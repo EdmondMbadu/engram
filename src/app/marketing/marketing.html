@@ -1,6 +1,6 @@
 <div class="selection:bg-[var(--accent)] selection:text-[#3c0800]">
   <!-- TopNavBar -->
-  <nav class="fixed top-0 z-50 w-full bg-[#0a0a0b]/80 backdrop-blur-2xl border-b border-white/[0.05]">
+  <nav class="theme-nav fixed top-0 z-50 w-full border-b backdrop-blur-2xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
       <div class="flex items-center gap-2 text-xl font-bold tracking-tighter text-[var(--text)]">
         engram core <span class="h-2 w-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_rgba(238,102,67,0.5)]"></span>
@@ -52,7 +52,7 @@
     </section>
 
     <!-- Workflow Section -->
-    <section class="border-y border-white/[0.05] bg-[#0c0c0e] py-32" id="workflow">
+    <section class="theme-muted-section border-y py-32" id="workflow">
       <div class="mx-auto max-w-7xl px-6 lg:px-10">
         <div class="mb-20">
           <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Operational Flow</p>
@@ -61,7 +61,7 @@
 
         <div class="grid gap-px overflow-hidden rounded-3xl border border-white/[0.05] bg-white/[0.05] md:grid-cols-4">
           @for (step of workflowSteps; track step.title; let index = $index) {
-            <div class="bg-[#0a0a0b] p-10 transition-colors hover:bg-white/[0.02]">
+            <div class="theme-surface p-10 transition-colors hover:bg-white/[0.02]">
               <div class="mb-8 text-[var(--accent)]">
                 <span class="material-symbols-outlined text-4xl leading-none">{{ step.icon }}</span>
               </div>
@@ -145,7 +145,7 @@
           </div>
           <h3 class="text-2xl font-bold text-[var(--text)] mb-3">Global Intelligence</h3>
           <p class="text-[var(--muted)] text-sm mb-8">One command bar to search across your library, web-results, and existing engram core simultaneously.</p>
-          <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0a0a0b] px-5 py-4">
+          <div class="theme-line-strong theme-surface flex items-center gap-3 rounded-xl border px-5 py-4">
              <span class="material-symbols-outlined text-[var(--accent)]">search</span>
              <span class="italic text-[var(--muted)] text-sm">Ask anything about your research...</span>
           </div>
@@ -186,7 +186,7 @@
 
     <!-- Final CTA -->
     <section class="mx-auto max-w-7xl px-6 py-32 lg:px-10">
-      <div class="relative overflow-hidden rounded-[3rem] bg-[var(--surface)] border border-white/[0.05] p-12 lg:p-20 text-center">
+      <div class="theme-line relative overflow-hidden rounded-[3rem] bg-[var(--surface)] border p-12 lg:p-20 text-center">
         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[var(--accent)]/10 blur-[120px]"></div>
         <h2 class="relative z-10 text-5xl font-bold tracking-tight text-[var(--text)] lg:text-7xl">Start Building Your Engram.</h2>
         <p class="relative z-10 mt-8 mx-auto max-w-2xl text-xl text-[var(--muted)]">Stop losing insights in a sea of browser tabs. Centralize your intelligence today.</p>
@@ -200,7 +200,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-white/[0.05] px-6 py-12 lg:px-10">
+  <footer class="theme-line border-t px-6 py-12 lg:px-10">
     <div class="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-8">
       <div class="flex items-center gap-2 text-lg font-bold tracking-tighter text-[var(--text)]">
         engram core <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]"></span>
