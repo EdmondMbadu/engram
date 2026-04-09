@@ -1,25 +1,13 @@
 <router-outlet></router-outlet>
 
-<div class="theme-switcher" role="group" aria-label="Color theme">
+<div class="theme-switcher">
   <button
     type="button"
-    class="theme-switcher__option"
-    [class.theme-switcher__option--active]="currentTheme() === 'light'"
-    [attr.aria-pressed]="currentTheme() === 'light'"
-    (click)="setTheme('light')"
+    class="theme-switcher__button"
+    [attr.aria-label]="themeActionLabel()"
+    [attr.title]="themeActionLabel()"
+    (click)="toggleTheme()"
   >
-    <span class="material-symbols-outlined">light_mode</span>
-    <span>Light</span>
-  </button>
-
-  <button
-    type="button"
-    class="theme-switcher__option"
-    [class.theme-switcher__option--active]="currentTheme() === 'dark'"
-    [attr.aria-pressed]="currentTheme() === 'dark'"
-    (click)="setTheme('dark')"
-  >
-    <span class="material-symbols-outlined">dark_mode</span>
-    <span>Dark</span>
+    <span class="material-symbols-outlined">{{ themeIcon() }}</span>
   </button>
 </div>

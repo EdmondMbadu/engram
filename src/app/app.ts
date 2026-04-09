@@ -33,8 +33,16 @@ export class App {
     });
   }
 
-  protected setTheme(theme: Theme): void {
-    this.currentTheme.set(theme);
+  protected toggleTheme(): void {
+    this.currentTheme.update((theme) => (theme === 'dark' ? 'light' : 'dark'));
+  }
+
+  protected themeActionLabel(): string {
+    return this.currentTheme() === 'dark' ? 'Light mode' : 'Dark mode';
+  }
+
+  protected themeIcon(): string {
+    return this.currentTheme() === 'dark' ? 'light_mode' : 'dark_mode';
   }
 
   private getInitialTheme(): Theme {
