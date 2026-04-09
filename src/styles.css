@@ -1,1 +1,95 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0a0b;
+  --surface: #141416;
+  --panel: rgba(28, 28, 30, 0.4);
+  --panel-strong: rgba(40, 40, 44, 0.6);
+  --accent: #ee6643;
+  --accent-soft: #ffb4a2;
+  --text: #f2f2f3;
+  --muted: #929298;
+  --line: rgba(255, 255, 255, 0.08);
+  --font-display: 'Inter', -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.05em;
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background-color: var(--panel);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .primary-btn {
+    background-color: var(--accent);
+    color: #3c0800 !important;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .primary-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .primary-btn:hover {
+    filter: brightness(110%);
+  }
+
+  .secondary-btn {
+    background-color: var(--panel-strong);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 600;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .secondary-btn:hover {
+    background-color: var(--panel);
+  }
+}
+
+/* Custom micro-animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fix for spacing issues mentioned by subagent */
+.flex { display: flex; }
+.grid { display: grid; }
+.gap-10 { gap: 2.5rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-20 { gap: 5rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.lg\:px-10 { @media (min-width: 1024px) { padding-left: 2.5rem; padding-right: 2.5rem; } }

@@ -1,0 +1,216 @@
+<div class="selection:bg-[var(--accent)] selection:text-[#3c0800]">
+  <!-- TopNavBar -->
+  <nav class="fixed top-0 z-50 w-full bg-[#0a0a0b]/80 backdrop-blur-2xl border-b border-white/[0.05]">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
+      <div class="flex items-center gap-2 text-xl font-bold tracking-tighter text-[var(--text)]">
+        engram core <span class="h-2 w-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_rgba(238,102,67,0.5)]"></span>
+      </div>
+      <div class="hidden items-center gap-10 md:flex">
+        @for (item of navItems; track item.href) {
+          <a [href]="item.href" class="text-sm font-medium text-[var(--muted)] transition-colors hover:text-[var(--text)]">
+            {{ item.label }}
+          </a>
+        }
+      </div>
+      <button routerLink="/landing" class="primary-btn !py-2.5 !px-6 !text-sm">
+        Join Early Access
+      </button>
+    </div>
+  </nav>
+
+  <main class="pt-32">
+    <!-- Hero Section -->
+    <section class="mx-auto max-w-7xl px-6 pb-32 lg:px-10">
+      <div class="grid gap-20 lg:grid-cols-[1.1fr_0.9fr] items-center">
+        <div class="animate-fade-up">
+          <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--accent-soft)]">
+            <span>Now in Early Access</span>
+            <div class="h-1 w-1 rounded-full bg-[var(--accent)]"></div>
+          </div>
+          <h1 class="text-6xl font-bold leading-[0.95] tracking-tight text-[var(--text)] lg:text-8xl">
+            Every document.<br/>Sorted. Forever.
+          </h1>
+          <p class="mt-8 max-w-xl text-xl leading-relaxed text-[var(--muted)]">
+            Engram builds an organic neural network of your technical intelligence. Turn raw data into a verifiable ground-truth memory layer.
+          </p>
+          <div class="mt-12 flex flex-wrap gap-4">
+            <button routerLink="/landing" class="primary-btn flex items-center gap-3">
+              Get Started for Free
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            <button class="secondary-btn">View Demo</button>
+          </div>
+        </div>
+
+        <div class="relative group">
+          <div class="absolute -inset-4 rounded-[2rem] bg-[var(--accent)]/10 opacity-0 blur-2xl transition-opacity group-hover:opacity-100"></div>
+          <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--surface)] shadow-2xl">
+            <img src="assets/hero_neural.png" alt="Neural Network Structure" class="w-full h-auto object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section class="border-y border-white/[0.05] bg-[#0c0c0e] py-32" id="workflow">
+      <div class="mx-auto max-w-7xl px-6 lg:px-10">
+        <div class="mb-20">
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Operational Flow</p>
+          <h2 class="mt-4 text-4xl font-bold text-[var(--text)] lg:text-5xl">The Neural Ingestion</h2>
+        </div>
+
+        <div class="grid gap-px overflow-hidden rounded-3xl border border-white/[0.05] bg-white/[0.05] md:grid-cols-4">
+          @for (step of workflowSteps; track step.title; let index = $index) {
+            <div class="bg-[#0a0a0b] p-10 transition-colors hover:bg-white/[0.02]">
+              <div class="mb-8 text-[var(--accent)]">
+                <span class="material-symbols-outlined text-4xl leading-none">{{ step.icon }}</span>
+              </div>
+              <p class="text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-2">Step 0{{ index + 1 }}</p>
+              <h3 class="text-xl font-bold text-[var(--text)] mb-3">{{ step.title }}</h3>
+              <p class="text-sm leading-relaxed text-[var(--muted)]">{{ step.description }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Grid Features -->
+    <section class="mx-auto max-w-7xl px-6 py-32 lg:px-10" id="features">
+      <div class="mb-16 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+        <div class="max-w-2xl">
+          <h2 class="text-4xl font-bold text-[var(--text)] lg:text-5xl">Engineered for Complexity</h2>
+          <p class="mt-5 text-lg text-[var(--muted)]">Most AI tools hallucinate. Engram provides a verifiable ground-truth for your most critical technical data.</p>
+        </div>
+        <div class="h-px flex-1 bg-white/[0.05] mb-6 hidden lg:block"></div>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-12">
+        <!-- Main Feature: Citations -->
+        <div class="glass-card col-span-12 rounded-[2.5rem] p-10 lg:col-span-8 overflow-hidden relative group">
+          <div class="relative z-10 flex flex-col h-full max-w-md">
+            <div class="mb-6 h-12 w-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">
+              <span class="material-symbols-outlined">menu_book</span>
+            </div>
+            <h3 class="text-3xl font-bold text-[var(--text)] mb-4">Precise Citations</h3>
+            <p class="text-[var(--muted)] leading-relaxed mb-10">Never trust a claim without proof. Every answer highlights the exact source, page, and paragraph it was derived from.</p>
+            
+            <div class="mt-auto space-y-3">
+              <div class="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4 transition-colors hover:bg-white/10">
+                <span class="text-sm font-medium text-[var(--muted)] truncate">Revenue growth in Q3...</span>
+                <span class="rounded bg-[var(--accent)]/20 px-2 py-1 text-[10px] font-bold text-[var(--accent-soft)]">PAGE 42</span>
+              </div>
+              <div class="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4 opacity-50">
+                <span class="text-sm font-medium text-[var(--muted)] truncate">Supply chain logistics...</span>
+                <span class="rounded bg-white/10 px-2 py-1 text-[10px] font-bold text-[var(--muted)]">PAGE 12</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Decorative element -->
+          <div class="absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4 opacity-[0.03] group-hover:scale-110 transition-transform duration-1000">
+             <span class="material-symbols-outlined text-[320px]">history_edu</span>
+          </div>
+        </div>
+
+        <!-- Visual: Knowledge Graph -->
+        <div class="glass-card col-span-12 rounded-[2.5rem] p-10 lg:col-span-4 group h-[480px] lg:h-auto">
+          <div class="mb-6 h-12 w-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">
+            <span class="material-symbols-outlined">bubble_chart</span>
+          </div>
+          <h3 class="text-2xl font-bold text-[var(--text)] mb-4">Knowledge Graph</h3>
+          <p class="text-[var(--muted)] text-sm mb-8">Visualize the hidden connections between disparate documents and research papers.</p>
+          <div class="overflow-hidden rounded-2xl border border-white/5 h-64 lg:h-1/2">
+            <img src="assets/knowledge_graph.png" alt="Knowledge Graph" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700">
+          </div>
+        </div>
+
+        <!-- Small Feature: Wiki -->
+        <div class="glass-card col-span-12 rounded-[2.5rem] p-8 lg:col-span-6">
+          <div class="mb-6 text-[var(--accent)]">
+            <span class="material-symbols-outlined text-3xl">article</span>
+          </div>
+          <h3 class="text-2xl font-bold text-[var(--text)] mb-3">Auto-Generated Wiki</h3>
+          <p class="text-[var(--muted)] text-sm mb-8">Engram automatically organizes your data into a structured system that updates as you learn.</p>
+          <div class="space-y-3 rounded-2xl border-l-4 border-[var(--accent)] bg-white/5 p-6">
+             <div class="h-2 w-3/4 rounded-full bg-white/10"></div>
+             <div class="h-2 w-1/2 rounded-full bg-white/10"></div>
+             <div class="h-2 w-2/3 rounded-full bg-white/5"></div>
+          </div>
+        </div>
+
+        <!-- Small Feature: Search -->
+        <div class="glass-card col-span-12 rounded-[2.5rem] p-8 lg:col-span-6">
+          <div class="mb-6 text-[var(--accent)]">
+            <span class="material-symbols-outlined text-3xl">hub</span>
+          </div>
+          <h3 class="text-2xl font-bold text-[var(--text)] mb-3">Global Intelligence</h3>
+          <p class="text-[var(--muted)] text-sm mb-8">One command bar to search across your library, web-results, and existing engram core simultaneously.</p>
+          <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0a0a0b] px-5 py-4">
+             <span class="material-symbols-outlined text-[var(--accent)]">search</span>
+             <span class="italic text-[var(--muted)] text-sm">Ask anything about your research...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-24">
+      <div class="mx-auto max-w-7xl px-6 lg:px-10 text-center">
+        <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[var(--muted)] mb-12">Trusted by teams at the frontier</p>
+        <div class="flex flex-wrap justify-center items-center gap-x-20 gap-y-10 opacity-30 grayscale contrast-125">
+          @for (mark of trustMarks; track mark) {
+            <span class="text-xl font-black tracking-tighter">{{ mark }}</span>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="mx-auto max-w-7xl px-6 py-32 lg:px-10" id="security">
+      <div class="grid gap-20 lg:grid-cols-2">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Security</p>
+          <h2 class="mt-4 text-4xl font-bold text-[var(--text)] lg:text-5xl leading-tight">Serious knowledge deserves serious boundaries.</h2>
+          <p class="mt-8 text-lg text-[var(--muted)] leading-relaxed">The product direction is clear: private contexts, explicit provenance, and controls that make internal adoption realistic.</p>
+        </div>
+        <div class="grid gap-4">
+          @for (point of securityPoints; track point) {
+            <div class="glass-card flex items-start gap-5 rounded-3xl p-6">
+              <div class="mt-1.5 h-2 w-2 flex-none rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
+              <p class="text-[var(--muted)] leading-relaxed">{{ point }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="mx-auto max-w-7xl px-6 py-32 lg:px-10">
+      <div class="relative overflow-hidden rounded-[3rem] bg-[var(--surface)] border border-white/[0.05] p-12 lg:p-20 text-center">
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[var(--accent)]/10 blur-[120px]"></div>
+        <h2 class="relative z-10 text-5xl font-bold tracking-tight text-[var(--text)] lg:text-7xl">Start Building Your Engram.</h2>
+        <p class="relative z-10 mt-8 mx-auto max-w-2xl text-xl text-[var(--muted)]">Stop losing insights in a sea of browser tabs. Centralize your intelligence today.</p>
+        <div class="relative z-10 mt-12 flex flex-col sm:flex-row justify-center gap-6">
+          <button routerLink="/landing" class="primary-btn text-lg">Get Started for Free</button>
+          <button class="secondary-btn text-lg">Talk to Sales</button>
+        </div>
+        <p class="mt-10 text-xs font-bold uppercase tracking-widest text-[var(--muted)]">No credit card required. 1GB free storage.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[0.05] px-6 py-12 lg:px-10">
+    <div class="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-8">
+      <div class="flex items-center gap-2 text-lg font-bold tracking-tighter text-[var(--text)]">
+        engram core <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]"></span>
+      </div>
+      <div class="flex gap-10">
+        <a class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" href="#">Privacy</a>
+        <a class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" href="#">Terms</a>
+        <a class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" href="#">Contact</a>
+      </div>
+      <p class="text-xs font-medium text-[var(--muted)]">© 2024 Engram Core. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

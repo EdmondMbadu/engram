@@ -1,0 +1,127 @@
+<div class="flex h-screen overflow-hidden text-[var(--text)] bg-[var(--bg)] selection:bg-[var(--accent)] selection:text-[#3c0800]">
+  <!-- SideNavBar -->
+  <aside class="bg-[#0a0a0b] h-screen w-64 border-r border-white/5 flex flex-col py-6 px-4 shrink-0 font-display">
+    <div class="flex items-center gap-2 px-2 mb-10">
+      <span class="text-xl font-black text-[var(--text)] tracking-tighter">engram</span>
+      <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] animate-pulse"></span>
+    </div>
+    <nav class="flex-1 space-y-1">
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--accent)] font-bold border-r-2 border-[var(--accent)] bg-white/5 transition-all" href="#">
+        <span class="material-symbols-outlined">neurology</span>
+        Knowledge Base
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5 transition-colors duration-200" href="#">
+        <span class="material-symbols-outlined">library_books</span>
+        Library
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5 transition-colors duration-200" href="#">
+        <span class="material-symbols-outlined">menu_book</span>
+        Wiki
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5 transition-colors duration-200" href="#">
+        <span class="material-symbols-outlined">category</span>
+        Collections
+      </a>
+    </nav>
+    <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
+      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5 transition-colors duration-200" href="#">
+        <span class="material-symbols-outlined">settings</span>
+        Settings
+      </a>
+      <div class="flex items-center gap-3 px-3 py-4 mt-2">
+        <div class="w-8 h-8 rounded-full bg-white/5 overflow-hidden flex items-center justify-center border border-white/10">
+          <img class="w-full h-full object-cover" [src]="aiAvatar" alt="Personal AI Avatar">
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xs font-bold text-[var(--text)]">Personal AI</span>
+          <span class="text-[10px] text-[var(--muted)] uppercase tracking-widest">v1.0.4</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col min-w-0 bg-[#0c0c0e] relative overflow-hidden">
+    <!-- TopAppBar -->
+    <header class="flex justify-between items-center w-full h-16 px-8 sticky top-0 z-50 bg-[#0a0a0b]/80 backdrop-blur-xl border-b border-white/5">
+      <div class="flex items-center gap-8 flex-1">
+        <div class="relative w-64 group">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm">search</span>
+          <input class="w-full bg-white/5 border-none rounded-lg pl-10 py-1.5 text-sm focus:ring-1 focus:ring-[var(--accent)]/20 transition-all text-[var(--text)] placeholder:text-[var(--muted)]/50" placeholder="Search thoughts..." type="text"/>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--accent)] border-b border-[var(--accent)] py-1" href="#">Deep Search</a>
+          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--muted)] hover:text-[var(--accent)] transition-all py-1" href="#">Graph</a>
+          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--muted)] hover:text-[var(--accent)] transition-all py-1" href="#">Timeline</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="material-symbols-outlined text-[var(--muted)] hover:text-[var(--accent)] transition-all">notifications</button>
+        <button class="material-symbols-outlined text-[var(--muted)] hover:text-[var(--accent)] transition-all">help_outline</button>
+        <div class="w-8 h-8 rounded-full border border-white/10 overflow-hidden">
+          <img class="w-full h-full object-cover" [src]="userAvatar" alt="User Avatar">
+        </div>
+      </div>
+    </header>
+
+    <!-- Onboarding View (The Canvas) -->
+    <div class="flex-1 flex flex-col items-center justify-center p-8 relative">
+      <!-- Background Decorative Element (The Void Texture) -->
+      <div class="absolute inset-0 pointer-events-none opacity-20">
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-[120px] mix-blend-screen opacity-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[var(--accent-soft)] rounded-full blur-[100px] mix-blend-screen opacity-5"></div>
+      </div>
+      
+      <div class="max-w-2xl w-full text-center z-10 animate-fade-up">
+        <h1 class="text-7xl font-bold tracking-tighter text-[var(--text)] mb-2 leading-none">Welcome.</h1>
+        <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-12">Cognitive Synchronization Active</p>
+        
+        <!-- Drop Zone Card -->
+        <div class="glass-card p-12 rounded-[2rem] border border-white/10 group cursor-pointer hover:border-[var(--accent)]/30 transition-all duration-500 flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-[var(--accent)]/10 transition-all duration-500">
+            <span class="material-symbols-outlined text-3xl text-[var(--accent)]" style="font-variation-settings: 'FILL' 1;">add</span>
+          </div>
+          <h2 class="text-3xl font-bold text-[var(--text)] mb-4">Initialize Knowledge</h2>
+          <p class="text-[var(--muted)] text-lg leading-relaxed mb-10 max-w-md">
+            Drop your first document. Engram will read it, learn from it, and remember it — <span class="text-[var(--accent-soft)] font-bold">forever.</span>
+          </p>
+          <div class="flex gap-4">
+            <button class="primary-btn">
+              Add Documents
+            </button>
+            <button class="secondary-btn">
+              Browse Files
+            </button>
+          </div>
+          <div class="mt-12 flex items-center gap-8">
+            <div class="flex flex-col items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity">
+              <span class="material-symbols-outlined text-xl">description</span>
+              <span class="text-[10px] uppercase font-bold tracking-tighter">PDF</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity delay-75">
+              <span class="material-symbols-outlined text-xl">article</span>
+              <span class="text-[10px] uppercase font-bold tracking-tighter">TXT</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity delay-150">
+              <span class="material-symbols-outlined text-xl">link</span>
+              <span class="text-[10px] uppercase font-bold tracking-tighter">URL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cognitive Chips -->
+        <div class="mt-16 flex flex-wrap justify-center gap-3">
+          <span class="px-5 py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5">Neural Indexing</span>
+          <span class="px-5 py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5">Semantic Search</span>
+          <span class="px-5 py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5">Zero-Loss Retention</span>
+        </div>
+      </div>
+
+      <!-- Footer Metadata -->
+      <div class="absolute bottom-8 right-8 text-right opacity-30">
+        <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--text)]">System Status: Optimal</p>
+        <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--muted)]">Location: Local Node 077</p>
+      </div>
+    </div>
+  </main>
+</div>
