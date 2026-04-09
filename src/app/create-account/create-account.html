@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
-  <div class="mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-6 lg:px-10">
+  <div class="mx-auto flex min-h-screen max-w-4xl flex-col px-6 py-6 lg:px-10">
     <header class="theme-nav flex items-center justify-between rounded-full border px-5 py-4">
       <a routerLink="/" class="flex items-center gap-2 text-xl font-bold tracking-tighter text-[var(--text)]">
         engram core <span class="h-2 w-2 rounded-full bg-[var(--accent)]"></span>
@@ -9,41 +9,13 @@
       </div>
     </header>
 
-    <main class="grid flex-1 gap-10 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-      <section class="relative overflow-hidden rounded-[2.5rem] border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-elevated)] lg:p-12">
-        <div class="absolute right-0 top-10 h-64 w-64 rounded-full bg-[var(--accent)]/10 blur-3xl"></div>
-        <div class="relative">
-          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Create Account</p>
-          <h1 class="mt-4 max-w-lg text-5xl font-bold tracking-tight text-[var(--text)] lg:text-6xl">
-            Build the memory layer your work deserves.
-          </h1>
-          <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--muted)]">
-            Start with your name, email, and password. Add Google sign-in when you want the faster path.
-          </p>
-
-          <div class="mt-10 grid gap-4 md:grid-cols-2">
-            <div class="glass-card rounded-[1.75rem] p-6">
-              <p class="text-sm font-bold uppercase tracking-[0.25em] text-[var(--accent)]">Private By Default</p>
-              <p class="mt-4 text-sm leading-relaxed text-[var(--muted)]">
-                Keep your research in a dedicated workspace with explicit provenance and cleaner retrieval.
-              </p>
-            </div>
-            <div class="glass-card rounded-[1.75rem] p-6">
-              <p class="text-sm font-bold uppercase tracking-[0.25em] text-[var(--accent)]">No Setup Drama</p>
-              <p class="mt-4 text-sm leading-relaxed text-[var(--muted)]">
-                Upload documents, connect URLs, and start asking questions without building your own stack first.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="glass-card rounded-[2.5rem] p-8 shadow-[var(--shadow-elevated)] lg:p-10">
+    <main class="flex flex-1 items-center justify-center py-10">
+      <section class="glass-card w-full max-w-xl rounded-[2.5rem] p-8 shadow-[var(--shadow-elevated)] lg:p-10">
         <div class="mb-8">
           <p class="text-sm font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Get Started</p>
           <h2 class="mt-3 text-4xl font-bold text-[var(--text)]">Create your account</h2>
           <p class="mt-3 text-[var(--muted)]">
-            UI only for now. This is ready for real auth wiring later.
+            Start with your name, email, and password, or continue with Google.
           </p>
         </div>
 
@@ -83,8 +55,6 @@
 
           <button type="button" class="primary-btn w-full justify-center">Create Account</button>
         </form>
-
-        <p class="mt-6 text-sm text-[var(--muted)]">No credit card required. Start by uploading your first documents.</p>
 
         <p class="mt-8 text-center text-sm text-[var(--muted)]">
           Already have an account?

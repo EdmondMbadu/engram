@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
-  <div class="mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-6 lg:px-10">
+  <div class="mx-auto flex min-h-screen max-w-4xl flex-col px-6 py-6 lg:px-10">
     <header class="theme-nav flex items-center justify-between rounded-full border px-5 py-4">
       <a routerLink="/" class="flex items-center gap-2 text-xl font-bold tracking-tighter text-[var(--text)]">
         engram core <span class="h-2 w-2 rounded-full bg-[var(--accent)]"></span>
@@ -10,46 +10,13 @@
       </div>
     </header>
 
-    <main class="grid flex-1 gap-10 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-      <section class="relative overflow-hidden rounded-[2.5rem] border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-elevated)] lg:p-12">
-        <div class="absolute -left-20 top-0 h-64 w-64 rounded-full bg-[var(--accent)]/10 blur-3xl"></div>
-        <div class="relative">
-          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Welcome Back</p>
-          <h1 class="mt-4 max-w-lg text-5xl font-bold tracking-tight text-[var(--text)] lg:text-6xl">
-            Pick up your knowledge exactly where you left it.
-          </h1>
-          <p class="mt-6 max-w-xl text-lg leading-relaxed text-[var(--muted)]">
-            Sign in to reopen your documents, citations, and evolving memory layer without losing context.
-          </p>
-
-          <div class="mt-10 grid gap-4">
-            <div class="glass-card rounded-[1.75rem] p-6">
-              <p class="text-sm font-bold uppercase tracking-[0.25em] text-[var(--accent)]">What You Get</p>
-              <ul class="mt-4 space-y-4 text-[var(--muted)]">
-                <li class="flex items-start gap-3">
-                  <span class="mt-1 h-2 w-2 rounded-full bg-[var(--accent)]"></span>
-                  Exact citations attached to every answer.
-                </li>
-                <li class="flex items-start gap-3">
-                  <span class="mt-1 h-2 w-2 rounded-full bg-[var(--accent)]"></span>
-                  A private workspace for your PDFs, notes, links, and research trails.
-                </li>
-                <li class="flex items-start gap-3">
-                  <span class="mt-1 h-2 w-2 rounded-full bg-[var(--accent)]"></span>
-                  A system that remembers over time instead of resetting every session.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="glass-card rounded-[2.5rem] p-8 shadow-[var(--shadow-elevated)] lg:p-10">
+    <main class="flex flex-1 items-center justify-center py-10">
+      <section class="glass-card w-full max-w-xl rounded-[2.5rem] p-8 shadow-[var(--shadow-elevated)] lg:p-10">
         <div class="mb-8">
           <p class="text-sm font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Sign In</p>
           <h2 class="mt-3 text-4xl font-bold text-[var(--text)]">Access your Engram</h2>
           <p class="mt-3 text-[var(--muted)]">
-            UI only for now. Real authentication can plug into this flow later.
+            Sign in with Google or use your email and password.
           </p>
         </div>
 
