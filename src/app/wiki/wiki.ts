@@ -8,7 +8,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
   templateUrl: './wiki.html',
 })
 export class WikiComponent {
-  askPanelExpanded = false;
+  askPanelExpanded = true;
 
   readonly tags = ['Machine Learning', 'Architecture', 'Memory Systems'];
 
