@@ -1,8 +1,22 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
-  {
-    path: '**',
-    renderMode: RenderMode.Prerender
-  }
+  // Marketing / public pages can be prerendered
+  { path: '', renderMode: RenderMode.Prerender },
+
+  // Auth pages must be client-rendered (they use browser-only Firebase Auth)
+  { path: 'sign-in', renderMode: RenderMode.Client },
+  { path: 'create-account', renderMode: RenderMode.Client },
+  { path: 'forgot-password', renderMode: RenderMode.Client },
+  { path: 'verify-email', renderMode: RenderMode.Client },
+  { path: 'auth/action', renderMode: RenderMode.Client },
+
+  // Guarded pages require auth state — client-render them
+  { path: 'home', renderMode: RenderMode.Client },
+  { path: 'chat', renderMode: RenderMode.Client },
+  { path: 'library', renderMode: RenderMode.Client },
+  { path: 'wiki', renderMode: RenderMode.Client },
+
+  // Fallback
+  { path: '**', renderMode: RenderMode.Prerender },
 ];
