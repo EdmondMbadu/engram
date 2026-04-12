@@ -1,0 +1,45 @@
+:host {
+  --accent: #3baf62;
+  --accent-soft: #8fd9a8;
+  --accent-contrast: #f4fff7;
+  --ambient-1: rgba(59, 175, 98, 0.16);
+  --ambient-2: rgba(143, 217, 168, 0.12);
+  --landing-accent-hover: #2a9150;
+}
+
+:host-context(:root[data-theme='light']) {
+  --bg: #ffffff;
+  --bg-alt: #ffffff;
+  --surface: rgba(255, 255, 255, 0.94);
+  --surface-strong: #ffffff;
+  --shell: #ffffff;
+  --sidebar: rgba(255, 255, 255, 0.98);
+  --nav-bg: rgba(255, 255, 255, 0.9);
+  --panel: rgba(255, 255, 255, 0.78);
+  --panel-strong: rgba(255, 255, 255, 0.96);
+  --input-bg: rgba(15, 23, 42, 0.04);
+  --soft-fill: rgba(15, 23, 42, 0.04);
+  --soft-fill-strong: rgba(15, 23, 42, 0.08);
+  --accent: #3baf62;
+  --accent-soft: #2a9150;
+  --accent-contrast: #f7fff9;
+  --text: #0f1720;
+  --muted: #5f6b76;
+  --line: rgba(15, 23, 42, 0.08);
+  --line-strong: rgba(15, 23, 42, 0.14);
+  --ambient-1: transparent;
+  --ambient-2: transparent;
+  --body-background-image: none;
+  --shadow-elevated: 0 24px 60px rgba(15, 23, 42, 0.08);
+  --shadow-floating: 0 16px 40px rgba(15, 23, 42, 0.08);
+  --landing-accent-hover: #2a9150;
+}
+
+:host .primary-btn {
+  box-shadow: 0 14px 30px rgba(59, 175, 98, 0.24);
+}
+
+:host .primary-btn:hover {
+  background-color: var(--landing-accent-hover);
+  filter: none;
+}
