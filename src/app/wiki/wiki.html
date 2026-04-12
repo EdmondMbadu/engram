@@ -1,5 +1,5 @@
 <div
-  class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[#3c0800]"
+  class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]"
 >
   <div class="pointer-events-none fixed inset-0 overflow-hidden">
     <div
@@ -392,22 +392,18 @@
                   Visualization
                 </p>
 
-                <div class="group relative mt-6 overflow-hidden rounded-[1.5rem] border border-white/10">
-                  <img
-                    src="/assets/knowledge_graph.png"
-                    alt="Knowledge graph visualization for the attention mechanism page"
-                    class="h-72 w-full object-cover opacity-70 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
-                  />
-                  <div
-                    class="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(10,10,11,0.74))]"
-                  ></div>
-                  <div class="absolute inset-x-0 bottom-0 p-5">
-                    <p class="text-sm font-semibold text-white">Cross-document concept graph</p>
-                    <p class="mt-1 text-xs leading-6 text-white/70">
-                      Surface adjacent concepts, citations, and latent relationships.
-                    </p>
+                  <div class="group relative mt-6 overflow-hidden rounded-[1.5rem] border border-white/10 h-72 flex items-center justify-center bg-[var(--accent)]/5">
+                    <span class="material-symbols-outlined text-7xl text-[var(--accent)] opacity-20 animate-pulse">schema</span>
+                    <div
+                      class="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(10,10,11,0.74))]"
+                    ></div>
+                    <div class="absolute inset-x-0 bottom-0 p-5">
+                      <p class="text-sm font-semibold text-white">Cross-document concept graph</p>
+                      <p class="mt-1 text-xs leading-6 text-white/70">
+                        Surface adjacent concepts, citations, and latent relationships.
+                      </p>
+                    </div>
                   </div>
-                </div>
               </section>
 
               <section
