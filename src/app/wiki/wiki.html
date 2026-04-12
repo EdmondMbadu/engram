@@ -135,13 +135,40 @@
           >
             <span class="material-symbols-outlined text-base">notifications</span>
           </button>
-          <div class="hidden text-right lg:block">
-            <p class="text-sm font-semibold text-[var(--text)]">{{ currentUserName() }}</p>
-            <p class="text-xs text-[var(--muted)]">{{ currentUserEmail() }}</p>
+
+          <!-- Avatar Dropdown -->
+          <div class="avatar-menu-wrapper relative">
+            <button
+              type="button"
+              class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-bold text-[var(--accent)] transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
+              (click)="toggleAvatarMenu()"
+              [attr.aria-expanded]="avatarMenuOpen()"
+              aria-haspopup="true"
+            >
+              {{ userInitials() }}
+            </button>
+
+            @if (avatarMenuOpen()) {
+              <div class="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)] backdrop-blur-xl animate-fade-up"
+                   style="animation-duration: 0.15s"
+                   role="menu">
+                <div class="border-b border-[var(--line)] px-4 py-4">
+                  <p class="text-sm font-bold text-[var(--text)] truncate">{{ currentUserName() }}</p>
+                  <p class="mt-0.5 text-xs text-[var(--muted)] truncate">{{ currentUserEmail() }}</p>
+                </div>
+                <div class="py-1.5">
+                  <button type="button" role="menuitem" class="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[var(--muted)] transition-colors duration-150 hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" disabled>
+                    <span class="material-symbols-outlined text-base">settings</span>
+                    Settings
+                  </button>
+                  <button type="button" role="menuitem" class="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-rose-400 transition-colors duration-150 hover:bg-rose-500/10" [disabled]="isSigningOut()" (click)="signOut()">
+                    <span class="material-symbols-outlined text-base">logout</span>
+                    {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
+                  </button>
+                </div>
+              </div>
+            }
           </div>
-          <button type="button" class="ghost-btn !px-4 !py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="isSigningOut()" (click)="signOut()">
-            {{ isSigningOut() ? 'Signing Out...' : 'Sign Out' }}
-          </button>
         </div>
       </header>
 

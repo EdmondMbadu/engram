@@ -122,8 +122,20 @@ export class WikiComponent {
     this.askPanelExpanded = false;
   }
 
+  toggleAvatarMenu(): void {
+    this.avatarMenuOpen.update((open) => !open);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.querySelector('.avatar-menu-wrapper')?.contains(event.target as Node)) {
+      this.avatarMenuOpen.set(false);
+    }
+  }
+
   async signOut(): Promise<void> {
     this.isSigningOut.set(true);
+    this.avatarMenuOpen.set(false);
 
     try {
       await this.authService.signOut();
