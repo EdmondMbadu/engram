@@ -37,11 +37,22 @@ export class SignInComponent {
 
     try {
       const { email, password, rememberMe } = this.form.getRawValue();
-      await this.authService.signInWithEmail({
+      const result = await this.authService.signInWithEmail({
         email,
         password,
         remember: rememberMe,
       });
+
+      if (result.needsEmailVerification) {
+        await this.router.navigate(['/verify-email'], {
+          queryParams: {
+            redirectTo: this.getRedirectUrl(),
+            email: email.trim().toLowerCase(),
+          },
+        });
+        return;
+      }
+
       await this.router.navigateByUrl(this.getRedirectUrl());
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
@@ -56,7 +67,17 @@ export class SignInComponent {
     this.isSubmitting.set(true);
 
     try {
-      await this.authService.signInWithGoogle(this.form.controls.rememberMe.getRawValue());
+      const result = await this.authService.signInWithGoogle(
+        this.form.controls.rememberMe.getRawValue(),
+      );
+
+      if (result.needsEmailVerification) {
+        await this.router.navigate(['/verify-email'], {
+          queryParams: { redirectTo: this.getRedirectUrl() },
+        });
+        return;
+      }
+
       await this.router.navigateByUrl(this.getRedirectUrl());
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
@@ -72,6 +93,10 @@ export class SignInComponent {
 
     if (this.route.snapshot.queryParamMap.get('reset') === 'sent') {
       return 'Password reset email sent if an account exists for that address.';
+    }
+
+    if (this.route.snapshot.queryParamMap.get('reset') === 'complete') {
+      return 'Your password has been updated. Sign in with your new password.';
     }
 
     return null;

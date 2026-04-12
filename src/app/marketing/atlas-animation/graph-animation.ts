@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 
 interface Node {
   id: number;
@@ -56,15 +57,21 @@ interface Connection {
 export class GraphAnimationComponent implements OnInit, OnDestroy {
   nodes: Node[] = [];
   connections: Connection[] = [];
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   private frameId: any;
 
   ngOnInit() {
     this.initGraph();
-    this.animate();
+    if (this.isBrowser) {
+      this.animate();
+    }
   }
 
   ngOnDestroy() {
-    if (this.frameId) cancelAnimationFrame(this.frameId);
+    if (this.frameId && this.isBrowser) {
+      cancelAnimationFrame(this.frameId);
+    }
   }
 
   private initGraph() {

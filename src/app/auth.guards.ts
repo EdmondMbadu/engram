@@ -14,9 +14,17 @@ export const authGuard: CanActivateFn = async (_route, state) => {
 
   await authService.waitForReady();
 
-  return authService.isAuthenticated()
-    ? true
-    : router.createUrlTree(['/sign-in'], { queryParams: { redirectTo: state.url } });
+  if (authService.isAuthenticated() && authService.needsEmailVerification()) {
+    await authService.refreshUser().catch(() => null);
+  }
+
+  if (!authService.isAuthenticated()) {
+    return router.createUrlTree(['/sign-in'], { queryParams: { redirectTo: state.url } });
+  }
+
+  return authService.needsEmailVerification()
+    ? router.createUrlTree(['/verify-email'], { queryParams: { redirectTo: state.url } })
+    : true;
 };
 
 export const guestOnlyGuard: CanActivateFn = async () => {
@@ -30,5 +38,11 @@ export const guestOnlyGuard: CanActivateFn = async () => {
 
   await authService.waitForReady();
 
-  return authService.isAuthenticated() ? router.createUrlTree(['/home']) : true;
+  if (!authService.isAuthenticated()) {
+    return true;
+  }
+
+  return authService.needsEmailVerification()
+    ? router.createUrlTree(['/verify-email'])
+    : router.createUrlTree(['/home']);
 };

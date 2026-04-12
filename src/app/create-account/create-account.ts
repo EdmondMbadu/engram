@@ -1,8 +1,8 @@
-import { AbstractControl, type ValidationErrors } from '@angular/forms';
 import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, Validators, NonNullableFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { passwordsMatchValidator } from '../auth-form-validators';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
@@ -42,13 +42,19 @@ export class CreateAccountComponent {
 
     try {
       const { fullName, email, password, rememberMe } = this.form.getRawValue();
-      await this.authService.createAccount({
+      const result = await this.authService.createAccount({
         fullName,
         email,
         password,
         remember: rememberMe,
+        redirectTo: this.getRedirectUrl(),
       });
-      await this.router.navigateByUrl(this.getRedirectUrl());
+      await this.router.navigate(['/verify-email'], {
+        queryParams: {
+          redirectTo: this.getRedirectUrl(),
+          sent: result.verificationEmailSent ? '1' : '0',
+        },
+      });
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
     } finally {
@@ -61,7 +67,17 @@ export class CreateAccountComponent {
     this.isSubmitting.set(true);
 
     try {
-      await this.authService.signInWithGoogle(this.form.controls.rememberMe.getRawValue());
+      const result = await this.authService.signInWithGoogle(
+        this.form.controls.rememberMe.getRawValue(),
+      );
+
+      if (result.needsEmailVerification) {
+        await this.router.navigate(['/verify-email'], {
+          queryParams: { redirectTo: this.getRedirectUrl() },
+        });
+        return;
+      }
+
       await this.router.navigateByUrl(this.getRedirectUrl());
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
@@ -78,13 +94,4 @@ export class CreateAccountComponent {
   private isSafeRedirect(value: string | null): value is string {
     return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
   }
-}
-
-function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password')?.value;
-  const confirmPassword = control.get('confirmPassword')?.value;
-
-  return password && confirmPassword && password !== confirmPassword
-    ? { passwordMismatch: true }
-    : null;
 }

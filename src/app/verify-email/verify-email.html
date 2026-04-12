@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <div class="mx-auto flex min-h-screen max-w-4xl flex-col px-6 py-6 lg:px-10">
+    <header class="theme-nav flex items-center justify-between rounded-full border px-5 py-4">
+      <a routerLink="/" class="flex items-center gap-3 text-xl font-bold tracking-tighter text-[var(--text)]">
+        <div class="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1.5 shadow-[0_0_24px_rgba(59,175,98,0.08)]">
+          <img src="/assets/living-atlas-logo.png" alt="Living Atlas logo" class="h-full w-full object-contain" />
+        </div>
+        <span>Living Atlas</span>
+      </a>
+      <div class="flex items-center gap-3">
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/sign-in" class="ghost-btn !px-4 !py-2.5 text-sm">Sign In</a>
+      </div>
+    </header>
+
+    <main class="flex flex-1 items-center justify-center py-10">
+      <section class="glass-card w-full max-w-xl rounded-[2.5rem] p-8 shadow-[var(--shadow-elevated)] lg:p-10">
+        <p class="text-sm font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Verify Email</p>
+        <h1 class="mt-3 text-4xl font-bold text-[var(--text)]">Confirm your inbox</h1>
+        <p class="mt-4 text-[var(--muted)]">
+          We need to verify your email before granting access to the workspace.
+          @if (currentEmail()) {
+            <span class="font-semibold text-[var(--text)]"> {{ currentEmail() }}</span>
+          }
+        </p>
+
+        @if (infoMessage()) {
+          <div class="mt-6 rounded-2xl border border-[rgba(59,175,98,0.18)] bg-[rgba(59,175,98,0.08)] px-4 py-3 text-sm text-[var(--text)]">
+            {{ infoMessage() }}
+          </div>
+        }
+
+        @if (submitError()) {
+          <div class="mt-6 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-sm text-rose-600 dark:text-rose-200">
+            {{ submitError() }}
+          </div>
+        }
+
+        <div class="mt-8 space-y-4">
+          <button
+            type="button"
+            class="primary-btn w-full justify-center disabled:cursor-not-allowed disabled:opacity-60"
+            [disabled]="isRefreshing()"
+            (click)="refreshStatus()"
+          >
+            {{ isRefreshing() ? 'Checking...' : 'I verified my email' }}
+          </button>
+
+          <button
+            type="button"
+            class="secondary-btn w-full justify-center disabled:cursor-not-allowed disabled:opacity-60"
+            [disabled]="isResending()"
+            (click)="resendEmail()"
+          >
+            {{ isResending() ? 'Sending...' : 'Resend verification email' }}
+          </button>
+        </div>
+
+        <div class="mt-8 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-4 text-sm text-[var(--muted)]">
+          Use the most recent email. Older verification links can expire or become invalid after a newer message is sent.
+        </div>
+
+        @if (currentUser()) {
+          <p class="mt-8 text-center text-sm text-[var(--muted)]">
+            Wrong account?
+            <button type="button" class="bg-transparent p-0 font-semibold text-[var(--accent)] hover:opacity-80" (click)="signOut()">Sign out</button>
+          </p>
+        } @else {
+          <p class="mt-8 text-center text-sm text-[var(--muted)]">
+            No active session.
+            <a routerLink="/sign-in" class="font-semibold text-[var(--accent)] hover:opacity-80">Return to sign in</a>
+          </p>
+        }
+      </section>
+    </main>
+  </div>
+</div>
