@@ -20,7 +20,7 @@ export class WikiComponent {
 
   readonly summary = [
     'The attention mechanism transformed sequence modeling by replacing recurrence with dynamic retrieval. Instead of forcing information through a fixed-size hidden state, it scores the relevance of every token against every other token and composes a context-aware representation in parallel.',
-    'Within Engram, the same pattern maps cleanly to knowledge work: queries express what you need, keys expose where meaning lives, and values recover the exact passages, citations, or concepts that should surface in response. The result is retrieval that feels closer to directed memory than keyword matching.',
+    'Within Living Atlas, the same pattern maps cleanly to knowledge work: queries express what you need, keys expose where meaning lives, and values recover the exact passages, citations, or concepts that should surface in response. The result is retrieval that feels closer to directed memory than keyword matching.',
   ];
 
   readonly architecturalComponents = [

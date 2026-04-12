@@ -21,7 +21,7 @@ export class ThemeService {
       root.style.colorScheme = theme;
 
       if (this.isBrowser) {
-        window.localStorage.setItem('engram-theme', theme);
+        window.localStorage.setItem('living-atlast-theme', theme);
       }
     });
   }
@@ -43,7 +43,7 @@ export class ThemeService {
       return 'dark';
     }
 
-    const savedTheme = window.localStorage.getItem('engram-theme');
+    const savedTheme = window.localStorage.getItem('living-atlast-theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       return savedTheme;
     }

@@ -1,5 +1,5 @@
 {
-  "name": "engram",
+  "name": "living-atlast",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:engram": "node dist/engram/server/server.mjs"
+    "serve:ssr:living-atlast": "node dist/living-atlast/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,

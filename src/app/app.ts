@@ -9,6 +9,6 @@ import { ThemeService } from './theme.service';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = 'engram core';
+  protected readonly title = 'Living Atlas';
   private readonly themeService = inject(ThemeService);
 }

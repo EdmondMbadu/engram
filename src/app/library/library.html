@@ -1,0 +1,300 @@
+<div
+  class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[#3c0800]"
+>
+  <div class="pointer-events-none fixed inset-0 overflow-hidden">
+    <div
+      class="absolute left-[-10rem] top-[-8rem] h-[24rem] w-[24rem] rounded-full bg-[var(--accent)]/12 blur-[120px]"
+    ></div>
+    <div
+      class="absolute bottom-[-12rem] right-[-8rem] h-[24rem] w-[24rem] rounded-full bg-[rgba(63,185,156,0.08)] blur-[120px]"
+    ></div>
+  </div>
+
+  <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
+    <aside
+      class="theme-sidebar hidden h-screen w-72 shrink-0 border-r px-5 py-6 md:flex md:flex-col"
+    >
+      <div class="mb-10 px-2">
+        <div class="flex items-center gap-2">
+          <a routerLink="/" class="text-xl font-black tracking-tighter text-[var(--text)]"
+            >Living Atlas</a
+          >
+          <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)]"></span>
+        </div>
+      </div>
+
+      <nav class="flex-1 space-y-1 text-sm">
+        <a
+          routerLink="/chat"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">chat</span>
+          <span>New Chat</span>
+        </a>
+        <a
+          routerLink="/home"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">neurology</span>
+          <span>Knowledge Base</span>
+        </a>
+        <a
+          routerLink="/library"
+          class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(238,102,67,0.08)]"
+        >
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
+            >library_books</span
+          >
+          <span>Library</span>
+        </a>
+        <a
+          routerLink="/wiki"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">menu_book</span>
+          <span>Wiki</span>
+        </a>
+        <a
+          href="#knowledge-gaps"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">category</span>
+          <span>Collections</span>
+        </a>
+        <a
+          href="#library-settings"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">settings</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="mt-8 space-y-5 border-t border-white/5 px-2 pt-6">
+        <button class="primary-btn !w-full !justify-center !px-4 !py-3 text-sm">
+          <span class="material-symbols-outlined text-lg">add</span>
+          <span>Add Documents</span>
+        </button>
+
+        <div class="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
+          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">
+            Active workspace
+          </p>
+          <p class="mt-3 text-sm font-semibold text-[var(--text)]">Primary Library</p>
+          <p class="mt-1 text-xs leading-relaxed text-[var(--muted)]">
+            Documents, notes, and generated pages indexed into one searchable memory layer.
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
+      <header
+        class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8"
+      >
+        <div class="flex min-w-0 items-center gap-3 md:gap-12">
+          <a routerLink="/home" class="md:hidden">
+            <span class="material-symbols-outlined text-[var(--text)]">arrow_back</span>
+          </a>
+
+          <div class="min-w-0">
+            <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">Library</h1>
+          </div>
+
+          <nav class="hidden items-center gap-8 md:flex">
+            <a
+              href="#all-files"
+              class="border-b border-[var(--accent)] pb-1 text-sm font-semibold text-[var(--accent)]"
+              >All Files</a
+            >
+            <a
+              href="#recent"
+              class="text-sm text-[var(--muted)] transition-colors hover:text-[var(--text)]"
+              >Recent</a
+            >
+            <a
+              href="#pinned"
+              class="text-sm text-[var(--muted)] transition-colors hover:text-[var(--text)]"
+              >Pinned</a
+            >
+          </nav>
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-4">
+          <div
+            class="theme-input hidden items-center gap-3 rounded-full px-4 py-2 text-sm text-[var(--muted)] lg:flex lg:w-72"
+          >
+            <span class="material-symbols-outlined text-base">search</span>
+            <input
+              type="text"
+              placeholder="Search knowledge base..."
+              class="min-w-0 flex-1 bg-transparent text-[var(--text)] placeholder:text-[var(--muted)]/60 focus:outline-none"
+            />
+          </div>
+          <app-theme-toggle></app-theme-toggle>
+          <button class="primary-btn !px-4 !py-2.5 text-sm">
+            <span class="material-symbols-outlined text-base">upload</span>
+            <span>Upload</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto">
+        <div class="mx-auto w-full max-w-7xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
+          <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            @for (stat of stats; track stat.label) {
+              <article
+                class="glass-card rounded-[1.5rem] p-5 transition-transform duration-200 hover:-translate-y-1"
+              >
+                <p class="text-3xl font-black tracking-[-0.06em]" [class]="stat.valueClass">
+                  {{ stat.value }}
+                </p>
+                <p class="mt-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">
+                  {{ stat.label }}
+                </p>
+              </article>
+            }
+          </section>
+
+          <section class="mt-8 rounded-[1.75rem] border border-white/5 bg-white/[0.03] p-4 md:p-5">
+            <div class="flex flex-col gap-4 xl:flex-row xl:items-center">
+              <div class="min-w-0 flex-1">
+                <div class="theme-input flex items-center gap-3 rounded-[1rem] px-4 py-3">
+                  <span class="material-symbols-outlined text-[var(--muted)]">search</span>
+                  <input
+                    type="text"
+                    placeholder="Filter by document name or metadata..."
+                    class="min-w-0 flex-1 bg-transparent text-sm text-[var(--text)] placeholder:text-[var(--muted)]/60 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-3 md:grid-cols-3 xl:w-auto">
+                <select class="theme-input rounded-[1rem] px-4 py-3 text-sm text-[var(--muted)] focus:outline-none">
+                  <option>Type</option>
+                  <option>PDF</option>
+                  <option>Markdown</option>
+                  <option>Word</option>
+                </select>
+                <select class="theme-input rounded-[1rem] px-4 py-3 text-sm text-[var(--muted)] focus:outline-none">
+                  <option>Status</option>
+                  <option>Indexed</option>
+                  <option>Processing</option>
+                  <option>Pending</option>
+                </select>
+                <select class="theme-input rounded-[1rem] px-4 py-3 text-sm text-[var(--muted)] focus:outline-none">
+                  <option>Sort by</option>
+                  <option>Latest</option>
+                  <option>Relevance</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section id="all-files" class="mt-8 space-y-3">
+            @for (document of documents; track document.title) {
+              <article
+                class="glass-card group rounded-[1.5rem] px-4 py-4 transition-colors duration-200 hover:bg-white/[0.06] md:px-5"
+              >
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div class="flex min-w-0 items-center gap-4">
+                    <div
+                      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
+                      [class]="document.iconClasses"
+                    >
+                      <span class="material-symbols-outlined">
+                        {{ document.icon }}
+                      </span>
+                    </div>
+
+                    <div class="min-w-0">
+                      <h2 class="truncate text-sm font-bold text-[var(--text)] md:text-base">
+                        {{ document.title }}
+                      </h2>
+                      <p
+                        class="mt-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]"
+                      >
+                        {{ document.addedOn }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between lg:gap-8">
+                    <div
+                      class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em]"
+                      [class]="document.statusClasses"
+                    >
+                      <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
+                      <span>{{ document.status }}</span>
+                    </div>
+
+                    <div class="flex min-w-[9rem] flex-col text-left sm:text-right">
+                      <span class="text-sm font-semibold text-[var(--text)]">
+                        {{ document.wikiPages }}
+                      </span>
+                      <span class="text-[11px] text-[var(--muted)]">{{ document.citations }}</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="inline-flex h-10 w-10 items-center justify-center rounded-full text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
+                    >
+                      <span class="material-symbols-outlined">more_vert</span>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            }
+          </section>
+
+          <section id="knowledge-gaps" class="mt-12 border-t border-white/5 pt-10">
+            <div class="max-w-2xl">
+              <h2 class="text-2xl font-black tracking-[-0.05em] text-[var(--text)]">
+                Knowledge Gaps
+              </h2>
+              <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
+                Topics your team has asked about that are not yet well covered in the current
+                library.
+              </p>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              @for (gap of knowledgeGaps; track gap) {
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-2 rounded-full border border-[rgba(238,102,67,0.16)] bg-[rgba(238,102,67,0.08)] px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent)] transition-colors hover:bg-[rgba(238,102,67,0.14)]"
+                >
+                  <span class="material-symbols-outlined text-sm">add</span>
+                  <span>{{ gap }}</span>
+                </button>
+              }
+            </div>
+          </section>
+
+          <section
+            id="library-settings"
+            class="mt-10 rounded-[1.75rem] border border-white/5 bg-white/[0.03] px-5 py-5"
+          >
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Ingestion status
+                </p>
+                <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
+                  Import queue is healthy. New uploads are being indexed into your wiki and
+                  citation graph automatically.
+                </p>
+              </div>
+              <div
+                class="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-400"
+              >
+                <span class="h-2 w-2 rounded-full bg-current"></span>
+                <span>Ready for upload</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

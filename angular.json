@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "engram": {
+    "living-atlast": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -58,10 +58,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "engram:build:production"
+              "buildTarget": "living-atlast:build:production"
             },
             "development": {
-              "buildTarget": "engram:build:development"
+              "buildTarget": "living-atlast:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -32,7 +32,7 @@ export class MarketingComponent {
     },
     {
       title: 'Done',
-      description: 'Instantly queryable, forever stored in your engram.',
+      description: 'Instantly queryable, forever stored in your Living Atlas.',
       icon: 'check_circle',
     },
   ];
