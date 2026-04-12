@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-mobile-menu',
   imports: [RouterLink],
   templateUrl: './mobile-menu.html',
+  host: { class: 'md:hidden' },
 })
 export class MobileMenuComponent {
   /** Which nav item is currently active */
