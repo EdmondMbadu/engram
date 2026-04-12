@@ -9,13 +9,13 @@ import { ChatComponent } from './chat/chat';
 import { LibraryComponent } from './library/library';
 
 export const routes: Routes = [
-  { path: '', component: MarketingComponent },
-  { path: 'home', component: LandingComponent },
-  { path: 'chat', component: ChatComponent },
-  { path: 'library', component: LibraryComponent },
-  { path: 'wiki', component: WikiComponent },
+  { path: '', component: MarketingComponent, title: 'Living Atlas' },
+  { path: 'home', component: LandingComponent, title: 'Knowledge Base | Living Atlas' },
+  { path: 'chat', component: ChatComponent, title: 'Chat | Living Atlas' },
+  { path: 'library', component: LibraryComponent, title: 'Library | Living Atlas' },
+  { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Atlas' },
   { path: 'landing', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'sign-in', component: SignInComponent },
-  { path: 'create-account', component: CreateAccountComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'sign-in', component: SignInComponent, title: 'Sign In | Living Atlas' },
+  { path: 'create-account', component: CreateAccountComponent, title: 'Create Account | Living Atlas' },
+  { path: 'forgot-password', component: ForgotPasswordComponent, title: 'Forgot Password | Living Atlas' },
 ];
