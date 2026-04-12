@@ -2,10 +2,11 @@ import { Component, ElementRef, HostListener, inject, signal } from '@angular/co
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent],
   templateUrl: './landing.html',
 })
 export class LandingComponent {

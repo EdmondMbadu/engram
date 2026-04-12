@@ -1,0 +1,81 @@
+<!-- Hamburger button — only visible on mobile -->
+<button
+  type="button"
+  class="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--soft-fill-strong)] hover:text-[var(--text)] md:hidden"
+  (click)="toggleMenu()"
+  aria-label="Open menu"
+>
+  <span class="material-symbols-outlined text-xl">menu</span>
+</button>
+
+<!-- Backdrop + Drawer -->
+@if (menuOpen()) {
+  <!-- Backdrop -->
+  <div
+    class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm md:hidden animate-fade-in"
+    (click)="closeMenu()"
+  ></div>
+
+  <!-- Drawer -->
+  <aside
+    class="fixed inset-y-0 left-0 z-[70] flex w-72 flex-col bg-[var(--sidebar)] border-r border-[var(--line)] shadow-[var(--shadow-elevated)] md:hidden animate-slide-in-left"
+  >
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-5">
+      <a routerLink="/" class="flex items-center gap-3" (click)="closeMenu()">
+        <div class="flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1">
+          <img src="/assets/living-atlas-logo.png" alt="Living Atlas logo" class="h-full w-full object-contain" />
+        </div>
+        <span class="text-lg font-black tracking-tighter text-[var(--text)]">Living Atlas</span>
+      </a>
+      <button
+        type="button"
+        class="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition-colors hover:text-[var(--text)]"
+        (click)="closeMenu()"
+        aria-label="Close menu"
+      >
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 space-y-1 px-4 pt-2 text-sm overflow-y-auto">
+      @for (item of navItems; track item.key) {
+        <a
+          [routerLink]="item.route"
+          class="flex items-center gap-3 rounded-xl px-3 py-3 transition-colors duration-200"
+          [class]="activePage() === item.key
+            ? 'border border-[var(--line-strong)] bg-white/5 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]'
+            : 'border border-transparent text-[var(--muted)] hover:bg-white/5 hover:text-[var(--text)]'"
+          (click)="closeMenu()"
+        >
+          <span
+            class="material-symbols-outlined"
+            [style.font-variation-settings]="activePage() === item.key ? '\'FILL\' 1' : ''"
+          >{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+      <a
+        href="#"
+        class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        (click)="closeMenu()"
+      >
+        <span class="material-symbols-outlined">category</span>
+        <span>Collections</span>
+      </a>
+    </nav>
+
+    <!-- Bottom -->
+    <div class="mt-auto space-y-1 border-t border-[var(--line)] px-4 pt-4 pb-6">
+      <a
+        href="#"
+        class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        (click)="closeMenu()"
+      >
+        <span class="material-symbols-outlined text-[1.2rem]">settings</span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </aside>
+}

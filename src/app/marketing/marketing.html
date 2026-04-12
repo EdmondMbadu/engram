@@ -1,12 +1,12 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   <!-- TopNavBar -->
   <nav class="theme-nav fixed top-0 z-50 w-full border-b backdrop-blur-2xl">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-      <div class="flex items-center gap-3 text-xl font-bold tracking-tighter text-[var(--text)]">
-        <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1.5 shadow-[0_0_24px_rgba(34,197,94,0.08)]">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
+      <div class="flex items-center gap-2 sm:gap-3 text-lg sm:text-xl font-bold tracking-tighter text-[var(--text)]">
+        <div class="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1.5 shadow-[0_0_24px_rgba(34,197,94,0.08)]">
           <img src="/assets/living-atlas-logo.png" alt="Living Atlas logo" class="h-full w-full object-contain" />
         </div>
-        <span>Living Atlas</span>
+        <span class="hidden sm:inline">Living Atlas</span>
       </div>
       <div class="hidden items-center gap-10 md:flex">
         @for (item of navItems; track item.href) {
@@ -15,31 +15,31 @@
           </a>
         }
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3">
         <app-theme-toggle></app-theme-toggle>
-        <a routerLink="/sign-in" class="ghost-btn !px-4 !py-2.5 !text-sm">
+        <a routerLink="/sign-in" class="ghost-btn !px-3 !py-2 sm:!px-4 sm:!py-2.5 text-xs sm:!text-sm">
           Sign In
         </a>
-        <button routerLink="/create-account" class="primary-btn !py-2.5 !px-6 !text-sm">
+        <button routerLink="/create-account" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">
           Create Account
         </button>
       </div>
     </div>
   </nav>
 
-  <main class="pt-32">
+  <main class="pt-24 sm:pt-32">
     <!-- Hero Section -->
-    <section class="mx-auto max-w-7xl px-6 pb-32 lg:px-10">
-      <div class="grid gap-20 lg:grid-cols-[1.1fr_0.9fr] items-center">
+    <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-32 lg:px-10">
+      <div class="grid gap-10 sm:gap-20 lg:grid-cols-[1.1fr_0.9fr] items-center">
         <div class="animate-fade-up">
-          <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--accent-soft)]">
+          <div class="mb-6 sm:mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--accent-soft)]">
             <span>Now in Early Access</span>
             <div class="h-1 w-1 rounded-full bg-[var(--accent)]"></div>
           </div>
-          <h1 class="text-6xl font-bold leading-[0.95] tracking-tight text-[var(--text)] lg:text-8xl">
+          <h1 class="text-4xl sm:text-6xl font-bold leading-[0.95] tracking-tight text-[var(--text)] lg:text-8xl">
             Upload once.<br/>Know forever.
           </h1>
-          <p class="mt-8 max-w-xl text-xl leading-relaxed text-[var(--muted)]">
+          <p class="mt-6 sm:mt-8 max-w-xl text-base sm:text-xl leading-relaxed text-[var(--muted)]">
             Drop your documents and ask anything. Living Atlas reads, remembers, and answers with exact citations so you always know where the truth came from.
           </p>
           <p class="mt-4 text-xs font-bold uppercase tracking-[0.24em] text-[var(--accent-soft)]">

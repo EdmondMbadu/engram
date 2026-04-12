@@ -2,11 +2,12 @@ import { Component, ElementRef, HostListener, inject, signal } from '@angular/co
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { GraphAnimationComponent } from '../marketing/atlas-animation/graph-animation';
 
 @Component({
   selector: 'app-wiki',
-  imports: [RouterLink, ThemeToggleComponent, GraphAnimationComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, GraphAnimationComponent],
   templateUrl: './wiki.html',
 })
 export class WikiComponent {
