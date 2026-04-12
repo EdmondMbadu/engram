@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { GraphAnimationComponent } from '../marketing/atlas-animation/graph-animation';
 
@@ -9,6 +10,13 @@ import { GraphAnimationComponent } from '../marketing/atlas-animation/graph-anim
   templateUrl: './wiki.html',
 })
 export class WikiComponent {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  readonly isSigningOut = signal(false);
+  readonly currentUserName = this.authService.displayName;
+  readonly currentUserEmail = this.authService.email;
+
   askPanelExpanded = true;
 
   readonly tags = ['Machine Learning', 'Architecture', 'Memory Systems'];
@@ -99,5 +107,16 @@ export class WikiComponent {
 
   collapseAskPanel(): void {
     this.askPanelExpanded = false;
+  }
+
+  async signOut(): Promise<void> {
+    this.isSigningOut.set(true);
+
+    try {
+      await this.authService.signOut();
+      await this.router.navigateByUrl('/');
+    } finally {
+      this.isSigningOut.set(false);
+    }
   }
 }

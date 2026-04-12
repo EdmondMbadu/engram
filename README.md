@@ -1,6 +1,6 @@
 # Living Atlas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+Living Atlas is an Angular app prepared for Firebase Hosting, with the Firebase Web SDK initialized on the client for future Auth and Firestore integration.
 
 ## Development server
 
@@ -35,6 +35,31 @@ ng build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Firebase Hosting
+
+This repo is configured for Firebase Hosting with project id `living-atlas-7622a`.
+
+Local runtime config:
+
+```bash
+cp public/runtime-config.template.js public/runtime-config.js
+```
+
+Then fill in `public/runtime-config.js` with your Firebase web config. This file is intentionally ignored by git and must never be committed.
+
+Build for hosting:
+
+```bash
+npm run build:hosting
+```
+
+Deploy to Firebase Hosting:
+
+```bash
+firebase login --reauth
+npm run deploy:hosting
+```
 
 ## Running unit tests
 

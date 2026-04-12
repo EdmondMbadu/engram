@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
@@ -8,6 +9,22 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
   templateUrl: './landing.html',
 })
 export class LandingComponent {
-  userAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAhjy15vNYzaxBTVD4z733KvpRD51QIEFTkVhhPt3iMje7q7OHOqBSqVFQLnyhGCbbEwrodVOOGGrn7xNpLPHnjPplbSUE1yL2JCbbOm6k3_iJdAOvCxBLrgrOUfyqe_t8rOGjKaYEyOw36tH_DrA1F7TK5gjM_rwGc32fE5O49-C0WJ8i4bgacVPDBPKd4GQWijIRNRVjmvrL-Hrt9eHfO9R0GaJq92oVIYGN1mgTV4uqck4o31Jw1FMTuMa0KRgeEzWBvaiXDxAUO';
-  aiAvatar = '/assets/living-atlas-logo.png';
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  readonly isSigningOut = signal(false);
+  readonly currentUserName = this.authService.displayName;
+  readonly currentUserEmail = this.authService.email;
+  readonly userAvatar = '/assets/living-atlas-logo.png';
+
+  async signOut(): Promise<void> {
+    this.isSigningOut.set(true);
+
+    try {
+      await this.authService.signOut();
+      await this.router.navigateByUrl('/');
+    } finally {
+      this.isSigningOut.set(false);
+    }
+  }
 }

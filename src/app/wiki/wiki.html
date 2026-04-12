@@ -135,12 +135,13 @@
           >
             <span class="material-symbols-outlined text-base">notifications</span>
           </button>
-          <a routerLink="/sign-in" class="ghost-btn hidden !px-4 !py-2 text-sm lg:inline-flex"
-            >Sign In</a
-          >
-          <a routerLink="/create-account" class="primary-btn hidden !px-5 !py-2 text-sm lg:inline-flex"
-            >Create Account</a
-          >
+          <div class="hidden text-right lg:block">
+            <p class="text-sm font-semibold text-[var(--text)]">{{ currentUserName() }}</p>
+            <p class="text-xs text-[var(--muted)]">{{ currentUserEmail() }}</p>
+          </div>
+          <button type="button" class="ghost-btn !px-4 !py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="isSigningOut()" (click)="signOut()">
+            {{ isSigningOut() ? 'Signing Out...' : 'Sign Out' }}
+          </button>
         </div>
       </header>
 

@@ -30,13 +30,19 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+.firebase/
 .sass-cache/
 /connect.lock
 /coverage
+firebase-debug.log
 /libpeerconnection.log
 testem.log
 /typings
 __screenshots__/
+public/runtime-config.js
+.env
+.env.*
+!.env.example
 
 # System files
 .DS_Store

@@ -132,9 +132,16 @@
             />
           </div>
           <app-theme-toggle></app-theme-toggle>
+          <div class="hidden text-right lg:block">
+            <p class="text-sm font-semibold text-[var(--text)]">{{ currentUserName() }}</p>
+            <p class="text-xs text-[var(--muted)]">{{ currentUserEmail() }}</p>
+          </div>
           <button class="primary-btn !px-4 !py-2.5 text-sm">
             <span class="material-symbols-outlined text-base">upload</span>
             <span>Upload</span>
+          </button>
+          <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="isSigningOut()" (click)="signOut()">
+            {{ isSigningOut() ? 'Signing Out...' : 'Sign Out' }}
           </button>
         </div>
       </header>

@@ -37,11 +37,11 @@
       </a>
       <div class="flex items-center gap-3 px-3 py-4 mt-2">
         <div class="w-8 h-8 rounded-full bg-white/5 overflow-hidden flex items-center justify-center border border-white/10">
-          <img class="w-full h-full object-cover" [src]="aiAvatar" alt="Personal AI Avatar">
+          <img class="w-full h-full object-cover" [src]="userAvatar" alt="Living Atlas account avatar">
         </div>
         <div class="flex flex-col">
-          <span class="text-xs font-bold text-[var(--text)]">Personal AI</span>
-          <span class="text-[10px] text-[var(--muted)] uppercase tracking-widest">v1.0.4</span>
+          <span class="text-xs font-bold text-[var(--text)]">{{ currentUserName() }}</span>
+          <span class="text-[10px] text-[var(--muted)] tracking-wide">{{ currentUserEmail() }}</span>
         </div>
       </div>
     </div>
@@ -64,8 +64,13 @@
       </div>
       <div class="flex items-center gap-4">
         <app-theme-toggle></app-theme-toggle>
-        <a routerLink="/sign-in" class="ghost-btn !px-4 !py-2.5 text-sm">Sign In</a>
-        <a routerLink="/create-account" class="primary-btn !px-5 !py-2.5 text-sm">Create Account</a>
+        <div class="hidden text-right md:block">
+          <p class="text-sm font-semibold text-[var(--text)]">{{ currentUserName() }}</p>
+          <p class="text-xs text-[var(--muted)]">{{ currentUserEmail() }}</p>
+        </div>
+        <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="isSigningOut()" (click)="signOut()">
+          {{ isSigningOut() ? 'Signing Out...' : 'Sign Out' }}
+        </button>
       </div>
     </header>
 

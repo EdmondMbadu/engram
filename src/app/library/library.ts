@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
@@ -8,6 +9,13 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
   templateUrl: './library.html',
 })
 export class LibraryComponent {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  readonly isSigningOut = signal(false);
+  readonly currentUserName = this.authService.displayName;
+  readonly currentUserEmail = this.authService.email;
+
   readonly stats = [
     { value: '142', label: 'Total Documents', valueClass: 'text-[var(--text)]' },
     { value: '56', label: 'Wiki Pages Generated', valueClass: 'text-[var(--text)]' },
@@ -80,4 +88,15 @@ export class LibraryComponent {
     'GDPR compliance',
     'Invoice late fees',
   ];
+
+  async signOut(): Promise<void> {
+    this.isSigningOut.set(true);
+
+    try {
+      await this.authService.signOut();
+      await this.router.navigateByUrl('/');
+    } finally {
+      this.isSigningOut.set(false);
+    }
+  }
 }
