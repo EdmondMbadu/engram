@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DocumentsService } from '../documents.service';
@@ -11,8 +11,6 @@ import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
   templateUrl: './landing.html',
 })
 export class LandingComponent {
-  @ViewChild('fileInput') private fileInput?: ElementRef<HTMLInputElement>;
-
   private readonly authService = inject(AuthService);
   private readonly documentsService = inject(DocumentsService);
   private readonly router = inject(Router);
@@ -49,7 +47,8 @@ export class LandingComponent {
   }
 
   openFilePicker(): void {
-    this.fileInput?.nativeElement.click();
+    const input = this.elementRef.nativeElement.querySelector('#landingFileInput') as HTMLInputElement;
+    input?.click();
   }
 
   async onFilesSelected(event: Event): Promise<void> {
