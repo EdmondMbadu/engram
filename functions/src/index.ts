@@ -10,7 +10,7 @@ import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './u
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
 
-export const prepareDocumentUpload = onCall({ region: callableRegion }, async (request) => {
+export const prepareDocumentUpload = onCall({ region: callableRegion, cors: true }, async (request) => {
   if (!request.auth?.uid) {
     throw new HttpsError('unauthenticated', 'Authentication is required.');
   }
@@ -57,7 +57,7 @@ export const prepareDocumentUpload = onCall({ region: callableRegion }, async (r
 });
 
 export const submitUrlDocument = onCall(
-  { region: callableRegion },
+  { region: callableRegion, cors: true },
   async (request) => {
     if (!request.auth?.uid) {
       throw new HttpsError('unauthenticated', 'Authentication is required.');
@@ -96,6 +96,7 @@ export const askAtlas = onCall(
     region: callableRegion,
     timeoutSeconds: 180,
     memory: '1GiB',
+    cors: true,
     secrets: [geminiApiKey],
   },
   async (request) => {
