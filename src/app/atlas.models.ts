@@ -5,6 +5,16 @@ export type DocumentStatus =
   | 'failed'
   | 'deleted';
 
+export type DocumentProcessingStage =
+  | 'queued'
+  | 'extracting'
+  | 'writing_extracts'
+  | 'compiling_knowledge'
+  | 'writing_entries'
+  | 'queuing_topics'
+  | 'indexed'
+  | 'failed';
+
 export interface DocumentItem {
   id: string;
   user_id: string;
@@ -14,16 +24,21 @@ export interface DocumentItem {
   source_type: 'file' | 'url';
   source_url: string | null;
   status: DocumentStatus;
+  processing_stage?: DocumentProcessingStage;
+  processed_chunks?: number;
+  total_chunks?: number;
   page_count: number;
   wiki_pages_generated: number;
   citation_count: number;
   uploaded_at?: { toDate(): Date } | Date | null;
   indexed_at?: { toDate(): Date } | Date | null;
+  last_heartbeat_at?: { toDate(): Date } | Date | null;
   visible: boolean;
   mime_type?: string | null;
   file_size?: number | null;
   title?: string | null;
   error_message?: string | null;
+  failure_code?: string | null;
 }
 
 export interface WikiTopicItem {

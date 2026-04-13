@@ -157,6 +157,40 @@ export class LibraryComponent {
     return status.charAt(0).toUpperCase() + status.slice(1);
   }
 
+  processingLabel(document: DocumentItem): string | null {
+    if (document.status !== 'processing') {
+      return null;
+    }
+
+    switch (document.processing_stage) {
+      case 'extracting':
+        return 'Extracting text';
+      case 'writing_extracts':
+        return 'Saving source extracts';
+      case 'compiling_knowledge':
+        return 'Compiling knowledge';
+      case 'writing_entries':
+        return 'Writing knowledge entries';
+      case 'queuing_topics':
+        return 'Queueing wiki updates';
+      default:
+        return 'Processing';
+    }
+  }
+
+  chunkProgressLabel(document: DocumentItem): string | null {
+    if (
+      document.status !== 'processing' ||
+      document.processing_stage !== 'compiling_knowledge' ||
+      !document.total_chunks ||
+      document.total_chunks <= 0
+    ) {
+      return null;
+    }
+
+    return `${document.processed_chunks ?? 0} of ${document.total_chunks} chunks`;
+  }
+
   formatDocumentDate(document: DocumentItem): string {
     const value = document.uploaded_at;
     const date =

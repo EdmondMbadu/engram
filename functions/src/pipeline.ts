@@ -19,6 +19,7 @@ import type {
   KnowledgeEntryDraft,
   KnowledgeEntryRecord,
   QueryCitationSnapshot,
+  WikiTopicJobRecord,
 } from './types';
 
 const documentsCollection = db.collection('documents');
@@ -26,6 +27,9 @@ const rawExtractsCollection = db.collection('raw_extracts');
 const knowledgeEntriesCollection = db.collection('knowledge_entries');
 const wikiTopicsCollection = db.collection('wiki_topics');
 const queriesCollection = db.collection('queries');
+const wikiTopicJobsCollection = db.collection('wiki_topic_jobs');
+
+const compileChunkConcurrency = 6;
 
 export async function loadDocumentRecord(documentId: string): Promise<DocumentRecord & { id: string }> {
   const snapshot = await documentsCollection.doc(documentId).get();
@@ -108,6 +112,7 @@ export async function deleteDocumentForUser(params: {
 
   const updatedTopicIds: string[] = [];
   const deletedTopicIds: string[] = [];
+  const topicsToRefresh: string[] = [];
 
   for (const topicName of topicNames) {
     const topicId = topicDocumentId(params.userId, topicName);
@@ -127,15 +132,12 @@ export async function deleteDocumentForUser(params: {
       id: snapshot.id,
       ...(snapshot.data() as Omit<KnowledgeEntryRecord, 'created_at' | 'last_updated'>),
     }));
-    const summary = await summarizeTopic(
-      topicName,
-      remainingEntries.map((entry) => entry.claim),
-    );
 
     await wikiTopicsCollection.doc(topicId).set(
       {
         name: topicName,
-        summary,
+        summary_status: 'pending',
+        summary_error: null,
         entry_ids: remainingEntries.map((entry) => entry.id),
         document_ids: dedupeStrings(remainingEntries.map((entry) => entry.document_id)),
         user_id: params.userId,
@@ -144,7 +146,10 @@ export async function deleteDocumentForUser(params: {
       { merge: true },
     );
     updatedTopicIds.push(topicId);
+    topicsToRefresh.push(topicName);
   }
+
+  await enqueueWikiTopicSummaryJobs(params.userId, topicsToRefresh, params.documentId);
 
   await documentsCollection.doc(params.documentId).delete();
 
@@ -160,14 +165,16 @@ async function processDocument(params: {
 }): Promise<void> {
   const { document } = params;
   const documentRef = documentsCollection.doc(document.id);
+  const startedAt = Date.now();
 
-  await documentRef.set(
-    {
-      status: 'processing',
-      error_message: null,
-    },
-    { merge: true },
-  );
+  await setDocumentProcessingState(documentRef, {
+    status: 'processing',
+    processing_stage: 'extracting',
+    processed_chunks: 0,
+    total_chunks: 0,
+    error_message: null,
+    failure_code: null,
+  });
 
   try {
     const extraction = await params.extraction;
@@ -177,19 +184,72 @@ async function processDocument(params: {
       throw new Error('No extractable text found in the document.');
     }
 
+    const chunks = chunkExtractBlocks(blocks);
+    const pageCount = Math.max(...blocks.map((block) => block.page));
+
+    logger.info('Document extraction completed', {
+      documentId: document.id,
+      blockCount: blocks.length,
+      chunkCount: chunks.length,
+      pageCount,
+      durationMs: Date.now() - startedAt,
+    });
+
+    await setDocumentProcessingState(documentRef, {
+      processing_stage: 'writing_extracts',
+      total_chunks: chunks.length,
+      processed_chunks: 0,
+      page_count: pageCount,
+    });
+
     await writeRawExtracts(document.id, document.user_id, blocks);
-    const entries = await buildKnowledgeEntries(document.id, document.user_id, blocks);
+
+    await setDocumentProcessingState(documentRef, {
+      processing_stage: 'compiling_knowledge',
+    });
+
+    const entries = await buildKnowledgeEntries(document.id, document.user_id, blocks, chunks, async (completed) => {
+      await setDocumentProcessingState(documentRef, {
+        processing_stage: 'compiling_knowledge',
+        processed_chunks: completed,
+        total_chunks: chunks.length,
+      });
+    });
+
+    logger.info('Knowledge compilation completed', {
+      documentId: document.id,
+      entryCount: entries.length,
+      chunkCount: chunks.length,
+      durationMs: Date.now() - startedAt,
+    });
+
+    await setDocumentProcessingState(documentRef, {
+      processing_stage: 'writing_entries',
+      processed_chunks: chunks.length,
+      total_chunks: chunks.length,
+    });
+
     await writeKnowledgeEntries(entries);
-    await refreshWikiTopics(document.user_id, document.id, entries);
+    await setDocumentProcessingState(documentRef, {
+      processing_stage: 'queuing_topics',
+    });
+
+    const topicNames = await upsertWikiTopics(document.user_id, document.id, entries);
+    await enqueueWikiTopicSummaryJobs(document.user_id, topicNames, document.id);
 
     await documentRef.set(
       {
         status: 'indexed',
+        processing_stage: 'indexed',
+        processed_chunks: chunks.length,
+        total_chunks: chunks.length,
         page_count: Math.max(...blocks.map((block) => block.page)),
         wiki_pages_generated: new Set(entries.map((entry) => entry.topic)).size,
         citation_count: entries.length,
         indexed_at: FieldValue.serverTimestamp(),
+        last_heartbeat_at: FieldValue.serverTimestamp(),
         error_message: null,
+        failure_code: null,
         title: extraction.title ?? document.title ?? null,
       },
       { merge: true },
@@ -199,7 +259,10 @@ async function processDocument(params: {
     await documentRef.set(
       {
         status: 'failed',
+        processing_stage: 'failed',
+        last_heartbeat_at: FieldValue.serverTimestamp(),
         error_message: error instanceof Error ? error.message : 'Unknown ingestion failure.',
+        failure_code: classifyProcessingFailure(error),
       },
       { merge: true },
     );
@@ -234,6 +297,8 @@ async function buildKnowledgeEntries(
   documentId: string,
   userId: string,
   blocks: ExtractBlock[],
+  chunks: ExtractBlock[][],
+  onChunkComplete?: (completed: number) => Promise<void> | void,
 ): Promise<Array<KnowledgeEntryRecord & { id: string }>> {
   const blockMap = new Map(
     blocks.map((block) => [
@@ -241,13 +306,14 @@ async function buildKnowledgeEntries(
       block,
     ]),
   );
-  const chunks = chunkExtractBlocks(blocks);
-  const drafts: KnowledgeEntryDraft[] = [];
-
-  for (const chunk of chunks) {
+  let completed = 0;
+  const compiledChunks = await parallelMapLimit(chunks, compileChunkConcurrency, async (chunk) => {
     const compiled = await compileKnowledgeEntries(chunk);
-    drafts.push(...compiled);
-  }
+    completed += 1;
+    await onChunkComplete?.(completed);
+    return compiled;
+  });
+  const drafts = compiledChunks.flat();
 
   const validated = drafts
     .map((draft) => {
@@ -280,11 +346,11 @@ async function writeKnowledgeEntries(
   );
 }
 
-async function refreshWikiTopics(
+async function upsertWikiTopics(
   userId: string,
   documentId: string,
   entries: Array<KnowledgeEntryRecord & { id: string }>,
-): Promise<void> {
+): Promise<string[]> {
   const topicMap = new Map<string, Array<KnowledgeEntryRecord & { id: string }>>();
 
   for (const entry of entries) {
@@ -293,30 +359,37 @@ async function refreshWikiTopics(
     topicMap.set(entry.topic, existing);
   }
 
-  for (const [topicName, topicEntries] of topicMap.entries()) {
-    const topicId = topicDocumentId(userId, topicName);
-    const existingSnapshot = await wikiTopicsCollection.doc(topicId).get();
-    const existing = existingSnapshot.exists ? existingSnapshot.data() : null;
-    const summary = await summarizeTopic(
-      topicName,
-      topicEntries.map((entry) => entry.claim),
-    );
+  const topicNames = Array.from(topicMap.keys());
+  await Promise.all(
+    topicNames.map(async (topicName) => {
+      const topicEntries = topicMap.get(topicName) ?? [];
+      const topicId = topicDocumentId(userId, topicName);
+      const existingSnapshot = await wikiTopicsCollection.doc(topicId).get();
+      const existing = existingSnapshot.exists ? existingSnapshot.data() : null;
 
-    await wikiTopicsCollection.doc(topicId).set(
-      {
-        name: topicName,
-        summary,
-        entry_ids: dedupeStrings([
-          ...(existing?.entry_ids ?? []),
-          ...topicEntries.map((entry) => entry.id),
-        ]),
-        document_ids: dedupeStrings([...(existing?.document_ids ?? []), documentId]),
-        user_id: userId,
-        last_updated: FieldValue.serverTimestamp(),
-      },
-      { merge: true },
-    );
-  }
+      await wikiTopicsCollection.doc(topicId).set(
+        {
+          name: topicName,
+          summary:
+            (typeof existing?.summary === 'string' && existing.summary.trim().length > 0
+              ? existing.summary
+              : ''),
+          summary_status: 'pending',
+          summary_error: null,
+          entry_ids: dedupeStrings([
+            ...(existing?.entry_ids ?? []),
+            ...topicEntries.map((entry) => entry.id),
+          ]),
+          document_ids: dedupeStrings([...(existing?.document_ids ?? []), documentId]),
+          user_id: userId,
+          last_updated: FieldValue.serverTimestamp(),
+        },
+        { merge: true },
+      );
+    }),
+  );
+
+  return topicNames;
 }
 
 export async function runAtlasQuery(params: {
@@ -504,6 +577,64 @@ async function hydrateCitationSnapshots(
   return snapshots.filter((snapshot) => snapshot.text.length > 0);
 }
 
+export async function processWikiTopicSummaryJob(jobId: string): Promise<void> {
+  const jobSnapshot = await wikiTopicJobsCollection.doc(jobId).get();
+  if (!jobSnapshot.exists) {
+    return;
+  }
+
+  const job = jobSnapshot.data() as WikiTopicJobRecord;
+  const topicRef = wikiTopicsCollection.doc(job.topic_id);
+
+  try {
+    const entriesSnapshot = await knowledgeEntriesCollection
+      .where('user_id', '==', job.user_id)
+      .where('topic', '==', job.topic_name)
+      .where('orphaned', '==', false)
+      .get();
+
+    if (entriesSnapshot.empty) {
+      await topicRef.delete();
+      return;
+    }
+
+    const entries = entriesSnapshot.docs.map((snapshot) => ({
+      id: snapshot.id,
+      ...(snapshot.data() as Omit<KnowledgeEntryRecord, 'created_at' | 'last_updated'>),
+    }));
+    const summary = await summarizeTopic(
+      job.topic_name,
+      entries.map((entry) => entry.claim),
+    );
+
+    await topicRef.set(
+      {
+        name: job.topic_name,
+        summary,
+        summary_status: 'ready',
+        summary_error: null,
+        entry_ids: entries.map((entry) => entry.id),
+        document_ids: dedupeStrings(entries.map((entry) => entry.document_id)),
+        user_id: job.user_id,
+        last_updated: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    );
+  } catch (error) {
+    await topicRef.set(
+      {
+        summary_status: 'failed',
+        summary_error: error instanceof Error ? error.message : 'Failed to summarize topic.',
+        last_updated: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    );
+    throw error;
+  } finally {
+    await wikiTopicJobsCollection.doc(jobId).delete();
+  }
+}
+
 async function commitSetOperations(
   operations: Array<{ ref: FirebaseFirestore.DocumentReference; data: FirebaseFirestore.DocumentData }>,
 ): Promise<void> {
@@ -572,6 +703,9 @@ export function newDocumentRecord(params: {
     source_type: params.sourceType,
     source_url: params.sourceUrl ?? null,
     status: 'pending',
+    processing_stage: 'queued',
+    processed_chunks: 0,
+    total_chunks: 0,
     page_count: 0,
     wiki_pages_generated: 0,
     citation_count: 0,
@@ -579,14 +713,91 @@ export function newDocumentRecord(params: {
     uploaded_at: FieldValue.serverTimestamp(),
     indexed_at: null,
     deleted_at: null,
+    last_heartbeat_at: FieldValue.serverTimestamp(),
     visible: true,
     mime_type: params.mimeType ?? null,
     file_size: params.fileSize ?? null,
     title: params.title ?? null,
     error_message: null,
+    failure_code: null,
   };
 }
 
 export function clientTimestamp(): FirebaseFirestore.Timestamp {
   return Timestamp.now();
+}
+
+async function enqueueWikiTopicSummaryJobs(
+  userId: string,
+  topicNames: string[],
+  documentId: string,
+): Promise<void> {
+  if (topicNames.length === 0) {
+    return;
+  }
+
+  await commitSetOperations(
+    dedupeStrings(topicNames).map((topicName) => ({
+      ref: wikiTopicJobsCollection.doc(generateId('topicjob')),
+      data: {
+        user_id: userId,
+        topic_id: topicDocumentId(userId, topicName),
+        topic_name: topicName,
+        triggered_by_document_id: documentId,
+        created_at: FieldValue.serverTimestamp(),
+      } satisfies WikiTopicJobRecord,
+    })),
+  );
+}
+
+async function setDocumentProcessingState(
+  documentRef: FirebaseFirestore.DocumentReference,
+  data: FirebaseFirestore.UpdateData<FirebaseFirestore.DocumentData>,
+): Promise<void> {
+  await documentRef.set(
+    {
+      ...data,
+      last_heartbeat_at: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+}
+
+function classifyProcessingFailure(error: unknown): string {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+
+  if (message.includes('credits are depleted') || message.includes('resource_exhausted')) {
+    return 'ai_quota_exhausted';
+  }
+
+  if (message.includes('rate limit')) {
+    return 'ai_rate_limited';
+  }
+
+  if (message.includes('no extractable text')) {
+    return 'no_extractable_text';
+  }
+
+  return 'ingestion_failed';
+}
+
+async function parallelMapLimit<T, R>(
+  values: T[],
+  limit: number,
+  mapper: (value: T, index: number) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(values.length);
+  let nextIndex = 0;
+
+  async function worker(): Promise<void> {
+    while (nextIndex < values.length) {
+      const currentIndex = nextIndex;
+      nextIndex += 1;
+      results[currentIndex] = await mapper(values[currentIndex], currentIndex);
+    }
+  }
+
+  const workerCount = Math.max(1, Math.min(limit, values.length));
+  await Promise.all(Array.from({ length: workerCount }, () => worker()));
+  return results;
 }

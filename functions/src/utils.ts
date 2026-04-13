@@ -75,8 +75,8 @@ export function makeExtractId(
 
 export function chunkExtractBlocks(
   blocks: ExtractBlock[],
-  maxBlocks = 40,
-  maxCharacters = 16000,
+  maxBlocks = 80,
+  maxCharacters = 48000,
 ): ExtractBlock[][] {
   const chunks: ExtractBlock[][] = [];
   let current: ExtractBlock[] = [];
@@ -107,8 +107,8 @@ export function chunkExtractBlocks(
 export function groupLinesIntoBlocks(
   lines: string[],
   page: number,
-  maxLinesPerBlock = 5,
-  maxCharsPerBlock = 700,
+  maxLinesPerBlock = 8,
+  maxCharsPerBlock = 1200,
 ): ExtractBlock[] {
   const filteredLines = lines
     .map((line) => line.replace(/\s+/g, ' ').trim())

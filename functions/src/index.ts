@@ -9,6 +9,7 @@ import {
   deleteDocumentForUser,
   loadDocumentRecord,
   newDocumentRecord,
+  processWikiTopicSummaryJob,
   processStoredDocument,
   processUrlDocument,
   runAtlasQuery,
@@ -226,6 +227,29 @@ export const ingestSubmittedUrl = onDocumentCreated(
       await processUrlDocument(snapshot.id);
     } catch (error) {
       logger.error('ingestSubmittedUrl failed', { documentId: snapshot.id, error });
+      throw error;
+    }
+  },
+);
+
+export const refreshWikiTopicSummary = onDocumentCreated(
+  {
+    region: callableRegion,
+    document: 'wiki_topic_jobs/{jobId}',
+    timeoutSeconds: 300,
+    memory: '1GiB',
+    secrets: [geminiApiKey],
+  },
+  async (event) => {
+    const snapshot = event.data;
+    if (!snapshot) {
+      return;
+    }
+
+    try {
+      await processWikiTopicSummaryJob(snapshot.id);
+    } catch (error) {
+      logger.error('refreshWikiTopicSummary failed', { jobId: snapshot.id, error });
       throw error;
     }
   },

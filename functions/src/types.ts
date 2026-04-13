@@ -21,6 +21,16 @@ export type DocumentStatus =
   | 'failed'
   | 'deleted';
 
+export type DocumentProcessingStage =
+  | 'queued'
+  | 'extracting'
+  | 'writing_extracts'
+  | 'compiling_knowledge'
+  | 'writing_entries'
+  | 'queuing_topics'
+  | 'indexed'
+  | 'failed';
+
 export interface DocumentRecord {
   user_id: string;
   filename: string;
@@ -29,6 +39,9 @@ export interface DocumentRecord {
   source_type: 'file' | 'url';
   source_url: string | null;
   status: DocumentStatus;
+  processing_stage: DocumentProcessingStage;
+  processed_chunks: number;
+  total_chunks: number;
   page_count: number;
   wiki_pages_generated: number;
   citation_count: number;
@@ -36,11 +49,13 @@ export interface DocumentRecord {
   uploaded_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
   indexed_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp | null;
   deleted_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp | null;
+  last_heartbeat_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp | null;
   visible: boolean;
   mime_type: string | null;
   file_size: number | null;
   title: string | null;
   error_message?: string | null;
+  failure_code?: string | null;
 }
 
 export interface ExtractBlock {
@@ -84,6 +99,16 @@ export interface WikiTopicRecord {
   document_ids: string[];
   user_id: string;
   last_updated: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
+  summary_status?: 'pending' | 'ready' | 'failed';
+  summary_error?: string | null;
+}
+
+export interface WikiTopicJobRecord {
+  user_id: string;
+  topic_id: string;
+  topic_name: string;
+  triggered_by_document_id: string | null;
+  created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
 }
 
 export interface QueryCitationSnapshot {

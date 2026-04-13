@@ -54,10 +54,78 @@ const lineArraySchema = {
   items: { type: 'string' },
 } as const;
 
+const maxAttempts = 3;
+
 function createClient(): GoogleGenAI {
   return new GoogleGenAI({
     apiKey: geminiApiKey.value(),
   });
+}
+
+async function generateContentWithRetry(
+  params: Parameters<GoogleGenAI['models']['generateContent']>[0],
+) {
+  const ai = createClient();
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      return await ai.models.generateContent(params);
+    } catch (error) {
+      const normalized = normalizeGeminiError(error);
+      if (!normalized.retryable || attempt === maxAttempts) {
+        throw new Error(normalized.message);
+      }
+
+      await sleep(400 * attempt * attempt);
+    }
+  }
+
+  throw new Error('Gemini request failed after repeated attempts.');
+}
+
+function normalizeGeminiError(error: unknown): { message: string; retryable: boolean } {
+  const message = error instanceof Error ? error.message : String(error);
+  const normalizedMessage = message.toLowerCase();
+
+  if (normalizedMessage.includes('prepayment credits are depleted')) {
+    return {
+      message:
+        'Gemini credits are depleted for this project. Add billing or wait for quota recovery, then re-upload or re-index the document.',
+      retryable: false,
+    };
+  }
+
+  if (
+    normalizedMessage.includes('resource_exhausted') ||
+    normalizedMessage.includes('"code":429') ||
+    normalizedMessage.includes('rate limit')
+  ) {
+    return {
+      message: 'Gemini rate limit reached while processing this document. Please retry shortly.',
+      retryable: true,
+    };
+  }
+
+  if (
+    normalizedMessage.includes('"code":500') ||
+    normalizedMessage.includes('"code":503') ||
+    normalizedMessage.includes('unavailable') ||
+    normalizedMessage.includes('deadline')
+  ) {
+    return {
+      message: 'Gemini was temporarily unavailable while processing this document.',
+      retryable: true,
+    };
+  }
+
+  return {
+    message,
+    retryable: false,
+  };
+}
+
+function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 export async function compileKnowledgeEntries(
@@ -67,7 +135,6 @@ export async function compileKnowledgeEntries(
     return [];
   }
 
-  const ai = createClient();
   const prompt = [
     'You are a knowledge compiler for a personal knowledge base.',
     'Read the provided source excerpts carefully.',
@@ -89,7 +156,7 @@ export async function compileKnowledgeEntries(
     ),
   ].join('\n');
 
-  const response = await ai.models.generateContent({
+  const response = await generateContentWithRetry({
     model,
     contents: prompt,
     config: {
@@ -130,7 +197,6 @@ export async function summarizeTopic(
     return '';
   }
 
-  const ai = createClient();
   const prompt = [
     `Summarize the topic "${topicName}" for a personal wiki.`,
     'Write 2 short paragraphs with high information density.',
@@ -140,7 +206,7 @@ export async function summarizeTopic(
     JSON.stringify(claims.slice(0, 80)),
   ].join('\n');
 
-  const response = await ai.models.generateContent({
+  const response = await generateContentWithRetry({
     model,
     contents: prompt,
     config: {
@@ -161,8 +227,6 @@ export async function answerQuestion(params: {
     source: { page: number; line_start: number; line_end: number };
   }>;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
-  const ai = createClient();
-
   const prompt = [
     'You are answering a question against a curated personal knowledge base.',
     'Use only the provided knowledge entries.',
@@ -177,7 +241,7 @@ export async function answerQuestion(params: {
     }),
   ].join('\n');
 
-  const response = await ai.models.generateContent({
+  const response = await generateContentWithRetry({
     model,
     contents: prompt,
     config: {
@@ -198,9 +262,7 @@ export async function transcribeImageToLines(params: {
   mediaType: 'image/png' | 'image/jpeg';
   base64: string;
 }): Promise<string[]> {
-  const ai = createClient();
-
-  const response = await ai.models.generateContent({
+  const response = await generateContentWithRetry({
     model,
     contents: [
       {
