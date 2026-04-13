@@ -148,6 +148,10 @@
 
                     @if (isLoadingEntries()) {
                       <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-[var(--muted)]">Loading topic entries...</div>
+                    } @else if (entriesError()) {
+                      <div class="rounded-[1.5rem] border border-rose-500/25 bg-rose-500/10 px-5 py-4 text-sm text-rose-200">
+                        {{ entriesError() }}
+                      </div>
                     } @else {
                       <div class="space-y-3">
                         @for (entry of topicEntries(); track entry.id) {

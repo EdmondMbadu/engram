@@ -28,6 +28,7 @@ export class WikiComponent {
   readonly sourceDocuments = this.wikiService.sourceDocuments;
   readonly isLoadingTopics = this.wikiService.isLoadingTopics;
   readonly isLoadingEntries = this.wikiService.isLoadingEntries;
+  readonly entriesError = this.wikiService.entriesError;
 
   readonly userInitials = () => {
     const name = this.currentUserName();

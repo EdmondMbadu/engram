@@ -2,12 +2,12 @@ import { isPlatformBrowser } from '@angular/common';
 import { computed, effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import {
   collection,
-  getDocs,
+  doc,
+  getDoc,
   onSnapshot,
   orderBy,
   query,
   where,
-  documentId,
   type Unsubscribe,
 } from 'firebase/firestore';
 import type { DocumentItem, KnowledgeEntryItem, WikiTopicItem } from './atlas.models';
@@ -30,6 +30,7 @@ export class WikiService {
   readonly sourceDocuments = signal<DocumentItem[]>([]);
   readonly isLoadingTopics = signal(true);
   readonly isLoadingEntries = signal(false);
+  readonly entriesError = signal<string | null>(null);
 
   constructor() {
     effect((onCleanup) => {
@@ -75,10 +76,12 @@ export class WikiService {
       if (!this.firestore || !uid || !topic) {
         this.topicEntries.set([]);
         this.sourceDocuments.set([]);
+        this.entriesError.set(null);
         return;
       }
 
       this.isLoadingEntries.set(true);
+      this.entriesError.set(null);
       const entriesQuery = query(
         collection(this.firestore, 'knowledge_entries'),
         where('user_id', '==', uid),
@@ -89,15 +92,27 @@ export class WikiService {
       const unsubscribe: Unsubscribe = onSnapshot(
         entriesQuery,
         async (snapshot) => {
-          const entries = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...(doc.data() as Omit<KnowledgeEntryItem, 'id'>),
-          }));
-          this.topicEntries.set(entries);
-          this.sourceDocuments.set(await this.loadDocuments(entries.map((entry) => entry.document_id)));
+          try {
+            const entries = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...(doc.data() as Omit<KnowledgeEntryItem, 'id'>),
+            }));
+            this.topicEntries.set(entries);
+            this.sourceDocuments.set(await this.loadDocuments(entries.map((entry) => entry.document_id)));
+            this.entriesError.set(null);
+          } catch (error) {
+            this.sourceDocuments.set([]);
+            this.entriesError.set(
+              error instanceof Error ? error.message : 'Failed to load topic details.',
+            );
+          } finally {
+            this.isLoadingEntries.set(false);
+          }
+        },
+        (error) => {
+          this.entriesError.set(error.message || 'Failed to load topic entries.');
           this.isLoadingEntries.set(false);
         },
-        () => this.isLoadingEntries.set(false),
       );
 
       onCleanup(() => unsubscribe());
@@ -114,27 +129,15 @@ export class WikiService {
     }
 
     const uniqueIds = Array.from(new Set(documentIds)).slice(0, 30);
-    const chunks = [];
-    for (let index = 0; index < uniqueIds.length; index += 10) {
-      chunks.push(uniqueIds.slice(index, index + 10));
-    }
-
     const snapshots = await Promise.all(
-      chunks.map((chunk) =>
-        getDocs(
-          query(
-            collection(this.firestore!, 'documents'),
-            where(documentId(), 'in', chunk),
-          ),
-        ),
-      ),
+      uniqueIds.map((documentId) => getDoc(doc(this.firestore!, 'documents', documentId))),
     );
 
-    return snapshots.flatMap((snapshot) =>
-      snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Omit<DocumentItem, 'id'>),
-      })),
-    );
+    return snapshots
+      .filter((snapshot) => snapshot.exists())
+      .map((snapshot) => ({
+        id: snapshot.id,
+        ...(snapshot.data() as Omit<DocumentItem, 'id'>),
+      }));
   }
 }
