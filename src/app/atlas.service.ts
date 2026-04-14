@@ -27,6 +27,7 @@ export class AtlasService {
   readonly atlases = signal<AtlasItem[]>([]);
   readonly activeAtlasId = signal<string | null>(this.loadActiveId());
   readonly isLoading = signal(true);
+  private autoCreateAttempted = false;
   readonly activeAtlas = computed(() => {
     const id = this.activeAtlasId();
     if (!id) return null;
@@ -65,9 +66,12 @@ export class AtlasService {
           this.atlases.set(items);
 
           if (items.length === 0) {
-            const created = await this.createDefaultAtlas(uid);
-            if (created) {
-              this.setActive(created);
+            if (!this.autoCreateAttempted) {
+              this.autoCreateAttempted = true;
+              const created = await this.createDefaultAtlas(uid);
+              if (created) {
+                this.setActive(created);
+              }
             }
           } else {
             void this.selfHealAtlases(items);
