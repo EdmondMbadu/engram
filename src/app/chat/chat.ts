@@ -14,6 +14,8 @@ interface ChatMessage {
   citations?: CitationPassage[];
   pending?: boolean;
   knowledgeGap?: boolean;
+  createdAt?: { toDate(): Date } | Date | null;
+  updatedAt?: { toDate(): Date } | Date | null;
 }
 
 const THINKING_STAGES = [
@@ -34,7 +36,12 @@ export class ChatComponent implements AfterViewChecked {
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 
+  private shouldScrollToEnd = false;
+  private thinkingInterval: ReturnType<typeof setInterval> | null = null;
+  private copyFeedbackTimeout: ReturnType<typeof setTimeout> | null = null;
+
   readonly isSigningOut = signal(false);
+  readonly isDeletingHistory = signal(false);
   readonly avatarMenuOpen = signal(false);
   readonly question = signal('');
   readonly selectedCitation = signal<CitationPassage | null>(null);
@@ -42,11 +49,12 @@ export class ChatComponent implements AfterViewChecked {
   readonly thinkingStage = signal(0);
   readonly historyExpanded = signal(false);
   readonly activeHistoryId = signal<string | null>(null);
+  readonly historyActionMenuId = signal<string | null>(null);
+  readonly messageActionMenuId = signal<string | null>(null);
+  readonly pendingDeleteHistoryItem = signal<QueryHistoryItem | null>(null);
+  readonly copiedTarget = signal<string | null>(null);
 
   @ViewChild('transcriptEnd') transcriptEnd?: ElementRef<HTMLElement>;
-
-  private shouldScrollToEnd = false;
-  private thinkingInterval: ReturnType<typeof setInterval> | null = null;
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
@@ -88,27 +96,28 @@ export class ChatComponent implements AfterViewChecked {
     this.activeHistoryId.set(null);
     this.question.set('');
 
+    const now = new Date();
     const userId = `u-${Date.now()}`;
     const pendingId = `a-${Date.now()}`;
     this.messages.update((msgs) => [
       ...msgs,
-      { id: userId, role: 'user', text: question },
-      { id: pendingId, role: 'assistant', text: '', pending: true },
+      { id: userId, role: 'user', text: question, createdAt: now, updatedAt: now },
+      { id: pendingId, role: 'assistant', text: '', pending: true, createdAt: now, updatedAt: now },
     ]);
     this.shouldScrollToEnd = true;
     this.startThinkingRotation();
 
-    await this.chatService.ask(
-      question,
-    );
+    await this.chatService.ask(question);
 
     this.stopThinkingRotation();
 
     const err = this.submitError();
     if (err) {
       this.messages.update((msgs) =>
-        msgs.map((m) =>
-          m.id === pendingId ? { ...m, pending: false, text: err } : m,
+        msgs.map((message) =>
+          message.id === pendingId
+            ? { ...message, pending: false, text: err, updatedAt: new Date() }
+            : message,
         ),
       );
     } else {
@@ -116,28 +125,22 @@ export class ChatComponent implements AfterViewChecked {
       const citations = this.chatService.latestCitations();
       const gap = this.chatService.knowledgeGap();
       this.messages.update((msgs) =>
-        msgs.map((m) =>
-          m.id === pendingId
-            ? { ...m, pending: false, text: answer, citations, knowledgeGap: gap }
-            : m,
+        msgs.map((message) =>
+          message.id === pendingId
+            ? {
+                ...message,
+                pending: false,
+                text: answer,
+                citations,
+                knowledgeGap: gap,
+                updatedAt: new Date(),
+              }
+            : message,
         ),
       );
     }
+
     this.shouldScrollToEnd = true;
-  }
-
-  private startThinkingRotation(): void {
-    this.thinkingStage.set(0);
-    this.thinkingInterval = setInterval(() => {
-      this.thinkingStage.update((s) => Math.min(s + 1, THINKING_STAGES.length - 1));
-    }, 1400);
-  }
-
-  private stopThinkingRotation(): void {
-    if (this.thinkingInterval) {
-      clearInterval(this.thinkingInterval);
-      this.thinkingInterval = null;
-    }
   }
 
   usePrompt(prompt: string): void {
@@ -157,26 +160,38 @@ export class ChatComponent implements AfterViewChecked {
     this.question.set('');
     this.selectedCitation.set(null);
     this.activeHistoryId.set(null);
+    this.historyActionMenuId.set(null);
+    this.messageActionMenuId.set(null);
   }
 
   loadHistoryItem(item: QueryHistoryItem): void {
     this.activeHistoryId.set(item.id);
     this.selectedCitation.set(null);
+    this.historyActionMenuId.set(null);
+    this.messageActionMenuId.set(null);
     this.messages.set([
-      { id: `${item.id}-q`, role: 'user', text: item.question },
+      {
+        id: `${item.id}-q`,
+        role: 'user',
+        text: item.question,
+        createdAt: item.created_at,
+        updatedAt: item.updated_at ?? item.created_at,
+      },
       {
         id: `${item.id}-a`,
         role: 'assistant',
         text: item.answer,
         citations: item.cited_passages ?? [],
         knowledgeGap: !!item.knowledge_gap,
+        createdAt: item.created_at,
+        updatedAt: item.updated_at ?? item.created_at,
       },
     ]);
     this.shouldScrollToEnd = true;
   }
 
   toggleHistoryExpanded(): void {
-    this.historyExpanded.update((v) => !v);
+    this.historyExpanded.update((value) => !value);
   }
 
   onComposerKeydown(event: KeyboardEvent): void {
@@ -191,8 +206,44 @@ export class ChatComponent implements AfterViewChecked {
     return text.length > max ? `${text.slice(0, max).trim()}...` : text;
   }
 
+  messageLabel(message: ChatMessage): string {
+    return message.role === 'user' ? 'You' : 'Living Atlas';
+  }
+
+  formatRelativeDateShort(value: { toDate(): Date } | Date | null | undefined): string {
+    const date = this.asDate(value);
+    if (!date) {
+      return 'now';
+    }
+
+    const deltaMs = Math.max(0, Date.now() - date.getTime());
+    const minute = 60 * 1000;
+    const hour = 60 * minute;
+    const day = 24 * hour;
+    const week = 7 * day;
+    const month = 30 * day;
+    const year = 365 * day;
+
+    if (deltaMs < hour) {
+      return `${Math.max(1, Math.floor(deltaMs / minute) || 1)}m`;
+    }
+    if (deltaMs < day) {
+      return `${Math.floor(deltaMs / hour)}h`;
+    }
+    if (deltaMs < week) {
+      return `${Math.floor(deltaMs / day)}d`;
+    }
+    if (deltaMs < month) {
+      return `${Math.floor(deltaMs / week)}w`;
+    }
+    if (deltaMs < year) {
+      return `${Math.floor(deltaMs / month)}mo`;
+    }
+    return `${Math.floor(deltaMs / year)}y`;
+  }
+
   formatDate(value: { toDate(): Date } | Date | null | undefined): string {
-    const date = value instanceof Date ? value : typeof value?.toDate === 'function' ? value.toDate() : null;
+    const date = this.asDate(value);
     if (!date) {
       return 'Just now';
     }
@@ -201,6 +252,80 @@ export class ChatComponent implements AfterViewChecked {
       month: 'short',
       day: 'numeric',
     }).format(date);
+  }
+
+  formatDateTime(value: { toDate(): Date } | Date | null | undefined): string {
+    const date = this.asDate(value);
+    if (!date) {
+      return 'Just now';
+    }
+
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    }).format(date);
+  }
+
+  toggleHistoryActions(historyId: string, event: MouseEvent): void {
+    event.stopPropagation();
+    this.messageActionMenuId.set(null);
+    this.historyActionMenuId.update((current) => (current === historyId ? null : historyId));
+  }
+
+  toggleMessageActions(messageId: string, event: MouseEvent): void {
+    event.stopPropagation();
+    this.historyActionMenuId.set(null);
+    this.messageActionMenuId.update((current) => (current === messageId ? null : messageId));
+  }
+
+  confirmDeleteHistoryItem(item: QueryHistoryItem, event?: MouseEvent): void {
+    event?.stopPropagation();
+    this.historyActionMenuId.set(null);
+    this.pendingDeleteHistoryItem.set(item);
+  }
+
+  cancelDeleteHistoryItem(): void {
+    this.pendingDeleteHistoryItem.set(null);
+  }
+
+  async deleteHistoryItem(): Promise<void> {
+    const item = this.pendingDeleteHistoryItem();
+    if (!item || this.isDeletingHistory()) {
+      return;
+    }
+
+    this.isDeletingHistory.set(true);
+    try {
+      await this.chatService.deleteQuery(item.id);
+      if (this.activeHistoryId() === item.id) {
+        this.newChat();
+      }
+      this.pendingDeleteHistoryItem.set(null);
+    } finally {
+      this.isDeletingHistory.set(false);
+    }
+  }
+
+  async copyWholeChat(): Promise<void> {
+    const transcript = this.messages()
+      .map((message) => this.buildMessageCopyText(message))
+      .join('\n\n')
+      .trim();
+
+    if (!transcript) {
+      return;
+    }
+
+    await this.copyText('chat-thread', transcript);
+  }
+
+  async copyMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
+    event?.stopPropagation();
+    await this.copyText(message.id, this.buildMessageCopyText(message));
+    this.messageActionMenuId.set(null);
   }
 
   ngAfterViewChecked(): void {
@@ -216,12 +341,18 @@ export class ChatComponent implements AfterViewChecked {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (
-      !this.elementRef.nativeElement
-        .querySelector('.avatar-menu-wrapper')
-        ?.contains(event.target as Node)
-    ) {
+    const target = event.target as HTMLElement | null;
+
+    if (!target?.closest('.avatar-menu-wrapper')) {
       this.avatarMenuOpen.set(false);
+    }
+
+    if (!target?.closest('.chat-history-actions')) {
+      this.historyActionMenuId.set(null);
+    }
+
+    if (!target?.closest('.chat-message-actions')) {
+      this.messageActionMenuId.set(null);
     }
   }
 
@@ -235,5 +366,54 @@ export class ChatComponent implements AfterViewChecked {
     } finally {
       this.isSigningOut.set(false);
     }
+  }
+
+  private startThinkingRotation(): void {
+    this.thinkingStage.set(0);
+    this.thinkingInterval = setInterval(() => {
+      this.thinkingStage.update((stage) => Math.min(stage + 1, THINKING_STAGES.length - 1));
+    }, 1400);
+  }
+
+  private stopThinkingRotation(): void {
+    if (this.thinkingInterval) {
+      clearInterval(this.thinkingInterval);
+      this.thinkingInterval = null;
+    }
+  }
+
+  private asDate(value: { toDate(): Date } | Date | null | undefined): Date | null {
+    return value instanceof Date ? value : typeof value?.toDate === 'function' ? value.toDate() : null;
+  }
+
+  private buildMessageCopyText(message: ChatMessage): string {
+    const lines = [`${this.messageLabel(message)}:`, message.text.trim() || '(empty)'];
+
+    if (message.citations?.length) {
+      lines.push('');
+      lines.push('Citations:');
+      for (const citation of message.citations) {
+        lines.push(`- ${citation.filename} p.${citation.page} (L${citation.line_start}-${citation.line_end})`);
+      }
+    }
+
+    return lines.join('\n');
+  }
+
+  private async copyText(target: string, text: string): Promise<void> {
+    if (!text.trim() || typeof navigator === 'undefined' || !navigator.clipboard) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(text);
+    this.copiedTarget.set(target);
+
+    if (this.copyFeedbackTimeout) {
+      clearTimeout(this.copyFeedbackTimeout);
+    }
+
+    this.copyFeedbackTimeout = setTimeout(() => {
+      this.copiedTarget.set(null);
+    }, 1800);
   }
 }

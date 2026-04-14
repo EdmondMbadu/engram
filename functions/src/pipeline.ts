@@ -480,6 +480,7 @@ export async function runAtlasQuery(params: {
     cited_passages: citedPassages,
     knowledge_gap: response.knowledge_gap,
     created_at: FieldValue.serverTimestamp(),
+    updated_at: FieldValue.serverTimestamp(),
   });
 
   return {

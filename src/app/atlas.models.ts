@@ -94,4 +94,5 @@ export interface QueryHistoryItem {
   cited_passages: CitationPassage[];
   knowledge_gap?: boolean;
   created_at?: { toDate(): Date } | Date | null;
+  updated_at?: { toDate(): Date } | Date | null;
 }

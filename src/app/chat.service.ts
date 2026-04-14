@@ -98,4 +98,17 @@ export class ChatService {
       this.isSubmitting.set(false);
     }
   }
+
+  async deleteQuery(queryId: string): Promise<void> {
+    if (!this.functions) {
+      return;
+    }
+
+    const deleteQuery = httpsCallable<{ queryId: string }, { deleted: boolean; queryId: string }>(
+      this.functions,
+      'deleteQuery',
+    );
+
+    await deleteQuery({ queryId });
+  }
 }

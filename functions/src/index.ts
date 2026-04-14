@@ -204,6 +204,39 @@ export const getWikiTopicDetails = onCall(
   },
 );
 
+export const deleteQuery = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const queryId = String(request.data?.queryId ?? '').trim();
+    if (!queryId) {
+      throw new HttpsError('invalid-argument', 'queryId is required.');
+    }
+
+    const queryRef = db.collection('queries').doc(queryId);
+    const snapshot = await queryRef.get();
+
+    if (!snapshot.exists) {
+      throw new HttpsError('not-found', 'Chat not found.');
+    }
+
+    if (snapshot.data()?.user_id !== request.auth.uid) {
+      throw new HttpsError('permission-denied', 'You do not have access to this chat.');
+    }
+
+    await queryRef.delete();
+    return { deleted: true, queryId };
+  },
+);
+
 export const ingestUploadedDocument = onObjectFinalized(
   {
     region: storageTriggerRegion,

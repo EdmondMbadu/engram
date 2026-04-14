@@ -142,6 +142,7 @@ export interface QueryRecord {
   cited_passages: QueryCitationSnapshot[];
   knowledge_gap?: boolean;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
+  updated_at?: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp | null;
 }
 
 export interface PreparedUpload {

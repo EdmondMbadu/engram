@@ -52,17 +52,61 @@
             <p class="px-2 text-xs leading-6 text-[var(--muted)]">No chats yet.</p>
           } @else {
             @for (item of visibleHistory(); track item.id) {
-              <button
-                type="button"
-                class="flex w-full items-start gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition-colors hover:bg-white/5"
+              <div
+                class="group flex items-start gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/5"
                 [class.bg-white/5]="activeHistoryId() === item.id"
-                [class.text-[var(--text)]]="activeHistoryId() === item.id"
-                [class.text-[var(--muted)]]="activeHistoryId() !== item.id"
-                (click)="loadHistoryItem(item)"
               >
-                <span class="material-symbols-outlined mt-0.5 text-[1rem] opacity-60">chat_bubble</span>
-                <span class="min-w-0 flex-1 truncate">{{ truncate(item.question, 40) }}</span>
-              </button>
+                <button
+                  type="button"
+                  class="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-0.5 py-0.5 text-left text-sm"
+                  [class.text-[var(--text)]]="activeHistoryId() === item.id"
+                  [class.text-[var(--muted)]]="activeHistoryId() !== item.id"
+                  (click)="loadHistoryItem(item)"
+                >
+                  <span class="material-symbols-outlined mt-0.5 text-[1rem] opacity-60">chat_bubble</span>
+                  <span class="min-w-0 flex-1">
+                    <span class="block truncate">{{ truncate(item.question, 34) }}</span>
+                    <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+                      {{ formatRelativeDateShort(item.updated_at ?? item.created_at) }}
+                    </span>
+                  </span>
+                </button>
+                <div class="chat-history-actions relative flex items-center gap-1">
+                  <button
+                    type="button"
+                    class="rounded-full p-1.5 text-[var(--muted)] opacity-0 transition-opacity hover:bg-white/5 hover:text-[var(--text)] group-hover:opacity-100"
+                    [class.opacity-100]="historyActionMenuId() === item.id"
+                    [attr.aria-expanded]="historyActionMenuId() === item.id"
+                    (click)="toggleHistoryActions(item.id, $event)"
+                  >
+                    <span class="material-symbols-outlined text-[1rem]">more_horiz</span>
+                  </button>
+                  @if (historyActionMenuId() === item.id) {
+                    <div class="absolute right-0 top-full z-30 mt-2 w-52 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2 shadow-[var(--shadow-elevated)]">
+                      <button
+                        type="button"
+                        class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-[var(--text)] transition-colors hover:bg-white/5"
+                        (click)="loadHistoryItem(item)"
+                      >
+                        <span class="material-symbols-outlined text-[1rem]">chat</span>
+                        <span>Open chat</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="danger-action mt-1 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm"
+                        (click)="confirmDeleteHistoryItem(item, $event)"
+                      >
+                        <span class="material-symbols-outlined text-[1rem]">delete</span>
+                        <span>Delete chat</span>
+                      </button>
+                      <div class="mt-2 border-t border-[var(--line)] px-3 py-2">
+                        <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Created</p>
+                        <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(item.created_at) }}</p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
             }
             @if (queryHistory().length > 6) {
               <button
@@ -97,6 +141,15 @@
         </div>
 
         <div class="flex items-center gap-3">
+          @if (hasMessages()) {
+            <button
+              type="button"
+              class="ghost-btn !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              (click)="copyWholeChat()"
+            >
+              {{ copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat' }}
+            </button>
+          }
           <app-theme-toggle></app-theme-toggle>
           <div class="avatar-menu-wrapper relative">
             <button
@@ -154,7 +207,37 @@
                 @for (msg of messages(); track msg.id) {
                   @if (msg.role === 'user') {
                     <div class="flex justify-end">
-                      <div class="max-w-[85%] rounded-3xl rounded-tr-lg border border-white/10 bg-white/[0.06] px-5 py-3.5 text-base leading-7 text-[var(--text)]">
+                      <div class="chat-message-actions max-w-[85%] rounded-3xl rounded-tr-lg border border-white/10 bg-white/[0.06] px-5 py-3.5 text-base leading-7 text-[var(--text)]">
+                        <div class="mb-2 flex items-start justify-between gap-4">
+                          <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">You</p>
+                          <div class="relative">
+                            <button
+                              type="button"
+                              class="rounded-full p-1.5 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
+                              (click)="toggleMessageActions(msg.id, $event)"
+                            >
+                              <span class="material-symbols-outlined text-[1rem]">more_horiz</span>
+                            </button>
+                            @if (messageActionMenuId() === msg.id) {
+                              <div class="absolute right-0 top-full z-20 mt-2 w-56 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2 shadow-[var(--shadow-elevated)]">
+                                <button
+                                  type="button"
+                                  class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-[var(--text)] transition-colors hover:bg-white/5"
+                                  (click)="copyMessage(msg, $event)"
+                                >
+                                  <span class="material-symbols-outlined text-[1rem]">content_copy</span>
+                                  <span>{{ copiedTarget() === msg.id ? 'Copied' : 'Copy message' }}</span>
+                                </button>
+                                <div class="mt-2 border-t border-[var(--line)] px-3 py-2">
+                                  <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Chat date</p>
+                                  <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.createdAt) }}</p>
+                                  <p class="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Last updated</p>
+                                  <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.updatedAt ?? msg.createdAt) }}</p>
+                                </div>
+                              </div>
+                            }
+                          </div>
+                        </div>
                         {{ msg.text }}
                       </div>
                     </div>
@@ -170,13 +253,42 @@
                               <span class="assistant-message__badge-dot" [class.assistant-message__badge-dot--live]="msg.pending"></span>
                               <span>Living Atlas</span>
                             </div>
-                            @if (msg.pending) {
-                              <div class="assistant-message__thinking" aria-hidden="true">
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                            <div class="ml-auto flex items-center gap-2">
+                              @if (msg.pending) {
+                                <div class="assistant-message__thinking" aria-hidden="true">
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                                </div>
+                              }
+                              <div class="chat-message-actions relative">
+                                <button
+                                  type="button"
+                                  class="rounded-full p-1.5 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
+                                  (click)="toggleMessageActions(msg.id, $event)"
+                                >
+                                  <span class="material-symbols-outlined text-[1rem]">more_horiz</span>
+                                </button>
+                                @if (messageActionMenuId() === msg.id) {
+                                  <div class="absolute right-0 top-full z-20 mt-2 w-56 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2 shadow-[var(--shadow-elevated)]">
+                                    <button
+                                      type="button"
+                                      class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-[var(--text)] transition-colors hover:bg-white/5"
+                                      (click)="copyMessage(msg, $event)"
+                                    >
+                                      <span class="material-symbols-outlined text-[1rem]">content_copy</span>
+                                      <span>{{ copiedTarget() === msg.id ? 'Copied' : 'Copy message' }}</span>
+                                    </button>
+                                    <div class="mt-2 border-t border-[var(--line)] px-3 py-2">
+                                      <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Chat date</p>
+                                      <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.createdAt) }}</p>
+                                      <p class="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Last updated</p>
+                                      <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.updatedAt ?? msg.createdAt) }}</p>
+                                    </div>
+                                  </div>
+                                }
                               </div>
-                            }
+                            </div>
                           </div>
                           @if (msg.pending) {
                             <div class="flex items-center gap-3 text-sm text-[var(--muted)]">
@@ -288,6 +400,29 @@
           p.{{ citation.page }} · L{{ citation.line_start }}-{{ citation.line_end }}
         </p>
         <p class="mt-4 max-h-[60vh] overflow-y-auto whitespace-pre-wrap text-sm leading-7 text-[var(--text)]">{{ citation.text }}</p>
+      </div>
+    </div>
+  }
+
+  @if (pendingDeleteHistoryItem(); as item) {
+    <div class="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8">
+      <div class="absolute inset-0 bg-black/45 backdrop-blur-sm" (click)="cancelDeleteHistoryItem()"></div>
+      <div class="relative w-full max-w-md rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-elevated)]">
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--error-text)]">Delete chat</p>
+        <h3 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Are you sure?</h3>
+        <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+          This will permanently remove
+          <span class="font-semibold text-[var(--text)]">"{{ truncate(item.question, 64) }}"</span>
+          from your saved chats.
+        </p>
+        <div class="mt-6 flex items-center justify-end gap-3">
+          <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm" [disabled]="isDeletingHistory()" (click)="cancelDeleteHistoryItem()">
+            Cancel
+          </button>
+          <button type="button" class="danger-action rounded-full px-4 py-2.5 text-sm font-semibold" [disabled]="isDeletingHistory()" (click)="deleteHistoryItem()">
+            {{ isDeletingHistory() ? 'Deleting...' : 'Delete chat' }}
+          </button>
+        </div>
       </div>
     </div>
   }
