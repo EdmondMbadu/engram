@@ -158,10 +158,16 @@ export class ChatService {
       return [];
     }
 
+    const uid = this.authService.uid();
+    if (!uid) {
+      return [];
+    }
+
     if (item.kind === 'thread') {
       const snapshot = await getDocs(
         query(
           collection(this.firestore, 'chat_messages'),
+          where('user_id', '==', uid),
           where('thread_id', '==', item.id),
           orderBy('created_at', 'asc'),
         ),
