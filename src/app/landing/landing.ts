@@ -5,10 +5,11 @@ import { DocumentsService } from '../documents.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
+import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent],
   templateUrl: './landing.html',
 })
 export class LandingComponent {

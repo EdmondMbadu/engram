@@ -31,28 +31,60 @@
     >
       <span class="flex items-center gap-2 min-w-0">
         <span class="material-symbols-outlined text-[var(--accent)] text-[1.1rem]">public</span>
-        <span class="truncate font-semibold">{{ activeAtlas()?.name ?? 'Select atlas' }}</span>
+        <span class="truncate font-semibold">{{ displayName(activeAtlas()) }}</span>
       </span>
       <span class="material-symbols-outlined text-[var(--muted)] text-[1.1rem]">{{ menuOpen() ? 'expand_less' : 'expand_more' }}</span>
     </button>
 
     @if (menuOpen()) {
-      <div class="absolute left-2 right-2 top-full mt-1 z-20 rounded-xl border border-[var(--line)] bg-[var(--bg)] shadow-lg py-1 max-h-64 overflow-auto">
+      <div class="absolute left-2 right-2 top-full mt-1 z-20 rounded-xl border border-[var(--line)] bg-[var(--bg)] shadow-lg py-1 max-h-80 overflow-auto">
         @for (atlas of atlases(); track atlas.id) {
-          <button
-            type="button"
-            (click)="select(atlas.id)"
-            class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[var(--text)] hover:bg-white/5"
-            [class.text-\[var\(--accent\)\]]="atlas.id === activeAtlas()?.id"
-          >
-            <span class="material-symbols-outlined text-[1rem]">{{ atlas.id === activeAtlas()?.id ? 'check' : 'public' }}</span>
-            <span class="truncate">{{ atlas.name }}</span>
-          </button>
+          @if (renamingId() === atlas.id) {
+            <form (submit)="submitRename($event)" class="flex items-center gap-1 px-2 py-1.5" (click)="$event.stopPropagation()">
+              <input
+                type="text"
+                [value]="renameDraft()"
+                (input)="onRenameInput($event)"
+                class="theme-input flex-1 min-w-0 rounded-md px-2 py-1 text-sm text-[var(--text)]"
+                autofocus
+              />
+              <button
+                type="submit"
+                [disabled]="renaming() || !renameDraft().trim()"
+                class="rounded-md bg-[var(--accent)] p-1 text-[var(--accent-contrast)] disabled:opacity-50"
+                aria-label="Save"
+              ><span class="material-symbols-outlined text-[1rem]">check</span></button>
+              <button
+                type="button"
+                (click)="cancelRename($event)"
+                class="rounded-md border border-[var(--line)] p-1 text-[var(--muted)] hover:text-[var(--text)]"
+                aria-label="Cancel"
+              ><span class="material-symbols-outlined text-[1rem]">close</span></button>
+            </form>
+          } @else {
+            <div class="group flex items-center gap-1 px-1">
+              <button
+                type="button"
+                (click)="select(atlas.id)"
+                class="flex flex-1 min-w-0 items-center gap-2 px-2 py-2 text-left text-sm hover:bg-white/5 rounded-md"
+                [class.text-\[var\(--accent\)\]]="atlas.id === activeAtlas()?.id"
+              >
+                <span class="material-symbols-outlined text-[1rem]">{{ atlas.id === activeAtlas()?.id ? 'check' : 'public' }}</span>
+                <span class="truncate">{{ displayName(atlas) }}</span>
+              </button>
+              <button
+                type="button"
+                (click)="startRename($event, atlas)"
+                class="opacity-0 group-hover:opacity-100 transition-opacity rounded-md p-1 text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5"
+                aria-label="Rename atlas"
+              ><span class="material-symbols-outlined text-[1rem]">edit</span></button>
+            </div>
+          }
         }
         <button
           type="button"
           (click)="openCreate()"
-          class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[var(--accent)] hover:bg-white/5 border-t border-[var(--line)]"
+          class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[var(--accent)] hover:bg-white/5 border-t border-[var(--line)] mt-1"
         >
           <span class="material-symbols-outlined text-[1rem]">add</span>
           <span>New atlas</span>

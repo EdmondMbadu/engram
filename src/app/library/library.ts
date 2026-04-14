@@ -7,10 +7,11 @@ import { DocumentsService } from '../documents.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
+import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 
 @Component({
   selector: 'app-library',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent],
   templateUrl: './library.html',
   styleUrl: './library.css',
 })

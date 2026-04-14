@@ -5,7 +5,6 @@ import {
   collection,
   doc,
   onSnapshot,
-  orderBy,
   query,
   serverTimestamp,
   updateDoc,
@@ -47,16 +46,22 @@ export class AtlasService {
       const atlasesQuery = query(
         collection(this.firestore, 'atlases'),
         where('user_id', '==', uid),
-        orderBy('created_at', 'asc'),
       );
 
       const unsubscribe: Unsubscribe = onSnapshot(
         atlasesQuery,
         async (snapshot) => {
-          const items: AtlasItem[] = snapshot.docs.map((d) => ({
-            id: d.id,
-            ...(d.data() as Omit<AtlasItem, 'id'>),
-          }));
+          const items: AtlasItem[] = snapshot.docs
+            .map((d) => ({
+              id: d.id,
+              ...(d.data() as Omit<AtlasItem, 'id'>),
+            }))
+            .sort((a, b) => {
+              const aMs = this.asMillis(a.created_at);
+              const bMs = this.asMillis(b.created_at);
+              if (aMs !== bMs) return aMs - bMs;
+              return a.id.localeCompare(b.id);
+            });
           this.atlases.set(items);
 
           if (items.length === 0) {
@@ -65,6 +70,7 @@ export class AtlasService {
               this.setActive(created);
             }
           } else {
+            void this.selfHealAtlases(items);
             const current = this.activeAtlasId();
             if (!current || !items.some((a) => a.id === current)) {
               this.setActive(items[0].id);
@@ -115,11 +121,50 @@ export class AtlasService {
 
   async renameAtlas(atlasId: string, name: string): Promise<void> {
     if (!this.firestore) return;
+    const trimmed = name.trim();
+    if (!trimmed) return;
     await updateDoc(doc(this.firestore, 'atlases', atlasId), {
-      name: name.trim(),
-      slug: this.slugify(name),
+      name: trimmed,
       updated_at: serverTimestamp(),
     });
+  }
+
+  displayName(atlas: AtlasItem | null | undefined): string {
+    if (!atlas) return 'Select atlas';
+    const trimmed = atlas.name?.trim();
+    if (trimmed) return trimmed;
+    return `Atlas ${atlas.id.slice(0, 6)}`;
+  }
+
+  private async selfHealAtlases(items: AtlasItem[]): Promise<void> {
+    if (!this.firestore) return;
+    for (const atlas of items) {
+      const patch: Record<string, unknown> = {};
+      if (!atlas.name || !atlas.name.trim()) {
+        patch['name'] = `Atlas ${atlas.id.slice(0, 6)}`;
+      }
+      if (!atlas.slug || !atlas.slug.trim()) {
+        patch['slug'] = this.slugify(patch['name'] as string ?? `atlas-${atlas.id.slice(0, 6)}`);
+      }
+      if (!atlas.created_at) {
+        patch['created_at'] = serverTimestamp();
+      }
+      if (Object.keys(patch).length === 0) continue;
+      try {
+        await updateDoc(doc(this.firestore, 'atlases', atlas.id), patch);
+      } catch {
+        // ignore self-heal errors
+      }
+    }
+  }
+
+  private asMillis(value: { toDate(): Date } | Date | null | undefined): number {
+    if (!value) return 0;
+    if (value instanceof Date) return value.getTime();
+    if (typeof (value as { toDate?: () => Date }).toDate === 'function') {
+      return (value as { toDate(): Date }).toDate().getTime();
+    }
+    return 0;
   }
 
   private async createDefaultAtlas(uid: string): Promise<string | null> {
