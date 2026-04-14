@@ -734,17 +734,10 @@ async function hydrateCitationSnapshots(
 
   const documentNameById = new Map<string, string>();
   documentSnapshots.forEach((snapshot) => {
-    if (!snapshot.exists) {
-      return;
-    }
-    const data = snapshot.data();
-    documentNameById.set(
-      snapshot.id,
-      (data?.filename as string | undefined) ?? 'Unknown document',
-    );
+    documentNameById.set(snapshot.id, resolveDocumentLabel(snapshot));
   });
 
-  return citedEntries
+  const hydrated = citedEntries
     .map(({ entryId, entry }, index) => {
       const extractSnapshot = extractSnapshots[index];
       const extractText = extractSnapshot.exists ? (extractSnapshot.data()?.text as string) : entry.claim;
@@ -752,13 +745,72 @@ async function hydrateCitationSnapshots(
       return {
         entry_id: entryId,
         text: extractText,
-        filename: documentNameById.get(entry.document_id) ?? 'Unknown document',
+        filename: documentNameById.get(entry.document_id) ?? `Document ${entry.document_id.slice(0, 8)}`,
         page: entry.source.page,
         line_start: entry.source.line_start,
         line_end: entry.source.line_end,
       };
     })
     .filter((snapshot) => snapshot.text.length > 0);
+
+  const deduped = new Map<string, QueryCitationSnapshot>();
+  for (const snapshot of hydrated) {
+    const key = [
+      snapshot.page,
+      snapshot.line_start,
+      snapshot.line_end,
+      snapshot.text.trim().toLowerCase(),
+    ].join('::');
+    const existing = deduped.get(key);
+    if (!existing) {
+      deduped.set(key, snapshot);
+      continue;
+    }
+
+    const existingIsFallback = isFallbackDocumentLabel(existing.filename);
+    const candidateIsFallback = isFallbackDocumentLabel(snapshot.filename);
+
+    if (existingIsFallback && !candidateIsFallback) {
+      deduped.set(key, snapshot);
+    }
+  }
+
+  return Array.from(deduped.values());
+}
+
+function resolveDocumentLabel(
+  snapshot: FirebaseFirestore.DocumentSnapshot,
+): string {
+  if (!snapshot.exists) {
+    return `Document ${snapshot.id.slice(0, 8)}`;
+  }
+
+  const data = snapshot.data();
+  const title = String(data?.title ?? '').trim();
+  if (title) {
+    return title;
+  }
+
+  const filename = String(data?.filename ?? '').trim();
+  if (filename) {
+    return filename;
+  }
+
+  const sourceUrl = String(data?.source_url ?? '').trim();
+  if (sourceUrl) {
+    try {
+      return new URL(sourceUrl).hostname || sourceUrl;
+    } catch {
+      return sourceUrl;
+    }
+  }
+
+  return `Document ${snapshot.id.slice(0, 8)}`;
+}
+
+function isFallbackDocumentLabel(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  return normalized === 'unknown document' || normalized.startsWith('document ');
 }
 
 export async function processWikiTopicSummaryJob(jobId: string): Promise<void> {

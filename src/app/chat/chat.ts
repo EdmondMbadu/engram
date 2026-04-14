@@ -121,7 +121,7 @@ export class ChatComponent implements AfterViewChecked {
       );
     } else {
       const answer = this.chatService.latestAnswer() ?? '';
-      const citations = this.chatService.latestCitations();
+      const citations = this.normalizeCitations(this.chatService.latestCitations());
       const gap = this.chatService.knowledgeGap();
       this.messages.update((msgs) =>
         msgs.map((message) =>
@@ -179,7 +179,7 @@ export class ChatComponent implements AfterViewChecked {
         id: `${item.id}-a`,
         role: 'assistant',
         text: item.answer,
-        citations: item.cited_passages ?? [],
+        citations: this.normalizeCitations(item.cited_passages ?? []),
         knowledgeGap: !!item.knowledge_gap,
         createdAt: item.created_at,
         updatedAt: item.updated_at ?? item.created_at,
@@ -384,6 +384,52 @@ export class ChatComponent implements AfterViewChecked {
     }
 
     return lines.join('\n');
+  }
+
+  private normalizeCitations(citations: CitationPassage[]): CitationPassage[] {
+    const deduped = new Map<string, CitationPassage>();
+
+    for (const citation of citations) {
+      const normalized = {
+        ...citation,
+        filename: this.normalizeCitationFilename(citation.filename),
+      };
+
+      const key = [
+        normalized.page,
+        normalized.line_start,
+        normalized.line_end,
+        normalized.text.trim().toLowerCase(),
+      ].join('::');
+
+      const existing = deduped.get(key);
+      if (!existing) {
+        deduped.set(key, normalized);
+        continue;
+      }
+
+      const existingIsFallback = this.isFallbackCitationFilename(existing.filename);
+      const candidateIsFallback = this.isFallbackCitationFilename(normalized.filename);
+
+      if (existingIsFallback && !candidateIsFallback) {
+        deduped.set(key, normalized);
+      }
+    }
+
+    return Array.from(deduped.values());
+  }
+
+  private normalizeCitationFilename(filename: string | null | undefined): string {
+    const value = String(filename ?? '').trim();
+    if (!value || this.isFallbackCitationFilename(value)) {
+      return 'Source document';
+    }
+    return value;
+  }
+
+  private isFallbackCitationFilename(filename: string): boolean {
+    const normalized = filename.trim().toLowerCase();
+    return normalized === 'unknown document' || normalized === 'source document' || normalized.startsWith('document ');
   }
 
   private async copyText(target: string, text: string): Promise<void> {
