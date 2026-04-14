@@ -16,6 +16,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'chat', renderMode: RenderMode.Client },
   { path: 'library', renderMode: RenderMode.Client },
   { path: 'wiki', renderMode: RenderMode.Client },
+  { path: 'atlases', renderMode: RenderMode.Client },
 
   // Fallback
   { path: '**', renderMode: RenderMode.Prerender },

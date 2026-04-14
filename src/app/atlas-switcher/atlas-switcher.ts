@@ -1,10 +1,11 @@
 import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { AtlasService } from '../atlas.service';
-import type { AtlasItem, AtlasUsage } from '../atlas.models';
+import type { AtlasItem } from '../atlas.models';
 
 @Component({
   selector: 'app-atlas-switcher',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './atlas-switcher.html',
 })
 export class AtlasSwitcherComponent {
@@ -20,11 +21,6 @@ export class AtlasSwitcherComponent {
   readonly showCreate = signal(false);
   readonly renamingId = signal<string | null>(null);
   readonly renameDraft = signal('');
-  readonly deleteCandidateId = signal<string | null>(null);
-  readonly deleteUsage = signal<AtlasUsage | null>(null);
-  readonly deleteError = signal<string | null>(null);
-  readonly checkingDelete = signal(false);
-  readonly deleting = signal(false);
 
   displayName(atlas: AtlasItem | null | undefined): string {
     return this.atlasService.displayName(atlas);
@@ -75,8 +71,6 @@ export class AtlasSwitcherComponent {
 
   startRename(event: Event, atlas: AtlasItem): void {
     event.stopPropagation();
-    this.deleteCandidateId.set(null);
-    this.deleteError.set(null);
     this.renamingId.set(atlas.id);
     this.renameDraft.set(this.displayName(atlas));
   }
@@ -89,61 +83,6 @@ export class AtlasSwitcherComponent {
     event.stopPropagation();
     this.renamingId.set(null);
     this.renameDraft.set('');
-  }
-
-  async startDelete(event: Event, atlas: AtlasItem): Promise<void> {
-    event.stopPropagation();
-    this.renamingId.set(null);
-    this.deleteError.set(null);
-    this.deleteUsage.set(null);
-
-    if (this.atlases().length <= 1) {
-      this.deleteError.set('You must keep at least one atlas.');
-      this.deleteCandidateId.set(atlas.id);
-      return;
-    }
-
-    this.checkingDelete.set(true);
-    this.deleteCandidateId.set(atlas.id);
-    try {
-      const usage = await this.atlasService.getAtlasUsage(atlas.id);
-      this.deleteUsage.set(usage);
-      if (usage.total > 0) {
-        this.deleteError.set('This atlas still has content, so it cannot be deleted from the switcher.');
-      }
-    } finally {
-      this.checkingDelete.set(false);
-    }
-  }
-
-  cancelDelete(event?: Event): void {
-    event?.stopPropagation();
-    this.deleteCandidateId.set(null);
-    this.deleteUsage.set(null);
-    this.deleteError.set(null);
-  }
-
-  async confirmDelete(event: Event): Promise<void> {
-    event.stopPropagation();
-    const atlasId = this.deleteCandidateId();
-    const usage = this.deleteUsage();
-    if (!atlasId || !usage || usage.total > 0) {
-      return;
-    }
-
-    this.deleting.set(true);
-    try {
-      await this.atlasService.deleteAtlas(atlasId);
-      this.cancelDelete();
-    } catch (error) {
-      this.deleteError.set(error instanceof Error ? error.message : 'Failed to delete atlas.');
-    } finally {
-      this.deleting.set(false);
-    }
-  }
-
-  canDeleteAtlas(atlas: AtlasItem): boolean {
-    return this.atlases().length > 1;
   }
 
   async submitRename(event: Event): Promise<void> {
@@ -170,7 +109,6 @@ export class AtlasSwitcherComponent {
     if (!this.elementRef.nativeElement.contains(event.target as Node)) {
       this.menuOpen.set(false);
       this.renamingId.set(null);
-      this.deleteCandidateId.set(null);
     }
   }
 }

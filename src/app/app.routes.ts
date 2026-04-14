@@ -9,6 +9,7 @@ import { AuthActionComponent } from './auth-action/auth-action';
 import { WikiComponent } from './wiki/wiki';
 import { ChatComponent } from './chat/chat';
 import { LibraryComponent } from './library/library';
+import { AtlasManageComponent } from './atlas-manage/atlas-manage';
 import { authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'chat', component: ChatComponent, title: 'Chat | Living Atlas', canActivate: [authGuard] },
   { path: 'library', component: LibraryComponent, title: 'Library | Living Atlas', canActivate: [authGuard] },
   { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Atlas', canActivate: [authGuard] },
+  { path: 'atlases', component: AtlasManageComponent, title: 'Atlas Settings | Living Atlas', canActivate: [authGuard] },
   { path: 'landing', redirectTo: 'home', pathMatch: 'full' },
   { path: 'sign-in', component: SignInComponent, title: 'Sign In | Living Atlas', canActivate: [guestOnlyGuard] },
   { path: 'create-account', component: CreateAccountComponent, title: 'Create Account | Living Atlas', canActivate: [guestOnlyGuard] },

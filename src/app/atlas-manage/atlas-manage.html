@@ -1,0 +1,168 @@
+<div class="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(59,175,98,0.18),_transparent_40%),linear-gradient(180deg,_#07110b_0%,_#0b1510_44%,_#0f1713_100%)] text-[var(--text)]">
+  <header class="border-b border-white/8 bg-black/10 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-3">
+        <a routerLink="/library" class="flex items-center gap-3">
+          <div class="h-11 w-11 rounded-2xl border border-white/10 bg-white/5 p-2 shadow-lg shadow-[rgba(59,175,98,0.18)]">
+            <img src="/assets/living-atlas-logo.png" alt="Living Atlas logo" class="h-full w-full object-contain" />
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
+            <h1 class="text-xl font-black tracking-tighter">Atlas Settings</h1>
+          </div>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a
+          routerLink="/library"
+          class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-white/8"
+        >
+          <span class="material-symbols-outlined text-[1rem]">arrow_back</span>
+          <span>Back to library</span>
+        </a>
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <section class="rounded-[28px] border border-white/10 bg-black/20 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.28)]">
+      <div class="flex flex-col gap-3 border-b border-white/8 pb-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">Atlas Admin</p>
+          <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Keep the switcher simple.</h2>
+          <p class="mt-3 max-w-3xl text-sm leading-6 text-[var(--muted)]">
+            Rename atlases here, inspect what each atlas contains, and delete empty ones without crowding the dropdown.
+          </p>
+        </div>
+        <a
+          routerLink="/library"
+          class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--accent)]/15"
+        >
+          <span class="material-symbols-outlined text-[1rem]">upload_file</span>
+          <span>Upload into active atlas</span>
+        </a>
+      </div>
+
+      @if (pageError()) {
+        <div class="mt-5 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">
+          {{ pageError() }}
+        </div>
+      }
+
+      <div class="mt-6 grid gap-4">
+        @for (atlas of atlases(); track atlas.id) {
+          <article class="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
+                    ID {{ atlasMeta(atlas) }}
+                  </span>
+                  @if (atlas.id === activeAtlasId()) {
+                    <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                      Active
+                    </span>
+                  }
+                </div>
+
+                @if (renamingId() === atlas.id) {
+                  <form class="mt-4 flex flex-col gap-3 sm:flex-row" (submit)="saveRename($event)">
+                    <input
+                      type="text"
+                      [value]="renameDraft()"
+                      (input)="onRenameInput($event)"
+                      class="theme-input min-w-0 flex-1 rounded-2xl px-4 py-3 text-sm text-[var(--text)]"
+                      autofocus
+                    />
+                    <div class="flex items-center gap-2">
+                      <button
+                        type="submit"
+                        [disabled]="renaming() || !renameDraft().trim()"
+                        class="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
+                      >{{ renaming() ? 'Saving...' : 'Save' }}</button>
+                      <button
+                        type="button"
+                        (click)="cancelRename()"
+                        class="rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]"
+                      >Cancel</button>
+                    </div>
+                  </form>
+                } @else {
+                  <h3 class="mt-4 text-2xl font-black tracking-tight">{{ displayName(atlas) }}</h3>
+                }
+
+                <p class="mt-3 text-sm text-[var(--muted)]">
+                  @if (isUsageLoading(atlas.id)) {
+                    Checking atlas contents...
+                  } @else {
+                    {{ usageLabel(usage(atlas.id)) }}
+                  }
+                </p>
+
+                @if (usage(atlas.id); as details) {
+                  <div class="mt-4 grid gap-2 sm:grid-cols-4">
+                    <div class="rounded-2xl border border-white/8 bg-black/15 px-3 py-3">
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Documents</p>
+                      <p class="mt-1 text-xl font-black">{{ details.documents }}</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/8 bg-black/15 px-3 py-3">
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Knowledge</p>
+                      <p class="mt-1 text-xl font-black">{{ details.knowledge_entries }}</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/8 bg-black/15 px-3 py-3">
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Topics</p>
+                      <p class="mt-1 text-xl font-black">{{ details.wiki_topics }}</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/8 bg-black/15 px-3 py-3">
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Chats</p>
+                      <p class="mt-1 text-xl font-black">{{ chatCount(details) }}</p>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 lg:justify-end">
+                @if (atlas.id !== activeAtlasId()) {
+                  <button
+                    type="button"
+                    (click)="selectAtlas(atlas.id)"
+                    class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-white/8"
+                  >Use atlas</button>
+                }
+                @if (renamingId() !== atlas.id) {
+                  <button
+                    type="button"
+                    (click)="startRename(atlas)"
+                    class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-white/8"
+                  >
+                    <span class="material-symbols-outlined text-[1rem]">edit</span>
+                    <span>Rename</span>
+                  </button>
+                }
+                <button
+                  type="button"
+                  (click)="deleteAtlas(atlas)"
+                  [disabled]="!canDelete(atlas.id) || deletingId() === atlas.id"
+                  class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--danger-text)]/10 px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--danger-text)]/15 disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  <span class="material-symbols-outlined text-[1rem]">delete</span>
+                  <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete empty atlas' }}</span>
+                </button>
+              </div>
+            </div>
+
+            @if (!hasMultipleAtlases()) {
+              <p class="mt-4 text-xs text-[var(--muted)]">You must keep at least one atlas.</p>
+            } @else if (usage(atlas.id); as details) {
+              @if (details.total > 0) {
+                <p class="mt-4 text-xs text-[var(--muted)]">Delete becomes available only when an atlas is empty.</p>
+              }
+            }
+          </article>
+        }
+      </div>
+    </section>
+  </main>
+</div>
