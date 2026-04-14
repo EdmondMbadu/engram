@@ -316,6 +316,7 @@ export async function answerQuestion(params: {
         responseJsonSchema: answerSchema,
         temperature: 0.1,
         maxOutputTokens: broadQuestion ? 4096 : 2048,
+        thinkingConfig: { thinkingBudget: 0 },
       },
     });
 
@@ -359,6 +360,7 @@ export async function answerQuestion(params: {
       responseJsonSchema: answerSchema,
       temperature: 0,
       maxOutputTokens: broadQuestion ? 4096 : 2048,
+      thinkingConfig: { thinkingBudget: 0 },
     },
   });
 
