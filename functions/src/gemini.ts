@@ -261,9 +261,10 @@ export async function answerQuestion(params: {
     source: { page: number; line_start: number; line_end: number };
   }>;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
-  const broadQuestion = isBroadSynthesisQuestion(params.question);
+  const hasHistory = (params.history ?? []).length > 0;
+  const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
   const serializedHistory = JSON.stringify(
-    (params.history ?? []).slice(-6).map((message) => [message.role, message.text.slice(0, 1400)] as const),
+    (params.history ?? []).slice(-6).map((message) => [message.role, message.text.slice(0, 4000)] as const),
   );
   const serializedEntries = JSON.stringify(
     params.entries.map((entry) => [
@@ -279,7 +280,8 @@ export async function answerQuestion(params: {
     'You are answering a question against a curated personal knowledge base.',
     'Use only the provided knowledge entries.',
     'Entry format: [id, topic, claim, page, line_start, line_end].',
-    'Use the recent conversation history only to resolve references like "they", "that", or follow-up questions.',
+    'Treat the recent conversation history as real context: resolve references (it, that, they), understand follow-ups, and avoid repeating themes, topics, or points already given in prior assistant turns unless the user asks for them again.',
+    'When the user asks for "other", "more", "additional", or "any else" items, introduce genuinely new themes/topics not already covered in prior assistant turns.',
     'Do not invent context that is not supported by the provided history and entries.',
     'Give a useful, concrete answer with enough detail to be meaningful.',
     'If the evidence is incomplete or weak, say so clearly and set knowledge_gap to true.',
@@ -313,7 +315,7 @@ export async function answerQuestion(params: {
         responseMimeType: 'application/json',
         responseJsonSchema: answerSchema,
         temperature: 0.1,
-        maxOutputTokens: broadQuestion ? 1200 : 800,
+        maxOutputTokens: broadQuestion ? 4096 : 2048,
       },
     });
 
@@ -356,7 +358,7 @@ export async function answerQuestion(params: {
       responseMimeType: 'application/json',
       responseJsonSchema: answerSchema,
       temperature: 0,
-      maxOutputTokens: broadQuestion ? 1400 : 900,
+      maxOutputTokens: broadQuestion ? 4096 : 2048,
     },
   });
 
