@@ -106,10 +106,24 @@ export interface KnowledgeEntryRecord {
   last_updated: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
 }
 
+export interface TopicEntryPreview {
+  id: string;
+  claim: string;
+  topic: string;
+  related_topics: string[];
+  document_id: string;
+  source: {
+    page: number;
+    line_start: number;
+    line_end: number;
+  };
+}
+
 export interface WikiTopicRecord {
   name: string;
   summary: string;
   search_text?: string;
+  retrieval_entries?: TopicEntryPreview[];
   entry_ids: string[];
   document_ids: string[];
   user_id: string;

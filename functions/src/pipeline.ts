@@ -8,10 +8,14 @@ import {
   chunkExtractBlocks,
   compact,
   dedupeStrings,
+  filterRedundantExtractBlocks,
   generateId,
   makeExtractId,
   normalizeRelatedTopics,
   normalizeTopicName,
+  normalizeTextFingerprint,
+  selectDiverseStrings,
+  tokenizeText,
   topicDocumentId,
 } from './utils';
 import type {
@@ -22,6 +26,7 @@ import type {
   KnowledgeEntryRecord,
   ModelUsage,
   QueryCitationSnapshot,
+  TopicEntryPreview,
   WikiTopicJobRecord,
 } from './types';
 
@@ -33,6 +38,9 @@ const queriesCollection = db.collection('queries');
 const wikiTopicJobsCollection = db.collection('wiki_topic_jobs');
 
 const compileChunkConcurrency = 6;
+const maxTopicPreviewEntries = 12;
+const minAnswerEntries = 18;
+const maxAnswerEntries = 48;
 
 export async function loadDocumentRecord(documentId: string): Promise<DocumentRecord & { id: string }> {
   const snapshot = await documentsCollection.doc(documentId).get();
@@ -181,7 +189,8 @@ async function processDocument(params: {
 
   try {
     const extraction = await params.extraction;
-    const blocks = extraction.blocks.filter((block) => block.text.trim().length > 0);
+    const extractedBlocks = extraction.blocks.filter((block) => block.text.trim().length > 0);
+    const blocks = filterRedundantExtractBlocks(extractedBlocks);
 
     if (blocks.length === 0) {
       throw new Error('No extractable text found in the document.');
@@ -193,6 +202,7 @@ async function processDocument(params: {
     logger.info('Document extraction completed', {
       documentId: document.id,
       blockCount: blocks.length,
+      removedBoilerplateBlocks: extractedBlocks.length - blocks.length,
       chunkCount: chunks.length,
       pageCount,
       durationMs: Date.now() - startedAt,
@@ -334,9 +344,10 @@ async function buildKnowledgeEntries(
       const key = `${draft.source.page}:${draft.source.line_start}:${draft.source.line_end}`;
       return blockMap.has(key) ? draft : null;
     });
+  const dedupedDrafts = dedupeKnowledgeDrafts(compact(validated));
 
   return {
-    entries: compact(validated).map((draft) => ({
+    entries: dedupedDrafts.map((draft) => ({
       id: generateId('entry'),
       claim: draft.claim,
       topic: normalizeTopicName(draft.topic),
@@ -383,6 +394,14 @@ async function upsertWikiTopics(
       const topicId = topicDocumentId(userId, topicName);
       const existingSnapshot = await wikiTopicsCollection.doc(topicId).get();
       const existing = existingSnapshot.exists ? existingSnapshot.data() : null;
+      const existingPreviewEntries = normalizeTopicPreviewEntries(existing?.retrieval_entries, topicName);
+      const retrievalEntries = selectRepresentativeEntries(
+        [
+          ...existingPreviewEntries,
+          ...topicEntries.map((entry) => toTopicEntryPreview(entry)),
+        ],
+        maxTopicPreviewEntries,
+      );
 
       await wikiTopicsCollection.doc(topicId).set(
         {
@@ -397,9 +416,10 @@ async function upsertWikiTopics(
               (typeof existing?.summary === 'string' && existing.summary.trim().length > 0
                 ? existing.summary
                 : ''),
-            claims: topicEntries.map((entry) => entry.claim),
-            relatedTopics: topicEntries.flatMap((entry) => entry.related_topics ?? []),
+            claims: retrievalEntries.map((entry) => entry.claim),
+            relatedTopics: retrievalEntries.flatMap((entry) => entry.related_topics ?? []),
           }),
+          retrieval_entries: retrievalEntries,
           summary_status: 'pending',
           summary_error: null,
           entry_ids: dedupeStrings([
@@ -436,31 +456,41 @@ export async function runAtlasQuery(params: {
   }
 
   const topics = await loadCandidateTopics(params.userId, trimmedQuestion, params.topicIds);
-  const topicNames = topics.map((topic) => topic.name);
   const tokens = tokenize(trimmedQuestion);
-
-  const entrySnapshots = await Promise.all(
-    topics.flatMap((topic) =>
-      topic.entry_ids.slice(0, 30).map((entryId) => knowledgeEntriesCollection.doc(entryId).get()),
-    ),
+  const previewEntries = dedupeById(
+    topics.flatMap((topic) => topic.retrieval_entries ?? []),
   );
+  const previewRankedEntries = rankEntriesForQuestion(previewEntries, tokens).slice(0, maxAnswerEntries);
 
-  const uniqueEntries = dedupeById(
-    compact(
-      entrySnapshots
-        .filter((snapshot) => snapshot.exists)
-        .map((snapshot) => ({
-          id: snapshot.id,
-          ...(snapshot.data() as Omit<KnowledgeEntryRecord, 'created_at' | 'last_updated'>),
-        })),
-    ),
-  )
-    .sort((left, right) => {
-      const leftScore = scoreEntryForQuestion(left, tokens);
-      const rightScore = scoreEntryForQuestion(right, tokens);
-      return rightScore - leftScore || left.topic.localeCompare(right.topic);
-    })
-    .slice(0, 80);
+  let uniqueEntries = previewRankedEntries;
+
+  if (uniqueEntries.length < minAnswerEntries || shouldFetchAdditionalEntries(uniqueEntries, tokens)) {
+    const fallbackEntryIds = topics.flatMap((topic) => topic.entry_ids)
+      .filter((entryId) => !uniqueEntries.some((entry) => entry.id === entryId))
+      .slice(0, 36);
+
+    if (fallbackEntryIds.length > 0) {
+      const entrySnapshots = await Promise.all(
+        fallbackEntryIds.map((entryId) => knowledgeEntriesCollection.doc(entryId).get()),
+      );
+
+      const fetchedEntries = compact(
+        entrySnapshots.map((snapshot) =>
+          snapshot.exists
+            ? {
+                id: snapshot.id,
+                ...(snapshot.data() as Omit<KnowledgeEntryRecord, 'created_at' | 'last_updated'>),
+              }
+            : null,
+        ),
+      );
+
+      uniqueEntries = rankEntriesForQuestion(
+        dedupeById([...uniqueEntries, ...fetchedEntries]),
+        tokens,
+      ).slice(0, maxAnswerEntries);
+    }
+  }
 
   if (uniqueEntries.length === 0) {
     return {
@@ -473,9 +503,15 @@ export async function runAtlasQuery(params: {
     };
   }
 
+  logger.info('Atlas query candidates selected', {
+    userId: params.userId,
+    topicCount: topics.length,
+    previewEntryCount: previewEntries.length,
+    answerEntryCount: uniqueEntries.length,
+  });
+
   const response = await answerQuestion({
     question: trimmedQuestion,
-    topicNames,
     entries: uniqueEntries.map((entry) => ({
       id: entry.id,
       claim: entry.claim,
@@ -569,7 +605,7 @@ async function loadCandidateTopics(
   userId: string,
   question: string,
   forcedTopicIds?: string[],
-): Promise<Array<{ id: string; name: string; entry_ids: string[] }>> {
+): Promise<Array<{ id: string; name: string; entry_ids: string[]; retrieval_entries?: TopicEntryPreview[]; score: number }>> {
   if (forcedTopicIds && forcedTopicIds.length > 0) {
     const snapshots = await Promise.all(forcedTopicIds.map((topicId) => wikiTopicsCollection.doc(topicId).get()));
     return compact(
@@ -579,6 +615,8 @@ async function loadCandidateTopics(
               id: snapshot.id,
               name: snapshot.data()?.name as string,
               entry_ids: (snapshot.data()?.entry_ids as string[]) ?? [],
+              retrieval_entries: normalizeTopicPreviewEntries(snapshot.data()?.retrieval_entries, snapshot.data()?.name as string),
+              score: 1,
             }
           : null,
       ),
@@ -600,6 +638,7 @@ async function loadCandidateTopics(
     id: string;
     name: string;
     entry_ids: string[];
+    retrieval_entries?: TopicEntryPreview[];
     topicScore: number;
     entryScore: number;
   }>(
@@ -611,10 +650,15 @@ async function loadCandidateTopics(
           id: doc.id,
           name: data.name as string,
           entry_ids: (data.entry_ids as string[]) ?? [],
-          topicScore: tokens.reduce((sum, token) => {
-            const haystack = `${data.name ?? ''} ${data.summary ?? ''} ${data.search_text ?? ''}`.toLowerCase();
-            return sum + (haystack.includes(token) ? 1 : 0);
-          }, 0),
+          retrieval_entries: normalizeTopicPreviewEntries(data.retrieval_entries, data.name as string),
+          topicScore: scoreTopicForQuestion(
+            {
+              name: String(data.name ?? ''),
+              summary: String(data.summary ?? ''),
+              searchText: String(data.search_text ?? ''),
+            },
+            tokens,
+          ),
           entryScore: 0,
         },
       ];
@@ -627,6 +671,7 @@ async function loadCandidateTopics(
         id: topic.id,
         name: topic.name,
         entry_ids: dedupeStrings(topic.entry_ids),
+        retrieval_entries: topic.retrieval_entries,
         score: topic.topicScore,
       }))
       .sort((left, right) => right.score - left.score || left.name.localeCompare(right.name));
@@ -637,6 +682,8 @@ async function loadCandidateTopics(
         id: topic.id,
         name: topic.name,
         entry_ids: topic.entry_ids,
+        retrieval_entries: topic.retrieval_entries,
+        score: topic.score,
       }));
     }
   }
@@ -644,7 +691,7 @@ async function loadCandidateTopics(
   const entrySnapshot = await knowledgeEntriesCollection
     .where('user_id', '==', userId)
     .where('orphaned', '==', false)
-    .limit(400)
+    .limit(300)
     .get();
 
   for (const doc of entrySnapshot.docs) {
@@ -654,10 +701,7 @@ async function loadCandidateTopics(
     }
 
     const haystack = `${data.topic ?? ''} ${(data.related_topics ?? []).join(' ')} ${data.claim ?? ''}`.toLowerCase();
-    const score = tokens.reduce(
-      (sum, token) => sum + (haystack.includes(token) ? 1 : 0),
-      0,
-    );
+    const score = scoreTextForTokens(haystack, tokens);
 
     if (score <= 0) {
       continue;
@@ -688,6 +732,7 @@ async function loadCandidateTopics(
         id: doc.id,
         name: doc.name,
         entry_ids: dedupeStrings(doc.entry_ids),
+        retrieval_entries: doc.retrieval_entries,
         score: doc.topicScore * 2 + doc.entryScore,
       };
     })
@@ -698,6 +743,8 @@ async function loadCandidateTopics(
     id: topic.id,
     name: topic.name,
     entry_ids: topic.entry_ids,
+    retrieval_entries: topic.retrieval_entries,
+    score: topic.score,
   }));
 }
 
@@ -838,9 +885,17 @@ export async function processWikiTopicSummaryJob(jobId: string): Promise<void> {
       id: snapshot.id,
       ...(snapshot.data() as Omit<KnowledgeEntryRecord, 'created_at' | 'last_updated'>),
     }));
+    const retrievalEntries = selectRepresentativeEntries(
+      entries.map((entry) => toTopicEntryPreview(entry)),
+      maxTopicPreviewEntries,
+    );
+    const summaryClaims = selectDiverseStrings(
+      retrievalEntries.map((entry) => entry.claim),
+      { limit: 18, maxChars: 4200 },
+    );
     const summaryResult = await summarizeTopic(
       job.topic_name,
-      entries.map((entry) => entry.claim),
+      summaryClaims,
     );
 
     await topicRef.set(
@@ -850,9 +905,10 @@ export async function processWikiTopicSummaryJob(jobId: string): Promise<void> {
         search_text: buildTopicSearchText({
           topicName: job.topic_name,
           summary: summaryResult.summary,
-          claims: entries.map((entry) => entry.claim),
-          relatedTopics: entries.flatMap((entry) => entry.related_topics ?? []),
+          claims: retrievalEntries.map((entry) => entry.claim),
+          relatedTopics: retrievalEntries.flatMap((entry) => entry.related_topics ?? []),
         }),
+        retrieval_entries: retrievalEntries,
         summary_status: 'ready',
         summary_error: null,
         entry_ids: entries.map((entry) => entry.id),
@@ -889,8 +945,210 @@ function scoreEntryForQuestion(
   entry: Pick<KnowledgeEntryRecord, 'claim' | 'topic' | 'related_topics'>,
   tokens: string[],
 ): number {
-  const haystack = `${entry.topic} ${(entry.related_topics ?? []).join(' ')} ${entry.claim}`.toLowerCase();
-  return tokens.reduce((sum, token) => sum + (haystack.includes(token) ? 1 : 0), 0);
+  const topicText = entry.topic.toLowerCase();
+  const relatedText = (entry.related_topics ?? []).join(' ').toLowerCase();
+  const claimText = entry.claim.toLowerCase();
+
+  return (
+    scoreTextForTokens(topicText, tokens) * 5 +
+    scoreTextForTokens(relatedText, tokens) * 2 +
+    scoreTextForTokens(claimText, tokens) * 3 +
+    Math.min(tokenCoverage(claimText, tokens), 4)
+  );
+}
+
+function scoreTopicForQuestion(
+  topic: { name: string; summary: string; searchText: string },
+  tokens: string[],
+): number {
+  const name = topic.name.toLowerCase();
+  const summary = topic.summary.toLowerCase();
+  const searchText = topic.searchText.toLowerCase();
+
+  return (
+    scoreTextForTokens(name, tokens) * 6 +
+    scoreTextForTokens(summary, tokens) * 2 +
+    scoreTextForTokens(searchText, tokens) +
+    tokenCoverage(name, tokens) * 2
+  );
+}
+
+function scoreTextForTokens(value: string, tokens: string[]): number {
+  return tokens.reduce((sum, token) => sum + (value.includes(token) ? 1 : 0), 0);
+}
+
+function tokenCoverage(value: string, tokens: string[]): number {
+  return tokens.filter((token) => value.includes(token)).length;
+}
+
+function rankEntriesForQuestion<T extends Pick<KnowledgeEntryRecord, 'claim' | 'topic' | 'related_topics'> & { id: string }>(
+  entries: T[],
+  tokens: string[],
+): T[] {
+  return [...entries]
+    .sort((left, right) => {
+      const leftScore = scoreEntryForQuestion(left, tokens);
+      const rightScore = scoreEntryForQuestion(right, tokens);
+      return rightScore - leftScore || left.topic.localeCompare(right.topic);
+    });
+}
+
+function shouldFetchAdditionalEntries(
+  entries: Array<Pick<KnowledgeEntryRecord, 'claim' | 'topic' | 'related_topics'>>,
+  tokens: string[],
+): boolean {
+  if (entries.length === 0) {
+    return true;
+  }
+
+  const topScore = scoreEntryForQuestion(entries[0], tokens);
+  const coveredClaims = new Set<string>();
+
+  for (const entry of entries.slice(0, 10)) {
+    tokenizeText(entry.claim).forEach((token) => coveredClaims.add(token));
+  }
+
+  const matchedCoverage = tokens.filter((token) => coveredClaims.has(token)).length;
+  return topScore < 8 || matchedCoverage < Math.min(3, tokens.length);
+}
+
+function toTopicEntryPreview(
+  entry: Pick<KnowledgeEntryRecord, 'claim' | 'topic' | 'related_topics' | 'document_id' | 'source'> & { id: string },
+): TopicEntryPreview {
+  return {
+    id: entry.id,
+    claim: entry.claim,
+    topic: entry.topic,
+    related_topics: normalizeRelatedTopics(entry.related_topics ?? []),
+    document_id: entry.document_id,
+    source: entry.source,
+  };
+}
+
+function normalizeTopicPreviewEntries(value: unknown, fallbackTopicName: string): TopicEntryPreview[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return compact(
+    value.map((preview) => {
+      const source = typeof preview === 'object' && preview ? (preview as TopicEntryPreview).source : null;
+      const page = Number(source?.page ?? 0);
+      const lineStart = Number(source?.line_start ?? 0);
+      const lineEnd = Number(source?.line_end ?? 0);
+
+      const id = String((preview as TopicEntryPreview | undefined)?.id ?? '').trim();
+      const claim = String((preview as TopicEntryPreview | undefined)?.claim ?? '').trim();
+      const documentId = String((preview as TopicEntryPreview | undefined)?.document_id ?? '').trim();
+
+      if (!id || !claim || !documentId || !Number.isFinite(page) || !Number.isFinite(lineStart) || !Number.isFinite(lineEnd)) {
+        return null;
+      }
+
+      return {
+        id,
+        claim,
+        topic: normalizeTopicName(String((preview as TopicEntryPreview | undefined)?.topic ?? fallbackTopicName)),
+        related_topics: normalizeRelatedTopics((preview as TopicEntryPreview | undefined)?.related_topics ?? []),
+        document_id: documentId,
+        source: {
+          page,
+          line_start: lineStart,
+          line_end: lineEnd,
+        },
+      } satisfies TopicEntryPreview;
+    }),
+  );
+}
+
+function selectRepresentativeEntries(entries: TopicEntryPreview[], limit: number): TopicEntryPreview[] {
+  const deduped = dedupeById(entries)
+    .filter((entry) => entry.claim.trim().length > 0)
+    .filter((entry, index, all) =>
+      all.findIndex((candidate) =>
+        candidate.topic === entry.topic &&
+        normalizeTextFingerprint(candidate.claim) === normalizeTextFingerprint(entry.claim),
+      ) === index,
+    );
+
+  if (deduped.length <= limit) {
+    return deduped;
+  }
+
+  const selected: TopicEntryPreview[] = [];
+  const coveredTokens = new Set<string>();
+  const remaining = [...deduped];
+
+  while (remaining.length > 0 && selected.length < limit) {
+    let bestIndex = 0;
+    let bestScore = Number.NEGATIVE_INFINITY;
+
+    for (let index = 0; index < remaining.length; index += 1) {
+      const entry = remaining[index];
+      const claimTokens = tokenizeText(entry.claim);
+      const topicTokens = tokenizeText(`${entry.topic} ${(entry.related_topics ?? []).join(' ')}`);
+      const novelty = [...claimTokens, ...topicTokens].filter((token) => !coveredTokens.has(token)).length;
+      const score =
+        novelty * 5 +
+        Math.min(claimTokens.length, 14) +
+        Math.min(entry.claim.length, 220) / 100 +
+        Math.min(topicTokens.length, 8);
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestIndex = index;
+      }
+    }
+
+    const [best] = remaining.splice(bestIndex, 1);
+    selected.push(best);
+    tokenizeText(`${best.topic} ${best.claim} ${(best.related_topics ?? []).join(' ')}`)
+      .forEach((token) => coveredTokens.add(token));
+  }
+
+  return selected;
+}
+
+function dedupeKnowledgeDrafts(drafts: KnowledgeEntryDraft[]): KnowledgeEntryDraft[] {
+  const deduped = new Map<string, KnowledgeEntryDraft>();
+
+  for (const draft of drafts) {
+    const key = `${normalizeTopicName(draft.topic)}::${normalizeTextFingerprint(draft.claim)}`;
+    const existing = deduped.get(key);
+
+    if (!existing) {
+      deduped.set(key, {
+        ...draft,
+        topic: normalizeTopicName(draft.topic),
+        related_topics: normalizeRelatedTopics(draft.related_topics),
+      });
+      continue;
+    }
+
+    deduped.set(key, {
+      ...existing,
+      related_topics: normalizeRelatedTopics([
+        ...(existing.related_topics ?? []),
+        ...(draft.related_topics ?? []),
+      ]),
+      source: compareSources(existing.source, draft.source) <= 0 ? existing.source : draft.source,
+    });
+  }
+
+  return Array.from(deduped.values());
+}
+
+function compareSources(
+  left: KnowledgeEntryDraft['source'],
+  right: KnowledgeEntryDraft['source'],
+): number {
+  if (left.page !== right.page) {
+    return left.page - right.page;
+  }
+  if (left.line_start !== right.line_start) {
+    return left.line_start - right.line_start;
+  }
+  return left.line_end - right.line_end;
 }
 
 async function commitSetOperations(
@@ -933,13 +1191,7 @@ function dedupeById<T extends { id: string }>(values: T[]): T[] {
 }
 
 function tokenize(value: string): string[] {
-  return dedupeStrings(
-    value
-      .toLowerCase()
-      .split(/[^a-z0-9]+/)
-      .map((token) => token.trim())
-      .filter((token) => token.length >= 3),
-  );
+  return tokenizeText(value);
 }
 
 export function newDocumentRecord(params: {

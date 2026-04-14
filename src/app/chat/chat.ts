@@ -6,11 +6,13 @@ import { AuthService } from '../auth.service';
 import { ChatService } from '../chat.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { formatAssistantMessageHtml } from './message-format.util';
 
 interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   text: string;
+  html?: string;
   citations?: CitationPassage[];
   pending?: boolean;
   knowledgeGap?: boolean;
@@ -115,7 +117,13 @@ export class ChatComponent implements AfterViewChecked {
       this.messages.update((msgs) =>
         msgs.map((message) =>
           message.id === pendingId
-            ? { ...message, pending: false, text: err, updatedAt: new Date() }
+            ? {
+                ...message,
+                pending: false,
+                text: err,
+                html: formatAssistantMessageHtml(err),
+                updatedAt: new Date(),
+              }
             : message,
         ),
       );
@@ -130,6 +138,7 @@ export class ChatComponent implements AfterViewChecked {
                 ...message,
                 pending: false,
                 text: answer,
+                html: formatAssistantMessageHtml(answer),
                 citations,
                 knowledgeGap: gap,
                 updatedAt: new Date(),
@@ -179,6 +188,7 @@ export class ChatComponent implements AfterViewChecked {
         id: `${item.id}-a`,
         role: 'assistant',
         text: item.answer,
+        html: formatAssistantMessageHtml(item.answer),
         citations: this.normalizeCitations(item.cited_passages ?? []),
         knowledgeGap: !!item.knowledge_gap,
         createdAt: item.created_at,

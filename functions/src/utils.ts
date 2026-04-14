@@ -1,6 +1,45 @@
 import { randomUUID } from 'node:crypto';
 import { SUPPORTED_FILE_TYPES, type ExtractBlock, type SupportedFileType } from './types';
 
+const STOPWORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'are',
+  'as',
+  'at',
+  'be',
+  'but',
+  'by',
+  'for',
+  'from',
+  'how',
+  'if',
+  'in',
+  'into',
+  'is',
+  'it',
+  'of',
+  'on',
+  'or',
+  'that',
+  'the',
+  'their',
+  'there',
+  'these',
+  'this',
+  'to',
+  'was',
+  'what',
+  'when',
+  'where',
+  'which',
+  'who',
+  'why',
+  'with',
+  'your',
+]);
+
 export function slugify(value: string): string {
   return value
     .toLowerCase()
@@ -104,6 +143,29 @@ export function chunkExtractBlocks(
   return chunks;
 }
 
+export function filterRedundantExtractBlocks(
+  blocks: ExtractBlock[],
+  repeatedThreshold = 3,
+): ExtractBlock[] {
+  const counts = new Map<string, number>();
+
+  for (const block of blocks) {
+    const fingerprint = fingerprintPotentialBoilerplate(block.text);
+    if (!fingerprint) {
+      continue;
+    }
+    counts.set(fingerprint, (counts.get(fingerprint) ?? 0) + 1);
+  }
+
+  return blocks.filter((block) => {
+    const fingerprint = fingerprintPotentialBoilerplate(block.text);
+    if (!fingerprint) {
+      return true;
+    }
+    return (counts.get(fingerprint) ?? 0) < repeatedThreshold;
+  });
+}
+
 export function groupLinesIntoBlocks(
   lines: string[],
   page: number,
@@ -182,6 +244,71 @@ export function dedupeStrings(values: string[]): string[] {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
+export function tokenizeText(value: string): string[] {
+  return dedupeStrings(
+    value
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .map((token) => token.trim())
+      .filter((token) => token.length >= 2 && !STOPWORDS.has(token)),
+  );
+}
+
+export function normalizeTextFingerprint(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/\b\d+\b/g, '#')
+    .replace(/[^a-z0-9#\s]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+export function selectDiverseStrings(
+  values: string[],
+  options: { limit?: number; maxChars?: number } = {},
+): string[] {
+  const unique = dedupeStrings(values.map((value) => value.trim()).filter(Boolean));
+  if (unique.length <= 1) {
+    return unique;
+  }
+
+  const limit = Math.max(1, options.limit ?? 24);
+  const maxChars = Math.max(400, options.maxChars ?? 5000);
+  const selected: string[] = [];
+  const coveredTokens = new Set<string>();
+  const remaining = unique.map((value) => ({
+    value,
+    tokens: tokenizeText(value),
+  }));
+  let totalChars = 0;
+
+  while (remaining.length > 0 && selected.length < limit) {
+    let bestIndex = 0;
+    let bestScore = Number.NEGATIVE_INFINITY;
+
+    for (let index = 0; index < remaining.length; index += 1) {
+      const candidate = remaining[index];
+      const novelty = candidate.tokens.filter((token) => !coveredTokens.has(token)).length;
+      const score = novelty * 4 + Math.min(candidate.value.length, 240) / 80 - candidate.tokens.length * 0.05;
+      if (score > bestScore) {
+        bestScore = score;
+        bestIndex = index;
+      }
+    }
+
+    const [candidate] = remaining.splice(bestIndex, 1);
+    if (selected.length > 0 && totalChars + candidate.value.length > maxChars) {
+      continue;
+    }
+
+    selected.push(candidate.value);
+    totalChars += candidate.value.length;
+    candidate.tokens.forEach((token) => coveredTokens.add(token));
+  }
+
+  return selected.length > 0 ? selected : unique.slice(0, limit);
+}
+
 export function buildTopicSearchText(params: {
   topicName: string;
   summary?: string | null;
@@ -193,10 +320,13 @@ export function buildTopicSearchText(params: {
     params.topicName,
     params.summary ?? '',
     ...(params.relatedTopics ?? []),
-    ...(params.claims ?? []),
+    ...selectDiverseStrings(params.claims ?? [], {
+      limit: 18,
+      maxChars: Math.max(1200, Math.floor((params.maxChars ?? 6000) * 0.7)),
+    }),
   ]);
 
-  return parts.join('\n').slice(0, params.maxChars ?? 12000);
+  return parts.join('\n').slice(0, params.maxChars ?? 6000);
 }
 
 export function compact<T>(values: Array<T | null | undefined>): T[] {
@@ -205,4 +335,14 @@ export function compact<T>(values: Array<T | null | undefined>): T[] {
 
 export function generateId(prefix: string): string {
   return `${prefix}_${randomUUID().replace(/-/g, '')}`;
+}
+
+function fingerprintPotentialBoilerplate(value: string): string | null {
+  const trimmed = value.trim();
+  if (trimmed.length < 6 || trimmed.length > 220) {
+    return null;
+  }
+
+  const fingerprint = normalizeTextFingerprint(trimmed);
+  return fingerprint.length >= 6 ? fingerprint : null;
 }

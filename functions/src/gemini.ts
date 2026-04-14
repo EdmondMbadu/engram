@@ -165,29 +165,21 @@ export async function compileKnowledgeEntries(
     return { entries: [], usage: emptyUsage() };
   }
 
+  const serializedBlocks = JSON.stringify(
+    blocks.map((block) => [block.page, block.lineStart, block.lineEnd, block.text] as const),
+  );
   const prompt = [
-    'You are a knowledge compiler for a personal knowledge base.',
-    'Read the provided source excerpts carefully.',
-    'Extract only durable knowledge worth retrieving later.',
-    'Prefer fewer, denser entries over exhaustive sentence-by-sentence coverage.',
-    'Merge repetitive nearby facts into one compact claim.',
-    'Skip anecdotes, rhetorical framing, examples, and repeated restatements unless they contain unique facts.',
-    'Usually produce no more than 1 to 3 entries per excerpt block.',
-    'Each output item must have:',
-    '- claim: concise rewrite of the knowledge in 1 or 2 sentences max',
-    '- topic: short canonical topic name',
-    '- related_topics: array of related topic names',
-    '- source: exact page, line_start, and line_end copied from one provided excerpt',
+    'Compile durable retrieval-worthy knowledge from the provided excerpt blocks.',
+    'Input block format: [page, line_start, line_end, text].',
+    'Keep only stable facts, definitions, mechanisms, decisions, constraints, and non-obvious relationships.',
+    'Ignore boilerplate, navigation text, rhetorical setup, repeated restatements, and examples without lasting value.',
+    'Prefer 0-2 dense entries per block. Merge nearby overlaps instead of producing variants.',
+    'Each claim must be a compact rewrite in at most 2 sentences.',
+    'Keep topic names short and canonical. Keep related_topics sparse.',
+    'Copy source page/line_start/line_end exactly from one input block.',
     'Return only valid JSON matching the schema.',
     '',
-    JSON.stringify(
-      blocks.map((block) => ({
-        page: block.page,
-        line_start: block.lineStart,
-        line_end: block.lineEnd,
-        text: block.text,
-      })),
-    ),
+    serializedBlocks,
   ].join('\n');
 
   const response = await generateContentWithRetry({
@@ -197,7 +189,7 @@ export async function compileKnowledgeEntries(
       responseMimeType: 'application/json',
       responseJsonSchema: knowledgeEntrySchema,
       temperature: 0,
-      maxOutputTokens: 4096,
+      maxOutputTokens: Math.min(3072, Math.max(768, blocks.length * 36)),
     },
   });
 
@@ -236,19 +228,20 @@ export async function summarizeTopic(
 
   const prompt = [
     `Summarize the topic "${topicName}" for a personal wiki.`,
-    'Write 2 short paragraphs with high information density.',
     'Use only the supplied claims.',
+    'Write exactly 2 short dense paragraphs.',
+    'Merge overlaps, preserve nuance, and mention meaningful tensions if the claims disagree.',
     'Do not include bullets or markdown.',
     '',
-    JSON.stringify(claims.slice(0, 80)),
+    JSON.stringify(claims),
   ].join('\n');
 
   const response = await generateContentWithRetry({
     model,
     contents: prompt,
     config: {
-      temperature: 0.2,
-      maxOutputTokens: 512,
+      temperature: 0.1,
+      maxOutputTokens: 384,
     },
   });
 
@@ -260,7 +253,6 @@ export async function summarizeTopic(
 
 export async function answerQuestion(params: {
   question: string;
-  topicNames: string[];
   entries: Array<{
     id: string;
     claim: string;
@@ -268,18 +260,27 @@ export async function answerQuestion(params: {
     source: { page: number; line_start: number; line_end: number };
   }>;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
+  const serializedEntries = JSON.stringify(
+    params.entries.map((entry) => [
+      entry.id,
+      entry.topic,
+      entry.claim,
+      entry.source.page,
+      entry.source.line_start,
+      entry.source.line_end,
+    ] as const),
+  );
   const prompt = [
-    'You are answering a question against a curated personal knowledge base.',
-    'Use only the provided knowledge entries.',
-    'If the entries do not answer the question well, say so clearly and set knowledge_gap to true.',
+    'Answer the question using only the provided knowledge entries.',
+    'Entry format: [id, topic, claim, page, line_start, line_end].',
+    'Keep the answer high-signal and concise.',
+    'Use a short list only when it improves clarity; otherwise prefer brief paragraphs.',
+    'If the evidence is incomplete or weak, say so clearly and set knowledge_gap to true.',
     'Only cite entry ids that are present in the provided entries.',
     'Return only valid JSON matching the schema.',
     '',
-    JSON.stringify({
-      question: params.question,
-      topic_names: params.topicNames,
-      entries: params.entries,
-    }),
+    JSON.stringify({ question: params.question }),
+    serializedEntries,
   ].join('\n');
 
   const response = await generateContentWithRetry({
@@ -288,7 +289,8 @@ export async function answerQuestion(params: {
     config: {
       responseMimeType: 'application/json',
       responseJsonSchema: answerSchema,
-      temperature: 0.2,
+      temperature: 0.1,
+      maxOutputTokens: 640,
     },
   });
 

@@ -277,7 +277,7 @@
                             @if (msg.knowledgeGap) {
                               <p class="mb-3 text-xs font-bold italic text-[var(--muted)]">This topic is not strongly covered in the current knowledge base yet.</p>
                             }
-                            <p class="whitespace-pre-wrap text-base leading-8 text-[var(--text)]">{{ msg.text }}</p>
+                            <div class="assistant-message__content text-base leading-8 text-[var(--text)]" [innerHTML]="msg.html || ''"></div>
                             @if (msg.citations && msg.citations.length > 0) {
                               <div class="mt-5 flex flex-wrap gap-2">
                                 @for (citation of msg.citations; track citation.entry_id; let i = $index) {
