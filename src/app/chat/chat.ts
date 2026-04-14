@@ -49,7 +49,6 @@ export class ChatComponent implements AfterViewChecked {
   readonly thinkingStage = signal(0);
   readonly historyExpanded = signal(false);
   readonly activeHistoryId = signal<string | null>(null);
-  readonly historyActionMenuId = signal<string | null>(null);
   readonly messageActionMenuId = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<QueryHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
@@ -160,14 +159,13 @@ export class ChatComponent implements AfterViewChecked {
     this.question.set('');
     this.selectedCitation.set(null);
     this.activeHistoryId.set(null);
-    this.historyActionMenuId.set(null);
     this.messageActionMenuId.set(null);
+    this.pendingDeleteHistoryItem.set(null);
   }
 
   loadHistoryItem(item: QueryHistoryItem): void {
     this.activeHistoryId.set(item.id);
     this.selectedCitation.set(null);
-    this.historyActionMenuId.set(null);
     this.messageActionMenuId.set(null);
     this.messages.set([
       {
@@ -269,21 +267,13 @@ export class ChatComponent implements AfterViewChecked {
     }).format(date);
   }
 
-  toggleHistoryActions(historyId: string, event: MouseEvent): void {
-    event.stopPropagation();
-    this.messageActionMenuId.set(null);
-    this.historyActionMenuId.update((current) => (current === historyId ? null : historyId));
-  }
-
   toggleMessageActions(messageId: string, event: MouseEvent): void {
     event.stopPropagation();
-    this.historyActionMenuId.set(null);
     this.messageActionMenuId.update((current) => (current === messageId ? null : messageId));
   }
 
   confirmDeleteHistoryItem(item: QueryHistoryItem, event?: MouseEvent): void {
     event?.stopPropagation();
-    this.historyActionMenuId.set(null);
     this.pendingDeleteHistoryItem.set(item);
   }
 
@@ -345,10 +335,6 @@ export class ChatComponent implements AfterViewChecked {
 
     if (!target?.closest('.avatar-menu-wrapper')) {
       this.avatarMenuOpen.set(false);
-    }
-
-    if (!target?.closest('.chat-history-actions')) {
-      this.historyActionMenuId.set(null);
     }
 
     if (!target?.closest('.chat-message-actions')) {

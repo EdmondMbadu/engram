@@ -71,41 +71,16 @@
                     </span>
                   </span>
                 </button>
-                <div class="chat-history-actions relative flex items-center gap-1">
-                  <button
-                    type="button"
-                    class="rounded-full p-1.5 text-[var(--muted)] opacity-0 transition-opacity hover:bg-white/5 hover:text-[var(--text)] group-hover:opacity-100"
-                    [class.opacity-100]="historyActionMenuId() === item.id"
-                    [attr.aria-expanded]="historyActionMenuId() === item.id"
-                    (click)="toggleHistoryActions(item.id, $event)"
-                  >
-                    <span class="material-symbols-outlined text-[1rem]">more_horiz</span>
-                  </button>
-                  @if (historyActionMenuId() === item.id) {
-                    <div class="absolute right-0 top-full z-30 mt-2 w-52 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2 shadow-[var(--shadow-elevated)]">
-                      <button
-                        type="button"
-                        class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-[var(--text)] transition-colors hover:bg-white/5"
-                        (click)="loadHistoryItem(item)"
-                      >
-                        <span class="material-symbols-outlined text-[1rem]">chat</span>
-                        <span>Open chat</span>
-                      </button>
-                      <button
-                        type="button"
-                        class="danger-action mt-1 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm"
-                        (click)="confirmDeleteHistoryItem(item, $event)"
-                      >
-                        <span class="material-symbols-outlined text-[1rem]">delete</span>
-                        <span>Delete chat</span>
-                      </button>
-                      <div class="mt-2 border-t border-[var(--line)] px-3 py-2">
-                        <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Created</p>
-                        <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(item.created_at) }}</p>
-                      </div>
-                    </div>
-                  }
-                </div>
+                <button
+                  type="button"
+                  class="danger-action rounded-full p-1.5 text-[var(--muted)] opacity-0 transition-opacity hover:bg-white/5 group-hover:opacity-100"
+                  [class.opacity-100]="activeHistoryId() === item.id"
+                  [disabled]="isDeletingHistory()"
+                  [attr.aria-label]="'Delete chat ' + truncate(item.question, 34)"
+                  (click)="confirmDeleteHistoryItem(item, $event)"
+                >
+                  <span class="material-symbols-outlined text-[1rem]">delete</span>
+                </button>
               </div>
             }
             @if (queryHistory().length > 6) {
@@ -414,6 +389,9 @@
           This will permanently remove
           <span class="font-semibold text-[var(--text)]">"{{ truncate(item.question, 64) }}"</span>
           from your saved chats.
+        </p>
+        <p class="mt-3 text-xs text-[var(--muted)]">
+          Created {{ formatDateTime(item.created_at) }}
         </p>
         <div class="mt-6 flex items-center justify-end gap-3">
           <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm" [disabled]="isDeletingHistory()" (click)="cancelDeleteHistoryItem()">
