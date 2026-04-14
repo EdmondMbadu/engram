@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { DocumentItem } from '../atlas.models';
 import { AuthService } from '../auth.service';
@@ -8,7 +9,7 @@ import { WikiService } from '../wiki.service';
 
 @Component({
   selector: 'app-wiki',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, FormsModule],
   templateUrl: './wiki.html',
 })
 export class WikiComponent {
@@ -19,10 +20,21 @@ export class WikiComponent {
 
   readonly isSigningOut = signal(false);
   readonly avatarMenuOpen = signal(false);
+  readonly searchQuery = signal('');
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
   readonly topics = this.wikiService.topics;
+  readonly filteredTopics = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    const all = this.topics();
+    if (!q) return all;
+    return all.filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) ||
+        (t.summary ?? '').toLowerCase().includes(q),
+    );
+  });
   readonly selectedTopic = this.wikiService.selectedTopic;
   readonly topicEntries = this.wikiService.topicEntries;
   readonly sourceDocuments = this.wikiService.sourceDocuments;

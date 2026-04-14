@@ -85,50 +85,67 @@
         </div>
       </header>
 
-      <div class="flex-1 overflow-y-auto">
-        <div class="mx-auto grid w-full max-w-7xl gap-8 px-5 py-8 pb-20 md:grid-cols-[22rem_minmax(0,1fr)] md:px-8 lg:px-12">
-          <section class="space-y-4">
+      <div class="flex-1 min-h-0 md:overflow-hidden">
+        <div class="mx-auto grid w-full max-w-7xl gap-8 px-5 py-8 pb-20 md:h-full md:grid-cols-[22rem_minmax(0,1fr)] md:gap-6 md:py-6 md:pb-6 md:px-8 lg:px-12">
+          <section class="flex min-h-0 flex-col gap-4 md:h-full">
             <div class="glass-card rounded-[1.75rem] p-5">
               <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Topic Index</p>
-              <h2 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Your Wiki Topics</h2>
-              <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
-                Every topic is synthesized from one or more uploaded documents and refreshed during ingestion.
-              </p>
+              <h2 class="mt-3 text-xl font-black tracking-[-0.05em] text-[var(--text)]">Your Wiki Topics</h2>
+              <div class="mt-4 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 focus-within:border-[var(--accent)]/40">
+                <span class="material-symbols-outlined text-[1.1rem] text-[var(--muted)]">search</span>
+                <input
+                  type="text"
+                  [ngModel]="searchQuery()"
+                  (ngModelChange)="searchQuery.set($event)"
+                  placeholder="Search topics"
+                  class="w-full bg-transparent text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none"
+                />
+                @if (searchQuery()) {
+                  <button type="button" class="text-[var(--muted)] hover:text-[var(--text)]" (click)="searchQuery.set('')" aria-label="Clear search">
+                    <span class="material-symbols-outlined text-[1.1rem]">close</span>
+                  </button>
+                }
+              </div>
+              <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredTopics().length }} of {{ topics().length }} topics</p>
             </div>
 
-            @if (isLoadingTopics()) {
-              <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]">Loading topics...</div>
-            } @else if (topics().length === 0) {
-              <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
-                No wiki topics yet. Upload documents in the Library and the ingestion pipeline will create topic pages automatically.
-              </div>
-            } @else {
-              @for (topic of topics(); track topic.id) {
-                <button
-                  type="button"
-                  class="glass-card block w-full rounded-[1.5rem] p-5 text-left transition-all hover:-translate-y-0.5"
-                  [class.border-[var(--accent)]]="selectedTopic()?.id === topic.id"
-                  [class.shadow-[0_18px_50px_rgba(59,175,98,0.08)]]="selectedTopic()?.id === topic.id"
-                  (click)="selectTopic(topic.id)"
-                >
-                  <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0">
-                      <h3 class="truncate text-lg font-black tracking-[-0.04em] text-[var(--text)]">{{ topic.name }}</h3>
-                      <p class="mt-2 line-clamp-3 text-sm leading-7 text-[var(--muted)]">{{ topic.summary }}</p>
+            <div class="flex-1 min-h-0 space-y-3 md:overflow-y-auto md:pr-1">
+              @if (isLoadingTopics()) {
+                <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]">Loading topics...</div>
+              } @else if (topics().length === 0) {
+                <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
+                  No wiki topics yet. Upload documents in the Library and the ingestion pipeline will create topic pages automatically.
+                </div>
+              } @else if (filteredTopics().length === 0) {
+                <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
+                  No topics match "{{ searchQuery() }}".
+                </div>
+              } @else {
+                @for (topic of filteredTopics(); track topic.id) {
+                  <button
+                    type="button"
+                    class="glass-card block w-full rounded-[1.25rem] border-l-2 border-transparent px-4 py-3 text-left transition-all hover:bg-white/[0.04]"
+                    [class.!border-l-2]="selectedTopic()?.id === topic.id"
+                    [class.!border-[var(--accent)]]="selectedTopic()?.id === topic.id"
+                    [class.bg-white/[0.04]]="selectedTopic()?.id === topic.id"
+                    (click)="selectTopic(topic.id)"
+                  >
+                    <div class="flex items-start justify-between gap-3">
+                      <h3 class="min-w-0 flex-1 truncate text-sm font-bold tracking-[-0.02em] text-[var(--text)]">{{ topic.name }}</h3>
+                      <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-black text-[var(--muted)]">
+                        {{ topic.entry_ids.length }}
+                      </span>
                     </div>
-                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
-                      {{ topic.entry_ids.length }} entries
-                    </span>
-                  </div>
-                  <p class="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">
-                    Updated {{ formatDate(topic.last_updated) }}
-                  </p>
-                </button>
+                    <p class="mt-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                      {{ formatDate(topic.last_updated) }}
+                    </p>
+                  </button>
+                }
               }
-            }
+            </div>
           </section>
 
-          <section>
+          <section class="min-h-0 md:h-full md:overflow-y-auto md:pr-1">
             @if (selectedTopic(); as topic) {
               <article class="glass-card rounded-[2rem] p-6 md:p-8">
                 <div class="border-b border-white/5 pb-6">
