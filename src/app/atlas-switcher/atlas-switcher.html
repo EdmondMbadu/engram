@@ -61,6 +61,35 @@
                 aria-label="Cancel"
               ><span class="material-symbols-outlined text-[1rem]">close</span></button>
             </form>
+          } @else if (deleteCandidateId() === atlas.id) {
+            <div class="px-2 py-2 space-y-2" (click)="$event.stopPropagation()">
+              <div class="rounded-lg border border-[var(--line)] bg-white/5 px-3 py-2 text-xs leading-5 text-[var(--muted)]">
+                @if (checkingDelete()) {
+                  Checking atlas contents...
+                } @else if (deleteError()) {
+                  <p class="text-[var(--danger-text)]">{{ deleteError() }}</p>
+                } @else if (deleteUsage(); as usage) {
+                  @if (usage.total === 0) {
+                    Delete "{{ displayName(atlas) }}"? This atlas is empty.
+                  } @else {
+                    This atlas has content and cannot be deleted here.
+                  }
+                }
+              </div>
+              <div class="flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  (click)="cancelDelete($event)"
+                  class="rounded-md border border-[var(--line)] px-2.5 py-1.5 text-xs text-[var(--muted)] hover:text-[var(--text)]"
+                >Cancel</button>
+                <button
+                  type="button"
+                  (click)="confirmDelete($event)"
+                  [disabled]="deleting() || checkingDelete() || (deleteUsage()?.total ?? 1) > 0"
+                  class="rounded-md bg-[var(--danger-text)] px-2.5 py-1.5 text-xs font-bold text-white disabled:opacity-50"
+                >{{ deleting() ? 'Deleting...' : 'Delete' }}</button>
+              </div>
+            </div>
           } @else {
             <div class="group flex items-center gap-1 px-1">
               <button
@@ -70,14 +99,27 @@
                 [class.text-\[var\(--accent\)\]]="atlas.id === activeAtlas()?.id"
               >
                 <span class="material-symbols-outlined text-[1rem]">{{ atlas.id === activeAtlas()?.id ? 'check' : 'public' }}</span>
-                <span class="truncate">{{ displayName(atlas) }}</span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate">{{ displayName(atlas) }}</span>
+                  <span class="block text-[10px] uppercase tracking-[0.16em] text-[var(--muted)]">ID {{ atlasMeta(atlas) }}</span>
+                </span>
               </button>
               <button
                 type="button"
                 (click)="startRename($event, atlas)"
-                class="opacity-0 group-hover:opacity-100 transition-opacity rounded-md p-1 text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5"
+                class="rounded-md p-1 text-[var(--muted)] opacity-70 transition-opacity hover:text-[var(--text)] hover:bg-white/5 hover:opacity-100"
                 aria-label="Rename atlas"
               ><span class="material-symbols-outlined text-[1rem]">edit</span></button>
+              <button
+                type="button"
+                (click)="startDelete($event, atlas)"
+                [disabled]="!canDeleteAtlas(atlas)"
+                class="inline-flex items-center gap-1 rounded-md border border-[var(--line)] px-2 py-1 text-[11px] font-semibold text-[var(--muted)] transition-colors hover:border-[var(--danger-text)]/30 hover:bg-white/5 hover:text-[var(--danger-text)] disabled:opacity-30"
+                aria-label="Delete atlas"
+              >
+                <span class="material-symbols-outlined text-[1rem]">delete</span>
+                <span>Delete</span>
+              </button>
             </div>
           }
         }

@@ -3,7 +3,9 @@ import { computed, effect, inject, Injectable, PLATFORM_ID, signal } from '@angu
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
+  getCountFromServer,
   onSnapshot,
   query,
   serverTimestamp,
@@ -11,7 +13,7 @@ import {
   where,
   type Unsubscribe,
 } from 'firebase/firestore';
-import type { AtlasItem } from './atlas.models';
+import type { AtlasItem, AtlasUsage } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore } from './firebase.client';
 
@@ -133,6 +135,69 @@ export class AtlasService {
     });
   }
 
+  async getAtlasUsage(atlasId: string): Promise<AtlasUsage> {
+    if (!this.firestore) {
+      return {
+        documents: 0,
+        knowledge_entries: 0,
+        wiki_topics: 0,
+        queries: 0,
+        chat_threads: 0,
+        total: 0,
+      };
+    }
+
+    const uid = this.authService.uid();
+    if (!uid) {
+      return {
+        documents: 0,
+        knowledge_entries: 0,
+        wiki_topics: 0,
+        queries: 0,
+        chat_threads: 0,
+        total: 0,
+      };
+    }
+
+    const [documents, knowledgeEntries, wikiTopics, queriesCount, chatThreads] = await Promise.all([
+      this.countAtlasCollection('documents', uid, atlasId),
+      this.countAtlasCollection('knowledge_entries', uid, atlasId),
+      this.countAtlasCollection('wiki_topics', uid, atlasId),
+      this.countAtlasCollection('queries', uid, atlasId),
+      this.countAtlasCollection('chat_threads', uid, atlasId),
+    ]);
+
+    return {
+      documents,
+      knowledge_entries: knowledgeEntries,
+      wiki_topics: wikiTopics,
+      queries: queriesCount,
+      chat_threads: chatThreads,
+      total: documents + knowledgeEntries + wikiTopics + queriesCount + chatThreads,
+    };
+  }
+
+  async deleteAtlas(atlasId: string): Promise<void> {
+    if (!this.firestore) return;
+
+    const currentAtlases = this.atlases();
+    if (currentAtlases.length <= 1) {
+      throw new Error('You must keep at least one atlas.');
+    }
+
+    const usage = await this.getAtlasUsage(atlasId);
+    if (usage.total > 0) {
+      throw new Error(this.formatAtlasUsageError(usage));
+    }
+
+    const nextAtlas = currentAtlases.find((atlas) => atlas.id !== atlasId)?.id ?? null;
+    await deleteDoc(doc(this.firestore, 'atlases', atlasId));
+
+    if (this.activeAtlasId() === atlasId) {
+      this.setActive(nextAtlas);
+    }
+  }
+
   displayName(atlas: AtlasItem | null | undefined): string {
     if (!atlas) return 'Select atlas';
     const trimmed = atlas.name?.trim();
@@ -200,5 +265,33 @@ export class AtlasService {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 48) || 'atlas';
+  }
+
+  private async countAtlasCollection(
+    collectionName: 'documents' | 'knowledge_entries' | 'wiki_topics' | 'queries' | 'chat_threads',
+    userId: string,
+    atlasId: string,
+  ): Promise<number> {
+    if (!this.firestore) return 0;
+    const count = await getCountFromServer(
+      query(
+        collection(this.firestore, collectionName),
+        where('user_id', '==', userId),
+        where('atlas_id', '==', atlasId),
+      ),
+    );
+    return count.data().count;
+  }
+
+  private formatAtlasUsageError(usage: AtlasUsage): string {
+    const parts = [
+      usage.documents ? `${usage.documents} document${usage.documents === 1 ? '' : 's'}` : null,
+      usage.knowledge_entries ? `${usage.knowledge_entries} knowledge entr${usage.knowledge_entries === 1 ? 'y' : 'ies'}` : null,
+      usage.wiki_topics ? `${usage.wiki_topics} wiki topic${usage.wiki_topics === 1 ? '' : 's'}` : null,
+      usage.queries ? `${usage.queries} legacy chat${usage.queries === 1 ? '' : 's'}` : null,
+      usage.chat_threads ? `${usage.chat_threads} thread${usage.chat_threads === 1 ? '' : 's'}` : null,
+    ].filter(Boolean);
+
+    return `This atlas still has content: ${parts.join(', ')}.`;
   }
 }

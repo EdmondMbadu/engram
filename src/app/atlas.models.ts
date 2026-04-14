@@ -39,6 +39,15 @@ export interface AtlasItem {
   updated_at?: { toDate(): Date } | Date | null;
 }
 
+export interface AtlasUsage {
+  documents: number;
+  knowledge_entries: number;
+  wiki_topics: number;
+  queries: number;
+  chat_threads: number;
+  total: number;
+}
+
 export interface DocumentItem {
   id: string;
   user_id: string;
