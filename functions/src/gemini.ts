@@ -260,6 +260,7 @@ export async function answerQuestion(params: {
     source: { page: number; line_start: number; line_end: number };
   }>;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
+  const broadQuestion = isBroadSynthesisQuestion(params.question);
   const serializedEntries = JSON.stringify(
     params.entries.map((entry) => [
       entry.id,
@@ -273,14 +274,25 @@ export async function answerQuestion(params: {
   const baseInstructions = [
     'Answer the question using only the provided knowledge entries.',
     'Entry format: [id, topic, claim, page, line_start, line_end].',
-    'Keep the answer high-signal and concise.',
-    'Use a short list only when it improves clarity; otherwise prefer brief paragraphs.',
+    'Give a useful, concrete answer with enough detail to be meaningful.',
+    'Be concise relative to the evidence, but do not be terse or fragmentary.',
     'If the evidence is incomplete or weak, say so clearly and set knowledge_gap to true.',
+    'Prefer citing multiple strong supporting entry ids when the evidence allows it.',
     'Only cite entry ids that are present in the provided entries.',
     'Return only valid JSON matching the schema.',
   ];
+  const styleInstructions = broadQuestion
+    ? [
+        'This is a synthesis or exploration question.',
+        'Give a substantive answer: either 2-4 solid paragraphs or a list of 4-8 concrete themes/topics when a list improves clarity.',
+        'For each theme or topic, explain it briefly instead of naming it only.',
+      ]
+    : [
+        'For direct questions, answer in 1-3 compact paragraphs unless a short list is clearly better.',
+      ];
   const prompt = [
     ...baseInstructions,
+    ...styleInstructions,
     '',
     JSON.stringify({ question: params.question }),
     serializedEntries,
@@ -294,11 +306,14 @@ export async function answerQuestion(params: {
         responseMimeType: 'application/json',
         responseJsonSchema: answerSchema,
         temperature: 0.1,
-        maxOutputTokens: 640,
+        maxOutputTokens: broadQuestion ? 1200 : 800,
       },
     });
 
-    return normalizeAnswerResponse(parseJsonResponse<unknown>(response.text ?? '{}'), response.text ?? '');
+    const parsed = normalizeAnswerResponse(parseJsonResponse<unknown>(response.text ?? '{}'), response.text ?? '');
+    if (!answerLooksTooThin(parsed.answer, params.question, params.entries.length)) {
+      return parsed;
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const looksLikeJsonParseFailure =
@@ -307,31 +322,37 @@ export async function answerQuestion(params: {
       message.includes('Unterminated string');
 
     if (!looksLikeJsonParseFailure) {
-      throw error;
+      const parsedMessage = message.trim();
+      if (!parsedMessage) {
+        throw error;
+      }
     }
-
-    const retryPrompt = [
-      ...baseInstructions,
-      'Important: the answer field must be a single plain-text string. Escape internal quotes. Use \\n for line breaks.',
-      'Do not output markdown fences. Do not output any prose outside the JSON object.',
-      '',
-      JSON.stringify({ question: params.question }),
-      serializedEntries,
-    ].join('\n');
-
-    const retryResponse = await generateContentWithRetry({
-      model,
-      contents: retryPrompt,
-      config: {
-        responseMimeType: 'application/json',
-        responseJsonSchema: answerSchema,
-        temperature: 0,
-        maxOutputTokens: 640,
-      },
-    });
-
-    return normalizeAnswerResponse(parseJsonResponse<unknown>(retryResponse.text ?? '{}'), retryResponse.text ?? '');
   }
+
+  const retryPrompt = [
+    ...baseInstructions,
+    ...styleInstructions,
+    'Important: the answer field must be a complete plain-text answer, not a fragment.',
+    'If the question asks for themes, topics, patterns, or areas to explore, include several distinct items with explanation.',
+    'Escape internal quotes. Use \\n for line breaks.',
+    'Do not output markdown fences. Do not output any prose outside the JSON object.',
+    '',
+    JSON.stringify({ question: params.question }),
+    serializedEntries,
+  ].join('\n');
+
+  const retryResponse = await generateContentWithRetry({
+    model,
+    contents: retryPrompt,
+    config: {
+      responseMimeType: 'application/json',
+      responseJsonSchema: answerSchema,
+      temperature: 0,
+      maxOutputTokens: broadQuestion ? 1400 : 900,
+    },
+  });
+
+  return normalizeAnswerResponse(parseJsonResponse<unknown>(retryResponse.text ?? '{}'), retryResponse.text ?? '');
 }
 
 export async function transcribeImageToLines(params: {
@@ -409,4 +430,40 @@ function extractFallbackAnswerText(value: string): string {
   return withoutCodeFence
     .slice(0, firstBrace)
     .trim() || 'I could not safely parse the model response for this question.';
+}
+
+function isBroadSynthesisQuestion(question: string): boolean {
+  const value = question.toLowerCase();
+  return [
+    'summarize',
+    'summary',
+    'themes',
+    'theme',
+    'patterns',
+    'strongest',
+    'overview',
+    'interesting',
+    'explore',
+    'what are they',
+    'what else',
+    'topics',
+    'across my sources',
+  ].some((pattern) => value.includes(pattern));
+}
+
+function answerLooksTooThin(answer: string, question: string, entryCount: number): boolean {
+  const trimmed = answer.trim();
+  if (!trimmed) {
+    return true;
+  }
+
+  const broadQuestion = isBroadSynthesisQuestion(question);
+  const lineCount = trimmed.split(/\n+/).filter(Boolean).length;
+  const sentenceCount = trimmed.split(/[.!?]+/).map((part) => part.trim()).filter(Boolean).length;
+
+  if (broadQuestion) {
+    return trimmed.length < 220 || sentenceCount < 3 || (lineCount < 3 && entryCount >= 10);
+  }
+
+  return trimmed.length < 90 && entryCount >= 8;
 }

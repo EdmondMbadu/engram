@@ -41,6 +41,8 @@ const compileChunkConcurrency = 6;
 const maxTopicPreviewEntries = 12;
 const minAnswerEntries = 18;
 const maxAnswerEntries = 48;
+const broadQuestionMinAnswerEntries = 30;
+const broadQuestionMaxAnswerEntries = 72;
 
 export async function loadDocumentRecord(documentId: string): Promise<DocumentRecord & { id: string }> {
   const snapshot = await documentsCollection.doc(documentId).get();
@@ -455,19 +457,22 @@ export async function runAtlasQuery(params: {
     throw new Error('Question is required.');
   }
 
+  const broadQuestion = isBroadSynthesisQuestion(trimmedQuestion);
   const topics = await loadCandidateTopics(params.userId, trimmedQuestion, params.topicIds);
   const tokens = tokenize(trimmedQuestion);
+  const entryLimit = broadQuestion ? broadQuestionMaxAnswerEntries : maxAnswerEntries;
+  const minEntries = broadQuestion ? broadQuestionMinAnswerEntries : minAnswerEntries;
   const previewEntries = dedupeById(
     topics.flatMap((topic) => topic.retrieval_entries ?? []),
   );
-  const previewRankedEntries = rankEntriesForQuestion(previewEntries, tokens).slice(0, maxAnswerEntries);
+  const previewRankedEntries = rankEntriesForQuestion(previewEntries, tokens).slice(0, entryLimit);
 
   let uniqueEntries = previewRankedEntries;
 
-  if (uniqueEntries.length < minAnswerEntries || shouldFetchAdditionalEntries(uniqueEntries, tokens)) {
+  if (uniqueEntries.length < minEntries || shouldFetchAdditionalEntries(uniqueEntries, tokens, broadQuestion)) {
     const fallbackEntryIds = topics.flatMap((topic) => topic.entry_ids)
       .filter((entryId) => !uniqueEntries.some((entry) => entry.id === entryId))
-      .slice(0, 36);
+      .slice(0, broadQuestion ? 72 : 36);
 
     if (fallbackEntryIds.length > 0) {
       const entrySnapshots = await Promise.all(
@@ -488,7 +493,7 @@ export async function runAtlasQuery(params: {
       uniqueEntries = rankEntriesForQuestion(
         dedupeById([...uniqueEntries, ...fetchedEntries]),
         tokens,
-      ).slice(0, maxAnswerEntries);
+      ).slice(0, entryLimit);
     }
   }
 
@@ -1001,6 +1006,7 @@ function rankEntriesForQuestion<T extends Pick<KnowledgeEntryRecord, 'claim' | '
 function shouldFetchAdditionalEntries(
   entries: Array<Pick<KnowledgeEntryRecord, 'claim' | 'topic' | 'related_topics'>>,
   tokens: string[],
+  broadQuestion = false,
 ): boolean {
   if (entries.length === 0) {
     return true;
@@ -1014,6 +1020,9 @@ function shouldFetchAdditionalEntries(
   }
 
   const matchedCoverage = tokens.filter((token) => coveredClaims.has(token)).length;
+  if (broadQuestion) {
+    return topScore < 10 || matchedCoverage < Math.min(5, tokens.length) || entries.length < broadQuestionMinAnswerEntries;
+  }
   return topScore < 8 || matchedCoverage < Math.min(3, tokens.length);
 }
 
@@ -1154,6 +1163,25 @@ function compareSources(
     return left.line_start - right.line_start;
   }
   return left.line_end - right.line_end;
+}
+
+function isBroadSynthesisQuestion(question: string): boolean {
+  const value = question.toLowerCase();
+  return [
+    'summarize',
+    'summary',
+    'themes',
+    'theme',
+    'patterns',
+    'interesting',
+    'explore',
+    'strongest',
+    'overview',
+    'what are they',
+    'what else',
+    'topics',
+    'across my sources',
+  ].some((pattern) => value.includes(pattern));
 }
 
 async function commitSetOperations(
