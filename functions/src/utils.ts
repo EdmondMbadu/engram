@@ -182,6 +182,23 @@ export function dedupeStrings(values: string[]): string[] {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
+export function buildTopicSearchText(params: {
+  topicName: string;
+  summary?: string | null;
+  claims?: string[];
+  relatedTopics?: string[];
+  maxChars?: number;
+}): string {
+  const parts = dedupeStrings([
+    params.topicName,
+    params.summary ?? '',
+    ...(params.relatedTopics ?? []),
+    ...(params.claims ?? []),
+  ]);
+
+  return parts.join('\n').slice(0, params.maxChars ?? 12000);
+}
+
 export function compact<T>(values: Array<T | null | undefined>): T[] {
   return values.filter((value): value is T => value != null);
 }

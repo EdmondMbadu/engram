@@ -4,6 +4,7 @@ import { answerQuestion, compileKnowledgeEntries, summarizeTopic } from './gemin
 import { db, storage } from './firebase';
 import { extractBlocksFromBuffer, extractBlocksFromUrl } from './extractors';
 import {
+  buildTopicSearchText,
   chunkExtractBlocks,
   compact,
   dedupeStrings,
@@ -390,6 +391,15 @@ async function upsertWikiTopics(
             (typeof existing?.summary === 'string' && existing.summary.trim().length > 0
               ? existing.summary
               : ''),
+          search_text: buildTopicSearchText({
+            topicName,
+            summary:
+              (typeof existing?.summary === 'string' && existing.summary.trim().length > 0
+                ? existing.summary
+                : ''),
+            claims: topicEntries.map((entry) => entry.claim),
+            relatedTopics: topicEntries.flatMap((entry) => entry.related_topics ?? []),
+          }),
           summary_status: 'pending',
           summary_error: null,
           entry_ids: dedupeStrings([
@@ -427,6 +437,7 @@ export async function runAtlasQuery(params: {
 
   const topics = await loadCandidateTopics(params.userId, trimmedQuestion, params.topicIds);
   const topicNames = topics.map((topic) => topic.name);
+  const tokens = tokenize(trimmedQuestion);
 
   const entrySnapshots = await Promise.all(
     topics.flatMap((topic) =>
@@ -443,7 +454,13 @@ export async function runAtlasQuery(params: {
           ...(snapshot.data() as Omit<KnowledgeEntryRecord, 'created_at' | 'last_updated'>),
         })),
     ),
-  ).slice(0, 80);
+  )
+    .sort((left, right) => {
+      const leftScore = scoreEntryForQuestion(left, tokens);
+      const rightScore = scoreEntryForQuestion(right, tokens);
+      return rightScore - leftScore || left.topic.localeCompare(right.topic);
+    })
+    .slice(0, 80);
 
   if (uniqueEntries.length === 0) {
     return {
@@ -575,6 +592,10 @@ async function loadCandidateTopics(
     .get();
 
   const tokens = tokenize(question);
+  const hasCachedSearchText = snapshot.docs.some((doc) => {
+    const searchText = doc.data()?.search_text;
+    return typeof searchText === 'string' && searchText.trim().length > 0;
+  });
   const topicMap = new Map<string, {
     id: string;
     name: string;
@@ -590,25 +611,39 @@ async function loadCandidateTopics(
           id: doc.id,
           name: data.name as string,
           entry_ids: (data.entry_ids as string[]) ?? [],
-          topicScore: 0,
+          topicScore: tokens.reduce((sum, token) => {
+            const haystack = `${data.name ?? ''} ${data.summary ?? ''} ${data.search_text ?? ''}`.toLowerCase();
+            return sum + (haystack.includes(token) ? 1 : 0);
+          }, 0),
           entryScore: 0,
         },
       ];
     }),
   );
 
-  for (const topic of topicMap.values()) {
-    const topicDoc = snapshot.docs.find((doc) => doc.id === topic.id);
-    const data = topicDoc?.data();
-    const haystack = `${data?.name ?? ''} ${data?.summary ?? ''}`.toLowerCase();
-    topic.topicScore = tokens.reduce(
-      (sum, token) => sum + (haystack.includes(token) ? 1 : 0),
-      0,
-    );
+  if (hasCachedSearchText) {
+    const cachedScored = Array.from(topicMap.values())
+      .map((topic) => ({
+        id: topic.id,
+        name: topic.name,
+        entry_ids: dedupeStrings(topic.entry_ids),
+        score: topic.topicScore,
+      }))
+      .sort((left, right) => right.score - left.score || left.name.localeCompare(right.name));
+
+    const selectedFromCache = cachedScored.filter((topic) => topic.score > 0).slice(0, 6);
+    if (selectedFromCache.length > 0) {
+      return selectedFromCache.map((topic) => ({
+        id: topic.id,
+        name: topic.name,
+        entry_ids: topic.entry_ids,
+      }));
+    }
   }
 
   const entrySnapshot = await knowledgeEntriesCollection
     .where('user_id', '==', userId)
+    .where('orphaned', '==', false)
     .limit(400)
     .get();
 
@@ -676,43 +711,54 @@ async function hydrateCitationSnapshots(
   }>,
   citedEntryIds: string[],
 ): Promise<QueryCitationSnapshot[]> {
-  const documentsCache = new Map<string, string>();
-  const snapshots: QueryCitationSnapshot[] = [];
+  const entryMap = new Map(entries.map((entry) => [entry.id, entry] as const));
+  const citedEntries = citedEntryIds
+    .map((entryId) => ({ entryId, entry: entryMap.get(entryId) }))
+    .filter((value): value is { entryId: string; entry: (typeof entries)[number] } => !!value.entry);
 
-  for (const entryId of citedEntryIds) {
-    const entry = entries.find((candidate) => candidate.id === entryId);
-    if (!entry) {
-      continue;
-    }
-
-    const extractId = makeExtractId(
-      entry.document_id,
-      entry.source.page,
-      entry.source.line_start,
-      entry.source.line_end,
-    );
-    const extractSnapshot = await rawExtractsCollection.doc(extractId).get();
-    const extractText = extractSnapshot.exists ? (extractSnapshot.data()?.text as string) : entry.claim;
-
-    if (!documentsCache.has(entry.document_id)) {
-      const documentSnapshot = await documentsCollection.doc(entry.document_id).get();
-      documentsCache.set(
-        entry.document_id,
-        (documentSnapshot.data()?.filename as string | undefined) ?? 'Unknown document',
-      );
-    }
-
-    snapshots.push({
-      entry_id: entryId,
-      text: extractText,
-      filename: documentsCache.get(entry.document_id) ?? 'Unknown document',
-      page: entry.source.page,
-      line_start: entry.source.line_start,
-      line_end: entry.source.line_end,
-    });
+  if (citedEntries.length === 0) {
+    return [];
   }
 
-  return snapshots.filter((snapshot) => snapshot.text.length > 0);
+  const documentIds = dedupeStrings(citedEntries.map(({ entry }) => entry.document_id));
+  const [extractSnapshots, documentSnapshots] = await Promise.all([
+    Promise.all(
+      citedEntries.map(({ entry }) =>
+        rawExtractsCollection
+          .doc(makeExtractId(entry.document_id, entry.source.page, entry.source.line_start, entry.source.line_end))
+          .get(),
+      ),
+    ),
+    Promise.all(documentIds.map((documentId) => documentsCollection.doc(documentId).get())),
+  ]);
+
+  const documentNameById = new Map<string, string>();
+  documentSnapshots.forEach((snapshot) => {
+    if (!snapshot.exists) {
+      return;
+    }
+    const data = snapshot.data();
+    documentNameById.set(
+      snapshot.id,
+      (data?.filename as string | undefined) ?? 'Unknown document',
+    );
+  });
+
+  return citedEntries
+    .map(({ entryId, entry }, index) => {
+      const extractSnapshot = extractSnapshots[index];
+      const extractText = extractSnapshot.exists ? (extractSnapshot.data()?.text as string) : entry.claim;
+
+      return {
+        entry_id: entryId,
+        text: extractText,
+        filename: documentNameById.get(entry.document_id) ?? 'Unknown document',
+        page: entry.source.page,
+        line_start: entry.source.line_start,
+        line_end: entry.source.line_end,
+      };
+    })
+    .filter((snapshot) => snapshot.text.length > 0);
 }
 
 export async function processWikiTopicSummaryJob(jobId: string): Promise<void> {
@@ -749,6 +795,12 @@ export async function processWikiTopicSummaryJob(jobId: string): Promise<void> {
       {
         name: job.topic_name,
         summary: summaryResult.summary,
+        search_text: buildTopicSearchText({
+          topicName: job.topic_name,
+          summary: summaryResult.summary,
+          claims: entries.map((entry) => entry.claim),
+          relatedTopics: entries.flatMap((entry) => entry.related_topics ?? []),
+        }),
         summary_status: 'ready',
         summary_error: null,
         entry_ids: entries.map((entry) => entry.id),
@@ -779,6 +831,14 @@ export async function processWikiTopicSummaryJob(jobId: string): Promise<void> {
   } finally {
     await wikiTopicJobsCollection.doc(jobId).delete();
   }
+}
+
+function scoreEntryForQuestion(
+  entry: Pick<KnowledgeEntryRecord, 'claim' | 'topic' | 'related_topics'>,
+  tokens: string[],
+): number {
+  const haystack = `${entry.topic} ${(entry.related_topics ?? []).join(' ')} ${entry.claim}`.toLowerCase();
+  return tokens.reduce((sum, token) => sum + (haystack.includes(token) ? 1 : 0), 0);
 }
 
 async function commitSetOperations(

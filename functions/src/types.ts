@@ -109,6 +109,7 @@ export interface KnowledgeEntryRecord {
 export interface WikiTopicRecord {
   name: string;
   summary: string;
+  search_text?: string;
   entry_ids: string[];
   document_ids: string[];
   user_id: string;
