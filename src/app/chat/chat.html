@@ -28,11 +28,15 @@
       </button>
 
       <nav class="space-y-1 text-sm">
+        <a [routerLink]="atlasHomeLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+          <span class="material-symbols-outlined">home</span>
+          <span>Home</span>
+        </a>
         <a routerLink="/chat" class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)]">
           <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">chat</span>
           <span>Chat</span>
         </a>
-        <a routerLink="/home" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+        <a routerLink="/upload" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
           <span class="material-symbols-outlined">neurology</span>
           <span>Upload</span>
         </a>

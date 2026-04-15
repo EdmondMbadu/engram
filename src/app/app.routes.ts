@@ -11,11 +11,13 @@ import { ChatComponent } from './chat/chat';
 import { LibraryComponent } from './library/library';
 import { AtlasManageComponent } from './atlas-manage/atlas-manage';
 import { AtlasLandingComponent } from './atlas-landing/atlas-landing';
+import { AtlasHomeRedirectComponent } from './atlas-home-redirect/atlas-home-redirect';
 import { authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
   { path: '', component: MarketingComponent, title: 'Living Atlas' },
-  { path: 'home', component: LandingComponent, title: 'Upload | Living Atlas', canActivate: [authGuard] },
+  { path: 'home', component: AtlasHomeRedirectComponent, title: 'Home | Living Atlas', canActivate: [authGuard] },
+  { path: 'upload', component: LandingComponent, title: 'Upload | Living Atlas', canActivate: [authGuard] },
   { path: 'chat', component: ChatComponent, title: 'Chat | Living Atlas', canActivate: [authGuard] },
   { path: 'library', component: LibraryComponent, title: 'Library | Living Atlas', canActivate: [authGuard] },
   { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Atlas', canActivate: [authGuard] },

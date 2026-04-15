@@ -1,5 +1,6 @@
-import { Component, HostListener, input, signal } from '@angular/core';
+import { Component, HostListener, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AtlasService } from '../atlas.service';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -13,9 +14,12 @@ export class MobileMenuComponent {
 
   readonly menuOpen = signal(false);
 
+  private readonly atlasService = inject(AtlasService);
+  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
+
   readonly navItems = [
     { route: '/chat', icon: 'chat', label: 'New Chat', key: 'chat' },
-    { route: '/home', icon: 'neurology', label: 'Upload', key: 'home' },
+    { route: '/upload', icon: 'neurology', label: 'Upload', key: 'upload' },
     { route: '/library', icon: 'library_books', label: 'Library', key: 'library' },
     { route: '/wiki', icon: 'menu_book', label: 'Wiki', key: 'wiki' },
   ];

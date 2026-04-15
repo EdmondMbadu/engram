@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
@@ -14,7 +15,10 @@ import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 })
 export class LandingComponent {
   private readonly authService = inject(AuthService);
+  private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
+
+  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { DocumentItem } from '../atlas.models';
 import { AuthService } from '../auth.service';
+import { AtlasService } from '../atlas.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
@@ -16,7 +17,10 @@ import { WikiService } from '../wiki.service';
 })
 export class WikiComponent {
   private readonly authService = inject(AuthService);
+  private readonly atlasService = inject(AtlasService);
   private readonly wikiService = inject(WikiService);
+
+  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 

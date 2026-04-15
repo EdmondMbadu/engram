@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { ChatHistoryItem, ChatStoredMessage, CitationPassage } from '../atlas.models';
 import { AuthService } from '../auth.service';
+import { AtlasService } from '../atlas.service';
 import { ChatService } from '../chat.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -36,7 +37,10 @@ const THINKING_STAGES = [
 })
 export class ChatComponent implements AfterViewChecked {
   private readonly authService = inject(AuthService);
+  private readonly atlasService = inject(AtlasService);
   private readonly chatService = inject(ChatService);
+
+  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 

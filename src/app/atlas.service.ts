@@ -34,6 +34,15 @@ export class AtlasService {
   readonly activeAtlasId = signal<string | null>(this.loadActiveId());
   readonly isLoading = signal(true);
   private autoCreateAttempted = false;
+  readonly activeAtlasHomeLink = computed(() => {
+    const id = this.activeAtlasId();
+    if (!id) return '/atlases';
+    const atlas = this.atlases().find((a) => a.id === id);
+    if (!atlas) return '/atlases';
+    const slug = atlas.slug?.trim() || this.slugify(atlas.name ?? '') || atlas.id;
+    return `/atlas/${slug}`;
+  });
+
   readonly activeAtlas = computed(() => {
     const id = this.activeAtlasId();
     if (!id) return null;

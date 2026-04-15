@@ -71,7 +71,7 @@
         } @else {
           <div class="h-full w-full bg-gradient-to-br from-[var(--accent)]/30 via-[var(--bg)] to-[var(--accent-soft)]/20"></div>
         }
-        <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/40 to-transparent"></div>
+        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
 
         @if (isOwner() && !editing()) {
           <button
@@ -97,7 +97,7 @@
             </div>
             <div class="flex-1 pb-2">
               <div class="mb-2 flex flex-wrap items-center gap-3">
-                <h1 class="text-4xl font-extrabold tracking-tighter text-[var(--text)] md:text-5xl">{{ displayName() }}</h1>
+                <h1 class="text-4xl font-extrabold tracking-tighter text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)] md:text-5xl">{{ displayName() }}</h1>
                 <span
                   class="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-widest"
                   [style.color]="a.is_public ? 'var(--accent)' : 'var(--muted)'"
@@ -111,9 +111,9 @@
                 </span>
               </div>
               @if (a.description) {
-                <p class="max-w-2xl text-base leading-relaxed text-[var(--muted)] md:text-lg">{{ a.description }}</p>
+                <p class="max-w-2xl text-base leading-relaxed text-white/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)] md:text-lg">{{ a.description }}</p>
               } @else if (isOwner()) {
-                <p class="text-sm italic text-[var(--muted)]">No description yet — click “Edit atlas” to add one.</p>
+                <p class="text-sm italic text-white/70 drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]">No description yet — click “Edit atlas” to add one.</p>
               }
             </div>
           </div>

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { DocumentItem } from '../atlas.models';
 import { AuthService } from '../auth.service';
+import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -19,7 +20,10 @@ export class LibraryComponent {
   @ViewChild('fileInput') private fileInput?: ElementRef<HTMLInputElement>;
 
   private readonly authService = inject(AuthService);
+  private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
+
+  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 
