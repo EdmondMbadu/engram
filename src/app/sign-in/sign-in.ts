@@ -104,7 +104,7 @@ export class SignInComponent {
 
   private getRedirectUrl(): string {
     const redirectTo = this.route.snapshot.queryParamMap.get('redirectTo');
-    return this.isSafeRedirect(redirectTo) ? redirectTo : '/home';
+    return this.isSafeRedirect(redirectTo) ? redirectTo : '/upload';
   }
 
   private isSafeRedirect(value: string | null): value is string {

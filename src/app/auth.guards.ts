@@ -44,5 +44,5 @@ export const guestOnlyGuard: CanActivateFn = async () => {
 
   return authService.needsEmailVerification()
     ? router.createUrlTree(['/verify-email'])
-    : router.createUrlTree(['/home']);
+    : router.createUrlTree(['/upload']);
 };
