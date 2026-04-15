@@ -124,6 +124,13 @@
               </div>
 
               <div class="flex flex-wrap items-center gap-2 lg:justify-end">
+                <a
+                  [routerLink]="['/atlas', atlas.slug || atlas.id]"
+                  class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]"
+                >
+                  <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
+                  <span>Open</span>
+                </a>
                 @if (atlas.id !== activeAtlasId()) {
                   <button
                     type="button"

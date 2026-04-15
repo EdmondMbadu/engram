@@ -131,6 +131,7 @@ export class AtlasService {
     if (!trimmed) return;
     await updateDoc(doc(this.firestore, 'atlases', atlasId), {
       name: trimmed,
+      slug: this.slugify(trimmed),
       updated_at: serverTimestamp(),
     });
   }
@@ -212,8 +213,10 @@ export class AtlasService {
       if (!atlas.name || !atlas.name.trim()) {
         patch['name'] = `Atlas ${atlas.id.slice(0, 6)}`;
       }
-      if (!atlas.slug || !atlas.slug.trim()) {
-        patch['slug'] = this.slugify(patch['name'] as string ?? `atlas-${atlas.id.slice(0, 6)}`);
+      const effectiveName = (patch['name'] as string | undefined) ?? atlas.name;
+      const expectedSlug = this.slugify(effectiveName || `atlas-${atlas.id.slice(0, 6)}`);
+      if (!atlas.slug || !atlas.slug.trim() || atlas.slug !== expectedSlug) {
+        patch['slug'] = expectedSlug;
       }
       if (!atlas.created_at) {
         patch['created_at'] = serverTimestamp();
@@ -258,7 +261,7 @@ export class AtlasService {
     return window.localStorage.getItem(ACTIVE_ATLAS_STORAGE_KEY);
   }
 
-  private slugify(value: string): string {
+  slugify(value: string): string {
     return value
       .toLowerCase()
       .trim()

@@ -17,6 +17,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'library', renderMode: RenderMode.Client },
   { path: 'wiki', renderMode: RenderMode.Client },
   { path: 'atlases', renderMode: RenderMode.Client },
+  { path: 'atlas/:slug', renderMode: RenderMode.Client },
 
   // Fallback
   { path: '**', renderMode: RenderMode.Prerender },
