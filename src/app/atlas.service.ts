@@ -6,6 +6,8 @@ import {
   deleteDoc,
   doc,
   getCountFromServer,
+  getDocs,
+  limit,
   onSnapshot,
   query,
   serverTimestamp,
@@ -13,9 +15,10 @@ import {
   where,
   type Unsubscribe,
 } from 'firebase/firestore';
+import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import type { AtlasItem, AtlasUsage } from './atlas.models';
 import { AuthService } from './auth.service';
-import { getFirebaseFirestore } from './firebase.client';
+import { getFirebaseFirestore, getFirebaseStorage } from './firebase.client';
 
 const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
 
@@ -25,6 +28,7 @@ export class AtlasService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore = this.isBrowser ? getFirebaseFirestore() : null;
+  private readonly storage = this.isBrowser ? getFirebaseStorage() : null;
 
   readonly atlases = signal<AtlasItem[]>([]);
   readonly activeAtlasId = signal<string | null>(this.loadActiveId());
@@ -123,6 +127,51 @@ export class AtlasService {
     });
     this.setActive(ref.id);
     return ref.id;
+  }
+
+  async getPublicAtlasBySlug(slug: string): Promise<AtlasItem | null> {
+    if (!this.firestore) return null;
+    const snap = await getDocs(
+      query(
+        collection(this.firestore, 'atlases'),
+        where('slug', '==', slug),
+        where('is_public', '==', true),
+        limit(1),
+      ),
+    );
+    const d = snap.docs[0];
+    if (!d) return null;
+    return { id: d.id, ...(d.data() as Omit<AtlasItem, 'id'>) };
+  }
+
+  async uploadAtlasImage(
+    atlasId: string,
+    kind: 'logo' | 'hero',
+    file: File,
+  ): Promise<string> {
+    if (!this.storage) throw new Error('Storage unavailable.');
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Only image files are supported.');
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      throw new Error('Image must be under 10 MB.');
+    }
+    const ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '') || 'png';
+    const path = `atlases/${atlasId}/${kind}-${Date.now()}.${ext}`;
+    const ref = storageRef(this.storage, path);
+    await uploadBytes(ref, file, { contentType: file.type });
+    return await getDownloadURL(ref);
+  }
+
+  async updateAtlas(
+    atlasId: string,
+    patch: Partial<Pick<AtlasItem, 'description' | 'logo_url' | 'hero_url' | 'is_public'>>,
+  ): Promise<void> {
+    if (!this.firestore) return;
+    await updateDoc(doc(this.firestore, 'atlases', atlasId), {
+      ...patch,
+      updated_at: serverTimestamp(),
+    });
   }
 
   async renameAtlas(atlasId: string, name: string): Promise<void> {

@@ -20,7 +20,7 @@ export const routes: Routes = [
   { path: 'library', component: LibraryComponent, title: 'Library | Living Atlas', canActivate: [authGuard] },
   { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Atlas', canActivate: [authGuard] },
   { path: 'atlases', component: AtlasManageComponent, title: 'Atlas Settings | Living Atlas', canActivate: [authGuard] },
-  { path: 'atlas/:slug', component: AtlasLandingComponent, title: 'Atlas | Living Atlas', canActivate: [authGuard] },
+  { path: 'atlas/:slug', component: AtlasLandingComponent, title: 'Atlas | Living Atlas' },
   { path: 'landing', redirectTo: 'home', pathMatch: 'full' },
   { path: 'sign-in', component: SignInComponent, title: 'Sign In | Living Atlas', canActivate: [guestOnlyGuard] },
   { path: 'create-account', component: CreateAccountComponent, title: 'Create Account | Living Atlas', canActivate: [guestOnlyGuard] },
