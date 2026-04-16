@@ -310,13 +310,19 @@ async function processDocument(params: {
 
     let articleCount = 0;
     try {
-      const articleCompilation = await compileAndStoreWikiArticles({
-        userId: document.user_id,
-        atlasId,
-        documentId: document.id,
-        filename: extraction.title ?? document.filename ?? 'Untitled',
-        blocks,
-      });
+      const articleTimeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Article compilation timed out after 400s')), 400_000),
+      );
+      const articleCompilation = await Promise.race([
+        compileAndStoreWikiArticles({
+          userId: document.user_id,
+          atlasId,
+          documentId: document.id,
+          filename: extraction.title ?? document.filename ?? 'Untitled',
+          blocks,
+        }),
+        articleTimeout,
+      ]);
       await addDocumentAiUsage(documentRef, articleCompilation.usage, 'compile');
       articleCount = articleCompilation.articleIds.length;
     } catch (articleError) {
@@ -539,19 +545,36 @@ export async function compileAndStoreWikiArticles(params: {
     chunkSizes: articleChunks.map((c) => c.length),
   });
 
-  for (const chunk of articleChunks) {
-    const compileResult = await compileWikiArticles({ blocks: chunk, filename });
-    totalUsage = mergeUsage(totalUsage, compileResult.usage);
+  // Process chunks in parallel batches of 4 to stay within the 540s function timeout
+  const BATCH_SIZE = 4;
+  for (let i = 0; i < articleChunks.length; i += BATCH_SIZE) {
+    const batch = articleChunks.slice(i, i + BATCH_SIZE);
+    const batchResults = await Promise.allSettled(
+      batch.map((chunk) => compileWikiArticles({ blocks: chunk, filename })),
+    );
 
-    logger.info('Chunk compilation result', {
-      documentId,
-      articlesFromChunk: compileResult.articles.length,
-      titles: compileResult.articles.map((a) => a.title),
-    });
+    for (const result of batchResults) {
+      if (result.status === 'rejected') {
+        logger.warn('Chunk compilation failed, skipping', {
+          documentId,
+          error: result.reason instanceof Error ? result.reason.message : String(result.reason),
+        });
+        continue;
+      }
 
-    for (const article of compileResult.articles) {
-      const articleId = await writeWikiArticle(userId, atlasId, documentId, filename, article);
-      writtenArticleIds.push(articleId);
+      const compileResult = result.value;
+      totalUsage = mergeUsage(totalUsage, compileResult.usage);
+
+      logger.info('Chunk compilation result', {
+        documentId,
+        articlesFromChunk: compileResult.articles.length,
+        titles: compileResult.articles.map((a) => a.title),
+      });
+
+      for (const article of compileResult.articles) {
+        const articleId = await writeWikiArticle(userId, atlasId, documentId, filename, article);
+        writtenArticleIds.push(articleId);
+      }
     }
   }
 
