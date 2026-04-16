@@ -377,11 +377,12 @@
             <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Source Citation</p>
             <button
               type="button"
-              class="mt-0.5 block w-full truncate text-left text-sm font-bold text-[var(--text)] transition-colors hover:text-[var(--accent)]"
+              class="group mt-0.5 flex w-full items-center gap-1.5 text-left text-sm font-bold text-[var(--text)] transition-colors hover:text-[var(--accent)]"
               [title]="citation.filename"
               (click)="openDocumentFile(citation)"
             >
-              {{ citation.filename }}
+              <span class="min-w-0 truncate">{{ citation.filename }}</span>
+              <span class="material-symbols-outlined shrink-0 text-[0.85rem] text-[var(--muted)] transition-colors group-hover:text-[var(--accent)]">open_in_new</span>
             </button>
           </div>
           <button type="button" class="shrink-0 rounded-full border border-white/10 bg-white/5 p-2 text-[var(--muted)] transition-colors hover:bg-white/10 hover:text-[var(--text)]" (click)="closeCitation()">
@@ -403,7 +404,7 @@
         <!-- Content -->
         <div class="px-6 pb-6 pt-4">
           <div class="max-h-[55vh] overflow-y-auto rounded-2xl border border-white/5 bg-white/[0.02] px-5 py-4">
-            <p class="whitespace-pre-wrap text-sm leading-7 text-[var(--text)]">{{ citation.text }}</p>
+            <p class="text-sm leading-7 text-[var(--text)]" [innerHTML]="formatCitationText(citation.text)"></p>
           </div>
         </div>
       </div>

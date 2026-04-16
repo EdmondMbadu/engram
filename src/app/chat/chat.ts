@@ -197,6 +197,16 @@ export class ChatComponent implements AfterViewChecked {
     this.selectedCitation.set(null);
   }
 
+  formatCitationText(text: string): string {
+    return text
+      .replace(/\[Source:\s*[^\]]*\]/g, '')
+      .replace(/^\* /gm, '- ')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-[var(--text)]">$1</strong>')
+      .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc leading-7">$1</li>')
+      .replace(/\n\n/g, '</p><p class="mt-2">')
+      .replace(/\n/g, '<br/>');
+  }
+
   async openDocumentFile(citation: CitationPassage): Promise<void> {
     const filename = citation.filename;
     if (!filename || this.isFallbackCitationFilename(filename)) {
