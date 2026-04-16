@@ -147,7 +147,7 @@ export const askAtlas = onCall(
         threadId,
       });
     } catch (error) {
-      logger.error('askAtlas failed', error);
+      logger.error('askAtlas failed', { errorMessage: error instanceof Error ? error.message : String(error) });
       throw new HttpsError(
         'internal',
         error instanceof Error ? error.message : 'Failed to answer question.',
@@ -180,7 +180,7 @@ export const deleteDocument = onCall(
         userId: request.auth.uid,
       });
     } catch (error) {
-      logger.error('deleteDocument failed', { documentId, error });
+      logger.error('deleteDocument failed', { documentId, errorMessage: error instanceof Error ? error.message : String(error) });
       throw new HttpsError(
         'internal',
         error instanceof Error ? error.message : 'Failed to delete document.',
@@ -212,7 +212,7 @@ export const getWikiTopicDetails = onCall(
         topicId,
       });
     } catch (error) {
-      logger.error('getWikiTopicDetails failed', { topicId, error });
+      logger.error('getWikiTopicDetails failed', { topicId, errorMessage: error instanceof Error ? error.message : String(error) });
       throw new HttpsError(
         'internal',
         error instanceof Error ? error.message : 'Failed to load topic details.',
@@ -283,7 +283,11 @@ export const ingestUploadedDocument = onObjectFinalized(
 
       await processStoredDocument(documentId);
     } catch (error) {
-      logger.error('ingestUploadedDocument failed', { storagePath, error });
+      logger.error('ingestUploadedDocument failed', {
+        storagePath,
+        errorMessage: error instanceof Error ? error.message : String(error),
+        errorStack: error instanceof Error ? error.stack : undefined,
+      });
       throw error;
     }
   },
@@ -311,7 +315,7 @@ export const ingestSubmittedUrl = onDocumentCreated(
     try {
       await processUrlDocument(snapshot.id);
     } catch (error) {
-      logger.error('ingestSubmittedUrl failed', { documentId: snapshot.id, error });
+      logger.error('ingestSubmittedUrl failed', { documentId: snapshot.id, errorMessage: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   },
@@ -334,7 +338,7 @@ export const refreshWikiTopicSummary = onDocumentCreated(
     try {
       await processWikiTopicSummaryJob(snapshot.id);
     } catch (error) {
-      logger.error('refreshWikiTopicSummary failed', { jobId: snapshot.id, error });
+      logger.error('refreshWikiTopicSummary failed', { jobId: snapshot.id, errorMessage: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   },

@@ -316,7 +316,9 @@ async function processDocument(params: {
       { merge: true },
     );
   } catch (error) {
-    logger.error('Document ingestion failed', { documentId: document.id, error });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    logger.error('Document ingestion failed', { documentId: document.id, errorMessage, errorStack });
     await documentRef.set(
       {
         status: 'failed',

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc:*)",
-      "Bash(npx firebase:*)"
+      "Bash(npx firebase:*)",
+      "Bash(npx ts-node -e ':*)"
     ]
   }
 }

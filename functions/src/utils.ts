@@ -261,13 +261,17 @@ function normalizeJsonCandidate(value: string): string {
 }
 
 function repairCommonJsonIssues(value: string): string {
+  // Replace single-quoted strings with double-quoted strings (outside existing double-quoted strings)
   let repaired = '';
   let inString = false;
+  let stringChar = '';
   let escaped = false;
   let objectDepth = 0;
   let arrayDepth = 0;
 
-  for (const character of value) {
+  for (let i = 0; i < value.length; i++) {
+    const character = value[i];
+
     if (escaped) {
       repaired += character;
       escaped = false;
@@ -280,38 +284,52 @@ function repairCommonJsonIssues(value: string): string {
       continue;
     }
 
-    if (character === '"') {
+    if (!inString) {
+      if (character === '"' || character === "'") {
+        inString = true;
+        stringChar = character;
+        repaired += '"';
+        continue;
+      }
+
+      if (character === '{') {
+        objectDepth += 1;
+      } else if (character === '}') {
+        objectDepth = Math.max(0, objectDepth - 1);
+      } else if (character === '[') {
+        arrayDepth += 1;
+      } else if (character === ']') {
+        arrayDepth = Math.max(0, arrayDepth - 1);
+      }
+
       repaired += character;
-      inString = !inString;
       continue;
     }
 
-    if (inString) {
-      if (character === '\n') {
-        repaired += '\\n';
-        continue;
-      }
-      if (character === '\r') {
-        continue;
-      }
-      if (character === '\t') {
-        repaired += '\\t';
-        continue;
-      }
-      repaired += character;
+    // Inside a string
+    if (character === stringChar) {
+      inString = false;
+      stringChar = '';
+      repaired += '"';
       continue;
     }
 
-    if (character === '{') {
-      objectDepth += 1;
-    } else if (character === '}') {
-      objectDepth = Math.max(0, objectDepth - 1);
-    } else if (character === '[') {
-      arrayDepth += 1;
-    } else if (character === ']') {
-      arrayDepth = Math.max(0, arrayDepth - 1);
+    if (character === '\n') {
+      repaired += '\\n';
+      continue;
     }
-
+    if (character === '\r') {
+      continue;
+    }
+    if (character === '\t') {
+      repaired += '\\t';
+      continue;
+    }
+    // Escape unescaped double quotes inside single-quoted strings
+    if (character === '"' && stringChar === "'") {
+      repaired += '\\"';
+      continue;
+    }
     repaired += character;
   }
 
@@ -321,6 +339,9 @@ function repairCommonJsonIssues(value: string): string {
 
   repaired += ']'.repeat(arrayDepth);
   repaired += '}'.repeat(objectDepth);
+
+  // Remove trailing commas before } or ]
+  repaired = repaired.replace(/,\s*([\]}])/g, '$1');
 
   return repaired;
 }

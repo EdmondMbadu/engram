@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { defineSecret } from 'firebase-functions/params';
+import { logger } from 'firebase-functions';
 import type { ExtractBlock, KnowledgeEntryDraft, ModelUsage } from './types';
 import {
   normalizeRelatedTopics,
@@ -193,9 +194,28 @@ export async function compileKnowledgeEntries(
     },
   });
 
-  const parsed = parseJsonResponse<KnowledgeEntryDraft[]>(response.text ?? '[]');
+  let parsed: KnowledgeEntryDraft[];
+  try {
+    parsed = parseJsonResponse<KnowledgeEntryDraft[]>(response.text ?? '[]');
+  } catch (error) {
+    logger.warn('compileKnowledgeEntries: JSON parse failed, skipping chunk', {
+      error: error instanceof Error ? error.message : String(error),
+      responsePreview: (response.text ?? '').slice(0, 200),
+    });
+    return { entries: [], usage: usageFromResponse(response) };
+  }
+
+  if (!Array.isArray(parsed)) {
+    logger.warn('compileKnowledgeEntries: response was not an array, skipping chunk');
+    return { entries: [], usage: usageFromResponse(response) };
+  }
+
   return {
     entries: parsed
+      .filter(
+        (entry): entry is KnowledgeEntryDraft =>
+          entry != null && typeof entry === 'object' && typeof entry.claim === 'string',
+      )
       .map((entry) => ({
         claim: entry.claim.trim(),
         topic: normalizeTopicName(entry.topic),
@@ -391,8 +411,24 @@ export async function transcribeImageToLines(params: {
     },
   });
 
-  const parsed = parseJsonResponse<string[]>(response.text ?? '[]');
-  return parsed.map((line) => line.trim()).filter((line) => line.length > 0);
+  let parsed: string[];
+  try {
+    parsed = parseJsonResponse<string[]>(response.text ?? '[]');
+  } catch (error) {
+    logger.warn('transcribeImageToLines: JSON parse failed', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+
+  if (!Array.isArray(parsed)) {
+    return [];
+  }
+
+  return parsed
+    .filter((line): line is string => typeof line === 'string')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
 }
 
 function normalizeAnswerResponse(
