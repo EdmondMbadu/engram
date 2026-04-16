@@ -9,7 +9,7 @@ import {
   type Unsubscribe,
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
-import type { DocumentItem, KnowledgeEntryItem, WikiTopicItem } from './atlas.models';
+import type { DocumentItem, KnowledgeEntryItem, WikiArticleItem, WikiTopicItem } from './atlas.models';
 import { AtlasService } from './atlas.service';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseFunctions } from './firebase.client';
@@ -24,6 +24,14 @@ export class WikiService {
   private readonly functions = this.isBrowser ? getFirebaseFunctions() : null;
 
   readonly topics = signal<WikiTopicItem[]>([]);
+  readonly articles = signal<WikiArticleItem[]>([]);
+  readonly hasArticles = computed(() => this.articles().length > 0);
+
+  readonly selectedArticleId = signal<string | null>(null);
+  readonly selectedArticle = computed(
+    () => this.articles().find((a) => a.id === this.selectedArticleId()) ?? null,
+  );
+
   readonly selectedTopicId = signal<string | null>(null);
   readonly selectedTopic = computed(
     () => this.topics().find((topic) => topic.id === this.selectedTopicId()) ?? null,
@@ -31,10 +39,57 @@ export class WikiService {
   readonly topicEntries = signal<KnowledgeEntryItem[]>([]);
   readonly sourceDocuments = signal<DocumentItem[]>([]);
   readonly isLoadingTopics = signal(true);
+  readonly isLoadingArticles = signal(true);
   readonly isLoadingEntries = signal(false);
   readonly entriesError = signal<string | null>(null);
 
   constructor() {
+    // Load wiki articles (new system)
+    effect((onCleanup) => {
+      const uid = this.authService.uid();
+      const atlasId = this.atlasService.activeAtlasId();
+      if (!this.firestore || !uid) {
+        this.articles.set([]);
+        this.selectedArticleId.set(null);
+        this.isLoadingArticles.set(false);
+        return;
+      }
+
+      this.isLoadingArticles.set(true);
+      const articlesQuery = atlasId
+        ? query(
+            collection(this.firestore, 'wiki_articles'),
+            where('user_id', '==', uid),
+            where('atlas_id', '==', atlasId),
+            orderBy('last_updated', 'desc'),
+          )
+        : query(
+            collection(this.firestore, 'wiki_articles'),
+            where('user_id', '==', uid),
+            orderBy('last_updated', 'desc'),
+          );
+
+      const unsubscribe: Unsubscribe = onSnapshot(
+        articlesQuery,
+        (snapshot) => {
+          const items = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...(doc.data() as Omit<WikiArticleItem, 'id'>),
+          }));
+          this.articles.set(items);
+          const current = this.selectedArticleId();
+          if (!current || !items.some((a) => a.id === current)) {
+            this.selectedArticleId.set(items[0]?.id ?? null);
+          }
+          this.isLoadingArticles.set(false);
+        },
+        () => this.isLoadingArticles.set(false),
+      );
+
+      onCleanup(() => unsubscribe());
+    });
+
+    // Load wiki topics (old system, used as fallback)
     effect((onCleanup) => {
       const uid = this.authService.uid();
       const atlasId = this.atlasService.activeAtlasId();
@@ -79,6 +134,7 @@ export class WikiService {
       onCleanup(() => unsubscribe());
     });
 
+    // Load topic details when a topic is selected (old system fallback)
     effect((onCleanup) => {
       const uid = this.authService.uid();
       const topic = this.selectedTopic();
@@ -134,6 +190,10 @@ export class WikiService {
         cancelled = true;
       });
     });
+  }
+
+  selectArticle(articleId: string): void {
+    this.selectedArticleId.set(articleId);
   }
 
   selectTopic(topicId: string): void {

@@ -30,6 +30,23 @@ export class WikiComponent {
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
+
+  readonly hasArticles = this.wikiService.hasArticles;
+  readonly articles = this.wikiService.articles;
+  readonly selectedArticle = this.wikiService.selectedArticle;
+  readonly isLoadingArticles = this.wikiService.isLoadingArticles;
+
+  readonly filteredArticles = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    const all = this.articles();
+    if (!q) return all;
+    return all.filter(
+      (a) =>
+        a.title.toLowerCase().includes(q) ||
+        (a.summary ?? '').toLowerCase().includes(q),
+    );
+  });
+
   readonly topics = this.wikiService.topics;
   readonly filteredTopics = computed(() => {
     const q = this.searchQuery().trim().toLowerCase();
@@ -59,8 +76,23 @@ export class WikiComponent {
       .toUpperCase();
   };
 
+  selectArticle(articleId: string): void {
+    this.wikiService.selectArticle(articleId);
+  }
+
   selectTopic(topicId: string): void {
     this.wikiService.selectTopic(topicId);
+  }
+
+  formatArticleContent(content: string): string {
+    return content
+      .replace(/^## (.+)$/gm, '<h2 class="mt-6 mb-3 text-xl font-black tracking-[-0.04em] text-[var(--text)]">$1</h2>')
+      .replace(/^### (.+)$/gm, '<h3 class="mt-4 mb-2 text-lg font-bold text-[var(--text)]">$1</h3>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold text-[var(--text)]">$1</strong>')
+      .replace(/\[Source:\s*([^\]]+)\]/g, '<span class="citation-badge inline-block rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em]">[Source: $1]</span>')
+      .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-[var(--muted)] leading-7">$1</li>')
+      .replace(/\n\n/g, '</p><p class="mt-3 text-base leading-8 text-[var(--muted)]">')
+      .replace(/\n/g, '<br/>');
   }
 
   formatDate(value: { toDate(): Date } | Date | null | undefined): string {

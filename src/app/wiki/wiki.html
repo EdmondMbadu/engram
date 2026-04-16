@@ -55,7 +55,7 @@
           <app-mobile-menu activePage="wiki"></app-mobile-menu>
           <div>
             <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">Wiki</h1>
-            <p class="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Compiled topics from your uploaded knowledge</p>
+            <p class="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Compiled knowledge from your uploaded documents</p>
           </div>
         </div>
 
@@ -93,17 +93,23 @@
 
       <div class="flex-1 min-h-0 md:overflow-hidden">
         <div class="mx-auto grid w-full max-w-7xl gap-8 px-5 py-8 pb-20 md:h-full md:grid-cols-[22rem_minmax(0,1fr)] md:gap-6 md:py-6 md:pb-6 md:px-8 lg:px-12">
+
+          <!-- LEFT SIDEBAR: Article/Topic index -->
           <section class="flex min-h-0 flex-col gap-4 md:h-full">
             <div class="glass-card rounded-[1.75rem] p-5">
-              <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Topic Index</p>
-              <h2 class="mt-3 text-xl font-black tracking-[-0.05em] text-[var(--text)]">Your Wiki Topics</h2>
+              <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">
+                @if (hasArticles()) { Article Index } @else { Topic Index }
+              </p>
+              <h2 class="mt-3 text-xl font-black tracking-[-0.05em] text-[var(--text)]">
+                @if (hasArticles()) { Wiki Articles } @else { Your Wiki Topics }
+              </h2>
               <div class="mt-4 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 focus-within:border-[var(--accent)]/40">
                 <span class="material-symbols-outlined text-[1.1rem] text-[var(--muted)]">search</span>
                 <input
                   type="text"
                   [ngModel]="searchQuery()"
                   (ngModelChange)="searchQuery.set($event)"
-                  placeholder="Search topics"
+                  placeholder="Search articles"
                   class="w-full bg-transparent text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none"
                 />
                 @if (searchQuery()) {
@@ -112,120 +118,244 @@
                   </button>
                 }
               </div>
-              <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredTopics().length }} of {{ topics().length }} topics</p>
+              @if (hasArticles()) {
+                <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredArticles().length }} of {{ articles().length }} articles</p>
+              } @else {
+                <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredTopics().length }} of {{ topics().length }} topics</p>
+              }
             </div>
 
             <div class="flex-1 min-h-0 space-y-3 md:overflow-y-auto md:pr-1">
-              @if (isLoadingTopics()) {
-                <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]">Loading topics...</div>
-              } @else if (topics().length === 0) {
-                <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
-                  No wiki topics yet. Upload documents in the Library and the ingestion pipeline will create topic pages automatically.
-                </div>
-              } @else if (filteredTopics().length === 0) {
-                <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
-                  No topics match "{{ searchQuery() }}".
-                </div>
+
+              <!-- ARTICLES VIEW (new system) -->
+              @if (hasArticles()) {
+                @if (isLoadingArticles()) {
+                  <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]">Loading articles...</div>
+                } @else if (filteredArticles().length === 0) {
+                  <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
+                    @if (searchQuery()) {
+                      No articles match "{{ searchQuery() }}".
+                    } @else {
+                      No wiki articles yet. Upload documents to generate wiki articles.
+                    }
+                  </div>
+                } @else {
+                  @for (article of filteredArticles(); track article.id) {
+                    <button
+                      type="button"
+                      class="glass-card block w-full rounded-[1.25rem] border-l-2 border-transparent px-4 py-3 text-left transition-all hover:bg-white/[0.04]"
+                      [class.!border-l-2]="selectedArticle()?.id === article.id"
+                      [class.!border-[var(--accent)]]="selectedArticle()?.id === article.id"
+                      [class.bg-white/[0.04]]="selectedArticle()?.id === article.id"
+                      (click)="selectArticle(article.id)"
+                    >
+                      <div class="flex items-start justify-between gap-3">
+                        <h3 class="min-w-0 flex-1 truncate text-sm font-bold tracking-[-0.02em] text-[var(--text)]">{{ article.title }}</h3>
+                        <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-black text-[var(--muted)]">
+                          {{ article.word_count }}w
+                        </span>
+                      </div>
+                      <p class="mt-1 text-xs text-[var(--muted)] line-clamp-2">{{ article.summary }}</p>
+                      <p class="mt-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                        {{ article.source_documents.length }} source{{ article.source_documents.length !== 1 ? 's' : '' }}
+                        · {{ formatDate(article.last_updated) }}
+                      </p>
+                    </button>
+                  }
+                }
+
+              <!-- TOPICS VIEW (old system fallback) -->
               } @else {
-                @for (topic of filteredTopics(); track topic.id) {
-                  <button
-                    type="button"
-                    class="glass-card block w-full rounded-[1.25rem] border-l-2 border-transparent px-4 py-3 text-left transition-all hover:bg-white/[0.04]"
-                    [class.!border-l-2]="selectedTopic()?.id === topic.id"
-                    [class.!border-[var(--accent)]]="selectedTopic()?.id === topic.id"
-                    [class.bg-white/[0.04]]="selectedTopic()?.id === topic.id"
-                    (click)="selectTopic(topic.id)"
-                  >
-                    <div class="flex items-start justify-between gap-3">
-                      <h3 class="min-w-0 flex-1 truncate text-sm font-bold tracking-[-0.02em] text-[var(--text)]">{{ topic.name }}</h3>
-                      <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-black text-[var(--muted)]">
-                        {{ topic.entry_ids.length }}
-                      </span>
-                    </div>
-                    <p class="mt-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
-                      {{ formatDate(topic.last_updated) }}
-                    </p>
-                  </button>
+                @if (isLoadingTopics()) {
+                  <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]">Loading topics...</div>
+                } @else if (topics().length === 0) {
+                  <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
+                    No wiki topics yet. Upload documents in the Library and the ingestion pipeline will create topic pages automatically.
+                  </div>
+                } @else if (filteredTopics().length === 0) {
+                  <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
+                    No topics match "{{ searchQuery() }}".
+                  </div>
+                } @else {
+                  @for (topic of filteredTopics(); track topic.id) {
+                    <button
+                      type="button"
+                      class="glass-card block w-full rounded-[1.25rem] border-l-2 border-transparent px-4 py-3 text-left transition-all hover:bg-white/[0.04]"
+                      [class.!border-l-2]="selectedTopic()?.id === topic.id"
+                      [class.!border-[var(--accent)]]="selectedTopic()?.id === topic.id"
+                      [class.bg-white/[0.04]]="selectedTopic()?.id === topic.id"
+                      (click)="selectTopic(topic.id)"
+                    >
+                      <div class="flex items-start justify-between gap-3">
+                        <h3 class="min-w-0 flex-1 truncate text-sm font-bold tracking-[-0.02em] text-[var(--text)]">{{ topic.name }}</h3>
+                        <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-black text-[var(--muted)]">
+                          {{ topic.entry_ids.length }}
+                        </span>
+                      </div>
+                      <p class="mt-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                        {{ formatDate(topic.last_updated) }}
+                      </p>
+                    </button>
+                  }
                 }
               }
             </div>
           </section>
 
+          <!-- RIGHT PANEL: Article content or Topic details -->
           <section class="min-h-0 md:h-full md:overflow-y-auto md:pr-1">
-            @if (selectedTopic(); as topic) {
-              <article class="glass-card rounded-[2rem] p-6 md:p-8">
-                <div class="border-b border-white/5 pb-6">
-                  <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Knowledge synthesis</p>
-                  <h1 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">{{ topic.name }}</h1>
-                  <p class="mt-5 max-w-3xl text-base leading-8 text-[var(--muted)]">{{ topic.summary }}</p>
-                </div>
 
-                <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.45fr)_20rem]">
-                  <div>
-                    <div class="mb-4 flex items-center justify-between gap-3">
-                      <h2 class="text-2xl font-black tracking-[-0.04em] text-[var(--text)]">Knowledge Entries</h2>
+            <!-- ARTICLE DETAIL VIEW (new system) -->
+            @if (hasArticles()) {
+              @if (selectedArticle(); as article) {
+                <article class="glass-card rounded-[2rem] p-6 md:p-8">
+                  <div class="border-b border-white/5 pb-6">
+                    <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Wiki Article</p>
+                    <h1 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">{{ article.title }}</h1>
+                    <div class="mt-4 flex flex-wrap items-center gap-2">
                       <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
-                        {{ topicEntries().length }} total
+                        {{ article.word_count }} words
                       </span>
+                      @for (source of article.source_documents; track source.document_id) {
+                        <span class="citation-badge rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em]">
+                          {{ source.filename }}
+                          @if (source.pages.length > 0) {
+                            · p.{{ source.pages[0] }}@if (source.pages.length > 1) {-{{ source.pages[source.pages.length - 1] }}}
+                          }
+                        </span>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+                    <div class="wiki-article-content">
+                      <p class="text-base leading-8 text-[var(--muted)]" [innerHTML]="formatArticleContent(article.content)"></p>
                     </div>
 
-                    @if (isLoadingEntries()) {
-                      <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-[var(--muted)]">Loading topic entries...</div>
-                    } @else if (entriesError()) {
-                      <div class="error-banner rounded-[1.5rem] px-5 py-4 text-sm">
-                        {{ entriesError() }}
-                      </div>
-                    } @else {
-                      <div class="space-y-3">
-                        @for (entry of topicEntries(); track entry.id) {
-                          <article class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                            <p class="text-base leading-8 text-[var(--text)]">{{ entry.claim }}</p>
-                            <div class="mt-4 flex flex-wrap items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em]">
-                              <span class="citation-badge rounded-full px-3 py-1">
-                                p.{{ entry.source.page }} · L{{ entry.source.line_start }}-{{ entry.source.line_end }}
-                              </span>
-                              @for (related of entry.related_topics; track related) {
-                                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[var(--muted)]">{{ related }}</span>
+                    <div class="space-y-4">
+                      @if (article.related_articles.length > 0) {
+                        <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Related Articles</p>
+                          <div class="mt-3 space-y-2">
+                            @for (related of article.related_articles; track related) {
+                              <p class="text-sm text-[var(--muted)]">{{ related }}</p>
+                            }
+                          </div>
+                        </div>
+                      }
+
+                      <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                        <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Source Documents</p>
+                        <div class="mt-4 space-y-3">
+                          @for (source of article.source_documents; track source.document_id) {
+                            <div class="rounded-[1rem] border border-white/10 bg-white/5 p-4">
+                              <p class="truncate text-sm font-bold text-[var(--text)]">{{ source.filename }}</p>
+                              @if (source.pages.length > 0) {
+                                <p class="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                                  Pages: {{ source.pages.join(', ') }}
+                                </p>
                               }
                             </div>
-                          </article>
-                        }
+                          }
+                        </div>
                       </div>
-                    }
-                  </div>
 
-                  <div class="space-y-4">
-                    <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                      <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Source Documents</p>
-                      <div class="mt-4 space-y-3">
-                        @for (document of sourceDocuments(); track document.id) {
-                          <div class="rounded-[1rem] border border-white/10 bg-white/5 p-4">
-                            <p class="truncate text-sm font-bold text-[var(--text)]">{{ documentLabel(document) }}</p>
-                            <p class="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
-                              {{ document.file_type }} · {{ formatDate(document.uploaded_at) }}
-                            </p>
-                          </div>
-                        }
+                      <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                        <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Ask About This</p>
+                        <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
+                          Use New Chat to ask questions — the system draws from all wiki articles to find answers.
+                        </p>
+                        <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to New Chat</a>
                       </div>
                     </div>
-
-                    <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                      <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Ask This Topic</p>
-                      <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
-                        Use New Chat to ask a scoped question with this topic as the knowledge surface.
-                      </p>
-                      <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to New Chat</a>
-                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              } @else {
+                <article class="glass-card rounded-[2rem] p-8 text-center">
+                  <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]">No article selected</h2>
+                  <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+                    Choose an article from the left to read compiled knowledge from your documents.
+                  </p>
+                </article>
+              }
+
+            <!-- TOPIC DETAIL VIEW (old system fallback) -->
             } @else {
-              <article class="glass-card rounded-[2rem] p-8 text-center">
-                <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]">No topic selected</h2>
-                <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
-                  Choose a topic from the left once your library has been indexed.
-                </p>
-              </article>
+              @if (selectedTopic(); as topic) {
+                <article class="glass-card rounded-[2rem] p-6 md:p-8">
+                  <div class="border-b border-white/5 pb-6">
+                    <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Knowledge synthesis</p>
+                    <h1 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">{{ topic.name }}</h1>
+                    <p class="mt-5 max-w-3xl text-base leading-8 text-[var(--muted)]">{{ topic.summary }}</p>
+                  </div>
+
+                  <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.45fr)_20rem]">
+                    <div>
+                      <div class="mb-4 flex items-center justify-between gap-3">
+                        <h2 class="text-2xl font-black tracking-[-0.04em] text-[var(--text)]">Knowledge Entries</h2>
+                        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                          {{ topicEntries().length }} total
+                        </span>
+                      </div>
+
+                      @if (isLoadingEntries()) {
+                        <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-[var(--muted)]">Loading topic entries...</div>
+                      } @else if (entriesError()) {
+                        <div class="error-banner rounded-[1.5rem] px-5 py-4 text-sm">
+                          {{ entriesError() }}
+                        </div>
+                      } @else {
+                        <div class="space-y-3">
+                          @for (entry of topicEntries(); track entry.id) {
+                            <article class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                              <p class="text-base leading-8 text-[var(--text)]">{{ entry.claim }}</p>
+                              <div class="mt-4 flex flex-wrap items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em]">
+                                <span class="citation-badge rounded-full px-3 py-1">
+                                  p.{{ entry.source.page }} · L{{ entry.source.line_start }}-{{ entry.source.line_end }}
+                                </span>
+                                @for (related of entry.related_topics; track related) {
+                                  <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[var(--muted)]">{{ related }}</span>
+                                }
+                              </div>
+                            </article>
+                          }
+                        </div>
+                      }
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                        <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Source Documents</p>
+                        <div class="mt-4 space-y-3">
+                          @for (document of sourceDocuments(); track document.id) {
+                            <div class="rounded-[1rem] border border-white/10 bg-white/5 p-4">
+                              <p class="truncate text-sm font-bold text-[var(--text)]">{{ documentLabel(document) }}</p>
+                              <p class="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                                {{ document.file_type }} · {{ formatDate(document.uploaded_at) }}
+                              </p>
+                            </div>
+                          }
+                        </div>
+                      </div>
+
+                      <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                        <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Ask This Topic</p>
+                        <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
+                          Use New Chat to ask a scoped question with this topic as the knowledge surface.
+                        </p>
+                        <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to New Chat</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              } @else {
+                <article class="glass-card rounded-[2rem] p-8 text-center">
+                  <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]">No topic selected</h2>
+                  <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+                    Choose a topic from the left once your library has been indexed.
+                  </p>
+                </article>
+              }
             }
           </section>
         </div>

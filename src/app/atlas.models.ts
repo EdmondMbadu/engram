@@ -137,6 +137,24 @@ export interface QueryHistoryItem {
 
 export type ChatHistoryItem = ChatThreadItem | QueryHistoryItem;
 
+export interface WikiArticleItem {
+  id: string;
+  user_id: string;
+  atlas_id?: string | null;
+  title: string;
+  content: string;
+  summary: string;
+  source_documents: Array<{
+    document_id: string;
+    filename: string;
+    pages: number[];
+  }>;
+  related_articles: string[];
+  word_count: number;
+  created_at?: { toDate(): Date } | Date | null;
+  last_updated?: { toDate(): Date } | Date | null;
+}
+
 export interface ChatStoredMessage {
   id: string;
   thread_id: string;
