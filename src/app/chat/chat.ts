@@ -200,11 +200,13 @@ export class ChatComponent implements AfterViewChecked {
   formatCitationText(text: string): string {
     return text
       .replace(/\[Source:\s*[^\]]*\]/g, '')
+      .replace(/^#{2,3}\s+(.+)$/gm, '<strong class="block mt-3 mb-1 font-bold text-[var(--text)]">$1</strong>')
       .replace(/^\* /gm, '- ')
       .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-[var(--text)]">$1</strong>')
       .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc leading-7">$1</li>')
       .replace(/\n\n/g, '</p><p class="mt-2">')
-      .replace(/\n/g, '<br/>');
+      .replace(/\n/g, '<br/>')
+      .replace(/(<br\/>)+\s*$/g, '');
   }
 
   async openDocumentFile(citation: CitationPassage): Promise<void> {

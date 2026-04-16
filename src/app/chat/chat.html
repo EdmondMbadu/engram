@@ -396,9 +396,11 @@
             <span class="material-symbols-outlined text-[0.75rem]">pin_drop</span>
             Page {{ citation.page }}
           </span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">
-            Lines {{ citation.line_start }}–{{ citation.line_end }}
-          </span>
+          @if (citation.line_start > 0 || citation.line_end > 0) {
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">
+              Lines {{ citation.line_start }}–{{ citation.line_end }}
+            </span>
+          }
         </div>
 
         <!-- Content -->

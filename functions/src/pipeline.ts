@@ -1081,9 +1081,13 @@ function extractSourceRefsFromContent(
   while ((match = pattern.exec(content)) !== null) {
     const filename = match[1].trim();
     const page = parseInt(match[2], 10);
-    const start = Math.max(0, match.index - 100);
-    const end = Math.min(content.length, match.index + match[0].length + 100);
-    const context = content.slice(start, end).trim();
+
+    // Find the paragraph boundaries around this source ref
+    let paraStart = content.lastIndexOf('\n\n', match.index);
+    paraStart = paraStart === -1 ? 0 : paraStart + 2;
+    let paraEnd = content.indexOf('\n\n', match.index + match[0].length);
+    paraEnd = paraEnd === -1 ? content.length : paraEnd;
+    const context = content.slice(paraStart, paraEnd).trim();
 
     refs.push({ filename, page, context });
   }
