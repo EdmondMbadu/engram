@@ -172,6 +172,23 @@
     color: var(--cite-text);
   }
 
+  .wiki-cite {
+    font-size: 0.65em;
+    font-weight: 600;
+    color: var(--muted);
+    opacity: 0.6;
+    vertical-align: super;
+    line-height: 0;
+    margin-left: 1px;
+    cursor: default;
+    transition: opacity 0.15s;
+  }
+
+  .wiki-cite:hover {
+    opacity: 1;
+    color: var(--accent);
+  }
+
   .assistant-message__content {
     display: flow-root;
   }
