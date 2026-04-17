@@ -74,6 +74,7 @@ export class WikiComponent {
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
+  readonly authInitialized = this.authService.initialized;
   readonly isSignedIn = computed(() => !!this.authService.uid());
 
   readonly hasArticles = this.wikiService.hasArticles;
@@ -213,11 +214,13 @@ export class WikiComponent {
   }
 
   async openArticleSourceDocument(source: { document_id: string; pages: number[] }): Promise<void> {
-    await this.openSourceDocument(source.document_id, source.pages[0]);
+    const article = this.selectedArticle();
+    const sourceMeta = article?.source_documents.find((item) => item.document_id === source.document_id);
+    await this.openSourceDocument(source.document_id, source.pages[0], sourceMeta?.filename ?? null);
   }
 
   async openTopicSourceDocument(document: DocumentItem): Promise<void> {
-    await this.openSourceDocument(document.id);
+    await this.openSourceDocument(document.id, undefined, document.title || document.filename);
   }
 
   @HostListener('document:click', ['$event'])
@@ -257,12 +260,19 @@ export class WikiComponent {
     }
   }
 
-  private async openSourceDocument(documentId: string, page?: number): Promise<void> {
+  private async openSourceDocument(
+    documentId: string,
+    page?: number,
+    filename?: string | null,
+  ): Promise<void> {
     this.openingSourceDocumentId.set(documentId);
     this.sourceDocumentError.set(null);
 
     try {
-      const url = await this.wikiService.getSourceDocumentLink(documentId);
+      const url = await this.wikiService.getSourceDocumentLink(documentId, {
+        atlasId: this.isPublicView() ? this.publicAtlas()?.id ?? null : null,
+        filename: filename ?? null,
+      });
       if (!url) {
         this.sourceDocumentError.set('Source document unavailable.');
         return;

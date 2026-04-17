@@ -411,7 +411,13 @@
                             }
                           </p>
                           @if (isPublicView()) {
-                            <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
+                            @if (!authInitialized()) {
+                              <span class="primary-btn mt-5 w-full justify-center !py-3 text-sm opacity-70 pointer-events-none">Loading account…</span>
+                            } @else if (isSignedIn()) {
+                              <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Click to chat</a>
+                            } @else {
+                              <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
+                            }
                           } @else {
                             <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to New Chat</a>
                           }

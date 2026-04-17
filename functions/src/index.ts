@@ -2,6 +2,7 @@ import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
+import { randomUUID } from 'node:crypto';
 import { db, storage } from './firebase';
 import { geminiApiKey } from './gemini';
 import {
@@ -45,6 +46,31 @@ function normalizeTimestamp(value: unknown): string | null {
   return null;
 }
 
+type PublicDocumentCandidate = Record<string, unknown> & { id: string };
+
+async function buildDocumentDownloadUrl(storagePath: string): Promise<string> {
+  const bucket = storage.bucket();
+  const file = bucket.file(storagePath);
+  const [metadata] = await file.getMetadata();
+  const existingTokens = String(metadata.metadata?.firebaseStorageDownloadTokens ?? '')
+    .split(',')
+    .map((token) => token.trim())
+    .filter(Boolean);
+
+  const token = existingTokens[0] ?? randomUUID();
+
+  if (existingTokens.length === 0) {
+    await file.setMetadata({
+      metadata: {
+        ...(metadata.metadata ?? {}),
+        firebaseStorageDownloadTokens: token,
+      },
+    });
+  }
+
+  return `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket.name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
+}
+
 async function loadPublicAtlasById(atlasId: string) {
   const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
   if (!atlasSnapshot.exists) {
@@ -83,6 +109,46 @@ async function documentAccessAllowed(requestUid: string | undefined, documentId:
   }
 
   return document;
+}
+
+async function findPublicDocumentByFilename(atlasId: string, filename: string) {
+  const atlas = await loadPublicAtlasById(atlasId);
+  const trimmedFilename = filename.trim();
+  if (!trimmedFilename) {
+    throw new HttpsError('invalid-argument', 'filename is required.');
+  }
+
+  const snapshot = await db
+    .collection('documents')
+    .where('user_id', '==', atlas.user_id)
+    .where('atlas_id', '==', atlas.id)
+    .where('filename', '==', trimmedFilename)
+    .limit(10)
+    .get();
+
+  const candidates: PublicDocumentCandidate[] = snapshot.docs
+    .map<PublicDocumentCandidate>((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Record<string, unknown>),
+    }))
+    .filter((document) => document.visible !== false);
+
+  const exactTitleMatch = candidates.find((document) => String(document.title ?? '').trim() === trimmedFilename);
+  if (exactTitleMatch) {
+    return exactTitleMatch;
+  }
+
+  const indexedCandidate = candidates.find((document) => document.status === 'indexed');
+  if (indexedCandidate) {
+    return indexedCandidate;
+  }
+
+  const firstCandidate = candidates[0];
+  if (firstCandidate) {
+    return firstCandidate;
+  }
+
+  throw new HttpsError('not-found', 'Document file is unavailable.');
 }
 
 function normalizeAtlasId(value: unknown): string | null {
@@ -462,26 +528,39 @@ export const getWikiSourceDocumentLink = onCall(
   },
   async (request) => {
     const documentId = String(request.data?.documentId ?? '').trim();
+    const atlasId = String(request.data?.atlasId ?? '').trim();
+    const filename = String(request.data?.filename ?? '').trim();
     if (!documentId) {
       throw new HttpsError('invalid-argument', 'documentId is required.');
     }
 
-    const document = await documentAccessAllowed(request.auth?.uid, documentId);
+    let document:
+      | {
+          id: string;
+          source_type?: unknown;
+          source_url?: unknown;
+          storage_path?: unknown;
+        }
+      | (Record<string, unknown> & { id: string });
 
-    if (document.source_type === 'url' && document.source_url) {
+    try {
+      document = await documentAccessAllowed(request.auth?.uid, documentId);
+    } catch (error) {
+      if (!atlasId || !filename) {
+        throw error;
+      }
+      document = await findPublicDocumentByFilename(atlasId, filename);
+    }
+
+    if (document.source_type === 'url' && typeof document.source_url === 'string' && document.source_url) {
       return { url: document.source_url };
     }
 
-    if (!document.storage_path) {
+    if (typeof document.storage_path !== 'string' || !document.storage_path) {
       throw new HttpsError('not-found', 'Document file is unavailable.');
     }
 
-    const [url] = await storage.bucket().file(document.storage_path).getSignedUrl({
-      action: 'read',
-      expires: Date.now() + 15 * 60 * 1000,
-    });
-
-    return { url };
+    return { url: await buildDocumentDownloadUrl(document.storage_path) };
   },
 );
 

@@ -373,17 +373,24 @@ export class WikiService {
     this.isLoadingEntries.set(false);
   }
 
-  async getSourceDocumentLink(documentId: string): Promise<string | null> {
+  async getSourceDocumentLink(
+    documentId: string,
+    options?: { atlasId?: string | null; filename?: string | null },
+  ): Promise<string | null> {
     if (!this.functions) {
       return null;
     }
 
     const getWikiSourceDocumentLink = httpsCallable<
-      { documentId: string },
+      { documentId: string; atlasId?: string | null; filename?: string | null },
       WikiSourceDocumentLinkResponse
     >(this.functions, 'getWikiSourceDocumentLink');
 
-    const { data } = await getWikiSourceDocumentLink({ documentId });
+    const { data } = await getWikiSourceDocumentLink({
+      documentId,
+      atlasId: options?.atlasId ?? null,
+      filename: options?.filename ?? null,
+    });
     return data?.url ?? null;
   }
 
