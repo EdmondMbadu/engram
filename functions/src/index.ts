@@ -21,6 +21,16 @@ import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './u
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
 
+async function countPublicAtlasCollection(collectionName: string, userId: string, atlasId: string): Promise<number> {
+  const snapshot = await db
+    .collection(collectionName)
+    .where('user_id', '==', userId)
+    .where('atlas_id', '==', atlasId)
+    .count()
+    .get();
+  return snapshot.data().count;
+}
+
 function normalizeAtlasId(value: unknown): string | null {
   if (typeof value !== 'string') {
     return null;
@@ -218,6 +228,47 @@ export const getWikiTopicDetails = onCall(
         error instanceof Error ? error.message : 'Failed to load topic details.',
       );
     }
+  },
+);
+
+export const getPublicAtlasUsage = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const atlasId = String(request.data?.atlasId ?? '').trim();
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+
+    const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
+    if (!atlasSnapshot.exists) {
+      throw new HttpsError('not-found', 'Atlas not found.');
+    }
+
+    const atlas = atlasSnapshot.data();
+    if (!atlas?.is_public || !atlas.user_id) {
+      throw new HttpsError('permission-denied', 'Atlas is not public.');
+    }
+
+    const [documents, knowledgeEntries, wikiTopics, chatThreads] = await Promise.all([
+      countPublicAtlasCollection('documents', atlas.user_id, atlasId),
+      countPublicAtlasCollection('knowledge_entries', atlas.user_id, atlasId),
+      countPublicAtlasCollection('wiki_topics', atlas.user_id, atlasId),
+      countPublicAtlasCollection('chat_threads', atlas.user_id, atlasId),
+    ]);
+
+    return {
+      documents,
+      knowledge_entries: knowledgeEntries,
+      wiki_topics: wikiTopics,
+      queries: 0,
+      chat_threads: chatThreads,
+      total: documents + knowledgeEntries + wikiTopics + chatThreads,
+    };
   },
 );
 

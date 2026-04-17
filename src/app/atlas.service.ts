@@ -15,10 +15,11 @@ import {
   where,
   type Unsubscribe,
 } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import type { AtlasItem, AtlasUsage } from './atlas.models';
 import { AuthService } from './auth.service';
-import { getFirebaseFirestore, getFirebaseStorage } from './firebase.client';
+import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
 const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
 
@@ -29,6 +30,7 @@ export class AtlasService {
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore = this.isBrowser ? getFirebaseFirestore() : null;
   private readonly storage = this.isBrowser ? getFirebaseStorage() : null;
+  private readonly functions = this.isBrowser ? getFirebaseFunctions() : null;
 
   readonly atlases = signal<AtlasItem[]>([]);
   readonly activeAtlasId = signal<string | null>(this.loadActiveId());
@@ -265,6 +267,26 @@ export class AtlasService {
       chat_threads: chatThreads,
       total: documents + knowledgeEntries + wikiTopics + queriesCount + chatThreads,
     };
+  }
+
+  async getPublicAtlasUsage(atlasId: string): Promise<AtlasUsage> {
+    if (!this.functions) {
+      return {
+        documents: 0,
+        knowledge_entries: 0,
+        wiki_topics: 0,
+        queries: 0,
+        chat_threads: 0,
+        total: 0,
+      };
+    }
+
+    const getPublicAtlasUsage = httpsCallable<{ atlasId: string }, AtlasUsage>(
+      this.functions,
+      'getPublicAtlasUsage',
+    );
+    const { data } = await getPublicAtlasUsage({ atlasId });
+    return data;
   }
 
   async deleteAtlas(atlasId: string): Promise<void> {
