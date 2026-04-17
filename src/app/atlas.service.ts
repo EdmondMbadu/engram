@@ -44,6 +44,14 @@ export class AtlasService {
     const slug = atlas.slug?.trim() || this.slugify(atlas.name ?? '') || atlas.id;
     return `/atlas/${slug}`;
   });
+  readonly activeAtlasWikiLink = computed(() => {
+    const id = this.activeAtlasId();
+    if (!id) return '/wiki';
+    const atlas = this.atlases().find((a) => a.id === id);
+    if (!atlas) return '/wiki';
+    const slug = atlas.slug?.trim() || this.slugify(atlas.name ?? '') || atlas.id;
+    return atlas.is_public ? `/wiki/${slug}` : '/wiki';
+  });
 
   readonly activeAtlas = computed(() => {
     const id = this.activeAtlasId();

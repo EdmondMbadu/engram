@@ -43,6 +43,7 @@ export class ChatComponent implements AfterViewChecked {
   private readonly documentsService = inject(DocumentsService);
 
   readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
+  readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 

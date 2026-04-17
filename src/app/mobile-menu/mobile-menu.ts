@@ -16,6 +16,7 @@ export class MobileMenuComponent {
 
   private readonly atlasService = inject(AtlasService);
   readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
+  readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
   readonly navItems = [
     { route: '/chat', icon: 'chat', label: 'New Chat', key: 'chat' },
@@ -30,6 +31,10 @@ export class MobileMenuComponent {
 
   closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  routeFor(key: string, fallbackRoute: string): string {
+    return key === 'wiki' ? this.atlasWikiLink() : fallbackRoute;
   }
 
   @HostListener('document:keydown.escape')

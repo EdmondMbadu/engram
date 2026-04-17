@@ -24,6 +24,7 @@ export class WikiComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
+  readonly internalAtlasWikiLink = this.atlasService.activeAtlasWikiLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 
@@ -54,6 +55,7 @@ export class WikiComponent {
     if (!atlas) return null;
     return `/wiki/${atlas.slug || atlas.id}`;
   });
+  readonly atlasWikiLink = computed(() => this.publicWikiLink() ?? this.internalAtlasWikiLink());
 
   readonly isSigningOut = signal(false);
   readonly avatarMenuOpen = signal(false);
