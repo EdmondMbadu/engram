@@ -8,7 +8,7 @@
           </div>
           <div>
             <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
-            <h1 class="text-xl font-black tracking-tighter">Atlas Settings</h1>
+            <h1 class="text-xl font-black tracking-tighter">Wiki Settings</h1>
           </div>
         </a>
       </div>
@@ -30,10 +30,10 @@
     <section class="rounded-[28px] border border-[var(--line)] bg-[var(--surface)] p-6">
       <div class="flex flex-col gap-3 border-b border-[var(--line)] pb-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">Atlas Admin</p>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">Wiki Admin</p>
           <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Keep the switcher simple.</h2>
           <p class="mt-3 max-w-3xl text-sm leading-6 text-[var(--muted)]">
-            Rename atlases here, inspect what each atlas contains, and delete empty ones without crowding the dropdown.
+            Rename Wikis here, inspect what each Wiki contains, and delete empty ones without crowding the dropdown.
           </p>
         </div>
         <a
@@ -41,7 +41,7 @@
           class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--soft-fill-strong)]"
         >
           <span class="material-symbols-outlined text-[1rem]">upload_file</span>
-          <span>Upload into active atlas</span>
+          <span>Upload into active Wiki</span>
         </a>
       </div>
 
@@ -95,7 +95,7 @@
 
                 <p class="mt-3 text-sm text-[var(--muted)]">
                   @if (isUsageLoading(atlas.id)) {
-                    Checking atlas contents...
+                    Checking Wiki contents...
                   } @else {
                     {{ usageLabel(usage(atlas.id)) }}
                   }
@@ -136,7 +136,7 @@
                     type="button"
                     (click)="selectAtlas(atlas.id)"
                     class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
-                  >Use atlas</button>
+                  >Use Wiki</button>
                 }
                 @if (renamingId() !== atlas.id) {
                   <button
@@ -155,16 +155,16 @@
                   class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-35"
                 >
                   <span class="material-symbols-outlined text-[1rem]">delete</span>
-                  <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete empty atlas' }}</span>
+                  <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete empty Wiki' }}</span>
                 </button>
               </div>
             </div>
 
             @if (!hasMultipleAtlases()) {
-              <p class="mt-4 text-xs text-[var(--muted)]">You must keep at least one atlas.</p>
+              <p class="mt-4 text-xs text-[var(--muted)]">You must keep at least one Wiki.</p>
             } @else if (usage(atlas.id); as details) {
               @if (details.total > 0) {
-                <p class="mt-4 text-xs text-[var(--muted)]">Delete becomes available only when an atlas is empty.</p>
+                <p class="mt-4 text-xs text-[var(--muted)]">Delete becomes available only when a Wiki is empty.</p>
               }
             }
           </article>
