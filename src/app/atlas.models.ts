@@ -35,6 +35,7 @@ export interface AtlasItem {
   is_public: boolean;
   logo_url: string | null;
   hero_url: string | null;
+  video_url: string | null;
   cover_color: string | null;
   created_at?: { toDate(): Date } | Date | null;
   updated_at?: { toDate(): Date } | Date | null;

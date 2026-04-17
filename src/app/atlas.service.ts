@@ -15,7 +15,7 @@ import {
   where,
   type Unsubscribe,
 } from 'firebase/firestore';
-import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import type { AtlasItem, AtlasUsage } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseStorage } from './firebase.client';
@@ -130,6 +130,7 @@ export class AtlasService {
       is_public: false,
       logo_url: null,
       hero_url: null,
+      video_url: null,
       cover_color: null,
       created_at: serverTimestamp(),
       updated_at: serverTimestamp(),
@@ -172,9 +173,39 @@ export class AtlasService {
     return await getDownloadURL(ref);
   }
 
+  async uploadAtlasVideo(
+    atlasId: string,
+    file: File,
+  ): Promise<string> {
+    if (!this.storage) throw new Error('Storage unavailable.');
+    if (!file.type.startsWith('video/')) {
+      throw new Error('Only video files are supported.');
+    }
+    if (file.size > 100 * 1024 * 1024) {
+      throw new Error('Video must be under 100 MB.');
+    }
+    const ext = (file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g, '') || 'mp4';
+    const path = `atlases/${atlasId}/video-${Date.now()}.${ext}`;
+    const ref = storageRef(this.storage, path);
+    await uploadBytes(ref, file, { contentType: file.type });
+    return await getDownloadURL(ref);
+  }
+
+  async removeAtlasVideo(atlasId: string, videoUrl: string): Promise<void> {
+    if (this.storage && videoUrl) {
+      try {
+        const ref = storageRef(this.storage, videoUrl);
+        await deleteObject(ref);
+      } catch {
+        // ignore — file may already be deleted
+      }
+    }
+    await this.updateAtlas(atlasId, { video_url: null });
+  }
+
   async updateAtlas(
     atlasId: string,
-    patch: Partial<Pick<AtlasItem, 'description' | 'logo_url' | 'hero_url' | 'is_public'>>,
+    patch: Partial<Pick<AtlasItem, 'description' | 'logo_url' | 'hero_url' | 'video_url' | 'is_public'>>,
   ): Promise<void> {
     if (!this.firestore) return;
     await updateDoc(doc(this.firestore, 'atlases', atlasId), {
@@ -307,6 +338,7 @@ export class AtlasService {
       is_public: false,
       logo_url: null,
       hero_url: null,
+      video_url: null,
       cover_color: null,
       created_at: serverTimestamp(),
       updated_at: serverTimestamp(),

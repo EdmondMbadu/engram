@@ -75,6 +75,8 @@ export class AtlasLandingComponent {
   readonly togglingPublic = signal(false);
   readonly uploadingLogo = signal(false);
   readonly uploadingHero = signal(false);
+  readonly uploadingVideo = signal(false);
+  readonly removingVideo = signal(false);
 
   readonly usage = signal<AtlasUsage | null>(null);
   readonly usageLoading = signal(false);
@@ -277,6 +279,39 @@ export class AtlasLandingComponent {
   onDocumentClick(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.querySelector('.avatar-menu-wrapper')?.contains(event.target as Node)) {
       this.avatarMenuOpen.set(false);
+    }
+  }
+
+  async onVideoSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    const a = this.atlas();
+    if (!a || !this.isOwner()) return;
+
+    this.editError.set(null);
+    this.uploadingVideo.set(true);
+    try {
+      const url = await this.atlasService.uploadAtlasVideo(a.id, file);
+      await this.atlasService.updateAtlas(a.id, { video_url: url });
+    } catch (error) {
+      this.editError.set(error instanceof Error ? error.message : 'Video upload failed.');
+    } finally {
+      this.uploadingVideo.set(false);
+    }
+  }
+
+  async removeVideo(): Promise<void> {
+    const a = this.atlas();
+    if (!a || !this.isOwner() || !a.video_url) return;
+    this.removingVideo.set(true);
+    try {
+      await this.atlasService.removeAtlasVideo(a.id, a.video_url);
+    } catch (error) {
+      this.editError.set(error instanceof Error ? error.message : 'Failed to remove video.');
+    } finally {
+      this.removingVideo.set(false);
     }
   }
 
