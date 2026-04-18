@@ -48,6 +48,18 @@ function normalizeTimestamp(value: unknown): string | null {
 
 type PublicDocumentCandidate = Record<string, unknown> & { id: string };
 
+function serializePublicAtlas(
+  atlasId: string,
+  atlas: Record<string, unknown>,
+): Record<string, unknown> {
+  return {
+    id: atlasId,
+    ...atlas,
+    created_at: normalizeTimestamp(atlas.created_at),
+    updated_at: normalizeTimestamp(atlas.updated_at),
+  };
+}
+
 async function buildDocumentDownloadUrl(storagePath: string): Promise<string> {
   const bucket = storage.bucket();
   const file = bucket.file(storagePath);
@@ -85,6 +97,33 @@ async function loadPublicAtlasById(atlasId: string) {
   return {
     id: atlasSnapshot.id,
     user_id: String(atlas.user_id),
+    is_public: atlas.is_public === true,
+    ...atlas,
+  };
+}
+
+async function loadPublicAtlasBySlug(slug: string) {
+  const trimmedSlug = slug.trim();
+  if (!trimmedSlug) {
+    throw new HttpsError('invalid-argument', 'slug is required.');
+  }
+
+  const snapshot = await db
+    .collection('atlases')
+    .where('slug', '==', trimmedSlug)
+    .where('is_public', '==', true)
+    .limit(1)
+    .get();
+
+  const atlasSnapshot = snapshot.docs[0];
+  if (!atlasSnapshot) {
+    throw new HttpsError('not-found', 'Atlas not found.');
+  }
+
+  const atlas = atlasSnapshot.data() as Record<string, unknown>;
+  return {
+    id: atlasSnapshot.id,
+    user_id: String(atlas.user_id ?? ''),
     is_public: atlas.is_public === true,
     ...atlas,
   };
@@ -206,6 +245,26 @@ export const prepareDocumentUpload = onCall({ region: callableRegion, cors: true
     createdAt: clientTimestamp().toMillis(),
   };
 });
+
+export const getPublicAtlasBySlug = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const slug = String(request.data?.slug ?? '').trim();
+    if (!slug) {
+      throw new HttpsError('invalid-argument', 'slug is required.');
+    }
+
+    const atlas = await loadPublicAtlasBySlug(slug);
+    return {
+      atlas: serializePublicAtlas(atlas.id, atlas),
+    };
+  },
+);
 
 export const submitUrlDocument = onCall(
   { region: callableRegion, cors: true },

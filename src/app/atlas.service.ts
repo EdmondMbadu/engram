@@ -23,6 +23,10 @@ import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from '
 
 const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
 
+type PublicAtlasBySlugResponse = {
+  atlas: Record<string, unknown> | null;
+};
+
 @Injectable({ providedIn: 'root' })
 export class AtlasService {
   private readonly authService = inject(AuthService);
@@ -150,7 +154,29 @@ export class AtlasService {
   }
 
   async getPublicAtlasBySlug(slug: string): Promise<AtlasItem | null> {
-    if (!this.firestore) return null;
+    if (this.functions) {
+      try {
+        const getPublicAtlasBySlug = httpsCallable<
+          { slug: string },
+          PublicAtlasBySlugResponse
+        >(
+          this.functions,
+          'getPublicAtlasBySlug',
+        );
+
+        const { data } = await getPublicAtlasBySlug({ slug });
+        if (data?.atlas) {
+          return this.hydrateAtlas(data.atlas);
+        }
+      } catch (error) {
+        console.warn('[AtlasService] getPublicAtlasBySlug callable failed; falling back to Firestore query.', error);
+      }
+    }
+
+    if (!this.firestore) {
+      return null;
+    }
+
     const snap = await getDocs(
       query(
         collection(this.firestore, 'atlases'),
@@ -159,9 +185,15 @@ export class AtlasService {
         limit(1),
       ),
     );
-    const d = snap.docs[0];
-    if (!d) return null;
-    return { id: d.id, ...(d.data() as Omit<AtlasItem, 'id'>) };
+    const atlasDoc = snap.docs[0];
+    if (!atlasDoc) {
+      return null;
+    }
+
+    return this.hydrateAtlas({
+      id: atlasDoc.id,
+      ...(atlasDoc.data() as Record<string, unknown>),
+    });
   }
 
   async uploadAtlasImage(
@@ -388,6 +420,37 @@ export class AtlasService {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 48) || 'atlas';
+  }
+
+  private hydrateAtlas(data: Record<string, unknown>): AtlasItem {
+    return {
+      ...(data as Omit<AtlasItem, 'created_at' | 'updated_at'>),
+      id: String(data['id'] ?? ''),
+      user_id: String(data['user_id'] ?? ''),
+      name: String(data['name'] ?? ''),
+      slug: String(data['slug'] ?? ''),
+      description: typeof data['description'] === 'string' ? data['description'] : null,
+      is_public: data['is_public'] === true,
+      logo_url: typeof data['logo_url'] === 'string' ? data['logo_url'] : null,
+      hero_url: typeof data['hero_url'] === 'string' ? data['hero_url'] : null,
+      video_url: typeof data['video_url'] === 'string' ? data['video_url'] : null,
+      cover_color: typeof data['cover_color'] === 'string' ? data['cover_color'] : null,
+      created_at: this.hydrateDateValue(data['created_at']),
+      updated_at: this.hydrateDateValue(data['updated_at']),
+    };
+  }
+
+  private hydrateDateValue(value: unknown): Date | null {
+    if (!value) return null;
+    if (value instanceof Date) return value;
+    if (typeof value === 'string' || typeof value === 'number') {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+    if (typeof (value as { toDate?: () => Date }).toDate === 'function') {
+      return (value as { toDate(): Date }).toDate();
+    }
+    return null;
   }
 
   private async countAtlasCollection(
