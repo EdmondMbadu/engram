@@ -57,6 +57,14 @@ export class AtlasLandingComponent {
     const uid = this.authService.uid();
     return !!atlas && !!uid && atlas.user_id === uid;
   });
+  readonly canViewSpaces = computed(() => {
+    const atlas = this.atlas();
+    return !!atlas && (this.isOwner() || atlas.is_public);
+  });
+  readonly isPublicVisitor = computed(() => {
+    const atlas = this.atlas();
+    return !!atlas && atlas.is_public && !this.isOwner();
+  });
 
   readonly isSigningOut = signal(false);
   readonly avatarMenuOpen = signal(false);
@@ -182,12 +190,33 @@ export class AtlasLandingComponent {
     if (id) this.atlasService.setActive(id);
   }
 
+  private publicAtlasSlug(): string | null {
+    const atlas = this.atlas();
+    if (!atlas?.is_public) return null;
+    return atlas.slug?.trim() || this.atlasService.slugify(atlas.name ?? '') || atlas.id;
+  }
+
+  private publicRoute(segment: 'chat' | 'library' | 'upload' | 'wiki'): string | null {
+    const slug = this.publicAtlasSlug();
+    return slug ? `/${segment}/${slug}` : null;
+  }
+
   openChat(): void {
+    const publicRoute = this.publicRoute('chat');
+    if (publicRoute && this.isPublicVisitor()) {
+      void this.router.navigateByUrl(publicRoute);
+      return;
+    }
     this.activateThisAtlas();
     void this.router.navigateByUrl('/chat');
   }
 
   openUpload(): void {
+    const publicRoute = this.publicRoute('upload');
+    if (publicRoute && this.isPublicVisitor()) {
+      void this.router.navigateByUrl(publicRoute);
+      return;
+    }
     this.activateThisAtlas();
     void this.router.navigateByUrl('/upload');
   }
@@ -198,20 +227,23 @@ export class AtlasLandingComponent {
   }
 
   openLibrary(): void {
+    const publicRoute = this.publicRoute('library');
+    if (publicRoute && this.isPublicVisitor()) {
+      void this.router.navigateByUrl(publicRoute);
+      return;
+    }
     this.activateThisAtlas();
     void this.router.navigateByUrl('/library');
   }
 
   openWiki(): void {
-    const atlas = this.atlas();
-    if (!atlas) return;
-    if (atlas.is_public) {
-      const slug = atlas.slug?.trim() || this.atlasService.slugify(atlas.name ?? '') || atlas.id;
-      void this.router.navigateByUrl(`/wiki/${slug}`);
+    const publicRoute = this.publicRoute('wiki');
+    if (publicRoute && this.isPublicVisitor()) {
+      void this.router.navigateByUrl(publicRoute);
       return;
     }
     this.activateThisAtlas();
-    void this.router.navigateByUrl('/wiki');
+    void this.router.navigateByUrl(publicRoute ?? '/wiki');
   }
 
   startEdit(): void {

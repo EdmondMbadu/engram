@@ -11,6 +11,7 @@ import { AtlasService } from '../atlas.service';
 export class MobileMenuComponent {
   /** Which nav item is currently active */
   readonly activePage = input<string>('home');
+  readonly publicSlug = input<string | null>(null);
 
   readonly menuOpen = signal(false);
 
@@ -34,7 +35,17 @@ export class MobileMenuComponent {
   }
 
   routeFor(key: string, fallbackRoute: string): string {
+    const slug = this.publicSlug()?.trim();
+    if (slug) {
+      if (key === 'wiki') return `/wiki/${slug}`;
+      return `/${key}/${slug}`;
+    }
     return key === 'wiki' ? this.atlasWikiLink() : fallbackRoute;
+  }
+
+  homeLink(): string {
+    const slug = this.publicSlug()?.trim();
+    return slug ? `/atlas/${slug}` : this.atlasHomeLink();
   }
 
   @HostListener('document:keydown.escape')

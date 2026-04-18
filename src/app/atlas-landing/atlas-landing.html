@@ -270,7 +270,7 @@
                 }
               </h3>
               <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                @if (isSignedIn()) {
+                @if (canViewSpaces()) {
                   <!-- Chat Card -->
                   <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)]/50 hover:shadow-[0_20px_40px_rgba(59,175,98,0.15)] active:translate-y-0" (click)="openChat()">
                     <div class="relative aspect-[16/9] overflow-hidden">
@@ -325,25 +325,23 @@
                     </div>
                   </button>
 
-                  @if (isOwner()) {
-                    <!-- Upload Card -->
-                    <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border-2 border-dashed border-[var(--accent)]/40 bg-[var(--surface)] text-left transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)] hover:shadow-[0_20px_40px_rgba(59,175,98,0.2)] active:translate-y-0" (click)="openUpload()">
-                      <div class="relative aspect-[16/9] overflow-hidden">
-                        <div 
-                          class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
-                          style="background-image: url('/assets/hero_neural.png'); filter: hue-rotate(130deg) brightness(0.6) saturate(1.2);"
-                        ></div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                        <div class="relative flex h-full w-full items-center justify-center">
-                          <span class="material-symbols-outlined text-[3.5rem] text-white opacity-40 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-80">upload_file</span>
-                        </div>
+                  <!-- Upload Card -->
+                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border-2 border-dashed border-[var(--accent)]/40 bg-[var(--surface)] text-left transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)] hover:shadow-[0_20px_40px_rgba(59,175,98,0.2)] active:translate-y-0" (click)="openUpload()">
+                    <div class="relative aspect-[16/9] overflow-hidden">
+                      <div 
+                        class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
+                        style="background-image: url('/assets/hero_neural.png'); filter: hue-rotate(130deg) brightness(0.6) saturate(1.2);"
+                      ></div>
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                      <div class="relative flex h-full w-full items-center justify-center">
+                        <span class="material-symbols-outlined text-[3.5rem] text-white opacity-40 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-80">upload_file</span>
                       </div>
-                      <div class="flex flex-col gap-1 px-6 py-5">
-                        <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Expand knowledge</div>
-                        <h4 class="text-xl font-bold text-[var(--text)]">Upload documents</h4>
-                      </div>
-                    </button>
-                  }
+                    </div>
+                    <div class="flex flex-col gap-1 px-6 py-5">
+                      <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Expand knowledge</div>
+                      <h4 class="text-xl font-bold text-[var(--text)]">Upload documents</h4>
+                    </div>
+                  </button>
                 } @else {
                   <div class="col-span-full">
                     <div class="flex flex-col items-center gap-3 rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] px-8 py-12 text-center shadow-[var(--shadow-floating)]">

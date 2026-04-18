@@ -35,6 +35,14 @@ type DeleteDocumentResponse = {
   updatedTopicIds: string[];
 };
 
+type PublicAtlasDocumentsResponse = {
+  documents: Array<Record<string, unknown>>;
+};
+
+type WikiSourceDocumentLinkResponse = {
+  url: string;
+};
+
 @Injectable({ providedIn: 'root' })
 export class DocumentsService {
   private readonly authService = inject(AuthService);
@@ -195,6 +203,46 @@ export class DocumentsService {
     return getDownloadURL(ref(this.storage, document.storage_path));
   }
 
+  async getAccessibleDownloadUrl(
+    document: DocumentItem,
+    options?: { atlasId?: string | null },
+  ): Promise<string | null> {
+    if (options?.atlasId) {
+      if (!this.functions) {
+        return null;
+      }
+
+      const getWikiSourceDocumentLink = httpsCallable<
+        { documentId: string; atlasId?: string | null; filename?: string | null },
+        WikiSourceDocumentLinkResponse
+      >(this.functions, 'getWikiSourceDocumentLink');
+
+      const { data } = await getWikiSourceDocumentLink({
+        documentId: document.id,
+        atlasId: options.atlasId,
+        filename: document.title || document.filename,
+      });
+
+      return data?.url ?? null;
+    }
+
+    return this.getDownloadUrl(document);
+  }
+
+  async getPublicAtlasDocuments(atlasId: string): Promise<DocumentItem[]> {
+    if (!this.functions) {
+      return [];
+    }
+
+    const getPublicAtlasDocuments = httpsCallable<
+      { atlasId: string },
+      PublicAtlasDocumentsResponse
+    >(this.functions, 'getPublicAtlasDocuments');
+
+    const { data } = await getPublicAtlasDocuments({ atlasId });
+    return (data.documents ?? []).map((document) => this.hydrateDocument(document));
+  }
+
   async deleteDocument(documentId: string): Promise<void> {
     if (!this.functions) {
       return;
@@ -276,5 +324,32 @@ export class DocumentsService {
       ...progress,
       [documentId]: percentage,
     }));
+  }
+
+  private hydrateDocument(document: Record<string, unknown>): DocumentItem {
+    return {
+      ...(document as Omit<DocumentItem, 'id'>),
+      id: String(document['id'] ?? ''),
+      uploaded_at: this.hydrateTimestamp(document['uploaded_at']),
+      indexed_at: this.hydrateTimestamp(document['indexed_at']),
+      last_heartbeat_at: this.hydrateTimestamp(document['last_heartbeat_at']),
+    };
+  }
+
+  private hydrateTimestamp(value: unknown): { toDate(): Date } | Date | null {
+    if (!value) {
+      return null;
+    }
+    if (value instanceof Date) {
+      return value;
+    }
+    if (typeof value === 'string' || typeof value === 'number') {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+    if (typeof (value as { toDate?: () => Date }).toDate === 'function') {
+      return value as { toDate(): Date };
+    }
+    return null;
   }
 }

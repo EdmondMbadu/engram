@@ -16,31 +16,33 @@
           <span class="text-xl font-black tracking-tighter text-[var(--text)]">Living Wiki</span>
         </a>
       </div>
-      <app-atlas-switcher></app-atlas-switcher>
+      @if (!isPublicView()) {
+        <app-atlas-switcher></app-atlas-switcher>
 
-      <button
-        type="button"
-        class="mb-6 flex items-center justify-center gap-2 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-white/10"
-        (click)="newChat()"
-      >
-        <span class="material-symbols-outlined text-[1.1rem]">edit_square</span>
-        <span>New chat</span>
-      </button>
+        <button
+          type="button"
+          class="mb-6 flex items-center justify-center gap-2 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-white/10"
+          (click)="newChat()"
+        >
+          <span class="material-symbols-outlined text-[1.1rem]">edit_square</span>
+          <span>New chat</span>
+        </button>
+      }
 
       <nav class="space-y-1 text-sm">
         <a [routerLink]="atlasHomeLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
           <span class="material-symbols-outlined">home</span>
           <span>Home</span>
         </a>
-        <a routerLink="/chat" class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)]">
+        <a [routerLink]="chatLink()" class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)]">
           <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">chat</span>
           <span>Chat</span>
         </a>
-        <a routerLink="/upload" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+        <a [routerLink]="uploadLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
           <span class="material-symbols-outlined">neurology</span>
           <span>Upload</span>
         </a>
-        <a routerLink="/library" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+        <a [routerLink]="libraryLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
           <span class="material-symbols-outlined">library_books</span>
           <span>Library</span>
         </a>
@@ -50,78 +52,84 @@
         </a>
       </nav>
 
-      <div class="mt-6 flex min-h-0 flex-1 flex-col">
-        <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Threads</p>
-        <div class="mt-3 flex-1 min-h-0 space-y-1 overflow-y-auto pr-1">
-          @if (queryHistory().length === 0) {
-            <p class="px-2 text-xs leading-6 text-[var(--muted)]">No threads yet.</p>
-          } @else {
-            @for (item of visibleHistory(); track item.id) {
-              <div
-                class="group flex items-start gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/5"
-                [class.bg-white/5]="activeHistoryId() === item.id"
-              >
-                <button
-                  type="button"
-                  class="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-0.5 py-0.5 text-left text-sm"
-                  [class.text-[var(--text)]]="activeHistoryId() === item.id"
-                  [class.text-[var(--muted)]]="activeHistoryId() !== item.id"
-                  (click)="loadHistoryItem(item)"
-                >
-                  <span class="material-symbols-outlined mt-0.5 text-[1rem] opacity-60">chat_bubble</span>
-                  <span class="min-w-0 flex-1">
-                    <span class="block truncate">{{ truncate(historyTitle(item), 34) }}</span>
-                    <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
-                      {{ historyTurnsLabel(item) }} · {{ formatRelativeDateShort(historyUpdatedAt(item)) }}
-                    </span>
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  class="danger-action rounded-full p-1.5 text-[var(--muted)] opacity-0 transition-opacity hover:bg-white/5 group-hover:opacity-100"
-                  [class.opacity-100]="activeHistoryId() === item.id"
-                  [disabled]="isDeletingHistory()"
-                  [attr.aria-label]="'Delete thread ' + truncate(historyTitle(item), 34)"
-                  (click)="confirmDeleteHistoryItem(item, $event)"
-                >
-                  <span class="material-symbols-outlined text-[1rem]">delete</span>
-                </button>
-              </div>
-            }
-            @if (queryHistory().length > 6) {
-              <button
-                type="button"
-                class="mt-1 flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-bold text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
-                (click)="toggleHistoryExpanded()"
-              >
-                <span class="material-symbols-outlined text-[1rem]">{{ historyExpanded() ? 'expand_less' : 'expand_more' }}</span>
-                <span>{{ historyExpanded() ? 'Show less' : 'Show more (' + (queryHistory().length - 6) + ')' }}</span>
-              </button>
-            }
-          }
+      @if (isPublicView()) {
+        <div class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm text-[var(--muted)]">
+          Public view only. Sign in to ask questions and save chat threads for this wiki.
         </div>
-      </div>
+      } @else {
+        <div class="mt-6 flex min-h-0 flex-1 flex-col">
+          <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Threads</p>
+          <div class="mt-3 flex-1 min-h-0 space-y-1 overflow-y-auto pr-1">
+            @if (queryHistory().length === 0) {
+              <p class="px-2 text-xs leading-6 text-[var(--muted)]">No threads yet.</p>
+            } @else {
+              @for (item of visibleHistory(); track item.id) {
+                <div
+                  class="group flex items-start gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/5"
+                  [class.bg-white/5]="activeHistoryId() === item.id"
+                >
+                  <button
+                    type="button"
+                    class="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-0.5 py-0.5 text-left text-sm"
+                    [class.text-[var(--text)]]="activeHistoryId() === item.id"
+                    [class.text-[var(--muted)]]="activeHistoryId() !== item.id"
+                    (click)="loadHistoryItem(item)"
+                  >
+                    <span class="material-symbols-outlined mt-0.5 text-[1rem] opacity-60">chat_bubble</span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block truncate">{{ truncate(historyTitle(item), 34) }}</span>
+                      <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+                        {{ historyTurnsLabel(item) }} · {{ formatRelativeDateShort(historyUpdatedAt(item)) }}
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class="danger-action rounded-full p-1.5 text-[var(--muted)] opacity-0 transition-opacity hover:bg-white/5 group-hover:opacity-100"
+                    [class.opacity-100]="activeHistoryId() === item.id"
+                    [disabled]="isDeletingHistory()"
+                    [attr.aria-label]="'Delete thread ' + truncate(historyTitle(item), 34)"
+                    (click)="confirmDeleteHistoryItem(item, $event)"
+                  >
+                    <span class="material-symbols-outlined text-[1rem]">delete</span>
+                  </button>
+                </div>
+              }
+              @if (queryHistory().length > 6) {
+                <button
+                  type="button"
+                  class="mt-1 flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-bold text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
+                  (click)="toggleHistoryExpanded()"
+                >
+                  <span class="material-symbols-outlined text-[1rem]">{{ historyExpanded() ? 'expand_less' : 'expand_more' }}</span>
+                  <span>{{ historyExpanded() ? 'Show less' : 'Show more (' + (queryHistory().length - 6) + ')' }}</span>
+                </button>
+              }
+            }
+          </div>
+        </div>
 
-      <div class="mt-4 border-t border-white/5 pt-4">
-        <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
-          <span class="material-symbols-outlined text-[1.2rem]">logout</span>
-          <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
-        </button>
-      </div>
+        <div class="mt-4 border-t border-white/5 pt-4">
+          <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
+            <span class="material-symbols-outlined text-[1.2rem]">logout</span>
+            <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
+          </button>
+        </div>
+      }
     </aside>
 
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
       <header class="theme-nav sticky top-0 z-40 flex h-16 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
         <div class="flex min-w-0 items-center gap-3 md:gap-8">
-          <app-mobile-menu activePage="chat"></app-mobile-menu>
+          <app-mobile-menu activePage="chat" [publicSlug]="routeSlug()"></app-mobile-menu>
           <div>
-            <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">Chat</h1>
-            <p class="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Query pre-compiled knowledge with citations</p>
+            <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">{{ pageTitle() }}</h1>
+            <p class="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">{{ isPublicView() ? 'Read-only public access' : 'Query pre-compiled knowledge with citations' }}</p>
           </div>
         </div>
 
         <div class="flex items-center gap-3">
-          @if (hasMessages()) {
+          @if (!isPublicView() && hasMessages()) {
             <button
               type="button"
               class="ghost-btn !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
@@ -130,58 +138,79 @@
               {{ copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat' }}
             </button>
           }
-          <app-atlas-badge></app-atlas-badge>
+          @if (!isPublicView()) {
+            <app-atlas-badge></app-atlas-badge>
+          }
           <app-theme-toggle></app-theme-toggle>
-          <div class="avatar-menu-wrapper relative">
-            <button
-              type="button"
-              class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-bold text-[var(--accent)] transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
-              (click)="toggleAvatarMenu()"
-              [attr.aria-expanded]="avatarMenuOpen()"
-              aria-haspopup="true"
-            >
-              {{ userInitials() }}
-            </button>
+          @if (isPublicView()) {
+            <a routerLink="/sign-in" class="primary-btn !px-4 !py-2.5 text-sm">Sign in</a>
+          } @else {
+            <div class="avatar-menu-wrapper relative">
+              <button
+                type="button"
+                class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-bold text-[var(--accent)] transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
+                (click)="toggleAvatarMenu()"
+                [attr.aria-expanded]="avatarMenuOpen()"
+                aria-haspopup="true"
+              >
+                {{ userInitials() }}
+              </button>
 
-            @if (avatarMenuOpen()) {
-              <div class="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)] backdrop-blur-xl" role="menu">
-                <div class="border-b border-[var(--line)] px-4 py-4">
-                  <p class="text-sm font-bold text-[var(--text)] truncate">{{ currentUserName() }}</p>
-                  <p class="mt-0.5 text-xs text-[var(--muted)] truncate">{{ currentUserEmail() }}</p>
+              @if (avatarMenuOpen()) {
+                <div class="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)] backdrop-blur-xl" role="menu">
+                  <div class="border-b border-[var(--line)] px-4 py-4">
+                    <p class="text-sm font-bold text-[var(--text)] truncate">{{ currentUserName() }}</p>
+                    <p class="mt-0.5 text-xs text-[var(--muted)] truncate">{{ currentUserEmail() }}</p>
+                  </div>
+                  <div class="py-1.5">
+                    <button type="button" role="menuitem" class="danger-action flex w-full items-center gap-3 px-4 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
+                      <span class="material-symbols-outlined text-base">logout</span>
+                      {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
+                    </button>
+                  </div>
                 </div>
-                <div class="py-1.5">
-                  <button type="button" role="menuitem" class="danger-action flex w-full items-center gap-3 px-4 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
-                    <span class="material-symbols-outlined text-base">logout</span>
-                    {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
-                  </button>
-                </div>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          }
         </div>
       </header>
 
       <div class="relative flex min-h-0 flex-1 flex-col">
         <div class="flex-1 min-h-0 overflow-y-auto">
           <div class="mx-auto w-full max-w-3xl px-5 py-8 md:px-8">
-            @if (!hasMessages()) {
+            @if (publicNotFound()) {
               <div class="flex flex-col items-center pt-12 text-center">
-                <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">General query</p>
-                <h2 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">Ask your Wiki</h2>
+                <h2 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">This chat is unavailable</h2>
                 <p class="mt-4 max-w-xl text-base leading-8 text-[var(--muted)]">
-                  Living Wiki answers from pre-compiled knowledge entries and returns citation passages tied to exact stored source spans.
+                  The linked atlas could not be found or is no longer public.
+                </p>
+              </div>
+            } @else if (!hasMessages()) {
+              <div class="flex flex-col items-center pt-12 text-center">
+                <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">{{ isPublicView() ? 'Public chat preview' : 'General query' }}</p>
+                <h2 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">{{ isPublicView() ? 'Chat is view only' : 'Ask your Wiki' }}</h2>
+                <p class="mt-4 max-w-xl text-base leading-8 text-[var(--muted)]">
+                  {{ isPublicView() ? 'Browse the library and wiki without signing in. Asking questions and saving threads requires an authenticated workspace.' : 'Living Wiki answers from pre-compiled knowledge entries and returns citation passages tied to exact stored source spans.' }}
                 </p>
 
-                <div class="mt-10 w-full space-y-3">
-                  <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Try asking</p>
-                  <div class="flex flex-wrap justify-center gap-2.5">
-                    @for (prompt of quickPrompts; track prompt) {
-                      <button type="button" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-[var(--muted)] transition-colors hover:text-[var(--text)]" (click)="usePrompt(prompt)">
-                        {{ prompt }}
-                      </button>
-                    }
+                @if (isPublicView()) {
+                  <div class="mt-10 flex flex-wrap justify-center gap-3">
+                    <a [routerLink]="libraryLink()" class="ghost-btn !px-4 !py-3 text-sm">Browse library</a>
+                    <a [routerLink]="atlasWikiLink()" class="ghost-btn !px-4 !py-3 text-sm">Read wiki</a>
+                    <a routerLink="/sign-in" class="primary-btn !px-4 !py-3 text-sm">Sign in to chat</a>
                   </div>
-                </div>
+                } @else {
+                  <div class="mt-10 w-full space-y-3">
+                    <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Try asking</p>
+                    <div class="flex flex-wrap justify-center gap-2.5">
+                      @for (prompt of quickPrompts; track prompt) {
+                        <button type="button" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-[var(--muted)] transition-colors hover:text-[var(--text)]" (click)="usePrompt(prompt)">
+                          {{ prompt }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
               </div>
             } @else {
               <div class="space-y-8 pb-6">
@@ -325,19 +354,24 @@
                 (ngModelChange)="question.set($event)"
                 (keydown)="onComposerKeydown($event)"
                 rows="1"
-                placeholder="Message Living Wiki..."
+                [placeholder]="composerPlaceholder()"
+                [disabled]="isPublicView()"
                 class="max-h-48 min-h-[2.5rem] w-full resize-none bg-transparent text-base leading-7 text-[var(--text)] placeholder:text-[var(--muted)]/60 focus:outline-none"
               ></textarea>
               <div class="mt-2 flex items-center justify-between gap-3 pt-2">
                 <p class="text-[11px] text-[var(--muted)]">
-                  <kbd class="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">⌘</kbd>
-                  <kbd class="ml-1 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">↵</kbd>
-                  to send
+                  @if (isPublicView()) {
+                    Public chat is view only.
+                  } @else {
+                    <kbd class="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">⌘</kbd>
+                    <kbd class="ml-1 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">↵</kbd>
+                    to send
+                  }
                 </p>
                 <button
                   type="button"
                   class="primary-btn !px-5 !py-2.5 text-sm"
-                  [disabled]="isSubmitting() || !question().trim()"
+                  [disabled]="!canSubmit()"
                   (click)="submitQuestion()"
                 >
                   @if (isSubmitting()) {
@@ -347,7 +381,7 @@
                     </span>
                   } @else {
                     <span class="flex items-center gap-1.5">
-                      <span>Send</span>
+                      <span>{{ isPublicView() ? 'View only' : 'Send' }}</span>
                       <span class="material-symbols-outlined text-base">arrow_upward</span>
                     </span>
                   }

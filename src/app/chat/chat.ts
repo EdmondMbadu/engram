@@ -1,7 +1,9 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, ViewChild, computed, inject, signal } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import type { ChatHistoryItem, ChatStoredMessage, CitationPassage } from '../atlas.models';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { map } from 'rxjs';
+import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, CitationPassage } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { ChatService } from '../chat.service';
@@ -41,11 +43,14 @@ export class ChatComponent implements AfterViewChecked {
   private readonly atlasService = inject(AtlasService);
   private readonly chatService = inject(ChatService);
   private readonly documentsService = inject(DocumentsService);
+  private readonly route = inject(ActivatedRoute);
 
-  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
-  readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
+  readonly routeSlug = toSignal(
+    this.route.paramMap.pipe(map((params) => params.get('slug'))),
+    { initialValue: this.route.snapshot.paramMap.get('slug') },
+  );
 
   private shouldScrollToEnd = false;
   private thinkingInterval: ReturnType<typeof setInterval> | null = null;
@@ -64,11 +69,22 @@ export class ChatComponent implements AfterViewChecked {
   readonly messageActionMenuId = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
+  readonly publicAtlas = signal<AtlasItem | null>(null);
+  readonly publicLookupDone = signal(false);
+  readonly isPublicView = computed(() => !!this.routeSlug());
+  readonly publicNotFound = computed(
+    () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
+  );
 
   @ViewChild('transcriptEnd') transcriptEnd?: ElementRef<HTMLElement>;
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
+  readonly atlasHomeLink = computed(() => this.publicRoute('atlas') ?? this.atlasService.activeAtlasHomeLink());
+  readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
+  readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');
+  readonly uploadLink = computed(() => this.publicRoute('upload') ?? '/upload');
+  readonly libraryLink = computed(() => this.publicRoute('library') ?? '/library');
   readonly queryHistory = this.chatService.queryHistory;
   readonly isSubmitting = this.chatService.isSubmitting;
   readonly submitError = this.chatService.submitError;
@@ -80,6 +96,13 @@ export class ChatComponent implements AfterViewChecked {
 
   readonly hasMessages = computed(() => this.messages().length > 0);
   readonly currentThinkingLabel = computed(() => THINKING_STAGES[this.thinkingStage()] ?? THINKING_STAGES[0]);
+  readonly pageTitle = computed(() =>
+    this.isPublicView() ? `${this.atlasService.displayName(this.publicAtlas())} Chat` : 'Chat',
+  );
+  readonly composerPlaceholder = computed(() =>
+    this.isPublicView() ? 'Sign in to ask questions about this wiki...' : 'Message Living Wiki...',
+  );
+  readonly canSubmit = computed(() => !this.isPublicView() && !this.isSubmitting() && !!this.question().trim());
 
   readonly quickPrompts = [
     'What does my knowledge base say about transformer architecture?',
@@ -98,7 +121,28 @@ export class ChatComponent implements AfterViewChecked {
       .toUpperCase();
   };
 
+  constructor() {
+    effect(() => {
+      const slug = this.routeSlug();
+      if (!slug) {
+        this.publicAtlas.set(null);
+        this.publicLookupDone.set(true);
+        return;
+      }
+
+      this.publicLookupDone.set(false);
+      void this.atlasService
+        .getPublicAtlasBySlug(slug)
+        .then((atlas) => this.publicAtlas.set(atlas))
+        .catch(() => this.publicAtlas.set(null))
+        .finally(() => this.publicLookupDone.set(true));
+    });
+  }
+
   async submitQuestion(): Promise<void> {
+    if (this.isPublicView()) {
+      return;
+    }
     const question = this.question().trim();
     if (!question || this.isSubmitting()) {
       return;
@@ -416,6 +460,20 @@ export class ChatComponent implements AfterViewChecked {
     } finally {
       this.isSigningOut.set(false);
     }
+  }
+
+  private publicRoute(segment: 'atlas' | 'chat' | 'upload' | 'library' | 'wiki'): string | null {
+    if (!this.isPublicView()) {
+      return null;
+    }
+
+    const atlas = this.publicAtlas();
+    const slug = atlas?.slug?.trim() || this.routeSlug()?.trim() || atlas?.id;
+    if (!slug) {
+      return null;
+    }
+
+    return segment === 'atlas' ? `/atlas/${slug}` : `/${segment}/${slug}`;
   }
 
   private startThinkingRotation(): void {

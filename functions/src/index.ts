@@ -384,6 +384,44 @@ export const getPublicAtlasUsage = onCall(
   },
 );
 
+export const getPublicAtlasDocuments = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const atlasId = String(request.data?.atlasId ?? '').trim();
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+
+    const atlas = await loadPublicAtlasById(atlasId);
+    const snapshot = await db
+      .collection('documents')
+      .where('user_id', '==', atlas.user_id)
+      .where('atlas_id', '==', atlas.id)
+      .where('visible', '==', true)
+      .orderBy('uploaded_at', 'desc')
+      .limit(250)
+      .get();
+
+    return {
+      documents: snapshot.docs.map((doc) => {
+        const data = doc.data() as Record<string, unknown>;
+        return {
+          id: doc.id,
+          ...data,
+          uploaded_at: normalizeTimestamp(data.uploaded_at),
+          indexed_at: normalizeTimestamp(data.indexed_at),
+          last_heartbeat_at: normalizeTimestamp(data.last_heartbeat_at),
+        };
+      }),
+    };
+  },
+);
+
 export const getPublicWikiContent = onCall(
   {
     region: callableRegion,

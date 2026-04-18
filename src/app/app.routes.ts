@@ -17,8 +17,11 @@ import { authGuard, guestOnlyGuard } from './auth.guards';
 export const routes: Routes = [
   { path: '', component: MarketingComponent, title: 'Living Wiki' },
   { path: 'home', component: AtlasHomeRedirectComponent, title: 'Home | Living Wiki', canActivate: [authGuard] },
+  { path: 'upload/:slug', component: LandingComponent, title: 'Upload | Living Wiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | Living Wiki', canActivate: [authGuard] },
+  { path: 'chat/:slug', component: ChatComponent, title: 'Chat | Living Wiki' },
   { path: 'chat', component: ChatComponent, title: 'Chat | Living Wiki', canActivate: [authGuard] },
+  { path: 'library/:slug', component: LibraryComponent, title: 'Library | Living Wiki' },
   { path: 'library', component: LibraryComponent, title: 'Library | Living Wiki', canActivate: [authGuard] },
   { path: 'wiki/:slug', component: WikiComponent, title: 'Public Wiki | Living Wiki' },
   { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Wiki', canActivate: [authGuard] },

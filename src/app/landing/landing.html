@@ -8,7 +8,9 @@
       <span class="text-xl font-black text-[var(--text)] tracking-tighter">Living Wiki</span>
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] animate-pulse"></span>
     </div>
-    <app-atlas-switcher></app-atlas-switcher>
+    @if (!isPublicView()) {
+      <app-atlas-switcher></app-atlas-switcher>
+    }
     <nav class="flex-1 space-y-1 text-sm">
       <a
         [routerLink]="atlasHomeLink()"
@@ -18,21 +20,21 @@
         <span>Home</span>
       </a>
       <a
-        routerLink="/chat"
+        [routerLink]="chatLink()"
         class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
       >
         <span class="material-symbols-outlined">chat</span>
         <span>New Chat</span>
       </a>
       <a
-        routerLink="/upload"
+        [routerLink]="uploadLink()"
         class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]"
       >
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">neurology</span>
         <span>Upload</span>
       </a>
       <a
-        routerLink="/library"
+        [routerLink]="libraryLink()"
         class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
       >
         <span class="material-symbols-outlined">library_books</span>
@@ -46,16 +48,18 @@
         <span>Wiki</span>
       </a>
     </nav>
-    <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
-      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5 transition-colors duration-200 text-sm" href="#">
-        <span class="material-symbols-outlined text-[1.2rem]">settings</span>
-        Settings
-      </a>
-      <button type="button" class="danger-action flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm" [disabled]="isSigningOut()" (click)="signOut()">
-        <span class="material-symbols-outlined text-[1.2rem]">logout</span>
-        <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
-      </button>
-    </div>
+    @if (!isPublicView()) {
+      <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
+        <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5 transition-colors duration-200 text-sm" href="#">
+          <span class="material-symbols-outlined text-[1.2rem]">settings</span>
+          Settings
+        </a>
+        <button type="button" class="danger-action flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm" [disabled]="isSigningOut()" (click)="signOut()">
+          <span class="material-symbols-outlined text-[1.2rem]">logout</span>
+          <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
+        </button>
+      </div>
+    }
   </aside>
 
   <!-- Main Content Area -->
@@ -63,7 +67,7 @@
     <!-- TopAppBar -->
     <header class="theme-nav flex justify-between items-center w-full h-16 px-4 md:px-8 sticky top-0 z-50 backdrop-blur-xl border-b">
       <div class="flex items-center gap-3 md:gap-8 flex-1 min-w-0">
-        <app-mobile-menu activePage="upload"></app-mobile-menu>
+        <app-mobile-menu activePage="upload" [publicSlug]="routeSlug()"></app-mobile-menu>
         <div class="relative w-64 group hidden md:block">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm">search</span>
           <input class="theme-input w-full rounded-lg pl-10 py-1.5 text-sm transition-all text-[var(--text)] placeholder:text-[var(--muted)]/50" placeholder="Search thoughts..." type="text"/>
@@ -75,70 +79,74 @@
         </nav>
       </div>
       <div class="flex items-center gap-3">
-        <app-atlas-badge></app-atlas-badge>
+        @if (!isPublicView()) {
+          <app-atlas-badge></app-atlas-badge>
+        }
         <app-theme-toggle></app-theme-toggle>
+        @if (isPublicView()) {
+          <a routerLink="/sign-in" class="primary-btn !px-4 !py-2.5 text-sm">Sign in</a>
+        } @else {
+          <div class="avatar-menu-wrapper relative">
+            <button
+              type="button"
+              class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-bold text-[var(--accent)] transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
+              (click)="toggleAvatarMenu()"
+              [attr.aria-expanded]="avatarMenuOpen()"
+              aria-haspopup="true"
+            >
+              {{ userInitials() }}
+            </button>
 
-        <!-- Avatar Dropdown -->
-        <div class="avatar-menu-wrapper relative">
-          <button
-            type="button"
-            class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-bold text-[var(--accent)] transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
-            (click)="toggleAvatarMenu()"
-            [attr.aria-expanded]="avatarMenuOpen()"
-            aria-haspopup="true"
-          >
-            {{ userInitials() }}
-          </button>
+            @if (avatarMenuOpen()) {
+              <div class="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)] backdrop-blur-xl animate-fade-up"
+                   style="animation-duration: 0.15s"
+                   role="menu">
+                <div class="border-b border-[var(--line)] px-4 py-4">
+                  <p class="text-sm font-bold text-[var(--text)] truncate">{{ currentUserName() }}</p>
+                  <p class="mt-0.5 text-xs text-[var(--muted)] truncate">{{ currentUserEmail() }}</p>
+                </div>
 
-          @if (avatarMenuOpen()) {
-            <div class="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)] backdrop-blur-xl animate-fade-up"
-                 style="animation-duration: 0.15s"
-                 role="menu">
-              <!-- User info -->
-              <div class="border-b border-[var(--line)] px-4 py-4">
-                <p class="text-sm font-bold text-[var(--text)] truncate">{{ currentUserName() }}</p>
-                <p class="mt-0.5 text-xs text-[var(--muted)] truncate">{{ currentUserEmail() }}</p>
+                <div class="py-1.5">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    class="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[var(--muted)] transition-colors duration-150 hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
+                    disabled
+                  >
+                    <span class="material-symbols-outlined text-base">settings</span>
+                    Settings
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    class="danger-action flex w-full items-center gap-3 px-4 py-2.5 text-sm"
+                    [disabled]="isSigningOut()"
+                    (click)="signOut()"
+                  >
+                    <span class="material-symbols-outlined text-base">logout</span>
+                    {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
+                  </button>
+                </div>
               </div>
-
-              <!-- Menu items -->
-              <div class="py-1.5">
-                <button
-                  type="button"
-                  role="menuitem"
-                  class="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[var(--muted)] transition-colors duration-150 hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
-                  disabled
-                >
-                  <span class="material-symbols-outlined text-base">settings</span>
-                  Settings
-                </button>
-                <button
-                  type="button"
-                  role="menuitem"
-                  class="danger-action flex w-full items-center gap-3 px-4 py-2.5 text-sm"
-                  [disabled]="isSigningOut()"
-                  (click)="signOut()"
-                >
-                  <span class="material-symbols-outlined text-base">logout</span>
-                  {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
-                </button>
-              </div>
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       </div>
     </header>
 
     <!-- Onboarding View (The Canvas) -->
     <div class="flex-1 flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-y-auto">
       <!-- Hidden file input -->
-      <input
-        id="landingFileInput"
-        type="file"
-        multiple
-        class="hidden"
-        accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.md,.png,.jpg,.jpeg"
-        (change)="onFilesSelected($event)"
-      />
+      @if (!isPublicView()) {
+        <input
+          id="landingFileInput"
+          type="file"
+          multiple
+          class="hidden"
+          accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.md,.png,.jpg,.jpeg"
+          (change)="onFilesSelected($event)"
+        />
+      }
 
       <!-- Background Decorative Element (The Void Texture) -->
       <div class="absolute inset-0 pointer-events-none opacity-20">
@@ -152,34 +160,45 @@
             <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
           </div>
         </div>
-        <h1 class="text-4xl sm:text-7xl font-bold tracking-tighter text-[var(--text)] mb-2 leading-none">Welcome.</h1>
-        <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-8 sm:mb-12">Cognitive Synchronization Active</p>
+        <h1 class="text-4xl sm:text-7xl font-bold tracking-tighter text-[var(--text)] mb-2 leading-none">{{ pageTitle() }}</h1>
+        <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-8 sm:mb-12">{{ isPublicView() ? 'Public access' : 'Cognitive Synchronization Active' }}</p>
 
         <!-- Drop Zone Card -->
         <div class="glass-card p-6 sm:p-12 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 group cursor-pointer hover:border-[var(--accent)]/30 transition-all duration-500 flex flex-col items-center">
           <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-[var(--accent)]/10 transition-all duration-500">
             <span class="material-symbols-outlined text-2xl sm:text-3xl text-[var(--accent)]" style="font-variation-settings: 'FILL' 1;">add</span>
           </div>
-          <h2 class="text-xl sm:text-3xl font-bold text-[var(--text)] mb-3 sm:mb-4">Initialize Knowledge</h2>
+          <h2 class="text-xl sm:text-3xl font-bold text-[var(--text)] mb-3 sm:mb-4">{{ isPublicView() ? 'Uploads require sign-in' : 'Initialize Knowledge' }}</h2>
           <p class="text-[var(--muted)] text-sm sm:text-lg leading-relaxed mb-6 sm:mb-10 max-w-md">
-            Drop your first document. Living Wiki will read it, learn from it, and remember it
-            <span class="text-[var(--accent-soft)] font-bold">forever.</span>
+            @if (publicNotFound()) {
+              This atlas could not be found or is no longer public.
+            } @else if (isPublicView()) {
+              You can browse this atlas without signing in, but adding documents is limited to the atlas owner or authorized collaborators.
+            } @else {
+              Drop your first document. Living Wiki will read it, learn from it, and remember it
+              <span class="text-[var(--accent-soft)] font-bold">forever.</span>
+            }
           </p>
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-            <button type="button" class="primary-btn !py-3 sm:!py-4" [disabled]="isUploading()" (click)="openFilePicker()">
-              {{ isUploading() ? 'Uploading...' : 'Add Documents' }}
-            </button>
-            <button type="button" class="secondary-btn !py-3 sm:!py-4" [disabled]="isUploading()" (click)="openFilePicker()">
-              Browse Files
-            </button>
+            @if (isPublicView()) {
+              <a routerLink="/sign-in" class="primary-btn !py-3 sm:!py-4 text-center">Sign in to upload</a>
+              <a [routerLink]="libraryLink()" class="secondary-btn !py-3 sm:!py-4 text-center">Browse documents</a>
+            } @else {
+              <button type="button" class="primary-btn !py-3 sm:!py-4" [disabled]="isUploading()" (click)="openFilePicker()">
+                {{ isUploading() ? 'Uploading...' : 'Add Documents' }}
+              </button>
+              <button type="button" class="secondary-btn !py-3 sm:!py-4" [disabled]="isUploading()" (click)="openFilePicker()">
+                Browse Files
+              </button>
+            }
           </div>
-          @if (uploadError()) {
+          @if (!isPublicView() && uploadError()) {
             <div class="error-banner mt-4 w-full rounded-2xl px-4 py-3 text-sm">
               {{ uploadError() }}
             </div>
           }
 
-          @if (activeUploads().length > 0) {
+          @if (!isPublicView() && activeUploads().length > 0) {
             <div class="mt-6 w-full space-y-3">
               @for (upload of activeUploads(); track upload.id) {
                 <div class="rounded-2xl border border-[var(--accent)]/10 bg-[var(--accent)]/[0.03] px-4 py-3">
@@ -195,7 +214,7 @@
             </div>
           }
 
-          @if (processingDocuments().length > 0) {
+          @if (!isPublicView() && processingDocuments().length > 0) {
             <div class="mt-4 w-full space-y-3">
               @for (doc of processingDocuments(); track doc.id) {
                 <div class="rounded-2xl border border-amber-500/10 bg-amber-500/[0.03] px-4 py-3">
@@ -215,8 +234,8 @@
           }
 
           <div class="mt-8 sm:mt-12 flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity text-[10px] uppercase font-bold tracking-[0.2em] text-[var(--muted)] text-center">
-            <span class="material-symbols-outlined text-base text-[var(--accent)]">upload_file</span>
-            <span>PDF, DOC/DOCX, PPT/PPTX, TXT, PNG/JPG, or URL</span>
+            <span class="material-symbols-outlined text-base text-[var(--accent)]">{{ isPublicView() ? 'visibility' : 'upload_file' }}</span>
+            <span>{{ isPublicView() ? 'Public pages are view only' : 'PDF, DOC/DOCX, PPT/PPTX, TXT, PNG/JPG, or URL' }}</span>
           </div>
         </div>
 

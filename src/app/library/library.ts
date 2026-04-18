@@ -1,7 +1,9 @@
-import { Component, ElementRef, HostListener, ViewChild, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import type { DocumentItem } from '../atlas.models';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { map } from 'rxjs';
+import type { AtlasItem, DocumentItem } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
@@ -22,27 +24,123 @@ export class LibraryComponent {
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
+  private readonly route = inject(ActivatedRoute);
 
-  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
-  readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
+  readonly routeSlug = toSignal(
+    this.route.paramMap.pipe(map((params) => params.get('slug'))),
+    { initialValue: this.route.snapshot.paramMap.get('slug') },
+  );
 
   readonly isSigningOut = signal(false);
   readonly avatarMenuOpen = signal(false);
   readonly urlToImport = signal('');
+  readonly publicAtlas = signal<AtlasItem | null>(null);
+  readonly publicLookupDone = signal(false);
+  readonly publicDocuments = signal<DocumentItem[]>([]);
+  readonly publicLoading = signal(false);
+  readonly publicError = signal<string | null>(null);
+  readonly isPublicView = computed(() => !!this.routeSlug());
+  readonly publicNotFound = computed(
+    () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
+  );
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
   readonly atlasLogo = '/assets/living-atlas-logo.png';
-  readonly documents = this.documentsService.documents;
-  readonly isLoading = this.documentsService.isLoading;
-  readonly isUploading = this.documentsService.isUploading;
-  readonly uploadError = this.documentsService.uploadError;
-  readonly deleteError = this.documentsService.deleteError;
-  readonly stats = this.documentsService.stats;
-  readonly uploadProgress = this.documentsService.uploadProgress;
-  readonly deletingDocumentIds = this.documentsService.deletingDocumentIds;
+  readonly atlasHomeLink = computed(() => this.publicRoute('atlas') ?? this.atlasService.activeAtlasHomeLink());
+  readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
+  readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');
+  readonly uploadLink = computed(() => this.publicRoute('upload') ?? '/upload');
+  readonly libraryLink = computed(() => this.publicRoute('library') ?? '/library');
+  readonly pageTitle = computed(() =>
+    this.isPublicView()
+      ? `${this.atlasService.displayName(this.publicAtlas())} Library`
+      : 'Library',
+  );
+  readonly documents = computed(() =>
+    this.isPublicView() ? this.publicDocuments() : this.documentsService.documents(),
+  );
+  readonly isLoading = computed(() =>
+    this.isPublicView() ? this.publicLoading() || !this.publicLookupDone() : this.documentsService.isLoading(),
+  );
+  readonly isUploading = computed(() =>
+    this.isPublicView() ? false : this.documentsService.isUploading(),
+  );
+  readonly uploadError = computed(() =>
+    this.isPublicView() ? this.publicError() : this.documentsService.uploadError(),
+  );
+  readonly deleteError = computed(() =>
+    this.isPublicView() ? null : this.documentsService.deleteError(),
+  );
+  readonly stats = computed(() => {
+    if (!this.isPublicView()) {
+      return this.documentsService.stats();
+    }
+
+    const documents = this.publicDocuments();
+    return {
+      totalDocuments: documents.length,
+      wikiPagesGenerated: documents.reduce(
+        (sum, document) => sum + (document.wiki_pages_generated ?? 0),
+        0,
+      ),
+      totalCitations: documents.reduce(
+        (sum, document) => sum + (document.citation_count ?? 0),
+        0,
+      ),
+      knowledgeGaps: 0,
+    };
+  });
+  readonly uploadProgress = computed(() =>
+    this.isPublicView() ? {} : this.documentsService.uploadProgress(),
+  );
+  readonly deletingDocumentIds = computed(() =>
+    this.isPublicView() ? {} : this.documentsService.deletingDocumentIds(),
+  );
+
+  constructor() {
+    effect(() => {
+      const slug = this.routeSlug();
+      if (!slug) {
+        this.publicAtlas.set(null);
+        this.publicDocuments.set([]);
+        this.publicError.set(null);
+        this.publicLoading.set(false);
+        this.publicLookupDone.set(true);
+        return;
+      }
+
+      this.publicLookupDone.set(false);
+      this.publicLoading.set(true);
+      this.publicError.set(null);
+
+      void this.atlasService
+        .getPublicAtlasBySlug(slug)
+        .then(async (atlas) => {
+          this.publicAtlas.set(atlas);
+          if (!atlas) {
+            this.publicDocuments.set([]);
+            return;
+          }
+
+          const documents = await this.documentsService.getPublicAtlasDocuments(atlas.id);
+          this.publicDocuments.set(documents);
+        })
+        .catch((error) => {
+          this.publicAtlas.set(null);
+          this.publicDocuments.set([]);
+          this.publicError.set(
+            error instanceof Error ? error.message : 'Failed to load this public library.',
+          );
+        })
+        .finally(() => {
+          this.publicLoading.set(false);
+          this.publicLookupDone.set(true);
+        });
+    });
+  }
 
   readonly userInitials = () => {
     const name = this.currentUserName();
@@ -60,10 +158,16 @@ export class LibraryComponent {
   }
 
   openFilePicker(): void {
+    if (this.isPublicView()) {
+      return;
+    }
     this.fileInput?.nativeElement.click();
   }
 
   async onFilesSelected(event: Event): Promise<void> {
+    if (this.isPublicView()) {
+      return;
+    }
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) {
       return;
@@ -74,6 +178,9 @@ export class LibraryComponent {
   }
 
   async submitUrl(): Promise<void> {
+    if (this.isPublicView()) {
+      return;
+    }
     const url = this.urlToImport().trim();
     if (!url) {
       return;
@@ -84,13 +191,18 @@ export class LibraryComponent {
   }
 
   async downloadDocument(document: DocumentItem): Promise<void> {
-    const downloadUrl = await this.documentsService.getDownloadUrl(document);
+    const downloadUrl = await this.documentsService.getAccessibleDownloadUrl(document, {
+      atlasId: this.isPublicView() ? this.publicAtlas()?.id ?? null : null,
+    });
     if (downloadUrl) {
       window.open(downloadUrl, '_blank', 'noopener,noreferrer');
     }
   }
 
   async deleteDocument(document: DocumentItem): Promise<void> {
+    if (this.isPublicView()) {
+      return;
+    }
     const label = document.title || document.filename;
     const confirmed = window.confirm(
       `Delete "${label}"?\n\nThis will remove the file, its extracts, its knowledge entries, and update affected wiki topics.`,
@@ -304,5 +416,19 @@ export class LibraryComponent {
     } finally {
       this.isSigningOut.set(false);
     }
+  }
+
+  private publicRoute(segment: 'atlas' | 'chat' | 'upload' | 'library' | 'wiki'): string | null {
+    if (!this.isPublicView()) {
+      return null;
+    }
+
+    const atlas = this.publicAtlas();
+    const slug = atlas?.slug?.trim() || this.routeSlug()?.trim() || atlas?.id;
+    if (!slug) {
+      return null;
+    }
+
+    return segment === 'atlas' ? `/atlas/${slug}` : `/${segment}/${slug}`;
   }
 }
