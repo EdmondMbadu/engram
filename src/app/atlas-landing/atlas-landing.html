@@ -271,37 +271,72 @@
               </h3>
               <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 @if (isSignedIn()) {
-                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all hover:-translate-y-1 hover:border-[var(--accent)]/40 active:translate-y-0" (click)="openChat()">
-                    <div class="relative flex aspect-[16/9] items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, var(--surface)) 0%, var(--surface) 100%)">
-                      <span class="material-symbols-outlined text-[5rem] text-[var(--accent)] transition-transform duration-500 group-hover:scale-110" style="font-variation-settings: 'FILL' 1">chat</span>
+                  <!-- Chat Card -->
+                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)]/50 hover:shadow-[0_20px_40px_rgba(59,175,98,0.15)] active:translate-y-0" (click)="openChat()">
+                    <div class="relative aspect-[16/9] overflow-hidden">
+                      <div 
+                        class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
+                        style="background-image: url('/assets/atlas-landing/chat-bg.png');"
+                      ></div>
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                      <div class="relative flex h-full w-full items-center justify-center">
+                        <span class="material-symbols-outlined text-[4rem] text-white opacity-90 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-100" style="font-variation-settings: 'FILL' 1">chat</span>
+                      </div>
                     </div>
                     <div class="flex flex-col gap-1 border-t border-[var(--line)] px-6 py-5">
                       <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Ask questions</div>
                       <h4 class="text-xl font-bold text-[var(--text)]">Chat with Wiki</h4>
                     </div>
                   </button>
-                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all hover:-translate-y-1 hover:border-[var(--accent)]/40 active:translate-y-0" (click)="openLibrary()">
-                    <div class="relative flex aspect-[16/9] items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, var(--soft-fill-strong) 0%, var(--surface) 100%)">
-                      <span class="material-symbols-outlined text-[5rem] text-[var(--text)] opacity-60 transition-transform duration-500 group-hover:scale-110" style="font-variation-settings: 'FILL' 1">library_books</span>
+
+                  <!-- Library Card -->
+                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)]/50 hover:shadow-[0_20px_40px_rgba(59,175,98,0.15)] active:translate-y-0" (click)="openLibrary()">
+                    <div class="relative aspect-[16/9] overflow-hidden">
+                      <div 
+                        class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
+                        style="background-image: url('/assets/atlas-landing/library-bg.png');"
+                      ></div>
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                      <div class="relative flex h-full w-full items-center justify-center">
+                        <span class="material-symbols-outlined text-[4rem] text-white opacity-90 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-100" style="font-variation-settings: 'FILL' 1">library_books</span>
+                      </div>
                     </div>
                     <div class="flex flex-col gap-1 border-t border-[var(--line)] px-6 py-5">
                       <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Documents</div>
                       <h4 class="text-xl font-bold text-[var(--text)]">Library</h4>
                     </div>
                   </button>
-                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all hover:-translate-y-1 hover:border-[var(--accent)]/40 active:translate-y-0" (click)="openWiki()">
-                    <div class="relative flex aspect-[16/9] items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 18%, var(--surface)) 0%, var(--surface) 100%)">
-                      <span class="material-symbols-outlined text-[5rem] text-[var(--accent-soft)] transition-transform duration-500 group-hover:scale-110" style="font-variation-settings: 'FILL' 1">menu_book</span>
+
+                  <!-- Topics Card -->
+                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent-soft)]/50 hover:shadow-[0_20px_40px_rgba(143,217,168,0.15)] active:translate-y-0" (click)="openWiki()">
+                    <div class="relative aspect-[16/9] overflow-hidden">
+                      <div 
+                        class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
+                        style="background-image: url('/assets/atlas-landing/wiki-bg.png');"
+                      ></div>
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                      <div class="relative flex h-full w-full items-center justify-center">
+                        <span class="material-symbols-outlined text-[4rem] text-white opacity-90 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-100" style="font-variation-settings: 'FILL' 1">menu_book</span>
+                      </div>
                     </div>
                     <div class="flex flex-col gap-1 border-t border-[var(--line)] px-6 py-5">
                       <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Auto-generated</div>
                       <h4 class="text-xl font-bold text-[var(--text)]">Wiki topics</h4>
                     </div>
                   </button>
+
                   @if (isOwner()) {
-                    <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border-2 border-dashed border-[var(--accent)]/40 bg-[var(--soft-fill)] text-left transition-all hover:-translate-y-1 hover:border-[var(--accent)] hover:bg-[var(--soft-fill-strong)] active:translate-y-0" (click)="openUpload()">
-                      <div class="relative flex aspect-[16/9] items-center justify-center overflow-hidden">
-                        <span class="material-symbols-outlined text-[5rem] text-[var(--accent)] transition-transform duration-500 group-hover:scale-110">upload_file</span>
+                    <!-- Upload Card -->
+                    <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border-2 border-dashed border-[var(--accent)]/40 bg-[var(--surface)] text-left transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)] hover:shadow-[0_20px_40px_rgba(59,175,98,0.2)] active:translate-y-0" (click)="openUpload()">
+                      <div class="relative aspect-[16/9] overflow-hidden">
+                        <div 
+                          class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
+                          style="background-image: url('/assets/atlas-landing/upload-bg.png');"
+                        ></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                        <div class="relative flex h-full w-full items-center justify-center">
+                          <span class="material-symbols-outlined text-[4rem] text-white opacity-90 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-100">upload_file</span>
+                        </div>
                       </div>
                       <div class="flex flex-col gap-1 px-6 py-5">
                         <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Expand knowledge</div>
