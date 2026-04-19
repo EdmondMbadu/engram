@@ -35,6 +35,7 @@ export class LibraryComponent {
 
   readonly isSigningOut = signal(false);
   readonly avatarMenuOpen = signal(false);
+  readonly searchQuery = signal('');
   readonly urlToImport = signal('');
   readonly publicAtlas = signal<AtlasItem | null>(null);
   readonly publicLookupDone = signal(false);
@@ -67,6 +68,29 @@ export class LibraryComponent {
   readonly documents = computed(() =>
     this.isPublicView() ? this.publicDocuments() : this.documentsService.documents(),
   );
+  readonly filteredDocuments = computed(() => {
+    const query = this.searchQuery().trim().toLowerCase();
+    const documents = this.documents();
+    if (!query) {
+      return documents;
+    }
+
+    return documents.filter((document) => {
+      const haystack = [
+        document.title,
+        document.filename,
+        document.file_type,
+        document.status,
+        document.processing_stage,
+        document.ai_usage?.model,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return haystack.includes(query);
+    });
+  });
   readonly isLoading = computed(() =>
     this.isPublicView() ? this.publicLoading() || !this.publicLookupDone() : this.documentsService.isLoading(),
   );

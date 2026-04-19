@@ -97,16 +97,6 @@
               class="border-b border-[var(--accent)] pb-1 text-sm font-semibold text-[var(--accent)]"
               >All Files</a
             >
-            <a
-              href="#recent"
-              class="text-sm text-[var(--muted)] transition-colors hover:text-[var(--text)]"
-              >Recent</a
-            >
-            <a
-              href="#pinned"
-              class="text-sm text-[var(--muted)] transition-colors hover:text-[var(--text)]"
-              >Pinned</a
-            >
           </nav>
         </div>
 
@@ -117,6 +107,8 @@
             <span class="material-symbols-outlined text-base">search</span>
             <input
               type="text"
+              [ngModel]="searchQuery()"
+              (ngModelChange)="searchQuery.set($event)"
               placeholder="Search knowledge base..."
               class="min-w-0 flex-1 bg-transparent text-[var(--text)] placeholder:text-[var(--muted)]/60 focus:outline-none"
             />
@@ -294,9 +286,16 @@
                   {{ isPublicView() ? 'No public documents have been published here yet.' : 'Upload files or import a URL to start building your knowledge base.' }}
                 </p>
               </article>
+            } @else if (filteredDocuments().length === 0) {
+              <article class="glass-card rounded-[1.5rem] px-5 py-8 text-center">
+                <h2 class="text-xl font-black tracking-[-0.05em] text-[var(--text)]">No matching documents</h2>
+                <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
+                  Nothing in this library matches "{{ searchQuery().trim() }}".
+                </p>
+              </article>
             }
 
-            @for (document of documents(); track document.id) {
+            @for (document of filteredDocuments(); track document.id) {
               <article
                 class="glass-card group rounded-[1.5rem] px-4 py-4 transition-colors duration-200 hover:bg-white/[0.06] md:px-5"
               >
