@@ -78,8 +78,52 @@
         <h2 class="mt-2 text-2xl font-bold text-[var(--text)] sm:text-3xl">All public wiki pages</h2>
       </div>
 
+      <div class="mb-6">
+        <label class="relative block">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)] text-base">search</span>
+          <input
+            type="text"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchInput($event)"
+            placeholder="Search wikis by name, topic, badge, or data source..."
+            class="w-full rounded-full border border-white/10 bg-[var(--surface)] py-3 pl-12 pr-4 text-sm text-[var(--text)] placeholder:text-[var(--muted)] outline-none transition-colors focus:border-[var(--accent)]"
+          />
+        </label>
+      </div>
+
+      <div class="mb-8 flex flex-wrap gap-2">
+        @for (cat of categories; track cat) {
+          @if (activeCategory() === cat) {
+            <button
+              type="button"
+              (click)="setCategory(cat)"
+              class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[var(--accent-contrast)]"
+            >
+              {{ cat }} ({{ categoryCounts[cat] }})
+            </button>
+          } @else {
+            <button
+              type="button"
+              (click)="setCategory(cat)"
+              class="rounded-full border border-white/10 bg-transparent px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)] transition-colors hover:border-[var(--accent)]/40 hover:text-[var(--text)]"
+            >
+              {{ cat }} ({{ categoryCounts[cat] }})
+            </button>
+          }
+        }
+      </div>
+
+      @if (filteredWikis().length === 0) {
+        <div class="rounded-[2rem] border border-dashed border-white/10 bg-white/[0.02] p-10 text-center">
+          <p class="text-sm text-[var(--muted)]">No public wikis match your search.</p>
+          <button type="button" (click)="clearFilters()" class="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-[var(--accent)] hover:underline">
+            Clear filters
+          </button>
+        </div>
+      }
+
       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        @for (wiki of publicWikis; track wiki.title) {
+        @for (wiki of filteredWikis(); track wiki.title) {
           @if (wiki.status === 'live') {
             <a [routerLink]="['/wiki', wiki.slug]" class="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--surface)] p-6 transition-transform duration-300 hover:-translate-y-1">
               <div class="relative">
