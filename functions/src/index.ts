@@ -1,8 +1,9 @@
-import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
 import { randomUUID } from 'node:crypto';
+import { FieldValue } from 'firebase-admin/firestore';
 import { db, storage } from './firebase';
 import { geminiApiKey } from './gemini';
 import { fetchHtmlWithFallback, looksLikeAntiBotChallenge } from './html-fetch';
@@ -24,6 +25,16 @@ import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './u
 
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
+const staleIngestionThresholdMinutes = 10;
+const defaultRetryLimit = 50;
+const urlIngestionTriggerOptions = {
+  region: callableRegion,
+  timeoutSeconds: 540,
+  memory: '2GiB' as const,
+  concurrency: 1,
+  maxInstances: 16,
+  secrets: [geminiApiKey],
+};
 
 export const fetchProxy = onRequest(
   {
@@ -133,6 +144,23 @@ function normalizeTimestamp(value: unknown): string | null {
   }
   if (typeof value === 'string') {
     return value;
+  }
+  return null;
+}
+
+function timestampToMillis(value: unknown): number | null {
+  if (!value) {
+    return null;
+  }
+  if (typeof (value as { toDate?: () => Date }).toDate === 'function') {
+    return (value as { toDate(): Date }).toDate().getTime();
+  }
+  if (value instanceof Date) {
+    return value.getTime();
+  }
+  if (typeof value === 'string' || typeof value === 'number') {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date.getTime();
   }
   return null;
 }
@@ -456,6 +484,86 @@ export const submitUrlDocument = onCall(
     );
 
     return { documentId: documentRef.id };
+  },
+);
+
+export const retryStaleUrlDocuments = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 120,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    await assertAtlasOwner(atlasId, request.auth.uid);
+
+    const staleMinutes = Math.max(
+      staleIngestionThresholdMinutes,
+      Number(request.data?.staleMinutes ?? staleIngestionThresholdMinutes) || staleIngestionThresholdMinutes,
+    );
+    const limit = Math.min(
+      200,
+      Math.max(1, Number(request.data?.limit ?? defaultRetryLimit) || defaultRetryLimit),
+    );
+    const cutoffMs = Date.now() - staleMinutes * 60_000;
+
+    const snapshot = atlasId
+      ? await db
+          .collection('documents')
+          .where('user_id', '==', request.auth.uid)
+          .where('atlas_id', '==', atlasId)
+          .where('status', '==', 'processing')
+          .limit(500)
+          .get()
+      : await db
+          .collection('documents')
+          .where('user_id', '==', request.auth.uid)
+          .where('status', '==', 'processing')
+          .limit(500)
+          .get();
+
+    const staleDocuments = snapshot.docs
+      .filter((doc) => {
+        const data = doc.data();
+        if (data.source_type !== 'url') {
+          return false;
+        }
+
+        const heartbeatMs = timestampToMillis(data.last_heartbeat_at);
+        return heartbeatMs !== null && heartbeatMs < cutoffMs;
+      })
+      .slice(0, limit);
+
+    if (staleDocuments.length === 0) {
+      return { retriedCount: 0, documentIds: [] };
+    }
+
+    await Promise.all(
+      staleDocuments.map((doc) =>
+        doc.ref.set(
+          {
+            status: 'pending',
+            processing_stage: 'queued',
+            processed_chunks: 0,
+            total_chunks: 0,
+            error_message: null,
+            failure_code: null,
+            last_heartbeat_at: FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        ),
+      ),
+    );
+
+    return {
+      retriedCount: staleDocuments.length,
+      documentIds: staleDocuments.map((doc) => doc.id),
+    };
   },
 );
 
@@ -1007,11 +1115,8 @@ export const ingestUploadedDocument = onObjectFinalized(
 
 export const ingestSubmittedUrl = onDocumentCreated(
   {
-    region: callableRegion,
+    ...urlIngestionTriggerOptions,
     document: 'documents/{documentId}',
-    timeoutSeconds: 540,
-    memory: '1GiB',
-    secrets: [geminiApiKey],
   },
   async (event) => {
     const snapshot = event.data;
@@ -1028,6 +1133,34 @@ export const ingestSubmittedUrl = onDocumentCreated(
       await processUrlDocument(snapshot.id);
     } catch (error) {
       logger.error('ingestSubmittedUrl failed', { documentId: snapshot.id, errorMessage: error instanceof Error ? error.message : String(error) });
+      throw error;
+    }
+  },
+);
+
+export const retrySubmittedUrl = onDocumentUpdated(
+  {
+    ...urlIngestionTriggerOptions,
+    document: 'documents/{documentId}',
+  },
+  async (event) => {
+    const before = event.data?.before.data();
+    const after = event.data?.after.data();
+    if (!before || !after || after.source_type !== 'url' || after.status !== 'pending') {
+      return;
+    }
+
+    if (before.status === 'pending') {
+      return;
+    }
+
+    try {
+      await processUrlDocument(event.params.documentId);
+    } catch (error) {
+      logger.error('retrySubmittedUrl failed', {
+        documentId: event.params.documentId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
   },
