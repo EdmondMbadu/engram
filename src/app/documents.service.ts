@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { computed, effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import {
   collection,
+  doc as firestoreDoc,
   onSnapshot,
   orderBy,
   query,
@@ -41,6 +42,10 @@ type PublicAtlasDocumentsResponse = {
 
 type WikiSourceDocumentLinkResponse = {
   url: string;
+};
+
+type SubmitUrlDocumentResponse = {
+  documentId: string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -173,26 +178,89 @@ export class DocumentsService {
     }
   }
 
-  async submitUrl(url: string): Promise<void> {
-    if (!this.functions) {
-      return;
-    }
-
+  async submitUrl(
+    url: string,
+    options?: { atlasId?: string | null },
+  ): Promise<string> {
     this.isUploading.set(true);
     this.uploadError.set(null);
 
     try {
-      const submitUrlDocument = httpsCallable<
-        { url: string; atlasId: string | null },
-        { documentId: string }
-      >(this.functions, 'submitUrlDocument');
-      await submitUrlDocument({ url, atlasId: this.atlasService.activeAtlasId() });
+      return await this.queueUrlDocument(url, options);
     } catch (error) {
       this.uploadError.set(this.authService.toFriendlyError(error));
       throw error;
     } finally {
       this.isUploading.set(false);
     }
+  }
+
+  async queueUrlDocument(
+    url: string,
+    options?: { atlasId?: string | null },
+  ): Promise<string> {
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+
+    const submitUrlDocument = httpsCallable<
+      { url: string; atlasId: string | null },
+      SubmitUrlDocumentResponse
+    >(this.functions, 'submitUrlDocument');
+
+    const { data } = await submitUrlDocument({
+      url,
+      atlasId: options?.atlasId ?? this.atlasService.activeAtlasId(),
+    });
+
+    const documentId = String(data?.documentId ?? '').trim();
+    if (!documentId) {
+      throw new Error('Document queueing did not return a document id.');
+    }
+
+    return documentId;
+  }
+
+  async waitForDocumentTerminalState(
+    documentId: string,
+    onUpdate?: (document: DocumentItem) => void,
+  ): Promise<DocumentItem> {
+    const firestore = this.firestore;
+    if (!firestore) {
+      throw new Error('Firestore unavailable.');
+    }
+
+    return await new Promise<DocumentItem>((resolve, reject) => {
+      const unsubscribe = onSnapshot(
+        firestoreDoc(firestore, 'documents', documentId),
+        (snapshot) => {
+          if (!snapshot.exists()) {
+            unsubscribe();
+            reject(new Error('Queued document no longer exists.'));
+            return;
+          }
+
+          const document = this.hydrateDocument({
+            id: snapshot.id,
+            ...(snapshot.data() as Record<string, unknown>),
+          });
+          onUpdate?.(document);
+
+          if (
+            document.status === 'indexed' ||
+            document.status === 'failed' ||
+            document.status === 'deleted'
+          ) {
+            unsubscribe();
+            resolve(document);
+          }
+        },
+        (error) => {
+          unsubscribe();
+          reject(error);
+        },
+      );
+    });
   }
 
   async getDownloadUrl(document: DocumentItem): Promise<string | null> {
@@ -207,7 +275,7 @@ export class DocumentsService {
     document: DocumentItem,
     options?: { atlasId?: string | null },
   ): Promise<string | null> {
-    if (options?.atlasId) {
+    if (options?.atlasId || document.source_type === 'url') {
       if (!this.functions) {
         return null;
       }
@@ -219,8 +287,8 @@ export class DocumentsService {
 
       const { data } = await getWikiSourceDocumentLink({
         documentId: document.id,
-        atlasId: options.atlasId,
-        filename: document.title || document.filename,
+        atlasId: options?.atlasId ?? null,
+        filename: document.title || document.filename || null,
       });
 
       return data?.url ?? null;

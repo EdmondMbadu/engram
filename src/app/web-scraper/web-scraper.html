@@ -1,0 +1,344 @@
+<div
+  class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[#3c0800]"
+>
+  <div class="pointer-events-none fixed inset-0 overflow-hidden">
+    <div
+      class="absolute left-[-10rem] top-[-8rem] h-[24rem] w-[24rem] rounded-full bg-[var(--accent)]/12 blur-[120px]"
+    ></div>
+    <div
+      class="absolute bottom-[-12rem] right-[-8rem] h-[24rem] w-[24rem] rounded-full bg-[rgba(63,185,156,0.08)] blur-[120px]"
+    ></div>
+  </div>
+
+  <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
+    <aside
+      class="theme-sidebar hidden h-screen w-72 shrink-0 border-r px-5 py-6 md:flex md:flex-col"
+    >
+      <div class="mb-10 px-2">
+        <a routerLink="/" class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1 shadow-[0_0_24px_rgba(59,175,98,0.08)]">
+            <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+          </div>
+          <span class="text-xl font-black tracking-tighter text-[var(--text)]">Living Wiki</span>
+        </a>
+      </div>
+
+      <app-atlas-switcher></app-atlas-switcher>
+
+      <nav class="flex-1 space-y-1 text-sm">
+        <a
+          [routerLink]="atlasHomeLink()"
+          class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">home</span>
+          <span>Home</span>
+        </a>
+        <a
+          routerLink="/chat"
+          class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">chat</span>
+          <span>New Chat</span>
+        </a>
+        <a
+          routerLink="/upload"
+          class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">neurology</span>
+          <span>Upload</span>
+        </a>
+        <a
+          routerLink="/library"
+          class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">library_books</span>
+          <span>Library</span>
+        </a>
+        <a
+          routerLink="/scrapper"
+          class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]"
+        >
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">travel_explore</span>
+          <span>Scrapper</span>
+        </a>
+        <a
+          [routerLink]="atlasWikiLink()"
+          class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
+        >
+          <span class="material-symbols-outlined">menu_book</span>
+          <span>Wiki</span>
+        </a>
+      </nav>
+
+      <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
+        <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
+          <span class="material-symbols-outlined text-[1.2rem]">logout</span>
+          <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
+      <header
+        class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8"
+      >
+        <div class="flex min-w-0 items-center gap-3 md:gap-12">
+          <app-mobile-menu activePage="scrapper"></app-mobile-menu>
+
+          <div class="min-w-0">
+            <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">Scrapper</h1>
+            <p class="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">{{ pageSubtitle() }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-4">
+          <app-atlas-badge></app-atlas-badge>
+          <app-theme-toggle></app-theme-toggle>
+
+          <div class="avatar-menu-wrapper relative">
+            <button
+              type="button"
+              class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-bold text-[var(--accent)] transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
+              (click)="toggleAvatarMenu()"
+              [attr.aria-expanded]="avatarMenuOpen()"
+              aria-haspopup="true"
+            >
+              {{ userInitials() }}
+            </button>
+
+            @if (avatarMenuOpen()) {
+              <div class="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)] backdrop-blur-xl animate-fade-up"
+                   style="animation-duration: 0.15s"
+                   role="menu">
+                <div class="border-b border-[var(--line)] px-4 py-4">
+                  <p class="text-sm font-bold text-[var(--text)] truncate">{{ currentUserName() }}</p>
+                  <p class="mt-0.5 text-xs text-[var(--muted)] truncate">{{ currentUserEmail() }}</p>
+                </div>
+                <div class="py-1.5">
+                  <button type="button" role="menuitem" class="danger-action flex w-full items-center gap-3 px-4 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
+                    <span class="material-symbols-outlined text-base">logout</span>
+                    {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto">
+        <div class="mx-auto w-full max-w-6xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
+          <section class="grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
+            <article class="glass-card rounded-[2rem] p-6 md:p-7">
+              <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div class="max-w-2xl">
+                  <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Current atlas</p>
+                  <h2 class="mt-3 text-3xl font-black tracking-[-0.05em] text-[var(--text)]">{{ activeAtlasName() }}</h2>
+                  <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
+                    Discovery reads a listing page through the proxy. Each confirmed article is then ingested through the existing URL pipeline into the active atlas.
+                  </p>
+                </div>
+                <div class="rounded-[1.25rem] border border-white/10 bg-white/[0.03] px-4 py-4 text-sm text-[var(--muted)]">
+                  <p class="font-semibold text-[var(--text)]">Rate limit</p>
+                  <p class="mt-2 leading-6">1 request every 1.1 seconds between articles.</p>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <label for="scrape-source-url" class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Source URL
+                </label>
+                <div class="theme-input mt-3 flex flex-col gap-3 rounded-[1.25rem] px-4 py-4 md:flex-row md:items-center">
+                  <span class="material-symbols-outlined text-[var(--muted)]">link</span>
+                  <input
+                    id="scrape-source-url"
+                    type="text"
+                    [ngModel]="sourceUrl()"
+                    (ngModelChange)="sourceUrl.set($event)"
+                    placeholder="https://rocketgoals.beehiiv.com/"
+                    class="min-w-0 flex-1 bg-transparent text-sm text-[var(--text)] placeholder:text-[var(--muted)]/60 focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    class="primary-btn !px-4 !py-3 text-sm"
+                    [disabled]="state() === 'DISCOVERING' || state() === 'SCRAPING'"
+                    (click)="discoverArticles()"
+                  >
+                    <span class="material-symbols-outlined text-base">{{ state() === 'DISCOVERING' ? 'progress_activity' : 'travel_explore' }}</span>
+                    <span>{{ state() === 'DISCOVERING' ? 'Discovering...' : 'Discover Articles' }}</span>
+                  </button>
+                </div>
+              </div>
+
+              @if (statusMessage()) {
+                <div class="error-banner mt-4 rounded-2xl px-4 py-3 text-sm">
+                  {{ statusMessage() }}
+                </div>
+              }
+
+              @if (state() === 'DISCOVERING') {
+                <div class="mt-6 rounded-[1.5rem] border border-white/10 bg-white/[0.03] px-5 py-5 text-sm text-[var(--muted)]">
+                  <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined animate-spin text-[var(--accent)]">progress_activity</span>
+                    <span>Finding articles on {{ discoveryDomain() || 'the supplied domain' }}...</span>
+                  </div>
+                </div>
+              }
+
+              @if (state() === 'PREVIEW' || state() === 'SCRAPING' || state() === 'DONE') {
+                <div class="mt-6 rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                    <div>
+                      <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Discovery preview</p>
+                      <h3 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">
+                        Found {{ totalDiscovered() }} article{{ totalDiscovered() === 1 ? '' : 's' }}
+                      </h3>
+                      <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
+                        Preview titles are inferred from link text and nearby headings. Review the list before queueing ingestion.
+                      </p>
+                    </div>
+
+                    @if (state() === 'PREVIEW') {
+                      <div class="min-w-[18rem] rounded-[1.25rem] border border-white/10 bg-[var(--surface)]/40 px-4 py-4">
+                        <label for="scrape-count" class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">How many to scrape?</label>
+                        <input
+                          id="scrape-count"
+                          type="number"
+                          min="1"
+                          [max]="totalDiscovered()"
+                          [ngModel]="clampedScrapeCount()"
+                          (ngModelChange)="updateScrapeCount($event)"
+                          class="theme-input mt-3 w-full rounded-xl px-4 py-3 text-sm text-[var(--text)]"
+                        />
+                        <p class="mt-3 text-sm font-semibold text-[var(--text)]">
+                          ~{{ estimatedTokens().toLocaleString() }} tokens · estimated ${{ estimatedCost().toFixed(4) }}
+                        </p>
+                        <p class="mt-2 text-xs leading-6 text-[var(--muted)]">
+                          Estimate based on ~800 words/article. Actual cost may vary.
+                        </p>
+                        <button type="button" class="primary-btn mt-4 w-full justify-center !py-3 text-sm" (click)="startScraping()">
+                          Scrape {{ clampedScrapeCount() }} Article{{ clampedScrapeCount() === 1 ? '' : 's' }}
+                        </button>
+                      </div>
+                    }
+
+                    @if (state() === 'DONE') {
+                      <div class="min-w-[18rem] rounded-[1.25rem] border border-white/10 bg-[var(--surface)]/40 px-4 py-4">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Run summary</p>
+                        <p class="mt-3 text-3xl font-black tracking-[-0.05em] text-[var(--text)]">{{ successfulCount() }}</p>
+                        <p class="mt-2 text-sm text-[var(--muted)]">articles ingested successfully</p>
+                        <button type="button" class="secondary-btn mt-4 w-full justify-center !py-3 text-sm" (click)="reset()">
+                          Add Another Source
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                  <div class="mt-5 max-h-80 overflow-y-auto rounded-[1.25rem] border border-white/10 bg-[var(--surface)]/30">
+                    @for (article of discoveredArticles(); track article.url; let i = $index) {
+                      <div class="flex items-start gap-3 border-b border-white/5 px-4 py-3 last:border-b-0">
+                        <div class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-[11px] font-bold text-[var(--muted)]">
+                          {{ i + 1 }}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                          <p class="truncate text-sm font-semibold text-[var(--text)]">{{ article.title }}</p>
+                          <a [href]="article.url" target="_blank" rel="noopener noreferrer" class="mt-1 block truncate text-xs text-[var(--muted)] hover:text-[var(--accent)]">
+                            {{ article.url }}
+                          </a>
+                        </div>
+                        <span class="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">
+                          {{ article.domain }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </article>
+
+            <article class="glass-card rounded-[2rem] p-6 md:p-7">
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Run state</p>
+              <h2 class="mt-3 text-3xl font-black tracking-[-0.05em] text-[var(--text)]">{{ state() }}</h2>
+
+              @if (state() === 'IDLE' || state() === 'ERROR') {
+                <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+                  Paste a listing page URL to begin discovery. The proxy fetches HTML server-side so external sites are never fetched directly from the browser.
+                </p>
+              }
+
+              @if (state() === 'SCRAPING' || state() === 'DONE') {
+                <div class="mt-5 rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="font-semibold text-[var(--text)]">{{ completedCount() }} of {{ clampedScrapeCount() }} scraped</span>
+                    <span class="text-[var(--muted)]">{{ progressPercent() }}%</span>
+                  </div>
+                  <div class="mt-3 h-2 overflow-hidden rounded-full bg-white/5">
+                    <div class="h-full rounded-full bg-[var(--accent)] transition-all duration-500" [style.width.%]="progressPercent()"></div>
+                  </div>
+
+                  <div class="mt-4 rounded-[1rem] border border-white/10 bg-[var(--surface)]/40 px-4 py-4">
+                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Current article</p>
+                    @if (currentArticle(); as article) {
+                      <p class="mt-3 text-sm font-semibold text-[var(--text)]">{{ article.title }}</p>
+                      <a [href]="article.url" target="_blank" rel="noopener noreferrer" class="mt-1 block truncate text-xs text-[var(--muted)] hover:text-[var(--accent)]">
+                        {{ article.url }}
+                      </a>
+                    } @else {
+                      <p class="mt-3 text-sm text-[var(--muted)]">No active article.</p>
+                    }
+                    <p class="mt-3 text-xs leading-6 text-[var(--muted)]">{{ currentStageLabel() }}</p>
+                  </div>
+
+                  <div class="mt-4 flex items-center justify-between">
+                    <div>
+                      <p class="text-sm font-semibold text-[var(--text)]">{{ successfulCount() }} success{{ successfulCount() === 1 ? '' : 'es' }}</p>
+                      <p class="text-xs text-[var(--muted)]">{{ failures().length }} failure{{ failures().length === 1 ? '' : 's' }}</p>
+                    </div>
+                    @if (state() === 'SCRAPING') {
+                      <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm" [disabled]="cancelRequested()" (click)="requestCancel()">
+                        {{ cancelRequested() ? 'Cancelling...' : 'Cancel' }}
+                      </button>
+                    }
+                  </div>
+                </div>
+
+                <div class="mt-5">
+                  <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Live log</p>
+                  <div class="mt-3 max-h-56 space-y-2 overflow-y-auto rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-3">
+                    @if (recentLog().length === 0) {
+                      <p class="px-2 py-1 text-sm text-[var(--muted)]">No completed articles yet.</p>
+                    }
+                    @for (entry of recentLog(); track entry.id) {
+                      <div class="rounded-xl border px-3 py-2 text-sm" [class]="logClasses(entry)">
+                        {{ entry.message }}
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if (state() === 'DONE' && failures().length > 0) {
+                <details class="mt-5 rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-4">
+                  <summary class="cursor-pointer text-sm font-semibold text-[var(--text)]">
+                    View {{ failures().length }} failed article{{ failures().length === 1 ? '' : 's' }}
+                  </summary>
+                  <div class="mt-4 space-y-3">
+                    @for (failure of failures(); track failure.url) {
+                      <div class="rounded-[1rem] border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3">
+                        <p class="text-sm font-semibold text-[var(--text)]">{{ failure.title }}</p>
+                        <a [href]="failure.url" target="_blank" rel="noopener noreferrer" class="mt-1 block truncate text-xs text-[var(--muted)] hover:text-[var(--accent)]">
+                          {{ failure.url }}
+                        </a>
+                        <p class="mt-2 text-sm text-[var(--error-text)]">{{ failure.reason }}</p>
+                      </div>
+                    }
+                  </div>
+                </details>
+              }
+            </article>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

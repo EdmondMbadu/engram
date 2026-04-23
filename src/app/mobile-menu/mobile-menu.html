@@ -49,6 +49,7 @@
         <span>Home</span>
       </a>
       @for (item of navItems; track item.key) {
+        @if (!publicSlug() || !item.workspaceOnly) {
         @if (activePage() === item.key) {
           <a
             [routerLink]="routeFor(item.key, item.route)"
@@ -67,6 +68,7 @@
             <span class="material-symbols-outlined">{{ item.icon }}</span>
             <span>{{ item.label }}</span>
           </a>
+        }
         }
       }
     </nav>

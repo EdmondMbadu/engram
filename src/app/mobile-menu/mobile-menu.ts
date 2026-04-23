@@ -23,6 +23,7 @@ export class MobileMenuComponent {
     { route: '/chat', icon: 'chat', label: 'New Chat', key: 'chat' },
     { route: '/upload', icon: 'neurology', label: 'Upload', key: 'upload' },
     { route: '/library', icon: 'library_books', label: 'Library', key: 'library' },
+    { route: '/scrapper', icon: 'travel_explore', label: 'Scrapper', key: 'scrapper', workspaceOnly: true },
     { route: '/wiki', icon: 'menu_book', label: 'Wiki', key: 'wiki' },
   ];
 

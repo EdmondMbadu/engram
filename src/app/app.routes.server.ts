@@ -19,6 +19,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'chat', renderMode: RenderMode.Client },
   { path: 'library/:slug', renderMode: RenderMode.Client },
   { path: 'library', renderMode: RenderMode.Client },
+  { path: 'scrapper', renderMode: RenderMode.Client },
   { path: 'wiki', renderMode: RenderMode.Client },
   { path: 'wiki/:slug', renderMode: RenderMode.Client },
   { path: 'atlases', renderMode: RenderMode.Client },

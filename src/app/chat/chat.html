@@ -46,6 +46,12 @@
           <span class="material-symbols-outlined">library_books</span>
           <span>Library</span>
         </a>
+        @if (isWorkspaceMode()) {
+          <a routerLink="/scrapper" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+            <span class="material-symbols-outlined">travel_explore</span>
+            <span>Scrapper</span>
+          </a>
+        }
         <a [routerLink]="atlasWikiLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
           <span class="material-symbols-outlined">menu_book</span>
           <span>Wiki</span>

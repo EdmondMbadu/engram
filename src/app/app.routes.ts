@@ -14,6 +14,7 @@ import { AtlasLandingComponent } from './atlas-landing/atlas-landing';
 import { AtlasHomeRedirectComponent } from './atlas-home-redirect/atlas-home-redirect';
 import { LegalComponent } from './legal/legal';
 import { PublicWikisComponent } from './public-wikis/public-wikis';
+import { WebScraperComponent } from './web-scraper/web-scraper';
 import { authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
@@ -25,6 +26,7 @@ export const routes: Routes = [
   { path: 'chat', component: ChatComponent, title: 'Chat | Living Wiki', canActivate: [authGuard] },
   { path: 'library/:slug', component: LibraryComponent, title: 'Library | Living Wiki' },
   { path: 'library', component: LibraryComponent, title: 'Library | Living Wiki', canActivate: [authGuard] },
+  { path: 'scrapper', component: WebScraperComponent, title: 'Scrapper | Living Wiki', canActivate: [authGuard] },
   { path: 'wiki/:slug', component: WikiComponent, title: 'Public Wiki | Living Wiki' },
   { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Wiki', canActivate: [authGuard] },
   { path: 'public-wikis', component: PublicWikisComponent, title: 'Public Wikis | Living Wiki' },

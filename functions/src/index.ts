@@ -1,5 +1,5 @@
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
-import { HttpsError, onCall } from 'firebase-functions/v2/https';
+import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
 import { randomUUID } from 'node:crypto';
@@ -23,6 +23,79 @@ import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './u
 
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
+
+export const fetchProxy = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+  },
+  async (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Cache-Control', 'no-store');
+
+    if (req.method === 'OPTIONS') {
+      res.status(204).send('');
+      return;
+    }
+
+    if (req.method !== 'GET') {
+      res.status(405).send('Method not allowed.');
+      return;
+    }
+
+    const rawUrl = typeof req.query.url === 'string' ? req.query.url.trim() : '';
+    if (!rawUrl) {
+      res.status(400).send('Missing url param.');
+      return;
+    }
+
+    let targetUrl: URL;
+    try {
+      targetUrl = new URL(rawUrl);
+    } catch {
+      res.status(400).send('Invalid url param.');
+      return;
+    }
+
+    if (!['http:', 'https:'].includes(targetUrl.protocol)) {
+      res.status(400).send('Only http and https URLs are allowed.');
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20_000);
+
+    try {
+      const response = await fetch(targetUrl.toString(), {
+        method: 'GET',
+        redirect: 'follow',
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; LivingAtlasBot/1.0)',
+          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+      });
+
+      const html = await response.text();
+      const contentType = response.headers.get('content-type');
+      res.status(response.status);
+      res.set('Content-Type', contentType && contentType.includes('text/html') ? contentType : 'text/html; charset=utf-8');
+      res.send(html);
+    } catch (error) {
+      logger.error('fetchProxy failed', {
+        url: targetUrl.toString(),
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      res.status(500).send('Fetch failed.');
+    } finally {
+      clearTimeout(timeout);
+    }
+  },
+);
 
 async function countPublicAtlasCollection(collectionName: string, userId: string, atlasId: string): Promise<number> {
   const snapshot = await db

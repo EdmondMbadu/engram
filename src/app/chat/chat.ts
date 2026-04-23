@@ -492,7 +492,7 @@ export class ChatComponent implements AfterViewChecked {
 
       const downloadUrl = await this.documentsService.getPublicDocumentLink(atlasId, filename);
       if (downloadUrl) {
-        window.open(this.withPdfPageAnchor(downloadUrl, citation.page), '_blank', 'noopener,noreferrer');
+        window.open(this.withCitationAnchor(downloadUrl, citation), '_blank', 'noopener,noreferrer');
       }
       return;
     }
@@ -506,9 +506,9 @@ export class ChatComponent implements AfterViewChecked {
       return;
     }
 
-    const downloadUrl = await this.documentsService.getDownloadUrl(match);
+    const downloadUrl = await this.documentsService.getAccessibleDownloadUrl(match);
     if (downloadUrl) {
-      window.open(this.withPdfPageAnchor(downloadUrl, citation.page), '_blank', 'noopener,noreferrer');
+      window.open(this.withCitationAnchor(downloadUrl, citation), '_blank', 'noopener,noreferrer');
     }
   }
 
@@ -830,6 +830,35 @@ export class ChatComponent implements AfterViewChecked {
 
     const withoutHash = url.split('#')[0];
     return `${withoutHash}#page=${page}`;
+  }
+
+  private withCitationAnchor(url: string, citation: CitationPassage): string {
+    if (/\.pdf([?#]|$)/i.test(url)) {
+      return this.withPdfPageAnchor(url, citation.page);
+    }
+
+    return this.withTextFragment(url, citation.text);
+  }
+
+  private withTextFragment(url: string, text: string): string {
+    const fragmentText = text
+      .trim()
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .slice(0, 7)
+      .join(' ');
+
+    if (!fragmentText) {
+      return url;
+    }
+
+    try {
+      const parsed = new URL(url);
+      parsed.hash = `:~:text=${encodeURIComponent(fragmentText)}`;
+      return parsed.toString();
+    } catch {
+      return url;
+    }
   }
 
   private async copyText(target: string, text: string): Promise<void> {
