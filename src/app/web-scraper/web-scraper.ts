@@ -61,6 +61,7 @@ export class WebScraperComponent {
   private readonly documentsService = inject(DocumentsService);
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
+  private readonly discoveryPageBatchSize = 500;
 
   readonly state = signal<ScraperState>('IDLE');
   readonly sourceUrl = signal('');
@@ -226,8 +227,7 @@ export class WebScraperComponent {
     this.runCancelled.set(false);
 
     try {
-      const html = await this.fetchHtmlThroughProxy(normalizedUrl);
-      const articles = this.extractArticlesFromHtml(html, normalizedUrl);
+      const articles = await this.discoverArticlesFromUrl(normalizedUrl);
 
       if (articles.length === 0) {
         this.state.set('ERROR');
@@ -250,6 +250,24 @@ export class WebScraperComponent {
         error instanceof Error ? error.message : 'Discovery failed. Try another source URL.',
       );
     }
+  }
+
+  private async discoverArticlesFromUrl(seedUrl: string): Promise<DiscoveredArticle[]> {
+    const discoveryUrls = await this.buildDiscoveryUrls(seedUrl);
+    const htmlPages = await Promise.all(
+      discoveryUrls.map((url) => this.fetchHtmlThroughProxy(url)),
+    );
+
+    const deduped = new Map<string, DiscoveredArticle>();
+    for (const html of htmlPages) {
+      for (const article of this.extractArticlesFromHtml(html, seedUrl)) {
+        if (!deduped.has(article.url)) {
+          deduped.set(article.url, article);
+        }
+      }
+    }
+
+    return Array.from(deduped.values());
   }
 
   async startScraping(): Promise<void> {
@@ -433,6 +451,51 @@ export class WebScraperComponent {
     }
 
     return [productionEndpoint];
+  }
+
+  private async buildDiscoveryUrls(seedUrl: string): Promise<string[]> {
+    const seed = new URL(seedUrl);
+    if (this.normalizeHost(seed.hostname) !== 'amanet.org') {
+      return [seedUrl];
+    }
+
+    if (!seed.pathname.toLowerCase().startsWith('/articles')) {
+      return [seedUrl];
+    }
+
+    const firstPageUrl = new URL(seedUrl);
+    firstPageUrl.searchParams.set('mpp', String(this.discoveryPageBatchSize));
+    firstPageUrl.searchParams.set('pg', '1');
+
+    const firstHtml = await this.fetchHtmlThroughProxy(firstPageUrl.toString());
+    const totalResults = this.extractAmaTotalResults(firstHtml);
+    if (!totalResults || totalResults <= this.discoveryPageBatchSize) {
+      return [firstPageUrl.toString()];
+    }
+
+    const totalPages = Math.ceil(totalResults / this.discoveryPageBatchSize);
+    const urls = [firstPageUrl.toString()];
+    for (let page = 2; page <= totalPages; page += 1) {
+      const pageUrl = new URL(firstPageUrl.toString());
+      pageUrl.searchParams.set('pg', String(page));
+      urls.push(pageUrl.toString());
+    }
+
+    return urls;
+  }
+
+  private extractAmaTotalResults(html: string): number | null {
+    const text = html.replace(/\s+/g, ' ');
+    const match =
+      text.match(/articles\s*:\s*\d+\s*-\s*\d+\s*of\s*(\d+)\s*results/i) ??
+      text.match(/content\s*\((\d+)\)/i);
+
+    if (!match) {
+      return null;
+    }
+
+    const total = Number(match[1]);
+    return Number.isFinite(total) && total > 0 ? total : null;
   }
 
   private extractArticlesFromHtml(html: string, seedUrl: string): DiscoveredArticle[] {
