@@ -196,6 +196,26 @@ export class AtlasService {
     });
   }
 
+  async listPublicAtlases(): Promise<AtlasItem[]> {
+    if (!this.firestore) {
+      return [];
+    }
+
+    const snap = await getDocs(
+      query(
+        collection(this.firestore, 'atlases'),
+        where('is_public', '==', true),
+      ),
+    );
+
+    return snap.docs.map((atlasDoc) =>
+      this.hydrateAtlas({
+        id: atlasDoc.id,
+        ...(atlasDoc.data() as Record<string, unknown>),
+      }),
+    );
+  }
+
   async uploadAtlasImage(
     atlasId: string,
     kind: 'logo' | 'hero',

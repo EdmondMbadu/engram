@@ -1,3 +1,5 @@
+import type { AtlasItem } from './atlas.models';
+
 export type PublicWikiStatus = 'live' | 'coming-soon';
 export type PublicWikiPriority = 'high' | 'med' | 'low';
 export type PublicWikiBadge =
@@ -20,46 +22,48 @@ export interface PublicWikiCatalogItem {
   sources?: string;
   fallbackHeroUrl?: string;
   fallbackLogoUrl?: string;
+  link?: string;
+  heroUrl?: string | null;
+  logoUrl?: string | null;
+  coverColor?: string | null;
 }
 
-export const PUBLIC_WIKI_CATALOG: PublicWikiCatalogItem[] = [
-  {
-    title: 'Philly',
+type PublicWikiPresentation = Pick<
+  PublicWikiCatalogItem,
+  'subtitle' | 'category' | 'priority' | 'badges' | 'sources' | 'fallbackHeroUrl' | 'fallbackLogoUrl'
+>;
+
+const PUBLIC_WIKI_PRESENTATION_BY_SLUG: Record<string, PublicWikiPresentation> = {
+  philly: {
     subtitle: 'City Atlas',
-    description:
-      'Public knowledge for Philadelphia research, local context, and connected source material.',
-    status: 'live',
-    slug: 'philly',
     category: 'Cities & Regions',
     priority: 'high',
     badges: ['evergreen', 'geo'],
     fallbackHeroUrl: '/assets/public-wikis/philly-hero.jpg',
     fallbackLogoUrl: '/assets/public-wikis/philly-logo.png',
-    sources:
-      'OpenDataPhilly, DVRPC, PWD, PEA, EPA, Census Bureau, SBN, Green Philly, SEPTA',
+    sources: 'OpenDataPhilly, DVRPC, PWD, PEA, EPA, Census Bureau, SBN, Green Philly, SEPTA',
   },
-  {
-    title: 'NewWorld Game',
+  'newworld-game': {
     subtitle: 'Platform Atlas',
-    description:
-      'A public wiki for NewWorld Game concepts, programs, and reference documents.',
-    status: 'live',
-    slug: 'newworld-game',
     category: 'Culture & Entertainment',
     fallbackHeroUrl: '/assets/public-wikis/newworld-game-hero.jpg',
     fallbackLogoUrl: '/assets/public-wikis/newworld-game-logo.png',
   },
-  {
-    title: 'MS Bookmakers',
+  bookmakers: {
     subtitle: 'Industry Atlas',
-    description:
-      'A public wiki for bookmaker knowledge, notes, and curated source material.',
-    status: 'live',
-    slug: 'ms-bookmakers',
     category: 'Business & Finance',
   },
+  'ms-bookmakers': {
+    subtitle: 'Industry Atlas',
+    category: 'Business & Finance',
+  },
+  'ms-bomakers': {
+    subtitle: 'Industry Atlas',
+    category: 'Business & Finance',
+  },
+};
 
-  // ===== AI & TECHNOLOGY =====
+export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   {
     title: 'The AI Landscape 2026',
     subtitle: 'AI & Tech',
@@ -672,3 +676,69 @@ export const PUBLIC_WIKI_CATALOG: PublicWikiCatalogItem[] = [
       'State legislatures, GDPR text, FTC enforcement, EFF, ACLU, court filings',
   },
 ];
+
+function atlasSortDate(atlas: AtlasItem): number {
+  const updated =
+    atlas.updated_at instanceof Date
+      ? atlas.updated_at.getTime()
+      : atlas.updated_at?.toDate?.().getTime() ?? 0;
+  if (updated > 0) return updated;
+  return atlas.created_at instanceof Date
+    ? atlas.created_at.getTime()
+    : atlas.created_at?.toDate?.().getTime() ?? 0;
+}
+
+function inferPresentation(atlas: AtlasItem): PublicWikiPresentation {
+  const slug = atlas.slug.trim().toLowerCase();
+  const title = atlas.name.trim().toLowerCase();
+  if (PUBLIC_WIKI_PRESENTATION_BY_SLUG[slug]) {
+    return PUBLIC_WIKI_PRESENTATION_BY_SLUG[slug];
+  }
+  if (title.includes('philly')) {
+    return PUBLIC_WIKI_PRESENTATION_BY_SLUG['philly'];
+  }
+  if (title.includes('newworld')) {
+    return PUBLIC_WIKI_PRESENTATION_BY_SLUG['newworld-game'];
+  }
+  if (title.includes('bookmaker')) {
+    return PUBLIC_WIKI_PRESENTATION_BY_SLUG['bookmakers'];
+  }
+  return {
+    subtitle: 'Public Atlas',
+    category: 'Public Atlases',
+  };
+}
+
+export function sortPublicAtlases(atlases: AtlasItem[]): AtlasItem[] {
+  return [...atlases].sort((a, b) => {
+    const aDate = atlasSortDate(a);
+    const bDate = atlasSortDate(b);
+    if (aDate !== bDate) return aDate - bDate;
+    const aName = a.name.trim().toLowerCase();
+    const bName = b.name.trim().toLowerCase();
+    return aName.localeCompare(bName);
+  });
+}
+
+export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem {
+  const presentation = inferPresentation(atlas);
+  const slug = atlas.slug?.trim() || atlas.id;
+  const title = atlas.name?.trim() || `Atlas ${atlas.id.slice(0, 6)}`;
+  return {
+    title,
+    subtitle: presentation.subtitle ?? 'Public Atlas',
+    description: atlas.description?.trim() || `Explore ${title} in Living Wiki.`,
+    status: 'live',
+    slug,
+    category: presentation.category ?? 'Public Atlases',
+    priority: presentation.priority,
+    badges: presentation.badges,
+    sources: presentation.sources,
+    fallbackHeroUrl: presentation.fallbackHeroUrl,
+    fallbackLogoUrl: presentation.fallbackLogoUrl,
+    link: `/atlas/${slug}`,
+    heroUrl: atlas.hero_url ?? presentation.fallbackHeroUrl ?? null,
+    logoUrl: atlas.logo_url ?? presentation.fallbackLogoUrl ?? null,
+    coverColor: atlas.cover_color ?? null,
+  };
+}
