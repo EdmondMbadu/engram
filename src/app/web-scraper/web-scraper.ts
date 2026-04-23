@@ -280,36 +280,20 @@ export class WebScraperComponent {
     for (let index = 0; index < targets.length; index += 1) {
       const article = targets[index];
       this.currentArticle.set(article);
-      this.currentStageLabel.set('Queueing URL for ingestion');
+      this.currentStageLabel.set('Queueing URL for background ingestion');
 
       try {
-        const documentId = await this.documentsService.queueUrlDocument(article.url, { atlasId });
-        const finalDocument = await this.documentsService.waitForDocumentTerminalState(
-          documentId,
-          (document) => {
-            this.currentStageLabel.set(this.describeDocumentProgress(document));
-          },
-        );
-
-        if (finalDocument.status === 'indexed') {
-          this.successfulCount.update((count) => count + 1);
-          this.pushLog('success', `Ingested ${article.title}`);
-        } else {
-          const reason = this.documentFailureReason(finalDocument);
-          this.failures.update((items) => [
-            ...items,
-            { title: article.title, url: article.url, reason },
-          ]);
-          this.pushLog('error', `Failed ${article.title}: ${reason}`);
-        }
+        await this.documentsService.queueUrlDocument(article.url, { atlasId });
+        this.successfulCount.update((count) => count + 1);
+        this.pushLog('success', `Queued ${article.title}`);
       } catch (error) {
         const reason =
-          error instanceof Error ? error.message : 'The article could not be processed.';
+          error instanceof Error ? error.message : 'The article could not be queued.';
         this.failures.update((items) => [
           ...items,
           { title: article.title, url: article.url, reason },
         ]);
-        this.pushLog('error', `Failed ${article.title}: ${reason}`);
+        this.pushLog('error', `Failed to queue ${article.title}: ${reason}`);
       }
 
       this.completedCount.update((count) => count + 1);
@@ -320,14 +304,16 @@ export class WebScraperComponent {
       }
 
       if (index < targets.length - 1) {
-        this.currentStageLabel.set('Rate limiting before the next fetch');
+        this.currentStageLabel.set('Rate limiting before the next queue');
         await this.delay(1100);
       }
     }
 
     this.currentArticle.set(null);
     this.currentStageLabel.set(
-      this.runCancelled() ? 'Scrape run stopped after the current article.' : 'Completed',
+      this.runCancelled()
+        ? 'Queueing stopped after the current article.'
+        : 'Queueing complete. Background ingestion continues in Library.',
     );
     this.state.set('DONE');
   }
@@ -742,48 +728,6 @@ export class WebScraperComponent {
     } catch {
       return value;
     }
-  }
-
-  private describeDocumentProgress(document: DocumentItem): string {
-    if (document.status === 'indexed') {
-      return 'Indexed successfully';
-    }
-
-    if (document.status === 'failed') {
-      return this.documentFailureReason(document);
-    }
-
-    switch (document.processing_stage) {
-      case 'queued':
-        return 'Queued';
-      case 'extracting':
-        return 'Extracting text from the article';
-      case 'writing_extracts':
-        return 'Saving source extracts';
-      case 'compiling_knowledge':
-        if (document.total_chunks && document.total_chunks > 0) {
-          return `Compiling knowledge (${document.processed_chunks ?? 0}/${document.total_chunks} chunks)`;
-        }
-        return 'Compiling knowledge';
-      case 'writing_entries':
-        return 'Writing knowledge entries';
-      case 'queuing_topics':
-        return 'Queueing topic summaries';
-      case 'compiling_articles':
-        return 'Compiling wiki articles';
-      case 'failed':
-        return this.documentFailureReason(document);
-      default:
-        return 'Processing';
-    }
-  }
-
-  private documentFailureReason(document: DocumentItem): string {
-    return (
-      document.error_message?.trim() ||
-      document.failure_code?.trim() ||
-      'The article failed during ingestion.'
-    );
   }
 
   private pushLog(status: ScrapeLogEntry['status'], message: string): void {
