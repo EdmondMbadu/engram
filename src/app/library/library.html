@@ -258,6 +258,21 @@
                   </button>
                   <button
                     type="button"
+                    class="inline-flex items-center gap-2 rounded-[1rem] border border-[var(--error-border)]/70 bg-[var(--error-bg)]/70 px-4 py-3 text-sm font-bold text-[var(--error-text)] transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                    [disabled]="!canDeleteFailedDocuments()"
+                    (click)="deleteFailedDocuments()"
+                  >
+                    <span class="material-symbols-outlined text-base">delete_forever</span>
+                    <span>{{
+                      isDeletingFailedDocuments()
+                        ? 'Deleting Failed...'
+                        : failedDocumentCount() > 0
+                          ? 'Delete Failed'
+                          : 'No Failed Sources'
+                    }}</span>
+                  </button>
+                  <button
+                    type="button"
                     class="inline-flex items-center gap-2 rounded-[1rem] border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm font-bold text-[var(--error-text)] transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
                     [disabled]="!canDeleteAllDocuments()"
                     (click)="deleteAllDocuments()"
@@ -443,13 +458,27 @@
                           </div>
                           <div>
                             <p class="text-xs font-bold uppercase tracking-[0.16em] text-amber-400">Ingesting document</p>
-                            <p class="text-[11px] text-[var(--muted)]">{{ processingLabel(document) }}{{ chunkProgressLabel(document) ? ' · ' + chunkProgressLabel(document) : '' }}</p>
+                            <p class="text-[11px] text-[var(--muted)]">{{ processingLabel(document) }}</p>
+                            @if (processingDetail(document); as detail) {
+                              <p class="mt-1 text-[11px] text-[var(--muted)]">{{ detail }}</p>
+                            }
                           </div>
                         </div>
-                        <span class="text-xs font-semibold text-[var(--text)]">{{ ingestion }}%</span>
+                        @if (ingestionStatusLabel(document, ingestion); as statusLabel) {
+                          <span
+                            class="text-xs font-semibold"
+                            [style.color]="isIndeterminateIngestion(document) ? 'rgb(252 211 77)' : 'var(--text)'"
+                          >
+                            {{ statusLabel }}
+                          </span>
+                        }
                       </div>
                       <div class="h-2 overflow-hidden rounded-full bg-white/5">
-                        <div class="h-full rounded-full bg-amber-400 transition-all duration-500" [style.width.%]="ingestion"></div>
+                        <div
+                          class="library-ingestion-progress__bar h-full rounded-full bg-amber-400 transition-all duration-500"
+                          [class.library-ingestion-progress__bar--indeterminate]="isIndeterminateIngestion(document)"
+                          [style.width.%]="isIndeterminateIngestion(document) ? 100 : ingestion"
+                        ></div>
                       </div>
                     </div>
                   }

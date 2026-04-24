@@ -105,6 +105,20 @@
   min-width: 0;
 }
 
+.library-ingestion-progress__bar--indeterminate {
+  width: 100% !important;
+  background-image: linear-gradient(
+    90deg,
+    rgba(251, 191, 36, 0.18) 0%,
+    rgba(251, 191, 36, 0.48) 22%,
+    rgba(252, 211, 77, 0.95) 48%,
+    rgba(251, 191, 36, 0.48) 74%,
+    rgba(251, 191, 36, 0.18) 100%
+  );
+  background-size: 220% 100%;
+  animation: library-ingestion-sweep 1.4s linear infinite;
+}
+
 @keyframes library-atlas-pulse {
   0% {
     transform: scale(0.86);
@@ -133,5 +147,14 @@
   40% {
     transform: translateY(-0.18rem);
     opacity: 1;
+  }
+}
+
+@keyframes library-ingestion-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -20% 0;
   }
 }

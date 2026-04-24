@@ -35,6 +35,7 @@ export class LibraryComponent {
 
   readonly isSigningOut = signal(false);
   readonly isDeletingAllDocuments = signal(false);
+  readonly isDeletingFailedDocuments = signal(false);
   readonly avatarMenuOpen = signal(false);
   readonly searchQuery = signal('');
   readonly urlToImport = signal('');
@@ -134,6 +135,19 @@ export class LibraryComponent {
       !this.isPublicView() &&
       this.documents().length > 0 &&
       !this.isDeletingAllDocuments() &&
+      !this.isDeletingFailedDocuments() &&
+      !this.isUploading(),
+  );
+  readonly failedDocuments = computed(() =>
+    this.documents().filter((document) => document.status === 'failed'),
+  );
+  readonly failedDocumentCount = computed(() => this.failedDocuments().length);
+  readonly canDeleteFailedDocuments = computed(
+    () =>
+      !this.isPublicView() &&
+      this.failedDocumentCount() > 0 &&
+      !this.isDeletingAllDocuments() &&
+      !this.isDeletingFailedDocuments() &&
       !this.isUploading(),
   );
 
@@ -279,6 +293,33 @@ export class LibraryComponent {
     }
   }
 
+  async deleteFailedDocuments(): Promise<void> {
+    if (this.isPublicView()) {
+      return;
+    }
+
+    const documents = this.failedDocuments().slice();
+    if (documents.length === 0) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Delete all ${documents.length} failed sources in this atlas?\n\nThis will remove only failed ingestions so they no longer appear in Source Files or interfere with cleanup.`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.isDeletingFailedDocuments.set(true);
+
+    try {
+      await this.documentsService.deleteDocuments(documents.map((document) => document.id));
+    } finally {
+      this.isDeletingFailedDocuments.set(false);
+    }
+  }
+
   iconForDocument(document: DocumentItem): string {
     switch (document.file_type) {
       case 'pdf':
@@ -349,7 +390,7 @@ export class LibraryComponent {
 
     switch (document.processing_stage) {
       case 'extracting':
-        return 'Extracting text';
+        return 'Fetching and rendering source page';
       case 'writing_extracts':
         return 'Saving source extracts';
       case 'compiling_knowledge':
@@ -378,6 +419,26 @@ export class LibraryComponent {
     return `${document.processed_chunks ?? 0} of ${document.total_chunks} chunks`;
   }
 
+  processingDetail(document: DocumentItem): string | null {
+    if (document.status !== 'processing') {
+      return null;
+    }
+
+    if (document.processing_stage === 'extracting') {
+      const heartbeat = this.relativeHeartbeat(document);
+      if (heartbeat) {
+        return `Last activity ${heartbeat}. Browser-rendered pages can take longer here.`;
+      }
+      return 'Browser-rendered pages can take longer here.';
+    }
+
+    return this.chunkProgressLabel(document);
+  }
+
+  isIndeterminateIngestion(document: DocumentItem): boolean {
+    return document.status === 'processing' && document.processing_stage === 'extracting';
+  }
+
   ingestionProgress(document: DocumentItem): number | null {
     if (document.status !== 'processing') {
       return null;
@@ -402,6 +463,18 @@ export class LibraryComponent {
     }
 
     return base;
+  }
+
+  ingestionStatusLabel(document: DocumentItem, progress: number | null): string | null {
+    if (document.status !== 'processing') {
+      return null;
+    }
+
+    if (this.isIndeterminateIngestion(document)) {
+      return 'Active now';
+    }
+
+    return progress === null ? null : `${progress}%`;
   }
 
   formatDocumentDate(document: DocumentItem): string {
@@ -457,6 +530,43 @@ export class LibraryComponent {
       return `${(numericValue / 1_000).toFixed(1)}k`;
     }
     return `${numericValue}`;
+  }
+
+  private relativeHeartbeat(document: DocumentItem): string | null {
+    const heartbeat = document.last_heartbeat_at;
+    const date =
+      heartbeat instanceof Date
+        ? heartbeat
+        : typeof heartbeat?.toDate === 'function'
+          ? heartbeat.toDate()
+          : null;
+
+    if (!date) {
+      return null;
+    }
+
+    const diffMs = Date.now() - date.getTime();
+    if (diffMs < 0 || diffMs < 15_000) {
+      return 'just now';
+    }
+
+    const diffSeconds = Math.floor(diffMs / 1_000);
+    if (diffSeconds < 60) {
+      return `${diffSeconds}s ago`;
+    }
+
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    if (diffMinutes < 60) {
+      return `${diffMinutes}m ago`;
+    }
+
+    const diffHours = Math.floor(diffMinutes / 60);
+    if (diffHours < 24) {
+      return `${diffHours}h ago`;
+    }
+
+    const diffDays = Math.floor(diffHours / 24);
+    return `${diffDays}d ago`;
   }
 
   @HostListener('document:click', ['$event'])
