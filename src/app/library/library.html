@@ -55,7 +55,7 @@
           <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
             >library_books</span
           >
-          <span>Library</span>
+          <span>Source Files</span>
         </a>
         @if (!isPublicView()) {
           <a
@@ -189,7 +189,7 @@
                 <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[var(--line)] bg-white/5">
                   <span class="material-symbols-outlined animate-spin text-[var(--accent)]">progress_activity</span>
                 </div>
-                <h2 class="mt-5 text-3xl font-black tracking-[-0.05em] text-[var(--text)]">Loading public library</h2>
+                <h2 class="mt-5 text-3xl font-black tracking-[-0.05em] text-[var(--text)]">Loading public source files</h2>
                 <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
                   Pulling published documents and preparing the page.
                 </p>
@@ -225,7 +225,7 @@
                 <div class="max-w-2xl">
                   <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">View only</p>
                   <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
-                    You can browse and download published documents from this library. Uploading and deleting documents requires a signed-in atlas owner.
+                    You can browse and download published documents from these source files. Uploading and deleting documents requires a signed-in atlas owner.
                   </p>
                 </div>
                 <div class="flex flex-wrap items-center gap-3">
@@ -288,18 +288,18 @@
           <section id="all-files" class="mt-8 space-y-3">
             @if (publicNotFound()) {
               <article class="glass-card rounded-[1.5rem] px-5 py-8 text-center">
-                <h2 class="text-xl font-black tracking-[-0.05em] text-[var(--text)]">This library is unavailable</h2>
+                <h2 class="text-xl font-black tracking-[-0.05em] text-[var(--text)]">These source files are unavailable</h2>
                 <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
                   The linked atlas could not be found or is no longer public.
                 </p>
               </article>
             } @else if (isLoading()) {
               <article class="glass-card rounded-[1.5rem] px-5 py-5 text-sm text-[var(--muted)]">
-                {{ isPublicView() ? 'Loading this public document library...' : 'Loading your document library...' }}
+                {{ isPublicView() ? 'Loading these public source files...' : 'Loading your source files...' }}
               </article>
             } @else if (documents().length === 0) {
               <article class="glass-card rounded-[1.5rem] px-5 py-8 text-center">
-                <h2 class="text-xl font-black tracking-[-0.05em] text-[var(--text)]">{{ isPublicView() ? 'This library is empty' : 'Your library is empty' }}</h2>
+                <h2 class="text-xl font-black tracking-[-0.05em] text-[var(--text)]">{{ isPublicView() ? 'No source files yet' : 'Your source files are empty' }}</h2>
                 <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
                   {{ isPublicView() ? 'No public documents have been published here yet.' : 'Upload files or import a URL to start building your knowledge base.' }}
                 </p>
@@ -308,7 +308,7 @@
               <article class="glass-card rounded-[1.5rem] px-5 py-8 text-center">
                 <h2 class="text-xl font-black tracking-[-0.05em] text-[var(--text)]">No matching documents</h2>
                 <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
-                  Nothing in this library matches "{{ searchQuery().trim() }}".
+                  Nothing in source files matches "{{ searchQuery().trim() }}".
                 </p>
               </article>
             }
@@ -471,7 +471,7 @@
               </h2>
               <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
                 Query-time knowledge gaps will appear here once users start asking questions the
-                current library cannot answer.
+                current source files cannot answer.
               </p>
             </div>
 

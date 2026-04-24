@@ -40,7 +40,7 @@ const PRIVACY_CONTENT: LegalPageContent = {
     {
       heading: 'Public atlas behavior',
       body: [
-        'If an atlas owner marks an atlas as public, visitors may be able to browse the atlas landing page, library, wiki, and other public surfaces without signing in.',
+        'If an atlas owner marks an atlas as public, visitors may be able to browse the atlas landing page, source files, wiki, and other public surfaces without signing in.',
         'Public chats are visible to the service operators and may later be visible to the relevant atlas owner inside the product. Owners should only publish atlases they are comfortable exposing in read-only form.',
       ],
     },

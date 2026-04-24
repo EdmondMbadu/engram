@@ -22,7 +22,7 @@ export class MobileMenuComponent {
   readonly navItems = [
     { route: '/chat', icon: 'chat', label: 'New Chat', key: 'chat' },
     { route: '/upload', icon: 'neurology', label: 'Upload', key: 'upload' },
-    { route: '/library', icon: 'library_books', label: 'Library', key: 'library' },
+    { route: '/library', icon: 'library_books', label: 'Source Files', key: 'library' },
     { route: '/scrapper', icon: 'travel_explore', label: 'Scrapper', key: 'scrapper', workspaceOnly: true },
     { route: '/wiki', icon: 'menu_book', label: 'Wiki', key: 'wiki' },
   ];

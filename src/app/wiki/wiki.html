@@ -34,7 +34,7 @@
           </a>
           <a routerLink="/library" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
             <span class="material-symbols-outlined">library_books</span>
-            <span>Library</span>
+            <span>Source Files</span>
           </a>
           <a routerLink="/scrapper" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
             <span class="material-symbols-outlined">travel_explore</span>
@@ -305,7 +305,7 @@
                       @if (isPublicView()) {
                         This public wiki does not have any topics yet.
                       } @else {
-                        No wiki topics yet. Upload documents in the Library and the ingestion pipeline will create topic pages automatically.
+                        No wiki topics yet. Upload source files in Source Files and the ingestion pipeline will create topic pages automatically.
                       }
                     </div>
                   } @else if (filteredTopics().length === 0) {

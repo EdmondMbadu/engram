@@ -44,7 +44,7 @@
         </a>
         <a [routerLink]="libraryLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
           <span class="material-symbols-outlined">library_books</span>
-          <span>Library</span>
+          <span>Source Files</span>
         </a>
         @if (isWorkspaceMode()) {
           <a routerLink="/scrapper" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
@@ -216,7 +216,7 @@
 
                 @if (isPublicVisitorMode()) {
                   <div class="mt-10 flex flex-wrap justify-center gap-3">
-                    <a [routerLink]="libraryLink()" class="ghost-btn !px-4 !py-3 text-sm">Browse library</a>
+                    <a [routerLink]="libraryLink()" class="ghost-btn !px-4 !py-3 text-sm">Browse source files</a>
                     <a [routerLink]="atlasWikiLink()" class="ghost-btn !px-4 !py-3 text-sm">Read wiki</a>
                     @if (showSignInCta() || !isSignedIn()) {
                       <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn !px-4 !py-3 text-sm">

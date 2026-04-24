@@ -62,9 +62,9 @@ export class LibraryComponent {
   readonly pageTitle = computed(() =>
     this.isPublicView()
       ? this.publicPageLoading()
-        ? 'Loading Library...'
-        : `${this.atlasService.displayName(this.publicAtlas())} Library`
-      : 'Library',
+        ? 'Loading Source Files...'
+        : `${this.atlasService.displayName(this.publicAtlas())} Source Files`
+      : 'Source Files',
   );
   readonly documents = computed(() =>
     this.isPublicView() ? this.publicDocuments() : this.documentsService.documents(),
@@ -169,7 +169,7 @@ export class LibraryComponent {
           this.publicAtlas.set(null);
           this.publicDocuments.set([]);
           this.publicError.set(
-            error instanceof Error ? error.message : 'Failed to load this public library.',
+            error instanceof Error ? error.message : 'Failed to load these public source files.',
           );
         })
         .finally(() => {

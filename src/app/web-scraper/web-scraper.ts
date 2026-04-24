@@ -331,7 +331,7 @@ export class WebScraperComponent {
     this.currentStageLabel.set(
       this.runCancelled()
         ? 'Queueing stopped after the current article.'
-        : 'Queueing complete. Background ingestion continues in Library.',
+        : 'Queueing complete. Background ingestion continues in Source Files.',
     );
     this.state.set('DONE');
   }
