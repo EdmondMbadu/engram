@@ -13,6 +13,7 @@ export const serverRoutes: ServerRoute[] = [
 
   // Guarded pages require auth state — client-render them
   { path: 'home', renderMode: RenderMode.Client },
+  { path: 'wikis', renderMode: RenderMode.Client },
   { path: 'upload/:slug', renderMode: RenderMode.Client },
   { path: 'upload', renderMode: RenderMode.Client },
   { path: 'chat/:slug', renderMode: RenderMode.Client },

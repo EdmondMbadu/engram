@@ -42,9 +42,9 @@ export class AtlasService {
   private autoCreateAttempted = false;
   readonly activeAtlasHomeLink = computed(() => {
     const id = this.activeAtlasId();
-    if (!id) return '/atlases';
+    if (!id) return '/wikis';
     const atlas = this.atlases().find((a) => a.id === id);
-    if (!atlas) return '/atlases';
+    if (!atlas) return '/wikis';
     const slug = atlas.slug?.trim() || this.slugify(atlas.name ?? '') || atlas.id;
     return `/atlas/${slug}`;
   });
@@ -134,7 +134,7 @@ export class AtlasService {
     const uid = this.authService.uid();
     if (!uid) return null;
 
-    const name = input.name.trim() || 'Untitled Atlas';
+    const name = input.name.trim() || 'Untitled Wiki';
     const slug = this.slugify(name);
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
@@ -354,7 +354,7 @@ export class AtlasService {
 
     const currentAtlases = this.atlases();
     if (currentAtlases.length <= 1) {
-      throw new Error('You must keep at least one atlas.');
+      throw new Error('You must keep at least one Wiki.');
     }
 
     const usage = await this.getAtlasUsage(atlasId);
@@ -371,10 +371,10 @@ export class AtlasService {
   }
 
   displayName(atlas: AtlasItem | null | undefined): string {
-    if (!atlas) return 'Select atlas';
+    if (!atlas) return 'Select Wiki';
     const trimmed = atlas.name?.trim();
     if (trimmed) return trimmed;
-    return `Atlas ${atlas.id.slice(0, 6)}`;
+    return `Wiki ${atlas.id.slice(0, 6)}`;
   }
 
   private async selfHealAtlases(items: AtlasItem[]): Promise<void> {
@@ -382,7 +382,7 @@ export class AtlasService {
     for (const atlas of items) {
       const patch: Record<string, unknown> = {};
       if (!atlas.name || !atlas.name.trim()) {
-        patch['name'] = `Atlas ${atlas.id.slice(0, 6)}`;
+        patch['name'] = `Wiki ${atlas.id.slice(0, 6)}`;
       }
       const effectiveName = (patch['name'] as string | undefined) ?? atlas.name;
       const expectedSlug = this.slugify(effectiveName || `atlas-${atlas.id.slice(0, 6)}`);
@@ -414,8 +414,8 @@ export class AtlasService {
     if (!this.firestore) return null;
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
-      name: 'My Atlas',
-      slug: 'my-atlas',
+      name: 'My Wiki',
+      slug: 'my-wiki',
       description: null,
       is_public: false,
       logo_url: null,
@@ -439,7 +439,7 @@ export class AtlasService {
       .trim()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
-      .slice(0, 48) || 'atlas';
+      .slice(0, 48) || 'wiki';
   }
 
   private hydrateAtlas(data: Record<string, unknown>): AtlasItem {

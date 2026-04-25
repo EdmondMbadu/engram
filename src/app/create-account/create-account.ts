@@ -88,7 +88,7 @@ export class CreateAccountComponent {
 
   private getRedirectUrl(): string {
     const redirectTo = this.route.snapshot.queryParamMap.get('redirectTo');
-    return this.isSafeRedirect(redirectTo) ? redirectTo : '/upload';
+    return this.isSafeRedirect(redirectTo) ? redirectTo : '/wikis';
   }
 
   private isSafeRedirect(value: string | null): value is string {

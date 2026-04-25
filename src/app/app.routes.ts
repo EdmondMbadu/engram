@@ -11,15 +11,16 @@ import { ChatComponent } from './chat/chat';
 import { LibraryComponent } from './library/library';
 import { AtlasManageComponent } from './atlas-manage/atlas-manage';
 import { AtlasLandingComponent } from './atlas-landing/atlas-landing';
-import { AtlasHomeRedirectComponent } from './atlas-home-redirect/atlas-home-redirect';
 import { LegalComponent } from './legal/legal';
 import { PublicWikisComponent } from './public-wikis/public-wikis';
 import { WebScraperComponent } from './web-scraper/web-scraper';
+import { WikiHomeComponent } from './wiki-home/wiki-home';
 import { authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
   { path: '', component: MarketingComponent, title: 'Living Wiki' },
-  { path: 'home', component: AtlasHomeRedirectComponent, title: 'Home | Living Wiki', canActivate: [authGuard] },
+  { path: 'home', component: WikiHomeComponent, title: 'My Wikis | Living Wiki', canActivate: [authGuard] },
+  { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | Living Wiki', canActivate: [authGuard] },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | Living Wiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | Living Wiki', canActivate: [authGuard] },
   { path: 'chat/:slug', component: ChatComponent, title: 'Chat | Living Wiki' },
