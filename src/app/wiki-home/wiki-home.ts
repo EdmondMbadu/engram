@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, computed, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import type { AtlasItem, AtlasUsage } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
@@ -17,6 +17,7 @@ export class WikiHomeComponent {
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly elementRef = inject(ElementRef);
 
   readonly atlases = this.atlasService.atlases;
   readonly activeAtlasId = this.atlasService.activeAtlasId;
@@ -31,6 +32,7 @@ export class WikiHomeComponent {
   readonly isCreating = signal(false);
   readonly createError = signal<string | null>(null);
   readonly isSigningOut = signal(false);
+  readonly avatarMenuOpen = signal(false);
   readonly usageById = signal<Record<string, AtlasUsage>>({});
   readonly loadingUsageById = signal<Record<string, boolean>>({});
 
@@ -79,6 +81,16 @@ export class WikiHomeComponent {
   chatCount(atlas: AtlasItem): number {
     const usage = this.usage(atlas.id);
     return atlas.stats?.chat_threads ?? ((usage?.queries ?? 0) + (usage?.chat_threads ?? 0));
+  }
+
+  initialsFor(text: string): string {
+    return text
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join('')
+      .toUpperCase();
   }
 
   updatedLabel(atlas: AtlasItem): string {
@@ -140,6 +152,10 @@ export class WikiHomeComponent {
     this.atlasService.setActive(atlasId);
   }
 
+  toggleAvatarMenu(): void {
+    this.avatarMenuOpen.update((open) => !open);
+  }
+
   async openWiki(atlas: AtlasItem, destination: 'library' | 'chat' | 'wiki' | 'settings'): Promise<void> {
     this.selectWiki(atlas.id);
     if (destination === 'wiki') {
@@ -166,11 +182,19 @@ export class WikiHomeComponent {
 
   async signOut(): Promise<void> {
     this.isSigningOut.set(true);
+    this.avatarMenuOpen.set(false);
     try {
       await this.authService.signOut();
       await this.router.navigateByUrl('/');
     } finally {
       this.isSigningOut.set(false);
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.querySelector('.avatar-menu-wrapper')?.contains(event.target as Node)) {
+      this.avatarMenuOpen.set(false);
     }
   }
 
