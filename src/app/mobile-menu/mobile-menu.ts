@@ -20,6 +20,7 @@ export class MobileMenuComponent {
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
   readonly navItems = [
+    { route: '/wikis', icon: 'dashboard', label: 'Wikis', key: 'wikis', workspaceOnly: true },
     { route: '/chat', icon: 'chat', label: 'New Chat', key: 'chat' },
     { route: '/upload', icon: 'neurology', label: 'Upload', key: 'upload' },
     { route: '/library', icon: 'library_books', label: 'Source Files', key: 'library' },

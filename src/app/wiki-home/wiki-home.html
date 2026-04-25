@@ -1,43 +1,86 @@
-<div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
-  <header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--surface)]/95 backdrop-blur-xl">
-    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-      <a routerLink="/wikis" class="flex min-w-0 items-center gap-3">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] p-1.5">
-          <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
-        </div>
-        <div class="min-w-0">
-          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--muted)]">Workspace</p>
-          <h1 class="truncate text-xl font-black tracking-tight">Living Wiki</h1>
-        </div>
-      </a>
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
+    <aside class="theme-sidebar hidden h-screen w-72 shrink-0 border-r px-5 py-6 md:flex md:flex-col">
+      <div class="mb-10 px-2">
+        <a routerLink="/" class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1 shadow-[0_0_24px_rgba(59,175,98,0.08)]">
+            <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+          </div>
+          <span class="text-xl font-black tracking-tighter text-[var(--text)]">Living Wiki</span>
+        </a>
+      </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
-        <button
-          type="button"
-          class="primary-btn inline-flex items-center gap-2 !px-4 !py-2.5 text-sm"
-          (click)="openCreate()"
-        >
-          <span class="material-symbols-outlined text-[1.1rem]">add</span>
-          <span class="hidden sm:inline">New Wiki</span>
-        </button>
-        <app-theme-toggle></app-theme-toggle>
-        <div class="hidden items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1.5 sm:flex">
-          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--accent)]/10 text-xs font-black text-[var(--accent)]">{{ userInitials() }}</span>
-          <span class="max-w-40 truncate text-xs font-semibold text-[var(--muted)]">{{ currentUserEmail() || currentUserName() }}</span>
-        </div>
-        <button
-          type="button"
-          class="ghost-btn !px-3 !py-2 text-xs"
-          [disabled]="isSigningOut()"
-          (click)="signOut()"
-        >
-          {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
+      <app-atlas-switcher></app-atlas-switcher>
+
+      <nav class="flex-1 space-y-1 text-sm">
+        <a routerLink="/wikis" class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">dashboard</span>
+          <span>Wikis</span>
+        </a>
+        <a [routerLink]="atlasHomeLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+          <span class="material-symbols-outlined">home</span>
+          <span>Home</span>
+        </a>
+        <a routerLink="/chat" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+          <span class="material-symbols-outlined">chat</span>
+          <span>New Chat</span>
+        </a>
+        <a routerLink="/upload" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+          <span class="material-symbols-outlined">neurology</span>
+          <span>Upload</span>
+        </a>
+        <a routerLink="/library" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+          <span class="material-symbols-outlined">library_books</span>
+          <span>Source Files</span>
+        </a>
+        <a routerLink="/scrapper" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+          <span class="material-symbols-outlined">travel_explore</span>
+          <span>Scrapper</span>
+        </a>
+        <a [routerLink]="atlasWikiLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+          <span class="material-symbols-outlined">menu_book</span>
+          <span>Wiki</span>
+        </a>
+      </nav>
+
+      <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
+        <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
+          <span class="material-symbols-outlined text-[1.2rem]">logout</span>
+          <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
         </button>
       </div>
-    </div>
-  </header>
+    </aside>
 
-  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
+      <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
+        <div class="flex min-w-0 items-center gap-3 md:gap-8">
+          <app-mobile-menu activePage="wikis"></app-mobile-menu>
+          <div class="min-w-0">
+            <h1 class="truncate text-2xl font-black tracking-[-0.06em] text-[var(--text)]">My Wikis</h1>
+            <p class="hidden text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block">Choose or create a workspace</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            class="primary-btn inline-flex items-center gap-2 !px-4 !py-2.5 text-sm"
+            (click)="openCreate()"
+          >
+            <span class="material-symbols-outlined text-[1.1rem]">add</span>
+            <span class="hidden sm:inline">New Wiki</span>
+          </button>
+          <app-atlas-badge></app-atlas-badge>
+          <app-theme-toggle></app-theme-toggle>
+          <div class="hidden items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1.5 lg:flex">
+            <span class="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--accent)]/10 text-xs font-black text-[var(--accent)]">{{ userInitials() }}</span>
+            <span class="max-w-40 truncate text-xs font-semibold text-[var(--muted)]">{{ currentUserEmail() || currentUserName() }}</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto">
+        <div class="mx-auto w-full max-w-7xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
     <section class="flex flex-col gap-5 border-b border-[var(--line)] pb-7 md:flex-row md:items-end md:justify-between">
       <div>
         <p class="text-[11px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">My Wikis</p>
@@ -172,7 +215,10 @@
         </div>
       </div>
     </section>
-  </main>
+        </div>
+      </div>
+    </main>
+  </div>
 
   @if (createOpen()) {
     <div class="fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-center">

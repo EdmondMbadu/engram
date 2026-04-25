@@ -3,11 +3,14 @@ import { Router, RouterLink } from '@angular/router';
 import type { AtlasItem, AtlasUsage } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
+import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-wiki-home',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent],
   templateUrl: './wiki-home.html',
 })
 export class WikiHomeComponent {
@@ -20,6 +23,8 @@ export class WikiHomeComponent {
   readonly isLoading = this.atlasService.isLoading;
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
+  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
+  readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
   readonly createOpen = signal(false);
   readonly createName = signal('');
