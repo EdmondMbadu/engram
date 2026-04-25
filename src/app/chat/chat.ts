@@ -617,7 +617,7 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   onComposerKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+    if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
       event.preventDefault();
       if (this.canSubmit()) {
         void this.submitQuestion();
