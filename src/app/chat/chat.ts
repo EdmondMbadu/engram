@@ -8,6 +8,7 @@ import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { ChatService } from '../chat.service';
 import { DocumentsService } from '../documents.service';
+import { WikiService } from '../wiki.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
@@ -43,6 +44,7 @@ export class ChatComponent implements AfterViewChecked {
   private readonly atlasService = inject(AtlasService);
   private readonly chatService = inject(ChatService);
   private readonly documentsService = inject(DocumentsService);
+  private readonly wikiService = inject(WikiService);
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
@@ -243,11 +245,61 @@ export class ChatComponent implements AfterViewChecked {
     return 'Your questions are saved with your name and email for the atlas owner.';
   });
 
-  readonly quickPrompts = [
-    'What does my knowledge base say about transformer architecture?',
-    'Summarize the strongest themes in my uploaded sources.',
-    'What contradictions exist across my notes and documents?',
-  ];
+  private cachedPromptsKey: string | null = null;
+  private cachedPrompts: string[] = [];
+
+  readonly quickPrompts = computed<string[]>(() => {
+    if (!this.isWorkspaceMode()) {
+      return [];
+    }
+
+    const topics = this.wikiService.topics();
+    const articles = this.wikiService.articles();
+    const atlasId = this.atlasService.activeAtlasId() ?? '';
+    const cacheKey = `${atlasId}::${topics.length}::${articles.length}`;
+    if (this.cachedPromptsKey === cacheKey && this.cachedPrompts.length > 0) {
+      return this.cachedPrompts;
+    }
+
+    const candidates: string[] = [];
+    for (const topic of topics) {
+      const name = topic.name?.trim();
+      if (name) candidates.push(name);
+    }
+    for (const article of articles) {
+      const title = article.title?.trim();
+      if (title) candidates.push(title);
+    }
+
+    if (candidates.length === 0) {
+      return [];
+    }
+
+    const picks: string[] = [];
+    const pool = [...candidates];
+    while (picks.length < 2 && pool.length > 0) {
+      const idx = Math.floor(Math.random() * pool.length);
+      const [chosen] = pool.splice(idx, 1);
+      if (chosen && !picks.includes(chosen)) {
+        picks.push(chosen);
+      }
+    }
+
+    const shorten = (label: string, max = 38) => {
+      const clean = label.replace(/\s+/g, ' ').trim();
+      return clean.length > max ? `${clean.slice(0, max - 1).trim()}…` : clean;
+    };
+
+    const templates = [
+      (label: string) => `What is ${shorten(label, 32)}?`,
+      (label: string) => `Why does ${shorten(label, 30)} matter?`,
+    ];
+
+    const prompts = picks.map((label, i) => templates[i % templates.length](label));
+    this.cachedPromptsKey = cacheKey;
+    this.cachedPrompts = prompts;
+    return prompts;
+  });
 
   readonly userInitials = () => {
     const name = this.currentUserName();
