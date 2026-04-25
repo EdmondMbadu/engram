@@ -81,38 +81,50 @@
 
       <div class="flex-1 overflow-y-auto">
         <div class="mx-auto w-full max-w-7xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
-    <section class="flex flex-col gap-5 border-b border-[var(--line)] pb-7 md:flex-row md:items-end md:justify-between">
-      <div>
-        <p class="text-[11px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">My Wikis</p>
-        <h2 class="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Choose a Wiki to build.</h2>
-        <p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)]">
-          Each Wiki is its own knowledge workspace with source files, compiled pages, and chat history.
-        </p>
-      </div>
+    <section class="relative overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
+      <div class="absolute inset-x-0 top-0 h-px bg-[var(--accent)]/35"></div>
+      <div class="grid gap-8 p-6 md:grid-cols-[1fr_auto] md:p-8">
+        <div class="min-w-0">
+          <p class="text-[11px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">My Wikis</p>
+          <h2 class="mt-3 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Choose a Wiki to build.</h2>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--muted)]">
+            Each Wiki is an isolated knowledge workspace with source files, compiled pages, and chat history.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <button type="button" class="primary-btn !px-4 !py-2.5 text-sm" (click)="openCreate()">
+              <span class="material-symbols-outlined text-base">add</span>
+              <span>Create Wiki</span>
+            </button>
+            <a routerLink="/atlases" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
+              <span class="material-symbols-outlined text-base">tune</span>
+              <span>Manage settings</span>
+            </a>
+          </div>
+        </div>
 
-      <div class="grid min-w-0 grid-cols-3 gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2 shadow-[var(--shadow-floating)] sm:min-w-[24rem]">
-        <div class="rounded-xl bg-[var(--soft-fill)] px-3 py-3">
-          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Wikis</p>
-          <p class="mt-1 text-2xl font-black">{{ atlases().length }}</p>
-        </div>
-        <div class="rounded-xl bg-[var(--soft-fill)] px-3 py-3">
-          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Docs</p>
-          <p class="mt-1 text-2xl font-black">{{ totalDocuments() }}</p>
-        </div>
-        <div class="rounded-xl bg-[var(--soft-fill)] px-3 py-3">
-          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Active</p>
-          <p class="mt-1 truncate text-sm font-black">{{ activeWikiName() }}</p>
+        <div class="grid min-w-0 grid-cols-3 gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-2 md:w-[25rem]">
+          <div class="rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Wikis</p>
+            <p class="mt-1 text-2xl font-black">{{ atlases().length }}</p>
+          </div>
+          <div class="rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Docs</p>
+            <p class="mt-1 text-2xl font-black">{{ totalDocuments() }}</p>
+          </div>
+          <div class="rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Active</p>
+            <p class="mt-1 truncate text-sm font-black">{{ activeWikiName() }}</p>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="mt-8">
       <div class="mb-4 flex items-center justify-between gap-4">
-        <h3 class="text-sm font-black uppercase tracking-[0.2em] text-[var(--muted)]">Recent Wikis</h3>
-        <a routerLink="/atlases" class="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--accent)]">
-          <span>Manage settings</span>
-          <span class="material-symbols-outlined text-[1rem]">tune</span>
-        </a>
+        <div>
+          <h3 class="text-sm font-black uppercase tracking-[0.2em] text-[var(--muted)]">Recent Wikis</h3>
+          <p class="mt-1 text-sm text-[var(--muted)]">Open a workspace or create a new one from the first tile.</p>
+        </div>
       </div>
 
       @if (isLoading()) {
@@ -122,62 +134,72 @@
           }
         </div>
       } @else {
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           <button
             type="button"
-            class="group flex min-h-56 flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--accent)]/45 bg-[var(--surface)] p-6 text-center transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--soft-fill)] hover:shadow-[var(--shadow-floating)]"
+            class="group flex min-h-[21rem] flex-col rounded-[1.5rem] border border-dashed border-[var(--accent)]/45 bg-[var(--surface)] p-5 text-left transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--soft-fill)] hover:shadow-[var(--shadow-floating)]"
             (click)="openCreate()"
           >
-            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-contrast)] shadow-[0_14px_30px_rgba(59,175,98,0.22)]">
-              <span class="material-symbols-outlined">add</span>
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent)] text-[var(--accent-contrast)] shadow-[0_14px_30px_rgba(59,175,98,0.20)]">
+              <span class="material-symbols-outlined text-[1.6rem]">add</span>
             </span>
-            <span class="mt-4 text-lg font-black">Create Wiki</span>
-            <span class="mt-2 max-w-52 text-sm leading-6 text-[var(--muted)]">Name a new Wiki, then add documents to grow it.</span>
+            <span class="mt-5 text-xl font-black tracking-tight">Create Wiki</span>
+            <span class="mt-2 max-w-64 text-sm leading-6 text-[var(--muted)]">Name a focused workspace, then add documents to grow its knowledge base.</span>
+            <span class="mt-auto inline-flex items-center gap-2 text-sm font-bold text-[var(--accent)]">
+              <span>Start a blank Wiki</span>
+              <span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+            </span>
           </button>
 
           @for (atlas of sortedWikis(); track atlas.id) {
             <article
-              class="group flex min-h-56 flex-col rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] transition hover:-translate-y-0.5 hover:border-[var(--accent)]/35"
+              class="group flex min-h-[21rem] flex-col overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)] transition hover:-translate-y-0.5 hover:border-[var(--accent)]/35"
             >
-              <div class="flex items-start justify-between gap-3">
-                <button type="button" class="min-w-0 text-left" (click)="openWiki(atlas, 'library')">
-                  <span class="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)]">
+              <div class="border-b border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                <div class="flex items-start justify-between gap-3">
+                  <button type="button" class="min-w-0 text-left" (click)="openWiki(atlas, 'library')">
+                    <span class="flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)]">
                     <span class="material-symbols-outlined">menu_book</span>
-                  </span>
-                  <h4 class="mt-4 line-clamp-2 text-xl font-black tracking-tight">{{ displayName(atlas) }}</h4>
-                </button>
-                @if (atlas.id === activeAtlasId()) {
-                  <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">Active</span>
-                }
-              </div>
-
-              <p class="mt-3 line-clamp-2 min-h-10 text-sm leading-6 text-[var(--muted)]">
-                {{ atlas.description || 'Add source files and Living Wiki will compile pages, citations, and chat answers.' }}
-              </p>
-
-              <div class="mt-5 grid grid-cols-3 gap-2 text-center">
-                <div class="rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-2">
-                  <p class="text-lg font-black">{{ documentCount(atlas) }}</p>
-                  <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Docs</p>
-                </div>
-                <div class="rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-2">
-                  <p class="text-lg font-black">{{ articleCount(atlas) }}</p>
-                  <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Pages</p>
-                </div>
-                <div class="rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-2">
-                  <p class="text-lg font-black">{{ chatCount(atlas) }}</p>
-                  <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Chats</p>
-                </div>
-              </div>
-
-              <div class="mt-auto pt-5">
-                <p class="mb-3 text-xs text-[var(--muted)]">Updated {{ updatedLabel(atlas) }}</p>
-                <div class="flex flex-wrap gap-2">
-                  <button type="button" class="primary-btn !px-3 !py-2 text-xs" (click)="openWiki(atlas, 'library')">
-                    <span>Add documents</span>
+                    </span>
+                    <h4 class="mt-4 line-clamp-2 text-xl font-black tracking-tight">{{ displayName(atlas) }}</h4>
                   </button>
-                  <button type="button" class="ghost-btn !px-3 !py-2 text-xs" (click)="openWiki(atlas, 'chat')">Chat</button>
-                  <button type="button" class="ghost-btn !px-3 !py-2 text-xs" (click)="openWiki(atlas, 'wiki')">Open Wiki</button>
+                  @if (atlas.id === activeAtlasId()) {
+                    <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">Active</span>
+                  }
+                </div>
+                <p class="mt-3 text-xs text-[var(--muted)]">Updated {{ updatedLabel(atlas) }}</p>
+              </div>
+
+              <div class="flex flex-1 flex-col p-5">
+                <p class="line-clamp-2 min-h-12 text-sm leading-6 text-[var(--muted)]">
+                  {{ atlas.description || 'Add source files and Living Wiki will compile pages, citations, and chat answers.' }}
+                </p>
+
+                <div class="mt-5 grid grid-cols-3 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-center">
+                  <div class="px-2 py-3">
+                    <p class="text-lg font-black">{{ documentCount(atlas) }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Docs</p>
+                  </div>
+                  <div class="border-x border-[var(--line)] px-2 py-3">
+                    <p class="text-lg font-black">{{ articleCount(atlas) }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Pages</p>
+                  </div>
+                  <div class="px-2 py-3">
+                    <p class="text-lg font-black">{{ chatCount(atlas) }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Chats</p>
+                  </div>
+                </div>
+
+                <div class="mt-auto flex items-center gap-2 pt-5">
+                  <button type="button" class="primary-btn flex-1 justify-center !px-3 !py-2.5 text-xs" (click)="openWiki(atlas, 'library')">
+                    <span>Add docs</span>
+                  </button>
+                  <button type="button" class="ghost-btn !px-3 !py-2.5 text-xs" title="Chat" aria-label="Chat" (click)="openWiki(atlas, 'chat')">
+                    <span class="material-symbols-outlined text-base">chat</span>
+                  </button>
+                  <button type="button" class="ghost-btn !px-3 !py-2.5 text-xs" title="Open Wiki" aria-label="Open Wiki" (click)="openWiki(atlas, 'wiki')">
+                    <span class="material-symbols-outlined text-base">open_in_new</span>
+                  </button>
                 </div>
               </div>
             </article>
@@ -186,29 +208,29 @@
       }
     </section>
 
-    <section class="mt-10 border-t border-[var(--line)] pt-8">
-      <div class="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+    <section class="mt-10 rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)] p-5 md:p-6">
+      <div class="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
         <div>
           <p class="text-[11px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Build guide</p>
-          <h3 class="mt-2 text-3xl font-black tracking-tight">Create and grow a Wiki</h3>
+          <h3 class="mt-2 text-2xl font-black tracking-tight">Create and grow a Wiki</h3>
           <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
             Start with a focused subject, add source material, then use generated pages and chat to refine what the Wiki knows.
           </p>
         </div>
         <div class="grid gap-3 sm:grid-cols-2">
-          <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+          <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
             <p class="text-sm font-black">1. Name the Wiki</p>
             <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Use a name that matches the subject, client, project, or research area.</p>
           </div>
-          <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+          <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
             <p class="text-sm font-black">2. Add source documents</p>
             <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Upload files or URLs. Keep related material inside the same Wiki.</p>
           </div>
-          <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+          <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
             <p class="text-sm font-black">3. Review generated pages</p>
             <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Open the Wiki view to inspect compiled topics, summaries, and citations.</p>
           </div>
-          <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+          <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
             <p class="text-sm font-black">4. Ask questions</p>
             <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Use chat to find gaps, then add more sources when answers need better coverage.</p>
           </div>
