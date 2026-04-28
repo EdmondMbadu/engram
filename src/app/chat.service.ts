@@ -185,7 +185,13 @@ export class ChatService {
 
     try {
       const askAtlas = httpsCallable<
-        { question: string; topicIds?: string[]; threadId?: string | null; atlasId: string | null },
+        {
+          question: string;
+          topicIds?: string[];
+          threadId?: string | null;
+          atlasId: string | null;
+          answerMode?: 'wiki' | 'internet';
+        },
         AskAtlasResponse
       >(this.functions, 'askAtlas');
       const { data } = await askAtlas({
@@ -193,6 +199,45 @@ export class ChatService {
         topicIds,
         threadId: threadId ?? null,
         atlasId: this.atlasService.activeAtlasId(),
+        answerMode: 'wiki',
+      });
+
+      this.latestAnswer.set(data.answer);
+      this.latestCitations.set(data.citedPassages);
+      this.knowledgeGap.set(data.knowledgeGap);
+      this.latestThreadId.set(data.threadId);
+      return data;
+    } catch (error) {
+      this.submitError.set(this.authService.toFriendlyError(error));
+      return null;
+    } finally {
+      this.isSubmitting.set(false);
+    }
+  }
+
+  async askInternet(question: string, threadId?: string | null): Promise<AskAtlasResponse | null> {
+    if (!this.functions) {
+      return null;
+    }
+
+    this.isSubmitting.set(true);
+    this.submitError.set(null);
+
+    try {
+      const askAtlas = httpsCallable<
+        {
+          question: string;
+          threadId?: string | null;
+          atlasId: string | null;
+          answerMode?: 'wiki' | 'internet';
+        },
+        AskAtlasResponse
+      >(this.functions, 'askAtlas');
+      const { data } = await askAtlas({
+        question,
+        threadId: threadId ?? null,
+        atlasId: this.atlasService.activeAtlasId(),
+        answerMode: 'internet',
       });
 
       this.latestAnswer.set(data.answer);
@@ -439,6 +484,7 @@ export class ChatService {
       id: String(message['id'] ?? ''),
       thread_id: String(message['thread_id'] ?? ''),
       user_id: String(message['user_id'] ?? message['visitor_uid'] ?? ''),
+      answer_mode: message['answer_mode'] === 'internet' ? 'internet' : 'wiki',
       role: message['role'] === 'assistant' ? 'assistant' : 'user',
       text: String(message['text'] ?? ''),
       cited_passages: Array.isArray(message['cited_passages'])

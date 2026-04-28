@@ -169,6 +169,7 @@ export interface ChatStoredMessage {
   id: string;
   thread_id: string;
   user_id: string;
+  answer_mode?: 'wiki' | 'internet';
   role: 'user' | 'assistant';
   text: string;
   cited_passages?: CitationPassage[];

@@ -11,6 +11,7 @@ import {
 export const geminiApiKey = defineSecret('GEMINI_API_KEY');
 
 const model = 'gemini-3-flash-preview';
+const internetSearchModel = 'gemini-2.5-flash';
 
 const knowledgeEntrySchema = {
   type: 'array',
@@ -115,6 +116,18 @@ const wikiArticlePlanSchema = {
 
 const maxAttempts = 3;
 
+type WebCitationAnnotation = {
+  type?: string;
+  title?: string;
+  url?: string;
+};
+
+type WebTextOutput = {
+  type?: string;
+  text?: string;
+  annotations?: WebCitationAnnotation[];
+};
+
 function createClient(): GoogleGenAI {
   return new GoogleGenAI({
     apiKey: geminiApiKey.value(),
@@ -215,6 +228,38 @@ function emptyUsage(): ModelUsage {
     total_tokens: 0,
     call_count: 0,
   };
+}
+
+function appendWebSources(answer: string, outputs: WebTextOutput[]): string {
+  const sources = new Map<string, string>();
+
+  for (const output of outputs) {
+    for (const annotation of output.annotations ?? []) {
+      if (annotation.type !== 'url_citation' || !annotation.url) {
+        continue;
+      }
+
+      const url = annotation.url.trim();
+      if (!url) {
+        continue;
+      }
+
+      const title = annotation.title?.trim() || url;
+      if (!sources.has(url)) {
+        sources.set(url, title);
+      }
+    }
+  }
+
+  if (sources.size === 0) {
+    return answer.trim();
+  }
+
+  const sourceLines = Array.from(sources.entries())
+    .slice(0, 8)
+    .map(([url, title]) => `- [${title}](${url})`);
+
+  return `${answer.trim()}\n\n## Sources\n${sourceLines.join('\n')}`;
 }
 
 export async function compileKnowledgeEntries(
@@ -452,6 +497,65 @@ export async function answerQuestion(params: {
   const retried = normalizeAnswerResponse(parseJsonResponse<unknown>(retryResponse.text ?? '{}'), retryResponse.text ?? '');
   retried.answer = ensureConcreteNextStepInvitation(retried.answer, params.question, broadQuestion);
   return retried;
+}
+
+export async function answerWithGoogleSearch(params: {
+  question: string;
+  history?: Array<{ role: 'user' | 'assistant'; text: string }>;
+}): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
+  const hasHistory = (params.history ?? []).length > 0;
+  const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
+  const serializedHistory = JSON.stringify(
+    (params.history ?? []).slice(-6).map((message) => [message.role, message.text.slice(0, 4000)] as const),
+  );
+
+  const prompt = [
+    'You are answering with full open-web context.',
+    'Use Google Search to gather current, relevant public information from the web.',
+    'Do not restrict yourself to the user\'s uploaded documents or personal knowledge base.',
+    'Treat the recent conversation history as real context: resolve references, follow up naturally, and avoid repeating prior assistant points unless needed.',
+    'If the user gives a short affirmative follow-up like "yes", "yeah", "do that", or "let\'s do it", interpret it as accepting the most recent concrete continuation proposed in the conversation history.',
+    'Prefer a precise, information-dense answer over a vague overview.',
+    'Include concrete facts, tradeoffs, dates, examples, and context when they materially improve the answer.',
+    'Do not fabricate sources or claim certainty when the evidence is mixed.',
+    broadQuestion
+      ? 'For synthesis or exploration questions, give a substantial structured answer with multiple distinct themes or sections.'
+      : 'For direct questions, answer in 2-4 compact but high-signal paragraphs unless a list is clearly better.',
+    'Write the answer in clean markdown.',
+    'Do not add a generic closing question or filler ending.',
+    'The answer body should stand on its own. Source links will be appended separately.',
+    '',
+    JSON.stringify({ question: params.question, history: params.history?.length ? 'provided' : 'empty' }),
+    serializedHistory,
+  ].join('\n');
+
+  const interaction = await createClient().interactions.create({
+    model: internetSearchModel,
+    input: prompt,
+    tools: [{ type: 'google_search' }],
+  });
+
+  if (interaction.status !== 'completed') {
+    throw new Error(`Internet answer failed with status: ${interaction.status}`);
+  }
+
+  const textOutputs: WebTextOutput[] = [];
+  for (const output of interaction.outputs ?? []) {
+    if (output.type === 'text' && typeof (output as { text?: unknown }).text === 'string') {
+      textOutputs.push(output as WebTextOutput);
+    }
+  }
+  const answerText = textOutputs.map((output) => output.text?.trim() ?? '').filter(Boolean).join('\n\n').trim();
+
+  if (!answerText) {
+    throw new Error('Internet answer returned no text.');
+  }
+
+  return {
+    answer: appendWebSources(answerText, textOutputs),
+    cited_entry_ids: [],
+    knowledge_gap: false,
+  };
 }
 
 export async function compileWikiArticles(params: {

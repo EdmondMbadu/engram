@@ -651,6 +651,7 @@ export const askAtlas = onCall(
     const question = String(request.data?.question ?? '').trim();
     const threadId = String(request.data?.threadId ?? '').trim() || null;
     const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const answerMode = request.data?.answerMode === 'internet' ? 'internet' : 'wiki';
     const topicIds = Array.isArray(request.data?.topicIds)
       ? request.data.topicIds.map((value: unknown) => String(value)).filter(Boolean)
       : undefined;
@@ -663,6 +664,7 @@ export const askAtlas = onCall(
       return await runAtlasQuery({
         userId: request.auth.uid,
         atlasId,
+        answerMode,
         question,
         topicIds,
         threadId,

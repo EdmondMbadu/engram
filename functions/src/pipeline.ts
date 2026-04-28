@@ -1,6 +1,6 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
-import { answerFromArticles, answerQuestion, compileKnowledgeEntries, compileWikiArticles, mergeWikiArticle, planArticleMerge, summarizeTopic } from './gemini';
+import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, mergeWikiArticle, planArticleMerge, summarizeTopic } from './gemini';
 import { db, storage } from './firebase';
 import { extractBlocksFromBuffer, extractBlocksFromUrl } from './extractors';
 import {
@@ -778,6 +778,7 @@ export async function runAtlasQuery(params: {
   userId: string;
   atlasId: string | null;
   question: string;
+  answerMode?: 'wiki' | 'internet';
   topicIds?: string[];
   threadId?: string | null;
   scopeTopicName?: string | null;
@@ -800,6 +801,34 @@ export async function runAtlasQuery(params: {
     ? await loadRecentChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
     : [];
 
+  if (params.answerMode === 'internet') {
+    const response = await answerWithGoogleSearch({
+      question: trimmedQuestion,
+      history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+    });
+
+    await recordChatThreadExchange({
+      threadId: thread.id,
+      userId: params.userId,
+      atlasId: params.atlasId,
+      answerMode: 'internet',
+      question: trimmedQuestion,
+      answer: response.answer,
+      citedPassages: [],
+      knowledgeGap: false,
+      questionCountIncrement: 1,
+    });
+
+    return {
+      answer: response.answer,
+      citedEntryIds: [],
+      citedPassages: [],
+      scopedTopicIds: [],
+      knowledgeGap: false,
+      threadId: thread.id,
+    };
+  }
+
   const articleResult = await tryAnswerFromArticles({
     userId: params.userId,
     atlasId: params.atlasId,
@@ -818,6 +847,7 @@ export async function runAtlasQuery(params: {
       threadId: thread.id,
       userId: params.userId,
       atlasId: params.atlasId,
+      answerMode: 'wiki',
       question: trimmedQuestion,
       answer: articleResult.answer,
       citedPassages: articleResult.citedPassages,
@@ -918,6 +948,7 @@ export async function runAtlasQuery(params: {
     threadId: thread.id,
     userId: params.userId,
     atlasId: params.atlasId,
+    answerMode: 'wiki',
     question: trimmedQuestion,
     answer: safeAnswer,
     citedPassages,
@@ -1438,6 +1469,7 @@ async function recordChatThreadExchange(params: {
   threadId: string;
   userId: string;
   atlasId: string | null;
+  answerMode: 'wiki' | 'internet';
   question: string;
   answer: string;
   citedPassages: QueryCitationSnapshot[];
@@ -1452,6 +1484,7 @@ async function recordChatThreadExchange(params: {
         thread_id: params.threadId,
         user_id: params.userId,
         atlas_id: params.atlasId,
+        answer_mode: params.answerMode,
         role: 'user',
         text: params.question,
         created_at: createdAt,
@@ -1463,6 +1496,7 @@ async function recordChatThreadExchange(params: {
         thread_id: params.threadId,
         user_id: params.userId,
         atlas_id: params.atlasId,
+        answer_mode: params.answerMode,
         role: 'assistant',
         text: params.answer,
         cited_passages: params.citedPassages,

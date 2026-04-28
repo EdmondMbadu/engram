@@ -144,6 +144,26 @@
         </div>
 
         <div class="flex items-center gap-3">
+          @if (isWorkspaceMode()) {
+            <div class="chat-mode-toggle flex items-center">
+              <button
+                type="button"
+                class="chat-mode-toggle__button"
+                [class.chat-mode-toggle__button--active]="!isInternetMode()"
+                (click)="setAnswerMode('wiki')"
+              >
+                Living Wiki
+              </button>
+              <button
+                type="button"
+                class="chat-mode-toggle__button"
+                [class.chat-mode-toggle__button--active]="isInternetMode()"
+                (click)="setAnswerMode('internet')"
+              >
+                Internet
+              </button>
+            </div>
+          }
           @if (canShareActiveThread()) {
             <button
               type="button"
@@ -264,8 +284,7 @@
                     <div class="mt-2 flex items-center justify-between gap-3 pt-2">
                       <p class="text-[11px] text-[var(--muted)]">
                         @if (isWorkspaceMode()) {
-                          <kbd class="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">Enter</kbd>
-                          to send
+                          {{ composerHelperText() }}
                         } @else {
                           {{ composerHelperText() }}
                         }
@@ -368,7 +387,7 @@
                           <div class="assistant-message__header">
                             <div class="assistant-message__badge">
                               <span class="assistant-message__badge-dot" [class.assistant-message__badge-dot--live]="msg.pending"></span>
-                              <span>Living Wiki</span>
+                              <span>{{ messageLabel(msg) }}</span>
                             </div>
                             <div class="ml-auto flex items-center gap-2">
                               @if (msg.pending) {
@@ -474,8 +493,7 @@
                 <div class="mt-2 flex items-center justify-between gap-3 pt-2">
                   <p class="text-[11px] text-[var(--muted)]">
                     @if (isWorkspaceMode()) {
-                      <kbd class="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px]">Enter</kbd>
-                      to send
+                      {{ composerHelperText() }}
                     } @else {
                       {{ composerHelperText() }}
                     }

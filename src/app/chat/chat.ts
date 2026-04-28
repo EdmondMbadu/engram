@@ -21,6 +21,7 @@ interface ChatMessage {
   role: 'user' | 'assistant';
   text: string;
   html?: string;
+  answerMode?: 'wiki' | 'internet';
   citations?: CitationPassage[];
   pending?: boolean;
   knowledgeGap?: boolean;
@@ -66,6 +67,7 @@ export class ChatComponent implements AfterViewChecked {
   readonly shareModalError = signal<string | null>(null);
   readonly generatedShareLink = signal<string | null>(null);
   readonly avatarMenuOpen = signal(false);
+  readonly answerMode = signal<'wiki' | 'internet'>('wiki');
   readonly question = signal('');
   readonly selectedCitation = signal<CitationPassage | null>(null);
   readonly messages = signal<ChatMessage[]>([]);
@@ -98,6 +100,7 @@ export class ChatComponent implements AfterViewChecked {
     () => this.isPublicView() && !!this.publicAtlas() && this.publicAtlas()!.user_id === this.authService.uid(),
   );
   readonly isWorkspaceMode = computed(() => !this.isPublicView() || this.isPublicOwner());
+  readonly isInternetMode = computed(() => this.answerMode() === 'internet');
   readonly isPublicVisitorMode = computed(() => this.isPublicView() && !this.isPublicOwner());
   readonly isAnonymousPublicVisitor = computed(() => this.isPublicVisitorMode() && !this.isSignedIn());
   readonly isSignedInPublicVisitor = computed(() => this.isPublicVisitorMode() && this.isSignedIn());
@@ -155,7 +158,9 @@ export class ChatComponent implements AfterViewChecked {
   );
   readonly pageSubtitle = computed(() => {
     if (this.isWorkspaceMode()) {
-      return 'Query pre-compiled knowledge with citations';
+      return this.isInternetMode()
+        ? 'Answer with full internet context and live web sources'
+        : 'Query pre-compiled knowledge with citations';
     }
     if (this.showSignInCta()) {
       return 'Public question limit reached';
@@ -170,7 +175,9 @@ export class ChatComponent implements AfterViewChecked {
   });
   readonly composerPlaceholder = computed(() =>
     this.isWorkspaceMode()
-      ? 'Message Living Wiki...'
+      ? this.isInternetMode()
+        ? 'Ask with internet mode...'
+        : 'Message Living Wiki...'
       : this.showSignInCta()
         ? 'Sign in to continue asking questions...'
         : 'Ask about this living wiki...',
@@ -224,7 +231,12 @@ export class ChatComponent implements AfterViewChecked {
     const name = this.currentWikiName();
     return name ? `Ask ${name} anything from your sources.` : 'Ask anything from your sources.';
   });
-  readonly emptyStateEyebrow = computed(() => (this.isWorkspaceMode() ? 'Living Wiki' : 'Living Wiki · Public chat'));
+  readonly emptyStateEyebrow = computed(() => {
+    if (this.isWorkspaceMode()) {
+      return this.isInternetMode() ? 'Internet mode' : 'Living Wiki';
+    }
+    return 'Living Wiki · Public chat';
+  });
   readonly emptyStateTitle = computed(() => {
     const name = this.currentWikiName();
     if (this.isWorkspaceMode()) {
@@ -237,7 +249,9 @@ export class ChatComponent implements AfterViewChecked {
   });
   readonly emptyStateDescription = computed(() => {
     if (this.isWorkspaceMode()) {
-      return this.currentWikiSummary();
+      return this.isInternetMode()
+        ? 'Internet mode uses general web knowledge and current public sources, not just your uploaded material.'
+        : this.currentWikiSummary();
     }
     if (this.showSignInCta()) {
       return 'You have used all 5 anonymous public questions for this atlas. Sign in to continue.';
@@ -257,6 +271,10 @@ export class ChatComponent implements AfterViewChecked {
       return 'Sign in to continue asking grounded questions.';
     }
 
+    if (this.isWorkspaceMode() && this.isInternetMode()) {
+      return 'Ask anything with full internet context and live public sources.';
+    }
+
     const name = this.currentWikiName();
     if (name) {
       return `Ask ${name} anything from your sources.`;
@@ -267,6 +285,10 @@ export class ChatComponent implements AfterViewChecked {
   readonly heroSupportingText = computed(() => {
     if (this.showSignInCta()) {
       return 'You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.';
+    }
+
+    if (this.isWorkspaceMode() && this.isInternetMode()) {
+      return 'Internet mode is not limited to your documents. It uses public web sources and broader general knowledge.';
     }
 
     const name = this.currentWikiName();
@@ -282,12 +304,18 @@ export class ChatComponent implements AfterViewChecked {
       return 'Anonymous session paused';
     }
 
+    if (this.isWorkspaceMode() && this.isInternetMode()) {
+      return 'Internet mode enabled';
+    }
+
     const total = this.currentWikiSourceCount();
     return total === 1 ? '1 indexed source ready' : `${total} indexed sources ready`;
   });
   readonly composerHelperText = computed(() => {
     if (this.isWorkspaceMode()) {
-      return 'shortcut';
+      return this.isInternetMode()
+        ? 'Internet mode searches the web and answers beyond your uploaded sources.'
+        : 'Living Wiki mode stays grounded in your indexed documents and wiki pages.';
     }
     if (this.showSignInCta()) {
       return 'You have used all 5 anonymous questions. Sign in to continue.';
@@ -305,7 +333,7 @@ export class ChatComponent implements AfterViewChecked {
   private cachedPrompts: { label: string; prompt: string }[] = [];
 
   readonly quickPrompts = computed<{ label: string; prompt: string }[]>(() => {
-    if (!this.isWorkspaceMode()) {
+    if (!this.isWorkspaceMode() || this.isInternetMode()) {
       return [];
     }
 
@@ -461,7 +489,9 @@ export class ChatComponent implements AfterViewChecked {
           if (cancelled) {
             return;
           }
-          this.messages.set(state.messages.map((message) => this.mapStoredMessage(message)));
+          const mappedMessages = state.messages.map((message) => this.mapStoredMessage(message));
+          this.messages.set(mappedMessages);
+          this.syncAnswerModeFromMessages(mappedMessages);
           this.activeThreadId.set(state.threadId ?? null);
           this.publicQuestionLimit.set(state.questionLimit);
           this.publicRemainingQuestions.set(state.remainingQuestions);
@@ -554,20 +584,23 @@ export class ChatComponent implements AfterViewChecked {
       this.activeHistoryId.set(null);
     }
     this.question.set('');
+    const selectedAnswerMode = this.isWorkspaceMode() ? this.answerMode() : 'wiki';
 
     const now = new Date();
     const userId = `u-${Date.now()}`;
     const pendingId = `a-${Date.now()}`;
     this.messages.update((msgs) => [
       ...msgs,
-      { id: userId, role: 'user', text: question, createdAt: now, updatedAt: now },
-      { id: pendingId, role: 'assistant', text: '', pending: true, createdAt: now, updatedAt: now },
+      { id: userId, role: 'user', text: question, answerMode: selectedAnswerMode, createdAt: now, updatedAt: now },
+      { id: pendingId, role: 'assistant', text: '', answerMode: selectedAnswerMode, pending: true, createdAt: now, updatedAt: now },
     ]);
     this.shouldScrollToEnd = true;
     this.startThinkingRotation();
 
     const response = this.isWorkspaceMode()
-      ? await this.chatService.ask(question, undefined, submittedThreadId)
+      ? selectedAnswerMode === 'internet'
+        ? await this.chatService.askInternet(question, submittedThreadId)
+        : await this.chatService.ask(question, undefined, submittedThreadId)
       : await this.chatService.askPublic(question, this.publicAtlas()!.id, {
           threadId: submittedThreadId,
           anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
@@ -585,6 +618,7 @@ export class ChatComponent implements AfterViewChecked {
                 pending: false,
                 text: err,
                 html: formatAssistantMessageHtml(err),
+                answerMode: selectedAnswerMode,
                 updatedAt: new Date(),
               }
             : message,
@@ -609,6 +643,7 @@ export class ChatComponent implements AfterViewChecked {
             role: 'assistant',
             text: answer,
             html: formatAssistantMessageHtml(answer),
+            answerMode: selectedAnswerMode,
             citations,
             knowledgeGap: gap,
             pending: false,
@@ -625,6 +660,7 @@ export class ChatComponent implements AfterViewChecked {
                   pending: false,
                   text: answer,
                   html: formatAssistantMessageHtml(answer),
+                  answerMode: selectedAnswerMode,
                   citations,
                   knowledgeGap: gap,
                   updatedAt: new Date(),
@@ -650,6 +686,13 @@ export class ChatComponent implements AfterViewChecked {
 
   usePrompt(prompt: string): void {
     this.question.set(prompt);
+  }
+
+  setAnswerMode(mode: 'wiki' | 'internet'): void {
+    if (!this.isWorkspaceMode()) {
+      return;
+    }
+    this.answerMode.set(mode);
   }
 
   openCitation(citation: CitationPassage): void {
@@ -723,7 +766,9 @@ export class ChatComponent implements AfterViewChecked {
     this.messageActionMenuId.set(null);
     this.activeThreadId.set(item.kind === 'thread' ? item.id : null);
     const storedMessages = await this.chatService.loadHistoryMessages(item);
-    this.messages.set(storedMessages.map((message) => this.mapStoredMessage(message)));
+    const mappedMessages = storedMessages.map((message) => this.mapStoredMessage(message));
+    this.messages.set(mappedMessages);
+    this.syncAnswerModeFromMessages(mappedMessages);
     this.shouldScrollToEnd = true;
   }
 
@@ -757,7 +802,10 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   messageLabel(message: ChatMessage): string {
-    return message.role === 'user' ? 'You' : 'Living Wiki';
+    if (message.role === 'user') {
+      return 'You';
+    }
+    return message.answerMode === 'internet' ? 'Internet' : 'Living Wiki';
   }
 
   formatRelativeDateShort(value: { toDate(): Date } | Date | null | undefined): string {
@@ -1133,11 +1181,25 @@ export class ChatComponent implements AfterViewChecked {
       role: message.role,
       text: message.text,
       html: message.role === 'assistant' ? formatAssistantMessageHtml(message.text) : undefined,
+      answerMode: message.answer_mode === 'internet' ? 'internet' : 'wiki',
       citations: this.normalizeCitations(message.cited_passages ?? []),
       knowledgeGap: !!message.knowledge_gap,
       createdAt: message.created_at,
       updatedAt: message.created_at,
     };
+  }
+
+  private syncAnswerModeFromMessages(messages: ChatMessage[]): void {
+    if (!this.isWorkspaceMode()) {
+      return;
+    }
+
+    const assistantMessage = [...messages].reverse().find((message) => message.role === 'assistant');
+    if (!assistantMessage) {
+      return;
+    }
+
+    this.answerMode.set(assistantMessage.answerMode === 'internet' ? 'internet' : 'wiki');
   }
 
   private resetPublicChatState(): void {

@@ -184,6 +184,7 @@ export interface ChatMessageRecord {
   thread_id: string;
   user_id: string;
   atlas_id: string | null;
+  answer_mode?: 'wiki' | 'internet';
   role: 'user' | 'assistant';
   text: string;
   cited_passages?: QueryCitationSnapshot[];
