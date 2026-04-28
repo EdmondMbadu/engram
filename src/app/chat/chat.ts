@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, CitationPassage } from '../atlas.models';
+import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { ChatService } from '../chat.service';
@@ -60,6 +60,7 @@ export class ChatComponent implements AfterViewChecked {
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
+  readonly isSharingThread = signal(false);
   readonly avatarMenuOpen = signal(false);
   readonly question = signal('');
   readonly selectedCitation = signal<CitationPassage | null>(null);
@@ -129,6 +130,19 @@ export class ChatComponent implements AfterViewChecked {
     const all = this.queryHistory();
     return this.historyExpanded() ? all : all.slice(0, 6);
   });
+  readonly activeThreadHistoryItem = computed<ChatThreadItem | null>(() => {
+    const activeThreadId = this.activeThreadId();
+    if (!activeThreadId) {
+      return null;
+    }
+
+    const item = this.queryHistory().find(
+      (entry): entry is ChatThreadItem => entry.kind === 'thread' && entry.id === activeThreadId,
+    );
+    return item ?? null;
+  });
+  readonly canShareActiveThread = computed(() => this.isWorkspaceMode() && !!this.activeThreadId() && this.hasMessages());
+  readonly activeThreadIsShared = computed(() => this.activeThreadHistoryItem()?.is_shared === true);
 
   readonly hasMessages = computed(() => this.messages().length > 0);
   readonly currentThinkingLabel = computed(() => THINKING_STAGES[this.thinkingStage()] ?? THINKING_STAGES[0]);
@@ -844,6 +858,26 @@ export class ChatComponent implements AfterViewChecked {
     }
 
     await this.copyText('chat-thread', transcript);
+  }
+
+  async shareCurrentThread(): Promise<void> {
+    const threadId = this.activeThreadId();
+    if (!threadId || this.isSharingThread()) {
+      return;
+    }
+
+    this.isSharingThread.set(true);
+    try {
+      const result = await this.chatService.shareThread(threadId);
+      if (!result || typeof window === 'undefined') {
+        return;
+      }
+
+      const shareUrl = `${window.location.origin}/chat/shared/${encodeURIComponent(result.threadId)}`;
+      await this.copyText('chat-share-link', shareUrl);
+    } finally {
+      this.isSharingThread.set(false);
+    }
   }
 
   async copyMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {

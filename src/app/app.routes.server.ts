@@ -16,6 +16,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'wikis', renderMode: RenderMode.Client },
   { path: 'upload/:slug', renderMode: RenderMode.Client },
   { path: 'upload', renderMode: RenderMode.Client },
+  { path: 'chat/shared/:threadId', renderMode: RenderMode.Client },
   { path: 'chat/:slug', renderMode: RenderMode.Client },
   { path: 'chat', renderMode: RenderMode.Client },
   { path: 'library/:slug', renderMode: RenderMode.Client },

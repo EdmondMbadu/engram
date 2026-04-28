@@ -53,6 +53,20 @@ type AskPublicAtlasResponse = {
   requiresSignIn: boolean;
 };
 
+type ShareChatThreadResponse = {
+  threadId: string;
+  isShared: boolean;
+  sharedAt: string | null;
+};
+
+type SharedChatThreadResponse = {
+  threadId: string;
+  title: string;
+  atlasName: string | null;
+  sharedAt: string | null;
+  messages: Array<Record<string, unknown>>;
+};
+
 @Injectable({ providedIn: 'root' })
 export class ChatService {
   private readonly authService = inject(AuthService);
@@ -192,6 +206,52 @@ export class ChatService {
     } finally {
       this.isSubmitting.set(false);
     }
+  }
+
+  async shareThread(threadId: string): Promise<ShareChatThreadResponse | null> {
+    if (!this.functions) {
+      return null;
+    }
+
+    const shareChatThread = httpsCallable<{ threadId: string }, ShareChatThreadResponse>(
+      this.functions,
+      'shareChatThread',
+    );
+
+    const { data } = await shareChatThread({ threadId });
+    return data;
+  }
+
+  async loadSharedThread(threadId: string): Promise<{
+    threadId: string;
+    title: string;
+    atlasName: string | null;
+    sharedAt: { toDate(): Date } | Date | null;
+    messages: ChatStoredMessage[];
+  }> {
+    if (!this.functions) {
+      return {
+        threadId,
+        title: 'Shared chat',
+        atlasName: null,
+        sharedAt: null,
+        messages: [],
+      };
+    }
+
+    const getSharedChatThread = httpsCallable<{ threadId: string }, SharedChatThreadResponse>(
+      this.functions,
+      'getSharedChatThread',
+    );
+    const { data } = await getSharedChatThread({ threadId });
+
+    return {
+      threadId: data.threadId,
+      title: data.title,
+      atlasName: data.atlasName ?? null,
+      sharedAt: this.hydrateTimestamp(data.sharedAt),
+      messages: Array.isArray(data.messages) ? data.messages.map((message) => this.hydrateStoredMessage(message)) : [],
+    };
   }
 
   async loadPublicChatState(

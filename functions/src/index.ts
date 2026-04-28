@@ -677,6 +677,117 @@ export const askAtlas = onCall(
   },
 );
 
+export const shareChatThread = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const threadId = String(request.data?.threadId ?? '').trim();
+    if (!threadId) {
+      throw new HttpsError('invalid-argument', 'threadId is required.');
+    }
+
+    const threadRef = db.collection('chat_threads').doc(threadId);
+    const threadSnapshot = await threadRef.get();
+    if (!threadSnapshot.exists) {
+      throw new HttpsError('not-found', 'Chat thread not found.');
+    }
+
+    const thread = threadSnapshot.data() as {
+      user_id?: string;
+      is_shared?: boolean;
+    };
+    if (thread.user_id !== request.auth.uid) {
+      throw new HttpsError('permission-denied', 'You do not have access to this chat thread.');
+    }
+
+    const sharedAtIso = clientTimestamp().toDate().toISOString();
+    if (thread.is_shared !== true) {
+      await threadRef.set(
+        {
+          is_shared: true,
+          shared_at: FieldValue.serverTimestamp(),
+        },
+        { merge: true },
+      );
+    }
+
+    return {
+      threadId,
+      isShared: true,
+      sharedAt: sharedAtIso,
+    };
+  },
+);
+
+export const getSharedChatThread = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const threadId = String(request.data?.threadId ?? '').trim();
+    if (!threadId) {
+      throw new HttpsError('invalid-argument', 'threadId is required.');
+    }
+
+    const threadSnapshot = await db.collection('chat_threads').doc(threadId).get();
+    if (!threadSnapshot.exists) {
+      throw new HttpsError('not-found', 'Shared chat thread not found.');
+    }
+
+    const thread = threadSnapshot.data() as {
+      atlas_id?: string | null;
+      title?: string;
+      is_shared?: boolean;
+      shared_at?: unknown;
+    };
+
+    if (thread.is_shared !== true) {
+      throw new HttpsError('permission-denied', 'This chat thread is not shared.');
+    }
+
+    const messagesSnapshot = await db
+      .collection('chat_messages')
+      .where('thread_id', '==', threadId)
+      .orderBy('created_at', 'asc')
+      .limit(250)
+      .get();
+
+    let atlasName: string | null = null;
+    if (typeof thread.atlas_id === 'string' && thread.atlas_id.trim()) {
+      const atlasSnapshot = await db.collection('atlases').doc(thread.atlas_id).get();
+      if (atlasSnapshot.exists) {
+        atlasName = String(atlasSnapshot.data()?.name ?? '').trim() || null;
+      }
+    }
+
+    return {
+      threadId,
+      title: String(thread.title ?? '').trim() || 'Shared chat',
+      atlasName,
+      sharedAt: normalizeTimestamp(thread.shared_at),
+      messages: messagesSnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          created_at: normalizeTimestamp(data.created_at),
+        };
+      }),
+    };
+  },
+);
+
 export const getPublicChatState = onCall(
   {
     region: callableRegion,

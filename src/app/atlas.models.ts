@@ -127,6 +127,8 @@ export interface ChatThreadItem {
   last_answer_preview: string;
   message_count: number;
   user_turn_count: number;
+  is_shared?: boolean;
+  shared_at?: { toDate(): Date } | Date | null;
   created_at?: { toDate(): Date } | Date | null;
   updated_at?: { toDate(): Date } | Date | null;
 }

@@ -172,6 +172,8 @@ export interface ChatThreadRecord {
   title: string;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
   updated_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
+  is_shared?: boolean;
+  shared_at?: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp | null;
   last_question: string;
   last_answer_preview: string;
   message_count: number;

@@ -15,6 +15,7 @@ import { LegalComponent } from './legal/legal';
 import { PublicWikisComponent } from './public-wikis/public-wikis';
 import { WebScraperComponent } from './web-scraper/web-scraper';
 import { WikiHomeComponent } from './wiki-home/wiki-home';
+import { SharedChatComponent } from './shared-chat/shared-chat';
 import { authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | Living Wiki', canActivate: [authGuard] },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | Living Wiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | Living Wiki', canActivate: [authGuard] },
+  { path: 'chat/shared/:threadId', component: SharedChatComponent, title: 'Shared Chat | Living Wiki' },
   { path: 'chat/:slug', component: ChatComponent, title: 'Chat | Living Wiki' },
   { path: 'chat', component: ChatComponent, title: 'Chat | Living Wiki', canActivate: [authGuard] },
   { path: 'library/:slug', component: LibraryComponent, title: 'Source Files | Living Wiki' },
