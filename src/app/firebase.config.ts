@@ -8,6 +8,7 @@ declare global {
   interface Window {
     __LIVING_ATLAS_CONFIG__?: {
       firebase?: PublicFirebaseConfig;
+      publicAppUrl?: string;
     };
   }
 }
@@ -22,4 +23,13 @@ export function getFirebaseConfig(): PublicFirebaseConfig {
   }
 
   return config;
+}
+
+export function getPublicAppUrl(): string | null {
+  const configured = window.__LIVING_ATLAS_CONFIG__?.publicAppUrl;
+  if (typeof configured === 'string' && configured.trim()) {
+    return configured.trim().replace(/\/+$/, '');
+  }
+
+  return null;
 }

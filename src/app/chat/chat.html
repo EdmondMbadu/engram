@@ -148,18 +148,9 @@
             <button
               type="button"
               class="ghost-btn !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
-              [disabled]="isSharingThread()"
-              (click)="shareCurrentThread()"
+              (click)="openShareModal()"
             >
-              @if (isSharingThread()) {
-                Sharing...
-              } @else if (copiedTarget() === 'chat-share-link') {
-                Link copied
-              } @else if (activeThreadIsShared()) {
-                Copy public link
-              } @else {
-                Share chat
-              }
+              {{ activeThreadIsShared() ? 'Shared' : 'Share chat' }}
             </button>
           }
           @if (hasMessages()) {
@@ -590,6 +581,84 @@
           <button type="button" class="danger-action rounded-full px-4 py-2.5 text-sm font-semibold" [disabled]="isDeletingHistory()" (click)="deleteHistoryItem()">
             {{ isDeletingHistory() ? 'Deleting...' : 'Delete thread' }}
           </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (shareModalOpen()) {
+    <div class="fixed inset-0 z-50 flex items-end justify-center p-4 md:items-center md:p-8">
+      <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" (click)="closeShareModal()"></div>
+      <div class="relative w-full max-w-xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-[var(--surface)] shadow-[var(--shadow-elevated)]">
+        <div class="flex items-start justify-between gap-4 border-b border-white/5 px-6 py-5">
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Share chat</p>
+            <h2 class="mt-2 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Create a public share link</h2>
+            <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
+              Anyone with this link can read this thread. They will not be able to reply from the shared page.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="rounded-full p-2 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
+            (click)="closeShareModal()"
+            aria-label="Close share dialog"
+          >
+            <span class="material-symbols-outlined text-lg">close</span>
+          </button>
+        </div>
+
+        <div class="space-y-5 px-6 py-6">
+          @if (!generatedShareLink()) {
+            <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm leading-7 text-[var(--muted)]">
+              Generate a dedicated link for this conversation.
+            </div>
+
+            <button
+              type="button"
+              class="primary-btn w-full justify-center !px-5 !py-3 text-sm"
+              [disabled]="isSharingThread()"
+              (click)="createShareLink()"
+            >
+              @if (isSharingThread()) {
+                <span class="flex items-center gap-2">
+                  <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                  <span>Creating link...</span>
+                </span>
+              } @else {
+                <span>Create share link</span>
+              }
+            </button>
+          } @else {
+            <div>
+              <label class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Share link</label>
+              <div class="mt-2 flex flex-col gap-3 md:flex-row">
+                <input
+                  type="text"
+                  [value]="generatedShareLink()"
+                  readonly
+                  class="theme-input min-w-0 flex-1 rounded-2xl px-4 py-3 text-sm text-[var(--text)] focus:outline-none"
+                />
+                <button
+                  type="button"
+                  class="primary-btn !px-5 !py-3 text-sm"
+                  (click)="copyShareLink()"
+                >
+                  {{ copiedTarget() === 'chat-share-link' ? 'Copied' : 'Copy link' }}
+                </button>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm leading-7 text-[var(--muted)]">
+              This link will open a read-only public thread page at the exact conversation.
+            </div>
+          }
+
+          @if (shareModalError()) {
+            <div class="error-banner rounded-2xl px-4 py-3 text-sm">
+              {{ shareModalError() }}
+            </div>
+          }
         </div>
       </div>
     </div>

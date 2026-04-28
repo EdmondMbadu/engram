@@ -13,6 +13,7 @@ import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
+import { getPublicAppUrl } from '../firebase.config';
 import { formatAssistantMessageHtml } from './message-format.util';
 
 interface ChatMessage {
@@ -61,6 +62,9 @@ export class ChatComponent implements AfterViewChecked {
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
   readonly isSharingThread = signal(false);
+  readonly shareModalOpen = signal(false);
+  readonly shareModalError = signal<string | null>(null);
+  readonly generatedShareLink = signal<string | null>(null);
   readonly avatarMenuOpen = signal(false);
   readonly question = signal('');
   readonly selectedCitation = signal<CitationPassage | null>(null);
@@ -860,7 +864,23 @@ export class ChatComponent implements AfterViewChecked {
     await this.copyText('chat-thread', transcript);
   }
 
-  async shareCurrentThread(): Promise<void> {
+  openShareModal(): void {
+    const threadId = this.activeThreadId();
+    if (!threadId) {
+      return;
+    }
+
+    this.shareModalError.set(null);
+    this.generatedShareLink.set(this.activeThreadIsShared() ? this.buildShareUrl(threadId) : null);
+    this.shareModalOpen.set(true);
+  }
+
+  closeShareModal(): void {
+    this.shareModalOpen.set(false);
+    this.shareModalError.set(null);
+  }
+
+  async createShareLink(): Promise<void> {
     const threadId = this.activeThreadId();
     if (!threadId || this.isSharingThread()) {
       return;
@@ -869,15 +889,26 @@ export class ChatComponent implements AfterViewChecked {
     this.isSharingThread.set(true);
     try {
       const result = await this.chatService.shareThread(threadId);
-      if (!result || typeof window === 'undefined') {
+      if (!result) {
         return;
       }
 
-      const shareUrl = `${window.location.origin}/chat/shared/${encodeURIComponent(result.threadId)}`;
-      await this.copyText('chat-share-link', shareUrl);
+      this.shareModalError.set(null);
+      this.generatedShareLink.set(this.buildShareUrl(result.threadId));
+    } catch (error) {
+      this.shareModalError.set(this.authService.toFriendlyError(error));
     } finally {
       this.isSharingThread.set(false);
     }
+  }
+
+  async copyShareLink(): Promise<void> {
+    const shareLink = this.generatedShareLink();
+    if (!shareLink) {
+      return;
+    }
+
+    await this.copyText('chat-share-link', shareLink);
   }
 
   async copyMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
@@ -1087,6 +1118,13 @@ export class ChatComponent implements AfterViewChecked {
     this.copyFeedbackTimeout = setTimeout(() => {
       this.copiedTarget.set(null);
     }, 1800);
+  }
+
+  private buildShareUrl(threadId: string): string {
+    const path = `/chat/shared/${encodeURIComponent(threadId)}`;
+    const configuredBaseUrl = typeof window !== 'undefined' ? getPublicAppUrl() : null;
+    const baseUrl = configuredBaseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
+    return `${baseUrl}${path}`;
   }
 
   private mapStoredMessage(message: ChatStoredMessage): ChatMessage {
