@@ -79,6 +79,10 @@ export class ChatComponent implements AfterViewChecked {
   readonly publicRemainingQuestions = signal<number | null>(null);
   readonly publicRequiresSignIn = signal(false);
   readonly anonymousVisitorId = signal<string | null>(this.loadAnonymousVisitorId());
+  readonly heroTypedPrompt = signal('');
+  readonly animatedDocumentCount = signal(0);
+  readonly animatedArticleCount = signal(0);
+  readonly animatedSourceCount = signal(0);
   readonly isPublicView = computed(() => !!this.routeSlug());
   readonly publicNotFound = computed(
     () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
@@ -192,6 +196,7 @@ export class ChatComponent implements AfterViewChecked {
   });
   readonly currentWikiDocumentCount = computed(() => this.currentWikiAtlas()?.stats?.documents ?? 0);
   readonly currentWikiArticleCount = computed(() => this.currentWikiAtlas()?.stats?.wiki_articles ?? 0);
+  readonly currentWikiSourceCount = computed(() => this.currentWikiDocumentCount() + this.currentWikiArticleCount());
   readonly currentWikiSummary = computed(() => {
     const atlas = this.currentWikiAtlas();
     const description = atlas?.description?.trim();
@@ -228,6 +233,39 @@ export class ChatComponent implements AfterViewChecked {
       return `${base} ${limitNote}`;
     }
     return this.currentWikiSummary();
+  });
+  readonly heroPromptText = computed(() => {
+    if (this.showSignInCta()) {
+      return 'Sign in to continue asking grounded questions.';
+    }
+
+    const name = this.currentWikiName();
+    if (name) {
+      return `Ask ${name} anything from your sources.`;
+    }
+
+    return 'Ask your living wiki anything from your sources.';
+  });
+  readonly heroSupportingText = computed(() => {
+    if (this.showSignInCta()) {
+      return 'You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.';
+    }
+
+    const name = this.currentWikiName();
+    if (name) {
+      return `${name} is indexed into documents and wiki pages so every answer can stay grounded in the material you uploaded.`;
+    }
+
+    return 'Your documents and wiki pages are indexed so every answer can stay grounded in the material you uploaded.';
+  });
+  readonly heroStatusLabel = computed(() => (this.isPublicVisitorMode() ? 'Public atlas live' : 'Living Wiki live'));
+  readonly heroMetaLabel = computed(() => {
+    if (this.showSignInCta()) {
+      return 'Anonymous session paused';
+    }
+
+    const total = this.currentWikiSourceCount();
+    return total === 1 ? '1 indexed source ready' : `${total} indexed sources ready`;
   });
   readonly composerHelperText = computed(() => {
     if (this.isWorkspaceMode()) {
@@ -425,6 +463,65 @@ export class ChatComponent implements AfterViewChecked {
             this.publicChatLoading.set(false);
           }
         });
+    });
+
+    effect((onCleanup) => {
+      const text = this.heroPromptText();
+      const shouldAnimate = !this.hasMessages() && !this.isPublicPageLoading() && !this.publicNotFound();
+
+      if (!text) {
+        this.heroTypedPrompt.set('');
+        return;
+      }
+
+      if (!shouldAnimate) {
+        this.heroTypedPrompt.set(text);
+        return;
+      }
+
+      this.heroTypedPrompt.set('');
+      let index = 0;
+      const interval = setInterval(() => {
+        index = Math.min(index + 1, text.length);
+        this.heroTypedPrompt.set(text.slice(0, index));
+        if (index >= text.length) {
+          clearInterval(interval);
+        }
+      }, text.length > 54 ? 24 : 34);
+
+      onCleanup(() => clearInterval(interval));
+    });
+
+    effect((onCleanup) => {
+      const shouldAnimate = !this.hasMessages() && !this.isPublicPageLoading() && !this.publicNotFound();
+      const docs = this.currentWikiDocumentCount();
+      const articles = this.currentWikiArticleCount();
+      const sources = this.currentWikiSourceCount();
+
+      if (!shouldAnimate) {
+        this.animatedDocumentCount.set(docs);
+        this.animatedArticleCount.set(articles);
+        this.animatedSourceCount.set(sources);
+        return;
+      }
+
+      const startedAt = Date.now();
+      const durationMs = 900;
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - startedAt;
+        const progress = Math.min(1, elapsed / durationMs);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        this.animatedDocumentCount.set(Math.round(docs * eased));
+        this.animatedArticleCount.set(Math.round(articles * eased));
+        this.animatedSourceCount.set(Math.round(sources * eased));
+
+        if (progress >= 1) {
+          clearInterval(interval);
+        }
+      }, 32);
+
+      onCleanup(() => clearInterval(interval));
     });
   }
 

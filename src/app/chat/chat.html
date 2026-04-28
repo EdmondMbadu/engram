@@ -213,32 +213,36 @@
             } @else if (!hasMessages()) {
               <div class="flex flex-col items-center pb-10 pt-10 text-center md:pt-16">
                 <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">{{ emptyStateEyebrow() }}</p>
-                <h2 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">{{ emptyStateTitle() }}</h2>
-                <p class="mt-4 max-w-xl text-base leading-8 text-[var(--muted)]">
-                  {{ emptyStateDescription() }}
+                <h2 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">
+                  Ask <span class="chat-empty-brand">Living Wiki</span>
+                </h2>
+                <p class="chat-empty-typed mt-4 max-w-2xl text-base leading-8 text-[var(--muted)]">
+                  <span>{{ heroTypedPrompt() }}</span>
+                  <span class="chat-empty-cursor" aria-hidden="true"></span>
                 </p>
 
                 @if (currentWikiName() && !showSignInCta()) {
                   <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
                     <a
                       [routerLink]="libraryLink()"
-                      class="inline-flex items-center gap-1.5 rounded-full border border-[var(--line-strong)] bg-white/5 px-3 py-1.5 text-xs font-bold text-[var(--text)] transition-colors hover:bg-white/10"
+                      class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold text-[var(--text)]"
                     >
                       <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">library_books</span>
-                      <span>{{ currentWikiDocumentCount() }} {{ currentWikiDocumentCount() === 1 ? 'document' : 'documents' }}</span>
+                      <span>{{ animatedDocumentCount() }} {{ currentWikiDocumentCount() === 1 ? 'document' : 'documents' }}</span>
                     </a>
                     <a
                       [routerLink]="atlasWikiLink()"
-                      class="inline-flex items-center gap-1.5 rounded-full border border-[var(--line-strong)] bg-white/5 px-3 py-1.5 text-xs font-bold text-[var(--text)] transition-colors hover:bg-white/10"
+                      class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold text-[var(--text)]"
                     >
                       <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">menu_book</span>
-                      <span>{{ currentWikiArticleCount() }} {{ currentWikiArticleCount() === 1 ? 'wiki page' : 'wiki pages' }}</span>
+                      <span>{{ animatedArticleCount() }} {{ currentWikiArticleCount() === 1 ? 'wiki page' : 'wiki pages' }}</span>
                     </a>
                   </div>
                 }
 
                 <div class="mt-8 w-full max-w-2xl">
-                  <div class="theme-input rounded-[1.5rem] px-4 py-3 text-left shadow-[var(--shadow-floating)]">
+                  <div class="chat-empty-composer theme-input rounded-[1.5rem] px-4 py-3 text-left shadow-[var(--shadow-floating)]">
+                    <p class="mb-2 text-[11px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">Ask a question</p>
                     <textarea
                       [ngModel]="question()"
                       (ngModelChange)="question.set($event)"
