@@ -89,6 +89,10 @@ export class AtlasLandingComponent {
   readonly usage = signal<AtlasUsage | null>(null);
   readonly usageLoading = signal(false);
   private usageAtlasId: string | null = null;
+  readonly aboutTypedLine = signal('');
+  readonly animatedAboutDocuments = signal(0);
+  readonly animatedAboutEntries = signal(0);
+  readonly animatedAboutTopics = signal(0);
   readonly displayUsage = computed<AtlasUsage | null>(() => {
     const usage = this.usage();
     if (usage) return usage;
@@ -109,6 +113,24 @@ export class AtlasLandingComponent {
       };
     }
     return null;
+  });
+  readonly aboutDocumentsCount = computed(() => this.displayUsage()?.documents ?? 0);
+  readonly aboutEntriesCount = computed(() => this.displayUsage()?.knowledge_entries ?? 0);
+  readonly aboutTopicsCount = computed(() => this.displayUsage()?.wiki_topics ?? 0);
+  readonly aboutSummaryLine = computed(() => {
+    if (this.usageLoading()) {
+      return 'Loading indexed knowledge…';
+    }
+
+    const docs = this.aboutDocumentsCount();
+    const entries = this.aboutEntriesCount();
+    const topics = this.aboutTopicsCount();
+
+    if (docs === 0 && entries === 0 && topics === 0) {
+      return 'Searchable knowledge with receipts, ready to grow.';
+    }
+
+    return `${docs} document${docs === 1 ? '' : 's'} • ${entries} knowledge entr${entries === 1 ? 'y' : 'ies'} • ${topics} wiki topic${topics === 1 ? '' : 's'}`;
   });
 
   constructor() {
@@ -160,6 +182,57 @@ export class AtlasLandingComponent {
           .catch(() => this.usage.set(null))
           .finally(() => this.usageLoading.set(false));
       }
+    });
+
+    effect((onCleanup) => {
+      const text = this.aboutSummaryLine();
+      if (!text) {
+        this.aboutTypedLine.set('');
+        return;
+      }
+
+      this.aboutTypedLine.set('');
+      let index = 0;
+      const interval = setInterval(() => {
+        index = Math.min(index + 1, text.length);
+        this.aboutTypedLine.set(text.slice(0, index));
+        if (index >= text.length) {
+          clearInterval(interval);
+        }
+      }, 18);
+
+      onCleanup(() => clearInterval(interval));
+    });
+
+    effect((onCleanup) => {
+      const docs = this.aboutDocumentsCount();
+      const entries = this.aboutEntriesCount();
+      const topics = this.aboutTopicsCount();
+
+      if (this.usageLoading()) {
+        this.animatedAboutDocuments.set(0);
+        this.animatedAboutEntries.set(0);
+        this.animatedAboutTopics.set(0);
+        return;
+      }
+
+      const startedAt = Date.now();
+      const durationMs = 750;
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - startedAt;
+        const progress = Math.min(1, elapsed / durationMs);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        this.animatedAboutDocuments.set(Math.round(docs * eased));
+        this.animatedAboutEntries.set(Math.round(entries * eased));
+        this.animatedAboutTopics.set(Math.round(topics * eased));
+
+        if (progress >= 1) {
+          clearInterval(interval);
+        }
+      }, 32);
+
+      onCleanup(() => clearInterval(interval));
     });
   }
 

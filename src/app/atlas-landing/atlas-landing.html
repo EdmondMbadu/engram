@@ -239,7 +239,30 @@
           <!-- Left: About + Spaces -->
           <div class="col-span-12 space-y-10 lg:col-span-7">
             <div class="glass-card rounded-[2rem] p-8 md:p-10">
-              <h2 class="mb-6 flex items-center gap-3 font-headline text-3xl font-bold text-[var(--text)]">About this Wiki</h2>
+              <div class="atlas-about__heading-row mb-4">
+                <h2 class="flex items-center gap-3 font-headline text-3xl font-bold text-[var(--text)]">
+                  About this Wiki
+                  <span class="atlas-about__pencil material-symbols-outlined">edit</span>
+                </h2>
+              </div>
+              <p class="atlas-about__typed mb-5 text-sm font-semibold text-[var(--accent)]" aria-live="polite">
+                <span>{{ aboutTypedLine() }}</span>
+                <span class="atlas-about__cursor" aria-hidden="true"></span>
+              </p>
+              <div class="mb-6 flex flex-wrap gap-2">
+                <span class="atlas-about__stat-pill">
+                  <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutDocuments() }}</span>
+                  <span>docs</span>
+                </span>
+                <span class="atlas-about__stat-pill">
+                  <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutEntries() }}</span>
+                  <span>entries</span>
+                </span>
+                <span class="atlas-about__stat-pill">
+                  <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutTopics() }}</span>
+                  <span>topics</span>
+                </span>
+              </div>
               @if (a.description) {
                 <p class="mb-6 text-lg leading-relaxed text-[var(--muted)]">{{ a.description }}</p>
               } @else {
