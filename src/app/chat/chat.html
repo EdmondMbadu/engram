@@ -25,7 +25,7 @@
           (click)="newChat()"
         >
           <span class="material-symbols-outlined text-[1.1rem]">edit_square</span>
-          <span>New chat</span>
+          <span>New Chat</span>
         </button>
       }
 
@@ -85,15 +85,15 @@
                 >
                   <button
                     type="button"
-                    class="flex min-w-0 flex-1 items-start gap-2 rounded-lg px-0.5 py-0.5 text-left text-sm"
+                    class="chat-thread-item flex min-w-0 flex-1 items-start gap-2 rounded-lg px-0.5 py-0.5 text-left text-sm"
                     [class.text-[var(--text)]]="activeHistoryId() === item.id"
                     [class.text-[var(--muted)]]="activeHistoryId() !== item.id"
                     (click)="loadHistoryItem(item)"
                   >
-                    <span class="material-symbols-outlined mt-0.5 text-[1rem] opacity-60">chat_bubble</span>
+                    <span class="chat-thread-item__icon material-symbols-outlined">chat_bubble</span>
                     <span class="min-w-0 flex-1">
-                      <span class="block truncate">{{ truncate(historyTitle(item), 34) }}</span>
-                      <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+                      <span class="chat-thread-item__title block truncate">{{ truncate(historyTitle(item), 34) }}</span>
+                      <span class="chat-thread-item__meta mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
                         {{ historyTurnsLabel(item) }} · {{ formatRelativeDateShort(historyUpdatedAt(item)) }}
                       </span>
                     </span>

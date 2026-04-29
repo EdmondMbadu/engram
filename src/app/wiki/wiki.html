@@ -30,7 +30,7 @@
           </a>
           <a routerLink="/chat" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
             <span class="material-symbols-outlined">chat</span>
-            <span>New Chat</span>
+            <span>Chat</span>
           </a>
           <a routerLink="/upload" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
             <span class="material-symbols-outlined">neurology</span>
@@ -436,7 +436,7 @@
                             @if (isPublicView()) {
                               Sign in to ask questions against this wiki and get cited answers.
                             } @else {
-                              Use New Chat to ask questions — the system draws from all wiki articles to find answers.
+                              Use Chat to ask questions — the system draws from all wiki articles to find answers.
                             }
                           </p>
                           @if (isPublicView()) {
@@ -448,7 +448,7 @@
                               <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
                             }
                           } @else {
-                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to New Chat</a>
+                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to Chat</a>
                           }
                         </div>
                       </div>
@@ -538,13 +538,13 @@
                             @if (isPublicView()) {
                               Sign in to ask a scoped question about this topic with cited answers.
                             } @else {
-                              Use New Chat to ask a scoped question with this topic as the knowledge surface.
+                              Use Chat to ask a scoped question with this topic as the knowledge surface.
                             }
                           </p>
                           @if (isPublicView()) {
                             <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
                           } @else {
-                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to New Chat</a>
+                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to Chat</a>
                           }
                         </div>
                       </div>
