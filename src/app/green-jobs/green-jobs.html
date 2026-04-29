@@ -165,77 +165,98 @@
                 No listings match the current filter.
               </div>
             } @else {
-              <div class="grid grid-cols-1 gap-4">
+              <div class="grid grid-cols-1 gap-3">
                 @for (listing of filteredListings(); track listing.id) {
-                  <article class="green-jobs-card glass-card rounded-[1.75rem] p-5">
-                    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <article class="green-jobs-card rounded-xl px-4 py-3.5">
+                    <div class="flex items-start gap-2.5">
+                      <span [class]="fitDotClasses(listing)" [title]="fitLabel(listing)" aria-hidden="true"></span>
+
                       <div class="min-w-0 flex-1">
-                        <div class="flex flex-wrap items-center gap-2">
-                          <span [class]="fitClasses(listing)">{{ fitLabel(listing) }}</span>
-                          <span class="green-jobs-card-chip green-jobs-card-chip--bucket rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]">
-                            {{ listing.bucket === 'jobs' ? 'Job' : 'Pathway' }}
-                          </span>
-                          <span class="green-jobs-card-chip green-jobs-card-chip--source rounded-full px-3 py-1 text-[11px] font-semibold">
-                            {{ sourceLabel(listing.sourceId) }}
-                          </span>
-                        </div>
-
-                        <h3 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">{{ listing.title }}</h3>
-                        <p class="mt-1 text-sm font-semibold text-[var(--accent)]">{{ listing.organization }}</p>
-                        <p class="mt-3 text-sm leading-7 text-[var(--muted)]">{{ listing.summary }}</p>
-
-                        <div class="mt-4 flex flex-wrap gap-2">
-                          <span class="green-jobs-card-chip green-jobs-card-chip--meta rounded-full px-3 py-1 text-xs font-semibold">
-                            {{ listing.location }}
-                          </span>
-                          @if (listing.postedLabel) {
-                            <span class="green-jobs-card-chip green-jobs-card-chip--meta rounded-full px-3 py-1 text-xs font-semibold">
-                              {{ listing.postedLabel }}
-                            </span>
-                          }
-                          @if (listing.compensation) {
-                            <span class="green-jobs-card-chip green-jobs-card-chip--meta rounded-full px-3 py-1 text-xs font-semibold">
-                              {{ listing.compensation }}
-                            </span>
-                          }
-                        </div>
-                      </div>
-
-                      <div class="flex shrink-0 flex-wrap gap-2">
-                        <a [href]="listing.applyUrl" target="_blank" rel="noreferrer noopener" class="primary-btn !px-4 !py-2.5 text-sm">
-                          {{ listing.bucket === 'jobs' ? 'Apply' : 'Open pathway' }}
-                        </a>
-                        <button type="button" class="secondary-btn !px-4 !py-2.5 text-sm" (click)="toggleExpanded(listing.id)">
-                          {{ isExpanded(listing) ? 'Less' : 'More' }}
-                        </button>
-                      </div>
-                    </div>
-
-                    @if (isExpanded(listing)) {
-                      <div class="mt-5 border-t border-[var(--line)] pt-5">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <div class="rounded-[1.25rem] bg-[var(--soft-fill)] p-4">
-                            <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Why it belongs here</p>
-                            <p class="mt-2 text-sm leading-7 text-[var(--text)]">{{ listing.greenReason }}</p>
-                          </div>
-                          <div class="rounded-[1.25rem] bg-[var(--soft-fill)] p-4">
-                            <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Source control</p>
-                            <p class="mt-2 text-sm leading-7 text-[var(--text)]">
-                              Sourced from <a [href]="listing.detailsUrl" target="_blank" rel="noreferrer noopener" class="text-[var(--accent)] hover:underline">the original listing</a> and grouped under
-                              <a [href]="listing.sourceUrl" target="_blank" rel="noreferrer noopener" class="text-[var(--accent)] hover:underline">{{ listing.sourceLabel }}</a>.
+                        <div class="flex items-start justify-between gap-3">
+                          <div class="min-w-0 flex-1">
+                            <h3 class="green-jobs-card__title text-[0.95rem] font-semibold leading-tight text-[var(--text)]">
+                              {{ listing.title }}
+                            </h3>
+                            <p class="mt-1 text-[0.8rem] leading-snug text-[var(--muted)]">
+                              <span class="font-medium text-[var(--text)]">{{ listing.organization }}</span>
+                              <span class="green-jobs-card__sep">·</span>
+                              <span>{{ listing.location }}</span>
+                              @if (listing.postedLabel) {
+                                <span class="green-jobs-card__sep">·</span>
+                                <span>{{ listing.postedLabel }}</span>
+                              }
                             </p>
                           </div>
+
+                          <div class="flex shrink-0 items-center gap-1.5">
+                            <a
+                              [href]="listing.applyUrl"
+                              target="_blank"
+                              rel="noreferrer noopener"
+                              class="green-jobs-card__cta"
+                            >
+                              {{ listing.bucket === 'jobs' ? 'Apply' : 'Open' }}
+                              <svg class="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M3 3h6v6"/>
+                                <path d="M3 9l6-6"/>
+                              </svg>
+                            </a>
+                            <button
+                              type="button"
+                              class="green-jobs-card__toggle"
+                              (click)="toggleExpanded(listing.id)"
+                              [attr.aria-expanded]="isExpanded(listing)"
+                              [attr.aria-label]="isExpanded(listing) ? 'Collapse' : 'Expand'"
+                            >
+                              <svg
+                                class="h-3.5 w-3.5 transition-transform"
+                                [class.rotate-180]="isExpanded(listing)"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                              >
+                                <path d="M3 4.5l3 3 3-3"/>
+                              </svg>
+                            </button>
+                          </div>
                         </div>
 
-                        @if (listing.tags.length > 0) {
-                          <div class="mt-4 flex flex-wrap gap-2">
-                            @for (tag of listing.tags; track tag) {
-                              <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1.5 text-xs font-semibold text-[var(--text)]">{{ tag }}</span>
+                        @if (isExpanded(listing)) {
+                          <div class="mt-3 space-y-3 border-t border-[var(--line)] pt-3">
+                            <p class="text-[0.85rem] leading-6 text-[var(--text)]">{{ listing.summary }}</p>
+
+                            <div>
+                              <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Why it belongs</p>
+                              <p class="mt-1 text-[0.85rem] leading-6 text-[var(--text)]">{{ listing.greenReason }}</p>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.75rem] text-[var(--muted)]">
+                              <span class="font-medium">{{ fitLabel(listing) }}</span>
+                              <span class="green-jobs-card__sep">·</span>
+                              <a [href]="listing.sourceUrl" target="_blank" rel="noreferrer noopener" class="text-[var(--accent)] hover:underline">{{ sourceLabel(listing.sourceId) }}</a>
+                              @if (listing.compensation) {
+                                <span class="green-jobs-card__sep">·</span>
+                                <span>{{ listing.compensation }}</span>
+                              }
+                              <span class="green-jobs-card__sep">·</span>
+                              <a [href]="listing.detailsUrl" target="_blank" rel="noreferrer noopener" class="text-[var(--accent)] hover:underline">View source</a>
+                            </div>
+
+                            @if (listing.tags.length > 0) {
+                              <div class="flex flex-wrap gap-1.5">
+                                @for (tag of listing.tags; track tag) {
+                                  <span class="green-jobs-card__tag">{{ tag }}</span>
+                                }
+                              </div>
                             }
                           </div>
                         }
                       </div>
-                    }
+                    </div>
                   </article>
                 }
               </div>

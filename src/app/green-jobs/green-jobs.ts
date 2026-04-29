@@ -168,6 +168,17 @@ export class GreenJobsComponent {
     return 'green-jobs-pill green-jobs-pill--pathway';
   }
 
+  fitDotClasses(listing: PhillyGreenJobListing): string {
+    const base = 'green-jobs-card__dot';
+    if (listing.fit === 'direct') {
+      return `${base} green-jobs-card__dot--direct`;
+    }
+    if (listing.fit === 'support') {
+      return `${base} green-jobs-card__dot--support`;
+    }
+    return `${base} green-jobs-card__dot--pathway`;
+  }
+
   bucketClasses(bucket: 'all' | 'jobs' | 'pathways'): string {
     return this.selectedBucket() === bucket ? 'green-jobs-filter green-jobs-filter--active' : 'green-jobs-filter';
   }
