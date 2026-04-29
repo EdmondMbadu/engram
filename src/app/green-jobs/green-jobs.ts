@@ -1,8 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import type { AtlasItem } from '../atlas.models';
+import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import {
@@ -18,6 +20,7 @@ import {
   styleUrl: './green-jobs.css',
 })
 export class GreenJobsComponent {
+  private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly greenJobsService = inject(PhillyGreenJobsService);
   private readonly route = inject(ActivatedRoute);
@@ -31,6 +34,8 @@ export class GreenJobsComponent {
 
   readonly isSignedIn = computed(() => !!this.authService.uid());
   readonly isSupportedAtlas = computed(() => (this.routeSlug() ?? '').toLowerCase() === 'philly');
+  readonly publicAtlas = signal<AtlasItem | null>(null);
+  readonly isOwner = computed(() => this.publicAtlas()?.user_id === this.authService.uid());
   readonly selectedBucket = signal<'all' | 'jobs' | 'pathways'>('all');
   readonly selectedSourceId = signal<'all' | string>('all');
   readonly expandedListingId = signal<string | null>(null);
@@ -74,6 +79,19 @@ export class GreenJobsComponent {
     if (this.isBrowser && this.isSupportedAtlas()) {
       void this.refresh(false);
     }
+
+    effect(() => {
+      const slug = this.routeSlug();
+      if (!slug || !this.isBrowser) {
+        this.publicAtlas.set(null);
+        return;
+      }
+
+      void this.atlasService
+        .getPublicAtlasBySlug(slug)
+        .then((atlas) => this.publicAtlas.set(atlas))
+        .catch(() => this.publicAtlas.set(null));
+    });
   }
 
   async refresh(force: boolean): Promise<void> {
@@ -89,10 +107,25 @@ export class GreenJobsComponent {
     this.loadError.set(null);
 
     try {
-      const snapshot = await this.greenJobsService.fetchLatestSnapshot();
+      const snapshot =
+        force && this.isOwner()
+          ? await this.greenJobsService.refreshStoredSnapshot()
+          : await this.greenJobsService.getStoredSnapshot();
       this.snapshot.set(snapshot);
     } catch (error) {
-      this.loadError.set(error instanceof Error ? error.message : 'Could not refresh Philly green jobs.');
+      if (force) {
+        this.loadError.set(error instanceof Error ? error.message : 'Could not refresh Philly green jobs.');
+        return;
+      }
+
+      try {
+        const fallbackSnapshot = await this.greenJobsService.fetchLatestSnapshot();
+        this.snapshot.set(fallbackSnapshot);
+      } catch (fallbackError) {
+        this.loadError.set(
+          fallbackError instanceof Error ? fallbackError.message : 'Could not refresh Philly green jobs.',
+        );
+      }
     } finally {
       this.isLoading.set(false);
       this.isRefreshing.set(false);

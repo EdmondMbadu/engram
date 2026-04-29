@@ -17,6 +17,12 @@
           </p>
         </div>
         <div class="flex items-center gap-3">
+          <a
+            [routerLink]="['/atlas', routeSlug() ?? 'philly']"
+            class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-bold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
+            Philly home
+          </a>
           <app-theme-toggle></app-theme-toggle>
           @if (!isSignedIn()) {
             <a routerLink="/sign-in" class="primary-btn !px-4 !py-2.5 text-sm">Sign in</a>
@@ -34,6 +40,54 @@
           </p>
         </section>
       } @else {
+        @if (isOwner()) {
+          <section class="mb-6 rounded-[1.75rem] border border-[#94cda4] bg-[#eef9f1] p-4 text-[#102015] shadow-[0_18px_50px_rgba(23,88,42,0.12)]">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[#2f6f43]">Admin controls</p>
+                <h2 class="mt-1 text-xl font-black tracking-[-0.05em] text-[#102015]">Manage the Philly green jobs feed</h2>
+                <p class="mt-2 max-w-3xl text-sm leading-7 text-[#31543b]">
+                  Use the stored daily snapshot for public visitors. Refresh manually when you want today’s source pull, or jump back to the atlas, source files, and upload flow.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <a
+                  [routerLink]="['/atlas', routeSlug() ?? 'philly']"
+                  class="inline-flex items-center rounded-full border border-[#b8d7c0] bg-white px-4 py-2.5 text-sm font-black text-[#102015] shadow-sm transition hover:border-[#2f6f43] hover:text-[#2f6f43]"
+                >
+                  Philly home
+                </a>
+                <a
+                  routerLink="/atlases"
+                  class="inline-flex items-center rounded-full border border-[#b8d7c0] bg-white px-4 py-2.5 text-sm font-black text-[#102015] shadow-sm transition hover:border-[#2f6f43] hover:text-[#2f6f43]"
+                >
+                  Atlas settings
+                </a>
+                <a
+                  [routerLink]="['/library', routeSlug() ?? 'philly']"
+                  class="inline-flex items-center rounded-full border border-[#b8d7c0] bg-white px-4 py-2.5 text-sm font-black text-[#102015] shadow-sm transition hover:border-[#2f6f43] hover:text-[#2f6f43]"
+                >
+                  Source files
+                </a>
+                <a
+                  [routerLink]="['/upload', routeSlug() ?? 'philly']"
+                  class="inline-flex items-center rounded-full border border-[#b8d7c0] bg-white px-4 py-2.5 text-sm font-black text-[#102015] shadow-sm transition hover:border-[#2f6f43] hover:text-[#2f6f43]"
+                >
+                  Add source
+                </a>
+                <button
+                  type="button"
+                  class="inline-flex items-center rounded-full bg-[#25783c] px-4 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-[#1c5e30] disabled:cursor-not-allowed disabled:opacity-60"
+                  [disabled]="isRefreshing() || isLoading()"
+                  (click)="refresh(true)"
+                >
+                  {{ isRefreshing() || isLoading() ? 'Refreshing…' : 'Refresh now' }}
+                </button>
+              </div>
+            </div>
+          </section>
+        }
+
         <section class="grid grid-cols-1 gap-5 lg:grid-cols-4">
           <article class="green-jobs-hero glass-card rounded-[2rem] p-6 lg:col-span-2">
             <p class="green-jobs-hero__eyebrow text-[11px] font-black uppercase tracking-[0.22em]">Living pipeline</p>
@@ -72,15 +126,12 @@
                     Latest pull:
                     <span class="green-jobs-refresh__meta">{{ refreshedLabel() }}</span>
                   </p>
+                  @if (!isOwner()) {
+                    <p class="mt-3 rounded-[1rem] border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-semibold leading-6 text-[var(--text)]">
+                      Admin manual refresh is only shown after signing in as the Philly atlas owner. Public visitors see the latest stored snapshot.
+                    </p>
+                  }
                 </div>
-                <button
-                  type="button"
-                  class="primary-btn !px-4 !py-2.5 text-sm"
-                  [disabled]="isRefreshing() || isLoading()"
-                  (click)="refresh(true)"
-                >
-                  {{ isRefreshing() || isLoading() ? 'Refreshing…' : 'Refresh now' }}
-                </button>
               </div>
 
               <div class="mt-5 flex flex-wrap gap-2">
@@ -229,11 +280,11 @@
             </section>
 
             <section class="glass-card rounded-[2rem] p-5 md:p-6">
-              <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Simple operating rules</p>
+              <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Green jobs operating plan</p>
               <div class="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-                <p>Keep `jobs` and `pathways` separate so the dataset stays honest even when the live-job market is thin.</p>
-                <p>Pull direct institutional pages first. Add aggregator sites only after the local sources feel complete.</p>
-                <p>Store one record per opportunity so you can later add dedupe, expiry, and source confidence without redesigning the page.</p>
+                <p><strong class="text-[var(--text)]">Daily cron:</strong> a scheduled backend refresh runs once per day and writes the Philly snapshot to Firestore.</p>
+                <p><strong class="text-[var(--text)]">Admin refresh:</strong> the atlas owner can click <span class="font-bold text-[var(--text)]">Refresh now</span> to run the same source pull immediately.</p>
+                <p><strong class="text-[var(--text)]">Clean dataset:</strong> keep jobs and pathways separate, store one record per opportunity, and add dedupe/expiry rules as the source list grows.</p>
               </div>
             </section>
           </aside>

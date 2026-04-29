@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { getFirebaseApp } from '../firebase.client';
+import { httpsCallable } from 'firebase/functions';
+import { getFirebaseApp, getFirebaseFunctions } from '../firebase.client';
 
 export type GreenListingBucket = 'jobs' | 'pathways';
 export type GreenListingFit = 'direct' | 'support' | 'pathway';
@@ -60,6 +61,7 @@ const PHILADELPHIA = 'Philadelphia, PA';
 export class PhillyGreenJobsService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly functions = this.isBrowser ? getFirebaseFunctions() : null;
 
   readonly sources: SourceDefinition[] = [
     {
@@ -134,6 +136,34 @@ export class PhillyGreenJobsService {
     } catch {
       return null;
     }
+  }
+
+  async getStoredSnapshot(): Promise<PhillyGreenJobsSnapshot> {
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+
+    const getPhillyGreenJobsSnapshot = httpsCallable<Record<string, never>, PhillyGreenJobsSnapshot>(
+      this.functions,
+      'getPhillyGreenJobsSnapshot',
+    );
+    const { data } = await getPhillyGreenJobsSnapshot({});
+    this.writeCachedSnapshot(data);
+    return data;
+  }
+
+  async refreshStoredSnapshot(): Promise<PhillyGreenJobsSnapshot> {
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+
+    const refreshPhillyGreenJobs = httpsCallable<Record<string, never>, PhillyGreenJobsSnapshot>(
+      this.functions,
+      'refreshPhillyGreenJobs',
+    );
+    const { data } = await refreshPhillyGreenJobs({});
+    this.writeCachedSnapshot(data);
+    return data;
   }
 
   async fetchLatestSnapshot(): Promise<PhillyGreenJobsSnapshot> {

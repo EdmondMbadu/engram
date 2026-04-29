@@ -7,6 +7,10 @@ import { randomUUID } from 'node:crypto';
 import { FieldValue } from 'firebase-admin/firestore';
 import { db, storage } from './firebase';
 import { geminiApiKey } from './gemini';
+import {
+  getStoredPhillyGreenJobsSnapshot,
+  refreshStoredPhillyGreenJobsSnapshot,
+} from './green-jobs';
 import { fetchHtmlWithFallback, looksLikeAntiBotChallenge } from './html-fetch';
 import {
   clientTimestamp,
@@ -997,6 +1001,58 @@ export const getPublicAtlasUsage = onCall(
       chat_threads: chatThreads,
       total: documents + knowledgeEntries + wikiTopics + chatThreads,
     };
+  },
+);
+
+export const getPhillyGreenJobsSnapshot = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 120,
+    memory: '512MiB',
+    cors: true,
+  },
+  async () => {
+    const snapshot = await getStoredPhillyGreenJobsSnapshot();
+    if (snapshot) {
+      return snapshot;
+    }
+
+    return await refreshStoredPhillyGreenJobsSnapshot('bootstrap');
+  },
+);
+
+export const refreshPhillyGreenJobs = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 300,
+    memory: '1GiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const atlas = await loadPublicAtlasBySlug('philly');
+    if (atlas.user_id !== request.auth.uid) {
+      throw new HttpsError('permission-denied', 'Only the Philly atlas owner can refresh green jobs.');
+    }
+
+    return await refreshStoredPhillyGreenJobsSnapshot('admin');
+  },
+);
+
+export const refreshPhillyGreenJobsDaily = onSchedule(
+  {
+    region: callableRegion,
+    schedule: '0 5 * * *',
+    timeZone: 'America/New_York',
+    timeoutSeconds: 300,
+    memory: '1GiB',
+    maxInstances: 1,
+  },
+  async () => {
+    await refreshStoredPhillyGreenJobsSnapshot('schedule');
   },
 );
 
