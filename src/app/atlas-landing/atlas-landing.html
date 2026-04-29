@@ -348,6 +348,29 @@
                     </div>
                   </button>
 
+                  @if (showGreenJobsCard()) {
+                    <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)]/50 hover:shadow-[0_20px_40px_rgba(59,175,98,0.15)] active:translate-y-0" (click)="openGreenJobs()">
+                      <div class="relative aspect-[16/9] overflow-hidden" style="background: linear-gradient(135deg, #0b2216 0%, #123421 48%, #0f2118 100%)">
+                        <div class="absolute -right-8 top-0 h-36 w-36 rounded-full bg-[var(--accent)]/18 blur-3xl"></div>
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(255,255,255,0.12),transparent_26%),linear-gradient(135deg,transparent_0%,rgba(255,255,255,0.04)_45%,transparent_72%)]"></div>
+                        <div class="relative flex h-full w-full flex-col justify-between px-6 py-5">
+                          <div class="flex items-center justify-between">
+                            <span class="rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white/85">Philly only</span>
+                            <span class="material-symbols-outlined text-[2.4rem] text-white/80" style="font-variation-settings: 'FILL' 1">eco</span>
+                          </div>
+                          <div>
+                            <div class="text-[10px] font-bold uppercase tracking-widest text-white/70">Live listings + pathways</div>
+                            <h4 class="mt-1 text-xl font-bold text-white">Green Jobs</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex flex-col gap-1 border-t border-[var(--line)] px-6 py-5">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Clean energy, water, retrofit</div>
+                        <h4 class="text-xl font-bold text-[var(--text)]">Philly Green Jobs</h4>
+                      </div>
+                    </button>
+                  }
+
                   <!-- Upload Card -->
                   <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border-2 border-dashed border-[var(--accent)]/40 bg-[var(--surface)] text-left transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)] hover:shadow-[0_20px_40px_rgba(59,175,98,0.2)] active:translate-y-0" (click)="openUpload()">
                     <div class="relative aspect-[16/9] overflow-hidden">

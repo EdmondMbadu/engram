@@ -65,6 +65,7 @@ export class AtlasLandingComponent {
     const atlas = this.atlas();
     return !!atlas && atlas.is_public && !this.isOwner();
   });
+  readonly showGreenJobsCard = computed(() => (this.routeSlug() ?? '').trim().toLowerCase() === 'philly');
 
   readonly isSigningOut = signal(false);
   readonly avatarMenuOpen = signal(false);
@@ -317,6 +318,14 @@ export class AtlasLandingComponent {
     }
     this.activateThisAtlas();
     void this.router.navigateByUrl(publicRoute ?? '/wiki');
+  }
+
+  openGreenJobs(): void {
+    const slug = (this.routeSlug() ?? this.publicAtlasSlug() ?? '').trim();
+    if (!slug) {
+      return;
+    }
+    void this.router.navigateByUrl(`/atlas/${slug}/green-jobs`);
   }
 
   startEdit(): void {

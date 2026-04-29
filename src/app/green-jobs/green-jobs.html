@@ -1,0 +1,243 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+  <div class="pointer-events-none fixed inset-0 overflow-hidden">
+    <div class="absolute left-[-8rem] top-[-6rem] h-[24rem] w-[24rem] rounded-full bg-[var(--accent)]/12 blur-[120px]"></div>
+    <div class="absolute bottom-[-10rem] right-[-6rem] h-[24rem] w-[24rem] rounded-full bg-[rgba(42,145,80,0.14)] blur-[110px]"></div>
+  </div>
+
+  <div class="relative">
+    <header class="theme-nav sticky top-0 z-40 border-b px-5 py-4 backdrop-blur-xl md:px-8">
+      <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-4">
+        <div>
+          <a [routerLink]="['/atlas', routeSlug() ?? 'philly']" class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">
+            Back to Philly
+          </a>
+          <h1 class="mt-2 text-3xl font-black tracking-[-0.07em] text-[var(--text)] md:text-4xl">Philly Green Jobs</h1>
+          <p class="mt-2 max-w-3xl text-sm leading-7 text-[var(--muted)]">
+            Live opportunities and career pathways across Philadelphia’s clean-energy, water, building retrofit, and environmental workforce ecosystem.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <app-theme-toggle></app-theme-toggle>
+          @if (!isSignedIn()) {
+            <a routerLink="/sign-in" class="primary-btn !px-4 !py-2.5 text-sm">Sign in</a>
+          }
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-[1400px] px-5 py-8 md:px-8 md:py-10">
+      @if (!isSupportedAtlas()) {
+        <section class="glass-card rounded-[2rem] p-8 text-center">
+          <h2 class="text-2xl font-black tracking-[-0.05em] text-[var(--text)]">This page is Philly-only for now</h2>
+          <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
+            The green-jobs build is currently scoped to Philadelphia so the sources, taxonomy, and refresh logic stay clean.
+          </p>
+        </section>
+      } @else {
+        <section class="grid grid-cols-1 gap-5 lg:grid-cols-4">
+          <article class="green-jobs-hero glass-card rounded-[2rem] p-6 lg:col-span-2">
+            <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Living pipeline</p>
+            <h2 class="mt-3 text-3xl font-black tracking-[-0.07em] text-[var(--text)]">A Philly-specific green workforce page that can stay current.</h2>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--muted)]">
+              The page refreshes directly from institutional source pages and keeps jobs separate from training pathways, so you can build a local dataset instead of a dead list of outbound links.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              @for (tag of availableTags(); track tag) {
+                <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1.5 text-xs font-semibold text-[var(--text)]">{{ tag }}</span>
+              }
+            </div>
+          </article>
+
+          <article class="glass-card rounded-[2rem] p-6">
+            <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Open jobs</p>
+            <div class="mt-3 text-4xl font-black tracking-[-0.07em] text-[var(--text)]">{{ totalJobs() }}</div>
+            <p class="mt-2 text-sm text-[var(--muted)]">Direct roles plus support roles inside Philly clean-energy institutions.</p>
+          </article>
+
+          <article class="glass-card rounded-[2rem] p-6">
+            <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Pathways</p>
+            <div class="mt-3 text-4xl font-black tracking-[-0.07em] text-[var(--text)]">{{ totalPathways() }}</div>
+            <p class="mt-2 text-sm text-[var(--muted)]">Training, apprenticeships, and structured on-ramps into green-sector work.</p>
+          </article>
+        </section>
+
+        <section class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.8fr)_minmax(320px,1fr)]">
+          <div class="space-y-6">
+            <div class="glass-card rounded-[2rem] p-5 md:p-6">
+              <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Refresh policy</p>
+                  <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
+                    Jobs sources are designed for daily refreshes. Training and apprenticeship sources refresh weekly.
+                    Latest pull: <span class="font-semibold text-[var(--text)]">{{ refreshedLabel() }}</span>
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  class="primary-btn !px-4 !py-2.5 text-sm"
+                  [disabled]="isRefreshing() || isLoading()"
+                  (click)="refresh(true)"
+                >
+                  {{ isRefreshing() || isLoading() ? 'Refreshing…' : 'Refresh now' }}
+                </button>
+              </div>
+
+              <div class="mt-5 flex flex-wrap gap-2">
+                <button type="button" [class]="bucketClasses('all')" (click)="setBucket('all')">All</button>
+                <button type="button" [class]="bucketClasses('jobs')" (click)="setBucket('jobs')">Jobs</button>
+                <button type="button" [class]="bucketClasses('pathways')" (click)="setBucket('pathways')">Pathways</button>
+              </div>
+
+              <div class="mt-3 flex flex-wrap gap-2">
+                <button type="button" [class]="sourceClasses('all')" (click)="setSource('all')">All sources</button>
+                @for (source of sourceStatuses(); track source.id) {
+                  <button type="button" [class]="sourceClasses(source.id)" (click)="setSource(source.id)">
+                    {{ source.label }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            @if (loadError()) {
+              <div class="error-banner rounded-[1.5rem] px-5 py-4 text-sm">
+                {{ loadError() }}
+              </div>
+            }
+
+            @if (isLoading() && filteredListings().length === 0) {
+              <div class="glass-card rounded-[2rem] px-6 py-8 text-center text-[var(--muted)]">
+                Refreshing Philly green jobs…
+              </div>
+            } @else if (filteredListings().length === 0) {
+              <div class="glass-card rounded-[2rem] px-6 py-8 text-center text-[var(--muted)]">
+                No listings match the current filter.
+              </div>
+            } @else {
+              <div class="grid grid-cols-1 gap-4">
+                @for (listing of filteredListings(); track listing.id) {
+                  <article class="green-jobs-card glass-card rounded-[1.75rem] p-5">
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                      <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span [class]="fitClasses(listing)">{{ fitLabel(listing) }}</span>
+                          <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                            {{ listing.bucket === 'jobs' ? 'Job' : 'Pathway' }}
+                          </span>
+                          <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1 text-[11px] font-semibold text-[var(--text)]">
+                            {{ sourceLabel(listing.sourceId) }}
+                          </span>
+                        </div>
+
+                        <h3 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">{{ listing.title }}</h3>
+                        <p class="mt-1 text-sm font-semibold text-[var(--accent)]">{{ listing.organization }}</p>
+                        <p class="mt-3 text-sm leading-7 text-[var(--muted)]">{{ listing.summary }}</p>
+
+                        <div class="mt-4 flex flex-wrap gap-2">
+                          <span class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-semibold text-[var(--text)]">
+                            {{ listing.location }}
+                          </span>
+                          @if (listing.postedLabel) {
+                            <span class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-semibold text-[var(--text)]">
+                              {{ listing.postedLabel }}
+                            </span>
+                          }
+                          @if (listing.compensation) {
+                            <span class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-semibold text-[var(--text)]">
+                              {{ listing.compensation }}
+                            </span>
+                          }
+                        </div>
+                      </div>
+
+                      <div class="flex shrink-0 flex-wrap gap-2">
+                        <a [href]="listing.applyUrl" target="_blank" rel="noreferrer noopener" class="primary-btn !px-4 !py-2.5 text-sm">
+                          {{ listing.bucket === 'jobs' ? 'Apply' : 'Open pathway' }}
+                        </a>
+                        <button type="button" class="secondary-btn !px-4 !py-2.5 text-sm" (click)="toggleExpanded(listing.id)">
+                          {{ isExpanded(listing) ? 'Less' : 'More' }}
+                        </button>
+                      </div>
+                    </div>
+
+                    @if (isExpanded(listing)) {
+                      <div class="mt-5 border-t border-[var(--line)] pt-5">
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div class="rounded-[1.25rem] bg-[var(--soft-fill)] p-4">
+                            <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Why it belongs here</p>
+                            <p class="mt-2 text-sm leading-7 text-[var(--text)]">{{ listing.greenReason }}</p>
+                          </div>
+                          <div class="rounded-[1.25rem] bg-[var(--soft-fill)] p-4">
+                            <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Source control</p>
+                            <p class="mt-2 text-sm leading-7 text-[var(--text)]">
+                              Sourced from <a [href]="listing.detailsUrl" target="_blank" rel="noreferrer noopener" class="text-[var(--accent)] hover:underline">the original listing</a> and grouped under
+                              <a [href]="listing.sourceUrl" target="_blank" rel="noreferrer noopener" class="text-[var(--accent)] hover:underline">{{ listing.sourceLabel }}</a>.
+                            </p>
+                          </div>
+                        </div>
+
+                        @if (listing.tags.length > 0) {
+                          <div class="mt-4 flex flex-wrap gap-2">
+                            @for (tag of listing.tags; track tag) {
+                              <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1.5 text-xs font-semibold text-[var(--text)]">{{ tag }}</span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  </article>
+                }
+              </div>
+            }
+          </div>
+
+          <aside class="space-y-6">
+            <section class="glass-card rounded-[2rem] p-5 md:p-6">
+              <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Source registry</p>
+              <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
+                These are the institutions this page trusts right now. Each source stays visible even when it temporarily has zero active listings.
+              </p>
+
+              <div class="mt-5 space-y-3">
+                @for (source of sourceStatuses(); track source.id) {
+                  <article class="rounded-[1.5rem] border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 class="text-base font-bold text-[var(--text)]">{{ source.label }}</h3>
+                        <p class="mt-1 text-xs leading-6 text-[var(--muted)]">{{ source.note }}</p>
+                      </div>
+                      <span class="rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]" style="background: color-mix(in srgb, var(--accent) 16%, transparent)">
+                        {{ source.cadence }}
+                      </span>
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
+                      <span>{{ source.itemCount }} items</span>
+                      <span>•</span>
+                      <span>{{ source.bucket }}</span>
+                    </div>
+                    @if (source.error) {
+                      <p class="mt-3 text-xs leading-6 text-[var(--danger-text)]">{{ source.error }}</p>
+                    }
+                    <div class="mt-3">
+                      <a [href]="source.url" target="_blank" rel="noreferrer noopener" class="text-sm font-semibold text-[var(--accent)] hover:underline">
+                        Open source page
+                      </a>
+                    </div>
+                  </article>
+                }
+              </div>
+            </section>
+
+            <section class="glass-card rounded-[2rem] p-5 md:p-6">
+              <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Simple operating rules</p>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
+                <p>Keep `jobs` and `pathways` separate so the dataset stays honest even when the live-job market is thin.</p>
+                <p>Pull direct institutional pages first. Add aggregator sites only after the local sources feel complete.</p>
+                <p>Store one record per opportunity so you can later add dedupe, expiry, and source confidence without redesigning the page.</p>
+              </div>
+            </section>
+          </aside>
+        </section>
+      }
+    </main>
+  </div>
+</div>
