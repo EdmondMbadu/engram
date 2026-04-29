@@ -85,6 +85,7 @@ export class ChatComponent implements AfterViewChecked {
   readonly publicQuestionLimit = signal<number | null>(null);
   readonly publicRemainingQuestions = signal<number | null>(null);
   readonly publicRequiresSignIn = signal(false);
+  readonly publicDocumentCount = signal(0);
   readonly anonymousVisitorId = signal<string | null>(this.loadAnonymousVisitorId());
   readonly heroTypedPrompt = signal('');
   readonly animatedDocumentCount = signal(0);
@@ -217,8 +218,12 @@ export class ChatComponent implements AfterViewChecked {
     const name = this.atlasService.displayName(atlas);
     return name && name !== 'Select atlas' ? name : '';
   });
-  readonly currentWikiDocumentCount = computed(() => this.currentWikiAtlas()?.stats?.documents ?? 0);
-  readonly currentWikiArticleCount = computed(() => this.currentWikiAtlas()?.stats?.wiki_articles ?? 0);
+  readonly currentWikiDocumentCount = computed(() =>
+    this.isPublicView()
+      ? this.publicDocumentCount()
+      : this.documentsService.stats().totalDocuments,
+  );
+  readonly currentWikiArticleCount = computed(() => this.wikiService.articles().length);
   readonly currentWikiSourceCount = computed(() => this.currentWikiDocumentCount() + this.currentWikiArticleCount());
   readonly currentWikiSummary = computed(() => {
     const atlas = this.currentWikiAtlas();
@@ -405,6 +410,7 @@ export class ChatComponent implements AfterViewChecked {
         this.publicLookupDone.set(true);
         this.publicChatLoading.set(false);
         this.publicLoadError.set(null);
+        this.publicDocumentCount.set(0);
         return;
       }
 
@@ -415,6 +421,35 @@ export class ChatComponent implements AfterViewChecked {
         .then((atlas) => this.publicAtlas.set(atlas))
         .catch(() => this.publicAtlas.set(null))
         .finally(() => this.publicLookupDone.set(true));
+    });
+
+    effect((onCleanup) => {
+      const atlasId = this.isPublicView() ? this.publicAtlas()?.id ?? null : null;
+      let cancelled = false;
+
+      this.wikiService.setPublicAtlasId(atlasId);
+
+      if (!atlasId) {
+        this.publicDocumentCount.set(0);
+        return;
+      }
+
+      void this.documentsService
+        .getPublicAtlasDocuments(atlasId)
+        .then((documents) => {
+          if (!cancelled) {
+            this.publicDocumentCount.set(documents.length);
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            this.publicDocumentCount.set(0);
+          }
+        });
+
+      onCleanup(() => {
+        cancelled = true;
+      });
     });
 
     effect(() => {
