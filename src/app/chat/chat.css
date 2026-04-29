@@ -1,18 +1,20 @@
 .chat-mode-toggle {
   flex-shrink: 0;
-  border: 1px solid var(--line-strong);
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line-strong));
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
+  background: color-mix(in srgb, var(--surface) 90%, white 10%);
   padding: 0.25rem;
   gap: 0.25rem;
-  box-shadow: 0 10px 24px rgba(15, 23, 16, 0.08);
+  box-shadow:
+    0 10px 24px rgba(15, 23, 16, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .chat-mode-toggle__button {
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--text) 72%, var(--muted) 28%);
   cursor: pointer;
   font-size: 0.68rem;
   font-weight: 900;
@@ -30,16 +32,20 @@
 
 .chat-mode-toggle__button:hover {
   color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .chat-mode-toggle__button--active {
-  background: var(--accent);
-  color: #0f1710;
-  box-shadow: 0 8px 18px rgba(59, 175, 98, 0.22);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 72%, white 28%));
+  color: var(--accent-contrast);
+  box-shadow:
+    0 8px 18px rgba(59, 175, 98, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .chat-mode-toggle__button--active:hover {
-  color: #0f1710;
+  color: var(--accent-contrast);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 68%, white 32%));
 }
 
 .chat-thread-item__icon {
