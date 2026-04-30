@@ -185,6 +185,35 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-text, #dc2626) 22%, transparent);
 }
 
+/* Owner admin toolbar */
+.green-jobs-admin__divider {
+  width: 1px;
+  height: 16px;
+  background: var(--line);
+}
+
+.green-jobs-admin__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  color: var(--muted);
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.green-jobs-admin__link:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--text);
+}
+
+.green-jobs-admin__refresh--spinning {
+  animation: green-jobs-spin 1s linear infinite;
+}
+
+@keyframes green-jobs-spin {
+  to { transform: rotate(360deg); }
+}
+
 .green-jobs-filter,
 .green-jobs-source-filter {
   border-radius: 999px;
