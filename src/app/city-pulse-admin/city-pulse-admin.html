@@ -126,6 +126,11 @@
               <article class="rounded-[1.5rem] border border-[var(--line)] bg-[var(--soft-fill)] p-4">
                 <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ metric.short_label }}</p>
                 <p class="mt-3 text-3xl font-black tracking-[-0.06em] text-[var(--text)]">{{ formatMetricValue(metric.id) }}</p>
+                @if (liveEstimate(metric.id); as liveEstimateValue) {
+                  <div class="mt-2 rounded-full border border-emerald-400/20 bg-emerald-400/8 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300" style="font-variant-numeric: tabular-nums;">
+                    Modeled live estimate {{ liveEstimateValue }}
+                  </div>
+                }
                 <p class="mt-3 text-sm font-semibold text-[var(--text)]">{{ metric.label }}</p>
                 <p class="mt-2 text-xs leading-5 text-[var(--muted)]">{{ metric.description }}</p>
                 @if (metric.source_detail) {

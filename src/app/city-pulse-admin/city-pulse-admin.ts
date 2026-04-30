@@ -159,6 +159,20 @@ export class CityPulseAdminComponent {
     return metric ? this.cityPulseService.formatMetric(metric, this.nowMs()) : '—';
   }
 
+  liveEstimate(metricId: string): string | null {
+    const metric = this.metrics().find((item) => item.id === metricId);
+    if (!metric?.realtime) {
+      return null;
+    }
+
+    const value = this.cityPulseService.metricValue(metric, this.nowMs());
+    const decimals = metric.id === 'population-now' ? 3 : 2;
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(value);
+  }
+
   metricAsOf(metricId: string): string {
     const metric = this.metrics().find((item) => item.id === metricId);
     if (!metric?.as_of) {

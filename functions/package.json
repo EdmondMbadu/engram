@@ -7,6 +7,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "city-pulse:refresh": "npm run build && node scripts/refresh-city-pulse.cjs",
     "clean": "rimraf lib",
     "serve": "npm run build && firebase emulators:start --only functions",
     "deploy": "firebase deploy --only functions",
