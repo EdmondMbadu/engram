@@ -43,8 +43,8 @@ export interface CityPulseSnapshot {
 
 const cityPulseCollection = db.collection('city_pulse_snapshots');
 const ATLASES_COLLECTION = db.collection('atlases');
-const CENSUS_POPULATION_YEARS = [2024, 2023, 2022];
 const ACS_YEARS = [2024, 2023, 2022];
+const CENSUS_CITY_POPULATION_VINTAGE = 2024;
 const LANDING_METRIC_ORDER = [
   'population-now',
   'population-change-annual',
@@ -100,7 +100,7 @@ export async function refreshStoredCityPulseSnapshot(
       metrics.push(populationData.populationMetric);
       metrics.push(populationData.changeMetric);
     } else {
-      notes.push('Population estimate is missing because Census population endpoints did not return a usable record.');
+      notes.push('Population estimate is missing because the official Census city population dataset did not return a usable record.');
     }
 
     if (acsData) {
@@ -183,38 +183,29 @@ async function fetchPopulationMetrics(stateCode: string, placeCode: string): Pro
   populationMetric: CityPulseMetric;
   changeMetric: CityPulseMetric;
 } | null> {
-  const estimates: Array<{ year: number; population: number; name: string }> = [];
+  const normalizedStateCode = stateCode.padStart(2, '0');
+  const normalizedPlaceCode = placeCode.padStart(5, '0');
+  const datasetUrl =
+    `https://www2.census.gov/programs-surveys/popest/datasets/2020-${CENSUS_CITY_POPULATION_VINTAGE}/cities/totals/` +
+    `sub-est${CENSUS_CITY_POPULATION_VINTAGE}_${normalizedStateCode}.csv`;
 
-  for (const year of CENSUS_POPULATION_YEARS) {
-    const row = await fetchCensusRow(
-      `https://api.census.gov/data/${year}/pep/population?get=NAME,POP&for=place:${placeCode}&in=state:${stateCode}`,
-    );
-    if (!row) {
-      continue;
-    }
-
-    const population = Number(row['POP']);
-    if (!Number.isFinite(population)) {
-      continue;
-    }
-
-    estimates.push({
-      year,
-      population,
-      name: String(row['NAME'] ?? ''),
-    });
-  }
-
-  if (estimates.length === 0) {
+  const row = await fetchCsvPlacePopulationRow(datasetUrl, normalizedStateCode, normalizedPlaceCode);
+  if (!row) {
     return null;
   }
 
-  estimates.sort((left, right) => right.year - left.year);
-  const latest = estimates[0];
-  const prior = estimates[1] ?? null;
-  const annualDelta = prior ? latest.population - prior.population : 0;
+  const latestYear = CENSUS_CITY_POPULATION_VINTAGE;
+  const priorYear = latestYear - 1;
+  const latestPopulation = Number(row[`POPESTIMATE${latestYear}`]);
+  const priorPopulation = Number(row[`POPESTIMATE${priorYear}`]);
+  if (!Number.isFinite(latestPopulation) || !Number.isFinite(priorPopulation)) {
+    return null;
+  }
+
+  const annualDelta = latestPopulation - priorPopulation;
   const ratePerSecond = annualDelta / (365.25 * 24 * 60 * 60);
-  const metricAsOf = `${latest.year}-07-01T00:00:00.000Z`;
+  const metricAsOf = `${latestYear}-07-01T00:00:00.000Z`;
+  const geographyName = String(row['NAME'] ?? '').trim() || `Place ${normalizedPlaceCode}`;
 
   return {
     populationMetric: {
@@ -223,18 +214,18 @@ async function fetchPopulationMetrics(stateCode: string, placeCode: string): Pro
       short_label: 'population',
       description: 'Interpolated from the latest official Census annual population estimate.',
       format: 'number',
-      value: latest.population,
-      source_label: 'U.S. Census Population Estimates API',
-      source_detail: `Population Estimates Program, place-level annual estimate (${latest.year}).`,
-      source_url: 'https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html',
-      methodology: 'Anchored to the latest annual July 1 estimate, then interpolated client-side using the latest year-over-year change expressed per second.',
+      value: latestPopulation,
+      source_label: 'U.S. Census Population and Housing Unit Estimates',
+      source_detail: `Vintage ${latestYear} subcounty resident population estimates for ${geographyName} (${row['STNAME'] ?? normalizedStateCode}).`,
+      source_url: datasetUrl,
+      methodology: 'Anchored to the latest official July 1 city population estimate from the Census place totals dataset, then interpolated client-side using the latest year-over-year change expressed per second.',
       cadence: 'realtime',
       as_of: metricAsOf,
       realtime: {
         anchor_iso: metricAsOf,
-        baseline_value: latest.population,
+        baseline_value: latestPopulation,
         rate_per_second: ratePerSecond,
-        min_value: latest.population,
+        min_value: latestPopulation,
       },
     },
     changeMetric: {
@@ -244,9 +235,9 @@ async function fetchPopulationMetrics(stateCode: string, placeCode: string): Pro
       description: 'Year-over-year population change using the latest two official Census annual estimates.',
       format: 'number',
       value: annualDelta,
-      source_label: 'U.S. Census Population Estimates API',
-      source_detail: `Population Estimates Program annual change (${prior ? `${prior.year} to ${latest.year}` : latest.year}).`,
-      source_url: 'https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html',
+      source_label: 'U.S. Census Population and Housing Unit Estimates',
+      source_detail: `Computed from POPESTIMATE${priorYear} and POPESTIMATE${latestYear} in the official Census city totals dataset.`,
+      source_url: datasetUrl,
       methodology: 'Computed as the most recent annual city population estimate minus the prior annual estimate.',
       cadence: 'yearly',
       as_of: metricAsOf,
@@ -348,6 +339,96 @@ async function fetchCensusRow(url: string): Promise<Record<string, string> | nul
     logger.warn('city pulse census request threw', { url, errorMessage: error instanceof Error ? error.message : String(error) });
     return null;
   }
+}
+
+async function fetchCsvPlacePopulationRow(
+  url: string,
+  normalizedStateCode: string,
+  normalizedPlaceCode: string,
+): Promise<Record<string, string> | null> {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'text/csv,text/plain;q=0.9,*/*;q=0.8',
+      },
+    });
+    if (!response.ok) {
+      logger.warn('city pulse population csv request failed', { url, status: response.status });
+      return null;
+    }
+
+    const text = await response.text();
+    const lines = text
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+    if (lines.length < 2) {
+      return null;
+    }
+
+    const header = parseCsvLine(lines[0]);
+    const candidates: Record<string, string>[] = [];
+
+    for (const line of lines.slice(1)) {
+      const values = parseCsvLine(line);
+      if (values.length !== header.length) {
+        continue;
+      }
+
+      const row = Object.fromEntries(header.map((key, index) => [key, values[index] ?? '']));
+      if (row['STATE'] !== normalizedStateCode || row['PLACE'] !== normalizedPlaceCode) {
+        continue;
+      }
+
+      candidates.push(row);
+    }
+
+    return (
+      candidates.find((row) => row['SUMLEV'] === '162') ??
+      candidates.find((row) => row['SUMLEV'] === '170') ??
+      candidates.find((row) => row['SUMLEV'] === '172') ??
+      candidates[0] ??
+      null
+    );
+  } catch (error) {
+    logger.warn('city pulse population csv request threw', {
+      url,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+function parseCsvLine(line: string): string[] {
+  const values: string[] = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+
+    if (char === '"') {
+      const nextChar = line[index + 1];
+      if (inQuotes && nextChar === '"') {
+        current += '"';
+        index += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === ',' && !inQuotes) {
+      values.push(current);
+      current = '';
+      continue;
+    }
+
+    current += char;
+  }
+
+  values.push(current);
+  return values;
 }
 
 function sanitizeMetrics(metrics: unknown[]): CityPulseMetric[] {
