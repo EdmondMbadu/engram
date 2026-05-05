@@ -10,6 +10,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
+import { GoogleDrivePickerService } from '../google-drive-picker.service';
 
 @Component({
   selector: 'app-landing',
@@ -20,6 +21,7 @@ export class LandingComponent {
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
+  private readonly googleDrivePickerService = inject(GoogleDrivePickerService);
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
@@ -44,10 +46,23 @@ export class LandingComponent {
   readonly hidePublicKnowledgeSurfaces = computed(() =>
     this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
   );
+  readonly isActiveAtlasOwner = computed(() => {
+    if (this.isPublicView()) {
+      return false;
+    }
+
+    const atlas = this.atlasService.activeAtlas();
+    const uid = this.authService.uid();
+    return !!atlas && !!uid && atlas.user_id === uid;
+  });
   readonly isUploading = this.documentsService.isUploading;
   readonly uploadError = this.documentsService.uploadError;
   readonly uploadProgress = this.documentsService.uploadProgress;
   readonly documents = this.documentsService.documents;
+  readonly googleDriveError = this.googleDrivePickerService.error;
+  readonly isGoogleDriveConfigured = this.googleDrivePickerService.isConfigured;
+  readonly isGoogleDriveBusy = this.googleDrivePickerService.isBusy;
+  readonly isGoogleDriveConnected = this.googleDrivePickerService.isConnected;
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
   readonly userAvatar = '/assets/living-atlas-logo.png';
@@ -61,6 +76,7 @@ export class LandingComponent {
       ? `Expand ${this.atlasService.displayName(this.publicAtlas())}`
       : 'Welcome.',
   );
+  readonly importError = computed(() => this.uploadError() ?? this.googleDriveError());
 
   readonly activeUploads = computed(() => {
     const progress = this.uploadProgress();
@@ -115,6 +131,7 @@ export class LandingComponent {
     if (this.isPublicView()) {
       return;
     }
+    this.googleDrivePickerService.clearError();
     const input = this.elementRef.nativeElement.querySelector('#landingFileInput') as HTMLInputElement;
     input?.click();
   }
@@ -123,6 +140,8 @@ export class LandingComponent {
     if (this.isPublicView()) {
       return;
     }
+
+    this.googleDrivePickerService.clearError();
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) {
       return;
@@ -133,6 +152,30 @@ export class LandingComponent {
 
     if (!this.uploadError()) {
       await this.router.navigateByUrl('/library');
+    }
+  }
+
+  async importFromGoogleDrive(): Promise<void> {
+    if (this.isPublicView()) {
+      return;
+    }
+
+    try {
+      const selection = await this.googleDrivePickerService.pickFiles();
+      if (!selection || selection.files.length === 0) {
+        return;
+      }
+
+      const result = await this.documentsService.importGoogleDriveFiles(
+        selection.files,
+        selection.accessToken,
+      );
+
+      if (result.imported.length > 0) {
+        await this.router.navigateByUrl('/library');
+      }
+    } catch {
+      // Errors are surfaced via service signals.
     }
   }
 

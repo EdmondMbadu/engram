@@ -2,6 +2,13 @@ import type { FirebaseOptions } from 'firebase/app';
 
 export type PublicFirebaseConfig = FirebaseOptions & {
   measurementId?: string;
+  messagingSenderId?: string;
+};
+
+export interface GoogleDriveRuntimeConfig {
+  apiKey?: string;
+  clientId?: string;
+  appId?: string;
 };
 
 declare global {
@@ -9,6 +16,7 @@ declare global {
     __LIVING_ATLAS_CONFIG__?: {
       firebase?: PublicFirebaseConfig;
       publicAppUrl?: string;
+      googleDrive?: GoogleDriveRuntimeConfig;
     };
   }
 }
@@ -32,4 +40,27 @@ export function getPublicAppUrl(): string | null {
   }
 
   return null;
+}
+
+export function getGoogleDriveConfig(): {
+  apiKey: string | null;
+  clientId: string | null;
+  appId: string | null;
+} {
+  const configured = window.__LIVING_ATLAS_CONFIG__?.googleDrive;
+  const firebase = getFirebaseConfig();
+
+  const apiKey = typeof configured?.apiKey === 'string' && configured.apiKey.trim()
+    ? configured.apiKey.trim()
+    : (typeof firebase.apiKey === 'string' && firebase.apiKey.trim() ? firebase.apiKey.trim() : null);
+  const clientId = typeof configured?.clientId === 'string' && configured.clientId.trim()
+    ? configured.clientId.trim()
+    : null;
+  const appId = typeof configured?.appId === 'string' && configured.appId.trim()
+    ? configured.appId.trim()
+    : (typeof firebase.messagingSenderId === 'string' && firebase.messagingSenderId.trim()
+        ? firebase.messagingSenderId.trim()
+        : null);
+
+  return { apiKey, clientId, appId };
 }

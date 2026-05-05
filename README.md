@@ -48,6 +48,36 @@ cp public/runtime-config.template.js public/runtime-config.js
 
 Then fill in `public/runtime-config.js` with your Firebase web config. This file is intentionally ignored by git and must never be committed.
 
+To enable Google Drive import on `/upload`, also add a `googleDrive` block to `public/runtime-config.js`:
+
+```js
+window.__LIVING_ATLAS_CONFIG__ = {
+  firebase: {
+    // existing Firebase web config
+  },
+  googleDrive: {
+    apiKey: 'YOUR_BROWSER_API_KEY',
+    clientId: 'YOUR_WEB_OAUTH_CLIENT_ID.apps.googleusercontent.com',
+    appId: 'YOUR_GOOGLE_CLOUD_PROJECT_NUMBER',
+  },
+};
+```
+
+Google Drive import setup checklist:
+
+1. In the same Google Cloud project used by Firebase, enable both the Google Drive API and Google Picker API.
+2. Create or reuse a browser API key that allows requests from your app origin.
+3. Create a Web OAuth client ID and add your local origin such as `http://localhost:4200` plus your production domain.
+4. Put the API key, OAuth client ID, and project number into `public/runtime-config.js`.
+5. Restart `ng serve` if the runtime config file was added after the dev server started.
+
+Imported Google Workspace files are converted into formats the current ingestion pipeline already supports:
+
+- Google Docs -> `.docx`
+- Google Slides -> `.pptx`
+- Google Sheets -> `.pdf`
+- Standard Drive PDFs, text files, Word docs, PowerPoints, and PNG/JPEG images are downloaded directly
+
 Build for hosting:
 
 ```bash

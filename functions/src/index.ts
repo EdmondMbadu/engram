@@ -32,12 +32,14 @@ import {
   runPublicAtlasQuery,
 } from './pipeline';
 import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './utils';
+import type { SupportedFileType } from './types';
 
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
 const staleIngestionThresholdMinutes = 10;
 const defaultRetryLimit = 50;
 const staleRetryBatchLimit = 200;
+const maxGoogleDriveImportFiles = 10;
 const urlIngestionTriggerOptions = {
   region: callableRegion,
   timeoutSeconds: 540,
@@ -46,6 +48,29 @@ const urlIngestionTriggerOptions = {
   concurrency: 1,
   maxInstances: 16,
   secrets: [geminiApiKey],
+};
+
+type GoogleDriveImportSelection = {
+  id: string;
+  name: string;
+  mimeType: string;
+  size: number | null;
+};
+
+type GoogleDriveFileMetadata = {
+  id: string;
+  name: string;
+  mimeType: string;
+  size: number | null;
+};
+
+type GoogleDriveImportPlan = {
+  fileType: SupportedFileType;
+  filename: string;
+  title: string;
+  requestMimeType: string;
+  uploadMimeType: string;
+  mode: 'download' | 'export';
 };
 
 export const fetchProxy = onRequest(
@@ -175,6 +200,187 @@ function timestampToMillis(value: unknown): number | null {
     return Number.isNaN(date.getTime()) ? null : date.getTime();
   }
   return null;
+}
+
+function normalizeGoogleDriveSelections(value: unknown): GoogleDriveImportSelection[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((entry) => {
+      const record = typeof entry === 'object' && entry ? (entry as Record<string, unknown>) : null;
+      if (!record) {
+        return null;
+      }
+
+      const id = String(record['id'] ?? '').trim();
+      const name = String(record['name'] ?? '').trim();
+      const mimeType = String(record['mimeType'] ?? '').trim();
+      const sizeValue = Number(record['size']);
+      const size = Number.isFinite(sizeValue) ? sizeValue : null;
+
+      if (!id || !name || !mimeType) {
+        return null;
+      }
+
+      return { id, name, mimeType, size };
+    })
+    .filter((entry): entry is GoogleDriveImportSelection => entry !== null)
+    .slice(0, maxGoogleDriveImportFiles);
+}
+
+function deriveGoogleDriveFilename(name: string, extension: string): string {
+  const trimmed = name.trim();
+  const suffix = `.${extension}`;
+  if (trimmed.toLowerCase().endsWith(suffix.toLowerCase())) {
+    return trimmed;
+  }
+
+  return `${trimmed}${suffix}`;
+}
+
+function deriveGoogleDriveUploadName(metadata: GoogleDriveFileMetadata): string {
+  const lowerName = metadata.name.trim().toLowerCase();
+
+  if (metadata.mimeType === 'application/pdf') {
+    return deriveGoogleDriveFilename(metadata.name, 'pdf');
+  }
+  if (metadata.mimeType === 'application/msword') {
+    return deriveGoogleDriveFilename(metadata.name, 'doc');
+  }
+  if (metadata.mimeType === 'application/vnd.ms-powerpoint') {
+    return deriveGoogleDriveFilename(metadata.name, 'ppt');
+  }
+  if (metadata.mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    return deriveGoogleDriveFilename(metadata.name, 'docx');
+  }
+  if (metadata.mimeType === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+    return deriveGoogleDriveFilename(metadata.name, 'pptx');
+  }
+  if (metadata.mimeType === 'text/plain') {
+    return lowerName.endsWith('.md')
+      ? deriveGoogleDriveFilename(metadata.name, 'md')
+      : deriveGoogleDriveFilename(metadata.name, 'txt');
+  }
+  if (metadata.mimeType === 'text/markdown') {
+    return deriveGoogleDriveFilename(metadata.name, 'md');
+  }
+  if (metadata.mimeType === 'image/png') {
+    return deriveGoogleDriveFilename(metadata.name, 'png');
+  }
+  if (metadata.mimeType === 'image/jpeg') {
+    return deriveGoogleDriveFilename(metadata.name, lowerName.endsWith('.jpeg') ? 'jpeg' : 'jpg');
+  }
+
+  return metadata.name.trim();
+}
+
+function resolveGoogleDriveImportPlan(metadata: GoogleDriveFileMetadata): GoogleDriveImportPlan {
+  const normalizedName = metadata.name.trim();
+  const title = normalizedName || 'Untitled document';
+
+  switch (metadata.mimeType) {
+    case 'application/vnd.google-apps.document':
+      return {
+        fileType: 'docx',
+        filename: deriveGoogleDriveFilename(title, 'docx'),
+        title,
+        requestMimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        uploadMimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        mode: 'export',
+      };
+    case 'application/vnd.google-apps.presentation':
+      return {
+        fileType: 'pptx',
+        filename: deriveGoogleDriveFilename(title, 'pptx'),
+        title,
+        requestMimeType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        uploadMimeType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        mode: 'export',
+      };
+    case 'application/vnd.google-apps.spreadsheet':
+      return {
+        fileType: 'pdf',
+        filename: deriveGoogleDriveFilename(title, 'pdf'),
+        title,
+        requestMimeType: 'application/pdf',
+        uploadMimeType: 'application/pdf',
+        mode: 'export',
+      };
+    default: {
+      const filename = deriveGoogleDriveUploadName(metadata);
+      const fileType = detectFileType(filename, metadata.mimeType);
+      return {
+        fileType,
+        filename,
+        title,
+        requestMimeType: metadata.mimeType,
+        uploadMimeType: metadata.mimeType,
+        mode: 'download',
+      };
+    }
+  }
+}
+
+async function fetchGoogleDriveMetadata(
+  accessToken: string,
+  fileId: string,
+): Promise<GoogleDriveFileMetadata> {
+  const response = await fetch(
+    `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?fields=id,name,mimeType,size&supportsAllDrives=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Failed to read Google Drive metadata (${response.status}): ${body.slice(0, 240)}`);
+  }
+
+  const data = (await response.json()) as Record<string, unknown>;
+  const name = String(data['name'] ?? '').trim();
+  const mimeType = String(data['mimeType'] ?? '').trim();
+  const id = String(data['id'] ?? fileId).trim();
+  const sizeValue = Number(data['size']);
+
+  if (!id || !name || !mimeType) {
+    throw new Error('Google Drive file metadata was incomplete.');
+  }
+
+  return {
+    id,
+    name,
+    mimeType,
+    size: Number.isFinite(sizeValue) ? sizeValue : null,
+  };
+}
+
+async function fetchGoogleDriveFileBuffer(params: {
+  accessToken: string;
+  fileId: string;
+  plan: GoogleDriveImportPlan;
+}): Promise<Buffer> {
+  const endpoint =
+    params.plan.mode === 'export'
+      ? `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(params.fileId)}/export?mimeType=${encodeURIComponent(params.plan.requestMimeType)}`
+      : `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(params.fileId)}?alt=media&supportsAllDrives=true`;
+  const response = await fetch(endpoint, {
+    headers: {
+      Authorization: `Bearer ${params.accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Failed to download Google Drive file (${response.status}): ${body.slice(0, 240)}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  return Buffer.from(arrayBuffer);
 }
 
 type StaleUrlDocumentCandidate = FirebaseFirestore.QueryDocumentSnapshot;
@@ -568,6 +774,113 @@ export const submitUrlDocument = onCall(
     );
 
     return { documentId: documentRef.id };
+  },
+);
+
+export const importGoogleDriveFiles = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 540,
+    memory: '1GiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const accessToken = String(request.data?.accessToken ?? '').trim();
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const selectedFiles = normalizeGoogleDriveSelections(request.data?.files);
+
+    if (!accessToken) {
+      throw new HttpsError('invalid-argument', 'Google Drive accessToken is required.');
+    }
+    if (selectedFiles.length === 0) {
+      throw new HttpsError('invalid-argument', 'At least one Google Drive file is required.');
+    }
+
+    await assertAtlasOwner(atlasId, request.auth.uid);
+
+    const imported: Array<{ documentId: string; filename: string; title: string | null }> = [];
+    const failed: Array<{ fileId: string; name: string | null; error: string }> = [];
+
+    for (const selectedFile of selectedFiles) {
+      let metadata: GoogleDriveFileMetadata | null = null;
+      let plan: GoogleDriveImportPlan | null = null;
+      let documentId: string | null = null;
+
+      try {
+        metadata = await fetchGoogleDriveMetadata(accessToken, selectedFile.id);
+        plan = resolveGoogleDriveImportPlan(metadata);
+        const buffer = await fetchGoogleDriveFileBuffer({
+          accessToken,
+          fileId: metadata.id,
+          plan,
+        });
+
+        const documentRef = db.collection('documents').doc();
+        documentId = documentRef.id;
+        const storagePath = buildStoragePath(request.auth.uid, documentRef.id, plan.filename);
+
+        await documentRef.set(
+          newDocumentRecord({
+            userId: request.auth.uid,
+            filename: plan.filename,
+            fileType: plan.fileType,
+            storagePath,
+            sourceType: 'file',
+            mimeType: plan.uploadMimeType,
+            fileSize: buffer.byteLength,
+            title: plan.title,
+            atlasId,
+          }),
+        );
+
+        await storage.bucket().file(storagePath).save(buffer, {
+          resumable: false,
+          metadata: {
+            contentType: plan.uploadMimeType,
+            metadata: {
+              documentId: documentRef.id,
+              originalFilename: plan.filename,
+              sourceProvider: 'google_drive',
+              sourceFileId: metadata.id,
+            },
+          },
+        });
+
+        imported.push({
+          documentId: documentRef.id,
+          filename: plan.filename,
+          title: plan.title,
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : 'Google Drive import failed.';
+
+        if (documentId) {
+          await db.collection('documents').doc(documentId).set(
+            {
+              status: 'failed',
+              processing_stage: 'failed',
+              last_heartbeat_at: FieldValue.serverTimestamp(),
+              error_message: message,
+              failure_code: 'google_drive_import_failed',
+            },
+            { merge: true },
+          );
+        }
+
+        failed.push({
+          fileId: selectedFile.id,
+          name: metadata?.name ?? selectedFile.name ?? null,
+          error: message,
+        });
+      }
+    }
+
+    return { imported, failed };
   },
 );
 

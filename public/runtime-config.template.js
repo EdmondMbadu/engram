@@ -9,4 +9,9 @@ window.__LIVING_ATLAS_CONFIG__ = {
     appId: 'REPLACE_ME',
     measurementId: 'REPLACE_ME',
   },
+  googleDrive: {
+    apiKey: 'REPLACE_ME',
+    clientId: 'REPLACE_ME.apps.googleusercontent.com',
+    appId: 'REPLACE_ME',
+  },
 };

@@ -24,6 +24,7 @@ import {
   getFirebaseFunctions,
   getFirebaseStorage,
 } from './firebase.client';
+import type { GoogleDrivePickerFile } from './google-drive-picker.service';
 
 type PrepareDocumentUploadResponse = {
   documentId: string;
@@ -46,6 +47,19 @@ type WikiSourceDocumentLinkResponse = {
 
 type SubmitUrlDocumentResponse = {
   documentId: string;
+};
+
+type ImportGoogleDriveFilesResponse = {
+  imported: Array<{
+    documentId: string;
+    filename: string;
+    title: string | null;
+  }>;
+  failed: Array<{
+    fileId: string;
+    name: string | null;
+    error: string;
+  }>;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -187,6 +201,70 @@ export class DocumentsService {
 
     try {
       return await this.queueUrlDocument(url, options);
+    } catch (error) {
+      this.uploadError.set(this.authService.toFriendlyError(error));
+      throw error;
+    } finally {
+      this.isUploading.set(false);
+    }
+  }
+
+  async importGoogleDriveFiles(
+    files: GoogleDrivePickerFile[],
+    accessToken: string,
+  ): Promise<ImportGoogleDriveFilesResponse> {
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+
+    const selectedFiles = files
+      .map((file) => ({
+        id: String(file.id ?? '').trim(),
+        name: String(file.name ?? '').trim(),
+        mimeType: String(file.mimeType ?? '').trim(),
+        size: typeof file.size === 'number' && Number.isFinite(file.size) ? file.size : null,
+      }))
+      .filter((file) => file.id && file.name && file.mimeType)
+      .slice(0, 10);
+
+    if (selectedFiles.length === 0) {
+      throw new Error('Choose at least one Google Drive file to import.');
+    }
+
+    this.isUploading.set(true);
+    this.uploadError.set(null);
+
+    try {
+      const importGoogleDriveFiles = httpsCallable<
+        {
+          accessToken: string;
+          files: Array<{ id: string; name: string; mimeType: string; size: number | null }>;
+          atlasId: string | null;
+        },
+        ImportGoogleDriveFilesResponse
+      >(this.functions, 'importGoogleDriveFiles');
+
+      const { data } = await importGoogleDriveFiles({
+        accessToken,
+        files: selectedFiles,
+        atlasId: this.atlasService.activeAtlasId(),
+      });
+
+      const imported = Array.isArray(data?.imported) ? data.imported : [];
+      const failed = Array.isArray(data?.failed) ? data.failed : [];
+
+      if (imported.length === 0) {
+        const firstFailure = failed[0];
+        throw new Error(firstFailure?.error || 'Google Drive import failed.');
+      }
+
+      if (failed.length > 0) {
+        this.uploadError.set(
+          `${failed.length} Google Drive ${failed.length === 1 ? 'file failed' : 'files failed'} to import.`,
+        );
+      }
+
+      return { imported, failed };
     } catch (error) {
       this.uploadError.set(this.authService.toFriendlyError(error));
       throw error;
