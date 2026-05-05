@@ -51,6 +51,10 @@ export class LibraryComponent {
   readonly publicPageLoading = computed(
     () => this.isPublicView() && this.isLoading() && !this.publicNotFound(),
   );
+  readonly isPublicOwner = computed(
+    () => this.isPublicView() && !!this.publicAtlas() && this.publicAtlas()!.user_id === this.authService.uid(),
+  );
+  readonly hidePublicSourceFiles = computed(() => this.isPublicView() && !this.isPublicOwner());
   readonly hidePublicKnowledgeSurfaces = computed(() =>
     this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
   );
@@ -193,6 +197,18 @@ export class LibraryComponent {
           this.publicLoading.set(false);
           this.publicLookupDone.set(true);
         });
+    });
+
+    effect(() => {
+      if (!this.hidePublicSourceFiles()) {
+        return;
+      }
+
+      if (!this.publicLookupDone() || !this.publicAtlas()) {
+        return;
+      }
+
+      void this.router.navigateByUrl(this.publicRoute('atlas') ?? '/');
     });
   }
 

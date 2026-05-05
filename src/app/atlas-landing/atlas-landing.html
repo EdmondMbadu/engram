@@ -114,10 +114,12 @@
                   <span class="material-symbols-outlined mr-2 align-middle text-base">chat</span>
                   Chat
                 </button>
-                <button type="button" class="secondary-btn !py-3 !px-7 text-base shadow-sm transition-transform active:scale-[0.97] hover:scale-[1.02]" (click)="openLibrary()">
-                  <span class="material-symbols-outlined mr-2 align-middle text-base">library_books</span>
-                  Source Files
-                </button>
+                @if (!hidePublicSourceFiles()) {
+                  <button type="button" class="secondary-btn !py-3 !px-7 text-base shadow-sm transition-transform active:scale-[0.97] hover:scale-[1.02]" (click)="openLibrary()">
+                    <span class="material-symbols-outlined mr-2 align-middle text-base">library_books</span>
+                    Source Files
+                  </button>
+                }
               } @else {
                 <a routerLink="/sign-in" class="primary-btn !py-3 !px-7 text-base shadow-[var(--shadow-floating)]">Sign in</a>
               }
@@ -314,23 +316,25 @@
                     </div>
                   </button>
 
-                  <!-- Source Files Card -->
-                  <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)]/50 hover:shadow-[0_20px_40px_rgba(59,175,98,0.15)] active:translate-y-0" (click)="openLibrary()">
-                    <div class="relative aspect-[16/9] overflow-hidden">
-                      <div 
-                        class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
-                        style="background-image: url('/assets/atlas-landing/library-v2.png');"
-                      ></div>
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                      <div class="relative flex h-full w-full items-center justify-center">
-                        <span class="material-symbols-outlined text-[3.5rem] text-white opacity-40 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-80" style="font-variation-settings: 'FILL' 1">library_books</span>
+                  @if (!hidePublicSourceFiles()) {
+                    <!-- Source Files Card -->
+                    <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent)]/50 hover:shadow-[0_20px_40px_rgba(59,175,98,0.15)] active:translate-y-0" (click)="openLibrary()">
+                      <div class="relative aspect-[16/9] overflow-hidden">
+                        <div 
+                          class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" 
+                          style="background-image: url('/assets/atlas-landing/library-v2.png');"
+                        ></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="relative flex h-full w-full items-center justify-center">
+                          <span class="material-symbols-outlined text-[3.5rem] text-white opacity-40 drop-shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:opacity-80" style="font-variation-settings: 'FILL' 1">library_books</span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="flex flex-col gap-1 border-t border-[var(--line)] px-6 py-5">
-                      <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Documents</div>
-                      <h4 class="text-xl font-bold text-[var(--text)]">Source Files</h4>
-                    </div>
-                  </button>
+                      <div class="flex flex-col gap-1 border-t border-[var(--line)] px-6 py-5">
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Documents</div>
+                        <h4 class="text-xl font-bold text-[var(--text)]">Source Files</h4>
+                      </div>
+                    </button>
+                  }
 
                   <!-- Topics Card -->
                   <button type="button" class="group flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] text-left shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent-soft)]/50 hover:shadow-[0_20px_40px_rgba(143,217,168,0.15)] active:translate-y-0" (click)="openWiki()">

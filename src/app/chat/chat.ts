@@ -100,6 +100,7 @@ export class ChatComponent implements AfterViewChecked {
   readonly isPublicOwner = computed(
     () => this.isPublicView() && !!this.publicAtlas() && this.publicAtlas()!.user_id === this.authService.uid(),
   );
+  readonly hidePublicSourceFiles = computed(() => this.isPublicView() && !this.isPublicOwner());
   readonly hidePublicKnowledgeSurfaces = computed(() =>
     this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
   );

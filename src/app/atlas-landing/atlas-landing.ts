@@ -67,6 +67,7 @@ export class AtlasLandingComponent {
     const atlas = this.atlas();
     return !!atlas && atlas.is_public && !this.isOwner();
   });
+  readonly hidePublicSourceFiles = computed(() => this.isPublicVisitor());
   readonly showGreenJobsCard = computed(() => (this.routeSlug() ?? '').trim().toLowerCase() === 'philly');
   readonly hidePublicKnowledgeSurfaces = computed(() =>
     this.atlasService.isPublicCityVisitorAtlas(this.atlas(), this.authService.uid()),

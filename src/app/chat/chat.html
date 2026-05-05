@@ -46,7 +46,7 @@
           <span class="material-symbols-outlined">neurology</span>
           <span>Upload</span>
         </a>
-        @if (!hidePublicKnowledgeSurfaces()) {
+        @if (!hidePublicSourceFiles()) {
           <a [routerLink]="libraryLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
             <span class="material-symbols-outlined">library_books</span>
             <span>Source Files</span>
@@ -138,7 +138,7 @@
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
       <header class="theme-nav sticky top-0 z-40 flex min-h-16 flex-wrap items-start justify-between gap-y-3 border-b px-5 py-3 backdrop-blur-xl md:h-16 md:flex-nowrap md:items-center md:py-0 md:px-8">
         <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-8">
-          <app-mobile-menu activePage="chat" [publicSlug]="routeSlug()" [hidePublicKnowledgeSurfaces]="hidePublicKnowledgeSurfaces()"></app-mobile-menu>
+          <app-mobile-menu activePage="chat" [publicSlug]="routeSlug()" [hidePublicKnowledgeSurfaces]="hidePublicSourceFiles()"></app-mobile-menu>
           <div class="min-w-0">
             <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">{{ pageTitle() }}</h1>
             @if (pageSubtitle()) {
@@ -254,15 +254,17 @@
                   <span class="chat-empty-cursor" aria-hidden="true"></span>
                 </p>
 
-                @if (currentWikiName() && !showSignInCta() && !hidePublicKnowledgeSurfaces()) {
+                @if (currentWikiName() && !showSignInCta()) {
                   <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
-                    <a
-                      [routerLink]="libraryLink()"
-                      class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold text-[var(--text)]"
-                    >
-                      <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">library_books</span>
-                      <span>{{ animatedDocumentCount() }} {{ currentWikiDocumentCount() === 1 ? 'document' : 'documents' }}</span>
-                    </a>
+                    @if (!hidePublicSourceFiles() && !hidePublicKnowledgeSurfaces()) {
+                      <a
+                        [routerLink]="libraryLink()"
+                        class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold text-[var(--text)]"
+                      >
+                        <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">library_books</span>
+                        <span>{{ animatedDocumentCount() }} {{ currentWikiDocumentCount() === 1 ? 'document' : 'documents' }}</span>
+                      </a>
+                    }
                     <a
                       [routerLink]="atlasWikiLink()"
                       class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold text-[var(--text)]"

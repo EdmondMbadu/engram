@@ -40,7 +40,7 @@
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">neurology</span>
         <span>Upload</span>
       </a>
-      @if (!hidePublicKnowledgeSurfaces()) {
+      @if (!hidePublicSourceFiles()) {
         <a
           [routerLink]="libraryLink()"
           class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
@@ -85,7 +85,7 @@
     <!-- TopAppBar -->
     <header class="theme-nav flex justify-between items-center w-full h-16 px-4 md:px-8 sticky top-0 z-50 backdrop-blur-xl border-b">
       <div class="flex items-center gap-3 md:gap-8 flex-1 min-w-0">
-        <app-mobile-menu activePage="upload" [publicSlug]="routeSlug()" [hidePublicKnowledgeSurfaces]="hidePublicKnowledgeSurfaces()"></app-mobile-menu>
+        <app-mobile-menu activePage="upload" [publicSlug]="routeSlug()" [hidePublicKnowledgeSurfaces]="hidePublicSourceFiles()"></app-mobile-menu>
         <div class="relative w-64 group hidden md:block">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm">search</span>
           <input class="theme-input w-full rounded-lg pl-10 py-1.5 text-sm transition-all text-[var(--text)] placeholder:text-[var(--muted)]/50" placeholder="Search thoughts..." type="text"/>
@@ -200,7 +200,7 @@
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             @if (isPublicView()) {
               <a routerLink="/sign-in" class="primary-btn !py-3 sm:!py-4 text-center">Sign in to upload</a>
-              @if (!hidePublicKnowledgeSurfaces()) {
+              @if (!hidePublicSourceFiles()) {
                 <a [routerLink]="libraryLink()" class="secondary-btn !py-3 sm:!py-4 text-center">Browse source files</a>
               } @else {
                 <a [routerLink]="atlasWikiLink()" class="secondary-btn !py-3 sm:!py-4 text-center">Browse wiki</a>

@@ -37,6 +37,10 @@ export class LandingComponent {
   readonly publicNotFound = computed(
     () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
   );
+  readonly isPublicOwner = computed(
+    () => this.isPublicView() && !!this.publicAtlas() && this.publicAtlas()!.user_id === this.authService.uid(),
+  );
+  readonly hidePublicSourceFiles = computed(() => this.isPublicView() && !this.isPublicOwner());
   readonly hidePublicKnowledgeSurfaces = computed(() =>
     this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
   );
