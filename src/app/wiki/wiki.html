@@ -258,7 +258,9 @@
                     </button>
                   }
                 </div>
-                @if (hasArticles()) {
+                @if (hidePublicSourceFiles()) {
+                  <p class="mt-3 text-[11px] text-[var(--muted)]">{{ hasArticles() ? 'Browse articles' : 'Browse topics' }}</p>
+                } @else if (hasArticles()) {
                   <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredArticles().length }} of {{ articles().length }} articles</p>
                 } @else {
                   <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredTopics().length }} of {{ topics().length }} topics</p>

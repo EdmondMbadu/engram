@@ -266,7 +266,7 @@
 
                 @if (currentWikiName() && !showSignInCta()) {
                   <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
-                    @if (!hidePublicSourceFiles() && !hidePublicKnowledgeSurfaces()) {
+                    @if (!isPublicVisitorMode() && !hidePublicSourceFiles() && !hidePublicKnowledgeSurfaces()) {
                       <a
                         [routerLink]="libraryLink()"
                         class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold text-[var(--text)]"
@@ -280,7 +280,7 @@
                       class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold text-[var(--text)]"
                     >
                       <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">menu_book</span>
-                      <span>{{ animatedArticleCount() }} {{ currentWikiArticleCount() === 1 ? 'wiki page' : 'wiki pages' }}</span>
+                      <span>{{ isPublicVisitorMode() ? 'Browse wiki' : animatedArticleCount() + ' ' + (currentWikiArticleCount() === 1 ? 'wiki page' : 'wiki pages') }}</span>
                     </a>
                   </div>
                 }
