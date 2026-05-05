@@ -67,6 +67,52 @@
   opacity: 0.9;
 }
 
+.chat-suggestion-label {
+  display: block;
+  text-align: center;
+}
+
+.chat-suggestion-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 0.55rem 0.95rem;
+  color: var(--text);
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    transform 140ms ease;
+}
+
+.chat-suggestion-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  transform: translateY(-1px);
+}
+
+.chat-suggestion-card__icon {
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+.chat-suggestion-card__prompt {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .assistant-message {
   align-items: flex-start;
 }

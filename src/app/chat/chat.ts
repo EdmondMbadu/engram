@@ -29,6 +29,13 @@ interface ChatMessage {
   updatedAt?: { toDate(): Date } | Date | null;
 }
 
+interface PromptSuggestion {
+  prompt: string;
+  title: string;
+  detail: string;
+  icon: string;
+}
+
 const THINKING_STAGES = [
   'Searching knowledge base',
   'Reading relevant entries',
@@ -130,6 +137,7 @@ export class ChatComponent implements AfterViewChecked {
   });
 
   @ViewChild('transcriptEnd') transcriptEnd?: ElementRef<HTMLElement>;
+  @ViewChild('composerInput') composerInput?: ElementRef<HTMLTextAreaElement>;
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
@@ -345,16 +353,42 @@ export class ChatComponent implements AfterViewChecked {
   });
 
   private cachedPromptsKey: string | null = null;
-  private cachedPrompts: { label: string; prompt: string }[] = [];
+  private cachedPrompts: PromptSuggestion[] = [];
 
-  readonly quickPrompts = computed<{ label: string; prompt: string }[]>(() => {
-    if (!this.isWorkspaceMode() || this.isInternetMode()) {
+  readonly quickPrompts = computed<PromptSuggestion[]>(() => {
+    if (this.publicNotFound()) {
       return [];
+    }
+
+    const atlasName = this.currentWikiName() || 'this atlas';
+    if (this.isInternetMode()) {
+      return [
+        {
+          title: 'Latest updates',
+          prompt: `What are the latest updates about ${atlasName}?`,
+          detail: 'Search the web for what is current right now.',
+          icon: 'public',
+        },
+        {
+          title: 'What matters now',
+          prompt: `What should I know right now about ${atlasName}?`,
+          detail: 'Get a quick current-events briefing.',
+          icon: 'bolt',
+        },
+        {
+          title: 'Recent debates',
+          prompt: `What are people debating about ${atlasName} right now?`,
+          detail: 'Pull in live internet context and discussion themes.',
+          icon: 'forum',
+        },
+      ];
     }
 
     const topics = this.wikiService.topics();
     const articles = this.wikiService.articles();
-    const atlasId = this.atlasService.activeAtlasId() ?? '';
+    const atlasId = this.isPublicView()
+      ? this.publicAtlas()?.id ?? this.routeSlug() ?? ''
+      : this.atlasService.activeAtlasId() ?? '';
     const cacheKey = `${atlasId}::${topics.length}::${articles.length}`;
     if (this.cachedPromptsKey === cacheKey && this.cachedPrompts.length > 0) {
       return this.cachedPrompts;
@@ -370,34 +404,45 @@ export class ChatComponent implements AfterViewChecked {
       if (title) candidates.push(title);
     }
 
-    if (candidates.length === 0) {
-      return [];
-    }
+    const uniqueCandidates = Array.from(
+      new Set(candidates.map((candidate) => candidate.replace(/\s+/g, ' ').trim()).filter(Boolean)),
+    );
 
-    const picks: string[] = [];
-    const pool = [...candidates];
-    while (picks.length < 2 && pool.length > 0) {
-      const idx = Math.floor(Math.random() * pool.length);
-      const [chosen] = pool.splice(idx, 1);
-      if (chosen && !picks.includes(chosen)) {
-        picks.push(chosen);
-      }
-    }
+    const picks = uniqueCandidates.slice(0, 4);
 
-    const shortenLabel = (label: string, max = 36) => {
-      const clean = label.replace(/\s+/g, ' ').trim();
-      return clean.length > max ? `${clean.slice(0, max - 1).trim()}…` : clean;
-    };
+    const built = picks.length > 0
+      ? picks.map((label, i) => ({
+          title: label,
+          prompt: [
+            `What is ${label}?`,
+            `Why does ${label} matter?`,
+            `Give me the key facts about ${label}.`,
+            `How does ${label} connect to ${atlasName}?`,
+          ][i % 4],
+          detail: i % 2 === 0 ? 'Grounded in the wiki and its sources.' : 'Use the atlas knowledge base for context.',
+          icon: i % 2 === 0 ? 'auto_stories' : 'explore',
+        }))
+      : [
+          {
+            title: 'Quick overview',
+            prompt: `Give me a quick overview of ${atlasName}.`,
+            detail: 'Start with the highest-signal summary from the wiki.',
+            icon: 'dashboard',
+          },
+          {
+            title: 'Important topics',
+            prompt: `What are the most important topics in ${atlasName}?`,
+            detail: 'See the main themes already covered in this wiki.',
+            icon: 'menu_book',
+          },
+          {
+            title: 'Best starting point',
+            prompt: `What should I read first about ${atlasName}?`,
+            detail: 'Ask the wiki where a new reader should begin.',
+            icon: 'flag',
+          },
+        ];
 
-    const templates = [
-      (label: string) => `What is ${label}?`,
-      (label: string) => `Why does ${label} matter?`,
-    ];
-
-    const built = picks.map((label, i) => ({
-      label: shortenLabel(label),
-      prompt: templates[i % templates.length](label),
-    }));
     this.cachedPromptsKey = cacheKey;
     this.cachedPrompts = built;
     return built;
@@ -732,6 +777,12 @@ export class ChatComponent implements AfterViewChecked {
 
   usePrompt(prompt: string): void {
     this.question.set(prompt);
+    queueMicrotask(() => {
+      const input = this.composerInput?.nativeElement;
+      if (!input) return;
+      input.focus();
+      input.setSelectionRange(prompt.length, prompt.length);
+    });
   }
 
   setAnswerMode(mode: 'wiki' | 'internet'): void {
