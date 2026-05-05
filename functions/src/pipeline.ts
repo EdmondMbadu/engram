@@ -970,6 +970,7 @@ export async function runPublicAtlasQuery(params: {
   atlasId: string;
   atlasOwnerUserId: string;
   question: string;
+  answerMode?: 'wiki' | 'internet';
   topicIds?: string[];
   threadId?: string | null;
   visitor: PublicChatVisitorContext;
@@ -1024,6 +1025,44 @@ export async function runPublicAtlasQuery(params: {
     ? await loadRecentPublicChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
     : [];
 
+  if (params.answerMode === 'internet') {
+    const response = await answerWithGoogleSearch({
+      question: trimmedQuestion,
+      history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+    });
+
+    await recordPublicChatThreadExchange({
+      threadId: thread.id,
+      atlasId: params.atlasId,
+      atlasOwnerUserId: params.atlasOwnerUserId,
+      visitor: params.visitor,
+      answerMode: 'internet',
+      question: trimmedQuestion,
+      answer: response.answer,
+      citedPassages: [],
+      knowledgeGap: false,
+      questionCountIncrement: 1,
+    });
+
+    const questionCount = questionCountBeforeAsk + 1;
+    const remainingQuestions =
+      questionLimit === null ? null : Math.max(0, questionLimit - questionCount);
+
+    return {
+      blocked: false,
+      answer: response.answer,
+      citedEntryIds: [],
+      citedPassages: [],
+      scopedTopicIds: [],
+      knowledgeGap: false,
+      threadId: thread.id,
+      questionCount,
+      questionLimit,
+      remainingQuestions,
+      requiresSignIn: questionLimit !== null && remainingQuestions !== null && remainingQuestions <= 0,
+    };
+  }
+
   const articleResult = await tryAnswerFromArticles({
     userId: params.atlasOwnerUserId,
     atlasId: params.atlasId,
@@ -1034,13 +1073,14 @@ export async function runPublicAtlasQuery(params: {
 
   if (articleResult) {
     await recordPublicChatThreadExchange({
-      threadId: thread.id,
-      atlasId: params.atlasId,
-      atlasOwnerUserId: params.atlasOwnerUserId,
-      visitor: params.visitor,
-      question: trimmedQuestion,
-      answer: articleResult.answer,
-      citedPassages: articleResult.citedPassages,
+    threadId: thread.id,
+    atlasId: params.atlasId,
+    atlasOwnerUserId: params.atlasOwnerUserId,
+    visitor: params.visitor,
+    answerMode: 'wiki',
+    question: trimmedQuestion,
+    answer: articleResult.answer,
+    citedPassages: articleResult.citedPassages,
       knowledgeGap: articleResult.knowledgeGap,
       questionCountIncrement: 1,
     });
@@ -1155,6 +1195,7 @@ export async function runPublicAtlasQuery(params: {
     atlasId: params.atlasId,
     atlasOwnerUserId: params.atlasOwnerUserId,
     visitor: params.visitor,
+    answerMode: 'wiki',
     question: trimmedQuestion,
     answer,
     citedPassages,
@@ -1654,6 +1695,7 @@ async function recordPublicChatThreadExchange(params: {
   atlasId: string;
   atlasOwnerUserId: string;
   visitor: PublicChatVisitorContext;
+  answerMode: 'wiki' | 'internet';
   question: string;
   answer: string;
   citedPassages: QueryCitationSnapshot[];
@@ -1672,6 +1714,7 @@ async function recordPublicChatThreadExchange(params: {
         visitor_kind: params.visitor.kind,
         visitor_uid: params.visitor.visitorUserId,
         anonymous_visitor_id: params.visitor.anonymousVisitorId,
+        answer_mode: params.answerMode,
         role: 'user',
         text: params.question,
         created_at: createdAt,
@@ -1686,6 +1729,7 @@ async function recordPublicChatThreadExchange(params: {
         visitor_kind: params.visitor.kind,
         visitor_uid: params.visitor.visitorUserId,
         anonymous_visitor_id: params.visitor.anonymousVisitorId,
+        answer_mode: params.answerMode,
         role: 'assistant',
         text: params.answer,
         cited_passages: params.citedPassages,

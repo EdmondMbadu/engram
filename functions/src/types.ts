@@ -216,6 +216,7 @@ export interface PublicChatMessageRecord {
   visitor_kind: 'anonymous' | 'authenticated';
   visitor_uid: string | null;
   anonymous_visitor_id: string | null;
+  answer_mode?: 'wiki' | 'internet';
   role: 'user' | 'assistant';
   text: string;
   cited_passages?: QueryCitationSnapshot[];

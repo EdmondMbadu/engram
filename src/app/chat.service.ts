@@ -348,6 +348,7 @@ export class ChatService {
       threadId?: string | null;
       anonymousVisitorId?: string | null;
       topicIds?: string[];
+      answerMode?: 'wiki' | 'internet';
     },
   ): Promise<AskPublicAtlasResponse | null> {
     if (!this.functions) {
@@ -365,6 +366,7 @@ export class ChatService {
           threadId?: string | null;
           anonymousVisitorId?: string | null;
           topicIds?: string[];
+          answerMode?: 'wiki' | 'internet';
         },
         AskPublicAtlasResponse
       >(this.functions, 'askPublicAtlas');
@@ -375,6 +377,7 @@ export class ChatService {
         threadId: options?.threadId ?? null,
         anonymousVisitorId: options?.anonymousVisitorId ?? null,
         topicIds: options?.topicIds,
+        answerMode: options?.answerMode === 'internet' ? 'internet' : 'wiki',
       });
 
       this.latestAnswer.set(data.answer);

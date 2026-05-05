@@ -864,6 +864,7 @@ export const askPublicAtlas = onCall(
     const atlasId = normalizeAtlasId(request.data?.atlasId);
     const question = String(request.data?.question ?? '').trim();
     const threadId = String(request.data?.threadId ?? '').trim() || null;
+    const answerMode = request.data?.answerMode === 'internet' ? 'internet' : 'wiki';
     const topicIds = Array.isArray(request.data?.topicIds)
       ? request.data.topicIds.map((value: unknown) => String(value)).filter(Boolean)
       : undefined;
@@ -887,6 +888,7 @@ export const askPublicAtlas = onCall(
         atlasId: atlas.id,
         atlasOwnerUserId: atlas.user_id,
         question,
+        answerMode,
         topicIds,
         threadId,
         visitor: {

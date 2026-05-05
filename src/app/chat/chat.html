@@ -18,7 +18,8 @@
       </div>
       @if (isWorkspaceMode()) {
         <app-atlas-switcher></app-atlas-switcher>
-
+      }
+      @if (canStartFreshChat()) {
         <button
           type="button"
           class="mb-6 flex items-center justify-center gap-2 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-white/10"
@@ -148,7 +149,7 @@
         </div>
 
         <div class="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:justify-end md:gap-3">
-          @if (isWorkspaceMode()) {
+          @if (canUseAnswerModeToggle()) {
             <div class="chat-mode-toggle flex items-center">
               <button
                 type="button"
@@ -167,6 +168,15 @@
                 Internet
               </button>
             </div>
+          }
+          @if (canStartFreshChat()) {
+            <button
+              type="button"
+              class="ghost-btn !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              (click)="newChat()"
+            >
+              New chat
+            </button>
           }
           @if (canShareActiveThread()) {
             <button
