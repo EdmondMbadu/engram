@@ -68,6 +68,9 @@ export class AtlasLandingComponent {
     return !!atlas && atlas.is_public && !this.isOwner();
   });
   readonly showGreenJobsCard = computed(() => (this.routeSlug() ?? '').trim().toLowerCase() === 'philly');
+  readonly hidePublicKnowledgeSurfaces = computed(() =>
+    this.atlasService.isPublicCityVisitorAtlas(this.atlas(), this.authService.uid()),
+  );
 
   readonly isSigningOut = signal(false);
   readonly avatarMenuOpen = signal(false);
@@ -129,6 +132,10 @@ export class AtlasLandingComponent {
   readonly aboutWikiPagesCount = computed(() => this.displayUsage()?.wiki_articles ?? 0);
   readonly aboutChatsCount = computed(() => (this.displayUsage()?.queries ?? 0) + (this.displayUsage()?.chat_threads ?? 0));
   readonly aboutSummaryLine = computed(() => {
+    if (this.hidePublicKnowledgeSurfaces()) {
+      return 'Searchable knowledge with receipts, ready to explore.';
+    }
+
     if (this.usageLoading()) {
       return 'Loading indexed knowledge…';
     }

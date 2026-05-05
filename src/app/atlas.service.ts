@@ -63,6 +63,18 @@ export class AtlasService {
     return this.atlases().find((atlas) => atlas.id === id) ?? null;
   });
 
+  isPublicCityVisitorAtlas(
+    atlas: AtlasItem | null | undefined,
+    viewerUid?: string | null,
+  ): boolean {
+    if (!atlas?.is_public || atlas.city_config?.enabled !== true) {
+      return false;
+    }
+
+    const uid = viewerUid?.trim() ?? '';
+    return !uid || atlas.user_id !== uid;
+  }
+
   constructor() {
     effect((onCleanup) => {
       const uid = this.authService.uid();

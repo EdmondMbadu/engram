@@ -100,6 +100,9 @@ export class ChatComponent implements AfterViewChecked {
   readonly isPublicOwner = computed(
     () => this.isPublicView() && !!this.publicAtlas() && this.publicAtlas()!.user_id === this.authService.uid(),
   );
+  readonly hidePublicKnowledgeSurfaces = computed(() =>
+    this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
+  );
   readonly isWorkspaceMode = computed(() => !this.isPublicView() || this.isPublicOwner());
   readonly isInternetMode = computed(() => this.answerMode() === 'internet');
   readonly isPublicVisitorMode = computed(() => this.isPublicView() && !this.isPublicOwner());
@@ -303,6 +306,10 @@ export class ChatComponent implements AfterViewChecked {
   });
   readonly heroStatusLabel = computed(() => (this.isPublicVisitorMode() ? 'Public atlas live' : 'Living Wiki live'));
   readonly heroMetaLabel = computed(() => {
+    if (this.hidePublicKnowledgeSurfaces()) {
+      return 'Knowledge ready';
+    }
+
     if (this.showSignInCta()) {
       return 'Anonymous session paused';
     }

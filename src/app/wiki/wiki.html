@@ -36,10 +36,12 @@
             <span class="material-symbols-outlined">neurology</span>
             <span>Upload</span>
           </a>
-          <a routerLink="/library" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-            <span class="material-symbols-outlined">library_books</span>
-            <span>Source Files</span>
-          </a>
+          @if (!hidePublicKnowledgeSurfaces()) {
+            <a routerLink="/library" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
+              <span class="material-symbols-outlined">library_books</span>
+              <span>Source Files</span>
+            </a>
+          }
           <a routerLink="/scrapper" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
             <span class="material-symbols-outlined">travel_explore</span>
             <span>Scrapper</span>
@@ -443,7 +445,7 @@
                             @if (!authInitialized()) {
                               <span class="primary-btn mt-5 w-full justify-center !py-3 text-sm opacity-70 pointer-events-none">Loading account…</span>
                             } @else if (isSignedIn()) {
-                              <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Click to chat</a>
+                              <a [routerLink]="publicChatLink() ?? '/chat'" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Click to chat</a>
                             } @else {
                               <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
                             }
@@ -542,7 +544,11 @@
                             }
                           </p>
                           @if (isPublicView()) {
-                            <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
+                            @if (isSignedIn()) {
+                              <a [routerLink]="publicChatLink() ?? '/chat'" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to Chat</a>
+                            } @else {
+                              <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
+                            }
                           } @else {
                             <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to Chat</a>
                           }

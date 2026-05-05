@@ -49,7 +49,7 @@
         <span>Home</span>
       </a>
       @for (item of navItems; track item.key) {
-        @if (!publicSlug() || !item.workspaceOnly) {
+        @if (shouldShowItem(item.key, item.workspaceOnly)) {
         @if (activePage() === item.key) {
           <a
             [routerLink]="routeFor(item.key, item.route)"

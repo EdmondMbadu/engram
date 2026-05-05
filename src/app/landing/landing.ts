@@ -37,6 +37,9 @@ export class LandingComponent {
   readonly publicNotFound = computed(
     () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
   );
+  readonly hidePublicKnowledgeSurfaces = computed(() =>
+    this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
+  );
   readonly isUploading = this.documentsService.isUploading;
   readonly uploadError = this.documentsService.uploadError;
   readonly uploadProgress = this.documentsService.uploadProgress;

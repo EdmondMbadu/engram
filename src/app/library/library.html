@@ -55,15 +55,17 @@
           <span class="material-symbols-outlined">neurology</span>
           <span>Upload</span>
         </a>
-        <a
-          [routerLink]="libraryLink()"
-          class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]"
-        >
-          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
-            >library_books</span
+        @if (!hidePublicKnowledgeSurfaces()) {
+          <a
+            [routerLink]="libraryLink()"
+            class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]"
           >
-          <span>Source Files</span>
-        </a>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
+              >library_books</span
+            >
+            <span>Source Files</span>
+          </a>
+        }
         @if (!isPublicView()) {
           <a
             routerLink="/scrapper"
@@ -101,7 +103,7 @@
         class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8"
       >
         <div class="flex min-w-0 items-center gap-3 md:gap-12">
-          <app-mobile-menu activePage="library" [publicSlug]="routeSlug()"></app-mobile-menu>
+          <app-mobile-menu activePage="library" [publicSlug]="routeSlug()" [hidePublicKnowledgeSurfaces]="hidePublicKnowledgeSurfaces()"></app-mobile-menu>
 
           <div class="min-w-0">
             <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">{{ pageTitle() }}</h1>
@@ -203,28 +205,30 @@
               </article>
             </section>
           } @else {
-          <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            @for (
-              stat of [
-                { value: stats().totalDocuments, label: 'Total Documents', valueClass: 'text-[var(--text)]' },
-                { value: stats().wikiPagesGenerated, label: 'Wiki Pages Generated', valueClass: 'text-[var(--text)]' },
-                { value: stats().totalCitations, label: 'Total Citations', valueClass: 'text-[var(--text)]' },
-                { value: stats().knowledgeGaps, label: 'Knowledge Gaps', valueClass: 'text-[var(--accent)]' },
-              ];
-              track stat.label
-            ) {
-              <article
-                class="glass-card rounded-[1.5rem] p-5 transition-transform duration-200 hover:-translate-y-1"
-              >
-                <p class="text-3xl font-black tracking-[-0.06em]" [class]="stat.valueClass">
-                  {{ stat.value }}
-                </p>
-                <p class="mt-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">
-                  {{ stat.label }}
-                </p>
-              </article>
-            }
-          </section>
+          @if (!hidePublicKnowledgeSurfaces()) {
+            <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              @for (
+                stat of [
+                  { value: stats().totalDocuments, label: 'Total Documents', valueClass: 'text-[var(--text)]' },
+                  { value: stats().wikiPagesGenerated, label: 'Wiki Pages Generated', valueClass: 'text-[var(--text)]' },
+                  { value: stats().totalCitations, label: 'Total Citations', valueClass: 'text-[var(--text)]' },
+                  { value: stats().knowledgeGaps, label: 'Knowledge Gaps', valueClass: 'text-[var(--accent)]' },
+                ];
+                track stat.label
+              ) {
+                <article
+                  class="glass-card rounded-[1.5rem] p-5 transition-transform duration-200 hover:-translate-y-1"
+                >
+                  <p class="text-3xl font-black tracking-[-0.06em]" [class]="stat.valueClass">
+                    {{ stat.value }}
+                  </p>
+                  <p class="mt-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">
+                    {{ stat.label }}
+                  </p>
+                </article>
+              }
+            </section>
+          }
 
           <section class="mt-8 rounded-[1.75rem] border border-white/5 bg-white/[0.03] p-4 md:p-5">
             @if (isPublicView()) {
@@ -393,18 +397,20 @@
                       </div>
                     }
 
-                    <div class="flex min-w-[9rem] flex-col text-left sm:text-right">
-                      <span class="text-sm font-semibold text-[var(--text)]">
-                        {{ document.wiki_pages_generated }} wiki pages
-                      </span>
-                      <span class="text-[11px] text-[var(--muted)]">{{ document.citation_count }} citations</span>
-                      @if (aiModelLabel(document); as modelLabel) {
-                        <span class="text-[11px] text-[var(--muted)]">{{ modelLabel }}</span>
-                      }
-                      @if (aiUsageLabel(document); as aiLabel) {
-                        <span class="text-[11px] text-[var(--muted)]">{{ aiLabel }}</span>
-                      }
-                    </div>
+                    @if (!hidePublicKnowledgeSurfaces()) {
+                      <div class="flex min-w-[9rem] flex-col text-left sm:text-right">
+                        <span class="text-sm font-semibold text-[var(--text)]">
+                          {{ document.wiki_pages_generated }} wiki pages
+                        </span>
+                        <span class="text-[11px] text-[var(--muted)]">{{ document.citation_count }} citations</span>
+                        @if (aiModelLabel(document); as modelLabel) {
+                          <span class="text-[11px] text-[var(--muted)]">{{ modelLabel }}</span>
+                        }
+                        @if (aiUsageLabel(document); as aiLabel) {
+                          <span class="text-[11px] text-[var(--muted)]">{{ aiLabel }}</span>
+                        }
+                      </div>
+                    }
 
                     <div class="flex items-center gap-2">
                       <button

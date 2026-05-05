@@ -249,20 +249,22 @@
                 <span>{{ aboutTypedLine() }}</span>
                 <span class="atlas-about__cursor" aria-hidden="true"></span>
               </p>
-              <div class="mb-6 flex flex-wrap gap-2">
-                <span class="atlas-about__stat-pill">
-                  <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutDocuments() }}</span>
-                  <span>docs</span>
-                </span>
-                <span class="atlas-about__stat-pill">
-                  <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutWikiPages() }}</span>
-                  <span>wiki pages</span>
-                </span>
-                <span class="atlas-about__stat-pill">
-                  <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutChats() }}</span>
-                  <span>chats</span>
-                </span>
-              </div>
+              @if (!hidePublicKnowledgeSurfaces()) {
+                <div class="mb-6 flex flex-wrap gap-2">
+                  <span class="atlas-about__stat-pill">
+                    <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutDocuments() }}</span>
+                    <span>docs</span>
+                  </span>
+                  <span class="atlas-about__stat-pill">
+                    <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutWikiPages() }}</span>
+                    <span>wiki pages</span>
+                  </span>
+                  <span class="atlas-about__stat-pill">
+                    <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutChats() }}</span>
+                    <span>chats</span>
+                  </span>
+                </div>
+              }
               @if (a.description) {
                 <p class="mb-6 text-lg leading-relaxed text-[var(--muted)]">{{ a.description }}</p>
               } @else {

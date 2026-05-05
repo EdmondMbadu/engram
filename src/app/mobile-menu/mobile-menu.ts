@@ -12,6 +12,7 @@ export class MobileMenuComponent {
   /** Which nav item is currently active */
   readonly activePage = input<string>('home');
   readonly publicSlug = input<string | null>(null);
+  readonly hidePublicKnowledgeSurfaces = input<boolean>(false);
 
   readonly menuOpen = signal(false);
 
@@ -34,6 +35,18 @@ export class MobileMenuComponent {
 
   closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  shouldShowItem(key: string, workspaceOnly?: boolean): boolean {
+    if (this.publicSlug() && workspaceOnly) {
+      return false;
+    }
+
+    if (this.hidePublicKnowledgeSurfaces() && key === 'library') {
+      return false;
+    }
+
+    return true;
   }
 
   routeFor(key: string, fallbackRoute: string): string {

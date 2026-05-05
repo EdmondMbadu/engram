@@ -51,6 +51,9 @@ export class LibraryComponent {
   readonly publicPageLoading = computed(
     () => this.isPublicView() && this.isLoading() && !this.publicNotFound(),
   );
+  readonly hidePublicKnowledgeSurfaces = computed(() =>
+    this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
+  );
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
