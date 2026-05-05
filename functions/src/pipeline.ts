@@ -751,6 +751,26 @@ async function countCollectionForAtlas(
   return snapshot.data().count;
 }
 
+const maxPersonaPromptChars = 8000;
+
+async function loadAtlasPersonaPrompt(atlasId: string | null): Promise<string | null> {
+  if (!atlasId) return null;
+  try {
+    const snapshot = await atlasesCollection.doc(atlasId).get();
+    if (!snapshot.exists) return null;
+    const data = snapshot.data() as { persona_prompt?: unknown } | undefined;
+    const raw = typeof data?.persona_prompt === 'string' ? data.persona_prompt.trim() : '';
+    if (!raw) return null;
+    return raw.length > maxPersonaPromptChars ? raw.slice(0, maxPersonaPromptChars) : raw;
+  } catch (error) {
+    logger.warn('Failed to load atlas persona prompt; falling back to default voice.', {
+      atlasId,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
 async function updateAtlasStats(userId: string, atlasId: string): Promise<void> {
   const [documents, knowledgeEntries, wikiTopics, wikiArticles, chatThreads] = await Promise.all([
     countCollectionForAtlas('documents', userId, atlasId),
@@ -796,7 +816,10 @@ export async function runAtlasQuery(params: {
   }
 
   const broadQuestion = isBroadSynthesisQuestion(trimmedQuestion);
-  const thread = await ensureActiveChatThread(params.userId, params.atlasId, params.threadId ?? null, trimmedQuestion);
+  const [thread, personaPrompt] = await Promise.all([
+    ensureActiveChatThread(params.userId, params.atlasId, params.threadId ?? null, trimmedQuestion),
+    loadAtlasPersonaPrompt(params.atlasId),
+  ]);
   const threadHistory = thread.reusedExisting
     ? await loadRecentChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
     : [];
@@ -805,6 +828,7 @@ export async function runAtlasQuery(params: {
     const response = await answerWithGoogleSearch({
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+      personaPrompt,
     });
 
     await recordChatThreadExchange({
@@ -835,6 +859,7 @@ export async function runAtlasQuery(params: {
     question: trimmedQuestion,
     broadQuestion,
     history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+    personaPrompt,
   });
 
   if (articleResult) {
@@ -932,6 +957,7 @@ export async function runAtlasQuery(params: {
       topic: entry.topic,
       source: entry.source,
     })),
+    personaPrompt,
   });
 
   const citedEntryIds = (Array.isArray(response.cited_entry_ids) ? response.cited_entry_ids : []).filter((entryId) =>
@@ -1021,14 +1047,18 @@ export async function runPublicAtlasQuery(params: {
   }
 
   const broadQuestion = isBroadSynthesisQuestion(trimmedQuestion);
-  const threadHistory = thread.reusedExisting
-    ? await loadRecentPublicChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
-    : [];
+  const [threadHistory, personaPrompt] = await Promise.all([
+    thread.reusedExisting
+      ? loadRecentPublicChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
+      : Promise.resolve([] as Awaited<ReturnType<typeof loadRecentPublicChatThreadMessages>>),
+    loadAtlasPersonaPrompt(params.atlasId),
+  ]);
 
   if (params.answerMode === 'internet') {
     const response = await answerWithGoogleSearch({
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+      personaPrompt,
     });
 
     await recordPublicChatThreadExchange({
@@ -1069,6 +1099,7 @@ export async function runPublicAtlasQuery(params: {
     question: trimmedQuestion,
     broadQuestion,
     history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+    personaPrompt,
   });
 
   if (articleResult) {
@@ -1170,6 +1201,7 @@ export async function runPublicAtlasQuery(params: {
         topic: entry.topic,
         source: entry.source,
       })),
+      personaPrompt,
     });
 
     citedEntryIds = (Array.isArray(response.cited_entry_ids) ? response.cited_entry_ids : []).filter((entryId) =>
@@ -1228,6 +1260,7 @@ async function tryAnswerFromArticles(params: {
   question: string;
   broadQuestion: boolean;
   history: Array<{ role: 'user' | 'assistant'; text: string }>;
+  personaPrompt?: string | null;
 }): Promise<{
   answer: string;
   articleIds: string[];
@@ -1292,6 +1325,7 @@ async function tryAnswerFromArticles(params: {
       title: a.title,
       content: a.content,
     })),
+    personaPrompt: params.personaPrompt ?? null,
   });
 
   const safeAnswer =

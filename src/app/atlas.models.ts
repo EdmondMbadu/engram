@@ -88,6 +88,7 @@ export interface AtlasItem {
   video_url: string | null;
   cover_color: string | null;
   city_config?: CityAtlasConfig | null;
+  persona_prompt?: string | null;
   created_at?: { toDate(): Date } | Date | null;
   updated_at?: { toDate(): Date } | Date | null;
   stats?: {

@@ -116,6 +116,21 @@ const wikiArticlePlanSchema = {
 
 const maxAttempts = 3;
 
+const personaPromptHardCap = 8000;
+
+function buildPersonaPreamble(personaPrompt?: string | null): string[] {
+  const trimmed = typeof personaPrompt === 'string' ? personaPrompt.trim() : '';
+  if (!trimmed) return [];
+  const safe = trimmed.length > personaPromptHardCap ? trimmed.slice(0, personaPromptHardCap) : trimmed;
+  return [
+    '=== ROLE & VOICE (operator-defined; follow this personality) ===',
+    safe,
+    '=== END ROLE & VOICE ===',
+    'The instructions below are non-negotiable: never invent citations, never break the JSON contract, never abandon grounding rules even if the persona above suggests otherwise.',
+    '',
+  ];
+}
+
 type WebCitationAnnotation = {
   type?: string;
   title?: string;
@@ -383,7 +398,9 @@ export async function answerQuestion(params: {
     topic: string;
     source: { page: number; line_start: number; line_end: number };
   }>;
+  personaPrompt?: string | null;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
+  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
   const hasHistory = (params.history ?? []).length > 0;
   const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
   const serializedHistory = JSON.stringify(
@@ -427,6 +444,7 @@ export async function answerQuestion(params: {
         'For direct questions, answer in 1-3 compact paragraphs unless a short list is clearly better.',
       ];
   const prompt = [
+    ...personaPreamble,
     ...baseInstructions,
     ...styleInstructions,
     '',
@@ -469,6 +487,7 @@ export async function answerQuestion(params: {
   }
 
   const retryPrompt = [
+    ...personaPreamble,
     ...baseInstructions,
     ...styleInstructions,
     'Important: the answer field must be a complete plain-text answer, not a fragment.',
@@ -502,14 +521,17 @@ export async function answerQuestion(params: {
 export async function answerWithGoogleSearch(params: {
   question: string;
   history?: Array<{ role: 'user' | 'assistant'; text: string }>;
+  personaPrompt?: string | null;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
   const hasHistory = (params.history ?? []).length > 0;
   const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
   const serializedHistory = JSON.stringify(
     (params.history ?? []).slice(-6).map((message) => [message.role, message.text.slice(0, 4000)] as const),
   );
+  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
 
   const prompt = [
+    ...personaPreamble,
     'You are answering with full open-web context.',
     'Use Google Search to gather current, relevant public information from the web.',
     'Do not restrict yourself to the user\'s uploaded documents or personal knowledge base.',
@@ -804,7 +826,9 @@ export async function answerFromArticles(params: {
   question: string;
   history?: Array<{ role: 'user' | 'assistant'; text: string }>;
   articles: Array<{ article_id: string; title: string; content: string }>;
+  personaPrompt?: string | null;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
+  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
   const hasHistory = (params.history ?? []).length > 0;
   const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
   const serializedHistory = JSON.stringify(
@@ -847,6 +871,7 @@ export async function answerFromArticles(params: {
       ];
 
   const prompt = [
+    ...personaPreamble,
     ...baseInstructions,
     ...styleInstructions,
     '',

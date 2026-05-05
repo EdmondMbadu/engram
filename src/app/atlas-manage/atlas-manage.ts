@@ -87,6 +87,14 @@ export class AtlasManageComponent {
     return parts.join(' • ');
   }
 
+  personaSummary(atlas: AtlasItem): string {
+    const persona = atlas.persona_prompt?.trim();
+    if (!persona) {
+      return 'Default voice';
+    }
+    return `Custom voice • ${persona.length} chars`;
+  }
+
   cityConfigSummary(atlas: AtlasItem): string {
     const config = atlas.city_config;
     if (!config?.enabled) {

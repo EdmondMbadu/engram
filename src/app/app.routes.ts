@@ -10,6 +10,7 @@ import { WikiComponent } from './wiki/wiki';
 import { ChatComponent } from './chat/chat';
 import { LibraryComponent } from './library/library';
 import { AtlasManageComponent } from './atlas-manage/atlas-manage';
+import { AtlasPersonaComponent } from './atlas-persona/atlas-persona';
 import { AtlasLandingComponent } from './atlas-landing/atlas-landing';
 import { LegalComponent } from './legal/legal';
 import { PublicWikisComponent } from './public-wikis/public-wikis';
@@ -36,6 +37,7 @@ export const routes: Routes = [
   { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Wiki', canActivate: [authGuard] },
   { path: 'public-wikis', component: PublicWikisComponent, title: 'Public Wikis | Living Wiki' },
   { path: 'atlases', component: AtlasManageComponent, title: 'Atlas Settings | Living Wiki', canActivate: [authGuard] },
+  { path: 'atlases/:atlasId/persona', component: AtlasPersonaComponent, title: 'Wiki Voice | Living Wiki', canActivate: [authGuard] },
   { path: 'atlas/:slug/green-jobs', component: GreenJobsComponent, title: 'Philly Green Jobs | Living Wiki' },
   { path: 'atlas/:slug/worldometers', component: CityPulseAdminComponent, title: 'Worldometers Maintenance | Living Wiki' },
   { path: 'atlas/:slug', component: AtlasLandingComponent, title: 'Atlas | Living Wiki' },
