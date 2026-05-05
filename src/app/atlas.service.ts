@@ -279,7 +279,7 @@ export class AtlasService {
 
   async updateAtlas(
     atlasId: string,
-    patch: Partial<Pick<AtlasItem, 'description' | 'logo_url' | 'hero_url' | 'video_url' | 'is_public'>>,
+    patch: Partial<Pick<AtlasItem, 'description' | 'landing_summary' | 'logo_url' | 'hero_url' | 'video_url' | 'is_public'>>,
   ): Promise<void> {
     if (!this.firestore) return;
     await updateDoc(doc(this.firestore, 'atlases', atlasId), {
@@ -442,6 +442,7 @@ export class AtlasService {
       name: 'My Wiki',
       slug: 'my-wiki',
       description: null,
+      landing_summary: null,
       is_public: false,
       logo_url: null,
       hero_url: null,
@@ -475,6 +476,7 @@ export class AtlasService {
       name: String(data['name'] ?? ''),
       slug: String(data['slug'] ?? ''),
       description: typeof data['description'] === 'string' ? data['description'] : null,
+      landing_summary: typeof data['landing_summary'] === 'string' ? data['landing_summary'] : null,
       is_public: data['is_public'] === true,
       logo_url: typeof data['logo_url'] === 'string' ? data['logo_url'] : null,
       hero_url: typeof data['hero_url'] === 'string' ? data['hero_url'] : null,

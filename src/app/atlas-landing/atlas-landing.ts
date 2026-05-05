@@ -83,6 +83,7 @@ export class AtlasLandingComponent {
   readonly editError = signal<string | null>(null);
 
   readonly descriptionDraft = signal('');
+  readonly landingSummaryDraft = signal('');
   readonly logoUrlDraft = signal('');
   readonly heroUrlDraft = signal('');
   readonly publicDraft = signal(false);
@@ -133,6 +134,11 @@ export class AtlasLandingComponent {
   readonly aboutWikiPagesCount = computed(() => this.displayUsage()?.wiki_articles ?? 0);
   readonly aboutChatsCount = computed(() => (this.displayUsage()?.queries ?? 0) + (this.displayUsage()?.chat_threads ?? 0));
   readonly aboutSummaryLine = computed(() => {
+    const customSummary = this.atlas()?.landing_summary?.trim();
+    if (customSummary) {
+      return customSummary;
+    }
+
     if (this.hidePublicKnowledgeSurfaces()) {
       return 'Searchable knowledge with receipts, ready to explore.';
     }
@@ -500,6 +506,7 @@ export class AtlasLandingComponent {
     const a = this.atlas();
     if (!a) return;
     this.descriptionDraft.set(a.description ?? '');
+    this.landingSummaryDraft.set(a.landing_summary ?? '');
     this.logoUrlDraft.set(a.logo_url ?? '');
     this.heroUrlDraft.set(a.hero_url ?? '');
     this.publicDraft.set(!!a.is_public);
@@ -520,6 +527,7 @@ export class AtlasLandingComponent {
     try {
       await this.atlasService.updateAtlas(a.id, {
         description: this.descriptionDraft().trim() || null,
+        landing_summary: this.landingSummaryDraft().trim() || null,
         logo_url: this.logoUrlDraft().trim() || null,
         hero_url: this.heroUrlDraft().trim() || null,
         is_public: this.publicDraft(),

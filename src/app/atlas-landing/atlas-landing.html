@@ -149,6 +149,17 @@
                 ></textarea>
               </label>
 
+              <label class="block">
+                <span class="mb-1 block text-xs font-bold uppercase tracking-widest text-[var(--muted)]">About highlight</span>
+                <textarea
+                  rows="2"
+                  class="theme-input w-full rounded-lg px-3 py-2 text-sm"
+                  [ngModel]="landingSummaryDraft()"
+                  (ngModelChange)="landingSummaryDraft.set($event)"
+                  placeholder="Featured line for the About section, shown prominently on the public page."
+                ></textarea>
+              </label>
+
               <div class="block">
                 <span class="mb-1 block text-xs font-bold uppercase tracking-widest text-[var(--muted)]">Logo image</span>
                 <div class="flex items-center gap-4">
@@ -247,10 +258,12 @@
                   <span class="atlas-about__pencil material-symbols-outlined">edit</span>
                 </h2>
               </div>
-              <p class="atlas-about__typed mb-5 text-sm font-semibold text-[var(--accent)]" aria-live="polite">
-                <span>{{ aboutTypedLine() }}</span>
-                <span class="atlas-about__cursor" aria-hidden="true"></span>
-              </p>
+              <div class="mb-6 rounded-[1.6rem] border border-[var(--accent)]/18 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_10%,transparent),color-mix(in_srgb,var(--surface)_88%,white_12%))] px-5 py-4 shadow-[0_18px_36px_rgba(59,175,98,0.10)]">
+                <p class="atlas-about__typed text-lg font-bold leading-8 text-[var(--text)] md:text-[1.35rem]" aria-live="polite">
+                  <span>{{ aboutTypedLine() }}</span>
+                  <span class="atlas-about__cursor" aria-hidden="true"></span>
+                </p>
+              </div>
               @if (!hidePublicKnowledgeSurfaces()) {
                 <div class="mb-6 flex flex-wrap gap-2">
                   <span class="atlas-about__stat-pill">

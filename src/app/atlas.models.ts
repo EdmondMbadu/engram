@@ -81,6 +81,7 @@ export interface AtlasItem {
   name: string;
   slug: string;
   description: string | null;
+  landing_summary: string | null;
   is_public: boolean;
   logo_url: string | null;
   hero_url: string | null;
