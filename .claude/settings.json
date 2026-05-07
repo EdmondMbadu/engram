@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx tsc:*)",
       "Bash(npx firebase:*)",
-      "Bash(npx ts-node -e ':*)"
+      "Bash(npx ts-node -e ':*)",
+      "Bash(curl -s \"http://localhost:4200/main.js\" -o /tmp/main.js -w \"HTTP %{http_code} | size %{size_download} bytes\\\\n\")"
     ]
   }
 }
