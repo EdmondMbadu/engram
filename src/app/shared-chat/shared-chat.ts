@@ -24,6 +24,7 @@ interface SharedChatMessage {
   selector: 'app-shared-chat',
   imports: [RouterLink, ThemeToggleComponent, ChatLocationMapComponent],
   templateUrl: './shared-chat.html',
+  styleUrl: '../chat/chat.css',
 })
 export class SharedChatComponent {
   private readonly route = inject(ActivatedRoute);
@@ -129,6 +130,10 @@ export class SharedChatComponent {
 
   async copyMessage(message: SharedChatMessage): Promise<void> {
     await this.copyText(message.id, this.buildMessageCopyText(message));
+  }
+
+  async copyMessageBody(message: SharedChatMessage): Promise<void> {
+    await this.copyText(`${message.id}:body`, message.text.trim());
   }
 
   openCitation(citation: CitationPassage): void {
