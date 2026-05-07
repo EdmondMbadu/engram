@@ -21,12 +21,12 @@
 
   <div class="relative h-72 w-full bg-[var(--surface)]">
     <div #mapCanvas class="h-full w-full"></div>
-    @if (isLoading) {
+    @if (isLoading()) {
       <div class="absolute inset-0 flex items-center justify-center bg-[var(--surface)]/80 text-sm font-semibold text-[var(--muted)] backdrop-blur-sm">
         Loading map...
       </div>
     }
-    @if (error) {
+    @if (error()) {
       <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[var(--surface)] px-5 text-center">
         <span class="material-symbols-outlined text-3xl text-[var(--muted)]">map_off</span>
         <p class="text-sm font-semibold text-[var(--text)]">Map preview unavailable</p>

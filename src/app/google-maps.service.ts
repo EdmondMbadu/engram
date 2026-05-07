@@ -7,7 +7,7 @@ type LatLngLiteral = { lat: number; lng: number };
 
 type GoogleMapsNamespace = {
   maps: {
-    importLibrary: (name: string) => Promise<Record<string, unknown>>;
+    importLibrary?: (name: string) => Promise<Record<string, unknown>>;
     Map: new (element: HTMLElement, options: Record<string, unknown>) => unknown;
     LatLngBounds: new () => {
       extend: (position: LatLngLiteral) => void;
@@ -40,6 +40,7 @@ export type ResolvedMappableLocation = MappableLocation & {
 export class GoogleMapsService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly callbackName = '__livingWikiGoogleMapsReady';
   private loadPromise: Promise<GoogleMapsNamespace> | null = null;
   private readonly geocodeCache = new Map<string, ResolvedMappableLocation | null>();
 
@@ -63,7 +64,7 @@ export class GoogleMapsService {
     }
 
     const loadedGoogle = this.googleMapsWindow();
-    if (loadedGoogle?.maps?.importLibrary) {
+    if (loadedGoogle) {
       return loadedGoogle;
     }
 
@@ -79,22 +80,44 @@ export class GoogleMapsService {
     this.loadPromise = new Promise<GoogleMapsNamespace>((resolve, reject) => {
       const existing = document.querySelector<HTMLScriptElement>('script[data-living-wiki-google-maps]');
       if (existing) {
-        existing.addEventListener('load', () => resolve(this.requireGoogleMaps()), { once: true });
-        existing.addEventListener('error', () => reject(new Error('Google Maps failed to load.')), { once: true });
-        return;
+        const initialized = this.googleMapsWindow();
+        if (initialized) {
+          resolve(initialized);
+          return;
+        }
+        existing.remove();
       }
 
+      this.setReadyCallback(resolve, reject);
       const script = document.createElement('script');
       script.dataset['livingWikiGoogleMaps'] = 'true';
       script.async = true;
       script.defer = true;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&v=weekly&loading=async`;
-      script.onload = () => resolve(this.requireGoogleMaps());
+      const params = new URLSearchParams({
+        key: apiKey,
+        v: 'weekly',
+        loading: 'async',
+        callback: this.callbackName,
+        libraries: 'maps,marker,geocoding',
+      });
+      script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
       script.onerror = () => reject(new Error('Google Maps failed to load.'));
       document.head.appendChild(script);
     });
 
     return this.loadPromise;
+  }
+
+  async loadMapLibraries(): Promise<GoogleMapsNamespace> {
+    const google = await this.load();
+    if (google.maps.importLibrary) {
+      await Promise.all([
+        google.maps.importLibrary('maps'),
+        google.maps.importLibrary('marker'),
+        google.maps.importLibrary('geocoding'),
+      ]);
+    }
+    return this.requireGoogleMaps();
   }
 
   async resolveLocations(locations: MappableLocation[]): Promise<ResolvedMappableLocation[]> {
@@ -103,7 +126,9 @@ export class GoogleMapsService {
     }
 
     const google = await this.load();
-    await google.maps.importLibrary('geocoding');
+    if (google.maps.importLibrary) {
+      await google.maps.importLibrary('geocoding');
+    }
     const geocoder = new google.maps.Geocoder();
     const resolved = await Promise.all(
       locations.slice(0, 6).map(async (location) => {
@@ -139,10 +164,25 @@ export class GoogleMapsService {
 
   private requireGoogleMaps(): GoogleMapsNamespace {
     const google = this.googleMapsWindow();
-    if (!google?.maps?.importLibrary) {
+    if (!google) {
       throw new Error('Google Maps did not initialize.');
     }
     return google;
+  }
+
+  private setReadyCallback(
+    resolve: (value: GoogleMapsNamespace) => void,
+    reject: (reason?: unknown) => void,
+  ): void {
+    (window as unknown as Record<string, unknown>)[this.callbackName] = () => {
+      try {
+        resolve(this.requireGoogleMaps());
+      } catch (error) {
+        reject(error);
+      } finally {
+        delete (window as unknown as Record<string, unknown>)[this.callbackName];
+      }
+    };
   }
 
   private googleMapsWindow(): GoogleMapsNamespace | null {
@@ -151,6 +191,7 @@ export class GoogleMapsService {
       return null;
     }
     const candidate = value as Partial<GoogleMapsNamespace>;
-    return candidate.maps?.importLibrary ? candidate as GoogleMapsNamespace : null;
+    const maps = candidate.maps as Partial<GoogleMapsNamespace['maps']> | undefined;
+    return maps?.Map && maps.Geocoder ? candidate as GoogleMapsNamespace : null;
   }
 }

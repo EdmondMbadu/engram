@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnChanges, signal, SimpleChanges, ViewChild } from '@angular/core';
 import type { MappableLocation } from '../atlas.models';
 import { GoogleMapsService, type ResolvedMappableLocation } from '../google-maps.service';
 
@@ -9,30 +9,43 @@ import { GoogleMapsService, type ResolvedMappableLocation } from '../google-maps
 export class ChatLocationMapComponent implements OnChanges {
   private readonly googleMapsService = inject(GoogleMapsService);
   private renderId = 0;
+  private renderScheduled = false;
 
   @Input() locations: MappableLocation[] = [];
   @ViewChild('mapCanvas') set mapCanvasRef(ref: ElementRef<HTMLElement> | undefined) {
     this.mapCanvas = ref;
     if (ref) {
-      void this.renderMap();
+      this.scheduleRenderMap();
     }
   }
 
   private mapCanvas?: ElementRef<HTMLElement>;
 
   readonly mapTitle = 'Places mentioned';
-  isLoading = false;
-  error: string | null = null;
+  readonly isLoading = signal(false);
+  readonly error = signal<string | null>(null);
   resolvedLocations: ResolvedMappableLocation[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['locations']) {
-      void this.renderMap();
+      this.scheduleRenderMap();
     }
   }
 
   mapLink(location: MappableLocation): string {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.search_query)}`;
+  }
+
+  private scheduleRenderMap(): void {
+    if (this.renderScheduled) {
+      return;
+    }
+
+    this.renderScheduled = true;
+    queueMicrotask(() => {
+      this.renderScheduled = false;
+      void this.renderMap();
+    });
   }
 
   private async renderMap(): Promise<void> {
@@ -43,19 +56,15 @@ export class ChatLocationMapComponent implements OnChanges {
     }
 
     const currentRender = ++this.renderId;
-    this.isLoading = true;
-    this.error = null;
+    this.isLoading.set(true);
+    this.error.set(null);
 
     try {
       if (!this.googleMapsService.isConfigured()) {
         throw new Error('Google Maps is not configured.');
       }
 
-      const google = await this.googleMapsService.load();
-      await Promise.all([
-        google.maps.importLibrary('maps'),
-        google.maps.importLibrary('marker'),
-      ]);
+      const google = await this.googleMapsService.loadMapLibraries();
       const resolved = await this.googleMapsService.resolveLocations(locations);
       if (currentRender !== this.renderId) {
         return;
@@ -93,12 +102,12 @@ export class ChatLocationMapComponent implements OnChanges {
       }
     } catch (error) {
       if (currentRender === this.renderId) {
-        this.error = error instanceof Error ? error.message : 'Map could not be loaded.';
+        this.error.set(error instanceof Error ? error.message : 'Map could not be loaded.');
         this.resolvedLocations = [];
       }
     } finally {
       if (currentRender === this.renderId) {
-        this.isLoading = false;
+        this.isLoading.set(false);
       }
     }
   }
