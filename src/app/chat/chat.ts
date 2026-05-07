@@ -7,6 +7,7 @@ import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, Cit
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { AnswerCardService } from '../answer-card.service';
+import { AnswerQuizService } from '../answer-quiz.service';
 import { ChatService } from '../chat.service';
 import { DocumentsService } from '../documents.service';
 import { WikiService } from '../wiki.service';
@@ -55,6 +56,7 @@ export class ChatComponent implements AfterViewChecked {
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly answerCardService = inject(AnswerCardService);
+  private readonly answerQuizService = inject(AnswerQuizService);
   private readonly chatService = inject(ChatService);
   private readonly documentsService = inject(DocumentsService);
   private readonly wikiService = inject(WikiService);
@@ -88,7 +90,9 @@ export class ChatComponent implements AfterViewChecked {
   readonly activeThreadId = signal<string | null>(null);
   readonly messageActionMenuId = signal<string | null>(null);
   readonly creatingAnswerCardId = signal<string | null>(null);
+  readonly creatingQuizId = signal<string | null>(null);
   readonly answerCardLinks = signal<Record<string, string>>({});
+  readonly quizLinks = signal<Record<string, string>>({});
   readonly answerCardErrorMessageId = signal<string | null>(null);
   readonly answerCardError = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
@@ -1142,6 +1146,46 @@ export class ChatComponent implements AfterViewChecked {
       return;
     }
 
+    await this.ensureAnswerCardForMessage(message);
+  }
+
+  async createQuizForMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
+    event?.stopPropagation();
+    if (!this.canCreateAnswerCard(message) || this.creatingQuizId() || this.creatingAnswerCardId()) {
+      return;
+    }
+
+    this.answerCardError.set(null);
+    this.answerCardErrorMessageId.set(null);
+    this.creatingQuizId.set(message.id);
+    this.messageActionMenuId.set(null);
+
+    try {
+      const cardId = await this.ensureAnswerCardForMessage(message);
+      if (!cardId) {
+        return;
+      }
+      const quiz = await this.answerQuizService.createQuizFromAnswerCard(cardId);
+      const quizLink = `/quiz/${quiz.id}`;
+      this.quizLinks.update((links) => ({
+        ...links,
+        [message.id]: quizLink,
+      }));
+      await this.router.navigateByUrl(quizLink);
+    } catch (error) {
+      this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create quiz.');
+      this.answerCardErrorMessageId.set(message.id);
+    } finally {
+      this.creatingQuizId.set(null);
+    }
+  }
+
+  private async ensureAnswerCardForMessage(message: ChatMessage): Promise<string | null> {
+    const existingCardId = this.cardIdFromLink(this.answerCardLinks()[message.id]);
+    if (existingCardId) {
+      return existingCardId;
+    }
+
     this.answerCardError.set(null);
     this.answerCardErrorMessageId.set(null);
     this.creatingAnswerCardId.set(message.id);
@@ -1162,12 +1206,22 @@ export class ChatComponent implements AfterViewChecked {
         ...links,
         [message.id]: `/answer-card/${card.id}`,
       }));
+      return card.id;
     } catch (error) {
       this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create answer card.');
       this.answerCardErrorMessageId.set(message.id);
+      return null;
     } finally {
       this.creatingAnswerCardId.set(null);
     }
+  }
+
+  private cardIdFromLink(link: string | undefined): string | null {
+    if (!link) {
+      return null;
+    }
+    const match = link.match(/\/answer-card\/([^/?#]+)/);
+    return match?.[1] ?? null;
   }
 
   ngAfterViewChecked(): void {

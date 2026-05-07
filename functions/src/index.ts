@@ -6,7 +6,7 @@ import { logger } from 'firebase-functions';
 import { createHash, randomUUID } from 'node:crypto';
 import { FieldValue } from 'firebase-admin/firestore';
 import { db, storage } from './firebase';
-import { geminiApiKey, generateAnswerCard } from './gemini';
+import { geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
 import {
   getStoredCityPulseSnapshot,
   listEnabledCityAtlasIds,
@@ -32,7 +32,7 @@ import {
   runPublicAtlasQuery,
 } from './pipeline';
 import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './utils';
-import type { AnswerCardRecord, MappableLocation, SupportedFileType } from './types';
+import type { AnswerCardRecord, AnswerQuizQuestionRecord, AnswerQuizRecord, MappableLocation, SupportedFileType } from './types';
 
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
@@ -649,6 +649,19 @@ function normalizeAnswerCardId(value: unknown): string {
   return trimmed;
 }
 
+function normalizeAnswerQuizId(value: unknown): string {
+  if (typeof value !== 'string') {
+    throw new HttpsError('invalid-argument', 'quizId is required.');
+  }
+
+  const trimmed = value.trim();
+  if (!/^[A-Za-z0-9_-]{8,128}$/.test(trimmed)) {
+    throw new HttpsError('invalid-argument', 'quizId is invalid.');
+  }
+
+  return trimmed;
+}
+
 function normalizeAnswerCardLocations(value: unknown): MappableLocation[] {
   if (!Array.isArray(value)) {
     return [];
@@ -718,6 +731,161 @@ function serializeAnswerCard(id: string, data: Record<string, unknown>) {
     createdAt: serializeTimestamp(data.created_at),
     updatedAt: serializeTimestamp(data.updated_at),
   };
+}
+
+function serializeAnswerQuiz(id: string, data: Record<string, unknown>, leaderboard: unknown[] = []) {
+  const questions = normalizeQuizQuestions(data.questions, false);
+  return {
+    id,
+    answerCardId: typeof data.answer_card_id === 'string' ? data.answer_card_id : '',
+    atlasId: typeof data.atlas_id === 'string' ? data.atlas_id : null,
+    atlasName: typeof data.atlas_name === 'string' ? data.atlas_name : null,
+    title: String(data.title ?? 'Philly Knowledge Challenge'),
+    description: String(data.description ?? 'Test what you picked up from this Living Wiki Philly answer.'),
+    sourceQuestion: String(data.source_question ?? ''),
+    questionCount: questions.length,
+    questions: questions.map((item) => ({
+      id: item.id,
+      prompt: item.prompt,
+      options: item.options,
+    })),
+    leaderboard,
+    createdAt: serializeTimestamp(data.created_at),
+    updatedAt: serializeTimestamp(data.updated_at),
+  };
+}
+
+function normalizeQuizQuestions(value: unknown, includeCorrect: true): AnswerQuizQuestionRecord[];
+function normalizeQuizQuestions(value: unknown, includeCorrect?: false): Array<Omit<AnswerQuizQuestionRecord, 'correct_option_id'> & { correct_option_id?: string }>;
+function normalizeQuizQuestions(value: unknown, includeCorrect = false) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.map((item): AnswerQuizQuestionRecord | null => {
+    if (!item || typeof item !== 'object') {
+      return null;
+    }
+    const data = item as Record<string, unknown>;
+    const id = typeof data.id === 'string' ? data.id.trim() : '';
+    const prompt = typeof data.prompt === 'string' ? data.prompt.trim() : '';
+    const correctOptionId = typeof data.correct_option_id === 'string' ? data.correct_option_id.trim() : '';
+    const explanation = typeof data.explanation === 'string' ? data.explanation.trim() : '';
+    const options = Array.isArray(data.options)
+      ? data.options.map((option): { id: string; text: string } | null => {
+          if (!option || typeof option !== 'object') {
+            return null;
+          }
+          const optionData = option as Record<string, unknown>;
+          const optionId = typeof optionData.id === 'string' ? optionData.id.trim() : '';
+          const text = typeof optionData.text === 'string' ? optionData.text.trim() : '';
+          return optionId && text ? { id: optionId, text } : null;
+        }).filter((option): option is { id: string; text: string } => !!option)
+      : [];
+
+    if (!id || !prompt || options.length < 2 || !correctOptionId) {
+      return null;
+    }
+
+    return {
+      id,
+      prompt,
+      options,
+      correct_option_id: includeCorrect ? correctOptionId : '',
+      explanation,
+    };
+  }).filter((item): item is AnswerQuizQuestionRecord => !!item);
+}
+
+function buildQuizQuestionRecords(questions: Array<{ prompt: string; options: string[]; correct_option_index: number; explanation: string }>): AnswerQuizQuestionRecord[] {
+  return questions.slice(0, 8).map((question, questionIndex) => {
+    const options = question.options.slice(0, 4).map((text, optionIndex) => ({
+      id: String.fromCharCode(97 + optionIndex),
+      text: text.slice(0, 140),
+    }));
+    const correctOption = options[Math.max(0, Math.min(options.length - 1, question.correct_option_index))] ?? options[0];
+    return {
+      id: `q${questionIndex + 1}`,
+      prompt: question.prompt.slice(0, 220),
+      options,
+      correct_option_id: correctOption?.id ?? 'a',
+      explanation: question.explanation.slice(0, 220),
+    };
+  }).filter((question) => question.options.length === 4);
+}
+
+function normalizeQuizAnswers(value: unknown): Map<string, string> {
+  const answers = new Map<string, string>();
+  if (!Array.isArray(value)) {
+    return answers;
+  }
+
+  for (const item of value) {
+    if (!item || typeof item !== 'object') {
+      continue;
+    }
+    const data = item as Record<string, unknown>;
+    const questionId = typeof data.questionId === 'string' ? data.questionId.trim() : '';
+    const optionId = typeof data.optionId === 'string' ? data.optionId.trim() : '';
+    if (/^q\d{1,2}$/.test(questionId) && /^[a-z]$/.test(optionId)) {
+      answers.set(questionId, optionId);
+    }
+  }
+  return answers;
+}
+
+function gradeQuiz(questions: AnswerQuizQuestionRecord[], answers: Map<string, string>) {
+  const results = questions.map((question) => {
+    const selectedOptionId = answers.get(question.id) ?? null;
+    const correct = selectedOptionId === question.correct_option_id;
+    return {
+      questionId: question.id,
+      selectedOptionId,
+      correctOptionId: question.correct_option_id,
+      correct,
+      explanation: question.explanation,
+    };
+  });
+  const score = results.filter((result) => result.correct).length;
+  return {
+    score,
+    total: questions.length,
+    percent: questions.length > 0 ? Math.round((score / questions.length) * 100) : 0,
+    results,
+  };
+}
+
+function serializeQuizScores(docs: FirebaseFirestore.QueryDocumentSnapshot[]): unknown[] {
+  return docs.map((doc, index) => {
+    const data = doc.data();
+    return {
+      rank: index + 1,
+      displayName: String(data.display_name ?? 'Living Wiki Player'),
+      score: Number(data.score ?? 0) || 0,
+      total: Number(data.total ?? 0) || 0,
+      percent: Number(data.percent ?? 0) || 0,
+      elapsedMs: Number(data.elapsed_ms ?? 0) || 0,
+      attempts: Number(data.attempts ?? 1) || 1,
+      updatedAt: serializeTimestamp(data.updated_at),
+    };
+  });
+}
+
+async function loadQuizLeaderboard(quizId: string): Promise<unknown[]> {
+  const snapshot = await db.collection('answer_quizzes').doc(quizId).collection('scores')
+    .orderBy('score', 'desc')
+    .limit(25)
+    .get();
+  return serializeQuizScores(snapshot.docs)
+    .sort((a, b) => {
+      const left = a as { score: number; elapsedMs: number; updatedAt: string | null };
+      const right = b as { score: number; elapsedMs: number; updatedAt: string | null };
+      if (right.score !== left.score) return right.score - left.score;
+      if (left.elapsedMs !== right.elapsedMs) return left.elapsedMs - right.elapsedMs;
+      return String(left.updatedAt ?? '').localeCompare(String(right.updatedAt ?? ''));
+    })
+    .slice(0, 10)
+    .map((item, index) => ({ ...(item as Record<string, unknown>), rank: index + 1 }));
 }
 
 async function loadAnswerCardAtlas(atlasId: string | null, uid: string): Promise<Record<string, unknown> | null> {
@@ -1250,6 +1418,194 @@ export const likeAnswerCard = onCall(
     });
 
     return result;
+  },
+);
+
+export const createAnswerQuiz = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 90,
+    memory: '512MiB',
+    cors: true,
+    secrets: [geminiApiKey],
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Sign in to create a quiz challenge.');
+    }
+
+    const cardId = normalizeAnswerCardId(request.data?.cardId);
+    const existing = await db.collection('answer_quizzes')
+      .where('answer_card_id', '==', cardId)
+      .limit(1)
+      .get();
+    if (!existing.empty) {
+      const doc = existing.docs[0];
+      return { quiz: serializeAnswerQuiz(doc.id, doc.data(), await loadQuizLeaderboard(doc.id)) };
+    }
+
+    const cardSnapshot = await db.collection('answer_cards').doc(cardId).get();
+    if (!cardSnapshot.exists) {
+      throw new HttpsError('not-found', 'Answer card not found.');
+    }
+
+    const card = cardSnapshot.data() ?? {};
+    const generated = await generateAnswerQuiz({
+      title: String(card.title ?? ''),
+      question: String(card.question ?? ''),
+      answerPreview: String(card.answer_preview ?? ''),
+      keyFacts: Array.isArray(card.key_facts) ? card.key_facts.map(String) : [],
+      didYouKnow: Array.isArray(card.did_you_know) ? card.did_you_know.map(String) : [],
+      atlasName: typeof card.atlas_name === 'string' ? card.atlas_name : null,
+    });
+    const questions = buildQuizQuestionRecords(generated.questions);
+    if (questions.length < 3) {
+      throw new HttpsError('internal', 'Could not generate enough quiz questions.');
+    }
+
+    const record: AnswerQuizRecord = {
+      owner_user_id: request.auth.uid,
+      answer_card_id: cardId,
+      atlas_id: typeof card.atlas_id === 'string' ? card.atlas_id : null,
+      atlas_name: typeof card.atlas_name === 'string' ? card.atlas_name : null,
+      title: generated.title,
+      description: generated.description,
+      source_question: String(card.question ?? '').slice(0, 2000),
+      questions,
+      play_count: 0,
+      submission_count: 0,
+      created_at: FieldValue.serverTimestamp(),
+      updated_at: FieldValue.serverTimestamp(),
+    };
+
+    const docRef = db.collection('answer_quizzes').doc();
+    await docRef.set(record);
+    const snapshot = await docRef.get();
+    return { quiz: serializeAnswerQuiz(docRef.id, snapshot.data() ?? record as unknown as Record<string, unknown>, []) };
+  },
+);
+
+export const getAnswerQuiz = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const quizId = normalizeAnswerQuizId(request.data?.quizId);
+    const snapshot = await db.collection('answer_quizzes').doc(quizId).get();
+    if (!snapshot.exists) {
+      throw new HttpsError('not-found', 'Quiz not found.');
+    }
+
+    await snapshot.ref.update({
+      play_count: FieldValue.increment(1),
+      updated_at: FieldValue.serverTimestamp(),
+    }).catch(() => undefined);
+
+    return {
+      quiz: serializeAnswerQuiz(snapshot.id, snapshot.data() ?? {}, await loadQuizLeaderboard(snapshot.id)),
+    };
+  },
+);
+
+export const gradeAnswerQuizAttempt = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const quizId = normalizeAnswerQuizId(request.data?.quizId);
+    const snapshot = await db.collection('answer_quizzes').doc(quizId).get();
+    if (!snapshot.exists) {
+      throw new HttpsError('not-found', 'Quiz not found.');
+    }
+
+    const questions = normalizeQuizQuestions(snapshot.data()?.questions, true);
+    const grade = gradeQuiz(questions, normalizeQuizAnswers(request.data?.answers));
+    return { grade };
+  },
+);
+
+export const submitAnswerQuizScore = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Sign in to save your leaderboard score.');
+    }
+
+    const uid = request.auth.uid;
+    const quizId = normalizeAnswerQuizId(request.data?.quizId);
+    const quizRef = db.collection('answer_quizzes').doc(quizId);
+    const quizSnapshot = await quizRef.get();
+    if (!quizSnapshot.exists) {
+      throw new HttpsError('not-found', 'Quiz not found.');
+    }
+
+    const questions = normalizeQuizQuestions(quizSnapshot.data()?.questions, true);
+    const grade = gradeQuiz(questions, normalizeQuizAnswers(request.data?.answers));
+    const elapsedMs = Math.max(0, Math.min(Number(request.data?.elapsedMs ?? 0) || 0, 24 * 60 * 60 * 1000));
+    const token = (request.auth.token ?? {}) as { name?: unknown; email?: unknown };
+    const displayName = typeof token.name === 'string' && token.name.trim()
+      ? token.name.trim().slice(0, 80)
+      : typeof token.email === 'string' && token.email.includes('@')
+        ? token.email.split('@')[0].slice(0, 80)
+        : 'Living Wiki Player';
+    const scoreRef = quizRef.collection('scores').doc(uid);
+
+    const saveResult = await db.runTransaction(async (transaction) => {
+      const scoreSnapshot = await transaction.get(scoreRef);
+      const previous = scoreSnapshot.exists ? scoreSnapshot.data() ?? {} : {};
+      const previousScore = Number(previous.score ?? -1);
+      const previousElapsed = Number(previous.elapsed_ms ?? Number.MAX_SAFE_INTEGER);
+      const isBetter = grade.score > previousScore || (grade.score === previousScore && elapsedMs > 0 && elapsedMs < previousElapsed);
+      const attempts = (Number(previous.attempts ?? 0) || 0) + 1;
+
+      if (isBetter) {
+        transaction.set(scoreRef, {
+          quiz_id: quizId,
+          user_id: uid,
+          display_name: displayName,
+          score: grade.score,
+          total: grade.total,
+          percent: grade.percent,
+          elapsed_ms: elapsedMs,
+          attempts,
+          created_at: scoreSnapshot.exists ? previous.created_at ?? FieldValue.serverTimestamp() : FieldValue.serverTimestamp(),
+          updated_at: FieldValue.serverTimestamp(),
+        }, { merge: true });
+      } else {
+        transaction.set(scoreRef, {
+          quiz_id: quizId,
+          user_id: uid,
+          display_name: displayName,
+          attempts,
+          last_attempt_at: FieldValue.serverTimestamp(),
+        }, { merge: true });
+      }
+
+      transaction.update(quizRef, {
+        submission_count: FieldValue.increment(1),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+
+      return { savedBest: isBetter, attempts };
+    });
+
+    return {
+      grade,
+      savedBest: saveResult.savedBest,
+      attempts: saveResult.attempts,
+      leaderboard: await loadQuizLeaderboard(quizId),
+    };
   },
 );
 

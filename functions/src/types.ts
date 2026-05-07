@@ -178,6 +178,34 @@ export interface AnswerCardRecord {
   updated_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
 }
 
+export interface AnswerQuizOptionRecord {
+  id: string;
+  text: string;
+}
+
+export interface AnswerQuizQuestionRecord {
+  id: string;
+  prompt: string;
+  options: AnswerQuizOptionRecord[];
+  correct_option_id: string;
+  explanation: string;
+}
+
+export interface AnswerQuizRecord {
+  owner_user_id: string | null;
+  answer_card_id: string;
+  atlas_id: string | null;
+  atlas_name: string | null;
+  title: string;
+  description: string;
+  source_question: string;
+  questions: AnswerQuizQuestionRecord[];
+  play_count: number;
+  submission_count: number;
+  created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
+  updated_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
+}
+
 export interface QueryRecord {
   user_id: string;
   atlas_id: string | null;

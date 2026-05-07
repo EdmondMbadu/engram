@@ -197,6 +197,58 @@ export interface AnswerCardItem {
   updatedAt: string | null;
 }
 
+export interface AnswerQuizOptionItem {
+  id: string;
+  text: string;
+}
+
+export interface AnswerQuizQuestionItem {
+  id: string;
+  prompt: string;
+  options: AnswerQuizOptionItem[];
+}
+
+export interface AnswerQuizLeaderboardItem {
+  rank: number;
+  displayName: string;
+  score: number;
+  total: number;
+  percent: number;
+  elapsedMs: number;
+  attempts: number;
+  updatedAt: string | null;
+}
+
+export interface AnswerQuizItem {
+  id: string;
+  answerCardId: string;
+  atlasId: string | null;
+  atlasName: string | null;
+  title: string;
+  description: string;
+  sourceQuestion: string;
+  questionCount: number;
+  questions: AnswerQuizQuestionItem[];
+  leaderboard: AnswerQuizLeaderboardItem[];
+  createdAt: string | null;
+  updatedAt: string | null;
+}
+
+export interface AnswerQuizGradeResult {
+  questionId: string;
+  selectedOptionId: string | null;
+  correctOptionId: string;
+  correct: boolean;
+  explanation: string;
+}
+
+export interface AnswerQuizGrade {
+  score: number;
+  total: number;
+  percent: number;
+  results: AnswerQuizGradeResult[];
+}
+
 export interface ChatThreadItem {
   id: string;
   kind: 'thread';

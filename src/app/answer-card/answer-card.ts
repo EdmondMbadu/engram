@@ -1,8 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import type { AnswerCardItem } from '../atlas.models';
 import { AnswerCardService } from '../answer-card.service';
+import { AnswerQuizService } from '../answer-quiz.service';
+import { AuthService } from '../auth.service';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
@@ -14,7 +16,10 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 })
 export class AnswerCardComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly answerCardService = inject(AnswerCardService);
+  private readonly answerQuizService = inject(AnswerQuizService);
+  private readonly authService = inject(AuthService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
@@ -27,6 +32,7 @@ export class AnswerCardComponent {
   readonly shareFeedback = signal<string | null>(null);
   readonly liking = signal(false);
   readonly liked = signal(false);
+  readonly creatingQuiz = signal(false);
 
   readonly shareUrl = computed(() => {
     const card = this.card();
@@ -132,6 +138,30 @@ export class AnswerCardComponent {
       setTimeout(() => this.shareFeedback.set(null), 2200);
     } finally {
       this.liking.set(false);
+    }
+  }
+
+  async createQuiz(): Promise<void> {
+    const card = this.card();
+    if (!card || this.creatingQuiz()) {
+      return;
+    }
+
+    if (!this.authService.isAuthenticated()) {
+      await this.router.navigate(['/sign-in'], { queryParams: { redirectTo: `/answer-card/${card.id}` } });
+      return;
+    }
+
+    this.creatingQuiz.set(true);
+    this.shareFeedback.set(null);
+    try {
+      const quiz = await this.answerQuizService.createQuizFromAnswerCard(card.id);
+      await this.router.navigate(['/quiz', quiz.id]);
+    } catch (error) {
+      this.shareFeedback.set(error instanceof Error ? error.message : 'Could not create a quiz from this card.');
+      setTimeout(() => this.shareFeedback.set(null), 2600);
+    } finally {
+      this.creatingQuiz.set(false);
     }
   }
 

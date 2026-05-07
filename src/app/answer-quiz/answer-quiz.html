@@ -1,0 +1,132 @@
+<div class="quiz-page min-h-screen bg-[var(--bg)] text-[var(--text)]">
+  <header class="quiz-shell flex items-center justify-between py-6">
+    <a routerLink="/" class="quiz-brand">
+      <img src="/living-wiki-logo.png" alt="" class="quiz-brand__logo" />
+      <span>Living Wiki Philly</span>
+    </a>
+    <app-theme-toggle />
+  </header>
+
+  <main class="quiz-shell pb-14">
+    @if (isLoading()) {
+      <section class="quiz-loading">
+        <span class="quiz-spinner" aria-hidden="true"></span>
+        <p>Loading challenge...</p>
+      </section>
+    } @else if (errorMessage() && !quiz()) {
+      <section class="quiz-empty">
+        <h1>Challenge unavailable</h1>
+        <p>{{ errorMessage() }}</p>
+      </section>
+    } @else if (quiz(); as quiz) {
+      <section class="quiz-hero">
+        <div>
+          <p class="quiz-kicker">Philly Challenge Quiz</p>
+          <h1>{{ quiz.title }}</h1>
+          <p>{{ quiz.description }}</p>
+          <div class="quiz-meta">
+            <span>{{ quiz.questionCount }} questions</span>
+            @if (quiz.atlasName) {
+              <span>{{ quiz.atlasName }}</span>
+            }
+          </div>
+        </div>
+        <a class="quiz-card-link" [routerLink]="['/answer-card', quiz.answerCardId]">View card</a>
+      </section>
+
+      @if (grade(); as grade) {
+        <section class="quiz-result">
+          <div>
+            <span>Your score</span>
+            <strong>{{ grade.score }}/{{ grade.total }}</strong>
+            <p>{{ grade.percent }}% correct</p>
+          </div>
+          @if (isSignedIn()) {
+            <button type="button" class="quiz-primary" [disabled]="isSubmitting()" (click)="submitScore()">
+              {{ isSubmitting() ? 'Saving...' : 'Save to leaderboard' }}
+            </button>
+          } @else {
+            <a class="quiz-primary" routerLink="/sign-in" [queryParams]="{ redirectTo: signInRedirect() }">Sign in to save score</a>
+          }
+        </section>
+      }
+
+      @if (statusMessage()) {
+        <p class="quiz-status">{{ statusMessage() }}</p>
+      }
+      @if (errorMessage()) {
+        <p class="quiz-error">{{ errorMessage() }}</p>
+      }
+
+      <section class="quiz-layout">
+        <div class="quiz-question-list">
+          @for (question of quiz.questions; track question.id; let index = $index) {
+            <article class="quiz-question">
+              <div class="quiz-question__top">
+                <span>{{ index + 1 }}</span>
+                <h2>{{ question.prompt }}</h2>
+              </div>
+
+              <div class="quiz-options">
+                @for (option of question.options; track option.id) {
+                  <button
+                    type="button"
+                    class="quiz-option"
+                    [class.quiz-option--selected]="optionState(question.id, option.id) === 'selected'"
+                    [class.quiz-option--correct]="optionState(question.id, option.id) === 'correct'"
+                    [class.quiz-option--incorrect]="optionState(question.id, option.id) === 'incorrect'"
+                    [disabled]="!!grade()"
+                    (click)="selectAnswer(question.id, option.id)"
+                  >
+                    <span>{{ option.id.toUpperCase() }}</span>
+                    <strong>{{ option.text }}</strong>
+                  </button>
+                }
+              </div>
+
+              @if (resultFor(question.id); as result) {
+                <p class="quiz-explanation">{{ result.explanation }}</p>
+              }
+            </article>
+          }
+
+          <div class="quiz-footer-actions">
+            @if (!grade()) {
+              <button type="button" class="quiz-primary" [disabled]="!canFinish() || isGrading()" (click)="finishQuiz()">
+                {{ isGrading() ? 'Checking...' : answeredCount() === quiz.questions.length ? 'Finish quiz' : answeredCount() + '/' + quiz.questions.length + ' answered' }}
+              </button>
+            } @else {
+              <button type="button" class="quiz-secondary" (click)="resetAttempt()">Try again</button>
+            }
+          </div>
+        </div>
+
+        <aside class="quiz-leaderboard">
+          <div class="quiz-leaderboard__header">
+            <span>Leaderboard</span>
+            @if (isSignedIn()) {
+              <small>{{ displayName() }}</small>
+            } @else {
+              <small>Sign in after playing</small>
+            }
+          </div>
+
+          @if (leaderboard().length > 0) {
+            <ol>
+              @for (entry of leaderboard(); track entry.rank + entry.displayName) {
+                <li>
+                  <span>{{ entry.rank }}</span>
+                  <strong>{{ entry.displayName }}</strong>
+                  <em>{{ entry.score }}/{{ entry.total }}</em>
+                  <small>{{ formatTime(entry.elapsedMs) }}</small>
+                </li>
+              }
+            </ol>
+          } @else {
+            <p class="quiz-leaderboard__empty">Be the first name on this challenge.</p>
+          }
+        </aside>
+      </section>
+    }
+  </main>
+</div>

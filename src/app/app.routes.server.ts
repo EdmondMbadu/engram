@@ -18,6 +18,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'upload', renderMode: RenderMode.Client },
   { path: 'chat/shared/:threadId', renderMode: RenderMode.Client },
   { path: 'answer-card/:cardId', renderMode: RenderMode.Client },
+  { path: 'quiz/:quizId', renderMode: RenderMode.Client },
   { path: 'chat/:slug', renderMode: RenderMode.Client },
   { path: 'chat', renderMode: RenderMode.Client },
   { path: 'library/:slug', renderMode: RenderMode.Client },

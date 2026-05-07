@@ -81,6 +81,31 @@ const answerCardSchema = {
   required: ['title', 'subtitle', 'key_facts', 'did_you_know'],
 } as const;
 
+const answerQuizSchema = {
+  type: 'object',
+  properties: {
+    title: { type: 'string' },
+    description: { type: 'string' },
+    questions: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          prompt: { type: 'string' },
+          options: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+          correct_option_index: { type: 'integer' },
+          explanation: { type: 'string' },
+        },
+        required: ['prompt', 'options', 'correct_option_index', 'explanation'],
+      },
+    },
+  },
+  required: ['title', 'description', 'questions'],
+} as const;
+
 const lineArraySchema = {
   type: 'array',
   items: { type: 'string' },
@@ -178,6 +203,19 @@ export type GeneratedAnswerCard = {
   subtitle: string;
   key_facts: string[];
   did_you_know: string[];
+};
+
+export type GeneratedQuizQuestion = {
+  prompt: string;
+  options: string[];
+  correct_option_index: number;
+  explanation: string;
+};
+
+export type GeneratedAnswerQuiz = {
+  title: string;
+  description: string;
+  questions: GeneratedQuizQuestion[];
 };
 
 function createClient(): GoogleGenAI {
@@ -734,6 +772,71 @@ export async function generateAnswerCard(params: {
   }
 }
 
+export async function generateAnswerQuiz(params: {
+  title: string;
+  question: string;
+  answerPreview: string;
+  keyFacts: string[];
+  didYouKnow: string[];
+  atlasName?: string | null;
+}): Promise<GeneratedAnswerQuiz> {
+  const title = cleanCardLine(params.title, 90);
+  const question = params.question.trim();
+  const answerPreview = params.answerPreview.trim();
+  const sourceLines = [
+    ...params.keyFacts.map((line) => cleanCardLine(line, 160)).filter(Boolean),
+    ...params.didYouKnow.map((line) => cleanCardLine(line, 160)).filter(Boolean),
+  ];
+
+  if (!question || (!answerPreview && sourceLines.length < 3)) {
+    return buildFallbackAnswerQuiz(title, question, sourceLines);
+  }
+
+  const prompt = [
+    'Create a public Living Wiki Philly challenge quiz from this answer card.',
+    'The quiz should feel fast, useful, and Philly-aware, not like a school worksheet.',
+    'Only use facts supported by the provided answer/card text. Do not invent places, dates, stats, or claims.',
+    'Return:',
+    '- title: 4 to 10 words.',
+    '- description: one inviting sentence, max 150 characters.',
+    '- questions: 5 to 8 multiple-choice questions.',
+    '- each question has exactly 4 options.',
+    '- exactly one correct option per question.',
+    '- explanations are short and explain the answer in one sentence.',
+    'Avoid trick questions and avoid options like "all of the above".',
+    '',
+    params.atlasName ? `Wiki: ${params.atlasName}` : 'Wiki: Living Wiki Philly',
+    '',
+    JSON.stringify({
+      card_title: title,
+      user_question: question.slice(0, 1200),
+      answer_preview: answerPreview.slice(0, 2200),
+      key_facts: sourceLines.slice(0, 8),
+    }),
+  ].join('\n');
+
+  try {
+    const response = await generateContentWithRetry({
+      model: internetSearchModel,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: answerQuizSchema,
+        temperature: 0.28,
+        maxOutputTokens: 2048,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+
+    return normalizeAnswerQuiz(parseJsonResponse<unknown>(response.text ?? '{}'), title, question, sourceLines);
+  } catch (error) {
+    logger.warn('Failed to generate answer quiz with Gemini.', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return buildFallbackAnswerQuiz(title, question, sourceLines);
+  }
+}
+
 export async function compileWikiArticles(params: {
   blocks: ExtractBlock[];
   filename: string;
@@ -1182,6 +1285,51 @@ function normalizeAnswerCard(parsed: unknown, question: string, answer: string):
   };
 }
 
+function normalizeAnswerQuiz(
+  parsed: unknown,
+  title: string,
+  question: string,
+  sourceLines: string[],
+): GeneratedAnswerQuiz {
+  if (!parsed || typeof parsed !== 'object') {
+    return buildFallbackAnswerQuiz(title, question, sourceLines);
+  }
+
+  const value = parsed as Record<string, unknown>;
+  const fallback = buildFallbackAnswerQuiz(title, question, sourceLines);
+  const questions = Array.isArray(value['questions'])
+    ? value['questions'].map(normalizeQuizQuestion).filter((item): item is GeneratedQuizQuestion => !!item).slice(0, 8)
+    : [];
+
+  return {
+    title: cleanCardLine(value['title'], 90) || fallback.title,
+    description: cleanCardLine(value['description'], 160) || fallback.description,
+    questions: questions.length >= 5 ? questions : fallback.questions,
+  };
+}
+
+function normalizeQuizQuestion(value: unknown): GeneratedQuizQuestion | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const data = value as Record<string, unknown>;
+  const prompt = cleanCardLine(data['prompt'], 180);
+  const options = cleanCardLines(data['options'], 4, 110);
+  const correctIndex = Number(data['correct_option_index']);
+  const explanation = cleanCardLine(data['explanation'], 180);
+  if (!prompt || options.length !== 4 || !Number.isInteger(correctIndex) || correctIndex < 0 || correctIndex > 3) {
+    return null;
+  }
+
+  return {
+    prompt,
+    options,
+    correct_option_index: correctIndex,
+    explanation: explanation || 'The answer follows directly from the Living Wiki card.',
+  };
+}
+
 function cleanCardLines(value: unknown, maxItems: number, maxLength: number): string[] {
   if (!Array.isArray(value)) {
     return [];
@@ -1213,6 +1361,37 @@ function cleanCardLine(value: unknown, maxLength: number): string {
     .replace(/\s+/g, ' ')
     .trim();
   return cleaned.length > maxLength ? `${cleaned.slice(0, Math.max(0, maxLength - 1)).trim()}…` : cleaned;
+}
+
+function buildFallbackAnswerQuiz(title: string, question: string, sourceLines: string[]): GeneratedAnswerQuiz {
+  const cleanTitle = title || cleanCardLine(question.replace(/[?!.]+$/g, ''), 80) || 'Philly Knowledge Challenge';
+  const facts = sourceLines.map((line) => cleanCardLine(line, 130)).filter(Boolean);
+  while (facts.length < 5) {
+    facts.push('Living Wiki Philly turns local answers into quick, shareable knowledge.');
+  }
+
+  const questions = facts.slice(0, 5).map((fact, index) => {
+    const options = [
+      fact,
+      'A detail not supported by this answer card.',
+      'A generic Philly guess without card evidence.',
+      'A different topic from the original question.',
+    ];
+    const rotation = index % options.length;
+    const rotated = [...options.slice(rotation), ...options.slice(0, rotation)];
+    return {
+      prompt: `Which detail is supported by this Living Wiki answer?`,
+      options: rotated,
+      correct_option_index: rotated.indexOf(fact),
+      explanation: fact,
+    };
+  });
+
+  return {
+    title: `${cleanTitle} Quiz`,
+    description: 'Test what you picked up from this Living Wiki Philly answer.',
+    questions,
+  };
 }
 
 function buildFallbackAnswerCard(question: string, answer: string): GeneratedAnswerCard {

@@ -99,6 +99,10 @@
               <span class="answer-card-action__glyph answer-card-action__glyph--share" aria-hidden="true"></span>
               <span>Share</span>
             </button>
+            <button type="button" class="answer-card-action answer-card-action--quiz" [disabled]="creatingQuiz()" (click)="createQuiz()">
+              <span class="material-symbols-outlined text-base" aria-hidden="true">quiz</span>
+              <span>{{ creatingQuiz() ? 'Making quiz...' : 'Make quiz' }}</span>
+            </button>
             <button type="button" class="answer-card-action" (click)="copyLink()">
               <span class="answer-card-action__glyph answer-card-action__glyph--copy" [class.answer-card-action__glyph--check]="copied()" aria-hidden="true"></span>
               <span>{{ copied() ? 'Copied' : 'Copy link' }}</span>
