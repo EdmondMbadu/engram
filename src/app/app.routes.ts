@@ -17,6 +17,7 @@ import { PublicWikisComponent } from './public-wikis/public-wikis';
 import { WebScraperComponent } from './web-scraper/web-scraper';
 import { WikiHomeComponent } from './wiki-home/wiki-home';
 import { SharedChatComponent } from './shared-chat/shared-chat';
+import { AnswerCardComponent } from './answer-card/answer-card';
 import { GreenJobsComponent } from './green-jobs/green-jobs';
 import { CityPulseAdminComponent } from './city-pulse-admin/city-pulse-admin';
 import { authGuard, guestOnlyGuard } from './auth.guards';
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | Living Wiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | Living Wiki', canActivate: [authGuard] },
   { path: 'chat/shared/:threadId', component: SharedChatComponent, title: 'Shared Chat | Living Wiki' },
+  { path: 'answer-card/:cardId', component: AnswerCardComponent, title: 'Answer Card | Living Wiki' },
   { path: 'chat/:slug', component: ChatComponent, title: 'Chat | Living Wiki' },
   { path: 'chat', component: ChatComponent, title: 'Chat | Living Wiki', canActivate: [authGuard] },
   { path: 'library/:slug', component: LibraryComponent, title: 'Source Files | Living Wiki' },

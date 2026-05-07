@@ -64,6 +64,23 @@ const mappableLocationsSchema = {
   },
 } as const;
 
+const answerCardSchema = {
+  type: 'object',
+  properties: {
+    title: { type: 'string' },
+    subtitle: { type: 'string' },
+    key_facts: {
+      type: 'array',
+      items: { type: 'string' },
+    },
+    did_you_know: {
+      type: 'array',
+      items: { type: 'string' },
+    },
+  },
+  required: ['title', 'subtitle', 'key_facts', 'did_you_know'],
+} as const;
+
 const lineArraySchema = {
   type: 'array',
   items: { type: 'string' },
@@ -154,6 +171,13 @@ type WebTextOutput = {
   type?: string;
   text?: string;
   annotations?: WebCitationAnnotation[];
+};
+
+export type GeneratedAnswerCard = {
+  title: string;
+  subtitle: string;
+  key_facts: string[];
+  did_you_know: string[];
 };
 
 function createClient(): GoogleGenAI {
@@ -647,6 +671,69 @@ export async function extractMappableLocations(params: {
   }
 }
 
+export async function generateAnswerCard(params: {
+  question: string;
+  answer: string;
+  atlasName?: string | null;
+  cityHint?: string | null;
+  locations?: MappableLocation[];
+}): Promise<GeneratedAnswerCard> {
+  const question = params.question.trim();
+  const answer = params.answer.trim();
+  if (!question || !answer) {
+    return buildFallbackAnswerCard(question, answer);
+  }
+
+  const locations = normalizeMappableLocations(params.locations ?? []);
+  const context = [
+    params.atlasName ? `Wiki: ${params.atlasName}` : null,
+    params.cityHint ? `City/region: ${params.cityHint}` : 'City/region: Philadelphia',
+    locations.length
+      ? `Mapped places: ${locations.map((location) => location.name).join(', ')}`
+      : null,
+  ].filter(Boolean).join('\n');
+
+  const prompt = [
+    'Create a shareable Living Wiki Philly Answer Card from this Q&A.',
+    'Use a Philly-aware, useful, lightly entertaining voice, but keep every line fast to scan.',
+    'Only use facts supported by the provided answer. Do not invent new restaurants, claims, prices, rankings, dates, or addresses.',
+    'Return concise card copy:',
+    '- title: 4 to 9 words, specific and lively.',
+    '- subtitle: one sentence, max 130 characters.',
+    '- key_facts: 3 to 5 bullets, max 120 characters each.',
+    '- did_you_know: 2 to 3 bullets, max 120 characters each.',
+    'If mapped places are provided, naturally include the most useful ones in key_facts when relevant.',
+    '',
+    context,
+    '',
+    JSON.stringify({
+      question: question.slice(0, 2000),
+      answer: answer.slice(0, 7000),
+    }),
+  ].join('\n');
+
+  try {
+    const response = await generateContentWithRetry({
+      model: internetSearchModel,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: answerCardSchema,
+        temperature: 0.25,
+        maxOutputTokens: 1024,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+
+    return normalizeAnswerCard(parseJsonResponse<unknown>(response.text ?? '{}'), question, answer);
+  } catch (error) {
+    logger.warn('Failed to generate answer card with Gemini.', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return buildFallbackAnswerCard(question, answer);
+  }
+}
+
 export async function compileWikiArticles(params: {
   blocks: ExtractBlock[];
   filename: string;
@@ -1073,6 +1160,88 @@ function normalizeMappableLocations(parsed: unknown): MappableLocation[] {
   }
 
   return locations;
+}
+
+function normalizeAnswerCard(parsed: unknown, question: string, answer: string): GeneratedAnswerCard {
+  if (!parsed || typeof parsed !== 'object') {
+    return buildFallbackAnswerCard(question, answer);
+  }
+
+  const value = parsed as Record<string, unknown>;
+  const fallback = buildFallbackAnswerCard(question, answer);
+  const title = cleanCardLine(value['title'], 90) || fallback.title;
+  const subtitle = cleanCardLine(value['subtitle'], 140) || fallback.subtitle;
+  const keyFacts = cleanCardLines(value['key_facts'], 5, 125);
+  const didYouKnow = cleanCardLines(value['did_you_know'], 3, 125);
+
+  return {
+    title,
+    subtitle,
+    key_facts: keyFacts.length >= 3 ? keyFacts : fallback.key_facts,
+    did_you_know: didYouKnow.length >= 2 ? didYouKnow : fallback.did_you_know,
+  };
+}
+
+function cleanCardLines(value: unknown, maxItems: number, maxLength: number): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const seen = new Set<string>();
+  const lines: string[] = [];
+  for (const item of value) {
+    const line = cleanCardLine(item, maxLength);
+    const key = line.toLowerCase();
+    if (!line || seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    lines.push(line);
+    if (lines.length >= maxItems) {
+      break;
+    }
+  }
+  return lines;
+}
+
+function cleanCardLine(value: unknown, maxLength: number): string {
+  if (typeof value !== 'string') {
+    return '';
+  }
+  const cleaned = value
+    .replace(/^[\s\-*•]+/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return cleaned.length > maxLength ? `${cleaned.slice(0, Math.max(0, maxLength - 1)).trim()}…` : cleaned;
+}
+
+function buildFallbackAnswerCard(question: string, answer: string): GeneratedAnswerCard {
+  const titleBase = question
+    .replace(/[?!.]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const sentences = answer
+    .replace(/\n+/g, ' ')
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => cleanCardLine(sentence, 125))
+    .filter((sentence) => sentence.length > 20);
+
+  const keyFacts = sentences.slice(0, 5);
+  while (keyFacts.length < 3) {
+    keyFacts.push('A quick Living Wiki summary pulled from the answer.');
+  }
+
+  const didYouKnow = sentences.slice(5, 8);
+  while (didYouKnow.length < 2) {
+    didYouKnow.push('Philly rewards the curious: the best answer usually has a neighborhood angle.');
+  }
+
+  return {
+    title: titleBase ? cleanCardLine(titleBase, 80) : 'A Philly Answer Worth Sharing',
+    subtitle: 'A fast, shareable summary from Living Wiki Philly.',
+    key_facts: keyFacts.slice(0, 5),
+    did_you_know: didYouKnow.slice(0, 3),
+  };
 }
 
 function shouldTryMappableLocationExtraction(question: string, answer: string): boolean {

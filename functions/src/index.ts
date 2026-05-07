@@ -3,10 +3,10 @@ import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { FieldValue } from 'firebase-admin/firestore';
 import { db, storage } from './firebase';
-import { geminiApiKey } from './gemini';
+import { geminiApiKey, generateAnswerCard } from './gemini';
 import {
   getStoredCityPulseSnapshot,
   listEnabledCityAtlasIds,
@@ -32,7 +32,7 @@ import {
   runPublicAtlasQuery,
 } from './pipeline';
 import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './utils';
-import type { SupportedFileType } from './types';
+import type { AnswerCardRecord, MappableLocation, SupportedFileType } from './types';
 
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
@@ -636,6 +636,118 @@ function normalizeAnonymousVisitorId(value: unknown): string | null {
   return /^[A-Za-z0-9_-]+$/.test(trimmed) ? trimmed : null;
 }
 
+function normalizeAnswerCardId(value: unknown): string {
+  if (typeof value !== 'string') {
+    throw new HttpsError('invalid-argument', 'cardId is required.');
+  }
+
+  const trimmed = value.trim();
+  if (!/^[A-Za-z0-9_-]{8,128}$/.test(trimmed)) {
+    throw new HttpsError('invalid-argument', 'cardId is invalid.');
+  }
+
+  return trimmed;
+}
+
+function normalizeAnswerCardLocations(value: unknown): MappableLocation[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const seen = new Set<string>();
+  const locations: MappableLocation[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== 'object') {
+      continue;
+    }
+    const data = item as Record<string, unknown>;
+    const name = typeof data.name === 'string' ? data.name.replace(/\s+/g, ' ').trim() : '';
+    const searchQuery =
+      typeof data.search_query === 'string' ? data.search_query.replace(/\s+/g, ' ').trim() : '';
+    if (!name || !searchQuery) {
+      continue;
+    }
+
+    const key = `${name.toLowerCase()}::${searchQuery.toLowerCase()}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    locations.push({
+      name: name.slice(0, 120),
+      search_query: searchQuery.slice(0, 240),
+      address_hint:
+        typeof data.address_hint === 'string' && data.address_hint.trim()
+          ? data.address_hint.replace(/\s+/g, ' ').trim().slice(0, 240)
+          : null,
+    });
+
+    if (locations.length >= 6) {
+      break;
+    }
+  }
+
+  return locations;
+}
+
+function serializeTimestamp(value: unknown): string | null {
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+  if (value && typeof value === 'object' && typeof (value as { toDate?: unknown }).toDate === 'function') {
+    return ((value as { toDate(): Date }).toDate()).toISOString();
+  }
+  return null;
+}
+
+function serializeAnswerCard(id: string, data: Record<string, unknown>) {
+  return {
+    id,
+    atlasId: typeof data.atlas_id === 'string' ? data.atlas_id : null,
+    atlasName: typeof data.atlas_name === 'string' ? data.atlas_name : null,
+    question: String(data.question ?? ''),
+    answerPreview: String(data.answer_preview ?? ''),
+    title: String(data.title ?? 'A Philly Answer Worth Sharing'),
+    subtitle: String(data.subtitle ?? 'A fast, shareable summary from Living Wiki Philly.'),
+    keyFacts: Array.isArray(data.key_facts) ? data.key_facts.map(String).filter(Boolean).slice(0, 5) : [],
+    didYouKnow: Array.isArray(data.did_you_know) ? data.did_you_know.map(String).filter(Boolean).slice(0, 3) : [],
+    mappableLocations: normalizeAnswerCardLocations(data.mappable_locations),
+    likeCount: Number(data.like_count ?? 0) || 0,
+    sourceThreadId: typeof data.source_thread_id === 'string' ? data.source_thread_id : null,
+    sourceAnswerMode: data.source_answer_mode === 'internet' ? 'internet' : data.source_answer_mode === 'wiki' ? 'wiki' : null,
+    createdAt: serializeTimestamp(data.created_at),
+    updatedAt: serializeTimestamp(data.updated_at),
+  };
+}
+
+async function loadAnswerCardAtlas(atlasId: string | null, uid: string): Promise<Record<string, unknown> | null> {
+  if (!atlasId) {
+    return null;
+  }
+
+  const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
+  if (!atlasSnapshot.exists) {
+    throw new HttpsError('not-found', 'Atlas not found.');
+  }
+
+  const atlas = atlasSnapshot.data() as Record<string, unknown> | undefined;
+  const isOwner = String(atlas?.user_id ?? '') === uid;
+  const isPublic = atlas?.is_public === true;
+  if (!isOwner && !isPublic) {
+    throw new HttpsError('permission-denied', 'You do not have access to this atlas.');
+  }
+
+  return {
+    id: atlasSnapshot.id,
+    ...atlas,
+  };
+}
+
+function answerCardLikeDocumentId(cardId: string, visitorId: string): string {
+  const hash = createHash('sha256').update(`${cardId}:${visitorId}`).digest('hex').slice(0, 40);
+  return `${cardId}_${hash}`;
+}
+
 function getPublicChatVisitorContext(request: {
   auth?: { uid?: string; token?: unknown } | null;
   data?: Record<string, unknown>;
@@ -998,6 +1110,146 @@ export const askAtlas = onCall(
         error instanceof Error ? error.message : 'Failed to answer question.',
       );
     }
+  },
+);
+
+export const createAnswerCard = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 90,
+    memory: '512MiB',
+    cors: true,
+    secrets: [geminiApiKey],
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const question = String(request.data?.question ?? '').replace(/\s+/g, ' ').trim();
+    const answer = String(request.data?.answer ?? '').trim();
+    if (!question) {
+      throw new HttpsError('invalid-argument', 'question is required.');
+    }
+    if (!answer) {
+      throw new HttpsError('invalid-argument', 'answer is required.');
+    }
+
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const atlas = await loadAnswerCardAtlas(atlasId, request.auth.uid);
+    const atlasName = typeof atlas?.name === 'string' ? atlas.name : null;
+    const cityConfig = atlas?.city_config && typeof atlas.city_config === 'object'
+      ? atlas.city_config as Record<string, unknown>
+      : null;
+    const cityName = typeof cityConfig?.city_name === 'string' ? cityConfig.city_name : null;
+    const regionName = typeof cityConfig?.region_name === 'string' ? cityConfig.region_name : null;
+    const cityHint = [cityName, regionName].filter(Boolean).join(', ') || null;
+    const locations = normalizeAnswerCardLocations(request.data?.mappableLocations);
+    const threadId = typeof request.data?.threadId === 'string' && request.data.threadId.trim()
+      ? request.data.threadId.trim().slice(0, 160)
+      : null;
+    const answerMode = request.data?.answerMode === 'internet' ? 'internet' : request.data?.answerMode === 'wiki' ? 'wiki' : null;
+
+    try {
+      const generated = await generateAnswerCard({
+        question: question.slice(0, 2000),
+        answer: answer.slice(0, 8000),
+        atlasName,
+        cityHint,
+        locations,
+      });
+      const record: AnswerCardRecord = {
+        owner_user_id: request.auth.uid,
+        atlas_id: atlasId,
+        atlas_name: atlasName,
+        question: question.slice(0, 2000),
+        answer_preview: answer.slice(0, 900),
+        title: generated.title,
+        subtitle: generated.subtitle,
+        key_facts: generated.key_facts,
+        did_you_know: generated.did_you_know,
+        mappable_locations: locations,
+        source_thread_id: threadId,
+        source_answer_mode: answerMode,
+        like_count: 0,
+        created_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      };
+
+      const docRef = db.collection('answer_cards').doc();
+      await docRef.set(record);
+      const snapshot = await docRef.get();
+      const savedRecord = snapshot.data() ?? (record as unknown as Record<string, unknown>);
+      return { card: serializeAnswerCard(docRef.id, savedRecord) };
+    } catch (error) {
+      logger.error('createAnswerCard failed', { errorMessage: error instanceof Error ? error.message : String(error) });
+      throw new HttpsError('internal', error instanceof Error ? error.message : 'Failed to create answer card.');
+    }
+  },
+);
+
+export const getAnswerCard = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const cardId = normalizeAnswerCardId(request.data?.cardId);
+    const snapshot = await db.collection('answer_cards').doc(cardId).get();
+    if (!snapshot.exists) {
+      throw new HttpsError('not-found', 'Answer card not found.');
+    }
+
+    return { card: serializeAnswerCard(snapshot.id, snapshot.data() ?? {}) };
+  },
+);
+
+export const likeAnswerCard = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const cardId = normalizeAnswerCardId(request.data?.cardId);
+    const visitorId = request.auth?.uid || normalizeAnonymousVisitorId(request.data?.visitorId);
+    if (!visitorId) {
+      throw new HttpsError('invalid-argument', 'visitorId is required.');
+    }
+
+    const cardRef = db.collection('answer_cards').doc(cardId);
+    const likeRef = db.collection('answer_card_likes').doc(answerCardLikeDocumentId(cardId, visitorId));
+
+    const result = await db.runTransaction(async (transaction) => {
+      const [cardSnapshot, likeSnapshot] = await Promise.all([
+        transaction.get(cardRef),
+        transaction.get(likeRef),
+      ]);
+      if (!cardSnapshot.exists) {
+        throw new HttpsError('not-found', 'Answer card not found.');
+      }
+
+      const currentCount = Number(cardSnapshot.data()?.like_count ?? 0) || 0;
+      if (likeSnapshot.exists) {
+        return { liked: true, likeCount: currentCount };
+      }
+
+      transaction.set(likeRef, {
+        card_id: cardId,
+        visitor_id_hash: createHash('sha256').update(visitorId).digest('hex'),
+        created_at: FieldValue.serverTimestamp(),
+      });
+      transaction.update(cardRef, {
+        like_count: FieldValue.increment(1),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      return { liked: true, likeCount: currentCount + 1 };
+    });
+
+    return result;
   },
 );
 

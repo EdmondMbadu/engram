@@ -160,6 +160,24 @@ export interface MappableLocation {
   address_hint?: string | null;
 }
 
+export interface AnswerCardRecord {
+  owner_user_id: string | null;
+  atlas_id: string | null;
+  atlas_name: string | null;
+  question: string;
+  answer_preview: string;
+  title: string;
+  subtitle: string;
+  key_facts: string[];
+  did_you_know: string[];
+  mappable_locations: MappableLocation[];
+  source_thread_id?: string | null;
+  source_answer_mode?: 'wiki' | 'internet' | null;
+  like_count: number;
+  created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
+  updated_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
+}
+
 export interface QueryRecord {
   user_id: string;
   atlas_id: string | null;

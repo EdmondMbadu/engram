@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage, MappableLocation } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
+import { AnswerCardService } from '../answer-card.service';
 import { ChatService } from '../chat.service';
 import { DocumentsService } from '../documents.service';
 import { WikiService } from '../wiki.service';
@@ -53,6 +54,7 @@ const THINKING_STAGES = [
 export class ChatComponent implements AfterViewChecked {
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
+  private readonly answerCardService = inject(AnswerCardService);
   private readonly chatService = inject(ChatService);
   private readonly documentsService = inject(DocumentsService);
   private readonly wikiService = inject(WikiService);
@@ -85,6 +87,10 @@ export class ChatComponent implements AfterViewChecked {
   readonly activeHistoryId = signal<string | null>(null);
   readonly activeThreadId = signal<string | null>(null);
   readonly messageActionMenuId = signal<string | null>(null);
+  readonly creatingAnswerCardId = signal<string | null>(null);
+  readonly answerCardLinks = signal<Record<string, string>>({});
+  readonly answerCardErrorMessageId = signal<string | null>(null);
+  readonly answerCardError = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly publicAtlas = signal<AtlasItem | null>(null);
@@ -1122,6 +1128,48 @@ export class ChatComponent implements AfterViewChecked {
     await this.copyText(`${message.id}:body`, message.text.trim());
   }
 
+  canCreateAnswerCard(message: ChatMessage): boolean {
+    return message.role === 'assistant' && !message.pending && !!message.text.trim() && this.isSignedIn();
+  }
+
+  canShowAnswerCardAction(message: ChatMessage): boolean {
+    return message.role === 'assistant' && !message.pending && !!message.text.trim();
+  }
+
+  async createAnswerCardForMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
+    event?.stopPropagation();
+    if (!this.canCreateAnswerCard(message) || this.creatingAnswerCardId()) {
+      return;
+    }
+
+    this.answerCardError.set(null);
+    this.answerCardErrorMessageId.set(null);
+    this.creatingAnswerCardId.set(message.id);
+    this.messageActionMenuId.set(null);
+
+    try {
+      const question = this.questionBeforeMessage(message.id);
+      const atlas = this.currentWikiAtlas();
+      const card = await this.answerCardService.createAnswerCard({
+        question: question || 'Living Wiki question',
+        answer: message.text,
+        atlasId: atlas?.id ?? null,
+        threadId: this.activeThreadId(),
+        answerMode: message.answerMode ?? this.answerMode(),
+        mappableLocations: message.mappableLocations ?? [],
+      });
+      this.answerCardLinks.update((links) => ({
+        ...links,
+        [message.id]: `/answer-card/${card.id}`,
+      }));
+    } catch (error) {
+      this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create answer card.');
+      this.answerCardErrorMessageId.set(message.id);
+    } finally {
+      this.creatingAnswerCardId.set(null);
+    }
+  }
+
   ngAfterViewChecked(): void {
     if (this.shouldScrollToEnd) {
       this.shouldScrollToEnd = false;
@@ -1206,6 +1254,22 @@ export class ChatComponent implements AfterViewChecked {
     }
 
     return lines.join('\n');
+  }
+
+  private questionBeforeMessage(messageId: string): string {
+    const messages = this.messages();
+    const index = messages.findIndex((message) => message.id === messageId);
+    if (index <= 0) {
+      return '';
+    }
+
+    for (let i = index - 1; i >= 0; i -= 1) {
+      const candidate = messages[i];
+      if (candidate?.role === 'user' && candidate.text.trim()) {
+        return candidate.text.trim();
+      }
+    }
+    return '';
   }
 
   historyTitle(item: ChatHistoryItem): string {

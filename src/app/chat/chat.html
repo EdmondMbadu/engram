@@ -494,7 +494,49 @@
                                 }
                               </div>
                             }
+                            @if (canShowAnswerCardAction(msg)) {
+                              <div class="chat-answer-card-cta">
+                                @if (answerCardLinks()[msg.id]) {
+                                  <a class="chat-answer-card-cta__button" [routerLink]="answerCardLinks()[msg.id]">
+                                    <span class="material-symbols-outlined">style</span>
+                                    <span>Open Philly Answer Card</span>
+                                  </a>
+                                } @else if (canCreateAnswerCard(msg)) {
+                                  <button
+                                    type="button"
+                                    class="chat-answer-card-cta__button"
+                                    [disabled]="creatingAnswerCardId() === msg.id"
+                                    (click)="createAnswerCardForMessage(msg, $event)"
+                                  >
+                                    @if (creatingAnswerCardId() === msg.id) {
+                                      <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                                      <span>Making Philly Answer Card</span>
+                                    } @else {
+                                      <span class="material-symbols-outlined">style</span>
+                                      <span>Make Philly Answer Card</span>
+                                    }
+                                  </button>
+                                } @else {
+                                  <a class="chat-answer-card-cta__button" routerLink="/sign-in" [queryParams]="signInQueryParams()">
+                                    <span class="material-symbols-outlined">style</span>
+                                    <span>Sign in to make card</span>
+                                  </a>
+                                }
+                                <p>Creates a shareable card with key facts, places, and Did You Know notes.</p>
+                              </div>
+                            }
                             <div class="chat-message-footer">
+                              @if (answerCardLinks()[msg.id]) {
+                                <a
+                                  class="chat-inline-action chat-inline-action--text"
+                                  [routerLink]="answerCardLinks()[msg.id]"
+                                  [attr.aria-label]="'Open answer card'"
+                                  [attr.data-tooltip]="'Open card'"
+                                >
+                                  <span class="material-symbols-outlined">style</span>
+                                  <span>Card</span>
+                                </a>
+                              }
                               <button
                                 type="button"
                                 class="chat-inline-action"
@@ -506,6 +548,9 @@
                                 <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
                               </button>
                             </div>
+                            @if (answerCardErrorMessageId() === msg.id && answerCardError()) {
+                              <p class="mt-2 text-xs font-bold text-red-500">{{ answerCardError() }}</p>
+                            }
                           }
                         </div>
                       </div>

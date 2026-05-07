@@ -1,0 +1,120 @@
+<div class="answer-card-page min-h-screen bg-[var(--bg)] text-[var(--text)]">
+  <header class="answer-card-shell flex items-center justify-between gap-4 py-4">
+    <a routerLink="/" class="answer-card-brand">
+      <img src="/assets/living-atlas-logo.png" alt="" class="answer-card-brand__logo" />
+      <span>Living Wiki Philly</span>
+    </a>
+    <app-theme-toggle></app-theme-toggle>
+  </header>
+
+  <main class="answer-card-shell pb-12 pt-4">
+    @if (isLoading()) {
+      <div class="answer-card-loading">
+        <span class="inline-block h-7 w-7 animate-spin rounded-full border-2 border-[var(--accent)]/35 border-t-[var(--accent)]"></span>
+        <p>Loading answer card</p>
+      </div>
+    } @else if (errorMessage()) {
+      <div class="answer-card-empty">
+        <span class="material-symbols-outlined">error</span>
+        <h1>This answer card is unavailable</h1>
+        <p>{{ errorMessage() }}</p>
+      </div>
+    } @else if (card(); as card) {
+      <section class="answer-card-layout">
+        <article class="philly-answer-card">
+          <div class="philly-answer-card__topline">
+            <span class="philly-answer-card__pill">Philly Answer Card</span>
+            @if (card.atlasName) {
+              <span>{{ card.atlasName }}</span>
+            }
+          </div>
+
+          <h1>{{ card.title }}</h1>
+          <p class="philly-answer-card__subtitle">{{ card.subtitle }}</p>
+
+          <div class="philly-answer-card__question">
+            <span class="material-symbols-outlined">forum</span>
+            <p>{{ card.question }}</p>
+          </div>
+
+          <div class="philly-answer-card__section">
+            <h2>Key Takeaways</h2>
+            <ul>
+              @for (fact of card.keyFacts; track fact) {
+                <li>
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span>{{ fact }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          @if (card.mappableLocations.length > 0) {
+            <div class="philly-answer-card__section">
+              <h2>Places Mentioned</h2>
+              <div class="answer-card-place-grid">
+                @for (place of card.mappableLocations; track place.name + place.search_query) {
+                  <a class="answer-card-place" [href]="mapLink(place.search_query)" target="_blank" rel="noreferrer">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span>
+                      <strong>{{ place.name }}</strong>
+                      @if (place.address_hint) {
+                        <small>{{ place.address_hint }}</small>
+                      }
+                    </span>
+                  </a>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="philly-answer-card__section philly-answer-card__did-you-know">
+            <h2>Did You Know?</h2>
+            <div class="answer-card-fact-stack">
+              @for (fact of card.didYouKnow; track fact) {
+                <p>{{ fact }}</p>
+              }
+            </div>
+          </div>
+
+          <footer class="philly-answer-card__footer">
+            <span>Made with Living Wiki Philly</span>
+            <span class="material-symbols-outlined">auto_awesome</span>
+          </footer>
+        </article>
+
+        <aside class="answer-card-side">
+          <div class="answer-card-actions">
+            <button type="button" class="answer-card-action answer-card-action--primary" (click)="shareCard()">
+              <span class="material-symbols-outlined">{{ shared() ? 'check' : 'ios_share' }}</span>
+              <span>{{ shared() ? 'Shared' : 'Share' }}</span>
+            </button>
+            <button type="button" class="answer-card-action" (click)="copyLink()">
+              <span class="material-symbols-outlined">{{ copied() ? 'check' : 'content_copy' }}</span>
+              <span>{{ copied() ? 'Copied' : 'Copy link' }}</span>
+            </button>
+            <button
+              type="button"
+              class="answer-card-action"
+              [class.answer-card-action--liked]="liked()"
+              [disabled]="liking() || liked()"
+              (click)="likeCard()"
+            >
+              <span class="material-symbols-outlined">{{ liked() ? 'favorite' : 'favorite_border' }}</span>
+              <span>{{ card.likeCount }} like{{ card.likeCount === 1 ? '' : 's' }}</span>
+            </button>
+          </div>
+
+          @if (card.mappableLocations.length > 0) {
+            <app-chat-location-map [locations]="card.mappableLocations"></app-chat-location-map>
+          }
+
+          <div class="answer-card-preview-text">
+            <h2>From the Answer</h2>
+            <p>{{ card.answerPreview }}</p>
+          </div>
+        </aside>
+      </section>
+    }
+  </main>
+</div>

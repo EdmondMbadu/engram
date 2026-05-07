@@ -179,6 +179,24 @@ export interface MappableLocation {
   address_hint?: string | null;
 }
 
+export interface AnswerCardItem {
+  id: string;
+  atlasId: string | null;
+  atlasName: string | null;
+  question: string;
+  answerPreview: string;
+  title: string;
+  subtitle: string;
+  keyFacts: string[];
+  didYouKnow: string[];
+  mappableLocations: MappableLocation[];
+  likeCount: number;
+  sourceThreadId: string | null;
+  sourceAnswerMode: 'wiki' | 'internet' | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+}
+
 export interface ChatThreadItem {
   id: string;
   kind: 'thread';
