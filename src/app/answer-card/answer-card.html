@@ -15,7 +15,7 @@
       </div>
     } @else if (errorMessage()) {
       <div class="answer-card-empty">
-        <span class="material-symbols-outlined">error</span>
+        <span class="answer-card-mark answer-card-mark--alert" aria-hidden="true"></span>
         <h1>This answer card is unavailable</h1>
         <p>{{ errorMessage() }}</p>
       </div>
@@ -33,7 +33,7 @@
           <p class="philly-answer-card__subtitle">{{ card.subtitle }}</p>
 
           <div class="philly-answer-card__question">
-            <span class="material-symbols-outlined">forum</span>
+            <span class="answer-card-mark answer-card-mark--question" aria-hidden="true"></span>
             <p>{{ card.question }}</p>
           </div>
 
@@ -42,7 +42,7 @@
             <ul>
               @for (fact of card.keyFacts; track fact) {
                 <li>
-                  <span class="material-symbols-outlined">check_circle</span>
+                  <span class="answer-card-mark answer-card-mark--check" aria-hidden="true"></span>
                   <span>{{ fact }}</span>
                 </li>
               }
@@ -55,7 +55,7 @@
               <div class="answer-card-place-grid">
                 @for (place of card.mappableLocations; track place.name + place.search_query) {
                   <a class="answer-card-place" [href]="mapLink(place.search_query)" target="_blank" rel="noreferrer">
-                    <span class="material-symbols-outlined">location_on</span>
+                    <span class="answer-card-mark answer-card-mark--pin" aria-hidden="true"></span>
                     <span>
                       <strong>{{ place.name }}</strong>
                       @if (place.address_hint) {
@@ -79,18 +79,18 @@
 
           <footer class="philly-answer-card__footer">
             <span>Made with Living Wiki Philly</span>
-            <span class="material-symbols-outlined">auto_awesome</span>
+            <span class="answer-card-monogram">LW</span>
           </footer>
         </article>
 
         <aside class="answer-card-side">
           <div class="answer-card-actions">
             <button type="button" class="answer-card-action answer-card-action--primary" (click)="shareCard()">
-              <span class="material-symbols-outlined">{{ shared() ? 'check' : 'ios_share' }}</span>
+              <span class="answer-card-action__glyph" [class.answer-card-action__glyph--check]="shared()" aria-hidden="true"></span>
               <span>{{ shared() ? 'Shared' : 'Share' }}</span>
             </button>
             <button type="button" class="answer-card-action" (click)="copyLink()">
-              <span class="material-symbols-outlined">{{ copied() ? 'check' : 'content_copy' }}</span>
+              <span class="answer-card-action__glyph answer-card-action__glyph--copy" [class.answer-card-action__glyph--check]="copied()" aria-hidden="true"></span>
               <span>{{ copied() ? 'Copied' : 'Copy link' }}</span>
             </button>
             <button
@@ -100,7 +100,7 @@
               [disabled]="liking() || liked()"
               (click)="likeCard()"
             >
-              <span class="material-symbols-outlined">{{ liked() ? 'favorite' : 'favorite_border' }}</span>
+              <span class="answer-card-action__glyph answer-card-action__glyph--heart" [class.answer-card-action__glyph--heart-filled]="liked()" aria-hidden="true"></span>
               <span>{{ card.likeCount }} like{{ card.likeCount === 1 ? '' : 's' }}</span>
             </button>
           </div>

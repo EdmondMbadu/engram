@@ -1,12 +1,18 @@
 .answer-card-page {
   --card-red: #d9413c;
-  --card-blue: #244c8f;
-  --card-gold: #f2b84b;
-  --card-green: #2f8b6f;
+  --card-blue: #254c89;
+  --card-gold: #f3ba4f;
+  --card-green: #25785f;
+  --card-ink: var(--text);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 52%, transparent), transparent 22rem),
+    radial-gradient(circle at 14% 12%, color-mix(in srgb, var(--card-gold) 16%, transparent), transparent 18rem),
+    radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--card-blue) 12%, transparent), transparent 20rem),
+    var(--bg);
 }
 
 .answer-card-shell {
-  width: min(1120px, calc(100% - 32px));
+  width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
 }
 
@@ -47,22 +53,25 @@
 
 .answer-card-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 22px;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
   align-items: start;
 }
 
 .philly-answer-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
-  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, var(--card-gold) 16%);
+  border-radius: 28px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--card-red) 18%, transparent), transparent 28%),
-    linear-gradient(315deg, color-mix(in srgb, var(--card-blue) 18%, transparent), transparent 30%),
-    var(--surface);
-  box-shadow: var(--shadow-elevated);
-  padding: clamp(22px, 4vw, 42px);
+    linear-gradient(145deg, color-mix(in srgb, var(--card-red) 9%, transparent), transparent 34%),
+    linear-gradient(315deg, color-mix(in srgb, var(--card-blue) 11%, transparent), transparent 36%),
+    color-mix(in srgb, var(--surface) 94%, white 6%);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 72%, transparent) inset,
+    0 30px 90px color-mix(in srgb, #0f1720 16%, transparent);
+  padding: clamp(24px, 4.6vw, 48px);
+  isolation: isolate;
 }
 
 .philly-answer-card::before {
@@ -71,10 +80,20 @@
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(90deg, color-mix(in srgb, var(--text) 6%, transparent) 1px, transparent 1px),
-    linear-gradient(0deg, color-mix(in srgb, var(--text) 6%, transparent) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: linear-gradient(to bottom, black, transparent 72%);
+    linear-gradient(90deg, color-mix(in srgb, var(--text) 4.5%, transparent) 1px, transparent 1px),
+    linear-gradient(0deg, color-mix(in srgb, var(--text) 4.5%, transparent) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(to bottom, black, transparent 68%);
+  z-index: -2;
+}
+
+.philly-answer-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 8px;
+  background: linear-gradient(90deg, var(--card-blue), var(--card-gold), var(--card-red));
+  z-index: 1;
 }
 
 .philly-answer-card > * {
@@ -88,10 +107,10 @@
   justify-content: space-between;
   gap: 12px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
 }
 
 .philly-answer-card__pill {
@@ -99,40 +118,46 @@
   align-items: center;
   min-height: 30px;
   border-radius: 999px;
-  background: var(--card-gold);
+  background: linear-gradient(135deg, var(--card-gold), #ffd37a);
   color: #20130a;
-  padding: 6px 10px;
-  letter-spacing: 0.08em;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--card-gold) 24%, transparent);
+  padding: 6px 12px;
+  letter-spacing: 0.09em;
 }
 
 .philly-answer-card h1 {
-  max-width: 12ch;
-  margin: 28px 0 0;
+  max-width: 14ch;
+  margin: 30px 0 0;
   color: var(--text);
-  font-size: clamp(2.7rem, 7vw, 6.5rem);
-  line-height: 0.92;
+  font-size: clamp(2.45rem, 5.8vw, 5.35rem);
+  line-height: 0.98;
   font-weight: 950;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .philly-answer-card__subtitle {
-  max-width: 760px;
-  margin: 18px 0 0;
-  color: var(--text);
-  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  max-width: 720px;
+  margin: 20px 0 0;
+  color: color-mix(in srgb, var(--text) 86%, var(--muted));
+  font-size: clamp(1.02rem, 1.5vw, 1.25rem);
   line-height: 1.45;
-  font-weight: 750;
+  font-weight: 760;
+  text-wrap: pretty;
 }
 
 .philly-answer-card__question {
-  display: flex;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
   align-items: flex-start;
   gap: 12px;
-  margin-top: 24px;
-  border-left: 4px solid var(--card-blue);
-  padding: 12px 14px;
-  background: color-mix(in srgb, var(--surface-2) 74%, transparent);
+  margin-top: 26px;
+  border: 1px solid color-mix(in srgb, var(--line) 74%, transparent);
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
   color: var(--text);
+  box-shadow: 0 1px 0 color-mix(in srgb, white 55%, transparent) inset;
 }
 
 .philly-answer-card__question p {
@@ -142,22 +167,22 @@
 }
 
 .philly-answer-card__section {
-  margin-top: 30px;
+  margin-top: 32px;
 }
 
 .philly-answer-card__section h2,
 .answer-card-preview-text h2 {
   margin: 0 0 12px;
   color: var(--text);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 950;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
 .philly-answer-card__section ul {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -165,36 +190,44 @@
 
 .philly-answer-card__section li {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
   align-items: start;
+  border: 1px solid color-mix(in srgb, var(--line) 68%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 74%, transparent);
   color: var(--text);
-  font-size: clamp(1rem, 1.6vw, 1.16rem);
+  padding: 13px 14px;
+  font-size: clamp(0.98rem, 1.2vw, 1.06rem);
   line-height: 1.45;
-  font-weight: 720;
-}
-
-.philly-answer-card__section li .material-symbols-outlined {
-  color: var(--card-green);
-  font-size: 1.25rem;
+  font-weight: 740;
 }
 
 .answer-card-place-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
 }
 
 .answer-card-place {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr);
-  gap: 9px;
-  min-height: 62px;
-  border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface) 88%, var(--card-gold) 12%);
-  padding: 10px;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 68px;
+  border: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 86%, var(--card-gold) 9%);
+  padding: 12px;
   color: var(--text);
+  text-decoration: none;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.answer-card-place:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--card-gold) 44%, var(--line));
+  background: color-mix(in srgb, var(--surface) 80%, var(--card-gold) 14%);
 }
 
 .answer-card-place strong,
@@ -211,7 +244,7 @@
 
 .philly-answer-card__did-you-know {
   border-top: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
-  padding-top: 24px;
+  padding-top: 26px;
 }
 
 .answer-card-fact-stack {
@@ -221,12 +254,14 @@
 
 .answer-card-fact-stack p {
   margin: 0;
+  border-left: 4px solid var(--card-gold);
   border-radius: 16px;
-  background: color-mix(in srgb, var(--card-blue) 12%, var(--surface));
-  padding: 14px 16px;
+  background: color-mix(in srgb, var(--card-blue) 9%, var(--surface));
+  padding: 15px 17px;
   color: var(--text);
   line-height: 1.48;
-  font-weight: 700;
+  font-weight: 730;
+  text-wrap: pretty;
 }
 
 .philly-answer-card__footer {
@@ -245,10 +280,12 @@
 .answer-card-actions,
 .answer-card-preview-text {
   border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
-  border-radius: 18px;
-  background: var(--surface);
-  box-shadow: var(--shadow-soft);
-  padding: 12px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface) 92%, white 8%);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 56%, transparent) inset,
+    var(--shadow-soft);
+  padding: 14px;
 }
 
 .answer-card-actions {
@@ -268,6 +305,7 @@
   color: var(--text);
   font-size: 0.9rem;
   font-weight: 850;
+  text-decoration: none;
   transition: transform 150ms ease, background 150ms ease, color 150ms ease;
 }
 
@@ -283,7 +321,7 @@
 
 .answer-card-action--primary {
   border-color: transparent;
-  background: var(--text);
+  background: linear-gradient(135deg, var(--text), color-mix(in srgb, var(--text) 86%, var(--card-blue)));
   color: var(--bg);
 }
 
@@ -298,6 +336,203 @@
   color: var(--muted);
   font-size: 0.9rem;
   line-height: 1.65;
+}
+
+.answer-card-mark,
+.answer-card-action__glyph {
+  display: inline-block;
+  flex: 0 0 auto;
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+}
+
+.answer-card-mark--alert {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--danger-text);
+  border-radius: 50%;
+}
+
+.answer-card-mark--alert::before,
+.answer-card-mark--alert::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  border-radius: 999px;
+  background: var(--danger-text);
+  transform: translateX(-50%);
+}
+
+.answer-card-mark--alert::before {
+  top: 0.46rem;
+  width: 2px;
+  height: 0.8rem;
+}
+
+.answer-card-mark--alert::after {
+  bottom: 0.42rem;
+  width: 3px;
+  height: 3px;
+}
+
+.answer-card-mark--question {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--card-blue);
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 950;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--card-blue) 22%, transparent);
+}
+
+.answer-card-mark--question::before {
+  content: "Q";
+}
+
+.answer-card-mark--check {
+  width: 30px;
+  height: 30px;
+  border-radius: 12px;
+  background: var(--card-green);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--card-green) 18%, transparent);
+}
+
+.answer-card-mark--check::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 7px;
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg);
+}
+
+.answer-card-mark--pin {
+  width: 26px;
+  height: 26px;
+  border-radius: 11px;
+  background: var(--card-gold);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--card-gold) 18%, transparent);
+}
+
+.answer-card-mark--pin::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #24130a;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+
+.answer-card-monogram {
+  display: inline-grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+}
+
+.answer-card-action__glyph::before,
+.answer-card-action__glyph::after {
+  content: "";
+  position: absolute;
+}
+
+.answer-card-action__glyph::before {
+  left: 0.22rem;
+  top: 0.22rem;
+  width: 0.56rem;
+  height: 0.56rem;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.answer-card-action__glyph::after {
+  left: 0.45rem;
+  top: 0.28rem;
+  width: 2px;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.answer-card-action__glyph--copy::before {
+  left: 0.22rem;
+  top: 0.28rem;
+  width: 0.54rem;
+  height: 0.62rem;
+  border: 2px solid currentColor;
+  border-radius: 0.12rem;
+  transform: none;
+}
+
+.answer-card-action__glyph--copy::after {
+  left: 0.42rem;
+  top: 0.1rem;
+  width: 0.42rem;
+  height: 0.52rem;
+  border: 2px solid currentColor;
+  border-radius: 0.12rem;
+  background: transparent;
+}
+
+.answer-card-action__glyph--check::before {
+  left: 0.2rem;
+  top: 0.32rem;
+  width: 0.68rem;
+  height: 0.36rem;
+  border-top: 0;
+  border-right: 0;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.answer-card-action__glyph--check::after {
+  display: none;
+}
+
+.answer-card-action__glyph--heart::before,
+.answer-card-action__glyph--heart::after {
+  top: 0.18rem;
+  width: 0.52rem;
+  height: 0.82rem;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 0.52rem 0.52rem 0 0;
+  background: transparent;
+}
+
+.answer-card-action__glyph--heart::before {
+  left: 0.12rem;
+  transform: rotate(-45deg);
+  transform-origin: 100% 100%;
+}
+
+.answer-card-action__glyph--heart::after {
+  left: 0.36rem;
+  transform: rotate(45deg);
+  transform-origin: 0 100%;
+}
+
+.answer-card-action__glyph--heart-filled::before,
+.answer-card-action__glyph--heart-filled::after {
+  background: currentColor;
 }
 
 @media (max-width: 900px) {

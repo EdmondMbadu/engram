@@ -5,6 +5,7 @@ import { GoogleMapsService, type ResolvedMappableLocation } from '../google-maps
 @Component({
   selector: 'app-chat-location-map',
   templateUrl: './chat-location-map.html',
+  styleUrl: './chat-location-map.css',
 })
 export class ChatLocationMapComponent implements OnChanges {
   private readonly googleMapsService = inject(GoogleMapsService);

@@ -1,7 +1,7 @@
 <div class="mt-5 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)]">
   <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] px-4 py-3">
     <div class="flex min-w-0 items-center gap-2">
-      <span class="material-symbols-outlined text-[1.05rem] text-[var(--accent)]">map</span>
+      <span class="chat-map-glyph chat-map-glyph--map" aria-hidden="true"></span>
       <p class="text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ mapTitle }}</p>
     </div>
     <div class="flex flex-wrap items-center gap-2">
@@ -12,7 +12,7 @@
           rel="noopener noreferrer"
           class="inline-flex max-w-[12rem] items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 text-[11px] font-bold text-[var(--text)] transition hover:border-[var(--accent)]/40"
         >
-          <span class="material-symbols-outlined text-[0.9rem] text-[var(--accent)]">place</span>
+          <span class="chat-map-glyph chat-map-glyph--pin" aria-hidden="true"></span>
           <span class="truncate">{{ location.name }}</span>
         </a>
       }
@@ -28,7 +28,7 @@
     }
     @if (error()) {
       <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[var(--surface)] px-5 text-center">
-        <span class="material-symbols-outlined text-3xl text-[var(--muted)]">map_off</span>
+        <span class="chat-map-glyph chat-map-glyph--off" aria-hidden="true"></span>
         <p class="text-sm font-semibold text-[var(--text)]">Map preview unavailable</p>
         <p class="max-w-md text-xs leading-5 text-[var(--muted)]">Open any place chip above in Google Maps.</p>
       </div>

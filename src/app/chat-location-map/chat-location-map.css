@@ -1,0 +1,51 @@
+.chat-map-glyph {
+  display: inline-block;
+  flex: 0 0 auto;
+  position: relative;
+  width: 0.92rem;
+  height: 0.92rem;
+}
+
+.chat-map-glyph--map {
+  border: 1.5px solid var(--accent);
+  border-radius: 0.2rem;
+  background:
+    linear-gradient(90deg, transparent 32%, color-mix(in srgb, var(--accent) 45%, transparent) 32% 36%, transparent 36% 66%, color-mix(in srgb, var(--accent) 45%, transparent) 66% 70%, transparent 70%),
+    linear-gradient(0deg, transparent 45%, color-mix(in srgb, var(--accent) 45%, transparent) 45% 50%, transparent 50%);
+}
+
+.chat-map-glyph--pin,
+.chat-map-glyph--off {
+  width: 0.86rem;
+  height: 0.86rem;
+  border: 2px solid var(--accent);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+
+.chat-map-glyph--pin::after {
+  content: "";
+  position: absolute;
+  inset: 0.18rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.chat-map-glyph--off {
+  width: 2rem;
+  height: 2rem;
+  border-color: var(--muted);
+  opacity: 0.72;
+}
+
+.chat-map-glyph--off::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.2rem;
+  width: 2px;
+  height: 2.35rem;
+  border-radius: 999px;
+  background: var(--muted);
+  transform: translateX(-50%) rotate(90deg);
+}
