@@ -675,10 +675,8 @@
   line-height: 1.78;
   letter-spacing: -0.014em;
   text-wrap: pretty;
-  font-feature-settings: 'kern' on, 'liga' on, 'calt' on;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .assistant-message__content > * + * {
@@ -693,8 +691,7 @@
 
 .assistant-message__content h1,
 .assistant-message__content h2,
-.assistant-message__content h3,
-.assistant-message__content h4 {
+.assistant-message__content h3 {
   color: var(--text);
   font-weight: 600;
   letter-spacing: -0.018em;
@@ -711,15 +708,6 @@
   font-size: 1.135rem;
   margin-top: 1.85rem !important;
   margin-bottom: -0.2rem;
-  color: var(--text);
-  letter-spacing: -0.018em;
-}
-
-.assistant-message__content h4 {
-  font-size: 1.04rem;
-  margin-top: 1.55rem !important;
-  letter-spacing: -0.014em;
-  color: color-mix(in srgb, var(--text) 88%, var(--muted) 12%);
 }
 
 .assistant-message__content p {
@@ -764,8 +752,8 @@
 .assistant-message__content ol > li::marker {
   color: color-mix(in srgb, var(--text) 55%, var(--muted) 45%);
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
   font-size: 0.95em;
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
 
@@ -799,42 +787,14 @@
 
 .assistant-message__content blockquote {
   border-left: 2px solid color-mix(in srgb, var(--accent) 50%, var(--line));
-  background: transparent !important;
   margin-left: 0;
   margin-right: 0;
-  padding: 0.1rem 0 0.1rem 1.15rem !important;
+  padding: 0.1rem 0 0.1rem 1.15rem;
   font-size: 1.04rem;
   line-height: 1.72;
   font-style: italic;
-  color: color-mix(in srgb, var(--text) 84%, var(--muted) 16%);
   letter-spacing: -0.008em;
-}
-
-.assistant-message__content code {
-  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace !important;
-  font-size: 0.88em !important;
-  font-feature-settings: 'liga' off, 'calt' off;
-  letter-spacing: -0.005em;
-  background: color-mix(in srgb, var(--text) 7%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent) !important;
-  padding: 0.1em 0.42em !important;
-  border-radius: 0.42rem !important;
-}
-
-.assistant-message__content pre {
-  font-size: 0.9rem !important;
-  line-height: 1.65 !important;
-  background: color-mix(in srgb, var(--text) 4%, transparent) !important;
-  border: 1px solid var(--line) !important;
-  padding: 1rem 1.15rem !important;
-  border-radius: 0.85rem !important;
-}
-
-.assistant-message__content pre code {
-  font-size: inherit !important;
-  border: 0 !important;
-  background: transparent !important;
-  padding: 0 !important;
+  color: color-mix(in srgb, var(--text) 84%, var(--muted) 16%);
 }
 
 .chat-user-bubble {
