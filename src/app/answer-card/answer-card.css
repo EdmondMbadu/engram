@@ -392,7 +392,6 @@
   font-size: 0.9rem;
   font-weight: 850;
   text-decoration: none;
-  transition: transform 150ms ease, background 150ms ease, color 150ms ease;
 }
 
 .answer-card-action:hover:not(:disabled) {
@@ -407,6 +406,14 @@
 
 .answer-card-action--primary {
   border-color: transparent;
+  background: var(--text);
+  color: var(--bg);
+}
+
+.answer-card-action--primary:hover:not(:disabled),
+.answer-card-action--primary:focus-visible,
+.answer-card-share-link button:hover,
+.answer-card-share-link button:focus-visible {
   background: var(--text);
   color: var(--bg);
 }
