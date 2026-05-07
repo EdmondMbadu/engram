@@ -235,7 +235,11 @@
 
       <div class="relative flex min-h-0 flex-1 flex-col">
         <div class="flex-1 min-h-0 overflow-y-auto">
-          <div class="mx-auto w-full max-w-3xl px-5 py-4 md:px-8 md:py-5">
+          <div
+            class="mx-auto w-full px-5 py-4 md:px-8 md:py-5"
+            [class.max-w-3xl]="!hasMessages()"
+            [class.max-w-4xl]="hasMessages()"
+          >
             @if (publicNotFound()) {
               <div class="flex flex-col items-center pt-12 text-center">
                 <h2 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">This chat is unavailable</h2>
@@ -270,8 +274,8 @@
                   <div class="chat-premium-composer">
                     <textarea
                       #composerInput
-                      [ngModel]="question()"
-                      (ngModelChange)="question.set($event)"
+                      [value]="question()"
+                      (input)="onComposerInput($event)"
                       (keydown)="onComposerKeydown($event)"
                       rows="1"
                       [placeholder]="composerPlaceholder()"
@@ -361,20 +365,32 @@
                 }
               </div>
             } @else {
-              <div class="space-y-8 pb-6">
+              <div class="chat-thread space-y-10 pb-8">
                 @for (msg of messages(); track msg.id) {
                   @if (msg.role === 'user') {
                     <div class="flex justify-end">
-                      <div class="chat-message-actions max-w-[85%] rounded-3xl rounded-tr-lg border border-white/10 bg-white/[0.06] px-5 py-3.5 text-base leading-7 text-[var(--text)]">
-                        <div class="mb-2 flex items-start justify-between gap-4">
-                          <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">You</p>
+                      <div class="chat-user-bubble chat-message-actions">
+                        <div class="chat-user-bubble__text">{{ msg.text }}</div>
+                        <div class="chat-user-bubble__actions">
+                          <button
+                            type="button"
+                            class="chat-inline-action"
+                            [class.chat-inline-action--copied]="copiedTarget() === msg.id + ':body'"
+                            [attr.aria-label]="copiedTarget() === msg.id + ':body' ? 'Copied question' : 'Copy question'"
+                            [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? 'Copied' : 'Copy'"
+                            (click)="copyMessageBody(msg, $event)"
+                          >
+                            <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
+                          </button>
                           <div class="relative">
                             <button
                               type="button"
-                              class="rounded-full p-1.5 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
+                              class="chat-inline-action"
+                              [attr.aria-label]="'More actions'"
+                              [attr.data-tooltip]="'More'"
                               (click)="toggleMessageActions(msg.id, $event)"
                             >
-                              <span class="material-symbols-outlined text-[1rem]">more_horiz</span>
+                              <span class="material-symbols-outlined">more_horiz</span>
                             </button>
                             @if (messageActionMenuId() === msg.id) {
                               <div class="absolute right-0 top-full z-20 mt-2 w-56 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-2 shadow-[var(--shadow-elevated)]">
@@ -396,28 +412,15 @@
                             }
                           </div>
                         </div>
-                        {{ msg.text }}
-                        <div class="chat-message-footer chat-message-footer--user">
-                          <button
-                            type="button"
-                            class="chat-inline-action"
-                            [class.chat-inline-action--copied]="copiedTarget() === msg.id + ':body'"
-                            [attr.aria-label]="copiedTarget() === msg.id + ':body' ? 'Copied question' : 'Copy question'"
-                            [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? 'Copied' : 'Copy'"
-                            (click)="copyMessageBody(msg, $event)"
-                          >
-                            <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
-                          </button>
-                        </div>
                       </div>
                     </div>
                   } @else {
-                    <div class="assistant-message flex gap-4">
+                    <div class="assistant-message flex gap-5">
                       <div class="assistant-message__avatar" [class.assistant-message__avatar--pending]="msg.pending">
                         <img src="/assets/living-atlas-logo.png" alt="Living Wiki" class="assistant-message__logo" />
                       </div>
                       <div class="min-w-0 flex-1 pt-1">
-                        <div class="assistant-message__card px-5 py-4">
+                        <div class="assistant-message__card">
                           <div class="assistant-message__header">
                             <div class="assistant-message__badge">
                               <span class="assistant-message__badge-dot" [class.assistant-message__badge-dot--live]="msg.pending"></span>
@@ -472,7 +475,7 @@
                             @if (msg.knowledgeGap) {
                               <p class="mb-3 text-xs font-bold italic text-[var(--muted)]">This topic is not strongly covered in the current knowledge base yet.</p>
                             }
-                            <div class="assistant-message__content text-base leading-8 text-[var(--text)]" [innerHTML]="msg.html || ''"></div>
+                            <div class="assistant-message__content text-[var(--text)]" [innerHTML]="msg.html || ''"></div>
                             @if (msg.mappableLocations && msg.mappableLocations.length > 0) {
                               <app-chat-location-map [locations]="msg.mappableLocations"></app-chat-location-map>
                             }
@@ -528,12 +531,12 @@
 
         @if (hasMessages()) {
           <div class="border-t border-[var(--line)] bg-[var(--bg)]/85 backdrop-blur-xl">
-            <div class="mx-auto w-full max-w-3xl px-5 py-4 md:px-8">
-              <div class="chat-premium-composer">
+            <div class="mx-auto w-full max-w-4xl px-5 py-4 md:px-8">
+              <div class="chat-premium-composer chat-premium-composer--compact">
                 <textarea
                   #composerInput
-                  [ngModel]="question()"
-                  (ngModelChange)="question.set($event)"
+                  [value]="question()"
+                  (input)="onComposerInput($event)"
                   (keydown)="onComposerKeydown($event)"
                   rows="1"
                   [placeholder]="composerPlaceholder()"

@@ -699,6 +699,7 @@ export class ChatComponent implements AfterViewChecked {
       this.activeHistoryId.set(null);
     }
     this.question.set('');
+    queueMicrotask(() => this.autoGrowComposer());
     const selectedAnswerMode = this.canUseAnswerModeToggle() ? this.answerMode() : 'wiki';
 
     const now = new Date();
@@ -810,6 +811,7 @@ export class ChatComponent implements AfterViewChecked {
       if (!input) return;
       input.focus();
       input.setSelectionRange(prompt.length, prompt.length);
+      this.autoGrowComposer();
     });
   }
 
@@ -884,6 +886,7 @@ export class ChatComponent implements AfterViewChecked {
     this.messageActionMenuId.set(null);
     this.pendingDeleteHistoryItem.set(null);
     this.answerMode.set(this.defaultAnswerMode(this.currentWikiAtlas()));
+    queueMicrotask(() => this.autoGrowComposer());
   }
 
   async loadHistoryItem(item: ChatHistoryItem): Promise<void> {
@@ -909,6 +912,29 @@ export class ChatComponent implements AfterViewChecked {
         void this.submitQuestion();
       }
     }
+  }
+
+  onComposerInput(event: Event): void {
+    const target = event.target as HTMLTextAreaElement | null;
+    if (!target) return;
+    this.question.set(target.value);
+    this.resizeComposer(target);
+  }
+
+  autoGrowComposer(): void {
+    const input = this.composerInput?.nativeElement;
+    if (!input) return;
+    this.resizeComposer(input);
+  }
+
+  private resizeComposer(input: HTMLTextAreaElement): void {
+    input.style.height = 'auto';
+    const maxHeight = Number.parseFloat(window.getComputedStyle(input).maxHeight);
+    const nextHeight = Number.isFinite(maxHeight)
+      ? Math.min(input.scrollHeight, maxHeight)
+      : input.scrollHeight;
+    input.style.height = `${nextHeight}px`;
+    input.style.overflowY = input.scrollHeight > nextHeight ? 'auto' : 'hidden';
   }
 
   handlePrimaryAction(): void {
