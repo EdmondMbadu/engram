@@ -77,9 +77,15 @@
         <div class="quiz-question-list">
           @for (question of quiz.questions; track question.id; let index = $index) {
             <article class="quiz-question">
-              <div class="quiz-question__top">
-                <span>{{ index + 1 }}</span>
-                <h2>{{ question.prompt }}</h2>
+              <div class="quiz-question__masthead">
+                <div class="quiz-question__top">
+                  <span>{{ index + 1 }}</span>
+                  <h2>{{ question.prompt }}</h2>
+                </div>
+                <div class="quiz-question__visual" aria-hidden="true">
+                  <img src="/assets/public-wikis/philly-logo.png" alt="" />
+                  <span>PHL</span>
+                </div>
               </div>
 
               <div class="quiz-options">
@@ -93,7 +99,10 @@
                     [disabled]="!!grade()"
                     (click)="selectAnswer(question.id, option.id)"
                   >
-                    <span>{{ option.id.toUpperCase() }}</span>
+                    <span class="quiz-option__badge">{{ option.id.toUpperCase() }}</span>
+                    <span class="quiz-option__art" aria-hidden="true">
+                      <img src="/assets/living-atlas-logo.png" alt="" />
+                    </span>
                     <strong>{{ option.text }}</strong>
                   </button>
                 }
@@ -129,11 +138,19 @@
           @if (leaderboard().length > 0) {
             <ol>
               @for (entry of leaderboard(); track entry.rank + entry.displayName) {
-                <li>
-                  <span>{{ entry.rank }}</span>
-                  <strong>{{ entry.displayName }}</strong>
+                <li [class.quiz-leaderboard__winner]="entry.rank === 1">
+                  <span class="quiz-leaderboard__rank">
+                    @if (entry.rank === 1) {
+                      <span class="material-symbols-outlined">emoji_events</span>
+                    } @else {
+                      {{ entry.rank }}
+                    }
+                  </span>
+                  <span class="quiz-leaderboard__player">
+                    <strong>{{ entry.displayName }}</strong>
+                    <small>{{ entry.rank === 1 ? 'Current champion' : formatTime(entry.elapsedMs) }}</small>
+                  </span>
                   <em>{{ entry.score }}/{{ entry.total }}</em>
-                  <small>{{ formatTime(entry.elapsedMs) }}</small>
                 </li>
               }
             </ol>
