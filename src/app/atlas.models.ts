@@ -89,6 +89,7 @@ export interface AtlasItem {
   cover_color: string | null;
   city_config?: CityAtlasConfig | null;
   persona_prompt?: string | null;
+  default_answer_mode?: 'wiki' | 'internet' | null;
   created_at?: { toDate(): Date } | Date | null;
   updated_at?: { toDate(): Date } | Date | null;
   stats?: {

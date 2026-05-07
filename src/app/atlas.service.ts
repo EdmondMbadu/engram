@@ -158,6 +158,7 @@ export class AtlasService {
       hero_url: null,
       video_url: null,
       cover_color: null,
+      default_answer_mode: 'wiki',
       created_at: serverTimestamp(),
       updated_at: serverTimestamp(),
     });
@@ -302,6 +303,14 @@ export class AtlasService {
     const persona = trimmed && trimmed.length > 0 ? trimmed.slice(0, 8000) : null;
     await updateDoc(doc(this.firestore, 'atlases', atlasId), {
       persona_prompt: persona,
+      updated_at: serverTimestamp(),
+    });
+  }
+
+  async updateDefaultAnswerMode(atlasId: string, mode: 'wiki' | 'internet'): Promise<void> {
+    if (!this.firestore) return;
+    await updateDoc(doc(this.firestore, 'atlases', atlasId), {
+      default_answer_mode: mode === 'internet' ? 'internet' : 'wiki',
       updated_at: serverTimestamp(),
     });
   }
@@ -458,6 +467,7 @@ export class AtlasService {
       hero_url: null,
       video_url: null,
       cover_color: null,
+      default_answer_mode: 'wiki',
       created_at: serverTimestamp(),
       updated_at: serverTimestamp(),
     });
@@ -493,6 +503,7 @@ export class AtlasService {
       video_url: typeof data['video_url'] === 'string' ? data['video_url'] : null,
       cover_color: typeof data['cover_color'] === 'string' ? data['cover_color'] : null,
       city_config: this.hydrateCityConfig(data['city_config']),
+      default_answer_mode: data['default_answer_mode'] === 'internet' ? 'internet' : 'wiki',
       created_at: this.hydrateDateValue(data['created_at']),
       updated_at: this.hydrateDateValue(data['updated_at']),
     };

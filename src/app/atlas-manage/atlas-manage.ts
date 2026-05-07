@@ -36,6 +36,7 @@ export class AtlasManageComponent {
   readonly cityEditingId = signal<string | null>(null);
   readonly cityDraft = signal<CityConfigDraft | null>(null);
   readonly savingCityConfig = signal(false);
+  readonly savingDefaultModeById = signal<Record<string, boolean>>({});
   readonly deletingId = signal<string | null>(null);
   readonly pageError = signal<string | null>(null);
 
@@ -93,6 +94,18 @@ export class AtlasManageComponent {
       return 'Default voice';
     }
     return `Custom voice • ${persona.length} chars`;
+  }
+
+  defaultAnswerMode(atlas: AtlasItem): 'wiki' | 'internet' {
+    return atlas.default_answer_mode === 'internet' ? 'internet' : 'wiki';
+  }
+
+  defaultAnswerModeSummary(atlas: AtlasItem): string {
+    return this.defaultAnswerMode(atlas) === 'internet' ? 'Internet' : 'Living Wiki';
+  }
+
+  isSavingDefaultMode(atlasId: string): boolean {
+    return this.savingDefaultModeById()[atlasId] ?? false;
   }
 
   cityConfigSummary(atlas: AtlasItem): string {
@@ -211,6 +224,22 @@ export class AtlasManageComponent {
       this.pageError.set(error instanceof Error ? error.message : 'Failed to save city pulse settings.');
     } finally {
       this.savingCityConfig.set(false);
+    }
+  }
+
+  async updateDefaultAnswerMode(atlas: AtlasItem, mode: 'wiki' | 'internet'): Promise<void> {
+    if (this.defaultAnswerMode(atlas) === mode || this.isSavingDefaultMode(atlas.id)) {
+      return;
+    }
+
+    this.savingDefaultModeById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    try {
+      await this.atlasService.updateDefaultAnswerMode(atlas.id, mode);
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to save default search mode.');
+    } finally {
+      this.savingDefaultModeById.update((current) => ({ ...current, [atlas.id]: false }));
     }
   }
 

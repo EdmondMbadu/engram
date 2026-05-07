@@ -254,6 +254,39 @@
                 </div>
 
                 <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
+                  <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Default search mode</p>
+                      <p class="mt-1 text-sm font-semibold text-[var(--text)]">{{ defaultAnswerModeSummary(atlas) }}</p>
+                    </div>
+                    <div class="flex w-full rounded-full border border-[var(--line)] bg-[var(--soft-fill)] p-1 sm:w-auto">
+                      <button
+                        type="button"
+                        class="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition sm:flex-none"
+                        [style.background-color]="defaultAnswerMode(atlas) === 'wiki' ? 'var(--accent)' : null"
+                        [style.color]="defaultAnswerMode(atlas) === 'wiki' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                        [disabled]="isSavingDefaultMode(atlas.id)"
+                        (click)="updateDefaultAnswerMode(atlas, 'wiki')"
+                      >
+                        <span class="material-symbols-outlined text-[1rem]">menu_book</span>
+                        <span>Living Wiki</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition sm:flex-none"
+                        [style.background-color]="defaultAnswerMode(atlas) === 'internet' ? 'var(--accent)' : null"
+                        [style.color]="defaultAnswerMode(atlas) === 'internet' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                        [disabled]="isSavingDefaultMode(atlas.id)"
+                        (click)="updateDefaultAnswerMode(atlas, 'internet')"
+                      >
+                        <span class="material-symbols-outlined text-[1rem]">public</span>
+                        <span>Internet</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
                   <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Voice & personality</p>

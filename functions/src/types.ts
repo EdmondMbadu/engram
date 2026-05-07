@@ -240,6 +240,7 @@ export interface AtlasRecord {
   hero_url: string | null;
   video_url?: string | null;
   cover_color: string | null;
+  default_answer_mode?: 'wiki' | 'internet' | null;
   city_config?: {
     enabled?: boolean;
     city_name?: string | null;

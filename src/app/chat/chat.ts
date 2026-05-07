@@ -520,6 +520,17 @@ export class ChatComponent implements AfterViewChecked {
       }
     });
 
+    effect(() => {
+      const atlas = this.currentWikiAtlas();
+      const canUseToggle = this.canUseAnswerModeToggle();
+      const hasActiveConversation = !!this.activeThreadId() || this.messages().length > 0;
+      if (!canUseToggle || !atlas?.id || hasActiveConversation) {
+        return;
+      }
+
+      this.answerMode.set(this.defaultAnswerMode(atlas));
+    });
+
     effect((onCleanup) => {
       if (!this.isPublicView()) {
         this.resetPublicChatState();
@@ -855,6 +866,7 @@ export class ChatComponent implements AfterViewChecked {
     this.activeThreadId.set(null);
     this.messageActionMenuId.set(null);
     this.pendingDeleteHistoryItem.set(null);
+    this.answerMode.set(this.defaultAnswerMode(this.currentWikiAtlas()));
   }
 
   async loadHistoryItem(item: ChatHistoryItem): Promise<void> {
@@ -1293,10 +1305,15 @@ export class ChatComponent implements AfterViewChecked {
 
     const assistantMessage = [...messages].reverse().find((message) => message.role === 'assistant');
     if (!assistantMessage) {
+      this.answerMode.set(this.defaultAnswerMode(this.currentWikiAtlas()));
       return;
     }
 
     this.answerMode.set(assistantMessage.answerMode === 'internet' ? 'internet' : 'wiki');
+  }
+
+  private defaultAnswerMode(atlas: AtlasItem | null | undefined): 'wiki' | 'internet' {
+    return atlas?.default_answer_mode === 'internet' ? 'internet' : 'wiki';
   }
 
   private resetPublicChatState(): void {
