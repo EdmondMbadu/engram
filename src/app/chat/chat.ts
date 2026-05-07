@@ -1079,6 +1079,11 @@ export class ChatComponent implements AfterViewChecked {
     this.messageActionMenuId.set(null);
   }
 
+  async copyMessageBody(message: ChatMessage, event?: MouseEvent): Promise<void> {
+    event?.stopPropagation();
+    await this.copyText(`${message.id}:body`, message.text.trim());
+  }
+
   ngAfterViewChecked(): void {
     if (this.shouldScrollToEnd) {
       this.shouldScrollToEnd = false;

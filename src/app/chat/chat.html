@@ -392,6 +392,18 @@
                           </div>
                         </div>
                         {{ msg.text }}
+                        <div class="chat-message-footer chat-message-footer--user">
+                          <button
+                            type="button"
+                            class="chat-inline-action"
+                            [class.chat-inline-action--copied]="copiedTarget() === msg.id + ':body'"
+                            [attr.aria-label]="copiedTarget() === msg.id + ':body' ? 'Copied question' : 'Copy question'"
+                            [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? 'Copied' : 'Copy'"
+                            (click)="copyMessageBody(msg, $event)"
+                          >
+                            <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   } @else {
@@ -474,6 +486,18 @@
                                 }
                               </div>
                             }
+                            <div class="chat-message-footer">
+                              <button
+                                type="button"
+                                class="chat-inline-action"
+                                [class.chat-inline-action--copied]="copiedTarget() === msg.id + ':body'"
+                                [attr.aria-label]="copiedTarget() === msg.id + ':body' ? 'Copied answer' : 'Copy answer'"
+                                [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? 'Copied' : 'Copy'"
+                                (click)="copyMessageBody(msg, $event)"
+                              >
+                                <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
+                              </button>
+                            </div>
                           }
                         </div>
                       </div>
