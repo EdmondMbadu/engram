@@ -305,5 +305,7 @@ export interface ChatStoredMessage {
   cited_passages?: CitationPassage[];
   mappable_locations?: MappableLocation[];
   knowledge_gap?: boolean;
+  answer_card_id?: string | null;
+  answer_quiz_id?: string | null;
   created_at?: { toDate(): Date } | Date | null;
 }

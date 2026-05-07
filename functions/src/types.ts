@@ -172,7 +172,10 @@ export interface AnswerCardRecord {
   did_you_know: string[];
   mappable_locations: MappableLocation[];
   source_thread_id?: string | null;
+  source_message_id?: string | null;
+  source_message_kind?: 'workspace' | 'public' | null;
   source_answer_mode?: 'wiki' | 'internet' | null;
+  answer_quiz_id?: string | null;
   like_count: number;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
   updated_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
@@ -242,6 +245,8 @@ export interface ChatMessageRecord {
   cited_passages?: QueryCitationSnapshot[];
   mappable_locations?: MappableLocation[];
   knowledge_gap?: boolean;
+  answer_card_id?: string | null;
+  answer_quiz_id?: string | null;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
 }
 
@@ -275,6 +280,8 @@ export interface PublicChatMessageRecord {
   cited_passages?: QueryCitationSnapshot[];
   mappable_locations?: MappableLocation[];
   knowledge_gap?: boolean;
+  answer_card_id?: string | null;
+  answer_quiz_id?: string | null;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
 }
 

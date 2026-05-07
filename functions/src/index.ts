@@ -4,7 +4,7 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
 import { createHash, randomUUID } from 'node:crypto';
-import { FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import { db, storage } from './firebase';
 import { geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
 import {
@@ -662,6 +662,19 @@ function normalizeAnswerQuizId(value: unknown): string {
   return trimmed;
 }
 
+function normalizeOptionalSourceMessageId(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return /^[A-Za-z0-9_-]{4,160}$/.test(trimmed) ? trimmed : null;
+}
+
+function normalizeSourceMessageKind(value: unknown): 'workspace' | 'public' | null {
+  return value === 'workspace' || value === 'public' ? value : null;
+}
+
 function normalizeAnswerCardLocations(value: unknown): MappableLocation[] {
   if (!Array.isArray(value)) {
     return [];
@@ -701,6 +714,81 @@ function normalizeAnswerCardLocations(value: unknown): MappableLocation[] {
   }
 
   return locations;
+}
+
+async function loadSourceAssistantMessage(params: {
+  uid: string;
+  sourceMessageKind: 'workspace' | 'public' | null;
+  sourceMessageId: string | null;
+  threadId: string | null;
+  answer: string;
+}): Promise<{
+  ref: DocumentReference;
+  data: Record<string, unknown>;
+  kind: 'workspace' | 'public';
+} | null> {
+  const sourceKind = params.sourceMessageKind;
+  if (!sourceKind) {
+    return null;
+  }
+
+  const collection = sourceKind === 'public' ? db.collection('public_chat_messages') : db.collection('chat_messages');
+  const allowed = (data: Record<string, unknown>) => {
+    if (data.role !== 'assistant') {
+      return false;
+    }
+    if (sourceKind === 'public') {
+      return data.visitor_uid === params.uid;
+    }
+    return data.user_id === params.uid;
+  };
+
+  if (params.sourceMessageId) {
+    const snapshot = await collection.doc(params.sourceMessageId).get();
+    if (snapshot.exists) {
+      const data = snapshot.data() ?? {};
+      if (allowed(data) && (!params.threadId || data.thread_id === params.threadId)) {
+        return { ref: snapshot.ref, data, kind: sourceKind };
+      }
+    }
+  }
+
+  if (!params.threadId || !params.answer.trim()) {
+    return null;
+  }
+
+  const snapshot = await collection
+    .where('thread_id', '==', params.threadId)
+    .limit(80)
+    .get();
+  const match = snapshot.docs.find((doc) => {
+    const data = doc.data();
+    return allowed(data) && String(data.text ?? '') === params.answer;
+  });
+
+  return match ? { ref: match.ref, data: match.data(), kind: sourceKind } : null;
+}
+
+async function loadExistingAnswerCardForSource(params: {
+  uid: string;
+  threadId: string | null;
+  answer: string;
+}): Promise<{ id: string; data: Record<string, unknown> } | null> {
+  if (!params.threadId || !params.answer.trim()) {
+    return null;
+  }
+
+  const preview = params.answer.slice(0, 900);
+  const snapshot = await db.collection('answer_cards')
+    .where('source_thread_id', '==', params.threadId)
+    .limit(50)
+    .get();
+  const match = snapshot.docs.find((doc) => {
+    const data = doc.data();
+    return data.owner_user_id === params.uid && String(data.answer_preview ?? '') === preview;
+  });
+
+  return match ? { id: match.id, data: match.data() } : null;
 }
 
 function serializeTimestamp(value: unknown): string | null {
@@ -1317,6 +1405,52 @@ export const createAnswerCard = onCall(
       ? request.data.threadId.trim().slice(0, 160)
       : null;
     const answerMode = request.data?.answerMode === 'internet' ? 'internet' : request.data?.answerMode === 'wiki' ? 'wiki' : null;
+    const sourceMessageKind = normalizeSourceMessageKind(request.data?.sourceMessageKind);
+    const sourceMessageId = normalizeOptionalSourceMessageId(request.data?.sourceMessageId);
+    const sourceMessage = await loadSourceAssistantMessage({
+      uid: request.auth.uid,
+      sourceMessageKind,
+      sourceMessageId,
+      threadId,
+      answer,
+    });
+
+    const existingMessageCardId = typeof sourceMessage?.data.answer_card_id === 'string'
+      ? sourceMessage.data.answer_card_id
+      : null;
+    if (existingMessageCardId) {
+      const snapshot = await db.collection('answer_cards').doc(existingMessageCardId).get();
+      if (snapshot.exists) {
+        return { card: serializeAnswerCard(snapshot.id, snapshot.data() ?? {}) };
+      }
+    }
+
+    const existingSourceCard = await loadExistingAnswerCardForSource({
+      uid: request.auth.uid,
+      threadId,
+      answer,
+    });
+    if (existingSourceCard) {
+      const sourcePatch = sourceMessage
+        ? {
+            source_message_id: sourceMessage.ref.id,
+            source_message_kind: sourceMessage.kind,
+            updated_at: FieldValue.serverTimestamp(),
+          }
+        : null;
+      await Promise.all([
+        sourceMessage?.ref.set({ answer_card_id: existingSourceCard.id }, { merge: true }) ?? Promise.resolve(),
+        sourcePatch
+          ? db.collection('answer_cards').doc(existingSourceCard.id).set(sourcePatch, { merge: true })
+          : Promise.resolve(),
+      ]);
+      return {
+        card: serializeAnswerCard(existingSourceCard.id, {
+          ...existingSourceCard.data,
+          ...(sourcePatch ?? {}),
+        }),
+      };
+    }
 
     try {
       const generated = await generateAnswerCard({
@@ -1338,7 +1472,10 @@ export const createAnswerCard = onCall(
         did_you_know: generated.did_you_know,
         mappable_locations: locations,
         source_thread_id: threadId,
+        source_message_id: sourceMessage?.ref.id ?? null,
+        source_message_kind: sourceMessage?.kind ?? sourceMessageKind,
         source_answer_mode: answerMode,
+        answer_quiz_id: null,
         like_count: 0,
         created_at: FieldValue.serverTimestamp(),
         updated_at: FieldValue.serverTimestamp(),
@@ -1346,6 +1483,9 @@ export const createAnswerCard = onCall(
 
       const docRef = db.collection('answer_cards').doc();
       await docRef.set(record);
+      if (sourceMessage) {
+        await sourceMessage.ref.set({ answer_card_id: docRef.id }, { merge: true });
+      }
       const snapshot = await docRef.get();
       const savedRecord = snapshot.data() ?? (record as unknown as Record<string, unknown>);
       return { card: serializeAnswerCard(docRef.id, savedRecord) };
@@ -1435,12 +1575,35 @@ export const createAnswerQuiz = onCall(
     }
 
     const cardId = normalizeAnswerCardId(request.data?.cardId);
+    const sourceMessageKind = normalizeSourceMessageKind(request.data?.sourceMessageKind);
+    const sourceMessageId = normalizeOptionalSourceMessageId(request.data?.sourceMessageId);
     const existing = await db.collection('answer_quizzes')
       .where('answer_card_id', '==', cardId)
       .limit(1)
       .get();
     if (!existing.empty) {
       const doc = existing.docs[0];
+      const cardSnapshot = await db.collection('answer_cards').doc(cardId).get();
+      const card = cardSnapshot.data() ?? {};
+      const messageKind = normalizeSourceMessageKind(card.source_message_kind) ?? sourceMessageKind;
+      const messageId = normalizeOptionalSourceMessageId(card.source_message_id) ?? sourceMessageId;
+      if (messageKind && messageId) {
+        const sourceMessage = await loadSourceAssistantMessage({
+          uid: request.auth.uid,
+          sourceMessageKind: messageKind,
+          sourceMessageId: messageId,
+          threadId: typeof card.source_thread_id === 'string' ? card.source_thread_id : null,
+          answer: String(card.answer_preview ?? ''),
+        });
+        await sourceMessage?.ref.set({ answer_card_id: cardId, answer_quiz_id: doc.id }, { merge: true });
+      }
+      await db.collection('answer_cards').doc(cardId).set(
+        {
+          answer_quiz_id: doc.id,
+          updated_at: FieldValue.serverTimestamp(),
+        },
+        { merge: true },
+      );
       return { quiz: serializeAnswerQuiz(doc.id, doc.data(), await loadQuizLeaderboard(doc.id)) };
     }
 
@@ -1480,6 +1643,25 @@ export const createAnswerQuiz = onCall(
 
     const docRef = db.collection('answer_quizzes').doc();
     await docRef.set(record);
+    await db.collection('answer_cards').doc(cardId).set(
+      {
+        answer_quiz_id: docRef.id,
+        updated_at: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    );
+    const messageKind = normalizeSourceMessageKind(card.source_message_kind) ?? sourceMessageKind;
+    const messageId = normalizeOptionalSourceMessageId(card.source_message_id) ?? sourceMessageId;
+    if (messageKind && messageId) {
+      const sourceMessage = await loadSourceAssistantMessage({
+        uid: request.auth.uid,
+        sourceMessageKind: messageKind,
+        sourceMessageId: messageId,
+        threadId: typeof card.source_thread_id === 'string' ? card.source_thread_id : null,
+        answer: String(card.answer_preview ?? ''),
+      });
+      await sourceMessage?.ref.set({ answer_card_id: cardId, answer_quiz_id: docRef.id }, { merge: true });
+    }
     const snapshot = await docRef.get();
     return { quiz: serializeAnswerQuiz(docRef.id, snapshot.data() ?? record as unknown as Record<string, unknown>, []) };
   },

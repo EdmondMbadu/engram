@@ -498,6 +498,8 @@ export class ChatService {
         : [],
       mappable_locations: this.hydrateMappableLocations(message['mappable_locations']),
       knowledge_gap: message['knowledge_gap'] === true,
+      answer_card_id: typeof message['answer_card_id'] === 'string' ? message['answer_card_id'] : null,
+      answer_quiz_id: typeof message['answer_quiz_id'] === 'string' ? message['answer_quiz_id'] : null,
       created_at: this.hydrateTimestamp(message['created_at']),
     };
   }

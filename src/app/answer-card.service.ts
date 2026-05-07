@@ -9,6 +9,8 @@ export interface CreateAnswerCardInput {
   answer: string;
   atlasId?: string | null;
   threadId?: string | null;
+  sourceMessageId?: string | null;
+  sourceMessageKind?: 'workspace' | 'public' | null;
   answerMode?: 'wiki' | 'internet' | null;
   mappableLocations?: MappableLocation[];
 }
@@ -26,6 +28,8 @@ export class AnswerCardService {
       answer: input.answer,
       atlasId: input.atlasId ?? null,
       threadId: input.threadId ?? null,
+      sourceMessageId: input.sourceMessageId ?? null,
+      sourceMessageKind: input.sourceMessageKind ?? null,
       answerMode: input.answerMode ?? null,
       mappableLocations: input.mappableLocations ?? [],
     });

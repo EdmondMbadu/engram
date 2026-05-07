@@ -27,6 +27,8 @@ interface ChatMessage {
   answerMode?: 'wiki' | 'internet';
   citations?: CitationPassage[];
   mappableLocations?: MappableLocation[];
+  answerCardId?: string | null;
+  answerQuizId?: string | null;
   pending?: boolean;
   knowledgeGap?: boolean;
   createdAt?: { toDate(): Date } | Date | null;
@@ -570,6 +572,7 @@ export class ChatComponent implements AfterViewChecked {
       if (this.publicNotFound()) {
         this.resetPublicChatState();
         this.messages.set([]);
+        this.syncArtifactLinksFromMessages([]);
         this.activeThreadId.set(null);
         return;
       }
@@ -583,6 +586,7 @@ export class ChatComponent implements AfterViewChecked {
       if (this.isWorkspaceMode()) {
         this.resetPublicChatState();
         this.messages.set([]);
+        this.syncArtifactLinksFromMessages([]);
         this.activeThreadId.set(null);
         this.activeHistoryId.set(null);
         return;
@@ -602,6 +606,7 @@ export class ChatComponent implements AfterViewChecked {
       this.publicChatLoading.set(true);
       this.publicLoadError.set(null);
       this.messages.set([]);
+      this.syncArtifactLinksFromMessages([]);
       this.activeThreadId.set(null);
       this.activeHistoryId.set(null);
 
@@ -616,6 +621,7 @@ export class ChatComponent implements AfterViewChecked {
           }
           const mappedMessages = state.messages.map((message) => this.mapStoredMessage(message));
           this.messages.set(mappedMessages);
+          this.syncArtifactLinksFromMessages(mappedMessages);
           this.syncAnswerModeFromMessages(mappedMessages);
           this.activeThreadId.set(state.threadId ?? null);
           this.publicQuestionLimit.set(state.questionLimit);
@@ -629,6 +635,7 @@ export class ChatComponent implements AfterViewChecked {
           const message = this.authService.toFriendlyError(error);
           this.publicLoadError.set(message);
           this.messages.set([]);
+          this.syncArtifactLinksFromMessages([]);
           this.activeThreadId.set(null);
         })
         .finally(() => {
@@ -889,6 +896,7 @@ export class ChatComponent implements AfterViewChecked {
 
   newChat(): void {
     this.messages.set([]);
+    this.syncArtifactLinksFromMessages([]);
     this.question.set('');
     this.selectedCitation.set(null);
     this.activeHistoryId.set(null);
@@ -907,6 +915,7 @@ export class ChatComponent implements AfterViewChecked {
     const storedMessages = await this.chatService.loadHistoryMessages(item);
     const mappedMessages = storedMessages.map((message) => this.mapStoredMessage(message));
     this.messages.set(mappedMessages);
+    this.syncArtifactLinksFromMessages(mappedMessages);
     this.syncAnswerModeFromMessages(mappedMessages);
     this.shouldScrollToEnd = true;
   }
@@ -1146,12 +1155,20 @@ export class ChatComponent implements AfterViewChecked {
       return;
     }
 
-    await this.ensureAnswerCardForMessage(message);
+    const cardId = await this.ensureAnswerCardForMessage(message);
+    if (cardId) {
+      await this.router.navigateByUrl(`/answer-card/${cardId}`);
+    }
   }
 
   async createQuizForMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
     event?.stopPropagation();
     if (!this.canCreateAnswerCard(message) || this.creatingQuizId() || this.creatingAnswerCardId()) {
+      return;
+    }
+
+    if (message.answerQuizId) {
+      await this.router.navigateByUrl(`/quiz/${message.answerQuizId}`);
       return;
     }
 
@@ -1165,12 +1182,18 @@ export class ChatComponent implements AfterViewChecked {
       if (!cardId) {
         return;
       }
-      const quiz = await this.answerQuizService.createQuizFromAnswerCard(cardId);
+      const quiz = await this.answerQuizService.createQuizFromAnswerCard(cardId, {
+        sourceMessageId: message.id,
+        sourceMessageKind: this.sourceMessageKind(),
+      });
       const quizLink = `/quiz/${quiz.id}`;
       this.quizLinks.update((links) => ({
         ...links,
         [message.id]: quizLink,
       }));
+      this.messages.update((messages) =>
+        messages.map((item) => item.id === message.id ? { ...item, answerCardId: cardId, answerQuizId: quiz.id } : item),
+      );
       await this.router.navigateByUrl(quizLink);
     } catch (error) {
       this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create quiz.');
@@ -1181,8 +1204,12 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   private async ensureAnswerCardForMessage(message: ChatMessage): Promise<string | null> {
-    const existingCardId = this.cardIdFromLink(this.answerCardLinks()[message.id]);
+    const existingCardId = message.answerCardId ?? this.cardIdFromLink(this.answerCardLinks()[message.id]);
     if (existingCardId) {
+      this.answerCardLinks.update((links) => ({
+        ...links,
+        [message.id]: `/answer-card/${existingCardId}`,
+      }));
       return existingCardId;
     }
 
@@ -1199,6 +1226,8 @@ export class ChatComponent implements AfterViewChecked {
         answer: message.text,
         atlasId: atlas?.id ?? null,
         threadId: this.activeThreadId(),
+        sourceMessageId: message.id,
+        sourceMessageKind: this.sourceMessageKind(),
         answerMode: message.answerMode ?? this.answerMode(),
         mappableLocations: message.mappableLocations ?? [],
       });
@@ -1206,6 +1235,9 @@ export class ChatComponent implements AfterViewChecked {
         ...links,
         [message.id]: `/answer-card/${card.id}`,
       }));
+      this.messages.update((messages) =>
+        messages.map((item) => item.id === message.id ? { ...item, answerCardId: card.id } : item),
+      );
       return card.id;
     } catch (error) {
       this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create answer card.');
@@ -1222,6 +1254,10 @@ export class ChatComponent implements AfterViewChecked {
     }
     const match = link.match(/\/answer-card\/([^/?#]+)/);
     return match?.[1] ?? null;
+  }
+
+  private sourceMessageKind(): 'workspace' | 'public' {
+    return this.isPublicVisitorMode() ? 'public' : 'workspace';
   }
 
   ngAfterViewChecked(): void {
@@ -1482,10 +1518,32 @@ export class ChatComponent implements AfterViewChecked {
       answerMode: message.answer_mode === 'internet' ? 'internet' : 'wiki',
       citations: this.normalizeCitations(message.cited_passages ?? []),
       mappableLocations: this.normalizeMappableLocations(message.mappable_locations ?? []),
+      answerCardId: message.answer_card_id ?? null,
+      answerQuizId: message.answer_quiz_id ?? null,
       knowledgeGap: !!message.knowledge_gap,
       createdAt: message.created_at,
       updatedAt: message.created_at,
     };
+  }
+
+  private syncArtifactLinksFromMessages(messages: ChatMessage[]): void {
+    const answerCardLinks: Record<string, string> = {};
+    const quizLinks: Record<string, string> = {};
+
+    for (const message of messages) {
+      if (message.role !== 'assistant') {
+        continue;
+      }
+      if (message.answerCardId) {
+        answerCardLinks[message.id] = `/answer-card/${message.answerCardId}`;
+      }
+      if (message.answerQuizId) {
+        quizLinks[message.id] = `/quiz/${message.answerQuizId}`;
+      }
+    }
+
+    this.answerCardLinks.set(answerCardLinks);
+    this.quizLinks.set(quizLinks);
   }
 
   private syncAnswerModeFromMessages(messages: ChatMessage[]): void {

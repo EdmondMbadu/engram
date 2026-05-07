@@ -15,15 +15,24 @@ export interface QuizAnswerInput {
   optionId: string;
 }
 
+export interface CreateAnswerQuizOptions {
+  sourceMessageId?: string | null;
+  sourceMessageKind?: 'workspace' | 'public' | null;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AnswerQuizService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly functions = this.isBrowser ? getFirebaseFunctions() : null;
 
-  async createQuizFromAnswerCard(cardId: string): Promise<AnswerQuizItem> {
+  async createQuizFromAnswerCard(cardId: string, options?: CreateAnswerQuizOptions): Promise<AnswerQuizItem> {
     const callable = httpsCallable(this.requireFunctions(), 'createAnswerQuiz');
-    const result = await callable({ cardId });
+    const result = await callable({
+      cardId,
+      sourceMessageId: options?.sourceMessageId ?? null,
+      sourceMessageKind: options?.sourceMessageKind ?? null,
+    });
     return this.hydrateQuiz((result.data as { quiz?: unknown }).quiz);
   }
 
