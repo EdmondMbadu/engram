@@ -26,6 +26,9 @@ export class AnswerQuizComponent {
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly statusMessage = signal<string | null>(null);
+  readonly shareModalOpen = signal(false);
+  readonly shareFeedback = signal<string | null>(null);
+  readonly copied = signal(false);
 
   readonly isSignedIn = this.authService.isAuthenticated;
   readonly displayName = this.authService.displayName;
@@ -38,6 +41,13 @@ export class AnswerQuizComponent {
   readonly signInRedirect = computed(() => {
     const quiz = this.quiz();
     return quiz ? `/quiz/${quiz.id}` : '/wikis';
+  });
+  readonly shareUrl = computed(() => {
+    const quiz = this.quiz();
+    if (!quiz) {
+      return '';
+    }
+    return typeof window === 'undefined' ? `/quiz/${quiz.id}` : `${window.location.origin}/quiz/${quiz.id}`;
   });
 
   constructor() {
@@ -97,6 +107,93 @@ export class AnswerQuizComponent {
     this.statusMessage.set(null);
   }
 
+  openShareModal(): void {
+    this.shareModalOpen.set(true);
+    this.shareFeedback.set(null);
+  }
+
+  closeShareModal(): void {
+    this.shareModalOpen.set(false);
+    this.shareFeedback.set(null);
+  }
+
+  async copyLink(): Promise<void> {
+    const url = this.shareUrl();
+    if (!url) {
+      return;
+    }
+
+    await this.copyShareText(url);
+    this.copied.set(true);
+    this.shareFeedback.set('Link copied');
+    setTimeout(() => this.copied.set(false), 1400);
+    setTimeout(() => this.shareFeedback.set(null), 1800);
+  }
+
+  async nativeShareQuiz(): Promise<void> {
+    const quiz = this.quiz();
+    const url = this.shareUrl();
+    if (!quiz || !url || typeof navigator === 'undefined') {
+      return;
+    }
+
+    try {
+      if (typeof navigator.share === 'function') {
+        await navigator.share({ title: quiz.title, text: quiz.description, url });
+        this.shareFeedback.set('Share sheet opened');
+      } else {
+        await this.copyShareText(url);
+        this.shareFeedback.set('Link copied');
+      }
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        return;
+      }
+      await this.copyShareText(url);
+      this.shareFeedback.set('Share failed. Link copied instead.');
+    }
+    setTimeout(() => this.shareFeedback.set(null), 2200);
+  }
+
+  async shareTo(platform: string): Promise<void> {
+    const quiz = this.quiz();
+    const url = this.shareUrl();
+    if (!quiz || !url) {
+      return;
+    }
+
+    await this.copyShareText(`${this.shareText(quiz)}\n${url}`);
+    const labels: Record<string, string> = {
+      instagram: 'Copied for Instagram',
+      tiktok: 'Copied for TikTok',
+      youtube: 'Copied for YouTube',
+    };
+    this.shareFeedback.set(labels[platform] ?? 'Copied');
+    setTimeout(() => this.shareFeedback.set(null), 2200);
+  }
+
+  shareHref(platform: string): string {
+    const quiz = this.quiz();
+    const url = this.shareUrl();
+    if (!quiz || !url) {
+      return '#';
+    }
+
+    const encodedUrl = encodeURIComponent(url);
+    const encodedTitle = encodeURIComponent(quiz.title);
+    const encodedText = encodeURIComponent(this.shareText(quiz));
+    const encodedTextWithUrl = encodeURIComponent(`${this.shareText(quiz)}\n${url}`);
+    const shareTargets: Record<string, string> = {
+      x: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+      whatsapp: `https://wa.me/?text=${encodedTextWithUrl}`,
+      email: `mailto:?subject=${encodedTitle}&body=${encodedTextWithUrl}`,
+    };
+    return shareTargets[platform] ?? '#';
+  }
+
   selectedOption(questionId: string): string | null {
     return this.selectedAnswers()[questionId] ?? null;
   }
@@ -150,5 +247,34 @@ export class AnswerQuizComponent {
 
   private answerPayload(): QuizAnswerInput[] {
     return Object.entries(this.selectedAnswers()).map(([questionId, optionId]) => ({ questionId, optionId }));
+  }
+
+  private shareText(quiz: AnswerQuizItem): string {
+    return `${quiz.title} - ${quiz.description}`;
+  }
+
+  private async copyShareText(text: string): Promise<void> {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {
+        // Fall through for browsers that expose Clipboard API but deny this call.
+      }
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
   }
 }

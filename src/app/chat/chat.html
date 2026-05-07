@@ -498,7 +498,7 @@
                               @if (canShowAnswerCardAction(msg)) {
                                 @if (answerCardLinks()[msg.id]) {
                                   <a
-                                    class="chat-inline-action"
+                                    class="chat-inline-action chat-inline-action--card"
                                     [routerLink]="answerCardLinks()[msg.id]"
                                     aria-label="Open Philly Answer Card"
                                     data-tooltip="Open card"
@@ -508,7 +508,7 @@
                                 } @else if (canCreateAnswerCard(msg)) {
                                   <button
                                     type="button"
-                                    class="chat-inline-action"
+                                    class="chat-inline-action chat-inline-action--card"
                                     [disabled]="creatingAnswerCardId() === msg.id"
                                     [attr.aria-label]="creatingAnswerCardId() === msg.id ? 'Making Philly Answer Card' : 'Make Philly Answer Card'"
                                     [attr.data-tooltip]="creatingAnswerCardId() === msg.id ? 'Making card' : 'Make card'"
@@ -522,7 +522,7 @@
                                   </button>
                                 } @else {
                                   <a
-                                    class="chat-inline-action"
+                                    class="chat-inline-action chat-inline-action--card"
                                     routerLink="/sign-in"
                                     [queryParams]="signInQueryParams()"
                                     aria-label="Sign in to make Philly Answer Card"
@@ -534,7 +534,7 @@
 
                                 @if (quizLinks()[msg.id]) {
                                   <a
-                                    class="chat-inline-action"
+                                    class="chat-inline-action chat-inline-action--quiz"
                                     [routerLink]="quizLinks()[msg.id]"
                                     aria-label="Open quiz challenge"
                                     data-tooltip="Open quiz"
@@ -544,7 +544,7 @@
                                 } @else if (canCreateAnswerCard(msg)) {
                                   <button
                                     type="button"
-                                    class="chat-inline-action"
+                                    class="chat-inline-action chat-inline-action--quiz"
                                     [disabled]="creatingQuizId() === msg.id || creatingAnswerCardId() === msg.id"
                                     [attr.aria-label]="creatingQuizId() === msg.id ? 'Making quiz challenge' : 'Make quiz challenge'"
                                     [attr.data-tooltip]="creatingQuizId() === msg.id ? 'Making quiz' : 'Make quiz'"
@@ -558,7 +558,7 @@
                                   </button>
                                 } @else {
                                   <a
-                                    class="chat-inline-action"
+                                    class="chat-inline-action chat-inline-action--quiz"
                                     routerLink="/sign-in"
                                     [queryParams]="signInQueryParams()"
                                     aria-label="Sign in to make quiz challenge"
