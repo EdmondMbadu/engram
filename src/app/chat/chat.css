@@ -776,7 +776,10 @@
 }
 
 .assistant-message__content em {
-  color: color-mix(in srgb, var(--text) 88%, var(--muted) 12%);
+  font-style: italic;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--text) 90%, var(--muted) 10%);
+  letter-spacing: -0.01em;
 }
 
 .assistant-message__content a {
@@ -852,9 +855,10 @@
 }
 
 .chat-user-bubble__text {
+  font-family: 'Inter Tight', 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 1rem;
   line-height: 1.65;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.012em;
   color: var(--text);
   white-space: pre-wrap;
   word-wrap: break-word;
