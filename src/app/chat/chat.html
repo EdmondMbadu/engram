@@ -254,7 +254,7 @@
                 </div>
               </div>
             } @else if (!hasMessages()) {
-              <div class="flex flex-col items-center pb-10 pt-1 text-center md:pt-2">
+              <div class="flex flex-col items-center pb-10 pt-6 text-center md:pt-10">
                 <span class="chat-hero-eyebrow">
                   <span class="chat-hero-eyebrow__dot"></span>
                   <span>{{ emptyStateEyebrow() }}</span>
@@ -329,27 +329,6 @@
                   </div>
                   <p class="chat-helper-line">{{ composerHelperText() }}</p>
                 </div>
-
-                @if (currentWikiName() && !showSignInCta()) {
-                  <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
-                    @if (!isPublicVisitorMode() && !hidePublicSourceFiles() && !hidePublicKnowledgeSurfaces()) {
-                      <a
-                        [routerLink]="libraryLink()"
-                        class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-bold text-[var(--text)]"
-                      >
-                        <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">library_books</span>
-                        <span>{{ animatedDocumentCount() }} {{ currentWikiDocumentCount() === 1 ? 'document' : 'documents' }}</span>
-                      </a>
-                    }
-                    <a
-                      [routerLink]="atlasWikiLink()"
-                      class="chat-empty-stat inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-bold text-[var(--text)]"
-                    >
-                      <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">menu_book</span>
-                      <span>{{ isPublicVisitorMode() ? 'Browse wiki' : animatedArticleCount() + ' ' + (currentWikiArticleCount() === 1 ? 'wiki page' : 'wiki pages') }}</span>
-                    </a>
-                  </div>
-                }
 
                 @if (quickPrompts().length > 0) {
                   <div class="mt-10 w-full max-w-3xl">

@@ -383,6 +383,12 @@ export class ChatComponent implements AfterViewChecked {
           detail: 'Pull in live internet context and discussion themes.',
           icon: 'forum',
         },
+        {
+          title: 'Background context',
+          prompt: `Give me background context on ${atlasName} from public sources.`,
+          detail: 'Pull broader context from the open web.',
+          icon: 'travel_explore',
+        },
       ];
     }
 
@@ -442,6 +448,12 @@ export class ChatComponent implements AfterViewChecked {
             prompt: `What should I read first about ${atlasName}?`,
             detail: 'Ask the wiki where a new reader should begin.',
             icon: 'flag',
+          },
+          {
+            title: 'Key questions',
+            prompt: `What are the key open questions about ${atlasName}?`,
+            detail: 'Surface the unresolved or most-discussed questions.',
+            icon: 'help',
           },
         ];
 
