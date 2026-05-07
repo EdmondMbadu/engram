@@ -173,6 +173,12 @@ export interface CitationPassage {
   line_end: number;
 }
 
+export interface MappableLocation {
+  name: string;
+  search_query: string;
+  address_hint?: string | null;
+}
+
 export interface ChatThreadItem {
   id: string;
   kind: 'thread';
@@ -227,6 +233,7 @@ export interface ChatStoredMessage {
   role: 'user' | 'assistant';
   text: string;
   cited_passages?: CitationPassage[];
+  mappable_locations?: MappableLocation[];
   knowledge_gap?: boolean;
   created_at?: { toDate(): Date } | Date | null;
 }

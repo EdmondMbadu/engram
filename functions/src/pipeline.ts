@@ -1,6 +1,6 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
-import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, mergeWikiArticle, planArticleMerge, summarizeTopic } from './gemini';
+import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, extractMappableLocations, mergeWikiArticle, planArticleMerge, summarizeTopic } from './gemini';
 import { db, storage } from './firebase';
 import { extractBlocksFromBuffer, extractBlocksFromUrl } from './extractors';
 import {
@@ -26,6 +26,7 @@ import type {
   ExtractBlock,
   KnowledgeEntryDraft,
   KnowledgeEntryRecord,
+  MappableLocation,
   ModelUsage,
   QueryCitationSnapshot,
   TopicEntryPreview,
@@ -771,6 +772,48 @@ async function loadAtlasPersonaPrompt(atlasId: string | null): Promise<string | 
   }
 }
 
+async function loadAtlasMapContext(atlasId: string | null): Promise<{
+  atlasName: string | null;
+  cityHint: string | null;
+}> {
+  if (!atlasId) {
+    return { atlasName: null, cityHint: null };
+  }
+
+  try {
+    const snapshot = await atlasesCollection.doc(atlasId).get();
+    if (!snapshot.exists) {
+      return { atlasName: null, cityHint: null };
+    }
+
+    const data = snapshot.data() as {
+      name?: unknown;
+      city_config?: {
+        city_name?: unknown;
+        region_name?: unknown;
+        country_code?: unknown;
+      } | null;
+    } | undefined;
+    const cityConfig = data?.city_config;
+    const cityParts = [
+      typeof cityConfig?.city_name === 'string' ? cityConfig.city_name.trim() : '',
+      typeof cityConfig?.region_name === 'string' ? cityConfig.region_name.trim() : '',
+      typeof cityConfig?.country_code === 'string' ? cityConfig.country_code.trim() : '',
+    ].filter(Boolean);
+
+    return {
+      atlasName: typeof data?.name === 'string' && data.name.trim() ? data.name.trim() : null,
+      cityHint: cityParts.length > 0 ? cityParts.join(', ') : null,
+    };
+  } catch (error) {
+    logger.warn('Failed to load atlas map context.', {
+      atlasId,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return { atlasName: null, cityHint: null };
+  }
+}
+
 async function updateAtlasStats(userId: string, atlasId: string): Promise<void> {
   const [documents, knowledgeEntries, wikiTopics, wikiArticles, chatThreads] = await Promise.all([
     countCollectionForAtlas('documents', userId, atlasId),
@@ -806,6 +849,7 @@ export async function runAtlasQuery(params: {
   answer: string;
   citedEntryIds: string[];
   citedPassages: QueryCitationSnapshot[];
+  mappableLocations: MappableLocation[];
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string;
@@ -816,9 +860,10 @@ export async function runAtlasQuery(params: {
   }
 
   const broadQuestion = isBroadSynthesisQuestion(trimmedQuestion);
-  const [thread, personaPrompt] = await Promise.all([
+  const [thread, personaPrompt, atlasMapContext] = await Promise.all([
     ensureActiveChatThread(params.userId, params.atlasId, params.threadId ?? null, trimmedQuestion),
     loadAtlasPersonaPrompt(params.atlasId),
+    loadAtlasMapContext(params.atlasId),
   ]);
   const threadHistory = thread.reusedExisting
     ? await loadRecentChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
@@ -830,6 +875,12 @@ export async function runAtlasQuery(params: {
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt,
     });
+    const mappableLocations = await extractMappableLocations({
+      question: trimmedQuestion,
+      answer: response.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
+    });
 
     await recordChatThreadExchange({
       threadId: thread.id,
@@ -839,6 +890,7 @@ export async function runAtlasQuery(params: {
       question: trimmedQuestion,
       answer: response.answer,
       citedPassages: [],
+      mappableLocations,
       knowledgeGap: false,
       questionCountIncrement: 1,
     });
@@ -847,6 +899,7 @@ export async function runAtlasQuery(params: {
       answer: response.answer,
       citedEntryIds: [],
       citedPassages: [],
+      mappableLocations,
       scopedTopicIds: [],
       knowledgeGap: false,
       threadId: thread.id,
@@ -863,6 +916,13 @@ export async function runAtlasQuery(params: {
   });
 
   if (articleResult) {
+    const mappableLocations = await extractMappableLocations({
+      question: trimmedQuestion,
+      answer: articleResult.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
+    });
+
     logger.info('Atlas query answered from wiki articles', {
       userId: params.userId,
       articleCount: articleResult.articleIds.length,
@@ -876,6 +936,7 @@ export async function runAtlasQuery(params: {
       question: trimmedQuestion,
       answer: articleResult.answer,
       citedPassages: articleResult.citedPassages,
+      mappableLocations,
       knowledgeGap: articleResult.knowledgeGap,
       questionCountIncrement: 1,
     });
@@ -884,6 +945,7 @@ export async function runAtlasQuery(params: {
       answer: articleResult.answer,
       citedEntryIds: articleResult.articleIds,
       citedPassages: articleResult.citedPassages,
+      mappableLocations,
       scopedTopicIds: [],
       knowledgeGap: articleResult.knowledgeGap,
       threadId: thread.id,
@@ -935,6 +997,7 @@ export async function runAtlasQuery(params: {
         "This topic isn't in your knowledge base yet. Upload source material so Living Wiki can answer it with citations.",
       citedEntryIds: [],
       citedPassages: [],
+      mappableLocations: [],
       scopedTopicIds: topics.map((topic) => topic.id),
       knowledgeGap: true,
       threadId: thread.id,
@@ -969,6 +1032,12 @@ export async function runAtlasQuery(params: {
       ? response.answer.trim()
       : 'I could not generate a reliable answer for this question from the current knowledge base.';
   const knowledgeGap = typeof response.knowledge_gap === 'boolean' ? response.knowledge_gap : citedEntryIds.length === 0;
+  const mappableLocations = await extractMappableLocations({
+    question: trimmedQuestion,
+    answer: safeAnswer,
+    atlasName: atlasMapContext.atlasName,
+    cityHint: atlasMapContext.cityHint,
+  });
 
   await recordChatThreadExchange({
     threadId: thread.id,
@@ -978,6 +1047,7 @@ export async function runAtlasQuery(params: {
     question: trimmedQuestion,
     answer: safeAnswer,
     citedPassages,
+    mappableLocations,
     knowledgeGap,
     questionCountIncrement: 1,
   });
@@ -986,6 +1056,7 @@ export async function runAtlasQuery(params: {
     answer: safeAnswer,
     citedEntryIds,
     citedPassages,
+    mappableLocations,
     scopedTopicIds: topics.map((topic) => topic.id),
     knowledgeGap: knowledgeGap,
     threadId: thread.id,
@@ -1005,6 +1076,7 @@ export async function runPublicAtlasQuery(params: {
   answer: string;
   citedEntryIds: string[];
   citedPassages: QueryCitationSnapshot[];
+  mappableLocations: MappableLocation[];
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string | null;
@@ -1036,6 +1108,7 @@ export async function runPublicAtlasQuery(params: {
       answer: '',
       citedEntryIds: [],
       citedPassages: [],
+      mappableLocations: [],
       scopedTopicIds: [],
       knowledgeGap: false,
       threadId: thread.id,
@@ -1047,11 +1120,12 @@ export async function runPublicAtlasQuery(params: {
   }
 
   const broadQuestion = isBroadSynthesisQuestion(trimmedQuestion);
-  const [threadHistory, personaPrompt] = await Promise.all([
+  const [threadHistory, personaPrompt, atlasMapContext] = await Promise.all([
     thread.reusedExisting
       ? loadRecentPublicChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
       : Promise.resolve([] as Awaited<ReturnType<typeof loadRecentPublicChatThreadMessages>>),
     loadAtlasPersonaPrompt(params.atlasId),
+    loadAtlasMapContext(params.atlasId),
   ]);
 
   if (params.answerMode === 'internet') {
@@ -1059,6 +1133,12 @@ export async function runPublicAtlasQuery(params: {
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt,
+    });
+    const mappableLocations = await extractMappableLocations({
+      question: trimmedQuestion,
+      answer: response.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
     });
 
     await recordPublicChatThreadExchange({
@@ -1070,6 +1150,7 @@ export async function runPublicAtlasQuery(params: {
       question: trimmedQuestion,
       answer: response.answer,
       citedPassages: [],
+      mappableLocations,
       knowledgeGap: false,
       questionCountIncrement: 1,
     });
@@ -1083,6 +1164,7 @@ export async function runPublicAtlasQuery(params: {
       answer: response.answer,
       citedEntryIds: [],
       citedPassages: [],
+      mappableLocations,
       scopedTopicIds: [],
       knowledgeGap: false,
       threadId: thread.id,
@@ -1103,15 +1185,23 @@ export async function runPublicAtlasQuery(params: {
   });
 
   if (articleResult) {
+    const mappableLocations = await extractMappableLocations({
+      question: trimmedQuestion,
+      answer: articleResult.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
+    });
+
     await recordPublicChatThreadExchange({
-    threadId: thread.id,
-    atlasId: params.atlasId,
-    atlasOwnerUserId: params.atlasOwnerUserId,
-    visitor: params.visitor,
-    answerMode: 'wiki',
-    question: trimmedQuestion,
-    answer: articleResult.answer,
-    citedPassages: articleResult.citedPassages,
+      threadId: thread.id,
+      atlasId: params.atlasId,
+      atlasOwnerUserId: params.atlasOwnerUserId,
+      visitor: params.visitor,
+      answerMode: 'wiki',
+      question: trimmedQuestion,
+      answer: articleResult.answer,
+      citedPassages: articleResult.citedPassages,
+      mappableLocations,
       knowledgeGap: articleResult.knowledgeGap,
       questionCountIncrement: 1,
     });
@@ -1125,6 +1215,7 @@ export async function runPublicAtlasQuery(params: {
       answer: articleResult.answer,
       citedEntryIds: articleResult.articleIds,
       citedPassages: articleResult.citedPassages,
+      mappableLocations,
       scopedTopicIds: [],
       knowledgeGap: articleResult.knowledgeGap,
       threadId: thread.id,
@@ -1222,6 +1313,13 @@ export async function runPublicAtlasQuery(params: {
         : citedEntryIds.length === 0;
   }
 
+  const mappableLocations = await extractMappableLocations({
+    question: trimmedQuestion,
+    answer,
+    atlasName: atlasMapContext.atlasName,
+    cityHint: atlasMapContext.cityHint,
+  });
+
   await recordPublicChatThreadExchange({
     threadId: thread.id,
     atlasId: params.atlasId,
@@ -1231,6 +1329,7 @@ export async function runPublicAtlasQuery(params: {
     question: trimmedQuestion,
     answer,
     citedPassages,
+    mappableLocations,
     knowledgeGap,
     questionCountIncrement: 1,
   });
@@ -1244,6 +1343,7 @@ export async function runPublicAtlasQuery(params: {
     answer,
     citedEntryIds,
     citedPassages,
+    mappableLocations,
     scopedTopicIds: topics.map((topic) => topic.id),
     knowledgeGap,
     threadId: thread.id,
@@ -1548,6 +1648,7 @@ async function recordChatThreadExchange(params: {
   question: string;
   answer: string;
   citedPassages: QueryCitationSnapshot[];
+  mappableLocations: MappableLocation[];
   knowledgeGap: boolean;
   questionCountIncrement: number;
 }): Promise<void> {
@@ -1575,6 +1676,7 @@ async function recordChatThreadExchange(params: {
         role: 'assistant',
         text: params.answer,
         cited_passages: params.citedPassages,
+        mappable_locations: params.mappableLocations,
         knowledge_gap: params.knowledgeGap,
         created_at: createdAt,
       } satisfies ChatMessageRecord,
@@ -1733,6 +1835,7 @@ async function recordPublicChatThreadExchange(params: {
   question: string;
   answer: string;
   citedPassages: QueryCitationSnapshot[];
+  mappableLocations: MappableLocation[];
   knowledgeGap: boolean;
   questionCountIncrement: number;
 }): Promise<void> {
@@ -1767,6 +1870,7 @@ async function recordPublicChatThreadExchange(params: {
         role: 'assistant',
         text: params.answer,
         cited_passages: params.citedPassages,
+        mappable_locations: params.mappableLocations,
         knowledge_gap: params.knowledgeGap,
         created_at: createdAt,
       } satisfies PublicChatMessageRecord,

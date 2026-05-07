@@ -105,6 +105,9 @@
                     <p class="mb-3 text-xs font-bold italic text-[var(--muted)]">This topic is not strongly covered in the current knowledge base yet.</p>
                   }
                   <div class="text-base leading-8 text-[var(--text)]" [innerHTML]="msg.html || ''"></div>
+                  @if (msg.mappableLocations && msg.mappableLocations.length > 0) {
+                    <app-chat-location-map [locations]="msg.mappableLocations"></app-chat-location-map>
+                  }
                   @if (msg.citations && msg.citations.length > 0) {
                     <div class="mt-5 flex flex-wrap gap-2">
                       @for (citation of msg.citations; track citation.entry_id; let i = $index) {

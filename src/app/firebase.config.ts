@@ -11,12 +11,18 @@ export interface GoogleDriveRuntimeConfig {
   appId?: string;
 };
 
+export interface GoogleMapsRuntimeConfig {
+  apiKey?: string;
+  mapId?: string;
+};
+
 declare global {
   interface Window {
     __LIVING_ATLAS_CONFIG__?: {
       firebase?: PublicFirebaseConfig;
       publicAppUrl?: string;
       googleDrive?: GoogleDriveRuntimeConfig;
+      googleMaps?: GoogleMapsRuntimeConfig;
     };
   }
 }
@@ -63,4 +69,21 @@ export function getGoogleDriveConfig(): {
         : null);
 
   return { apiKey, clientId, appId };
+}
+
+export function getGoogleMapsConfig(): {
+  apiKey: string | null;
+  mapId: string | null;
+} {
+  const configured = window.__LIVING_ATLAS_CONFIG__?.googleMaps;
+  const firebase = getFirebaseConfig();
+
+  const apiKey = typeof configured?.apiKey === 'string' && configured.apiKey.trim()
+    ? configured.apiKey.trim()
+    : (typeof firebase.apiKey === 'string' && firebase.apiKey.trim() ? firebase.apiKey.trim() : null);
+  const mapId = typeof configured?.mapId === 'string' && configured.mapId.trim()
+    ? configured.mapId.trim()
+    : null;
+
+  return { apiKey, mapId };
 }

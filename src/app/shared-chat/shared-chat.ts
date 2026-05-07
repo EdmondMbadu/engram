@@ -2,9 +2,10 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import type { ChatStoredMessage, CitationPassage } from '../atlas.models';
+import type { ChatStoredMessage, CitationPassage, MappableLocation } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { ChatService } from '../chat.service';
+import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { formatAssistantMessageHtml } from '../chat/message-format.util';
 
@@ -14,13 +15,14 @@ interface SharedChatMessage {
   text: string;
   html?: string;
   citations?: CitationPassage[];
+  mappableLocations?: MappableLocation[];
   knowledgeGap?: boolean;
   createdAt?: { toDate(): Date } | Date | null;
 }
 
 @Component({
   selector: 'app-shared-chat',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, ChatLocationMapComponent],
   templateUrl: './shared-chat.html',
 })
 export class SharedChatComponent {
@@ -172,6 +174,7 @@ export class SharedChatComponent {
       text: message.text,
       html: message.role === 'assistant' ? formatAssistantMessageHtml(message.text) : undefined,
       citations: Array.isArray(message.cited_passages) ? message.cited_passages : [],
+      mappableLocations: Array.isArray(message.mappable_locations) ? message.mappable_locations : [],
       knowledgeGap: !!message.knowledge_gap,
       createdAt: message.created_at,
     };

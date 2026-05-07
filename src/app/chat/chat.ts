@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage } from '../atlas.models';
+import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage, MappableLocation } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { ChatService } from '../chat.service';
@@ -13,6 +13,7 @@ import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
+import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { getPublicAppUrl } from '../firebase.config';
 import { formatAssistantMessageHtml } from './message-format.util';
 
@@ -23,6 +24,7 @@ interface ChatMessage {
   html?: string;
   answerMode?: 'wiki' | 'internet';
   citations?: CitationPassage[];
+  mappableLocations?: MappableLocation[];
   pending?: boolean;
   knowledgeGap?: boolean;
   createdAt?: { toDate(): Date } | Date | null;
@@ -44,7 +46,7 @@ const THINKING_STAGES = [
 
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent, ChatLocationMapComponent],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
@@ -734,6 +736,7 @@ export class ChatComponent implements AfterViewChecked {
         ? 'You have reached the 5-question public limit for this atlas. Sign in to continue this conversation.'
         : response?.answer ?? this.chatService.latestAnswer() ?? '';
       const citations = this.normalizeCitations(response?.citedPassages ?? this.chatService.latestCitations());
+      const mappableLocations = this.normalizeMappableLocations(response?.mappableLocations ?? []);
       const gap = response?.knowledgeGap ?? this.chatService.knowledgeGap();
       const returnedThreadId = response?.threadId ?? submittedThreadId;
 
@@ -747,6 +750,7 @@ export class ChatComponent implements AfterViewChecked {
             html: formatAssistantMessageHtml(answer),
             answerMode: selectedAnswerMode,
             citations,
+            mappableLocations,
             knowledgeGap: gap,
             pending: false,
             createdAt: now,
@@ -764,6 +768,7 @@ export class ChatComponent implements AfterViewChecked {
                   html: formatAssistantMessageHtml(answer),
                   answerMode: selectedAnswerMode,
                   citations,
+                  mappableLocations,
                   knowledgeGap: gap,
                   updatedAt: new Date(),
                 }
@@ -1209,6 +1214,29 @@ export class ChatComponent implements AfterViewChecked {
     return Array.from(deduped.values());
   }
 
+  private normalizeMappableLocations(locations: MappableLocation[]): MappableLocation[] {
+    const deduped = new Map<string, MappableLocation>();
+
+    for (const location of locations) {
+      const name = location.name?.trim();
+      const searchQuery = location.search_query?.trim();
+      if (!name || !searchQuery) {
+        continue;
+      }
+
+      const key = `${name.toLowerCase()}::${searchQuery.toLowerCase()}`;
+      if (!deduped.has(key)) {
+        deduped.set(key, {
+          name,
+          search_query: searchQuery,
+          address_hint: location.address_hint?.trim() || null,
+        });
+      }
+    }
+
+    return Array.from(deduped.values()).slice(0, 6);
+  }
+
   private normalizeCitationFilename(filename: string | null | undefined): string {
     const value = String(filename ?? '').trim();
     if (!value || this.isFallbackCitationFilename(value)) {
@@ -1292,6 +1320,7 @@ export class ChatComponent implements AfterViewChecked {
       html: message.role === 'assistant' ? formatAssistantMessageHtml(message.text) : undefined,
       answerMode: message.answer_mode === 'internet' ? 'internet' : 'wiki',
       citations: this.normalizeCitations(message.cited_passages ?? []),
+      mappableLocations: this.normalizeMappableLocations(message.mappable_locations ?? []),
       knowledgeGap: !!message.knowledge_gap,
       createdAt: message.created_at,
       updatedAt: message.created_at,

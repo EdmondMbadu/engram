@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { defineSecret } from 'firebase-functions/params';
 import { logger } from 'firebase-functions';
-import type { ExtractBlock, KnowledgeEntryDraft, ModelUsage, WikiArticleDraft, WikiArticlePlan } from './types';
+import type { ExtractBlock, KnowledgeEntryDraft, MappableLocation, ModelUsage, WikiArticleDraft, WikiArticlePlan } from './types';
 import {
   normalizeRelatedTopics,
   normalizeTopicName,
@@ -49,6 +49,19 @@ const answerSchema = {
     knowledge_gap: { type: 'boolean' },
   },
   required: ['answer', 'cited_entry_ids', 'knowledge_gap'],
+} as const;
+
+const mappableLocationsSchema = {
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      search_query: { type: 'string' },
+      address_hint: { type: 'string' },
+    },
+    required: ['name', 'search_query'],
+  },
 } as const;
 
 const lineArraySchema = {
@@ -580,6 +593,60 @@ export async function answerWithGoogleSearch(params: {
   };
 }
 
+export async function extractMappableLocations(params: {
+  question: string;
+  answer: string;
+  atlasName?: string | null;
+  cityHint?: string | null;
+}): Promise<MappableLocation[]> {
+  const question = params.question.trim();
+  const answer = params.answer.trim();
+  if (!shouldTryMappableLocationExtraction(question, answer)) {
+    return [];
+  }
+
+  const context = [
+    params.atlasName ? `Atlas/wiki name: ${params.atlasName}` : null,
+    params.cityHint ? `City or region hint: ${params.cityHint}` : null,
+  ].filter(Boolean).join('\n');
+
+  const prompt = [
+    'Extract specific real-world physical locations from this Q&A that would be useful to show as pins on a map.',
+    'Return only places explicitly recommended, compared, visited, listed, or discussed as destinations.',
+    'Include restaurants, bars, venues, stores, landmarks, agencies, parks, schools, hospitals, neighborhoods, and addresses when they are the actual subject of the answer.',
+    'Exclude broad regions used only as context, such as the city/state/country in the question, unless the answer compares multiple cities or neighborhoods directly.',
+    'For each place, create a search_query that Google Maps Geocoding can resolve. Add the city/region hint when helpful.',
+    'Return at most 6 locations. Return [] when there are no useful map pins.',
+    '',
+    context,
+    JSON.stringify({
+      question: question.slice(0, 2000),
+      answer: answer.slice(0, 6000),
+    }),
+  ].join('\n');
+
+  try {
+    const response = await generateContentWithRetry({
+      model: internetSearchModel,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: mappableLocationsSchema,
+        temperature: 0,
+        maxOutputTokens: 1024,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+
+    return normalizeMappableLocations(parseJsonResponse<unknown>(response.text ?? '[]'));
+  } catch (error) {
+    logger.warn('Failed to extract mappable locations from answer.', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+}
+
 export async function compileWikiArticles(params: {
   blocks: ExtractBlock[];
   filename: string;
@@ -967,6 +1034,75 @@ function normalizeAnswerResponse(
         ? value.knowledge_gap
         : answer.length === 0,
   };
+}
+
+function normalizeMappableLocations(parsed: unknown): MappableLocation[] {
+  if (!Array.isArray(parsed)) {
+    return [];
+  }
+
+  const seen = new Set<string>();
+  const locations: MappableLocation[] = [];
+  for (const item of parsed) {
+    if (!item || typeof item !== 'object') {
+      continue;
+    }
+    const data = item as Record<string, unknown>;
+    const name = typeof data['name'] === 'string' ? data['name'].replace(/\s+/g, ' ').trim() : '';
+    const searchQuery =
+      typeof data['search_query'] === 'string' ? data['search_query'].replace(/\s+/g, ' ').trim() : '';
+    if (!name || !searchQuery) {
+      continue;
+    }
+    const key = `${name.toLowerCase()}::${searchQuery.toLowerCase()}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    locations.push({
+      name: name.slice(0, 120),
+      search_query: searchQuery.slice(0, 240),
+      address_hint:
+        typeof data['address_hint'] === 'string' && data['address_hint'].trim()
+          ? data['address_hint'].replace(/\s+/g, ' ').trim().slice(0, 240)
+          : null,
+    });
+    if (locations.length >= 6) {
+      break;
+    }
+  }
+
+  return locations;
+}
+
+function shouldTryMappableLocationExtraction(question: string, answer: string): boolean {
+  const combined = `${question}\n${answer}`.toLowerCase();
+  return [
+    'where',
+    'near',
+    'address',
+    'location',
+    'restaurant',
+    'bar',
+    'cafe',
+    'coffee',
+    'shop',
+    'store',
+    'venue',
+    'hotel',
+    'museum',
+    'park',
+    'school',
+    'hospital',
+    'office',
+    'neighborhood',
+    'center city',
+    'south philly',
+    'north philly',
+    'west philly',
+    'philadelphia',
+    'philly',
+  ].some((term) => combined.includes(term));
 }
 
 function extractFallbackAnswerText(value: string): string {

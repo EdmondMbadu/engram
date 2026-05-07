@@ -15,6 +15,7 @@ import type {
   ChatStoredMessage,
   ChatThreadItem,
   CitationPassage,
+  MappableLocation,
   QueryHistoryItem,
 } from './atlas.models';
 import { AtlasService } from './atlas.service';
@@ -25,6 +26,7 @@ type AskAtlasResponse = {
   answer: string;
   citedEntryIds: string[];
   citedPassages: CitationPassage[];
+  mappableLocations?: MappableLocation[];
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string;
@@ -44,6 +46,7 @@ type AskPublicAtlasResponse = {
   answer: string;
   citedEntryIds: string[];
   citedPassages: CitationPassage[];
+  mappableLocations?: MappableLocation[];
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string | null;
@@ -493,9 +496,35 @@ export class ChatService {
       cited_passages: Array.isArray(message['cited_passages'])
         ? (message['cited_passages'] as CitationPassage[])
         : [],
+      mappable_locations: this.hydrateMappableLocations(message['mappable_locations']),
       knowledge_gap: message['knowledge_gap'] === true,
       created_at: this.hydrateTimestamp(message['created_at']),
     };
+  }
+
+  private hydrateMappableLocations(value: unknown): MappableLocation[] {
+    if (!Array.isArray(value)) {
+      return [];
+    }
+
+    return value
+      .map((item): MappableLocation | null => {
+        if (!item || typeof item !== 'object') {
+          return null;
+        }
+        const data = item as Record<string, unknown>;
+        const name = typeof data['name'] === 'string' ? data['name'].trim() : '';
+        const searchQuery = typeof data['search_query'] === 'string' ? data['search_query'].trim() : '';
+        if (!name || !searchQuery) {
+          return null;
+        }
+        return {
+          name,
+          search_query: searchQuery,
+          address_hint: typeof data['address_hint'] === 'string' ? data['address_hint'] : null,
+        };
+      })
+      .filter((location): location is MappableLocation => !!location);
   }
 
   private hydrateTimestamp(value: unknown): { toDate(): Date } | Date | null {

@@ -154,6 +154,12 @@ export interface QueryCitationSnapshot {
   line_end: number;
 }
 
+export interface MappableLocation {
+  name: string;
+  search_query: string;
+  address_hint?: string | null;
+}
+
 export interface QueryRecord {
   user_id: string;
   atlas_id: string | null;
@@ -188,6 +194,7 @@ export interface ChatMessageRecord {
   role: 'user' | 'assistant';
   text: string;
   cited_passages?: QueryCitationSnapshot[];
+  mappable_locations?: MappableLocation[];
   knowledge_gap?: boolean;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
 }
@@ -220,6 +227,7 @@ export interface PublicChatMessageRecord {
   role: 'user' | 'assistant';
   text: string;
   cited_passages?: QueryCitationSnapshot[];
+  mappable_locations?: MappableLocation[];
   knowledge_gap?: boolean;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
 }
@@ -260,6 +268,7 @@ export interface AskAtlasResponse {
   answer: string;
   citedEntryIds: string[];
   citedPassages: QueryCitationSnapshot[];
+  mappableLocations: MappableLocation[];
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string;

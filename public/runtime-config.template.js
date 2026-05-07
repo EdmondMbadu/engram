@@ -14,4 +14,8 @@ window.__LIVING_ATLAS_CONFIG__ = {
     clientId: 'REPLACE_ME.apps.googleusercontent.com',
     appId: 'REPLACE_ME',
   },
+  googleMaps: {
+    apiKey: 'REPLACE_ME',
+    mapId: 'REPLACE_ME',
+  },
 };

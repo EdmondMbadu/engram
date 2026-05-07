@@ -1,0 +1,37 @@
+<div class="mt-5 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)]">
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] px-4 py-3">
+    <div class="flex min-w-0 items-center gap-2">
+      <span class="material-symbols-outlined text-[1.05rem] text-[var(--accent)]">map</span>
+      <p class="text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ mapTitle }}</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      @for (location of locations; track location.search_query) {
+        <a
+          [href]="mapLink(location)"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex max-w-[12rem] items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 text-[11px] font-bold text-[var(--text)] transition hover:border-[var(--accent)]/40"
+        >
+          <span class="material-symbols-outlined text-[0.9rem] text-[var(--accent)]">place</span>
+          <span class="truncate">{{ location.name }}</span>
+        </a>
+      }
+    </div>
+  </div>
+
+  <div class="relative h-72 w-full bg-[var(--surface)]">
+    <div #mapCanvas class="h-full w-full"></div>
+    @if (isLoading) {
+      <div class="absolute inset-0 flex items-center justify-center bg-[var(--surface)]/80 text-sm font-semibold text-[var(--muted)] backdrop-blur-sm">
+        Loading map...
+      </div>
+    }
+    @if (error) {
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[var(--surface)] px-5 text-center">
+        <span class="material-symbols-outlined text-3xl text-[var(--muted)]">map_off</span>
+        <p class="text-sm font-semibold text-[var(--text)]">Map preview unavailable</p>
+        <p class="max-w-md text-xs leading-5 text-[var(--muted)]">Open any place chip above in Google Maps.</p>
+      </div>
+    }
+  </div>
+</div>
