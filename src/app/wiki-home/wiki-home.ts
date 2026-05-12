@@ -43,6 +43,12 @@ export class WikiHomeComponent {
   readonly totalDocuments = computed(() =>
     this.atlases().reduce((sum, atlas) => sum + (atlas.stats?.documents ?? this.usage(atlas.id)?.documents ?? 0), 0),
   );
+  readonly ownedWikiCount = computed(() =>
+    this.atlases().filter((atlas) => this.isOwner(atlas)).length,
+  );
+  readonly adminWikiCount = computed(() =>
+    this.atlases().filter((atlas) => this.isAdmin(atlas) && !this.isOwner(atlas)).length,
+  );
   readonly activeWikiName = computed(() =>
     this.displayName(this.atlases().find((atlas) => atlas.id === this.activeAtlasId())),
   );
@@ -64,6 +70,18 @@ export class WikiHomeComponent {
 
   wikiSlug(atlas: AtlasItem): string {
     return atlas.slug?.trim() || this.atlasService.slugify(atlas.name ?? '') || atlas.id;
+  }
+
+  isOwner(atlas: AtlasItem): boolean {
+    return this.atlasService.isAtlasOwner(atlas);
+  }
+
+  isAdmin(atlas: AtlasItem): boolean {
+    return this.atlasService.isAtlasAdmin(atlas);
+  }
+
+  isSharedAdmin(atlas: AtlasItem): boolean {
+    return this.isAdmin(atlas) && !this.isOwner(atlas);
   }
 
   usage(atlasId: string): AtlasUsage | null {
@@ -158,6 +176,10 @@ export class WikiHomeComponent {
 
   async openWiki(atlas: AtlasItem, destination: 'library' | 'chat' | 'wiki' | 'settings'): Promise<void> {
     this.selectWiki(atlas.id);
+    if (this.isSharedAdmin(atlas) && destination !== 'settings') {
+      await this.router.navigate(['/atlas', this.wikiSlug(atlas)]);
+      return;
+    }
     if (destination === 'wiki') {
       await this.router.navigate(['/wiki']);
       return;
@@ -221,6 +243,8 @@ export class WikiHomeComponent {
         try {
           const usage = await this.atlasService.getAtlasUsage(atlas.id);
           this.usageById.update((current) => ({ ...current, [atlas.id]: usage }));
+        } catch {
+          // Shared admins may not have direct read permission for owner-only usage collections.
         } finally {
           this.loadingUsageById.update((current) => ({ ...current, [atlas.id]: false }));
         }
