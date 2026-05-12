@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import type { AtlasAdminProfile, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
+import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 interface CityConfigDraft {
@@ -32,6 +33,7 @@ interface NewsletterDraft {
 })
 export class AtlasManageComponent {
   private readonly atlasService = inject(AtlasService);
+  private readonly authService = inject(AuthService);
 
   readonly atlases = this.atlasService.atlases;
   readonly activeAtlasId = this.atlasService.activeAtlasId;
@@ -44,6 +46,7 @@ export class AtlasManageComponent {
   readonly newsletterDraftById = signal<Record<string, NewsletterDraft>>({});
   readonly savingNewsletterById = signal<Record<string, boolean>>({});
   readonly newsletterSavedById = signal<Record<string, string>>({});
+  readonly newsletterTestEmailById = signal<Record<string, string>>({});
   readonly sendingNewsletterTestById = signal<Record<string, boolean>>({});
   readonly newsletterTestResultById = signal<Record<string, AtlasNewsletterTestResult>>({});
   readonly renamingId = signal<string | null>(null);
@@ -269,6 +272,14 @@ export class AtlasManageComponent {
     });
   }
 
+  newsletterTestEmail(atlasId: string): string {
+    return this.newsletterTestEmailById()[atlasId] ?? this.authService.email();
+  }
+
+  updateNewsletterTestEmail(atlasId: string, value: string): void {
+    this.newsletterTestEmailById.update((current) => ({ ...current, [atlasId]: value }));
+  }
+
   weekdayValue(value: unknown): number {
     const day = Number(value);
     return Number.isInteger(day) && day >= 0 && day <= 6 ? day : 1;
@@ -409,6 +420,11 @@ export class AtlasManageComponent {
   async sendNewsletterTest(atlas: AtlasItem): Promise<void> {
     const draft = this.newsletterDraft(atlas);
     const config = this.normalizeNewsletterDraft(draft);
+    const recipientEmail = this.newsletterTestEmail(atlas.id).trim();
+    if (!recipientEmail) {
+      this.pageError.set('Enter a test recipient email address.');
+      return;
+    }
     this.sendingNewsletterTestById.update((current) => ({ ...current, [atlas.id]: true }));
     this.pageError.set(null);
     this.newsletterTestResultById.update((current) => {
@@ -417,7 +433,7 @@ export class AtlasManageComponent {
       return next;
     });
     try {
-      const result = await this.atlasService.sendAtlasNewsletterTest(atlas.id, config);
+      const result = await this.atlasService.sendAtlasNewsletterTest(atlas.id, config, recipientEmail);
       this.newsletterTestResultById.update((current) => ({ ...current, [atlas.id]: result }));
     } catch (error) {
       this.pageError.set(error instanceof Error ? error.message : 'Failed to send test newsletter.');

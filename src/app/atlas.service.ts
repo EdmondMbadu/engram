@@ -460,13 +460,13 @@ export class AtlasService {
     return atlas;
   }
 
-  async sendAtlasNewsletterTest(atlasId: string, config: AtlasNewsletterConfig): Promise<AtlasNewsletterTestResult> {
+  async sendAtlasNewsletterTest(atlasId: string, config: AtlasNewsletterConfig, recipientEmail?: string): Promise<AtlasNewsletterTestResult> {
     if (!this.functions) throw new Error('Functions unavailable.');
     const sendAtlasNewsletterTest = httpsCallable<
-      { atlasId: string; config: AtlasNewsletterConfig },
+      { atlasId: string; config: AtlasNewsletterConfig; recipientEmail?: string },
       AtlasNewsletterTestResult
     >(this.functions, 'sendAtlasNewsletterTest');
-    const { data } = await sendAtlasNewsletterTest({ atlasId, config });
+    const { data } = await sendAtlasNewsletterTest({ atlasId, config, recipientEmail });
     return data;
   }
 

@@ -261,7 +261,18 @@
                     </div>
                   </div>
 
-                  <div class="mt-4 flex flex-wrap items-center gap-2">
+                  <div class="mt-4 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-end">
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Test recipient</span>
+                      <input
+                        type="email"
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                        [value]="newsletterTestEmail(atlas.id)"
+                        (input)="updateNewsletterTestEmail(atlas.id, $any($event.target).value)"
+                        placeholder="name@example.com"
+                      />
+                    </label>
+                    <div class="flex flex-wrap items-center gap-2">
                     <button
                       type="button"
                       class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
@@ -278,8 +289,9 @@
                       (click)="sendNewsletterTest(atlas)"
                     >
                       <span class="material-symbols-outlined text-[1rem]">outgoing_mail</span>
-                      <span>{{ isSendingNewsletterTest(atlas.id) ? 'Generating...' : 'Send test to me' }}</span>
+                      <span>{{ isSendingNewsletterTest(atlas.id) ? 'Generating...' : 'Send test email' }}</span>
                     </button>
+                    </div>
                   </div>
 
                   @if (newsletterTestResult(atlas.id); as result) {

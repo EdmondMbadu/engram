@@ -544,6 +544,10 @@ function normalizeUserEmail(value: unknown): string {
   return typeof value === 'string' ? value.trim().toLowerCase() : '';
 }
 
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 function normalizeAdminProfiles(value: unknown): Record<string, unknown>[] {
   if (!Array.isArray(value)) {
     return [];
@@ -1976,9 +1980,13 @@ export const sendAtlasNewsletterTest = onCall(
       throw new HttpsError('invalid-argument', 'atlasId is required.');
     }
 
-    const recipientEmail = normalizeUserEmail((request.auth.token ?? {}).email);
+    const requestedRecipientEmail = normalizeUserEmail(request.data?.recipientEmail);
+    const recipientEmail = requestedRecipientEmail || normalizeUserEmail((request.auth.token ?? {}).email);
     if (!recipientEmail) {
-      throw new HttpsError('failed-precondition', 'Your account needs an email address to receive a test newsletter.');
+      throw new HttpsError('failed-precondition', 'Enter an email address for the test newsletter.');
+    }
+    if (!isValidEmail(recipientEmail)) {
+      throw new HttpsError('invalid-argument', 'Enter a valid test recipient email address.');
     }
 
     const { atlas } = await loadAtlasForAdminAccess(atlasId, request.auth.uid);
