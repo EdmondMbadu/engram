@@ -30,6 +30,7 @@ interface ChatGuideDraft {
   label: string;
   name: string;
   image_url: string;
+  banner_url: string;
 }
 
 @Component({
@@ -147,10 +148,10 @@ export class AtlasManageComponent {
 
   chatGuideSummary(atlas: AtlasItem): string {
     const guide = atlas.chat_guide;
-    if (!guide?.name && !guide?.label && !guide?.image_url) {
+    if (!guide?.name && !guide?.label && !guide?.image_url && !guide?.banner_url) {
       return 'No guide shown';
     }
-    return [guide.label?.trim() || null, guide.name?.trim() || null].filter(Boolean).join(' • ') || 'Guide configured';
+    return [guide.label?.trim() || null, guide.name?.trim() || null, guide.banner_url ? 'Banner' : null].filter(Boolean).join(' • ') || 'Guide configured';
   }
 
   defaultAnswerMode(atlas: AtlasItem): 'wiki' | 'internet' {
@@ -802,6 +803,7 @@ export class AtlasManageComponent {
       label: guide?.label?.trim() ?? '',
       name: guide?.name?.trim() ?? '',
       image_url: guide?.image_url?.trim() ?? '',
+      banner_url: guide?.banner_url?.trim() ?? '',
     };
   }
 
@@ -809,7 +811,8 @@ export class AtlasManageComponent {
     const label = draft.label.trim().slice(0, 120);
     const name = draft.name.trim().slice(0, 80);
     const imageUrl = draft.image_url.trim().slice(0, 1000);
-    if (!label && !name && !imageUrl) {
+    const bannerUrl = draft.banner_url.trim().slice(0, 1000);
+    if (!label && !name && !imageUrl && !bannerUrl) {
       return null;
     }
 
@@ -817,6 +820,7 @@ export class AtlasManageComponent {
       label: label || null,
       name: name || null,
       image_url: imageUrl || null,
+      banner_url: bannerUrl || null,
     };
   }
 

@@ -264,7 +264,7 @@ export class ChatComponent implements AfterViewChecked {
   });
   readonly currentWikiGuide = computed(() => {
     const guide = this.currentWikiAtlas()?.chat_guide;
-    const hasGuide = !!guide?.name?.trim() || !!guide?.label?.trim() || !!guide?.image_url?.trim();
+    const hasGuide = !!guide?.name?.trim() || !!guide?.label?.trim() || !!guide?.image_url?.trim() || !!guide?.banner_url?.trim();
     return hasGuide ? guide : null;
   });
   readonly currentWikiDocumentCount = computed(() =>

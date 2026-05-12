@@ -79,6 +79,7 @@ export interface AtlasChatGuideConfig {
   name: string | null;
   label: string | null;
   image_url: string | null;
+  banner_url: string | null;
 }
 
 export interface AtlasItem {

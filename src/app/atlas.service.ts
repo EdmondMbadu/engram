@@ -756,7 +756,8 @@ export class AtlasService {
     const name = typeof value.name === 'string' ? value.name.trim().slice(0, 80) || null : null;
     const label = typeof value.label === 'string' ? value.label.trim().slice(0, 120) || null : null;
     const imageUrl = typeof value.image_url === 'string' ? value.image_url.trim().slice(0, 1000) || null : null;
-    if (!name && !label && !imageUrl) {
+    const bannerUrl = typeof value.banner_url === 'string' ? value.banner_url.trim().slice(0, 1000) || null : null;
+    if (!name && !label && !imageUrl && !bannerUrl) {
       return null;
     }
 
@@ -764,6 +765,7 @@ export class AtlasService {
       name,
       label,
       image_url: imageUrl,
+      banner_url: bannerUrl,
     };
   }
 

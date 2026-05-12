@@ -291,24 +291,34 @@
                   <span>{{ emptyStateEyebrow() }}</span>
                 </span>
 
+                @if (currentWikiGuide(); as guide) {
+                  @if (guide.banner_url) {
+                    <div class="mt-4 w-full max-w-3xl overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
+                      <img [src]="guide.banner_url" alt="" class="h-36 w-full object-cover sm:h-44" />
+                    </div>
+                  }
+                }
+
                 <h2 class="chat-hero-title mt-3">
                   Ask <span class="chat-hero-title__brand">Living Wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
                 </h2>
 
                 @if (currentWikiGuide(); as guide) {
-                  <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
-                    @if (guide.image_url) {
-                      <img [src]="guide.image_url" [alt]="guide.name || 'Living Wiki guide'" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
-                    }
-                    <span class="grid min-w-0 text-left">
-                      @if (guide.label) {
-                        <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ guide.label }}</span>
+                  @if (guide.image_url || guide.label || guide.name) {
+                    <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
+                      @if (guide.image_url) {
+                        <img [src]="guide.image_url" [alt]="guide.name || 'Living Wiki guide'" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
                       }
-                      @if (guide.name) {
-                        <span class="truncate text-base font-black text-[var(--text)]">{{ guide.name }}</span>
-                      }
-                    </span>
-                  </div>
+                      <span class="grid min-w-0 text-left">
+                        @if (guide.label) {
+                          <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ guide.label }}</span>
+                        }
+                        @if (guide.name) {
+                          <span class="truncate text-base font-black text-[var(--text)]">{{ guide.name }}</span>
+                        }
+                      </span>
+                    </div>
+                  }
                 }
 
                 <p class="chat-hero-sub mt-2">{{ heroPromptText() }}</p>

@@ -197,15 +197,21 @@
             @if (isSectionOpen(atlas, 'chat-guide')) {
               @if (chatGuideDraft(atlas); as guideDraft) {
                 <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
-                  <div class="grid gap-4 lg:grid-cols-[8rem_1fr]">
-                    <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
+                  <div class="grid gap-4">
+                    @if (guideDraft.banner_url) {
+                      <div class="overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
+                        <img [src]="guideDraft.banner_url" alt="" class="h-32 w-full object-cover" />
+                      </div>
+                    }
+                    <div class="grid gap-4 lg:grid-cols-[8rem_1fr]">
+                      <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
                       @if (guideDraft.image_url) {
                         <img [src]="guideDraft.image_url" alt="" class="h-full w-full object-cover" />
                       } @else {
                         <span class="material-symbols-outlined text-3xl text-[var(--muted)]">person</span>
                       }
-                    </div>
-                    <div class="grid gap-3 md:grid-cols-2">
+                      </div>
+                      <div class="grid gap-3 md:grid-cols-2">
                       <label class="block">
                         <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Guide label</span>
                         <input
@@ -227,7 +233,17 @@
                         />
                       </label>
                       <label class="block md:col-span-2">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Image URL</span>
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Banner URL</span>
+                        <input
+                          type="url"
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                          [value]="guideDraft.banner_url"
+                          (input)="updateChatGuideDraft(atlas.id, 'banner_url', $any($event.target).value)"
+                          placeholder="https://..."
+                        />
+                      </label>
+                      <label class="block md:col-span-2">
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Guide image URL</span>
                         <input
                           type="url"
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
@@ -236,6 +252,7 @@
                           placeholder="https://..."
                         />
                       </label>
+                      </div>
                     </div>
                   </div>
                   <div class="mt-4 flex justify-end">
