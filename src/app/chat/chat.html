@@ -577,6 +577,32 @@
                                   </div>
                                 </div>
 
+                                <div class="px-3 pt-3 sm:px-4 sm:pt-4">
+                                  <div class="overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.025))]">
+                                    <div class="grid gap-0 sm:grid-cols-[8rem,1fr]">
+                                      <div class="relative min-h-32 overflow-hidden bg-white/5">
+                                        <img
+                                          [src]="assistantAvatarUrl()"
+                                          [alt]="assistantAvatarAlt()"
+                                          class="absolute inset-0 h-full w-full object-cover"
+                                          loading="lazy"
+                                        />
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+                                        <div class="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-black shadow-lg">
+                                          <span class="material-symbols-outlined text-[1.1rem]">format_quote</span>
+                                        </div>
+                                      </div>
+                                      <div class="p-4 sm:p-5">
+                                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">{{ guideQuoteLabel() }}</p>
+                                        <blockquote class="mt-2 text-xl font-black leading-snug text-[var(--text)] sm:text-2xl">{{ guideQuote() }}</blockquote>
+                                        <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                                          Use the cards below as the actual plan. The notes are there if you want the full color commentary.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
                                 <div class="grid gap-4 p-3 sm:p-4 lg:grid-cols-2">
                                   @for (card of guide.cards; track card.id; let i = $index) {
                                     <article class="group overflow-hidden rounded-2xl border border-white/10 bg-[var(--surface)] shadow-[0_14px_38px_rgba(0,0,0,0.22)]">
@@ -698,9 +724,29 @@
                                   </div>
                                 }
                               </section>
-                              <details class="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                                <summary class="cursor-pointer text-sm font-black text-[var(--text)]">Read {{ assistantMessageName() }}’s full notes</summary>
-                                <div class="assistant-message__content mt-4 text-[var(--text)]" [innerHTML]="msg.html || ''"></div>
+                              <details class="group mt-4 overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.07),rgba(255,255,255,0.025))] shadow-[0_18px_50px_rgba(0,0,0,0.18)]">
+                                <summary class="flex cursor-pointer list-none items-center gap-3 p-3 transition-colors hover:bg-white/[0.03] [&::-webkit-details-marker]:hidden sm:p-4">
+                                  <div class="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5">
+                                    <img
+                                      [src]="assistantAvatarUrl()"
+                                      [alt]="assistantAvatarAlt()"
+                                      class="h-full w-full object-cover"
+                                      loading="lazy"
+                                    />
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
+                                  </div>
+                                  <div class="min-w-0 flex-1">
+                                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Full notes</p>
+                                    <h4 class="truncate text-sm font-black text-[var(--text)] sm:text-base">Read {{ assistantMessageName() }}’s complete take</h4>
+                                    <p class="mt-0.5 text-xs text-[var(--muted)]">Context, jokes, caveats, and the full explanation behind the cards.</p>
+                                  </div>
+                                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[var(--text)] transition-transform group-open:rotate-180">
+                                    <span class="material-symbols-outlined text-[1.2rem]">keyboard_arrow_down</span>
+                                  </div>
+                                </summary>
+                                <div class="border-t border-white/10 bg-black/10 p-4 sm:p-5">
+                                  <div class="assistant-message__content rounded-2xl border border-white/10 bg-[var(--surface)]/70 p-4 text-[var(--text)] shadow-inner sm:p-5" [innerHTML]="msg.html || ''"></div>
+                                </div>
                               </details>
                             } @else {
                               <div class="assistant-message__content text-[var(--text)]" [innerHTML]="msg.html || ''"></div>

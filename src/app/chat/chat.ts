@@ -1033,6 +1033,19 @@ export class ChatComponent implements AfterViewChecked {
     return this.currentWikiGuide()?.banner_url?.trim() || this.currentWikiAtlas()?.hero_url?.trim() || null;
   }
 
+  guideQuote(): string {
+    const guideName = this.assistantMessageName().toLowerCase();
+    if (guideName.includes('franklin') || guideName.includes('ben')) {
+      return '"Well done is better than well said."';
+    }
+    return '"A good guide turns an answer into a next move."';
+  }
+
+  guideQuoteLabel(): string {
+    const guideName = this.assistantMessageName();
+    return guideName === 'Living Wiki' ? 'Guide note' : `${guideName}'s quote`;
+  }
+
   travelCardMapUrl(card: TravelGuideCard): string {
     const query = card.map_query?.trim() || card.subtitle?.trim() || card.title;
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
