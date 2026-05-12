@@ -939,26 +939,81 @@ async function resolveNewsletterUrl(url: string): Promise<string> {
   return trimmed;
 }
 
-async function resolveNewsletterMarkdownLinks(markdown: string): Promise<string> {
+function looksLikeMissingPage(html: string): boolean {
+  const normalized = html.toLowerCase().slice(0, 120_000);
+  return (
+    /<title>[^<]*(404|not found|page not found|access denied|forbidden)[^<]*<\/title>/i.test(normalized) ||
+    normalized.includes('the page you requested could not be found') ||
+    normalized.includes('this page could not be found') ||
+    normalized.includes('page not found') ||
+    normalized.includes('404 not found')
+  );
+}
+
+async function validateNewsletterUrl(url: string): Promise<string | null> {
+  const resolvedUrl = await resolveNewsletterUrl(url);
+  if (
+    !/^https?:\/\//i.test(resolvedUrl) ||
+    /vertexaisearch\.cloud\.google\.com\/grounding-api-redirect/i.test(resolvedUrl) ||
+    /google\.com\/search/i.test(resolvedUrl)
+  ) {
+    return null;
+  }
+
+  try {
+    const result = await fetchHtmlWithFallback(resolvedUrl, { timeoutMs: 18_000 });
+    const finalUrl = (result.finalUrl || resolvedUrl).trim();
+    if (
+      result.status < 200 ||
+      result.status >= 400 ||
+      !/^https?:\/\//i.test(finalUrl) ||
+      /vertexaisearch\.cloud\.google\.com\/grounding-api-redirect/i.test(finalUrl) ||
+      /google\.com\/search/i.test(finalUrl) ||
+      looksLikeAntiBotChallenge(result.html) ||
+      looksLikeMissingPage(result.html)
+    ) {
+      logger.warn('Newsletter source URL rejected.', {
+        url: resolvedUrl,
+        finalUrl,
+        status: result.status,
+        method: result.method,
+      });
+      return null;
+    }
+    return finalUrl;
+  } catch (error) {
+    logger.warn('Newsletter source URL validation failed.', {
+      url: resolvedUrl,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+async function prepareNewsletterMarkdownLinks(markdown: string): Promise<{ markdown: string; validUrls: Set<string> }> {
   const urls = new Set<string>();
   for (const match of markdown.matchAll(/https?:\/\/[^\s)]+/g)) {
     urls.add(match[0].replace(/[).,;]+$/g, ''));
   }
   if (urls.size === 0) {
-    return markdown;
+    return { markdown, validUrls: new Set<string>() };
   }
 
-  const resolvedEntries = await Promise.all(
-    Array.from(urls).map(async (url) => [url, await resolveNewsletterUrl(url)] as const),
+  const validatedEntries = await Promise.all(
+    Array.from(urls).map(async (url) => [url, await validateNewsletterUrl(url)] as const),
   );
-  const resolvedByUrl = new Map(resolvedEntries);
+  const validatedByUrl = new Map(validatedEntries);
+  const validUrls = new Set<string>();
   let nextMarkdown = markdown;
-  for (const [original, resolved] of resolvedByUrl.entries()) {
-    if (original !== resolved) {
-      nextMarkdown = nextMarkdown.split(original).join(resolved);
+  for (const [original, validUrl] of validatedByUrl.entries()) {
+    if (validUrl) {
+      validUrls.add(validUrl);
+      if (original !== validUrl) {
+        nextMarkdown = nextMarkdown.split(original).join(validUrl);
+      }
     }
   }
-  return nextMarkdown;
+  return { markdown: nextMarkdown, validUrls };
 }
 
 function renderHeadlineSourceButton(source: NewsletterSourceLink): string {
@@ -972,7 +1027,11 @@ function renderHeadlineSourceButton(source: NewsletterSourceLink): string {
     <span style="display:block;margin-top:7px;color:#6f7d74;font-size:12px;line-height:1.4;">${safeTitle} · ${safeHost}</span>`;
 }
 
-function renderNewsletterMarkdown(markdown: string, fallbackSources: NewsletterSourceLink[] = []): { html: string; usedSourceUrls: string[] } {
+function renderNewsletterMarkdown(
+  markdown: string,
+  fallbackSources: NewsletterSourceLink[] = [],
+  validUrls = new Set<string>(),
+): { html: string; usedSourceUrls: string[] } {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n');
   const html: string[] = [];
   const usedSourceUrls = new Set<string>();
@@ -1022,7 +1081,7 @@ function renderNewsletterMarkdown(markdown: string, fallbackSources: NewsletterS
       closeHeadlineCard();
       html.push('<div style="margin:16px 0;padding:20px;border:1px solid #dfe9e3;border-radius:18px;background:#fbfdfb;">');
       const source = newsletterSourceFromLine(line);
-      if (source) {
+      if (source && validUrls.has(source.url)) {
         headlineSource = source;
       }
       html.push(`<h3 style="margin:0 0 10px;color:#102016;font-size:18px;line-height:1.25;">${renderNewsletterInline(line.slice(4).replace(/\s*\[[^\]]+\]\(https?:\/\/[^)\s]+\)\s*/g, '').trim())}</h3>`);
@@ -1046,7 +1105,7 @@ function renderNewsletterMarkdown(markdown: string, fallbackSources: NewsletterS
       if (inHeadlineCard && /^(source|read article|article|link)\s*:/i.test(listText)) {
         closeList();
         const source = newsletterSourceFromLine(listText);
-        if (source) {
+        if (source && validUrls.has(source.url)) {
           headlineSource = source;
         }
         continue;
@@ -1063,7 +1122,7 @@ function renderNewsletterMarkdown(markdown: string, fallbackSources: NewsletterS
     if (inHeadlineCard && /^(source|read article|article|link)\s*:/i.test(line)) {
       closeList();
       const source = newsletterSourceFromLine(line);
-      if (source) {
+      if (source && validUrls.has(source.url)) {
         headlineSource = source;
       }
       continue;
@@ -1077,7 +1136,7 @@ function renderNewsletterMarkdown(markdown: string, fallbackSources: NewsletterS
   return { html: html.join('\n'), usedSourceUrls: Array.from(usedSourceUrls) };
 }
 
-function extractNewsletterSources(markdown: string): { bodyMarkdown: string; sources: NewsletterSourceLink[] } {
+function extractNewsletterSources(markdown: string, validUrls = new Set<string>()): { bodyMarkdown: string; sources: NewsletterSourceLink[] } {
   const normalized = markdown.replace(/\r\n/g, '\n');
   const sourceMatch = normalized.match(/\n##\s+Sources\s*\n/i);
   const bodyMarkdown = (sourceMatch ? normalized.slice(0, sourceMatch.index).trim() : normalized.trim())
@@ -1090,7 +1149,7 @@ function extractNewsletterSources(markdown: string): { bodyMarkdown: string; sou
 
   const addSource = (title: string, url: string) => {
     const cleanUrl = url.trim().replace(/[).,;]+$/g, '');
-    if (!/^https?:\/\//i.test(cleanUrl) || sources.has(cleanUrl)) {
+    if (!/^https?:\/\//i.test(cleanUrl) || sources.has(cleanUrl) || (validUrls.size > 0 && !validUrls.has(cleanUrl))) {
       return;
     }
     const cleanTitle = title
@@ -1159,6 +1218,56 @@ function stripMarkdownForPreview(markdown: string): string {
     .slice(0, 500);
 }
 
+function extractNewsletterHeadlineTitles(markdown: string): string[] {
+  return markdown
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith('### '))
+    .map((line) => line.slice(4).replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim())
+    .filter(Boolean)
+    .slice(0, 5);
+}
+
+function mergeNewsletterSources(primary: NewsletterSourceLink[], secondary: NewsletterSourceLink[]): NewsletterSourceLink[] {
+  const byUrl = new Map<string, NewsletterSourceLink>();
+  for (const source of [...primary, ...secondary]) {
+    if (!byUrl.has(source.url)) {
+      byUrl.set(source.url, source);
+    }
+  }
+  return Array.from(byUrl.values());
+}
+
+async function findAdditionalNewsletterSources(params: {
+  atlasName: string;
+  headlines: string[];
+}): Promise<NewsletterSourceLink[]> {
+  if (params.headlines.length === 0) {
+    return [];
+  }
+
+  try {
+    const response = await answerWithGoogleSearch({
+      question: [
+        `Find direct, reachable publisher article URLs for these ${params.atlasName} newsletter headlines.`,
+        'Return only markdown bullets in this exact form: - [Publication or article title](direct URL)',
+        'Do not use Google search URLs, grounding redirect URLs, homepages, tag pages, or calendar listing pages.',
+        'Prefer official city, transit, school district, newsroom, or established local news article pages.',
+        '',
+        ...params.headlines.map((headline, index) => `${index + 1}. ${headline}`),
+      ].join('\n'),
+    });
+    const prepared = await prepareNewsletterMarkdownLinks(response.answer);
+    return extractNewsletterSources(`\n## Sources\n${prepared.markdown}`, prepared.validUrls).sources;
+  } catch (error) {
+    logger.warn('Failed to find additional newsletter sources.', {
+      atlasName: params.atlasName,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+}
+
 function buildNewsletterQuestion(params: {
   atlasName: string;
   atlasSlug: string;
@@ -1218,7 +1327,7 @@ async function generateAtlasNewsletterContent(params: {
     }),
     personaPrompt: typeof params.atlas.persona_prompt === 'string' ? params.atlas.persona_prompt : null,
   });
-  const markdown = (await resolveNewsletterMarkdownLinks(response.answer.trim())).trim();
+  const markdown = response.answer.trim();
   const title = markdown
     .split('\n')
     .map((line) => line.trim())
@@ -1235,7 +1344,7 @@ async function generateAtlasNewsletterContent(params: {
   };
 }
 
-function buildNewsletterEmail(params: {
+async function buildNewsletterEmail(params: {
   atlasName: string;
   subject: string;
   markdown: string;
@@ -1248,8 +1357,21 @@ function buildNewsletterEmail(params: {
   const safePreview = escapeHtml(params.previewText);
   const safeChatUrl = escapeHtml(params.chatUrl);
   const safeUnsubscribeUrl = params.unsubscribeUrl ? escapeHtml(params.unsubscribeUrl) : '';
-  const { bodyMarkdown, sources } = extractNewsletterSources(params.markdown);
-  const renderedBody = renderNewsletterMarkdown(bodyMarkdown, sources.slice(0, 5));
+  const prepared = await prepareNewsletterMarkdownLinks(params.markdown);
+  const extracted = extractNewsletterSources(prepared.markdown, prepared.validUrls);
+  const bodyMarkdown = extracted.bodyMarkdown;
+  let sources = extracted.sources;
+  if (sources.length < 5) {
+    const extraSources = await findAdditionalNewsletterSources({
+      atlasName: params.atlasName,
+      headlines: extractNewsletterHeadlineTitles(bodyMarkdown),
+    });
+    sources = mergeNewsletterSources(sources, extraSources).slice(0, 8);
+    for (const source of sources) {
+      prepared.validUrls.add(source.url);
+    }
+  }
+  const renderedBody = renderNewsletterMarkdown(bodyMarkdown, sources.slice(0, 5), prepared.validUrls);
   const bodyHtml = renderedBody.html;
   const usedSourceUrls = new Set(renderedBody.usedSourceUrls);
   const extraSources = sources.filter((source) => !usedSourceUrls.has(source.url)).slice(0, 3);
@@ -1316,7 +1438,7 @@ async function sendNewsletterEmail(params: {
   }
 
   sgMail.setApiKey(apiKey);
-  const email = buildNewsletterEmail(params);
+  const email = await buildNewsletterEmail(params);
   const [response] = await sgMail.send({
     to: params.recipientEmail,
     from: {
