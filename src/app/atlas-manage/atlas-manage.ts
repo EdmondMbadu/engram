@@ -40,6 +40,7 @@ export class AtlasManageComponent {
   readonly adminEmailDraftById = signal<Record<string, string>>({});
   readonly sharingAdminById = signal<Record<string, boolean>>({});
   readonly removingAdminKey = signal<string | null>(null);
+  readonly openWikis = signal<Record<string, boolean>>({});
   readonly openSections = signal<Record<string, boolean>>({});
   readonly deletingId = signal<string | null>(null);
   readonly pageError = signal<string | null>(null);
@@ -118,6 +119,18 @@ export class AtlasManageComponent {
 
   isSavingDefaultMode(atlasId: string): boolean {
     return this.savingDefaultModeById()[atlasId] ?? false;
+  }
+
+  isWikiOpen(atlas: AtlasItem): boolean {
+    return this.openWikis()[atlas.id] === true;
+  }
+
+  toggleWiki(atlas: AtlasItem): void {
+    this.openWikis.update((current) => ({ ...current, [atlas.id]: !current[atlas.id] }));
+  }
+
+  openWikiPanel(atlas: AtlasItem): void {
+    this.openWikis.update((current) => ({ ...current, [atlas.id]: true }));
   }
 
   sectionKey(atlas: AtlasItem, section: string): string {
@@ -224,6 +237,7 @@ export class AtlasManageComponent {
 
   startRename(atlas: AtlasItem): void {
     this.pageError.set(null);
+    this.openWikiPanel(atlas);
     this.renamingId.set(atlas.id);
     this.renameDraft.set(this.displayName(atlas));
   }
@@ -236,6 +250,7 @@ export class AtlasManageComponent {
   startCityEdit(atlas: AtlasItem): void {
     const config = atlas.city_config;
     this.pageError.set(null);
+    this.openWikiPanel(atlas);
     this.openSection(atlas, 'city');
     this.cityEditingId.set(atlas.id);
     this.cityDraft.set({

@@ -131,9 +131,19 @@
                   <span>Rename</span>
                 </button>
               }
+              <button
+                type="button"
+                (click)="toggleWiki(atlas)"
+                class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                [attr.aria-expanded]="isWikiOpen(atlas)"
+              >
+                <span>{{ isWikiOpen(atlas) ? 'Hide details' : 'Details' }}</span>
+                <span class="material-symbols-outlined text-[1rem]">{{ isWikiOpen(atlas) ? 'expand_less' : 'expand_more' }}</span>
+              </button>
             </div>
           </div>
 
+          @if (isWikiOpen(atlas)) {
           <div class="border-t border-[var(--line)]">
             <button
               type="button"
@@ -471,6 +481,7 @@
               </div>
             }
           </div>
+          }
         </article>
       }
     </div>
