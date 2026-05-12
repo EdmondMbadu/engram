@@ -178,6 +178,16 @@
               New chat
             </button>
           }
+          @if (currentWikiAdminLink(); as adminLink) {
+            <a
+              [routerLink]="adminLink"
+              class="ghost-btn inline-flex items-center gap-2 !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              aria-label="Open wiki admin"
+            >
+              <span class="material-symbols-outlined text-base">admin_panel_settings</span>
+              <span>Admin</span>
+            </a>
+          }
           @if (canShareActiveThread()) {
             <button
               type="button"

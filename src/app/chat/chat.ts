@@ -240,6 +240,11 @@ export class ChatComponent implements AfterViewChecked {
   readonly currentWikiAtlas = computed(() =>
     this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
   );
+  readonly canAdminCurrentWiki = computed(() => this.atlasService.canAdminAtlas(this.currentWikiAtlas()));
+  readonly currentWikiAdminLink = computed(() => {
+    const atlas = this.currentWikiAtlas();
+    return atlas && this.canAdminCurrentWiki() ? ['/atlases', atlas.id, 'persona'] : null;
+  });
   readonly currentWikiName = computed(() => {
     const atlas = this.currentWikiAtlas();
     if (!atlas) {
