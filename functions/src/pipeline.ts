@@ -30,6 +30,7 @@ import type {
   ModelUsage,
   QueryCitationSnapshot,
   TopicEntryPreview,
+  TravelGuideStructuredResponse,
   PublicChatMessageRecord,
   PublicChatThreadRecord,
   WikiArticleDraft,
@@ -827,6 +828,199 @@ async function loadAtlasMapContext(atlasId: string | null): Promise<{
   }
 }
 
+function buildTravelGuideResponse(params: {
+  question: string;
+  answer: string;
+  atlasName: string | null;
+  cityHint: string | null;
+  mappableLocations: MappableLocation[];
+}): TravelGuideStructuredResponse | null {
+  const locations = dedupeMappableLocations(params.mappableLocations).slice(0, 5);
+  const travelIntent = hasTravelGuideIntent(params.question);
+  if (locations.length === 0 || (!travelIntent && !params.cityHint)) {
+    return null;
+  }
+
+  const cityLabel = params.cityHint || params.atlasName || 'this wiki';
+  const cards = locations.map((location, index) => {
+    const sentence = findSentenceMentioning(params.answer, location.name);
+    const description = sentence || `A useful stop to consider for this ${cityLabel} answer.`;
+    const bestFor = inferBestFor(params.question, description);
+    const localTip = buildLocalTip(params.question);
+
+    return {
+      id: `guide-${index + 1}-${slugifyForId(location.name)}`,
+      title: location.name,
+      subtitle: location.address_hint || location.search_query || null,
+      description: compactSentence(description, 220),
+      neighborhood: inferNeighborhood(description),
+      best_for: bestFor,
+      vibe: inferVibe(params.question, description),
+      local_tip: localTip,
+      cost: inferCost(params.question, description),
+      time_hint: inferTimeHint(params.question, description),
+      image_url: null,
+      map_query: location.search_query || [location.name, params.cityHint].filter(Boolean).join(' '),
+      source_url: null,
+    };
+  });
+
+  return {
+    title: params.atlasName ? `${params.atlasName} guide picks` : 'Guide picks',
+    summary: buildTravelSummary(params.question, params.answer, cityLabel),
+    cards,
+    route: buildRouteHint(cards.map((card) => card.title)),
+    next_actions: [
+      'Open the map before you go',
+      'Ask for a two-hour version',
+      'Ask for food stops nearby',
+    ],
+  };
+}
+
+function dedupeMappableLocations(locations: MappableLocation[]): MappableLocation[] {
+  const deduped = new Map<string, MappableLocation>();
+  for (const location of locations) {
+    const name = location.name?.trim();
+    const searchQuery = location.search_query?.trim();
+    if (!name || !searchQuery) {
+      continue;
+    }
+    const key = `${name.toLowerCase()}::${searchQuery.toLowerCase()}`;
+    if (!deduped.has(key)) {
+      deduped.set(key, {
+        name,
+        search_query: searchQuery,
+        address_hint: location.address_hint?.trim() || null,
+      });
+    }
+  }
+  return Array.from(deduped.values());
+}
+
+function hasTravelGuideIntent(question: string): boolean {
+  return /\b(visit|trip|travel|tour|tourist|guide|itinerary|walk|walking|weekend|things to do|where should|where to|eat|drink|restaurant|bar|cafe|coffee|museum|park|neighborhood|nearby|route|hotel|stay|date|family|kids|history|historic)\b/i.test(question);
+}
+
+function findSentenceMentioning(answer: string, name: string): string | null {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const namePattern = new RegExp(escapedName, 'i');
+  const sentences = answer
+    .replace(/\s+/g, ' ')
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+  const match = sentences.find((sentence) => namePattern.test(sentence));
+  return match ?? null;
+}
+
+function compactSentence(value: string, maxLength: number): string {
+  const cleaned = value.replace(/\s+/g, ' ').trim();
+  if (cleaned.length <= maxLength) {
+    return cleaned;
+  }
+  return `${cleaned.slice(0, maxLength - 1).trim()}...`;
+}
+
+function inferBestFor(question: string, description: string): string | null {
+  const source = `${question} ${description}`.toLowerCase();
+  if (/\b(kid|kids|family|families)\b/.test(source)) return 'Families';
+  if (/\b(date|romantic|couple)\b/.test(source)) return 'Date plans';
+  if (/\b(food|eat|restaurant|lunch|dinner|breakfast)\b/.test(source)) return 'Food stops';
+  if (/\b(history|historic|museum|founding|old city)\b/.test(source)) return 'History lovers';
+  if (/\b(walk|walking|route|itinerary)\b/.test(source)) return 'Easy routing';
+  if (/\b(photo|view|scenic)\b/.test(source)) return 'Photos and views';
+  return 'A focused local stop';
+}
+
+function inferVibe(question: string, description: string): string | null {
+  const source = `${question} ${description}`.toLowerCase();
+  if (/\b(chill|relax|quiet|calm)\b/.test(source)) return 'Relaxed';
+  if (/\b(lively|nightlife|bar|music|busy)\b/.test(source)) return 'Lively';
+  if (/\b(classic|historic|old|heritage)\b/.test(source)) return 'Classic';
+  if (/\b(fancy|upscale|special)\b/.test(source)) return 'Polished';
+  if (/\b(kid|family|park)\b/.test(source)) return 'Easygoing';
+  return null;
+}
+
+function inferCost(question: string, description: string): string | null {
+  const source = `${question} ${description}`.toLowerCase();
+  if (/\b(free|no cost)\b/.test(source)) return 'Often free';
+  if (/\b(cheap|budget|affordable)\b/.test(source)) return 'Budget-friendly';
+  if (/\b(fancy|upscale|splurge|expensive)\b/.test(source)) return 'Splurge';
+  return null;
+}
+
+function inferTimeHint(question: string, description: string): string | null {
+  const source = `${question} ${description}`.toLowerCase();
+  if (/\b(morning|breakfast|coffee)\b/.test(source)) return 'Good earlier in the day';
+  if (/\b(lunch|afternoon)\b/.test(source)) return 'Good midday';
+  if (/\b(dinner|evening|night|bar)\b/.test(source)) return 'Best later in the day';
+  if (/\b(two-hour|2-hour|quick|short)\b/.test(source)) return 'Works for a short stop';
+  return null;
+}
+
+function inferNeighborhood(description: string): string | null {
+  const neighborhoods = [
+    'Center City',
+    'Old City',
+    'Rittenhouse',
+    'Fishtown',
+    'Northern Liberties',
+    'University City',
+    'South Philly',
+    'Passyunk',
+    'Fairmount',
+    'Manayunk',
+    'Chestnut Hill',
+    'Queen Village',
+    'Society Hill',
+    'Kensington',
+    'West Philly',
+  ];
+  const lower = description.toLowerCase();
+  return neighborhoods.find((neighborhood) => lower.includes(neighborhood.toLowerCase())) ?? null;
+}
+
+function buildLocalTip(question: string): string {
+  if (/\b(food|eat|restaurant|bar|cafe|coffee)\b/i.test(question)) {
+    return 'Check hours and reservation rules before you head over.';
+  }
+  if (/\b(walk|route|itinerary)\b/i.test(question)) {
+    return 'Use the map link to group nearby stops before committing to the route.';
+  }
+  return 'Confirm hours and transit timing before you go.';
+}
+
+function buildTravelSummary(question: string, answer: string, cityLabel: string): string {
+  const firstSentence = answer
+    .replace(/\s+/g, ' ')
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .find(Boolean);
+  if (firstSentence) {
+    return compactSentence(firstSentence, 180);
+  }
+  return `A focused ${cityLabel} guide view based on your question: ${compactSentence(question, 120)}`;
+}
+
+function buildRouteHint(titles: string[]): string | null {
+  if (titles.length < 2) {
+    return null;
+  }
+  const visible = titles.slice(0, 3);
+  return `Start with ${visible[0]}, then compare ${visible.slice(1).join(' and ')} on the map so the day does not turn into a scenic detour disguised as planning.`;
+}
+
+function slugifyForId(value: string): string {
+  const slug = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40);
+  return slug || 'stop';
+}
+
 async function updateAtlasStats(userId: string, atlasId: string): Promise<void> {
   const [documents, knowledgeEntries, wikiTopics, wikiArticles, chatThreads] = await Promise.all([
     countCollectionForAtlas('documents', userId, atlasId),
@@ -863,6 +1057,7 @@ export async function runAtlasQuery(params: {
   citedEntryIds: string[];
   citedPassages: QueryCitationSnapshot[];
   mappableLocations: MappableLocation[];
+  travelGuide: TravelGuideStructuredResponse | null;
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string;
@@ -894,6 +1089,13 @@ export async function runAtlasQuery(params: {
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
     });
+    const travelGuide = buildTravelGuideResponse({
+      question: trimmedQuestion,
+      answer: response.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
+      mappableLocations,
+    });
 
     await recordChatThreadExchange({
       threadId: thread.id,
@@ -904,6 +1106,7 @@ export async function runAtlasQuery(params: {
       answer: response.answer,
       citedPassages: [],
       mappableLocations,
+      travelGuide,
       knowledgeGap: false,
       questionCountIncrement: 1,
     });
@@ -913,6 +1116,7 @@ export async function runAtlasQuery(params: {
       citedEntryIds: [],
       citedPassages: [],
       mappableLocations,
+      travelGuide,
       scopedTopicIds: [],
       knowledgeGap: false,
       threadId: thread.id,
@@ -935,6 +1139,13 @@ export async function runAtlasQuery(params: {
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
     });
+    const travelGuide = buildTravelGuideResponse({
+      question: trimmedQuestion,
+      answer: articleResult.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
+      mappableLocations,
+    });
 
     logger.info('Atlas query answered from wiki articles', {
       userId: params.userId,
@@ -950,6 +1161,7 @@ export async function runAtlasQuery(params: {
       answer: articleResult.answer,
       citedPassages: articleResult.citedPassages,
       mappableLocations,
+      travelGuide,
       knowledgeGap: articleResult.knowledgeGap,
       questionCountIncrement: 1,
     });
@@ -959,6 +1171,7 @@ export async function runAtlasQuery(params: {
       citedEntryIds: articleResult.articleIds,
       citedPassages: articleResult.citedPassages,
       mappableLocations,
+      travelGuide,
       scopedTopicIds: [],
       knowledgeGap: articleResult.knowledgeGap,
       threadId: thread.id,
@@ -1011,6 +1224,7 @@ export async function runAtlasQuery(params: {
       citedEntryIds: [],
       citedPassages: [],
       mappableLocations: [],
+      travelGuide: null,
       scopedTopicIds: topics.map((topic) => topic.id),
       knowledgeGap: true,
       threadId: thread.id,
@@ -1051,6 +1265,13 @@ export async function runAtlasQuery(params: {
     atlasName: atlasMapContext.atlasName,
     cityHint: atlasMapContext.cityHint,
   });
+  const travelGuide = buildTravelGuideResponse({
+    question: trimmedQuestion,
+    answer: safeAnswer,
+    atlasName: atlasMapContext.atlasName,
+    cityHint: atlasMapContext.cityHint,
+    mappableLocations,
+  });
 
   await recordChatThreadExchange({
     threadId: thread.id,
@@ -1061,6 +1282,7 @@ export async function runAtlasQuery(params: {
     answer: safeAnswer,
     citedPassages,
     mappableLocations,
+    travelGuide,
     knowledgeGap,
     questionCountIncrement: 1,
   });
@@ -1070,6 +1292,7 @@ export async function runAtlasQuery(params: {
     citedEntryIds,
     citedPassages,
     mappableLocations,
+    travelGuide,
     scopedTopicIds: topics.map((topic) => topic.id),
     knowledgeGap: knowledgeGap,
     threadId: thread.id,
@@ -1090,6 +1313,7 @@ export async function runPublicAtlasQuery(params: {
   citedEntryIds: string[];
   citedPassages: QueryCitationSnapshot[];
   mappableLocations: MappableLocation[];
+  travelGuide: TravelGuideStructuredResponse | null;
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string | null;
@@ -1122,6 +1346,7 @@ export async function runPublicAtlasQuery(params: {
       citedEntryIds: [],
       citedPassages: [],
       mappableLocations: [],
+      travelGuide: null,
       scopedTopicIds: [],
       knowledgeGap: false,
       threadId: thread.id,
@@ -1153,6 +1378,13 @@ export async function runPublicAtlasQuery(params: {
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
     });
+    const travelGuide = buildTravelGuideResponse({
+      question: trimmedQuestion,
+      answer: response.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
+      mappableLocations,
+    });
 
     await recordPublicChatThreadExchange({
       threadId: thread.id,
@@ -1164,6 +1396,7 @@ export async function runPublicAtlasQuery(params: {
       answer: response.answer,
       citedPassages: [],
       mappableLocations,
+      travelGuide,
       knowledgeGap: false,
       questionCountIncrement: 1,
     });
@@ -1178,6 +1411,7 @@ export async function runPublicAtlasQuery(params: {
       citedEntryIds: [],
       citedPassages: [],
       mappableLocations,
+      travelGuide,
       scopedTopicIds: [],
       knowledgeGap: false,
       threadId: thread.id,
@@ -1204,6 +1438,13 @@ export async function runPublicAtlasQuery(params: {
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
     });
+    const travelGuide = buildTravelGuideResponse({
+      question: trimmedQuestion,
+      answer: articleResult.answer,
+      atlasName: atlasMapContext.atlasName,
+      cityHint: atlasMapContext.cityHint,
+      mappableLocations,
+    });
 
     await recordPublicChatThreadExchange({
       threadId: thread.id,
@@ -1215,6 +1456,7 @@ export async function runPublicAtlasQuery(params: {
       answer: articleResult.answer,
       citedPassages: articleResult.citedPassages,
       mappableLocations,
+      travelGuide,
       knowledgeGap: articleResult.knowledgeGap,
       questionCountIncrement: 1,
     });
@@ -1229,6 +1471,7 @@ export async function runPublicAtlasQuery(params: {
       citedEntryIds: articleResult.articleIds,
       citedPassages: articleResult.citedPassages,
       mappableLocations,
+      travelGuide,
       scopedTopicIds: [],
       knowledgeGap: articleResult.knowledgeGap,
       threadId: thread.id,
@@ -1332,6 +1575,13 @@ export async function runPublicAtlasQuery(params: {
     atlasName: atlasMapContext.atlasName,
     cityHint: atlasMapContext.cityHint,
   });
+  const travelGuide = buildTravelGuideResponse({
+    question: trimmedQuestion,
+    answer,
+    atlasName: atlasMapContext.atlasName,
+    cityHint: atlasMapContext.cityHint,
+    mappableLocations,
+  });
 
   await recordPublicChatThreadExchange({
     threadId: thread.id,
@@ -1343,6 +1593,7 @@ export async function runPublicAtlasQuery(params: {
     answer,
     citedPassages,
     mappableLocations,
+    travelGuide,
     knowledgeGap,
     questionCountIncrement: 1,
   });
@@ -1357,6 +1608,7 @@ export async function runPublicAtlasQuery(params: {
     citedEntryIds,
     citedPassages,
     mappableLocations,
+    travelGuide,
     scopedTopicIds: topics.map((topic) => topic.id),
     knowledgeGap,
     threadId: thread.id,
@@ -1662,6 +1914,7 @@ async function recordChatThreadExchange(params: {
   answer: string;
   citedPassages: QueryCitationSnapshot[];
   mappableLocations: MappableLocation[];
+  travelGuide: TravelGuideStructuredResponse | null;
   knowledgeGap: boolean;
   questionCountIncrement: number;
 }): Promise<void> {
@@ -1690,6 +1943,7 @@ async function recordChatThreadExchange(params: {
         text: params.answer,
         cited_passages: params.citedPassages,
         mappable_locations: params.mappableLocations,
+        travel_guide: params.travelGuide,
         knowledge_gap: params.knowledgeGap,
         created_at: createdAt,
       } satisfies ChatMessageRecord,
@@ -1849,6 +2103,7 @@ async function recordPublicChatThreadExchange(params: {
   answer: string;
   citedPassages: QueryCitationSnapshot[];
   mappableLocations: MappableLocation[];
+  travelGuide: TravelGuideStructuredResponse | null;
   knowledgeGap: boolean;
   questionCountIncrement: number;
 }): Promise<void> {
@@ -1884,6 +2139,7 @@ async function recordPublicChatThreadExchange(params: {
         text: params.answer,
         cited_passages: params.citedPassages,
         mappable_locations: params.mappableLocations,
+        travel_guide: params.travelGuide,
         knowledge_gap: params.knowledgeGap,
         created_at: createdAt,
       } satisfies PublicChatMessageRecord,

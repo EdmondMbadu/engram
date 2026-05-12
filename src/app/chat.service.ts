@@ -17,6 +17,8 @@ import type {
   CitationPassage,
   MappableLocation,
   QueryHistoryItem,
+  TravelGuideCard,
+  TravelGuideStructuredResponse,
 } from './atlas.models';
 import { AtlasService } from './atlas.service';
 import { AuthService } from './auth.service';
@@ -27,6 +29,7 @@ type AskAtlasResponse = {
   citedEntryIds: string[];
   citedPassages: CitationPassage[];
   mappableLocations?: MappableLocation[];
+  travelGuide?: TravelGuideStructuredResponse | null;
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string;
@@ -47,6 +50,7 @@ type AskPublicAtlasResponse = {
   citedEntryIds: string[];
   citedPassages: CitationPassage[];
   mappableLocations?: MappableLocation[];
+  travelGuide?: TravelGuideStructuredResponse | null;
   scopedTopicIds: string[];
   knowledgeGap: boolean;
   threadId: string | null;
@@ -497,6 +501,7 @@ export class ChatService {
         ? (message['cited_passages'] as CitationPassage[])
         : [],
       mappable_locations: this.hydrateMappableLocations(message['mappable_locations']),
+      travel_guide: this.hydrateTravelGuide(message['travel_guide']),
       knowledge_gap: message['knowledge_gap'] === true,
       answer_card_id: typeof message['answer_card_id'] === 'string' ? message['answer_card_id'] : null,
       answer_quiz_id: typeof message['answer_quiz_id'] === 'string' ? message['answer_quiz_id'] : null,
@@ -527,6 +532,61 @@ export class ChatService {
         };
       })
       .filter((location): location is MappableLocation => !!location);
+  }
+
+  private hydrateTravelGuide(value: unknown): TravelGuideStructuredResponse | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    const data = value as Record<string, unknown>;
+    const cards = Array.isArray(data['cards'])
+      ? data['cards']
+          .map((item, index): TravelGuideCard | null => {
+            if (!item || typeof item !== 'object') {
+              return null;
+            }
+            const card = item as Record<string, unknown>;
+            const title = typeof card['title'] === 'string' ? card['title'].trim() : '';
+            const description = typeof card['description'] === 'string' ? card['description'].trim() : '';
+            if (!title || !description) {
+              return null;
+            }
+            return {
+              id: typeof card['id'] === 'string' && card['id'].trim() ? card['id'].trim() : `guide-card-${index + 1}`,
+              title,
+              subtitle: typeof card['subtitle'] === 'string' ? card['subtitle'].trim() || null : null,
+              description,
+              neighborhood: typeof card['neighborhood'] === 'string' ? card['neighborhood'].trim() || null : null,
+              best_for: typeof card['best_for'] === 'string' ? card['best_for'].trim() || null : null,
+              vibe: typeof card['vibe'] === 'string' ? card['vibe'].trim() || null : null,
+              local_tip: typeof card['local_tip'] === 'string' ? card['local_tip'].trim() || null : null,
+              cost: typeof card['cost'] === 'string' ? card['cost'].trim() || null : null,
+              time_hint: typeof card['time_hint'] === 'string' ? card['time_hint'].trim() || null : null,
+              image_url: typeof card['image_url'] === 'string' ? card['image_url'].trim() || null : null,
+              map_query: typeof card['map_query'] === 'string' ? card['map_query'].trim() || null : null,
+              source_url: typeof card['source_url'] === 'string' ? card['source_url'].trim() || null : null,
+            };
+          })
+          .filter((card): card is TravelGuideCard => !!card)
+      : [];
+
+    if (cards.length === 0) {
+      return null;
+    }
+
+    return {
+      title: typeof data['title'] === 'string' ? data['title'].trim() || null : null,
+      summary: typeof data['summary'] === 'string' ? data['summary'].trim() || null : null,
+      cards,
+      route: typeof data['route'] === 'string' ? data['route'].trim() || null : null,
+      next_actions: Array.isArray(data['next_actions'])
+        ? data['next_actions']
+            .map((item) => (typeof item === 'string' ? item.trim() : ''))
+            .filter(Boolean)
+            .slice(0, 4)
+        : [],
+    };
   }
 
   private hydrateTimestamp(value: unknown): { toDate(): Date } | Date | null {

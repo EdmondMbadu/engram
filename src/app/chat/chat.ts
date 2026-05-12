@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage, MappableLocation } from '../atlas.models';
+import type { AtlasItem, ChatHistoryItem, ChatStoredMessage, ChatThreadItem, CitationPassage, MappableLocation, TravelGuideCard, TravelGuideStructuredResponse } from '../atlas.models';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { AnswerCardService } from '../answer-card.service';
@@ -27,6 +27,7 @@ interface ChatMessage {
   answerMode?: 'wiki' | 'internet';
   citations?: CitationPassage[];
   mappableLocations?: MappableLocation[];
+  travelGuide?: TravelGuideStructuredResponse | null;
   answerCardId?: string | null;
   answerQuizId?: string | null;
   pending?: boolean;
@@ -104,6 +105,7 @@ export class ChatComponent implements AfterViewChecked {
   readonly answerCardError = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
+  readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
   readonly publicAtlas = signal<AtlasItem | null>(null);
   readonly publicLookupDone = signal(false);
   readonly publicChatLoading = signal(false);
@@ -786,6 +788,7 @@ export class ChatComponent implements AfterViewChecked {
         : response?.answer ?? this.chatService.latestAnswer() ?? '';
       const citations = this.normalizeCitations(response?.citedPassages ?? this.chatService.latestCitations());
       const mappableLocations = this.normalizeMappableLocations(response?.mappableLocations ?? []);
+      const travelGuide = this.normalizeTravelGuide(response?.travelGuide ?? null);
       const gap = response?.knowledgeGap ?? this.chatService.knowledgeGap();
       const returnedThreadId = response?.threadId ?? submittedThreadId;
 
@@ -800,6 +803,7 @@ export class ChatComponent implements AfterViewChecked {
             answerMode: selectedAnswerMode,
             citations,
             mappableLocations,
+            travelGuide,
             knowledgeGap: gap,
             pending: false,
             createdAt: now,
@@ -818,6 +822,7 @@ export class ChatComponent implements AfterViewChecked {
                   answerMode: selectedAnswerMode,
                   citations,
                   mappableLocations,
+                  travelGuide,
                   knowledgeGap: gap,
                   updatedAt: new Date(),
                 }
@@ -1014,6 +1019,53 @@ export class ChatComponent implements AfterViewChecked {
   assistantAvatarAlt(): string {
     const name = this.assistantMessageName();
     return name === 'Living Wiki' ? 'Living Wiki' : `${name} guide`;
+  }
+
+  travelGuideForMessage(message: ChatMessage): TravelGuideStructuredResponse | null {
+    return message.role === 'assistant' && !message.pending ? message.travelGuide ?? null : null;
+  }
+
+  travelCardImageUrl(card: TravelGuideCard): string | null {
+    return card.image_url?.trim() || this.currentWikiGuide()?.banner_url?.trim() || this.currentWikiAtlas()?.hero_url?.trim() || null;
+  }
+
+  travelCardMapUrl(card: TravelGuideCard): string {
+    const query = card.map_query?.trim() || card.subtitle?.trim() || card.title;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  }
+
+  travelCardSourceUrl(card: TravelGuideCard): string | null {
+    const sourceUrl = card.source_url?.trim();
+    if (!sourceUrl) {
+      return null;
+    }
+    try {
+      const parsed = new URL(sourceUrl);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.toString() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  travelCardSaved(card: TravelGuideCard): boolean {
+    return this.savedTravelCardIds()[this.travelCardStorageId(card)] === true;
+  }
+
+  saveTravelCard(card: TravelGuideCard, event?: MouseEvent): void {
+    event?.stopPropagation();
+    const storageId = this.travelCardStorageId(card);
+    const next = {
+      ...this.savedTravelCardIds(),
+      [storageId]: true,
+    };
+    this.savedTravelCardIds.set(next);
+    this.persistSavedTravelCardIds(next);
+    this.copiedTarget.set(`save:${storageId}`);
+  }
+
+  async shareTravelCard(card: TravelGuideCard, event?: MouseEvent): Promise<void> {
+    event?.stopPropagation();
+    await this.copyText(`share:${this.travelCardStorageId(card)}`, this.buildTravelCardShareText(card));
   }
 
   formatRelativeDateShort(value: { toDate(): Date } | Date | null | undefined): string {
@@ -1440,6 +1492,14 @@ export class ChatComponent implements AfterViewChecked {
       }
     }
 
+    if (message.travelGuide?.cards.length) {
+      lines.push('');
+      lines.push('Guide cards:');
+      for (const card of message.travelGuide.cards) {
+        lines.push(`- ${card.title}: ${card.description}`);
+      }
+    }
+
     return lines.join('\n');
   }
 
@@ -1531,6 +1591,92 @@ export class ChatComponent implements AfterViewChecked {
     return Array.from(deduped.values()).slice(0, 6);
   }
 
+  private normalizeTravelGuide(guide: TravelGuideStructuredResponse | null | undefined): TravelGuideStructuredResponse | null {
+    if (!guide || !Array.isArray(guide.cards)) {
+      return null;
+    }
+
+    const cards = guide.cards
+      .map((card, index): TravelGuideCard | null => {
+        const title = card.title?.trim();
+        const description = card.description?.trim();
+        if (!title || !description) {
+          return null;
+        }
+
+        return {
+          id: card.id?.trim() || `guide-card-${index + 1}`,
+          title,
+          subtitle: card.subtitle?.trim() || null,
+          description,
+          neighborhood: card.neighborhood?.trim() || null,
+          best_for: card.best_for?.trim() || null,
+          vibe: card.vibe?.trim() || null,
+          local_tip: card.local_tip?.trim() || null,
+          cost: card.cost?.trim() || null,
+          time_hint: card.time_hint?.trim() || null,
+          image_url: card.image_url?.trim() || null,
+          map_query: card.map_query?.trim() || null,
+          source_url: card.source_url?.trim() || null,
+        };
+      })
+      .filter((card): card is TravelGuideCard => !!card)
+      .slice(0, 5);
+
+    if (cards.length === 0) {
+      return null;
+    }
+
+    return {
+      title: guide.title?.trim() || null,
+      summary: guide.summary?.trim() || null,
+      cards,
+      route: guide.route?.trim() || null,
+      next_actions: (guide.next_actions ?? []).map((action) => action.trim()).filter(Boolean).slice(0, 4),
+    };
+  }
+
+  travelCardStorageId(card: TravelGuideCard): string {
+    return `${this.currentWikiAtlas()?.id ?? 'wiki'}:${card.id || card.title}`.toLowerCase();
+  }
+
+  private buildTravelCardShareText(card: TravelGuideCard): string {
+    const lines = [
+      card.title,
+      card.subtitle,
+      card.description,
+      card.best_for ? `Best for: ${card.best_for}` : '',
+      card.local_tip ? `Tip: ${card.local_tip}` : '',
+      `Map: ${this.travelCardMapUrl(card)}`,
+    ].filter(Boolean);
+    return lines.join('\n');
+  }
+
+  private loadSavedTravelCardIds(): Record<string, boolean> {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem('living-wiki:saved-travel-cards') ?? '{}') as unknown;
+      if (!parsed || typeof parsed !== 'object') {
+        return {};
+      }
+      return Object.fromEntries(
+        Object.entries(parsed as Record<string, unknown>)
+          .filter(([, value]) => value === true),
+      ) as Record<string, boolean>;
+    } catch {
+      return {};
+    }
+  }
+
+  private persistSavedTravelCardIds(value: Record<string, boolean>): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem('living-wiki:saved-travel-cards', JSON.stringify(value));
+  }
+
   private normalizeCitationFilename(filename: string | null | undefined): string {
     const value = String(filename ?? '').trim();
     if (!value || this.isFallbackCitationFilename(value)) {
@@ -1615,6 +1761,7 @@ export class ChatComponent implements AfterViewChecked {
       answerMode: message.answer_mode === 'internet' ? 'internet' : 'wiki',
       citations: this.normalizeCitations(message.cited_passages ?? []),
       mappableLocations: this.normalizeMappableLocations(message.mappable_locations ?? []),
+      travelGuide: this.normalizeTravelGuide(message.travel_guide ?? null),
       answerCardId: message.answer_card_id ?? null,
       answerQuizId: message.answer_quiz_id ?? null,
       knowledgeGap: !!message.knowledge_gap,

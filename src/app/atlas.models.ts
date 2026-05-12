@@ -228,6 +228,30 @@ export interface MappableLocation {
   address_hint?: string | null;
 }
 
+export interface TravelGuideCard {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  description: string;
+  neighborhood?: string | null;
+  best_for?: string | null;
+  vibe?: string | null;
+  local_tip?: string | null;
+  cost?: string | null;
+  time_hint?: string | null;
+  image_url?: string | null;
+  map_query?: string | null;
+  source_url?: string | null;
+}
+
+export interface TravelGuideStructuredResponse {
+  title?: string | null;
+  summary?: string | null;
+  cards: TravelGuideCard[];
+  route?: string | null;
+  next_actions?: string[];
+}
+
 export interface AnswerCardItem {
   id: string;
   atlasId: string | null;
@@ -353,6 +377,7 @@ export interface ChatStoredMessage {
   text: string;
   cited_passages?: CitationPassage[];
   mappable_locations?: MappableLocation[];
+  travel_guide?: TravelGuideStructuredResponse | null;
   knowledge_gap?: boolean;
   answer_card_id?: string | null;
   answer_quiz_id?: string | null;
