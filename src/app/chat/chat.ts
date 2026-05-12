@@ -1029,6 +1029,10 @@ export class ChatComponent implements AfterViewChecked {
     return card.image_url?.trim() || this.currentWikiGuide()?.banner_url?.trim() || this.currentWikiAtlas()?.hero_url?.trim() || null;
   }
 
+  travelGuideHeroImage(): string | null {
+    return this.currentWikiGuide()?.banner_url?.trim() || this.currentWikiAtlas()?.hero_url?.trim() || null;
+  }
+
   travelCardMapUrl(card: TravelGuideCard): string {
     const query = card.map_query?.trim() || card.subtitle?.trim() || card.title;
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;

@@ -835,9 +835,12 @@ function buildTravelGuideResponse(params: {
   cityHint: string | null;
   mappableLocations: MappableLocation[];
 }): TravelGuideStructuredResponse | null {
-  const locations = dedupeMappableLocations(params.mappableLocations).slice(0, 5);
   const travelIntent = hasTravelGuideIntent(params.question);
-  if (locations.length === 0 || (!travelIntent && !params.cityHint)) {
+  const locations = dedupeMappableLocations([
+    ...params.mappableLocations,
+    ...extractTravelLocationCandidates(params.answer, params.cityHint || params.atlasName),
+  ]).slice(0, 5);
+  if (locations.length === 0 || !travelIntent) {
     return null;
   }
 
@@ -851,7 +854,7 @@ function buildTravelGuideResponse(params: {
     return {
       id: `guide-${index + 1}-${slugifyForId(location.name)}`,
       title: location.name,
-      subtitle: location.address_hint || location.search_query || null,
+      subtitle: location.address_hint || inferNeighborhood(description) || cityLabel,
       description: compactSentence(description, 220),
       neighborhood: inferNeighborhood(description),
       best_for: bestFor,
@@ -896,6 +899,95 @@ function dedupeMappableLocations(locations: MappableLocation[]): MappableLocatio
     }
   }
   return Array.from(deduped.values());
+}
+
+function extractTravelLocationCandidates(answer: string, cityHint: string | null): MappableLocation[] {
+  const candidates: string[] = [];
+  const boldPattern = /\*\*([^*]{3,90})\*\*/g;
+  let boldMatch: RegExpExecArray | null;
+
+  while ((boldMatch = boldPattern.exec(answer)) !== null) {
+    const cleaned = normalizeCandidatePlaceName(boldMatch[1]);
+    if (cleaned && looksLikePlaceName(cleaned)) {
+      candidates.push(cleaned);
+    }
+  }
+
+  const headingPattern = /^\s*(?:\d+\.\s+|[-*]\s+)?(?:#+\s*)?(.{4,110})$/gm;
+  let headingMatch: RegExpExecArray | null;
+
+  while ((headingMatch = headingPattern.exec(answer)) !== null) {
+    const rawLine = headingMatch[1].trim();
+    if (!/^\*\*.+\*\*/.test(rawLine) && !/^\d+\./.test(headingMatch[0])) {
+      continue;
+    }
+    const cleaned = normalizeCandidatePlaceName(rawLine.replace(/\*\*/g, ''));
+    if (cleaned && looksLikePlaceName(cleaned)) {
+      candidates.push(cleaned);
+    }
+  }
+
+  return dedupeStrings(candidates)
+    .slice(0, 8)
+    .map((name) => ({
+      name,
+      search_query: [name, cityHint].filter(Boolean).join(' '),
+      address_hint: null,
+    }));
+}
+
+function normalizeCandidatePlaceName(value: string): string | null {
+  let cleaned = value
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/^[\d.)\s-]+/, '')
+    .replace(/^(kick-?off at|start at|stop at|head to|visit|the sight|the spot|the taste)\s+/i, '')
+    .replace(/^(the flag's first home|a true philly bite|my humble abode)\s*[–-]\s*/i, '')
+    .replace(/\s+[–-]\s+.*$/, '')
+    .replace(/:\s*$/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (cleaned.includes(' & ')) {
+    cleaned = cleaned.split(' & ')[0].trim();
+  }
+  if (cleaned.includes(' and ') && cleaned.length > 42) {
+    cleaned = cleaned.split(/\s+and\s+/i)[0].trim();
+  }
+
+  if (!cleaned || cleaned.length < 3 || cleaned.length > 80 || isGuideLabel(cleaned)) {
+    return null;
+  }
+  return cleaned;
+}
+
+function looksLikePlaceName(value: string): boolean {
+  if (isGuideLabel(value)) {
+    return false;
+  }
+  const lower = value.toLowerCase();
+  if (/\b(approx|minutes|hours|why it matters|local angle|good first move|best for|cost|vibe|nearby|the big picture)\b/.test(lower)) {
+    return false;
+  }
+  if (/\b(hall|bell|house|museum|market|park|ground|grounds|church|restaurant|cafe|coffee|bar|bourse|square|street|avenue|terminal|center|centre|garden|trail|bridge|station|library|theater|theatre|hotel|pier|waterfront|zoo)\b/i.test(value)) {
+    return true;
+  }
+  return /^[A-Z][A-Za-z0-9'&. ]{2,}$/.test(value) && value.split(/\s+/).length <= 6;
+}
+
+function isGuideLabel(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  return [
+    'the big picture',
+    'why it matters',
+    'local angle',
+    'good first move',
+    'the sight',
+    'the spot',
+    'the taste',
+    'cost/vibe',
+    'nearby',
+    'your next move',
+  ].includes(normalized);
 }
 
 function hasTravelGuideIntent(question: string): boolean {
