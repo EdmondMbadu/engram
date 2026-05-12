@@ -998,6 +998,25 @@ export class ChatComponent implements AfterViewChecked {
     return message.answerMode === 'internet' ? 'Internet' : 'Living Wiki';
   }
 
+  assistantMessageName(): string {
+    return this.currentWikiGuide()?.name?.trim() || 'Living Wiki';
+  }
+
+  assistantMessageSubtitle(message: ChatMessage): string {
+    const guideLabel = this.currentWikiGuide()?.label?.trim();
+    const modeLabel = this.messageLabel(message);
+    return guideLabel ? `${guideLabel} · ${modeLabel}` : modeLabel;
+  }
+
+  assistantAvatarUrl(): string {
+    return this.currentWikiGuide()?.image_url?.trim() || '/assets/living-atlas-logo.png';
+  }
+
+  assistantAvatarAlt(): string {
+    const name = this.assistantMessageName();
+    return name === 'Living Wiki' ? 'Living Wiki' : `${name} guide`;
+  }
+
   formatRelativeDateShort(value: { toDate(): Date } | Date | null | undefined): string {
     const date = this.asDate(value);
     if (!date) {

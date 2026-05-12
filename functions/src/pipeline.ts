@@ -759,10 +759,23 @@ async function loadAtlasPersonaPrompt(atlasId: string | null): Promise<string | 
   try {
     const snapshot = await atlasesCollection.doc(atlasId).get();
     if (!snapshot.exists) return null;
-    const data = snapshot.data() as { persona_prompt?: unknown } | undefined;
+    const data = snapshot.data() as { persona_prompt?: unknown; chat_guide?: unknown } | undefined;
     const raw = typeof data?.persona_prompt === 'string' ? data.persona_prompt.trim() : '';
-    if (!raw) return null;
-    return raw.length > maxPersonaPromptChars ? raw.slice(0, maxPersonaPromptChars) : raw;
+    const guide = data?.chat_guide && typeof data.chat_guide === 'object'
+      ? data.chat_guide as Record<string, unknown>
+      : null;
+    const guideName = typeof guide?.name === 'string' ? guide.name.trim() : '';
+    const guideLabel = typeof guide?.label === 'string' ? guide.label.trim() : '';
+    const guidePrompt = guideName
+      ? [
+        `You are responding as ${guideName}, ${guideLabel || 'the Living Wiki guide'} for this wiki.`,
+        'Let that guide identity shape the voice, warmth, framing, and local color of every answer.',
+        'Stay accurate, grounded, and modern; do not fabricate personal memories, citations, dates, or facts.',
+      ].join(' ')
+      : '';
+    const combined = [guidePrompt, raw].filter(Boolean).join('\n\n');
+    if (!combined) return null;
+    return combined.length > maxPersonaPromptChars ? combined.slice(0, maxPersonaPromptChars) : combined;
   } catch (error) {
     logger.warn('Failed to load atlas persona prompt; falling back to default voice.', {
       atlasId,

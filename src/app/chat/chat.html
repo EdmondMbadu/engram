@@ -474,15 +474,22 @@
                     </div>
                   } @else {
                     <div class="assistant-message flex gap-5">
-                      <div class="assistant-message__avatar" [class.assistant-message__avatar--pending]="msg.pending">
-                        <img src="/assets/living-atlas-logo.png" alt="Living Wiki" class="assistant-message__logo" />
+                      <div class="assistant-message__avatar overflow-hidden" [class.assistant-message__avatar--pending]="msg.pending">
+                        <img
+                          [src]="assistantAvatarUrl()"
+                          [alt]="assistantAvatarAlt()"
+                          class="h-full w-full rounded-full object-cover"
+                        />
                       </div>
                       <div class="min-w-0 flex-1 pt-1">
                         <div class="assistant-message__card">
                           <div class="assistant-message__header">
                             <div class="assistant-message__badge">
                               <span class="assistant-message__badge-dot" [class.assistant-message__badge-dot--live]="msg.pending"></span>
-                              <span>{{ messageLabel(msg) }}</span>
+                              <span class="grid min-w-0">
+                                <span class="truncate text-sm font-black text-[var(--text)]">{{ assistantMessageName() }}</span>
+                                <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ assistantMessageSubtitle(msg) }}</span>
+                              </span>
                             </div>
                             <div class="ml-auto flex items-center gap-2">
                               @if (msg.pending) {
