@@ -40,6 +40,7 @@ export class AtlasManageComponent {
   readonly adminEmailDraftById = signal<Record<string, string>>({});
   readonly sharingAdminById = signal<Record<string, boolean>>({});
   readonly removingAdminKey = signal<string | null>(null);
+  readonly openSections = signal<Record<string, boolean>>({});
   readonly deletingId = signal<string | null>(null);
   readonly pageError = signal<string | null>(null);
 
@@ -117,6 +118,24 @@ export class AtlasManageComponent {
 
   isSavingDefaultMode(atlasId: string): boolean {
     return this.savingDefaultModeById()[atlasId] ?? false;
+  }
+
+  sectionKey(atlas: AtlasItem, section: string): string {
+    return `${atlas.id}:${section}`;
+  }
+
+  isSectionOpen(atlas: AtlasItem, section: string): boolean {
+    return this.openSections()[this.sectionKey(atlas, section)] === true;
+  }
+
+  toggleSection(atlas: AtlasItem, section: string): void {
+    const key = this.sectionKey(atlas, section);
+    this.openSections.update((current) => ({ ...current, [key]: !current[key] }));
+  }
+
+  openSection(atlas: AtlasItem, section: string): void {
+    const key = this.sectionKey(atlas, section);
+    this.openSections.update((current) => ({ ...current, [key]: true }));
   }
 
   adminEmailDraft(atlasId: string): string {
@@ -217,6 +236,7 @@ export class AtlasManageComponent {
   startCityEdit(atlas: AtlasItem): void {
     const config = atlas.city_config;
     this.pageError.set(null);
+    this.openSection(atlas, 'city');
     this.cityEditingId.set(atlas.id);
     this.cityDraft.set({
       enabled: config?.enabled === true,

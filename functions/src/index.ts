@@ -3,8 +3,10 @@ import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
+import { defineSecret } from 'firebase-functions/params';
 import { createHash, randomUUID } from 'node:crypto';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
+import sgMail from '@sendgrid/mail';
 import { db, storage } from './firebase';
 import { geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
 import {
@@ -40,6 +42,9 @@ const staleIngestionThresholdMinutes = 10;
 const defaultRetryLimit = 50;
 const staleRetryBatchLimit = 200;
 const maxGoogleDriveImportFiles = 10;
+const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
+const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
+const publicAppUrl = 'https://living-atlas-7622a.web.app';
 const urlIngestionTriggerOptions = {
   region: callableRegion,
   timeoutSeconds: 540,
@@ -539,6 +544,115 @@ function normalizeAdminProfiles(value: unknown): Record<string, unknown>[] {
   return value.filter((item): item is Record<string, unknown> => !!item && typeof item === 'object');
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function atlasDisplayName(atlas: Record<string, unknown>, atlasId: string): string {
+  const name = typeof atlas.name === 'string' ? atlas.name.trim() : '';
+  return name || `Wiki ${atlasId.slice(0, 6)}`;
+}
+
+function buildAtlasAdminInviteEmail(params: {
+  recipientName: string | null;
+  recipientEmail: string;
+  inviterName: string;
+  atlasName: string;
+  adminUrl: string;
+  publicUrl: string;
+}) {
+  const recipientName = params.recipientName?.trim() || params.recipientEmail;
+  const subject = `You have been added as an admin for ${params.atlasName}`;
+  const safeRecipientName = escapeHtml(recipientName);
+  const safeInviterName = escapeHtml(params.inviterName);
+  const safeAtlasName = escapeHtml(params.atlasName);
+  const safeAdminUrl = escapeHtml(params.adminUrl);
+  const safePublicUrl = escapeHtml(params.publicUrl);
+
+  const text = `Hi ${recipientName},
+
+${params.inviterName} added you as an admin for "${params.atlasName}" on Living Wiki.
+
+You can now help manage this wiki's AI voice and settings.
+
+Open the admin page:
+${params.adminUrl}
+
+Open the public wiki:
+${params.publicUrl}
+
+If your admin access is removed later, this wiki will automatically disappear from your Wikis page.
+
+The Living Wiki Team`;
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 640px; margin: 0 auto; padding: 0;">
+      <div style="background: linear-gradient(135deg, #0b1f14 0%, #1c7c41 100%); padding: 34px 30px; border-radius: 18px 18px 0 0;">
+        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Living Wiki</h1>
+        <p style="color: rgba(255,255,255,0.76); margin: 10px 0 0; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;">Admin invitation</p>
+      </div>
+      <div style="background: #ffffff; padding: 32px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 18px 18px;">
+        <p style="color: #111827; font-size: 16px; line-height: 1.6; margin: 0 0 18px;">Hi <strong>${safeRecipientName}</strong>,</p>
+        <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 22px;">
+          ${safeInviterName} added you as an admin for <strong>${safeAtlasName}</strong> on Living Wiki.
+        </p>
+        <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; padding: 20px; margin: 0 0 24px;">
+          <p style="color: #0f2417; font-size: 15px; line-height: 1.6; margin: 0;">
+            You can now open this wiki from your Wikis page and manage its AI voice and settings.
+          </p>
+        </div>
+        <div style="text-align: center; margin: 26px 0;">
+          <a href="${safeAdminUrl}" style="background: #1c7c41; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 999px; font-weight: 800; display: inline-block; font-size: 15px;">
+            Open Admin Page
+          </a>
+        </div>
+        <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0 0 10px;">
+          Public wiki: <a href="${safePublicUrl}" style="color: #1c7c41; text-decoration: none;">${safePublicUrl}</a>
+        </p>
+        <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">
+          If your admin access is removed later, this wiki will automatically disappear from your Wikis page.
+        </p>
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+        <p style="color: #9ca3af; font-size: 13px; margin: 0;">The Living Wiki Team</p>
+      </div>
+    </div>
+  `;
+
+  return { subject, text, html };
+}
+
+async function sendAtlasAdminInviteEmail(params: {
+  recipientName: string | null;
+  recipientEmail: string;
+  inviterName: string;
+  atlasName: string;
+  adminUrl: string;
+  publicUrl: string;
+}): Promise<void> {
+  const apiKey = sendgridApiKey.value();
+  if (!apiKey) {
+    throw new HttpsError('failed-precondition', 'SendGrid API key is not configured.');
+  }
+
+  sgMail.setApiKey(apiKey);
+  const email = buildAtlasAdminInviteEmail(params);
+  await sgMail.send({
+    to: params.recipientEmail,
+    from: {
+      email: inviteSenderEmail,
+      name: 'Living Wiki',
+    },
+    subject: email.subject,
+    text: email.text,
+    html: email.html,
+  });
+}
+
 async function loadOwnedAtlasForAdminMutation(atlasId: string, userId: string) {
   const atlasRef = db.collection('atlases').doc(atlasId);
   const atlasSnapshot = await atlasRef.get();
@@ -554,7 +668,7 @@ async function loadOwnedAtlasForAdminMutation(atlasId: string, userId: string) {
   return { atlasRef, atlas };
 }
 
-export const addAtlasAdmin = onCall({ region: callableRegion, cors: true }, async (request) => {
+export const addAtlasAdmin = onCall({ region: callableRegion, cors: true, secrets: [sendgridApiKey] }, async (request) => {
   if (!request.auth?.uid) {
     throw new HttpsError('unauthenticated', 'Authentication is required.');
   }
@@ -586,6 +700,16 @@ export const addAtlasAdmin = onCall({ region: callableRegion, cors: true }, asyn
   }
 
   const user = userDoc.data() as Record<string, unknown>;
+  const atlasName = atlasDisplayName(atlas, atlasId);
+  const atlasSlug = typeof atlas.slug === 'string' && atlas.slug.trim()
+    ? atlas.slug.trim()
+    : atlasId;
+  const token = (request.auth.token ?? {}) as { name?: unknown; email?: unknown };
+  const inviterName = typeof token.name === 'string' && token.name.trim()
+    ? token.name.trim()
+    : typeof token.email === 'string' && token.email.trim()
+      ? token.email.trim()
+      : 'A Living Wiki owner';
   const admin = {
     user_id: userId,
     email,
@@ -603,7 +727,36 @@ export const addAtlasAdmin = onCall({ region: callableRegion, cors: true }, asyn
     updated_at: FieldValue.serverTimestamp(),
   });
 
-  return { admin };
+  try {
+    await sendAtlasAdminInviteEmail({
+      recipientName: typeof user.displayName === 'string' ? user.displayName : null,
+      recipientEmail: email,
+      inviterName,
+      atlasName,
+      adminUrl: `${publicAppUrl}/atlases/${encodeURIComponent(atlasId)}/persona`,
+      publicUrl: `${publicAppUrl}/atlas/${encodeURIComponent(atlasSlug)}`,
+    });
+  } catch (error) {
+    logger.error('Failed to send atlas admin invitation email; rolling back admin grant.', {
+      atlasId,
+      userId,
+      email,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    const rollbackProfiles = normalizeAdminProfiles((await atlasRef.get()).data()?.admin_profiles)
+      .filter((profile) => String(profile.user_id ?? '') !== userId);
+    await atlasRef.update({
+      admin_user_ids: FieldValue.arrayRemove(userId),
+      admin_profiles: rollbackProfiles,
+      updated_at: FieldValue.serverTimestamp(),
+    });
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    throw new HttpsError('internal', 'Admin invite email could not be sent.');
+  }
+
+  return { admin, emailSent: true };
 });
 
 export const removeAtlasAdmin = onCall({ region: callableRegion, cors: true }, async (request) => {

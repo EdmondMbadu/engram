@@ -1,25 +1,23 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
   <header class="border-b border-[var(--line)] bg-[var(--surface)]">
     <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-3">
-        <a routerLink="/library" class="flex items-center gap-3">
-          <div class="h-11 w-11 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-2">
-            <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
-          </div>
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
-            <h1 class="text-xl font-black tracking-tighter">Wiki Settings</h1>
-          </div>
-        </a>
-      </div>
+      <a routerLink="/wikis" class="flex min-w-0 items-center gap-3">
+        <div class="h-11 w-11 shrink-0 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-2">
+          <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+        </div>
+        <div class="min-w-0">
+          <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
+          <h1 class="truncate text-xl font-black tracking-tighter">Wiki Admin</h1>
+        </div>
+      </a>
 
       <div class="flex items-center gap-3">
         <a
-          routerLink="/library"
+          routerLink="/wikis"
           class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
         >
           <span class="material-symbols-outlined text-[1rem]">arrow_back</span>
-          <span>Back to Source Files</span>
+          <span>Back to Wikis</span>
         </a>
         <app-theme-toggle></app-theme-toggle>
       </div>
@@ -27,407 +25,454 @@
   </header>
 
   <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-    <section class="rounded-[28px] border border-[var(--line)] bg-[var(--surface)] p-6">
-      <div class="flex flex-col gap-3 border-b border-[var(--line)] pb-5 sm:flex-row sm:items-end sm:justify-between">
+    <section class="border-b border-[var(--line)] pb-6">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">Wiki Admin</p>
-          <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Keep the switcher simple.</h2>
-          <p class="mt-3 max-w-3xl text-sm leading-6 text-[var(--muted)]">
-            Rename Wikis here, inspect what each Wiki contains, and delete empty ones without crowding the dropdown.
+          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">Admin console</p>
+          <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Manage each Wiki from one place.</h2>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+            Sections stay collapsed until you need them. Open a row to edit voice, access, search behavior, city data, or contents.
           </p>
         </div>
         <a
-          routerLink="/library"
+          routerLink="/wikis"
           class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--soft-fill-strong)]"
         >
-          <span class="material-symbols-outlined text-[1rem]">upload_file</span>
-          <span>Upload into active Wiki</span>
+          <span class="material-symbols-outlined text-[1rem]">dashboard</span>
+          <span>All Wikis</span>
         </a>
       </div>
+    </section>
 
-      @if (pageError()) {
-        <div class="mt-5 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">
-          {{ pageError() }}
-        </div>
-      }
+    @if (pageError()) {
+      <div class="mt-5 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">
+        {{ pageError() }}
+      </div>
+    }
 
-      <div class="mt-6 grid gap-4">
-        @for (atlas of atlases(); track atlas.id) {
-          <article class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-5">
-            <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-                    ID {{ atlasMeta(atlas) }}
+    <div class="mt-6 grid gap-4">
+      @for (atlas of atlases(); track atlas.id) {
+        <article class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
+          <div class="flex flex-col gap-4 px-5 py-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
+                  ID {{ atlasMeta(atlas) }}
+                </span>
+                @if (atlas.id === activeAtlasId()) {
+                  <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                    Active
                   </span>
-                  @if (atlas.id === activeAtlasId()) {
-                    <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-                      Active
-                    </span>
-                  }
-                  @if (isAdmin(atlas) && !isOwner(atlas)) {
-                    <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-                      Admin
-                    </span>
-                  }
-                </div>
+                }
+                @if (isAdmin(atlas) && !isOwner(atlas)) {
+                  <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                    Added admin
+                  </span>
+                }
+              </div>
 
-                @if (renamingId() === atlas.id) {
-                  <form class="mt-4 flex flex-col gap-3 sm:flex-row" (submit)="saveRename($event)">
-                    <input
-                      type="text"
-                      [value]="renameDraft()"
-                      (input)="onRenameInput($event)"
-                      class="theme-input min-w-0 flex-1 rounded-2xl px-4 py-3 text-sm text-[var(--text)]"
-                      autofocus
-                    />
-                    <div class="flex items-center gap-2">
+              @if (renamingId() === atlas.id) {
+                <form class="mt-4 flex flex-col gap-3 sm:flex-row" (submit)="saveRename($event)">
+                  <input
+                    type="text"
+                    [value]="renameDraft()"
+                    (input)="onRenameInput($event)"
+                    class="theme-input min-w-0 flex-1 rounded-2xl px-4 py-3 text-sm text-[var(--text)]"
+                    autofocus
+                  />
+                  <div class="flex items-center gap-2">
+                    <button
+                      type="submit"
+                      [disabled]="renaming() || !renameDraft().trim()"
+                      class="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
+                    >{{ renaming() ? 'Saving...' : 'Save' }}</button>
+                    <button
+                      type="button"
+                      (click)="cancelRename()"
+                      class="rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]"
+                    >Cancel</button>
+                  </div>
+                </form>
+              } @else {
+                <h3 class="mt-4 text-2xl font-black tracking-tight">{{ displayName(atlas) }}</h3>
+              }
+
+              <p class="mt-2 text-sm text-[var(--muted)]">
+                @if (isUsageLoading(atlas.id)) {
+                  Checking contents...
+                } @else {
+                  {{ usageLabel(usage(atlas.id)) }}
+                }
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 lg:justify-end">
+              <a
+                [routerLink]="['/atlas', atlas.slug || atlas.id]"
+                class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]"
+              >
+                <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
+                <span>Open</span>
+              </a>
+              @if (atlas.id !== activeAtlasId()) {
+                <button
+                  type="button"
+                  (click)="selectAtlas(atlas.id)"
+                  class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                >Use Wiki</button>
+              }
+              @if (renamingId() !== atlas.id) {
+                <button
+                  type="button"
+                  (click)="startRename(atlas)"
+                  class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                >
+                  <span class="material-symbols-outlined text-[1rem]">edit</span>
+                  <span>Rename</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleSection(atlas, 'voice')"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'voice')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">record_voice_over</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">Voice & personality</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ personaSummary(atlas) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'voice') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'voice')) {
+              <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                    Control how the assistant sounds for this Wiki. Grounding, citations, and safety rules still stay automatic.
+                  </p>
+                  <a
+                    [routerLink]="['/atlases', atlas.id, 'persona']"
+                    class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50"
+                  >
+                    <span class="material-symbols-outlined text-[1rem]">tune</span>
+                    <span>{{ atlas.persona_prompt ? 'Edit voice' : 'Set voice' }}</span>
+                  </a>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleSection(atlas, 'search')"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'search')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">travel_explore</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">Default search mode</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ defaultAnswerModeSummary(atlas) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'search') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'search')) {
+              <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                    Choose the mode chat starts with for this Wiki.
+                  </p>
+                  <div class="flex w-full rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 sm:w-auto">
+                    <button
+                      type="button"
+                      class="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition sm:flex-none"
+                      [style.background-color]="defaultAnswerMode(atlas) === 'wiki' ? 'var(--accent)' : null"
+                      [style.color]="defaultAnswerMode(atlas) === 'wiki' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                      [disabled]="isSavingDefaultMode(atlas.id)"
+                      (click)="updateDefaultAnswerMode(atlas, 'wiki')"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">menu_book</span>
+                      <span>Living Wiki</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition sm:flex-none"
+                      [style.background-color]="defaultAnswerMode(atlas) === 'internet' ? 'var(--accent)' : null"
+                      [style.color]="defaultAnswerMode(atlas) === 'internet' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                      [disabled]="isSavingDefaultMode(atlas.id)"
+                      (click)="updateDefaultAnswerMode(atlas, 'internet')"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">public</span>
+                      <span>Internet</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          @if (isOwner(atlas)) {
+            <div class="border-t border-[var(--line)]">
+              <button
+                type="button"
+                class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+                (click)="toggleSection(atlas, 'admins')"
+                [attr.aria-expanded]="isSectionOpen(atlas, 'admins')"
+              >
+                <span class="flex min-w-0 items-center gap-3">
+                  <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">admin_panel_settings</span>
+                  <span class="min-w-0">
+                    <span class="block text-sm font-black text-[var(--text)]">Admins</span>
+                    <span class="block truncate text-xs text-[var(--muted)]">
+                      {{ adminProfiles(atlas).length ? adminProfiles(atlas).length + ' shared admin' + (adminProfiles(atlas).length === 1 ? '' : 's') : 'Owner only' }}
+                    </span>
+                  </span>
+                </span>
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'admins') ? 'expand_less' : 'expand_more' }}</span>
+              </button>
+              @if (isSectionOpen(atlas, 'admins')) {
+                <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                    <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                      Add an existing Living Wiki user by email. They receive an email invite and can edit this Wiki's admin settings.
+                    </p>
+                    <form class="flex w-full flex-col gap-2 sm:flex-row lg:max-w-md" (submit)="shareAdmin($event, atlas)">
+                      <input
+                        type="email"
+                        class="theme-input min-w-0 flex-1 rounded-full px-4 py-2 text-sm"
+                        [value]="adminEmailDraft(atlas.id)"
+                        (input)="onAdminEmailInput(atlas.id, $event)"
+                        placeholder="person@example.com"
+                      />
                       <button
                         type="submit"
-                        [disabled]="renaming() || !renameDraft().trim()"
-                        class="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
-                      >{{ renaming() ? 'Saving...' : 'Save' }}</button>
-                      <button
-                        type="button"
-                        (click)="cancelRename()"
-                        class="rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]"
-                      >Cancel</button>
-                    </div>
-                  </form>
-                } @else {
-                  <h3 class="mt-4 text-2xl font-black tracking-tight">{{ displayName(atlas) }}</h3>
-                }
+                        class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
+                        [disabled]="isSharingAdmin(atlas.id) || !adminEmailDraft(atlas.id).trim()"
+                      >
+                        <span class="material-symbols-outlined text-[1rem]">person_add</span>
+                        <span>{{ isSharingAdmin(atlas.id) ? 'Adding...' : 'Add admin' }}</span>
+                      </button>
+                    </form>
+                  </div>
 
-                <p class="mt-3 text-sm text-[var(--muted)]">
-                  @if (isUsageLoading(atlas.id)) {
-                    Checking Wiki contents...
-                  } @else {
-                    {{ usageLabel(usage(atlas.id)) }}
+                  @if (adminProfiles(atlas).length) {
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      @for (admin of adminProfiles(atlas); track admin.user_id) {
+                        <div class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] py-1 pl-3 pr-1 text-xs text-[var(--text)]">
+                          <span class="max-w-[14rem] truncate">{{ adminLabel(admin) }}</span>
+                          <button
+                            type="button"
+                            class="inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--soft-fill-strong)] hover:text-[var(--danger-text)] disabled:opacity-50"
+                            [disabled]="removingAdminKey() === atlas.id + ':' + admin.user_id"
+                            (click)="removeAdmin(atlas, admin)"
+                            aria-label="Remove admin"
+                          >
+                            <span class="material-symbols-outlined text-[1rem]">close</span>
+                          </button>
+                        </div>
+                      }
+                    </div>
                   }
-                </p>
+                </div>
+              }
+            </div>
+          }
 
-                <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
-                  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">City pulse</p>
-                      <p class="mt-1 text-sm font-semibold text-[var(--text)]">{{ cityConfigSummary(atlas) }}</p>
-                    </div>
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleSection(atlas, 'city')"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'city')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">location_city</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">City pulse</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ cityConfigSummary(atlas) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'city') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'city')) {
+              <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                    Optional city-aware landing data and worldometer-style metrics.
+                  </p>
+                  <div class="flex flex-wrap gap-2">
                     @if (atlas.city_config?.enabled) {
                       <a
                         [routerLink]="['/atlas', atlas.slug || atlas.id, 'worldometers']"
-                        class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--soft-fill-strong)]"
+                        class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50"
                       >
                         <span class="material-symbols-outlined text-[1rem]">monitoring</span>
                         <span>Maintenance</span>
                       </a>
                     }
-                  </div>
-
-                  @if (cityEditingId() === atlas.id && cityDraft(); as draft) {
-                    <div class="mt-4 grid gap-4 md:grid-cols-2">
-                      <label class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 md:col-span-2">
-                        <span class="flex items-center justify-between gap-4">
-                          <span>
-                            <span class="block text-sm font-bold text-[var(--text)]">Enable city pulse</span>
-                            <span class="block text-xs text-[var(--muted)]">Turns this wiki into a city-aware landing page with worldometer-style metrics.</span>
-                          </span>
-                          <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer accent-[var(--accent)]"
-                            [checked]="draft.enabled"
-                            (change)="updateCityDraft('enabled', $any($event.target).checked)"
-                          />
-                        </span>
-                      </label>
-
-                      <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">City name</span>
-                        <input
-                          type="text"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.city_name"
-                          (input)="updateCityDraft('city_name', $any($event.target).value)"
-                        />
-                      </label>
-
-                      <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Region / state</span>
-                        <input
-                          type="text"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.region_name"
-                          (input)="updateCityDraft('region_name', $any($event.target).value)"
-                        />
-                      </label>
-
-                      <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Country code</span>
-                        <input
-                          type="text"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.country_code"
-                          (input)="updateCityDraft('country_code', $any($event.target).value)"
-                        />
-                      </label>
-
-                      <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Timezone</span>
-                        <input
-                          type="text"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.timezone"
-                          (input)="updateCityDraft('timezone', $any($event.target).value)"
-                        />
-                      </label>
-
-                      <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Census state code</span>
-                        <input
-                          type="text"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.census_state_code"
-                          (input)="updateCityDraft('census_state_code', $any($event.target).value)"
-                          placeholder="42"
-                        />
-                      </label>
-
-                      <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Census place code</span>
-                        <input
-                          type="text"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.census_place_code"
-                          (input)="updateCityDraft('census_place_code', $any($event.target).value)"
-                          placeholder="60000"
-                        />
-                      </label>
-
-                      <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-xs leading-5 text-[var(--muted)] md:col-span-2">
-                        These two Census codes are required for `Estimated population now`, `Population change / year`, `Median household income`, `Median gross rent`, and `Median home value`.
-                      </div>
-
-                      <label class="block md:col-span-2">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">AirNow zip code</span>
-                        <input
-                          type="text"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.airnow_zip_code"
-                          (input)="updateCityDraft('airnow_zip_code', $any($event.target).value)"
-                          placeholder="19102"
-                        />
-                      </label>
-
-                      <label class="block md:col-span-2">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Manual metrics JSON</span>
-                        <textarea
-                          rows="10"
-                          class="theme-input w-full rounded-2xl px-4 py-3 text-xs"
-                          [value]="draft.manual_metrics_json"
-                          (input)="updateCityDraft('manual_metrics_json', $any($event.target).value)"
-                          placeholder='[{"id":"aqi-now","label":"AQI now","short_label":"AQI","format":"number","value":42,"source_label":"AirNow manual import","cadence":"manual"}]'
-                        ></textarea>
-                        <p class="mt-2 text-xs leading-5 text-[var(--muted)]">Use this for weekly imports or one-off metrics until a source is automated. Matching `id`s override generated metrics.</p>
-                      </label>
-                    </div>
-
-                    <div class="mt-4 flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        class="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
-                        [disabled]="savingCityConfig()"
-                        (click)="saveCityConfig(atlas)"
-                      >{{ savingCityConfig() ? 'Saving...' : 'Save city pulse settings' }}</button>
-                      <button
-                        type="button"
-                        class="rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]"
-                        [disabled]="savingCityConfig()"
-                        (click)="cancelCityEdit()"
-                      >Cancel</button>
-                    </div>
-                  } @else {
-                    <div class="mt-4">
+                    @if (!(cityEditingId() === atlas.id && cityDraft())) {
                       <button
                         type="button"
                         (click)="startCityEdit(atlas)"
-                        class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                        class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35"
                       >
-                        <span class="material-symbols-outlined text-[1rem]">location_city</span>
+                        <span class="material-symbols-outlined text-[1rem]">tune</span>
                         <span>{{ atlas.city_config?.enabled ? 'Edit city pulse' : 'Set up city pulse' }}</span>
                       </button>
-                    </div>
-                  }
-                </div>
-
-                <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
-                  <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Default search mode</p>
-                      <p class="mt-1 text-sm font-semibold text-[var(--text)]">{{ defaultAnswerModeSummary(atlas) }}</p>
-                    </div>
-                    <div class="flex w-full rounded-full border border-[var(--line)] bg-[var(--soft-fill)] p-1 sm:w-auto">
-                      <button
-                        type="button"
-                        class="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition sm:flex-none"
-                        [style.background-color]="defaultAnswerMode(atlas) === 'wiki' ? 'var(--accent)' : null"
-                        [style.color]="defaultAnswerMode(atlas) === 'wiki' ? 'var(--accent-contrast)' : 'var(--muted)'"
-                        [disabled]="isSavingDefaultMode(atlas.id)"
-                        (click)="updateDefaultAnswerMode(atlas, 'wiki')"
-                      >
-                        <span class="material-symbols-outlined text-[1rem]">menu_book</span>
-                        <span>Living Wiki</span>
-                      </button>
-                      <button
-                        type="button"
-                        class="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition sm:flex-none"
-                        [style.background-color]="defaultAnswerMode(atlas) === 'internet' ? 'var(--accent)' : null"
-                        [style.color]="defaultAnswerMode(atlas) === 'internet' ? 'var(--accent-contrast)' : 'var(--muted)'"
-                        [disabled]="isSavingDefaultMode(atlas.id)"
-                        (click)="updateDefaultAnswerMode(atlas, 'internet')"
-                      >
-                        <span class="material-symbols-outlined text-[1rem]">public</span>
-                        <span>Internet</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                @if (isOwner(atlas)) {
-                  <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
-                    <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                      <div class="min-w-0">
-                        <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Admins</p>
-                        <p class="mt-1 text-sm font-semibold text-[var(--text)]">
-                          {{ adminProfiles(atlas).length ? adminProfiles(atlas).length + ' shared admin' + (adminProfiles(atlas).length === 1 ? '' : 's') : 'Owner only' }}
-                        </p>
-                        <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Admins can open admin shortcuts and edit wiki settings, but only the owner can manage admins or delete the wiki.</p>
-                      </div>
-                      <form class="flex w-full flex-col gap-2 sm:flex-row lg:max-w-md" (submit)="shareAdmin($event, atlas)">
-                        <input
-                          type="email"
-                          class="theme-input min-w-0 flex-1 rounded-full px-4 py-2 text-sm"
-                          [value]="adminEmailDraft(atlas.id)"
-                          (input)="onAdminEmailInput(atlas.id, $event)"
-                          placeholder="person@example.com"
-                        />
-                        <button
-                          type="submit"
-                          class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
-                          [disabled]="isSharingAdmin(atlas.id) || !adminEmailDraft(atlas.id).trim()"
-                        >
-                          <span class="material-symbols-outlined text-[1rem]">person_add</span>
-                          <span>{{ isSharingAdmin(atlas.id) ? 'Adding...' : 'Add admin' }}</span>
-                        </button>
-                      </form>
-                    </div>
-
-                    @if (adminProfiles(atlas).length) {
-                      <div class="mt-3 flex flex-wrap gap-2">
-                        @for (admin of adminProfiles(atlas); track admin.user_id) {
-                          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] py-1 pl-3 pr-1 text-xs text-[var(--text)]">
-                            <span class="max-w-[14rem] truncate">{{ adminLabel(admin) }}</span>
-                            <button
-                              type="button"
-                              class="inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--soft-fill-strong)] hover:text-[var(--danger-text)] disabled:opacity-50"
-                              [disabled]="removingAdminKey() === atlas.id + ':' + admin.user_id"
-                              (click)="removeAdmin(atlas, admin)"
-                              aria-label="Remove admin"
-                            >
-                              <span class="material-symbols-outlined text-[1rem]">close</span>
-                            </button>
-                          </div>
-                        }
-                      </div>
                     }
                   </div>
-                }
-
-                <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
-                  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Voice & personality</p>
-                      <p class="mt-1 text-sm font-semibold text-[var(--text)]">{{ personaSummary(atlas) }}</p>
-                    </div>
-                    <a
-                      [routerLink]="['/atlases', atlas.id, 'persona']"
-                      class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--soft-fill-strong)]"
-                    >
-                      <span class="material-symbols-outlined text-[1rem]">tune</span>
-                      <span>{{ atlas.persona_prompt ? 'Edit voice' : 'Set voice' }}</span>
-                    </a>
-                  </div>
                 </div>
 
+                @if (cityEditingId() === atlas.id && cityDraft(); as draft) {
+                  <div class="mt-5 grid gap-4 md:grid-cols-2">
+                    <label class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 md:col-span-2">
+                      <span class="flex items-center justify-between gap-4">
+                        <span>
+                          <span class="block text-sm font-bold text-[var(--text)]">Enable city pulse</span>
+                          <span class="block text-xs text-[var(--muted)]">Turns this wiki into a city-aware landing page with live-style metrics.</span>
+                        </span>
+                        <input
+                          type="checkbox"
+                          class="h-5 w-5 cursor-pointer accent-[var(--accent)]"
+                          [checked]="draft.enabled"
+                          (change)="updateCityDraft('enabled', $any($event.target).checked)"
+                        />
+                      </span>
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">City name</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.city_name" (input)="updateCityDraft('city_name', $any($event.target).value)" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Region / state</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.region_name" (input)="updateCityDraft('region_name', $any($event.target).value)" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Country code</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.country_code" (input)="updateCityDraft('country_code', $any($event.target).value)" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Timezone</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.timezone" (input)="updateCityDraft('timezone', $any($event.target).value)" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Census state code</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.census_state_code" (input)="updateCityDraft('census_state_code', $any($event.target).value)" placeholder="42" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Census place code</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.census_place_code" (input)="updateCityDraft('census_place_code', $any($event.target).value)" placeholder="60000" />
+                    </label>
+
+                    <label class="block md:col-span-2">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">AirNow zip code</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.airnow_zip_code" (input)="updateCityDraft('airnow_zip_code', $any($event.target).value)" placeholder="19102" />
+                    </label>
+
+                    <label class="block md:col-span-2">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Manual metrics JSON</span>
+                      <textarea
+                        rows="8"
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-xs"
+                        [value]="draft.manual_metrics_json"
+                        (input)="updateCityDraft('manual_metrics_json', $any($event.target).value)"
+                        placeholder='[{"id":"aqi-now","label":"AQI now","short_label":"AQI","format":"number","value":42,"source_label":"AirNow manual import","cadence":"manual"}]'
+                      ></textarea>
+                    </label>
+                  </div>
+
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    <button type="button" class="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50" [disabled]="savingCityConfig()" (click)="saveCityConfig(atlas)">
+                      {{ savingCityConfig() ? 'Saving...' : 'Save city pulse' }}
+                    </button>
+                    <button type="button" class="rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]" [disabled]="savingCityConfig()" (click)="cancelCityEdit()">Cancel</button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleSection(atlas, 'contents')"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'contents')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">inventory_2</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">Contents</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ usageLabel(usage(atlas.id)) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'contents') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'contents')) {
+              <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                 @if (usage(atlas.id); as details) {
-                  <div class="mt-4 grid gap-2 sm:grid-cols-4">
-                    <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3">
+                  <div class="grid gap-2 sm:grid-cols-4">
+                    <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
                       <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Documents</p>
                       <p class="mt-1 text-xl font-black">{{ details.documents }}</p>
                     </div>
-                    <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3">
+                    <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
                       <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Knowledge</p>
                       <p class="mt-1 text-xl font-black">{{ details.knowledge_entries }}</p>
                     </div>
-                    <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3">
+                    <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
                       <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Topics</p>
                       <p class="mt-1 text-xl font-black">{{ details.wiki_topics }}</p>
                     </div>
-                    <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-3">
+                    <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
                       <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Chats</p>
                       <p class="mt-1 text-xl font-black">{{ chatCount(details) }}</p>
                     </div>
                   </div>
+                  @if (isOwner(atlas)) {
+                    <div class="mt-4 flex flex-wrap items-center gap-2">
+                      <a routerLink="/library" class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                        <span class="material-symbols-outlined text-[1rem]">upload_file</span>
+                        <span>Upload sources</span>
+                      </a>
+                      <button
+                        type="button"
+                        (click)="deleteAtlas(atlas)"
+                        [disabled]="!canDelete(atlas) || deletingId() === atlas.id"
+                        class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-35"
+                      >
+                        <span class="material-symbols-outlined text-[1rem]">delete</span>
+                        <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete empty Wiki' }}</span>
+                      </button>
+                    </div>
+                    @if (!hasMultipleAtlases()) {
+                      <p class="mt-3 text-xs text-[var(--muted)]">You must keep at least one Wiki.</p>
+                    } @else if (details.total > 0) {
+                      <p class="mt-3 text-xs text-[var(--muted)]">Delete becomes available only when a Wiki is empty.</p>
+                    }
+                  }
+                } @else {
+                  <p class="text-sm text-[var(--muted)]">Usage details are not available yet.</p>
                 }
               </div>
-
-              <div class="flex flex-wrap items-center gap-2 lg:justify-end">
-                <a
-                  [routerLink]="['/atlas', atlas.slug || atlas.id]"
-                  class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]"
-                >
-                  <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
-                  <span>Open</span>
-                </a>
-                @if (atlas.id !== activeAtlasId()) {
-                  <button
-                    type="button"
-                    (click)="selectAtlas(atlas.id)"
-                    class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
-                  >Use Wiki</button>
-                }
-                @if (renamingId() !== atlas.id) {
-                  <button
-                    type="button"
-                    (click)="startRename(atlas)"
-                    class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
-                  >
-                    <span class="material-symbols-outlined text-[1rem]">edit</span>
-                    <span>Rename</span>
-                  </button>
-                }
-                @if (isOwner(atlas)) {
-                  <button
-                    type="button"
-                    (click)="deleteAtlas(atlas)"
-                    [disabled]="!canDelete(atlas) || deletingId() === atlas.id"
-                    class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-35"
-                  >
-                    <span class="material-symbols-outlined text-[1rem]">delete</span>
-                    <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete empty Wiki' }}</span>
-                  </button>
-                }
-              </div>
-            </div>
-
-            @if (!hasMultipleAtlases()) {
-              <p class="mt-4 text-xs text-[var(--muted)]">You must keep at least one Wiki.</p>
-            } @else if (usage(atlas.id); as details) {
-              @if (details.total > 0) {
-                <p class="mt-4 text-xs text-[var(--muted)]">Delete becomes available only when a Wiki is empty.</p>
-              }
             }
-          </article>
-        }
-      </div>
-    </section>
+          </div>
+        </article>
+      }
+    </div>
   </main>
 </div>

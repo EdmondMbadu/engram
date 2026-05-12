@@ -16,6 +16,7 @@
   "dependencies": {
     "@google/genai": "^1.16.0",
     "@mozilla/readability": "^0.6.0",
+    "@sendgrid/mail": "^8.1.6",
     "@sparticuz/chromium": "^147.0.2",
     "firebase-admin": "^13.4.0",
     "firebase-functions": "^6.5.0",
