@@ -852,11 +852,59 @@ function renderNewsletterInline(value: string): string {
     .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" style="color:#1c7c41;text-decoration:none;font-weight:700;">$1</a>');
 }
 
-function renderNewsletterMarkdown(markdown: string): string {
+function newsletterHost(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return 'Source';
+  }
+}
+
+function newsletterSourceFromLine(line: string): NewsletterSourceLink | null {
+  const markdownLink = line.match(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/);
+  if (markdownLink) {
+    return {
+      title: markdownLink[1].trim() || newsletterHost(markdownLink[2]),
+      url: markdownLink[2].trim().replace(/[).,;]+$/g, ''),
+    };
+  }
+
+  const rawUrl = line.match(/(https?:\/\/\S+)/);
+  if (!rawUrl) {
+    return null;
+  }
+
+  const url = rawUrl[1].trim().replace(/[).,;]+$/g, '');
+  const title = line
+    .replace(rawUrl[1], '')
+    .replace(/^[-*\s]*(source|read article|article|link)\s*:/i, '')
+    .replace(/[:.\s-]+$/, '')
+    .trim();
+  return {
+    title: title || newsletterHost(url),
+    url,
+  };
+}
+
+function renderHeadlineSourceButton(source: NewsletterSourceLink): string {
+  const safeUrl = escapeHtml(source.url);
+  const safeTitle = escapeHtml(source.title.length > 72 ? `${source.title.slice(0, 69)}...` : source.title);
+  const safeHost = escapeHtml(newsletterHost(source.url));
+  return `
+    <a href="${safeUrl}" style="display:inline-block;margin-top:14px;background:#102016;color:#ffffff;text-decoration:none;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:900;">
+      Read article
+    </a>
+    <span style="display:block;margin-top:7px;color:#6f7d74;font-size:12px;line-height:1.4;">${safeTitle} · ${safeHost}</span>`;
+}
+
+function renderNewsletterMarkdown(markdown: string, fallbackSources: NewsletterSourceLink[] = []): { html: string; usedSourceUrls: string[] } {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n');
   const html: string[] = [];
+  const usedSourceUrls = new Set<string>();
   let inList = false;
   let inHeadlineCard = false;
+  let headlineSource: NewsletterSourceLink | null = null;
+  let fallbackSourceIndex = 0;
 
   const closeList = () => {
     if (inList) {
@@ -864,11 +912,27 @@ function renderNewsletterMarkdown(markdown: string): string {
       inList = false;
     }
   };
+  const nextFallbackSource = (): NewsletterSourceLink | null => {
+    while (fallbackSourceIndex < fallbackSources.length) {
+      const source = fallbackSources[fallbackSourceIndex];
+      fallbackSourceIndex += 1;
+      if (!usedSourceUrls.has(source.url)) {
+        return source;
+      }
+    }
+    return null;
+  };
   const closeHeadlineCard = () => {
     closeList();
     if (inHeadlineCard) {
+      const source = headlineSource ?? nextFallbackSource();
+      if (source) {
+        usedSourceUrls.add(source.url);
+        html.push(renderHeadlineSourceButton(source));
+      }
       html.push('</div>');
       inHeadlineCard = false;
+      headlineSource = null;
     }
   };
 
@@ -882,7 +946,11 @@ function renderNewsletterMarkdown(markdown: string): string {
     if (line.startsWith('### ')) {
       closeHeadlineCard();
       html.push('<div style="margin:16px 0;padding:20px;border:1px solid #dfe9e3;border-radius:18px;background:#fbfdfb;">');
-      html.push(`<h3 style="margin:0 0 10px;color:#102016;font-size:18px;line-height:1.25;">${renderNewsletterInline(line.slice(4))}</h3>`);
+      const source = newsletterSourceFromLine(line);
+      if (source) {
+        headlineSource = source;
+      }
+      html.push(`<h3 style="margin:0 0 10px;color:#102016;font-size:18px;line-height:1.25;">${renderNewsletterInline(line.slice(4).replace(/\s*\[[^\]]+\]\(https?:\/\/[^)\s]+\)\s*/g, '').trim())}</h3>`);
       inHeadlineCard = true;
       continue;
     }
@@ -899,11 +967,30 @@ function renderNewsletterMarkdown(markdown: string): string {
     }
 
     if (line.startsWith('- ') || line.startsWith('* ')) {
+      const listText = line.slice(2).trim();
+      if (inHeadlineCard && /^(source|read article|article|link)\s*:/i.test(listText)) {
+        closeList();
+        const source = newsletterSourceFromLine(listText);
+        if (source) {
+          headlineSource = source;
+        }
+        continue;
+      }
+
       if (!inList) {
         html.push('<ul style="margin:8px 0 0;padding-left:20px;color:#34443b;font-size:14px;line-height:1.6;">');
         inList = true;
       }
-      html.push(`<li style="margin:6px 0;">${renderNewsletterInline(line.slice(2))}</li>`);
+      html.push(`<li style="margin:6px 0;">${renderNewsletterInline(listText)}</li>`);
+      continue;
+    }
+
+    if (inHeadlineCard && /^(source|read article|article|link)\s*:/i.test(line)) {
+      closeList();
+      const source = newsletterSourceFromLine(line);
+      if (source) {
+        headlineSource = source;
+      }
       continue;
     }
 
@@ -912,7 +999,7 @@ function renderNewsletterMarkdown(markdown: string): string {
   }
 
   closeHeadlineCard();
-  return html.join('\n');
+  return { html: html.join('\n'), usedSourceUrls: Array.from(usedSourceUrls) };
 }
 
 function extractNewsletterSources(markdown: string): { bodyMarkdown: string; sources: NewsletterSourceLink[] } {
@@ -954,11 +1041,11 @@ function extractNewsletterSources(markdown: string): { bodyMarkdown: string; sou
 
   return {
     bodyMarkdown,
-    sources: Array.from(sources.entries()).slice(0, 5).map(([url, title]) => ({ title, url })),
+    sources: Array.from(sources.entries()).slice(0, 8).map(([url, title]) => ({ title, url })),
   };
 }
 
-function renderNewsletterSourceButtons(sources: NewsletterSourceLink[]): string {
+function renderNewsletterSourceButtons(sources: NewsletterSourceLink[], title = 'More source links'): string {
   if (sources.length === 0) {
     return '';
   }
@@ -983,7 +1070,7 @@ function renderNewsletterSourceButtons(sources: NewsletterSourceLink[]): string 
 
   return `
     <div style="margin:28px 0 0;padding:18px;border-radius:18px;background:#f8faf9;border:1px solid #dbe8df;">
-      <p style="margin:0 0 8px;color:#102016;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;">Source links</p>
+      <p style="margin:0 0 8px;color:#102016;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;">${escapeHtml(title)}</p>
       ${buttons}
     </div>`;
 }
@@ -1015,6 +1102,8 @@ function buildNewsletterQuestion(params: {
     '- Do not include raw URLs in the body.',
     '- Do not create a Sources section; citation links will be handled separately.',
     '- Each headline must be specific and timely, with dates when known.',
+    '- Each headline must include one final source line in this exact form: "- Read article: [Publication or article name](source URL)".',
+    '- The Read article URL must point to the most relevant article/source for that headline.',
     '',
     'Use this exact structure:',
     '# A timely, specific title',
@@ -1023,9 +1112,11 @@ function buildNewsletterQuestion(params: {
     '### Headline 1',
     '- What happened: one sentence.',
     '- Why it matters: one sentence.',
+    '- Read article: [Publication or article name](source URL)',
     '### Headline 2',
     '- What happened: one sentence.',
     '- Why it matters: one sentence.',
+    '- Read article: [Publication or article name](source URL)',
     'Continue through Headline 5.',
     '## What to watch next',
     '- Three short bullets maximum.',
@@ -1082,8 +1173,11 @@ function buildNewsletterEmail(params: {
   const safeChatUrl = escapeHtml(params.chatUrl);
   const safeUnsubscribeUrl = params.unsubscribeUrl ? escapeHtml(params.unsubscribeUrl) : '';
   const { bodyMarkdown, sources } = extractNewsletterSources(params.markdown);
-  const bodyHtml = renderNewsletterMarkdown(bodyMarkdown);
-  const sourceButtonsHtml = renderNewsletterSourceButtons(sources);
+  const renderedBody = renderNewsletterMarkdown(bodyMarkdown, sources.slice(0, 5));
+  const bodyHtml = renderedBody.html;
+  const usedSourceUrls = new Set(renderedBody.usedSourceUrls);
+  const extraSources = sources.filter((source) => !usedSourceUrls.has(source.url)).slice(0, 3);
+  const sourceButtonsHtml = renderNewsletterSourceButtons(extraSources, 'Additional source links');
   const unsubscribeText = params.unsubscribeUrl
     ? `\n\nUnsubscribe: ${params.unsubscribeUrl}`
     : '';
