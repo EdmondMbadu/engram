@@ -43,6 +43,7 @@ export class AtlasManageComponent {
   readonly removingSubscriptionKey = signal<string | null>(null);
   readonly newsletterDraftById = signal<Record<string, NewsletterDraft>>({});
   readonly savingNewsletterById = signal<Record<string, boolean>>({});
+  readonly newsletterSavedById = signal<Record<string, string>>({});
   readonly sendingNewsletterTestById = signal<Record<string, boolean>>({});
   readonly newsletterTestResultById = signal<Record<string, AtlasNewsletterTestResult>>({});
   readonly renamingId = signal<string | null>(null);
@@ -254,10 +255,23 @@ export class AtlasManageComponent {
   }
 
   updateNewsletterDraft<K extends keyof NewsletterDraft>(atlasId: string, key: K, value: NewsletterDraft[K]): void {
+    this.newsletterSavedById.update((current) => {
+      if (!current[atlasId]) {
+        return current;
+      }
+      const next = { ...current };
+      delete next[atlasId];
+      return next;
+    });
     this.newsletterDraftById.update((current) => {
       const existing = current[atlasId] ?? this.toNewsletterDraft(this.atlases().find((atlas) => atlas.id === atlasId) ?? null);
       return { ...current, [atlasId]: { ...existing, [key]: value } };
     });
+  }
+
+  weekdayValue(value: unknown): number {
+    const day = Number(value);
+    return Number.isInteger(day) && day >= 0 && day <= 6 ? day : 1;
   }
 
   isSavingNewsletter(atlasId: string): boolean {
@@ -365,9 +379,26 @@ export class AtlasManageComponent {
     const config = this.normalizeNewsletterDraft(draft);
     this.savingNewsletterById.update((current) => ({ ...current, [atlas.id]: true }));
     this.pageError.set(null);
+    this.newsletterSavedById.update((current) => {
+      const next = { ...current };
+      delete next[atlas.id];
+      return next;
+    });
     try {
       const saved = await this.atlasService.updateAtlasNewsletterConfig(atlas.id, config);
-      this.newsletterDraftById.update((current) => ({ ...current, [atlas.id]: this.toNewsletterDraft({ ...atlas, newsletter_config: saved }) }));
+      let latestAtlas: AtlasItem | null = null;
+      try {
+        latestAtlas = await this.atlasService.refreshAtlas(atlas.id);
+      } catch {
+        latestAtlas = null;
+      }
+      const persistedAtlas = latestAtlas ?? { ...atlas, newsletter_config: saved };
+      const persistedDraft = this.toNewsletterDraft(persistedAtlas);
+      this.newsletterDraftById.update((current) => ({ ...current, [atlas.id]: persistedDraft }));
+      this.newsletterSavedById.update((current) => ({
+        ...current,
+        [atlas.id]: `Saved: ${this.weekdayLabel(persistedDraft.day_of_week)} at ${persistedDraft.send_time} ${persistedDraft.timezone}.`,
+      }));
     } catch (error) {
       this.pageError.set(error instanceof Error ? error.message : 'Failed to save email settings.');
     } finally {

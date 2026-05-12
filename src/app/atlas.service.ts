@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   getCountFromServer,
+  getDoc,
   getDocs,
   limit,
   onSnapshot,
@@ -434,7 +435,29 @@ export class AtlasService {
       AtlasNewsletterConfigResponse
     >(this.functions, 'updateAtlasNewsletterConfig');
     const { data } = await updateAtlasNewsletterConfig({ atlasId, config });
+    this.patchAtlas(atlasId, {
+      newsletter_config: this.hydrateNewsletterConfig(data.config) ?? data.config,
+      updated_at: new Date(),
+    });
     return data.config;
+  }
+
+  async refreshAtlas(atlasId: string): Promise<AtlasItem | null> {
+    if (!this.firestore) {
+      return null;
+    }
+
+    const atlasDoc = await getDoc(doc(this.firestore, 'atlases', atlasId));
+    if (!atlasDoc.exists()) {
+      return null;
+    }
+
+    const atlas = this.hydrateAtlas({
+      id: atlasDoc.id,
+      ...(atlasDoc.data() as Record<string, unknown>),
+    });
+    this.replaceAtlas(atlas);
+    return atlas;
   }
 
   async sendAtlasNewsletterTest(atlasId: string, config: AtlasNewsletterConfig): Promise<AtlasNewsletterTestResult> {
@@ -445,6 +468,18 @@ export class AtlasService {
     >(this.functions, 'sendAtlasNewsletterTest');
     const { data } = await sendAtlasNewsletterTest({ atlasId, config });
     return data;
+  }
+
+  private patchAtlas(atlasId: string, patch: Partial<AtlasItem>): void {
+    this.atlases.update((items) =>
+      items.map((atlas) => (atlas.id === atlasId ? { ...atlas, ...patch } : atlas)),
+    );
+  }
+
+  private replaceAtlas(nextAtlas: AtlasItem): void {
+    this.atlases.update((items) =>
+      items.map((atlas) => (atlas.id === nextAtlas.id ? nextAtlas : atlas)),
+    );
   }
 
   async renameAtlas(atlasId: string, name: string): Promise<void> {

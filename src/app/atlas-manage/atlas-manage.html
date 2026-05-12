@@ -228,11 +228,12 @@
                         <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Day</span>
                         <select
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
-                          [value]="draft.day_of_week"
-                          (change)="updateNewsletterDraft(atlas.id, 'day_of_week', +$any($event.target).value)"
+                          [ngModel]="draft.day_of_week"
+                          [ngModelOptions]="{ standalone: true }"
+                          (ngModelChange)="updateNewsletterDraft(atlas.id, 'day_of_week', weekdayValue($event))"
                         >
                           @for (weekday of weekdays; track weekday.value) {
-                            <option [value]="weekday.value">{{ weekday.label }}</option>
+                            <option [ngValue]="weekday.value">{{ weekday.label }}</option>
                           }
                         </select>
                       </label>
@@ -286,6 +287,12 @@
                       <p class="text-sm font-bold text-[var(--text)]">Test sent to {{ result.sentTo }}</p>
                       <p class="mt-1 text-xs text-[var(--muted)]">{{ result.subject }}</p>
                       <p class="mt-2 line-clamp-3 text-sm leading-6 text-[var(--muted)]">{{ result.previewText }}</p>
+                    </div>
+                  }
+
+                  @if (newsletterSavedById()[atlas.id]; as savedMessage) {
+                    <div class="mt-4 rounded-2xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3">
+                      <p class="text-sm font-bold text-emerald-700 dark:text-emerald-200">{{ savedMessage }}</p>
                     </div>
                   }
                 </div>
