@@ -75,6 +75,12 @@ export interface CityAtlasConfig {
   manual_metrics?: CityPulseMetric[] | null;
 }
 
+export interface AtlasChatGuideConfig {
+  name: string | null;
+  label: string | null;
+  image_url: string | null;
+}
+
 export interface AtlasItem {
   id: string;
   user_id: string;
@@ -90,6 +96,7 @@ export interface AtlasItem {
   video_url: string | null;
   cover_color: string | null;
   city_config?: CityAtlasConfig | null;
+  chat_guide?: AtlasChatGuideConfig | null;
   persona_prompt?: string | null;
   default_answer_mode?: 'wiki' | 'internet' | null;
   newsletter_config?: AtlasNewsletterConfig | null;

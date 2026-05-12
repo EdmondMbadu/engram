@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import type { AtlasAdminProfile, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -24,6 +24,12 @@ interface NewsletterDraft {
   send_time: string;
   timezone: string;
   prompt: string;
+}
+
+interface ChatGuideDraft {
+  label: string;
+  name: string;
+  image_url: string;
 }
 
 @Component({
@@ -55,6 +61,8 @@ export class AtlasManageComponent {
   readonly cityEditingId = signal<string | null>(null);
   readonly cityDraft = signal<CityConfigDraft | null>(null);
   readonly savingCityConfig = signal(false);
+  readonly chatGuideDraftById = signal<Record<string, ChatGuideDraft>>({});
+  readonly savingChatGuideById = signal<Record<string, boolean>>({});
   readonly savingDefaultModeById = signal<Record<string, boolean>>({});
   readonly adminEmailDraftById = signal<Record<string, string>>({});
   readonly sharingAdminById = signal<Record<string, boolean>>({});
@@ -137,6 +145,14 @@ export class AtlasManageComponent {
     return `Custom voice • ${persona.length} chars`;
   }
 
+  chatGuideSummary(atlas: AtlasItem): string {
+    const guide = atlas.chat_guide;
+    if (!guide?.name && !guide?.label && !guide?.image_url) {
+      return 'No guide shown';
+    }
+    return [guide.label?.trim() || null, guide.name?.trim() || null].filter(Boolean).join(' • ') || 'Guide configured';
+  }
+
   defaultAnswerMode(atlas: AtlasItem): 'wiki' | 'internet' {
     return atlas.default_answer_mode === 'internet' ? 'internet' : 'wiki';
   }
@@ -192,6 +208,14 @@ export class AtlasManageComponent {
     this.toggleSection(atlas, 'newsletter');
     if (willOpen) {
       this.ensureNewsletterDraft(atlas);
+    }
+  }
+
+  toggleChatGuideSection(atlas: AtlasItem): void {
+    const willOpen = !this.isSectionOpen(atlas, 'chat-guide');
+    this.toggleSection(atlas, 'chat-guide');
+    if (willOpen) {
+      this.ensureChatGuideDraft(atlas);
     }
   }
 
@@ -295,6 +319,21 @@ export class AtlasManageComponent {
 
   newsletterTestResult(atlasId: string): AtlasNewsletterTestResult | null {
     return this.newsletterTestResultById()[atlasId] ?? null;
+  }
+
+  chatGuideDraft(atlas: AtlasItem): ChatGuideDraft {
+    return this.chatGuideDraftById()[atlas.id] ?? this.toChatGuideDraft(atlas);
+  }
+
+  updateChatGuideDraft<K extends keyof ChatGuideDraft>(atlasId: string, key: K, value: ChatGuideDraft[K]): void {
+    this.chatGuideDraftById.update((current) => {
+      const existing = current[atlasId] ?? this.toChatGuideDraft(this.atlases().find((atlas) => atlas.id === atlasId) ?? null);
+      return { ...current, [atlasId]: { ...existing, [key]: value } };
+    });
+  }
+
+  isSavingChatGuide(atlasId: string): boolean {
+    return this.savingChatGuideById()[atlasId] ?? false;
   }
 
   adminEmailDraft(atlasId: string): string {
@@ -439,6 +478,21 @@ export class AtlasManageComponent {
       this.pageError.set(error instanceof Error ? error.message : 'Failed to send test newsletter.');
     } finally {
       this.sendingNewsletterTestById.update((current) => ({ ...current, [atlas.id]: false }));
+    }
+  }
+
+  async saveChatGuide(atlas: AtlasItem): Promise<void> {
+    const draft = this.chatGuideDraft(atlas);
+    const config = this.normalizeChatGuideDraft(draft);
+    this.savingChatGuideById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    try {
+      await this.atlasService.updateChatGuideConfig(atlas.id, config);
+      this.chatGuideDraftById.update((current) => ({ ...current, [atlas.id]: this.toChatGuideDraft({ ...atlas, chat_guide: config }) }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to save chat guide.');
+    } finally {
+      this.savingChatGuideById.update((current) => ({ ...current, [atlas.id]: false }));
     }
   }
 
@@ -713,6 +767,13 @@ export class AtlasManageComponent {
     this.newsletterDraftById.update((current) => ({ ...current, [atlas.id]: this.toNewsletterDraft(atlas) }));
   }
 
+  private ensureChatGuideDraft(atlas: AtlasItem): void {
+    if (this.chatGuideDraftById()[atlas.id]) {
+      return;
+    }
+    this.chatGuideDraftById.update((current) => ({ ...current, [atlas.id]: this.toChatGuideDraft(atlas) }));
+  }
+
   private toNewsletterDraft(atlas: AtlasItem | null): NewsletterDraft {
     const config = atlas?.newsletter_config;
     return {
@@ -732,6 +793,30 @@ export class AtlasManageComponent {
       send_time: /^([01]\d|2[0-3]):[0-5]\d$/.test(draft.send_time) ? draft.send_time : '09:00',
       timezone: draft.timezone.trim() || 'America/New_York',
       prompt: draft.prompt.trim() || this.atlasService.defaultNewsletterPrompt(),
+    };
+  }
+
+  private toChatGuideDraft(atlas: AtlasItem | null): ChatGuideDraft {
+    const guide = atlas?.chat_guide;
+    return {
+      label: guide?.label?.trim() ?? '',
+      name: guide?.name?.trim() ?? '',
+      image_url: guide?.image_url?.trim() ?? '',
+    };
+  }
+
+  private normalizeChatGuideDraft(draft: ChatGuideDraft): AtlasChatGuideConfig | null {
+    const label = draft.label.trim().slice(0, 120);
+    const name = draft.name.trim().slice(0, 80);
+    const imageUrl = draft.image_url.trim().slice(0, 1000);
+    if (!label && !name && !imageUrl) {
+      return null;
+    }
+
+    return {
+      label: label || null,
+      name: name || null,
+      image_url: imageUrl || null,
     };
   }
 

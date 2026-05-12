@@ -40,6 +40,7 @@ service cloud.firestore {
             'video_url',
             'cover_color',
             'city_config',
+            'chat_guide',
             'persona_prompt',
             'default_answer_mode',
             'updated_at'

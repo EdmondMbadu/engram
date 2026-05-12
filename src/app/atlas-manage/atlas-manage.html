@@ -182,6 +182,82 @@
             <button
               type="button"
               class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleChatGuideSection(atlas)"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'chat-guide')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">person_pin</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">Chat guide</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ chatGuideSummary(atlas) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'chat-guide') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'chat-guide')) {
+              @if (chatGuideDraft(atlas); as guideDraft) {
+                <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                  <div class="grid gap-4 lg:grid-cols-[8rem_1fr]">
+                    <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
+                      @if (guideDraft.image_url) {
+                        <img [src]="guideDraft.image_url" alt="" class="h-full w-full object-cover" />
+                      } @else {
+                        <span class="material-symbols-outlined text-3xl text-[var(--muted)]">person</span>
+                      }
+                    </div>
+                    <div class="grid gap-3 md:grid-cols-2">
+                      <label class="block">
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Guide label</span>
+                        <input
+                          type="text"
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                          [value]="guideDraft.label"
+                          (input)="updateChatGuideDraft(atlas.id, 'label', $any($event.target).value)"
+                          placeholder="Your Living Wiki tour guide"
+                        />
+                      </label>
+                      <label class="block">
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Guide name</span>
+                        <input
+                          type="text"
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                          [value]="guideDraft.name"
+                          (input)="updateChatGuideDraft(atlas.id, 'name', $any($event.target).value)"
+                          placeholder="B. Franklin"
+                        />
+                      </label>
+                      <label class="block md:col-span-2">
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Image URL</span>
+                        <input
+                          type="url"
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                          [value]="guideDraft.image_url"
+                          (input)="updateChatGuideDraft(atlas.id, 'image_url', $any($event.target).value)"
+                          placeholder="https://..."
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div class="mt-4 flex justify-end">
+                    <button
+                      type="button"
+                      class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
+                      [disabled]="isSavingChatGuide(atlas.id)"
+                      (click)="saveChatGuide(atlas)"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">save</span>
+                      <span>{{ isSavingChatGuide(atlas.id) ? 'Saving...' : 'Save chat guide' }}</span>
+                    </button>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
               (click)="toggleNewsletterSection(atlas)"
               [attr.aria-expanded]="isSectionOpen(atlas, 'newsletter')"
             >

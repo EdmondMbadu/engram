@@ -262,6 +262,11 @@ export class ChatComponent implements AfterViewChecked {
     const name = this.atlasService.displayName(atlas);
     return name && name !== 'Select atlas' ? name : '';
   });
+  readonly currentWikiGuide = computed(() => {
+    const guide = this.currentWikiAtlas()?.chat_guide;
+    const hasGuide = !!guide?.name?.trim() || !!guide?.label?.trim() || !!guide?.image_url?.trim();
+    return hasGuide ? guide : null;
+  });
   readonly currentWikiDocumentCount = computed(() =>
     this.isPublicView()
       ? this.publicDocumentCount()

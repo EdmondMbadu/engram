@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
@@ -358,6 +358,19 @@ export class AtlasService {
     });
   }
 
+  async updateChatGuideConfig(atlasId: string, config: AtlasChatGuideConfig | null): Promise<void> {
+    if (!this.firestore) return;
+    const normalized = this.normalizeChatGuideConfig(config);
+    await updateDoc(doc(this.firestore, 'atlases', atlasId), {
+      chat_guide: normalized,
+      updated_at: serverTimestamp(),
+    });
+    this.patchAtlas(atlasId, {
+      chat_guide: normalized,
+      updated_at: new Date(),
+    });
+  }
+
   async updatePersonaPrompt(atlasId: string, value: string | null): Promise<void> {
     if (!this.firestore) return;
     const trimmed = value === null ? null : value.trim();
@@ -684,6 +697,7 @@ export class AtlasService {
       video_url: typeof data['video_url'] === 'string' ? data['video_url'] : null,
       cover_color: typeof data['cover_color'] === 'string' ? data['cover_color'] : null,
       city_config: this.hydrateCityConfig(data['city_config']),
+      chat_guide: this.hydrateChatGuideConfig(data['chat_guide']),
       persona_prompt: typeof data['persona_prompt'] === 'string' ? data['persona_prompt'] : null,
       admin_user_ids: Array.isArray(data['admin_user_ids'])
         ? data['admin_user_ids'].filter((value): value is string => typeof value === 'string')
@@ -723,6 +737,33 @@ export class AtlasService {
       last_sent_at: this.hydrateDateValue(data['last_sent_at']),
       last_recipient_count: typeof data['last_recipient_count'] === 'number' ? data['last_recipient_count'] : null,
       last_subject: typeof data['last_subject'] === 'string' ? data['last_subject'] : null,
+    };
+  }
+
+  private hydrateChatGuideConfig(value: unknown): AtlasChatGuideConfig | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    return this.normalizeChatGuideConfig(value as Partial<Record<keyof AtlasChatGuideConfig, unknown>>);
+  }
+
+  private normalizeChatGuideConfig(value: Partial<Record<keyof AtlasChatGuideConfig, unknown>> | null): AtlasChatGuideConfig | null {
+    if (!value) {
+      return null;
+    }
+
+    const name = typeof value.name === 'string' ? value.name.trim().slice(0, 80) || null : null;
+    const label = typeof value.label === 'string' ? value.label.trim().slice(0, 120) || null : null;
+    const imageUrl = typeof value.image_url === 'string' ? value.image_url.trim().slice(0, 1000) || null : null;
+    if (!name && !label && !imageUrl) {
+      return null;
+    }
+
+    return {
+      name,
+      label,
+      image_url: imageUrl,
     };
   }
 
