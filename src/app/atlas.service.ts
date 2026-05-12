@@ -414,6 +414,15 @@ export class AtlasService {
     return data.subscriptions ?? [];
   }
 
+  async removeAtlasSubscription(atlasId: string, subscriptionId: string): Promise<void> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const removeAtlasSubscription = httpsCallable<
+      { atlasId: string; subscriptionId: string },
+      { ok: boolean }
+    >(this.functions, 'removeAtlasSubscription');
+    await removeAtlasSubscription({ atlasId, subscriptionId });
+  }
+
   async renameAtlas(atlasId: string, name: string): Promise<void> {
     if (!this.firestore) return;
     const trimmed = name.trim();

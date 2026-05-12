@@ -32,6 +32,7 @@ export class AtlasManageComponent {
   readonly loadingUsageById = signal<Record<string, boolean>>({});
   readonly subscriptionsById = signal<Record<string, AtlasSubscriptionItem[]>>({});
   readonly loadingSubscriptionsById = signal<Record<string, boolean>>({});
+  readonly removingSubscriptionKey = signal<string | null>(null);
   readonly renamingId = signal<string | null>(null);
   readonly renameDraft = signal('');
   readonly renaming = signal(false);
@@ -193,6 +194,10 @@ export class AtlasManageComponent {
     }).format(date);
   }
 
+  isRemovingSubscription(atlasId: string, subscriptionId: string): boolean {
+    return this.removingSubscriptionKey() === `${atlasId}:${subscriptionId}`;
+  }
+
   adminEmailDraft(atlasId: string): string {
     return this.adminEmailDraftById()[atlasId] ?? '';
   }
@@ -256,6 +261,28 @@ export class AtlasManageComponent {
       this.pageError.set(error instanceof Error ? error.message : 'Failed to remove admin.');
     } finally {
       this.removingAdminKey.set(null);
+    }
+  }
+
+  async removeSubscription(atlas: AtlasItem, subscription: AtlasSubscriptionItem): Promise<void> {
+    const confirmed = window.confirm(`Remove ${subscription.email} from weekly updates for "${this.displayName(atlas)}"?`);
+    if (!confirmed) {
+      return;
+    }
+
+    const key = `${atlas.id}:${subscription.id}`;
+    this.removingSubscriptionKey.set(key);
+    this.pageError.set(null);
+    try {
+      await this.atlasService.removeAtlasSubscription(atlas.id, subscription.id);
+      this.subscriptionsById.update((current) => ({
+        ...current,
+        [atlas.id]: (current[atlas.id] ?? []).filter((item) => item.id !== subscription.id),
+      }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to remove subscriber.');
+    } finally {
+      this.removingSubscriptionKey.set(null);
     }
   }
 

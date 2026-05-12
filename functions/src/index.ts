@@ -719,7 +719,7 @@ async function sendAtlasSubscriptionEmail(params: {
 
   sgMail.setApiKey(apiKey);
   const email = buildAtlasSubscriptionEmail(params);
-  await sgMail.send({
+  const [response] = await sgMail.send({
     to: params.recipientEmail,
     from: {
       email: inviteSenderEmail,
@@ -728,6 +728,12 @@ async function sendAtlasSubscriptionEmail(params: {
     subject: email.subject,
     text: email.text,
     html: email.html,
+  });
+  logger.info('Atlas subscription confirmation accepted by SendGrid.', {
+    recipientEmail: params.recipientEmail,
+    atlasName: params.atlasName,
+    statusCode: response.statusCode,
+    messageId: response.headers?.['x-message-id'] ?? null,
   });
 }
 
@@ -915,6 +921,11 @@ export const subscribeToAtlasUpdates = onCall(
     const existingData = existingSubscription.data() as Record<string, unknown> | undefined;
 
     if (existingSubscription.exists && existingData?.status === 'active') {
+      logger.info('Atlas subscription already active; confirmation email not resent.', {
+        atlasId,
+        email,
+        subscriptionId,
+      });
       return { ok: true, alreadySubscribed: true };
     }
 
@@ -994,6 +1005,41 @@ export const listAtlasSubscriptions = onCall({ region: callableRegion, cors: tru
     .sort((a, b) => String(b.created_at ?? '').localeCompare(String(a.created_at ?? '')));
 
   return { subscriptions };
+});
+
+export const removeAtlasSubscription = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  const subscriptionId = typeof request.data?.subscriptionId === 'string' ? request.data.subscriptionId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+  if (!subscriptionId) {
+    throw new HttpsError('invalid-argument', 'subscriptionId is required.');
+  }
+
+  await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  const subscriptionRef = db.collection('atlas_subscriptions').doc(subscriptionId);
+  const subscriptionSnapshot = await subscriptionRef.get();
+  if (!subscriptionSnapshot.exists) {
+    return { ok: true };
+  }
+
+  const subscription = subscriptionSnapshot.data() as Record<string, unknown> | undefined;
+  if (String(subscription?.atlas_id ?? '') !== atlasId) {
+    throw new HttpsError('permission-denied', 'That subscriber does not belong to this wiki.');
+  }
+
+  await subscriptionRef.delete();
+  logger.info('Atlas subscription removed by admin.', {
+    atlasId,
+    subscriptionId,
+    adminUserId: request.auth.uid,
+  });
+  return { ok: true };
 });
 
 async function loadPublicAtlasBySlug(slug: string) {

@@ -320,8 +320,19 @@
                   <div class="grid gap-2">
                     @for (subscription of subscriptions(atlas.id); track subscription.id) {
                       <div class="flex flex-col gap-1 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-                        <span class="min-w-0 truncate text-sm font-semibold text-[var(--text)]">{{ subscription.email }}</span>
-                        <span class="text-xs text-[var(--muted)]">Subscribed {{ subscriptionDate(subscription) }}</span>
+                        <div class="min-w-0">
+                          <span class="block truncate text-sm font-semibold text-[var(--text)]">{{ subscription.email }}</span>
+                          <span class="block text-xs text-[var(--muted)]">Subscribed {{ subscriptionDate(subscription) }}</span>
+                        </div>
+                        <button
+                          type="button"
+                          class="inline-flex items-center justify-center gap-1 rounded-full border border-[var(--danger-text)]/25 px-3 py-1.5 text-xs font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:opacity-50"
+                          [disabled]="isRemovingSubscription(atlas.id, subscription.id)"
+                          (click)="removeSubscription(atlas, subscription)"
+                        >
+                          <span class="material-symbols-outlined text-[0.95rem]">person_remove</span>
+                          <span>{{ isRemovingSubscription(atlas.id, subscription.id) ? 'Removing...' : 'Remove' }}</span>
+                        </button>
                       </div>
                     }
                   </div>
