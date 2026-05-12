@@ -804,11 +804,11 @@ export class AtlasService {
 
   defaultNewsletterPrompt(): string {
     return [
-      'Create a premium weekly Living Wiki email briefing for this specific wiki.',
-      'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter to readers.',
+      'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
+      'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
       'For Philadelphia wikis, prioritize Philadelphia and the surrounding region.',
-      'Use fresh web search, include dates when available, avoid rumors, and cite source links.',
-      'Write like a top-tier professional local intelligence briefing: concise, useful, polished, and skimmable.',
+      'Use fresh web search, include dates when available, avoid rumors, and keep every item concise.',
+      'Write like a top-tier professional local intelligence briefing: sharp, useful, polished, and skimmable.',
     ].join(' ');
   }
 

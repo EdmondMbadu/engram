@@ -47,11 +47,11 @@ const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://living-atlas-7622a.web.app';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
 const defaultNewsletterPrompt = [
-  'Create a premium weekly Living Wiki email briefing for this specific wiki.',
-  'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter to readers.',
+  'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
+  'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
   'For Philadelphia wikis, prioritize Philadelphia and the surrounding region.',
-  'Use fresh web search, include dates when available, avoid rumors, and cite source links.',
-  'Write like a top-tier professional local intelligence briefing: concise, useful, polished, and skimmable.',
+  'Use fresh web search, include dates when available, avoid rumors, and keep every item concise.',
+  'Write like a top-tier professional local intelligence briefing: sharp, useful, polished, and skimmable.',
 ].join(' ');
 const urlIngestionTriggerOptions = {
   region: callableRegion,
@@ -841,6 +841,11 @@ async function sendAtlasSubscriptionEmail(params: {
   });
 }
 
+type NewsletterSourceLink = {
+  title: string;
+  url: string;
+};
+
 function renderNewsletterInline(value: string): string {
   return escapeHtml(value)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -851,11 +856,19 @@ function renderNewsletterMarkdown(markdown: string): string {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n');
   const html: string[] = [];
   let inList = false;
+  let inHeadlineCard = false;
 
   const closeList = () => {
     if (inList) {
       html.push('</ul>');
       inList = false;
+    }
+  };
+  const closeHeadlineCard = () => {
+    closeList();
+    if (inHeadlineCard) {
+      html.push('</div>');
+      inHeadlineCard = false;
     }
   };
 
@@ -866,21 +879,28 @@ function renderNewsletterMarkdown(markdown: string): string {
       continue;
     }
 
+    if (line.startsWith('### ')) {
+      closeHeadlineCard();
+      html.push('<div style="margin:16px 0;padding:20px;border:1px solid #dfe9e3;border-radius:18px;background:#fbfdfb;">');
+      html.push(`<h3 style="margin:0 0 10px;color:#102016;font-size:18px;line-height:1.25;">${renderNewsletterInline(line.slice(4))}</h3>`);
+      inHeadlineCard = true;
+      continue;
+    }
+
     if (line.startsWith('## ')) {
-      closeList();
-      html.push(`<h2 style="margin:28px 0 10px;color:#102016;font-size:22px;line-height:1.2;">${renderNewsletterInline(line.slice(3))}</h2>`);
+      closeHeadlineCard();
+      html.push(`<h2 style="margin:28px 0 12px;color:#102016;font-size:20px;line-height:1.2;">${renderNewsletterInline(line.slice(3))}</h2>`);
       continue;
     }
 
     if (line.startsWith('# ')) {
-      closeList();
-      html.push(`<h1 style="margin:0 0 14px;color:#102016;font-size:30px;line-height:1.1;">${renderNewsletterInline(line.slice(2))}</h1>`);
+      closeHeadlineCard();
       continue;
     }
 
-    if (line.startsWith('- ')) {
+    if (line.startsWith('- ') || line.startsWith('* ')) {
       if (!inList) {
-        html.push('<ul style="margin:10px 0 18px;padding-left:22px;color:#34443b;font-size:15px;line-height:1.65;">');
+        html.push('<ul style="margin:8px 0 0;padding-left:20px;color:#34443b;font-size:14px;line-height:1.6;">');
         inList = true;
       }
       html.push(`<li style="margin:6px 0;">${renderNewsletterInline(line.slice(2))}</li>`);
@@ -888,11 +908,84 @@ function renderNewsletterMarkdown(markdown: string): string {
     }
 
     closeList();
-    html.push(`<p style="margin:0 0 16px;color:#34443b;font-size:15px;line-height:1.72;">${renderNewsletterInline(line)}</p>`);
+    html.push(`<p style="margin:0 0 16px;color:#34443b;font-size:15px;line-height:1.68;">${renderNewsletterInline(line)}</p>`);
   }
 
-  closeList();
+  closeHeadlineCard();
   return html.join('\n');
+}
+
+function extractNewsletterSources(markdown: string): { bodyMarkdown: string; sources: NewsletterSourceLink[] } {
+  const normalized = markdown.replace(/\r\n/g, '\n');
+  const sourceMatch = normalized.match(/\n##\s+Sources\s*\n/i);
+  const bodyMarkdown = (sourceMatch ? normalized.slice(0, sourceMatch.index).trim() : normalized.trim())
+    .split('\n')
+    .filter((line) => !/^sources$/i.test(line.trim()))
+    .join('\n')
+    .trim();
+  const sourceMarkdown = sourceMatch ? normalized.slice((sourceMatch.index ?? 0) + sourceMatch[0].length) : '';
+  const sources = new Map<string, string>();
+
+  const addSource = (title: string, url: string) => {
+    const cleanUrl = url.trim().replace(/[).,;]+$/g, '');
+    if (!/^https?:\/\//i.test(cleanUrl) || sources.has(cleanUrl)) {
+      return;
+    }
+    const cleanTitle = title
+      .replace(/^[-*\d.\s]+/, '')
+      .replace(/\s+/g, ' ')
+      .replace(/[:.\s-]+$/, '')
+      .trim();
+    if (/current time information/i.test(cleanTitle)) {
+      return;
+    }
+    sources.set(cleanUrl, cleanTitle || new URL(cleanUrl).hostname.replace(/^www\./, ''));
+  };
+
+  for (const match of sourceMarkdown.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g)) {
+    addSource(match[1], match[2]);
+  }
+  for (const line of sourceMarkdown.split('\n')) {
+    const match = line.match(/^(.*?)(https?:\/\/\S+)/);
+    if (match) {
+      addSource(match[1], match[2]);
+    }
+  }
+
+  return {
+    bodyMarkdown,
+    sources: Array.from(sources.entries()).slice(0, 5).map(([url, title]) => ({ title, url })),
+  };
+}
+
+function renderNewsletterSourceButtons(sources: NewsletterSourceLink[]): string {
+  if (sources.length === 0) {
+    return '';
+  }
+
+  const buttons = sources
+    .map((source) => {
+      const safeTitle = escapeHtml(source.title.length > 72 ? `${source.title.slice(0, 69)}...` : source.title);
+      const safeUrl = escapeHtml(source.url);
+      let host = '';
+      try {
+        host = new URL(source.url).hostname.replace(/^www\./, '');
+      } catch {
+        host = 'Source';
+      }
+      return `
+        <a href="${safeUrl}" style="display:block;margin:8px 0;padding:13px 14px;border:1px solid #dbe8df;border-radius:14px;background:#ffffff;color:#102016;text-decoration:none;">
+          <span style="display:block;font-size:14px;font-weight:800;line-height:1.35;">${safeTitle}</span>
+          <span style="display:block;margin-top:3px;color:#6f7d74;font-size:12px;">${escapeHtml(host)}</span>
+        </a>`;
+    })
+    .join('');
+
+  return `
+    <div style="margin:28px 0 0;padding:18px;border-radius:18px;background:#f8faf9;border:1px solid #dbe8df;">
+      <p style="margin:0 0 8px;color:#102016;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;">Source links</p>
+      ${buttons}
+    </div>`;
 }
 
 function stripMarkdownForPreview(markdown: string): string {
@@ -915,18 +1008,27 @@ function buildNewsletterQuestion(params: {
     `Wiki name: ${params.atlasName}`,
     `Wiki slug/context: ${params.atlasSlug}`,
     '',
-    'Return a complete newsletter body in clean markdown.',
+    'Return a short complete newsletter body in clean markdown.',
+    'Hard requirements:',
+    '- Exactly five headline sections. No more and no fewer.',
+    '- Keep the full body under 750 words.',
+    '- Do not include raw URLs in the body.',
+    '- Do not create a Sources section; citation links will be handled separately.',
+    '- Each headline must be specific and timely, with dates when known.',
+    '',
     'Use this exact structure:',
     '# A timely, specific title',
-    'A short executive opening paragraph.',
-    '## What changed this week',
-    '3-5 bullets with fresh, concrete updates.',
-    '## Why it matters',
-    '2-4 concise paragraphs or bullets explaining implications for local readers.',
-    '## Watch next',
-    '3 bullets about dates, decisions, meetings, developments, or signals to watch.',
-    '## Sources',
-    'Source links will be appended if search citations are available; include explicit source links in the body when useful.',
+    'A one-paragraph opening, maximum 45 words.',
+    '## Five headlines to know',
+    '### Headline 1',
+    '- What happened: one sentence.',
+    '- Why it matters: one sentence.',
+    '### Headline 2',
+    '- What happened: one sentence.',
+    '- Why it matters: one sentence.',
+    'Continue through Headline 5.',
+    '## What to watch next',
+    '- Three short bullets maximum.',
     '',
     'Make it professional, factual, and useful. Do not invent facts. Avoid generic filler.',
   ].join('\n');
@@ -979,14 +1081,19 @@ function buildNewsletterEmail(params: {
   const safePreview = escapeHtml(params.previewText);
   const safeChatUrl = escapeHtml(params.chatUrl);
   const safeUnsubscribeUrl = params.unsubscribeUrl ? escapeHtml(params.unsubscribeUrl) : '';
-  const bodyHtml = renderNewsletterMarkdown(params.markdown);
+  const { bodyMarkdown, sources } = extractNewsletterSources(params.markdown);
+  const bodyHtml = renderNewsletterMarkdown(bodyMarkdown);
+  const sourceButtonsHtml = renderNewsletterSourceButtons(sources);
   const unsubscribeText = params.unsubscribeUrl
     ? `\n\nUnsubscribe: ${params.unsubscribeUrl}`
+    : '';
+  const sourceText = sources.length
+    ? `\n\nSource links:\n${sources.map((source) => `- ${source.title}: ${source.url}`).join('\n')}`
     : '';
 
   const text = `${params.subject}
 
-${params.markdown}
+${bodyMarkdown}${sourceText}
 
 Open this wiki:
 ${params.chatUrl}${unsubscribeText}`;
@@ -1002,9 +1109,14 @@ ${params.chatUrl}${unsubscribeText}`;
         </div>
         <div style="background:#ffffff;border:1px solid #dfe9e3;border-top:0;padding:32px;border-radius:0 0 24px 24px;">
           ${bodyHtml}
-          <div style="margin:30px 0 0;padding:20px;border-radius:18px;background:#f8faf9;border:1px solid #dbe8df;">
-            <p style="margin:0;color:#34443b;font-size:14px;line-height:1.65;">Continue the conversation with this Living Wiki.</p>
-            <a href="${safeChatUrl}" style="display:inline-block;margin-top:14px;background:#1c7c41;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:999px;font-size:14px;font-weight:800;">Open Wiki Chat</a>
+          ${sourceButtonsHtml}
+          <div style="margin:30px 0 0;padding:20px;border-radius:18px;background:#102016;border:1px solid #173a25;">
+            <p style="margin:0;color:rgba(255,255,255,.78);font-size:14px;line-height:1.65;">Continue the conversation with this Living Wiki.</p>
+            <a href="${safeChatUrl}" style="display:inline-block;margin-top:14px;background:#ffffff;color:#102016;text-decoration:none;padding:12px 18px;border-radius:999px;font-size:14px;font-weight:900;">Open Wiki Chat</a>
+          </div>
+          <div style="margin:20px 0 0;padding:16px;border-radius:16px;background:#f8faf9;border:1px solid #dbe8df;">
+            <p style="margin:0;color:#34443b;font-size:14px;line-height:1.65;font-weight:800;">Reading note</p>
+            <p style="margin:8px 0 0;color:#6f7d74;font-size:12px;line-height:1.55;">Forward-looking items can change quickly. Use the source buttons above to check the latest detail.</p>
           </div>
           <hr style="border:none;border-top:1px solid #e5ece7;margin:28px 0 18px;">
           <p style="margin:0;color:#7a8780;font-size:12px;line-height:1.6;">
