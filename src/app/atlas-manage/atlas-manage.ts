@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import type { AtlasItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
+import type { AtlasAdminProfile, AtlasItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
@@ -37,6 +37,9 @@ export class AtlasManageComponent {
   readonly cityDraft = signal<CityConfigDraft | null>(null);
   readonly savingCityConfig = signal(false);
   readonly savingDefaultModeById = signal<Record<string, boolean>>({});
+  readonly adminEmailDraftById = signal<Record<string, string>>({});
+  readonly sharingAdminById = signal<Record<string, boolean>>({});
+  readonly removingAdminKey = signal<string | null>(null);
   readonly deletingId = signal<string | null>(null);
   readonly pageError = signal<string | null>(null);
 
@@ -55,6 +58,14 @@ export class AtlasManageComponent {
 
   atlasMeta(atlas: AtlasItem): string {
     return atlas.id.slice(0, 6);
+  }
+
+  isOwner(atlas: AtlasItem): boolean {
+    return this.atlasService.isAtlasOwner(atlas);
+  }
+
+  isAdmin(atlas: AtlasItem): boolean {
+    return this.atlasService.isAtlasAdmin(atlas);
   }
 
   usage(atlasId: string): AtlasUsage | null {
@@ -106,6 +117,72 @@ export class AtlasManageComponent {
 
   isSavingDefaultMode(atlasId: string): boolean {
     return this.savingDefaultModeById()[atlasId] ?? false;
+  }
+
+  adminEmailDraft(atlasId: string): string {
+    return this.adminEmailDraftById()[atlasId] ?? '';
+  }
+
+  isSharingAdmin(atlasId: string): boolean {
+    return this.sharingAdminById()[atlasId] ?? false;
+  }
+
+  adminProfiles(atlas: AtlasItem): AtlasAdminProfile[] {
+    return atlas.admin_profiles ?? [];
+  }
+
+  adminLabel(admin: AtlasAdminProfile): string {
+    return admin.display_name?.trim() || admin.email?.trim() || admin.user_id.slice(0, 8);
+  }
+
+  onAdminEmailInput(atlasId: string, event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.adminEmailDraftById.update((current) => ({ ...current, [atlasId]: value }));
+  }
+
+  async shareAdmin(event: Event, atlas: AtlasItem): Promise<void> {
+    event.preventDefault();
+    if (!this.isOwner(atlas) || this.isSharingAdmin(atlas.id)) {
+      return;
+    }
+
+    const email = this.adminEmailDraft(atlas.id).trim().toLowerCase();
+    if (!email) {
+      return;
+    }
+
+    this.sharingAdminById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    try {
+      await this.atlasService.addAtlasAdmin(atlas.id, email);
+      this.adminEmailDraftById.update((current) => ({ ...current, [atlas.id]: '' }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to add admin.');
+    } finally {
+      this.sharingAdminById.update((current) => ({ ...current, [atlas.id]: false }));
+    }
+  }
+
+  async removeAdmin(atlas: AtlasItem, admin: AtlasAdminProfile): Promise<void> {
+    if (!this.isOwner(atlas)) {
+      return;
+    }
+
+    const confirmed = window.confirm(`Remove ${this.adminLabel(admin)} as an admin of "${this.displayName(atlas)}"?`);
+    if (!confirmed) {
+      return;
+    }
+
+    const key = `${atlas.id}:${admin.user_id}`;
+    this.removingAdminKey.set(key);
+    this.pageError.set(null);
+    try {
+      await this.atlasService.removeAtlasAdmin(atlas.id, admin.user_id);
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to remove admin.');
+    } finally {
+      this.removingAdminKey.set(null);
+    }
   }
 
   cityConfigSummary(atlas: AtlasItem): string {
@@ -243,12 +320,12 @@ export class AtlasManageComponent {
     }
   }
 
-  canDelete(atlasId: string): boolean {
-    if (!this.hasMultipleAtlases()) {
+  canDelete(atlas: AtlasItem): boolean {
+    if (!this.isOwner(atlas) || !this.hasMultipleAtlases()) {
       return false;
     }
 
-    const usage = this.usage(atlasId);
+    const usage = this.usage(atlas.id);
     return !!usage && usage.total === 0;
   }
 
@@ -323,6 +400,8 @@ export class AtlasManageComponent {
         try {
           const usage = await this.atlasService.getAtlasUsage(atlas.id);
           this.usageById.update((current) => ({ ...current, [atlas.id]: usage }));
+        } catch {
+          // Collaborator admins may not have direct read access to every owner-only usage collection.
         } finally {
           this.loadingUsageById.update((current) => ({ ...current, [atlas.id]: false }));
         }

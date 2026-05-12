@@ -527,6 +527,116 @@ async function assertAtlasOwner(atlasId: string | null, userId: string): Promise
   }
 }
 
+function normalizeUserEmail(value: unknown): string {
+  return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+function normalizeAdminProfiles(value: unknown): Record<string, unknown>[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item): item is Record<string, unknown> => !!item && typeof item === 'object');
+}
+
+async function loadOwnedAtlasForAdminMutation(atlasId: string, userId: string) {
+  const atlasRef = db.collection('atlases').doc(atlasId);
+  const atlasSnapshot = await atlasRef.get();
+  if (!atlasSnapshot.exists) {
+    throw new HttpsError('not-found', 'Atlas not found.');
+  }
+
+  const atlas = atlasSnapshot.data() as Record<string, unknown> | undefined;
+  if (!atlas?.user_id || String(atlas.user_id) !== userId) {
+    throw new HttpsError('permission-denied', 'Only the wiki owner can manage admins.');
+  }
+
+  return { atlasRef, atlas };
+}
+
+export const addAtlasAdmin = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  const email = normalizeUserEmail(request.data?.email);
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+  if (!email || !email.includes('@')) {
+    throw new HttpsError('invalid-argument', 'Enter a valid admin email address.');
+  }
+
+  const { atlasRef, atlas } = await loadOwnedAtlasForAdminMutation(atlasId, request.auth.uid);
+  const ownerEmail = normalizeUserEmail((request.auth.token ?? {}).email);
+  if (ownerEmail && ownerEmail === email) {
+    throw new HttpsError('invalid-argument', 'You are already the owner of this wiki.');
+  }
+
+  const userSnapshot = await db.collection('users').where('email', '==', email).limit(1).get();
+  const userDoc = userSnapshot.docs[0];
+  if (!userDoc) {
+    throw new HttpsError('not-found', 'No Living Wiki account exists for that email yet.');
+  }
+
+  const userId = userDoc.id;
+  if (String(atlas.user_id) === userId) {
+    throw new HttpsError('invalid-argument', 'That user already owns this wiki.');
+  }
+
+  const user = userDoc.data() as Record<string, unknown>;
+  const admin = {
+    user_id: userId,
+    email,
+    display_name: typeof user.displayName === 'string' && user.displayName.trim()
+      ? user.displayName.trim()
+      : null,
+    added_at: new Date().toISOString(),
+  };
+  const adminProfiles = normalizeAdminProfiles(atlas.admin_profiles)
+    .filter((profile) => String(profile.user_id ?? '') !== userId);
+
+  await atlasRef.update({
+    admin_user_ids: FieldValue.arrayUnion(userId),
+    admin_profiles: [...adminProfiles, admin],
+    updated_at: FieldValue.serverTimestamp(),
+  });
+
+  return { admin };
+});
+
+export const removeAtlasAdmin = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  const userId = typeof request.data?.userId === 'string' ? request.data.userId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+  if (!userId) {
+    throw new HttpsError('invalid-argument', 'userId is required.');
+  }
+
+  const { atlasRef, atlas } = await loadOwnedAtlasForAdminMutation(atlasId, request.auth.uid);
+  if (String(atlas.user_id) === userId) {
+    throw new HttpsError('invalid-argument', 'The owner cannot be removed as an admin.');
+  }
+
+  const adminProfiles = normalizeAdminProfiles(atlas.admin_profiles)
+    .filter((profile) => String(profile.user_id ?? '') !== userId);
+
+  await atlasRef.update({
+    admin_user_ids: FieldValue.arrayRemove(userId),
+    admin_profiles: adminProfiles,
+    updated_at: FieldValue.serverTimestamp(),
+  });
+
+  return { ok: true };
+});
+
 async function loadPublicAtlasBySlug(slug: string) {
   const trimmedSlug = slug.trim();
   if (!trimmedSlug) {

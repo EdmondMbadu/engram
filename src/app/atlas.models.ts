@@ -78,6 +78,8 @@ export interface CityAtlasConfig {
 export interface AtlasItem {
   id: string;
   user_id: string;
+  admin_user_ids?: string[];
+  admin_profiles?: AtlasAdminProfile[];
   name: string;
   slug: string;
   description: string | null;
@@ -99,6 +101,13 @@ export interface AtlasItem {
     wiki_articles: number;
     chat_threads: number;
   } | null;
+}
+
+export interface AtlasAdminProfile {
+  user_id: string;
+  email: string | null;
+  display_name: string | null;
+  added_at?: { toDate(): Date } | Date | string | null;
 }
 
 export interface AtlasUsage {

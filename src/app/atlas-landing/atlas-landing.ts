@@ -59,6 +59,7 @@ export class AtlasLandingComponent {
     const uid = this.authService.uid();
     return !!atlas && !!uid && atlas.user_id === uid;
   });
+  readonly canAdminAtlas = computed(() => this.atlasService.canAdminAtlas(this.atlas()));
   readonly canViewSpaces = computed(() => {
     const atlas = this.atlas();
     return !!atlas && (this.isOwner() || atlas.is_public);
@@ -372,6 +373,14 @@ export class AtlasLandingComponent {
   openManage(): void {
     this.activateThisAtlas();
     void this.router.navigateByUrl('/atlases');
+  }
+
+  openPersona(): void {
+    const atlas = this.atlas();
+    if (!atlas || !this.canAdminAtlas()) {
+      return;
+    }
+    void this.router.navigate(['/atlases', atlas.id, 'persona']);
   }
 
   openLibrary(): void {

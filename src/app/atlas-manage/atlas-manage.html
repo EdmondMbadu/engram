@@ -65,6 +65,11 @@
                       Active
                     </span>
                   }
+                  @if (isAdmin(atlas) && !isOwner(atlas)) {
+                    <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                      Admin
+                    </span>
+                  }
                 </div>
 
                 @if (renamingId() === atlas.id) {
@@ -286,6 +291,56 @@
                   </div>
                 </div>
 
+                @if (isOwner(atlas)) {
+                  <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
+                    <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                      <div class="min-w-0">
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Admins</p>
+                        <p class="mt-1 text-sm font-semibold text-[var(--text)]">
+                          {{ adminProfiles(atlas).length ? adminProfiles(atlas).length + ' shared admin' + (adminProfiles(atlas).length === 1 ? '' : 's') : 'Owner only' }}
+                        </p>
+                        <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Admins can open admin shortcuts and edit wiki settings, but only the owner can manage admins or delete the wiki.</p>
+                      </div>
+                      <form class="flex w-full flex-col gap-2 sm:flex-row lg:max-w-md" (submit)="shareAdmin($event, atlas)">
+                        <input
+                          type="email"
+                          class="theme-input min-w-0 flex-1 rounded-full px-4 py-2 text-sm"
+                          [value]="adminEmailDraft(atlas.id)"
+                          (input)="onAdminEmailInput(atlas.id, $event)"
+                          placeholder="person@example.com"
+                        />
+                        <button
+                          type="submit"
+                          class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
+                          [disabled]="isSharingAdmin(atlas.id) || !adminEmailDraft(atlas.id).trim()"
+                        >
+                          <span class="material-symbols-outlined text-[1rem]">person_add</span>
+                          <span>{{ isSharingAdmin(atlas.id) ? 'Adding...' : 'Add admin' }}</span>
+                        </button>
+                      </form>
+                    </div>
+
+                    @if (adminProfiles(atlas).length) {
+                      <div class="mt-3 flex flex-wrap gap-2">
+                        @for (admin of adminProfiles(atlas); track admin.user_id) {
+                          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] py-1 pl-3 pr-1 text-xs text-[var(--text)]">
+                            <span class="max-w-[14rem] truncate">{{ adminLabel(admin) }}</span>
+                            <button
+                              type="button"
+                              class="inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--soft-fill-strong)] hover:text-[var(--danger-text)] disabled:opacity-50"
+                              [disabled]="removingAdminKey() === atlas.id + ':' + admin.user_id"
+                              (click)="removeAdmin(atlas, admin)"
+                              aria-label="Remove admin"
+                            >
+                              <span class="material-symbols-outlined text-[1rem]">close</span>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+
                 <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4">
                   <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -349,15 +404,17 @@
                     <span>Rename</span>
                   </button>
                 }
-                <button
-                  type="button"
-                  (click)="deleteAtlas(atlas)"
-                  [disabled]="!canDelete(atlas.id) || deletingId() === atlas.id"
-                  class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-35"
-                >
-                  <span class="material-symbols-outlined text-[1rem]">delete</span>
-                  <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete empty Wiki' }}</span>
-                </button>
+                @if (isOwner(atlas)) {
+                  <button
+                    type="button"
+                    (click)="deleteAtlas(atlas)"
+                    [disabled]="!canDelete(atlas) || deletingId() === atlas.id"
+                    class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-35"
+                  >
+                    <span class="material-symbols-outlined text-[1rem]">delete</span>
+                    <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete empty Wiki' }}</span>
+                  </button>
+                }
               </div>
             </div>
 

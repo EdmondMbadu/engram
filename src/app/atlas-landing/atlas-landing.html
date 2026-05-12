@@ -73,15 +73,27 @@
         }
         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
 
-        @if (isOwner() && !editing()) {
-          <button
-            type="button"
-            (click)="startEdit()"
-            class="absolute right-4 top-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-black/40 active:scale-[0.97] md:right-12 md:top-8"
-          >
-            <span class="material-symbols-outlined text-[20px]">edit</span>
-            Edit cover
-          </button>
+        @if (canAdminAtlas() && !editing()) {
+          <div class="absolute right-4 top-6 flex flex-wrap justify-end gap-2 md:right-12 md:top-8">
+            <button
+              type="button"
+              (click)="openPersona()"
+              class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-black/40 active:scale-[0.97]"
+            >
+              <span class="material-symbols-outlined text-[20px]">record_voice_over</span>
+              Voice
+            </button>
+            @if (isOwner()) {
+              <button
+                type="button"
+                (click)="startEdit()"
+                class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-black/40 active:scale-[0.97]"
+              >
+                <span class="material-symbols-outlined text-[20px]">edit</span>
+                Edit cover
+              </button>
+            }
+          </div>
         }
 
         <div class="absolute bottom-0 left-0 w-full px-6 pb-10 md:px-12">
@@ -302,9 +314,9 @@
             <div>
               <h3 class="mb-6 flex items-center justify-between px-1 font-headline text-2xl font-bold text-[var(--text)]">
                 Jump to spaces
-                @if (isOwner()) {
+                @if (canAdminAtlas()) {
                   <button type="button" class="flex items-center gap-1 text-sm font-bold text-[var(--accent)] hover:underline" (click)="openManage()">
-                    Manage Wikis
+                    Admin
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                   </button>
                 }

@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
-import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 const PERSONA_SOFT_LIMIT = 4000;
@@ -15,7 +14,6 @@ const PERSONA_SOFT_LIMIT = 4000;
 })
 export class AtlasPersonaComponent {
   private readonly atlasService = inject(AtlasService);
-  private readonly authService = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -33,11 +31,7 @@ export class AtlasPersonaComponent {
     return this.atlasService.atlases().find((a) => a.id === id) ?? null;
   });
 
-  readonly isOwner = computed(() => {
-    const atlas = this.atlas();
-    const uid = this.authService.uid();
-    return !!atlas && !!uid && atlas.user_id === uid;
-  });
+  readonly canAdminAtlas = computed(() => this.atlasService.canAdminAtlas(this.atlas()));
 
   readonly characterCount = computed(() => this.draft().length);
   readonly remaining = computed(() => Math.max(0, PERSONA_SOFT_LIMIT - this.characterCount()));
@@ -77,7 +71,7 @@ export class AtlasPersonaComponent {
 
   async save(): Promise<void> {
     const id = this.atlasId();
-    if (!id || !this.isOwner()) return;
+    if (!id || !this.canAdminAtlas()) return;
     if (this.saving()) return;
 
     const value = this.draft().trim();
@@ -110,7 +104,7 @@ export class AtlasPersonaComponent {
 
   async clearPersona(): Promise<void> {
     const id = this.atlasId();
-    if (!id || !this.isOwner()) return;
+    if (!id || !this.canAdminAtlas()) return;
     if (this.saving()) return;
 
     if (this.hasCustomPrompt()) {

@@ -13,11 +13,13 @@ import {
   serverTimestamp,
   updateDoc,
   where,
+  type DocumentData,
+  type QuerySnapshot,
   type Unsubscribe,
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
@@ -25,6 +27,10 @@ const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
 
 type PublicAtlasBySlugResponse = {
   atlas: Record<string, unknown> | null;
+};
+
+type AtlasAdminResponse = {
+  admin: AtlasAdminProfile;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -85,48 +91,89 @@ export class AtlasService {
       }
 
       this.isLoading.set(true);
-      const atlasesQuery = query(
+      const ownedAtlasesQuery = query(
         collection(this.firestore, 'atlases'),
         where('user_id', '==', uid),
       );
-
-      const unsubscribe: Unsubscribe = onSnapshot(
-        atlasesQuery,
-        async (snapshot) => {
-          const items: AtlasItem[] = snapshot.docs
-            .map((d) => ({
-              id: d.id,
-              ...(d.data() as Omit<AtlasItem, 'id'>),
-            }))
-            .sort((a, b) => {
-              const aMs = this.asMillis(a.created_at);
-              const bMs = this.asMillis(b.created_at);
-              if (aMs !== bMs) return aMs - bMs;
-              return a.id.localeCompare(b.id);
-            });
-          this.atlases.set(items);
-
-          if (items.length === 0) {
-            if (!this.autoCreateAttempted) {
-              this.autoCreateAttempted = true;
-              const created = await this.createDefaultAtlas(uid);
-              if (created) {
-                this.setActive(created);
-              }
-            }
-          } else {
-            void this.selfHealAtlases(items);
-            const current = this.activeAtlasId();
-            if (!current || !items.some((a) => a.id === current)) {
-              this.setActive(items[0].id);
-            }
-          }
-          this.isLoading.set(false);
-        },
-        () => this.isLoading.set(false),
+      const adminAtlasesQuery = query(
+        collection(this.firestore, 'atlases'),
+        where('admin_user_ids', 'array-contains', uid),
       );
 
-      onCleanup(() => unsubscribe());
+      let ownedItems: AtlasItem[] | null = null;
+      let adminItems: AtlasItem[] | null = null;
+
+      const publish = async () => {
+        if (!ownedItems || !adminItems) {
+          return;
+        }
+
+        const byId = new Map<string, AtlasItem>();
+        for (const atlas of [...ownedItems, ...adminItems]) {
+          byId.set(atlas.id, atlas);
+        }
+
+        const items = [...byId.values()].sort((a, b) => {
+          const aMs = this.asMillis(a.created_at);
+          const bMs = this.asMillis(b.created_at);
+          if (aMs !== bMs) return aMs - bMs;
+          return a.id.localeCompare(b.id);
+        });
+        this.atlases.set(items);
+
+        if (items.length === 0) {
+          if (!this.autoCreateAttempted) {
+            this.autoCreateAttempted = true;
+            const created = await this.createDefaultAtlas(uid);
+            if (created) {
+              this.setActive(created);
+            }
+          }
+        } else {
+          void this.selfHealAtlases(items.filter((atlas) => atlas.user_id === uid));
+          const current = this.activeAtlasId();
+          if (!current || !items.some((a) => a.id === current)) {
+            this.setActive(items[0].id);
+          }
+        }
+        this.isLoading.set(false);
+      };
+
+      const hydrateSnapshot = (snapshot: QuerySnapshot<DocumentData>) =>
+        snapshot.docs.map((d) =>
+          this.hydrateAtlas({
+            id: d.id,
+            ...(d.data() as Record<string, unknown>),
+          }),
+        );
+
+      const ownedUnsubscribe: Unsubscribe = onSnapshot(
+        ownedAtlasesQuery,
+        (snapshot) => {
+          ownedItems = hydrateSnapshot(snapshot);
+          void publish();
+        },
+        () => {
+          ownedItems = [];
+          void publish();
+        },
+      );
+      const adminUnsubscribe: Unsubscribe = onSnapshot(
+        adminAtlasesQuery,
+        (snapshot) => {
+          adminItems = hydrateSnapshot(snapshot);
+          void publish();
+        },
+        () => {
+          adminItems = [];
+          void publish();
+        },
+      );
+
+      onCleanup(() => {
+        ownedUnsubscribe();
+        adminUnsubscribe();
+      });
     });
   }
 
@@ -315,6 +362,25 @@ export class AtlasService {
     });
   }
 
+  async addAtlasAdmin(atlasId: string, email: string): Promise<AtlasAdminProfile> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const addAtlasAdmin = httpsCallable<
+      { atlasId: string; email: string },
+      AtlasAdminResponse
+    >(this.functions, 'addAtlasAdmin');
+    const { data } = await addAtlasAdmin({ atlasId, email });
+    return data.admin;
+  }
+
+  async removeAtlasAdmin(atlasId: string, userId: string): Promise<void> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const removeAtlasAdmin = httpsCallable<
+      { atlasId: string; userId: string },
+      { ok: boolean }
+    >(this.functions, 'removeAtlasAdmin');
+    await removeAtlasAdmin({ atlasId, userId });
+  }
+
   async renameAtlas(atlasId: string, name: string): Promise<void> {
     if (!this.firestore) return;
     const trimmed = name.trim();
@@ -421,6 +487,20 @@ export class AtlasService {
     return `Wiki ${atlas.id.slice(0, 6)}`;
   }
 
+  isAtlasOwner(atlas: AtlasItem | null | undefined): boolean {
+    const uid = this.authService.uid();
+    return !!atlas && !!uid && atlas.user_id === uid;
+  }
+
+  isAtlasAdmin(atlas: AtlasItem | null | undefined): boolean {
+    const uid = this.authService.uid();
+    return !!atlas && !!uid && !!atlas.admin_user_ids?.includes(uid);
+  }
+
+  canAdminAtlas(atlas: AtlasItem | null | undefined): boolean {
+    return this.isAtlasOwner(atlas) || this.isAtlasAdmin(atlas);
+  }
+
   private async selfHealAtlases(items: AtlasItem[]): Promise<void> {
     if (!this.firestore) return;
     for (const atlas of items) {
@@ -503,10 +583,40 @@ export class AtlasService {
       video_url: typeof data['video_url'] === 'string' ? data['video_url'] : null,
       cover_color: typeof data['cover_color'] === 'string' ? data['cover_color'] : null,
       city_config: this.hydrateCityConfig(data['city_config']),
+      persona_prompt: typeof data['persona_prompt'] === 'string' ? data['persona_prompt'] : null,
+      admin_user_ids: Array.isArray(data['admin_user_ids'])
+        ? data['admin_user_ids'].filter((value): value is string => typeof value === 'string')
+        : [],
+      admin_profiles: this.hydrateAdminProfiles(data['admin_profiles']),
       default_answer_mode: data['default_answer_mode'] === 'internet' ? 'internet' : 'wiki',
       created_at: this.hydrateDateValue(data['created_at']),
       updated_at: this.hydrateDateValue(data['updated_at']),
     };
+  }
+
+  private hydrateAdminProfiles(value: unknown): AtlasAdminProfile[] {
+    if (!Array.isArray(value)) {
+      return [];
+    }
+
+    return value
+      .map((item): AtlasAdminProfile | null => {
+        if (!item || typeof item !== 'object') {
+          return null;
+        }
+        const data = item as Record<string, unknown>;
+        const userId = typeof data['user_id'] === 'string' ? data['user_id'] : '';
+        if (!userId) {
+          return null;
+        }
+        return {
+          user_id: userId,
+          email: typeof data['email'] === 'string' ? data['email'] : null,
+          display_name: typeof data['display_name'] === 'string' ? data['display_name'] : null,
+          added_at: this.hydrateDateValue(data['added_at']),
+        };
+      })
+      .filter((profile): profile is AtlasAdminProfile => !!profile);
   }
 
   private hydrateCityConfig(value: unknown): CityAtlasConfig | null {
