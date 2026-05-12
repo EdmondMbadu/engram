@@ -604,6 +604,23 @@ function normalizeNewsletterConfigInput(value: unknown, fallbackTimezone = 'Amer
   return config;
 }
 
+function newsletterConfigForWrite(config: AtlasNewsletterConfig): Record<string, unknown> {
+  const data: Record<string, unknown> = {
+    enabled: config.enabled,
+    day_of_week: config.day_of_week,
+    send_time: config.send_time,
+    timezone: config.timezone,
+    prompt: config.prompt,
+  };
+  if (config.last_sent_key) {
+    data['last_sent_key'] = config.last_sent_key;
+  }
+  if (config.last_sent_at) {
+    data['last_sent_at'] = config.last_sent_at;
+  }
+  return data;
+}
+
 function localNewsletterKey(now: Date, timezone: string, sendTime: string): {
   key: string;
   dayOfWeek: number;
@@ -886,6 +903,64 @@ function newsletterSourceFromLine(line: string): NewsletterSourceLink | null {
   };
 }
 
+async function resolveNewsletterUrl(url: string): Promise<string> {
+  const trimmed = url.trim().replace(/[).,;]+$/g, '');
+  if (!/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  const isGoogleGroundingRedirect =
+    /vertexaisearch\.cloud\.google\.com\/grounding-api-redirect/i.test(trimmed) ||
+    /google\.com\/search/i.test(trimmed);
+  if (!isGoogleGroundingRedirect) {
+    return trimmed;
+  }
+
+  try {
+    const response = await fetch(trimmed, {
+      method: 'GET',
+      redirect: 'manual',
+      signal: AbortSignal.timeout(8000),
+    });
+    const location = response.headers.get('location');
+    if (location && /^https?:\/\//i.test(location)) {
+      return location;
+    }
+    if (response.url && response.url !== trimmed && /^https?:\/\//i.test(response.url)) {
+      return response.url;
+    }
+  } catch (error) {
+    logger.warn('Failed to resolve newsletter source redirect.', {
+      url: trimmed,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  return trimmed;
+}
+
+async function resolveNewsletterMarkdownLinks(markdown: string): Promise<string> {
+  const urls = new Set<string>();
+  for (const match of markdown.matchAll(/https?:\/\/[^\s)]+/g)) {
+    urls.add(match[0].replace(/[).,;]+$/g, ''));
+  }
+  if (urls.size === 0) {
+    return markdown;
+  }
+
+  const resolvedEntries = await Promise.all(
+    Array.from(urls).map(async (url) => [url, await resolveNewsletterUrl(url)] as const),
+  );
+  const resolvedByUrl = new Map(resolvedEntries);
+  let nextMarkdown = markdown;
+  for (const [original, resolved] of resolvedByUrl.entries()) {
+    if (original !== resolved) {
+      nextMarkdown = nextMarkdown.split(original).join(resolved);
+    }
+  }
+  return nextMarkdown;
+}
+
 function renderHeadlineSourceButton(source: NewsletterSourceLink): string {
   const safeUrl = escapeHtml(source.url);
   const safeTitle = escapeHtml(source.title.length > 72 ? `${source.title.slice(0, 69)}...` : source.title);
@@ -1104,6 +1179,7 @@ function buildNewsletterQuestion(params: {
     '- Each headline must be specific and timely, with dates when known.',
     '- Each headline must include one final source line in this exact form: "- Read article: [Publication or article name](source URL)".',
     '- The Read article URL must point to the most relevant article/source for that headline.',
+    '- Use direct publisher URLs only for Read article links. Never use google.com/search, vertexaisearch.cloud.google.com, or grounding-api-redirect URLs.',
     '',
     'Use this exact structure:',
     '# A timely, specific title',
@@ -1142,7 +1218,7 @@ async function generateAtlasNewsletterContent(params: {
     }),
     personaPrompt: typeof params.atlas.persona_prompt === 'string' ? params.atlas.persona_prompt : null,
   });
-  const markdown = response.answer.trim();
+  const markdown = (await resolveNewsletterMarkdownLinks(response.answer.trim())).trim();
   const title = markdown
     .split('\n')
     .map((line) => line.trim())
@@ -1746,7 +1822,7 @@ export const updateAtlasNewsletterConfig = onCall({ region: callableRegion, cors
   await atlasSnapshot.ref.set(
     {
       newsletter_config: {
-        ...config,
+        ...newsletterConfigForWrite(config),
         updated_at: FieldValue.serverTimestamp(),
       },
       updated_at: FieldValue.serverTimestamp(),
@@ -1856,7 +1932,7 @@ export const sendWeeklyAtlasNewsletters = onSchedule(
         await atlasSnapshot.ref.set(
           {
             newsletter_config: {
-              ...config,
+              ...newsletterConfigForWrite(config),
               last_sent_key: due.key,
               last_sent_at: FieldValue.serverTimestamp(),
               last_recipient_count: 0,
@@ -1896,7 +1972,7 @@ export const sendWeeklyAtlasNewsletters = onSchedule(
         await atlasSnapshot.ref.set(
           {
             newsletter_config: {
-              ...config,
+              ...newsletterConfigForWrite(config),
               last_sent_key: due.key,
               last_sent_at: FieldValue.serverTimestamp(),
               last_recipient_count: sentCount,
