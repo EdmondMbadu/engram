@@ -110,6 +110,17 @@ export interface AtlasAdminProfile {
   added_at?: { toDate(): Date } | Date | string | null;
 }
 
+export interface AtlasSubscriptionItem {
+  id: string;
+  atlas_id: string;
+  email: string;
+  status: 'active' | 'unsubscribed';
+  subscriber_user_id?: string | null;
+  source?: string | null;
+  created_at?: { toDate(): Date } | Date | string | null;
+  updated_at?: { toDate(): Date } | Date | string | null;
+}
+
 export interface AtlasUsage {
   documents: number;
   wiki_articles: number;

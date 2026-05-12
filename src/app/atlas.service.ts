@@ -19,7 +19,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasItem, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
@@ -31,6 +31,15 @@ type PublicAtlasBySlugResponse = {
 
 type AtlasAdminResponse = {
   admin: AtlasAdminProfile;
+};
+
+type AtlasSubscribeResponse = {
+  ok: boolean;
+  alreadySubscribed?: boolean;
+};
+
+type AtlasSubscriptionsResponse = {
+  subscriptions: AtlasSubscriptionItem[];
 };
 
 @Injectable({ providedIn: 'root' })
@@ -379,6 +388,30 @@ export class AtlasService {
       { ok: boolean }
     >(this.functions, 'removeAtlasAdmin');
     await removeAtlasAdmin({ atlasId, userId });
+  }
+
+  async subscribeToAtlasUpdates(input: {
+    atlasId: string;
+    email: string;
+    anonymousVisitorId?: string | null;
+  }): Promise<AtlasSubscribeResponse> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const subscribeToAtlasUpdates = httpsCallable<
+      { atlasId: string; email: string; anonymousVisitorId?: string | null },
+      AtlasSubscribeResponse
+    >(this.functions, 'subscribeToAtlasUpdates');
+    const { data } = await subscribeToAtlasUpdates(input);
+    return data;
+  }
+
+  async listAtlasSubscriptions(atlasId: string): Promise<AtlasSubscriptionItem[]> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const listAtlasSubscriptions = httpsCallable<
+      { atlasId: string },
+      AtlasSubscriptionsResponse
+    >(this.functions, 'listAtlasSubscriptions');
+    const { data } = await listAtlasSubscriptions({ atlasId });
+    return data.subscriptions ?? [];
   }
 
   async renameAtlas(atlasId: string, name: string): Promise<void> {

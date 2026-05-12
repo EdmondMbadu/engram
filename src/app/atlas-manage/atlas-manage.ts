@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import type { AtlasAdminProfile, AtlasItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
+import type { AtlasAdminProfile, AtlasItem, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
@@ -30,6 +30,8 @@ export class AtlasManageComponent {
 
   readonly usageById = signal<Record<string, AtlasUsage>>({});
   readonly loadingUsageById = signal<Record<string, boolean>>({});
+  readonly subscriptionsById = signal<Record<string, AtlasSubscriptionItem[]>>({});
+  readonly loadingSubscriptionsById = signal<Record<string, boolean>>({});
   readonly renamingId = signal<string | null>(null);
   readonly renameDraft = signal('');
   readonly renaming = signal(false);
@@ -149,6 +151,46 @@ export class AtlasManageComponent {
   openSection(atlas: AtlasItem, section: string): void {
     const key = this.sectionKey(atlas, section);
     this.openSections.update((current) => ({ ...current, [key]: true }));
+  }
+
+  toggleSubscriptionSection(atlas: AtlasItem): void {
+    const willOpen = !this.isSectionOpen(atlas, 'subscribers');
+    this.toggleSection(atlas, 'subscribers');
+    if (willOpen) {
+      void this.loadSubscriptions(atlas.id);
+    }
+  }
+
+  subscriptions(atlasId: string): AtlasSubscriptionItem[] {
+    return this.subscriptionsById()[atlasId] ?? [];
+  }
+
+  subscriberCountLabel(atlasId: string): string {
+    const count = this.subscriptions(atlasId).length;
+    if (this.isLoadingSubscriptions(atlasId)) {
+      return 'Loading subscribers...';
+    }
+    if (count === 0) {
+      return 'No subscribers yet';
+    }
+    return `${count} subscriber${count === 1 ? '' : 's'}`;
+  }
+
+  isLoadingSubscriptions(atlasId: string): boolean {
+    return this.loadingSubscriptionsById()[atlasId] ?? false;
+  }
+
+  subscriptionDate(subscription: AtlasSubscriptionItem): string {
+    const value = subscription.created_at ?? subscription.updated_at;
+    const date = this.asDate(value);
+    if (!date) {
+      return 'Date unavailable';
+    }
+    return new Intl.DateTimeFormat(undefined, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date);
   }
 
   adminEmailDraft(atlasId: string): string {
@@ -425,6 +467,26 @@ export class AtlasManageComponent {
       return next;
     });
 
+    this.subscriptionsById.update((current) => {
+      const next: Record<string, AtlasSubscriptionItem[]> = {};
+      for (const [atlasId, subscriptions] of Object.entries(current)) {
+        if (atlasIds.has(atlasId)) {
+          next[atlasId] = subscriptions;
+        }
+      }
+      return next;
+    });
+
+    this.loadingSubscriptionsById.update((current) => {
+      const next: Record<string, boolean> = {};
+      for (const [atlasId, loading] of Object.entries(current)) {
+        if (atlasIds.has(atlasId)) {
+          next[atlasId] = loading;
+        }
+      }
+      return next;
+    });
+
     await Promise.all(
       atlases.map(async (atlas) => {
         if (this.usage(atlas.id) || this.isUsageLoading(atlas.id)) {
@@ -442,6 +504,40 @@ export class AtlasManageComponent {
         }
       }),
     );
+  }
+
+  private async loadSubscriptions(atlasId: string): Promise<void> {
+    if (this.subscriptionsById()[atlasId] || this.isLoadingSubscriptions(atlasId)) {
+      return;
+    }
+
+    this.loadingSubscriptionsById.update((current) => ({ ...current, [atlasId]: true }));
+    this.pageError.set(null);
+    try {
+      const subscriptions = await this.atlasService.listAtlasSubscriptions(atlasId);
+      this.subscriptionsById.update((current) => ({ ...current, [atlasId]: subscriptions }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to load subscribers.');
+    } finally {
+      this.loadingSubscriptionsById.update((current) => ({ ...current, [atlasId]: false }));
+    }
+  }
+
+  private asDate(value: { toDate(): Date } | Date | string | null | undefined): Date | null {
+    if (!value) {
+      return null;
+    }
+    if (value instanceof Date) {
+      return value;
+    }
+    if (typeof value === 'string') {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+    if (typeof value.toDate === 'function') {
+      return value.toDate();
+    }
+    return null;
   }
 
   private stringifyManualMetrics(metrics: CityPulseMetric[] | null): string {

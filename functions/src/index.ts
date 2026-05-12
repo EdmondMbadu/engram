@@ -653,6 +653,84 @@ async function sendAtlasAdminInviteEmail(params: {
   });
 }
 
+function buildAtlasSubscriptionEmail(params: {
+  recipientEmail: string;
+  atlasName: string;
+  chatUrl: string;
+}) {
+  const subject = `You're subscribed to Living Wiki Weekly Updates`;
+  const safeRecipientEmail = escapeHtml(params.recipientEmail);
+  const safeAtlasName = escapeHtml(params.atlasName);
+  const safeChatUrl = escapeHtml(params.chatUrl);
+
+  const text = `Hi,
+
+You subscribed to Living Wiki Weekly Updates for "${params.atlasName}".
+
+Each week, you will receive related information and updates from this wiki.
+
+Open the wiki chat:
+${params.chatUrl}
+
+The Living Wiki Team`;
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 640px; margin: 0 auto; padding: 0;">
+      <div style="background: linear-gradient(135deg, #0b1f14 0%, #1c7c41 100%); padding: 34px 30px; border-radius: 18px 18px 0 0;">
+        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Living Wiki</h1>
+        <p style="color: rgba(255,255,255,0.76); margin: 10px 0 0; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;">Weekly updates</p>
+      </div>
+      <div style="background: #ffffff; padding: 32px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 18px 18px;">
+        <p style="color: #111827; font-size: 16px; line-height: 1.6; margin: 0 0 18px;">Hi <strong>${safeRecipientEmail}</strong>,</p>
+        <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 22px;">
+          You subscribed to <strong>Living Wiki Weekly Updates</strong> for <strong>${safeAtlasName}</strong>.
+        </p>
+        <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; padding: 20px; margin: 0 0 24px;">
+          <p style="color: #0f2417; font-size: 15px; line-height: 1.6; margin: 0;">
+            Each week, you will receive related information and updates from this wiki.
+          </p>
+        </div>
+        <div style="text-align: center; margin: 26px 0;">
+          <a href="${safeChatUrl}" style="background: #1c7c41; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 999px; font-weight: 800; display: inline-block; font-size: 15px;">
+            Open Wiki Chat
+          </a>
+        </div>
+        <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">
+          Chat page: <a href="${safeChatUrl}" style="color: #1c7c41; text-decoration: none;">${safeChatUrl}</a>
+        </p>
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+        <p style="color: #9ca3af; font-size: 13px; margin: 0;">The Living Wiki Team</p>
+      </div>
+    </div>
+  `;
+
+  return { subject, text, html };
+}
+
+async function sendAtlasSubscriptionEmail(params: {
+  recipientEmail: string;
+  atlasName: string;
+  chatUrl: string;
+}): Promise<void> {
+  const apiKey = sendgridApiKey.value();
+  if (!apiKey) {
+    throw new HttpsError('failed-precondition', 'SendGrid API key is not configured.');
+  }
+
+  sgMail.setApiKey(apiKey);
+  const email = buildAtlasSubscriptionEmail(params);
+  await sgMail.send({
+    to: params.recipientEmail,
+    from: {
+      email: inviteSenderEmail,
+      name: 'Living Wiki',
+    },
+    subject: email.subject,
+    text: email.text,
+    html: email.html,
+  });
+}
+
 async function loadOwnedAtlasForAdminMutation(atlasId: string, userId: string) {
   const atlasRef = db.collection('atlases').doc(atlasId);
   const atlasSnapshot = await atlasRef.get();
@@ -666,6 +744,24 @@ async function loadOwnedAtlasForAdminMutation(atlasId: string, userId: string) {
   }
 
   return { atlasRef, atlas };
+}
+
+async function loadAtlasForAdminAccess(atlasId: string, userId: string) {
+  const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
+  if (!atlasSnapshot.exists) {
+    throw new HttpsError('not-found', 'Atlas not found.');
+  }
+
+  const atlas = atlasSnapshot.data() as Record<string, unknown> | undefined;
+  const ownerId = String(atlas?.user_id ?? '');
+  const adminIds = Array.isArray(atlas?.admin_user_ids)
+    ? atlas.admin_user_ids.map((value) => String(value))
+    : [];
+  if (ownerId !== userId && !adminIds.includes(userId)) {
+    throw new HttpsError('permission-denied', 'You do not have access to this wiki admin data.');
+  }
+
+  return { atlasSnapshot, atlas: atlas ?? {} };
 }
 
 export const addAtlasAdmin = onCall({ region: callableRegion, cors: true, secrets: [sendgridApiKey] }, async (request) => {
@@ -788,6 +884,116 @@ export const removeAtlasAdmin = onCall({ region: callableRegion, cors: true }, a
   });
 
   return { ok: true };
+});
+
+export const subscribeToAtlasUpdates = onCall(
+  { region: callableRegion, cors: true, secrets: [sendgridApiKey] },
+  async (request) => {
+    const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+    const email = normalizeUserEmail(request.data?.email);
+    const anonymousVisitorId = typeof request.data?.anonymousVisitorId === 'string'
+      ? request.data.anonymousVisitorId.trim().slice(0, 128)
+      : null;
+
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new HttpsError('invalid-argument', 'Enter a valid email address.');
+    }
+
+    const atlas = await loadPublicAtlasById(atlasId) as Record<string, unknown>;
+    const atlasName = atlasDisplayName(atlas, atlasId);
+    const atlasSlug = typeof atlas['slug'] === 'string' && atlas['slug'].trim()
+      ? atlas['slug'].trim()
+      : atlasId;
+    const subscriptionId = createHash('sha256')
+      .update(`${atlasId}:${email}`)
+      .digest('hex');
+    const subscriptionRef = db.collection('atlas_subscriptions').doc(subscriptionId);
+    const existingSubscription = await subscriptionRef.get();
+    const existingData = existingSubscription.data() as Record<string, unknown> | undefined;
+
+    if (existingSubscription.exists && existingData?.status === 'active') {
+      return { ok: true, alreadySubscribed: true };
+    }
+
+    try {
+      await sendAtlasSubscriptionEmail({
+        recipientEmail: email,
+        atlasName,
+        chatUrl: `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}`,
+      });
+    } catch (error) {
+      logger.error('Failed to send atlas subscription confirmation email.', {
+        atlasId,
+        email,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      throw new HttpsError('internal', 'Subscription email could not be sent.');
+    }
+
+    await subscriptionRef.set(
+      {
+        atlas_id: atlasId,
+        atlas_name: atlasName,
+        atlas_slug: atlasSlug,
+        email,
+        status: 'active',
+        source: 'chat',
+        subscriber_user_id: request.auth?.uid ?? null,
+        anonymous_visitor_id: anonymousVisitorId,
+        subscribed_at: FieldValue.serverTimestamp(),
+        created_at: existingSubscription.exists && existingData?.created_at
+          ? existingData.created_at
+          : FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    );
+
+    return { ok: true, alreadySubscribed: false };
+  },
+);
+
+export const listAtlasSubscriptions = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+
+  await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  const subscriptionsSnapshot = await db
+    .collection('atlas_subscriptions')
+    .where('atlas_id', '==', atlasId)
+    .limit(500)
+    .get();
+
+  const subscriptions = subscriptionsSnapshot.docs
+    .map((subscriptionSnapshot) => {
+      const data = subscriptionSnapshot.data() as Record<string, unknown>;
+      return {
+        id: subscriptionSnapshot.id,
+        atlas_id: String(data.atlas_id ?? ''),
+        email: String(data.email ?? ''),
+        status: data.status === 'unsubscribed' ? 'unsubscribed' : 'active',
+        subscriber_user_id: typeof data.subscriber_user_id === 'string' ? data.subscriber_user_id : null,
+        source: typeof data.source === 'string' ? data.source : null,
+        created_at: normalizeTimestamp(data.created_at ?? data.subscribed_at),
+        updated_at: normalizeTimestamp(data.updated_at),
+      };
+    })
+    .filter((subscription) => subscription.email && subscription.status === 'active')
+    .sort((a, b) => String(b.created_at ?? '').localeCompare(String(a.created_at ?? '')));
+
+  return { subscriptions };
 });
 
 async function loadPublicAtlasBySlug(slug: string) {

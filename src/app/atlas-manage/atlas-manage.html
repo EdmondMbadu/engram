@@ -300,6 +300,42 @@
             <button
               type="button"
               class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleSubscriptionSection(atlas)"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'subscribers')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">mark_email_read</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">Weekly subscribers</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ subscriberCountLabel(atlas.id) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'subscribers') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'subscribers')) {
+              <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                @if (isLoadingSubscriptions(atlas.id)) {
+                  <p class="text-sm text-[var(--muted)]">Loading subscribers...</p>
+                } @else if (subscriptions(atlas.id).length) {
+                  <div class="grid gap-2">
+                    @for (subscription of subscriptions(atlas.id); track subscription.id) {
+                      <div class="flex flex-col gap-1 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                        <span class="min-w-0 truncate text-sm font-semibold text-[var(--text)]">{{ subscription.email }}</span>
+                        <span class="text-xs text-[var(--muted)]">Subscribed {{ subscriptionDate(subscription) }}</span>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p class="text-sm text-[var(--muted)]">No one has subscribed to weekly updates for this Wiki yet.</p>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
               (click)="toggleSection(atlas, 'city')"
               [attr.aria-expanded]="isSectionOpen(atlas, 'city')"
             >

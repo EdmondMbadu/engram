@@ -81,6 +81,11 @@ export class ChatComponent implements AfterViewChecked {
   readonly shareModalOpen = signal(false);
   readonly shareModalError = signal<string | null>(null);
   readonly generatedShareLink = signal<string | null>(null);
+  readonly subscribeModalOpen = signal(false);
+  readonly subscribeEmail = signal('');
+  readonly isSubscribing = signal(false);
+  readonly subscribeError = signal<string | null>(null);
+  readonly subscribeSuccess = signal<string | null>(null);
   readonly avatarMenuOpen = signal(false);
   readonly answerMode = signal<'wiki' | 'internet'>('wiki');
   readonly question = signal('');
@@ -241,6 +246,10 @@ export class ChatComponent implements AfterViewChecked {
     this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
   );
   readonly canAdminCurrentWiki = computed(() => this.atlasService.canAdminAtlas(this.currentWikiAtlas()));
+  readonly canSubscribeToCurrentWiki = computed(() => {
+    const atlas = this.currentWikiAtlas();
+    return !!atlas?.id && atlas.is_public === true && !this.canAdminCurrentWiki();
+  });
   readonly currentWikiAdminLink = computed(() => {
     const atlas = this.currentWikiAtlas();
     return atlas && this.canAdminCurrentWiki() ? ['/atlases', atlas.id, 'persona'] : null;
@@ -1102,6 +1111,66 @@ export class ChatComponent implements AfterViewChecked {
   closeShareModal(): void {
     this.shareModalOpen.set(false);
     this.shareModalError.set(null);
+  }
+
+  openSubscribeModal(): void {
+    const atlas = this.currentWikiAtlas();
+    if (!atlas || !this.canSubscribeToCurrentWiki()) {
+      return;
+    }
+
+    const currentEmail = this.currentUserEmail()?.trim() ?? '';
+    this.subscribeEmail.set(currentEmail);
+    this.subscribeError.set(null);
+    this.subscribeSuccess.set(null);
+    this.subscribeModalOpen.set(true);
+  }
+
+  closeSubscribeModal(): void {
+    if (this.isSubscribing()) {
+      return;
+    }
+    this.subscribeModalOpen.set(false);
+    this.subscribeError.set(null);
+    this.subscribeSuccess.set(null);
+  }
+
+  onSubscribeEmailInput(event: Event): void {
+    this.subscribeEmail.set((event.target as HTMLInputElement).value);
+    this.subscribeError.set(null);
+  }
+
+  async subscribeToUpdates(event: Event): Promise<void> {
+    event.preventDefault();
+    const atlas = this.currentWikiAtlas();
+    const email = this.subscribeEmail().trim().toLowerCase();
+    if (!atlas?.id || this.isSubscribing()) {
+      return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.subscribeError.set('Enter a valid email address.');
+      return;
+    }
+
+    this.isSubscribing.set(true);
+    this.subscribeError.set(null);
+    this.subscribeSuccess.set(null);
+    try {
+      const result = await this.atlasService.subscribeToAtlasUpdates({
+        atlasId: atlas.id,
+        email,
+        anonymousVisitorId: this.anonymousVisitorId(),
+      });
+      this.subscribeSuccess.set(
+        result.alreadySubscribed
+          ? 'You are already subscribed to weekly updates for this wiki.'
+          : 'You are subscribed. A confirmation email is on the way.',
+      );
+    } catch (error) {
+      this.subscribeError.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.isSubscribing.set(false);
+    }
   }
 
   async createShareLink(): Promise<void> {
