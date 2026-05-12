@@ -1004,8 +1004,7 @@ export class ChatComponent implements AfterViewChecked {
 
   assistantMessageSubtitle(message: ChatMessage): string {
     const guideLabel = this.currentWikiGuide()?.label?.trim();
-    const modeLabel = this.messageLabel(message);
-    return guideLabel ? `${guideLabel} · ${modeLabel}` : modeLabel;
+    return guideLabel || this.messageLabel(message);
   }
 
   assistantAvatarUrl(): string {

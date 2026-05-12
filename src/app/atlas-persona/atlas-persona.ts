@@ -5,7 +5,8 @@ import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
-const PERSONA_SOFT_LIMIT = 4000;
+const PERSONA_STORAGE_LIMIT = 40000;
+const PERSONA_RUNTIME_LIMIT = 8000;
 
 @Component({
   selector: 'app-atlas-persona',
@@ -34,12 +35,14 @@ export class AtlasPersonaComponent {
   readonly canAdminAtlas = computed(() => this.atlasService.canAdminAtlas(this.atlas()));
 
   readonly characterCount = computed(() => this.draft().length);
-  readonly remaining = computed(() => Math.max(0, PERSONA_SOFT_LIMIT - this.characterCount()));
-  readonly overSoftLimit = computed(() => this.characterCount() > PERSONA_SOFT_LIMIT);
+  readonly remaining = computed(() => Math.max(0, PERSONA_STORAGE_LIMIT - this.characterCount()));
+  readonly overStorageLimit = computed(() => this.characterCount() > PERSONA_STORAGE_LIMIT);
+  readonly overRuntimeLimit = computed(() => this.characterCount() > PERSONA_RUNTIME_LIMIT);
   readonly hasChanges = computed(() => this.draft().trim() !== this.initialValue().trim());
   readonly hasCustomPrompt = computed(() => this.initialValue().trim().length > 0);
 
-  readonly softLimit = PERSONA_SOFT_LIMIT;
+  readonly storageLimit = PERSONA_STORAGE_LIMIT;
+  readonly runtimeLimit = PERSONA_RUNTIME_LIMIT;
 
   constructor() {
     effect(() => {
@@ -75,8 +78,8 @@ export class AtlasPersonaComponent {
     if (this.saving()) return;
 
     const value = this.draft().trim();
-    if (value.length > PERSONA_SOFT_LIMIT) {
-      this.errorMessage.set(`Keep the persona under ${PERSONA_SOFT_LIMIT} characters for predictable latency.`);
+    if (value.length > PERSONA_STORAGE_LIMIT) {
+      this.errorMessage.set(`Keep the persona under ${PERSONA_STORAGE_LIMIT} characters.`);
       return;
     }
 
@@ -127,6 +130,52 @@ export class AtlasPersonaComponent {
       );
     } finally {
       this.saving.set(false);
+    }
+  }
+
+  downloadMarkdown(): void {
+    const filenameBase = this.displayName()
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'living-wiki';
+    const blob = new Blob([this.draft()], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${filenameBase}-persona.md`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async uploadMarkdown(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    input.value = '';
+    if (!file) {
+      return;
+    }
+
+    const isMarkdown = file.name.toLowerCase().endsWith('.md')
+      || file.type === 'text/markdown'
+      || file.type === 'text/plain'
+      || file.type === '';
+    if (!isMarkdown) {
+      this.errorMessage.set('Upload a Markdown or plain text persona file.');
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      if (text.length > PERSONA_STORAGE_LIMIT) {
+        this.errorMessage.set(`That file is ${text.length} characters. Keep persona Markdown under ${PERSONA_STORAGE_LIMIT} characters.`);
+        return;
+      }
+      this.draft.set(text);
+      this.justSaved.set(false);
+      this.errorMessage.set(null);
+    } catch {
+      this.errorMessage.set('Failed to read the persona file.');
     }
   }
 

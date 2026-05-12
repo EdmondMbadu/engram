@@ -374,7 +374,7 @@ export class AtlasService {
   async updatePersonaPrompt(atlasId: string, value: string | null): Promise<void> {
     if (!this.firestore) return;
     const trimmed = value === null ? null : value.trim();
-    const persona = trimmed && trimmed.length > 0 ? trimmed.slice(0, 8000) : null;
+    const persona = trimmed && trimmed.length > 0 ? trimmed.slice(0, 40000) : null;
     await updateDoc(doc(this.firestore, 'atlases', atlasId), {
       persona_prompt: persona,
       updated_at: serverTimestamp(),

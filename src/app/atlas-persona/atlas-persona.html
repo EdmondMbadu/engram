@@ -51,7 +51,7 @@
             <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">{{ displayName() }}</p>
             <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Set the voice of your AI.</h2>
             <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
-              Tell the assistant who it is, how to sound, and what to emphasize when answering questions in this wiki. Citations, grounding, and JSON output stay automatic.
+              Tell the assistant who it is, how to sound, and what to emphasize when answering questions in this wiki. You can store a longer Markdown persona here; replies stay fast by using a bounded runtime voice layer.
             </p>
           </div>
           <div class="flex items-center gap-2">
@@ -73,8 +73,8 @@
             <label class="block">
               <span class="mb-2 flex items-center justify-between gap-3 text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
                 <span>Persona prompt</span>
-                <span [class.text-[var(--danger-text)]]="overSoftLimit()" class="font-mono text-[10px] tracking-normal">
-                  {{ characterCount() }} / {{ softLimit }}
+                <span [class.text-[var(--danger-text)]]="overStorageLimit()" class="font-mono text-[10px] tracking-normal">
+                  {{ characterCount() }} / {{ storageLimit }}
                 </span>
               </span>
               <textarea
@@ -86,9 +86,13 @@
               ></textarea>
             </label>
 
-            @if (overSoftLimit()) {
+            @if (overStorageLimit()) {
               <p class="mt-2 text-xs text-[var(--danger-text)]">
-                Long persona prompts slow every reply. Trim to {{ softLimit }} characters or less.
+                Trim to {{ storageLimit }} characters or less.
+              </p>
+            } @else if (overRuntimeLimit()) {
+              <p class="mt-2 text-xs leading-5 text-[var(--muted)]">
+                Saved persona can be this long. For speed, each reply uses the first {{ runtimeLimit }} characters plus the wiki's guide identity.
               </p>
             }
 
@@ -108,7 +112,7 @@
               <button
                 type="button"
                 class="rounded-full bg-[var(--accent)] px-5 py-2 text-sm font-bold text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-                [disabled]="saving() || !hasChanges() || overSoftLimit()"
+                [disabled]="saving() || !hasChanges() || overStorageLimit()"
                 (click)="save()"
               >
                 {{ saving() ? 'Saving…' : 'Save voice' }}
@@ -132,6 +136,29 @@
                 </button>
               }
             </div>
+
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]">
+                <span class="material-symbols-outlined text-[1rem]">upload_file</span>
+                <span>Upload Markdown</span>
+                <input
+                  type="file"
+                  class="sr-only"
+                  accept=".md,text/markdown,text/plain"
+                  [disabled]="saving()"
+                  (change)="uploadMarkdown($event)"
+                />
+              </label>
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-40"
+                [disabled]="saving() || characterCount() === 0"
+                (click)="downloadMarkdown()"
+              >
+                <span class="material-symbols-outlined text-[1rem]">download</span>
+                <span>Download Markdown</span>
+              </button>
+            </div>
           </div>
 
           <aside class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-5 text-sm leading-6 text-[var(--muted)]">
@@ -151,7 +178,7 @@
               </li>
             </ul>
             <p class="mt-4 text-xs">
-              Your voice is added on top — the assistant can't drop these guarantees, even if the persona suggests otherwise.
+              Your full Markdown is saved here. To keep chat quick, the answer pipeline sends only the runtime voice layer, capped at {{ runtimeLimit }} characters.
             </p>
             <hr class="my-4 border-[var(--line)]" />
             <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--muted)]">Try writing</p>
