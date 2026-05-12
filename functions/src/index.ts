@@ -46,7 +46,6 @@ const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://living-atlas-7622a.web.app';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
-const livingWikiLogoUrl = `${publicAppUrl}/assets/living-atlas-logo.png`;
 const defaultNewsletterPrompt = [
   'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
@@ -1357,7 +1356,6 @@ async function buildNewsletterEmail(params: {
   const safeSubject = escapeHtml(params.subject);
   const safePreview = escapeHtml(params.previewText);
   const safeChatUrl = escapeHtml(params.chatUrl);
-  const safeLogoUrl = escapeHtml(livingWikiLogoUrl);
   const safeUnsubscribeUrl = params.unsubscribeUrl ? escapeHtml(params.unsubscribeUrl) : '';
   const prepared = await prepareNewsletterMarkdownLinks(params.markdown);
   const extracted = extractNewsletterSources(prepared.markdown, prepared.validUrls);
@@ -1397,15 +1395,8 @@ ${params.chatUrl}${unsubscribeText}`;
     <div style="margin:0;padding:0;background:#f3f7f4;">
       <div style="font-family:Inter,'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;max-width:720px;margin:0 auto;padding:28px 16px;">
         <div style="background:#0b1f14;border-radius:24px 24px 0 0;padding:34px 32px;border:1px solid #173a25;">
-          <div style="margin:0 0 22px;display:flex;align-items:center;gap:12px;">
-            <span style="display:inline-block;width:44px;height:44px;border-radius:14px;background:#ffffff;padding:7px;vertical-align:middle;">
-              <img src="${safeLogoUrl}" alt="Living Wiki" width="30" height="30" style="display:block;width:30px;height:30px;object-fit:contain;border:0;">
-            </span>
-            <span style="display:inline-block;vertical-align:middle;">
-              <span style="display:block;color:#ffffff;font-size:18px;font-weight:900;line-height:1;">Living Wiki</span>
-              <span style="display:block;margin-top:5px;color:#90d7aa;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;">Weekly Updates</span>
-            </span>
-          </div>
+          <p style="margin:0 0 8px;color:#ffffff;font-size:20px;font-weight:900;line-height:1;">Living Wiki</p>
+          <p style="margin:0 0 22px;color:#90d7aa;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;">Weekly Updates</p>
           <h1 style="margin:0;color:#ffffff;font-size:32px;line-height:1.08;font-weight:900;">${safeSubject}</h1>
           <p style="margin:14px 0 0;color:rgba(255,255,255,.72);font-size:15px;line-height:1.6;">A curated local intelligence briefing from ${safeAtlasName}.</p>
         </div>
