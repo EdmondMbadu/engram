@@ -182,6 +182,121 @@
             <button
               type="button"
               class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleNewsletterSection(atlas)"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'newsletter')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">campaign</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">Email content</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ newsletterSummary(atlas) }} · {{ newsletterLastSentLabel(atlas) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'newsletter') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'newsletter')) {
+              @if (newsletterDraft(atlas); as draft) {
+                <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                  <div class="grid gap-4 lg:grid-cols-[1fr_16rem]">
+                    <label class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 lg:col-span-2">
+                      <span class="flex items-center justify-between gap-4">
+                        <span>
+                          <span class="block text-sm font-bold text-[var(--text)]">Send weekly email updates</span>
+                          <span class="block text-xs leading-5 text-[var(--muted)]">Off by default. When enabled, active subscribers receive a professionally generated weekly update for this Wiki.</span>
+                        </span>
+                        <input
+                          type="checkbox"
+                          class="h-5 w-5 cursor-pointer accent-[var(--accent)]"
+                          [checked]="draft.enabled"
+                          (change)="updateNewsletterDraft(atlas.id, 'enabled', $any($event.target).checked)"
+                        />
+                      </span>
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Prompt</span>
+                      <textarea
+                        rows="8"
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                        [value]="draft.prompt"
+                        (input)="updateNewsletterDraft(atlas.id, 'prompt', $any($event.target).value)"
+                      ></textarea>
+                    </label>
+
+                    <div class="grid content-start gap-3">
+                      <label class="block">
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Day</span>
+                        <select
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                          [value]="draft.day_of_week"
+                          (change)="updateNewsletterDraft(atlas.id, 'day_of_week', +$any($event.target).value)"
+                        >
+                          @for (weekday of weekdays; track weekday.value) {
+                            <option [value]="weekday.value">{{ weekday.label }}</option>
+                          }
+                        </select>
+                      </label>
+
+                      <label class="block">
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Time</span>
+                        <input
+                          type="time"
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                          [value]="draft.send_time"
+                          (input)="updateNewsletterDraft(atlas.id, 'send_time', $any($event.target).value)"
+                        />
+                      </label>
+
+                      <label class="block">
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Timezone</span>
+                        <input
+                          type="text"
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                          [value]="draft.timezone"
+                          (input)="updateNewsletterDraft(atlas.id, 'timezone', $any($event.target).value)"
+                          placeholder="America/New_York"
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
+                      [disabled]="isSavingNewsletter(atlas.id)"
+                      (click)="saveNewsletterConfig(atlas)"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">save</span>
+                      <span>{{ isSavingNewsletter(atlas.id) ? 'Saving...' : 'Save email settings' }}</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 disabled:opacity-50"
+                      [disabled]="isSendingNewsletterTest(atlas.id)"
+                      (click)="sendNewsletterTest(atlas)"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">outgoing_mail</span>
+                      <span>{{ isSendingNewsletterTest(atlas.id) ? 'Generating...' : 'Send test to me' }}</span>
+                    </button>
+                  </div>
+
+                  @if (newsletterTestResult(atlas.id); as result) {
+                    <div class="mt-4 rounded-2xl border border-[var(--accent)]/20 bg-[var(--surface)] px-4 py-3">
+                      <p class="text-sm font-bold text-[var(--text)]">Test sent to {{ result.sentTo }}</p>
+                      <p class="mt-1 text-xs text-[var(--muted)]">{{ result.subject }}</p>
+                      <p class="mt-2 line-clamp-3 text-sm leading-6 text-[var(--muted)]">{{ result.previewText }}</p>
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </div>
+
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
               (click)="toggleSection(atlas, 'search')"
               [attr.aria-expanded]="isSectionOpen(atlas, 'search')"
             >

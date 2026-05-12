@@ -8,7 +8,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import { db, storage } from './firebase';
-import { geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
+import { answerWithGoogleSearch, geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
 import {
   getStoredCityPulseSnapshot,
   listEnabledCityAtlasIds,
@@ -45,6 +45,14 @@ const maxGoogleDriveImportFiles = 10;
 const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://living-atlas-7622a.web.app';
+const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
+const defaultNewsletterPrompt = [
+  'Create a premium weekly Living Wiki email briefing for this specific wiki.',
+  'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter to readers.',
+  'For Philadelphia wikis, prioritize Philadelphia and the surrounding region.',
+  'Use fresh web search, include dates when available, avoid rumors, and cite source links.',
+  'Write like a top-tier professional local intelligence briefing: concise, useful, polished, and skimmable.',
+].join(' ');
 const urlIngestionTriggerOptions = {
   region: callableRegion,
   timeoutSeconds: 540,
@@ -558,6 +566,93 @@ function atlasDisplayName(atlas: Record<string, unknown>, atlasId: string): stri
   return name || `Wiki ${atlasId.slice(0, 6)}`;
 }
 
+type AtlasNewsletterConfig = {
+  enabled: boolean;
+  day_of_week: number;
+  send_time: string;
+  timezone: string;
+  prompt: string;
+  last_sent_key?: string | null;
+  last_sent_at?: unknown;
+};
+
+function normalizeNewsletterConfig(value: unknown, fallbackTimezone = 'America/New_York'): AtlasNewsletterConfig {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const day = Number(data.day_of_week);
+  const rawSendTime = typeof data.send_time === 'string' ? data.send_time.trim() : '';
+  const rawTimezone = typeof data.timezone === 'string' ? data.timezone.trim() : '';
+  const rawPrompt = typeof data.prompt === 'string' ? data.prompt.trim() : '';
+
+  return {
+    enabled: data.enabled === true,
+    day_of_week: Number.isInteger(day) && day >= 0 && day <= 6 ? day : 1,
+    send_time: /^([01]\d|2[0-3]):[0-5]\d$/.test(rawSendTime) ? rawSendTime : '09:00',
+    timezone: rawTimezone || fallbackTimezone,
+    prompt: rawPrompt ? rawPrompt.slice(0, 4000) : defaultNewsletterPrompt,
+    last_sent_key: typeof data.last_sent_key === 'string' ? data.last_sent_key : null,
+    last_sent_at: data.last_sent_at,
+  };
+}
+
+function normalizeNewsletterConfigInput(value: unknown, fallbackTimezone = 'America/New_York'): AtlasNewsletterConfig {
+  const config = normalizeNewsletterConfig(value, fallbackTimezone);
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: config.timezone }).format(new Date());
+  } catch {
+    throw new HttpsError('invalid-argument', 'Enter a valid timezone, for example America/New_York.');
+  }
+  return config;
+}
+
+function localNewsletterKey(now: Date, timezone: string, sendTime: string): {
+  key: string;
+  dayOfWeek: number;
+  hour: number;
+  minute: number;
+} {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    weekday: 'short',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(now);
+  const value = (type: string) => parts.find((part) => part.type === type)?.value ?? '';
+  const weekdayMap: Record<string, number> = {
+    Sun: 0,
+    Mon: 1,
+    Tue: 2,
+    Wed: 3,
+    Thu: 4,
+    Fri: 5,
+    Sat: 6,
+  };
+  const dateKey = `${value('year')}-${value('month')}-${value('day')}`;
+  return {
+    key: `${dateKey}:${sendTime}`,
+    dayOfWeek: weekdayMap[value('weekday')] ?? 0,
+    hour: Number(value('hour')),
+    minute: Number(value('minute')),
+  };
+}
+
+function isNewsletterDue(config: AtlasNewsletterConfig, now = new Date()): { due: boolean; key: string } {
+  const local = localNewsletterKey(now, config.timezone, config.send_time);
+  const [sendHourText, sendMinuteText] = config.send_time.split(':');
+  const sendHour = Number(sendHourText);
+  const sendMinute = Number(sendMinuteText);
+  const due =
+    config.enabled &&
+    local.dayOfWeek === config.day_of_week &&
+    local.hour === sendHour &&
+    local.minute >= sendMinute &&
+    config.last_sent_key !== local.key;
+  return { due, key: local.key };
+}
+
 function buildAtlasAdminInviteEmail(params: {
   recipientName: string | null;
   recipientEmail: string;
@@ -657,11 +752,13 @@ function buildAtlasSubscriptionEmail(params: {
   recipientEmail: string;
   atlasName: string;
   chatUrl: string;
+  unsubscribeUrl: string;
 }) {
   const subject = `You're subscribed to Living Wiki Weekly Updates`;
   const safeRecipientEmail = escapeHtml(params.recipientEmail);
   const safeAtlasName = escapeHtml(params.atlasName);
   const safeChatUrl = escapeHtml(params.chatUrl);
+  const safeUnsubscribeUrl = escapeHtml(params.unsubscribeUrl);
 
   const text = `Hi,
 
@@ -671,6 +768,9 @@ Each week, you will receive related information and updates from this wiki.
 
 Open the wiki chat:
 ${params.chatUrl}
+
+Unsubscribe:
+${params.unsubscribeUrl}
 
 The Living Wiki Team`;
 
@@ -699,6 +799,9 @@ The Living Wiki Team`;
           Chat page: <a href="${safeChatUrl}" style="color: #1c7c41; text-decoration: none;">${safeChatUrl}</a>
         </p>
         <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+        <p style="color: #6b7280; font-size: 13px; line-height: 1.6; margin: 0 0 8px;">
+          You can <a href="${safeUnsubscribeUrl}" style="color: #1c7c41; text-decoration: underline;">unsubscribe from these weekly updates</a> at any time.
+        </p>
         <p style="color: #9ca3af; font-size: 13px; margin: 0;">The Living Wiki Team</p>
       </div>
     </div>
@@ -711,6 +814,7 @@ async function sendAtlasSubscriptionEmail(params: {
   recipientEmail: string;
   atlasName: string;
   chatUrl: string;
+  unsubscribeUrl: string;
 }): Promise<void> {
   const apiKey = sendgridApiKey.value();
   if (!apiKey) {
@@ -735,6 +839,253 @@ async function sendAtlasSubscriptionEmail(params: {
     statusCode: response.statusCode,
     messageId: response.headers?.['x-message-id'] ?? null,
   });
+}
+
+function renderNewsletterInline(value: string): string {
+  return escapeHtml(value)
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" style="color:#1c7c41;text-decoration:none;font-weight:700;">$1</a>');
+}
+
+function renderNewsletterMarkdown(markdown: string): string {
+  const lines = markdown.replace(/\r\n/g, '\n').split('\n');
+  const html: string[] = [];
+  let inList = false;
+
+  const closeList = () => {
+    if (inList) {
+      html.push('</ul>');
+      inList = false;
+    }
+  };
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) {
+      closeList();
+      continue;
+    }
+
+    if (line.startsWith('## ')) {
+      closeList();
+      html.push(`<h2 style="margin:28px 0 10px;color:#102016;font-size:22px;line-height:1.2;">${renderNewsletterInline(line.slice(3))}</h2>`);
+      continue;
+    }
+
+    if (line.startsWith('# ')) {
+      closeList();
+      html.push(`<h1 style="margin:0 0 14px;color:#102016;font-size:30px;line-height:1.1;">${renderNewsletterInline(line.slice(2))}</h1>`);
+      continue;
+    }
+
+    if (line.startsWith('- ')) {
+      if (!inList) {
+        html.push('<ul style="margin:10px 0 18px;padding-left:22px;color:#34443b;font-size:15px;line-height:1.65;">');
+        inList = true;
+      }
+      html.push(`<li style="margin:6px 0;">${renderNewsletterInline(line.slice(2))}</li>`);
+      continue;
+    }
+
+    closeList();
+    html.push(`<p style="margin:0 0 16px;color:#34443b;font-size:15px;line-height:1.72;">${renderNewsletterInline(line)}</p>`);
+  }
+
+  closeList();
+  return html.join('\n');
+}
+
+function stripMarkdownForPreview(markdown: string): string {
+  return markdown
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[#*_`>-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 500);
+}
+
+function buildNewsletterQuestion(params: {
+  atlasName: string;
+  atlasSlug: string;
+  prompt: string;
+}): string {
+  return [
+    params.prompt,
+    '',
+    `Wiki name: ${params.atlasName}`,
+    `Wiki slug/context: ${params.atlasSlug}`,
+    '',
+    'Return a complete newsletter body in clean markdown.',
+    'Use this exact structure:',
+    '# A timely, specific title',
+    'A short executive opening paragraph.',
+    '## What changed this week',
+    '3-5 bullets with fresh, concrete updates.',
+    '## Why it matters',
+    '2-4 concise paragraphs or bullets explaining implications for local readers.',
+    '## Watch next',
+    '3 bullets about dates, decisions, meetings, developments, or signals to watch.',
+    '## Sources',
+    'Source links will be appended if search citations are available; include explicit source links in the body when useful.',
+    '',
+    'Make it professional, factual, and useful. Do not invent facts. Avoid generic filler.',
+  ].join('\n');
+}
+
+async function generateAtlasNewsletterContent(params: {
+  atlasId: string;
+  atlas: Record<string, unknown>;
+  config: AtlasNewsletterConfig;
+}): Promise<{ subject: string; markdown: string; previewText: string }> {
+  const atlasName = atlasDisplayName(params.atlas, params.atlasId);
+  const atlasSlug = typeof params.atlas.slug === 'string' && params.atlas.slug.trim()
+    ? params.atlas.slug.trim()
+    : params.atlasId;
+  const response = await answerWithGoogleSearch({
+    question: buildNewsletterQuestion({
+      atlasName,
+      atlasSlug,
+      prompt: params.config.prompt,
+    }),
+    personaPrompt: typeof params.atlas.persona_prompt === 'string' ? params.atlas.persona_prompt : null,
+  });
+  const markdown = response.answer.trim();
+  const title = markdown
+    .split('\n')
+    .map((line) => line.trim())
+    .find((line) => line.startsWith('# '))
+    ?.replace(/^#\s+/, '')
+    .trim();
+  const subject = title
+    ? `${atlasName}: ${title}`.slice(0, 140)
+    : `${atlasName} Weekly Update`;
+  return {
+    subject,
+    markdown,
+    previewText: stripMarkdownForPreview(markdown),
+  };
+}
+
+function buildNewsletterEmail(params: {
+  atlasName: string;
+  subject: string;
+  markdown: string;
+  previewText: string;
+  chatUrl: string;
+  unsubscribeUrl?: string | null;
+}) {
+  const safeAtlasName = escapeHtml(params.atlasName);
+  const safeSubject = escapeHtml(params.subject);
+  const safePreview = escapeHtml(params.previewText);
+  const safeChatUrl = escapeHtml(params.chatUrl);
+  const safeUnsubscribeUrl = params.unsubscribeUrl ? escapeHtml(params.unsubscribeUrl) : '';
+  const bodyHtml = renderNewsletterMarkdown(params.markdown);
+  const unsubscribeText = params.unsubscribeUrl
+    ? `\n\nUnsubscribe: ${params.unsubscribeUrl}`
+    : '';
+
+  const text = `${params.subject}
+
+${params.markdown}
+
+Open this wiki:
+${params.chatUrl}${unsubscribeText}`;
+
+  const html = `
+    <div style="display:none;max-height:0;overflow:hidden;color:transparent;">${safePreview}</div>
+    <div style="margin:0;padding:0;background:#f3f7f4;">
+      <div style="font-family:Inter,'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;max-width:720px;margin:0 auto;padding:28px 16px;">
+        <div style="background:#0b1f14;border-radius:24px 24px 0 0;padding:34px 32px;border:1px solid #173a25;">
+          <p style="margin:0 0 12px;color:#90d7aa;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">Living Wiki Weekly Updates</p>
+          <h1 style="margin:0;color:#ffffff;font-size:32px;line-height:1.08;font-weight:900;">${safeSubject}</h1>
+          <p style="margin:14px 0 0;color:rgba(255,255,255,.72);font-size:15px;line-height:1.6;">A curated local intelligence briefing from ${safeAtlasName}.</p>
+        </div>
+        <div style="background:#ffffff;border:1px solid #dfe9e3;border-top:0;padding:32px;border-radius:0 0 24px 24px;">
+          ${bodyHtml}
+          <div style="margin:30px 0 0;padding:20px;border-radius:18px;background:#f8faf9;border:1px solid #dbe8df;">
+            <p style="margin:0;color:#34443b;font-size:14px;line-height:1.65;">Continue the conversation with this Living Wiki.</p>
+            <a href="${safeChatUrl}" style="display:inline-block;margin-top:14px;background:#1c7c41;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:999px;font-size:14px;font-weight:800;">Open Wiki Chat</a>
+          </div>
+          <hr style="border:none;border-top:1px solid #e5ece7;margin:28px 0 18px;">
+          <p style="margin:0;color:#7a8780;font-size:12px;line-height:1.6;">
+            You received this because you subscribed to weekly updates for ${safeAtlasName}.
+            ${safeUnsubscribeUrl ? ` <a href="${safeUnsubscribeUrl}" style="color:#1c7c41;text-decoration:underline;">Unsubscribe</a>.` : ''}
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  return { subject: params.subject, text, html };
+}
+
+async function sendNewsletterEmail(params: {
+  recipientEmail: string;
+  atlasName: string;
+  subject: string;
+  markdown: string;
+  previewText: string;
+  chatUrl: string;
+  unsubscribeUrl?: string | null;
+}): Promise<string | null> {
+  const apiKey = sendgridApiKey.value();
+  if (!apiKey) {
+    throw new HttpsError('failed-precondition', 'SendGrid API key is not configured.');
+  }
+
+  sgMail.setApiKey(apiKey);
+  const email = buildNewsletterEmail(params);
+  const [response] = await sgMail.send({
+    to: params.recipientEmail,
+    from: {
+      email: inviteSenderEmail,
+      name: 'Living Wiki',
+    },
+    subject: email.subject,
+    text: email.text,
+    html: email.html,
+  });
+  return typeof response.headers?.['x-message-id'] === 'string'
+    ? response.headers['x-message-id']
+    : null;
+}
+
+async function listActiveAtlasSubscriptions(atlasId: string) {
+  const subscriptionsSnapshot = await db
+    .collection('atlas_subscriptions')
+    .where('atlas_id', '==', atlasId)
+    .limit(1000)
+    .get();
+
+  return subscriptionsSnapshot.docs
+    .map((snapshot) => ({ id: snapshot.id, data: snapshot.data() as Record<string, unknown>, ref: snapshot.ref }))
+    .filter((subscription) => subscription.data.status === 'active' && typeof subscription.data.email === 'string' && subscription.data.email);
+}
+
+async function ensureSubscriptionUnsubscribeToken(subscription: {
+  id: string;
+  data: Record<string, unknown>;
+  ref: DocumentReference;
+}): Promise<string> {
+  const existing = typeof subscription.data.unsubscribe_token === 'string'
+    ? subscription.data.unsubscribe_token.trim()
+    : '';
+  if (existing) {
+    return existing;
+  }
+  const token = randomUUID();
+  await subscription.ref.set(
+    {
+      unsubscribe_token: token,
+      updated_at: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+  return token;
+}
+
+function buildSubscriptionUnsubscribeUrl(subscriptionId: string, token: string): string {
+  return `${publicFunctionsBaseUrl}/unsubscribeAtlasSubscription?sid=${encodeURIComponent(subscriptionId)}&token=${encodeURIComponent(token)}`;
 }
 
 async function loadOwnedAtlasForAdminMutation(atlasId: string, userId: string) {
@@ -919,6 +1270,10 @@ export const subscribeToAtlasUpdates = onCall(
     const subscriptionRef = db.collection('atlas_subscriptions').doc(subscriptionId);
     const existingSubscription = await subscriptionRef.get();
     const existingData = existingSubscription.data() as Record<string, unknown> | undefined;
+    const unsubscribeToken = typeof existingData?.unsubscribe_token === 'string' && existingData.unsubscribe_token.trim()
+      ? existingData.unsubscribe_token.trim()
+      : randomUUID();
+    const unsubscribeUrl = `${publicFunctionsBaseUrl}/unsubscribeAtlasSubscription?sid=${encodeURIComponent(subscriptionId)}&token=${encodeURIComponent(unsubscribeToken)}`;
 
     if (existingSubscription.exists && existingData?.status === 'active') {
       logger.info('Atlas subscription already active; confirmation email not resent.', {
@@ -934,6 +1289,7 @@ export const subscribeToAtlasUpdates = onCall(
         recipientEmail: email,
         atlasName,
         chatUrl: `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}`,
+        unsubscribeUrl,
       });
     } catch (error) {
       logger.error('Failed to send atlas subscription confirmation email.', {
@@ -957,6 +1313,7 @@ export const subscribeToAtlasUpdates = onCall(
         source: 'chat',
         subscriber_user_id: request.auth?.uid ?? null,
         anonymous_visitor_id: anonymousVisitorId,
+        unsubscribe_token: unsubscribeToken,
         subscribed_at: FieldValue.serverTimestamp(),
         created_at: existingSubscription.exists && existingData?.created_at
           ? existingData.created_at
@@ -1041,6 +1398,338 @@ export const removeAtlasSubscription = onCall({ region: callableRegion, cors: tr
   });
   return { ok: true };
 });
+
+function sendUnsubscribeHtml(
+  res: { status(code: number): unknown; set(name: string, value: string): unknown; send(body: string): unknown },
+  statusCode: number,
+  params: { title: string; message: string; actionUrl?: string; actionLabel?: string },
+): void {
+  const safeTitle = escapeHtml(params.title);
+  const safeMessage = escapeHtml(params.message);
+  const safeActionUrl = params.actionUrl ? escapeHtml(params.actionUrl) : '';
+  const safeActionLabel = params.actionLabel ? escapeHtml(params.actionLabel) : '';
+  res.status(statusCode);
+  res.set('Content-Type', 'text/html; charset=utf-8');
+  res.send(`<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${safeTitle}</title>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f7faf8; color: #102016; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      main { width: min(92vw, 520px); border: 1px solid #dbe8df; border-radius: 24px; background: white; padding: 32px; box-shadow: 0 24px 60px rgba(15, 36, 23, 0.12); }
+      .eyebrow { color: #1c7c41; font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+      h1 { margin: 10px 0 12px; font-size: 30px; line-height: 1.1; }
+      p { margin: 0; color: #55635b; font-size: 16px; line-height: 1.6; }
+      a { display: inline-flex; margin-top: 24px; border-radius: 999px; background: #1c7c41; color: white; padding: 12px 18px; text-decoration: none; font-weight: 800; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">Living Wiki</div>
+      <h1>${safeTitle}</h1>
+      <p>${safeMessage}</p>
+      ${safeActionUrl && safeActionLabel ? `<a href="${safeActionUrl}">${safeActionLabel}</a>` : ''}
+    </main>
+  </body>
+</html>`);
+}
+
+export const unsubscribeAtlasSubscription = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+  },
+  async (req, res) => {
+    res.set('Cache-Control', 'no-store');
+
+    if (req.method !== 'GET') {
+      res.status(405).send('Method not allowed.');
+      return;
+    }
+
+    const subscriptionId = typeof req.query.sid === 'string' ? req.query.sid.trim() : '';
+    const token = typeof req.query.token === 'string' ? req.query.token.trim() : '';
+    if (!subscriptionId || !token) {
+      sendUnsubscribeHtml(res, 400, {
+        title: 'Unsubscribe link is incomplete',
+        message: 'This unsubscribe link is missing required information.',
+        actionUrl: publicAppUrl,
+        actionLabel: 'Open Living Wiki',
+      });
+      return;
+    }
+
+    const subscriptionRef = db.collection('atlas_subscriptions').doc(subscriptionId);
+    const subscriptionSnapshot = await subscriptionRef.get();
+    if (!subscriptionSnapshot.exists) {
+      sendUnsubscribeHtml(res, 404, {
+        title: 'Subscription not found',
+        message: 'This subscription may have already been removed.',
+        actionUrl: publicAppUrl,
+        actionLabel: 'Open Living Wiki',
+      });
+      return;
+    }
+
+    const subscription = subscriptionSnapshot.data() as Record<string, unknown> | undefined;
+    const expectedToken = typeof subscription?.unsubscribe_token === 'string'
+      ? subscription.unsubscribe_token
+      : '';
+    if (!expectedToken || expectedToken !== token) {
+      sendUnsubscribeHtml(res, 403, {
+        title: 'Unsubscribe link is invalid',
+        message: 'This unsubscribe link is not valid for this subscription.',
+        actionUrl: publicAppUrl,
+        actionLabel: 'Open Living Wiki',
+      });
+      return;
+    }
+
+    if (subscription?.status !== 'unsubscribed') {
+      await subscriptionRef.set(
+        {
+          status: 'unsubscribed',
+          unsubscribed_at: FieldValue.serverTimestamp(),
+          updated_at: FieldValue.serverTimestamp(),
+        },
+        { merge: true },
+      );
+    }
+
+    const atlasSlug = typeof subscription?.atlas_slug === 'string' && subscription.atlas_slug.trim()
+      ? subscription.atlas_slug.trim()
+      : null;
+    const atlasName = typeof subscription?.atlas_name === 'string' && subscription.atlas_name.trim()
+      ? subscription.atlas_name.trim()
+      : 'this wiki';
+
+    logger.info('Atlas subscription unsubscribed from email link.', {
+      subscriptionId,
+      atlasId: subscription?.atlas_id ?? null,
+      email: subscription?.email ?? null,
+    });
+
+    sendUnsubscribeHtml(res, 200, {
+      title: 'You are unsubscribed',
+      message: `You will no longer receive Living Wiki Weekly Updates for ${atlasName}.`,
+      actionUrl: atlasSlug ? `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}` : publicAppUrl,
+      actionLabel: 'Return to Living Wiki',
+    });
+  },
+);
+
+export const updateAtlasNewsletterConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+
+  const { atlasSnapshot, atlas } = await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  const fallbackTimezone =
+    atlas.city_config && typeof atlas.city_config === 'object' && typeof (atlas.city_config as Record<string, unknown>).timezone === 'string'
+      ? String((atlas.city_config as Record<string, unknown>).timezone)
+      : 'America/New_York';
+  const config = normalizeNewsletterConfigInput(request.data?.config, fallbackTimezone);
+  await atlasSnapshot.ref.set(
+    {
+      newsletter_config: {
+        ...config,
+        updated_at: FieldValue.serverTimestamp(),
+      },
+      updated_at: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+
+  return {
+    config: {
+      ...config,
+      updated_at: new Date().toISOString(),
+    },
+  };
+});
+
+export const sendAtlasNewsletterTest = onCall(
+  { region: callableRegion, cors: true, secrets: [sendgridApiKey, geminiApiKey], timeoutSeconds: 180, memory: '1GiB' },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+
+    const recipientEmail = normalizeUserEmail((request.auth.token ?? {}).email);
+    if (!recipientEmail) {
+      throw new HttpsError('failed-precondition', 'Your account needs an email address to receive a test newsletter.');
+    }
+
+    const { atlas } = await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+    const fallbackTimezone =
+      atlas.city_config && typeof atlas.city_config === 'object' && typeof (atlas.city_config as Record<string, unknown>).timezone === 'string'
+        ? String((atlas.city_config as Record<string, unknown>).timezone)
+        : 'America/New_York';
+    const config = normalizeNewsletterConfig(request.data?.config ?? atlas.newsletter_config, fallbackTimezone);
+    const atlasName = atlasDisplayName(atlas, atlasId);
+    const atlasSlug = typeof atlas.slug === 'string' && atlas.slug.trim() ? atlas.slug.trim() : atlasId;
+    const content = await generateAtlasNewsletterContent({ atlasId, atlas, config });
+    const messageId = await sendNewsletterEmail({
+      recipientEmail,
+      atlasName,
+      subject: `[Test] ${content.subject}`,
+      markdown: content.markdown,
+      previewText: content.previewText,
+      chatUrl: `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}`,
+      unsubscribeUrl: null,
+    });
+
+    await db.collection('atlas_newsletter_runs').add({
+      atlas_id: atlasId,
+      atlas_name: atlasName,
+      mode: 'test',
+      recipient_count: 1,
+      requested_by: request.auth.uid,
+      subject: `[Test] ${content.subject}`,
+      sendgrid_message_id: messageId,
+      created_at: FieldValue.serverTimestamp(),
+    });
+
+    return {
+      ok: true,
+      sentTo: recipientEmail,
+      subject: `[Test] ${content.subject}`,
+      previewText: content.previewText,
+      messageId,
+    };
+  },
+);
+
+export const sendWeeklyAtlasNewsletters = onSchedule(
+  {
+    region: callableRegion,
+    schedule: 'every 15 minutes',
+    timeZone: 'UTC',
+    timeoutSeconds: 540,
+    memory: '1GiB',
+    maxInstances: 1,
+    secrets: [sendgridApiKey, geminiApiKey],
+  },
+  async () => {
+    const snapshot = await db
+      .collection('atlases')
+      .where('newsletter_config.enabled', '==', true)
+      .limit(100)
+      .get();
+
+    for (const atlasSnapshot of snapshot.docs) {
+      const atlas = atlasSnapshot.data() as Record<string, unknown>;
+      const fallbackTimezone =
+        atlas.city_config && typeof atlas.city_config === 'object' && typeof (atlas.city_config as Record<string, unknown>).timezone === 'string'
+          ? String((atlas.city_config as Record<string, unknown>).timezone)
+          : 'America/New_York';
+      const config = normalizeNewsletterConfig(atlas.newsletter_config, fallbackTimezone);
+      const due = isNewsletterDue(config);
+      if (!due.due) {
+        continue;
+      }
+
+      const atlasId = atlasSnapshot.id;
+      const atlasName = atlasDisplayName(atlas, atlasId);
+      const atlasSlug = typeof atlas.slug === 'string' && atlas.slug.trim() ? atlas.slug.trim() : atlasId;
+      const subscriptions = await listActiveAtlasSubscriptions(atlasId);
+      if (subscriptions.length === 0) {
+        await atlasSnapshot.ref.set(
+          {
+            newsletter_config: {
+              ...config,
+              last_sent_key: due.key,
+              last_sent_at: FieldValue.serverTimestamp(),
+              last_recipient_count: 0,
+            },
+            updated_at: FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        );
+        continue;
+      }
+
+      try {
+        const content = await generateAtlasNewsletterContent({ atlasId, atlas, config });
+        let sentCount = 0;
+        const messageIds: string[] = [];
+        for (const subscription of subscriptions) {
+          const email = normalizeUserEmail(subscription.data.email);
+          if (!email) {
+            continue;
+          }
+          const token = await ensureSubscriptionUnsubscribeToken(subscription);
+          const messageId = await sendNewsletterEmail({
+            recipientEmail: email,
+            atlasName,
+            subject: content.subject,
+            markdown: content.markdown,
+            previewText: content.previewText,
+            chatUrl: `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}`,
+            unsubscribeUrl: buildSubscriptionUnsubscribeUrl(subscription.id, token),
+          });
+          sentCount += 1;
+          if (messageId) {
+            messageIds.push(messageId);
+          }
+        }
+
+        await atlasSnapshot.ref.set(
+          {
+            newsletter_config: {
+              ...config,
+              last_sent_key: due.key,
+              last_sent_at: FieldValue.serverTimestamp(),
+              last_recipient_count: sentCount,
+              last_subject: content.subject,
+            },
+            updated_at: FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        );
+
+        await db.collection('atlas_newsletter_runs').add({
+          atlas_id: atlasId,
+          atlas_name: atlasName,
+          mode: 'scheduled',
+          recipient_count: sentCount,
+          subject: content.subject,
+          sendgrid_message_ids: messageIds.slice(0, 20),
+          schedule_key: due.key,
+          created_at: FieldValue.serverTimestamp(),
+        });
+      } catch (error) {
+        logger.error('Scheduled atlas newsletter failed.', {
+          atlasId,
+          atlasName,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        await db.collection('atlas_newsletter_runs').add({
+          atlas_id: atlasId,
+          atlas_name: atlasName,
+          mode: 'scheduled',
+          status: 'failed',
+          schedule_key: due.key,
+          error_message: error instanceof Error ? error.message : String(error),
+          created_at: FieldValue.serverTimestamp(),
+        });
+      }
+    }
+  },
+);
 
 async function loadPublicAtlasBySlug(slug: string) {
   const trimmedSlug = slug.trim();

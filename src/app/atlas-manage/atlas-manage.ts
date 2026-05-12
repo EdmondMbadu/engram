@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import type { AtlasAdminProfile, AtlasItem, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
+import type { AtlasAdminProfile, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
@@ -15,6 +15,14 @@ interface CityConfigDraft {
   census_place_code: string;
   airnow_zip_code: string;
   manual_metrics_json: string;
+}
+
+interface NewsletterDraft {
+  enabled: boolean;
+  day_of_week: number;
+  send_time: string;
+  timezone: string;
+  prompt: string;
 }
 
 @Component({
@@ -33,6 +41,10 @@ export class AtlasManageComponent {
   readonly subscriptionsById = signal<Record<string, AtlasSubscriptionItem[]>>({});
   readonly loadingSubscriptionsById = signal<Record<string, boolean>>({});
   readonly removingSubscriptionKey = signal<string | null>(null);
+  readonly newsletterDraftById = signal<Record<string, NewsletterDraft>>({});
+  readonly savingNewsletterById = signal<Record<string, boolean>>({});
+  readonly sendingNewsletterTestById = signal<Record<string, boolean>>({});
+  readonly newsletterTestResultById = signal<Record<string, AtlasNewsletterTestResult>>({});
   readonly renamingId = signal<string | null>(null);
   readonly renameDraft = signal('');
   readonly renaming = signal(false);
@@ -49,6 +61,15 @@ export class AtlasManageComponent {
   readonly pageError = signal<string | null>(null);
 
   readonly hasMultipleAtlases = computed(() => this.atlases().length > 1);
+  readonly weekdays = [
+    { value: 0, label: 'Sunday' },
+    { value: 1, label: 'Monday' },
+    { value: 2, label: 'Tuesday' },
+    { value: 3, label: 'Wednesday' },
+    { value: 4, label: 'Thursday' },
+    { value: 5, label: 'Friday' },
+    { value: 6, label: 'Saturday' },
+  ];
 
   constructor() {
     effect(() => {
@@ -162,6 +183,14 @@ export class AtlasManageComponent {
     }
   }
 
+  toggleNewsletterSection(atlas: AtlasItem): void {
+    const willOpen = !this.isSectionOpen(atlas, 'newsletter');
+    this.toggleSection(atlas, 'newsletter');
+    if (willOpen) {
+      this.ensureNewsletterDraft(atlas);
+    }
+  }
+
   subscriptions(atlasId: string): AtlasSubscriptionItem[] {
     return this.subscriptionsById()[atlasId] ?? [];
   }
@@ -196,6 +225,51 @@ export class AtlasManageComponent {
 
   isRemovingSubscription(atlasId: string, subscriptionId: string): boolean {
     return this.removingSubscriptionKey() === `${atlasId}:${subscriptionId}`;
+  }
+
+  newsletterDraft(atlas: AtlasItem): NewsletterDraft {
+    const existing = this.newsletterDraftById()[atlas.id];
+    if (existing) {
+      return existing;
+    }
+    return this.toNewsletterDraft(atlas);
+  }
+
+  newsletterSummary(atlas: AtlasItem): string {
+    const config = atlas.newsletter_config;
+    if (!config?.enabled) {
+      return 'Off';
+    }
+    return `${this.weekdayLabel(config.day_of_week)} at ${config.send_time} ${config.timezone}`;
+  }
+
+  newsletterLastSentLabel(atlas: AtlasItem): string {
+    const sentAt = this.asDate(atlas.newsletter_config?.last_sent_at);
+    if (!sentAt) {
+      return 'Not sent yet';
+    }
+    const count = atlas.newsletter_config?.last_recipient_count;
+    const countLabel = typeof count === 'number' ? ` to ${count} subscriber${count === 1 ? '' : 's'}` : '';
+    return `Last sent ${new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(sentAt)}${countLabel}`;
+  }
+
+  updateNewsletterDraft<K extends keyof NewsletterDraft>(atlasId: string, key: K, value: NewsletterDraft[K]): void {
+    this.newsletterDraftById.update((current) => {
+      const existing = current[atlasId] ?? this.toNewsletterDraft(this.atlases().find((atlas) => atlas.id === atlasId) ?? null);
+      return { ...current, [atlasId]: { ...existing, [key]: value } };
+    });
+  }
+
+  isSavingNewsletter(atlasId: string): boolean {
+    return this.savingNewsletterById()[atlasId] ?? false;
+  }
+
+  isSendingNewsletterTest(atlasId: string): boolean {
+    return this.sendingNewsletterTestById()[atlasId] ?? false;
+  }
+
+  newsletterTestResult(atlasId: string): AtlasNewsletterTestResult | null {
+    return this.newsletterTestResultById()[atlasId] ?? null;
   }
 
   adminEmailDraft(atlasId: string): string {
@@ -283,6 +357,41 @@ export class AtlasManageComponent {
       this.pageError.set(error instanceof Error ? error.message : 'Failed to remove subscriber.');
     } finally {
       this.removingSubscriptionKey.set(null);
+    }
+  }
+
+  async saveNewsletterConfig(atlas: AtlasItem): Promise<void> {
+    const draft = this.newsletterDraft(atlas);
+    const config = this.normalizeNewsletterDraft(draft);
+    this.savingNewsletterById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    try {
+      const saved = await this.atlasService.updateAtlasNewsletterConfig(atlas.id, config);
+      this.newsletterDraftById.update((current) => ({ ...current, [atlas.id]: this.toNewsletterDraft({ ...atlas, newsletter_config: saved }) }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to save email settings.');
+    } finally {
+      this.savingNewsletterById.update((current) => ({ ...current, [atlas.id]: false }));
+    }
+  }
+
+  async sendNewsletterTest(atlas: AtlasItem): Promise<void> {
+    const draft = this.newsletterDraft(atlas);
+    const config = this.normalizeNewsletterDraft(draft);
+    this.sendingNewsletterTestById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    this.newsletterTestResultById.update((current) => {
+      const next = { ...current };
+      delete next[atlas.id];
+      return next;
+    });
+    try {
+      const result = await this.atlasService.sendAtlasNewsletterTest(atlas.id, config);
+      this.newsletterTestResultById.update((current) => ({ ...current, [atlas.id]: result }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to send test newsletter.');
+    } finally {
+      this.sendingNewsletterTestById.update((current) => ({ ...current, [atlas.id]: false }));
     }
   }
 
@@ -548,6 +657,39 @@ export class AtlasManageComponent {
     } finally {
       this.loadingSubscriptionsById.update((current) => ({ ...current, [atlasId]: false }));
     }
+  }
+
+  private ensureNewsletterDraft(atlas: AtlasItem): void {
+    if (this.newsletterDraftById()[atlas.id]) {
+      return;
+    }
+    this.newsletterDraftById.update((current) => ({ ...current, [atlas.id]: this.toNewsletterDraft(atlas) }));
+  }
+
+  private toNewsletterDraft(atlas: AtlasItem | null): NewsletterDraft {
+    const config = atlas?.newsletter_config;
+    return {
+      enabled: config?.enabled === true,
+      day_of_week: Number.isInteger(config?.day_of_week) ? Number(config?.day_of_week) : 1,
+      send_time: config?.send_time && /^([01]\d|2[0-3]):[0-5]\d$/.test(config.send_time) ? config.send_time : '09:00',
+      timezone: config?.timezone?.trim() || atlas?.city_config?.timezone?.trim() || 'America/New_York',
+      prompt: config?.prompt?.trim() || this.atlasService.defaultNewsletterPrompt(),
+    };
+  }
+
+  private normalizeNewsletterDraft(draft: NewsletterDraft): AtlasNewsletterConfig {
+    const day = Number(draft.day_of_week);
+    return {
+      enabled: draft.enabled === true,
+      day_of_week: Number.isInteger(day) && day >= 0 && day <= 6 ? day : 1,
+      send_time: /^([01]\d|2[0-3]):[0-5]\d$/.test(draft.send_time) ? draft.send_time : '09:00',
+      timezone: draft.timezone.trim() || 'America/New_York',
+      prompt: draft.prompt.trim() || this.atlasService.defaultNewsletterPrompt(),
+    };
+  }
+
+  private weekdayLabel(day: number | null | undefined): string {
+    return this.weekdays.find((weekday) => weekday.value === day)?.label ?? 'Monday';
   }
 
   private asDate(value: { toDate(): Date } | Date | string | null | undefined): Date | null {

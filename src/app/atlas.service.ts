@@ -19,7 +19,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasItem, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
@@ -40,6 +40,10 @@ type AtlasSubscribeResponse = {
 
 type AtlasSubscriptionsResponse = {
   subscriptions: AtlasSubscriptionItem[];
+};
+
+type AtlasNewsletterConfigResponse = {
+  config: AtlasNewsletterConfig;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -423,6 +427,26 @@ export class AtlasService {
     await removeAtlasSubscription({ atlasId, subscriptionId });
   }
 
+  async updateAtlasNewsletterConfig(atlasId: string, config: AtlasNewsletterConfig): Promise<AtlasNewsletterConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const updateAtlasNewsletterConfig = httpsCallable<
+      { atlasId: string; config: AtlasNewsletterConfig },
+      AtlasNewsletterConfigResponse
+    >(this.functions, 'updateAtlasNewsletterConfig');
+    const { data } = await updateAtlasNewsletterConfig({ atlasId, config });
+    return data.config;
+  }
+
+  async sendAtlasNewsletterTest(atlasId: string, config: AtlasNewsletterConfig): Promise<AtlasNewsletterTestResult> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const sendAtlasNewsletterTest = httpsCallable<
+      { atlasId: string; config: AtlasNewsletterConfig },
+      AtlasNewsletterTestResult
+    >(this.functions, 'sendAtlasNewsletterTest');
+    const { data } = await sendAtlasNewsletterTest({ atlasId, config });
+    return data;
+  }
+
   async renameAtlas(atlasId: string, name: string): Promise<void> {
     if (!this.firestore) return;
     const trimmed = name.trim();
@@ -631,8 +655,39 @@ export class AtlasService {
         : [],
       admin_profiles: this.hydrateAdminProfiles(data['admin_profiles']),
       default_answer_mode: data['default_answer_mode'] === 'internet' ? 'internet' : 'wiki',
+      newsletter_config: this.hydrateNewsletterConfig(data['newsletter_config'], data['city_config']),
       created_at: this.hydrateDateValue(data['created_at']),
       updated_at: this.hydrateDateValue(data['updated_at']),
+    };
+  }
+
+  private hydrateNewsletterConfig(value: unknown, cityConfigValue?: unknown): AtlasNewsletterConfig | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    const data = value as Record<string, unknown>;
+    const cityConfig = this.hydrateCityConfig(cityConfigValue);
+    const day = Number(data['day_of_week']);
+    const sendTime = typeof data['send_time'] === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(data['send_time'])
+      ? data['send_time']
+      : '09:00';
+    const timezone = typeof data['timezone'] === 'string' && data['timezone'].trim()
+      ? data['timezone'].trim()
+      : cityConfig?.timezone || 'America/New_York';
+    const prompt = typeof data['prompt'] === 'string' && data['prompt'].trim()
+      ? data['prompt'].trim()
+      : this.defaultNewsletterPrompt();
+    return {
+      enabled: data['enabled'] === true,
+      day_of_week: Number.isInteger(day) && day >= 0 && day <= 6 ? day : 1,
+      send_time: sendTime,
+      timezone,
+      prompt,
+      last_sent_key: typeof data['last_sent_key'] === 'string' ? data['last_sent_key'] : null,
+      last_sent_at: this.hydrateDateValue(data['last_sent_at']),
+      last_recipient_count: typeof data['last_recipient_count'] === 'number' ? data['last_recipient_count'] : null,
+      last_subject: typeof data['last_subject'] === 'string' ? data['last_subject'] : null,
     };
   }
 
@@ -745,6 +800,16 @@ export class AtlasService {
       rate_per_second: ratePerSecond,
       min_value: typeof data['min_value'] === 'number' ? data['min_value'] : null,
     };
+  }
+
+  defaultNewsletterPrompt(): string {
+    return [
+      'Create a premium weekly Living Wiki email briefing for this specific wiki.',
+      'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter to readers.',
+      'For Philadelphia wikis, prioritize Philadelphia and the surrounding region.',
+      'Use fresh web search, include dates when available, avoid rumors, and cite source links.',
+      'Write like a top-tier professional local intelligence briefing: concise, useful, polished, and skimmable.',
+    ].join(' ');
   }
 
   private hydrateDateValue(value: unknown): Date | null {

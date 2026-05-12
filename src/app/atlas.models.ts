@@ -92,6 +92,7 @@ export interface AtlasItem {
   city_config?: CityAtlasConfig | null;
   persona_prompt?: string | null;
   default_answer_mode?: 'wiki' | 'internet' | null;
+  newsletter_config?: AtlasNewsletterConfig | null;
   created_at?: { toDate(): Date } | Date | null;
   updated_at?: { toDate(): Date } | Date | null;
   stats?: {
@@ -119,6 +120,26 @@ export interface AtlasSubscriptionItem {
   source?: string | null;
   created_at?: { toDate(): Date } | Date | string | null;
   updated_at?: { toDate(): Date } | Date | string | null;
+}
+
+export interface AtlasNewsletterConfig {
+  enabled: boolean;
+  day_of_week: number;
+  send_time: string;
+  timezone: string;
+  prompt: string;
+  last_sent_key?: string | null;
+  last_sent_at?: { toDate(): Date } | Date | string | null;
+  last_recipient_count?: number | null;
+  last_subject?: string | null;
+}
+
+export interface AtlasNewsletterTestResult {
+  ok: boolean;
+  sentTo: string;
+  subject: string;
+  previewText: string;
+  messageId?: string | null;
 }
 
 export interface AtlasUsage {
