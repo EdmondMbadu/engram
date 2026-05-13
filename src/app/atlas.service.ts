@@ -292,7 +292,7 @@ export class AtlasService {
 
   async uploadAtlasImage(
     atlasId: string,
-    kind: 'logo' | 'hero',
+    kind: 'logo' | 'hero' | 'chat-guide',
     file: File,
   ): Promise<string> {
     if (!this.storage) throw new Error('Storage unavailable.');

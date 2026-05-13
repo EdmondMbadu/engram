@@ -64,6 +64,7 @@ export class AtlasManageComponent {
   readonly savingCityConfig = signal(false);
   readonly chatGuideDraftById = signal<Record<string, ChatGuideDraft>>({});
   readonly savingChatGuideById = signal<Record<string, boolean>>({});
+  readonly uploadingChatGuideImageById = signal<Record<string, boolean>>({});
   readonly savingDefaultModeById = signal<Record<string, boolean>>({});
   readonly adminEmailDraftById = signal<Record<string, string>>({});
   readonly sharingAdminById = signal<Record<string, boolean>>({});
@@ -335,6 +336,38 @@ export class AtlasManageComponent {
 
   isSavingChatGuide(atlasId: string): boolean {
     return this.savingChatGuideById()[atlasId] ?? false;
+  }
+
+  isUploadingChatGuideImage(atlasId: string): boolean {
+    return this.uploadingChatGuideImageById()[atlasId] ?? false;
+  }
+
+  async onChatGuideImageSelected(atlas: AtlasItem, event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || this.isUploadingChatGuideImage(atlas.id)) {
+      return;
+    }
+
+    this.uploadingChatGuideImageById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    try {
+      const imageUrl = await this.atlasService.uploadAtlasImage(atlas.id, 'chat-guide', file);
+      const nextDraft = { ...this.chatGuideDraft(atlas), image_url: imageUrl };
+      const config = this.normalizeChatGuideDraft(nextDraft);
+
+      await this.atlasService.updateChatGuideConfig(atlas.id, config);
+      this.chatGuideDraftById.update((current) => ({ ...current, [atlas.id]: nextDraft }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to upload guide image.');
+    } finally {
+      this.uploadingChatGuideImageById.update((current) => ({ ...current, [atlas.id]: false }));
+    }
+  }
+
+  clearChatGuideImage(atlas: AtlasItem): void {
+    this.updateChatGuideDraft(atlas.id, 'image_url', '');
   }
 
   adminEmailDraft(atlasId: string): string {
