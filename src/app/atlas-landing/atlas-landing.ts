@@ -94,6 +94,12 @@ export class AtlasLandingComponent {
   readonly uploadingHero = signal(false);
   readonly uploadingVideo = signal(false);
   readonly removingVideo = signal(false);
+  readonly subscribeModalOpen = signal(false);
+  readonly subscribeEmail = signal('');
+  readonly isSubscribing = signal(false);
+  readonly subscribeError = signal<string | null>(null);
+  readonly subscribeSuccess = signal<string | null>(null);
+  readonly anonymousVisitorId = signal<string | null>(this.loadAnonymousVisitorId());
 
   readonly usage = signal<AtlasUsage | null>(null);
   readonly usageLoading = signal(false);
@@ -134,6 +140,18 @@ export class AtlasLandingComponent {
   readonly aboutDocumentsCount = computed(() => this.displayUsage()?.documents ?? 0);
   readonly aboutWikiPagesCount = computed(() => this.displayUsage()?.wiki_articles ?? 0);
   readonly aboutChatsCount = computed(() => (this.displayUsage()?.queries ?? 0) + (this.displayUsage()?.chat_threads ?? 0));
+  readonly currentWikiName = computed(() => {
+    const atlas = this.atlas();
+    if (!atlas) {
+      return '';
+    }
+    const name = this.atlasService.displayName(atlas);
+    return name && name !== 'Select atlas' ? name : '';
+  });
+  readonly canSubscribeToAtlasUpdates = computed(() => {
+    const atlas = this.atlas();
+    return !!atlas?.id && atlas.is_public === true && !this.canAdminAtlas();
+  });
   readonly aboutSummaryLine = computed(() => {
     const customSummary = this.atlas()?.landing_summary?.trim();
     if (customSummary) {
@@ -358,6 +376,70 @@ export class AtlasLandingComponent {
     }
     this.activateThisAtlas();
     void this.router.navigateByUrl('/chat');
+  }
+
+  signInQueryParams(): { redirectTo: string } {
+    return { redirectTo: this.publicRoute('chat') ?? this.router.url ?? '/chat' };
+  }
+
+  openSubscribeModal(): void {
+    const atlas = this.atlas();
+    if (!atlas || !this.canSubscribeToAtlasUpdates()) {
+      return;
+    }
+
+    const currentEmail = this.currentUserEmail()?.trim() ?? '';
+    this.subscribeEmail.set(currentEmail);
+    this.subscribeError.set(null);
+    this.subscribeSuccess.set(null);
+    this.subscribeModalOpen.set(true);
+  }
+
+  closeSubscribeModal(): void {
+    if (this.isSubscribing()) {
+      return;
+    }
+    this.subscribeModalOpen.set(false);
+    this.subscribeError.set(null);
+    this.subscribeSuccess.set(null);
+  }
+
+  onSubscribeEmailInput(event: Event): void {
+    this.subscribeEmail.set((event.target as HTMLInputElement).value);
+    this.subscribeError.set(null);
+  }
+
+  async subscribeToUpdates(event: Event): Promise<void> {
+    event.preventDefault();
+    const atlas = this.atlas();
+    const email = this.subscribeEmail().trim().toLowerCase();
+    if (!atlas?.id || this.isSubscribing()) {
+      return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.subscribeError.set('Enter a valid email address.');
+      return;
+    }
+
+    this.isSubscribing.set(true);
+    this.subscribeError.set(null);
+    this.subscribeSuccess.set(null);
+    try {
+      const result = await this.atlasService.subscribeToAtlasUpdates({
+        atlasId: atlas.id,
+        email,
+        anonymousVisitorId: this.ensureAnonymousVisitorId(),
+      });
+      this.subscribeSuccess.set(
+        result.alreadySubscribed
+          ? 'You are already subscribed to weekly updates for this wiki.'
+          : 'You are subscribed. A confirmation email is on the way.',
+      );
+    } catch (error) {
+      this.subscribeError.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.isSubscribing.set(false);
+    }
   }
 
   openUpload(): void {
@@ -639,5 +721,27 @@ export class AtlasLandingComponent {
     } finally {
       this.isSigningOut.set(false);
     }
+  }
+
+  private loadAnonymousVisitorId(): string | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return window.localStorage.getItem('living-wiki:publicVisitorId');
+  }
+
+  private ensureAnonymousVisitorId(): string | null {
+    const existing = this.anonymousVisitorId();
+    if (existing) {
+      return existing;
+    }
+    if (typeof window === 'undefined' || typeof crypto === 'undefined' || typeof crypto.randomUUID !== 'function') {
+      return null;
+    }
+
+    const next = crypto.randomUUID();
+    window.localStorage.setItem('living-wiki:publicVisitorId', next);
+    this.anonymousVisitorId.set(next);
+    return next;
   }
 }
