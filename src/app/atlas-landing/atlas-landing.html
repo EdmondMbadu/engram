@@ -270,43 +270,11 @@
                   <span class="atlas-about__pencil material-symbols-outlined">edit</span>
                 </h2>
               </div>
-              <div class="mb-6 rounded-[1.6rem] border border-[var(--accent)]/18 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_10%,transparent),color-mix(in_srgb,var(--surface)_88%,white_12%))] px-5 py-4 shadow-[0_18px_36px_rgba(59,175,98,0.10)]">
+              <div class="rounded-[1.6rem] border border-[var(--accent)]/18 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_10%,transparent),color-mix(in_srgb,var(--surface)_88%,white_12%))] px-5 py-4 shadow-[0_18px_36px_rgba(59,175,98,0.10)]">
                 <p class="atlas-about__typed text-lg font-bold leading-8 text-[var(--text)] md:text-[1.35rem]" aria-live="polite">
                   <span>{{ aboutTypedLine() }}</span>
                   <span class="atlas-about__cursor" aria-hidden="true"></span>
                 </p>
-              </div>
-              @if (!hidePublicKnowledgeSurfaces()) {
-                <div class="mb-6 flex flex-wrap gap-2">
-                  <span class="atlas-about__stat-pill">
-                    <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutDocuments() }}</span>
-                    <span>docs</span>
-                  </span>
-                  <span class="atlas-about__stat-pill">
-                    <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutWikiPages() }}</span>
-                    <span>wiki pages</span>
-                  </span>
-                  <span class="atlas-about__stat-pill">
-                    <span class="atlas-about__stat-value">{{ usageLoading() ? '—' : animatedAboutChats() }}</span>
-                    <span>chats</span>
-                  </span>
-                </div>
-              }
-              @if (a.description) {
-                <p class="mb-6 text-lg leading-relaxed text-[var(--muted)]">{{ a.description }}</p>
-              } @else {
-                <p class="mb-6 text-lg leading-relaxed text-[var(--muted)]">
-                  This Wiki is a growing archive of documents and wiki pages — organized, cross-referenced, and ready to answer questions with receipts.
-                </p>
-              }
-              <p class="mb-8 text-base leading-relaxed text-[var(--muted)]">
-                Every upload becomes searchable knowledge: citations link back to exact pages and lines, and the wiki keeps itself up to date as new sources arrive.
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <span class="rounded-full px-4 py-1.5 text-xs font-bold" style="background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent)">#Knowledge</span>
-                <span class="rounded-full bg-[var(--soft-fill-strong)] px-4 py-1.5 text-xs font-bold text-[var(--text)]">#CitedAnswers</span>
-                <span class="rounded-full bg-[var(--soft-fill)] px-4 py-1.5 text-xs font-bold text-[var(--muted)]">#LivingArchive</span>
-                <span class="rounded-full bg-[var(--soft-fill)] px-4 py-1.5 text-xs font-bold text-[var(--muted)]">#Research</span>
               </div>
             </div>
 
