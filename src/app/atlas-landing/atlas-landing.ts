@@ -137,6 +137,13 @@ export class AtlasLandingComponent {
   });
   readonly isCityAtlas = computed(() => this.atlas()?.city_config?.enabled === true);
   readonly cityPulseMetrics = computed(() => this.cityPulseSnapshot()?.metrics.slice(0, 6) ?? []);
+  readonly cityPulsePrimaryMetric = computed(
+    () => this.cityPulseMetrics().find((metric) => metric.id === 'population-now') ?? this.cityPulseMetrics()[0] ?? null,
+  );
+  readonly cityPulseSecondaryMetrics = computed(() => {
+    const primary = this.cityPulsePrimaryMetric();
+    return this.cityPulseMetrics().filter((metric) => metric.id !== primary?.id);
+  });
   readonly aboutDocumentsCount = computed(() => this.displayUsage()?.documents ?? 0);
   readonly aboutWikiPagesCount = computed(() => this.displayUsage()?.wiki_articles ?? 0);
   readonly aboutChatsCount = computed(() => (this.displayUsage()?.queries ?? 0) + (this.displayUsage()?.chat_threads ?? 0));
@@ -505,12 +512,61 @@ export class AtlasLandingComponent {
     return this.cityPulseService.formatMetric(metric, this.cityPulseNowMs());
   }
 
-  cityPulseLiveEstimate(metric: CityPulseMetric): string {
+  cityPulseWorldometerValue(metric: CityPulseMetric): string {
+    return metric.realtime
+      ? this.cityPulseService.formatModeledMetric(metric, this.cityPulseNowMs())
+      : this.cityPulseService.formatMetric(metric, this.cityPulseNowMs());
+  }
+
+  cityPulseLiveEstimate(metric: CityPulseMetric): string | null {
+    if (!metric.realtime) {
+      return null;
+    }
     return this.cityPulseService.formatModeledMetric(metric, this.cityPulseNowMs());
   }
 
   cityPulseLiveCaption(metric: CityPulseMetric): string {
-    return 'Modeled live estimate';
+    return metric.realtime ? 'Modeled live estimate' : 'Latest verified value';
+  }
+
+  cityPulseMetricStatus(metric: CityPulseMetric): string {
+    return metric.realtime ? 'Live model' : 'Latest verified';
+  }
+
+  cityPulseMetricFrequency(metric: CityPulseMetric): string {
+    switch (metric.cadence) {
+      case 'realtime':
+        return 'Updates every second';
+      case 'daily':
+        return 'Daily refresh';
+      case 'weekly':
+        return 'Weekly refresh';
+      case 'monthly':
+        return 'Monthly refresh';
+      case 'yearly':
+        return 'Annual source';
+      default:
+        return 'Manual source';
+    }
+  }
+
+  cityPulseSnapshotRefreshedAt(): string {
+    const refreshedAt = this.cityPulseSnapshot()?.refreshed_at;
+    if (!refreshedAt) {
+      return 'Snapshot pending';
+    }
+
+    const date = new Date(refreshedAt);
+    if (Number.isNaN(date.getTime())) {
+      return 'Snapshot pending';
+    }
+
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    }).format(date);
   }
 
   cityPulseMetricIcon(metric: CityPulseMetric): string {
