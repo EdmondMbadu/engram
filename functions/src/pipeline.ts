@@ -835,11 +835,11 @@ function buildTravelGuideResponse(params: {
   cityHint: string | null;
   mappableLocations: MappableLocation[];
 }): TravelGuideStructuredResponse | null {
-  const travelIntent = hasTravelGuideIntent(params.question);
   const locations = dedupeMappableLocations([
     ...params.mappableLocations,
     ...extractTravelLocationCandidates(params.answer, params.cityHint || params.atlasName),
   ]).slice(0, 5);
+  const travelIntent = hasTravelGuideIntent(params.question) || hasPlaceRecommendationAnswer(params.answer, locations.length);
   if (locations.length === 0 || !travelIntent) {
     return null;
   }
@@ -991,7 +991,14 @@ function isGuideLabel(value: string): boolean {
 }
 
 function hasTravelGuideIntent(question: string): boolean {
-  return /\b(visit|trip|travel|tour|tourist|guide|itinerary|walk|walking|weekend|things to do|where should|where to|eat|drink|restaurant|bar|cafe|coffee|museum|park|neighborhood|nearby|route|hotel|stay|date|family|kids|history|historic)\b/i.test(question);
+  return /\b(visit|trip|travel|tour|tourist|guide|itinerary|walk|walking|weekend|things to do|where should|where to|place|places|spot|spots|recommend|recommendation|recommendations|best places|best spots|eat|food|drink|restaurant|bar|cafe|coffee|brunch|lunch|dinner|breakfast|bakery|deli|market|cheesesteak|cheesesteaks|cheesestake|cheesestakes|hoagie|hoagies|pizza|taco|tacos|ramen|sushi|sandwich|sandwiches|museum|park|neighborhood|nearby|route|hotel|stay|date|family|kids|history|historic|venue|venues|landmark|landmarks|attraction|attractions)\b/i.test(question);
+}
+
+function hasPlaceRecommendationAnswer(answer: string, locationCount: number): boolean {
+  if (locationCount < 2) {
+    return false;
+  }
+  return /\b(best for|local tip|vibe|what to know|where to go|prime spots|top contenders|places to|spots to|restaurant|bar|cafe|market|museum|park|hotel|venue|landmark|attraction|steaks|cheesesteak|hoagie|pizza)\b/i.test(answer);
 }
 
 function findSentenceMentioning(answer: string, name: string): string | null {
@@ -1018,7 +1025,7 @@ function inferBestFor(question: string, description: string): string | null {
   const source = `${question} ${description}`.toLowerCase();
   if (/\b(kid|kids|family|families)\b/.test(source)) return 'Families';
   if (/\b(date|romantic|couple)\b/.test(source)) return 'Date plans';
-  if (/\b(food|eat|restaurant|lunch|dinner|breakfast)\b/.test(source)) return 'Food stops';
+  if (/\b(food|eat|restaurant|lunch|dinner|breakfast|brunch|cheesesteak|cheesestake|hoagie|pizza|taco|sandwich|bakery|deli)\b/.test(source)) return 'Food stops';
   if (/\b(history|historic|museum|founding|old city)\b/.test(source)) return 'History lovers';
   if (/\b(walk|walking|route|itinerary)\b/.test(source)) return 'Easy routing';
   if (/\b(photo|view|scenic)\b/.test(source)) return 'Photos and views';
@@ -1075,7 +1082,7 @@ function inferNeighborhood(description: string): string | null {
 }
 
 function buildLocalTip(question: string): string {
-  if (/\b(food|eat|restaurant|bar|cafe|coffee)\b/i.test(question)) {
+  if (/\b(food|eat|restaurant|bar|cafe|coffee|brunch|lunch|dinner|breakfast|cheesesteak|cheesestake|hoagie|pizza|taco|sandwich|bakery|deli)\b/i.test(question)) {
     return 'Check hours and reservation rules before you head over.';
   }
   if (/\b(walk|route|itinerary)\b/i.test(question)) {

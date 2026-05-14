@@ -18,4 +18,8 @@ window.__LIVING_ATLAS_CONFIG__ = {
     apiKey: 'REPLACE_ME',
     mapId: 'REPLACE_ME',
   },
+  googleAdSense: {
+    clientId: 'ca-pub-REPLACE_ME',
+    phillyBottomSlotId: 'REPLACE_ME',
+  },
 };

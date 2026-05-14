@@ -7,6 +7,8 @@ import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import type { AtlasItem, AtlasUsage, CityPulseMetric, CityPulseSnapshot } from '../atlas.models';
 import { CityPulseService } from '../city-pulse.service';
+import { getGoogleAdSenseConfig } from '../firebase.config';
+import { GoogleAdSenseService } from '../google-adsense.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
@@ -18,6 +20,7 @@ export class AtlasLandingComponent {
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly cityPulseService = inject(CityPulseService);
+  private readonly googleAdSenseService = inject(GoogleAdSenseService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
@@ -70,6 +73,18 @@ export class AtlasLandingComponent {
   });
   readonly hidePublicSourceFiles = computed(() => this.isPublicVisitor());
   readonly showGreenJobsCard = computed(() => (this.routeSlug() ?? '').trim().toLowerCase() === 'philly');
+  readonly showPhillyBottomAd = computed(() => (this.routeSlug() ?? '').trim().toLowerCase() === 'philly');
+  readonly phillyBottomAdSense = computed(() => {
+    if (!this.showPhillyBottomAd()) {
+      return null;
+    }
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    const { clientId, phillyBottomSlotId } = getGoogleAdSenseConfig();
+    return clientId && phillyBottomSlotId ? { clientId, slotId: phillyBottomSlotId } : null;
+  });
   readonly hidePublicKnowledgeSurfaces = computed(() =>
     this.atlasService.isPublicCityVisitorAtlas(this.atlas(), this.authService.uid()),
   );
@@ -100,6 +115,7 @@ export class AtlasLandingComponent {
   readonly subscribeError = signal<string | null>(null);
   readonly subscribeSuccess = signal<string | null>(null);
   readonly anonymousVisitorId = signal<string | null>(this.loadAnonymousVisitorId());
+  private renderedAdSenseSlotKey: string | null = null;
 
   readonly usage = signal<AtlasUsage | null>(null);
   readonly usageLoading = signal(false);
@@ -334,6 +350,28 @@ export class AtlasLandingComponent {
       }, 32);
 
       onCleanup(() => clearInterval(interval));
+    });
+
+    effect((onCleanup) => {
+      const adSense = this.phillyBottomAdSense();
+      if (!adSense || typeof window === 'undefined') {
+        this.renderedAdSenseSlotKey = null;
+        return;
+      }
+
+      const slotKey = `${adSense.clientId}:${adSense.slotId}`;
+      if (this.renderedAdSenseSlotKey === slotKey) {
+        return;
+      }
+
+      const timeout = window.setTimeout(() => {
+        this.renderedAdSenseSlotKey = slotKey;
+        void this.googleAdSenseService.requestAd(adSense.clientId).catch(() => {
+          this.renderedAdSenseSlotKey = null;
+        });
+      });
+
+      onCleanup(() => window.clearTimeout(timeout));
     });
   }
 

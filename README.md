@@ -71,6 +71,20 @@ Google Drive import setup checklist:
 4. Put the API key, OAuth client ID, and project number into `public/runtime-config.js`.
 5. Restart `ng serve` if the runtime config file was added after the dev server started.
 
+To enable the bottom Google AdSense unit on `/atlas/philly`, add your publisher client and ad slot to `public/runtime-config.js`:
+
+```js
+window.__LIVING_ATLAS_CONFIG__ = {
+  firebase: {
+    // existing Firebase web config
+  },
+  googleAdSense: {
+    clientId: 'ca-pub-YOUR_PUBLISHER_ID',
+    phillyBottomSlotId: 'YOUR_AD_SLOT_ID',
+  },
+};
+```
+
 Imported Google Workspace files are converted into formats the current ingestion pipeline already supports:
 
 - Google Docs -> `.docx`

@@ -16,6 +16,11 @@ export interface GoogleMapsRuntimeConfig {
   mapId?: string;
 };
 
+export interface GoogleAdSenseRuntimeConfig {
+  clientId?: string;
+  phillyBottomSlotId?: string;
+};
+
 declare global {
   interface Window {
     __LIVING_ATLAS_CONFIG__?: {
@@ -23,6 +28,7 @@ declare global {
       publicAppUrl?: string;
       googleDrive?: GoogleDriveRuntimeConfig;
       googleMaps?: GoogleMapsRuntimeConfig;
+      googleAdSense?: GoogleAdSenseRuntimeConfig;
     };
   }
 }
@@ -86,4 +92,19 @@ export function getGoogleMapsConfig(): {
     : null;
 
   return { apiKey, mapId };
+}
+
+export function getGoogleAdSenseConfig(): {
+  clientId: string | null;
+  phillyBottomSlotId: string | null;
+} {
+  const configured = window.__LIVING_ATLAS_CONFIG__?.googleAdSense;
+  const clientId = typeof configured?.clientId === 'string' && configured.clientId.trim()
+    ? configured.clientId.trim()
+    : null;
+  const phillyBottomSlotId = typeof configured?.phillyBottomSlotId === 'string' && configured.phillyBottomSlotId.trim()
+    ? configured.phillyBottomSlotId.trim()
+    : null;
+
+  return { clientId, phillyBottomSlotId };
 }

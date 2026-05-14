@@ -743,6 +743,29 @@
         </section>
       }
 
+      @if (showPhillyBottomAd()) {
+        <section class="mx-auto max-w-[1400px] px-6 pb-24 md:px-12" aria-label="Advertisement">
+          <div class="border-t border-[var(--line)] pt-6">
+            <p class="mb-3 text-center text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--muted)]">Advertisement</p>
+            @if (phillyBottomAdSense(); as adSense) {
+              <ins
+                class="adsbygoogle block min-h-[90px] w-full overflow-hidden rounded-xl bg-[var(--soft-fill)]"
+                style="display: block;"
+                [attr.data-ad-client]="adSense.clientId"
+                [attr.data-ad-slot]="adSense.slotId"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              ></ins>
+            } @else {
+              <div class="flex min-h-[120px] flex-col items-center justify-center rounded-xl border border-dashed border-[var(--line)] bg-[var(--soft-fill)] px-6 py-8 text-center">
+                <p class="text-sm font-black uppercase tracking-[0.18em] text-[var(--accent)]">Advertise on Philly Living Wiki</p>
+                <p class="mt-2 max-w-xl text-sm leading-6 text-[var(--muted)]">Reach readers exploring Philadelphia civic data, green jobs, and local knowledge.</p>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
       @if (subscribeModalOpen()) {
         <div class="fixed inset-0 z-50 flex items-end justify-center p-4 md:items-center md:p-8">
           <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" (click)="closeSubscribeModal()"></div>
