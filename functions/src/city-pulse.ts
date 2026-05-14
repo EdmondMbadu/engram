@@ -80,6 +80,7 @@ export async function refreshStoredCityPulseSnapshot(
   triggeredBy: 'schedule' | 'admin' | 'bootstrap',
 ): Promise<CityPulseSnapshot> {
   const atlas = await loadCityAtlas(atlasId);
+  const previousSnapshot = await getStoredCityPulseSnapshot(atlasId).catch(() => null);
   const cityConfig = atlas.city_config ?? {};
   const cityName = String(cityConfig.city_name ?? '').trim() || atlas.name;
   const regionName = typeof cityConfig.region_name === 'string' ? cityConfig.region_name : null;
@@ -103,8 +104,20 @@ export async function refreshStoredCityPulseSnapshot(
       notes.push('Population estimate is missing because the official Census city population dataset did not return a usable record.');
     }
 
-    if (acsData) {
-      metrics.push(...acsData);
+    const acsMetrics = acsData
+      ? { metrics: acsData, note: null }
+      : fallbackAcsMetrics({
+          stateCode,
+          placeCode,
+          cityName,
+          previousMetrics: previousSnapshot?.metrics ?? [],
+        });
+
+    if (acsMetrics.metrics.length > 0) {
+      metrics.push(...acsMetrics.metrics);
+      if (acsMetrics.note) {
+        notes.push(acsMetrics.note);
+      }
     } else {
       notes.push('ACS profile metrics are missing because Census ACS endpoints did not return a usable record.');
     }
@@ -247,9 +260,16 @@ async function fetchPopulationMetrics(stateCode: string, placeCode: string): Pro
 
 async function fetchAcsMetrics(stateCode: string, placeCode: string): Promise<CityPulseMetric[] | null> {
   for (const year of ACS_YEARS) {
-    const row = await fetchCensusRow(
-      `https://api.census.gov/data/${year}/acs/acs5?get=NAME,B19013_001E,B25064_001E,B25077_001E&for=place:${placeCode}&in=state:${stateCode}`,
-    );
+    const url = new URL(`https://api.census.gov/data/${year}/acs/acs5`);
+    url.searchParams.set('get', 'NAME,B19013_001E,B25064_001E,B25077_001E');
+    url.searchParams.set('for', `place:${placeCode}`);
+    url.searchParams.set('in', `state:${stateCode}`);
+    const apiKey = process.env.CENSUS_API_KEY?.trim();
+    if (apiKey) {
+      url.searchParams.set('key', apiKey);
+    }
+
+    const row = await fetchCensusRow(url.toString());
     if (!row) {
       continue;
     }
@@ -312,6 +332,80 @@ async function fetchAcsMetrics(stateCode: string, placeCode: string): Promise<Ci
   return null;
 }
 
+function fallbackAcsMetrics(params: {
+  stateCode: string;
+  placeCode: string;
+  cityName: string;
+  previousMetrics: CityPulseMetric[];
+}): { metrics: CityPulseMetric[]; note: string | null } {
+  const previousAcs = params.previousMetrics.filter((metric) =>
+    metric.id === 'median-household-income' ||
+    metric.id === 'median-gross-rent' ||
+    metric.id === 'median-home-value',
+  );
+  if (previousAcs.length > 0) {
+    return {
+      metrics: previousAcs,
+      note: 'ACS API did not return profile metrics, so the snapshot retained the last stored ACS income and housing values.',
+    };
+  }
+
+  if (params.stateCode.padStart(2, '0') !== '42' || params.placeCode.padStart(5, '0') !== '60000') {
+    return { metrics: [], note: null };
+  }
+
+  const asOf = '2024-12-31T00:00:00.000Z';
+  const sourceUrl = 'https://www.census.gov/quickfacts/fact/table/philadelphiacitypennsylvania/HSG860224';
+  const cityLabel = params.cityName || 'Philadelphia';
+  return {
+    note: 'Census ACS API did not return profile metrics, so official Census QuickFacts 2020-2024 Philadelphia values were used.',
+    metrics: [
+      {
+        id: 'median-household-income',
+        label: 'Median household income',
+        short_label: 'median income',
+        description: 'Median household income from official Census QuickFacts 2020-2024 ACS profile values.',
+        format: 'currency',
+        value: 61953,
+        source_label: 'U.S. Census QuickFacts',
+        source_detail: `Median household income in 2024 dollars, 2020-2024, for ${cityLabel}.`,
+        source_url: sourceUrl,
+        methodology: 'Displayed as the published Census QuickFacts ACS 5-year profile value for Philadelphia city, Pennsylvania.',
+        cadence: 'yearly',
+        as_of: asOf,
+      },
+      {
+        id: 'median-gross-rent',
+        label: 'Median gross rent',
+        short_label: 'median rent',
+        description: 'Median gross rent from official Census QuickFacts 2020-2024 ACS profile values.',
+        format: 'currency',
+        value: 1397,
+        source_label: 'U.S. Census QuickFacts',
+        source_detail: `Median gross rent, 2020-2024, for ${cityLabel}.`,
+        source_url: sourceUrl,
+        methodology: 'Displayed as the published Census QuickFacts ACS 5-year profile value for Philadelphia city, Pennsylvania.',
+        cadence: 'yearly',
+        as_of: asOf,
+      },
+      {
+        id: 'median-home-value',
+        label: 'Median home value',
+        short_label: 'home value',
+        description: 'Median owner-occupied home value from official Census QuickFacts 2020-2024 ACS profile values.',
+        format: 'currency',
+        value: 243100,
+        source_label: 'U.S. Census QuickFacts',
+        source_detail: `Median value of owner-occupied housing units, 2020-2024, for ${cityLabel}.`,
+        source_url: sourceUrl,
+        methodology: 'Displayed as the published Census QuickFacts ACS 5-year profile value for Philadelphia city, Pennsylvania.',
+        cadence: 'yearly',
+        as_of: asOf,
+      },
+    ],
+  };
+}
+
 async function fetchCensusRow(url: string): Promise<Record<string, string> | null> {
   try {
     const response = await fetch(url, {
@@ -319,8 +413,18 @@ async function fetchCensusRow(url: string): Promise<Record<string, string> | nul
         Accept: 'application/json',
       },
     });
+    if (response.headers.get('x-datawebapi-keyerror') || response.url.includes('/missing_key.html')) {
+      logger.warn('city pulse census request requires API key', { url: redactCensusApiKey(url), status: response.status });
+      return null;
+    }
     if (!response.ok) {
-      logger.warn('city pulse census request failed', { url, status: response.status });
+      logger.warn('city pulse census request failed', { url: redactCensusApiKey(url), status: response.status });
+      return null;
+    }
+
+    const contentType = response.headers.get('content-type') ?? '';
+    if (!contentType.includes('application/json')) {
+      logger.warn('city pulse census request returned non-json response', { url: redactCensusApiKey(url), status: response.status, contentType });
       return null;
     }
 
@@ -336,8 +440,20 @@ async function fetchCensusRow(url: string): Promise<Record<string, string> | nul
 
     return Object.fromEntries(header.map((key, index) => [String(key), String(data[index] ?? '')]));
   } catch (error) {
-    logger.warn('city pulse census request threw', { url, errorMessage: error instanceof Error ? error.message : String(error) });
+    logger.warn('city pulse census request threw', { url: redactCensusApiKey(url), errorMessage: error instanceof Error ? error.message : String(error) });
     return null;
+  }
+}
+
+function redactCensusApiKey(value: string): string {
+  try {
+    const url = new URL(value);
+    if (url.searchParams.has('key')) {
+      url.searchParams.set('key', 'REDACTED');
+    }
+    return url.toString();
+  } catch {
+    return value.replace(/([?&]key=)[^&]+/i, '$1REDACTED');
   }
 }
 
