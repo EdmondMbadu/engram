@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -42,6 +42,14 @@ interface TextMessagingDraft {
   webhook_url: string;
 }
 
+interface VoiceAgentDraft {
+  enabled: boolean;
+  vapi_phone_number_id: string;
+  vapi_assistant_id: string;
+  webhook_token: string;
+  tool_url: string;
+}
+
 @Component({
   selector: 'app-atlas-manage',
   imports: [FormsModule, RouterLink, ThemeToggleComponent],
@@ -69,6 +77,10 @@ export class AtlasManageComponent {
   readonly loadingTextMessagingById = signal<Record<string, boolean>>({});
   readonly savingTextMessagingById = signal<Record<string, boolean>>({});
   readonly copiedTextMessagingById = signal<Record<string, boolean>>({});
+  readonly voiceAgentDraftById = signal<Record<string, VoiceAgentDraft>>({});
+  readonly loadingVoiceAgentById = signal<Record<string, boolean>>({});
+  readonly savingVoiceAgentById = signal<Record<string, boolean>>({});
+  readonly copiedVoiceAgentById = signal<Record<string, boolean>>({});
   readonly renamingId = signal<string | null>(null);
   readonly renameDraft = signal('');
   readonly renaming = signal(false);
@@ -239,6 +251,14 @@ export class AtlasManageComponent {
     this.toggleSection(atlas, 'text-messaging');
     if (willOpen) {
       void this.loadTextMessagingConfig(atlas.id);
+    }
+  }
+
+  toggleVoiceAgentSection(atlas: AtlasItem): void {
+    const willOpen = !this.isSectionOpen(atlas, 'voice-agent');
+    this.toggleSection(atlas, 'voice-agent');
+    if (willOpen) {
+      void this.loadVoiceAgentConfig(atlas.id);
     }
   }
 
@@ -452,6 +472,97 @@ export class AtlasManageComponent {
       this.copiedTextMessagingById.update((current) => ({ ...current, [atlasId]: true }));
     } catch {
       this.pageError.set('Could not copy the webhook URL.');
+    }
+  }
+
+  voiceAgentDraft(atlasId: string): VoiceAgentDraft | null {
+    return this.voiceAgentDraftById()[atlasId] ?? null;
+  }
+
+  voiceAgentSummary(atlas: AtlasItem): string {
+    const draft = this.voiceAgentDraft(atlas.id);
+    if (!draft) {
+      return 'Not loaded';
+    }
+    if (!draft.enabled) {
+      return 'Off';
+    }
+    return draft.vapi_phone_number_id || draft.vapi_assistant_id || 'Vapi tool enabled';
+  }
+
+  isLoadingVoiceAgent(atlasId: string): boolean {
+    return this.loadingVoiceAgentById()[atlasId] ?? false;
+  }
+
+  isSavingVoiceAgent(atlasId: string): boolean {
+    return this.savingVoiceAgentById()[atlasId] ?? false;
+  }
+
+  copiedVoiceAgent(atlasId: string): boolean {
+    return this.copiedVoiceAgentById()[atlasId] ?? false;
+  }
+
+  updateVoiceAgentDraft<K extends keyof VoiceAgentDraft>(atlasId: string, key: K, value: VoiceAgentDraft[K]): void {
+    this.voiceAgentDraftById.update((current) => {
+      const existing = current[atlasId] ?? this.emptyVoiceAgentDraft();
+      return { ...current, [atlasId]: { ...existing, [key]: value } };
+    });
+    this.copiedVoiceAgentById.update((current) => ({ ...current, [atlasId]: false }));
+  }
+
+  async loadVoiceAgentConfig(atlasId: string): Promise<void> {
+    if (this.voiceAgentDraft(atlasId) || this.isLoadingVoiceAgent(atlasId)) {
+      return;
+    }
+
+    this.loadingVoiceAgentById.update((current) => ({ ...current, [atlasId]: true }));
+    this.pageError.set(null);
+    try {
+      const config = await this.atlasService.getAtlasVoiceAgentConfig(atlasId);
+      this.voiceAgentDraftById.update((current) => ({ ...current, [atlasId]: this.toVoiceAgentDraft(config) }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to load Vapi voice settings.');
+    } finally {
+      this.loadingVoiceAgentById.update((current) => ({ ...current, [atlasId]: false }));
+    }
+  }
+
+  async saveVoiceAgentConfig(atlas: AtlasItem, rotateToken = false): Promise<void> {
+    const draft = this.voiceAgentDraft(atlas.id);
+    if (!draft || this.isSavingVoiceAgent(atlas.id)) {
+      return;
+    }
+
+    this.savingVoiceAgentById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    try {
+      const saved = await this.atlasService.updateAtlasVoiceAgentConfig(
+        atlas.id,
+        {
+          enabled: draft.enabled,
+          vapi_phone_number_id: draft.vapi_phone_number_id.trim() || null,
+          vapi_assistant_id: draft.vapi_assistant_id.trim() || null,
+        },
+        rotateToken,
+      );
+      this.voiceAgentDraftById.update((current) => ({ ...current, [atlas.id]: this.toVoiceAgentDraft(saved) }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to save Vapi voice settings.');
+    } finally {
+      this.savingVoiceAgentById.update((current) => ({ ...current, [atlas.id]: false }));
+    }
+  }
+
+  async copyVoiceAgentToolUrl(atlasId: string): Promise<void> {
+    const url = this.voiceAgentDraft(atlasId)?.tool_url;
+    if (!url) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      this.copiedVoiceAgentById.update((current) => ({ ...current, [atlasId]: true }));
+    } catch {
+      this.pageError.set('Could not copy the Vapi tool URL.');
     }
   }
 
@@ -881,6 +992,16 @@ export class AtlasManageComponent {
       return next;
     });
 
+    this.voiceAgentDraftById.update((current) => {
+      const next: Record<string, VoiceAgentDraft> = {};
+      for (const [atlasId, draft] of Object.entries(current)) {
+        if (atlasIds.has(atlasId)) {
+          next[atlasId] = draft;
+        }
+      }
+      return next;
+    });
+
     await Promise.all(
       atlases.map(async (atlas) => {
         if (this.usage(atlas.id) || this.isUsageLoading(atlas.id)) {
@@ -982,6 +1103,26 @@ export class AtlasManageComponent {
       vapi_phone_number_id: config.vapi_phone_number_id ?? '',
       webhook_token: config.webhook_token ?? '',
       webhook_url: config.webhook_url ?? '',
+    };
+  }
+
+  private emptyVoiceAgentDraft(): VoiceAgentDraft {
+    return {
+      enabled: false,
+      vapi_phone_number_id: '',
+      vapi_assistant_id: '',
+      webhook_token: '',
+      tool_url: '',
+    };
+  }
+
+  private toVoiceAgentDraft(config: AtlasVoiceAgentConfig): VoiceAgentDraft {
+    return {
+      enabled: config.enabled,
+      vapi_phone_number_id: config.vapi_phone_number_id ?? '',
+      vapi_assistant_id: config.vapi_assistant_id ?? '',
+      webhook_token: config.webhook_token ?? '',
+      tool_url: config.tool_url ?? '',
     };
   }
 

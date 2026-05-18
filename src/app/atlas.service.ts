@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
@@ -49,6 +49,10 @@ type AtlasNewsletterConfigResponse = {
 
 type AtlasTextMessagingConfigResponse = {
   config: AtlasTextMessagingConfig;
+};
+
+type AtlasVoiceAgentConfigResponse = {
+  config: AtlasVoiceAgentConfig;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -515,6 +519,34 @@ export class AtlasService {
     return this.hydrateTextMessagingConfig(data.config);
   }
 
+  async getAtlasVoiceAgentConfig(atlasId: string): Promise<AtlasVoiceAgentConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const getAtlasVoiceAgentConfig = httpsCallable<
+      { atlasId: string },
+      AtlasVoiceAgentConfigResponse
+    >(this.functions, 'getAtlasVoiceAgentConfig');
+    const { data } = await getAtlasVoiceAgentConfig({ atlasId });
+    return this.hydrateVoiceAgentConfig(data.config);
+  }
+
+  async updateAtlasVoiceAgentConfig(
+    atlasId: string,
+    config: Pick<AtlasVoiceAgentConfig, 'enabled' | 'vapi_phone_number_id' | 'vapi_assistant_id'>,
+    rotateToken = false,
+  ): Promise<AtlasVoiceAgentConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const updateAtlasVoiceAgentConfig = httpsCallable<
+      {
+        atlasId: string;
+        config: Pick<AtlasVoiceAgentConfig, 'enabled' | 'vapi_phone_number_id' | 'vapi_assistant_id'>;
+        rotateToken?: boolean;
+      },
+      AtlasVoiceAgentConfigResponse
+    >(this.functions, 'updateAtlasVoiceAgentConfig');
+    const { data } = await updateAtlasVoiceAgentConfig({ atlasId, config, rotateToken });
+    return this.hydrateVoiceAgentConfig(data.config);
+  }
+
   private patchAtlas(atlasId: string, patch: Partial<AtlasItem>): void {
     this.atlases.update((items) =>
       items.map((atlas) => (atlas.id === atlasId ? { ...atlas, ...patch } : atlas)),
@@ -793,6 +825,22 @@ export class AtlasService {
         : null,
       webhook_token: typeof data['webhook_token'] === 'string' ? data['webhook_token'] : '',
       webhook_url: typeof data['webhook_url'] === 'string' ? data['webhook_url'] : '',
+      updated_at: this.hydrateDateValue(data['updated_at']),
+    };
+  }
+
+  private hydrateVoiceAgentConfig(value: unknown): AtlasVoiceAgentConfig {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    return {
+      enabled: data['enabled'] === true,
+      vapi_phone_number_id: typeof data['vapi_phone_number_id'] === 'string' && data['vapi_phone_number_id'].trim()
+        ? data['vapi_phone_number_id'].trim()
+        : null,
+      vapi_assistant_id: typeof data['vapi_assistant_id'] === 'string' && data['vapi_assistant_id'].trim()
+        ? data['vapi_assistant_id'].trim()
+        : null,
+      webhook_token: typeof data['webhook_token'] === 'string' ? data['webhook_token'] : '',
+      tool_url: typeof data['tool_url'] === 'string' ? data['tool_url'] : '',
       updated_at: this.hydrateDateValue(data['updated_at']),
     };
   }

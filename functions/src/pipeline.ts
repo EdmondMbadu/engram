@@ -1405,6 +1405,7 @@ export async function runPublicAtlasQuery(params: {
   answerMode?: 'wiki' | 'internet';
   topicIds?: string[];
   threadId?: string | null;
+  anonymousQuestionLimit?: number | null;
   visitor: PublicChatVisitorContext;
 }): Promise<{
   blocked: boolean;
@@ -1435,7 +1436,9 @@ export async function runPublicAtlasQuery(params: {
   });
 
   const questionLimit =
-    params.visitor.kind === 'anonymous' ? maxAnonymousPublicQuestions : null;
+    typeof params.anonymousQuestionLimit !== 'undefined'
+      ? params.anonymousQuestionLimit
+      : params.visitor.kind === 'anonymous' ? maxAnonymousPublicQuestions : null;
   const questionCountBeforeAsk = thread.questionCount;
 
   if (questionLimit !== null && questionCountBeforeAsk >= questionLimit) {

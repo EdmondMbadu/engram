@@ -98,6 +98,20 @@ type AtlasTextMessagingConfig = {
   updated_at?: unknown;
 };
 
+type AtlasVoiceAgentConfig = {
+  enabled: boolean;
+  vapi_phone_number_id: string | null;
+  vapi_assistant_id: string | null;
+  webhook_token: string;
+  updated_at?: unknown;
+};
+
+type VapiToolCall = {
+  id: string;
+  name: string;
+  arguments: Record<string, unknown>;
+};
+
 type HttpRequestLike = {
   body?: unknown;
   rawBody?: Buffer;
@@ -2112,6 +2126,180 @@ export const atlasTextWebhook = onRequest(
   },
 );
 
+export const getAtlasVoiceAgentConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+
+  await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  const config = await loadOrCreateVoiceAgentConfig(atlasId);
+  return { config: serializeVoiceAgentConfig(atlasId, config) };
+});
+
+export const updateAtlasVoiceAgentConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+
+  await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  const integrationRef = db.collection('atlas_integrations').doc(atlasId);
+  const integrationSnapshot = await integrationRef.get();
+  const existing = voiceAgentConfigFromStored(integrationSnapshot.data()?.voice_agent);
+  const config = normalizeVoiceAgentConfigInput(
+    request.data?.config,
+    existing?.webhook_token ?? null,
+    request.data?.rotateToken === true,
+  );
+
+  await integrationRef.set(
+    {
+      atlas_id: atlasId,
+      voice_agent: {
+        ...config,
+        updated_at: FieldValue.serverTimestamp(),
+        updated_by: request.auth.uid,
+      },
+      updated_at: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+
+  return { config: serializeVoiceAgentConfig(atlasId, { ...config, updated_at: new Date().toISOString() }) };
+});
+
+export const vapiLivingWikiTool = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 180,
+    memory: '1GiB',
+    secrets: [geminiApiKey],
+  },
+  async (req, res) => {
+    res.set('Cache-Control', 'no-store');
+
+    if (req.method === 'GET') {
+      res.status(200).send({
+        ok: true,
+        message: 'Living Wiki Vapi tool endpoint. Configure this URL as a Vapi custom function tool server URL.',
+      });
+      return;
+    }
+
+    if (req.method !== 'POST') {
+      res.status(405).send({ error: 'Method not allowed.' });
+      return;
+    }
+
+    const atlasId = normalizeAtlasId(req.query.atlasId);
+    const token =
+      textValue(req.query.token, 256) ||
+      bearerToken(req.get('authorization')) ||
+      textValue(req.get('x-living-wiki-token'), 256);
+
+    if (!atlasId || !token) {
+      res.status(401).send({ error: 'Missing atlasId or authorization token.' });
+      return;
+    }
+
+    try {
+      const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
+      const config = voiceAgentConfigFromStored(integrationSnapshot.data()?.voice_agent);
+      if (!config?.enabled || config.webhook_token !== token) {
+        res.status(403).send({ error: 'Living Wiki voice agent endpoint is not enabled.' });
+        return;
+      }
+
+      const toolCalls = extractVapiToolCalls(req.body);
+      if (toolCalls.length === 0) {
+        res.status(400).send({ error: 'No Vapi tool calls were found in the request.' });
+        return;
+      }
+
+      const atlas = await loadPublicAtlasById(atlasId);
+      const callId =
+        nestedRequestField(req, ['message', 'call', 'id']) ||
+        nestedRequestField(req, ['message', 'callId']) ||
+        randomUUID();
+      const callerNumber =
+        nestedRequestField(req, ['message', 'customer', 'number']) ||
+        nestedRequestField(req, ['message', 'call', 'customer', 'number']) ||
+        nestedRequestField(req, ['message', 'call', 'phoneNumber', 'number']) ||
+        null;
+      const visitorId = `vapi_${createHash('sha256').update(`${atlasId}:${callId}:${callerNumber ?? ''}`).digest('hex').slice(0, 48)}`;
+      const visitorName = callerNumber ? `Vapi caller ${maskPhoneNumber(callerNumber).replace(/^SMS /, '')}` : 'Vapi caller';
+
+      const results = [];
+      for (const toolCall of toolCalls) {
+        const question = extractToolQuestion(toolCall.arguments);
+        if (!question) {
+          results.push({
+            toolCallId: toolCall.id,
+            result: 'Ask me a specific question about the Living Wiki and I can look it up.',
+          });
+          continue;
+        }
+
+        const response = await runPublicAtlasQuery({
+          atlasId,
+          atlasOwnerUserId: String(atlas.user_id),
+          question,
+          answerMode: atlas.default_answer_mode === 'internet' ? 'internet' : 'wiki',
+          anonymousQuestionLimit: null,
+          visitor: {
+            kind: 'anonymous',
+            visitorUserId: null,
+            anonymousVisitorId: visitorId,
+            visitorDisplayName: visitorName,
+            visitorEmail: null,
+          },
+        });
+
+        results.push({
+          toolCallId: toolCall.id,
+          result: formatVoiceToolResult(response.answer),
+        });
+
+        await db.collection('atlas_voice_tool_calls').add({
+          atlas_id: atlasId,
+          atlas_owner_user_id: String(atlas.user_id),
+          vapi_call_id: callId,
+          vapi_tool_name: toolCall.name,
+          caller_hash: callerNumber ? createHash('sha256').update(callerNumber).digest('hex') : null,
+          question_preview: question.slice(0, 500),
+          answer_preview: response.answer.slice(0, 500),
+          thread_id: response.threadId,
+          created_at: FieldValue.serverTimestamp(),
+        });
+      }
+
+      res.status(200).send({ results });
+    } catch (error) {
+      logger.error('vapiLivingWikiTool failed', {
+        atlasId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      res.status(500).send({
+        results: [
+          {
+            toolCallId: firstVapiToolCallId(req.body) ?? 'unknown',
+            result: 'Living Wiki could not answer that right now. Please try again shortly.',
+          },
+        ],
+      });
+    }
+  },
+);
+
 export const updateAtlasNewsletterConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
   if (!request.auth?.uid) {
     throw new HttpsError('unauthenticated', 'Authentication is required.');
@@ -2451,6 +2639,10 @@ function buildAtlasTextWebhookUrl(atlasId: string, token: string): string {
   return `${publicFunctionsBaseUrl}/atlasTextWebhook?atlasId=${encodeURIComponent(atlasId)}&token=${encodeURIComponent(token)}`;
 }
 
+function buildVapiVoiceToolUrl(atlasId: string, token: string): string {
+  return `${publicFunctionsBaseUrl}/vapiLivingWikiTool?atlasId=${encodeURIComponent(atlasId)}&token=${encodeURIComponent(token)}`;
+}
+
 function normalizeTextMessagingConfigInput(
   value: unknown,
   existingToken: string | null,
@@ -2523,6 +2715,84 @@ async function loadOrCreateTextMessagingConfig(atlasId: string): Promise<AtlasTe
     { merge: true },
   );
   return config;
+}
+
+function normalizeVoiceAgentConfigInput(
+  value: unknown,
+  existingToken: string | null,
+  rotateToken = false,
+): AtlasVoiceAgentConfig {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const token = rotateToken || !existingToken ? generateWebhookToken() : existingToken;
+
+  return {
+    enabled: data['enabled'] === true,
+    vapi_phone_number_id: textValue(data['vapi_phone_number_id'], 120),
+    vapi_assistant_id: textValue(data['vapi_assistant_id'], 120),
+    webhook_token: token,
+  };
+}
+
+function voiceAgentConfigFromStored(value: unknown): AtlasVoiceAgentConfig | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const data = value as Record<string, unknown>;
+  const token = textValue(data['webhook_token'], 256);
+  if (!token) {
+    return null;
+  }
+
+  return {
+    enabled: data['enabled'] === true,
+    vapi_phone_number_id: textValue(data['vapi_phone_number_id'], 120),
+    vapi_assistant_id: textValue(data['vapi_assistant_id'], 120),
+    webhook_token: token,
+    updated_at: data['updated_at'],
+  };
+}
+
+function serializeVoiceAgentConfig(atlasId: string, config: AtlasVoiceAgentConfig) {
+  return {
+    enabled: config.enabled,
+    vapi_phone_number_id: config.vapi_phone_number_id,
+    vapi_assistant_id: config.vapi_assistant_id,
+    webhook_token: config.webhook_token,
+    tool_url: buildVapiVoiceToolUrl(atlasId, config.webhook_token),
+    updated_at: normalizeTimestamp(config.updated_at),
+  };
+}
+
+async function loadOrCreateVoiceAgentConfig(atlasId: string): Promise<AtlasVoiceAgentConfig> {
+  const integrationRef = db.collection('atlas_integrations').doc(atlasId);
+  const integrationSnapshot = await integrationRef.get();
+  const existing = voiceAgentConfigFromStored(integrationSnapshot.data()?.voice_agent);
+  if (existing) {
+    return existing;
+  }
+
+  const config = normalizeVoiceAgentConfigInput(null, null);
+  await integrationRef.set(
+    {
+      atlas_id: atlasId,
+      voice_agent: {
+        ...config,
+        updated_at: FieldValue.serverTimestamp(),
+      },
+      updated_at: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+  return config;
+}
+
+function bearerToken(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const match = value.match(/^Bearer\s+(.+)$/i);
+  return match ? textValue(match[1], 256) : null;
 }
 
 function requestField(req: HttpRequestLike, names: string[]): string | null {
@@ -2621,6 +2891,82 @@ function sendTwilioMessage(res: HttpResponseLike, message: string, status = 200)
   res.set('Content-Type', 'text/xml; charset=utf-8');
   res.set('Cache-Control', 'no-store');
   res.send(`<Response><Message>${xmlEscape(message)}</Message></Response>`);
+}
+
+function extractVapiToolCalls(body: unknown): VapiToolCall[] {
+  const message = body && typeof body === 'object'
+    ? (body as Record<string, unknown>)['message']
+    : null;
+  const container = message && typeof message === 'object'
+    ? message as Record<string, unknown>
+    : body && typeof body === 'object'
+      ? body as Record<string, unknown>
+      : {};
+  const candidates = [
+    container['toolCallList'],
+    container['toolCalls'],
+    container['tool_call_list'],
+    container['tool_calls'],
+  ];
+  const list = candidates.find(Array.isArray) as unknown[] | undefined;
+  if (!list) {
+    const single = container['toolCall'];
+    return single && typeof single === 'object'
+      ? normalizeVapiToolCalls([single])
+      : [];
+  }
+  return normalizeVapiToolCalls(list);
+}
+
+function normalizeVapiToolCalls(list: unknown[]): VapiToolCall[] {
+  return list
+    .map((item): VapiToolCall | null => {
+      if (!item || typeof item !== 'object') {
+        return null;
+      }
+      const data = item as Record<string, unknown>;
+      const id = textValue(data['id'] ?? data['toolCallId'] ?? data['tool_call_id'], 160);
+      const name = textValue(data['name'] ?? data['functionName'] ?? data['function'] ?? data['toolName'], 120) ?? 'ask_living_wiki';
+      const args = normalizeToolArguments(data['arguments'] ?? data['parameters'] ?? data['args']);
+      return id ? { id, name, arguments: args } : null;
+    })
+    .filter((item): item is VapiToolCall => item !== null);
+}
+
+function normalizeToolArguments(value: unknown): Record<string, unknown> {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return value as Record<string, unknown>;
+  }
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value) as unknown;
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        return parsed as Record<string, unknown>;
+      }
+    } catch {
+      return { question: value };
+    }
+  }
+  return {};
+}
+
+function extractToolQuestion(args: Record<string, unknown>): string | null {
+  return textValue(args['question'], 1200) ||
+    textValue(args['query'], 1200) ||
+    textValue(args['prompt'], 1200) ||
+    textValue(args['text'], 1200);
+}
+
+function firstVapiToolCallId(body: unknown): string | null {
+  return extractVapiToolCalls(body)[0]?.id ?? null;
+}
+
+function formatVoiceToolResult(answer: string): string {
+  const compact = answer
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return compact.slice(0, 4500);
 }
 
 function normalizeAnswerCardId(value: unknown): string {

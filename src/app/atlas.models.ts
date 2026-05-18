@@ -162,6 +162,15 @@ export interface AtlasTextMessagingConfig {
   updated_at?: { toDate(): Date } | Date | string | null;
 }
 
+export interface AtlasVoiceAgentConfig {
+  enabled: boolean;
+  vapi_phone_number_id: string | null;
+  vapi_assistant_id: string | null;
+  webhook_token: string;
+  tool_url: string;
+  updated_at?: { toDate(): Date } | Date | string | null;
+}
+
 export interface AtlasUsage {
   documents: number;
   wiki_articles: number;
