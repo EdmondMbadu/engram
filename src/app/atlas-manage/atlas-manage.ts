@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -33,6 +33,15 @@ interface ChatGuideDraft {
   banner_url: string;
 }
 
+interface TextMessagingDraft {
+  enabled: boolean;
+  provider: AtlasTextMessagingProvider;
+  phone_number: string;
+  vapi_phone_number_id: string;
+  webhook_token: string;
+  webhook_url: string;
+}
+
 @Component({
   selector: 'app-atlas-manage',
   imports: [FormsModule, RouterLink, ThemeToggleComponent],
@@ -56,6 +65,10 @@ export class AtlasManageComponent {
   readonly newsletterTestEmailById = signal<Record<string, string>>({});
   readonly sendingNewsletterTestById = signal<Record<string, boolean>>({});
   readonly newsletterTestResultById = signal<Record<string, AtlasNewsletterTestResult>>({});
+  readonly textMessagingDraftById = signal<Record<string, TextMessagingDraft>>({});
+  readonly loadingTextMessagingById = signal<Record<string, boolean>>({});
+  readonly savingTextMessagingById = signal<Record<string, boolean>>({});
+  readonly copiedTextMessagingById = signal<Record<string, boolean>>({});
   readonly renamingId = signal<string | null>(null);
   readonly renameDraft = signal('');
   readonly renaming = signal(false);
@@ -221,6 +234,14 @@ export class AtlasManageComponent {
     }
   }
 
+  toggleTextMessagingSection(atlas: AtlasItem): void {
+    const willOpen = !this.isSectionOpen(atlas, 'text-messaging');
+    this.toggleSection(atlas, 'text-messaging');
+    if (willOpen) {
+      void this.loadTextMessagingConfig(atlas.id);
+    }
+  }
+
   subscriptions(atlasId: string): AtlasSubscriptionItem[] {
     return this.subscriptionsById()[atlasId] ?? [];
   }
@@ -340,6 +361,98 @@ export class AtlasManageComponent {
 
   isUploadingChatGuideImage(atlasId: string): boolean {
     return this.uploadingChatGuideImageById()[atlasId] ?? false;
+  }
+
+  textMessagingDraft(atlasId: string): TextMessagingDraft | null {
+    return this.textMessagingDraftById()[atlasId] ?? null;
+  }
+
+  textMessagingSummary(atlas: AtlasItem): string {
+    const draft = this.textMessagingDraft(atlas.id);
+    if (!draft) {
+      return 'Not loaded';
+    }
+    if (!draft.enabled) {
+      return 'Off';
+    }
+    return draft.phone_number || (draft.provider === 'vapi' ? 'Vapi number' : 'Twilio webhook');
+  }
+
+  isLoadingTextMessaging(atlasId: string): boolean {
+    return this.loadingTextMessagingById()[atlasId] ?? false;
+  }
+
+  isSavingTextMessaging(atlasId: string): boolean {
+    return this.savingTextMessagingById()[atlasId] ?? false;
+  }
+
+  copiedTextMessaging(atlasId: string): boolean {
+    return this.copiedTextMessagingById()[atlasId] ?? false;
+  }
+
+  updateTextMessagingDraft<K extends keyof TextMessagingDraft>(atlasId: string, key: K, value: TextMessagingDraft[K]): void {
+    this.textMessagingDraftById.update((current) => {
+      const existing = current[atlasId] ?? this.emptyTextMessagingDraft();
+      return { ...current, [atlasId]: { ...existing, [key]: value } };
+    });
+    this.copiedTextMessagingById.update((current) => ({ ...current, [atlasId]: false }));
+  }
+
+  async loadTextMessagingConfig(atlasId: string): Promise<void> {
+    if (this.textMessagingDraft(atlasId) || this.isLoadingTextMessaging(atlasId)) {
+      return;
+    }
+
+    this.loadingTextMessagingById.update((current) => ({ ...current, [atlasId]: true }));
+    this.pageError.set(null);
+    try {
+      const config = await this.atlasService.getAtlasTextMessagingConfig(atlasId);
+      this.textMessagingDraftById.update((current) => ({ ...current, [atlasId]: this.toTextMessagingDraft(config) }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to load text messaging settings.');
+    } finally {
+      this.loadingTextMessagingById.update((current) => ({ ...current, [atlasId]: false }));
+    }
+  }
+
+  async saveTextMessagingConfig(atlas: AtlasItem, rotateToken = false): Promise<void> {
+    const draft = this.textMessagingDraft(atlas.id);
+    if (!draft || this.isSavingTextMessaging(atlas.id)) {
+      return;
+    }
+
+    this.savingTextMessagingById.update((current) => ({ ...current, [atlas.id]: true }));
+    this.pageError.set(null);
+    try {
+      const saved = await this.atlasService.updateAtlasTextMessagingConfig(
+        atlas.id,
+        {
+          enabled: draft.enabled,
+          provider: draft.provider,
+          phone_number: draft.phone_number.trim() || null,
+          vapi_phone_number_id: draft.vapi_phone_number_id.trim() || null,
+        },
+        rotateToken,
+      );
+      this.textMessagingDraftById.update((current) => ({ ...current, [atlas.id]: this.toTextMessagingDraft(saved) }));
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to save text messaging settings.');
+    } finally {
+      this.savingTextMessagingById.update((current) => ({ ...current, [atlas.id]: false }));
+    }
+  }
+
+  async copyTextMessagingWebhook(atlasId: string): Promise<void> {
+    const url = this.textMessagingDraft(atlasId)?.webhook_url;
+    if (!url) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      this.copiedTextMessagingById.update((current) => ({ ...current, [atlasId]: true }));
+    } catch {
+      this.pageError.set('Could not copy the webhook URL.');
+    }
   }
 
   async onChatGuideImageSelected(atlas: AtlasItem, event: Event): Promise<void> {
@@ -758,6 +871,16 @@ export class AtlasManageComponent {
       return next;
     });
 
+    this.textMessagingDraftById.update((current) => {
+      const next: Record<string, TextMessagingDraft> = {};
+      for (const [atlasId, draft] of Object.entries(current)) {
+        if (atlasIds.has(atlasId)) {
+          next[atlasId] = draft;
+        }
+      }
+      return next;
+    });
+
     await Promise.all(
       atlases.map(async (atlas) => {
         if (this.usage(atlas.id) || this.isUsageLoading(atlas.id)) {
@@ -837,6 +960,28 @@ export class AtlasManageComponent {
       name: guide?.name?.trim() ?? '',
       image_url: guide?.image_url?.trim() ?? '',
       banner_url: guide?.banner_url?.trim() ?? '',
+    };
+  }
+
+  private emptyTextMessagingDraft(): TextMessagingDraft {
+    return {
+      enabled: false,
+      provider: 'twilio',
+      phone_number: '',
+      vapi_phone_number_id: '',
+      webhook_token: '',
+      webhook_url: '',
+    };
+  }
+
+  private toTextMessagingDraft(config: AtlasTextMessagingConfig): TextMessagingDraft {
+    return {
+      enabled: config.enabled,
+      provider: config.provider,
+      phone_number: config.phone_number ?? '',
+      vapi_phone_number_id: config.vapi_phone_number_id ?? '',
+      webhook_token: config.webhook_token ?? '',
+      webhook_url: config.webhook_url ?? '',
     };
   }
 

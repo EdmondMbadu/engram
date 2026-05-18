@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, CityAtlasConfig, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
@@ -45,6 +45,10 @@ type AtlasSubscriptionsResponse = {
 
 type AtlasNewsletterConfigResponse = {
   config: AtlasNewsletterConfig;
+};
+
+type AtlasTextMessagingConfigResponse = {
+  config: AtlasTextMessagingConfig;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -483,6 +487,34 @@ export class AtlasService {
     return data;
   }
 
+  async getAtlasTextMessagingConfig(atlasId: string): Promise<AtlasTextMessagingConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const getAtlasTextMessagingConfig = httpsCallable<
+      { atlasId: string },
+      AtlasTextMessagingConfigResponse
+    >(this.functions, 'getAtlasTextMessagingConfig');
+    const { data } = await getAtlasTextMessagingConfig({ atlasId });
+    return this.hydrateTextMessagingConfig(data.config);
+  }
+
+  async updateAtlasTextMessagingConfig(
+    atlasId: string,
+    config: Pick<AtlasTextMessagingConfig, 'enabled' | 'provider' | 'phone_number' | 'vapi_phone_number_id'>,
+    rotateToken = false,
+  ): Promise<AtlasTextMessagingConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const updateAtlasTextMessagingConfig = httpsCallable<
+      {
+        atlasId: string;
+        config: Pick<AtlasTextMessagingConfig, 'enabled' | 'provider' | 'phone_number' | 'vapi_phone_number_id'>;
+        rotateToken?: boolean;
+      },
+      AtlasTextMessagingConfigResponse
+    >(this.functions, 'updateAtlasTextMessagingConfig');
+    const { data } = await updateAtlasTextMessagingConfig({ atlasId, config, rotateToken });
+    return this.hydrateTextMessagingConfig(data.config);
+  }
+
   private patchAtlas(atlasId: string, patch: Partial<AtlasItem>): void {
     this.atlases.update((items) =>
       items.map((atlas) => (atlas.id === atlasId ? { ...atlas, ...patch } : atlas)),
@@ -746,6 +778,23 @@ export class AtlasService {
     }
 
     return this.normalizeChatGuideConfig(value as Partial<Record<keyof AtlasChatGuideConfig, unknown>>);
+  }
+
+  private hydrateTextMessagingConfig(value: unknown): AtlasTextMessagingConfig {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    return {
+      enabled: data['enabled'] === true,
+      provider: data['provider'] === 'vapi' ? 'vapi' : 'twilio',
+      phone_number: typeof data['phone_number'] === 'string' && data['phone_number'].trim()
+        ? data['phone_number'].trim()
+        : null,
+      vapi_phone_number_id: typeof data['vapi_phone_number_id'] === 'string' && data['vapi_phone_number_id'].trim()
+        ? data['vapi_phone_number_id'].trim()
+        : null,
+      webhook_token: typeof data['webhook_token'] === 'string' ? data['webhook_token'] : '',
+      webhook_url: typeof data['webhook_url'] === 'string' ? data['webhook_url'] : '',
+      updated_at: this.hydrateDateValue(data['updated_at']),
+    };
   }
 
   private normalizeChatGuideConfig(value: Partial<Record<keyof AtlasChatGuideConfig, unknown>> | null): AtlasChatGuideConfig | null {

@@ -46,6 +46,7 @@ const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://living-atlas-7622a.web.app';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
+const maxSmsReplyLength = 1200;
 const defaultNewsletterPrompt = [
   'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
@@ -84,6 +85,28 @@ type GoogleDriveImportPlan = {
   requestMimeType: string;
   uploadMimeType: string;
   mode: 'download' | 'export';
+};
+
+type AtlasTextMessagingProvider = 'twilio' | 'vapi';
+
+type AtlasTextMessagingConfig = {
+  enabled: boolean;
+  provider: AtlasTextMessagingProvider;
+  phone_number: string | null;
+  vapi_phone_number_id: string | null;
+  webhook_token: string;
+  updated_at?: unknown;
+};
+
+type HttpRequestLike = {
+  body?: unknown;
+  rawBody?: Buffer;
+};
+
+type HttpResponseLike = {
+  status(code: number): HttpResponseLike;
+  set(field: string, value: string): HttpResponseLike;
+  send(body: unknown): void;
 };
 
 export const fetchProxy = onRequest(
@@ -505,7 +528,7 @@ async function buildDocumentDownloadUrl(storagePath: string): Promise<string> {
   return `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket.name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
 }
 
-async function loadPublicAtlasById(atlasId: string) {
+async function loadPublicAtlasById(atlasId: string): Promise<Record<string, unknown> & { id: string; user_id: string; is_public: boolean }> {
   const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
   if (!atlasSnapshot.exists) {
     throw new HttpsError('not-found', 'Atlas not found.');
@@ -1933,6 +1956,162 @@ export const unsubscribeAtlasSubscription = onRequest(
   },
 );
 
+export const getAtlasTextMessagingConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+
+  await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  const config = await loadOrCreateTextMessagingConfig(atlasId);
+  return { config: serializeTextMessagingConfig(atlasId, config) };
+});
+
+export const updateAtlasTextMessagingConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'atlasId is required.');
+  }
+
+  await loadAtlasForAdminAccess(atlasId, request.auth.uid);
+  const integrationRef = db.collection('atlas_integrations').doc(atlasId);
+  const integrationSnapshot = await integrationRef.get();
+  const existing = textMessagingConfigFromStored(integrationSnapshot.data()?.text_messaging);
+  const config = normalizeTextMessagingConfigInput(
+    request.data?.config,
+    existing?.webhook_token ?? null,
+    request.data?.rotateToken === true,
+  );
+
+  await integrationRef.set(
+    {
+      atlas_id: atlasId,
+      text_messaging: {
+        ...config,
+        updated_at: FieldValue.serverTimestamp(),
+        updated_by: request.auth.uid,
+      },
+      updated_at: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+
+  return { config: serializeTextMessagingConfig(atlasId, { ...config, updated_at: new Date().toISOString() }) };
+});
+
+export const atlasTextWebhook = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 180,
+    memory: '1GiB',
+    secrets: [geminiApiKey],
+  },
+  async (req, res) => {
+    res.set('Cache-Control', 'no-store');
+
+    if (req.method === 'GET') {
+      res.status(200).send({
+        ok: true,
+        message: 'Living Wiki text webhook. Configure this URL as an inbound SMS webhook with atlasId and token.',
+      });
+      return;
+    }
+
+    if (req.method !== 'POST') {
+      res.status(405).send('Method not allowed.');
+      return;
+    }
+
+    const atlasId = normalizeAtlasId(req.query.atlasId);
+    const token = textValue(req.query.token, 256) || textValue(req.get('x-living-wiki-token'), 256);
+    if (!atlasId || !token) {
+      sendTwilioMessage(res, 'This Living Wiki text endpoint is missing its configuration.', 400);
+      return;
+    }
+
+    try {
+      const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
+      const config = textMessagingConfigFromStored(integrationSnapshot.data()?.text_messaging);
+      if (!config?.enabled || config.webhook_token !== token) {
+        sendTwilioMessage(res, 'This Living Wiki text number is not enabled.', 403);
+        return;
+      }
+
+      const inboundText =
+        requestField(req, ['Body', 'body', 'text', 'message', 'Message']) ||
+        nestedRequestField(req, ['message', 'text']) ||
+        nestedRequestField(req, ['message', 'content']);
+      const fromNumber =
+        requestField(req, ['From', 'from', 'fromNumber', 'customerNumber', 'phoneNumber']) ||
+        nestedRequestField(req, ['customer', 'number']) ||
+        nestedRequestField(req, ['message', 'from']);
+      const toNumber =
+        requestField(req, ['To', 'to', 'toNumber']) ||
+        nestedRequestField(req, ['message', 'to']);
+
+      if (!inboundText || !fromNumber) {
+        sendTwilioMessage(res, 'Send a question to this Living Wiki number and I will answer from the public wiki.', 400);
+        return;
+      }
+
+      const atlas = await loadPublicAtlasById(atlasId);
+      const response = await runPublicAtlasQuery({
+        atlasId,
+        atlasOwnerUserId: String(atlas.user_id),
+        question: inboundText,
+        answerMode: atlas.default_answer_mode === 'internet' ? 'internet' : 'wiki',
+        visitor: {
+          kind: 'anonymous',
+          visitorUserId: null,
+          anonymousVisitorId: phoneVisitorId(atlasId, fromNumber),
+          visitorDisplayName: maskPhoneNumber(fromNumber),
+          visitorEmail: null,
+        },
+      });
+
+      const continuationUrl = `${publicAppUrl}/chat/${encodeURIComponent(String(atlas.slug || atlasId))}`;
+      const reply = response.blocked
+        ? `This text chat reached its public question limit. Continue here: ${continuationUrl}`
+        : formatSmsReply(response.answer, continuationUrl);
+
+      await db.collection('atlas_text_messages').add({
+        atlas_id: atlasId,
+        atlas_owner_user_id: String(atlas.user_id),
+        provider: config.provider,
+        from_hash: createHash('sha256').update(fromNumber).digest('hex'),
+        to_number: toNumber,
+        question_preview: inboundText.slice(0, 500),
+        answer_preview: reply.slice(0, 500),
+        thread_id: response.threadId,
+        created_at: FieldValue.serverTimestamp(),
+      });
+
+      const acceptsJson = String(req.get('accept') ?? '').includes('application/json') ||
+        String(req.get('content-type') ?? '').includes('application/json');
+      if (acceptsJson && !requestField(req, ['SmsMessageSid', 'MessageSid'])) {
+        res.status(200).send({ ok: true, answer: reply, threadId: response.threadId });
+        return;
+      }
+
+      sendTwilioMessage(res, reply);
+    } catch (error) {
+      logger.error('atlasTextWebhook failed', {
+        atlasId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      sendTwilioMessage(res, 'Living Wiki could not answer that text right now. Please try again shortly.', 500);
+    }
+  },
+);
+
 export const updateAtlasNewsletterConfig = onCall({ region: callableRegion, cors: true }, async (request) => {
   if (!request.auth?.uid) {
     throw new HttpsError('unauthenticated', 'Authentication is required.');
@@ -2254,6 +2433,194 @@ function normalizeAnonymousVisitorId(value: unknown): string | null {
   }
 
   return /^[A-Za-z0-9_-]+$/.test(trimmed) ? trimmed : null;
+}
+
+function textValue(value: unknown, maxLength = 2000): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const trimmed = value.replace(/\s+/g, ' ').trim();
+  return trimmed ? trimmed.slice(0, maxLength) : null;
+}
+
+function generateWebhookToken(): string {
+  return createHash('sha256').update(`${randomUUID()}:${Date.now()}`).digest('hex');
+}
+
+function buildAtlasTextWebhookUrl(atlasId: string, token: string): string {
+  return `${publicFunctionsBaseUrl}/atlasTextWebhook?atlasId=${encodeURIComponent(atlasId)}&token=${encodeURIComponent(token)}`;
+}
+
+function normalizeTextMessagingConfigInput(
+  value: unknown,
+  existingToken: string | null,
+  rotateToken = false,
+): AtlasTextMessagingConfig {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const existingProvider = data['provider'] === 'vapi' ? 'vapi' : 'twilio';
+  const token = rotateToken || !existingToken ? generateWebhookToken() : existingToken;
+
+  return {
+    enabled: data['enabled'] === true,
+    provider: existingProvider,
+    phone_number: textValue(data['phone_number'], 40),
+    vapi_phone_number_id: textValue(data['vapi_phone_number_id'], 120),
+    webhook_token: token,
+  };
+}
+
+function textMessagingConfigFromStored(value: unknown): AtlasTextMessagingConfig | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const data = value as Record<string, unknown>;
+  const token = textValue(data['webhook_token'], 256);
+  if (!token) {
+    return null;
+  }
+
+  return {
+    enabled: data['enabled'] === true,
+    provider: data['provider'] === 'vapi' ? 'vapi' : 'twilio',
+    phone_number: textValue(data['phone_number'], 40),
+    vapi_phone_number_id: textValue(data['vapi_phone_number_id'], 120),
+    webhook_token: token,
+    updated_at: data['updated_at'],
+  };
+}
+
+function serializeTextMessagingConfig(atlasId: string, config: AtlasTextMessagingConfig) {
+  return {
+    enabled: config.enabled,
+    provider: config.provider,
+    phone_number: config.phone_number,
+    vapi_phone_number_id: config.vapi_phone_number_id,
+    webhook_token: config.webhook_token,
+    webhook_url: buildAtlasTextWebhookUrl(atlasId, config.webhook_token),
+    updated_at: normalizeTimestamp(config.updated_at),
+  };
+}
+
+async function loadOrCreateTextMessagingConfig(atlasId: string): Promise<AtlasTextMessagingConfig> {
+  const integrationRef = db.collection('atlas_integrations').doc(atlasId);
+  const integrationSnapshot = await integrationRef.get();
+  const existing = textMessagingConfigFromStored(integrationSnapshot.data()?.text_messaging);
+  if (existing) {
+    return existing;
+  }
+
+  const config = normalizeTextMessagingConfigInput(null, null);
+  await integrationRef.set(
+    {
+      atlas_id: atlasId,
+      text_messaging: {
+        ...config,
+        updated_at: FieldValue.serverTimestamp(),
+      },
+      updated_at: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+  return config;
+}
+
+function requestField(req: HttpRequestLike, names: string[]): string | null {
+  const tryRecord = (record: Record<string, unknown> | null) => {
+    if (!record) {
+      return null;
+    }
+    for (const name of names) {
+      const value = record[name];
+      if (Array.isArray(value)) {
+        const first = textValue(value[0], 4000);
+        if (first) return first;
+      } else {
+        const text = textValue(value, 4000);
+        if (text) return text;
+      }
+    }
+    return null;
+  };
+
+  const body = req.body;
+  if (body && typeof body === 'object') {
+    const value = tryRecord(body as Record<string, unknown>);
+    if (value) return value;
+  }
+
+  if (typeof body === 'string') {
+    const params = new URLSearchParams(body);
+    for (const name of names) {
+      const value = textValue(params.get(name), 4000);
+      if (value) return value;
+    }
+  }
+
+  const rawBody = req.rawBody;
+  if (rawBody?.length) {
+    const rawText = rawBody.toString('utf8');
+    try {
+      const parsed = JSON.parse(rawText) as Record<string, unknown>;
+      const value = tryRecord(parsed);
+      if (value) return value;
+    } catch {
+      const params = new URLSearchParams(rawText);
+      for (const name of names) {
+        const value = textValue(params.get(name), 4000);
+        if (value) return value;
+      }
+    }
+  }
+
+  return null;
+}
+
+function nestedRequestField(req: HttpRequestLike, path: string[]): string | null {
+  let current: unknown = req.body;
+  for (const part of path) {
+    if (!current || typeof current !== 'object') {
+      return null;
+    }
+    current = (current as Record<string, unknown>)[part];
+  }
+  return textValue(current, 4000);
+}
+
+function xmlEscape(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function formatSmsReply(answer: string, continuationUrl: string): string {
+  const compact = answer
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1: $2')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (compact.length <= maxSmsReplyLength) {
+    return compact;
+  }
+  return `${compact.slice(0, maxSmsReplyLength - 80).trimEnd()}... More: ${continuationUrl}`;
+}
+
+function phoneVisitorId(atlasId: string, phoneNumber: string): string {
+  return `sms_${createHash('sha256').update(`${atlasId}:${phoneNumber}`).digest('hex').slice(0, 48)}`;
+}
+
+function maskPhoneNumber(phoneNumber: string): string {
+  const digits = phoneNumber.replace(/\D/g, '');
+  return digits.length >= 4 ? `SMS ${digits.slice(-4)}` : 'SMS visitor';
+}
+
+function sendTwilioMessage(res: HttpResponseLike, message: string, status = 200): void {
+  res.status(status);
+  res.set('Content-Type', 'text/xml; charset=utf-8');
+  res.set('Cache-Control', 'no-store');
+  res.send(`<Response><Message>${xmlEscape(message)}</Message></Response>`);
 }
 
 function normalizeAnswerCardId(value: unknown): string {

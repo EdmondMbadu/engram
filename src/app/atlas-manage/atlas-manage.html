@@ -182,6 +182,123 @@
             <button
               type="button"
               class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
+              (click)="toggleTextMessagingSection(atlas)"
+              [attr.aria-expanded]="isSectionOpen(atlas, 'text-messaging')"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">sms</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-black text-[var(--text)]">Text messaging</span>
+                  <span class="block truncate text-xs text-[var(--muted)]">{{ textMessagingSummary(atlas) }}</span>
+                </span>
+              </span>
+              <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">{{ isSectionOpen(atlas, 'text-messaging') ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (isSectionOpen(atlas, 'text-messaging')) {
+              <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+                @if (isLoadingTextMessaging(atlas.id)) {
+                  <p class="text-sm text-[var(--muted)]">Loading text settings...</p>
+                } @else if (textMessagingDraft(atlas.id); as textDraft) {
+                  <div class="grid gap-4 lg:grid-cols-2">
+                    <label class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 lg:col-span-2">
+                      <span class="flex items-center justify-between gap-4">
+                        <span>
+                          <span class="block text-sm font-bold text-[var(--text)]">Enable inbound SMS webhook</span>
+                          <span class="block text-xs leading-5 text-[var(--muted)]">Use a Twilio SMS-capable number, or a Vapi setup that exposes Twilio SMS webhooks.</span>
+                        </span>
+                        <input
+                          type="checkbox"
+                          class="h-5 w-5 cursor-pointer accent-[var(--accent)]"
+                          [checked]="textDraft.enabled"
+                          (change)="updateTextMessagingDraft(atlas.id, 'enabled', $any($event.target).checked)"
+                        />
+                      </span>
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Provider record</span>
+                      <select
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                        [ngModel]="textDraft.provider"
+                        [ngModelOptions]="{ standalone: true }"
+                        (ngModelChange)="updateTextMessagingDraft(atlas.id, 'provider', $any($event))"
+                      >
+                        <option [ngValue]="'twilio'">Twilio SMS webhook</option>
+                        <option [ngValue]="'vapi'">Vapi number record</option>
+                      </select>
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Phone number</span>
+                      <input
+                        type="tel"
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                        [value]="textDraft.phone_number"
+                        (input)="updateTextMessagingDraft(atlas.id, 'phone_number', $any($event.target).value)"
+                        placeholder="+1 864 734 3013"
+                      />
+                    </label>
+
+                    <label class="block lg:col-span-2">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Vapi phone number ID</span>
+                      <input
+                        type="text"
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                        [value]="textDraft.vapi_phone_number_id"
+                        (input)="updateTextMessagingDraft(atlas.id, 'vapi_phone_number_id', $any($event.target).value)"
+                        placeholder="c9dddd68-d5a2-4017-a41b-53df70419bea"
+                      />
+                    </label>
+
+                    <label class="block lg:col-span-2">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">SMS webhook URL</span>
+                      <input
+                        type="text"
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-xs"
+                        [value]="textDraft.webhook_url"
+                        readonly
+                      />
+                    </label>
+                  </div>
+
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
+                      [disabled]="isSavingTextMessaging(atlas.id)"
+                      (click)="saveTextMessagingConfig(atlas)"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">save</span>
+                      <span>{{ isSavingTextMessaging(atlas.id) ? 'Saving...' : 'Save text settings' }}</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 disabled:opacity-50"
+                      [disabled]="!textDraft.webhook_url"
+                      (click)="copyTextMessagingWebhook(atlas.id)"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">{{ copiedTextMessaging(atlas.id) ? 'done' : 'content_copy' }}</span>
+                      <span>{{ copiedTextMessaging(atlas.id) ? 'Copied' : 'Copy URL' }}</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:opacity-50"
+                      [disabled]="isSavingTextMessaging(atlas.id)"
+                      (click)="saveTextMessagingConfig(atlas, true)"
+                    >
+                      <span class="material-symbols-outlined text-[1rem]">sync_lock</span>
+                      <span>Rotate token</span>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="border-t border-[var(--line)]">
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-[var(--soft-fill)]"
               (click)="toggleChatGuideSection(atlas)"
               [attr.aria-expanded]="isSectionOpen(atlas, 'chat-guide')"
             >

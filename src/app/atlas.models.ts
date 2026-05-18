@@ -150,6 +150,18 @@ export interface AtlasNewsletterTestResult {
   messageId?: string | null;
 }
 
+export type AtlasTextMessagingProvider = 'twilio' | 'vapi';
+
+export interface AtlasTextMessagingConfig {
+  enabled: boolean;
+  provider: AtlasTextMessagingProvider;
+  phone_number: string | null;
+  vapi_phone_number_id: string | null;
+  webhook_token: string;
+  webhook_url: string;
+  updated_at?: { toDate(): Date } | Date | string | null;
+}
+
 export interface AtlasUsage {
   documents: number;
   wiki_articles: number;
