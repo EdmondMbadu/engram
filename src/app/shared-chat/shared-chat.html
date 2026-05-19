@@ -168,34 +168,34 @@
                                   <div class="flex min-w-0 flex-col p-4 sm:p-5">
                                     <div class="flex items-start justify-between gap-3">
                                       <div class="min-w-0">
-                                        <h4 class="text-lg font-black leading-snug text-[var(--text)]">{{ card.title }}</h4>
+                                        <h4 class="text-lg font-black leading-snug text-[var(--text)]">{{ cleanTravelCardText(card.title) }}</h4>
                                         @if (card.subtitle || card.neighborhood) {
-                                          <p class="mt-1 truncate text-xs font-bold text-[var(--muted)]">{{ card.neighborhood || card.subtitle }}</p>
+                                          <p class="mt-1 truncate text-xs font-bold text-[var(--muted)]">{{ cleanTravelCardText(card.neighborhood || card.subtitle) }}</p>
                                         }
                                       </div>
                                       @if (card.vibe) {
-                                        <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">{{ card.vibe }}</span>
+                                        <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">{{ cleanTravelCardText(card.vibe) }}</span>
                                       }
                                     </div>
 
-                                    <p class="mt-3 text-sm leading-6 text-[var(--text)]">{{ card.description }}</p>
+                                    <p class="mt-3 text-sm leading-6 text-[var(--text)]">{{ cleanTravelCardText(card.description) }}</p>
 
                                     <div class="mt-3 flex flex-wrap gap-2">
                                       @if (card.best_for) {
-                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">Best for {{ card.best_for }}</span>
+                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">Best for {{ cleanTravelCardText(card.best_for) }}</span>
                                       }
                                       @if (card.cost) {
-                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ card.cost }}</span>
+                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ cleanTravelCardText(card.cost) }}</span>
                                       }
                                       @if (card.time_hint) {
-                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ card.time_hint }}</span>
+                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ cleanTravelCardText(card.time_hint) }}</span>
                                       }
                                     </div>
 
                                     @if (card.local_tip) {
                                       <p class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-3 py-2.5 text-xs leading-5 text-[var(--muted)]">
                                         <span class="font-black text-[var(--text)]">Local move:</span>
-                                        {{ card.local_tip }}
+                                        {{ cleanTravelCardText(card.local_tip) }}
                                       </p>
                                     }
 

@@ -1654,8 +1654,8 @@ export class ChatComponent implements AfterViewChecked {
 
     const cards = guide.cards
       .map((card, index): TravelGuideCard | null => {
-        const title = card.title?.trim();
-        const description = card.description?.trim();
+        const title = this.cleanTravelCardText(card.title ?? '');
+        const description = this.cleanTravelCardText(card.description ?? '');
         if (!title || !description) {
           return null;
         }
@@ -1663,14 +1663,14 @@ export class ChatComponent implements AfterViewChecked {
         return {
           id: card.id?.trim() || `guide-card-${index + 1}`,
           title,
-          subtitle: card.subtitle?.trim() || null,
+          subtitle: card.subtitle ? this.cleanTravelCardText(card.subtitle) || null : null,
           description,
-          neighborhood: card.neighborhood?.trim() || null,
-          best_for: card.best_for?.trim() || null,
-          vibe: card.vibe?.trim() || null,
-          local_tip: card.local_tip?.trim() || null,
-          cost: card.cost?.trim() || null,
-          time_hint: card.time_hint?.trim() || null,
+          neighborhood: card.neighborhood ? this.cleanTravelCardText(card.neighborhood) || null : null,
+          best_for: card.best_for ? this.cleanTravelCardText(card.best_for) || null : null,
+          vibe: card.vibe ? this.cleanTravelCardText(card.vibe) || null : null,
+          local_tip: card.local_tip ? this.cleanTravelCardText(card.local_tip) || null : null,
+          cost: card.cost ? this.cleanTravelCardText(card.cost) || null : null,
+          time_hint: card.time_hint ? this.cleanTravelCardText(card.time_hint) || null : null,
           image_url: card.image_url?.trim() || null,
           map_query: card.map_query?.trim() || null,
           source_url: card.source_url?.trim() || null,
@@ -1706,6 +1706,22 @@ export class ChatComponent implements AfterViewChecked {
       `Map: ${this.travelCardMapUrl(card)}`,
     ].filter(Boolean);
     return lines.join('\n');
+  }
+
+  private cleanTravelCardText(value: string): string {
+    return value
+      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/^\s*#{1,6}\s*[^*#]+(?=\s+[-*+]\s+\*\*)/g, ' ')
+      .replace(/(^|\s)#{1,6}\s*/g, '$1')
+      .replace(/(^|\s)[*_]{1,3}([^*_]+)[*_]{1,3}(?=\s|$|[.,;:!?])/g, '$1$2')
+      .replace(/^\s*[-*+]\s+/gm, '')
+      .replace(/(^|\s)[-*+]\s+(?=\S)/g, '$1')
+      .replace(/[*_]{1,3}/g, '')
+      .replace(/\s+\*\s+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   private loadSavedTravelCardIds(): Record<string, boolean> {

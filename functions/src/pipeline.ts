@@ -847,7 +847,7 @@ function buildTravelGuideResponse(params: {
   const cityLabel = params.cityHint || params.atlasName || 'this wiki';
   const cards = locations.map((location, index) => {
     const sentence = findSentenceMentioning(params.answer, location.name);
-    const description = sentence || `A useful stop to consider for this ${cityLabel} answer.`;
+    const description = cleanTravelCardText(sentence || `A useful stop to consider for this ${cityLabel} answer.`);
     const bestFor = inferBestFor(params.question, description);
     const localTip = buildLocalTip(params.question);
 
@@ -1004,6 +1004,19 @@ function hasPlaceRecommendationAnswer(answer: string, locationCount: number): bo
 function findSentenceMentioning(answer: string, name: string): string | null {
   const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const namePattern = new RegExp(escapedName, 'i');
+  const markdownBlocks = answer
+    .replace(/\r\n/g, '\n')
+    .replace(/\s+(\d+\.\s+\*\*)/g, '\n$1')
+    .replace(/\s+([-*+]\s+\*\*)/g, '\n$1')
+    .replace(/\s+(\*\*[^*]{3,90}\*\*\s*(?:\([^)]*\))?:)/g, '\n$1')
+    .split(/\n+/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+  const blockMatch = markdownBlocks.find((block) => namePattern.test(block) && !/^#{1,6}\s/i.test(block));
+  if (blockMatch) {
+    return blockMatch;
+  }
+
   const sentences = answer
     .replace(/\s+/g, ' ')
     .split(/(?<=[.!?])\s+/)
@@ -1019,6 +1032,22 @@ function compactSentence(value: string, maxLength: number): string {
     return cleaned;
   }
   return `${cleaned.slice(0, maxLength - 1).trim()}...`;
+}
+
+function cleanTravelCardText(value: string): string {
+  return value
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^\s*#{1,6}\s*[^*#]+(?=\s+[-*+]\s+\*\*)/g, ' ')
+    .replace(/(^|\s)#{1,6}\s*/g, '$1')
+    .replace(/(^|\s)[*_]{1,3}([^*_]+)[*_]{1,3}(?=\s|$|[.,;:!?])/g, '$1$2')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/(^|\s)[-*+]\s+(?=\S)/g, '$1')
+    .replace(/[*_]{1,3}/g, '')
+    .replace(/\s+\*\s+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function inferBestFor(question: string, description: string): string | null {

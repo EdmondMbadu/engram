@@ -308,13 +308,29 @@ export class SharedChatComponent {
 
   private buildTravelCardShareText(card: TravelGuideCard): string {
     const lines = [
-      card.title,
-      card.neighborhood || card.subtitle || '',
-      card.description,
-      card.local_tip ? `Local move: ${card.local_tip}` : '',
+      this.cleanTravelCardText(card.title),
+      this.cleanTravelCardText(card.neighborhood || card.subtitle || ''),
+      this.cleanTravelCardText(card.description),
+      card.local_tip ? `Local move: ${this.cleanTravelCardText(card.local_tip)}` : '',
       `Map: ${this.travelCardMapUrl(card)}`,
     ].filter((line) => line.trim());
     return lines.join('\n');
+  }
+
+  cleanTravelCardText(value: string | null | undefined): string {
+    return (value ?? '')
+      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/^\s*#{1,6}\s*[^*#]+(?=\s+[-*+]\s+\*\*)/g, ' ')
+      .replace(/(^|\s)#{1,6}\s*/g, '$1')
+      .replace(/(^|\s)[*_]{1,3}([^*_]+)[*_]{1,3}(?=\s|$|[.,;:!?])/g, '$1$2')
+      .replace(/^\s*[-*+]\s+/gm, '')
+      .replace(/(^|\s)[-*+]\s+(?=\S)/g, '$1')
+      .replace(/[*_]{1,3}/g, '')
+      .replace(/\s+\*\s+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   private async copyText(target: string, text: string): Promise<void> {

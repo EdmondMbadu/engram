@@ -547,22 +547,22 @@ export class ChatService {
               return null;
             }
             const card = item as Record<string, unknown>;
-            const title = typeof card['title'] === 'string' ? card['title'].trim() : '';
-            const description = typeof card['description'] === 'string' ? card['description'].trim() : '';
+            const title = this.cleanCardText(typeof card['title'] === 'string' ? card['title'] : '');
+            const description = this.cleanCardText(typeof card['description'] === 'string' ? card['description'] : '');
             if (!title || !description) {
               return null;
             }
             return {
               id: typeof card['id'] === 'string' && card['id'].trim() ? card['id'].trim() : `guide-card-${index + 1}`,
               title,
-              subtitle: typeof card['subtitle'] === 'string' ? card['subtitle'].trim() || null : null,
+              subtitle: typeof card['subtitle'] === 'string' ? this.cleanCardText(card['subtitle']) || null : null,
               description,
-              neighborhood: typeof card['neighborhood'] === 'string' ? card['neighborhood'].trim() || null : null,
-              best_for: typeof card['best_for'] === 'string' ? card['best_for'].trim() || null : null,
-              vibe: typeof card['vibe'] === 'string' ? card['vibe'].trim() || null : null,
-              local_tip: typeof card['local_tip'] === 'string' ? card['local_tip'].trim() || null : null,
-              cost: typeof card['cost'] === 'string' ? card['cost'].trim() || null : null,
-              time_hint: typeof card['time_hint'] === 'string' ? card['time_hint'].trim() || null : null,
+              neighborhood: typeof card['neighborhood'] === 'string' ? this.cleanCardText(card['neighborhood']) || null : null,
+              best_for: typeof card['best_for'] === 'string' ? this.cleanCardText(card['best_for']) || null : null,
+              vibe: typeof card['vibe'] === 'string' ? this.cleanCardText(card['vibe']) || null : null,
+              local_tip: typeof card['local_tip'] === 'string' ? this.cleanCardText(card['local_tip']) || null : null,
+              cost: typeof card['cost'] === 'string' ? this.cleanCardText(card['cost']) || null : null,
+              time_hint: typeof card['time_hint'] === 'string' ? this.cleanCardText(card['time_hint']) || null : null,
               image_url: typeof card['image_url'] === 'string' ? card['image_url'].trim() || null : null,
               map_query: typeof card['map_query'] === 'string' ? card['map_query'].trim() || null : null,
               source_url: typeof card['source_url'] === 'string' ? card['source_url'].trim() || null : null,
@@ -604,5 +604,21 @@ export class ChatService {
       return value as { toDate(): Date };
     }
     return null;
+  }
+
+  private cleanCardText(value: string): string {
+    return value
+      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/^\s*#{1,6}\s*[^*#]+(?=\s+[-*+]\s+\*\*)/g, ' ')
+      .replace(/(^|\s)#{1,6}\s*/g, '$1')
+      .replace(/(^|\s)[*_]{1,3}([^*_]+)[*_]{1,3}(?=\s|$|[.,;:!?])/g, '$1$2')
+      .replace(/^\s*[-*+]\s+/gm, '')
+      .replace(/(^|\s)[-*+]\s+(?=\S)/g, '$1')
+      .replace(/[*_]{1,3}/g, '')
+      .replace(/\s+\*\s+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 }
