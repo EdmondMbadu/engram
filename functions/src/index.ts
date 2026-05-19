@@ -2221,7 +2221,7 @@ export const vapiLivingWikiTool = onRequest(
 
       const toolCalls = extractVapiToolCalls(req.body);
       if (toolCalls.length === 0) {
-        res.status(400).send({ error: 'No Vapi tool calls were found in the request.' });
+        res.status(200).send({ ok: true, ignored: true });
         return;
       }
 

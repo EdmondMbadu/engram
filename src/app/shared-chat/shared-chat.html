@@ -124,6 +124,42 @@
                         </div>
                       }
                       <div class="chat-message-footer">
+                        @if (canShowAnswerCardAction(msg)) {
+                          @if (answerCardLinks()[msg.id]) {
+                            <a
+                              class="chat-inline-action chat-inline-action--card"
+                              [routerLink]="answerCardLinks()[msg.id]"
+                              aria-label="Open Philly Answer Card"
+                              data-tooltip="Open card"
+                            >
+                              <span class="material-symbols-outlined">style</span>
+                            </a>
+                          } @else if (canCreateAnswerCard(msg)) {
+                            <button
+                              type="button"
+                              class="chat-inline-action chat-inline-action--card"
+                              [disabled]="creatingAnswerCardId() === msg.id"
+                              [attr.aria-label]="creatingAnswerCardId() === msg.id ? 'Making Philly Answer Card' : 'Make Philly Answer Card'"
+                              [attr.data-tooltip]="creatingAnswerCardId() === msg.id ? 'Making card' : 'Make card'"
+                              (click)="createAnswerCardForMessage(msg)"
+                            >
+                              @if (creatingAnswerCardId() === msg.id) {
+                                <span class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                              } @else {
+                                <span class="material-symbols-outlined">style</span>
+                              }
+                            </button>
+                          } @else {
+                            <a
+                              class="chat-inline-action chat-inline-action--card"
+                              routerLink="/sign-in"
+                              aria-label="Sign in to make Philly Answer Card"
+                              data-tooltip="Sign in for card"
+                            >
+                              <span class="material-symbols-outlined">style</span>
+                            </a>
+                          }
+                        }
                         <button
                           type="button"
                           class="chat-inline-action"
@@ -135,6 +171,9 @@
                           <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
                         </button>
                       </div>
+                      @if (answerCardErrorMessageId() === msg.id && answerCardError()) {
+                        <p class="mt-2 text-xs font-bold text-red-500">{{ answerCardError() }}</p>
+                      }
                     </div>
                   </div>
                 </div>
