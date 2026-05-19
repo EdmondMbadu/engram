@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, input, signal } from '@angular/core';
+import { Component, HostListener, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AtlasService } from '../atlas.service';
 
@@ -13,6 +13,11 @@ export class MobileMenuComponent {
   readonly activePage = input<string>('home');
   readonly publicSlug = input<string | null>(null);
   readonly hidePublicKnowledgeSurfaces = input<boolean>(false);
+  readonly showJoinAction = input<boolean>(false);
+  readonly joinLabel = input<string>('Join for Free');
+  readonly showSignInAction = input<boolean>(false);
+  readonly signInQueryParams = input<{ redirectTo: string } | null>(null);
+  readonly join = output<void>();
 
   readonly menuOpen = signal(false);
 
@@ -35,6 +40,11 @@ export class MobileMenuComponent {
 
   closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  openJoin(): void {
+    this.closeMenu();
+    this.join.emit();
   }
 
   shouldShowItem(key: string, workspaceOnly?: boolean): boolean {

@@ -12,13 +12,15 @@
 @if (menuOpen()) {
   <!-- Backdrop -->
   <div
-    class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm animate-fade-in"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
+    style="z-index: 9998;"
     (click)="closeMenu()"
   ></div>
 
   <!-- Drawer -->
   <aside
-    class="fixed inset-y-0 left-0 z-[70] flex w-72 flex-col bg-[var(--sidebar)] border-r border-[var(--line)] shadow-[var(--shadow-elevated)] animate-slide-in-left"
+    class="fixed inset-y-0 left-0 flex w-72 max-w-[88vw] flex-col bg-[var(--sidebar)] border-r border-[var(--line)] shadow-[var(--shadow-elevated)] animate-slide-in-left"
+    style="z-index: 9999;"
   >
     <!-- Header -->
     <div class="flex items-center justify-between px-5 py-5">
@@ -74,15 +76,28 @@
     </nav>
 
     <!-- Bottom -->
-    <div class="mt-auto space-y-1 border-t border-[var(--line)] px-4 pt-4 pb-6">
-      <a
-        href="#"
-        class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
-        (click)="closeMenu()"
-      >
-        <span class="material-symbols-outlined text-[1.2rem]">settings</span>
-        <span>Settings</span>
-      </a>
+    <div class="mt-auto space-y-2 border-t border-[var(--line)] px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4">
+      @if (showJoinAction()) {
+        <button
+          type="button"
+          class="primary-btn flex w-full items-center justify-center gap-2 !px-4 !py-3 text-sm"
+          (click)="openJoin()"
+        >
+          <span class="material-symbols-outlined text-[1.1rem]">mark_email_read</span>
+          <span>{{ joinLabel() }}</span>
+        </button>
+      }
+      @if (showSignInAction()) {
+        <a
+          routerLink="/sign-in"
+          [queryParams]="signInQueryParams()"
+          class="ghost-btn flex w-full items-center justify-center gap-2 !px-4 !py-3 text-sm"
+          (click)="closeMenu()"
+        >
+          <span class="material-symbols-outlined text-[1.1rem]">login</span>
+          <span>Sign in</span>
+        </a>
+      }
     </div>
   </aside>
 }

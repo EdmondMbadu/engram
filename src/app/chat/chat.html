@@ -144,20 +144,29 @@
     </aside>
 
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
-      <header class="theme-nav sticky top-0 z-40 flex min-h-16 flex-wrap items-start justify-between gap-y-3 border-b px-5 py-3 backdrop-blur-xl md:h-16 md:flex-nowrap md:items-center md:py-0 md:px-8">
+      <header class="theme-nav sticky top-0 z-[180] flex min-h-16 flex-nowrap items-center justify-between gap-3 border-b px-4 py-3 backdrop-blur-xl md:h-16 md:py-0 md:px-8">
         <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-8">
-          <app-mobile-menu activePage="chat" [publicSlug]="routeSlug()" [hidePublicKnowledgeSurfaces]="hidePublicSourceFiles()"></app-mobile-menu>
+          <app-mobile-menu
+            activePage="chat"
+            [publicSlug]="routeSlug()"
+            [hidePublicKnowledgeSurfaces]="hidePublicSourceFiles()"
+            [showJoinAction]="canSubscribeToCurrentWiki()"
+            [joinLabel]="isSignedIn() ? 'Subscribe' : 'Join for Free'"
+            [showSignInAction]="!isSignedIn()"
+            [signInQueryParams]="signInQueryParams()"
+            (join)="openSubscribeModal()"
+          ></app-mobile-menu>
           <div class="min-w-0">
-            <h1 class="text-2xl font-black tracking-[-0.06em] text-[var(--text)]">{{ pageTitle() }}</h1>
+            <h1 class="truncate text-lg font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.06em]">{{ pageTitle() }}</h1>
             @if (pageSubtitle()) {
-              <p class="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">{{ pageSubtitle() }}</p>
+              <p class="hidden truncate text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block">{{ pageSubtitle() }}</p>
             }
           </div>
         </div>
 
-        <div class="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:justify-end md:gap-3">
+        <div class="ml-auto flex w-auto shrink-0 flex-nowrap items-center justify-end gap-2 md:gap-3">
           @if (canUseAnswerModeToggle() && hasMessages()) {
-            <div class="chat-mode-toggle flex items-center">
+            <div class="chat-mode-toggle hidden items-center sm:flex">
               <button
                 type="button"
                 class="chat-mode-toggle__button"
@@ -179,7 +188,7 @@
           @if (canStartFreshChat()) {
             <button
               type="button"
-              class="ghost-btn !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              class="ghost-btn hidden !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
               (click)="newChat()"
             >
               New chat
@@ -188,7 +197,7 @@
           @if (currentWikiAdminLink(); as adminLink) {
             <a
               [routerLink]="adminLink"
-              class="ghost-btn inline-flex items-center gap-2 !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              class="ghost-btn hidden items-center gap-2 !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
               aria-label="Open wiki admin"
             >
               <span class="material-symbols-outlined text-base">admin_panel_settings</span>
@@ -198,7 +207,7 @@
           @if (canSubscribeToCurrentWiki()) {
             <button
               type="button"
-              class="primary-btn inline-flex items-center gap-2 !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              class="primary-btn hidden items-center gap-2 !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
               (click)="openSubscribeModal()"
             >
               <span class="material-symbols-outlined text-base">mark_email_read</span>
@@ -208,7 +217,7 @@
           @if (canShareActiveThread()) {
             <button
               type="button"
-              class="ghost-btn !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              class="ghost-btn hidden !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
               (click)="openShareModal()"
             >
               {{ activeThreadIsShared() ? 'Shared' : 'Share chat' }}
@@ -217,7 +226,7 @@
           @if (hasMessages()) {
             <button
               type="button"
-              class="ghost-btn !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em]"
+              class="ghost-btn hidden !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
               (click)="copyWholeChat()"
             >
               {{ copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat' }}
@@ -228,7 +237,7 @@
           }
           <app-theme-toggle></app-theme-toggle>
           @if (!isSignedIn()) {
-            <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn !px-4 !py-2.5 text-sm">Sign in</a>
+            <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn hidden !px-4 !py-2.5 text-sm sm:inline-flex">Sign in</a>
           } @else {
             <div class="avatar-menu-wrapper relative">
               <button
@@ -906,7 +915,7 @@
         </div>
 
         @if (hasMessages()) {
-          <div class="border-t border-[var(--line)] bg-[var(--bg)]/85 backdrop-blur-xl">
+          <div class="relative z-0 border-t border-[var(--line)] bg-[var(--bg)]/85 backdrop-blur-xl">
             <div class="mx-auto w-full max-w-4xl px-5 py-4 md:px-8">
               <div class="chat-premium-composer chat-premium-composer--compact">
                 <textarea
@@ -1027,54 +1036,54 @@
   }
 
   @if (subscribeModalOpen()) {
-    <div class="fixed inset-0 z-50 flex items-end justify-center p-4 md:items-center md:p-8">
+    <div class="fixed inset-0 flex items-end justify-center p-2 sm:p-4 md:items-center md:p-8" style="z-index: 10000;">
       <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" (click)="closeSubscribeModal()"></div>
-      <div class="relative w-full max-w-xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-[var(--surface)] shadow-[var(--shadow-elevated)]">
-        <div class="relative overflow-hidden border-b border-white/5 px-6 py-5">
+      <div class="relative max-h-[calc(100dvh-1rem)] w-full max-w-xl overflow-y-auto rounded-t-[1.5rem] border border-white/10 bg-[var(--surface)] shadow-[var(--shadow-elevated)] sm:rounded-[1.75rem]">
+        <div class="relative overflow-hidden border-b border-white/5 px-4 py-4 sm:px-6 sm:py-5">
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(214,169,74,0.14),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.06),transparent_55%)]"></div>
           <div class="relative flex items-start justify-between gap-4">
-          <div>
-            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Free Living Wiki access</p>
-            <h2 class="mt-2 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">
-              @if (isSignedIn()) {
-                Subscribe to {{ currentWikiName() || 'this wiki' }}
-              } @else {
-                Join Living Wiki {{ currentWikiName() || 'this wiki' }}
-              }
-            </h2>
-            <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
-              Get the weekly Philly brief now. Phone access and the rest of the member perks unlock once you join.
-            </p>
-          </div>
-          <button
-            type="button"
-            class="rounded-full p-2 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)] disabled:opacity-50"
-            [disabled]="isSubscribing()"
-            (click)="closeSubscribeModal()"
-            aria-label="Close subscribe dialog"
-          >
-            <span class="material-symbols-outlined text-lg">close</span>
-          </button>
+            <div class="min-w-0">
+              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] sm:tracking-[0.24em]">Free Living Wiki access</p>
+              <h2 class="mt-2 text-xl font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.05em]">
+                @if (isSignedIn()) {
+                  Subscribe to {{ currentWikiName() || 'this wiki' }}
+                } @else {
+                  Join Living Wiki {{ currentWikiName() || 'this wiki' }}
+                }
+              </h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:leading-7">
+                Get the weekly Philly brief now. Phone access and the rest of the member perks unlock once you join.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="shrink-0 rounded-full p-2 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)] disabled:opacity-50"
+              [disabled]="isSubscribing()"
+              (click)="closeSubscribeModal()"
+              aria-label="Close subscribe dialog"
+            >
+              <span class="material-symbols-outlined text-lg">close</span>
+            </button>
           </div>
         </div>
 
-        <form class="space-y-5 px-6 py-6" (submit)="subscribeToUpdates($event)">
+        <form class="space-y-4 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:space-y-5 sm:px-6 sm:py-6" (submit)="subscribeToUpdates($event)">
           <div class="grid gap-2.5">
-            <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3">
+            <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">mark_email_read</span>
               <div>
                 <p class="text-sm font-black text-[var(--text)]">Weekly updates on {{ currentWikiName() || 'this Living Wiki' }}</p>
                 <p class="mt-1 text-xs leading-5 text-[var(--muted)]">A concise local digest so Philly does not sneak important things past you.</p>
               </div>
             </div>
-            <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3">
+            <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">chat</span>
               <div>
                 <p class="text-sm font-black text-[var(--text)]">Ask the wiki anytime</p>
                 <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Use the public chat for real-time answers about neighborhoods, food, history, routes, and local details.</p>
               </div>
             </div>
-            <div class="flex gap-3 rounded-2xl border border-[var(--accent)]/20 bg-[linear-gradient(135deg,rgba(255,255,255,0.065),rgba(255,255,255,0.025))] px-4 py-3">
+            <div class="flex gap-3 rounded-2xl border border-[var(--accent)]/20 bg-[linear-gradient(135deg,rgba(255,255,255,0.065),rgba(255,255,255,0.025))] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">phone_in_talk</span>
               <div>
                 <p class="text-sm font-black text-[var(--text)]">Call the Philly guide</p>
@@ -1088,7 +1097,7 @@
                 }
               </div>
             </div>
-            <div class="flex gap-3 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-3">
+            <div class="flex gap-3 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--muted)]">lock_open</span>
               <div>
                 <p class="text-sm font-black text-[var(--text)]">More access after joining</p>
@@ -1122,7 +1131,7 @@
             </div>
           }
 
-          <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <div class="sticky bottom-0 -mx-4 flex flex-col-reverse gap-3 border-t border-white/5 bg-[var(--surface)] px-4 pt-3 sm:static sm:mx-0 sm:flex-row sm:justify-end sm:border-0 sm:bg-transparent sm:px-0 sm:pt-0">
             <button type="button" class="ghost-btn justify-center !px-4 !py-3 text-sm" [disabled]="isSubscribing()" (click)="closeSubscribeModal()">
               Close
             </button>
