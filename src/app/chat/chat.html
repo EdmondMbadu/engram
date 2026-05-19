@@ -617,8 +617,16 @@
                                             />
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent"></div>
                                           } @else {
-                                            <div class="flex h-full min-h-40 items-center justify-center bg-[linear-gradient(135deg,rgba(20,184,166,0.22),rgba(234,179,8,0.18),rgba(244,63,94,0.18))]">
-                                              <span class="text-3xl font-black text-white/80">{{ card.title.slice(0, 1) }}</span>
+                                            <div
+                                              class="relative flex h-full min-h-40 items-center justify-center overflow-hidden"
+                                              [style.background]="travelCardVisualBackground(card, i)"
+                                            >
+                                              <div class="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.34),transparent_28%),linear-gradient(to_top,rgba(0,0,0,0.48),transparent_64%)]"></div>
+                                              <div class="absolute right-[-1.6rem] top-[-1.6rem] h-24 w-24 rounded-full border border-white/20"></div>
+                                              <div class="absolute bottom-5 right-5 h-14 w-14 rounded-full border border-white/15"></div>
+                                              <div class="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-white/25 bg-white/16 text-white shadow-[0_16px_32px_rgba(0,0,0,0.24)] backdrop-blur">
+                                                <span class="material-symbols-outlined text-3xl">{{ travelCardVisualIcon(card) }}</span>
+                                              </div>
                                             </div>
                                           }
                                           <div class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-xs font-black text-white ring-1 ring-white/20 backdrop-blur">

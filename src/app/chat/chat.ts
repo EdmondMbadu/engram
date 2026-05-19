@@ -1026,11 +1026,46 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   travelCardImageUrl(card: TravelGuideCard): string | null {
-    return card.image_url?.trim() || this.currentWikiGuide()?.banner_url?.trim() || this.currentWikiAtlas()?.hero_url?.trim() || null;
+    return card.image_url?.trim() || null;
   }
 
   travelGuideHeroImage(): string | null {
     return this.currentWikiGuide()?.banner_url?.trim() || this.currentWikiAtlas()?.hero_url?.trim() || null;
+  }
+
+  travelCardVisualBackground(card: TravelGuideCard, index: number): string {
+    const palettes = [
+      ['#0f766e', '#f59e0b', '#7f1d1d'],
+      ['#1d4ed8', '#14b8a6', '#312e81'],
+      ['#7c2d12', '#eab308', '#be123c'],
+      ['#166534', '#84cc16', '#0f172a'],
+      ['#6d28d9', '#db2777', '#111827'],
+      ['#0e7490', '#f97316', '#1f2937'],
+    ];
+    const key = `${card.title}|${card.neighborhood ?? ''}|${index}`;
+    const hash = Array.from(key).reduce((total, char) => total + char.charCodeAt(0), 0);
+    const palette = palettes[Math.abs(hash) % palettes.length];
+    return `linear-gradient(135deg, ${palette[0]} 0%, ${palette[1]} 54%, ${palette[2]} 100%)`;
+  }
+
+  travelCardVisualIcon(card: TravelGuideCard): string {
+    const text = `${card.title} ${card.best_for ?? ''} ${card.vibe ?? ''}`.toLowerCase();
+    if (/(food|steak|cheese|restaurant|sandwich|bar|coffee|market|eat|drink)/.test(text)) {
+      return 'restaurant';
+    }
+    if (/(museum|history|historic|hall|art|gallery|library)/.test(text)) {
+      return 'museum';
+    }
+    if (/(park|trail|river|garden|outdoor|walk)/.test(text)) {
+      return 'park';
+    }
+    if (/(music|show|theater|night|club|venue)/.test(text)) {
+      return 'local_activity';
+    }
+    if (/(shop|store|market|boutique)/.test(text)) {
+      return 'storefront';
+    }
+    return 'place';
   }
 
   guideQuote(): string {
