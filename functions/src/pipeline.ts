@@ -1,6 +1,6 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
-import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, extractMappableLocations, mergeWikiArticle, planArticleMerge, summarizeTopic } from './gemini';
+import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, mergeWikiArticle, planArticleMerge, summarizeTopic } from './gemini';
 import { db, storage } from './firebase';
 import { extractBlocksFromBuffer, extractBlocksFromUrl } from './extractors';
 import {
@@ -881,6 +881,46 @@ function buildTravelGuideResponse(params: {
   };
 }
 
+function buildFastAnswerPresentation(params: {
+  question: string;
+  answer: string;
+  atlasName: string | null;
+  cityHint: string | null;
+}): {
+  mappableLocations: MappableLocation[];
+  travelGuide: TravelGuideStructuredResponse | null;
+} {
+  const localLocations = dedupeMappableLocations(
+    extractTravelLocationCandidates(params.answer, params.cityHint || params.atlasName),
+  ).slice(0, 6);
+
+  const travelGuide = buildTravelGuideResponse({
+    question: params.question,
+    answer: params.answer,
+    atlasName: params.atlasName,
+    cityHint: params.cityHint,
+    mappableLocations: localLocations,
+  });
+
+  if (!travelGuide) {
+    return {
+      mappableLocations: [],
+      travelGuide: null,
+    };
+  }
+
+  const cardLocations = travelGuide.cards.map((card) => ({
+    name: card.title,
+    search_query: card.map_query || [card.title, params.cityHint].filter(Boolean).join(' '),
+    address_hint: card.neighborhood || card.subtitle || null,
+  }));
+
+  return {
+    mappableLocations: dedupeMappableLocations([...localLocations, ...cardLocations]).slice(0, 6),
+    travelGuide,
+  };
+}
+
 function dedupeMappableLocations(locations: MappableLocation[]): MappableLocation[] {
   const deduped = new Map<string, MappableLocation>();
   for (const location of locations) {
@@ -1211,18 +1251,11 @@ export async function runAtlasQuery(params: {
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt,
     });
-    const mappableLocations = await extractMappableLocations({
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: response.answer,
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
-    });
-    const travelGuide = buildTravelGuideResponse({
-      question: trimmedQuestion,
-      answer: response.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
-      mappableLocations,
     });
 
     await recordChatThreadExchange({
@@ -1261,18 +1294,11 @@ export async function runAtlasQuery(params: {
   });
 
   if (articleResult) {
-    const mappableLocations = await extractMappableLocations({
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: articleResult.answer,
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
-    });
-    const travelGuide = buildTravelGuideResponse({
-      question: trimmedQuestion,
-      answer: articleResult.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
-      mappableLocations,
     });
 
     logger.info('Atlas query answered from wiki articles', {
@@ -1387,18 +1413,11 @@ export async function runAtlasQuery(params: {
       ? response.answer.trim()
       : 'I could not generate a reliable answer for this question from the current knowledge base.';
   const knowledgeGap = typeof response.knowledge_gap === 'boolean' ? response.knowledge_gap : citedEntryIds.length === 0;
-  const mappableLocations = await extractMappableLocations({
+  const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
     question: trimmedQuestion,
     answer: safeAnswer,
     atlasName: atlasMapContext.atlasName,
     cityHint: atlasMapContext.cityHint,
-  });
-  const travelGuide = buildTravelGuideResponse({
-    question: trimmedQuestion,
-    answer: safeAnswer,
-    atlasName: atlasMapContext.atlasName,
-    cityHint: atlasMapContext.cityHint,
-    mappableLocations,
   });
 
   await recordChatThreadExchange({
@@ -1503,18 +1522,11 @@ export async function runPublicAtlasQuery(params: {
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
       personaPrompt,
     });
-    const mappableLocations = await extractMappableLocations({
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: response.answer,
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
-    });
-    const travelGuide = buildTravelGuideResponse({
-      question: trimmedQuestion,
-      answer: response.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
-      mappableLocations,
     });
 
     await recordPublicChatThreadExchange({
@@ -1563,18 +1575,11 @@ export async function runPublicAtlasQuery(params: {
   });
 
   if (articleResult) {
-    const mappableLocations = await extractMappableLocations({
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: articleResult.answer,
       atlasName: atlasMapContext.atlasName,
       cityHint: atlasMapContext.cityHint,
-    });
-    const travelGuide = buildTravelGuideResponse({
-      question: trimmedQuestion,
-      answer: articleResult.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
-      mappableLocations,
     });
 
     await recordPublicChatThreadExchange({
@@ -1700,18 +1705,11 @@ export async function runPublicAtlasQuery(params: {
         : citedEntryIds.length === 0;
   }
 
-  const mappableLocations = await extractMappableLocations({
+  const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
     question: trimmedQuestion,
     answer,
     atlasName: atlasMapContext.atlasName,
     cityHint: atlasMapContext.cityHint,
-  });
-  const travelGuide = buildTravelGuideResponse({
-    question: trimmedQuestion,
-    answer,
-    atlasName: atlasMapContext.atlasName,
-    cityHint: atlasMapContext.cityHint,
-    mappableLocations,
   });
 
   await recordPublicChatThreadExchange({
