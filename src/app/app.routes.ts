@@ -21,6 +21,7 @@ import { AnswerCardComponent } from './answer-card/answer-card';
 import { AnswerQuizComponent } from './answer-quiz/answer-quiz';
 import { GreenJobsComponent } from './green-jobs/green-jobs';
 import { CityPulseAdminComponent } from './city-pulse-admin/city-pulse-admin';
+import { NotFoundComponent } from './not-found/not-found';
 import { authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
@@ -53,4 +54,5 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent, title: 'Forgot Password | Living Wiki', canActivate: [guestOnlyGuard] },
   { path: 'verify-email', component: VerifyEmailComponent, title: 'Verify Email | Living Wiki' },
   { path: 'auth/action', component: AuthActionComponent, title: 'Account Action | Living Wiki' },
+  { path: '**', component: NotFoundComponent, title: 'Page Not Found | Living Wiki' },
 ];

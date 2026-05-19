@@ -1,0 +1,46 @@
+<div class="min-h-screen overflow-hidden bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--line)_1px,transparent_1px),linear-gradient(to_bottom,var(--line)_1px,transparent_1px)] bg-[size:72px_72px] opacity-[0.18]"></div>
+  <div class="absolute inset-x-0 top-0 -z-10 h-64 bg-[linear-gradient(to_bottom,rgba(59,175,98,0.14),transparent)]"></div>
+
+  <header class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-10">
+    <a routerLink="/" class="flex items-center gap-3 text-base font-bold tracking-tight text-[var(--text)]">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-1.5 shadow-[var(--shadow-floating)]">
+        <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+      </span>
+      <span>Living Wiki</span>
+    </a>
+    <app-theme-toggle></app-theme-toggle>
+  </header>
+
+  <main class="mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl items-center justify-center px-4 pb-16 sm:px-6 lg:px-10">
+    <section class="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+      <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--panel-strong)] px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-[var(--accent-soft)] shadow-[var(--shadow-floating)]">
+        <span class="material-symbols-outlined text-base">travel_explore</span>
+        Page not found
+      </div>
+
+      <div class="relative mb-8 flex h-28 w-28 items-center justify-center rounded-[2rem] border border-[var(--line-strong)] bg-[var(--surface)] shadow-[var(--shadow-elevated)] sm:h-32 sm:w-32">
+        <span class="absolute inset-3 rounded-[1.5rem] border border-[var(--line)]"></span>
+        <span class="material-symbols-outlined text-5xl text-[var(--accent)] sm:text-6xl">map_search</span>
+      </div>
+
+      <p class="text-sm font-bold uppercase tracking-[0.32em] text-[var(--muted)]">404</p>
+      <h1 class="mt-4 max-w-2xl text-4xl font-bold leading-tight tracking-tight text-[var(--text)] sm:text-6xl">
+        This path drifted off the atlas.
+      </h1>
+      <p class="mt-5 max-w-xl text-base leading-8 text-[var(--muted)] sm:text-lg">
+        The page you entered does not exist. Head back to the landing page or open your wiki home.
+      </p>
+
+      <div class="mt-10 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:flex-row">
+        <a routerLink="/" class="primary-btn justify-center !px-6 !py-3.5 text-sm">
+          <span class="material-symbols-outlined mr-2 text-base">home</span>
+          Back to landing page
+        </a>
+        <a routerLink="/home" class="secondary-btn justify-center !px-6 !py-3.5 text-sm">
+          My wikis
+        </a>
+      </div>
+    </section>
+  </main>
+</div>
