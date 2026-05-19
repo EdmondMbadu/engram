@@ -128,8 +128,8 @@
 
                           <div class="grid gap-4 p-3 pt-0 sm:p-4 sm:pt-0 lg:grid-cols-2">
                             @for (card of guide.cards; track card.id; let i = $index) {
-                              <article class="group overflow-hidden rounded-2xl border border-white/10 bg-[var(--surface)] shadow-[0_14px_38px_rgba(0,0,0,0.16)]">
-                                <div class="grid min-h-full sm:grid-cols-[10rem,1fr]">
+                              <article class="group overflow-hidden rounded-2xl border border-white/[0.12] bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.025))] shadow-[0_18px_46px_rgba(0,0,0,0.18)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/25 hover:shadow-[0_22px_60px_rgba(0,0,0,0.24)]">
+                                <div class="grid min-h-full sm:grid-cols-[9.5rem,1fr]">
                                   <div class="relative min-h-40 overflow-hidden bg-white/5 sm:min-h-full">
                                     @if (travelCardImageUrl(card); as cardImageUrl) {
                                       <img
@@ -144,11 +144,11 @@
                                         class="relative flex h-full min-h-40 items-center justify-center overflow-hidden"
                                         [style.background]="travelCardVisualBackground(card, i)"
                                       >
-                                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.34),transparent_28%),linear-gradient(to_top,rgba(0,0,0,0.48),transparent_64%)]"></div>
-                                        <div class="absolute right-[-1.6rem] top-[-1.6rem] h-24 w-24 rounded-full border border-white/20"></div>
-                                        <div class="absolute bottom-5 right-5 h-14 w-14 rounded-full border border-white/15"></div>
-                                        <div class="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-white/25 bg-white/16 text-white shadow-[0_16px_32px_rgba(0,0,0,0.24)] backdrop-blur">
-                                          <span class="material-symbols-outlined text-3xl">{{ travelCardVisualIcon(card) }}</span>
+                                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_26%_18%,rgba(255,255,255,0.32),transparent_27%),linear-gradient(to_top,rgba(0,0,0,0.5),transparent_66%)]"></div>
+                                        <div class="absolute right-[-1.75rem] top-[-1.75rem] h-24 w-24 rounded-full border border-white/[0.18]"></div>
+                                        <div class="absolute bottom-5 right-5 h-12 w-12 rounded-full border border-white/[0.14]"></div>
+                                        <div class="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.22] bg-white/[0.14] text-white shadow-[0_18px_34px_rgba(0,0,0,0.26)] backdrop-blur">
+                                          <span class="material-symbols-outlined text-[2rem]">{{ travelCardVisualIcon(card) }}</span>
                                         </div>
                                       </div>
                                     }
@@ -170,33 +170,50 @@
                                       <div class="min-w-0">
                                         <h4 class="text-lg font-black leading-snug text-[var(--text)]">{{ cleanTravelCardText(card.title) }}</h4>
                                         @if (card.subtitle || card.neighborhood) {
-                                          <p class="mt-1 truncate text-xs font-bold text-[var(--muted)]">{{ cleanTravelCardText(card.neighborhood || card.subtitle) }}</p>
+                                          <p class="mt-1 inline-flex max-w-full items-center gap-1.5 truncate text-xs font-bold text-[var(--muted)]">
+                                            <span class="material-symbols-outlined text-[0.9rem] text-[var(--accent)]">location_on</span>
+                                            <span class="truncate">{{ cleanTravelCardText(card.neighborhood || card.subtitle) }}</span>
+                                          </p>
                                         }
                                       </div>
                                       @if (card.vibe) {
-                                        <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">{{ cleanTravelCardText(card.vibe) }}</span>
+                                        <span class="shrink-0 rounded-full border border-white/[0.12] bg-white/[0.06] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">{{ cleanTravelCardText(card.vibe) }}</span>
                                       }
                                     </div>
 
-                                    <p class="mt-3 text-sm leading-6 text-[var(--text)]">{{ cleanTravelCardText(card.description) }}</p>
+                                    <p class="mt-3 text-[0.92rem] leading-6 text-[var(--text)]">{{ travelCardDescription(card) }}</p>
 
-                                    <div class="mt-3 flex flex-wrap gap-2">
+                                    <div class="mt-4 flex flex-wrap gap-2">
                                       @if (card.best_for) {
-                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">Best for {{ cleanTravelCardText(card.best_for) }}</span>
+                                        <span class="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold text-[var(--muted)]">
+                                          <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">target</span>
+                                          <span class="text-[var(--muted)]">Best for</span>
+                                          <span class="text-[var(--text)]">{{ cleanTravelCardText(card.best_for) }}</span>
+                                        </span>
                                       }
                                       @if (card.cost) {
-                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ cleanTravelCardText(card.cost) }}</span>
+                                        <span class="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold text-[var(--muted)]">
+                                          <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">payments</span>
+                                          {{ cleanTravelCardText(card.cost) }}
+                                        </span>
                                       }
                                       @if (card.time_hint) {
-                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ cleanTravelCardText(card.time_hint) }}</span>
+                                        <span class="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold text-[var(--muted)]">
+                                          <span class="material-symbols-outlined text-[0.95rem] text-[var(--accent)]">schedule</span>
+                                          {{ cleanTravelCardText(card.time_hint) }}
+                                        </span>
                                       }
                                     </div>
 
                                     @if (card.local_tip) {
-                                      <p class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-3 py-2.5 text-xs leading-5 text-[var(--muted)]">
-                                        <span class="font-black text-[var(--text)]">Local move:</span>
-                                        {{ cleanTravelCardText(card.local_tip) }}
-                                      </p>
+                                      <div class="mt-4 flex gap-3 rounded-2xl border border-[var(--accent)]/20 bg-[linear-gradient(135deg,rgba(255,255,255,0.065),rgba(255,255,255,0.025))] px-3.5 py-3">
+                                        <span class="material-symbols-outlined mt-0.5 text-[1.05rem] text-[var(--accent)]">tips_and_updates</span>
+                                        <p class="text-xs leading-5 text-[var(--muted)]">
+                                          <span class="font-black uppercase tracking-[0.12em] text-[var(--text)]">Local move</span>
+                                          <span class="mx-1 text-[var(--accent)]">/</span>
+                                          {{ cleanTravelCardText(card.local_tip) }}
+                                        </p>
+                                      </div>
                                     }
 
                                     <div class="mt-auto flex flex-wrap items-center gap-2 pt-4">

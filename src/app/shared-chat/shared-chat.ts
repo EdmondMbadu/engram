@@ -177,18 +177,25 @@ export class SharedChatComponent {
   }
 
   travelCardVisualBackground(card: TravelGuideCard, index: number): string {
-    const palettes = [
-      ['#0f766e', '#f59e0b', '#7f1d1d'],
-      ['#1d4ed8', '#14b8a6', '#312e81'],
-      ['#7c2d12', '#eab308', '#be123c'],
-      ['#166534', '#84cc16', '#0f172a'],
-      ['#6d28d9', '#db2777', '#111827'],
-      ['#0e7490', '#f97316', '#1f2937'],
-    ];
-    const key = `${card.title}|${card.neighborhood ?? ''}|${index}`;
-    const hash = Array.from(key).reduce((total, char) => total + char.charCodeAt(0), 0);
-    const palette = palettes[Math.abs(hash) % palettes.length];
-    return `linear-gradient(135deg, ${palette[0]} 0%, ${palette[1]} 54%, ${palette[2]} 100%)`;
+    const text = `${card.title} ${card.best_for ?? ''} ${card.vibe ?? ''}`.toLowerCase();
+    if (/(food|steak|cheese|restaurant|sandwich|bar|coffee|market|eat|drink)/.test(text)) {
+      return 'linear-gradient(135deg, #6f1d1b 0%, #b45309 48%, #d6a94a 100%)';
+    }
+    if (/(museum|history|historic|hall|art|gallery|library)/.test(text)) {
+      return 'linear-gradient(135deg, #1f3b57 0%, #3a6d8c 52%, #c49a4a 100%)';
+    }
+    if (/(park|trail|river|garden|outdoor|walk)/.test(text)) {
+      return 'linear-gradient(135deg, #155e4b 0%, #5f8f55 52%, #d0b15e 100%)';
+    }
+    if (/(music|show|theater|night|club|venue)/.test(text)) {
+      return 'linear-gradient(135deg, #3b1d5f 0%, #7c3f78 52%, #d08a45 100%)';
+    }
+    if (/(shop|store|boutique)/.test(text)) {
+      return 'linear-gradient(135deg, #17405e 0%, #3f7f89 52%, #d1a45f 100%)';
+    }
+    return index % 2 === 0
+      ? 'linear-gradient(135deg, #1f3b57 0%, #5d6f82 52%, #d0a85b 100%)'
+      : 'linear-gradient(135deg, #2d4656 0%, #7a6a52 52%, #c69c4a 100%)';
   }
 
   travelCardVisualIcon(card: TravelGuideCard): string {
@@ -199,6 +206,19 @@ export class SharedChatComponent {
     if (/(music|show|theater|night|club|venue)/.test(text)) return 'local_activity';
     if (/(shop|store|market|boutique)/.test(text)) return 'storefront';
     return 'place';
+  }
+
+  travelCardDescription(card: TravelGuideCard): string {
+    let description = this.cleanTravelCardText(card.description ?? '');
+    const title = this.escapeRegExp(this.cleanTravelCardText(card.title ?? ''));
+    if (title) {
+      description = description.replace(new RegExp(`^${title}\\s*(?:\\([^)]*\\))?\\s*[:–-]\\s*`, 'i'), '').trim();
+    }
+    const neighborhood = this.escapeRegExp(this.cleanTravelCardText(card.neighborhood || card.subtitle || ''));
+    if (neighborhood) {
+      description = description.replace(new RegExp(`^\\(?${neighborhood}\\)?\\s*[:–-]\\s*`, 'i'), '').trim();
+    }
+    return description || this.cleanTravelCardText(card.description ?? '');
   }
 
   travelCardMapUrl(card: TravelGuideCard): string {
@@ -331,6 +351,10 @@ export class SharedChatComponent {
       .replace(/\s+\*\s+/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+  }
+
+  private escapeRegExp(value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
   private async copyText(target: string, text: string): Promise<void> {
