@@ -1068,17 +1068,21 @@ export class ChatComponent implements AfterViewChecked {
     return 'place';
   }
 
-  guideQuote(): string {
-    const guideName = this.assistantMessageName().toLowerCase();
-    if (guideName.includes('franklin') || guideName.includes('ben')) {
-      return '"Well done is better than well said."';
+  guideIntro(message: ChatMessage, guide: TravelGuideStructuredResponse): string {
+    const question = this.questionBeforeMessage(message.id).replace(/[?!.]+$/, '').trim();
+    const topic = question || guide.title || 'this Philly mission';
+    const stopCount = guide.cards.length;
+    const firstStop = guide.cards[0]?.title?.trim();
+    if (/cheesesteak|steak|sandwich|food|eat|restaurant/i.test(topic)) {
+      return `For ${topic.toLowerCase()}, here is the no-nonsense route before hunger starts making policy decisions.`;
     }
-    return '"A good guide turns an answer into a next move."';
-  }
-
-  guideQuoteLabel(): string {
-    const guideName = this.assistantMessageName();
-    return guideName === 'Living Wiki' ? 'Guide note' : `${guideName}'s quote`;
+    if (/weekend|today|tonight|date|visit|do|itinerary|tour/i.test(topic)) {
+      return `For ${topic.toLowerCase()}, here is a tight ${stopCount}-stop plan that keeps the day moving and the detours honest.`;
+    }
+    if (firstStop) {
+      return `For ${topic.toLowerCase()}, start with ${firstStop} and let the rest of the cards keep you out of spreadsheet-mode planning.`;
+    }
+    return `For ${topic.toLowerCase()}, here is the practical version: useful stops first, overthinking politely escorted out.`;
   }
 
   travelCardMapUrl(card: TravelGuideCard): string {

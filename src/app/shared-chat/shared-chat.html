@@ -120,6 +120,10 @@
                             @if (guide.summary) {
                               <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ guide.summary }}</p>
                             }
+                            <div class="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Your plan, lightly caffeinated</p>
+                              <p class="mt-2 text-lg font-black leading-snug text-[var(--text)]">{{ guideIntro(msg, guide) }}</p>
+                            </div>
                           </div>
 
                           <div class="grid gap-4 p-3 pt-0 sm:p-4 sm:pt-0 lg:grid-cols-2">
