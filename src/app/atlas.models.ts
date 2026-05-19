@@ -101,6 +101,7 @@ export interface AtlasItem {
   persona_prompt?: string | null;
   default_answer_mode?: 'wiki' | 'internet' | null;
   newsletter_config?: AtlasNewsletterConfig | null;
+  public_voice_phone_number?: string | null;
   created_at?: { toDate(): Date } | Date | null;
   updated_at?: { toDate(): Date } | Date | null;
   stats?: {
@@ -164,6 +165,7 @@ export interface AtlasTextMessagingConfig {
 
 export interface AtlasVoiceAgentConfig {
   enabled: boolean;
+  phone_number: string | null;
   vapi_phone_number_id: string | null;
   vapi_assistant_id: string | null;
   webhook_token: string;

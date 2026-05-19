@@ -44,6 +44,7 @@ interface TextMessagingDraft {
 
 interface VoiceAgentDraft {
   enabled: boolean;
+  phone_number: string;
   vapi_phone_number_id: string;
   vapi_assistant_id: string;
   webhook_token: string;
@@ -487,7 +488,7 @@ export class AtlasManageComponent {
     if (!draft.enabled) {
       return 'Off';
     }
-    return draft.vapi_phone_number_id || draft.vapi_assistant_id || 'Vapi tool enabled';
+    return draft.phone_number || draft.vapi_phone_number_id || draft.vapi_assistant_id || 'Vapi tool enabled';
   }
 
   isLoadingVoiceAgent(atlasId: string): boolean {
@@ -540,6 +541,7 @@ export class AtlasManageComponent {
         atlas.id,
         {
           enabled: draft.enabled,
+          phone_number: draft.phone_number.trim() || null,
           vapi_phone_number_id: draft.vapi_phone_number_id.trim() || null,
           vapi_assistant_id: draft.vapi_assistant_id.trim() || null,
         },
@@ -1109,6 +1111,7 @@ export class AtlasManageComponent {
   private emptyVoiceAgentDraft(): VoiceAgentDraft {
     return {
       enabled: false,
+      phone_number: '',
       vapi_phone_number_id: '',
       vapi_assistant_id: '',
       webhook_token: '',
@@ -1119,6 +1122,7 @@ export class AtlasManageComponent {
   private toVoiceAgentDraft(config: AtlasVoiceAgentConfig): VoiceAgentDraft {
     return {
       enabled: config.enabled,
+      phone_number: config.phone_number ?? '',
       vapi_phone_number_id: config.vapi_phone_number_id ?? '',
       vapi_assistant_id: config.vapi_assistant_id ?? '',
       webhook_token: config.webhook_token ?? '',

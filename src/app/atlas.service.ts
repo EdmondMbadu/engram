@@ -531,14 +531,14 @@ export class AtlasService {
 
   async updateAtlasVoiceAgentConfig(
     atlasId: string,
-    config: Pick<AtlasVoiceAgentConfig, 'enabled' | 'vapi_phone_number_id' | 'vapi_assistant_id'>,
+    config: Pick<AtlasVoiceAgentConfig, 'enabled' | 'phone_number' | 'vapi_phone_number_id' | 'vapi_assistant_id'>,
     rotateToken = false,
   ): Promise<AtlasVoiceAgentConfig> {
     if (!this.functions) throw new Error('Functions unavailable.');
     const updateAtlasVoiceAgentConfig = httpsCallable<
       {
         atlasId: string;
-        config: Pick<AtlasVoiceAgentConfig, 'enabled' | 'vapi_phone_number_id' | 'vapi_assistant_id'>;
+        config: Pick<AtlasVoiceAgentConfig, 'enabled' | 'phone_number' | 'vapi_phone_number_id' | 'vapi_assistant_id'>;
         rotateToken?: boolean;
       },
       AtlasVoiceAgentConfigResponse
@@ -769,6 +769,9 @@ export class AtlasService {
       admin_profiles: this.hydrateAdminProfiles(data['admin_profiles']),
       default_answer_mode: data['default_answer_mode'] === 'internet' ? 'internet' : 'wiki',
       newsletter_config: this.hydrateNewsletterConfig(data['newsletter_config'], data['city_config']),
+      public_voice_phone_number: typeof data['public_voice_phone_number'] === 'string' && data['public_voice_phone_number'].trim()
+        ? data['public_voice_phone_number'].trim()
+        : null,
       created_at: this.hydrateDateValue(data['created_at']),
       updated_at: this.hydrateDateValue(data['updated_at']),
     };
@@ -833,6 +836,9 @@ export class AtlasService {
     const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
     return {
       enabled: data['enabled'] === true,
+      phone_number: typeof data['phone_number'] === 'string' && data['phone_number'].trim()
+        ? data['phone_number'].trim()
+        : null,
       vapi_phone_number_id: typeof data['vapi_phone_number_id'] === 'string' && data['vapi_phone_number_id'].trim()
         ? data['vapi_phone_number_id'].trim()
         : null,

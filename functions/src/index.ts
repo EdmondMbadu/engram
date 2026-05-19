@@ -100,6 +100,7 @@ type AtlasTextMessagingConfig = {
 
 type AtlasVoiceAgentConfig = {
   enabled: boolean;
+  phone_number: string | null;
   vapi_phone_number_id: string | null;
   vapi_assistant_id: string | null;
   webhook_token: string;
@@ -507,16 +508,34 @@ async function requeueStaleUrlDocuments(
 
 type PublicDocumentCandidate = Record<string, unknown> & { id: string };
 
-function serializePublicAtlas(
+async function serializePublicAtlas(
   atlasId: string,
   atlas: Record<string, unknown>,
-): Record<string, unknown> {
+): Promise<Record<string, unknown>> {
   return {
     id: atlasId,
     ...atlas,
+    public_voice_phone_number: await loadPublicVoicePhoneNumber(atlasId),
     created_at: normalizeTimestamp(atlas.created_at),
     updated_at: normalizeTimestamp(atlas.updated_at),
   };
+}
+
+async function loadPublicVoicePhoneNumber(atlasId: string): Promise<string | null> {
+  try {
+    const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
+    const config = voiceAgentConfigFromStored(integrationSnapshot.data()?.voice_agent);
+    if (!config?.enabled) {
+      return null;
+    }
+    return config.phone_number;
+  } catch (error) {
+    logger.warn('Failed to load public voice phone number.', {
+      atlasId,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
 }
 
 async function buildDocumentDownloadUrl(storagePath: string): Promise<string> {
@@ -2727,6 +2746,7 @@ function normalizeVoiceAgentConfigInput(
 
   return {
     enabled: data['enabled'] === true,
+    phone_number: textValue(data['phone_number'], 40),
     vapi_phone_number_id: textValue(data['vapi_phone_number_id'], 120),
     vapi_assistant_id: textValue(data['vapi_assistant_id'], 120),
     webhook_token: token,
@@ -2746,6 +2766,7 @@ function voiceAgentConfigFromStored(value: unknown): AtlasVoiceAgentConfig | nul
 
   return {
     enabled: data['enabled'] === true,
+    phone_number: textValue(data['phone_number'], 40),
     vapi_phone_number_id: textValue(data['vapi_phone_number_id'], 120),
     vapi_assistant_id: textValue(data['vapi_assistant_id'], 120),
     webhook_token: token,
@@ -2756,6 +2777,7 @@ function voiceAgentConfigFromStored(value: unknown): AtlasVoiceAgentConfig | nul
 function serializeVoiceAgentConfig(atlasId: string, config: AtlasVoiceAgentConfig) {
   return {
     enabled: config.enabled,
+    phone_number: config.phone_number,
     vapi_phone_number_id: config.vapi_phone_number_id,
     vapi_assistant_id: config.vapi_assistant_id,
     webhook_token: config.webhook_token,
@@ -3434,7 +3456,7 @@ export const getPublicAtlasBySlug = onCall(
 
     const atlas = await loadPublicAtlasBySlug(slug);
     return {
-      atlas: serializePublicAtlas(atlas.id, atlas),
+      atlas: await serializePublicAtlas(atlas.id, atlas),
     };
   },
 );

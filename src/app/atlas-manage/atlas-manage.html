@@ -216,6 +216,18 @@
                     </label>
 
                     <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Public call-in phone number</span>
+                      <input
+                        type="text"
+                        class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
+                        [value]="voiceDraft.phone_number"
+                        (input)="updateVoiceAgentDraft(atlas.id, 'phone_number', $any($event.target).value)"
+                        placeholder="+1 (864) 734 3013"
+                      />
+                      <span class="mt-1 block text-xs leading-5 text-[var(--muted)]">Shown to visitors after they join. Keep blank until the phone experience is ready.</span>
+                    </label>
+
+                    <label class="block">
                       <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Vapi phone number ID</span>
                       <input
                         type="text"
