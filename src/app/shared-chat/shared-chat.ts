@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import type { ChatStoredMessage, CitationPassage, MappableLocation } from '../atlas.models';
+import type { ChatStoredMessage, CitationPassage, MappableLocation, TravelGuideCard, TravelGuideStructuredResponse } from '../atlas.models';
 import { AnswerCardService } from '../answer-card.service';
 import { AuthService } from '../auth.service';
 import { ChatService } from '../chat.service';
@@ -17,6 +17,7 @@ interface SharedChatMessage {
   html?: string;
   citations?: CitationPassage[];
   mappableLocations?: MappableLocation[];
+  travelGuide?: TravelGuideStructuredResponse | null;
   answerMode?: 'wiki' | 'internet';
   answerCardId?: string | null;
   answerQuizId?: string | null;
@@ -49,6 +50,7 @@ export class SharedChatComponent {
   readonly messages = signal<SharedChatMessage[]>([]);
   readonly selectedCitation = signal<CitationPassage | null>(null);
   readonly copiedTarget = signal<string | null>(null);
+  readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
   readonly creatingAnswerCardId = signal<string | null>(null);
   readonly answerCardLinks = signal<Record<string, string>>({});
   readonly answerCardErrorMessageId = signal<string | null>(null);
@@ -149,6 +151,74 @@ export class SharedChatComponent {
     await this.copyText(`${message.id}:body`, message.text.trim());
   }
 
+  travelGuideForMessage(message: SharedChatMessage): TravelGuideStructuredResponse | null {
+    return message.role === 'assistant' ? message.travelGuide ?? null : null;
+  }
+
+  travelCardImageUrl(card: TravelGuideCard): string | null {
+    return card.image_url?.trim() || null;
+  }
+
+  travelCardVisualBackground(card: TravelGuideCard, index: number): string {
+    const palettes = [
+      ['#0f766e', '#f59e0b', '#7f1d1d'],
+      ['#1d4ed8', '#14b8a6', '#312e81'],
+      ['#7c2d12', '#eab308', '#be123c'],
+      ['#166534', '#84cc16', '#0f172a'],
+      ['#6d28d9', '#db2777', '#111827'],
+      ['#0e7490', '#f97316', '#1f2937'],
+    ];
+    const key = `${card.title}|${card.neighborhood ?? ''}|${index}`;
+    const hash = Array.from(key).reduce((total, char) => total + char.charCodeAt(0), 0);
+    const palette = palettes[Math.abs(hash) % palettes.length];
+    return `linear-gradient(135deg, ${palette[0]} 0%, ${palette[1]} 54%, ${palette[2]} 100%)`;
+  }
+
+  travelCardVisualIcon(card: TravelGuideCard): string {
+    const text = `${card.title} ${card.best_for ?? ''} ${card.vibe ?? ''}`.toLowerCase();
+    if (/(food|steak|cheese|restaurant|sandwich|bar|coffee|market|eat|drink)/.test(text)) return 'restaurant';
+    if (/(museum|history|historic|hall|art|gallery|library)/.test(text)) return 'museum';
+    if (/(park|trail|river|garden|outdoor|walk)/.test(text)) return 'park';
+    if (/(music|show|theater|night|club|venue)/.test(text)) return 'local_activity';
+    if (/(shop|store|market|boutique)/.test(text)) return 'storefront';
+    return 'place';
+  }
+
+  travelCardMapUrl(card: TravelGuideCard): string {
+    const query = card.map_query?.trim() || card.subtitle?.trim() || card.title;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  }
+
+  travelCardSourceUrl(card: TravelGuideCard): string | null {
+    const sourceUrl = card.source_url?.trim();
+    if (!sourceUrl) return null;
+    try {
+      const parsed = new URL(sourceUrl);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.toString() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  travelCardSaved(card: TravelGuideCard): boolean {
+    return this.savedTravelCardIds()[this.travelCardStorageId(card)] === true;
+  }
+
+  saveTravelCard(card: TravelGuideCard): void {
+    const storageId = this.travelCardStorageId(card);
+    const next = {
+      ...this.savedTravelCardIds(),
+      [storageId]: true,
+    };
+    this.savedTravelCardIds.set(next);
+    this.persistSavedTravelCardIds(next);
+    this.copiedTarget.set(`save:${storageId}`);
+  }
+
+  async shareTravelCard(card: TravelGuideCard): Promise<void> {
+    await this.copyText(`share:${this.travelCardStorageId(card)}`, this.buildTravelCardShareText(card));
+  }
+
   canShowAnswerCardAction(message: SharedChatMessage): boolean {
     return message.role === 'assistant' && !!message.text.trim();
   }
@@ -219,6 +289,17 @@ export class SharedChatComponent {
     return lines.join('\n');
   }
 
+  private buildTravelCardShareText(card: TravelGuideCard): string {
+    const lines = [
+      card.title,
+      card.neighborhood || card.subtitle || '',
+      card.description,
+      card.local_tip ? `Local move: ${card.local_tip}` : '',
+      `Map: ${this.travelCardMapUrl(card)}`,
+    ].filter((line) => line.trim());
+    return lines.join('\n');
+  }
+
   private async copyText(target: string, text: string): Promise<void> {
     if (!text.trim() || typeof navigator === 'undefined' || !navigator.clipboard) {
       return;
@@ -241,6 +322,7 @@ export class SharedChatComponent {
       html: message.role === 'assistant' ? formatAssistantMessageHtml(message.text) : undefined,
       citations: Array.isArray(message.cited_passages) ? message.cited_passages : [],
       mappableLocations: Array.isArray(message.mappable_locations) ? message.mappable_locations : [],
+      travelGuide: message.travel_guide ?? null,
       answerMode: message.answer_mode === 'internet' ? 'internet' : 'wiki',
       answerCardId: message.answer_card_id ?? null,
       answerQuizId: message.answer_quiz_id ?? null,
@@ -277,6 +359,31 @@ export class SharedChatComponent {
     }
     const match = link.match(/\/answer-card\/([^/?#]+)/);
     return match?.[1] ?? null;
+  }
+
+  travelCardStorageId(card: TravelGuideCard): string {
+    return `${card.id || card.title}:${card.map_query || card.subtitle || ''}`.toLowerCase();
+  }
+
+  private loadSavedTravelCardIds(): Record<string, boolean> {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem('living-wiki:saved-travel-cards') ?? '{}') as unknown;
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+        ? Object.fromEntries(Object.entries(parsed).filter(([, value]) => value === true))
+        : {};
+    } catch {
+      return {};
+    }
+  }
+
+  private persistSavedTravelCardIds(value: Record<string, boolean>): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem('living-wiki:saved-travel-cards', JSON.stringify(value));
   }
 
   private asDate(value: { toDate(): Date } | Date | null | undefined): Date | null {

@@ -104,6 +104,139 @@
                       @if (msg.knowledgeGap) {
                         <p class="mb-3 text-xs font-bold italic text-[var(--muted)]">This topic is not strongly covered in the current knowledge base yet.</p>
                       }
+                      @if (travelGuideForMessage(msg); as guide) {
+                        <section class="mb-5 overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.025))] shadow-[0_18px_50px_rgba(0,0,0,0.18)]">
+                          <div class="px-4 py-4 sm:px-5">
+                            <div class="flex flex-wrap items-center gap-2">
+                              <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)]/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">
+                                <span class="material-symbols-outlined text-[0.95rem]">explore</span>
+                                Field guide
+                              </span>
+                              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold text-[var(--muted)]">
+                                {{ guide.cards.length }} stop{{ guide.cards.length === 1 ? '' : 's' }}
+                              </span>
+                            </div>
+                            <h3 class="mt-3 text-2xl font-black leading-tight text-[var(--text)]">{{ guide.title || 'Guide picks' }}</h3>
+                            @if (guide.summary) {
+                              <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ guide.summary }}</p>
+                            }
+                          </div>
+
+                          <div class="grid gap-4 p-3 pt-0 sm:p-4 sm:pt-0 lg:grid-cols-2">
+                            @for (card of guide.cards; track card.id; let i = $index) {
+                              <article class="group overflow-hidden rounded-2xl border border-white/10 bg-[var(--surface)] shadow-[0_14px_38px_rgba(0,0,0,0.16)]">
+                                <div class="grid min-h-full sm:grid-cols-[10rem,1fr]">
+                                  <div class="relative min-h-40 overflow-hidden bg-white/5 sm:min-h-full">
+                                    @if (travelCardImageUrl(card); as cardImageUrl) {
+                                      <img
+                                        [src]="cardImageUrl"
+                                        [alt]="card.title"
+                                        class="h-full min-h-40 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        loading="lazy"
+                                      />
+                                      <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent"></div>
+                                    } @else {
+                                      <div
+                                        class="relative flex h-full min-h-40 items-center justify-center overflow-hidden"
+                                        [style.background]="travelCardVisualBackground(card, i)"
+                                      >
+                                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.34),transparent_28%),linear-gradient(to_top,rgba(0,0,0,0.48),transparent_64%)]"></div>
+                                        <div class="absolute right-[-1.6rem] top-[-1.6rem] h-24 w-24 rounded-full border border-white/20"></div>
+                                        <div class="absolute bottom-5 right-5 h-14 w-14 rounded-full border border-white/15"></div>
+                                        <div class="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-white/25 bg-white/16 text-white shadow-[0_16px_32px_rgba(0,0,0,0.24)] backdrop-blur">
+                                          <span class="material-symbols-outlined text-3xl">{{ travelCardVisualIcon(card) }}</span>
+                                        </div>
+                                      </div>
+                                    }
+                                    <div class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-xs font-black text-white ring-1 ring-white/20 backdrop-blur">
+                                      {{ i + 1 }}
+                                    </div>
+                                    <a
+                                      class="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-black text-black shadow-lg transition-transform hover:-translate-y-0.5"
+                                      [href]="travelCardMapUrl(card)"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      <span class="material-symbols-outlined text-[0.95rem]">map</span>
+                                      Map
+                                    </a>
+                                  </div>
+                                  <div class="flex min-w-0 flex-col p-4 sm:p-5">
+                                    <div class="flex items-start justify-between gap-3">
+                                      <div class="min-w-0">
+                                        <h4 class="text-lg font-black leading-snug text-[var(--text)]">{{ card.title }}</h4>
+                                        @if (card.subtitle || card.neighborhood) {
+                                          <p class="mt-1 truncate text-xs font-bold text-[var(--muted)]">{{ card.neighborhood || card.subtitle }}</p>
+                                        }
+                                      </div>
+                                      @if (card.vibe) {
+                                        <span class="shrink-0 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">{{ card.vibe }}</span>
+                                      }
+                                    </div>
+
+                                    <p class="mt-3 text-sm leading-6 text-[var(--text)]">{{ card.description }}</p>
+
+                                    <div class="mt-3 flex flex-wrap gap-2">
+                                      @if (card.best_for) {
+                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">Best for {{ card.best_for }}</span>
+                                      }
+                                      @if (card.cost) {
+                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ card.cost }}</span>
+                                      }
+                                      @if (card.time_hint) {
+                                        <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[var(--muted)]">{{ card.time_hint }}</span>
+                                      }
+                                    </div>
+
+                                    @if (card.local_tip) {
+                                      <p class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-3 py-2.5 text-xs leading-5 text-[var(--muted)]">
+                                        <span class="font-black text-[var(--text)]">Local move:</span>
+                                        {{ card.local_tip }}
+                                      </p>
+                                    }
+
+                                    <div class="mt-auto flex flex-wrap items-center gap-2 pt-4">
+                                      @if (travelCardSourceUrl(card); as sourceUrl) {
+                                        <a
+                                          class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-xs font-bold text-[var(--text)] transition-colors hover:bg-white/5"
+                                          [href]="sourceUrl"
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
+                                          <span>Article</span>
+                                        </a>
+                                      }
+                                      <button
+                                        type="button"
+                                        class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-xs font-bold text-[var(--text)] transition-colors hover:bg-white/5"
+                                        (click)="saveTravelCard(card)"
+                                      >
+                                        <span class="material-symbols-outlined text-[1rem]">{{ travelCardSaved(card) ? 'bookmark_added' : 'bookmark' }}</span>
+                                        <span>{{ travelCardSaved(card) ? 'Saved' : 'Save' }}</span>
+                                      </button>
+                                      <button
+                                        type="button"
+                                        class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-xs font-bold text-[var(--text)] transition-colors hover:bg-white/5"
+                                        (click)="shareTravelCard(card)"
+                                      >
+                                        <span class="material-symbols-outlined text-[1rem]">ios_share</span>
+                                        <span>{{ copiedTarget() === 'share:' + travelCardStorageId(card) ? 'Copied' : 'Share' }}</span>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </article>
+                            }
+                          </div>
+
+                          @if (guide.route) {
+                            <div class="border-t border-white/10 px-4 py-3">
+                              <p class="text-sm leading-6 text-[var(--text)]"><span class="font-black">Smart route:</span> {{ guide.route }}</p>
+                            </div>
+                          }
+                        </section>
+                      }
                       <div class="assistant-message__content text-[var(--text)]" [innerHTML]="msg.html || ''"></div>
                       @if (msg.mappableLocations && msg.mappableLocations.length > 0) {
                         <app-chat-location-map [locations]="msg.mappableLocations"></app-chat-location-map>
