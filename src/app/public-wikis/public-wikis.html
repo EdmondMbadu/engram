@@ -123,7 +123,7 @@
         <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           @for (wiki of filteredWikis(); track wiki.title) {
             @if (wiki.status === 'live') {
-              <a [routerLink]="wiki.link || ['/atlas', wiki.slug]" class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.55)]">
+              <a [routerLink]="wiki.link || '/chat'" class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.55)]">
                 @if (wiki.heroUrl) {
                   <div class="relative aspect-[5/3] w-full overflow-hidden bg-black">
                     <img

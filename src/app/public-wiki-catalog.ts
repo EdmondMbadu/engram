@@ -739,7 +739,7 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
     sources: presentation.sources,
     fallbackHeroUrl: presentation.fallbackHeroUrl,
     fallbackLogoUrl: presentation.fallbackLogoUrl,
-    link: `/atlas/${slug}`,
+    link: '/chat',
     heroUrl: atlas.hero_url ?? presentation.fallbackHeroUrl ?? null,
     logoUrl: atlas.logo_url ?? presentation.fallbackLogoUrl ?? null,
     coverColor: atlas.cover_color ?? null,
