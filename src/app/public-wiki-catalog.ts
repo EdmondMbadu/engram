@@ -31,11 +31,14 @@ export interface PublicWikiCatalogItem {
 type PublicWikiPresentation = Pick<
   PublicWikiCatalogItem,
   'subtitle' | 'category' | 'priority' | 'badges' | 'sources' | 'fallbackHeroUrl' | 'fallbackLogoUrl'
->;
+> & {
+  title?: string;
+};
 
 const PUBLIC_WIKI_PRESENTATION_BY_SLUG: Record<string, PublicWikiPresentation> = {
   philly: {
-    subtitle: 'City Atlas',
+    title: 'My living wiki: Philly',
+    subtitle: 'Cities & Regions',
     category: 'Cities & Regions',
     priority: 'high',
     badges: ['evergreen', 'geo'],
@@ -723,7 +726,7 @@ export function sortPublicAtlases(atlases: AtlasItem[]): AtlasItem[] {
 export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem {
   const presentation = inferPresentation(atlas);
   const slug = atlas.slug?.trim() || atlas.id;
-  const title = atlas.name?.trim() || `Atlas ${atlas.id.slice(0, 6)}`;
+  const title = presentation.title ?? (atlas.name?.trim() || `Atlas ${atlas.id.slice(0, 6)}`);
   return {
     title,
     subtitle: presentation.subtitle ?? 'Public Atlas',
