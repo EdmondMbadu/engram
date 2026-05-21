@@ -74,6 +74,12 @@ type SharedChatThreadResponse = {
   messages: Array<Record<string, unknown>>;
 };
 
+type ChatAnswerSpeechResponse = {
+  audioBase64: string;
+  contentType: string;
+  voiceId: string;
+};
+
 @Injectable({ providedIn: 'root' })
 export class ChatService {
   private readonly authService = inject(AuthService);
@@ -398,6 +404,26 @@ export class ChatService {
     } finally {
       this.isSubmitting.set(false);
     }
+  }
+
+  async synthesizeAnswerSpeech(
+    text: string,
+    anonymousVisitorId?: string | null,
+  ): Promise<ChatAnswerSpeechResponse | null> {
+    if (!this.functions) {
+      return null;
+    }
+
+    const synthesizeChatAnswerSpeech = httpsCallable<
+      { text: string; anonymousVisitorId?: string | null },
+      ChatAnswerSpeechResponse
+    >(this.functions, 'synthesizeChatAnswerSpeech');
+
+    const { data } = await synthesizeChatAnswerSpeech({
+      text,
+      anonymousVisitorId: anonymousVisitorId ?? null,
+    });
+    return data;
   }
 
   async loadHistoryMessages(item: ChatHistoryItem): Promise<ChatStoredMessage[]> {

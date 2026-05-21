@@ -43,10 +43,13 @@ const defaultRetryLimit = 50;
 const staleRetryBatchLimit = 200;
 const maxGoogleDriveImportFiles = 10;
 const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
+const elevenLabsApiKey = defineSecret('ELEVENLABS_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://living-atlas-7622a.web.app';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
 const maxSmsReplyLength = 1200;
+const chatAnswerVoiceId = 'ZthjuvLPty3kTMaNKVKb';
+const maxSpeechTextLength = 4000;
 const defaultNewsletterPrompt = [
   'Create a premium weekly My living wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
@@ -2642,6 +2645,19 @@ function normalizeAnonymousVisitorId(value: unknown): string | null {
   return /^[A-Za-z0-9_-]+$/.test(trimmed) ? trimmed : null;
 }
 
+function normalizeSpeechText(value: unknown): string {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value
+    .replace(/\[[^\]]+\]\(([^)]+)\)/g, '$1')
+    .replace(/[`*_#>~-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxSpeechTextLength);
+}
+
 function textValue(value: unknown, maxLength = 2000): string | null {
   if (typeof value !== 'string') {
     return null;
@@ -4307,6 +4323,62 @@ export const getPublicChatState = onCall(
         error instanceof Error ? error.message : 'Failed to load public chat state.',
       );
     }
+  },
+);
+
+export const synthesizeChatAnswerSpeech = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 120,
+    memory: '512MiB',
+    cors: true,
+    secrets: [elevenLabsApiKey],
+  },
+  async (request) => {
+    const text = normalizeSpeechText(request.data?.text);
+    if (!text) {
+      throw new HttpsError('invalid-argument', 'Answer text is required.');
+    }
+
+    if (!request.auth?.uid && !normalizeAnonymousVisitorId(request.data?.anonymousVisitorId)) {
+      throw new HttpsError('unauthenticated', 'Authentication or anonymousVisitorId is required.');
+    }
+
+    const apiKey = elevenLabsApiKey.value();
+    if (!apiKey) {
+      throw new HttpsError('failed-precondition', 'ElevenLabs API key is not configured.');
+    }
+
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(chatAnswerVoiceId)}?output_format=mp3_44100_128`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xi-api-key': apiKey,
+        },
+        body: JSON.stringify({
+          text,
+          model_id: 'eleven_multilingual_v2',
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => '');
+      logger.warn('ElevenLabs speech synthesis failed', {
+        status: response.status,
+        body: errorText.slice(0, 500),
+      });
+      throw new HttpsError('internal', 'Failed to create audio for this answer.');
+    }
+
+    const audioBuffer = Buffer.from(await response.arrayBuffer());
+    return {
+      audioBase64: audioBuffer.toString('base64'),
+      contentType: response.headers.get('content-type')?.split(';')[0] || 'audio/mpeg',
+      voiceId: chatAnswerVoiceId,
+    };
   },
 );
 

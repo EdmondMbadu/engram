@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, ViewChild, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -62,7 +62,7 @@ const CITY_WIKI_CATEGORY = 'Cities & Regions';
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
-export class ChatComponent implements AfterViewChecked {
+export class ChatComponent implements AfterViewChecked, OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly answerCardService = inject(AnswerCardService);
@@ -82,6 +82,8 @@ export class ChatComponent implements AfterViewChecked {
   private shouldScrollToEnd = false;
   private thinkingInterval: ReturnType<typeof setInterval> | null = null;
   private copyFeedbackTimeout: ReturnType<typeof setTimeout> | null = null;
+  private answerAudio: HTMLAudioElement | null = null;
+  private answerAudioUrls = new Map<string, string>();
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -110,6 +112,10 @@ export class ChatComponent implements AfterViewChecked {
   readonly quizLinks = signal<Record<string, string>>({});
   readonly answerCardErrorMessageId = signal<string | null>(null);
   readonly answerCardError = signal<string | null>(null);
+  readonly loadingSpeechMessageId = signal<string | null>(null);
+  readonly playingSpeechMessageId = signal<string | null>(null);
+  readonly speechErrorMessageId = signal<string | null>(null);
+  readonly speechError = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
@@ -893,6 +899,63 @@ export class ChatComponent implements AfterViewChecked {
     });
   }
 
+  async toggleReadAnswer(message: ChatMessage, event?: Event): Promise<void> {
+    event?.stopPropagation();
+    if (message.pending || !message.text.trim() || typeof Audio === 'undefined') {
+      return;
+    }
+
+    if (this.playingSpeechMessageId() === message.id) {
+      this.stopAnswerAudio();
+      return;
+    }
+
+    this.stopAnswerAudio();
+    this.speechError.set(null);
+    this.speechErrorMessageId.set(null);
+
+    let audioUrl = this.answerAudioUrls.get(message.id);
+    if (!audioUrl) {
+      this.loadingSpeechMessageId.set(message.id);
+      try {
+        const response = await this.chatService.synthesizeAnswerSpeech(
+          message.text,
+          this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
+        );
+        if (!response?.audioBase64) {
+          throw new Error('No audio was returned for this answer.');
+        }
+        const blob = this.audioBlobFromBase64(response.audioBase64, response.contentType || 'audio/mpeg');
+        audioUrl = URL.createObjectURL(blob);
+        this.answerAudioUrls.set(message.id, audioUrl);
+      } catch (error) {
+        this.speechError.set(this.authService.toFriendlyError(error));
+        this.speechErrorMessageId.set(message.id);
+        return;
+      } finally {
+        this.loadingSpeechMessageId.set(null);
+      }
+    }
+
+    const audio = new Audio(audioUrl);
+    this.answerAudio = audio;
+    this.playingSpeechMessageId.set(message.id);
+    audio.onended = () => this.stopAnswerAudio();
+    audio.onerror = () => {
+      this.speechError.set('Audio playback failed.');
+      this.speechErrorMessageId.set(message.id);
+      this.stopAnswerAudio();
+    };
+
+    try {
+      await audio.play();
+    } catch (error) {
+      this.speechError.set(this.authService.toFriendlyError(error));
+      this.speechErrorMessageId.set(message.id);
+      this.stopAnswerAudio();
+    }
+  }
+
   setAnswerMode(mode: 'wiki' | 'internet'): void {
     if (!this.canUseAnswerModeToggle()) {
       return;
@@ -956,6 +1019,7 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   newChat(): void {
+    this.clearSpeechState(true);
     this.messages.set([]);
     this.syncArtifactLinksFromMessages([]);
     this.question.set('');
@@ -969,6 +1033,7 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   async loadHistoryItem(item: ChatHistoryItem): Promise<void> {
+    this.clearSpeechState(true);
     this.activeHistoryId.set(item.id);
     this.selectedCitation.set(null);
     this.messageActionMenuId.set(null);
@@ -1530,6 +1595,18 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.thinkingInterval) {
+      clearInterval(this.thinkingInterval);
+      this.thinkingInterval = null;
+    }
+    if (this.copyFeedbackTimeout) {
+      clearTimeout(this.copyFeedbackTimeout);
+      this.copyFeedbackTimeout = null;
+    }
+    this.clearSpeechState(true);
+  }
+
   toggleAvatarMenu(): void {
     this.avatarMenuOpen.update((open) => !open);
   }
@@ -1877,6 +1954,42 @@ export class ChatComponent implements AfterViewChecked {
     this.copyFeedbackTimeout = setTimeout(() => {
       this.copiedTarget.set(null);
     }, 1800);
+  }
+
+  private stopAnswerAudio(): void {
+    if (this.answerAudio) {
+      this.answerAudio.pause();
+      this.answerAudio.currentTime = 0;
+      this.answerAudio.onended = null;
+      this.answerAudio.onerror = null;
+      this.answerAudio = null;
+    }
+    this.playingSpeechMessageId.set(null);
+  }
+
+  private clearSpeechState(revokeUrls = false): void {
+    this.stopAnswerAudio();
+    this.loadingSpeechMessageId.set(null);
+    this.speechErrorMessageId.set(null);
+    this.speechError.set(null);
+
+    if (!revokeUrls) {
+      return;
+    }
+
+    for (const audioUrl of this.answerAudioUrls.values()) {
+      URL.revokeObjectURL(audioUrl);
+    }
+    this.answerAudioUrls.clear();
+  }
+
+  private audioBlobFromBase64(audioBase64: string, contentType: string): Blob {
+    const binary = atob(audioBase64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return new Blob([bytes], { type: contentType });
   }
 
   private buildShareUrl(threadId: string): string {

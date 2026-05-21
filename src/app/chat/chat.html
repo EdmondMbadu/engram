@@ -507,6 +507,22 @@
                               </span>
                             </div>
                             <div class="ml-auto flex items-center gap-2">
+                              @if (!msg.pending) {
+                                <button
+                                  type="button"
+                                  class="chat-inline-action chat-inline-action--speech"
+                                  [disabled]="loadingSpeechMessageId() === msg.id"
+                                  [attr.aria-label]="playingSpeechMessageId() === msg.id ? 'Stop reading answer' : 'Read answer aloud'"
+                                  [attr.data-tooltip]="playingSpeechMessageId() === msg.id ? 'Stop' : loadingSpeechMessageId() === msg.id ? 'Loading audio' : 'Read aloud'"
+                                  (click)="toggleReadAnswer(msg, $event)"
+                                >
+                                  @if (loadingSpeechMessageId() === msg.id) {
+                                    <span class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                                  } @else {
+                                    <span class="material-symbols-outlined">{{ playingSpeechMessageId() === msg.id ? 'stop_circle' : 'volume_up' }}</span>
+                                  }
+                                </button>
+                              }
                               @if (msg.pending) {
                                 <div class="assistant-message__thinking" aria-hidden="true">
                                   <span></span>
@@ -896,6 +912,9 @@
                             </div>
                             @if (answerCardErrorMessageId() === msg.id && answerCardError()) {
                               <p class="mt-2 text-xs font-bold text-red-500">{{ answerCardError() }}</p>
+                            }
+                            @if (speechErrorMessageId() === msg.id && speechError()) {
+                              <p class="mt-2 text-xs font-bold text-red-500">{{ speechError() }}</p>
                             }
                           }
                         </div>
