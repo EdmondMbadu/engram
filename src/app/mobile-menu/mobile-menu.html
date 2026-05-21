@@ -24,11 +24,10 @@
   >
     <!-- Header -->
     <div class="flex items-center justify-between px-5 py-5">
-      <a routerLink="/" class="flex items-center gap-3" (click)="closeMenu()">
-        <div class="flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1">
+      <a routerLink="/" class="flex items-center" (click)="closeMenu()">
+        <div class="flex h-10 w-40 items-center justify-start">
           <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
         </div>
-        <span class="text-lg font-black tracking-tighter text-[var(--text)]">My living wiki</span>
       </a>
       <button
         type="button"

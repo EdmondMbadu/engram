@@ -24,10 +24,9 @@
 }
 
 .answer-card-brand__logo {
-  width: 34px;
+  width: 142px;
   height: 34px;
-  border-radius: 10px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .answer-card-loading,

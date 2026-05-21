@@ -19,13 +19,9 @@
 }
 
 .quiz-brand__logo {
-  width: 42px;
+  width: 156px;
   height: 42px;
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
-  border-radius: 14px;
-  background: var(--surface);
-  box-shadow: 0 14px 28px color-mix(in srgb, var(--accent) 12%, transparent);
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .quiz-loading,
