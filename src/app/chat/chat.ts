@@ -85,6 +85,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private answerAudio: HTMLAudioElement | null = null;
   private answerAudioUrls = new Map<string, string>();
   private answerAudioPromises = new Map<string, Promise<string | null>>();
+  private voiceClickScrollPosition: ReturnType<ChatComponent['captureScrollPosition']> = null;
+  private voiceScrollLockTimer: ReturnType<typeof setInterval> | null = null;
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -176,6 +178,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   @ViewChild('transcriptEnd') transcriptEnd?: ElementRef<HTMLElement>;
   @ViewChild('composerInput') composerInput?: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('chatScrollViewport') chatScrollViewport?: ElementRef<HTMLElement>;
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
@@ -907,11 +910,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return;
     }
     this.shouldScrollToEnd = false;
-    const scrollPosition = this.captureScrollPosition();
+    const scrollPosition = this.voiceClickScrollPosition ?? this.captureScrollPosition();
+    this.lockScrollPosition(scrollPosition);
 
     if (this.playingSpeechMessageId() === message.id) {
       this.stopAnswerAudio();
-      this.restoreScrollPosition(scrollPosition);
+      this.unlockScrollPosition(scrollPosition);
       return;
     }
 
@@ -919,31 +923,48 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.speechError.set(null);
     this.speechErrorMessageId.set(null);
 
-    const audioUrlPromise = this.ensureAnswerAudioUrl(message, true);
-    this.restoreScrollPosition(scrollPosition);
-    const audioUrl = await audioUrlPromise;
-    if (!audioUrl) {
-      this.restoreScrollPosition(scrollPosition);
-      return;
-    }
-
-    const audio = new Audio(audioUrl);
-    this.answerAudio = audio;
-    this.playingSpeechMessageId.set(message.id);
-    this.restoreScrollPosition(scrollPosition);
+    const audio = new Audio();
+    audio.preload = 'auto';
     audio.onended = () => this.stopAnswerAudio();
     audio.onerror = () => {
       this.speechError.set('Audio playback failed.');
       this.speechErrorMessageId.set(message.id);
       this.stopAnswerAudio();
     };
+    this.answerAudio = audio;
+    void audio.play().catch(() => undefined);
+
+    const audioUrlPromise = this.ensureAnswerAudioUrl(message, true);
+    this.restoreScrollPosition(scrollPosition);
+    const audioUrl = await audioUrlPromise;
+    if (!audioUrl || this.answerAudio !== audio) {
+      this.unlockScrollPosition(scrollPosition);
+      return;
+    }
+
+    audio.src = audioUrl;
+    this.playingSpeechMessageId.set(message.id);
+    this.restoreScrollPosition(scrollPosition);
 
     try {
       await audio.play();
+      this.unlockScrollPosition(scrollPosition);
     } catch (error) {
       this.speechError.set(this.authService.toFriendlyError(error));
       this.speechErrorMessageId.set(message.id);
       this.stopAnswerAudio();
+      this.unlockScrollPosition(scrollPosition);
+    }
+  }
+
+  prepareReadAnswerClick(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.shouldScrollToEnd = false;
+    this.voiceClickScrollPosition = this.captureScrollPosition();
+    this.lockScrollPosition(this.voiceClickScrollPosition);
+    if (event.currentTarget instanceof HTMLElement) {
+      event.currentTarget.blur();
     }
   }
 
@@ -1580,6 +1601,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   ngAfterViewChecked(): void {
+    if (this.voiceScrollLockTimer) {
+      this.shouldScrollToEnd = false;
+      this.restoreScrollPosition(this.voiceClickScrollPosition);
+      return;
+    }
+
     if (this.shouldScrollToEnd) {
       this.shouldScrollToEnd = false;
       this.transcriptEnd?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -1595,6 +1622,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       clearTimeout(this.copyFeedbackTimeout);
       this.copyFeedbackTimeout = null;
     }
+    this.unlockScrollPosition(this.voiceClickScrollPosition);
     this.clearSpeechState(true);
   }
 
@@ -2045,7 +2073,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return new Blob([bytes], { type: contentType });
   }
 
-  private captureScrollPosition(): { windowY: number; documentY: number; bodyY: number } | null {
+  private captureScrollPosition(): {
+    windowY: number;
+    documentY: number;
+    bodyY: number;
+    viewportTop: number | null;
+  } | null {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
       return null;
     }
@@ -2054,16 +2087,26 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       windowY: window.scrollY,
       documentY: document.documentElement.scrollTop,
       bodyY: document.body.scrollTop,
+      viewportTop: this.chatScrollViewport?.nativeElement.scrollTop ?? null,
     };
   }
 
-  private restoreScrollPosition(position: { windowY: number; documentY: number; bodyY: number } | null): void {
+  private restoreScrollPosition(position: {
+    windowY: number;
+    documentY: number;
+    bodyY: number;
+    viewportTop: number | null;
+  } | null): void {
     if (!position || typeof window === 'undefined' || typeof document === 'undefined') {
       return;
     }
 
     const restore = () => {
       this.shouldScrollToEnd = false;
+      const viewport = this.chatScrollViewport?.nativeElement;
+      if (viewport && position.viewportTop !== null) {
+        viewport.scrollTop = position.viewportTop;
+      }
       window.scrollTo({ top: position.windowY, left: window.scrollX, behavior: 'auto' });
       document.documentElement.scrollTop = position.documentY;
       document.body.scrollTop = position.bodyY;
@@ -2073,6 +2116,30 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     requestAnimationFrame(restore);
     setTimeout(restore, 50);
     setTimeout(restore, 250);
+  }
+
+  private lockScrollPosition(position: ReturnType<ChatComponent['captureScrollPosition']>): void {
+    if (!position) {
+      return;
+    }
+
+    this.restoreScrollPosition(position);
+    if (this.voiceScrollLockTimer) {
+      return;
+    }
+
+    this.voiceScrollLockTimer = setInterval(() => {
+      this.restoreScrollPosition(position);
+    }, 40);
+  }
+
+  private unlockScrollPosition(position: ReturnType<ChatComponent['captureScrollPosition']>): void {
+    if (this.voiceScrollLockTimer) {
+      clearInterval(this.voiceScrollLockTimer);
+      this.voiceScrollLockTimer = null;
+    }
+    this.restoreScrollPosition(position);
+    this.voiceClickScrollPosition = null;
   }
 
   private buildShareUrl(threadId: string): string {
