@@ -190,7 +190,7 @@ export class ChatComponent implements AfterViewChecked {
     const currentSlug = (this.routeSlug() ?? this.currentWikiAtlas()?.slug ?? '').trim().toLowerCase();
     return this.publicCityWikis()
       .filter((wiki) => (wiki.slug ?? '').trim().toLowerCase() !== currentSlug)
-      .slice(0, 6);
+      .slice(0, 1);
   });
   readonly activeThreadHistoryItem = computed<ChatThreadItem | null>(() => {
     const activeThreadId = this.activeThreadId();
@@ -259,7 +259,7 @@ export class ChatComponent implements AfterViewChecked {
         ? 'Ask up to 5 questions without signing in.'
         : `Ask up to 5 questions without signing in. ${remaining} remaining.`;
     }
-    return 'Signed-in visitors can ask unlimited questions. The atlas owner can see your name, email, and questions.';
+    return 'Subscribe for weekly updates from this Wiki.';
   });
   readonly currentWikiAtlas = computed(() =>
     this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
