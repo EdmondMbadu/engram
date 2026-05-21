@@ -25,8 +25,9 @@ import { NotFoundComponent } from './not-found/not-found';
 import { authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'public-wikis', pathMatch: 'full' },
-  { path: 'marketing', component: MarketingComponent, title: 'My living wiki' },
+  { path: '', component: PublicWikisComponent, title: 'Public Wikis | My living wiki' },
+  { path: 'landing', component: MarketingComponent, title: 'My living wiki' },
+  { path: 'marketing', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'home', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | My living wiki' },
@@ -49,7 +50,6 @@ export const routes: Routes = [
   { path: 'atlas/:slug', component: AtlasLandingComponent, title: 'Atlas | My living wiki' },
   { path: 'privacy', component: LegalComponent, title: 'Privacy Policy | My living wiki', data: { legalPage: 'privacy' } },
   { path: 'terms', component: LegalComponent, title: 'Terms and Conditions | My living wiki', data: { legalPage: 'terms' } },
-  { path: 'landing', redirectTo: 'home', pathMatch: 'full' },
   { path: 'sign-in', component: SignInComponent, title: 'Sign In | My living wiki', canActivate: [guestOnlyGuard] },
   { path: 'create-account', component: CreateAccountComponent, title: 'Create Account | My living wiki', canActivate: [guestOnlyGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent, title: 'Forgot Password | My living wiki', canActivate: [guestOnlyGuard] },
