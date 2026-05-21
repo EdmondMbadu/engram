@@ -213,7 +213,7 @@ export class ChatComponent implements AfterViewChecked {
     this.canUseAnswerModeToggle()
       ? this.isInternetMode()
         ? 'Ask with internet mode...'
-        : 'Message Living Wiki...'
+        : 'Message My living wiki...'
       : this.showSignInCta()
         ? 'Sign in to continue asking questions...'
         : 'Ask about this living wiki...',
@@ -294,9 +294,9 @@ export class ChatComponent implements AfterViewChecked {
   });
   readonly emptyStateEyebrow = computed(() => {
     if (this.canUseAnswerModeToggle()) {
-      return this.isInternetMode() ? 'Internet mode' : 'Living Wiki';
+      return this.isInternetMode() ? 'Internet mode' : 'My living wiki';
     }
-    return 'Living Wiki · Public chat';
+    return 'My living wiki · Public chat';
   });
   readonly emptyStateTitle = computed(() => {
     const name = this.currentWikiName();
@@ -359,7 +359,7 @@ export class ChatComponent implements AfterViewChecked {
 
     return 'Your documents and wiki pages are indexed so every answer can stay grounded in the material you uploaded.';
   });
-  readonly heroStatusLabel = computed(() => (this.isPublicVisitorMode() ? 'Public atlas live' : 'Living Wiki live'));
+  readonly heroStatusLabel = computed(() => (this.isPublicVisitorMode() ? 'Public atlas live' : 'My living wiki live'));
   readonly heroMetaLabel = computed(() => {
     if (this.hidePublicKnowledgeSurfaces()) {
       return 'Knowledge ready';
@@ -380,7 +380,7 @@ export class ChatComponent implements AfterViewChecked {
     if (this.canUseAnswerModeToggle()) {
       return this.isInternetMode()
         ? 'Internet mode searches the web and answers beyond your uploaded sources.'
-        : 'Living Wiki mode stays grounded in your indexed documents and wiki pages.';
+        : 'My living wiki mode stays grounded in your indexed documents and wiki pages.';
     }
     if (this.showSignInCta()) {
       return 'You have used all 5 anonymous questions. Sign in to continue.';
@@ -1007,11 +1007,11 @@ export class ChatComponent implements AfterViewChecked {
     if (message.role === 'user') {
       return 'You';
     }
-    return message.answerMode === 'internet' ? 'Internet' : 'Living Wiki';
+    return message.answerMode === 'internet' ? 'Internet' : 'My living wiki';
   }
 
   assistantMessageName(): string {
-    return this.currentWikiGuide()?.name?.trim() || 'Living Wiki';
+    return this.currentWikiGuide()?.name?.trim() || 'My living wiki';
   }
 
   assistantMessageSubtitle(message: ChatMessage): string {
@@ -1020,12 +1020,12 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   assistantAvatarUrl(): string {
-    return this.currentWikiGuide()?.image_url?.trim() || '/assets/living-atlas-logo.png';
+    return this.currentWikiGuide()?.image_url?.trim() || '/assets/image/my-living-wiki.png';
   }
 
   assistantAvatarAlt(): string {
     const name = this.assistantMessageName();
-    return name === 'Living Wiki' ? 'Living Wiki' : `${name} guide`;
+    return name === 'My living wiki' ? 'My living wiki' : `${name} guide`;
   }
 
   travelGuideForMessage(message: ChatMessage): TravelGuideStructuredResponse | null {
@@ -1455,7 +1455,7 @@ export class ChatComponent implements AfterViewChecked {
       const question = this.questionBeforeMessage(message.id);
       const atlas = this.currentWikiAtlas();
       const card = await this.answerCardService.createAnswerCard({
-        question: question || 'Living Wiki question',
+        question: question || 'My living wiki question',
         answer: message.text,
         atlasId: atlas?.id ?? null,
         threadId: this.activeThreadId(),

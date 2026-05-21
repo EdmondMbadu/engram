@@ -11,9 +11,9 @@
       <div class="mb-8 px-2">
         <a routerLink="/" class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1 shadow-[0_0_24px_rgba(59,175,98,0.08)]">
-            <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+            <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
           </div>
-          <span class="text-xl font-black tracking-tighter text-[var(--text)]">Living Wiki</span>
+          <span class="text-xl font-black tracking-tighter text-[var(--text)]">My living wiki</span>
         </a>
       </div>
       @if (isWorkspaceMode()) {
@@ -173,7 +173,7 @@
                 [class.chat-mode-toggle__button--active]="!isInternetMode()"
                 (click)="setAnswerMode('wiki')"
               >
-                Living Wiki
+                My living wiki
               </button>
               <button
                 type="button"
@@ -309,14 +309,14 @@
                 }
 
                 <h2 class="chat-hero-title mt-3">
-                  Ask <span class="chat-hero-title__brand">Living Wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
+                  Ask <span class="chat-hero-title__brand">My living wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
                 </h2>
 
                 @if (currentWikiGuide(); as guide) {
                   @if (guide.image_url || guide.label || guide.name) {
                     <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
                       @if (guide.image_url) {
-                        <img [src]="guide.image_url" [alt]="guide.name || 'Living Wiki guide'" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
+                        <img [src]="guide.image_url" [alt]="guide.name || 'My living wiki guide'" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
                       }
                       <span class="grid min-w-0 text-left">
                         @if (guide.label) {
@@ -555,7 +555,7 @@
                                   @if (travelGuideHeroImage(); as heroImage) {
                                     <img
                                       [src]="heroImage"
-                                      [alt]="guide.title || 'Living Wiki guide'"
+                                      [alt]="guide.title || 'My living wiki guide'"
                                       class="absolute inset-0 h-full w-full object-cover"
                                       loading="lazy"
                                     />
@@ -1043,12 +1043,12 @@
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(214,169,74,0.14),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.06),transparent_55%)]"></div>
           <div class="relative flex items-start justify-between gap-4">
             <div class="min-w-0">
-              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] sm:tracking-[0.24em]">Free Living Wiki access</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] sm:tracking-[0.24em]">Free My living wiki access</p>
               <h2 class="mt-2 text-xl font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.05em]">
                 @if (isSignedIn()) {
                   Subscribe to {{ currentWikiName() || 'this wiki' }}
                 } @else {
-                  Join Living Wiki {{ currentWikiName() || 'this wiki' }}
+                  Join My living wiki {{ currentWikiName() || 'this wiki' }}
                 }
               </h2>
               <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:leading-7">
@@ -1072,7 +1072,7 @@
             <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">mark_email_read</span>
               <div>
-                <p class="text-sm font-black text-[var(--text)]">Weekly updates on {{ currentWikiName() || 'this Living Wiki' }}</p>
+                <p class="text-sm font-black text-[var(--text)]">Weekly updates on {{ currentWikiName() || 'this My living wiki' }}</p>
                 <p class="mt-1 text-xs leading-5 text-[var(--muted)]">A concise local digest so Philly does not sneak important things past you.</p>
               </div>
             </div>
@@ -1101,7 +1101,7 @@
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--muted)]">lock_open</span>
               <div>
                 <p class="text-sm font-black text-[var(--text)]">More access after joining</p>
-                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">We will reveal additional member features as they come online for this Living Wiki.</p>
+                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">We will reveal additional member features as they come online for this My living wiki.</p>
               </div>
             </div>
           </div>

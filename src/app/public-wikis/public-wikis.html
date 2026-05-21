@@ -1,11 +1,10 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
-      <a routerLink="/" class="flex items-center gap-2 sm:gap-3 text-lg font-bold tracking-tighter text-[var(--text)]">
-        <div class="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-1.5">
-          <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+      <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
+        <div class="flex h-10 w-36 sm:h-12 sm:w-48 shrink-0 items-center justify-start">
+          <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
         </div>
-        <span class="hidden sm:inline">Living Wiki</span>
       </a>
 
       <div class="flex items-center gap-2 sm:gap-3">
@@ -19,19 +18,18 @@
   <main>
     <!-- Editorial Hero -->
     <section class="border-b border-white/5">
-      <div class="mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-10">
+      <div class="mx-auto max-w-5xl px-4 py-5 text-center sm:px-6 sm:py-7 lg:px-10">
         <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[var(--surface)] px-4 py-1.5">
           <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]"></span>
           <span class="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--accent)]">Public Source Files</span>
         </div>
-        <h1 class="mt-8 text-5xl font-bold tracking-tight text-[var(--text)] sm:text-7xl">
-          Every public wiki,<br />
-          <span class="text-[var(--accent-soft)]">in one place.</span>
+        <h1 class="mx-auto mt-3 max-w-4xl text-4xl font-bold leading-[1.03] tracking-normal text-[var(--accent-soft)] sm:text-6xl">
+          Find what lights you up.
         </h1>
-        <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-          Browse the live atlases or preview what is coming next. Each wiki is a long-form, source-cited reference compiled from public data.
+        <p class="mx-auto mt-3 max-w-2xl text-lg font-semibold leading-relaxed text-[var(--text)] sm:text-2xl">
+          MyLivingWiki.com is like having a friend who knows everything about your city.
         </p>
-        <div class="mt-10 inline-flex items-center divide-x divide-white/10 rounded-full border border-white/10 bg-[var(--surface)] text-xs font-bold uppercase tracking-[0.18em]">
+        <div class="mt-5 inline-flex items-center divide-x divide-white/10 rounded-full border border-white/10 bg-[var(--surface)] text-xs font-bold uppercase tracking-[0.18em]">
           <span class="px-5 py-3 text-[var(--text)]">
             <span class="text-[var(--accent)]">{{ liveCount() }}</span> Live
           </span>
@@ -47,8 +45,8 @@
 
     <!-- Sticky Filter + Catalog -->
     <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-      <div class="sticky top-[73px] z-40 -mx-4 border-b border-white/5 bg-[var(--bg)]/85 px-4 py-5 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10">
-        <div class="mb-4">
+      <div class="sticky top-[73px] z-40 -mx-4 border-b border-white/5 bg-[var(--bg)]/85 px-4 py-3 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10">
+        <div class="mb-3">
           <label class="group relative block">
             <span class="material-symbols-outlined pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[var(--muted)] transition-colors group-focus-within:text-[var(--accent)]">search</span>
             <input
@@ -56,7 +54,7 @@
               [ngModel]="searchTerm()"
               (ngModelChange)="onSearchInput($event)"
               placeholder="Search public and upcoming wikis..."
-              class="w-full rounded-2xl border border-white/10 bg-[var(--surface)] py-4 pl-14 pr-12 text-sm text-[var(--text)] placeholder:text-[var(--muted)] outline-none transition-colors focus:border-[var(--accent)]"
+              class="w-full rounded-2xl border border-white/10 bg-[var(--surface)] py-3 pl-14 pr-12 text-sm text-[var(--text)] placeholder:text-[var(--muted)] outline-none transition-colors focus:border-[var(--accent)]"
             />
             @if (searchTerm()) {
               <button
@@ -96,8 +94,8 @@
         </div>
       </div>
 
-      <div class="py-10">
-        <div class="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-white/5 pb-4">
+      <div class="py-4">
+        <div class="mb-4 flex flex-wrap items-baseline justify-between gap-3 border-b border-white/5 pb-3">
           <h2 class="text-xs font-bold uppercase tracking-[0.22em] text-[var(--muted)]">
             {{ activeCategory() === 'All' ? 'All Wikis' : activeCategory() }}
           </h2>
@@ -259,15 +257,14 @@
     <footer class="mt-12 border-t border-white/5">
       <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-10 sm:flex-row sm:px-6 lg:px-10">
         <div class="flex items-center gap-3">
-          <div class="flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-white/5 p-1">
-            <img src="/assets/living-atlas-logo.png" alt="" class="h-full w-full object-contain" />
+          <div class="flex h-10 w-40 items-center justify-start">
+            <img src="/assets/image/my-living-wiki.png" alt="" class="h-full w-full object-contain" />
           </div>
           <div class="text-left">
-            <p class="text-xs font-bold tracking-tight text-[var(--text)]">Living Wiki</p>
             <p class="text-[11px] text-[var(--muted)]">Brought to you by <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
           </div>
         </div>
-        <p class="text-[11px] font-medium text-[var(--muted)]">© 2026 Living Wiki. All rights reserved.</p>
+        <p class="text-[11px] font-medium text-[var(--muted)]">© 2026 My living wiki. All rights reserved.</p>
       </div>
     </footer>
   </main>

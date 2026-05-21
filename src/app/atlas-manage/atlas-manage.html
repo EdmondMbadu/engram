@@ -3,7 +3,7 @@
     <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
       <a routerLink="/wikis" class="flex min-w-0 items-center gap-3">
         <div class="h-11 w-11 shrink-0 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-2">
-          <img src="/assets/living-atlas-logo.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
         </div>
         <div class="min-w-0">
           <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
@@ -475,7 +475,7 @@
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                           [value]="guideDraft.label"
                           (input)="updateChatGuideDraft(atlas.id, 'label', $any($event.target).value)"
-                          placeholder="Your Living Wiki tour guide"
+                          placeholder="Your My living wiki tour guide"
                         />
                       </label>
                       <label class="block">
@@ -694,7 +694,7 @@
                       (click)="updateDefaultAnswerMode(atlas, 'wiki')"
                     >
                       <span class="material-symbols-outlined text-[1rem]">menu_book</span>
-                      <span>Living Wiki</span>
+                      <span>My living wiki</span>
                     </button>
                     <button
                       type="button"
@@ -736,7 +736,7 @@
                 <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                   <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
-                      Add an existing Living Wiki user by email. They receive an email invite and can edit this Wiki's admin settings.
+                      Add an existing My living wiki user by email. They receive an email invite and can edit this Wiki's admin settings.
                     </p>
                     <form class="flex w-full flex-col gap-2 sm:flex-row lg:max-w-md" (submit)="shareAdmin($event, atlas)">
                       <input

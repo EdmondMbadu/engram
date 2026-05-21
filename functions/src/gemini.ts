@@ -732,7 +732,7 @@ export async function generateAnswerCard(params: {
   ].filter(Boolean).join('\n');
 
   const prompt = [
-    'Create a shareable Living Wiki Philly Answer Card from this Q&A.',
+    'Create a shareable My living wiki Philly Answer Card from this Q&A.',
     'Use a Philly-aware, useful, lightly entertaining voice, but keep every line fast to scan.',
     'Only use facts supported by the provided answer. Do not invent new restaurants, claims, prices, rankings, dates, or addresses.',
     'Return concise card copy:',
@@ -793,7 +793,7 @@ export async function generateAnswerQuiz(params: {
   }
 
   const prompt = [
-    'Create a public Living Wiki Philly challenge quiz from this answer card.',
+    'Create a public My living wiki Philly challenge quiz from this answer card.',
     'The quiz should feel fast, useful, and Philly-aware, not like a school worksheet.',
     'Only use facts supported by the provided answer/card text. Do not invent places, dates, stats, or claims.',
     'Return:',
@@ -805,7 +805,7 @@ export async function generateAnswerQuiz(params: {
     '- explanations are short and explain the answer in one sentence.',
     'Avoid trick questions and avoid options like "all of the above".',
     '',
-    params.atlasName ? `Wiki: ${params.atlasName}` : 'Wiki: Living Wiki Philly',
+    params.atlasName ? `Wiki: ${params.atlasName}` : 'Wiki: My living wiki Philly',
     '',
     JSON.stringify({
       card_title: title,
@@ -1326,7 +1326,7 @@ function normalizeQuizQuestion(value: unknown): GeneratedQuizQuestion | null {
     prompt,
     options,
     correct_option_index: correctIndex,
-    explanation: explanation || 'The answer follows directly from the Living Wiki card.',
+    explanation: explanation || 'The answer follows directly from the My living wiki card.',
   };
 }
 
@@ -1367,7 +1367,7 @@ function buildFallbackAnswerQuiz(title: string, question: string, sourceLines: s
   const cleanTitle = title || cleanCardLine(question.replace(/[?!.]+$/g, ''), 80) || 'Philly Knowledge Challenge';
   const facts = sourceLines.map((line) => cleanCardLine(line, 130)).filter(Boolean);
   while (facts.length < 5) {
-    facts.push('Living Wiki Philly turns local answers into quick, shareable knowledge.');
+    facts.push('My living wiki Philly turns local answers into quick, shareable knowledge.');
   }
 
   const questions = facts.slice(0, 5).map((fact, index) => {
@@ -1380,7 +1380,7 @@ function buildFallbackAnswerQuiz(title: string, question: string, sourceLines: s
     const rotation = index % options.length;
     const rotated = [...options.slice(rotation), ...options.slice(0, rotation)];
     return {
-      prompt: `Which detail is supported by this Living Wiki answer?`,
+      prompt: `Which detail is supported by this My living wiki answer?`,
       options: rotated,
       correct_option_index: rotated.indexOf(fact),
       explanation: fact,
@@ -1389,7 +1389,7 @@ function buildFallbackAnswerQuiz(title: string, question: string, sourceLines: s
 
   return {
     title: `${cleanTitle} Quiz`,
-    description: 'Test what you picked up from this Living Wiki Philly answer.',
+    description: 'Test what you picked up from this My living wiki Philly answer.',
     questions,
   };
 }
@@ -1407,7 +1407,7 @@ function buildFallbackAnswerCard(question: string, answer: string): GeneratedAns
 
   const keyFacts = sentences.slice(0, 5);
   while (keyFacts.length < 3) {
-    keyFacts.push('A quick Living Wiki summary pulled from the answer.');
+    keyFacts.push('A quick My living wiki summary pulled from the answer.');
   }
 
   const didYouKnow = sentences.slice(5, 8);
@@ -1417,7 +1417,7 @@ function buildFallbackAnswerCard(question: string, answer: string): GeneratedAns
 
   return {
     title: titleBase ? cleanCardLine(titleBase, 80) : 'A Philly Answer Worth Sharing',
-    subtitle: 'A fast, shareable summary from Living Wiki Philly.',
+    subtitle: 'A fast, shareable summary from My living wiki Philly.',
     key_facts: keyFacts.slice(0, 5),
     did_you_know: didYouKnow.slice(0, 3),
   };

@@ -280,7 +280,7 @@ export class SharedChatComponent {
     this.answerCardErrorMessageId.set(null);
     try {
       const card = await this.answerCardService.createAnswerCard({
-        question: this.questionBeforeMessage(message.id) || 'Shared Living Wiki question',
+        question: this.questionBeforeMessage(message.id) || 'Shared My living wiki question',
         answer: message.text,
         threadId: this.threadId(),
         sourceMessageId: message.id,
@@ -313,7 +313,7 @@ export class SharedChatComponent {
   }
 
   private buildMessageCopyText(message: SharedChatMessage): string {
-    const lines = [message.role === 'user' ? 'User:' : 'Living Wiki:', message.text.trim() || '(empty)'];
+    const lines = [message.role === 'user' ? 'User:' : 'My living wiki:', message.text.trim() || '(empty)'];
 
     if (message.citations?.length) {
       lines.push('');

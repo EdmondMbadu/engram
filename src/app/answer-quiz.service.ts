@@ -79,7 +79,7 @@ export class AnswerQuizService {
       atlasId: typeof data['atlasId'] === 'string' ? data['atlasId'] : null,
       atlasName: typeof data['atlasName'] === 'string' ? data['atlasName'] : null,
       title: String(data['title'] ?? 'Philly Knowledge Challenge'),
-      description: String(data['description'] ?? 'Test what you picked up from this Living Wiki Philly answer.'),
+      description: String(data['description'] ?? 'Test what you picked up from this My living wiki Philly answer.'),
       sourceQuestion: String(data['sourceQuestion'] ?? ''),
       questionCount: Number(data['questionCount'] ?? questions.length) || questions.length,
       questions,
@@ -141,7 +141,7 @@ export class AnswerQuizService {
           const data = item && typeof item === 'object' ? item as Record<string, unknown> : {};
           return {
             rank: Number(data['rank'] ?? 0) || 0,
-            displayName: String(data['displayName'] ?? 'Living Wiki Player'),
+            displayName: String(data['displayName'] ?? 'My living wiki Player'),
             score: Number(data['score'] ?? 0) || 0,
             total: Number(data['total'] ?? 0) || 0,
             percent: Number(data['percent'] ?? 0) || 0,

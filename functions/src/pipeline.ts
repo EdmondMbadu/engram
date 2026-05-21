@@ -769,7 +769,7 @@ async function loadAtlasPersonaPrompt(atlasId: string | null): Promise<string | 
     const guideLabel = typeof guide?.label === 'string' ? guide.label.trim() : '';
     const guidePrompt = guideName
       ? [
-        `You are responding as ${guideName}, ${guideLabel || 'the Living Wiki guide'} for this wiki.`,
+        `You are responding as ${guideName}, ${guideLabel || 'the My living wiki guide'} for this wiki.`,
         'Let that guide identity shape the voice, warmth, framing, and local color of every answer.',
         'Stay accurate, grounded, and modern; do not fabricate personal memories, citations, dates, or facts.',
       ].join(' ')
@@ -1374,7 +1374,7 @@ export async function runAtlasQuery(params: {
   if (uniqueEntries.length === 0) {
     return {
       answer:
-        "This topic isn't in your knowledge base yet. Upload source material so Living Wiki can answer it with citations.",
+        "This topic isn't in your knowledge base yet. Upload source material so My living wiki can answer it with citations.",
       citedEntryIds: [],
       citedPassages: [],
       mappableLocations: [],
@@ -1670,7 +1670,7 @@ export async function runPublicAtlasQuery(params: {
 
   if (uniqueEntries.length === 0) {
     answer =
-      "This topic isn't in the current knowledge base yet. Sign in or ask the atlas owner to upload source material so Living Wiki can answer it with citations.";
+      "This topic isn't in the current knowledge base yet. Sign in or ask the atlas owner to upload source material so My living wiki can answer it with citations.";
     citedEntryIds = [];
     citedPassages = [];
     knowledgeGap = true;

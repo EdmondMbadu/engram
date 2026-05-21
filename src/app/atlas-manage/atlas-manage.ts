@@ -186,7 +186,7 @@ export class AtlasManageComponent {
   }
 
   defaultAnswerModeSummary(atlas: AtlasItem): string {
-    return this.defaultAnswerMode(atlas) === 'internet' ? 'Internet' : 'Living Wiki';
+    return this.defaultAnswerMode(atlas) === 'internet' ? 'Internet' : 'My living wiki';
   }
 
   isSavingDefaultMode(atlasId: string): boolean {

@@ -61,7 +61,7 @@ export class LibraryComponent {
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
-  readonly atlasLogo = '/assets/living-atlas-logo.png';
+  readonly atlasLogo = '/assets/image/my-living-wiki.png';
   readonly atlasHomeLink = computed(() => this.publicRoute('atlas') ?? this.atlasService.activeAtlasHomeLink());
   readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
   readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');

@@ -985,7 +985,7 @@ export class AtlasService {
 
   defaultNewsletterPrompt(): string {
     return [
-      'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
+      'Create a premium weekly My living wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
       'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
       'For Philadelphia wikis, prioritize Philadelphia and the surrounding region.',
       'Use fresh web search, include dates when available, avoid rumors, and keep every item concise.',
