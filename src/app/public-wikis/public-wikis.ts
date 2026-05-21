@@ -10,7 +10,10 @@ import {
 } from '../public-wiki-catalog';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
-const ALL_CATEGORIES = 'All';
+const CITIES_CATEGORY = 'Cities';
+const OTHERS_CATEGORY = 'Others';
+const PUBLIC_WIKI_CATEGORIES = [CITIES_CATEGORY, OTHERS_CATEGORY] as const;
+type PublicWikiCategory = (typeof PUBLIC_WIKI_CATEGORIES)[number];
 
 @Component({
   selector: 'app-public-wikis',
@@ -23,7 +26,7 @@ export class PublicWikisComponent implements OnInit {
   readonly liveWikis = signal<PublicWikiCatalogItem[]>([]);
   readonly isLoadingLiveWikis = signal(true);
   readonly searchTerm = signal('');
-  readonly activeCategory = signal<string>(ALL_CATEGORIES);
+  readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
 
   readonly comingSoonWikis = COMING_SOON_PUBLIC_WIKIS;
 
@@ -35,25 +38,17 @@ export class PublicWikisComponent implements OnInit {
   readonly liveCount = computed(() => this.liveWikis().length);
   readonly comingSoonCount = this.comingSoonWikis.length;
 
-  readonly categories = computed(() => [
-    ALL_CATEGORIES,
-    ...Array.from(
-      new Set(this.publicWikis().map((wiki) => wiki.category).filter((cat): cat is string => !!cat)),
-    ).sort(),
-  ]);
+  readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
 
   readonly categoryCounts = computed(() =>
     this.categories().reduce<Record<string, number>>((acc, cat) => {
-      acc[cat] =
-        cat === ALL_CATEGORIES
-          ? this.publicWikis().length
-          : this.publicWikis().filter((wiki) => wiki.category === cat).length;
+      acc[cat] = this.publicWikis().filter((wiki) => this.categoryForWiki(wiki) === cat).length;
       return acc;
     }, {}),
   );
 
   readonly hasFilters = computed(
-    () => this.activeCategory() !== ALL_CATEGORIES || this.searchTerm().trim().length > 0,
+    () => this.activeCategory() !== CITIES_CATEGORY || this.searchTerm().trim().length > 0,
   );
 
   readonly filteredWikis = computed(() => {
@@ -61,7 +56,7 @@ export class PublicWikisComponent implements OnInit {
     const cat = this.activeCategory();
 
     return this.publicWikis().filter((wiki) => {
-      const catMatch = cat === ALL_CATEGORIES || wiki.category === cat;
+      const catMatch = this.categoryForWiki(wiki) === cat;
       if (!catMatch) return false;
       if (!term) return true;
 
@@ -94,7 +89,7 @@ export class PublicWikisComponent implements OnInit {
     }
   }
 
-  setCategory(cat: string): void {
+  setCategory(cat: PublicWikiCategory): void {
     this.activeCategory.set(cat);
   }
 
@@ -103,7 +98,7 @@ export class PublicWikisComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.activeCategory.set(ALL_CATEGORIES);
+    this.activeCategory.set(CITIES_CATEGORY);
     this.searchTerm.set('');
   }
 
@@ -115,5 +110,9 @@ export class PublicWikisComponent implements OnInit {
       .map((part) => part[0])
       .join('')
       .toUpperCase();
+  }
+
+  private categoryForWiki(wiki: PublicWikiCatalogItem): PublicWikiCategory {
+    return wiki.category === 'Cities & Regions' ? CITIES_CATEGORY : OTHERS_CATEGORY;
   }
 }
