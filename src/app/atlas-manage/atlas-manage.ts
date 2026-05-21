@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
@@ -59,9 +59,12 @@ interface VoiceAgentDraft {
 export class AtlasManageComponent {
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   readonly atlases = this.atlasService.atlases;
   readonly activeAtlasId = this.atlasService.activeAtlasId;
+  readonly activeAtlasHomeLink = this.atlasService.activeAtlasHomeLink;
+  readonly activeAtlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
   readonly usageById = signal<Record<string, AtlasUsage>>({});
   readonly loadingUsageById = signal<Record<string, boolean>>({});
@@ -772,6 +775,43 @@ export class AtlasManageComponent {
 
   selectAtlas(atlasId: string): void {
     this.atlasService.setActive(atlasId);
+  }
+
+  openAtlasSection(atlas: AtlasItem, section: string): void {
+    this.openWikiPanel(atlas);
+    this.openSection(atlas, section);
+    if (section === 'voice-agent') {
+      void this.loadVoiceAgentConfig(atlas.id);
+    }
+    if (section === 'text-messaging') {
+      void this.loadTextMessagingConfig(atlas.id);
+    }
+    if (section === 'newsletter') {
+      this.ensureNewsletterDraft(atlas);
+    }
+    if (section === 'chat-guide') {
+      this.ensureChatGuideDraft(atlas);
+    }
+  }
+
+  async openAtlasChat(atlas: AtlasItem): Promise<void> {
+    this.selectAtlas(atlas.id);
+    await this.router.navigate(['/chat']);
+  }
+
+  async openAtlasUpload(atlas: AtlasItem): Promise<void> {
+    this.selectAtlas(atlas.id);
+    await this.router.navigate(['/upload']);
+  }
+
+  async openAtlasSources(atlas: AtlasItem): Promise<void> {
+    this.selectAtlas(atlas.id);
+    await this.router.navigate(['/library']);
+  }
+
+  async openAtlasWiki(atlas: AtlasItem): Promise<void> {
+    this.selectAtlas(atlas.id);
+    await this.router.navigate(['/wiki']);
   }
 
   startRename(atlas: AtlasItem): void {

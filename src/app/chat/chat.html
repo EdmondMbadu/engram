@@ -29,40 +29,45 @@
         </button>
       }
 
-      <nav class="space-y-1 text-sm">
-        <a [routerLink]="atlasHomeLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">home</span>
-          <span>Home</span>
+      @if (currentWikiAdminLink(); as adminLink) {
+        <a
+          [routerLink]="adminLink"
+          class="mb-6 flex items-center justify-center gap-2 rounded-xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-3 py-3 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15"
+        >
+          <span class="material-symbols-outlined text-[1.1rem]">admin_panel_settings</span>
+          <span>Admin Console</span>
         </a>
-        <a routerLink="/wikis" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">dashboard</span>
-          <span>Wikis</span>
-        </a>
-        <a [routerLink]="chatLink()" class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)]">
-          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">chat</span>
-          <span>Chat</span>
-        </a>
-        <a [routerLink]="uploadLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">neurology</span>
-          <span>Upload</span>
-        </a>
-        @if (!hidePublicSourceFiles()) {
-          <a [routerLink]="libraryLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-            <span class="material-symbols-outlined">library_books</span>
-            <span>Source Files</span>
+      }
+
+      <section class="rounded-3xl border border-white/10 bg-white/[0.025] p-3">
+        <div class="mb-3 flex items-center justify-between gap-3 px-1">
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Explore cities</p>
+            <p class="mt-1 text-xs text-[var(--muted)]">Public living wikis</p>
+          </div>
+          <a routerLink="/public-wikis" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-[var(--muted)] transition hover:bg-white/5 hover:text-[var(--text)]" aria-label="Open public wikis">
+            <span class="material-symbols-outlined text-[1rem]">arrow_outward</span>
           </a>
-        }
-        @if (isWorkspaceMode()) {
-          <a routerLink="/scrapper" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-            <span class="material-symbols-outlined">travel_explore</span>
-            <span>Scrapper</span>
-          </a>
-        }
-        <a [routerLink]="atlasWikiLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">menu_book</span>
-          <span>Wiki</span>
-        </a>
-      </nav>
+        </div>
+        <div class="space-y-2">
+          @for (city of sidebarCityWikis(); track city.slug || city.title) {
+            <a
+              [routerLink]="cityWikiRouterLink(city)"
+              class="chat-city-card group"
+              [class.chat-city-card--live]="city.status === 'live'"
+            >
+              <span class="chat-city-card__icon">
+                <span class="material-symbols-outlined">location_city</span>
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="chat-city-card__title">{{ cityWikiLocationLabel(city) }}</span>
+                <span class="chat-city-card__meta">{{ cityWikiStatusLabel(city) }}</span>
+              </span>
+              <span class="material-symbols-outlined chat-city-card__arrow">chevron_right</span>
+            </a>
+          }
+        </div>
+      </section>
 
       @if (isPublicVisitorMode()) {
         <div class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm text-[var(--muted)]">
@@ -149,6 +154,7 @@
             activePage="chat"
             [publicSlug]="routeSlug()"
             [hidePublicKnowledgeSurfaces]="hidePublicSourceFiles()"
+            [adminNavigation]="canAdminCurrentWiki()"
             [showJoinAction]="canSubscribeToCurrentWiki()"
             [joinLabel]="isSignedIn() ? 'Subscribe' : 'Join for Free'"
             [showSignInAction]="!isSignedIn()"

@@ -17,6 +17,12 @@ import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { getPublicAppUrl } from '../firebase.config';
+import {
+  buildPublicWikiLiveItem,
+  COMING_SOON_PUBLIC_WIKIS,
+  type PublicWikiCatalogItem,
+  sortPublicAtlases,
+} from '../public-wiki-catalog';
 import { formatAssistantMessageHtml } from './message-format.util';
 
 interface ChatMessage {
@@ -48,6 +54,8 @@ const THINKING_STAGES = [
   'Reading relevant entries',
   'Synthesizing answer',
 ];
+
+const CITY_WIKI_CATEGORY = 'Cities & Regions';
 
 @Component({
   selector: 'app-chat',
@@ -114,6 +122,9 @@ export class ChatComponent implements AfterViewChecked {
   readonly publicRemainingQuestions = signal<number | null>(null);
   readonly publicRequiresSignIn = signal(false);
   readonly publicDocumentCount = signal(0);
+  readonly publicCityWikis = signal<PublicWikiCatalogItem[]>(
+    COMING_SOON_PUBLIC_WIKIS.filter((wiki) => wiki.category === CITY_WIKI_CATEGORY),
+  );
   readonly anonymousVisitorId = signal<string | null>(this.loadAnonymousVisitorId());
   readonly heroTypedPrompt = signal('');
   readonly animatedDocumentCount = signal(0);
@@ -174,6 +185,12 @@ export class ChatComponent implements AfterViewChecked {
   readonly visibleHistory = computed(() => {
     const all = this.queryHistory();
     return this.historyExpanded() ? all : all.slice(0, 6);
+  });
+  readonly sidebarCityWikis = computed(() => {
+    const currentSlug = (this.routeSlug() ?? this.currentWikiAtlas()?.slug ?? '').trim().toLowerCase();
+    return this.publicCityWikis()
+      .filter((wiki) => (wiki.slug ?? '').trim().toLowerCase() !== currentSlug)
+      .slice(0, 6);
   });
   readonly activeThreadHistoryItem = computed<ChatThreadItem | null>(() => {
     const activeThreadId = this.activeThreadId();
@@ -254,7 +271,7 @@ export class ChatComponent implements AfterViewChecked {
   });
   readonly currentWikiAdminLink = computed(() => {
     const atlas = this.currentWikiAtlas();
-    return atlas && this.canAdminCurrentWiki() ? ['/atlases', atlas.id, 'persona'] : null;
+    return atlas && this.canAdminCurrentWiki() ? '/atlases' : null;
   });
   readonly currentWikiName = computed(() => {
     const atlas = this.currentWikiAtlas();
@@ -513,7 +530,21 @@ export class ChatComponent implements AfterViewChecked {
       .toUpperCase();
   };
 
+  cityWikiRouterLink(wiki: PublicWikiCatalogItem): string | string[] {
+    return wiki.status === 'live' && wiki.slug ? ['/chat', wiki.slug] : '/public-wikis';
+  }
+
+  cityWikiStatusLabel(wiki: PublicWikiCatalogItem): string {
+    return wiki.status === 'live' ? 'Live' : 'Preview';
+  }
+
+  cityWikiLocationLabel(wiki: PublicWikiCatalogItem): string {
+    return wiki.title.replace(/^My living wiki:\s*/i, '').trim();
+  }
+
   constructor() {
+    void this.loadSidebarCityWikis();
+
     effect(() => {
       const slug = this.routeSlug();
       if (!slug) {
@@ -1918,6 +1949,18 @@ export class ChatComponent implements AfterViewChecked {
     this.publicQuestionLimit.set(null);
     this.publicRemainingQuestions.set(null);
     this.publicRequiresSignIn.set(false);
+  }
+
+  private async loadSidebarCityWikis(): Promise<void> {
+    const comingSoon = COMING_SOON_PUBLIC_WIKIS.filter((wiki) => wiki.category === CITY_WIKI_CATEGORY);
+    try {
+      const liveWikis = sortPublicAtlases(await this.atlasService.listPublicAtlases())
+        .map((atlas) => buildPublicWikiLiveItem(atlas))
+        .filter((wiki) => wiki.category === CITY_WIKI_CATEGORY);
+      this.publicCityWikis.set([...liveWikis, ...comingSoon]);
+    } catch {
+      this.publicCityWikis.set(comingSoon);
+    }
   }
 
   private loadAnonymousVisitorId(): string | null {

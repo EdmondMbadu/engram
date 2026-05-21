@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
   <header class="border-b border-[var(--line)] bg-[var(--surface)]">
-    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
       <a routerLink="/wikis" class="flex min-w-0 items-center gap-4">
         <div class="flex h-10 w-40 shrink-0 items-center justify-start">
           <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
@@ -24,7 +24,45 @@
     </div>
   </header>
 
-  <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[16rem_1fr] lg:px-8">
+    <aside class="h-max rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-3 shadow-[var(--shadow-floating)] lg:sticky lg:top-6">
+      <div class="px-3 py-3">
+        <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Admin navigation</p>
+        <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Workspace-only controls for the active Wiki.</p>
+      </div>
+      <nav class="mt-1 space-y-1 text-sm">
+        <a [routerLink]="activeAtlasHomeLink()" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <span class="material-symbols-outlined text-[1.1rem]">home</span>
+          <span>Home</span>
+        </a>
+        <a routerLink="/wikis" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <span class="material-symbols-outlined text-[1.1rem]">dashboard</span>
+          <span>Wikis</span>
+        </a>
+        <a routerLink="/chat" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <span class="material-symbols-outlined text-[1.1rem]">chat</span>
+          <span>Chat</span>
+        </a>
+        <a routerLink="/upload" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <span class="material-symbols-outlined text-[1.1rem]">neurology</span>
+          <span>Upload</span>
+        </a>
+        <a routerLink="/library" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <span class="material-symbols-outlined text-[1.1rem]">library_books</span>
+          <span>Source Files</span>
+        </a>
+        <a routerLink="/scrapper" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <span class="material-symbols-outlined text-[1.1rem]">travel_explore</span>
+          <span>Scrapper</span>
+        </a>
+        <a [routerLink]="activeAtlasWikiLink()" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <span class="material-symbols-outlined text-[1.1rem]">menu_book</span>
+          <span>Wiki</span>
+        </a>
+      </nav>
+    </aside>
+
+  <main class="min-w-0">
     <section class="border-b border-[var(--line)] pb-6">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -104,6 +142,72 @@
                   {{ usageLabel(usage(atlas.id)) }}
                 }
               </p>
+
+              <div class="mt-5 grid gap-3 xl:grid-cols-2">
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-3">
+                  <p class="px-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Open</p>
+                  <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5 xl:grid-cols-2">
+                    <a [routerLink]="['/atlas', atlas.slug || atlas.id]" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">home</span>
+                      <span>Home</span>
+                    </a>
+                    <button type="button" (click)="openAtlasChat(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">chat</span>
+                      <span>Chat</span>
+                    </button>
+                    <button type="button" (click)="openAtlasUpload(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">neurology</span>
+                      <span>Upload</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSources(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">library_books</span>
+                      <span>Sources</span>
+                    </button>
+                    <button type="button" (click)="openAtlasWiki(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">menu_book</span>
+                      <span>Wiki</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-3">
+                  <p class="px-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Configure</p>
+                  <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-2">
+                    <button type="button" (click)="openAtlasSection(atlas, 'voice')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">record_voice_over</span>
+                      <span>Voice</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSection(atlas, 'chat-guide')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">person_pin</span>
+                      <span>Guide</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSection(atlas, 'voice-agent')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">phone_in_talk</span>
+                      <span>Vapi</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSection(atlas, 'text-messaging')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">sms</span>
+                      <span>SMS</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSection(atlas, 'newsletter')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">campaign</span>
+                      <span>Email</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSection(atlas, 'search')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">travel_explore</span>
+                      <span>Search</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSection(atlas, 'city')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">location_city</span>
+                      <span>City</span>
+                    </button>
+                    <button type="button" (click)="openAtlasSection(atlas, 'contents')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
+                      <span class="material-symbols-outlined text-[1rem]">inventory_2</span>
+                      <span>Contents</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-2 lg:justify-end">
@@ -1017,4 +1121,5 @@
       }
     </div>
   </main>
+  </div>
 </div>

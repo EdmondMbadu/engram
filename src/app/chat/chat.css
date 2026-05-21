@@ -67,6 +67,87 @@
   opacity: 0.9;
 }
 
+.chat-city-card {
+  display: flex;
+  align-items: center;
+  gap: 0.72rem;
+  width: 100%;
+  min-height: 3.45rem;
+  border: 1px solid color-mix(in srgb, var(--line-strong) 70%, transparent);
+  border-radius: 1rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--surface) 88%, transparent), color-mix(in srgb, var(--accent) 4%, transparent));
+  padding: 0.62rem 0.68rem;
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.chat-city-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--line-strong));
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  transform: translateY(-1px);
+}
+
+.chat-city-card__icon {
+  display: inline-flex;
+  width: 2.15rem;
+  height: 2.15rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+}
+
+.chat-city-card__icon .material-symbols-outlined {
+  font-size: 1.05rem;
+}
+
+.chat-city-card__title,
+.chat-city-card__meta {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-city-card__title {
+  font-size: 0.88rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.chat-city-card__meta {
+  margin-top: 0.14rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.chat-city-card__arrow {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+  opacity: 0.55;
+  transition:
+    color 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.chat-city-card:hover .chat-city-card__arrow {
+  color: var(--accent);
+  opacity: 1;
+  transform: translateX(2px);
+}
+
 .chat-suggestion-label {
   display: block;
   text-align: center;

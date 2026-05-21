@@ -13,6 +13,7 @@ export class MobileMenuComponent {
   readonly activePage = input<string>('home');
   readonly publicSlug = input<string | null>(null);
   readonly hidePublicKnowledgeSurfaces = input<boolean>(false);
+  readonly adminNavigation = input<boolean>(true);
   readonly showJoinAction = input<boolean>(false);
   readonly joinLabel = input<string>('Join for Free');
   readonly showSignInAction = input<boolean>(false);
@@ -48,6 +49,10 @@ export class MobileMenuComponent {
   }
 
   shouldShowItem(key: string, workspaceOnly?: boolean): boolean {
+    if (!this.adminNavigation()) {
+      return key === 'chat';
+    }
+
     if (this.publicSlug() && workspaceOnly) {
       return false;
     }
