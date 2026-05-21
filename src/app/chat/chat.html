@@ -38,16 +38,6 @@
         </button>
       }
 
-      @if (currentWikiAdminLink(); as adminLink) {
-        <a
-          [routerLink]="adminLink"
-          class="mb-6 flex items-center justify-center gap-2 rounded-xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-3 py-3 text-sm font-bold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/15"
-        >
-          <span class="material-symbols-outlined text-[1.1rem]">admin_panel_settings</span>
-          <span>Admin Console</span>
-        </a>
-      }
-
       <section class="rounded-3xl border border-white/10 bg-white/[0.025] p-3">
         <div class="mb-3 flex items-center justify-between gap-3 px-1">
           <div>
