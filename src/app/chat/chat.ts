@@ -906,11 +906,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (message.pending || !message.text.trim() || typeof Audio === 'undefined') {
       return;
     }
-    const scrollY = typeof window !== 'undefined' ? window.scrollY : null;
+    this.shouldScrollToEnd = false;
+    const scrollPosition = this.captureScrollPosition();
 
     if (this.playingSpeechMessageId() === message.id) {
       this.stopAnswerAudio();
-      this.restoreScrollPosition(scrollY);
+      this.restoreScrollPosition(scrollPosition);
       return;
     }
 
@@ -919,16 +920,17 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.speechErrorMessageId.set(null);
 
     const audioUrlPromise = this.ensureAnswerAudioUrl(message, true);
-    this.restoreScrollPosition(scrollY);
+    this.restoreScrollPosition(scrollPosition);
     const audioUrl = await audioUrlPromise;
     if (!audioUrl) {
+      this.restoreScrollPosition(scrollPosition);
       return;
     }
 
     const audio = new Audio(audioUrl);
     this.answerAudio = audio;
     this.playingSpeechMessageId.set(message.id);
-    this.restoreScrollPosition(scrollY);
+    this.restoreScrollPosition(scrollPosition);
     audio.onended = () => this.stopAnswerAudio();
     audio.onerror = () => {
       this.speechError.set('Audio playback failed.');
@@ -2043,14 +2045,34 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return new Blob([bytes], { type: contentType });
   }
 
-  private restoreScrollPosition(scrollY: number | null): void {
-    if (scrollY === null || typeof window === 'undefined') {
+  private captureScrollPosition(): { windowY: number; documentY: number; bodyY: number } | null {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return null;
+    }
+
+    return {
+      windowY: window.scrollY,
+      documentY: document.documentElement.scrollTop,
+      bodyY: document.body.scrollTop,
+    };
+  }
+
+  private restoreScrollPosition(position: { windowY: number; documentY: number; bodyY: number } | null): void {
+    if (!position || typeof window === 'undefined' || typeof document === 'undefined') {
       return;
     }
 
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
-    });
+    const restore = () => {
+      this.shouldScrollToEnd = false;
+      window.scrollTo({ top: position.windowY, left: window.scrollX, behavior: 'auto' });
+      document.documentElement.scrollTop = position.documentY;
+      document.body.scrollTop = position.bodyY;
+    };
+
+    restore();
+    requestAnimationFrame(restore);
+    setTimeout(restore, 50);
+    setTimeout(restore, 250);
   }
 
   private buildShareUrl(threadId: string): string {

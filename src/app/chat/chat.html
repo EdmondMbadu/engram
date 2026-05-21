@@ -514,6 +514,7 @@
                                   [disabled]="loadingSpeechMessageId() === msg.id"
                                   [attr.aria-label]="playingSpeechMessageId() === msg.id ? 'Stop reading answer' : 'Read answer aloud'"
                                   [attr.data-tooltip]="playingSpeechMessageId() === msg.id ? 'Stop' : loadingSpeechMessageId() === msg.id ? 'Loading audio' : 'Read aloud'"
+                                  (mousedown)="$event.preventDefault()"
                                   (click)="toggleReadAnswer(msg, $event)"
                                 >
                                   @if (loadingSpeechMessageId() === msg.id) {
@@ -522,6 +523,11 @@
                                     <span class="material-symbols-outlined">{{ playingSpeechMessageId() === msg.id ? 'stop_circle' : 'volume_up' }}</span>
                                   }
                                 </button>
+                                @if (loadingSpeechMessageId() === msg.id) {
+                                  <span class="hidden rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-2.5 py-1 text-[11px] font-black text-[var(--accent)] sm:inline-flex">
+                                    Loading voice
+                                  </span>
+                                }
                               }
                               @if (msg.pending) {
                                 <div class="assistant-message__thinking" aria-hidden="true">
