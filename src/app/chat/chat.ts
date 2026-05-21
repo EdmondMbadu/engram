@@ -901,13 +901,16 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   async toggleReadAnswer(message: ChatMessage, event?: Event): Promise<void> {
+    event?.preventDefault();
     event?.stopPropagation();
     if (message.pending || !message.text.trim() || typeof Audio === 'undefined') {
       return;
     }
+    const scrollY = typeof window !== 'undefined' ? window.scrollY : null;
 
     if (this.playingSpeechMessageId() === message.id) {
       this.stopAnswerAudio();
+      this.restoreScrollPosition(scrollY);
       return;
     }
 
@@ -915,7 +918,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.speechError.set(null);
     this.speechErrorMessageId.set(null);
 
-    const audioUrl = await this.ensureAnswerAudioUrl(message, true);
+    const audioUrlPromise = this.ensureAnswerAudioUrl(message, true);
+    this.restoreScrollPosition(scrollY);
+    const audioUrl = await audioUrlPromise;
     if (!audioUrl) {
       return;
     }
@@ -923,6 +928,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const audio = new Audio(audioUrl);
     this.answerAudio = audio;
     this.playingSpeechMessageId.set(message.id);
+    this.restoreScrollPosition(scrollY);
     audio.onended = () => this.stopAnswerAudio();
     audio.onerror = () => {
       this.speechError.set('Audio playback failed.');
@@ -2035,6 +2041,16 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       bytes[i] = binary.charCodeAt(i);
     }
     return new Blob([bytes], { type: contentType });
+  }
+
+  private restoreScrollPosition(scrollY: number | null): void {
+    if (scrollY === null || typeof window === 'undefined') {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
+    });
   }
 
   private buildShareUrl(threadId: string): string {
