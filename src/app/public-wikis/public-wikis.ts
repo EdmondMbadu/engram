@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AtlasService } from '../atlas.service';
+import { AuthService } from '../auth.service';
 import {
   buildPublicWikiLiveItem,
   COMING_SOON_PUBLIC_WIKIS,
@@ -22,7 +23,9 @@ type PublicWikiCategory = (typeof PUBLIC_WIKI_CATEGORIES)[number];
 })
 export class PublicWikisComponent implements OnInit {
   private readonly atlasService = inject(AtlasService);
+  private readonly authService = inject(AuthService);
 
+  readonly isSignedIn = this.authService.isAuthenticated;
   readonly liveWikis = signal<PublicWikiCatalogItem[]>([]);
   readonly isLoadingLiveWikis = signal(true);
   readonly searchTerm = signal('');

@@ -10,7 +10,11 @@
       <div class="flex items-center gap-2 sm:gap-3">
         <app-theme-toggle></app-theme-toggle>
         <a routerLink="/landing" class="ghost-btn !px-3 !py-2 sm:!px-4 sm:!py-2.5 text-xs sm:!text-sm">Build One</a>
-        <a routerLink="/sign-in" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">Sign In</a>
+        @if (isSignedIn()) {
+          <a routerLink="/wikis" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">Home</a>
+        } @else {
+          <a routerLink="/sign-in" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">Sign In</a>
+        }
       </div>
     </div>
   </nav>
