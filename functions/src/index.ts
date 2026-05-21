@@ -50,6 +50,7 @@ const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunc
 const maxSmsReplyLength = 1200;
 const chatAnswerVoiceId = 'ZthjuvLPty3kTMaNKVKb';
 const maxSpeechTextLength = 4000;
+const chatAnswerSpeechModel = 'eleven_flash_v2_5';
 const defaultNewsletterPrompt = [
   'Create a premium weekly My living wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
@@ -562,6 +563,10 @@ async function buildDocumentDownloadUrl(storagePath: string): Promise<string> {
   }
 
   return `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket.name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
+}
+
+async function buildSpeechCacheDownloadUrl(storagePath: string): Promise<string> {
+  return buildDocumentDownloadUrl(storagePath);
 }
 
 async function loadPublicAtlasById(atlasId: string): Promise<Record<string, unknown> & { id: string; user_id: string; is_public: boolean }> {
@@ -4349,8 +4354,23 @@ export const synthesizeChatAnswerSpeech = onCall(
       throw new HttpsError('failed-precondition', 'ElevenLabs API key is not configured.');
     }
 
+    const textHash = createHash('sha256')
+      .update(`${chatAnswerVoiceId}:${chatAnswerSpeechModel}:${text}`)
+      .digest('hex');
+    const storagePath = `chat-answer-speech/${chatAnswerVoiceId}/${textHash}.mp3`;
+    const cachedFile = storage.bucket().file(storagePath);
+    const [cacheExists] = await cachedFile.exists();
+    if (cacheExists) {
+      return {
+        audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
+        contentType: 'audio/mpeg',
+        voiceId: chatAnswerVoiceId,
+        cached: true,
+      };
+    }
+
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(chatAnswerVoiceId)}?output_format=mp3_44100_128`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(chatAnswerVoiceId)}/stream?output_format=mp3_44100_128&optimize_streaming_latency=3`,
       {
         method: 'POST',
         headers: {
@@ -4359,7 +4379,13 @@ export const synthesizeChatAnswerSpeech = onCall(
         },
         body: JSON.stringify({
           text,
-          model_id: 'eleven_multilingual_v2',
+          model_id: chatAnswerSpeechModel,
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.75,
+            style: 0,
+            use_speaker_boost: false,
+          },
         }),
       },
     );
@@ -4374,10 +4400,24 @@ export const synthesizeChatAnswerSpeech = onCall(
     }
 
     const audioBuffer = Buffer.from(await response.arrayBuffer());
+    await cachedFile.save(audioBuffer, {
+      resumable: false,
+      metadata: {
+        contentType: 'audio/mpeg',
+        cacheControl: 'public, max-age=31536000, immutable',
+        metadata: {
+          voiceId: chatAnswerVoiceId,
+          modelId: chatAnswerSpeechModel,
+          textHash,
+        },
+      },
+    });
+
     return {
-      audioBase64: audioBuffer.toString('base64'),
-      contentType: response.headers.get('content-type')?.split(';')[0] || 'audio/mpeg',
+      audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
+      contentType: 'audio/mpeg',
       voiceId: chatAnswerVoiceId,
+      cached: false,
     };
   },
 );

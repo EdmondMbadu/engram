@@ -75,9 +75,11 @@ type SharedChatThreadResponse = {
 };
 
 type ChatAnswerSpeechResponse = {
-  audioBase64: string;
+  audioUrl?: string;
+  audioBase64?: string;
   contentType: string;
   voiceId: string;
+  cached?: boolean;
 };
 
 @Injectable({ providedIn: 'root' })

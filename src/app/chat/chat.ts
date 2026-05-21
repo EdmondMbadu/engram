@@ -84,6 +84,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private copyFeedbackTimeout: ReturnType<typeof setTimeout> | null = null;
   private answerAudio: HTMLAudioElement | null = null;
   private answerAudioUrls = new Map<string, string>();
+  private answerAudioPromises = new Map<string, Promise<string | null>>();
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -914,27 +915,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.speechError.set(null);
     this.speechErrorMessageId.set(null);
 
-    let audioUrl = this.answerAudioUrls.get(message.id);
+    const audioUrl = await this.ensureAnswerAudioUrl(message, true);
     if (!audioUrl) {
-      this.loadingSpeechMessageId.set(message.id);
-      try {
-        const response = await this.chatService.synthesizeAnswerSpeech(
-          message.text,
-          this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
-        );
-        if (!response?.audioBase64) {
-          throw new Error('No audio was returned for this answer.');
-        }
-        const blob = this.audioBlobFromBase64(response.audioBase64, response.contentType || 'audio/mpeg');
-        audioUrl = URL.createObjectURL(blob);
-        this.answerAudioUrls.set(message.id, audioUrl);
-      } catch (error) {
-        this.speechError.set(this.authService.toFriendlyError(error));
-        this.speechErrorMessageId.set(message.id);
-        return;
-      } finally {
-        this.loadingSpeechMessageId.set(null);
-      }
+      return;
     }
 
     const audio = new Audio(audioUrl);
@@ -1956,6 +1939,65 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }, 1800);
   }
 
+  private ensureAnswerAudioUrl(message: ChatMessage, showLoading: boolean): Promise<string | null> {
+    const cachedUrl = this.answerAudioUrls.get(message.id);
+    if (cachedUrl) {
+      return Promise.resolve(cachedUrl);
+    }
+
+    const pending = this.answerAudioPromises.get(message.id);
+    if (pending) {
+      if (showLoading) {
+        this.loadingSpeechMessageId.set(message.id);
+        pending.finally(() => {
+          if (this.loadingSpeechMessageId() === message.id) {
+            this.loadingSpeechMessageId.set(null);
+          }
+        });
+      }
+      return pending;
+    }
+
+    if (showLoading) {
+      this.loadingSpeechMessageId.set(message.id);
+    }
+
+    const promise = this.chatService
+      .synthesizeAnswerSpeech(
+        message.text,
+        this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
+      )
+      .then((response) => {
+        if (response?.audioUrl) {
+          this.answerAudioUrls.set(message.id, response.audioUrl);
+          return response.audioUrl;
+        }
+        if (response?.audioBase64) {
+          const blob = this.audioBlobFromBase64(response.audioBase64, response.contentType || 'audio/mpeg');
+          const audioUrl = URL.createObjectURL(blob);
+          this.answerAudioUrls.set(message.id, audioUrl);
+          return audioUrl;
+        }
+        throw new Error('No audio was returned for this answer.');
+      })
+      .catch((error) => {
+        if (showLoading) {
+          this.speechError.set(this.authService.toFriendlyError(error));
+          this.speechErrorMessageId.set(message.id);
+        }
+        return null;
+      })
+      .finally(() => {
+        this.answerAudioPromises.delete(message.id);
+        if (this.loadingSpeechMessageId() === message.id) {
+          this.loadingSpeechMessageId.set(null);
+        }
+      });
+
+    this.answerAudioPromises.set(message.id, promise);
+    return promise;
+  }
+
   private stopAnswerAudio(): void {
     if (this.answerAudio) {
       this.answerAudio.pause();
@@ -1977,8 +2019,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return;
     }
 
+    this.answerAudioPromises.clear();
     for (const audioUrl of this.answerAudioUrls.values()) {
-      URL.revokeObjectURL(audioUrl);
+      if (audioUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(audioUrl);
+      }
     }
     this.answerAudioUrls.clear();
   }
