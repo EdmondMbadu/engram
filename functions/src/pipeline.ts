@@ -1,6 +1,6 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
-import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, mergeWikiArticle, planArticleMerge, summarizeTopic } from './gemini';
+import { answerFromArticles, answerQuestion, answerWithGoogleSearch, compileKnowledgeEntries, compileWikiArticles, mergeWikiArticle, planArticleMerge, streamAnswerWithGoogleSearch, summarizeTopic } from './gemini';
 import { db, storage } from './firebase';
 import { extractBlocksFromBuffer, extractBlocksFromUrl } from './extractors';
 import {
@@ -1498,6 +1498,87 @@ export async function runAtlasQuery(params: {
     travelGuide,
     scopedTopicIds: topics.map((topic) => topic.id),
     knowledgeGap: knowledgeGap,
+    threadId: thread.id,
+  };
+}
+
+export async function runAtlasInternetStream(params: {
+  userId: string;
+  atlasId: string | null;
+  question: string;
+  threadId?: string | null;
+  onDelta: (delta: string) => void | Promise<void>;
+}): Promise<{
+  answer: string;
+  citedEntryIds: string[];
+  citedPassages: QueryCitationSnapshot[];
+  mappableLocations: MappableLocation[];
+  travelGuide: TravelGuideStructuredResponse | null;
+  scopedTopicIds: string[];
+  knowledgeGap: boolean;
+  threadId: string;
+}> {
+  const timer = createChatQueryTimer();
+  const trimmedQuestion = params.question.trim();
+  if (!trimmedQuestion) {
+    throw new Error('Question is required.');
+  }
+
+  const [thread, atlasChatContext] = await Promise.all([
+    ensureActiveChatThread(params.userId, params.atlasId, params.threadId ?? null, trimmedQuestion),
+    loadAtlasChatContext(params.atlasId),
+  ]);
+  timer.mark('thread_and_context_ms');
+  const threadHistory = thread.reusedExisting
+    ? await loadRecentChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
+    : [];
+  timer.mark('history_ms');
+
+  const response = await streamAnswerWithGoogleSearch({
+    question: trimmedQuestion,
+    history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+    personaPrompt: atlasChatContext.personaPrompt,
+    onDelta: params.onDelta,
+  });
+  timer.mark('internet_model_stream_ms');
+
+  const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
+    question: trimmedQuestion,
+    answer: response.answer,
+    atlasName: atlasChatContext.atlasName,
+    cityHint: atlasChatContext.cityHint,
+  });
+  timer.mark('presentation_ms');
+
+  await recordChatThreadExchange({
+    threadId: thread.id,
+    userId: params.userId,
+    atlasId: params.atlasId,
+    answerMode: 'internet',
+    question: trimmedQuestion,
+    answer: response.answer,
+    citedPassages: [],
+    mappableLocations,
+    travelGuide,
+    knowledgeGap: false,
+    questionCountIncrement: 1,
+  });
+  timer.mark('record_ms');
+  logger.info('Atlas query streaming timing', {
+    answerMode: 'internet',
+    source: 'internet',
+    totalMs: timer.totalMs(),
+    ...timer.snapshot(),
+  });
+
+  return {
+    answer: response.answer,
+    citedEntryIds: [],
+    citedPassages: [],
+    mappableLocations,
+    travelGuide,
+    scopedTopicIds: [],
+    knowledgeGap: false,
     threadId: thread.id,
   };
 }

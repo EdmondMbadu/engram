@@ -245,6 +245,27 @@ async function generateContentWithRetry(
   throw new Error('Gemini request failed after repeated attempts.');
 }
 
+async function generateContentStreamWithRetry(
+  params: Parameters<GoogleGenAI['models']['generateContentStream']>[0],
+) {
+  const ai = createClient();
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      return await ai.models.generateContentStream(params);
+    } catch (error) {
+      const normalized = normalizeGeminiError(error);
+      if (!normalized.retryable || attempt === maxAttempts) {
+        throw new Error(normalized.message);
+      }
+
+      await sleep(400 * attempt * attempt);
+    }
+  }
+
+  throw new Error('Gemini stream request failed after repeated attempts.');
+}
+
 function normalizeGeminiError(error: unknown): { message: string; retryable: boolean } {
   const message = error instanceof Error ? error.message : String(error);
   const normalizedMessage = message.toLowerCase();
@@ -379,6 +400,44 @@ function appendGroundingSources(answer: string, response: GenerateContentRespons
     .map(([url, title]) => `- [${title}](${url})`);
 
   return `${answer.trim()}\n\n## Sources\n${sourceLines.join('\n')}`;
+}
+
+function buildInternetAnswerPrompt(params: {
+  question: string;
+  history?: Array<{ role: 'user' | 'assistant'; text: string }>;
+  personaPrompt?: string | null;
+}): { prompt: string; broadQuestion: boolean } {
+  const hasHistory = (params.history ?? []).length > 0;
+  const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
+  const serializedHistory = JSON.stringify(
+    (params.history ?? []).slice(-6).map((message) => [message.role, message.text.slice(0, 4000)] as const),
+  );
+  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
+
+  const prompt = [
+    ...personaPreamble,
+    'You are answering with full open-web context.',
+    'Use Google Search to gather current, relevant public information from the web.',
+    'Use the minimum search breadth needed for a high-quality answer: once reliable evidence is sufficient, stop searching and answer.',
+    'For direct questions, prefer a few authoritative, diverse sources over broad source collection. For synthesis questions, broaden only when it materially improves the answer.',
+    'Do not restrict yourself to the user\'s uploaded documents or personal knowledge base.',
+    'Treat the recent conversation history as real context: resolve references, follow up naturally, and avoid repeating prior assistant points unless needed.',
+    'If the user gives a short affirmative follow-up like "yes", "yeah", "do that", or "let\'s do it", interpret it as accepting the most recent concrete continuation proposed in the conversation history.',
+    'Prefer a precise, information-dense answer over a vague overview.',
+    'Include concrete facts, tradeoffs, dates, examples, and context when they materially improve the answer.',
+    'Do not fabricate sources or claim certainty when the evidence is mixed.',
+    broadQuestion
+      ? 'For synthesis or exploration questions, give a substantial structured answer with multiple distinct themes or sections.'
+      : 'For direct questions, answer in 2-4 compact but high-signal paragraphs unless a list is clearly better.',
+    'Write the answer in clean markdown.',
+    'Do not add a generic closing question or filler ending.',
+    'The answer body should stand on its own. Source links will be appended separately.',
+    '',
+    JSON.stringify({ question: params.question, history: params.history?.length ? 'provided' : 'empty' }),
+    serializedHistory,
+  ].join('\n');
+
+  return { prompt, broadQuestion };
 }
 
 export async function compileKnowledgeEntries(
@@ -656,35 +715,7 @@ export async function answerWithGoogleSearch(params: {
   history?: Array<{ role: 'user' | 'assistant'; text: string }>;
   personaPrompt?: string | null;
 }): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
-  const hasHistory = (params.history ?? []).length > 0;
-  const broadQuestion = isBroadSynthesisQuestion(params.question) || hasHistory;
-  const serializedHistory = JSON.stringify(
-    (params.history ?? []).slice(-6).map((message) => [message.role, message.text.slice(0, 4000)] as const),
-  );
-  const personaPreamble = buildPersonaPreamble(params.personaPrompt);
-
-  const prompt = [
-    ...personaPreamble,
-    'You are answering with full open-web context.',
-    'Use Google Search to gather current, relevant public information from the web.',
-    'Use the minimum search breadth needed for a high-quality answer: once reliable evidence is sufficient, stop searching and answer.',
-    'For direct questions, prefer a few authoritative, diverse sources over broad source collection. For synthesis questions, broaden only when it materially improves the answer.',
-    'Do not restrict yourself to the user\'s uploaded documents or personal knowledge base.',
-    'Treat the recent conversation history as real context: resolve references, follow up naturally, and avoid repeating prior assistant points unless needed.',
-    'If the user gives a short affirmative follow-up like "yes", "yeah", "do that", or "let\'s do it", interpret it as accepting the most recent concrete continuation proposed in the conversation history.',
-    'Prefer a precise, information-dense answer over a vague overview.',
-    'Include concrete facts, tradeoffs, dates, examples, and context when they materially improve the answer.',
-    'Do not fabricate sources or claim certainty when the evidence is mixed.',
-    broadQuestion
-      ? 'For synthesis or exploration questions, give a substantial structured answer with multiple distinct themes or sections.'
-      : 'For direct questions, answer in 2-4 compact but high-signal paragraphs unless a list is clearly better.',
-    'Write the answer in clean markdown.',
-    'Do not add a generic closing question or filler ending.',
-    'The answer body should stand on its own. Source links will be appended separately.',
-    '',
-    JSON.stringify({ question: params.question, history: params.history?.length ? 'provided' : 'empty' }),
-    serializedHistory,
-  ].join('\n');
+  const { prompt, broadQuestion } = buildInternetAnswerPrompt(params);
 
   const startedAt = Date.now();
   const response = await generateContentWithRetry({
@@ -718,6 +749,80 @@ export async function answerWithGoogleSearch(params: {
 
   return {
     answer: appendGroundingSources(answerText, response),
+    cited_entry_ids: [],
+    knowledge_gap: false,
+  };
+}
+
+export async function streamAnswerWithGoogleSearch(params: {
+  question: string;
+  history?: Array<{ role: 'user' | 'assistant'; text: string }>;
+  personaPrompt?: string | null;
+  onDelta: (delta: string) => void | Promise<void>;
+}): Promise<{ answer: string; cited_entry_ids: string[]; knowledge_gap: boolean }> {
+  const { prompt, broadQuestion } = buildInternetAnswerPrompt(params);
+  const startedAt = Date.now();
+  const stream = await generateContentStreamWithRetry({
+    model: internetSearchModel,
+    contents: prompt,
+    config: {
+      tools: [{ googleSearch: {} }],
+      thinkingConfig: { thinkingBudget: 0 },
+    },
+  });
+
+  let answerText = '';
+  let webSearchQueryCount = 0;
+  let groundedSourceCount = 0;
+  const groundingSources = new Map<string, string>();
+
+  for await (const chunk of stream) {
+    const delta = chunk.text ?? '';
+    if (delta) {
+      answerText += delta;
+      await params.onDelta(delta);
+    }
+
+    for (const candidate of chunk.candidates ?? []) {
+      webSearchQueryCount += candidate.groundingMetadata?.webSearchQueries?.length ?? 0;
+      for (const groundingChunk of candidate.groundingMetadata?.groundingChunks ?? []) {
+        groundedSourceCount += 1;
+        const web = groundingChunk.web ?? groundingChunk.retrievedContext;
+        const url = web?.uri?.trim();
+        if (!url) {
+          continue;
+        }
+        const title = web?.title?.trim() || url;
+        if (!groundingSources.has(url)) {
+          groundingSources.set(url, title);
+        }
+      }
+    }
+  }
+
+  const trimmedAnswer = answerText.trim();
+  if (!trimmedAnswer) {
+    throw new Error('Internet answer returned no text.');
+  }
+
+  const sourceLines = Array.from(groundingSources.entries())
+    .slice(0, 8)
+    .map(([url, title]) => `- [${title}](${url})`);
+  const answer = sourceLines.length > 0
+    ? `${trimmedAnswer}\n\n## Sources\n${sourceLines.join('\n')}`
+    : trimmedAnswer;
+
+  logger.info('streamAnswerWithGoogleSearch model completed', {
+    durationMs: Date.now() - startedAt,
+    historyCount: params.history?.length ?? 0,
+    broadQuestion,
+    answerLength: answer.length,
+    webSearchQueryCount,
+    groundedSourceCount,
+  });
+
+  return {
+    answer,
     cited_entry_ids: [],
     knowledge_gap: false,
   };

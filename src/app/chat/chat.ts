@@ -798,9 +798,32 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.shouldScrollToEnd = true;
     this.startThinkingRotation();
 
+    let streamStarted = false;
     const response = this.isWorkspaceMode()
       ? selectedAnswerMode === 'internet'
-        ? await this.chatService.askInternet(question, submittedThreadId)
+        ? await this.chatService.askInternetStream(question, submittedThreadId, {
+            onDelta: (delta) => {
+              if (!streamStarted) {
+                streamStarted = true;
+                this.stopThinkingRotation();
+              }
+              this.messages.update((msgs) =>
+                msgs.map((message) => {
+                  if (message.id !== pendingId) {
+                    return message;
+                  }
+                  const text = `${message.text ?? ''}${delta}`;
+                  return {
+                    ...message,
+                    text,
+                    html: formatAssistantMessageHtml(text),
+                    updatedAt: new Date(),
+                  };
+                }),
+              );
+              this.shouldScrollToEnd = true;
+            },
+          })
         : await this.chatService.ask(question, undefined, submittedThreadId)
       : await this.chatService.askPublic(question, this.publicAtlas()!.id, {
           threadId: submittedThreadId,

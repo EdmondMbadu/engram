@@ -240,6 +240,11 @@ export class AuthService {
     return auth.currentUser;
   }
 
+  async getIdToken(): Promise<string> {
+    const user = this.requireCurrentUser();
+    return user.getIdToken();
+  }
+
   async applyEmailVerificationCode(code: string): Promise<void> {
     const auth = this.requireAuth();
     await applyActionCode(auth, code);

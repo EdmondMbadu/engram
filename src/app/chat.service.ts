@@ -22,6 +22,7 @@ import type {
 } from './atlas.models';
 import { AtlasService } from './atlas.service';
 import { AuthService } from './auth.service';
+import { getFirebaseConfig } from './firebase.config';
 import { getFirebaseFirestore, getFirebaseFunctions } from './firebase.client';
 
 type AskAtlasResponse = {
@@ -80,6 +81,10 @@ type ChatAnswerSpeechResponse = {
   contentType: string;
   voiceId: string;
   cached?: boolean;
+};
+
+type StreamingAnswerCallbacks = {
+  onDelta: (delta: string) => void;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -260,6 +265,116 @@ export class ChatService {
       this.knowledgeGap.set(data.knowledgeGap);
       this.latestThreadId.set(data.threadId);
       return data;
+    } catch (error) {
+      this.submitError.set(this.authService.toFriendlyError(error));
+      return null;
+    } finally {
+      this.isSubmitting.set(false);
+    }
+  }
+
+  async askInternetStream(
+    question: string,
+    threadId: string | null | undefined,
+    callbacks: StreamingAnswerCallbacks,
+  ): Promise<AskAtlasResponse | null> {
+    if (!this.isBrowser) {
+      return this.askInternet(question, threadId);
+    }
+
+    this.isSubmitting.set(true);
+    this.submitError.set(null);
+
+    try {
+      const projectId = getFirebaseConfig().projectId;
+      if (!projectId) {
+        throw new Error('Firebase project is not configured.');
+      }
+
+      const token = await this.authService.getIdToken();
+      const response = await fetch(`https://us-central1-${projectId}.cloudfunctions.net/askAtlasStream`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question,
+          threadId: threadId ?? null,
+          atlasId: this.atlasService.activeAtlasId(),
+        }),
+      });
+
+      if (!response.ok || !response.body) {
+        const message = await response.text().catch(() => '');
+        throw new Error(message || `Streaming request failed with status ${response.status}.`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      const finalResponseRef: { value: AskAtlasResponse | null } = { value: null };
+
+      const processEvent = (rawEvent: string) => {
+        const lines = rawEvent.split('\n');
+        const event = lines
+          .find((line) => line.startsWith('event:'))
+          ?.slice('event:'.length)
+          .trim();
+        const dataText = lines
+          .filter((line) => line.startsWith('data:'))
+          .map((line) => line.slice('data:'.length).trimStart())
+          .join('\n');
+        if (!event || !dataText) {
+          return;
+        }
+
+        const data = JSON.parse(dataText) as Record<string, unknown>;
+        if (event === 'delta') {
+          const delta = typeof data['delta'] === 'string' ? data['delta'] : '';
+          if (delta) {
+            callbacks.onDelta(delta);
+          }
+          return;
+        }
+
+        if (event === 'final') {
+          finalResponseRef.value = data as AskAtlasResponse;
+          return;
+        }
+
+        if (event === 'error') {
+          throw new Error(typeof data['message'] === 'string' ? data['message'] : 'Streaming answer failed.');
+        }
+      };
+
+      while (true) {
+        const { value, done } = await reader.read();
+        buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+        const events = buffer.split('\n\n');
+        buffer = events.pop() ?? '';
+        for (const event of events) {
+          processEvent(event);
+        }
+        if (done) {
+          break;
+        }
+      }
+
+      if (buffer.trim()) {
+        processEvent(buffer);
+      }
+
+      const finalResponse = finalResponseRef.value;
+      if (!finalResponse) {
+        throw new Error('Streaming answer ended before the final response arrived.');
+      }
+
+      this.latestAnswer.set(finalResponse.answer);
+      this.latestCitations.set(finalResponse.citedPassages);
+      this.knowledgeGap.set(finalResponse.knowledgeGap);
+      this.latestThreadId.set(finalResponse.threadId);
+      return finalResponse;
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
       return null;

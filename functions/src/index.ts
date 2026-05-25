@@ -5,6 +5,7 @@ import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
 import { defineSecret } from 'firebase-functions/params';
 import { createHash, randomUUID } from 'node:crypto';
+import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import { db, storage } from './firebase';
@@ -31,6 +32,7 @@ import {
   processStoredDocument,
   processUrlDocument,
   runAtlasQuery,
+  runAtlasInternetStream,
   runPublicAtlasQuery,
 } from './pipeline';
 import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './utils';
@@ -4164,6 +4166,81 @@ export const submitAnswerQuizScore = onCall(
       attempts: saveResult.attempts,
       leaderboard: await loadQuizLeaderboard(quizId),
     };
+  },
+);
+
+function writeSseEvent(response: { write(chunk: string): unknown }, event: string, data: unknown): void {
+  response.write(`event: ${event}\n`);
+  response.write(`data: ${JSON.stringify(data)}\n\n`);
+}
+
+export const askAtlasStream = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 180,
+    memory: '1GiB',
+    cors: true,
+    secrets: [geminiApiKey],
+  },
+  async (request, response) => {
+    if (request.method === 'OPTIONS') {
+      response.status(204).send('');
+      return;
+    }
+
+    if (request.method !== 'POST') {
+      response.status(405).json({ error: 'Method not allowed.' });
+      return;
+    }
+
+    try {
+      const authorization = request.get('authorization') ?? '';
+      const match = authorization.match(/^Bearer\s+(.+)$/i);
+      if (!match?.[1]) {
+        response.status(401).json({ error: 'Authentication is required.' });
+        return;
+      }
+
+      const decodedToken = await getAuth().verifyIdToken(match[1]);
+      const question = String(request.body?.question ?? '').trim();
+      const threadId = String(request.body?.threadId ?? '').trim() || null;
+      const atlasId = normalizeAtlasId(request.body?.atlasId);
+
+      if (!question) {
+        response.status(400).json({ error: 'question is required.' });
+        return;
+      }
+
+      response.status(200);
+      response.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+      response.setHeader('Cache-Control', 'no-cache, no-transform');
+      response.setHeader('Connection', 'keep-alive');
+      response.setHeader('X-Accel-Buffering', 'no');
+      response.flushHeaders?.();
+
+      writeSseEvent(response, 'start', { ok: true });
+
+      const result = await runAtlasInternetStream({
+        userId: decodedToken.uid,
+        atlasId,
+        question,
+        threadId,
+        onDelta: (delta) => writeSseEvent(response, 'delta', { delta }),
+      });
+
+      writeSseEvent(response, 'final', result);
+      response.end();
+    } catch (error) {
+      logger.error('askAtlasStream failed', { errorMessage: error instanceof Error ? error.message : String(error) });
+      if (!response.headersSent) {
+        response.status(500).json({ error: error instanceof Error ? error.message : 'Failed to stream answer.' });
+        return;
+      }
+      writeSseEvent(response, 'error', {
+        message: error instanceof Error ? error.message : 'Failed to stream answer.',
+      });
+      response.end();
+    }
   },
 );
 
