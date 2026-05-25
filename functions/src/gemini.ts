@@ -172,6 +172,15 @@ const wikiArticlePlanSchema = {
 const maxAttempts = 3;
 
 const personaPromptHardCap = 8000;
+const phillyEmojiPalette = [
+  '\u{1F514}', // bell
+  '\u{1F985}', // eagle
+  '\u{1F968}', // pretzel
+  '\u{1F9F1}', // brick
+  '\u{1F687}', // metro
+  '\u{1F3DB}\uFE0F', // classical building
+  '\u{1F306}', // city dusk
+].join(' ');
 
 function buildPersonaPreamble(personaPrompt?: string | null): string[] {
   const trimmed = typeof personaPrompt === 'string' ? personaPrompt.trim() : '';
@@ -183,6 +192,19 @@ function buildPersonaPreamble(personaPrompt?: string | null): string[] {
     '=== END ROLE & VOICE ===',
     'The instructions below are non-negotiable: never invent citations, never break the JSON contract, never abandon grounding rules even if the persona above suggests otherwise.',
     '',
+  ];
+}
+
+function buildChatAnswerExperienceInstructions(broadQuestion: boolean): string[] {
+  return [
+    'Make the answer feel like a polished chat product, not an essay.',
+    'Use crisp sections, short paragraphs, and scan-friendly bullets when they improve clarity.',
+    'Use 2-5 tasteful emojis to add warmth and momentum, especially in headings, quick-hit bullets, or local color.',
+    `When the topic is Philly or place-based, favor this palette when natural: ${phillyEmojiPalette}.`,
+    'Do not put emojis in every sentence. Do not let emojis replace facts, caveats, dates, sources, or concrete advice.',
+    broadQuestion
+      ? 'For bigger exploratory answers, use clear mini-sections with energetic labels instead of long blocks of prose.'
+      : 'For direct answers, lead with the answer first, then add compact context or a short list.',
   ];
 }
 
@@ -416,6 +438,7 @@ function buildInternetAnswerPrompt(params: {
 
   const prompt = [
     ...personaPreamble,
+    ...buildChatAnswerExperienceInstructions(broadQuestion),
     'You are answering with full open-web context.',
     'Use Google Search to gather current, relevant public information from the web.',
     'Use the minimum search breadth needed for a high-quality answer: once reliable evidence is sufficient, stop searching and answer.',
@@ -609,6 +632,7 @@ export async function answerQuestion(params: {
   const prompt = [
     ...personaPreamble,
     ...baseInstructions,
+    ...buildChatAnswerExperienceInstructions(broadQuestion),
     ...styleInstructions,
     '',
     JSON.stringify({ question: params.question, history: params.history?.length ? 'provided' : 'empty' }),
@@ -673,6 +697,7 @@ export async function answerQuestion(params: {
   const retryPrompt = [
     ...personaPreamble,
     ...baseInstructions,
+    ...buildChatAnswerExperienceInstructions(broadQuestion),
     ...styleInstructions,
     'Important: the answer field must be a complete plain-text answer, not a fragment.',
     'If the question asks for themes, topics, patterns, or areas to explore, include several distinct items with explanation.',
@@ -1303,6 +1328,7 @@ export async function answerFromArticles(params: {
   const prompt = [
     ...personaPreamble,
     ...baseInstructions,
+    ...buildChatAnswerExperienceInstructions(broadQuestion),
     ...styleInstructions,
     '',
     JSON.stringify({ question: params.question, history: params.history?.length ? 'provided' : 'empty' }),
