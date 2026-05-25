@@ -53,6 +53,7 @@ const maxSmsReplyLength = 1200;
 const chatAnswerVoiceId = 'ZthjuvLPty3kTMaNKVKb';
 const maxSpeechTextLength = 4000;
 const maxSpeechRecapWords = 28;
+const speechRecapVersion = 'v2';
 const chatAnswerSpeechModel = 'eleven_flash_v2_5';
 const defaultNewsletterPrompt = [
   'Create a premium weekly My living wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
@@ -2690,6 +2691,70 @@ function isWeakSpeechLead(value: string): boolean {
   );
 }
 
+function extractSpeechItemLabel(value: string): string {
+  const line = cleanSpeechLine(value)
+    .replace(/^\*\*([^:*]+):?\*\*:?\s*/g, '$1: ')
+    .replace(/^["'“”]+|["'“”]+$/g, '')
+    .trim();
+  const label = line.match(/^(.{4,80}?):\s+\S/)?.[1] ?? line.match(/^(.{4,80}?)[.!?]\s+\S/)?.[1] ?? line;
+  return label
+    .replace(/\s+-\s+.*$/, '')
+    .replace(/\s+\|\s+.*$/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 72);
+}
+
+function buildSpeechListRecap(questionValue: unknown, answerValue: unknown): string | null {
+  if (typeof answerValue !== 'string') {
+    return null;
+  }
+
+  const rawLines = answerValue
+    .replace(/\n\s*#{0,3}\s*Sources\b[\s\S]*$/i, '')
+    .replace(/\bSources\b[\s\S]*$/i, '')
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const labels: string[] = [];
+
+  for (const rawLine of rawLines) {
+    const looksLikeItem =
+      /^\s*(?:[-*•]|\d+[.)])\s+/.test(rawLine) ||
+      /^\s*\*\*[^*]{4,80}:?\*\*:/.test(rawLine) ||
+      /^\s*#{2,4}\s+/.test(rawLine);
+    if (!looksLikeItem) {
+      continue;
+    }
+
+    const label = extractSpeechItemLabel(rawLine);
+    if (!label || isWeakSpeechLead(label)) {
+      continue;
+    }
+    if (!labels.some((existing) => existing.toLowerCase() === label.toLowerCase())) {
+      labels.push(label);
+    }
+    if (labels.length >= 4) {
+      break;
+    }
+  }
+
+  if (labels.length < 2) {
+    return null;
+  }
+
+  const question = typeof questionValue === 'string' ? questionValue.toLowerCase() : '';
+  const noun = question.includes('visit') || question.includes('go') || question.includes('see')
+    ? 'places'
+    : question.includes('latest') || question.includes('update') || question.includes('news')
+      ? 'top updates'
+      : 'key points';
+  const listText = labels.length === 2
+    ? `${labels[0]} and ${labels[1]}`
+    : `${labels.slice(0, -1).join(', ')}, and ${labels[labels.length - 1]}`;
+  return `Quick recap: the ${noun} are ${listText}.`.replace(/\s+/g, ' ').slice(0, 300);
+}
+
 function chooseSpeechRecapLine(answerValue: unknown): string {
   if (typeof answerValue !== 'string') {
     return '';
@@ -2724,6 +2789,11 @@ function chooseSpeechRecapLine(answerValue: unknown): string {
 }
 
 function buildSpeechRecapText(questionValue: unknown, answerValue: unknown): string {
+  const listRecap = buildSpeechListRecap(questionValue, answerValue);
+  if (listRecap) {
+    return listRecap;
+  }
+
   const answer = chooseSpeechRecapLine(answerValue) || normalizeSpeechText(answerValue);
   if (!answer) {
     return '';
@@ -4505,9 +4575,9 @@ export const synthesizeChatAnswerSpeech = onCall(
     }
 
     const textHash = createHash('sha256')
-      .update(`${chatAnswerVoiceId}:${chatAnswerSpeechModel}:${requestedMode}:${text}`)
+      .update(`${chatAnswerVoiceId}:${chatAnswerSpeechModel}:${speechRecapVersion}:${requestedMode}:${text}`)
       .digest('hex');
-    const storagePath = `chat-answer-speech/${requestedMode}/${chatAnswerVoiceId}/${textHash}.mp3`;
+    const storagePath = `chat-answer-speech/${requestedMode}/${speechRecapVersion}/${chatAnswerVoiceId}/${textHash}.mp3`;
     const cachedFile = storage.bucket().file(storagePath);
     const [cacheExists] = await cachedFile.exists();
     if (cacheExists) {
