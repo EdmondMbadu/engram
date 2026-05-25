@@ -199,7 +199,7 @@ function buildChatAnswerExperienceInstructions(broadQuestion: boolean): string[]
   return [
     'Make the answer feel like a polished chat product, not an essay.',
     'Use crisp sections, short paragraphs, and scan-friendly bullets when they improve clarity.',
-    'Use 2-5 tasteful emojis to add warmth and momentum, especially in headings, quick-hit bullets, or local color.',
+    'Use 3-7 tasteful emojis to add warmth and momentum, especially in headings, quick-hit bullets, or local color.',
     `When the topic is Philly or place-based, favor this palette when natural: ${phillyEmojiPalette}.`,
     'Do not put emojis in every sentence. Do not let emojis replace facts, caveats, dates, sources, or concrete advice.',
     broadQuestion
