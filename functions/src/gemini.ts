@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, type GenerateContentResponse } from '@google/genai';
 import { defineSecret } from 'firebase-functions/params';
 import { logger } from 'firebase-functions';
 import type { ExtractBlock, KnowledgeEntryDraft, MappableLocation, ModelUsage, WikiArticleDraft, WikiArticlePlan } from './types';
@@ -352,6 +352,35 @@ function appendWebSources(answer: string, outputs: WebTextOutput[]): string {
   return `${answer.trim()}\n\n## Sources\n${sourceLines.join('\n')}`;
 }
 
+function appendGroundingSources(answer: string, response: GenerateContentResponse): string {
+  const sources = new Map<string, string>();
+
+  for (const candidate of response.candidates ?? []) {
+    for (const chunk of candidate.groundingMetadata?.groundingChunks ?? []) {
+      const web = chunk.web ?? chunk.retrievedContext;
+      const url = web?.uri?.trim();
+      if (!url) {
+        continue;
+      }
+
+      const title = web?.title?.trim() || url;
+      if (!sources.has(url)) {
+        sources.set(url, title);
+      }
+    }
+  }
+
+  if (sources.size === 0) {
+    return answer.trim();
+  }
+
+  const sourceLines = Array.from(sources.entries())
+    .slice(0, 8)
+    .map(([url, title]) => `- [${title}](${url})`);
+
+  return `${answer.trim()}\n\n## Sources\n${sourceLines.join('\n')}`;
+}
+
 export async function compileKnowledgeEntries(
   blocks: ExtractBlock[],
 ): Promise<{ entries: KnowledgeEntryDraft[]; usage: ModelUsage }> {
@@ -528,6 +557,7 @@ export async function answerQuestion(params: {
     serializedEntries,
   ].join('\n');
 
+  const firstAttemptStartedAt = Date.now();
   try {
     const response = await generateContentWithRetry({
       model,
@@ -540,12 +570,26 @@ export async function answerQuestion(params: {
         thinkingConfig: { thinkingBudget: 0 },
       },
     });
+    const firstAttemptDurationMs = Date.now() - firstAttemptStartedAt;
+    logger.info('answerQuestion model attempt completed', {
+      attempt: 1,
+      durationMs: firstAttemptDurationMs,
+      broadQuestion,
+      entryCount: params.entries.length,
+      historyCount: params.history?.length ?? 0,
+    });
 
     const parsed = normalizeAnswerResponse(parseJsonResponse<unknown>(response.text ?? '{}'), response.text ?? '');
     parsed.answer = ensureConcreteNextStepInvitation(parsed.answer, params.question, broadQuestion);
     if (!answerLooksTooThin(parsed.answer, params.question, params.entries.length)) {
       return parsed;
     }
+    logger.info('answerQuestion retrying thin answer', {
+      firstAttemptDurationMs,
+      answerLength: parsed.answer.length,
+      broadQuestion,
+      entryCount: params.entries.length,
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const looksLikeJsonParseFailure =
@@ -559,6 +603,12 @@ export async function answerQuestion(params: {
         throw error;
       }
     }
+    logger.warn('answerQuestion retrying after parse failure', {
+      firstAttemptDurationMs: Date.now() - firstAttemptStartedAt,
+      broadQuestion,
+      entryCount: params.entries.length,
+      errorMessage: message,
+    });
   }
 
   const retryPrompt = [
@@ -576,6 +626,7 @@ export async function answerQuestion(params: {
     serializedEntries,
   ].join('\n');
 
+  const retryStartedAt = Date.now();
   const retryResponse = await generateContentWithRetry({
     model,
     contents: retryPrompt,
@@ -586,6 +637,13 @@ export async function answerQuestion(params: {
       maxOutputTokens: broadQuestion ? 4096 : 2048,
       thinkingConfig: { thinkingBudget: 0 },
     },
+  });
+  logger.info('answerQuestion model attempt completed', {
+    attempt: 2,
+    durationMs: Date.now() - retryStartedAt,
+    broadQuestion,
+    entryCount: params.entries.length,
+    historyCount: params.history?.length ?? 0,
   });
 
   const retried = normalizeAnswerResponse(parseJsonResponse<unknown>(retryResponse.text ?? '{}'), retryResponse.text ?? '');
@@ -609,6 +667,8 @@ export async function answerWithGoogleSearch(params: {
     ...personaPreamble,
     'You are answering with full open-web context.',
     'Use Google Search to gather current, relevant public information from the web.',
+    'Use the minimum search breadth needed for a high-quality answer: once reliable evidence is sufficient, stop searching and answer.',
+    'For direct questions, prefer a few authoritative, diverse sources over broad source collection. For synthesis questions, broaden only when it materially improves the answer.',
     'Do not restrict yourself to the user\'s uploaded documents or personal knowledge base.',
     'Treat the recent conversation history as real context: resolve references, follow up naturally, and avoid repeating prior assistant points unless needed.',
     'If the user gives a short affirmative follow-up like "yes", "yeah", "do that", or "let\'s do it", interpret it as accepting the most recent concrete continuation proposed in the conversation history.',
@@ -626,30 +686,38 @@ export async function answerWithGoogleSearch(params: {
     serializedHistory,
   ].join('\n');
 
-  const interaction = await createClient().interactions.create({
+  const startedAt = Date.now();
+  const response = await generateContentWithRetry({
     model: internetSearchModel,
-    input: prompt,
-    tools: [{ type: 'google_search' }],
+    contents: prompt,
+    config: {
+      tools: [{ googleSearch: {} }],
+      thinkingConfig: { thinkingBudget: 0 },
+    },
+  });
+  logger.info('answerWithGoogleSearch model completed', {
+    durationMs: Date.now() - startedAt,
+    historyCount: params.history?.length ?? 0,
+    broadQuestion,
+    answerLength: response.text?.length ?? 0,
+    webSearchQueryCount: response.candidates?.reduce(
+      (count, candidate) => count + (candidate.groundingMetadata?.webSearchQueries?.length ?? 0),
+      0,
+    ) ?? 0,
+    groundedSourceCount: response.candidates?.reduce(
+      (count, candidate) => count + (candidate.groundingMetadata?.groundingChunks?.length ?? 0),
+      0,
+    ) ?? 0,
   });
 
-  if (interaction.status !== 'completed') {
-    throw new Error(`Internet answer failed with status: ${interaction.status}`);
-  }
-
-  const textOutputs: WebTextOutput[] = [];
-  for (const output of interaction.outputs ?? []) {
-    if (output.type === 'text' && typeof (output as { text?: unknown }).text === 'string') {
-      textOutputs.push(output as WebTextOutput);
-    }
-  }
-  const answerText = textOutputs.map((output) => output.text?.trim() ?? '').filter(Boolean).join('\n\n').trim();
+  const answerText = response.text?.trim() ?? '';
 
   if (!answerText) {
     throw new Error('Internet answer returned no text.');
   }
 
   return {
-    answer: appendWebSources(answerText, textOutputs),
+    answer: appendGroundingSources(answerText, response),
     cited_entry_ids: [],
     knowledge_gap: false,
   };
@@ -1138,6 +1206,7 @@ export async function answerFromArticles(params: {
     serializedArticles,
   ].join('\n');
 
+  const startedAt = Date.now();
   const response = await generateContentWithRetry({
     model,
     contents: prompt,
@@ -1148,6 +1217,12 @@ export async function answerFromArticles(params: {
       maxOutputTokens: broadQuestion ? 4096 : 2048,
       thinkingConfig: { thinkingBudget: 0 },
     },
+  });
+  logger.info('answerFromArticles model completed', {
+    durationMs: Date.now() - startedAt,
+    broadQuestion,
+    articleCount: params.articles.length,
+    historyCount: params.history?.length ?? 0,
   });
 
   const parsed = normalizeAnswerResponse(parseJsonResponse<unknown>(response.text ?? '{}'), response.text ?? '');

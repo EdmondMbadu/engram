@@ -64,6 +64,32 @@ const maxUserTurnsPerThread = 8;
 const maxAnonymousPublicQuestions = 5;
 const maxHistoryMessagesForAnswer = 6;
 
+type ChatQueryTimer = {
+  mark(stage: string): void;
+  totalMs(): number;
+  snapshot(): Record<string, number>;
+};
+
+function createChatQueryTimer(): ChatQueryTimer {
+  const startedAt = Date.now();
+  let previousMarkAt = startedAt;
+  const timings: Record<string, number> = {};
+
+  return {
+    mark(stage: string): void {
+      const now = Date.now();
+      timings[stage] = now - previousMarkAt;
+      previousMarkAt = now;
+    },
+    totalMs(): number {
+      return Date.now() - startedAt;
+    },
+    snapshot(): Record<string, number> {
+      return { ...timings };
+    },
+  };
+}
+
 export async function loadDocumentRecord(documentId: string): Promise<DocumentRecord & { id: string }> {
   const snapshot = await documentsCollection.doc(documentId).get();
   if (!snapshot.exists) {
@@ -755,12 +781,31 @@ async function countCollectionForAtlas(
 
 const maxPersonaPromptChars = 8000;
 
-async function loadAtlasPersonaPrompt(atlasId: string | null): Promise<string | null> {
-  if (!atlasId) return null;
+async function loadAtlasChatContext(atlasId: string | null): Promise<{
+  personaPrompt: string | null;
+  atlasName: string | null;
+  cityHint: string | null;
+}> {
+  if (!atlasId) {
+    return { personaPrompt: null, atlasName: null, cityHint: null };
+  }
+
   try {
     const snapshot = await atlasesCollection.doc(atlasId).get();
-    if (!snapshot.exists) return null;
-    const data = snapshot.data() as { persona_prompt?: unknown; chat_guide?: unknown } | undefined;
+    if (!snapshot.exists) {
+      return { personaPrompt: null, atlasName: null, cityHint: null };
+    }
+
+    const data = snapshot.data() as {
+      name?: unknown;
+      persona_prompt?: unknown;
+      chat_guide?: unknown;
+      city_config?: {
+        city_name?: unknown;
+        region_name?: unknown;
+        country_code?: unknown;
+      } | null;
+    } | undefined;
     const raw = typeof data?.persona_prompt === 'string' ? data.persona_prompt.trim() : '';
     const guide = data?.chat_guide && typeof data.chat_guide === 'object'
       ? data.chat_guide as Record<string, unknown>
@@ -775,39 +820,11 @@ async function loadAtlasPersonaPrompt(atlasId: string | null): Promise<string | 
       ].join(' ')
       : '';
     const combined = [guidePrompt, raw].filter(Boolean).join('\n\n');
-    if (!combined) return null;
-    return combined.length > maxPersonaPromptChars ? combined.slice(0, maxPersonaPromptChars) : combined;
-  } catch (error) {
-    logger.warn('Failed to load atlas persona prompt; falling back to default voice.', {
-      atlasId,
-      errorMessage: error instanceof Error ? error.message : String(error),
-    });
-    return null;
-  }
-}
-
-async function loadAtlasMapContext(atlasId: string | null): Promise<{
-  atlasName: string | null;
-  cityHint: string | null;
-}> {
-  if (!atlasId) {
-    return { atlasName: null, cityHint: null };
-  }
-
-  try {
-    const snapshot = await atlasesCollection.doc(atlasId).get();
-    if (!snapshot.exists) {
-      return { atlasName: null, cityHint: null };
-    }
-
-    const data = snapshot.data() as {
-      name?: unknown;
-      city_config?: {
-        city_name?: unknown;
-        region_name?: unknown;
-        country_code?: unknown;
-      } | null;
-    } | undefined;
+    const personaPrompt = combined
+      ? combined.length > maxPersonaPromptChars
+        ? combined.slice(0, maxPersonaPromptChars)
+        : combined
+      : null;
     const cityConfig = data?.city_config;
     const cityParts = [
       typeof cityConfig?.city_name === 'string' ? cityConfig.city_name.trim() : '',
@@ -816,15 +833,16 @@ async function loadAtlasMapContext(atlasId: string | null): Promise<{
     ].filter(Boolean);
 
     return {
+      personaPrompt,
       atlasName: typeof data?.name === 'string' && data.name.trim() ? data.name.trim() : null,
       cityHint: cityParts.length > 0 ? cityParts.join(', ') : null,
     };
   } catch (error) {
-    logger.warn('Failed to load atlas map context.', {
+    logger.warn('Failed to load atlas chat context.', {
       atlasId,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
-    return { atlasName: null, cityHint: null };
+    return { personaPrompt: null, atlasName: null, cityHint: null };
   }
 }
 
@@ -1230,33 +1248,37 @@ export async function runAtlasQuery(params: {
   knowledgeGap: boolean;
   threadId: string;
 }> {
+  const timer = createChatQueryTimer();
   const trimmedQuestion = params.question.trim();
   if (!trimmedQuestion) {
     throw new Error('Question is required.');
   }
 
   const broadQuestion = isBroadSynthesisQuestion(trimmedQuestion);
-  const [thread, personaPrompt, atlasMapContext] = await Promise.all([
+  const [thread, atlasChatContext] = await Promise.all([
     ensureActiveChatThread(params.userId, params.atlasId, params.threadId ?? null, trimmedQuestion),
-    loadAtlasPersonaPrompt(params.atlasId),
-    loadAtlasMapContext(params.atlasId),
+    loadAtlasChatContext(params.atlasId),
   ]);
+  timer.mark('thread_and_context_ms');
   const threadHistory = thread.reusedExisting
     ? await loadRecentChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
     : [];
+  timer.mark('history_ms');
 
   if (params.answerMode === 'internet') {
     const response = await answerWithGoogleSearch({
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
-      personaPrompt,
+      personaPrompt: atlasChatContext.personaPrompt,
     });
+    timer.mark('internet_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: response.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
     });
+    timer.mark('presentation_ms');
 
     await recordChatThreadExchange({
       threadId: thread.id,
@@ -1270,6 +1292,13 @@ export async function runAtlasQuery(params: {
       travelGuide,
       knowledgeGap: false,
       questionCountIncrement: 1,
+    });
+    timer.mark('record_ms');
+    logger.info('Atlas query timing', {
+      answerMode: 'internet',
+      source: 'internet',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
     });
 
     return {
@@ -1290,16 +1319,18 @@ export async function runAtlasQuery(params: {
     question: trimmedQuestion,
     broadQuestion,
     history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
-    personaPrompt,
+    personaPrompt: atlasChatContext.personaPrompt,
   });
+  timer.mark('article_attempt_ms');
 
   if (articleResult) {
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: articleResult.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
     });
+    timer.mark('presentation_ms');
 
     logger.info('Atlas query answered from wiki articles', {
       userId: params.userId,
@@ -1319,6 +1350,13 @@ export async function runAtlasQuery(params: {
       knowledgeGap: articleResult.knowledgeGap,
       questionCountIncrement: 1,
     });
+    timer.mark('record_ms');
+    logger.info('Atlas query timing', {
+      answerMode: 'wiki',
+      source: 'articles',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
 
     return {
       answer: articleResult.answer,
@@ -1333,6 +1371,7 @@ export async function runAtlasQuery(params: {
   }
 
   const topics = await loadCandidateTopics(params.userId, trimmedQuestion, params.topicIds, broadQuestion);
+  timer.mark('topic_retrieval_ms');
   const tokens = tokenize(trimmedQuestion);
   const entryLimit = broadQuestion ? broadQuestionMaxAnswerEntries : maxAnswerEntries;
   const minEntries = broadQuestion ? broadQuestionMinAnswerEntries : minAnswerEntries;
@@ -1370,8 +1409,15 @@ export async function runAtlasQuery(params: {
       ).slice(0, entryLimit);
     }
   }
+  timer.mark('entry_retrieval_ms');
 
   if (uniqueEntries.length === 0) {
+    logger.info('Atlas query timing', {
+      answerMode: 'wiki',
+      source: 'knowledge_gap',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
     return {
       answer:
         "This topic isn't in your knowledge base yet. Upload source material so My living wiki can answer it with citations.",
@@ -1401,13 +1447,15 @@ export async function runAtlasQuery(params: {
       topic: entry.topic,
       source: entry.source,
     })),
-    personaPrompt,
+    personaPrompt: atlasChatContext.personaPrompt,
   });
+  timer.mark('knowledge_model_ms');
 
   const citedEntryIds = (Array.isArray(response.cited_entry_ids) ? response.cited_entry_ids : []).filter((entryId) =>
     uniqueEntries.some((entry) => entry.id === entryId),
   );
   const citedPassages = await hydrateCitationSnapshots(params.userId, uniqueEntries, citedEntryIds);
+  timer.mark('citation_hydration_ms');
   const safeAnswer =
     typeof response.answer === 'string' && response.answer.trim().length > 0
       ? response.answer.trim()
@@ -1416,9 +1464,10 @@ export async function runAtlasQuery(params: {
   const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
     question: trimmedQuestion,
     answer: safeAnswer,
-    atlasName: atlasMapContext.atlasName,
-    cityHint: atlasMapContext.cityHint,
+    atlasName: atlasChatContext.atlasName,
+    cityHint: atlasChatContext.cityHint,
   });
+  timer.mark('presentation_ms');
 
   await recordChatThreadExchange({
     threadId: thread.id,
@@ -1432,6 +1481,13 @@ export async function runAtlasQuery(params: {
     travelGuide,
     knowledgeGap,
     questionCountIncrement: 1,
+  });
+  timer.mark('record_ms');
+  logger.info('Atlas query timing', {
+    answerMode: 'wiki',
+    source: 'knowledge_entries',
+    totalMs: timer.totalMs(),
+    ...timer.snapshot(),
   });
 
   return {
@@ -1470,6 +1526,7 @@ export async function runPublicAtlasQuery(params: {
   remainingQuestions: number | null;
   requiresSignIn: boolean;
 }> {
+  const timer = createChatQueryTimer();
   const trimmedQuestion = params.question.trim();
   if (!trimmedQuestion) {
     throw new Error('Question is required.');
@@ -1482,6 +1539,7 @@ export async function runPublicAtlasQuery(params: {
     seedQuestion: trimmedQuestion,
     visitor: params.visitor,
   });
+  timer.mark('thread_ms');
 
   const questionLimit =
     typeof params.anonymousQuestionLimit !== 'undefined'
@@ -1490,6 +1548,12 @@ export async function runPublicAtlasQuery(params: {
   const questionCountBeforeAsk = thread.questionCount;
 
   if (questionLimit !== null && questionCountBeforeAsk >= questionLimit) {
+    logger.info('Public atlas query timing', {
+      answerMode: params.answerMode === 'internet' ? 'internet' : 'wiki',
+      source: 'question_limit',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
     return {
       blocked: true,
       answer: '',
@@ -1508,26 +1572,28 @@ export async function runPublicAtlasQuery(params: {
   }
 
   const broadQuestion = isBroadSynthesisQuestion(trimmedQuestion);
-  const [threadHistory, personaPrompt, atlasMapContext] = await Promise.all([
+  const [threadHistory, atlasChatContext] = await Promise.all([
     thread.reusedExisting
       ? loadRecentPublicChatThreadMessages(thread.id, maxHistoryMessagesForAnswer)
       : Promise.resolve([] as Awaited<ReturnType<typeof loadRecentPublicChatThreadMessages>>),
-    loadAtlasPersonaPrompt(params.atlasId),
-    loadAtlasMapContext(params.atlasId),
+    loadAtlasChatContext(params.atlasId),
   ]);
+  timer.mark('history_and_context_ms');
 
   if (params.answerMode === 'internet') {
     const response = await answerWithGoogleSearch({
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
-      personaPrompt,
+      personaPrompt: atlasChatContext.personaPrompt,
     });
+    timer.mark('internet_model_ms');
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: response.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
     });
+    timer.mark('presentation_ms');
 
     await recordPublicChatThreadExchange({
       threadId: thread.id,
@@ -1543,10 +1609,17 @@ export async function runPublicAtlasQuery(params: {
       knowledgeGap: false,
       questionCountIncrement: 1,
     });
+    timer.mark('record_ms');
 
     const questionCount = questionCountBeforeAsk + 1;
     const remainingQuestions =
       questionLimit === null ? null : Math.max(0, questionLimit - questionCount);
+    logger.info('Public atlas query timing', {
+      answerMode: 'internet',
+      source: 'internet',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
 
     return {
       blocked: false,
@@ -1571,16 +1644,18 @@ export async function runPublicAtlasQuery(params: {
     question: trimmedQuestion,
     broadQuestion,
     history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
-    personaPrompt,
+    personaPrompt: atlasChatContext.personaPrompt,
   });
+  timer.mark('article_attempt_ms');
 
   if (articleResult) {
     const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
       question: trimmedQuestion,
       answer: articleResult.answer,
-      atlasName: atlasMapContext.atlasName,
-      cityHint: atlasMapContext.cityHint,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
     });
+    timer.mark('presentation_ms');
 
     await recordPublicChatThreadExchange({
       threadId: thread.id,
@@ -1596,10 +1671,17 @@ export async function runPublicAtlasQuery(params: {
       knowledgeGap: articleResult.knowledgeGap,
       questionCountIncrement: 1,
     });
+    timer.mark('record_ms');
 
     const questionCount = questionCountBeforeAsk + 1;
     const remainingQuestions =
       questionLimit === null ? null : Math.max(0, questionLimit - questionCount);
+    logger.info('Public atlas query timing', {
+      answerMode: 'wiki',
+      source: 'articles',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
 
     return {
       blocked: false,
@@ -1624,6 +1706,7 @@ export async function runPublicAtlasQuery(params: {
     params.topicIds,
     broadQuestion,
   );
+  timer.mark('topic_retrieval_ms');
   const tokens = tokenize(trimmedQuestion);
   const entryLimit = broadQuestion ? broadQuestionMaxAnswerEntries : maxAnswerEntries;
   const minEntries = broadQuestion ? broadQuestionMinAnswerEntries : minAnswerEntries;
@@ -1662,6 +1745,7 @@ export async function runPublicAtlasQuery(params: {
       ).slice(0, entryLimit);
     }
   }
+  timer.mark('entry_retrieval_ms');
 
   let answer: string;
   let citedEntryIds: string[];
@@ -1684,8 +1768,9 @@ export async function runPublicAtlasQuery(params: {
         topic: entry.topic,
         source: entry.source,
       })),
-      personaPrompt,
+      personaPrompt: atlasChatContext.personaPrompt,
     });
+    timer.mark('knowledge_model_ms');
 
     citedEntryIds = (Array.isArray(response.cited_entry_ids) ? response.cited_entry_ids : []).filter((entryId) =>
       uniqueEntries.some((entry) => entry.id === entryId),
@@ -1695,6 +1780,7 @@ export async function runPublicAtlasQuery(params: {
       uniqueEntries,
       citedEntryIds,
     );
+    timer.mark('citation_hydration_ms');
     answer =
       typeof response.answer === 'string' && response.answer.trim().length > 0
         ? response.answer.trim()
@@ -1708,9 +1794,10 @@ export async function runPublicAtlasQuery(params: {
   const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
     question: trimmedQuestion,
     answer,
-    atlasName: atlasMapContext.atlasName,
-    cityHint: atlasMapContext.cityHint,
+    atlasName: atlasChatContext.atlasName,
+    cityHint: atlasChatContext.cityHint,
   });
+  timer.mark('presentation_ms');
 
   await recordPublicChatThreadExchange({
     threadId: thread.id,
@@ -1725,6 +1812,13 @@ export async function runPublicAtlasQuery(params: {
     travelGuide,
     knowledgeGap,
     questionCountIncrement: 1,
+  });
+  timer.mark('record_ms');
+  logger.info('Public atlas query timing', {
+    answerMode: 'wiki',
+    source: uniqueEntries.length === 0 ? 'knowledge_gap' : 'knowledge_entries',
+    totalMs: timer.totalMs(),
+    ...timer.snapshot(),
   });
 
   const questionCount = questionCountBeforeAsk + 1;
@@ -2048,38 +2142,31 @@ async function recordChatThreadExchange(params: {
   questionCountIncrement: number;
 }): Promise<void> {
   const createdAt = FieldValue.serverTimestamp();
-  await commitSetOperations([
-    {
-      ref: chatMessagesCollection.doc(generateId('chatmsg')),
-      data: {
-        thread_id: params.threadId,
-        user_id: params.userId,
-        atlas_id: params.atlasId,
-        answer_mode: params.answerMode,
-        role: 'user',
-        text: params.question,
-        created_at: createdAt,
-      } satisfies ChatMessageRecord,
-    },
-    {
-      ref: chatMessagesCollection.doc(generateId('chatmsg')),
-      data: {
-        thread_id: params.threadId,
-        user_id: params.userId,
-        atlas_id: params.atlasId,
-        answer_mode: params.answerMode,
-        role: 'assistant',
-        text: params.answer,
-        cited_passages: params.citedPassages,
-        mappable_locations: params.mappableLocations,
-        travel_guide: params.travelGuide,
-        knowledge_gap: params.knowledgeGap,
-        created_at: createdAt,
-      } satisfies ChatMessageRecord,
-    },
-  ]);
-
-  await chatThreadsCollection.doc(params.threadId).set(
+  const batch = db.batch();
+  batch.set(chatMessagesCollection.doc(generateId('chatmsg')), {
+    thread_id: params.threadId,
+    user_id: params.userId,
+    atlas_id: params.atlasId,
+    answer_mode: params.answerMode,
+    role: 'user',
+    text: params.question,
+    created_at: createdAt,
+  } satisfies ChatMessageRecord, { merge: true });
+  batch.set(chatMessagesCollection.doc(generateId('chatmsg')), {
+    thread_id: params.threadId,
+    user_id: params.userId,
+    atlas_id: params.atlasId,
+    answer_mode: params.answerMode,
+    role: 'assistant',
+    text: params.answer,
+    cited_passages: params.citedPassages,
+    mappable_locations: params.mappableLocations,
+    travel_guide: params.travelGuide,
+    knowledge_gap: params.knowledgeGap,
+    created_at: createdAt,
+  } satisfies ChatMessageRecord, { merge: true });
+  batch.set(
+    chatThreadsCollection.doc(params.threadId),
     {
       updated_at: FieldValue.serverTimestamp(),
       last_question: params.question,
@@ -2089,6 +2176,7 @@ async function recordChatThreadExchange(params: {
     },
     { merge: true },
   );
+  await batch.commit();
 }
 
 type PublicChatVisitorContext = {
@@ -2237,45 +2325,37 @@ async function recordPublicChatThreadExchange(params: {
   questionCountIncrement: number;
 }): Promise<void> {
   const createdAt = FieldValue.serverTimestamp();
-
-  await commitSetOperations([
-    {
-      ref: publicChatMessagesCollection.doc(generateId('pubchatmsg')),
-      data: {
-        thread_id: params.threadId,
-        atlas_id: params.atlasId,
-        atlas_owner_user_id: params.atlasOwnerUserId,
-        visitor_kind: params.visitor.kind,
-        visitor_uid: params.visitor.visitorUserId,
-        anonymous_visitor_id: params.visitor.anonymousVisitorId,
-        answer_mode: params.answerMode,
-        role: 'user',
-        text: params.question,
-        created_at: createdAt,
-      } satisfies PublicChatMessageRecord,
-    },
-    {
-      ref: publicChatMessagesCollection.doc(generateId('pubchatmsg')),
-      data: {
-        thread_id: params.threadId,
-        atlas_id: params.atlasId,
-        atlas_owner_user_id: params.atlasOwnerUserId,
-        visitor_kind: params.visitor.kind,
-        visitor_uid: params.visitor.visitorUserId,
-        anonymous_visitor_id: params.visitor.anonymousVisitorId,
-        answer_mode: params.answerMode,
-        role: 'assistant',
-        text: params.answer,
-        cited_passages: params.citedPassages,
-        mappable_locations: params.mappableLocations,
-        travel_guide: params.travelGuide,
-        knowledge_gap: params.knowledgeGap,
-        created_at: createdAt,
-      } satisfies PublicChatMessageRecord,
-    },
-  ]);
-
-  await publicChatThreadsCollection.doc(params.threadId).set(
+  const batch = db.batch();
+  batch.set(publicChatMessagesCollection.doc(generateId('pubchatmsg')), {
+    thread_id: params.threadId,
+    atlas_id: params.atlasId,
+    atlas_owner_user_id: params.atlasOwnerUserId,
+    visitor_kind: params.visitor.kind,
+    visitor_uid: params.visitor.visitorUserId,
+    anonymous_visitor_id: params.visitor.anonymousVisitorId,
+    answer_mode: params.answerMode,
+    role: 'user',
+    text: params.question,
+    created_at: createdAt,
+  } satisfies PublicChatMessageRecord, { merge: true });
+  batch.set(publicChatMessagesCollection.doc(generateId('pubchatmsg')), {
+    thread_id: params.threadId,
+    atlas_id: params.atlasId,
+    atlas_owner_user_id: params.atlasOwnerUserId,
+    visitor_kind: params.visitor.kind,
+    visitor_uid: params.visitor.visitorUserId,
+    anonymous_visitor_id: params.visitor.anonymousVisitorId,
+    answer_mode: params.answerMode,
+    role: 'assistant',
+    text: params.answer,
+    cited_passages: params.citedPassages,
+    mappable_locations: params.mappableLocations,
+    travel_guide: params.travelGuide,
+    knowledge_gap: params.knowledgeGap,
+    created_at: createdAt,
+  } satisfies PublicChatMessageRecord, { merge: true });
+  batch.set(
+    publicChatThreadsCollection.doc(params.threadId),
     {
       updated_at: FieldValue.serverTimestamp(),
       last_question: params.question,
@@ -2287,6 +2367,7 @@ async function recordPublicChatThreadExchange(params: {
     },
     { merge: true },
   );
+  await batch.commit();
 }
 
 export async function getPublicChatState(params: {
