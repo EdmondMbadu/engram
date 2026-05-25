@@ -117,6 +117,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly answerCardError = signal<string | null>(null);
   readonly loadingSpeechMessageId = signal<string | null>(null);
   readonly playingSpeechMessageId = signal<string | null>(null);
+  readonly preparedSpeechMessageIds = signal<Record<string, boolean>>({});
   readonly speechErrorMessageId = signal<string | null>(null);
   readonly speechError = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
@@ -909,6 +910,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         this.publicQuestionLimit.set(publicResponse.questionLimit ?? null);
         this.publicRemainingQuestions.set(publicResponse.remainingQuestions ?? null);
         this.publicRequiresSignIn.set(publicResponse.requiresSignIn === true);
+      }
+      if (!blocked && answer.trim()) {
+        this.prepareAnswerAudioPreview(pendingId);
       }
     }
 
@@ -2001,6 +2005,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private ensureAnswerAudioUrl(message: ChatMessage, showLoading: boolean): Promise<string | null> {
     const cachedUrl = this.answerAudioUrls.get(message.id);
     if (cachedUrl) {
+      this.preparedSpeechMessageIds.update((items) => ({ ...items, [message.id]: true }));
       return Promise.resolve(cachedUrl);
     }
 
@@ -2024,17 +2029,20 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const promise = this.chatService
       .synthesizeAnswerSpeech(
         message.text,
+        this.questionBeforeMessage(message.id),
         this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
       )
       .then((response) => {
         if (response?.audioUrl) {
           this.answerAudioUrls.set(message.id, response.audioUrl);
+          this.preparedSpeechMessageIds.update((items) => ({ ...items, [message.id]: true }));
           return response.audioUrl;
         }
         if (response?.audioBase64) {
           const blob = this.audioBlobFromBase64(response.audioBase64, response.contentType || 'audio/mpeg');
           const audioUrl = URL.createObjectURL(blob);
           this.answerAudioUrls.set(message.id, audioUrl);
+          this.preparedSpeechMessageIds.update((items) => ({ ...items, [message.id]: true }));
           return audioUrl;
         }
         throw new Error('No audio was returned for this answer.');
@@ -2055,6 +2063,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
     this.answerAudioPromises.set(message.id, promise);
     return promise;
+  }
+
+  private prepareAnswerAudioPreview(messageId: string): void {
+    const message = this.messages().find((item) => item.id === messageId);
+    if (!message || message.pending || message.role !== 'assistant' || !message.text.trim()) {
+      return;
+    }
+
+    void this.ensureAnswerAudioUrl(message, false);
   }
 
   private stopAnswerAudio(): void {

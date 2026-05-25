@@ -80,6 +80,8 @@ type ChatAnswerSpeechResponse = {
   audioBase64?: string;
   contentType: string;
   voiceId: string;
+  speechText?: string;
+  durationHintSeconds?: number | null;
   cached?: boolean;
 };
 
@@ -525,6 +527,7 @@ export class ChatService {
 
   async synthesizeAnswerSpeech(
     text: string,
+    question?: string | null,
     anonymousVisitorId?: string | null,
   ): Promise<ChatAnswerSpeechResponse | null> {
     if (!this.functions) {
@@ -532,13 +535,15 @@ export class ChatService {
     }
 
     const synthesizeChatAnswerSpeech = httpsCallable<
-      { text: string; anonymousVisitorId?: string | null },
+      { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' },
       ChatAnswerSpeechResponse
     >(this.functions, 'synthesizeChatAnswerSpeech');
 
     const { data } = await synthesizeChatAnswerSpeech({
       text,
+      question: question ?? null,
       anonymousVisitorId: anonymousVisitorId ?? null,
+      mode: 'recap',
     });
     return data;
   }

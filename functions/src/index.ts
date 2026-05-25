@@ -52,6 +52,7 @@ const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunc
 const maxSmsReplyLength = 1200;
 const chatAnswerVoiceId = 'ZthjuvLPty3kTMaNKVKb';
 const maxSpeechTextLength = 4000;
+const maxSpeechRecapWords = 28;
 const chatAnswerSpeechModel = 'eleven_flash_v2_5';
 const defaultNewsletterPrompt = [
   'Create a premium weekly My living wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
@@ -2665,6 +2666,75 @@ function normalizeSpeechText(value: unknown): string {
     .slice(0, maxSpeechTextLength);
 }
 
+function cleanSpeechLine(value: string): string {
+  return value
+    .replace(/\[[^\]]+\]\(([^)]+)\)/g, '$1')
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/^[\s>*#`~_-]+/, '')
+    .replace(/^\s*(?:[-*•]|\d+[.)])\s+/, '')
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function isWeakSpeechLead(value: string): boolean {
+  const normalized = value.toLowerCase();
+  return (
+    normalized.length < 35 ||
+    /^here'?s\b/.test(normalized) ||
+    /^absolutely\b/.test(normalized) ||
+    /^sure\b/.test(normalized) ||
+    /^quick\s+(take|answer|recap)\b/.test(normalized) ||
+    /^short\s+answer\b/.test(normalized) ||
+    /^the\s+(gist|bottom line)\b/.test(normalized)
+  );
+}
+
+function chooseSpeechRecapLine(answerValue: unknown): string {
+  if (typeof answerValue !== 'string') {
+    return '';
+  }
+
+  const answerWithoutSources = answerValue
+    .replace(/\n\s*#{0,3}\s*Sources\b[\s\S]*$/i, '')
+    .replace(/\bSources\b[\s\S]*$/i, '');
+  const lines = answerWithoutSources
+    .split(/\n+/)
+    .map(cleanSpeechLine)
+    .filter(Boolean);
+
+  const listItem = lines.find((line) => {
+    const rawLine = answerWithoutSources
+      .split(/\n+/)
+      .find((candidate) => cleanSpeechLine(candidate) === line);
+    return Boolean(rawLine?.match(/^\s*(?:[-*•]|\d+[.)])\s+/)) && !isWeakSpeechLead(line);
+  });
+  if (listItem) {
+    return listItem;
+  }
+
+  const joined = lines
+    .filter((line) => !/^sources$/i.test(line))
+    .join(' ');
+  const sentences = joined
+    .split(/(?<=[.!?])\s+/)
+    .map(cleanSpeechLine)
+    .filter(Boolean);
+  return sentences.find((sentence) => !isWeakSpeechLead(sentence)) ?? sentences[0] ?? '';
+}
+
+function buildSpeechRecapText(questionValue: unknown, answerValue: unknown): string {
+  const answer = chooseSpeechRecapLine(answerValue) || normalizeSpeechText(answerValue);
+  if (!answer) {
+    return '';
+  }
+
+  const words = answer.split(/\s+/).filter(Boolean);
+  const recap = words.slice(0, maxSpeechRecapWords).join(' ');
+  const clipped = recap.length < answer.length ? recap.replace(/[,:;.-]+$/, '') : recap;
+  return `Quick recap: ${clipped}.`.replace(/\s+/g, ' ').slice(0, 300);
+}
+
 function textValue(value: unknown, maxLength = 2000): string | null {
   if (typeof value !== 'string') {
     return null;
@@ -4417,7 +4487,10 @@ export const synthesizeChatAnswerSpeech = onCall(
     secrets: [elevenLabsApiKey],
   },
   async (request) => {
-    const text = normalizeSpeechText(request.data?.text);
+    const requestedMode = request.data?.mode === 'full' ? 'full' : 'recap';
+    const text = requestedMode === 'full'
+      ? normalizeSpeechText(request.data?.text)
+      : buildSpeechRecapText(request.data?.question, request.data?.text);
     if (!text) {
       throw new HttpsError('invalid-argument', 'Answer text is required.');
     }
@@ -4432,9 +4505,9 @@ export const synthesizeChatAnswerSpeech = onCall(
     }
 
     const textHash = createHash('sha256')
-      .update(`${chatAnswerVoiceId}:${chatAnswerSpeechModel}:${text}`)
+      .update(`${chatAnswerVoiceId}:${chatAnswerSpeechModel}:${requestedMode}:${text}`)
       .digest('hex');
-    const storagePath = `chat-answer-speech/${chatAnswerVoiceId}/${textHash}.mp3`;
+    const storagePath = `chat-answer-speech/${requestedMode}/${chatAnswerVoiceId}/${textHash}.mp3`;
     const cachedFile = storage.bucket().file(storagePath);
     const [cacheExists] = await cachedFile.exists();
     if (cacheExists) {
@@ -4442,6 +4515,8 @@ export const synthesizeChatAnswerSpeech = onCall(
         audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
         contentType: 'audio/mpeg',
         voiceId: chatAnswerVoiceId,
+        speechText: text,
+        durationHintSeconds: requestedMode === 'recap' ? 15 : null,
         cached: true,
       };
     }
@@ -4485,6 +4560,7 @@ export const synthesizeChatAnswerSpeech = onCall(
         metadata: {
           voiceId: chatAnswerVoiceId,
           modelId: chatAnswerSpeechModel,
+          mode: requestedMode,
           textHash,
         },
       },
@@ -4494,6 +4570,8 @@ export const synthesizeChatAnswerSpeech = onCall(
       audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
       contentType: 'audio/mpeg',
       voiceId: chatAnswerVoiceId,
+      speechText: text,
+      durationHintSeconds: requestedMode === 'recap' ? 15 : null,
       cached: false,
     };
   },
