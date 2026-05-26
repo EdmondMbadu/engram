@@ -243,11 +243,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly composerPlaceholder = computed(() =>
     this.canUseAnswerModeToggle()
       ? this.isInternetMode()
-        ? 'Ask with internet mode...'
+        ? this.localInternetPlaceholder()
         : 'Message My living wiki...'
       : this.showSignInCta()
         ? 'Sign in to continue asking questions...'
-        : 'Ask about this living wiki...',
+        : this.localInternetPlaceholder(),
   );
   readonly canSubmit = computed(() => {
     if (this.isSubmitting() || !this.question().trim() || this.publicNotFound()) {
@@ -565,6 +565,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   cityWikiLocationLabel(wiki: PublicWikiCatalogItem): string {
     return wiki.title.replace(/^My living wiki:\s*/i, '').trim();
+  }
+
+  private localInternetPlaceholder(): string {
+    const name = this.currentWikiName();
+    if (!name) {
+      return 'Ask about news, places, jobs, events, and civic life...';
+    }
+    return `Ask about ${name} news, neighborhoods, transit, food, jobs, safety, events, and civic life...`;
   }
 
   constructor() {
