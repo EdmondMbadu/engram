@@ -16,13 +16,13 @@
         </a>
       </div>
       @if (currentWikiName()) {
-        <div class="mb-6 rounded-3xl border border-[var(--line-strong)] bg-[var(--surface)] p-3 shadow-[var(--shadow-soft)]">
-          <div class="flex items-center gap-3">
-            <span class="flex h-12 w-12 shrink-0 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-1.5">
+        <div class="mb-6 rounded-3xl border border-[var(--accent)]/25 bg-[var(--surface)] p-2.5 shadow-[var(--shadow-soft)]">
+          <div class="flex items-center gap-2">
+            <span class="flex h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[var(--accent)]/20 bg-[var(--soft-fill)] p-1.5 shadow-sm">
               <img src="/assets/image/living-cities.png" alt="LW" class="h-full w-full rounded-xl object-contain" />
             </span>
             <span class="min-w-0">
-              <span class="block truncate text-base font-black tracking-[-0.02em] text-[var(--text)] lg:text-lg">{{ currentWikiName() }}</span>
+              <span class="block truncate text-2xl font-black tracking-[-0.06em] text-[var(--text)] lg:text-[1.65rem]">{{ currentWikiName() }}</span>
             </span>
           </div>
         </div>
@@ -323,8 +323,48 @@
                   }
                 }
 
+                @if (canSubscribeToCurrentWiki()) {
+                  <form
+                    class="mt-4 flex w-full max-w-xl flex-col gap-2 rounded-[1.35rem] border border-[var(--accent)]/30 bg-[var(--surface)]/95 p-2 shadow-[var(--shadow-soft)] sm:flex-row sm:items-center sm:rounded-full"
+                    (submit)="subscribeToUpdates($event)"
+                  >
+                    <label class="sr-only" for="hero-subscribe-email">Email address</label>
+                    <input
+                      id="hero-subscribe-email"
+                      type="email"
+                      autocomplete="email"
+                      inputmode="email"
+                      placeholder="you@example.com"
+                      [value]="subscribeEmail()"
+                      (input)="onSubscribeEmailInput($event)"
+                      [disabled]="isSubscribing()"
+                      class="min-h-[3rem] min-w-0 flex-1 rounded-[1rem] border border-transparent bg-transparent px-4 text-sm font-semibold text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)]/35 focus:bg-[var(--soft-fill)] sm:rounded-full"
+                    />
+                    <button
+                      type="submit"
+                      class="inline-flex min-h-[3rem] shrink-0 items-center justify-center gap-2 rounded-[1rem] bg-[linear-gradient(135deg,var(--accent),color-mix(in_srgb,var(--accent)_72%,white_28%))] px-5 text-sm font-black text-[var(--accent-contrast)] shadow-[0_12px_24px_color-mix(in_srgb,var(--accent)_22%,transparent)] transition hover:-translate-y-0.5 hover:brightness-[1.03] disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-full"
+                      [disabled]="isSubscribing() || !canSubmitSubscribeEmail()"
+                    >
+                      @if (isSubscribing()) {
+                        <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white"></span>
+                        <span>Joining...</span>
+                      } @else {
+                        <span>Join for free</span>
+                      }
+                    </button>
+                    <p class="px-2 pb-1 text-center text-xs font-bold leading-5 text-[var(--muted)] sm:hidden">Weekly updates and staying in the know.</p>
+                  </form>
+                  <p class="mt-2 hidden text-xs font-bold leading-5 text-[var(--muted)] sm:block">Weekly updates and staying in the know.</p>
+                  @if (subscribeSuccess()) {
+                    <p class="mt-2 max-w-xl rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-2 text-sm font-semibold text-[var(--accent)]">{{ subscribeSuccess() }}</p>
+                  }
+                  @if (subscribeError()) {
+                    <p class="error-banner mt-2 max-w-xl rounded-2xl px-4 py-2 text-sm">{{ subscribeError() }}</p>
+                  }
+                }
+
                 <h2 class="chat-hero-title mt-3">
-                  Ask <span class="chat-hero-title__brand">My living wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
+                  Ask <span class="chat-hero-title__brand">My Living Wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
                 </h2>
 
                 @if (currentWikiGuide(); as guide) {

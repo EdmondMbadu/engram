@@ -283,6 +283,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const atlas = this.currentWikiAtlas();
     return !!atlas?.id && atlas.is_public === true && !this.canAdminCurrentWiki();
   });
+  readonly canSubmitSubscribeEmail = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.subscribeEmail().trim().toLowerCase()));
   readonly currentWikiAdminLink = computed(() => {
     const atlas = this.currentWikiAtlas();
     return atlas && this.canAdminCurrentWiki() ? '/atlases' : null;
