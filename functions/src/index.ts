@@ -4721,6 +4721,7 @@ export const askPublicAtlas = onCall(
     const atlasId = normalizeAtlasId(request.data?.atlasId);
     const question = String(request.data?.question ?? '').trim();
     const threadId = String(request.data?.threadId ?? '').trim() || null;
+    const startNewThread = request.data?.startNewThread === true;
     const answerMode = request.data?.answerMode === 'internet' ? 'internet' : 'wiki';
     const topicIds = Array.isArray(request.data?.topicIds)
       ? request.data.topicIds.map((value: unknown) => String(value)).filter(Boolean)
@@ -4748,6 +4749,7 @@ export const askPublicAtlas = onCall(
         answerMode,
         topicIds,
         threadId,
+        startNewThread,
         visitor: {
           kind: visitor.kind,
           visitorUserId: visitor.visitorUserId,

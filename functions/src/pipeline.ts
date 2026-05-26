@@ -1666,6 +1666,7 @@ export async function runPublicAtlasQuery(params: {
   answerMode?: 'wiki' | 'internet';
   topicIds?: string[];
   threadId?: string | null;
+  startNewThread?: boolean;
   anonymousQuestionLimit?: number | null;
   visitor: PublicChatVisitorContext;
 }): Promise<{
@@ -1693,6 +1694,7 @@ export async function runPublicAtlasQuery(params: {
     atlasId: params.atlasId,
     atlasOwnerUserId: params.atlasOwnerUserId,
     threadId: params.threadId ?? null,
+    startNewThread: params.startNewThread === true,
     seedQuestion: trimmedQuestion,
     visitor: params.visitor,
   });
@@ -2497,6 +2499,7 @@ async function ensureActivePublicChatThread(params: {
   atlasId: string;
   atlasOwnerUserId: string;
   threadId: string | null;
+  startNewThread?: boolean;
   seedQuestion: string;
   visitor: PublicChatVisitorContext;
 }): Promise<{ id: string; reusedExisting: boolean; questionCount: number }> {
@@ -2518,16 +2521,18 @@ async function ensureActivePublicChatThread(params: {
     }
   }
 
-  const currentThread = await loadPublicChatThreadForVisitor({
-    atlasId: params.atlasId,
-    visitor: params.visitor,
-  });
-  if (currentThread) {
-    return {
-      id: currentThread.id,
-      reusedExisting: true,
-      questionCount: Number(currentThread.user_turn_count ?? 0),
-    };
+  if (params.startNewThread !== true) {
+    const currentThread = await loadPublicChatThreadForVisitor({
+      atlasId: params.atlasId,
+      visitor: params.visitor,
+    });
+    if (currentThread) {
+      return {
+        id: currentThread.id,
+        reusedExisting: true,
+        questionCount: Number(currentThread.user_turn_count ?? 0),
+      };
+    }
   }
 
   const threadRef = publicChatThreadsCollection.doc();

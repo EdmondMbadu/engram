@@ -676,7 +676,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       this.answerMode.set(this.defaultAnswerMode(atlas));
     });
 
-    effect((onCleanup) => {
+    effect(() => {
       if (!this.isPublicView()) {
         this.resetPublicChatState();
         return;
@@ -717,51 +717,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         return;
       }
 
-      let cancelled = false;
-      onCleanup(() => {
-        cancelled = true;
-      });
-
-      this.publicChatLoading.set(true);
+      this.publicChatLoading.set(false);
       this.publicLoadError.set(null);
       this.messages.set([]);
       this.syncArtifactLinksFromMessages([]);
       this.activeThreadId.set(null);
       this.activeHistoryId.set(null);
-
-      void this.chatService
-        .loadPublicChatState(
-          atlas.id,
-          this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
-        )
-        .then((state) => {
-          if (cancelled) {
-            return;
-          }
-          const mappedMessages = state.messages.map((message) => this.mapStoredMessage(message));
-          this.messages.set(mappedMessages);
-          this.syncArtifactLinksFromMessages(mappedMessages);
-          this.syncAnswerModeFromMessages(mappedMessages);
-          this.activeThreadId.set(state.threadId ?? null);
-          this.publicQuestionLimit.set(state.questionLimit);
-          this.publicRemainingQuestions.set(state.remainingQuestions);
-          this.publicRequiresSignIn.set(state.requiresSignIn);
-        })
-        .catch((error) => {
-          if (cancelled) {
-            return;
-          }
-          const message = this.authService.toFriendlyError(error);
-          this.publicLoadError.set(message);
-          this.messages.set([]);
-          this.syncArtifactLinksFromMessages([]);
-          this.activeThreadId.set(null);
-        })
-        .finally(() => {
-          if (!cancelled) {
-            this.publicChatLoading.set(false);
-          }
-        });
+      this.publicQuestionLimit.set(this.isAnonymousPublicVisitor() ? 5 : null);
+      this.publicRemainingQuestions.set(this.isAnonymousPublicVisitor() ? 5 : null);
+      this.publicRequiresSignIn.set(false);
     });
 
     effect((onCleanup) => {
@@ -831,6 +795,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
 
     const submittedThreadId = this.activeThreadId();
+    const shouldStartNewPublicThread = !this.isWorkspaceMode() && !submittedThreadId;
     if (!submittedThreadId && this.isWorkspaceMode()) {
       this.activeHistoryId.set(null);
     }
@@ -880,6 +845,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           threadId: submittedThreadId,
           anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
           answerMode: selectedAnswerMode,
+          startNewThread: shouldStartNewPublicThread,
         });
 
     this.stopThinkingRotation();
