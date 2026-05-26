@@ -60,6 +60,15 @@ interface CustomCityDraft {
   description: string;
 }
 
+function normalizeAdminCityIdentity(value: string | null | undefined): string {
+  return (value ?? '')
+    .toLowerCase()
+    .replace(/^my living wiki:\s*/i, '')
+    .replace(/\s*\(flagship\)\s*$/i, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 @Component({
   selector: 'app-atlas-manage',
   imports: [FormsModule, RouterLink, ThemeToggleComponent],
@@ -117,7 +126,7 @@ export class AtlasManageComponent {
   readonly creatingCitySlug = signal<string | null>(null);
   readonly creatingCustomCity = signal(false);
   readonly cityCreationMessage = signal<string | null>(null);
-  readonly publicCityTemplateSlugs = signal<Set<string>>(new Set());
+  readonly publicCityTemplateKeys = signal<Set<string>>(new Set());
   readonly customCityDraft = signal<CustomCityDraft>({
     city_name: '',
     region_name: '',
@@ -127,18 +136,16 @@ export class AtlasManageComponent {
   });
 
   readonly hasMultipleAtlases = computed(() => this.atlases().length > 1);
-  readonly existingCityTemplateSlugs = computed(() =>
+  readonly existingCityTemplateKeys = computed(() =>
     new Set(
       [
-        ...this.atlases()
-        .map((atlas) => atlas.slug?.trim().toLowerCase())
-        .filter((slug): slug is string => !!slug),
-        ...this.publicCityTemplateSlugs(),
+        ...this.atlases().flatMap((atlas) => this.cityIdentityKeysForAtlas(atlas)),
+        ...this.publicCityTemplateKeys(),
       ],
     ),
   );
   readonly remainingCityTemplates = computed(() =>
-    this.cityTemplates.filter((template) => !this.existingCityTemplateSlugs().has(template.slug)),
+    this.cityTemplates.filter((template) => !this.cityTemplateExists(template)),
   );
   readonly customCityNamePreview = computed(() => {
     const draft = this.customCityDraft();
@@ -875,7 +882,8 @@ export class AtlasManageComponent {
   }
 
   cityTemplateExists(template: CityAtlasTemplate): boolean {
-    return this.existingCityTemplateSlugs().has(template.slug);
+    const existingKeys = this.existingCityTemplateKeys();
+    return this.cityIdentityKeysForTemplate(template).some((key) => existingKeys.has(key));
   }
 
   cityTemplateActionLabel(template: CityAtlasTemplate): string {
@@ -896,7 +904,7 @@ export class AtlasManageComponent {
     try {
       const atlasId = await this.atlasService.createCityAtlasFromTemplate(template);
       if (atlasId) {
-        this.publicCityTemplateSlugs.update((current) => new Set([...current, template.slug]));
+        this.publicCityTemplateKeys.update((current) => new Set([...current, ...this.cityIdentityKeysForTemplate(template)]));
         this.cityCreationMessage.set(`${template.name} is live with internet answers enabled.`);
       }
     } catch (error) {
@@ -907,15 +915,35 @@ export class AtlasManageComponent {
   }
 
   private async loadPublicCityTemplateSlugs(): Promise<void> {
-    const templateSlugs = new Set(this.cityTemplates.map((template) => template.slug));
+    const templateKeys = new Set(this.cityTemplates.flatMap((template) => this.cityIdentityKeysForTemplate(template)));
     try {
-      const publicSlugs = (await this.atlasService.listPublicAtlases())
-        .map((atlas) => atlas.slug?.trim().toLowerCase())
-        .filter((slug): slug is string => !!slug && templateSlugs.has(slug));
-      this.publicCityTemplateSlugs.set(new Set(publicSlugs));
+      const publicKeys = (await this.atlasService.listPublicAtlases())
+        .flatMap((atlas) => this.cityIdentityKeysForAtlas(atlas))
+        .filter((key) => templateKeys.has(key));
+      this.publicCityTemplateKeys.set(new Set(publicKeys));
     } catch {
-      this.publicCityTemplateSlugs.set(new Set());
+      this.publicCityTemplateKeys.set(new Set());
     }
+  }
+
+  private cityIdentityKeysForTemplate(template: CityAtlasTemplate): string[] {
+    return [
+      template.slug,
+      template.cityConfig.city_name,
+      template.name,
+    ]
+      .map((value) => normalizeAdminCityIdentity(value))
+      .filter(Boolean);
+  }
+
+  private cityIdentityKeysForAtlas(atlas: AtlasItem): string[] {
+    return [
+      atlas.slug,
+      atlas.city_config?.city_name,
+      atlas.name,
+    ]
+      .map((value) => normalizeAdminCityIdentity(value))
+      .filter(Boolean);
   }
 
   selectAtlas(atlasId: string): void {

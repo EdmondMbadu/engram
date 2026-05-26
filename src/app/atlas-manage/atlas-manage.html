@@ -200,15 +200,22 @@
                 Sources later: {{ template.sources }}
               </p>
             </div>
-            <button
-              type="button"
-              (click)="createCityAtlas(template)"
-              [disabled]="cityTemplateExists(template) || !!creatingCitySlug()"
-              class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:border-[var(--line)] disabled:bg-[var(--soft-fill)] disabled:text-[var(--muted)]"
-            >
-              <span class="material-symbols-outlined text-[1rem]">{{ cityTemplateExists(template) ? 'check_circle' : 'add_location_alt' }}</span>
-              <span>{{ cityTemplateActionLabel(template) }}</span>
-            </button>
+            @if (cityTemplateExists(template)) {
+              <span class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-black text-[var(--accent)]">
+                <span class="material-symbols-outlined text-[1rem]">check_circle</span>
+                <span>Created</span>
+              </span>
+            } @else {
+              <button
+                type="button"
+                (click)="createCityAtlas(template)"
+                [disabled]="!!creatingCitySlug()"
+                class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
+              >
+                <span class="material-symbols-outlined text-[1rem]">add_location_alt</span>
+                <span>{{ cityTemplateActionLabel(template) }}</span>
+              </button>
+            }
           </div>
         }
         </div>
@@ -388,6 +395,18 @@
                 <span>{{ isWikiOpen(atlas) ? 'Hide details' : 'Details' }}</span>
                 <span class="material-symbols-outlined text-[1rem]">{{ isWikiOpen(atlas) ? 'expand_less' : 'expand_more' }}</span>
               </button>
+              @if (isOwner(atlas)) {
+                <button
+                  type="button"
+                  (click)="deleteAtlas(atlas)"
+                  [disabled]="!canDelete(atlas) || deletingId() === atlas.id"
+                  class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-35"
+                  title="Delete is available for empty Wikis."
+                >
+                  <span class="material-symbols-outlined text-[1rem]">delete</span>
+                  <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete' }}</span>
+                </button>
+              }
             </div>
           </div>
 

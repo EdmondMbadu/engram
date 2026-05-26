@@ -36,6 +36,15 @@ export interface CustomCityAtlasInput {
   description?: string;
 }
 
+function normalizeCityIdentity(value: string | null | undefined): string {
+  return (value ?? '')
+    .toLowerCase()
+    .replace(/^my living wiki:\s*/i, '')
+    .replace(/\s*\(flagship\)\s*$/i, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 type PublicAtlasBySlugResponse = {
   atlas: Record<string, unknown> | null;
 };
@@ -255,13 +264,20 @@ export class AtlasService {
       throw new Error('City template is missing a slug.');
     }
 
-    const existingLocal = this.atlases().find((atlas) => atlas.slug?.trim().toLowerCase() === slug);
+    const cityName = template.cityConfig.city_name?.trim() || template.name;
+    const cityKey = normalizeCityIdentity(cityName);
+    const existingLocal = this.atlases().find((atlas) =>
+      atlas.slug?.trim().toLowerCase() === slug
+      || normalizeCityIdentity(atlas.city_config?.city_name) === cityKey
+      || normalizeCityIdentity(atlas.name) === cityKey
+      || normalizeCityIdentity(atlas.name) === slug,
+    );
     if (existingLocal) {
       this.setActive(existingLocal.id);
       throw new Error(`${template.name} already exists in this workspace.`);
     }
 
-    const existingPublic = await this.findAnyPublicAtlasBySlug(slug);
+    const existingPublic = await this.findAnyPublicCityAtlas(slug, cityKey);
     if (existingPublic) {
       throw new Error(`${template.name} is already live in the public directory.`);
     }
@@ -305,13 +321,19 @@ export class AtlasService {
       || `${cityName}'s practical local knowledge, civic updates, transit, culture, climate, jobs, food, neighborhoods, and public information.`;
     const timezone = input.timezone?.trim() || 'America/New_York';
 
-    const existingLocal = this.atlases().find((atlas) => atlas.slug?.trim().toLowerCase() === slug);
+    const cityKey = normalizeCityIdentity(cityName);
+    const existingLocal = this.atlases().find((atlas) =>
+      atlas.slug?.trim().toLowerCase() === slug
+      || normalizeCityIdentity(atlas.city_config?.city_name) === cityKey
+      || normalizeCityIdentity(atlas.name) === cityKey
+      || normalizeCityIdentity(atlas.name) === slug,
+    );
     if (existingLocal) {
       this.setActive(existingLocal.id);
       throw new Error(`${name} already exists in this workspace.`);
     }
 
-    const existingPublic = await this.findAnyPublicAtlasBySlug(slug);
+    const existingPublic = await this.findAnyPublicCityAtlas(slug, cityKey);
     if (existingPublic) {
       throw new Error(`${name} is already live in the public directory.`);
     }
@@ -445,6 +467,36 @@ export class AtlasService {
       id: atlasDoc.id,
       ...(atlasDoc.data() as Record<string, unknown>),
     });
+  }
+
+  private async findAnyPublicCityAtlas(slug: string, cityKey: string): Promise<AtlasItem | null> {
+    if (!this.firestore) {
+      return null;
+    }
+
+    const snap = await getDocs(
+      query(
+        collection(this.firestore, 'atlases'),
+        where('is_public', '==', true),
+      ),
+    );
+
+    for (const atlasDoc of snap.docs) {
+      const atlas = this.hydrateAtlas({
+        id: atlasDoc.id,
+        ...(atlasDoc.data() as Record<string, unknown>),
+      });
+      if (
+        atlas.slug?.trim().toLowerCase() === slug
+        || normalizeCityIdentity(atlas.city_config?.city_name) === cityKey
+        || normalizeCityIdentity(atlas.name) === cityKey
+        || normalizeCityIdentity(atlas.name) === slug
+      ) {
+        return atlas;
+      }
+    }
+
+    return null;
   }
 
   async uploadAtlasImage(
