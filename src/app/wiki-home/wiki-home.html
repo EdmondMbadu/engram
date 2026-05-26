@@ -87,8 +87,17 @@
                 <div class="border-b border-[var(--line)] px-4 py-4">
                   <p class="truncate text-sm font-bold text-[var(--text)]">{{ currentUserName() }}</p>
                   <p class="mt-0.5 truncate text-xs text-[var(--muted)]">{{ currentUserEmail() }}</p>
+                  @if (isPlatformAdmin()) {
+                    <span class="mt-2 inline-flex rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent)]">Admin</span>
+                  }
                 </div>
                 <div class="py-1.5">
+                  @if (isPlatformAdmin()) {
+                    <a routerLink="/admin/users" role="menuitem" class="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[var(--muted)] transition-colors duration-150 hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+                      <span class="material-symbols-outlined text-base">group</span>
+                      Admin users
+                    </a>
+                  }
                   <button type="button" role="menuitem" class="danger-action flex w-full items-center gap-3 px-4 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
                     <span class="material-symbols-outlined text-base">logout</span>
                     {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}

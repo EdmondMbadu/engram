@@ -21,8 +21,9 @@ import { AnswerCardComponent } from './answer-card/answer-card';
 import { AnswerQuizComponent } from './answer-quiz/answer-quiz';
 import { GreenJobsComponent } from './green-jobs/green-jobs';
 import { CityPulseAdminComponent } from './city-pulse-admin/city-pulse-admin';
+import { AdminUsersComponent } from './admin-users/admin-users';
 import { NotFoundComponent } from './not-found/not-found';
-import { authGuard, guestOnlyGuard } from './auth.guards';
+import { adminGuard, authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
   { path: '', component: PublicWikisComponent, title: 'Public Wikis | My living wiki' },
@@ -44,6 +45,7 @@ export const routes: Routes = [
   { path: 'wiki', component: WikiComponent, title: 'Wiki | My living wiki', canActivate: [authGuard] },
   { path: 'public-wikis', component: PublicWikisComponent, title: 'Public Wikis | My living wiki' },
   { path: 'atlases', component: AtlasManageComponent, title: 'Atlas Settings | My living wiki', canActivate: [authGuard] },
+  { path: 'admin/users', component: AdminUsersComponent, title: 'Users | My living wiki', canActivate: [adminGuard] },
   { path: 'atlases/:atlasId/persona', component: AtlasPersonaComponent, title: 'Wiki Voice | My living wiki', canActivate: [authGuard] },
   { path: 'atlas/:slug/green-jobs', component: GreenJobsComponent, title: 'Philly Green Jobs | My living wiki' },
   { path: 'atlas/:slug/worldometers', component: CityPulseAdminComponent, title: 'Worldometers Maintenance | My living wiki' },

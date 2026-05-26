@@ -95,6 +95,29 @@ type GoogleDriveImportPlan = {
   mode: 'download' | 'export';
 };
 
+function timestampToIso(value: unknown): string | null {
+  if (!value) {
+    return null;
+  }
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+  if (typeof value === 'string') {
+    return value;
+  }
+  if (typeof (value as { toDate?: unknown }).toDate === 'function') {
+    return (value as { toDate(): Date }).toDate().toISOString();
+  }
+  return null;
+}
+
+async function assertPlatformAdmin(userId: string): Promise<void> {
+  const snapshot = await db.collection('users').doc(userId).get();
+  if (!snapshot.exists || snapshot.data()?.role !== 'admin') {
+    throw new HttpsError('permission-denied', 'Platform admin access is required.');
+  }
+}
+
 type AtlasTextMessagingProvider = 'twilio' | 'vapi';
 
 type AtlasTextMessagingConfig = {
@@ -1600,6 +1623,45 @@ async function loadAtlasForAdminAccess(atlasId: string, userId: string) {
 
   return { atlasSnapshot, atlas: atlas ?? {} };
 }
+
+export const listPlatformUsers = onCall({ region: callableRegion, cors: true }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  await assertPlatformAdmin(request.auth.uid);
+
+  const snapshot = await db.collection('users').get();
+  const users = snapshot.docs
+    .map((userDoc) => {
+      const data = userDoc.data() as Record<string, unknown>;
+      return {
+        id: userDoc.id,
+        email: typeof data.email === 'string' ? data.email : null,
+        displayName: typeof data.displayName === 'string' ? data.displayName : null,
+        role: data.role === 'admin' ? 'admin' : 'user',
+        emailVerified: data.emailVerified === true,
+        providers: Array.isArray(data.providers)
+          ? data.providers.filter((provider): provider is string => typeof provider === 'string')
+          : [],
+        creationTime: timestampToIso(data.creationTime),
+        lastSignInTime: timestampToIso(data.lastSignInTime),
+        updatedAt: timestampToIso(data.updatedAt),
+      };
+    })
+    .sort((a, b) => {
+      const aTime = Date.parse(a.lastSignInTime ?? a.updatedAt ?? a.creationTime ?? '') || 0;
+      const bTime = Date.parse(b.lastSignInTime ?? b.updatedAt ?? b.creationTime ?? '') || 0;
+      if (aTime !== bTime) return bTime - aTime;
+      return (a.email ?? a.id).localeCompare(b.email ?? b.id);
+    });
+
+  return {
+    total: users.length,
+    admins: users.filter((user) => user.role === 'admin').length,
+    users,
+  };
+});
 
 export const addAtlasAdmin = onCall({ region: callableRegion, cors: true, secrets: [sendgridApiKey] }, async (request) => {
   if (!request.auth?.uid) {

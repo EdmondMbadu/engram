@@ -24,6 +24,7 @@ export class WikiHomeComponent {
   readonly isLoading = this.atlasService.isLoading;
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
+  readonly isPlatformAdmin = this.authService.isAdmin;
   readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 

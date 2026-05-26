@@ -27,6 +27,7 @@ import {
 } from 'firebase/auth';
 import {
   doc,
+  getDoc,
   getFirestore,
   serverTimestamp,
   setDoc,
@@ -53,11 +54,28 @@ export interface CreateAccountResult extends AuthResult {
   verificationEmailSent: boolean;
 }
 
+export type AuthUserRole = 'admin' | 'user';
+
+export interface AuthUserProfile {
+  id: string;
+  authUid: string;
+  email: string | null;
+  emailVerified: boolean;
+  displayName: string | null;
+  photoURL: string | null;
+  providers: string[];
+  role: AuthUserRole;
+  creationTime: string | null;
+  lastSignInTime: string | null;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   readonly user = signal<User | null>(null);
+  readonly profile = signal<AuthUserProfile | null>(null);
   readonly initialized = signal(false);
   readonly isAuthenticated = computed(() => this.user() !== null);
+  readonly isAdmin = computed(() => this.profile()?.role === 'admin');
   readonly uid = computed(() => this.user()?.uid ?? '');
   readonly emailVerified = computed(() => this.user()?.emailVerified ?? false);
   readonly needsEmailVerification = computed(() => {
@@ -111,10 +129,13 @@ export class AuthService {
       this.user.set(user);
 
       if (user) {
-        void this.syncUserProfile(user).catch(() => undefined);
+        void this.syncUserProfile(user)
+          .catch(() => undefined)
+          .finally(() => this.markReady());
+      } else {
+        this.profile.set(null);
+        this.markReady();
       }
-
-      this.markReady();
     });
   }
 
@@ -382,6 +403,32 @@ export class AuthService {
     };
 
     await setDoc(doc(firestore, 'users', user.uid), profile, { merge: true });
+    await this.loadUserProfile(user.uid);
+  }
+
+  private async loadUserProfile(userId: string): Promise<void> {
+    const firestore = this.requireFirestore();
+    const snapshot = await getDoc(doc(firestore, 'users', userId));
+    if (!snapshot.exists()) {
+      this.profile.set(null);
+      return;
+    }
+
+    const data = snapshot.data() as Record<string, unknown>;
+    this.profile.set({
+      id: String(data['id'] ?? snapshot.id),
+      authUid: String(data['authUid'] ?? snapshot.id),
+      email: typeof data['email'] === 'string' ? data['email'] : null,
+      emailVerified: data['emailVerified'] === true,
+      displayName: typeof data['displayName'] === 'string' ? data['displayName'] : null,
+      photoURL: typeof data['photoURL'] === 'string' ? data['photoURL'] : null,
+      providers: Array.isArray(data['providers'])
+        ? data['providers'].filter((provider): provider is string => typeof provider === 'string')
+        : [],
+      role: data['role'] === 'admin' ? 'admin' : 'user',
+      creationTime: typeof data['creationTime'] === 'string' ? data['creationTime'] : null,
+      lastSignInTime: typeof data['lastSignInTime'] === 'string' ? data['lastSignInTime'] : null,
+    });
   }
 
   private async sendVerificationEmail(

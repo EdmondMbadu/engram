@@ -46,3 +46,29 @@ export const guestOnlyGuard: CanActivateFn = async () => {
     ? router.createUrlTree(['/verify-email'])
     : router.createUrlTree(['/wikis']);
 };
+
+export const adminGuard: CanActivateFn = async (_route, state) => {
+  const platformId = inject(PLATFORM_ID);
+  if (!isPlatformBrowser(platformId)) {
+    return true;
+  }
+
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  await authService.waitForReady();
+
+  if (authService.isAuthenticated() && authService.needsEmailVerification()) {
+    await authService.refreshUser().catch(() => null);
+  }
+
+  if (!authService.isAuthenticated()) {
+    return router.createUrlTree(['/sign-in'], { queryParams: { redirectTo: state.url } });
+  }
+
+  if (authService.needsEmailVerification()) {
+    return router.createUrlTree(['/verify-email'], { queryParams: { redirectTo: state.url } });
+  }
+
+  return authService.isAdmin() ? true : router.createUrlTree(['/wikis']);
+};
