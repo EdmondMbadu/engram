@@ -292,7 +292,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return '';
     }
     const name = this.atlasService.displayName(atlas);
-    return name && name !== 'Select atlas' ? name : '';
+    if (!name || name === 'Select atlas') {
+      return '';
+    }
+    return name.replace(/^My living wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
   });
   readonly currentWikiVoicePhoneNumber = computed(() => this.currentWikiAtlas()?.public_voice_phone_number?.trim() || '');
   readonly currentWikiVoicePhoneHref = computed(() => {
