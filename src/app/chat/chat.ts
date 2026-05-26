@@ -556,7 +556,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   constructor() {
     void this.loadSidebarCityWikis();
 
-    effect(() => {
+    effect((onCleanup) => {
       const slug = this.routeSlug();
       if (!slug) {
         this.publicAtlas.set(null);
@@ -567,13 +567,34 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         return;
       }
 
+      this.publicAtlas.set(null);
       this.publicLookupDone.set(false);
       this.publicLoadError.set(null);
+      this.messages.set([]);
+      this.syncArtifactLinksFromMessages([]);
+      this.activeThreadId.set(null);
+      this.activeHistoryId.set(null);
+      let cancelled = false;
+      onCleanup(() => {
+        cancelled = true;
+      });
       void this.atlasService
         .getPublicAtlasBySlug(slug)
-        .then((atlas) => this.publicAtlas.set(atlas))
-        .catch(() => this.publicAtlas.set(null))
-        .finally(() => this.publicLookupDone.set(true));
+        .then((atlas) => {
+          if (!cancelled) {
+            this.publicAtlas.set(atlas);
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            this.publicAtlas.set(null);
+          }
+        })
+        .finally(() => {
+          if (!cancelled) {
+            this.publicLookupDone.set(true);
+          }
+        });
     });
 
     effect((onCleanup) => {
@@ -606,12 +627,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     });
 
     effect(() => {
-      if (!this.isPublicOwner()) {
+      if (!this.isPublicView()) {
         return;
       }
 
       const atlas = this.publicAtlas();
-      if (atlas?.id) {
+      if (atlas?.id && this.atlasService.canAdminAtlas(atlas)) {
         this.atlasService.setActive(atlas.id);
       }
     });

@@ -764,7 +764,7 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
     sources: presentation.sources,
     fallbackHeroUrl: presentation.fallbackHeroUrl,
     fallbackLogoUrl: presentation.fallbackLogoUrl,
-    link: slug === 'philly' ? '/chat' : `/chat/${slug}`,
+    link: `/chat/${slug}`,
     heroUrl: atlas.hero_url ?? presentation.fallbackHeroUrl ?? null,
     logoUrl: atlas.logo_url ?? presentation.fallbackLogoUrl ?? null,
     coverColor: atlas.cover_color ?? null,
