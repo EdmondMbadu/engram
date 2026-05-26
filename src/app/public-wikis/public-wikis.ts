@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
 import {
   buildPublicWikiLiveItem,
   COMING_SOON_PUBLIC_WIKIS,
+  removeCreatedPublicWikiPreviews,
   type PublicWikiCatalogItem,
   sortPublicAtlases,
 } from '../public-wiki-catalog';
@@ -31,15 +32,17 @@ export class PublicWikisComponent implements OnInit {
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
 
-  readonly comingSoonWikis = COMING_SOON_PUBLIC_WIKIS;
+  readonly comingSoonWikis = computed(() =>
+    removeCreatedPublicWikiPreviews(this.liveWikis(), COMING_SOON_PUBLIC_WIKIS),
+  );
 
   readonly publicWikis = computed(() => [
     ...this.liveWikis(),
-    ...this.comingSoonWikis,
+    ...this.comingSoonWikis(),
   ]);
 
   readonly liveCount = computed(() => this.liveWikis().length);
-  readonly comingSoonCount = this.comingSoonWikis.length;
+  readonly comingSoonCount = computed(() => this.comingSoonWikis().length);
 
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
 

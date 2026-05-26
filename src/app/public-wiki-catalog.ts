@@ -1,4 +1,5 @@
 import type { AtlasItem } from './atlas.models';
+import { CITY_ATLAS_TEMPLATES } from './city-atlas-templates';
 
 export type PublicWikiStatus = 'live' | 'coming-soon';
 export type PublicWikiPriority = 'high' | 'med' | 'low';
@@ -35,17 +36,24 @@ type PublicWikiPresentation = Pick<
   title?: string;
 };
 
+const CITY_PUBLIC_WIKI_PRESENTATION_BY_SLUG = Object.fromEntries(
+  CITY_ATLAS_TEMPLATES.map((template) => [
+    template.slug,
+    {
+      title: template.name,
+      subtitle: 'Cities & Regions',
+      category: 'Cities & Regions',
+      priority: template.priority,
+      badges: template.badges,
+      fallbackHeroUrl: template.heroUrl ?? undefined,
+      fallbackLogoUrl: template.logoUrl ?? undefined,
+      sources: template.sources,
+    } satisfies PublicWikiPresentation,
+  ]),
+) as Record<string, PublicWikiPresentation>;
+
 const PUBLIC_WIKI_PRESENTATION_BY_SLUG: Record<string, PublicWikiPresentation> = {
-  philly: {
-    title: 'My living wiki: Philly',
-    subtitle: 'Cities & Regions',
-    category: 'Cities & Regions',
-    priority: 'high',
-    badges: ['evergreen', 'geo'],
-    fallbackHeroUrl: '/assets/public-wikis/philly-hero.jpg',
-    fallbackLogoUrl: '/assets/public-wikis/philly-logo.png',
-    sources: 'OpenDataPhilly, DVRPC, PWD, PEA, EPA, Census Bureau, SBN, Green Philly, SEPTA',
-  },
+  ...CITY_PUBLIC_WIKI_PRESENTATION_BY_SLUG,
   'newworld-game': {
     subtitle: 'Platform Atlas',
     category: 'Culture & Entertainment',
@@ -143,6 +151,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   // ===== CLIMATE & SUSTAINABILITY =====
   {
     title: 'My living wiki: Philly (Flagship)',
+    slug: 'philly',
     subtitle: 'Climate & Sustainability',
     description:
       "The Delaware Valley's living institutional memory — 60+ sources of sustainability, economic, environmental justice, and green infrastructure data for the nine-county region.",
@@ -476,6 +485,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   // ===== CITIES & REGIONS =====
   {
     title: 'My living wiki: Boston',
+    slug: 'boston',
     subtitle: 'Cities & Regions',
     description:
       "Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.",
@@ -488,6 +498,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   },
   {
     title: 'My living wiki: Portland',
+    slug: 'portland',
     subtitle: 'Cities & Regions',
     description:
       "Portland's sustainability ecosystem — urban planning, transit, climate action, food systems, and the green economy of the Pacific Northwest.",
@@ -500,6 +511,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   },
   {
     title: 'My living wiki: Austin',
+    slug: 'austin',
     subtitle: 'Cities & Regions',
     description:
       "Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.",
@@ -511,6 +523,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   },
   {
     title: 'My living wiki: San Francisco',
+    slug: 'san-francisco',
     subtitle: 'Cities & Regions',
     description:
       "SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.",
@@ -522,6 +535,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   },
   {
     title: 'My living wiki: New York City',
+    slug: 'new-york-city',
     subtitle: 'Cities & Regions',
     description:
       "NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.",
@@ -706,6 +720,17 @@ function inferPresentation(atlas: AtlasItem): PublicWikiPresentation {
   if (title.includes('bookmaker')) {
     return PUBLIC_WIKI_PRESENTATION_BY_SLUG['bookmakers'];
   }
+  if (atlas.city_config?.enabled) {
+    return {
+      title: atlas.name?.trim() || undefined,
+      subtitle: 'Cities & Regions',
+      category: 'Cities & Regions',
+      priority: 'med',
+      badges: ['geo'],
+      fallbackLogoUrl: '/assets/image/living-cities.png',
+      sources: 'Internet-grounded city answers. Source bundles can be added later.',
+    };
+  }
   return {
     subtitle: 'Public Atlas',
     category: 'Public Atlases',
@@ -739,9 +764,29 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
     sources: presentation.sources,
     fallbackHeroUrl: presentation.fallbackHeroUrl,
     fallbackLogoUrl: presentation.fallbackLogoUrl,
-    link: '/chat',
+    link: slug === 'philly' ? '/chat' : `/chat/${slug}`,
     heroUrl: atlas.hero_url ?? presentation.fallbackHeroUrl ?? null,
     logoUrl: atlas.logo_url ?? presentation.fallbackLogoUrl ?? null,
     coverColor: atlas.cover_color ?? null,
   };
+}
+
+export function removeCreatedPublicWikiPreviews(
+  liveWikis: PublicWikiCatalogItem[],
+  previewWikis = COMING_SOON_PUBLIC_WIKIS,
+): PublicWikiCatalogItem[] {
+  const liveKeys = new Set(
+    liveWikis.flatMap((wiki) => [
+      wiki.slug?.trim().toLowerCase() || '',
+      wiki.title.trim().toLowerCase(),
+    ]).filter(Boolean),
+  );
+
+  return previewWikis.filter((wiki) => {
+    const slug = wiki.slug?.trim().toLowerCase();
+    if (slug && liveKeys.has(slug)) {
+      return false;
+    }
+    return !liveKeys.has(wiki.title.trim().toLowerCase());
+  });
 }

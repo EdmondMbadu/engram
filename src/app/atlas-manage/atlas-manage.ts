@@ -2,8 +2,9 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
-import { AtlasService } from '../atlas.service';
+import { AtlasService, type CustomCityAtlasInput } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { CITY_ATLAS_TEMPLATES, type CityAtlasTemplate } from '../city-atlas-templates';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 interface CityConfigDraft {
@@ -49,6 +50,14 @@ interface VoiceAgentDraft {
   vapi_assistant_id: string;
   webhook_token: string;
   tool_url: string;
+}
+
+interface CustomCityDraft {
+  city_name: string;
+  region_name: string;
+  timezone: string;
+  name: string;
+  description: string;
 }
 
 @Component({
@@ -100,10 +109,52 @@ export class AtlasManageComponent {
   readonly removingAdminKey = signal<string | null>(null);
   readonly openWikis = signal<Record<string, boolean>>({});
   readonly openSections = signal<Record<string, boolean>>({});
+  readonly cityLaunchOpen = signal(false);
+  readonly wikiListOpen = signal(false);
   readonly deletingId = signal<string | null>(null);
   readonly pageError = signal<string | null>(null);
+  readonly cityTemplates = CITY_ATLAS_TEMPLATES;
+  readonly creatingCitySlug = signal<string | null>(null);
+  readonly creatingCustomCity = signal(false);
+  readonly cityCreationMessage = signal<string | null>(null);
+  readonly publicCityTemplateSlugs = signal<Set<string>>(new Set());
+  readonly customCityDraft = signal<CustomCityDraft>({
+    city_name: '',
+    region_name: '',
+    timezone: 'America/New_York',
+    name: '',
+    description: '',
+  });
 
   readonly hasMultipleAtlases = computed(() => this.atlases().length > 1);
+  readonly existingCityTemplateSlugs = computed(() =>
+    new Set(
+      [
+        ...this.atlases()
+        .map((atlas) => atlas.slug?.trim().toLowerCase())
+        .filter((slug): slug is string => !!slug),
+        ...this.publicCityTemplateSlugs(),
+      ],
+    ),
+  );
+  readonly remainingCityTemplates = computed(() =>
+    this.cityTemplates.filter((template) => !this.existingCityTemplateSlugs().has(template.slug)),
+  );
+  readonly customCityNamePreview = computed(() => {
+    const draft = this.customCityDraft();
+    const explicitName = draft.name.trim();
+    if (explicitName) {
+      return explicitName;
+    }
+    const city = draft.city_name.trim();
+    return city ? `My living wiki: ${city}` : 'My living wiki: New City';
+  });
+  readonly customCitySlugPreview = computed(() =>
+    this.atlasService.slugify(this.customCityDraft().city_name.trim() || this.customCityNamePreview()),
+  );
+  readonly canCreateCustomCity = computed(() =>
+    !!this.customCityDraft().city_name.trim() && !this.creatingCustomCity() && !this.creatingCitySlug(),
+  );
   readonly weekdays = [
     { value: 0, label: 'Sunday' },
     { value: 1, label: 'Monday' },
@@ -115,6 +166,7 @@ export class AtlasManageComponent {
   ];
 
   constructor() {
+    void this.loadPublicCityTemplateSlugs();
     effect(() => {
       const atlases = this.atlases();
       void this.syncUsage(atlases);
@@ -771,6 +823,99 @@ export class AtlasManageComponent {
       config.timezone?.trim() || null,
     ].filter(Boolean);
     return parts.join(' • ');
+  }
+
+  toggleCityLaunch(): void {
+    this.cityLaunchOpen.update((open) => !open);
+  }
+
+  toggleWikiList(): void {
+    this.wikiListOpen.update((open) => !open);
+  }
+
+  updateCustomCityDraft<K extends keyof CustomCityDraft>(key: K, value: CustomCityDraft[K]): void {
+    this.customCityDraft.update((current) => ({ ...current, [key]: value }));
+  }
+
+  async createCustomCityAtlas(event: Event): Promise<void> {
+    event.preventDefault();
+    if (!this.canCreateCustomCity()) {
+      return;
+    }
+
+    const draft = this.customCityDraft();
+    const input: CustomCityAtlasInput = {
+      cityName: draft.city_name,
+      regionName: draft.region_name,
+      timezone: draft.timezone,
+      name: draft.name,
+      description: draft.description,
+    };
+
+    this.creatingCustomCity.set(true);
+    this.pageError.set(null);
+    this.cityCreationMessage.set(null);
+    try {
+      const atlasId = await this.atlasService.createCustomCityAtlas(input);
+      if (atlasId) {
+        this.cityCreationMessage.set(`${this.customCityNamePreview()} is live with internet answers enabled.`);
+        this.customCityDraft.set({
+          city_name: '',
+          region_name: '',
+          timezone: 'America/New_York',
+          name: '',
+          description: '',
+        });
+      }
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to create custom city Wiki.');
+    } finally {
+      this.creatingCustomCity.set(false);
+    }
+  }
+
+  cityTemplateExists(template: CityAtlasTemplate): boolean {
+    return this.existingCityTemplateSlugs().has(template.slug);
+  }
+
+  cityTemplateActionLabel(template: CityAtlasTemplate): string {
+    if (this.creatingCitySlug() === template.slug) {
+      return 'Creating...';
+    }
+    return this.cityTemplateExists(template) ? 'Created' : 'Create live city';
+  }
+
+  async createCityAtlas(template: CityAtlasTemplate): Promise<void> {
+    if (this.cityTemplateExists(template) || this.creatingCitySlug()) {
+      return;
+    }
+
+    this.creatingCitySlug.set(template.slug);
+    this.pageError.set(null);
+    this.cityCreationMessage.set(null);
+    try {
+      const atlasId = await this.atlasService.createCityAtlasFromTemplate(template);
+      if (atlasId) {
+        this.publicCityTemplateSlugs.update((current) => new Set([...current, template.slug]));
+        this.cityCreationMessage.set(`${template.name} is live with internet answers enabled.`);
+      }
+    } catch (error) {
+      this.pageError.set(error instanceof Error ? error.message : 'Failed to create city Wiki.');
+    } finally {
+      this.creatingCitySlug.set(null);
+    }
+  }
+
+  private async loadPublicCityTemplateSlugs(): Promise<void> {
+    const templateSlugs = new Set(this.cityTemplates.map((template) => template.slug));
+    try {
+      const publicSlugs = (await this.atlasService.listPublicAtlases())
+        .map((atlas) => atlas.slug?.trim().toLowerCase())
+        .filter((slug): slug is string => !!slug && templateSlugs.has(slug));
+      this.publicCityTemplateSlugs.set(new Set(publicSlugs));
+    } catch {
+      this.publicCityTemplateSlugs.set(new Set());
+    }
   }
 
   selectAtlas(atlasId: string): void {

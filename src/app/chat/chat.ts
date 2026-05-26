@@ -19,6 +19,7 @@ import { getPublicAppUrl } from '../firebase.config';
 import {
   buildPublicWikiLiveItem,
   COMING_SOON_PUBLIC_WIKIS,
+  removeCreatedPublicWikiPreviews,
   type PublicWikiCatalogItem,
   sortPublicAtlases,
 } from '../public-wiki-catalog';
@@ -2259,7 +2260,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       const liveWikis = sortPublicAtlases(await this.atlasService.listPublicAtlases())
         .map((atlas) => buildPublicWikiLiveItem(atlas))
         .filter((wiki) => wiki.category === CITY_WIKI_CATEGORY);
-      this.publicCityWikis.set([...liveWikis, ...comingSoon]);
+      this.publicCityWikis.set([
+        ...liveWikis,
+        ...removeCreatedPublicWikiPreviews(liveWikis, comingSoon),
+      ]);
     } catch {
       this.publicCityWikis.set(comingSoon);
     }

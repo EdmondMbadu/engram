@@ -22,9 +22,19 @@ import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
+import type { CityAtlasTemplate } from './city-atlas-templates';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
 const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
+const DEFAULT_CITY_LOGO_URL = '/assets/image/living-cities.png';
+
+export interface CustomCityAtlasInput {
+  name?: string;
+  cityName: string;
+  regionName?: string;
+  timezone?: string;
+  description?: string;
+}
 
 type PublicAtlasBySlugResponse = {
   atlas: Record<string, unknown> | null;
@@ -235,6 +245,121 @@ export class AtlasService {
     return ref.id;
   }
 
+  async createCityAtlasFromTemplate(template: CityAtlasTemplate): Promise<string | null> {
+    if (!this.firestore) return null;
+    const uid = this.authService.uid();
+    if (!uid) return null;
+
+    const slug = template.slug.trim().toLowerCase();
+    if (!slug) {
+      throw new Error('City template is missing a slug.');
+    }
+
+    const existingLocal = this.atlases().find((atlas) => atlas.slug?.trim().toLowerCase() === slug);
+    if (existingLocal) {
+      this.setActive(existingLocal.id);
+      throw new Error(`${template.name} already exists in this workspace.`);
+    }
+
+    const existingPublic = await this.findAnyPublicAtlasBySlug(slug);
+    if (existingPublic) {
+      throw new Error(`${template.name} is already live in the public directory.`);
+    }
+
+    const ref = await addDoc(collection(this.firestore, 'atlases'), {
+      user_id: uid,
+      name: template.name,
+      slug,
+      description: template.description,
+      landing_summary: template.landingSummary,
+      is_public: true,
+      logo_url: template.logoUrl,
+      hero_url: template.heroUrl,
+      video_url: null,
+      cover_color: template.coverColor,
+      default_answer_mode: 'internet',
+      city_config: template.cityConfig,
+      chat_guide: template.chatGuide,
+      persona_prompt: template.personaPrompt,
+      created_at: serverTimestamp(),
+      updated_at: serverTimestamp(),
+    });
+    this.setActive(ref.id);
+    return ref.id;
+  }
+
+  async createCustomCityAtlas(input: CustomCityAtlasInput): Promise<string | null> {
+    if (!this.firestore) return null;
+    const uid = this.authService.uid();
+    if (!uid) return null;
+
+    const cityName = input.cityName.trim();
+    if (!cityName) {
+      throw new Error('City name is required.');
+    }
+
+    const regionName = input.regionName?.trim() || null;
+    const name = input.name?.trim() || `My living wiki: ${cityName}`;
+    const slug = this.slugify(cityName);
+    const description = input.description?.trim()
+      || `${cityName}'s practical local knowledge, civic updates, transit, culture, climate, jobs, food, neighborhoods, and public information.`;
+    const timezone = input.timezone?.trim() || 'America/New_York';
+
+    const existingLocal = this.atlases().find((atlas) => atlas.slug?.trim().toLowerCase() === slug);
+    if (existingLocal) {
+      this.setActive(existingLocal.id);
+      throw new Error(`${name} already exists in this workspace.`);
+    }
+
+    const existingPublic = await this.findAnyPublicAtlasBySlug(slug);
+    if (existingPublic) {
+      throw new Error(`${name} is already live in the public directory.`);
+    }
+
+    const regionPhrase = regionName ? `${cityName}, ${regionName}` : cityName;
+    const ref = await addDoc(collection(this.firestore, 'atlases'), {
+      user_id: uid,
+      name,
+      slug,
+      description,
+      landing_summary: `A city-first guide for ${regionPhrase}, focused on practical local knowledge, neighborhoods, transit, civic life, culture, climate, jobs, food, and local updates.`,
+      is_public: true,
+      logo_url: DEFAULT_CITY_LOGO_URL,
+      hero_url: null,
+      video_url: null,
+      cover_color: '#255a61',
+      default_answer_mode: 'internet',
+      city_config: {
+        enabled: true,
+        city_name: cityName,
+        region_name: regionName,
+        country_code: 'US',
+        timezone,
+        census_state_code: null,
+        census_place_code: null,
+        airnow_zip_code: null,
+        manual_metrics: null,
+      } satisfies CityAtlasConfig,
+      chat_guide: {
+        name: `${cityName} Guide`,
+        label: `Ask about ${cityName} civic life, transit, culture, climate, jobs, food, neighborhoods, and local updates.`,
+        image_url: DEFAULT_CITY_LOGO_URL,
+        banner_url: null,
+      } satisfies AtlasChatGuideConfig,
+      persona_prompt: [
+        `You are the My living wiki guide for ${regionPhrase}.`,
+        `Speak with practical local confidence about ${cityName}, while staying source-aware and clear about uncertainty.`,
+        'Use live internet grounding by default because this city was created before source ingestion.',
+        'Keep answers concise, readable, energetic, and useful for residents, visitors, builders, researchers, and local operators.',
+        'Include tasteful local emojis when they make the answer feel more alive, but keep the facts precise.',
+      ].join(' '),
+      created_at: serverTimestamp(),
+      updated_at: serverTimestamp(),
+    });
+    this.setActive(ref.id);
+    return ref.id;
+  }
+
   async getPublicAtlasBySlug(slug: string): Promise<AtlasItem | null> {
     if (this.functions) {
       try {
@@ -296,6 +421,30 @@ export class AtlasService {
         ...(atlasDoc.data() as Record<string, unknown>),
       }),
     );
+  }
+
+  private async findAnyPublicAtlasBySlug(slug: string): Promise<AtlasItem | null> {
+    if (!this.firestore) {
+      return null;
+    }
+
+    const snap = await getDocs(
+      query(
+        collection(this.firestore, 'atlases'),
+        where('slug', '==', slug),
+        where('is_public', '==', true),
+        limit(1),
+      ),
+    );
+    const atlasDoc = snap.docs[0];
+    if (!atlasDoc) {
+      return null;
+    }
+
+    return this.hydrateAtlas({
+      id: atlasDoc.id,
+      ...(atlasDoc.data() as Record<string, unknown>),
+    });
   }
 
   async uploadAtlasImage(
