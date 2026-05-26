@@ -1,12 +1,12 @@
 <div class="flex h-screen overflow-hidden text-[var(--text)] bg-[var(--bg)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   <!-- SideNavBar -->
   <aside class="theme-sidebar hidden h-screen w-64 border-r md:flex flex-col py-6 px-4 shrink-0 font-display">
-    <div class="flex items-center px-2 mb-10">
+    <a routerLink="/" class="flex items-center px-2 mb-10">
       <div class="flex h-10 w-44 items-center justify-start">
         <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
       </div>
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] animate-pulse"></span>
-    </div>
+    </a>
     @if (!isPublicView()) {
       <app-atlas-switcher></app-atlas-switcher>
     }
@@ -173,9 +173,9 @@
 
       <div class="max-w-2xl w-full text-center z-10 animate-fade-up">
         <div class="mb-6 sm:mb-8 flex justify-center">
-          <div class="flex h-20 w-72 sm:h-28 sm:w-96 items-center justify-center">
+          <a routerLink="/" class="flex h-20 w-72 sm:h-28 sm:w-96 items-center justify-center">
             <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
-          </div>
+          </a>
         </div>
         <h1 class="text-4xl sm:text-7xl font-bold tracking-tighter text-[var(--text)] mb-2 leading-none">{{ pageTitle() }}</h1>
         <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-8 sm:mb-12">{{ isPublicView() ? 'Public access' : 'Cognitive Synchronization Active' }}</p>
