@@ -156,7 +156,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly isWorkspaceMode = computed(() => !this.isPublicView() || this.isPublicOwner());
   readonly isInternetMode = computed(() => this.answerMode() === 'internet');
   readonly isPublicVisitorMode = computed(() => this.isPublicView() && !this.isPublicOwner());
-  readonly canUseAnswerModeToggle = computed(() => this.isWorkspaceMode() || this.isPublicVisitorMode());
+  readonly canUseAnswerModeToggle = computed(() =>
+    (this.isWorkspaceMode() || this.isPublicVisitorMode()) && this.hasWikiDocuments(),
+  );
   readonly canStartFreshChat = computed(
     () => !this.publicNotFound() && (this.isWorkspaceMode() || this.isPublicVisitorMode()),
   );
@@ -309,6 +311,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       ? this.publicDocumentCount()
       : this.documentsService.stats().totalDocuments,
   );
+  readonly hasWikiDocuments = computed(() => this.currentWikiDocumentCount() > 0);
   readonly currentWikiArticleCount = computed(() => this.wikiService.articles().length);
   readonly currentWikiSourceCount = computed(() => this.currentWikiDocumentCount() + this.currentWikiArticleCount());
   readonly currentWikiSummary = computed(() => {
@@ -324,7 +327,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (this.canUseAnswerModeToggle()) {
       return this.isInternetMode() ? 'Internet mode' : 'My living wiki';
     }
-    return 'My living wiki · Public chat';
+    return 'Internet mode';
   });
   readonly emptyStateTitle = computed(() => {
     const name = this.currentWikiName();
@@ -341,6 +344,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return this.isInternetMode()
         ? 'Internet mode uses general web knowledge and current public sources, not just your uploaded material.'
         : this.currentWikiSummary();
+    }
+    if (!this.hasWikiDocuments()) {
+      return 'No source documents are attached yet, so answers use internet context and current public sources.';
     }
     if (this.showSignInCta()) {
       return 'You have used all 5 anonymous public questions for this atlas. Sign in to continue.';
@@ -360,7 +366,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return 'Sign in to continue asking grounded questions.';
     }
 
-    if (this.canUseAnswerModeToggle() && this.isInternetMode()) {
+    if (!this.hasWikiDocuments() || (this.canUseAnswerModeToggle() && this.isInternetMode())) {
       return 'Ask anything with full internet context and live public sources.';
     }
 
@@ -376,7 +382,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return 'You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.';
     }
 
-    if (this.canUseAnswerModeToggle() && this.isInternetMode()) {
+    if (!this.hasWikiDocuments() || (this.canUseAnswerModeToggle() && this.isInternetMode())) {
       return 'Internet mode is not limited to your documents. It uses public web sources and broader general knowledge.';
     }
 
@@ -397,7 +403,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return 'Anonymous session paused';
     }
 
-    if (this.canUseAnswerModeToggle() && this.isInternetMode()) {
+    if (!this.hasWikiDocuments() || (this.canUseAnswerModeToggle() && this.isInternetMode())) {
       return 'Internet mode enabled';
     }
 
@@ -405,6 +411,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return total === 1 ? '1 indexed source ready' : `${total} indexed sources ready`;
   });
   readonly composerHelperText = computed(() => {
+    if (!this.hasWikiDocuments()) {
+      return 'Internet mode searches the web because this Wiki does not have source documents yet.';
+    }
+
     if (this.canUseAnswerModeToggle()) {
       return this.isInternetMode()
         ? 'Internet mode searches the web and answers beyond your uploaded sources.'
@@ -641,7 +651,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       const atlas = this.currentWikiAtlas();
       const canUseToggle = this.canUseAnswerModeToggle();
       const hasActiveConversation = !!this.activeThreadId() || this.messages().length > 0;
-      if (!canUseToggle || !atlas?.id || hasActiveConversation) {
+      if (!atlas?.id || hasActiveConversation) {
+        return;
+      }
+
+      if (!canUseToggle) {
+        this.answerMode.set('internet');
         return;
       }
 
@@ -808,7 +823,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
     this.question.set('');
     queueMicrotask(() => this.autoGrowComposer());
-    const selectedAnswerMode = this.canUseAnswerModeToggle() ? this.answerMode() : 'wiki';
+    const selectedAnswerMode = this.canUseAnswerModeToggle() ? this.answerMode() : 'internet';
 
     const now = new Date();
     const userId = `u-${Date.now()}`;
@@ -1019,6 +1034,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   setAnswerMode(mode: 'wiki' | 'internet'): void {
     if (!this.canUseAnswerModeToggle()) {
+      this.answerMode.set('internet');
+      return;
+    }
+    if (mode === 'wiki' && !this.hasWikiDocuments()) {
+      this.answerMode.set('internet');
       return;
     }
     this.answerMode.set(mode);
@@ -2251,6 +2271,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   private syncAnswerModeFromMessages(messages: ChatMessage[]): void {
     if (!this.canUseAnswerModeToggle()) {
+      this.answerMode.set('internet');
       return;
     }
 

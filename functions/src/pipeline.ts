@@ -1412,21 +1412,49 @@ export async function runAtlasQuery(params: {
   timer.mark('entry_retrieval_ms');
 
   if (uniqueEntries.length === 0) {
+    const response = await answerWithGoogleSearch({
+      question: trimmedQuestion,
+      history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+      personaPrompt: atlasChatContext.personaPrompt,
+    });
+    timer.mark('internet_fallback_model_ms');
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
+      question: trimmedQuestion,
+      answer: response.answer,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
+    });
+    timer.mark('presentation_ms');
+
+    await recordChatThreadExchange({
+      threadId: thread.id,
+      userId: params.userId,
+      atlasId: params.atlasId,
+      answerMode: 'internet',
+      question: trimmedQuestion,
+      answer: response.answer,
+      citedPassages: [],
+      mappableLocations,
+      travelGuide,
+      knowledgeGap: false,
+      questionCountIncrement: 1,
+    });
+    timer.mark('record_ms');
     logger.info('Atlas query timing', {
-      answerMode: 'wiki',
-      source: 'knowledge_gap',
+      answerMode: 'internet',
+      source: 'wiki_gap_internet_fallback',
       totalMs: timer.totalMs(),
       ...timer.snapshot(),
     });
+
     return {
-      answer:
-        "This topic isn't in your knowledge base yet. Upload source material so My living wiki can answer it with citations.",
+      answer: response.answer,
       citedEntryIds: [],
       citedPassages: [],
-      mappableLocations: [],
-      travelGuide: null,
+      mappableLocations,
+      travelGuide,
       scopedTopicIds: topics.map((topic) => topic.id),
-      knowledgeGap: true,
+      knowledgeGap: false,
       threadId: thread.id,
     };
   }
@@ -1461,6 +1489,54 @@ export async function runAtlasQuery(params: {
       ? response.answer.trim()
       : 'I could not generate a reliable answer for this question from the current knowledge base.';
   const knowledgeGap = typeof response.knowledge_gap === 'boolean' ? response.knowledge_gap : citedEntryIds.length === 0;
+
+  if (knowledgeGap || citedEntryIds.length === 0) {
+    const fallbackResponse = await answerWithGoogleSearch({
+      question: trimmedQuestion,
+      history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+      personaPrompt: atlasChatContext.personaPrompt,
+    });
+    timer.mark('internet_fallback_model_ms');
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
+      question: trimmedQuestion,
+      answer: fallbackResponse.answer,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
+    });
+    timer.mark('presentation_ms');
+
+    await recordChatThreadExchange({
+      threadId: thread.id,
+      userId: params.userId,
+      atlasId: params.atlasId,
+      answerMode: 'internet',
+      question: trimmedQuestion,
+      answer: fallbackResponse.answer,
+      citedPassages: [],
+      mappableLocations,
+      travelGuide,
+      knowledgeGap: false,
+      questionCountIncrement: 1,
+    });
+    timer.mark('record_ms');
+    logger.info('Atlas query timing', {
+      answerMode: 'internet',
+      source: 'wiki_uncited_internet_fallback',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
+
+    return {
+      answer: fallbackResponse.answer,
+      citedEntryIds: [],
+      citedPassages: [],
+      mappableLocations,
+      travelGuide,
+      scopedTopicIds: topics.map((topic) => topic.id),
+      knowledgeGap: false,
+      threadId: thread.id,
+    };
+  }
   const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
     question: trimmedQuestion,
     answer: safeAnswer,
@@ -1828,48 +1904,151 @@ export async function runPublicAtlasQuery(params: {
   }
   timer.mark('entry_retrieval_ms');
 
-  let answer: string;
-  let citedEntryIds: string[];
-  let citedPassages: QueryCitationSnapshot[];
-  let knowledgeGap: boolean;
-
   if (uniqueEntries.length === 0) {
-    answer =
-      "This topic isn't in the current knowledge base yet. Sign in or ask the atlas owner to upload source material so My living wiki can answer it with citations.";
-    citedEntryIds = [];
-    citedPassages = [];
-    knowledgeGap = true;
-  } else {
-    const response = await answerQuestion({
+    const response = await answerWithGoogleSearch({
       question: trimmedQuestion,
       history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
-      entries: uniqueEntries.map((entry) => ({
-        id: entry.id,
-        claim: entry.claim,
-        topic: entry.topic,
-        source: entry.source,
-      })),
       personaPrompt: atlasChatContext.personaPrompt,
     });
-    timer.mark('knowledge_model_ms');
+    timer.mark('internet_fallback_model_ms');
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
+      question: trimmedQuestion,
+      answer: response.answer,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
+    });
+    timer.mark('presentation_ms');
 
-    citedEntryIds = (Array.isArray(response.cited_entry_ids) ? response.cited_entry_ids : []).filter((entryId) =>
-      uniqueEntries.some((entry) => entry.id === entryId),
-    );
-    citedPassages = await hydrateCitationSnapshots(
-      params.atlasOwnerUserId,
-      uniqueEntries,
-      citedEntryIds,
-    );
-    timer.mark('citation_hydration_ms');
-    answer =
-      typeof response.answer === 'string' && response.answer.trim().length > 0
-        ? response.answer.trim()
-        : 'I could not generate a reliable answer for this question from the current knowledge base.';
-    knowledgeGap =
-      typeof response.knowledge_gap === 'boolean'
-        ? response.knowledge_gap
-        : citedEntryIds.length === 0;
+    await recordPublicChatThreadExchange({
+      threadId: thread.id,
+      atlasId: params.atlasId,
+      atlasOwnerUserId: params.atlasOwnerUserId,
+      visitor: params.visitor,
+      answerMode: 'internet',
+      question: trimmedQuestion,
+      answer: response.answer,
+      citedPassages: [],
+      mappableLocations,
+      travelGuide,
+      knowledgeGap: false,
+      questionCountIncrement: 1,
+    });
+    timer.mark('record_ms');
+
+    const questionCount = questionCountBeforeAsk + 1;
+    const remainingQuestions =
+      questionLimit === null ? null : Math.max(0, questionLimit - questionCount);
+    logger.info('Public atlas query timing', {
+      answerMode: 'internet',
+      source: 'wiki_gap_internet_fallback',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
+
+    return {
+      blocked: false,
+      answer: response.answer,
+      citedEntryIds: [],
+      citedPassages: [],
+      mappableLocations,
+      travelGuide,
+      scopedTopicIds: topics.map((topic) => topic.id),
+      knowledgeGap: false,
+      threadId: thread.id,
+      questionCount,
+      questionLimit,
+      remainingQuestions,
+      requiresSignIn: questionLimit !== null && remainingQuestions !== null && remainingQuestions <= 0,
+    };
+  }
+
+  const response = await answerQuestion({
+    question: trimmedQuestion,
+    history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+    entries: uniqueEntries.map((entry) => ({
+      id: entry.id,
+      claim: entry.claim,
+      topic: entry.topic,
+      source: entry.source,
+    })),
+    personaPrompt: atlasChatContext.personaPrompt,
+  });
+  timer.mark('knowledge_model_ms');
+
+  const citedEntryIds = (Array.isArray(response.cited_entry_ids) ? response.cited_entry_ids : []).filter((entryId) =>
+    uniqueEntries.some((entry) => entry.id === entryId),
+  );
+  const citedPassages = await hydrateCitationSnapshots(
+    params.atlasOwnerUserId,
+    uniqueEntries,
+    citedEntryIds,
+  );
+  timer.mark('citation_hydration_ms');
+  const answer =
+    typeof response.answer === 'string' && response.answer.trim().length > 0
+      ? response.answer.trim()
+      : 'I could not generate a reliable answer for this question from the current knowledge base.';
+  const knowledgeGap =
+    typeof response.knowledge_gap === 'boolean'
+      ? response.knowledge_gap
+      : citedEntryIds.length === 0;
+
+  if (knowledgeGap || citedEntryIds.length === 0) {
+    const fallbackResponse = await answerWithGoogleSearch({
+      question: trimmedQuestion,
+      history: threadHistory.map((message) => ({ role: message.role, text: message.text })),
+      personaPrompt: atlasChatContext.personaPrompt,
+    });
+    timer.mark('internet_fallback_model_ms');
+    const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
+      question: trimmedQuestion,
+      answer: fallbackResponse.answer,
+      atlasName: atlasChatContext.atlasName,
+      cityHint: atlasChatContext.cityHint,
+    });
+    timer.mark('presentation_ms');
+
+    await recordPublicChatThreadExchange({
+      threadId: thread.id,
+      atlasId: params.atlasId,
+      atlasOwnerUserId: params.atlasOwnerUserId,
+      visitor: params.visitor,
+      answerMode: 'internet',
+      question: trimmedQuestion,
+      answer: fallbackResponse.answer,
+      citedPassages: [],
+      mappableLocations,
+      travelGuide,
+      knowledgeGap: false,
+      questionCountIncrement: 1,
+    });
+    timer.mark('record_ms');
+
+    const questionCount = questionCountBeforeAsk + 1;
+    const remainingQuestions =
+      questionLimit === null ? null : Math.max(0, questionLimit - questionCount);
+    logger.info('Public atlas query timing', {
+      answerMode: 'internet',
+      source: 'wiki_uncited_internet_fallback',
+      totalMs: timer.totalMs(),
+      ...timer.snapshot(),
+    });
+
+    return {
+      blocked: false,
+      answer: fallbackResponse.answer,
+      citedEntryIds: [],
+      citedPassages: [],
+      mappableLocations,
+      travelGuide,
+      scopedTopicIds: topics.map((topic) => topic.id),
+      knowledgeGap: false,
+      threadId: thread.id,
+      questionCount,
+      questionLimit,
+      remainingQuestions,
+      requiresSignIn: questionLimit !== null && remainingQuestions !== null && remainingQuestions <= 0,
+    };
   }
 
   const { mappableLocations, travelGuide } = buildFastAnswerPresentation({
