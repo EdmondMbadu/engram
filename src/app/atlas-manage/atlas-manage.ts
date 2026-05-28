@@ -69,6 +69,15 @@ interface BulkCityDraft extends CustomCityDraft {
   create_error: string | null;
 }
 
+interface BulkCityProgress {
+  total: number;
+  processed: number;
+  created: number;
+  failed: number;
+  skipped: number;
+  started_at_ms: number;
+}
+
 function normalizeAdminCityIdentity(value: string | null | undefined): string {
   return (value ?? '')
     .toLowerCase()
@@ -185,12 +194,14 @@ export class AtlasManageComponent {
   readonly creatingCitySlug = signal<string | null>(null);
   readonly creatingCustomCity = signal(false);
   readonly creatingBulkCities = signal(false);
-  readonly bulkCityProgress = signal<{ total: number; processed: number; created: number; failed: number; skipped: number } | null>(null);
+  readonly bulkCityProgress = signal<BulkCityProgress | null>(null);
+  readonly bulkCityEtaNowMs = signal(Date.now());
   readonly cityCreationMessage = signal<string | null>(null);
   readonly bulkCityFileName = signal<string | null>(null);
   readonly bulkCityRows = signal<BulkCityDraft[]>([]);
   readonly bulkCityError = signal<string | null>(null);
   readonly publicCityTemplateKeys = signal<Set<string>>(new Set());
+  private bulkCityEtaTimer: number | null = null;
   readonly customCityDraft = signal<CustomCityDraft>({
     city_name: '',
     region_name: '',
@@ -249,6 +260,25 @@ export class AtlasManageComponent {
       return 0;
     }
     return Math.min(100, Math.round((progress.processed / progress.total) * 100));
+  });
+  readonly bulkCityEtaLabel = computed(() => {
+    const progress = this.bulkCityProgress();
+    if (!progress || progress.total <= 0) {
+      return null;
+    }
+
+    const remainingRows = Math.max(0, progress.total - progress.processed);
+    if (!this.creatingBulkCities()) {
+      return remainingRows > 0 ? 'Retry available' : 'Done';
+    }
+    if (progress.processed <= 0) {
+      return 'Estimating...';
+    }
+
+    const elapsedMs = Math.max(1, this.bulkCityEtaNowMs() - progress.started_at_ms);
+    const averageMsPerRow = elapsedMs / progress.processed;
+    const remainingSeconds = Math.ceil((averageMsPerRow * remainingRows) / 1000);
+    return `${this.formatDuration(remainingSeconds)} remaining`;
   });
   readonly weekdays = [
     { value: 0, label: 'Sunday' },
@@ -1029,6 +1059,7 @@ export class AtlasManageComponent {
     this.bulkCityRows.set([]);
     this.bulkCityError.set(null);
     this.bulkCityProgress.set(null);
+    this.stopBulkCityEtaTimer();
   }
 
   async createBulkCityAtlases(): Promise<void> {
@@ -1042,13 +1073,17 @@ export class AtlasManageComponent {
     this.pageError.set(null);
     this.bulkCityError.set(null);
     this.cityCreationMessage.set(null);
+    const startedAtMs = Date.now();
+    this.bulkCityEtaNowMs.set(startedAtMs);
     this.bulkCityProgress.set({
       total: rows.length,
       processed: 0,
       created: 0,
       failed: 0,
       skipped: 0,
+      started_at_ms: startedAtMs,
     });
+    this.startBulkCityEtaTimer();
 
     let createdCount = 0;
     let alreadyCreatedCount = 0;
@@ -1116,6 +1151,7 @@ export class AtlasManageComponent {
       }
     } finally {
       this.creatingBulkCities.set(false);
+      this.stopBulkCityEtaTimer();
     }
   }
 
@@ -1253,6 +1289,35 @@ export class AtlasManageComponent {
 
   private wait(ms: number): Promise<void> {
     return new Promise((resolve) => window.setTimeout(resolve, ms));
+  }
+
+  private startBulkCityEtaTimer(): void {
+    this.stopBulkCityEtaTimer();
+    this.bulkCityEtaTimer = window.setInterval(() => {
+      this.bulkCityEtaNowMs.set(Date.now());
+    }, 1000);
+  }
+
+  private stopBulkCityEtaTimer(): void {
+    if (this.bulkCityEtaTimer === null) {
+      return;
+    }
+    window.clearInterval(this.bulkCityEtaTimer);
+    this.bulkCityEtaTimer = null;
+    this.bulkCityEtaNowMs.set(Date.now());
+  }
+
+  private formatDuration(totalSeconds: number): string {
+    if (totalSeconds <= 0) {
+      return '0 sec';
+    }
+    if (totalSeconds < 60) {
+      return `${totalSeconds} sec`;
+    }
+
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return seconds ? `${minutes} min ${seconds} sec` : `${minutes} min`;
   }
 
   cityTemplateExists(template: CityAtlasTemplate): boolean {

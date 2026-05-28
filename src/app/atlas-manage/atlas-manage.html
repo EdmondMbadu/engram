@@ -241,10 +241,10 @@
 	              </div>
 	              @if (bulkCityProgress()) {
 	                <div class="border-b border-[var(--line)] px-4 py-3">
-	                  <div class="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
-	                    <span>Bulk import progress</span>
-	                    <span>{{ bulkCityProgressPercent() }}%</span>
-	                  </div>
+		                  <div class="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+		                    <span>Bulk import progress</span>
+		                    <span>{{ bulkCityProgressPercent() }}% · {{ bulkCityEtaLabel() }}</span>
+		                  </div>
 	                  <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--soft-fill)]">
 	                    <div
 	                      class="h-full rounded-full bg-[var(--accent)] transition-all duration-300"
