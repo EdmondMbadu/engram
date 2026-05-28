@@ -3363,7 +3363,8 @@ function normalizeShareUrl(value: unknown): string | null {
 }
 
 async function loadSourceAssistantMessage(params: {
-  uid: string;
+  uid: string | null;
+  anonymousVisitorId?: string | null;
   sourceMessageKind: 'workspace' | 'public' | null;
   sourceMessageId: string | null;
   threadId: string | null;
@@ -3384,9 +3385,10 @@ async function loadSourceAssistantMessage(params: {
       return false;
     }
     if (sourceKind === 'public') {
-      return data.visitor_uid === params.uid;
+      return (!!params.uid && data.visitor_uid === params.uid) ||
+        (!!params.anonymousVisitorId && data.anonymous_visitor_id === params.anonymousVisitorId);
     }
-    return data.user_id === params.uid;
+    return !!params.uid && data.user_id === params.uid;
   };
 
   if (params.sourceMessageId) {
@@ -3416,7 +3418,7 @@ async function loadSourceAssistantMessage(params: {
 }
 
 async function loadExistingAnswerCardForSource(params: {
-  uid: string;
+  uid: string | null;
   threadId: string | null;
   answer: string;
 }): Promise<{ id: string; data: Record<string, unknown> } | null> {
@@ -3622,7 +3624,7 @@ async function loadQuizLeaderboard(quizId: string): Promise<unknown[]> {
     .map((item, index) => ({ ...(item as Record<string, unknown>), rank: index + 1 }));
 }
 
-async function loadAnswerCardAtlas(atlasId: string | null, uid: string): Promise<Record<string, unknown> | null> {
+async function loadAnswerCardAtlas(atlasId: string | null, uid: string | null): Promise<Record<string, unknown> | null> {
   if (!atlasId) {
     return null;
   }
@@ -3633,7 +3635,7 @@ async function loadAnswerCardAtlas(atlasId: string | null, uid: string): Promise
   }
 
   const atlas = atlasSnapshot.data() as Record<string, unknown> | undefined;
-  const isOwner = String(atlas?.user_id ?? '') === uid;
+  const isOwner = !!uid && String(atlas?.user_id ?? '') === uid;
   const isPublic = atlas?.is_public === true;
   if (!isOwner && !isPublic) {
     throw new HttpsError('permission-denied', 'You do not have access to this atlas.');
@@ -4024,10 +4026,6 @@ export const createAnswerCard = onCall(
     secrets: [geminiApiKey],
   },
   async (request) => {
-    if (!request.auth?.uid) {
-      throw new HttpsError('unauthenticated', 'Authentication is required.');
-    }
-
     const question = String(request.data?.question ?? '').replace(/\s+/g, ' ').trim();
     const answer = String(request.data?.answer ?? '').trim();
     if (!question) {
@@ -4037,8 +4035,15 @@ export const createAnswerCard = onCall(
       throw new HttpsError('invalid-argument', 'answer is required.');
     }
 
+    const requesterUid = request.auth?.uid ?? null;
+    const anonymousVisitorId = normalizeAnonymousVisitorId(request.data?.anonymousVisitorId);
+    const sourceMessageKind = normalizeSourceMessageKind(request.data?.sourceMessageKind);
+    if (!requesterUid && (!anonymousVisitorId || sourceMessageKind !== 'public')) {
+      throw new HttpsError('unauthenticated', 'Authentication or a public anonymous visitor session is required.');
+    }
+
     const atlasId = normalizeAtlasId(request.data?.atlasId);
-    const atlas = await loadAnswerCardAtlas(atlasId, request.auth.uid);
+    const atlas = await loadAnswerCardAtlas(atlasId, requesterUid);
     const atlasName = typeof atlas?.name === 'string' ? atlas.name : null;
     const cityConfig = atlas?.city_config && typeof atlas.city_config === 'object'
       ? atlas.city_config as Record<string, unknown>
@@ -4051,10 +4056,10 @@ export const createAnswerCard = onCall(
       ? request.data.threadId.trim().slice(0, 160)
       : null;
     const answerMode = request.data?.answerMode === 'internet' ? 'internet' : request.data?.answerMode === 'wiki' ? 'wiki' : null;
-    const sourceMessageKind = normalizeSourceMessageKind(request.data?.sourceMessageKind);
     const sourceMessageId = normalizeOptionalSourceMessageId(request.data?.sourceMessageId);
     const sourceMessage = await loadSourceAssistantMessage({
-      uid: request.auth.uid,
+      uid: requesterUid,
+      anonymousVisitorId,
       sourceMessageKind,
       sourceMessageId,
       threadId,
@@ -4072,7 +4077,7 @@ export const createAnswerCard = onCall(
     }
 
     const existingSourceCard = await loadExistingAnswerCardForSource({
-      uid: request.auth.uid,
+      uid: requesterUid,
       threadId,
       answer,
     });
@@ -4107,7 +4112,7 @@ export const createAnswerCard = onCall(
         locations,
       });
       const record: AnswerCardRecord = {
-        owner_user_id: request.auth.uid,
+        owner_user_id: requesterUid,
         atlas_id: atlasId,
         atlas_name: atlasName,
         question: question.slice(0, 2000),
@@ -4297,6 +4302,7 @@ export const createAnswerQuiz = onCall(
       if (messageKind && messageId) {
         const sourceMessage = await loadSourceAssistantMessage({
           uid: request.auth.uid,
+          anonymousVisitorId: null,
           sourceMessageKind: messageKind,
           sourceMessageId: messageId,
           threadId: typeof card.source_thread_id === 'string' ? card.source_thread_id : null,
@@ -4362,6 +4368,7 @@ export const createAnswerQuiz = onCall(
     if (messageKind && messageId) {
       const sourceMessage = await loadSourceAssistantMessage({
         uid: request.auth.uid,
+        anonymousVisitorId: null,
         sourceMessageKind: messageKind,
         sourceMessageId: messageId,
         threadId: typeof card.source_thread_id === 'string' ? card.source_thread_id : null,

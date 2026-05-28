@@ -1623,11 +1623,18 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   canCreateAnswerCard(message: ChatMessage): boolean {
-    return message.role === 'assistant' && !message.pending && !!message.text.trim() && this.isSignedIn();
+    return message.role === 'assistant' &&
+      !message.pending &&
+      !!message.text.trim() &&
+      (this.isSignedIn() || this.isAnonymousPublicVisitor());
   }
 
   canShowAnswerCardAction(message: ChatMessage): boolean {
     return message.role === 'assistant' && !message.pending && !!message.text.trim();
+  }
+
+  canCreateAnswerQuiz(message: ChatMessage): boolean {
+    return this.canShowAnswerCardAction(message) && this.isSignedIn();
   }
 
   async createAnswerCardForMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
@@ -1644,7 +1651,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   async createQuizForMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
     event?.stopPropagation();
-    if (!this.canCreateAnswerCard(message) || this.creatingQuizId() || this.creatingAnswerCardId()) {
+    if (!this.canCreateAnswerQuiz(message) || this.creatingQuizId() || this.creatingAnswerCardId()) {
       return;
     }
 
@@ -1711,6 +1718,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         sourceMessageKind: this.sourceMessageKind(),
         answerMode: message.answerMode ?? this.answerMode(),
         mappableLocations: message.mappableLocations ?? [],
+        anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
       });
       this.answerCardLinks.update((links) => ({
         ...links,

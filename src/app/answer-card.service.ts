@@ -13,6 +13,7 @@ export interface CreateAnswerCardInput {
   sourceMessageKind?: 'workspace' | 'public' | null;
   answerMode?: 'wiki' | 'internet' | null;
   mappableLocations?: MappableLocation[];
+  anonymousVisitorId?: string | null;
 }
 
 export interface CreateTravelCardShareInput {
@@ -43,6 +44,7 @@ export class AnswerCardService {
       sourceMessageKind: input.sourceMessageKind ?? null,
       answerMode: input.answerMode ?? null,
       mappableLocations: input.mappableLocations ?? [],
+      anonymousVisitorId: input.anonymousVisitorId ?? null,
     });
     return this.hydrateCard((result.data as { card?: unknown }).card);
   }
