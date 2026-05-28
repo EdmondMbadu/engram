@@ -25,6 +25,12 @@ interface SharedChatMessage {
   createdAt?: { toDate(): Date } | Date | null;
 }
 
+interface SharePageModal {
+  title: string;
+  subtitle: string;
+  url: string;
+}
+
 @Component({
   selector: 'app-shared-chat',
   imports: [RouterLink, ThemeToggleComponent, ChatLocationMapComponent],
@@ -52,6 +58,7 @@ export class SharedChatComponent {
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
   readonly sharingTravelCardId = signal<string | null>(null);
+  readonly sharePageModal = signal<SharePageModal | null>(null);
   readonly creatingAnswerCardId = signal<string | null>(null);
   readonly answerCardLinks = signal<Record<string, string>>({});
   readonly answerCardErrorMessageId = signal<string | null>(null);
@@ -270,7 +277,11 @@ export class SharedChatComponent {
         threadId: this.threadId(),
         sourceMessageId: message?.id ?? null,
       });
-      await this.copyText(target, share.url);
+      this.sharePageModal.set({
+        title: card.title,
+        subtitle: 'This individual card now has its own public share page.',
+        url: share.url,
+      });
     } catch {
       await this.copyText(target, this.buildTravelCardShareText(card));
     } finally {
@@ -285,7 +296,11 @@ export class SharedChatComponent {
 
     const existingCardId = message.answerCardId ?? this.cardIdFromLink(this.answerCardLinks()[message.id]);
     if (existingCardId) {
-      await this.copyText(`share-guide:${message.id}`, this.buildAnswerCardShareUrl(existingCardId));
+      this.sharePageModal.set({
+        title: message.travelGuide?.title || 'Share the full guide card',
+        subtitle: 'This opens the full Answer Card share page with social preview metadata.',
+        url: this.buildAnswerCardShareUrl(existingCardId),
+      });
       return;
     }
 
@@ -309,13 +324,37 @@ export class SharedChatComponent {
       this.messages.update((messages) =>
         messages.map((item) => item.id === message.id ? { ...item, answerCardId: card.id } : item),
       );
-      await this.copyText(`share-guide:${message.id}`, this.buildAnswerCardShareUrl(card.id));
+      this.sharePageModal.set({
+        title: message.travelGuide?.title || 'Share the full guide card',
+        subtitle: 'This opens the full Answer Card share page with social preview metadata.',
+        url: this.buildAnswerCardShareUrl(card.id),
+      });
     } catch (error) {
       this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create answer card.');
       this.answerCardErrorMessageId.set(message.id);
     } finally {
       this.creatingAnswerCardId.set(null);
     }
+  }
+
+  closeSharePageModal(): void {
+    this.sharePageModal.set(null);
+  }
+
+  async copySharePageModalUrl(): Promise<void> {
+    const modal = this.sharePageModal();
+    if (!modal) {
+      return;
+    }
+    await this.copyText('share-page-modal', modal.url);
+  }
+
+  openSharePageModalUrl(): void {
+    const modal = this.sharePageModal();
+    if (!modal || typeof window === 'undefined') {
+      return;
+    }
+    window.open(modal.url, '_blank', 'noopener,noreferrer');
   }
 
   canShowAnswerCardAction(message: SharedChatMessage): boolean {

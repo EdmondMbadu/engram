@@ -7,6 +7,7 @@ import { AnswerQuizService } from '../answer-quiz.service';
 import { AuthService } from '../auth.service';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { getPublicAppUrl } from '../firebase.config';
 
 @Component({
   selector: 'app-answer-card',
@@ -40,7 +41,8 @@ export class AnswerCardComponent {
       return '';
     }
     if (this.isBrowser) {
-      return `${window.location.origin}/share/answer-card/${card.id}`;
+      const baseUrl = getPublicAppUrl() || window.location.origin;
+      return `${baseUrl}/share/answer-card/${card.id}`;
     }
     return `/share/answer-card/${card.id}`;
   });
@@ -66,6 +68,14 @@ export class AnswerCardComponent {
     this.shareFeedback.set('Link copied');
     setTimeout(() => this.copied.set(false), 1400);
     setTimeout(() => this.shareFeedback.set(null), 1800);
+  }
+
+  openSharePage(): void {
+    const url = this.shareUrl();
+    if (!url || !this.isBrowser) {
+      return;
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   downloadStoryCard(): void {

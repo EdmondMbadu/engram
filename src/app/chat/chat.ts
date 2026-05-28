@@ -49,6 +49,12 @@ interface PromptSuggestion {
   icon: string;
 }
 
+interface SharePageModal {
+  title: string;
+  subtitle: string;
+  url: string;
+}
+
 const THINKING_STAGES = [
   'Searching knowledge base',
   'Reading relevant entries',
@@ -125,6 +131,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
   readonly sharingTravelCardId = signal<string | null>(null);
+  readonly sharePageModal = signal<SharePageModal | null>(null);
   readonly publicAtlas = signal<AtlasItem | null>(null);
   readonly publicLookupDone = signal(false);
   readonly publicChatLoading = signal(false);
@@ -1323,7 +1330,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         threadId: this.activeThreadId(),
         sourceMessageId: message?.id ?? null,
       });
-      await this.copyText(target, share.url);
+      this.sharePageModal.set({
+        title: card.title,
+        subtitle: 'This individual card now has its own public share page.',
+        url: share.url,
+      });
     } catch {
       await this.copyText(target, this.buildTravelCardShareText(card));
     } finally {
@@ -1341,7 +1352,31 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (!cardId) {
       return;
     }
-    await this.copyText(`share-guide:${message.id}`, this.buildAnswerCardShareUrl(cardId));
+    this.sharePageModal.set({
+      title: message.travelGuide?.title || 'Share the full guide card',
+      subtitle: 'This opens the full Answer Card share page with social preview metadata.',
+      url: this.buildAnswerCardShareUrl(cardId),
+    });
+  }
+
+  closeSharePageModal(): void {
+    this.sharePageModal.set(null);
+  }
+
+  async copySharePageModalUrl(): Promise<void> {
+    const modal = this.sharePageModal();
+    if (!modal) {
+      return;
+    }
+    await this.copyText('share-page-modal', modal.url);
+  }
+
+  openSharePageModalUrl(): void {
+    const modal = this.sharePageModal();
+    if (!modal || typeof window === 'undefined') {
+      return;
+    }
+    window.open(modal.url, '_blank', 'noopener,noreferrer');
   }
 
   formatRelativeDateShort(value: { toDate(): Date } | Date | null | undefined): string {
