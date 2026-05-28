@@ -282,9 +282,11 @@
 	                            <span class="inline-flex rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--error-text)]">{{ row.errors.join(', ') }}</span>
 	                          } @else if (row.create_status === 'creating') {
 	                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Creating</span>
-	                          } @else if (row.create_status === 'created') {
-	                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Created</span>
-	                          } @else if (row.create_status === 'failed') {
+		                          } @else if (row.create_status === 'created') {
+		                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Created</span>
+		                          } @else if (row.create_status === 'skipped') {
+		                            <span class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">Already created</span>
+		                          } @else if (row.create_status === 'failed') {
 	                            <span class="inline-flex max-w-[16rem] rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--error-text)]">Failed: {{ row.create_error || 'Retry available' }}</span>
 	                          } @else if (row.duplicate) {
 	                            <span class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">Duplicate / created</span>
