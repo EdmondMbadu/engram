@@ -69,10 +69,11 @@ export class PublicWikisComponent implements OnInit {
       const haystack = [
         wiki.title,
         wiki.subtitle,
-        wiki.description,
-        wiki.category ?? '',
-        wiki.sources ?? '',
-        ...(wiki.badges ?? []),
+	        wiki.description,
+	        wiki.category ?? '',
+	        wiki.sources ?? '',
+	        wiki.countryLabel ?? '',
+	        ...(wiki.badges ?? []),
       ]
         .join(' ')
         .toLowerCase();
@@ -84,10 +85,13 @@ export class PublicWikisComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.isLoadingLiveWikis.set(true);
 
-    try {
-      const atlases = await this.atlasService.listPublicAtlases();
-      const liveWikis = sortPublicAtlases(atlases).map((atlas) => buildPublicWikiLiveItem(atlas));
-      this.liveWikis.set(liveWikis);
+	    try {
+	      const atlases = await this.atlasService.listPublicAtlases();
+	      const liveWikis = sortPublicAtlases(atlases).map((atlas) => ({
+	        ...buildPublicWikiLiveItem(atlas),
+	        countryLabel: this.atlasService.cityCountryLabel(atlas),
+	      }));
+	      this.liveWikis.set(liveWikis);
     } catch {
       this.liveWikis.set([]);
     } finally {

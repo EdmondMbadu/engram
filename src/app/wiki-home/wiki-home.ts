@@ -69,6 +69,10 @@ export class WikiHomeComponent {
     return name;
   }
 
+  cityCountryLabel(atlas: AtlasItem | null | undefined): string | null {
+    return this.atlasService.cityCountryLabel(atlas);
+  }
+
   wikiSlug(atlas: AtlasItem): string {
     return atlas.slug?.trim() || this.atlasService.slugify(atlas.name ?? '') || atlas.id;
   }

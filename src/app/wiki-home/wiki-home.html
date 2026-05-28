@@ -229,9 +229,12 @@
 
               <div class="border-b border-[var(--line)] px-5 py-4">
                 <div class="flex items-start justify-between gap-3">
-                  <button type="button" class="min-w-0 text-left" (click)="openWiki(atlas, 'library')">
-                    <h4 class="line-clamp-2 text-xl font-black tracking-tight transition-colors group-hover:text-[var(--accent)]">{{ displayName(atlas) }}</h4>
-                  </button>
+	                  <button type="button" class="min-w-0 text-left" (click)="openWiki(atlas, 'library')">
+	                    <h4 class="line-clamp-2 text-xl font-black tracking-tight transition-colors group-hover:text-[var(--accent)]">{{ displayName(atlas) }}</h4>
+	                    @if (cityCountryLabel(atlas); as country) {
+	                      <p class="mt-1 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ country }}</p>
+	                    }
+	                  </button>
                   @if (isSharedAdmin(atlas)) {
                     <span class="shrink-0 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">Added admin</span>
                   }

@@ -27,6 +27,71 @@ import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from '
 
 const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
 const DEFAULT_CITY_LOGO_URL = '/assets/image/living-cities.png';
+const COUNTRY_LABEL_BY_CODE: Record<string, string> = {
+  AU: 'Australia',
+  BR: 'Brazil',
+  CA: 'Canada',
+  CD: 'Democratic Republic of the Congo',
+  DE: 'Germany',
+  DK: 'Denmark',
+  ES: 'Spain',
+  FR: 'France',
+  GB: 'United Kingdom',
+  JP: 'Japan',
+  KE: 'Kenya',
+  KR: 'South Korea',
+  MX: 'Mexico',
+  NL: 'Netherlands',
+  NG: 'Nigeria',
+  PT: 'Portugal',
+  SG: 'Singapore',
+  TR: 'Turks and Caicos Islands',
+  US: 'United States',
+  ZA: 'South Africa',
+};
+const COUNTRY_BY_REGION_KEY: Record<string, string> = {
+  australia: 'Australia',
+  brazil: 'Brazil',
+  canada: 'Canada',
+  denmark: 'Denmark',
+  'democratic-republic-of-the-congo': 'Democratic Republic of the Congo',
+  drc: 'Democratic Republic of the Congo',
+  france: 'France',
+  germany: 'Germany',
+  japan: 'Japan',
+  kenya: 'Kenya',
+  mexico: 'Mexico',
+  netherlands: 'Netherlands',
+  nigeria: 'Nigeria',
+  portugal: 'Portugal',
+  singapore: 'Singapore',
+  'south-africa': 'South Africa',
+  'south-korea': 'South Korea',
+  spain: 'Spain',
+  'turks-and-caicos': 'Turks and Caicos Islands',
+  'turks-caicos': 'Turks and Caicos Islands',
+  'united-kingdom': 'United Kingdom',
+  uk: 'United Kingdom',
+};
+const COUNTRY_BY_TIMEZONE: Record<string, string> = {
+  'Africa/Johannesburg': 'South Africa',
+  'Africa/Kinshasa': 'Democratic Republic of the Congo',
+  'Africa/Lagos': 'Nigeria',
+  'Africa/Nairobi': 'Kenya',
+  'America/Mexico_City': 'Mexico',
+  'America/Sao_Paulo': 'Brazil',
+  'Asia/Seoul': 'South Korea',
+  'Asia/Singapore': 'Singapore',
+  'Asia/Tokyo': 'Japan',
+  'Australia/Sydney': 'Australia',
+  'Europe/Amsterdam': 'Netherlands',
+  'Europe/Berlin': 'Germany',
+  'Europe/Copenhagen': 'Denmark',
+  'Europe/Lisbon': 'Portugal',
+  'Europe/London': 'United Kingdom',
+  'Europe/Madrid': 'Spain',
+  'Europe/Paris': 'France',
+};
 
 export interface CustomCityAtlasInput {
   name?: string;
@@ -43,6 +108,40 @@ function normalizeCityIdentity(value: string | null | undefined): string {
     .replace(/\s*\(flagship\)\s*$/i, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+function countryLabelFromCityConfig(config: CityAtlasConfig | null | undefined): string | null {
+  if (!config?.enabled) {
+    return null;
+  }
+
+  const regionKey = normalizeCityIdentity(config.region_name);
+  if (regionKey && COUNTRY_BY_REGION_KEY[regionKey]) {
+    return COUNTRY_BY_REGION_KEY[regionKey];
+  }
+
+  const timezone = config.timezone?.trim() ?? '';
+  if (timezone && COUNTRY_BY_TIMEZONE[timezone]) {
+    return COUNTRY_BY_TIMEZONE[timezone];
+  }
+
+  const countryCode = config.country_code?.trim().toUpperCase() ?? '';
+  if (countryCode && COUNTRY_LABEL_BY_CODE[countryCode]) {
+    return COUNTRY_LABEL_BY_CODE[countryCode];
+  }
+  if (countryCode) {
+    return countryCode;
+  }
+
+  return null;
+}
+
+function countryCodeFromCityConfig(config: Pick<CityAtlasConfig, 'enabled' | 'region_name' | 'timezone'>): string | null {
+  const label = countryLabelFromCityConfig({ ...config, country_code: null } as CityAtlasConfig);
+  if (!label) {
+    return null;
+  }
+  return Object.entries(COUNTRY_LABEL_BY_CODE).find(([, countryLabel]) => countryLabel === label)?.[0] ?? null;
 }
 
 type PublicAtlasBySlugResponse = {
@@ -326,9 +425,14 @@ export class AtlasService {
     const regionName = input.regionName?.trim() || null;
     const name = input.name?.trim() || `My living wiki: ${cityName}`;
     const slug = this.slugify(cityName);
-    const description = input.description?.trim()
-      || `${cityName}'s practical local knowledge, civic updates, transit, culture, climate, jobs, food, neighborhoods, and public information.`;
-    const timezone = input.timezone?.trim() || 'America/New_York';
+	    const description = input.description?.trim()
+	      || `${cityName}'s practical local knowledge, civic updates, transit, culture, climate, jobs, food, neighborhoods, and public information.`;
+	    const timezone = input.timezone?.trim() || 'America/New_York';
+	    const inferredCountryCode = countryCodeFromCityConfig({
+	      enabled: true,
+	      region_name: regionName,
+	      timezone,
+	    });
 
     const cityKey = normalizeCityIdentity(cityName);
     const existingLocal = this.atlases().find((atlas) =>
@@ -361,11 +465,11 @@ export class AtlasService {
       cover_color: '#255a61',
       default_answer_mode: 'internet',
       city_config: {
-        enabled: true,
-        city_name: cityName,
-        region_name: regionName,
-        country_code: 'US',
-        timezone,
+	        enabled: true,
+	        city_name: cityName,
+	        region_name: regionName,
+	        country_code: inferredCountryCode ?? 'US',
+	        timezone,
         census_state_code: null,
         census_place_code: null,
         airnow_zip_code: null,
@@ -880,14 +984,18 @@ export class AtlasService {
     }
   }
 
-  displayName(atlas: AtlasItem | null | undefined): string {
-    if (!atlas) return 'Select Wiki';
-    const trimmed = atlas.name?.trim();
-    if (trimmed) return trimmed;
-    return `Wiki ${atlas.id.slice(0, 6)}`;
-  }
+	  displayName(atlas: AtlasItem | null | undefined): string {
+	    if (!atlas) return 'Select Wiki';
+	    const trimmed = atlas.name?.trim();
+	    if (trimmed) return trimmed;
+	    return `Wiki ${atlas.id.slice(0, 6)}`;
+	  }
 
-  isAtlasOwner(atlas: AtlasItem | null | undefined): boolean {
+	  cityCountryLabel(atlas: AtlasItem | null | undefined): string | null {
+	    return countryLabelFromCityConfig(atlas?.city_config);
+	  }
+
+	  isAtlasOwner(atlas: AtlasItem | null | undefined): boolean {
     const uid = this.authService.uid();
     return !!atlas && !!uid && atlas.user_id === uid;
   }

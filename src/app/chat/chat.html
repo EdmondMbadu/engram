@@ -20,12 +20,15 @@
           <div class="flex items-center gap-2">
             <span class="flex h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[var(--accent)]/20 bg-[var(--soft-fill)] p-1.5 shadow-sm">
               <img src="/assets/image/living-cities.png" alt="LW" class="h-full w-full rounded-xl object-contain" />
-            </span>
-            <span class="min-w-0">
-              <span class="block truncate text-2xl font-black tracking-[-0.06em] text-[var(--text)] lg:text-[1.65rem]">{{ currentWikiName() }}</span>
-            </span>
-          </div>
-        </div>
+	            </span>
+	            <span class="min-w-0">
+	              <span class="block truncate text-2xl font-black tracking-[-0.06em] text-[var(--text)] lg:text-[1.65rem]">{{ currentWikiName() }}</span>
+	              @if (currentWikiCountry()) {
+	                <span class="mt-0.5 block truncate text-[0.68rem] font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ currentWikiCountry() }}</span>
+	              }
+	            </span>
+	          </div>
+	        </div>
       }
       @if (canStartFreshChat()) {
         <button
@@ -363,11 +366,14 @@
                   }
                 }
 
-                <h2 class="chat-hero-title mt-3">
-                  Ask <span class="chat-hero-title__brand">My Living Wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
-                </h2>
+	                <h2 class="chat-hero-title mt-3">
+	                  Ask <span class="chat-hero-title__brand">My Living Wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
+	                </h2>
+	                @if (currentWikiCountry()) {
+	                  <p class="mt-1 text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ currentWikiCountry() }}</p>
+	                }
 
-                @if (currentWikiGuide(); as guide) {
+	                @if (currentWikiGuide(); as guide) {
                   @if (guide.image_url || guide.label || guide.name) {
                     <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
                       @if (guide.image_url) {

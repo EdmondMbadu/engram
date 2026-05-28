@@ -27,6 +27,7 @@ export interface PublicWikiCatalogItem {
   heroUrl?: string | null;
   logoUrl?: string | null;
   coverColor?: string | null;
+  countryLabel?: string | null;
 }
 
 type PublicWikiPresentation = Pick<
