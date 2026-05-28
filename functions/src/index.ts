@@ -9,6 +9,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import { db, storage } from './firebase';
+import { handleAnswerCardShare } from './answer-card-share';
 import { answerWithGoogleSearch, geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
 import {
   getStoredCityPulseSnapshot,
@@ -71,6 +72,16 @@ const urlIngestionTriggerOptions = {
   maxInstances: 16,
   secrets: [geminiApiKey],
 };
+
+export const answerCardShare = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '1GiB',
+    cors: true,
+  },
+  handleAnswerCardShare,
+);
 
 type GoogleDriveImportSelection = {
   id: string;

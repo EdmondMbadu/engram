@@ -40,9 +40,14 @@ export class AnswerCardComponent {
       return '';
     }
     if (this.isBrowser) {
-      return `${window.location.origin}/answer-card/${card.id}`;
+      return `${window.location.origin}/share/answer-card/${card.id}`;
     }
-    return `/answer-card/${card.id}`;
+    return `/share/answer-card/${card.id}`;
+  });
+
+  readonly storyImageUrl = computed(() => {
+    const url = this.shareUrl();
+    return url ? `${url}/story.png` : '';
   });
 
   constructor() {
@@ -60,6 +65,24 @@ export class AnswerCardComponent {
     this.copied.set(true);
     this.shareFeedback.set('Link copied');
     setTimeout(() => this.copied.set(false), 1400);
+    setTimeout(() => this.shareFeedback.set(null), 1800);
+  }
+
+  downloadStoryCard(): void {
+    const card = this.card();
+    const url = this.storyImageUrl();
+    if (!card || !url || !this.isBrowser) {
+      return;
+    }
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `my-living-wiki-${card.id}-story.png`;
+    anchor.rel = 'noopener';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    this.shareFeedback.set('Story card downloading');
     setTimeout(() => this.shareFeedback.set(null), 1800);
   }
 
