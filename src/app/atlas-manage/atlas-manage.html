@@ -169,6 +169,107 @@
           </div>
         </form>
 
+        <section class="m-5 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+          <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Bulk city CSV</p>
+              <h4 class="mt-1 text-lg font-black tracking-tight">Create public city Wikis in bulk.</h4>
+              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                Upload a CSV, preview rows, skip duplicates, then create all valid city Wikis with internet answers enabled.
+              </p>
+            </div>
+            <button
+              type="button"
+              (click)="downloadBulkCitySampleCsv()"
+              class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35"
+            >
+              <span class="material-symbols-outlined text-[1rem]">download</span>
+              <span>Sample CSV</span>
+            </button>
+          </div>
+
+          <div class="mt-4 rounded-2xl border border-dashed border-[var(--line)] bg-[var(--surface)] px-4 py-4">
+            <label class="flex cursor-pointer flex-col items-center justify-center gap-2 text-center">
+              <span class="material-symbols-outlined text-3xl text-[var(--accent)]">upload_file</span>
+              <span class="text-sm font-black text-[var(--text)]">Upload city CSV</span>
+              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, timezone, public_title, description.</span>
+              <input type="file" accept=".csv,text/csv" class="sr-only" (change)="onBulkCityCsvSelected($event)" />
+            </label>
+          </div>
+
+          @if (bulkCityFileName()) {
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+              <div class="min-w-0">
+                <p class="truncate text-sm font-black text-[var(--text)]">{{ bulkCityFileName() }}</p>
+                <p class="mt-1 text-xs text-[var(--muted)]">
+                  {{ validBulkCityRows().length }} valid · {{ skippedBulkCityRows().length }} skipped
+                </p>
+              </div>
+              <button type="button" class="rounded-full border border-[var(--line)] px-3 py-1.5 text-xs font-bold text-[var(--muted)] transition hover:text-[var(--text)]" (click)="clearBulkCityCsv()" [disabled]="creatingBulkCities()">Clear</button>
+            </div>
+          }
+
+          @if (bulkCityError()) {
+            <div class="mt-4 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">
+              {{ bulkCityError() }}
+            </div>
+          }
+
+          @if (bulkCityRows().length > 0) {
+            <div class="mt-4 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
+              <div class="flex flex-col gap-3 border-b border-[var(--line)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Preview</p>
+                <button
+                  type="button"
+                  (click)="createBulkCityAtlases()"
+                  [disabled]="!canCreateBulkCities()"
+                  class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
+                >
+                  <span class="material-symbols-outlined text-[1rem]">playlist_add_check</span>
+                  <span>{{ creatingBulkCities() ? 'Creating...' : 'Create valid rows' }}</span>
+                </button>
+              </div>
+              <div class="max-h-[24rem] overflow-auto">
+                <table class="w-full min-w-[860px] text-left text-sm">
+                  <thead class="border-b border-[var(--line)] bg-[var(--soft-fill)] text-[10px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                    <tr>
+                      <th class="px-4 py-3 font-black">Row</th>
+                      <th class="px-4 py-3 font-black">City</th>
+                      <th class="px-4 py-3 font-black">Region</th>
+                      <th class="px-4 py-3 font-black">Timezone</th>
+                      <th class="px-4 py-3 font-black">Slug</th>
+                      <th class="px-4 py-3 font-black">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-[var(--line)]">
+                    @for (row of bulkCityRows(); track row.row_number) {
+                      <tr class="align-top">
+                        <td class="px-4 py-3 text-xs font-bold text-[var(--muted)]">{{ row.row_number }}</td>
+                        <td class="px-4 py-3">
+                          <p class="font-bold text-[var(--text)]">{{ row.city_name || 'Missing city' }}</p>
+                          <p class="mt-1 max-w-[18rem] truncate text-xs text-[var(--muted)]">{{ row.name || 'No title' }}</p>
+                        </td>
+                        <td class="px-4 py-3 text-xs text-[var(--muted)]">{{ row.region_name || '—' }}</td>
+                        <td class="px-4 py-3 text-xs text-[var(--muted)]">{{ row.timezone || 'America/New_York' }}</td>
+                        <td class="px-4 py-3 text-xs font-bold text-[var(--muted)]">/{{ row.slug }}</td>
+                        <td class="px-4 py-3">
+                          @if (row.errors.length) {
+                            <span class="inline-flex rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--error-text)]">{{ row.errors.join(', ') }}</span>
+                          } @else if (row.duplicate) {
+                            <span class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">Duplicate / created</span>
+                          } @else {
+                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Ready</span>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+        </section>
+
         <div class="border-t border-[var(--line)] px-5 py-4">
           <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Templates</p>
         </div>

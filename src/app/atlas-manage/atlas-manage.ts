@@ -60,6 +60,13 @@ interface CustomCityDraft {
   description: string;
 }
 
+interface BulkCityDraft extends CustomCityDraft {
+  row_number: number;
+  slug: string;
+  errors: string[];
+  duplicate: boolean;
+}
+
 function normalizeAdminCityIdentity(value: string | null | undefined): string {
   return (value ?? '')
     .toLowerCase()
@@ -67,6 +74,56 @@ function normalizeAdminCityIdentity(value: string | null | undefined): string {
     .replace(/\s*\(flagship\)\s*$/i, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+function parseCsvRows(csv: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < csv.length; i += 1) {
+    const char = csv[i];
+    const next = csv[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && next === '"') {
+        field += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === ',' && !inQuotes) {
+      row.push(field.trim());
+      field = '';
+      continue;
+    }
+
+    if ((char === '\n' || char === '\r') && !inQuotes) {
+      if (char === '\r' && next === '\n') {
+        i += 1;
+      }
+      row.push(field.trim());
+      if (row.some((value) => value.length > 0)) {
+        rows.push(row);
+      }
+      row = [];
+      field = '';
+      continue;
+    }
+
+    field += char;
+  }
+
+  row.push(field.trim());
+  if (row.some((value) => value.length > 0)) {
+    rows.push(row);
+  }
+
+  return rows;
 }
 
 @Component({
@@ -125,7 +182,11 @@ export class AtlasManageComponent {
   readonly cityTemplates = CITY_ATLAS_TEMPLATES;
   readonly creatingCitySlug = signal<string | null>(null);
   readonly creatingCustomCity = signal(false);
+  readonly creatingBulkCities = signal(false);
   readonly cityCreationMessage = signal<string | null>(null);
+  readonly bulkCityFileName = signal<string | null>(null);
+  readonly bulkCityRows = signal<BulkCityDraft[]>([]);
+  readonly bulkCityError = signal<string | null>(null);
   readonly publicCityTemplateKeys = signal<Set<string>>(new Set());
   readonly customCityDraft = signal<CustomCityDraft>({
     city_name: '',
@@ -161,6 +222,18 @@ export class AtlasManageComponent {
   );
   readonly canCreateCustomCity = computed(() =>
     !!this.customCityDraft().city_name.trim() && !this.creatingCustomCity() && !this.creatingCitySlug(),
+  );
+  readonly validBulkCityRows = computed(() =>
+    this.bulkCityRows().filter((row) => row.errors.length === 0 && !row.duplicate),
+  );
+  readonly skippedBulkCityRows = computed(() =>
+    this.bulkCityRows().filter((row) => row.errors.length > 0 || row.duplicate),
+  );
+  readonly canCreateBulkCities = computed(() =>
+    this.validBulkCityRows().length > 0
+    && !this.creatingBulkCities()
+    && !this.creatingCustomCity()
+    && !this.creatingCitySlug(),
   );
   readonly weekdays = [
     { value: 0, label: 'Sunday' },
@@ -879,6 +952,162 @@ export class AtlasManageComponent {
     } finally {
       this.creatingCustomCity.set(false);
     }
+  }
+
+  async onBulkCityCsvSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    input.value = '';
+    this.bulkCityError.set(null);
+    this.cityCreationMessage.set(null);
+
+    if (!file) {
+      return;
+    }
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+      this.bulkCityRows.set([]);
+      this.bulkCityFileName.set(null);
+      this.bulkCityError.set('Upload a .csv file.');
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      this.bulkCityFileName.set(file.name);
+      this.bulkCityRows.set(this.parseBulkCityCsv(text));
+    } catch (error) {
+      this.bulkCityRows.set([]);
+      this.bulkCityFileName.set(null);
+      this.bulkCityError.set(error instanceof Error ? error.message : 'Failed to read CSV file.');
+    }
+  }
+
+  downloadBulkCitySampleCsv(): void {
+    const csv = [
+      'city_name,region_name,timezone,public_title,description',
+      '"Seattle","Washington","America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates."',
+      '"Las Vegas","Nevada","America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates."',
+      '"Nairobi","Kenya","Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates."',
+      '"Kinshasa","Democratic Republic of the Congo","Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates."',
+      '"Tokyo","Japan","Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates."',
+      '"London","United Kingdom","Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates."',
+      '"Paris","France","Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates."',
+      '"Singapore","Singapore","Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates."',
+      '"Cape Town","South Africa","Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates."',
+      '"Mexico City","Mexico","America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates."',
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'bulk-city-wikis-sample.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  clearBulkCityCsv(): void {
+    if (this.creatingBulkCities()) {
+      return;
+    }
+    this.bulkCityFileName.set(null);
+    this.bulkCityRows.set([]);
+    this.bulkCityError.set(null);
+  }
+
+  async createBulkCityAtlases(): Promise<void> {
+    const rows = this.validBulkCityRows();
+    if (rows.length === 0 || this.creatingBulkCities()) {
+      return;
+    }
+
+    this.creatingBulkCities.set(true);
+    this.pageError.set(null);
+    this.bulkCityError.set(null);
+    this.cityCreationMessage.set(null);
+
+    let createdCount = 0;
+    const failed: string[] = [];
+    try {
+      for (const row of rows) {
+        try {
+          const atlasId = await this.atlasService.createCustomCityAtlas({
+            cityName: row.city_name,
+            regionName: row.region_name,
+            timezone: row.timezone,
+            name: row.name,
+            description: row.description,
+          });
+          if (atlasId) {
+            createdCount += 1;
+          }
+        } catch (error) {
+          failed.push(`${row.city_name}: ${error instanceof Error ? error.message : 'failed'}`);
+        }
+      }
+
+      this.cityCreationMessage.set(
+        failed.length
+          ? `Created ${createdCount} city Wikis. ${failed.length} row${failed.length === 1 ? '' : 's'} failed.`
+          : `Created ${createdCount} public city Wiki${createdCount === 1 ? '' : 's'}.`,
+      );
+      this.bulkCityRows.set([]);
+      this.bulkCityFileName.set(null);
+      if (failed.length) {
+        this.bulkCityError.set(failed.slice(0, 4).join(' | '));
+      }
+    } finally {
+      this.creatingBulkCities.set(false);
+    }
+  }
+
+  private parseBulkCityCsv(csv: string): BulkCityDraft[] {
+    const rows = parseCsvRows(csv);
+    if (rows.length < 2) {
+      throw new Error('CSV needs a header row and at least one city row.');
+    }
+
+    const headers = rows[0].map((header) => header.trim().toLowerCase());
+    const indexFor = (names: string[]) => names.map((name) => headers.indexOf(name)).find((index) => index >= 0) ?? -1;
+    const cityIndex = indexFor(['city_name', 'city', 'name']);
+    const regionIndex = indexFor(['region_name', 'region', 'state', 'region_state']);
+    const timezoneIndex = indexFor(['timezone', 'time_zone']);
+    const titleIndex = indexFor(['public_title', 'title', 'wiki_title']);
+    const descriptionIndex = indexFor(['description', 'desc']);
+
+    if (cityIndex < 0) {
+      throw new Error('CSV is missing the city_name column.');
+    }
+
+    const seen = new Set<string>();
+    const existingKeys = this.existingCityTemplateKeys();
+    return rows.slice(1).map((row, index): BulkCityDraft => {
+      const cityName = row[cityIndex]?.trim() ?? '';
+      const name = titleIndex >= 0 ? row[titleIndex]?.trim() ?? '' : '';
+      const key = normalizeAdminCityIdentity(cityName || name);
+      const slug = this.atlasService.slugify(cityName || name || `row-${index + 2}`);
+      const errors: string[] = [];
+      if (!cityName) {
+        errors.push('Missing city name');
+      }
+      if (!key) {
+        errors.push('Missing city identity');
+      }
+      const duplicate = !!key && (seen.has(key) || existingKeys.has(key) || existingKeys.has(slug));
+      seen.add(key);
+
+      return {
+        row_number: index + 2,
+        city_name: cityName,
+        region_name: regionIndex >= 0 ? row[regionIndex]?.trim() ?? '' : '',
+        timezone: timezoneIndex >= 0 ? row[timezoneIndex]?.trim() ?? '' : 'America/New_York',
+        name: name || (cityName ? `My living wiki: ${cityName}` : ''),
+        description: descriptionIndex >= 0 ? row[descriptionIndex]?.trim() ?? '' : '',
+        slug,
+        errors,
+        duplicate,
+      };
+    });
   }
 
   cityTemplateExists(template: CityAtlasTemplate): boolean {
