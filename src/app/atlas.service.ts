@@ -495,10 +495,28 @@ export class AtlasService {
     return ref.id;
   }
 
-  async getPublicAtlasBySlug(slug: string): Promise<AtlasItem | null> {
-    if (this.functions) {
-      try {
-        const getPublicAtlasBySlug = httpsCallable<
+	  async getPublicAtlasBySlug(slug: string): Promise<AtlasItem | null> {
+	    if (this.firestore) {
+	      const snap = await getDocs(
+	        query(
+	          collection(this.firestore, 'atlases'),
+	          where('slug', '==', slug),
+	          where('is_public', '==', true),
+	          limit(1),
+	        ),
+	      );
+	      const atlasDoc = snap.docs[0];
+	      if (atlasDoc) {
+	        return this.hydrateAtlas({
+	          id: atlasDoc.id,
+	          ...(atlasDoc.data() as Record<string, unknown>),
+	        });
+	      }
+	    }
+
+	    if (this.functions) {
+	      try {
+	        const getPublicAtlasBySlug = httpsCallable<
           { slug: string },
           PublicAtlasBySlugResponse
         >(
@@ -512,31 +530,10 @@ export class AtlasService {
         }
       } catch (error) {
         console.warn('[AtlasService] getPublicAtlasBySlug callable failed; falling back to Firestore query.', error);
-      }
-    }
-
-    if (!this.firestore) {
-      return null;
-    }
-
-    const snap = await getDocs(
-      query(
-        collection(this.firestore, 'atlases'),
-        where('slug', '==', slug),
-        where('is_public', '==', true),
-        limit(1),
-      ),
-    );
-    const atlasDoc = snap.docs[0];
-    if (!atlasDoc) {
-      return null;
-    }
-
-    return this.hydrateAtlas({
-      id: atlasDoc.id,
-      ...(atlasDoc.data() as Record<string, unknown>),
-    });
-  }
+	      }
+	    }
+	    return null;
+	  }
 
   async listPublicAtlases(): Promise<AtlasItem[]> {
     if (!this.firestore) {

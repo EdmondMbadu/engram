@@ -179,14 +179,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (!this.publicLookupDone()) {
       return true;
     }
-    if (this.publicNotFound()) {
-      return false;
-    }
-    if (!this.authInitialized()) {
-      return true;
-    }
-    return this.isPublicVisitorMode() && this.publicChatLoading();
-  });
+	    if (this.publicNotFound()) {
+	      return false;
+	    }
+	    return false;
+	  });
 
   @ViewChild('transcriptEnd') transcriptEnd?: ElementRef<HTMLElement>;
   @ViewChild('composerInput') composerInput?: ElementRef<HTMLTextAreaElement>;
@@ -296,19 +293,19 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const atlas = this.currentWikiAtlas();
     return atlas && this.canAdminCurrentWiki() ? '/atlases' : null;
   });
-	  readonly currentWikiName = computed(() => {
-	    const atlas = this.currentWikiAtlas();
-	    if (!atlas) {
-	      return '';
+  readonly currentWikiName = computed(() => {
+    const atlas = this.currentWikiAtlas();
+    if (!atlas) {
+      return '';
     }
     const name = this.atlasService.displayName(atlas);
     if (!name || name === 'Select atlas') {
       return '';
-	    }
-	    return name.replace(/^My living wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
-	  });
-	  readonly currentWikiCountry = computed(() => this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? '');
-	  readonly currentWikiVoicePhoneNumber = computed(() => this.currentWikiAtlas()?.public_voice_phone_number?.trim() || '');
+    }
+    return name.replace(/^My living wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
+  });
+  readonly currentWikiCountry = computed(() => this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? '');
+  readonly currentWikiVoicePhoneNumber = computed(() => this.currentWikiAtlas()?.public_voice_phone_number?.trim() || '');
   readonly currentWikiVoicePhoneHref = computed(() => {
     const phone = this.currentWikiVoicePhoneNumber();
     const digits = phone.replace(/[^\d+]/g, '');
