@@ -1100,8 +1100,8 @@ export class AtlasManageComponent {
       [atlas.id]: { state: 'running', message: 'Finding and validating image...' },
     }));
 
-    try {
-      const result = await this.atlasService.autoUploadAtlasCoverImage(atlas.id);
+	    try {
+	      const result = await this.autoUploadAtlasCoverImageWithTimeout(atlas.id);
       this.coverImageStatusById.update((current) => ({
         ...current,
         [atlas.id]: { state: 'done', message: `Added cover from ${result.pageTitle}.` },
@@ -1135,21 +1135,22 @@ export class AtlasManageComponent {
       failed: 0,
     });
 
-    let created = 0;
-    let failed = 0;
-    try {
-      for (const atlas of atlases) {
-        this.automatingCoverImageId.set(atlas.id);
-        this.coverImageStatusById.update((current) => ({
-          ...current,
-          [atlas.id]: { state: 'running', message: 'Finding and validating image...' },
-        }));
-        try {
-          const result = await this.atlasService.autoUploadAtlasCoverImage(atlas.id);
-          created += 1;
-          this.coverImageStatusById.update((current) => ({
-            ...current,
-            [atlas.id]: { state: 'done', message: `Added cover from ${result.pageTitle}.` },
+	    let created = 0;
+	    let failed = 0;
+	    try {
+	      let nextIndex = 0;
+	      const processAtlas = async (atlas: AtlasItem): Promise<void> => {
+	        this.automatingCoverImageId.set(atlas.id);
+	        this.coverImageStatusById.update((current) => ({
+	          ...current,
+	          [atlas.id]: { state: 'running', message: 'Finding and validating image...' },
+	        }));
+	        try {
+	          const result = await this.autoUploadAtlasCoverImageWithTimeout(atlas.id);
+	          created += 1;
+	          this.coverImageStatusById.update((current) => ({
+	            ...current,
+	            [atlas.id]: { state: 'done', message: `Added cover from ${result.pageTitle}.` },
           }));
         } catch (error) {
           failed += 1;
@@ -1166,10 +1167,23 @@ export class AtlasManageComponent {
                 created,
                 failed,
               }
-            : progress,
-          );
-        }
-      }
+	            : progress,
+	          );
+	        }
+	      };
+
+	      const workerCount = Math.min(2, atlases.length);
+	      await Promise.all(
+	        Array.from({ length: workerCount }, async () => {
+	          while (nextIndex < atlases.length) {
+	            const atlas = atlases[nextIndex];
+	            nextIndex += 1;
+	            if (atlas) {
+	              await processAtlas(atlas);
+	            }
+	          }
+	        }),
+	      );
 
       this.coverImageAutomationMessage.set(
         failed
@@ -1179,11 +1193,19 @@ export class AtlasManageComponent {
       this.coverImageProgress.set(null);
     } finally {
       this.automatingCoverImages.set(false);
-      this.automatingCoverImageId.set(null);
-    }
-  }
+	      this.automatingCoverImageId.set(null);
+	    }
+	  }
 
-  async createBulkCityAtlases(): Promise<void> {
+	  private async autoUploadAtlasCoverImageWithTimeout(atlasId: string) {
+	    return await this.withTimeout(
+	      this.atlasService.autoUploadAtlasCoverImage(atlasId),
+	      60_000,
+	      'Cover image lookup took longer than 60 seconds. It was skipped so the rest can continue; retry this city after the batch finishes.',
+	    );
+	  }
+
+	  async createBulkCityAtlases(): Promise<void> {
     this.refreshBulkCityDuplicateStatus();
     const rows = this.validBulkCityRows();
     if (rows.length === 0 || this.creatingBulkCities()) {
