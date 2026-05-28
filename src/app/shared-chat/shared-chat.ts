@@ -51,6 +51,7 @@ export class SharedChatComponent {
   readonly selectedCitation = signal<CitationPassage | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
+  readonly sharingTravelCardId = signal<string | null>(null);
   readonly creatingAnswerCardId = signal<string | null>(null);
   readonly answerCardLinks = signal<Record<string, string>>({});
   readonly answerCardErrorMessageId = signal<string | null>(null);
@@ -252,8 +253,69 @@ export class SharedChatComponent {
     this.copiedTarget.set(`save:${storageId}`);
   }
 
-  async shareTravelCard(card: TravelGuideCard): Promise<void> {
-    await this.copyText(`share:${this.travelCardStorageId(card)}`, this.buildTravelCardShareText(card));
+  async shareTravelCard(card: TravelGuideCard, message?: SharedChatMessage, guide?: TravelGuideStructuredResponse | null): Promise<void> {
+    const target = `share:${this.travelCardStorageId(card)}`;
+    if (this.sharingTravelCardId()) {
+      return;
+    }
+
+    this.sharingTravelCardId.set(target);
+    try {
+      const share = await this.answerCardService.createTravelCardShare({
+        card,
+        atlasName: this.atlasName(),
+        guideTitle: guide?.title ?? null,
+        guideSummary: guide?.summary ?? null,
+        question: message ? this.questionBeforeMessage(message.id) : null,
+        threadId: this.threadId(),
+        sourceMessageId: message?.id ?? null,
+      });
+      await this.copyText(target, share.url);
+    } catch {
+      await this.copyText(target, this.buildTravelCardShareText(card));
+    } finally {
+      this.sharingTravelCardId.set(null);
+    }
+  }
+
+  async shareGuideCardForMessage(message: SharedChatMessage): Promise<void> {
+    if (!this.canCreateAnswerCard(message) || this.creatingAnswerCardId()) {
+      return;
+    }
+
+    const existingCardId = message.answerCardId ?? this.cardIdFromLink(this.answerCardLinks()[message.id]);
+    if (existingCardId) {
+      await this.copyText(`share-guide:${message.id}`, this.buildAnswerCardShareUrl(existingCardId));
+      return;
+    }
+
+    this.creatingAnswerCardId.set(message.id);
+    this.answerCardError.set(null);
+    this.answerCardErrorMessageId.set(null);
+    try {
+      const card = await this.answerCardService.createAnswerCard({
+        question: this.questionBeforeMessage(message.id) || 'Shared My living wiki question',
+        answer: message.text,
+        threadId: this.threadId(),
+        sourceMessageId: message.id,
+        sourceMessageKind: 'workspace',
+        answerMode: message.answerMode ?? 'wiki',
+        mappableLocations: message.mappableLocations ?? [],
+      });
+      this.answerCardLinks.update((links) => ({
+        ...links,
+        [message.id]: `/answer-card/${card.id}`,
+      }));
+      this.messages.update((messages) =>
+        messages.map((item) => item.id === message.id ? { ...item, answerCardId: card.id } : item),
+      );
+      await this.copyText(`share-guide:${message.id}`, this.buildAnswerCardShareUrl(card.id));
+    } catch (error) {
+      this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create answer card.');
+      this.answerCardErrorMessageId.set(message.id);
+    } finally {
+      this.creatingAnswerCardId.set(null);
+    }
   }
 
   canShowAnswerCardAction(message: SharedChatMessage): boolean {
@@ -335,6 +397,10 @@ export class SharedChatComponent {
       `Map: ${this.travelCardMapUrl(card)}`,
     ].filter((line) => line.trim());
     return lines.join('\n');
+  }
+
+  private buildAnswerCardShareUrl(cardId: string): string {
+    return `${window.location.origin}/share/answer-card/${encodeURIComponent(cardId)}`;
   }
 
   cleanTravelCardText(value: string | null | undefined): string {

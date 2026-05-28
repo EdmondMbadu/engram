@@ -124,6 +124,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
+  readonly sharingTravelCardId = signal<string | null>(null);
   readonly publicAtlas = signal<AtlasItem | null>(null);
   readonly publicLookupDone = signal(false);
   readonly publicChatLoading = signal(false);
@@ -1302,9 +1303,45 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.copiedTarget.set(`save:${storageId}`);
   }
 
-  async shareTravelCard(card: TravelGuideCard, event?: MouseEvent): Promise<void> {
+  async shareTravelCard(card: TravelGuideCard, event?: MouseEvent, message?: ChatMessage, guide?: TravelGuideStructuredResponse): Promise<void> {
     event?.stopPropagation();
-    await this.copyText(`share:${this.travelCardStorageId(card)}`, this.buildTravelCardShareText(card));
+    const target = `share:${this.travelCardStorageId(card)}`;
+    if (this.sharingTravelCardId()) {
+      return;
+    }
+
+    this.sharingTravelCardId.set(target);
+    try {
+      const atlas = this.currentWikiAtlas();
+      const share = await this.answerCardService.createTravelCardShare({
+        card,
+        atlasId: atlas?.id ?? null,
+        atlasName: atlas?.name ?? null,
+        guideTitle: guide?.title ?? null,
+        guideSummary: guide?.summary ?? null,
+        question: message ? this.questionBeforeMessage(message.id) : null,
+        threadId: this.activeThreadId(),
+        sourceMessageId: message?.id ?? null,
+      });
+      await this.copyText(target, share.url);
+    } catch {
+      await this.copyText(target, this.buildTravelCardShareText(card));
+    } finally {
+      this.sharingTravelCardId.set(null);
+    }
+  }
+
+  async shareGuideCardForMessage(message: ChatMessage, event?: MouseEvent): Promise<void> {
+    event?.stopPropagation();
+    if (!this.canCreateAnswerCard(message) || this.creatingAnswerCardId()) {
+      return;
+    }
+
+    const cardId = await this.ensureAnswerCardForMessage(message);
+    if (!cardId) {
+      return;
+    }
+    await this.copyText(`share-guide:${message.id}`, this.buildAnswerCardShareUrl(cardId));
   }
 
   formatRelativeDateShort(value: { toDate(): Date } | Date | null | undefined): string {
@@ -2208,6 +2245,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const configuredBaseUrl = typeof window !== 'undefined' ? getPublicAppUrl() : null;
     const baseUrl = configuredBaseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
     return `${baseUrl}${path}`;
+  }
+
+  private buildAnswerCardShareUrl(cardId: string): string {
+    const configuredBaseUrl = typeof window !== 'undefined' ? getPublicAppUrl() : null;
+    const baseUrl = configuredBaseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
+    return `${baseUrl}/share/answer-card/${encodeURIComponent(cardId)}`;
   }
 
   private mapStoredMessage(message: ChatStoredMessage): ChatMessage {

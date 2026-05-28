@@ -38,6 +38,13 @@
         }
       },
       {
+        "source": "/share/travel-card/**",
+        "function": {
+          "functionId": "travelCardShare",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

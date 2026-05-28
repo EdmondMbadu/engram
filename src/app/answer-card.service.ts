@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { httpsCallable } from 'firebase/functions';
-import type { AnswerCardItem, MappableLocation } from './atlas.models';
+import type { AnswerCardItem, MappableLocation, TravelGuideCard } from './atlas.models';
 import { getFirebaseFunctions } from './firebase.client';
 
 export interface CreateAnswerCardInput {
@@ -13,6 +13,17 @@ export interface CreateAnswerCardInput {
   sourceMessageKind?: 'workspace' | 'public' | null;
   answerMode?: 'wiki' | 'internet' | null;
   mappableLocations?: MappableLocation[];
+}
+
+export interface CreateTravelCardShareInput {
+  card: TravelGuideCard;
+  atlasId?: string | null;
+  atlasName?: string | null;
+  guideTitle?: string | null;
+  guideSummary?: string | null;
+  question?: string | null;
+  threadId?: string | null;
+  sourceMessageId?: string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -50,6 +61,31 @@ export class AnswerCardService {
       liked: data['liked'] === true,
       likeCount: Number(data['likeCount'] ?? 0) || 0,
     };
+  }
+
+  async createTravelCardShare(input: CreateTravelCardShareInput): Promise<{ id: string; url: string }> {
+    const callable = httpsCallable(this.requireFunctions(), 'createTravelCardShare');
+    const result = await callable({
+      card: input.card,
+      atlasId: input.atlasId ?? null,
+      atlasName: input.atlasName ?? null,
+      guideTitle: input.guideTitle ?? null,
+      guideSummary: input.guideSummary ?? null,
+      question: input.question ?? null,
+      threadId: input.threadId ?? null,
+      sourceMessageId: input.sourceMessageId ?? null,
+    });
+    const share = (result.data as { share?: unknown }).share;
+    if (!share || typeof share !== 'object') {
+      throw new Error('Travel card share response was invalid.');
+    }
+    const data = share as Record<string, unknown>;
+    const id = typeof data['id'] === 'string' ? data['id'] : '';
+    const url = typeof data['url'] === 'string' ? data['url'] : '';
+    if (!id || !url) {
+      throw new Error('Travel card share response was invalid.');
+    }
+    return { id, url };
   }
 
   private hydrateCard(value: unknown): AnswerCardItem {

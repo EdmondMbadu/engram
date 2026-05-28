@@ -9,7 +9,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import { db, storage } from './firebase';
-import { handleAnswerCardShare } from './answer-card-share';
+import { handleAnswerCardShare, handleTravelCardShare } from './answer-card-share';
 import { answerWithGoogleSearch, geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
 import {
   getStoredCityPulseSnapshot,
@@ -37,7 +37,7 @@ import {
   runPublicAtlasQuery,
 } from './pipeline';
 import { buildStoragePath, detectFileType, extractDocumentIdFromPath } from './utils';
-import type { AnswerCardRecord, AnswerQuizQuestionRecord, AnswerQuizRecord, MappableLocation, SupportedFileType } from './types';
+import type { AnswerCardRecord, AnswerQuizQuestionRecord, AnswerQuizRecord, MappableLocation, SupportedFileType, TravelGuideCard } from './types';
 
 const callableRegion = 'us-central1';
 const storageTriggerRegion = 'us-west1';
@@ -81,6 +81,16 @@ export const answerCardShare = onRequest(
     cors: true,
   },
   handleAnswerCardShare,
+);
+
+export const travelCardShare = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '1GiB',
+    cors: true,
+  },
+  handleTravelCardShare,
 );
 
 type GoogleDriveImportSelection = {
@@ -3307,6 +3317,51 @@ function normalizeAnswerCardLocations(value: unknown): MappableLocation[] {
   return locations;
 }
 
+function normalizeTravelCardShareCard(value: unknown): TravelGuideCard {
+  if (!value || typeof value !== 'object') {
+    throw new HttpsError('invalid-argument', 'card is required.');
+  }
+
+  const data = value as Record<string, unknown>;
+  const title = normalizeShareText(data.title, 140);
+  const description = normalizeShareText(data.description, 600);
+  if (!title || !description) {
+    throw new HttpsError('invalid-argument', 'card title and description are required.');
+  }
+
+  return {
+    id: normalizeShareText(data.id, 120) || 'guide-card',
+    title,
+    subtitle: normalizeShareText(data.subtitle, 180) || null,
+    description,
+    neighborhood: normalizeShareText(data.neighborhood, 160) || null,
+    best_for: normalizeShareText(data.best_for, 160) || null,
+    vibe: normalizeShareText(data.vibe, 80) || null,
+    local_tip: normalizeShareText(data.local_tip, 240) || null,
+    cost: normalizeShareText(data.cost, 80) || null,
+    time_hint: normalizeShareText(data.time_hint, 80) || null,
+    image_url: normalizeShareUrl(data.image_url),
+    map_query: normalizeShareText(data.map_query, 240) || null,
+    source_url: normalizeShareUrl(data.source_url),
+  };
+}
+
+function normalizeShareText(value: unknown, limit: number): string {
+  return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim().slice(0, limit) : '';
+}
+
+function normalizeShareUrl(value: unknown): string | null {
+  if (typeof value !== 'string' || !value.trim()) {
+    return null;
+  }
+  try {
+    const parsed = new URL(value.trim());
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 async function loadSourceAssistantMessage(params: {
   uid: string;
   sourceMessageKind: 'workspace' | 'public' | null;
@@ -4084,6 +4139,67 @@ export const createAnswerCard = onCall(
       logger.error('createAnswerCard failed', { errorMessage: error instanceof Error ? error.message : String(error) });
       throw new HttpsError('internal', error instanceof Error ? error.message : 'Failed to create answer card.');
     }
+  },
+);
+
+export const createTravelCardShare = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const card = normalizeTravelCardShareCard(request.data?.card);
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const atlasName = normalizeShareText(request.data?.atlasName, 120) || null;
+    const guideTitle = normalizeShareText(request.data?.guideTitle, 160) || null;
+    const guideSummary = normalizeShareText(request.data?.guideSummary, 240) || null;
+    const question = normalizeShareText(request.data?.question, 500) || null;
+    const sourceThreadId = typeof request.data?.threadId === 'string' && request.data.threadId.trim()
+      ? request.data.threadId.trim().slice(0, 160)
+      : null;
+    const sourceMessageId = normalizeOptionalSourceMessageId(request.data?.sourceMessageId);
+    const ownerUserId = request.auth?.uid ?? null;
+    const shareHash = createHash('sha256')
+      .update(JSON.stringify({
+        ownerUserId,
+        atlasId,
+        atlasName,
+        guideTitle,
+        guideSummary,
+        question,
+        sourceThreadId,
+        sourceMessageId,
+        card,
+      }))
+      .digest('hex')
+      .slice(0, 36);
+    const docRef = db.collection('travel_card_shares').doc(`tc_${shareHash}`);
+
+    await docRef.set(
+      {
+        owner_user_id: ownerUserId,
+        atlas_id: atlasId,
+        atlas_name: atlasName,
+        guide_title: guideTitle,
+        guide_summary: guideSummary,
+        question,
+        source_thread_id: sourceThreadId,
+        source_message_id: sourceMessageId,
+        card,
+        updated_at: FieldValue.serverTimestamp(),
+        created_at: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    );
+
+    return {
+      share: {
+        id: docRef.id,
+        url: `${publicAppUrl}/share/travel-card/${docRef.id}`,
+      },
+    };
   },
 );
 

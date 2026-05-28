@@ -658,6 +658,17 @@
                                       <span class="rounded-full bg-black/35 px-3 py-1.5 text-[11px] font-bold text-white/80 backdrop-blur">
                                         {{ guide.cards.length }} stop{{ guide.cards.length === 1 ? '' : 's' }}
                                       </span>
+                                      @if (canCreateAnswerCard(msg)) {
+                                        <button
+                                          type="button"
+                                          class="ml-auto inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-black shadow-sm transition-opacity hover:opacity-90"
+                                          [disabled]="creatingAnswerCardId() === msg.id"
+                                          (click)="shareGuideCardForMessage(msg, $event)"
+                                        >
+                                          <span class="material-symbols-outlined text-[0.95rem]">{{ copiedTarget() === 'share-guide:' + msg.id ? 'check' : 'ios_share' }}</span>
+                                          <span>{{ copiedTarget() === 'share-guide:' + msg.id ? 'Copied guide' : creatingAnswerCardId() === msg.id ? 'Making card' : 'Share guide' }}</span>
+                                        </button>
+                                      }
                                     </div>
                                     <div class="max-w-3xl">
                                       <p class="text-xs font-black uppercase tracking-[0.2em] text-white/65">{{ assistantMessageName() }}</p>
@@ -781,10 +792,11 @@
                                         <button
                                           type="button"
                                           class="inline-flex items-center gap-1.5 rounded-lg border border-[var(--line)] px-3 py-2 text-xs font-bold text-[var(--text)] transition-colors hover:bg-white/5"
-                                          (click)="shareTravelCard(card, $event)"
+                                          [disabled]="sharingTravelCardId() === 'share:' + travelCardStorageId(card)"
+                                          (click)="shareTravelCard(card, $event, msg, guide)"
                                         >
-                                          <span class="material-symbols-outlined text-[1rem]">ios_share</span>
-                                          <span>{{ copiedTarget() === 'share:' + travelCardStorageId(card) ? 'Copied' : 'Share' }}</span>
+                                          <span class="material-symbols-outlined text-[1rem]">{{ copiedTarget() === 'share:' + travelCardStorageId(card) ? 'check' : 'ios_share' }}</span>
+                                          <span>{{ copiedTarget() === 'share:' + travelCardStorageId(card) ? 'Copied' : sharingTravelCardId() === 'share:' + travelCardStorageId(card) ? 'Sharing...' : 'Share' }}</span>
                                         </button>
                                       </div>
                                     </article>
@@ -807,6 +819,19 @@
                                             {{ action }}
                                           </button>
                                         }
+                                      </div>
+                                    }
+                                    @if (canCreateAnswerCard(msg)) {
+                                      <div class="mt-3 border-t border-white/10 pt-3">
+                                        <button
+                                          type="button"
+                                          class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent)] px-4 py-2 text-xs font-black text-black transition-opacity hover:opacity-90"
+                                          [disabled]="creatingAnswerCardId() === msg.id"
+                                          (click)="shareGuideCardForMessage(msg, $event)"
+                                        >
+                                          <span class="material-symbols-outlined text-[1rem]">{{ copiedTarget() === 'share-guide:' + msg.id ? 'check' : 'ios_share' }}</span>
+                                          <span>{{ copiedTarget() === 'share-guide:' + msg.id ? 'Copied share page' : creatingAnswerCardId() === msg.id ? 'Making card...' : 'Share the full guide card' }}</span>
+                                        </button>
                                       </div>
                                     }
                                   </div>

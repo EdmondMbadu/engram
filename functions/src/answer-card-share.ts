@@ -5,7 +5,7 @@ import type { Request } from 'firebase-functions/v2/https';
 import { logger } from 'firebase-functions';
 import puppeteer from 'puppeteer-extra';
 import { db, storage } from './firebase';
-import type { MappableLocation } from './types';
+import type { MappableLocation, TravelGuideCard } from './types';
 
 const appUrl = 'https://living-atlas-7622a.web.app';
 const imageVersion = 'v1';
@@ -23,6 +23,16 @@ interface ShareCard {
   didYouKnow: string[];
   mappableLocations: MappableLocation[];
   likeCount: number;
+  updatedAt: string | null;
+}
+
+interface TravelCardShare {
+  id: string;
+  atlasName: string | null;
+  guideTitle: string | null;
+  guideSummary: string | null;
+  question: string | null;
+  card: TravelGuideCard;
   updatedAt: string | null;
 }
 
@@ -62,6 +72,41 @@ export async function handleAnswerCardShare(req: Request, res: Response): Promis
     .send(req.method === 'HEAD' ? undefined : html);
 }
 
+export async function handleTravelCardShare(req: Request, res: Response): Promise<void> {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.set('Allow', 'GET, HEAD').status(405).send('Method not allowed');
+    return;
+  }
+
+  const parsed = parseTravelSharePath(req.originalUrl || req.url || '');
+  if (!parsed) {
+    res.status(404).send('Guide card share link not found.');
+    return;
+  }
+
+  const share = await loadTravelCardShare(parsed.shareId);
+  if (!share) {
+    res.status(404).send('Guide card not found.');
+    return;
+  }
+
+  if (parsed.kind) {
+    const image = await getOrRenderTravelImage(share, parsed.kind);
+    res
+      .status(200)
+      .set('Content-Type', 'image/png')
+      .set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
+      .send(req.method === 'HEAD' ? undefined : image);
+    return;
+  }
+
+  res
+    .status(200)
+    .set('Content-Type', 'text/html; charset=utf-8')
+    .set('Cache-Control', 'public, max-age=300, s-maxage=3600')
+    .send(req.method === 'HEAD' ? undefined : buildTravelSharePageHtml(share));
+}
+
 function parseSharePath(url: string): { cardId: string; kind: ShareImageKind | null } | null {
   const path = url.split('?')[0] ?? '';
   const match = path.match(/\/share\/answer-card\/([A-Za-z0-9_-]{8,128})(?:\/(og|story)\.png)?\/?$/);
@@ -71,6 +116,19 @@ function parseSharePath(url: string): { cardId: string; kind: ShareImageKind | n
 
   return {
     cardId: match[1],
+    kind: match[2] === 'og' || match[2] === 'story' ? match[2] : null,
+  };
+}
+
+function parseTravelSharePath(url: string): { shareId: string; kind: ShareImageKind | null } | null {
+  const path = url.split('?')[0] ?? '';
+  const match = path.match(/\/share\/travel-card\/([A-Za-z0-9_-]{8,128})(?:\/(og|story)\.png)?\/?$/);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    shareId: match[1],
     kind: match[2] === 'og' || match[2] === 'story' ? match[2] : null,
   };
 }
@@ -93,6 +151,29 @@ async function loadShareCard(cardId: string): Promise<ShareCard | null> {
     didYouKnow: cleanList(data.did_you_know, 3, 150),
     mappableLocations: cleanLocations(data.mappable_locations),
     likeCount: Number(data.like_count ?? 0) || 0,
+    updatedAt: timestampToIso(data.updated_at) ?? timestampToIso(data.created_at),
+  };
+}
+
+async function loadTravelCardShare(shareId: string): Promise<TravelCardShare | null> {
+  const snapshot = await db.collection('travel_card_shares').doc(shareId).get();
+  if (!snapshot.exists) {
+    return null;
+  }
+
+  const data = snapshot.data() ?? {};
+  const card = cleanTravelCard(data.card);
+  if (!card) {
+    return null;
+  }
+
+  return {
+    id: snapshot.id,
+    atlasName: cleanText(data.atlas_name, 120) || null,
+    guideTitle: cleanText(data.guide_title, 160) || null,
+    guideSummary: cleanText(data.guide_summary, 240) || null,
+    question: cleanText(data.question, 500) || null,
+    card,
     updatedAt: timestampToIso(data.updated_at) ?? timestampToIso(data.created_at),
   };
 }
@@ -141,6 +222,48 @@ async function getOrRenderShareImage(card: ShareCard, kind: ShareImageKind): Pro
   return image;
 }
 
+async function getOrRenderTravelImage(share: TravelCardShare, kind: ShareImageKind): Promise<Buffer> {
+  const hash = createHash('sha256')
+    .update(JSON.stringify({
+      imageVersion,
+      kind,
+      atlasName: share.atlasName,
+      guideTitle: share.guideTitle,
+      guideSummary: share.guideSummary,
+      question: share.question,
+      card: share.card,
+      updatedAt: share.updatedAt,
+    }))
+    .digest('hex')
+    .slice(0, 18);
+  const path = `travel-card-share/${share.id}/${kind}-${hash}.png`;
+  const file = storage.bucket().file(path);
+
+  try {
+    const [exists] = await file.exists();
+    if (exists) {
+      const [cached] = await file.download();
+      return cached;
+    }
+  } catch (error) {
+    logger.warn('Failed to read cached travel card image.', {
+      shareId: share.id,
+      kind,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  const image = await renderTravelImage(share, kind);
+  await file.save(image, {
+    resumable: false,
+    contentType: 'image/png',
+    metadata: {
+      cacheControl: 'public,max-age=604800',
+    },
+  });
+  return image;
+}
+
 async function renderShareImage(card: ShareCard, kind: ShareImageKind): Promise<Buffer> {
   const { width, height } = imageSize(kind);
   const browser = await puppeteer.launch(await resolveLaunchOptions());
@@ -149,6 +272,21 @@ async function renderShareImage(card: ShareCard, kind: ShareImageKind): Promise<
     const page = await browser.newPage();
     await page.setViewport({ width, height, deviceScaleFactor: 1 });
     await page.setContent(buildShareImageHtml(card, kind), { waitUntil: 'networkidle0' });
+    const image = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width, height } });
+    return Buffer.from(image);
+  } finally {
+    await browser.close();
+  }
+}
+
+async function renderTravelImage(share: TravelCardShare, kind: ShareImageKind): Promise<Buffer> {
+  const { width, height } = imageSize(kind);
+  const browser = await puppeteer.launch(await resolveLaunchOptions());
+
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width, height, deviceScaleFactor: 1 });
+    await page.setContent(buildTravelImageHtml(share, kind), { waitUntil: 'networkidle0' });
     const image = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width, height } });
     return Buffer.from(image);
   } finally {
@@ -230,8 +368,69 @@ function buildSharePageHtml(card: ShareCard): string {
 </html>`;
 }
 
+function buildTravelSharePageHtml(share: TravelCardShare): string {
+  const title = `${share.card.title} | My living wiki`;
+  const description = share.card.description || share.card.subtitle || share.guideSummary || '';
+  const shareUrl = `${appUrl}/share/travel-card/${encodeURIComponent(share.id)}`;
+  const imageCacheKey = encodeURIComponent(share.updatedAt ?? imageVersion);
+  const ogImage = `${shareUrl}/og.png?v=${imageCacheKey}`;
+  const storyImage = `${shareUrl}/story.png?v=${imageCacheKey}`;
+  const mapUrl = travelCardMapUrl(share.card);
+  const sourceUrl = safeUrl(share.card.source_url);
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <link rel="canonical" href="${escapeHtml(shareUrl)}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="My living wiki">
+  <meta property="og:title" content="${escapeHtml(share.card.title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${escapeHtml(shareUrl)}">
+  <meta property="og:image" content="${escapeHtml(ogImage)}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(share.card.title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+  <meta name="twitter:image" content="${escapeHtml(ogImage)}">
+  ${sharePageStyles()}
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="brand">
+        <img src="${appUrl}/assets/image/my-living-wiki.png" alt="My living wiki">
+        <span>${escapeHtml(share.atlasName || 'Shared guide')}</span>
+      </div>
+      <p class="eyebrow">${escapeHtml(share.guideTitle || 'Guide Card')}</p>
+      <h1>${escapeHtml(share.card.title)}</h1>
+      <p class="subtitle">${escapeHtml(description)}</p>
+      ${share.question ? `<div class="question">${escapeHtml(share.question)}</div>` : ''}
+      <div class="facts">
+        ${travelFacts(share.card).map((fact) => `<p>${escapeHtml(fact)}</p>`).join('')}
+      </div>
+      <div class="actions">
+        <a href="${escapeHtml(mapUrl)}">Open map</a>
+        ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}">Read source</a>` : ''}
+        <a href="${escapeHtml(storyImage)}" download>Download story image</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>`;
+}
+
 function buildShareImageHtml(card: ShareCard, kind: ShareImageKind): string {
   return kind === 'story' ? buildStoryImageHtml(card) : buildOgImageHtml(card);
+}
+
+function buildTravelImageHtml(share: TravelCardShare, kind: ShareImageKind): string {
+  return kind === 'story' ? buildTravelStoryImageHtml(share) : buildTravelOgImageHtml(share);
 }
 
 function buildOgImageHtml(card: ShareCard): string {
@@ -308,6 +507,83 @@ function buildStoryImageHtml(card: ShareCard): string {
       <div class="story-bottom">
         <p>${escapeHtml(fact)}</p>
         <div class="story-cta">See the full guide</div>
+        <small>living-atlas-7622a.web.app</small>
+      </div>
+    </section>
+  `);
+}
+
+function buildTravelOgImageHtml(share: TravelCardShare): string {
+  const facts = travelFacts(share.card);
+  return imageDocument(1200, 630, `
+    <section class="og-card">
+      <div class="og-main">
+        <div class="brand-row">
+          <div class="brand-lockup">
+            <div class="brand-dot">LW</div>
+            <div>
+              <p>My living wiki</p>
+              <strong>${escapeHtml(share.atlasName || 'Guide pick')}</strong>
+            </div>
+          </div>
+          <div class="field-badge">Share card</div>
+        </div>
+
+        <p class="question-label">${escapeHtml(share.guideTitle || 'Local pick')}</p>
+        <h1>${escapeHtml(share.card.title)}</h1>
+        <p class="subtitle">${escapeHtml(share.card.description || share.card.subtitle || '')}</p>
+
+        <div class="answer-stack">
+          ${facts.slice(0, 3).map((fact) => `
+            <div class="fact-row">
+              <span></span>
+              <p>${escapeHtml(fact)}</p>
+            </div>
+          `).join('')}
+          <div class="fact-row hidden-row">
+            <span></span>
+            <p>${escapeHtml(share.card.local_tip || share.guideSummary || 'Open the full card for the local move.')}</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="og-side">
+        <div class="question-card">
+          <small>${escapeHtml(share.card.neighborhood || share.card.subtitle || 'The pick')}</small>
+          <p>${escapeHtml(share.card.best_for || share.card.vibe || 'Worth saving for later')}</p>
+        </div>
+        <div class="place-card">
+          <small>Quick details</small>
+          ${[share.card.cost, share.card.time_hint, share.card.vibe].filter(Boolean).map((item) => `<strong>${escapeHtml(String(item))}</strong>`).join('') || '<strong>Map, tip, and source inside</strong>'}
+        </div>
+        <div class="cta">Open the share card</div>
+      </aside>
+    </section>
+  `);
+}
+
+function buildTravelStoryImageHtml(share: TravelCardShare): string {
+  return imageDocument(1080, 1920, `
+    <section class="story-card">
+      <div class="story-top">
+        <div class="brand-lockup">
+          <div class="brand-dot">LW</div>
+          <div>
+            <p>My living wiki</p>
+            <strong>${escapeHtml(share.atlasName || 'Guide pick')}</strong>
+          </div>
+        </div>
+        <div class="field-badge">Share card</div>
+      </div>
+
+      <div class="story-middle">
+        <p class="question-label">${escapeHtml(share.guideTitle || 'Local pick')}</p>
+        <h1>${escapeHtml(share.card.title)}</h1>
+      </div>
+
+      <div class="story-bottom">
+        <p>${escapeHtml(share.card.local_tip || share.card.description || share.card.subtitle || '')}</p>
+        <div class="story-cta">Open the full card</div>
         <small>living-atlas-7622a.web.app</small>
       </div>
     </section>
@@ -765,6 +1041,61 @@ function cleanLocations(value: unknown): MappableLocation[] {
     })
     .filter((location): location is MappableLocation => !!location)
     .slice(0, 6);
+}
+
+function cleanTravelCard(value: unknown): TravelGuideCard | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const data = value as Record<string, unknown>;
+  const title = cleanText(data.title, 140);
+  const description = cleanText(data.description, 600);
+  if (!title || !description) {
+    return null;
+  }
+
+  return {
+    id: cleanText(data.id, 120) || 'guide-card',
+    title,
+    subtitle: cleanText(data.subtitle, 180) || null,
+    description,
+    neighborhood: cleanText(data.neighborhood, 160) || null,
+    best_for: cleanText(data.best_for, 160) || null,
+    vibe: cleanText(data.vibe, 80) || null,
+    local_tip: cleanText(data.local_tip, 240) || null,
+    cost: cleanText(data.cost, 80) || null,
+    time_hint: cleanText(data.time_hint, 80) || null,
+    image_url: safeUrl(data.image_url) || null,
+    map_query: cleanText(data.map_query, 240) || null,
+    source_url: safeUrl(data.source_url) || null,
+  };
+}
+
+function travelFacts(card: TravelGuideCard): string[] {
+  return [
+    card.subtitle || card.neighborhood || '',
+    card.best_for ? `Best for: ${card.best_for}` : '',
+    card.local_tip ? `Local move: ${card.local_tip}` : '',
+    card.cost ? `Cost: ${card.cost}` : '',
+    card.time_hint ? `Timing: ${card.time_hint}` : '',
+  ].filter(Boolean).slice(0, 4);
+}
+
+function travelCardMapUrl(card: TravelGuideCard): string {
+  const query = card.map_query?.trim() || card.subtitle?.trim() || card.title;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+function safeUrl(value: unknown): string | null {
+  if (typeof value !== 'string' || !value.trim()) {
+    return null;
+  }
+  try {
+    const parsed = new URL(value.trim());
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
 }
 
 function timestampToIso(value: unknown): string | null {
