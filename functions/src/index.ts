@@ -560,6 +560,36 @@ async function requeueStaleUrlDocuments(
 
 type PublicDocumentCandidate = Record<string, unknown> & { id: string };
 
+type WikipediaSearchResponse = {
+  query?: {
+    search?: Array<{
+      pageid?: number;
+      title?: string;
+    }>;
+  };
+};
+
+type WikipediaPageImagesResponse = {
+  query?: {
+    pages?: Record<string, {
+      pageid?: number;
+      title?: string;
+      fullurl?: string;
+      original?: { source?: string };
+      thumbnail?: { source?: string };
+    }>;
+  };
+};
+
+type AutomatedCoverResult = {
+  atlasId: string;
+  heroUrl: string;
+  sourceUrl: string;
+  pageTitle: string;
+  contentType: string;
+  bytes: number;
+};
+
 async function serializePublicAtlas(
   atlasId: string,
   atlas: Record<string, unknown>,
@@ -611,6 +641,126 @@ async function buildDocumentDownloadUrl(storagePath: string): Promise<string> {
   }
 
   return `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket.name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
+}
+
+function textFromUnknown(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function slugPart(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 64) || 'cover';
+}
+
+function imageExtensionForContentType(contentType: string): string | null {
+  const normalized = contentType.toLowerCase().split(';')[0]?.trim();
+  if (normalized === 'image/jpeg' || normalized === 'image/jpg') return 'jpg';
+  if (normalized === 'image/png') return 'png';
+  if (normalized === 'image/webp') return 'webp';
+  return null;
+}
+
+async function fetchJson<T>(url: string): Promise<T> {
+  const response = await fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'User-Agent': 'MyLivingWiki/1.0 cover-image-automation (https://mylivingwiki.com)',
+    },
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!response.ok) {
+    throw new Error(`Request failed with ${response.status}.`);
+  }
+  return await response.json() as T;
+}
+
+async function findWikipediaCoverImage(cityName: string, regionName: string | null): Promise<{ imageUrl: string; pageTitle: string; pageUrl: string }> {
+  const searchTerms = [
+    regionName ? `${cityName}, ${regionName}` : cityName,
+    cityName,
+  ];
+  const seenPageIds = new Set<number>();
+
+  for (const term of searchTerms) {
+    const searchUrl = new URL('https://en.wikipedia.org/w/api.php');
+    searchUrl.searchParams.set('action', 'query');
+    searchUrl.searchParams.set('list', 'search');
+    searchUrl.searchParams.set('format', 'json');
+    searchUrl.searchParams.set('srlimit', '5');
+    searchUrl.searchParams.set('srsearch', term);
+
+    const search = await fetchJson<WikipediaSearchResponse>(searchUrl.toString());
+    const pageIds = (search.query?.search ?? [])
+      .map((result) => result.pageid)
+      .filter((pageId): pageId is number => typeof pageId === 'number' && !seenPageIds.has(pageId));
+    pageIds.forEach((pageId) => seenPageIds.add(pageId));
+    if (pageIds.length === 0) {
+      continue;
+    }
+
+    const imageUrl = new URL('https://en.wikipedia.org/w/api.php');
+    imageUrl.searchParams.set('action', 'query');
+    imageUrl.searchParams.set('format', 'json');
+    imageUrl.searchParams.set('prop', 'pageimages|info');
+    imageUrl.searchParams.set('piprop', 'original|thumbnail');
+    imageUrl.searchParams.set('pithumbsize', '1600');
+    imageUrl.searchParams.set('inprop', 'url');
+    imageUrl.searchParams.set('pageids', pageIds.join('|'));
+
+    const pages = await fetchJson<WikipediaPageImagesResponse>(imageUrl.toString());
+    for (const page of Object.values(pages.query?.pages ?? {})) {
+      const source = page.original?.source ?? page.thumbnail?.source ?? '';
+      const title = page.title ?? term;
+      if (!source || source.toLowerCase().endsWith('.svg')) {
+        continue;
+      }
+      return {
+        imageUrl: source,
+        pageTitle: title,
+        pageUrl: page.fullurl ?? `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/\s+/g, '_'))}`,
+      };
+    }
+  }
+
+  throw new HttpsError('not-found', `No usable Wikipedia cover image found for ${cityName}.`);
+}
+
+async function fetchValidatedCoverImage(imageUrl: string): Promise<{ buffer: Buffer; contentType: string; extension: string }> {
+  const response = await fetch(imageUrl, {
+    headers: {
+      'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
+      'User-Agent': 'MyLivingWiki/1.0 cover-image-automation (https://mylivingwiki.com)',
+    },
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!response.ok) {
+    throw new HttpsError('unavailable', `Image download failed with ${response.status}.`);
+  }
+
+  const contentType = response.headers.get('content-type') ?? '';
+  const extension = imageExtensionForContentType(contentType);
+  if (!extension) {
+    throw new HttpsError('failed-precondition', `Candidate image is not a supported bitmap type (${contentType || 'unknown'}).`);
+  }
+
+  const contentLength = Number(response.headers.get('content-length') ?? '0');
+  const maxBytes = 12 * 1024 * 1024;
+  if (Number.isFinite(contentLength) && contentLength > maxBytes) {
+    throw new HttpsError('failed-precondition', 'Candidate image is larger than 12 MB.');
+  }
+
+  const buffer = Buffer.from(await response.arrayBuffer());
+  if (buffer.length < 50 * 1024) {
+    throw new HttpsError('failed-precondition', 'Candidate image is too small to use as a cover.');
+  }
+  if (buffer.length > maxBytes) {
+    throw new HttpsError('failed-precondition', 'Candidate image is larger than 12 MB.');
+  }
+
+  return { buffer, contentType: contentType.split(';')[0]?.trim() || contentType, extension };
 }
 
 async function buildSpeechCacheDownloadUrl(storagePath: string): Promise<string> {
@@ -1681,8 +1831,91 @@ export const listPlatformUsers = onCall({ region: callableRegion, cors: true }, 
     total: users.length,
     admins: users.filter((user) => user.role === 'admin').length,
     users,
-  };
-});
+	  };
+	});
+
+export const autoUploadAtlasCoverImage = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 120,
+    memory: '1GiB',
+  },
+  async (request): Promise<AutomatedCoverResult> => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    await assertPlatformAdmin(request.auth.uid);
+
+    const atlasId = typeof request.data?.atlasId === 'string' ? request.data.atlasId.trim() : '';
+    const overwrite = request.data?.overwrite === true;
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+
+    const atlasRef = db.collection('atlases').doc(atlasId);
+    const atlasSnapshot = await atlasRef.get();
+    if (!atlasSnapshot.exists) {
+      throw new HttpsError('not-found', 'Atlas not found.');
+    }
+
+    const atlas = atlasSnapshot.data() as Record<string, unknown>;
+    if (atlas.is_public !== true) {
+      throw new HttpsError('failed-precondition', 'Only public Wikis can use automated cover images.');
+    }
+    if (!overwrite && textFromUnknown(atlas.hero_url)) {
+      throw new HttpsError('failed-precondition', 'This Wiki already has a cover image.');
+    }
+
+    const cityConfig = atlas.city_config && typeof atlas.city_config === 'object'
+      ? atlas.city_config as Record<string, unknown>
+      : {};
+    const cityName = textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^my living wiki:\s*/i, '');
+    const regionName = textFromUnknown(cityConfig.region_name) || null;
+    if (!cityName) {
+      throw new HttpsError('failed-precondition', 'This Wiki does not have a city name.');
+    }
+
+    const candidate = await findWikipediaCoverImage(cityName, regionName);
+    const image = await fetchValidatedCoverImage(candidate.imageUrl);
+    const token = randomUUID();
+    const storagePath = `atlases/${atlasId}/hero-auto-${slugPart(cityName)}-${Date.now()}.${image.extension}`;
+    await storage.bucket().file(storagePath).save(image.buffer, {
+      contentType: image.contentType,
+      resumable: false,
+      metadata: {
+        cacheControl: 'public, max-age=31536000',
+        metadata: {
+          firebaseStorageDownloadTokens: token,
+          source: 'wikipedia',
+          sourceUrl: candidate.pageUrl,
+          sourceImageUrl: candidate.imageUrl,
+          sourcePageTitle: candidate.pageTitle,
+        },
+      },
+    });
+
+    const heroUrl = `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(storage.bucket().name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
+    await atlasRef.update({
+      hero_url: heroUrl,
+      hero_image_source: 'wikipedia',
+      hero_image_source_url: candidate.pageUrl,
+      hero_image_source_title: candidate.pageTitle,
+      hero_image_original_url: candidate.imageUrl,
+      updated_at: FieldValue.serverTimestamp(),
+    });
+
+    return {
+      atlasId,
+      heroUrl,
+      sourceUrl: candidate.pageUrl,
+      pageTitle: candidate.pageTitle,
+      contentType: image.contentType,
+      bytes: image.buffer.length,
+    };
+  },
+);
 
 export const addAtlasAdmin = onCall({ region: callableRegion, cors: true, secrets: [sendgridApiKey] }, async (request) => {
   if (!request.auth?.uid) {

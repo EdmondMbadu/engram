@@ -299,11 +299,86 @@
               </div>
             </div>
           }
-        </section>
+	        </section>
 
-        <div class="border-t border-[var(--line)] px-5 py-4">
-          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Templates</p>
-        </div>
+	        <section class="m-5 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+	          <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+	            <div>
+	              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Cover image automation</p>
+	              <h4 class="mt-1 text-lg font-black tracking-tight">Add valid cover images for cities missing one.</h4>
+	              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+	                Finds a Wikimedia image for each location, validates the image response, uploads it to our storage, then saves it as the public cover.
+	              </p>
+	            </div>
+	            <button
+	              type="button"
+	              (click)="automateMissingCoverImages()"
+	              [disabled]="coverlessCityAtlases().length === 0 || automatingCoverImages() || !!automatingCoverImageId()"
+	              class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
+	            >
+	              <span class="material-symbols-outlined text-[1rem]">image_search</span>
+	              <span>{{ automatingCoverImages() ? 'Adding covers...' : 'Automate missing covers' }}</span>
+	            </button>
+	          </div>
+
+	          @if (coverImageAutomationMessage()) {
+	            <div class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--accent)]">
+	              {{ coverImageAutomationMessage() }}
+	            </div>
+	          }
+
+	          @if (coverImageProgress()) {
+	            <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+	              <div class="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+	                <span>{{ coverImageProgress()?.processed }} of {{ coverImageProgress()?.total }} processed · {{ coverImageProgress()?.created }} added · {{ coverImageProgress()?.failed }} failed</span>
+	                <span>{{ coverImageProgressPercent() }}%</span>
+	              </div>
+	              <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--soft-fill)]">
+	                <div class="h-full rounded-full bg-[var(--accent)] transition-all duration-300" [style.width.%]="coverImageProgressPercent()"></div>
+	              </div>
+	            </div>
+	          }
+
+	          @if (coverlessCityAtlases().length === 0 && !coverImageProgress()) {
+	            <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4 text-sm font-semibold text-[var(--muted)]">
+	              Every public city Wiki currently has a cover image.
+	            </div>
+	          } @else {
+	            <div class="mt-4 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
+	              <div class="border-b border-[var(--line)] px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">
+	                Missing covers
+	              </div>
+	              <div class="divide-y divide-[var(--line)]">
+	                @for (atlas of coverlessCityAtlases(); track atlas.id) {
+	                  <div class="grid gap-3 px-4 py-3 md:grid-cols-[1fr_auto] md:items-center">
+	                    <div class="min-w-0">
+	                      <p class="truncate text-sm font-black text-[var(--text)]">{{ displayName(atlas) }}</p>
+	                      <p class="mt-1 text-xs text-[var(--muted)]">{{ cityConfigSummary(atlas) }}</p>
+	                      @if (coverImageStatus(atlas.id); as status) {
+	                        <p [class]="status.state === 'failed' ? 'mt-2 text-xs font-semibold text-[var(--error-text)]' : 'mt-2 text-xs font-semibold text-[var(--accent)]'">
+	                          {{ status.message }}
+	                        </p>
+	                      }
+	                    </div>
+	                    <button
+	                      type="button"
+	                      (click)="automateCoverImage(atlas)"
+	                      [disabled]="automatingCoverImages() || !!automatingCoverImageId()"
+	                      class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35 disabled:cursor-not-allowed disabled:opacity-45"
+	                    >
+	                      <span class="material-symbols-outlined text-[1rem]">add_photo_alternate</span>
+	                      <span>{{ automatingCoverImageId() === atlas.id ? 'Adding...' : 'Add cover' }}</span>
+	                    </button>
+	                  </div>
+	                }
+	              </div>
+	            </div>
+	          }
+	        </section>
+
+	        <div class="border-t border-[var(--line)] px-5 py-4">
+	          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Templates</p>
+	        </div>
 
         <div class="grid gap-0 divide-y divide-[var(--line)]">
         @for (template of cityTemplates; track template.slug) {

@@ -201,6 +201,11 @@ export class AtlasManageComponent {
   readonly bulkCityRows = signal<BulkCityDraft[]>([]);
   readonly bulkCityError = signal<string | null>(null);
   readonly publicCityTemplateKeys = signal<Set<string>>(new Set());
+  readonly automatingCoverImages = signal(false);
+  readonly automatingCoverImageId = signal<string | null>(null);
+  readonly coverImageStatusById = signal<Record<string, { state: 'running' | 'done' | 'failed'; message: string }>>({});
+  readonly coverImageAutomationMessage = signal<string | null>(null);
+  readonly coverImageProgress = signal<{ total: number; processed: number; created: number; failed: number } | null>(null);
   private bulkCityEtaTimer: number | null = null;
   readonly customCityDraft = signal<CustomCityDraft>({
     city_name: '',
@@ -279,6 +284,22 @@ export class AtlasManageComponent {
     const averageMsPerRow = elapsedMs / progress.processed;
     const remainingSeconds = Math.ceil((averageMsPerRow * remainingRows) / 1000);
     return `${this.formatDuration(remainingSeconds)} remaining`;
+  });
+  readonly coverlessCityAtlases = computed(() =>
+    this.atlases()
+      .filter((atlas) =>
+        atlas.is_public
+        && atlas.city_config?.enabled === true
+        && !atlas.hero_url?.trim(),
+      )
+      .sort((a, b) => this.displayName(a).localeCompare(this.displayName(b))),
+  );
+  readonly coverImageProgressPercent = computed(() => {
+    const progress = this.coverImageProgress();
+    if (!progress || progress.total <= 0) {
+      return 0;
+    }
+    return Math.min(100, Math.round((progress.processed / progress.total) * 100));
   });
   readonly weekdays = [
     { value: 0, label: 'Sunday' },
@@ -1060,6 +1081,108 @@ export class AtlasManageComponent {
     this.bulkCityError.set(null);
     this.bulkCityProgress.set(null);
     this.stopBulkCityEtaTimer();
+  }
+
+  coverImageStatus(atlasId: string): { state: 'running' | 'done' | 'failed'; message: string } | null {
+    return this.coverImageStatusById()[atlasId] ?? null;
+  }
+
+  async automateCoverImage(atlas: AtlasItem): Promise<void> {
+    if (this.automatingCoverImages() || this.automatingCoverImageId()) {
+      return;
+    }
+
+    this.automatingCoverImageId.set(atlas.id);
+    this.coverImageAutomationMessage.set(null);
+    this.pageError.set(null);
+    this.coverImageStatusById.update((current) => ({
+      ...current,
+      [atlas.id]: { state: 'running', message: 'Finding and validating image...' },
+    }));
+
+    try {
+      const result = await this.atlasService.autoUploadAtlasCoverImage(atlas.id);
+      this.coverImageStatusById.update((current) => ({
+        ...current,
+        [atlas.id]: { state: 'done', message: `Added cover from ${result.pageTitle}.` },
+      }));
+      this.coverImageAutomationMessage.set(`Added cover image for ${this.displayName(atlas)}.`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Cover image automation failed.';
+      this.coverImageStatusById.update((current) => ({
+        ...current,
+        [atlas.id]: { state: 'failed', message },
+      }));
+      this.pageError.set(message);
+    } finally {
+      this.automatingCoverImageId.set(null);
+    }
+  }
+
+  async automateMissingCoverImages(): Promise<void> {
+    const atlases = this.coverlessCityAtlases();
+    if (atlases.length === 0 || this.automatingCoverImages() || this.automatingCoverImageId()) {
+      return;
+    }
+
+    this.automatingCoverImages.set(true);
+    this.coverImageAutomationMessage.set(null);
+    this.pageError.set(null);
+    this.coverImageProgress.set({
+      total: atlases.length,
+      processed: 0,
+      created: 0,
+      failed: 0,
+    });
+
+    let created = 0;
+    let failed = 0;
+    try {
+      for (const atlas of atlases) {
+        this.automatingCoverImageId.set(atlas.id);
+        this.coverImageStatusById.update((current) => ({
+          ...current,
+          [atlas.id]: { state: 'running', message: 'Finding and validating image...' },
+        }));
+        try {
+          const result = await this.atlasService.autoUploadAtlasCoverImage(atlas.id);
+          created += 1;
+          this.coverImageStatusById.update((current) => ({
+            ...current,
+            [atlas.id]: { state: 'done', message: `Added cover from ${result.pageTitle}.` },
+          }));
+        } catch (error) {
+          failed += 1;
+          const message = error instanceof Error ? error.message : 'Cover image automation failed.';
+          this.coverImageStatusById.update((current) => ({
+            ...current,
+            [atlas.id]: { state: 'failed', message },
+          }));
+        } finally {
+          this.coverImageProgress.update((progress) => progress
+            ? {
+                ...progress,
+                processed: Math.min(progress.total, progress.processed + 1),
+                created,
+                failed,
+              }
+            : progress,
+          );
+        }
+      }
+
+      this.coverImageAutomationMessage.set(
+        failed
+          ? `Added ${created} cover image${created === 1 ? '' : 's'}. ${failed} failed and can be retried.`
+          : `Added ${created} cover image${created === 1 ? '' : 's'}.`,
+      );
+      if (failed === 0) {
+        this.coverImageProgress.set(null);
+      }
+    } finally {
+      this.automatingCoverImages.set(false);
+      this.automatingCoverImageId.set(null);
+    }
   }
 
   async createBulkCityAtlases(): Promise<void> {

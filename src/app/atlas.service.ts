@@ -62,6 +62,15 @@ type AtlasSubscriptionsResponse = {
   subscriptions: AtlasSubscriptionItem[];
 };
 
+export type AutomatedCoverImageResult = {
+  atlasId: string;
+  heroUrl: string;
+  sourceUrl: string;
+  pageTitle: string;
+  contentType: string;
+  bytes: number;
+};
+
 type AtlasNewsletterConfigResponse = {
   config: AtlasNewsletterConfig;
 };
@@ -443,6 +452,18 @@ export class AtlasService {
         ...(atlasDoc.data() as Record<string, unknown>),
       }),
     );
+  }
+
+  async autoUploadAtlasCoverImage(atlasId: string): Promise<AutomatedCoverImageResult> {
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+    const autoUploadAtlasCoverImage = httpsCallable<
+      { atlasId: string },
+      AutomatedCoverImageResult
+    >(this.functions, 'autoUploadAtlasCoverImage');
+    const { data } = await autoUploadAtlasCoverImage({ atlasId });
+    return data;
   }
 
   private async findAnyPublicAtlasBySlug(slug: string): Promise<AtlasItem | null> {
