@@ -1379,6 +1379,27 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     window.open(modal.url, '_blank', 'noopener,noreferrer');
   }
 
+  sharePageHref(platform: string): string {
+    const modal = this.sharePageModal();
+    if (!modal) {
+      return '#';
+    }
+
+    const encodedUrl = encodeURIComponent(modal.url);
+    const encodedTitle = encodeURIComponent(modal.title);
+    const encodedText = encodeURIComponent(`${modal.title} — ${modal.subtitle}`);
+    const encodedTextWithUrl = encodeURIComponent(`${modal.title} — ${modal.subtitle}\n${modal.url}`);
+    const targets: Record<string, string> = {
+      x: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+      whatsapp: `https://wa.me/?text=${encodedTextWithUrl}`,
+      email: `mailto:?subject=${encodedTitle}&body=${encodedTextWithUrl}`,
+    };
+    return targets[platform] ?? '#';
+  }
+
   formatRelativeDateShort(value: { toDate(): Date } | Date | null | undefined): string {
     const date = this.asDate(value);
     if (!date) {
