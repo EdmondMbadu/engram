@@ -1067,7 +1067,7 @@ export class AtlasManageComponent {
       throw new Error('CSV needs a header row and at least one city row.');
     }
 
-    const headers = rows[0].map((header) => header.trim().toLowerCase());
+    const headers = rows[0].map((header) => header.replace(/^\ufeff/, '').trim().toLowerCase());
     const indexFor = (names: string[]) => names.map((name) => headers.indexOf(name)).find((index) => index >= 0) ?? -1;
     const cityIndex = indexFor(['city_name', 'city', 'name']);
     const regionIndex = indexFor(['region_name', 'region', 'state', 'region_state']);
@@ -1082,13 +1082,23 @@ export class AtlasManageComponent {
     const seen = new Set<string>();
     const existingKeys = this.existingCityTemplateKeys();
     return rows.slice(1).map((row, index): BulkCityDraft => {
-      const cityName = row[cityIndex]?.trim() ?? '';
-      const name = titleIndex >= 0 ? row[titleIndex]?.trim() ?? '' : '';
+      const cell = (cellIndex: number): string => (cellIndex >= 0 ? row[cellIndex]?.trim() ?? '' : '');
+      const cityName = cell(cityIndex);
+      const regionName = cell(regionIndex);
+      const timezone = cell(timezoneIndex) || 'America/New_York';
+      const name = cell(titleIndex);
+      const description = cell(descriptionIndex);
       const key = normalizeAdminCityIdentity(cityName || name);
       const slug = this.atlasService.slugify(cityName || name || `row-${index + 2}`);
       const errors: string[] = [];
       if (!cityName) {
         errors.push('Missing city name');
+      }
+      if (titleIndex >= 0 && !name) {
+        errors.push('Missing public title');
+      }
+      if (descriptionIndex >= 0 && !description) {
+        errors.push('Missing description');
       }
       if (!key) {
         errors.push('Missing city identity');
@@ -1099,10 +1109,10 @@ export class AtlasManageComponent {
       return {
         row_number: index + 2,
         city_name: cityName,
-        region_name: regionIndex >= 0 ? row[regionIndex]?.trim() ?? '' : '',
-        timezone: timezoneIndex >= 0 ? row[timezoneIndex]?.trim() ?? '' : 'America/New_York',
+        region_name: regionName,
+        timezone,
         name: name || (cityName ? `My living wiki: ${cityName}` : ''),
-        description: descriptionIndex >= 0 ? row[descriptionIndex]?.trim() ?? '' : '',
+        description,
         slug,
         errors,
         duplicate,
