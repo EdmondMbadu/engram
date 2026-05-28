@@ -65,6 +65,8 @@ interface BulkCityDraft extends CustomCityDraft {
   slug: string;
   errors: string[];
   duplicate: boolean;
+  create_status: 'pending' | 'creating' | 'created' | 'failed';
+  create_error: string | null;
 }
 
 function normalizeAdminCityIdentity(value: string | null | undefined): string {
@@ -224,10 +226,15 @@ export class AtlasManageComponent {
     !!this.customCityDraft().city_name.trim() && !this.creatingCustomCity() && !this.creatingCitySlug(),
   );
   readonly validBulkCityRows = computed(() =>
-    this.bulkCityRows().filter((row) => row.errors.length === 0 && !row.duplicate),
+    this.bulkCityRows().filter((row) =>
+      row.errors.length === 0
+      && !row.duplicate
+      && row.create_status !== 'created'
+      && row.create_status !== 'creating',
+    ),
   );
   readonly skippedBulkCityRows = computed(() =>
-    this.bulkCityRows().filter((row) => row.errors.length > 0 || row.duplicate),
+    this.bulkCityRows().filter((row) => row.errors.length > 0 || row.duplicate || row.create_status === 'created'),
   );
   readonly canCreateBulkCities = computed(() =>
     this.validBulkCityRows().length > 0
@@ -1016,6 +1023,7 @@ export class AtlasManageComponent {
   }
 
   async createBulkCityAtlases(): Promise<void> {
+    this.refreshBulkCityDuplicateStatus();
     const rows = this.validBulkCityRows();
     if (rows.length === 0 || this.creatingBulkCities()) {
       return;
@@ -1027,32 +1035,58 @@ export class AtlasManageComponent {
     this.cityCreationMessage.set(null);
 
     let createdCount = 0;
+    let alreadyCreatedCount = 0;
     const failed: string[] = [];
     try {
       for (const row of rows) {
+        this.updateBulkCityRow(row.row_number, {
+          create_status: 'creating',
+          create_error: null,
+        });
+
         try {
-          const atlasId = await this.atlasService.createCustomCityAtlas({
+          const atlasId = await this.createCustomCityAtlasWithRetry({
             cityName: row.city_name,
             regionName: row.region_name,
             timezone: row.timezone,
             name: row.name,
             description: row.description,
           });
-          if (atlasId) {
-            createdCount += 1;
+          if (!atlasId) {
+            throw new Error('City Wiki was not created. Check that you are signed in and try again.');
           }
+          createdCount += 1;
+          this.addBulkCityIdentityKeys(row);
+          this.updateBulkCityRow(row.row_number, {
+            duplicate: true,
+            create_status: 'created',
+            create_error: null,
+          });
         } catch (error) {
-          failed.push(`${row.city_name}: ${error instanceof Error ? error.message : 'failed'}`);
+          const message = error instanceof Error ? error.message : 'failed';
+          if (this.isAlreadyCreatedError(message)) {
+            alreadyCreatedCount += 1;
+            this.addBulkCityIdentityKeys(row);
+            this.updateBulkCityRow(row.row_number, {
+              duplicate: true,
+              create_status: 'created',
+              create_error: null,
+            });
+          } else {
+            failed.push(`${row.city_name}: ${message}`);
+            this.updateBulkCityRow(row.row_number, {
+              create_status: 'failed',
+              create_error: message,
+            });
+          }
         }
       }
 
       this.cityCreationMessage.set(
         failed.length
-          ? `Created ${createdCount} city Wikis. ${failed.length} row${failed.length === 1 ? '' : 's'} failed.`
-          : `Created ${createdCount} public city Wiki${createdCount === 1 ? '' : 's'}.`,
+          ? `Created ${createdCount} city Wikis. ${alreadyCreatedCount} already existed. ${failed.length} row${failed.length === 1 ? '' : 's'} failed and can be retried.`
+          : `Created ${createdCount} public city Wiki${createdCount === 1 ? '' : 's'}${alreadyCreatedCount ? `; ${alreadyCreatedCount} already existed` : ''}.`,
       );
-      this.bulkCityRows.set([]);
-      this.bulkCityFileName.set(null);
       if (failed.length) {
         this.bulkCityError.set(failed.slice(0, 4).join(' | '));
       }
@@ -1116,8 +1150,72 @@ export class AtlasManageComponent {
         slug,
         errors,
         duplicate,
+        create_status: 'pending',
+        create_error: null,
       };
     });
+  }
+
+  private async createCustomCityAtlasWithRetry(input: CustomCityAtlasInput): Promise<string | null> {
+    const maxAttempts = 3;
+    let lastError: unknown = null;
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+      try {
+        return await this.atlasService.createCustomCityAtlas(input);
+      } catch (error) {
+        lastError = error;
+        const message = error instanceof Error ? error.message : '';
+        if (this.isAlreadyCreatedError(message) || message.toLowerCase().includes('required') || attempt === maxAttempts) {
+          throw error;
+        }
+        await this.wait(600 * attempt);
+      }
+    }
+    throw lastError;
+  }
+
+  private updateBulkCityRow(rowNumber: number, patch: Partial<BulkCityDraft>): void {
+    this.bulkCityRows.update((rows) =>
+      rows.map((row) => (row.row_number === rowNumber ? { ...row, ...patch } : row)),
+    );
+  }
+
+  private addBulkCityIdentityKeys(row: BulkCityDraft): void {
+    const keys = [
+      row.slug,
+      normalizeAdminCityIdentity(row.city_name),
+      normalizeAdminCityIdentity(row.name),
+    ].filter(Boolean);
+    this.publicCityTemplateKeys.update((current) => new Set([...current, ...keys]));
+  }
+
+  private refreshBulkCityDuplicateStatus(): void {
+    const existingKeys = this.existingCityTemplateKeys();
+    this.bulkCityRows.update((rows) =>
+      rows.map((row) => {
+        if (row.errors.length > 0 || row.create_status === 'created') {
+          return row;
+        }
+        const keys = [
+          row.slug,
+          normalizeAdminCityIdentity(row.city_name),
+          normalizeAdminCityIdentity(row.name),
+        ].filter(Boolean);
+        return {
+          ...row,
+          duplicate: keys.some((key) => existingKeys.has(key)),
+        };
+      }),
+    );
+  }
+
+  private isAlreadyCreatedError(message: string): boolean {
+    const normalized = message.toLowerCase();
+    return normalized.includes('already exists') || normalized.includes('already live');
+  }
+
+  private wait(ms: number): Promise<void> {
+    return new Promise((resolve) => window.setTimeout(resolve, ms));
   }
 
   cityTemplateExists(template: CityAtlasTemplate): boolean {
@@ -1154,11 +1252,10 @@ export class AtlasManageComponent {
   }
 
   private async loadPublicCityTemplateSlugs(): Promise<void> {
-    const templateKeys = new Set(this.cityTemplates.flatMap((template) => this.cityIdentityKeysForTemplate(template)));
     try {
       const publicKeys = (await this.atlasService.listPublicAtlases())
         .flatMap((atlas) => this.cityIdentityKeysForAtlas(atlas))
-        .filter((key) => templateKeys.has(key));
+        .filter(Boolean);
       this.publicCityTemplateKeys.set(new Set(publicKeys));
     } catch {
       this.publicCityTemplateKeys.set(new Set());
@@ -1372,9 +1469,11 @@ export class AtlasManageComponent {
     this.deletingId.set(atlas.id);
     this.pageError.set(null);
     try {
-      await this.atlasService.deleteAtlas(atlas.id);
-      this.renamingId.update((current) => (current === atlas.id ? null : current));
-      this.renameDraft.set('');
+	      await this.atlasService.deleteAtlas(atlas.id);
+	      const removedKeys = new Set(this.cityIdentityKeysForAtlas(atlas));
+	      this.publicCityTemplateKeys.update((current) => new Set([...current].filter((key) => !removedKeys.has(key))));
+	      this.renamingId.update((current) => (current === atlas.id ? null : current));
+	      this.renameDraft.set('');
 
       this.usageById.update((current) => {
         const next = { ...current };
