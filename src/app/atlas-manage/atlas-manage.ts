@@ -1206,15 +1206,16 @@ export class AtlasManageComponent {
     });
     this.startBulkCityEtaTimer();
 
-    let createdCount = 0;
-    let alreadyCreatedCount = 0;
-    const failed: string[] = [];
-    try {
-      for (const row of rows) {
-        this.updateBulkCityRow(row.row_number, {
-          create_status: 'creating',
-          create_error: null,
-        });
+	    let createdCount = 0;
+	    let alreadyCreatedCount = 0;
+	    const failed: string[] = [];
+	    try {
+	      let nextIndex = 0;
+	      const processRow = async (row: BulkCityDraft): Promise<void> => {
+	        this.updateBulkCityRow(row.row_number, {
+	          create_status: 'creating',
+	          create_error: null,
+	        });
 
         try {
           const atlasId = await this.createCustomCityAtlasWithRetry({
@@ -1251,13 +1252,26 @@ export class AtlasManageComponent {
             this.incrementBulkCityProgress('failed');
             this.updateBulkCityRow(row.row_number, {
               create_status: 'failed',
-              create_error: message,
-            });
-          }
-        }
-      }
+	              create_error: message,
+	            });
+	          }
+	        }
+	      };
 
-      this.cityCreationMessage.set(
+	      const workerCount = Math.min(3, rows.length);
+	      await Promise.all(
+	        Array.from({ length: workerCount }, async () => {
+	          while (nextIndex < rows.length) {
+	            const row = rows[nextIndex];
+	            nextIndex += 1;
+	            if (row) {
+	              await processRow(row);
+	            }
+	          }
+	        }),
+	      );
+
+	      this.cityCreationMessage.set(
         failed.length
           ? `Created ${createdCount} city Wikis. ${alreadyCreatedCount} already existed. ${failed.length} row${failed.length === 1 ? '' : 's'} failed and can be retried.`
           : `Created ${createdCount} public city Wiki${createdCount === 1 ? '' : 's'}${alreadyCreatedCount ? `; ${alreadyCreatedCount} already existed` : ''}.`,
@@ -1350,23 +1364,44 @@ export class AtlasManageComponent {
     });
   }
 
-  private async createCustomCityAtlasWithRetry(input: CustomCityAtlasInput): Promise<string | null> {
-    const maxAttempts = 3;
-    let lastError: unknown = null;
-    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-      try {
-        return await this.atlasService.createCustomCityAtlas(input);
-      } catch (error) {
-        lastError = error;
-        const message = error instanceof Error ? error.message : '';
-        if (this.isAlreadyCreatedError(message) || message.toLowerCase().includes('required') || attempt === maxAttempts) {
-          throw error;
-        }
-        await this.wait(600 * attempt);
-      }
-    }
-    throw lastError;
-  }
+	  private async createCustomCityAtlasWithRetry(input: CustomCityAtlasInput): Promise<string | null> {
+	    const maxAttempts = 2;
+	    let lastError: unknown = null;
+	    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+	      try {
+	        return await this.withTimeout(
+	          this.atlasService.createCustomCityAtlas(input),
+	          20_000,
+	          `${input.cityName} took longer than 20 seconds. It was skipped so the rest can continue; retry this row after the batch finishes.`,
+	        );
+	      } catch (error) {
+	        lastError = error;
+	        const message = error instanceof Error ? error.message : '';
+	        if (
+	          this.isAlreadyCreatedError(message)
+	          || message.toLowerCase().includes('required')
+	          || message.toLowerCase().includes('took longer than')
+	          || attempt === maxAttempts
+	        ) {
+	          throw error;
+	        }
+	        await this.wait(600 * attempt);
+	      }
+	    }
+	    throw lastError;
+	  }
+
+	  private withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
+	    let timer: number | null = null;
+	    const timeout = new Promise<never>((_, reject) => {
+	      timer = window.setTimeout(() => reject(new Error(message)), ms);
+	    });
+	    return Promise.race([promise, timeout]).finally(() => {
+	      if (timer !== null) {
+	        window.clearTimeout(timer);
+	      }
+	    });
+	  }
 
   private updateBulkCityRow(rowNumber: number, patch: Partial<BulkCityDraft>): void {
     this.bulkCityRows.update((rows) =>
