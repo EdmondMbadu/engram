@@ -14,7 +14,9 @@ type ShareImageKind = 'og' | 'story';
 
 interface ShareCard {
   id: string;
+  atlasId: string | null;
   atlasName: string | null;
+  atlasSlug: string | null;
   question: string;
   answerPreview: string;
   title: string;
@@ -28,7 +30,9 @@ interface ShareCard {
 
 interface TravelCardShare {
   id: string;
+  atlasId: string | null;
   atlasName: string | null;
+  atlasSlug: string | null;
   guideTitle: string | null;
   guideSummary: string | null;
   question: string | null;
@@ -140,9 +144,13 @@ async function loadShareCard(cardId: string): Promise<ShareCard | null> {
   }
 
   const data = snapshot.data() ?? {};
+  const atlasId = typeof data.atlas_id === 'string' ? data.atlas_id : null;
+  const atlasTarget = await loadAtlasShareTarget(atlasId);
   return {
     id: snapshot.id,
-    atlasName: typeof data.atlas_name === 'string' ? data.atlas_name : null,
+    atlasId,
+    atlasName: atlasTarget.name || (typeof data.atlas_name === 'string' ? data.atlas_name : null),
+    atlasSlug: atlasTarget.slug,
     question: cleanText(data.question, 600),
     answerPreview: cleanText(data.answer_preview, 900),
     title: cleanText(data.title, 120) || 'A Philly Answer Worth Sharing',
@@ -166,16 +174,44 @@ async function loadTravelCardShare(shareId: string): Promise<TravelCardShare | n
   if (!card) {
     return null;
   }
+  const atlasId = typeof data.atlas_id === 'string' ? data.atlas_id : null;
+  const atlasTarget = await loadAtlasShareTarget(atlasId);
 
   return {
     id: snapshot.id,
-    atlasName: cleanText(data.atlas_name, 120) || null,
+    atlasId,
+    atlasName: atlasTarget.name || cleanText(data.atlas_name, 120) || null,
+    atlasSlug: atlasTarget.slug,
     guideTitle: cleanText(data.guide_title, 160) || null,
     guideSummary: cleanText(data.guide_summary, 240) || null,
     question: cleanText(data.question, 500) || null,
     card,
     updatedAt: timestampToIso(data.updated_at) ?? timestampToIso(data.created_at),
   };
+}
+
+async function loadAtlasShareTarget(atlasId: string | null): Promise<{ name: string | null; slug: string | null }> {
+  if (!atlasId) {
+    return { name: null, slug: null };
+  }
+
+  try {
+    const snapshot = await db.collection('atlases').doc(atlasId).get();
+    if (!snapshot.exists) {
+      return { name: null, slug: null };
+    }
+    const data = snapshot.data() ?? {};
+    return {
+      name: cleanText(data.name, 120) || null,
+      slug: normalizeSlug(data.slug),
+    };
+  } catch (error) {
+    logger.warn('Failed to load share atlas target.', {
+      atlasId,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return { name: null, slug: null };
+  }
 }
 
 async function getOrRenderShareImage(card: ShareCard, kind: ShareImageKind): Promise<Buffer> {
@@ -190,6 +226,7 @@ async function getOrRenderShareImage(card: ShareCard, kind: ShareImageKind): Pro
       didYouKnow: card.didYouKnow,
       locations: card.mappableLocations,
       atlasName: card.atlasName,
+      atlasSlug: card.atlasSlug,
       updatedAt: card.updatedAt,
     }))
     .digest('hex')
@@ -228,6 +265,7 @@ async function getOrRenderTravelImage(share: TravelCardShare, kind: ShareImageKi
       imageVersion,
       kind,
       atlasName: share.atlasName,
+      atlasSlug: share.atlasSlug,
       guideTitle: share.guideTitle,
       guideSummary: share.guideSummary,
       question: share.question,
@@ -316,6 +354,8 @@ function buildSharePageHtml(card: ShareCard): string {
   const description = card.subtitle || card.question;
   const shareUrl = `${appUrl}/share/answer-card/${encodeURIComponent(card.id)}`;
   const appCardUrl = `${appUrl}/answer-card/${encodeURIComponent(card.id)}`;
+  const wikiChatUrl = buildWikiChatUrl(card.atlasSlug);
+  const wikiLabel = card.atlasName ? `Ask ${card.atlasName}` : 'Open this living wiki';
   const imageCacheKey = encodeURIComponent(card.updatedAt ?? imageVersion);
   const ogImage = `${shareUrl}/og.png?v=${imageCacheKey}`;
   const storyImage = `${shareUrl}/story.png?v=${imageCacheKey}`;
@@ -359,6 +399,7 @@ function buildSharePageHtml(card: ShareCard): string {
         ${facts.slice(0, 4).map((fact) => `<p>${escapeHtml(fact)}</p>`).join('')}
       </div>
       <div class="actions">
+        <a href="${escapeHtml(wikiChatUrl)}">${escapeHtml(wikiLabel)}</a>
         <a href="${escapeHtml(appCardUrl)}">Open full card</a>
         <a href="${escapeHtml(storyImage)}" download>Download story image</a>
       </div>
@@ -377,6 +418,8 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
   const storyImage = `${shareUrl}/story.png?v=${imageCacheKey}`;
   const mapUrl = travelCardMapUrl(share.card);
   const sourceUrl = safeUrl(share.card.source_url);
+  const wikiChatUrl = buildWikiChatUrl(share.atlasSlug);
+  const wikiLabel = share.atlasName ? `Ask ${share.atlasName}` : 'Open this living wiki';
 
   return `<!doctype html>
 <html lang="en">
@@ -415,6 +458,7 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
         ${travelFacts(share.card).map((fact) => `<p>${escapeHtml(fact)}</p>`).join('')}
       </div>
       <div class="actions">
+        <a href="${escapeHtml(wikiChatUrl)}">${escapeHtml(wikiLabel)}</a>
         <a href="${escapeHtml(mapUrl)}">Open map</a>
         ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}">Read source</a>` : ''}
         <a href="${escapeHtml(storyImage)}" download>Download story image</a>
@@ -1096,6 +1140,18 @@ function safeUrl(value: unknown): string | null {
   } catch {
     return null;
   }
+}
+
+function normalizeSlug(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const slug = value.trim().toLowerCase();
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ? slug : null;
+}
+
+function buildWikiChatUrl(slug: string | null): string {
+  return slug ? `${appUrl}/chat/${encodeURIComponent(slug)}` : `${appUrl}/public-wikis`;
 }
 
 function timestampToIso(value: unknown): string | null {
