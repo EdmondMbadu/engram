@@ -185,6 +185,7 @@ export class AtlasManageComponent {
   readonly creatingCitySlug = signal<string | null>(null);
   readonly creatingCustomCity = signal(false);
   readonly creatingBulkCities = signal(false);
+  readonly bulkCityProgress = signal<{ total: number; processed: number; created: number; failed: number; skipped: number } | null>(null);
   readonly cityCreationMessage = signal<string | null>(null);
   readonly bulkCityFileName = signal<string | null>(null);
   readonly bulkCityRows = signal<BulkCityDraft[]>([]);
@@ -242,6 +243,13 @@ export class AtlasManageComponent {
     && !this.creatingCustomCity()
     && !this.creatingCitySlug(),
   );
+  readonly bulkCityProgressPercent = computed(() => {
+    const progress = this.bulkCityProgress();
+    if (!progress || progress.total <= 0) {
+      return 0;
+    }
+    return Math.min(100, Math.round((progress.processed / progress.total) * 100));
+  });
   readonly weekdays = [
     { value: 0, label: 'Sunday' },
     { value: 1, label: 'Monday' },
@@ -1020,6 +1028,7 @@ export class AtlasManageComponent {
     this.bulkCityFileName.set(null);
     this.bulkCityRows.set([]);
     this.bulkCityError.set(null);
+    this.bulkCityProgress.set(null);
   }
 
   async createBulkCityAtlases(): Promise<void> {
@@ -1033,6 +1042,13 @@ export class AtlasManageComponent {
     this.pageError.set(null);
     this.bulkCityError.set(null);
     this.cityCreationMessage.set(null);
+    this.bulkCityProgress.set({
+      total: rows.length,
+      processed: 0,
+      created: 0,
+      failed: 0,
+      skipped: 0,
+    });
 
     let createdCount = 0;
     let alreadyCreatedCount = 0;
@@ -1057,6 +1073,7 @@ export class AtlasManageComponent {
           }
           createdCount += 1;
           this.addBulkCityIdentityKeys(row);
+          this.incrementBulkCityProgress('created');
           this.updateBulkCityRow(row.row_number, {
             duplicate: true,
             create_status: 'created',
@@ -1067,6 +1084,7 @@ export class AtlasManageComponent {
           if (this.isAlreadyCreatedError(message)) {
             alreadyCreatedCount += 1;
             this.addBulkCityIdentityKeys(row);
+            this.incrementBulkCityProgress('skipped');
             this.updateBulkCityRow(row.row_number, {
               duplicate: true,
               create_status: 'created',
@@ -1074,6 +1092,7 @@ export class AtlasManageComponent {
             });
           } else {
             failed.push(`${row.city_name}: ${message}`);
+            this.incrementBulkCityProgress('failed');
             this.updateBulkCityRow(row.row_number, {
               create_status: 'failed',
               create_error: message,
@@ -1093,6 +1112,19 @@ export class AtlasManageComponent {
     } finally {
       this.creatingBulkCities.set(false);
     }
+  }
+
+  private incrementBulkCityProgress(kind: 'created' | 'failed' | 'skipped'): void {
+    this.bulkCityProgress.update((progress) => {
+      if (!progress) {
+        return progress;
+      }
+      return {
+        ...progress,
+        processed: Math.min(progress.total, progress.processed + 1),
+        [kind]: progress[kind] + 1,
+      };
+    });
   }
 
   private parseBulkCityCsv(csv: string): BulkCityDraft[] {

@@ -215,21 +215,45 @@
             </div>
           }
 
-          @if (bulkCityRows().length > 0) {
-            <div class="mt-4 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
-              <div class="flex flex-col gap-3 border-b border-[var(--line)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Preview</p>
-                <button
-                  type="button"
-                  (click)="createBulkCityAtlases()"
+	          @if (bulkCityRows().length > 0) {
+	            <div class="mt-4 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
+	              <div class="flex flex-col gap-3 border-b border-[var(--line)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+	                <div>
+	                  <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Preview</p>
+	                  @if (bulkCityProgress()) {
+	                    <p class="mt-1 text-xs font-semibold text-[var(--muted)]">
+	                      {{ bulkCityProgress()?.processed }} of {{ bulkCityProgress()?.total }} processed ·
+	                      {{ bulkCityProgress()?.created }} created ·
+	                      {{ bulkCityProgress()?.failed }} failed ·
+	                      {{ bulkCityProgress()?.skipped }} skipped
+	                    </p>
+	                  }
+	                </div>
+	                <button
+	                  type="button"
+	                  (click)="createBulkCityAtlases()"
                   [disabled]="!canCreateBulkCities()"
                   class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <span class="material-symbols-outlined text-[1rem]">playlist_add_check</span>
-                  <span>{{ creatingBulkCities() ? 'Creating...' : 'Create valid rows' }}</span>
-                </button>
-              </div>
-              <div class="max-h-[24rem] overflow-auto">
+	                  <span>{{ creatingBulkCities() ? 'Creating...' : 'Create valid rows' }}</span>
+	                </button>
+	              </div>
+	              @if (bulkCityProgress()) {
+	                <div class="border-b border-[var(--line)] px-4 py-3">
+	                  <div class="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+	                    <span>Bulk import progress</span>
+	                    <span>{{ bulkCityProgressPercent() }}%</span>
+	                  </div>
+	                  <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--soft-fill)]">
+	                    <div
+	                      class="h-full rounded-full bg-[var(--accent)] transition-all duration-300"
+	                      [style.width.%]="bulkCityProgressPercent()"
+	                    ></div>
+	                  </div>
+	                </div>
+	              }
+	              <div class="max-h-[24rem] overflow-auto">
                 <table class="w-full min-w-[860px] text-left text-sm">
                   <thead class="border-b border-[var(--line)] bg-[var(--soft-fill)] text-[10px] uppercase tracking-[0.16em] text-[var(--muted)]">
                     <tr>
