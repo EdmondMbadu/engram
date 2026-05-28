@@ -1,5 +1,5 @@
 window.__LIVING_ATLAS_CONFIG__ = {
-  publicAppUrl: 'https://REPLACE_ME.web.app',
+  publicAppUrl: 'https://mylivingwiki.com',
   firebase: {
     apiKey: 'REPLACE_ME',
     authDomain: 'REPLACE_ME.firebaseapp.com',

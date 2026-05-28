@@ -7,7 +7,7 @@ import puppeteer from 'puppeteer-extra';
 import { db, storage } from './firebase';
 import type { MappableLocation, TravelGuideCard } from './types';
 
-const appUrl = 'https://living-atlas-7622a.web.app';
+const appUrl = 'https://mylivingwiki.com';
 const imageVersion = 'v1';
 
 type ShareImageKind = 'og' | 'story';
@@ -507,7 +507,7 @@ function buildStoryImageHtml(card: ShareCard): string {
       <div class="story-bottom">
         <p>${escapeHtml(fact)}</p>
         <div class="story-cta">See the full guide</div>
-        <small>living-atlas-7622a.web.app</small>
+        <small>mylivingwiki.com</small>
       </div>
     </section>
   `);
@@ -584,7 +584,7 @@ function buildTravelStoryImageHtml(share: TravelCardShare): string {
       <div class="story-bottom">
         <p>${escapeHtml(share.card.local_tip || share.card.description || share.card.subtitle || '')}</p>
         <div class="story-cta">Open the full card</div>
-        <small>living-atlas-7622a.web.app</small>
+        <small>mylivingwiki.com</small>
       </div>
     </section>
   `);

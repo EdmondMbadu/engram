@@ -8,6 +8,7 @@ import { AuthService } from '../auth.service';
 import { ChatService } from '../chat.service';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { getPublicAppUrl } from '../firebase.config';
 import { formatAssistantMessageHtml } from '../chat/message-format.util';
 
 interface SharedChatMessage {
@@ -439,7 +440,9 @@ export class SharedChatComponent {
   }
 
   private buildAnswerCardShareUrl(cardId: string): string {
-    return `${window.location.origin}/share/answer-card/${encodeURIComponent(cardId)}`;
+    const configuredBaseUrl = typeof window !== 'undefined' ? getPublicAppUrl() : null;
+    const baseUrl = configuredBaseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
+    return `${baseUrl}/share/answer-card/${encodeURIComponent(cardId)}`;
   }
 
   cleanTravelCardText(value: string | null | undefined): string {
