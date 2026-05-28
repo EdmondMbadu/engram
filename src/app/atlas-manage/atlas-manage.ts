@@ -1106,6 +1106,11 @@ export class AtlasManageComponent {
           ? `Created ${createdCount} city Wikis. ${alreadyCreatedCount} already existed. ${failed.length} row${failed.length === 1 ? '' : 's'} failed and can be retried.`
           : `Created ${createdCount} public city Wiki${createdCount === 1 ? '' : 's'}${alreadyCreatedCount ? `; ${alreadyCreatedCount} already existed` : ''}.`,
       );
+      if (failed.length === 0) {
+        this.bulkCityRows.set([]);
+        this.bulkCityFileName.set(null);
+        this.bulkCityProgress.set(null);
+      }
       if (failed.length) {
         this.bulkCityError.set(failed.slice(0, 4).join(' | '));
       }
