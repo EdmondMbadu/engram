@@ -1176,9 +1176,7 @@ export class AtlasManageComponent {
           ? `Added ${created} cover image${created === 1 ? '' : 's'}. ${failed} failed and can be retried.`
           : `Added ${created} cover image${created === 1 ? '' : 's'}.`,
       );
-      if (failed === 0) {
-        this.coverImageProgress.set(null);
-      }
+      this.coverImageProgress.set(null);
     } finally {
       this.automatingCoverImages.set(false);
       this.automatingCoverImageId.set(null);

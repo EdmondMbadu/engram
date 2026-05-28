@@ -581,6 +581,28 @@ type WikipediaPageImagesResponse = {
   };
 };
 
+type WikimediaCommonsImageResponse = {
+  query?: {
+    pages?: Record<string, {
+      pageid?: number;
+      title?: string;
+      imageinfo?: Array<{
+        url?: string;
+        thumburl?: string;
+        mime?: string;
+        size?: number;
+      }>;
+    }>;
+  };
+};
+
+type CoverImageCandidate = {
+  imageUrl: string;
+  pageTitle: string;
+  pageUrl: string;
+  source: 'wikipedia' | 'wikimedia-commons';
+};
+
 type AutomatedCoverResult = {
   atlasId: string;
   heroUrl: string;
@@ -677,7 +699,32 @@ async function fetchJson<T>(url: string): Promise<T> {
   return await response.json() as T;
 }
 
-async function findWikipediaCoverImage(cityName: string, regionName: string | null): Promise<{ imageUrl: string; pageTitle: string; pageUrl: string }> {
+function canTryCoverImageUrl(url: string): boolean {
+  const normalized = url.toLowerCase().split('?')[0] ?? '';
+  return !!url
+    && !normalized.endsWith('.svg')
+    && !normalized.endsWith('.tif')
+    && !normalized.endsWith('.tiff');
+}
+
+function addCoverCandidate(
+  candidates: CoverImageCandidate[],
+  seenUrls: Set<string>,
+  candidate: CoverImageCandidate,
+): void {
+  if (!canTryCoverImageUrl(candidate.imageUrl) || seenUrls.has(candidate.imageUrl)) {
+    return;
+  }
+  seenUrls.add(candidate.imageUrl);
+  candidates.push(candidate);
+}
+
+async function collectWikipediaCoverImageCandidates(
+  cityName: string,
+  regionName: string | null,
+  candidates: CoverImageCandidate[],
+  seenUrls: Set<string>,
+): Promise<void> {
   const searchTerms = [
     regionName ? `${cityName}, ${regionName}` : cityName,
     cityName,
@@ -712,20 +759,101 @@ async function findWikipediaCoverImage(cityName: string, regionName: string | nu
 
     const pages = await fetchJson<WikipediaPageImagesResponse>(imageUrl.toString());
     for (const page of Object.values(pages.query?.pages ?? {})) {
-      const source = page.original?.source ?? page.thumbnail?.source ?? '';
       const title = page.title ?? term;
-      if (!source || source.toLowerCase().endsWith('.svg')) {
+      const pageUrl = page.fullurl ?? `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/\s+/g, '_'))}`;
+      for (const source of [page.thumbnail?.source, page.original?.source]) {
+        if (!source) {
+          continue;
+        }
+        addCoverCandidate(candidates, seenUrls, {
+          imageUrl: source,
+          pageTitle: title,
+          pageUrl,
+          source: 'wikipedia',
+        });
+      }
+    }
+  }
+}
+
+async function collectCommonsCoverImageCandidates(
+  cityName: string,
+  regionName: string | null,
+  candidates: CoverImageCandidate[],
+  seenUrls: Set<string>,
+): Promise<void> {
+  const place = regionName ? `${cityName} ${regionName}` : cityName;
+  const searchTerms = [
+    `${place} skyline`,
+    `${place} downtown`,
+    `${place} city`,
+    place,
+  ];
+
+  for (const term of searchTerms) {
+    const url = new URL('https://commons.wikimedia.org/w/api.php');
+    url.searchParams.set('action', 'query');
+    url.searchParams.set('format', 'json');
+    url.searchParams.set('generator', 'search');
+    url.searchParams.set('gsrsearch', term);
+    url.searchParams.set('gsrnamespace', '6');
+    url.searchParams.set('gsrlimit', '8');
+    url.searchParams.set('prop', 'imageinfo');
+    url.searchParams.set('iiprop', 'url|mime|size');
+    url.searchParams.set('iiurlwidth', '1800');
+
+    const data = await fetchJson<WikimediaCommonsImageResponse>(url.toString());
+    for (const page of Object.values(data.query?.pages ?? {})) {
+      const image = page.imageinfo?.[0];
+      if (!image) {
         continue;
       }
+      const title = page.title ?? term;
+      const mime = image.mime?.toLowerCase() ?? '';
+      if (mime && !['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(mime)) {
+        continue;
+      }
+      for (const source of [image.thumburl, image.url]) {
+        if (!source) {
+          continue;
+        }
+        addCoverCandidate(candidates, seenUrls, {
+          imageUrl: source,
+          pageTitle: title.replace(/^File:/i, ''),
+          pageUrl: `https://commons.wikimedia.org/wiki/${encodeURIComponent(title.replace(/\s+/g, '_'))}`,
+          source: 'wikimedia-commons',
+        });
+      }
+    }
+  }
+}
+
+async function findValidatedCoverImage(cityName: string, regionName: string | null): Promise<{ candidate: CoverImageCandidate; image: { buffer: Buffer; contentType: string; extension: string } }> {
+  const candidates: CoverImageCandidate[] = [];
+  const seenUrls = new Set<string>();
+  await collectWikipediaCoverImageCandidates(cityName, regionName, candidates, seenUrls);
+  await collectCommonsCoverImageCandidates(cityName, regionName, candidates, seenUrls);
+
+  if (candidates.length === 0) {
+    throw new HttpsError('not-found', `No usable Wikimedia cover image candidates found for ${cityName}.`);
+  }
+
+  const failures: string[] = [];
+  for (const candidate of candidates.slice(0, 30)) {
+    try {
       return {
-        imageUrl: source,
-        pageTitle: title,
-        pageUrl: page.fullurl ?? `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/\s+/g, '_'))}`,
+        candidate,
+        image: await fetchValidatedCoverImage(candidate.imageUrl),
       };
+    } catch (error) {
+      failures.push(error instanceof Error ? error.message : 'candidate failed');
     }
   }
 
-  throw new HttpsError('not-found', `No usable Wikipedia cover image found for ${cityName}.`);
+  throw new HttpsError(
+    'failed-precondition',
+    `No valid bitmap cover image found after ${Math.min(candidates.length, 30)} candidates. Last issue: ${failures.at(-1) ?? 'unknown failure'}`,
+  );
 }
 
 async function fetchValidatedCoverImage(imageUrl: string): Promise<{ buffer: Buffer; contentType: string; extension: string }> {
@@ -1877,8 +2005,7 @@ export const autoUploadAtlasCoverImage = onCall(
       throw new HttpsError('failed-precondition', 'This Wiki does not have a city name.');
     }
 
-    const candidate = await findWikipediaCoverImage(cityName, regionName);
-    const image = await fetchValidatedCoverImage(candidate.imageUrl);
+    const { candidate, image } = await findValidatedCoverImage(cityName, regionName);
     const token = randomUUID();
     const storagePath = `atlases/${atlasId}/hero-auto-${slugPart(cityName)}-${Date.now()}.${image.extension}`;
     await storage.bucket().file(storagePath).save(image.buffer, {
@@ -1888,7 +2015,7 @@ export const autoUploadAtlasCoverImage = onCall(
         cacheControl: 'public, max-age=31536000',
         metadata: {
           firebaseStorageDownloadTokens: token,
-          source: 'wikipedia',
+          source: candidate.source,
           sourceUrl: candidate.pageUrl,
           sourceImageUrl: candidate.imageUrl,
           sourcePageTitle: candidate.pageTitle,
@@ -1899,7 +2026,7 @@ export const autoUploadAtlasCoverImage = onCall(
     const heroUrl = `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(storage.bucket().name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
     await atlasRef.update({
       hero_url: heroUrl,
-      hero_image_source: 'wikipedia',
+      hero_image_source: candidate.source,
       hero_image_source_url: candidate.pageUrl,
       hero_image_source_title: candidate.pageTitle,
       hero_image_original_url: candidate.imageUrl,
