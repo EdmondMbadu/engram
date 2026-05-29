@@ -5,7 +5,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
-import { PlaceReviewsService, type CityPlaceCandidate, type CityReviewedPlace } from '../place-reviews.service';
+import { PlaceReviewsService, type CityPlaceCandidate, type CityPlaceReview, type CityReviewedPlace } from '../place-reviews.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
@@ -32,6 +32,11 @@ export class CityPlacesComponent implements OnDestroy {
   readonly reviewedPlacesLoading = signal(false);
   readonly reviewedPlaceSearchQuery = signal('');
   readonly selectedMapPlace = signal<CityPlaceCandidate | null>(null);
+  readonly selectedDetailPlace = signal<CityReviewedPlace | null>(null);
+  readonly placeDetailReviews = signal<CityPlaceReview[]>([]);
+  readonly placeDetailReviewsLoading = signal(false);
+  readonly placeDetailError = signal<string | null>(null);
+  readonly placeDrawerOpen = signal(false);
   readonly placeSearchQuery = signal('');
   readonly placeSearchResults = signal<CityPlaceCandidate[]>([]);
   readonly placeSearchLoading = signal(false);
@@ -67,6 +72,14 @@ export class CityPlacesComponent implements OnDestroy {
   });
   readonly mapEmbedUrl = computed<SafeResourceUrl>(() => {
     const place = this.mapPlace();
+    const query = place?.lat !== null && place?.lng !== null && typeof place?.lat === 'number' && typeof place?.lng === 'number'
+      ? `${place.lat},${place.lng}`
+      : [place?.name || this.cityName(), place?.address || this.country()].filter(Boolean).join(', ');
+    const url = `https://www.google.com/maps?q=${encodeURIComponent(query)}&z=${place ? '15' : '11'}&output=embed`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  });
+  readonly detailMapEmbedUrl = computed<SafeResourceUrl>(() => {
+    const place = this.selectedDetailPlace();
     const query = place?.lat !== null && place?.lng !== null && typeof place?.lat === 'number' && typeof place?.lng === 'number'
       ? `${place.lat},${place.lng}`
       : [place?.name || this.cityName(), place?.address || this.country()].filter(Boolean).join(', ');
@@ -246,6 +259,56 @@ export class CityPlacesComponent implements OnDestroy {
     this.selectedMapPlace.set(place);
   }
 
+  async openPlaceDrawer(place: CityReviewedPlace): Promise<void> {
+    const atlasId = this.atlas()?.id;
+    if (!atlasId) {
+      return;
+    }
+
+    this.selectedDetailPlace.set(place);
+    this.placeDrawerOpen.set(true);
+    this.placeDetailReviews.set([]);
+    this.placeDetailError.set(null);
+    this.placeDetailReviewsLoading.set(true);
+
+    try {
+      const reviews = await this.placeReviewsService.listCityPlaceReviews(atlasId, place.id);
+      if (this.selectedDetailPlace()?.id === place.id) {
+        this.placeDetailReviews.set(reviews);
+      }
+    } catch (error) {
+      if (this.selectedDetailPlace()?.id === place.id) {
+        const message = typeof (error as { message?: unknown })?.message === 'string'
+          ? (error as { message: string }).message
+          : 'Could not load reviews for this place.';
+        this.placeDetailError.set(message);
+      }
+    } finally {
+      if (this.selectedDetailPlace()?.id === place.id) {
+        this.placeDetailReviewsLoading.set(false);
+      }
+    }
+  }
+
+  closePlaceDrawer(): void {
+    this.placeDrawerOpen.set(false);
+  }
+
+  formatReviewDate(value: string | null): string {
+    if (!value) {
+      return 'Recently';
+    }
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return 'Recently';
+    }
+    return new Intl.DateTimeFormat(undefined, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date);
+  }
+
   setPlaceReviewRating(rating: number): void {
     this.placeReviewRating.set(rating);
   }
@@ -336,6 +399,10 @@ export class CityPlacesComponent implements OnDestroy {
     this.placeSearchResults.set([]);
     this.reviewedPlaceSearchQuery.set('');
     this.selectedMapPlace.set(null);
+    this.selectedDetailPlace.set(null);
+    this.placeDetailReviews.set([]);
+    this.placeDetailError.set(null);
+    this.placeDrawerOpen.set(false);
     this.placeSearchLoading.set(false);
     this.selectedReviewPlace.set(null);
     this.placeReviewRating.set(5);

@@ -939,6 +939,20 @@ type CityPlaceRecord = CityPlaceCandidate & {
   latestReviewAt: string | null;
 };
 
+type CityPlaceReviewRecord = {
+  id: string;
+  atlasId: string;
+  citySlug: string;
+  placeId: string;
+  googlePlaceId: string;
+  placeName: string;
+  rating: number;
+  text: string;
+  reviewerType: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+};
+
 type GooglePlacesTextSearchResponse = {
   status?: string;
   error_message?: string;
@@ -1028,6 +1042,22 @@ function serializeCityPlace(snapshotId: string, data: Record<string, unknown>): 
     latestReviewText: textFromUnknown(data.latest_review_text),
     latestReviewRating: typeof data.latest_review_rating === 'number' ? data.latest_review_rating : null,
     latestReviewAt: timestampToIso(data.latest_review_at),
+  };
+}
+
+function serializeCityPlaceReview(snapshotId: string, data: Record<string, unknown>): CityPlaceReviewRecord {
+  return {
+    id: snapshotId,
+    atlasId: textFromUnknown(data.atlas_id),
+    citySlug: textFromUnknown(data.city_slug),
+    placeId: textFromUnknown(data.place_id),
+    googlePlaceId: textFromUnknown(data.google_place_id),
+    placeName: textFromUnknown(data.place_name),
+    rating: typeof data.rating === 'number' ? data.rating : 0,
+    text: textFromUnknown(data.text),
+    reviewerType: textFromUnknown(data.reviewer_type) || 'anonymous',
+    createdAt: timestampToIso(data.created_at),
+    updatedAt: timestampToIso(data.updated_at),
   };
 }
 
@@ -2211,6 +2241,34 @@ export const searchCityPlaces = onCall(
   },
 );
 
+export const listCityPlaceReviews = onCall({ region: callableRegion, cors: true }, async (request) => {
+  const atlasId = textFromUnknown(request.data?.atlasId);
+  const placeId = textFromUnknown(request.data?.placeId);
+  if (!atlasId || !placeId) {
+    throw new HttpsError('invalid-argument', 'Atlas ID and place ID are required.');
+  }
+
+  const atlas = await loadPublicAtlasById(atlasId);
+  assertPublicCityAtlas(atlas);
+
+  const snapshot = await db
+    .collection('city_place_reviews')
+    .where('atlas_id', '==', atlasId)
+    .where('place_id', '==', placeId)
+    .limit(120)
+    .get();
+
+  const reviews = snapshot.docs
+    .map((doc) => serializeCityPlaceReview(doc.id, doc.data() as Record<string, unknown>))
+    .sort((a, b) => {
+      const aTime = Date.parse(a.createdAt ?? a.updatedAt ?? '') || 0;
+      const bTime = Date.parse(b.createdAt ?? b.updatedAt ?? '') || 0;
+      return bTime - aTime;
+    });
+
+  return { reviews };
+});
+
 export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true, timeoutSeconds: 30 }, async (request) => {
   const atlasId = textFromUnknown(request.data?.atlasId);
   const place = (request.data?.place ?? {}) as Record<string, unknown>;
@@ -2232,9 +2290,8 @@ export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true
   const citySlug = textFromUnknown(atlas.slug) || slugPart(cityAtlasSearchContext(atlas));
   const reviewerKey = anonymousPlaceReviewerKey(request.auth?.uid, request.data?.anonymousVisitorId);
   const placeDocId = cityScopedPlaceDocId(atlasId, googlePlaceId);
-  const reviewId = `${placeDocId}_${reviewerHash(reviewerKey)}`;
   const placeRef = db.collection('city_places').doc(placeDocId);
-  const reviewRef = db.collection('city_place_reviews').doc(reviewId);
+  const reviewRef = db.collection('city_place_reviews').doc();
   const types = Array.isArray(place.types) ? place.types.map((type) => textFromUnknown(type)).filter(Boolean).slice(0, 12) : [];
   const lat = typeof place.lat === 'number' ? place.lat : null;
   const lng = typeof place.lng === 'number' ? place.lng : null;
@@ -2243,20 +2300,15 @@ export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true
   const category = textFromUnknown(place.category) || cityPlaceCategory(types);
 
   const placeResult = await db.runTransaction(async (transaction) => {
-    const [placeSnapshot, reviewSnapshot] = await Promise.all([
-      transaction.get(placeRef),
-      transaction.get(reviewRef),
-    ]);
+    const placeSnapshot = await transaction.get(placeRef);
 
     const existingPlace = (placeSnapshot.data() ?? {}) as Record<string, unknown>;
-    const existingReview = reviewSnapshot.exists ? reviewSnapshot.data() as Record<string, unknown> : null;
-    const oldRating = typeof existingReview?.rating === 'number' ? existingReview.rating : 0;
     const currentCount = typeof existingPlace.rating_count === 'number' ? existingPlace.rating_count : 0;
     const currentSum = typeof existingPlace.rating_sum === 'number'
       ? existingPlace.rating_sum
       : (typeof existingPlace.rating_avg === 'number' ? existingPlace.rating_avg * currentCount : 0);
-    const nextCount = existingReview ? Math.max(1, currentCount) : currentCount + 1;
-    const nextSum = existingReview ? currentSum - oldRating + rating : currentSum + rating;
+    const nextCount = currentCount + 1;
+    const nextSum = currentSum + rating;
     const nextAverage = nextCount > 0 ? Math.round((nextSum / nextCount) * 10) / 10 : rating;
 
     const placePayload = {
@@ -2296,7 +2348,7 @@ export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true
       user_id: request.auth?.uid ?? null,
       status: 'published',
       updated_at: FieldValue.serverTimestamp(),
-      created_at: existingReview?.created_at ?? FieldValue.serverTimestamp(),
+      created_at: FieldValue.serverTimestamp(),
     }, { merge: true });
 
     return {
@@ -2308,7 +2360,7 @@ export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true
 
   return {
     place: serializeCityPlace(placeDocId, placeResult),
-    reviewId,
+    reviewId: reviewRef.id,
   };
 });
 

@@ -35,6 +35,20 @@ export interface CityReviewedPlace extends CityPlaceCandidate {
   latestReviewAt: string | null;
 }
 
+export interface CityPlaceReview {
+  id: string;
+  atlasId: string;
+  citySlug: string;
+  placeId: string;
+  googlePlaceId: string;
+  placeName: string;
+  rating: number;
+  text: string;
+  reviewerType: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+}
+
 type ListReviewedPlacesResponse = {
   places?: CityReviewedPlace[];
 };
@@ -42,6 +56,10 @@ type ListReviewedPlacesResponse = {
 type SearchCityPlacesResponse = {
   candidates?: CityPlaceCandidate[];
   places?: CityReviewedPlace[];
+};
+
+type ListCityPlaceReviewsResponse = {
+  reviews?: CityPlaceReview[];
 };
 
 type SubmitCityPlaceReviewResponse = {
@@ -80,6 +98,19 @@ export class PlaceReviewsService {
     );
     const result = await callable({ atlasId, query: query.trim() });
     return Array.isArray(result.data.candidates) ? result.data.candidates : [];
+  }
+
+  async listCityPlaceReviews(atlasId: string, placeId: string): Promise<CityPlaceReview[]> {
+    if (!this.functions || !atlasId || !placeId) {
+      return [];
+    }
+
+    const callable = httpsCallable<{ atlasId: string; placeId: string }, ListCityPlaceReviewsResponse>(
+      this.functions,
+      'listCityPlaceReviews',
+    );
+    const result = await callable({ atlasId, placeId });
+    return Array.isArray(result.data.reviews) ? result.data.reviews : [];
   }
 
   async submitCityPlaceReview(input: {
