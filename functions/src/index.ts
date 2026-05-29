@@ -47,6 +47,7 @@ const staleRetryBatchLimit = 200;
 const maxGoogleDriveImportFiles = 10;
 const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
 const elevenLabsApiKey = defineSecret('ELEVENLABS_API_KEY');
+const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://mylivingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
@@ -912,6 +913,170 @@ async function loadPublicAtlasById(atlasId: string): Promise<Record<string, unkn
     is_public: atlas.is_public === true,
     ...atlas,
   };
+}
+
+type CityPlaceCandidate = {
+  placeId: string;
+  name: string;
+  address: string;
+  lat: number | null;
+  lng: number | null;
+  types: string[];
+  category: string;
+  googleMapsUrl: string;
+  source: 'google' | 'reviewed';
+  ratingAvg?: number;
+  ratingCount?: number;
+  reviewCount?: number;
+};
+
+type CityPlaceRecord = CityPlaceCandidate & {
+  id: string;
+  atlasId: string;
+  citySlug: string;
+  latestReviewText: string;
+  latestReviewRating: number | null;
+  latestReviewAt: string | null;
+};
+
+type GooglePlacesTextSearchResponse = {
+  status?: string;
+  error_message?: string;
+  results?: Array<{
+    place_id?: string;
+    name?: string;
+    formatted_address?: string;
+    types?: string[];
+    rating?: number;
+    user_ratings_total?: number;
+    geometry?: {
+      location?: {
+        lat?: number;
+        lng?: number;
+      };
+    };
+  }>;
+};
+
+function placeDocIdFromGooglePlaceId(placeId: string): string {
+  return `google_${placeId.replace(/[^a-zA-Z0-9_-]+/g, '_').slice(0, 120)}`;
+}
+
+function cityScopedPlaceDocId(atlasId: string, placeId: string): string {
+  const atlasHash = createHash('sha1').update(atlasId).digest('hex').slice(0, 12);
+  return `${atlasHash}_${placeDocIdFromGooglePlaceId(placeId)}`;
+}
+
+function cityPlaceCategory(types: string[]): string {
+  if (types.includes('restaurant')) return 'Restaurant';
+  if (types.includes('cafe')) return 'Cafe';
+  if (types.includes('bar')) return 'Bar';
+  if (types.includes('bakery')) return 'Bakery';
+  if (types.includes('tourist_attraction')) return 'Attraction';
+  if (types.includes('park')) return 'Park';
+  if (types.includes('lodging')) return 'Hotel';
+  if (types.includes('museum')) return 'Museum';
+  if (types.includes('store')) return 'Shop';
+  return 'Place';
+}
+
+function normalizePlaceReviewText(value: unknown): string {
+  return textFromUnknown(value).replace(/\s+/g, ' ').slice(0, 900);
+}
+
+function reviewRatingFromUnknown(value: unknown): number {
+  const rating = Math.round(Number(value));
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
+    throw new HttpsError('invalid-argument', 'Rating must be between 1 and 5.');
+  }
+  return rating;
+}
+
+function anonymousPlaceReviewerKey(requestAuthUid: string | undefined, anonymousVisitorId: unknown): string {
+  if (requestAuthUid) {
+    return `user:${requestAuthUid}`;
+  }
+
+  const visitorId = textFromUnknown(anonymousVisitorId);
+  if (!/^[a-zA-Z0-9_-]{8,120}$/.test(visitorId)) {
+    throw new HttpsError('unauthenticated', 'Anonymous review session is missing.');
+  }
+  return `anon:${visitorId}`;
+}
+
+function reviewerHash(reviewerKey: string): string {
+  return createHash('sha256').update(reviewerKey).digest('hex').slice(0, 32);
+}
+
+function serializeCityPlace(snapshotId: string, data: Record<string, unknown>): CityPlaceRecord {
+  return {
+    id: snapshotId,
+    atlasId: textFromUnknown(data.atlas_id),
+    citySlug: textFromUnknown(data.city_slug),
+    placeId: textFromUnknown(data.google_place_id || data.place_id),
+    name: textFromUnknown(data.name),
+    address: textFromUnknown(data.address),
+    lat: typeof data.lat === 'number' ? data.lat : null,
+    lng: typeof data.lng === 'number' ? data.lng : null,
+    types: Array.isArray(data.types) ? data.types.map((type) => textFromUnknown(type)).filter(Boolean) : [],
+    category: textFromUnknown(data.category) || 'Place',
+    googleMapsUrl: textFromUnknown(data.google_maps_url),
+    source: 'reviewed',
+    ratingAvg: typeof data.rating_avg === 'number' ? data.rating_avg : 0,
+    ratingCount: typeof data.rating_count === 'number' ? data.rating_count : 0,
+    reviewCount: typeof data.review_count === 'number' ? data.review_count : 0,
+    latestReviewText: textFromUnknown(data.latest_review_text),
+    latestReviewRating: typeof data.latest_review_rating === 'number' ? data.latest_review_rating : null,
+    latestReviewAt: timestampToIso(data.latest_review_at),
+  };
+}
+
+function cityAtlasSearchContext(atlas: Record<string, unknown>): string {
+  const cityConfig = (atlas.city_config ?? {}) as Record<string, unknown>;
+  const name = textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^My living wiki:\s*/i, '');
+  const region = textFromUnknown(cityConfig.region_name);
+  const country = textFromUnknown(cityConfig.country_code);
+  return [name, region, country].filter(Boolean).join(', ');
+}
+
+function assertPublicCityAtlas(atlas: Record<string, unknown>): void {
+  const cityConfig = (atlas.city_config ?? {}) as Record<string, unknown>;
+  if (cityConfig.enabled !== true) {
+    throw new HttpsError('failed-precondition', 'Place reviews are only available for city wikis.');
+  }
+}
+
+function googleCandidateFromResult(result: NonNullable<GooglePlacesTextSearchResponse['results']>[number]): CityPlaceCandidate | null {
+  const placeId = textFromUnknown(result.place_id);
+  const name = textFromUnknown(result.name);
+  if (!placeId || !name) {
+    return null;
+  }
+
+  const types = Array.isArray(result.types) ? result.types.map((type) => textFromUnknown(type)).filter(Boolean) : [];
+  return {
+    placeId,
+    name,
+    address: textFromUnknown(result.formatted_address),
+    lat: typeof result.geometry?.location?.lat === 'number' ? result.geometry.location.lat : null,
+    lng: typeof result.geometry?.location?.lng === 'number' ? result.geometry.location.lng : null,
+    types,
+    category: cityPlaceCategory(types),
+    googleMapsUrl: `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`,
+    source: 'google',
+    ratingAvg: typeof result.rating === 'number' ? result.rating : undefined,
+    ratingCount: typeof result.user_ratings_total === 'number' ? result.user_ratings_total : undefined,
+    reviewCount: 0,
+  };
+}
+
+function matchesPlaceQuery(place: CityPlaceRecord, query: string): boolean {
+  const haystack = `${place.name} ${place.address} ${place.category}`.toLowerCase();
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((token) => haystack.includes(token));
 }
 
 async function assertAtlasOwner(atlasId: string | null, userId: string): Promise<void> {
@@ -1959,8 +2124,193 @@ export const listPlatformUsers = onCall({ region: callableRegion, cors: true }, 
     total: users.length,
     admins: users.filter((user) => user.role === 'admin').length,
     users,
-	  };
-	});
+  };
+});
+
+export const listCityReviewedPlaces = onCall({ region: callableRegion, cors: true }, async (request) => {
+  const atlasId = textFromUnknown(request.data?.atlasId);
+  if (!atlasId) {
+    throw new HttpsError('invalid-argument', 'Atlas ID is required.');
+  }
+
+  const atlas = await loadPublicAtlasById(atlasId);
+  assertPublicCityAtlas(atlas);
+
+  const snapshot = await db
+    .collection('city_places')
+    .where('atlas_id', '==', atlasId)
+    .limit(80)
+    .get();
+
+  const places = snapshot.docs
+    .map((doc) => serializeCityPlace(doc.id, doc.data() as Record<string, unknown>))
+    .sort((a, b) => {
+      const countDelta = (b.reviewCount ?? 0) - (a.reviewCount ?? 0);
+      if (countDelta !== 0) return countDelta;
+      const ratingDelta = (b.ratingAvg ?? 0) - (a.ratingAvg ?? 0);
+      if (ratingDelta !== 0) return ratingDelta;
+      return (b.latestReviewAt ?? '').localeCompare(a.latestReviewAt ?? '');
+    })
+    .slice(0, 24);
+
+  return { places };
+});
+
+export const searchCityPlaces = onCall(
+  { region: callableRegion, cors: true, secrets: [googlePlacesApiKey], timeoutSeconds: 30, memory: '512MiB' },
+  async (request) => {
+    const atlasId = textFromUnknown(request.data?.atlasId);
+    const query = textFromUnknown(request.data?.query).slice(0, 120);
+    if (!atlasId || query.length < 2) {
+      throw new HttpsError('invalid-argument', 'A city and search query are required.');
+    }
+
+    const atlas = await loadPublicAtlasById(atlasId);
+    assertPublicCityAtlas(atlas);
+
+    const reviewedSnapshot = await db
+      .collection('city_places')
+      .where('atlas_id', '==', atlasId)
+      .limit(80)
+      .get();
+
+    const reviewedPlaces = reviewedSnapshot.docs
+      .map((doc) => serializeCityPlace(doc.id, doc.data() as Record<string, unknown>))
+      .filter((place) => matchesPlaceQuery(place, query))
+      .slice(0, 5);
+
+    const key = googlePlacesApiKey.value();
+    if (!key) {
+      return { places: reviewedPlaces, candidates: reviewedPlaces };
+    }
+
+    const url = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
+    url.searchParams.set('query', `${query} ${cityAtlasSearchContext(atlas)}`.trim());
+    url.searchParams.set('key', key);
+
+    const data = await fetchJson<GooglePlacesTextSearchResponse>(url.toString());
+    if (data.status && !['OK', 'ZERO_RESULTS'].includes(data.status)) {
+      logger.warn('Google Places text search failed', { status: data.status, error: data.error_message });
+      throw new HttpsError('unavailable', data.error_message || 'Place search is temporarily unavailable.');
+    }
+
+    const seen = new Set(reviewedPlaces.map((place) => place.placeId).filter(Boolean));
+    const googlePlaces = (data.results ?? [])
+      .map(googleCandidateFromResult)
+      .filter((candidate): candidate is CityPlaceCandidate => !!candidate)
+      .filter((candidate) => {
+        if (seen.has(candidate.placeId)) {
+          return false;
+        }
+        seen.add(candidate.placeId);
+        return true;
+      })
+      .slice(0, 7);
+
+    return { places: reviewedPlaces, candidates: [...reviewedPlaces, ...googlePlaces].slice(0, 10) };
+  },
+);
+
+export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true, timeoutSeconds: 30 }, async (request) => {
+  const atlasId = textFromUnknown(request.data?.atlasId);
+  const place = (request.data?.place ?? {}) as Record<string, unknown>;
+  const googlePlaceId = textFromUnknown(place.placeId || place.google_place_id || place.place_id);
+  const placeName = textFromUnknown(place.name).slice(0, 160);
+  const address = textFromUnknown(place.address).slice(0, 260);
+  const rating = reviewRatingFromUnknown(request.data?.rating);
+  const reviewText = normalizePlaceReviewText(request.data?.text);
+
+  if (!atlasId || !googlePlaceId || !placeName) {
+    throw new HttpsError('invalid-argument', 'A valid city place is required.');
+  }
+  if (reviewText.length < 3) {
+    throw new HttpsError('invalid-argument', 'Review text must be at least 3 characters.');
+  }
+
+  const atlas = await loadPublicAtlasById(atlasId);
+  assertPublicCityAtlas(atlas);
+  const citySlug = textFromUnknown(atlas.slug) || slugPart(cityAtlasSearchContext(atlas));
+  const reviewerKey = anonymousPlaceReviewerKey(request.auth?.uid, request.data?.anonymousVisitorId);
+  const placeDocId = cityScopedPlaceDocId(atlasId, googlePlaceId);
+  const reviewId = `${placeDocId}_${reviewerHash(reviewerKey)}`;
+  const placeRef = db.collection('city_places').doc(placeDocId);
+  const reviewRef = db.collection('city_place_reviews').doc(reviewId);
+  const types = Array.isArray(place.types) ? place.types.map((type) => textFromUnknown(type)).filter(Boolean).slice(0, 12) : [];
+  const lat = typeof place.lat === 'number' ? place.lat : null;
+  const lng = typeof place.lng === 'number' ? place.lng : null;
+  const googleMapsUrl = textFromUnknown(place.googleMapsUrl || place.google_maps_url)
+    || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(googlePlaceId)}`;
+  const category = textFromUnknown(place.category) || cityPlaceCategory(types);
+
+  const placeResult = await db.runTransaction(async (transaction) => {
+    const [placeSnapshot, reviewSnapshot] = await Promise.all([
+      transaction.get(placeRef),
+      transaction.get(reviewRef),
+    ]);
+
+    const existingPlace = (placeSnapshot.data() ?? {}) as Record<string, unknown>;
+    const existingReview = reviewSnapshot.exists ? reviewSnapshot.data() as Record<string, unknown> : null;
+    const oldRating = typeof existingReview?.rating === 'number' ? existingReview.rating : 0;
+    const currentCount = typeof existingPlace.rating_count === 'number' ? existingPlace.rating_count : 0;
+    const currentSum = typeof existingPlace.rating_sum === 'number'
+      ? existingPlace.rating_sum
+      : (typeof existingPlace.rating_avg === 'number' ? existingPlace.rating_avg * currentCount : 0);
+    const nextCount = existingReview ? Math.max(1, currentCount) : currentCount + 1;
+    const nextSum = existingReview ? currentSum - oldRating + rating : currentSum + rating;
+    const nextAverage = nextCount > 0 ? Math.round((nextSum / nextCount) * 10) / 10 : rating;
+
+    const placePayload = {
+      atlas_id: atlasId,
+      city_slug: citySlug,
+      google_place_id: googlePlaceId,
+      place_id: googlePlaceId,
+      name: placeName,
+      address,
+      lat,
+      lng,
+      types,
+      category,
+      google_maps_url: googleMapsUrl,
+      rating_sum: nextSum,
+      rating_avg: nextAverage,
+      rating_count: nextCount,
+      review_count: nextCount,
+      latest_review_text: reviewText,
+      latest_review_rating: rating,
+      latest_review_at: FieldValue.serverTimestamp(),
+      updated_at: FieldValue.serverTimestamp(),
+      created_at: placeSnapshot.exists ? existingPlace.created_at ?? FieldValue.serverTimestamp() : FieldValue.serverTimestamp(),
+    };
+
+    transaction.set(placeRef, placePayload, { merge: true });
+    transaction.set(reviewRef, {
+      atlas_id: atlasId,
+      city_slug: citySlug,
+      place_id: placeDocId,
+      google_place_id: googlePlaceId,
+      place_name: placeName,
+      rating,
+      text: reviewText,
+      reviewer_hash: reviewerHash(reviewerKey),
+      reviewer_type: request.auth?.uid ? 'user' : 'anonymous',
+      user_id: request.auth?.uid ?? null,
+      status: 'published',
+      updated_at: FieldValue.serverTimestamp(),
+      created_at: existingReview?.created_at ?? FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    return {
+      id: placeDocId,
+      ...placePayload,
+      latest_review_at: new Date().toISOString(),
+    } as Record<string, unknown>;
+  });
+
+  return {
+    place: serializeCityPlace(placeDocId, placeResult),
+    reviewId,
+  };
+});
 
 export const autoUploadAtlasCoverImage = onCall(
   {

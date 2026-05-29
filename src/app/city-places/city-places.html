@@ -1,0 +1,246 @@
+<main class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+  <div class="pointer-events-none fixed inset-0 overflow-hidden">
+    <div class="absolute left-[-10rem] top-[-8rem] h-[24rem] w-[24rem] rounded-full bg-[var(--accent)]/[0.055] blur-[140px]"></div>
+    <div class="absolute bottom-[-12rem] right-[-8rem] h-[22rem] w-[22rem] rounded-full bg-[rgba(63,185,156,0.05)] blur-[130px]"></div>
+  </div>
+
+  <header class="theme-nav sticky top-0 z-30 border-b px-5 py-4 backdrop-blur-xl md:px-8">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4">
+      <a routerLink="/" class="flex items-center no-underline">
+        <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-10 w-44 object-contain" />
+      </a>
+      <div class="flex items-center gap-2">
+        <a
+          [routerLink]="chatLink()"
+          class="inline-flex items-center gap-2 rounded-2xl border border-[var(--line-strong)] bg-[var(--surface)] px-4 py-2.5 text-sm font-black text-[var(--text)] no-underline shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:border-[var(--accent)]/35"
+        >
+          <span class="material-symbols-outlined text-[1.05rem] text-[var(--accent)]">chat</span>
+          Back to chat
+        </a>
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-12">
+    @if (atlasLoading()) {
+      <div class="rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-soft)]">
+        <div class="h-4 w-44 animate-pulse rounded-full bg-[var(--soft-fill)]"></div>
+        <div class="mt-5 h-12 max-w-xl animate-pulse rounded-2xl bg-[var(--soft-fill)]"></div>
+        <div class="mt-4 h-4 max-w-2xl animate-pulse rounded-full bg-[var(--soft-fill)]"></div>
+      </div>
+    } @else if (atlasError()) {
+      <div class="rounded-[1.75rem] border border-red-500/20 bg-red-500/10 p-8 shadow-[var(--shadow-soft)]">
+        <p class="text-sm font-black uppercase tracking-[0.18em] text-red-200">Places unavailable</p>
+        <h1 class="mt-3 text-3xl font-black tracking-[-0.06em] text-[var(--text)]">{{ atlasError() }}</h1>
+        <a [routerLink]="chatLink()" class="mt-6 inline-flex items-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[#2a0700] no-underline">
+          <span class="material-symbols-outlined text-[1.1rem]">arrow_back</span>
+          Back to chat
+        </a>
+      </div>
+    } @else {
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+        <section class="space-y-5">
+          <div class="rounded-[2rem] border border-[var(--line-strong)] bg-[var(--surface)] p-5 shadow-[var(--shadow-elevated)] md:p-7">
+            <div class="flex items-start justify-between gap-4">
+              <div class="min-w-0">
+                <p class="text-[0.72rem] font-black uppercase tracking-[0.22em] text-[var(--accent)]">City places board</p>
+                <h1 class="mt-3 text-4xl font-black tracking-[-0.07em] text-[var(--text)] md:text-5xl">{{ cityName() }}</h1>
+                @if (country()) {
+                  <p class="mt-2 text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ country() }}</p>
+                }
+              </div>
+              <span class="hidden h-14 w-14 shrink-0 items-center justify-center rounded-3xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 text-[var(--accent)] sm:inline-flex">
+                <span class="material-symbols-outlined text-[1.6rem]">location_on</span>
+              </span>
+            </div>
+            <p class="mt-5 max-w-2xl text-sm font-semibold leading-7 text-[var(--muted)]">
+              Search a restaurant, cafe, attraction, park, or local spot. Google finds the address, then the local review becomes part of this city Wiki.
+            </p>
+            <div class="mt-5 grid grid-cols-2 gap-3">
+              <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+                <p class="text-[0.66rem] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Local reviews</p>
+                <p class="mt-1 text-2xl font-black tracking-[-0.04em] text-[var(--text)]">{{ reviewedPlacesCountLabel() }}</p>
+              </div>
+              <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+                <p class="text-[0.66rem] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Access</p>
+                <p class="mt-1 text-2xl font-black tracking-[-0.04em] text-[var(--text)]">Public</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-[2rem] border border-[var(--line-strong)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] md:p-6">
+            <label class="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--muted)]" for="city-place-search-page">Find a place</label>
+            <div class="mt-3 flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
+              <span class="material-symbols-outlined text-[1.25rem] text-[var(--accent)]">search</span>
+              <input
+                id="city-place-search-page"
+                type="search"
+                [value]="placeSearchQuery()"
+                (input)="onPlaceSearchInput($event)"
+                class="min-w-0 flex-1 bg-transparent text-base font-bold text-[var(--text)] outline-none placeholder:text-[var(--muted)]"
+                placeholder="Try Suraya, Reading Terminal, a park..."
+                autocomplete="off"
+              />
+              @if (placeSearchLoading()) {
+                <span class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent"></span>
+              }
+            </div>
+
+            @if (placeSearchResults().length > 0) {
+              <div class="mt-4 space-y-2">
+                @for (place of placeSearchResults(); track place.placeId) {
+                  <button
+                    type="button"
+                    class="group flex w-full items-start gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-3 text-left transition hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                    [class.border-[var(--accent)]/50]="selectedReviewPlace()?.placeId === place.placeId"
+                    (click)="selectPlaceForReview(place)"
+                  >
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-sm font-black text-[var(--accent)]">
+                      {{ placeInitial(place.name) }}
+                    </span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block truncate text-sm font-black tracking-[-0.02em] text-[var(--text)]">{{ place.name }}</span>
+                      <span class="mt-1 block line-clamp-2 text-xs font-semibold leading-5 text-[var(--muted)]">{{ place.address || place.category }}</span>
+                    </span>
+                    <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--accent)]/12 px-2 py-1 text-xs font-black text-[var(--accent)]">
+                      <span class="material-symbols-outlined text-[0.9rem]">star</span>
+                      {{ placeRatingLabel(place) }}
+                    </span>
+                  </button>
+                }
+              </div>
+            } @else if (placeSearchQuery().trim().length >= 2 && !placeSearchLoading() && !placeReviewError()) {
+              <p class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-semibold leading-6 text-[var(--muted)]">
+                No match yet. Try the exact place name plus a neighborhood.
+              </p>
+            }
+          </div>
+
+          @if (selectedReviewPlace(); as selectedPlace) {
+            <form class="rounded-[2rem] border border-[var(--accent)]/25 bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] md:p-6" (submit)="$event.preventDefault(); submitPlaceReview()">
+              <div class="flex items-start gap-4">
+                <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-3xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 text-xl font-black text-[var(--accent)]">
+                  {{ placeInitial(selectedPlace.name) }}
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[var(--accent)]">Write a review</p>
+                  <h2 class="mt-1 truncate text-2xl font-black tracking-[-0.05em] text-[var(--text)]">{{ selectedPlace.name }}</h2>
+                  <p class="mt-1 line-clamp-2 text-sm font-semibold leading-6 text-[var(--muted)]">{{ selectedPlace.address || selectedPlace.category }}</p>
+                </div>
+              </div>
+
+              <div class="mt-5 flex items-center justify-between rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
+                <span class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">Your rating</span>
+                <div class="flex items-center gap-1">
+                  @for (star of starValues; track star) {
+                    <button
+                      type="button"
+                      class="rounded-full p-1 text-[var(--muted)] transition hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]"
+                      [class.text-[var(--accent)]]="star <= placeReviewRating()"
+                      (click)="setPlaceReviewRating(star)"
+                      [attr.aria-label]="'Rate ' + star + ' stars'"
+                    >
+                      <span class="material-symbols-outlined text-[1.45rem]">star</span>
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <textarea
+                rows="5"
+                [value]="placeReviewText()"
+                (input)="placeReviewText.set($any($event.target).value)"
+                class="mt-4 min-h-36 w-full resize-none rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-4 text-sm font-semibold leading-7 text-[var(--text)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]/45"
+                placeholder="What should someone know before they go?"
+              ></textarea>
+
+              <button
+                type="submit"
+                class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3.5 text-sm font-black text-[#2a0700] shadow-[0_14px_30px_rgba(255,176,112,0.22)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+                [disabled]="!canSubmitPlaceReview()"
+              >
+                @if (placeReviewSubmitting()) {
+                  <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                  Saving review
+                } @else {
+                  <span class="material-symbols-outlined text-[1.1rem]">rate_review</span>
+                  Publish review
+                }
+              </button>
+            </form>
+          }
+
+          @if (placeReviewError()) {
+            <p class="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-bold leading-6 text-red-200">{{ placeReviewError() }}</p>
+          }
+          @if (placeReviewSuccess()) {
+            <p class="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-bold leading-6 text-emerald-100">{{ placeReviewSuccess() }}</p>
+          }
+        </section>
+
+        <section class="rounded-[2rem] border border-[var(--line-strong)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] md:p-6">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Local signals</p>
+              <h2 class="mt-1 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Reviewed places</h2>
+            </div>
+            @if (reviewedPlacesLoading()) {
+              <span class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.12em] text-[var(--muted)]">
+                <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                Loading
+              </span>
+            }
+          </div>
+
+          @if (reviewedPlaces().length === 0 && !reviewedPlacesLoading()) {
+            <div class="mt-6 rounded-[1.5rem] border border-[var(--line)] bg-[var(--soft-fill)] p-8 text-center">
+              <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)]">
+                <span class="material-symbols-outlined">add_location_alt</span>
+              </span>
+              <p class="mt-4 text-lg font-black tracking-[-0.03em] text-[var(--text)]">No reviewed places yet</p>
+              <p class="mt-2 text-sm font-semibold leading-6 text-[var(--muted)]">Search a place and leave the first useful local note.</p>
+            </div>
+          } @else {
+            <div class="mt-5 grid gap-3">
+              @for (place of reviewedPlaces(); track place.id) {
+                <article class="rounded-[1.5rem] border border-[var(--line)] bg-[var(--soft-fill)] p-4 transition hover:border-[var(--accent)]/30">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-base font-black text-[var(--accent)]">
+                      {{ placeInitial(place.name) }}
+                    </span>
+                    <div class="min-w-0 flex-1">
+                      <h3 class="truncate text-base font-black tracking-[-0.03em] text-[var(--text)]">{{ place.name }}</h3>
+                      <p class="mt-1 line-clamp-2 text-xs font-semibold leading-5 text-[var(--muted)]">{{ place.address || place.category }}</p>
+                    </div>
+                    <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--accent)]/12 px-2.5 py-1.5 text-xs font-black text-[var(--accent)]">
+                      <span class="material-symbols-outlined text-[0.95rem]">star</span>
+                      {{ (place.ratingAvg || 0).toFixed(1) }}
+                    </span>
+                  </div>
+                  @if (place.latestReviewText) {
+                    <p class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold leading-6 text-[var(--text)]">
+                      &ldquo;{{ truncatePlaceText(place.latestReviewText) }}&rdquo;
+                    </p>
+                  }
+                  <div class="mt-4 flex items-center justify-between gap-3">
+                    <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.12em] text-[var(--muted)]">{{ placeReviewCountLabel(place) }}</span>
+                    <a
+                      [href]="place.googleMapsUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex shrink-0 items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[0.68rem] font-black uppercase tracking-[0.12em] text-[var(--accent)] no-underline transition hover:border-[var(--accent)]/35"
+                    >
+                      Map
+                      <span class="material-symbols-outlined text-[0.85rem]">open_in_new</span>
+                    </a>
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </section>
+      </div>
+    }
+  </section>
+</main>

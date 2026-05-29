@@ -22,6 +22,7 @@ import { AnswerQuizComponent } from './answer-quiz/answer-quiz';
 import { GreenJobsComponent } from './green-jobs/green-jobs';
 import { CityPulseAdminComponent } from './city-pulse-admin/city-pulse-admin';
 import { AdminUsersComponent } from './admin-users/admin-users';
+import { CityPlacesComponent } from './city-places/city-places';
 import { NotFoundComponent } from './not-found/not-found';
 import { adminGuard, authGuard, guestOnlyGuard } from './auth.guards';
 
@@ -36,6 +37,7 @@ export const routes: Routes = [
   { path: 'chat/shared/:threadId', component: SharedChatComponent, title: 'Shared Chat | My living wiki' },
   { path: 'answer-card/:cardId', component: AnswerCardComponent, title: 'Answer Card | My living wiki' },
   { path: 'quiz/:quizId', component: AnswerQuizComponent, title: 'Quiz Challenge | My living wiki' },
+  { path: 'places/:slug', component: CityPlacesComponent, title: 'Places | My living wiki' },
   { path: 'chat/:slug', component: ChatComponent, title: 'Chat | My living wiki' },
   { path: 'chat', component: ChatComponent, title: 'Chat | My living wiki', canActivate: [authGuard] },
   { path: 'library/:slug', component: LibraryComponent, title: 'Source Files | My living wiki' },

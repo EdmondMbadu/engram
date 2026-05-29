@@ -11,6 +11,7 @@ import { AnswerQuizService } from '../answer-quiz.service';
 import { ChatService } from '../chat.service';
 import { DocumentsService } from '../documents.service';
 import { WikiService } from '../wiki.service';
+import { PlaceReviewsService, type CityReviewedPlace } from '../place-reviews.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
@@ -77,6 +78,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private readonly chatService = inject(ChatService);
   private readonly documentsService = inject(DocumentsService);
   private readonly wikiService = inject(WikiService);
+  private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
@@ -148,6 +150,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly animatedDocumentCount = signal(0);
   readonly animatedArticleCount = signal(0);
   readonly animatedSourceCount = signal(0);
+  readonly reviewedPlaces = signal<CityReviewedPlace[]>([]);
+  readonly reviewedPlacesLoading = signal(false);
   readonly isPublicView = computed(() => !!this.routeSlug());
   readonly publicNotFound = computed(
     () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
@@ -305,6 +309,19 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return name.replace(/^My living wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
   });
   readonly currentWikiCountry = computed(() => this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? '');
+  readonly canShowPlaceReviews = computed(() => {
+    const atlas = this.currentWikiAtlas();
+    return !!atlas?.id && atlas.city_config?.enabled === true && !this.publicNotFound();
+  });
+  readonly reviewedPlacesCountLabel = computed(() => {
+    const count = this.reviewedPlaces().length;
+    return count === 1 ? '1 reviewed place' : `${count} reviewed places`;
+  });
+  readonly reviewedPlacesPreview = computed(() => this.reviewedPlaces().slice(0, 4));
+  readonly placesLink = computed(() => {
+    const slug = this.currentWikiAtlas()?.slug?.trim() || this.routeSlug()?.trim();
+    return slug ? ['/places', slug] : '/public-wikis';
+  });
   readonly currentWikiVoicePhoneNumber = computed(() => this.currentWikiAtlas()?.public_voice_phone_number?.trim() || '');
   readonly currentWikiVoicePhoneHref = computed(() => {
     const phone = this.currentWikiVoicePhoneNumber();
@@ -582,6 +599,35 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return `Ask about ${name} news, neighborhoods, transit, food, jobs, safety, events, and civic life...`;
   }
 
+  placeRatingLabel(place: CityReviewedPlace): string {
+    const rating = place.ratingAvg ?? 0;
+    const count = place.reviewCount ?? place.ratingCount ?? 0;
+    if (!rating) {
+      return count ? `${count} ratings` : 'New';
+    }
+    return count ? `${rating.toFixed(1)} · ${count}` : rating.toFixed(1);
+  }
+
+  placeReviewCountLabel(place: CityReviewedPlace): string {
+    const count = place.reviewCount ?? place.ratingCount ?? 0;
+    if (!count) {
+      return 'No local reviews yet';
+    }
+    return count === 1 ? '1 local review' : `${count} local reviews`;
+  }
+
+  placeInitial(name: string): string {
+    return name.trim().charAt(0).toUpperCase() || 'P';
+  }
+
+  truncatePlaceText(value: string | undefined | null, max = 96): string {
+    const text = (value ?? '').trim();
+    if (text.length <= max) {
+      return text;
+    }
+    return `${text.slice(0, max - 1).trim()}...`;
+  }
+
   constructor() {
     void this.loadSidebarCityWikis();
 
@@ -647,6 +693,40 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         .catch(() => {
           if (!cancelled) {
             this.publicDocumentCount.set(0);
+          }
+        });
+
+      onCleanup(() => {
+        cancelled = true;
+      });
+    });
+
+    effect((onCleanup) => {
+      const atlasId = this.currentWikiAtlas()?.id ?? null;
+      let cancelled = false;
+
+      if (!atlasId || !this.canShowPlaceReviews()) {
+        this.reviewedPlaces.set([]);
+        this.reviewedPlacesLoading.set(false);
+        return;
+      }
+
+      this.reviewedPlacesLoading.set(true);
+      void this.placeReviewsService
+        .listCityReviewedPlaces(atlasId)
+        .then((places) => {
+          if (!cancelled) {
+            this.reviewedPlaces.set(places);
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            this.reviewedPlaces.set([]);
+          }
+        })
+        .finally(() => {
+          if (!cancelled) {
+            this.reviewedPlacesLoading.set(false);
           }
         });
 
