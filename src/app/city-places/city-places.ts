@@ -173,6 +173,10 @@ export class CityPlacesComponent implements OnDestroy {
   onPlaceSearchInput(event: Event): void {
     const input = event.target as HTMLInputElement | null;
     const query = input?.value ?? '';
+    if (this.selectedReviewPlace()) {
+      this.selectedReviewPlace.set(null);
+      this.placeReviewText.set('');
+    }
     this.placeSearchQuery.set(query);
     this.placeReviewError.set(null);
     this.placeReviewSuccess.set(null);
@@ -197,6 +201,13 @@ export class CityPlacesComponent implements OnDestroy {
   selectPlaceForReview(place: CityPlaceCandidate): void {
     this.selectedReviewPlace.set(place);
     this.placeReviewRating.set(Math.max(1, Math.min(5, Math.round(place.ratingAvg ?? 5))));
+    this.placeReviewText.set('');
+    this.placeReviewError.set(null);
+    this.placeReviewSuccess.set(null);
+  }
+
+  changeSelectedPlace(): void {
+    this.selectedReviewPlace.set(null);
     this.placeReviewText.set('');
     this.placeReviewError.set(null);
     this.placeReviewSuccess.set(null);

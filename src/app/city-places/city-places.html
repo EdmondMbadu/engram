@@ -105,8 +105,8 @@
               }
             </div>
 
-            @if (placeSearchResults().length > 0) {
-              <div class="mt-4 space-y-1.5">
+            @if (placeSearchResults().length > 0 && !selectedReviewPlace()) {
+              <div class="mt-4 max-h-56 space-y-1.5 overflow-y-auto pr-1">
                 @for (place of placeSearchResults(); track place.placeId) {
                   <button
                     type="button"
@@ -129,7 +129,7 @@
                   </button>
                 }
               </div>
-            } @else if (placeSearchQuery().trim().length >= 2 && !placeSearchLoading() && !placeReviewError()) {
+            } @else if (placeSearchQuery().trim().length >= 2 && !placeSearchLoading() && !placeReviewError() && !selectedReviewPlace()) {
               <p class="mt-4 px-1 text-sm font-normal leading-6 text-[var(--muted)]">
                 No match yet. Try the exact place name plus a neighborhood.
               </p>
@@ -145,6 +145,13 @@
                     <h3 class="mt-1.5 truncate text-xl font-semibold tracking-[-0.02em] text-[var(--text)]">{{ selectedPlace.name }}</h3>
                     <p class="mt-1 line-clamp-2 text-sm font-normal leading-6 text-[var(--muted)]">{{ selectedPlace.address || selectedPlace.category }}</p>
                   </div>
+                  <button
+                    type="button"
+                    class="inline-flex shrink-0 items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--accent)] transition hover:border-[var(--accent)]/35"
+                    (click)="changeSelectedPlace()"
+                  >
+                    Change
+                  </button>
                 </div>
               </div>
             } @else {
