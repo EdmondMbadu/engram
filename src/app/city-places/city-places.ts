@@ -24,6 +24,11 @@ export class CityPlacesComponent implements OnDestroy {
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
     { initialValue: this.route.snapshot.paramMap.get('slug') },
   );
+  readonly routePlaceId = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('place'))),
+    { initialValue: this.route.snapshot.queryParamMap.get('place') },
+  );
+  private openedDeepLinkPlaceId: string | null = null;
 
   readonly atlas = signal<AtlasItem | null>(null);
   readonly atlasLoading = signal(true);
@@ -201,6 +206,22 @@ export class CityPlacesComponent implements OnDestroy {
       onCleanup(() => {
         cancelled = true;
       });
+    });
+
+    effect(() => {
+      const placeId = this.routePlaceId();
+      const places = this.reviewedPlaces();
+      if (!placeId || this.openedDeepLinkPlaceId === placeId) {
+        return;
+      }
+
+      const place = places.find((item) => item.id === placeId || item.placeId === placeId);
+      if (!place) {
+        return;
+      }
+
+      this.openedDeepLinkPlaceId = placeId;
+      void this.openPlaceDrawer(place);
     });
   }
 

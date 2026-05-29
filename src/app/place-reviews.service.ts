@@ -45,6 +45,7 @@ export interface CityPlaceReview {
   rating: number;
   text: string;
   reviewerType: string;
+  reviewerName: string;
   createdAt: string | null;
   updatedAt: string | null;
 }

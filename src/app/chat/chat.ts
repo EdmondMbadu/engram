@@ -616,6 +616,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return count === 1 ? '1 local review' : `${count} local reviews`;
   }
 
+  placeDetailQueryParams(place: CityReviewedPlace): { place: string } {
+    return { place: place.id || place.placeId };
+  }
+
   placeInitial(name: string): string {
     return name.trim().charAt(0).toUpperCase() || 'P';
   }

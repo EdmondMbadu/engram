@@ -949,6 +949,7 @@ type CityPlaceReviewRecord = {
   rating: number;
   text: string;
   reviewerType: string;
+  reviewerName: string;
   createdAt: string | null;
   updatedAt: string | null;
 };
@@ -1056,6 +1057,7 @@ function serializeCityPlaceReview(snapshotId: string, data: Record<string, unkno
     rating: typeof data.rating === 'number' ? data.rating : 0,
     text: textFromUnknown(data.text),
     reviewerType: textFromUnknown(data.reviewer_type) || 'anonymous',
+    reviewerName: textFromUnknown(data.reviewer_name) || 'Local reviewer',
     createdAt: timestampToIso(data.created_at),
     updatedAt: timestampToIso(data.updated_at),
   };
@@ -2295,6 +2297,9 @@ export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true
   const types = Array.isArray(place.types) ? place.types.map((type) => textFromUnknown(type)).filter(Boolean).slice(0, 12) : [];
   const lat = typeof place.lat === 'number' ? place.lat : null;
   const lng = typeof place.lng === 'number' ? place.lng : null;
+  const reviewerName = textFromUnknown(request.auth?.token?.name)
+    || textFromUnknown(request.auth?.token?.email)
+    || 'Local reviewer';
   const googleMapsUrl = textFromUnknown(place.googleMapsUrl || place.google_maps_url)
     || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(googlePlaceId)}`;
   const category = textFromUnknown(place.category) || cityPlaceCategory(types);
@@ -2345,6 +2350,7 @@ export const submitCityPlaceReview = onCall({ region: callableRegion, cors: true
       text: reviewText,
       reviewer_hash: reviewerHash(reviewerKey),
       reviewer_type: request.auth?.uid ? 'user' : 'anonymous',
+      reviewer_name: reviewerName,
       user_id: request.auth?.uid ?? null,
       status: 'published',
       updated_at: FieldValue.serverTimestamp(),
