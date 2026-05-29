@@ -30,6 +30,8 @@ export class CityPlacesComponent implements OnDestroy {
   readonly atlasError = signal<string | null>(null);
   readonly reviewedPlaces = signal<CityReviewedPlace[]>([]);
   readonly reviewedPlacesLoading = signal(false);
+  readonly reviewedPlaceSearchQuery = signal('');
+  readonly selectedMapPlace = signal<CityPlaceCandidate | null>(null);
   readonly placeSearchQuery = signal('');
   readonly placeSearchResults = signal<CityPlaceCandidate[]>([]);
   readonly placeSearchLoading = signal(false);
@@ -53,18 +55,18 @@ export class CityPlacesComponent implements OnDestroy {
     return slug ? ['/chat', slug] : '/public-wikis';
   });
   readonly mapTitle = computed(() => {
-    const place = this.selectedReviewPlace();
+    const place = this.mapPlace();
     return place ? `${place.name} map` : `${this.cityName()} map`;
   });
   readonly mapLocationLabel = computed(() => {
-    const place = this.selectedReviewPlace();
+    const place = this.mapPlace();
     if (place) {
       return place.address || place.category || 'Selected place';
     }
     return [this.cityName(), this.country()].filter(Boolean).join(', ');
   });
   readonly mapEmbedUrl = computed<SafeResourceUrl>(() => {
-    const place = this.selectedReviewPlace();
+    const place = this.mapPlace();
     const query = place?.lat !== null && place?.lng !== null && typeof place?.lat === 'number' && typeof place?.lng === 'number'
       ? `${place.lat},${place.lng}`
       : [place?.name || this.cityName(), place?.address || this.country()].filter(Boolean).join(', ');
@@ -74,6 +76,32 @@ export class CityPlacesComponent implements OnDestroy {
   readonly reviewedPlacesCountLabel = computed(() => {
     const count = this.reviewedPlaces().length;
     return count === 1 ? '1 reviewed place' : `${count} reviewed places`;
+  });
+  readonly mapPlace = computed(() => this.selectedReviewPlace() ?? this.selectedMapPlace());
+  readonly filteredReviewedPlaces = computed(() => {
+    const query = this.reviewedPlaceSearchQuery().trim().toLowerCase();
+    const places = this.reviewedPlaces();
+    if (!query) {
+      return places;
+    }
+
+    const tokens = query.split(/\s+/).filter(Boolean);
+    return places.filter((place) => {
+      const haystack = [
+        place.name,
+        place.address,
+        place.category,
+        place.latestReviewText,
+      ].join(' ').toLowerCase();
+      return tokens.every((token) => haystack.includes(token));
+    });
+  });
+  readonly reviewedPlacesResultLabel = computed(() => {
+    const count = this.filteredReviewedPlaces().length;
+    if (!this.reviewedPlaceSearchQuery().trim()) {
+      return this.reviewedPlacesCountLabel();
+    }
+    return count === 1 ? '1 match' : `${count} matches`;
   });
   readonly canSubmitPlaceReview = computed(() =>
     !!this.atlas()?.id
@@ -200,6 +228,7 @@ export class CityPlacesComponent implements OnDestroy {
 
   selectPlaceForReview(place: CityPlaceCandidate): void {
     this.selectedReviewPlace.set(place);
+    this.selectedMapPlace.set(null);
     this.placeReviewRating.set(Math.max(1, Math.min(5, Math.round(place.ratingAvg ?? 5))));
     this.placeReviewText.set('');
     this.placeReviewError.set(null);
@@ -211,6 +240,10 @@ export class CityPlacesComponent implements OnDestroy {
     this.placeReviewText.set('');
     this.placeReviewError.set(null);
     this.placeReviewSuccess.set(null);
+  }
+
+  selectReviewedPlaceOnMap(place: CityReviewedPlace): void {
+    this.selectedMapPlace.set(place);
   }
 
   setPlaceReviewRating(rating: number): void {
@@ -301,6 +334,8 @@ export class CityPlacesComponent implements OnDestroy {
   private resetReviewState(): void {
     this.placeSearchQuery.set('');
     this.placeSearchResults.set([]);
+    this.reviewedPlaceSearchQuery.set('');
+    this.selectedMapPlace.set(null);
     this.placeSearchLoading.set(false);
     this.selectedReviewPlace.set(null);
     this.placeReviewRating.set(5);
