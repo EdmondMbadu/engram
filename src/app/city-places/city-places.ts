@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
+import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -16,6 +17,7 @@ export class CityPlacesComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly atlasService = inject(AtlasService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
+  private readonly sanitizer = inject(DomSanitizer);
   private placeSearchTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly routeSlug = toSignal(
@@ -49,6 +51,25 @@ export class CityPlacesComponent implements OnDestroy {
   readonly chatLink = computed(() => {
     const slug = this.atlas()?.slug?.trim() || this.routeSlug()?.trim();
     return slug ? ['/chat', slug] : '/public-wikis';
+  });
+  readonly mapTitle = computed(() => {
+    const place = this.selectedReviewPlace();
+    return place ? `${place.name} map` : `${this.cityName()} map`;
+  });
+  readonly mapLocationLabel = computed(() => {
+    const place = this.selectedReviewPlace();
+    if (place) {
+      return place.address || place.category || 'Selected place';
+    }
+    return [this.cityName(), this.country()].filter(Boolean).join(', ');
+  });
+  readonly mapEmbedUrl = computed<SafeResourceUrl>(() => {
+    const place = this.selectedReviewPlace();
+    const query = place?.lat !== null && place?.lng !== null && typeof place?.lat === 'number' && typeof place?.lng === 'number'
+      ? `${place.lat},${place.lng}`
+      : [place?.name || this.cityName(), place?.address || this.country()].filter(Boolean).join(', ');
+    const url = `https://www.google.com/maps?q=${encodeURIComponent(query)}&z=${place ? '15' : '11'}&output=embed`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   });
   readonly reviewedPlacesCountLabel = computed(() => {
     const count = this.reviewedPlaces().length;
@@ -183,6 +204,16 @@ export class CityPlacesComponent implements OnDestroy {
 
   setPlaceReviewRating(rating: number): void {
     this.placeReviewRating.set(rating);
+  }
+
+  starColor(star: number): string {
+    return star <= this.placeReviewRating() ? 'var(--accent)' : 'var(--line-strong)';
+  }
+
+  starFillStyle(star: number): string {
+    return star <= this.placeReviewRating()
+      ? "'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24"
+      : "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24";
   }
 
   async submitPlaceReview(): Promise<void> {
