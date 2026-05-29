@@ -22,7 +22,7 @@
     </div>
   </header>
 
-  <section class="relative mx-auto max-w-6xl px-5 py-4 md:px-8 md:py-5">
+  <section class="relative mx-auto max-w-6xl px-5 py-3 md:px-8 md:py-4">
     @if (atlasLoading()) {
       <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-10 shadow-[var(--shadow-soft)]">
         <div class="h-3 w-32 animate-pulse rounded-full bg-[var(--soft-fill)]"></div>
@@ -39,18 +39,18 @@
         </a>
       </div>
     } @else {
-      <div class="mb-5">
+      <div class="mb-3">
         <div class="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
           <span class="inline-block h-px w-8 bg-[var(--line-strong)]"></span>
           City places
         </div>
-        <div class="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div class="mt-2 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div class="min-w-0">
-            <h1 class="text-[2.2rem] font-semibold leading-[1.05] tracking-[-0.035em] text-[var(--text)] md:text-[2.85rem]">
+            <h1 class="text-[2rem] font-semibold leading-[1.03] tracking-[-0.035em] text-[var(--text)] md:text-[2.55rem]">
               {{ cityName() }}
             </h1>
             @if (country()) {
-              <p class="mt-3 text-sm font-medium text-[var(--muted)]">{{ country() }}</p>
+              <p class="mt-1.5 text-sm font-medium text-[var(--muted)]">{{ country() }}</p>
             }
           </div>
           <div class="flex shrink-0 items-center gap-6 md:gap-8">
@@ -65,16 +65,31 @@
             </div>
           </div>
         </div>
-        <p class="mt-4 max-w-xl text-[0.95rem] font-normal leading-[1.7] text-[var(--muted)]">
+        <p class="mt-2 max-w-xl text-[0.9rem] font-normal leading-6 text-[var(--muted)]">
           Search a restaurant, cafe, attraction, park, or local spot. Google finds the address, then your review becomes part of this city wiki.
         </p>
       </div>
 
-      <div class="grid gap-7 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-9">
-        <section class="space-y-6">
-          <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-soft)] md:p-7">
-            <label class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" for="city-place-search-page">Find a place</label>
-            <div class="mt-3 flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 transition focus-within:border-[var(--accent)]/40 focus-within:bg-[var(--soft-fill-strong)]">
+      <div class="grid gap-5 lg:grid-cols-[minmax(0,1.18fr)_minmax(20rem,0.82fr)] lg:gap-6">
+        <section class="space-y-4">
+          <form
+            class="relative overflow-hidden rounded-[2rem] border border-[var(--accent)]/25 bg-[var(--surface)] p-4 shadow-[var(--shadow-elevated)] md:p-5"
+            (submit)="$event.preventDefault(); submitPlaceReview()"
+          >
+            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#254c89] via-[#f3ba4f] to-[#d9413c]"></div>
+            <div class="flex items-start justify-between gap-4 pt-1">
+              <div class="min-w-0">
+                <p class="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">Write a local review</p>
+                <h2 class="mt-1.5 text-2xl font-semibold tracking-[-0.035em] text-[var(--text)] md:text-[1.7rem]">Start with the place name</h2>
+                <p class="mt-1.5 max-w-xl text-sm font-normal leading-5 text-[var(--muted)]">Find the address, choose your stars, and leave the note that should help the next person.</p>
+              </div>
+              <span class="inline-grid h-12 w-12 shrink-0 rotate-[7deg] place-items-center rounded-full border border-[var(--line-strong)] text-[0.72rem] font-black uppercase tracking-[0.12em] text-[var(--muted)]">
+                LW
+              </span>
+            </div>
+
+            <label class="mt-4 block text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" for="city-place-search-page">Find a place</label>
+            <div class="mt-2 flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2.5 transition focus-within:border-[var(--accent)]/40 focus-within:bg-[var(--soft-fill-strong)]">
               <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">search</span>
               <input
                 id="city-place-search-page"
@@ -119,22 +134,30 @@
                 No match yet. Try the exact place name plus a neighborhood.
               </p>
             }
-          </div>
-
-          @if (selectedReviewPlace(); as selectedPlace) {
-            <form class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-soft)] md:p-7" (submit)="$event.preventDefault(); submitPlaceReview()">
-              <div class="flex items-start gap-4">
-                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-base font-semibold text-[var(--text)]">
+            @if (selectedReviewPlace(); as selectedPlace) {
+              <div class="mt-4 rounded-[1.5rem] border border-[var(--accent)]/25 bg-[var(--accent)]/[0.06] p-3">
+                <div class="flex items-start gap-4">
+                  <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[var(--accent)]/25 bg-[var(--surface)] text-base font-semibold text-[var(--text)]">
                   {{ placeInitial(selectedPlace.name) }}
-                </span>
-                <div class="min-w-0 flex-1">
-                  <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Write a review</p>
-                  <h2 class="mt-1.5 truncate text-xl font-semibold tracking-[-0.02em] text-[var(--text)]">{{ selectedPlace.name }}</h2>
-                  <p class="mt-1 line-clamp-2 text-sm font-normal leading-6 text-[var(--muted)]">{{ selectedPlace.address || selectedPlace.category }}</p>
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Selected place</p>
+                    <h3 class="mt-1.5 truncate text-xl font-semibold tracking-[-0.02em] text-[var(--text)]">{{ selectedPlace.name }}</h3>
+                    <p class="mt-1 line-clamp-2 text-sm font-normal leading-6 text-[var(--muted)]">{{ selectedPlace.address || selectedPlace.category }}</p>
+                  </div>
                 </div>
               </div>
+            } @else {
+              <div class="mt-4 rounded-[1.5rem] border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] p-4 text-center">
+                <span class="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)]">
+                  <span class="material-symbols-outlined">touch_app</span>
+                </span>
+                <p class="mt-3 text-sm font-semibold text-[var(--text)]">Choose a search result to unlock the review form.</p>
+                <p class="mt-1 text-xs font-normal leading-5 text-[var(--muted)]">The review area stays here so the main action is always visible.</p>
+              </div>
+            }
 
-              <div class="mt-6 flex items-center justify-between">
+            <div class="mt-4 flex items-center justify-between rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2.5">
                 <span class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Your rating</span>
                 <div class="flex items-center gap-0.5">
                   @for (star of starValues; track star) {
@@ -155,27 +178,27 @@
               </div>
 
               <textarea
-                rows="5"
+                rows="4"
                 [value]="placeReviewText()"
                 (input)="placeReviewText.set($any($event.target).value)"
-                class="mt-4 min-h-32 w-full resize-none rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3.5 text-[0.95rem] font-normal leading-7 text-[var(--text)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]/40 focus:bg-[var(--soft-fill-strong)]"
+                class="mt-3 min-h-28 w-full resize-none rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-[0.95rem] font-normal leading-6 text-[var(--text)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]/40 focus:bg-[var(--soft-fill-strong)]"
                 placeholder="What should someone know before they go?"
               ></textarea>
 
-              <button
-                type="submit"
-                class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-                [disabled]="!canSubmitPlaceReview()"
-              >
-                @if (placeReviewSubmitting()) {
-                  <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-                  Saving review
-                } @else {
-                  Publish review
-                }
-              </button>
+            <button
+              type="submit"
+              class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--accent-contrast)] shadow-[0_18px_36px_rgba(255,176,112,0.2)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+              [disabled]="!canSubmitPlaceReview()"
+            >
+              @if (placeReviewSubmitting()) {
+                <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                Saving review
+              } @else {
+                <span class="material-symbols-outlined text-[1.05rem]">rate_review</span>
+                Publish review
+              }
+            </button>
             </form>
-          }
 
           @if (placeReviewError()) {
             <p class="rounded-2xl border border-red-500/15 bg-red-500/[0.06] px-4 py-3 text-sm font-medium leading-6 text-red-400">{{ placeReviewError() }}</p>
@@ -185,51 +208,13 @@
           }
         </section>
 
-	        <section class="space-y-5">
-          <div class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
-            <div class="relative border-b border-[var(--line)] p-5">
-              <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#254c89] via-[#f3ba4f] to-[#d9413c]"></div>
-              <div class="flex items-start justify-between gap-4 pt-1">
-                <div class="min-w-0">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">City map</p>
-                  <h2 class="mt-1 truncate text-xl font-semibold tracking-[-0.02em] text-[var(--text)]">{{ selectedReviewPlace()?.name || cityName() }}</h2>
-                  <p class="mt-1 line-clamp-1 text-xs font-normal leading-5 text-[var(--muted)]">{{ mapLocationLabel() }}</p>
-                </div>
-                <span class="inline-grid h-12 w-12 shrink-0 rotate-[7deg] place-items-center rounded-full border border-[var(--line-strong)] text-[0.72rem] font-black uppercase tracking-[0.12em] text-[var(--muted)]">
-                  LW
-                </span>
+        <section class="space-y-4">
+          <div class="rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)]">
+	          <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Community reviews</p>
+	              <h2 class="mt-1 text-xl font-semibold tracking-[-0.035em] text-[var(--text)]">Reviewed places</h2>
               </div>
-            </div>
-            <div class="relative aspect-[16/10] bg-[var(--soft-fill)]">
-              <iframe
-                class="absolute inset-0 h-full w-full"
-                [src]="mapEmbedUrl()"
-                [title]="mapTitle()"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
-            <div class="flex items-center justify-between gap-3 px-5 py-3">
-              <span class="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-                {{ selectedReviewPlace() ? 'Selected place' : 'City view' }}
-              </span>
-              @if (selectedReviewPlace()?.googleMapsUrl) {
-                <a
-                  [href]="selectedReviewPlace()?.googleMapsUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--accent)] no-underline transition hover:opacity-75"
-                >
-                  Open Google Maps
-                  <span class="material-symbols-outlined text-[0.85rem]">arrow_outward</span>
-                </a>
-              }
-            </div>
-          </div>
-
-          <div>
-	          <div class="flex items-baseline justify-between gap-3">
-	            <h2 class="text-lg font-semibold tracking-[-0.02em] text-[var(--text)]">Reviewed places</h2>
             @if (reviewedPlacesLoading()) {
               <span class="inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
                 <span class="inline-block h-2.5 w-2.5 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
@@ -249,9 +234,9 @@
               <p class="mt-1.5 text-sm font-normal leading-6 text-[var(--muted)]">Search a place and leave the first local note.</p>
             </div>
           } @else {
-            <div class="mt-5 space-y-3">
+	            <div class="mt-4 max-h-[18rem] space-y-2 overflow-y-auto pr-1">
               @for (place of reviewedPlaces(); track place.id) {
-                <article class="group rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-soft)] transition hover:border-[var(--line-strong)]">
+	                <article class="group rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)] transition hover:border-[var(--line-strong)]">
                   <div class="flex items-start gap-4">
                     <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-sm font-semibold text-[var(--text)]">
                       {{ placeInitial(place.name) }}
@@ -266,11 +251,11 @@
                     </span>
                   </div>
                   @if (place.latestReviewText) {
-                    <p class="mt-4 border-l-2 border-[var(--accent)]/40 pl-4 text-sm font-normal italic leading-6 text-[var(--text)]/85">
-                      &ldquo;{{ truncatePlaceText(place.latestReviewText) }}&rdquo;
+	                    <p class="mt-3 border-l-2 border-[var(--accent)]/40 pl-3 text-sm font-normal italic leading-5 text-[var(--text)]/85">
+	                      &ldquo;{{ truncatePlaceText(place.latestReviewText, 92) }}&rdquo;
                     </p>
                   }
-                  <div class="mt-4 flex items-center justify-between gap-3 border-t border-[var(--line)] pt-3">
+	                  <div class="mt-3 flex items-center justify-between gap-3 border-t border-[var(--line)] pt-3">
                     <span class="truncate text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">{{ placeReviewCountLabel(place) }}</span>
                     <a
                       [href]="place.googleMapsUrl"
@@ -286,6 +271,41 @@
               }
             </div>
           }
+          </div>
+
+          <div class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
+            <div class="relative border-b border-[var(--line)] p-4">
+              <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#254c89] via-[#f3ba4f] to-[#d9413c]"></div>
+              <div class="flex items-start justify-between gap-4 pt-1">
+                <div class="min-w-0">
+                  <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Map context</p>
+                  <h2 class="mt-1 truncate text-lg font-semibold tracking-[-0.02em] text-[var(--text)]">{{ selectedReviewPlace()?.name || cityName() }}</h2>
+                  <p class="mt-1 line-clamp-1 text-xs font-normal leading-5 text-[var(--muted)]">{{ mapLocationLabel() }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="relative aspect-[16/8] bg-[var(--soft-fill)]">
+              <iframe
+                class="absolute inset-0 h-full w-full"
+                [src]="mapEmbedUrl()"
+                [title]="mapTitle()"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+            @if (selectedReviewPlace()?.googleMapsUrl) {
+              <div class="flex justify-end px-4 py-3">
+                <a
+                  [href]="selectedReviewPlace()?.googleMapsUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--accent)] no-underline transition hover:opacity-75"
+                >
+                  Open Google Maps
+                  <span class="material-symbols-outlined text-[0.85rem]">arrow_outward</span>
+                </a>
+              </div>
+            }
           </div>
         </section>
       </div>
