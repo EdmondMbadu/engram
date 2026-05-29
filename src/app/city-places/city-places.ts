@@ -19,6 +19,7 @@ export class CityPlacesComponent implements OnDestroy {
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly sanitizer = inject(DomSanitizer);
   private placeSearchTimer: ReturnType<typeof setTimeout> | null = null;
+  private shareCopiedTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly routeSlug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
@@ -42,6 +43,8 @@ export class CityPlacesComponent implements OnDestroy {
   readonly placeDetailReviewsLoading = signal(false);
   readonly placeDetailError = signal<string | null>(null);
   readonly placeDrawerOpen = signal(false);
+  readonly shareModalOpen = signal(false);
+  readonly shareCopied = signal(false);
   readonly placeSearchQuery = signal('');
   readonly placeSearchResults = signal<CityPlaceCandidate[]>([]);
   readonly placeSearchLoading = signal(false);
@@ -90,6 +93,34 @@ export class CityPlacesComponent implements OnDestroy {
       : [place?.name || this.cityName(), place?.address || this.country()].filter(Boolean).join(', ');
     const url = `https://www.google.com/maps?q=${encodeURIComponent(query)}&z=${place ? '15' : '11'}&output=embed`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  });
+  readonly shareUrl = computed(() => {
+    const place = this.selectedDetailPlace();
+    if (typeof window === 'undefined') {
+      return '';
+    }
+
+    const slug = this.atlas()?.slug?.trim() || this.routeSlug()?.trim();
+    const url = new URL(slug ? `/places/${slug}` : window.location.pathname, window.location.origin);
+    if (place?.id) {
+      url.searchParams.set('place', place.id);
+    }
+    return url.toString();
+  });
+  readonly shareTitle = computed(() => {
+    const city = this.cityName() || 'this city';
+    const place = this.selectedDetailPlace();
+    return place ? `${place.name} on My living wiki: ${city}` : `Share your best place in ${city}`;
+  });
+  readonly shareInviteText = computed(() => {
+    const city = this.cityName() || 'this city';
+    const country = this.country();
+    const cityLabel = country ? `${city}, ${country}` : city;
+    const place = this.selectedDetailPlace();
+    if (!place) {
+      return `Come add your review of a favorite place in ${city}. Share a restaurant, cafe, park, landmark, or local spot on My living wiki and help build the ${cityLabel} city board.`;
+    }
+    return `Come add your review of ${place.name} in ${city}. I found it on My living wiki for ${cityLabel}; add your stars and help build the local board.`;
   });
   readonly reviewedPlacesCountLabel = computed(() => {
     const count = this.reviewedPlaces().length;
@@ -230,6 +261,10 @@ export class CityPlacesComponent implements OnDestroy {
       clearTimeout(this.placeSearchTimer);
       this.placeSearchTimer = null;
     }
+    if (this.shareCopiedTimer) {
+      clearTimeout(this.shareCopiedTimer);
+      this.shareCopiedTimer = null;
+    }
   }
 
   onPlaceSearchInput(event: Event): void {
@@ -313,6 +348,80 @@ export class CityPlacesComponent implements OnDestroy {
 
   closePlaceDrawer(): void {
     this.placeDrawerOpen.set(false);
+    this.closeShareModal();
+  }
+
+  openShareModal(): void {
+    this.shareCopied.set(false);
+    this.shareModalOpen.set(true);
+  }
+
+  closeShareModal(): void {
+    this.shareModalOpen.set(false);
+  }
+
+  async copyShareInvite(): Promise<void> {
+    const url = this.shareUrl();
+    if (!url) {
+      return;
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+    } else if (typeof document !== 'undefined') {
+      const textarea = document.createElement('textarea');
+      textarea.value = url;
+      textarea.setAttribute('readonly', 'true');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      textarea.remove();
+    }
+    this.showShareCopied();
+  }
+
+  async nativeSharePlace(): Promise<void> {
+    const url = this.shareUrl();
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title: this.shareTitle(),
+          text: this.shareInviteText(),
+          url,
+        });
+        return;
+      } catch (error) {
+        if ((error as { name?: string })?.name === 'AbortError') {
+          return;
+        }
+      }
+    }
+    await this.copyShareInvite();
+  }
+
+  shareHref(platform: string): string {
+    const url = this.shareUrl();
+    if (!url) {
+      return '#';
+    }
+
+    const title = this.shareTitle();
+    const text = this.shareInviteText();
+    const encodedUrl = encodeURIComponent(url);
+    const encodedTitle = encodeURIComponent(title);
+    const encodedText = encodeURIComponent(text);
+    const encodedTextWithUrl = encodeURIComponent(`${text}\n${url}`);
+    const shareTargets: Record<string, string> = {
+      x: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+      whatsapp: `https://wa.me/?text=${encodedTextWithUrl}`,
+      email: `mailto:?subject=${encodedTitle}&body=${encodedTextWithUrl}`,
+    };
+    return shareTargets[platform] ?? '#';
   }
 
   formatReviewDate(value: string | null): string {
@@ -424,6 +533,8 @@ export class CityPlacesComponent implements OnDestroy {
     this.placeDetailReviews.set([]);
     this.placeDetailError.set(null);
     this.placeDrawerOpen.set(false);
+    this.shareModalOpen.set(false);
+    this.shareCopied.set(false);
     this.placeSearchLoading.set(false);
     this.selectedReviewPlace.set(null);
     this.placeReviewRating.set(5);
@@ -466,5 +577,16 @@ export class CityPlacesComponent implements OnDestroy {
       return 'Place search is not configured yet. Existing reviewed places still work.';
     }
     return message || 'Could not save that review. Please try again.';
+  }
+
+  private showShareCopied(): void {
+    this.shareCopied.set(true);
+    if (this.shareCopiedTimer) {
+      clearTimeout(this.shareCopiedTimer);
+    }
+    this.shareCopiedTimer = setTimeout(() => {
+      this.shareCopied.set(false);
+      this.shareCopiedTimer = null;
+    }, 1800);
   }
 }
