@@ -85,6 +85,13 @@ type ChatAnswerSpeechResponse = {
   cached?: boolean;
 };
 
+type ElevenLabsVoiceSessionResponse = {
+  conversationToken: string;
+  agentId: string;
+  userId: string;
+  dynamicVariables: Record<string, string | number | boolean>;
+};
+
 type StreamingAnswerCallbacks = {
   onDelta: (delta: string) => void;
 };
@@ -547,6 +554,35 @@ export class ChatService {
       question: question ?? null,
       anonymousVisitorId: anonymousVisitorId ?? null,
       mode: 'recap',
+    });
+    return data;
+  }
+
+  async createElevenLabsVoiceSession(options: {
+    atlasId?: string | null;
+    atlasName?: string | null;
+    anonymousVisitorId?: string | null;
+    participantName?: string | null;
+  }): Promise<ElevenLabsVoiceSessionResponse | null> {
+    if (!this.functions) {
+      return null;
+    }
+
+    const createVoiceSession = httpsCallable<
+      {
+        atlasId?: string | null;
+        atlasName?: string | null;
+        anonymousVisitorId?: string | null;
+        participantName?: string | null;
+      },
+      ElevenLabsVoiceSessionResponse
+    >(this.functions, 'createElevenLabsVoiceSession');
+
+    const { data } = await createVoiceSession({
+      atlasId: options.atlasId ?? null,
+      atlasName: options.atlasName ?? null,
+      anonymousVisitorId: options.anonymousVisitorId ?? null,
+      participantName: options.participantName ?? null,
     });
     return data;
   }

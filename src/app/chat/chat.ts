@@ -17,6 +17,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { getPublicAppUrl } from '../firebase.config';
+import type { Conversation as ElevenLabsConversation, Mode as ElevenLabsMode, Status as ElevenLabsStatus } from '@elevenlabs/client';
 import {
   buildPublicWikiLiveItem,
   COMING_SOON_PUBLIC_WIKIS,
@@ -55,6 +56,14 @@ interface SharePageModal {
   subtitle: string;
   url: string;
 }
+
+interface VoiceTranscriptItem {
+  id: string;
+  role: 'user' | 'agent';
+  text: string;
+}
+
+type RealtimeVoiceStatus = ElevenLabsStatus | 'error';
 
 const THINKING_STAGES = [
   'Searching knowledge base',
@@ -96,6 +105,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private answerAudioPromises = new Map<string, Promise<string | null>>();
   private voiceClickScrollPosition: ReturnType<ChatComponent['captureScrollPosition']> = null;
   private voiceScrollLockTimer: ReturnType<typeof setInterval> | null = null;
+  private realtimeVoiceConversation: ElevenLabsConversation | null = null;
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -129,6 +139,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly preparedSpeechMessageIds = signal<Record<string, boolean>>({});
   readonly speechErrorMessageId = signal<string | null>(null);
   readonly speechError = signal<string | null>(null);
+  readonly realtimeVoiceStatus = signal<RealtimeVoiceStatus>('disconnected');
+  readonly realtimeVoiceMode = signal<ElevenLabsMode | null>(null);
+  readonly realtimeVoiceMuted = signal(false);
+  readonly realtimeVoiceError = signal<string | null>(null);
+  readonly realtimeVoiceConversationId = signal<string | null>(null);
+  readonly realtimeVoiceTranscript = signal<VoiceTranscriptItem[]>([]);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
@@ -174,6 +190,30 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly canStartFreshChat = computed(
     () => !this.publicNotFound() && (this.isWorkspaceMode() || this.isPublicVisitorMode()),
   );
+  readonly canStartRealtimeVoice = computed(
+    () => !this.publicNotFound() && !this.isPublicPageLoading() && !!this.currentVoiceAtlasId(),
+  );
+  readonly realtimeVoiceActive = computed(() => {
+    const status = this.realtimeVoiceStatus();
+    return status === 'connecting' || status === 'connected' || status === 'disconnecting';
+  });
+  readonly realtimeVoicePrimaryLabel = computed(() => {
+    const status = this.realtimeVoiceStatus();
+    if (status === 'connecting') return 'Connecting';
+    if (status === 'disconnecting') return 'Ending';
+    if (status === 'connected') return 'End voice';
+    return 'Voice mode';
+  });
+  readonly realtimeVoicePanelTitle = computed(() => {
+    const status = this.realtimeVoiceStatus();
+    if (status === 'connecting') return 'Connecting realtime voice';
+    if (status === 'connected') {
+      return this.realtimeVoiceMode() === 'speaking' ? 'AI speaking' : 'Listening';
+    }
+    if (status === 'disconnecting') return 'Ending voice mode';
+    if (status === 'error') return 'Voice mode needs setup';
+    return 'Realtime voice';
+  });
   readonly isAnonymousPublicVisitor = computed(() => this.isPublicVisitorMode() && !this.isSignedIn());
   readonly isSignedInPublicVisitor = computed(() => this.isPublicVisitorMode() && this.isSignedIn());
   readonly isPublicPageLoading = computed(() => {
@@ -286,6 +326,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   });
   readonly currentWikiAtlas = computed(() =>
     this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
+  );
+  readonly currentVoiceAtlasId = computed(() =>
+    this.currentWikiAtlas()?.id ?? this.publicAtlas()?.id ?? this.atlasService.activeAtlasId(),
   );
   readonly canAdminCurrentWiki = computed(() => this.atlasService.canAdminAtlas(this.currentWikiAtlas()));
   readonly canSubscribeToCurrentWiki = computed(() => {
@@ -1033,6 +1076,149 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       input.focus();
       input.setSelectionRange(prompt.length, prompt.length);
       this.autoGrowComposer();
+    });
+  }
+
+  async toggleRealtimeVoice(): Promise<void> {
+    if (this.realtimeVoiceActive()) {
+      await this.stopRealtimeVoice();
+      return;
+    }
+
+    await this.startRealtimeVoice();
+  }
+
+  async startRealtimeVoice(): Promise<void> {
+    if (this.realtimeVoiceActive()) {
+      return;
+    }
+
+    if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
+      this.realtimeVoiceStatus.set('error');
+      this.realtimeVoiceError.set('This browser does not support microphone voice mode.');
+      return;
+    }
+
+    const atlasId = this.currentVoiceAtlasId();
+    if (!atlasId) {
+      this.realtimeVoiceStatus.set('error');
+      this.realtimeVoiceError.set('Select a wiki before starting voice mode.');
+      return;
+    }
+
+    this.stopAnswerAudio();
+    this.realtimeVoiceStatus.set('connecting');
+    this.realtimeVoiceMode.set(null);
+    this.realtimeVoiceMuted.set(false);
+    this.realtimeVoiceError.set(null);
+    this.realtimeVoiceTranscript.set([]);
+    this.answerMode.set('internet');
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((track) => track.stop());
+
+      const session = await this.chatService.createElevenLabsVoiceSession({
+        atlasId,
+        atlasName: this.currentWikiName(),
+        anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
+        participantName: this.currentUserName() || this.currentUserEmail() || 'My living wiki visitor',
+      });
+      if (!session) {
+        throw new Error('Voice service is unavailable.');
+      }
+
+      const { Conversation } = await import('@elevenlabs/client');
+      const conversation = await Conversation.startSession({
+        conversationToken: session.conversationToken,
+        connectionType: 'webrtc',
+        userId: session.userId,
+        dynamicVariables: session.dynamicVariables,
+        onConnect: ({ conversationId }) => {
+          this.realtimeVoiceConversationId.set(conversationId);
+          this.realtimeVoiceStatus.set('connected');
+        },
+        onDisconnect: () => {
+          this.realtimeVoiceConversation = null;
+          this.realtimeVoiceStatus.set('disconnected');
+          this.realtimeVoiceMode.set(null);
+          this.realtimeVoiceMuted.set(false);
+        },
+        onStatusChange: ({ status }) => {
+          this.realtimeVoiceStatus.set(status);
+        },
+        onModeChange: ({ mode }) => {
+          this.realtimeVoiceMode.set(mode);
+        },
+        onMessage: ({ role, message }) => {
+          this.rememberRealtimeVoiceMessage(role === 'agent' ? 'agent' : 'user', message);
+        },
+        onError: (message) => {
+          this.realtimeVoiceStatus.set('error');
+          this.realtimeVoiceError.set(message || 'Realtime voice failed.');
+        },
+      });
+
+      this.realtimeVoiceConversation = conversation;
+      conversation.sendContextualUpdate(
+        [
+          `This is a My living wiki voice session for ${this.currentWikiName() || 'the current wiki'}.`,
+          'Use internet mode only.',
+          'Keep replies short, spoken, and fast. Use the configured My living wiki internet tool for factual local answers.',
+        ].join(' '),
+      );
+    } catch (error) {
+      this.realtimeVoiceConversation = null;
+      this.realtimeVoiceStatus.set('error');
+      this.realtimeVoiceMode.set(null);
+      this.realtimeVoiceError.set(this.authService.toFriendlyError(error));
+    }
+  }
+
+  async stopRealtimeVoice(): Promise<void> {
+    const conversation = this.realtimeVoiceConversation;
+    if (!conversation) {
+      this.realtimeVoiceStatus.set('disconnected');
+      this.realtimeVoiceMode.set(null);
+      return;
+    }
+
+    this.realtimeVoiceStatus.set('disconnecting');
+    this.realtimeVoiceConversation = null;
+    try {
+      await conversation.endSession();
+    } catch (error) {
+      this.realtimeVoiceError.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.realtimeVoiceStatus.set('disconnected');
+      this.realtimeVoiceMode.set(null);
+      this.realtimeVoiceMuted.set(false);
+    }
+  }
+
+  toggleRealtimeVoiceMute(): void {
+    const conversation = this.realtimeVoiceConversation;
+    if (!conversation || this.realtimeVoiceStatus() !== 'connected') {
+      return;
+    }
+
+    const muted = !this.realtimeVoiceMuted();
+    conversation.setMicMuted(muted);
+    this.realtimeVoiceMuted.set(muted);
+  }
+
+  private rememberRealtimeVoiceMessage(role: VoiceTranscriptItem['role'], text: string): void {
+    const trimmed = text.replace(/\s+/g, ' ').trim();
+    if (!trimmed) {
+      return;
+    }
+
+    this.realtimeVoiceTranscript.update((items) => {
+      const last = items[items.length - 1];
+      if (last?.role === role && last.text === trimmed) {
+        return items;
+      }
+      return [...items.slice(-7), { id: `voice-${Date.now()}-${items.length}`, role, text: trimmed }];
     });
   }
 
@@ -1855,6 +2041,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
     this.unlockScrollPosition(this.voiceClickScrollPosition);
     this.clearSpeechState(true);
+    void this.stopRealtimeVoice();
   }
 
   toggleAvatarMenu(): void {

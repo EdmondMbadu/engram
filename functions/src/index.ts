@@ -3,7 +3,7 @@ import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
-import { defineSecret } from 'firebase-functions/params';
+import { defineSecret, defineString } from 'firebase-functions/params';
 import { createHash, randomUUID } from 'node:crypto';
 import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
@@ -47,6 +47,7 @@ const staleRetryBatchLimit = 200;
 const maxGoogleDriveImportFiles = 10;
 const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
 const elevenLabsApiKey = defineSecret('ELEVENLABS_API_KEY');
+const elevenLabsAgentId = defineString('ELEVENLABS_AGENT_ID');
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://mylivingwiki.com';
@@ -3059,6 +3060,170 @@ export const updateAtlasVoiceAgentConfig = onCall({ region: callableRegion, cors
   return { config: serializeVoiceAgentConfig(atlasId, { ...config, updated_at: new Date().toISOString() }) };
 });
 
+export const createElevenLabsVoiceSession = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+    secrets: [elevenLabsApiKey],
+  },
+  async (request) => {
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const anonymousVisitorId = normalizeAnonymousVisitorId(request.data?.anonymousVisitorId);
+    const uid = request.auth?.uid ?? null;
+    if (!uid && !anonymousVisitorId) {
+      throw new HttpsError('unauthenticated', 'Authentication or anonymousVisitorId is required.');
+    }
+
+    let atlasName = textValue(request.data?.atlasName, 120) || null;
+    if (atlasId) {
+      if (uid) {
+        const { atlas } = await loadAtlasForAdminAccess(atlasId, uid);
+        atlasName = textValue(atlas.name, 120) || atlasName;
+      } else {
+        const atlas = await loadPublicAtlasById(atlasId);
+        atlasName = textValue(atlas.name, 120) || atlasName;
+      }
+    }
+
+    const apiKey = elevenLabsApiKey.value();
+    if (!apiKey) {
+      throw new HttpsError('failed-precondition', 'ElevenLabs API key is not configured.');
+    }
+
+    const agentId = elevenLabsAgentId.value().trim();
+    if (!agentId) {
+      throw new HttpsError('failed-precondition', 'ELEVENLABS_AGENT_ID is not configured.');
+    }
+
+    const visitorId = uid ?? anonymousVisitorId ?? `visitor_${randomUUID()}`;
+    const params = new URLSearchParams({
+      agent_id: agentId,
+      participant_name: textValue(request.data?.participantName, 80) || visitorId.slice(0, 80),
+      environment: 'production',
+    });
+
+    const response = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/token?${params.toString()}`, {
+      method: 'GET',
+      headers: {
+        'xi-api-key': apiKey,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => '');
+      logger.warn('ElevenLabs voice session token request failed', {
+        status: response.status,
+        body: errorText.slice(0, 500),
+      });
+      throw new HttpsError('internal', 'Failed to start realtime voice.');
+    }
+
+    const data = await response.json() as { token?: unknown };
+    const conversationToken = typeof data.token === 'string' ? data.token : '';
+    if (!conversationToken) {
+      throw new HttpsError('internal', 'ElevenLabs did not return a conversation token.');
+    }
+
+    return {
+      conversationToken,
+      agentId,
+      userId: visitorId,
+      dynamicVariables: {
+        atlas_id: atlasId ?? '',
+        atlas_name: atlasName ?? '',
+        answer_mode: 'internet',
+        visitor_id: visitorId,
+      },
+    };
+  },
+);
+
+export const elevenLabsLivingWikiInternetTool = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 180,
+    memory: '1GiB',
+    secrets: [geminiApiKey],
+  },
+  async (req, res) => {
+    res.set('Cache-Control', 'no-store');
+
+    if (req.method === 'GET') {
+      res.status(200).send({
+        ok: true,
+        message: 'My living wiki ElevenLabs internet voice tool. POST a question to answer from internet mode.',
+      });
+      return;
+    }
+
+    if (req.method !== 'POST') {
+      res.status(405).send({ error: 'Method not allowed.' });
+      return;
+    }
+
+    const body = req.body && typeof req.body === 'object' ? req.body as Record<string, unknown> : {};
+    const atlasId = normalizeAtlasId(req.query.atlasId) || normalizeAtlasId(body['atlasId']);
+    const token =
+      textValue(req.query.token, 256) ||
+      bearerToken(req.get('authorization')) ||
+      textValue(req.get('x-living-wiki-token'), 256);
+    if (!atlasId || !token) {
+      res.status(401).send({ error: 'Missing atlasId or authorization token.' });
+      return;
+    }
+
+    try {
+      const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
+      const config = voiceAgentConfigFromStored(integrationSnapshot.data()?.voice_agent);
+      if (!config?.enabled || config.webhook_token !== token) {
+        res.status(403).send({ error: 'My living wiki voice agent endpoint is not enabled.' });
+        return;
+      }
+
+      const question = extractElevenLabsToolQuestion(body);
+      if (!question) {
+        res.status(200).send({
+          answer: 'Ask me a specific question about this living wiki and I can look it up.',
+        });
+        return;
+      }
+
+      const atlas = await loadPublicAtlasById(atlasId);
+      const visitorId = normalizeAnonymousVisitorId(body['anonymousVisitorId']) ??
+        `elevenlabs_${createHash('sha256').update(`${atlasId}:${token}`).digest('hex').slice(0, 48)}`;
+      const response = await runPublicAtlasQuery({
+        atlasId,
+        atlasOwnerUserId: String(atlas.user_id),
+        question,
+        answerMode: 'internet',
+        anonymousQuestionLimit: null,
+        visitor: {
+          kind: 'anonymous',
+          visitorUserId: null,
+          anonymousVisitorId: visitorId,
+          visitorDisplayName: 'ElevenLabs voice visitor',
+          visitorEmail: null,
+        },
+      });
+
+      res.status(200).send({
+        answer: formatVoiceToolResult(response.answer),
+        threadId: response.threadId,
+      });
+    } catch (error) {
+      logger.error('elevenLabsLivingWikiInternetTool failed', {
+        atlasId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      res.status(500).send({
+        answer: 'My living wiki could not answer that right now. Please try again shortly.',
+      });
+    }
+  },
+);
+
 export const vapiLivingWikiTool = onRequest(
   {
     region: callableRegion,
@@ -3991,6 +4156,31 @@ function extractToolQuestion(args: Record<string, unknown>): string | null {
     textValue(args['query'], 1200) ||
     textValue(args['prompt'], 1200) ||
     textValue(args['text'], 1200);
+}
+
+function extractElevenLabsToolQuestion(body: Record<string, unknown>): string | null {
+  const direct = extractToolQuestion(body);
+  if (direct) {
+    return direct;
+  }
+
+  const parameters = body['parameters'];
+  if (parameters && typeof parameters === 'object') {
+    const question = extractToolQuestion(parameters as Record<string, unknown>);
+    if (question) {
+      return question;
+    }
+  }
+
+  const argumentsValue = body['arguments'];
+  if (argumentsValue && typeof argumentsValue === 'object') {
+    const question = extractToolQuestion(argumentsValue as Record<string, unknown>);
+    if (question) {
+      return question;
+    }
+  }
+
+  return null;
 }
 
 function firstVapiToolCallId(body: unknown): string | null {
