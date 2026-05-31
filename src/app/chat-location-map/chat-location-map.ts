@@ -2,6 +2,12 @@ import { Component, ElementRef, inject, Input, OnChanges, signal, SimpleChanges,
 import type { MappableLocation } from '../atlas.models';
 import { GoogleMapsService, type ResolvedMappableLocation } from '../google-maps.service';
 
+type MapController = {
+  fitBounds?: (bounds: unknown, padding?: number) => void;
+  panTo?: (position: ResolvedMappableLocation['position']) => void;
+  setZoom?: (zoom: number) => void;
+};
+
 @Component({
   selector: 'app-chat-location-map',
   templateUrl: './chat-location-map.html',
@@ -25,7 +31,9 @@ export class ChatLocationMapComponent implements OnChanges {
   readonly mapTitle = 'Places mentioned';
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
-  resolvedLocations: ResolvedMappableLocation[] = [];
+  readonly resolvedLocations = signal<ResolvedMappableLocation[]>([]);
+  readonly selectedLocationKey = signal<string | null>(null);
+  private currentMap: MapController | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['locations']) {
@@ -35,6 +43,38 @@ export class ChatLocationMapComponent implements OnChanges {
 
   mapLink(location: MappableLocation): string {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.search_query)}`;
+  }
+
+  displayLocations(): MappableLocation[] {
+    const resolved = this.resolvedLocations();
+    if (resolved.length > 0) {
+      return resolved;
+    }
+    return this.validLocations();
+  }
+
+  locationKey(location: MappableLocation): string {
+    return `${location.name.trim().toLowerCase()}::${location.search_query.trim().toLowerCase()}`;
+  }
+
+  locationDetail(location: MappableLocation): string {
+    const resolved = this.resolvedLocations().find((item) => this.locationKey(item) === this.locationKey(location));
+    return resolved?.formatted_address || location.address_hint || location.search_query;
+  }
+
+  isSelectedLocation(location: MappableLocation): boolean {
+    return this.selectedLocationKey() === this.locationKey(location);
+  }
+
+  selectLocation(location: MappableLocation): void {
+    const key = this.locationKey(location);
+    this.selectedLocationKey.set(key);
+    const resolved = this.resolvedLocations().find((item) => this.locationKey(item) === key);
+    if (!resolved) {
+      return;
+    }
+    this.currentMap?.panTo?.(resolved.position);
+    this.currentMap?.setZoom?.(15);
   }
 
   private scheduleRenderMap(): void {
@@ -51,14 +91,20 @@ export class ChatLocationMapComponent implements OnChanges {
 
   private async renderMap(): Promise<void> {
     const canvas = this.mapCanvas?.nativeElement;
-    const locations = this.locations.filter((location) => location.name?.trim() && location.search_query?.trim());
+    const locations = this.validLocations();
     if (!canvas || locations.length === 0) {
+      this.resolvedLocations.set([]);
+      this.selectedLocationKey.set(null);
+      this.currentMap = null;
       return;
     }
 
     const currentRender = ++this.renderId;
     this.isLoading.set(true);
     this.error.set(null);
+    if (!this.selectedLocationKey() || !locations.some((location) => this.isSelectedLocation(location))) {
+      this.selectedLocationKey.set(this.locationKey(locations[0]));
+    }
 
     try {
       if (!this.googleMapsService.isConfigured()) {
@@ -71,9 +117,12 @@ export class ChatLocationMapComponent implements OnChanges {
         return;
       }
 
-      this.resolvedLocations = resolved;
+      this.resolvedLocations.set(resolved);
       if (resolved.length === 0) {
         throw new Error('No map locations could be resolved.');
+      }
+      if (!resolved.some((location) => this.isSelectedLocation(location))) {
+        this.selectedLocationKey.set(this.locationKey(resolved[0]));
       }
 
       const map = new google.maps.Map(canvas, {
@@ -84,6 +133,7 @@ export class ChatLocationMapComponent implements OnChanges {
         zoomControl: true,
         fullscreenControl: true,
       });
+      this.currentMap = map as MapController;
       const bounds = new google.maps.LatLngBounds();
       const Marker = google.maps.marker?.AdvancedMarkerElement;
 
@@ -98,18 +148,23 @@ export class ChatLocationMapComponent implements OnChanges {
         }
       }
 
-      if (resolved.length > 1 && typeof (map as { fitBounds?: unknown }).fitBounds === 'function') {
-        (map as { fitBounds: (bounds: unknown, padding?: number) => void }).fitBounds(bounds, 54);
+      if (resolved.length > 1 && typeof this.currentMap.fitBounds === 'function') {
+        this.currentMap.fitBounds(bounds, 54);
       }
     } catch (error) {
       if (currentRender === this.renderId) {
         this.error.set(error instanceof Error ? error.message : 'Map could not be loaded.');
-        this.resolvedLocations = [];
+        this.resolvedLocations.set([]);
+        this.currentMap = null;
       }
     } finally {
       if (currentRender === this.renderId) {
         this.isLoading.set(false);
       }
     }
+  }
+
+  private validLocations(): MappableLocation[] {
+    return this.locations.filter((location) => location.name?.trim() && location.search_query?.trim());
   }
 }

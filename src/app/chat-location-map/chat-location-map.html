@@ -4,34 +4,57 @@
       <span class="chat-map-glyph chat-map-glyph--map" aria-hidden="true"></span>
       <p class="text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ mapTitle }}</p>
     </div>
-    <div class="flex flex-wrap items-center gap-2">
-      @for (location of locations; track location.search_query) {
-        <a
-          [href]="mapLink(location)"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex max-w-[12rem] items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 text-[11px] font-bold text-[var(--text)] transition hover:border-[var(--accent)]/40"
-        >
-          <span class="chat-map-glyph chat-map-glyph--pin" aria-hidden="true"></span>
-          <span class="truncate">{{ location.name }}</span>
-        </a>
-      }
-    </div>
+    <p class="text-[11px] font-bold text-[var(--muted)]">{{ displayLocations().length }} place{{ displayLocations().length === 1 ? '' : 's' }}</p>
   </div>
 
-  <div class="relative h-72 w-full bg-[var(--surface)]">
-    <div #mapCanvas class="h-full w-full"></div>
-    @if (isLoading()) {
-      <div class="absolute inset-0 flex items-center justify-center bg-[var(--surface)]/80 text-sm font-semibold text-[var(--muted)] backdrop-blur-sm">
-        Loading map...
+  <div class="chat-map-layout">
+    <div class="relative min-h-[20rem] w-full bg-[var(--surface)]">
+      <div #mapCanvas class="h-full min-h-[20rem] w-full"></div>
+      @if (isLoading()) {
+        <div class="absolute inset-0 flex items-center justify-center bg-[var(--surface)]/80 text-sm font-semibold text-[var(--muted)] backdrop-blur-sm">
+          Loading map...
+        </div>
+      }
+      @if (error()) {
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[var(--surface)] px-5 text-center">
+          <span class="chat-map-glyph chat-map-glyph--off" aria-hidden="true"></span>
+          <p class="text-sm font-semibold text-[var(--text)]">Map preview unavailable</p>
+          <p class="max-w-md text-xs leading-5 text-[var(--muted)]">Open a place from the list.</p>
+        </div>
+      }
+    </div>
+
+    <aside class="chat-map-sidebar" aria-label="Places on this map">
+      <div class="chat-map-sidebar__inner">
+        @for (location of displayLocations(); track locationKey(location); let i = $index) {
+          <article
+            class="chat-map-place"
+            [class.chat-map-place--active]="isSelectedLocation(location)"
+          >
+            <button
+              type="button"
+              class="chat-map-place__select"
+              [attr.aria-pressed]="isSelectedLocation(location)"
+              (click)="selectLocation(location)"
+            >
+              <span class="chat-map-place__pin">{{ i + 1 }}</span>
+              <span class="min-w-0 flex-1">
+                <span class="chat-map-place__name">{{ location.name }}</span>
+                <span class="chat-map-place__detail">{{ locationDetail(location) }}</span>
+              </span>
+            </button>
+            <a
+              class="chat-map-place__open"
+              [href]="mapLink(location)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>Open</span>
+              <span class="material-symbols-outlined text-[0.95rem]">open_in_new</span>
+            </a>
+          </article>
+        }
       </div>
-    }
-    @if (error()) {
-      <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[var(--surface)] px-5 text-center">
-        <span class="chat-map-glyph chat-map-glyph--off" aria-hidden="true"></span>
-        <p class="text-sm font-semibold text-[var(--text)]">Map preview unavailable</p>
-        <p class="max-w-md text-xs leading-5 text-[var(--muted)]">Open any place chip above in Google Maps.</p>
-      </div>
-    }
+    </aside>
   </div>
 </div>
