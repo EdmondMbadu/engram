@@ -1134,6 +1134,13 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         connectionType: 'webrtc',
         userId: session.userId,
         dynamicVariables: session.dynamicVariables,
+        overrides: session.voiceId
+          ? {
+              tts: {
+                voiceId: session.voiceId,
+              },
+            }
+          : undefined,
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');

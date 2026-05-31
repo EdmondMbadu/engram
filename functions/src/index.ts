@@ -53,7 +53,7 @@ const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://mylivingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
 const maxSmsReplyLength = 1200;
-const chatAnswerVoiceId = 'ZthjuvLPty3kTMaNKVKb';
+const chatAnswerVoiceId = 'ed7fd7f55fa58dd74b904a15d1e38bf97763ae8d9faccdce8a27de3441bffa75';
 const maxSpeechTextLength = 4000;
 const maxSpeechRecapWords = 28;
 const speechRecapVersion = 'v2';
@@ -3129,6 +3129,7 @@ export const createElevenLabsVoiceSession = onCall(
     return {
       conversationToken,
       agentId,
+      voiceId: chatAnswerVoiceId,
       userId: visitorId,
       dynamicVariables: {
         atlas_id: atlasId ?? '',

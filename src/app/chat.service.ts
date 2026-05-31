@@ -88,6 +88,7 @@ type ChatAnswerSpeechResponse = {
 type ElevenLabsVoiceSessionResponse = {
   conversationToken: string;
   agentId: string;
+  voiceId?: string;
   userId: string;
   dynamicVariables: Record<string, string | number | boolean>;
 };
