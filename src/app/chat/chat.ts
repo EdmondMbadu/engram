@@ -1152,17 +1152,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       }
 
       const { Conversation } = await import('@elevenlabs/client');
-      const firstMessage = this.realtimeVoiceGreeting();
       const conversation = await Conversation.startSession({
-        conversationToken: session.conversationToken,
+        agentId: session.agentId,
         connectionType: 'webrtc',
         userId: session.userId,
-        dynamicVariables: session.dynamicVariables,
-        overrides: {
-          agent: {
-            firstMessage,
-          },
-        },
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
@@ -1191,13 +1184,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       });
 
       this.realtimeVoiceConversation = conversation;
-      conversation.sendContextualUpdate(
-        [
-          `This is a My living wiki voice session for ${this.currentWikiName() || 'the current wiki'}.`,
-          'Use internet mode only.',
-          'Keep replies short, spoken, and fast. Use the configured My living wiki internet tool for factual local answers.',
-        ].join(' '),
-      );
     } catch (error) {
       this.realtimeVoiceConversation = null;
       this.realtimeVoiceStatus.set('error');
