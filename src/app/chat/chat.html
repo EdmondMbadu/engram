@@ -178,8 +178,8 @@
                 type="button"
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="!isInternetMode()"
-                aria-label="Use My living wiki mode"
-                title="My living wiki"
+              aria-label="Use My living wiki mode"
+                data-tooltip="My living wiki"
                 (click)="setAnswerMode('wiki')"
               >
                 <span class="material-symbols-outlined text-[1rem]">auto_stories</span>
@@ -189,7 +189,7 @@
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="isInternetMode()"
                 aria-label="Use internet mode"
-                title="Internet"
+                data-tooltip="Internet"
                 (click)="setAnswerMode('internet')"
               >
                 <span class="material-symbols-outlined text-[1rem]">public</span>
@@ -201,7 +201,7 @@
               type="button"
               class="chat-nav-icon hidden sm:inline-flex"
               aria-label="New chat"
-              title="New chat"
+              data-tooltip="New chat"
               (click)="newChat()"
             >
               <span class="material-symbols-outlined">edit_square</span>
@@ -212,7 +212,7 @@
               [routerLink]="adminLink"
               class="chat-nav-icon hidden sm:inline-flex"
               aria-label="Open wiki admin"
-              title="Admin"
+              data-tooltip="Admin"
             >
               <span class="material-symbols-outlined">admin_panel_settings</span>
             </a>
@@ -232,7 +232,7 @@
               type="button"
               class="chat-nav-icon hidden sm:inline-flex"
               [attr.aria-label]="activeThreadIsShared() ? 'Chat is shared' : 'Share chat'"
-              [attr.title]="activeThreadIsShared() ? 'Shared' : 'Share chat'"
+              [attr.data-tooltip]="activeThreadIsShared() ? 'Shared' : 'Share chat'"
               (click)="openShareModal()"
             >
               <span class="material-symbols-outlined">{{ activeThreadIsShared() ? 'ios_share' : 'share' }}</span>
@@ -246,7 +246,7 @@
               [style.color]="realtimeVoiceStatus() === 'connected' ? 'var(--accent-contrast)' : null"
               [disabled]="realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting'"
               [attr.aria-label]="realtimeVoiceActive() ? 'End realtime voice mode' : 'Start realtime voice mode'"
-              [attr.title]="realtimeVoiceActive() ? 'End voice mode' : 'Voice mode'"
+              [attr.data-tooltip]="realtimeVoiceActive() ? 'End voice mode' : 'Voice mode'"
               (click)="toggleRealtimeVoice()"
             >
               @if (realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting') {
@@ -261,7 +261,7 @@
               type="button"
               class="chat-nav-icon hidden sm:inline-flex"
               [attr.aria-label]="copiedTarget() === 'chat-thread' ? 'Chat copied' : 'Copy chat'"
-              [attr.title]="copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat'"
+              [attr.data-tooltip]="copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat'"
               (click)="copyWholeChat()"
             >
               <span class="material-symbols-outlined">{{ copiedTarget() === 'chat-thread' ? 'check' : 'content_copy' }}</span>
