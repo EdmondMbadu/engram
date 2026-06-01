@@ -3141,7 +3141,6 @@ export const createElevenLabsVoiceSession = onCall(
     return {
       conversationToken,
       agentId,
-      voiceId: chatAnswerVoiceId,
       userId: visitorId,
       dynamicVariables: {
         atlas_id: atlasId ?? '',

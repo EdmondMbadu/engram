@@ -1162,31 +1162,29 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           agent: {
             firstMessage,
           },
-          ...(session.voiceId
-            ? {
-                tts: {
-                  voiceId: session.voiceId,
-                },
-              }
-            : {}),
         },
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
         },
         onDisconnect: (details) => {
+          console.warn('[Voice mode] ElevenLabs disconnected', details);
           this.handleRealtimeVoiceDisconnect(details);
         },
         onStatusChange: ({ status }) => {
+          console.debug('[Voice mode] status', status);
           this.realtimeVoiceStatus.set(status);
         },
         onModeChange: ({ mode }) => {
+          console.debug('[Voice mode] mode', mode);
           this.realtimeVoiceMode.set(mode);
         },
         onMessage: ({ role, message }) => {
+          console.debug('[Voice mode] message', { role, message });
           this.rememberRealtimeVoiceMessage(role === 'agent' ? 'agent' : 'user', message);
         },
         onError: (message) => {
+          console.error('[Voice mode] error', message);
           this.realtimeVoiceStatus.set('error');
           this.realtimeVoiceError.set(message || 'Realtime voice failed.');
         },
