@@ -178,37 +178,43 @@
                 type="button"
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="!isInternetMode()"
+                aria-label="Use My living wiki mode"
+                title="My living wiki"
                 (click)="setAnswerMode('wiki')"
               >
-                My living wiki
+                <span class="material-symbols-outlined text-[1rem]">auto_stories</span>
               </button>
               <button
                 type="button"
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="isInternetMode()"
+                aria-label="Use internet mode"
+                title="Internet"
                 (click)="setAnswerMode('internet')"
               >
-                Internet
+                <span class="material-symbols-outlined text-[1rem]">public</span>
               </button>
             </div>
           }
           @if (canStartFreshChat()) {
             <button
               type="button"
-              class="ghost-btn hidden !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
+              class="chat-nav-icon hidden sm:inline-flex"
+              aria-label="New chat"
+              title="New chat"
               (click)="newChat()"
             >
-              New chat
+              <span class="material-symbols-outlined">edit_square</span>
             </button>
           }
           @if (currentWikiAdminLink(); as adminLink) {
             <a
               [routerLink]="adminLink"
-              class="ghost-btn hidden items-center gap-2 !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
+              class="chat-nav-icon hidden sm:inline-flex"
               aria-label="Open wiki admin"
+              title="Admin"
             >
-              <span class="material-symbols-outlined text-base">admin_panel_settings</span>
-              <span>Admin</span>
+              <span class="material-symbols-outlined">admin_panel_settings</span>
             </a>
           }
           @if (canSubscribeToCurrentWiki()) {
@@ -224,20 +230,23 @@
           @if (canShareActiveThread()) {
             <button
               type="button"
-              class="ghost-btn hidden !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
+              class="chat-nav-icon hidden sm:inline-flex"
+              [attr.aria-label]="activeThreadIsShared() ? 'Chat is shared' : 'Share chat'"
+              [attr.title]="activeThreadIsShared() ? 'Shared' : 'Share chat'"
               (click)="openShareModal()"
             >
-              {{ activeThreadIsShared() ? 'Shared' : 'Share chat' }}
+              <span class="material-symbols-outlined">{{ activeThreadIsShared() ? 'ios_share' : 'share' }}</span>
             </button>
           }
           @if (canStartRealtimeVoice()) {
             <button
               type="button"
-              class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)] shadow-sm transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill)] disabled:cursor-wait disabled:opacity-70 sm:h-auto sm:w-auto sm:gap-2 sm:rounded-xl sm:px-4 sm:py-2 sm:text-xs sm:font-bold sm:uppercase sm:tracking-[0.16em]"
+              class="chat-nav-icon chat-nav-icon--voice"
               [style.background]="realtimeVoiceStatus() === 'connected' ? 'var(--accent)' : null"
               [style.color]="realtimeVoiceStatus() === 'connected' ? 'var(--accent-contrast)' : null"
               [disabled]="realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting'"
               [attr.aria-label]="realtimeVoiceActive() ? 'End realtime voice mode' : 'Start realtime voice mode'"
+              [attr.title]="realtimeVoiceActive() ? 'End voice mode' : 'Voice mode'"
               (click)="toggleRealtimeVoice()"
             >
               @if (realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting') {
@@ -245,20 +254,18 @@
               } @else {
                 <span class="material-symbols-outlined text-[1.2rem]">{{ realtimeVoiceStatus() === 'connected' ? 'stop_circle' : 'graphic_eq' }}</span>
               }
-              <span class="hidden sm:inline">{{ realtimeVoicePrimaryLabel() }}</span>
             </button>
           }
           @if (hasMessages()) {
             <button
               type="button"
-              class="ghost-btn hidden !px-4 !py-2 text-xs font-bold uppercase tracking-[0.16em] sm:inline-flex"
+              class="chat-nav-icon hidden sm:inline-flex"
+              [attr.aria-label]="copiedTarget() === 'chat-thread' ? 'Chat copied' : 'Copy chat'"
+              [attr.title]="copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat'"
               (click)="copyWholeChat()"
             >
-              {{ copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat' }}
+              <span class="material-symbols-outlined">{{ copiedTarget() === 'chat-thread' ? 'check' : 'content_copy' }}</span>
             </button>
-          }
-          @if (isWorkspaceMode()) {
-            <app-atlas-badge></app-atlas-badge>
           }
           <app-theme-toggle></app-theme-toggle>
           @if (!isSignedIn()) {

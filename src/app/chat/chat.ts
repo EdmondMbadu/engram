@@ -14,7 +14,6 @@ import { WikiService } from '../wiki.service';
 import { PlaceReviewsService, type CityReviewedPlace } from '../place-reviews.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
-import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { getPublicAppUrl } from '../firebase.config';
 import type {
@@ -80,7 +79,7 @@ const CITY_WIKI_CATEGORY = 'Cities & Regions';
 
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasBadgeComponent, ChatLocationMapComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, ChatLocationMapComponent],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
