@@ -17,7 +17,12 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
 import { getPublicAppUrl } from '../firebase.config';
-import type { Conversation as ElevenLabsConversation, Mode as ElevenLabsMode, Status as ElevenLabsStatus } from '@elevenlabs/client';
+import type {
+  Conversation as ElevenLabsConversation,
+  DisconnectionDetails as ElevenLabsDisconnectionDetails,
+  Mode as ElevenLabsMode,
+  Status as ElevenLabsStatus,
+} from '@elevenlabs/client';
 import {
   buildPublicWikiLiveItem,
   COMING_SOON_PUBLIC_WIKIS,
@@ -106,6 +111,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private voiceClickScrollPosition: ReturnType<ChatComponent['captureScrollPosition']> = null;
   private voiceScrollLockTimer: ReturnType<typeof setInterval> | null = null;
   private realtimeVoiceConversation: ElevenLabsConversation | null = null;
+  private realtimeVoiceEndingByUser = false;
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -139,12 +145,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly preparedSpeechMessageIds = signal<Record<string, boolean>>({});
   readonly speechErrorMessageId = signal<string | null>(null);
   readonly speechError = signal<string | null>(null);
+  readonly realtimeVoicePanelOpen = signal(false);
   readonly realtimeVoiceStatus = signal<RealtimeVoiceStatus>('disconnected');
   readonly realtimeVoiceMode = signal<ElevenLabsMode | null>(null);
   readonly realtimeVoiceMuted = signal(false);
   readonly realtimeVoiceError = signal<string | null>(null);
   readonly realtimeVoiceConversationId = signal<string | null>(null);
   readonly realtimeVoiceTranscript = signal<VoiceTranscriptItem[]>([]);
+  readonly realtimeVoiceTextInput = signal('');
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
@@ -197,6 +205,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const status = this.realtimeVoiceStatus();
     return status === 'connecting' || status === 'connected' || status === 'disconnecting';
   });
+  readonly realtimeVoiceOrbState = computed(() => {
+    if (this.realtimeVoiceStatus() === 'connecting') return 'Connecting';
+    if (this.realtimeVoiceStatus() === 'error') return 'Needs attention';
+    if (this.realtimeVoiceStatus() === 'disconnected') return 'Ready';
+    return this.realtimeVoiceMode() === 'speaking' ? 'Speaking' : 'Listening';
+  });
   readonly realtimeVoicePrimaryLabel = computed(() => {
     const status = this.realtimeVoiceStatus();
     if (status === 'connecting') return 'Connecting';
@@ -212,8 +226,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
     if (status === 'disconnecting') return 'Ending voice mode';
     if (status === 'error') return 'Voice mode needs setup';
-    return 'Realtime voice';
+    return 'Realtime voice is ready';
   });
+  readonly realtimeVoiceGreeting = computed(() =>
+    `Hi, I’m your ${this.currentWikiName() || 'My living wiki'} voice guide. Ask me anything and I’ll answer out loud.`,
+  );
   readonly isAnonymousPublicVisitor = computed(() => this.isPublicVisitorMode() && !this.isSignedIn());
   readonly isSignedInPublicVisitor = computed(() => this.isPublicVisitorMode() && this.isSignedIn());
   readonly isPublicPageLoading = computed(() => {
@@ -1107,11 +1124,17 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
 
     this.stopAnswerAudio();
+    this.realtimeVoiceEndingByUser = false;
+    this.realtimeVoicePanelOpen.set(true);
     this.realtimeVoiceStatus.set('connecting');
     this.realtimeVoiceMode.set(null);
     this.realtimeVoiceMuted.set(false);
     this.realtimeVoiceError.set(null);
-    this.realtimeVoiceTranscript.set([]);
+    this.realtimeVoiceConversationId.set(null);
+    this.realtimeVoiceTextInput.set('');
+    this.realtimeVoiceTranscript.set([
+      { id: `voice-greeting-${Date.now()}`, role: 'agent', text: this.realtimeVoiceGreeting() },
+    ]);
     this.answerMode.set('internet');
 
     try {
@@ -1129,27 +1152,30 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       }
 
       const { Conversation } = await import('@elevenlabs/client');
+      const firstMessage = this.realtimeVoiceGreeting();
       const conversation = await Conversation.startSession({
         conversationToken: session.conversationToken,
         connectionType: 'webrtc',
         userId: session.userId,
         dynamicVariables: session.dynamicVariables,
-        overrides: session.voiceId
-          ? {
-              tts: {
-                voiceId: session.voiceId,
-              },
-            }
-          : undefined,
+        overrides: {
+          agent: {
+            firstMessage,
+          },
+          ...(session.voiceId
+            ? {
+                tts: {
+                  voiceId: session.voiceId,
+                },
+              }
+            : {}),
+        },
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
         },
-        onDisconnect: () => {
-          this.realtimeVoiceConversation = null;
-          this.realtimeVoiceStatus.set('disconnected');
-          this.realtimeVoiceMode.set(null);
-          this.realtimeVoiceMuted.set(false);
+        onDisconnect: (details) => {
+          this.handleRealtimeVoiceDisconnect(details);
         },
         onStatusChange: ({ status }) => {
           this.realtimeVoiceStatus.set(status);
@@ -1187,9 +1213,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (!conversation) {
       this.realtimeVoiceStatus.set('disconnected');
       this.realtimeVoiceMode.set(null);
+      this.realtimeVoicePanelOpen.set(false);
       return;
     }
 
+    this.realtimeVoiceEndingByUser = true;
     this.realtimeVoiceStatus.set('disconnecting');
     this.realtimeVoiceConversation = null;
     try {
@@ -1200,7 +1228,19 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       this.realtimeVoiceStatus.set('disconnected');
       this.realtimeVoiceMode.set(null);
       this.realtimeVoiceMuted.set(false);
+      this.realtimeVoicePanelOpen.set(false);
     }
+  }
+
+  closeRealtimeVoicePanel(): void {
+    if (this.realtimeVoiceConversation) {
+      void this.stopRealtimeVoice();
+      return;
+    }
+    this.realtimeVoicePanelOpen.set(false);
+    this.realtimeVoiceStatus.set('disconnected');
+    this.realtimeVoiceMode.set(null);
+    this.realtimeVoiceMuted.set(false);
   }
 
   toggleRealtimeVoiceMute(): void {
@@ -1212,6 +1252,44 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const muted = !this.realtimeVoiceMuted();
     conversation.setMicMuted(muted);
     this.realtimeVoiceMuted.set(muted);
+  }
+
+  onRealtimeVoiceTextInput(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    this.realtimeVoiceTextInput.set(input?.value ?? '');
+  }
+
+  sendRealtimeVoiceTextMessage(event?: Event): void {
+    event?.preventDefault();
+    const text = this.realtimeVoiceTextInput().trim();
+    const conversation = this.realtimeVoiceConversation;
+    if (!text || !conversation || this.realtimeVoiceStatus() !== 'connected') {
+      return;
+    }
+
+    this.rememberRealtimeVoiceMessage('user', text);
+    conversation.sendUserMessage(text);
+    this.realtimeVoiceTextInput.set('');
+  }
+
+  private handleRealtimeVoiceDisconnect(details: ElevenLabsDisconnectionDetails): void {
+    this.realtimeVoiceConversation = null;
+    this.realtimeVoiceStatus.set('disconnected');
+    this.realtimeVoiceMode.set(null);
+    this.realtimeVoiceMuted.set(false);
+
+    if (this.realtimeVoiceEndingByUser || details.reason === 'user') {
+      this.realtimeVoicePanelOpen.set(false);
+      this.realtimeVoiceEndingByUser = false;
+      return;
+    }
+
+    this.realtimeVoicePanelOpen.set(true);
+    const message = details.reason === 'error'
+      ? details.message
+      : details.closeReason || 'The voice session ended before audio started.';
+    this.realtimeVoiceError.set(message);
+    this.rememberRealtimeVoiceMessage('agent', `Voice session ended: ${message}`);
   }
 
   private rememberRealtimeVoiceMessage(role: VoiceTranscriptItem['role'], text: string): void {
