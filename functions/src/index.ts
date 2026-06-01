@@ -3096,6 +3096,12 @@ export const createElevenLabsVoiceSession = onCall(
     if (!agentId) {
       throw new HttpsError('failed-precondition', 'ELEVENLABS_AGENT_ID is not configured.');
     }
+    if (agentId === chatAnswerVoiceId || /^[a-f0-9]{64}$/i.test(agentId)) {
+      throw new HttpsError(
+        'failed-precondition',
+        'ELEVENLABS_AGENT_ID must be an ElevenLabs Conversational AI agent ID, not a voice ID. Create or open an ElevenLabs agent and use its agent ID.',
+      );
+    }
 
     const visitorId = uid ?? anonymousVisitorId ?? `visitor_${randomUUID()}`;
     const params = new URLSearchParams({
@@ -3117,6 +3123,12 @@ export const createElevenLabsVoiceSession = onCall(
         status: response.status,
         body: errorText.slice(0, 500),
       });
+      if (response.status === 404 && errorText.includes('agent_not_found')) {
+        throw new HttpsError(
+          'failed-precondition',
+          'ElevenLabs agent not found. Set ELEVENLABS_AGENT_ID to a valid Conversational AI agent ID from ElevenLabs, not the voice ID.',
+        );
+      }
       throw new HttpsError('internal', 'Failed to start realtime voice.');
     }
 
