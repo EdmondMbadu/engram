@@ -27,6 +27,9 @@ type BusinessPlan = {
 })
 export class BusinessComponent {
   readonly billingCycle = signal<BillingCycle>('monthly');
+  readonly isBusinessVideoOpen = signal(false);
+  readonly businessVideoUrl =
+    'https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/videos%2FBusiness%20Welcome%202.mp4?alt=media&token=47615cb9-00b7-4531-bbcd-e2188c6572c2';
 
   readonly citySignals = ['Philadelphia', 'Austin', 'London', 'Tokyo', 'Nairobi', 'Sao Paulo'];
 
@@ -127,5 +130,13 @@ export class BusinessComponent {
 
   setBillingCycle(cycle: BillingCycle): void {
     this.billingCycle.set(cycle);
+  }
+
+  openBusinessVideo(): void {
+    this.isBusinessVideoOpen.set(true);
+  }
+
+  closeBusinessVideo(): void {
+    this.isBusinessVideoOpen.set(false);
   }
 }

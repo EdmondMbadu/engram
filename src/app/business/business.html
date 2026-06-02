@@ -47,6 +47,24 @@
             </a>
           </div>
 
+          <button
+            type="button"
+            (click)="openBusinessVideo()"
+            class="mt-6 flex w-full max-w-xl items-center gap-4 rounded-2xl border border-[var(--line)] bg-[linear-gradient(135deg,var(--surface),rgba(59,175,98,0.10),rgba(56,189,248,0.08))] p-3 text-left shadow-[var(--shadow-floating)] transition-all hover:-translate-y-0.5 hover:border-[var(--accent)]/35"
+          >
+            <span class="relative flex aspect-video w-28 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface-strong)] sm:w-36">
+              <span class="absolute inset-0 bg-[radial-gradient(circle_at_35%_30%,rgba(245,158,11,0.20),transparent_34%),radial-gradient(circle_at_75%_70%,rgba(56,189,248,0.18),transparent_36%)]"></span>
+              <span class="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-contrast)] shadow-[0_16px_30px_-18px_rgba(59,175,98,1)]">
+                <span class="material-symbols-outlined text-2xl">play_arrow</span>
+              </span>
+            </span>
+            <span class="min-w-0">
+              <span class="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business explainer</span>
+              <span class="mt-1 block text-sm font-black leading-5 text-[var(--text)]">See how My living wiki works for local businesses.</span>
+              <span class="mt-1 block text-xs font-semibold leading-5 text-[var(--muted)]">Short welcome video</span>
+            </span>
+          </button>
+
           <div class="mt-8 flex flex-wrap gap-2">
             @for (city of citySignals; track city) {
               <span class="rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
@@ -286,4 +304,43 @@
       <p class="text-[11px] font-medium text-[var(--muted)]">© 2026 My living wiki. All rights reserved.</p>
     </div>
   </footer>
+
+  @if (isBusinessVideoOpen()) {
+    <div
+      class="fixed inset-0 z-[120] flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-xl"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="business-video-title"
+      (click)="closeBusinessVideo()"
+    >
+      <div
+        class="relative w-full max-w-5xl overflow-hidden rounded-[1.75rem] border border-white/15 bg-black shadow-[0_32px_90px_rgba(0,0,0,0.55)]"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="flex items-center justify-between gap-4 border-b border-white/10 bg-black/70 px-4 py-3 text-white backdrop-blur-md sm:px-5">
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent-soft)]">Business explainer</p>
+            <h2 id="business-video-title" class="mt-1 text-lg font-black tracking-tight sm:text-xl">My living wiki for business</h2>
+          </div>
+          <button
+            type="button"
+            (click)="closeBusinessVideo()"
+            aria-label="Close video"
+            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/15"
+          >
+            <span class="material-symbols-outlined text-xl">close</span>
+          </button>
+        </div>
+        <video
+          class="aspect-video w-full bg-black object-contain"
+          [src]="businessVideoUrl"
+          controls
+          autoplay
+          playsinline
+          preload="metadata"
+          aria-label="Video explaining My living wiki for business"
+        ></video>
+      </div>
+    </div>
+  }
 </div>
