@@ -35,57 +35,57 @@ export class BusinessComponent {
       icon: 'storefront',
       title: 'A living business profile',
       description:
-        'Hours, menu, events, photos, your story - all in one page that updates in real time instead of going stale the day you post it.',
+        'Tell the story behind the place, keep hours and links current, and give people a richer page than a static directory listing.',
     },
     {
       icon: 'location_on',
       title: 'A pin on the city map',
       description:
-        'Show up right in your own neighborhood on our interactive map - exactly where people are scanning for somewhere to go.',
+        'Show up in the neighborhood context where visitors are already exploring food, culture, jobs, events, and local guides.',
     },
     {
       icon: 'explore',
-      title: 'Featured by local guides',
+      title: 'Featured guide placement',
       description:
-        'Get picked for the curated lists locals trust - best secret coffee, the spot everyone should know - instead of fighting for page seven.',
+        'Surface in curated local paths like hidden coffee, founder-friendly blocks, weekend plans, or places locals actually recommend.',
     },
     {
       icon: 'verified',
-      title: 'Verified Local Favorite badge',
+      title: 'Local Favorite trust badge',
       description:
-        "A trust signal that tells visitors you're the real, community-vouched deal - not a drive-by chain.",
+        'Add a visible signal that this is a real, community-relevant business worth checking before the usual generic results.',
     },
     {
       icon: 'monitoring',
       title: 'Local search insights',
       description:
-        'See what people near you are actually searching for, so you can stock, staff, and promote around real local demand.',
+        'Learn what people are asking around your city so promotions, events, staffing, and inventory can follow actual demand.',
     },
     {
       icon: 'new_releases',
       title: 'Founding-business status',
       description:
-        'Plant your flag early in a launch city. Founding businesses get a launch badge, lasting placement, and a hand in shaping their wiki.',
+        'Plant your flag early in a launch city with launch placement, a founding badge, and a stronger voice in how the wiki grows.',
     },
   ];
 
   readonly plans: BusinessPlan[] = [
     {
       name: 'Local',
-      description: 'Get on the map and start being found in your neighborhood.',
+      description: 'Get on the map and start being found around your neighborhood.',
       monthlyPrice: 25,
       annualMonthlyPrice: 20,
       cta: 'Get started',
       features: [
-        'Living business profile - hours, story, links, photos',
-        'A pin on your neighborhood map',
-        'Connected to nearby places and events',
-        'Standard support',
+        'Living business profile with story, photos, hours, and links',
+        'Neighborhood map placement',
+        'Connections to nearby places, guides, and events',
+        'Standard setup support',
       ],
     },
     {
       name: 'Local Favorite',
-      description: 'Stand out, earn trust, and learn what your neighbors want.',
+      description: 'Stand out, build trust, and understand what nearby people want.',
       monthlyPrice: 65,
       annualMonthlyPrice: 54,
       featured: true,
@@ -93,25 +93,25 @@ export class BusinessComponent {
       features: [
         'Everything in Local',
         'Verified Local Favorite badge',
-        'Featured in your neighborhood guide',
-        'Monthly local-search insights',
+        'Featured placement in a neighborhood guide',
+        'Monthly local-search insight summary',
         'Events and promotions on your profile',
         'Priority support',
       ],
     },
     {
       name: 'City Sponsor',
-      description: 'Anchor your city. Maximum reach and full insight.',
+      description: 'Anchor a city wiki with maximum visibility and deeper insight.',
       monthlyPrice: 180,
       annualMonthlyPrice: 150,
       cta: 'Start a conversation',
       features: [
         'Everything in Local Favorite',
-        'Citywide featured placement',
-        'Full discovery and analytics dashboard',
+        'Citywide sponsor placement',
+        'Discovery and analytics dashboard',
         'Sponsor a neighborhood guide or topic hub',
-        'Founding-business status and launch badge',
-        'Dedicated local partner manager',
+        'Founding-business launch badge',
+        'Dedicated local partner support',
       ],
     },
   ];
