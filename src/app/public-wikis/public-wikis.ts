@@ -31,6 +31,9 @@ export class PublicWikisComponent implements OnInit {
   readonly isLoadingLiveWikis = signal(true);
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
+  readonly isProductVideoOpen = signal(false);
+  readonly productVideoUrl =
+    'https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/videos%2FAvatar%20IV%20Video.mp4?alt=media&token=77103de1-4ce4-4be4-8aa2-68f92d94076d';
 
   readonly comingSoonWikis = computed(() =>
     removeCreatedPublicWikiPreviews(this.liveWikis(), COMING_SOON_PUBLIC_WIKIS),
@@ -110,6 +113,14 @@ export class PublicWikisComponent implements OnInit {
   clearFilters(): void {
     this.activeCategory.set(CITIES_CATEGORY);
     this.searchTerm.set('');
+  }
+
+  openProductVideo(): void {
+    this.isProductVideoOpen.set(true);
+  }
+
+  closeProductVideo(): void {
+    this.isProductVideoOpen.set(false);
   }
 
   initialsFor(title: string): string {
