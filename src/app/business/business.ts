@@ -119,14 +119,15 @@ export class BusinessComponent {
     },
   ];
 
-  readonly activePlans = computed(() =>
-    this.plans.map((plan) => ({
+  readonly activePlans = computed(() => {
+    const annual = this.billingCycle() === 'annual';
+    return this.plans.map((plan) => ({
       ...plan,
-      price: this.billingCycle() === 'annual' ? plan.annualMonthlyPrice : plan.monthlyPrice,
-      cadence:
-        this.billingCycle() === 'annual' ? 'per month, billed annually' : 'per month',
-    })),
-  );
+      price: annual ? plan.annualMonthlyPrice : plan.monthlyPrice,
+      cadence: annual ? 'per month, billed annually' : 'per month',
+      showStrike: annual && plan.annualMonthlyPrice < plan.monthlyPrice,
+    }));
+  });
 
   setBillingCycle(cycle: BillingCycle): void {
     this.billingCycle.set(cycle);
