@@ -88,10 +88,12 @@
               <button
                 type="button"
                 (click)="openProductVideo()"
-                class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)] transition-colors hover:border-[var(--accent)]/55 hover:bg-[var(--accent)]/15"
+                class="group inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/45 bg-[linear-gradient(135deg,_var(--accent),_color-mix(in_srgb,_var(--accent)_72%,_#0f1720_28%))] px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)] shadow-[0_16px_34px_-20px_rgba(59,175,98,0.95)] transition-all hover:-translate-y-0.5 hover:shadow-[0_20px_42px_-22px_rgba(59,175,98,1)] sm:px-4"
               >
-                <span class="material-symbols-outlined text-sm">play_circle</span>
-                What is this?
+                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/18 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.22)] transition-transform group-hover:scale-105">
+                  <span class="material-symbols-outlined text-base">play_arrow</span>
+                </span>
+                What is My living wiki?
               </button>
 
               <div class="flex items-center divide-x divide-[var(--line)] rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[10px] font-bold uppercase tracking-[0.16em]">
@@ -283,15 +285,6 @@
       </div>
     </footer>
   </main>
-
-  <button
-    type="button"
-    (click)="openProductVideo()"
-    class="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--surface)]/92 px-3 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)] shadow-[var(--shadow-floating)] backdrop-blur-xl transition-colors hover:border-[var(--accent)]/60 hover:bg-[var(--surface)] xl:inline-flex"
-  >
-    <span class="material-symbols-outlined text-sm">play_circle</span>
-    What is this?
-  </button>
 
   @if (isProductVideoOpen()) {
     <div
