@@ -3,6 +3,7 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   // Marketing / public pages can be prerendered
   { path: '', renderMode: RenderMode.Prerender },
+  { path: 'business', renderMode: RenderMode.Prerender },
 
   // Auth pages must be client-rendered (they use browser-only Firebase Auth)
   { path: 'sign-in', renderMode: RenderMode.Client },

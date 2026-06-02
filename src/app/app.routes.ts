@@ -23,6 +23,7 @@ import { GreenJobsComponent } from './green-jobs/green-jobs';
 import { CityPulseAdminComponent } from './city-pulse-admin/city-pulse-admin';
 import { AdminUsersComponent } from './admin-users/admin-users';
 import { CityPlacesComponent } from './city-places/city-places';
+import { BusinessComponent } from './business/business';
 import { NotFoundComponent } from './not-found/not-found';
 import { adminGuard, authGuard, guestOnlyGuard } from './auth.guards';
 
@@ -30,6 +31,7 @@ export const routes: Routes = [
   { path: '', component: PublicWikisComponent, title: 'Public Wikis | My living wiki' },
   { path: 'landing', component: MarketingComponent, title: 'My living wiki' },
   { path: 'marketing', redirectTo: 'landing', pathMatch: 'full' },
+  { path: 'business', component: BusinessComponent, title: 'For Business | My living wiki' },
   { path: 'home', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | My living wiki' },

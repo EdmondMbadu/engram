@@ -1,0 +1,211 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
+      <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
+        <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
+          <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-4">
+        <a href="#perks" class="hidden text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] md:inline-flex">What you get</a>
+        <a href="#pricing" class="hidden text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] md:inline-flex">Pricing</a>
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/create-account" class="primary-btn !px-3 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:!text-sm">
+          Claim
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="relative overflow-hidden border-b border-[var(--line)]">
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--soft-fill),transparent_48%),linear-gradient(to_right,var(--line)_1px,transparent_1px),linear-gradient(to_bottom,var(--line)_1px,transparent_1px)] bg-[size:auto,64px_64px,64px_64px] opacity-70"></div>
+
+      <div class="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-10 lg:py-24">
+        <div class="mx-auto mb-7 grid h-4 w-4 place-items-center rounded-full bg-[var(--accent)] shadow-[0_0_0_10px_color-mix(in_srgb,var(--accent)_12%,transparent),0_0_0_22px_color-mix(in_srgb,var(--accent)_6%,transparent)]"></div>
+        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--accent)]">Put your business on the living map</p>
+        <h1 class="mx-auto mt-4 max-w-5xl text-4xl font-black leading-[0.98] tracking-normal text-[var(--accent-soft)] sm:text-6xl lg:text-7xl">
+          The people on MyLivingWiki are already looking for a place like yours.
+        </h1>
+        <p class="mx-auto mt-6 max-w-3xl text-base leading-7 text-[var(--muted)] sm:text-lg">
+          Locals and curious travelers come here hunting for the hidden gems and niche spots the big search engines miss. Give them a living profile that breathes - and let your community find you.
+        </p>
+
+        <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <a routerLink="/create-account" class="primary-btn justify-center !px-6 !py-3 text-sm">
+            Get started
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+          <a href="#perks" class="ghost-btn justify-center !px-6 !py-3 text-sm">See what you get</a>
+        </div>
+
+        <p class="mx-auto mt-9 max-w-3xl text-xs font-bold uppercase leading-6 tracking-[0.16em] text-[var(--muted)]">
+          Now in
+          <span class="text-[var(--text)]">Philadelphia · Austin · London · Tokyo · Nairobi · Sao Paulo</span>
+          and beyond
+        </p>
+      </div>
+    </section>
+
+    <section id="perks" class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-10 lg:py-18">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">What you get</p>
+        <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">Not a dead listing. A page with a pulse.</h2>
+        <p class="mt-4 text-base leading-7 text-[var(--muted)]">
+          Everything below is built for hyper-local discovery - so you show up where it counts, to the people who actually want to find you.
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        @for (feature of features; track feature.title) {
+          <article class="group rounded-lg border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:shadow-[0_18px_45px_-30px_rgba(59,175,98,0.6)]">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)] transition-colors group-hover:border-[var(--accent)]/30">
+              <span class="material-symbols-outlined text-2xl">{{ feature.icon }}</span>
+            </span>
+            <h3 class="mt-5 text-xl font-black tracking-tight text-[var(--text)]">{{ feature.title }}</h3>
+            <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ feature.description }}</p>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section id="pricing" class="border-y border-[var(--line)] bg-[var(--soft-fill)]/30">
+      <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-10 lg:py-18">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">Sponsorship levels</p>
+          <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">Pick how far you want to reach.</h2>
+          <p class="mt-4 text-base leading-7 text-[var(--muted)]">
+            From a simple spot on the map to anchoring an entire city. No marketing department or giant ad budget required.
+          </p>
+        </div>
+
+        <div class="mx-auto mt-8 flex w-full max-w-md rounded-full border border-[var(--line)] bg-[var(--surface)] p-1">
+          <button
+            type="button"
+            (click)="setBillingCycle('monthly')"
+            class="flex-1 rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.14em] transition-colors"
+            [style.background-color]="billingCycle() === 'monthly' ? 'var(--accent)' : null"
+            [style.color]="billingCycle() === 'monthly' ? 'var(--accent-contrast)' : 'var(--muted)'"
+          >
+            Monthly
+          </button>
+          <button
+            type="button"
+            (click)="setBillingCycle('annual')"
+            class="flex-1 rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.14em] transition-colors"
+            [style.background-color]="billingCycle() === 'annual' ? 'var(--accent)' : null"
+            [style.color]="billingCycle() === 'annual' ? 'var(--accent-contrast)' : 'var(--muted)'"
+          >
+            Annual
+          </button>
+        </div>
+        <p class="mt-3 text-center text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">2 months free</p>
+
+        <div class="mt-10 grid gap-5 lg:grid-cols-3">
+          @for (plan of activePlans(); track plan.name) {
+            <article
+              class="relative flex min-h-full flex-col rounded-lg border p-6 shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-0.5"
+              [style.background-color]="plan.featured ? 'var(--accent)' : 'var(--surface)'"
+              [style.border-color]="plan.featured ? 'var(--accent)' : 'var(--line)'"
+              [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--text)'"
+            >
+              @if (plan.featured) {
+                <span class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--text)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--bg)]">
+                  Most popular
+                </span>
+              }
+
+              <p
+                class="text-[10px] font-black uppercase tracking-[0.22em]"
+                [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--accent)'"
+              >
+                {{ plan.name }}
+              </p>
+              <p
+                class="mt-3 min-h-12 text-sm leading-6"
+                [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
+              >
+                {{ plan.description }}
+              </p>
+
+              <div class="mt-6">
+                <p class="text-5xl font-black tracking-tight">${{ plan.price }}</p>
+                <p
+                  class="mt-2 text-xs font-bold uppercase tracking-[0.16em]"
+                  [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
+                >
+                  {{ plan.cadence }}
+                </p>
+              </div>
+
+              <ul class="mt-7 grid gap-3">
+                @for (feature of plan.features; track feature) {
+                  <li class="flex gap-3 text-sm leading-6">
+                    <span
+                      class="material-symbols-outlined mt-0.5 text-base"
+                      [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--accent)'"
+                    >
+                      check_circle
+                    </span>
+                    <span [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'">
+                      {{ feature }}
+                    </span>
+                  </li>
+                }
+              </ul>
+
+              <a
+                routerLink="/create-account"
+                class="mt-8 inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-black transition-all hover:-translate-y-0.5"
+                [style.background-color]="plan.featured ? 'var(--accent-contrast)' : 'var(--accent)'"
+                [style.color]="plan.featured ? 'var(--accent)' : 'var(--accent-contrast)'"
+              >
+                {{ plan.cta }}
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </a>
+            </article>
+          }
+        </div>
+
+        <p class="mt-6 text-center text-xs font-bold uppercase leading-6 tracking-[0.16em] text-[var(--muted)]">
+          Launch pricing - example figures, subject to change. A free basic listing is always available.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-10">
+      <div class="grid gap-8 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-elevated)] md:grid-cols-[1fr_0.72fr] md:items-center lg:p-10">
+        <div>
+          <h2 class="text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">
+            You do not need an ad budget. You just need to be where your community is looking.
+          </h2>
+          <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
+            Claim your business, put down roots in your city's living map, and let the people who love local find you. Founding spots in each launch city are limited.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3">
+          <a routerLink="/create-account" class="primary-btn justify-center !px-6 !py-3 text-sm">Claim your business</a>
+          <p class="text-center text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Free to list · upgrade anytime</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-[var(--line)]">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 py-10 sm:flex-row sm:px-6 lg:px-10">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-40 items-center justify-start">
+          <img src="/assets/image/my-living-wiki.png" alt="" class="h-full w-full object-contain" />
+        </div>
+        <p class="text-[11px] text-[var(--muted)]">Brought to you by <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-5">
+        <a routerLink="/" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Public Wikis</a>
+        <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Privacy</a>
+        <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Terms</a>
+      </div>
+      <p class="text-[11px] font-medium text-[var(--muted)]">© 2026 My living wiki. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
