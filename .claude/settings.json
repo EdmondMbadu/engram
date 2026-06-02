@@ -5,7 +5,8 @@
       "Bash(npx firebase:*)",
       "Bash(npx ts-node -e ':*)",
       "Bash(curl -s \"http://localhost:4200/main.js\" -o /tmp/main.js -w \"HTTP %{http_code} | size %{size_download} bytes\\\\n\")",
-      "Bash(curl -sI http://localhost:4200/places/philly)"
+      "Bash(curl -sI http://localhost:4200/places/philly)",
+      "Bash(command -v shot-scraper)"
     ]
   }
 }
