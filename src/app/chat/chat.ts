@@ -1338,8 +1338,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
                     overrides: {
                       tts: {
                         voiceId: session.voiceId,
-                        stability: 0.55,
-                        similarityBoost: 0.9,
                       },
                     },
                   }
