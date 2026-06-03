@@ -99,6 +99,11 @@ interface VoiceLanguageOption {
   greeting: string;
 }
 
+interface VoiceAccentProfile {
+  label: string;
+  instruction: string;
+}
+
 // World Cup 2026 nations (plus the explicitly requested China, Russia and Japan),
 // each paired with the language the voice guide should speak and a native welcome
 // message so the conversation feels seamless from the very first second.
@@ -1278,6 +1283,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
 
     const greeting = language?.greeting ?? this.realtimeVoiceGreeting();
+    const accentProfile = language ? this.voiceAccentProfile(language) : null;
 
     this.stopAnswerAudio();
     this.realtimeVoiceEndingByUser = false;
@@ -1313,6 +1319,17 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         agentId: session.agentId,
         connectionType: 'webrtc',
         userId: session.userId,
+        ...(language && accentProfile
+          ? {
+              dynamicVariables: {
+                preferred_language: language.language,
+                preferred_country: language.country,
+                preferred_accent: accentProfile.label,
+                preferred_voice_locale: `${language.language} (${language.country})`,
+                voice_accent_instruction: accentProfile.instruction,
+              },
+            }
+          : {}),
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
@@ -1344,8 +1361,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       });
 
       this.realtimeVoiceConversation = conversation;
-      if (language) {
-        this.sendVoiceLanguageWelcomePrompt(conversation, language);
+      if (language && accentProfile) {
+        this.sendVoiceLanguageWelcomePrompt(conversation, language, accentProfile);
       }
     } catch (error) {
       this.realtimeVoiceConversation = null;
@@ -1463,10 +1480,16 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     });
   }
 
-  private sendVoiceLanguageWelcomePrompt(conversation: ElevenLabsConversation, language: VoiceLanguageOption): void {
+  private sendVoiceLanguageWelcomePrompt(
+    conversation: ElevenLabsConversation,
+    language: VoiceLanguageOption,
+    accentProfile: VoiceAccentProfile,
+  ): void {
     const prompt = [
       `Please greet me now in ${language.language} for ${language.country}.`,
       `Say exactly this greeting first: "${language.greeting}"`,
+      accentProfile.instruction,
+      'For the rest of this voice session, keep speaking in this language and accent unless I ask to switch.',
       'Keep it warm and brief, then wait for my spoken question.',
     ].join(' ');
 
@@ -1478,6 +1501,13 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       }
 
       try {
+        conversation.sendContextualUpdate([
+          `The visitor selected ${language.country} / ${language.language}.`,
+          `Voice and accent target: ${accentProfile.label}.`,
+          accentProfile.instruction,
+          'Avoid an English accent unless the selected country/language is English.',
+          'If the agent has configured language-specific or multi-voice voices, use the closest matching native voice for this language and country.',
+        ].join(' '), { contextId: `voice-accent-${language.country.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` });
         conversation.sendUserMessage(prompt);
       } catch (error) {
         console.warn('[Voice mode] Could not send language greeting prompt', error);
@@ -1499,6 +1529,134 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
     this.pendingVoiceLanguagePrompt = null;
     return true;
+  }
+
+  private voiceAccentProfile(language: VoiceLanguageOption): VoiceAccentProfile {
+    const country = language.country;
+    const profiles: Record<string, VoiceAccentProfile> = {
+      'United States': {
+        label: 'native American English accent',
+        instruction: 'Speak with a natural native American English accent and casual US pacing.',
+      },
+      Canada: {
+        label: 'native Canadian English accent',
+        instruction: 'Speak with a natural native Canadian English accent and clear Canadian pacing.',
+      },
+      England: {
+        label: 'native English accent from England',
+        instruction: 'Speak with a natural native English accent from England, not an American accent.',
+      },
+      Australia: {
+        label: 'native Australian English accent',
+        instruction: 'Speak with a natural native Australian English accent and relaxed Australian pacing.',
+      },
+      Nigeria: {
+        label: 'native Nigerian English accent',
+        instruction: 'Speak with a natural Nigerian English accent, not American or British English.',
+      },
+      Ghana: {
+        label: 'native Ghanaian English accent',
+        instruction: 'Speak with a natural Ghanaian English accent, not American or British English.',
+      },
+      'South Africa': {
+        label: 'native South African English accent',
+        instruction: 'Speak with a natural South African English accent, not American or British English.',
+      },
+      Mexico: {
+        label: 'native Mexican Spanish accent',
+        instruction: 'Speak Spanish with a natural Mexican accent and pronunciation; do not use an English accent.',
+      },
+      Argentina: {
+        label: 'native Argentine Spanish accent',
+        instruction: 'Speak Spanish with a natural Argentine accent, including local rhythm where appropriate; do not use an English accent.',
+      },
+      Uruguay: {
+        label: 'native Uruguayan Spanish accent',
+        instruction: 'Speak Spanish with a natural Uruguayan accent and Rioplatense rhythm where appropriate; do not use an English accent.',
+      },
+      Colombia: {
+        label: 'native Colombian Spanish accent',
+        instruction: 'Speak Spanish with a natural Colombian accent and pronunciation; do not use an English accent.',
+      },
+      Ecuador: {
+        label: 'native Ecuadorian Spanish accent',
+        instruction: 'Speak Spanish with a natural Ecuadorian accent and pronunciation; do not use an English accent.',
+      },
+      Paraguay: {
+        label: 'native Paraguayan Spanish accent',
+        instruction: 'Speak Spanish with a natural Paraguayan accent and pronunciation; do not use an English accent.',
+      },
+      Spain: {
+        label: 'native Spanish accent from Spain',
+        instruction: 'Speak Spanish with a natural Spain accent and pronunciation; do not use a Latin American or English accent.',
+      },
+      France: {
+        label: 'native French accent from France',
+        instruction: 'Speak French with a natural France French accent and pronunciation; do not use an English accent.',
+      },
+      Belgium: {
+        label: 'native Belgian French accent',
+        instruction: 'Speak French with a natural Belgian French accent and pronunciation; do not use an English accent.',
+      },
+      Senegal: {
+        label: 'native Senegalese French accent',
+        instruction: 'Speak French with a natural Senegalese French accent and pronunciation; do not use an English accent.',
+      },
+      'Ivory Coast': {
+        label: 'native Ivorian French accent',
+        instruction: 'Speak French with a natural Ivorian French accent and pronunciation; do not use an English accent.',
+      },
+      Cameroon: {
+        label: 'native Cameroonian French accent',
+        instruction: 'Speak French with a natural Cameroonian French accent and pronunciation; do not use an English accent.',
+      },
+      Brazil: {
+        label: 'native Brazilian Portuguese accent',
+        instruction: 'Speak Portuguese with a natural Brazilian accent and pronunciation; do not use a Portugal or English accent.',
+      },
+      Portugal: {
+        label: 'native European Portuguese accent',
+        instruction: 'Speak Portuguese with a natural European Portuguese accent and pronunciation; do not use a Brazilian or English accent.',
+      },
+      Germany: {
+        label: 'native German accent from Germany',
+        instruction: 'Speak German with a natural Germany German accent and pronunciation; do not use an English accent.',
+      },
+      Switzerland: {
+        label: 'native Swiss German accent',
+        instruction: 'Speak German with a natural Swiss German accent where appropriate; do not use an English accent.',
+      },
+      Austria: {
+        label: 'native Austrian German accent',
+        instruction: 'Speak German with a natural Austrian accent and pronunciation; do not use an English accent.',
+      },
+      Morocco: {
+        label: 'native Moroccan Arabic accent',
+        instruction: 'Speak Arabic with a natural Moroccan accent where appropriate; do not use an English accent.',
+      },
+      Egypt: {
+        label: 'native Egyptian Arabic accent',
+        instruction: 'Speak Arabic with a natural Egyptian accent where appropriate; do not use an English accent.',
+      },
+      'Saudi Arabia': {
+        label: 'native Saudi Arabic accent',
+        instruction: 'Speak Arabic with a natural Saudi accent where appropriate; do not use an English accent.',
+      },
+      Qatar: {
+        label: 'native Qatari Arabic accent',
+        instruction: 'Speak Arabic with a natural Qatari accent where appropriate; do not use an English accent.',
+      },
+    };
+
+    const matched = profiles[country];
+    if (matched) {
+      return matched;
+    }
+
+    return {
+      label: `native ${language.language} accent for ${country}`,
+      instruction: `Speak ${language.language} with a natural native accent from ${country} or the closest native regional accent. Do not use an English accent unless ${language.language} is English.`,
+    };
   }
 
   async toggleReadAnswer(message: ChatMessage, event?: Event): Promise<void> {
