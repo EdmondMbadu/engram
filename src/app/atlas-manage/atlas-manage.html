@@ -154,7 +154,16 @@
               <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Description</span>
               <textarea rows="3" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().description" (input)="updateCustomCityDraft('description', $any($event.target).value)" placeholder="Leave blank to generate a practical city description."></textarea>
             </label>
+            <label class="block">
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Latitude <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional · for the map)</span></span>
+              <input type="text" inputmode="decimal" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().latitude" (input)="updateCustomCityDraft('latitude', $any($event.target).value)" placeholder="41.8781" />
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Longitude <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional · for the map)</span></span>
+              <input type="text" inputmode="decimal" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().longitude" (input)="updateCustomCityDraft('longitude', $any($event.target).value)" placeholder="-87.6298" />
+            </label>
           </div>
+          <p class="mt-2 text-xs leading-5 text-[var(--muted)]">Add coordinates to drop this city on the <a routerLink="/dymaxion" class="font-bold text-[var(--accent)] hover:underline">Dymaxion map</a>. Leave blank to skip the map.</p>
 
           <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
             <p class="text-xs leading-5 text-[var(--muted)]">Preview: {{ customCityNamePreview() }} will be public and promptable immediately.</p>
@@ -192,7 +201,7 @@
             <label class="flex cursor-pointer flex-col items-center justify-center gap-2 text-center">
               <span class="material-symbols-outlined text-3xl text-[var(--accent)]">upload_file</span>
               <span class="text-sm font-black text-[var(--text)]">Upload city CSV</span>
-              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, timezone, public_title, description.</span>
+              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, timezone, public_title, description, latitude, longitude. Add latitude &amp; longitude to place the city on the Dymaxion map.</span>
               <input type="file" accept=".csv,text/csv" class="sr-only" (change)="onBulkCityCsvSelected($event)" />
             </label>
           </div>
@@ -261,6 +270,7 @@
                       <th class="px-4 py-3 font-black">City</th>
                       <th class="px-4 py-3 font-black">Region</th>
                       <th class="px-4 py-3 font-black">Timezone</th>
+                      <th class="px-4 py-3 font-black">Map</th>
                       <th class="px-4 py-3 font-black">Slug</th>
                       <th class="px-4 py-3 font-black">Status</th>
                     </tr>
@@ -276,6 +286,13 @@
 	                        </td>
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">{{ row.region_name || '—' }}</td>
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">{{ row.timezone || 'America/New_York' }}</td>
+                        <td class="px-4 py-3 text-xs text-[var(--muted)]">
+                          @if (row.latitude && row.longitude) {
+                            <span class="inline-flex items-center gap-1 text-[var(--accent)]"><span class="material-symbols-outlined text-[0.9rem]">place</span>{{ row.latitude }}, {{ row.longitude }}</span>
+                          } @else {
+                            —
+                          }
+                        </td>
                         <td class="px-4 py-3 text-xs font-bold text-[var(--muted)]">/{{ row.slug }}</td>
                         <td class="px-4 py-3">
 	                          @if (row.errors.length) {

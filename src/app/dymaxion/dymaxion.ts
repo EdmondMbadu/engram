@@ -446,7 +446,10 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     const clusterLayer = this.clusterLayerRef.nativeElement;
     clusterLayer.innerHTML = '';
     this.markerEls.forEach((m) => {
-      m.b.classList.toggle('dim', !this.inFocus(m.c));
+      // Dim anything out of the active region focus, and — when searching —
+      // anything that doesn't match the query, so the hits stand out.
+      const dim = !this.inFocus(m.c) || (!!this.query && !this.match(m.c));
+      m.b.classList.toggle('dim', dim);
       m.b.classList.remove('clustered');
     });
     this.computeClusters().forEach((g) => {
@@ -563,11 +566,37 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   onSearch(value: string): void {
     this.searchValue.set(value);
     this.query = value.trim().toLowerCase();
-    if (this.query && this.activeFocus() !== 'all') {
-      this.setFocus({ id: 'all', label: 'World' });
-    } else {
+
+    // Clearing the box: drop any region focus, zoom back to the world.
+    if (!this.query) {
+      this.activeFocus.set('all');
+      if (this.viewReady) this.resetZoom();
       this.applyFilter();
+      return;
     }
+
+    // Leaving a region focus while searching so every match can show.
+    if (this.activeFocus() !== 'all') {
+      this.activeFocus.set('all');
+    }
+
+    // Zoom/pan the map to the matching cities so the result is obvious — then
+    // apply the highlight rings on top.
+    const matches = this.cities.filter((c) => this.match(c));
+    if (this.viewReady && matches.length > 0) {
+      const xs = matches.map((c) => c.x);
+      const ys = matches.map((c) => c.y);
+      // A single match gets a tighter, friendlier zoom; many matches just fit.
+      const cap = matches.length === 1 ? 3.4 : MAX_Z;
+      this.applyZoom(
+        [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)],
+        cap,
+      );
+    } else if (this.viewReady) {
+      this.resetZoom();
+    }
+    if (this.hintRef) this.hintRef.nativeElement.style.opacity = '0';
+    this.applyFilter();
   }
 
   /* ===================== SELECT A CITY ===================== */

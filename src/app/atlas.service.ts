@@ -190,6 +190,9 @@ export interface CustomCityAtlasInput {
   regionName?: string;
   timezone?: string;
   description?: string;
+  /** Optional coordinates so the city appears on the /dymaxion map. */
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 function normalizeCityIdentity(value: string | null | undefined): string {
@@ -564,6 +567,8 @@ export class AtlasService {
         census_state_code: null,
         census_place_code: null,
         airnow_zip_code: null,
+        latitude: Number.isFinite(input.latitude) ? (input.latitude as number) : null,
+        longitude: Number.isFinite(input.longitude) ? (input.longitude as number) : null,
         manual_metrics: null,
       } satisfies CityAtlasConfig,
       chat_guide: {

@@ -58,6 +58,8 @@ interface CustomCityDraft {
   timezone: string;
   name: string;
   description: string;
+  latitude: string;
+  longitude: string;
 }
 
 interface BulkCityDraft extends CustomCityDraft {
@@ -213,6 +215,8 @@ export class AtlasManageComponent {
     timezone: 'America/New_York',
     name: '',
     description: '',
+    latitude: '',
+    longitude: '',
   });
 
   readonly hasMultipleAtlases = computed(() => this.atlases().length > 1);
@@ -996,12 +1000,30 @@ export class AtlasManageComponent {
     }
 
     const draft = this.customCityDraft();
+    const latRaw = draft.latitude.trim();
+    const lngRaw = draft.longitude.trim();
+    if ((latRaw !== '') !== (lngRaw !== '')) {
+      this.pageError.set('Provide both latitude and longitude, or leave both blank.');
+      return;
+    }
+    const latitude = latRaw ? Number(latRaw) : null;
+    const longitude = lngRaw ? Number(lngRaw) : null;
+    if (latitude !== null && (!Number.isFinite(latitude) || latitude < -90 || latitude > 90)) {
+      this.pageError.set('Latitude must be a number between -90 and 90.');
+      return;
+    }
+    if (longitude !== null && (!Number.isFinite(longitude) || longitude < -180 || longitude > 180)) {
+      this.pageError.set('Longitude must be a number between -180 and 180.');
+      return;
+    }
     const input: CustomCityAtlasInput = {
       cityName: draft.city_name,
       regionName: draft.region_name,
       timezone: draft.timezone,
       name: draft.name,
       description: draft.description,
+      latitude,
+      longitude,
     };
 
     this.creatingCustomCity.set(true);
@@ -1017,6 +1039,8 @@ export class AtlasManageComponent {
           timezone: 'America/New_York',
           name: '',
           description: '',
+          latitude: '',
+          longitude: '',
         });
       }
     } catch (error) {
@@ -1056,17 +1080,17 @@ export class AtlasManageComponent {
 
   downloadBulkCitySampleCsv(): void {
     const csv = [
-      'city_name,region_name,timezone,public_title,description',
-      '"Seattle","Washington","America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates."',
-      '"Las Vegas","Nevada","America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates."',
-      '"Nairobi","Kenya","Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates."',
-      '"Kinshasa","Democratic Republic of the Congo","Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates."',
-      '"Tokyo","Japan","Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates."',
-      '"London","United Kingdom","Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates."',
-      '"Paris","France","Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates."',
-      '"Singapore","Singapore","Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates."',
-      '"Cape Town","South Africa","Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates."',
-      '"Mexico City","Mexico","America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates."',
+      'city_name,region_name,timezone,public_title,description,latitude,longitude',
+      '"Seattle","Washington","America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
+      '"Las Vegas","Nevada","America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
+      '"Nairobi","Kenya","Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
+      '"Kinshasa","Democratic Republic of the Congo","Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
+      '"Tokyo","Japan","Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
+      '"London","United Kingdom","Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
+      '"Paris","France","Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
+      '"Singapore","Singapore","Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
+      '"Cape Town","South Africa","Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
+      '"Mexico City","Mexico","America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
     ].join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -1250,6 +1274,8 @@ export class AtlasManageComponent {
             timezone: row.timezone,
             name: row.name,
             description: row.description,
+            latitude: row.latitude ? Number(row.latitude) : null,
+            longitude: row.longitude ? Number(row.longitude) : null,
           });
           if (!atlasId) {
             throw new Error('City Wiki was not created. Check that you are signed in and try again.');
@@ -1342,6 +1368,8 @@ export class AtlasManageComponent {
     const timezoneIndex = indexFor(['timezone', 'time_zone']);
     const titleIndex = indexFor(['public_title', 'title', 'wiki_title']);
     const descriptionIndex = indexFor(['description', 'desc']);
+    const latitudeIndex = indexFor(['latitude', 'lat']);
+    const longitudeIndex = indexFor(['longitude', 'lng', 'lon', 'long']);
 
     if (cityIndex < 0) {
       throw new Error('CSV is missing the city_name column.');
@@ -1356,6 +1384,8 @@ export class AtlasManageComponent {
       const timezone = cell(timezoneIndex) || 'America/New_York';
       const name = cell(titleIndex);
       const description = cell(descriptionIndex);
+      const latitude = cell(latitudeIndex);
+      const longitude = cell(longitudeIndex);
       const key = normalizeAdminCityIdentity(cityName || name);
       const slug = this.atlasService.slugify(cityName || name || `row-${index + 2}`);
       const errors: string[] = [];
@@ -1367,6 +1397,19 @@ export class AtlasManageComponent {
       }
       if (descriptionIndex >= 0 && !description) {
         errors.push('Missing description');
+      }
+      // Coordinates are optional, but if one is given both must be valid so the
+      // city lands in the right place on the Dymaxion map.
+      const hasAnyCoord = latitude !== '' || longitude !== '';
+      if (hasAnyCoord) {
+        const lat = Number(latitude);
+        const lng = Number(longitude);
+        if (!Number.isFinite(lat) || lat < -90 || lat > 90) {
+          errors.push('Invalid latitude (-90 to 90)');
+        }
+        if (!Number.isFinite(lng) || lng < -180 || lng > 180) {
+          errors.push('Invalid longitude (-180 to 180)');
+        }
       }
       if (!key) {
         errors.push('Missing city identity');
@@ -1381,6 +1424,8 @@ export class AtlasManageComponent {
         timezone,
         name: name || (cityName ? `My living wiki: ${cityName}` : ''),
         description,
+        latitude,
+        longitude,
         slug,
         errors,
         duplicate,

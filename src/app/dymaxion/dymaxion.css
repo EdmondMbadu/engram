@@ -341,26 +341,40 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* ---------- hint chip ---------- */
+/* ---------- hint chip ----------
+   Pinned to the bottom of the frame (not the center) and fully click-through
+   so it never covers or blocks the markers/clusters. */
 .dym-hint {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 11px;
+  bottom: 14px;
+  top: auto;
+  transform: translateX(-50%);
+  max-width: calc(100% - 28px);
+  font-size: 10.5px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
   border: 1px solid var(--line-strong);
-  padding: 7px 14px;
+  padding: 6px 14px;
   border-radius: 100px;
-  z-index: 5;
+  z-index: 2;
   backdrop-filter: blur(2px);
   transition: opacity 0.4s;
   pointer-events: none;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 640px) {
+  .dym-hint {
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    padding: 5px 10px;
+  }
 }
 
 /* ---------- name-picker popover ---------- */
