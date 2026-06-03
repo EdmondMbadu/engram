@@ -444,7 +444,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return 'Realtime voice is ready';
   });
   readonly realtimeVoiceGreeting = computed(() =>
-    `Hi, I’m your ${this.currentWikiName() || 'My living wiki'} voice guide. Ask me anything and I’ll answer out loud.`,
+    this.voiceSessionGreeting(),
   );
 
   readonly canScrollVoiceCarouselPrev = computed(() => !this.voiceCarouselAtStart());
@@ -1414,8 +1414,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return;
     }
 
-    const greeting = language?.greeting ?? this.realtimeVoiceGreeting();
+    const greeting = this.voiceSessionGreeting(language);
     const accentProfile = language ? this.voiceAccentProfile(language) : null;
+    const cityName = this.currentWikiName();
+    const cityCountry = this.currentWikiCountry();
 
     this.stopAnswerAudio();
     this.realtimeVoiceEndingByUser = false;
@@ -1451,6 +1453,17 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         throw new Error('Voice service is unavailable.');
       }
 
+      const voiceDynamicVariables = {
+        ...(session.dynamicVariables ?? {}),
+        current_city: cityName,
+        current_city_country: cityCountry,
+        current_living_wiki: cityName ? `My Living Wiki, ${cityName}` : 'My Living Wiki',
+        requested_intro_greeting: greeting,
+        city_context_instruction: cityName
+          ? `This voice conversation is for the My Living Wiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked.`
+          : 'This voice conversation is for the current My Living Wiki page.',
+      };
+
       const { Conversation } = await import('@elevenlabs/client');
       const conversation = await Conversation.startSession({
         conversationToken: session.conversationToken,
@@ -1459,7 +1472,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         ...(language && accentProfile
           ? {
               dynamicVariables: {
-                ...(session.dynamicVariables ?? {}),
+                ...voiceDynamicVariables,
                 preferred_language: language.language,
                 preferred_country: language.country,
                 preferred_accent: accentProfile.label,
@@ -1473,7 +1486,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
                       ...(session.firstMessageOverrideEnabled
                         ? {
                             agent: {
-                              firstMessage: language.greeting,
+                              firstMessage: greeting,
                             },
                           }
                         : {}),
@@ -1488,9 +1501,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
                   }
                 : {}),
             }
-          : session.dynamicVariables
-            ? { dynamicVariables: session.dynamicVariables }
-            : {}),
+          : { dynamicVariables: voiceDynamicVariables }),
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
@@ -1538,6 +1549,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         this.sendVoiceLanguageWelcomePrompt(
           conversation,
           language,
+          greeting,
           accentProfile,
           session.voiceName ?? null,
           Boolean(session.firstMessageOverrideEnabled),
@@ -1756,18 +1768,72 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return current + (next - current) * amount;
   }
 
+  private voiceSessionGreeting(language?: VoiceLanguageOption): string {
+    const city = this.currentWikiName();
+    if (!city) {
+      return language?.greeting
+        ?? 'Hi, I’m your My Living Wiki voice guide. Ask me anything and I’ll answer out loud.';
+    }
+
+    switch (language?.code) {
+      case 'ar':
+        return `مرحباً بك في My Living Wiki، ${city}. كيف يمكنني مساعدتك بشأن ${city} اليوم؟`;
+      case 'cs':
+        return `Vítejte v My Living Wiki, ${city}. Jak vám dnes mohu pomoci s ${city}?`;
+      case 'de':
+        return `Willkommen bei My Living Wiki, ${city}. Wie kann ich dir heute zu ${city} helfen?`;
+      case 'es':
+        return `Bienvenido a My Living Wiki, ${city}. ¿Cómo puedo ayudarte con ${city} hoy?`;
+      case 'fa':
+        return `به My Living Wiki، ${city} خوش آمدید. امروز درباره ${city} چطور می‌توانم کمک کنم؟`;
+      case 'fr':
+        return `Bienvenue sur My Living Wiki, ${city}. Comment puis-je vous aider avec ${city} aujourd’hui ?`;
+      case 'hi':
+        return `My Living Wiki, ${city} में आपका स्वागत है। आज मैं ${city} के बारे में आपकी कैसे मदद कर सकता हूँ?`;
+      case 'hr':
+        return `Dobrodošli u My Living Wiki, ${city}. Kako vam danas mogu pomoći s ${city}?`;
+      case 'ja':
+        return `My Living Wiki、${city}へようこそ。今日は${city}について、どのようにお手伝いできますか？`;
+      case 'ko':
+        return `My Living Wiki, ${city}에 오신 것을 환영합니다. 오늘 ${city}에 대해 어떻게 도와드릴까요?`;
+      case 'nl':
+        return `Welkom bij My Living Wiki, ${city}. Hoe kan ik u vandaag helpen met ${city}?`;
+      case 'no':
+        return `Velkommen til My Living Wiki, ${city}. Hvordan kan jeg hjelpe deg med ${city} i dag?`;
+      case 'pt':
+      case 'pt-br':
+        return `Bem-vindo ao My Living Wiki, ${city}. Como posso ajudar com ${city} hoje?`;
+      case 'ru':
+        return `Добро пожаловать в My Living Wiki, ${city}. Чем я могу помочь вам сегодня по ${city}?`;
+      case 'sv':
+        return `Välkommen till My Living Wiki, ${city}. Hur kan jag hjälpa dig med ${city} idag?`;
+      case 'tr':
+        return `My Living Wiki, ${city} sayfasına hoş geldiniz. Bugün ${city} hakkında size nasıl yardımcı olabilirim?`;
+      case 'zh':
+        return `欢迎来到 My Living Wiki，${city}。今天我可以怎样帮你了解 ${city}？`;
+      case 'en':
+      default:
+        return `Welcome to My Living Wiki, ${city}. How can I help you with ${city} today?`;
+    }
+  }
+
   private sendVoiceLanguageWelcomePrompt(
     conversation: ElevenLabsConversation,
     language: VoiceLanguageOption,
+    greeting: string,
     accentProfile: VoiceAccentProfile,
     voiceName: string | null,
     firstMessageOverrideEnabled: boolean,
   ): void {
     const prompt = [
       `Please greet me now in ${language.language} for ${language.country}.`,
-      `Say exactly this greeting first: "${language.greeting}"`,
+      `Say exactly this greeting first: "${greeting}"`,
+      `The current My Living Wiki city context is ${this.currentWikiName() || 'the selected city wiki'}.`,
       accentProfile.instruction,
       'For the rest of this voice session, keep speaking in this language and accent unless I ask to switch.',
+      this.currentWikiName()
+        ? `When helpful, invite me to ask questions about ${this.currentWikiName()}.`
+        : 'When helpful, invite me to ask questions about this city.',
       'Keep it warm and brief, then wait for my spoken question.',
     ].join(' ');
 
@@ -1781,6 +1847,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       try {
         conversation.sendContextualUpdate([
           `The visitor selected ${language.country} / ${language.language}.`,
+          `The current Living Wiki context is ${this.currentWikiName() || 'the selected city wiki'}.`,
           `Voice and accent target: ${accentProfile.label}.`,
           voiceName ? `Selected ElevenLabs voice: ${voiceName}.` : 'No dedicated ElevenLabs native voice was selected; use the closest available native accent.',
           accentProfile.instruction,
