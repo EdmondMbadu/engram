@@ -207,6 +207,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private realtimeVoiceConversation: ElevenLabsConversation | null = null;
   private realtimeVoiceEndingByUser = false;
   private pendingVoiceLanguagePrompt: string | null = null;
+  private realtimeVoiceMeterFrame: number | null = null;
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -248,6 +249,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly realtimeVoiceConversationId = signal<string | null>(null);
   readonly realtimeVoiceTranscript = signal<VoiceTranscriptItem[]>([]);
   readonly realtimeVoiceTextInput = signal('');
+  readonly realtimeVoiceInputLevel = signal(0);
+  readonly realtimeVoiceOutputLevel = signal(0);
+  readonly realtimeVoiceEnergyLevel = signal(0);
+  readonly realtimeVoiceVisualScale = computed(() => (1 + this.realtimeVoiceEnergyLevel() * 0.12).toFixed(3));
+  readonly realtimeVoiceVisualGlow = computed(() => `${Math.round(22 + this.realtimeVoiceEnergyLevel() * 70)}px`);
+  readonly realtimeVoiceVisualBar = computed(() => (0.2 + this.realtimeVoiceEnergyLevel() * 1.7).toFixed(3));
 
   // Language flag carousel (World Cup 2026 nations + China / Russia / Japan).
   readonly voiceLanguages = signal<VoiceLanguageOption[]>(VOICE_LANGUAGES);
@@ -1374,6 +1381,17 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           console.debug('[Voice mode] mode', mode);
           this.realtimeVoiceMode.set(mode);
         },
+        onVadScore: ({ vadScore }) => {
+          if (!this.realtimeVoiceMuted()) {
+            this.realtimeVoiceInputLevel.set(Math.max(this.realtimeVoiceInputLevel(), this.clampVoiceLevel(vadScore)));
+          }
+        },
+        onAudio: () => {
+          this.realtimeVoiceOutputLevel.set(Math.max(this.realtimeVoiceOutputLevel(), 0.42));
+        },
+        onAgentChatResponsePart: ({ text, type, event_id }) => {
+          this.rememberRealtimeVoicePartialMessage(event_id, text, type);
+        },
         onMessage: ({ role, message }) => {
           console.debug('[Voice mode] message', { role, message });
           if (role !== 'agent' && this.isPendingVoiceLanguagePrompt(message)) {
@@ -1389,6 +1407,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       });
 
       this.realtimeVoiceConversation = conversation;
+      this.startRealtimeVoiceMeter(conversation);
       if (language && accentProfile) {
         this.sendVoiceLanguageWelcomePrompt(
           conversation,
@@ -1400,6 +1419,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       }
     } catch (error) {
       this.realtimeVoiceConversation = null;
+      this.stopRealtimeVoiceMeter();
       this.realtimeVoiceStatus.set('error');
       this.realtimeVoiceMode.set(null);
       this.pendingVoiceLanguagePrompt = null;
@@ -1421,6 +1441,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceEndingByUser = true;
     this.realtimeVoiceStatus.set('disconnecting');
     this.realtimeVoiceConversation = null;
+    this.stopRealtimeVoiceMeter();
     try {
       await conversation.endSession();
     } catch (error) {
@@ -1446,6 +1467,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceMuted.set(false);
     this.activeVoiceLanguageCode.set(null);
     this.pendingVoiceLanguagePrompt = null;
+    this.stopRealtimeVoiceMeter();
   }
 
   toggleRealtimeVoiceMute(): void {
@@ -1479,6 +1501,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   private handleRealtimeVoiceDisconnect(details: ElevenLabsDisconnectionDetails): void {
     this.realtimeVoiceConversation = null;
+    this.stopRealtimeVoiceMeter();
     this.realtimeVoiceStatus.set('disconnected');
     this.realtimeVoiceMode.set(null);
     this.realtimeVoiceMuted.set(false);
@@ -1510,8 +1533,97 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       if (last?.role === role && last.text === trimmed) {
         return items;
       }
+      if (role === 'agent' && last?.role === 'agent' && last.id.startsWith('voice-agent-live-')) {
+        return [...items.slice(0, -1), { id: `voice-${Date.now()}-${items.length}`, role, text: trimmed }];
+      }
       return [...items.slice(-7), { id: `voice-${Date.now()}-${items.length}`, role, text: trimmed }];
     });
+  }
+
+  private rememberRealtimeVoicePartialMessage(eventId: number, text: string, type: 'start' | 'delta' | 'stop'): void {
+    if (type === 'stop') {
+      return;
+    }
+
+    const normalized = text.replace(/\s+/g, ' ');
+    if (!normalized.trim() && type !== 'start') {
+      return;
+    }
+
+    const id = `voice-agent-live-${eventId}`;
+    this.realtimeVoiceTranscript.update((items) => {
+      const existingIndex = items.findIndex((item) => item.id === id);
+      if (existingIndex >= 0) {
+        const existing = items[existingIndex];
+        const nextText = type === 'start'
+          ? normalized.trim()
+          : `${existing.text}${normalized}`.replace(/\s+/g, ' ').trim();
+        if (!nextText) {
+          return items;
+        }
+        const next = [...items];
+        next[existingIndex] = { ...existing, text: nextText };
+        return next.slice(-8);
+      }
+      const nextText = normalized.trim();
+      if (!nextText) {
+        return items;
+      }
+      return [...items.slice(-7), { id, role: 'agent', text: nextText }];
+    });
+  }
+
+  private startRealtimeVoiceMeter(conversation: ElevenLabsConversation): void {
+    this.stopRealtimeVoiceMeter();
+    const tick = () => {
+      if (this.realtimeVoiceConversation !== conversation || this.realtimeVoiceStatus() === 'disconnected') {
+        this.stopRealtimeVoiceMeter();
+        return;
+      }
+
+      const rawInput = this.realtimeVoiceMuted() ? 0 : this.safeVoiceVolume(() => conversation.getInputVolume());
+      const rawOutput = this.safeVoiceVolume(() => conversation.getOutputVolume());
+      const input = this.smoothVoiceLevel(this.realtimeVoiceInputLevel(), rawInput, 0.28);
+      const output = this.smoothVoiceLevel(this.realtimeVoiceOutputLevel(), rawOutput, 0.24);
+      const active = this.realtimeVoiceMode() === 'speaking' ? output : Math.max(input, output * 0.36);
+      const energy = this.smoothVoiceLevel(this.realtimeVoiceEnergyLevel(), active, 0.34);
+
+      this.realtimeVoiceInputLevel.set(input);
+      this.realtimeVoiceOutputLevel.set(output);
+      this.realtimeVoiceEnergyLevel.set(energy);
+      this.realtimeVoiceMeterFrame = window.requestAnimationFrame(tick);
+    };
+
+    this.realtimeVoiceMeterFrame = window.requestAnimationFrame(tick);
+  }
+
+  private stopRealtimeVoiceMeter(): void {
+    if (this.realtimeVoiceMeterFrame !== null) {
+      window.cancelAnimationFrame(this.realtimeVoiceMeterFrame);
+      this.realtimeVoiceMeterFrame = null;
+    }
+    this.realtimeVoiceInputLevel.set(0);
+    this.realtimeVoiceOutputLevel.set(0);
+    this.realtimeVoiceEnergyLevel.set(0);
+  }
+
+  private safeVoiceVolume(read: () => number): number {
+    try {
+      return this.clampVoiceLevel(read());
+    } catch {
+      return 0;
+    }
+  }
+
+  private clampVoiceLevel(value: number): number {
+    if (!Number.isFinite(value)) {
+      return 0;
+    }
+    return Math.min(1, Math.max(0, value));
+  }
+
+  private smoothVoiceLevel(current: number, next: number, amount: number): number {
+    return current + (next - current) * amount;
   }
 
   private sendVoiceLanguageWelcomePrompt(

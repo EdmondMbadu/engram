@@ -347,11 +347,23 @@
                 [class.voice-orb--listening]="realtimeVoiceMode() === 'listening'"
                 [class.voice-orb--connecting]="realtimeVoiceStatus() === 'connecting'"
                 [class.voice-orb--error]="realtimeVoiceStatus() === 'error'"
+                [style.--voice-energy]="realtimeVoiceEnergyLevel()"
+                [style.--voice-input]="realtimeVoiceInputLevel()"
+                [style.--voice-output]="realtimeVoiceOutputLevel()"
+                [style.--voice-scale]="realtimeVoiceVisualScale()"
+                [style.--voice-glow]="realtimeVoiceVisualGlow()"
+                [style.--voice-bar]="realtimeVoiceVisualBar()"
               >
+                <span class="voice-orb__halo"></span>
                 <span class="voice-orb__slice voice-orb__slice--one"></span>
                 <span class="voice-orb__slice voice-orb__slice--two"></span>
                 <span class="voice-orb__slice voice-orb__slice--three"></span>
                 <span class="voice-orb__center"></span>
+                <span class="voice-orb__wave voice-orb__wave--one"></span>
+                <span class="voice-orb__wave voice-orb__wave--two"></span>
+                <span class="voice-orb__wave voice-orb__wave--three"></span>
+                <span class="voice-orb__wave voice-orb__wave--four"></span>
+                <span class="voice-orb__wave voice-orb__wave--five"></span>
               </div>
               <p class="voice-mode-orb-label">{{ realtimeVoiceOrbState() }}</p>
               <p class="voice-mode-orb-subtitle">
@@ -360,14 +372,32 @@
               @if (realtimeVoiceError()) {
                 <p class="voice-mode-error">{{ realtimeVoiceError() }}</p>
               }
+              @if (realtimeVoiceActive()) {
+                <button
+                  type="button"
+                  class="voice-mode-end-button"
+                  [disabled]="realtimeVoiceStatus() === 'disconnecting'"
+                  aria-label="End voice call"
+                  (click)="stopRealtimeVoice()"
+                >
+                  <span class="material-symbols-outlined">call_end</span>
+                  End
+                </button>
+              }
             </div>
 
             <div class="voice-mode-transcript" aria-live="polite">
+              <div class="voice-mode-transcript__head">
+                <span>Live transcript</span>
+                <span>{{ realtimeVoiceMode() === 'speaking' ? 'AI is talking' : 'Listening for you' }}</span>
+              </div>
               @for (item of realtimeVoiceTranscript(); track item.id) {
                 <article class="voice-transcript-line" [class.voice-transcript-line--user]="item.role === 'user'">
                   <span>{{ item.role === 'agent' ? 'AI' : 'You' }}</span>
                   <p>{{ item.text }}</p>
                 </article>
+              } @empty {
+                <p class="voice-mode-transcript__empty">Spoken words will appear here.</p>
               }
             </div>
 
