@@ -410,6 +410,62 @@
             [class.max-w-3xl]="!hasMessages()"
             [class.max-w-4xl]="hasMessages()"
           >
+            @if (canShowCityVoiceCarousel()) {
+              <section class="lang-carousel lang-carousel--top" aria-label="Start a voice conversation in your language">
+                <div class="lang-carousel__head">
+                  <span class="lang-carousel__eyebrow">
+                    <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
+                    <span>Talk in your language</span>
+                  </span>
+                  <p class="lang-carousel__hint">Tap a flag to start a voice conversation — I’ll greet you in that language.</p>
+                </div>
+
+                <div class="lang-carousel__viewport">
+                  <button
+                    type="button"
+                    class="lang-carousel__nav lang-carousel__nav--prev"
+                    aria-label="Previous languages"
+                    [disabled]="!canScrollVoiceCarouselPrev()"
+                    (click)="scrollVoiceCarousel(-1)"
+                  >
+                    <span class="material-symbols-outlined">chevron_left</span>
+                  </button>
+
+                  <div #voiceLanguageTrack class="lang-carousel__track" role="list" (scroll)="syncVoiceCarouselScrollState()">
+                    @for (lang of voiceLanguages(); track lang.country) {
+                      <button
+                        type="button"
+                        role="listitem"
+                        class="lang-flag-card"
+                        [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && realtimeVoiceActive()"
+                        [attr.aria-label]="'Start a voice conversation in ' + lang.language + ' (' + lang.country + ')'"
+                        [attr.data-tooltip]="'Start in ' + lang.language"
+                        (click)="startVoiceInLanguage(lang)"
+                      >
+                        <span class="lang-flag-card__flag" aria-hidden="true">{{ lang.flag }}</span>
+                        <span class="lang-flag-card__country">{{ lang.country }}</span>
+                        <span class="lang-flag-card__language">{{ lang.language }}</span>
+                        <span class="lang-flag-card__cta">
+                          <span class="material-symbols-outlined">graphic_eq</span>
+                          <span>Voice chat</span>
+                        </span>
+                      </button>
+                    }
+                  </div>
+
+                  <button
+                    type="button"
+                    class="lang-carousel__nav lang-carousel__nav--next"
+                    aria-label="More languages"
+                    [disabled]="!canScrollVoiceCarouselNext()"
+                    (click)="scrollVoiceCarousel(1)"
+                  >
+                    <span class="material-symbols-outlined">chevron_right</span>
+                  </button>
+                </div>
+              </section>
+            }
+
             @if (publicNotFound()) {
               <div class="flex flex-col items-center pt-12 text-center">
                 <h2 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">This chat is unavailable</h2>

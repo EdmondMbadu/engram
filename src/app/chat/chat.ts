@@ -77,6 +77,96 @@ const THINKING_STAGES = [
 
 const CITY_WIKI_CATEGORY = 'Cities & Regions';
 
+// ElevenLabs supported language override codes (see @elevenlabs/types
+// ConversationConfigOverrideAgentLanguage). Keep `code` values within this set,
+// otherwise the agent override is silently ignored.
+type VoiceLanguageCode =
+  | 'en' | 'ja' | 'zh' | 'de' | 'hi' | 'fr' | 'ko' | 'pt' | 'pt-br' | 'it' | 'es'
+  | 'id' | 'nl' | 'tr' | 'pl' | 'sv' | 'bg' | 'ro' | 'ar' | 'cs' | 'el' | 'fi'
+  | 'ms' | 'da' | 'ta' | 'uk' | 'ru' | 'hu' | 'hr' | 'sk' | 'no' | 'vi' | 'tl'
+  | 'af' | 'fa' | 'sr' | 'sw' | 'th' | 'cy';
+
+interface VoiceLanguageOption {
+  /** Country / region the flag represents. */
+  country: string;
+  /** Emoji flag — purely presentational. */
+  flag: string;
+  /** Human-readable language name shown under the flag. */
+  language: string;
+  /** ElevenLabs agent language override code. */
+  code: VoiceLanguageCode;
+  /** Native-language welcome line spoken the moment the conversation starts. */
+  greeting: string;
+}
+
+// World Cup 2026 nations (plus the explicitly requested China, Russia and Japan),
+// each paired with the language the voice guide should speak and a native welcome
+// message so the conversation feels seamless from the very first second.
+// De-duplicated by country; languages reuse codes where countries share one.
+const VOICE_LANGUAGES: VoiceLanguageOption[] = [
+  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m your living wiki voice guide. Ask me anything and I’ll answer out loud.' },
+  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m your living wiki voice guide. What would you like to know?' },
+  { country: 'Mexico', flag: '🇲🇽', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras y te respondo en voz alta.' },
+  { country: 'Argentina', flag: '🇦🇷', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿En qué puedo ayudarte hoy?' },
+  { country: 'Brazil', flag: '🇧🇷', language: 'Português', code: 'pt-br', greeting: 'Olá! Eu sou o seu guia de voz. Pergunte o que quiser e eu respondo em voz alta.' },
+  { country: 'Uruguay', flag: '🇺🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Qué te gustaría saber?' },
+  { country: 'Colombia', flag: '🇨🇴', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
+  { country: 'Ecuador', flag: '🇪🇨', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Cómo puedo ayudarte?' },
+  { country: 'Paraguay', flag: '🇵🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Estoy aquí para responder tus preguntas.' },
+  { country: 'France', flag: '🇫🇷', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi vos questions, j’y réponds à voix haute.' },
+  { country: 'Spain', flag: '🇪🇸', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
+  { country: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Germany', flag: '🇩🇪', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir eine Frage und ich antworte dir laut.' },
+  { country: 'Netherlands', flag: '🇳🇱', language: 'Nederlands', code: 'nl', greeting: 'Hallo! Ik ben je spraakgids. Stel me een vraag en ik antwoord hardop.' },
+  { country: 'Portugal', flag: '🇵🇹', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
+  { country: 'Belgium', flag: '🇧🇪', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Que souhaitez-vous savoir ?' },
+  { country: 'Croatia', flag: '🇭🇷', language: 'Hrvatski', code: 'hr', greeting: 'Bok! Ja sam tvoj glasovni vodič. Pitaj me bilo što i odgovorit ću naglas.' },
+  { country: 'Italy', flag: '🇮🇹', language: 'Italiano', code: 'it', greeting: 'Ciao! Sono la tua guida vocale. Chiedimi quello che vuoi e ti rispondo a voce.' },
+  { country: 'Switzerland', flag: '🇨🇭', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Wie kann ich dir helfen?' },
+  { country: 'Austria', flag: '🇦🇹', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir gerne eine Frage.' },
+  { country: 'Poland', flag: '🇵🇱', language: 'Polski', code: 'pl', greeting: 'Cześć! Jestem twoim głosowym przewodnikiem. Zapytaj mnie o cokolwiek.' },
+  { country: 'Ukraine', flag: '🇺🇦', language: 'Українська', code: 'uk', greeting: 'Привіт! Я ваш голосовий помічник. Запитайте мене про що завгодно.' },
+  { country: 'Denmark', flag: '🇩🇰', language: 'Dansk', code: 'da', greeting: 'Hej! Jeg er din stemmeguide. Spørg mig om hvad som helst.' },
+  { country: 'Sweden', flag: '🇸🇪', language: 'Svenska', code: 'sv', greeting: 'Hej! Jag är din röstguide. Fråga mig vad du vill.' },
+  { country: 'Norway', flag: '🇳🇴', language: 'Norsk', code: 'no', greeting: 'Hei! Jeg er din stemmeguide. Spør meg om hva som helst.' },
+  { country: 'Serbia', flag: '🇷🇸', language: 'Српски', code: 'sr', greeting: 'Здраво! Ја сам твој гласовни водич. Питај ме било шта.' },
+  { country: 'Czechia', flag: '🇨🇿', language: 'Čeština', code: 'cs', greeting: 'Ahoj! Jsem tvůj hlasový průvodce. Zeptej se mě na cokoliv.' },
+  { country: 'Türkiye', flag: '🇹🇷', language: 'Türkçe', code: 'tr', greeting: 'Merhaba! Ben senin sesli rehberinim. Bana istediğini sorabilirsin.' },
+  { country: 'Greece', flag: '🇬🇷', language: 'Ελληνικά', code: 'el', greeting: 'Γεια σου! Είμαι ο φωνητικός σου οδηγός. Ρώτησέ με ό,τι θέλεις.' },
+  { country: 'Romania', flag: '🇷🇴', language: 'Română', code: 'ro', greeting: 'Salut! Sunt ghidul tău vocal. Întreabă-mă orice.' },
+  { country: 'Hungary', flag: '🇭🇺', language: 'Magyar', code: 'hu', greeting: 'Szia! Én vagyok a hangos kalauzod. Kérdezz tőlem bármit.' },
+  { country: 'Bulgaria', flag: '🇧🇬', language: 'Български', code: 'bg', greeting: 'Здравей! Аз съм твоят гласов водач. Питай ме каквото пожелаеш.' },
+  { country: 'Slovakia', flag: '🇸🇰', language: 'Slovenčina', code: 'sk', greeting: 'Ahoj! Som tvoj hlasový sprievodca. Opýtaj sa ma na čokoľvek.' },
+  { country: 'Wales', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', language: 'Cymraeg', code: 'cy', greeting: 'Helo! Fi yw eich tywysydd llais. Gofynnwch unrhyw beth i mi.' },
+  { country: 'Finland', flag: '🇫🇮', language: 'Suomi', code: 'fi', greeting: 'Hei! Olen äänioppaasi. Kysy minulta mitä tahansa.' },
+  { country: 'Japan', flag: '🇯🇵', language: '日本語', code: 'ja', greeting: 'こんにちは！私はあなたの音声ガイドです。何でも聞いてください。' },
+  { country: 'South Korea', flag: '🇰🇷', language: '한국어', code: 'ko', greeting: '안녕하세요! 저는 음성 가이드입니다. 무엇이든 물어보세요.' },
+  { country: 'China', flag: '🇨🇳', language: '中文（普通话）', code: 'zh', greeting: '你好！我是你的语音向导。有什么问题都可以问我。' },
+  { country: 'Russia', flag: '🇷🇺', language: 'Русский', code: 'ru', greeting: 'Здравствуйте! Я ваш голосовой гид. Спрашивайте меня о чём угодно.' },
+  { country: 'Iran', flag: '🇮🇷', language: 'فارسی', code: 'fa', greeting: 'سلام! من راهنمای صوتی شما هستم. هر چه می‌خواهید بپرسید.' },
+  { country: 'Saudi Arabia', flag: '🇸🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
+  { country: 'Qatar', flag: '🇶🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
+  { country: 'Morocco', flag: '🇲🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. كيف يمكنني مساعدتك؟' },
+  { country: 'Egypt', flag: '🇪🇬', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
+  { country: 'Tunisia', flag: '🇹🇳', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. تفضّل بالسؤال.' },
+  { country: 'Algeria', flag: '🇩🇿', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
+  { country: 'Senegal', flag: '🇸🇳', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
+  { country: 'Ivory Coast', flag: '🇨🇮', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Comment puis-je vous aider ?' },
+  { country: 'Cameroon', flag: '🇨🇲', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Que souhaitez-vous savoir ?' },
+  { country: 'Nigeria', flag: '🇳🇬', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything at all.' },
+  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. How can I help you today?' },
+  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Kenya', flag: '🇰🇪', language: 'Kiswahili', code: 'sw', greeting: 'Habari! Mimi ni kiongozi wako wa sauti. Niulize chochote.' },
+  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Japan (J-League)', flag: '🇯🇵', language: '日本語', code: 'ja', greeting: 'こんにちは！音声ガイドです。何でもお聞きください。' },
+  { country: 'Indonesia', flag: '🇮🇩', language: 'Bahasa Indonesia', code: 'id', greeting: 'Halo! Saya pemandu suara Anda. Tanyakan apa saja.' },
+  { country: 'Malaysia', flag: '🇲🇾', language: 'Bahasa Melayu', code: 'ms', greeting: 'Helo! Saya pemandu suara anda. Tanya saya apa sahaja.' },
+  { country: 'Vietnam', flag: '🇻🇳', language: 'Tiếng Việt', code: 'vi', greeting: 'Xin chào! Tôi là hướng dẫn viên bằng giọng nói của bạn. Hãy hỏi tôi bất cứ điều gì.' },
+  { country: 'Thailand', flag: '🇹🇭', language: 'ภาษาไทย', code: 'th', greeting: 'สวัสดี! ฉันเป็นไกด์เสียงของคุณ ถามอะไรก็ได้เลย' },
+  { country: 'Philippines', flag: '🇵🇭', language: 'Filipino', code: 'tl', greeting: 'Kumusta! Ako ang iyong voice guide. Magtanong ka lang ng kahit ano.' },
+  { country: 'India', flag: '🇮🇳', language: 'हिन्दी', code: 'hi', greeting: 'नमस्ते! मैं आपका वॉइस गाइड हूँ। मुझसे कुछ भी पूछिए।' },
+];
+
 @Component({
   selector: 'app-chat',
   imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, ChatLocationMapComponent],
@@ -111,6 +201,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private voiceScrollLockTimer: ReturnType<typeof setInterval> | null = null;
   private realtimeVoiceConversation: ElevenLabsConversation | null = null;
   private realtimeVoiceEndingByUser = false;
+  private pendingVoiceLanguagePrompt: string | null = null;
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -152,6 +243,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly realtimeVoiceConversationId = signal<string | null>(null);
   readonly realtimeVoiceTranscript = signal<VoiceTranscriptItem[]>([]);
   readonly realtimeVoiceTextInput = signal('');
+
+  // Language flag carousel (World Cup 2026 nations + China / Russia / Japan).
+  readonly voiceLanguages = signal<VoiceLanguageOption[]>(VOICE_LANGUAGES);
+  readonly voiceCarouselAtStart = signal(true);
+  readonly voiceCarouselAtEnd = signal(false);
+  // Language the active/last voice session was started in, so the UI can show
+  // which flag is "speaking".
+  readonly activeVoiceLanguageCode = signal<VoiceLanguageCode | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
@@ -200,6 +299,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly canStartRealtimeVoice = computed(
     () => !this.publicNotFound() && !this.isPublicPageLoading() && !!this.currentVoiceAtlasId(),
   );
+  readonly canShowCityVoiceCarousel = computed(
+    () => this.canStartRealtimeVoice() && this.currentWikiAtlas()?.city_config?.enabled === true,
+  );
   readonly realtimeVoiceActive = computed(() => {
     const status = this.realtimeVoiceStatus();
     return status === 'connecting' || status === 'connected' || status === 'disconnecting';
@@ -230,6 +332,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly realtimeVoiceGreeting = computed(() =>
     `Hi, I’m your ${this.currentWikiName() || 'My living wiki'} voice guide. Ask me anything and I’ll answer out loud.`,
   );
+
+  readonly canScrollVoiceCarouselPrev = computed(() => !this.voiceCarouselAtStart());
+  readonly canScrollVoiceCarouselNext = computed(() => !this.voiceCarouselAtEnd());
+
   readonly isAnonymousPublicVisitor = computed(() => this.isPublicVisitorMode() && !this.isSignedIn());
   readonly isSignedInPublicVisitor = computed(() => this.isPublicVisitorMode() && this.isSignedIn());
   readonly isPublicPageLoading = computed(() => {
@@ -248,6 +354,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   @ViewChild('transcriptEnd') transcriptEnd?: ElementRef<HTMLElement>;
   @ViewChild('composerInput') composerInput?: ElementRef<HTMLTextAreaElement>;
   @ViewChild('chatScrollViewport') chatScrollViewport?: ElementRef<HTMLElement>;
+  @ViewChild('voiceLanguageTrack') voiceLanguageTrack?: ElementRef<HTMLElement>;
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
@@ -1095,6 +1202,54 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     });
   }
 
+  // ---- Language flag carousel -------------------------------------------------
+
+  scrollVoiceCarousel(direction: -1 | 1): void {
+    const track = this.voiceLanguageTrack?.nativeElement;
+    if (!track) {
+      return;
+    }
+
+    const firstCard = track.querySelector<HTMLElement>('.lang-flag-card');
+    const cardWidth = firstCard?.getBoundingClientRect().width ?? 140;
+    const gap = Number.parseFloat(window.getComputedStyle(track).columnGap || window.getComputedStyle(track).gap || '0') || 0;
+    const scrollAmount = Math.max(cardWidth + gap, track.clientWidth * 0.72);
+
+    track.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth',
+    });
+
+    window.setTimeout(() => this.syncVoiceCarouselScrollState(), 220);
+  }
+
+  syncVoiceCarouselScrollState(): void {
+    const track = this.voiceLanguageTrack?.nativeElement;
+    if (!track) {
+      this.voiceCarouselAtStart.set(true);
+      this.voiceCarouselAtEnd.set(false);
+      return;
+    }
+
+    const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+    this.voiceCarouselAtStart.set(track.scrollLeft <= 2);
+    this.voiceCarouselAtEnd.set(track.scrollLeft >= maxScrollLeft - 2);
+  }
+
+  /**
+   * Start (or restart) voice mode in the language tied to a flag. Clicking a flag
+   * always begins a fresh conversation in that language so the welcome message is
+   * spoken in the chosen tongue right away.
+   */
+  async startVoiceInLanguage(language: VoiceLanguageOption): Promise<void> {
+    if (this.realtimeVoiceActive()) {
+      // Switching language mid-session: tear the old one down first so the new
+      // greeting is spoken cleanly in the newly selected language.
+      await this.stopRealtimeVoice();
+    }
+    await this.startRealtimeVoice(language);
+  }
+
   async toggleRealtimeVoice(): Promise<void> {
     if (this.realtimeVoiceActive()) {
       await this.stopRealtimeVoice();
@@ -1104,7 +1259,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     await this.startRealtimeVoice();
   }
 
-  async startRealtimeVoice(): Promise<void> {
+  async startRealtimeVoice(language?: VoiceLanguageOption): Promise<void> {
     if (this.realtimeVoiceActive()) {
       return;
     }
@@ -1122,8 +1277,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return;
     }
 
+    const greeting = language?.greeting ?? this.realtimeVoiceGreeting();
+
     this.stopAnswerAudio();
     this.realtimeVoiceEndingByUser = false;
+    this.activeVoiceLanguageCode.set(language?.code ?? null);
     this.realtimeVoicePanelOpen.set(true);
     this.realtimeVoiceStatus.set('connecting');
     this.realtimeVoiceMode.set(null);
@@ -1132,7 +1290,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceConversationId.set(null);
     this.realtimeVoiceTextInput.set('');
     this.realtimeVoiceTranscript.set([
-      { id: `voice-greeting-${Date.now()}`, role: 'agent', text: this.realtimeVoiceGreeting() },
+      { id: `voice-greeting-${Date.now()}`, role: 'agent', text: greeting },
     ]);
     this.answerMode.set('internet');
 
@@ -1173,6 +1331,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         },
         onMessage: ({ role, message }) => {
           console.debug('[Voice mode] message', { role, message });
+          if (role !== 'agent' && this.isPendingVoiceLanguagePrompt(message)) {
+            return;
+          }
           this.rememberRealtimeVoiceMessage(role === 'agent' ? 'agent' : 'user', message);
         },
         onError: (message) => {
@@ -1183,10 +1344,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       });
 
       this.realtimeVoiceConversation = conversation;
+      if (language) {
+        this.sendVoiceLanguageWelcomePrompt(conversation, language);
+      }
     } catch (error) {
       this.realtimeVoiceConversation = null;
       this.realtimeVoiceStatus.set('error');
       this.realtimeVoiceMode.set(null);
+      this.pendingVoiceLanguagePrompt = null;
       this.realtimeVoiceError.set(this.authService.toFriendlyError(error));
     }
   }
@@ -1196,6 +1361,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (!conversation) {
       this.realtimeVoiceStatus.set('disconnected');
       this.realtimeVoiceMode.set(null);
+      this.activeVoiceLanguageCode.set(null);
+      this.pendingVoiceLanguagePrompt = null;
       this.realtimeVoicePanelOpen.set(false);
       return;
     }
@@ -1211,6 +1378,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       this.realtimeVoiceStatus.set('disconnected');
       this.realtimeVoiceMode.set(null);
       this.realtimeVoiceMuted.set(false);
+      this.activeVoiceLanguageCode.set(null);
+      this.pendingVoiceLanguagePrompt = null;
       this.realtimeVoicePanelOpen.set(false);
     }
   }
@@ -1224,6 +1393,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceStatus.set('disconnected');
     this.realtimeVoiceMode.set(null);
     this.realtimeVoiceMuted.set(false);
+    this.activeVoiceLanguageCode.set(null);
+    this.pendingVoiceLanguagePrompt = null;
   }
 
   toggleRealtimeVoiceMute(): void {
@@ -1260,6 +1431,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceStatus.set('disconnected');
     this.realtimeVoiceMode.set(null);
     this.realtimeVoiceMuted.set(false);
+    this.activeVoiceLanguageCode.set(null);
+    this.pendingVoiceLanguagePrompt = null;
 
     if (this.realtimeVoiceEndingByUser || details.reason === 'user') {
       this.realtimeVoicePanelOpen.set(false);
@@ -1288,6 +1461,44 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       }
       return [...items.slice(-7), { id: `voice-${Date.now()}-${items.length}`, role, text: trimmed }];
     });
+  }
+
+  private sendVoiceLanguageWelcomePrompt(conversation: ElevenLabsConversation, language: VoiceLanguageOption): void {
+    const prompt = [
+      `Please greet me now in ${language.language} for ${language.country}.`,
+      `Say exactly this greeting first: "${language.greeting}"`,
+      'Keep it warm and brief, then wait for my spoken question.',
+    ].join(' ');
+
+    this.pendingVoiceLanguagePrompt = prompt.replace(/\s+/g, ' ').trim();
+
+    window.setTimeout(() => {
+      if (this.realtimeVoiceConversation !== conversation || this.realtimeVoiceStatus() !== 'connected') {
+        return;
+      }
+
+      try {
+        conversation.sendUserMessage(prompt);
+      } catch (error) {
+        console.warn('[Voice mode] Could not send language greeting prompt', error);
+        this.pendingVoiceLanguagePrompt = null;
+      }
+    }, 120);
+  }
+
+  private isPendingVoiceLanguagePrompt(message: string): boolean {
+    const pending = this.pendingVoiceLanguagePrompt;
+    if (!pending) {
+      return false;
+    }
+
+    const normalized = message.replace(/\s+/g, ' ').trim();
+    if (normalized !== pending) {
+      return false;
+    }
+
+    this.pendingVoiceLanguagePrompt = null;
+    return true;
   }
 
   async toggleReadAnswer(message: ChatMessage, event?: Event): Promise<void> {
@@ -2127,6 +2338,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (!target?.closest('.chat-message-actions')) {
       this.messageActionMenuId.set(null);
     }
+  }
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.syncVoiceCarouselScrollState();
   }
 
   async signOut(): Promise<void> {
