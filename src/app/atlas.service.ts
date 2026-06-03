@@ -1330,6 +1330,8 @@ export class AtlasService {
       census_state_code: typeof data['census_state_code'] === 'string' ? data['census_state_code'] : null,
       census_place_code: typeof data['census_place_code'] === 'string' ? data['census_place_code'] : null,
       airnow_zip_code: typeof data['airnow_zip_code'] === 'string' ? data['airnow_zip_code'] : null,
+      latitude: typeof data['latitude'] === 'number' && Number.isFinite(data['latitude']) ? data['latitude'] : null,
+      longitude: typeof data['longitude'] === 'number' && Number.isFinite(data['longitude']) ? data['longitude'] : null,
       manual_metrics: Array.isArray(data['manual_metrics'])
         ? data['manual_metrics'].map((metric) => this.hydrateCityPulseMetric(metric)).filter(Boolean) as CityPulseMetric[]
         : null,

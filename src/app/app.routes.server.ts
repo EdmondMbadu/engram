@@ -5,6 +5,9 @@ export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Prerender },
   { path: 'business', renderMode: RenderMode.Prerender },
 
+  // Dymaxion map reads public atlases from Firebase + measures the DOM — client-render
+  { path: 'dymaxion', renderMode: RenderMode.Client },
+
   // Auth pages must be client-rendered (they use browser-only Firebase Auth)
   { path: 'sign-in', renderMode: RenderMode.Client },
   { path: 'create-account', renderMode: RenderMode.Client },

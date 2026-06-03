@@ -72,6 +72,9 @@ export interface CityAtlasConfig {
   census_state_code: string | null;
   census_place_code: string | null;
   airnow_zip_code: string | null;
+  /** Geographic coordinates, used to place the city on the /dymaxion map. */
+  latitude?: number | null;
+  longitude?: number | null;
   manual_metrics?: CityPulseMetric[] | null;
 }
 

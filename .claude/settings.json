@@ -7,7 +7,13 @@
       "Bash(curl -s \"http://localhost:4200/main.js\" -o /tmp/main.js -w \"HTTP %{http_code} | size %{size_download} bytes\\\\n\")",
       "Bash(curl -sI http://localhost:4200/places/philly)",
       "Bash(command -v shot-scraper)",
-      "Bash(curl -s \"http://localhost:4200/business\" -o /tmp/business_out.html -w \"HTTP %{http_code}\\\\n\")"
+      "Bash(curl -s \"http://localhost:4200/business\" -o /tmp/business_out.html -w \"HTTP %{http_code}\\\\n\")",
+      "Bash(ls -la /Users/edmondmbadu/Downloads/ | grep -i dymaxion)",
+      "Read(//Users/edmondmbadu/Downloads/**)",
+      "Bash(awk 'NR>=712 && NR<=716 && length\\($0\\)<2000 {print NR\": \"$0}' /Users/edmondmbadu/Downloads/mylivingwiki_dymaxion_nav.html)",
+      "Bash(awk 'NR>713 {print NR\": \"$0}' /Users/edmondmbadu/Downloads/mylivingwiki_dymaxion_nav.html)",
+      "Bash(awk 'NR==713 {match\\($0, /base64,[A-Za-z0-9+\\\\/=]+/\\); print substr\\($0, RSTART+7\\) }' /Users/edmondmbadu/Downloads/mylivingwiki_dymaxion_nav.html)",
+      "Bash(awk 'NR==713 {match\\($0, /base64,[A-Za-z0-9+\\\\/=]+/\\); print length\\(substr\\($0, RSTART+7\\)\\) }' /Users/edmondmbadu/Downloads/mylivingwiki_dymaxion_nav.html)"
     ]
   }
 }

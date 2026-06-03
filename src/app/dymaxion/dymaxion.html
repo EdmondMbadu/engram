@@ -1,0 +1,128 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
+      <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
+        <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
+          <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
+        </div>
+      </a>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a routerLink="/" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+          Public Wikis
+        </a>
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/create-account" class="primary-btn !px-3 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:!text-sm">
+          Claim
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-6xl px-4 pb-24 pt-6 sm:px-6 lg:px-10">
+    <!-- header -->
+    <header class="flex flex-wrap items-end justify-between gap-5 border-b border-[var(--line)] pb-5">
+      <div>
+        <p class="text-[11px] font-black uppercase tracking-[0.34em] text-[var(--accent)]">
+          Dymaxion Navigation
+        </p>
+        <h1 class="mt-1 text-[2rem] font-black leading-[0.98] tracking-[-0.01em] text-[var(--text)] sm:text-5xl">
+          The world, undistorted.
+        </h1>
+        <p class="mt-2 max-w-[48ch] text-sm leading-6 text-[var(--muted)]">
+          One world, one map, no distortion. Hover the Fuller projection to find a city —
+          click a marker to open its Living Wiki.
+        </p>
+      </div>
+      <div class="flex w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
+        <label class="dym-search">
+          <span class="material-symbols-outlined dym-search__icon">search</span>
+          <input
+            type="text"
+            placeholder="search a city…"
+            autocomplete="off"
+            [ngModel]="searchValue()"
+            (ngModelChange)="onSearch($event)"
+          />
+        </label>
+        <span class="text-[10.5px] font-medium uppercase tracking-[0.12em] text-[var(--muted)]">
+          {{ shownCount() }} / {{ cityCount() }} shown
+        </span>
+      </div>
+    </header>
+
+    <!-- region chips -->
+    <div class="dym-chips">
+      @for (f of foci(); track f.id) {
+        <button
+          type="button"
+          class="dym-chip"
+          [class.active]="activeFocus() === f.id"
+          [class.sub]="!!f.box"
+          (click)="setFocus(f)"
+        >
+          {{ f.label }}
+        </button>
+      }
+    </div>
+
+    <!-- map -->
+    <div class="dym-mapstage">
+      <div class="dym-map-frame" #frame>
+        <span class="dym-tick tl"></span><span class="dym-tick tr"></span>
+        <span class="dym-tick bl"></span><span class="dym-tick br"></span>
+        <button class="dym-zoomout" type="button" #zoomout (click)="resetToWorld()" aria-label="Zoom back out to the whole world">
+          <span class="material-symbols-outlined" style="font-size:15px">public</span>
+          World
+        </button>
+        <div class="dym-map-canvas" #canvas>
+          <img src="/assets/image/dymaxion-map.png" alt="Dymaxion (Fuller) projection world map" draggable="false" />
+          <div #clusterLayer></div>
+          <!-- markers injected here -->
+        </div>
+        @if (isLoading()) {
+          <div class="dym-hint">Loading the world…</div>
+        } @else {
+          <div class="dym-hint" #hint>
+            Hover the world · pick a region to zoom · numbered pips = clusters, click to open
+          </div>
+        }
+      </div>
+      <div class="dym-picker" #picker role="dialog" aria-label="Cities at this location"></div>
+    </div>
+
+    <!-- city panel below the map -->
+    <div id="dymaxion-panel" class="dym-panel" [class.empty]="!selected()">
+      @if (selected(); as c) {
+        <div class="dym-city-hero">
+          <div class="dym-reg">{{ regionLabel(c.region) }}</div>
+          <h2>{{ c.name }}</h2>
+          <div class="dym-country">{{ c.country }}</div>
+        </div>
+        <div class="dym-city-meta">
+          <div class="m"><div class="k">Place</div><div class="v">{{ c.country }}</div></div>
+          <div class="m"><div class="k">Coordinates</div><div class="v">{{ fmtLat(c.lat) }}, {{ fmtLng(c.lng) }}</div></div>
+          <div class="m"><div class="k">Wiki</div><div class="v">/atlas/{{ c.slug }}</div></div>
+        </div>
+        <div class="dym-city-body">
+          <div>
+            <p>
+              Open the <b>{{ c.name }}</b> Living Wiki — practical local knowledge, civic
+              updates, transit, culture, climate, jobs, food, and neighborhoods, kept current.
+            </p>
+          </div>
+          <div class="dym-actions">
+            <a class="primary-btn dym-open" [routerLink]="['/atlas', c.slug]">
+              Open full page →
+            </a>
+            <div class="dym-urlrow">/atlas/{{ c.slug }}</div>
+          </div>
+        </div>
+      } @else {
+        <div class="dym-empty-inner">
+          <div class="big">Choose a city to begin.</div>
+          <div class="sub">— its Living Wiki opens from here —</div>
+        </div>
+      }
+    </div>
+  </main>
+</div>

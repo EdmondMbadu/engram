@@ -1,0 +1,559 @@
+/* ============================================================
+   Dymaxion map chrome — styled with the app theme tokens so it
+   tracks light (white) and dark. Arrangement/interactions mirror
+   the original single-file prototype.
+   ============================================================ */
+
+@property --z {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+/* ---------- search box ---------- */
+.dym-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.dym-search input {
+  font-size: 13px;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 9px 12px 9px 34px;
+  width: 230px;
+  max-width: 100%;
+  outline: none;
+  transition: 0.2s;
+}
+.dym-search input::placeholder {
+  color: var(--muted);
+}
+.dym-search input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.dym-search__icon {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--muted);
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  .dym-search input {
+    width: 100%;
+  }
+}
+
+/* ---------- region chips ---------- */
+.dym-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0 6px;
+}
+.dym-chip {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  padding: 6px 13px;
+  transition: 0.18s;
+}
+.dym-chip:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.dym-chip.active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-color: var(--accent);
+}
+.dym-chip.sub {
+  border-style: dashed;
+  color: color-mix(in srgb, var(--accent) 80%, var(--text));
+}
+.dym-chip.sub:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.dym-chip.sub.active {
+  background: color-mix(in srgb, var(--accent) 88%, var(--text));
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* ---------- map stage ---------- */
+.dym-mapstage {
+  position: relative;
+  margin: 14px 0 6px;
+}
+.dym-map-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1000 / 475;
+  overflow: hidden;
+  line-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%),
+    var(--soft-fill);
+  box-shadow: var(--shadow-floating);
+}
+.dym-map-canvas {
+  position: absolute;
+  inset: 0;
+  --z: 1;
+  transform-origin: 0 0;
+  transform: translate(0, 0) scale(1);
+  transition:
+    transform 0.72s cubic-bezier(0.45, 0.05, 0.2, 1),
+    --z 0.72s cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+.dym-map-canvas img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* reset-to-world button */
+.dym-zoomout {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 8;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--text) 86%, transparent);
+  color: var(--bg);
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: 0.25s;
+  backdrop-filter: blur(3px);
+}
+.dym-zoomout.show {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.dym-zoomout:hover {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* corner ticks — cartographic instrument feel */
+.dym-tick {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: var(--line-strong);
+  opacity: 0.85;
+  z-index: 3;
+}
+.dym-tick.tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
+.dym-tick.tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; }
+.dym-tick.bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; }
+.dym-tick.br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* ---------- markers ----------
+   These elements are created imperatively (document.createElement) so the
+   component runs with ViewEncapsulation.None; every selector below is scoped
+   under .dym-map-frame to avoid leaking the generic class names globally. */
+.dym-map-frame .marker {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(calc(1 / var(--z, 1)));
+  z-index: 4;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  opacity: 0;
+  animation: dym-pop 0.5s ease forwards;
+}
+@keyframes dym-pop {
+  to { opacity: 1; }
+}
+.dym-map-frame .marker .dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 1px 4px rgba(0, 0, 0, 0.4);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.dym-map-frame .marker .ring {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+  transform: scale(1);
+}
+.dym-map-frame .marker:hover { z-index: 6; }
+.dym-map-frame .marker:hover .dot,
+.dym-map-frame .marker:focus-visible .dot {
+  transform: scale(1.5);
+  background: color-mix(in srgb, var(--accent) 80%, white);
+}
+.dym-map-frame .marker:focus-visible { outline: none; }
+.dym-map-frame .marker:focus-visible .dot {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+}
+.dym-map-frame .marker.dim {
+  opacity: 0.16;
+  filter: grayscale(0.6);
+}
+.dym-map-frame .marker.sel .dot {
+  background: var(--accent-contrast);
+  transform: scale(1.4);
+  box-shadow:
+    0 0 0 3px var(--accent),
+    0 1px 6px rgba(0, 0, 0, 0.5);
+}
+.dym-map-frame .marker.sel .ring,
+.dym-map-frame .marker.hl .ring {
+  opacity: 1;
+  animation: dym-ping 1.6s ease-out infinite;
+}
+@keyframes dym-ping {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(3.4); opacity: 0; }
+}
+.dym-map-frame .marker.clustered { display: none; }
+
+/* ---------- cluster pip ---------- */
+.dym-map-frame .cluster {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(calc(1 / var(--z, 1)));
+  z-index: 5;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 85%, var(--text));
+  color: var(--accent-contrast);
+  box-shadow:
+    0 0 0 3px var(--bg),
+    0 2px 7px rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.18s ease, box-shadow 0.18s ease;
+  animation: dym-pop 0.4s ease forwards;
+  opacity: 0;
+}
+.dym-map-frame .cluster::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  opacity: 0.35;
+}
+.dym-map-frame .cluster:hover,
+.dym-map-frame .cluster:focus-visible,
+.dym-map-frame .cluster.hl {
+  background: var(--accent);
+  outline: none;
+}
+.dym-map-frame .cluster:focus-visible {
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--accent);
+}
+.dym-map-frame .cluster .cnum {
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ---------- label / tooltip ---------- */
+.dym-map-frame .label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% + 13px);
+  transform: translateX(-50%) translateY(4px);
+  background: var(--text);
+  color: var(--bg);
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.16s;
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+  z-index: 7;
+  line-height: 1.25;
+}
+.dym-map-frame .label b { font-weight: 600; }
+.dym-map-frame .label .lc {
+  display: block;
+  font-size: 10px;
+  color: color-mix(in srgb, var(--accent) 70%, var(--bg));
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+.dym-map-frame .label::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--text);
+}
+.dym-map-frame .marker:hover .label,
+.dym-map-frame .marker:focus-visible .label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- hint chip ---------- */
+.dym-hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid var(--line-strong);
+  padding: 7px 14px;
+  border-radius: 100px;
+  z-index: 5;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.4s;
+  pointer-events: none;
+  text-align: center;
+}
+
+/* ---------- name-picker popover ---------- */
+.dym-picker {
+  position: absolute;
+  z-index: 20;
+  width: 230px;
+  max-height: 300px;
+  overflow: auto;
+  background: var(--surface-strong);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  box-shadow: var(--shadow-elevated);
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(0.96);
+  transform-origin: top center;
+  transition: 0.18s;
+  pointer-events: none;
+}
+.dym-picker.show {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  pointer-events: auto;
+}
+.dym-picker .phead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.dym-picker .pclose {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+}
+.dym-picker .pitem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+  transition: 0.12s;
+}
+.dym-picker .pitem:last-child { border-bottom: 0; }
+.dym-picker .pitem:hover {
+  background: var(--soft-fill);
+  padding-left: 16px;
+}
+.dym-picker .pitem .pc {
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-left: 6px;
+}
+
+/* ---------- city panel below the map ---------- */
+.dym-panel {
+  margin-top: 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: var(--shadow-floating);
+  min-height: 200px;
+}
+.dym-panel.empty {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 54px 20px;
+  background: var(--soft-fill);
+}
+.dym-empty-inner .big {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+}
+.dym-empty-inner .sub {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.dym-city-hero {
+  position: relative;
+  padding: 26px 28px;
+  color: var(--accent-contrast);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 78%, black), var(--accent));
+  overflow: hidden;
+}
+.dym-city-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1.4px);
+  background-size: 18px 18px;
+}
+.dym-city-hero .dym-reg {
+  position: relative;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent-contrast) 82%, transparent);
+}
+.dym-city-hero h2 {
+  position: relative;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 900;
+  margin: 4px 0 2px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.dym-city-hero .dym-country {
+  position: relative;
+  font-size: 15px;
+  opacity: 0.94;
+}
+
+.dym-city-meta {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+}
+.dym-city-meta .m {
+  flex: 1 1 150px;
+  padding: 13px 18px;
+  border-right: 1px solid var(--line);
+}
+.dym-city-meta .m:last-child { border-right: 0; }
+.dym-city-meta .k {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.dym-city-meta .v {
+  font-size: 14px;
+  margin-top: 3px;
+  color: var(--text);
+}
+
+.dym-city-body {
+  padding: 22px 28px 26px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+.dym-city-body p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+.dym-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 210px;
+}
+.dym-open {
+  text-align: center;
+  text-decoration: none;
+}
+.dym-urlrow {
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+  border-top: 1px dashed var(--line-strong);
+  padding-top: 9px;
+}
+@media (max-width: 640px) {
+  .dym-city-body { grid-template-columns: 1fr; }
+  .dym-actions { min-width: 0; }
+}

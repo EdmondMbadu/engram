@@ -32,6 +32,12 @@ export const routes: Routes = [
   { path: 'landing', component: MarketingComponent, title: 'My living wiki' },
   { path: 'marketing', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'business', component: BusinessComponent, title: 'For Business | My living wiki' },
+  {
+    // Lazy-loaded so the d3 projection libraries stay out of the initial bundle.
+    path: 'dymaxion',
+    loadComponent: () => import('./dymaxion/dymaxion').then((m) => m.DymaxionComponent),
+    title: 'Dymaxion Map | My living wiki',
+  },
   { path: 'home', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | My living wiki' },
