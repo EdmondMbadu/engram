@@ -91,6 +91,7 @@ type ElevenLabsVoiceSessionResponse = {
   userId: string;
   dynamicVariables: Record<string, string | number | boolean>;
   voiceOverrideEnabled?: boolean | null;
+  firstMessageOverrideEnabled?: boolean | null;
   voiceId?: string | null;
   voiceName?: string | null;
   voiceAccent?: string | null;

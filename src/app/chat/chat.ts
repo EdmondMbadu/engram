@@ -1334,11 +1334,23 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
                 voice_accent_instruction: accentProfile.instruction,
               },
               ...(session.voiceOverrideEnabled && session.voiceId
+                || session.firstMessageOverrideEnabled
                 ? {
                     overrides: {
-                      tts: {
-                        voiceId: session.voiceId,
-                      },
+                      ...(session.firstMessageOverrideEnabled
+                        ? {
+                            agent: {
+                              firstMessage: language.greeting,
+                            },
+                          }
+                        : {}),
+                      ...(session.voiceOverrideEnabled && session.voiceId
+                        ? {
+                            tts: {
+                              voiceId: session.voiceId,
+                            },
+                          }
+                        : {}),
                     },
                   }
                 : {}),
@@ -1378,7 +1390,13 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
       this.realtimeVoiceConversation = conversation;
       if (language && accentProfile) {
-        this.sendVoiceLanguageWelcomePrompt(conversation, language, accentProfile, session.voiceName ?? null);
+        this.sendVoiceLanguageWelcomePrompt(
+          conversation,
+          language,
+          accentProfile,
+          session.voiceName ?? null,
+          Boolean(session.firstMessageOverrideEnabled),
+        );
       }
     } catch (error) {
       this.realtimeVoiceConversation = null;
@@ -1501,6 +1519,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     language: VoiceLanguageOption,
     accentProfile: VoiceAccentProfile,
     voiceName: string | null,
+    firstMessageOverrideEnabled: boolean,
   ): void {
     const prompt = [
       `Please greet me now in ${language.language} for ${language.country}.`,
@@ -1526,7 +1545,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           'Avoid an English accent unless the selected country/language is English.',
           'If the agent has configured language-specific or multi-voice voices, use the closest matching native voice for this language and country.',
         ].join(' '), { contextId: `voice-accent-${language.country.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` });
-        conversation.sendUserMessage(prompt);
+        if (!firstMessageOverrideEnabled) {
+          conversation.sendUserMessage(prompt);
+        }
       } catch (error) {
         console.warn('[Voice mode] Could not send language greeting prompt', error);
         this.pendingVoiceLanguagePrompt = null;

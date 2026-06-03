@@ -51,6 +51,9 @@ const elevenLabsAgentId = defineString('ELEVENLABS_AGENT_ID');
 const elevenLabsTtsVoiceOverridesEnabled = defineString('ELEVENLABS_TTS_VOICE_OVERRIDES_ENABLED', {
   default: 'false',
 });
+const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_MESSAGE_OVERRIDES_ENABLED', {
+  default: 'false',
+});
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://mylivingwiki.com';
@@ -3137,6 +3140,7 @@ export const createElevenLabsVoiceSession = onCall(
 
     const voicePreference = normalizeElevenLabsVoicePreference(request.data);
     const voiceOverrideEnabled = isTruthyParam(elevenLabsTtsVoiceOverridesEnabled.value());
+    const firstMessageOverrideEnabled = isTruthyParam(elevenLabsFirstMessageOverridesEnabled.value());
     const selectedVoice = voiceOverrideEnabled
       ? await resolveElevenLabsVoiceForPreference(apiKey, voicePreference)
       : null;
@@ -3186,6 +3190,7 @@ export const createElevenLabsVoiceSession = onCall(
       agentId,
       userId: visitorId,
       voiceOverrideEnabled,
+      firstMessageOverrideEnabled,
       voiceId: selectedVoice?.voiceId ?? null,
       voiceName: selectedVoice?.name ?? null,
       voiceAccent: selectedVoice?.accent ?? voicePreference.accent,
