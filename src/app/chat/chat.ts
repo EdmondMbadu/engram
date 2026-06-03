@@ -104,11 +104,12 @@ interface VoiceAccentProfile {
   instruction: string;
 }
 
-// World Cup 2026 nations (plus the explicitly requested China, Russia and Japan),
+// Legacy broader language list kept as a fallback reference while the carousel
+// uses the curated 2026 World Cup list below.
 // each paired with the language the voice guide should speak and a native welcome
 // message so the conversation feels seamless from the very first second.
 // De-duplicated by country; languages reuse codes where countries share one.
-const VOICE_LANGUAGES: VoiceLanguageOption[] = [
+const LEGACY_VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m your living wiki voice guide. Ask me anything and I’ll answer out loud.' },
   { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m your living wiki voice guide. What would you like to know?' },
   { country: 'Mexico', flag: '🇲🇽', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras y te respondo en voz alta.' },
@@ -169,6 +170,60 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Vietnam', flag: '🇻🇳', language: 'Tiếng Việt', code: 'vi', greeting: 'Xin chào! Tôi là hướng dẫn viên bằng giọng nói của bạn. Hãy hỏi tôi bất cứ điều gì.' },
   { country: 'Thailand', flag: '🇹🇭', language: 'ภาษาไทย', code: 'th', greeting: 'สวัสดี! ฉันเป็นไกด์เสียงของคุณ ถามอะไรก็ได้เลย' },
   { country: 'Philippines', flag: '🇵🇭', language: 'Filipino', code: 'tl', greeting: 'Kumusta! Ako ang iyong voice guide. Magtanong ka lang ng kahit ano.' },
+  { country: 'India', flag: '🇮🇳', language: 'हिन्दी', code: 'hi', greeting: 'नमस्ते! मैं आपका वॉइस गाइड हूँ। मुझसे कुछ भी पूछिए।' },
+];
+
+const VOICE_LANGUAGES: VoiceLanguageOption[] = [
+  { country: 'Argentina', flag: '🇦🇷', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿En qué puedo ayudarte hoy?' },
+  { country: 'Algeria', flag: '🇩🇿', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
+  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Austria', flag: '🇦🇹', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir gerne eine Frage.' },
+  { country: 'Belgium', flag: '🇧🇪', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Que souhaitez-vous savoir ?' },
+  { country: 'Bosnia & Herzegovina', flag: '🇧🇦', language: 'Bosanski', code: 'hr', greeting: 'Zdravo! Ja sam vaš glasovni vodič. Pitajte me bilo šta.' },
+  { country: 'Brazil', flag: '🇧🇷', language: 'Português', code: 'pt-br', greeting: 'Olá! Eu sou o seu guia de voz. Pergunte o que quiser e eu respondo em voz alta.' },
+  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m your living wiki voice guide. What would you like to know?' },
+  { country: 'Cape Verde', flag: '🇨🇻', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
+  { country: 'Colombia', flag: '🇨🇴', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
+  { country: 'Croatia', flag: '🇭🇷', language: 'Hrvatski', code: 'hr', greeting: 'Bok! Ja sam tvoj glasovni vodič. Pitaj me bilo što i odgovorit ću naglas.' },
+  { country: 'Curaçao', flag: '🇨🇼', language: 'Nederlands', code: 'nl', greeting: 'Hallo! Ik ben je spraakgids. Stel me een vraag en ik antwoord hardop.' },
+  { country: 'Czechia', flag: '🇨🇿', language: 'Čeština', code: 'cs', greeting: 'Ahoj! Jsem tvůj hlasový průvodce. Zeptej se mě na cokoliv.' },
+  { country: 'DR Congo', flag: '🇨🇩', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
+  { country: 'Ecuador', flag: '🇪🇨', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Cómo puedo ayudarte?' },
+  { country: 'Egypt', flag: '🇪🇬', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
+  { country: 'England', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'France', flag: '🇫🇷', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi vos questions, j’y réponds à voix haute.' },
+  { country: 'Germany', flag: '🇩🇪', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir eine Frage und ich antworte dir laut.' },
+  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. How can I help you today?' },
+  { country: 'Haiti', flag: '🇭🇹', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Comment puis-je vous aider ?' },
+  { country: 'Iran', flag: '🇮🇷', language: 'فارسی', code: 'fa', greeting: 'سلام! من راهنمای صوتی شما هستم. هر چه می‌خواهید بپرسید.' },
+  { country: 'Iraq', flag: '🇮🇶', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. كيف يمكنني مساعدتك؟' },
+  { country: 'Ivory Coast', flag: '🇨🇮', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Comment puis-je vous aider ?' },
+  { country: 'Japan', flag: '🇯🇵', language: '日本語', code: 'ja', greeting: 'こんにちは！私はあなたの音声ガイドです。何でも聞いてください。' },
+  { country: 'Jordan', flag: '🇯🇴', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
+  { country: 'Mexico', flag: '🇲🇽', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras y te respondo en voz alta.' },
+  { country: 'Morocco', flag: '🇲🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. كيف يمكنني مساعدتك؟' },
+  { country: 'Netherlands', flag: '🇳🇱', language: 'Nederlands', code: 'nl', greeting: 'Hallo! Ik ben je spraakgids. Stel me een vraag en ik antwoord hardop.' },
+  { country: 'New Zealand', flag: '🇳🇿', language: 'English', code: 'en', greeting: 'Kia ora! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Norway', flag: '🇳🇴', language: 'Norsk', code: 'no', greeting: 'Hei! Jeg er din stemmeguide. Spør meg om hva som helst.' },
+  { country: 'Panama', flag: '🇵🇦', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
+  { country: 'Paraguay', flag: '🇵🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Estoy aquí para responder tus preguntas.' },
+  { country: 'Portugal', flag: '🇵🇹', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
+  { country: 'Qatar', flag: '🇶🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
+  { country: 'Saudi Arabia', flag: '🇸🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
+  { country: 'Scotland', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Senegal', flag: '🇸🇳', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
+  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'South Korea', flag: '🇰🇷', language: '한국어', code: 'ko', greeting: '안녕하세요! 저는 음성 가이드입니다. 무엇이든 물어보세요.' },
+  { country: 'Spain', flag: '🇪🇸', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
+  { country: 'Sweden', flag: '🇸🇪', language: 'Svenska', code: 'sv', greeting: 'Hej! Jag är din röstguide. Fråga mig vad du vill.' },
+  { country: 'Switzerland', flag: '🇨🇭', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Wie kann ich dir helfen?' },
+  { country: 'Tunisia', flag: '🇹🇳', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. تفضّل بالسؤال.' },
+  { country: 'Türkiye', flag: '🇹🇷', language: 'Türkçe', code: 'tr', greeting: 'Merhaba! Ben senin sesli rehberinim. Bana istediğini sorabilirsin.' },
+  { country: 'Uruguay', flag: '🇺🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Qué te gustaría saber?' },
+  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m your living wiki voice guide. Ask me anything and I’ll answer out loud.' },
+  { country: 'Uzbekistan', flag: '🇺🇿', language: 'Русский', code: 'ru', greeting: 'Здравствуйте! Я ваш голосовой гид. Спрашивайте меня о чём угодно.' },
+  { country: 'China', flag: '🇨🇳', language: '中文（普通话）', code: 'zh', greeting: '你好！我是你的语音向导。有什么问题都可以问我。' },
+  { country: 'Russia', flag: '🇷🇺', language: 'Русский', code: 'ru', greeting: 'Здравствуйте! Я ваш голосовой гид. Спрашивайте меня о чём угодно.' },
   { country: 'India', flag: '🇮🇳', language: 'हिन्दी', code: 'hi', greeting: 'नमस्ते! मैं आपका वॉइस गाइड हूँ। मुझसे कुछ भी पूछिए।' },
 ];
 

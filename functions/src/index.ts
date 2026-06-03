@@ -3459,22 +3459,32 @@ function elevenLabsCountryCode(country: string | null): string | null {
   if (!country) {
     return null;
   }
-  const normalized = country.toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+  const normalized = country
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z]+/g, ' ')
+    .trim();
   const codes: Record<string, string> = {
     algeria: 'dz',
     argentina: 'ar',
     australia: 'au',
     austria: 'at',
     belgium: 'be',
+    'bosnia herzegovina': 'ba',
+    'bosnia and herzegovina': 'ba',
     brazil: 'br',
     bulgaria: 'bg',
     cameroon: 'cm',
     canada: 'ca',
+    'cape verde': 'cv',
     china: 'cn',
     colombia: 'co',
     croatia: 'hr',
+    curacao: 'cw',
     czechia: 'cz',
     denmark: 'dk',
+    'dr congo': 'cd',
     ecuador: 'ec',
     egypt: 'eg',
     england: 'gb',
@@ -3483,21 +3493,26 @@ function elevenLabsCountryCode(country: string | null): string | null {
     germany: 'de',
     ghana: 'gh',
     greece: 'gr',
+    haiti: 'ht',
     hungary: 'hu',
     india: 'in',
     indonesia: 'id',
     iran: 'ir',
+    iraq: 'iq',
     italy: 'it',
     'ivory coast': 'ci',
     japan: 'jp',
     'japan j league': 'jp',
+    jordan: 'jo',
     kenya: 'ke',
     malaysia: 'my',
     mexico: 'mx',
     morocco: 'ma',
     netherlands: 'nl',
+    'new zealand': 'nz',
     nigeria: 'ng',
     norway: 'no',
+    panama: 'pa',
     paraguay: 'py',
     philippines: 'ph',
     poland: 'pl',
@@ -3506,6 +3521,7 @@ function elevenLabsCountryCode(country: string | null): string | null {
     romania: 'ro',
     russia: 'ru',
     'saudi arabia': 'sa',
+    scotland: 'gb',
     senegal: 'sn',
     serbia: 'rs',
     slovakia: 'sk',
@@ -3521,7 +3537,9 @@ function elevenLabsCountryCode(country: string | null): string | null {
     türkiye: 'tr',
     ukraine: 'ua',
     'united states': 'us',
+    usa: 'us',
     uruguay: 'uy',
+    uzbekistan: 'uz',
     vietnam: 'vn',
     wales: 'gb',
   };
