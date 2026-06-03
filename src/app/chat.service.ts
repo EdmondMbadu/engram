@@ -90,6 +90,9 @@ type ElevenLabsVoiceSessionResponse = {
   agentId: string;
   userId: string;
   dynamicVariables: Record<string, string | number | boolean>;
+  voiceId?: string | null;
+  voiceName?: string | null;
+  voiceAccent?: string | null;
 };
 
 type StreamingAnswerCallbacks = {
@@ -563,6 +566,10 @@ export class ChatService {
     atlasName?: string | null;
     anonymousVisitorId?: string | null;
     participantName?: string | null;
+    voiceLanguageCode?: string | null;
+    voiceLanguage?: string | null;
+    voiceCountry?: string | null;
+    voiceAccent?: string | null;
   }): Promise<ElevenLabsVoiceSessionResponse | null> {
     if (!this.functions) {
       return null;
@@ -574,6 +581,10 @@ export class ChatService {
         atlasName?: string | null;
         anonymousVisitorId?: string | null;
         participantName?: string | null;
+        voiceLanguageCode?: string | null;
+        voiceLanguage?: string | null;
+        voiceCountry?: string | null;
+        voiceAccent?: string | null;
       },
       ElevenLabsVoiceSessionResponse
     >(this.functions, 'createElevenLabsVoiceSession');
@@ -583,6 +594,10 @@ export class ChatService {
       atlasName: options.atlasName ?? null,
       anonymousVisitorId: options.anonymousVisitorId ?? null,
       participantName: options.participantName ?? null,
+      voiceLanguageCode: options.voiceLanguageCode ?? null,
+      voiceLanguage: options.voiceLanguage ?? null,
+      voiceCountry: options.voiceCountry ?? null,
+      voiceAccent: options.voiceAccent ?? null,
     });
     return data;
   }

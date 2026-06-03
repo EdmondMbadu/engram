@@ -1309,6 +1309,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         atlasName: this.currentWikiName(),
         anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
         participantName: this.currentUserName() || this.currentUserEmail() || 'My living wiki visitor',
+        voiceLanguageCode: language?.code ?? null,
+        voiceLanguage: language?.language ?? null,
+        voiceCountry: language?.country ?? null,
+        voiceAccent: accentProfile?.label ?? null,
       });
       if (!session) {
         throw new Error('Voice service is unavailable.');
@@ -1316,20 +1320,34 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
       const { Conversation } = await import('@elevenlabs/client');
       const conversation = await Conversation.startSession({
-        agentId: session.agentId,
+        conversationToken: session.conversationToken,
         connectionType: 'webrtc',
         userId: session.userId,
         ...(language && accentProfile
           ? {
               dynamicVariables: {
+                ...(session.dynamicVariables ?? {}),
                 preferred_language: language.language,
                 preferred_country: language.country,
                 preferred_accent: accentProfile.label,
                 preferred_voice_locale: `${language.language} (${language.country})`,
                 voice_accent_instruction: accentProfile.instruction,
               },
+              ...(session.voiceId
+                ? {
+                    overrides: {
+                      tts: {
+                        voiceId: session.voiceId,
+                        stability: 0.55,
+                        similarityBoost: 0.9,
+                      },
+                    },
+                  }
+                : {}),
             }
-          : {}),
+          : session.dynamicVariables
+            ? { dynamicVariables: session.dynamicVariables }
+            : {}),
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
@@ -1362,7 +1380,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
       this.realtimeVoiceConversation = conversation;
       if (language && accentProfile) {
-        this.sendVoiceLanguageWelcomePrompt(conversation, language, accentProfile);
+        this.sendVoiceLanguageWelcomePrompt(conversation, language, accentProfile, session.voiceName ?? null);
       }
     } catch (error) {
       this.realtimeVoiceConversation = null;
@@ -1484,6 +1502,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     conversation: ElevenLabsConversation,
     language: VoiceLanguageOption,
     accentProfile: VoiceAccentProfile,
+    voiceName: string | null,
   ): void {
     const prompt = [
       `Please greet me now in ${language.language} for ${language.country}.`,
@@ -1504,6 +1523,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         conversation.sendContextualUpdate([
           `The visitor selected ${language.country} / ${language.language}.`,
           `Voice and accent target: ${accentProfile.label}.`,
+          voiceName ? `Selected ElevenLabs voice: ${voiceName}.` : 'No dedicated ElevenLabs native voice was selected; use the closest available native accent.',
           accentProfile.instruction,
           'Avoid an English accent unless the selected country/language is English.',
           'If the agent has configured language-specific or multi-voice voices, use the closest matching native voice for this language and country.',

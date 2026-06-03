@@ -161,6 +161,35 @@ type AtlasVoiceAgentConfig = {
   updated_at?: unknown;
 };
 
+type ElevenLabsVoicePreference = {
+  languageCode: string | null;
+  language: string | null;
+  country: string | null;
+  accent: string | null;
+};
+
+type ElevenLabsResolvedVoice = {
+  voiceId: string;
+  name: string;
+  accent: string | null;
+  score: number;
+};
+
+type ElevenLabsVoiceRecord = {
+  voice_id?: unknown;
+  name?: unknown;
+  category?: unknown;
+  description?: unknown;
+  labels?: unknown;
+  verified_languages?: unknown;
+};
+
+type ElevenLabsVerifiedLanguage = {
+  language?: unknown;
+  accent?: unknown;
+  locale?: unknown;
+};
+
 type VapiToolCall = {
   id: string;
   name: string;
@@ -3103,6 +3132,8 @@ export const createElevenLabsVoiceSession = onCall(
       );
     }
 
+    const voicePreference = normalizeElevenLabsVoicePreference(request.data);
+    const selectedVoice = await resolveElevenLabsVoiceForPreference(apiKey, voicePreference);
     const visitorId = uid ?? anonymousVisitorId ?? `visitor_${randomUUID()}`;
     const params = new URLSearchParams({
       agent_id: agentId,
@@ -3142,15 +3173,338 @@ export const createElevenLabsVoiceSession = onCall(
       conversationToken,
       agentId,
       userId: visitorId,
+      voiceId: selectedVoice?.voiceId ?? null,
+      voiceName: selectedVoice?.name ?? null,
+      voiceAccent: selectedVoice?.accent ?? voicePreference.accent,
       dynamicVariables: {
         atlas_id: atlasId ?? '',
         atlas_name: atlasName ?? '',
         answer_mode: 'internet',
         visitor_id: visitorId,
+        preferred_language_code: voicePreference.languageCode ?? '',
+        preferred_language: voicePreference.language ?? '',
+        preferred_country: voicePreference.country ?? '',
+        preferred_accent: selectedVoice?.accent ?? voicePreference.accent ?? '',
+        selected_voice_id: selectedVoice?.voiceId ?? '',
+        selected_voice_name: selectedVoice?.name ?? '',
       },
     };
   },
 );
+
+function normalizeElevenLabsVoicePreference(data: unknown): ElevenLabsVoicePreference {
+  const record = data && typeof data === 'object' ? data as Record<string, unknown> : {};
+  return {
+    languageCode: textValue(record['voiceLanguageCode'], 24)?.toLowerCase() ?? null,
+    language: textValue(record['voiceLanguage'], 80),
+    country: textValue(record['voiceCountry'], 80),
+    accent: textValue(record['voiceAccent'], 120),
+  };
+}
+
+async function resolveElevenLabsVoiceForPreference(
+  apiKey: string,
+  preference: ElevenLabsVoicePreference,
+): Promise<ElevenLabsResolvedVoice | null> {
+  if (!preference.languageCode && !preference.language && !preference.country) {
+    return null;
+  }
+
+  const searchTerms = buildElevenLabsVoiceSearchTerms(preference);
+  const candidates = new Map<string, ElevenLabsVoiceRecord>();
+
+  for (const term of searchTerms) {
+    const voices = await fetchElevenLabsVoices(apiKey, term);
+    for (const voice of voices) {
+      const voiceId = textValue(voice.voice_id, 120);
+      if (voiceId && !candidates.has(voiceId)) {
+        candidates.set(voiceId, voice);
+      }
+    }
+    if (candidates.size >= 40) {
+      break;
+    }
+  }
+
+  let best: ElevenLabsResolvedVoice | null = null;
+  for (const voice of candidates.values()) {
+    const scored = scoreElevenLabsVoice(voice, preference);
+    if (!scored) {
+      continue;
+    }
+    if (!best || scored.score > best.score) {
+      best = scored;
+    }
+  }
+
+  if (!best || best.score < 45) {
+    logger.warn('No strong ElevenLabs native voice match found; falling back to agent default voice.', {
+      preference,
+      best,
+    });
+    return null;
+  }
+
+  logger.info('Selected ElevenLabs native voice for realtime accent.', {
+    preference,
+    voiceId: best.voiceId,
+    name: best.name,
+    accent: best.accent,
+    score: best.score,
+  });
+  return best;
+}
+
+function buildElevenLabsVoiceSearchTerms(preference: ElevenLabsVoicePreference): string[] {
+  const languageName = elevenLabsLanguageSearchName(preference.languageCode, preference.language);
+  const country = preference.country ?? '';
+  const countryCode = elevenLabsCountryCode(preference.country);
+  const accent = preference.accent ?? '';
+  return Array.from(new Set([
+    [country, languageName, 'native'].filter(Boolean).join(' '),
+    [languageName, countryCode ? `${preference.languageCode}-${countryCode}` : ''].filter(Boolean).join(' '),
+    [languageName, country].filter(Boolean).join(' '),
+    countryCode ? `${preference.languageCode}-${countryCode}` : '',
+    accent,
+    languageName,
+    country,
+    preference.languageCode ?? '',
+  ].map((term) => term.replace(/\s+/g, ' ').trim()).filter(Boolean)));
+}
+
+async function fetchElevenLabsVoices(apiKey: string, search: string): Promise<ElevenLabsVoiceRecord[]> {
+  const params = new URLSearchParams({ page_size: '100', search });
+  const response = await fetch(`https://api.elevenlabs.io/v2/voices?${params.toString()}`, {
+    method: 'GET',
+    headers: { 'xi-api-key': apiKey },
+  });
+
+  if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    logger.warn('ElevenLabs voice search failed.', {
+      search,
+      status: response.status,
+      body: body.slice(0, 300),
+    });
+    return [];
+  }
+
+  const data = await response.json().catch(() => null) as { voices?: unknown } | null;
+  return Array.isArray(data?.voices) ? data.voices as ElevenLabsVoiceRecord[] : [];
+}
+
+function scoreElevenLabsVoice(
+  voice: ElevenLabsVoiceRecord,
+  preference: ElevenLabsVoicePreference,
+): ElevenLabsResolvedVoice | null {
+  const voiceId = textValue(voice.voice_id, 120);
+  const name = textValue(voice.name, 120) ?? 'ElevenLabs voice';
+  if (!voiceId) {
+    return null;
+  }
+
+  const languageCode = preference.languageCode ?? '';
+  const country = (preference.country ?? '').toLowerCase();
+  const countryCode = elevenLabsCountryCode(preference.country);
+  const languageName = elevenLabsLanguageSearchName(preference.languageCode, preference.language).toLowerCase();
+  const preferredAccent = (preference.accent ?? '').toLowerCase();
+  const labels = objectToSearchText(voice.labels);
+  const verifiedLanguages = Array.isArray(voice.verified_languages)
+    ? voice.verified_languages as ElevenLabsVerifiedLanguage[]
+    : [];
+  const searchable = [
+    name,
+    textValue(voice.category, 80) ?? '',
+    textValue(voice.description, 500) ?? '',
+    labels,
+    ...verifiedLanguages.flatMap((entry) => [
+      textValue(entry.language, 80) ?? '',
+      textValue(entry.accent, 120) ?? '',
+      textValue(entry.locale, 40) ?? '',
+    ]),
+  ].join(' ').toLowerCase();
+
+  let score = 0;
+  let matchedAccent: string | null = null;
+
+  for (const entry of verifiedLanguages) {
+    const verifiedLanguage = (textValue(entry.language, 80) ?? '').toLowerCase();
+    const verifiedLocale = (textValue(entry.locale, 40) ?? '').toLowerCase();
+    const verifiedAccent = (textValue(entry.accent, 120) ?? '').toLowerCase();
+
+    if (languageCode && (verifiedLanguage === languageCode || verifiedLocale.startsWith(`${languageCode}-`))) {
+      score += 90;
+    }
+    if (languageName && verifiedLanguage.includes(languageName)) {
+      score += 40;
+    }
+    if (country && verifiedAccent.includes(country)) {
+      score += 70;
+      matchedAccent = textValue(entry.accent, 120);
+    }
+    if (countryCode && verifiedLocale === `${languageCode}-${countryCode}`) {
+      score += 110;
+      matchedAccent = textValue(entry.accent, 120);
+    } else if (countryCode && verifiedLocale.endsWith(`-${countryCode}`)) {
+      score += 60;
+      matchedAccent = textValue(entry.accent, 120);
+    }
+    if (preferredAccent && verifiedAccent && preferredAccent.includes(verifiedAccent)) {
+      score += 50;
+      matchedAccent = textValue(entry.accent, 120);
+    }
+  }
+
+  if (languageName && searchable.includes(languageName)) {
+    score += 28;
+  }
+  if (country && searchable.includes(country)) {
+    score += 36;
+  }
+  if (countryCode && searchable.includes(`-${countryCode}`)) {
+    score += 35;
+  }
+  if (preferredAccent) {
+    for (const token of preferredAccent.split(/\s+/).filter((part) => part.length > 4)) {
+      if (searchable.includes(token)) {
+        score += 8;
+      }
+    }
+  }
+  if (searchable.includes('native')) {
+    score += 8;
+  }
+  if (searchable.includes('professional')) {
+    score += 4;
+  }
+
+  return { voiceId, name, accent: matchedAccent ?? preference.accent, score };
+}
+
+function objectToSearchText(value: unknown): string {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return '';
+  }
+  return Object.entries(value as Record<string, unknown>)
+    .flatMap(([key, entry]) => [key, typeof entry === 'string' ? entry : ''])
+    .join(' ');
+}
+
+function elevenLabsLanguageSearchName(code: string | null, fallback: string | null): string {
+  const names: Record<string, string> = {
+    ar: 'Arabic',
+    bg: 'Bulgarian',
+    cs: 'Czech',
+    cy: 'Welsh',
+    da: 'Danish',
+    de: 'German',
+    el: 'Greek',
+    en: 'English',
+    es: 'Spanish',
+    fa: 'Persian',
+    fi: 'Finnish',
+    fr: 'French',
+    hi: 'Hindi',
+    hr: 'Croatian',
+    hu: 'Hungarian',
+    id: 'Indonesian',
+    it: 'Italian',
+    ja: 'Japanese',
+    ko: 'Korean',
+    ms: 'Malay',
+    nl: 'Dutch',
+    no: 'Norwegian',
+    pl: 'Polish',
+    pt: 'Portuguese',
+    'pt-br': 'Portuguese',
+    ro: 'Romanian',
+    ru: 'Russian',
+    sk: 'Slovak',
+    sr: 'Serbian',
+    sv: 'Swedish',
+    sw: 'Swahili',
+    th: 'Thai',
+    tl: 'Filipino',
+    tr: 'Turkish',
+    uk: 'Ukrainian',
+    vi: 'Vietnamese',
+    zh: 'Chinese',
+  };
+  return (code ? names[code] : null) ?? fallback ?? '';
+}
+
+function elevenLabsCountryCode(country: string | null): string | null {
+  if (!country) {
+    return null;
+  }
+  const normalized = country.toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+  const codes: Record<string, string> = {
+    algeria: 'dz',
+    argentina: 'ar',
+    australia: 'au',
+    austria: 'at',
+    belgium: 'be',
+    brazil: 'br',
+    bulgaria: 'bg',
+    cameroon: 'cm',
+    canada: 'ca',
+    china: 'cn',
+    colombia: 'co',
+    croatia: 'hr',
+    czechia: 'cz',
+    denmark: 'dk',
+    ecuador: 'ec',
+    egypt: 'eg',
+    england: 'gb',
+    finland: 'fi',
+    france: 'fr',
+    germany: 'de',
+    ghana: 'gh',
+    greece: 'gr',
+    hungary: 'hu',
+    india: 'in',
+    indonesia: 'id',
+    iran: 'ir',
+    italy: 'it',
+    'ivory coast': 'ci',
+    japan: 'jp',
+    'japan j league': 'jp',
+    kenya: 'ke',
+    malaysia: 'my',
+    mexico: 'mx',
+    morocco: 'ma',
+    netherlands: 'nl',
+    nigeria: 'ng',
+    norway: 'no',
+    paraguay: 'py',
+    philippines: 'ph',
+    poland: 'pl',
+    portugal: 'pt',
+    qatar: 'qa',
+    romania: 'ro',
+    russia: 'ru',
+    'saudi arabia': 'sa',
+    senegal: 'sn',
+    serbia: 'rs',
+    slovakia: 'sk',
+    'south africa': 'za',
+    'south korea': 'kr',
+    spain: 'es',
+    sweden: 'se',
+    switzerland: 'ch',
+    thailand: 'th',
+    tunisia: 'tn',
+    turkey: 'tr',
+    turkiye: 'tr',
+    türkiye: 'tr',
+    ukraine: 'ua',
+    'united states': 'us',
+    uruguay: 'uy',
+    vietnam: 'vn',
+    wales: 'gb',
+  };
+  return codes[normalized] ?? null;
+}
 
 export const elevenLabsLivingWikiInternetTool = onRequest(
   {
