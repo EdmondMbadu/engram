@@ -336,9 +336,34 @@
   border-top-color: var(--text);
 }
 .dym-map-frame .marker:hover .label,
-.dym-map-frame .marker:focus-visible .label {
+.dym-map-frame .marker:focus-visible .label,
+.dym-map-frame .marker.pinned .label {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* A search-matched marker: lift it above neighbours and keep its name label
+   pinned (visible without hover) with an accent outline so it reads as the
+   active result. */
+.dym-map-frame .marker.pinned {
+  z-index: 8;
+}
+.dym-map-frame .marker.pinned .dot {
+  transform: scale(1.5);
+  background: color-mix(in srgb, var(--accent) 80%, white);
+}
+.dym-map-frame .marker.pinned .label {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 6px 16px -6px rgba(0, 0, 0, 0.6);
+}
+.dym-map-frame .marker.pinned .label .lc {
+  color: color-mix(in srgb, var(--accent-contrast) 80%, transparent);
+}
+.dym-map-frame .marker.pinned .label::after {
+  border-top-color: var(--accent);
 }
 
 /* ---------- hint chip ----------

@@ -420,6 +420,18 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     const used = new Set<number>();
     const clusters: { m: MarkerEntry; sx: number; sy: number }[][] = [];
+
+    // While searching, any matched city stays its own standalone point — never
+    // swallowed into a cluster pip — so you can see exactly which dot it is.
+    if (this.query) {
+      for (let i = 0; i < items.length; i++) {
+        if (this.match(items[i].m.c)) {
+          used.add(i);
+          clusters.push([items[i]]);
+        }
+      }
+    }
+
     for (let i = 0; i < items.length; i++) {
       if (used.has(i)) continue;
       used.add(i);
@@ -478,13 +490,15 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     this.markerEls.forEach((m) => {
-      m.b.classList.toggle(
-        'hl',
+      const isMatch =
         !!this.query &&
-          this.match(m.c) &&
-          !m.b.classList.contains('clustered') &&
-          this.inFocus(m.c),
-      );
+        this.match(m.c) &&
+        !m.b.classList.contains('clustered') &&
+        this.inFocus(m.c);
+      // Matched markers pulse (.hl) AND show their name label pinned to the
+      // point (.pinned) so you can read which dot it is without hovering.
+      m.b.classList.toggle('hl', isMatch);
+      m.b.classList.toggle('pinned', isMatch);
     });
     this.shownCount.set(this.markerEls.filter((m) => this.inFocus(m.c)).length);
   }
@@ -580,18 +594,14 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       this.activeFocus.set('all');
     }
 
-    // Zoom/pan the map to the matching cities so the result is obvious — then
-    // apply the highlight rings on top.
+    // Pinpoint the FIRST match (cities are sorted alphabetically) so there is
+    // always one clear target. Zoom tight on that single point — its dot pops
+    // out of any cluster and shows its label (see applyFilter/.pinned).
     const matches = this.cities.filter((c) => this.match(c));
     if (this.viewReady && matches.length > 0) {
-      const xs = matches.map((c) => c.x);
-      const ys = matches.map((c) => c.y);
-      // A single match gets a tighter, friendlier zoom; many matches just fit.
-      const cap = matches.length === 1 ? 3.4 : MAX_Z;
-      this.applyZoom(
-        [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)],
-        cap,
-      );
+      const target = matches[0];
+      // A tiny box around the point → applyZoom centers on it at the cap.
+      this.applyZoom([target.x, target.y, target.x, target.y], 3.4);
     } else if (this.viewReady) {
       this.resetZoom();
     }
