@@ -48,6 +48,9 @@ const maxGoogleDriveImportFiles = 10;
 const sendgridApiKey = defineSecret('SENDGRID_API_KEY');
 const elevenLabsApiKey = defineSecret('ELEVENLABS_API_KEY');
 const elevenLabsAgentId = defineString('ELEVENLABS_AGENT_ID');
+const elevenLabsTtsVoiceOverridesEnabled = defineString('ELEVENLABS_TTS_VOICE_OVERRIDES_ENABLED', {
+  default: 'false',
+});
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://mylivingwiki.com';
@@ -3133,7 +3136,16 @@ export const createElevenLabsVoiceSession = onCall(
     }
 
     const voicePreference = normalizeElevenLabsVoicePreference(request.data);
-    const selectedVoice = await resolveElevenLabsVoiceForPreference(apiKey, voicePreference);
+    const voiceOverrideEnabled = isTruthyParam(elevenLabsTtsVoiceOverridesEnabled.value());
+    const selectedVoice = voiceOverrideEnabled
+      ? await resolveElevenLabsVoiceForPreference(apiKey, voicePreference)
+      : null;
+    if (voicePreference.languageCode && !voiceOverrideEnabled) {
+      logger.warn('ElevenLabs TTS voice override is disabled; using the agent default voice.', {
+        languageCode: voicePreference.languageCode,
+        country: voicePreference.country,
+      });
+    }
     const visitorId = uid ?? anonymousVisitorId ?? `visitor_${randomUUID()}`;
     const params = new URLSearchParams({
       agent_id: agentId,
@@ -3173,6 +3185,7 @@ export const createElevenLabsVoiceSession = onCall(
       conversationToken,
       agentId,
       userId: visitorId,
+      voiceOverrideEnabled,
       voiceId: selectedVoice?.voiceId ?? null,
       voiceName: selectedVoice?.name ?? null,
       voiceAccent: selectedVoice?.accent ?? voicePreference.accent,
@@ -3200,6 +3213,10 @@ function normalizeElevenLabsVoicePreference(data: unknown): ElevenLabsVoicePrefe
     country: textValue(record['voiceCountry'], 80),
     accent: textValue(record['voiceAccent'], 120),
   };
+}
+
+function isTruthyParam(value: string): boolean {
+  return ['1', 'true', 'yes', 'on', 'enabled'].includes(value.trim().toLowerCase());
 }
 
 async function resolveElevenLabsVoiceForPreference(

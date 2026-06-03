@@ -1333,7 +1333,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
                 preferred_voice_locale: `${language.language} (${language.country})`,
                 voice_accent_instruction: accentProfile.instruction,
               },
-              ...(session.voiceId
+              ...(session.voiceOverrideEnabled && session.voiceId
                 ? {
                     overrides: {
                       tts: {
