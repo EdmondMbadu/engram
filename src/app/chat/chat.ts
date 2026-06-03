@@ -97,11 +97,42 @@ interface VoiceLanguageOption {
   code: VoiceLanguageCode;
   /** Native-language welcome line spoken the moment the conversation starts. */
   greeting: string;
+  /** Extra search aliases for names displayed in native script. */
+  searchTerms?: string[];
 }
 
 interface VoiceAccentProfile {
   label: string;
   instruction: string;
+}
+
+const VOICE_LANGUAGE_SEARCH_ALIASES: Partial<Record<VoiceLanguageCode, string[]>> = {
+  ar: ['Arabic'],
+  cs: ['Czech'],
+  de: ['German'],
+  en: ['English'],
+  es: ['Spanish', 'Espanol', 'Español'],
+  fa: ['Persian', 'Farsi'],
+  fr: ['French', 'Francais', 'Français'],
+  hi: ['Hindi'],
+  hr: ['Croatian', 'Bosnian'],
+  ja: ['Japanese'],
+  ko: ['Korean'],
+  nl: ['Dutch'],
+  no: ['Norwegian'],
+  pt: ['Portuguese'],
+  'pt-br': ['Portuguese', 'Brazilian Portuguese'],
+  ru: ['Russian'],
+  sv: ['Swedish'],
+  tr: ['Turkish'],
+  zh: ['Chinese', 'Mandarin'],
+};
+
+function normalizeVoiceSearchText(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 }
 
 // Legacy broader language list kept as a fallback reference while the carousel
@@ -311,13 +342,29 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly realtimeVoiceVisualGlow = computed(() => `${Math.round(22 + this.realtimeVoiceEnergyLevel() * 70)}px`);
   readonly realtimeVoiceVisualBar = computed(() => (0.2 + this.realtimeVoiceEnergyLevel() * 1.7).toFixed(3));
 
-  // Language flag carousel (World Cup 2026 nations + China / Russia / Japan).
+  // Language flag carousel (World Cup 2026 nations + China / Russia / India).
   readonly voiceLanguages = signal<VoiceLanguageOption[]>(VOICE_LANGUAGES);
+  readonly voiceLanguageSearch = signal('');
+  readonly filteredVoiceLanguages = computed(() => {
+    const query = this.voiceLanguageSearch().trim().toLowerCase();
+    if (!query) {
+      return this.voiceLanguages();
+    }
+    const normalizedQuery = normalizeVoiceSearchText(query);
+    return this.voiceLanguages().filter((language) => [
+      language.country,
+      language.language,
+      language.code,
+      ...(VOICE_LANGUAGE_SEARCH_ALIASES[language.code] ?? []),
+      ...(language.searchTerms ?? []),
+    ].map(normalizeVoiceSearchText).join(' ').includes(normalizedQuery));
+  });
   readonly voiceCarouselAtStart = signal(true);
   readonly voiceCarouselAtEnd = signal(false);
   // Language the active/last voice session was started in, so the UI can show
   // which flag is "speaking".
   readonly activeVoiceLanguageCode = signal<VoiceLanguageCode | null>(null);
+  readonly activeVoiceCountry = signal<string | null>(null);
   readonly pendingDeleteHistoryItem = signal<ChatHistoryItem | null>(null);
   readonly copiedTarget = signal<string | null>(null);
   readonly savedTravelCardIds = signal<Record<string, boolean>>(this.loadSavedTravelCardIds());
@@ -1271,6 +1318,29 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   // ---- Language flag carousel -------------------------------------------------
 
+  onVoiceLanguageSearchInput(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    this.voiceLanguageSearch.set(input?.value ?? '');
+    queueMicrotask(() => {
+      const track = this.voiceLanguageTrack?.nativeElement;
+      if (track) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+      this.syncVoiceCarouselScrollState();
+    });
+  }
+
+  clearVoiceLanguageSearch(): void {
+    this.voiceLanguageSearch.set('');
+    queueMicrotask(() => {
+      const track = this.voiceLanguageTrack?.nativeElement;
+      if (track) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+      this.syncVoiceCarouselScrollState();
+    });
+  }
+
   scrollVoiceCarousel(direction: -1 | 1): void {
     const track = this.voiceLanguageTrack?.nativeElement;
     if (!track) {
@@ -1350,6 +1420,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.stopAnswerAudio();
     this.realtimeVoiceEndingByUser = false;
     this.activeVoiceLanguageCode.set(language?.code ?? null);
+    this.activeVoiceCountry.set(language?.country ?? null);
     this.realtimeVoicePanelOpen.set(true);
     this.realtimeVoiceStatus.set('connecting');
     this.realtimeVoiceMode.set(null);
@@ -1488,6 +1559,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       this.realtimeVoiceStatus.set('disconnected');
       this.realtimeVoiceMode.set(null);
       this.activeVoiceLanguageCode.set(null);
+      this.activeVoiceCountry.set(null);
       this.pendingVoiceLanguagePrompt = null;
       this.realtimeVoicePanelOpen.set(false);
       return;
@@ -1506,6 +1578,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       this.realtimeVoiceMode.set(null);
       this.realtimeVoiceMuted.set(false);
       this.activeVoiceLanguageCode.set(null);
+      this.activeVoiceCountry.set(null);
       this.pendingVoiceLanguagePrompt = null;
       this.realtimeVoicePanelOpen.set(false);
     }
@@ -1521,6 +1594,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceMode.set(null);
     this.realtimeVoiceMuted.set(false);
     this.activeVoiceLanguageCode.set(null);
+    this.activeVoiceCountry.set(null);
     this.pendingVoiceLanguagePrompt = null;
     this.stopRealtimeVoiceMeter();
   }
@@ -1561,6 +1635,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceMode.set(null);
     this.realtimeVoiceMuted.set(false);
     this.activeVoiceLanguageCode.set(null);
+    this.activeVoiceCountry.set(null);
     this.pendingVoiceLanguagePrompt = null;
 
     if (this.realtimeVoiceEndingByUser || details.reason === 'user') {

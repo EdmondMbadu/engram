@@ -3281,12 +3281,15 @@ function buildElevenLabsVoiceSearchTerms(preference: ElevenLabsVoicePreference):
   const languageName = elevenLabsLanguageSearchName(preference.languageCode, preference.language);
   const country = preference.country ?? '';
   const countryCode = elevenLabsCountryCode(preference.country);
+  const accentTerms = elevenLabsAccentSearchTerms(preference.country, preference.languageCode);
   const accent = preference.accent ?? '';
   return Array.from(new Set([
+    ...accentTerms.map((term) => [term, languageName, 'native'].filter(Boolean).join(' ')),
     [country, languageName, 'native'].filter(Boolean).join(' '),
     [languageName, countryCode ? `${preference.languageCode}-${countryCode}` : ''].filter(Boolean).join(' '),
     [languageName, country].filter(Boolean).join(' '),
     countryCode ? `${preference.languageCode}-${countryCode}` : '',
+    ...accentTerms,
     accent,
     languageName,
     country,
@@ -3328,6 +3331,7 @@ function scoreElevenLabsVoice(
   const languageCode = preference.languageCode ?? '';
   const country = (preference.country ?? '').toLowerCase();
   const countryCode = elevenLabsCountryCode(preference.country);
+  const accentTerms = elevenLabsAccentSearchTerms(preference.country, preference.languageCode).map((term) => term.toLowerCase());
   const languageName = elevenLabsLanguageSearchName(preference.languageCode, preference.language).toLowerCase();
   const preferredAccent = (preference.accent ?? '').toLowerCase();
   const labels = objectToSearchText(voice.labels);
@@ -3364,6 +3368,12 @@ function scoreElevenLabsVoice(
       score += 70;
       matchedAccent = textValue(entry.accent, 120);
     }
+    for (const accentTerm of accentTerms) {
+      if (verifiedAccent.includes(accentTerm)) {
+        score += 85;
+        matchedAccent = textValue(entry.accent, 120);
+      }
+    }
     if (countryCode && verifiedLocale === `${languageCode}-${countryCode}`) {
       score += 110;
       matchedAccent = textValue(entry.accent, 120);
@@ -3382,6 +3392,11 @@ function scoreElevenLabsVoice(
   }
   if (country && searchable.includes(country)) {
     score += 36;
+  }
+  for (const accentTerm of accentTerms) {
+    if (searchable.includes(accentTerm)) {
+      score += 38;
+    }
   }
   if (countryCode && searchable.includes(`-${countryCode}`)) {
     score += 35;
@@ -3410,6 +3425,71 @@ function objectToSearchText(value: unknown): string {
   return Object.entries(value as Record<string, unknown>)
     .flatMap(([key, entry]) => [key, typeof entry === 'string' ? entry : ''])
     .join(' ');
+}
+
+function elevenLabsAccentSearchTerms(country: string | null, languageCode: string | null): string[] {
+  if (!country) {
+    return [];
+  }
+  const normalized = normalizeCountryName(country);
+  const terms: Record<string, string[]> = {
+    algeria: ['algerian', 'north african', 'maghrebi'],
+    argentina: ['argentinian', 'rioplatense', 'latin american'],
+    australia: ['australian'],
+    austria: ['austrian'],
+    belgium: ['belgian'],
+    'bosnia herzegovina': ['bosnian', 'balkan'],
+    'bosnia and herzegovina': ['bosnian', 'balkan'],
+    brazil: ['brazilian'],
+    canada: ['canadian'],
+    'cape verde': ['cape verdean', 'cabo verdean'],
+    colombia: ['colombian', 'latin american'],
+    croatia: ['croatian', 'balkan'],
+    curacao: ['caribbean', 'curacaoan', 'curaçaoan'],
+    'dr congo': ['congolese', 'central african', 'african french'],
+    ecuador: ['ecuadorian', 'latin american'],
+    egypt: ['egyptian'],
+    england: ['british', 'english'],
+    france: ['french from france', 'parisian', 'metropolitan french', 'france french'],
+    germany: ['german'],
+    ghana: ['ghanaian', 'west african'],
+    haiti: ['haitian', 'caribbean french', 'haitian creole'],
+    india: ['indian', 'hindi'],
+    iran: ['iranian', 'persian'],
+    iraq: ['iraqi'],
+    'ivory coast': ['ivorian', 'west african', 'african french'],
+    japan: ['japanese'],
+    jordan: ['jordanian'],
+    mexico: ['mexican', 'latin american'],
+    morocco: ['moroccan', 'north african', 'maghrebi'],
+    netherlands: ['dutch', 'netherlands'],
+    'new zealand': ['new zealand', 'kiwi'],
+    norway: ['norwegian'],
+    panama: ['panamanian', 'latin american'],
+    paraguay: ['paraguayan', 'latin american'],
+    portugal: ['portuguese from portugal', 'european portuguese'],
+    qatar: ['qatari', 'gulf arabic'],
+    russia: ['russian'],
+    'saudi arabia': ['saudi', 'gulf arabic'],
+    scotland: ['scottish'],
+    senegal: ['senegalese', 'west african', 'african french'],
+    'south africa': ['south african'],
+    'south korea': ['korean'],
+    spain: ['spanish from spain', 'castilian', 'european spanish'],
+    sweden: ['swedish'],
+    switzerland: ['swiss'],
+    tunisia: ['tunisian', 'north african', 'maghrebi'],
+    turkey: ['turkish'],
+    turkiye: ['turkish'],
+    türkiye: ['turkish'],
+    uruguay: ['uruguayan', 'rioplatense', 'latin american'],
+    'united states': ['american', 'us english'],
+    uzbekistan: ['uzbek', 'central asian'],
+  };
+  const specificTerms = terms[normalized] ?? [];
+  const countryTerm = normalized ? [normalized] : [];
+  const languageTerm = languageCode ? [`${languageCode}-${elevenLabsCountryCode(country) ?? ''}`.replace(/-$/, '')] : [];
+  return Array.from(new Set([...specificTerms, ...countryTerm, ...languageTerm].filter(Boolean)));
 }
 
 function elevenLabsLanguageSearchName(code: string | null, fallback: string | null): string {
@@ -3459,12 +3539,7 @@ function elevenLabsCountryCode(country: string | null): string | null {
   if (!country) {
     return null;
   }
-  const normalized = country
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z]+/g, ' ')
-    .trim();
+  const normalized = normalizeCountryName(country);
   const codes: Record<string, string> = {
     algeria: 'dz',
     argentina: 'ar',
@@ -3544,6 +3619,15 @@ function elevenLabsCountryCode(country: string | null): string | null {
     wales: 'gb',
   };
   return codes[normalized] ?? null;
+}
+
+function normalizeCountryName(country: string): string {
+  return country
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z]+/g, ' ')
+    .trim();
 }
 
 export const elevenLabsLivingWikiInternetTool = onRequest(

@@ -443,11 +443,30 @@
             @if (canShowCityVoiceCarousel()) {
               <section class="lang-carousel lang-carousel--top" aria-label="Start a voice conversation in your language">
                 <div class="lang-carousel__head">
-                  <span class="lang-carousel__eyebrow">
-                    <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
-                    <span>Talk in your language</span>
-                  </span>
-                  <p class="lang-carousel__hint">Tap a flag to start a voice conversation — I’ll greet you in that language.</p>
+                  <div class="lang-carousel__copy">
+                    <span class="lang-carousel__eyebrow">
+                      <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
+                      <span>Talk in your language</span>
+                    </span>
+                    <p class="lang-carousel__hint">
+                      {{ filteredVoiceLanguages().length }} countries · search country or language.
+                    </p>
+                  </div>
+                  <label class="lang-carousel__search">
+                    <span class="material-symbols-outlined">search</span>
+                    <input
+                      type="search"
+                      autocomplete="off"
+                      placeholder="Find country"
+                      [value]="voiceLanguageSearch()"
+                      (input)="onVoiceLanguageSearchInput($event)"
+                    />
+                    @if (voiceLanguageSearch()) {
+                      <button type="button" aria-label="Clear country search" (click)="clearVoiceLanguageSearch()">
+                        <span class="material-symbols-outlined">close</span>
+                      </button>
+                    }
+                  </label>
                 </div>
 
                 <div class="lang-carousel__viewport">
@@ -462,12 +481,12 @@
                   </button>
 
                   <div #voiceLanguageTrack class="lang-carousel__track" role="list" (scroll)="syncVoiceCarouselScrollState()">
-                    @for (lang of voiceLanguages(); track lang.country) {
+                    @for (lang of filteredVoiceLanguages(); track lang.country) {
                       <button
                         type="button"
                         role="listitem"
                         class="lang-flag-card"
-                        [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && realtimeVoiceActive()"
+                        [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
                         [attr.aria-label]="'Start a voice conversation in ' + lang.language + ' (' + lang.country + ')'"
                         [attr.data-tooltip]="'Start in ' + lang.language"
                         (click)="startVoiceInLanguage(lang)"
@@ -480,6 +499,8 @@
                           <span>Voice chat</span>
                         </span>
                       </button>
+                    } @empty {
+                      <p class="lang-carousel__empty">No matching country or language.</p>
                     }
                   </div>
 
