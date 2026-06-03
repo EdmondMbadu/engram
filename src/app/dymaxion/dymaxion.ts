@@ -626,7 +626,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openSelected(): void {
     const c = this.selected();
-    if (c) this.router.navigate(['/atlas', c.slug]);
+    if (c) this.router.navigate(['/chat', c.slug]);
   }
 
   /* ===================== TEMPLATE HELPERS ===================== */

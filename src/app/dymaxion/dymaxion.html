@@ -30,7 +30,7 @@
         </h1>
         <p class="mt-2 max-w-[48ch] text-sm leading-6 text-[var(--muted)]">
           One world, one map, no distortion. Hover the Fuller projection to find a city —
-          click a marker to open its Living Wiki.
+          click a marker to open its chat.
         </p>
       </div>
       <div class="flex w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
@@ -101,20 +101,20 @@
         <div class="dym-city-meta">
           <div class="m"><div class="k">Place</div><div class="v">{{ c.country }}</div></div>
           <div class="m"><div class="k">Coordinates</div><div class="v">{{ fmtLat(c.lat) }}, {{ fmtLng(c.lng) }}</div></div>
-          <div class="m"><div class="k">Wiki</div><div class="v">/atlas/{{ c.slug }}</div></div>
+          <div class="m"><div class="k">Chat</div><div class="v">/chat/{{ c.slug }}</div></div>
         </div>
         <div class="dym-city-body">
           <div>
             <p>
-              Open the <b>{{ c.name }}</b> Living Wiki — practical local knowledge, civic
+              Open the <b>{{ c.name }}</b> Living Wiki chat — practical local knowledge, civic
               updates, transit, culture, climate, jobs, food, and neighborhoods, kept current.
             </p>
           </div>
           <div class="dym-actions">
-            <a class="primary-btn dym-open" [routerLink]="['/atlas', c.slug]">
-              Open full page →
+            <a class="primary-btn dym-open" [routerLink]="['/chat', c.slug]">
+              Open chat →
             </a>
-            <div class="dym-urlrow">/atlas/{{ c.slug }}</div>
+            <div class="dym-urlrow">/chat/{{ c.slug }}</div>
           </div>
         </div>
       } @else {
