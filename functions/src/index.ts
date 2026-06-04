@@ -10,7 +10,14 @@ import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleTravelCardShare } from './answer-card-share';
-import { answerWithGoogleSearch, geminiApiKey, generateAnswerCard, generateAnswerQuiz } from './gemini';
+import {
+  answerWithGoogleSearch,
+  extractMappableLocations,
+  geminiApiKey,
+  generateAnswerCard,
+  generateAnswerQuiz,
+  generateVoiceConversationRecap,
+} from './gemini';
 import {
   getStoredCityPulseSnapshot,
   listEnabledCityAtlasIds,
@@ -1009,6 +1016,27 @@ type GooglePlacesTextSearchResponse = {
   }>;
 };
 
+type GooglePlaceDetailsResponse = {
+  status?: string;
+  error_message?: string;
+  result?: {
+    place_id?: string;
+    name?: string;
+    formatted_address?: string;
+    website?: string;
+    url?: string;
+    rating?: number;
+    user_ratings_total?: number;
+    types?: string[];
+    geometry?: {
+      location?: {
+        lat?: number;
+        lng?: number;
+      };
+    };
+  };
+};
+
 function placeDocIdFromGooglePlaceId(placeId: string): string {
   return `google_${placeId.replace(/[^a-zA-Z0-9_-]+/g, '_').slice(0, 120)}`;
 }
@@ -1495,7 +1523,32 @@ type VoiceConversationSummary = {
   summary: string;
   keyQuestions: string[];
   takeaways: string[];
+  contextualAnswer: string;
   transcriptText: string;
+};
+
+type VoiceConversationPlaceLink = {
+  name: string;
+  reason: string;
+  address: string | null;
+  websiteUrl: string | null;
+  googleMapsUrl: string;
+  searchQuery: string;
+  rating: number | null;
+  ratingCount: number | null;
+};
+
+type VoiceConversationRecapInput = {
+  title: string;
+  summary: string;
+  contextual_answer: string;
+  key_questions: string[];
+  useful_takeaways: string[];
+  suggested_places: Array<{
+    name: string;
+    reason: string;
+    search_query: string;
+  }>;
 };
 
 function normalizeVoiceSummaryTranscript(value: unknown): VoiceSummaryTranscriptEntry[] {
@@ -1532,12 +1585,13 @@ function buildVoiceConversationSummary(params: {
   atlasName: string;
   cityName: string | null;
   transcript: VoiceSummaryTranscriptEntry[];
+  recap?: VoiceConversationRecapInput | null;
 }): VoiceConversationSummary {
   const placeName = params.cityName || params.atlasName || 'this wiki';
   const userMessages = params.transcript.filter((item) => item.role === 'user').map((item) => item.text);
   const agentMessages = params.transcript.filter((item) => item.role === 'agent').map((item) => item.text);
-  const keyQuestions = userMessages.slice(0, 4).map((text) => shortVoiceSummaryLine(text, 160));
-  const takeaways = agentMessages
+  const fallbackKeyQuestions = userMessages.slice(0, 4).map((text) => shortVoiceSummaryLine(text, 160));
+  const fallbackTakeaways = agentMessages
     .filter((text) => !/^hello\b/i.test(text))
     .slice(0, 4)
     .map((text) => shortVoiceSummaryLine(text, 190));
@@ -1550,10 +1604,11 @@ function buildVoiceConversationSummary(params: {
     .join('\n');
 
   return {
-    title: `${placeName} voice chat recap`,
-    summary: summaryParts.join(' '),
-    keyQuestions,
-    takeaways,
+    title: params.recap?.title?.trim() || `${placeName} voice chat recap`,
+    summary: params.recap?.summary?.trim() || summaryParts.join(' '),
+    keyQuestions: params.recap?.key_questions?.length ? params.recap.key_questions : fallbackKeyQuestions,
+    takeaways: params.recap?.useful_takeaways?.length ? params.recap.useful_takeaways : fallbackTakeaways,
+    contextualAnswer: params.recap?.contextual_answer?.trim() || summaryParts.join(' '),
     transcriptText,
   };
 }
@@ -1564,6 +1619,7 @@ function buildVoiceConversationSummaryEmail(params: {
   cityName: string | null;
   summary: VoiceConversationSummary;
   answerCardUrl: string | null;
+  placeLinks: VoiceConversationPlaceLink[];
   continueChatUrl: string;
 }) {
   const placeName = params.cityName || params.atlasName || 'this wiki';
@@ -1574,6 +1630,30 @@ function buildVoiceConversationSummaryEmail(params: {
   const safeSummary = escapeHtml(params.summary.summary);
   const safeContinueChatUrl = escapeHtml(params.continueChatUrl);
   const safeAnswerCardUrl = params.answerCardUrl ? escapeHtml(params.answerCardUrl) : null;
+  const placeLinksHtml = params.placeLinks.length
+    ? params.placeLinks.map((place) => {
+        const safeName = escapeHtml(place.name);
+        const safeReason = escapeHtml(place.reason);
+        const safeAddress = place.address ? escapeHtml(place.address) : '';
+        const safeWebsite = place.websiteUrl ? escapeHtml(place.websiteUrl) : null;
+        const safeMaps = escapeHtml(place.googleMapsUrl);
+        const rating = typeof place.rating === 'number'
+          ? `<span style="color:#6f7d74;font-size:12px;">${place.rating.toFixed(1)}${place.ratingCount ? ` · ${place.ratingCount} reviews` : ''}</span>`
+          : '';
+        return `
+          <div style="border:1px solid #e2e8df;border-radius:14px;padding:14px 15px;margin:0 0 10px;background:#ffffff;">
+            <p style="margin:0 0 5px;color:#0d1f15;font-size:15px;font-weight:900;">${safeName}</p>
+            ${safeAddress ? `<p style="margin:0 0 6px;color:#526057;font-size:13px;line-height:1.45;">${safeAddress}</p>` : ''}
+            <p style="margin:0 0 10px;color:#3f4d45;font-size:13px;line-height:1.5;">${safeReason}</p>
+            <p style="margin:0;display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:13px;font-weight:800;">
+              ${safeWebsite ? `<a href="${safeWebsite}" style="color:#1c7c41;text-decoration:none;">Website</a>` : ''}
+              <a href="${safeMaps}" style="color:#1c7c41;text-decoration:none;">Open in Maps</a>
+              ${rating}
+            </p>
+          </div>
+        `;
+      }).join('')
+    : '';
   const keyQuestionsHtml = params.summary.keyQuestions.length
     ? params.summary.keyQuestions.map((text) => `<li style="margin:0 0 8px;">${escapeHtml(text)}</li>`).join('')
     : '<li style="margin:0 0 8px;">Your voice questions are included in the transcript below.</li>';
@@ -1598,7 +1678,7 @@ ${params.summary.keyQuestions.map((item) => `- ${item}`).join('\n') || '- See tr
 Useful takeaways:
 ${params.summary.takeaways.map((item) => `- ${item}`).join('\n') || '- Continue in the wiki chat.'}
 
-${params.answerCardUrl ? `Open recap card:\n${params.answerCardUrl}\n\n` : ''}Continue the chat:
+${params.placeLinks.length ? `Places and links:\n${params.placeLinks.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}\n\n` : ''}${params.answerCardUrl ? `Open the full recap card:\n${params.answerCardUrl}\n\n` : ''}Continue the chat:
 ${params.continueChatUrl}
 
 Transcript:
@@ -1615,7 +1695,10 @@ The My living wiki Team`;
       <div style="background:#ffffff;padding:30px;border:1px solid #e3e8df;border-top:none;border-radius:0 0 20px 20px;">
         <p style="color:#111827;font-size:15px;line-height:1.65;margin:0 0 18px;">Hi <strong>${safeRecipientEmail}</strong>,</p>
         <h2 style="color:#0d1f15;font-size:24px;line-height:1.15;margin:0 0 12px;font-weight:900;letter-spacing:-0.03em;">${safeTitle}</h2>
-        <p style="color:#3f4d45;font-size:15px;line-height:1.65;margin:0 0 22px;">${safeSummary}</p>
+        <p style="color:#3f4d45;font-size:15px;line-height:1.65;margin:0 0 18px;">${safeSummary}</p>
+        <div style="background:#f8faf7;border:1px solid #dfe8dc;border-radius:16px;padding:18px 20px;margin:0 0 20px;">
+          <p style="margin:0;color:#2f3d35;font-size:14px;line-height:1.65;">${escapeHtml(params.summary.contextualAnswer).replace(/\n/g, '<br>')}</p>
+        </div>
         <div style="background:#f8faf7;border:1px solid #dfe8dc;border-radius:16px;padding:18px 20px;margin:0 0 20px;">
           <p style="margin:0 0 10px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Questions and prompts</p>
           <ul style="margin:0;padding-left:20px;color:#2f3d35;font-size:14px;line-height:1.55;">${keyQuestionsHtml}</ul>
@@ -1624,8 +1707,14 @@ The My living wiki Team`;
           <p style="margin:0 0 10px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Useful takeaways</p>
           <ul style="margin:0;padding-left:20px;color:#2f3d35;font-size:14px;line-height:1.55;">${takeawaysHtml}</ul>
         </div>
+        ${placeLinksHtml ? `
+        <div style="background:#f7fbfa;border:1px solid #d8ece7;border-radius:16px;padding:18px 20px;margin:0 0 22px;">
+          <p style="margin:0 0 12px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Places from your conversation</p>
+          ${placeLinksHtml}
+        </div>
+        ` : ''}
         <div style="text-align:center;margin:26px 0;">
-          ${safeAnswerCardUrl ? `<a href="${safeAnswerCardUrl}" style="background:#0f2417;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Open Recap Card</a>` : ''}
+          ${safeAnswerCardUrl ? `<a href="${safeAnswerCardUrl}" style="background:#0f2417;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Open Full Recap Card</a>` : ''}
           <a href="${safeContinueChatUrl}" style="background:#1c7c41;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Continue in ${safePlaceName}</a>
         </div>
         <div style="border-top:1px solid #e5e7eb;margin:24px 0 0;padding-top:20px;">
@@ -1648,6 +1737,7 @@ async function createVoiceConversationAnswerCard(params: {
   cityHint: string | null;
   question: string;
   answer: string;
+  locations: MappableLocation[];
 }): Promise<{ id: string; url: string } | null> {
   if (!params.answer.trim() || params.answer.length < 120) {
     return null;
@@ -1658,7 +1748,7 @@ async function createVoiceConversationAnswerCard(params: {
     answer: params.answer.slice(0, 8000),
     atlasName: params.atlasName,
     cityHint: params.cityHint,
-    locations: [],
+    locations: params.locations,
   });
   const record: AnswerCardRecord = {
     owner_user_id: params.uid,
@@ -1670,7 +1760,7 @@ async function createVoiceConversationAnswerCard(params: {
     subtitle: generated.subtitle,
     key_facts: generated.key_facts,
     did_you_know: generated.did_you_know,
-    mappable_locations: [],
+    mappable_locations: params.locations,
     source_thread_id: null,
     source_message_id: null,
     source_message_kind: null,
@@ -1684,8 +1774,125 @@ async function createVoiceConversationAnswerCard(params: {
   await docRef.set(record);
   return {
     id: docRef.id,
-    url: `${publicAppUrl}/share/answer-card/${encodeURIComponent(docRef.id)}`,
+    url: `${publicAppUrl}/answer-card/${encodeURIComponent(docRef.id)}`,
   };
+}
+
+function voicePlaceMapSearchUrl(searchQuery: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+}
+
+async function fetchGooglePlaceDetails(placeId: string, apiKey: string): Promise<GooglePlaceDetailsResponse['result'] | null> {
+  const url = new URL('https://maps.googleapis.com/maps/api/place/details/json');
+  url.searchParams.set('place_id', placeId);
+  url.searchParams.set('fields', 'place_id,name,formatted_address,website,url,rating,user_ratings_total,types,geometry');
+  url.searchParams.set('key', apiKey);
+  const data = await fetchJson<GooglePlaceDetailsResponse>(url.toString());
+  if (data.status && !['OK', 'ZERO_RESULTS'].includes(data.status)) {
+    logger.warn('Google Place Details lookup failed for voice recap.', {
+      status: data.status,
+      error: data.error_message,
+      placeId,
+    });
+    return null;
+  }
+  return data.result ?? null;
+}
+
+async function resolveVoiceConversationPlaceLinks(params: {
+  atlas: Record<string, unknown> | null;
+  cityHint: string | null;
+  suggestedPlaces: VoiceConversationRecapInput['suggested_places'];
+}): Promise<{ links: VoiceConversationPlaceLink[]; locations: MappableLocation[] }> {
+  const deduped = new Map<string, VoiceConversationRecapInput['suggested_places'][number]>();
+  for (const place of params.suggestedPlaces ?? []) {
+    const name = place.name?.replace(/\s+/g, ' ').trim();
+    const query = place.search_query?.replace(/\s+/g, ' ').trim();
+    if (!name || !query) {
+      continue;
+    }
+    const key = `${name}|${query}`.toLowerCase();
+    if (!deduped.has(key)) {
+      deduped.set(key, {
+        name: name.slice(0, 120),
+        reason: (place.reason || 'Mentioned in your voice conversation.').replace(/\s+/g, ' ').trim().slice(0, 180),
+        search_query: query.slice(0, 180),
+      });
+    }
+  }
+
+  const apiKey = googlePlacesApiKey.value();
+  const links: VoiceConversationPlaceLink[] = [];
+  const locations: MappableLocation[] = [];
+  const context = params.atlas ? cityAtlasSearchContext(params.atlas) : params.cityHint ?? '';
+
+  for (const place of Array.from(deduped.values()).slice(0, 6)) {
+    const baseQuery = `${place.search_query} ${context}`.trim();
+    let resolvedName = place.name;
+    let address: string | null = null;
+    let websiteUrl: string | null = null;
+    let googleMapsUrl = voicePlaceMapSearchUrl(baseQuery);
+    let rating: number | null = null;
+    let ratingCount: number | null = null;
+
+    if (apiKey) {
+      try {
+        const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
+        searchUrl.searchParams.set('query', baseQuery);
+        searchUrl.searchParams.set('key', apiKey);
+        const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
+        if (search.status && !['OK', 'ZERO_RESULTS'].includes(search.status)) {
+          logger.warn('Google Places text search failed for voice recap.', {
+            status: search.status,
+            error: search.error_message,
+            query: baseQuery,
+          });
+        }
+        const candidate = (search.results ?? []).map(googleCandidateFromResult).find((item): item is CityPlaceCandidate => !!item);
+        if (candidate) {
+          resolvedName = candidate.name;
+          address = candidate.address || null;
+          googleMapsUrl = candidate.googleMapsUrl || googleMapsUrl;
+          rating = typeof candidate.ratingAvg === 'number' ? candidate.ratingAvg : null;
+          ratingCount = typeof candidate.ratingCount === 'number' ? candidate.ratingCount : null;
+
+          const details = await fetchGooglePlaceDetails(candidate.placeId, apiKey);
+          if (details) {
+            resolvedName = textFromUnknown(details.name) || resolvedName;
+            address = textFromUnknown(details.formatted_address) || address;
+            websiteUrl = textFromUnknown(details.website) || null;
+            googleMapsUrl = textFromUnknown(details.url) || googleMapsUrl;
+            rating = typeof details.rating === 'number' ? details.rating : rating;
+            ratingCount = typeof details.user_ratings_total === 'number' ? details.user_ratings_total : ratingCount;
+          }
+        }
+      } catch (error) {
+        logger.warn('Voice recap place enrichment failed for one place.', {
+          query: baseQuery,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
+
+    const searchQuery = [resolvedName, address || context].filter(Boolean).join(', ');
+    links.push({
+      name: resolvedName,
+      reason: place.reason,
+      address,
+      websiteUrl,
+      googleMapsUrl,
+      searchQuery,
+      rating,
+      ratingCount,
+    });
+    locations.push({
+      name: resolvedName,
+      search_query: searchQuery || baseQuery,
+      address_hint: address,
+    });
+  }
+
+  return { links, locations };
 }
 
 type NewsletterSourceLink = {
@@ -5338,10 +5545,10 @@ function getPublicChatVisitorContext(request: {
 export const sendVoiceConversationSummary = onCall(
   {
     region: callableRegion,
-    timeoutSeconds: 90,
+    timeoutSeconds: 120,
     memory: '512MiB',
     cors: true,
-    secrets: [sendgridApiKey, geminiApiKey],
+    secrets: [sendgridApiKey, geminiApiKey, googlePlacesApiKey],
   },
   async (request) => {
     const requesterUid = request.auth?.uid ?? null;
@@ -5388,17 +5595,47 @@ export const sendVoiceConversationSummary = onCall(
     const continueChatUrl = atlasSlug
       ? `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}`
       : publicAppUrl;
+    const cityHint = [cityName, regionName].filter(Boolean).join(', ') || null;
+    const recap = await generateVoiceConversationRecap({
+      atlasName,
+      cityHint,
+      transcript,
+    });
     const summary = buildVoiceConversationSummary({
       atlasName,
       cityName,
       transcript,
+      recap,
+    });
+    const extractedLocations = await extractMappableLocations({
+      question: transcript.filter((item) => item.role === 'user').map((item) => item.text).join('\n').slice(0, 2000),
+      answer: summary.contextualAnswer,
+      atlasName,
+      cityHint,
+    });
+    const suggestedPlaces = [
+      ...(recap.suggested_places ?? []),
+      ...extractedLocations.map((location) => ({
+        name: location.name,
+        reason: 'Mentioned in your voice conversation.',
+        search_query: location.search_query,
+      })),
+    ];
+    const resolvedPlaces = await resolveVoiceConversationPlaceLinks({
+      atlas,
+      cityHint,
+      suggestedPlaces,
     });
     const firstUserQuestion = transcript.find((item) => item.role === 'user')?.text
       ?? `Voice conversation about ${cityName || atlasName}`;
     const cardAnswer = [
+      summary.contextualAnswer,
       summary.summary,
       summary.keyQuestions.length ? `Questions:\n${summary.keyQuestions.map((item) => `- ${item}`).join('\n')}` : '',
       summary.takeaways.length ? `Useful takeaways:\n${summary.takeaways.map((item) => `- ${item}`).join('\n')}` : '',
+      resolvedPlaces.links.length
+        ? `Places and links:\n${resolvedPlaces.links.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}`
+        : '',
       `Transcript:\n${summary.transcriptText}`,
     ].filter(Boolean).join('\n\n');
     let answerCardId: string | null = null;
@@ -5410,9 +5647,10 @@ export const sendVoiceConversationSummary = onCall(
           uid: requesterUid,
           atlasId,
           atlasName,
-          cityHint: [cityName, regionName].filter(Boolean).join(', ') || null,
+          cityHint,
           question: firstUserQuestion,
           answer: cardAnswer,
+          locations: resolvedPlaces.locations,
         });
         answerCardId = card?.id ?? null;
         answerCardUrl = card?.url ?? null;
@@ -5436,6 +5674,7 @@ export const sendVoiceConversationSummary = onCall(
       cityName,
       summary,
       answerCardUrl,
+      placeLinks: resolvedPlaces.links,
       continueChatUrl,
     });
     const [response] = await sgMail.send({
@@ -5464,8 +5703,10 @@ export const sendVoiceConversationSummary = onCall(
       conversation_id: typeof request.data?.conversationId === 'string' ? request.data.conversationId.trim().slice(0, 160) : null,
       summary_title: summary.title,
       summary_text: summary.summary,
+      contextual_answer: summary.contextualAnswer,
       key_questions: summary.keyQuestions,
       takeaways: summary.takeaways,
+      place_links: resolvedPlaces.links,
       transcript_count: transcript.length,
       transcript_preview: summary.transcriptText.slice(0, 2000),
       answer_card_id: answerCardId,

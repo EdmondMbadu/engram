@@ -81,6 +81,36 @@ const answerCardSchema = {
   required: ['title', 'subtitle', 'key_facts', 'did_you_know'],
 } as const;
 
+const voiceConversationRecapSchema = {
+  type: 'object',
+  properties: {
+    title: { type: 'string' },
+    summary: { type: 'string' },
+    contextual_answer: { type: 'string' },
+    key_questions: {
+      type: 'array',
+      items: { type: 'string' },
+    },
+    useful_takeaways: {
+      type: 'array',
+      items: { type: 'string' },
+    },
+    suggested_places: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          reason: { type: 'string' },
+          search_query: { type: 'string' },
+        },
+        required: ['name', 'reason', 'search_query'],
+      },
+    },
+  },
+  required: ['title', 'summary', 'contextual_answer', 'key_questions', 'useful_takeaways', 'suggested_places'],
+} as const;
+
 const answerQuizSchema = {
   type: 'object',
   properties: {
@@ -225,6 +255,21 @@ export type GeneratedAnswerCard = {
   subtitle: string;
   key_facts: string[];
   did_you_know: string[];
+};
+
+export type GeneratedVoiceConversationRecapPlace = {
+  name: string;
+  reason: string;
+  search_query: string;
+};
+
+export type GeneratedVoiceConversationRecap = {
+  title: string;
+  summary: string;
+  contextual_answer: string;
+  key_questions: string[];
+  useful_takeaways: string[];
+  suggested_places: GeneratedVoiceConversationRecapPlace[];
 };
 
 export type GeneratedQuizQuestion = {
@@ -967,6 +1012,142 @@ export async function generateAnswerCard(params: {
       errorMessage: error instanceof Error ? error.message : String(error),
     });
     return buildFallbackAnswerCard(question, answer);
+  }
+}
+
+function normalizeRecapLines(value: unknown, limit: number, maxLength: number): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .map((item) => (typeof item === 'string' ? item.replace(/\s+/g, ' ').trim() : ''))
+    .filter(Boolean)
+    .slice(0, limit)
+    .map((item) => item.slice(0, maxLength));
+}
+
+function normalizeVoiceConversationRecap(
+  value: unknown,
+  fallback: {
+    title: string;
+    summary: string;
+    contextualAnswer: string;
+  },
+): GeneratedVoiceConversationRecap {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const suggestedPlaces = Array.isArray(data.suggested_places)
+    ? data.suggested_places
+        .map((item): GeneratedVoiceConversationRecapPlace | null => {
+          if (!item || typeof item !== 'object') {
+            return null;
+          }
+          const place = item as Record<string, unknown>;
+          const name = typeof place.name === 'string' ? place.name.replace(/\s+/g, ' ').trim().slice(0, 120) : '';
+          const reason = typeof place.reason === 'string' ? place.reason.replace(/\s+/g, ' ').trim().slice(0, 180) : '';
+          const searchQuery = typeof place.search_query === 'string'
+            ? place.search_query.replace(/\s+/g, ' ').trim().slice(0, 180)
+            : '';
+          if (!name || !searchQuery) {
+            return null;
+          }
+          return {
+            name,
+            reason: reason || 'Mentioned in your voice conversation.',
+            search_query: searchQuery,
+          };
+        })
+        .filter((item): item is GeneratedVoiceConversationRecapPlace => !!item)
+        .slice(0, 6)
+    : [];
+
+  const title = typeof data.title === 'string' && data.title.trim()
+    ? data.title.replace(/\s+/g, ' ').trim().slice(0, 90)
+    : fallback.title;
+  const summary = typeof data.summary === 'string' && data.summary.trim()
+    ? data.summary.replace(/\s+/g, ' ').trim().slice(0, 650)
+    : fallback.summary;
+  const contextualAnswer = typeof data.contextual_answer === 'string' && data.contextual_answer.trim()
+    ? data.contextual_answer.trim().slice(0, 3500)
+    : fallback.contextualAnswer;
+
+  return {
+    title,
+    summary,
+    contextual_answer: contextualAnswer,
+    key_questions: normalizeRecapLines(data.key_questions, 5, 180),
+    useful_takeaways: normalizeRecapLines(data.useful_takeaways, 6, 220),
+    suggested_places: suggestedPlaces,
+  };
+}
+
+export async function generateVoiceConversationRecap(params: {
+  atlasName?: string | null;
+  cityHint?: string | null;
+  transcript: Array<{ role: 'user' | 'agent'; text: string }>;
+}): Promise<GeneratedVoiceConversationRecap> {
+  const transcript = params.transcript
+    .map((item) => `${item.role === 'user' ? 'User' : 'My living wiki'}: ${item.text}`)
+    .join('\n')
+    .trim();
+  const placeName = params.cityHint || params.atlasName || 'this wiki';
+  const fallback = {
+    title: `${placeName} voice chat recap`,
+    summary: `A recap of the voice conversation about ${placeName}.`,
+    contextualAnswer: transcript.slice(0, 3500),
+  };
+  if (!transcript) {
+    return {
+      ...fallback,
+      contextual_answer: fallback.contextualAnswer,
+      key_questions: [],
+      useful_takeaways: [],
+      suggested_places: [],
+    };
+  }
+
+  const context = [
+    params.atlasName ? `Wiki: ${params.atlasName}` : null,
+    params.cityHint ? `City/region: ${params.cityHint}` : null,
+  ].filter(Boolean).join('\n');
+  const prompt = [
+    'You are the post-call cleanup editor for My living wiki.',
+    'Turn this voice transcript into a polished, useful email recap and answer-card source.',
+    'Be contextual: preserve the city/wiki context, the user intent, and the most useful recommendations.',
+    'Do not invent places, claims, addresses, prices, rankings, or facts not supported by the transcript.',
+    'For suggested_places, include only real physical locations that were explicitly mentioned, recommended, compared, or clearly requested in the conversation.',
+    'For each suggested place, write a Google Maps-friendly search_query with the city/region when helpful. If no specific locations were mentioned, return [].',
+    'Return JSON only.',
+    '',
+    context,
+    '',
+    transcript.slice(0, 9000),
+  ].join('\n');
+
+  try {
+    const response = await generateContentWithRetry({
+      model: internetSearchModel,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: voiceConversationRecapSchema,
+        temperature: 0.18,
+        maxOutputTokens: 2400,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+
+    return normalizeVoiceConversationRecap(parseJsonResponse<unknown>(response.text ?? '{}'), fallback);
+  } catch (error) {
+    logger.warn('Failed to generate voice conversation recap with Gemini.', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return {
+      ...fallback,
+      contextual_answer: fallback.contextualAnswer,
+      key_questions: [],
+      useful_takeaways: [],
+      suggested_places: [],
+    };
   }
 }
 
