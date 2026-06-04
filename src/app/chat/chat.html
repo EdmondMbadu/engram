@@ -1543,6 +1543,157 @@
     </div>
   }
 
+  @if (voiceSummaryModal(); as summaryModal) {
+    <div class="fixed inset-0 flex items-end justify-center p-2 sm:p-4 md:items-center md:p-8" style="z-index: 10000;">
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" (click)="closeVoiceSummaryModal()"></div>
+      <div class="relative max-h-[calc(100dvh-1rem)] w-full max-w-xl overflow-y-auto rounded-t-[1.5rem] border border-white/10 bg-[var(--surface)] shadow-[var(--shadow-elevated)] sm:rounded-[1.75rem]">
+        <div class="relative overflow-hidden border-b border-white/5 px-4 py-4 sm:px-6 sm:py-5">
+          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(20,184,166,0.16),transparent_34%),linear-gradient(135deg,rgba(214,169,74,0.12),transparent_58%)]"></div>
+          <div class="relative flex items-start justify-between gap-4">
+            <div class="min-w-0">
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Voice recap</p>
+              <h2 class="mt-2 text-xl font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.05em]">
+                @if (voiceSummarySent()) {
+                  Recap sent
+                } @else {
+                  Send this conversation?
+                }
+              </h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:leading-7">
+                @if (voiceSummarySent()) {
+                  Your {{ summaryModal.cityName }} voice chat recap is on its way.
+                } @else {
+                  Send a concise summary, useful links, and the transcript to your email.
+                }
+              </p>
+            </div>
+            <button
+              type="button"
+              class="shrink-0 rounded-full p-2 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)] disabled:opacity-50"
+              [disabled]="voiceSummarySending()"
+              (click)="closeVoiceSummaryModal()"
+              aria-label="Close voice recap dialog"
+            >
+              <span class="material-symbols-outlined text-lg">close</span>
+            </button>
+          </div>
+        </div>
+
+        @if (!voiceSummarySent()) {
+          <form class="space-y-4 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:space-y-5 sm:px-6 sm:py-6" (submit)="sendVoiceSummaryEmail($event)">
+            <div class="rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-4">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">summarize</span>
+                <p class="text-sm leading-6 text-[var(--text)]">{{ summaryModal.preview }}</p>
+              </div>
+            </div>
+
+            <div class="grid gap-2.5 sm:grid-cols-2">
+              <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
+                <span class="material-symbols-outlined mt-0.5 text-[1.05rem] text-[var(--accent)]">mark_email_read</span>
+                <div>
+                  <p class="text-sm font-black text-[var(--text)]">Email recap</p>
+                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Summary plus transcript excerpt.</p>
+                </div>
+              </div>
+              <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
+                <span class="material-symbols-outlined mt-0.5 text-[1.05rem] text-[var(--accent)]">link</span>
+                <div>
+                  <p class="text-sm font-black text-[var(--text)]">Useful links</p>
+                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Includes the wiki and a recap card when ready.</p>
+                </div>
+              </div>
+            </div>
+
+            <label class="block">
+              <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Email address</span>
+              <input
+                type="email"
+                class="theme-input mt-2 w-full rounded-2xl px-4 py-3 text-sm text-[var(--text)]"
+                [value]="voiceSummaryEmail()"
+                (input)="onVoiceSummaryEmailInput($event)"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+            </label>
+
+            @if (!isSignedIn()) {
+              <p class="rounded-2xl border border-dashed border-white/15 bg-white/[0.025] px-4 py-3 text-xs leading-5 text-[var(--muted)]">
+                You can send this without an account. To keep future recaps together,
+                <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="font-black text-[var(--accent)] underline-offset-4 hover:underline">sign in</a>.
+              </p>
+            }
+
+            @if (voiceSummaryError()) {
+              <div class="error-banner rounded-2xl px-4 py-3 text-sm">
+                {{ voiceSummaryError() }}
+              </div>
+            }
+
+            <div class="sticky bottom-0 -mx-4 flex flex-col-reverse gap-3 border-t border-white/5 bg-[var(--surface)] px-4 pt-3 sm:static sm:mx-0 sm:flex-row sm:justify-end sm:border-0 sm:bg-transparent sm:px-0 sm:pt-0">
+              <button type="button" class="ghost-btn justify-center !px-4 !py-3 text-sm" [disabled]="voiceSummarySending()" (click)="closeVoiceSummaryModal()">
+                Skip
+              </button>
+              <button type="submit" class="primary-btn justify-center !px-5 !py-3 text-sm" [disabled]="voiceSummarySending() || !voiceSummaryEmail().trim()">
+                @if (voiceSummarySending()) {
+                  <span class="flex items-center gap-2">
+                    <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                    <span>Sending...</span>
+                  </span>
+                } @else {
+                  <span class="material-symbols-outlined text-base">send</span>
+                  <span>Send recap</span>
+                }
+              </button>
+            </div>
+          </form>
+        } @else {
+          <div class="space-y-4 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-6">
+            <div class="rounded-2xl border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-4 py-4">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">check_circle</span>
+                <div>
+                  <p class="text-sm font-black text-[var(--text)]">Sent to {{ summaryModal.sentTo || voiceSummaryEmail() }}</p>
+                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">The email includes your recap and transcript excerpt.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              @if (summaryModal.answerCardUrl) {
+                <a
+                  class="primary-btn justify-center !px-5 !py-3 text-sm"
+                  [href]="summaryModal.answerCardUrl"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <span class="material-symbols-outlined text-base">open_in_new</span>
+                  <span>Open recap card</span>
+                </a>
+              }
+              @if (summaryModal.continueChatUrl) {
+                <a
+                  class="ghost-btn justify-center !px-5 !py-3 text-sm"
+                  [href]="summaryModal.continueChatUrl"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <span class="material-symbols-outlined text-base">chat</span>
+                  <span>Continue chat</span>
+                </a>
+              }
+            </div>
+
+            <button type="button" class="ghost-btn w-full justify-center !px-4 !py-3 text-sm" (click)="closeVoiceSummaryModal()">
+              Done
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
   @if (shareModalOpen()) {
     <div class="fixed inset-0 z-50 flex items-end justify-center p-4 md:items-center md:p-8">
       <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" (click)="closeShareModal()"></div>

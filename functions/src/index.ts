@@ -1485,6 +1485,209 @@ async function sendAtlasSubscriptionEmail(params: {
   });
 }
 
+type VoiceSummaryTranscriptEntry = {
+  role: 'user' | 'agent';
+  text: string;
+};
+
+type VoiceConversationSummary = {
+  title: string;
+  summary: string;
+  keyQuestions: string[];
+  takeaways: string[];
+  transcriptText: string;
+};
+
+function normalizeVoiceSummaryTranscript(value: unknown): VoiceSummaryTranscriptEntry[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item): VoiceSummaryTranscriptEntry | null => {
+      if (!item || typeof item !== 'object') {
+        return null;
+      }
+      const data = item as Record<string, unknown>;
+      const role = data.role === 'user' ? 'user' : data.role === 'agent' || data.role === 'assistant' ? 'agent' : null;
+      const text = typeof data.text === 'string' ? data.text.replace(/\s+/g, ' ').trim().slice(0, 1000) : '';
+      if (!role || !text || /^voice session ended:/i.test(text)) {
+        return null;
+      }
+      return { role, text };
+    })
+    .filter((item): item is VoiceSummaryTranscriptEntry => !!item)
+    .slice(-40);
+}
+
+function shortVoiceSummaryLine(value: string, maxLength = 180): string {
+  const cleaned = value.replace(/\s+/g, ' ').trim();
+  if (cleaned.length <= maxLength) {
+    return cleaned;
+  }
+  return `${cleaned.slice(0, maxLength - 1).trim()}…`;
+}
+
+function buildVoiceConversationSummary(params: {
+  atlasName: string;
+  cityName: string | null;
+  transcript: VoiceSummaryTranscriptEntry[];
+}): VoiceConversationSummary {
+  const placeName = params.cityName || params.atlasName || 'this wiki';
+  const userMessages = params.transcript.filter((item) => item.role === 'user').map((item) => item.text);
+  const agentMessages = params.transcript.filter((item) => item.role === 'agent').map((item) => item.text);
+  const keyQuestions = userMessages.slice(0, 4).map((text) => shortVoiceSummaryLine(text, 160));
+  const takeaways = agentMessages
+    .filter((text) => !/^hello\b/i.test(text))
+    .slice(0, 4)
+    .map((text) => shortVoiceSummaryLine(text, 190));
+  const summaryParts = [
+    userMessages[0] ? `You asked about ${shortVoiceSummaryLine(userMessages[0], 120)}` : `You had a voice conversation about ${placeName}.`,
+    agentMessages[0] ? `The wiki responded with local context for ${placeName}.` : '',
+  ].filter(Boolean);
+  const transcriptText = params.transcript
+    .map((item) => `${item.role === 'user' ? 'You' : 'My living wiki'}: ${item.text}`)
+    .join('\n');
+
+  return {
+    title: `${placeName} voice chat recap`,
+    summary: summaryParts.join(' '),
+    keyQuestions,
+    takeaways,
+    transcriptText,
+  };
+}
+
+function buildVoiceConversationSummaryEmail(params: {
+  recipientEmail: string;
+  atlasName: string;
+  cityName: string | null;
+  summary: VoiceConversationSummary;
+  answerCardUrl: string | null;
+  continueChatUrl: string;
+}) {
+  const placeName = params.cityName || params.atlasName || 'this wiki';
+  const subject = `Your My living wiki voice recap for ${placeName}`;
+  const safeRecipientEmail = escapeHtml(params.recipientEmail);
+  const safePlaceName = escapeHtml(placeName);
+  const safeTitle = escapeHtml(params.summary.title);
+  const safeSummary = escapeHtml(params.summary.summary);
+  const safeContinueChatUrl = escapeHtml(params.continueChatUrl);
+  const safeAnswerCardUrl = params.answerCardUrl ? escapeHtml(params.answerCardUrl) : null;
+  const keyQuestionsHtml = params.summary.keyQuestions.length
+    ? params.summary.keyQuestions.map((text) => `<li style="margin:0 0 8px;">${escapeHtml(text)}</li>`).join('')
+    : '<li style="margin:0 0 8px;">Your voice questions are included in the transcript below.</li>';
+  const takeawaysHtml = params.summary.takeaways.length
+    ? params.summary.takeaways.map((text) => `<li style="margin:0 0 8px;">${escapeHtml(text)}</li>`).join('')
+    : '<li style="margin:0 0 8px;">Open the chat page to continue exploring this wiki.</li>';
+  const transcriptHtml = params.summary.transcriptText
+    .split('\n')
+    .slice(0, 16)
+    .map((line) => `<p style="margin:0 0 10px;color:#3f4d45;font-size:13px;line-height:1.55;">${escapeHtml(line)}</p>`)
+    .join('');
+
+  const text = `Hi ${params.recipientEmail},
+
+Here is your My living wiki voice recap for ${placeName}.
+
+${params.summary.summary}
+
+Questions and prompts:
+${params.summary.keyQuestions.map((item) => `- ${item}`).join('\n') || '- See transcript below.'}
+
+Useful takeaways:
+${params.summary.takeaways.map((item) => `- ${item}`).join('\n') || '- Continue in the wiki chat.'}
+
+${params.answerCardUrl ? `Open recap card:\n${params.answerCardUrl}\n\n` : ''}Continue the chat:
+${params.continueChatUrl}
+
+Transcript:
+${params.summary.transcriptText}
+
+The My living wiki Team`;
+
+  const html = `
+    <div style="font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;max-width:680px;margin:0 auto;padding:0;background:#f6f8f5;">
+      <div style="background:linear-gradient(135deg,#07160f 0%,#1c7c41 68%,#d6a94a 100%);padding:34px 30px;border-radius:20px 20px 0 0;">
+        <h1 style="color:#ffffff;margin:0;font-size:27px;font-weight:900;letter-spacing:-0.02em;">My living wiki</h1>
+        <p style="color:rgba(255,255,255,0.78);margin:10px 0 0;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">Voice recap</p>
+      </div>
+      <div style="background:#ffffff;padding:30px;border:1px solid #e3e8df;border-top:none;border-radius:0 0 20px 20px;">
+        <p style="color:#111827;font-size:15px;line-height:1.65;margin:0 0 18px;">Hi <strong>${safeRecipientEmail}</strong>,</p>
+        <h2 style="color:#0d1f15;font-size:24px;line-height:1.15;margin:0 0 12px;font-weight:900;letter-spacing:-0.03em;">${safeTitle}</h2>
+        <p style="color:#3f4d45;font-size:15px;line-height:1.65;margin:0 0 22px;">${safeSummary}</p>
+        <div style="background:#f8faf7;border:1px solid #dfe8dc;border-radius:16px;padding:18px 20px;margin:0 0 20px;">
+          <p style="margin:0 0 10px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Questions and prompts</p>
+          <ul style="margin:0;padding-left:20px;color:#2f3d35;font-size:14px;line-height:1.55;">${keyQuestionsHtml}</ul>
+        </div>
+        <div style="background:#fffaf0;border:1px solid #eedfaf;border-radius:16px;padding:18px 20px;margin:0 0 22px;">
+          <p style="margin:0 0 10px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Useful takeaways</p>
+          <ul style="margin:0;padding-left:20px;color:#2f3d35;font-size:14px;line-height:1.55;">${takeawaysHtml}</ul>
+        </div>
+        <div style="text-align:center;margin:26px 0;">
+          ${safeAnswerCardUrl ? `<a href="${safeAnswerCardUrl}" style="background:#0f2417;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Open Recap Card</a>` : ''}
+          <a href="${safeContinueChatUrl}" style="background:#1c7c41;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Continue in ${safePlaceName}</a>
+        </div>
+        <div style="border-top:1px solid #e5e7eb;margin:24px 0 0;padding-top:20px;">
+          <p style="margin:0 0 12px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Transcript excerpt</p>
+          ${transcriptHtml}
+        </div>
+        <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+        <p style="color:#9ca3af;font-size:13px;margin:0;">The My living wiki Team</p>
+      </div>
+    </div>
+  `;
+
+  return { subject, text, html };
+}
+
+async function createVoiceConversationAnswerCard(params: {
+  uid: string | null;
+  atlasId: string | null;
+  atlasName: string | null;
+  cityHint: string | null;
+  question: string;
+  answer: string;
+}): Promise<{ id: string; url: string } | null> {
+  if (!params.answer.trim() || params.answer.length < 120) {
+    return null;
+  }
+
+  const generated = await generateAnswerCard({
+    question: params.question.slice(0, 2000),
+    answer: params.answer.slice(0, 8000),
+    atlasName: params.atlasName,
+    cityHint: params.cityHint,
+    locations: [],
+  });
+  const record: AnswerCardRecord = {
+    owner_user_id: params.uid,
+    atlas_id: params.atlasId,
+    atlas_name: params.atlasName,
+    question: params.question.slice(0, 2000),
+    answer_preview: params.answer.slice(0, 900),
+    title: generated.title,
+    subtitle: generated.subtitle,
+    key_facts: generated.key_facts,
+    did_you_know: generated.did_you_know,
+    mappable_locations: [],
+    source_thread_id: null,
+    source_message_id: null,
+    source_message_kind: null,
+    source_answer_mode: 'internet',
+    answer_quiz_id: null,
+    like_count: 0,
+    created_at: FieldValue.serverTimestamp(),
+    updated_at: FieldValue.serverTimestamp(),
+  };
+  const docRef = db.collection('answer_cards').doc();
+  await docRef.set(record);
+  return {
+    id: docRef.id,
+    url: `${publicAppUrl}/share/answer-card/${encodeURIComponent(docRef.id)}`,
+  };
+}
+
 type NewsletterSourceLink = {
   title: string;
   url: string;
@@ -5131,6 +5334,166 @@ function getPublicChatVisitorContext(request: {
     visitorEmail: null,
   };
 }
+
+export const sendVoiceConversationSummary = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 90,
+    memory: '512MiB',
+    cors: true,
+    secrets: [sendgridApiKey, geminiApiKey],
+  },
+  async (request) => {
+    const requesterUid = request.auth?.uid ?? null;
+    const anonymousVisitorId = normalizeAnonymousVisitorId(request.data?.anonymousVisitorId);
+    if (!requesterUid && !anonymousVisitorId) {
+      throw new HttpsError('unauthenticated', 'Authentication or an anonymous visitor session is required.');
+    }
+
+    const requestedEmail = normalizeUserEmail(request.data?.recipientEmail);
+    const authEmail = normalizeUserEmail((request.auth?.token ?? {}).email);
+    const recipientEmail = requestedEmail || authEmail;
+    if (!isValidEmail(recipientEmail)) {
+      throw new HttpsError('invalid-argument', 'Enter a valid email address.');
+    }
+
+    const transcript = normalizeVoiceSummaryTranscript(request.data?.transcript);
+    const hasUserTurn = transcript.some((item) => item.role === 'user');
+    const hasAgentTurn = transcript.some((item) => item.role === 'agent');
+    if (transcript.length < 2 || !hasUserTurn || !hasAgentTurn) {
+      throw new HttpsError('invalid-argument', 'A voice recap needs at least one user message and one wiki response.');
+    }
+
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const atlas = await loadAnswerCardAtlas(atlasId, requesterUid);
+    const requestAtlasName = typeof request.data?.atlasName === 'string' ? request.data.atlasName.trim().slice(0, 160) : '';
+    const requestCityName = typeof request.data?.cityName === 'string' ? request.data.cityName.trim().slice(0, 120) : '';
+    const requestCountryName = typeof request.data?.cityCountry === 'string' ? request.data.cityCountry.trim().slice(0, 120) : '';
+    const requestAtlasSlug = typeof request.data?.atlasSlug === 'string' ? request.data.atlasSlug.trim().slice(0, 160) : '';
+    const cityConfig = atlas?.city_config && typeof atlas.city_config === 'object'
+      ? atlas.city_config as Record<string, unknown>
+      : null;
+    const atlasName = typeof atlas?.name === 'string' && atlas.name.trim()
+      ? atlas.name.trim()
+      : requestAtlasName || 'My living wiki';
+    const cityName = typeof cityConfig?.city_name === 'string' && cityConfig.city_name.trim()
+      ? cityConfig.city_name.trim()
+      : requestCityName || null;
+    const regionName = typeof cityConfig?.region_name === 'string' && cityConfig.region_name.trim()
+      ? cityConfig.region_name.trim()
+      : requestCountryName || null;
+    const atlasSlug = typeof atlas?.slug === 'string' && atlas.slug.trim()
+      ? atlas.slug.trim()
+      : requestAtlasSlug || null;
+    const continueChatUrl = atlasSlug
+      ? `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}`
+      : publicAppUrl;
+    const summary = buildVoiceConversationSummary({
+      atlasName,
+      cityName,
+      transcript,
+    });
+    const firstUserQuestion = transcript.find((item) => item.role === 'user')?.text
+      ?? `Voice conversation about ${cityName || atlasName}`;
+    const cardAnswer = [
+      summary.summary,
+      summary.keyQuestions.length ? `Questions:\n${summary.keyQuestions.map((item) => `- ${item}`).join('\n')}` : '',
+      summary.takeaways.length ? `Useful takeaways:\n${summary.takeaways.map((item) => `- ${item}`).join('\n')}` : '',
+      `Transcript:\n${summary.transcriptText}`,
+    ].filter(Boolean).join('\n\n');
+    let answerCardId: string | null = null;
+    let answerCardUrl: string | null = null;
+
+    if (request.data?.createAnswerCard !== false) {
+      try {
+        const card = await createVoiceConversationAnswerCard({
+          uid: requesterUid,
+          atlasId,
+          atlasName,
+          cityHint: [cityName, regionName].filter(Boolean).join(', ') || null,
+          question: firstUserQuestion,
+          answer: cardAnswer,
+        });
+        answerCardId = card?.id ?? null;
+        answerCardUrl = card?.url ?? null;
+      } catch (error) {
+        logger.warn('Voice conversation recap card generation failed; continuing with email only.', {
+          atlasId,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
+
+    const apiKey = sendgridApiKey.value();
+    if (!apiKey) {
+      throw new HttpsError('failed-precondition', 'SendGrid API key is not configured.');
+    }
+
+    sgMail.setApiKey(apiKey);
+    const email = buildVoiceConversationSummaryEmail({
+      recipientEmail,
+      atlasName,
+      cityName,
+      summary,
+      answerCardUrl,
+      continueChatUrl,
+    });
+    const [response] = await sgMail.send({
+      to: recipientEmail,
+      from: {
+        email: inviteSenderEmail,
+        name: 'My living wiki',
+      },
+      subject: email.subject,
+      text: email.text,
+      html: email.html,
+    });
+
+    const docRef = db.collection('voice_conversation_summaries').doc();
+    await docRef.set({
+      user_id: requesterUid,
+      anonymous_visitor_id: requesterUid ? null : anonymousVisitorId,
+      recipient_email: recipientEmail,
+      atlas_id: atlasId,
+      atlas_name: atlasName,
+      atlas_slug: atlasSlug,
+      city_name: cityName,
+      city_region: regionName,
+      language: typeof request.data?.language === 'string' ? request.data.language.trim().slice(0, 80) : null,
+      country: typeof request.data?.country === 'string' ? request.data.country.trim().slice(0, 80) : null,
+      conversation_id: typeof request.data?.conversationId === 'string' ? request.data.conversationId.trim().slice(0, 160) : null,
+      summary_title: summary.title,
+      summary_text: summary.summary,
+      key_questions: summary.keyQuestions,
+      takeaways: summary.takeaways,
+      transcript_count: transcript.length,
+      transcript_preview: summary.transcriptText.slice(0, 2000),
+      answer_card_id: answerCardId,
+      continue_chat_url: continueChatUrl,
+      sendgrid_status_code: response.statusCode,
+      sendgrid_message_id: response.headers?.['x-message-id'] ?? null,
+      created_at: FieldValue.serverTimestamp(),
+    });
+
+    logger.info('Voice conversation summary email accepted by SendGrid.', {
+      summaryId: docRef.id,
+      atlasId,
+      recipientEmail,
+      statusCode: response.statusCode,
+      answerCardId,
+    });
+
+    return {
+      sent: true,
+      summaryId: docRef.id,
+      recipientEmail,
+      summary: summary.summary,
+      answerCardId,
+      answerCardUrl,
+      continueChatUrl,
+    };
+  },
+);
 
 export const prepareDocumentUpload = onCall({ region: callableRegion, cors: true }, async (request) => {
   if (!request.auth?.uid) {

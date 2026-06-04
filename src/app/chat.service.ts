@@ -97,7 +97,22 @@ type ElevenLabsVoiceSessionResponse = {
   voiceAccent?: string | null;
 };
 
-type StreamingAnswerCallbacks = {
+export type VoiceSummaryTranscriptItem = {
+  role: 'user' | 'agent';
+  text: string;
+};
+
+export type SendVoiceConversationSummaryResponse = {
+  sent: boolean;
+  summaryId?: string;
+  recipientEmail: string;
+  summary: string;
+  answerCardId?: string | null;
+  answerCardUrl?: string | null;
+  continueChatUrl?: string | null;
+};
+
+export type StreamingAnswerCallbacks = {
   onDelta: (delta: string) => void;
 };
 
@@ -600,6 +615,59 @@ export class ChatService {
       voiceLanguage: options.voiceLanguage ?? null,
       voiceCountry: options.voiceCountry ?? null,
       voiceAccent: options.voiceAccent ?? null,
+    });
+    return data;
+  }
+
+  async sendVoiceConversationSummary(options: {
+    atlasId?: string | null;
+    atlasName?: string | null;
+    atlasSlug?: string | null;
+    cityName?: string | null;
+    cityCountry?: string | null;
+    anonymousVisitorId?: string | null;
+    recipientEmail: string;
+    transcript: VoiceSummaryTranscriptItem[];
+    conversationId?: string | null;
+    language?: string | null;
+    country?: string | null;
+    createAnswerCard?: boolean;
+  }): Promise<SendVoiceConversationSummaryResponse | null> {
+    if (!this.functions) {
+      return null;
+    }
+
+    const sendSummary = httpsCallable<
+      {
+        atlasId?: string | null;
+        atlasName?: string | null;
+        atlasSlug?: string | null;
+        cityName?: string | null;
+        cityCountry?: string | null;
+        anonymousVisitorId?: string | null;
+        recipientEmail: string;
+        transcript: VoiceSummaryTranscriptItem[];
+        conversationId?: string | null;
+        language?: string | null;
+        country?: string | null;
+        createAnswerCard?: boolean;
+      },
+      SendVoiceConversationSummaryResponse
+    >(this.functions, 'sendVoiceConversationSummary');
+
+    const { data } = await sendSummary({
+      atlasId: options.atlasId ?? null,
+      atlasName: options.atlasName ?? null,
+      atlasSlug: options.atlasSlug ?? null,
+      cityName: options.cityName ?? null,
+      cityCountry: options.cityCountry ?? null,
+      anonymousVisitorId: options.anonymousVisitorId ?? null,
+      recipientEmail: options.recipientEmail,
+      transcript: options.transcript,
+      conversationId: options.conversationId ?? null,
+      language: options.language ?? null,
+      country: options.country ?? null,
+      createAnswerCard: options.createAnswerCard !== false,
     });
     return data;
   }

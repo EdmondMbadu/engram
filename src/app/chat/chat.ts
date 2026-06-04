@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { AnswerCardService } from '../answer-card.service';
 import { AnswerQuizService } from '../answer-quiz.service';
-import { ChatService } from '../chat.service';
+import { ChatService, type VoiceSummaryTranscriptItem } from '../chat.service';
 import { DocumentsService } from '../documents.service';
 import { WikiService } from '../wiki.service';
 import { PlaceReviewsService, type CityReviewedPlace } from '../place-reviews.service';
@@ -65,6 +65,22 @@ interface VoiceTranscriptItem {
   id: string;
   role: 'user' | 'agent';
   text: string;
+}
+
+interface VoiceSummaryModal {
+  transcript: VoiceTranscriptItem[];
+  preview: string;
+  cityName: string;
+  atlasId: string | null;
+  atlasName: string | null;
+  atlasSlug: string | null;
+  cityCountry: string | null;
+  conversationId: string | null;
+  language: string | null;
+  country: string | null;
+  sentTo: string | null;
+  answerCardUrl: string | null;
+  continueChatUrl: string | null;
 }
 
 type RealtimeVoiceStatus = ElevenLabsStatus | 'error';
@@ -292,6 +308,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private voiceScrollLockTimer: ReturnType<typeof setInterval> | null = null;
   private realtimeVoiceConversation: ElevenLabsConversation | null = null;
   private realtimeVoiceEndingByUser = false;
+  private realtimeVoiceSummaryOffered = false;
   private pendingVoiceLanguagePrompt: string | null = null;
   private realtimeVoiceMeterFrame: number | null = null;
 
@@ -341,6 +358,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly realtimeVoiceVisualScale = computed(() => (1 + this.realtimeVoiceEnergyLevel() * 0.12).toFixed(3));
   readonly realtimeVoiceVisualGlow = computed(() => `${Math.round(22 + this.realtimeVoiceEnergyLevel() * 70)}px`);
   readonly realtimeVoiceVisualBar = computed(() => (0.2 + this.realtimeVoiceEnergyLevel() * 1.7).toFixed(3));
+  readonly voiceSummaryModal = signal<VoiceSummaryModal | null>(null);
+  readonly voiceSummaryEmail = signal('');
+  readonly voiceSummarySending = signal(false);
+  readonly voiceSummaryError = signal<string | null>(null);
+  readonly voiceSummarySent = signal(false);
 
   // Language flag carousel (World Cup 2026 nations + China / Russia / India).
   readonly voiceLanguages = signal<VoiceLanguageOption[]>(VOICE_LANGUAGES);
@@ -1444,6 +1466,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
     this.stopAnswerAudio();
     this.realtimeVoiceEndingByUser = false;
+    this.realtimeVoiceSummaryOffered = false;
     this.activeVoiceLanguageCode.set(language?.code ?? null);
     this.activeVoiceCountry.set(language?.country ?? null);
     this.realtimeVoicePanelOpen.set(true);
@@ -1609,6 +1632,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     } catch (error) {
       this.realtimeVoiceError.set(this.authService.toFriendlyError(error));
     } finally {
+      this.offerVoiceSummaryIfUseful();
       this.realtimeVoiceStatus.set('disconnected');
       this.realtimeVoiceMode.set(null);
       this.realtimeVoiceMuted.set(false);
@@ -1663,7 +1687,69 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.realtimeVoiceTextInput.set('');
   }
 
+  private meaningfulVoiceTranscript(): VoiceTranscriptItem[] {
+    return this.realtimeVoiceTranscript()
+      .filter((item) => !item.id.startsWith('voice-greeting-'))
+      .filter((item) => !/^voice session ended:/i.test(item.text.trim()))
+      .filter((item) => item.text.trim().length > 0);
+  }
+
+  private shouldOfferVoiceSummary(transcript: VoiceTranscriptItem[]): boolean {
+    const hasUserTurn = transcript.some((item) => item.role === 'user');
+    const hasAgentTurn = transcript.some((item) => item.role === 'agent');
+    const totalTextLength = transcript.reduce((total, item) => total + item.text.trim().length, 0);
+    return hasUserTurn && hasAgentTurn && totalTextLength >= 40;
+  }
+
+  private buildVoiceSummaryPreview(transcript: VoiceTranscriptItem[]): string {
+    const cityName = this.currentWikiName() || 'this wiki';
+    const firstUserTurn = transcript.find((item) => item.role === 'user')?.text.trim();
+    if (!firstUserTurn) {
+      return `Send yourself a recap of this ${cityName} voice chat, including the transcript and helpful links.`;
+    }
+    const compactQuestion = firstUserTurn.length > 130
+      ? `${firstUserTurn.slice(0, 127).trim()}...`
+      : firstUserTurn;
+    return `Send yourself a recap of this ${cityName} voice chat, starting with: "${compactQuestion}"`;
+  }
+
+  private offerVoiceSummaryIfUseful(): void {
+    if (this.realtimeVoiceSummaryOffered) {
+      return;
+    }
+    const transcript = this.meaningfulVoiceTranscript();
+    if (!this.shouldOfferVoiceSummary(transcript)) {
+      return;
+    }
+
+    const atlas = this.currentWikiAtlas();
+    const selectedLanguage = this.selectedVoiceLanguage();
+    this.realtimeVoiceSummaryOffered = true;
+    this.voiceSummaryModal.set({
+      transcript,
+      preview: this.buildVoiceSummaryPreview(transcript),
+      cityName: this.currentWikiName() || 'this wiki',
+      atlasId: this.currentVoiceAtlasId(),
+      atlasName: this.currentWikiName() || null,
+      atlasSlug: typeof atlas?.slug === 'string' ? atlas.slug : null,
+      cityCountry: this.currentWikiCountry() || null,
+      conversationId: this.realtimeVoiceConversationId(),
+      language: selectedLanguage?.language ?? null,
+      country: this.activeVoiceCountry() ?? selectedLanguage?.country ?? null,
+      sentTo: null,
+      answerCardUrl: null,
+      continueChatUrl: null,
+    });
+    this.voiceSummaryEmail.set(this.currentUserEmail()?.trim() ?? '');
+    this.voiceSummaryError.set(null);
+    this.voiceSummarySent.set(false);
+  }
+
   private handleRealtimeVoiceDisconnect(details: ElevenLabsDisconnectionDetails): void {
+    const endedByUser = this.realtimeVoiceEndingByUser || details.reason === 'user';
+    if (endedByUser) {
+      this.offerVoiceSummaryIfUseful();
+    }
     this.realtimeVoiceConversation = null;
     this.stopRealtimeVoiceMeter();
     this.realtimeVoiceStatus.set('disconnected');
@@ -1673,7 +1759,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.activeVoiceCountry.set(null);
     this.pendingVoiceLanguagePrompt = null;
 
-    if (this.realtimeVoiceEndingByUser || details.reason === 'user') {
+    if (endedByUser) {
       this.realtimeVoicePanelOpen.set(false);
       this.realtimeVoiceEndingByUser = false;
       return;
@@ -2653,6 +2739,70 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       this.subscribeError.set(this.authService.toFriendlyError(error));
     } finally {
       this.isSubscribing.set(false);
+    }
+  }
+
+  onVoiceSummaryEmailInput(event: Event): void {
+    this.voiceSummaryEmail.set((event.target as HTMLInputElement).value);
+    this.voiceSummaryError.set(null);
+  }
+
+  closeVoiceSummaryModal(): void {
+    if (this.voiceSummarySending()) {
+      return;
+    }
+    this.voiceSummaryModal.set(null);
+    this.voiceSummaryError.set(null);
+    this.voiceSummarySent.set(false);
+  }
+
+  async sendVoiceSummaryEmail(event: Event): Promise<void> {
+    event.preventDefault();
+    const modal = this.voiceSummaryModal();
+    const email = this.voiceSummaryEmail().trim().toLowerCase();
+    if (!modal || this.voiceSummarySending()) {
+      return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.voiceSummaryError.set('Enter a valid email address.');
+      return;
+    }
+
+    const transcript: VoiceSummaryTranscriptItem[] = modal.transcript.map((item) => ({
+      role: item.role,
+      text: item.text,
+    }));
+    this.voiceSummarySending.set(true);
+    this.voiceSummaryError.set(null);
+    try {
+      const result = await this.chatService.sendVoiceConversationSummary({
+        atlasId: modal.atlasId,
+        atlasName: modal.atlasName,
+        atlasSlug: modal.atlasSlug,
+        cityName: modal.cityName,
+        cityCountry: modal.cityCountry,
+        anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
+        recipientEmail: email,
+        transcript,
+        conversationId: modal.conversationId,
+        language: modal.language,
+        country: modal.country,
+        createAnswerCard: true,
+      });
+      if (!result?.sent) {
+        throw new Error('The recap could not be sent.');
+      }
+      this.voiceSummarySent.set(true);
+      this.voiceSummaryModal.set({
+        ...modal,
+        sentTo: result.recipientEmail,
+        answerCardUrl: result.answerCardUrl ?? null,
+        continueChatUrl: result.continueChatUrl ?? null,
+      });
+    } catch (error) {
+      this.voiceSummaryError.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.voiceSummarySending.set(false);
     }
   }
 
