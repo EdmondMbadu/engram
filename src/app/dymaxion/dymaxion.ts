@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { geoPath } from 'd3-geo';
 import { geoAirocean } from 'd3-geo-polygon';
+import { feature as topojsonFeature } from 'topojson-client';
+import type { Feature, FeatureCollection, Geometry } from 'geojson';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -55,6 +57,25 @@ interface MarkerEntry {
   b: HTMLButtonElement;
 }
 
+interface DymaxionCountry {
+  id: string;
+  name: string;
+  key: string;
+  d: string;
+  box: [number, number, number, number];
+  centroid: [number, number];
+  cities: DymaxionCity[];
+  el: SVGPathElement | null;
+}
+
+interface ProjectionFrame {
+  path: ReturnType<typeof geoPath>;
+  transform: string;
+  place(lng: number, lat: number): { x: number; y: number } | null;
+  bounds(geometry: Feature<Geometry>): [number, number, number, number] | null;
+  centroid(geometry: Feature<Geometry>): [number, number] | null;
+}
+
 const REGIONS: Region[] = [
   { id: 'north-america', label: 'N. America' },
   { id: 'south-america', label: 'S. America' },
@@ -73,10 +94,24 @@ const SUB_FOCI: Focus[] = [
 ];
 
 const MAX_Z = 4.6; // region buttons
-const MAX_DRILL = 5.5; // cluster drill-down
+const MAX_DRILL = 80; // cluster drill-down; high enough to separate tight city groups
+const MAX_COUNTRY_Z = 8.2; // country boundary drill-down
 const PAD = 0.22;
-const CLUSTER_TH = 28; // px: markers closer than this on screen get grouped
-const SEP_TH = 30; // px: target separation when drilling into a cluster
+const CLUSTER_TH = 28; // px: world-view cluster radius
+const MIN_CLUSTER_TH = 10; // px: deep-zoom cluster radius
+const MAP_W = 1000;
+const MAP_H = 475;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const COUNTRY_TOPOLOGY_URL = '/assets/maps/countries-50m.json';
+const COUNTRY_ALIASES: Record<string, string> = {
+  'czech-republic': 'czechia',
+  'democratic-republic-of-the-congo': 'dem-rep-congo',
+  drc: 'dem-rep-congo',
+  'south-korea': 'south-korea',
+  'turks-and-caicos-islands': 'turks-and-caicos-is',
+  'united-states': 'united-states-of-america',
+  usa: 'united-states-of-america',
+};
 
 @Component({
   selector: 'app-dymaxion',
@@ -97,6 +132,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('frame') frameRef!: ElementRef<HTMLDivElement>;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('countryLayer') countryLayerRef!: ElementRef<SVGSVGElement>;
   @ViewChild('clusterLayer') clusterLayerRef!: ElementRef<HTMLDivElement>;
   @ViewChild('picker') pickerRef!: ElementRef<HTMLDivElement>;
   @ViewChild('zoomout') zoomoutRef!: ElementRef<HTMLButtonElement>;
@@ -109,8 +145,12 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly activeFocus = signal<string>('all');
   readonly searchValue = signal('');
   readonly selected = signal<DymaxionCity | null>(null);
+  readonly selectedCountry = signal<DymaxionCountry | null>(null);
 
   private cities: DymaxionCity[] = [];
+  private countries: DymaxionCountry[] = [];
+  private countriesByKey = new Map<string, DymaxionCountry>();
+  private countryLayerTransform = '';
   private markerEls: MarkerEntry[] = [];
   private view = { z: 1, tx: 0, ty: 0 };
   private query = '';
@@ -138,18 +178,32 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isLoading.set(false);
       return;
     }
+    void this.loadCountries();
+    this.refreshFoci();
+    this.isLoading.set(false);
+    this.dataReady = true;
+    this.tryInitMap();
+    void this.loadCities();
+  }
+
+  private async loadCities(): Promise<void> {
     try {
       const atlases = await this.atlasService.listPublicAtlases();
       this.cities = this.buildCities(atlases);
     } catch {
       this.cities = [];
-    } finally {
-      this.cityCount.set(this.cities.length);
-      this.isLoading.set(false);
     }
 
-    // Region chips: only show continents that actually have cities, plus the
-    // fixed sub-zooms.
+    this.cityCount.set(this.cities.length);
+    this.refreshFoci();
+    this.attachCitiesToCountries();
+    this.renderCountryLayer();
+    if (this.viewReady) {
+      this.rebuildMarkers();
+    }
+  }
+
+  private refreshFoci(): void {
     const regionsWithCities = REGIONS.filter((r) =>
       this.cities.some((c) => c.region === r.id),
     );
@@ -158,9 +212,6 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       ...regionsWithCities.map((r) => ({ id: r.id, label: r.label, region: r.id })),
       ...SUB_FOCI,
     ]);
-
-    this.dataReady = true;
-    this.tryInitMap();
   }
 
   ngAfterViewInit(): void {
@@ -190,21 +241,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   /* ===================== DATA ===================== */
 
   private buildCities(atlases: AtlasItem[]): DymaxionCity[] {
-    const W = 1000;
-    const H = 475;
-    const proj = geoAirocean();
-    const [[bx0, by0], [bx1, by1]] = geoPath(proj).bounds({ type: 'Sphere' });
-    const sx = W / (bx1 - bx0);
-    const sy = H / (by1 - by0);
-    const place = (lng: number, lat: number) => {
-      const projected = proj([lng, lat]);
-      if (!projected) return null;
-      const [px, py] = projected;
-      return {
-        x: ((px - bx0) * sx) / W * 100,
-        y: ((py - by0) * sy) / H * 100,
-      };
-    };
+    const frame = this.createProjectionFrame();
 
     const cities: DymaxionCity[] = [];
     for (const atlas of atlases) {
@@ -212,7 +249,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       const lat = cfg?.latitude;
       const lng = cfg?.longitude;
       if (typeof lat !== 'number' || typeof lng !== 'number') continue;
-      const pos = place(lng, lat);
+      const pos = frame.place(lng, lat);
       if (!pos) continue;
 
       const name = (cfg?.city_name?.trim() || atlas.name || '')
@@ -233,6 +270,110 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     cities.sort((a, b) => a.name.localeCompare(b.name));
     return cities;
+  }
+
+  private async loadCountries(): Promise<void> {
+    try {
+      const response = await fetch(COUNTRY_TOPOLOGY_URL);
+      if (!response.ok) {
+        throw new Error(`Country topology request failed: ${response.status}`);
+      }
+      const topology = await response.json() as { objects?: Record<string, unknown> };
+      const countriesObject = topology.objects?.['countries'];
+      if (!countriesObject) {
+        throw new Error('Country topology is missing countries object.');
+      }
+
+      const converted = topojsonFeature<Geometry, { name?: string }>(topology, countriesObject);
+      if (converted.type !== 'FeatureCollection') {
+        return;
+      }
+
+      const collection = converted as FeatureCollection<Geometry, { name?: string }>;
+      const frame = this.createProjectionFrame();
+      this.countryLayerTransform = frame.transform;
+      this.countries = collection.features
+        .map((country, index): DymaxionCountry | null => {
+          const name = country.properties?.name?.trim();
+          if (!name) return null;
+          const d = frame.path(country) ?? '';
+          const box = frame.bounds(country);
+          const centroid = frame.centroid(country);
+          if (!d || !box || !centroid) return null;
+          return {
+            id: `${country.id ?? index}`,
+            name,
+            key: countryKey(name),
+            d,
+            box,
+            centroid,
+            cities: [],
+            el: null,
+          };
+        })
+        .filter((country): country is DymaxionCountry => !!country);
+      this.countriesByKey = new Map(this.countries.map((country) => [country.key, country]));
+      this.attachCitiesToCountries();
+      this.renderCountryLayer();
+      this.applyFilter();
+    } catch {
+      // The city marker map is still usable if the optional country topology is
+      // unavailable; the UI simply falls back to city-only clusters.
+      this.countries = [];
+      this.countriesByKey.clear();
+    }
+  }
+
+  private createProjectionFrame(): ProjectionFrame {
+    const projection = geoAirocean();
+    const path = geoPath(projection);
+    const [[bx0, by0], [bx1, by1]] = path.bounds({ type: 'Sphere' });
+    const sx = MAP_W / (bx1 - bx0);
+    const sy = MAP_H / (by1 - by0);
+    const toPercent = ([px, py]: [number, number]) => ({
+      x: ((px - bx0) * sx) / MAP_W * 100,
+      y: ((py - by0) * sy) / MAP_H * 100,
+    });
+
+    return {
+      path,
+      transform: `matrix(${sx} 0 0 ${sy} ${-bx0 * sx} ${-by0 * sy})`,
+      place: (lng: number, lat: number) => {
+        const projected = projection([lng, lat]);
+        if (!projected) return null;
+        return toPercent(projected as [number, number]);
+      },
+      bounds: (geometry: Feature<Geometry>) => {
+        const [[x0, y0], [x1, y1]] = path.bounds(geometry);
+        if (![x0, y0, x1, y1].every(Number.isFinite)) return null;
+        const p0 = toPercent([x0, y0]);
+        const p1 = toPercent([x1, y1]);
+        return [p0.x, p0.y, p1.x, p1.y];
+      },
+      centroid: (geometry: Feature<Geometry>) => {
+        const [x, y] = path.centroid(geometry);
+        if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+        const p = toPercent([x, y]);
+        return [p.x, p.y];
+      },
+    };
+  }
+
+  private attachCitiesToCountries(): void {
+    this.countries.forEach((country) => {
+      country.cities = [];
+    });
+
+    for (const city of this.cities) {
+      const country = this.countriesByKey.get(countryKey(city.country));
+      if (country) {
+        country.cities.push(city);
+      }
+    }
+
+    this.countries.forEach((country) => {
+      country.cities.sort((a, b) => a.name.localeCompare(b.name));
+    });
   }
 
   // Bucket a city into one of the six map regions, used only for the zoom chips.
@@ -300,7 +441,16 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initMap(): void {
     if (!this.frameRef || !this.canvasRef) return;
+    this.renderCountryLayer();
+    this.viewReady = true;
+    this.rebuildMarkers();
+  }
+
+  private rebuildMarkers(): void {
+    if (!this.canvasRef || !this.clusterLayerRef) return;
     const canvas = this.canvasRef.nativeElement;
+    this.markerEls.forEach(({ b }) => b.remove());
+    this.clusterLayerRef.nativeElement.innerHTML = '';
 
     this.markerEls = this.cities.map((c, i) => {
       const b = document.createElement('button');
@@ -319,7 +469,6 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       return { c, b };
     });
 
-    this.viewReady = true;
     this.applyFilter();
   }
 
@@ -374,6 +523,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       f = { id: 'all', label: 'World' };
     }
     this.activeFocus.set(f.id);
+    this.selectedCountry.set(null);
     if (this.hintRef) this.hintRef.nativeElement.style.opacity = '0';
     if (!this.viewReady) return;
     if (f.id === 'all') this.resetZoom();
@@ -387,6 +537,11 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private inFocus(c: DymaxionCity): boolean {
+    const selectedCountry = this.selectedCountry();
+    if (selectedCountry && countryKey(c.country) !== selectedCountry.key) {
+      return false;
+    }
+
     const id = this.activeFocus();
     if (id === 'all') return true;
     const f = this.foci().find((x) => x.id === id);
@@ -412,6 +567,10 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     const frame = this.frameRef.nativeElement;
     const fw = frame.clientWidth;
     const fh = frame.clientHeight;
+    const clusterThreshold = Math.max(
+      MIN_CLUSTER_TH,
+      CLUSTER_TH / Math.sqrt(Math.max(1, this.view.z)),
+    );
     const items = this.markerEls
       .filter((m) => this.inFocus(m.c))
       .map((m) => {
@@ -440,7 +599,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       let cy = items[i].sy;
       for (let j = 0; j < items.length; j++) {
         if (used.has(j)) continue;
-        if (Math.hypot(items[j].sx - cx, items[j].sy - cy) < CLUSTER_TH) {
+        if (Math.hypot(items[j].sx - cx, items[j].sy - cy) < clusterThreshold) {
           used.add(j);
           g.push(items[j]);
           cx = g.reduce((s, k) => s + k.sx, 0) / g.length;
@@ -455,6 +614,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   private applyFilter(): void {
     if (!this.viewReady) return;
     this.closePicker();
+    this.syncCountryLayerState();
     const clusterLayer = this.clusterLayerRef.nativeElement;
     clusterLayer.innerHTML = '';
     this.markerEls.forEach((m) => {
@@ -519,17 +679,74 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
         minFrac = Math.min(minFrac, Math.hypot(dx, dy));
       }
     }
-    const zNeed = SEP_TH / minFrac;
-    if (zNeed <= MAX_DRILL && zNeed > this.view.z + 0.1) {
-      const xs = members.map((c) => c.x);
-      const ys = members.map((c) => c.y);
-      this.applyZoom(
-        [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)],
-        MAX_DRILL,
-      );
+    const xs = members.map((c) => c.x);
+    const ys = members.map((c) => c.y);
+    const box: [number, number, number, number] = [
+      Math.min(...xs),
+      Math.min(...ys),
+      Math.max(...xs),
+      Math.max(...ys),
+    ];
+    if (minFrac > 0 && this.view.z < MAX_DRILL - 0.1) {
+      this.applyZoom(box, MAX_DRILL);
       this.applyFilter();
-    } else {
-      this.openPicker(members);
+      return;
+    }
+
+    // Last resort for identical or still-overlapping coordinates: keep the
+    // choice on top of the map instead of sending users to a country list.
+    this.openPicker(members);
+  }
+
+  private renderCountryLayer(): void {
+    if (!this.countryLayerRef || this.countries.length === 0 || !this.countryLayerTransform) {
+      return;
+    }
+
+    const layer = this.countryLayerRef.nativeElement;
+    layer.innerHTML = '';
+    const group = document.createElementNS(SVG_NS, 'g');
+    group.setAttribute('transform', this.countryLayerTransform);
+
+    for (const country of this.countries) {
+      const path = document.createElementNS(SVG_NS, 'path');
+      path.setAttribute('d', country.d);
+      path.setAttribute('class', 'country-shape');
+      path.setAttribute('role', 'button');
+      path.setAttribute('tabindex', '0');
+      path.setAttribute(
+        'aria-label',
+        country.cities.length > 0
+          ? `${country.name}, ${country.cities.length} city wikis`
+          : `${country.name}, no city wikis yet`,
+      );
+      path.addEventListener('click', (event) => {
+        event.stopPropagation();
+        this.selectCountry(country);
+      });
+      path.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          this.selectCountry(country);
+        }
+      });
+      country.el = path;
+      group.appendChild(path);
+    }
+
+    layer.appendChild(group);
+    this.syncCountryLayerState();
+  }
+
+  private syncCountryLayerState(): void {
+    const selectedCountry = this.selectedCountry();
+    for (const country of this.countries) {
+      if (!country.el) continue;
+      const active = selectedCountry?.key === country.key;
+      const populated = country.cities.length > 0;
+      country.el.classList.toggle('active', active);
+      country.el.classList.toggle('has-cities', populated);
+      country.el.classList.toggle('muted', !!selectedCountry && !active);
     }
   }
 
@@ -580,6 +797,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   onSearch(value: string): void {
     this.searchValue.set(value);
     this.query = value.trim().toLowerCase();
+    this.selectedCountry.set(null);
 
     // Clearing the box: drop any region focus, zoom back to the world.
     if (!this.query) {
@@ -613,6 +831,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private selectCity(c: DymaxionCity, b: HTMLButtonElement | null): void {
     this.selected.set(c);
+    this.selectedCountry.set(null);
     this.markerEls.forEach((m) => m.b.classList.toggle('sel', m.b === b));
     if (this.hintRef) this.hintRef.nativeElement.style.opacity = '0';
     // Let the panel render, then bring it into view.
@@ -622,6 +841,16 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
         block: 'nearest',
       });
     }, 0);
+  }
+
+  private selectCountry(country: DymaxionCountry): void {
+    this.selected.set(null);
+    this.markerEls.forEach((m) => m.b.classList.remove('sel'));
+    this.selectedCountry.set(country);
+    this.activeFocus.set('all');
+    this.applyZoom(country.box, MAX_COUNTRY_Z);
+    if (this.hintRef) this.hintRef.nativeElement.style.opacity = '0';
+    this.applyFilter();
   }
 
   openSelected(): void {
@@ -640,6 +869,16 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   regionLabel(id: RegionId): string {
     return REGIONS.find((r) => r.id === id)?.label ?? id;
   }
+}
+
+function countryKey(value: string): string {
+  const key = value
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/\bis\.\b/g, 'islands')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return COUNTRY_ALIASES[key] ?? key;
 }
 
 function escapeHtml(s: string): string {

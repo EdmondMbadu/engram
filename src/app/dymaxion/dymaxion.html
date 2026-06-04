@@ -76,6 +76,14 @@
         </button>
         <div class="dym-map-canvas" #canvas>
           <img src="/assets/image/dymaxion-map.png" alt="Dymaxion (Fuller) projection world map" draggable="false" />
+          <svg
+            class="dym-country-layer"
+            #countryLayer
+            viewBox="0 0 1000 475"
+            preserveAspectRatio="none"
+            role="img"
+            aria-label="Projected country boundaries"
+          ></svg>
           <div #clusterLayer></div>
           <!-- markers injected here -->
         </div>
@@ -83,7 +91,7 @@
           <div class="dym-hint">Loading the world…</div>
         } @else {
           <div class="dym-hint" #hint>
-            Hover the world · pick a region to zoom · numbered pips = clusters, click to open
+            Hover cities · click numbered clusters to zoom deeper
           </div>
         }
       </div>
