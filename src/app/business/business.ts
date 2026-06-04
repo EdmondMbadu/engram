@@ -4,6 +4,19 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 type BillingCycle = 'monthly' | 'annual';
 
+type DecalLanguage = {
+  code: string;
+  flag: string;
+  label: string;
+  greeting: string;
+};
+
+type DecalSize = {
+  id: string;
+  label: string;
+  detail: string;
+};
+
 type BusinessFeature = {
   icon: string;
   title: string;
@@ -28,10 +41,68 @@ type BusinessPlan = {
 export class BusinessComponent {
   readonly billingCycle = signal<BillingCycle>('monthly');
   readonly isBusinessVideoOpen = signal(false);
+  readonly businessName = signal('Brauhaus Schmitz');
+  readonly businessNeighborhood = signal('South Street');
+  readonly businessCategory = signal('German bierhall');
+  readonly businessDescription = signal('Authentic German beer hall, 40+ taps, WC watch parties, private events, and a South Street crowd that wants the real thing.');
+  readonly selectedLanguageCodes = signal(['en', 'es', 'de', 'pt', 'fr']);
+  readonly selectedDecalSize = signal('window');
+  readonly copiedBusinessLink = signal(false);
   readonly businessVideoUrl =
     'https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/videos%2FBusiness%20Welcome%202.mp4?alt=media&token=47615cb9-00b7-4531-bbcd-e2188c6572c2';
 
   readonly citySignals = ['Philadelphia', 'Austin', 'London', 'Tokyo', 'Nairobi', 'Sao Paulo'];
+
+  readonly decalLanguages: DecalLanguage[] = [
+    { code: 'en', flag: '🇺🇸', label: 'English', greeting: 'Hello' },
+    { code: 'es', flag: '🇪🇸', label: 'Español', greeting: '¡Hola!' },
+    { code: 'de', flag: '🇩🇪', label: 'Deutsch', greeting: 'Guten Tag' },
+    { code: 'pt', flag: '🇧🇷', label: 'Português', greeting: 'Olá' },
+    { code: 'fr', flag: '🇫🇷', label: 'Français', greeting: 'Bonjour' },
+    { code: 'zh', flag: '🇨🇳', label: '中文', greeting: '你好' },
+    { code: 'ar', flag: '🇸🇦', label: 'العربية', greeting: 'مرحبا' },
+    { code: 'ko', flag: '🇰🇷', label: '한국어', greeting: '안녕' },
+  ];
+
+  readonly decalSizes: DecalSize[] = [
+    { id: 'window', label: 'Window cling 8×10"', detail: 'Best for storefront glass' },
+    { id: 'door', label: 'Door decal 5×7"', detail: 'Compact entrance sticker' },
+    { id: 'tent', label: 'Table tent 4×6"', detail: 'Countertop or host stand' },
+    { id: 'card', label: 'Counter card', detail: 'Small checkout display' },
+  ];
+
+  readonly businessCategories = [
+    'German bierhall',
+    'Restaurant',
+    'Cafe',
+    'Bar',
+    'Bakery',
+    'Shop',
+    'Gallery',
+    'Hotel',
+    'Venue',
+  ];
+
+  readonly businessChatUrl = computed(() => {
+    const name = this.slugify(this.businessName());
+    return `mylivingwiki.com/philly${name ? `?business=${name}` : ''}`;
+  });
+
+  readonly businessQrImageUrl = computed(() =>
+    `https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=18&data=${encodeURIComponent(`https://${this.businessChatUrl()}`)}`,
+  );
+
+  readonly selectedDecalLanguages = computed(() => {
+    const selected = new Set(this.selectedLanguageCodes());
+    return this.decalLanguages.filter((language) => selected.has(language.code)).slice(0, 6);
+  });
+
+  readonly decalDownloadName = computed(() => `${this.slugify(this.businessName()) || 'my-living-wiki'}-decal.svg`);
+
+  readonly decalDownloadHref = computed(() => {
+    const svg = this.buildDecalSvg();
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  });
 
   readonly features: BusinessFeature[] = [
     {
@@ -133,11 +204,112 @@ export class BusinessComponent {
     this.billingCycle.set(cycle);
   }
 
+  onBusinessNameInput(event: Event): void {
+    this.businessName.set((event.target as HTMLInputElement).value);
+  }
+
+  onBusinessNeighborhoodInput(event: Event): void {
+    this.businessNeighborhood.set((event.target as HTMLInputElement).value);
+  }
+
+  onBusinessCategoryInput(event: Event): void {
+    this.businessCategory.set((event.target as HTMLSelectElement).value);
+  }
+
+  onBusinessDescriptionInput(event: Event): void {
+    this.businessDescription.set((event.target as HTMLInputElement).value);
+  }
+
+  toggleDecalLanguage(code: string): void {
+    this.selectedLanguageCodes.update((codes) => {
+      if (codes.includes(code)) {
+        return codes.length > 1 ? codes.filter((item) => item !== code) : codes;
+      }
+      return [...codes, code].slice(0, 6);
+    });
+  }
+
+  selectDecalSize(sizeId: string): void {
+    this.selectedDecalSize.set(sizeId);
+  }
+
+  orbitTransform(index: number, total: number): string {
+    const angle = -90 + (360 / Math.max(total, 1)) * index;
+    return `rotate(${angle}deg) translate(7rem) rotate(${-angle}deg)`;
+  }
+
+  async copyBusinessLink(): Promise<void> {
+    if (typeof navigator === 'undefined' || !navigator.clipboard) {
+      return;
+    }
+    await navigator.clipboard.writeText(`https://${this.businessChatUrl()}`);
+    this.copiedBusinessLink.set(true);
+    setTimeout(() => this.copiedBusinessLink.set(false), 1600);
+  }
+
   openBusinessVideo(): void {
     this.isBusinessVideoOpen.set(true);
   }
 
   closeBusinessVideo(): void {
     this.isBusinessVideoOpen.set(false);
+  }
+
+  private slugify(value: string): string {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, ' and ')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80);
+  }
+
+  private escapeSvg(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  private buildDecalSvg(): string {
+    const business = this.escapeSvg(this.businessName() || 'Your business');
+    const category = this.escapeSvg(this.businessCategory());
+    const url = this.escapeSvg(this.businessChatUrl());
+    const qrUrl = this.escapeSvg(this.businessQrImageUrl());
+    const languages = this.selectedDecalLanguages();
+    const greetings = languages.map((language, index) => {
+      const x = index % 2 === 0 ? 55 : 310;
+      const y = 140 + Math.floor(index / 2) * 62;
+      return `<text x="${x}" y="${y}" font-size="30" font-weight="800" fill="${index % 3 === 0 ? '#176a3a' : index % 3 === 1 ? '#1f66b1' : '#9f3a2c'}">${this.escapeSvg(language.greeting)}</text>`;
+    }).join('');
+    const flags = languages.map((language, index) => {
+      const positions = [[760, 108], [885, 170], [890, 300], [760, 368], [632, 300], [630, 170]];
+      const [x, y] = positions[index] ?? [760, 108];
+      return `<circle cx="${x}" cy="${y}" r="38" fill="#fff" stroke="#cfe3d2" stroke-width="3"/><text x="${x}" y="${y + 10}" text-anchor="middle" font-size="28">${language.flag}</text>`;
+    }).join('');
+
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640">
+      <rect width="1000" height="640" rx="26" fill="#f2faf5"/>
+      <rect x="18" y="18" width="964" height="70" rx="10" fill="#dfeee3"/>
+      <rect x="36" y="34" width="42" height="42" rx="10" fill="#1e8f45"/>
+      <text x="98" y="65" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="900" fill="#092616">${business}</text>
+      <rect x="618" y="34" width="42" height="42" rx="10" fill="#1e8f45"/>
+      <text x="676" y="65" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#092616">Living Wiki · <tspan fill="#1e8f45">Philly</tspan></text>
+      ${greetings}
+      <rect x="222" y="206" width="92" height="152" rx="24" fill="#071b10"/>
+      <rect x="235" y="218" width="66" height="128" rx="18" fill="#ffffff"/>
+      <text x="268" y="294" text-anchor="middle" font-size="34" fill="#1e8f45">▢</text>
+      <circle cx="760" cy="245" r="214" fill="none" stroke="#b9d9c0" stroke-width="3" stroke-dasharray="6 7"/>
+      <rect x="645" y="130" width="230" height="230" rx="16" fill="#ffffff" stroke="#d8eadc" stroke-width="2"/>
+      <image href="${qrUrl}" x="672" y="157" width="176" height="176" preserveAspectRatio="xMidYMid meet"/>
+      ${flags}
+      <line x1="32" y1="500" x2="968" y2="500" stroke="#cfe3d2" stroke-width="2"/>
+      <rect x="344" y="526" width="312" height="56" rx="28" fill="#ffffff" stroke="#cfe3d2" stroke-width="2"/>
+      <text x="500" y="563" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900" fill="#1e8f45">phone → mic → chat</text>
+      <text x="500" y="618" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900" fill="#1e8f45">${url}</text>
+      <text x="36" y="610" font-family="Inter, Arial, sans-serif" font-size="18" fill="#456252">${category}</text>
+    </svg>`;
   }
 }

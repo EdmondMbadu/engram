@@ -172,6 +172,217 @@
       </div>
     </section>
 
+    <section id="claim" class="border-b border-[var(--line)] bg-[var(--surface)]">
+      <div class="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-10">
+        <div>
+          <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">Claim your business</p>
+          <h2 class="mt-3 max-w-3xl text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">
+            Turn your storefront into a multilingual city guide.
+          </h2>
+          <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
+            Businesses can claim a local profile, tune what the voice guide knows, and download a decal that sends customers into the city wiki by voice.
+          </p>
+
+          <div class="mt-8 grid gap-5">
+            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
+              <div class="flex items-start gap-4">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">1</span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">Find your business</h3>
+                  <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                    <label class="block sm:col-span-2">
+                      <span class="text-sm font-bold text-[var(--muted)]">Business name</span>
+                      <input
+                        type="text"
+                        class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
+                        [value]="businessName()"
+                        (input)="onBusinessNameInput($event)"
+                      />
+                    </label>
+                    <label class="block">
+                      <span class="text-sm font-bold text-[var(--muted)]">Neighborhood</span>
+                      <input
+                        type="text"
+                        class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
+                        [value]="businessNeighborhood()"
+                        (input)="onBusinessNeighborhoodInput($event)"
+                      />
+                    </label>
+                    <label class="block">
+                      <span class="text-sm font-bold text-[var(--muted)]">Category</span>
+                      <select
+                        class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
+                        [value]="businessCategory()"
+                        (change)="onBusinessCategoryInput($event)"
+                      >
+                        @for (category of businessCategories; track category) {
+                          <option [value]="category">{{ category }}</option>
+                        }
+                      </select>
+                    </label>
+                  </div>
+                  <p class="mt-3 flex items-center gap-2 text-sm font-semibold leading-6 text-[var(--muted)]">
+                    <span class="material-symbols-outlined text-base">search</span>
+                    We will match this to an existing Philly wiki card or create one if it is new.
+                  </p>
+                </div>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
+              <div class="flex items-start gap-4">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">2</span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">What should your guide know?</h3>
+                  <label class="mt-4 block">
+                    <span class="text-sm font-bold text-[var(--muted)]">Short description customers hear first</span>
+                    <input
+                      type="text"
+                      class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
+                      [value]="businessDescription()"
+                      (input)="onBusinessDescriptionInput($event)"
+                    />
+                  </label>
+                  <div class="mt-4 rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--surface)] px-4 py-5 text-center">
+                    <span class="material-symbols-outlined text-3xl text-[var(--muted)]">upload</span>
+                    <p class="mt-2 text-sm font-bold text-[var(--text)]">Drop menu, hours, specials, PDF, link, or photo</p>
+                    <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Optional for V1. The guide can read these later to answer questions accurately.</p>
+                  </div>
+                  <p class="mt-3 text-sm font-semibold leading-6 text-[var(--muted)]">
+                    Already have a city wiki card? We can pull hours, menu, and tips automatically in the claimed profile flow.
+                  </p>
+                </div>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
+              <div class="flex items-start gap-4">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">3</span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">Languages on your decal</h3>
+                  <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+                    Your guide can support many languages. Pick up to 6 flags to feature in the window or on your site.
+                  </p>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    @for (language of decalLanguages; track language.code) {
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-bold transition-all"
+                        [class.border-[var(--accent)]]="selectedLanguageCodes().includes(language.code)"
+                        [class.bg-[var(--accent)]/10]="selectedLanguageCodes().includes(language.code)"
+                        [class.text-[var(--accent)]]="selectedLanguageCodes().includes(language.code)"
+                        [class.border-[var(--line)]]="!selectedLanguageCodes().includes(language.code)"
+                        [class.text-[var(--text)]]="!selectedLanguageCodes().includes(language.code)"
+                        (click)="toggleDecalLanguage(language.code)"
+                      >
+                        <span>{{ language.flag }}</span>
+                        <span>{{ language.label }}</span>
+                        @if (selectedLanguageCodes().includes(language.code)) {
+                          <span class="material-symbols-outlined text-base">check</span>
+                        }
+                      </button>
+                    }
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
+              <div class="flex items-start gap-4">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">4</span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">Pick a size and finish</h3>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    @for (size of decalSizes; track size.id) {
+                      <button
+                        type="button"
+                        class="rounded-full border px-4 py-2 text-sm font-bold transition-colors"
+                        [class.border-[var(--accent)]]="selectedDecalSize() === size.id"
+                        [class.bg-[var(--accent)]/10]="selectedDecalSize() === size.id"
+                        [class.text-[var(--accent)]]="selectedDecalSize() === size.id"
+                        [class.border-[var(--line)]]="selectedDecalSize() !== size.id"
+                        [class.text-[var(--text)]]="selectedDecalSize() !== size.id"
+                        (click)="selectDecalSize(size.id)"
+                      >
+                        {{ size.label }}
+                      </button>
+                    }
+                  </div>
+                  <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
+                    All sizes use the same QR link. Download a print-ready file now, or claim the profile to order finished decals.
+                  </p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <aside class="lg:sticky lg:top-28 lg:self-start">
+          <p class="mb-3 text-center text-[10px] font-black uppercase tracking-[0.28em] text-[var(--muted)]">Live preview</p>
+          <div class="rounded-[1.75rem] border border-[var(--line)] bg-[var(--bg)] p-4 shadow-[var(--shadow-elevated)]">
+            <div class="overflow-hidden rounded-[1.35rem] border border-[var(--accent)]/20 bg-[#082012] p-4 text-white">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex min-w-0 items-start gap-3">
+                  <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#1f9d4f]">
+                    <span class="material-symbols-outlined text-xl">eco</span>
+                  </span>
+                  <div class="min-w-0">
+                    <p class="truncate text-base font-black">My Living Wiki · <span class="text-emerald-300">Philly</span></p>
+                    <p class="truncate text-sm font-black text-emerald-200">{{ businessName() }}</p>
+                  </div>
+                </div>
+                <span class="rounded-full border border-emerald-300/25 px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200">{{ selectedDecalSize() }}</span>
+              </div>
+
+              <div class="mt-5 rounded-2xl bg-[#f4fbf5] p-3">
+                <img [src]="decalDownloadHref()" alt="Live business decal preview" class="block w-full rounded-xl" />
+              </div>
+
+              <div class="mt-5 text-center">
+                <h3 class="text-lg font-black">Talk to us in your language</h3>
+                <p class="mt-1 text-sm font-semibold text-emerald-100">Scan to chat by voice with {{ businessName() || 'this shop' }}’s guide</p>
+                <p class="mt-4 text-sm font-black text-emerald-300">{{ businessChatUrl() }}</p>
+              </div>
+            </div>
+
+            <div class="mt-4 grid gap-3">
+              <a
+                class="ghost-btn justify-center !px-5 !py-3 text-sm"
+                [href]="decalDownloadHref()"
+                [download]="decalDownloadName()"
+              >
+                <span class="material-symbols-outlined text-base">download</span>
+                <span>Download print-ready SVG</span>
+              </a>
+              <a routerLink="/create-account" class="ghost-btn justify-center !px-5 !py-3 text-sm">
+                <span class="material-symbols-outlined text-base">inventory_2</span>
+                <span>Order printed decals</span>
+              </a>
+              <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="'https://' + businessChatUrl()" target="_blank" rel="noopener">
+                <span class="material-symbols-outlined text-base">qr_code_2</span>
+                <span>Test my QR link</span>
+              </a>
+            </div>
+
+            <div class="mt-5 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Add to your site</p>
+                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Paste this link on your website, menu, profile, or QR placard.</p>
+                </div>
+                <button type="button" class="rounded-full border border-[var(--line)] p-2 text-[var(--muted)] hover:text-[var(--accent)]" (click)="copyBusinessLink()" aria-label="Copy business link">
+                  <span class="material-symbols-outlined text-base">{{ copiedBusinessLink() ? 'check' : 'content_copy' }}</span>
+                </button>
+              </div>
+              <div class="mt-3 rounded-xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-sm font-bold text-[var(--text)]">
+                https://{{ businessChatUrl() }}
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
     <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-10">
       <div class="mx-auto max-w-3xl text-center">
         <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">What you get</p>
