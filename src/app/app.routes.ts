@@ -33,6 +33,11 @@ export const routes: Routes = [
   { path: 'marketing', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'business', component: BusinessComponent, title: 'For Business | My living wiki' },
   {
+    path: 'business/claim',
+    loadComponent: () => import('./business-claim/business-claim').then((m) => m.BusinessClaimComponent),
+    title: 'Claim Your Business | My living wiki',
+  },
+  {
     // Lazy-loaded so the d3 projection libraries stay out of the initial bundle.
     path: 'dymaxion',
     loadComponent: () => import('./dymaxion/dymaxion').then((m) => m.DymaxionComponent),

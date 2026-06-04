@@ -4,6 +4,7 @@ export const serverRoutes: ServerRoute[] = [
   // Marketing / public pages can be prerendered
   { path: '', renderMode: RenderMode.Prerender },
   { path: 'business', renderMode: RenderMode.Prerender },
+  { path: 'business/claim', renderMode: RenderMode.Client },
 
   // Dymaxion map reads public atlases from Firebase + measures the DOM — client-render
   { path: 'dymaxion', renderMode: RenderMode.Client },
