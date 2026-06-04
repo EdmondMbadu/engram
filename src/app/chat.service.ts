@@ -627,6 +627,7 @@ export class ChatService {
     cityCountry?: string | null;
     anonymousVisitorId?: string | null;
     recipientEmail: string;
+    recipientName?: string | null;
     transcript: VoiceSummaryTranscriptItem[];
     conversationId?: string | null;
     language?: string | null;
@@ -646,6 +647,7 @@ export class ChatService {
         cityCountry?: string | null;
         anonymousVisitorId?: string | null;
         recipientEmail: string;
+        recipientName?: string | null;
         transcript: VoiceSummaryTranscriptItem[];
         conversationId?: string | null;
         language?: string | null;
@@ -663,6 +665,7 @@ export class ChatService {
       cityCountry: options.cityCountry ?? null,
       anonymousVisitorId: options.anonymousVisitorId ?? null,
       recipientEmail: options.recipientEmail,
+      recipientName: options.recipientName ?? null,
       transcript: options.transcript,
       conversationId: options.conversationId ?? null,
       language: options.language ?? null,

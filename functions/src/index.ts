@@ -1199,6 +1199,15 @@ function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function firstNameFromDisplayName(value: unknown): string | null {
+  const text = typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
+  if (!text || text.includes('@')) {
+    return null;
+  }
+  const first = text.split(' ')[0]?.replace(/[^a-zA-ZÀ-ÿ'’-]/g, '').trim() ?? '';
+  return first.length >= 2 ? first.slice(0, 40) : null;
+}
+
 function normalizeAdminProfiles(value: unknown): Record<string, unknown>[] {
   if (!Array.isArray(value)) {
     return [];
@@ -1615,6 +1624,7 @@ function buildVoiceConversationSummary(params: {
 
 function buildVoiceConversationSummaryEmail(params: {
   recipientEmail: string;
+  recipientName: string | null;
   atlasName: string;
   cityName: string | null;
   summary: VoiceConversationSummary;
@@ -1624,7 +1634,8 @@ function buildVoiceConversationSummaryEmail(params: {
 }) {
   const placeName = params.cityName || params.atlasName || 'this wiki';
   const subject = `Your My living wiki voice recap for ${placeName}`;
-  const safeRecipientEmail = escapeHtml(params.recipientEmail);
+  const greetingName = params.recipientName || params.recipientEmail;
+  const safeGreetingName = escapeHtml(greetingName);
   const safePlaceName = escapeHtml(placeName);
   const safeTitle = escapeHtml(params.summary.title);
   const safeSummary = escapeHtml(params.summary.summary);
@@ -1666,7 +1677,7 @@ function buildVoiceConversationSummaryEmail(params: {
     .map((line) => `<p style="margin:0 0 10px;color:#3f4d45;font-size:13px;line-height:1.55;">${escapeHtml(line)}</p>`)
     .join('');
 
-  const text = `Hi ${params.recipientEmail},
+  const text = `Hi ${greetingName},
 
 Here is your My living wiki voice recap for ${placeName}.
 
@@ -1693,7 +1704,7 @@ The My living wiki Team`;
         <p style="color:rgba(255,255,255,0.78);margin:10px 0 0;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">Voice recap</p>
       </div>
       <div style="background:#ffffff;padding:30px;border:1px solid #e3e8df;border-top:none;border-radius:0 0 20px 20px;">
-        <p style="color:#111827;font-size:15px;line-height:1.65;margin:0 0 18px;">Hi <strong>${safeRecipientEmail}</strong>,</p>
+        <p style="color:#111827;font-size:15px;line-height:1.65;margin:0 0 18px;">Hi <strong>${safeGreetingName}</strong>,</p>
         <h2 style="color:#0d1f15;font-size:24px;line-height:1.15;margin:0 0 12px;font-weight:900;letter-spacing:-0.03em;">${safeTitle}</h2>
         <p style="color:#3f4d45;font-size:15px;line-height:1.65;margin:0 0 18px;">${safeSummary}</p>
         <div style="background:#f8faf7;border:1px solid #dfe8dc;border-radius:16px;padding:18px 20px;margin:0 0 20px;">
@@ -3609,6 +3620,7 @@ export const createElevenLabsVoiceSession = onCall(
         atlas_name: atlasName ?? '',
         answer_mode: 'internet',
         visitor_id: visitorId,
+        link_delivery_instruction: 'If the user asks for links, websites, maps, addresses, or asks you to send links, tell them the relevant links will be collected and included in the recap email after they hang up. Do not say you cannot send links directly.',
         preferred_language_code: voicePreference.languageCode ?? '',
         preferred_language: voicePreference.language ?? '',
         preferred_country: voicePreference.country ?? '',
@@ -5563,6 +5575,9 @@ export const sendVoiceConversationSummary = onCall(
     if (!isValidEmail(recipientEmail)) {
       throw new HttpsError('invalid-argument', 'Enter a valid email address.');
     }
+    const authToken = (request.auth?.token ?? {}) as { name?: unknown };
+    const recipientName = firstNameFromDisplayName(request.data?.recipientName)
+      ?? firstNameFromDisplayName(authToken.name);
 
     const transcript = normalizeVoiceSummaryTranscript(request.data?.transcript);
     const hasUserTurn = transcript.some((item) => item.role === 'user');
@@ -5670,6 +5685,7 @@ export const sendVoiceConversationSummary = onCall(
     sgMail.setApiKey(apiKey);
     const email = buildVoiceConversationSummaryEmail({
       recipientEmail,
+      recipientName,
       atlasName,
       cityName,
       summary,
@@ -5693,6 +5709,7 @@ export const sendVoiceConversationSummary = onCall(
       user_id: requesterUid,
       anonymous_visitor_id: requesterUid ? null : anonymousVisitorId,
       recipient_email: recipientEmail,
+      recipient_name: recipientName,
       atlas_id: atlasId,
       atlas_name: atlasName,
       atlas_slug: atlasSlug,

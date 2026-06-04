@@ -1463,6 +1463,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const accentProfile = language ? this.voiceAccentProfile(language) : null;
     const cityName = this.currentWikiName();
     const cityCountry = this.currentWikiCountry();
+    const linkDeliveryInstruction = 'If the user asks you to send, text, email, or provide links during the voice call, do not say you cannot send links. Say: "I will collect the relevant links and they will be included in your recap email after you hang up." Continue answering naturally, and mention that the user can send the recap from the post-call prompt.';
 
     this.stopAnswerAudio();
     this.realtimeVoiceEndingByUser = false;
@@ -1505,9 +1506,35 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         current_city_country: cityCountry,
         current_living_wiki: cityName ? `My Living Wiki, ${cityName}` : 'My Living Wiki',
         requested_intro_greeting: greeting,
+        link_delivery_instruction: linkDeliveryInstruction,
         city_context_instruction: cityName
-          ? `This voice conversation is for the My Living Wiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked.`
-          : 'This voice conversation is for the current My Living Wiki page.',
+          ? `This voice conversation is for the My Living Wiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${linkDeliveryInstruction}`
+          : `This voice conversation is for the current My Living Wiki page. ${linkDeliveryInstruction}`,
+      };
+      const voicePromptOverride = [
+        'You are the My living wiki realtime voice guide.',
+        voiceDynamicVariables.city_context_instruction,
+        'When asked for links, websites, maps, addresses, or a list to send later, explain that the links will be collected and included in the recap email after the user hangs up.',
+        'Do not claim that you cannot send links directly; instead, explain the post-call recap flow clearly and briefly.',
+      ].join('\n');
+      const voiceOverrides = {
+        agent: {
+          prompt: {
+            prompt: voicePromptOverride,
+          },
+          ...(session.firstMessageOverrideEnabled
+            ? {
+                firstMessage: greeting,
+              }
+            : {}),
+        },
+        ...(session.voiceOverrideEnabled && session.voiceId
+          ? {
+              tts: {
+                voiceId: session.voiceId,
+              },
+            }
+          : {}),
       };
 
       const { Conversation } = await import('@elevenlabs/client');
@@ -1525,29 +1552,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
                 preferred_voice_locale: `${language.language} (${language.country})`,
                 voice_accent_instruction: accentProfile.instruction,
               },
-              ...(session.voiceOverrideEnabled && session.voiceId
-                || session.firstMessageOverrideEnabled
-                ? {
-                    overrides: {
-                      ...(session.firstMessageOverrideEnabled
-                        ? {
-                            agent: {
-                              firstMessage: greeting,
-                            },
-                          }
-                        : {}),
-                      ...(session.voiceOverrideEnabled && session.voiceId
-                        ? {
-                            tts: {
-                              voiceId: session.voiceId,
-                            },
-                          }
-                        : {}),
-                    },
-                  }
-                : {}),
+              overrides: voiceOverrides,
             }
-          : { dynamicVariables: voiceDynamicVariables }),
+          : { dynamicVariables: voiceDynamicVariables, overrides: voiceOverrides }),
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
@@ -2783,6 +2790,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         cityCountry: modal.cityCountry,
         anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
         recipientEmail: email,
+        recipientName: this.currentUserName() || null,
         transcript,
         conversationId: modal.conversationId,
         language: modal.language,
