@@ -67,9 +67,22 @@
 
     <!-- map -->
     <div class="dym-mapstage">
-      <div class="dym-map-frame" #frame>
+      <div
+        class="dym-map-frame"
+        #frame
+        (wheel)="onMapWheel($event)"
+        (pointerdown)="onMapPointerDown($event)"
+      >
         <span class="dym-tick tl"></span><span class="dym-tick tr"></span>
         <span class="dym-tick bl"></span><span class="dym-tick br"></span>
+        <div class="dym-zoom-controls" aria-label="Map zoom controls">
+          <button class="dym-zoomctl" type="button" (click)="zoomBy(1.45)" aria-label="Zoom in">
+            <span class="material-symbols-outlined">add</span>
+          </button>
+          <button class="dym-zoomctl" type="button" (click)="zoomBy(1 / 1.45)" aria-label="Zoom out">
+            <span class="material-symbols-outlined">remove</span>
+          </button>
+        </div>
         <button class="dym-zoomout" type="button" #zoomout (click)="resetToWorld()" aria-label="Zoom back out to the whole world">
           <span class="material-symbols-outlined" style="font-size:15px">public</span>
           World
@@ -91,7 +104,7 @@
           <div class="dym-hint">Loading the world…</div>
         } @else {
           <div class="dym-hint" #hint>
-            Hover cities · click numbered clusters to zoom deeper
+            Scroll to zoom · drag to pan · hover cities
           </div>
         }
       </div>

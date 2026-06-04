@@ -76,6 +76,15 @@ interface ProjectionFrame {
   centroid(geometry: Feature<Geometry>): [number, number] | null;
 }
 
+interface PanState {
+  pointerId: number;
+  startX: number;
+  startY: number;
+  tx: number;
+  ty: number;
+  moved: boolean;
+}
+
 const REGIONS: Region[] = [
   { id: 'north-america', label: 'N. America' },
   { id: 'south-america', label: 'S. America' },
@@ -153,6 +162,8 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   private countryLayerTransform = '';
   private markerEls: MarkerEntry[] = [];
   private view = { z: 1, tx: 0, ty: 0 };
+  private panState: PanState | null = null;
+  private suppressMapClick = false;
   private query = '';
   private viewReady = false;
   private viewInited = false;
@@ -171,6 +182,31 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   };
   private readonly onKeydown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') this.closePicker();
+  };
+  private readonly onPointerMove = (event: PointerEvent) => {
+    if (!this.panState || !this.viewReady || event.pointerId !== this.panState.pointerId) {
+      return;
+    }
+    const frame = this.frameRef.nativeElement;
+    if (Math.hypot(event.clientX - this.panState.startX, event.clientY - this.panState.startY) > 3) {
+      this.panState.moved = true;
+      event.preventDefault();
+    }
+    const dx = (event.clientX - this.panState.startX) / frame.clientWidth;
+    const dy = (event.clientY - this.panState.startY) / frame.clientHeight;
+    this.setView(this.view.z, this.panState.tx + dx, this.panState.ty + dy);
+  };
+  private readonly onPointerUp = (event: PointerEvent) => {
+    if (!this.panState || event.pointerId !== this.panState.pointerId) return;
+    const moved = this.panState.moved;
+    this.panState = null;
+    if (moved) {
+      this.suppressMapClick = true;
+      window.setTimeout(() => {
+        this.suppressMapClick = false;
+      }, 250);
+    }
+    this.applyView();
   };
 
   async ngOnInit(): Promise<void> {
@@ -219,6 +255,9 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.viewInited = true;
     this.tryInitMap();
     window.addEventListener('resize', this.onResize);
+    window.addEventListener('pointermove', this.onPointerMove);
+    window.addEventListener('pointerup', this.onPointerUp);
+    window.addEventListener('pointercancel', this.onPointerUp);
     document.addEventListener('click', this.onDocClick);
     document.addEventListener('keydown', this.onKeydown);
   }
@@ -234,6 +273,9 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.isBrowser) return;
     if (this.resizeTimer) clearTimeout(this.resizeTimer);
     window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('pointermove', this.onPointerMove);
+    window.removeEventListener('pointerup', this.onPointerUp);
+    window.removeEventListener('pointercancel', this.onPointerUp);
     document.removeEventListener('click', this.onDocClick);
     document.removeEventListener('keydown', this.onKeydown);
   }
@@ -500,21 +542,95 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     z = Math.max(1, Math.min(cap, z));
     let tx = 0.5 - cx * z;
     let ty = 0.5 - cy * z;
-    tx = Math.min(0, Math.max(1 - z, tx));
-    ty = Math.min(0, Math.max(1 - z, ty));
-    this.view = { z, tx, ty };
-    const canvas = this.canvasRef.nativeElement;
-    canvas.style.setProperty('--z', String(z));
-    canvas.style.transform = `translate(${tx * 100}%, ${ty * 100}%) scale(${z})`;
-    this.zoomoutRef?.nativeElement.classList.toggle('show', z > 1.01);
+    this.setView(z, tx, ty);
   }
 
   private resetZoom(): void {
-    this.view = { z: 1, tx: 0, ty: 0 };
+    this.setView(1, 0, 0);
+  }
+
+  zoomBy(factor: number): void {
+    if (!this.viewReady) return;
+    this.zoomAt(0.5, 0.5, factor);
+  }
+
+  onMapWheel(event: WheelEvent): void {
+    if (!this.viewReady) return;
+    event.preventDefault();
+    const rect = this.frameRef.nativeElement.getBoundingClientRect();
+    const sx = this.clamp01((event.clientX - rect.left) / rect.width);
+    const sy = this.clamp01((event.clientY - rect.top) / rect.height);
+    const factor = Math.exp(-event.deltaY * 0.0014);
+    this.zoomAt(sx, sy, factor);
+  }
+
+  onMapPointerDown(event: PointerEvent): void {
+    if (!this.viewReady || this.view.z <= 1.01 || event.button !== 0) return;
+    const target = event.target as Element | null;
+    if (
+      target?.closest(
+        'button, a, input, .marker, .cluster, .dym-picker, .dym-zoom-controls',
+      )
+    ) {
+      return;
+    }
+    this.closePicker();
+    this.panState = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      tx: this.view.tx,
+      ty: this.view.ty,
+      moved: false,
+    };
+    this.frameRef.nativeElement.setPointerCapture?.(event.pointerId);
+    this.applyView();
+  }
+
+  private zoomAt(sx: number, sy: number, factor: number): void {
+    const z = Math.max(1, Math.min(MAX_DRILL, this.view.z * factor));
+    const wx = (sx - this.view.tx) / this.view.z;
+    const wy = (sy - this.view.ty) / this.view.z;
+    this.setView(z, sx - wx * z, sy - wy * z);
+    this.closePicker();
+    if (this.hintRef) this.hintRef.nativeElement.style.opacity = '0';
+    this.applyFilter();
+  }
+
+  private setView(z: number, tx: number, ty: number): void {
+    const clampedZ = Math.max(1, Math.min(MAX_DRILL, z));
+    const [clampedTx, clampedTy] = this.clampPan(clampedZ, tx, ty);
+    this.view = { z: clampedZ, tx: clampedTx, ty: clampedTy };
+    this.applyView();
+  }
+
+  private applyView(): void {
+    if (!this.canvasRef) return;
     const canvas = this.canvasRef.nativeElement;
-    canvas.style.setProperty('--z', '1');
-    canvas.style.transform = 'translate(0,0) scale(1)';
-    this.zoomoutRef?.nativeElement.classList.remove('show');
+    canvas.style.setProperty('--z', String(this.view.z));
+    canvas.style.transform = `translate(${this.view.tx * 100}%, ${this.view.ty * 100}%) scale(${this.view.z})`;
+
+    const frame = this.frameRef?.nativeElement;
+    if (frame) {
+      frame.classList.toggle('is-zoomed', this.view.z > 1.01);
+      frame.classList.toggle('detail-mid', this.view.z >= 3);
+      frame.classList.toggle('detail-deep', this.view.z >= 8);
+      frame.classList.toggle('detail-labels', this.view.z >= 12);
+      frame.classList.toggle('dragging', !!this.panState);
+    }
+    this.zoomoutRef?.nativeElement.classList.toggle('show', this.view.z > 1.01);
+  }
+
+  private clampPan(z: number, tx: number, ty: number): [number, number] {
+    if (z <= 1.01) return [0, 0];
+    return [
+      Math.min(0, Math.max(1 - z, tx)),
+      Math.min(0, Math.max(1 - z, ty)),
+    ];
+  }
+
+  private clamp01(value: number): number {
+    return Math.max(0, Math.min(1, value));
   }
 
   setFocus(f: Focus): void {
@@ -722,6 +838,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       );
       path.addEventListener('click', (event) => {
         event.stopPropagation();
+        if (this.suppressMapClick) return;
         this.selectCountry(country);
       });
       path.addEventListener('keydown', (event) => {
