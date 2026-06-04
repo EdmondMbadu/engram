@@ -465,10 +465,10 @@
 .dym-map-frame .marker.pinned .label::after {
   border-top-color: var(--accent);
 }
-.dym-map-frame.detail-labels .marker:not(.clustered):not(.dim) {
+.dym-map-frame.detail-labels .marker.auto-label:not(.clustered):not(.dim) {
   z-index: 6;
 }
-.dym-map-frame.detail-labels .marker:not(.clustered):not(.dim) .label {
+.dym-map-frame.detail-labels .marker.auto-label:not(.clustered):not(.dim) .label {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }

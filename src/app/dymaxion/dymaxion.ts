@@ -557,6 +557,19 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   onMapWheel(event: WheelEvent): void {
     if (!this.viewReady) return;
     event.preventDefault();
+    if (
+      this.view.z > 1.01 &&
+      Math.abs(event.deltaX) > Math.abs(event.deltaY) * 1.15
+    ) {
+      const frame = this.frameRef.nativeElement;
+      this.setView(
+        this.view.z,
+        this.view.tx - event.deltaX / frame.clientWidth,
+        this.view.ty - event.deltaY / frame.clientHeight,
+      );
+      this.closePicker();
+      return;
+    }
     const rect = this.frameRef.nativeElement.getBoundingClientRect();
     const sx = this.clamp01((event.clientX - rect.left) / rect.width);
     const sy = this.clamp01((event.clientY - rect.top) / rect.height);
@@ -584,6 +597,9 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       moved: false,
     };
     this.frameRef.nativeElement.setPointerCapture?.(event.pointerId);
+    if (target?.closest('.country-shape')) {
+      event.preventDefault();
+    }
     this.applyView();
   }
 
@@ -619,6 +635,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       frame.classList.toggle('dragging', !!this.panState);
     }
     this.zoomoutRef?.nativeElement.classList.toggle('show', this.view.z > 1.01);
+    this.scheduleAutoLabels();
   }
 
   private clampPan(z: number, tx: number, ty: number): [number, number] {
@@ -631,6 +648,60 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private clamp01(value: number): number {
     return Math.max(0, Math.min(1, value));
+  }
+
+  private scheduleAutoLabels(): void {
+    if (!this.isBrowser || !this.viewReady) return;
+    window.requestAnimationFrame(() => this.updateAutoLabels());
+  }
+
+  private updateAutoLabels(): void {
+    if (!this.frameRef || !this.markerEls.length) return;
+    this.markerEls.forEach((m) => m.b.classList.remove('auto-label'));
+    if (this.view.z < 12) return;
+
+    const frameRect = this.frameRef.nativeElement.getBoundingClientRect();
+    const placed: DOMRect[] = [];
+    const candidates = this.markerEls
+      .filter((m) => {
+        if (!this.inFocus(m.c)) return false;
+        if (m.b.classList.contains('clustered') || m.b.classList.contains('dim')) return false;
+        const markerRect = m.b.getBoundingClientRect();
+        return (
+          markerRect.right >= frameRect.left &&
+          markerRect.left <= frameRect.right &&
+          markerRect.bottom >= frameRect.top &&
+          markerRect.top <= frameRect.bottom
+        );
+      })
+      .sort((a, b) => {
+        const aPinned = a.b.classList.contains('pinned') || a.b.classList.contains('sel');
+        const bPinned = b.b.classList.contains('pinned') || b.b.classList.contains('sel');
+        if (aPinned !== bPinned) return aPinned ? -1 : 1;
+        return a.c.name.localeCompare(b.c.name);
+      });
+
+    for (const candidate of candidates) {
+      const label = candidate.b.querySelector<HTMLElement>('.label');
+      if (!label) continue;
+      const rect = label.getBoundingClientRect();
+      const padded = new DOMRect(rect.x - 5, rect.y - 4, rect.width + 10, rect.height + 8);
+      if (
+        padded.left < frameRect.left + 6 ||
+        padded.right > frameRect.right - 6 ||
+        padded.top < frameRect.top + 6 ||
+        padded.bottom > frameRect.bottom - 6
+      ) {
+        continue;
+      }
+      if (placed.some((r) => this.rectsOverlap(r, padded))) continue;
+      candidate.b.classList.add('auto-label');
+      placed.push(padded);
+    }
+  }
+
+  private rectsOverlap(a: DOMRect, b: DOMRect): boolean {
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
   }
 
   setFocus(f: Focus): void {
@@ -777,6 +848,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       m.b.classList.toggle('pinned', isMatch);
     });
     this.shownCount.set(this.markerEls.filter((m) => this.inFocus(m.c)).length);
+    this.scheduleAutoLabels();
   }
 
   private match(c: DymaxionCity): boolean {
