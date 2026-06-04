@@ -1243,17 +1243,31 @@
 
 .lang-carousel--top {
   position: relative;
-  margin: 0 auto 1.35rem;
+  margin: 0 auto 1.1rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
-  border-radius: 1.35rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
+  border-radius: 1.15rem;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, white 4%), color-mix(in srgb, var(--surface) 92%, transparent)),
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 42%);
-  padding: 0.9rem 0.95rem 0.8rem;
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 97%, white 6%), color-mix(in srgb, var(--surface) 93%, transparent)),
+    radial-gradient(120% 90% at 15% -10%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 46%);
+  padding: 0.72rem 0.78rem 0.66rem;
   box-shadow:
-    0 18px 44px -34px rgba(15, 23, 42, 0.44),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    0 22px 50px -38px rgba(15, 23, 42, 0.5),
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.lang-carousel--top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 24%, transparent), transparent 55%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .lang-carousel__head {
@@ -1261,8 +1275,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.45rem 0.75rem;
-  margin-bottom: 0.7rem;
+  gap: 0.4rem 0.7rem;
+  margin-bottom: 0.6rem;
 }
 
 .lang-carousel__copy {
@@ -1270,49 +1284,61 @@
   min-width: 0;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.45rem 0.75rem;
+  gap: 0.4rem 0.68rem;
 }
 
 .lang-carousel__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
+  gap: 0.36rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
-  padding: 0.32rem 0.74rem;
-  font-size: 0.7rem;
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  padding: 0.3rem 0.7rem;
+  font-size: 0.66rem;
   font-weight: 850;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
+.lang-carousel__eyebrow .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
 .lang-carousel__hint {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--muted);
 }
 
 .lang-carousel__search {
   display: inline-flex;
   align-items: center;
-  gap: 0.32rem;
-  width: min(100%, 13.5rem);
-  height: 2.15rem;
+  gap: 0.3rem;
+  width: min(100%, 12.5rem);
+  height: 2rem;
   border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 92%, white 8%);
-  padding: 0 0.42rem 0 0.68rem;
+  background: color-mix(in srgb, var(--surface) 90%, white 10%);
+  padding: 0 0.38rem 0 0.66rem;
   color: var(--muted);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.lang-carousel__search:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .lang-carousel__search .material-symbols-outlined {
   flex: 0 0 auto;
-  font-size: 1rem;
+  font-size: 0.98rem;
 }
 
 .lang-carousel__search input {
@@ -1322,18 +1348,18 @@
   outline: 0;
   background: transparent;
   color: var(--text);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
 }
 
 .lang-carousel__search input::placeholder {
-  color: color-mix(in srgb, var(--muted) 76%, transparent);
+  color: color-mix(in srgb, var(--muted) 74%, transparent);
 }
 
 .lang-carousel__search button {
   display: inline-flex;
-  width: 1.42rem;
-  height: 1.42rem;
+  width: 1.35rem;
+  height: 1.35rem;
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
@@ -1342,9 +1368,11 @@
   background: color-mix(in srgb, var(--muted) 12%, transparent);
   color: var(--muted);
   cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
 }
 
 .lang-carousel__search button:hover {
+  background: color-mix(in srgb, var(--muted) 20%, transparent);
   color: var(--text);
 }
 
@@ -1352,7 +1380,7 @@
   position: relative;
   display: flex;
   align-items: stretch;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .lang-carousel__viewport::before,
@@ -1362,30 +1390,30 @@
   top: 0;
   bottom: 0.3rem;
   z-index: 1;
-  width: 2.6rem;
+  width: 2.4rem;
   pointer-events: none;
 }
 
 .lang-carousel__viewport::before {
-  left: 2.65rem;
+  left: 2.55rem;
   background: linear-gradient(90deg, var(--surface), transparent);
 }
 
 .lang-carousel__viewport::after {
-  right: 2.65rem;
+  right: 2.55rem;
   background: linear-gradient(270deg, var(--surface), transparent);
 }
 
 .lang-carousel__track {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: clamp(6.9rem, 17vw, 8.35rem);
-  gap: 0.55rem;
+  grid-auto-columns: clamp(6.4rem, 15vw, 7.6rem);
+  gap: 0.45rem;
   flex: 1 1 auto;
   min-width: 0;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
-  padding: 0.08rem 0.05rem 0.35rem;
+  padding: 0.08rem 0.05rem 0.3rem;
   scroll-behavior: smooth;
   scroll-padding-inline: 0.1rem;
   scroll-snap-type: x proximity;
@@ -1397,19 +1425,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 7.2rem;
+  min-height: 6.4rem;
   margin: 0;
   border: 1px dashed var(--line);
-  border-radius: 0.95rem;
+  border-radius: 0.9rem;
   background: color-mix(in srgb, var(--soft-fill) 60%, transparent);
   color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 750;
+  font-size: 0.8rem;
+  font-weight: 700;
   scroll-snap-align: start;
 }
 
 .lang-carousel__track::-webkit-scrollbar {
-  height: 0.35rem;
+  height: 0.3rem;
 }
 
 .lang-carousel__track::-webkit-scrollbar-track {
@@ -1429,27 +1457,36 @@
   align-items: center;
   justify-content: center;
   align-self: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 88%, white 12%);
+  background: color-mix(in srgb, var(--surface) 86%, white 14%);
   color: var(--text);
   box-shadow:
-    0 12px 30px -24px rgba(15, 23, 42, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    0 10px 26px -22px rgba(15, 23, 42, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26);
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, opacity 160ms ease;
+}
+
+.lang-carousel__nav .material-symbols-outlined {
+  font-size: 1.25rem;
 }
 
 .lang-carousel__nav:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
   background: var(--surface);
+  color: var(--accent);
+}
+
+.lang-carousel__nav:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .lang-carousel__nav:disabled {
   cursor: not-allowed;
-  opacity: 0.35;
+  opacity: 0.3;
 }
 
 .lang-flag-card {
@@ -1457,31 +1494,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.26rem;
   min-width: 0;
   border: 1px solid var(--line);
-  border-radius: 0.95rem;
+  border-radius: 0.85rem;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--surface) 98%, white 2%), color-mix(in srgb, var(--surface) 92%, transparent));
-  padding: 0.72rem 0.55rem 0.62rem;
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 99%, white 3%), color-mix(in srgb, var(--surface) 93%, transparent));
+  padding: 0.6rem 0.45rem 0.5rem;
   color: var(--text);
   cursor: pointer;
   scroll-snap-align: start;
   transition:
     border-color 180ms ease,
     background-color 180ms ease,
-    transform 180ms ease,
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 180ms ease;
   box-shadow:
-    0 12px 30px -28px rgba(15, 23, 42, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    0 10px 26px -26px rgba(15, 23, 42, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .lang-flag-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 38%, var(--line-strong));
-  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
-  transform: translateY(-2px);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.1);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line-strong));
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px -22px rgba(15, 23, 42, 0.32);
 }
 
 .lang-flag-card:focus-visible {
@@ -1492,34 +1529,40 @@
 .lang-flag-card--active {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 10%, var(--surface));
-  box-shadow: 0 0 0 1px var(--accent), 0 14px 34px -18px color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 0 0 1px var(--accent), 0 16px 34px -18px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
 .lang-flag-card--selected {
-  border-color: color-mix(in srgb, var(--accent) 58%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), color-mix(in srgb, var(--surface) 92%, transparent));
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 13%, var(--surface)), color-mix(in srgb, var(--surface) 92%, transparent));
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
-    0 14px 34px -24px color-mix(in srgb, var(--accent) 55%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--accent) 38%, transparent),
+    0 16px 34px -22px color-mix(in srgb, var(--accent) 58%, transparent);
 }
 
 .lang-flag-card__flag {
   display: inline-flex;
-  width: 2.45rem;
-  height: 2.45rem;
+  width: 2.2rem;
+  height: 2.2rem;
   align-items: center;
   justify-content: center;
   border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--line));
   border-radius: 999px;
   background: color-mix(in srgb, var(--soft-fill) 82%, var(--surface));
-  font-size: 1.82rem;
+  font-size: 1.6rem;
   line-height: 1;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lang-flag-card:hover .lang-flag-card__flag,
+.lang-flag-card--selected .lang-flag-card__flag {
+  transform: scale(1.06);
 }
 
 .lang-flag-card__country {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -1530,7 +1573,7 @@
 }
 
 .lang-flag-card__language {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -1542,34 +1585,42 @@
 .lang-flag-card__cta {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  margin-top: 0.08rem;
+  gap: 0.22rem;
+  margin-top: 0.14rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
-  padding: 0.18rem 0.46rem;
-  font-size: 0.58rem;
+  padding: 0.16rem 0.44rem;
+  font-size: 0.55rem;
   font-weight: 850;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--accent);
+  opacity: 0.85;
+  transition: background-color 160ms ease, color 160ms ease, opacity 160ms ease, border-color 160ms ease;
+}
+
+.lang-flag-card:hover .lang-flag-card__cta {
   opacity: 1;
-  transform: translateY(0);
-  transition: background-color 160ms ease, color 160ms ease;
+  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
 }
 
 .lang-flag-card__cta .material-symbols-outlined {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 .lang-flag-card--active .lang-flag-card__cta {
+  opacity: 1;
   background: var(--accent);
+  border-color: var(--accent);
   color: var(--accent-contrast);
 }
 
 .lang-flag-card--selected .lang-flag-card__cta {
-  border-color: color-mix(in srgb, var(--accent) 36%, transparent);
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  opacity: 1;
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
   color: var(--accent);
 }
 
@@ -1577,24 +1628,25 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.7rem;
-  margin-top: 0.72rem;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
   border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
-  border-radius: 0.95rem;
+  border-radius: 0.85rem;
   background: color-mix(in srgb, var(--soft-fill) 58%, transparent);
-  padding: 0.58rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.55rem;
+  transition: border-color 200ms ease, background 200ms ease;
 }
 
 .lang-carousel__selection--ready {
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
-  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--line));
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
 }
 
 .lang-carousel__selected-copy {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 0.52rem;
+  gap: 0.5rem;
   color: var(--muted);
   text-align: left;
 }
@@ -1602,61 +1654,74 @@
 .lang-carousel__selected-copy .material-symbols-outlined {
   flex: 0 0 auto;
   display: inline-flex;
-  width: 1.95rem;
-  height: 1.95rem;
+  width: 1.85rem;
+  height: 1.85rem;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  background: color-mix(in srgb, var(--accent) 13%, var(--surface));
   color: var(--accent);
-  font-size: 1.05rem;
+  font-size: 1.02rem;
 }
 
 .lang-carousel__selected-copy p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.3;
   color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .lang-carousel__speak {
   display: inline-flex;
-  min-height: 2.55rem;
+  min-height: 2.4rem;
   align-items: center;
   justify-content: center;
-  gap: 0.42rem;
+  gap: 0.4rem;
   border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
   border-radius: 999px;
-  background: var(--accent);
-  padding: 0.48rem 0.86rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 92%, white 8%), var(--accent));
+  padding: 0.44rem 0.9rem;
   color: var(--accent-contrast);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 900;
   letter-spacing: 0.01em;
-  box-shadow: 0 14px 34px -22px color-mix(in srgb, var(--accent) 72%, transparent);
+  box-shadow:
+    0 14px 32px -20px color-mix(in srgb, var(--accent) 75%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
   transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
   white-space: nowrap;
 }
 
 .lang-carousel__speak:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 16px 38px -20px color-mix(in srgb, var(--accent) 84%, transparent);
+  box-shadow:
+    0 18px 38px -18px color-mix(in srgb, var(--accent) 88%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.lang-carousel__speak:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .lang-carousel__speak:disabled {
   cursor: not-allowed;
-  opacity: 0.52;
+  opacity: 0.5;
+  box-shadow: none;
 }
 
 .lang-carousel__speak .material-symbols-outlined {
-  font-size: 1rem;
+  font-size: 0.98rem;
 }
 
 @media (max-width: 480px) {
   .lang-carousel--top {
-    margin-bottom: 0.9rem;
-    padding: 0.78rem 0.7rem 0.72rem;
+    margin-bottom: 0.8rem;
+    padding: 0.66rem 0.6rem 0.62rem;
   }
 
   .lang-carousel__head {
@@ -1665,30 +1730,30 @@
   }
 
   .lang-carousel__viewport {
-    gap: 0.28rem;
+    gap: 0.26rem;
   }
 
   .lang-carousel__viewport::before,
   .lang-carousel__viewport::after {
-    width: 1.45rem;
+    width: 1.35rem;
   }
 
   .lang-carousel__viewport::before {
-    left: 2.2rem;
+    left: 2.1rem;
   }
 
   .lang-carousel__viewport::after {
-    right: 2.2rem;
+    right: 2.1rem;
   }
 
   .lang-carousel__track {
-    grid-auto-columns: minmax(6.45rem, 42vw);
-    gap: 0.45rem;
+    grid-auto-columns: minmax(6.1rem, 40vw);
+    gap: 0.4rem;
   }
 
   .lang-carousel__nav {
-    width: 2.15rem;
-    height: 2.15rem;
+    width: 2rem;
+    height: 2rem;
   }
 
   .lang-carousel__selection {
@@ -1702,12 +1767,12 @@
   }
 
   .lang-flag-card__flag {
-    width: 2.2rem;
-    height: 2.2rem;
-    font-size: 1.65rem;
+    width: 2.05rem;
+    height: 2.05rem;
+    font-size: 1.5rem;
   }
 
   .lang-flag-card {
-    padding: 0.65rem 0.42rem 0.56rem;
+    padding: 0.55rem 0.38rem 0.48rem;
   }
 }
