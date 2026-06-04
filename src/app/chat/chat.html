@@ -446,10 +446,10 @@
                   <div class="lang-carousel__copy">
                     <span class="lang-carousel__eyebrow">
                       <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
-                      <span>Talk in your language</span>
+                      <span>We speak your language</span>
                     </span>
                     <p class="lang-carousel__hint">
-                      {{ filteredVoiceLanguages().length }} countries · search country or language.
+                      {{ filteredVoiceLanguages().length }} countries · choose a flag first.
                     </p>
                   </div>
                   <label class="lang-carousel__search">
@@ -486,17 +486,18 @@
                         type="button"
                         role="listitem"
                         class="lang-flag-card"
+                        [class.lang-flag-card--selected]="selectedVoiceLanguage()?.country === lang.country"
                         [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
-                        [attr.aria-label]="'Start a voice conversation in ' + lang.language + ' (' + lang.country + ')'"
-                        [attr.data-tooltip]="'Start in ' + lang.language"
-                        (click)="startVoiceInLanguage(lang)"
+                        [attr.aria-label]="'Use ' + lang.language + ' for ' + currentWikiName() + ' (' + lang.country + ')'"
+                        [attr.data-tooltip]="'Choose ' + lang.language"
+                        (click)="selectVoiceLanguage(lang)"
                       >
                         <span class="lang-flag-card__flag" aria-hidden="true">{{ lang.flag }}</span>
                         <span class="lang-flag-card__country">{{ lang.country }}</span>
                         <span class="lang-flag-card__language">{{ lang.language }}</span>
                         <span class="lang-flag-card__cta">
-                          <span class="material-symbols-outlined">graphic_eq</span>
-                          <span>Voice chat</span>
+                          <span class="material-symbols-outlined">translate</span>
+                          <span>Choose</span>
                         </span>
                       </button>
                     } @empty {
@@ -512,6 +513,22 @@
                     (click)="scrollVoiceCarousel(1)"
                   >
                     <span class="material-symbols-outlined">chevron_right</span>
+                  </button>
+                </div>
+
+                <div class="lang-carousel__selection" [class.lang-carousel__selection--ready]="selectedVoiceLanguage()">
+                  <div class="lang-carousel__selected-copy">
+                    <span class="material-symbols-outlined">language</span>
+                    <p>{{ selectedVoiceLanguageGreeting() }}</p>
+                  </div>
+                  <button
+                    type="button"
+                    class="lang-carousel__speak"
+                    [disabled]="!selectedVoiceLanguage()"
+                    (click)="startSelectedVoiceLanguage()"
+                  >
+                    <span class="material-symbols-outlined">graphic_eq</span>
+                    <span>{{ selectedVoiceLanguageCta() }}</span>
                   </button>
                 </div>
               </section>

@@ -361,6 +361,17 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   });
   readonly voiceCarouselAtStart = signal(true);
   readonly voiceCarouselAtEnd = signal(false);
+  readonly selectedVoiceLanguage = signal<VoiceLanguageOption | null>(null);
+  readonly selectedVoiceLanguageGreeting = computed(() => {
+    const language = this.selectedVoiceLanguage();
+    return language
+      ? this.voiceSessionGreeting(language)
+      : `Choose a flag to switch ${this.currentWikiName() || 'this City Wiki'} into your language.`;
+  });
+  readonly selectedVoiceLanguageCta = computed(() => {
+    const language = this.selectedVoiceLanguage();
+    return language ? `Speak to me in ${language.language}` : 'Select a flag first';
+  });
   // Language the active/last voice session was started in, so the UI can show
   // which flag is "speaking".
   readonly activeVoiceLanguageCode = signal<VoiceLanguageCode | null>(null);
@@ -1373,12 +1384,24 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.voiceCarouselAtEnd.set(track.scrollLeft >= maxScrollLeft - 2);
   }
 
+  selectVoiceLanguage(language: VoiceLanguageOption): void {
+    this.selectedVoiceLanguage.set(language);
+  }
+
+  async startSelectedVoiceLanguage(): Promise<void> {
+    const language = this.selectedVoiceLanguage();
+    if (!language) {
+      return;
+    }
+    await this.startVoiceInLanguage(language);
+  }
+
   /**
-   * Start (or restart) voice mode in the language tied to a flag. Clicking a flag
-   * always begins a fresh conversation in that language so the welcome message is
-   * spoken in the chosen tongue right away.
+   * Start (or restart) voice mode in the selected language. The flag click only
+   * chooses the language; the explicit "Speak to me" control starts the call.
    */
   async startVoiceInLanguage(language: VoiceLanguageOption): Promise<void> {
+    this.selectedVoiceLanguage.set(language);
     if (this.realtimeVoiceActive()) {
       // Switching language mid-session: tear the old one down first so the new
       // greeting is spoken cleanly in the newly selected language.

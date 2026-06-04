@@ -1495,6 +1495,15 @@
   box-shadow: 0 0 0 1px var(--accent), 0 14px 34px -18px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
+.lang-flag-card--selected {
+  border-color: color-mix(in srgb, var(--accent) 58%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), color-mix(in srgb, var(--surface) 92%, transparent));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 14px 34px -24px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
 .lang-flag-card__flag {
   display: inline-flex;
   width: 2.45rem;
@@ -1558,6 +1567,92 @@
   color: var(--accent-contrast);
 }
 
+.lang-flag-card--selected .lang-flag-card__cta {
+  border-color: color-mix(in srgb, var(--accent) 36%, transparent);
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+}
+
+.lang-carousel__selection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.72rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+  border-radius: 0.95rem;
+  background: color-mix(in srgb, var(--soft-fill) 58%, transparent);
+  padding: 0.58rem;
+}
+
+.lang-carousel__selection--ready {
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+
+.lang-carousel__selected-copy {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.52rem;
+  color: var(--muted);
+  text-align: left;
+}
+
+.lang-carousel__selected-copy .material-symbols-outlined {
+  flex: 0 0 auto;
+  display: inline-flex;
+  width: 1.95rem;
+  height: 1.95rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+.lang-carousel__selected-copy p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.lang-carousel__speak {
+  display: inline-flex;
+  min-height: 2.55rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: 999px;
+  background: var(--accent);
+  padding: 0.48rem 0.86rem;
+  color: var(--accent-contrast);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  box-shadow: 0 14px 34px -22px color-mix(in srgb, var(--accent) 72%, transparent);
+  transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
+  white-space: nowrap;
+}
+
+.lang-carousel__speak:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 38px -20px color-mix(in srgb, var(--accent) 84%, transparent);
+}
+
+.lang-carousel__speak:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.lang-carousel__speak .material-symbols-outlined {
+  font-size: 1rem;
+}
+
 @media (max-width: 480px) {
   .lang-carousel--top {
     margin-bottom: 0.9rem;
@@ -1594,6 +1689,16 @@
   .lang-carousel__nav {
     width: 2.15rem;
     height: 2.15rem;
+  }
+
+  .lang-carousel__selection {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .lang-carousel__speak {
+    width: 100%;
+    white-space: normal;
   }
 
   .lang-flag-card__flag {
