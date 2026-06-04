@@ -1483,19 +1483,20 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.answerMode.set('internet');
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const [stream, session] = await Promise.all([
+        navigator.mediaDevices.getUserMedia({ audio: true }),
+        this.chatService.createElevenLabsVoiceSession({
+          atlasId,
+          atlasName: this.currentWikiName(),
+          anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
+          participantName: this.currentUserName() || this.currentUserEmail() || 'My living wiki visitor',
+          voiceLanguageCode: language?.code ?? null,
+          voiceLanguage: language?.language ?? null,
+          voiceCountry: language?.country ?? null,
+          voiceAccent: accentProfile?.label ?? null,
+        }),
+      ]);
       stream.getTracks().forEach((track) => track.stop());
-
-      const session = await this.chatService.createElevenLabsVoiceSession({
-        atlasId,
-        atlasName: this.currentWikiName(),
-        anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
-        participantName: this.currentUserName() || this.currentUserEmail() || 'My living wiki visitor',
-        voiceLanguageCode: language?.code ?? null,
-        voiceLanguage: language?.language ?? null,
-        voiceCountry: language?.country ?? null,
-        voiceAccent: accentProfile?.label ?? null,
-      });
       if (!session) {
         throw new Error('Voice service is unavailable.');
       }
@@ -1511,23 +1512,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           ? `This voice conversation is for the My Living Wiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${linkDeliveryInstruction}`
           : `This voice conversation is for the current My Living Wiki page. ${linkDeliveryInstruction}`,
       };
-      const voicePromptOverride = [
-        'You are the My living wiki realtime voice guide.',
-        voiceDynamicVariables.city_context_instruction,
-        'When asked for links, websites, maps, addresses, or a list to send later, explain that the links will be collected and included in the recap email after the user hangs up.',
-        'Do not claim that you cannot send links directly; instead, explain the post-call recap flow clearly and briefly.',
-      ].join('\n');
       const voiceOverrides = {
-        agent: {
-          prompt: {
-            prompt: voicePromptOverride,
-          },
-          ...(session.firstMessageOverrideEnabled
-            ? {
+        ...(session.firstMessageOverrideEnabled
+          ? {
+              agent: {
                 firstMessage: greeting,
-              }
-            : {}),
-        },
+              },
+            }
+          : {}),
         ...(session.voiceOverrideEnabled && session.voiceId
           ? {
               tts: {
@@ -1536,6 +1528,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
             }
           : {}),
       };
+      const voiceOverrideOptions = Object.keys(voiceOverrides).length > 0
+        ? { overrides: voiceOverrides }
+        : {};
 
       const { Conversation } = await import('@elevenlabs/client');
       const conversation = await Conversation.startSession({
@@ -1552,9 +1547,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
                 preferred_voice_locale: `${language.language} (${language.country})`,
                 voice_accent_instruction: accentProfile.instruction,
               },
-              overrides: voiceOverrides,
+              ...voiceOverrideOptions,
             }
-          : { dynamicVariables: voiceDynamicVariables, overrides: voiceOverrides }),
+          : { dynamicVariables: voiceDynamicVariables, ...voiceOverrideOptions }),
         onConnect: ({ conversationId }) => {
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
