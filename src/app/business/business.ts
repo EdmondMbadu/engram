@@ -235,7 +235,7 @@ export class BusinessComponent {
 
   orbitTransform(index: number, total: number): string {
     const angle = -90 + (360 / Math.max(total, 1)) * index;
-    return `rotate(${angle}deg) translate(7rem) rotate(${-angle}deg)`;
+    return `rotate(${angle}deg) translate(6.8rem) rotate(${-angle}deg)`;
   }
 
   async copyBusinessLink(): Promise<void> {
@@ -285,7 +285,7 @@ export class BusinessComponent {
       return `<text x="${x}" y="${y}" font-size="30" font-weight="800" fill="${index % 3 === 0 ? '#176a3a' : index % 3 === 1 ? '#1f66b1' : '#9f3a2c'}">${this.escapeSvg(language.greeting)}</text>`;
     }).join('');
     const flags = languages.map((language, index) => {
-      const positions = [[760, 108], [885, 170], [890, 300], [760, 368], [632, 300], [630, 170]];
+      const positions = [[760, 92], [930, 180], [930, 312], [760, 398], [590, 312], [590, 180]];
       const [x, y] = positions[index] ?? [760, 108];
       return `<circle cx="${x}" cy="${y}" r="38" fill="#fff" stroke="#cfe3d2" stroke-width="3"/><text x="${x}" y="${y + 10}" text-anchor="middle" font-size="28">${language.flag}</text>`;
     }).join('');
@@ -298,9 +298,22 @@ export class BusinessComponent {
       <rect x="618" y="34" width="42" height="42" rx="10" fill="#1e8f45"/>
       <text x="676" y="65" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#092616">Living Wiki · <tspan fill="#1e8f45">Philly</tspan></text>
       ${greetings}
-      <rect x="222" y="206" width="92" height="152" rx="24" fill="#071b10"/>
-      <rect x="235" y="218" width="66" height="128" rx="18" fill="#ffffff"/>
-      <text x="268" y="294" text-anchor="middle" font-size="34" fill="#1e8f45">▢</text>
+      <g transform="translate(210 192)">
+        <rect x="0" y="0" width="118" height="184" rx="32" fill="#071b10"/>
+        <rect x="15" y="18" width="88" height="148" rx="24" fill="#ffffff"/>
+        <rect x="42" y="9" width="34" height="6" rx="3" fill="#ffffff" opacity="0.24"/>
+        <circle cx="59" cy="84" r="36" fill="#e7f6ec"/>
+        <path d="M59 56c10 0 18 8 18 18v10c0 10-8 18-18 18s-18-8-18-18V74c0-10 8-18 18-18z" fill="#1e8f45"/>
+        <path d="M36 84c0 13 10 24 23 24s23-11 23-24" fill="none" stroke="#1e8f45" stroke-width="8" stroke-linecap="round"/>
+        <path d="M59 108v16M44 124h30" fill="none" stroke="#1e8f45" stroke-width="8" stroke-linecap="round"/>
+        <rect x="34" y="137" width="50" height="8" rx="4" fill="#cfe3d2"/>
+      </g>
+      <rect x="126" y="184" width="118" height="42" rx="21" fill="#ffffff" stroke="#cfe3d2" stroke-width="2"/>
+      <text x="185" y="214" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#176a3a">Hello</text>
+      <rect x="320" y="248" width="112" height="42" rx="21" fill="#ffffff" stroke="#d9e4ff" stroke-width="2"/>
+      <text x="376" y="278" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#1f66b1">Hola</text>
+      <rect x="120" y="330" width="122" height="42" rx="21" fill="#ffffff" stroke="#ffe0d5" stroke-width="2"/>
+      <text x="181" y="360" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#9f3a2c">Hallo</text>
       <circle cx="760" cy="245" r="214" fill="none" stroke="#b9d9c0" stroke-width="3" stroke-dasharray="6 7"/>
       <rect x="645" y="130" width="230" height="230" rx="16" fill="#ffffff" stroke="#d8eadc" stroke-width="2"/>
       <image href="${qrUrl}" x="672" y="157" width="176" height="176" preserveAspectRatio="xMidYMid meet"/>

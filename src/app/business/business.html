@@ -334,8 +334,58 @@
                 <span class="rounded-full border border-emerald-300/25 px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200">{{ selectedDecalSize() }}</span>
               </div>
 
-              <div class="mt-5 rounded-2xl bg-[#f4fbf5] p-3">
-                <img [src]="decalDownloadHref()" alt="Live business decal preview" class="block w-full rounded-xl" />
+              <div class="mt-5 overflow-hidden rounded-2xl bg-[#f4fbf5] p-3 text-[#082012]">
+                <div class="rounded-xl border border-[#cfe3d2] bg-[#f8fff9] p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.75)]">
+                  <div class="flex items-center justify-between gap-3 rounded-lg bg-[#dfeee3] px-3 py-2">
+                    <div class="min-w-0">
+                      <p class="truncate text-sm font-black">{{ businessName() || 'Your business' }}</p>
+                      <p class="truncate text-[11px] font-bold text-[#1e8f45]">{{ businessCategory() }}</p>
+                    </div>
+                    <p class="shrink-0 text-xs font-black">Living Wiki · Philly</p>
+                  </div>
+
+                  <div class="mt-4 grid gap-4 min-[440px]:grid-cols-[0.9fr_1.1fr] min-[440px]:items-center">
+                    <div class="relative mx-auto flex h-48 w-36 items-center justify-center">
+                      <div class="absolute left-0 top-5 rounded-full bg-[#e8f4eb] px-3 py-1 text-sm font-black text-[#176a3a] shadow-sm">Hello</div>
+                      <div class="absolute right-0 top-16 rounded-full bg-[#edf3ff] px-3 py-1 text-sm font-black text-[#1f66b1] shadow-sm">Hola</div>
+                      <div class="absolute bottom-5 left-1 rounded-full bg-[#fff1ec] px-3 py-1 text-sm font-black text-[#9f3a2c] shadow-sm">Hallo</div>
+                      <div class="relative h-40 w-24 rounded-[1.65rem] bg-[#071b10] p-2 shadow-[0_22px_50px_-22px_rgba(7,27,16,0.9)]">
+                        <div class="absolute left-1/2 top-1.5 h-1.5 w-8 -translate-x-1/2 rounded-full bg-white/20"></div>
+                        <div class="flex h-full flex-col items-center justify-between rounded-[1.2rem] bg-white px-2 py-4">
+                          <span class="material-symbols-outlined text-2xl text-[#1e8f45]">record_voice_over</span>
+                          <div class="grid h-16 w-16 place-items-center rounded-full bg-[#e7f6ec]">
+                            <span class="material-symbols-outlined text-4xl text-[#1e8f45]">mic</span>
+                          </div>
+                          <div class="h-1.5 w-10 rounded-full bg-[#cfe3d2]"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="relative mx-auto flex h-64 w-64 items-center justify-center">
+                      <div class="absolute inset-2 rounded-full border border-dashed border-[#1e8f45]/35"></div>
+                      <div class="relative rounded-2xl bg-white p-3 shadow-[0_22px_60px_-28px_rgba(0,0,0,0.55)]">
+                        <img
+                          [src]="businessQrImageUrl()"
+                          [alt]="'QR code for ' + (businessName() || 'this business') + ' business chat'"
+                          class="h-36 w-36 rounded-lg bg-white"
+                        />
+                      </div>
+                      @for (language of selectedDecalLanguages(); track language.code; let i = $index) {
+                        <span
+                          class="absolute left-1/2 top-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#cfe3d2] bg-white text-lg shadow-md"
+                          [style.transform]="'translate(-50%, -50%) ' + orbitTransform(i, selectedDecalLanguages().length)"
+                        >
+                          {{ language.flag }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="mt-3 border-t border-[#cfe3d2] pt-3 text-center">
+                    <p class="text-base font-black">Talk to us in your language</p>
+                    <p class="mt-1 text-xs font-bold text-[#456252]">Scan to chat by voice with {{ businessName() || 'this shop' }}’s guide</p>
+                  </div>
+                </div>
               </div>
 
               <div class="mt-5 text-center">
