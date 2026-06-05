@@ -345,10 +345,14 @@
                   </div>
 
                   <div class="mt-4 grid gap-4 min-[440px]:grid-cols-[0.9fr_1.1fr] min-[440px]:items-center">
-                    <div class="relative mx-auto flex h-48 w-36 items-center justify-center">
-                      <div class="absolute left-0 top-5 rounded-full bg-[#e8f4eb] px-3 py-1 text-sm font-black text-[#176a3a] shadow-sm">Hello</div>
-                      <div class="absolute right-0 top-16 rounded-full bg-[#edf3ff] px-3 py-1 text-sm font-black text-[#1f66b1] shadow-sm">Hola</div>
-                      <div class="absolute bottom-5 left-1 rounded-full bg-[#fff1ec] px-3 py-1 text-sm font-black text-[#9f3a2c] shadow-sm">Hallo</div>
+                    <div class="mx-auto flex min-h-56 w-full max-w-60 flex-col items-center justify-center gap-3">
+                      <div class="flex flex-wrap justify-center gap-2">
+                        @for (language of selectedDecalLanguages(); track language.code) {
+                          <span class="rounded-full bg-white px-3 py-1 text-sm font-black text-[#176a3a] shadow-sm ring-1 ring-[#cfe3d2]">
+                            {{ language.greeting }}
+                          </span>
+                        }
+                      </div>
                       <div class="relative h-40 w-24 rounded-[1.65rem] bg-[#071b10] p-2 shadow-[0_22px_50px_-22px_rgba(7,27,16,0.9)]">
                         <div class="absolute left-1/2 top-1.5 h-1.5 w-8 -translate-x-1/2 rounded-full bg-white/20"></div>
                         <div class="flex h-full flex-col items-center justify-between rounded-[1.2rem] bg-white px-2 py-4">
