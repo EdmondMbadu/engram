@@ -148,6 +148,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('hint') hintRef!: ElementRef<HTMLDivElement>;
 
   readonly isLoading = signal(true);
+  readonly cityDataLoading = signal(true);
   readonly cityCount = signal(0);
   readonly shownCount = signal(0);
   readonly foci = signal<Focus[]>([]);
@@ -160,6 +161,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   private countries: DymaxionCountry[] = [];
   private countriesByKey = new Map<string, DymaxionCountry>();
   private countryLayerTransform = '';
+  private projectionFrame: ProjectionFrame | null = null;
   private markerEls: MarkerEntry[] = [];
   private view = { z: 1, tx: 0, ty: 0 };
   private panState: PanState | null = null;
@@ -212,6 +214,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     if (!this.isBrowser) {
       this.isLoading.set(false);
+      this.cityDataLoading.set(false);
       return;
     }
     void this.loadCountries();
@@ -223,6 +226,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async loadCities(): Promise<void> {
+    this.cityDataLoading.set(true);
     try {
       const atlases = await this.atlasService.listPublicAtlases();
       this.cities = this.buildCities(atlases);
@@ -237,6 +241,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewReady) {
       this.rebuildMarkers();
     }
+    this.cityDataLoading.set(false);
   }
 
   private refreshFoci(): void {
@@ -367,6 +372,8 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private createProjectionFrame(): ProjectionFrame {
+    if (this.projectionFrame) return this.projectionFrame;
+
     const projection = geoAirocean();
     const path = geoPath(projection);
     const [[bx0, by0], [bx1, by1]] = path.bounds({ type: 'Sphere' });
@@ -377,7 +384,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       y: ((py - by0) * sy) / MAP_H * 100,
     });
 
-    return {
+    this.projectionFrame = {
       path,
       transform: `matrix(${sx} 0 0 ${sy} ${-bx0 * sx} ${-by0 * sy})`,
       place: (lng: number, lat: number) => {
@@ -399,6 +406,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
         return [p.x, p.y];
       },
     };
+    return this.projectionFrame;
   }
 
   private attachCitiesToCountries(): void {

@@ -100,6 +100,12 @@
           <div #clusterLayer></div>
           <!-- markers injected here -->
         </div>
+        @if (cityDataLoading()) {
+          <div class="dym-map-loading" aria-live="polite" aria-label="Loading city points">
+            <span class="dym-loading-spinner" aria-hidden="true"></span>
+            <span>Loading city points…</span>
+          </div>
+        }
         @if (isLoading()) {
           <div class="dym-hint">Loading the world…</div>
         } @else {
