@@ -209,13 +209,30 @@ const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' |
   'bangkok-th': seededPopulation(5475000, 2024, 'Bangkok registered population estimate'),
   'beijing-cn': seededPopulation(21858000, 2023, 'Beijing municipal statistical estimate'),
   'budapest-hu': seededPopulation(1686851, 2024, 'Hungarian Central Statistical Office estimate'),
+  'buenos-aires-ar': seededPopulation(3121707, 2022, 'INDEC city estimate'),
   'dubai-ae': seededPopulation(3825000, 2025, 'Dubai Statistics Center population clock estimate'),
   'doha-qa': seededPopulation(1186000, 2024, 'Qatar Planning and Statistics Authority municipality estimate'),
+  'helsinki-fi': seededPopulation(684018, 2024, 'Statistics Finland municipal estimate'),
   'hong-kong-cn': seededPopulation(7531800, 2024, 'Hong Kong Census and Statistics Department estimate'),
   'istanbul-tr': seededPopulation(15655924, 2023, 'Turkish Statistical Institute province estimate'),
   'jerusalem-il': seededPopulation(989000, 2022, 'Jerusalem Institute statistical yearbook estimate'),
+  'kinshasa-cd': seededPopulation(17032000, 2024, 'UN urban agglomeration estimate'),
+  'lima-pe': seededPopulation(10092000, 2024, 'INEI Lima metropolitan estimate'),
+  'marrakech-ma': seededPopulation(966987, 2024, 'Morocco population estimate'),
+  'mumbai-in': seededPopulation(12442373, 2011, 'India Census municipal corporation count'),
+  'nairobi-ke': seededPopulation(5545000, 2024, 'UN urban agglomeration estimate'),
+  'oslo-no': seededPopulation(717710, 2024, 'Statistics Norway municipal estimate'),
+  'santiago-cl': seededPopulation(6257516, 2017, 'Chile census metropolitan estimate'),
   'seoul-kr': seededPopulation(9367000, 2024, 'Seoul resident registration estimate'),
+  'shanghai-cn': seededPopulation(24870000, 2023, 'Shanghai municipal statistical estimate'),
+  'singapore-sg': seededPopulation(6040000, 2024, 'Singapore Department of Statistics estimate'),
+  'stockholm-se': seededPopulation(984748, 2024, 'Statistics Sweden municipal estimate'),
   'taipei-tw': seededPopulation(2494000, 2024, 'Taipei household registration estimate'),
+  'tel-aviv-il': seededPopulation(482500, 2023, 'Tel Aviv municipal estimate'),
+  'the-hamptons-us': seededPopulation(97421, 2020, 'Southampton and East Hampton town census total'),
+  'tokyo-jp': seededPopulation(14180000, 2024, 'Tokyo Metropolitan Government estimate'),
+  'turks-caicos-tc': seededPopulation(46535, 2024, 'Turks and Caicos Islands population estimate'),
+  'zurich-ch': seededPopulation(443037, 2024, 'City of Zurich statistical estimate'),
 };
 
 export async function refreshCityPopulationMetadata(
@@ -739,18 +756,21 @@ function cleanCityName(value: string): string {
 
 function inferCountryCode(cityConfig: NonNullable<AtlasRecord['city_config']>): string {
   const explicit = typeof cityConfig.country_code === 'string' ? cityConfig.country_code.trim().toUpperCase() : '';
+  const regionKey = normalizeSeedKey(typeof cityConfig.region_name === 'string' ? cityConfig.region_name : '');
+  const timezone = typeof cityConfig.timezone === 'string' ? cityConfig.timezone.trim() : '';
+  const regionInferred = regionKey ? COUNTRY_CODE_BY_REGION_KEY[regionKey] ?? '' : '';
+  const timezoneInferred = timezone ? COUNTRY_CODE_BY_TIMEZONE[timezone] ?? '' : '';
+
+  if (regionInferred && (!explicit || explicit === 'US' || explicit !== regionInferred)) {
+    return regionInferred;
+  }
+
+  if (timezoneInferred && (!explicit || explicit === 'US' || explicit !== timezoneInferred)) {
+    return timezoneInferred;
+  }
+
   if (explicit) {
     return explicit;
-  }
-
-  const regionKey = normalizeSeedKey(typeof cityConfig.region_name === 'string' ? cityConfig.region_name : '');
-  if (regionKey && COUNTRY_CODE_BY_REGION_KEY[regionKey]) {
-    return COUNTRY_CODE_BY_REGION_KEY[regionKey];
-  }
-
-  const timezone = typeof cityConfig.timezone === 'string' ? cityConfig.timezone.trim() : '';
-  if (timezone && COUNTRY_CODE_BY_TIMEZONE[timezone]) {
-    return COUNTRY_CODE_BY_TIMEZONE[timezone];
   }
 
   return '';
