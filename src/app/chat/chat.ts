@@ -122,6 +122,17 @@ interface VoiceAccentProfile {
   instruction: string;
 }
 
+interface IpLanguageLocation {
+  countryCode: string | null;
+  countryName: string | null;
+  source: 'ip' | 'browser' | 'fallback';
+}
+
+interface IpApiLocationResponse {
+  country_code?: string | null;
+  country_name?: string | null;
+}
+
 const VOICE_LANGUAGE_SEARCH_ALIASES: Partial<Record<VoiceLanguageCode, string[]>> = {
   ar: ['Arabic'],
   cs: ['Czech'],
@@ -142,6 +153,85 @@ const VOICE_LANGUAGE_SEARCH_ALIASES: Partial<Record<VoiceLanguageCode, string[]>
   sv: ['Swedish'],
   tr: ['Turkish'],
   zh: ['Chinese', 'Mandarin'],
+};
+
+const IP_LANGUAGE_LOCATION_CACHE_KEY = 'livingWiki.ipLanguageLocation.v1';
+const IP_LANGUAGE_LOCATION_URL = 'https://ipapi.co/json/';
+
+const COUNTRY_CODE_TO_VOICE_COUNTRY: Record<string, string> = {
+  DZ: 'Algeria',
+  AR: 'Argentina',
+  AU: 'Australia',
+  AT: 'Austria',
+  BE: 'Belgium',
+  BA: 'Bosnia & Herzegovina',
+  BR: 'Brazil',
+  CA: 'Canada',
+  CV: 'Cape Verde',
+  CO: 'Colombia',
+  HR: 'Croatia',
+  CW: 'Curaçao',
+  CZ: 'Czechia',
+  CD: 'DR Congo',
+  EC: 'Ecuador',
+  EG: 'Egypt',
+  GB: 'England',
+  FR: 'France',
+  DE: 'Germany',
+  GH: 'Ghana',
+  HT: 'Haiti',
+  IR: 'Iran',
+  IQ: 'Iraq',
+  CI: 'Ivory Coast',
+  JP: 'Japan',
+  JO: 'Jordan',
+  MX: 'Mexico',
+  MA: 'Morocco',
+  NL: 'Netherlands',
+  NZ: 'New Zealand',
+  NO: 'Norway',
+  PA: 'Panama',
+  PY: 'Paraguay',
+  PT: 'Portugal',
+  QA: 'Qatar',
+  SA: 'Saudi Arabia',
+  SN: 'Senegal',
+  ZA: 'South Africa',
+  KR: 'South Korea',
+  ES: 'Spain',
+  SE: 'Sweden',
+  CH: 'Switzerland',
+  TN: 'Tunisia',
+  TR: 'Türkiye',
+  UY: 'Uruguay',
+  US: 'United States',
+  UZ: 'Uzbekistan',
+  CN: 'China',
+  RU: 'Russia',
+  IN: 'India',
+};
+
+const COUNTRY_CODE_TO_VOICE_LANGUAGE: Partial<Record<string, VoiceLanguageCode>> = {
+  AE: 'ar',
+  AF: 'fa',
+  BG: 'bg',
+  DK: 'da',
+  FI: 'fi',
+  GR: 'el',
+  HU: 'hu',
+  ID: 'id',
+  IT: 'it',
+  KE: 'sw',
+  MY: 'ms',
+  NG: 'en',
+  PH: 'tl',
+  PL: 'pl',
+  RO: 'ro',
+  RS: 'sr',
+  SK: 'sk',
+  TH: 'th',
+  UA: 'uk',
+  VN: 'vi',
 };
 
 function normalizeVoiceSearchText(value: string): string {
@@ -311,6 +401,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private realtimeVoiceSummaryOffered = false;
   private pendingVoiceLanguagePrompt: string | null = null;
   private realtimeVoiceMeterFrame: number | null = null;
+  private voiceLanguageUserSelected = false;
+  private voiceLanguageDetectionStarted = false;
 
   readonly isSigningOut = signal(false);
   readonly isDeletingHistory = signal(false);
@@ -384,15 +476,35 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly voiceCarouselAtStart = signal(true);
   readonly voiceCarouselAtEnd = signal(false);
   readonly selectedVoiceLanguage = signal<VoiceLanguageOption | null>(null);
+  readonly detectedVoiceLanguageLocation = signal<IpLanguageLocation | null>(null);
+  readonly voiceLanguageAutoSelected = signal(false);
   readonly selectedVoiceLanguageGreeting = computed(() => {
     const language = this.selectedVoiceLanguage();
     return language
       ? this.voiceSessionGreeting(language)
-      : `Choose a flag to switch ${this.currentWikiName() || 'this City Wiki'} into your language.`;
+      : this.uiText('chooseLanguagePrompt', { city: this.currentWikiName() || 'this City Wiki' });
   });
   readonly selectedVoiceLanguageCta = computed(() => {
     const language = this.selectedVoiceLanguage();
-    return language ? `Speak to me in ${language.language}` : 'Select a flag first';
+    return language
+      ? this.uiText('speakInLanguage', { language: language.language })
+      : this.uiText('selectFlagFirst');
+  });
+  readonly selectedPageLanguageCode = computed(() => this.selectedVoiceLanguage()?.code ?? 'en');
+  readonly pageTextDirection = computed(() => {
+    const code = this.selectedPageLanguageCode();
+    return code === 'ar' || code === 'fa' ? 'rtl' : 'ltr';
+  });
+  readonly voiceLanguageHint = computed(() => {
+    const language = this.selectedVoiceLanguage();
+    const location = this.detectedVoiceLanguageLocation();
+    if (language && this.voiceLanguageAutoSelected()) {
+      return this.uiText('voiceHintAuto', {
+        count: String(this.filteredVoiceLanguages().length),
+        country: location?.countryName || language.country,
+      });
+    }
+    return this.uiText('voiceHintManual', { count: String(this.filteredVoiceLanguages().length) });
   });
   // Language the active/last voice session was started in, so the UI can show
   // which flag is "speaking".
@@ -477,7 +589,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return 'Realtime voice is ready';
   });
   readonly realtimeVoiceGreeting = computed(() =>
-    this.voiceSessionGreeting(),
+    this.voiceSessionGreeting(this.selectedVoiceLanguage() ?? undefined),
   );
 
   readonly canScrollVoiceCarouselPrev = computed(() => !this.voiceCarouselAtStart());
@@ -912,6 +1024,132 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return `Ask about ${name} news, neighborhoods, transit, food, jobs, safety, events, and civic life...`;
   }
 
+  uiText(
+    key:
+      | 'weSpeakYourLanguage'
+      | 'voiceHintManual'
+      | 'voiceHintAuto'
+      | 'findCountry'
+      | 'clearCountrySearch'
+      | 'previousLanguages'
+      | 'moreLanguages'
+      | 'choose'
+      | 'noMatchingLanguage'
+      | 'chooseLanguagePrompt'
+      | 'selectFlagFirst'
+      | 'speakInLanguage',
+    params: Record<string, string> = {},
+  ): string {
+    const code = this.selectedPageLanguageCode();
+    const family = code === 'pt-br' ? 'pt' : code;
+    const dictionaries: Partial<Record<string, Record<typeof key, string>>> = {
+      en: {
+        weSpeakYourLanguage: 'We speak your language',
+        voiceHintManual: '{count} countries · choose a flag first.',
+        voiceHintAuto: '{count} countries · selected for {country}.',
+        findCountry: 'Find country',
+        clearCountrySearch: 'Clear country search',
+        previousLanguages: 'Previous languages',
+        moreLanguages: 'More languages',
+        choose: 'Choose',
+        noMatchingLanguage: 'No matching country or language.',
+        chooseLanguagePrompt: 'Choose a flag to switch {city} into your language.',
+        selectFlagFirst: 'Select a flag first',
+        speakInLanguage: 'Speak to me in {language}',
+      },
+      es: {
+        weSpeakYourLanguage: 'Hablamos tu idioma',
+        voiceHintManual: '{count} países · elige una bandera primero.',
+        voiceHintAuto: '{count} países · seleccionado para {country}.',
+        findCountry: 'Buscar país',
+        clearCountrySearch: 'Borrar búsqueda de país',
+        previousLanguages: 'Idiomas anteriores',
+        moreLanguages: 'Más idiomas',
+        choose: 'Elegir',
+        noMatchingLanguage: 'No hay país o idioma coincidente.',
+        chooseLanguagePrompt: 'Elige una bandera para cambiar {city} a tu idioma.',
+        selectFlagFirst: 'Elige una bandera primero',
+        speakInLanguage: 'Háblame en {language}',
+      },
+      fr: {
+        weSpeakYourLanguage: 'Nous parlons votre langue',
+        voiceHintManual: '{count} pays · choisissez d’abord un drapeau.',
+        voiceHintAuto: '{count} pays · sélectionné pour {country}.',
+        findCountry: 'Trouver un pays',
+        clearCountrySearch: 'Effacer la recherche de pays',
+        previousLanguages: 'Langues précédentes',
+        moreLanguages: 'Plus de langues',
+        choose: 'Choisir',
+        noMatchingLanguage: 'Aucun pays ou langue correspondant.',
+        chooseLanguagePrompt: 'Choisissez un drapeau pour passer {city} dans votre langue.',
+        selectFlagFirst: 'Choisissez d’abord un drapeau',
+        speakInLanguage: 'Parlez-moi en {language}',
+      },
+      de: {
+        weSpeakYourLanguage: 'Wir sprechen deine Sprache',
+        voiceHintManual: '{count} Länder · wähle zuerst eine Flagge.',
+        voiceHintAuto: '{count} Länder · für {country} ausgewählt.',
+        findCountry: 'Land suchen',
+        clearCountrySearch: 'Ländersuche löschen',
+        previousLanguages: 'Vorherige Sprachen',
+        moreLanguages: 'Weitere Sprachen',
+        choose: 'Auswählen',
+        noMatchingLanguage: 'Kein passendes Land oder keine passende Sprache.',
+        chooseLanguagePrompt: 'Wähle eine Flagge, um {city} in deine Sprache umzuschalten.',
+        selectFlagFirst: 'Wähle zuerst eine Flagge',
+        speakInLanguage: 'Sprich mit mir auf {language}',
+      },
+      pt: {
+        weSpeakYourLanguage: 'Falamos o seu idioma',
+        voiceHintManual: '{count} países · escolha uma bandeira primeiro.',
+        voiceHintAuto: '{count} países · selecionado para {country}.',
+        findCountry: 'Encontrar país',
+        clearCountrySearch: 'Limpar busca de país',
+        previousLanguages: 'Idiomas anteriores',
+        moreLanguages: 'Mais idiomas',
+        choose: 'Escolher',
+        noMatchingLanguage: 'Nenhum país ou idioma correspondente.',
+        chooseLanguagePrompt: 'Escolha uma bandeira para mudar {city} para o seu idioma.',
+        selectFlagFirst: 'Escolha uma bandeira primeiro',
+        speakInLanguage: 'Fale comigo em {language}',
+      },
+      ar: {
+        weSpeakYourLanguage: 'نتحدث لغتك',
+        voiceHintManual: '{count} دولة · اختر علماً أولاً.',
+        voiceHintAuto: '{count} دولة · تم الاختيار لـ {country}.',
+        findCountry: 'ابحث عن بلد',
+        clearCountrySearch: 'مسح بحث البلد',
+        previousLanguages: 'اللغات السابقة',
+        moreLanguages: 'المزيد من اللغات',
+        choose: 'اختر',
+        noMatchingLanguage: 'لا يوجد بلد أو لغة مطابقة.',
+        chooseLanguagePrompt: 'اختر علماً لتحويل {city} إلى لغتك.',
+        selectFlagFirst: 'اختر علماً أولاً',
+        speakInLanguage: 'تحدث معي باللغة {language}',
+      },
+      zh: {
+        weSpeakYourLanguage: '我们会说你的语言',
+        voiceHintManual: '{count} 个国家 · 请先选择旗帜。',
+        voiceHintAuto: '{count} 个国家 · 已为 {country} 选择。',
+        findCountry: '查找国家',
+        clearCountrySearch: '清除国家搜索',
+        previousLanguages: '上一组语言',
+        moreLanguages: '更多语言',
+        choose: '选择',
+        noMatchingLanguage: '没有匹配的国家或语言。',
+        chooseLanguagePrompt: '选择一面旗帜，将 {city} 切换为你的语言。',
+        selectFlagFirst: '请先选择旗帜',
+        speakInLanguage: '用 {language} 和我说话',
+      },
+    };
+
+    const template = dictionaries[family]?.[key] ?? dictionaries['en']![key];
+    return Object.entries(params).reduce(
+      (text, [paramKey, value]) => text.replaceAll(`{${paramKey}}`, value),
+      template,
+    );
+  }
+
   placeRatingLabel(place: CityReviewedPlace): string {
     const rating = place.ratingAvg ?? 0;
     const count = place.reviewCount ?? place.ratingCount ?? 0;
@@ -1189,6 +1427,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
       onCleanup(() => clearInterval(interval));
     });
+
+    effect(() => {
+      if (!this.canShowCityVoiceCarousel() || this.voiceLanguageDetectionStarted || this.voiceLanguageUserSelected) {
+        return;
+      }
+
+      this.voiceLanguageDetectionStarted = true;
+      void this.detectAndSelectVoiceLanguage();
+    });
   }
 
   async submitQuestion(): Promise<void> {
@@ -1351,6 +1598,162 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   // ---- Language flag carousel -------------------------------------------------
 
+  private async detectAndSelectVoiceLanguage(): Promise<void> {
+    const location = await this.detectLanguageLocation();
+    if (location) {
+      this.detectedVoiceLanguageLocation.set(location);
+    }
+
+    if (this.voiceLanguageUserSelected || this.selectedVoiceLanguage()) {
+      return;
+    }
+
+    const language = this.voiceLanguageForLocation(location) ?? this.voiceLanguageForBrowserLocale();
+    if (!language) {
+      return;
+    }
+
+    this.selectedVoiceLanguage.set(language);
+    this.voiceLanguageAutoSelected.set(true);
+    this.voiceLanguageSearch.set('');
+    queueMicrotask(() => this.scrollSelectedVoiceLanguageIntoView());
+  }
+
+  private async detectLanguageLocation(): Promise<IpLanguageLocation | null> {
+    const cached = this.readCachedLanguageLocation();
+    if (cached) {
+      return cached;
+    }
+
+    if (typeof window === 'undefined' || typeof fetch === 'undefined') {
+      return this.browserLanguageLocation();
+    }
+
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeout = controller ? window.setTimeout(() => controller.abort(), 2200) : null;
+
+    try {
+      const response = await fetch(IP_LANGUAGE_LOCATION_URL, {
+        signal: controller?.signal,
+        cache: 'no-store',
+      });
+      if (!response.ok) {
+        throw new Error(`IP language lookup failed: ${response.status}`);
+      }
+      const payload = (await response.json()) as IpApiLocationResponse;
+      const location: IpLanguageLocation = {
+        countryCode: payload.country_code?.trim().toUpperCase() || null,
+        countryName: payload.country_name?.trim() || null,
+        source: 'ip',
+      };
+      this.writeCachedLanguageLocation(location);
+      return location;
+    } catch {
+      return this.browserLanguageLocation();
+    } finally {
+      if (timeout !== null) {
+        window.clearTimeout(timeout);
+      }
+    }
+  }
+
+  private readCachedLanguageLocation(): IpLanguageLocation | null {
+    if (typeof localStorage === 'undefined') {
+      return null;
+    }
+
+    try {
+      const raw = localStorage.getItem(IP_LANGUAGE_LOCATION_CACHE_KEY);
+      if (!raw) {
+        return null;
+      }
+      const parsed = JSON.parse(raw) as { location?: IpLanguageLocation; cachedAt?: string };
+      const cachedAt = parsed.cachedAt ? Date.parse(parsed.cachedAt) : 0;
+      if (!parsed.location || !Number.isFinite(cachedAt) || Date.now() - cachedAt > 24 * 60 * 60 * 1000) {
+        return null;
+      }
+      return parsed.location;
+    } catch {
+      return null;
+    }
+  }
+
+  private writeCachedLanguageLocation(location: IpLanguageLocation): void {
+    if (typeof localStorage === 'undefined') {
+      return;
+    }
+
+    try {
+      localStorage.setItem(IP_LANGUAGE_LOCATION_CACHE_KEY, JSON.stringify({
+        location,
+        cachedAt: new Date().toISOString(),
+      }));
+    } catch {
+      // Language detection is an enhancement; storage failures should not block chat.
+    }
+  }
+
+  private browserLanguageLocation(): IpLanguageLocation {
+    const locale = typeof navigator !== 'undefined'
+      ? navigator.languages?.[0] || navigator.language || ''
+      : '';
+    const countryCode = locale.includes('-') ? locale.split('-').pop()?.toUpperCase() ?? null : null;
+    return {
+      countryCode,
+      countryName: countryCode ? COUNTRY_CODE_TO_VOICE_COUNTRY[countryCode] ?? null : null,
+      source: countryCode ? 'browser' : 'fallback',
+    };
+  }
+
+  private voiceLanguageForLocation(location: IpLanguageLocation | null): VoiceLanguageOption | null {
+    if (!location) {
+      return null;
+    }
+
+    const countryCode = location.countryCode?.toUpperCase() ?? '';
+    const mappedCountry = countryCode ? COUNTRY_CODE_TO_VOICE_COUNTRY[countryCode] : null;
+    const countryName = mappedCountry || location.countryName;
+    if (countryName) {
+      const direct = this.voiceLanguages().find(
+        (language) => language.country.toLowerCase() === countryName.toLowerCase(),
+      );
+      if (direct) {
+        return direct;
+      }
+    }
+
+    const mappedLanguageCode = countryCode ? COUNTRY_CODE_TO_VOICE_LANGUAGE[countryCode] : null;
+    return mappedLanguageCode ? this.voiceLanguageForCode(mappedLanguageCode) : null;
+  }
+
+  private voiceLanguageForBrowserLocale(): VoiceLanguageOption | null {
+    const locale = typeof navigator !== 'undefined'
+      ? navigator.languages?.[0] || navigator.language || ''
+      : '';
+    const normalized = locale.toLowerCase();
+    const code = normalized.startsWith('pt-br')
+      ? 'pt-br'
+      : normalized.split('-')[0] as VoiceLanguageCode;
+    return this.voiceLanguageForCode(code) ?? this.voiceLanguageForCode('en');
+  }
+
+  private voiceLanguageForCode(code: VoiceLanguageCode): VoiceLanguageOption | null {
+    return this.voiceLanguages().find((language) => language.code === code) ?? null;
+  }
+
+  private scrollSelectedVoiceLanguageIntoView(): void {
+    const language = this.selectedVoiceLanguage();
+    const track = this.voiceLanguageTrack?.nativeElement;
+    if (!language || !track) {
+      return;
+    }
+
+    const index = this.filteredVoiceLanguages().findIndex((candidate) => candidate.country === language.country);
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('.lang-flag-card'));
+    cards[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    window.setTimeout(() => this.syncVoiceCarouselScrollState(), 240);
+  }
+
   onVoiceLanguageSearchInput(event: Event): void {
     const input = event.target as HTMLInputElement | null;
     this.voiceLanguageSearch.set(input?.value ?? '');
@@ -1407,6 +1810,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   selectVoiceLanguage(language: VoiceLanguageOption): void {
+    this.voiceLanguageUserSelected = true;
+    this.voiceLanguageAutoSelected.set(false);
     this.selectedVoiceLanguage.set(language);
   }
 
@@ -1423,6 +1828,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
    * chooses the language; the explicit "Speak to me" control starts the call.
    */
   async startVoiceInLanguage(language: VoiceLanguageOption): Promise<void> {
+    this.voiceLanguageUserSelected = true;
+    this.voiceLanguageAutoSelected.set(false);
     this.selectedVoiceLanguage.set(language);
     if (this.realtimeVoiceActive()) {
       // Switching language mid-session: tear the old one down first so the new
@@ -1438,7 +1845,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return;
     }
 
-    await this.startRealtimeVoice();
+    await this.startRealtimeVoice(this.selectedVoiceLanguage() ?? undefined);
   }
 
   async startRealtimeVoice(language?: VoiceLanguageOption): Promise<void> {

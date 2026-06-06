@@ -1,5 +1,7 @@
 <div
   class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[#3c0800]"
+  [attr.lang]="selectedPageLanguageCode()"
+  [attr.dir]="pageTextDirection()"
 >
   <div class="pointer-events-none fixed inset-0 overflow-hidden">
     <div class="absolute left-[-12rem] top-[-10rem] h-[26rem] w-[26rem] rounded-full bg-[var(--accent)]/[0.05] blur-[140px]"></div>
@@ -446,10 +448,10 @@
                   <div class="lang-carousel__copy">
                     <span class="lang-carousel__eyebrow">
                       <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
-                      <span>We speak your language</span>
+                      <span>{{ uiText('weSpeakYourLanguage') }}</span>
                     </span>
                     <p class="lang-carousel__hint">
-                      {{ filteredVoiceLanguages().length }} countries · choose a flag first.
+                      {{ voiceLanguageHint() }}
                     </p>
                   </div>
                   <label class="lang-carousel__search">
@@ -457,12 +459,12 @@
                     <input
                       type="search"
                       autocomplete="off"
-                      placeholder="Find country"
+                      [placeholder]="uiText('findCountry')"
                       [value]="voiceLanguageSearch()"
                       (input)="onVoiceLanguageSearchInput($event)"
                     />
                     @if (voiceLanguageSearch()) {
-                      <button type="button" aria-label="Clear country search" (click)="clearVoiceLanguageSearch()">
+                      <button type="button" [attr.aria-label]="uiText('clearCountrySearch')" (click)="clearVoiceLanguageSearch()">
                         <span class="material-symbols-outlined">close</span>
                       </button>
                     }
@@ -473,7 +475,7 @@
                   <button
                     type="button"
                     class="lang-carousel__nav lang-carousel__nav--prev"
-                    aria-label="Previous languages"
+                    [attr.aria-label]="uiText('previousLanguages')"
                     [disabled]="!canScrollVoiceCarouselPrev()"
                     (click)="scrollVoiceCarousel(-1)"
                   >
@@ -497,18 +499,18 @@
                         <span class="lang-flag-card__language">{{ lang.language }}</span>
                         <span class="lang-flag-card__cta">
                           <span class="material-symbols-outlined">translate</span>
-                          <span>Choose</span>
+                          <span>{{ uiText('choose') }}</span>
                         </span>
                       </button>
                     } @empty {
-                      <p class="lang-carousel__empty">No matching country or language.</p>
+                      <p class="lang-carousel__empty">{{ uiText('noMatchingLanguage') }}</p>
                     }
                   </div>
 
                   <button
                     type="button"
                     class="lang-carousel__nav lang-carousel__nav--next"
-                    aria-label="More languages"
+                    [attr.aria-label]="uiText('moreLanguages')"
                     [disabled]="!canScrollVoiceCarouselNext()"
                     (click)="scrollVoiceCarousel(1)"
                   >
