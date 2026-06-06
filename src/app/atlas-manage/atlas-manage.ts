@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
-import { AtlasService, type CityPopulationRefreshResult, type CustomCityAtlasInput } from '../atlas.service';
+import { AtlasService, type BulkCityAtlasResult, type CityPopulationRefreshResult, type CustomCityAtlasInput } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { CITY_ATLAS_TEMPLATES, type CityAtlasTemplate } from '../city-atlas-templates';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -1399,17 +1399,23 @@ export class AtlasManageComponent {
     });
     this.startBulkCityEtaTimer();
 
-	    const failed: string[] = [];
 	    try {
-	      let nextIndex = 0;
-	      const processRow = async (row: BulkCityDraft): Promise<void> => {
-	        this.updateBulkCityRow(row.row_number, {
-	          create_status: 'creating',
-	          create_error: null,
-	        });
+        const rowNumbers = new Set(rows.map((row) => row.row_number));
+        this.bulkCityRows.update((currentRows) =>
+          currentRows.map((row) =>
+            rowNumbers.has(row.row_number)
+              ? {
+                  ...row,
+                  create_status: 'creating',
+                  create_error: null,
+                }
+              : row,
+          ),
+        );
 
-        try {
-          const atlasId = await this.createCustomCityAtlasWithRetry({
+        const response = await this.atlasService.createBulkCityAtlases(
+          rows.map((row) => ({
+            rowNumber: row.row_number,
             cityName: row.city_name,
             regionName: row.region_name,
             countryCode: row.country_code,
@@ -1421,53 +1427,61 @@ export class AtlasManageComponent {
             populationYear: parseOptionalPositiveInteger(row.population_year),
             latitude: row.latitude ? Number(row.latitude) : null,
             longitude: row.longitude ? Number(row.longitude) : null,
-            skipGlobalDuplicateScan: true,
-          });
-          if (!atlasId) {
-            throw new Error('City Wiki was not created. Check that you are signed in and try again.');
-          }
-	          this.addBulkCityIdentityKeys(row);
-	          this.incrementBulkCityProgress('created');
-	          this.updateBulkCityRow(row.row_number, {
-	            duplicate: false,
-	            create_status: 'created',
-	            create_error: null,
-	          });
-	        } catch (error) {
-	          const message = error instanceof Error ? error.message : 'failed';
-	          if (this.isAlreadyCreatedError(message)) {
-	            this.addBulkCityIdentityKeys(row);
-	            this.incrementBulkCityProgress('skipped');
-	            this.updateBulkCityRow(row.row_number, {
-	              duplicate: true,
-	              create_status: 'skipped',
-	              create_error: null,
-	            });
-	          } else {
-            failed.push(`${row.city_name}: ${message}`);
-            this.incrementBulkCityProgress('failed');
-            this.updateBulkCityRow(row.row_number, {
-              create_status: 'failed',
-	              create_error: message,
-	            });
-	          }
-	        }
-	      };
+          })),
+        );
 
-	      const workerCount = Math.min(2, rows.length);
-	      await Promise.all(
-	        Array.from({ length: workerCount }, async () => {
-	          while (nextIndex < rows.length) {
-	            const row = rows[nextIndex];
-	            nextIndex += 1;
-	            if (row) {
-	              await processRow(row);
-	            }
-	          }
-	        }),
-	      );
-	      await this.reconcileBulkCityRowsAfterRun(rows);
-	      const summary = this.bulkCityRunSummary(rows);
+        const resultsByRow = new Map<number, BulkCityAtlasResult>(
+          response.results.map((result) => [result.rowNumber, result]),
+        );
+        const failed = response.results
+          .filter((result) => result.status === 'failed')
+          .map((result) => `${result.cityName || `Row ${result.rowNumber}`}: ${result.error || 'failed'}`);
+
+        this.bulkCityRows.update((currentRows) =>
+          currentRows.map((row) => {
+            if (!rowNumbers.has(row.row_number)) {
+              return row;
+            }
+            const result = resultsByRow.get(row.row_number);
+            if (!result) {
+              return {
+                ...row,
+                create_status: 'failed',
+                create_error: 'No server result returned for this row.',
+              };
+            }
+            return {
+              ...row,
+              slug: result.slug || row.slug,
+              duplicate: result.status === 'skipped',
+              create_status: result.status,
+              create_error: result.error,
+            };
+          }),
+        );
+
+        for (const result of response.results) {
+          if (result.status === 'created' || result.status === 'skipped') {
+            const row = rows.find((candidate) => candidate.row_number === result.rowNumber);
+            if (row) {
+              this.addBulkCityIdentityKeys({ ...row, slug: result.slug || row.slug });
+            }
+          }
+        }
+
+        this.bulkCityProgress.set({
+          total: rows.length,
+          processed: response.results.length,
+          created: response.created,
+          skipped: response.skipped,
+          failed: response.failed,
+          started_at_ms: startedAtMs,
+        });
+	      const summary = {
+          created: response.created,
+          skipped: response.skipped,
+          failed: response.failed,
+        };
 
 	      this.cityCreationMessage.set(
 	        summary.failed

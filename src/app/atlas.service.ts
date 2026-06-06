@@ -245,6 +245,26 @@ export interface CustomCityAtlasInput {
   skipGlobalDuplicateScan?: boolean;
 }
 
+export interface BulkCityAtlasInput extends Omit<CustomCityAtlasInput, 'skipGlobalDuplicateScan'> {
+  rowNumber: number;
+}
+
+export interface BulkCityAtlasResult {
+  rowNumber: number;
+  cityName: string;
+  slug: string;
+  status: 'created' | 'skipped' | 'failed';
+  atlasId: string | null;
+  error: string | null;
+}
+
+export interface BulkCityAtlasCreateResponse {
+  created: number;
+  skipped: number;
+  failed: number;
+  results: BulkCityAtlasResult[];
+}
+
 function normalizeCityIdentity(value: string | null | undefined): string {
   return (value ?? '')
     .toLowerCase()
@@ -762,6 +782,18 @@ export class AtlasService {
       CityPopulationRefreshResult
     >(this.functions, 'refreshCityPopulation');
     const { data } = await refreshCityPopulation({ atlasId, force });
+    return data;
+  }
+
+  async createBulkCityAtlases(rows: BulkCityAtlasInput[]): Promise<BulkCityAtlasCreateResponse> {
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+    const createBulkCityAtlases = httpsCallable<
+      { rows: BulkCityAtlasInput[] },
+      BulkCityAtlasCreateResponse
+    >(this.functions, 'createBulkCityAtlases');
+    const { data } = await createBulkCityAtlases({ rows });
     return data;
   }
 

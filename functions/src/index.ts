@@ -7173,6 +7173,237 @@ export const refreshCityPopulation = onCall(
   },
 );
 
+type BulkCityCreateRow = {
+  rowNumber?: number;
+  cityName?: string;
+  regionName?: string;
+  countryCode?: string;
+  timezone?: string;
+  name?: string;
+  description?: string;
+  globalRegion?: string;
+  population?: number | string | null;
+  populationYear?: number | string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+};
+
+type BulkCityCreateResult = {
+  rowNumber: number;
+  cityName: string;
+  slug: string;
+  status: 'created' | 'skipped' | 'failed';
+  atlasId: string | null;
+  error: string | null;
+};
+
+function cityImportSlug(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48) || 'wiki';
+}
+
+function cityImportIdentity(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/^my living wiki:\s*/i, '')
+    .replace(/\s*\(flagship\)\s*$/i, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function numberFromUnknown(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return Math.round(value);
+  }
+  if (typeof value === 'string') {
+    const parsed = Number(value.replace(/,/g, '').trim());
+    return Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : null;
+  }
+  return null;
+}
+
+function nullableTextFromUnknown(value: unknown, maxLength: number): string | null {
+  const text = textFromUnknown(value).slice(0, maxLength);
+  return text || null;
+}
+
+function bulkCityResult(
+  row: BulkCityCreateRow,
+  status: BulkCityCreateResult['status'],
+  details: Partial<Omit<BulkCityCreateResult, 'rowNumber' | 'cityName' | 'status'>>,
+): BulkCityCreateResult {
+  return {
+    rowNumber: typeof row.rowNumber === 'number' && Number.isFinite(row.rowNumber) ? Math.round(row.rowNumber) : 0,
+    cityName: textFromUnknown(row.cityName).slice(0, 120),
+    slug: details.slug ?? '',
+    status,
+    atlasId: details.atlasId ?? null,
+    error: details.error ?? null,
+  };
+}
+
+export const createBulkCityAtlases = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 300,
+    memory: '1GiB',
+  },
+  async (request) => {
+    const uid = request.auth?.uid;
+    if (!uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const rows = Array.isArray(request.data?.rows)
+      ? (request.data.rows as BulkCityCreateRow[])
+      : [];
+    if (rows.length === 0) {
+      throw new HttpsError('invalid-argument', 'At least one city row is required.');
+    }
+    if (rows.length > 250) {
+      throw new HttpsError('invalid-argument', 'Import up to 250 cities at a time.');
+    }
+
+    const publicSnapshot = await db.collection('atlases').where('is_public', '==', true).get();
+    const existingKeys = new Set<string>();
+    for (const docSnapshot of publicSnapshot.docs) {
+      const atlas = docSnapshot.data();
+      const cityConfig = atlas.city_config && typeof atlas.city_config === 'object'
+        ? atlas.city_config as Record<string, unknown>
+        : {};
+      [
+        textFromUnknown(atlas.slug),
+        cityImportIdentity(textFromUnknown(cityConfig.city_name)),
+        cityImportIdentity(textFromUnknown(atlas.name)),
+      ].filter(Boolean).forEach((key) => existingKeys.add(key));
+    }
+
+    const batch = db.batch();
+    const results: BulkCityCreateResult[] = [];
+    const now = FieldValue.serverTimestamp();
+    const seenInRequest = new Set<string>();
+    let createCount = 0;
+
+    for (const row of rows) {
+      const cityName = textFromUnknown(row.cityName).replace(/\s+/g, ' ').slice(0, 120);
+      const name = (textFromUnknown(row.name).replace(/\s+/g, ' ').slice(0, 160) || `My living wiki: ${cityName}`).trim();
+      const slug = cityImportSlug(name);
+      const cityKey = cityImportIdentity(cityName);
+      const nameKey = cityImportIdentity(name);
+      const keys = [slug, cityKey, nameKey].filter(Boolean);
+
+      if (!cityName) {
+        results.push(bulkCityResult(row, 'failed', { slug, error: 'City name is required.' }));
+        continue;
+      }
+      if (!slug || keys.length === 0) {
+        results.push(bulkCityResult(row, 'failed', { slug, error: 'City identity is invalid.' }));
+        continue;
+      }
+      if (keys.some((key) => existingKeys.has(key) || seenInRequest.has(key))) {
+        results.push(bulkCityResult(row, 'skipped', { slug }));
+        keys.forEach((key) => seenInRequest.add(key));
+        continue;
+      }
+
+      const countryCode = textFromUnknown(row.countryCode).toUpperCase();
+      const cleanCountryCode = /^[A-Z]{2}$/.test(countryCode) ? countryCode : 'US';
+      const regionName = nullableTextFromUnknown(row.regionName, 120);
+      const timezone = textFromUnknown(row.timezone).slice(0, 80) || 'America/New_York';
+      const globalRegion = nullableTextFromUnknown(row.globalRegion, 60);
+      const population = numberFromUnknown(row.population);
+      const populationYear = numberFromUnknown(row.populationYear);
+      const latitude = typeof row.latitude === 'number' && Number.isFinite(row.latitude) && row.latitude >= -90 && row.latitude <= 90
+        ? row.latitude
+        : null;
+      const longitude = typeof row.longitude === 'number' && Number.isFinite(row.longitude) && row.longitude >= -180 && row.longitude <= 180
+        ? row.longitude
+        : null;
+      const description = textFromUnknown(row.description).slice(0, 700)
+        || `${cityName}'s practical local knowledge, civic updates, transit, culture, climate, jobs, food, neighborhoods, and public information.`;
+      const regionPhrase = regionName ? `${cityName}, ${regionName}` : cityName;
+      const atlasRef = db.collection('atlases').doc();
+
+      batch.set(atlasRef, {
+        user_id: uid,
+        name,
+        slug,
+        description,
+        landing_summary: `A city-first guide for ${regionPhrase}, focused on practical local knowledge, neighborhoods, transit, civic life, culture, climate, jobs, food, and local updates.`,
+        is_public: true,
+        logo_url: '/assets/image/living-cities.png',
+        hero_url: null,
+        video_url: null,
+        cover_color: '#255a61',
+        default_answer_mode: 'internet',
+        city_config: {
+          enabled: true,
+          city_name: cityName,
+          region_name: regionName,
+          country_code: cleanCountryCode,
+          timezone,
+          census_state_code: null,
+          census_place_code: null,
+          airnow_zip_code: null,
+          latitude,
+          longitude,
+          metadata: {
+            global_region: globalRegion,
+            population,
+            population_year: populationYear,
+            population_scope: population ? 'unknown' : null,
+            population_source: population ? 'manual' : null,
+            population_source_url: null,
+            population_source_record_id: null,
+            population_fetched_at: population ? new Date().toISOString() : null,
+            population_confidence: population ? 'medium' : null,
+            population_match_method: population ? 'manual' : null,
+          },
+          manual_metrics: null,
+        },
+        chat_guide: {
+          name: `${cityName} Guide`,
+          label: `Ask about ${cityName} civic life, transit, culture, climate, jobs, food, neighborhoods, and local updates.`,
+          image_url: '/assets/image/living-cities.png',
+          banner_url: null,
+        },
+        persona_prompt: [
+          `You are the My living wiki guide for ${regionPhrase}.`,
+          `Speak with practical local confidence about ${cityName}, while staying source-aware and clear about uncertainty.`,
+          'Use live internet grounding by default because this city was created before source ingestion.',
+          'Keep answers concise, readable, energetic, and useful for residents, visitors, builders, researchers, and local operators.',
+          'Include tasteful local emojis when they make the answer feel more alive, but keep the facts precise.',
+        ].join(' '),
+        created_at: now,
+        updated_at: now,
+      });
+
+      createCount += 1;
+      keys.forEach((key) => {
+        existingKeys.add(key);
+        seenInRequest.add(key);
+      });
+      results.push(bulkCityResult(row, 'created', { slug, atlasId: atlasRef.id }));
+    }
+
+    if (createCount > 0) {
+      await batch.commit();
+    }
+
+    return {
+      created: results.filter((result) => result.status === 'created').length,
+      skipped: results.filter((result) => result.status === 'skipped').length,
+      failed: results.filter((result) => result.status === 'failed').length,
+      results,
+    };
+  },
+);
+
 export const refreshCityPulseDaily = onSchedule(
   {
     region: callableRegion,
