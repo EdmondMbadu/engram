@@ -96,6 +96,111 @@ const COUNTRY_ITEM_BY_CODE: Record<string, string> = {
   US: 'Q30',
   ZA: 'Q258',
 };
+const COUNTRY_CODE_BY_REGION_KEY: Record<string, string> = {
+  argentina: 'AR',
+  austria: 'AT',
+  australia: 'AU',
+  belgium: 'BE',
+  brazil: 'BR',
+  canada: 'CA',
+  chile: 'CL',
+  china: 'CN',
+  colombia: 'CO',
+  'czech-republic': 'CZ',
+  denmark: 'DK',
+  'democratic-republic-of-the-congo': 'CD',
+  drc: 'CD',
+  egypt: 'EG',
+  finland: 'FI',
+  france: 'FR',
+  germany: 'DE',
+  ghana: 'GH',
+  greece: 'GR',
+  hungary: 'HU',
+  india: 'IN',
+  ireland: 'IE',
+  israel: 'IL',
+  italy: 'IT',
+  japan: 'JP',
+  kenya: 'KE',
+  mexico: 'MX',
+  morocco: 'MA',
+  netherlands: 'NL',
+  'new-zealand': 'NZ',
+  nigeria: 'NG',
+  norway: 'NO',
+  peru: 'PE',
+  poland: 'PL',
+  'puerto-rico': 'PR',
+  portugal: 'PT',
+  qatar: 'QA',
+  singapore: 'SG',
+  'south-africa': 'ZA',
+  'south-korea': 'KR',
+  spain: 'ES',
+  sweden: 'SE',
+  switzerland: 'CH',
+  taiwan: 'TW',
+  thailand: 'TH',
+  turkey: 'TR',
+  'turks-and-caicos': 'TC',
+  'turks-caicos': 'TC',
+  'united-arab-emirates': 'AE',
+  'united-kingdom': 'GB',
+  'united-states': 'US',
+  uk: 'GB',
+  usa: 'US',
+};
+const COUNTRY_CODE_BY_TIMEZONE: Record<string, string> = {
+  'Africa/Accra': 'GH',
+  'Africa/Cairo': 'EG',
+  'Africa/Casablanca': 'MA',
+  'Africa/Johannesburg': 'ZA',
+  'Africa/Kinshasa': 'CD',
+  'Africa/Lagos': 'NG',
+  'Africa/Nairobi': 'KE',
+  'America/Argentina/Buenos_Aires': 'AR',
+  'America/Bogota': 'CO',
+  'America/Grand_Turk': 'TC',
+  'America/Lima': 'PE',
+  'America/Mexico_City': 'MX',
+  'America/Puerto_Rico': 'PR',
+  'America/Santiago': 'CL',
+  'America/Sao_Paulo': 'BR',
+  'Asia/Bangkok': 'TH',
+  'Asia/Dubai': 'AE',
+  'Asia/Hong_Kong': 'CN',
+  'Asia/Jerusalem': 'IL',
+  'Asia/Kolkata': 'IN',
+  'Asia/Qatar': 'QA',
+  'Asia/Shanghai': 'CN',
+  'Asia/Seoul': 'KR',
+  'Asia/Singapore': 'SG',
+  'Asia/Taipei': 'TW',
+  'Asia/Tokyo': 'JP',
+  'Australia/Sydney': 'AU',
+  'Europe/Amsterdam': 'NL',
+  'Europe/Athens': 'GR',
+  'Europe/Berlin': 'DE',
+  'Europe/Brussels': 'BE',
+  'Europe/Budapest': 'HU',
+  'Europe/Copenhagen': 'DK',
+  'Europe/Dublin': 'IE',
+  'Europe/Helsinki': 'FI',
+  'Europe/Istanbul': 'TR',
+  'Europe/Lisbon': 'PT',
+  'Europe/London': 'GB',
+  'Europe/Madrid': 'ES',
+  'Europe/Oslo': 'NO',
+  'Europe/Paris': 'FR',
+  'Europe/Prague': 'CZ',
+  'Europe/Rome': 'IT',
+  'Europe/Stockholm': 'SE',
+  'Europe/Vienna': 'AT',
+  'Europe/Warsaw': 'PL',
+  'Europe/Zurich': 'CH',
+  'Pacific/Auckland': 'NZ',
+};
 const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'>> = {
   'abu-dhabi-ae': seededPopulation(1650000, 2023, 'Abu Dhabi Statistics Centre estimate'),
   'accra-gh': seededPopulation(2841000, 2021, 'Ghana 2021 census metropolitan district estimate'),
@@ -103,6 +208,7 @@ const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' |
   'auckland-nz': seededPopulation(1695100, 2024, 'Stats NZ Auckland region estimate'),
   'bangkok-th': seededPopulation(5475000, 2024, 'Bangkok registered population estimate'),
   'beijing-cn': seededPopulation(21858000, 2023, 'Beijing municipal statistical estimate'),
+  'budapest-hu': seededPopulation(1686851, 2024, 'Hungarian Central Statistical Office estimate'),
   'dubai-ae': seededPopulation(3825000, 2025, 'Dubai Statistics Center population clock estimate'),
   'doha-qa': seededPopulation(1186000, 2024, 'Qatar Planning and Statistics Authority municipality estimate'),
   'hong-kong-cn': seededPopulation(7531800, 2024, 'Hong Kong Census and Statistics Department estimate'),
@@ -199,7 +305,7 @@ export async function refreshCityPopulationMetadata(
 
 async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: string): Promise<PopulationCandidate | null> {
   const cityConfig = atlas.city_config ?? {};
-  const countryCode = typeof cityConfig.country_code === 'string' ? cityConfig.country_code.trim().toUpperCase() : '';
+  const countryCode = inferCountryCode(cityConfig);
   const regionName = typeof cityConfig.region_name === 'string' ? cityConfig.region_name.trim() : '';
 
   if (countryCode === 'US' && cityConfig.census_state_code && cityConfig.census_place_code) {
@@ -212,6 +318,11 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
     }
   }
 
+  const seeded = seededPopulationFor(cityName, countryCode);
+  if (seeded) {
+    return seeded;
+  }
+
   const geonames = await fetchGeoNamesPopulation(cityName, countryCode);
   if (geonames) {
     return geonames;
@@ -220,11 +331,6 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
   const wikidata = await fetchWikidataPopulation(cityName, countryCode, regionName);
   if (wikidata) {
     return wikidata;
-  }
-
-  const seeded = seededPopulationFor(cityName, countryCode);
-  if (seeded) {
-    return seeded;
   }
 
   return null;
@@ -278,7 +384,7 @@ async function fetchGeoNamesPopulation(cityName: string, countryCode: string): P
   }
 
   try {
-    const data = await fetchJson(url.toString()) as { geonames?: Array<Record<string, unknown>> };
+    const data = await fetchJson(url.toString(), {}, 8_000) as { geonames?: Array<Record<string, unknown>> };
     const records = Array.isArray(data.geonames) ? data.geonames : [];
     const best = records
       .map((record) => ({
@@ -348,7 +454,7 @@ LIMIT 20
     const data = await fetchJson(url.toString(), {
       Accept: 'application/sparql-results+json',
       'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
-    }) as {
+    }, 8_000) as {
       results?: { bindings?: Array<Record<string, { value?: string }>> };
     };
     const bindings = data.results?.bindings ?? [];
@@ -420,7 +526,7 @@ async function fetchWikidataEntityPopulation(
     const data = await fetchJson(url.toString(), {
       Accept: 'application/json',
       'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
-    }) as { entities?: Record<string, Record<string, unknown>> };
+    }, 8_000) as { entities?: Record<string, Record<string, unknown>> };
     const entities = data.entities ?? {};
     const expectedCountryItem = countryCode ? COUNTRY_ITEM_BY_CODE[countryCode] ?? null : null;
 
@@ -510,7 +616,7 @@ async function searchWikidataCandidates(cityName: string): Promise<WikidataSearc
   const data = await fetchJson(url.toString(), {
     Accept: 'application/json',
     'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
-  }) as { search?: Array<{ id?: string; label?: string; description?: string }> };
+  }, 6_000) as { search?: Array<{ id?: string; label?: string; description?: string }> };
 
   return (data.search ?? [])
     .map((item) => ({
@@ -603,12 +709,25 @@ function parseCsvLine(line: string): string[] {
   return values;
 }
 
-async function fetchJson(url: string, headers: Record<string, string> = {}): Promise<unknown> {
-  const response = await fetch(url, { headers });
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
+async function fetchJson(
+  url: string,
+  headers: Record<string, string> = {},
+  timeoutMs = 10_000,
+): Promise<unknown> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      headers,
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    return await response.json();
+  } finally {
+    clearTimeout(timeout);
   }
-  return await response.json();
 }
 
 function cleanCityName(value: string): string {
@@ -616,6 +735,25 @@ function cleanCityName(value: string): string {
     .replace(/^my living wiki:\s*/i, '')
     .replace(/\s*\(flagship\)\s*$/i, '')
     .trim();
+}
+
+function inferCountryCode(cityConfig: NonNullable<AtlasRecord['city_config']>): string {
+  const explicit = typeof cityConfig.country_code === 'string' ? cityConfig.country_code.trim().toUpperCase() : '';
+  if (explicit) {
+    return explicit;
+  }
+
+  const regionKey = normalizeSeedKey(typeof cityConfig.region_name === 'string' ? cityConfig.region_name : '');
+  if (regionKey && COUNTRY_CODE_BY_REGION_KEY[regionKey]) {
+    return COUNTRY_CODE_BY_REGION_KEY[regionKey];
+  }
+
+  const timezone = typeof cityConfig.timezone === 'string' ? cityConfig.timezone.trim() : '';
+  if (timezone && COUNTRY_CODE_BY_TIMEZONE[timezone]) {
+    return COUNTRY_CODE_BY_TIMEZONE[timezone];
+  }
+
+  return '';
 }
 
 function numberOrNull(value: unknown): number | null {
