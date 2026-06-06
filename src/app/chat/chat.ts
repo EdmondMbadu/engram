@@ -242,129 +242,7 @@ const COUNTRY_CODE_TO_VOICE_LANGUAGE: Partial<Record<string, VoiceLanguageCode>>
   VN: 'vi',
 };
 
-type ChatUiTextKey =
-  | 'weSpeakYourLanguage'
-  | 'voiceHintManual'
-  | 'voiceHintAuto'
-  | 'findCountry'
-  | 'clearCountrySearch'
-  | 'previousLanguages'
-  | 'moreLanguages'
-  | 'choose'
-  | 'noMatchingLanguage'
-  | 'chooseLanguagePrompt'
-  | 'selectFlagFirst'
-  | 'speakInLanguage'
-  | 'loadingChat'
-  | 'preparingConversation'
-  | 'emailAddress'
-  | 'joining'
-  | 'joinForFree'
-  | 'weeklyUpdates'
-  | 'askMyLivingWiki'
-  | 'guideAlt'
-  | 'answerMode'
-  | 'wiki'
-  | 'internet'
-  | 'toSend'
-  | 'signInToContinue'
-  | 'sendMessage'
-  | 'suggestedQuestions'
-  | 'signInToSaveChat'
-  | 'subscribeWeeklyUpdates'
-  | 'reviewedLocations'
-  | 'trendingNow'
-  | 'openPlacesBoard'
-  | 'noLocalReviewsYet'
-  | 'openBoardFirstPlace'
-  | 'newChat'
-  | 'exploreCities'
-  | 'publicLivingWikis'
-  | 'seeAll'
-  | 'signIn'
-  | 'subscribe'
-  | 'messageMyLivingWiki'
-  | 'publicLimitReached'
-  | 'askFiveNoSignIn'
-  | 'signedInVisitorsFree'
-  | 'askPublicAtlas'
-  | 'publicLimitNotice'
-  | 'askFiveNoSignInPeriod'
-  | 'remainingQuestions'
-  | 'subscribeNotice'
-  | 'askAtlasInternet'
-  | 'askCityInternet'
-  | 'askCitySources'
-  | 'askSources'
-  | 'internetModeLabel'
-  | 'myLivingWikiLabel'
-  | 'askYourWiki'
-  | 'askThisWiki'
-  | 'signInKeepChatting'
-  | 'internetModeDescription'
-  | 'noSourcesDescription'
-  | 'publicLimitUsed'
-  | 'anonymousQuestionsAllowed'
-  | 'anonymousQuestionsLeft'
-  | 'signInGroundedQuestions'
-  | 'heroInternetPrompt'
-  | 'heroCitySourcesPrompt'
-  | 'heroWikiSourcesPrompt'
-  | 'signInKeepConversation'
-  | 'heroInternetSupporting'
-  | 'heroCityIndexed'
-  | 'heroIndexed'
-  | 'publicAtlasLive'
-  | 'myLivingWikiLive'
-  | 'knowledgeReady'
-  | 'anonymousSessionPaused'
-  | 'internetModeEnabled'
-  | 'oneIndexedSource'
-  | 'manyIndexedSources'
-  | 'internetNoDocumentsHelper'
-  | 'internetModeHelper'
-  | 'wikiModeHelper'
-  | 'anonymousQuestionsRemaining'
-  | 'savedWithNameEmail'
-  | 'latestUpdates'
-  | 'latestUpdatesPrompt'
-  | 'latestUpdatesDetail'
-  | 'whatMattersNow'
-  | 'whatMattersNowPrompt'
-  | 'whatMattersNowDetail'
-  | 'recentDebates'
-  | 'recentDebatesPrompt'
-  | 'recentDebatesDetail'
-  | 'backgroundContext'
-  | 'backgroundContextPrompt'
-  | 'backgroundContextDetail'
-  | 'quickOverview'
-  | 'quickOverviewPrompt'
-  | 'quickOverviewDetail'
-  | 'importantTopics'
-  | 'importantTopicsPrompt'
-  | 'importantTopicsDetail'
-  | 'bestStartingPoint'
-  | 'bestStartingPointPrompt'
-  | 'bestStartingPointDetail'
-  | 'keyQuestions'
-  | 'keyQuestionsPrompt'
-  | 'keyQuestionsDetail'
-  | 'whatIsTopic'
-  | 'whyTopicMatters'
-  | 'keyFactsTopic'
-  | 'topicConnection'
-  | 'groundedWikiDetail'
-  | 'knowledgeBaseDetail'
-  | 'reviewedPlaceCount'
-  | 'reviewedPlacesCount'
-  | 'localReviewCount'
-  | 'localReviewsCount'
-  | 'ratings'
-  | 'newPlace'
-  | 'you'
-  | 'myLivingWiki'
-  | 'guideLabel';
+type ChatUiTextKey = string;
 
 function normalizeVoiceSearchText(value: string): string {
   return value
@@ -698,27 +576,27 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return status === 'connecting' || status === 'connected' || status === 'disconnecting';
   });
   readonly realtimeVoiceOrbState = computed(() => {
-    if (this.realtimeVoiceStatus() === 'connecting') return 'Connecting';
-    if (this.realtimeVoiceStatus() === 'error') return 'Needs attention';
-    if (this.realtimeVoiceStatus() === 'disconnected') return 'Ready';
-    return this.realtimeVoiceMode() === 'speaking' ? 'Speaking' : 'Listening';
+    if (this.realtimeVoiceStatus() === 'connecting') return this.uiText('connecting');
+    if (this.realtimeVoiceStatus() === 'error') return this.uiText('needsAttention');
+    if (this.realtimeVoiceStatus() === 'disconnected') return this.uiText('ready');
+    return this.realtimeVoiceMode() === 'speaking' ? this.uiText('speaking') : this.uiText('listening');
   });
   readonly realtimeVoicePrimaryLabel = computed(() => {
     const status = this.realtimeVoiceStatus();
-    if (status === 'connecting') return 'Connecting';
-    if (status === 'disconnecting') return 'Ending';
-    if (status === 'connected') return 'End voice';
-    return 'Voice mode';
+    if (status === 'connecting') return this.uiText('connecting');
+    if (status === 'disconnecting') return this.uiText('ending');
+    if (status === 'connected') return this.uiText('endVoice');
+    return this.uiText('voiceMode');
   });
   readonly realtimeVoicePanelTitle = computed(() => {
     const status = this.realtimeVoiceStatus();
-    if (status === 'connecting') return 'Connecting realtime voice';
+    if (status === 'connecting') return this.uiText('connectingRealtimeVoice');
     if (status === 'connected') {
-      return this.realtimeVoiceMode() === 'speaking' ? 'AI speaking' : 'Listening';
+      return this.realtimeVoiceMode() === 'speaking' ? this.uiText('aiSpeaking') : this.uiText('listening');
     }
-    if (status === 'disconnecting') return 'Ending voice mode';
-    if (status === 'error') return 'Voice mode needs setup';
-    return 'Realtime voice is ready';
+    if (status === 'disconnecting') return this.uiText('endingVoiceMode');
+    if (status === 'error') return this.uiText('voiceModeNeedsSetup');
+    return this.uiText('realtimeVoiceReady');
   });
   readonly realtimeVoiceGreeting = computed(() =>
     this.voiceSessionGreeting(this.selectedVoiceLanguage() ?? undefined),
@@ -786,7 +664,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly hasMessages = computed(() => this.messages().length > 0);
   readonly currentThinkingLabel = computed(() => THINKING_STAGES[this.thinkingStage()] ?? THINKING_STAGES[0]);
   readonly pageTitle = computed(() =>
-    this.isPublicView() ? `${this.atlasService.displayName(this.publicAtlas())} Chat` : 'Chat',
+    this.isPublicView()
+      ? this.uiText('chatTitle', { city: this.atlasService.displayName(this.publicAtlas()) })
+      : this.uiText('chat'),
   );
   readonly pageSubtitle = computed(() => {
     if (this.isWorkspaceMode()) {
@@ -1141,7 +1021,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   cityWikiStatusLabel(wiki: PublicWikiCatalogItem): string {
-    return wiki.status === 'live' ? 'Live' : 'Preview';
+    return wiki.status === 'live' ? this.uiText('live') : this.uiText('preview');
   }
 
   cityWikiLocationLabel(wiki: PublicWikiCatalogItem): string {
@@ -1286,6 +1166,124 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         you: 'You',
         myLivingWiki: 'My living wiki',
         guideLabel: 'Your My Living Wiki {city} tour guide',
+        chat: 'Chat',
+        chatTitle: '{city} Chat',
+        threads: 'Threads',
+        noThreadsYet: 'No threads yet.',
+        deleteThread: 'Delete thread {title}',
+        showLess: 'Show less',
+        showMore: 'Show more ({count})',
+        signingOut: 'Signing out...',
+        signOut: 'Sign out',
+        live: 'Live',
+        preview: 'Preview',
+        useMyWikiMode: 'Use My living wiki mode',
+        useInternetMode: 'Use internet mode',
+        openWikiAdmin: 'Open wiki admin',
+        admin: 'Admin',
+        chatIsShared: 'Chat is shared',
+        shareChat: 'Share chat',
+        shared: 'Shared',
+        endRealtimeVoiceMode: 'End realtime voice mode',
+        startRealtimeVoiceMode: 'Start realtime voice mode',
+        endVoiceMode: 'End voice mode',
+        voiceMode: 'Voice mode',
+        chatCopied: 'Chat copied',
+        copyChat: 'Copy chat',
+        copied: 'Copied',
+        copy: 'Copy',
+        closeVoiceMode: 'Close voice mode',
+        realtimeVoiceMode: 'Realtime voice mode',
+        unmuteMicrophone: 'Unmute microphone',
+        muteMicrophone: 'Mute microphone',
+        internetModeOnly: 'Internet mode only',
+        endVoiceCall: 'End voice call',
+        end: 'End',
+        liveTranscript: 'Live transcript',
+        aiTalking: 'AI is talking',
+        listeningForYou: 'Listening for you',
+        ai: 'AI',
+        spokenWords: 'Spoken words will appear here.',
+        voiceTextPlaceholder: 'Send a message to start a chat',
+        sendVoiceTextMessage: 'Send voice text message',
+        close: 'Close',
+        closeSubscribeDialog: 'Close subscribe dialog',
+        freeAccess: 'Free My living wiki access',
+        subscribeToWiki: 'Subscribe to {city}',
+        joinWiki: 'Join My living wiki {city}',
+        thisWiki: 'this wiki',
+        subscribeIntro: 'Get the weekly {city} brief now. Phone access and the rest of the member perks unlock once you join.',
+        weeklyUpdatesOn: 'Weekly updates on {city}',
+        conciseDigest: 'A concise local digest so {city} does not sneak important things past you.',
+        askWikiAnytime: 'Ask the wiki anytime',
+        publicChatRealtime: 'Use the public chat for real-time answers about neighborhoods, food, history, routes, and local details.',
+        callCityGuide: 'Call the {city} guide',
+        callInNumber: 'Your call-in number:',
+        joinUnlockPhone: 'Join to unlock the phone number for real-time {city} answers when the line is available.',
+        moreAccess: 'More access after joining',
+        revealFeatures: 'We will reveal additional member features as they come online for this My living wiki.',
+        subscribing: 'Subscribing...',
+        voiceRecap: 'Voice recap',
+        emailRecap: 'Email recap',
+        summaryTranscript: 'Summary plus transcript excerpt.',
+        usefulLinks: 'Useful links',
+        includesWiki: 'Includes the wiki and a recap card when ready.',
+        signInLower: 'sign in',
+        sending: 'Sending...',
+        sendRecap: 'Send recap',
+        sentTo: 'Sent to {email}',
+        emailIncludes: 'The email includes your recap and transcript excerpt.',
+        openRecapCard: 'Open recap card',
+        continueChat: 'Continue chat',
+        shareChatHeader: 'Share chat',
+        createPublicShareLink: 'Create a public share link',
+        shareDescription: 'Anyone with the link can read this chat. Private account details are not included.',
+        shareThreadDescription: 'Anyone with this link can read this thread. They will not be able to reply from the shared page.',
+        generateConversationLink: 'Generate a dedicated link for this conversation.',
+        readOnlyThreadLink: 'This link will open a read-only public thread page at the exact conversation.',
+        creatingLink: 'Creating link...',
+        createShareLink: 'Create share link',
+        shareLink: 'Share link',
+        copyLink: 'Copy link',
+        closeShareDialog: 'Close share dialog',
+        sharePageReady: 'Share page ready',
+        publicUrl: 'Public URL',
+        copyUrl: 'Copy URL',
+        openPage: 'Open page',
+        shareDirectly: 'Share directly',
+        recapSent: 'Recap sent',
+        sendConversation: 'Send this conversation?',
+        voiceRecapOnWay: 'Your {city} voice chat recap is on its way.',
+        sendSummaryEmail: 'Send a concise summary, useful links, and the transcript to your email.',
+        closeVoiceRecapDialog: 'Close voice recap dialog',
+        accountlessSend: 'You can send this without an account. To keep future recaps together,',
+        skip: 'Skip',
+        done: 'Done',
+        connecting: 'Connecting',
+        needsAttention: 'Needs attention',
+        ready: 'Ready',
+        speaking: 'Speaking',
+        listening: 'Listening',
+        ending: 'Ending',
+        endVoice: 'End voice',
+        connectingRealtimeVoice: 'Connecting realtime voice',
+        aiSpeaking: 'AI speaking',
+        endingVoiceMode: 'Ending voice mode',
+        voiceModeNeedsSetup: 'Voice mode needs setup',
+        realtimeVoiceReady: 'Realtime voice is ready',
+        startVoiceConversation: 'Start a voice conversation in your language',
+        useLanguageFor: 'Use {language} for {city} ({country})',
+        chooseLanguage: 'Choose {language}',
+        sourceCitation: 'Source Citation',
+        page: 'Page',
+        lines: 'Lines',
+        deleteThreadTitle: 'Delete thread',
+        areYouSure: 'Are you sure?',
+        permanentlyRemove: 'This will permanently remove',
+        fromSavedThreads: 'from your saved threads.',
+        updated: 'Updated',
+        cancel: 'Cancel',
+        deleting: 'Deleting...',
       },
       es: {
         weSpeakYourLanguage: 'Hablamos tu idioma',
@@ -1410,6 +1408,124 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         you: 'Tú',
         myLivingWiki: 'My Living Wiki',
         guideLabel: 'Tu guía de My Living Wiki {city}',
+        chat: 'Chat',
+        chatTitle: 'Chat de {city}',
+        threads: 'Conversaciones',
+        noThreadsYet: 'Aún no hay conversaciones.',
+        deleteThread: 'Eliminar conversación {title}',
+        showLess: 'Mostrar menos',
+        showMore: 'Mostrar más ({count})',
+        signingOut: 'Cerrando sesión...',
+        signOut: 'Cerrar sesión',
+        live: 'Activo',
+        preview: 'Vista previa',
+        useMyWikiMode: 'Usar modo My Living Wiki',
+        useInternetMode: 'Usar modo Internet',
+        openWikiAdmin: 'Abrir administración de la wiki',
+        admin: 'Admin',
+        chatIsShared: 'El chat está compartido',
+        shareChat: 'Compartir chat',
+        shared: 'Compartido',
+        endRealtimeVoiceMode: 'Terminar modo de voz en tiempo real',
+        startRealtimeVoiceMode: 'Iniciar modo de voz en tiempo real',
+        endVoiceMode: 'Terminar modo de voz',
+        voiceMode: 'Modo de voz',
+        chatCopied: 'Chat copiado',
+        copyChat: 'Copiar chat',
+        copied: 'Copiado',
+        copy: 'Copiar',
+        closeVoiceMode: 'Cerrar modo de voz',
+        realtimeVoiceMode: 'Modo de voz en tiempo real',
+        unmuteMicrophone: 'Activar micrófono',
+        muteMicrophone: 'Silenciar micrófono',
+        internetModeOnly: 'Solo modo Internet',
+        endVoiceCall: 'Terminar llamada de voz',
+        end: 'Terminar',
+        liveTranscript: 'Transcripción en vivo',
+        aiTalking: 'La IA está hablando',
+        listeningForYou: 'Escuchándote',
+        ai: 'IA',
+        spokenWords: 'Las palabras habladas aparecerán aquí.',
+        voiceTextPlaceholder: 'Envía un mensaje para iniciar un chat',
+        sendVoiceTextMessage: 'Enviar mensaje de texto por voz',
+        close: 'Cerrar',
+        closeSubscribeDialog: 'Cerrar diálogo de suscripción',
+        freeAccess: 'Acceso gratis a My Living Wiki',
+        subscribeToWiki: 'Suscribirse a {city}',
+        joinWiki: 'Unirse a My Living Wiki {city}',
+        thisWiki: 'esta wiki',
+        subscribeIntro: 'Recibe ahora el resumen semanal de {city}. El acceso por teléfono y el resto de beneficios se activan cuando te unas.',
+        weeklyUpdatesOn: 'Actualizaciones semanales sobre {city}',
+        conciseDigest: 'Un resumen local conciso para que no se te pase nada importante de {city}.',
+        askWikiAnytime: 'Pregunta a la wiki cuando quieras',
+        publicChatRealtime: 'Usa el chat público para respuestas en tiempo real sobre vecindarios, comida, historia, rutas y detalles locales.',
+        callCityGuide: 'Llama a la guía de {city}',
+        callInNumber: 'Tu número para llamar:',
+        joinUnlockPhone: 'Únete para desbloquear el número de teléfono y recibir respuestas en tiempo real sobre {city} cuando la línea esté disponible.',
+        moreAccess: 'Más acceso después de unirte',
+        revealFeatures: 'Mostraremos funciones adicionales para miembros cuando estén disponibles para esta My Living Wiki.',
+        subscribing: 'Suscribiendo...',
+        voiceRecap: 'Resumen de voz',
+        emailRecap: 'Resumen por correo',
+        summaryTranscript: 'Resumen más extracto de la transcripción.',
+        usefulLinks: 'Enlaces útiles',
+        includesWiki: 'Incluye la wiki y una tarjeta de resumen cuando esté lista.',
+        signInLower: 'iniciar sesión',
+        sending: 'Enviando...',
+        sendRecap: 'Enviar resumen',
+        sentTo: 'Enviado a {email}',
+        emailIncludes: 'El correo incluye tu resumen y un extracto de la transcripción.',
+        openRecapCard: 'Abrir tarjeta de resumen',
+        continueChat: 'Continuar chat',
+        shareChatHeader: 'Compartir chat',
+        createPublicShareLink: 'Crear un enlace público para compartir',
+        shareDescription: 'Cualquier persona con el enlace puede leer este chat. No se incluyen datos privados de la cuenta.',
+        shareThreadDescription: 'Cualquier persona con este enlace puede leer esta conversación. No podrá responder desde la página compartida.',
+        generateConversationLink: 'Genera un enlace dedicado para esta conversación.',
+        readOnlyThreadLink: 'Este enlace abrirá una página pública de solo lectura en la conversación exacta.',
+        creatingLink: 'Creando enlace...',
+        createShareLink: 'Crear enlace para compartir',
+        shareLink: 'Enlace para compartir',
+        copyLink: 'Copiar enlace',
+        closeShareDialog: 'Cerrar diálogo de compartir',
+        sharePageReady: 'Página para compartir lista',
+        publicUrl: 'URL pública',
+        copyUrl: 'Copiar URL',
+        openPage: 'Abrir página',
+        shareDirectly: 'Compartir directamente',
+        recapSent: 'Resumen enviado',
+        sendConversation: '¿Enviar esta conversación?',
+        voiceRecapOnWay: 'Tu resumen de voz de {city} está en camino.',
+        sendSummaryEmail: 'Envía a tu correo un resumen conciso, enlaces útiles y la transcripción.',
+        closeVoiceRecapDialog: 'Cerrar diálogo de resumen de voz',
+        accountlessSend: 'Puedes enviarlo sin una cuenta. Para mantener juntos futuros resúmenes,',
+        skip: 'Omitir',
+        done: 'Listo',
+        connecting: 'Conectando',
+        needsAttention: 'Necesita atención',
+        ready: 'Listo',
+        speaking: 'Hablando',
+        listening: 'Escuchando',
+        ending: 'Terminando',
+        endVoice: 'Terminar voz',
+        connectingRealtimeVoice: 'Conectando voz en tiempo real',
+        aiSpeaking: 'La IA está hablando',
+        endingVoiceMode: 'Terminando modo de voz',
+        voiceModeNeedsSetup: 'El modo de voz necesita configuración',
+        realtimeVoiceReady: 'La voz en tiempo real está lista',
+        startVoiceConversation: 'Inicia una conversación de voz en tu idioma',
+        useLanguageFor: 'Usar {language} para {city} ({country})',
+        chooseLanguage: 'Elegir {language}',
+        sourceCitation: 'Cita de fuente',
+        page: 'Página',
+        lines: 'Líneas',
+        deleteThreadTitle: 'Eliminar conversación',
+        areYouSure: '¿Estás seguro?',
+        permanentlyRemove: 'Esto eliminará permanentemente',
+        fromSavedThreads: 'de tus conversaciones guardadas.',
+        updated: 'Actualizado',
+        cancel: 'Cancelar',
+        deleting: 'Eliminando...',
       },
       fr: {
         weSpeakYourLanguage: 'Nous parlons votre langue',

@@ -91,10 +91,10 @@
         </div>
       } @else {
         <div class="mt-6 flex min-h-0 flex-1 flex-col">
-          <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Threads</p>
+          <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">{{ uiText('threads') }}</p>
           <div class="mt-3 flex-1 min-h-0 space-y-1 overflow-y-auto pr-1">
             @if (queryHistory().length === 0) {
-              <p class="px-2 text-xs leading-6 text-[var(--muted)]">No threads yet.</p>
+              <p class="px-2 text-xs leading-6 text-[var(--muted)]">{{ uiText('noThreadsYet') }}</p>
             } @else {
               @for (item of visibleHistory(); track item.id) {
                 <div
@@ -121,7 +121,7 @@
                     class="danger-action rounded-full p-1.5 text-[var(--muted)] opacity-0 transition-opacity hover:bg-white/5 group-hover:opacity-100"
                     [class.opacity-100]="activeHistoryId() === item.id"
                     [disabled]="isDeletingHistory()"
-                    [attr.aria-label]="'Delete thread ' + truncate(historyTitle(item), 34)"
+                    [attr.aria-label]="uiText('deleteThread', { title: truncate(historyTitle(item), 34) })"
                     (click)="confirmDeleteHistoryItem(item, $event)"
                   >
                     <span class="material-symbols-outlined text-[1rem]">delete</span>
@@ -135,7 +135,7 @@
                   (click)="toggleHistoryExpanded()"
                 >
                   <span class="material-symbols-outlined text-[1rem]">{{ historyExpanded() ? 'expand_less' : 'expand_more' }}</span>
-                  <span>{{ historyExpanded() ? 'Show less' : 'Show more (' + (queryHistory().length - 6) + ')' }}</span>
+                  <span>{{ historyExpanded() ? uiText('showLess') : uiText('showMore', { count: '' + (queryHistory().length - 6) }) }}</span>
                 </button>
               }
             }
@@ -145,7 +145,7 @@
         <div class="mt-4 border-t border-white/5 pt-4">
           <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
             <span class="material-symbols-outlined text-[1.2rem]">logout</span>
-            <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
+            <span>{{ isSigningOut() ? uiText('signingOut') : uiText('signOut') }}</span>
           </button>
         </div>
       }
@@ -180,7 +180,7 @@
                 type="button"
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="!isInternetMode()"
-              aria-label="Use My living wiki mode"
+              [attr.aria-label]="uiText('useMyWikiMode')"
                 [attr.data-tooltip]="uiText('myLivingWikiLabel')"
                 (click)="setAnswerMode('wiki')"
               >
@@ -190,7 +190,7 @@
                 type="button"
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="isInternetMode()"
-                aria-label="Use internet mode"
+                [attr.aria-label]="uiText('useInternetMode')"
                 [attr.data-tooltip]="uiText('internet')"
                 (click)="setAnswerMode('internet')"
               >
@@ -213,8 +213,8 @@
             <a
               [routerLink]="adminLink"
               class="chat-nav-icon hidden sm:inline-flex"
-              aria-label="Open wiki admin"
-              data-tooltip="Admin"
+              [attr.aria-label]="uiText('openWikiAdmin')"
+              [attr.data-tooltip]="uiText('admin')"
             >
               <span class="material-symbols-outlined">admin_panel_settings</span>
             </a>
@@ -233,8 +233,8 @@
             <button
               type="button"
               class="chat-nav-icon hidden sm:inline-flex"
-              [attr.aria-label]="activeThreadIsShared() ? 'Chat is shared' : 'Share chat'"
-              [attr.data-tooltip]="activeThreadIsShared() ? 'Shared' : 'Share chat'"
+              [attr.aria-label]="activeThreadIsShared() ? uiText('chatIsShared') : uiText('shareChat')"
+              [attr.data-tooltip]="activeThreadIsShared() ? uiText('shared') : uiText('shareChat')"
               (click)="openShareModal()"
             >
               <span class="material-symbols-outlined">{{ activeThreadIsShared() ? 'ios_share' : 'share' }}</span>
@@ -247,8 +247,8 @@
               [style.background]="realtimeVoiceStatus() === 'connected' ? 'var(--accent)' : null"
               [style.color]="realtimeVoiceStatus() === 'connected' ? 'var(--accent-contrast)' : null"
               [disabled]="realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting'"
-              [attr.aria-label]="realtimeVoiceActive() ? 'End realtime voice mode' : 'Start realtime voice mode'"
-              [attr.data-tooltip]="realtimeVoiceActive() ? 'End voice mode' : 'Voice mode'"
+              [attr.aria-label]="realtimeVoiceActive() ? uiText('endRealtimeVoiceMode') : uiText('startRealtimeVoiceMode')"
+              [attr.data-tooltip]="realtimeVoiceActive() ? uiText('endVoiceMode') : uiText('voiceMode')"
               (click)="toggleRealtimeVoice()"
             >
               @if (realtimeVoiceStatus() === 'connecting' || realtimeVoiceStatus() === 'disconnecting') {
@@ -262,8 +262,8 @@
             <button
               type="button"
               class="chat-nav-icon hidden sm:inline-flex"
-              [attr.aria-label]="copiedTarget() === 'chat-thread' ? 'Chat copied' : 'Copy chat'"
-              [attr.data-tooltip]="copiedTarget() === 'chat-thread' ? 'Copied' : 'Copy chat'"
+              [attr.aria-label]="copiedTarget() === 'chat-thread' ? uiText('chatCopied') : uiText('copyChat')"
+              [attr.data-tooltip]="copiedTarget() === 'chat-thread' ? uiText('copied') : uiText('copyChat')"
               (click)="copyWholeChat()"
             >
               <span class="material-symbols-outlined">{{ copiedTarget() === 'chat-thread' ? 'check' : 'content_copy' }}</span>
@@ -290,7 +290,7 @@
                     <p class="text-sm font-bold text-[var(--text)] truncate">{{ currentUserName() }}</p>
                     <p class="mt-0.5 text-xs text-[var(--muted)] truncate">{{ currentUserEmail() }}</p>
                     @if (isPlatformAdmin()) {
-                      <span class="mt-2 inline-flex rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent)]">Admin</span>
+                      <span class="mt-2 inline-flex rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent)]">{{ uiText('admin') }}</span>
                     }
                   </div>
                   <div class="py-1.5">
@@ -302,7 +302,7 @@
                     }
                     <button type="button" role="menuitem" class="danger-action flex w-full items-center gap-3 px-4 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
                       <span class="material-symbols-outlined text-base">logout</span>
-                      {{ isSigningOut() ? 'Signing out...' : 'Sign out' }}
+                      {{ isSigningOut() ? uiText('signingOut') : uiText('signOut') }}
                     </button>
                   </div>
                 </div>
@@ -313,13 +313,13 @@
       </header>
 
       @if (realtimeVoicePanelOpen()) {
-        <section class="voice-mode-overlay" aria-label="Realtime voice mode">
+        <section class="voice-mode-overlay" [attr.aria-label]="uiText('realtimeVoiceMode')">
           <div class="voice-mode-shell">
             <div class="voice-mode-topbar">
               <button
                 type="button"
                 class="voice-mode-icon-button"
-                aria-label="Close voice mode"
+                [attr.aria-label]="uiText('closeVoiceMode')"
                 (click)="closeRealtimeVoicePanel()"
               >
                 <span class="material-symbols-outlined">close</span>
@@ -332,7 +332,7 @@
                 <button
                   type="button"
                   class="voice-mode-icon-button"
-                  [attr.aria-label]="realtimeVoiceMuted() ? 'Unmute microphone' : 'Mute microphone'"
+                  [attr.aria-label]="realtimeVoiceMuted() ? uiText('unmuteMicrophone') : uiText('muteMicrophone')"
                   (click)="toggleRealtimeVoiceMute()"
                 >
                   <span class="material-symbols-outlined">{{ realtimeVoiceMuted() ? 'mic_off' : 'mic' }}</span>
@@ -369,7 +369,7 @@
               </div>
               <p class="voice-mode-orb-label">{{ realtimeVoiceOrbState() }}</p>
               <p class="voice-mode-orb-subtitle">
-                Internet mode only{{ realtimeVoiceConversationId() ? ' · ' + realtimeVoiceConversationId() : '' }}
+                {{ uiText('internetModeOnly') }}{{ realtimeVoiceConversationId() ? ' · ' + realtimeVoiceConversationId() : '' }}
               </p>
               @if (realtimeVoiceError()) {
                 <p class="voice-mode-error">{{ realtimeVoiceError() }}</p>
@@ -379,27 +379,27 @@
                   type="button"
                   class="voice-mode-end-button"
                   [disabled]="realtimeVoiceStatus() === 'disconnecting'"
-                  aria-label="End voice call"
+                  [attr.aria-label]="uiText('endVoiceCall')"
                   (click)="stopRealtimeVoice()"
                 >
                   <span class="material-symbols-outlined">call_end</span>
-                  End
+                  {{ uiText('end') }}
                 </button>
               }
             </div>
 
             <div class="voice-mode-transcript" aria-live="polite">
               <div class="voice-mode-transcript__head">
-                <span>Live transcript</span>
-                <span>{{ realtimeVoiceMode() === 'speaking' ? 'AI is talking' : 'Listening for you' }}</span>
+                <span>{{ uiText('liveTranscript') }}</span>
+                <span>{{ realtimeVoiceMode() === 'speaking' ? uiText('aiTalking') : uiText('listeningForYou') }}</span>
               </div>
               @for (item of realtimeVoiceTranscript(); track item.id) {
                 <article class="voice-transcript-line" [class.voice-transcript-line--user]="item.role === 'user'">
-                  <span>{{ item.role === 'agent' ? 'AI' : 'You' }}</span>
+                  <span>{{ item.role === 'agent' ? uiText('ai') : uiText('you') }}</span>
                   <p>{{ item.text }}</p>
                 </article>
               } @empty {
-                <p class="voice-mode-transcript__empty">Spoken words will appear here.</p>
+                <p class="voice-mode-transcript__empty">{{ uiText('spokenWords') }}</p>
               }
             </div>
 
@@ -407,7 +407,7 @@
               <input
                 type="text"
                 autocomplete="off"
-                placeholder="Send a message to start a chat"
+                [placeholder]="uiText('voiceTextPlaceholder')"
                 [value]="realtimeVoiceTextInput()"
                 (input)="onRealtimeVoiceTextInput($event)"
               />
@@ -416,7 +416,7 @@
                   type="button"
                   class="voice-mode-icon-button"
                   [disabled]="realtimeVoiceStatus() !== 'connected'"
-                  [attr.aria-label]="realtimeVoiceMuted() ? 'Unmute microphone' : 'Mute microphone'"
+                  [attr.aria-label]="realtimeVoiceMuted() ? uiText('unmuteMicrophone') : uiText('muteMicrophone')"
                   (click)="toggleRealtimeVoiceMute()"
                 >
                   <span class="material-symbols-outlined">{{ realtimeVoiceMuted() ? 'mic_off' : 'mic' }}</span>
@@ -425,7 +425,7 @@
                   type="submit"
                   class="voice-mode-send"
                   [disabled]="realtimeVoiceStatus() !== 'connected' || !realtimeVoiceTextInput().trim()"
-                  aria-label="Send voice text message"
+                  [attr.aria-label]="uiText('sendVoiceTextMessage')"
                 >
                   <span class="material-symbols-outlined">play_arrow</span>
                 </button>
@@ -443,7 +443,7 @@
             [class.max-w-4xl]="hasMessages()"
           >
             @if (canShowCityVoiceCarousel()) {
-              <section class="lang-carousel lang-carousel--top" aria-label="Start a voice conversation in your language">
+              <section class="lang-carousel lang-carousel--top" [attr.aria-label]="uiText('startVoiceConversation')">
                 <div class="lang-carousel__head">
                   <div class="lang-carousel__copy">
                     <span class="lang-carousel__eyebrow">
@@ -490,8 +490,8 @@
                         class="lang-flag-card"
                         [class.lang-flag-card--selected]="selectedVoiceLanguage()?.country === lang.country"
                         [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
-                        [attr.aria-label]="'Use ' + lang.language + ' for ' + currentWikiName() + ' (' + localizedCountryName(lang.country) + ')'"
-                        [attr.data-tooltip]="'Choose ' + lang.language"
+                        [attr.aria-label]="uiText('useLanguageFor', { language: lang.language, city: currentWikiName(), country: localizedCountryName(lang.country) })"
+                        [attr.data-tooltip]="uiText('chooseLanguage', { language: lang.language })"
                         (click)="selectVoiceLanguage(lang)"
                       >
                         <span class="lang-flag-card__flag" aria-hidden="true">{{ lang.flag }}</span>
@@ -1364,7 +1364,7 @@
             <span class="material-symbols-outlined text-base text-[var(--accent)]">description</span>
           </div>
           <div class="min-w-0 flex-1">
-            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Source Citation</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">{{ uiText('sourceCitation') }}</p>
             <button
               type="button"
               class="group mt-0.5 flex w-full items-center gap-1.5 text-left text-sm font-bold text-[var(--text)] transition-colors hover:text-[var(--accent)]"
@@ -1384,11 +1384,11 @@
         <div class="flex items-center gap-2 px-6 pt-4">
           <span class="citation-badge inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em]">
             <span class="material-symbols-outlined text-[0.75rem]">pin_drop</span>
-            Page {{ citation.page }}
+            {{ uiText('page') }} {{ citation.page }}
           </span>
           @if (citation.line_start > 0 || citation.line_end > 0) {
             <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">
-              Lines {{ citation.line_start }}–{{ citation.line_end }}
+              {{ uiText('lines') }} {{ citation.line_start }}–{{ citation.line_end }}
             </span>
           }
         </div>
@@ -1407,22 +1407,22 @@
     <div class="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8">
       <div class="absolute inset-0 bg-black/45 backdrop-blur-sm" (click)="cancelDeleteHistoryItem()"></div>
       <div class="relative w-full max-w-md rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-elevated)]">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--error-text)]">Delete thread</p>
-        <h3 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Are you sure?</h3>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--error-text)]">{{ uiText('deleteThreadTitle') }}</p>
+        <h3 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">{{ uiText('areYouSure') }}</h3>
         <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
-          This will permanently remove
+          {{ uiText('permanentlyRemove') }}
           <span class="font-semibold text-[var(--text)]">"{{ truncate(historyTitle(item), 64) }}"</span>
-          from your saved threads.
+          {{ uiText('fromSavedThreads') }}
         </p>
         <p class="mt-3 text-xs text-[var(--muted)]">
-          Updated {{ formatDateTime(historyUpdatedAt(item)) }}
+          {{ uiText('updated') }} {{ formatDateTime(historyUpdatedAt(item)) }}
         </p>
         <div class="mt-6 flex items-center justify-end gap-3">
           <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm" [disabled]="isDeletingHistory()" (click)="cancelDeleteHistoryItem()">
-            Cancel
+            {{ uiText('cancel') }}
           </button>
           <button type="button" class="danger-action rounded-full px-4 py-2.5 text-sm font-semibold" [disabled]="isDeletingHistory()" (click)="deleteHistoryItem()">
-            {{ isDeletingHistory() ? 'Deleting...' : 'Delete thread' }}
+            {{ isDeletingHistory() ? uiText('deleting') : uiText('deleteThreadTitle') }}
           </button>
         </div>
       </div>
@@ -1437,16 +1437,16 @@
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(214,169,74,0.14),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.06),transparent_55%)]"></div>
           <div class="relative flex items-start justify-between gap-4">
             <div class="min-w-0">
-              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] sm:tracking-[0.24em]">Free My living wiki access</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] sm:tracking-[0.24em]">{{ uiText('freeAccess') }}</p>
               <h2 class="mt-2 text-xl font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.05em]">
                 @if (isSignedIn()) {
-                  Subscribe to {{ currentWikiName() || 'this wiki' }}
+                  {{ uiText('subscribeToWiki', { city: currentWikiName() || uiText('thisWiki') }) }}
                 } @else {
-                  Join My living wiki {{ currentWikiName() || 'this wiki' }}
+                  {{ uiText('joinWiki', { city: currentWikiName() || uiText('thisWiki') }) }}
                 }
               </h2>
               <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:leading-7">
-                Get the weekly Philly brief now. Phone access and the rest of the member perks unlock once you join.
+                {{ uiText('subscribeIntro', { city: currentWikiName() || uiText('thisWiki') }) }}
               </p>
             </div>
             <button
@@ -1454,7 +1454,7 @@
               class="shrink-0 rounded-full p-2 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)] disabled:opacity-50"
               [disabled]="isSubscribing()"
               (click)="closeSubscribeModal()"
-              aria-label="Close subscribe dialog"
+              [attr.aria-label]="uiText('closeSubscribeDialog')"
             >
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
@@ -1466,42 +1466,42 @@
             <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">mark_email_read</span>
               <div>
-                <p class="text-sm font-black text-[var(--text)]">Weekly updates on {{ currentWikiName() || 'this My living wiki' }}</p>
-                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">A concise local digest so Philly does not sneak important things past you.</p>
+                <p class="text-sm font-black text-[var(--text)]">{{ uiText('weeklyUpdatesOn', { city: currentWikiName() || uiText('thisWiki') }) }}</p>
+                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">{{ uiText('conciseDigest', { city: currentWikiName() || uiText('thisWiki') }) }}</p>
               </div>
             </div>
             <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">chat</span>
               <div>
-                <p class="text-sm font-black text-[var(--text)]">Ask the wiki anytime</p>
-                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Use the public chat for real-time answers about neighborhoods, food, history, routes, and local details.</p>
+                <p class="text-sm font-black text-[var(--text)]">{{ uiText('askWikiAnytime') }}</p>
+                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">{{ uiText('publicChatRealtime') }}</p>
               </div>
             </div>
             <div class="flex gap-3 rounded-2xl border border-[var(--accent)]/20 bg-[linear-gradient(135deg,rgba(255,255,255,0.065),rgba(255,255,255,0.025))] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">phone_in_talk</span>
               <div>
-                <p class="text-sm font-black text-[var(--text)]">Call the Philly guide</p>
+                <p class="text-sm font-black text-[var(--text)]">{{ uiText('callCityGuide', { city: currentWikiName() || uiText('thisWiki') }) }}</p>
                 @if (revealJoinPhoneNumber()) {
                   <p class="mt-1 text-xs leading-5 text-[var(--muted)]">
-                    Your call-in number:
+                    {{ uiText('callInNumber') }}
                     <a class="font-black text-[var(--accent)] underline-offset-4 hover:underline" [href]="currentWikiVoicePhoneHref()">{{ currentWikiVoicePhoneNumber() }}</a>
                   </p>
                 } @else {
-                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Join to unlock the phone number for real-time Philly answers when the line is available.</p>
+                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">{{ uiText('joinUnlockPhone', { city: currentWikiName() || uiText('thisWiki') }) }}</p>
                 }
               </div>
             </div>
             <div class="flex gap-3 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-3.5 py-3 sm:px-4">
               <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--muted)]">lock_open</span>
               <div>
-                <p class="text-sm font-black text-[var(--text)]">More access after joining</p>
-                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">We will reveal additional member features as they come online for this My living wiki.</p>
+                <p class="text-sm font-black text-[var(--text)]">{{ uiText('moreAccess') }}</p>
+                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">{{ uiText('revealFeatures') }}</p>
               </div>
             </div>
           </div>
 
           <label class="block">
-            <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Email address</span>
+            <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ uiText('emailAddress') }}</span>
             <input
               type="email"
               class="theme-input mt-2 w-full rounded-2xl px-4 py-3 text-sm text-[var(--text)]"
@@ -1527,16 +1527,16 @@
 
           <div class="sticky bottom-0 -mx-4 flex flex-col-reverse gap-3 border-t border-white/5 bg-[var(--surface)] px-4 pt-3 sm:static sm:mx-0 sm:flex-row sm:justify-end sm:border-0 sm:bg-transparent sm:px-0 sm:pt-0">
             <button type="button" class="ghost-btn justify-center !px-4 !py-3 text-sm" [disabled]="isSubscribing()" (click)="closeSubscribeModal()">
-              Close
+              {{ uiText('close') }}
             </button>
             <button type="submit" class="primary-btn justify-center !px-5 !py-3 text-sm" [disabled]="isSubscribing() || !subscribeEmail().trim()">
               @if (isSubscribing()) {
                 <span class="flex items-center gap-2">
                   <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-                  <span>{{ isSignedIn() ? 'Subscribing...' : 'Joining...' }}</span>
+                  <span>{{ isSignedIn() ? uiText('subscribing') : uiText('joining') }}</span>
                 </span>
               } @else {
-                <span>{{ isSignedIn() ? 'Subscribe' : 'Join for Free' }}</span>
+                <span>{{ isSignedIn() ? uiText('subscribe') : uiText('joinForFree') }}</span>
               }
             </button>
           </div>
@@ -1553,19 +1553,19 @@
           <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(20,184,166,0.16),transparent_34%),linear-gradient(135deg,rgba(214,169,74,0.12),transparent_58%)]"></div>
           <div class="relative flex items-start justify-between gap-4">
             <div class="min-w-0">
-              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Voice recap</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">{{ uiText('voiceRecap') }}</p>
               <h2 class="mt-2 text-xl font-black tracking-[-0.04em] text-[var(--text)] sm:text-2xl sm:tracking-[-0.05em]">
                 @if (voiceSummarySent()) {
-                  Recap sent
+                  {{ uiText('recapSent') }}
                 } @else {
-                  Send this conversation?
+                  {{ uiText('sendConversation') }}
                 }
               </h2>
               <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:leading-7">
                 @if (voiceSummarySent()) {
-                  Your {{ summaryModal.cityName }} voice chat recap is on its way.
+                  {{ uiText('voiceRecapOnWay', { city: summaryModal.cityName }) }}
                 } @else {
-                  Send a concise summary, useful links, and the transcript to your email.
+                  {{ uiText('sendSummaryEmail') }}
                 }
               </p>
             </div>
@@ -1574,7 +1574,7 @@
               class="shrink-0 rounded-full p-2 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)] disabled:opacity-50"
               [disabled]="voiceSummarySending()"
               (click)="closeVoiceSummaryModal()"
-              aria-label="Close voice recap dialog"
+              [attr.aria-label]="uiText('closeVoiceRecapDialog')"
             >
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
@@ -1594,21 +1594,21 @@
               <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
                 <span class="material-symbols-outlined mt-0.5 text-[1.05rem] text-[var(--accent)]">mark_email_read</span>
                 <div>
-                  <p class="text-sm font-black text-[var(--text)]">Email recap</p>
-                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Summary plus transcript excerpt.</p>
+                  <p class="text-sm font-black text-[var(--text)]">{{ uiText('emailRecap') }}</p>
+                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">{{ uiText('summaryTranscript') }}</p>
                 </div>
               </div>
               <div class="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
                 <span class="material-symbols-outlined mt-0.5 text-[1.05rem] text-[var(--accent)]">link</span>
                 <div>
-                  <p class="text-sm font-black text-[var(--text)]">Useful links</p>
-                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Includes the wiki and a recap card when ready.</p>
+                  <p class="text-sm font-black text-[var(--text)]">{{ uiText('usefulLinks') }}</p>
+                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">{{ uiText('includesWiki') }}</p>
                 </div>
               </div>
             </div>
 
             <label class="block">
-              <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Email address</span>
+              <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ uiText('emailAddress') }}</span>
               <input
                 type="email"
                 class="theme-input mt-2 w-full rounded-2xl px-4 py-3 text-sm text-[var(--text)]"
@@ -1622,8 +1622,8 @@
 
             @if (!isSignedIn()) {
               <p class="rounded-2xl border border-dashed border-white/15 bg-white/[0.025] px-4 py-3 text-xs leading-5 text-[var(--muted)]">
-                You can send this without an account. To keep future recaps together,
-                <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="font-black text-[var(--accent)] underline-offset-4 hover:underline">sign in</a>.
+                {{ uiText('accountlessSend') }}
+                <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="font-black text-[var(--accent)] underline-offset-4 hover:underline">{{ uiText('signInLower') }}</a>.
               </p>
             }
 
@@ -1635,17 +1635,17 @@
 
             <div class="sticky bottom-0 -mx-4 flex flex-col-reverse gap-3 border-t border-white/5 bg-[var(--surface)] px-4 pt-3 sm:static sm:mx-0 sm:flex-row sm:justify-end sm:border-0 sm:bg-transparent sm:px-0 sm:pt-0">
               <button type="button" class="ghost-btn justify-center !px-4 !py-3 text-sm" [disabled]="voiceSummarySending()" (click)="closeVoiceSummaryModal()">
-                Skip
+                {{ uiText('skip') }}
               </button>
               <button type="submit" class="primary-btn justify-center !px-5 !py-3 text-sm" [disabled]="voiceSummarySending() || !voiceSummaryEmail().trim()">
                 @if (voiceSummarySending()) {
                   <span class="flex items-center gap-2">
                     <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-                    <span>Sending...</span>
+                    <span>{{ uiText('sending') }}</span>
                   </span>
                 } @else {
                   <span class="material-symbols-outlined text-base">send</span>
-                  <span>Send recap</span>
+                  <span>{{ uiText('sendRecap') }}</span>
                 }
               </button>
             </div>
@@ -1656,8 +1656,8 @@
               <div class="flex items-start gap-3">
                 <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">check_circle</span>
                 <div>
-                  <p class="text-sm font-black text-[var(--text)]">Sent to {{ summaryModal.sentTo || voiceSummaryEmail() }}</p>
-                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">The email includes your recap and transcript excerpt.</p>
+                  <p class="text-sm font-black text-[var(--text)]">{{ uiText('sentTo', { email: summaryModal.sentTo || voiceSummaryEmail() }) }}</p>
+                  <p class="mt-1 text-xs leading-5 text-[var(--muted)]">{{ uiText('emailIncludes') }}</p>
                 </div>
               </div>
             </div>
@@ -1671,7 +1671,7 @@
                   rel="noopener"
                 >
                   <span class="material-symbols-outlined text-base">open_in_new</span>
-                  <span>Open recap card</span>
+                  <span>{{ uiText('openRecapCard') }}</span>
                 </a>
               }
               @if (summaryModal.continueChatUrl) {
@@ -1682,13 +1682,13 @@
                   rel="noopener"
                 >
                   <span class="material-symbols-outlined text-base">chat</span>
-                  <span>Continue chat</span>
+                  <span>{{ uiText('continueChat') }}</span>
                 </a>
               }
             </div>
 
             <button type="button" class="ghost-btn w-full justify-center !px-4 !py-3 text-sm" (click)="closeVoiceSummaryModal()">
-              Done
+              {{ uiText('done') }}
             </button>
           </div>
         }
@@ -1702,17 +1702,17 @@
       <div class="relative w-full max-w-xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-[var(--surface)] shadow-[var(--shadow-elevated)]">
         <div class="flex items-start justify-between gap-4 border-b border-white/5 px-6 py-5">
           <div>
-            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Share chat</p>
-            <h2 class="mt-2 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Create a public share link</h2>
+            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">{{ uiText('shareChatHeader') }}</p>
+            <h2 class="mt-2 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">{{ uiText('createPublicShareLink') }}</h2>
             <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
-              Anyone with this link can read this thread. They will not be able to reply from the shared page.
+              {{ uiText('shareThreadDescription') }}
             </p>
           </div>
           <button
             type="button"
             class="rounded-full p-2 text-[var(--muted)] transition-colors hover:bg-white/5 hover:text-[var(--text)]"
             (click)="closeShareModal()"
-            aria-label="Close share dialog"
+            [attr.aria-label]="uiText('closeShareDialog')"
           >
             <span class="material-symbols-outlined text-lg">close</span>
           </button>
@@ -1721,7 +1721,7 @@
         <div class="space-y-5 px-6 py-6">
           @if (!generatedShareLink()) {
             <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm leading-7 text-[var(--muted)]">
-              Generate a dedicated link for this conversation.
+              {{ uiText('generateConversationLink') }}
             </div>
 
             <button
@@ -1733,15 +1733,15 @@
               @if (isSharingThread()) {
                 <span class="flex items-center gap-2">
                   <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-                  <span>Creating link...</span>
+                  <span>{{ uiText('creatingLink') }}</span>
                 </span>
               } @else {
-                <span>Create share link</span>
+                <span>{{ uiText('createShareLink') }}</span>
               }
             </button>
           } @else {
             <div>
-              <label class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Share link</label>
+              <label class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ uiText('shareLink') }}</label>
               <div class="mt-2 flex flex-col gap-3 md:flex-row">
                 <input
                   type="text"
@@ -1754,13 +1754,13 @@
                   class="primary-btn !px-5 !py-3 text-sm"
                   (click)="copyShareLink()"
                 >
-                  {{ copiedTarget() === 'chat-share-link' ? 'Copied' : 'Copy link' }}
+                  {{ copiedTarget() === 'chat-share-link' ? uiText('copied') : uiText('copyLink') }}
                 </button>
               </div>
             </div>
 
             <div class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm leading-7 text-[var(--muted)]">
-              This link will open a read-only public thread page at the exact conversation.
+              {{ uiText('readOnlyThreadLink') }}
             </div>
           }
 
@@ -1783,7 +1783,7 @@
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.18),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]"></div>
           <div class="relative flex items-start justify-between gap-4">
             <div class="min-w-0">
-              <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Share page ready</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">{{ uiText('sharePageReady') }}</p>
               <h2 class="mt-2 text-2xl font-black leading-tight tracking-[-0.05em] text-[var(--text)] sm:text-3xl">{{ modal.title }}</h2>
               <p class="mt-2 max-w-xl text-sm leading-7 text-[var(--muted)]">{{ modal.subtitle }}</p>
             </div>
@@ -1791,14 +1791,14 @@
               type="button"
               class="shrink-0 rounded-full border border-white/10 bg-white/5 p-2 text-[var(--muted)] transition-colors hover:bg-white/10 hover:text-[var(--text)]"
               (click)="closeSharePageModal()"
-              aria-label="Close share page dialog"
+              [attr.aria-label]="uiText('closeShareDialog')"
             >
               <span class="material-symbols-outlined text-lg">close</span>
             </button>
           </div>
 
           <div class="relative mt-5 rounded-2xl border border-white/10 bg-black/10 p-4 shadow-inner">
-            <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Public URL</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ uiText('publicUrl') }}</p>
             <div class="mt-2 flex items-center gap-2 rounded-2xl border border-white/10 bg-[var(--bg)]/60 px-3 py-3">
               <span class="material-symbols-outlined text-[1rem] text-[var(--accent)]">link</span>
               <input
@@ -1815,16 +1815,16 @@
           <div class="grid gap-3 sm:grid-cols-2">
             <button type="button" class="primary-btn justify-center !px-5 !py-3.5 text-sm" (click)="copySharePageModalUrl()">
               <span class="material-symbols-outlined text-base">{{ copiedTarget() === 'share-page-modal' ? 'check' : 'content_copy' }}</span>
-              <span>{{ copiedTarget() === 'share-page-modal' ? 'Copied' : 'Copy URL' }}</span>
+              <span>{{ copiedTarget() === 'share-page-modal' ? uiText('copied') : uiText('copyUrl') }}</span>
             </button>
             <button type="button" class="secondary-btn justify-center !px-5 !py-3.5 text-sm" (click)="openSharePageModalUrl()">
               <span class="material-symbols-outlined text-base">open_in_new</span>
-              <span>Open page</span>
+              <span>{{ uiText('openPage') }}</span>
             </button>
           </div>
 
           <div>
-            <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Share directly</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ uiText('shareDirectly') }}</p>
             <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
               <a class="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3 text-sm font-black text-[var(--text)] transition hover:-translate-y-0.5 hover:bg-white/[0.08]" [href]="sharePageHref('x')" target="_blank" rel="noopener noreferrer">
                 <span class="grid h-9 w-9 place-items-center rounded-full bg-black text-white">X</span>
