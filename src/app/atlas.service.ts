@@ -29,6 +29,7 @@ const ACTIVE_ATLAS_STORAGE_KEY = 'living-atlas:activeAtlasId';
 const DEFAULT_CITY_LOGO_URL = '/assets/image/living-cities.png';
 const COUNTRY_LABEL_BY_CODE: Record<string, string> = {
   AE: 'United Arab Emirates',
+  AO: 'Angola',
   AR: 'Argentina',
   AT: 'Austria',
   AU: 'Australia',
@@ -36,46 +37,68 @@ const COUNTRY_LABEL_BY_CODE: Record<string, string> = {
   BR: 'Brazil',
   CA: 'Canada',
   CH: 'Switzerland',
+  CI: "Cote d'Ivoire",
   CL: 'Chile',
   CN: 'China',
   CO: 'Colombia',
   CZ: 'Czech Republic',
   CD: 'Democratic Republic of the Congo',
+  BD: 'Bangladesh',
   DE: 'Germany',
   DK: 'Denmark',
+  EC: 'Ecuador',
+  HR: 'Croatia',
   EG: 'Egypt',
   ES: 'Spain',
+  ET: 'Ethiopia',
   FI: 'Finland',
   FR: 'France',
   GB: 'United Kingdom',
   GH: 'Ghana',
   GR: 'Greece',
   HU: 'Hungary',
+  ID: 'Indonesia',
   IE: 'Ireland',
   IL: 'Israel',
   IN: 'India',
+  IQ: 'Iraq',
+  IR: 'Iran',
   IT: 'Italy',
   JP: 'Japan',
   KE: 'Kenya',
+  KW: 'Kuwait',
   KR: 'South Korea',
   MA: 'Morocco',
+  MM: 'Myanmar',
+  MY: 'Malaysia',
   MX: 'Mexico',
   NL: 'Netherlands',
   NO: 'Norway',
   NG: 'Nigeria',
   NZ: 'New Zealand',
+  OM: 'Oman',
+  PH: 'Philippines',
+  PK: 'Pakistan',
   PE: 'Peru',
   PL: 'Poland',
   PR: 'Puerto Rico',
   PT: 'Portugal',
   QA: 'Qatar',
+  RS: 'Serbia',
+  RU: 'Russia',
+  SA: 'Saudi Arabia',
   SG: 'Singapore',
+  SI: 'Slovenia',
+  SD: 'Sudan',
   SE: 'Sweden',
   TC: 'Turks and Caicos Islands',
   TH: 'Thailand',
   TR: 'Turkey',
   TW: 'Taiwan',
+  TZ: 'Tanzania',
   US: 'United States',
+  VE: 'Venezuela',
+  VN: 'Vietnam',
   ZA: 'South Africa',
 };
 const COUNTRY_BY_REGION_KEY: Record<string, string> = {
@@ -188,6 +211,7 @@ export interface CustomCityAtlasInput {
   name?: string;
   cityName: string;
   regionName?: string;
+  countryCode?: string | null;
   timezone?: string;
   description?: string;
   globalRegion?: string | null;
@@ -546,6 +570,7 @@ export class AtlasService {
 	      region_name: regionName,
 	      timezone,
 	    });
+    const explicitCountryCode = input.countryCode?.trim().toUpperCase();
     const globalRegion = input.globalRegion?.trim() || null;
     const population = typeof input.population === 'number' && Number.isFinite(input.population) && input.population > 0
       ? Math.round(input.population)
@@ -588,7 +613,9 @@ export class AtlasService {
 	        enabled: true,
 	        city_name: cityName,
 	        region_name: regionName,
-	        country_code: inferredCountryCode ?? 'US',
+	        country_code: explicitCountryCode && /^[A-Z]{2}$/.test(explicitCountryCode)
+          ? explicitCountryCode
+          : inferredCountryCode ?? 'US',
 	        timezone,
         census_state_code: null,
         census_place_code: null,

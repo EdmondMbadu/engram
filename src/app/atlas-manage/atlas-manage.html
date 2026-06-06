@@ -294,7 +294,7 @@
             <label class="flex cursor-pointer flex-col items-center justify-center gap-2 text-center">
               <span class="material-symbols-outlined text-3xl text-[var(--accent)]">upload_file</span>
               <span class="text-sm font-black text-[var(--text)]">Upload city CSV</span>
-              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, global_region, population, population_year, timezone, public_title, description, latitude, longitude. Add latitude &amp; longitude to place the city on the Dymaxion map.</span>
+              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, country_code, global_region, population, population_year, timezone, public_title, description, latitude, longitude. Add latitude &amp; longitude to place the city on the Dymaxion map.</span>
               <input type="file" accept=".csv,text/csv" class="sr-only" (change)="onBulkCityCsvSelected($event)" />
             </label>
           </div>
@@ -378,7 +378,12 @@
 	                          <p class="mt-1 max-w-[18rem] truncate text-xs text-[var(--muted)]">{{ row.name || 'No title' }}</p>
 	                          <p class="mt-1 max-w-[22rem] truncate text-xs text-[var(--muted)]">{{ row.description || 'No description' }}</p>
                         </td>
-                        <td class="px-4 py-3 text-xs text-[var(--muted)]">{{ row.region_name || '—' }}</td>
+                        <td class="px-4 py-3 text-xs text-[var(--muted)]">
+                          {{ row.region_name || '—' }}
+                          @if (row.country_code) {
+                            <span class="mt-1 block text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent)]">{{ row.country_code }}</span>
+                          }
+                        </td>
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">
                           @if (row.population) {
                             <span class="font-bold text-[var(--text)]">{{ row.population }}</span>

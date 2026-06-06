@@ -58,6 +58,7 @@ interface VoiceAgentDraft {
 interface CustomCityDraft {
   city_name: string;
   region_name: string;
+  country_code: string;
   timezone: string;
   name: string;
   description: string;
@@ -243,6 +244,7 @@ export class AtlasManageComponent {
   readonly customCityDraft = signal<CustomCityDraft>({
     city_name: '',
     region_name: '',
+    country_code: '',
     timezone: 'America/New_York',
     name: '',
     description: '',
@@ -1119,6 +1121,7 @@ export class AtlasManageComponent {
         this.customCityDraft.set({
           city_name: '',
           region_name: '',
+          country_code: '',
           timezone: 'America/New_York',
           name: '',
           description: '',
@@ -1166,17 +1169,17 @@ export class AtlasManageComponent {
 
   downloadBulkCitySampleCsv(): void {
     const csv = [
-      'city_name,region_name,global_region,population,population_year,timezone,public_title,description,latitude,longitude',
-      '"Seattle","Washington","Americas",755078,2024,"America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
-      '"Las Vegas","Nevada","Americas",660929,2024,"America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
-      '"Nairobi","Kenya","Africa",5545000,2024,"Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
-      '"Kinshasa","Democratic Republic of the Congo","Africa",17032000,2024,"Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
-      '"Tokyo","Japan","Asia",14180000,2024,"Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
-      '"London","United Kingdom","Europe",8978000,2024,"Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
-      '"Paris","France","Europe",2103000,2024,"Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
-      '"Singapore","Singapore","Asia",6040000,2024,"Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
-      '"Cape Town","South Africa","Africa",4772000,2024,"Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
-      '"Mexico City","Mexico","Americas",9209944,2024,"America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
+      'city_name,region_name,country_code,global_region,population,population_year,timezone,public_title,description,latitude,longitude',
+      '"Seattle","Washington","US","Americas",755078,2024,"America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
+      '"Las Vegas","Nevada","US","Americas",660929,2024,"America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
+      '"Nairobi","Kenya","KE","Africa",5545000,2024,"Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
+      '"Kinshasa","Democratic Republic of the Congo","CD","Africa",17032000,2024,"Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
+      '"Tokyo","Japan","JP","Asia",14180000,2024,"Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
+      '"London","United Kingdom","GB","Europe",8978000,2024,"Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
+      '"Paris","France","FR","Europe",2103000,2024,"Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
+      '"Singapore","Singapore","SG","Asia",6040000,2024,"Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
+      '"Cape Town","South Africa","ZA","Africa",4772000,2024,"Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
+      '"Mexico City","Mexico","MX","Americas",9209944,2024,"America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
     ].join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -1409,6 +1412,7 @@ export class AtlasManageComponent {
           const atlasId = await this.createCustomCityAtlasWithRetry({
             cityName: row.city_name,
             regionName: row.region_name,
+            countryCode: row.country_code,
             timezone: row.timezone,
             name: row.name,
             description: row.description,
@@ -1544,6 +1548,7 @@ export class AtlasManageComponent {
     const indexFor = (names: string[]) => names.map((name) => headers.indexOf(name)).find((index) => index >= 0) ?? -1;
     const cityIndex = indexFor(['city_name', 'city', 'name']);
     const regionIndex = indexFor(['region_name', 'region', 'state', 'region_state']);
+    const countryCodeIndex = indexFor(['country_code', 'iso_country_code', 'country_iso2']);
     const timezoneIndex = indexFor(['timezone', 'time_zone']);
     const titleIndex = indexFor(['public_title', 'title', 'wiki_title']);
     const descriptionIndex = indexFor(['description', 'desc']);
@@ -1563,6 +1568,7 @@ export class AtlasManageComponent {
       const cell = (cellIndex: number): string => (cellIndex >= 0 ? row[cellIndex]?.trim() ?? '' : '');
       const cityName = cell(cityIndex);
       const regionName = cell(regionIndex);
+      const countryCode = cell(countryCodeIndex).toUpperCase();
       const timezone = cell(timezoneIndex) || 'America/New_York';
       const name = cell(titleIndex);
       const description = cell(descriptionIndex);
@@ -1582,6 +1588,9 @@ export class AtlasManageComponent {
       }
       if (descriptionIndex >= 0 && !description) {
         errors.push('Missing description');
+      }
+      if (countryCode && !/^[A-Z]{2}$/.test(countryCode)) {
+        errors.push('Invalid country code');
       }
       const parsedPopulation = parseOptionalPositiveInteger(population);
       if (Number.isNaN(parsedPopulation)) {
@@ -1614,6 +1623,7 @@ export class AtlasManageComponent {
         row_number: index + 2,
         city_name: cityName,
         region_name: regionName,
+        country_code: countryCode,
         timezone,
         name: name || (cityName ? `My living wiki: ${cityName}` : ''),
         description,
