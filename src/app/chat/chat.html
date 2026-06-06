@@ -714,7 +714,7 @@
                         >
                           <span class="chat-suggestion-card__head">
                             <span class="chat-suggestion-card__icon"><span class="material-symbols-outlined">{{ suggestion.icon }}</span></span>
-                            <span class="chat-suggestion-card__title">{{ suggestion.title || 'Ask' }}</span>
+                            <span class="chat-suggestion-card__title">{{ suggestion.title || uiText('ask') }}</span>
                           </span>
                           <span class="chat-suggestion-card__prompt">{{ suggestion.prompt }}</span>
                         </button>
@@ -748,8 +748,8 @@
                             type="button"
                             class="chat-inline-action"
                             [class.chat-inline-action--copied]="copiedTarget() === msg.id + ':body'"
-                            [attr.aria-label]="copiedTarget() === msg.id + ':body' ? 'Copied question' : 'Copy question'"
-                            [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? 'Copied' : 'Copy'"
+                            [attr.aria-label]="copiedTarget() === msg.id + ':body' ? uiText('copiedQuestion') : uiText('copyQuestion')"
+                            [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? uiText('copied') : uiText('copy')"
                             (click)="copyMessageBody(msg, $event)"
                           >
                             <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
@@ -758,8 +758,8 @@
                             <button
                               type="button"
                               class="chat-inline-action"
-                              [attr.aria-label]="'More actions'"
-                              [attr.data-tooltip]="'More'"
+                              [attr.aria-label]="uiText('moreActions')"
+                              [attr.data-tooltip]="uiText('more')"
                               (click)="toggleMessageActions(msg.id, $event)"
                             >
                               <span class="material-symbols-outlined">more_horiz</span>
@@ -772,12 +772,12 @@
                                   (click)="copyMessage(msg, $event)"
                                 >
                                   <span class="material-symbols-outlined text-[1rem]">content_copy</span>
-                                  <span>{{ copiedTarget() === msg.id ? 'Copied' : 'Copy message' }}</span>
+                                  <span>{{ copiedTarget() === msg.id ? uiText('copied') : uiText('copyMessage') }}</span>
                                 </button>
                                 <div class="mt-2 border-t border-[var(--line)] px-3 py-2">
-                                  <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Chat date</p>
+                                  <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ uiText('chatDate') }}</p>
                                   <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.createdAt) }}</p>
-                                  <p class="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Last updated</p>
+                                  <p class="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ uiText('lastUpdated') }}</p>
                                   <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.updatedAt ?? msg.createdAt) }}</p>
                                 </div>
                               </div>
@@ -829,12 +829,12 @@
                                       (click)="copyMessage(msg, $event)"
                                     >
                                       <span class="material-symbols-outlined text-[1rem]">content_copy</span>
-                                      <span>{{ copiedTarget() === msg.id ? 'Copied' : 'Copy message' }}</span>
+                                      <span>{{ copiedTarget() === msg.id ? uiText('copied') : uiText('copyMessage') }}</span>
                                     </button>
                                     <div class="mt-2 border-t border-[var(--line)] px-3 py-2">
-                                      <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Chat date</p>
+                                      <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ uiText('chatDate') }}</p>
                                       <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.createdAt) }}</p>
-                                      <p class="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Last updated</p>
+                                      <p class="mt-3 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ uiText('lastUpdated') }}</p>
                                       <p class="mt-1 text-xs text-[var(--text)]">{{ formatDateTime(msg.updatedAt ?? msg.createdAt) }}</p>
                                     </div>
                                   </div>
@@ -854,16 +854,16 @@
                             @if (msg.role === 'assistant' && !msg.pending && msg.text.trim()) {
                               <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-[var(--accent)]/25 bg-[linear-gradient(135deg,rgba(20,184,166,0.14),rgba(255,255,255,0.04))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.16)] sm:flex-row sm:items-center sm:justify-between">
                                 <div class="min-w-0">
-                                  <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">🎧 15-sec audio recap</p>
+                                  <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">🎧 {{ uiText('audioRecap15') }}</p>
                                   <p class="mt-1 text-sm font-semibold leading-5 text-[var(--text)]">
-                                    Hear the key takeaway first.
+                                    {{ uiText('hearTakeaway') }}
                                   </p>
                                 </div>
                                 <button
                                   type="button"
                                   class="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] shadow-[0_16px_34px_rgba(20,184,166,0.26)] transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70"
                                   [disabled]="loadingSpeechMessageId() === msg.id"
-                                  [attr.aria-label]="playingSpeechMessageId() === msg.id ? 'Stop 15 second audio recap' : 'Play 15 second audio recap'"
+                                  [attr.aria-label]="playingSpeechMessageId() === msg.id ? uiText('stopAudioRecap15') : uiText('playAudioRecap15')"
                                   (pointerdown)="prepareReadAnswerClick($event)"
                                   (mousedown)="$event.preventDefault()"
                                   (click)="toggleReadAnswer(msg, $event)"
@@ -874,13 +874,13 @@
                                     <span class="material-symbols-outlined text-[1.25rem]">{{ playingSpeechMessageId() === msg.id ? 'stop_circle' : preparedSpeechMessageIds()[msg.id] ? 'play_circle' : 'headphones' }}</span>
                                   }
                                   <span>
-                                    {{ playingSpeechMessageId() === msg.id ? 'Stop recap' : loadingSpeechMessageId() === msg.id ? 'Preparing…' : preparedSpeechMessageIds()[msg.id] ? 'Play recap' : 'Listen now' }}
+                                    {{ playingSpeechMessageId() === msg.id ? uiText('stopRecap') : loadingSpeechMessageId() === msg.id ? uiText('preparingEllipsis') : preparedSpeechMessageIds()[msg.id] ? uiText('playRecap') : uiText('listenNow') }}
                                   </span>
                                 </button>
                               </div>
                             }
                             @if (msg.knowledgeGap) {
-                              <p class="mb-3 text-xs font-bold italic text-[var(--muted)]">This topic is not strongly covered in the current knowledge base yet.</p>
+                              <p class="mb-3 text-xs font-bold italic text-[var(--muted)]">{{ uiText('knowledgeGap') }}</p>
                             }
                             @if (travelGuideForMessage(msg); as guide) {
                               <section class="mt-2 overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
@@ -888,7 +888,7 @@
                                   @if (travelGuideHeroImage(); as heroImage) {
                                     <img
                                       [src]="heroImage"
-                                      [alt]="guide.title || 'My living wiki guide'"
+                                      [alt]="guide.title || uiText('guideAlt')"
                                       class="absolute inset-0 h-full w-full object-cover"
                                       loading="lazy"
                                     />
@@ -903,10 +903,10 @@
                                     <div class="mb-4 flex flex-wrap items-center gap-2">
                                       <span class="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-white/85 backdrop-blur">
                                         <span class="material-symbols-outlined text-[0.95rem]">explore</span>
-                                        Field guide
+                                        {{ uiText('fieldGuide') }}
                                       </span>
                                       <span class="rounded-full bg-black/35 px-3 py-1.5 text-[11px] font-bold text-white/80 backdrop-blur">
-                                        {{ guide.cards.length }} stop{{ guide.cards.length === 1 ? '' : 's' }}
+                                        {{ uiText(guide.cards.length === 1 ? 'oneStop' : 'manyStops', { count: '' + guide.cards.length }) }}
                                       </span>
                                       @if (canCreateAnswerCard(msg)) {
                                         <button
@@ -916,13 +916,13 @@
                                           (click)="shareGuideCardForMessage(msg, $event)"
                                         >
                                           <span class="material-symbols-outlined text-[0.95rem]">ios_share</span>
-                                          <span>{{ creatingAnswerCardId() === msg.id ? 'Making card' : 'Share guide' }}</span>
+                                          <span>{{ creatingAnswerCardId() === msg.id ? uiText('makingCard') : uiText('shareGuide') }}</span>
                                         </button>
                                       }
                                     </div>
                                     <div class="max-w-3xl">
                                       <p class="text-xs font-black uppercase tracking-[0.2em] text-white/65">{{ assistantMessageName() }}</p>
-                                      <h3 class="mt-2 text-2xl font-black leading-tight text-white sm:text-3xl">{{ guide.title || 'Guide picks' }}</h3>
+                                      <h3 class="mt-2 text-2xl font-black leading-tight text-white sm:text-3xl">{{ guide.title || uiText('guidePicks') }}</h3>
                                       @if (guide.summary) {
                                         <p class="mt-3 max-w-2xl text-sm leading-6 text-white/78 sm:text-base">{{ guide.summary }}</p>
                                       }
@@ -937,10 +937,10 @@
                                         <span class="material-symbols-outlined text-[1.2rem]">format_quote</span>
                                       </div>
                                       <div class="min-w-0">
-                                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Your plan</p>
+                                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">{{ uiText('yourPlan') }}</p>
                                         <blockquote class="mt-2 text-xl font-black leading-snug text-[var(--text)] sm:text-2xl">{{ guideIntro(msg, guide) }}</blockquote>
                                         <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
-                                          Use the cards below as the plan. Open full notes for the broader context and caveats.
+                                          {{ uiText('cardsAsPlan') }}
                                         </p>
                                       </div>
                                     </div>
@@ -1003,7 +1003,7 @@
                                       @if (card.local_tip) {
                                         <div class="mt-3 rounded-lg border border-[var(--line)] bg-white/[0.035] px-3 py-2">
                                           <p class="line-clamp-2 text-xs leading-5 text-[var(--muted)]">
-                                            <span class="font-black uppercase tracking-[0.12em] text-[var(--accent)]">Tip</span>
+                                            <span class="font-black uppercase tracking-[0.12em] text-[var(--accent)]">{{ uiText('tip') }}</span>
                                             <span class="mx-1 text-[var(--accent)]">/</span>
                                             {{ card.local_tip }}
                                           </p>
@@ -1018,7 +1018,7 @@
                                           rel="noopener noreferrer"
                                         >
                                           <span class="material-symbols-outlined text-[1rem]">map</span>
-                                          Map
+                                          {{ uiText('map') }}
                                         </a>
                                         @if (travelCardSourceUrl(card); as sourceUrl) {
                                           <a
@@ -1028,7 +1028,7 @@
                                             rel="noopener noreferrer"
                                           >
                                             <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
-                                            <span>Article</span>
+                                            <span>{{ uiText('article') }}</span>
                                           </a>
                                         }
                                         <button
@@ -1037,7 +1037,7 @@
                                           (click)="saveTravelCard(card, $event)"
                                         >
                                           <span class="material-symbols-outlined text-[1rem]">{{ travelCardSaved(card) ? 'bookmark_added' : 'bookmark' }}</span>
-                                          <span>{{ travelCardSaved(card) ? 'Saved' : 'Save' }}</span>
+                                          <span>{{ travelCardSaved(card) ? uiText('saved') : uiText('save') }}</span>
                                         </button>
                                         <button
                                           type="button"
@@ -1046,7 +1046,7 @@
                                           (click)="shareTravelCard(card, $event, msg, guide)"
                                         >
                                           <span class="material-symbols-outlined text-[1rem]">ios_share</span>
-                                          <span>{{ sharingTravelCardId() === 'share:' + travelCardStorageId(card) ? 'Sharing...' : 'Share' }}</span>
+                                          <span>{{ sharingTravelCardId() === 'share:' + travelCardStorageId(card) ? uiText('sharing') : uiText('share') }}</span>
                                         </button>
                                       </div>
                                     </article>
@@ -1056,7 +1056,7 @@
                                 @if (guide.route || (guide.next_actions && guide.next_actions.length > 0)) {
                                   <div class="border-t border-white/10 px-4 py-3">
                                     @if (guide.route) {
-                                      <p class="text-sm leading-6 text-[var(--text)]"><span class="font-black">Smart route:</span> {{ guide.route }}</p>
+                                      <p class="text-sm leading-6 text-[var(--text)]"><span class="font-black">{{ uiText('smartRoute') }}</span> {{ guide.route }}</p>
                                     }
                                     @if (guide.next_actions && guide.next_actions.length > 0) {
                                       <div class="mt-3 flex flex-wrap gap-2">
@@ -1080,7 +1080,7 @@
                                           (click)="shareGuideCardForMessage(msg, $event)"
                                         >
                                           <span class="material-symbols-outlined text-[1rem]">ios_share</span>
-                                          <span>{{ creatingAnswerCardId() === msg.id ? 'Making card...' : 'Share the full guide card' }}</span>
+                                          <span>{{ creatingAnswerCardId() === msg.id ? uiText('makingCardEllipsis') : uiText('shareFullGuideCard') }}</span>
                                         </button>
                                       </div>
                                     }
@@ -1099,9 +1099,9 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
                                   </div>
                                   <div class="min-w-0 flex-1">
-                                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Full notes</p>
-                                    <h4 class="truncate text-sm font-black text-[var(--text)] sm:text-base">Read {{ assistantMessageName() }}’s complete take</h4>
-                                    <p class="mt-0.5 text-xs text-[var(--muted)]">Context, jokes, caveats, and the full explanation behind the cards.</p>
+                                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">{{ uiText('fullNotes') }}</p>
+                                    <h4 class="truncate text-sm font-black text-[var(--text)] sm:text-base">{{ uiText('readCompleteTake', { name: assistantMessageName() }) }}</h4>
+                                    <p class="mt-0.5 text-xs text-[var(--muted)]">{{ uiText('fullNotesDescription') }}</p>
                                   </div>
                                   <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[var(--text)] transition-transform group-open:rotate-180">
                                     <span class="material-symbols-outlined text-[1.2rem]">keyboard_arrow_down</span>
@@ -1138,8 +1138,8 @@
                                   <a
                                     class="chat-inline-action chat-inline-action--card"
                                     [routerLink]="answerCardLinks()[msg.id]"
-                                    aria-label="Open Philly Answer Card"
-                                    data-tooltip="Open card"
+                                    [attr.aria-label]="uiText('openAnswerCard', { city: currentWikiName() || 'Philly' })"
+                                    [attr.data-tooltip]="uiText('openCard')"
                                   >
                                     <span class="material-symbols-outlined">style</span>
                                   </a>
@@ -1148,8 +1148,8 @@
                                     type="button"
                                     class="chat-inline-action chat-inline-action--card"
                                     [disabled]="creatingAnswerCardId() === msg.id"
-                                    [attr.aria-label]="creatingAnswerCardId() === msg.id ? 'Making Philly Answer Card' : 'Make Philly Answer Card'"
-                                    [attr.data-tooltip]="creatingAnswerCardId() === msg.id ? 'Making card' : 'Make card'"
+                                    [attr.aria-label]="creatingAnswerCardId() === msg.id ? uiText('makingAnswerCard', { city: currentWikiName() || 'Philly' }) : uiText('makeAnswerCard', { city: currentWikiName() || 'Philly' })"
+                                    [attr.data-tooltip]="creatingAnswerCardId() === msg.id ? uiText('makingCard') : uiText('makeCard')"
                                     (click)="createAnswerCardForMessage(msg, $event)"
                                   >
                                     @if (creatingAnswerCardId() === msg.id) {
@@ -1163,8 +1163,8 @@
                                     class="chat-inline-action chat-inline-action--card"
                                     routerLink="/sign-in"
                                     [queryParams]="signInQueryParams()"
-                                    aria-label="Sign in to make Philly Answer Card"
-                                    data-tooltip="Sign in for card"
+                                    [attr.aria-label]="uiText('signInMakeAnswerCard', { city: currentWikiName() || 'Philly' })"
+                                    [attr.data-tooltip]="uiText('signInForCard')"
                                   >
                                     <span class="material-symbols-outlined">style</span>
                                   </a>
@@ -1174,8 +1174,8 @@
                                   <a
                                     class="chat-inline-action chat-inline-action--quiz"
                                     [routerLink]="quizLinks()[msg.id]"
-                                    aria-label="Open quiz challenge"
-                                    data-tooltip="Open quiz"
+                                    [attr.aria-label]="uiText('openQuizChallenge')"
+                                    [attr.data-tooltip]="uiText('openQuiz')"
                                   >
                                     <span class="material-symbols-outlined">quiz</span>
                                   </a>
@@ -1184,8 +1184,8 @@
                                     type="button"
                                     class="chat-inline-action chat-inline-action--quiz"
                                     [disabled]="creatingQuizId() === msg.id || creatingAnswerCardId() === msg.id"
-                                    [attr.aria-label]="creatingQuizId() === msg.id ? 'Making quiz challenge' : 'Make quiz challenge'"
-                                    [attr.data-tooltip]="creatingQuizId() === msg.id ? 'Making quiz' : 'Make quiz'"
+                                    [attr.aria-label]="creatingQuizId() === msg.id ? uiText('makingQuizChallenge') : uiText('makeQuizChallenge')"
+                                    [attr.data-tooltip]="creatingQuizId() === msg.id ? uiText('makingQuiz') : uiText('makeQuiz')"
                                     (click)="createQuizForMessage(msg, $event)"
                                   >
                                     @if (creatingQuizId() === msg.id) {
@@ -1199,8 +1199,8 @@
                                     class="chat-inline-action chat-inline-action--quiz"
                                     routerLink="/sign-in"
                                     [queryParams]="signInQueryParams()"
-                                    aria-label="Sign in to make quiz challenge"
-                                    data-tooltip="Sign in for quiz"
+                                    [attr.aria-label]="uiText('signInMakeQuiz')"
+                                    [attr.data-tooltip]="uiText('signInForQuiz')"
                                   >
                                     <span class="material-symbols-outlined">quiz</span>
                                   </a>
@@ -1210,8 +1210,8 @@
                                 type="button"
                                 class="chat-inline-action"
                                 [class.chat-inline-action--copied]="copiedTarget() === msg.id + ':body'"
-                                [attr.aria-label]="copiedTarget() === msg.id + ':body' ? 'Copied answer' : 'Copy answer'"
-                                [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? 'Copied' : 'Copy'"
+                                [attr.aria-label]="copiedTarget() === msg.id + ':body' ? uiText('copiedAnswer') : uiText('copyAnswer')"
+                                [attr.data-tooltip]="copiedTarget() === msg.id + ':body' ? uiText('copied') : uiText('copy')"
                                 (click)="copyMessageBody(msg, $event)"
                               >
                                 <span class="material-symbols-outlined">{{ copiedTarget() === msg.id + ':body' ? 'check' : 'content_copy' }}</span>
