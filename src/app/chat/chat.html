@@ -39,15 +39,15 @@
           (click)="newChat()"
         >
           <span class="material-symbols-outlined text-[1.1rem]">edit_square</span>
-          <span>New Chat</span>
+          <span>{{ uiText('newChat') }}</span>
         </button>
       }
 
       <section class="rounded-[1.35rem] border border-[var(--line-strong)] bg-[var(--surface)] p-3 shadow-[var(--shadow-soft)]">
         <div class="mb-3 border-b border-[var(--line)] px-1 pb-3">
           <div>
-            <p class="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--text)]">Explore cities</p>
-            <p class="mt-1 text-[0.72rem] font-semibold leading-5 text-[var(--muted)]">Public living wikis</p>
+            <p class="text-[0.72rem] font-black uppercase tracking-[0.18em] text-[var(--text)]">{{ uiText('exploreCities') }}</p>
+            <p class="mt-1 text-[0.72rem] font-semibold leading-5 text-[var(--muted)]">{{ uiText('publicLivingWikis') }}</p>
           </div>
         </div>
         <div class="space-y-2.5">
@@ -67,7 +67,7 @@
             </a>
           }
           <a routerLink="/public-wikis" class="flex min-h-[2.75rem] items-center justify-center gap-2 rounded-[1rem] border border-[var(--line)] bg-transparent text-xs font-black uppercase tracking-[0.14em] text-[var(--accent)] no-underline transition hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill)]">
-            <span>See all</span>
+            <span>{{ uiText('seeAll') }}</span>
             <span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
           </a>
         </div>
@@ -79,11 +79,11 @@
           @if (showSignInCta() || canSubscribeToCurrentWiki()) {
             <div class="mt-3 flex flex-col gap-2">
               @if (showSignInCta()) {
-                <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn inline-flex !px-4 !py-2.5 text-sm">Sign in</a>
+                <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn inline-flex !px-4 !py-2.5 text-sm">{{ uiText('signIn') }}</a>
               }
               @if (canSubscribeToCurrentWiki()) {
                 <button type="button" class="ghost-btn justify-center !px-4 !py-2.5 text-sm" (click)="openSubscribeModal()">
-                  {{ isSignedIn() ? 'Subscribe' : 'Join for Free' }}
+                  {{ isSignedIn() ? uiText('subscribe') : uiText('joinForFree') }}
                 </button>
               }
             </div>
@@ -160,7 +160,7 @@
             [hidePublicKnowledgeSurfaces]="hidePublicSourceFiles()"
             [adminNavigation]="canAdminCurrentWiki()"
             [showJoinAction]="canSubscribeToCurrentWiki()"
-            [joinLabel]="isSignedIn() ? 'Subscribe' : 'Join for Free'"
+            [joinLabel]="isSignedIn() ? uiText('subscribe') : uiText('joinForFree')"
             [showSignInAction]="!isSignedIn()"
             [signInQueryParams]="signInQueryParams()"
             (join)="openSubscribeModal()"
@@ -181,7 +181,7 @@
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="!isInternetMode()"
               aria-label="Use My living wiki mode"
-                data-tooltip="My living wiki"
+                [attr.data-tooltip]="uiText('myLivingWikiLabel')"
                 (click)="setAnswerMode('wiki')"
               >
                 <span class="material-symbols-outlined text-[1rem]">auto_stories</span>
@@ -191,7 +191,7 @@
                 class="chat-mode-toggle__button"
                 [class.chat-mode-toggle__button--active]="isInternetMode()"
                 aria-label="Use internet mode"
-                data-tooltip="Internet"
+                [attr.data-tooltip]="uiText('internet')"
                 (click)="setAnswerMode('internet')"
               >
                 <span class="material-symbols-outlined text-[1rem]">public</span>
@@ -202,8 +202,8 @@
             <button
               type="button"
               class="chat-nav-icon hidden sm:inline-flex"
-              aria-label="New chat"
-              data-tooltip="New chat"
+              [attr.aria-label]="uiText('newChat')"
+              [attr.data-tooltip]="uiText('newChat')"
               (click)="newChat()"
             >
               <span class="material-symbols-outlined">edit_square</span>
@@ -226,7 +226,7 @@
               (click)="openSubscribeModal()"
             >
               <span class="material-symbols-outlined text-base">mark_email_read</span>
-              <span>{{ isSignedIn() ? 'Subscribe' : 'Join for Free' }}</span>
+              <span>{{ isSignedIn() ? uiText('subscribe') : uiText('joinForFree') }}</span>
             </button>
           }
           @if (canShareActiveThread()) {
@@ -271,7 +271,7 @@
           }
           <app-theme-toggle></app-theme-toggle>
           @if (!isSignedIn()) {
-            <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn hidden !px-4 !py-2.5 text-sm sm:inline-flex">Sign in</a>
+            <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn hidden !px-4 !py-2.5 text-sm sm:inline-flex">{{ uiText('signIn') }}</a>
           } @else {
             <div class="avatar-menu-wrapper relative">
               <button
@@ -490,12 +490,12 @@
                         class="lang-flag-card"
                         [class.lang-flag-card--selected]="selectedVoiceLanguage()?.country === lang.country"
                         [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
-                        [attr.aria-label]="'Use ' + lang.language + ' for ' + currentWikiName() + ' (' + lang.country + ')'"
+                        [attr.aria-label]="'Use ' + lang.language + ' for ' + currentWikiName() + ' (' + localizedCountryName(lang.country) + ')'"
                         [attr.data-tooltip]="'Choose ' + lang.language"
                         (click)="selectVoiceLanguage(lang)"
                       >
                         <span class="lang-flag-card__flag" aria-hidden="true">{{ lang.flag }}</span>
-                        <span class="lang-flag-card__country">{{ lang.country }}</span>
+                        <span class="lang-flag-card__country">{{ localizedCountryName(lang.country) }}</span>
                         <span class="lang-flag-card__language">{{ lang.language }}</span>
                         <span class="lang-flag-card__cta">
                           <span class="material-symbols-outlined">translate</span>
@@ -548,8 +548,8 @@
                 <div class="glass-card flex flex-col items-center gap-4 rounded-[1.75rem] px-8 py-8">
                   <span class="inline-block h-7 w-7 animate-spin rounded-full border-2 border-[var(--accent)]/35 border-t-[var(--accent)]"></span>
                   <div>
-                    <h2 class="text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Loading chat</h2>
-                    <p class="mt-2 text-sm leading-7 text-[var(--muted)]">Preparing this atlas conversation.</p>
+                    <h2 class="text-2xl font-black tracking-[-0.05em] text-[var(--text)]">{{ uiText('loadingChat') }}</h2>
+                    <p class="mt-2 text-sm leading-7 text-[var(--muted)]">{{ uiText('preparingConversation') }}</p>
                   </div>
                 </div>
               </div>
@@ -575,7 +575,7 @@
                     class="mt-4 flex w-full max-w-xl flex-col gap-2 rounded-[1.35rem] border border-[var(--accent)]/30 bg-[var(--surface)]/95 p-2 shadow-[var(--shadow-soft)] sm:flex-row sm:items-center sm:rounded-full"
                     (submit)="subscribeToUpdates($event)"
                   >
-                    <label class="sr-only" for="hero-subscribe-email">Email address</label>
+                    <label class="sr-only" for="hero-subscribe-email">{{ uiText('emailAddress') }}</label>
                     <input
                       id="hero-subscribe-email"
                       type="email"
@@ -594,14 +594,14 @@
                     >
                       @if (isSubscribing()) {
                         <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white"></span>
-                        <span>Joining...</span>
+                        <span>{{ uiText('joining') }}</span>
                       } @else {
-                        <span>Join for free</span>
+                        <span>{{ uiText('joinForFree') }}</span>
                       }
                     </button>
-                    <p class="px-2 pb-1 text-center text-xs font-bold leading-5 text-[var(--muted)] sm:hidden">Weekly updates and staying in the know.</p>
+                    <p class="px-2 pb-1 text-center text-xs font-bold leading-5 text-[var(--muted)] sm:hidden">{{ uiText('weeklyUpdates') }}</p>
                   </form>
-                  <p class="mt-2 hidden text-xs font-bold leading-5 text-[var(--muted)] sm:block">Weekly updates and staying in the know.</p>
+                  <p class="mt-2 hidden text-xs font-bold leading-5 text-[var(--muted)] sm:block">{{ uiText('weeklyUpdates') }}</p>
                   @if (subscribeSuccess()) {
                     <p class="mt-2 max-w-xl rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-2 text-sm font-semibold text-[var(--accent)]">{{ subscribeSuccess() }}</p>
                   }
@@ -611,7 +611,7 @@
                 }
 
 	                <h2 class="chat-hero-title mt-3">
-	                  Ask <span class="chat-hero-title__brand">My Living Wiki</span>@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
+	                  {{ uiText('askMyLivingWiki') }}@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
 	                </h2>
 	                @if (currentWikiCountry()) {
 	                  <p class="mt-1 text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ currentWikiCountry() }}</p>
@@ -621,11 +621,11 @@
                   @if (guide.image_url || guide.label || guide.name) {
                     <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
                       @if (guide.image_url) {
-                        <img [src]="guide.image_url" [alt]="guide.name || 'My living wiki guide'" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
+                        <img [src]="guide.image_url" [alt]="guide.name || uiText('guideAlt')" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
                       }
                       <span class="grid min-w-0 text-left">
                         @if (guide.label) {
-                          <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ guide.label }}</span>
+                          <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ localizedGuideLabel(guide.label) }}</span>
                         }
                         @if (guide.name) {
                           <span class="truncate text-base font-black text-[var(--text)]">{{ guide.name }}</span>
@@ -652,7 +652,7 @@
                     <div class="chat-premium-composer__bar">
                       <div class="chat-premium-composer__bar-left">
                         @if (canUseAnswerModeToggle()) {
-                          <div class="chat-inline-mode-toggle" role="tablist" aria-label="Answer mode">
+                          <div class="chat-inline-mode-toggle" role="tablist" [attr.aria-label]="uiText('answerMode')">
                             <button
                               type="button"
                               role="tab"
@@ -662,7 +662,7 @@
                               (click)="setAnswerMode('wiki')"
                             >
                               <span class="material-symbols-outlined">menu_book</span>
-                              <span>Wiki</span>
+                              <span>{{ uiText('wiki') }}</span>
                             </button>
                             <button
                               type="button"
@@ -673,21 +673,21 @@
                               (click)="setAnswerMode('internet')"
                             >
                               <span class="material-symbols-outlined">public</span>
-                              <span>Internet</span>
+                              <span>{{ uiText('internet') }}</span>
                             </button>
                           </div>
                         }
                         <span class="chat-premium-composer__hint hidden sm:inline-flex">
                           <span class="chat-premium-composer__kbd">⌘</span>
                           <span class="chat-premium-composer__kbd">↵</span>
-                          <span>to send</span>
+                          <span>{{ uiText('toSend') }}</span>
                         </span>
                       </div>
                       <button
                         type="button"
                         class="chat-premium-composer__send"
                         [disabled]="primaryActionDisabled()"
-                        [attr.aria-label]="showSignInCta() ? 'Sign in to continue' : 'Send message'"
+                        [attr.aria-label]="showSignInCta() ? uiText('signInToContinue') : uiText('sendMessage')"
                         (click)="handlePrimaryAction()"
                       >
                         @if (isSubmitting()) {
@@ -703,7 +703,7 @@
 
                 @if (quickPrompts().length > 0) {
                   <div class="mt-10 w-full max-w-3xl">
-                    <p class="chat-suggestion-label text-[11px] font-semibold tracking-[-0.005em] text-[var(--muted)]">Suggested questions</p>
+                    <p class="chat-suggestion-label text-[11px] font-semibold tracking-[-0.005em] text-[var(--muted)]">{{ uiText('suggestedQuestions') }}</p>
                     <div class="mt-3 grid gap-2.5 sm:grid-cols-2">
                       @for (suggestion of quickPrompts(); track suggestion.prompt) {
                         <button
@@ -726,11 +726,11 @@
                 @if (isPublicVisitorMode() && (showSignInCta() || !isSignedIn())) {
                   <div class="mt-8 flex flex-wrap justify-center gap-3">
                     <a routerLink="/sign-in" [queryParams]="signInQueryParams()" class="primary-btn !px-4 !py-3 text-sm">
-                      {{ showSignInCta() ? 'Sign in to continue' : 'Sign in to save chat' }}
+                      {{ showSignInCta() ? uiText('signInToContinue') : uiText('signInToSaveChat') }}
                     </a>
                     @if (canSubscribeToCurrentWiki()) {
                       <button type="button" class="ghost-btn !px-4 !py-3 text-sm" (click)="openSubscribeModal()">
-                        {{ isSignedIn() ? 'Subscribe to weekly updates' : 'Join for Free' }}
+                        {{ isSignedIn() ? uiText('subscribeWeeklyUpdates') : uiText('joinForFree') }}
                       </button>
                     }
                   </div>
@@ -1264,13 +1264,13 @@
                   <span class="chat-premium-composer__hint hidden sm:inline-flex">
                     <span class="chat-premium-composer__kbd">⌘</span>
                     <span class="chat-premium-composer__kbd">↵</span>
-                    <span>to send</span>
+                    <span>{{ uiText('toSend') }}</span>
                   </span>
                   <button
                     type="button"
                     class="chat-premium-composer__send"
                     [disabled]="primaryActionDisabled()"
-                    [attr.aria-label]="showSignInCta() ? 'Sign in to continue' : 'Send message'"
+                    [attr.aria-label]="showSignInCta() ? uiText('signInToContinue') : uiText('sendMessage')"
                     (click)="handlePrimaryAction()"
                   >
                     @if (isSubmitting()) {
@@ -1294,19 +1294,19 @@
 	          <section class="flex min-h-0 flex-1 flex-col rounded-[1.65rem] border border-[var(--line-strong)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)]">
 	            <div class="flex items-start justify-between gap-3">
 	              <div class="min-w-0">
-	                <h2 class="text-[1.7rem] font-black leading-none tracking-[-0.055em] text-[var(--text)]">Reviewed locations</h2>
+	                <h2 class="text-[1.7rem] font-black leading-none tracking-[-0.055em] text-[var(--text)]">{{ uiText('reviewedLocations') }}</h2>
 	                <p class="mt-2 text-sm font-semibold leading-5 text-[var(--muted)]">{{ reviewedPlacesCountLabel() }}</p>
 	              </div>
 	              <a
 	                [routerLink]="placesLink()"
 	                class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)] no-underline transition hover:border-[var(--accent)]/35"
-	                aria-label="Open places board"
+	                [attr.aria-label]="uiText('openPlacesBoard')"
 	              >
 	                <span class="material-symbols-outlined text-[1.05rem]">arrow_outward</span>
 	              </a>
 	            </div>
 	            <div class="mt-4 flex items-center justify-between border-t border-[var(--line)] pt-3">
-	              <p class="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Trending now</p>
+	              <p class="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ uiText('trendingNow') }}</p>
 	              @if (reviewedPlacesLoading()) {
 	                <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-[var(--muted)] border-t-transparent"></span>
 	              }
@@ -1317,8 +1317,8 @@
 	                <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)]">
 	                  <span class="material-symbols-outlined">rate_review</span>
                 </span>
-                <p class="mt-3 text-sm font-black tracking-[-0.02em] text-[var(--text)]">No local reviews yet</p>
-	                <p class="mt-1 text-xs font-semibold leading-5 text-[var(--muted)]">Open the board to add the first place.</p>
+                <p class="mt-3 text-sm font-black tracking-[-0.02em] text-[var(--text)]">{{ uiText('noLocalReviewsYet') }}</p>
+	                <p class="mt-1 text-xs font-semibold leading-5 text-[var(--muted)]">{{ uiText('openBoardFirstPlace') }}</p>
 	              </div>
 	            } @else {
 	              <div class="mt-3 min-h-0 flex-1 space-y-5 overflow-y-auto pr-1">

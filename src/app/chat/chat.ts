@@ -211,6 +211,14 @@ const COUNTRY_CODE_TO_VOICE_COUNTRY: Record<string, string> = {
   IN: 'India',
 };
 
+const COUNTRY_NAME_TO_CODE = Object.entries(COUNTRY_CODE_TO_VOICE_COUNTRY).reduce<Record<string, string>>(
+  (map, [code, country]) => {
+    map[country.toLowerCase()] = code;
+    return map;
+  },
+  {},
+);
+
 const COUNTRY_CODE_TO_VOICE_LANGUAGE: Partial<Record<string, VoiceLanguageCode>> = {
   AE: 'ar',
   AF: 'fa',
@@ -233,6 +241,130 @@ const COUNTRY_CODE_TO_VOICE_LANGUAGE: Partial<Record<string, VoiceLanguageCode>>
   UA: 'uk',
   VN: 'vi',
 };
+
+type ChatUiTextKey =
+  | 'weSpeakYourLanguage'
+  | 'voiceHintManual'
+  | 'voiceHintAuto'
+  | 'findCountry'
+  | 'clearCountrySearch'
+  | 'previousLanguages'
+  | 'moreLanguages'
+  | 'choose'
+  | 'noMatchingLanguage'
+  | 'chooseLanguagePrompt'
+  | 'selectFlagFirst'
+  | 'speakInLanguage'
+  | 'loadingChat'
+  | 'preparingConversation'
+  | 'emailAddress'
+  | 'joining'
+  | 'joinForFree'
+  | 'weeklyUpdates'
+  | 'askMyLivingWiki'
+  | 'guideAlt'
+  | 'answerMode'
+  | 'wiki'
+  | 'internet'
+  | 'toSend'
+  | 'signInToContinue'
+  | 'sendMessage'
+  | 'suggestedQuestions'
+  | 'signInToSaveChat'
+  | 'subscribeWeeklyUpdates'
+  | 'reviewedLocations'
+  | 'trendingNow'
+  | 'openPlacesBoard'
+  | 'noLocalReviewsYet'
+  | 'openBoardFirstPlace'
+  | 'newChat'
+  | 'exploreCities'
+  | 'publicLivingWikis'
+  | 'seeAll'
+  | 'signIn'
+  | 'subscribe'
+  | 'messageMyLivingWiki'
+  | 'publicLimitReached'
+  | 'askFiveNoSignIn'
+  | 'signedInVisitorsFree'
+  | 'askPublicAtlas'
+  | 'publicLimitNotice'
+  | 'askFiveNoSignInPeriod'
+  | 'remainingQuestions'
+  | 'subscribeNotice'
+  | 'askAtlasInternet'
+  | 'askCityInternet'
+  | 'askCitySources'
+  | 'askSources'
+  | 'internetModeLabel'
+  | 'myLivingWikiLabel'
+  | 'askYourWiki'
+  | 'askThisWiki'
+  | 'signInKeepChatting'
+  | 'internetModeDescription'
+  | 'noSourcesDescription'
+  | 'publicLimitUsed'
+  | 'anonymousQuestionsAllowed'
+  | 'anonymousQuestionsLeft'
+  | 'signInGroundedQuestions'
+  | 'heroInternetPrompt'
+  | 'heroCitySourcesPrompt'
+  | 'heroWikiSourcesPrompt'
+  | 'signInKeepConversation'
+  | 'heroInternetSupporting'
+  | 'heroCityIndexed'
+  | 'heroIndexed'
+  | 'publicAtlasLive'
+  | 'myLivingWikiLive'
+  | 'knowledgeReady'
+  | 'anonymousSessionPaused'
+  | 'internetModeEnabled'
+  | 'oneIndexedSource'
+  | 'manyIndexedSources'
+  | 'internetNoDocumentsHelper'
+  | 'internetModeHelper'
+  | 'wikiModeHelper'
+  | 'anonymousQuestionsRemaining'
+  | 'savedWithNameEmail'
+  | 'latestUpdates'
+  | 'latestUpdatesPrompt'
+  | 'latestUpdatesDetail'
+  | 'whatMattersNow'
+  | 'whatMattersNowPrompt'
+  | 'whatMattersNowDetail'
+  | 'recentDebates'
+  | 'recentDebatesPrompt'
+  | 'recentDebatesDetail'
+  | 'backgroundContext'
+  | 'backgroundContextPrompt'
+  | 'backgroundContextDetail'
+  | 'quickOverview'
+  | 'quickOverviewPrompt'
+  | 'quickOverviewDetail'
+  | 'importantTopics'
+  | 'importantTopicsPrompt'
+  | 'importantTopicsDetail'
+  | 'bestStartingPoint'
+  | 'bestStartingPointPrompt'
+  | 'bestStartingPointDetail'
+  | 'keyQuestions'
+  | 'keyQuestionsPrompt'
+  | 'keyQuestionsDetail'
+  | 'whatIsTopic'
+  | 'whyTopicMatters'
+  | 'keyFactsTopic'
+  | 'topicConnection'
+  | 'groundedWikiDetail'
+  | 'knowledgeBaseDetail'
+  | 'reviewedPlaceCount'
+  | 'reviewedPlacesCount'
+  | 'localReviewCount'
+  | 'localReviewsCount'
+  | 'ratings'
+  | 'newPlace'
+  | 'you'
+  | 'myLivingWiki'
+  | 'guideLabel';
 
 function normalizeVoiceSearchText(value: string): string {
   return value
@@ -501,7 +633,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (language && this.voiceLanguageAutoSelected()) {
       return this.uiText('voiceHintAuto', {
         count: String(this.filteredVoiceLanguages().length),
-        country: location?.countryName || language.country,
+        country: this.localizedCountryName(location?.countryName || language.country),
       });
     }
     return this.uiText('voiceHintManual', { count: String(this.filteredVoiceLanguages().length) });
@@ -661,23 +793,23 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return '';
     }
     if (this.showSignInCta()) {
-      return 'Public question limit reached';
+      return this.uiText('publicLimitReached');
     }
     if (this.isAnonymousPublicVisitor()) {
-      return 'Ask up to 5 questions without signing in';
+      return this.uiText('askFiveNoSignIn');
     }
     if (this.isSignedInPublicVisitor()) {
-      return 'Signed-in visitors can chat freely with this atlas';
+      return this.uiText('signedInVisitorsFree');
     }
-    return 'Ask questions about this public atlas';
+    return this.uiText('askPublicAtlas');
   });
   readonly composerPlaceholder = computed(() =>
     this.canUseAnswerModeToggle()
       ? this.isInternetMode()
         ? this.localInternetPlaceholder()
-        : 'Message My living wiki...'
+        : this.uiText('messageMyLivingWiki')
       : this.showSignInCta()
-        ? 'Sign in to continue asking questions...'
+        ? `${this.uiText('signInToContinue')}...`
         : this.localInternetPlaceholder(),
   );
   readonly canSubmit = computed(() => {
@@ -696,15 +828,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return '';
     }
     if (this.showSignInCta()) {
-      return 'You have reached the 5-question public limit. Sign in to continue this conversation.';
+      return this.uiText('publicLimitNotice');
     }
     if (this.isAnonymousPublicVisitor()) {
       const remaining = this.publicRemainingQuestions();
       return remaining === null
-        ? 'Ask up to 5 questions without signing in.'
-        : `Ask up to 5 questions without signing in. ${remaining} remaining.`;
+        ? this.uiText('askFiveNoSignInPeriod')
+        : this.uiText('remainingQuestions', { count: `${remaining}` });
     }
-    return 'Subscribe for weekly updates from this Wiki.';
+    return this.uiText('subscribeNotice');
   });
   readonly currentWikiAtlas = computed(() =>
     this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
@@ -733,14 +865,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
     return name.replace(/^My living wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
   });
-  readonly currentWikiCountry = computed(() => this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? '');
+  readonly currentWikiCountry = computed(() => this.localizedCountryName(this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? ''));
   readonly canShowPlaceReviews = computed(() => {
     const atlas = this.currentWikiAtlas();
     return !!atlas?.id && atlas.city_config?.enabled === true && !this.publicNotFound();
   });
   readonly reviewedPlacesCountLabel = computed(() => {
     const count = this.reviewedPlaces().length;
-    return count === 1 ? '1 reviewed place' : `${count} reviewed places`;
+    return this.uiText(count === 1 ? 'reviewedPlaceCount' : 'reviewedPlacesCount', { count: `${count}` });
   });
   readonly reviewedPlacesPreview = computed(() => this.reviewedPlaces().slice(0, 4));
   readonly placesLink = computed(() => {
@@ -774,115 +906,115 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return description;
     }
     const name = this.currentWikiName();
-    return name ? `Ask ${name} anything from your sources.` : 'Ask anything from your sources.';
+    return name ? this.uiText('askCitySources', { city: name }) : this.uiText('askSources');
   });
   readonly emptyStateEyebrow = computed(() => {
     if (this.canUseAnswerModeToggle()) {
-      return this.isInternetMode() ? 'Internet mode' : 'My living wiki';
+      return this.isInternetMode() ? this.uiText('internetModeLabel') : this.uiText('myLivingWikiLabel');
     }
-    return 'Internet mode';
+    return this.uiText('internetModeLabel');
   });
   readonly emptyStateTitle = computed(() => {
     const name = this.currentWikiName();
     if (this.isWorkspaceMode()) {
-      return name ? `Ask ${name}` : 'Ask your Wiki';
+      return name ? this.uiText('askAtlasInternet', { city: name }) : this.uiText('askYourWiki');
     }
     if (this.showSignInCta()) {
-      return 'Sign in to keep chatting';
+      return this.uiText('signInKeepChatting');
     }
-    return name ? `Ask ${name}` : 'Ask this Wiki';
+    return name ? this.uiText('askAtlasInternet', { city: name }) : this.uiText('askThisWiki');
   });
   readonly emptyStateDescription = computed(() => {
     if (this.canUseAnswerModeToggle()) {
       return this.isInternetMode()
-        ? 'Internet mode uses general web knowledge and current public sources, not just your uploaded material.'
+        ? this.uiText('internetModeDescription')
         : this.currentWikiSummary();
     }
     if (!this.hasWikiDocuments()) {
-      return 'No source documents are attached yet, so answers use internet context and current public sources.';
+      return this.uiText('noSourcesDescription');
     }
     if (this.showSignInCta()) {
-      return 'You have used all 5 anonymous public questions for this atlas. Sign in to continue.';
+      return this.uiText('publicLimitUsed');
     }
     if (this.isAnonymousPublicVisitor()) {
       const remaining = this.publicRemainingQuestions();
       const base = this.currentWikiSummary();
       const limitNote = remaining === null
-        ? '5 anonymous questions allowed.'
-        : `${remaining} anonymous question${remaining === 1 ? '' : 's'} left.`;
+        ? this.uiText('anonymousQuestionsAllowed')
+        : this.uiText('anonymousQuestionsLeft', { count: `${remaining}` });
       return `${base} ${limitNote}`;
     }
     return this.currentWikiSummary();
   });
   readonly heroPromptText = computed(() => {
     if (this.showSignInCta()) {
-      return 'Sign in to continue asking grounded questions.';
+      return this.uiText('signInGroundedQuestions');
     }
 
     if (!this.hasWikiDocuments() || (this.canUseAnswerModeToggle() && this.isInternetMode())) {
-      return 'Ask anything with full internet context and live public sources.';
+      return this.uiText('heroInternetPrompt');
     }
 
     const name = this.currentWikiName();
     if (name) {
-      return `Ask ${name} anything from your sources.`;
+      return this.uiText('heroCitySourcesPrompt', { city: name });
     }
 
-    return 'Ask your living wiki anything from your sources.';
+    return this.uiText('heroWikiSourcesPrompt');
   });
   readonly heroSupportingText = computed(() => {
     if (this.showSignInCta()) {
-      return 'You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.';
+      return this.uiText('signInKeepConversation');
     }
 
     if (!this.hasWikiDocuments() || (this.canUseAnswerModeToggle() && this.isInternetMode())) {
-      return 'Internet mode is not limited to your documents. It uses public web sources and broader general knowledge.';
+      return this.uiText('heroInternetSupporting');
     }
 
     const name = this.currentWikiName();
     if (name) {
-      return `${name} is indexed into documents and wiki pages so every answer can stay grounded in the material you uploaded.`;
+      return this.uiText('heroCityIndexed', { city: name });
     }
 
-    return 'Your documents and wiki pages are indexed so every answer can stay grounded in the material you uploaded.';
+    return this.uiText('heroIndexed');
   });
-  readonly heroStatusLabel = computed(() => (this.isPublicVisitorMode() ? 'Public atlas live' : 'My living wiki live'));
+  readonly heroStatusLabel = computed(() => (this.isPublicVisitorMode() ? this.uiText('publicAtlasLive') : this.uiText('myLivingWikiLive')));
   readonly heroMetaLabel = computed(() => {
     if (this.hidePublicKnowledgeSurfaces()) {
-      return 'Knowledge ready';
+      return this.uiText('knowledgeReady');
     }
 
     if (this.showSignInCta()) {
-      return 'Anonymous session paused';
+      return this.uiText('anonymousSessionPaused');
     }
 
     if (!this.hasWikiDocuments() || (this.canUseAnswerModeToggle() && this.isInternetMode())) {
-      return 'Internet mode enabled';
+      return this.uiText('internetModeEnabled');
     }
 
     const total = this.currentWikiSourceCount();
-    return total === 1 ? '1 indexed source ready' : `${total} indexed sources ready`;
+    return this.uiText(total === 1 ? 'oneIndexedSource' : 'manyIndexedSources', { count: `${total}` });
   });
   readonly composerHelperText = computed(() => {
     if (!this.hasWikiDocuments()) {
-      return 'Internet mode searches the web because this Wiki does not have source documents yet.';
+      return this.uiText('internetNoDocumentsHelper');
     }
 
     if (this.canUseAnswerModeToggle()) {
       return this.isInternetMode()
-        ? 'Internet mode searches the web and answers beyond your uploaded sources.'
-        : 'My living wiki mode stays grounded in your indexed documents and wiki pages.';
+        ? this.uiText('internetModeHelper')
+        : this.uiText('wikiModeHelper');
     }
     if (this.showSignInCta()) {
-      return 'You have used all 5 anonymous questions. Sign in to continue.';
+      return this.uiText('publicLimitUsed');
     }
     if (this.isAnonymousPublicVisitor()) {
       const remaining = this.publicRemainingQuestions();
       return remaining === null
-        ? 'Ask up to 5 questions without signing in.'
-        : `${remaining} of 5 anonymous questions remaining.`;
+        ? this.uiText('askFiveNoSignInPeriod')
+        : this.uiText('anonymousQuestionsRemaining', { count: `${remaining}` });
     }
-    return 'Your questions are saved with your name and email for the atlas owner.';
+    return this.uiText('savedWithNameEmail');
   });
 
   private cachedPromptsKey: string | null = null;
@@ -893,31 +1025,31 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return [];
     }
 
-    const atlasName = this.currentWikiName() || 'this atlas';
+    const atlasName = this.currentWikiName() || this.uiText('askThisWiki').toLowerCase();
     if (this.isInternetMode()) {
       return [
         {
-          title: 'Latest updates',
-          prompt: `What are the latest updates about ${atlasName}?`,
-          detail: 'Search the web for what is current right now.',
+          title: this.uiText('latestUpdates'),
+          prompt: this.uiText('latestUpdatesPrompt', { city: atlasName }),
+          detail: this.uiText('latestUpdatesDetail'),
           icon: 'public',
         },
         {
-          title: 'What matters now',
-          prompt: `What should I know right now about ${atlasName}?`,
-          detail: 'Get a quick current-events briefing.',
+          title: this.uiText('whatMattersNow'),
+          prompt: this.uiText('whatMattersNowPrompt', { city: atlasName }),
+          detail: this.uiText('whatMattersNowDetail'),
           icon: 'bolt',
         },
         {
-          title: 'Recent debates',
-          prompt: `What are people debating about ${atlasName} right now?`,
-          detail: 'Pull in live internet context and discussion themes.',
+          title: this.uiText('recentDebates'),
+          prompt: this.uiText('recentDebatesPrompt', { city: atlasName }),
+          detail: this.uiText('recentDebatesDetail'),
           icon: 'forum',
         },
         {
-          title: 'Background context',
-          prompt: `Give me background context on ${atlasName} from public sources.`,
-          detail: 'Pull broader context from the open web.',
+          title: this.uiText('backgroundContext'),
+          prompt: this.uiText('backgroundContextPrompt', { city: atlasName }),
+          detail: this.uiText('backgroundContextDetail'),
           icon: 'travel_explore',
         },
       ];
@@ -928,7 +1060,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const atlasId = this.isPublicView()
       ? this.publicAtlas()?.id ?? this.routeSlug() ?? ''
       : this.atlasService.activeAtlasId() ?? '';
-    const cacheKey = `${atlasId}::${topics.length}::${articles.length}`;
+    const cacheKey = `${this.selectedPageLanguageCode()}::${atlasId}::${topics.length}::${articles.length}`;
     if (this.cachedPromptsKey === cacheKey && this.cachedPrompts.length > 0) {
       return this.cachedPrompts;
     }
@@ -953,37 +1085,37 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       ? picks.map((label, i) => ({
           title: label,
           prompt: [
-            `What is ${label}?`,
-            `Why does ${label} matter?`,
-            `Give me the key facts about ${label}.`,
-            `How does ${label} connect to ${atlasName}?`,
+            this.uiText('whatIsTopic', { topic: label }),
+            this.uiText('whyTopicMatters', { topic: label }),
+            this.uiText('keyFactsTopic', { topic: label }),
+            this.uiText('topicConnection', { topic: label, city: atlasName }),
           ][i % 4],
-          detail: i % 2 === 0 ? 'Grounded in the wiki and its sources.' : 'Use the atlas knowledge base for context.',
+          detail: i % 2 === 0 ? this.uiText('groundedWikiDetail') : this.uiText('knowledgeBaseDetail'),
           icon: i % 2 === 0 ? 'auto_stories' : 'explore',
         }))
       : [
           {
-            title: 'Quick overview',
-            prompt: `Give me a quick overview of ${atlasName}.`,
-            detail: 'Start with the highest-signal summary from the wiki.',
+            title: this.uiText('quickOverview'),
+            prompt: this.uiText('quickOverviewPrompt', { city: atlasName }),
+            detail: this.uiText('quickOverviewDetail'),
             icon: 'dashboard',
           },
           {
-            title: 'Important topics',
-            prompt: `What are the most important topics in ${atlasName}?`,
-            detail: 'See the main themes already covered in this wiki.',
+            title: this.uiText('importantTopics'),
+            prompt: this.uiText('importantTopicsPrompt', { city: atlasName }),
+            detail: this.uiText('importantTopicsDetail'),
             icon: 'menu_book',
           },
           {
-            title: 'Best starting point',
-            prompt: `What should I read first about ${atlasName}?`,
-            detail: 'Ask the wiki where a new reader should begin.',
+            title: this.uiText('bestStartingPoint'),
+            prompt: this.uiText('bestStartingPointPrompt', { city: atlasName }),
+            detail: this.uiText('bestStartingPointDetail'),
             icon: 'flag',
           },
           {
-            title: 'Key questions',
-            prompt: `What are the key open questions about ${atlasName}?`,
-            detail: 'Surface the unresolved or most-discussed questions.',
+            title: this.uiText('keyQuestions'),
+            prompt: this.uiText('keyQuestionsPrompt', { city: atlasName }),
+            detail: this.uiText('keyQuestionsDetail'),
             icon: 'help',
           },
         ];
@@ -1019,30 +1151,18 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private localInternetPlaceholder(): string {
     const name = this.currentWikiName();
     if (!name) {
-      return 'Ask about news, places, jobs, events, and civic life...';
+      return this.uiText('askAtlasInternet');
     }
-    return `Ask about ${name} news, neighborhoods, transit, food, jobs, safety, events, and civic life...`;
+    return this.uiText('askCityInternet', { city: name });
   }
 
   uiText(
-    key:
-      | 'weSpeakYourLanguage'
-      | 'voiceHintManual'
-      | 'voiceHintAuto'
-      | 'findCountry'
-      | 'clearCountrySearch'
-      | 'previousLanguages'
-      | 'moreLanguages'
-      | 'choose'
-      | 'noMatchingLanguage'
-      | 'chooseLanguagePrompt'
-      | 'selectFlagFirst'
-      | 'speakInLanguage',
+    key: ChatUiTextKey,
     params: Record<string, string> = {},
   ): string {
     const code = this.selectedPageLanguageCode();
     const family = code === 'pt-br' ? 'pt' : code;
-    const dictionaries: Partial<Record<string, Record<typeof key, string>>> = {
+    const dictionaries: Partial<Record<string, Partial<Record<ChatUiTextKey, string>>>> = {
       en: {
         weSpeakYourLanguage: 'We speak your language',
         voiceHintManual: '{count} countries · choose a flag first.',
@@ -1056,6 +1176,116 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'Choose a flag to switch {city} into your language.',
         selectFlagFirst: 'Select a flag first',
         speakInLanguage: 'Speak to me in {language}',
+        loadingChat: 'Loading chat',
+        preparingConversation: 'Preparing this atlas conversation.',
+        emailAddress: 'Email address',
+        joining: 'Joining...',
+        joinForFree: 'Join for free',
+        weeklyUpdates: 'Weekly updates and staying in the know.',
+        askMyLivingWiki: 'Ask My Living Wiki',
+        guideAlt: 'My living wiki guide',
+        answerMode: 'Answer mode',
+        wiki: 'Wiki',
+        internet: 'Internet',
+        toSend: 'to send',
+        signInToContinue: 'Sign in to continue',
+        sendMessage: 'Send message',
+        suggestedQuestions: 'Suggested questions',
+        signInToSaveChat: 'Sign in to save chat',
+        subscribeWeeklyUpdates: 'Subscribe to weekly updates',
+        reviewedLocations: 'Reviewed locations',
+        trendingNow: 'Trending now',
+        openPlacesBoard: 'Open places board',
+        noLocalReviewsYet: 'No local reviews yet',
+        openBoardFirstPlace: 'Open the board to add the first place.',
+        newChat: 'New Chat',
+        exploreCities: 'Explore cities',
+        publicLivingWikis: 'Public living wikis',
+        seeAll: 'See all',
+        signIn: 'Sign in',
+        subscribe: 'Subscribe',
+        messageMyLivingWiki: 'Message My living wiki...',
+        publicLimitReached: 'Public question limit reached',
+        askFiveNoSignIn: 'Ask up to 5 questions without signing in',
+        signedInVisitorsFree: 'Signed-in visitors can chat freely with this atlas',
+        askPublicAtlas: 'Ask questions about this public atlas',
+        publicLimitNotice: 'You have reached the 5-question public limit. Sign in to continue this conversation.',
+        askFiveNoSignInPeriod: 'Ask up to 5 questions without signing in.',
+        remainingQuestions: 'Ask up to 5 questions without signing in. {count} remaining.',
+        subscribeNotice: 'Subscribe for weekly updates from this Wiki.',
+        askAtlasInternet: 'Ask about news, places, jobs, events, and civic life...',
+        askCityInternet: 'Ask about {city} news, neighborhoods, transit, food, jobs, safety, events, and civic life...',
+        askCitySources: 'Ask {city} anything from your sources.',
+        askSources: 'Ask anything from your sources.',
+        internetModeLabel: 'Internet mode',
+        myLivingWikiLabel: 'My living wiki',
+        askYourWiki: 'Ask your Wiki',
+        askThisWiki: 'Ask this Wiki',
+        signInKeepChatting: 'Sign in to keep chatting',
+        internetModeDescription: 'Internet mode uses general web knowledge and current public sources, not just your uploaded material.',
+        noSourcesDescription: 'No source documents are attached yet, so answers use internet context and current public sources.',
+        publicLimitUsed: 'You have used all 5 anonymous public questions for this atlas. Sign in to continue.',
+        anonymousQuestionsAllowed: '5 anonymous questions allowed.',
+        anonymousQuestionsLeft: '{count} anonymous questions left.',
+        signInGroundedQuestions: 'Sign in to continue asking grounded questions.',
+        heroInternetPrompt: 'Ask anything with full internet context and live public sources.',
+        heroCitySourcesPrompt: 'Ask {city} anything from your sources.',
+        heroWikiSourcesPrompt: 'Ask your living wiki anything from your sources.',
+        signInKeepConversation: 'You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.',
+        heroInternetSupporting: 'Internet mode is not limited to your documents. It uses public web sources and broader general knowledge.',
+        heroCityIndexed: '{city} is indexed into documents and wiki pages so every answer can stay grounded in the material you uploaded.',
+        heroIndexed: 'Your documents and wiki pages are indexed so every answer can stay grounded in the material you uploaded.',
+        publicAtlasLive: 'Public atlas live',
+        myLivingWikiLive: 'My living wiki live',
+        knowledgeReady: 'Knowledge ready',
+        anonymousSessionPaused: 'Anonymous session paused',
+        internetModeEnabled: 'Internet mode enabled',
+        oneIndexedSource: '1 indexed source ready',
+        manyIndexedSources: '{count} indexed sources ready',
+        internetNoDocumentsHelper: 'Internet mode searches the web because this Wiki does not have source documents yet.',
+        internetModeHelper: 'Internet mode searches the web and answers beyond your uploaded sources.',
+        wikiModeHelper: 'My living wiki mode stays grounded in your indexed documents and wiki pages.',
+        anonymousQuestionsRemaining: '{count} of 5 anonymous questions remaining.',
+        savedWithNameEmail: 'Your questions are saved with your name and email for the atlas owner.',
+        latestUpdates: 'Latest updates',
+        latestUpdatesPrompt: 'What are the latest updates about {city}?',
+        latestUpdatesDetail: 'Search the web for what is current right now.',
+        whatMattersNow: 'What matters now',
+        whatMattersNowPrompt: 'What should I know right now about {city}?',
+        whatMattersNowDetail: 'Get a quick current-events briefing.',
+        recentDebates: 'Recent debates',
+        recentDebatesPrompt: 'What are people debating about {city} right now?',
+        recentDebatesDetail: 'Pull in live internet context and discussion themes.',
+        backgroundContext: 'Background context',
+        backgroundContextPrompt: 'Give me background context on {city} from public sources.',
+        backgroundContextDetail: 'Pull broader context from the open web.',
+        quickOverview: 'Quick overview',
+        quickOverviewPrompt: 'Give me a quick overview of {city}.',
+        quickOverviewDetail: 'Start with the highest-signal summary from the wiki.',
+        importantTopics: 'Important topics',
+        importantTopicsPrompt: 'What are the most important topics in {city}?',
+        importantTopicsDetail: 'See the main themes already covered in this wiki.',
+        bestStartingPoint: 'Best starting point',
+        bestStartingPointPrompt: 'What should I read first about {city}?',
+        bestStartingPointDetail: 'Ask the wiki where a new reader should begin.',
+        keyQuestions: 'Key questions',
+        keyQuestionsPrompt: 'What are the key open questions about {city}?',
+        keyQuestionsDetail: 'Surface the unresolved or most-discussed questions.',
+        whatIsTopic: 'What is {topic}?',
+        whyTopicMatters: 'Why does {topic} matter?',
+        keyFactsTopic: 'Give me the key facts about {topic}.',
+        topicConnection: 'How does {topic} connect to {city}?',
+        groundedWikiDetail: 'Grounded in the wiki and its sources.',
+        knowledgeBaseDetail: 'Use the atlas knowledge base for context.',
+        reviewedPlaceCount: '1 reviewed place',
+        reviewedPlacesCount: '{count} reviewed places',
+        localReviewCount: '1 local review',
+        localReviewsCount: '{count} local reviews',
+        ratings: '{count} ratings',
+        newPlace: 'New',
+        you: 'You',
+        myLivingWiki: 'My living wiki',
+        guideLabel: 'Your My Living Wiki {city} tour guide',
       },
       es: {
         weSpeakYourLanguage: 'Hablamos tu idioma',
@@ -1070,6 +1300,116 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'Elige una bandera para cambiar {city} a tu idioma.',
         selectFlagFirst: 'Elige una bandera primero',
         speakInLanguage: 'Háblame en {language}',
+        loadingChat: 'Cargando chat',
+        preparingConversation: 'Preparando esta conversación del atlas.',
+        emailAddress: 'Dirección de correo',
+        joining: 'Uniéndote...',
+        joinForFree: 'Únete gratis',
+        weeklyUpdates: 'Actualizaciones semanales para estar al día.',
+        askMyLivingWiki: 'Pregunta a My Living Wiki',
+        guideAlt: 'Guía de My Living Wiki',
+        answerMode: 'Modo de respuesta',
+        wiki: 'Wiki',
+        internet: 'Internet',
+        toSend: 'para enviar',
+        signInToContinue: 'Inicia sesión para continuar',
+        sendMessage: 'Enviar mensaje',
+        suggestedQuestions: 'Preguntas sugeridas',
+        signInToSaveChat: 'Inicia sesión para guardar el chat',
+        subscribeWeeklyUpdates: 'Suscríbete a las actualizaciones semanales',
+        reviewedLocations: 'Lugares reseñados',
+        trendingNow: 'Tendencias ahora',
+        openPlacesBoard: 'Abrir tablero de lugares',
+        noLocalReviewsYet: 'Aún no hay reseñas locales',
+        openBoardFirstPlace: 'Abre el tablero para agregar el primer lugar.',
+        newChat: 'Nuevo chat',
+        exploreCities: 'Explorar ciudades',
+        publicLivingWikis: 'Living wikis públicas',
+        seeAll: 'Ver todo',
+        signIn: 'Iniciar sesión',
+        subscribe: 'Suscribirse',
+        messageMyLivingWiki: 'Mensaje para My Living Wiki...',
+        publicLimitReached: 'Límite público de preguntas alcanzado',
+        askFiveNoSignIn: 'Haz hasta 5 preguntas sin iniciar sesión',
+        signedInVisitorsFree: 'Los visitantes con sesión iniciada pueden chatear libremente con este atlas',
+        askPublicAtlas: 'Haz preguntas sobre este atlas público',
+        publicLimitNotice: 'Llegaste al límite público de 5 preguntas. Inicia sesión para continuar esta conversación.',
+        askFiveNoSignInPeriod: 'Haz hasta 5 preguntas sin iniciar sesión.',
+        remainingQuestions: 'Haz hasta 5 preguntas sin iniciar sesión. Quedan {count}.',
+        subscribeNotice: 'Suscríbete para recibir actualizaciones semanales de esta Wiki.',
+        askAtlasInternet: 'Pregunta sobre noticias, lugares, empleos, eventos y vida cívica...',
+        askCityInternet: 'Pregunta sobre noticias de {city}, vecindarios, transporte, comida, empleos, seguridad, eventos y vida cívica...',
+        askCitySources: 'Pregunta cualquier cosa sobre {city} desde tus fuentes.',
+        askSources: 'Pregunta cualquier cosa desde tus fuentes.',
+        internetModeLabel: 'Modo Internet',
+        myLivingWikiLabel: 'My Living Wiki',
+        askYourWiki: 'Pregunta a tu Wiki',
+        askThisWiki: 'Pregunta a esta Wiki',
+        signInKeepChatting: 'Inicia sesión para seguir chateando',
+        internetModeDescription: 'El modo Internet usa conocimiento general y fuentes públicas actuales, no solo tu material cargado.',
+        noSourcesDescription: 'Aún no hay documentos fuente adjuntos, así que las respuestas usan contexto de internet y fuentes públicas actuales.',
+        publicLimitUsed: 'Ya usaste las 5 preguntas públicas anónimas para este atlas. Inicia sesión para continuar.',
+        anonymousQuestionsAllowed: 'Se permiten 5 preguntas anónimas.',
+        anonymousQuestionsLeft: 'Quedan {count} preguntas anónimas.',
+        signInGroundedQuestions: 'Inicia sesión para seguir haciendo preguntas con fuentes.',
+        heroInternetPrompt: 'Pregunta cualquier cosa con contexto completo de internet y fuentes públicas actualizadas.',
+        heroCitySourcesPrompt: 'Pregunta cualquier cosa sobre {city} desde tus fuentes.',
+        heroWikiSourcesPrompt: 'Pregunta cualquier cosa a tu living wiki desde tus fuentes.',
+        signInKeepConversation: 'Usaste el límite de preguntas anónimas para este atlas. Inicia sesión para continuar la conversación.',
+        heroInternetSupporting: 'El modo Internet no se limita a tus documentos. Usa fuentes web públicas y conocimiento general más amplio.',
+        heroCityIndexed: '{city} está indexado en documentos y páginas wiki para que cada respuesta pueda apoyarse en el material que cargaste.',
+        heroIndexed: 'Tus documentos y páginas wiki están indexados para que cada respuesta pueda apoyarse en el material que cargaste.',
+        publicAtlasLive: 'Atlas público activo',
+        myLivingWikiLive: 'My Living Wiki activo',
+        knowledgeReady: 'Conocimiento listo',
+        anonymousSessionPaused: 'Sesión anónima pausada',
+        internetModeEnabled: 'Modo Internet activado',
+        oneIndexedSource: '1 fuente indexada lista',
+        manyIndexedSources: '{count} fuentes indexadas listas',
+        internetNoDocumentsHelper: 'El modo Internet busca en la web porque esta Wiki aún no tiene documentos fuente.',
+        internetModeHelper: 'El modo Internet busca en la web y responde más allá de tus fuentes cargadas.',
+        wikiModeHelper: 'El modo My Living Wiki se mantiene apoyado en tus documentos indexados y páginas wiki.',
+        anonymousQuestionsRemaining: 'Quedan {count} de 5 preguntas anónimas.',
+        savedWithNameEmail: 'Tus preguntas se guardan con tu nombre y correo para el propietario del atlas.',
+        latestUpdates: 'Últimas novedades',
+        latestUpdatesPrompt: '¿Cuáles son las últimas novedades sobre {city}?',
+        latestUpdatesDetail: 'Busca en la web lo que está ocurriendo ahora.',
+        whatMattersNow: 'Lo importante ahora',
+        whatMattersNowPrompt: '¿Qué debo saber ahora mismo sobre {city}?',
+        whatMattersNowDetail: 'Obtén un resumen rápido de actualidad.',
+        recentDebates: 'Debates recientes',
+        recentDebatesPrompt: '¿Qué está debatiendo la gente sobre {city} ahora?',
+        recentDebatesDetail: 'Incluye contexto de internet en vivo y temas de discusión.',
+        backgroundContext: 'Contexto general',
+        backgroundContextPrompt: 'Dame contexto general sobre {city} usando fuentes públicas.',
+        backgroundContextDetail: 'Trae contexto más amplio desde la web abierta.',
+        quickOverview: 'Resumen rápido',
+        quickOverviewPrompt: 'Dame un resumen rápido de {city}.',
+        quickOverviewDetail: 'Empieza con el resumen de mayor señal de la wiki.',
+        importantTopics: 'Temas importantes',
+        importantTopicsPrompt: '¿Cuáles son los temas más importantes en {city}?',
+        importantTopicsDetail: 'Muestra los temas principales ya cubiertos en esta wiki.',
+        bestStartingPoint: 'Mejor punto de partida',
+        bestStartingPointPrompt: '¿Qué debería leer primero sobre {city}?',
+        bestStartingPointDetail: 'Pregunta a la wiki por dónde debería empezar un lector nuevo.',
+        keyQuestions: 'Preguntas clave',
+        keyQuestionsPrompt: '¿Cuáles son las preguntas abiertas clave sobre {city}?',
+        keyQuestionsDetail: 'Muestra las preguntas sin resolver o más discutidas.',
+        whatIsTopic: '¿Qué es {topic}?',
+        whyTopicMatters: '¿Por qué importa {topic}?',
+        keyFactsTopic: 'Dame los datos clave sobre {topic}.',
+        topicConnection: '¿Cómo se conecta {topic} con {city}?',
+        groundedWikiDetail: 'Basado en la wiki y sus fuentes.',
+        knowledgeBaseDetail: 'Usa la base de conocimiento del atlas como contexto.',
+        reviewedPlaceCount: '1 lugar reseñado',
+        reviewedPlacesCount: '{count} lugares reseñados',
+        localReviewCount: '1 reseña local',
+        localReviewsCount: '{count} reseñas locales',
+        ratings: '{count} calificaciones',
+        newPlace: 'Nuevo',
+        you: 'Tú',
+        myLivingWiki: 'My Living Wiki',
+        guideLabel: 'Tu guía de My Living Wiki {city}',
       },
       fr: {
         weSpeakYourLanguage: 'Nous parlons votre langue',
@@ -1143,18 +1483,67 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       },
     };
 
-    const template = dictionaries[family]?.[key] ?? dictionaries['en']![key];
+    const template = dictionaries[family]?.[key] ?? dictionaries['en']?.[key] ?? key;
     return Object.entries(params).reduce(
       (text, [paramKey, value]) => text.replaceAll(`{${paramKey}}`, value),
       template,
     );
   }
 
+  localizedCountryName(country: string): string {
+    const trimmed = country.trim();
+    if (!trimmed) {
+      return '';
+    }
+
+    const countryCode = COUNTRY_NAME_TO_CODE[trimmed.toLowerCase()];
+    if (!countryCode) {
+      return trimmed;
+    }
+
+    try {
+      const DisplayNames = (Intl as typeof Intl & {
+        DisplayNames?: new (locales: string[], options: { type: 'region' }) => { of(code: string): string | undefined };
+      }).DisplayNames;
+      return DisplayNames
+        ? new DisplayNames([this.localeForSelectedLanguage()], { type: 'region' }).of(countryCode) ?? trimmed
+        : trimmed;
+    } catch {
+      return trimmed;
+    }
+  }
+
+  localizedGuideLabel(label: string | undefined | null): string {
+    const trimmed = label?.trim();
+    const city = this.currentWikiName();
+    if (!trimmed) {
+      return city ? this.uiText('guideLabel', { city }) : this.uiText('guideAlt');
+    }
+
+    if (/living wiki/i.test(trimmed) && /tour guide|guide/i.test(trimmed)) {
+      return city ? this.uiText('guideLabel', { city }) : this.uiText('guideAlt');
+    }
+
+    return trimmed;
+  }
+
+  private localeForSelectedLanguage(): string {
+    const language = this.selectedVoiceLanguage();
+    const code = language?.code ?? this.selectedPageLanguageCode();
+    if (code === 'pt-br') {
+      return 'pt-BR';
+    }
+    if (code === 'zh') {
+      return 'zh-CN';
+    }
+    return code || 'en';
+  }
+
   placeRatingLabel(place: CityReviewedPlace): string {
     const rating = place.ratingAvg ?? 0;
     const count = place.reviewCount ?? place.ratingCount ?? 0;
     if (!rating) {
-      return count ? `${count} ratings` : 'New';
+      return count ? this.uiText('ratings', { count: `${count}` }) : this.uiText('newPlace');
     }
     return count ? `${rating.toFixed(1)} · ${count}` : rating.toFixed(1);
   }
@@ -1162,9 +1551,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   placeReviewCountLabel(place: CityReviewedPlace): string {
     const count = place.reviewCount ?? place.ratingCount ?? 0;
     if (!count) {
-      return 'No local reviews yet';
+      return this.uiText('noLocalReviewsYet');
     }
-    return count === 1 ? '1 local review' : `${count} local reviews`;
+    return this.uiText(count === 1 ? 'localReviewCount' : 'localReviewsCount', { count: `${count}` });
   }
 
   placeDetailQueryParams(place: CityReviewedPlace): { place: string } {
@@ -2739,18 +3128,18 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   messageLabel(message: ChatMessage): string {
     if (message.role === 'user') {
-      return 'You';
+      return this.uiText('you');
     }
-    return message.answerMode === 'internet' ? 'Internet' : 'My living wiki';
+    return message.answerMode === 'internet' ? this.uiText('internet') : this.uiText('myLivingWiki');
   }
 
   assistantMessageName(): string {
-    return this.currentWikiGuide()?.name?.trim() || 'My living wiki';
+    return this.currentWikiGuide()?.name?.trim() || this.uiText('myLivingWiki');
   }
 
   assistantMessageSubtitle(message: ChatMessage): string {
     const guideLabel = this.currentWikiGuide()?.label?.trim();
-    return guideLabel || this.messageLabel(message);
+    return guideLabel ? this.localizedGuideLabel(guideLabel) : this.messageLabel(message);
   }
 
   assistantAvatarUrl(): string {
@@ -2759,7 +3148,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   assistantAvatarAlt(): string {
     const name = this.assistantMessageName();
-    return name === 'My living wiki' ? 'My living wiki' : `${name} guide`;
+    return name === this.uiText('myLivingWiki') ? this.uiText('myLivingWiki') : `${name} ${this.uiText('guideAlt')}`;
   }
 
   travelGuideForMessage(message: ChatMessage): TravelGuideStructuredResponse | null {
