@@ -127,6 +127,7 @@
         </div>
         <div class="dym-city-meta">
           <div class="m"><div class="k">Place</div><div class="v">{{ c.country }}</div></div>
+          <div class="m"><div class="k">Population</div><div class="v">{{ fmtPopulation(c) }}</div></div>
           <div class="m"><div class="k">Coordinates</div><div class="v">{{ fmtLat(c.lat) }}, {{ fmtLng(c.lng) }}</div></div>
           <div class="m"><div class="k">Chat</div><div class="v">/chat/{{ c.slug }}</div></div>
         </div>

@@ -28,6 +28,8 @@ interface DymaxionCity {
   lat: number;
   lng: number;
   slug: string;
+  population: number | null;
+  populationYear: number | null;
   x: number; // percent position on the 1000x475 map image
   y: number;
 }
@@ -311,6 +313,8 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
         lat,
         lng,
         slug: atlas.slug,
+        population: cfg?.metadata?.population ?? null,
+        populationYear: cfg?.metadata?.population_year ?? null,
         x: pos.x,
         y: pos.y,
       });
@@ -1062,6 +1066,13 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   fmtLng(v: number): string {
     return `${Math.abs(v).toFixed(2)}°${v >= 0 ? 'E' : 'W'}`;
+  }
+  fmtPopulation(c: DymaxionCity): string {
+    if (!c.population) {
+      return 'Not available';
+    }
+    const value = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(c.population);
+    return c.populationYear ? `${value} (${c.populationYear})` : value;
   }
   regionLabel(id: RegionId): string {
     return REGIONS.find((r) => r.id === id)?.label ?? id;
