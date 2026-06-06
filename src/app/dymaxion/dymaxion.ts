@@ -28,8 +28,11 @@ interface DymaxionCity {
   lat: number;
   lng: number;
   slug: string;
+  timezone: string | null;
   population: number | null;
   populationYear: number | null;
+  imageUrl: string | null;
+  description: string | null;
   x: number; // percent position on the 1000x475 map image
   y: number;
 }
@@ -85,6 +88,18 @@ interface PanState {
   tx: number;
   ty: number;
   moved: boolean;
+}
+
+interface CityTemperatureReading {
+  fahrenheit: number;
+  fetchedAt: string;
+}
+
+interface OpenMeteoLocationResponse {
+  current?: {
+    temperature_2m?: number | null;
+    time?: string | null;
+  } | null;
 }
 
 const REGIONS: Region[] = [
@@ -158,6 +173,9 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly searchValue = signal('');
   readonly selected = signal<DymaxionCity | null>(null);
   readonly selectedCountry = signal<DymaxionCountry | null>(null);
+  readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
+  readonly temperatureLoadingSlug = signal<string | null>(null);
+  readonly now = signal(new Date());
 
   private cities: DymaxionCity[] = [];
   private countries: DymaxionCountry[] = [];
@@ -172,6 +190,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   private viewReady = false;
   private viewInited = false;
   private dataReady = false;
+  private clockTimer: number | null = null;
   private resizeTimer: ReturnType<typeof setTimeout> | null = null;
   private readonly onResize = () => {
     if (this.resizeTimer) clearTimeout(this.resizeTimer);
@@ -224,6 +243,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isLoading.set(false);
     this.dataReady = true;
     this.tryInitMap();
+    this.clockTimer = window.setInterval(() => this.now.set(new Date()), 60000);
     void this.loadCities();
   }
 
@@ -278,6 +298,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (!this.isBrowser) return;
+    if (this.clockTimer) clearInterval(this.clockTimer);
     if (this.resizeTimer) clearTimeout(this.resizeTimer);
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('pointermove', this.onPointerMove);
@@ -313,8 +334,11 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
         lat,
         lng,
         slug: atlas.slug,
+        timezone: cfg?.timezone ?? null,
         population: cfg?.metadata?.population ?? null,
         populationYear: cfg?.metadata?.population_year ?? null,
+        imageUrl: atlas.hero_url || atlas.chat_guide?.banner_url || atlas.chat_guide?.image_url || atlas.logo_url || null,
+        description: atlas.description || null,
         x: pos.x,
         y: pos.y,
       });
@@ -1033,6 +1057,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   private selectCity(c: DymaxionCity, b: HTMLButtonElement | null): void {
     this.selected.set(c);
     this.selectedCountry.set(null);
+    void this.ensureTemperature(c);
     this.markerEls.forEach((m) => m.b.classList.toggle('sel', m.b === b));
     if (this.hintRef) this.hintRef.nativeElement.style.opacity = '0';
     // Let the panel render, then bring it into view.
@@ -1076,6 +1101,122 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   regionLabel(id: RegionId): string {
     return REGIONS.find((r) => r.id === id)?.label ?? id;
+  }
+
+  cityTitle(c: DymaxionCity): string {
+    return `${c.name}, ${c.country}`;
+  }
+
+  cityImageAlt(c: DymaxionCity): string {
+    return `${c.name} city profile image`;
+  }
+
+  identityLine(c: DymaxionCity): string {
+    const description = c.description?.trim();
+    if (description && !this.isProductDescription(description)) {
+      return description;
+    }
+    return `A practical snapshot of ${c.name}: local knowledge, civic updates, transit, culture, climate, jobs, food, and neighborhood context.`;
+  }
+
+  cityTags(c: DymaxionCity): string[] {
+    const tags = ['Local knowledge', 'Transit', 'Culture', 'Jobs', 'Food', 'Neighborhoods'];
+    if (c.population && c.population >= 5_000_000) {
+      return ['Major metro', ...tags.slice(0, 5)];
+    }
+    if (c.population && c.population < 500_000) {
+      return ['Local scale', ...tags.slice(0, 5)];
+    }
+    return tags;
+  }
+
+  localTimeLabel(c: DymaxionCity): string {
+    const timezone = c.timezone?.trim();
+    if (!timezone) {
+      return 'Not available';
+    }
+
+    try {
+      return new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        hour: 'numeric',
+        minute: '2-digit',
+      }).format(this.now());
+    } catch {
+      return 'Not available';
+    }
+  }
+
+  temperatureLabel(c: DymaxionCity): string {
+    const reading = this.cityTemperatures()[c.slug];
+    if (reading) {
+      return `${Math.round(reading.fahrenheit)}°F`;
+    }
+    if (this.temperatureLoadingSlug() === c.slug) {
+      return 'Loading';
+    }
+    return 'Not available';
+  }
+
+  urbanSummary(c: DymaxionCity): string {
+    const scale = c.population && c.population >= 5_000_000
+      ? 'large metropolitan region'
+      : c.population && c.population < 500_000
+        ? 'smaller urban community'
+        : 'city-scale living wiki';
+    return `A ${scale} snapshot centered on neighborhoods, movement, public life, work, and everyday local decisions.`;
+  }
+
+  climateSummary(c: DymaxionCity): string {
+    const region = this.regionLabel(c.region);
+    return `Current weather and local context for ${region}, with deeper seasonal and climate notes available in the chat.`;
+  }
+
+  private async ensureTemperature(c: DymaxionCity): Promise<void> {
+    if (!this.isBrowser || this.cityTemperatures()[c.slug] || this.temperatureLoadingSlug() === c.slug) {
+      return;
+    }
+
+    this.temperatureLoadingSlug.set(c.slug);
+    try {
+      const url = new URL('https://api.open-meteo.com/v1/forecast');
+      url.searchParams.set('latitude', String(c.lat));
+      url.searchParams.set('longitude', String(c.lng));
+      url.searchParams.set('current', 'temperature_2m');
+      url.searchParams.set('temperature_unit', 'fahrenheit');
+      url.searchParams.set('timezone', 'auto');
+
+      const response = await fetch(url.toString());
+      if (!response.ok) return;
+      const payload = (await response.json()) as OpenMeteoLocationResponse;
+      const temperature = payload.current?.temperature_2m;
+      if (typeof temperature !== 'number' || !Number.isFinite(temperature)) {
+        return;
+      }
+      this.cityTemperatures.update((current) => ({
+        ...current,
+        [c.slug]: {
+          fahrenheit: temperature,
+          fetchedAt: new Date().toISOString(),
+        },
+      }));
+    } catch {
+      // Weather is useful context, but the card still works without it.
+    } finally {
+      if (this.temperatureLoadingSlug() === c.slug) {
+        this.temperatureLoadingSlug.set(null);
+      }
+    }
+  }
+
+  private isProductDescription(value: string): boolean {
+    const normalized = value.toLowerCase();
+    return (
+      normalized.includes('living wiki:') ||
+      normalized.includes('intelligence platform') ||
+      normalized.includes('consolidates') ||
+      normalized.includes('database')
+    );
   }
 }
 

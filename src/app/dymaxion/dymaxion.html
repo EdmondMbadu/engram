@@ -120,31 +120,88 @@
     <!-- city panel below the map -->
     <div id="dymaxion-panel" class="dym-panel" [class.empty]="!selected()">
       @if (selected(); as c) {
-        <div class="dym-city-hero">
-          <div class="dym-reg">{{ regionLabel(c.region) }}</div>
-          <h2>{{ c.name }}</h2>
-          <div class="dym-country">{{ c.country }}</div>
-        </div>
-        <div class="dym-city-meta">
-          <div class="m"><div class="k">Place</div><div class="v">{{ c.country }}</div></div>
-          <div class="m"><div class="k">Population</div><div class="v">{{ fmtPopulation(c) }}</div></div>
-          <div class="m"><div class="k">Coordinates</div><div class="v">{{ fmtLat(c.lat) }}, {{ fmtLng(c.lng) }}</div></div>
-          <div class="m"><div class="k">Chat</div><div class="v">/chat/{{ c.slug }}</div></div>
-        </div>
-        <div class="dym-city-body">
-          <div>
-            <p>
-              Open the <b>{{ c.name }}</b> Living Wiki chat — practical local knowledge, civic
-              updates, transit, culture, climate, jobs, food, and neighborhoods, kept current.
-            </p>
-          </div>
-          <div class="dym-actions">
-            <a class="primary-btn dym-open" [routerLink]="['/chat', c.slug]">
-              Open chat →
-            </a>
-            <div class="dym-urlrow">/chat/{{ c.slug }}</div>
-          </div>
-        </div>
+        <article class="dym-city-card" aria-label="Selected city snapshot">
+          <section class="dym-city-visual">
+            @if (c.imageUrl) {
+              <img [src]="c.imageUrl" [alt]="cityImageAlt(c)" />
+            } @else {
+              <div class="dym-city-visual-fallback" aria-hidden="true">
+                <span class="material-symbols-outlined">travel_explore</span>
+              </div>
+            }
+            <div class="dym-city-visual-shade"></div>
+            <div class="dym-city-titleblock">
+              <div class="dym-reg">{{ regionLabel(c.region) }}</div>
+              <h2>{{ cityTitle(c) }}</h2>
+            </div>
+          </section>
+
+          <section class="dym-city-content">
+            <p class="dym-city-intro">{{ identityLine(c) }}</p>
+
+            <div class="dym-tag-row" aria-label="City themes">
+              @for (tag of cityTags(c); track tag) {
+                <span>{{ tag }}</span>
+              }
+            </div>
+
+            <div class="dym-metric-grid">
+              <div class="dym-metric">
+                <span class="material-symbols-outlined">groups</span>
+                <div>
+                  <div class="k">Population</div>
+                  <div class="v">{{ fmtPopulation(c) }}</div>
+                </div>
+              </div>
+              <div class="dym-metric">
+                <span class="material-symbols-outlined">location_on</span>
+                <div>
+                  <div class="k">Coordinates</div>
+                  <div class="v">{{ fmtLat(c.lat) }}, {{ fmtLng(c.lng) }}</div>
+                </div>
+              </div>
+              <div class="dym-metric live">
+                <span class="material-symbols-outlined">schedule</span>
+                <div>
+                  <div class="k">Local time <i aria-hidden="true"></i></div>
+                  <div class="v">{{ localTimeLabel(c) }}</div>
+                </div>
+              </div>
+              <div class="dym-metric">
+                <span class="material-symbols-outlined">thermostat</span>
+                <div>
+                  <div class="k">Temperature</div>
+                  <div class="v">{{ temperatureLabel(c) }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dym-context-list">
+              <div class="dym-context-item">
+                <span class="material-symbols-outlined">directions_transit</span>
+                <div>
+                  <h3>Urban &amp; Mobility</h3>
+                  <p>{{ urbanSummary(c) }}</p>
+                </div>
+              </div>
+              <div class="dym-context-item">
+                <span class="material-symbols-outlined">wb_sunny</span>
+                <div>
+                  <h3>Climate Context</h3>
+                  <p>{{ climateSummary(c) }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="dym-actions">
+              <a class="primary-btn dym-open" [routerLink]="['/chat', c.slug]">
+                <span class="material-symbols-outlined">forum</span>
+                Open Living Wiki Chat
+              </a>
+              <div class="dym-urlrow">/chat/{{ c.slug }}</div>
+            </div>
+          </section>
+        </article>
       } @else {
         <div class="dym-empty-inner">
           <div class="big">Choose a city to begin.</div>
