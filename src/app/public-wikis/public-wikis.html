@@ -123,22 +123,22 @@
 
     <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
       <div class="py-8">
-        <div class="mb-5 flex flex-wrap items-end justify-between gap-4 border-b border-[var(--line)] pb-4">
-          <div>
+        <div class="mb-5 flex flex-col gap-4 border-b border-[var(--line)] pb-4 lg:flex-row lg:items-end lg:justify-between">
+          <div class="order-1 lg:order-2 lg:text-right">
             <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--accent)]">Directory</p>
             <h2 class="mt-1 text-2xl font-black tracking-tight text-[var(--text)] sm:text-3xl">
               {{ activeCategory() === 'Cities' ? 'City Living Wikis' : 'Upcoming Living Wikis' }}
             </h2>
           </div>
-          <div class="flex flex-wrap items-center justify-end gap-2">
+          <div class="order-2 flex flex-wrap items-center gap-2 lg:order-1">
             @if (activeCategory() === 'Cities') {
-              <div class="flex flex-wrap items-center justify-end gap-1.5 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] p-1">
+              <div class="flex flex-wrap items-center gap-1.5 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-1">
                 @for (sort of sortOptions(); track sort.value) {
                   @if (activeSort() === sort.value) {
                     <button
                       type="button"
                       (click)="setSort(sort.value)"
-                      class="rounded-full bg-[var(--accent)] px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)] transition-colors"
+                      class="rounded-xl bg-[var(--accent)] px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)] transition-colors"
                     >
                       {{ sort.label }}
                     </button>
@@ -146,7 +146,7 @@
                     <button
                       type="button"
                       (click)="setSort(sort.value)"
-                      class="rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)] transition-colors hover:text-[var(--text)]"
+                      class="rounded-xl px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text)]"
                     >
                       {{ sort.label }}
                     </button>
@@ -154,9 +154,14 @@
                 }
               </div>
             }
-            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
+            <p class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
               <span class="text-[var(--text)]">{{ filteredWikis().length }}</span> shown
             </p>
+            @if (temperatureStatusLabel()) {
+              <p class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
+                {{ temperatureStatusLabel() }}
+              </p>
+            }
           </div>
         </div>
 
@@ -247,6 +252,14 @@
                         @if (populationLabel(wiki)) {
                           <p class="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Population {{ populationLabel(wiki) }}</p>
                         }
+                        <div class="mt-2 flex flex-wrap gap-1.5">
+                          @if (localTimeLabel(wiki); as localTime) {
+                            <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Time {{ localTime }}</span>
+                          }
+                          @if (temperatureLabel(wiki); as temp) {
+                            <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Temp {{ temp }}</span>
+                          }
+                        </div>
 	                    </div>
 	                  </div>
                   <p class="mt-3 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{{ wiki.description }}</p>
@@ -282,6 +295,14 @@
                   @if (populationLabel(wiki)) {
                     <p class="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Population {{ populationLabel(wiki) }}</p>
                   }
+                  <div class="mt-2 flex flex-wrap gap-1.5">
+                    @if (localTimeLabel(wiki); as localTime) {
+                      <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Time {{ localTime }}</span>
+                    }
+                    @if (temperatureLabel(wiki); as temp) {
+                      <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Temp {{ temp }}</span>
+                    }
+                  </div>
 	                <p class="mt-3 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{{ wiki.description }}</p>
                 <div class="mt-auto pt-6">
                   <div class="inline-flex items-center gap-2 border-t border-[var(--line)] pt-4 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">

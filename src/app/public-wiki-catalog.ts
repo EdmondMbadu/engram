@@ -31,6 +31,9 @@ export interface PublicWikiCatalogItem {
   globalRegion?: string | null;
   population?: number | null;
   populationYear?: number | null;
+  timezone?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 type PublicWikiPresentation = Pick<
@@ -775,6 +778,9 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
     globalRegion: atlas.city_config?.metadata?.global_region ?? null,
     population: atlas.city_config?.metadata?.population ?? null,
     populationYear: atlas.city_config?.metadata?.population_year ?? null,
+    timezone: atlas.city_config?.timezone ?? null,
+    latitude: atlas.city_config?.latitude ?? null,
+    longitude: atlas.city_config?.longitude ?? null,
   };
 }
 
