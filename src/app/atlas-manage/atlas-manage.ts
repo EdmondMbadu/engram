@@ -1421,6 +1421,7 @@ export class AtlasManageComponent {
             populationYear: parseOptionalPositiveInteger(row.population_year),
             latitude: row.latitude ? Number(row.latitude) : null,
             longitude: row.longitude ? Number(row.longitude) : null,
+            skipGlobalDuplicateScan: true,
           });
           if (!atlasId) {
             throw new Error('City Wiki was not created. Check that you are signed in and try again.');
@@ -1453,7 +1454,7 @@ export class AtlasManageComponent {
 	        }
 	      };
 
-	      const workerCount = Math.min(5, rows.length);
+	      const workerCount = Math.min(2, rows.length);
 	      await Promise.all(
 	        Array.from({ length: workerCount }, async () => {
 	          while (nextIndex < rows.length) {
@@ -1578,7 +1579,8 @@ export class AtlasManageComponent {
       const latitude = cell(latitudeIndex);
       const longitude = cell(longitudeIndex);
       const key = normalizeAdminCityIdentity(cityName || name);
-      const slug = this.atlasService.slugify(cityName || name || `row-${index + 2}`);
+      const effectiveName = name || (cityName ? `My living wiki: ${cityName}` : '');
+      const slug = this.atlasService.slugify(effectiveName || `row-${index + 2}`);
       const errors: string[] = [];
       if (!cityName) {
         errors.push('Missing city name');
@@ -1625,7 +1627,7 @@ export class AtlasManageComponent {
         region_name: regionName,
         country_code: countryCode,
         timezone,
-        name: name || (cityName ? `My living wiki: ${cityName}` : ''),
+        name: effectiveName,
         description,
         global_region: globalRegion,
         population,
@@ -1648,8 +1650,8 @@ export class AtlasManageComponent {
 	      try {
 	        return await this.withTimeout(
 	          this.atlasService.createCustomCityAtlas(input),
-	          20_000,
-	          `${input.cityName} took longer than 20 seconds. It was skipped so the rest can continue; retry this row after the batch finishes.`,
+	          45_000,
+	          `${input.cityName} took longer than 45 seconds. It was skipped so the rest can continue; retry this row after the batch finishes.`,
 	        );
 	      } catch (error) {
 	        lastError = error;

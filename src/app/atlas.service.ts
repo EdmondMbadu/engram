@@ -160,30 +160,50 @@ const COUNTRY_BY_TIMEZONE: Record<string, string> = {
   'Africa/Accra': 'Ghana',
   'Africa/Cairo': 'Egypt',
   'Africa/Casablanca': 'Morocco',
+  'Africa/Abidjan': "Cote d'Ivoire",
+  'Africa/Addis_Ababa': 'Ethiopia',
+  'Africa/Dar_es_Salaam': 'Tanzania',
   'Africa/Johannesburg': 'South Africa',
   'Africa/Kinshasa': 'Democratic Republic of the Congo',
   'Africa/Lagos': 'Nigeria',
+  'Africa/Luanda': 'Angola',
   'Africa/Nairobi': 'Kenya',
   'America/Argentina/Buenos_Aires': 'Argentina',
   'America/Bogota': 'Colombia',
+  'America/Caracas': 'Venezuela',
+  'America/Edmonton': 'Canada',
   'America/Grand_Turk': 'Turks and Caicos Islands',
+  'America/Guayaquil': 'Ecuador',
   'America/Lima': 'Peru',
   'America/Mexico_City': 'Mexico',
   'America/Puerto_Rico': 'Puerto Rico',
   'America/Santiago': 'Chile',
   'America/Sao_Paulo': 'Brazil',
   'Asia/Bangkok': 'Thailand',
+  'Asia/Dhaka': 'Bangladesh',
   'Asia/Dubai': 'United Arab Emirates',
   'Asia/Hong_Kong': 'China',
+  'Asia/Ho_Chi_Minh': 'Vietnam',
+  'Asia/Jakarta': 'Indonesia',
   'Asia/Jerusalem': 'Israel',
+  'Asia/Karachi': 'Pakistan',
   'Asia/Kolkata': 'India',
+  'Asia/Kuala_Lumpur': 'Malaysia',
+  'Asia/Kuwait': 'Kuwait',
+  'Asia/Manila': 'Philippines',
+  'Asia/Muscat': 'Oman',
   'Asia/Qatar': 'Qatar',
+  'Asia/Riyadh': 'Saudi Arabia',
   'Asia/Shanghai': 'China',
   'Asia/Seoul': 'South Korea',
   'Asia/Singapore': 'Singapore',
   'Asia/Taipei': 'Taiwan',
+  'Asia/Tehran': 'Iran',
   'Asia/Tokyo': 'Japan',
+  'Asia/Yangon': 'Myanmar',
+  'Australia/Melbourne': 'Australia',
   'Australia/Sydney': 'Australia',
+  'Europe/Belgrade': 'Serbia',
   'Europe/Amsterdam': 'Netherlands',
   'Europe/Athens': 'Greece',
   'Europe/Berlin': 'Germany',
@@ -194,6 +214,7 @@ const COUNTRY_BY_TIMEZONE: Record<string, string> = {
   'Europe/Helsinki': 'Finland',
   'Europe/Istanbul': 'Turkey',
   'Europe/Lisbon': 'Portugal',
+  'Europe/Ljubljana': 'Slovenia',
   'Europe/London': 'United Kingdom',
   'Europe/Madrid': 'Spain',
   'Europe/Oslo': 'Norway',
@@ -204,6 +225,7 @@ const COUNTRY_BY_TIMEZONE: Record<string, string> = {
   'Europe/Vienna': 'Austria',
   'Europe/Warsaw': 'Poland',
   'Europe/Zurich': 'Switzerland',
+  'Europe/Moscow': 'Russia',
   'Pacific/Auckland': 'New Zealand',
 };
 
@@ -220,6 +242,7 @@ export interface CustomCityAtlasInput {
   /** Optional coordinates so the city appears on the /dymaxion map. */
   latitude?: number | null;
   longitude?: number | null;
+  skipGlobalDuplicateScan?: boolean;
 }
 
 function normalizeCityIdentity(value: string | null | undefined): string {
@@ -561,7 +584,7 @@ export class AtlasService {
 
     const regionName = input.regionName?.trim() || null;
     const name = input.name?.trim() || `My living wiki: ${cityName}`;
-    const slug = this.slugify(cityName);
+    const slug = this.slugify(name);
 	    const description = input.description?.trim()
 	      || `${cityName}'s practical local knowledge, civic updates, transit, culture, climate, jobs, food, neighborhoods, and public information.`;
 	    const timezone = input.timezone?.trim() || 'America/New_York';
@@ -591,7 +614,9 @@ export class AtlasService {
       throw new Error(`${name} already exists in this workspace.`);
     }
 
-    const existingPublic = await this.findAnyPublicCityAtlas(slug, cityKey);
+    const existingPublic = input.skipGlobalDuplicateScan
+      ? await this.findAnyPublicAtlasBySlug(slug)
+      : await this.findAnyPublicCityAtlas(slug, cityKey);
     if (existingPublic) {
       throw new Error(`${name} is already live in the public directory.`);
     }
