@@ -235,6 +235,86 @@ const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' |
   'zurich-ch': seededPopulation(443037, 2024, 'City of Zurich statistical estimate'),
 };
 
+const GLOBAL_AGGLOMERATION_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'>> = {
+  'jakarta-id': urbanAgglomerationPopulation(41900000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'dhaka-bd': urbanAgglomerationPopulation(36600000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'tokyo-jp': urbanAgglomerationPopulation(33400000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'delhi-in': urbanAgglomerationPopulation(30200000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'new-delhi-in': urbanAgglomerationPopulation(30200000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'shanghai-cn': urbanAgglomerationPopulation(29600000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'guangzhou-cn': urbanAgglomerationPopulation(27600000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'cairo-eg': urbanAgglomerationPopulation(25600000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'manila-ph': urbanAgglomerationPopulation(24700000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'kolkata-in': urbanAgglomerationPopulation(22600000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'seoul-kr': urbanAgglomerationPopulation(22500000, 2025, 'UN World Urbanization Prospects 2025 urban agglomeration estimate'),
+  'mumbai-in': urbanAgglomerationPopulation(21000000, 2026, 'Global urban agglomeration planning estimate'),
+  'sao-paulo-br': urbanAgglomerationPopulation(22400000, 2026, 'Global urban agglomeration planning estimate'),
+  'mexico-city-mx': urbanAgglomerationPopulation(22500000, 2026, 'Global urban agglomeration planning estimate'),
+  'beijing-cn': urbanAgglomerationPopulation(22000000, 2026, 'Global urban agglomeration planning estimate'),
+  'istanbul-tr': urbanAgglomerationPopulation(16000000, 2026, 'Global urban agglomeration planning estimate'),
+  'buenos-aires-ar': urbanAgglomerationPopulation(15700000, 2026, 'Global urban agglomeration planning estimate'),
+  'karachi-pk': urbanAgglomerationPopulation(20500000, 2026, 'Global urban agglomeration planning estimate'),
+  'lagos-ng': urbanAgglomerationPopulation(16600000, 2026, 'Global urban agglomeration planning estimate'),
+  'los-angeles-us': urbanAgglomerationPopulation(12500000, 2026, 'Global urban agglomeration planning estimate'),
+  'kinshasa-cd': urbanAgglomerationPopulation(17032000, 2024, 'UN urban agglomeration estimate'),
+  'lima-pe': urbanAgglomerationPopulation(10092000, 2024, 'INEI Lima metropolitan estimate'),
+  'london-gb': urbanAgglomerationPopulation(11200000, 2026, 'Global urban agglomeration planning estimate'),
+  'paris-fr': urbanAgglomerationPopulation(11000000, 2026, 'Global urban agglomeration planning estimate'),
+  'new-york-city-us': metroPopulation(19940274, 2024, 'U.S. Census Bureau New York-Newark-Jersey City metropolitan estimate'),
+  'new-york-us': metroPopulation(19940274, 2024, 'U.S. Census Bureau New York-Newark-Jersey City metropolitan estimate'),
+  'rio-de-janeiro-br': urbanAgglomerationPopulation(13400000, 2026, 'Global urban agglomeration planning estimate'),
+  'chicago-us': metroPopulation(9300000, 2026, 'Global metro planning estimate'),
+  'hong-kong-cn': urbanAgglomerationPopulation(7500000, 2026, 'Global urban agglomeration planning estimate'),
+  'hong-kong-hk': urbanAgglomerationPopulation(7500000, 2026, 'Global urban agglomeration planning estimate'),
+  'madrid-es': urbanAgglomerationPopulation(6800000, 2026, 'Global urban agglomeration planning estimate'),
+  'washington-dc-us': metroPopulation(6300000, 2026, 'Global metro planning estimate'),
+  'toronto-ca': metroPopulation(6200000, 2026, 'Global metro planning estimate'),
+  'miami-us': metroPopulation(6200000, 2026, 'Global metro planning estimate'),
+  'singapore-sg': urbanAgglomerationPopulation(6040000, 2024, 'Singapore Department of Statistics estimate'),
+  'philadelphia-us': metroPopulation(6300000, 2026, 'Global metro planning estimate'),
+  'atlanta-us': metroPopulation(6100000, 2026, 'Global metro planning estimate'),
+  'barcelona-es': urbanAgglomerationPopulation(5600000, 2026, 'Global urban agglomeration planning estimate'),
+  'boston-us': metroPopulation(4900000, 2026, 'Global metro planning estimate'),
+  'san-francisco-us': metroPopulation(4700000, 2026, 'Global metro planning estimate'),
+  'detroit-us': metroPopulation(4300000, 2026, 'Global metro planning estimate'),
+  'phoenix-us': metroPopulation(5000000, 2026, 'Global metro planning estimate'),
+  'seattle-us': metroPopulation(4000000, 2026, 'Global metro planning estimate'),
+  'montreal-ca': metroPopulation(4300000, 2026, 'Global metro planning estimate'),
+  'sydney-au': urbanAgglomerationPopulation(5400000, 2026, 'Global urban agglomeration planning estimate'),
+  'berlin-de': urbanAgglomerationPopulation(4700000, 2026, 'Global urban agglomeration planning estimate'),
+  'rome-it': urbanAgglomerationPopulation(4300000, 2026, 'Global urban agglomeration planning estimate'),
+  'milan-it': urbanAgglomerationPopulation(3200000, 2026, 'Global urban agglomeration planning estimate'),
+  'athens-gr': urbanAgglomerationPopulation(3400000, 2026, 'Global urban agglomeration planning estimate'),
+  'nairobi-ke': urbanAgglomerationPopulation(5545000, 2024, 'UN urban agglomeration estimate'),
+  'cape-town-za': urbanAgglomerationPopulation(4772000, 2024, 'Global urban agglomeration planning estimate'),
+  'accra-gh': urbanAgglomerationPopulation(5500000, 2026, 'Global urban agglomeration planning estimate'),
+  'taipei-tw': urbanAgglomerationPopulation(7000000, 2026, 'Global urban agglomeration planning estimate'),
+  'dubai-ae': urbanAgglomerationPopulation(3825000, 2025, 'Dubai Statistics Center population clock estimate'),
+  'san-diego-us': metroPopulation(3300000, 2026, 'Global metro planning estimate'),
+  'denver-us': metroPopulation(3000000, 2026, 'Global metro planning estimate'),
+  'las-vegas-us': metroPopulation(2900000, 2026, 'Global metro planning estimate'),
+  'portland-us': metroPopulation(2500000, 2026, 'Global metro planning estimate'),
+  'austin-us': metroPopulation(2500000, 2026, 'Global metro planning estimate'),
+  'nashville-us': metroPopulation(2100000, 2026, 'Global metro planning estimate'),
+  'new-orleans-us': metroPopulation(1300000, 2026, 'Global metro planning estimate'),
+  'vancouver-ca': metroPopulation(2800000, 2026, 'Global metro planning estimate'),
+  'lisbon-pt': urbanAgglomerationPopulation(3000000, 2026, 'Global urban agglomeration planning estimate'),
+  'prague-cz': urbanAgglomerationPopulation(2200000, 2026, 'Global urban agglomeration planning estimate'),
+  'vienna-at': urbanAgglomerationPopulation(2000000, 2026, 'Global urban agglomeration planning estimate'),
+  'brussels-be': urbanAgglomerationPopulation(2100000, 2026, 'Global urban agglomeration planning estimate'),
+  'stockholm-se': urbanAgglomerationPopulation(1700000, 2026, 'Global urban agglomeration planning estimate'),
+  'copenhagen-dk': urbanAgglomerationPopulation(1700000, 2026, 'Global urban agglomeration planning estimate'),
+  'dublin-ie': urbanAgglomerationPopulation(1500000, 2026, 'Global urban agglomeration planning estimate'),
+  'helsinki-fi': urbanAgglomerationPopulation(1300000, 2026, 'Global urban agglomeration planning estimate'),
+  'oslo-no': urbanAgglomerationPopulation(1100000, 2026, 'Global urban agglomeration planning estimate'),
+  'warsaw-pl': urbanAgglomerationPopulation(1800000, 2026, 'Global urban agglomeration planning estimate'),
+  'budapest-hu': urbanAgglomerationPopulation(2500000, 2026, 'Global urban agglomeration planning estimate'),
+  'naples-it': urbanAgglomerationPopulation(3000000, 2026, 'Global urban agglomeration planning estimate'),
+  'kyoto-jp': urbanAgglomerationPopulation(1500000, 2026, 'Global urban agglomeration planning estimate'),
+  'hiroshima-jp': urbanAgglomerationPopulation(1400000, 2026, 'Global urban agglomeration planning estimate'),
+  'doha-qa': urbanAgglomerationPopulation(2400000, 2026, 'Global urban agglomeration planning estimate'),
+};
+
 export async function refreshCityPopulationMetadata(
   atlasId: string,
   options: { force: boolean },
@@ -324,6 +404,11 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
   const cityConfig = atlas.city_config ?? {};
   const countryCode = inferCountryCode(cityConfig);
   const regionName = typeof cityConfig.region_name === 'string' ? cityConfig.region_name.trim() : '';
+
+  const globalAgglomeration = globalAgglomerationPopulationFor(cityName, countryCode);
+  if (globalAgglomeration) {
+    return globalAgglomeration;
+  }
 
   if (countryCode === 'US' && cityConfig.census_state_code && cityConfig.census_place_code) {
     const census = await fetchCensusPopulation(
@@ -938,6 +1023,57 @@ function seededPopulation(value: number, year: number, sourceLabel: string): Omi
   };
 }
 
+function urbanAgglomerationPopulation(
+  value: number,
+  year: number,
+  sourceLabel: string,
+): Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'> {
+  return {
+    value,
+    year,
+    scope: 'urban_agglomeration',
+    source: 'manual',
+    sourceLabel,
+    confidence: sourceLabel.includes('UN World Urbanization Prospects') ? 'high' : 'medium',
+    matchMethod: 'manual',
+  };
+}
+
+function metroPopulation(
+  value: number,
+  year: number,
+  sourceLabel: string,
+): Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'> {
+  return {
+    value,
+    year,
+    scope: 'metro',
+    source: 'manual',
+    sourceLabel,
+    confidence: sourceLabel.includes('U.S. Census Bureau') ? 'high' : 'medium',
+    matchMethod: 'manual',
+  };
+}
+
+function globalAgglomerationPopulationFor(cityName: string, countryCode: string): PopulationCandidate | null {
+  const country = countryCode.trim().toUpperCase();
+  if (!country) {
+    return null;
+  }
+  const key = `${normalizeSeedKey(cityName)}-${country.toLowerCase()}`;
+  const preferred = GLOBAL_AGGLOMERATION_POPULATIONS[key];
+  if (!preferred) {
+    return null;
+  }
+  return {
+    ...preferred,
+    sourceUrl: preferred.sourceLabel.includes('UN World Urbanization Prospects')
+      ? 'https://population.un.org/wup/'
+      : 'manual-seed:global-city-population-tiers',
+    sourceRecordId: key,
+  };
+}
+
 function seededPopulationFor(cityName: string, countryCode: string): PopulationCandidate | null {
   const country = countryCode.trim().toUpperCase();
   if (!country) {
@@ -957,6 +1093,8 @@ function seededPopulationFor(cityName: string, countryCode: string): PopulationC
 
 function normalizeSeedKey(value: string): string {
   return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/^city of\s+/i, '')
     .replace(/[^a-z0-9]+/g, '-')
