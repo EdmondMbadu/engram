@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityAtlasMetadata, CityPulseMetric } from './atlas.models';
 import { AuthService } from './auth.service';
 import type { CityAtlasTemplate } from './city-atlas-templates';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
@@ -266,6 +266,22 @@ export type AutomatedCoverImageResult = {
   contentType: string;
   bytes: number;
 };
+
+export type CityPopulationStatus = 'updated' | 'skipped' | 'failed';
+
+export type CityPopulationSource = 'us_census_pep' | 'geonames' | 'wikidata' | 'manual';
+
+export interface CityPopulationRefreshResult {
+  atlasId: string;
+  status: CityPopulationStatus;
+  cityName: string;
+  population: number | null;
+  populationYear: number | null;
+  source: CityPopulationSource | null;
+  sourceLabel: string | null;
+  confidence: 'high' | 'medium' | 'low' | null;
+  message: string;
+}
 
 type AtlasNewsletterConfigResponse = {
   config: AtlasNewsletterConfig;
@@ -583,6 +599,13 @@ export class AtlasService {
           global_region: globalRegion,
           population,
           population_year: populationYear,
+          population_scope: population ? 'unknown' : null,
+          population_source: population ? 'manual' : null,
+          population_source_url: null,
+          population_source_record_id: null,
+          population_fetched_at: population ? new Date().toISOString() : null,
+          population_confidence: population ? 'medium' : null,
+          population_match_method: population ? 'manual' : null,
         },
         manual_metrics: null,
       } satisfies CityAtlasConfig,
@@ -675,6 +698,18 @@ export class AtlasService {
       AutomatedCoverImageResult
     >(this.functions, 'autoUploadAtlasCoverImage');
     const { data } = await autoUploadAtlasCoverImage({ atlasId });
+    return data;
+  }
+
+  async refreshCityPopulation(atlasId: string, force = false): Promise<CityPopulationRefreshResult> {
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+    const refreshCityPopulation = httpsCallable<
+      { atlasId: string; force?: boolean },
+      CityPopulationRefreshResult
+    >(this.functions, 'refreshCityPopulation');
+    const { data } = await refreshCityPopulation({ atlasId, force });
     return data;
   }
 
@@ -1373,7 +1408,36 @@ export class AtlasService {
       population_year: typeof data['population_year'] === 'number' && Number.isFinite(data['population_year'])
         ? data['population_year']
         : null,
+      population_scope: this.hydratePopulationScope(data['population_scope']),
+      population_source: this.hydratePopulationSource(data['population_source']),
+      population_source_url: typeof data['population_source_url'] === 'string' ? data['population_source_url'] : null,
+      population_source_record_id: typeof data['population_source_record_id'] === 'string' ? data['population_source_record_id'] : null,
+      population_fetched_at: typeof data['population_fetched_at'] === 'string' ? data['population_fetched_at'] : null,
+      population_confidence: this.hydratePopulationConfidence(data['population_confidence']),
+      population_match_method: this.hydratePopulationMatchMethod(data['population_match_method']),
     };
+  }
+
+  private hydratePopulationScope(value: unknown): CityAtlasMetadata['population_scope'] {
+    return value === 'city_proper' || value === 'urban_agglomeration' || value === 'metro' || value === 'unknown'
+      ? value
+      : null;
+  }
+
+  private hydratePopulationSource(value: unknown): CityAtlasMetadata['population_source'] {
+    return value === 'us_census_pep' || value === 'geonames' || value === 'wikidata' || value === 'manual'
+      ? value
+      : null;
+  }
+
+  private hydratePopulationConfidence(value: unknown): CityAtlasMetadata['population_confidence'] {
+    return value === 'high' || value === 'medium' || value === 'low' ? value : null;
+  }
+
+  private hydratePopulationMatchMethod(value: unknown): CityAtlasMetadata['population_match_method'] {
+    return value === 'exact_id' || value === 'census_codes' || value === 'name_country_region' || value === 'name_coords' || value === 'manual'
+      ? value
+      : null;
   }
 
   private hydrateCityPulseMetric(value: unknown): CityPulseMetric | null {

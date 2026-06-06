@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
-import { AtlasService, type CustomCityAtlasInput } from '../atlas.service';
+import { AtlasService, type CityPopulationRefreshResult, type CustomCityAtlasInput } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { CITY_ATLAS_TEMPLATES, type CityAtlasTemplate } from '../city-atlas-templates';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -84,6 +84,16 @@ interface BulkCityProgress {
   failed: number;
   skipped: number;
   started_at_ms: number;
+}
+
+interface PopulationBackfillProgress {
+  total: number;
+  processed: number;
+  updated: number;
+  failed: number;
+  skipped: number;
+  started_at_ms: number;
+  mode: 'missing' | 'refresh';
 }
 
 function normalizeAdminCityIdentity(value: string | null | undefined): string {
@@ -217,6 +227,11 @@ export class AtlasManageComponent {
   readonly bulkCityFileName = signal<string | null>(null);
   readonly bulkCityRows = signal<BulkCityDraft[]>([]);
   readonly bulkCityError = signal<string | null>(null);
+  readonly populationBackfillRunning = signal(false);
+  readonly populationBackfillProgress = signal<PopulationBackfillProgress | null>(null);
+  readonly populationBackfillResults = signal<CityPopulationRefreshResult[]>([]);
+  readonly populationBackfillMessage = signal<string | null>(null);
+  readonly populationBackfillNowMs = signal(Date.now());
   readonly publicCityTemplateKeys = signal<Set<string>>(new Set());
   readonly automatingCoverImages = signal(false);
   readonly automatingCoverImageId = signal<string | null>(null);
@@ -224,6 +239,7 @@ export class AtlasManageComponent {
   readonly coverImageAutomationMessage = signal<string | null>(null);
   readonly coverImageProgress = signal<{ total: number; processed: number; created: number; failed: number } | null>(null);
   private bulkCityEtaTimer: number | null = null;
+  private populationBackfillEtaTimer: number | null = null;
   readonly customCityDraft = signal<CustomCityDraft>({
     city_name: '',
     region_name: '',
@@ -321,6 +337,42 @@ export class AtlasManageComponent {
         && !atlas.hero_url?.trim(),
       )
       .sort((a, b) => this.displayName(a).localeCompare(this.displayName(b))),
+  );
+  readonly cityPopulationAtlases = computed(() =>
+    this.atlases()
+      .filter((atlas) => atlas.city_config?.enabled === true)
+      .sort((a, b) => this.displayName(a).localeCompare(this.displayName(b))),
+  );
+  readonly missingPopulationAtlases = computed(() =>
+    this.cityPopulationAtlases().filter((atlas) => !atlas.city_config?.metadata?.population),
+  );
+  readonly populationBackfillProgressPercent = computed(() => {
+    const progress = this.populationBackfillProgress();
+    if (!progress || progress.total <= 0) {
+      return 0;
+    }
+    return Math.min(100, Math.round((progress.processed / progress.total) * 100));
+  });
+  readonly populationBackfillEtaLabel = computed(() => {
+    const progress = this.populationBackfillProgress();
+    if (!progress || progress.total <= 0) {
+      return null;
+    }
+    if (!this.populationBackfillRunning()) {
+      return progress.processed >= progress.total ? 'Done' : 'Stopped';
+    }
+    if (progress.processed <= 0) {
+      return 'Estimating...';
+    }
+
+    const remainingRows = Math.max(0, progress.total - progress.processed);
+    const elapsedMs = Math.max(1, this.populationBackfillNowMs() - progress.started_at_ms);
+    const averageMsPerRow = elapsedMs / progress.processed;
+    const remainingSeconds = Math.ceil((averageMsPerRow * remainingRows) / 1000);
+    return `${this.formatDuration(remainingSeconds)} remaining`;
+  });
+  readonly populationBackfillFailures = computed(() =>
+    this.populationBackfillResults().filter((result) => result.status === 'failed'),
   );
   readonly coverImageProgressPercent = computed(() => {
     const progress = this.coverImageProgress();
@@ -1147,6 +1199,58 @@ export class AtlasManageComponent {
     this.stopBulkCityEtaTimer();
   }
 
+  async runPopulationBackfill(force: boolean): Promise<void> {
+    if (this.populationBackfillRunning()) {
+      return;
+    }
+
+    const atlases = force ? this.cityPopulationAtlases() : this.missingPopulationAtlases();
+    if (atlases.length === 0) {
+      this.populationBackfillMessage.set(
+        force
+          ? 'No city Wikis are available to refresh.'
+          : 'Every city Wiki already has population attached.',
+      );
+      return;
+    }
+
+    const startedAtMs = Date.now();
+    this.populationBackfillRunning.set(true);
+    this.populationBackfillMessage.set(null);
+    this.populationBackfillResults.set([]);
+    this.pageError.set(null);
+    this.populationBackfillNowMs.set(startedAtMs);
+    this.populationBackfillProgress.set({
+      total: atlases.length,
+      processed: 0,
+      updated: 0,
+      failed: 0,
+      skipped: 0,
+      started_at_ms: startedAtMs,
+      mode: force ? 'refresh' : 'missing',
+    });
+    this.startPopulationBackfillEtaTimer();
+
+    try {
+      for (const atlas of atlases) {
+        const result = await this.refreshCityPopulationWithTimeout(atlas, force);
+        this.populationBackfillResults.update((current) => [...current, result]);
+        this.incrementPopulationBackfillProgress(result.status);
+      }
+
+      const progress = this.populationBackfillProgress();
+      if (progress) {
+        const noun = progress.total === 1 ? 'city' : 'cities';
+        this.populationBackfillMessage.set(
+          `${force ? 'Refresh' : 'Backfill'} finished for ${progress.total} ${noun}: ${progress.updated} updated, ${progress.skipped} skipped, ${progress.failed} failed.`,
+        );
+      }
+    } finally {
+      this.populationBackfillRunning.set(false);
+      this.stopPopulationBackfillEtaTimer();
+    }
+  }
+
   coverImageStatus(atlasId: string): { state: 'running' | 'done' | 'failed'; message: string } | null {
     return this.coverImageStatusById()[atlasId] ?? null;
   }
@@ -1390,6 +1494,44 @@ export class AtlasManageComponent {
         [kind]: progress[kind] + 1,
       };
     });
+  }
+
+  private incrementPopulationBackfillProgress(status: 'updated' | 'failed' | 'skipped'): void {
+    this.populationBackfillProgress.update((progress) => {
+      if (!progress) {
+        return progress;
+      }
+      return {
+        ...progress,
+        processed: Math.min(progress.total, progress.processed + 1),
+        [status]: progress[status] + 1,
+      };
+    });
+  }
+
+  private async refreshCityPopulationWithTimeout(
+    atlas: AtlasItem,
+    force: boolean,
+  ): Promise<CityPopulationRefreshResult> {
+    try {
+      return await this.withTimeout(
+        this.atlasService.refreshCityPopulation(atlas.id, force),
+        90_000,
+        'Population lookup took longer than 90 seconds. It was skipped so the batch can continue.',
+      );
+    } catch (error) {
+      return {
+        atlasId: atlas.id,
+        status: 'failed',
+        cityName: atlas.city_config?.city_name || this.displayName(atlas),
+        population: atlas.city_config?.metadata?.population ?? null,
+        populationYear: atlas.city_config?.metadata?.population_year ?? null,
+        source: atlas.city_config?.metadata?.population_source ?? null,
+        sourceLabel: null,
+        confidence: atlas.city_config?.metadata?.population_confidence ?? null,
+        message: error instanceof Error ? error.message : 'Population lookup failed.',
+      };
+    }
   }
 
   private parseBulkCityCsv(csv: string): BulkCityDraft[] {
@@ -1671,6 +1813,22 @@ export class AtlasManageComponent {
     this.bulkCityEtaNowMs.set(Date.now());
   }
 
+  private startPopulationBackfillEtaTimer(): void {
+    this.stopPopulationBackfillEtaTimer();
+    this.populationBackfillEtaTimer = window.setInterval(() => {
+      this.populationBackfillNowMs.set(Date.now());
+    }, 1000);
+  }
+
+  private stopPopulationBackfillEtaTimer(): void {
+    if (this.populationBackfillEtaTimer === null) {
+      return;
+    }
+    window.clearInterval(this.populationBackfillEtaTimer);
+    this.populationBackfillEtaTimer = null;
+    this.populationBackfillNowMs.set(Date.now());
+  }
+
   private formatDuration(totalSeconds: number): string {
     if (totalSeconds <= 0) {
       return '0 sec';
@@ -1884,6 +2042,10 @@ export class AtlasManageComponent {
       if (Number.isNaN(populationYear)) {
         throw new Error('Population year must be a positive number.');
       }
+      const existingMetadata = atlas.city_config?.metadata ?? null;
+      const populationChanged =
+        population !== (existingMetadata?.population ?? null)
+        || populationYear !== (existingMetadata?.population_year ?? null);
       const nextConfig: CityAtlasConfig = {
         enabled: draft.enabled,
         city_name: draft.city_name.trim() || null,
@@ -1896,9 +2058,27 @@ export class AtlasManageComponent {
         latitude: atlas.city_config?.latitude ?? null,
         longitude: atlas.city_config?.longitude ?? null,
         metadata: {
+          ...(existingMetadata ?? {}),
           global_region: draft.global_region.trim() || null,
           population,
           population_year: populationYear,
+          population_scope: population
+            ? (populationChanged ? 'unknown' : existingMetadata?.population_scope ?? 'unknown')
+            : null,
+          population_source: population
+            ? (populationChanged ? 'manual' : existingMetadata?.population_source ?? 'manual')
+            : null,
+          population_source_url: populationChanged ? null : existingMetadata?.population_source_url ?? null,
+          population_source_record_id: populationChanged ? null : existingMetadata?.population_source_record_id ?? null,
+          population_fetched_at: population
+            ? (populationChanged ? new Date().toISOString() : existingMetadata?.population_fetched_at ?? null)
+            : null,
+          population_confidence: population
+            ? (populationChanged ? 'medium' : existingMetadata?.population_confidence ?? 'medium')
+            : null,
+          population_match_method: population
+            ? (populationChanged ? 'manual' : existingMetadata?.population_match_method ?? 'manual')
+            : null,
         },
         manual_metrics: manualMetrics,
       };

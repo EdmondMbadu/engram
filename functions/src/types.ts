@@ -341,6 +341,13 @@ export interface AtlasRecord {
       global_region?: string | null;
       population?: number | null;
       population_year?: number | null;
+      population_scope?: string | null;
+      population_source?: string | null;
+      population_source_url?: string | null;
+      population_source_record_id?: string | null;
+      population_fetched_at?: string | null;
+      population_confidence?: string | null;
+      population_match_method?: string | null;
     } | null;
     manual_metrics?: unknown[] | null;
   } | null;

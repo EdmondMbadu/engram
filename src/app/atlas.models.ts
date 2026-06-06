@@ -69,6 +69,13 @@ export interface CityAtlasMetadata {
   /** Latest known city population, when attached during city creation/import. */
   population: number | null;
   population_year: number | null;
+  population_scope?: 'city_proper' | 'urban_agglomeration' | 'metro' | 'unknown' | null;
+  population_source?: 'us_census_pep' | 'geonames' | 'wikidata' | 'manual' | null;
+  population_source_url?: string | null;
+  population_source_record_id?: string | null;
+  population_fetched_at?: string | null;
+  population_confidence?: 'high' | 'medium' | 'low' | null;
+  population_match_method?: 'exact_id' | 'census_codes' | 'name_country_region' | 'name_coords' | 'manual' | null;
 }
 
 export interface CityAtlasConfig {

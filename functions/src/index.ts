@@ -23,6 +23,7 @@ import {
   listEnabledCityAtlasIds,
   refreshStoredCityPulseSnapshot,
 } from './city-pulse';
+import { refreshCityPopulationMetadata } from './city-population';
 import {
   getStoredPhillyGreenJobsSnapshot,
   refreshStoredPhillyGreenJobsSnapshot,
@@ -7131,6 +7132,44 @@ export const refreshCityPulseSnapshot = onCall(
 
     await assertAtlasOwner(atlasId, request.auth.uid);
     return await refreshStoredCityPulseSnapshot(atlasId, 'admin');
+  },
+);
+
+export const refreshCityPopulation = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 120,
+    memory: '512MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+
+    const atlasId = String(request.data?.atlasId ?? '').trim();
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'atlasId is required.');
+    }
+
+    const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
+    if (!atlasSnapshot.exists) {
+      throw new HttpsError('not-found', 'Atlas not found.');
+    }
+
+    const atlas = atlasSnapshot.data() as Record<string, unknown>;
+    const adminUserIds = Array.isArray(atlas.admin_user_ids)
+      ? atlas.admin_user_ids.map((value) => String(value))
+      : [];
+    const canAdminAtlas =
+      String(atlas.user_id ?? '') === request.auth.uid || adminUserIds.includes(request.auth.uid);
+    if (!canAdminAtlas) {
+      await assertPlatformAdmin(request.auth.uid);
+    }
+
+    return await refreshCityPopulationMetadata(atlasId, {
+      force: request.data?.force === true,
+    });
   },
 );
 
