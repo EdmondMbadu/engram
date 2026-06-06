@@ -147,6 +147,18 @@
               <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().timezone" (input)="updateCustomCityDraft('timezone', $any($event.target).value)" placeholder="America/Chicago" />
             </label>
             <label class="block">
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Global region</span>
+              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().global_region" (input)="updateCustomCityDraft('global_region', $any($event.target).value)" placeholder="Americas" />
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
+              <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().population" (input)="updateCustomCityDraft('population', $any($event.target).value)" placeholder="2,664,452" />
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population year</span>
+              <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().population_year" (input)="updateCustomCityDraft('population_year', $any($event.target).value)" placeholder="2024" />
+            </label>
+            <label class="block">
               <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Public title</span>
               <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().name" (input)="updateCustomCityDraft('name', $any($event.target).value)" placeholder="My living wiki: Chicago" />
             </label>
@@ -201,7 +213,7 @@
             <label class="flex cursor-pointer flex-col items-center justify-center gap-2 text-center">
               <span class="material-symbols-outlined text-3xl text-[var(--accent)]">upload_file</span>
               <span class="text-sm font-black text-[var(--text)]">Upload city CSV</span>
-              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, timezone, public_title, description, latitude, longitude. Add latitude &amp; longitude to place the city on the Dymaxion map.</span>
+              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, global_region, population, population_year, timezone, public_title, description, latitude, longitude. Add latitude &amp; longitude to place the city on the Dymaxion map.</span>
               <input type="file" accept=".csv,text/csv" class="sr-only" (change)="onBulkCityCsvSelected($event)" />
             </label>
           </div>
@@ -269,6 +281,7 @@
                       <th class="px-4 py-3 font-black">Row</th>
                       <th class="px-4 py-3 font-black">City</th>
                       <th class="px-4 py-3 font-black">Region</th>
+                      <th class="px-4 py-3 font-black">Population</th>
                       <th class="px-4 py-3 font-black">Timezone</th>
                       <th class="px-4 py-3 font-black">Map</th>
                       <th class="px-4 py-3 font-black">Slug</th>
@@ -283,8 +296,18 @@
 	                          <p class="font-bold text-[var(--text)]">{{ row.city_name || 'Missing city' }}</p>
 	                          <p class="mt-1 max-w-[18rem] truncate text-xs text-[var(--muted)]">{{ row.name || 'No title' }}</p>
 	                          <p class="mt-1 max-w-[22rem] truncate text-xs text-[var(--muted)]">{{ row.description || 'No description' }}</p>
-	                        </td>
+                        </td>
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">{{ row.region_name || '—' }}</td>
+                        <td class="px-4 py-3 text-xs text-[var(--muted)]">
+                          @if (row.population) {
+                            <span class="font-bold text-[var(--text)]">{{ row.population }}</span>
+                            @if (row.population_year) {
+                              <span class="block text-[10px] uppercase tracking-[0.14em]">{{ row.population_year }}</span>
+                            }
+                          } @else {
+                            —
+                          }
+                        </td>
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">{{ row.timezone || 'America/New_York' }}</td>
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">
                           @if (row.latitude && row.longitude) {
@@ -1400,6 +1423,21 @@
                     <label class="block">
                       <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Timezone</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.timezone" (input)="updateCityDraft('timezone', $any($event.target).value)" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Global region</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.global_region" (input)="updateCityDraft('global_region', $any($event.target).value)" placeholder="Europe" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population</span>
+                      <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.population" (input)="updateCityDraft('population', $any($event.target).value)" placeholder="8,978,000" />
+                    </label>
+
+                    <label class="block">
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population year</span>
+                      <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.population_year" (input)="updateCityDraft('population_year', $any($event.target).value)" placeholder="2024" />
                     </label>
 
                     <label class="block">

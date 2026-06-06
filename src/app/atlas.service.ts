@@ -190,6 +190,9 @@ export interface CustomCityAtlasInput {
   regionName?: string;
   timezone?: string;
   description?: string;
+  globalRegion?: string | null;
+  population?: number | null;
+  populationYear?: number | null;
   /** Optional coordinates so the city appears on the /dymaxion map. */
   latitude?: number | null;
   longitude?: number | null;
@@ -527,6 +530,13 @@ export class AtlasService {
 	      region_name: regionName,
 	      timezone,
 	    });
+    const globalRegion = input.globalRegion?.trim() || null;
+    const population = typeof input.population === 'number' && Number.isFinite(input.population) && input.population > 0
+      ? Math.round(input.population)
+      : null;
+    const populationYear = typeof input.populationYear === 'number' && Number.isFinite(input.populationYear) && input.populationYear > 0
+      ? Math.round(input.populationYear)
+      : null;
 
     const cityKey = normalizeCityIdentity(cityName);
     const existingLocal = this.atlases().find((atlas) =>
@@ -569,6 +579,11 @@ export class AtlasService {
         airnow_zip_code: null,
         latitude: Number.isFinite(input.latitude) ? (input.latitude as number) : null,
         longitude: Number.isFinite(input.longitude) ? (input.longitude as number) : null,
+        metadata: {
+          global_region: globalRegion,
+          population,
+          population_year: populationYear,
+        },
         manual_metrics: null,
       } satisfies CityAtlasConfig,
       chat_guide: {
@@ -1337,8 +1352,26 @@ export class AtlasService {
       airnow_zip_code: typeof data['airnow_zip_code'] === 'string' ? data['airnow_zip_code'] : null,
       latitude: typeof data['latitude'] === 'number' && Number.isFinite(data['latitude']) ? data['latitude'] : null,
       longitude: typeof data['longitude'] === 'number' && Number.isFinite(data['longitude']) ? data['longitude'] : null,
+      metadata: this.hydrateCityMetadata(data['metadata']),
       manual_metrics: Array.isArray(data['manual_metrics'])
         ? data['manual_metrics'].map((metric) => this.hydrateCityPulseMetric(metric)).filter(Boolean) as CityPulseMetric[]
+        : null,
+    };
+  }
+
+  private hydrateCityMetadata(value: unknown): CityAtlasConfig['metadata'] {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    const data = value as Record<string, unknown>;
+    return {
+      global_region: typeof data['global_region'] === 'string' ? data['global_region'] : null,
+      population: typeof data['population'] === 'number' && Number.isFinite(data['population'])
+        ? data['population']
+        : null,
+      population_year: typeof data['population_year'] === 'number' && Number.isFinite(data['population_year'])
+        ? data['population_year']
         : null,
     };
   }

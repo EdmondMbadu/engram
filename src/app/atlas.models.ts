@@ -63,6 +63,14 @@ export interface CityPulseSnapshot {
   notes?: string[];
 }
 
+export interface CityAtlasMetadata {
+  /** Broad directory bucket, such as Africa, Americas, Asia, Europe, or Oceania. */
+  global_region: string | null;
+  /** Latest known city population, when attached during city creation/import. */
+  population: number | null;
+  population_year: number | null;
+}
+
 export interface CityAtlasConfig {
   enabled: boolean;
   city_name: string | null;
@@ -75,6 +83,7 @@ export interface CityAtlasConfig {
   /** Geographic coordinates, used to place the city on the /dymaxion map. */
   latitude?: number | null;
   longitude?: number | null;
+  metadata?: CityAtlasMetadata | null;
   manual_metrics?: CityPulseMetric[] | null;
 }
 

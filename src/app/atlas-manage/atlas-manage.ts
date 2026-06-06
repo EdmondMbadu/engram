@@ -16,6 +16,9 @@ interface CityConfigDraft {
   census_state_code: string;
   census_place_code: string;
   airnow_zip_code: string;
+  global_region: string;
+  population: string;
+  population_year: string;
   manual_metrics_json: string;
 }
 
@@ -58,6 +61,9 @@ interface CustomCityDraft {
   timezone: string;
   name: string;
   description: string;
+  global_region: string;
+  population: string;
+  population_year: string;
   latitude: string;
   longitude: string;
 }
@@ -139,6 +145,15 @@ function parseCsvRows(csv: string): string[][] {
   return rows;
 }
 
+function parseOptionalPositiveInteger(value: string): number | null {
+  const normalized = value.replace(/,/g, '').trim();
+  if (!normalized) {
+    return null;
+  }
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : NaN;
+}
+
 @Component({
   selector: 'app-atlas-manage',
   imports: [FormsModule, RouterLink, ThemeToggleComponent],
@@ -215,6 +230,9 @@ export class AtlasManageComponent {
     timezone: 'America/New_York',
     name: '',
     description: '',
+    global_region: '',
+    population: '',
+    population_year: '',
     latitude: '',
     longitude: '',
   });
@@ -1016,12 +1034,25 @@ export class AtlasManageComponent {
       this.pageError.set('Longitude must be a number between -180 and 180.');
       return;
     }
+    const population = parseOptionalPositiveInteger(draft.population);
+    const populationYear = parseOptionalPositiveInteger(draft.population_year);
+    if (Number.isNaN(population)) {
+      this.pageError.set('Population must be a positive number.');
+      return;
+    }
+    if (Number.isNaN(populationYear)) {
+      this.pageError.set('Population year must be a positive number.');
+      return;
+    }
     const input: CustomCityAtlasInput = {
       cityName: draft.city_name,
       regionName: draft.region_name,
       timezone: draft.timezone,
       name: draft.name,
       description: draft.description,
+      globalRegion: draft.global_region,
+      population,
+      populationYear,
       latitude,
       longitude,
     };
@@ -1039,6 +1070,9 @@ export class AtlasManageComponent {
           timezone: 'America/New_York',
           name: '',
           description: '',
+          global_region: '',
+          population: '',
+          population_year: '',
           latitude: '',
           longitude: '',
         });
@@ -1080,17 +1114,17 @@ export class AtlasManageComponent {
 
   downloadBulkCitySampleCsv(): void {
     const csv = [
-      'city_name,region_name,timezone,public_title,description,latitude,longitude',
-      '"Seattle","Washington","America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
-      '"Las Vegas","Nevada","America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
-      '"Nairobi","Kenya","Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
-      '"Kinshasa","Democratic Republic of the Congo","Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
-      '"Tokyo","Japan","Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
-      '"London","United Kingdom","Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
-      '"Paris","France","Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
-      '"Singapore","Singapore","Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
-      '"Cape Town","South Africa","Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
-      '"Mexico City","Mexico","America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
+      'city_name,region_name,global_region,population,population_year,timezone,public_title,description,latitude,longitude',
+      '"Seattle","Washington","Americas",755078,2024,"America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
+      '"Las Vegas","Nevada","Americas",660929,2024,"America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
+      '"Nairobi","Kenya","Africa",5545000,2024,"Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
+      '"Kinshasa","Democratic Republic of the Congo","Africa",17032000,2024,"Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
+      '"Tokyo","Japan","Asia",14180000,2024,"Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
+      '"London","United Kingdom","Europe",8978000,2024,"Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
+      '"Paris","France","Europe",2103000,2024,"Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
+      '"Singapore","Singapore","Asia",6040000,2024,"Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
+      '"Cape Town","South Africa","Africa",4772000,2024,"Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
+      '"Mexico City","Mexico","Americas",9209944,2024,"America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
     ].join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -1274,6 +1308,9 @@ export class AtlasManageComponent {
             timezone: row.timezone,
             name: row.name,
             description: row.description,
+            globalRegion: row.global_region,
+            population: parseOptionalPositiveInteger(row.population),
+            populationYear: parseOptionalPositiveInteger(row.population_year),
             latitude: row.latitude ? Number(row.latitude) : null,
             longitude: row.longitude ? Number(row.longitude) : null,
           });
@@ -1368,6 +1405,9 @@ export class AtlasManageComponent {
     const timezoneIndex = indexFor(['timezone', 'time_zone']);
     const titleIndex = indexFor(['public_title', 'title', 'wiki_title']);
     const descriptionIndex = indexFor(['description', 'desc']);
+    const globalRegionIndex = indexFor(['global_region', 'continent', 'world_region', 'directory_region']);
+    const populationIndex = indexFor(['population', 'population_estimate', 'latest_population']);
+    const populationYearIndex = indexFor(['population_year', 'population_as_of', 'population_estimate_year']);
     const latitudeIndex = indexFor(['latitude', 'lat']);
     const longitudeIndex = indexFor(['longitude', 'lng', 'lon', 'long']);
 
@@ -1384,6 +1424,9 @@ export class AtlasManageComponent {
       const timezone = cell(timezoneIndex) || 'America/New_York';
       const name = cell(titleIndex);
       const description = cell(descriptionIndex);
+      const globalRegion = cell(globalRegionIndex);
+      const population = cell(populationIndex);
+      const populationYear = cell(populationYearIndex);
       const latitude = cell(latitudeIndex);
       const longitude = cell(longitudeIndex);
       const key = normalizeAdminCityIdentity(cityName || name);
@@ -1397,6 +1440,14 @@ export class AtlasManageComponent {
       }
       if (descriptionIndex >= 0 && !description) {
         errors.push('Missing description');
+      }
+      const parsedPopulation = parseOptionalPositiveInteger(population);
+      if (Number.isNaN(parsedPopulation)) {
+        errors.push('Invalid population');
+      }
+      const parsedPopulationYear = parseOptionalPositiveInteger(populationYear);
+      if (Number.isNaN(parsedPopulationYear)) {
+        errors.push('Invalid population year');
       }
       // Coordinates are optional, but if one is given both must be valid so the
       // city lands in the right place on the Dymaxion map.
@@ -1424,6 +1475,9 @@ export class AtlasManageComponent {
         timezone,
         name: name || (cityName ? `My living wiki: ${cityName}` : ''),
         description,
+        global_region: globalRegion,
+        population,
+        population_year: populationYear,
         latitude,
         longitude,
         slug,
@@ -1762,6 +1816,9 @@ export class AtlasManageComponent {
       census_state_code: config?.census_state_code ?? '',
       census_place_code: config?.census_place_code ?? '',
       airnow_zip_code: config?.airnow_zip_code ?? '',
+      global_region: config?.metadata?.global_region ?? '',
+      population: config?.metadata?.population ? String(config.metadata.population) : '',
+      population_year: config?.metadata?.population_year ? String(config.metadata.population_year) : '',
       manual_metrics_json: this.stringifyManualMetrics(config?.manual_metrics ?? null),
     });
   }
@@ -1819,6 +1876,14 @@ export class AtlasManageComponent {
       }
 
       const manualMetrics = this.parseManualMetricsJson(draft.manual_metrics_json);
+      const population = parseOptionalPositiveInteger(draft.population);
+      const populationYear = parseOptionalPositiveInteger(draft.population_year);
+      if (Number.isNaN(population)) {
+        throw new Error('Population must be a positive number.');
+      }
+      if (Number.isNaN(populationYear)) {
+        throw new Error('Population year must be a positive number.');
+      }
       const nextConfig: CityAtlasConfig = {
         enabled: draft.enabled,
         city_name: draft.city_name.trim() || null,
@@ -1828,6 +1893,13 @@ export class AtlasManageComponent {
         census_state_code: censusStateCode || null,
         census_place_code: censusPlaceCode || null,
         airnow_zip_code: draft.airnow_zip_code.trim() || null,
+        latitude: atlas.city_config?.latitude ?? null,
+        longitude: atlas.city_config?.longitude ?? null,
+        metadata: {
+          global_region: draft.global_region.trim() || null,
+          population,
+          population_year: populationYear,
+        },
         manual_metrics: manualMetrics,
       };
       await this.atlasService.updateCityConfig(atlas.id, nextConfig);

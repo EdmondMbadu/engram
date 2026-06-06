@@ -28,6 +28,9 @@ export interface PublicWikiCatalogItem {
   logoUrl?: string | null;
   coverColor?: string | null;
   countryLabel?: string | null;
+  globalRegion?: string | null;
+  population?: number | null;
+  populationYear?: number | null;
 }
 
 type PublicWikiPresentation = Pick<
@@ -769,6 +772,9 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
     heroUrl: atlas.hero_url ?? presentation.fallbackHeroUrl ?? null,
     logoUrl: atlas.logo_url ?? presentation.fallbackLogoUrl ?? null,
     coverColor: atlas.cover_color ?? null,
+    globalRegion: atlas.city_config?.metadata?.global_region ?? null,
+    population: atlas.city_config?.metadata?.population ?? null,
+    populationYear: atlas.city_config?.metadata?.population_year ?? null,
   };
 }
 

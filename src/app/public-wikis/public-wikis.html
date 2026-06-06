@@ -130,9 +130,34 @@
               {{ activeCategory() === 'Cities' ? 'City Living Wikis' : 'Upcoming Living Wikis' }}
             </h2>
           </div>
-          <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
-            <span class="text-[var(--text)]">{{ filteredWikis().length }}</span> shown
-          </p>
+          <div class="flex flex-wrap items-center justify-end gap-2">
+            @if (activeCategory() === 'Cities') {
+              <div class="flex flex-wrap items-center justify-end gap-1.5 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] p-1">
+                @for (sort of sortOptions(); track sort.value) {
+                  @if (activeSort() === sort.value) {
+                    <button
+                      type="button"
+                      (click)="setSort(sort.value)"
+                      class="rounded-full bg-[var(--accent)] px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)] transition-colors"
+                    >
+                      {{ sort.label }}
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      (click)="setSort(sort.value)"
+                      class="rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)] transition-colors hover:text-[var(--text)]"
+                    >
+                      {{ sort.label }}
+                    </button>
+                  }
+                }
+              </div>
+            }
+            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
+              <span class="text-[var(--text)]">{{ filteredWikis().length }}</span> shown
+            </p>
+          </div>
         </div>
 
         @if (filteredWikis().length === 0) {
@@ -219,6 +244,9 @@
 	                      @if (wiki.countryLabel) {
 	                        <p class="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ wiki.countryLabel }}</p>
 	                      }
+                        @if (populationLabel(wiki)) {
+                          <p class="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Population {{ populationLabel(wiki) }}</p>
+                        }
 	                    </div>
 	                  </div>
                   <p class="mt-3 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{{ wiki.description }}</p>
@@ -251,6 +279,9 @@
 	                @if (wiki.countryLabel) {
 	                  <p class="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ wiki.countryLabel }}</p>
 	                }
+                  @if (populationLabel(wiki)) {
+                    <p class="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Population {{ populationLabel(wiki) }}</p>
+                  }
 	                <p class="mt-3 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{{ wiki.description }}</p>
                 <div class="mt-auto pt-6">
                   <div class="inline-flex items-center gap-2 border-t border-[var(--line)] pt-4 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--muted)]">

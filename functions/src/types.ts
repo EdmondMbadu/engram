@@ -337,6 +337,11 @@ export interface AtlasRecord {
     census_state_code?: string | null;
     census_place_code?: string | null;
     airnow_zip_code?: string | null;
+    metadata?: {
+      global_region?: string | null;
+      population?: number | null;
+      population_year?: number | null;
+    } | null;
     manual_metrics?: unknown[] | null;
   } | null;
   created_at: FirebaseFirestore.FieldValue | FirebaseFirestore.Timestamp;
