@@ -32,8 +32,85 @@ interface PopulationCandidate {
   matchMethod: CityPopulationMatchMethod;
 }
 
+interface WikidataSearchCandidate {
+  id: string;
+  label: string;
+  description: string;
+}
+
+interface WikidataPopulationClaim {
+  value: number;
+  year: number | null;
+  rank: string;
+}
+
 const CENSUS_CITY_POPULATION_VINTAGE = 2024;
 const ATLASES_COLLECTION = db.collection('atlases');
+const COUNTRY_ITEM_BY_CODE: Record<string, string> = {
+  AE: 'Q878',
+  AR: 'Q414',
+  AT: 'Q40',
+  AU: 'Q408',
+  BE: 'Q31',
+  BR: 'Q155',
+  CA: 'Q16',
+  CH: 'Q39',
+  CL: 'Q298',
+  CN: 'Q148',
+  CO: 'Q739',
+  CD: 'Q974',
+  CZ: 'Q213',
+  DE: 'Q183',
+  DK: 'Q35',
+  EG: 'Q79',
+  ES: 'Q29',
+  FI: 'Q33',
+  FR: 'Q142',
+  GB: 'Q145',
+  GH: 'Q117',
+  GR: 'Q41',
+  HU: 'Q28',
+  IE: 'Q27',
+  IL: 'Q801',
+  IN: 'Q668',
+  IT: 'Q38',
+  JP: 'Q17',
+  KE: 'Q114',
+  KR: 'Q884',
+  MA: 'Q1028',
+  MX: 'Q96',
+  NL: 'Q55',
+  NO: 'Q20',
+  NG: 'Q1033',
+  NZ: 'Q664',
+  PE: 'Q419',
+  PL: 'Q36',
+  PR: 'Q1183',
+  PT: 'Q45',
+  QA: 'Q846',
+  SG: 'Q334',
+  SE: 'Q34',
+  TH: 'Q869',
+  TR: 'Q43',
+  TW: 'Q865',
+  US: 'Q30',
+  ZA: 'Q258',
+};
+const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'>> = {
+  'abu-dhabi-ae': seededPopulation(1650000, 2023, 'Abu Dhabi Statistics Centre estimate'),
+  'accra-gh': seededPopulation(2841000, 2021, 'Ghana 2021 census metropolitan district estimate'),
+  'amsterdam-nl': seededPopulation(933680, 2024, 'Municipality of Amsterdam estimate'),
+  'auckland-nz': seededPopulation(1695100, 2024, 'Stats NZ Auckland region estimate'),
+  'bangkok-th': seededPopulation(5475000, 2024, 'Bangkok registered population estimate'),
+  'beijing-cn': seededPopulation(21858000, 2023, 'Beijing municipal statistical estimate'),
+  'dubai-ae': seededPopulation(3825000, 2025, 'Dubai Statistics Center population clock estimate'),
+  'doha-qa': seededPopulation(1186000, 2024, 'Qatar Planning and Statistics Authority municipality estimate'),
+  'hong-kong-cn': seededPopulation(7531800, 2024, 'Hong Kong Census and Statistics Department estimate'),
+  'istanbul-tr': seededPopulation(15655924, 2023, 'Turkish Statistical Institute province estimate'),
+  'jerusalem-il': seededPopulation(989000, 2022, 'Jerusalem Institute statistical yearbook estimate'),
+  'seoul-kr': seededPopulation(9367000, 2024, 'Seoul resident registration estimate'),
+  'taipei-tw': seededPopulation(2494000, 2024, 'Taipei household registration estimate'),
+};
 
 export async function refreshCityPopulationMetadata(
   atlasId: string,
@@ -145,6 +222,11 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
     return wikidata;
   }
 
+  const seeded = seededPopulationFor(cityName, countryCode);
+  if (seeded) {
+    return seeded;
+  }
+
   return null;
 }
 
@@ -236,11 +318,12 @@ async function fetchWikidataPopulation(
   countryCode: string,
   regionName: string,
 ): Promise<PopulationCandidate | null> {
-  const ids = await searchWikidataIds(cityName);
-  if (ids.length === 0) {
+  const searchCandidates = await searchWikidataCandidates(cityName);
+  if (searchCandidates.length === 0) {
     return null;
   }
 
+  const ids = searchCandidates.map((candidate) => candidate.id);
   const values = ids.map((id) => `wd:${id}`).join(' ');
   const countryFilter = countryCode ? `FILTER(?countryCode = "${escapeSparql(countryCode)}")` : '';
   const query = `
@@ -315,11 +398,107 @@ LIMIT 20
       countryCode,
       message: error instanceof Error ? error.message : String(error),
     });
+  }
+
+  return await fetchWikidataEntityPopulation(cityName, countryCode, regionName, searchCandidates);
+}
+
+async function fetchWikidataEntityPopulation(
+  cityName: string,
+  countryCode: string,
+  regionName: string,
+  searchCandidates: WikidataSearchCandidate[],
+): Promise<PopulationCandidate | null> {
+  const url = new URL('https://www.wikidata.org/w/api.php');
+  url.searchParams.set('action', 'wbgetentities');
+  url.searchParams.set('format', 'json');
+  url.searchParams.set('props', 'claims|labels|descriptions');
+  url.searchParams.set('languages', 'en');
+  url.searchParams.set('ids', searchCandidates.map((candidate) => candidate.id).join('|'));
+
+  try {
+    const data = await fetchJson(url.toString(), {
+      Accept: 'application/json',
+      'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
+    }) as { entities?: Record<string, Record<string, unknown>> };
+    const entities = data.entities ?? {};
+    const expectedCountryItem = countryCode ? COUNTRY_ITEM_BY_CODE[countryCode] ?? null : null;
+
+    const scored = searchCandidates
+      .map((candidate, index) => {
+        const entity = entities[candidate.id];
+        if (!entity || entity['missing'] === '') {
+          return null;
+        }
+
+        const claims = entity['claims'] as Record<string, unknown[]> | undefined;
+        const countryItems = claimEntityIds(claims?.['P17']);
+        if (expectedCountryItem && countryItems.length > 0 && !countryItems.includes(expectedCountryItem)) {
+          return null;
+        }
+
+        const population = latestPopulationClaim(claims?.['P1082']);
+        if (!population) {
+          return null;
+        }
+
+        const label = labelFromEntity(entity) || candidate.label;
+        const description = descriptionFromEntity(entity) || candidate.description;
+        const labelKey = normalizeForMatch(label);
+        const cityKey = normalizeForMatch(cityName);
+        const regionKey = normalizeForMatch(regionName);
+        const matchedCountry = !!expectedCountryItem && countryItems.includes(expectedCountryItem);
+        const score =
+          (matchedCountry ? 100 : 0) +
+          (labelKey === cityKey ? 35 : 0) +
+          (labelKey.includes(cityKey) || cityKey.includes(labelKey) ? 10 : 0) +
+          (regionKey && normalizeForMatch(description).includes(regionKey) ? 8 : 0) +
+          (descriptionLooksLikePlace(description) ? 6 : 0) +
+          Math.max(0, 8 - index) +
+          (population.year ?? 0) / 10000;
+        return {
+          candidate,
+          population,
+          matchedCountry,
+          score,
+        };
+      })
+      .filter((candidate): candidate is NonNullable<typeof candidate> => !!candidate)
+      .sort((a, b) =>
+        b.score - a.score ||
+        (b.population.year ?? 0) - (a.population.year ?? 0) ||
+        b.population.value - a.population.value,
+      );
+
+    const best = scored[0];
+    if (!best) {
+      return null;
+    }
+
+    return {
+      value: best.population.value,
+      year: best.population.year,
+      scope: 'unknown',
+      source: 'wikidata',
+      sourceLabel: 'Wikidata direct entity claims',
+      sourceUrl: `https://www.wikidata.org/wiki/${best.candidate.id}`,
+      sourceRecordId: best.candidate.id,
+      confidence: best.matchedCountry || normalizeForMatch(best.candidate.label) === normalizeForMatch(cityName)
+        ? 'medium'
+        : 'low',
+      matchMethod: best.matchedCountry ? 'name_country_region' : 'name_coords',
+    };
+  } catch (error) {
+    logger.warn('Wikidata entity population lookup failed', {
+      cityName,
+      countryCode,
+      message: error instanceof Error ? error.message : String(error),
+    });
     return null;
   }
 }
 
-async function searchWikidataIds(cityName: string): Promise<string[]> {
+async function searchWikidataCandidates(cityName: string): Promise<WikidataSearchCandidate[]> {
   const url = new URL('https://www.wikidata.org/w/api.php');
   url.searchParams.set('action', 'wbsearchentities');
   url.searchParams.set('format', 'json');
@@ -331,11 +510,15 @@ async function searchWikidataIds(cityName: string): Promise<string[]> {
   const data = await fetchJson(url.toString(), {
     Accept: 'application/json',
     'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
-  }) as { search?: Array<{ id?: string }> };
+  }) as { search?: Array<{ id?: string; label?: string; description?: string }> };
 
   return (data.search ?? [])
-    .map((item) => item.id)
-    .filter((id): id is string => typeof id === 'string' && /^Q\d+$/.test(id));
+    .map((item) => ({
+      id: item.id ?? '',
+      label: item.label ?? '',
+      description: item.description ?? '',
+    }))
+    .filter((item) => /^Q\d+$/.test(item.id));
 }
 
 async function fetchCsvPlacePopulationRow(
@@ -448,6 +631,106 @@ function yearFromDate(value: string | undefined): number | null {
   return Number.isFinite(year) && year > 0 ? year : null;
 }
 
+function latestPopulationClaim(claims: unknown[] | undefined): WikidataPopulationClaim | null {
+  const parsed = (claims ?? [])
+    .map((claim): WikidataPopulationClaim | null => {
+      if (!claim || typeof claim !== 'object') {
+        return null;
+      }
+      const data = claim as Record<string, unknown>;
+      if (data['rank'] === 'deprecated') {
+        return null;
+      }
+      const mainsnak = data['mainsnak'] as Record<string, unknown> | undefined;
+      const datavalue = mainsnak?.['datavalue'] as Record<string, unknown> | undefined;
+      const value = datavalue?.['value'] as Record<string, unknown> | undefined;
+      const amount = typeof value?.['amount'] === 'string' ? Number(value['amount']) : NaN;
+      if (!Number.isFinite(amount) || amount <= 0) {
+        return null;
+      }
+
+      const qualifiers = data['qualifiers'] as Record<string, unknown[]> | undefined;
+      const year = yearFromWikidataTimeClaim(qualifiers?.['P585']?.[0])
+        ?? yearFromWikidataTimeClaim(qualifiers?.['P813']?.[0]);
+
+      return {
+        value: Math.round(amount),
+        year,
+        rank: typeof data['rank'] === 'string' ? data['rank'] : 'normal',
+      };
+    })
+    .filter((claim): claim is WikidataPopulationClaim => !!claim)
+    .sort((a, b) => {
+      if (a.rank !== b.rank) {
+        if (a.rank === 'preferred') return -1;
+        if (b.rank === 'preferred') return 1;
+      }
+      return (b.year ?? 0) - (a.year ?? 0) || b.value - a.value;
+    });
+
+  return parsed[0] ?? null;
+}
+
+function claimEntityIds(claims: unknown[] | undefined): string[] {
+  return (claims ?? [])
+    .map((claim) => {
+      if (!claim || typeof claim !== 'object') {
+        return null;
+      }
+      const mainsnak = (claim as Record<string, unknown>)['mainsnak'] as Record<string, unknown> | undefined;
+      const datavalue = mainsnak?.['datavalue'] as Record<string, unknown> | undefined;
+      const value = datavalue?.['value'] as Record<string, unknown> | undefined;
+      const id = value?.['id'];
+      return typeof id === 'string' ? id : null;
+    })
+    .filter((id): id is string => !!id);
+}
+
+function yearFromWikidataTimeClaim(claim: unknown): number | null {
+  if (!claim || typeof claim !== 'object') {
+    return null;
+  }
+  const datavalue = ((claim as Record<string, unknown>)['datavalue'] as Record<string, unknown> | undefined);
+  const value = datavalue?.['value'] as Record<string, unknown> | undefined;
+  const time = typeof value?.['time'] === 'string' ? value['time'] : null;
+  if (!time) {
+    return null;
+  }
+  const match = time.match(/[+-](\d{4})-/);
+  return match ? Number(match[1]) : null;
+}
+
+function labelFromEntity(entity: Record<string, unknown>): string | null {
+  const labels = entity['labels'] as Record<string, { value?: string }> | undefined;
+  return labels?.['en']?.value ?? null;
+}
+
+function descriptionFromEntity(entity: Record<string, unknown>): string | null {
+  const descriptions = entity['descriptions'] as Record<string, { value?: string }> | undefined;
+  return descriptions?.['en']?.value ?? null;
+}
+
+function normalizeForMatch(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/^city of\s+/i, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function descriptionLooksLikePlace(description: string): boolean {
+  const normalized = description.toLowerCase();
+  return [
+    'capital',
+    'city',
+    'municipality',
+    'metropolis',
+    'largest city',
+    'federal territory',
+    'administrative division',
+  ].some((fragment) => normalized.includes(fragment));
+}
+
 function escapeSparql(value: string): string {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
@@ -483,4 +766,41 @@ function failedResult(atlasId: string, cityName: string, message: string): CityP
     confidence: null,
     message,
   };
+}
+
+function seededPopulation(value: number, year: number, sourceLabel: string): Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'> {
+  return {
+    value,
+    year,
+    scope: 'unknown',
+    source: 'manual',
+    sourceLabel,
+    confidence: 'medium',
+    matchMethod: 'manual',
+  };
+}
+
+function seededPopulationFor(cityName: string, countryCode: string): PopulationCandidate | null {
+  const country = countryCode.trim().toUpperCase();
+  if (!country) {
+    return null;
+  }
+  const key = `${normalizeSeedKey(cityName)}-${country.toLowerCase()}`;
+  const seeded = SEEDED_POPULATIONS[key];
+  if (!seeded) {
+    return null;
+  }
+  return {
+    ...seeded,
+    sourceUrl: 'manual-seed:city-population',
+    sourceRecordId: key,
+  };
+}
+
+function normalizeSeedKey(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/^city of\s+/i, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
