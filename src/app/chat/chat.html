@@ -520,16 +520,20 @@
 
                 <div class="lang-carousel__selection" [class.lang-carousel__selection--ready]="selectedVoiceLanguage()">
                   <div class="lang-carousel__selected-copy">
-                    <span class="material-symbols-outlined">language</span>
-                    <p>{{ selectedVoiceLanguageGreeting() }}</p>
+                    <span class="material-symbols-outlined">{{ selectedVoiceLanguage() ? 'record_voice_over' : 'language' }}</span>
+                    <div class="lang-carousel__selected-text">
+                      <span class="lang-carousel__selected-kicker">{{ selectedVoiceLanguage() ? uiText('voiceModeSelected') : uiText('language') }}</span>
+                      <p>{{ selectedVoiceLanguageGreeting() }}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
                     class="lang-carousel__speak"
                     [disabled]="!selectedVoiceLanguage()"
+                    [attr.aria-label]="selectedVoiceLanguageCta()"
                     (click)="startSelectedVoiceLanguage()"
                   >
-                    <span class="material-symbols-outlined">graphic_eq</span>
+                    <span class="material-symbols-outlined">mic</span>
                     <span>{{ selectedVoiceLanguageCta() }}</span>
                   </button>
                 </div>

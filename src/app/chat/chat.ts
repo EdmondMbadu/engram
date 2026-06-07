@@ -497,7 +497,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly selectedVoiceLanguageCta = computed(() => {
     const language = this.selectedVoiceLanguage();
     return language
-      ? this.uiText('speakInLanguage', { language: language.language })
+      ? this.uiText('startVoiceModeIn', { language: language.language })
       : this.uiText('selectFlagFirst');
   });
   readonly selectedPageLanguageCode = computed(() => this.selectedVoiceLanguage()?.code ?? 'en');
@@ -1059,6 +1059,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'Choose a flag to switch {city} into your language.',
         selectFlagFirst: 'Select a flag first',
         speakInLanguage: 'Speak to me in {language}',
+        language: 'Language',
+        voiceModeSelected: 'Voice mode selected',
+        startVoiceModeIn: 'Start voice mode in {language}',
         loadingChat: 'Loading chat',
         preparingConversation: 'Preparing this atlas conversation.',
         emailAddress: 'Email address',
@@ -1359,6 +1362,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'Elige una bandera para cambiar {city} a tu idioma.',
         selectFlagFirst: 'Elige una bandera primero',
         speakInLanguage: 'Háblame en {language}',
+        language: 'Idioma',
+        voiceModeSelected: 'Modo de voz seleccionado',
+        startVoiceModeIn: 'Iniciar modo de voz en {language}',
         loadingChat: 'Cargando chat',
         preparingConversation: 'Preparando esta conversación del atlas.',
         emailAddress: 'Dirección de correo',
@@ -1659,6 +1665,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'Choisissez un drapeau pour passer {city} dans votre langue.',
         selectFlagFirst: 'Choisissez d’abord un drapeau',
         speakInLanguage: 'Parlez-moi en {language}',
+        language: 'Langue',
+        voiceModeSelected: 'Mode vocal sélectionné',
+        startVoiceModeIn: 'Démarrer le mode vocal en {language}',
       },
       de: {
         weSpeakYourLanguage: 'Wir sprechen deine Sprache',
@@ -1673,6 +1682,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'Wähle eine Flagge, um {city} in deine Sprache umzuschalten.',
         selectFlagFirst: 'Wähle zuerst eine Flagge',
         speakInLanguage: 'Sprich mit mir auf {language}',
+        language: 'Sprache',
+        voiceModeSelected: 'Sprachmodus ausgewählt',
+        startVoiceModeIn: 'Sprachmodus auf {language} starten',
       },
       pt: {
         weSpeakYourLanguage: 'Falamos o seu idioma',
@@ -1687,6 +1699,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'Escolha uma bandeira para mudar {city} para o seu idioma.',
         selectFlagFirst: 'Escolha uma bandeira primeiro',
         speakInLanguage: 'Fale comigo em {language}',
+        language: 'Idioma',
+        voiceModeSelected: 'Modo de voz selecionado',
+        startVoiceModeIn: 'Iniciar modo de voz em {language}',
       },
       ar: {
         weSpeakYourLanguage: 'نتحدث لغتك',
@@ -1701,6 +1716,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: 'اختر علماً لتحويل {city} إلى لغتك.',
         selectFlagFirst: 'اختر علماً أولاً',
         speakInLanguage: 'تحدث معي باللغة {language}',
+        language: 'اللغة',
+        voiceModeSelected: 'تم اختيار وضع الصوت',
+        startVoiceModeIn: 'بدء وضع الصوت باللغة {language}',
       },
       zh: {
         weSpeakYourLanguage: '我们会说你的语言',
@@ -1715,6 +1733,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         chooseLanguagePrompt: '选择一面旗帜，将 {city} 切换为你的语言。',
         selectFlagFirst: '请先选择旗帜',
         speakInLanguage: '用 {language} 和我说话',
+        language: '语言',
+        voiceModeSelected: '已选择语音模式',
+        startVoiceModeIn: '用 {language} 开始语音模式',
       },
     };
 
@@ -2356,6 +2377,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Choisissez un drapeau pour passer {city} dans votre langue.',
 	        selectFlagFirst: 'Choisissez d’abord un drapeau',
 	        speakInLanguage: 'Parlez-moi en {language}',
+	        language: 'Langue',
+	        voiceModeSelected: 'Mode vocal sélectionné',
+	        startVoiceModeIn: 'Démarrer le mode vocal en {language}',
 	        findCountry: 'Trouver un pays',
 	        choose: 'Choisir',
 	      },
@@ -2375,6 +2399,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Wähle eine Flagge, um {city} in deine Sprache umzuschalten.',
 	        selectFlagFirst: 'Wähle zuerst eine Flagge',
 	        speakInLanguage: 'Sprich mit mir auf {language}',
+	        language: 'Sprache',
+	        voiceModeSelected: 'Sprachmodus ausgewählt',
+	        startVoiceModeIn: 'Sprachmodus auf {language} starten',
 	        findCountry: 'Land suchen',
 	        choose: 'Auswählen',
 	      },
@@ -2394,6 +2421,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Escolha uma bandeira para mudar {city} para o seu idioma.',
 	        selectFlagFirst: 'Escolha uma bandeira primeiro',
 	        speakInLanguage: 'Fale comigo em {language}',
+	        language: 'Idioma',
+	        voiceModeSelected: 'Modo de voz selecionado',
+	        startVoiceModeIn: 'Iniciar modo de voz em {language}',
 	        findCountry: 'Encontrar país',
 	        choose: 'Escolher',
 	      },
@@ -2436,6 +2466,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Kies een vlag om {city} naar je taal te schakelen.',
 	        selectFlagFirst: 'Kies eerst een vlag',
 	        speakInLanguage: 'Praat met mij in {language}',
+	        language: 'Taal',
+	        voiceModeSelected: 'Spraakmodus geselecteerd',
+	        startVoiceModeIn: 'Start spraakmodus in {language}',
 	      },
 	      ar: {
 	        subscribeWeeklyUpdates: 'اشترك في التحديثات الأسبوعية',
@@ -2462,6 +2495,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'اختر علماً لتحويل {city} إلى لغتك.',
 	        selectFlagFirst: 'اختر علماً أولاً',
 	        speakInLanguage: 'تحدث معي باللغة {language}',
+	        language: 'اللغة',
+	        voiceModeSelected: 'تم اختيار وضع الصوت',
+	        startVoiceModeIn: 'بدء وضع الصوت باللغة {language}',
 	        findCountry: 'ابحث عن بلد',
 	        choose: 'اختر',
 	      },
@@ -2490,6 +2526,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: '选择一面旗帜，将 {city} 切换为你的语言。',
 	        selectFlagFirst: '请先选择旗帜',
 	        speakInLanguage: '用 {language} 和我说话',
+	        language: '语言',
+	        voiceModeSelected: '已选择语音模式',
+	        startVoiceModeIn: '用 {language} 开始语音模式',
 	        findCountry: '查找国家',
 	        choose: '选择',
 	      },
@@ -2533,6 +2572,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: '旗を選んで {city} をあなたの言語に切り替えます。',
 	        selectFlagFirst: 'まず旗を選択してください',
 	        speakInLanguage: '{language} で話してください',
+	        language: '言語',
+	        voiceModeSelected: '音声モードを選択中',
+	        startVoiceModeIn: '{language} で音声モードを開始',
 	      },
 	      ko: {
 	        loadingChat: '채팅 불러오는 중',
@@ -2574,6 +2616,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: '깃발을 선택해 {city}를 당신의 언어로 전환하세요.',
 	        selectFlagFirst: '먼저 깃발을 선택하세요',
 	        speakInLanguage: '{language}로 말해 주세요',
+	        language: '언어',
+	        voiceModeSelected: '음성 모드 선택됨',
+	        startVoiceModeIn: '{language}로 음성 모드 시작',
 	      },
 	      ru: {
 	        loadingChat: 'Загрузка чата',
@@ -2615,6 +2660,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Выберите флаг, чтобы переключить {city} на ваш язык.',
 	        selectFlagFirst: 'Сначала выберите флаг',
 	        speakInLanguage: 'Говорите со мной на {language}',
+	        language: 'Язык',
+	        voiceModeSelected: 'Выбран голосовой режим',
+	        startVoiceModeIn: 'Запустить голосовой режим на {language}',
 	      },
 	      hi: {
 	        loadingChat: 'चैट लोड हो रही है',
@@ -2661,6 +2709,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: '{city} को अपनी भाषा में बदलने के लिए झंडा चुनें।',
 	        selectFlagFirst: 'पहले एक झंडा चुनें',
 	        speakInLanguage: 'मुझसे {language} में बात करें',
+	        language: 'भाषा',
+	        voiceModeSelected: 'वॉइस मोड चुना गया',
+	        startVoiceModeIn: '{language} में वॉइस मोड शुरू करें',
 	      },
 	      cs: {
 	        loadingChat: 'Načítání chatu',
@@ -2708,6 +2759,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Vyberte vlajku a přepněte {city} do svého jazyka.',
 	        selectFlagFirst: 'Nejprve vyberte vlajku',
 	        speakInLanguage: 'Mluvte se mnou v jazyce {language}',
+	        language: 'Jazyk',
+	        voiceModeSelected: 'Hlasový režim vybrán',
+	        startVoiceModeIn: 'Spustit hlasový režim v jazyce {language}',
 	      },
 	      hr: {
 	        loadingChat: 'Učitavanje chata',
@@ -2755,6 +2809,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Odaberite zastavu da prebacite {city} na svoj jezik.',
 	        selectFlagFirst: 'Prvo odaberite zastavu',
 	        speakInLanguage: 'Razgovarajte sa mnom na {language}',
+	        language: 'Jezik',
+	        voiceModeSelected: 'Glasovni način odabran',
+	        startVoiceModeIn: 'Pokreni glasovni način na {language}',
 	      },
 	      fa: {
 	        loadingChat: 'در حال بارگذاری گفتگو',
@@ -2802,6 +2859,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'یک پرچم انتخاب کنید تا {city} به زبان شما تغییر کند.',
 	        selectFlagFirst: 'ابتدا یک پرچم انتخاب کنید',
 	        speakInLanguage: 'با من به {language} صحبت کنید',
+	        language: 'زبان',
+	        voiceModeSelected: 'حالت صوتی انتخاب شد',
+	        startVoiceModeIn: 'شروع حالت صوتی به {language}',
 	      },
 	      no: {
 	        loadingChat: 'Laster chat',
@@ -2849,6 +2909,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Velg et flagg for å bytte {city} til språket ditt.',
 	        selectFlagFirst: 'Velg et flagg først',
 	        speakInLanguage: 'Snakk med meg på {language}',
+	        language: 'Språk',
+	        voiceModeSelected: 'Talemodus valgt',
+	        startVoiceModeIn: 'Start talemodus på {language}',
 	      },
 	      sv: {
 	        loadingChat: 'Laddar chatt',
@@ -2896,6 +2959,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: 'Välj en flagga för att byta {city} till ditt språk.',
 	        selectFlagFirst: 'Välj en flagga först',
 	        speakInLanguage: 'Prata med mig på {language}',
+	        language: 'Språk',
+	        voiceModeSelected: 'Röstläge valt',
+	        startVoiceModeIn: 'Starta röstläge på {language}',
 	      },
 	      tr: {
 	        loadingChat: 'Sohbet yükleniyor',
@@ -2943,6 +3009,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        chooseLanguagePrompt: '{city} için dilinizi seçmek üzere bir bayrak seçin.',
 	        selectFlagFirst: 'Önce bir bayrak seçin',
 	        speakInLanguage: 'Benimle {language} konuş',
+	        language: 'Dil',
+	        voiceModeSelected: 'Ses modu seçildi',
+	        startVoiceModeIn: '{language} ses modunu başlat',
 	      },
 	    };
 	    return packs[normalized]?.[key] ?? completionPacks[normalized]?.[key];
