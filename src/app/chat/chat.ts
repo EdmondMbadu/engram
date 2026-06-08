@@ -492,6 +492,33 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       ...(language.searchTerms ?? []),
     ].map(normalizeVoiceSearchText).join(' ').includes(normalizedQuery));
   });
+  readonly businessVoiceLanguages = computed(() => {
+    const preferredCountries = ['United States', 'DR Congo', 'France', 'Spain', 'Brazil', 'China'];
+    const selected = this.selectedVoiceLanguage();
+    const byCountry = new Map(this.voiceLanguages().map((language) => [language.country, language]));
+    const picked: VoiceLanguageOption[] = [];
+    if (selected) {
+      picked.push(selected);
+    }
+    for (const country of preferredCountries) {
+      const language = byCountry.get(country);
+      if (language && !picked.some((item) => item.country === language.country)) {
+        picked.push(language);
+      }
+    }
+    return picked.slice(0, 6);
+  });
+  readonly businessActiveVoiceLanguage = computed(() => this.selectedVoiceLanguage() ?? this.businessVoiceLanguages()[0] ?? null);
+  readonly businessVoiceGreeting = computed(() => {
+    const language = this.businessActiveVoiceLanguage();
+    return language
+      ? this.voiceSessionGreeting(language)
+      : `Choose a language to speak with ${this.businessPageName()}.`;
+  });
+  readonly businessVoiceCta = computed(() => {
+    const language = this.businessActiveVoiceLanguage();
+    return language ? this.uiText('startVoiceModeIn', { language: language.language }) : 'Start voice';
+  });
   readonly voiceCarouselAtStart = signal(true);
   readonly voiceCarouselAtEnd = signal(false);
   readonly selectedVoiceLanguage = signal<VoiceLanguageOption | null>(null);
@@ -3796,6 +3823,14 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   async startSelectedVoiceLanguage(): Promise<void> {
     const language = this.selectedVoiceLanguage();
+    if (!language) {
+      return;
+    }
+    await this.startVoiceInLanguage(language);
+  }
+
+  async startBusinessVoice(): Promise<void> {
+    const language = this.businessActiveVoiceLanguage();
     if (!language) {
       return;
     }
