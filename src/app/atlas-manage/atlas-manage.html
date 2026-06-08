@@ -144,8 +144,29 @@
               </a>
             </div>
           } @else {
+            <div class="mb-4 grid gap-3 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-3 md:grid-cols-[1fr_auto] md:items-center">
+              <label class="relative block min-w-0">
+                <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[1.1rem] text-[var(--muted)]">search</span>
+                <input
+                  type="search"
+                  autocomplete="off"
+                  class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm"
+                  placeholder="Search businesses by name, city, category, admin, or link..."
+                  [value]="businessSearch()"
+                  (input)="onBusinessSearchInput($event)"
+                />
+                @if (businessSearch()) {
+                  <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear business search" (click)="clearBusinessSearch()">
+                    <span class="material-symbols-outlined text-[1rem]">close</span>
+                  </button>
+                }
+              </label>
+              <p class="px-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+                {{ filteredBusinessClaims().length }} of {{ businessClaims().length }} shown
+              </p>
+            </div>
             <div class="grid gap-4">
-              @for (business of businessClaims(); track business.claim_key) {
+              @for (business of filteredBusinessClaims(); track business.claim_key) {
                 <article class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
                   <div class="grid gap-5 px-5 py-5 lg:grid-cols-[1fr_22rem] lg:items-start">
                     <div class="min-w-0">
@@ -277,6 +298,10 @@
                     }
                   }
                 </article>
+              } @empty {
+                <div class="rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]">
+                  No businesses match "{{ businessSearch() }}".
+                </div>
               }
             </div>
           }
@@ -771,7 +796,29 @@
 
       @if (wikiListOpen()) {
       <div class="grid gap-4 border-t border-[var(--line)] p-4 sm:p-5">
-      @for (atlas of atlases(); track atlas.id) {
+      <div class="grid gap-3 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-3 md:grid-cols-[1fr_auto] md:items-center">
+        <label class="relative block min-w-0">
+          <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[1.1rem] text-[var(--muted)]">search</span>
+          <input
+            type="search"
+            autocomplete="off"
+            class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm"
+            placeholder="Search Wikis by name, city, region, slug, or ID..."
+            [value]="wikiSearch()"
+            (input)="onWikiSearchInput($event)"
+          />
+          @if (wikiSearch()) {
+            <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear Wiki search" (click)="clearWikiSearch()">
+              <span class="material-symbols-outlined text-[1rem]">close</span>
+            </button>
+          }
+        </label>
+        <p class="px-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+          {{ filteredAtlases().length }} of {{ atlases().length }} shown
+        </p>
+      </div>
+
+      @for (atlas of filteredAtlases(); track atlas.id) {
         <article class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
           <div class="flex flex-col gap-4 px-5 py-5 lg:flex-row lg:items-start lg:justify-between">
             <div class="min-w-0 flex-1">
@@ -1827,6 +1874,10 @@
           </div>
           }
         </article>
+      } @empty {
+        <div class="rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]">
+          No Wikis match "{{ wikiSearch() }}".
+        </div>
       }
       </div>
       }

@@ -226,6 +226,7 @@ export class AtlasManageComponent {
   readonly openWikis = signal<Record<string, boolean>>({});
   readonly openSections = signal<Record<string, boolean>>({});
   readonly businessListOpen = signal(true);
+  readonly businessSearch = signal('');
   readonly businessClaims = signal<BusinessClaimWorkspaceRecord[]>([]);
   readonly loadingBusinesses = signal(false);
   readonly businessError = signal<string | null>(null);
@@ -236,6 +237,7 @@ export class AtlasManageComponent {
   readonly businessEditDraftByKey = signal<Record<string, BusinessEditDraft>>({});
   readonly cityLaunchOpen = signal(false);
   readonly wikiListOpen = signal(false);
+  readonly wikiSearch = signal('');
   readonly deletingId = signal<string | null>(null);
   readonly pageError = signal<string | null>(null);
   readonly cityTemplates = CITY_ATLAS_TEMPLATES;
@@ -276,6 +278,41 @@ export class AtlasManageComponent {
   });
 
   readonly hasMultipleAtlases = computed(() => this.atlases().length > 1);
+  readonly filteredAtlases = computed(() => {
+    const query = this.normalizedSearchText(this.wikiSearch());
+    if (!query) {
+      return this.atlases();
+    }
+    return this.atlases().filter((atlas) => this.normalizedSearchText([
+      this.displayName(atlas),
+      atlas.slug,
+      atlas.id,
+      atlas.description,
+      atlas.city_config?.city_name,
+      atlas.city_config?.region_name,
+      atlas.city_config?.country_code,
+      this.cityConfigSummary(atlas),
+    ].filter(Boolean).join(' ')).includes(query));
+  });
+  readonly filteredBusinessClaims = computed(() => {
+    const query = this.normalizedSearchText(this.businessSearch());
+    if (!query) {
+      return this.businessClaims();
+    }
+    return this.businessClaims().filter((business) => this.normalizedSearchText([
+      business.business_name,
+      business.business_slug,
+      business.city_name,
+      business.city_slug,
+      business.category,
+      business.business_address,
+      business.admin_name,
+      business.admin_email,
+      business.guide_prompt,
+      business.badge_icons?.join(' '),
+      business.claim_key,
+    ].filter(Boolean).join(' ')).includes(query));
+  });
   readonly existingCityTemplateKeys = computed(() =>
     new Set(
       [
@@ -461,6 +498,14 @@ export class AtlasManageComponent {
     this.businessListOpen.update((open) => !open);
   }
 
+  onBusinessSearchInput(event: Event): void {
+    this.businessSearch.set((event.target as HTMLInputElement).value);
+  }
+
+  clearBusinessSearch(): void {
+    this.businessSearch.set('');
+  }
+
   businessPublicPath(business: BusinessClaimWorkspaceRecord): string {
     return `/chat/${business.city_slug}?business=${business.business_slug}`;
   }
@@ -604,6 +649,23 @@ export class AtlasManageComponent {
       guide_prompt: business.guide_prompt ?? '',
       badge_icons: business.badge_icons?.join(', ') ?? '',
     };
+  }
+
+  onWikiSearchInput(event: Event): void {
+    this.wikiSearch.set((event.target as HTMLInputElement).value);
+  }
+
+  clearWikiSearch(): void {
+    this.wikiSearch.set('');
+  }
+
+  private normalizedSearchText(value: string): string {
+    return value
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
   }
 
   usageLabel(usage: AtlasUsage | null): string {
