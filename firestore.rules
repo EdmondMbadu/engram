@@ -154,11 +154,25 @@ service cloud.firestore {
         && request.resource.data.status == 'pending'
         && request.resource.data.created_at == request.time
         && !exists(/databases/$(database)/documents/business_claims/$(claimId));
-      allow update, delete: if false;
+      allow update: if isSignedIn()
+        && resource.data.owner_user_id == request.auth.uid
+        && request.resource.data.owner_user_id == resource.data.owner_user_id
+        && request.resource.data.claim_key == resource.data.claim_key
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'business_address',
+          'category',
+          'updated_at'
+        ])
+        && request.resource.data.business_address is string
+        && request.resource.data.business_address.size() <= 180
+        && request.resource.data.category is string
+        && request.resource.data.category.size() <= 80
+        && request.resource.data.updated_at == request.time;
+      allow delete: if false;
     }
 
     match /business_claim_requests/{claimId} {
-      allow read: if false;
+      allow read: if isSignedIn() && resource.data.owner_user_id == request.auth.uid;
       allow create: if isSignedIn()
         && request.resource.data.keys().hasOnly([
           'claim_key',
@@ -214,7 +228,36 @@ service cloud.firestore {
         && request.resource.data.status == 'pending'
         && request.resource.data.created_at == request.time
         && !exists(/databases/$(database)/documents/business_claim_requests/$(claimId));
-      allow update, delete: if false;
+      allow update: if isSignedIn()
+        && resource.data.owner_user_id == request.auth.uid
+        && request.resource.data.owner_user_id == resource.data.owner_user_id
+        && request.resource.data.claim_key == resource.data.claim_key
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'business_address',
+          'category',
+          'admin_name',
+          'admin_email',
+          'guide_prompt',
+          'badge_icons',
+          'updated_at'
+        ])
+        && request.resource.data.business_address is string
+        && request.resource.data.business_address.size() <= 180
+        && request.resource.data.category is string
+        && request.resource.data.category.size() <= 80
+        && request.resource.data.admin_name is string
+        && request.resource.data.admin_name.size() >= 2
+        && request.resource.data.admin_name.size() <= 90
+        && request.resource.data.admin_email is string
+        && request.resource.data.admin_email.size() >= 5
+        && request.resource.data.admin_email.size() <= 140
+        && request.resource.data.admin_email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && request.resource.data.guide_prompt is string
+        && request.resource.data.guide_prompt.size() <= 5000
+        && request.resource.data.badge_icons is list
+        && request.resource.data.badge_icons.size() <= 3
+        && request.resource.data.updated_at == request.time;
+      allow delete: if false;
     }
 
     match /{document=**} {

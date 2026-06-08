@@ -92,6 +92,202 @@
       <button
         type="button"
         class="flex w-full items-center justify-between gap-4 px-5 py-5 text-left transition hover:bg-[var(--soft-fill)]"
+        (click)="toggleBusinessList()"
+        [attr.aria-expanded]="businessListOpen()"
+      >
+        <span class="min-w-0">
+          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Account businesses</span>
+          <span class="mt-2 block text-2xl font-black tracking-tight">Manage claimed business pages.</span>
+          <span class="mt-2 block text-sm leading-6 text-[var(--muted)]">
+            {{ loadingBusinesses() ? 'Loading businesses...' : businessClaims().length + ' businesses connected to this account.' }}
+          </span>
+        </span>
+        <span class="flex shrink-0 items-center gap-3">
+          <span class="hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm sm:inline-flex">
+            <span class="font-black text-[var(--text)]">{{ businessClaims().length }}</span>
+            <span class="ml-1 text-[var(--muted)]"> businesses</span>
+          </span>
+          <span class="material-symbols-outlined text-[1.4rem] text-[var(--muted)]">{{ businessListOpen() ? 'expand_less' : 'expand_more' }}</span>
+        </span>
+      </button>
+
+      @if (businessListOpen()) {
+        <div class="border-t border-[var(--line)] p-4 sm:p-5">
+          <div class="mb-4 flex justify-end">
+            <a routerLink="/business/claim" class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]">
+              <span class="material-symbols-outlined text-[1rem]">add_business</span>
+              <span>Add business</span>
+            </a>
+          </div>
+
+          @if (businessError()) {
+            <div class="mb-4 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">
+              {{ businessError() }}
+            </div>
+          }
+
+          @if (loadingBusinesses()) {
+            <div class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]">
+              Loading account businesses...
+            </div>
+          } @else if (businessClaims().length === 0) {
+            <div class="grid gap-4 rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 md:grid-cols-[1fr_auto] md:items-center">
+              <div>
+                <p class="text-lg font-black tracking-tight text-[var(--text)]">No claimed businesses yet.</p>
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                  Claim a business to reserve its QR/chat link, review status, and profile settings under this account.
+                </p>
+              </div>
+              <a routerLink="/business/claim" class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90">
+                <span class="material-symbols-outlined text-[1rem]">add_business</span>
+                <span>Claim a business</span>
+              </a>
+            </div>
+          } @else {
+            <div class="grid gap-4">
+              @for (business of businessClaims(); track business.claim_key) {
+                <article class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
+                  <div class="grid gap-5 px-5 py-5 lg:grid-cols-[1fr_22rem] lg:items-start">
+                    <div class="min-w-0">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">
+                          {{ businessStatusLabel(business) }}
+                        </span>
+                        <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">
+                          {{ business.city_name }}
+                        </span>
+                      </div>
+
+                      <h3 class="mt-3 text-2xl font-black tracking-tight">{{ business.business_name }}</h3>
+                      <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+                        {{ business.category || 'Business' }} · {{ business.business_address || 'No location detail yet' }}
+                      </p>
+
+                      <label class="mt-4 block">
+                        <span class="mb-1 block text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Business QR / chat link</span>
+                        <input
+                          type="text"
+                          class="theme-input w-full rounded-2xl px-4 py-3 text-xs font-semibold text-[var(--text)]"
+                          [value]="businessPublicUrl(business)"
+                          readonly
+                        />
+                      </label>
+
+                      <div class="mt-3 flex flex-wrap gap-2">
+                        <a
+                          [routerLink]="['/chat', business.city_slug]"
+                          [queryParams]="{ business: business.business_slug }"
+                          class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]"
+                        >
+                          <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
+                          <span>Open business page</span>
+                        </a>
+                        <button
+                          type="button"
+                          (click)="copyBusinessLink(business)"
+                          class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                        >
+                          <span class="material-symbols-outlined text-[1rem]">content_copy</span>
+                          <span>{{ copiedBusinessClaimKey() === business.claim_key ? 'Copied' : 'Copy link' }}</span>
+                        </button>
+                        <button
+                          type="button"
+                          (click)="toggleBusinessEdit(business)"
+                          class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                        >
+                          <span class="material-symbols-outlined text-[1rem]">edit</span>
+                          <span>{{ isBusinessEditing(business) ? 'Close editor' : 'Edit business' }}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+                      <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Current setup</p>
+                      <dl class="mt-3 grid gap-3 text-sm">
+                        <div>
+                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">Admin</dt>
+                          <dd class="mt-1 font-semibold text-[var(--text)]">{{ business.admin_name || 'Not set' }}</dd>
+                          <dd class="mt-0.5 truncate text-xs text-[var(--muted)]">{{ business.admin_email || 'No admin email' }}</dd>
+                        </div>
+                        <div>
+                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">Badge icons</dt>
+                          <dd class="mt-1 font-semibold text-[var(--text)]">{{ businessIconLabels(business) }}</dd>
+                        </div>
+                        <div>
+                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">Guide prompt</dt>
+                          <dd class="mt-1 line-clamp-4 text-sm leading-6 text-[var(--muted)]">{{ business.guide_prompt || 'No guide prompt saved yet.' }}</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+
+                  @if (isBusinessEditing(business)) {
+                    @if (businessEditDraft(business); as draft) {
+                      <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-5">
+                        <div class="grid gap-4 lg:grid-cols-2">
+                          <label class="block">
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Category</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.category" (input)="updateBusinessEditDraft(business.claim_key, 'category', $any($event.target).value)" placeholder="Restaurant, bar, shop..." />
+                          </label>
+                          <label class="block">
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Location / neighborhood</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.business_address" (input)="updateBusinessEditDraft(business.claim_key, 'business_address', $any($event.target).value)" placeholder="Street, neighborhood, or address" />
+                          </label>
+                          <label class="block">
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin name</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.admin_name" (input)="updateBusinessEditDraft(business.claim_key, 'admin_name', $any($event.target).value)" placeholder="Owner or manager name" />
+                          </label>
+                          <label class="block">
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin email</span>
+                            <input type="email" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.admin_email" (input)="updateBusinessEditDraft(business.claim_key, 'admin_email', $any($event.target).value)" placeholder="admin@example.com" />
+                          </label>
+                          <label class="block lg:col-span-2">
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Business guide prompt</span>
+                            <textarea class="theme-input min-h-32 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.guide_prompt" (input)="updateBusinessEditDraft(business.claim_key, 'guide_prompt', $any($event.target).value)" placeholder="What should the business guide know about this place?"></textarea>
+                          </label>
+                          <label class="block lg:col-span-2">
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Badge icons</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.badge_icons" (input)="updateBusinessEditDraft(business.claim_key, 'badge_icons', $any($event.target).value)" placeholder="beer, coffee, music" />
+                            <span class="mt-1 block text-xs leading-5 text-[var(--muted)]">Comma-separated icon codes. The badge uses the first 3.</span>
+                          </label>
+                        </div>
+
+                        <div class="mt-4 flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            (click)="saveBusinessEdit(business)"
+                            [disabled]="isBusinessSaving(business)"
+                            class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            <span class="material-symbols-outlined text-[1rem]">save</span>
+                            <span>{{ isBusinessSaving(business) ? 'Saving...' : 'Save business changes' }}</span>
+                          </button>
+                          <button
+                            type="button"
+                            (click)="toggleBusinessEdit(business)"
+                            class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35"
+                          >
+                            Cancel
+                          </button>
+                          @if (businessSavedClaimKey() === business.claim_key) {
+                            <span class="text-sm font-semibold text-[var(--accent)]">Saved.</span>
+                          }
+                        </div>
+                      </div>
+                    }
+                  }
+                </article>
+              }
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
+      <button
+        type="button"
+        class="flex w-full items-center justify-between gap-4 px-5 py-5 text-left transition hover:bg-[var(--soft-fill)]"
         (click)="toggleCityLaunch()"
         [attr.aria-expanded]="cityLaunchOpen()"
       >

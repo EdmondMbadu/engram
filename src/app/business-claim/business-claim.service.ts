@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { doc, getDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, serverTimestamp, where, writeBatch } from 'firebase/firestore';
 import { getFirebaseFirestore } from '../firebase.client';
 
 export interface BusinessClaimRegistryRecord {
@@ -29,6 +29,17 @@ export interface BusinessClaimContactRecord {
   badge_icons: string[];
 }
 
+export type BusinessClaimWorkspaceRecord = BusinessClaimRegistryRecord & Partial<BusinessClaimContactRecord>;
+
+export interface BusinessClaimWorkspaceUpdate {
+  business_address: string;
+  category: string;
+  admin_name: string;
+  admin_email: string;
+  guide_prompt: string;
+  badge_icons: string[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class BusinessClaimService {
   private readonly platformId = inject(PLATFORM_ID);
@@ -49,6 +60,43 @@ export class BusinessClaimService {
       id: snapshot.id,
       ...(snapshot.data() as Omit<BusinessClaimRegistryRecord, 'id'>),
     };
+  }
+
+  async listByOwner(ownerUserId: string): Promise<BusinessClaimWorkspaceRecord[]> {
+    if (!this.firestore || !ownerUserId) {
+      return [];
+    }
+
+    const claimsQuery = query(
+      collection(this.firestore, 'business_claims'),
+      where('owner_user_id', '==', ownerUserId),
+    );
+    const snapshot = await getDocs(claimsQuery);
+    const claims = snapshot.docs.map((claimSnapshot) => ({
+      id: claimSnapshot.id,
+      ...(claimSnapshot.data() as Omit<BusinessClaimRegistryRecord, 'id'>),
+    }));
+
+    const enriched = await Promise.all(claims.map(async (claim) => {
+      const requestSnapshot = await getDoc(doc(this.firestore!, 'business_claim_requests', claim.claim_key));
+      if (!requestSnapshot.exists()) {
+        return claim;
+      }
+      const request = requestSnapshot.data() as Partial<BusinessClaimContactRecord>;
+      return {
+        ...claim,
+        admin_name: typeof request.admin_name === 'string' ? request.admin_name : undefined,
+        admin_email: typeof request.admin_email === 'string' ? request.admin_email : undefined,
+        guide_prompt: typeof request.guide_prompt === 'string' ? request.guide_prompt : undefined,
+        badge_icons: Array.isArray(request.badge_icons)
+          ? request.badge_icons.filter((icon): icon is string => typeof icon === 'string')
+          : undefined,
+      };
+    }));
+
+    return enriched.sort((left, right) =>
+      left.city_name.localeCompare(right.city_name) || left.business_name.localeCompare(right.business_name),
+    );
   }
 
   async create(
@@ -89,5 +137,33 @@ export class BusinessClaimService {
       id: ref.id,
       ...record,
     };
+  }
+
+  async updateWorkspaceRecord(claimKey: string, update: BusinessClaimWorkspaceUpdate): Promise<void> {
+    if (!this.firestore) {
+      throw new Error('Business claims are only available in the browser.');
+    }
+    if (!claimKey) {
+      throw new Error('Missing business claim key.');
+    }
+
+    const ref = doc(this.firestore, 'business_claims', claimKey);
+    const requestRef = doc(this.firestore, 'business_claim_requests', claimKey);
+    const batch = writeBatch(this.firestore);
+    batch.set(ref, {
+      business_address: update.business_address,
+      category: update.category,
+      updated_at: serverTimestamp(),
+    }, { merge: true });
+    batch.set(requestRef, {
+      business_address: update.business_address,
+      category: update.category,
+      admin_name: update.admin_name,
+      admin_email: update.admin_email,
+      guide_prompt: update.guide_prompt,
+      badge_icons: update.badge_icons.slice(0, 3),
+      updated_at: serverTimestamp(),
+    }, { merge: true });
+    await batch.commit();
   }
 }

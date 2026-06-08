@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
 import { AtlasService, type BulkCityAtlasResult, type CityPopulationRefreshResult, type CustomCityAtlasInput } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessClaimWorkspaceUpdate } from '../business-claim/business-claim.service';
 import { CITY_ATLAS_TEMPLATES, type CityAtlasTemplate } from '../city-atlas-templates';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
@@ -85,6 +86,15 @@ interface BulkCityProgress {
   failed: number;
   skipped: number;
   started_at_ms: number;
+}
+
+interface BusinessEditDraft {
+  business_address: string;
+  category: string;
+  admin_name: string;
+  admin_email: string;
+  guide_prompt: string;
+  badge_icons: string;
 }
 
 interface PopulationBackfillProgress {
@@ -173,6 +183,7 @@ function parseOptionalPositiveInteger(value: string): number | null {
 export class AtlasManageComponent {
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly businessClaimService = inject(BusinessClaimService);
   private readonly router = inject(Router);
 
   readonly atlases = this.atlasService.atlases;
@@ -214,6 +225,15 @@ export class AtlasManageComponent {
   readonly removingAdminKey = signal<string | null>(null);
   readonly openWikis = signal<Record<string, boolean>>({});
   readonly openSections = signal<Record<string, boolean>>({});
+  readonly businessListOpen = signal(true);
+  readonly businessClaims = signal<BusinessClaimWorkspaceRecord[]>([]);
+  readonly loadingBusinesses = signal(false);
+  readonly businessError = signal<string | null>(null);
+  readonly copiedBusinessClaimKey = signal<string | null>(null);
+  readonly editingBusinessClaimKey = signal<string | null>(null);
+  readonly savingBusinessClaimKey = signal<string | null>(null);
+  readonly businessSavedClaimKey = signal<string | null>(null);
+  readonly businessEditDraftByKey = signal<Record<string, BusinessEditDraft>>({});
   readonly cityLaunchOpen = signal(false);
   readonly wikiListOpen = signal(false);
   readonly deletingId = signal<string | null>(null);
@@ -399,6 +419,14 @@ export class AtlasManageComponent {
       const atlases = this.atlases();
       void this.syncUsage(atlases);
     });
+    effect(() => {
+      const uid = this.authService.uid();
+      if (!uid) {
+        this.businessClaims.set([]);
+        return;
+      }
+      void this.loadOwnedBusinesses(uid);
+    });
   }
 
   displayName(atlas: AtlasItem | null | undefined): string {
@@ -427,6 +455,155 @@ export class AtlasManageComponent {
 
   chatCount(usage: AtlasUsage): number {
     return usage.queries + usage.chat_threads;
+  }
+
+  toggleBusinessList(): void {
+    this.businessListOpen.update((open) => !open);
+  }
+
+  businessPublicPath(business: BusinessClaimWorkspaceRecord): string {
+    return `/chat/${business.city_slug}?business=${business.business_slug}`;
+  }
+
+  businessPublicUrl(business: BusinessClaimWorkspaceRecord): string {
+    const path = this.businessPublicPath(business);
+    if (typeof window !== 'undefined' && window.location?.origin) {
+      return `${window.location.origin}${path}`;
+    }
+    return `https://mylivingwiki.com${path}`;
+  }
+
+  businessStatusLabel(business: BusinessClaimWorkspaceRecord): string {
+    return business.status === 'pending' ? 'Pending review' : business.status;
+  }
+
+  businessIconLabels(business: BusinessClaimWorkspaceRecord): string {
+    return business.badge_icons?.length ? business.badge_icons.join(', ') : 'None selected';
+  }
+
+  isBusinessEditing(business: BusinessClaimWorkspaceRecord): boolean {
+    return this.editingBusinessClaimKey() === business.claim_key;
+  }
+
+  isBusinessSaving(business: BusinessClaimWorkspaceRecord): boolean {
+    return this.savingBusinessClaimKey() === business.claim_key;
+  }
+
+  businessEditDraft(business: BusinessClaimWorkspaceRecord): BusinessEditDraft {
+    return this.businessEditDraftByKey()[business.claim_key] ?? this.createBusinessEditDraft(business);
+  }
+
+  toggleBusinessEdit(business: BusinessClaimWorkspaceRecord): void {
+    if (this.isBusinessEditing(business)) {
+      this.editingBusinessClaimKey.set(null);
+      return;
+    }
+    this.businessEditDraftByKey.update((current) => ({
+      ...current,
+      [business.claim_key]: current[business.claim_key] ?? this.createBusinessEditDraft(business),
+    }));
+    this.businessSavedClaimKey.set(null);
+    this.editingBusinessClaimKey.set(business.claim_key);
+  }
+
+  updateBusinessEditDraft(claimKey: string, field: keyof BusinessEditDraft, value: string): void {
+    this.businessEditDraftByKey.update((current) => {
+      const existing = current[claimKey];
+      if (!existing) {
+        return current;
+      }
+      return {
+        ...current,
+        [claimKey]: {
+          ...existing,
+          [field]: value,
+        },
+      };
+    });
+  }
+
+  async copyBusinessLink(business: BusinessClaimWorkspaceRecord): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(this.businessPublicUrl(business));
+      this.copiedBusinessClaimKey.set(business.claim_key);
+      window.setTimeout(() => {
+        if (this.copiedBusinessClaimKey() === business.claim_key) {
+          this.copiedBusinessClaimKey.set(null);
+        }
+      }, 1600);
+    } catch {
+      this.businessError.set('Could not copy the business link.');
+    }
+  }
+
+  async saveBusinessEdit(business: BusinessClaimWorkspaceRecord): Promise<void> {
+    const draft = this.businessEditDraftByKey()[business.claim_key];
+    if (!draft) {
+      return;
+    }
+
+    const update: BusinessClaimWorkspaceUpdate = {
+      business_address: draft.business_address.trim(),
+      category: draft.category.trim(),
+      admin_name: draft.admin_name.trim(),
+      admin_email: draft.admin_email.trim(),
+      guide_prompt: draft.guide_prompt.trim(),
+      badge_icons: draft.badge_icons
+        .split(',')
+        .map((icon) => icon.trim())
+        .filter(Boolean)
+        .slice(0, 3),
+    };
+
+    this.savingBusinessClaimKey.set(business.claim_key);
+    this.businessError.set(null);
+    this.businessSavedClaimKey.set(null);
+    try {
+      await this.businessClaimService.updateWorkspaceRecord(business.claim_key, update);
+      this.businessClaims.update((claims) => claims.map((claim) =>
+        claim.claim_key === business.claim_key
+          ? { ...claim, ...update, badge_icons: update.badge_icons }
+          : claim,
+      ));
+      this.businessSavedClaimKey.set(business.claim_key);
+      this.editingBusinessClaimKey.set(null);
+    } catch (error) {
+      this.businessError.set(error instanceof Error ? error.message : 'Failed to save business changes.');
+    } finally {
+      this.savingBusinessClaimKey.set(null);
+    }
+  }
+
+  private async loadOwnedBusinesses(uid: string): Promise<void> {
+    this.loadingBusinesses.set(true);
+    this.businessError.set(null);
+    try {
+      const businesses = await this.businessClaimService.listByOwner(uid);
+      if (this.authService.uid() !== uid) {
+        return;
+      }
+      this.businessClaims.set(businesses);
+      this.businessEditDraftByKey.set(
+        Object.fromEntries(businesses.map((business) => [business.claim_key, this.createBusinessEditDraft(business)])),
+      );
+    } catch (error) {
+      this.businessError.set(error instanceof Error ? error.message : 'Failed to load account businesses.');
+    } finally {
+      if (this.authService.uid() === uid) {
+        this.loadingBusinesses.set(false);
+      }
+    }
+  }
+
+  private createBusinessEditDraft(business: BusinessClaimWorkspaceRecord): BusinessEditDraft {
+    return {
+      business_address: business.business_address ?? '',
+      category: business.category ?? '',
+      admin_name: business.admin_name ?? '',
+      admin_email: business.admin_email ?? '',
+      guide_prompt: business.guide_prompt ?? '',
+      badge_icons: business.badge_icons?.join(', ') ?? '',
+    };
   }
 
   usageLabel(usage: AtlasUsage | null): string {
