@@ -246,6 +246,37 @@
                 }
               </div>
 
+              <div class="mt-6">
+                <div class="flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <h3 class="text-sm font-black text-[var(--text)]">Badge side icons</h3>
+                    <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose up to 3 icons that fit this business.</p>
+                  </div>
+                  <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase text-[var(--muted)]">{{ selectedIconCodes().length }}/3 selected</span>
+                </div>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  @for (icon of badgeIcons; track icon.code) {
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-bold transition-all disabled:cursor-not-allowed disabled:opacity-45"
+                      [class.border-[var(--accent)]]="selectedIconCodes().includes(icon.code)"
+                      [class.bg-[var(--accent)]/10]="selectedIconCodes().includes(icon.code)"
+                      [class.text-[var(--accent)]]="selectedIconCodes().includes(icon.code)"
+                      [class.border-[var(--line)]]="!selectedIconCodes().includes(icon.code)"
+                      [class.text-[var(--text)]]="!selectedIconCodes().includes(icon.code)"
+                      [disabled]="!selectedIconCodes().includes(icon.code) && selectedIconCodes().length >= 3"
+                      (click)="toggleBadgeIcon(icon.code)"
+                    >
+                      <span>{{ icon.emoji }}</span>
+                      <span>{{ icon.label }}</span>
+                      @if (selectedIconCodes().includes(icon.code)) {
+                        <span class="material-symbols-outlined text-base">check</span>
+                      }
+                    </button>
+                  }
+                </div>
+              </div>
+
               <div class="mt-5 grid gap-2 sm:grid-cols-2">
                 @for (size of sizes; track size.id) {
                   <button
@@ -272,8 +303,19 @@
             <div class="min-w-0 flex-1">
               <h2 class="text-lg font-black">Business admin</h2>
               <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
-                Enter the person who should manage this business page. This is saved with the claim request, not shown on the public badge.
+                This business page must be associated with an account. One account can manage multiple businesses.
               </p>
+              @if (authService.isAuthenticated()) {
+                <div class="mt-4 rounded-2xl border border-emerald-400/35 bg-emerald-400/10 px-4 py-3">
+                  <p class="text-sm font-black text-[var(--text)]">Signed in as {{ authService.email() }}</p>
+                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">This business will be attached to your account.</p>
+                </div>
+              } @else {
+                <div class="mt-4 rounded-2xl border border-amber-400/40 bg-amber-400/10 px-4 py-3">
+                  <p class="text-sm font-black text-[var(--text)]">Create an account to finish this claim.</p>
+                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">The draft stays here, then the business will be attached to the account you create or sign into.</p>
+                </div>
+              }
               <div class="mt-4 grid gap-4 sm:grid-cols-2">
                 <label class="block">
                   <span class="text-sm font-bold text-[var(--muted)]">Admin name</span>
@@ -287,7 +329,7 @@
                   />
                 </label>
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Admin email</span>
+                  <span class="text-sm font-bold text-[var(--muted)]">Account email</span>
                   <input
                     type="email"
                     class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
@@ -295,6 +337,7 @@
                     (input)="onAdminEmailInput($event)"
                     placeholder="jane@example.com"
                     autocomplete="email"
+                    [readonly]="authService.isAuthenticated()"
                   />
                 </label>
               </div>
@@ -327,14 +370,12 @@
             <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"></circle>
             <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"></circle>
 
-            <text font-family="Inter, Arial, sans-serif" font-size="45" font-weight="900" fill="#ffffff">
-              <textPath href="#claimTopArc" startOffset="50%" text-anchor="middle">YOUR LOCAL INSIDER</textPath>
+            <text font-family="Inter, Arial, sans-serif" font-size="38" font-weight="900" fill="#ffffff" letter-spacing="1" dy="15">
+              <textPath href="#claimTopArc" startOffset="50%" text-anchor="middle">{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
             </text>
-            <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff">
+            <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff" letter-spacing="3" dy="-4">
               <textPath href="#claimBottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
             </text>
-
-            <text x="450" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="31" font-weight="900" fill="#0f596d">{{ decalBusinessTitle() }}</text>
 
             <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"></rect>
             <image [attr.href]="qrImageUrl()" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"></image>
@@ -342,6 +383,13 @@
             <path d="M450 431c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16v-16c0-9 7-16 16-16z" fill="#0f596d"></path>
             <path d="M424 458c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
             <path d="M450 488v23M432 511h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
+
+            @for (icon of selectedBadgeIcons(); track icon.code; let i = $index) {
+              <g [attr.transform]="badgeIconTransform(i, selectedBadgeIcons().length)">
+                <circle r="43" fill="#fff8ea" stroke="#b98834" stroke-width="4"></circle>
+                <text y="18" text-anchor="middle" font-size="54">{{ icon.emoji }}</text>
+              </g>
+            }
 
             @for (language of selectedLanguages(); track language.code; let i = $index) {
               <g [attr.transform]="svgOrbitTransform(i, selectedLanguages().length, 176)">
@@ -367,15 +415,26 @@
         }
 
         <div class="mt-4 grid gap-3">
-          <button type="button" class="primary-btn justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
-            @if (claimSaving()) {
-              <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-              <span>Saving</span>
-            } @else {
-              <span class="material-symbols-outlined text-base">add_business</span>
-              <span>Submit claim request</span>
-            }
-          </button>
+          @if (authService.isAuthenticated()) {
+            <button type="button" class="primary-btn justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
+              @if (claimSaving()) {
+                <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                <span>Saving</span>
+              } @else {
+                <span class="material-symbols-outlined text-base">add_business</span>
+                <span>Submit claim request</span>
+              }
+            </button>
+          } @else {
+            <a routerLink="/create-account" [queryParams]="accountRedirectParams()" class="primary-btn justify-center !px-5 !py-3 text-sm" (click)="saveCurrentDraftForAccount()">
+              <span class="material-symbols-outlined text-base">person_add</span>
+              <span>Create account to claim</span>
+            </a>
+            <a routerLink="/sign-in" [queryParams]="accountRedirectParams()" class="ghost-btn justify-center !px-5 !py-3 text-sm" (click)="saveCurrentDraftForAccount()">
+              <span class="material-symbols-outlined text-base">login</span>
+              <span>Sign in instead</span>
+            </a>
+          }
           <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="decalDownloadHref()" [download]="decalFilename()">
             <span class="material-symbols-outlined text-base">download</span>
             <span>Download badge SVG</span>
@@ -388,10 +447,6 @@
             <span class="material-symbols-outlined text-base">{{ copiedLink() ? 'check' : 'content_copy' }}</span>
             <span>{{ copiedLink() ? 'Copied' : 'Copy link' }}</span>
           </button>
-          <a routerLink="/create-account" class="ghost-btn justify-center !px-5 !py-3 text-sm">
-            <span class="material-symbols-outlined text-base">inventory_2</span>
-            <span>Create account to finish</span>
-          </a>
         </div>
       </div>
     </aside>

@@ -112,8 +112,10 @@ service cloud.firestore {
 
     match /business_claims/{claimId} {
       allow get, list: if true;
-      allow create: if request.resource.data.keys().hasOnly([
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly([
           'claim_key',
+          'owner_user_id',
           'atlas_id',
           'city_name',
           'city_slug',
@@ -127,6 +129,7 @@ service cloud.firestore {
           'created_at'
         ])
         && request.resource.data.claim_key == claimId
+        && request.resource.data.owner_user_id == request.auth.uid
         && request.resource.data.claim_key is string
         && request.resource.data.claim_key.size() >= 4
         && request.resource.data.claim_key.size() <= 180
@@ -156,8 +159,10 @@ service cloud.firestore {
 
     match /business_claim_requests/{claimId} {
       allow read: if false;
-      allow create: if request.resource.data.keys().hasOnly([
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly([
           'claim_key',
+          'owner_user_id',
           'city_name',
           'city_slug',
           'business_name',
@@ -168,10 +173,12 @@ service cloud.firestore {
           'admin_name',
           'admin_email',
           'guide_prompt',
+          'badge_icons',
           'status',
           'created_at'
         ])
         && request.resource.data.claim_key == claimId
+        && request.resource.data.owner_user_id == request.auth.uid
         && request.resource.data.claim_key is string
         && request.resource.data.claim_key.size() >= 4
         && request.resource.data.claim_key.size() <= 180
@@ -202,6 +209,8 @@ service cloud.firestore {
         && request.resource.data.admin_email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
         && request.resource.data.guide_prompt is string
         && request.resource.data.guide_prompt.size() <= 5000
+        && request.resource.data.badge_icons is list
+        && request.resource.data.badge_icons.size() <= 3
         && request.resource.data.status == 'pending'
         && request.resource.data.created_at == request.time
         && !exists(/databases/$(database)/documents/business_claim_requests/$(claimId));

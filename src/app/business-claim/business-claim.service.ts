@@ -6,6 +6,7 @@ import { getFirebaseFirestore } from '../firebase.client';
 export interface BusinessClaimRegistryRecord {
   id: string;
   claim_key: string;
+  owner_user_id: string;
   atlas_id: string | null;
   city_name: string;
   city_slug: string;
@@ -25,6 +26,7 @@ export interface BusinessClaimContactRecord {
   admin_name: string;
   admin_email: string;
   guide_prompt: string;
+  badge_icons: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -66,6 +68,7 @@ export class BusinessClaimService {
     });
     batch.set(requestRef, {
       claim_key: record.claim_key,
+      owner_user_id: record.owner_user_id,
       city_name: record.city_name,
       city_slug: record.city_slug,
       business_name: record.business_name,
@@ -76,6 +79,7 @@ export class BusinessClaimService {
       admin_name: contact.admin_name,
       admin_email: contact.admin_email,
       guide_prompt: contact.guide_prompt,
+      badge_icons: contact.badge_icons.slice(0, 3),
       status: 'pending',
       created_at: serverTimestamp(),
     });

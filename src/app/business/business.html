@@ -213,19 +213,24 @@
               <circle cx="450" cy="450" r="340" fill="none" stroke="url(#businessTealRing)" stroke-width="74"></circle>
               <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"></circle>
               <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"></circle>
-              <text font-family="Inter, Arial, sans-serif" font-size="45" font-weight="900" fill="#ffffff">
-                <textPath href="#businessTopArc" startOffset="50%" text-anchor="middle">YOUR LOCAL INSIDER</textPath>
+              <text font-family="Inter, Arial, sans-serif" font-size="38" font-weight="900" fill="#ffffff" letter-spacing="1" dy="15">
+                <textPath href="#businessTopArc" startOffset="50%" text-anchor="middle">{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
               </text>
-              <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff">
+              <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff" letter-spacing="3" dy="-4">
                 <textPath href="#businessBottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
               </text>
-              <text x="450" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="31" font-weight="900" fill="#0f596d">{{ decalBusinessTitle() }}</text>
               <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"></rect>
               <image [attr.href]="businessQrImageUrl()" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"></image>
               <circle cx="450" cy="450" r="30" fill="#f3dfb9"></circle>
               <path d="M450 431c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16v-16c0-9 7-16 16-16z" fill="#0f596d"></path>
               <path d="M424 458c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
               <path d="M450 488v23M432 511h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
+              @for (icon of businessBadgeIcons; track icon.code; let i = $index) {
+                <g [attr.transform]="badgeIconTransform(i, businessBadgeIcons.length)">
+                  <circle r="43" fill="#fff8ea" stroke="#b98834" stroke-width="4"></circle>
+                  <text y="18" text-anchor="middle" font-size="54">{{ icon.emoji }}</text>
+                </g>
+              }
               @for (language of selectedDecalLanguages(); track language.code; let i = $index) {
                 <g [attr.transform]="svgOrbitTransform(i, selectedDecalLanguages().length, 176)">
                   <circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"></circle>

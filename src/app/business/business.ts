@@ -1,5 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 type BillingCycle = 'monthly' | 'annual';
@@ -15,6 +16,12 @@ type DecalSize = {
   id: string;
   label: string;
   detail: string;
+};
+
+type BadgeIcon = {
+  code: string;
+  emoji: string;
+  label: string;
 };
 
 type BusinessFeature = {
@@ -64,6 +71,12 @@ export class BusinessComponent {
     { code: 'ko', flag: '🇰🇷', label: '한국어', greeting: '안녕' },
   ];
 
+  readonly businessBadgeIcons: BadgeIcon[] = [
+    { code: 'hat', emoji: '🎩', label: 'Heritage' },
+    { code: 'pretzel', emoji: '🥨', label: 'Pretzel' },
+    { code: 'beer', emoji: '🍺', label: 'Beer' },
+  ];
+
   readonly decalSizes: DecalSize[] = [
     { id: 'window', label: 'Window cling 8×10"', detail: 'Best for storefront glass' },
     { id: 'door', label: 'Door decal 5×7"', detail: 'Compact entrance sticker' },
@@ -88,9 +101,7 @@ export class BusinessComponent {
     return `mylivingwiki.com/chat/philly${name ? `?business=${name}` : ''}`;
   });
 
-  readonly businessQrImageUrl = computed(() =>
-    `https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=18&data=${encodeURIComponent(`https://${this.businessChatUrl()}`)}`,
-  );
+  readonly businessQrImageUrl = computed(() => generateQrSvgDataUrl(`https://${this.businessChatUrl()}`));
 
   readonly selectedDecalLanguages = computed(() => {
     const selected = new Set(this.selectedLanguageCodes());
@@ -245,6 +256,16 @@ export class BusinessComponent {
     const x = 450 + Math.cos(angle) * radius;
     const y = 450 + Math.sin(angle) * radius;
     return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
+  }
+
+  badgeIconTransform(index: number, total: number): string {
+    const positions = total <= 1
+      ? [[450, 216]]
+      : total === 2
+        ? [[282, 450], [618, 450]]
+        : [[450, 216], [282, 450], [618, 450]];
+    const [x, y] = positions[index] ?? positions[0];
+    return `translate(${x} ${y})`;
   }
 
   async copyBusinessLink(): Promise<void> {

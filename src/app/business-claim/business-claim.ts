@@ -2,7 +2,9 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
+import { AuthService } from '../auth.service';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
+import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import {
   BusinessClaimService,
@@ -20,6 +22,12 @@ type DecalSize = {
   id: string;
   label: string;
   detail: string;
+};
+
+type BadgeIcon = {
+  code: string;
+  emoji: string;
+  label: string;
 };
 
 type ClaimCityFallback = {
@@ -41,6 +49,8 @@ type StoredClaimDraft = {
   guidePrompt: string;
   adminName: string;
   adminEmail: string;
+  selectedLanguageCodes: string[];
+  selectedIconCodes: string[];
   savedAt: string;
 };
 
@@ -52,9 +62,11 @@ type StoredClaimDraft = {
 export class BusinessClaimComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly atlasService = inject(AtlasService);
+  readonly authService = inject(AuthService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly businessClaimService = inject(BusinessClaimService);
   private readonly localDraftsKey = 'living-wiki:business-claim-drafts';
+  private readonly pendingDraftKey = 'living-wiki:business-claim-pending';
   private businessSearchTimer: ReturnType<typeof setTimeout> | null = null;
   private claimCheckTimer: ReturnType<typeof setTimeout> | null = null;
   private lastPlaceSearchKey = '';
@@ -73,6 +85,7 @@ export class BusinessClaimComponent {
     'Authentic German beer hall on South Street with a deep beer list, food, events, private parties, watch parties, and staff who can point visitors to the right local experience.',
   );
   readonly selectedLanguageCodes = signal(['en', 'fr', 'pt', 'zh', 'de']);
+  readonly selectedIconCodes = signal(['hat', 'pretzel', 'beer']);
   readonly selectedSizeId = signal('window');
   readonly placeResults = signal<CityPlaceCandidate[]>([]);
   readonly selectedPlace = signal<CityPlaceCandidate | null>(null);
@@ -87,6 +100,7 @@ export class BusinessClaimComponent {
   readonly copiedLink = signal(false);
   readonly adminName = signal('');
   readonly adminEmail = signal('');
+  readonly accountRedirectParams = computed(() => ({ redirectTo: '/business/claim' }));
 
   readonly fallbackCities: ClaimCityFallback[] = [
     { id: 'fallback-philly', name: 'Philadelphia', region: 'Pennsylvania', slug: 'philly' },
@@ -106,6 +120,21 @@ export class BusinessClaimComponent {
     { code: 'es', flag: '🇪🇸', label: 'Espanol', greeting: 'Hola' },
     { code: 'ar', flag: '🇸🇦', label: 'Arabic', greeting: 'Marhaba' },
     { code: 'ko', flag: '🇰🇷', label: 'Korean', greeting: 'Annyeong' },
+  ];
+
+  readonly badgeIcons: BadgeIcon[] = [
+    { code: 'hat', emoji: '🎩', label: 'Heritage' },
+    { code: 'pretzel', emoji: '🥨', label: 'Pretzel' },
+    { code: 'beer', emoji: '🍺', label: 'Beer' },
+    { code: 'coffee', emoji: '☕', label: 'Coffee' },
+    { code: 'pizza', emoji: '🍕', label: 'Pizza' },
+    { code: 'taco', emoji: '🌮', label: 'Taco' },
+    { code: 'sushi', emoji: '🍣', label: 'Sushi' },
+    { code: 'burger', emoji: '🍔', label: 'Burger' },
+    { code: 'bread', emoji: '🥐', label: 'Bakery' },
+    { code: 'wine', emoji: '🍷', label: 'Wine' },
+    { code: 'cocktail', emoji: '🍸', label: 'Cocktail' },
+    { code: 'music', emoji: '🎵', label: 'Live music' },
   ];
 
   readonly sizes: DecalSize[] = [
@@ -204,6 +233,10 @@ export class BusinessClaimComponent {
     const selected = new Set(this.selectedLanguageCodes());
     return this.languages.filter((language) => selected.has(language.code)).slice(0, 6);
   });
+  readonly selectedBadgeIcons = computed(() => {
+    const selected = new Set(this.selectedIconCodes());
+    return this.badgeIcons.filter((icon) => selected.has(icon.code)).slice(0, 3);
+  });
   readonly businessSlug = computed(() => this.slugify(this.businessName()));
   readonly claimKey = computed(() => `${this.selectedCitySlug()}__${this.businessSlug() || 'business'}`);
   readonly previewPath = computed(() => {
@@ -212,9 +245,7 @@ export class BusinessClaimComponent {
     return `/chat/${slug}${business ? `?business=${business}` : ''}`;
   });
   readonly previewUrl = computed(() => `https://mylivingwiki.com${this.previewPath()}`);
-  readonly qrImageUrl = computed(() =>
-    `https://api.qrserver.com/v1/create-qr-code/?size=520x520&margin=18&data=${encodeURIComponent(this.previewUrl())}`,
-  );
+  readonly qrImageUrl = computed(() => generateQrSvgDataUrl(this.previewUrl()));
   readonly decalDownloadHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.buildDecalSvg())}`);
   readonly decalFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-local-insider-badge.svg`);
   readonly localDuplicateClaim = computed(() => this.localClaimKeys().includes(this.claimKey()));
@@ -225,6 +256,7 @@ export class BusinessClaimComponent {
   });
   readonly canSaveClaim = computed(() =>
     !!this.businessSlug()
+    && this.authService.isAuthenticated()
     && this.adminName().trim().length >= 2
     && this.isValidEmail(this.adminEmail())
     && !this.hasDuplicateClaim()
@@ -242,6 +274,7 @@ export class BusinessClaimComponent {
 
   constructor() {
     this.localClaimKeys.set(this.loadLocalDrafts().map((claim) => claim.claimKey));
+    this.restorePendingDraft();
 
     const requestedCity = this.route.snapshot.queryParamMap.get('city')?.trim().toLowerCase() ?? '';
     if (requestedCity) {
@@ -266,6 +299,18 @@ export class BusinessClaimComponent {
         if (firstPart) {
           this.neighborhood.set(firstPart);
         }
+      }
+    });
+
+    effect(() => {
+      const email = this.authService.email().trim();
+      if (email) {
+        this.adminEmail.set(email);
+      }
+
+      const displayName = this.authService.displayName().trim();
+      if (this.authService.isAuthenticated() && !this.adminName().trim() && displayName && displayName !== 'My living wiki') {
+        this.adminName.set(displayName);
       }
     });
 
@@ -426,8 +471,24 @@ export class BusinessClaimComponent {
     });
   }
 
+  toggleBadgeIcon(code: string): void {
+    this.selectedIconCodes.update((codes) => {
+      if (codes.includes(code)) {
+        return codes.length > 1 ? codes.filter((item) => item !== code) : codes;
+      }
+      if (codes.length >= 3) {
+        return codes;
+      }
+      return [...codes, code];
+    });
+  }
+
   selectSize(sizeId: string): void {
     this.selectedSizeId.set(sizeId);
+  }
+
+  saveCurrentDraftForAccount(): void {
+    this.savePendingDraft();
   }
 
   async saveClaimDraft(): Promise<void> {
@@ -450,6 +511,7 @@ export class BusinessClaimComponent {
       category: this.category(),
       place_id: this.selectedPlace()?.placeId ?? null,
       preview_url: this.previewUrl(),
+      owner_user_id: this.authService.uid(),
       status: 'pending' as const,
     };
 
@@ -464,6 +526,7 @@ export class BusinessClaimComponent {
         admin_name: this.adminName().trim(),
         admin_email: this.adminEmail().trim(),
         guide_prompt: this.guidePrompt().trim(),
+        badge_icons: this.selectedIconCodes(),
       });
       this.existingClaim.set(saved);
       this.saveLocalDraft({
@@ -474,8 +537,11 @@ export class BusinessClaimComponent {
         guidePrompt: this.guidePrompt(),
         adminName: this.adminName().trim(),
         adminEmail: this.adminEmail().trim(),
+        selectedLanguageCodes: this.selectedLanguageCodes(),
+        selectedIconCodes: this.selectedIconCodes(),
         savedAt: new Date().toISOString(),
       });
+      this.clearPendingDraft();
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
       this.claimStatus.set('Business page draft reserved. The duplicate check will now catch this business before another draft is created.');
     } catch {
@@ -487,6 +553,8 @@ export class BusinessClaimComponent {
         guidePrompt: this.guidePrompt(),
         adminName: this.adminName().trim(),
         adminEmail: this.adminEmail().trim(),
+        selectedLanguageCodes: this.selectedLanguageCodes(),
+        selectedIconCodes: this.selectedIconCodes(),
         savedAt: new Date().toISOString(),
       });
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
@@ -510,6 +578,16 @@ export class BusinessClaimComponent {
     const x = 450 + Math.cos(angle) * radius;
     const y = 450 + Math.sin(angle) * radius;
     return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
+  }
+
+  badgeIconTransform(index: number, total: number): string {
+    const positions = total <= 1
+      ? [[450, 216]]
+      : total === 2
+        ? [[282, 450], [618, 450]]
+        : [[450, 216], [282, 450], [618, 450]];
+    const [x, y] = positions[index] ?? positions[0];
+    return `translate(${x} ${y})`;
   }
 
   private async loadCities(requestedCity: string): Promise<void> {
@@ -581,6 +659,66 @@ export class BusinessClaimComponent {
     window.localStorage.setItem(this.localDraftsKey, JSON.stringify([draft, ...existing].slice(0, 20)));
   }
 
+  private currentDraft(): StoredClaimDraft {
+    return {
+      claimKey: this.claimKey(),
+      businessName: this.businessName(),
+      cityName: this.selectedCityName(),
+      previewUrl: this.previewUrl(),
+      guidePrompt: this.guidePrompt(),
+      adminName: this.adminName().trim(),
+      adminEmail: this.adminEmail().trim(),
+      selectedLanguageCodes: this.selectedLanguageCodes(),
+      selectedIconCodes: this.selectedIconCodes(),
+      savedAt: new Date().toISOString(),
+    };
+  }
+
+  private savePendingDraft(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem(this.pendingDraftKey, JSON.stringify(this.currentDraft()));
+  }
+
+  private restorePendingDraft(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(this.pendingDraftKey) ?? 'null') as Partial<StoredClaimDraft> | null;
+      if (!parsed) {
+        return;
+      }
+      if (parsed.businessName) {
+        this.businessQuery.set(parsed.businessName);
+      }
+      if (parsed.guidePrompt) {
+        this.guidePrompt.set(parsed.guidePrompt);
+      }
+      if (parsed.adminName) {
+        this.adminName.set(parsed.adminName);
+      }
+      if (parsed.adminEmail) {
+        this.adminEmail.set(parsed.adminEmail);
+      }
+      if (Array.isArray(parsed.selectedLanguageCodes) && parsed.selectedLanguageCodes.length > 0) {
+        this.selectedLanguageCodes.set(parsed.selectedLanguageCodes.slice(0, 6));
+      }
+      if (Array.isArray(parsed.selectedIconCodes) && parsed.selectedIconCodes.length > 0) {
+        this.selectedIconCodes.set(parsed.selectedIconCodes.slice(0, 3));
+      }
+    } catch {
+      window.localStorage.removeItem(this.pendingDraftKey);
+    }
+  }
+
+  private clearPendingDraft(): void {
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(this.pendingDraftKey);
+    }
+  }
+
   private slugify(value: string): string {
     return value
       .trim()
@@ -615,6 +753,10 @@ export class BusinessClaimComponent {
       const transform = this.svgOrbitTransform(index, all.length, 176);
       return `<g transform="${transform}"><circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="10" text-anchor="middle" font-size="27">${language.flag}</text></g>`;
     }).join('');
+    const icons = this.selectedBadgeIcons().map((icon, index, all) => {
+      const transform = this.badgeIconTransform(index, all.length);
+      return `<g transform="${transform}"><circle r="43" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="18" text-anchor="middle" font-size="54">${icon.emoji}</text></g>`;
+    }).join('');
 
     return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
       <defs>
@@ -638,19 +780,19 @@ export class BusinessClaimComponent {
       <circle cx="450" cy="450" r="340" fill="none" stroke="url(#tealRing)" stroke-width="74"/>
       <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"/>
       <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"/>
-      <text font-family="Inter, Arial, sans-serif" font-size="45" font-weight="900" fill="#ffffff" letter-spacing="3">
-        <textPath href="#topArc" startOffset="50%" text-anchor="middle">YOUR LOCAL INSIDER</textPath>
+      <text font-family="Inter, Arial, sans-serif" font-size="38" font-weight="900" fill="#ffffff" letter-spacing="1" dy="15">
+        <textPath href="#topArc" startOffset="50%" text-anchor="middle">${business} • LivingWiki Chat</textPath>
       </text>
-      <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff" letter-spacing="5">
+      <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff" letter-spacing="3" dy="-4">
         <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
       </text>
-      <text x="450" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="31" font-weight="900" fill="#0f596d">${business}</text>
       <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
       <image href="${qr}" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"/>
       <circle cx="450" cy="450" r="30" fill="#f3dfb9"/>
       <path d="M450 431c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16v-16c0-9 7-16 16-16z" fill="#0f596d"/>
       <path d="M424 458c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
       <path d="M450 488v23M432 511h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
+      ${icons}
       ${flags}
       <text x="450" y="665" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
     </svg>`;
