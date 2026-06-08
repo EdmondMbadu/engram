@@ -1,17 +1,17 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
-      <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
+      <a routerLink="/" class="flex items-center text-lg font-bold text-[var(--text)]">
         <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
           <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
         </div>
       </a>
 
       <div class="flex items-center gap-2 sm:gap-3">
-        <a routerLink="/business" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+        <a routerLink="/business" class="hidden text-xs font-bold uppercase text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
           Business
         </a>
-        <a routerLink="/dymaxion" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+        <a routerLink="/dymaxion" class="hidden text-xs font-bold uppercase text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
           City map
         </a>
         <app-theme-toggle></app-theme-toggle>
@@ -19,65 +19,70 @@
     </div>
   </nav>
 
-  <main class="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-10 lg:py-12">
+  <main class="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-10 lg:py-12">
     <section>
-      <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">Claim your business</p>
-      <h1 class="mt-3 max-w-4xl text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">
-        Turn your storefront into a multilingual city guide.
+      <p class="text-[10px] font-black uppercase text-[var(--accent)]">Claim your business</p>
+      <h1 class="mt-3 max-w-4xl text-3xl font-black text-[var(--text)] sm:text-5xl">
+        Your Local Insider
+        <span class="block text-[var(--accent)]">Any City. Any Language.</span>
       </h1>
       <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-        Businesses can claim a local profile, tune what the voice guide knows, and download a decal that sends customers into the city wiki by voice.
+        Create a real local business page, reserve the unique claim key, and generate a QR badge that sends customers to a voice-first guide for that business.
       </p>
 
-      <div class="mt-8 grid gap-5">
+      <div class="mt-8 grid gap-4">
         <article class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
           <div class="flex items-start gap-4">
             <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">1</span>
             <div class="min-w-0 flex-1">
-              <h2 class="text-lg font-black tracking-tight">Select a city</h2>
-              <div class="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
+              <h2 class="text-lg font-black">Select a city</h2>
+              <div class="relative mt-4">
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Search city</span>
-                  <input
-                    type="text"
-                    class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
-                    [value]="citySearch()"
-                    (input)="onCitySearchInput($event)"
-                    placeholder="Philadelphia, Boston, Portland..."
-                  />
+                  <span class="text-sm font-bold text-[var(--muted)]">City</span>
+                  <span class="relative mt-2 block">
+                    <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">location_city</span>
+                    <input
+                      type="text"
+                      class="theme-input w-full rounded-xl py-3 pl-11 pr-4 text-base font-semibold text-[var(--text)]"
+                      [value]="citySearch()"
+                      (focus)="openCitySuggestions()"
+                      (input)="onCitySearchInput($event)"
+                      placeholder="Select a city"
+                      autocomplete="off"
+                    />
+                  </span>
                 </label>
-                <a routerLink="/dymaxion" class="ghost-btn mt-7 justify-center !px-4 !py-3 text-sm">
+
+                @if (citySuggestionsOpen() && citySearch().trim()) {
+                  <div class="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)]">
+                    @for (city of cityOptions(); track city.id) {
+                      <button type="button" class="flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-[var(--soft-fill)]" (click)="selectCity(city)">
+                        <span class="min-w-0">
+                          <span class="block truncate text-sm font-black text-[var(--text)]">{{ city.name }}</span>
+                          <span class="mt-0.5 block truncate text-xs font-semibold text-[var(--muted)]">{{ city.region || 'City wiki' }}</span>
+                        </span>
+                        @if (city.live) {
+                          <span class="shrink-0 rounded-full bg-[var(--accent)]/12 px-2 py-1 text-[9px] font-black uppercase text-[var(--accent)]">Live</span>
+                        }
+                      </button>
+                    } @empty {
+                      <p class="px-4 py-3 text-sm font-semibold text-[var(--muted)]">No city matches yet. Keep typing or open the map.</p>
+                    }
+                  </div>
+                }
+              </div>
+
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <p class="text-sm font-semibold text-[var(--muted)]">
+                  Current city: <span class="font-black text-[var(--text)]">{{ selectedCityName() }}</span>
+                  @if (selectedCityRegion()) {
+                    <span> ({{ selectedCityRegion() }})</span>
+                  }
+                </p>
+                <a routerLink="/dymaxion" class="inline-flex items-center gap-1 text-sm font-black text-[var(--accent)] underline-offset-4 hover:underline">
                   <span class="material-symbols-outlined text-base">public</span>
                   <span>Open map</span>
                 </a>
-              </div>
-
-              <div class="mt-4 grid gap-2 sm:grid-cols-2">
-                @for (city of cityOptions(); track city.id) {
-                  <button
-                    type="button"
-                    class="rounded-2xl border px-4 py-3 text-left transition-all hover:-translate-y-0.5"
-                    [class.border-[var(--accent)]]="selectedCityId() === city.id"
-                    [class.bg-[var(--accent)]/10]="selectedCityId() === city.id"
-                    [class.border-[var(--line)]]="selectedCityId() !== city.id"
-                    [class.bg-[var(--bg)]]="selectedCityId() !== city.id"
-                    (click)="selectCity(city.id)"
-                  >
-                    <span class="flex items-center justify-between gap-3">
-                      <span class="min-w-0">
-                        <span class="block truncate text-sm font-black text-[var(--text)]">{{ city.name }}</span>
-                        <span class="mt-0.5 block truncate text-xs font-semibold text-[var(--muted)]">{{ city.region || 'City wiki' }}</span>
-                      </span>
-                      @if (city.live) {
-                        <span class="rounded-full bg-[var(--accent)]/12 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Live</span>
-                      }
-                    </span>
-                  </button>
-                } @empty {
-                  <p class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--muted)]">
-                    No city matches yet. Try the map, or start with Philadelphia.
-                  </p>
-                }
               </div>
             </div>
           </div>
@@ -87,37 +92,58 @@
           <div class="flex items-start gap-4">
             <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">2</span>
             <div class="min-w-0 flex-1">
-              <h2 class="text-lg font-black tracking-tight">Find your business</h2>
-              <div class="mt-4 grid gap-4 sm:grid-cols-[1fr_auto]">
+              <h2 class="text-lg font-black">Find your business</h2>
+              <div class="relative mt-4">
                 <label class="block">
                   <span class="text-sm font-bold text-[var(--muted)]">Business name</span>
-                  <input
-                    type="text"
-                    class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
-                    [value]="businessQuery()"
-                    (input)="onBusinessQueryInput($event)"
-                    placeholder="Delasandro's, Brauhaus Schmitz..."
-                  />
+                  <span class="relative mt-2 block">
+                    <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">search</span>
+                    <input
+                      type="text"
+                      class="theme-input w-full rounded-xl py-3 pl-11 pr-12 text-base font-semibold text-[var(--text)]"
+                      [value]="businessQuery()"
+                      (focus)="openBusinessSuggestions()"
+                      (input)="onBusinessQueryInput($event)"
+                      placeholder="Start typing the business name"
+                      autocomplete="off"
+                    />
+                    @if (placeSearchLoading()) {
+                      <span class="absolute right-4 top-1/2 inline-block h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent"></span>
+                    }
+                  </span>
                 </label>
-                <button type="button" class="primary-btn mt-7 justify-center !px-5 !py-3 text-sm" [disabled]="!canSearchBusiness()" (click)="searchBusiness()">
-                  @if (placeSearchLoading()) {
-                    <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-                    <span>Searching</span>
-                  } @else {
-                    <span class="material-symbols-outlined text-base">search</span>
-                    <span>Find matches</span>
-                  }
-                </button>
+
+                @if (businessSuggestionsOpen() && placeResults().length > 0) {
+                  <div class="absolute left-0 right-0 top-full z-20 mt-2 max-h-80 overflow-auto rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-elevated)]">
+                    @for (place of placeResults(); track place.placeId) {
+                      <button type="button" class="flex w-full items-start justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-[var(--soft-fill)]" (click)="selectPlace(place)">
+                        <span class="min-w-0">
+                          <span class="block truncate text-sm font-black text-[var(--text)]">{{ place.name }}</span>
+                          <span class="mt-1 block truncate text-xs font-semibold text-[var(--muted)]">{{ place.address || place.category }}</span>
+                        </span>
+                        <span class="shrink-0 rounded-full bg-[var(--soft-fill)] px-2 py-1 text-[9px] font-black uppercase text-[var(--muted)]">{{ place.source }}</span>
+                      </button>
+                    }
+                    <button type="button" class="w-full border-t border-[var(--line)] px-4 py-3 text-left text-sm font-black text-[var(--accent)] hover:bg-[var(--soft-fill)]" (click)="useManualBusiness()">
+                      Add as a new business instead
+                    </button>
+                  </div>
+                }
               </div>
+
+              @if (placeSearchError()) {
+                <div class="error-banner mt-4 rounded-2xl px-4 py-3 text-sm">{{ placeSearchError() }}</div>
+              }
 
               <div class="mt-4 grid gap-4 sm:grid-cols-2">
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Neighborhood</span>
+                  <span class="text-sm font-bold text-[var(--muted)]">Neighborhood or address</span>
                   <input
                     type="text"
                     class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
                     [value]="neighborhood()"
                     (input)="onNeighborhoodInput($event)"
+                    placeholder="Street, neighborhood, or area"
                   />
                 </label>
                 <label class="block">
@@ -128,48 +154,40 @@
                     (change)="onCategoryInput($event)"
                   >
                     @for (item of categories; track item) {
-                      <option [value]="item">{{ item }}</option>
+                      <option [value]="item" [selected]="item === category()">{{ item }}</option>
                     }
                   </select>
                 </label>
               </div>
 
-              @if (placeSearchError()) {
-                <div class="error-banner mt-4 rounded-2xl px-4 py-3 text-sm">{{ placeSearchError() }}</div>
-              }
-
-              @if (placeResults().length > 0) {
-                <div class="mt-4 space-y-2">
-                  <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Possible matches</p>
-                  @for (place of placeResults(); track place.placeId) {
-                    <button
-                      type="button"
-                      class="w-full rounded-2xl border px-4 py-3 text-left transition-all"
-                      [class.border-[var(--accent)]]="selectedPlace()?.placeId === place.placeId"
-                      [class.bg-[var(--accent)]/10]="selectedPlace()?.placeId === place.placeId"
-                      [class.border-[var(--line)]]="selectedPlace()?.placeId !== place.placeId"
-                      [class.bg-[var(--bg)]]="selectedPlace()?.placeId !== place.placeId"
-                      (click)="selectPlace(place)"
-                    >
-                      <span class="flex items-start justify-between gap-3">
-                        <span>
-                          <span class="block text-sm font-black text-[var(--text)]">{{ place.name }}</span>
-                          <span class="mt-1 block text-xs leading-5 text-[var(--muted)]">{{ place.address || place.category }}</span>
-                        </span>
-                        <span class="rounded-full bg-[var(--soft-fill)] px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">{{ place.source }}</span>
-                      </span>
-                    </button>
-                  }
-                  <button type="button" class="text-sm font-black text-[var(--accent)] underline-offset-4 hover:underline" (click)="useManualBusiness()">
-                    My business is not listed. Add it manually.
-                  </button>
+              <div class="mt-4 rounded-2xl border px-4 py-3"
+                [class.border-amber-400]="reviewedPlaceMatch() && !hasDuplicateClaim()"
+                [class.bg-amber-400/10]="reviewedPlaceMatch() && !hasDuplicateClaim()"
+                [class.border-red-400]="hasDuplicateClaim()"
+                [class.bg-red-400/10]="hasDuplicateClaim()"
+                [class.border-[var(--line)]]="!reviewedPlaceMatch() && !hasDuplicateClaim()"
+                [class.bg-[var(--bg)]]="!reviewedPlaceMatch() && !hasDuplicateClaim()"
+              >
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-outlined mt-0.5 text-base"
+                    [class.text-amber-600]="reviewedPlaceMatch() && !hasDuplicateClaim()"
+                    [class.text-red-600]="hasDuplicateClaim()"
+                    [class.text-[var(--accent)]]="!reviewedPlaceMatch() && !hasDuplicateClaim()"
+                  >{{ hasDuplicateClaim() ? 'block' : reviewedPlaceMatch() ? 'verified' : 'task_alt' }}</span>
+                  <div>
+                    @if (hasDuplicateClaim()) {
+                      <p class="text-sm font-black text-[var(--text)]">Duplicate check found an existing pending claim.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Use the existing claim for {{ businessName() }} in {{ selectedCityName() }} instead of creating another business page.</p>
+                    } @else if (reviewedPlaceMatch()) {
+                      <p class="text-sm font-black text-[var(--text)]">Existing city profile found.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">This will claim the existing place profile rather than creating a duplicate listing.</p>
+                    } @else {
+                      <p class="text-sm font-black text-[var(--text)]">No duplicate claim found for this name and city.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Claim key: {{ claimKey() }}</p>
+                    }
+                  </div>
                 </div>
-              } @else {
-                <p class="mt-3 flex items-center gap-2 text-sm font-semibold leading-6 text-[var(--muted)]">
-                  <span class="material-symbols-outlined text-base">search</span>
-                  We will match it to an existing {{ selectedCityName() }} wiki card, use Google Places, or create a new profile.
-                </p>
-              }
+              </div>
             </div>
           </div>
         </article>
@@ -178,23 +196,24 @@
           <div class="flex items-start gap-4">
             <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">3</span>
             <div class="min-w-0 flex-1">
-              <h2 class="text-lg font-black tracking-tight">What should your guide know?</h2>
-              <label class="mt-4 block">
-                <span class="text-sm font-bold text-[var(--muted)]">Short description customers hear first</span>
-                <input
-                  type="text"
-                  class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
-                  [value]="description()"
-                  (input)="onDescriptionInput($event)"
-                />
-              </label>
-              <div class="mt-4 rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--bg)] px-4 py-5 text-center">
-                <span class="material-symbols-outlined text-3xl text-[var(--muted)]">upload</span>
-                <p class="mt-2 text-sm font-bold text-[var(--text)]">Drop menu, hours, specials, PDF, link, or photo</p>
-                <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Optional for V1. The guide can read these later to answer questions accurately.</p>
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <h2 class="text-lg font-black">Business guide prompt</h2>
+                <button type="button" class="ghost-btn justify-center !px-4 !py-2.5 text-sm" (click)="refineGuidePrompt()">
+                  <span class="material-symbols-outlined text-base">auto_awesome</span>
+                  <span>Refine with AI</span>
+                </button>
               </div>
-              <p class="mt-3 text-sm font-semibold leading-6 text-[var(--muted)]">
-                Already have a city wiki card? We can pull hours, menu, and tips automatically in the claimed profile flow.
+              <label class="mt-4 block">
+                <span class="text-sm font-bold text-[var(--muted)]">General guide about the business</span>
+                <textarea
+                  class="theme-input mt-2 min-h-40 w-full resize-y rounded-xl px-4 py-3 text-base font-semibold leading-7 text-[var(--text)]"
+                  [value]="guidePrompt()"
+                  (input)="onGuidePromptInput($event)"
+                  placeholder="Tell the guide what this business is, what customers ask about, what makes it local, and what it should never guess."
+                ></textarea>
+              </label>
+              <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
+                PDF upload comes later. For now, this prompt is enough to shape the first version of the business guide.
               </p>
             </div>
           </div>
@@ -204,10 +223,8 @@
           <div class="flex items-start gap-4">
             <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">4</span>
             <div class="min-w-0 flex-1">
-              <h2 class="text-lg font-black tracking-tight">Languages and decal finish</h2>
-              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
-                Pick up to 6 flags to feature. The guide can support more languages behind the scenes.
-              </p>
+              <h2 class="text-lg font-black">Languages and format</h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Pick up to 6 featured languages for the badge. The guide link itself can support more.</p>
               <div class="mt-4 flex flex-wrap gap-2">
                 @for (language of languages; track language.code) {
                   <button
@@ -229,25 +246,22 @@
                 }
               </div>
 
-              <div class="mt-5 flex flex-wrap gap-2">
+              <div class="mt-5 grid gap-2 sm:grid-cols-2">
                 @for (size of sizes; track size.id) {
                   <button
                     type="button"
-                    class="rounded-full border px-4 py-2 text-sm font-bold transition-colors"
+                    class="rounded-2xl border px-4 py-3 text-left transition-colors"
                     [class.border-[var(--accent)]]="selectedSizeId() === size.id"
                     [class.bg-[var(--accent)]/10]="selectedSizeId() === size.id"
-                    [class.text-[var(--accent)]]="selectedSizeId() === size.id"
                     [class.border-[var(--line)]]="selectedSizeId() !== size.id"
-                    [class.text-[var(--text)]]="selectedSizeId() !== size.id"
+                    [class.bg-[var(--bg)]]="selectedSizeId() !== size.id"
                     (click)="selectSize(size.id)"
                   >
-                    {{ size.label }}
+                    <span class="block text-sm font-black text-[var(--text)]">{{ size.label }}</span>
+                    <span class="mt-0.5 block text-xs font-semibold text-[var(--muted)]">{{ size.detail }}</span>
                   </button>
                 }
               </div>
-              <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
-                All sizes use the same QR link. Download a print-ready file now, or create an account to save/order.
-              </p>
             </div>
           </div>
         </article>
@@ -255,72 +269,97 @@
     </section>
 
     <aside class="lg:sticky lg:top-28 lg:self-start">
-      <p class="mb-3 text-center text-[10px] font-black uppercase tracking-[0.28em] text-[var(--muted)]">Live preview</p>
+      <p class="mb-3 text-center text-[10px] font-black uppercase text-[var(--muted)]">Live preview</p>
       <div class="rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-elevated)]">
-        <div class="overflow-hidden rounded-[1.35rem] border border-[var(--accent)]/20 bg-[#082012] p-4 text-white">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex min-w-0 items-start gap-3">
-              <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#1f9d4f]">
-                <span class="material-symbols-outlined text-xl">eco</span>
-              </span>
-              <div class="min-w-0">
-                <p class="truncate text-base font-black">My Living Wiki · <span class="text-emerald-300">{{ selectedCityName() }}</span></p>
-                <p class="truncate text-sm font-black text-emerald-200">{{ businessName() }}</p>
-              </div>
-            </div>
-            <span class="rounded-full border border-emerald-300/25 px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200">{{ selectedSizeId() }}</span>
-          </div>
+        <div class="rounded-[1.35rem] border border-[#c9a160]/45 bg-[#f7f2e8] p-4">
+          <svg viewBox="0 0 900 900" role="img" [attr.aria-label]="'QR badge preview for ' + businessName()" class="mx-auto aspect-square w-full max-w-[34rem] drop-shadow-2xl">
+            <defs>
+              <radialGradient id="claimPaper" cx="50%" cy="42%" r="62%">
+                <stop offset="0" stop-color="#f7e7ca"></stop>
+                <stop offset="0.68" stop-color="#dfc28d"></stop>
+                <stop offset="1" stop-color="#c79d56"></stop>
+              </radialGradient>
+              <linearGradient id="claimTealRing" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2f8294"></stop>
+                <stop offset="1" stop-color="#0f596d"></stop>
+              </linearGradient>
+              <path id="claimTopArc" d="M 138 466 A 312 312 0 0 1 762 466"></path>
+              <path id="claimBottomArc" d="M 154 642 A 315 315 0 0 0 746 642"></path>
+            </defs>
+            <circle cx="450" cy="450" r="400" fill="url(#claimPaper)"></circle>
+            <circle cx="450" cy="450" r="342" fill="none" stroke="url(#claimTealRing)" stroke-width="76"></circle>
+            <circle cx="450" cy="450" r="286" fill="#ead2a5" stroke="#b8842f" stroke-width="5"></circle>
+            <circle cx="450" cy="450" r="214" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="28 30"></circle>
 
-          <div class="relative mx-auto mt-6 flex h-[18rem] max-w-[23rem] items-center justify-center">
-            <div class="absolute inset-8 rounded-full border border-dashed border-emerald-500/35"></div>
-            <div class="relative rounded-2xl bg-white p-3 shadow-[0_22px_60px_-28px_rgba(0,0,0,0.65)]">
-              <img [src]="qrImageUrl()" alt="QR code for claimed business preview" class="h-36 w-36 rounded-lg bg-white" />
-            </div>
+            <text font-family="Inter, Arial, sans-serif" font-size="46" font-weight="900" fill="#ffffff">
+              <textPath href="#claimTopArc" startOffset="50%" text-anchor="middle">{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
+            </text>
+            <text font-family="Inter, Arial, sans-serif" font-size="52" font-weight="900" fill="#ffffff">
+              <textPath href="#claimBottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
+            </text>
+
+            <text x="450" y="118" text-anchor="middle" font-size="68">🎩</text>
+            <text x="238" y="464" text-anchor="middle" font-size="70">🥨</text>
+            <text x="676" y="466" text-anchor="middle" font-size="70">🍺</text>
+            <text x="450" y="710" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+
+            <rect x="304" y="294" width="292" height="292" rx="18" fill="#fff8ea" stroke="#b8842f" stroke-width="5"></rect>
+            <image [attr.href]="qrImageUrl()" x="326" y="316" width="248" height="248" preserveAspectRatio="xMidYMid meet"></image>
+            <g transform="translate(450 446)">
+              <circle r="28" fill="#f3dfb9"></circle>
+              <path d="M0 -18c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16V-2c0-9 7-16 16-16z" fill="#0f596d"></path>
+              <path d="M-26 9c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
+              <path d="M0 39v23M-18 62h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
+            </g>
+
             @for (language of selectedLanguages(); track language.code; let i = $index) {
-              <span
-                class="absolute left-1/2 top-1/2 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-emerald-200/30 bg-white text-xl shadow-lg"
-                [style.transform]="'translate(-50%, -50%) ' + flagTransform(i, selectedLanguages().length)"
-              >
-                {{ language.flag }}
-              </span>
+              <g [attr.transform]="svgOrbitTransform(i, selectedLanguages().length)">
+                <circle r="36" fill="#f7efe0" stroke="#b98834" stroke-width="4"></circle>
+                <text y="10" text-anchor="middle" font-size="28">{{ language.flag }}</text>
+              </g>
             }
-          </div>
-
-          <div class="text-center">
-            <h3 class="text-lg font-black">Talk to us in your language</h3>
-            <p class="mt-1 text-sm font-semibold text-emerald-100">Scan to chat by voice with {{ businessName() }}’s guide</p>
-            <p class="mt-4 break-all text-sm font-black text-emerald-300">{{ previewUrl().replace('https://', '') }}</p>
-          </div>
+          </svg>
         </div>
 
+        <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-4">
+          <p class="text-[10px] font-black uppercase text-[var(--accent)]">Business page link</p>
+          <p class="mt-2 break-all text-sm font-black text-[var(--text)]">{{ previewUrl() }}</p>
+          <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ guideSummary() }}</p>
+        </div>
+
+        @if (claimStatus()) {
+          <div class="mt-4 rounded-2xl border border-emerald-400/35 bg-emerald-400/10 px-4 py-3 text-sm font-semibold text-[var(--text)]">{{ claimStatus() }}</div>
+        }
+        @if (claimError()) {
+          <div class="error-banner mt-4 rounded-2xl px-4 py-3 text-sm">{{ claimError() }}</div>
+        }
+
         <div class="mt-4 grid gap-3">
+          <button type="button" class="primary-btn justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
+            @if (claimSaving()) {
+              <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+              <span>Saving</span>
+            } @else {
+              <span class="material-symbols-outlined text-base">add_business</span>
+              <span>Reserve business page</span>
+            }
+          </button>
           <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="decalDownloadHref()" [download]="decalFilename()">
             <span class="material-symbols-outlined text-base">download</span>
-            <span>Download print-ready SVG</span>
-          </a>
-          <a routerLink="/create-account" class="primary-btn justify-center !px-5 !py-3 text-sm">
-            <span class="material-symbols-outlined text-base">inventory_2</span>
-            <span>Save claim and order decals</span>
+            <span>Download badge SVG</span>
           </a>
           <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="previewUrl()" target="_blank" rel="noopener">
             <span class="material-symbols-outlined text-base">qr_code_2</span>
-            <span>Test my QR link</span>
+            <span>Test QR link</span>
           </a>
-        </div>
-
-        <div class="mt-5 rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-4">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Add to your site</p>
-              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Paste this link on your website, menu, profile, or QR placard.</p>
-            </div>
-            <button type="button" class="rounded-full border border-[var(--line)] p-2 text-[var(--muted)] hover:text-[var(--accent)]" (click)="copyLink()" aria-label="Copy business link">
-              <span class="material-symbols-outlined text-base">{{ copiedLink() ? 'check' : 'content_copy' }}</span>
-            </button>
-          </div>
-          <div class="mt-3 break-all rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm font-bold text-[var(--text)]">
-            {{ previewUrl() }}
-          </div>
+          <button type="button" class="ghost-btn justify-center !px-5 !py-3 text-sm" (click)="copyLink()">
+            <span class="material-symbols-outlined text-base">{{ copiedLink() ? 'check' : 'content_copy' }}</span>
+            <span>{{ copiedLink() ? 'Copied' : 'Copy link' }}</span>
+          </button>
+          <a routerLink="/create-account" class="ghost-btn justify-center !px-5 !py-3 text-sm">
+            <span class="material-symbols-outlined text-base">inventory_2</span>
+            <span>Create account to finish</span>
+          </a>
         </div>
       </div>
     </aside>

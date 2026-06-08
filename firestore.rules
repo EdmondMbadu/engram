@@ -110,6 +110,50 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /business_claims/{claimId} {
+      allow get, list: if true;
+      allow create: if request.resource.data.keys().hasOnly([
+          'claim_key',
+          'atlas_id',
+          'city_name',
+          'city_slug',
+          'business_name',
+          'business_slug',
+          'business_address',
+          'category',
+          'place_id',
+          'preview_url',
+          'status',
+          'created_at'
+        ])
+        && request.resource.data.claim_key == claimId
+        && request.resource.data.claim_key is string
+        && request.resource.data.claim_key.size() >= 4
+        && request.resource.data.claim_key.size() <= 180
+        && request.resource.data.city_name is string
+        && request.resource.data.city_name.size() >= 2
+        && request.resource.data.city_name.size() <= 90
+        && request.resource.data.city_slug is string
+        && request.resource.data.city_slug.size() >= 2
+        && request.resource.data.city_slug.size() <= 90
+        && request.resource.data.business_name is string
+        && request.resource.data.business_name.size() >= 2
+        && request.resource.data.business_name.size() <= 120
+        && request.resource.data.business_slug is string
+        && request.resource.data.business_slug.size() >= 2
+        && request.resource.data.business_slug.size() <= 90
+        && request.resource.data.business_address is string
+        && request.resource.data.business_address.size() <= 180
+        && request.resource.data.category is string
+        && request.resource.data.category.size() <= 80
+        && request.resource.data.preview_url is string
+        && request.resource.data.preview_url.matches('https://mylivingwiki\\.com/.*')
+        && request.resource.data.status == 'pending'
+        && request.resource.data.created_at == request.time
+        && !exists(/databases/$(database)/documents/business_claims/$(claimId));
+      allow update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

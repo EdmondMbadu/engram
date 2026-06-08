@@ -4,6 +4,10 @@ import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import {
+  BusinessClaimService,
+  type BusinessClaimRegistryRecord,
+} from './business-claim.service';
 
 type DecalLanguage = {
   code: string;
@@ -25,6 +29,19 @@ type ClaimCityFallback = {
   slug: string;
 };
 
+type ClaimCityOption = ClaimCityFallback & {
+  live: boolean;
+};
+
+type StoredClaimDraft = {
+  claimKey: string;
+  businessName: string;
+  cityName: string;
+  previewUrl: string;
+  guidePrompt: string;
+  savedAt: string;
+};
+
 @Component({
   selector: 'app-business-claim',
   imports: [RouterLink, ThemeToggleComponent],
@@ -34,47 +51,63 @@ export class BusinessClaimComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly atlasService = inject(AtlasService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
+  private readonly businessClaimService = inject(BusinessClaimService);
+  private readonly localDraftsKey = 'living-wiki:business-claim-drafts';
+  private businessSearchTimer: ReturnType<typeof setTimeout> | null = null;
+  private claimCheckTimer: ReturnType<typeof setTimeout> | null = null;
+  private lastPlaceSearchKey = '';
+  private lastClaimCheckKey = '';
 
   readonly publicCities = signal<AtlasItem[]>([]);
   readonly citiesLoading = signal(true);
   readonly citySearch = signal('');
+  readonly citySuggestionsOpen = signal(false);
   readonly selectedCityId = signal<string | null>(null);
-  readonly businessQuery = signal('Delasandrois');
+  readonly businessQuery = signal('Brauhaus Schmitz');
+  readonly businessSuggestionsOpen = signal(false);
   readonly neighborhood = signal('South Street');
   readonly category = signal('German bierhall');
-  readonly description = signal('Authentic local favorite with a strong neighborhood following, events, specials, and a city guide customers can ask by voice.');
-  readonly selectedLanguageCodes = signal(['en', 'es', 'de', 'pt', 'fr', 'ko']);
+  readonly guidePrompt = signal(
+    'Authentic German beer hall on South Street with a deep beer list, food, events, private parties, watch parties, and staff who can point visitors to the right local experience.',
+  );
+  readonly selectedLanguageCodes = signal(['en', 'fr', 'pt', 'zh', 'de']);
   readonly selectedSizeId = signal('window');
   readonly placeResults = signal<CityPlaceCandidate[]>([]);
   readonly selectedPlace = signal<CityPlaceCandidate | null>(null);
   readonly placeSearchLoading = signal(false);
   readonly placeSearchError = signal<string | null>(null);
+  readonly existingClaim = signal<BusinessClaimRegistryRecord | null>(null);
+  readonly localClaimKeys = signal<string[]>([]);
+  readonly claimCheckLoading = signal(false);
+  readonly claimSaving = signal(false);
+  readonly claimStatus = signal<string | null>(null);
+  readonly claimError = signal<string | null>(null);
   readonly copiedLink = signal(false);
 
   readonly fallbackCities: ClaimCityFallback[] = [
     { id: 'fallback-philly', name: 'Philadelphia', region: 'Pennsylvania', slug: 'philly' },
     { id: 'fallback-boston', name: 'Boston', region: 'Massachusetts', slug: 'my-living-wiki-boston' },
     { id: 'fallback-portland', name: 'Portland', region: 'Oregon', slug: 'my-living-wiki-portland' },
-    { id: 'fallback-sao-paulo', name: 'São Paulo', region: 'Brazil', slug: 'my-living-wiki-s-o-paulo' },
+    { id: 'fallback-sao-paulo', name: 'Sao Paulo', region: 'Brazil', slug: 'my-living-wiki-sao-paulo' },
     { id: 'fallback-austin', name: 'Austin', region: 'Texas', slug: 'my-living-wiki-austin' },
     { id: 'fallback-london', name: 'London', region: 'United Kingdom', slug: 'my-living-wiki-london' },
   ];
 
   readonly languages: DecalLanguage[] = [
     { code: 'en', flag: '🇺🇸', label: 'English', greeting: 'Hello' },
-    { code: 'es', flag: '🇪🇸', label: 'Español', greeting: '¡Hola!' },
-    { code: 'fr', flag: '🇫🇷', label: 'Français', greeting: 'Bonjour' },
+    { code: 'fr', flag: '🇫🇷', label: 'Francais', greeting: 'Bonjour' },
+    { code: 'pt', flag: '🇧🇷', label: 'Portugues', greeting: 'Ola' },
+    { code: 'zh', flag: '🇨🇳', label: 'Chinese', greeting: 'Ni hao' },
     { code: 'de', flag: '🇩🇪', label: 'Deutsch', greeting: 'Guten Tag' },
-    { code: 'pt', flag: '🇧🇷', label: 'Português', greeting: 'Olá' },
-    { code: 'zh', flag: '🇨🇳', label: '中文', greeting: '你好' },
-    { code: 'ar', flag: '🇸🇦', label: 'العربية', greeting: 'مرحبا' },
-    { code: 'ko', flag: '🇰🇷', label: '한국어', greeting: '안녕' },
+    { code: 'es', flag: '🇪🇸', label: 'Espanol', greeting: 'Hola' },
+    { code: 'ar', flag: '🇸🇦', label: 'Arabic', greeting: 'Marhaba' },
+    { code: 'ko', flag: '🇰🇷', label: 'Korean', greeting: 'Annyeong' },
   ];
 
   readonly sizes: DecalSize[] = [
-    { id: 'window', label: 'Window cling 8×10"', detail: 'Best for glass storefronts' },
-    { id: 'door', label: 'Door decal 5×7"', detail: 'Compact entrance sticker' },
-    { id: 'tent', label: 'Table tent 4×6"', detail: 'Host stand or counter' },
+    { id: 'window', label: 'Window cling 8x10"', detail: 'Best for glass storefronts' },
+    { id: 'door', label: 'Door decal 5x7"', detail: 'Compact entrance sticker' },
+    { id: 'tent', label: 'Table tent 4x6"', detail: 'Host stand or counter' },
     { id: 'card', label: 'Counter card', detail: 'Checkout display' },
   ];
 
@@ -126,7 +159,7 @@ export class BusinessClaimComponent {
 
   readonly selectedAtlasId = computed(() => this.selectedCity()?.id ?? null);
 
-  readonly cityOptions = computed(() => {
+  readonly allCityOptions = computed<ClaimCityOption[]>(() => {
     const live = this.publicCities()
       .filter((atlas) => atlas.city_config?.enabled === true)
       .map((atlas) => ({
@@ -137,13 +170,28 @@ export class BusinessClaimComponent {
         live: true,
       }));
     const seenSlugs = new Set(live.map((city) => city.slug));
+    const seenNames = new Set(live.map((city) => city.name.trim().toLowerCase()));
     const fallback = this.fallbackCities
-      .filter((city) => !seenSlugs.has(city.slug))
+      .filter((city) => !seenSlugs.has(city.slug) && !seenNames.has(city.name.trim().toLowerCase()))
       .map((city) => ({ ...city, live: false }));
+    return [...live, ...fallback];
+  });
+
+  readonly cityOptions = computed(() => {
     const query = this.citySearch().trim().toLowerCase();
-    return [...live, ...fallback]
-      .filter((city) => !query || `${city.name} ${city.region}`.toLowerCase().includes(query))
-      .slice(0, 10);
+    if (!query) {
+      return [];
+    }
+    return this.allCityOptions()
+      .filter((city) => `${city.name} ${city.region}`.toLowerCase().includes(query))
+      .sort((left, right) => {
+        const leftName = left.name.toLowerCase();
+        const rightName = right.name.toLowerCase();
+        const leftStarts = leftName.startsWith(query) ? 0 : 1;
+        const rightStarts = rightName.startsWith(query) ? 0 : 1;
+        return leftStarts - rightStarts || leftName.localeCompare(rightName);
+      })
+      .slice(0, 7);
   });
 
   readonly businessName = computed(() => this.selectedPlace()?.name || this.businessQuery().trim() || 'Your business');
@@ -153,6 +201,7 @@ export class BusinessClaimComponent {
     return this.languages.filter((language) => selected.has(language.code)).slice(0, 6);
   });
   readonly businessSlug = computed(() => this.slugify(this.businessName()));
+  readonly claimKey = computed(() => `${this.selectedCitySlug()}__${this.businessSlug() || 'business'}`);
   readonly previewPath = computed(() => {
     const slug = this.selectedCitySlug();
     const business = this.businessSlug();
@@ -160,13 +209,34 @@ export class BusinessClaimComponent {
   });
   readonly previewUrl = computed(() => `https://mylivingwiki.com${this.previewPath()}`);
   readonly qrImageUrl = computed(() =>
-    `https://api.qrserver.com/v1/create-qr-code/?size=480x480&margin=18&data=${encodeURIComponent(this.previewUrl())}`,
+    `https://api.qrserver.com/v1/create-qr-code/?size=520x520&margin=18&data=${encodeURIComponent(this.previewUrl())}`,
   );
   readonly decalDownloadHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.buildDecalSvg())}`);
-  readonly decalFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-decal.svg`);
-  readonly canSearchBusiness = computed(() => !!this.selectedAtlasId() && this.businessQuery().trim().length >= 2 && !this.placeSearchLoading());
+  readonly decalFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-local-insider-badge.svg`);
+  readonly localDuplicateClaim = computed(() => this.localClaimKeys().includes(this.claimKey()));
+  readonly hasDuplicateClaim = computed(() => !!this.existingClaim() || this.localDuplicateClaim());
+  readonly reviewedPlaceMatch = computed(() => {
+    const businessSlug = this.businessSlug();
+    return this.placeResults().find((place) => place.source === 'reviewed' && this.slugify(place.name) === businessSlug) ?? null;
+  });
+  readonly canSaveClaim = computed(() =>
+    !!this.businessSlug()
+    && !this.hasDuplicateClaim()
+    && !this.claimCheckLoading()
+    && !this.claimSaving(),
+  );
+  readonly guideSummary = computed(() => {
+    const prompt = this.guidePrompt().trim();
+    if (!prompt) {
+      return 'A local guide that answers customer questions in their language.';
+    }
+    return prompt.length > 150 ? `${prompt.slice(0, 147).trim()}...` : prompt;
+  });
+  readonly decalBusinessTitle = computed(() => this.fitBadgeText(this.businessName()).toUpperCase());
 
   constructor() {
+    this.localClaimKeys.set(this.loadLocalDrafts().map((claim) => claim.claimKey));
+
     const requestedCity = this.route.snapshot.queryParamMap.get('city')?.trim().toLowerCase() ?? '';
     if (requestedCity) {
       const fallback = this.fallbackCities.find((city) => city.slug === requestedCity || city.name.toLowerCase() === requestedCity);
@@ -192,14 +262,53 @@ export class BusinessClaimComponent {
         }
       }
     });
+
+    effect(() => {
+      const atlasId = this.selectedAtlasId();
+      const query = this.businessQuery().trim();
+      const selectedPlaceName = this.selectedPlace()?.name.trim() ?? '';
+      if (this.businessSearchTimer) {
+        clearTimeout(this.businessSearchTimer);
+      }
+      if (!atlasId || query.length < 2 || selectedPlaceName === query) {
+        if (query.length < 2) {
+          this.placeResults.set([]);
+        }
+        return;
+      }
+      this.businessSearchTimer = setTimeout(() => void this.searchBusiness(), 420);
+    });
+
+    effect(() => {
+      const claimKey = this.claimKey();
+      const businessSlug = this.businessSlug();
+      if (this.claimCheckTimer) {
+        clearTimeout(this.claimCheckTimer);
+      }
+      this.existingClaim.set(null);
+      this.claimError.set(null);
+      if (!businessSlug || businessSlug === 'your-business') {
+        return;
+      }
+      this.claimCheckTimer = setTimeout(() => void this.checkExistingClaim(claimKey), 360);
+    });
   }
 
   onCitySearchInput(event: Event): void {
     this.citySearch.set((event.target as HTMLInputElement).value);
+    this.citySuggestionsOpen.set(true);
   }
 
-  selectCity(cityId: string): void {
-    this.selectedCityId.set(cityId);
+  openCitySuggestions(): void {
+    if (this.citySearch().trim()) {
+      this.citySuggestionsOpen.set(true);
+    }
+  }
+
+  selectCity(city: ClaimCityOption): void {
+    this.selectedCityId.set(city.id);
+    this.citySearch.set(city.name);
+    this.citySuggestionsOpen.set(false);
     this.placeResults.set([]);
     this.selectedPlace.set(null);
     this.placeSearchError.set(null);
@@ -208,6 +317,14 @@ export class BusinessClaimComponent {
   onBusinessQueryInput(event: Event): void {
     this.businessQuery.set((event.target as HTMLInputElement).value);
     this.selectedPlace.set(null);
+    this.businessSuggestionsOpen.set(true);
+    this.claimStatus.set(null);
+  }
+
+  openBusinessSuggestions(): void {
+    if (this.placeResults().length > 0) {
+      this.businessSuggestionsOpen.set(true);
+    }
   }
 
   onNeighborhoodInput(event: Event): void {
@@ -218,42 +335,70 @@ export class BusinessClaimComponent {
     this.category.set((event.target as HTMLSelectElement).value);
   }
 
-  onDescriptionInput(event: Event): void {
-    this.description.set((event.target as HTMLInputElement).value);
+  onGuidePromptInput(event: Event): void {
+    this.guidePrompt.set((event.target as HTMLTextAreaElement).value);
+    this.claimStatus.set(null);
   }
 
   async searchBusiness(): Promise<void> {
     const atlasId = this.selectedAtlasId();
     const query = this.businessQuery().trim();
-    if (!atlasId || query.length < 2 || this.placeSearchLoading()) {
+    if (!atlasId || query.length < 2) {
       return;
     }
 
+    const searchKey = `${atlasId}:${query}`;
+    this.lastPlaceSearchKey = searchKey;
     this.placeSearchLoading.set(true);
     this.placeSearchError.set(null);
-    this.selectedPlace.set(null);
     try {
       const places = await this.placeReviewsService.searchCityPlaces(atlasId, query);
-      this.placeResults.set(places);
-      if (places.length > 0) {
-        this.selectedPlace.set(places[0]);
+      if (this.lastPlaceSearchKey !== searchKey) {
+        return;
       }
+      this.placeResults.set(places);
+      this.businessSuggestionsOpen.set(true);
     } catch {
-      this.placeSearchError.set('Place search is unavailable right now. You can still add the business manually.');
-      this.placeResults.set([]);
+      if (this.lastPlaceSearchKey === searchKey) {
+        this.placeSearchError.set('Place search is unavailable right now. You can still type the business manually.');
+        this.placeResults.set([]);
+      }
     } finally {
-      this.placeSearchLoading.set(false);
+      if (this.lastPlaceSearchKey === searchKey) {
+        this.placeSearchLoading.set(false);
+      }
     }
   }
 
   selectPlace(place: CityPlaceCandidate): void {
     this.selectedPlace.set(place);
     this.businessQuery.set(place.name);
+    this.businessSuggestionsOpen.set(false);
+    this.claimStatus.set(null);
   }
 
   useManualBusiness(): void {
     this.selectedPlace.set(null);
     this.placeResults.set([]);
+    this.businessSuggestionsOpen.set(false);
+  }
+
+  refineGuidePrompt(): void {
+    const name = this.businessName();
+    const city = this.selectedCityName();
+    const category = this.category();
+    const base = this.guidePrompt().trim();
+    const address = this.businessAddress();
+    const refined = [
+      `Act as ${name}'s local insider for ${city}.`,
+      `Explain the business as a real ${category.toLowerCase()} with practical, customer-ready answers.`,
+      address ? `Use this location context: ${address}.` : '',
+      base ? `Business notes: ${base}` : '',
+      'Help visitors with hours, menu or service highlights, reservations, events, accessibility, nearby recommendations, and language-friendly answers.',
+      'Keep answers warm, specific, concise, and honest when details are missing.',
+    ].filter(Boolean).join('\n\n');
+    this.guidePrompt.set(refined);
+    this.claimStatus.set('Guide prompt refined. Review it, then reserve the page draft.');
   }
 
   toggleLanguage(code: string): void {
@@ -269,6 +414,64 @@ export class BusinessClaimComponent {
     this.selectedSizeId.set(sizeId);
   }
 
+  async saveClaimDraft(): Promise<void> {
+    if (!this.canSaveClaim()) {
+      return;
+    }
+
+    this.claimSaving.set(true);
+    this.claimError.set(null);
+    this.claimStatus.set(null);
+    const claimKey = this.claimKey();
+    const record = {
+      claim_key: claimKey,
+      atlas_id: this.selectedAtlasId(),
+      city_name: this.selectedCityName(),
+      city_slug: this.selectedCitySlug(),
+      business_name: this.businessName(),
+      business_slug: this.businessSlug(),
+      business_address: this.businessAddress(),
+      category: this.category(),
+      place_id: this.selectedPlace()?.placeId ?? null,
+      preview_url: this.previewUrl(),
+      status: 'pending' as const,
+    };
+
+    try {
+      const existing = await this.businessClaimService.findByClaimKey(claimKey);
+      if (existing) {
+        this.existingClaim.set(existing);
+        this.claimError.set('This business already has a pending page draft. Use the existing claim instead of creating a duplicate.');
+        return;
+      }
+      const saved = await this.businessClaimService.create(record);
+      this.existingClaim.set(saved);
+      this.saveLocalDraft({
+        claimKey,
+        businessName: this.businessName(),
+        cityName: this.selectedCityName(),
+        previewUrl: this.previewUrl(),
+        guidePrompt: this.guidePrompt(),
+        savedAt: new Date().toISOString(),
+      });
+      this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
+      this.claimStatus.set('Business page draft reserved. The duplicate check will now catch this business before another draft is created.');
+    } catch {
+      this.saveLocalDraft({
+        claimKey,
+        businessName: this.businessName(),
+        cityName: this.selectedCityName(),
+        previewUrl: this.previewUrl(),
+        guidePrompt: this.guidePrompt(),
+        savedAt: new Date().toISOString(),
+      });
+      this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
+      this.claimStatus.set('Saved locally. Once the claim registry is available, this same key will be used to prevent duplicates.');
+    } finally {
+      this.claimSaving.set(false);
+    }
+  }
+
   async copyLink(): Promise<void> {
     if (typeof navigator === 'undefined' || !navigator.clipboard) {
       return;
@@ -278,9 +481,11 @@ export class BusinessClaimComponent {
     setTimeout(() => this.copiedLink.set(false), 1600);
   }
 
-  flagTransform(index: number, total: number): string {
-    const angle = -90 + (360 / Math.max(total, 1)) * index;
-    return `rotate(${angle}deg) translate(8.2rem) rotate(${-angle}deg)`;
+  svgOrbitTransform(index: number, total: number, radius = 190): string {
+    const angle = (-120 + (360 / Math.max(total, 1)) * index) * (Math.PI / 180);
+    const x = 450 + Math.cos(angle) * radius;
+    const y = 450 + Math.sin(angle) * radius;
+    return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
   }
 
   private async loadCities(requestedCity: string): Promise<void> {
@@ -309,6 +514,49 @@ export class BusinessClaimComponent {
     }
   }
 
+  private async checkExistingClaim(claimKey: string): Promise<void> {
+    if (this.localClaimKeys().includes(claimKey)) {
+      return;
+    }
+
+    this.lastClaimCheckKey = claimKey;
+    this.claimCheckLoading.set(true);
+    try {
+      const existing = await this.businessClaimService.findByClaimKey(claimKey);
+      if (this.lastClaimCheckKey === claimKey) {
+        this.existingClaim.set(existing);
+      }
+    } catch {
+      if (this.lastClaimCheckKey === claimKey) {
+        this.existingClaim.set(null);
+      }
+    } finally {
+      if (this.lastClaimCheckKey === claimKey) {
+        this.claimCheckLoading.set(false);
+      }
+    }
+  }
+
+  private loadLocalDrafts(): StoredClaimDraft[] {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(this.localDraftsKey) ?? '[]') as StoredClaimDraft[];
+      return Array.isArray(parsed) ? parsed.filter((draft) => !!draft.claimKey) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private saveLocalDraft(draft: StoredClaimDraft): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const existing = this.loadLocalDrafts().filter((item) => item.claimKey !== draft.claimKey);
+    window.localStorage.setItem(this.localDraftsKey, JSON.stringify([draft, ...existing].slice(0, 20)));
+  }
+
   private slugify(value: string): string {
     return value
       .trim()
@@ -317,6 +565,11 @@ export class BusinessClaimComponent {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 90);
+  }
+
+  private fitBadgeText(value: string): string {
+    const clean = value.trim() || 'Your business';
+    return clean.length > 28 ? `${clean.slice(0, 25).trim()}...` : clean;
   }
 
   private escapeSvg(value: string): string {
@@ -328,44 +581,54 @@ export class BusinessClaimComponent {
   }
 
   private buildDecalSvg(): string {
-    const business = this.escapeSvg(this.businessName());
-    const city = this.escapeSvg(this.selectedCityName());
-    const url = this.escapeSvg(this.previewUrl().replace(/^https:\/\//, ''));
+    const business = this.escapeSvg(this.decalBusinessTitle());
     const qr = this.escapeSvg(this.qrImageUrl());
-    const languages = this.selectedLanguages();
-    const greetings = languages.map((language, index) => {
-      const x = index % 2 === 0 ? 58 : 318;
-      const y = 144 + Math.floor(index / 2) * 62;
-      const color = ['#176a3a', '#1f66b1', '#9f3a2c', '#6b46c1'][index % 4];
-      return `<text x="${x}" y="${y}" font-size="30" font-weight="900" fill="${color}">${this.escapeSvg(language.greeting)}</text>`;
-    }).join('');
-    const flags = languages.map((language, index) => {
-      const positions = [[760, 110], [886, 178], [882, 316], [760, 388], [634, 316], [634, 178]];
-      const [x, y] = positions[index] ?? [760, 110];
-      return `<circle cx="${x}" cy="${y}" r="38" fill="#fff" stroke="#cfe3d2" stroke-width="3"/><text x="${x}" y="${y + 10}" text-anchor="middle" font-size="28">${language.flag}</text>`;
+    const flags = this.selectedLanguages().map((language, index, all) => {
+      const transform = this.svgOrbitTransform(index, all.length, 190);
+      return `<g transform="${transform}"><circle r="36" fill="#f7efe0" stroke="#b98834" stroke-width="4"/><text y="10" text-anchor="middle" font-size="28">${language.flag}</text></g>`;
     }).join('');
 
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640">
-      <rect width="1000" height="640" rx="28" fill="#f2faf5"/>
-      <rect x="18" y="18" width="964" height="72" rx="12" fill="#dfeee3"/>
-      <rect x="36" y="34" width="42" height="42" rx="10" fill="#1e8f45"/>
-      <text x="57" y="64" text-anchor="middle" font-size="26" fill="#fff">⌂</text>
-      <text x="100" y="66" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="900" fill="#092616">${business}</text>
-      <rect x="620" y="34" width="42" height="42" rx="10" fill="#1e8f45"/>
-      <text x="641" y="64" text-anchor="middle" font-size="24" fill="#fff">◒</text>
-      <text x="678" y="66" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#092616">Living Wiki · <tspan fill="#1e8f45">${city}</tspan></text>
-      ${greetings}
-      <rect x="226" y="208" width="88" height="154" rx="24" fill="#071b10"/>
-      <rect x="239" y="220" width="62" height="130" rx="18" fill="#ffffff"/>
-      <text x="270" y="296" text-anchor="middle" font-size="34" fill="#1e8f45">▢</text>
-      <circle cx="760" cy="250" r="220" fill="none" stroke="#b9d9c0" stroke-width="3" stroke-dasharray="6 7"/>
-      <rect x="642" y="130" width="236" height="236" rx="18" fill="#fff" stroke="#d8eadc" stroke-width="2"/>
-      <image href="${qr}" x="670" y="158" width="180" height="180" preserveAspectRatio="xMidYMid meet"/>
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
+      <defs>
+        <radialGradient id="paper" cx="50%" cy="42%" r="62%">
+          <stop offset="0" stop-color="#f5e4c5"/>
+          <stop offset="0.68" stop-color="#dfc28d"/>
+          <stop offset="1" stop-color="#c79d56"/>
+        </radialGradient>
+        <linearGradient id="tealRing" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#2f8294"/>
+          <stop offset="1" stop-color="#0f596d"/>
+        </linearGradient>
+        <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#12323a" flood-opacity="0.28"/>
+        </filter>
+        <path id="topArc" d="M 138 466 A 312 312 0 0 1 762 466"/>
+        <path id="bottomArc" d="M 154 642 A 315 315 0 0 0 746 642"/>
+      </defs>
+      <rect width="900" height="900" fill="#f4f4f1"/>
+      <circle cx="450" cy="450" r="400" fill="url(#paper)" filter="url(#softShadow)"/>
+      <circle cx="450" cy="450" r="342" fill="none" stroke="url(#tealRing)" stroke-width="76"/>
+      <circle cx="450" cy="450" r="286" fill="#ead2a5" stroke="#b8842f" stroke-width="5"/>
+      <circle cx="450" cy="450" r="214" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="28 30"/>
+      <text font-family="Inter, Arial, sans-serif" font-size="46" font-weight="900" fill="#ffffff" letter-spacing="4">
+        <textPath href="#topArc" startOffset="50%" text-anchor="middle">${business} • LivingWiki Chat</textPath>
+      </text>
+      <text font-family="Inter, Arial, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="6">
+        <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
+      </text>
+      <text x="450" y="710" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+      <text x="450" y="118" text-anchor="middle" font-size="68">🎩</text>
+      <text x="238" y="464" text-anchor="middle" font-size="70">🥨</text>
+      <text x="676" y="466" text-anchor="middle" font-size="70">🍺</text>
+      <rect x="304" y="294" width="292" height="292" rx="18" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
+      <image href="${qr}" x="326" y="316" width="248" height="248" preserveAspectRatio="xMidYMid meet"/>
+      <g transform="translate(450 446)">
+        <circle r="28" fill="#f3dfb9"/>
+        <path d="M0 -18c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16V-2c0-9 7-16 16-16z" fill="#0f596d"/>
+        <path d="M-26 9c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
+        <path d="M0 39v23M-18 62h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
+      </g>
       ${flags}
-      <line x1="32" y1="500" x2="968" y2="500" stroke="#cfe3d2" stroke-width="2"/>
-      <rect x="344" y="526" width="312" height="56" rx="28" fill="#fff" stroke="#cfe3d2" stroke-width="2"/>
-      <text x="500" y="563" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900" fill="#1e8f45">phone → mic → chat</text>
-      <text x="500" y="618" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900" fill="#1e8f45">${url}</text>
     </svg>`;
   }
 }
