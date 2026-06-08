@@ -248,6 +248,7 @@ export class BusinessClaimComponent {
   readonly qrImageUrl = computed(() => generateQrSvgDataUrl(this.previewUrl()));
   readonly decalDownloadHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.buildDecalSvg())}`);
   readonly decalFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-local-insider-badge.svg`);
+  readonly decalPngFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-local-insider-badge.png`);
   readonly localDuplicateClaim = computed(() => this.localClaimKeys().includes(this.claimKey()));
   readonly hasDuplicateClaim = computed(() => !!this.existingClaim() || this.localDuplicateClaim());
   readonly reviewedPlaceMatch = computed(() => {
@@ -573,6 +574,43 @@ export class BusinessClaimComponent {
     setTimeout(() => this.copiedLink.set(false), 1600);
   }
 
+  async downloadDecalPng(): Promise<void> {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    const svg = this.buildDecalSvg();
+    const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    const objectUrl = URL.createObjectURL(blob);
+    try {
+      const image = await this.loadImage(objectUrl);
+      const canvas = document.createElement('canvas');
+      canvas.width = 1800;
+      canvas.height = 1800;
+      const context = canvas.getContext('2d');
+      if (!context) {
+        return;
+      }
+      context.fillStyle = '#f4f4f1';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const pngBlob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
+      if (!pngBlob) {
+        return;
+      }
+      const pngUrl = URL.createObjectURL(pngBlob);
+      const anchor = document.createElement('a');
+      anchor.href = pngUrl;
+      anchor.download = this.decalPngFilename();
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(pngUrl);
+    } finally {
+      URL.revokeObjectURL(objectUrl);
+    }
+  }
+
   svgOrbitTransform(index: number, total: number, _radius = 190): string {
     const positionsByCount: Record<number, number[][]> = {
       1: [[450, 640]],
@@ -751,6 +789,15 @@ export class BusinessClaimComponent {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  private loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('Badge image could not be rendered for PNG download.'));
+      image.src = src;
+    });
   }
 
   private buildDecalSvg(): string {
