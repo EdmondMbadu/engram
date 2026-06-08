@@ -495,7 +495,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly businessVoiceLanguages = computed(() => {
     const filtered = this.filteredVoiceLanguages();
     const selected = this.selectedVoiceLanguage();
-    if (!selected || filtered.some((language) => language.country === selected.country)) {
+    if (!selected || filtered.some((language) => this.voiceLanguageMatches(language, selected))) {
       return filtered;
     }
     return [selected, ...filtered];
@@ -3745,15 +3745,59 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   private scrollSelectedVoiceLanguageIntoView(): void {
     const language = this.selectedVoiceLanguage();
-    const track = this.voiceLanguageTrack?.nativeElement;
-    if (!language || !track) {
+    if (!language) {
       return;
     }
 
-    const index = this.filteredVoiceLanguages().findIndex((candidate) => candidate.country === language.country);
-    const cards = Array.from(track.querySelectorAll<HTMLElement>('.lang-flag-card'));
+    this.scrollVoiceLanguageIntoTrack(
+      this.voiceLanguageTrack?.nativeElement,
+      '.lang-flag-card',
+      this.filteredVoiceLanguages(),
+      language,
+      () => this.syncVoiceCarouselScrollState(),
+    );
+    this.scrollVoiceLanguageIntoTrack(
+      this.businessVoiceLanguageTrack?.nativeElement,
+      '[data-business-language-card="true"]',
+      this.businessVoiceLanguages(),
+      language,
+      () => this.syncBusinessVoiceScrollState(),
+    );
+  }
+
+  private scrollVoiceLanguageIntoTrack(
+    track: HTMLElement | undefined,
+    cardSelector: string,
+    languages: VoiceLanguageOption[],
+    selectedLanguage: VoiceLanguageOption,
+    syncScrollState: () => void,
+  ): void {
+    if (!track) {
+      return;
+    }
+
+    const index = languages.findIndex((candidate) => this.voiceLanguageMatches(candidate, selectedLanguage));
+    if (index < 0) {
+      return;
+    }
+
+    const cards = Array.from(track.querySelectorAll<HTMLElement>(cardSelector));
     cards[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    window.setTimeout(() => this.syncVoiceCarouselScrollState(), 240);
+    window.setTimeout(syncScrollState, 240);
+  }
+
+  private voiceLanguageMatches(left: VoiceLanguageOption | null | undefined, right: VoiceLanguageOption | null | undefined): boolean {
+    return Boolean(
+      left
+      && right
+      && left.country === right.country
+      && left.code === right.code
+      && left.language === right.language,
+    );
+  }
+
+  isSelectedVoiceLanguage(language: VoiceLanguageOption): boolean {
+    return this.voiceLanguageMatches(this.selectedVoiceLanguage(), language);
   }
 
   onVoiceLanguageSearchInput(event: Event): void {
@@ -3857,6 +3901,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.voiceLanguageUserSelected = true;
     this.voiceLanguageAutoSelected.set(false);
     this.selectedVoiceLanguage.set(language);
+    queueMicrotask(() => this.scrollSelectedVoiceLanguageIntoView());
   }
 
   async startSelectedVoiceLanguage(): Promise<void> {

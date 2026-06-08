@@ -488,7 +488,7 @@
                         type="button"
                         role="listitem"
                         class="lang-flag-card"
-                        [class.lang-flag-card--selected]="selectedVoiceLanguage()?.country === lang.country"
+                        [class.lang-flag-card--selected]="isSelectedVoiceLanguage(lang)"
                         [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
                         [attr.aria-label]="uiText('useLanguageFor', { language: lang.language, city: currentWikiName(), country: localizedCountryName(lang.country) })"
                         [attr.data-tooltip]="uiText('chooseLanguage', { language: lang.language })"
@@ -704,16 +704,17 @@
                             <button
                               type="button"
                               data-business-language-card="true"
-                              class="inline-flex min-w-[5.75rem] shrink-0 flex-col items-center gap-1 rounded-2xl border px-3 py-2 text-center transition hover:-translate-y-0.5"
-                              [class.border-[var(--accent)]]="businessActiveVoiceLanguage().country === lang.country"
-                              [class.bg-[var(--accent)]/10]="businessActiveVoiceLanguage().country === lang.country"
-                              [class.border-[var(--line)]]="businessActiveVoiceLanguage().country !== lang.country"
-                              [class.bg-[var(--surface)]]="businessActiveVoiceLanguage().country !== lang.country"
+                              class="business-language-card inline-flex min-w-[5.75rem] shrink-0 flex-col items-center gap-1 rounded-2xl border px-3 py-2 text-center transition hover:-translate-y-0.5"
+                              [class.business-language-card--selected]="isSelectedVoiceLanguage(lang)"
+                              [class.business-language-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
                               [attr.aria-label]="uiText('useLanguageFor', { language: lang.language, city: businessPageName(), country: localizedCountryName(lang.country) })"
                               (click)="selectVoiceLanguage(lang)"
                             >
                               <span class="text-2xl leading-none">{{ lang.flag }}</span>
                               <span class="max-w-full truncate text-[11px] font-black text-[var(--text)]">{{ lang.language }}</span>
+                              @if (isSelectedVoiceLanguage(lang)) {
+                                <span class="material-symbols-outlined business-language-card__check" aria-hidden="true">check</span>
+                              }
                             </button>
                           } @empty {
                             <p class="min-h-11 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--muted)]">{{ uiText('noMatchingLanguage') }}</p>

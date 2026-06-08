@@ -1624,6 +1624,43 @@
   color: var(--accent);
 }
 
+.business-language-card {
+  position: relative;
+  border-color: var(--line);
+  background: var(--surface);
+}
+
+.business-language-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line-strong));
+}
+
+.business-language-card--selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
+.business-language-card--active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.business-language-card__check {
+  position: absolute;
+  right: 0.35rem;
+  top: 0.35rem;
+  display: inline-flex;
+  width: 1rem;
+  height: 1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
 .lang-carousel__selection {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(10.8rem, auto);
