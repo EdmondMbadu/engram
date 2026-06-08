@@ -38,6 +38,12 @@ export const routes: Routes = [
     title: 'Claim Your Business | My living wiki',
   },
   {
+    path: 'business/:citySlug/:businessSlug/edit',
+    loadComponent: () => import('./business-detail/business-edit').then((m) => m.BusinessEditComponent),
+    title: 'Edit Business | My living wiki',
+    canActivate: [authGuard],
+  },
+  {
     path: 'business/:citySlug/:businessSlug',
     loadComponent: () => import('./business-detail/business-detail').then((m) => m.BusinessDetailComponent),
     title: 'Business Details | My living wiki',

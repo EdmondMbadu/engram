@@ -121,6 +121,10 @@ export class BusinessDetailComponent {
   readonly detailUrl = computed(() => `${this.origin()}${this.detailPath()}`);
   readonly contactEmail = computed(() => this.ownerCanViewPrivateDetails() ? this.business()?.admin_email?.trim() || '' : '');
   readonly guidePrompt = computed(() => this.business()?.guide_prompt?.trim() || '');
+  readonly logoUrl = computed(() => this.business()?.logo_url?.trim() || '');
+  readonly profileImageUrl = computed(() => this.business()?.profile_image_url?.trim() || '');
+  readonly coverImageUrl = computed(() => this.business()?.cover_image_url?.trim() || '');
+  readonly editPath = computed(() => `${this.detailPath()}/edit`);
   readonly aboutText = computed(() =>
     this.guidePrompt()
       || `${this.businessName()} is a local ${this.business()?.category || 'business'} connected to My Living Wiki for ${this.cityName()}. Visitors can ask questions by text or voice in their preferred language.`,

@@ -1,0 +1,210 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+  <header class="border-b border-[var(--line)] bg-[var(--surface)]">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <a [routerLink]="detailPath()" class="flex min-w-0 items-center gap-3">
+        <span class="material-symbols-outlined text-[var(--accent)]">arrow_back</span>
+        <span class="truncate text-sm font-black">Back to {{ businessName() }}</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a [routerLink]="detailPath()" class="hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-bold text-[var(--text)] sm:inline-flex">View page</a>
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    @if (loading()) {
+      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)]">
+        <p class="text-sm font-semibold text-[var(--muted)]">Loading business editor...</p>
+      </section>
+    } @else if (!authService.isAuthenticated()) {
+      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
+        <h1 class="mt-3 text-3xl font-black tracking-tight">Sign in to edit this business.</h1>
+        <a [routerLink]="['/sign-in']" [queryParams]="{ redirectTo: detailPath() + '/edit' }" class="mt-6 inline-flex rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">Sign in</a>
+      </section>
+    } @else if (!ownerCanEdit()) {
+      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
+        <h1 class="mt-3 text-3xl font-black tracking-tight">This account cannot edit {{ businessName() }}.</h1>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ loadError() || 'Only the account that claimed this business can edit the page.' }}</p>
+      </section>
+    } @else {
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
+        <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] sm:p-6">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
+              <h1 class="mt-2 text-3xl font-black tracking-tight">Edit {{ businessName() }}</h1>
+              <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">Update the public page, guide prompt, images, and QR badge assets for this business.</p>
+            </div>
+            <button type="button" (click)="save()" [disabled]="saving()" class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+              <span class="material-symbols-outlined text-[1rem]">save</span>
+              <span>{{ saving() ? 'Saving...' : 'Save changes' }}</span>
+            </button>
+          </div>
+
+          @if (loadError()) {
+            <div class="mt-5 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">{{ loadError() }}</div>
+          }
+          @if (savedMessage()) {
+            <div class="mt-5 rounded-2xl border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-4 py-3 text-sm font-semibold text-[var(--accent)]">{{ savedMessage() }}</div>
+          }
+
+          <div class="mt-6 grid gap-5">
+            <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+              <h2 class="text-lg font-black">Business information</h2>
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Business name</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="businessName()" readonly />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">City</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="cityName()" readonly />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Category</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().category" (input)="updateDraft('category', $any($event.target).value)" placeholder="Restaurant, shop, cafe..." />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Location / address</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().business_address" (input)="updateDraft('business_address', $any($event.target).value)" placeholder="Street, neighborhood, or address" />
+                </label>
+              </div>
+            </section>
+
+            <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+              <h2 class="text-lg font-black">Images</h2>
+              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Upload the images that appear on the public business page. Direct URLs still work when media already lives elsewhere.</p>
+              <div class="mt-4 grid gap-4">
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+                  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p class="text-sm font-black">Logo</p>
+                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Used in the page header and preview.</p>
+                    </div>
+                    <label class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black text-[var(--text)]">
+                      <span class="material-symbols-outlined text-[1rem]">upload</span>
+                      <span>{{ imageUploading('logo') ? 'Uploading...' : 'Upload logo' }}</span>
+                      <input type="file" accept="image/*" class="sr-only" [disabled]="imageUploading('logo')" (change)="uploadImage('logo', 'logo_url', $event)" />
+                    </label>
+                  </div>
+                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().logo_url" (input)="updateDraft('logo_url', $any($event.target).value)" placeholder="https://..." />
+                </div>
+
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+                  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p class="text-sm font-black">Profile picture</p>
+                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Shown in the business guide chat module.</p>
+                    </div>
+                    <label class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black text-[var(--text)]">
+                      <span class="material-symbols-outlined text-[1rem]">upload</span>
+                      <span>{{ imageUploading('profile') ? 'Uploading...' : 'Upload profile' }}</span>
+                      <input type="file" accept="image/*" class="sr-only" [disabled]="imageUploading('profile')" (change)="uploadImage('profile', 'profile_image_url', $event)" />
+                    </label>
+                  </div>
+                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().profile_image_url" (input)="updateDraft('profile_image_url', $any($event.target).value)" placeholder="https://..." />
+                </div>
+
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+                  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p class="text-sm font-black">Cover image</p>
+                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Used as the main storefront visual.</p>
+                    </div>
+                    <label class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black text-[var(--text)]">
+                      <span class="material-symbols-outlined text-[1rem]">upload</span>
+                      <span>{{ imageUploading('cover') ? 'Uploading...' : 'Upload cover' }}</span>
+                      <input type="file" accept="image/*" class="sr-only" [disabled]="imageUploading('cover')" (change)="uploadImage('cover', 'cover_image_url', $event)" />
+                    </label>
+                  </div>
+                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().cover_image_url" (input)="updateDraft('cover_image_url', $any($event.target).value)" placeholder="https://..." />
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+              <h2 class="text-lg font-black">Guide and admin contact</h2>
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin name</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().admin_name" (input)="updateDraft('admin_name', $any($event.target).value)" />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin email</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().admin_email" (input)="updateDraft('admin_email', $any($event.target).value)" />
+                </label>
+                <label class="block md:col-span-2">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Business guide prompt</span>
+                  <textarea class="theme-input min-h-40 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().guide_prompt" (input)="updateDraft('guide_prompt', $any($event.target).value)" placeholder="What should the guide know about this business?"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+              <h2 class="text-lg font-black">Badge icons</h2>
+              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose up to 3 icons for the circular QR badge.</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                @for (icon of iconOptions; track icon) {
+                  <button type="button" class="rounded-full border px-3 py-2 text-xs font-black uppercase tracking-[0.12em] transition" [class.border-[var(--accent)]]="iconSelected(icon)" [class.bg-[var(--soft-fill-strong)]]="iconSelected(icon)" [class.text-[var(--accent)]]="iconSelected(icon)" [class.border-[var(--line)]]="!iconSelected(icon)" [class.text-[var(--muted)]]="!iconSelected(icon)" (click)="toggleIcon(icon)">
+                    {{ icon }}
+                  </button>
+                }
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <aside class="grid h-max gap-5 lg:sticky lg:top-6">
+          <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
+            <h2 class="text-lg font-black">Page preview</h2>
+            <div class="mt-4 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)]">
+              <div class="flex h-36 items-center justify-center bg-[var(--soft-fill-strong)]">
+                @if (draft().cover_image_url) {
+                  <img [src]="draft().cover_image_url" alt="Cover preview" class="h-full w-full object-cover" />
+                } @else {
+                  <span class="material-symbols-outlined text-5xl text-[var(--accent)]">storefront</span>
+                }
+              </div>
+              <div class="p-4">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-xl font-black text-[var(--accent)]">
+                    @if (draft().logo_url) {
+                      <img [src]="draft().logo_url" alt="Logo preview" class="h-full w-full object-cover" />
+                    } @else {
+                      {{ businessInitial() }}
+                    }
+                  </div>
+                  <div class="min-w-0">
+                    <p class="truncate font-black">{{ businessName() }}</p>
+                    <p class="truncate text-xs text-[var(--muted)]">{{ draft().category || 'Local business' }} · {{ cityName() }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
+            <h2 class="text-lg font-black">QR badge</h2>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">This badge links to the business detail page.</p>
+            <div class="mt-4 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-3">
+              <img [src]="badgeSvgHref()" alt="Business QR badge preview" class="aspect-square w-full rounded-2xl bg-white object-contain" />
+            </div>
+            <div class="mt-4 grid gap-2">
+              <a [href]="badgeSvgHref()" [download]="badgeSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)]">
+                <span class="material-symbols-outlined text-[1rem]">download</span>
+                <span>Download SVG</span>
+              </a>
+              <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadBadgePng()">
+                <span class="material-symbols-outlined text-[1rem]">image</span>
+                <span>Download PNG</span>
+              </button>
+            </div>
+          </section>
+        </aside>
+      </div>
+    }
+  </main>
+</div>

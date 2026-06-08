@@ -239,6 +239,9 @@ service cloud.firestore {
           'admin_email',
           'guide_prompt',
           'badge_icons',
+          'logo_url',
+          'profile_image_url',
+          'cover_image_url',
           'updated_at'
         ])
         && request.resource.data.business_address is string
@@ -256,6 +259,12 @@ service cloud.firestore {
         && request.resource.data.guide_prompt.size() <= 5000
         && request.resource.data.badge_icons is list
         && request.resource.data.badge_icons.size() <= 3
+        && request.resource.data.logo_url is string
+        && request.resource.data.logo_url.size() <= 1200
+        && request.resource.data.profile_image_url is string
+        && request.resource.data.profile_image_url.size() <= 1200
+        && request.resource.data.cover_image_url is string
+        && request.resource.data.cover_image_url.size() <= 1200
         && request.resource.data.updated_at == request.time;
       allow delete: if false;
     }

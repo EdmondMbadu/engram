@@ -61,9 +61,9 @@
             <span class="material-symbols-outlined text-[1.1rem]">forum</span>
             <span>Direct Chat</span>
           </a>
-          <a routerLink="/atlases" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <a [routerLink]="editPath()" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
             <span class="material-symbols-outlined text-[1.1rem]">settings</span>
-            <span>Settings</span>
+            <span>Edit page</span>
           </a>
         </nav>
 
@@ -90,7 +90,7 @@
           </a>
           <a routerLink="/business/claim" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
             <span class="material-symbols-outlined text-[1.1rem]">add_business</span>
-            <span>Claim Business</span>
+            <span>Claim a business</span>
           </a>
           <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="flex items-center gap-3 rounded-2xl bg-[var(--soft-fill)] px-3 py-3 text-[var(--accent)]">
             <span class="material-symbols-outlined text-[1.1rem]">forum</span>
@@ -120,7 +120,11 @@
           <div class="flex flex-col gap-6 md:flex-row md:items-center">
             <div class="relative">
               <div class="flex h-32 w-32 items-center justify-center rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] text-5xl font-black text-[var(--accent)]">
-                {{ businessInitial() }}
+                @if (logoUrl()) {
+                  <img [src]="logoUrl()" [alt]="businessName() + ' logo'" class="h-full w-full rounded-3xl object-cover" />
+                } @else {
+                  {{ businessInitial() }}
+                }
               </div>
               <div class="absolute -bottom-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full border-4 border-[var(--surface)] bg-[var(--accent)] text-[var(--accent-contrast)]">
                 <span class="material-symbols-outlined text-[1rem]">check</span>
@@ -216,7 +220,11 @@
 
           <article class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
             <div class="flex h-48 items-center justify-center bg-[var(--soft-fill)]">
-              <span class="material-symbols-outlined text-6xl text-[var(--accent)]">storefront</span>
+              @if (coverImageUrl()) {
+                <img [src]="coverImageUrl()" [alt]="businessName() + ' cover image'" class="h-full w-full object-cover" />
+              } @else {
+                <span class="material-symbols-outlined text-6xl text-[var(--accent)]">storefront</span>
+              }
             </div>
             <div class="p-6">
               <div class="flex items-start justify-between gap-3">
@@ -253,9 +261,9 @@
                 </div>
                 <div class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-[var(--accent)]">link</span>
-                  <div class="min-w-0">
-                    <p class="truncate font-black text-[var(--text)]">{{ detailUrl() }}</p>
-                    <p class="text-sm text-[var(--muted)]">Business detail page</p>
+                  <div>
+                    <p class="font-black text-[var(--text)]">Business detail page</p>
+                    <p class="text-sm text-[var(--muted)]">Use the copy button below to share this page.</p>
                   </div>
                 </div>
               </div>
@@ -299,6 +307,15 @@
             <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="hidden rounded-full bg-white/15 px-4 py-2 text-sm font-black transition hover:bg-white/25 sm:inline-flex">Open chat</a>
           </div>
           <div class="grid gap-4 bg-[var(--soft-fill)] px-5 py-6 sm:px-6">
+            @if (profileImageUrl()) {
+              <div class="flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                <img [src]="profileImageUrl()" [alt]="businessName() + ' profile image'" class="h-12 w-12 rounded-full object-cover" />
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-black text-[var(--text)]">{{ businessName() }}</p>
+                  <p class="truncate text-xs text-[var(--muted)]">Business guide profile</p>
+                </div>
+              </div>
+            }
             <div class="max-w-[82%] rounded-b-2xl rounded-tr-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--muted)]">
               Ask about hours, menu, services, directions, language support, and local recommendations.
             </div>
@@ -326,6 +343,10 @@
               <a routerLink="/atlases" class="inline-flex items-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">
                 <span class="material-symbols-outlined text-[1rem]">settings</span>
                 <span>Edit in account admin</span>
+              </a>
+              <a [routerLink]="editPath()" class="inline-flex items-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--surface)] px-5 py-3 text-sm font-black text-[var(--accent)]">
+                <span class="material-symbols-outlined text-[1rem]">edit</span>
+                <span>Edit this page</span>
               </a>
               <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="inline-flex items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-5 py-3 text-sm font-black text-[var(--text)]">
                 <span class="material-symbols-outlined text-[1rem]">qr_code_2</span>

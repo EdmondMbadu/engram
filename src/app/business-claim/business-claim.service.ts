@@ -1,7 +1,8 @@
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, where, writeBatch } from 'firebase/firestore';
-import { getFirebaseFirestore } from '../firebase.client';
+import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { getFirebaseFirestore, getFirebaseStorage } from '../firebase.client';
 
 export interface BusinessClaimRegistryRecord {
   id: string;
@@ -27,6 +28,9 @@ export interface BusinessClaimContactRecord {
   admin_email: string;
   guide_prompt: string;
   badge_icons: string[];
+  logo_url?: string;
+  profile_image_url?: string;
+  cover_image_url?: string;
 }
 
 export type BusinessClaimWorkspaceRecord = BusinessClaimRegistryRecord & Partial<BusinessClaimContactRecord>;
@@ -38,13 +42,19 @@ export interface BusinessClaimWorkspaceUpdate {
   admin_email: string;
   guide_prompt: string;
   badge_icons: string[];
+  logo_url?: string;
+  profile_image_url?: string;
+  cover_image_url?: string;
 }
+
+export type BusinessImageKind = 'logo' | 'profile' | 'cover';
 
 @Injectable({ providedIn: 'root' })
 export class BusinessClaimService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore = this.isBrowser ? getFirebaseFirestore() : null;
+  private readonly storage = this.isBrowser ? getFirebaseStorage() : null;
 
   async findByClaimKey(claimKey: string): Promise<BusinessClaimRegistryRecord | null> {
     if (!this.firestore || !claimKey) {
@@ -166,9 +176,38 @@ export class BusinessClaimService {
       admin_email: update.admin_email,
       guide_prompt: update.guide_prompt,
       badge_icons: update.badge_icons.slice(0, 3),
+      logo_url: update.logo_url?.trim() ?? '',
+      profile_image_url: update.profile_image_url?.trim() ?? '',
+      cover_image_url: update.cover_image_url?.trim() ?? '',
       updated_at: serverTimestamp(),
     }, { merge: true });
     await batch.commit();
+  }
+
+  async uploadBusinessImage(
+    claimKey: string,
+    ownerUserId: string,
+    kind: BusinessImageKind,
+    file: File,
+  ): Promise<string> {
+    if (!this.storage) {
+      throw new Error('Storage unavailable.');
+    }
+    if (!claimKey || !ownerUserId) {
+      throw new Error('Missing business image owner.');
+    }
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Only image files are supported.');
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      throw new Error('Image must be under 10 MB.');
+    }
+
+    const ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '') || 'png';
+    const path = `businesses/${ownerUserId}/${claimKey}/${kind}-${Date.now()}.${ext}`;
+    const ref = storageRef(this.storage, path);
+    await uploadBytes(ref, file, { contentType: file.type });
+    return await getDownloadURL(ref);
   }
 
   private async enrichWorkspaceRecord(claim: BusinessClaimRegistryRecord): Promise<BusinessClaimWorkspaceRecord> {
@@ -190,6 +229,9 @@ export class BusinessClaimService {
       badge_icons: Array.isArray(request.badge_icons)
         ? request.badge_icons.filter((icon): icon is string => typeof icon === 'string')
         : undefined,
+      logo_url: typeof request.logo_url === 'string' ? request.logo_url : undefined,
+      profile_image_url: typeof request.profile_image_url === 'string' ? request.profile_image_url : undefined,
+      cover_image_url: typeof request.cover_image_url === 'string' ? request.cover_image_url : undefined,
     };
   }
 }
