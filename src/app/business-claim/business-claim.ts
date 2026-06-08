@@ -77,7 +77,7 @@ export class BusinessClaimComponent {
   readonly citySearch = signal('');
   readonly citySuggestionsOpen = signal(false);
   readonly selectedCityId = signal<string | null>(null);
-  readonly businessQuery = signal('Brauhaus Schmitz');
+  readonly businessQuery = signal('');
   readonly businessSuggestionsOpen = signal(false);
   readonly neighborhood = signal('South Street');
   readonly category = signal('German bierhall');
