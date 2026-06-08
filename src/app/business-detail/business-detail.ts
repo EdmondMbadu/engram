@@ -73,6 +73,7 @@ const BUSINESS_LANGUAGES: BusinessLanguage[] = [
   selector: 'app-business-detail',
   imports: [RouterLink, ThemeToggleComponent],
   templateUrl: './business-detail.html',
+  styleUrl: './business-detail.css',
 })
 export class BusinessDetailComponent {
   private readonly route = inject(ActivatedRoute);
@@ -110,7 +111,9 @@ export class BusinessDetailComponent {
   readonly cityName = computed(() => this.business()?.city_name || this.fallbackCityName());
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());
   readonly statusLabel = computed(() => this.business()?.status === 'pending' ? 'Pending' : 'Live');
-  readonly ownerCanViewPrivateDetails = computed(() => this.authService.uid() && this.business()?.owner_user_id === this.authService.uid());
+  readonly ownerCanViewPrivateDetails = computed(() => !!this.authService.uid() && this.business()?.owner_user_id === this.authService.uid());
+  readonly showWorkspaceSidebar = computed(() => this.authService.isAuthenticated() && !this.loading() && !this.ownerCanViewPrivateDetails());
+  readonly showAnySidebar = computed(() => this.ownerCanViewPrivateDetails() || this.showWorkspaceSidebar());
   readonly detailPath = computed(() => `/business/${this.routeParams().citySlug}/${this.routeParams().businessSlug}`);
   readonly chatPath = computed(() => `/chat/${this.routeParams().citySlug}`);
   readonly chatQueryParams = computed(() => ({ business: this.routeParams().businessSlug }));

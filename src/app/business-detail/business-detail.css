@@ -1,0 +1,14 @@
+.business-detail-shell {
+  max-width: 72rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.business-detail-shell--with-sidebar {
+  max-width: 80rem;
+}
+
+@media (min-width: 1024px) {
+  .business-detail-shell--with-sidebar {
+    grid-template-columns: 18rem minmax(0, 1fr);
+  }
+}

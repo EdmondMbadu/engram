@@ -28,51 +28,77 @@
     </div>
   </header>
 
-  <main class="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[18rem_1fr] lg:px-8">
-    <aside class="hidden h-max rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] lg:sticky lg:top-28 lg:block">
-      <div class="flex items-center gap-4">
-        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-2xl font-black text-[var(--accent)]">
-          {{ businessInitial() }}
+  <main class="business-detail-shell mx-auto grid gap-8 px-4 py-8 sm:px-6 lg:px-8" [class.business-detail-shell--with-sidebar]="showAnySidebar()">
+    @if (ownerCanViewPrivateDetails()) {
+      <aside class="hidden h-max rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] lg:sticky lg:top-28 lg:block">
+        <div class="flex items-center gap-4">
+          <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-2xl font-black text-[var(--accent)]">
+            {{ businessInitial() }}
+          </div>
+          <div class="min-w-0">
+            <h2 class="truncate text-lg font-black tracking-tight">{{ businessName() }}</h2>
+            <p class="mt-1 flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">
+              {{ statusLabel() }}
+              <span class="material-symbols-outlined text-[0.95rem]">verified</span>
+            </p>
+          </div>
         </div>
-        <div class="min-w-0">
-          <h2 class="truncate text-lg font-black tracking-tight">{{ businessName() }}</h2>
-          <p class="mt-1 flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">
-            {{ statusLabel() }}
-            <span class="material-symbols-outlined text-[0.95rem]">verified</span>
-          </p>
-        </div>
-      </div>
 
-      <nav class="mt-6 grid gap-2 text-sm font-bold">
-        <a href="#business-info" class="flex items-center gap-3 rounded-2xl bg-[var(--soft-fill)] px-3 py-3 text-[var(--accent)]">
-          <span class="material-symbols-outlined text-[1.1rem]">business_center</span>
-          <span>Business Info</span>
-        </a>
-        <a href="#voice" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">mic</span>
-          <span>Voice Assistant</span>
-        </a>
-        <a href="#contact" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">location_on</span>
-          <span>Contact</span>
-        </a>
-        <a href="#direct-chat" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">forum</span>
-          <span>Direct Chat</span>
-        </a>
-        @if (ownerCanViewPrivateDetails()) {
+        <nav class="mt-6 grid gap-2 text-sm font-bold">
+          <a href="#business-info" class="flex items-center gap-3 rounded-2xl bg-[var(--soft-fill)] px-3 py-3 text-[var(--accent)]">
+            <span class="material-symbols-outlined text-[1.1rem]">business_center</span>
+            <span>Business Info</span>
+          </a>
+          <a href="#voice" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+            <span class="material-symbols-outlined text-[1.1rem]">mic</span>
+            <span>Voice Assistant</span>
+          </a>
+          <a href="#contact" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+            <span class="material-symbols-outlined text-[1.1rem]">location_on</span>
+            <span>Contact</span>
+          </a>
+          <a href="#direct-chat" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+            <span class="material-symbols-outlined text-[1.1rem]">forum</span>
+            <span>Direct Chat</span>
+          </a>
           <a routerLink="/atlases" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
             <span class="material-symbols-outlined text-[1.1rem]">settings</span>
             <span>Settings</span>
           </a>
-        }
-      </nav>
+        </nav>
 
-      <button type="button" class="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90" (click)="startVoiceMode()">
-        <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
-        <span>Start voice</span>
-      </button>
-    </aside>
+        <button type="button" class="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90" (click)="startVoiceMode()">
+          <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
+          <span>Start voice</span>
+        </button>
+      </aside>
+    } @else if (showWorkspaceSidebar()) {
+      <aside class="hidden h-max rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] lg:sticky lg:top-28 lg:block">
+        <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-4">
+          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Workspace</p>
+          <h2 class="mt-2 truncate text-lg font-black tracking-tight">{{ authService.displayName() }}</h2>
+          <p class="mt-1 truncate text-xs text-[var(--muted)]">{{ authService.email() }}</p>
+        </div>
+        <nav class="mt-5 grid gap-2 text-sm font-bold">
+          <a routerLink="/wikis" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+            <span class="material-symbols-outlined text-[1.1rem]">dashboard</span>
+            <span>My Wikis</span>
+          </a>
+          <a routerLink="/atlases" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+            <span class="material-symbols-outlined text-[1.1rem]">settings</span>
+            <span>Admin Console</span>
+          </a>
+          <a routerLink="/business/claim" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+            <span class="material-symbols-outlined text-[1.1rem]">add_business</span>
+            <span>Claim Business</span>
+          </a>
+          <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="flex items-center gap-3 rounded-2xl bg-[var(--soft-fill)] px-3 py-3 text-[var(--accent)]">
+            <span class="material-symbols-outlined text-[1.1rem]">forum</span>
+            <span>Open Chat</span>
+          </a>
+        </nav>
+      </aside>
+    }
 
     <div class="min-w-0 space-y-8">
       @if (loading()) {
