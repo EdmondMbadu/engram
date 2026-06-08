@@ -12,6 +12,10 @@ import { ChatService, type VoiceSummaryTranscriptItem } from '../chat.service';
 import { DocumentsService } from '../documents.service';
 import { WikiService } from '../wiki.service';
 import { PlaceReviewsService, type CityReviewedPlace } from '../place-reviews.service';
+import {
+  BusinessClaimService,
+  type BusinessClaimRegistryRecord,
+} from '../business-claim/business-claim.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
@@ -389,6 +393,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private readonly documentsService = inject(DocumentsService);
   private readonly wikiService = inject(WikiService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
+  private readonly businessClaimService = inject(BusinessClaimService);
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
@@ -396,6 +401,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly routeSlug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
     { initialValue: this.route.snapshot.paramMap.get('slug') },
+  );
+  readonly routeBusinessSlug = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('business')?.trim() || null)),
+    { initialValue: this.route.snapshot.queryParamMap.get('business')?.trim() || null },
   );
 
   private shouldScrollToEnd = false;
@@ -533,6 +542,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly publicRemainingQuestions = signal<number | null>(null);
   readonly publicRequiresSignIn = signal(false);
   readonly publicDocumentCount = signal(0);
+  readonly businessClaim = signal<BusinessClaimRegistryRecord | null>(null);
+  readonly businessClaimLookupDone = signal(false);
   readonly publicCityWikis = signal<PublicWikiCatalogItem[]>(
     COMING_SOON_PUBLIC_WIKIS.filter((wiki) => wiki.category === CITY_WIKI_CATEGORY),
   );
@@ -544,6 +555,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly reviewedPlaces = signal<CityReviewedPlace[]>([]);
   readonly reviewedPlacesLoading = signal(false);
   readonly isPublicView = computed(() => !!this.routeSlug());
+  readonly businessPageContext = computed(() => !!this.routeBusinessSlug());
+  readonly businessPageName = computed(() =>
+    this.businessClaim()?.business_name?.trim()
+    || this.titleizeSlug(this.routeBusinessSlug() || 'business'),
+  );
+  readonly businessPageCityName = computed(() => this.businessClaim()?.city_name?.trim() || this.currentWikiName());
+  readonly businessPageInitial = computed(() => this.businessPageName().trim().charAt(0).toUpperCase() || 'B');
+  readonly businessPageStatus = computed(() => this.businessClaim()?.status ?? (this.businessPageContext() && !this.businessClaimLookupDone() ? 'pending' : null));
+  readonly businessPagePending = computed(() => this.businessPageStatus() === 'pending');
   readonly publicNotFound = computed(
     () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
   );
@@ -569,7 +589,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     () => !this.publicNotFound() && !this.isPublicPageLoading() && !!this.currentVoiceAtlasId(),
   );
   readonly canShowCityVoiceCarousel = computed(
-    () => this.canStartRealtimeVoice() && this.currentWikiAtlas()?.city_config?.enabled === true,
+    () => !this.businessPageContext() && this.canStartRealtimeVoice() && this.currentWikiAtlas()?.city_config?.enabled === true,
   );
   readonly realtimeVoiceActive = computed(() => {
     const status = this.realtimeVoiceStatus();
@@ -667,7 +687,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return this.uiText(keys[this.thinkingStage()] ?? keys[0]);
   });
   readonly pageTitle = computed(() =>
-    this.isPublicView()
+    this.businessPageContext()
+      ? `${this.businessPageName()} | My Living Wiki`
+      : this.isPublicView()
       ? this.uiText('chatTitle', { city: this.atlasService.displayName(this.publicAtlas()) })
       : this.uiText('chat'),
   );
@@ -830,6 +852,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return this.currentWikiSummary();
   });
   readonly heroPromptText = computed(() => {
+    if (this.businessPageContext()) {
+      return this.businessPagePending()
+        ? `${this.businessPageName()} has been submitted and is pending review. This QR link is reserved for the business page.`
+        : `Ask ${this.businessPageName()}'s My Living Wiki guide about this business and the surrounding city.`;
+    }
+
     if (this.showSignInCta()) {
       return this.uiText('signInGroundedQuestions');
     }
@@ -3144,6 +3172,41 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     });
 
     effect((onCleanup) => {
+      const citySlug = this.routeSlug()?.trim();
+      const businessSlug = this.routeBusinessSlug()?.trim();
+      let cancelled = false;
+      onCleanup(() => {
+        cancelled = true;
+      });
+
+      this.businessClaim.set(null);
+      this.businessClaimLookupDone.set(false);
+
+      if (!citySlug || !businessSlug) {
+        this.businessClaimLookupDone.set(true);
+        return;
+      }
+
+      void this.businessClaimService
+        .findByClaimKey(`${citySlug}__${businessSlug}`)
+        .then((claim) => {
+          if (!cancelled) {
+            this.businessClaim.set(claim);
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            this.businessClaim.set(null);
+          }
+        })
+        .finally(() => {
+          if (!cancelled) {
+            this.businessClaimLookupDone.set(true);
+          }
+        });
+    });
+
+    effect((onCleanup) => {
       const atlasId = this.isPublicView() ? this.publicAtlas()?.id ?? null : null;
       let cancelled = false;
 
@@ -4651,6 +4714,15 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   truncate(text: string, max = 48): string {
     if (!text) return '';
     return text.length > max ? `${text.slice(0, max).trim()}...` : text;
+  }
+
+  titleizeSlug(value: string): string {
+    return value
+      .trim()
+      .split(/[-_\s]+/)
+      .filter(Boolean)
+      .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1).toLowerCase()}`)
+      .join(' ') || 'Business';
   }
 
   messageLabel(message: ChatMessage): string {

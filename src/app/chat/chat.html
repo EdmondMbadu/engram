@@ -574,7 +574,7 @@
                   }
                 }
 
-                @if (canSubscribeToCurrentWiki()) {
+                @if (canSubscribeToCurrentWiki() && !businessPageContext()) {
                   <form
                     class="mt-4 flex w-full max-w-xl flex-col gap-2 rounded-[1.35rem] border border-[var(--accent)]/30 bg-[var(--surface)]/95 p-2 shadow-[var(--shadow-soft)] sm:flex-row sm:items-center sm:rounded-full"
                     (submit)="subscribeToUpdates($event)"
@@ -614,6 +614,27 @@
                   }
                 }
 
+                @if (businessPageContext()) {
+                  <div class="mt-4 w-full max-w-3xl rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-5 text-left shadow-[var(--shadow-elevated)] sm:p-6">
+                    <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
+                      <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 text-3xl font-black text-[var(--accent)] shadow-[var(--shadow-soft)]">
+                        {{ businessPageInitial() }}
+                      </div>
+                      <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">My Living Wiki for business</span>
+                          @if (businessPagePending()) {
+                            <span class="rounded-full border border-amber-400/45 bg-amber-400/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-700 dark:text-amber-300">Pending</span>
+                          }
+                        </div>
+                        <h2 class="mt-3 truncate text-3xl font-black tracking-[-0.05em] text-[var(--text)] sm:text-5xl">{{ businessPageName() }}</h2>
+                        <p class="mt-2 text-sm font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+                          {{ businessPageCityName() || currentWikiName() }} business page
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                } @else {
 	                <h2 class="chat-hero-title mt-3">
 	                  {{ uiText('askMyLivingWiki') }}@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
 	                </h2>
@@ -622,20 +643,21 @@
 	                }
 
 	                @if (currentWikiGuide(); as guide) {
-                  @if (guide.image_url || guide.label || guide.name) {
-                    <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
-                      @if (guide.image_url) {
-                        <img [src]="guide.image_url" [alt]="guide.name || uiText('guideAlt')" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
-                      }
-                      <span class="grid min-w-0 text-left">
-                        @if (guide.label) {
-                          <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ localizedGuideLabel(guide.label) }}</span>
+                    @if (guide.image_url || guide.label || guide.name) {
+                      <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
+                        @if (guide.image_url) {
+                          <img [src]="guide.image_url" [alt]="guide.name || uiText('guideAlt')" class="h-14 w-14 flex-none rounded-full border border-[var(--line-strong)] object-cover" />
                         }
-                        @if (guide.name) {
-                          <span class="truncate text-base font-black text-[var(--text)]">{{ guide.name }}</span>
-                        }
-                      </span>
-                    </div>
+                        <span class="grid min-w-0 text-left">
+                          @if (guide.label) {
+                            <span class="truncate text-[0.68rem] font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ localizedGuideLabel(guide.label) }}</span>
+                          }
+                          @if (guide.name) {
+                            <span class="truncate text-base font-black text-[var(--text)]">{{ guide.name }}</span>
+                          }
+                        </span>
+                      </div>
+                    }
                   }
                 }
 

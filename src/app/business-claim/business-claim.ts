@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
@@ -61,6 +61,7 @@ type StoredClaimDraft = {
 })
 export class BusinessClaimComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly atlasService = inject(AtlasService);
   readonly authService = inject(AuthService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
@@ -545,6 +546,7 @@ export class BusinessClaimComponent {
       this.clearPendingDraft();
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
       this.claimStatus.set('Business page draft reserved. The duplicate check will now catch this business before another draft is created.');
+      await this.router.navigateByUrl(this.previewPath());
     } catch {
       this.saveLocalDraft({
         claimKey,
