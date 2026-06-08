@@ -251,19 +251,26 @@ export class BusinessComponent {
     return `rotate(${angle}deg) translate(6.8rem) rotate(${-angle}deg)`;
   }
 
-  svgOrbitTransform(index: number, total: number, radius = 176): string {
-    const angle = (-110 + (360 / Math.max(total, 1)) * index) * (Math.PI / 180);
-    const x = 450 + Math.cos(angle) * radius;
-    const y = 450 + Math.sin(angle) * radius;
-    return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
+  svgOrbitTransform(index: number, total: number, _radius = 176): string {
+    const positionsByCount: Record<number, number[][]> = {
+      1: [[450, 640]],
+      2: [[320, 316], [580, 316]],
+      3: [[300, 316], [600, 316], [450, 602]],
+      4: [[300, 316], [600, 316], [335, 608], [565, 608]],
+      5: [[300, 316], [600, 316], [250, 552], [450, 602], [650, 552]],
+      6: [[300, 316], [600, 316], [250, 552], [650, 552], [385, 612], [515, 612]],
+    };
+    const positions = positionsByCount[Math.min(Math.max(total, 1), 6)] ?? positionsByCount[6];
+    const [x, y] = positions[index] ?? positions[0];
+    return `translate(${x} ${y})`;
   }
 
   badgeIconTransform(index: number, total: number): string {
     const positions = total <= 1
-      ? [[450, 216]]
+      ? [[450, 238]]
       : total === 2
-        ? [[282, 450], [618, 450]]
-        : [[450, 216], [282, 450], [618, 450]];
+        ? [[252, 450], [648, 450]]
+        : [[450, 238], [252, 450], [648, 450]];
     const [x, y] = positions[index] ?? positions[0];
     return `translate(${x} ${y})`;
   }

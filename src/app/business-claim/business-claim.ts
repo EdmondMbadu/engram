@@ -573,19 +573,26 @@ export class BusinessClaimComponent {
     setTimeout(() => this.copiedLink.set(false), 1600);
   }
 
-  svgOrbitTransform(index: number, total: number, radius = 190): string {
-    const angle = (-110 + (360 / Math.max(total, 1)) * index) * (Math.PI / 180);
-    const x = 450 + Math.cos(angle) * radius;
-    const y = 450 + Math.sin(angle) * radius;
-    return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
+  svgOrbitTransform(index: number, total: number, _radius = 190): string {
+    const positionsByCount: Record<number, number[][]> = {
+      1: [[450, 640]],
+      2: [[320, 316], [580, 316]],
+      3: [[300, 316], [600, 316], [450, 602]],
+      4: [[300, 316], [600, 316], [335, 608], [565, 608]],
+      5: [[300, 316], [600, 316], [250, 552], [450, 602], [650, 552]],
+      6: [[300, 316], [600, 316], [250, 552], [650, 552], [385, 612], [515, 612]],
+    };
+    const positions = positionsByCount[Math.min(Math.max(total, 1), 6)] ?? positionsByCount[6];
+    const [x, y] = positions[index] ?? positions[0];
+    return `translate(${x} ${y})`;
   }
 
   badgeIconTransform(index: number, total: number): string {
     const positions = total <= 1
-      ? [[450, 216]]
+      ? [[450, 238]]
       : total === 2
-        ? [[282, 450], [618, 450]]
-        : [[450, 216], [282, 450], [618, 450]];
+        ? [[252, 450], [648, 450]]
+        : [[450, 238], [252, 450], [648, 450]];
     const [x, y] = positions[index] ?? positions[0];
     return `translate(${x} ${y})`;
   }
@@ -751,7 +758,7 @@ export class BusinessClaimComponent {
     const qr = this.escapeSvg(this.qrImageUrl());
     const flags = this.selectedLanguages().map((language, index, all) => {
       const transform = this.svgOrbitTransform(index, all.length, 176);
-      return `<g transform="${transform}"><circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="10" text-anchor="middle" font-size="27">${language.flag}</text></g>`;
+      return `<g transform="${transform}"><circle r="30" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="9" text-anchor="middle" font-size="24">${language.flag}</text></g>`;
     }).join('');
     const icons = this.selectedBadgeIcons().map((icon, index, all) => {
       const transform = this.badgeIconTransform(index, all.length);
@@ -772,29 +779,29 @@ export class BusinessClaimComponent {
         <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
           <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#12323a" flood-opacity="0.28"/>
         </filter>
-        <path id="topArc" d="M 142 452 A 308 308 0 0 1 758 452"/>
-        <path id="bottomArc" d="M 170 630 A 300 300 0 0 0 730 630"/>
+        <path id="topArc" d="M 112 472 A 338 338 0 0 1 788 472"/>
+        <path id="bottomArc" d="M 186 606 A 310 310 0 0 0 714 606"/>
       </defs>
       <rect width="900" height="900" fill="#f4f4f1"/>
       <circle cx="450" cy="450" r="400" fill="url(#paper)" filter="url(#softShadow)"/>
       <circle cx="450" cy="450" r="340" fill="none" stroke="url(#tealRing)" stroke-width="74"/>
       <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"/>
       <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"/>
-      <text font-family="Inter, Arial, sans-serif" font-size="38" font-weight="900" fill="#ffffff" letter-spacing="1" dy="15">
-        <textPath href="#topArc" startOffset="50%" text-anchor="middle">${business} • LivingWiki Chat</textPath>
+      <text font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#ffffff" dy="12">
+        <textPath href="#topArc" startOffset="50%" text-anchor="middle" textLength="610" lengthAdjust="spacingAndGlyphs">${business} • LivingWiki Chat</textPath>
       </text>
-      <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff" letter-spacing="3" dy="-4">
-        <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
+      <text font-family="Inter, Arial, sans-serif" font-size="40" font-weight="900" fill="#ffffff" letter-spacing="1" dy="20">
+        <textPath href="#bottomArc" startOffset="50%" text-anchor="middle" textLength="410" lengthAdjust="spacingAndGlyphs">60+ Languages</textPath>
       </text>
       <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
       <image href="${qr}" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"/>
-      <circle cx="450" cy="450" r="30" fill="#f3dfb9"/>
-      <path d="M450 431c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16v-16c0-9 7-16 16-16z" fill="#0f596d"/>
-      <path d="M424 458c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
-      <path d="M450 488v23M432 511h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
-      ${icons}
+      <circle cx="450" cy="450" r="24" fill="#f3dfb9"/>
+      <path d="M450 434c7 0 13 6 13 13v13c0 7-6 13-13 13s-13-6-13-13v-13c0-7 6-13 13-13z" fill="#0f596d"/>
+      <path d="M429 458c0 13 9 24 21 24s21-11 21-24" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"/>
+      <path d="M450 482v18M437 500h26" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"/>
       ${flags}
-      <text x="450" y="665" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+      ${icons}
+      <text x="450" y="646" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
     </svg>`;
   }
 }
