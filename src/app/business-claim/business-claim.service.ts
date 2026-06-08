@@ -62,6 +62,19 @@ export class BusinessClaimService {
     };
   }
 
+  async findWorkspaceByClaimKey(claimKey: string): Promise<BusinessClaimWorkspaceRecord | null> {
+    const claim = await this.findByClaimKey(claimKey);
+    if (!claim || !this.firestore) {
+      return claim;
+    }
+
+    try {
+      return await this.enrichWorkspaceRecord(claim);
+    } catch {
+      return claim;
+    }
+  }
+
   async listByOwner(ownerUserId: string): Promise<BusinessClaimWorkspaceRecord[]> {
     if (!this.firestore || !ownerUserId) {
       return [];
@@ -78,20 +91,11 @@ export class BusinessClaimService {
     }));
 
     const enriched = await Promise.all(claims.map(async (claim) => {
-      const requestSnapshot = await getDoc(doc(this.firestore!, 'business_claim_requests', claim.claim_key));
-      if (!requestSnapshot.exists()) {
+      try {
+        return await this.enrichWorkspaceRecord(claim);
+      } catch {
         return claim;
       }
-      const request = requestSnapshot.data() as Partial<BusinessClaimContactRecord>;
-      return {
-        ...claim,
-        admin_name: typeof request.admin_name === 'string' ? request.admin_name : undefined,
-        admin_email: typeof request.admin_email === 'string' ? request.admin_email : undefined,
-        guide_prompt: typeof request.guide_prompt === 'string' ? request.guide_prompt : undefined,
-        badge_icons: Array.isArray(request.badge_icons)
-          ? request.badge_icons.filter((icon): icon is string => typeof icon === 'string')
-          : undefined,
-      };
     }));
 
     return enriched.sort((left, right) =>
@@ -165,5 +169,27 @@ export class BusinessClaimService {
       updated_at: serverTimestamp(),
     }, { merge: true });
     await batch.commit();
+  }
+
+  private async enrichWorkspaceRecord(claim: BusinessClaimRegistryRecord): Promise<BusinessClaimWorkspaceRecord> {
+    if (!this.firestore) {
+      return claim;
+    }
+
+    const requestSnapshot = await getDoc(doc(this.firestore, 'business_claim_requests', claim.claim_key));
+    if (!requestSnapshot.exists()) {
+      return claim;
+    }
+
+    const request = requestSnapshot.data() as Partial<BusinessClaimContactRecord>;
+    return {
+      ...claim,
+      admin_name: typeof request.admin_name === 'string' ? request.admin_name : undefined,
+      admin_email: typeof request.admin_email === 'string' ? request.admin_email : undefined,
+      guide_prompt: typeof request.guide_prompt === 'string' ? request.guide_prompt : undefined,
+      badge_icons: Array.isArray(request.badge_icons)
+        ? request.badge_icons.filter((icon): icon is string => typeof icon === 'string')
+        : undefined,
+    };
   }
 }

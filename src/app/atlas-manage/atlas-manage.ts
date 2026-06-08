@@ -510,6 +510,10 @@ export class AtlasManageComponent {
     return `/chat/${business.city_slug}?business=${business.business_slug}`;
   }
 
+  businessDetailPath(business: BusinessClaimWorkspaceRecord): string {
+    return `/business/${business.city_slug}/${business.business_slug}`;
+  }
+
   businessPublicUrl(business: BusinessClaimWorkspaceRecord): string {
     const path = this.businessPublicPath(business);
     if (typeof window !== 'undefined' && window.location?.origin) {

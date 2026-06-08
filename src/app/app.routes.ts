@@ -38,6 +38,11 @@ export const routes: Routes = [
     title: 'Claim Your Business | My living wiki',
   },
   {
+    path: 'business/:citySlug/:businessSlug',
+    loadComponent: () => import('./business-detail/business-detail').then((m) => m.BusinessDetailComponent),
+    title: 'Business Details | My living wiki',
+  },
+  {
     // Lazy-loaded so the d3 projection libraries stay out of the initial bundle.
     path: 'dymaxion',
     loadComponent: () => import('./dymaxion/dymaxion').then((m) => m.DymaxionComponent),

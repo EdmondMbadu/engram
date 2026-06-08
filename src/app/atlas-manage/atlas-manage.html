@@ -203,6 +203,13 @@
                           <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
                           <span>Open business page</span>
                         </a>
+                        <a
+                          [routerLink]="businessDetailPath(business)"
+                          class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+                        >
+                          <span class="material-symbols-outlined text-[1rem]">storefront</span>
+                          <span>Business details</span>
+                        </a>
                         <button
                           type="button"
                           (click)="copyBusinessLink(business)"
