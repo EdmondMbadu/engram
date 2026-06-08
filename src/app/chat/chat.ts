@@ -493,20 +493,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     ].map(normalizeVoiceSearchText).join(' ').includes(normalizedQuery));
   });
   readonly businessVoiceLanguages = computed(() => {
-    const preferredCountries = ['United States', 'DR Congo', 'France', 'Spain', 'Brazil', 'China'];
+    const filtered = this.filteredVoiceLanguages();
     const selected = this.selectedVoiceLanguage();
-    const byCountry = new Map(this.voiceLanguages().map((language) => [language.country, language]));
-    const picked: VoiceLanguageOption[] = [];
-    if (selected) {
-      picked.push(selected);
+    if (!selected || filtered.some((language) => language.country === selected.country)) {
+      return filtered;
     }
-    for (const country of preferredCountries) {
-      const language = byCountry.get(country);
-      if (language && !picked.some((item) => item.country === language.country)) {
-        picked.push(language);
-      }
-    }
-    return picked.slice(0, 6);
+    return [selected, ...filtered];
   });
   readonly businessActiveVoiceLanguage = computed(() => this.selectedVoiceLanguage() ?? this.businessVoiceLanguages()[0] ?? null);
   readonly businessVoiceGreeting = computed(() => {
@@ -521,6 +513,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   });
   readonly voiceCarouselAtStart = signal(true);
   readonly voiceCarouselAtEnd = signal(false);
+  readonly businessVoiceAtStart = signal(true);
+  readonly businessVoiceAtEnd = signal(false);
   readonly selectedVoiceLanguage = signal<VoiceLanguageOption | null>(null);
   readonly detectedVoiceLanguageLocation = signal<IpLanguageLocation | null>(null);
   readonly voiceLanguageAutoSelected = signal(false);
@@ -671,6 +665,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   @ViewChild('composerInput') composerInput?: ElementRef<HTMLTextAreaElement>;
   @ViewChild('chatScrollViewport') chatScrollViewport?: ElementRef<HTMLElement>;
   @ViewChild('voiceLanguageTrack') voiceLanguageTrack?: ElementRef<HTMLElement>;
+  @ViewChild('businessVoiceLanguageTrack') businessVoiceLanguageTrack?: ElementRef<HTMLElement>;
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
@@ -3435,7 +3430,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     });
 
     effect(() => {
-      if (!this.canShowCityVoiceCarousel() || this.voiceLanguageDetectionStarted || this.voiceLanguageUserSelected) {
+      const shouldDetectVoiceLanguage = this.canShowCityVoiceCarousel() || (this.businessPageContext() && this.canStartRealtimeVoice());
+      if (!shouldDetectVoiceLanguage || this.voiceLanguageDetectionStarted || this.voiceLanguageUserSelected) {
         return;
       }
 
@@ -3768,7 +3764,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       if (track) {
         track.scrollTo({ left: 0, behavior: 'smooth' });
       }
+      const businessTrack = this.businessVoiceLanguageTrack?.nativeElement;
+      if (businessTrack) {
+        businessTrack.scrollTo({ left: 0, behavior: 'smooth' });
+      }
       this.syncVoiceCarouselScrollState();
+      this.syncBusinessVoiceScrollState();
     });
   }
 
@@ -3779,7 +3780,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       if (track) {
         track.scrollTo({ left: 0, behavior: 'smooth' });
       }
+      const businessTrack = this.businessVoiceLanguageTrack?.nativeElement;
+      if (businessTrack) {
+        businessTrack.scrollTo({ left: 0, behavior: 'smooth' });
+      }
       this.syncVoiceCarouselScrollState();
+      this.syncBusinessVoiceScrollState();
     });
   }
 
@@ -3813,6 +3819,38 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
     this.voiceCarouselAtStart.set(track.scrollLeft <= 2);
     this.voiceCarouselAtEnd.set(track.scrollLeft >= maxScrollLeft - 2);
+  }
+
+  scrollBusinessVoiceLanguages(direction: -1 | 1): void {
+    const track = this.businessVoiceLanguageTrack?.nativeElement;
+    if (!track) {
+      return;
+    }
+
+    const firstCard = track.querySelector<HTMLElement>('[data-business-language-card="true"]');
+    const cardWidth = firstCard?.getBoundingClientRect().width ?? 96;
+    const gap = Number.parseFloat(window.getComputedStyle(track).columnGap || window.getComputedStyle(track).gap || '0') || 0;
+    const scrollAmount = Math.max(cardWidth + gap, track.clientWidth * 0.72);
+
+    track.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth',
+    });
+
+    window.setTimeout(() => this.syncBusinessVoiceScrollState(), 220);
+  }
+
+  syncBusinessVoiceScrollState(): void {
+    const track = this.businessVoiceLanguageTrack?.nativeElement;
+    if (!track) {
+      this.businessVoiceAtStart.set(true);
+      this.businessVoiceAtEnd.set(false);
+      return;
+    }
+
+    const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+    this.businessVoiceAtStart.set(track.scrollLeft <= 2);
+    this.businessVoiceAtEnd.set(track.scrollLeft >= maxScrollLeft - 2);
   }
 
   selectVoiceLanguage(language: VoiceLanguageOption): void {
