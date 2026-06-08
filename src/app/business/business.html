@@ -173,267 +173,69 @@
     </section>
 
     <section id="claim" class="border-b border-[var(--line)] bg-[var(--surface)]">
-      <div class="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-10">
+      <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-10">
         <div>
           <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">Claim your business</p>
           <h2 class="mt-3 max-w-3xl text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">
-            Turn your storefront into a multilingual city guide.
+            Your Local Insider. Any City. Any Language.
           </h2>
           <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-            Businesses can claim a local profile, tune what the voice guide knows, and download a decal that sends customers into the city wiki by voice.
+            The customer-facing product is a clean multilingual QR badge tied to one real business page. Claim flow happens on the next page; this page shows the finished signal.
           </p>
-
-          <div class="mt-8 grid gap-5">
-            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
-              <div class="flex items-start gap-4">
-                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">1</span>
-                <div class="min-w-0 flex-1">
-                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">Find your business</h3>
-                  <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                    <label class="block sm:col-span-2">
-                      <span class="text-sm font-bold text-[var(--muted)]">Business name</span>
-                      <input
-                        type="text"
-                        class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
-                        [value]="businessName()"
-                        (input)="onBusinessNameInput($event)"
-                      />
-                    </label>
-                    <label class="block">
-                      <span class="text-sm font-bold text-[var(--muted)]">Neighborhood</span>
-                      <input
-                        type="text"
-                        class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
-                        [value]="businessNeighborhood()"
-                        (input)="onBusinessNeighborhoodInput($event)"
-                      />
-                    </label>
-                    <label class="block">
-                      <span class="text-sm font-bold text-[var(--muted)]">Category</span>
-                      <select
-                        class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
-                        [value]="businessCategory()"
-                        (change)="onBusinessCategoryInput($event)"
-                      >
-                        @for (category of businessCategories; track category) {
-                          <option [value]="category">{{ category }}</option>
-                        }
-                      </select>
-                    </label>
-                  </div>
-                  <p class="mt-3 flex items-center gap-2 text-sm font-semibold leading-6 text-[var(--muted)]">
-                    <span class="material-symbols-outlined text-base">search</span>
-                    We will match this to an existing Philly wiki card or create one if it is new.
-                  </p>
-                </div>
-              </div>
-            </article>
-
-            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
-              <div class="flex items-start gap-4">
-                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">2</span>
-                <div class="min-w-0 flex-1">
-                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">What should your guide know?</h3>
-                  <label class="mt-4 block">
-                    <span class="text-sm font-bold text-[var(--muted)]">Short description customers hear first</span>
-                    <input
-                      type="text"
-                      class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
-                      [value]="businessDescription()"
-                      (input)="onBusinessDescriptionInput($event)"
-                    />
-                  </label>
-                  <div class="mt-4 rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--surface)] px-4 py-5 text-center">
-                    <span class="material-symbols-outlined text-3xl text-[var(--muted)]">upload</span>
-                    <p class="mt-2 text-sm font-bold text-[var(--text)]">Drop menu, hours, specials, PDF, link, or photo</p>
-                    <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Optional for V1. The guide can read these later to answer questions accurately.</p>
-                  </div>
-                  <p class="mt-3 text-sm font-semibold leading-6 text-[var(--muted)]">
-                    Already have a city wiki card? We can pull hours, menu, and tips automatically in the claimed profile flow.
-                  </p>
-                </div>
-              </div>
-            </article>
-
-            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
-              <div class="flex items-start gap-4">
-                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">3</span>
-                <div class="min-w-0 flex-1">
-                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">Languages on your decal</h3>
-                  <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
-                    Your guide can support many languages. Pick up to 6 flags to feature in the window or on your site.
-                  </p>
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    @for (language of decalLanguages; track language.code) {
-                      <button
-                        type="button"
-                        class="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-bold transition-all"
-                        [class.border-[var(--accent)]]="selectedLanguageCodes().includes(language.code)"
-                        [class.bg-[var(--accent)]/10]="selectedLanguageCodes().includes(language.code)"
-                        [class.text-[var(--accent)]]="selectedLanguageCodes().includes(language.code)"
-                        [class.border-[var(--line)]]="!selectedLanguageCodes().includes(language.code)"
-                        [class.text-[var(--text)]]="!selectedLanguageCodes().includes(language.code)"
-                        (click)="toggleDecalLanguage(language.code)"
-                      >
-                        <span>{{ language.flag }}</span>
-                        <span>{{ language.label }}</span>
-                        @if (selectedLanguageCodes().includes(language.code)) {
-                          <span class="material-symbols-outlined text-base">check</span>
-                        }
-                      </button>
-                    }
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
-              <div class="flex items-start gap-4">
-                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">4</span>
-                <div class="min-w-0 flex-1">
-                  <h3 class="text-lg font-black tracking-tight text-[var(--text)]">Pick a size and finish</h3>
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    @for (size of decalSizes; track size.id) {
-                      <button
-                        type="button"
-                        class="rounded-full border px-4 py-2 text-sm font-bold transition-colors"
-                        [class.border-[var(--accent)]]="selectedDecalSize() === size.id"
-                        [class.bg-[var(--accent)]/10]="selectedDecalSize() === size.id"
-                        [class.text-[var(--accent)]]="selectedDecalSize() === size.id"
-                        [class.border-[var(--line)]]="selectedDecalSize() !== size.id"
-                        [class.text-[var(--text)]]="selectedDecalSize() !== size.id"
-                        (click)="selectDecalSize(size.id)"
-                      >
-                        {{ size.label }}
-                      </button>
-                    }
-                  </div>
-                  <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
-                    All sizes use the same QR link. Download a print-ready file now, or claim the profile to order finished decals.
-                  </p>
-                </div>
-              </div>
-            </article>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm">
+              Claim your business
+              <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </a>
+            <a class="ghost-btn justify-center !px-6 !py-3 text-sm" [href]="'https://' + businessChatUrl()" target="_blank" rel="noopener">
+              Test sample QR link
+            </a>
           </div>
         </div>
 
-        <aside class="lg:sticky lg:top-28 lg:self-start">
-          <p class="mb-3 text-center text-[10px] font-black uppercase tracking-[0.28em] text-[var(--muted)]">Live preview</p>
-          <div class="rounded-[1.75rem] border border-[var(--line)] bg-[var(--bg)] p-4 shadow-[var(--shadow-elevated)]">
-            <div class="overflow-hidden rounded-[1.35rem] border border-[var(--accent)]/20 bg-[#082012] p-4 text-white">
-              <div class="flex items-start justify-between gap-4">
-                <div class="flex min-w-0 items-start gap-3">
-                  <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#1f9d4f]">
-                    <span class="material-symbols-outlined text-xl">eco</span>
-                  </span>
-                  <div class="min-w-0">
-                    <p class="truncate text-base font-black">My Living Wiki · <span class="text-emerald-300">Philly</span></p>
-                    <p class="truncate text-sm font-black text-emerald-200">{{ businessName() }}</p>
-                  </div>
-                </div>
-                <span class="rounded-full border border-emerald-300/25 px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200">{{ selectedDecalSize() }}</span>
-              </div>
-
-              <div class="mt-5 overflow-hidden rounded-2xl bg-[#f4fbf5] p-3 text-[#082012]">
-                <div class="rounded-xl border border-[#cfe3d2] bg-[#f8fff9] p-3 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.75)]">
-                  <div class="flex items-center justify-between gap-3 rounded-lg bg-[#dfeee3] px-3 py-2">
-                    <div class="min-w-0">
-                      <p class="truncate text-sm font-black">{{ businessName() || 'Your business' }}</p>
-                      <p class="truncate text-[11px] font-bold text-[#1e8f45]">{{ businessCategory() }}</p>
-                    </div>
-                    <p class="shrink-0 text-xs font-black">Living Wiki · Philly</p>
-                  </div>
-
-                  <div class="mt-4 grid gap-4 min-[440px]:grid-cols-[0.9fr_1.1fr] min-[440px]:items-center">
-                    <div class="mx-auto flex min-h-56 w-full max-w-60 flex-col items-center justify-center gap-3">
-                      <div class="flex flex-wrap justify-center gap-2">
-                        @for (language of selectedDecalLanguages(); track language.code) {
-                          <span class="rounded-full bg-white px-3 py-1 text-sm font-black text-[#176a3a] shadow-sm ring-1 ring-[#cfe3d2]">
-                            {{ language.greeting }}
-                          </span>
-                        }
-                      </div>
-                      <div class="relative h-40 w-24 rounded-[1.65rem] bg-[#071b10] p-2 shadow-[0_22px_50px_-22px_rgba(7,27,16,0.9)]">
-                        <div class="absolute left-1/2 top-1.5 h-1.5 w-8 -translate-x-1/2 rounded-full bg-white/20"></div>
-                        <div class="flex h-full flex-col items-center justify-between rounded-[1.2rem] bg-white px-2 py-4">
-                          <span class="material-symbols-outlined text-2xl text-[#1e8f45]">record_voice_over</span>
-                          <div class="grid h-16 w-16 place-items-center rounded-full bg-[#e7f6ec]">
-                            <span class="material-symbols-outlined text-4xl text-[#1e8f45]">mic</span>
-                          </div>
-                          <div class="h-1.5 w-10 rounded-full bg-[#cfe3d2]"></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="relative mx-auto flex h-64 w-64 items-center justify-center">
-                      <div class="absolute inset-2 rounded-full border border-dashed border-[#1e8f45]/35"></div>
-                      <div class="relative rounded-2xl bg-white p-3 shadow-[0_22px_60px_-28px_rgba(0,0,0,0.55)]">
-                        <img
-                          [src]="businessQrImageUrl()"
-                          [alt]="'QR code for ' + (businessName() || 'this business') + ' business chat'"
-                          class="h-36 w-36 rounded-lg bg-white"
-                        />
-                      </div>
-                      @for (language of selectedDecalLanguages(); track language.code; let i = $index) {
-                        <span
-                          class="absolute left-1/2 top-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#cfe3d2] bg-white text-lg shadow-md"
-                          [style.transform]="'translate(-50%, -50%) ' + orbitTransform(i, selectedDecalLanguages().length)"
-                        >
-                          {{ language.flag }}
-                        </span>
-                      }
-                    </div>
-                  </div>
-
-                  <div class="mt-3 border-t border-[#cfe3d2] pt-3 text-center">
-                    <p class="text-base font-black">Talk to us in your language</p>
-                    <p class="mt-1 text-xs font-bold text-[#456252]">Scan to chat by voice with {{ businessName() || 'this shop' }}’s guide</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-5 text-center">
-                <h3 class="text-lg font-black">Talk to us in your language</h3>
-                <p class="mt-1 text-sm font-semibold text-emerald-100">Scan to chat by voice with {{ businessName() || 'this shop' }}’s guide</p>
-                <p class="mt-4 text-sm font-black text-emerald-300">{{ businessChatUrl() }}</p>
-              </div>
-            </div>
-
-            <div class="mt-4 grid gap-3">
-              <a
-                class="ghost-btn justify-center !px-5 !py-3 text-sm"
-                [href]="decalDownloadHref()"
-                [download]="decalDownloadName()"
-              >
-                <span class="material-symbols-outlined text-base">download</span>
-                <span>Download print-ready SVG</span>
-              </a>
-              <a routerLink="/business/claim" class="ghost-btn justify-center !px-5 !py-3 text-sm">
-                <span class="material-symbols-outlined text-base">inventory_2</span>
-                <span>Order printed decals</span>
-              </a>
-              <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="'https://' + businessChatUrl()" target="_blank" rel="noopener">
-                <span class="material-symbols-outlined text-base">qr_code_2</span>
-                <span>Test my QR link</span>
-              </a>
-            </div>
-
-            <div class="mt-5 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Add to your site</p>
-                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Paste this link on your website, menu, profile, or QR placard.</p>
-                </div>
-                <button type="button" class="rounded-full border border-[var(--line)] p-2 text-[var(--muted)] hover:text-[var(--accent)]" (click)="copyBusinessLink()" aria-label="Copy business link">
-                  <span class="material-symbols-outlined text-base">{{ copiedBusinessLink() ? 'check' : 'content_copy' }}</span>
-                </button>
-              </div>
-              <div class="mt-3 rounded-xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-sm font-bold text-[var(--text)]">
-                https://{{ businessChatUrl() }}
-              </div>
-            </div>
+        <div class="rounded-[1.75rem] border border-[var(--line)] bg-[var(--bg)] p-4 shadow-[var(--shadow-elevated)]">
+          <div class="rounded-[1.35rem] border border-[#c9a160]/45 bg-[#f7f2e8] p-4">
+            <svg viewBox="0 0 900 900" role="img" [attr.aria-label]="'Sample QR badge for ' + businessName()" class="mx-auto aspect-square w-full max-w-[34rem] drop-shadow-2xl">
+              <defs>
+                <radialGradient id="businessPaper" cx="50%" cy="42%" r="62%">
+                  <stop offset="0" stop-color="#f7e7ca"></stop>
+                  <stop offset="0.68" stop-color="#dfc28d"></stop>
+                  <stop offset="1" stop-color="#c79d56"></stop>
+                </radialGradient>
+                <linearGradient id="businessTealRing" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#2f8294"></stop>
+                  <stop offset="1" stop-color="#0f596d"></stop>
+                </linearGradient>
+                <path id="businessTopArc" d="M 142 452 A 308 308 0 0 1 758 452"></path>
+                <path id="businessBottomArc" d="M 170 630 A 300 300 0 0 0 730 630"></path>
+              </defs>
+              <circle cx="450" cy="450" r="400" fill="url(#businessPaper)"></circle>
+              <circle cx="450" cy="450" r="340" fill="none" stroke="url(#businessTealRing)" stroke-width="74"></circle>
+              <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"></circle>
+              <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"></circle>
+              <text font-family="Inter, Arial, sans-serif" font-size="45" font-weight="900" fill="#ffffff">
+                <textPath href="#businessTopArc" startOffset="50%" text-anchor="middle">YOUR LOCAL INSIDER</textPath>
+              </text>
+              <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff">
+                <textPath href="#businessBottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
+              </text>
+              <text x="450" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="31" font-weight="900" fill="#0f596d">{{ decalBusinessTitle() }}</text>
+              <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"></rect>
+              <image [attr.href]="businessQrImageUrl()" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"></image>
+              <circle cx="450" cy="450" r="30" fill="#f3dfb9"></circle>
+              <path d="M450 431c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16v-16c0-9 7-16 16-16z" fill="#0f596d"></path>
+              <path d="M424 458c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
+              <path d="M450 488v23M432 511h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
+              @for (language of selectedDecalLanguages(); track language.code; let i = $index) {
+                <g [attr.transform]="svgOrbitTransform(i, selectedDecalLanguages().length, 176)">
+                  <circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"></circle>
+                  <text y="10" text-anchor="middle" font-size="27">{{ language.flag }}</text>
+                </g>
+              }
+              <text x="450" y="665" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+            </svg>
           </div>
-        </aside>
+        </div>
       </div>
     </section>
 

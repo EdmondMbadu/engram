@@ -85,7 +85,7 @@ export class BusinessComponent {
 
   readonly businessChatUrl = computed(() => {
     const name = this.slugify(this.businessName());
-    return `mylivingwiki.com/philly${name ? `?business=${name}` : ''}`;
+    return `mylivingwiki.com/chat/philly${name ? `?business=${name}` : ''}`;
   });
 
   readonly businessQrImageUrl = computed(() =>
@@ -96,6 +96,8 @@ export class BusinessComponent {
     const selected = new Set(this.selectedLanguageCodes());
     return this.decalLanguages.filter((language) => selected.has(language.code)).slice(0, 6);
   });
+
+  readonly decalBusinessTitle = computed(() => this.fitBadgeText(this.businessName()).toUpperCase());
 
   readonly decalDownloadName = computed(() => `${this.slugify(this.businessName()) || 'my-living-wiki'}-decal.svg`);
 
@@ -238,6 +240,13 @@ export class BusinessComponent {
     return `rotate(${angle}deg) translate(6.8rem) rotate(${-angle}deg)`;
   }
 
+  svgOrbitTransform(index: number, total: number, radius = 176): string {
+    const angle = (-110 + (360 / Math.max(total, 1)) * index) * (Math.PI / 180);
+    const x = 450 + Math.cos(angle) * radius;
+    const y = 450 + Math.sin(angle) * radius;
+    return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
+  }
+
   async copyBusinessLink(): Promise<void> {
     if (typeof navigator === 'undefined' || !navigator.clipboard) {
       return;
@@ -271,6 +280,11 @@ export class BusinessComponent {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  private fitBadgeText(value: string): string {
+    const clean = value.trim() || 'Your business';
+    return clean.length > 26 ? `${clean.slice(0, 23).trim()}...` : clean;
   }
 
   private buildDecalSvg(): string {

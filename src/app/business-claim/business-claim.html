@@ -265,6 +265,42 @@
             </div>
           </div>
         </article>
+
+        <article class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
+          <div class="flex items-start gap-4">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">5</span>
+            <div class="min-w-0 flex-1">
+              <h2 class="text-lg font-black">Business admin</h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+                Enter the person who should manage this business page. This is saved with the claim request, not shown on the public badge.
+              </p>
+              <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                <label class="block">
+                  <span class="text-sm font-bold text-[var(--muted)]">Admin name</span>
+                  <input
+                    type="text"
+                    class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
+                    [value]="adminName()"
+                    (input)="onAdminNameInput($event)"
+                    placeholder="Jane Smith"
+                    autocomplete="name"
+                  />
+                </label>
+                <label class="block">
+                  <span class="text-sm font-bold text-[var(--muted)]">Admin email</span>
+                  <input
+                    type="email"
+                    class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
+                    [value]="adminEmail()"
+                    (input)="onAdminEmailInput($event)"
+                    placeholder="jane@example.com"
+                    autocomplete="email"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -283,41 +319,37 @@
                 <stop offset="0" stop-color="#2f8294"></stop>
                 <stop offset="1" stop-color="#0f596d"></stop>
               </linearGradient>
-              <path id="claimTopArc" d="M 138 466 A 312 312 0 0 1 762 466"></path>
-              <path id="claimBottomArc" d="M 154 642 A 315 315 0 0 0 746 642"></path>
+              <path id="claimTopArc" d="M 142 452 A 308 308 0 0 1 758 452"></path>
+              <path id="claimBottomArc" d="M 170 630 A 300 300 0 0 0 730 630"></path>
             </defs>
             <circle cx="450" cy="450" r="400" fill="url(#claimPaper)"></circle>
-            <circle cx="450" cy="450" r="342" fill="none" stroke="url(#claimTealRing)" stroke-width="76"></circle>
-            <circle cx="450" cy="450" r="286" fill="#ead2a5" stroke="#b8842f" stroke-width="5"></circle>
-            <circle cx="450" cy="450" r="214" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="28 30"></circle>
+            <circle cx="450" cy="450" r="340" fill="none" stroke="url(#claimTealRing)" stroke-width="74"></circle>
+            <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"></circle>
+            <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"></circle>
 
-            <text font-family="Inter, Arial, sans-serif" font-size="46" font-weight="900" fill="#ffffff">
-              <textPath href="#claimTopArc" startOffset="50%" text-anchor="middle">{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
+            <text font-family="Inter, Arial, sans-serif" font-size="45" font-weight="900" fill="#ffffff">
+              <textPath href="#claimTopArc" startOffset="50%" text-anchor="middle">YOUR LOCAL INSIDER</textPath>
             </text>
-            <text font-family="Inter, Arial, sans-serif" font-size="52" font-weight="900" fill="#ffffff">
+            <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff">
               <textPath href="#claimBottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
             </text>
 
-            <text x="450" y="118" text-anchor="middle" font-size="68">🎩</text>
-            <text x="238" y="464" text-anchor="middle" font-size="70">🥨</text>
-            <text x="676" y="466" text-anchor="middle" font-size="70">🍺</text>
-            <text x="450" y="710" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+            <text x="450" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="31" font-weight="900" fill="#0f596d">{{ decalBusinessTitle() }}</text>
 
-            <rect x="304" y="294" width="292" height="292" rx="18" fill="#fff8ea" stroke="#b8842f" stroke-width="5"></rect>
-            <image [attr.href]="qrImageUrl()" x="326" y="316" width="248" height="248" preserveAspectRatio="xMidYMid meet"></image>
-            <g transform="translate(450 446)">
-              <circle r="28" fill="#f3dfb9"></circle>
-              <path d="M0 -18c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16V-2c0-9 7-16 16-16z" fill="#0f596d"></path>
-              <path d="M-26 9c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
-              <path d="M0 39v23M-18 62h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
-            </g>
+            <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"></rect>
+            <image [attr.href]="qrImageUrl()" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"></image>
+            <circle cx="450" cy="450" r="30" fill="#f3dfb9"></circle>
+            <path d="M450 431c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16v-16c0-9 7-16 16-16z" fill="#0f596d"></path>
+            <path d="M424 458c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
+            <path d="M450 488v23M432 511h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"></path>
 
             @for (language of selectedLanguages(); track language.code; let i = $index) {
-              <g [attr.transform]="svgOrbitTransform(i, selectedLanguages().length)">
-                <circle r="36" fill="#f7efe0" stroke="#b98834" stroke-width="4"></circle>
-                <text y="10" text-anchor="middle" font-size="28">{{ language.flag }}</text>
+              <g [attr.transform]="svgOrbitTransform(i, selectedLanguages().length, 176)">
+                <circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"></circle>
+                <text y="10" text-anchor="middle" font-size="27">{{ language.flag }}</text>
               </g>
             }
+            <text x="450" y="665" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
           </svg>
         </div>
 
@@ -341,7 +373,7 @@
               <span>Saving</span>
             } @else {
               <span class="material-symbols-outlined text-base">add_business</span>
-              <span>Reserve business page</span>
+              <span>Submit claim request</span>
             }
           </button>
           <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="decalDownloadHref()" [download]="decalFilename()">

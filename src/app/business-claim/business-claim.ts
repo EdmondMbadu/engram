@@ -39,6 +39,8 @@ type StoredClaimDraft = {
   cityName: string;
   previewUrl: string;
   guidePrompt: string;
+  adminName: string;
+  adminEmail: string;
   savedAt: string;
 };
 
@@ -83,6 +85,8 @@ export class BusinessClaimComponent {
   readonly claimStatus = signal<string | null>(null);
   readonly claimError = signal<string | null>(null);
   readonly copiedLink = signal(false);
+  readonly adminName = signal('');
+  readonly adminEmail = signal('');
 
   readonly fallbackCities: ClaimCityFallback[] = [
     { id: 'fallback-philly', name: 'Philadelphia', region: 'Pennsylvania', slug: 'philly' },
@@ -221,6 +225,8 @@ export class BusinessClaimComponent {
   });
   readonly canSaveClaim = computed(() =>
     !!this.businessSlug()
+    && this.adminName().trim().length >= 2
+    && this.isValidEmail(this.adminEmail())
     && !this.hasDuplicateClaim()
     && !this.claimCheckLoading()
     && !this.claimSaving(),
@@ -340,6 +346,16 @@ export class BusinessClaimComponent {
     this.claimStatus.set(null);
   }
 
+  onAdminNameInput(event: Event): void {
+    this.adminName.set((event.target as HTMLInputElement).value);
+    this.claimStatus.set(null);
+  }
+
+  onAdminEmailInput(event: Event): void {
+    this.adminEmail.set((event.target as HTMLInputElement).value);
+    this.claimStatus.set(null);
+  }
+
   async searchBusiness(): Promise<void> {
     const atlasId = this.selectedAtlasId();
     const query = this.businessQuery().trim();
@@ -444,7 +460,11 @@ export class BusinessClaimComponent {
         this.claimError.set('This business already has a pending page draft. Use the existing claim instead of creating a duplicate.');
         return;
       }
-      const saved = await this.businessClaimService.create(record);
+      const saved = await this.businessClaimService.create(record, {
+        admin_name: this.adminName().trim(),
+        admin_email: this.adminEmail().trim(),
+        guide_prompt: this.guidePrompt().trim(),
+      });
       this.existingClaim.set(saved);
       this.saveLocalDraft({
         claimKey,
@@ -452,6 +472,8 @@ export class BusinessClaimComponent {
         cityName: this.selectedCityName(),
         previewUrl: this.previewUrl(),
         guidePrompt: this.guidePrompt(),
+        adminName: this.adminName().trim(),
+        adminEmail: this.adminEmail().trim(),
         savedAt: new Date().toISOString(),
       });
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
@@ -463,6 +485,8 @@ export class BusinessClaimComponent {
         cityName: this.selectedCityName(),
         previewUrl: this.previewUrl(),
         guidePrompt: this.guidePrompt(),
+        adminName: this.adminName().trim(),
+        adminEmail: this.adminEmail().trim(),
         savedAt: new Date().toISOString(),
       });
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
@@ -482,7 +506,7 @@ export class BusinessClaimComponent {
   }
 
   svgOrbitTransform(index: number, total: number, radius = 190): string {
-    const angle = (-120 + (360 / Math.max(total, 1)) * index) * (Math.PI / 180);
+    const angle = (-110 + (360 / Math.max(total, 1)) * index) * (Math.PI / 180);
     const x = 450 + Math.cos(angle) * radius;
     const y = 450 + Math.sin(angle) * radius;
     return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
@@ -569,7 +593,11 @@ export class BusinessClaimComponent {
 
   private fitBadgeText(value: string): string {
     const clean = value.trim() || 'Your business';
-    return clean.length > 28 ? `${clean.slice(0, 25).trim()}...` : clean;
+    return clean.length > 26 ? `${clean.slice(0, 23).trim()}...` : clean;
+  }
+
+  private isValidEmail(value: string): boolean {
+    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value.trim());
   }
 
   private escapeSvg(value: string): string {
@@ -584,8 +612,8 @@ export class BusinessClaimComponent {
     const business = this.escapeSvg(this.decalBusinessTitle());
     const qr = this.escapeSvg(this.qrImageUrl());
     const flags = this.selectedLanguages().map((language, index, all) => {
-      const transform = this.svgOrbitTransform(index, all.length, 190);
-      return `<g transform="${transform}"><circle r="36" fill="#f7efe0" stroke="#b98834" stroke-width="4"/><text y="10" text-anchor="middle" font-size="28">${language.flag}</text></g>`;
+      const transform = this.svgOrbitTransform(index, all.length, 176);
+      return `<g transform="${transform}"><circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="10" text-anchor="middle" font-size="27">${language.flag}</text></g>`;
     }).join('');
 
     return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
@@ -602,33 +630,29 @@ export class BusinessClaimComponent {
         <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
           <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#12323a" flood-opacity="0.28"/>
         </filter>
-        <path id="topArc" d="M 138 466 A 312 312 0 0 1 762 466"/>
-        <path id="bottomArc" d="M 154 642 A 315 315 0 0 0 746 642"/>
+        <path id="topArc" d="M 142 452 A 308 308 0 0 1 758 452"/>
+        <path id="bottomArc" d="M 170 630 A 300 300 0 0 0 730 630"/>
       </defs>
       <rect width="900" height="900" fill="#f4f4f1"/>
       <circle cx="450" cy="450" r="400" fill="url(#paper)" filter="url(#softShadow)"/>
-      <circle cx="450" cy="450" r="342" fill="none" stroke="url(#tealRing)" stroke-width="76"/>
-      <circle cx="450" cy="450" r="286" fill="#ead2a5" stroke="#b8842f" stroke-width="5"/>
-      <circle cx="450" cy="450" r="214" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="28 30"/>
-      <text font-family="Inter, Arial, sans-serif" font-size="46" font-weight="900" fill="#ffffff" letter-spacing="4">
-        <textPath href="#topArc" startOffset="50%" text-anchor="middle">${business} • LivingWiki Chat</textPath>
+      <circle cx="450" cy="450" r="340" fill="none" stroke="url(#tealRing)" stroke-width="74"/>
+      <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"/>
+      <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"/>
+      <text font-family="Inter, Arial, sans-serif" font-size="45" font-weight="900" fill="#ffffff" letter-spacing="3">
+        <textPath href="#topArc" startOffset="50%" text-anchor="middle">YOUR LOCAL INSIDER</textPath>
       </text>
-      <text font-family="Inter, Arial, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="6">
+      <text font-family="Inter, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff" letter-spacing="5">
         <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">60+ Languages</textPath>
       </text>
-      <text x="450" y="710" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
-      <text x="450" y="118" text-anchor="middle" font-size="68">🎩</text>
-      <text x="238" y="464" text-anchor="middle" font-size="70">🥨</text>
-      <text x="676" y="466" text-anchor="middle" font-size="70">🍺</text>
-      <rect x="304" y="294" width="292" height="292" rx="18" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
-      <image href="${qr}" x="326" y="316" width="248" height="248" preserveAspectRatio="xMidYMid meet"/>
-      <g transform="translate(450 446)">
-        <circle r="28" fill="#f3dfb9"/>
-        <path d="M0 -18c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16V-2c0-9 7-16 16-16z" fill="#0f596d"/>
-        <path d="M-26 9c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
-        <path d="M0 39v23M-18 62h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
-      </g>
+      <text x="450" y="252" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="31" font-weight="900" fill="#0f596d">${business}</text>
+      <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
+      <image href="${qr}" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"/>
+      <circle cx="450" cy="450" r="30" fill="#f3dfb9"/>
+      <path d="M450 431c9 0 16 7 16 16v16c0 9-7 16-16 16s-16-7-16-16v-16c0-9 7-16 16-16z" fill="#0f596d"/>
+      <path d="M424 458c0 16 11 30 26 30s26-14 26-30" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
+      <path d="M450 488v23M432 511h36" fill="none" stroke="#0f596d" stroke-width="7" stroke-linecap="round"/>
       ${flags}
+      <text x="450" y="665" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
     </svg>`;
   }
 }
