@@ -44,7 +44,7 @@ export function buildBusinessBadgeSvg(params: {
     <rect x="242" y="242" width="416" height="416" rx="24" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
     ${qr}
     ${flags}${icons}
-    <text x="450" y="746" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+    <text x="450" y="746" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by LivingWiki.com</text>
   </svg>`;
 }
 

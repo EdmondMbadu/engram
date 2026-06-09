@@ -46,7 +46,7 @@ export class BusinessActivityComponent {
   readonly editPath = computed(() => `${this.detailPath()}/edit`);
   readonly chatPath = computed(() => `/chat/${this.routeParams().citySlug}`);
   readonly chatQueryParams = computed(() => ({ business: this.routeParams().businessSlug }));
-  readonly publicChatUrl = computed(() => `https://mylivingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
+  readonly publicChatUrl = computed(() => `https://livingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly businessName = computed(() => this.business()?.business_name || this.titleizeSlug(this.routeParams().businessSlug || 'business'));
   readonly cityName = computed(() => this.business()?.city_name || this.titleizeSlug(this.routeParams().citySlug || 'city'));
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());
@@ -71,7 +71,7 @@ export class BusinessActivityComponent {
       void this.loadBusiness(claimKey);
     });
     effect(() => {
-      this.title.setTitle(`${this.pageTitle()} | ${this.businessName()} | My Living Wiki`);
+      this.title.setTitle(`${this.pageTitle()} | ${this.businessName()} | Living Wiki`);
     });
   }
 

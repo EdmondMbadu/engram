@@ -175,7 +175,7 @@ export class BusinessClaimComponent {
       return city.city_config.city_name;
     }
     if (city?.name) {
-      return city.name.replace(/^My living wiki:\s*/i, '').trim();
+      return city.name.replace(/^Living Wiki:\s*/i, '').trim();
     }
     return this.selectedFallbackCity()?.name ?? 'Philadelphia';
   });
@@ -199,7 +199,7 @@ export class BusinessClaimComponent {
       .filter((atlas) => atlas.city_config?.enabled === true)
       .map((atlas) => ({
         id: atlas.id,
-        name: atlas.city_config?.city_name || atlas.name.replace(/^My living wiki:\s*/i, ''),
+        name: atlas.city_config?.city_name || atlas.name.replace(/^Living Wiki:\s*/i, ''),
         region: atlas.city_config?.region_name || atlas.city_config?.country_code || '',
         slug: atlas.slug,
         live: true,
@@ -242,13 +242,13 @@ export class BusinessClaimComponent {
   readonly businessSlug = computed(() => this.slugify(this.businessName()));
   readonly claimKey = computed(() => `${this.selectedCitySlug()}__${this.businessSlug() || 'business'}`);
   readonly businessDetailPath = computed(() => `/business/${this.selectedCitySlug()}/${this.businessSlug() || 'business'}`);
-  readonly businessDetailUrl = computed(() => `https://mylivingwiki.com${this.businessDetailPath()}`);
+  readonly businessDetailUrl = computed(() => `https://livingwiki.com${this.businessDetailPath()}`);
   readonly previewPath = computed(() => {
     const slug = this.selectedCitySlug();
     const business = this.businessSlug();
     return `/chat/${slug}${business ? `?business=${business}` : ''}`;
   });
-  readonly previewUrl = computed(() => `https://mylivingwiki.com${this.previewPath()}`);
+  readonly previewUrl = computed(() => `https://livingwiki.com${this.previewPath()}`);
   readonly qrImageUrl = computed(() => generateQrSvgDataUrl(this.previewUrl()));
   readonly decalDownloadHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.buildDecalSvg())}`);
   readonly decalFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-local-insider-badge.svg`);
@@ -314,7 +314,7 @@ export class BusinessClaimComponent {
       }
 
       const displayName = this.authService.displayName().trim();
-      if (this.authService.isAuthenticated() && !this.adminName().trim() && displayName && displayName !== 'My living wiki') {
+      if (this.authService.isAuthenticated() && !this.adminName().trim() && displayName && displayName !== 'Living Wiki') {
         this.adminName.set(displayName);
       }
     });
@@ -853,7 +853,7 @@ export class BusinessClaimComponent {
       <path d="M450 482v18M437 500h26" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"/>
       ${flags}
       ${icons}
-      <text x="450" y="646" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+      <text x="450" y="646" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by LivingWiki.com</text>
     </svg>`;
   }
 }

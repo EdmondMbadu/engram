@@ -161,6 +161,10 @@ export class PublicWikisComponent implements OnInit {
     }
   }
 
+  displayWikiTitle(wiki: PublicWikiCatalogItem): string {
+    return this.normalizeVisibleWikiTitle(wiki.title);
+  }
+
   setCategory(cat: PublicWikiCategory): void {
     this.activeCategory.set(cat);
     if (cat !== CITIES_CATEGORY) {
@@ -313,7 +317,11 @@ export class PublicWikisComponent implements OnInit {
   }
 
   private titleKey(wiki: PublicWikiCatalogItem): string {
-    return wiki.title.replace(/^my living wiki:\s*/i, '').trim().toLowerCase();
+    return this.normalizeVisibleWikiTitle(wiki.title).replace(/^living wiki:\s*/i, '').trim().toLowerCase();
+  }
+
+  private normalizeVisibleWikiTitle(title: string): string {
+    return title.replace(/^my\s+living\s+wiki:/i, 'Living Wiki:').trim();
   }
 
   private globalRegionForWiki(wiki: PublicWikiCatalogItem): string {

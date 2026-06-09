@@ -63,7 +63,7 @@ export class BusinessEditComponent {
   readonly cityName = computed(() => this.business()?.city_name || this.titleizeSlug(this.routeParams().citySlug || 'city'));
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());
   readonly ownerCanEdit = computed(() => !!this.authService.uid() && this.business()?.owner_user_id === this.authService.uid());
-  readonly chatUrl = computed(() => `https://mylivingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
+  readonly chatUrl = computed(() => `https://livingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly qrOnlySvg = computed(() => generateQrSvg(this.chatUrl()));
   readonly qrOnlySvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.qrOnlySvg())}`);
   readonly badgeSvg = computed(() => this.buildBadgeSvg());
@@ -97,7 +97,7 @@ export class BusinessEditComponent {
       void this.loadBusiness(claimKey);
     });
     effect(() => {
-      this.title.setTitle(`Edit ${this.businessName()} | My Living Wiki`);
+      this.title.setTitle(`Edit ${this.businessName()} | Living Wiki`);
     });
   }
 

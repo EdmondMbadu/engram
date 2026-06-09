@@ -9,6 +9,6 @@ import { ThemeService } from './theme.service';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = 'My living wiki';
+  protected readonly title = 'Living Wiki';
   private readonly themeService = inject(ThemeService);
 }

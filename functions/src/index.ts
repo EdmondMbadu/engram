@@ -64,7 +64,7 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
 });
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
-const publicAppUrl = 'https://mylivingwiki.com';
+const publicAppUrl = 'https://livingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
 const maxSmsReplyLength = 1200;
 const chatAnswerVoiceId = 'ed7fd7f55fa58dd74b904a15d1e38bf97763ae8d9faccdce8a27de3441bffa75';
@@ -73,7 +73,7 @@ const maxSpeechRecapWords = 28;
 const speechRecapVersion = 'v2';
 const chatAnswerSpeechModel = 'eleven_flash_v2_5';
 const defaultNewsletterPrompt = [
-  'Create a premium weekly My living wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
+  'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
   'For Philadelphia wikis, prioritize Philadelphia and the surrounding region.',
   'Use fresh web search, include dates when available, avoid rumors, and keep every item concise.',
@@ -734,7 +734,7 @@ async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url, {
     headers: {
       'Accept': 'application/json',
-      'User-Agent': 'MyLivingWiki/1.0 cover-image-automation (https://mylivingwiki.com)',
+      'User-Agent': 'LivingWiki/1.0 cover-image-automation (https://livingwiki.com)',
     },
     signal: AbortSignal.timeout(15000),
   });
@@ -905,7 +905,7 @@ async function fetchValidatedCoverImage(imageUrl: string): Promise<{ buffer: Buf
   const response = await fetch(imageUrl, {
     headers: {
       'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
-      'User-Agent': 'MyLivingWiki/1.0 cover-image-automation (https://mylivingwiki.com)',
+      'User-Agent': 'LivingWiki/1.0 cover-image-automation (https://livingwiki.com)',
     },
     signal: AbortSignal.timeout(20000),
   });
@@ -1130,7 +1130,7 @@ function serializeCityPlaceReview(snapshotId: string, data: Record<string, unkno
 
 function cityAtlasSearchContext(atlas: Record<string, unknown>): string {
   const cityConfig = (atlas.city_config ?? {}) as Record<string, unknown>;
-  const name = textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^My living wiki:\s*/i, '');
+  const name = textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^Living Wiki:\s*/i, '');
   const region = textFromUnknown(cityConfig.region_name);
   const country = textFromUnknown(cityConfig.country_code);
   return [name, region, country].filter(Boolean).join(', ');
@@ -1353,7 +1353,7 @@ function buildAtlasAdminInviteEmail(params: {
 
   const text = `Hi ${recipientName},
 
-${params.inviterName} added you as an admin for "${params.atlasName}" on My living wiki.
+${params.inviterName} added you as an admin for "${params.atlasName}" on Living Wiki.
 
 You can now help manage this wiki's AI voice and settings.
 
@@ -1365,18 +1365,18 @@ ${params.publicUrl}
 
 If your admin access is removed later, this wiki will automatically disappear from your Wikis page.
 
-The My living wiki Team`;
+The Living Wiki Team`;
 
   const html = `
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 640px; margin: 0 auto; padding: 0;">
       <div style="background: linear-gradient(135deg, #0b1f14 0%, #1c7c41 100%); padding: 34px 30px; border-radius: 18px 18px 0 0;">
-        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">My living wiki</h1>
+        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Living Wiki</h1>
         <p style="color: rgba(255,255,255,0.76); margin: 10px 0 0; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;">Admin invitation</p>
       </div>
       <div style="background: #ffffff; padding: 32px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 18px 18px;">
         <p style="color: #111827; font-size: 16px; line-height: 1.6; margin: 0 0 18px;">Hi <strong>${safeRecipientName}</strong>,</p>
         <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 22px;">
-          ${safeInviterName} added you as an admin for <strong>${safeAtlasName}</strong> on My living wiki.
+          ${safeInviterName} added you as an admin for <strong>${safeAtlasName}</strong> on Living Wiki.
         </p>
         <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; padding: 20px; margin: 0 0 24px;">
           <p style="color: #0f2417; font-size: 15px; line-height: 1.6; margin: 0;">
@@ -1395,7 +1395,7 @@ The My living wiki Team`;
           If your admin access is removed later, this wiki will automatically disappear from your Wikis page.
         </p>
         <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
-        <p style="color: #9ca3af; font-size: 13px; margin: 0;">The My living wiki Team</p>
+        <p style="color: #9ca3af; font-size: 13px; margin: 0;">The Living Wiki Team</p>
       </div>
     </div>
   `;
@@ -1422,7 +1422,7 @@ async function sendAtlasAdminInviteEmail(params: {
     to: params.recipientEmail,
     from: {
       email: inviteSenderEmail,
-      name: 'My living wiki',
+      name: 'Living Wiki',
     },
     subject: email.subject,
     text: email.text,
@@ -1436,7 +1436,7 @@ function buildAtlasSubscriptionEmail(params: {
   chatUrl: string;
   unsubscribeUrl: string;
 }) {
-  const subject = `You're subscribed to My living wiki Weekly Updates`;
+  const subject = `You're subscribed to Living Wiki Weekly Updates`;
   const safeRecipientEmail = escapeHtml(params.recipientEmail);
   const safeAtlasName = escapeHtml(params.atlasName);
   const safeChatUrl = escapeHtml(params.chatUrl);
@@ -1444,7 +1444,7 @@ function buildAtlasSubscriptionEmail(params: {
 
   const text = `Hi,
 
-You subscribed to My living wiki Weekly Updates for "${params.atlasName}".
+You subscribed to Living Wiki Weekly Updates for "${params.atlasName}".
 
 Each week, you will receive related information and updates from this wiki.
 
@@ -1454,18 +1454,18 @@ ${params.chatUrl}
 Unsubscribe:
 ${params.unsubscribeUrl}
 
-The My living wiki Team`;
+The Living Wiki Team`;
 
   const html = `
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 640px; margin: 0 auto; padding: 0;">
       <div style="background: linear-gradient(135deg, #0b1f14 0%, #1c7c41 100%); padding: 34px 30px; border-radius: 18px 18px 0 0;">
-        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">My living wiki</h1>
+        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Living Wiki</h1>
         <p style="color: rgba(255,255,255,0.76); margin: 10px 0 0; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;">Weekly updates</p>
       </div>
       <div style="background: #ffffff; padding: 32px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 18px 18px;">
         <p style="color: #111827; font-size: 16px; line-height: 1.6; margin: 0 0 18px;">Hi <strong>${safeRecipientEmail}</strong>,</p>
         <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 22px;">
-          You subscribed to <strong>My living wiki Weekly Updates</strong> for <strong>${safeAtlasName}</strong>.
+          You subscribed to <strong>Living Wiki Weekly Updates</strong> for <strong>${safeAtlasName}</strong>.
         </p>
         <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; padding: 20px; margin: 0 0 24px;">
           <p style="color: #0f2417; font-size: 15px; line-height: 1.6; margin: 0;">
@@ -1484,7 +1484,7 @@ The My living wiki Team`;
         <p style="color: #6b7280; font-size: 13px; line-height: 1.6; margin: 0 0 8px;">
           You can <a href="${safeUnsubscribeUrl}" style="color: #1c7c41; text-decoration: underline;">unsubscribe from these weekly updates</a> at any time.
         </p>
-        <p style="color: #9ca3af; font-size: 13px; margin: 0;">The My living wiki Team</p>
+        <p style="color: #9ca3af; font-size: 13px; margin: 0;">The Living Wiki Team</p>
       </div>
     </div>
   `;
@@ -1509,7 +1509,7 @@ async function sendAtlasSubscriptionEmail(params: {
     to: params.recipientEmail,
     from: {
       email: inviteSenderEmail,
-      name: 'My living wiki',
+      name: 'Living Wiki',
     },
     subject: email.subject,
     text: email.text,
@@ -1610,7 +1610,7 @@ function buildVoiceConversationSummary(params: {
     agentMessages[0] ? `The wiki responded with local context for ${placeName}.` : '',
   ].filter(Boolean);
   const transcriptText = params.transcript
-    .map((item) => `${item.role === 'user' ? 'You' : 'My living wiki'}: ${item.text}`)
+    .map((item) => `${item.role === 'user' ? 'You' : 'Living Wiki'}: ${item.text}`)
     .join('\n');
 
   return {
@@ -1634,7 +1634,7 @@ function buildVoiceConversationSummaryEmail(params: {
   continueChatUrl: string;
 }) {
   const placeName = params.cityName || params.atlasName || 'this wiki';
-  const subject = `Your My living wiki voice recap for ${placeName}`;
+  const subject = `Your Living Wiki voice recap for ${placeName}`;
   const greetingName = params.recipientName || params.recipientEmail;
   const safeGreetingName = escapeHtml(greetingName);
   const safePlaceName = escapeHtml(placeName);
@@ -1680,7 +1680,7 @@ function buildVoiceConversationSummaryEmail(params: {
 
   const text = `Hi ${greetingName},
 
-Here is your My living wiki voice recap for ${placeName}.
+Here is your Living Wiki voice recap for ${placeName}.
 
 ${params.summary.summary}
 
@@ -1696,12 +1696,12 @@ ${params.continueChatUrl}
 Transcript:
 ${params.summary.transcriptText}
 
-The My living wiki Team`;
+The Living Wiki Team`;
 
   const html = `
     <div style="font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;max-width:680px;margin:0 auto;padding:0;background:#f6f8f5;">
       <div style="background:linear-gradient(135deg,#07160f 0%,#1c7c41 68%,#d6a94a 100%);padding:34px 30px;border-radius:20px 20px 0 0;">
-        <h1 style="color:#ffffff;margin:0;font-size:27px;font-weight:900;letter-spacing:-0.02em;">My living wiki</h1>
+        <h1 style="color:#ffffff;margin:0;font-size:27px;font-weight:900;letter-spacing:-0.02em;">Living Wiki</h1>
         <p style="color:rgba(255,255,255,0.78);margin:10px 0 0;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">Voice recap</p>
       </div>
       <div style="background:#ffffff;padding:30px;border:1px solid #e3e8df;border-top:none;border-radius:0 0 20px 20px;">
@@ -1734,7 +1734,7 @@ The My living wiki Team`;
           ${transcriptHtml}
         </div>
         <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
-        <p style="color:#9ca3af;font-size:13px;margin:0;">The My living wiki Team</p>
+        <p style="color:#9ca3af;font-size:13px;margin:0;">The Living Wiki Team</p>
       </div>
     </div>
   `;
@@ -2444,7 +2444,7 @@ ${params.chatUrl}${unsubscribeText}`;
     <div style="margin:0;padding:0;background:#f3f7f4;">
       <div style="font-family:Inter,'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;max-width:720px;margin:0 auto;padding:28px 16px;">
         <div style="background:#0b1f14;border-radius:24px 24px 0 0;padding:34px 32px;border:1px solid #173a25;">
-          <p style="margin:0 0 8px;color:#ffffff;font-size:20px;font-weight:900;line-height:1;">My living wiki</p>
+          <p style="margin:0 0 8px;color:#ffffff;font-size:20px;font-weight:900;line-height:1;">Living Wiki</p>
           <p style="margin:0 0 22px;color:#90d7aa;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;">Weekly Updates</p>
           <h1 style="margin:0;color:#ffffff;font-size:32px;line-height:1.08;font-weight:900;">${safeSubject}</h1>
           <p style="margin:14px 0 0;color:rgba(255,255,255,.72);font-size:15px;line-height:1.6;">A curated local intelligence briefing from ${safeAtlasName}.</p>
@@ -2453,7 +2453,7 @@ ${params.chatUrl}${unsubscribeText}`;
           ${bodyHtml}
           ${sourceButtonsHtml}
           <div style="margin:30px 0 0;padding:20px;border-radius:18px;background:#102016;border:1px solid #173a25;">
-            <p style="margin:0;color:rgba(255,255,255,.78);font-size:14px;line-height:1.65;">Continue the conversation with this My living wiki.</p>
+            <p style="margin:0;color:rgba(255,255,255,.78);font-size:14px;line-height:1.65;">Continue the conversation with this Living Wiki.</p>
             <a href="${safeChatUrl}" style="display:inline-block;margin-top:14px;background:#ffffff;color:#102016;text-decoration:none;padding:12px 18px;border-radius:999px;font-size:14px;font-weight:900;">Open Wiki Chat</a>
           </div>
           <div style="margin:20px 0 0;padding:16px;border-radius:16px;background:#f8faf9;border:1px solid #dbe8df;">
@@ -2462,11 +2462,11 @@ ${params.chatUrl}${unsubscribeText}`;
           </div>
           <hr style="border:none;border-top:1px solid #e5ece7;margin:28px 0 18px;">
           <p style="margin:0;color:#7a8780;font-size:12px;line-height:1.65;">
-            You received this My living wiki email because you subscribed to weekly updates for <strong style="color:#34443b;">${safeAtlasName}</strong>.
-            ${safeUnsubscribeUrl ? `You can <a href="${safeUnsubscribeUrl}" style="color:#1c7c41;text-decoration:underline;font-weight:700;">unsubscribe from these My living wiki updates</a> at any time.` : ''}
+            You received this Living Wiki email because you subscribed to weekly updates for <strong style="color:#34443b;">${safeAtlasName}</strong>.
+            ${safeUnsubscribeUrl ? `You can <a href="${safeUnsubscribeUrl}" style="color:#1c7c41;text-decoration:underline;font-weight:700;">unsubscribe from these Living Wiki updates</a> at any time.` : ''}
           </p>
           <p style="margin:10px 0 0;color:#9aa6a0;font-size:12px;line-height:1.55;">
-            My living wiki turns local knowledge into useful, current briefings and conversations.
+            Living Wiki turns local knowledge into useful, current briefings and conversations.
           </p>
         </div>
       </div>
@@ -2496,7 +2496,7 @@ async function sendNewsletterEmail(params: {
     to: params.recipientEmail,
     from: {
       email: inviteSenderEmail,
-      name: 'My living wiki',
+      name: 'Living Wiki',
     },
     subject: email.subject,
     text: email.text,
@@ -2865,7 +2865,7 @@ export const autoUploadAtlasCoverImage = onCall(
     const cityConfig = atlas.city_config && typeof atlas.city_config === 'object'
       ? atlas.city_config as Record<string, unknown>
       : {};
-    const cityName = textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^my living wiki:\s*/i, '');
+    const cityName = textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^living wiki:\s*/i, '');
     const regionName = textFromUnknown(cityConfig.region_name) || null;
     if (!cityName) {
       throw new HttpsError('failed-precondition', 'This Wiki does not have a city name.');
@@ -2933,7 +2933,7 @@ export const addAtlasAdmin = onCall({ region: callableRegion, cors: true, secret
   const userSnapshot = await db.collection('users').where('email', '==', email).limit(1).get();
   const userDoc = userSnapshot.docs[0];
   if (!userDoc) {
-    throw new HttpsError('not-found', 'No My living wiki account exists for that email yet.');
+    throw new HttpsError('not-found', 'No Living Wiki account exists for that email yet.');
   }
 
   const userId = userDoc.id;
@@ -2951,7 +2951,7 @@ export const addAtlasAdmin = onCall({ region: callableRegion, cors: true, secret
     ? token.name.trim()
     : typeof token.email === 'string' && token.email.trim()
       ? token.email.trim()
-      : 'A My living wiki owner';
+      : 'A Living Wiki owner';
   const admin = {
     user_id: userId,
     email,
@@ -3216,7 +3216,7 @@ function sendUnsubscribeHtml(
   </head>
   <body>
     <main>
-      <div class="eyebrow">My living wiki</div>
+      <div class="eyebrow">Living Wiki</div>
       <h1>${safeTitle}</h1>
       <p>${safeMessage}</p>
       ${safeActionUrl && safeActionLabel ? `<a href="${safeActionUrl}">${safeActionLabel}</a>` : ''}
@@ -3246,7 +3246,7 @@ export const unsubscribeAtlasSubscription = onRequest(
         title: 'Unsubscribe link is incomplete',
         message: 'This unsubscribe link is missing required information.',
         actionUrl: publicAppUrl,
-        actionLabel: 'Open My living wiki',
+        actionLabel: 'Open Living Wiki',
       });
       return;
     }
@@ -3258,7 +3258,7 @@ export const unsubscribeAtlasSubscription = onRequest(
         title: 'Subscription not found',
         message: 'This subscription may have already been removed.',
         actionUrl: publicAppUrl,
-        actionLabel: 'Open My living wiki',
+        actionLabel: 'Open Living Wiki',
       });
       return;
     }
@@ -3272,7 +3272,7 @@ export const unsubscribeAtlasSubscription = onRequest(
         title: 'Unsubscribe link is invalid',
         message: 'This unsubscribe link is not valid for this subscription.',
         actionUrl: publicAppUrl,
-        actionLabel: 'Open My living wiki',
+        actionLabel: 'Open Living Wiki',
       });
       return;
     }
@@ -3303,9 +3303,9 @@ export const unsubscribeAtlasSubscription = onRequest(
 
     sendUnsubscribeHtml(res, 200, {
       title: 'You are unsubscribed',
-      message: `You will no longer receive My living wiki Weekly Updates for ${atlasName}.`,
+      message: `You will no longer receive Living Wiki Weekly Updates for ${atlasName}.`,
       actionUrl: atlasSlug ? `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}` : publicAppUrl,
-      actionLabel: 'Return to My living wiki',
+      actionLabel: 'Return to Living Wiki',
     });
   },
 );
@@ -3374,7 +3374,7 @@ export const atlasTextWebhook = onRequest(
     if (req.method === 'GET') {
       res.status(200).send({
         ok: true,
-        message: 'My living wiki text webhook. Configure this URL as an inbound SMS webhook with atlasId and token.',
+        message: 'Living Wiki text webhook. Configure this URL as an inbound SMS webhook with atlasId and token.',
       });
       return;
     }
@@ -3387,7 +3387,7 @@ export const atlasTextWebhook = onRequest(
     const atlasId = normalizeAtlasId(req.query.atlasId);
     const token = textValue(req.query.token, 256) || textValue(req.get('x-living-wiki-token'), 256);
     if (!atlasId || !token) {
-      sendTwilioMessage(res, 'This My living wiki text endpoint is missing its configuration.', 400);
+      sendTwilioMessage(res, 'This Living Wiki text endpoint is missing its configuration.', 400);
       return;
     }
 
@@ -3395,7 +3395,7 @@ export const atlasTextWebhook = onRequest(
       const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
       const config = textMessagingConfigFromStored(integrationSnapshot.data()?.text_messaging);
       if (!config?.enabled || config.webhook_token !== token) {
-        sendTwilioMessage(res, 'This My living wiki text number is not enabled.', 403);
+        sendTwilioMessage(res, 'This Living Wiki text number is not enabled.', 403);
         return;
       }
 
@@ -3412,7 +3412,7 @@ export const atlasTextWebhook = onRequest(
         nestedRequestField(req, ['message', 'to']);
 
       if (!inboundText || !fromNumber) {
-        sendTwilioMessage(res, 'Send a question to this My living wiki number and I will answer from the public wiki.', 400);
+        sendTwilioMessage(res, 'Send a question to this Living Wiki number and I will answer from the public wiki.', 400);
         return;
       }
 
@@ -3461,7 +3461,7 @@ export const atlasTextWebhook = onRequest(
         atlasId,
         errorMessage: error instanceof Error ? error.message : String(error),
       });
-      sendTwilioMessage(res, 'My living wiki could not answer that text right now. Please try again shortly.', 500);
+      sendTwilioMessage(res, 'Living Wiki could not answer that text right now. Please try again shortly.', 500);
     }
   },
 );
@@ -4066,7 +4066,7 @@ export const elevenLabsLivingWikiInternetTool = onRequest(
     if (req.method === 'GET') {
       res.status(200).send({
         ok: true,
-        message: 'My living wiki ElevenLabs internet voice tool. POST a question to answer from internet mode.',
+        message: 'Living Wiki ElevenLabs internet voice tool. POST a question to answer from internet mode.',
       });
       return;
     }
@@ -4091,7 +4091,7 @@ export const elevenLabsLivingWikiInternetTool = onRequest(
       const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
       const config = voiceAgentConfigFromStored(integrationSnapshot.data()?.voice_agent);
       if (!config?.enabled || config.webhook_token !== token) {
-        res.status(403).send({ error: 'My living wiki voice agent endpoint is not enabled.' });
+        res.status(403).send({ error: 'Living Wiki voice agent endpoint is not enabled.' });
         return;
       }
 
@@ -4131,7 +4131,7 @@ export const elevenLabsLivingWikiInternetTool = onRequest(
         errorMessage: error instanceof Error ? error.message : String(error),
       });
       res.status(500).send({
-        answer: 'My living wiki could not answer that right now. Please try again shortly.',
+        answer: 'Living Wiki could not answer that right now. Please try again shortly.',
       });
     }
   },
@@ -4150,7 +4150,7 @@ export const vapiLivingWikiTool = onRequest(
     if (req.method === 'GET') {
       res.status(200).send({
         ok: true,
-        message: 'My living wiki Vapi tool endpoint. Configure this URL as a Vapi custom function tool server URL.',
+        message: 'Living Wiki Vapi tool endpoint. Configure this URL as a Vapi custom function tool server URL.',
       });
       return;
     }
@@ -4175,7 +4175,7 @@ export const vapiLivingWikiTool = onRequest(
       const integrationSnapshot = await db.collection('atlas_integrations').doc(atlasId).get();
       const config = voiceAgentConfigFromStored(integrationSnapshot.data()?.voice_agent);
       if (!config?.enabled || config.webhook_token !== token) {
-        res.status(403).send({ error: 'My living wiki voice agent endpoint is not enabled.' });
+        res.status(403).send({ error: 'Living Wiki voice agent endpoint is not enabled.' });
         return;
       }
 
@@ -4204,7 +4204,7 @@ export const vapiLivingWikiTool = onRequest(
         if (!question) {
           results.push({
             toolCallId: toolCall.id,
-            result: 'Ask me a specific question about the My living wiki and I can look it up.',
+            result: 'Ask me a specific question about the Living Wiki and I can look it up.',
           });
           continue;
         }
@@ -4252,7 +4252,7 @@ export const vapiLivingWikiTool = onRequest(
         results: [
           {
             toolCallId: firstVapiToolCallId(req.body) ?? 'unknown',
-            result: 'My living wiki could not answer that right now. Please try again shortly.',
+            result: 'Living Wiki could not answer that right now. Please try again shortly.',
           },
         ],
       });
@@ -5328,7 +5328,7 @@ function serializeAnswerCard(id: string, data: Record<string, unknown>) {
     question: String(data.question ?? ''),
     answerPreview: String(data.answer_preview ?? ''),
     title: String(data.title ?? 'A Philly Answer Worth Sharing'),
-    subtitle: String(data.subtitle ?? 'A fast, shareable summary from My living wiki Philly.'),
+    subtitle: String(data.subtitle ?? 'A fast, shareable summary from Living Wiki Philly.'),
     keyFacts: Array.isArray(data.key_facts) ? data.key_facts.map(String).filter(Boolean).slice(0, 5) : [],
     didYouKnow: Array.isArray(data.did_you_know) ? data.did_you_know.map(String).filter(Boolean).slice(0, 3) : [],
     mappableLocations: normalizeAnswerCardLocations(data.mappable_locations),
@@ -5348,7 +5348,7 @@ function serializeAnswerQuiz(id: string, data: Record<string, unknown>, leaderbo
     atlasId: typeof data.atlas_id === 'string' ? data.atlas_id : null,
     atlasName: typeof data.atlas_name === 'string' ? data.atlas_name : null,
     title: String(data.title ?? 'Philly Knowledge Challenge'),
-    description: String(data.description ?? 'Test what you picked up from this My living wiki Philly answer.'),
+    description: String(data.description ?? 'Test what you picked up from this Living Wiki Philly answer.'),
     sourceQuestion: String(data.source_question ?? ''),
     questionCount: questions.length,
     questions: questions.map((item) => ({
@@ -5467,7 +5467,7 @@ function serializeQuizScores(docs: FirebaseFirestore.QueryDocumentSnapshot[]): u
     const data = doc.data();
     return {
       rank: index + 1,
-      displayName: String(data.display_name ?? 'My living wiki Player'),
+      displayName: String(data.display_name ?? 'Living Wiki Player'),
       score: Number(data.score ?? 0) || 0,
       total: Number(data.total ?? 0) || 0,
       percent: Number(data.percent ?? 0) || 0,
@@ -5598,7 +5598,7 @@ export const sendVoiceConversationSummary = onCall(
       : null;
     const atlasName = typeof atlas?.name === 'string' && atlas.name.trim()
       ? atlas.name.trim()
-      : requestAtlasName || 'My living wiki';
+      : requestAtlasName || 'Living Wiki';
     const cityName = typeof cityConfig?.city_name === 'string' && cityConfig.city_name.trim()
       ? cityConfig.city_name.trim()
       : requestCityName || null;
@@ -5698,7 +5698,7 @@ export const sendVoiceConversationSummary = onCall(
       to: recipientEmail,
       from: {
         email: inviteSenderEmail,
-        name: 'My living wiki',
+        name: 'Living Wiki',
       },
       subject: email.subject,
       text: email.text,
@@ -6524,7 +6524,7 @@ export const submitAnswerQuizScore = onCall(
       ? token.name.trim().slice(0, 80)
       : typeof token.email === 'string' && token.email.includes('@')
         ? token.email.split('@')[0].slice(0, 80)
-        : 'My living wiki Player';
+        : 'Living Wiki Player';
     const scoreRef = quizRef.collection('scores').doc(uid);
 
     const saveResult = await db.runTransaction(async (transaction) => {
@@ -7209,7 +7209,7 @@ function cityImportSlug(value: string): string {
 function cityImportIdentity(value: string): string {
   return value
     .toLowerCase()
-    .replace(/^my living wiki:\s*/i, '')
+    .replace(/^living wiki:\s*/i, '')
     .replace(/\s*\(flagship\)\s*$/i, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
@@ -7291,7 +7291,7 @@ export const createBulkCityAtlases = onCall(
 
     for (const row of rows) {
       const cityName = textFromUnknown(row.cityName).replace(/\s+/g, ' ').slice(0, 120);
-      const name = (textFromUnknown(row.name).replace(/\s+/g, ' ').slice(0, 160) || `My living wiki: ${cityName}`).trim();
+      const name = (textFromUnknown(row.name).replace(/\s+/g, ' ').slice(0, 160) || `Living Wiki: ${cityName}`).trim();
       const slug = cityImportSlug(name);
       const cityKey = cityImportIdentity(cityName);
       const nameKey = cityImportIdentity(name);
@@ -7373,7 +7373,7 @@ export const createBulkCityAtlases = onCall(
           banner_url: null,
         },
         persona_prompt: [
-          `You are the My living wiki guide for ${regionPhrase}.`,
+          `You are the Living Wiki guide for ${regionPhrase}.`,
           `Speak with practical local confidence about ${cityName}, while staying source-aware and clear about uncertainty.`,
           'Use live internet grounding by default because this city was created before source ingestion.',
           'Keep answers concise, readable, energetic, and useful for residents, visitors, builders, researchers, and local operators.',
@@ -7752,7 +7752,7 @@ export const ingestUploadedDocument = onObjectFinalized(
 
     const documentId = extractDocumentIdFromPath(storagePath);
     if (!documentId) {
-      logger.warn('Ignoring storage object without a My living wiki document path', { storagePath });
+      logger.warn('Ignoring storage object without a Living Wiki document path', { storagePath });
       return;
     }
 

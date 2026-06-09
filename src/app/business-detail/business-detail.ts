@@ -132,7 +132,7 @@ export class BusinessDetailComponent {
   readonly chatPath = computed(() => `/chat/${this.routeParams().citySlug}`);
   readonly chatQueryParams = computed(() => ({ business: this.routeParams().businessSlug }));
   readonly chatUrl = computed(() => `${this.origin()}${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
-  readonly publicChatUrl = computed(() => `https://mylivingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
+  readonly publicChatUrl = computed(() => `https://livingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly detailUrl = computed(() => `${this.origin()}${this.detailPath()}`);
   readonly voiceAdminPath = computed(() => `${this.detailPath()}/voice`);
   readonly chatAdminPath = computed(() => `${this.detailPath()}/chat`);
@@ -153,7 +153,7 @@ export class BusinessDetailComponent {
   readonly editPath = computed(() => `${this.detailPath()}/edit`);
   readonly aboutText = computed(() =>
     this.guidePrompt()
-      || `${this.businessName()} is a local ${this.business()?.category || 'business'} connected to My Living Wiki for ${this.cityName()}. Visitors can ask questions by text or voice in their preferred language.`,
+      || `${this.businessName()} is a local ${this.business()?.category || 'business'} connected to Living Wiki for ${this.cityName()}. Visitors can ask questions by text or voice in their preferred language.`,
   );
   readonly filteredLanguages = computed(() => {
     const query = this.normalizeSearch(this.languageSearch());
@@ -178,7 +178,7 @@ export class BusinessDetailComponent {
       void this.loadBusiness(claimKey);
     });
     effect(() => {
-      this.title.setTitle(`${this.businessName()} | Business | My Living Wiki`);
+      this.title.setTitle(`${this.businessName()} | Business | Living Wiki`);
     });
   }
 
@@ -253,7 +253,7 @@ export class BusinessDetailComponent {
 
   async shareBusinessGuide(): Promise<void> {
     const shareData = {
-      title: `${this.businessName()} on My Living Wiki`,
+      title: `${this.businessName()} on Living Wiki`,
       text: `Chat with ${this.businessName()} in your language.`,
       url: this.publicChatUrl(),
     };
@@ -394,7 +394,7 @@ export class BusinessDetailComponent {
   }
 
   private origin(): string {
-    return typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://mylivingwiki.com';
+    return typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://livingwiki.com';
   }
 
   private normalizeSearch(value: string): string {

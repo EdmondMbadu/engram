@@ -47,7 +47,7 @@ export class MarketingComponent implements OnInit {
     },
     {
       title: 'Done',
-      description: 'Instantly queryable, forever stored in your My living wiki.',
+      description: 'Instantly queryable, forever stored in your Living Wiki.',
       icon: 'check_circle',
     },
   ];

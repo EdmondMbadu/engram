@@ -9,7 +9,7 @@
   <header class="theme-nav sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b px-4 backdrop-blur-xl md:px-8">
     <a [routerLink]="isSignedIn() ? '/home' : '/'" class="flex items-center">
       <div class="flex h-10 w-36 sm:h-12 sm:w-48 items-center justify-start">
-        <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
+        <img src="/assets/image/my-living-wiki.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
       </div>
     </a>
     <div class="flex items-center gap-3">
@@ -673,7 +673,7 @@
                   <span class="material-symbols-outlined text-2xl">mark_email_read</span>
                 </div>
                 <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Stay connected</p>
-                <h3 class="mt-2 font-headline text-2xl font-black tracking-[-0.04em] text-[var(--text)]">Follow this My living wiki</h3>
+                <h3 class="mt-2 font-headline text-2xl font-black tracking-[-0.04em] text-[var(--text)]">Follow this Living Wiki</h3>
                 <p class="mt-3 text-sm leading-6 text-[var(--muted)]">Subscribe for weekly updates, or sign in to keep exploring the Philly guide.</p>
                 <div class="mt-6 flex flex-col gap-3">
                   @if (canSubscribeToAtlasUpdates()) {
@@ -763,7 +763,7 @@
               ></ins>
             } @else {
               <div class="flex min-h-[120px] flex-col items-center justify-center rounded-xl border border-dashed border-[var(--line)] bg-[var(--soft-fill)] px-6 py-8 text-center">
-                <p class="text-sm font-black uppercase tracking-[0.18em] text-[var(--accent)]">Advertise on My living wiki Philly</p>
+                <p class="text-sm font-black uppercase tracking-[0.18em] text-[var(--accent)]">Advertise on Living Wiki Philly</p>
                 <p class="mt-2 max-w-xl text-sm leading-6 text-[var(--muted)]">Reach readers exploring Philadelphia civic data, green jobs, and local knowledge.</p>
               </div>
             }
@@ -780,7 +780,7 @@
                 <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Weekly updates</p>
                 <h2 class="mt-2 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">Subscribe to {{ currentWikiName() || 'this wiki' }}</h2>
                 <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
-                  You will receive weekly emails with information related to this My living wiki.
+                  You will receive weekly emails with information related to this Living Wiki.
                 </p>
               </div>
               <button

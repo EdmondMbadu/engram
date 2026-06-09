@@ -27,7 +27,7 @@ const livingCitiesLogoUrl = '/assets/image/living-cities.png';
 
 function buildCityPersona(cityName: string, regionName: string, civicFocus: string): string {
   return [
-    `You are the My living wiki guide for ${cityName}.`,
+    `You are the Living Wiki guide for ${cityName}.`,
     `Speak with practical local confidence about ${cityName}, ${regionName}, while staying source-aware and clear about uncertainty.`,
     `Prioritize useful civic knowledge: ${civicFocus}.`,
     'Use live internet grounding by default, keep answers concise, readable, and energetic, and include tasteful local emojis when they help the answer feel alive.',
@@ -68,7 +68,7 @@ function chatGuide(cityName: string): AtlasChatGuideConfig {
 export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
   {
     slug: 'philly',
-    name: 'My living wiki: Philly',
+    name: 'Living Wiki: Philly',
     description:
       'Living Wiki: Philly consolidates the Delaware Valley’s fragmented sustainability and economic data — currently scattered across 60+ agencies, portals, and databases — into the region’s living institutional memory.',
     landingSummary:
@@ -97,7 +97,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
   },
   {
     slug: 'boston',
-    name: 'My living wiki: Boston',
+    name: 'Living Wiki: Boston',
     description:
       "Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.",
     landingSummary:
@@ -126,7 +126,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
   },
   {
     slug: 'portland',
-    name: 'My living wiki: Portland',
+    name: 'Living Wiki: Portland',
     description:
       "Portland's sustainability ecosystem — urban planning, transit, climate action, food systems, and the green economy of the Pacific Northwest.",
     landingSummary:
@@ -155,7 +155,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
   },
   {
     slug: 'austin',
-    name: 'My living wiki: Austin',
+    name: 'Living Wiki: Austin',
     description:
       "Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.",
     landingSummary:
@@ -183,7 +183,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
   },
   {
     slug: 'san-francisco',
-    name: 'My living wiki: San Francisco',
+    name: 'Living Wiki: San Francisco',
     description:
       "SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.",
     landingSummary:
@@ -211,7 +211,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
   },
   {
     slug: 'new-york-city',
-    name: 'My living wiki: New York City',
+    name: 'Living Wiki: New York City',
     description:
       "NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.",
     landingSummary:

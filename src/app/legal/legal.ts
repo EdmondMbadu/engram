@@ -19,7 +19,7 @@ const PRIVACY_CONTENT: LegalPageContent = {
   eyebrow: 'Privacy',
   title: 'Privacy Policy',
   intro:
-    'My living wiki helps people upload documents, build atlas pages, and chat with knowledge derived from those materials. This page explains, in plain language, what information the product currently handles and why.',
+    'Living Wiki helps people upload documents, build atlas pages, and chat with knowledge derived from those materials. This page explains, in plain language, what information the product currently handles and why.',
   updatedLabel: 'Last updated April 18, 2026',
   sections: [
     {
@@ -47,7 +47,7 @@ const PRIVACY_CONTENT: LegalPageContent = {
     {
       heading: 'Sharing and service providers',
       body: [
-        'We may use infrastructure, hosting, storage, authentication, analytics, and model providers to operate My living wiki. Those providers may process data strictly to deliver the service on our behalf.',
+        'We may use infrastructure, hosting, storage, authentication, analytics, and model providers to operate Living Wiki. Those providers may process data strictly to deliver the service on our behalf.',
         'We do not sell personal information. We may disclose information when required by law, to enforce our terms, or to protect the product, users, or the public.',
       ],
     },
@@ -72,20 +72,20 @@ const TERMS_CONTENT: LegalPageContent = {
   eyebrow: 'Terms',
   title: 'Terms and Conditions',
   intro:
-    'These terms are a practical starting point for using My living wiki. They are intentionally concise for now and will be refined as the product matures.',
+    'These terms are a practical starting point for using Living Wiki. They are intentionally concise for now and will be refined as the product matures.',
   updatedLabel: 'Last updated April 18, 2026',
   sections: [
     {
       heading: 'Using the service',
       body: [
-        'By accessing or using My living wiki, you agree to use the product lawfully and responsibly. If you do not agree, do not use the service.',
+        'By accessing or using Living Wiki, you agree to use the product lawfully and responsibly. If you do not agree, do not use the service.',
         'You are responsible for your account, your atlas settings, and the activity that occurs under your credentials.',
       ],
     },
     {
       heading: 'Your content',
       body: [
-        'You keep ownership of the content you upload or submit. You give My living wiki permission to host, process, transform, index, and display that content as needed to operate the product.',
+        'You keep ownership of the content you upload or submit. You give Living Wiki permission to host, process, transform, index, and display that content as needed to operate the product.',
         'You are responsible for making sure you have the rights to upload, publish, and share the material you place into the service.',
       ],
     },
@@ -99,21 +99,21 @@ const TERMS_CONTENT: LegalPageContent = {
     {
       heading: 'Acceptable use',
       body: [
-        'You may not use My living wiki to violate the law, infringe intellectual property or privacy rights, distribute harmful material, interfere with the service, or attempt unauthorized access.',
+        'You may not use Living Wiki to violate the law, infringe intellectual property or privacy rights, distribute harmful material, interfere with the service, or attempt unauthorized access.',
         'We may suspend or terminate access if we reasonably believe your use creates security, legal, operational, or abuse risks.',
       ],
     },
     {
       heading: 'AI output and product changes',
       body: [
-        'My living wiki may generate summaries, wiki pages, citations, and chat answers using automated systems. Those outputs can be incomplete or incorrect and should be reviewed before being relied on.',
+        'Living Wiki may generate summaries, wiki pages, citations, and chat answers using automated systems. Those outputs can be incomplete or incorrect and should be reviewed before being relied on.',
         'We may change, improve, limit, or discontinue features at any time, including public atlas behavior, storage limits, or usage controls.',
       ],
     },
     {
       heading: 'Disclaimers and liability',
       body: [
-        'My living wiki is provided on an as-is and as-available basis without warranties of any kind, to the fullest extent permitted by law.',
+        'Living Wiki is provided on an as-is and as-available basis without warranties of any kind, to the fullest extent permitted by law.',
         'To the fullest extent permitted by law, we are not liable for indirect, incidental, special, consequential, or punitive damages, or for loss of data, profits, or business arising from use of the service.',
       ],
     },

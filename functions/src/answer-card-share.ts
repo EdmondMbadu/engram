@@ -7,7 +7,7 @@ import puppeteer from 'puppeteer-extra';
 import { db, storage } from './firebase';
 import type { MappableLocation, TravelGuideCard } from './types';
 
-const appUrl = 'https://mylivingwiki.com';
+const appUrl = 'https://livingwiki.com';
 const imageVersion = 'v1';
 
 type ShareImageKind = 'og' | 'story';
@@ -154,7 +154,7 @@ async function loadShareCard(cardId: string): Promise<ShareCard | null> {
     question: cleanText(data.question, 600),
     answerPreview: cleanText(data.answer_preview, 900),
     title: cleanText(data.title, 120) || 'A Philly Answer Worth Sharing',
-    subtitle: cleanText(data.subtitle, 180) || 'A fast, shareable summary from My living wiki Philly.',
+    subtitle: cleanText(data.subtitle, 180) || 'A fast, shareable summary from Living Wiki Philly.',
     keyFacts: cleanList(data.key_facts, 5, 150),
     didYouKnow: cleanList(data.did_you_know, 3, 150),
     mappableLocations: cleanLocations(data.mappable_locations),
@@ -350,7 +350,7 @@ async function resolveLaunchOptions() {
 }
 
 function buildSharePageHtml(card: ShareCard): string {
-  const title = `${card.title} | My living wiki`;
+  const title = `${card.title} | Living Wiki`;
   const description = card.subtitle || card.question;
   const shareUrl = `${appUrl}/share/answer-card/${encodeURIComponent(card.id)}`;
   const appCardUrl = `${appUrl}/answer-card/${encodeURIComponent(card.id)}`;
@@ -370,7 +370,7 @@ function buildSharePageHtml(card: ShareCard): string {
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${escapeHtml(shareUrl)}">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="My living wiki">
+  <meta property="og:site_name" content="Living Wiki">
   <meta property="og:title" content="${escapeHtml(card.title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${escapeHtml(shareUrl)}">
@@ -388,7 +388,7 @@ function buildSharePageHtml(card: ShareCard): string {
   <main class="page">
     <section class="hero">
       <div class="brand">
-        <img src="${appUrl}/assets/image/my-living-wiki.png" alt="My living wiki">
+        <img src="${appUrl}/assets/image/my-living-wiki.png" alt="Living Wiki">
         <span>${escapeHtml(card.atlasName || 'Philly')}</span>
       </div>
       <p class="eyebrow">Shared Answer Card</p>
@@ -410,7 +410,7 @@ function buildSharePageHtml(card: ShareCard): string {
 }
 
 function buildTravelSharePageHtml(share: TravelCardShare): string {
-  const title = `${share.card.title} | My living wiki`;
+  const title = `${share.card.title} | Living Wiki`;
   const description = share.card.description || share.card.subtitle || share.guideSummary || '';
   const shareUrl = `${appUrl}/share/travel-card/${encodeURIComponent(share.id)}`;
   const imageCacheKey = encodeURIComponent(share.updatedAt ?? imageVersion);
@@ -430,7 +430,7 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${escapeHtml(shareUrl)}">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="My living wiki">
+  <meta property="og:site_name" content="Living Wiki">
   <meta property="og:title" content="${escapeHtml(share.card.title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${escapeHtml(shareUrl)}">
@@ -447,7 +447,7 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
   <main class="page">
     <section class="hero">
       <div class="brand">
-        <img src="${appUrl}/assets/image/my-living-wiki.png" alt="My living wiki">
+        <img src="${appUrl}/assets/image/my-living-wiki.png" alt="Living Wiki">
         <span>${escapeHtml(share.atlasName || 'Shared guide')}</span>
       </div>
       <p class="eyebrow">${escapeHtml(share.guideTitle || 'Guide Card')}</p>
@@ -488,7 +488,7 @@ function buildOgImageHtml(card: ShareCard): string {
           <div class="brand-lockup">
             <div class="brand-dot">LW</div>
             <div>
-              <p>My living wiki</p>
+              <p>Living Wiki</p>
               <strong>${escapeHtml(card.atlasName || 'Philly')}</strong>
             </div>
           </div>
@@ -536,7 +536,7 @@ function buildStoryImageHtml(card: ShareCard): string {
         <div class="brand-lockup">
           <div class="brand-dot">LW</div>
           <div>
-            <p>My living wiki</p>
+            <p>Living Wiki</p>
             <strong>${escapeHtml(card.atlasName || 'Philly')}</strong>
           </div>
         </div>
@@ -551,7 +551,7 @@ function buildStoryImageHtml(card: ShareCard): string {
       <div class="story-bottom">
         <p>${escapeHtml(fact)}</p>
         <div class="story-cta">See the full guide</div>
-        <small>mylivingwiki.com</small>
+        <small>livingwiki.com</small>
       </div>
     </section>
   `);
@@ -566,7 +566,7 @@ function buildTravelOgImageHtml(share: TravelCardShare): string {
           <div class="brand-lockup">
             <div class="brand-dot">LW</div>
             <div>
-              <p>My living wiki</p>
+              <p>Living Wiki</p>
               <strong>${escapeHtml(share.atlasName || 'Guide pick')}</strong>
             </div>
           </div>
@@ -613,7 +613,7 @@ function buildTravelStoryImageHtml(share: TravelCardShare): string {
         <div class="brand-lockup">
           <div class="brand-dot">LW</div>
           <div>
-            <p>My living wiki</p>
+            <p>Living Wiki</p>
             <strong>${escapeHtml(share.atlasName || 'Guide pick')}</strong>
           </div>
         </div>
@@ -628,7 +628,7 @@ function buildTravelStoryImageHtml(share: TravelCardShare): string {
       <div class="story-bottom">
         <p>${escapeHtml(share.card.local_tip || share.card.description || share.card.subtitle || '')}</p>
         <div class="story-cta">Open the full card</div>
-        <small>mylivingwiki.com</small>
+        <small>livingwiki.com</small>
       </div>
     </section>
   `);

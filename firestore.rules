@@ -160,7 +160,7 @@ service cloud.firestore {
         && request.resource.data.category is string
         && request.resource.data.category.size() <= 80
         && request.resource.data.preview_url is string
-        && request.resource.data.preview_url.matches('https://mylivingwiki\\.com/.*')
+        && request.resource.data.preview_url.matches('https://livingwiki\\.com/.*')
         && request.resource.data.status == 'pending'
         && request.resource.data.created_at == request.time
         && !exists(/databases/$(database)/documents/business_claims/$(claimId));
@@ -241,7 +241,7 @@ service cloud.firestore {
         && request.resource.data.category is string
         && request.resource.data.category.size() <= 80
         && request.resource.data.preview_url is string
-        && request.resource.data.preview_url.matches('https://mylivingwiki\\.com/.*')
+        && request.resource.data.preview_url.matches('https://livingwiki\\.com/.*')
         && request.resource.data.admin_name is string
         && request.resource.data.admin_name.size() >= 2
         && request.resource.data.admin_name.size() <= 90

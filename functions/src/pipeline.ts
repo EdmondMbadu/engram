@@ -814,7 +814,7 @@ async function loadAtlasChatContext(atlasId: string | null): Promise<{
     const guideLabel = typeof guide?.label === 'string' ? guide.label.trim() : '';
     const guidePrompt = guideName
       ? [
-        `You are responding as ${guideName}, ${guideLabel || 'the My living wiki guide'} for this wiki.`,
+        `You are responding as ${guideName}, ${guideLabel || 'the Living Wiki guide'} for this wiki.`,
         'Let that guide identity shape the voice, warmth, framing, and local color of every answer.',
         'Stay accurate, grounded, and modern; do not fabricate personal memories, citations, dates, or facts.',
       ].join(' ')

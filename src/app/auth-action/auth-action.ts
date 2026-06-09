@@ -136,7 +136,7 @@ export class AuthActionComponent {
           this.resetCode = oobCode;
           this.state.set('ready');
           this.title.set('Choose a new password');
-          this.description.set('Set a new password for your My living wiki account.');
+          this.description.set('Set a new password for your Living Wiki account.');
           return;
         case 'recoverEmail': {
           const restoredEmail = await this.authService.restoreEmailFromCode(oobCode);

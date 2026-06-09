@@ -111,7 +111,7 @@ interface PopulationBackfillProgress {
 function normalizeAdminCityIdentity(value: string | null | undefined): string {
   return (value ?? '')
     .toLowerCase()
-    .replace(/^my living wiki:\s*/i, '')
+    .replace(/^living wiki:\s*/i, '')
     .replace(/\s*\(flagship\)\s*$/i, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
@@ -329,7 +329,7 @@ export class AtlasManageComponent {
       return explicitName;
     }
     const city = draft.city_name.trim();
-    return city ? `My living wiki: ${city}` : 'My living wiki: New City';
+    return city ? `Living Wiki: ${city}` : 'Living Wiki: New City';
   });
   readonly customCitySlugPreview = computed(() =>
     this.atlasService.slugify(this.customCityDraft().city_name.trim() || this.customCityNamePreview()),
@@ -517,7 +517,7 @@ export class AtlasManageComponent {
     if (typeof window !== 'undefined' && window.location?.origin) {
       return `${window.location.origin}${path}`;
     }
-    return `https://mylivingwiki.com${path}`;
+    return `https://livingwiki.com${path}`;
   }
 
   businessStatusLabel(business: BusinessClaimWorkspaceRecord): string {
@@ -717,7 +717,7 @@ export class AtlasManageComponent {
   }
 
   defaultAnswerModeSummary(atlas: AtlasItem): string {
-    return this.defaultAnswerMode(atlas) === 'internet' ? 'Internet' : 'My living wiki';
+    return this.defaultAnswerMode(atlas) === 'internet' ? 'Internet' : 'Living Wiki';
   }
 
   isSavingDefaultMode(atlasId: string): boolean {
@@ -1418,16 +1418,16 @@ export class AtlasManageComponent {
   downloadBulkCitySampleCsv(): void {
     const csv = [
       'city_name,region_name,country_code,global_region,population,population_year,timezone,public_title,description,latitude,longitude',
-      '"Seattle","Washington","US","Americas",755078,2024,"America/Los_Angeles","My living wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
-      '"Las Vegas","Nevada","US","Americas",660929,2024,"America/Los_Angeles","My living wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
-      '"Nairobi","Kenya","KE","Africa",5545000,2024,"Africa/Nairobi","My living wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
-      '"Kinshasa","Democratic Republic of the Congo","CD","Africa",17032000,2024,"Africa/Kinshasa","My living wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
-      '"Tokyo","Japan","JP","Asia",14180000,2024,"Asia/Tokyo","My living wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
-      '"London","United Kingdom","GB","Europe",8978000,2024,"Europe/London","My living wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
-      '"Paris","France","FR","Europe",2103000,2024,"Europe/Paris","My living wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
-      '"Singapore","Singapore","SG","Asia",6040000,2024,"Asia/Singapore","My living wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
-      '"Cape Town","South Africa","ZA","Africa",4772000,2024,"Africa/Johannesburg","My living wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
-      '"Mexico City","Mexico","MX","Americas",9209944,2024,"America/Mexico_City","My living wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
+      '"Seattle","Washington","US","Americas",755078,2024,"America/Los_Angeles","Living Wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
+      '"Las Vegas","Nevada","US","Americas",660929,2024,"America/Los_Angeles","Living Wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
+      '"Nairobi","Kenya","KE","Africa",5545000,2024,"Africa/Nairobi","Living Wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
+      '"Kinshasa","Democratic Republic of the Congo","CD","Africa",17032000,2024,"Africa/Kinshasa","Living Wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
+      '"Tokyo","Japan","JP","Asia",14180000,2024,"Asia/Tokyo","Living Wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
+      '"London","United Kingdom","GB","Europe",8978000,2024,"Europe/London","Living Wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
+      '"Paris","France","FR","Europe",2103000,2024,"Europe/Paris","Living Wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
+      '"Singapore","Singapore","SG","Asia",6040000,2024,"Asia/Singapore","Living Wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
+      '"Cape Town","South Africa","ZA","Africa",4772000,2024,"Africa/Johannesburg","Living Wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
+      '"Mexico City","Mexico","MX","Americas",9209944,2024,"America/Mexico_City","Living Wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
     ].join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -1841,7 +1841,7 @@ export class AtlasManageComponent {
       const latitude = cell(latitudeIndex);
       const longitude = cell(longitudeIndex);
       const key = normalizeAdminCityIdentity(cityName || name);
-      const effectiveName = name || (cityName ? `My living wiki: ${cityName}` : '');
+      const effectiveName = name || (cityName ? `Living Wiki: ${cityName}` : '');
       const slug = this.atlasService.slugify(effectiveName || `row-${index + 2}`);
       const errors: string[] = [];
       if (!cityName) {

@@ -1,6 +1,6 @@
 {
   "appId": "com.livingatlas.ios",
-  "appName": "My living wiki",
+  "appName": "Living Wiki",
   "webDir": "dist/living-atlast/browser",
   "bundledWebRuntime": false
 }

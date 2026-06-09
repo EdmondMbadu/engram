@@ -85,7 +85,7 @@ export class AuthService {
   readonly displayName = computed(() => {
     const user = this.user();
     if (!user) {
-      return 'My living wiki';
+      return 'Living Wiki';
     }
 
     const name = user.displayName?.trim();
@@ -98,7 +98,7 @@ export class AuthService {
       return email.split('@')[0] ?? email;
     }
 
-    return 'My living wiki User';
+    return 'Living Wiki User';
   });
   readonly email = computed(() => this.user()?.email ?? '');
 

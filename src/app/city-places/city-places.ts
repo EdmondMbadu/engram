@@ -58,7 +58,7 @@ export class CityPlacesComponent implements OnDestroy {
 
   readonly cityName = computed(() =>
     this.atlasService.displayName(this.atlas())
-      .replace(/^My living wiki:\s*/i, '')
+      .replace(/^Living Wiki:\s*/i, '')
       .replace(/\s*\(flagship\)\s*$/i, '')
       .trim(),
   );
@@ -110,7 +110,7 @@ export class CityPlacesComponent implements OnDestroy {
   readonly shareTitle = computed(() => {
     const city = this.cityName() || 'this city';
     const place = this.selectedDetailPlace();
-    return place ? `${place.name} on My living wiki: ${city}` : `Share your best place in ${city}`;
+    return place ? `${place.name} on Living Wiki: ${city}` : `Share your best place in ${city}`;
   });
   readonly shareInviteText = computed(() => {
     const city = this.cityName() || 'this city';
@@ -118,9 +118,9 @@ export class CityPlacesComponent implements OnDestroy {
     const cityLabel = country ? `${city}, ${country}` : city;
     const place = this.selectedDetailPlace();
     if (!place) {
-      return `Come add your review of a favorite place in ${city}. Share a restaurant, cafe, park, landmark, or local spot on My living wiki and help build the ${cityLabel} city board.`;
+      return `Come add your review of a favorite place in ${city}. Share a restaurant, cafe, park, landmark, or local spot on Living Wiki and help build the ${cityLabel} city board.`;
     }
-    return `Come add your review of ${place.name} in ${city}. I found it on My living wiki for ${cityLabel}; add your stars and help build the local board.`;
+    return `Come add your review of ${place.name} in ${city}. I found it on Living Wiki for ${cityLabel}; add your stars and help build the local board.`;
   });
   readonly reviewedPlacesCountLabel = computed(() => {
     const count = this.reviewedPlaces().length;

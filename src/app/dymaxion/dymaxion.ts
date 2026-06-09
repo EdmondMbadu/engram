@@ -327,7 +327,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!pos) continue;
 
       const name = (cfg?.city_name?.trim() || atlas.name || '')
-        .replace(/^My living wiki:\s*/i, '')
+        .replace(/^Living Wiki:\s*/i, '')
         .trim();
       if (!name) continue;
 

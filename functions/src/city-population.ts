@@ -555,7 +555,7 @@ LIMIT 20
     url.searchParams.set('query', query);
     const data = await fetchJson(url.toString(), {
       Accept: 'application/sparql-results+json',
-      'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
+      'User-Agent': 'LivingWiki population backfill/1.0 (https://livingwiki.com)',
     }, 8_000) as {
       results?: { bindings?: Array<Record<string, { value?: string }>> };
     };
@@ -627,7 +627,7 @@ async function fetchWikidataEntityPopulation(
   try {
     const data = await fetchJson(url.toString(), {
       Accept: 'application/json',
-      'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
+      'User-Agent': 'LivingWiki population backfill/1.0 (https://livingwiki.com)',
     }, 8_000) as { entities?: Record<string, Record<string, unknown>> };
     const entities = data.entities ?? {};
     const expectedCountryItem = countryCode ? COUNTRY_ITEM_BY_CODE[countryCode] ?? null : null;
@@ -717,7 +717,7 @@ async function searchWikidataCandidates(cityName: string): Promise<WikidataSearc
 
   const data = await fetchJson(url.toString(), {
     Accept: 'application/json',
-    'User-Agent': 'MyLivingWiki population backfill/1.0 (https://mylivingwiki.com)',
+    'User-Agent': 'LivingWiki population backfill/1.0 (https://livingwiki.com)',
   }, 6_000) as { search?: Array<{ id?: string; label?: string; description?: string }> };
 
   return (data.search ?? [])
@@ -834,7 +834,7 @@ async function fetchJson(
 
 function cleanCityName(value: string): string {
   return value
-    .replace(/^my living wiki:\s*/i, '')
+    .replace(/^living wiki:\s*/i, '')
     .replace(/\s*\(flagship\)\s*$/i, '')
     .trim();
 }

@@ -314,7 +314,7 @@ const LEGACY_VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. How can I help you today?' },
   { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m your living wiki voice guide. Ask me anything.' },
   { country: 'Kenya', flag: '🇰🇪', language: 'Kiswahili', code: 'sw', greeting: 'Habari! Mimi ni kiongozi wako wa sauti. Niulize chochote.' },
-  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m the Living Wiki voice guide. Ask me anything.' },
   { country: 'Japan (J-League)', flag: '🇯🇵', language: '日本語', code: 'ja', greeting: 'こんにちは！音声ガイドです。何でもお聞きください。' },
   { country: 'Indonesia', flag: '🇮🇩', language: 'Bahasa Indonesia', code: 'id', greeting: 'Halo! Saya pemandu suara Anda. Tanyakan apa saja.' },
   { country: 'Malaysia', flag: '🇲🇾', language: 'Bahasa Melayu', code: 'ms', greeting: 'Helo! Saya pemandu suara anda. Tanya saya apa sahaja.' },
@@ -332,7 +332,7 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Belgium', flag: '🇧🇪', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Que souhaitez-vous savoir ?' },
   { country: 'Bosnia & Herzegovina', flag: '🇧🇦', language: 'Bosanski', code: 'hr', greeting: 'Zdravo! Ja sam vaš glasovni vodič. Pitajte me bilo šta.' },
   { country: 'Brazil', flag: '🇧🇷', language: 'Português', code: 'pt-br', greeting: 'Olá! Eu sou o seu guia de voz. Pergunte o que quiser e eu respondo em voz alta.' },
-  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m your living wiki voice guide. What would you like to know?' },
+  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m the Living Wiki voice guide. What would you like to know?' },
   { country: 'Cape Verde', flag: '🇨🇻', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
   { country: 'Colombia', flag: '🇨🇴', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
   { country: 'Croatia', flag: '🇭🇷', language: 'Hrvatski', code: 'hr', greeting: 'Bok! Ja sam tvoj glasovni vodič. Pitaj me bilo što i odgovorit ću naglas.' },
@@ -341,10 +341,10 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'DR Congo', flag: '🇨🇩', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
   { country: 'Ecuador', flag: '🇪🇨', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Cómo puedo ayudarte?' },
   { country: 'Egypt', flag: '🇪🇬', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
-  { country: 'England', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'England', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m the Living Wiki voice guide. Ask me anything.' },
   { country: 'France', flag: '🇫🇷', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi vos questions, j’y réponds à voix haute.' },
   { country: 'Germany', flag: '🇩🇪', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir eine Frage und ich antworte dir laut.' },
-  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. How can I help you today?' },
+  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m the Living Wiki voice guide. How can I help you today?' },
   { country: 'Haiti', flag: '🇭🇹', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Comment puis-je vous aider ?' },
   { country: 'Iran', flag: '🇮🇷', language: 'فارسی', code: 'fa', greeting: 'سلام! من راهنمای صوتی شما هستم. هر چه می‌خواهید بپرسید.' },
   { country: 'Iraq', flag: '🇮🇶', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. كيف يمكنني مساعدتك؟' },
@@ -354,16 +354,16 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Mexico', flag: '🇲🇽', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras y te respondo en voz alta.' },
   { country: 'Morocco', flag: '🇲🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. كيف يمكنني مساعدتك؟' },
   { country: 'Netherlands', flag: '🇳🇱', language: 'Nederlands', code: 'nl', greeting: 'Hallo! Ik ben je spraakgids. Stel me een vraag en ik antwoord hardop.' },
-  { country: 'New Zealand', flag: '🇳🇿', language: 'English', code: 'en', greeting: 'Kia ora! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'New Zealand', flag: '🇳🇿', language: 'English', code: 'en', greeting: 'Kia ora! I’m the Living Wiki voice guide. Ask me anything.' },
   { country: 'Norway', flag: '🇳🇴', language: 'Norsk', code: 'no', greeting: 'Hei! Jeg er din stemmeguide. Spør meg om hva som helst.' },
   { country: 'Panama', flag: '🇵🇦', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
   { country: 'Paraguay', flag: '🇵🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Estoy aquí para responder tus preguntas.' },
   { country: 'Portugal', flag: '🇵🇹', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
   { country: 'Qatar', flag: '🇶🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
   { country: 'Saudi Arabia', flag: '🇸🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
-  { country: 'Scotland', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Scotland', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m the Living Wiki voice guide. Ask me anything.' },
   { country: 'Senegal', flag: '🇸🇳', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
-  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m the Living Wiki voice guide. Ask me anything.' },
   { country: 'South Korea', flag: '🇰🇷', language: '한국어', code: 'ko', greeting: '안녕하세요! 저는 음성 가이드입니다. 무엇이든 물어보세요.' },
   { country: 'Spain', flag: '🇪🇸', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
   { country: 'Sweden', flag: '🇸🇪', language: 'Svenska', code: 'sv', greeting: 'Hej! Jag är din röstguide. Fråga mig vad du vill.' },
@@ -371,7 +371,7 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Tunisia', flag: '🇹🇳', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. تفضّل بالسؤال.' },
   { country: 'Türkiye', flag: '🇹🇷', language: 'Türkçe', code: 'tr', greeting: 'Merhaba! Ben senin sesli rehberinim. Bana istediğini sorabilirsin.' },
   { country: 'Uruguay', flag: '🇺🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Qué te gustaría saber?' },
-  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m your living wiki voice guide. Ask me anything and I’ll answer out loud.' },
+  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m the Living Wiki voice guide. Ask me anything and I’ll answer out loud.' },
   { country: 'Uzbekistan', flag: '🇺🇿', language: 'Русский', code: 'ru', greeting: 'Здравствуйте! Я ваш голосовой гид. Спрашивайте меня о чём угодно.' },
   { country: 'China', flag: '🇨🇳', language: '中文（普通话）', code: 'zh', greeting: '你好！我是你的语音向导。有什么问题都可以问我。' },
   { country: 'Russia', flag: '🇷🇺', language: 'Русский', code: 'ru', greeting: 'Здравствуйте! Я ваш голосовой гид. Спрашивайте меня о чём угодно.' },
@@ -709,7 +709,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   });
   readonly pageTitle = computed(() =>
     this.businessPageContext()
-      ? `${this.businessPageName()} | My Living Wiki`
+      ? `${this.businessPageName()} | Living Wiki`
       : this.isPublicView()
       ? this.uiText('chatTitle', { city: this.atlasService.displayName(this.publicAtlas()) })
       : this.uiText('chat'),
@@ -733,7 +733,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.canUseAnswerModeToggle()
       ? this.isInternetMode()
         ? this.localInternetPlaceholder()
-        : this.uiText('messageMyLivingWiki')
+        : this.uiText('messageLivingWiki')
       : this.showSignInCta()
         ? `${this.uiText('signInToContinue')}...`
         : this.localInternetPlaceholder(),
@@ -789,7 +789,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (!name || name === 'Select atlas') {
       return '';
     }
-    return name.replace(/^My living wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
+    return name.replace(/^Living Wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
   });
   readonly currentWikiCountry = computed(() => this.localizedCountryName(this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? ''));
   readonly canShowPlaceReviews = computed(() => {
@@ -876,7 +876,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (this.businessPageContext()) {
       return this.businessPagePending()
         ? `${this.businessPageName()} has been submitted and is pending review. This QR link is reserved for the business page.`
-        : `Ask ${this.businessPageName()}'s My Living Wiki guide about this business and the surrounding city.`;
+        : `Ask ${this.businessPageName()}'s Living Wiki guide about this business and the surrounding city.`;
     }
 
     if (this.showSignInCta()) {
@@ -1077,7 +1077,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   cityWikiLocationLabel(wiki: PublicWikiCatalogItem): string {
-    return wiki.title.replace(/^My living wiki:\s*/i, '').trim();
+    return wiki.title.replace(/^Living Wiki:\s*/i, '').trim();
   }
 
   private localInternetPlaceholder(): string {
@@ -1117,8 +1117,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: 'Joining...',
         joinForFree: 'Join for free',
         weeklyUpdates: 'Weekly updates and staying in the know.',
-        askMyLivingWiki: 'Ask My Living Wiki',
-        guideAlt: 'My living wiki guide',
+        askLivingWiki: 'Ask Living Wiki',
+        guideAlt: 'Living Wiki guide',
         answerMode: 'Answer mode',
         wiki: 'Wiki',
         internet: 'Internet',
@@ -1139,7 +1139,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         seeAll: 'See all',
         signIn: 'Sign in',
         subscribe: 'Subscribe',
-        messageMyLivingWiki: 'Message My living wiki...',
+        messageLivingWiki: 'Message Living Wiki...',
         publicLimitReached: 'Public question limit reached',
         askFiveNoSignIn: 'Ask up to 5 questions without signing in',
         signedInVisitorsFree: 'Signed-in visitors can chat freely with this atlas',
@@ -1153,7 +1153,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         askCitySources: 'Ask {city} anything from your sources.',
         askSources: 'Ask anything from your sources.',
         internetModeLabel: 'Internet mode',
-        myLivingWikiLabel: 'My living wiki',
+        myLivingWikiLabel: 'Living Wiki',
         askYourWiki: 'Ask your Wiki',
         askThisWiki: 'Ask this Wiki',
         signInKeepChatting: 'Sign in to keep chatting',
@@ -1171,7 +1171,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         heroCityIndexed: '{city} is indexed into documents and wiki pages so every answer can stay grounded in the material you uploaded.',
         heroIndexed: 'Your documents and wiki pages are indexed so every answer can stay grounded in the material you uploaded.',
         publicAtlasLive: 'Public atlas live',
-        myLivingWikiLive: 'My living wiki live',
+        myLivingWikiLive: 'Living Wiki live',
         knowledgeReady: 'Knowledge ready',
         anonymousSessionPaused: 'Anonymous session paused',
         internetModeEnabled: 'Internet mode enabled',
@@ -1179,7 +1179,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         manyIndexedSources: '{count} indexed sources ready',
         internetNoDocumentsHelper: 'Internet mode searches the web because this Wiki does not have source documents yet.',
         internetModeHelper: 'Internet mode searches the web and answers beyond your uploaded sources.',
-        wikiModeHelper: 'My living wiki mode stays grounded in your indexed documents and wiki pages.',
+        wikiModeHelper: 'Living Wiki mode stays grounded in your indexed documents and wiki pages.',
         anonymousQuestionsRemaining: '{count} of 5 anonymous questions remaining.',
         savedWithNameEmail: 'Your questions are saved with your name and email for the atlas owner.',
         latestUpdates: 'Latest updates',
@@ -1219,8 +1219,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         ratings: '{count} ratings',
         newPlace: 'New',
         you: 'You',
-        myLivingWiki: 'My living wiki',
-        guideLabel: 'Your My Living Wiki {city} tour guide',
+        myLivingWiki: 'Living Wiki',
+        guideLabel: 'Your Living Wiki {city} tour guide',
         chat: 'Chat',
         chatTitle: '{city} Chat',
         threads: 'Threads',
@@ -1232,7 +1232,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         signOut: 'Sign out',
         live: 'Live',
         preview: 'Preview',
-        useMyWikiMode: 'Use My living wiki mode',
+        useMyWikiMode: 'Use Living Wiki mode',
         useInternetMode: 'Use internet mode',
         openWikiAdmin: 'Open wiki admin',
         admin: 'Admin',
@@ -1263,9 +1263,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         sendVoiceTextMessage: 'Send voice text message',
         close: 'Close',
         closeSubscribeDialog: 'Close subscribe dialog',
-        freeAccess: 'Free My living wiki access',
+        freeAccess: 'Free Living Wiki access',
         subscribeToWiki: 'Subscribe to {city}',
-        joinWiki: 'Join My living wiki {city}',
+        joinWiki: 'Join Living Wiki {city}',
         thisWiki: 'this wiki',
         subscribeIntro: 'Get the weekly {city} brief now. Phone access and the rest of the member perks unlock once you join.',
         weeklyUpdatesOn: 'Weekly updates on {city}',
@@ -1276,7 +1276,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         callInNumber: 'Your call-in number:',
         joinUnlockPhone: 'Join to unlock the phone number for real-time {city} answers when the line is available.',
         moreAccess: 'More access after joining',
-        revealFeatures: 'We will reveal additional member features as they come online for this My living wiki.',
+        revealFeatures: 'We will reveal additional member features as they come online for this Living Wiki.',
         subscribing: 'Subscribing...',
         voiceRecap: 'Voice recap',
         emailRecap: 'Email recap',
@@ -1420,8 +1420,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: 'Uniéndote...',
         joinForFree: 'Únete gratis',
         weeklyUpdates: 'Actualizaciones semanales para estar al día.',
-        askMyLivingWiki: 'Pregunta a Mi Wiki Viva',
-        guideAlt: 'Guía de Mi Wiki Viva',
+        askLivingWiki: 'Pregunta a Wiki Viva',
+        guideAlt: 'Guía de Wiki Viva',
         answerMode: 'Modo de respuesta',
         wiki: 'Wiki',
         internet: 'Internet',
@@ -1442,7 +1442,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         seeAll: 'Ver todo',
         signIn: 'Iniciar sesión',
         subscribe: 'Suscribirse',
-        messageMyLivingWiki: 'Mensaje para Mi Wiki Viva...',
+        messageLivingWiki: 'Mensaje para Wiki Viva...',
         publicLimitReached: 'Límite público de preguntas alcanzado',
         askFiveNoSignIn: 'Haz hasta 5 preguntas sin iniciar sesión',
         signedInVisitorsFree: 'Los visitantes con sesión iniciada pueden chatear libremente con este atlas',
@@ -1456,7 +1456,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         askCitySources: 'Pregunta cualquier cosa sobre {city} desde tus fuentes.',
         askSources: 'Pregunta cualquier cosa desde tus fuentes.',
         internetModeLabel: 'Modo Internet',
-        myLivingWikiLabel: 'Mi Wiki Viva',
+        myLivingWikiLabel: 'Wiki Viva',
         askYourWiki: 'Pregunta a tu Wiki',
         askThisWiki: 'Pregunta a esta Wiki',
         signInKeepChatting: 'Inicia sesión para seguir chateando',
@@ -1474,7 +1474,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         heroCityIndexed: '{city} está indexado en documentos y páginas wiki para que cada respuesta pueda apoyarse en el material que cargaste.',
         heroIndexed: 'Tus documentos y páginas wiki están indexados para que cada respuesta pueda apoyarse en el material que cargaste.',
         publicAtlasLive: 'Atlas público activo',
-        myLivingWikiLive: 'Mi Wiki Viva activa',
+        myLivingWikiLive: 'Wiki Viva activa',
         knowledgeReady: 'Conocimiento listo',
         anonymousSessionPaused: 'Sesión anónima pausada',
         internetModeEnabled: 'Modo Internet activado',
@@ -1482,7 +1482,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         manyIndexedSources: '{count} fuentes indexadas listas',
         internetNoDocumentsHelper: 'El modo Internet busca en la web porque esta Wiki aún no tiene documentos fuente.',
         internetModeHelper: 'El modo Internet busca en la web y responde más allá de tus fuentes cargadas.',
-        wikiModeHelper: 'El modo Mi Wiki Viva se mantiene apoyado en tus documentos indexados y páginas wiki.',
+        wikiModeHelper: 'El modo Wiki Viva se mantiene apoyado en tus documentos indexados y páginas wiki.',
         anonymousQuestionsRemaining: 'Quedan {count} de 5 preguntas anónimas.',
         savedWithNameEmail: 'Tus preguntas se guardan con tu nombre y correo para el propietario del atlas.',
         latestUpdates: 'Últimas novedades',
@@ -1522,8 +1522,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         ratings: '{count} calificaciones',
         newPlace: 'Nuevo',
         you: 'Tú',
-        myLivingWiki: 'Mi Wiki Viva',
-        guideLabel: 'Tu guía de Mi Wiki Viva {city}',
+        myLivingWiki: 'Wiki Viva',
+        guideLabel: 'Tu guía de Wiki Viva {city}',
         chat: 'Chat',
         chatTitle: 'Chat de {city}',
         threads: 'Conversaciones',
@@ -1535,7 +1535,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         signOut: 'Cerrar sesión',
         live: 'Activo',
         preview: 'Vista previa',
-        useMyWikiMode: 'Usar modo Mi Wiki Viva',
+        useMyWikiMode: 'Usar modo Wiki Viva',
         useInternetMode: 'Usar modo Internet',
         openWikiAdmin: 'Abrir administración de la wiki',
         admin: 'Admin',
@@ -1566,9 +1566,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         sendVoiceTextMessage: 'Enviar mensaje de texto por voz',
         close: 'Cerrar',
         closeSubscribeDialog: 'Cerrar diálogo de suscripción',
-        freeAccess: 'Acceso gratis a Mi Wiki Viva',
+        freeAccess: 'Acceso gratis a Wiki Viva',
         subscribeToWiki: 'Suscribirse a {city}',
-        joinWiki: 'Unirse a Mi Wiki Viva {city}',
+        joinWiki: 'Unirse a Wiki Viva {city}',
         thisWiki: 'esta wiki',
         subscribeIntro: 'Recibe ahora el resumen semanal de {city}. El acceso por teléfono y el resto de beneficios se activan cuando te unas.',
         weeklyUpdatesOn: 'Actualizaciones semanales sobre {city}',
@@ -1579,7 +1579,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         callInNumber: 'Tu número para llamar:',
         joinUnlockPhone: 'Únete para desbloquear el número de teléfono y recibir respuestas en tiempo real sobre {city} cuando la línea esté disponible.',
         moreAccess: 'Más acceso después de unirte',
-        revealFeatures: 'Mostraremos funciones adicionales para miembros cuando estén disponibles para esta Mi Wiki Viva.',
+        revealFeatures: 'Mostraremos funciones adicionales para miembros cuando estén disponibles para esta Wiki Viva.',
         subscribing: 'Suscribiendo...',
         voiceRecap: 'Resumen de voz',
         emailRecap: 'Resumen por correo',
@@ -1809,8 +1809,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: 'Inscription...',
         joinForFree: 'Rejoindre gratuitement',
         weeklyUpdates: 'Des mises à jour hebdomadaires pour rester informé.',
-        askMyLivingWiki: 'Demander à Mon Wiki Vivant',
-        guideAlt: 'Guide de Mon Wiki Vivant',
+        askLivingWiki: 'Demander à Wiki Vivant',
+        guideAlt: 'Guide de Wiki Vivant',
         answerMode: 'Mode de réponse',
         wiki: 'Wiki',
         internet: 'Internet',
@@ -1831,13 +1831,13 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         seeAll: 'Tout voir',
         signIn: 'Se connecter',
         subscribe: 'S’abonner',
-        messageMyLivingWiki: 'Message pour Mon Wiki Vivant...',
+        messageLivingWiki: 'Message pour Wiki Vivant...',
         publicLimitReached: 'Limite de questions publiques atteinte',
         askFiveNoSignIn: 'Posez jusqu’à 5 questions sans vous connecter',
         remainingQuestions: 'Posez jusqu’à 5 questions sans vous connecter. {count} restantes.',
         askCityInternet: 'Posez des questions sur l’actualité de {city}, les quartiers, les transports, la nourriture, les emplois, la sécurité, les événements et la vie civique...',
         internetModeLabel: 'Mode Internet',
-        myLivingWikiLabel: 'Mon Wiki Vivant',
+        myLivingWikiLabel: 'Wiki Vivant',
         heroInternetPrompt: 'Posez n’importe quelle question avec le contexte complet d’Internet et des sources publiques à jour.',
         internetModeHelper: 'Le mode Internet recherche sur le web et répond au-delà de vos sources importées.',
         latestUpdates: 'Dernières nouvelles',
@@ -1852,7 +1852,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '{count} lieux évalués',
         localReviewCount: '1 avis local',
         localReviewsCount: '{count} avis locaux',
-        guideLabel: 'Votre guide de Mon Wiki Vivant {city}',
+        guideLabel: 'Votre guide de Wiki Vivant {city}',
         chatTitle: 'Chat de {city}',
         live: 'En direct',
         preview: 'Aperçu',
@@ -1864,8 +1864,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: 'Beitreten...',
         joinForFree: 'Kostenlos beitreten',
         weeklyUpdates: 'Wöchentliche Updates, damit du informiert bleibst.',
-        askMyLivingWiki: 'Frag Mein Lebendiges Wiki',
-        guideAlt: 'Guide von Mein Lebendiges Wiki',
+        askLivingWiki: 'Frag Lebendiges Wiki',
+        guideAlt: 'Guide von Lebendiges Wiki',
         answerMode: 'Antwortmodus',
         wiki: 'Wiki',
         internet: 'Internet',
@@ -1886,13 +1886,13 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         seeAll: 'Alle anzeigen',
         signIn: 'Einloggen',
         subscribe: 'Abonnieren',
-        messageMyLivingWiki: 'Nachricht an Mein Lebendiges Wiki...',
+        messageLivingWiki: 'Nachricht an Lebendiges Wiki...',
         publicLimitReached: 'Öffentliches Fragenlimit erreicht',
         askFiveNoSignIn: 'Bis zu 5 Fragen ohne Anmeldung stellen',
         remainingQuestions: 'Bis zu 5 Fragen ohne Anmeldung stellen. {count} übrig.',
         askCityInternet: 'Frag nach Nachrichten zu {city}, Vierteln, Verkehr, Essen, Jobs, Sicherheit, Veranstaltungen und Stadtleben...',
         internetModeLabel: 'Internetmodus',
-        myLivingWikiLabel: 'Mein Lebendiges Wiki',
+        myLivingWikiLabel: 'Lebendiges Wiki',
         heroInternetPrompt: 'Frag alles mit vollständigem Internetkontext und aktuellen öffentlichen Quellen.',
         internetModeHelper: 'Der Internetmodus durchsucht das Web und antwortet über deine hochgeladenen Quellen hinaus.',
         latestUpdates: 'Neueste Updates',
@@ -1907,7 +1907,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '{count} bewertete Orte',
         localReviewCount: '1 lokale Bewertung',
         localReviewsCount: '{count} lokale Bewertungen',
-        guideLabel: 'Dein Guide von Mein Lebendiges Wiki {city}',
+        guideLabel: 'Dein Guide von Lebendiges Wiki {city}',
         chatTitle: '{city}-Chat',
         live: 'Live',
         preview: 'Vorschau',
@@ -1919,8 +1919,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: 'Entrando...',
         joinForFree: 'Entrar grátis',
         weeklyUpdates: 'Atualizações semanais para ficar por dentro.',
-        askMyLivingWiki: 'Pergunte ao Meu Wiki Vivo',
-        guideAlt: 'Guia do Meu Wiki Vivo',
+        askLivingWiki: 'Pergunte ao Wiki Vivo',
+        guideAlt: 'Guia do Wiki Vivo',
         answerMode: 'Modo de resposta',
         wiki: 'Wiki',
         internet: 'Internet',
@@ -1941,13 +1941,13 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         seeAll: 'Ver tudo',
         signIn: 'Entrar',
         subscribe: 'Assinar',
-        messageMyLivingWiki: 'Mensagem para Meu Wiki Vivo...',
+        messageLivingWiki: 'Mensagem para Wiki Vivo...',
         publicLimitReached: 'Limite público de perguntas atingido',
         askFiveNoSignIn: 'Faça até 5 perguntas sem entrar',
         remainingQuestions: 'Faça até 5 perguntas sem entrar. Restam {count}.',
         askCityInternet: 'Pergunte sobre notícias de {city}, bairros, transporte, comida, empregos, segurança, eventos e vida cívica...',
         internetModeLabel: 'Modo Internet',
-        myLivingWikiLabel: 'Meu Wiki Vivo',
+        myLivingWikiLabel: 'Wiki Vivo',
         heroInternetPrompt: 'Pergunte qualquer coisa com contexto completo da internet e fontes públicas atualizadas.',
         internetModeHelper: 'O modo Internet pesquisa na web e responde além das suas fontes enviadas.',
         latestUpdates: 'Últimas atualizações',
@@ -1962,7 +1962,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '{count} locais avaliados',
         localReviewCount: '1 avaliação local',
         localReviewsCount: '{count} avaliações locais',
-        guideLabel: 'Seu guia do Meu Wiki Vivo {city}',
+        guideLabel: 'Seu guia do Wiki Vivo {city}',
         chatTitle: 'Chat de {city}',
         live: 'Ao vivo',
         preview: 'Prévia',
@@ -1973,8 +1973,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintAuto: '{count} landen · geselecteerd voor {country}.',
         findCountry: 'Land zoeken',
         choose: 'Kiezen',
-        askMyLivingWiki: 'Vraag Mijn Levende Wiki',
-        guideAlt: 'Gids van Mijn Levende Wiki',
+        askLivingWiki: 'Vraag Levende Wiki',
+        guideAlt: 'Gids van Levende Wiki',
         joinForFree: 'Gratis meedoen',
         weeklyUpdates: 'Wekelijkse updates om op de hoogte te blijven.',
         newChat: 'Nieuwe chat',
@@ -2000,7 +2000,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '{count} beoordeelde plaatsen',
         localReviewCount: '1 lokale review',
         localReviewsCount: '{count} lokale reviews',
-        guideLabel: 'Je gids van Mijn Levende Wiki {city}',
+        guideLabel: 'Je gids van Levende Wiki {city}',
         chatTitle: '{city}-chat',
         live: 'Live',
       },
@@ -2011,8 +2011,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: 'جارٍ الانضمام...',
         joinForFree: 'انضم مجاناً',
         weeklyUpdates: 'تحديثات أسبوعية لتبقى على اطلاع.',
-        askMyLivingWiki: 'اسأل ويكي الحي الخاص بي',
-        guideAlt: 'دليل ويكي الحي الخاص بي',
+        askLivingWiki: 'اسأل ويكي الحي',
+        guideAlt: 'دليل ويكي الحي',
         answerMode: 'وضع الإجابة',
         wiki: 'ويكي',
         internet: 'الإنترنت',
@@ -2032,7 +2032,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         remainingQuestions: 'اطرح حتى 5 أسئلة دون تسجيل الدخول. المتبقي {count}.',
         askCityInternet: 'اسأل عن أخبار {city} والأحياء والمواصلات والطعام والوظائف والسلامة والفعاليات والحياة المدنية...',
         internetModeLabel: 'وضع الإنترنت',
-        myLivingWikiLabel: 'ويكي الحي الخاص بي',
+        myLivingWikiLabel: 'ويكي الحي',
         heroInternetPrompt: 'اسأل أي شيء مع سياق كامل من الإنترنت ومصادر عامة حديثة.',
         internetModeHelper: 'يبحث وضع الإنترنت في الويب ويجيب خارج نطاق مصادرك المرفوعة.',
         latestUpdates: 'آخر التحديثات',
@@ -2046,7 +2046,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '{count} أماكن تمت مراجعتها',
         localReviewCount: 'مراجعة محلية واحدة',
         localReviewsCount: '{count} مراجعات محلية',
-        guideLabel: 'دليلك في ويكي الحي الخاص بي {city}',
+        guideLabel: 'دليلك في ويكي الحي {city}',
         chatTitle: 'دردشة {city}',
         live: 'مباشر',
       },
@@ -2057,8 +2057,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: '正在加入...',
         joinForFree: '免费加入',
         weeklyUpdates: '每周更新，随时掌握动态。',
-        askMyLivingWiki: '询问我的生活维基',
-        guideAlt: '我的生活维基向导',
+        askLivingWiki: '询问生活维基',
+        guideAlt: '生活维基向导',
         answerMode: '回答模式',
         wiki: '维基',
         internet: '互联网',
@@ -2078,7 +2078,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         remainingQuestions: '无需登录即可提问最多 5 个问题。还剩 {count} 个。',
         askCityInternet: '询问 {city} 的新闻、社区、交通、美食、工作、安全、活动和市政生活...',
         internetModeLabel: '互联网模式',
-        myLivingWikiLabel: '我的生活维基',
+        myLivingWikiLabel: '生活维基',
         heroInternetPrompt: '结合完整互联网背景和最新公共来源提问任何内容。',
         internetModeHelper: '互联网模式会搜索网络，并回答超出已上传来源的问题。',
         latestUpdates: '最新动态',
@@ -2092,7 +2092,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '{count} 个已评价地点',
         localReviewCount: '1 条本地评价',
         localReviewsCount: '{count} 条本地评价',
-        guideLabel: '你的我的生活维基 {city} 向导',
+        guideLabel: '生活维基 {city} 向导',
         chatTitle: '{city} 聊天',
         live: '实时',
       },
@@ -2102,8 +2102,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintAuto: '{count}か国 · {country} に合わせて選択済み。',
         findCountry: '国を検索',
         choose: '選択',
-        askMyLivingWiki: 'マイ・リビング・ウィキに質問',
-        guideAlt: 'マイ・リビング・ウィキのガイド',
+        askLivingWiki: 'リビング・ウィキに質問',
+        guideAlt: 'リビング・ウィキのガイド',
         joinForFree: '無料で参加',
         newChat: '新しいチャット',
         exploreCities: '都市を探す',
@@ -2128,7 +2128,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '{count}件のレビュー済みスポット',
         localReviewCount: '1件のローカルレビュー',
         localReviewsCount: '{count}件のローカルレビュー',
-        guideLabel: 'マイ・リビング・ウィキ {city} のガイド',
+        guideLabel: 'リビング・ウィキ {city} のガイド',
         chatTitle: '{city} チャット',
         live: '公開中',
       },
@@ -2138,8 +2138,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintAuto: '{count}개국 · {country}에 맞게 선택됨.',
         findCountry: '국가 검색',
         choose: '선택',
-        askMyLivingWiki: '나의 살아있는 위키에 질문하기',
-        guideAlt: '나의 살아있는 위키 가이드',
+        askLivingWiki: '살아있는 위키에 질문하기',
+        guideAlt: '살아있는 위키 가이드',
         joinForFree: '무료로 참여',
         newChat: '새 채팅',
         exploreCities: '도시 탐색',
@@ -2164,7 +2164,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         reviewedPlacesCount: '리뷰된 장소 {count}개',
         localReviewCount: '로컬 리뷰 1개',
         localReviewsCount: '로컬 리뷰 {count}개',
-        guideLabel: '나의 살아있는 위키 {city} 가이드',
+        guideLabel: '살아있는 위키 {city} 가이드',
         chatTitle: '{city} 채팅',
         live: '라이브',
       },
@@ -2174,7 +2174,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintAuto: '{count} стран · выбрано для {country}.',
         findCountry: 'Найти страну',
         choose: 'Выбрать',
-        askMyLivingWiki: 'Спросить Мою живую вики',
+        askLivingWiki: 'Спросить Мою живую вики',
         guideAlt: 'Гид Моей живой вики',
         joinForFree: 'Присоединиться бесплатно',
         newChat: 'Новый чат',
@@ -2209,7 +2209,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintManual: '{count} देश · पहले एक झंडा चुनें।',
         findCountry: 'देश खोजें',
         choose: 'चुनें',
-        askMyLivingWiki: 'मेरी जीवित विकी से पूछें',
+        askLivingWiki: 'जीवित विकी से पूछें',
         joinForFree: 'मुफ़्त जुड़ें',
         newChat: 'नई चैट',
         exploreCities: 'शहर देखें',
@@ -2230,7 +2230,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         recentDebates: 'हाल की बहसें',
         backgroundContext: 'पृष्ठभूमि संदर्भ',
         reviewedPlacesCount: '{count} समीक्षित स्थान',
-        guideLabel: 'आपका मेरी जीवित विकी {city} गाइड',
+        guideLabel: 'आपका जीवित विकी {city} गाइड',
         chatTitle: '{city} चैट',
         live: 'लाइव',
       },
@@ -2239,7 +2239,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintManual: '{count} zemí · nejprve vyberte vlajku.',
         findCountry: 'Hledat zemi',
         choose: 'Vybrat',
-        askMyLivingWiki: 'Zeptejte se Mé živé wiki',
+        askLivingWiki: 'Zeptejte se Mé živé wiki',
         joinForFree: 'Připojit se zdarma',
         newChat: 'Nový chat',
         exploreCities: 'Prozkoumat města',
@@ -2268,7 +2268,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintManual: '{count} zemalja · prvo odaberite zastavu.',
         findCountry: 'Pretraži zemlju',
         choose: 'Odaberi',
-        askMyLivingWiki: 'Pitaj Moj živi wiki',
+        askLivingWiki: 'Pitaj Živi wiki',
         joinForFree: 'Pridruži se besplatno',
         newChat: 'Novi chat',
         exploreCities: 'Istraži gradove',
@@ -2288,7 +2288,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         recentDebates: 'Nedavne rasprave',
         backgroundContext: 'Širi kontekst',
         reviewedPlacesCount: '{count} recenzirana mjesta',
-        guideLabel: 'Vaš vodič Moj živi wiki {city}',
+        guideLabel: 'Vaš vodič Živi wiki {city}',
         chatTitle: '{city} chat',
         live: 'Uživo',
       },
@@ -2297,7 +2297,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintManual: '{count} کشور · ابتدا یک پرچم انتخاب کنید.',
         findCountry: 'جستجوی کشور',
         choose: 'انتخاب',
-        askMyLivingWiki: 'از ویکی زنده من بپرس',
+        askLivingWiki: 'از ویکی زنده بپرس',
         joinForFree: 'رایگان بپیوندید',
         newChat: 'گفتگوی جدید',
         exploreCities: 'کاوش شهرها',
@@ -2317,7 +2317,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         recentDebates: 'بحث‌های اخیر',
         backgroundContext: 'زمینه کلی',
         reviewedPlacesCount: '{count} مکان بررسی‌شده',
-        guideLabel: 'راهنمای ویکی زنده من {city}',
+        guideLabel: 'راهنمای ویکی زنده {city}',
         chatTitle: 'گفتگوی {city}',
         live: 'زنده',
       },
@@ -2326,7 +2326,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintManual: '{count} land · velg et flagg først.',
         findCountry: 'Finn land',
         choose: 'Velg',
-        askMyLivingWiki: 'Spør Min levende wiki',
+        askLivingWiki: 'Spør Levende wiki',
         joinForFree: 'Bli med gratis',
         newChat: 'Ny chat',
         exploreCities: 'Utforsk byer',
@@ -2346,7 +2346,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         recentDebates: 'Nylige debatter',
         backgroundContext: 'Bakgrunnskontekst',
         reviewedPlacesCount: '{count} vurderte steder',
-        guideLabel: 'Din guide for Min levende wiki {city}',
+        guideLabel: 'Din guide for Levende wiki {city}',
         chatTitle: '{city}-chat',
         live: 'Direkte',
       },
@@ -2355,7 +2355,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintManual: '{count} länder · välj en flagga först.',
         findCountry: 'Sök land',
         choose: 'Välj',
-        askMyLivingWiki: 'Fråga Min levande wiki',
+        askLivingWiki: 'Fråga Levande wiki',
         joinForFree: 'Gå med gratis',
         newChat: 'Ny chatt',
         exploreCities: 'Utforska städer',
@@ -2375,7 +2375,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         recentDebates: 'Senaste debatter',
         backgroundContext: 'Bakgrund',
         reviewedPlacesCount: '{count} recenserade platser',
-        guideLabel: 'Din guide för Min levande wiki {city}',
+        guideLabel: 'Din guide för Levande wiki {city}',
         chatTitle: '{city}-chatt',
         live: 'Live',
       },
@@ -2384,7 +2384,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         voiceHintManual: '{count} ülke · önce bir bayrak seçin.',
         findCountry: 'Ülke ara',
         choose: 'Seç',
-        askMyLivingWiki: 'Yaşayan Vikime Sor',
+        askLivingWiki: 'Yaşayan Viki’ye Sor',
         joinForFree: 'Ücretsiz katıl',
         newChat: 'Yeni sohbet',
         exploreCities: 'Şehirleri keşfet',
@@ -2404,7 +2404,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         recentDebates: 'Son tartışmalar',
         backgroundContext: 'Genel arka plan',
         reviewedPlacesCount: '{count} incelenen yer',
-        guideLabel: 'Yaşayan Vikim {city} rehberin',
+        guideLabel: 'Yaşayan Viki {city} rehberin',
         chatTitle: '{city} sohbeti',
         live: 'Canlı',
 	      },
@@ -2493,11 +2493,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'Nog geen lokale reviews',
 	        openBoardFirstPlace: 'Open het bord om de eerste plek toe te voegen.',
 	        subscribe: 'Abonneren',
-	        messageMyLivingWiki: 'Bericht aan Mijn Levende Wiki...',
+	        messageLivingWiki: 'Bericht aan Levende Wiki...',
 	        publicLimitReached: 'Openbare vragenlimiet bereikt',
 	        askFiveNoSignInPeriod: 'Stel tot 5 vragen zonder in te loggen.',
 	        internetModeLabel: 'Internetmodus',
-	        myLivingWikiLabel: 'Mijn Levende Wiki',
+	        myLivingWikiLabel: 'Levende Wiki',
 	        internetModeHelper: 'Internetmodus zoekt op het web en antwoordt voorbij je geüploade bronnen.',
 	        reviewedPlaceCount: '1 beoordeelde plaats',
 	        preview: 'Voorbeeld',
@@ -2525,7 +2525,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'لا توجد مراجعات محلية بعد',
 	        openBoardFirstPlace: 'افتح اللوحة لإضافة المكان الأول.',
 	        subscribe: 'اشترك',
-	        messageMyLivingWiki: 'رسالة إلى ويكي الحي الخاص بي...',
+	        messageLivingWiki: 'رسالة إلى ويكي الحي...',
 	        publicLimitReached: 'تم بلوغ حد الأسئلة العامة',
 	        askFiveNoSignInPeriod: 'اطرح حتى 5 أسئلة دون تسجيل الدخول.',
 	        reviewedPlaceCount: 'مكان واحد تمت مراجعته',
@@ -2556,7 +2556,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: '暂无本地评价',
 	        openBoardFirstPlace: '打开看板添加第一个地点。',
 	        subscribe: '订阅',
-	        messageMyLivingWiki: '给我的活 wiki 留言...',
+	        messageLivingWiki: '给我的活 wiki 留言...',
 	        publicLimitReached: '已达到公开提问限制',
 	        askFiveNoSignInPeriod: '无需登录即可提问最多 5 个问题。',
 	        reviewedPlaceCount: '1 个已评价地点',
@@ -2599,11 +2599,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'ローカルレビューはまだありません',
 	        openBoardFirstPlace: 'ボードを開いて最初の場所を追加してください。',
 	        subscribe: '購読',
-	        messageMyLivingWiki: 'マイ・リビング・ウィキへメッセージ...',
+	        messageLivingWiki: 'リビング・ウィキへメッセージ...',
 	        publicLimitReached: '公開質問の上限に達しました',
 	        askFiveNoSignInPeriod: 'サインインせずに最大5件まで質問できます。',
 	        internetModeLabel: 'インターネットモード',
-	        myLivingWikiLabel: 'マイ・リビング・ウィキ',
+	        myLivingWikiLabel: 'リビング・ウィキ',
 	        internetModeHelper: 'インターネットモードはウェブを検索し、アップロード済みソースを超えて回答します。',
 	        reviewedPlaceCount: '1件のレビュー済みスポット',
 	        preview: 'プレビュー',
@@ -2643,11 +2643,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: '아직 로컬 리뷰가 없습니다',
 	        openBoardFirstPlace: '첫 장소를 추가하려면 보드를 여세요.',
 	        subscribe: '구독',
-	        messageMyLivingWiki: '나의 살아있는 위키에 메시지...',
+	        messageLivingWiki: '살아있는 위키에 메시지...',
 	        publicLimitReached: '공개 질문 한도에 도달했습니다',
 	        askFiveNoSignInPeriod: '로그인 없이 최대 5개 질문 가능.',
 	        internetModeLabel: '인터넷 모드',
-	        myLivingWikiLabel: '나의 살아있는 위키',
+	        myLivingWikiLabel: '살아있는 위키',
 	        internetModeHelper: '인터넷 모드는 웹을 검색하고 업로드한 출처를 넘어 답합니다.',
 	        reviewedPlaceCount: '리뷰된 장소 1개',
 	        preview: '미리보기',
@@ -2687,11 +2687,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'Пока нет местных отзывов',
 	        openBoardFirstPlace: 'Откройте доску, чтобы добавить первое место.',
 	        subscribe: 'Подписаться',
-	        messageMyLivingWiki: 'Сообщение Моей живой вики...',
+	        messageLivingWiki: 'Сообщение Моей живой вики...',
 	        publicLimitReached: 'Достигнут лимит публичных вопросов',
 	        askFiveNoSignInPeriod: 'Задайте до 5 вопросов без входа.',
 	        internetModeLabel: 'Интернет-режим',
-	        myLivingWikiLabel: 'Моя живая вики',
+	        myLivingWikiLabel: 'Живая вики',
 	        internetModeHelper: 'Интернет-режим ищет в сети и отвечает за пределами ваших загруженных источников.',
 	        reviewedPlaceCount: '1 место с отзывом',
 	        preview: 'Предпросмотр',
@@ -2719,7 +2719,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        emailAddress: 'ईमेल पता',
 	        joining: 'जुड़ रहे हैं...',
 	        weeklyUpdates: 'अपडेट रहने के लिए साप्ताहिक अपडेट।',
-	        guideAlt: 'मेरी जीवित विकी गाइड',
+	        guideAlt: 'जीवित विकी गाइड',
 	        answerMode: 'उत्तर मोड',
 	        wiki: 'विकी',
 	        internet: 'इंटरनेट',
@@ -2732,11 +2732,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'अभी कोई स्थानीय समीक्षा नहीं',
 	        openBoardFirstPlace: 'पहला स्थान जोड़ने के लिए बोर्ड खोलें।',
 	        subscribe: 'सदस्यता लें',
-	        messageMyLivingWiki: 'मेरी जीवित विकी को संदेश...',
+	        messageLivingWiki: 'जीवित विकी को संदेश...',
 	        publicLimitReached: 'सार्वजनिक प्रश्न सीमा पूरी हुई',
 	        askFiveNoSignInPeriod: 'साइन इन किए बिना 5 प्रश्न तक पूछें।',
 	        internetModeLabel: 'इंटरनेट मोड',
-	        myLivingWikiLabel: 'मेरी जीवित विकी',
+	        myLivingWikiLabel: 'जीवित विकी',
 	        internetModeHelper: 'इंटरनेट मोड वेब खोजता है और आपके अपलोड किए स्रोतों से आगे जवाब देता है।',
 	        recentDebatesPrompt: 'लोग अभी {city} के बारे में क्या बहस कर रहे हैं?',
 	        backgroundContextPrompt: 'सार्वजनिक स्रोतों से {city} की पृष्ठभूमि बताएं।',
@@ -2781,11 +2781,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'Zatím žádné místní recenze',
 	        openBoardFirstPlace: 'Otevřete tabuli a přidejte první místo.',
 	        subscribe: 'Odebírat',
-	        messageMyLivingWiki: 'Zpráva pro Mou živou wiki...',
+	        messageLivingWiki: 'Zpráva pro Mou živou wiki...',
 	        publicLimitReached: 'Dosažen limit veřejných otázek',
 	        askFiveNoSignInPeriod: 'Položte až 5 otázek bez přihlášení.',
 	        internetModeLabel: 'Internetový režim',
-	        myLivingWikiLabel: 'Má živá wiki',
+	        myLivingWikiLabel: 'Živá wiki',
 	        internetModeHelper: 'Internetový režim prohledává web a odpovídá nad rámec nahraných zdrojů.',
 	        whatMattersNowPrompt: 'Co bych měl teď vědět o {city}?',
 	        recentDebatesPrompt: 'O čem lidé teď diskutují kolem {city}?',
@@ -2818,7 +2818,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        emailAddress: 'Adresa e-pošte',
 	        joining: 'Pridruživanje...',
 	        weeklyUpdates: 'Tjedne novosti da ostanete u toku.',
-	        guideAlt: 'Vodič Moj živi wiki',
+	        guideAlt: 'Vodič Živi wiki',
 	        answerMode: 'Način odgovora',
 	        wiki: 'Wiki',
 	        internet: 'Internet',
@@ -2831,11 +2831,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'Još nema lokalnih recenzija',
 	        openBoardFirstPlace: 'Otvorite ploču za dodavanje prvog mjesta.',
 	        subscribe: 'Pretplati se',
-	        messageMyLivingWiki: 'Poruka za Moj živi wiki...',
+	        messageLivingWiki: 'Poruka za Živi wiki...',
 	        publicLimitReached: 'Dosegnuto je ograničenje javnih pitanja',
 	        askFiveNoSignInPeriod: 'Postavite do 5 pitanja bez prijave.',
 	        internetModeLabel: 'Internetski način',
-	        myLivingWikiLabel: 'Moj živi wiki',
+	        myLivingWikiLabel: 'Živi wiki',
 	        internetModeHelper: 'Internetski način pretražuje web i odgovara izvan vaših učitanih izvora.',
 	        whatMattersNowPrompt: 'Što sada trebam znati o {city}?',
 	        recentDebatesPrompt: 'O čemu ljudi sada raspravljaju u vezi s {city}?',
@@ -2868,7 +2868,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        emailAddress: 'نشانی ایمیل',
 	        joining: 'در حال پیوستن...',
 	        weeklyUpdates: 'به‌روزرسانی‌های هفتگی برای آگاه ماندن.',
-	        guideAlt: 'راهنمای ویکی زنده من',
+	        guideAlt: 'راهنمای ویکی زنده',
 	        answerMode: 'حالت پاسخ',
 	        wiki: 'ویکی',
 	        internet: 'اینترنت',
@@ -2881,11 +2881,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'هنوز بررسی محلی وجود ندارد',
 	        openBoardFirstPlace: 'تابلو را باز کنید تا اولین مکان را اضافه کنید.',
 	        subscribe: 'اشتراک',
-	        messageMyLivingWiki: 'پیام به ویکی زنده من...',
+	        messageLivingWiki: 'پیام به ویکی زنده...',
 	        publicLimitReached: 'حد پرسش عمومی تمام شد',
 	        askFiveNoSignInPeriod: 'بدون ورود تا ۵ پرسش بپرسید.',
 	        internetModeLabel: 'حالت اینترنت',
-	        myLivingWikiLabel: 'ویکی زنده من',
+	        myLivingWikiLabel: 'ویکی زنده',
 	        internetModeHelper: 'حالت اینترنت وب را جستجو می‌کند و فراتر از منابع بارگذاری‌شده شما پاسخ می‌دهد.',
 	        whatMattersNowPrompt: 'اکنون باید درباره {city} چه بدانم؟',
 	        recentDebatesPrompt: 'اکنون مردم درباره {city} چه بحث می‌کنند؟',
@@ -2918,7 +2918,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        emailAddress: 'E-postadresse',
 	        joining: 'Blir med...',
 	        weeklyUpdates: 'Ukentlige oppdateringer for å holde deg orientert.',
-	        guideAlt: 'Guide for Min levende wiki',
+	        guideAlt: 'Guide for Levende wiki',
 	        answerMode: 'Svarmodus',
 	        wiki: 'Wiki',
 	        internet: 'Internett',
@@ -2931,11 +2931,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'Ingen lokale anmeldelser ennå',
 	        openBoardFirstPlace: 'Åpne tavlen for å legge til det første stedet.',
 	        subscribe: 'Abonner',
-	        messageMyLivingWiki: 'Melding til Min levende wiki...',
+	        messageLivingWiki: 'Melding til Levende wiki...',
 	        publicLimitReached: 'Grensen for offentlige spørsmål er nådd',
 	        askFiveNoSignInPeriod: 'Still opptil 5 spørsmål uten å logge inn.',
 	        internetModeLabel: 'Internettmodus',
-	        myLivingWikiLabel: 'Min levende wiki',
+	        myLivingWikiLabel: 'Levende wiki',
 	        internetModeHelper: 'Internettmodus søker på nettet og svarer utover de opplastede kildene dine.',
 	        whatMattersNowPrompt: 'Hva bør jeg vite akkurat nå om {city}?',
 	        recentDebatesPrompt: 'Hva diskuterer folk om {city} akkurat nå?',
@@ -2968,7 +2968,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        emailAddress: 'E-postadress',
 	        joining: 'Går med...',
 	        weeklyUpdates: 'Veckouppdateringar så att du håller dig informerad.',
-	        guideAlt: 'Guide för Min levande wiki',
+	        guideAlt: 'Guide för Levande wiki',
 	        answerMode: 'Svarsläge',
 	        wiki: 'Wiki',
 	        internet: 'Internet',
@@ -2981,11 +2981,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'Inga lokala recensioner än',
 	        openBoardFirstPlace: 'Öppna tavlan för att lägga till den första platsen.',
 	        subscribe: 'Prenumerera',
-	        messageMyLivingWiki: 'Meddelande till Min levande wiki...',
+	        messageLivingWiki: 'Meddelande till Levande wiki...',
 	        publicLimitReached: 'Gränsen för offentliga frågor är nådd',
 	        askFiveNoSignInPeriod: 'Ställ upp till 5 frågor utan att logga in.',
 	        internetModeLabel: 'Internetläge',
-	        myLivingWikiLabel: 'Min levande wiki',
+	        myLivingWikiLabel: 'Levande wiki',
 	        internetModeHelper: 'Internetläge söker på webben och svarar bortom dina uppladdade källor.',
 	        whatMattersNowPrompt: 'Vad bör jag veta just nu om {city}?',
 	        recentDebatesPrompt: 'Vad debatterar människor om {city} just nu?',
@@ -3018,7 +3018,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        emailAddress: 'E-posta adresi',
 	        joining: 'Katılıyor...',
 	        weeklyUpdates: 'Gündemde kalmak için haftalık güncellemeler.',
-	        guideAlt: 'Yaşayan Vikim rehberi',
+	        guideAlt: 'Yaşayan Viki rehberi',
 	        answerMode: 'Yanıt modu',
 	        wiki: 'Viki',
 	        internet: 'İnternet',
@@ -3031,11 +3031,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 	        noLocalReviewsYet: 'Henüz yerel yorum yok',
 	        openBoardFirstPlace: 'İlk yeri eklemek için panoyu açın.',
 	        subscribe: 'Abone ol',
-	        messageMyLivingWiki: 'Yaşayan Vikime mesaj...',
+	        messageLivingWiki: 'Yaşayan Viki’ye mesaj...',
 	        publicLimitReached: 'Herkese açık soru sınırına ulaşıldı',
 	        askFiveNoSignInPeriod: 'Giriş yapmadan en fazla 5 soru sor.',
 	        internetModeLabel: 'İnternet modu',
-	        myLivingWikiLabel: 'Yaşayan Vikim',
+	        myLivingWikiLabel: 'Yaşayan Viki',
 	        internetModeHelper: 'İnternet modu webde arama yapar ve yüklediğiniz kaynakların ötesinde yanıt verir.',
 	        whatMattersNowPrompt: 'Şu anda {city} hakkında ne bilmeliyim?',
 	        recentDebatesPrompt: 'İnsanlar şu anda {city} hakkında ne tartışıyor?',
@@ -3992,7 +3992,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           atlasId,
           atlasName: this.currentWikiName(),
           anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
-          participantName: this.currentUserName() || this.currentUserEmail() || 'My living wiki visitor',
+          participantName: this.currentUserName() || this.currentUserEmail() || 'Living Wiki visitor',
           voiceLanguageCode: language?.code ?? null,
           voiceLanguage: language?.language ?? null,
           voiceCountry: language?.country ?? null,
@@ -4008,12 +4008,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         ...(session.dynamicVariables ?? {}),
         current_city: cityName,
         current_city_country: cityCountry,
-        current_living_wiki: cityName ? `My Living Wiki, ${cityName}` : 'My Living Wiki',
+        current_living_wiki: cityName ? `Living Wiki, ${cityName}` : 'Living Wiki',
         requested_intro_greeting: greeting,
         link_delivery_instruction: linkDeliveryInstruction,
         city_context_instruction: cityName
-          ? `This voice conversation is for the My Living Wiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${linkDeliveryInstruction}`
-          : `This voice conversation is for the current My Living Wiki page. ${linkDeliveryInstruction}`,
+          ? `This voice conversation is for the Living Wiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${linkDeliveryInstruction}`
+          : `This voice conversation is for the current Living Wiki page. ${linkDeliveryInstruction}`,
       };
       const voiceOverrides = {
         ...(session.firstMessageOverrideEnabled
@@ -4386,48 +4386,48 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const city = this.currentWikiName();
     if (!city) {
       return language?.greeting
-        ?? 'Hi, I’m your My Living Wiki voice guide. Ask me anything and I’ll answer out loud.';
+        ?? 'Hi, I’m your Living Wiki voice guide. Ask me anything and I’ll answer out loud.';
     }
 
     switch (language?.code) {
       case 'ar':
-        return `مرحباً بك في My Living Wiki، ${city}. كيف يمكنني مساعدتك بشأن ${city} اليوم؟`;
+        return `مرحباً بك في Living Wiki، ${city}. كيف يمكنني مساعدتك بشأن ${city} اليوم؟`;
       case 'cs':
-        return `Vítejte v My Living Wiki, ${city}. Jak vám dnes mohu pomoci s ${city}?`;
+        return `Vítejte v Living Wiki, ${city}. Jak vám dnes mohu pomoci s ${city}?`;
       case 'de':
-        return `Willkommen bei My Living Wiki, ${city}. Wie kann ich dir heute zu ${city} helfen?`;
+        return `Willkommen bei Living Wiki, ${city}. Wie kann ich dir heute zu ${city} helfen?`;
       case 'es':
-        return `Bienvenido a Mi Wiki Viva, ${city}. ¿Cómo puedo ayudarte con ${city} hoy?`;
+        return `Bienvenido a Wiki Viva, ${city}. ¿Cómo puedo ayudarte con ${city} hoy?`;
       case 'fa':
-        return `به My Living Wiki، ${city} خوش آمدید. امروز درباره ${city} چطور می‌توانم کمک کنم؟`;
+        return `به Living Wiki، ${city} خوش آمدید. امروز درباره ${city} چطور می‌توانم کمک کنم؟`;
       case 'fr':
-        return `Bienvenue sur My Living Wiki, ${city}. Comment puis-je vous aider avec ${city} aujourd’hui ?`;
+        return `Bienvenue sur Living Wiki, ${city}. Comment puis-je vous aider avec ${city} aujourd’hui ?`;
       case 'hi':
-        return `My Living Wiki, ${city} में आपका स्वागत है। आज मैं ${city} के बारे में आपकी कैसे मदद कर सकता हूँ?`;
+        return `Living Wiki, ${city} में आपका स्वागत है। आज मैं ${city} के बारे में आपकी कैसे मदद कर सकता हूँ?`;
       case 'hr':
-        return `Dobrodošli u My Living Wiki, ${city}. Kako vam danas mogu pomoći s ${city}?`;
+        return `Dobrodošli u Living Wiki, ${city}. Kako vam danas mogu pomoći s ${city}?`;
       case 'ja':
-        return `My Living Wiki、${city}へようこそ。今日は${city}について、どのようにお手伝いできますか？`;
+        return `Living Wiki、${city}へようこそ。今日は${city}について、どのようにお手伝いできますか？`;
       case 'ko':
-        return `My Living Wiki, ${city}에 오신 것을 환영합니다. 오늘 ${city}에 대해 어떻게 도와드릴까요?`;
+        return `Living Wiki, ${city}에 오신 것을 환영합니다. 오늘 ${city}에 대해 어떻게 도와드릴까요?`;
       case 'nl':
-        return `Welkom bij My Living Wiki, ${city}. Hoe kan ik u vandaag helpen met ${city}?`;
+        return `Welkom bij Living Wiki, ${city}. Hoe kan ik u vandaag helpen met ${city}?`;
       case 'no':
-        return `Velkommen til My Living Wiki, ${city}. Hvordan kan jeg hjelpe deg med ${city} i dag?`;
+        return `Velkommen til Living Wiki, ${city}. Hvordan kan jeg hjelpe deg med ${city} i dag?`;
       case 'pt':
       case 'pt-br':
-        return `Bem-vindo ao My Living Wiki, ${city}. Como posso ajudar com ${city} hoje?`;
+        return `Bem-vindo ao Living Wiki, ${city}. Como posso ajudar com ${city} hoje?`;
       case 'ru':
-        return `Добро пожаловать в My Living Wiki, ${city}. Чем я могу помочь вам сегодня по ${city}?`;
+        return `Добро пожаловать в Living Wiki, ${city}. Чем я могу помочь вам сегодня по ${city}?`;
       case 'sv':
-        return `Välkommen till My Living Wiki, ${city}. Hur kan jag hjälpa dig med ${city} idag?`;
+        return `Välkommen till Living Wiki, ${city}. Hur kan jag hjälpa dig med ${city} idag?`;
       case 'tr':
-        return `My Living Wiki, ${city} sayfasına hoş geldiniz. Bugün ${city} hakkında size nasıl yardımcı olabilirim?`;
+        return `Living Wiki, ${city} sayfasına hoş geldiniz. Bugün ${city} hakkında size nasıl yardımcı olabilirim?`;
       case 'zh':
-        return `欢迎来到 My Living Wiki，${city}。今天我可以怎样帮你了解 ${city}？`;
+        return `欢迎来到 Living Wiki，${city}。今天我可以怎样帮你了解 ${city}？`;
       case 'en':
       default:
-        return `Welcome to My Living Wiki, ${city}. How can I help you with ${city} today?`;
+        return `Welcome to Living Wiki, ${city}. How can I help you with ${city} today?`;
     }
   }
 
@@ -4442,7 +4442,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const prompt = [
       `Please greet me now in ${language.language} for ${language.country}.`,
       `Say exactly this greeting first: "${greeting}"`,
-      `The current My Living Wiki city context is ${this.currentWikiName() || 'the selected city wiki'}.`,
+      `The current Living Wiki city context is ${this.currentWikiName() || 'the selected city wiki'}.`,
       accentProfile.instruction,
       'For the rest of this voice session, keep speaking in this language and accent unless I ask to switch.',
       this.currentWikiName()
@@ -5451,7 +5451,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       const question = this.questionBeforeMessage(message.id);
       const atlas = this.currentWikiAtlas();
       const card = await this.answerCardService.createAnswerCard({
-        question: question || 'My living wiki question',
+        question: question || 'Living Wiki question',
         answer: message.text,
         atlasId: atlas?.id ?? null,
         threadId: this.activeThreadId(),

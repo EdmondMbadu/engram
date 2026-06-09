@@ -108,7 +108,7 @@ export class BusinessComponent {
 
   readonly businessChatUrl = computed(() => {
     const name = this.slugify(this.businessName());
-    return `mylivingwiki.com/chat/philly${name ? `?business=${name}` : ''}`;
+    return `livingwiki.com/chat/philly${name ? `?business=${name}` : ''}`;
   });
 
   readonly businessQrImageUrl = computed(() => generateQrSvgDataUrl(`https://${this.businessChatUrl()}`));

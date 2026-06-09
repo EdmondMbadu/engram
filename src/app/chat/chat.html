@@ -13,7 +13,7 @@
       <div class="mb-8 px-2">
         <a routerLink="/" class="flex items-center">
           <div class="flex h-10 w-44 items-center justify-start">
-            <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
+            <img src="/assets/image/my-living-wiki.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
           </div>
         </a>
       </div>
@@ -622,7 +622,7 @@
                       </div>
                       <div class="min-w-0 flex-1">
                         <div class="flex flex-wrap items-center gap-2">
-                          <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">My Living Wiki for business</span>
+                          <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Living Wiki for business</span>
                           @if (businessPagePending()) {
                             <span class="rounded-full border border-amber-400/45 bg-amber-400/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-amber-700 dark:text-amber-300">Pending</span>
                           }
@@ -725,7 +725,7 @@
                   </div>
                 } @else {
 	                <h2 class="chat-hero-title mt-3">
-	                  {{ uiText('askMyLivingWiki') }}@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
+	                  {{ uiText('askLivingWiki') }}@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
 	                </h2>
 	                @if (currentWikiCountry()) {
 	                  <p class="mt-1 text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ currentWikiCountry() }}</p>
