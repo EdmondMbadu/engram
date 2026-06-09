@@ -388,7 +388,7 @@ function buildSharePageHtml(card: ShareCard): string {
   <main class="page">
     <section class="hero">
       <div class="brand">
-        <img src="${appUrl}/assets/image/my-living-wiki.png" alt="Living Wiki">
+        <img src="${appUrl}/assets/image/livingwiki.png" alt="Living Wiki">
         <span>${escapeHtml(card.atlasName || 'Philly')}</span>
       </div>
       <p class="eyebrow">Shared Answer Card</p>
@@ -447,7 +447,7 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
   <main class="page">
     <section class="hero">
       <div class="brand">
-        <img src="${appUrl}/assets/image/my-living-wiki.png" alt="Living Wiki">
+        <img src="${appUrl}/assets/image/livingwiki.png" alt="Living Wiki">
         <span>${escapeHtml(share.atlasName || 'Shared guide')}</span>
       </div>
       <p class="eyebrow">${escapeHtml(share.guideTitle || 'Guide Card')}</p>

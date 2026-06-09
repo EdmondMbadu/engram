@@ -4859,7 +4859,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   assistantAvatarUrl(): string {
-    return this.currentWikiGuide()?.image_url?.trim() || '/assets/image/my-living-wiki.png';
+    return this.currentWikiGuide()?.image_url?.trim() || '/assets/image/livingwiki.png';
   }
 
   assistantAvatarAlt(): string {
