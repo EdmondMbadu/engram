@@ -1,33 +1,33 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
-  <header class="border-b border-[var(--line)] bg-[var(--surface)]">
-    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-      <a routerLink="/wikis" class="flex min-w-0 items-center gap-4">
-        <div class="flex h-10 w-40 shrink-0 items-center justify-start">
-          <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
-        </div>
-        <div class="min-w-0">
-          <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
-          <h1 class="truncate text-xl font-black tracking-tighter">Wiki Admin</h1>
-        </div>
-      </a>
+  <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
+    <app-workspace-sidebar active="settings" [rail]="true"></app-workspace-sidebar>
 
-      <div class="flex items-center gap-3">
-        <a
-          routerLink="/wikis"
-          class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
-        >
-          <span class="material-symbols-outlined text-[1rem]">arrow_back</span>
-          <span>Back to Wikis</span>
+    <main class="theme-shell relative flex min-w-0 flex-1 flex-col overflow-y-auto">
+      <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
+        <a routerLink="/wikis" class="flex min-w-0 items-center gap-4">
+          <div class="flex h-10 w-40 shrink-0 items-center justify-start">
+            <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
+          </div>
+          <div class="min-w-0">
+            <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
+            <h1 class="truncate text-xl font-black tracking-tighter">Wiki Admin</h1>
+          </div>
         </a>
-        <app-theme-toggle></app-theme-toggle>
-      </div>
-    </div>
-  </header>
 
-  <div class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[16rem_1fr] lg:px-8">
-    <app-workspace-sidebar active="settings"></app-workspace-sidebar>
+        <div class="flex items-center gap-3">
+          <a
+            routerLink="/wikis"
+            class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
+          >
+            <span class="material-symbols-outlined text-[1rem]">arrow_back</span>
+            <span>Back to Wikis</span>
+          </a>
+          <app-theme-toggle></app-theme-toggle>
+        </div>
+      </header>
 
-  <main class="min-w-0">
+      <div class="px-4 py-6 sm:px-6 lg:px-8">
+        <div class="min-w-0">
     <section class="border-b border-[var(--line)] pb-6">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -1854,6 +1854,8 @@
       </div>
       }
     </section>
-  </main>
+  </div>
+  </div>
+    </main>
   </div>
 </div>

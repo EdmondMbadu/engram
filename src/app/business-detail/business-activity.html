@@ -19,7 +19,7 @@
     </div>
   </header>
 
-  <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
     @if (loading()) {
       <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
         <p class="text-sm font-semibold text-[var(--muted)]">Loading business admin page...</p>
@@ -54,22 +54,21 @@
         </div>
       </section>
     } @else {
-      <section class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
-        <div class="grid gap-0 lg:grid-cols-[18rem_minmax(0,1fr)]">
-          <app-workspace-sidebar
-            [active]="sidebarActive()"
-            [businessName]="businessName()"
-            [businessCity]="cityName()"
-            [businessPath]="detailPath()"
-            [businessEditPath]="editPath()"
-            [businessBadgePath]="detailPath() + '#badge'"
-            [businessVoicePath]="detailPath() + '/voice'"
-            [businessChatPath]="detailPath() + '/chat'"
-            [businessChatGuidePath]="chatPath()"
-            [businessChatGuideQueryParams]="chatQueryParams()"
-          ></app-workspace-sidebar>
+      <div class="grid gap-6 lg:grid-cols-[16rem_minmax(0,1fr)]">
+        <app-workspace-sidebar
+          [active]="sidebarActive()"
+          [businessName]="businessName()"
+          [businessCity]="cityName()"
+          [businessPath]="detailPath()"
+          [businessEditPath]="editPath()"
+          [businessBadgePath]="detailPath() + '#badge'"
+          [businessVoicePath]="detailPath() + '/voice'"
+          [businessChatPath]="detailPath() + '/chat'"
+          [businessChatGuidePath]="chatPath()"
+          [businessChatGuideQueryParams]="chatQueryParams()"
+        ></app-workspace-sidebar>
 
-          <div class="p-6 sm:p-8">
+        <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)] sm:p-8">
             <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
               <div>
                 <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">{{ pageEyebrow() }}</p>
@@ -124,9 +123,8 @@
             <div class="mt-8 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
               <p class="break-all text-xs font-bold text-[var(--muted)]">{{ publicChatUrl() }}</p>
             </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     }
   </main>
 </div>

@@ -9,6 +9,6 @@
 
 @media (min-width: 1024px) {
   .business-detail-shell--with-sidebar {
-    grid-template-columns: 18rem minmax(0, 1fr);
+    grid-template-columns: 16rem minmax(0, 1fr);
   }
 }

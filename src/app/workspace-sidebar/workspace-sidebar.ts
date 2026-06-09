@@ -40,6 +40,7 @@ export class WorkspaceSidebarComponent {
   readonly businessChatPath = input<string | null>(null);
   readonly businessChatGuidePath = input<string | null>(null);
   readonly businessChatGuideQueryParams = input<Record<string, string> | null>(null);
+  readonly rail = input(false);
 
   readonly signingOut = signal(false);
   readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;

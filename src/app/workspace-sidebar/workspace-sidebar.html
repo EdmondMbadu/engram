@@ -1,5 +1,21 @@
 <aside
-  class="hidden h-max rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-floating)] lg:sticky lg:top-6 lg:block"
+  class="hidden shrink-0 border-[var(--line)] bg-[var(--surface)]"
+  [class.theme-sidebar]="rail()"
+  [class.h-screen]="rail()"
+  [class.w-72]="rail()"
+  [class.border-r]="rail()"
+  [class.px-5]="rail()"
+  [class.py-6]="rail()"
+  [class.md:flex]="rail()"
+  [class.md:flex-col]="rail()"
+  [class.h-max]="!rail()"
+  [class.rounded-3xl]="!rail()"
+  [class.border]="!rail()"
+  [class.p-4]="!rail()"
+  [class.shadow-[var(--shadow-floating)]]="!rail()"
+  [class.lg:sticky]="!rail()"
+  [class.lg:top-6]="!rail()"
+  [class.lg:block]="!rail()"
 >
   <div class="px-2 py-2">
     <a routerLink="/" class="flex items-center">
