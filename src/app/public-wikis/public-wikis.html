@@ -221,14 +221,19 @@
         }
 
         <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          @for (wiki of filteredWikis(); track wiki.title) {
+          @for (wiki of filteredWikis(); track wiki.title; let rank = $index) {
             @if (wiki.status === 'live') {
               <a
                 [routerLink]="wiki.link || '/chat'"
-                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.55)]"
-                [style.background]="timeCardBackground(wiki) || temperatureCardBackground(wiki)"
-                [style.border-color]="timeBorderColor(wiki) || temperatureBorderColor(wiki)"
+                class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.55)]"
+                [style.background]="densityCardBackground(wiki) || populationCardBackground() || timeCardBackground(wiki) || temperatureCardBackground(wiki)"
+                [style.border-color]="densityBorderColor(wiki) || populationBorderColor() || timeBorderColor(wiki) || temperatureBorderColor(wiki)"
               >
+                @if (showRankBadge()) {
+                  <span class="absolute left-3 top-3 z-20 flex h-10 w-10 items-center justify-center rounded-2xl border border-white/20 bg-black/55 text-base font-black text-white shadow-[0_12px_28px_rgba(0,0,0,0.32)] backdrop-blur-md">
+                    {{ rank + 1 }}
+                  </span>
+                }
                 @if (wiki.heroUrl) {
                   <div class="relative aspect-[5/3] w-full overflow-hidden bg-black">
                     <img
@@ -283,7 +288,29 @@
                     </span>
                   </div>
                 }
-                @if (isTimeSort()) {
+                @if (isDensitySort()) {
+                  <div class="border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="densityBandBackground(wiki)">
+                    <div class="flex items-center justify-between gap-4">
+                      <span class="text-3xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl">
+                        {{ densityHeroLabel(wiki) }}
+                      </span>
+                      <span class="material-symbols-outlined text-3xl text-white/80 drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
+                        apps
+                      </span>
+                    </div>
+                  </div>
+                } @else if (isPopulationSort()) {
+                  <div class="border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="populationBandBackground()">
+                    <div class="flex items-center justify-between gap-4">
+                      <span class="text-3xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl">
+                        {{ populationHeroLabel(wiki) }}
+                      </span>
+                      <span class="text-right text-[10px] font-black uppercase tracking-[0.16em] text-white/85">
+                        Population
+                      </span>
+                    </div>
+                  </div>
+                } @else if (isTimeSort()) {
                   <div class="border-y border-white/15 px-4 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="timeBandBackground(wiki)">
                     <div class="flex items-center justify-between gap-3">
                       <div class="flex min-w-0 items-center gap-3">
@@ -335,6 +362,9 @@
                           }
                           @if (temperatureLabel(wiki); as temp) {
                             <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Temp {{ temp }}</span>
+                          }
+                          @if (densityLabel(wiki); as density) {
+                            <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Density {{ density }}</span>
                           }
                         </div>
 	                    </div>

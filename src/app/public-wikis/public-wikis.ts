@@ -18,6 +18,7 @@ type PublicWikiCategory = (typeof PUBLIC_WIKI_CATEGORIES)[number];
 const PUBLIC_WIKI_SORTS = [
   { value: 'az', label: 'A-Z' },
   { value: 'population', label: 'Population' },
+  { value: 'density', label: 'Density' },
   { value: 'region', label: 'Region' },
   { value: 'time', label: 'Time' },
   { value: 'temp', label: 'Temp' },
@@ -60,6 +61,53 @@ const TIME_NEUTRAL_TONE = {
   icon: 'schedule',
   iconColor: '#e2e8f0',
 } as const;
+const POPULATION_TONE = {
+  from: '#0f172a',
+  via: '#334155',
+  to: '#64748b',
+  surface: 'rgba(51,65,85,0.16)',
+  border: 'rgba(100,116,139,0.36)',
+} as const;
+const DENSITY_TONES = [
+  { min: 20_000, from: '#0f172a', via: '#1f2937', to: '#475569', surface: 'rgba(15,23,42,0.22)', border: 'rgba(71,85,105,0.48)' },
+  { min: 10_000, from: '#111827', via: '#374151', to: '#6b7280', surface: 'rgba(31,41,55,0.18)', border: 'rgba(75,85,99,0.42)' },
+  { min: 3_000, from: '#3730a3', via: '#4f46e5', to: '#a5b4fc', surface: 'rgba(79,70,229,0.16)', border: 'rgba(99,102,241,0.38)' },
+  { min: 1_000, from: '#0f766e', via: '#5eead4', to: '#ccfbf1', surface: 'rgba(45,212,191,0.16)', border: 'rgba(20,184,166,0.36)' },
+  { min: 0, from: '#c7d2fe', via: '#e9d5ff', to: '#f5d0fe', surface: 'rgba(233,213,255,0.16)', border: 'rgba(216,180,254,0.34)' },
+] as const;
+const DENSITY_NEUTRAL_TONE = {
+  from: '#475569',
+  via: '#64748b',
+  to: '#94a3b8',
+  surface: 'rgba(100,116,139,0.14)',
+  border: 'rgba(148,163,184,0.3)',
+} as const;
+
+const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
+  'abu dhabi': 110,
+  atlanta: 1418,
+  berlin: 4127,
+  boise: 1146,
+  boston: 5532,
+  burlington: 1032,
+  cairo: 19376,
+  delhi: 12100,
+  dhaka: 29069,
+  doha: 4610,
+  dubai: 860,
+  'las vegas': 1781,
+  'los angeles': 3124,
+  marrakech: 688,
+  miami: 4866,
+  mumbai: 21665,
+  'new york city': 11232,
+  paris: 20360,
+  phoenix: 1200,
+  savannah: 534,
+  tampa: 1313,
+  toronto: 4427,
+  vancouver: 5749,
+};
 
 const COUNTRY_REGION_HINTS: Array<{ region: string; countries: string[] }> = [
   {
@@ -130,6 +178,8 @@ export class PublicWikisComponent implements OnInit {
   readonly sortOptions = computed(() => [...PUBLIC_WIKI_SORTS]);
   readonly isTemperatureSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'temp');
   readonly isTimeSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'time');
+  readonly isPopulationSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'population');
+  readonly isDensitySort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'density');
 
   readonly categoryCounts = computed(() =>
     this.categories().reduce<Record<string, number>>((acc, cat) => {
@@ -149,6 +199,7 @@ export class PublicWikisComponent implements OnInit {
     const filtered = this.publicWikis().filter((wiki) => {
       const catMatch = this.categoryForWiki(wiki) === cat;
       if (!catMatch) return false;
+      if (this.activeSort() === 'density' && this.populationDensityForWiki(wiki) === null) return false;
       if (!term) return true;
 
       const haystack = [
@@ -240,6 +291,73 @@ export class PublicWikisComponent implements OnInit {
     }
     const formatted = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(wiki.population);
     return wiki.populationYear ? `${formatted} (${wiki.populationYear})` : formatted;
+  }
+
+  populationHeroLabel(wiki: PublicWikiCatalogItem): string {
+    if (!wiki.population) {
+      return 'No population';
+    }
+
+    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(wiki.population);
+  }
+
+  populationBandBackground(): string | null {
+    if (!this.isPopulationSort()) {
+      return null;
+    }
+
+    return `linear-gradient(90deg, ${POPULATION_TONE.from}, ${POPULATION_TONE.via} 52%, ${POPULATION_TONE.to})`;
+  }
+
+  populationCardBackground(): string | null {
+    if (!this.isPopulationSort()) {
+      return null;
+    }
+
+    return `linear-gradient(180deg, ${POPULATION_TONE.surface}, rgba(255,255,255,0.025) 48%, var(--surface) 100%)`;
+  }
+
+  populationBorderColor(): string | null {
+    return this.isPopulationSort() ? POPULATION_TONE.border : null;
+  }
+
+  densityLabel(wiki: PublicWikiCatalogItem): string | null {
+    const density = this.populationDensityForWiki(wiki);
+    if (density === null) {
+      return null;
+    }
+
+    return `${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(density)} pers/km²`;
+  }
+
+  densityHeroLabel(wiki: PublicWikiCatalogItem): string {
+    return this.densityLabel(wiki) ?? 'No density';
+  }
+
+  densityBandBackground(wiki: PublicWikiCatalogItem): string | null {
+    if (!this.isDensitySort()) {
+      return null;
+    }
+
+    const tone = this.densityTone(wiki);
+    return `linear-gradient(90deg, ${tone.from}, ${tone.via} 52%, ${tone.to})`;
+  }
+
+  densityCardBackground(wiki: PublicWikiCatalogItem): string | null {
+    if (!this.isDensitySort()) {
+      return null;
+    }
+
+    const tone = this.densityTone(wiki);
+    return `linear-gradient(180deg, ${tone.surface}, rgba(255,255,255,0.025) 48%, var(--surface) 100%)`;
+  }
+
+  densityBorderColor(wiki: PublicWikiCatalogItem): string | null {
+    return this.isDensitySort() ? this.densityTone(wiki).border : null;
+  }
+
+  showRankBadge(): boolean {
+    return this.activeCategory() === CITIES_CATEGORY && ['population', 'density', 'time', 'temp'].includes(this.activeSort());
   }
 
   localTimeLabel(wiki: PublicWikiCatalogItem): string | null {
@@ -401,6 +519,13 @@ export class PublicWikisComponent implements OnInit {
           if (aPopulation !== bPopulation) return bPopulation - aPopulation;
           return this.titleKey(a).localeCompare(this.titleKey(b));
         });
+      case 'density':
+        return sorted.sort((a, b) => {
+          const aDensity = this.populationDensityForWiki(a) ?? -1;
+          const bDensity = this.populationDensityForWiki(b) ?? -1;
+          if (aDensity !== bDensity) return bDensity - aDensity;
+          return this.titleKey(a).localeCompare(this.titleKey(b));
+        });
       case 'region':
         return sorted.sort((a, b) => {
           const aRegion = this.globalRegionForWiki(a);
@@ -441,6 +566,14 @@ export class PublicWikisComponent implements OnInit {
 
   private titleKey(wiki: PublicWikiCatalogItem): string {
     return this.normalizeVisibleWikiTitle(wiki.title).replace(/^living wiki:\s*/i, '').trim().toLowerCase();
+  }
+
+  private cityNameKey(wiki: PublicWikiCatalogItem): string {
+    return this.normalizeVisibleWikiTitle(wiki.title)
+      .replace(/^living wiki:\s*/i, '')
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .trim()
+      .toLowerCase();
   }
 
   private normalizeVisibleWikiTitle(title: string): string {
@@ -625,6 +758,20 @@ export class PublicWikisComponent implements OnInit {
     }
 
     return TEMPERATURE_TONES.find((tone) => fahrenheit >= tone.min) ?? TEMPERATURE_NEUTRAL_TONE;
+  }
+
+  private populationDensityForWiki(wiki: PublicWikiCatalogItem): number | null {
+    const density = CITY_DENSITY_PER_KM2_BY_KEY[this.cityNameKey(wiki)];
+    return typeof density === 'number' && Number.isFinite(density) && density > 0 ? density : null;
+  }
+
+  private densityTone(wiki: PublicWikiCatalogItem): (typeof DENSITY_TONES)[number] | typeof DENSITY_NEUTRAL_TONE {
+    const density = this.populationDensityForWiki(wiki);
+    if (density === null) {
+      return DENSITY_NEUTRAL_TONE;
+    }
+
+    return DENSITY_TONES.find((tone) => density >= tone.min) ?? DENSITY_NEUTRAL_TONE;
   }
 
   private timeTone(wiki: PublicWikiCatalogItem): (typeof TIME_TONES)[number] | typeof TIME_NEUTRAL_TONE {
