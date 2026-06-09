@@ -239,6 +239,8 @@ export interface CustomCityAtlasInput {
   globalRegion?: string | null;
   population?: number | null;
   populationYear?: number | null;
+  areaKm2?: number | null;
+  populationDensityPerKm2?: number | null;
   /** Optional coordinates so the city appears on the /dymaxion map. */
   latitude?: number | null;
   longitude?: number | null;
@@ -621,6 +623,14 @@ export class AtlasService {
     const populationYear = typeof input.populationYear === 'number' && Number.isFinite(input.populationYear) && input.populationYear > 0
       ? Math.round(input.populationYear)
       : null;
+    const areaKm2 = typeof input.areaKm2 === 'number' && Number.isFinite(input.areaKm2) && input.areaKm2 > 0
+      ? input.areaKm2
+      : null;
+    const populationDensityPerKm2 = typeof input.populationDensityPerKm2 === 'number' && Number.isFinite(input.populationDensityPerKm2) && input.populationDensityPerKm2 > 0
+      ? Math.round(input.populationDensityPerKm2)
+      : areaKm2 && population
+        ? Math.round(population / areaKm2)
+        : null;
 
     const cityKey = normalizeCityIdentity(cityName);
     const existingLocal = this.atlases().find((atlas) =>
@@ -671,6 +681,8 @@ export class AtlasService {
           global_region: globalRegion,
           population,
           population_year: populationYear,
+          area_km2: areaKm2,
+          population_density_per_km2: populationDensityPerKm2,
           population_scope: population ? 'unknown' : null,
           population_source: population ? 'manual' : null,
           population_source_url: null,
@@ -1491,6 +1503,12 @@ export class AtlasService {
         : null,
       population_year: typeof data['population_year'] === 'number' && Number.isFinite(data['population_year'])
         ? data['population_year']
+        : null,
+      area_km2: typeof data['area_km2'] === 'number' && Number.isFinite(data['area_km2'])
+        ? data['area_km2']
+        : null,
+      population_density_per_km2: typeof data['population_density_per_km2'] === 'number' && Number.isFinite(data['population_density_per_km2'])
+        ? data['population_density_per_km2']
         : null,
       population_scope: this.hydratePopulationScope(data['population_scope']),
       population_source: this.hydratePopulationSource(data['population_source']),

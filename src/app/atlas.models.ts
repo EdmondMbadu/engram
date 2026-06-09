@@ -69,6 +69,10 @@ export interface CityAtlasMetadata {
   /** Latest known city population, when attached during city creation/import. */
   population: number | null;
   population_year: number | null;
+  /** Optional city land/urban area used to compute population density in the public directory. */
+  area_km2?: number | null;
+  /** Optional population density, in people per square kilometer. */
+  population_density_per_km2?: number | null;
   population_scope?: 'city_proper' | 'urban_agglomeration' | 'metro' | 'unknown' | null;
   population_source?: 'us_census_pep' | 'geonames' | 'wikidata' | 'manual' | null;
   population_source_url?: string | null;

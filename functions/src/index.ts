@@ -7184,6 +7184,8 @@ type BulkCityCreateRow = {
   globalRegion?: string;
   population?: number | string | null;
   populationYear?: number | string | null;
+  areaKm2?: number | string | null;
+  populationDensityPerKm2?: number | string | null;
   latitude?: number | null;
   longitude?: number | null;
 };
@@ -7222,6 +7224,17 @@ function numberFromUnknown(value: unknown): number | null {
   if (typeof value === 'string') {
     const parsed = Number(value.replace(/,/g, '').trim());
     return Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : null;
+  }
+  return null;
+}
+
+function decimalNumberFromUnknown(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const parsed = Number(value.replace(/,/g, '').trim());
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
   }
   return null;
 }
@@ -7318,6 +7331,9 @@ export const createBulkCityAtlases = onCall(
       const globalRegion = nullableTextFromUnknown(row.globalRegion, 60);
       const population = numberFromUnknown(row.population);
       const populationYear = numberFromUnknown(row.populationYear);
+      const areaKm2 = decimalNumberFromUnknown(row.areaKm2);
+      const populationDensityPerKm2 = numberFromUnknown(row.populationDensityPerKm2)
+        ?? (areaKm2 && population ? Math.round(population / areaKm2) : null);
       const latitude = typeof row.latitude === 'number' && Number.isFinite(row.latitude) && row.latitude >= -90 && row.latitude <= 90
         ? row.latitude
         : null;
@@ -7356,6 +7372,8 @@ export const createBulkCityAtlases = onCall(
             global_region: globalRegion,
             population,
             population_year: populationYear,
+            area_km2: areaKm2,
+            population_density_per_km2: populationDensityPerKm2,
             population_scope: population ? 'unknown' : null,
             population_source: population ? 'manual' : null,
             population_source_url: null,

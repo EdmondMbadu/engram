@@ -433,6 +433,14 @@
               <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().population_year" (input)="updateCustomCityDraft('population_year', $any($event.target).value)" placeholder="2024" />
             </label>
             <label class="block">
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Area km² <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
+              <input type="text" inputmode="decimal" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().area_km2" (input)="updateCustomCityDraft('area_km2', $any($event.target).value)" placeholder="606.1" />
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Density / km² <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
+              <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().population_density_per_km2" (input)="updateCustomCityDraft('population_density_per_km2', $any($event.target).value)" placeholder="4,397" />
+            </label>
+            <label class="block">
               <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Public title</span>
               <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().name" (input)="updateCustomCityDraft('name', $any($event.target).value)" placeholder="Living Wiki: Chicago" />
             </label>
@@ -487,7 +495,7 @@
             <label class="flex cursor-pointer flex-col items-center justify-center gap-2 text-center">
               <span class="material-symbols-outlined text-3xl text-[var(--accent)]">upload_file</span>
               <span class="text-sm font-black text-[var(--text)]">Upload city CSV</span>
-              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, country_code, global_region, population, population_year, timezone, public_title, description, latitude, longitude. Add latitude &amp; longitude to place the city on the Dymaxion map.</span>
+              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, country_code, global_region, population, population_year, area_km2, population_density_per_km2, timezone, public_title, description, latitude, longitude. Add density directly, or add area_km2 so density can be computed.</span>
               <input type="file" accept=".csv,text/csv" class="sr-only" (change)="onBulkCityCsvSelected($event)" />
             </label>
           </div>
@@ -556,6 +564,7 @@
                       <th class="px-4 py-3 font-black">City</th>
                       <th class="px-4 py-3 font-black">Region</th>
                       <th class="px-4 py-3 font-black">Population</th>
+                      <th class="px-4 py-3 font-black">Density</th>
                       <th class="px-4 py-3 font-black">Timezone</th>
                       <th class="px-4 py-3 font-black">Map</th>
                       <th class="px-4 py-3 font-black">Slug</th>
@@ -583,6 +592,17 @@
                             @if (row.population_year) {
                               <span class="block text-[10px] uppercase tracking-[0.14em]">{{ row.population_year }}</span>
                             }
+                          } @else {
+                            —
+                          }
+                        </td>
+                        <td class="px-4 py-3 text-xs text-[var(--muted)]">
+                          @if (row.population_density_per_km2) {
+                            <span class="font-bold text-[var(--text)]">{{ row.population_density_per_km2 }}</span>
+                            <span class="block text-[10px] uppercase tracking-[0.14em]">pers/km²</span>
+                          } @else if (row.area_km2) {
+                            <span class="font-bold text-[var(--text)]">{{ row.area_km2 }}</span>
+                            <span class="block text-[10px] uppercase tracking-[0.14em]">area km²</span>
                           } @else {
                             —
                           }

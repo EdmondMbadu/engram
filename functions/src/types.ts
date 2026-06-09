@@ -341,6 +341,8 @@ export interface AtlasRecord {
       global_region?: string | null;
       population?: number | null;
       population_year?: number | null;
+      area_km2?: number | null;
+      population_density_per_km2?: number | null;
       population_scope?: string | null;
       population_source?: string | null;
       population_source_url?: string | null;

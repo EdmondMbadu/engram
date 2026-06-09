@@ -199,7 +199,6 @@ export class PublicWikisComponent implements OnInit {
     const filtered = this.publicWikis().filter((wiki) => {
       const catMatch = this.categoryForWiki(wiki) === cat;
       if (!catMatch) return false;
-      if (this.activeSort() === 'density' && this.populationDensityForWiki(wiki) === null) return false;
       if (!term) return true;
 
       const haystack = [
@@ -331,7 +330,7 @@ export class PublicWikisComponent implements OnInit {
   }
 
   densityHeroLabel(wiki: PublicWikiCatalogItem): string {
-    return this.densityLabel(wiki) ?? 'No density';
+    return this.densityLabel(wiki) ?? 'Density needed';
   }
 
   densityBandBackground(wiki: PublicWikiCatalogItem): string | null {
@@ -761,6 +760,23 @@ export class PublicWikisComponent implements OnInit {
   }
 
   private populationDensityForWiki(wiki: PublicWikiCatalogItem): number | null {
+    if (
+      typeof wiki.populationDensityPerKm2 === 'number' &&
+      Number.isFinite(wiki.populationDensityPerKm2) &&
+      wiki.populationDensityPerKm2 > 0
+    ) {
+      return Math.round(wiki.populationDensityPerKm2);
+    }
+    if (
+      typeof wiki.areaKm2 === 'number' &&
+      Number.isFinite(wiki.areaKm2) &&
+      wiki.areaKm2 > 0 &&
+      typeof wiki.population === 'number' &&
+      Number.isFinite(wiki.population) &&
+      wiki.population > 0
+    ) {
+      return Math.round(wiki.population / wiki.areaKm2);
+    }
     const density = CITY_DENSITY_PER_KM2_BY_KEY[this.cityNameKey(wiki)];
     return typeof density === 'number' && Number.isFinite(density) && density > 0 ? density : null;
   }

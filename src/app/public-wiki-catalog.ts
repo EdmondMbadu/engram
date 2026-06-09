@@ -31,6 +31,8 @@ export interface PublicWikiCatalogItem {
   globalRegion?: string | null;
   population?: number | null;
   populationYear?: number | null;
+  areaKm2?: number | null;
+  populationDensityPerKm2?: number | null;
   timezone?: string | null;
   latitude?: number | null;
   longitude?: number | null;
@@ -778,6 +780,8 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
     globalRegion: atlas.city_config?.metadata?.global_region ?? null,
     population: atlas.city_config?.metadata?.population ?? null,
     populationYear: atlas.city_config?.metadata?.population_year ?? null,
+    areaKm2: atlas.city_config?.metadata?.area_km2 ?? null,
+    populationDensityPerKm2: atlas.city_config?.metadata?.population_density_per_km2 ?? null,
     timezone: atlas.city_config?.timezone ?? null,
     latitude: atlas.city_config?.latitude ?? null,
     longitude: atlas.city_config?.longitude ?? null,

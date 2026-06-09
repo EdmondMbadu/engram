@@ -67,6 +67,8 @@ interface CustomCityDraft {
   global_region: string;
   population: string;
   population_year: string;
+  area_km2: string;
+  population_density_per_km2: string;
   latitude: string;
   longitude: string;
 }
@@ -176,6 +178,15 @@ function parseOptionalPositiveInteger(value: string): number | null {
   return Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : NaN;
 }
 
+function parseOptionalPositiveNumber(value: string): number | null {
+  const normalized = value.replace(/,/g, '').trim();
+  if (!normalized) {
+    return null;
+  }
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : NaN;
+}
+
 @Component({
   selector: 'app-atlas-manage',
   imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
@@ -271,6 +282,8 @@ export class AtlasManageComponent {
     global_region: '',
     population: '',
     population_year: '',
+    area_km2: '',
+    population_density_per_km2: '',
     latitude: '',
     longitude: '',
   });
@@ -1338,12 +1351,22 @@ export class AtlasManageComponent {
     }
     const population = parseOptionalPositiveInteger(draft.population);
     const populationYear = parseOptionalPositiveInteger(draft.population_year);
+    const areaKm2 = parseOptionalPositiveNumber(draft.area_km2);
+    const populationDensityPerKm2 = parseOptionalPositiveInteger(draft.population_density_per_km2);
     if (Number.isNaN(population)) {
       this.pageError.set('Population must be a positive number.');
       return;
     }
     if (Number.isNaN(populationYear)) {
       this.pageError.set('Population year must be a positive number.');
+      return;
+    }
+    if (Number.isNaN(areaKm2)) {
+      this.pageError.set('Area km² must be a positive number.');
+      return;
+    }
+    if (Number.isNaN(populationDensityPerKm2)) {
+      this.pageError.set('Population density must be a positive number.');
       return;
     }
     const input: CustomCityAtlasInput = {
@@ -1355,6 +1378,8 @@ export class AtlasManageComponent {
       globalRegion: draft.global_region,
       population,
       populationYear,
+      areaKm2,
+      populationDensityPerKm2,
       latitude,
       longitude,
     };
@@ -1376,6 +1401,8 @@ export class AtlasManageComponent {
           global_region: '',
           population: '',
           population_year: '',
+          area_km2: '',
+          population_density_per_km2: '',
           latitude: '',
           longitude: '',
         });
@@ -1417,17 +1444,17 @@ export class AtlasManageComponent {
 
   downloadBulkCitySampleCsv(): void {
     const csv = [
-      'city_name,region_name,country_code,global_region,population,population_year,timezone,public_title,description,latitude,longitude',
-      '"Seattle","Washington","US","Americas",755078,2024,"America/Los_Angeles","Living Wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
-      '"Las Vegas","Nevada","US","Americas",660929,2024,"America/Los_Angeles","Living Wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
-      '"Nairobi","Kenya","KE","Africa",5545000,2024,"Africa/Nairobi","Living Wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
-      '"Kinshasa","Democratic Republic of the Congo","CD","Africa",17032000,2024,"Africa/Kinshasa","Living Wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
-      '"Tokyo","Japan","JP","Asia",14180000,2024,"Asia/Tokyo","Living Wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
-      '"London","United Kingdom","GB","Europe",8978000,2024,"Europe/London","Living Wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
-      '"Paris","France","FR","Europe",2103000,2024,"Europe/Paris","Living Wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
-      '"Singapore","Singapore","SG","Asia",6040000,2024,"Asia/Singapore","Living Wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
-      '"Cape Town","South Africa","ZA","Africa",4772000,2024,"Africa/Johannesburg","Living Wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
-      '"Mexico City","Mexico","MX","Americas",9209944,2024,"America/Mexico_City","Living Wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
+      'city_name,region_name,country_code,global_region,population,population_year,area_km2,population_density_per_km2,timezone,public_title,description,latitude,longitude',
+      '"Seattle","Washington","US","Americas",755078,2024,217,3479,"America/Los_Angeles","Living Wiki: Seattle","Seattle practical local knowledge - neighborhoods, transit, tech, climate, housing, jobs, food, culture, public services, waterfront life, and civic updates.",47.6062,-122.3321',
+      '"Las Vegas","Nevada","US","Americas",660929,2024,367.5,1781,"America/Los_Angeles","Living Wiki: Las Vegas","Las Vegas practical local knowledge - tourism, entertainment, hospitality, neighborhoods, transportation, water, climate resilience, jobs, development, public safety, and civic updates.",36.1699,-115.1398',
+      '"Nairobi","Kenya","KE","Africa",5545000,2024,696,7967,"Africa/Nairobi","Living Wiki: Nairobi","Nairobi practical local knowledge - neighborhoods, tech, transport, climate, jobs, business, culture, food, public services, startups, and civic updates.",-1.2921,36.8219',
+      '"Kinshasa","Democratic Republic of the Congo","CD","Africa",17032000,2024,9965,1709,"Africa/Kinshasa","Living Wiki: Kinshasa","Kinshasa practical local knowledge - neighborhoods, transportation, culture, business, public services, infrastructure, climate, jobs, food, music, and civic updates.",-4.4419,15.2663',
+      '"Tokyo","Japan","JP","Asia",14180000,2024,2194,6463,"Asia/Tokyo","Living Wiki: Tokyo","Tokyo practical local knowledge - neighborhoods, transit, business, technology, culture, food, housing, climate resilience, public services, and civic updates.",35.6762,139.6503',
+      '"London","United Kingdom","GB","Europe",8978000,2024,1572,5711,"Europe/London","Living Wiki: London","London practical local knowledge - neighborhoods, transport, housing, culture, finance, jobs, climate, food, safety, and civic updates.",51.5074,-0.1278',
+      '"Paris","France","FR","Europe",2103000,2024,105.4,20360,"Europe/Paris","Living Wiki: Paris","Paris practical local knowledge - neighborhoods, transit, culture, tourism, climate, housing, jobs, food, public services, urban planning, and civic updates.",48.8566,2.3522',
+      '"Singapore","Singapore","SG","Asia",6040000,2024,735.7,8210,"Asia/Singapore","Living Wiki: Singapore","Singapore practical local knowledge - housing, transport, business, technology, climate adaptation, food, public services, jobs, neighborhoods, and civic updates.",1.3521,103.8198',
+      '"Cape Town","South Africa","ZA","Africa",4772000,2024,2455,1944,"Africa/Johannesburg","Living Wiki: Cape Town","Cape Town practical local knowledge - neighborhoods, tourism, beaches, food, culture, climate, jobs, safety, water, and civic updates.",-33.9249,18.4241',
+      '"Mexico City","Mexico","MX","Americas",9209944,2024,1485,6200,"America/Mexico_City","Living Wiki: Mexico City","Mexico City practical local knowledge - neighborhoods, transit, food, culture, business, housing, climate, safety, public services, and civic updates.",19.4326,-99.1332',
     ].join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -1673,6 +1700,8 @@ export class AtlasManageComponent {
             globalRegion: row.global_region,
             population: parseOptionalPositiveInteger(row.population),
             populationYear: parseOptionalPositiveInteger(row.population_year),
+            areaKm2: parseOptionalPositiveNumber(row.area_km2),
+            populationDensityPerKm2: parseOptionalPositiveInteger(row.population_density_per_km2),
             latitude: row.latitude ? Number(row.latitude) : null,
             longitude: row.longitude ? Number(row.longitude) : null,
           })),
@@ -1818,6 +1847,8 @@ export class AtlasManageComponent {
     const globalRegionIndex = indexFor(['global_region', 'continent', 'world_region', 'directory_region']);
     const populationIndex = indexFor(['population', 'population_estimate', 'latest_population']);
     const populationYearIndex = indexFor(['population_year', 'population_as_of', 'population_estimate_year']);
+    const areaKm2Index = indexFor(['area_km2', 'area_sq_km', 'area_square_km', 'land_area_km2']);
+    const densityIndex = indexFor(['population_density_per_km2', 'density_per_km2', 'population_density', 'density']);
     const latitudeIndex = indexFor(['latitude', 'lat']);
     const longitudeIndex = indexFor(['longitude', 'lng', 'lon', 'long']);
 
@@ -1838,6 +1869,8 @@ export class AtlasManageComponent {
       const globalRegion = cell(globalRegionIndex);
       const population = cell(populationIndex);
       const populationYear = cell(populationYearIndex);
+      const areaKm2 = cell(areaKm2Index);
+      const populationDensityPerKm2 = cell(densityIndex);
       const latitude = cell(latitudeIndex);
       const longitude = cell(longitudeIndex);
       const key = normalizeAdminCityIdentity(cityName || name);
@@ -1863,6 +1896,14 @@ export class AtlasManageComponent {
       const parsedPopulationYear = parseOptionalPositiveInteger(populationYear);
       if (Number.isNaN(parsedPopulationYear)) {
         errors.push('Invalid population year');
+      }
+      const parsedAreaKm2 = parseOptionalPositiveNumber(areaKm2);
+      if (Number.isNaN(parsedAreaKm2)) {
+        errors.push('Invalid area km²');
+      }
+      const parsedDensity = parseOptionalPositiveInteger(populationDensityPerKm2);
+      if (Number.isNaN(parsedDensity)) {
+        errors.push('Invalid population density');
       }
       // Coordinates are optional, but if one is given both must be valid so the
       // city lands in the right place on the Dymaxion map.
@@ -1894,6 +1935,8 @@ export class AtlasManageComponent {
         global_region: globalRegion,
         population,
         population_year: populationYear,
+        area_km2: areaKm2,
+        population_density_per_km2: populationDensityPerKm2,
         latitude,
         longitude,
         slug,
