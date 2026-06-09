@@ -8,13 +8,13 @@ import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
-import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { WikiService } from '../wiki.service';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 @Component({
   selector: 'app-wiki',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, FormsModule, AtlasSwitcherComponent, AtlasBadgeComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, FormsModule, AtlasBadgeComponent, WorkspaceSidebarComponent],
   templateUrl: './wiki.html',
 })
 export class WikiComponent {
