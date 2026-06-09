@@ -5,7 +5,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessClaimWorkspaceUpdate, type BusinessImageKind } from '../business-claim/business-claim.service';
-import { generateQrSvgDataUrl } from '../qr-code';
+import { generateQrSvg } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 type BusinessEditDraft = {
@@ -57,10 +57,12 @@ export class BusinessEditComponent {
   readonly cityName = computed(() => this.business()?.city_name || this.titleizeSlug(this.routeParams().citySlug || 'city'));
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());
   readonly ownerCanEdit = computed(() => !!this.authService.uid() && this.business()?.owner_user_id === this.authService.uid());
-  readonly detailUrl = computed(() => `${this.origin()}${this.detailPath()}`);
-  readonly chatUrl = computed(() => `${this.origin()}${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
+  readonly chatUrl = computed(() => `https://mylivingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
+  readonly qrOnlySvg = computed(() => generateQrSvg(this.chatUrl()));
+  readonly qrOnlySvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.qrOnlySvg())}`);
   readonly badgeSvg = computed(() => this.buildBadgeSvg());
   readonly badgeSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.badgeSvg())}`);
+  readonly qrOnlyPngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-qr.png`);
   readonly badgeSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.svg`);
   readonly badgePngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.png`);
   readonly selectedIconCodes = computed(() => this.draft().badge_icons.split(',').map((icon) => icon.trim()).filter(Boolean).slice(0, 3));
@@ -174,22 +176,31 @@ export class BusinessEditComponent {
   }
 
   async downloadBadgePng(): Promise<void> {
+    await this.downloadSvgAsPng(this.badgeSvgHref(), this.badgePngFilename(), 900);
+  }
+
+  async downloadQrOnlyPng(): Promise<void> {
+    await this.downloadSvgAsPng(this.qrOnlySvgHref(), this.qrOnlyPngFilename(), 1024);
+  }
+
+  private async downloadSvgAsPng(svgUrl: string, filename: string, size: number): Promise<void> {
     if (typeof document === 'undefined') {
       return;
     }
-    const svgUrl = this.badgeSvgHref();
     const image = await this.loadImage(svgUrl);
     const canvas = document.createElement('canvas');
-    canvas.width = 900;
-    canvas.height = 900;
+    canvas.width = size;
+    canvas.height = size;
     const context = canvas.getContext('2d');
     if (!context) {
-      throw new Error('Could not render badge PNG.');
+      throw new Error('Could not render QR PNG.');
     }
-    context.drawImage(image, 0, 0, 900, 900);
+    context.fillStyle = '#ffffff';
+    context.fillRect(0, 0, size, size);
+    context.drawImage(image, 0, 0, size, size);
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
-    link.download = this.badgePngFilename();
+    link.download = filename;
     link.click();
   }
 
@@ -241,21 +252,24 @@ export class BusinessEditComponent {
 
   private buildBadgeSvg(): string {
     const business = this.escapeSvg(this.fitBadgeText(this.businessName()).toUpperCase());
-    const qr = this.escapeSvg(generateQrSvgDataUrl(this.detailUrl()));
+    const qr = generateQrSvg(this.chatUrl()).replace(
+      '<svg ',
+      '<svg x="260" y="260" width="380" height="380" ',
+    );
     const icons = this.selectedIconCodes().map((icon, index, all) => {
       const angle = -155 + (all.length <= 1 ? 0 : (310 / Math.max(1, all.length - 1)) * index);
       const radians = angle * Math.PI / 180;
-      const x = 450 + Math.cos(radians) * 220;
-      const y = 450 + Math.sin(radians) * 220;
-      return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle r="38" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="12" text-anchor="middle" font-size="36">${this.iconEmoji(icon)}</text></g>`;
+      const x = 450 + Math.cos(radians) * 275;
+      const y = 450 + Math.sin(radians) * 275;
+      return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="11" text-anchor="middle" font-size="32">${this.iconEmoji(icon)}</text></g>`;
     }).join('');
     const flags = [
-      ['🇺🇸', 300, 305],
-      ['🇫🇷', 600, 305],
-      ['🇧🇷', 600, 575],
-      ['🇩🇪', 450, 642],
-      ['🇨🇳', 300, 575],
-    ].map(([flag, x, y]) => `<g transform="translate(${x} ${y})"><circle r="29" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="8" text-anchor="middle" font-size="24">${flag}</text></g>`).join('');
+      ['🇺🇸', 214, 332],
+      ['🇫🇷', 686, 332],
+      ['🇧🇷', 686, 568],
+      ['🇩🇪', 450, 704],
+      ['🇨🇳', 214, 568],
+    ].map(([flag, x, y]) => `<g transform="translate(${x} ${y})"><circle r="27" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="8" text-anchor="middle" font-size="22">${flag}</text></g>`).join('');
 
     return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
       <defs>
@@ -272,14 +286,10 @@ export class BusinessEditComponent {
       <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"/>
       <text font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#ffffff" dy="12"><textPath href="#topArc" startOffset="50%" text-anchor="middle" textLength="610" lengthAdjust="spacingAndGlyphs">${business} • LivingWiki Chat</textPath></text>
       <text font-family="Inter, Arial, sans-serif" font-size="40" font-weight="900" fill="#ffffff" dy="20"><textPath href="#bottomArc" startOffset="50%" text-anchor="middle" textLength="410" lengthAdjust="spacingAndGlyphs">60+ Languages</textPath></text>
-      <rect x="318" y="318" width="264" height="264" rx="20" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
-      <image href="${qr}" x="340" y="340" width="220" height="220" preserveAspectRatio="xMidYMid meet"/>
-      <circle cx="450" cy="450" r="24" fill="#f3dfb9"/>
-      <path d="M450 434c7 0 13 6 13 13v13c0 7-6 13-13 13s-13-6-13-13v-13c0-7 6-13 13-13z" fill="#0f596d"/>
-      <path d="M429 458c0 13 9 24 21 24s21-11 21-24" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"/>
-      <path d="M450 482v18M437 500h26" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"/>
+      <rect x="242" y="242" width="416" height="416" rx="24" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
+      ${qr}
       ${flags}${icons}
-      <text x="450" y="646" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
+      <text x="450" y="746" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by MyLivingWiki.com</text>
     </svg>`;
   }
 
@@ -328,10 +338,6 @@ export class BusinessEditComponent {
   private fitBadgeText(value: string): string {
     const clean = value.trim() || 'Your business';
     return clean.length > 26 ? `${clean.slice(0, 23).trim()}...` : clean;
-  }
-
-  private origin(): string {
-    return typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://mylivingwiki.com';
   }
 
   private titleizeSlug(value: string): string {
