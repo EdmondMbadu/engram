@@ -27,6 +27,7 @@ export class MobileMenuComponent {
 
   readonly navItems = [
     { route: '/wikis', icon: 'dashboard', label: 'Wikis', key: 'wikis', workspaceOnly: true },
+    { route: '/business', icon: 'storefront', label: 'Business', key: 'business', workspaceOnly: true },
     { route: '/chat', icon: 'chat', label: 'Chat', key: 'chat' },
     { route: '/upload', icon: 'neurology', label: 'Upload', key: 'upload' },
     { route: '/library', icon: 'library_books', label: 'Source Files', key: 'library' },

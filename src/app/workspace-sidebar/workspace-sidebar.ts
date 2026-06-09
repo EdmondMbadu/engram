@@ -52,6 +52,7 @@ export class WorkspaceSidebarComponent {
   readonly workspaceItems = computed(() => [
     { key: 'home', label: 'Home', icon: 'home', route: '/' },
     { key: 'wikis', label: 'Wikis', icon: 'dashboard', route: '/wikis' },
+    { key: 'business', label: 'Business', icon: 'storefront', route: '/business' },
     { key: 'chat', label: 'Chat', icon: 'chat', route: '/chat' },
     { key: 'upload', label: 'Upload', icon: 'neurology', route: '/upload' },
     { key: 'library', label: 'Source Files', icon: 'library_books', route: '/library' },

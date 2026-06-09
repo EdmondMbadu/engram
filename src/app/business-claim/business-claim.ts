@@ -10,6 +10,7 @@ import {
   BusinessClaimService,
   type BusinessClaimRegistryRecord,
 } from './business-claim.service';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type DecalLanguage = {
   code: string;
@@ -56,7 +57,7 @@ type StoredClaimDraft = {
 
 @Component({
   selector: 'app-business-claim',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
   templateUrl: './business-claim.html',
 })
 export class BusinessClaimComponent {

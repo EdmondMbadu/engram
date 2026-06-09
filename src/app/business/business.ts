@@ -1,7 +1,10 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../business-claim/business-claim.service';
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type BillingCycle = 'monthly' | 'annual';
 
@@ -42,12 +45,18 @@ type BusinessPlan = {
 
 @Component({
   selector: 'app-business',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
   templateUrl: './business.html',
 })
 export class BusinessComponent {
+  private readonly authService = inject(AuthService);
+  private readonly businessClaimService = inject(BusinessClaimService);
+
   readonly billingCycle = signal<BillingCycle>('monthly');
   readonly isBusinessVideoOpen = signal(false);
+  readonly ownedBusinesses = signal<BusinessClaimWorkspaceRecord[]>([]);
+  readonly ownedBusinessesLoading = signal(false);
+  readonly ownedBusinessesError = signal<string | null>(null);
   readonly businessName = signal('Brauhaus Schmitz');
   readonly businessNeighborhood = signal('South Street');
   readonly businessCategory = signal('German bierhall');
@@ -212,6 +221,34 @@ export class BusinessComponent {
       showStrike: annual && plan.annualMonthlyPrice < plan.monthlyPrice,
     }));
   });
+  readonly isSignedIn = this.authService.isAuthenticated;
+  readonly ownerEmail = this.authService.email;
+
+  constructor() {
+    effect(() => {
+      const uid = this.authService.uid();
+      if (!uid) {
+        this.ownedBusinesses.set([]);
+        this.ownedBusinessesLoading.set(false);
+        this.ownedBusinessesError.set(null);
+        return;
+      }
+
+      void this.loadOwnedBusinesses(uid);
+    });
+  }
+
+  businessDetailPath(business: BusinessClaimWorkspaceRecord): string {
+    return `/business/${business.city_slug}/${business.business_slug}`;
+  }
+
+  businessEditPath(business: BusinessClaimWorkspaceRecord): string {
+    return `${this.businessDetailPath(business)}/edit`;
+  }
+
+  businessStatusLabel(business: BusinessClaimWorkspaceRecord): string {
+    return business.status === 'pending' ? 'Pending' : 'Live';
+  }
 
   setBillingCycle(cycle: BillingCycle): void {
     this.billingCycle.set(cycle);
@@ -366,5 +403,20 @@ export class BusinessComponent {
       <text x="500" y="618" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="900" fill="#1e8f45">${url}</text>
       <text x="36" y="610" font-family="Inter, Arial, sans-serif" font-size="18" fill="#456252">${category}</text>
     </svg>`;
+  }
+
+  private async loadOwnedBusinesses(uid: string): Promise<void> {
+    this.ownedBusinessesLoading.set(true);
+    this.ownedBusinessesError.set(null);
+    try {
+      this.ownedBusinesses.set(await this.businessClaimService.listByOwner(uid));
+    } catch (error) {
+      this.ownedBusinesses.set([]);
+      this.ownedBusinessesError.set(
+        error instanceof Error ? error.message : 'Failed to load your businesses.',
+      );
+    } finally {
+      this.ownedBusinessesLoading.set(false);
+    }
   }
 }
