@@ -9,12 +9,19 @@ import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
-import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 @Component({
   selector: 'app-library',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    ThemeToggleComponent,
+    MobileMenuComponent,
+    AtlasBadgeComponent,
+    WorkspaceSidebarComponent,
+  ],
   templateUrl: './library.html',
   styleUrl: './library.css',
 })
@@ -73,6 +80,17 @@ export class LibraryComponent {
         : `${this.atlasService.displayName(this.publicAtlas())} Source Files`
       : 'Source Files',
   );
+  readonly currentWikiName = computed(() => {
+    if (this.publicNotFound()) {
+      return 'Wiki not found';
+    }
+    if (this.publicPageLoading()) {
+      return 'Loading wiki...';
+    }
+    return this.atlasService.displayName(
+      this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
+    );
+  });
   readonly documents = computed(() =>
     this.isPublicView() ? this.publicDocuments() : this.documentsService.documents(),
   );

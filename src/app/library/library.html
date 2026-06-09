@@ -11,6 +11,9 @@
   </div>
 
   <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
+    @if (!isPublicView()) {
+      <app-workspace-sidebar active="library" [rail]="true"></app-workspace-sidebar>
+    } @else {
     <aside
       class="theme-sidebar hidden h-screen w-72 shrink-0 border-r px-5 py-6 md:flex md:flex-col"
     >
@@ -21,9 +24,6 @@
           </div>
         </a>
       </div>
-      @if (!isPublicView()) {
-        <app-atlas-switcher></app-atlas-switcher>
-      }
 
       <nav class="flex-1 space-y-1 text-sm">
         <a
@@ -82,20 +82,8 @@
           <span>Wiki</span>
         </a>
       </nav>
-
-      @if (!isPublicView()) {
-        <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
-          <a class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)] text-sm" href="#">
-            <span class="material-symbols-outlined text-[1.2rem]">settings</span>
-            <span>Settings</span>
-          </a>
-          <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
-            <span class="material-symbols-outlined text-[1.2rem]">logout</span>
-            <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
-          </button>
-        </div>
-      }
     </aside>
+    }
 
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
       <header
@@ -204,6 +192,18 @@
               </article>
             </section>
           } @else {
+          <section class="mb-8 rounded-[1.75rem] border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-5 py-5 md:px-6">
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Current wiki</p>
+            <div class="mt-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <h2 class="min-w-0 truncate text-3xl font-black tracking-[-0.05em] text-[var(--text)]">{{ currentWikiName() }}</h2>
+              @if (!isPublicView()) {
+                <a routerLink="/atlases" class="ghost-btn !px-4 !py-3 text-sm">
+                  <span class="material-symbols-outlined text-base">settings</span>
+                  <span>Wiki settings</span>
+                </a>
+              }
+            </div>
+          </section>
           @if (!hidePublicKnowledgeSurfaces()) {
             <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               @for (

@@ -32,6 +32,7 @@ export class MobileMenuComponent {
     { route: '/library', icon: 'library_books', label: 'Source Files', key: 'library' },
     { route: '/scrapper', icon: 'travel_explore', label: 'Scrapper', key: 'scrapper', workspaceOnly: true },
     { route: '/wiki', icon: 'menu_book', label: 'Wiki', key: 'wiki' },
+    { route: '/atlases', icon: 'settings', label: 'Settings', key: 'settings', workspaceOnly: true },
   ];
 
   toggleMenu(): void {

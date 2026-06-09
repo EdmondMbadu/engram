@@ -1,14 +1,14 @@
 import { Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { getFirebaseApp } from '../firebase.client';
 import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
-import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import type { DocumentItem } from '../atlas.models';
 
 type ScraperState =
@@ -47,11 +47,10 @@ const EMBEDDING_COST_PER_MILLION_TOKENS = 0.02;
   selector: 'app-web-scraper',
   imports: [
     FormsModule,
-    RouterLink,
     ThemeToggleComponent,
     MobileMenuComponent,
-    AtlasSwitcherComponent,
     AtlasBadgeComponent,
+    WorkspaceSidebarComponent,
   ],
   templateUrl: './web-scraper.html',
 })
@@ -83,7 +82,6 @@ export class WebScraperComponent {
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
-  readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
   readonly activeAtlas = this.atlasService.activeAtlas;
   readonly activeAtlasName = computed(() => this.atlasService.displayName(this.activeAtlas()));
   readonly totalDiscovered = computed(() => this.discoveredArticles().length);

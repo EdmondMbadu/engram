@@ -1,5 +1,7 @@
 <div class="flex h-screen overflow-hidden text-[var(--text)] bg-[var(--bg)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
-  <!-- SideNavBar -->
+  @if (!isPublicView()) {
+    <app-workspace-sidebar active="upload" [rail]="true"></app-workspace-sidebar>
+  } @else {
   <aside class="theme-sidebar hidden h-screen w-64 border-r md:flex flex-col py-6 px-4 shrink-0 font-display">
     <a routerLink="/" class="flex items-center px-2 mb-10">
       <div class="flex h-10 w-44 items-center justify-start">
@@ -7,9 +9,6 @@
       </div>
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] animate-pulse"></span>
     </a>
-    @if (!isPublicView()) {
-      <app-atlas-switcher></app-atlas-switcher>
-    }
     <nav class="flex-1 space-y-1 text-sm">
       <a
         routerLink="/"
@@ -65,19 +64,8 @@
         <span>Wiki</span>
       </a>
     </nav>
-    @if (!isPublicView()) {
-      <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
-        <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[var(--muted)] hover:text-[var(--text)] hover:bg-white/5 transition-colors duration-200 text-sm" href="#">
-          <span class="material-symbols-outlined text-[1.2rem]">settings</span>
-          Settings
-        </a>
-        <button type="button" class="danger-action flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm" [disabled]="isSigningOut()" (click)="signOut()">
-          <span class="material-symbols-outlined text-[1.2rem]">logout</span>
-          <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
-        </button>
-      </div>
-    }
   </aside>
+  }
 
   <!-- Main Content Area -->
   <main class="theme-shell flex-1 flex flex-col min-w-0 relative overflow-hidden">
@@ -178,6 +166,10 @@
           </a>
         </div>
         <h1 class="text-4xl sm:text-7xl font-bold tracking-tighter text-[var(--text)] mb-2 leading-none">{{ pageTitle() }}</h1>
+        <div class="mx-auto mb-5 flex w-full max-w-xl flex-col items-center gap-2 rounded-2xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 py-3 sm:mb-6">
+          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Current wiki</p>
+          <p class="max-w-full truncate text-xl font-black tracking-tight text-[var(--text)] sm:text-2xl">{{ currentWikiName() }}</p>
+        </div>
         <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-8 sm:mb-12">{{ isPublicView() ? 'Public access' : 'Cognitive Synchronization Active' }}</p>
 
         <!-- Drop Zone Card -->

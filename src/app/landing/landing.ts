@@ -8,13 +8,19 @@ import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
-import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { GoogleDrivePickerService } from '../google-drive-picker.service';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent],
+  imports: [
+    RouterLink,
+    ThemeToggleComponent,
+    MobileMenuComponent,
+    AtlasBadgeComponent,
+    WorkspaceSidebarComponent,
+  ],
   templateUrl: './landing.html',
 })
 export class LandingComponent {
@@ -75,6 +81,17 @@ export class LandingComponent {
       ? `Expand ${this.atlasService.displayName(this.publicAtlas())}`
       : 'Welcome.',
   );
+  readonly currentWikiName = computed(() => {
+    if (this.publicNotFound()) {
+      return 'Wiki not found';
+    }
+    if (this.isPublicView() && !this.publicLookupDone()) {
+      return 'Loading wiki...';
+    }
+    return this.atlasService.displayName(
+      this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
+    );
+  });
   readonly importError = computed(() => this.uploadError() ?? this.googleDriveError());
 
   readonly activeUploads = computed(() => {
