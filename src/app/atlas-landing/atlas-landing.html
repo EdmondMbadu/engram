@@ -1,4 +1,10 @@
-<div class="flex min-h-screen flex-col text-[var(--text)] bg-[var(--bg)]">
+<div class="min-h-screen text-[var(--text)] bg-[var(--bg)]">
+  <div class="relative flex min-h-screen flex-col" [class.md:h-screen]="isSignedIn()" [class.md:flex-row]="isSignedIn()" [class.md:overflow-hidden]="isSignedIn()">
+  @if (isSignedIn()) {
+    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
+  }
+
+  <div class="flex min-w-0 flex-1 flex-col" [class.overflow-y-auto]="isSignedIn()">
   <!-- TopAppBar -->
   <header class="theme-nav sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b px-4 backdrop-blur-xl md:px-8">
     <a [routerLink]="isSignedIn() ? '/home' : '/'" class="flex items-center">
@@ -835,4 +841,6 @@
       }
     }
   </main>
+  </div>
+  </div>
 </div>

@@ -10,10 +10,11 @@ import { CityPulseService } from '../city-pulse.service';
 import { getGoogleAdSenseConfig } from '../firebase.config';
 import { GoogleAdSenseService } from '../google-adsense.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 @Component({
   selector: 'app-atlas-landing',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
   templateUrl: './atlas-landing.html',
 })
 export class AtlasLandingComponent {
