@@ -56,40 +56,18 @@
     } @else {
       <section class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
         <div class="grid gap-0 lg:grid-cols-[18rem_minmax(0,1fr)]">
-          <aside class="border-b border-[var(--line)] bg-[var(--soft-fill)] p-5 lg:border-b-0 lg:border-r">
-            <div class="flex items-center gap-4">
-              <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-2xl font-black text-[var(--accent)]">
-                {{ businessInitial() }}
-              </div>
-              <div class="min-w-0">
-                <h2 class="truncate text-lg font-black tracking-tight">{{ businessName() }}</h2>
-                <p class="mt-1 text-xs font-bold text-[var(--muted)]">{{ cityName() }}</p>
-              </div>
-            </div>
-
-            <nav class="mt-6 grid gap-2 text-sm font-bold">
-              <a [routerLink]="detailPath()" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]">
-                <span class="material-symbols-outlined text-[1.1rem]">business_center</span>
-                <span>Business Info</span>
-              </a>
-              <a [routerLink]="detailPath() + '/voice'" class="flex items-center gap-3 rounded-2xl px-3 py-3 transition hover:bg-[var(--surface)] hover:text-[var(--text)]" [class.bg-[var(--surface)]]="activity() === 'voice'" [class.text-[var(--accent)]]="activity() === 'voice'" [class.text-[var(--muted)]]="activity() !== 'voice'">
-                <span class="material-symbols-outlined text-[1.1rem]">mic</span>
-                <span>Voice Assistant</span>
-              </a>
-              <a [routerLink]="detailPath() + '/chat'" class="flex items-center gap-3 rounded-2xl px-3 py-3 transition hover:bg-[var(--surface)] hover:text-[var(--text)]" [class.bg-[var(--surface)]]="activity() === 'chat'" [class.text-[var(--accent)]]="activity() === 'chat'" [class.text-[var(--muted)]]="activity() !== 'chat'">
-                <span class="material-symbols-outlined text-[1.1rem]">forum</span>
-                <span>Direct Chat</span>
-              </a>
-              <a [routerLink]="editPath()" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]">
-                <span class="material-symbols-outlined text-[1.1rem]">edit</span>
-                <span>Edit page</span>
-              </a>
-              <a routerLink="/atlases" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]">
-                <span class="material-symbols-outlined text-[1.1rem]">settings</span>
-                <span>Settings</span>
-              </a>
-            </nav>
-          </aside>
+          <app-workspace-sidebar
+            [active]="sidebarActive()"
+            [businessName]="businessName()"
+            [businessCity]="cityName()"
+            [businessPath]="detailPath()"
+            [businessEditPath]="editPath()"
+            [businessBadgePath]="detailPath() + '#badge'"
+            [businessVoicePath]="detailPath() + '/voice'"
+            [businessChatPath]="detailPath() + '/chat'"
+            [businessChatGuidePath]="chatPath()"
+            [businessChatGuideQueryParams]="chatQueryParams()"
+          ></app-workspace-sidebar>
 
           <div class="p-6 sm:p-8">
             <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">

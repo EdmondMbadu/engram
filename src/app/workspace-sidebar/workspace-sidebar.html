@@ -1,0 +1,96 @@
+<aside
+  class="hidden h-max rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-floating)] lg:sticky lg:top-6 lg:block"
+>
+  <div class="px-2 py-2">
+    <a routerLink="/" class="flex items-center">
+      <div class="flex h-10 w-40 items-center justify-start">
+        <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
+      </div>
+    </a>
+  </div>
+
+  <div class="mt-5 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-2.5">
+    <app-atlas-switcher></app-atlas-switcher>
+  </div>
+
+  <section class="mt-5">
+    <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Workspace</p>
+    <nav class="mt-2 grid gap-1 text-sm font-bold" aria-label="Workspace navigation">
+      @for (item of workspaceItems(); track item.key) {
+        <a
+          [routerLink]="item.route"
+          class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
+          [class.bg-[var(--soft-fill)]]="isActive(item.key)"
+          [class.text-[var(--accent)]]="isActive(item.key)"
+          [class.text-[var(--muted)]]="!isActive(item.key)"
+        >
+          <span class="material-symbols-outlined text-[1.1rem]">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+  </section>
+
+  @if (showBusinessSection()) {
+    <section class="mt-5 border-t border-[var(--line)] pt-5">
+      <div class="rounded-2xl border border-[var(--accent)]/25 bg-[var(--soft-fill)] p-3">
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">Current Business</p>
+        <h2 class="mt-2 truncate text-base font-black tracking-tight">{{ businessName() }}</h2>
+        <div class="mt-1 flex items-center gap-2 text-xs font-bold text-[var(--muted)]">
+          @if (businessCity()) {
+            <span class="truncate">{{ businessCity() }}</span>
+          }
+          @if (businessStatus()) {
+            <span class="h-1 w-1 rounded-full bg-[var(--muted)]"></span>
+            <span class="shrink-0">{{ businessStatus() }}</span>
+          }
+        </div>
+      </div>
+
+      <nav class="mt-2 grid gap-1 text-sm font-bold" aria-label="Business navigation">
+        @for (item of businessItems(); track item.key) {
+          <a
+            [routerLink]="item.route"
+            class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
+            [class.bg-[var(--soft-fill)]]="isActive(item.key)"
+            [class.text-[var(--accent)]]="isActive(item.key)"
+            [class.text-[var(--muted)]]="!isActive(item.key)"
+          >
+            <span class="material-symbols-outlined text-[1.1rem]">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+        @if (businessChatGuidePath()) {
+          <a
+            [routerLink]="businessChatGuidePath()"
+            [queryParams]="businessChatGuideQueryParams()"
+            class="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-3 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90"
+          >
+            <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
+            <span>Test live guide</span>
+          </a>
+        }
+      </nav>
+    </section>
+  }
+
+  <section class="mt-5 border-t border-[var(--line)] pt-5">
+    <div class="flex items-center gap-3 px-2">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-sm font-black text-[var(--accent)]">{{ userInitial() }}</span>
+      <span class="min-w-0">
+        <span class="block truncate text-sm font-black text-[var(--text)]">{{ userName() }}</span>
+        <span class="mt-0.5 block truncate text-xs text-[var(--muted)]">{{ userEmail() }}</span>
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="mt-4 flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-bold text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)] disabled:cursor-wait disabled:opacity-60"
+      [disabled]="signingOut()"
+      (click)="signOut()"
+    >
+      <span class="material-symbols-outlined text-[1.1rem]">logout</span>
+      <span>{{ signingOut() ? 'Signing out...' : 'Sign out' }}</span>
+    </button>
+  </section>
+</aside>

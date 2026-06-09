@@ -7,6 +7,7 @@ import { AuthService } from '../auth.service';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessClaimWorkspaceUpdate } from '../business-claim/business-claim.service';
 import { CITY_ATLAS_TEMPLATES, type CityAtlasTemplate } from '../city-atlas-templates';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 interface CityConfigDraft {
   enabled: boolean;
@@ -177,7 +178,7 @@ function parseOptionalPositiveInteger(value: string): number | null {
 
 @Component({
   selector: 'app-atlas-manage',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
   templateUrl: './atlas-manage.html',
 })
 export class AtlasManageComponent {
@@ -188,9 +189,6 @@ export class AtlasManageComponent {
 
   readonly atlases = this.atlasService.atlases;
   readonly activeAtlasId = this.atlasService.activeAtlasId;
-  readonly activeAtlasHomeLink = this.atlasService.activeAtlasHomeLink;
-  readonly activeAtlasWikiLink = this.atlasService.activeAtlasWikiLink;
-
   readonly usageById = signal<Record<string, AtlasUsage>>({});
   readonly loadingUsageById = signal<Record<string, boolean>>({});
   readonly subscriptionsById = signal<Record<string, AtlasSubscriptionItem[]>>({});

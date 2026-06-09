@@ -25,42 +25,7 @@
   </header>
 
   <div class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[16rem_1fr] lg:px-8">
-    <aside class="h-max rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-3 shadow-[var(--shadow-floating)] lg:sticky lg:top-6">
-      <div class="px-3 py-3">
-        <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Admin navigation</p>
-        <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Workspace-only controls for the active Wiki.</p>
-      </div>
-      <nav class="mt-1 space-y-1 text-sm">
-        <a [routerLink]="activeAtlasHomeLink()" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">home</span>
-          <span>Home</span>
-        </a>
-        <a routerLink="/wikis" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">dashboard</span>
-          <span>Wikis</span>
-        </a>
-        <a routerLink="/chat" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">chat</span>
-          <span>Chat</span>
-        </a>
-        <a routerLink="/upload" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">neurology</span>
-          <span>Upload</span>
-        </a>
-        <a routerLink="/library" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">library_books</span>
-          <span>Source Files</span>
-        </a>
-        <a routerLink="/scrapper" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">travel_explore</span>
-          <span>Scrapper</span>
-        </a>
-        <a [routerLink]="activeAtlasWikiLink()" class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 font-semibold text-[var(--muted)] transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-          <span class="material-symbols-outlined text-[1.1rem]">menu_book</span>
-          <span>Wiki</span>
-        </a>
-      </nav>
-    </aside>
+    <app-workspace-sidebar active="settings"></app-workspace-sidebar>
 
   <main class="min-w-0">
     <section class="border-b border-[var(--line)] pb-6">

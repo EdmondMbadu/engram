@@ -8,6 +8,7 @@ import { buildBusinessBadgeSvg } from '../business-badge';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessClaimWorkspaceUpdate, type BusinessImageKind } from '../business-claim/business-claim.service';
 import { generateQrSvg } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type BusinessEditDraft = {
   business_address: string;
@@ -23,7 +24,7 @@ type BusinessEditDraft = {
 
 @Component({
   selector: 'app-business-edit',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
   templateUrl: './business-edit.html',
 })
 export class BusinessEditComponent {
@@ -53,7 +54,11 @@ export class BusinessEditComponent {
     return params.citySlug && params.businessSlug ? `${params.citySlug}__${params.businessSlug}` : '';
   });
   readonly detailPath = computed(() => `/business/${this.routeParams().citySlug}/${this.routeParams().businessSlug}`);
+  readonly editPath = computed(() => `${this.detailPath()}/edit`);
+  readonly voiceAdminPath = computed(() => `${this.detailPath()}/voice`);
+  readonly chatAdminPath = computed(() => `${this.detailPath()}/chat`);
   readonly chatPath = computed(() => `/chat/${this.routeParams().citySlug}`);
+  readonly chatQueryParams = computed(() => ({ business: this.routeParams().businessSlug }));
   readonly businessName = computed(() => this.business()?.business_name || this.titleizeSlug(this.routeParams().businessSlug || 'business'));
   readonly cityName = computed(() => this.business()?.city_name || this.titleizeSlug(this.routeParams().citySlug || 'city'));
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());

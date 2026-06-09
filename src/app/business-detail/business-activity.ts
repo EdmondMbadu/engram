@@ -6,12 +6,13 @@ import { map } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../business-claim/business-claim.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent, type WorkspaceSidebarActive } from '../workspace-sidebar/workspace-sidebar';
 
 type BusinessActivityKind = 'voice' | 'chat';
 
 @Component({
   selector: 'app-business-activity',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
   templateUrl: './business-activity.html',
 })
 export class BusinessActivityComponent {
@@ -53,6 +54,7 @@ export class BusinessActivityComponent {
   readonly pageTitle = computed(() => this.activity() === 'voice' ? 'Voice Assistant' : 'Direct Chat History');
   readonly pageEyebrow = computed(() => this.activity() === 'voice' ? 'Business voice' : 'Business chat');
   readonly pageIcon = computed(() => this.activity() === 'voice' ? 'mic' : 'forum');
+  readonly sidebarActive = computed<WorkspaceSidebarActive>(() => this.activity() === 'voice' ? 'business-voice' : 'business-chat');
   readonly emptyTitle = computed(() => this.activity() === 'voice' ? 'Voice recordings will appear here.' : 'Visitor chat threads will appear here.');
   readonly emptyBody = computed(() => this.activity() === 'voice'
     ? 'This placeholder is ready for recorded voice sessions, transcripts, timestamps, and playback controls once the voice provider saves business-specific audio records.'
