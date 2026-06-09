@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { AuthService } from '../auth.service';
+import { buildBusinessBadgeSvg } from '../business-badge';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../business-claim/business-claim.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
@@ -100,6 +101,7 @@ export class BusinessDetailComponent {
   readonly languageAtStart = signal(true);
   readonly languageAtEnd = signal(false);
   readonly copiedLink = signal(false);
+  readonly copiedGuideLink = signal(false);
 
   readonly claimKey = computed(() => {
     const params = this.routeParams();
@@ -118,7 +120,17 @@ export class BusinessDetailComponent {
   readonly chatPath = computed(() => `/chat/${this.routeParams().citySlug}`);
   readonly chatQueryParams = computed(() => ({ business: this.routeParams().businessSlug }));
   readonly chatUrl = computed(() => `${this.origin()}${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
+  readonly publicChatUrl = computed(() => `https://mylivingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly detailUrl = computed(() => `${this.origin()}${this.detailPath()}`);
+  readonly badgeIconCodes = computed(() => this.business()?.badge_icons?.filter((icon): icon is string => typeof icon === 'string').slice(0, 3) ?? []);
+  readonly badgeSvg = computed(() => buildBusinessBadgeSvg({
+    businessName: this.businessName(),
+    chatUrl: this.publicChatUrl(),
+    iconCodes: this.badgeIconCodes(),
+  }));
+  readonly badgeSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.badgeSvg())}`);
+  readonly badgeSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.svg`);
+  readonly badgePngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.png`);
   readonly contactEmail = computed(() => this.ownerCanViewPrivateDetails() ? this.business()?.admin_email?.trim() || '' : '');
   readonly guidePrompt = computed(() => this.business()?.guide_prompt?.trim() || '');
   readonly logoUrl = computed(() => this.business()?.logo_url?.trim() || '');
@@ -215,8 +227,68 @@ export class BusinessDetailComponent {
     }
   }
 
+  async copyGuideLink(): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(this.publicChatUrl());
+      this.copiedGuideLink.set(true);
+      window.setTimeout(() => this.copiedGuideLink.set(false), 1600);
+    } catch {
+      this.loadError.set('Could not copy the business guide link.');
+    }
+  }
+
+  async shareBusinessGuide(): Promise<void> {
+    const shareData = {
+      title: `${this.businessName()} on My Living Wiki`,
+      text: `Chat with ${this.businessName()} in your language.`,
+      url: this.publicChatUrl(),
+    };
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          return;
+        }
+      }
+    }
+    await this.copyGuideLink();
+  }
+
+  async downloadBadgePng(): Promise<void> {
+    if (typeof document === 'undefined') {
+      return;
+    }
+    const image = await this.loadImage(this.badgeSvgHref());
+    const canvas = document.createElement('canvas');
+    canvas.width = 900;
+    canvas.height = 900;
+    const context = canvas.getContext('2d');
+    if (!context) {
+      this.loadError.set('Could not render the badge PNG.');
+      return;
+    }
+    context.fillStyle = '#ffffff';
+    context.fillRect(0, 0, 900, 900);
+    context.drawImage(image, 0, 0, 900, 900);
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = this.badgePngFilename();
+    link.click();
+  }
+
   startVoiceMode(): void {
     void this.router.navigate([this.chatPath()], { queryParams: this.chatQueryParams() });
+  }
+
+  private loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('Badge image could not be rendered for PNG download.'));
+      image.src = src;
+    });
   }
 
   private async loadBusiness(claimKey: string): Promise<void> {

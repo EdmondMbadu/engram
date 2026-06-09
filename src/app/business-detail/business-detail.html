@@ -301,6 +301,43 @@
           </div>
         </section>
 
+        <section class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
+          <div class="grid gap-0 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div class="flex items-center justify-center border-b border-[var(--line)] bg-[#f7f2e8] p-5 sm:p-6 lg:border-b-0 lg:border-r">
+              <img [src]="badgeSvgHref()" [alt]="'QR badge for ' + businessName()" class="aspect-square w-full max-w-sm rounded-3xl bg-white object-contain shadow-[var(--shadow-floating)]" />
+            </div>
+            <div class="p-6 sm:p-8">
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Share the guide</p>
+              <h2 class="mt-2 text-2xl font-black tracking-tight">Badge and QR code</h2>
+              <p class="mt-3 text-sm leading-7 text-[var(--muted)]">Share this badge on a website, menu, poster, window, or message. It opens the voice-first guide for {{ businessName() }}.</p>
+              <p class="mt-4 break-all rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-xs font-bold text-[var(--muted)]">{{ publicChatUrl() }}</p>
+
+              <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                <a [href]="publicChatUrl()" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)]">
+                  <span class="material-symbols-outlined text-[1rem]">forum</span>
+                  <span>Open guide</span>
+                </a>
+                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--accent)]" (click)="shareBusinessGuide()">
+                  <span class="material-symbols-outlined text-[1rem]">ios_share</span>
+                  <span>Share</span>
+                </button>
+                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="copyGuideLink()">
+                  <span class="material-symbols-outlined text-[1rem]">{{ copiedGuideLink() ? 'check' : 'content_copy' }}</span>
+                  <span>{{ copiedGuideLink() ? 'Copied' : 'Copy link' }}</span>
+                </button>
+                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadBadgePng()">
+                  <span class="material-symbols-outlined text-[1rem]">image</span>
+                  <span>Download PNG</span>
+                </button>
+                <a [href]="badgeSvgHref()" [download]="badgeSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)] sm:col-span-2">
+                  <span class="material-symbols-outlined text-[1rem]">download</span>
+                  <span>Download SVG</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="direct-chat" class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
           <div class="flex items-center justify-between gap-4 bg-[var(--accent)] px-5 py-5 text-[var(--accent-contrast)] sm:px-6">
             <div class="flex items-center gap-4">
