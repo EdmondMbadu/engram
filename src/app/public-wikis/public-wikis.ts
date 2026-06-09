@@ -5,8 +5,6 @@ import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import {
   buildPublicWikiLiveItem,
-  COMING_SOON_PUBLIC_WIKIS,
-  removeCreatedPublicWikiPreviews,
   type PublicWikiCatalogItem,
   sortPublicAtlases,
 } from '../public-wiki-catalog';
@@ -124,17 +122,9 @@ export class PublicWikisComponent implements OnInit {
   private readonly localTimeHeroFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly timezoneFormatterCache = new Map<string, Intl.DateTimeFormat>();
 
-  readonly comingSoonWikis = computed(() =>
-    removeCreatedPublicWikiPreviews(this.liveWikis(), COMING_SOON_PUBLIC_WIKIS),
-  );
-
-  readonly publicWikis = computed(() => [
-    ...this.liveWikis(),
-    ...this.comingSoonWikis(),
-  ]);
+  readonly publicWikis = computed(() => this.liveWikis());
 
   readonly liveCount = computed(() => this.liveWikis().length);
-  readonly comingSoonCount = computed(() => this.comingSoonWikis().length);
 
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
   readonly sortOptions = computed(() => [...PUBLIC_WIKI_SORTS]);
