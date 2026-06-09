@@ -150,11 +150,27 @@
     </section>
 
     <section class="mt-8">
-      <div class="mb-4 flex items-center justify-between gap-4">
+      <div class="mb-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h3 class="text-sm font-black uppercase tracking-[0.2em] text-[var(--muted)]">Recent Wikis</h3>
           <p class="mt-1 text-sm text-[var(--muted)]">Open a workspace or create a new one from the first tile.</p>
         </div>
+        <label class="relative block w-full lg:max-w-md">
+          <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[1.1rem] text-[var(--muted)]">search</span>
+          <input
+            type="search"
+            autocomplete="off"
+            class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm"
+            placeholder="Search your wikis..."
+            [value]="wikiSearch()"
+            (input)="onWikiSearchInput($event)"
+          />
+          @if (wikiSearch()) {
+            <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear wiki search" (click)="clearWikiSearch()">
+              <span class="material-symbols-outlined text-[1rem]">close</span>
+            </button>
+          }
+        </label>
       </div>
 
       @if (isLoading()) {
@@ -181,7 +197,7 @@
             </span>
           </button>
 
-          @for (atlas of sortedWikis(); track atlas.id) {
+          @for (atlas of filteredSortedWikis(); track atlas.id) {
             <article
               class="group flex min-h-[21rem] flex-col overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)] transition hover:-translate-y-0.5 hover:border-[var(--accent)]/35"
             >
@@ -288,6 +304,15 @@
                 </div>
               </div>
             </article>
+          } @empty {
+            <div class="rounded-[1.5rem] border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] p-8 text-center sm:col-span-2 xl:col-span-3">
+              <span class="material-symbols-outlined text-3xl text-[var(--muted)]">search_off</span>
+              <p class="mt-3 text-sm font-semibold text-[var(--muted)]">No wikis match "{{ wikiSearch() }}".</p>
+              <button type="button" class="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/10" (click)="clearWikiSearch()">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Clear search
+              </button>
+            </div>
           }
         </div>
       }

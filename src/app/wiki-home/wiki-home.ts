@@ -36,10 +36,24 @@ export class WikiHomeComponent {
   readonly avatarMenuOpen = signal(false);
   readonly usageById = signal<Record<string, AtlasUsage>>({});
   readonly loadingUsageById = signal<Record<string, boolean>>({});
+  readonly wikiSearch = signal('');
 
   readonly sortedWikis = computed(() =>
     [...this.atlases()].sort((a, b) => this.asMillis(b.updated_at ?? b.created_at) - this.asMillis(a.updated_at ?? a.created_at)),
   );
+  readonly filteredSortedWikis = computed(() => {
+    const query = this.wikiSearch().trim().toLowerCase();
+    if (!query) {
+      return this.sortedWikis();
+    }
+    return this.sortedWikis().filter((atlas) => [
+      this.displayName(atlas),
+      this.cityCountryLabel(atlas) ?? '',
+      atlas.description ?? '',
+      atlas.slug ?? '',
+      atlas.id,
+    ].join(' ').toLowerCase().includes(query));
+  });
 
   readonly totalDocuments = computed(() =>
     this.atlases().reduce((sum, atlas) => sum + (atlas.stats?.documents ?? this.usage(atlas.id)?.documents ?? 0), 0),
@@ -146,6 +160,14 @@ export class WikiHomeComponent {
 
   onCreateNameInput(event: Event): void {
     this.createName.set((event.target as HTMLInputElement).value);
+  }
+
+  onWikiSearchInput(event: Event): void {
+    this.wikiSearch.set((event.target as HTMLInputElement).value);
+  }
+
+  clearWikiSearch(): void {
+    this.wikiSearch.set('');
   }
 
   async createWiki(event: Event): Promise<void> {

@@ -11,6 +11,7 @@ import {
   sortPublicAtlases,
 } from '../public-wiki-catalog';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 const CITIES_CATEGORY = 'Cities';
 const OTHERS_CATEGORY = 'Others';
@@ -66,7 +67,7 @@ interface OpenMeteoLocationResponse {
 
 @Component({
   selector: 'app-public-wikis',
-  imports: [RouterLink, ThemeToggleComponent, FormsModule],
+  imports: [RouterLink, ThemeToggleComponent, FormsModule, WorkspaceSidebarComponent],
   templateUrl: './public-wikis.html',
 })
 export class PublicWikisComponent implements OnInit {
