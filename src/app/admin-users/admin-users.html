@@ -150,7 +150,7 @@
       </button>
 
       @if (businessesOpen()) {
-        <div class="border-b border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+        <div class="grid gap-4 border-b border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4 lg:grid-cols-[1fr_auto] lg:items-center">
           <label class="relative block max-w-xl">
             <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">search</span>
             <input type="search" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Search businesses by name, owner, admin, city, status, or category..." [value]="businessSearch()" (input)="onBusinessSearchInput($event)" />
@@ -160,6 +160,24 @@
               </button>
             }
           </label>
+
+          <div class="flex flex-wrap gap-2">
+            @for (status of businessStatusFilters; track status) {
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-black transition"
+                [class.border-[var(--accent)]/45]="businessStatusFilter() === status"
+                [class.bg-[var(--surface)]]="businessStatusFilter() === status"
+                [class.text-[var(--accent)]]="businessStatusFilter() === status"
+                [class.border-[var(--line)]]="businessStatusFilter() !== status"
+                [class.text-[var(--muted)]]="businessStatusFilter() !== status"
+                (click)="selectBusinessStatusFilter(status)"
+              >
+                <span>{{ statusFilterLabel(status) }}</span>
+                <span class="rounded-full bg-[var(--soft-fill-strong)] px-2 py-0.5 text-[10px]">{{ businessStatusFilterCount(status) }}</span>
+              </button>
+            }
+          </div>
         </div>
 
         @if (businessError()) {
@@ -169,7 +187,7 @@
         @if (businessesLoading()) {
           <div class="p-5 text-sm text-[var(--muted)]">Loading businesses...</div>
         } @else if (filteredBusinesses().length === 0) {
-          <div class="p-5 text-sm text-[var(--muted)]">No businesses match this search.</div>
+          <div class="p-5 text-sm text-[var(--muted)]">No businesses match this search or status filter.</div>
         } @else {
           <div class="grid gap-4 p-5">
             @for (business of filteredBusinesses(); track trackBusiness($index, business)) {

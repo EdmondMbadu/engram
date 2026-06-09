@@ -29,6 +29,8 @@ interface ListPlatformUsersResponse {
   users: AdminUserListItem[];
 }
 
+type BusinessStatusFilter = 'all' | BusinessClaimStatus;
+
 @Component({
   selector: 'app-admin-users',
   imports: [RouterLink, ThemeToggleComponent, DatePipe],
@@ -51,14 +53,17 @@ export class AdminUsersComponent implements OnInit {
   readonly businessError = signal<string | null>(null);
   readonly userSearch = signal('');
   readonly businessSearch = signal('');
-  readonly usersOpen = signal(true);
-  readonly businessesOpen = signal(true);
+  readonly usersOpen = signal(false);
+  readonly businessesOpen = signal(false);
+  readonly businessStatusFilter = signal<BusinessStatusFilter>('all');
   readonly updatingBusinessStatusKey = signal<string | null>(null);
   readonly businessStatuses: BusinessClaimStatus[] = ['pending', 'verified', 'rejected'];
+  readonly businessStatusFilters: BusinessStatusFilter[] = ['all', 'verified', 'pending', 'rejected'];
   readonly adminCount = computed(() => this.users().filter((user) => user.role === 'admin').length);
   readonly verifiedCount = computed(() => this.users().filter((user) => user.emailVerified).length);
   readonly pendingBusinessCount = computed(() => this.businesses().filter((business) => business.status === 'pending').length);
   readonly verifiedBusinessCount = computed(() => this.businesses().filter((business) => business.status === 'verified').length);
+  readonly rejectedBusinessCount = computed(() => this.businesses().filter((business) => business.status === 'rejected').length);
   readonly userById = computed(() => new Map(this.users().map((user) => [user.id, user])));
   readonly filteredUsers = computed(() => {
     const query = this.userSearch().trim().toLowerCase();
@@ -76,11 +81,15 @@ export class AdminUsersComponent implements OnInit {
   });
   readonly filteredBusinesses = computed(() => {
     const query = this.businessSearch().trim().toLowerCase();
+    const statusFilter = this.businessStatusFilter();
+    const statusFiltered = statusFilter === 'all'
+      ? this.businesses()
+      : this.businesses().filter((business) => business.status === statusFilter);
     if (!query) {
-      return this.businesses();
+      return statusFiltered;
     }
 
-    return this.businesses().filter((business) => [
+    return statusFiltered.filter((business) => [
       business.claim_key,
       business.business_name,
       business.city_name,
@@ -90,6 +99,8 @@ export class AdminUsersComponent implements OnInit {
       business.admin_email,
       business.owner_user_id,
       this.businessAuthorLabel(business),
+      this.statusLabel(business.status),
+      this.statusFilterLabel(business.status),
       business.status,
     ].filter(Boolean).join(' ').toLowerCase().includes(query));
   });
@@ -164,6 +175,32 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
+  statusFilterLabel(status: BusinessStatusFilter): string {
+    switch (status) {
+      case 'all':
+        return 'All';
+      case 'verified':
+        return 'Verified';
+      case 'rejected':
+        return 'Rejected';
+      default:
+        return 'Not verified';
+    }
+  }
+
+  businessStatusFilterCount(status: BusinessStatusFilter): number {
+    switch (status) {
+      case 'verified':
+        return this.verifiedBusinessCount();
+      case 'pending':
+        return this.pendingBusinessCount();
+      case 'rejected':
+        return this.rejectedBusinessCount();
+      default:
+        return this.businesses().length;
+    }
+  }
+
   onUserSearchInput(event: Event): void {
     this.userSearch.set((event.target as HTMLInputElement).value);
   }
@@ -178,6 +215,10 @@ export class AdminUsersComponent implements OnInit {
 
   clearBusinessSearch(): void {
     this.businessSearch.set('');
+  }
+
+  selectBusinessStatusFilter(status: BusinessStatusFilter): void {
+    this.businessStatusFilter.set(status);
   }
 
   toggleUsers(): void {
