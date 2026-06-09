@@ -29,6 +29,21 @@ type PublicWikiSortMode = 'featured' | PublicWikiVisibleSortMode;
 
 const GLOBAL_REGION_ORDER = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Other'];
 const TEMPERATURE_BATCH_SIZE = 25;
+const TEMPERATURE_TONES = [
+  { min: 100, from: '#9f1239', via: '#e11d48', to: '#fb923c', surface: 'rgba(225,29,72,0.2)', border: 'rgba(225,29,72,0.45)' },
+  { min: 94, from: '#c2410c', via: '#f97316', to: '#facc15', surface: 'rgba(249,115,22,0.2)', border: 'rgba(249,115,22,0.45)' },
+  { min: 86, from: '#ca8a04', via: '#eab308', to: '#bef264', surface: 'rgba(234,179,8,0.2)', border: 'rgba(234,179,8,0.42)' },
+  { min: 78, from: '#0f766e', via: '#14b8a6', to: '#67e8f9', surface: 'rgba(20,184,166,0.18)', border: 'rgba(20,184,166,0.4)' },
+  { min: 68, from: '#1d4ed8', via: '#0ea5e9', to: '#7dd3fc', surface: 'rgba(14,165,233,0.18)', border: 'rgba(14,165,233,0.4)' },
+  { min: -100, from: '#1e3a8a', via: '#2563eb', to: '#93c5fd', surface: 'rgba(37,99,235,0.18)', border: 'rgba(37,99,235,0.42)' },
+] as const;
+const TEMPERATURE_NEUTRAL_TONE = {
+  from: '#475569',
+  via: '#64748b',
+  to: '#94a3b8',
+  surface: 'rgba(100,116,139,0.14)',
+  border: 'rgba(148,163,184,0.3)',
+} as const;
 
 const COUNTRY_REGION_HINTS: Array<{ region: string; countries: string[] }> = [
   {
@@ -103,6 +118,7 @@ export class PublicWikisComponent implements OnInit {
 
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
   readonly sortOptions = computed(() => [...PUBLIC_WIKI_SORTS]);
+  readonly isTemperatureSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'temp');
 
   readonly categoryCounts = computed(() =>
     this.categories().reduce<Record<string, number>>((acc, cat) => {
@@ -243,6 +259,45 @@ export class PublicWikisComponent implements OnInit {
     }
 
     return this.isLoadingTemperatures() ? 'Loading' : null;
+  }
+
+  temperatureHeroLabel(wiki: PublicWikiCatalogItem): string {
+    return this.temperatureLabel(wiki) ?? 'No temp';
+  }
+
+  temperatureAssistiveLabel(wiki: PublicWikiCatalogItem): string {
+    const reading = this.temperatureForWiki(wiki);
+    if (reading) {
+      return 'Current temperature';
+    }
+
+    if (!this.coordinatePair(wiki)) {
+      return 'Temperature unavailable';
+    }
+
+    return this.isLoadingTemperatures() ? 'Loading current temperature' : 'Temperature pending';
+  }
+
+  temperatureBandBackground(wiki: PublicWikiCatalogItem): string | null {
+    if (!this.isTemperatureSort()) {
+      return null;
+    }
+
+    const tone = this.temperatureTone(wiki);
+    return `linear-gradient(90deg, ${tone.from}, ${tone.via} 52%, ${tone.to})`;
+  }
+
+  temperatureCardBackground(wiki: PublicWikiCatalogItem): string | null {
+    if (!this.isTemperatureSort()) {
+      return null;
+    }
+
+    const tone = this.temperatureTone(wiki);
+    return `linear-gradient(180deg, ${tone.surface}, rgba(255,255,255,0.025) 48%, var(--surface) 100%)`;
+  }
+
+  temperatureBorderColor(wiki: PublicWikiCatalogItem): string | null {
+    return this.isTemperatureSort() ? this.temperatureTone(wiki).border : null;
   }
 
   temperatureStatusLabel(): string | null {
@@ -463,6 +518,15 @@ export class PublicWikisComponent implements OnInit {
 
   private temperatureForWiki(wiki: PublicWikiCatalogItem): CityTemperatureReading | null {
     return this.cityTemperatures()[this.wikiKey(wiki)] ?? null;
+  }
+
+  private temperatureTone(wiki: PublicWikiCatalogItem): (typeof TEMPERATURE_TONES)[number] | typeof TEMPERATURE_NEUTRAL_TONE {
+    const fahrenheit = this.temperatureForWiki(wiki)?.fahrenheit ?? null;
+    if (fahrenheit === null) {
+      return TEMPERATURE_NEUTRAL_TONE;
+    }
+
+    return TEMPERATURE_TONES.find((tone) => fahrenheit >= tone.min) ?? TEMPERATURE_NEUTRAL_TONE;
   }
 
   private coordinatePair(wiki: PublicWikiCatalogItem): { latitude: number; longitude: number } | null {

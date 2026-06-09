@@ -226,7 +226,12 @@
         <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           @for (wiki of filteredWikis(); track wiki.title) {
             @if (wiki.status === 'live') {
-              <a [routerLink]="wiki.link || '/chat'" class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.55)]">
+              <a
+                [routerLink]="wiki.link || '/chat'"
+                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.55)]"
+                [style.background]="temperatureCardBackground(wiki)"
+                [style.border-color]="temperatureBorderColor(wiki)"
+              >
                 @if (wiki.heroUrl) {
                   <div class="relative aspect-[5/3] w-full overflow-hidden bg-black">
                     <img
@@ -281,6 +286,18 @@
                     </span>
                   </div>
                 }
+                @if (isTemperatureSort()) {
+                  <div class="border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]" [style.background]="temperatureBandBackground(wiki)">
+                    <div class="flex items-end justify-between gap-4">
+                      <span class="text-4xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl">
+                        {{ temperatureHeroLabel(wiki) }}
+                      </span>
+                      <span class="mb-1 text-right text-[10px] font-black uppercase tracking-[0.16em] text-white/85">
+                        {{ temperatureAssistiveLabel(wiki) }}
+                      </span>
+                    </div>
+                  </div>
+                }
                 <div class="flex min-h-[13rem] flex-1 flex-col p-5">
                   <div class="flex items-start gap-3">
                     @if (activeCategory() === 'Cities') {
@@ -317,7 +334,24 @@
                 </div>
               </a>
             } @else {
-              <div class="group relative flex min-h-[16rem] flex-col overflow-hidden rounded-2xl border border-dashed border-[var(--line)] bg-[var(--surface)]/55 p-5 transition-all duration-300 hover:border-[var(--accent)]/25 hover:bg-[var(--surface)]">
+              <div
+                class="group relative flex min-h-[16rem] flex-col overflow-hidden rounded-2xl border border-dashed border-[var(--line)] bg-[var(--surface)]/55 transition-all duration-300 hover:border-[var(--accent)]/25 hover:bg-[var(--surface)]"
+                [style.background]="temperatureCardBackground(wiki)"
+                [style.border-color]="temperatureBorderColor(wiki)"
+              >
+                @if (isTemperatureSort()) {
+                  <div class="border-b border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]" [style.background]="temperatureBandBackground(wiki)">
+                    <div class="flex items-end justify-between gap-4">
+                      <span class="text-3xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl">
+                        {{ temperatureHeroLabel(wiki) }}
+                      </span>
+                      <span class="mb-1 text-right text-[10px] font-black uppercase tracking-[0.16em] text-white/85">
+                        {{ temperatureAssistiveLabel(wiki) }}
+                      </span>
+                    </div>
+                  </div>
+                }
+                <div class="flex flex-1 flex-col p-5">
                 <div class="mb-5 flex items-start justify-between gap-4">
                   @if (activeCategory() === 'Cities') {
                     <span class="flex h-12 w-12 shrink-0 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-1 shadow-sm">
@@ -354,6 +388,7 @@
                     <span class="material-symbols-outlined text-sm">schedule</span>
                     Coming soon
                   </div>
+                </div>
                 </div>
               </div>
             }
