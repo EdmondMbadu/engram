@@ -30,10 +30,11 @@
     </div>
   </header>
 
-  <main class="business-detail-shell mx-auto grid gap-8 px-4 py-8 sm:px-6 lg:px-8" [class.business-detail-shell--with-sidebar]="showAnySidebar()">
+  <main class="business-detail-shell" [class.business-detail-shell--with-sidebar]="showAnySidebar()">
     @if (ownerCanViewPrivateDetails()) {
       <app-workspace-sidebar
         active="business"
+        [rail]="true"
         [businessName]="businessName()"
         [businessCity]="cityName()"
         [businessStatus]="statusLabel()"
@@ -46,10 +47,11 @@
         [businessChatGuideQueryParams]="chatQueryParams()"
       ></app-workspace-sidebar>
     } @else if (showWorkspaceSidebar()) {
-      <app-workspace-sidebar active="business"></app-workspace-sidebar>
+      <app-workspace-sidebar active="business" [rail]="true"></app-workspace-sidebar>
     }
 
-    <div class="min-w-0 space-y-8">
+    <div class="business-detail-content min-w-0">
+    <div class="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
       @if (loading()) {
         <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] px-6 py-8 shadow-[var(--shadow-floating)]">
           <p class="text-sm font-semibold text-[var(--muted)]">Loading business page...</p>
@@ -352,6 +354,7 @@
           </section>
         }
       }
+    </div>
     </div>
   </main>
 
