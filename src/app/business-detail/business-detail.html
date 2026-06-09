@@ -325,14 +325,16 @@
                   <span class="material-symbols-outlined text-[1rem]">{{ copiedGuideLink() ? 'check' : 'content_copy' }}</span>
                   <span>{{ copiedGuideLink() ? 'Copied' : 'Copy link' }}</span>
                 </button>
-                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadBadgePng()">
-                  <span class="material-symbols-outlined text-[1rem]">image</span>
-                  <span>Download PNG</span>
-                </button>
-                <a [href]="badgeSvgHref()" [download]="badgeSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)] sm:col-span-2">
-                  <span class="material-symbols-outlined text-[1rem]">download</span>
-                  <span>Download SVG</span>
-                </a>
+                @if (ownerCanViewPrivateDetails()) {
+                  <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadBadgePng()">
+                    <span class="material-symbols-outlined text-[1rem]">image</span>
+                    <span>Download PNG</span>
+                  </button>
+                  <a [href]="badgeSvgHref()" [download]="badgeSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)] sm:col-span-2">
+                    <span class="material-symbols-outlined text-[1rem]">download</span>
+                    <span>Download SVG</span>
+                  </a>
+                }
               </div>
             </div>
           </div>
