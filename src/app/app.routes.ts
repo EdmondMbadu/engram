@@ -44,6 +44,20 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'business/:citySlug/:businessSlug/voice',
+    loadComponent: () => import('./business-detail/business-activity').then((m) => m.BusinessActivityComponent),
+    title: 'Business Voice | My living wiki',
+    canActivate: [authGuard],
+    data: { activity: 'voice' },
+  },
+  {
+    path: 'business/:citySlug/:businessSlug/chat',
+    loadComponent: () => import('./business-detail/business-activity').then((m) => m.BusinessActivityComponent),
+    title: 'Business Chat History | My living wiki',
+    canActivate: [authGuard],
+    data: { activity: 'chat' },
+  },
+  {
     path: 'business/:citySlug/:businessSlug',
     loadComponent: () => import('./business-detail/business-detail').then((m) => m.BusinessDetailComponent),
     title: 'Business Details | My living wiki',

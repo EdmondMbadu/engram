@@ -122,6 +122,8 @@ export class BusinessDetailComponent {
   readonly chatUrl = computed(() => `${this.origin()}${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly publicChatUrl = computed(() => `https://mylivingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly detailUrl = computed(() => `${this.origin()}${this.detailPath()}`);
+  readonly voiceAdminPath = computed(() => `${this.detailPath()}/voice`);
+  readonly chatAdminPath = computed(() => `${this.detailPath()}/chat`);
   readonly badgeIconCodes = computed(() => this.business()?.badge_icons?.filter((icon): icon is string => typeof icon === 'string').slice(0, 3) ?? []);
   readonly badgeSvg = computed(() => buildBusinessBadgeSvg({
     businessName: this.businessName(),

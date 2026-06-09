@@ -47,24 +47,28 @@
         </div>
 
         <nav class="mt-6 grid gap-2 text-sm font-bold">
-          <a href="#business-info" class="flex items-center gap-3 rounded-2xl bg-[var(--soft-fill)] px-3 py-3 text-[var(--accent)]">
+          <button type="button" class="flex items-center gap-3 rounded-2xl bg-[var(--soft-fill)] px-3 py-3 text-left text-[var(--accent)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('business-info')">
             <span class="material-symbols-outlined text-[1.1rem]">business_center</span>
             <span>Business Info</span>
-          </a>
-          <a href="#voice" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          </button>
+          <a [routerLink]="voiceAdminPath()" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-left text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
             <span class="material-symbols-outlined text-[1.1rem]">mic</span>
             <span>Voice Assistant</span>
           </a>
-          <a href="#contact" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
-            <span class="material-symbols-outlined text-[1.1rem]">location_on</span>
-            <span>Contact</span>
-          </a>
-          <a href="#direct-chat" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <a [routerLink]="chatAdminPath()" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-left text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
             <span class="material-symbols-outlined text-[1.1rem]">forum</span>
             <span>Direct Chat</span>
           </a>
-          <a [routerLink]="editPath()" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+          <button type="button" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-left text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('badge')">
+            <span class="material-symbols-outlined text-[1.1rem]">qr_code_2</span>
+            <span>Badge</span>
+          </button>
+          <a routerLink="/atlases" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
             <span class="material-symbols-outlined text-[1.1rem]">settings</span>
+            <span>Settings</span>
+          </a>
+          <a [routerLink]="editPath()" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-[var(--muted)] transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]">
+            <span class="material-symbols-outlined text-[1.1rem]">edit</span>
             <span>Edit page</span>
           </a>
         </nav>

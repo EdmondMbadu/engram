@@ -110,6 +110,11 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /atlas_voice_tool_calls/{callId} {
+      allow read: if isSignedIn() && resource.data.atlas_owner_user_id == request.auth.uid;
+      allow write: if false;
+    }
+
     match /business_claims/{claimId} {
       allow get, list: if true;
       allow create: if isSignedIn()
