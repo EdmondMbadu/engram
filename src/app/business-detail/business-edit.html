@@ -12,27 +12,28 @@
     </div>
   </header>
 
-  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <main>
     @if (loading()) {
-      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)]">
+      <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
         <p class="text-sm font-semibold text-[var(--muted)]">Loading business editor...</p>
       </section>
     } @else if (!authService.isAuthenticated()) {
-      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
+      <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
         <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
         <h1 class="mt-3 text-3xl font-black tracking-tight">Sign in to edit this business.</h1>
         <a [routerLink]="['/sign-in']" [queryParams]="{ redirectTo: detailPath() + '/edit' }" class="mt-6 inline-flex rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">Sign in</a>
       </section>
     } @else if (!ownerCanEdit()) {
-      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
+      <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
         <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
         <h1 class="mt-3 text-3xl font-black tracking-tight">This account cannot edit {{ businessName() }}.</h1>
         <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ loadError() || 'Only the account that claimed this business can edit the page.' }}</p>
       </section>
     } @else {
-      <div class="grid gap-6 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <div class="flex min-h-[calc(100vh-5rem)] flex-col md:flex-row">
         <app-workspace-sidebar
           active="business-edit"
+          [rail]="true"
           [businessName]="businessName()"
           [businessCity]="cityName()"
           [businessPath]="detailPath()"
@@ -44,7 +45,7 @@
           [businessChatGuideQueryParams]="chatQueryParams()"
         ></app-workspace-sidebar>
 
-        <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
+        <div class="grid min-w-0 flex-1 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_24rem] lg:px-8">
           <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] sm:p-6">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
