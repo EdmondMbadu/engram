@@ -278,6 +278,18 @@ export class BusinessDetailComponent {
     link.click();
   }
 
+  scrollToSection(sectionId: string): void {
+    if (typeof document === 'undefined' || typeof window === 'undefined') {
+      return;
+    }
+    const section = document.getElementById(sectionId);
+    if (!section) {
+      return;
+    }
+    const top = section.getBoundingClientRect().top + window.scrollY - 96;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }
+
   startVoiceMode(): void {
     void this.router.navigate([this.chatPath()], { queryParams: this.chatQueryParams() });
   }

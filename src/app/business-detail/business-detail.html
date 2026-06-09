@@ -9,10 +9,12 @@
         <span class="hidden truncate text-sm font-black text-[var(--text)] sm:block">{{ businessName() }}</span>
       </a>
 
-      <nav class="hidden items-center gap-6 text-sm font-bold text-[var(--muted)] md:flex">
-        <a href="#business-info" class="text-[var(--accent)]">Directory</a>
-        <a href="#voice" class="transition hover:text-[var(--text)]">Voice</a>
-        <a href="#contact" class="transition hover:text-[var(--text)]">Contact</a>
+      <nav class="hidden min-w-0 flex-1 items-center gap-2 overflow-x-auto px-2 text-sm font-bold text-[var(--muted)] md:flex" aria-label="Business page sections">
+        <button type="button" class="shrink-0 rounded-full bg-[var(--soft-fill)] px-3 py-2 text-[var(--accent)] transition hover:text-[var(--text)]" (click)="scrollToSection('business-info')">Overview</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('voice')">Voice</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('contact')">Contact</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('badge')">Badge</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('direct-chat')">Chat</button>
       </nav>
 
       <div class="flex items-center gap-2">
@@ -301,7 +303,7 @@
           </div>
         </section>
 
-        <section class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
+        <section id="badge" class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
           <div class="grid gap-0 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
             <div class="flex items-center justify-center border-b border-[var(--line)] bg-[#f7f2e8] p-5 sm:p-6 lg:border-b-0 lg:border-r">
               <img [src]="badgeSvgHref()" [alt]="'QR badge for ' + businessName()" class="aspect-square w-full max-w-sm rounded-3xl bg-white object-contain shadow-[var(--shadow-floating)]" />
