@@ -68,7 +68,7 @@ export const routes: Routes = [
     loadComponent: () => import('./dymaxion/dymaxion').then((m) => m.DymaxionComponent),
     title: 'Dymaxion Map | My living wiki',
   },
-  { path: 'home', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | My living wiki', canActivate: [authGuard] },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | My living wiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | My living wiki', canActivate: [authGuard] },

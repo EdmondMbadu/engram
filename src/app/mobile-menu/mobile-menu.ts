@@ -23,7 +23,6 @@ export class MobileMenuComponent {
   readonly menuOpen = signal(false);
 
   private readonly atlasService = inject(AtlasService);
-  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
   readonly navItems = [
@@ -74,8 +73,7 @@ export class MobileMenuComponent {
   }
 
   homeLink(): string {
-    const slug = this.publicSlug()?.trim();
-    return slug ? `/atlas/${slug}` : this.atlasHomeLink();
+    return '/';
   }
 
   @HostListener('document:keydown.escape')

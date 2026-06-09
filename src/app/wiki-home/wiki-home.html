@@ -1,54 +1,6 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
-    <aside class="theme-sidebar hidden h-screen w-72 shrink-0 border-r px-5 py-6 md:flex md:flex-col">
-      <div class="mb-10 px-2">
-        <a routerLink="/" class="flex items-center">
-          <div class="flex h-10 w-44 items-center justify-start">
-            <img src="/assets/image/my-living-wiki.png" alt="My living wiki logo" class="h-full w-full object-contain" />
-          </div>
-        </a>
-      </div>
-
-      <app-atlas-switcher></app-atlas-switcher>
-
-      <nav class="flex-1 space-y-1 text-sm">
-        <a routerLink="/wikis" class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]">
-          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">dashboard</span>
-          <span>Wikis</span>
-        </a>
-        <a [routerLink]="atlasHomeLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">home</span>
-          <span>Home</span>
-        </a>
-        <a routerLink="/chat" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">chat</span>
-          <span>Chat</span>
-        </a>
-        <a routerLink="/upload" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">neurology</span>
-          <span>Upload</span>
-        </a>
-        <a routerLink="/library" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">library_books</span>
-          <span>Source Files</span>
-        </a>
-        <a routerLink="/scrapper" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">travel_explore</span>
-          <span>Scrapper</span>
-        </a>
-        <a [routerLink]="atlasWikiLink()" class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
-          <span class="material-symbols-outlined">menu_book</span>
-          <span>Wiki</span>
-        </a>
-      </nav>
-
-      <div class="mt-auto space-y-1 border-t border-white/5 pt-6">
-        <button type="button" class="danger-action flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm" [disabled]="isSigningOut()" (click)="signOut()">
-          <span class="material-symbols-outlined text-[1.2rem]">logout</span>
-          <span>{{ isSigningOut() ? 'Signing out...' : 'Sign out' }}</span>
-        </button>
-      </div>
-    </aside>
+    <app-workspace-sidebar active="wikis" [rail]="true"></app-workspace-sidebar>
 
     <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
       <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">

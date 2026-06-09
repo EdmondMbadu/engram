@@ -43,7 +43,6 @@ export class WorkspaceSidebarComponent {
   readonly rail = input(false);
 
   readonly signingOut = signal(false);
-  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
   readonly userEmail = this.authService.email;
   readonly userName = this.authService.displayName;
@@ -51,8 +50,8 @@ export class WorkspaceSidebarComponent {
   readonly showBusinessSection = computed(() => !!this.businessName()?.trim() && !!this.businessPath()?.trim());
 
   readonly workspaceItems = computed(() => [
+    { key: 'home', label: 'Home', icon: 'home', route: '/' },
     { key: 'wikis', label: 'Wikis', icon: 'dashboard', route: '/wikis' },
-    { key: 'home', label: 'Home', icon: 'home', route: this.atlasHomeLink() },
     { key: 'chat', label: 'Chat', icon: 'chat', route: '/chat' },
     { key: 'upload', label: 'Upload', icon: 'neurology', route: '/upload' },
     { key: 'library', label: 'Source Files', icon: 'library_books', route: '/library' },

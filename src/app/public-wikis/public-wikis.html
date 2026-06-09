@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   <div class="relative flex min-h-screen flex-col" [class.md:h-screen]="isSignedIn()" [class.md:flex-row]="isSignedIn()" [class.md:overflow-hidden]="isSignedIn()">
   @if (isSignedIn()) {
-    <app-workspace-sidebar active="wikis" [rail]="true"></app-workspace-sidebar>
+    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
   }
 
   <div class="min-w-0 flex-1" [class.overflow-y-auto]="isSignedIn()">
@@ -31,7 +31,7 @@
         <app-theme-toggle></app-theme-toggle>
         <a routerLink="/landing" class="ghost-btn !px-3 !py-2 sm:!px-4 sm:!py-2.5 text-xs sm:!text-sm">Build One</a>
         @if (isSignedIn()) {
-          <a routerLink="/wikis" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">Home</a>
+          <a routerLink="/wikis" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">My Wikis</a>
         } @else {
           <a routerLink="/sign-in" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">Sign In</a>
         }

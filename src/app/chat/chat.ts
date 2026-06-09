@@ -670,7 +670,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
   readonly isPlatformAdmin = this.authService.isAdmin;
-  readonly atlasHomeLink = computed(() => this.publicRoute('atlas') ?? this.atlasService.activeAtlasHomeLink());
   readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
   readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');
   readonly uploadLink = computed(() => this.publicRoute('upload') ?? '/upload');

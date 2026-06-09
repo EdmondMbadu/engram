@@ -87,7 +87,7 @@
           @if (!isPublicView()) {
             <app-mobile-menu activePage="wiki"></app-mobile-menu>
           } @else {
-            <a [routerLink]="publicAtlasHomeLink()" class="md:hidden flex items-center gap-2 text-sm font-bold text-[var(--text)]">
+            <a routerLink="/" class="md:hidden flex items-center gap-2 text-sm font-bold text-[var(--text)]">
               <span class="material-symbols-outlined">arrow_back</span>
               <span>Home</span>
             </a>
@@ -148,7 +148,7 @@
               }
             </div>
           } @else if (isSignedIn()) {
-            <a routerLink="/home" class="hidden sm:inline-flex items-center gap-2 rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition-colors hover:border-[var(--accent)]/30 hover:text-[var(--accent)]">
+            <a routerLink="/" class="hidden sm:inline-flex items-center gap-2 rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition-colors hover:border-[var(--accent)]/30 hover:text-[var(--accent)]">
               <span>Open app</span>
             </a>
           } @else {

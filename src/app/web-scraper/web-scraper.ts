@@ -83,7 +83,6 @@ export class WebScraperComponent {
 
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
-  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
   readonly activeAtlas = this.atlasService.activeAtlas;
   readonly activeAtlasName = computed(() => this.atlasService.displayName(this.activeAtlas()));

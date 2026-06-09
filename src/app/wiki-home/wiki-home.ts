@@ -4,13 +4,13 @@ import type { AtlasItem, AtlasUsage } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
-import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 @Component({
   selector: 'app-wiki-home',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasSwitcherComponent, AtlasBadgeComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasBadgeComponent, WorkspaceSidebarComponent],
   templateUrl: './wiki-home.html',
 })
 export class WikiHomeComponent {
@@ -25,9 +25,6 @@ export class WikiHomeComponent {
   readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
   readonly isPlatformAdmin = this.authService.isAdmin;
-  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
-  readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
-
   readonly createOpen = signal(false);
   readonly createName = signal('');
   readonly isCreating = signal(false);

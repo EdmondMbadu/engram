@@ -24,7 +24,6 @@ export class WikiComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly atlasHomeLink = this.atlasService.activeAtlasHomeLink;
   readonly internalAtlasWikiLink = this.atlasService.activeAtlasWikiLink;
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
@@ -67,11 +66,6 @@ export class WikiComponent {
     const atlas = this.publicAtlas();
     if (!atlas) return null;
     return `/chat/${atlas.slug || atlas.id}`;
-  });
-  readonly publicAtlasHomeLink = computed(() => {
-    const atlas = this.publicAtlas();
-    if (!atlas) return '/';
-    return `/atlas/${atlas.slug || atlas.id}`;
   });
   readonly atlasWikiLink = computed(() => this.publicWikiLink() ?? this.internalAtlasWikiLink());
   readonly isPublicOwner = computed(
