@@ -44,6 +44,24 @@ const TEMPERATURE_NEUTRAL_TONE = {
   surface: 'rgba(100,116,139,0.14)',
   border: 'rgba(148,163,184,0.3)',
 } as const;
+const TIME_TONES = [
+  { start: 5, end: 7, from: '#075985', via: '#0891b2', to: '#fde68a', surface: 'rgba(14,165,233,0.12)', border: 'rgba(14,165,233,0.34)', icon: 'wb_twilight', iconColor: '#fde68a' },
+  { start: 7, end: 12, from: '#1e3a8a', via: '#2563eb', to: '#93c5fd', surface: 'rgba(37,99,235,0.14)', border: 'rgba(37,99,235,0.34)', icon: 'wb_sunny', iconColor: '#facc15' },
+  { start: 12, end: 17, from: '#3b82f6', via: '#67e8f9', to: '#b7f7ef', surface: 'rgba(103,232,249,0.16)', border: 'rgba(45,212,191,0.36)', icon: 'wb_sunny', iconColor: '#facc15' },
+  { start: 17, end: 20, from: '#7c3aed', via: '#c4b5fd', to: '#fbcfe8', surface: 'rgba(196,181,253,0.18)', border: 'rgba(167,139,250,0.38)', icon: 'wb_twilight', iconColor: '#fb923c' },
+  { start: 20, end: 23, from: '#a78bfa', via: '#c4b5fd', to: '#f5d0fe', surface: 'rgba(196,181,253,0.2)', border: 'rgba(167,139,250,0.4)', icon: 'wb_twilight', iconColor: '#f97316' },
+  { start: 23, end: 24, from: '#0f172a', via: '#1d4ed8', to: '#2563eb', surface: 'rgba(29,78,216,0.18)', border: 'rgba(37,99,235,0.4)', icon: 'dark_mode', iconColor: '#bfdbfe' },
+  { start: 0, end: 5, from: '#020617', via: '#0f172a', to: '#1e3a8a', surface: 'rgba(15,23,42,0.28)', border: 'rgba(30,64,175,0.42)', icon: 'dark_mode', iconColor: '#bfdbfe' },
+] as const;
+const TIME_NEUTRAL_TONE = {
+  from: '#334155',
+  via: '#64748b',
+  to: '#cbd5e1',
+  surface: 'rgba(100,116,139,0.14)',
+  border: 'rgba(148,163,184,0.3)',
+  icon: 'schedule',
+  iconColor: '#e2e8f0',
+} as const;
 
 const COUNTRY_REGION_HINTS: Array<{ region: string; countries: string[] }> = [
   {
@@ -103,6 +121,8 @@ export class PublicWikisComponent implements OnInit {
     'https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/videos%2FAvatar%20IV%20Video.mp4?alt=media&token=77103de1-4ce4-4be4-8aa2-68f92d94076d';
   private readonly localTimeFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly localTimePartsFormatterCache = new Map<string, Intl.DateTimeFormat>();
+  private readonly localTimeHeroFormatterCache = new Map<string, Intl.DateTimeFormat>();
+  private readonly timezoneFormatterCache = new Map<string, Intl.DateTimeFormat>();
 
   readonly comingSoonWikis = computed(() =>
     removeCreatedPublicWikiPreviews(this.liveWikis(), COMING_SOON_PUBLIC_WIKIS),
@@ -119,6 +139,7 @@ export class PublicWikisComponent implements OnInit {
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
   readonly sortOptions = computed(() => [...PUBLIC_WIKI_SORTS]);
   readonly isTemperatureSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'temp');
+  readonly isTimeSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'time');
 
   readonly categoryCounts = computed(() =>
     this.categories().reduce<Record<string, number>>((acc, cat) => {
@@ -300,6 +321,63 @@ export class PublicWikisComponent implements OnInit {
     return this.isTemperatureSort() ? this.temperatureTone(wiki).border : null;
   }
 
+  timeHeroLabel(wiki: PublicWikiCatalogItem): string {
+    const timezone = wiki.timezone?.trim();
+    if (!timezone) {
+      return 'No time';
+    }
+
+    try {
+      return this.localTimeHeroFormatter(timezone).format(new Date());
+    } catch {
+      return 'No time';
+    }
+  }
+
+  timeZoneLabel(wiki: PublicWikiCatalogItem): string {
+    const timezone = wiki.timezone?.trim();
+    if (!timezone) {
+      return '';
+    }
+
+    try {
+      const parts = this.timezoneFormatter(timezone).formatToParts(new Date());
+      return parts.find((part) => part.type === 'timeZoneName')?.value ?? '';
+    } catch {
+      return '';
+    }
+  }
+
+  timeIcon(wiki: PublicWikiCatalogItem): string {
+    return this.timeTone(wiki).icon;
+  }
+
+  timeIconColor(wiki: PublicWikiCatalogItem): string {
+    return this.timeTone(wiki).iconColor;
+  }
+
+  timeBandBackground(wiki: PublicWikiCatalogItem): string | null {
+    if (!this.isTimeSort()) {
+      return null;
+    }
+
+    const tone = this.timeTone(wiki);
+    return `linear-gradient(90deg, ${tone.from}, ${tone.via} 52%, ${tone.to})`;
+  }
+
+  timeCardBackground(wiki: PublicWikiCatalogItem): string | null {
+    if (!this.isTimeSort()) {
+      return null;
+    }
+
+    const tone = this.timeTone(wiki);
+    return `linear-gradient(180deg, ${tone.surface}, rgba(255,255,255,0.025) 48%, var(--surface) 100%)`;
+  }
+
+  timeBorderColor(wiki: PublicWikiCatalogItem): string | null {
+    return this.isTimeSort() ? this.timeTone(wiki).border : null;
+  }
+
   temperatureStatusLabel(): string | null {
     if (this.activeSort() !== 'temp') {
       return null;
@@ -440,6 +518,36 @@ export class PublicWikisComponent implements OnInit {
     return formatter;
   }
 
+  private localTimeHeroFormatter(timezone: string): Intl.DateTimeFormat {
+    const cached = this.localTimeHeroFormatterCache.get(timezone);
+    if (cached) {
+      return cached;
+    }
+
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: timezone,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+    this.localTimeHeroFormatterCache.set(timezone, formatter);
+    return formatter;
+  }
+
+  private timezoneFormatter(timezone: string): Intl.DateTimeFormat {
+    const cached = this.timezoneFormatterCache.get(timezone);
+    if (cached) {
+      return cached;
+    }
+
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      timeZoneName: 'short',
+    });
+    this.timezoneFormatterCache.set(timezone, formatter);
+    return formatter;
+  }
+
   private async ensureTemperatures(): Promise<void> {
     if (this.isLoadingTemperatures()) {
       return;
@@ -527,6 +635,16 @@ export class PublicWikisComponent implements OnInit {
     }
 
     return TEMPERATURE_TONES.find((tone) => fahrenheit >= tone.min) ?? TEMPERATURE_NEUTRAL_TONE;
+  }
+
+  private timeTone(wiki: PublicWikiCatalogItem): (typeof TIME_TONES)[number] | typeof TIME_NEUTRAL_TONE {
+    const minutes = this.localMinutesForWiki(wiki);
+    if (minutes === null) {
+      return TIME_NEUTRAL_TONE;
+    }
+
+    const hour = Math.floor(minutes / 60);
+    return TIME_TONES.find((tone) => hour >= tone.start && hour < tone.end) ?? TIME_NEUTRAL_TONE;
   }
 
   private coordinatePair(wiki: PublicWikiCatalogItem): { latitude: number; longitude: number } | null {
