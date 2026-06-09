@@ -241,6 +241,8 @@ export class BusinessClaimComponent {
   });
   readonly businessSlug = computed(() => this.slugify(this.businessName()));
   readonly claimKey = computed(() => `${this.selectedCitySlug()}__${this.businessSlug() || 'business'}`);
+  readonly businessDetailPath = computed(() => `/business/${this.selectedCitySlug()}/${this.businessSlug() || 'business'}`);
+  readonly businessDetailUrl = computed(() => `https://mylivingwiki.com${this.businessDetailPath()}`);
   readonly previewPath = computed(() => {
     const slug = this.selectedCitySlug();
     const business = this.businessSlug();
@@ -546,8 +548,8 @@ export class BusinessClaimComponent {
       });
       this.clearPendingDraft();
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
-      this.claimStatus.set('Business page draft reserved. The duplicate check will now catch this business before another draft is created.');
-      await this.router.navigateByUrl(this.previewPath());
+      this.claimStatus.set('Business page created and marked pending review.');
+      await this.router.navigateByUrl(this.businessDetailPath());
     } catch {
       this.saveLocalDraft({
         claimKey,

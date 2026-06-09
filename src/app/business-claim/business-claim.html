@@ -349,6 +349,37 @@
             </div>
           </div>
         </article>
+
+        <article class="rounded-2xl border border-[var(--accent)]/25 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_10%,var(--surface)),var(--surface))] p-5 shadow-[var(--shadow-floating)]">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Ready to create the page</p>
+              <h2 class="mt-2 text-xl font-black text-[var(--text)]">Submit {{ businessName() }} for review.</h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+                A pending business page will be created at {{ businessDetailPath() }} and attached to your account.
+              </p>
+            </div>
+            @if (authService.isAuthenticated()) {
+              <button type="button" class="primary-btn shrink-0 justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
+                @if (claimSaving()) {
+                  <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                  <span>Saving</span>
+                } @else {
+                  <span class="material-symbols-outlined text-base">add_business</span>
+                  <span>Submit claim request</span>
+                }
+              </button>
+            } @else {
+              <a routerLink="/create-account" [queryParams]="accountRedirectParams()" class="primary-btn shrink-0 justify-center !px-5 !py-3 text-sm" (click)="saveCurrentDraftForAccount()">
+                <span class="material-symbols-outlined text-base">person_add</span>
+                <span>Create account to claim</span>
+              </a>
+            }
+          </div>
+          @if (claimError()) {
+            <div class="error-banner mt-4 rounded-2xl px-4 py-3 text-sm">{{ claimError() }}</div>
+          }
+        </article>
       </div>
     </section>
 
@@ -407,7 +438,9 @@
         </div>
 
         <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-4">
-          <p class="text-[10px] font-black uppercase text-[var(--accent)]">Business page link</p>
+          <p class="text-[10px] font-black uppercase text-[var(--accent)]">Business page</p>
+          <p class="mt-2 break-all text-sm font-black text-[var(--text)]">{{ businessDetailUrl() }}</p>
+          <p class="mt-3 text-[10px] font-black uppercase text-[var(--accent)]">QR guide link</p>
           <p class="mt-2 break-all text-sm font-black text-[var(--text)]">{{ previewUrl() }}</p>
           <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ guideSummary() }}</p>
         </div>
