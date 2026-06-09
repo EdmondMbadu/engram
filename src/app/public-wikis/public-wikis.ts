@@ -354,7 +354,7 @@ export class PublicWikisComponent implements OnInit {
   readonly isLoadingLiveWikis = signal(true);
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
-  readonly activeSort = signal<PublicWikiSortMode>('az');
+  readonly activeSort = signal<PublicWikiSortMode>('population');
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
   readonly isLoadingTemperatures = signal(false);
   readonly temperatureError = signal<string | null>(null);
@@ -452,7 +452,7 @@ export class PublicWikisComponent implements OnInit {
   clearFilters(): void {
     this.activeCategory.set(CITIES_CATEGORY);
     this.searchTerm.set('');
-    this.activeSort.set('az');
+    this.activeSort.set('population');
   }
 
   setSort(mode: PublicWikiVisibleSortMode): void {
