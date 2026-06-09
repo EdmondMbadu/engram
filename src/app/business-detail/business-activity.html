@@ -19,13 +19,13 @@
     </div>
   </header>
 
-  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <main>
     @if (loading()) {
-      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
+      <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
         <p class="text-sm font-semibold text-[var(--muted)]">Loading business admin page...</p>
       </section>
     } @else if (!business()) {
-      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
+      <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
         <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
         <h1 class="mt-3 text-3xl font-black tracking-tight">This business page is not available yet.</h1>
         <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ loadError() || 'The business page could not be found.' }}</p>
@@ -35,7 +35,7 @@
         </a>
       </section>
     } @else if (!ownerCanView()) {
-      <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)]">
+      <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
         <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)]">
           <span class="material-symbols-outlined text-3xl">lock</span>
         </div>
@@ -54,9 +54,10 @@
         </div>
       </section>
     } @else {
-      <div class="grid gap-6 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <div class="flex min-h-[calc(100vh-5rem)] flex-col md:flex-row">
         <app-workspace-sidebar
           [active]="sidebarActive()"
+          [rail]="true"
           [businessName]="businessName()"
           [businessCity]="cityName()"
           [businessPath]="detailPath()"
@@ -68,7 +69,8 @@
           [businessChatGuideQueryParams]="chatQueryParams()"
         ></app-workspace-sidebar>
 
-        <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)] sm:p-8">
+        <div class="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
+          <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)] sm:p-8">
             <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
               <div>
                 <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">{{ pageEyebrow() }}</p>
@@ -123,7 +125,8 @@
             <div class="mt-8 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
               <p class="break-all text-xs font-bold text-[var(--muted)]">{{ publicChatUrl() }}</p>
             </div>
-        </section>
+          </section>
+        </div>
       </div>
     }
   </main>

@@ -14,6 +14,7 @@ export type WorkspaceSidebarActive =
   | 'wiki'
   | 'settings'
   | 'business'
+  | 'dymaxion'
   | 'business-edit'
   | 'business-badge'
   | 'business-voice'
@@ -53,6 +54,7 @@ export class WorkspaceSidebarComponent {
     { key: 'home', label: 'Home', icon: 'home', route: '/' },
     { key: 'wikis', label: 'Wikis', icon: 'dashboard', route: '/wikis' },
     { key: 'business', label: 'Business', icon: 'storefront', route: '/business' },
+    { key: 'dymaxion', label: 'World Map', icon: 'public', route: '/dymaxion' },
     { key: 'chat', label: 'Chat', icon: 'chat', route: '/chat' },
     { key: 'upload', label: 'Upload', icon: 'neurology', route: '/upload' },
     { key: 'library', label: 'Source Files', icon: 'library_books', route: '/library' },

@@ -19,7 +19,9 @@ import { feature as topojsonFeature } from 'topojson-client';
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
+import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 interface DymaxionCity {
   name: string;
@@ -141,7 +143,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
 
 @Component({
   selector: 'app-dymaxion',
-  imports: [RouterLink, ThemeToggleComponent, FormsModule],
+  imports: [RouterLink, ThemeToggleComponent, FormsModule, WorkspaceSidebarComponent],
   templateUrl: './dymaxion.html',
   styleUrl: './dymaxion.css',
   // Markers/clusters are created imperatively via document.createElement, so they
@@ -152,6 +154,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
 })
 export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly atlasService = inject(AtlasService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
@@ -176,6 +179,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
   readonly temperatureLoadingSlug = signal<string | null>(null);
   readonly now = signal(new Date());
+  readonly isSignedIn = this.authService.isAuthenticated;
 
   private cities: DymaxionCity[] = [];
   private countries: DymaxionCountry[] = [];
