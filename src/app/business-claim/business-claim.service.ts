@@ -4,6 +4,8 @@ import { collection, doc, getDoc, getDocs, query, serverTimestamp, where, writeB
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { getFirebaseFirestore, getFirebaseStorage } from '../firebase.client';
 
+export type BusinessClaimStatus = 'pending' | 'verified' | 'rejected';
+
 export interface BusinessClaimRegistryRecord {
   id: string;
   claim_key: string;
@@ -17,7 +19,7 @@ export interface BusinessClaimRegistryRecord {
   category: string;
   place_id: string | null;
   preview_url: string;
-  status: 'pending';
+  status: BusinessClaimStatus;
   created_at?: unknown;
 }
 
@@ -113,6 +115,30 @@ export class BusinessClaimService {
     );
   }
 
+  async listAll(): Promise<BusinessClaimWorkspaceRecord[]> {
+    if (!this.firestore) {
+      return [];
+    }
+
+    const snapshot = await getDocs(collection(this.firestore, 'business_claims'));
+    const claims = snapshot.docs.map((claimSnapshot) => ({
+      id: claimSnapshot.id,
+      ...(claimSnapshot.data() as Omit<BusinessClaimRegistryRecord, 'id'>),
+    }));
+
+    const enriched = await Promise.all(claims.map(async (claim) => {
+      try {
+        return await this.enrichWorkspaceRecord(claim);
+      } catch {
+        return claim;
+      }
+    }));
+
+    return enriched.sort((left, right) =>
+      left.city_name.localeCompare(right.city_name) || left.business_name.localeCompare(right.business_name),
+    );
+  }
+
   async create(
     record: NewBusinessClaimRegistryRecord,
     contact: BusinessClaimContactRecord,
@@ -181,6 +207,36 @@ export class BusinessClaimService {
       cover_image_url: update.cover_image_url?.trim() ?? '',
       updated_at: serverTimestamp(),
     }, { merge: true });
+    await batch.commit();
+  }
+
+  async updateStatus(claimKey: string, status: BusinessClaimStatus): Promise<void> {
+    if (!this.firestore) {
+      throw new Error('Business claims are only available in the browser.');
+    }
+    if (!claimKey) {
+      throw new Error('Missing business claim key.');
+    }
+
+    const ref = doc(this.firestore, 'business_claims', claimKey);
+    const requestRef = doc(this.firestore, 'business_claim_requests', claimKey);
+    const batch = writeBatch(this.firestore);
+    batch.set(ref, { status, updated_at: serverTimestamp() }, { merge: true });
+    batch.set(requestRef, { status, updated_at: serverTimestamp() }, { merge: true });
+    await batch.commit();
+  }
+
+  async deleteBusiness(claimKey: string): Promise<void> {
+    if (!this.firestore) {
+      throw new Error('Business claims are only available in the browser.');
+    }
+    if (!claimKey) {
+      throw new Error('Missing business claim key.');
+    }
+
+    const batch = writeBatch(this.firestore);
+    batch.delete(doc(this.firestore, 'business_claims', claimKey));
+    batch.delete(doc(this.firestore, 'business_claim_requests', claimKey));
     await batch.commit();
   }
 

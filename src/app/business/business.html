@@ -41,6 +41,10 @@
           </a>
         </div>
 
+        @if (ownedBusinessesError()) {
+          <div class="error-banner mt-6 rounded-2xl px-5 py-4 text-sm">{{ ownedBusinessesError() }}</div>
+        }
+
         @if (ownedBusinessesLoading()) {
           <div class="mt-6 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-5 py-5">
             <div class="flex items-center gap-3 text-sm font-bold text-[var(--muted)]">
@@ -48,8 +52,6 @@
               <span>Loading your businesses...</span>
             </div>
           </div>
-        } @else if (ownedBusinessesError()) {
-          <div class="error-banner mt-6 rounded-2xl px-5 py-4 text-sm">{{ ownedBusinessesError() }}</div>
         } @else if (ownedBusinesses().length > 0) {
           <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             @for (business of ownedBusinesses(); track business.claim_key) {
@@ -74,6 +76,15 @@
                     <span class="material-symbols-outlined text-base">edit</span>
                     <span>Edit</span>
                   </a>
+                  <button
+                    type="button"
+                    class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-2.5 text-xs font-black text-[var(--error-text)] transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0"
+                    [disabled]="isDeletingBusiness(business)"
+                    (click)="deleteBusiness(business)"
+                  >
+                    <span class="material-symbols-outlined text-base">delete</span>
+                    <span>{{ isDeletingBusiness(business) ? 'Deleting...' : 'Delete' }}</span>
+                  </button>
                 </div>
               </article>
             }

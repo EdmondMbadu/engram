@@ -57,6 +57,7 @@ export class BusinessComponent {
   readonly ownedBusinesses = signal<BusinessClaimWorkspaceRecord[]>([]);
   readonly ownedBusinessesLoading = signal(false);
   readonly ownedBusinessesError = signal<string | null>(null);
+  readonly deletingBusinessKey = signal<string | null>(null);
   readonly businessName = signal('Brauhaus Schmitz');
   readonly businessNeighborhood = signal('South Street');
   readonly businessCategory = signal('German bierhall');
@@ -247,7 +248,50 @@ export class BusinessComponent {
   }
 
   businessStatusLabel(business: BusinessClaimWorkspaceRecord): string {
-    return business.status === 'pending' ? 'Pending' : 'Live';
+    switch (business.status) {
+      case 'verified':
+        return 'Verified';
+      case 'rejected':
+        return 'Rejected';
+      default:
+        return 'Pending';
+    }
+  }
+
+  isDeletingBusiness(business: BusinessClaimWorkspaceRecord): boolean {
+    return this.deletingBusinessKey() === business.claim_key;
+  }
+
+  async deleteBusiness(business: BusinessClaimWorkspaceRecord): Promise<void> {
+    if (this.isDeletingBusiness(business)) {
+      return;
+    }
+
+    const firstConfirmed = window.confirm(
+      `Delete "${business.business_name}"?\n\nThis removes the business claim and the business admin request. This cannot be undone.`,
+    );
+    if (!firstConfirmed) {
+      return;
+    }
+
+    const typed = window.prompt(
+      `To confirm you are really sure, type DELETE ${business.business_name}`,
+    );
+    if (typed !== `DELETE ${business.business_name}`) {
+      this.ownedBusinessesError.set('Business deletion cancelled. The confirmation text did not match.');
+      return;
+    }
+
+    this.deletingBusinessKey.set(business.claim_key);
+    this.ownedBusinessesError.set(null);
+    try {
+      await this.businessClaimService.deleteBusiness(business.claim_key);
+      this.ownedBusinesses.update((items) => items.filter((item) => item.claim_key !== business.claim_key));
+    } catch (error) {
+      this.ownedBusinessesError.set(error instanceof Error ? error.message : 'Failed to delete this business.');
+    } finally {
+      this.deletingBusinessKey.set(null);
+    }
   }
 
   setBillingCycle(cycle: BillingCycle): void {

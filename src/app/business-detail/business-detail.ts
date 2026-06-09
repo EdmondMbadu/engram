@@ -113,7 +113,18 @@ export class BusinessDetailComponent {
   readonly businessName = computed(() => this.business()?.business_name || this.fallbackBusinessName());
   readonly cityName = computed(() => this.business()?.city_name || this.fallbackCityName());
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());
-  readonly statusLabel = computed(() => this.business()?.status === 'pending' ? 'Pending' : 'Live');
+  readonly statusLabel = computed(() => {
+    switch (this.business()?.status) {
+      case 'verified':
+        return 'Verified';
+      case 'rejected':
+        return 'Rejected';
+      case 'pending':
+        return 'Pending';
+      default:
+        return 'Live';
+    }
+  });
   readonly ownerCanViewPrivateDetails = computed(() => !!this.authService.uid() && this.business()?.owner_user_id === this.authService.uid());
   readonly showWorkspaceSidebar = computed(() => this.authService.isAuthenticated() && !this.loading() && !this.ownerCanViewPrivateDetails());
   readonly showAnySidebar = computed(() => this.ownerCanViewPrivateDetails() || this.showWorkspaceSidebar());

@@ -521,7 +521,14 @@ export class AtlasManageComponent {
   }
 
   businessStatusLabel(business: BusinessClaimWorkspaceRecord): string {
-    return business.status === 'pending' ? 'Pending review' : business.status;
+    switch (business.status) {
+      case 'verified':
+        return 'Verified';
+      case 'rejected':
+        return 'Rejected';
+      default:
+        return 'Pending review';
+    }
   }
 
   businessIconLabels(business: BusinessClaimWorkspaceRecord): string {

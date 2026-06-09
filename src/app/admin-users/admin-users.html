@@ -44,7 +44,7 @@
       </div>
     }
 
-    <section class="mt-6 grid gap-3 sm:grid-cols-3">
+    <section class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
         <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Total users</p>
         <p class="mt-2 text-3xl font-black">{{ users().length }}</p>
@@ -57,63 +57,193 @@
         <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Verified emails</p>
         <p class="mt-2 text-3xl font-black">{{ verifiedCount() }}</p>
       </div>
+      <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Businesses</p>
+        <p class="mt-2 text-3xl font-black">{{ businesses().length }}</p>
+        <p class="mt-1 text-xs font-bold text-[var(--muted)]">{{ verifiedBusinessCount() }} verified · {{ pendingBusinessCount() }} pending</p>
+      </div>
     </section>
 
     <section class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
-      <div class="border-b border-[var(--line)] px-5 py-4">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">User list</p>
-      </div>
+      <button type="button" class="flex w-full items-center justify-between gap-4 border-b border-[var(--line)] px-5 py-4 text-left" (click)="toggleUsers()" [attr.aria-expanded]="usersOpen()">
+        <span>
+          <span class="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">User list</span>
+          <span class="mt-1 block text-sm font-semibold text-[var(--muted)]">{{ filteredUsers().length }} of {{ users().length }} users shown</span>
+        </span>
+        <span class="material-symbols-outlined text-[var(--muted)]">{{ usersOpen() ? 'expand_less' : 'expand_more' }}</span>
+      </button>
 
-      @if (isLoading()) {
-        <div class="p-5 text-sm text-[var(--muted)]">Loading users...</div>
-      } @else if (users().length === 0) {
-        <div class="p-5 text-sm text-[var(--muted)]">No users found.</div>
-      } @else {
-        <div class="overflow-x-auto">
-          <table class="w-full min-w-[860px] text-left text-sm">
-            <thead class="border-b border-[var(--line)] bg-[var(--soft-fill)] text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
-              <tr>
-                <th class="px-5 py-3 font-black">User</th>
-                <th class="px-5 py-3 font-black">Role</th>
-                <th class="px-5 py-3 font-black">Verified</th>
-                <th class="px-5 py-3 font-black">Providers</th>
-                <th class="px-5 py-3 font-black">Last sign in</th>
-                <th class="px-5 py-3 font-black">Created</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-[var(--line)]">
-              @for (user of users(); track trackUser($index, user)) {
-                <tr class="align-top transition hover:bg-[var(--soft-fill)]">
-                  <td class="px-5 py-4">
-                    <p class="font-bold text-[var(--text)]">{{ userLabel(user) }}</p>
-                    <p class="mt-1 max-w-[18rem] truncate text-xs text-[var(--muted)]">{{ user.email || user.id }}</p>
-                    <p class="mt-1 max-w-[18rem] truncate text-[10px] text-[var(--muted)]">{{ user.id }}</p>
-                  </td>
-                  <td class="px-5 py-4">
-                    <span class="inline-flex rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em]"
-                      [class.border-[var(--accent)]/30]="user.role === 'admin'"
-                      [class.text-[var(--accent)]]="user.role === 'admin'"
-                      [class.border-[var(--line)]]="user.role !== 'admin'"
-                      [class.text-[var(--muted)]]="user.role !== 'admin'"
-                    >
-                      {{ user.role }}
-                    </span>
-                  </td>
-                  <td class="px-5 py-4 text-xs font-semibold" [class.text-[var(--accent)]]="user.emailVerified" [class.text-[var(--muted)]]="!user.emailVerified">
-                    {{ user.emailVerified ? 'Verified' : 'Unverified' }}
-                  </td>
-                  <td class="px-5 py-4 text-xs text-[var(--muted)]">{{ providerLabel(user) }}</td>
-                  <td class="px-5 py-4 text-xs text-[var(--muted)]">
-                    {{ user.lastSignInTime ? (user.lastSignInTime | date: 'medium') : 'Not recorded' }}
-                  </td>
-                  <td class="px-5 py-4 text-xs text-[var(--muted)]">
-                    {{ user.creationTime ? (user.creationTime | date: 'medium') : 'Not recorded' }}
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
+      @if (usersOpen()) {
+        <div class="border-b border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+          <label class="relative block max-w-xl">
+            <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">search</span>
+            <input type="search" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Search users by name, email, id, role, or provider..." [value]="userSearch()" (input)="onUserSearchInput($event)" />
+            @if (userSearch()) {
+              <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear user search" (click)="clearUserSearch()">
+                <span class="material-symbols-outlined text-[1rem]">close</span>
+              </button>
+            }
+          </label>
         </div>
+
+        @if (isLoading()) {
+          <div class="p-5 text-sm text-[var(--muted)]">Loading users...</div>
+        } @else if (filteredUsers().length === 0) {
+          <div class="p-5 text-sm text-[var(--muted)]">No users match this search.</div>
+        } @else {
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[860px] text-left text-sm">
+              <thead class="border-b border-[var(--line)] bg-[var(--soft-fill)] text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
+                <tr>
+                  <th class="px-5 py-3 font-black">User</th>
+                  <th class="px-5 py-3 font-black">Role</th>
+                  <th class="px-5 py-3 font-black">Verified</th>
+                  <th class="px-5 py-3 font-black">Providers</th>
+                  <th class="px-5 py-3 font-black">Last sign in</th>
+                  <th class="px-5 py-3 font-black">Created</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[var(--line)]">
+                @for (user of filteredUsers(); track trackUser($index, user)) {
+                  <tr class="align-top transition hover:bg-[var(--soft-fill)]">
+                    <td class="px-5 py-4">
+                      <p class="font-bold text-[var(--text)]">{{ userLabel(user) }}</p>
+                      <p class="mt-1 max-w-[18rem] truncate text-xs text-[var(--muted)]">{{ user.email || user.id }}</p>
+                      <p class="mt-1 max-w-[18rem] truncate text-[10px] text-[var(--muted)]">{{ user.id }}</p>
+                    </td>
+                    <td class="px-5 py-4">
+                      <span class="inline-flex rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em]"
+                        [class.border-[var(--accent)]/30]="user.role === 'admin'"
+                        [class.text-[var(--accent)]]="user.role === 'admin'"
+                        [class.border-[var(--line)]]="user.role !== 'admin'"
+                        [class.text-[var(--muted)]]="user.role !== 'admin'"
+                      >
+                        {{ user.role }}
+                      </span>
+                    </td>
+                    <td class="px-5 py-4 text-xs font-semibold" [class.text-[var(--accent)]]="user.emailVerified" [class.text-[var(--muted)]]="!user.emailVerified">
+                      {{ user.emailVerified ? 'Verified' : 'Unverified' }}
+                    </td>
+                    <td class="px-5 py-4 text-xs text-[var(--muted)]">{{ providerLabel(user) }}</td>
+                    <td class="px-5 py-4 text-xs text-[var(--muted)]">
+                      {{ user.lastSignInTime ? (user.lastSignInTime | date: 'medium') : 'Not recorded' }}
+                    </td>
+                    <td class="px-5 py-4 text-xs text-[var(--muted)]">
+                      {{ user.creationTime ? (user.creationTime | date: 'medium') : 'Not recorded' }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      }
+    </section>
+
+    <section class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
+      <button type="button" class="flex w-full items-center justify-between gap-4 border-b border-[var(--line)] px-5 py-4 text-left" (click)="toggleBusinesses()" [attr.aria-expanded]="businessesOpen()">
+        <span>
+          <span class="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business list</span>
+          <span class="mt-1 block text-sm font-semibold text-[var(--muted)]">{{ filteredBusinesses().length }} of {{ businesses().length }} businesses shown</span>
+        </span>
+        <span class="material-symbols-outlined text-[var(--muted)]">{{ businessesOpen() ? 'expand_less' : 'expand_more' }}</span>
+      </button>
+
+      @if (businessesOpen()) {
+        <div class="border-b border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
+          <label class="relative block max-w-xl">
+            <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">search</span>
+            <input type="search" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Search businesses by name, owner, admin, city, status, or category..." [value]="businessSearch()" (input)="onBusinessSearchInput($event)" />
+            @if (businessSearch()) {
+              <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear business search" (click)="clearBusinessSearch()">
+                <span class="material-symbols-outlined text-[1rem]">close</span>
+              </button>
+            }
+          </label>
+        </div>
+
+        @if (businessError()) {
+          <div class="m-5 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">{{ businessError() }}</div>
+        }
+
+        @if (businessesLoading()) {
+          <div class="p-5 text-sm text-[var(--muted)]">Loading businesses...</div>
+        } @else if (filteredBusinesses().length === 0) {
+          <div class="p-5 text-sm text-[var(--muted)]">No businesses match this search.</div>
+        } @else {
+          <div class="grid gap-4 p-5">
+            @for (business of filteredBusinesses(); track trackBusiness($index, business)) {
+              <article class="rounded-3xl border border-[var(--line)] bg-[var(--bg)] p-5">
+                <div class="grid gap-5 lg:grid-cols-[1fr_18rem]">
+                  <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em]"
+                        [class.border-[var(--accent)]/30]="business.status === 'verified'"
+                        [class.text-[var(--accent)]]="business.status === 'verified'"
+                        [class.border-amber-400]="business.status === 'pending'"
+                        [class.text-amber-500]="business.status === 'pending'"
+                        [class.border-[var(--error-border)]]="business.status === 'rejected'"
+                        [class.text-[var(--error-text)]]="business.status === 'rejected'"
+                      >
+                        {{ statusLabel(business.status) }}
+                      </span>
+                      <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ business.city_name }}</span>
+                    </div>
+
+                    <h3 class="mt-3 truncate text-2xl font-black tracking-tight">{{ business.business_name }}</h3>
+                    <p class="mt-2 text-sm leading-6 text-[var(--muted)]">{{ business.category || 'Business' }} · {{ business.business_address || 'No location detail yet' }}</p>
+
+                    <dl class="mt-4 grid gap-3 text-sm md:grid-cols-2">
+                      <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                        <dt class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Author / account</dt>
+                        <dd class="mt-1 font-bold text-[var(--text)]">{{ businessAuthorLabel(business) }}</dd>
+                        <dd class="mt-0.5 truncate text-xs text-[var(--muted)]">{{ businessAuthorEmail(business) || business.owner_user_id }}</dd>
+                      </div>
+                      <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                        <dt class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Business admin</dt>
+                        <dd class="mt-1 font-bold text-[var(--text)]">{{ business.admin_name || 'Not set' }}</dd>
+                        <dd class="mt-0.5 truncate text-xs text-[var(--muted)]">{{ business.admin_email || 'No admin email' }}</dd>
+                      </div>
+                    </dl>
+
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      <a [routerLink]="businessDetailPath(business)" class="ghost-btn !px-4 !py-2.5 text-xs">
+                        <span class="material-symbols-outlined text-base">info</span>
+                        <span>Details</span>
+                      </a>
+                      <a [routerLink]="businessEditPath(business)" class="ghost-btn !px-4 !py-2.5 text-xs">
+                        <span class="material-symbols-outlined text-base">edit</span>
+                        <span>Edit</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4">
+                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Review status</p>
+                    <div class="mt-3 grid gap-2">
+                      @for (status of businessStatuses; track status) {
+                        <button
+                          type="button"
+                          class="flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-black transition disabled:cursor-wait disabled:opacity-60"
+                          [class.border-[var(--accent)]/35]="business.status === status"
+                          [class.bg-[var(--soft-fill-strong)]]="business.status === status"
+                          [class.border-[var(--line)]]="business.status !== status"
+                          [disabled]="isUpdatingBusinessStatus(business)"
+                          (click)="setBusinessStatus(business, status)"
+                        >
+                          <span>{{ statusLabel(status) }}</span>
+                          @if (business.status === status) {
+                            <span class="material-symbols-outlined text-[1rem] text-[var(--accent)]">check_circle</span>
+                          }
+                        </button>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+        }
       }
     </section>
   </main>
