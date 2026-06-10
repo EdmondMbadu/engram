@@ -367,7 +367,7 @@ export class PublicWikisComponent implements OnInit {
   readonly temperatureError = signal<string | null>(null);
   readonly isProductVideoOpen = signal(false);
   readonly productVideoUrl =
-    'https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/videos%2FAvatar%20IV%20Video.mp4?alt=media&token=77103de1-4ce4-4be4-8aa2-68f92d94076d';
+    'https://firebasestorage.googleapis.com/v0/b/living-atlas-7622a.firebasestorage.app/o/videos%2FAvatar%20Video.mp4?alt=media&token=6898fe99-71fe-49dc-af66-0467e816de87';
   private readonly localTimeFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly localTimePartsFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly localTimeHeroFormatterCache = new Map<string, Intl.DateTimeFormat>();
