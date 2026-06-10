@@ -88,7 +88,7 @@ export class BusinessClaimComponent {
     'Authentic German beer hall on South Street with a deep beer list, food, events, private parties, watch parties, and staff who can point visitors to the right local experience.',
   );
   readonly selectedLanguageCodes = signal(['en', 'fr', 'pt', 'zh', 'de']);
-  readonly selectedIconCodes = signal(['hat', 'pretzel', 'beer']);
+  readonly selectedIconCodes = signal(['hat', 'pretzel', 'beer', 'music']);
   readonly selectedSizeId = signal('window');
   readonly placeResults = signal<CityPlaceCandidate[]>([]);
   readonly selectedPlace = signal<CityPlaceCandidate | null>(null);
@@ -238,7 +238,7 @@ export class BusinessClaimComponent {
   });
   readonly selectedBadgeIcons = computed(() => {
     const selected = new Set(this.selectedIconCodes());
-    return this.badgeIcons.filter((icon) => selected.has(icon.code)).slice(0, 3);
+    return this.badgeIcons.filter((icon) => selected.has(icon.code)).slice(0, 4);
   });
   readonly businessSlug = computed(() => this.slugify(this.businessName()));
   readonly claimKey = computed(() => `${this.selectedCitySlug()}__${this.businessSlug() || 'business'}`);
@@ -482,7 +482,7 @@ export class BusinessClaimComponent {
       if (codes.includes(code)) {
         return codes.length > 1 ? codes.filter((item) => item !== code) : codes;
       }
-      if (codes.length >= 3) {
+      if (codes.length >= 4) {
         return codes;
       }
       return [...codes, code];
@@ -636,7 +636,9 @@ export class BusinessClaimComponent {
       ? [[450, 238]]
       : total === 2
         ? [[252, 450], [648, 450]]
-        : [[450, 238], [252, 450], [648, 450]];
+        : total === 3
+          ? [[450, 238], [252, 450], [648, 450]]
+          : [[274, 310], [626, 310], [274, 590], [626, 590]];
     const [x, y] = positions[index] ?? positions[0];
     return `translate(${x} ${y})`;
   }
@@ -757,7 +759,7 @@ export class BusinessClaimComponent {
         this.selectedLanguageCodes.set(parsed.selectedLanguageCodes.slice(0, 6));
       }
       if (Array.isArray(parsed.selectedIconCodes) && parsed.selectedIconCodes.length > 0) {
-        this.selectedIconCodes.set(parsed.selectedIconCodes.slice(0, 3));
+        this.selectedIconCodes.set(parsed.selectedIconCodes.slice(0, 4));
       }
     } catch {
       window.localStorage.removeItem(this.pendingDraftKey);

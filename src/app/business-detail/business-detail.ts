@@ -139,7 +139,7 @@ export class BusinessDetailComponent {
   readonly detailUrl = computed(() => `${this.origin()}${this.detailPath()}`);
   readonly voiceAdminPath = computed(() => `${this.detailPath()}/voice`);
   readonly chatAdminPath = computed(() => `${this.detailPath()}/chat`);
-  readonly badgeIconCodes = computed(() => this.business()?.badge_icons?.filter((icon): icon is string => typeof icon === 'string').slice(0, 3) ?? []);
+  readonly badgeIconCodes = computed(() => this.business()?.badge_icons?.filter((icon): icon is string => typeof icon === 'string').slice(0, 4) ?? []);
   readonly badgeSvg = computed(() => buildBusinessBadgeSvg({
     businessName: this.businessName(),
     chatUrl: this.publicChatUrl(),

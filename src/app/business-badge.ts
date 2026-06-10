@@ -12,7 +12,7 @@ export function buildBusinessBadgeSvg(params: {
     '<svg ',
     '<svg x="260" y="260" width="380" height="380" ',
   );
-  const iconCodes = (params.iconCodes ?? []).filter(Boolean).slice(0, 3);
+  const iconCodes = (params.iconCodes ?? []).filter(Boolean).slice(0, 4);
   const icons = iconCodes.map((icon, index, all) => {
     const angle = -155 + (all.length <= 1 ? 0 : (310 / Math.max(1, all.length - 1)) * index);
     const radians = angle * Math.PI / 180;
@@ -50,15 +50,21 @@ function iconEmoji(code: string): string {
     cocktail: '🍸',
     coffee: '☕',
     gallery: '🎨',
+    bread: '🥐',
+    burger: '🍔',
     hat: '🎩',
     hotel: '🏨',
     local: '📍',
     market: '🛍️',
     music: '🎵',
     pretzel: '🥨',
+    pizza: '🍕',
     restaurant: '🍽️',
     service: '🧰',
     shop: '🛍️',
+    sushi: '🍣',
+    taco: '🌮',
+    wine: '🍷',
   };
   return icons[code] ?? '⭐';
 }

@@ -161,7 +161,7 @@
 
             <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
               <h2 class="text-lg font-black">Badge icons</h2>
-              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose up to 3 icons for the circular QR badge.</p>
+              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose up to 4 icons for the circular QR badge.</p>
               <div class="mt-4 flex flex-wrap gap-2">
                 @for (icon of iconOptions; track icon) {
                   <button type="button" class="rounded-full border px-3 py-2 text-xs font-black uppercase tracking-[0.12em] transition" [class.border-[var(--accent)]]="iconSelected(icon)" [class.bg-[var(--soft-fill-strong)]]="iconSelected(icon)" [class.text-[var(--accent)]]="iconSelected(icon)" [class.border-[var(--line)]]="!iconSelected(icon)" [class.text-[var(--muted)]]="!iconSelected(icon)" (click)="toggleIcon(icon)">

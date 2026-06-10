@@ -167,7 +167,7 @@ export class BusinessClaimService {
       admin_name: contact.admin_name,
       admin_email: contact.admin_email,
       guide_prompt: contact.guide_prompt,
-      badge_icons: contact.badge_icons.slice(0, 3),
+      badge_icons: contact.badge_icons.slice(0, 4),
       status: 'pending',
       created_at: serverTimestamp(),
     });
@@ -201,7 +201,7 @@ export class BusinessClaimService {
       admin_name: update.admin_name,
       admin_email: update.admin_email,
       guide_prompt: update.guide_prompt,
-      badge_icons: update.badge_icons.slice(0, 3),
+      badge_icons: update.badge_icons.slice(0, 4),
       logo_url: update.logo_url?.trim() ?? '',
       profile_image_url: update.profile_image_url?.trim() ?? '',
       cover_image_url: update.cover_image_url?.trim() ?? '',

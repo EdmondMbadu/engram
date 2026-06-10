@@ -86,6 +86,7 @@ export class BusinessComponent {
     { code: 'hat', emoji: '🎩', label: 'Heritage' },
     { code: 'pretzel', emoji: '🥨', label: 'Pretzel' },
     { code: 'beer', emoji: '🍺', label: 'Beer' },
+    { code: 'music', emoji: '🎵', label: 'Live music' },
   ];
 
   readonly decalSizes: DecalSize[] = [
@@ -352,7 +353,9 @@ export class BusinessComponent {
       ? [[450, 238]]
       : total === 2
         ? [[252, 450], [648, 450]]
-        : [[450, 238], [252, 450], [648, 450]];
+        : total === 3
+          ? [[450, 238], [252, 450], [648, 450]]
+          : [[274, 310], [626, 310], [274, 590], [626, 590]];
     const [x, y] = positions[index] ?? positions[0];
     return `translate(${x} ${y})`;
   }

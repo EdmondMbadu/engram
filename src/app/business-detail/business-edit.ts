@@ -74,7 +74,7 @@ export class BusinessEditComponent {
   readonly qrOnlyPngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-qr.png`);
   readonly badgeSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.svg`);
   readonly badgePngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.png`);
-  readonly selectedIconCodes = computed(() => this.draft().badge_icons.split(',').map((icon) => icon.trim()).filter(Boolean).slice(0, 3));
+  readonly selectedIconCodes = computed(() => this.draft().badge_icons.split(',').map((icon) => icon.trim()).filter(Boolean).slice(0, 4));
 
   readonly iconOptions = [
     'beer',
@@ -113,7 +113,7 @@ export class BusinessEditComponent {
     const current = this.selectedIconCodes();
     const next = current.includes(code)
       ? current.filter((item) => item !== code)
-      : [...current, code].slice(0, 3);
+      : [...current, code].slice(0, 4);
     this.updateDraft('badge_icons', next.join(', '));
   }
 
