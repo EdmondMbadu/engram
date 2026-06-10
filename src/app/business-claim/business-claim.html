@@ -219,15 +219,155 @@
                 ></textarea>
               </label>
               <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
-                PDF upload comes later. For now, this prompt is enough to shape the first version of the business guide.
+                This creates the first version of the business guide. Paid plans can add tone control and company documents below so the AI answers with more precision.
               </p>
             </div>
           </div>
         </article>
+      </div>
+    </section>
 
-        <article class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
+        <article class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] lg:col-span-2">
           <div class="flex items-start gap-4">
             <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">4</span>
+            <div class="min-w-0 flex-1">
+              <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div class="min-w-0">
+                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">Business AI</p>
+                    <h2 class="mt-2 text-xl font-black text-[var(--text)]">AI setup</h2>
+                    @if (paidBusinessPlan()) {
+                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                        Local is selected by default. It unlocks tone, company documents, conversation details, and 200+ conversation minutes.
+                      </p>
+                    } @else {
+                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                        Free preview is selected. Tone and document upload stay locked, with up to 15 call minutes while billing is finalized.
+                      </p>
+                    }
+                  </div>
+                  <span class="inline-flex w-fit shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-[10px] font-black uppercase"
+                    [class.border-[var(--accent)]]="paidBusinessPlan()"
+                    [class.bg-[var(--accent)]/10]="paidBusinessPlan()"
+                    [class.text-[var(--accent)]]="paidBusinessPlan()"
+                    [class.border-amber-400/40]="!paidBusinessPlan()"
+                    [class.bg-amber-400/10]="!paidBusinessPlan()"
+                    [class.text-amber-600]="!paidBusinessPlan()"
+                  >
+                    <span class="material-symbols-outlined text-base">{{ paidBusinessPlan() ? 'lock_open' : 'lock' }}</span>
+                    <span>{{ paidBusinessPlan() ? 'Paid features on' : 'Free preview' }}</span>
+                  </span>
+                </div>
+
+                <div class="mt-5 grid gap-2 sm:grid-cols-2">
+                  @for (plan of businessPlans; track plan.id) {
+                    <button
+                      type="button"
+                      class="rounded-xl border px-4 py-3 text-left transition-all hover:border-[var(--accent)]/45"
+                      [class.border-[var(--accent)]]="selectedBusinessPlan() === plan.id"
+                      [class.bg-[var(--accent)]/10]="selectedBusinessPlan() === plan.id"
+                      [class.border-[var(--line)]]="selectedBusinessPlan() !== plan.id"
+                      [class.bg-[var(--surface)]]="selectedBusinessPlan() !== plan.id"
+                      (click)="selectBusinessPlan(plan.id)"
+                    >
+                      <span class="flex min-w-0 items-center justify-between gap-3">
+                        <span class="min-w-0">
+                          <span class="block truncate text-sm font-black text-[var(--text)]">{{ plan.label }}</span>
+                          <span class="mt-0.5 block truncate text-xs font-semibold text-[var(--muted)]">{{ plan.included }}</span>
+                        </span>
+                        <span class="shrink-0 text-sm font-black text-[var(--accent)]">{{ plan.price }}</span>
+                      </span>
+                    </button>
+                  }
+                </div>
+
+                <div class="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                  <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <p class="text-sm font-black text-[var(--text)]">
+                      {{ paidBusinessPlan() ? '200+ conversation minutes included' : '15 call minutes included' }}
+                    </p>
+                    <p class="text-sm leading-6 text-[var(--muted)]">
+                      {{ paidBusinessPlan() ? 'Tone, documents, and conversation details are enabled.' : 'Select Local or above to unlock tone and documents.' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 class="text-sm font-black text-[var(--text)]">AI tone</h3>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose how the customer-service agent should sound on calls and chat.</p>
+                    </div>
+                    @if (!paidBusinessPlan()) {
+                      <span class="material-symbols-outlined text-[var(--muted)]">lock</span>
+                    }
+                  </div>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    @for (tone of aiToneOptions; track tone.id) {
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-black transition-all disabled:cursor-not-allowed disabled:opacity-45"
+                        [class.border-[var(--accent)]]="aiTone() === tone.id && paidBusinessPlan()"
+                        [class.bg-[var(--accent)]/10]="aiTone() === tone.id && paidBusinessPlan()"
+                        [class.text-[var(--accent)]]="aiTone() === tone.id && paidBusinessPlan()"
+                        [class.border-[var(--line)]]="aiTone() !== tone.id || !paidBusinessPlan()"
+                        [class.bg-[var(--surface)]]="aiTone() !== tone.id || !paidBusinessPlan()"
+                        [class.text-[var(--text)]]="aiTone() !== tone.id || !paidBusinessPlan()"
+                        [disabled]="!paidBusinessPlan()"
+                        (click)="selectAiTone(tone.id)"
+                      >
+                        <span>{{ tone.label }}</span>
+                        @if (aiTone() === tone.id && paidBusinessPlan()) {
+                          <span class="material-symbols-outlined text-base">check_circle</span>
+                        }
+                      </button>
+                    }
+                  </div>
+                  <p class="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--muted)]">
+                    Current tone: <span class="font-black text-[var(--text)]">{{ selectedAiToneOption().label }}</span> - {{ selectedAiToneOption().detail }}
+                  </p>
+                </div>
+
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 class="text-sm font-black text-[var(--text)]">Business documents</h3>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Add company knowledge so the AI answers from real source material.</p>
+                    </div>
+                    @if (!paidBusinessPlan()) {
+                      <span class="material-symbols-outlined text-[var(--muted)]">lock</span>
+                    }
+                  </div>
+                  <div class="mt-4 grid gap-2 text-sm font-semibold text-[var(--muted)]">
+                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span>Up to 10 documents per upload</span></p>
+                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span>Menus, FAQs, policies, service sheets, and training notes</span></p>
+                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span>Used to guide business-specific answers</span></p>
+                  </div>
+                  <button
+                    type="button"
+                    class="primary-btn mt-4 w-full justify-center !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+                    [disabled]="!paidBusinessPlan()"
+                    (click)="openBusinessUpload()"
+                  >
+                    <span class="material-symbols-outlined text-base">upload_file</span>
+                    <span>Upload business documents</span>
+                  </button>
+                  @if (!paidBusinessPlan()) {
+                    <p class="mt-3 text-xs font-semibold leading-5 text-[var(--muted)]">
+                      Free preview keeps these controls locked. Select Local or above to unlock them.
+                    </p>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] lg:col-span-2">
+          <div class="flex items-start gap-4">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">5</span>
             <div class="min-w-0 flex-1">
               <h2 class="text-lg font-black">24/7 multilingual service</h2>
               <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
@@ -338,9 +478,9 @@
           </div>
         </article>
 
-        <article class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
+        <article class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] lg:col-span-2">
           <div class="flex items-start gap-4">
-            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">5</span>
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">6</span>
             <div class="min-w-0 flex-1">
               <h2 class="text-lg font-black">Business admin</h2>
               <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
@@ -386,7 +526,7 @@
           </div>
         </article>
 
-        <article class="rounded-2xl border border-[var(--accent)]/25 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_10%,var(--surface)),var(--surface))] p-5 shadow-[var(--shadow-floating)]">
+        <article class="rounded-2xl border border-[var(--accent)]/25 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_10%,var(--surface)),var(--surface))] p-5 shadow-[var(--shadow-floating)] lg:col-span-2">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Ready to create the page</p>
@@ -416,10 +556,7 @@
             <div class="error-banner mt-4 rounded-2xl px-4 py-3 text-sm">{{ claimError() }}</div>
           }
         </article>
-      </div>
-    </section>
-
-    <aside class="lg:sticky lg:top-28 lg:self-start">
+    <aside class="lg:col-start-2 lg:row-start-1 lg:self-start">
       <p class="mb-3 text-center text-[10px] font-black uppercase text-[var(--muted)]">Live preview</p>
       <div class="rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-elevated)]">
         <div class="rounded-[1.35rem] border border-[#c9a160]/45 bg-[#f7f2e8] p-4">

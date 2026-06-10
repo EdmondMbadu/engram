@@ -30,6 +30,9 @@ export interface BusinessClaimContactRecord {
   admin_email: string;
   guide_prompt: string;
   badge_icons: string[];
+  business_plan?: string;
+  ai_tone?: string;
+  business_documents_enabled?: boolean;
   logo_url?: string;
   profile_image_url?: string;
   cover_image_url?: string;
@@ -44,6 +47,9 @@ export interface BusinessClaimWorkspaceUpdate {
   admin_email: string;
   guide_prompt: string;
   badge_icons: string[];
+  business_plan?: string;
+  ai_tone?: string;
+  business_documents_enabled?: boolean;
   logo_url?: string;
   profile_image_url?: string;
   cover_image_url?: string;
@@ -168,6 +174,9 @@ export class BusinessClaimService {
       admin_email: contact.admin_email,
       guide_prompt: contact.guide_prompt,
       badge_icons: contact.badge_icons.slice(0, 4),
+      business_plan: contact.business_plan ?? 'free',
+      ai_tone: contact.ai_tone ?? 'warm',
+      business_documents_enabled: contact.business_documents_enabled === true,
       status: 'pending',
       created_at: serverTimestamp(),
     });
@@ -202,6 +211,11 @@ export class BusinessClaimService {
       admin_email: update.admin_email,
       guide_prompt: update.guide_prompt,
       badge_icons: update.badge_icons.slice(0, 4),
+      ...(typeof update.business_plan === 'string' ? { business_plan: update.business_plan } : {}),
+      ...(typeof update.ai_tone === 'string' ? { ai_tone: update.ai_tone } : {}),
+      ...(typeof update.business_documents_enabled === 'boolean'
+        ? { business_documents_enabled: update.business_documents_enabled }
+        : {}),
       logo_url: update.logo_url?.trim() ?? '',
       profile_image_url: update.profile_image_url?.trim() ?? '',
       cover_image_url: update.cover_image_url?.trim() ?? '',
@@ -285,6 +299,9 @@ export class BusinessClaimService {
       badge_icons: Array.isArray(request.badge_icons)
         ? request.badge_icons.filter((icon): icon is string => typeof icon === 'string')
         : undefined,
+      business_plan: typeof request.business_plan === 'string' ? request.business_plan : undefined,
+      ai_tone: typeof request.ai_tone === 'string' ? request.ai_tone : undefined,
+      business_documents_enabled: typeof request.business_documents_enabled === 'boolean' ? request.business_documents_enabled : undefined,
       logo_url: typeof request.logo_url === 'string' ? request.logo_url : undefined,
       profile_image_url: typeof request.profile_image_url === 'string' ? request.profile_image_url : undefined,
       cover_image_url: typeof request.cover_image_url === 'string' ? request.cover_image_url : undefined,

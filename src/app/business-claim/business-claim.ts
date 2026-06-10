@@ -29,6 +29,24 @@ type DecalSize = {
 
 type BadgeIcon = BusinessBadgeIcon;
 
+type BusinessPlanId = 'free' | 'local' | 'favorite' | 'sponsor';
+type AiToneId = 'warm' | 'calm' | 'upbeat' | 'professional' | 'concise' | 'premium';
+
+type BusinessPlanOption = {
+  id: BusinessPlanId;
+  label: string;
+  price: string;
+  detail: string;
+  included: string;
+  paid: boolean;
+};
+
+type AiToneOption = {
+  id: AiToneId;
+  label: string;
+  detail: string;
+};
+
 type ClaimCityFallback = {
   id: string;
   name: string;
@@ -49,6 +67,8 @@ type StoredClaimDraft = {
   adminName: string;
   adminEmail: string;
   selectedIconCodes: string[];
+  selectedBusinessPlan: BusinessPlanId;
+  aiTone: AiToneId;
   savedAt: string;
 };
 
@@ -86,6 +106,8 @@ export class BusinessClaimComponent {
   readonly selectedIconCodes = signal(['hat', 'pretzel', 'beer', 'music']);
   readonly showAllBadgeIcons = signal(false);
   readonly selectedSizeId = signal('window');
+  readonly selectedBusinessPlan = signal<BusinessPlanId>('local');
+  readonly aiTone = signal<AiToneId>('warm');
   readonly placeResults = signal<CityPlaceCandidate[]>([]);
   readonly selectedPlace = signal<CityPlaceCandidate | null>(null);
   readonly placeSearchLoading = signal(false);
@@ -100,6 +122,50 @@ export class BusinessClaimComponent {
   readonly adminName = signal('');
   readonly adminEmail = signal('');
   readonly accountRedirectParams = computed(() => ({ redirectTo: '/business/claim' }));
+
+  readonly businessPlans: BusinessPlanOption[] = [
+    {
+      id: 'free',
+      label: 'Free preview',
+      price: '$0',
+      detail: 'Basic claim with up to 15 minutes of calls while billing is finalized.',
+      included: '15 call minutes',
+      paid: false,
+    },
+    {
+      id: 'local',
+      label: 'Local',
+      price: '$25/mo',
+      detail: 'Unlock AI tone, business documents, conversation details, and more minutes.',
+      included: '200+ conversation minutes',
+      paid: true,
+    },
+    {
+      id: 'favorite',
+      label: 'Local Favorite',
+      price: '$65/mo',
+      detail: 'Adds stronger placement and priority support for a busier local profile.',
+      included: '200+ conversation minutes',
+      paid: true,
+    },
+    {
+      id: 'sponsor',
+      label: 'City Sponsor',
+      price: '$180/mo',
+      detail: 'Citywide visibility with deeper support for launch and growth.',
+      included: '200+ conversation minutes',
+      paid: true,
+    },
+  ];
+
+  readonly aiToneOptions: AiToneOption[] = [
+    { id: 'warm', label: 'Warm', detail: 'Friendly, patient, and welcoming.' },
+    { id: 'calm', label: 'Calm', detail: 'Steady, clear, and reassuring.' },
+    { id: 'upbeat', label: 'Happy', detail: 'Bright, energetic, and positive.' },
+    { id: 'professional', label: 'Professional', detail: 'Polished, precise, and service-minded.' },
+    { id: 'concise', label: 'Concise', detail: 'Direct answers with minimal extra detail.' },
+    { id: 'premium', label: 'Premium', detail: 'Refined, attentive, and high-touch.' },
+  ];
 
   readonly fallbackCities: ClaimCityFallback[] = [
     { id: 'fallback-philly', name: 'Philadelphia', region: 'Pennsylvania', slug: 'philly' },
@@ -229,6 +295,19 @@ export class BusinessClaimComponent {
   readonly claimKey = computed(() => `${this.selectedCitySlug()}__${this.businessSlug() || 'business'}`);
   readonly businessDetailPath = computed(() => `/business/${this.selectedCitySlug()}/${this.businessSlug() || 'business'}`);
   readonly businessDetailUrl = computed(() => `https://livingwiki.com${this.businessDetailPath()}`);
+  readonly paidBusinessPlan = computed(() => this.selectedBusinessPlan() !== 'free');
+  readonly selectedBusinessPlanOption = computed(() =>
+    this.businessPlans.find((plan) => plan.id === this.selectedBusinessPlan()) ?? this.businessPlans[0],
+  );
+  readonly selectedAiToneOption = computed(() =>
+    this.aiToneOptions.find((tone) => tone.id === this.aiTone()) ?? this.aiToneOptions[0],
+  );
+  readonly businessUploadQueryParams = computed(() => ({
+    context: 'business',
+    claim: this.claimKey(),
+    business: this.businessName(),
+    return: '/business/claim',
+  }));
   readonly previewPath = computed(() => {
     const slug = this.selectedCitySlug();
     const business = this.businessSlug();
@@ -446,6 +525,9 @@ export class BusinessClaimComponent {
       `Explain the business as a real ${category.toLowerCase()} with practical, customer-ready answers.`,
       address ? `Use this location context: ${address}.` : '',
       base ? `Business notes: ${base}` : '',
+      this.paidBusinessPlan()
+        ? `Use this paid AI tone: ${this.selectedAiToneOption().label}. ${this.selectedAiToneOption().detail}`
+        : '',
       'Help visitors with hours, menu or service highlights, reservations, events, accessibility, nearby recommendations, and language-friendly answers.',
       'Keep answers warm, specific, concise, and honest when details are missing.',
     ].filter(Boolean).join('\n\n');
@@ -471,6 +553,27 @@ export class BusinessClaimComponent {
 
   selectSize(sizeId: string): void {
     this.selectedSizeId.set(sizeId);
+  }
+
+  selectBusinessPlan(planId: BusinessPlanId): void {
+    this.selectedBusinessPlan.set(planId);
+    this.claimStatus.set(null);
+  }
+
+  selectAiTone(toneId: AiToneId): void {
+    if (!this.paidBusinessPlan()) {
+      return;
+    }
+    this.aiTone.set(toneId);
+    this.claimStatus.set(null);
+  }
+
+  async openBusinessUpload(): Promise<void> {
+    if (!this.paidBusinessPlan()) {
+      return;
+    }
+    this.savePendingDraft();
+    await this.router.navigate(['/upload'], { queryParams: this.businessUploadQueryParams() });
   }
 
   saveCurrentDraftForAccount(): void {
@@ -511,37 +614,20 @@ export class BusinessClaimComponent {
       const saved = await this.businessClaimService.create(record, {
         admin_name: this.adminName().trim(),
         admin_email: this.adminEmail().trim(),
-        guide_prompt: this.guidePrompt().trim(),
+        guide_prompt: this.guidePromptForClaim(),
         badge_icons: this.selectedIconCodes(),
+        business_plan: this.selectedBusinessPlan(),
+        ai_tone: this.aiTone(),
+        business_documents_enabled: this.paidBusinessPlan(),
       });
       this.existingClaim.set(saved);
-      this.saveLocalDraft({
-        claimKey,
-        businessName: this.businessName(),
-        cityName: this.selectedCityName(),
-        previewUrl: this.previewUrl(),
-        guidePrompt: this.guidePrompt(),
-        adminName: this.adminName().trim(),
-        adminEmail: this.adminEmail().trim(),
-        selectedIconCodes: this.selectedIconCodes(),
-        savedAt: new Date().toISOString(),
-      });
+      this.saveLocalDraft(this.currentDraft());
       this.clearPendingDraft();
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
       this.claimStatus.set('Business page created and marked pending review.');
       await this.router.navigateByUrl(this.businessDetailPath());
     } catch {
-      this.saveLocalDraft({
-        claimKey,
-        businessName: this.businessName(),
-        cityName: this.selectedCityName(),
-        previewUrl: this.previewUrl(),
-        guidePrompt: this.guidePrompt(),
-        adminName: this.adminName().trim(),
-        adminEmail: this.adminEmail().trim(),
-        selectedIconCodes: this.selectedIconCodes(),
-        savedAt: new Date().toISOString(),
-      });
+      this.saveLocalDraft(this.currentDraft());
       this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
       this.claimStatus.set('Saved locally. Once the claim registry is available, this same key will be used to prevent duplicates.');
     } finally {
@@ -700,6 +786,8 @@ export class BusinessClaimComponent {
       adminName: this.adminName().trim(),
       adminEmail: this.adminEmail().trim(),
       selectedIconCodes: this.selectedIconCodes(),
+      selectedBusinessPlan: this.selectedBusinessPlan(),
+      aiTone: this.aiTone(),
       savedAt: new Date().toISOString(),
     };
   }
@@ -735,6 +823,12 @@ export class BusinessClaimComponent {
       if (Array.isArray(parsed.selectedIconCodes) && parsed.selectedIconCodes.length > 0) {
         this.selectedIconCodes.set(parsed.selectedIconCodes.slice(0, 4));
       }
+      if (this.isBusinessPlanId(parsed.selectedBusinessPlan)) {
+        this.selectedBusinessPlan.set(parsed.selectedBusinessPlan);
+      }
+      if (this.isAiToneId(parsed.aiTone)) {
+        this.aiTone.set(parsed.aiTone);
+      }
     } catch {
       window.localStorage.removeItem(this.pendingDraftKey);
     }
@@ -763,6 +857,27 @@ export class BusinessClaimComponent {
 
   private isValidEmail(value: string): boolean {
     return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value.trim());
+  }
+
+  private isBusinessPlanId(value: unknown): value is BusinessPlanId {
+    return typeof value === 'string' && this.businessPlans.some((plan) => plan.id === value);
+  }
+
+  private isAiToneId(value: unknown): value is AiToneId {
+    return typeof value === 'string' && this.aiToneOptions.some((tone) => tone.id === value);
+  }
+
+  private guidePromptForClaim(): string {
+    const prompt = this.guidePrompt().trim();
+    if (!this.paidBusinessPlan()) {
+      return prompt;
+    }
+    const tone = this.selectedAiToneOption();
+    return [
+      `Preferred AI tone: ${tone.label}. ${tone.detail}`,
+      prompt,
+      'Use uploaded business documents as source material when available, and avoid guessing when the documents do not contain the answer.',
+    ].filter(Boolean).join('\n\n');
   }
 
   private escapeSvg(value: string): string {

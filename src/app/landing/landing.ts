@@ -38,10 +38,30 @@ export class LandingComponent {
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
     { initialValue: this.route.snapshot.paramMap.get('slug') },
   );
+  readonly routeQuery = toSignal(
+    this.route.queryParamMap.pipe(map((params) => ({
+      context: params.get('context'),
+      business: params.get('business'),
+      returnTo: params.get('return'),
+    }))),
+    {
+      initialValue: {
+        context: this.route.snapshot.queryParamMap.get('context'),
+        business: this.route.snapshot.queryParamMap.get('business'),
+        returnTo: this.route.snapshot.queryParamMap.get('return'),
+      },
+    },
+  );
 
   readonly publicAtlas = signal<AtlasItem | null>(null);
   readonly publicLookupDone = signal(false);
   readonly isPublicView = computed(() => !!this.routeSlug());
+  readonly isBusinessUpload = computed(() => !this.isPublicView() && this.routeQuery().context === 'business');
+  readonly businessUploadName = computed(() => this.routeQuery().business?.trim() || 'this business');
+  readonly businessUploadReturn = computed(() => {
+    const returnTo = this.routeQuery().returnTo?.trim();
+    return returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/business/claim';
+  });
   readonly publicNotFound = computed(
     () => this.isPublicView() && this.publicLookupDone() && !this.publicAtlas(),
   );
@@ -75,11 +95,16 @@ export class LandingComponent {
   readonly uploadLink = computed(() => this.publicRoute('upload') ?? '/upload');
   readonly libraryLink = computed(() => this.publicRoute('library') ?? '/library');
   readonly pageTitle = computed(() =>
-    this.isPublicView()
+    this.isBusinessUpload()
+      ? 'Upload business documents.'
+      : this.isPublicView()
       ? `Expand ${this.atlasService.displayName(this.publicAtlas())}`
       : 'Welcome.',
   );
   readonly currentWikiName = computed(() => {
+    if (this.isBusinessUpload()) {
+      return `Business knowledge for ${this.businessUploadName()}`;
+    }
     if (this.publicNotFound()) {
       return 'Wiki not found';
     }
@@ -143,7 +168,7 @@ export class LandingComponent {
     input.value = '';
 
     if (!this.uploadError()) {
-      await this.router.navigateByUrl('/library');
+      await this.router.navigateByUrl(this.isBusinessUpload() ? this.businessUploadReturn() : '/library');
     }
   }
 
@@ -164,7 +189,7 @@ export class LandingComponent {
       );
 
       if (result.imported.length > 0) {
-        await this.router.navigateByUrl('/library');
+        await this.router.navigateByUrl(this.isBusinessUpload() ? this.businessUploadReturn() : '/library');
       }
     } catch {
       // Errors are surfaced via service signals.

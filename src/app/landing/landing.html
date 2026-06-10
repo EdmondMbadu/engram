@@ -122,19 +122,21 @@
           <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Current wiki</p>
           <p class="max-w-full truncate text-xl font-black tracking-tight text-[var(--text)] sm:text-2xl">{{ currentWikiName() }}</p>
         </div>
-        <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-8 sm:mb-12">{{ isPublicView() ? 'Public access' : 'Cognitive Synchronization Active' }}</p>
+        <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-8 sm:mb-12">{{ isBusinessUpload() ? 'Business AI source files' : isPublicView() ? 'Public access' : 'Cognitive Synchronization Active' }}</p>
 
         <!-- Drop Zone Card -->
         <div class="glass-card p-6 sm:p-12 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 group cursor-pointer hover:border-[var(--accent)]/30 transition-all duration-500 flex flex-col items-center">
           <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-[var(--accent)]/10 transition-all duration-500">
             <span class="material-symbols-outlined text-2xl sm:text-3xl text-[var(--accent)]" style="font-variation-settings: 'FILL' 1;">add</span>
           </div>
-          <h2 class="text-xl sm:text-3xl font-bold text-[var(--text)] mb-3 sm:mb-4">{{ isPublicView() ? 'Uploads require sign-in' : 'Initialize Knowledge' }}</h2>
+          <h2 class="text-xl sm:text-3xl font-bold text-[var(--text)] mb-3 sm:mb-4">{{ isBusinessUpload() ? 'Train the business guide' : isPublicView() ? 'Uploads require sign-in' : 'Initialize Knowledge' }}</h2>
           <p class="text-[var(--muted)] text-sm sm:text-lg leading-relaxed mb-6 sm:mb-10 max-w-md">
             @if (publicNotFound()) {
               This atlas could not be found or is no longer public.
             } @else if (isPublicView()) {
               You can browse this atlas without signing in, but adding documents is limited to the atlas owner or authorized collaborators.
+            } @else if (isBusinessUpload()) {
+              Upload menus, FAQs, service sheets, policies, training notes, or company docs. Living Wiki will use them as source material for the business AI. You can add up to 10 documents in one upload.
             } @else {
               Drop your first document. Living Wiki will read it, learn from it, and remember it
               <span class="text-[var(--accent-soft)] font-bold">forever.</span>
@@ -150,7 +152,7 @@
               }
             } @else {
               <button type="button" class="primary-btn !py-3 sm:!py-4" [disabled]="isUploading()" (click)="openFilePicker()">
-                {{ isUploading() ? 'Uploading...' : 'Upload from device' }}
+                {{ isUploading() ? 'Uploading...' : isBusinessUpload() ? 'Upload business docs' : 'Upload from device' }}
               </button>
               @if (isActiveAtlasOwner()) {
                 <button
@@ -217,7 +219,7 @@
 
           <div class="mt-8 sm:mt-12 flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity text-[10px] uppercase font-bold tracking-[0.2em] text-[var(--muted)] text-center">
             <span class="material-symbols-outlined text-base text-[var(--accent)]">{{ isPublicView() ? 'visibility' : 'upload_file' }}</span>
-            <span>{{ isPublicView() ? 'Public pages are view only' : 'PDF, DOC/DOCX, PPT/PPTX, TXT, PNG/JPG, and supported Google Drive files' }}</span>
+            <span>{{ isPublicView() ? 'Public pages are view only' : isBusinessUpload() ? 'Up to 10 files: PDF, DOC/DOCX, PPT/PPTX, TXT, PNG/JPG' : 'PDF, DOC/DOCX, PPT/PPTX, TXT, PNG/JPG, and supported Google Drive files' }}</span>
           </div>
         </div>
 
