@@ -1,5 +1,7 @@
 import { generateQrSvg } from './qr-code';
 
+const COUNTRY_RING_IMAGE = '/assets/image/ring-countries.png';
+
 export function buildBusinessBadgeSvg(params: {
   businessName: string;
   chatUrl: string;
@@ -18,13 +20,6 @@ export function buildBusinessBadgeSvg(params: {
     const y = 450 + Math.sin(radians) * 275;
     return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle r="34" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="11" text-anchor="middle" font-size="32">${iconEmoji(icon)}</text></g>`;
   }).join('');
-  const flags = [
-    ['🇺🇸', 214, 332],
-    ['🇫🇷', 686, 332],
-    ['🇧🇷', 686, 568],
-    ['🇩🇪', 450, 704],
-    ['🇨🇳', 214, 568],
-  ].map(([flag, x, y]) => `<g transform="translate(${x} ${y})"><circle r="27" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="8" text-anchor="middle" font-size="22">${flag}</text></g>`).join('');
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
     <defs>
@@ -34,16 +29,16 @@ export function buildBusinessBadgeSvg(params: {
       <path id="topArc" d="M 112 472 A 338 338 0 0 1 788 472"/>
       <path id="bottomArc" d="M 186 606 A 310 310 0 0 0 714 606"/>
     </defs>
-    <rect width="900" height="900" fill="#f4f4f1"/>
-    <circle cx="450" cy="450" r="400" fill="url(#paper)" filter="url(#softShadow)"/>
-    <circle cx="450" cy="450" r="340" fill="none" stroke="url(#tealRing)" stroke-width="74"/>
-    <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"/>
+    <rect width="900" height="900" fill="#111211"/>
+    <image href="${COUNTRY_RING_IMAGE}" x="0" y="0" width="900" height="900" preserveAspectRatio="xMidYMid meet"/>
+    <circle cx="450" cy="450" r="335" fill="none" stroke="url(#tealRing)" stroke-width="46" opacity="0.96"/>
+    <circle cx="450" cy="450" r="300" fill="url(#paper)" stroke="#b8842f" stroke-width="5" filter="url(#softShadow)"/>
     <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"/>
     <text font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#ffffff" dy="12"><textPath href="#topArc" startOffset="50%" text-anchor="middle" textLength="610" lengthAdjust="spacingAndGlyphs">${business} • LivingWiki Chat</textPath></text>
     <text font-family="Inter, Arial, sans-serif" font-size="40" font-weight="900" fill="#ffffff" dy="20"><textPath href="#bottomArc" startOffset="50%" text-anchor="middle" textLength="410" lengthAdjust="spacingAndGlyphs">60+ Languages</textPath></text>
     <rect x="242" y="242" width="416" height="416" rx="24" fill="#fff8ea" stroke="#b8842f" stroke-width="5"/>
     ${qr}
-    ${flags}${icons}
+    ${icons}
     <text x="450" y="746" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by LivingWiki.com</text>
   </svg>`;
 }
@@ -55,10 +50,12 @@ function iconEmoji(code: string): string {
     cocktail: '🍸',
     coffee: '☕',
     gallery: '🎨',
+    hat: '🎩',
     hotel: '🏨',
     local: '📍',
     market: '🛍️',
     music: '🎵',
+    pretzel: '🥨',
     restaurant: '🍽️',
     service: '🧰',
     shop: '🛍️',

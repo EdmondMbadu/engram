@@ -809,10 +809,6 @@ export class BusinessClaimComponent {
   private buildDecalSvg(): string {
     const business = this.escapeSvg(this.decalBusinessTitle());
     const qr = this.escapeSvg(this.qrImageUrl());
-    const flags = this.selectedLanguages().map((language, index, all) => {
-      const transform = this.svgOrbitTransform(index, all.length, 176);
-      return `<g transform="${transform}"><circle r="30" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="9" text-anchor="middle" font-size="24">${language.flag}</text></g>`;
-    }).join('');
     const icons = this.selectedBadgeIcons().map((icon, index, all) => {
       const transform = this.badgeIconTransform(index, all.length);
       return `<g transform="${transform}"><circle r="43" fill="#fff8ea" stroke="#b98834" stroke-width="4"/><text y="18" text-anchor="middle" font-size="54">${icon.emoji}</text></g>`;
@@ -835,10 +831,10 @@ export class BusinessClaimComponent {
         <path id="topArc" d="M 112 472 A 338 338 0 0 1 788 472"/>
         <path id="bottomArc" d="M 186 606 A 310 310 0 0 0 714 606"/>
       </defs>
-      <rect width="900" height="900" fill="#f4f4f1"/>
-      <circle cx="450" cy="450" r="400" fill="url(#paper)" filter="url(#softShadow)"/>
-      <circle cx="450" cy="450" r="340" fill="none" stroke="url(#tealRing)" stroke-width="74"/>
-      <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"/>
+      <rect width="900" height="900" fill="#111211"/>
+      <image href="/assets/image/ring-countries.png" x="0" y="0" width="900" height="900" preserveAspectRatio="xMidYMid meet"/>
+      <circle cx="450" cy="450" r="335" fill="none" stroke="url(#tealRing)" stroke-width="46" opacity="0.96"/>
+      <circle cx="450" cy="450" r="300" fill="url(#paper)" stroke="#b8842f" stroke-width="5" filter="url(#softShadow)"/>
       <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"/>
       <text font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#ffffff" dy="12">
         <textPath href="#topArc" startOffset="50%" text-anchor="middle" textLength="610" lengthAdjust="spacingAndGlyphs">${business} • LivingWiki Chat</textPath>
@@ -852,7 +848,6 @@ export class BusinessClaimComponent {
       <path d="M450 434c7 0 13 6 13 13v13c0 7-6 13-13 13s-13-6-13-13v-13c0-7 6-13 13-13z" fill="#0f596d"/>
       <path d="M429 458c0 13 9 24 21 24s21-11 21-24" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"/>
       <path d="M450 482v18M437 500h26" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"/>
-      ${flags}
       ${icons}
       <text x="450" y="646" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#0f596d">Powered by LivingWiki.com</text>
     </svg>`;

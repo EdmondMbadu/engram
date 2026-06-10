@@ -402,9 +402,10 @@
               <path id="claimTopArc" d="M 112 472 A 338 338 0 0 1 788 472"></path>
               <path id="claimBottomArc" d="M 186 606 A 310 310 0 0 0 714 606"></path>
             </defs>
-            <circle cx="450" cy="450" r="400" fill="url(#claimPaper)"></circle>
-            <circle cx="450" cy="450" r="340" fill="none" stroke="url(#claimTealRing)" stroke-width="74"></circle>
-            <circle cx="450" cy="450" r="284" fill="#ead2a5" stroke="#b8842f" stroke-width="5"></circle>
+            <rect width="900" height="900" fill="#111211"></rect>
+            <image href="/assets/image/ring-countries.png" x="0" y="0" width="900" height="900" preserveAspectRatio="xMidYMid meet"></image>
+            <circle cx="450" cy="450" r="335" fill="none" stroke="url(#claimTealRing)" stroke-width="46" opacity="0.96"></circle>
+            <circle cx="450" cy="450" r="300" fill="url(#claimPaper)" stroke="#b8842f" stroke-width="5"></circle>
             <circle cx="450" cy="450" r="210" fill="none" stroke="#a47729" stroke-width="4" stroke-dasharray="24 28"></circle>
 
             <text font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#ffffff" dy="12">
@@ -420,13 +421,6 @@
             <path d="M450 434c7 0 13 6 13 13v13c0 7-6 13-13 13s-13-6-13-13v-13c0-7 6-13 13-13z" fill="#0f596d"></path>
             <path d="M429 458c0 13 9 24 21 24s21-11 21-24" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"></path>
             <path d="M450 482v18M437 500h26" fill="none" stroke="#0f596d" stroke-width="5" stroke-linecap="round"></path>
-
-            @for (language of selectedLanguages(); track language.code; let i = $index) {
-              <g [attr.transform]="svgOrbitTransform(i, selectedLanguages().length, 176)">
-                <circle r="30" fill="#fff8ea" stroke="#b98834" stroke-width="4"></circle>
-                <text y="9" text-anchor="middle" font-size="24">{{ language.flag }}</text>
-              </g>
-            }
 
             @for (icon of selectedBadgeIcons(); track icon.code; let i = $index) {
               <g [attr.transform]="badgeIconTransform(i, selectedBadgeIcons().length)">
