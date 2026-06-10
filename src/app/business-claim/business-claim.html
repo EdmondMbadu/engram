@@ -33,7 +33,7 @@
         <span class="block text-[var(--accent)]">Any City. Any Language.</span>
       </h1>
       <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-        Create a real local business page, reserve the unique claim key, and generate a QR badge that sends customers to a voice-first guide for that business.
+        Create a real local business page with a 24/7 customer-service agent that can answer voice calls and customer questions in 60+ languages. The QR badge sends every visitor to the same always-on guide for that business.
       </p>
 
       <div class="mt-8 grid gap-4">
@@ -229,27 +229,27 @@
           <div class="flex items-start gap-4">
             <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/14 text-sm font-black text-[var(--accent)]">4</span>
             <div class="min-w-0 flex-1">
-              <h2 class="text-lg font-black">Languages and format</h2>
-              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Pick up to 6 featured languages for the badge. The guide link itself can support more.</p>
-              <div class="mt-4 flex flex-wrap gap-2">
+              <h2 class="text-lg font-black">24/7 multilingual service</h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+                Every claimed business gets an always-on customer-service agent that can answer calls, explain the business, and guide customers in 60+ languages. Customers choose the language when they scan or call, so there is nothing for the business to configure here.
+              </p>
+              <div class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.08] p-4">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">support_agent</span>
+                  <p class="text-sm font-black text-[var(--text)]">Built-in customer service in 60+ languages</p>
+                </div>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+                  It can handle common questions about hours, menus, services, events, accessibility, directions, nearby recommendations, and what makes the place worth visiting.
+                </p>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2" aria-label="Example supported languages">
                 @for (language of languages; track language.code) {
-                  <button
-                    type="button"
-                    class="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-bold transition-all"
-                    [class.border-[var(--accent)]]="selectedLanguageCodes().includes(language.code)"
-                    [class.bg-[var(--accent)]/10]="selectedLanguageCodes().includes(language.code)"
-                    [class.text-[var(--accent)]]="selectedLanguageCodes().includes(language.code)"
-                    [class.border-[var(--line)]]="!selectedLanguageCodes().includes(language.code)"
-                    [class.text-[var(--text)]]="!selectedLanguageCodes().includes(language.code)"
-                    (click)="toggleLanguage(language.code)"
-                  >
+                  <span class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm font-bold text-[var(--text)]">
                     <span>{{ language.flag }}</span>
                     <span>{{ language.label }}</span>
-                    @if (selectedLanguageCodes().includes(language.code)) {
-                      <span class="material-symbols-outlined text-base">check</span>
-                    }
-                  </button>
+                  </span>
                 }
+                <span class="inline-flex items-center rounded-full border border-[var(--accent)]/35 bg-[var(--accent)]/10 px-3 py-2 text-sm font-black text-[var(--accent)]">+ more</span>
               </div>
 
               <div class="mt-6">

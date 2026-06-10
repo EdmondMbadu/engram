@@ -51,7 +51,6 @@ type StoredClaimDraft = {
   guidePrompt: string;
   adminName: string;
   adminEmail: string;
-  selectedLanguageCodes: string[];
   selectedIconCodes: string[];
   savedAt: string;
 };
@@ -87,7 +86,6 @@ export class BusinessClaimComponent {
   readonly guidePrompt = signal(
     'Authentic German beer hall on South Street with a deep beer list, food, events, private parties, watch parties, and staff who can point visitors to the right local experience.',
   );
-  readonly selectedLanguageCodes = signal(['en', 'fr', 'pt', 'zh', 'de']);
   readonly selectedIconCodes = signal(['hat', 'pretzel', 'beer', 'music']);
   readonly selectedSizeId = signal('window');
   readonly placeResults = signal<CityPlaceCandidate[]>([]);
@@ -232,10 +230,6 @@ export class BusinessClaimComponent {
 
   readonly businessName = computed(() => this.selectedPlace()?.name || this.businessQuery().trim() || 'Your business');
   readonly businessAddress = computed(() => this.selectedPlace()?.address || this.neighborhood().trim());
-  readonly selectedLanguages = computed(() => {
-    const selected = new Set(this.selectedLanguageCodes());
-    return this.languages.filter((language) => selected.has(language.code)).slice(0, 6);
-  });
   readonly selectedBadgeIcons = computed(() => {
     const selected = new Set(this.selectedIconCodes());
     return this.badgeIcons.filter((icon) => selected.has(icon.code)).slice(0, 4);
@@ -468,15 +462,6 @@ export class BusinessClaimComponent {
     this.claimStatus.set('Guide prompt refined. Review it, then reserve the page draft.');
   }
 
-  toggleLanguage(code: string): void {
-    this.selectedLanguageCodes.update((codes) => {
-      if (codes.includes(code)) {
-        return codes.length > 1 ? codes.filter((item) => item !== code) : codes;
-      }
-      return [...codes, code].slice(0, 6);
-    });
-  }
-
   toggleBadgeIcon(code: string): void {
     this.selectedIconCodes.update((codes) => {
       if (codes.includes(code)) {
@@ -543,7 +528,6 @@ export class BusinessClaimComponent {
         guidePrompt: this.guidePrompt(),
         adminName: this.adminName().trim(),
         adminEmail: this.adminEmail().trim(),
-        selectedLanguageCodes: this.selectedLanguageCodes(),
         selectedIconCodes: this.selectedIconCodes(),
         savedAt: new Date().toISOString(),
       });
@@ -560,7 +544,6 @@ export class BusinessClaimComponent {
         guidePrompt: this.guidePrompt(),
         adminName: this.adminName().trim(),
         adminEmail: this.adminEmail().trim(),
-        selectedLanguageCodes: this.selectedLanguageCodes(),
         selectedIconCodes: this.selectedIconCodes(),
         savedAt: new Date().toISOString(),
       });
@@ -721,7 +704,6 @@ export class BusinessClaimComponent {
       guidePrompt: this.guidePrompt(),
       adminName: this.adminName().trim(),
       adminEmail: this.adminEmail().trim(),
-      selectedLanguageCodes: this.selectedLanguageCodes(),
       selectedIconCodes: this.selectedIconCodes(),
       savedAt: new Date().toISOString(),
     };
@@ -754,9 +736,6 @@ export class BusinessClaimComponent {
       }
       if (parsed.adminEmail) {
         this.adminEmail.set(parsed.adminEmail);
-      }
-      if (Array.isArray(parsed.selectedLanguageCodes) && parsed.selectedLanguageCodes.length > 0) {
-        this.selectedLanguageCodes.set(parsed.selectedLanguageCodes.slice(0, 6));
       }
       if (Array.isArray(parsed.selectedIconCodes) && parsed.selectedIconCodes.length > 0) {
         this.selectedIconCodes.set(parsed.selectedIconCodes.slice(0, 4));
