@@ -4423,7 +4423,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         return `欢迎来到 Living Wiki，${city}。今天我可以怎样帮你了解 ${city}？`;
       case 'en':
       default:
-        return `Welcome to Living Wiki, ${city}. How can I help you with ${city} today?`;
+        return `Welcome to Living Wiki, ${city}. How can I help?`;
     }
   }
 
