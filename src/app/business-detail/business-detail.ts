@@ -8,6 +8,7 @@ import { buildBusinessBadgeSvg } from '../business-badge';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../business-claim/business-claim.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 type BusinessLanguage = {
   country: string;
@@ -73,7 +74,7 @@ const BUSINESS_LANGUAGES: BusinessLanguage[] = [
 
 @Component({
   selector: 'app-business-detail',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './business-detail.html',
   styleUrl: './business-detail.css',
 })

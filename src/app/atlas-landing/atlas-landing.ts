@@ -1,4 +1,4 @@
-import { Component, computed, effect, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -11,10 +11,11 @@ import { getGoogleAdSenseConfig } from '../firebase.config';
 import { GoogleAdSenseService } from '../google-adsense.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-atlas-landing',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './atlas-landing.html',
 })
 export class AtlasLandingComponent {
@@ -24,7 +25,6 @@ export class AtlasLandingComponent {
   private readonly googleAdSenseService = inject(GoogleAdSenseService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly elementRef = inject(ElementRef);
 
   private readonly routeSlug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
@@ -90,9 +90,6 @@ export class AtlasLandingComponent {
     this.atlasService.isPublicCityVisitorAtlas(this.atlas(), this.authService.uid()),
   );
 
-  readonly isSigningOut = signal(false);
-  readonly avatarMenuOpen = signal(false);
-  readonly currentUserName = this.authService.displayName;
   readonly currentUserEmail = this.authService.email;
 
   readonly editing = signal(false);
@@ -384,17 +381,6 @@ export class AtlasLandingComponent {
     if (!date) return null;
     return date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
   });
-
-  readonly userInitials = () => {
-    const name = this.currentUserName();
-    if (!name) return '?';
-    return name
-      .split(' ')
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
-  };
 
   readonly displayName = computed(() => this.atlasService.displayName(this.atlas()));
 
@@ -763,17 +749,6 @@ export class AtlasLandingComponent {
     }
   }
 
-  toggleAvatarMenu(): void {
-    this.avatarMenuOpen.update((open) => !open);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.querySelector('.avatar-menu-wrapper')?.contains(event.target as Node)) {
-      this.avatarMenuOpen.set(false);
-    }
-  }
-
   async onVideoSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -804,17 +779,6 @@ export class AtlasLandingComponent {
       this.editError.set(error instanceof Error ? error.message : 'Failed to remove video.');
     } finally {
       this.removingVideo.set(false);
-    }
-  }
-
-  async signOut(): Promise<void> {
-    this.isSigningOut.set(true);
-    this.avatarMenuOpen.set(false);
-    try {
-      await this.authService.signOut();
-      await this.router.navigateByUrl('/');
-    } finally {
-      this.isSigningOut.set(false);
     }
   }
 

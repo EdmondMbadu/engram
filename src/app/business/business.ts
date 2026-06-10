@@ -5,6 +5,7 @@ import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../busi
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 type BillingCycle = 'monthly' | 'annual';
 
@@ -45,7 +46,7 @@ type BusinessPlan = {
 
 @Component({
   selector: 'app-business',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './business.html',
 })
 export class BusinessComponent {

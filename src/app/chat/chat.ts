@@ -19,6 +19,7 @@ import {
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { ChatLocationMapComponent } from '../chat-location-map/chat-location-map';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 import { getPublicAppUrl } from '../firebase.config';
 import type {
   Conversation as ElevenLabsConversation,
@@ -380,7 +381,14 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
 
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent, MobileMenuComponent, ChatLocationMapComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    ThemeToggleComponent,
+    MobileMenuComponent,
+    ChatLocationMapComponent,
+    AccountMenuComponent,
+  ],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
@@ -434,7 +442,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly isSubscribing = signal(false);
   readonly subscribeError = signal<string | null>(null);
   readonly subscribeSuccess = signal<string | null>(null);
-  readonly avatarMenuOpen = signal(false);
   readonly answerMode = signal<'wiki' | 'internet'>('wiki');
   readonly question = signal('');
   readonly selectedCitation = signal<CitationPassage | null>(null);
@@ -1056,17 +1063,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.cachedPrompts = built;
     return built;
   });
-
-  readonly userInitials = () => {
-    const name = this.currentUserName();
-    if (!name) return '?';
-    return name
-      .split(' ')
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
-  };
 
   cityWikiRouterLink(wiki: PublicWikiCatalogItem): string | string[] {
     return wiki.status === 'live' && wiki.slug ? ['/chat', wiki.slug] : '/public-wikis';
@@ -5517,17 +5513,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     void this.stopRealtimeVoice();
   }
 
-  toggleAvatarMenu(): void {
-    this.avatarMenuOpen.update((open) => !open);
-  }
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement | null;
-
-    if (!target?.closest('.avatar-menu-wrapper')) {
-      this.avatarMenuOpen.set(false);
-    }
 
     if (!target?.closest('.chat-message-actions')) {
       this.messageActionMenuId.set(null);
@@ -5541,7 +5529,6 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   async signOut(): Promise<void> {
     this.isSigningOut.set(true);
-    this.avatarMenuOpen.set(false);
 
     try {
       await this.authService.signOut();

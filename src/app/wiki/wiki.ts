@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, HostListener, computed, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -11,10 +11,19 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { WikiService } from '../wiki.service';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-wiki',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, FormsModule, AtlasBadgeComponent, WorkspaceSidebarComponent],
+  imports: [
+    RouterLink,
+    ThemeToggleComponent,
+    MobileMenuComponent,
+    FormsModule,
+    AtlasBadgeComponent,
+    WorkspaceSidebarComponent,
+    AccountMenuComponent,
+  ],
   templateUrl: './wiki.html',
 })
 export class WikiComponent {
@@ -26,7 +35,6 @@ export class WikiComponent {
 
   readonly internalAtlasWikiLink = this.atlasService.activeAtlasWikiLink;
   private readonly router = inject(Router);
-  private readonly elementRef = inject(ElementRef);
 
   private readonly routeSlug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
@@ -77,14 +85,10 @@ export class WikiComponent {
   );
   readonly shareStatus = signal<'idle' | 'copied' | 'error'>('idle');
 
-  readonly isSigningOut = signal(false);
-  readonly avatarMenuOpen = signal(false);
   readonly searchQuery = signal('');
   readonly openingSourceDocumentId = signal<string | null>(null);
   readonly sourceDocumentError = signal<string | null>(null);
 
-  readonly currentUserName = this.authService.displayName;
-  readonly currentUserEmail = this.authService.email;
   readonly authInitialized = this.authService.initialized;
   readonly isSignedIn = computed(() => !!this.authService.uid());
 
@@ -151,17 +155,6 @@ export class WikiComponent {
         .finally(() => this.publicLookupDone.set(true));
     });
   }
-
-  readonly userInitials = () => {
-    const name = this.currentUserName();
-    if (!name) return '?';
-    return name
-      .split(' ')
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
-  };
 
   selectArticle(articleId: string): void {
     this.wikiService.selectArticle(articleId);
@@ -236,10 +229,6 @@ export class WikiComponent {
     return `+${count} more source${count === 1 ? '' : 's'}`;
   }
 
-  toggleAvatarMenu(): void {
-    this.avatarMenuOpen.update((open) => !open);
-  }
-
   articleSourceId(article: WikiArticleItem, documentId: string): string {
     return `${article.id}:${documentId}`;
   }
@@ -252,27 +241,6 @@ export class WikiComponent {
 
   async openTopicSourceDocument(document: DocumentItem): Promise<void> {
     await this.openSourceDocument(document.id, undefined, document.title || document.filename);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (
-      !this.elementRef.nativeElement.querySelector('.avatar-menu-wrapper')?.contains(event.target as Node)
-    ) {
-      this.avatarMenuOpen.set(false);
-    }
-  }
-
-  async signOut(): Promise<void> {
-    this.isSigningOut.set(true);
-    this.avatarMenuOpen.set(false);
-
-    try {
-      await this.authService.signOut();
-      await this.router.navigateByUrl('/');
-    } finally {
-      this.isSigningOut.set(false);
-    }
   }
 
   async copyPublicWikiLink(): Promise<void> {

@@ -3,12 +3,19 @@ import { RouterLink } from '@angular/router';
 import { AtlasService } from '../atlas.service';
 import { buildPublicWikiLiveItem, type PublicWikiCatalogItem, sortPublicAtlases } from '../public-wiki-catalog';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AtlasAnimationComponent } from './atlas-animation/atlas-animation';
 import { GraphAnimationComponent } from './atlas-animation/graph-animation';
 
 @Component({
   selector: 'app-marketing',
-  imports: [RouterLink, ThemeToggleComponent, AtlasAnimationComponent, GraphAnimationComponent],
+  imports: [
+    RouterLink,
+    ThemeToggleComponent,
+    AccountMenuComponent,
+    AtlasAnimationComponent,
+    GraphAnimationComponent,
+  ],
   templateUrl: './marketing.html',
 })
 export class MarketingComponent implements OnInit {

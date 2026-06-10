@@ -1,14 +1,13 @@
-import { Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { getFirebaseApp } from '../firebase.client';
-import { AuthService } from '../auth.service';
 import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 import type { DocumentItem } from '../atlas.models';
 
 type ScraperState =
@@ -51,21 +50,17 @@ const EMBEDDING_COST_PER_MILLION_TOKENS = 0.02;
     MobileMenuComponent,
     AtlasBadgeComponent,
     WorkspaceSidebarComponent,
+    AccountMenuComponent,
   ],
   templateUrl: './web-scraper.html',
 })
 export class WebScraperComponent {
-  private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
-  private readonly router = inject(Router);
-  private readonly elementRef = inject(ElementRef);
   private readonly discoveryPageBatchSize = 500;
 
   readonly state = signal<ScraperState>('IDLE');
   readonly sourceUrl = signal('');
-  readonly isSigningOut = signal(false);
-  readonly avatarMenuOpen = signal(false);
   readonly statusMessage = signal<string | null>(null);
   readonly discoveredArticles = signal<DiscoveredArticle[]>([]);
   readonly scrapeCount = signal(0);
@@ -80,8 +75,6 @@ export class WebScraperComponent {
   readonly runCancelled = signal(false);
   readonly discoveryDomain = signal<string | null>(null);
 
-  readonly currentUserName = this.authService.displayName;
-  readonly currentUserEmail = this.authService.email;
   readonly activeAtlas = this.atlasService.activeAtlas;
   readonly activeAtlasName = computed(() => this.atlasService.displayName(this.activeAtlas()));
   readonly totalDiscovered = computed(() => this.discoveredArticles().length);
@@ -141,49 +134,6 @@ export class WebScraperComponent {
         return 'Discover article links from a source page and ingest them into the active atlas.';
     }
   });
-
-  readonly userInitials = computed(() => {
-    const name = this.currentUserName()?.trim();
-    if (!name) {
-      return '?';
-    }
-
-    const initials = name
-      .split(/\s+/)
-      .slice(0, 2)
-      .map((part) => part[0] ?? '')
-      .join('')
-      .toUpperCase();
-
-    return initials || '?';
-  });
-
-  toggleAvatarMenu(): void {
-    this.avatarMenuOpen.update((open) => !open);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (
-      !this.elementRef.nativeElement
-        .querySelector('.avatar-menu-wrapper')
-        ?.contains(event.target as Node)
-    ) {
-      this.avatarMenuOpen.set(false);
-    }
-  }
-
-  async signOut(): Promise<void> {
-    this.isSigningOut.set(true);
-    this.avatarMenuOpen.set(false);
-
-    try {
-      await this.authService.signOut();
-      await this.router.navigateByUrl('/');
-    } finally {
-      this.isSigningOut.set(false);
-    }
-  }
 
   updateScrapeCount(value: unknown): void {
     const numericValue = Number(value);

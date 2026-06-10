@@ -1,36 +1,36 @@
-import { Component, ElementRef, HostListener, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import type { AtlasItem, AtlasUsage } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
-import { AuthService } from '../auth.service';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-wiki-home',
-  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, AtlasBadgeComponent, WorkspaceSidebarComponent],
+  imports: [
+    RouterLink,
+    ThemeToggleComponent,
+    MobileMenuComponent,
+    AtlasBadgeComponent,
+    WorkspaceSidebarComponent,
+    AccountMenuComponent,
+  ],
   templateUrl: './wiki-home.html',
 })
 export class WikiHomeComponent {
   private readonly atlasService = inject(AtlasService);
-  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly elementRef = inject(ElementRef);
 
   readonly atlases = this.atlasService.atlases;
   readonly activeAtlasId = this.atlasService.activeAtlasId;
   readonly isLoading = this.atlasService.isLoading;
-  readonly currentUserName = this.authService.displayName;
-  readonly currentUserEmail = this.authService.email;
-  readonly isPlatformAdmin = this.authService.isAdmin;
   readonly createOpen = signal(false);
   readonly createName = signal('');
   readonly isCreating = signal(false);
   readonly createError = signal<string | null>(null);
-  readonly isSigningOut = signal(false);
-  readonly avatarMenuOpen = signal(false);
   readonly usageById = signal<Record<string, AtlasUsage>>({});
   readonly loadingUsageById = signal<Record<string, boolean>>({});
   readonly wikiSearch = signal('');
@@ -194,10 +194,6 @@ export class WikiHomeComponent {
     this.atlasService.setActive(atlasId);
   }
 
-  toggleAvatarMenu(): void {
-    this.avatarMenuOpen.update((open) => !open);
-  }
-
   async openWiki(atlas: AtlasItem, destination: 'library' | 'chat' | 'wiki' | 'settings'): Promise<void> {
     this.selectWiki(atlas.id);
     if (this.isSharedAdmin(atlas) && destination !== 'settings') {
@@ -213,35 +209,6 @@ export class WikiHomeComponent {
       return;
     }
     await this.router.navigate([`/${destination}`]);
-  }
-
-  userInitials(): string {
-    const name = this.currentUserName();
-    if (!name) return '?';
-    return name
-      .split(' ')
-      .slice(0, 2)
-      .map((part) => part[0])
-      .join('')
-      .toUpperCase();
-  }
-
-  async signOut(): Promise<void> {
-    this.isSigningOut.set(true);
-    this.avatarMenuOpen.set(false);
-    try {
-      await this.authService.signOut();
-      await this.router.navigateByUrl('/');
-    } finally {
-      this.isSigningOut.set(false);
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.querySelector('.avatar-menu-wrapper')?.contains(event.target as Node)) {
-      this.avatarMenuOpen.set(false);
-    }
   }
 
   private async syncUsage(atlases: AtlasItem[]): Promise<void> {

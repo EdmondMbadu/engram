@@ -28,9 +28,7 @@
             Philly home
           </a>
           <app-theme-toggle></app-theme-toggle>
-          @if (!isSignedIn()) {
-            <a routerLink="/sign-in" class="primary-btn !px-4 !py-2.5 text-sm">Sign in</a>
-          }
+          <app-account-menu signInClass="primary-btn !px-4 !py-2.5 text-sm" signInLabel="Sign in"></app-account-menu>
         </div>
       </div>
     </header>

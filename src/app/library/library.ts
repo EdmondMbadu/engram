@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,6 +11,7 @@ import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-library',
@@ -21,6 +22,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
     MobileMenuComponent,
     AtlasBadgeComponent,
     WorkspaceSidebarComponent,
+    AccountMenuComponent,
   ],
   templateUrl: './library.html',
   styleUrl: './library.css',
@@ -34,16 +36,13 @@ export class LibraryComponent {
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
-  private readonly elementRef = inject(ElementRef);
   readonly routeSlug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
     { initialValue: this.route.snapshot.paramMap.get('slug') },
   );
 
-  readonly isSigningOut = signal(false);
   readonly isDeletingAllDocuments = signal(false);
   readonly isDeletingFailedDocuments = signal(false);
-  readonly avatarMenuOpen = signal(false);
   readonly searchQuery = signal('');
   readonly urlToImport = signal('');
   readonly publicAtlas = signal<AtlasItem | null>(null);
@@ -66,8 +65,6 @@ export class LibraryComponent {
     this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
   );
 
-  readonly currentUserName = this.authService.displayName;
-  readonly currentUserEmail = this.authService.email;
   readonly atlasLogo = '/assets/image/livingwiki.png';
   readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
   readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');
@@ -227,21 +224,6 @@ export class LibraryComponent {
 
       void this.router.navigateByUrl(this.publicRoute('atlas') ?? '/');
     });
-  }
-
-  readonly userInitials = () => {
-    const name = this.currentUserName();
-    if (!name) return '?';
-    return name
-      .split(' ')
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
-  };
-
-  toggleAvatarMenu(): void {
-    this.avatarMenuOpen.update((open) => !open);
   }
 
   openFilePicker(): void {
@@ -603,29 +585,6 @@ export class LibraryComponent {
 
     const diffDays = Math.floor(diffHours / 24);
     return `${diffDays}d ago`;
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (
-      !this.elementRef.nativeElement
-        .querySelector('.avatar-menu-wrapper')
-        ?.contains(event.target as Node)
-    ) {
-      this.avatarMenuOpen.set(false);
-    }
-  }
-
-  async signOut(): Promise<void> {
-    this.isSigningOut.set(true);
-    this.avatarMenuOpen.set(false);
-
-    try {
-      await this.authService.signOut();
-      await this.router.navigateByUrl('/');
-    } finally {
-      this.isSigningOut.set(false);
-    }
   }
 
   private publicRoute(segment: 'atlas' | 'chat' | 'upload' | 'library' | 'wiki'): string | null {

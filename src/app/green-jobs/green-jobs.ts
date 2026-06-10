@@ -7,6 +7,7 @@ import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 import {
   PhillyGreenJobsService,
   type PhillyGreenJobListing,
@@ -15,7 +16,7 @@ import {
 
 @Component({
   selector: 'app-green-jobs',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, AccountMenuComponent],
   templateUrl: './green-jobs.html',
   styleUrl: './green-jobs.css',
 })

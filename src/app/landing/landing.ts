@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, computed, effect, inject, signal } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
@@ -11,6 +11,7 @@ import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
 import { GoogleDrivePickerService } from '../google-drive-picker.service';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-landing',
@@ -20,6 +21,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
     MobileMenuComponent,
     AtlasBadgeComponent,
     WorkspaceSidebarComponent,
+    AccountMenuComponent,
   ],
   templateUrl: './landing.html',
 })
@@ -37,8 +39,6 @@ export class LandingComponent {
     { initialValue: this.route.snapshot.paramMap.get('slug') },
   );
 
-  readonly isSigningOut = signal(false);
-  readonly avatarMenuOpen = signal(false);
   readonly publicAtlas = signal<AtlasItem | null>(null);
   readonly publicLookupDone = signal(false);
   readonly isPublicView = computed(() => !!this.routeSlug());
@@ -69,8 +69,6 @@ export class LandingComponent {
   readonly isGoogleDriveConfigured = this.googleDrivePickerService.isConfigured;
   readonly isGoogleDriveBusy = this.googleDrivePickerService.isBusy;
   readonly isGoogleDriveConnected = this.googleDrivePickerService.isConnected;
-  readonly currentUserName = this.authService.displayName;
-  readonly currentUserEmail = this.authService.email;
   readonly userAvatar = '/assets/image/livingwiki.png';
   readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
   readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');
@@ -119,28 +117,6 @@ export class LandingComponent {
         .catch(() => this.publicAtlas.set(null))
         .finally(() => this.publicLookupDone.set(true));
     });
-  }
-
-  readonly userInitials = () => {
-    const name = this.currentUserName();
-    if (!name) return '?';
-    return name
-      .split(' ')
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase();
-  };
-
-  toggleAvatarMenu(): void {
-    this.avatarMenuOpen.update((open) => !open);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.querySelector('.avatar-menu-wrapper')?.contains(event.target as Node)) {
-      this.avatarMenuOpen.set(false);
-    }
   }
 
   openFilePicker(): void {
@@ -234,18 +210,6 @@ export class LandingComponent {
     }
 
     return base;
-  }
-
-  async signOut(): Promise<void> {
-    this.isSigningOut.set(true);
-    this.avatarMenuOpen.set(false);
-
-    try {
-      await this.authService.signOut();
-      await this.router.navigateByUrl('/');
-    } finally {
-      this.isSigningOut.set(false);
-    }
   }
 
   private publicRoute(segment: 'atlas' | 'chat' | 'upload' | 'library' | 'wiki'): string | null {

@@ -10,6 +10,7 @@ import {
 } from '../business-claim/business-claim.service';
 import { getFirebaseFunctions } from '../firebase.client';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 interface AdminUserListItem {
   id: string;
@@ -33,7 +34,7 @@ type BusinessStatusFilter = 'all' | BusinessClaimStatus;
 
 @Component({
   selector: 'app-admin-users',
-  imports: [RouterLink, ThemeToggleComponent, DatePipe],
+  imports: [RouterLink, ThemeToggleComponent, DatePipe, AccountMenuComponent],
   templateUrl: './admin-users.html',
 })
 export class AdminUsersComponent implements OnInit {

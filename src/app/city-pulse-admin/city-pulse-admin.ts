@@ -7,10 +7,11 @@ import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { CityPulseService } from '../city-pulse.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-city-pulse-admin',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, AccountMenuComponent],
   templateUrl: './city-pulse-admin.html',
 })
 export class CityPulseAdminComponent {

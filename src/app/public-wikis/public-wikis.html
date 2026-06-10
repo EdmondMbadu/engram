@@ -29,12 +29,7 @@
           <span>Business</span>
         </a>
         <app-theme-toggle></app-theme-toggle>
-        <a routerLink="/landing" class="ghost-btn !px-3 !py-2 sm:!px-4 sm:!py-2.5 text-xs sm:!text-sm">Build One</a>
-        @if (isSignedIn()) {
-          <a routerLink="/wikis" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">My Wikis</a>
-        } @else {
-          <a routerLink="/sign-in" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">Sign In</a>
-        }
+        <app-account-menu></app-account-menu>
       </div>
     </div>
   </nav>
@@ -419,6 +414,10 @@
           <a routerLink="/business" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-black uppercase tracking-widest text-[var(--text)] transition-all hover:border-[var(--accent)]/45 hover:bg-[color-mix(in_srgb,var(--accent)_8%,var(--surface))] hover:text-[var(--accent)]">
             <span class="material-symbols-outlined text-base text-[var(--accent)]">storefront</span>
             Business
+          </a>
+          <a routerLink="/landing" class="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-black uppercase tracking-widest text-[var(--text)] transition-all hover:border-[var(--accent)]/45 hover:bg-[color-mix(in_srgb,var(--accent)_8%,var(--surface))] hover:text-[var(--accent)]">
+            <span class="material-symbols-outlined text-base text-[var(--accent)]">add_circle</span>
+            Build One
           </a>
           <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Privacy</a>
           <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Terms</a>

@@ -9,6 +9,7 @@ import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessC
 import { generateQrSvg } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 type BusinessEditDraft = {
   business_address: string;
@@ -24,7 +25,7 @@ type BusinessEditDraft = {
 
 @Component({
   selector: 'app-business-edit',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './business-edit.html',
 })
 export class BusinessEditComponent {

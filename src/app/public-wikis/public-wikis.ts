@@ -10,6 +10,7 @@ import {
 } from '../public-wiki-catalog';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 const CITIES_CATEGORY = 'Cities';
 const OTHERS_CATEGORY = 'Others';
@@ -342,7 +343,13 @@ interface OpenMeteoLocationResponse {
 
 @Component({
   selector: 'app-public-wikis',
-  imports: [RouterLink, ThemeToggleComponent, FormsModule, WorkspaceSidebarComponent],
+  imports: [
+    RouterLink,
+    ThemeToggleComponent,
+    FormsModule,
+    WorkspaceSidebarComponent,
+    AccountMenuComponent,
+  ],
   templateUrl: './public-wikis.html',
 })
 export class PublicWikisComponent implements OnInit {

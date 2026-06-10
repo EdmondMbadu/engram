@@ -22,6 +22,7 @@ import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 interface DymaxionCity {
   name: string;
@@ -143,7 +144,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
 
 @Component({
   selector: 'app-dymaxion',
-  imports: [RouterLink, ThemeToggleComponent, FormsModule, WorkspaceSidebarComponent],
+  imports: [RouterLink, ThemeToggleComponent, FormsModule, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './dymaxion.html',
   styleUrl: './dymaxion.css',
   // Markers/clusters are created imperatively via document.createElement, so they

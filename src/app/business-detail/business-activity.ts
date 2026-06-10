@@ -7,12 +7,13 @@ import { AuthService } from '../auth.service';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../business-claim/business-claim.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent, type WorkspaceSidebarActive } from '../workspace-sidebar/workspace-sidebar';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 type BusinessActivityKind = 'voice' | 'chat';
 
 @Component({
   selector: 'app-business-activity',
-  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent],
+  imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './business-activity.html',
 })
 export class BusinessActivityComponent {

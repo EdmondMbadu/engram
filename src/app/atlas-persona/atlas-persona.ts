@@ -4,13 +4,14 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { AccountMenuComponent } from '../account-menu/account-menu';
 
 const PERSONA_STORAGE_LIMIT = 40000;
 const PERSONA_RUNTIME_LIMIT = 8000;
 
 @Component({
   selector: 'app-atlas-persona',
-  imports: [FormsModule, RouterLink, ThemeToggleComponent],
+  imports: [FormsModule, RouterLink, ThemeToggleComponent, AccountMenuComponent],
   templateUrl: './atlas-persona.html',
 })
 export class AtlasPersonaComponent {
