@@ -20,6 +20,13 @@ export type WorkspaceSidebarActive =
   | 'business-voice'
   | 'business-chat';
 
+type WorkspaceNavItem = {
+  key: WorkspaceSidebarActive;
+  label: string;
+  icon: string;
+  route: string;
+};
+
 @Component({
   selector: 'app-workspace-sidebar',
   imports: [RouterLink, AtlasSwitcherComponent],
@@ -49,19 +56,26 @@ export class WorkspaceSidebarComponent {
   readonly userName = this.authService.displayName;
   readonly userInitial = computed(() => (this.userName().trim()[0] || this.userEmail().trim()[0] || 'U').toUpperCase());
   readonly showBusinessSection = computed(() => !!this.businessName()?.trim() && !!this.businessPath()?.trim());
+  readonly moreOpen = signal(false);
 
-  readonly workspaceItems = computed(() => [
+  readonly workspacePrimaryItems = computed<WorkspaceNavItem[]>(() => [
     { key: 'home', label: 'Home', icon: 'home', route: '/' },
     { key: 'wikis', label: 'Wikis', icon: 'dashboard', route: '/wikis' },
-    { key: 'business', label: 'Business', icon: 'storefront', route: '/business' },
-    { key: 'dymaxion', label: 'World Map', icon: 'public', route: '/dymaxion' },
     { key: 'chat', label: 'Chat', icon: 'chat', route: '/chat' },
-    { key: 'upload', label: 'Upload', icon: 'neurology', route: '/upload' },
+    { key: 'business', label: 'Business', icon: 'storefront', route: '/business' },
+  ]);
+
+  readonly workspaceMoreItems = computed<WorkspaceNavItem[]>(() => [
+    { key: 'dymaxion', label: 'World Map', icon: 'public', route: '/dymaxion' },
+    { key: 'upload', label: 'Upload Knowledge', icon: 'neurology', route: '/upload' },
     { key: 'library', label: 'Source Files', icon: 'library_books', route: '/library' },
-    { key: 'scrapper', label: 'Scrapper', icon: 'travel_explore', route: '/scrapper' },
-    { key: 'wiki', label: 'Wiki', icon: 'menu_book', route: this.atlasWikiLink() },
+    { key: 'scrapper', label: 'Scraper', icon: 'travel_explore', route: '/scrapper' },
+    { key: 'wiki', label: 'Wiki Reader', icon: 'menu_book', route: this.atlasWikiLink() },
     { key: 'settings', label: 'Settings', icon: 'settings', route: '/atlases' },
   ]);
+
+  readonly moreActive = computed(() => this.workspaceMoreItems().some((item) => this.isActive(item.key)));
+  readonly showMoreItems = computed(() => this.moreOpen() || this.moreActive());
 
   readonly businessItems = computed(() => [
     { key: 'business', label: 'Business Page', icon: 'business_center', route: this.businessPath() },
@@ -73,6 +87,17 @@ export class WorkspaceSidebarComponent {
 
   isActive(key: string): boolean {
     return this.active() === key;
+  }
+
+  isPrimaryActive(key: string): boolean {
+    if (key === 'business') {
+      return this.active() === 'business' || this.active().startsWith('business-');
+    }
+    return this.isActive(key);
+  }
+
+  toggleMore(): void {
+    this.moreOpen.update((open) => !open);
   }
 
   async signOut(): Promise<void> {

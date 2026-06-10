@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, input, output, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AtlasService } from '../atlas.service';
 
@@ -21,23 +21,42 @@ export class MobileMenuComponent {
   readonly join = output<void>();
 
   readonly menuOpen = signal(false);
+  readonly moreOpen = signal(false);
 
   private readonly atlasService = inject(AtlasService);
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
-  readonly navItems = [
+  readonly primaryNavItems = [
     { route: '/wikis', icon: 'dashboard', label: 'Wikis', key: 'wikis', workspaceOnly: true },
-    { route: '/business', icon: 'storefront', label: 'Business', key: 'business', workspaceOnly: true },
     { route: '/chat', icon: 'chat', label: 'Chat', key: 'chat' },
+    { route: '/business', icon: 'storefront', label: 'Business', key: 'business', workspaceOnly: true },
+  ];
+
+  readonly moreNavItems = [
+    { route: '/dymaxion', icon: 'public', label: 'World Map', key: 'dymaxion', workspaceOnly: true },
     { route: '/upload', icon: 'neurology', label: 'Upload', key: 'upload' },
     { route: '/library', icon: 'library_books', label: 'Source Files', key: 'library' },
-    { route: '/scrapper', icon: 'travel_explore', label: 'Scrapper', key: 'scrapper', workspaceOnly: true },
+    { route: '/scrapper', icon: 'travel_explore', label: 'Scraper', key: 'scrapper', workspaceOnly: true },
     { route: '/wiki', icon: 'menu_book', label: 'Wiki', key: 'wiki' },
     { route: '/atlases', icon: 'settings', label: 'Settings', key: 'settings', workspaceOnly: true },
   ];
 
+  readonly moreActive = computed(() =>
+    this.moreNavItems.some(
+      (item) => this.activePage() === item.key && this.shouldShowItem(item.key, item.workspaceOnly),
+    ),
+  );
+  readonly showMoreItems = computed(() => this.moreOpen() || this.moreActive());
+  readonly hasVisibleMoreItems = computed(() =>
+    this.moreNavItems.some((item) => this.shouldShowItem(item.key, item.workspaceOnly)),
+  );
+
   toggleMenu(): void {
     this.menuOpen.update((open) => !open);
+  }
+
+  toggleMore(): void {
+    this.moreOpen.update((open) => !open);
   }
 
   closeMenu(): void {

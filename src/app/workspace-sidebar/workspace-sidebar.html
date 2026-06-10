@@ -37,18 +37,58 @@
   <section class="mt-5">
     <p class="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Workspace</p>
     <nav class="mt-2 grid gap-1 text-sm font-bold" aria-label="Workspace navigation">
-      @for (item of workspaceItems(); track item.key) {
+      @for (item of workspacePrimaryItems(); track item.key) {
         <a
           [routerLink]="item.route"
           class="flex items-center gap-3 rounded-2xl border border-transparent px-3 py-3 transition hover:border-[var(--line)] hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
-          [class.bg-[var(--soft-fill)]]="isActive(item.key)"
-          [class.text-[var(--accent)]]="isActive(item.key)"
-          [class.text-[var(--muted)]]="!isActive(item.key)"
+          [class.bg-[var(--soft-fill)]]="isPrimaryActive(item.key)"
+          [class.text-[var(--accent)]]="isPrimaryActive(item.key)"
+          [class.text-[var(--muted)]]="!isPrimaryActive(item.key)"
         >
           <span class="material-symbols-outlined text-[1.1rem]">{{ item.icon }}</span>
           <span>{{ item.label }}</span>
         </a>
       }
+
+      <div class="mt-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-1.5">
+        <button
+          type="button"
+          class="flex w-full items-center gap-3 rounded-xl px-2.5 py-2.5 text-left transition hover:bg-[var(--surface)] hover:text-[var(--text)]"
+          [class.bg-[var(--surface)]]="showMoreItems()"
+          [class.text-[var(--accent)]]="moreActive()"
+          [class.text-[var(--muted)]]="!moreActive()"
+          [attr.aria-expanded]="showMoreItems()"
+          aria-controls="workspace-more-items"
+          (click)="toggleMore()"
+        >
+          <span class="material-symbols-outlined text-[1.1rem]">menu</span>
+          <span class="min-w-0 flex-1">More</span>
+          <span
+            class="material-symbols-outlined text-[1rem] transition-transform"
+            [class.rotate-180]="showMoreItems()"
+          >
+            expand_more
+          </span>
+        </button>
+
+        @if (showMoreItems()) {
+          <div id="workspace-more-items" class="mt-1 grid gap-0.5 border-t border-[var(--line)] pt-1.5">
+            @for (item of workspaceMoreItems(); track item.key) {
+              <a
+                [routerLink]="item.route"
+                class="flex items-center gap-2.5 rounded-xl border border-transparent px-2.5 py-2 text-xs font-black transition hover:border-[var(--line)] hover:bg-[var(--surface)] hover:text-[var(--text)]"
+                [class.border-[var(--accent)]]="isActive(item.key)"
+                [class.bg-[var(--surface)]]="isActive(item.key)"
+                [class.text-[var(--accent)]]="isActive(item.key)"
+                [class.text-[var(--muted)]]="!isActive(item.key)"
+              >
+                <span class="material-symbols-outlined text-[1rem]">{{ item.icon }}</span>
+                <span class="min-w-0 truncate">{{ item.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      </div>
     </nav>
   </section>
 
