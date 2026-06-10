@@ -11,6 +11,8 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
+const BADGE_RING_IMAGE_URL = '/assets/image/ring-countries.png';
+
 type BusinessEditDraft = {
   business_address: string;
   category: string;
@@ -183,18 +185,21 @@ export class BusinessEditComponent {
   }
 
   async downloadBadgePng(): Promise<void> {
-    await this.downloadSvgAsPng(this.badgeSvgHref(), this.badgePngFilename(), 900);
+    await this.downloadSvgAsPng(this.badgeSvgHref(), this.badgePngFilename(), 900, BADGE_RING_IMAGE_URL);
   }
 
   async downloadQrOnlyPng(): Promise<void> {
     await this.downloadSvgAsPng(this.qrOnlySvgHref(), this.qrOnlyPngFilename(), 1024);
   }
 
-  private async downloadSvgAsPng(svgUrl: string, filename: string, size: number): Promise<void> {
+  private async downloadSvgAsPng(svgUrl: string, filename: string, size: number, backgroundImageUrl?: string): Promise<void> {
     if (typeof document === 'undefined') {
       return;
     }
-    const image = await this.loadImage(svgUrl);
+    const [backgroundImage, image] = await Promise.all([
+      backgroundImageUrl ? this.loadImage(backgroundImageUrl) : Promise.resolve(null),
+      this.loadImage(svgUrl),
+    ]);
     const canvas = document.createElement('canvas');
     canvas.width = size;
     canvas.height = size;
@@ -202,8 +207,11 @@ export class BusinessEditComponent {
     if (!context) {
       throw new Error('Could not render QR PNG.');
     }
-    context.fillStyle = '#ffffff';
+    context.fillStyle = backgroundImage ? '#111211' : '#ffffff';
     context.fillRect(0, 0, size, size);
+    if (backgroundImage) {
+      context.drawImage(backgroundImage, 0, 0, size, size);
+    }
     context.drawImage(image, 0, 0, size, size);
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');

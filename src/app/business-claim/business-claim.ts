@@ -822,8 +822,8 @@ export class BusinessClaimComponent {
           <stop offset="1" stop-color="#c79d56"/>
         </radialGradient>
         <linearGradient id="tealRing" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#2f8294"/>
-          <stop offset="1" stop-color="#0f596d"/>
+          <stop offset="0" stop-color="#2f6f46"/>
+          <stop offset="1" stop-color="#12372b"/>
         </linearGradient>
         <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
           <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#12323a" flood-opacity="0.28"/>

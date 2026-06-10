@@ -24,12 +24,12 @@ export function buildBusinessBadgeSvg(params: {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
     <defs>
       <radialGradient id="paper" cx="50%" cy="42%" r="62%"><stop offset="0" stop-color="#f5e4c5"/><stop offset="0.68" stop-color="#dfc28d"/><stop offset="1" stop-color="#c79d56"/></radialGradient>
-      <linearGradient id="tealRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f8294"/><stop offset="1" stop-color="#0f596d"/></linearGradient>
+      <linearGradient id="tealRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6f46"/><stop offset="1" stop-color="#12372b"/></linearGradient>
       <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#12323a" flood-opacity="0.28"/></filter>
       <path id="topArc" d="M 112 472 A 338 338 0 0 1 788 472"/>
       <path id="bottomArc" d="M 186 606 A 310 310 0 0 0 714 606"/>
     </defs>
-    <rect width="900" height="900" fill="#111211"/>
+    <rect width="900" height="900" fill="none"/>
     <image href="${COUNTRY_RING_IMAGE}" x="0" y="0" width="900" height="900" preserveAspectRatio="xMidYMid meet"/>
     <circle cx="450" cy="450" r="335" fill="none" stroke="url(#tealRing)" stroke-width="46" opacity="0.96"/>
     <circle cx="450" cy="450" r="300" fill="url(#paper)" stroke="#b8842f" stroke-width="5" filter="url(#softShadow)"/>

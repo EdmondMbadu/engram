@@ -256,7 +256,9 @@
         <section id="badge" class="overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
           <div class="grid gap-0 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
             <div class="flex items-center justify-center border-b border-[var(--line)] bg-[#f7f2e8] p-5 sm:p-6 lg:border-b-0 lg:border-r">
-              <img [src]="badgeSvgHref()" [alt]="'QR badge for ' + businessName()" class="aspect-square w-full max-w-sm rounded-3xl bg-white object-contain shadow-[var(--shadow-floating)]" />
+              <div class="aspect-square w-full max-w-sm rounded-3xl bg-[#111211] bg-contain bg-center bg-no-repeat shadow-[var(--shadow-floating)]" style="background-image: url('/assets/image/ring-countries.png')">
+                <img [src]="badgeSvgHref()" [alt]="'QR badge for ' + businessName()" class="h-full w-full rounded-3xl object-contain" />
+              </div>
             </div>
             <div class="p-6 sm:p-8">
               <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Share the guide</p>

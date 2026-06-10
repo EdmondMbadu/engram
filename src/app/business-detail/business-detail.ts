@@ -10,6 +10,8 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
+const BADGE_RING_IMAGE_URL = '/assets/image/ring-countries.png';
+
 type BusinessLanguage = {
   country: string;
   flag: string;
@@ -275,7 +277,10 @@ export class BusinessDetailComponent {
     if (typeof document === 'undefined') {
       return;
     }
-    const image = await this.loadImage(this.badgeSvgHref());
+    const [ringImage, image] = await Promise.all([
+      this.loadImage(BADGE_RING_IMAGE_URL),
+      this.loadImage(this.badgeSvgHref()),
+    ]);
     const canvas = document.createElement('canvas');
     canvas.width = 900;
     canvas.height = 900;
@@ -284,8 +289,9 @@ export class BusinessDetailComponent {
       this.loadError.set('Could not render the badge PNG.');
       return;
     }
-    context.fillStyle = '#ffffff';
+    context.fillStyle = '#111211';
     context.fillRect(0, 0, 900, 900);
+    context.drawImage(ringImage, 0, 0, 900, 900);
     context.drawImage(image, 0, 0, 900, 900);
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
