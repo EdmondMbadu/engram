@@ -350,12 +350,12 @@ export class BusinessComponent {
 
   badgeIconTransform(index: number, total: number): string {
     const positions = total <= 1
-      ? [[450, 238]]
+      ? [[450, 260]]
       : total === 2
-        ? [[252, 450], [648, 450]]
+        ? [[224, 450], [676, 450]]
         : total === 3
-          ? [[450, 238], [252, 450], [648, 450]]
-          : [[274, 310], [626, 310], [274, 590], [626, 590]];
+          ? [[224, 388], [676, 388], [224, 512]]
+          : [[224, 382], [676, 382], [224, 518], [676, 518]];
     const [x, y] = positions[index] ?? positions[0];
     return `translate(${x} ${y})`;
   }
