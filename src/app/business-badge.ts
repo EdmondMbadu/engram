@@ -36,7 +36,7 @@ export function buildBusinessBadgeSvg(params: {
       <filter id="badgeShadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="22" stdDeviation="18" flood-color="#050505" flood-opacity="0.38"/></filter>
       <filter id="coinShadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#2b1a08" flood-opacity="0.38"/></filter>
       <filter id="textLift" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#001b10" flood-opacity="0.72"/></filter>
-      <path id="topArc" d="M 132 464 A 318 318 0 0 1 768 464"/>
+      <path id="topArc" d="M 105 464 A 345 345 0 0 1 795 464"/>
       <path id="bottomArc" d="M 176 606 A 300 300 0 0 0 724 606"/>
     </defs>
     <rect width="900" height="900" fill="none"/>
@@ -53,7 +53,7 @@ export function buildBusinessBadgeSvg(params: {
       <circle cx="450" cy="248" r="34" fill="url(#coinFace)" stroke="#7f4d16" stroke-width="4"/>
       <circle cx="450" cy="248" r="25" fill="url(#greenRing)" stroke="#ffe39a" stroke-width="3"/>
       <text x="450" y="258" text-anchor="middle" font-size="28">🌍</text>
-      <text font-family="Inter, Arial, sans-serif" font-size="42" font-weight="900" fill="#f8f8f2" dy="15" filter="url(#textLift)"><textPath href="#topArc" startOffset="50%" text-anchor="middle" textLength="610" lengthAdjust="spacingAndGlyphs">${business} • LivingWiki Chat</textPath></text>
+      <text font-family="Inter, Arial, sans-serif" font-size="34" font-weight="900" fill="#f8f8f2" dy="8" filter="url(#textLift)"><textPath href="#topArc" startOffset="50%" text-anchor="middle" textLength="510" lengthAdjust="spacingAndGlyphs">${business} • LivingWiki Chat</textPath></text>
       <text font-family="Inter, Arial, sans-serif" font-size="48" font-weight="900" fill="#f8f8f2" dy="22" filter="url(#textLift)"><textPath href="#bottomArc" startOffset="50%" text-anchor="middle" textLength="470" lengthAdjust="spacingAndGlyphs">60+ Languages</textPath></text>
     </g>
     <rect x="270" y="288" width="360" height="360" rx="28" fill="#fffdf6" stroke="url(#goldEdge)" stroke-width="8" filter="url(#coinShadow)"/>
