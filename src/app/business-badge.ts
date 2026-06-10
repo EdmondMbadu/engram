@@ -1,4 +1,5 @@
 import { generateQrSvg } from './qr-code';
+import { businessBadgeEmoji } from './business-badge-icons';
 
 const COUNTRY_RING_IMAGE = '/assets/image/ring-countries.png';
 const BADGE_BRAND_GREEN = '#3baf62';
@@ -24,7 +25,7 @@ export function buildBusinessBadgeSvg(params: {
         : [[224, 382], [676, 382], [224, 518], [676, 518]];
   const icons = iconCodes.map((icon, index, all) => {
     const [x, y] = iconPositions[index] ?? iconPositions[0];
-    return `<g transform="translate(${x} ${y})" filter="url(#coinShadow)"><circle r="43" fill="url(#coinFace)" stroke="#f4cd76" stroke-width="4"/><circle r="36" fill="#fff8ea" stroke="#b8872f" stroke-width="2"/><text y="14" text-anchor="middle" font-size="36">${iconEmoji(icon)}</text></g>`;
+    return `<g transform="translate(${x} ${y})" filter="url(#coinShadow)"><circle r="43" fill="url(#coinFace)" stroke="#f4cd76" stroke-width="4"/><circle r="36" fill="#fff8ea" stroke="#b8872f" stroke-width="2"/><text y="14" text-anchor="middle" font-size="36">${businessBadgeEmoji(icon)}</text></g>`;
   }).join('');
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
@@ -64,32 +65,6 @@ export function buildBusinessBadgeSvg(params: {
     <text x="450" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#10391f">Powered by LivingWiki.com</text>
     <text x="450" y="746" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="900" fill="#f5d780" filter="url(#coinShadow)">★ ★ ★ ★ ★</text>
   </svg>`;
-}
-
-function iconEmoji(code: string): string {
-  const icons: Record<string, string> = {
-    bakery: '🥐',
-    beer: '🍺',
-    cocktail: '🍸',
-    coffee: '☕',
-    gallery: '🎨',
-    bread: '🥐',
-    burger: '🍔',
-    hat: '🎩',
-    hotel: '🏨',
-    local: '📍',
-    market: '🛍️',
-    music: '🎵',
-    pretzel: '🥨',
-    pizza: '🍕',
-    restaurant: '🍽️',
-    service: '🧰',
-    shop: '🛍️',
-    sushi: '🍣',
-    taco: '🌮',
-    wine: '🍷',
-  };
-  return icons[code] ?? '⭐';
 }
 
 function escapeSvg(value: string): string {

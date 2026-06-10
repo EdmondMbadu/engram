@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { BUSINESS_BADGE_ICONS, type BusinessBadgeIcon } from '../business-badge-icons';
 import {
   BusinessClaimService,
   type BusinessClaimRegistryRecord,
@@ -26,11 +27,7 @@ type DecalSize = {
   detail: string;
 };
 
-type BadgeIcon = {
-  code: string;
-  emoji: string;
-  label: string;
-};
+type BadgeIcon = BusinessBadgeIcon;
 
 type ClaimCityFallback = {
   id: string;
@@ -87,6 +84,7 @@ export class BusinessClaimComponent {
     'Authentic German beer hall on South Street with a deep beer list, food, events, private parties, watch parties, and staff who can point visitors to the right local experience.',
   );
   readonly selectedIconCodes = signal(['hat', 'pretzel', 'beer', 'music']);
+  readonly showAllBadgeIcons = signal(false);
   readonly selectedSizeId = signal('window');
   readonly placeResults = signal<CityPlaceCandidate[]>([]);
   readonly selectedPlace = signal<CityPlaceCandidate | null>(null);
@@ -123,20 +121,13 @@ export class BusinessClaimComponent {
     { code: 'ko', flag: '🇰🇷', label: 'Korean', greeting: 'Annyeong' },
   ];
 
-  readonly badgeIcons: BadgeIcon[] = [
-    { code: 'hat', emoji: '🎩', label: 'Heritage' },
-    { code: 'pretzel', emoji: '🥨', label: 'Pretzel' },
-    { code: 'beer', emoji: '🍺', label: 'Beer' },
-    { code: 'coffee', emoji: '☕', label: 'Coffee' },
-    { code: 'pizza', emoji: '🍕', label: 'Pizza' },
-    { code: 'taco', emoji: '🌮', label: 'Taco' },
-    { code: 'sushi', emoji: '🍣', label: 'Sushi' },
-    { code: 'burger', emoji: '🍔', label: 'Burger' },
-    { code: 'bread', emoji: '🥐', label: 'Bakery' },
-    { code: 'wine', emoji: '🍷', label: 'Wine' },
-    { code: 'cocktail', emoji: '🍸', label: 'Cocktail' },
-    { code: 'music', emoji: '🎵', label: 'Live music' },
-  ];
+  readonly badgeIcons: BadgeIcon[] = BUSINESS_BADGE_ICONS;
+  readonly featuredBadgeIcons: BadgeIcon[] = BUSINESS_BADGE_ICONS.slice(0, 12);
+  readonly additionalBadgeIcons: BadgeIcon[] = BUSINESS_BADGE_ICONS.slice(12);
+  readonly hiddenSelectedIconCount = computed(() => {
+    const featured = new Set(this.featuredBadgeIcons.map((icon) => icon.code));
+    return this.selectedIconCodes().filter((code) => !featured.has(code)).length;
+  });
 
   readonly sizes: DecalSize[] = [
     { id: 'window', label: 'Window cling 8x10"', detail: 'Best for glass storefronts' },
@@ -472,6 +463,10 @@ export class BusinessClaimComponent {
       }
       return [...codes, code];
     });
+  }
+
+  toggleAllBadgeIcons(): void {
+    this.showAllBadgeIcons.update((value) => !value);
   }
 
   selectSize(sizeId: string): void {

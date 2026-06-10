@@ -10,6 +10,7 @@ import { generateQrSvg } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { AccountMenuComponent } from '../account-menu/account-menu';
+import { BUSINESS_BADGE_ICONS } from '../business-badge-icons';
 
 const BADGE_RING_IMAGE_URL = '/assets/image/ring-countries.png';
 
@@ -75,21 +76,13 @@ export class BusinessEditComponent {
   readonly badgeSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.svg`);
   readonly badgePngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.png`);
   readonly selectedIconCodes = computed(() => this.draft().badge_icons.split(',').map((icon) => icon.trim()).filter(Boolean).slice(0, 4));
-
-  readonly iconOptions = [
-    'beer',
-    'coffee',
-    'restaurant',
-    'music',
-    'market',
-    'shop',
-    'hotel',
-    'gallery',
-    'bakery',
-    'cocktail',
-    'service',
-    'local',
-  ];
+  readonly showAllBadgeIcons = signal(false);
+  readonly featuredIconOptions = BUSINESS_BADGE_ICONS.slice(0, 12);
+  readonly additionalIconOptions = BUSINESS_BADGE_ICONS.slice(12);
+  readonly hiddenSelectedIconCount = computed(() => {
+    const featured = new Set(this.featuredIconOptions.map((icon) => icon.code));
+    return this.selectedIconCodes().filter((code) => !featured.has(code)).length;
+  });
 
   constructor() {
     effect(() => {
@@ -119,6 +112,10 @@ export class BusinessEditComponent {
 
   iconSelected(code: string): boolean {
     return this.selectedIconCodes().includes(code);
+  }
+
+  toggleAllBadgeIcons(): void {
+    this.showAllBadgeIcons.update((value) => !value);
   }
 
   imageUploading(kind: BusinessImageKind): boolean {
