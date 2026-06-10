@@ -1,6 +1,8 @@
 import { generateQrSvg } from './qr-code';
 
 const COUNTRY_RING_IMAGE = '/assets/image/ring-countries.png';
+const BADGE_BRAND_GREEN = '#3baf62';
+const BADGE_BRAND_GREEN_DEEP = '#2a9150';
 
 export function buildBusinessBadgeSvg(params: {
   businessName: string;
@@ -24,7 +26,7 @@ export function buildBusinessBadgeSvg(params: {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
     <defs>
       <radialGradient id="paper" cx="50%" cy="42%" r="62%"><stop offset="0" stop-color="#f5e4c5"/><stop offset="0.68" stop-color="#dfc28d"/><stop offset="1" stop-color="#c79d56"/></radialGradient>
-      <linearGradient id="tealRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6f46"/><stop offset="1" stop-color="#12372b"/></linearGradient>
+      <linearGradient id="tealRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${BADGE_BRAND_GREEN}"/><stop offset="1" stop-color="${BADGE_BRAND_GREEN_DEEP}"/></linearGradient>
       <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#12323a" flood-opacity="0.28"/></filter>
       <path id="topArc" d="M 112 472 A 338 338 0 0 1 788 472"/>
       <path id="bottomArc" d="M 186 606 A 310 310 0 0 0 714 606"/>
