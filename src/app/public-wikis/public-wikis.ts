@@ -383,6 +383,7 @@ export class PublicWikisComponent implements OnInit {
   readonly isTimeSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'time');
   readonly isPopulationSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'population');
   readonly isDensitySort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'density');
+  readonly isOthersCategory = computed(() => this.activeCategory() === OTHERS_CATEGORY);
 
   readonly categoryCounts = computed(() =>
     this.categories().reduce<Record<string, number>>((acc, cat) => {
