@@ -334,11 +334,28 @@ interface CityTemperatureReading {
   fetchedAt: string;
 }
 
+interface CityTemperatureCoordinates {
+  latitude: number;
+  longitude: number;
+}
+
 interface OpenMeteoLocationResponse {
   current?: {
     temperature_2m?: number | null;
     time?: string | null;
   } | null;
+}
+
+interface OpenMeteoGeocodingResult {
+  name?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  country?: string | null;
+  admin1?: string | null;
+}
+
+interface OpenMeteoGeocodingResponse {
+  results?: OpenMeteoGeocodingResult[] | null;
 }
 
 interface PublicWikiStickerAttribute {
@@ -379,6 +396,7 @@ export class PublicWikisComponent implements OnInit {
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
   readonly activeSort = signal<PublicWikiSortMode>('population');
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
+  readonly cityTemperatureCoordinates = signal<Record<string, CityTemperatureCoordinates>>({});
   readonly isLoadingTemperatures = signal(false);
   readonly temperatureError = signal<string | null>(null);
   readonly isProductVideoOpen = signal(false);
@@ -388,6 +406,7 @@ export class PublicWikisComponent implements OnInit {
   private readonly localTimePartsFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly localTimeHeroFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly timezoneFormatterCache = new Map<string, Intl.DateTimeFormat>();
+  private readonly pendingTemperatureCoordinateLookups = new Map<string, Promise<CityTemperatureCoordinates | null>>();
 
   readonly publicWikis = computed(() => this.liveWikis());
 
@@ -853,8 +872,9 @@ export class PublicWikisComponent implements OnInit {
     }
 
     const loadedCount = Object.keys(this.cityTemperatures()).length;
-    if (loadedCount > 0) {
-      return `${loadedCount} temps loaded`;
+    const totalCount = this.cityTemperatureTotalCount();
+    if (loadedCount > 0 && totalCount > 0) {
+      return loadedCount >= totalCount ? 'All city temps loaded' : `${loadedCount}/${totalCount} temps loaded`;
     }
 
     return this.temperatureError();
@@ -1034,12 +1054,7 @@ export class PublicWikisComponent implements OnInit {
     }
 
     const existing = this.cityTemperatures();
-    const candidates = this.liveWikis().filter(
-      (wiki) =>
-        this.categoryForWiki(wiki) === CITIES_CATEGORY &&
-        this.coordinatePair(wiki) !== null &&
-        !existing[this.wikiKey(wiki)],
-    );
+    const candidates = this.liveWikis().filter((wiki) => this.categoryForWiki(wiki) === CITIES_CATEGORY && !existing[this.wikiKey(wiki)]);
     if (candidates.length === 0) {
       return;
     }
@@ -1067,9 +1082,18 @@ export class PublicWikisComponent implements OnInit {
   }
 
   private async fetchTemperatureBatch(wikis: PublicWikiCatalogItem[]): Promise<Record<string, CityTemperatureReading>> {
-    const locatedWikis = wikis
-      .map((wiki) => ({ wiki, coordinates: this.coordinatePair(wiki) }))
-      .filter((item): item is { wiki: PublicWikiCatalogItem; coordinates: { latitude: number; longitude: number } } => item.coordinates !== null);
+    const locatedWikis = (
+      await Promise.all(
+        wikis.map(async (wiki) => ({
+          wiki,
+          coordinates: await this.ensureTemperatureCoordinates(wiki),
+        })),
+      )
+    ).filter((item): item is { wiki: PublicWikiCatalogItem; coordinates: CityTemperatureCoordinates } => item.coordinates !== null);
+
+    if (locatedWikis.length === 0) {
+      return {};
+    }
 
     const url = new URL('https://api.open-meteo.com/v1/forecast');
     url.searchParams.set('latitude', locatedWikis.map((item) => String(item.coordinates.latitude)).join(','));
@@ -1106,6 +1130,98 @@ export class PublicWikisComponent implements OnInit {
 
   private temperatureForWiki(wiki: PublicWikiCatalogItem): CityTemperatureReading | null {
     return this.cityTemperatures()[this.wikiKey(wiki)] ?? null;
+  }
+
+  private async ensureTemperatureCoordinates(wiki: PublicWikiCatalogItem): Promise<CityTemperatureCoordinates | null> {
+    const existing = this.coordinatePair(wiki);
+    if (existing) {
+      return existing;
+    }
+
+    const key = this.wikiKey(wiki);
+    const pending = this.pendingTemperatureCoordinateLookups.get(key);
+    if (pending) {
+      return pending;
+    }
+
+    const lookup = this.fetchTemperatureCoordinates(wiki).finally(() => {
+      this.pendingTemperatureCoordinateLookups.delete(key);
+    });
+    this.pendingTemperatureCoordinateLookups.set(key, lookup);
+    return lookup;
+  }
+
+  private async fetchTemperatureCoordinates(wiki: PublicWikiCatalogItem): Promise<CityTemperatureCoordinates | null> {
+    const query = this.temperatureGeocodeQuery(wiki);
+    if (!query) {
+      return null;
+    }
+
+    const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
+    url.searchParams.set('name', query);
+    url.searchParams.set('count', '10');
+    url.searchParams.set('language', 'en');
+    url.searchParams.set('format', 'json');
+
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      return null;
+    }
+
+    const payload = (await response.json()) as OpenMeteoGeocodingResponse;
+    const results = payload.results ?? [];
+    const result = this.bestTemperatureGeocodingResult(wiki, results);
+    const latitude = result?.latitude;
+    const longitude = result?.longitude;
+    const coordinates = this.asCoordinatePair(latitude, longitude);
+    if (!coordinates) {
+      return null;
+    }
+
+    this.cityTemperatureCoordinates.update((current) => ({
+      ...current,
+      [this.wikiKey(wiki)]: coordinates,
+    }));
+    return coordinates;
+  }
+
+  private bestTemperatureGeocodingResult(
+    wiki: PublicWikiCatalogItem,
+    results: OpenMeteoGeocodingResult[],
+  ): OpenMeteoGeocodingResult | null {
+    if (results.length === 0) {
+      return null;
+    }
+
+    const country = wiki.countryLabel?.trim().toLowerCase();
+    const title = this.cityNameKey(wiki);
+    return (
+      results.find((result) => country && result.country?.trim().toLowerCase() === country) ??
+      results.find((result) => result.name?.trim().toLowerCase() === title) ??
+      results[0] ??
+      null
+    );
+  }
+
+  private temperatureGeocodeQuery(wiki: PublicWikiCatalogItem): string {
+    const key = this.cityNameKey(wiki);
+    const aliases: Record<string, string> = {
+      philly: 'Philadelphia',
+      'birmingham uk': 'Birmingham',
+      'hong kong': 'Hong Kong',
+      'ho chi minh city': 'Ho Chi Minh City',
+      'new york city': 'New York',
+      'san francisco': 'San Francisco',
+      'abu dhabi': 'Abu Dhabi',
+      'buenos aires': 'Buenos Aires',
+      'dar es salaam': 'Dar es Salaam',
+      'kuala lumpur': 'Kuala Lumpur',
+      'kuwait city': 'Kuwait City',
+      'las vegas': 'Las Vegas',
+      'los angeles': 'Los Angeles',
+      'mexico city': 'Mexico City',
+    };
+    return aliases[key] ?? this.cityDisplayName(wiki);
   }
 
   private temperatureTone(wiki: PublicWikiCatalogItem): (typeof TEMPERATURE_TONES)[number] | typeof TEMPERATURE_NEUTRAL_TONE {
@@ -1159,22 +1275,31 @@ export class PublicWikisComponent implements OnInit {
   }
 
   private coordinatePair(wiki: PublicWikiCatalogItem): { latitude: number; longitude: number } | null {
-    const latitude = wiki.latitude;
-    const longitude = wiki.longitude;
+    const stored = this.asCoordinatePair(wiki.latitude, wiki.longitude);
+    if (stored) return stored;
+
+    return this.cityTemperatureCoordinates()[this.wikiKey(wiki)] ?? null;
+  }
+
+  private asCoordinatePair(latitude: unknown, longitude: unknown): CityTemperatureCoordinates | null {
     if (
-      typeof latitude !== 'number' ||
-      typeof longitude !== 'number' ||
-      !Number.isFinite(latitude) ||
-      !Number.isFinite(longitude) ||
-      latitude < -90 ||
-      latitude > 90 ||
-      longitude < -180 ||
-      longitude > 180
+      typeof latitude === 'number' &&
+      typeof longitude === 'number' &&
+      Number.isFinite(latitude) &&
+      Number.isFinite(longitude) &&
+      latitude >= -90 &&
+      latitude <= 90 &&
+      longitude >= -180 &&
+      longitude <= 180
     ) {
-      return null;
+      return { latitude, longitude };
     }
 
-    return { latitude, longitude };
+    return null;
+  }
+
+  private cityTemperatureTotalCount(): number {
+    return this.liveWikis().filter((wiki) => this.categoryForWiki(wiki) === CITIES_CATEGORY).length;
   }
 
   private wikiKey(wiki: PublicWikiCatalogItem): string {
