@@ -6,6 +6,8 @@ import { RouterLink } from '@angular/router';
 type FenceLineCategory = 'waste' | 'water' | 'petrochemical' | 'legacy';
 type FenceLineStatus = 'Active Fight' | 'Ongoing Crisis' | 'Ongoing Recovery' | 'Victory Won' | 'Cautionary Tale' | 'Movement Anchor' | 'Settlement Won';
 
+const FENCE_LINE_SHARE_URL = 'https://livingwiki.com/fence-line';
+
 interface FenceLineCommunity {
   id: string;
   name: string;
@@ -484,6 +486,7 @@ export class FenceLineComponent {
   readonly activeStatus = signal<'All' | FenceLineStatus>('All');
   readonly selectedId = signal('chester');
   readonly copied = signal(false);
+  readonly phillyChatUrl = 'https://livingwiki.com/chat/philadelphia';
 
   readonly filteredCommunities = computed(() => {
     const query = this.searchTerm().trim().toLowerCase();
@@ -569,14 +572,35 @@ export class FenceLineComponent {
   }
 
   async copyShareLink(): Promise<void> {
-    const url = typeof window === 'undefined' ? '/fence-line' : `${window.location.origin}/fence-line`;
+    await this.writeShareText(FENCE_LINE_SHARE_URL);
+    this.copied.set(true);
+    if (typeof window !== 'undefined') {
+      window.setTimeout(() => this.copied.set(false), 1800);
+    }
+  }
 
+  private async writeShareText(url: string): Promise<void> {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      await navigator.clipboard.writeText(url);
+      try {
+        await navigator.clipboard.writeText(url);
+        return;
+      } catch {
+        // Fall back to the selection-based copy path below.
+      }
     }
 
-    this.copied.set(true);
-    window.setTimeout(() => this.copied.set(false), 1800);
+    if (typeof document === 'undefined') return;
+
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
   }
 
   private ensureSelectedVisible(): void {
