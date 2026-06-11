@@ -1,0 +1,472 @@
+:host {
+  display: block;
+}
+
+/* ── Ambient backdrop ──────────────────────────────────────────── */
+.claim-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.claim-ambient span {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(96px);
+}
+
+.claim-ambient__one {
+  top: -8rem;
+  left: -6rem;
+  width: 28rem;
+  height: 28rem;
+  background: var(--ambient-1);
+  animation: claimBreathe 7s ease-in-out infinite;
+}
+
+.claim-ambient__two {
+  top: 16rem;
+  right: -9rem;
+  width: 24rem;
+  height: 24rem;
+  background: var(--ambient-2);
+  animation: claimBreathe 9s ease-in-out infinite 1.4s;
+}
+
+.claim-ambient__three {
+  bottom: -12rem;
+  left: 32%;
+  width: 32rem;
+  height: 32rem;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  animation: claimBreathe 11s ease-in-out infinite 0.6s;
+}
+
+/* ── Hero ──────────────────────────────────────────────────────── */
+.claim-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  padding: 0.5rem 0.95rem;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.claim-pill--soft {
+  border-color: var(--line-strong);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  color: var(--muted);
+}
+
+.claim-pill__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent);
+  animation: claimPing 1.8s ease-out infinite;
+}
+
+.claim-pill__divider {
+  width: 1px;
+  height: 0.85rem;
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.claim-gradient-text {
+  background: linear-gradient(
+    94deg,
+    var(--accent) 0%,
+    var(--accent-soft) 45%,
+    var(--accent) 90%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: claimShimmer 7s ease-in-out infinite;
+}
+
+.claim-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  padding: 0.55rem 0.95rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.claim-chip:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--line));
+}
+
+.claim-chip .material-symbols-outlined {
+  font-size: 1.02rem;
+  color: var(--accent);
+}
+
+/* ── Cards & steps ─────────────────────────────────────────────── */
+.claim-card {
+  position: relative;
+  border-radius: 1.6rem;
+  border: 1px solid var(--line);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface) 94%, white 6%),
+    var(--surface)
+  );
+  box-shadow: var(--shadow-floating);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.claim-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 1.4rem auto;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 50%, transparent),
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.claim-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
+  box-shadow: var(--shadow-elevated);
+}
+
+.claim-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-shrink: 0;
+  border-radius: 0.95rem;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--accent-contrast);
+  background: linear-gradient(140deg, var(--accent), #2a9150);
+  box-shadow:
+    0 12px 26px -12px color-mix(in srgb, var(--accent) 65%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.claim-kicker {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.claim-subpanel {
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--bg) 72%, var(--surface) 28%);
+}
+
+/* ── Pricing plans ─────────────────────────────────────────────── */
+.claim-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 1.15rem;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 1.05rem 1.05rem 0.95rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.claim-plan:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+}
+
+.claim-plan--active {
+  border-color: color-mix(in srgb, var(--accent) 62%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 12%, var(--surface)),
+    var(--surface)
+  );
+  box-shadow: 0 18px 38px -20px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.claim-plan__ribbon {
+  position: absolute;
+  top: -0.6rem;
+  left: 0.9rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #2a9150);
+  color: var(--accent-contrast);
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.62rem;
+  box-shadow: 0 10px 20px -10px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.claim-plan__label {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.claim-plan__price {
+  margin-top: 0.2rem;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.claim-plan__included {
+  margin-top: 0.1rem;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.claim-plan__detail {
+  margin-top: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.claim-plan__check {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  font-size: 1.18rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: scale(0.55);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.claim-plan--active .claim-plan__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── CTA band ──────────────────────────────────────────────────── */
+.claim-cta {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.6rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  background:
+    radial-gradient(
+      120% 170% at 0% 0%,
+      color-mix(in srgb, var(--accent) 14%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      120% 170% at 100% 100%,
+      color-mix(in srgb, var(--accent-soft) 10%, transparent),
+      transparent 52%
+    ),
+    var(--surface);
+  box-shadow: var(--shadow-floating);
+}
+
+.claim-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0 18% auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 70%, transparent),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* ── Badge preview showcase ────────────────────────────────────── */
+.claim-preview-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid color-mix(in srgb, #c9a160 42%, transparent);
+  background: radial-gradient(130% 95% at 50% 0%, #20211f 0%, #101110 58%, #0a0a0b 100%);
+  padding: 1.35rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 227, 154, 0.1),
+    0 24px 60px -28px rgba(0, 0, 0, 0.65);
+}
+
+.claim-preview-frame::after {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 70%,
+    rgba(255, 227, 154, 0.07) 80%,
+    transparent 90%
+  );
+  animation: claimSheen 16s linear infinite;
+  pointer-events: none;
+}
+
+.claim-preview-halo {
+  position: absolute;
+  inset: 10% 14%;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 24%, transparent),
+    transparent 66%
+  );
+  filter: blur(44px);
+  animation: claimBreathe 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.claim-preview-frame svg {
+  position: relative;
+  z-index: 1;
+  animation: claimFloat 6.5s ease-in-out infinite;
+}
+
+.claim-badge-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.claim-mini-preview {
+  border: 1px solid color-mix(in srgb, #c9a160 30%, var(--line));
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, transparent), var(--surface)),
+    radial-gradient(100% 85% at 50% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent);
+  padding: 1rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 18px 42px -28px rgba(0, 0, 0, 0.42);
+}
+
+.claim-mini-preview svg {
+  display: block;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: #111211;
+  box-shadow: 0 16px 34px -24px rgba(0, 0, 0, 0.65);
+}
+
+@media (min-width: 1100px) {
+  .claim-badge-workbench {
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.42fr);
+    gap: 1.25rem;
+  }
+}
+
+.claim-linkcard {
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--bg) 72%, var(--surface) 28%);
+  transition: border-color 0.2s ease;
+}
+
+.claim-linkcard:hover {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--line));
+}
+
+/* ── Motion ────────────────────────────────────────────────────── */
+@keyframes claimPing {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 38%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes claimBreathe {
+  0%,
+  100% {
+    transform: scale(0.97);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes claimShimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes claimSheen {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes claimFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .claim-ambient span,
+  .claim-pill__dot,
+  .claim-gradient-text,
+  .claim-preview-frame::after,
+  .claim-preview-halo,
+  .claim-preview-frame svg {
+    animation: none;
+  }
+}

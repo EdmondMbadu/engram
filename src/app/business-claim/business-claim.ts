@@ -81,6 +81,7 @@ type StoredClaimDraft = {
   selector: 'app-business-claim',
   imports: [RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './business-claim.html',
+  styleUrl: './business-claim.css',
 })
 export class BusinessClaimComponent {
   private readonly route = inject(ActivatedRoute);
