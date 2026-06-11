@@ -33,6 +33,11 @@ export interface BusinessClaimContactRecord {
   business_plan?: string;
   ai_tone?: string;
   business_documents_enabled?: boolean;
+  payment_status?: string;
+  business_paid?: boolean;
+  stripe_checkout_session_id?: string;
+  stripe_customer_id?: string | null;
+  stripe_subscription_id?: string | null;
   logo_url?: string;
   profile_image_url?: string;
   cover_image_url?: string;
@@ -50,6 +55,7 @@ export interface BusinessClaimWorkspaceUpdate {
   business_plan?: string;
   ai_tone?: string;
   business_documents_enabled?: boolean;
+  payment_status?: string;
   logo_url?: string;
   profile_image_url?: string;
   cover_image_url?: string;
@@ -158,6 +164,13 @@ export class BusinessClaimService {
     const batch = writeBatch(this.firestore);
     batch.set(ref, {
       ...record,
+      ...(contact.payment_status === 'paid'
+        ? {
+            business_paid: true,
+            business_plan: contact.business_plan ?? 'local',
+            payment_status: 'paid',
+          }
+        : {}),
       created_at: serverTimestamp(),
     });
     batch.set(requestRef, {
@@ -177,9 +190,10 @@ export class BusinessClaimService {
       business_plan: contact.business_plan ?? 'free',
       ai_tone: contact.ai_tone ?? 'warm',
       business_documents_enabled: contact.business_documents_enabled === true,
+      ...(contact.payment_status === 'paid' ? { payment_status: 'paid', business_paid: true } : {}),
       status: 'pending',
       created_at: serverTimestamp(),
-    });
+    }, { merge: true });
     await batch.commit();
 
     return {
@@ -216,6 +230,7 @@ export class BusinessClaimService {
       ...(typeof update.business_documents_enabled === 'boolean'
         ? { business_documents_enabled: update.business_documents_enabled }
         : {}),
+      ...(typeof update.payment_status === 'string' ? { payment_status: update.payment_status } : {}),
       logo_url: update.logo_url?.trim() ?? '',
       profile_image_url: update.profile_image_url?.trim() ?? '',
       cover_image_url: update.cover_image_url?.trim() ?? '',
@@ -302,6 +317,11 @@ export class BusinessClaimService {
       business_plan: typeof request.business_plan === 'string' ? request.business_plan : undefined,
       ai_tone: typeof request.ai_tone === 'string' ? request.ai_tone : undefined,
       business_documents_enabled: typeof request.business_documents_enabled === 'boolean' ? request.business_documents_enabled : undefined,
+      payment_status: typeof request.payment_status === 'string' ? request.payment_status : undefined,
+      business_paid: typeof request.business_paid === 'boolean' ? request.business_paid : undefined,
+      stripe_checkout_session_id: typeof request.stripe_checkout_session_id === 'string' ? request.stripe_checkout_session_id : undefined,
+      stripe_customer_id: typeof request.stripe_customer_id === 'string' ? request.stripe_customer_id : undefined,
+      stripe_subscription_id: typeof request.stripe_subscription_id === 'string' ? request.stripe_subscription_id : undefined,
       logo_url: typeof request.logo_url === 'string' ? request.logo_url : undefined,
       profile_image_url: typeof request.profile_image_url === 'string' ? request.profile_image_url : undefined,
       cover_image_url: typeof request.cover_image_url === 'string' ? request.cover_image_url : undefined,

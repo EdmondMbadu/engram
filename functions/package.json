@@ -26,7 +26,8 @@
     "pdf-parse": "^1.1.1",
     "puppeteer-core": "^24.42.0",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "stripe": "^18.5.0"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",

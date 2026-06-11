@@ -8,6 +8,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
+import Stripe from 'stripe';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleTravelCardShare } from './answer-card-share';
 import {
@@ -63,6 +64,8 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
   default: 'false',
 });
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
+const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
+const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://livingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
@@ -154,6 +157,381 @@ async function assertPlatformAdmin(userId: string): Promise<void> {
     throw new HttpsError('permission-denied', 'Platform admin access is required.');
   }
 }
+
+type BusinessCheckoutPlanKey = 'local' | 'favorite' | 'sponsor';
+
+const businessCheckoutPlans: Record<BusinessCheckoutPlanKey, {
+  amount: number;
+  name: string;
+  description: string;
+}> = {
+  local: {
+    amount: 2500,
+    name: 'LivingWiki Business Local',
+    description: 'Tone control, business documents, 200+ conversation minutes, and conversation details.',
+  },
+  favorite: {
+    amount: 6500,
+    name: 'LivingWiki Business Local Favorite',
+    description: 'Business AI setup plus stronger local placement and priority support.',
+  },
+  sponsor: {
+    amount: 18000,
+    name: 'LivingWiki City Sponsor',
+    description: 'Citywide visibility with deeper support for launch and growth.',
+  },
+};
+
+const allowedCheckoutOrigins = new Set([
+  'http://localhost:4200',
+  'http://127.0.0.1:4200',
+  'http://localhost:4201',
+  'http://127.0.0.1:4201',
+  'https://livingwiki.com',
+  'https://www.livingwiki.com',
+  'https://living-atlas-7622a.web.app',
+  'https://living-atlas-7622a.firebaseapp.com',
+]);
+
+let stripeClient: Stripe | null = null;
+
+function getStripeClient(): Stripe {
+  const secret = stripeSecretKey.value();
+  if (!secret) {
+    throw new HttpsError('failed-precondition', 'Stripe is not configured.');
+  }
+  stripeClient ??= new Stripe(secret);
+  return stripeClient;
+}
+
+function normalizeBusinessCheckoutPlan(value: unknown): BusinessCheckoutPlanKey | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const plan = value.toLowerCase();
+  return plan === 'local' || plan === 'favorite' || plan === 'sponsor' ? plan : null;
+}
+
+function resolveCheckoutUrl(value: unknown, fallbackPath: string, requestOrigin?: string): string {
+  const fallbackOrigin = requestOrigin && allowedCheckoutOrigins.has(requestOrigin) ? requestOrigin : publicAppUrl;
+  const rawUrl = typeof value === 'string' && value.trim()
+    ? value.trim()
+    : `${fallbackOrigin}${fallbackPath}`;
+
+  let parsed: URL;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    throw new HttpsError('invalid-argument', 'Checkout return URL is invalid.');
+  }
+
+  const origin = `${parsed.protocol}//${parsed.host}`;
+  if (!allowedCheckoutOrigins.has(origin)) {
+    throw new HttpsError('invalid-argument', 'Checkout return URL is not allowed.');
+  }
+
+  return parsed.toString();
+}
+
+async function markBusinessCheckoutPaid(session: Stripe.Checkout.Session): Promise<void> {
+  const userId = session.metadata?.userId?.trim();
+  const claimKey = session.metadata?.claimKey?.trim();
+  const plan = normalizeBusinessCheckoutPlan(session.metadata?.planType);
+  if (!userId || !claimKey || !plan) {
+    throw new HttpsError('invalid-argument', 'Checkout session is missing business claim metadata.');
+  }
+
+  const paid = session.payment_status === 'paid' || session.status === 'complete';
+  if (!paid) {
+    throw new HttpsError('failed-precondition', 'Checkout has not completed yet.');
+  }
+
+  const update = {
+    owner_user_id: userId,
+    business_plan: plan,
+    business_paid: true,
+    business_documents_enabled: true,
+    payment_status: 'paid',
+    stripe_checkout_session_id: session.id,
+    stripe_customer_id: typeof session.customer === 'string' ? session.customer : null,
+    stripe_subscription_id: typeof session.subscription === 'string' ? session.subscription : null,
+    paid_at: FieldValue.serverTimestamp(),
+    updated_at: FieldValue.serverTimestamp(),
+  };
+
+  const requestRef = db.collection('business_claim_requests').doc(claimKey);
+  const claimRef = db.collection('business_claims').doc(claimKey);
+  const claimSnapshot = await claimRef.get();
+  await requestRef.set(update, { merge: true });
+  if (claimSnapshot.exists) {
+    await claimRef.set(update, { merge: true });
+  }
+}
+
+async function updateBusinessRecordsForSubscription(
+  subscriptionId: string,
+  update: Record<string, unknown>,
+): Promise<void> {
+  if (!subscriptionId) {
+    return;
+  }
+
+  const snapshot = await db.collection('business_claim_requests')
+    .where('stripe_subscription_id', '==', subscriptionId)
+    .limit(10)
+    .get();
+
+  await Promise.all(snapshot.docs.map(async (requestDoc) => {
+    const claimKey = requestDoc.id;
+    const claimRef = db.collection('business_claims').doc(claimKey);
+    const claimSnapshot = await claimRef.get();
+    await requestDoc.ref.set(update, { merge: true });
+    if (claimSnapshot.exists) {
+      await claimRef.set(update, { merge: true });
+    }
+  }));
+}
+
+function subscriptionAccessEnabled(status: unknown): boolean {
+  return status === 'active' || status === 'trialing';
+}
+
+function getSubscriptionUpdate(subscription: Stripe.Subscription): Record<string, unknown> {
+  const subscriptionRecord = subscription as Stripe.Subscription & {
+    current_period_end?: number | null;
+    cancel_at_period_end?: boolean | null;
+  };
+  const enabled = subscriptionAccessEnabled(subscription.status);
+  return {
+    business_paid: enabled,
+    business_documents_enabled: enabled,
+    payment_status: enabled ? 'paid' : subscription.status,
+    stripe_subscription_id: subscription.id,
+    subscription_status: subscription.status,
+    subscription_cancel_at_period_end: subscriptionRecord.cancel_at_period_end === true,
+    subscription_current_period_end: typeof subscriptionRecord.current_period_end === 'number'
+      ? new Date(subscriptionRecord.current_period_end * 1000)
+      : null,
+    updated_at: FieldValue.serverTimestamp(),
+  };
+}
+
+function getInvoiceSubscriptionId(invoice: Stripe.Invoice): string | null {
+  const invoiceRecord = invoice as Stripe.Invoice & {
+    subscription?: string | Stripe.Subscription | null;
+    parent?: {
+      subscription_details?: {
+        subscription?: string | Stripe.Subscription | null;
+      } | null;
+    } | null;
+  };
+  const subscription = invoiceRecord.subscription ?? invoiceRecord.parent?.subscription_details?.subscription;
+  if (typeof subscription === 'string') {
+    return subscription;
+  }
+  if (subscription && typeof subscription === 'object' && 'id' in subscription && typeof subscription.id === 'string') {
+    return subscription.id;
+  }
+  return null;
+}
+
+export const createBusinessCheckoutSession = onCall(
+  { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to start business checkout.');
+    }
+
+    const planKey = normalizeBusinessCheckoutPlan(request.data?.plan);
+    if (!planKey) {
+      throw new HttpsError('invalid-argument', 'Choose a paid business plan.');
+    }
+
+    const claimKey = typeof request.data?.claimKey === 'string' ? request.data.claimKey.trim() : '';
+    if (!claimKey) {
+      throw new HttpsError('invalid-argument', 'Business claim key is required.');
+    }
+
+    const businessName = typeof request.data?.businessName === 'string' && request.data.businessName.trim()
+      ? request.data.businessName.trim()
+      : 'Business';
+    const citySlug = typeof request.data?.citySlug === 'string' ? request.data.citySlug.trim() : '';
+    const originHeader = request.rawRequest.headers.origin;
+    const requestOrigin = typeof originHeader === 'string' ? originHeader : undefined;
+    const successUrl = resolveCheckoutUrl(request.data?.successUrl, '/business/claim?businessPayment=success', requestOrigin);
+    const cancelUrl = resolveCheckoutUrl(request.data?.cancelUrl, '/business/claim?businessPayment=cancelled', requestOrigin);
+    const plan = businessCheckoutPlans[planKey];
+    const customerEmail = typeof request.auth?.token.email === 'string' ? request.auth.token.email : undefined;
+
+    try {
+      const stripe = getStripeClient();
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: plan.name,
+                description: plan.description,
+              },
+              recurring: { interval: 'month' },
+              unit_amount: plan.amount,
+            },
+            quantity: 1,
+          },
+        ],
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        client_reference_id: claimKey,
+        metadata: {
+          source: 'business_claim',
+          userId,
+          claimKey,
+          businessName,
+          citySlug,
+          planType: planKey,
+        },
+        customer_email: customerEmail,
+      });
+
+      await db.collection('business_claim_requests').doc(claimKey).set({
+        claim_key: claimKey,
+        owner_user_id: userId,
+        business_name: businessName,
+        city_slug: citySlug,
+        business_plan: planKey,
+        business_documents_enabled: false,
+        payment_status: 'checkout_started',
+        stripe_checkout_session_id: session.id,
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+
+      return { sessionId: session.id, url: session.url ?? null };
+    } catch (error) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      logger.error('Failed to create business checkout session', error);
+      throw new HttpsError('internal', 'Checkout could not be started. Please try again.');
+    }
+  },
+);
+
+export const confirmBusinessCheckoutSession = onCall(
+  { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to confirm business checkout.');
+    }
+
+    const sessionId = typeof request.data?.sessionId === 'string' ? request.data.sessionId.trim() : '';
+    if (!sessionId) {
+      throw new HttpsError('invalid-argument', 'Checkout session ID is required.');
+    }
+
+    try {
+      const session = await getStripeClient().checkout.sessions.retrieve(sessionId);
+      if (session.metadata?.source !== 'business_claim' || session.metadata?.userId !== userId) {
+        throw new HttpsError('permission-denied', 'This checkout session does not belong to your account.');
+      }
+      await markBusinessCheckoutPaid(session);
+      return {
+        paid: true,
+        plan: normalizeBusinessCheckoutPlan(session.metadata?.planType),
+        claimKey: session.metadata?.claimKey ?? null,
+      };
+    } catch (error) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      logger.error('Failed to confirm business checkout session', error);
+      throw new HttpsError('internal', 'Checkout could not be confirmed. Please try again.');
+    }
+  },
+);
+
+export const stripeBusinessWebhook = onRequest(
+  { region: callableRegion, secrets: [stripeSecretKey, stripeWebhookSecret] },
+  async (request, response) => {
+    if (request.method !== 'POST') {
+      response.status(405).send('Method Not Allowed');
+      return;
+    }
+
+    const signature = request.headers['stripe-signature'];
+    if (!signature) {
+      response.status(400).send('Missing Stripe signature.');
+      return;
+    }
+
+    let event: Stripe.Event;
+    try {
+      const rawBody = (request as unknown as { rawBody?: Buffer | string }).rawBody ?? request.body;
+      event = getStripeClient().webhooks.constructEvent(rawBody, signature as string, stripeWebhookSecret.value());
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown verification error';
+      logger.warn('Business Stripe webhook signature verification failed', message);
+      response.status(400).send(`Webhook Error: ${message}`);
+      return;
+    }
+
+    try {
+      switch (event.type) {
+        case 'checkout.session.completed': {
+          const session = event.data.object as Stripe.Checkout.Session;
+          if (session.metadata?.source === 'business_claim') {
+            await markBusinessCheckoutPaid(session);
+          }
+          break;
+        }
+        case 'customer.subscription.created':
+        case 'customer.subscription.updated':
+        case 'customer.subscription.deleted': {
+          const subscription = event.data.object as Stripe.Subscription;
+          await updateBusinessRecordsForSubscription(subscription.id, getSubscriptionUpdate(subscription));
+          break;
+        }
+        case 'invoice.paid':
+        case 'invoice.payment_succeeded': {
+          const invoice = event.data.object as Stripe.Invoice;
+          const subscriptionId = getInvoiceSubscriptionId(invoice);
+          await updateBusinessRecordsForSubscription(subscriptionId ?? '', {
+            business_paid: true,
+            business_documents_enabled: true,
+            payment_status: 'paid',
+            latest_invoice_id: invoice.id,
+            last_payment_at: FieldValue.serverTimestamp(),
+            updated_at: FieldValue.serverTimestamp(),
+          });
+          break;
+        }
+        case 'invoice.payment_failed':
+        case 'invoice.payment_action_required': {
+          const invoice = event.data.object as Stripe.Invoice;
+          const subscriptionId = getInvoiceSubscriptionId(invoice);
+          await updateBusinessRecordsForSubscription(subscriptionId ?? '', {
+            business_paid: false,
+            business_documents_enabled: false,
+            payment_status: event.type === 'invoice.payment_action_required' ? 'payment_action_required' : 'payment_failed',
+            latest_invoice_id: invoice.id,
+            updated_at: FieldValue.serverTimestamp(),
+          });
+          break;
+        }
+        default:
+          break;
+      }
+      response.sendStatus(200);
+    } catch (error) {
+      logger.error('Failed to process business Stripe webhook', error);
+      response.status(500).send('Business checkout update failed.');
+    }
+  },
+);
 
 type AtlasTextMessagingProvider = 'twilio' | 'vapi';
 

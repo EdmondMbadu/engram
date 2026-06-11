@@ -236,9 +236,13 @@
                   <div class="min-w-0">
                     <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">Business AI</p>
                     <h2 class="mt-2 text-xl font-black text-[var(--text)]">AI setup</h2>
-                    @if (paidBusinessPlan()) {
+                    @if (paidFeaturesUnlocked()) {
                       <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
-                        Local is selected by default. It unlocks tone, company documents, conversation details, and 200+ conversation minutes.
+                        Payment is confirmed. Tone control, company documents, conversation details, and 200+ conversation minutes are unlocked.
+                      </p>
+                    } @else if (paidBusinessPlan()) {
+                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                        {{ selectedBusinessPlanOption().label }} is selected. Complete checkout to unlock AI tone, company documents, conversation details, and 200+ conversation minutes.
                       </p>
                     } @else {
                       <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
@@ -247,15 +251,18 @@
                     }
                   </div>
                   <span class="inline-flex w-fit shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-[10px] font-black uppercase"
-                    [class.border-[var(--accent)]]="paidBusinessPlan()"
-                    [class.bg-[var(--accent)]/10]="paidBusinessPlan()"
-                    [class.text-[var(--accent)]]="paidBusinessPlan()"
+                    [class.border-[var(--accent)]]="paidFeaturesUnlocked()"
+                    [class.bg-[var(--accent)]/10]="paidFeaturesUnlocked()"
+                    [class.text-[var(--accent)]]="paidFeaturesUnlocked()"
                     [class.border-amber-400/40]="!paidBusinessPlan()"
                     [class.bg-amber-400/10]="!paidBusinessPlan()"
                     [class.text-amber-600]="!paidBusinessPlan()"
+                    [class.border-[var(--line)]]="paidBusinessPlan() && !paidFeaturesUnlocked()"
+                    [class.bg-[var(--surface)]]="paidBusinessPlan() && !paidFeaturesUnlocked()"
+                    [class.text-[var(--muted)]]="paidBusinessPlan() && !paidFeaturesUnlocked()"
                   >
-                    <span class="material-symbols-outlined text-base">{{ paidBusinessPlan() ? 'lock_open' : 'lock' }}</span>
-                    <span>{{ paidBusinessPlan() ? 'Paid features on' : 'Free preview' }}</span>
+                    <span class="material-symbols-outlined text-base">{{ paidFeaturesUnlocked() ? 'lock_open' : 'lock' }}</span>
+                    <span>{{ paidFeaturesUnlocked() ? 'Paid features on' : paidBusinessPlan() ? 'Checkout required' : 'Free preview' }}</span>
                   </span>
                 </div>
 
@@ -284,13 +291,39 @@
                 <div class="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
                   <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <p class="text-sm font-black text-[var(--text)]">
-                      {{ paidBusinessPlan() ? '200+ conversation minutes included' : '15 call minutes included' }}
+                      {{ paidBusinessPlan() ? '200+ conversation minutes after checkout' : '15 call minutes included' }}
                     </p>
                     <p class="text-sm leading-6 text-[var(--muted)]">
-                      {{ paidBusinessPlan() ? 'Tone, documents, and conversation details are enabled.' : 'Select Local or above to unlock tone and documents.' }}
+                      {{ paidFeaturesUnlocked() ? 'Tone, documents, and conversation details are enabled.' : paidBusinessPlan() ? 'Secure checkout unlocks tone, documents, and conversation details.' : 'Select Local or above to unlock tone and documents.' }}
                     </p>
                   </div>
                 </div>
+                @if (paidBusinessPlan() && !paidFeaturesUnlocked()) {
+                  <div class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.08] p-4">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div class="min-w-0">
+                        <p class="text-sm font-black text-[var(--text)]">Complete payment to unlock business AI</p>
+                        <p class="mt-1 text-sm leading-6 text-[var(--muted)]">
+                          You will return here after checkout, then document upload continues from this same draft.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        class="primary-btn shrink-0 justify-center !px-5 !py-3 text-sm disabled:cursor-wait disabled:opacity-60"
+                        [disabled]="checkoutLoading()"
+                        (click)="startBusinessCheckout()"
+                      >
+                        <span class="material-symbols-outlined text-base">{{ checkoutLoading() ? 'progress_activity' : 'credit_card' }}</span>
+                        <span>{{ checkoutLoading() ? 'Starting checkout...' : 'Pay ' + selectedBusinessPlanOption().price + ' and continue' }}</span>
+                      </button>
+                    </div>
+                    @if (checkoutError()) {
+                      <p class="mt-3 rounded-xl border border-red-400/30 bg-red-400/10 px-3 py-2 text-sm font-semibold text-red-600">{{ checkoutError() }}</p>
+                    }
+                  </div>
+                } @else if (checkoutError()) {
+                  <p class="mt-4 rounded-xl border border-red-400/30 bg-red-400/10 px-3 py-2 text-sm font-semibold text-red-600">{{ checkoutError() }}</p>
+                }
               </div>
 
               <div class="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
@@ -300,7 +333,7 @@
                       <h3 class="text-sm font-black text-[var(--text)]">AI tone</h3>
                       <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose how the customer-service agent should sound on calls and chat.</p>
                     </div>
-                    @if (!paidBusinessPlan()) {
+                    @if (!paidFeaturesUnlocked()) {
                       <span class="material-symbols-outlined text-[var(--muted)]">lock</span>
                     }
                   </div>
@@ -309,17 +342,17 @@
                       <button
                         type="button"
                         class="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-black transition-all disabled:cursor-not-allowed disabled:opacity-45"
-                        [class.border-[var(--accent)]]="aiTone() === tone.id && paidBusinessPlan()"
-                        [class.bg-[var(--accent)]/10]="aiTone() === tone.id && paidBusinessPlan()"
-                        [class.text-[var(--accent)]]="aiTone() === tone.id && paidBusinessPlan()"
-                        [class.border-[var(--line)]]="aiTone() !== tone.id || !paidBusinessPlan()"
-                        [class.bg-[var(--surface)]]="aiTone() !== tone.id || !paidBusinessPlan()"
-                        [class.text-[var(--text)]]="aiTone() !== tone.id || !paidBusinessPlan()"
-                        [disabled]="!paidBusinessPlan()"
+                        [class.border-[var(--accent)]]="aiTone() === tone.id && paidFeaturesUnlocked()"
+                        [class.bg-[var(--accent)]/10]="aiTone() === tone.id && paidFeaturesUnlocked()"
+                        [class.text-[var(--accent)]]="aiTone() === tone.id && paidFeaturesUnlocked()"
+                        [class.border-[var(--line)]]="aiTone() !== tone.id || !paidFeaturesUnlocked()"
+                        [class.bg-[var(--surface)]]="aiTone() !== tone.id || !paidFeaturesUnlocked()"
+                        [class.text-[var(--text)]]="aiTone() !== tone.id || !paidFeaturesUnlocked()"
+                        [disabled]="!paidFeaturesUnlocked()"
                         (click)="selectAiTone(tone.id)"
                       >
                         <span>{{ tone.label }}</span>
-                        @if (aiTone() === tone.id && paidBusinessPlan()) {
+                        @if (aiTone() === tone.id && paidFeaturesUnlocked()) {
                           <span class="material-symbols-outlined text-base">check_circle</span>
                         }
                       </button>
@@ -336,7 +369,7 @@
                       <h3 class="text-sm font-black text-[var(--text)]">Business documents</h3>
                       <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Add company knowledge so the AI answers from real source material.</p>
                     </div>
-                    @if (!paidBusinessPlan()) {
+                    @if (!paidFeaturesUnlocked()) {
                       <span class="material-symbols-outlined text-[var(--muted)]">lock</span>
                     }
                   </div>
@@ -348,15 +381,15 @@
                   <button
                     type="button"
                     class="primary-btn mt-4 w-full justify-center !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50"
-                    [disabled]="!paidBusinessPlan()"
+                    [disabled]="checkoutLoading()"
                     (click)="openBusinessUpload()"
                   >
-                    <span class="material-symbols-outlined text-base">upload_file</span>
-                    <span>Upload business documents</span>
+                    <span class="material-symbols-outlined text-base">{{ paidFeaturesUnlocked() ? 'upload_file' : 'credit_card' }}</span>
+                    <span>{{ paidFeaturesUnlocked() ? 'Upload business documents' : paidBusinessPlan() ? 'Pay and unlock document upload' : 'Select paid plan to upload' }}</span>
                   </button>
-                  @if (!paidBusinessPlan()) {
+                  @if (!paidFeaturesUnlocked()) {
                     <p class="mt-3 text-xs font-semibold leading-5 text-[var(--muted)]">
-                      Free preview keeps these controls locked. Select Local or above to unlock them.
+                      Document uploads are available after payment. The upload page will return here when files are added.
                     </p>
                   }
                 </div>

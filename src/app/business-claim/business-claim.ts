@@ -1,8 +1,10 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { httpsCallable } from 'firebase/functions';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { getFirebaseFunctions } from '../firebase.client';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -31,6 +33,7 @@ type BadgeIcon = BusinessBadgeIcon;
 
 type BusinessPlanId = 'free' | 'local' | 'favorite' | 'sponsor';
 type AiToneId = 'warm' | 'calm' | 'upbeat' | 'professional' | 'concise' | 'premium';
+type BusinessPaymentStatus = 'idle' | 'checkout_started' | 'paid' | 'cancelled';
 
 type BusinessPlanOption = {
   id: BusinessPlanId;
@@ -68,6 +71,8 @@ type StoredClaimDraft = {
   adminEmail: string;
   selectedIconCodes: string[];
   selectedBusinessPlan: BusinessPlanId;
+  businessPaymentStatus?: BusinessPaymentStatus;
+  paidBusinessPlanId?: BusinessPlanId | null;
   aiTone: AiToneId;
   savedAt: string;
 };
@@ -107,6 +112,10 @@ export class BusinessClaimComponent {
   readonly showAllBadgeIcons = signal(false);
   readonly selectedSizeId = signal('window');
   readonly selectedBusinessPlan = signal<BusinessPlanId>('local');
+  readonly businessPaymentStatus = signal<BusinessPaymentStatus>('idle');
+  readonly paidBusinessPlanId = signal<BusinessPlanId | null>(null);
+  readonly checkoutLoading = signal(false);
+  readonly checkoutError = signal<string | null>(null);
   readonly aiTone = signal<AiToneId>('warm');
   readonly placeResults = signal<CityPlaceCandidate[]>([]);
   readonly selectedPlace = signal<CityPlaceCandidate | null>(null);
@@ -296,6 +305,11 @@ export class BusinessClaimComponent {
   readonly businessDetailPath = computed(() => `/business/${this.selectedCitySlug()}/${this.businessSlug() || 'business'}`);
   readonly businessDetailUrl = computed(() => `https://livingwiki.com${this.businessDetailPath()}`);
   readonly paidBusinessPlan = computed(() => this.selectedBusinessPlan() !== 'free');
+  readonly paidFeaturesUnlocked = computed(() =>
+    this.paidBusinessPlan()
+    && this.businessPaymentStatus() === 'paid'
+    && this.paidBusinessPlanId() === this.selectedBusinessPlan(),
+  );
   readonly selectedBusinessPlanOption = computed(() =>
     this.businessPlans.find((plan) => plan.id === this.selectedBusinessPlan()) ?? this.businessPlans[0],
   );
@@ -345,6 +359,7 @@ export class BusinessClaimComponent {
   constructor() {
     this.localClaimKeys.set(this.loadLocalDrafts().map((claim) => claim.claimKey));
     this.restorePendingDraft();
+    void this.restoreCheckoutReturn();
 
     const requestedCity = this.route.snapshot.queryParamMap.get('city')?.trim().toLowerCase() ?? '';
     if (requestedCity) {
@@ -525,7 +540,7 @@ export class BusinessClaimComponent {
       `Explain the business as a real ${category.toLowerCase()} with practical, customer-ready answers.`,
       address ? `Use this location context: ${address}.` : '',
       base ? `Business notes: ${base}` : '',
-      this.paidBusinessPlan()
+      this.paidFeaturesUnlocked()
         ? `Use this paid AI tone: ${this.selectedAiToneOption().label}. ${this.selectedAiToneOption().detail}`
         : '',
       'Help visitors with hours, menu or service highlights, reservations, events, accessibility, nearby recommendations, and language-friendly answers.',
@@ -556,20 +571,83 @@ export class BusinessClaimComponent {
   }
 
   selectBusinessPlan(planId: BusinessPlanId): void {
+    const previousPlan = this.selectedBusinessPlan();
     this.selectedBusinessPlan.set(planId);
+    if (planId === 'free') {
+      this.businessPaymentStatus.set('idle');
+      this.paidBusinessPlanId.set(null);
+    } else if (previousPlan !== planId && this.paidBusinessPlanId() !== planId) {
+      this.businessPaymentStatus.set('idle');
+    }
+    this.checkoutError.set(null);
     this.claimStatus.set(null);
   }
 
   selectAiTone(toneId: AiToneId): void {
-    if (!this.paidBusinessPlan()) {
+    if (!this.paidFeaturesUnlocked()) {
       return;
     }
     this.aiTone.set(toneId);
     this.claimStatus.set(null);
   }
 
+  async startBusinessCheckout(): Promise<void> {
+    if (this.checkoutLoading()) {
+      return;
+    }
+    if (!this.paidBusinessPlan()) {
+      this.selectedBusinessPlan.set('local');
+    }
+    if (!this.authService.isAuthenticated()) {
+      this.savePendingDraft();
+      await this.router.navigate(['/create-account'], { queryParams: this.accountRedirectParams() });
+      return;
+    }
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    this.savePendingDraft();
+    this.checkoutLoading.set(true);
+    this.checkoutError.set(null);
+    this.businessPaymentStatus.set('checkout_started');
+
+    const plan = this.selectedBusinessPlan();
+    const origin = window.location.origin;
+    const successUrl = `${origin}/business/claim?businessPayment=success&plan=${encodeURIComponent(plan)}&claim=${encodeURIComponent(this.claimKey())}&session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${origin}/business/claim?businessPayment=cancelled&plan=${encodeURIComponent(plan)}&claim=${encodeURIComponent(this.claimKey())}`;
+
+    try {
+      const createCheckoutSession = httpsCallable(getFirebaseFunctions(), 'createBusinessCheckoutSession');
+      const result = await createCheckoutSession({
+        plan,
+        claimKey: this.claimKey(),
+        businessName: this.businessName(),
+        citySlug: this.selectedCitySlug(),
+        successUrl,
+        cancelUrl,
+      });
+      const data = result.data as { url?: string; sessionUrl?: string };
+      const checkoutUrl = data.url || data.sessionUrl;
+      if (!checkoutUrl) {
+        throw new Error('Checkout URL was not returned.');
+      }
+      window.location.href = checkoutUrl;
+    } catch {
+      this.businessPaymentStatus.set('idle');
+      this.checkoutError.set('Checkout could not be started. Please try again.');
+      this.checkoutLoading.set(false);
+    }
+  }
+
   async openBusinessUpload(): Promise<void> {
     if (!this.paidBusinessPlan()) {
+      this.selectedBusinessPlan.set('local');
+      this.checkoutError.set('Choose a paid plan before uploading business documents.');
+      return;
+    }
+    if (!this.paidFeaturesUnlocked()) {
+      await this.startBusinessCheckout();
       return;
     }
     this.savePendingDraft();
@@ -618,7 +696,8 @@ export class BusinessClaimComponent {
         badge_icons: this.selectedIconCodes(),
         business_plan: this.selectedBusinessPlan(),
         ai_tone: this.aiTone(),
-        business_documents_enabled: this.paidBusinessPlan(),
+        business_documents_enabled: this.paidFeaturesUnlocked(),
+        payment_status: this.businessPaymentStatus(),
       });
       this.existingClaim.set(saved);
       this.saveLocalDraft(this.currentDraft());
@@ -787,6 +866,8 @@ export class BusinessClaimComponent {
       adminEmail: this.adminEmail().trim(),
       selectedIconCodes: this.selectedIconCodes(),
       selectedBusinessPlan: this.selectedBusinessPlan(),
+      businessPaymentStatus: this.businessPaymentStatus(),
+      paidBusinessPlanId: this.paidBusinessPlanId(),
       aiTone: this.aiTone(),
       savedAt: new Date().toISOString(),
     };
@@ -825,6 +906,12 @@ export class BusinessClaimComponent {
       }
       if (this.isBusinessPlanId(parsed.selectedBusinessPlan)) {
         this.selectedBusinessPlan.set(parsed.selectedBusinessPlan);
+      }
+      if (this.isBusinessPaymentStatus(parsed.businessPaymentStatus)) {
+        this.businessPaymentStatus.set(parsed.businessPaymentStatus);
+      }
+      if (parsed.paidBusinessPlanId === null || this.isBusinessPlanId(parsed.paidBusinessPlanId)) {
+        this.paidBusinessPlanId.set(parsed.paidBusinessPlanId ?? null);
       }
       if (this.isAiToneId(parsed.aiTone)) {
         this.aiTone.set(parsed.aiTone);
@@ -867,9 +954,62 @@ export class BusinessClaimComponent {
     return typeof value === 'string' && this.aiToneOptions.some((tone) => tone.id === value);
   }
 
+  private isBusinessPaymentStatus(value: unknown): value is BusinessPaymentStatus {
+    return value === 'idle' || value === 'checkout_started' || value === 'paid' || value === 'cancelled';
+  }
+
+  private async restoreCheckoutReturn(): Promise<void> {
+    const payment = this.route.snapshot.queryParamMap.get('businessPayment');
+    const plan = this.route.snapshot.queryParamMap.get('plan');
+    const sessionId = this.route.snapshot.queryParamMap.get('session_id');
+
+    if (this.isBusinessPlanId(plan)) {
+      this.selectedBusinessPlan.set(plan);
+    }
+
+    if (payment === 'cancelled') {
+      this.businessPaymentStatus.set('cancelled');
+      this.checkoutError.set('Checkout was cancelled. Your draft is still here when you are ready.');
+      return;
+    }
+
+    if (payment !== 'success') {
+      return;
+    }
+
+    if (!sessionId) {
+      this.businessPaymentStatus.set('checkout_started');
+      this.checkoutError.set('Payment returned without a checkout session. Please try checkout again.');
+      return;
+    }
+
+    this.checkoutLoading.set(true);
+    this.checkoutError.set(null);
+    this.businessPaymentStatus.set('checkout_started');
+
+    try {
+      const confirmCheckout = httpsCallable(getFirebaseFunctions(), 'confirmBusinessCheckoutSession');
+      const result = await confirmCheckout({ sessionId });
+      const data = result.data as { paid?: boolean; plan?: unknown };
+      if (!data.paid || !this.isBusinessPlanId(data.plan)) {
+        throw new Error('Checkout was not paid.');
+      }
+      this.selectedBusinessPlan.set(data.plan);
+      this.paidBusinessPlanId.set(data.plan);
+      this.businessPaymentStatus.set('paid');
+      this.claimStatus.set('Payment confirmed. Tone controls and business document uploads are unlocked.');
+      this.savePendingDraft();
+    } catch {
+      this.businessPaymentStatus.set('checkout_started');
+      this.checkoutError.set('We could not confirm the payment yet. If the card was charged, refresh in a moment or contact support.');
+    } finally {
+      this.checkoutLoading.set(false);
+    }
+  }
+
   private guidePromptForClaim(): string {
     const prompt = this.guidePrompt().trim();
-    if (!this.paidBusinessPlan()) {
+    if (!this.paidFeaturesUnlocked()) {
       return prompt;
     }
     const tone = this.selectedAiToneOption();
