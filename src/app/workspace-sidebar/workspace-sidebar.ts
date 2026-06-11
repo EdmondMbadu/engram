@@ -14,6 +14,7 @@ export type WorkspaceSidebarActive =
   | 'wiki'
   | 'settings'
   | 'business'
+  | 'profile'
   | 'dymaxion'
   | 'business-edit'
   | 'business-badge'
@@ -71,6 +72,7 @@ export class WorkspaceSidebarComponent {
     { key: 'library', label: 'Source Files', icon: 'library_books', route: '/library' },
     { key: 'scrapper', label: 'Scraper', icon: 'travel_explore', route: '/scrapper' },
     { key: 'wiki', label: 'Wiki Reader', icon: 'menu_book', route: this.atlasWikiLink() },
+    { key: 'profile', label: 'Profile', icon: 'account_circle', route: '/profile' },
     { key: 'settings', label: 'Settings', icon: 'settings', route: '/atlases' },
   ]);
 

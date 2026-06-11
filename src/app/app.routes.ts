@@ -84,6 +84,12 @@ export const routes: Routes = [
   { path: 'wiki/:slug', component: WikiComponent, title: 'Public Wiki | Living Wiki' },
   { path: 'wiki', component: WikiComponent, title: 'Wiki | Living Wiki', canActivate: [authGuard] },
   { path: 'public-wikis', component: PublicWikisComponent, title: 'Public Wikis | Living Wiki' },
+  {
+    path: 'profile',
+    loadComponent: () => import('./profile/profile').then((m) => m.ProfileComponent),
+    title: 'Profile | Living Wiki',
+    canActivate: [authGuard],
+  },
   { path: 'atlases', component: AtlasManageComponent, title: 'Atlas Settings | Living Wiki', canActivate: [authGuard] },
   { path: 'admin/users', component: AdminUsersComponent, title: 'Users | Living Wiki', canActivate: [adminGuard] },
   { path: 'atlases/:atlasId/persona', component: AtlasPersonaComponent, title: 'Wiki Voice | Living Wiki', canActivate: [authGuard] },

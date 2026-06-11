@@ -1,0 +1,287 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
+    <app-workspace-sidebar active="profile" [rail]="true"></app-workspace-sidebar>
+
+    <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
+      <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
+        <div class="flex min-w-0 items-center gap-3 md:gap-8">
+          <app-mobile-menu activePage="profile"></app-mobile-menu>
+          <div class="min-w-0">
+            <h1 class="truncate text-2xl font-black text-[var(--text)]">Profile</h1>
+            <p class="hidden text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block">Account and linked spaces</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <app-atlas-badge></app-atlas-badge>
+          <app-theme-toggle></app-theme-toggle>
+          <app-account-menu></app-account-menu>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto">
+        <div class="mx-auto w-full max-w-6xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
+          <section class="border-b border-[var(--line)] pb-8">
+            <div class="grid gap-8 md:grid-cols-[13rem_1fr] md:items-start">
+              <div class="flex justify-center md:justify-start">
+                <div class="relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] shadow-[var(--shadow-floating)] sm:h-48 sm:w-48">
+                  @if (profilePhoto()) {
+                    <img [src]="profilePhoto()" [alt]="userName() + ' profile photo'" class="h-full w-full object-cover" />
+                  } @else {
+                    <span class="text-5xl font-black text-[var(--accent)]">{{ userInitials() }}</span>
+                  }
+                </div>
+              </div>
+
+              <div class="min-w-0">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-3">
+                      <h2 class="min-w-0 text-4xl font-black text-[var(--text)]">{{ profileHandle() }}</h2>
+                      @if (profile()?.role === 'admin') {
+                        <span class="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">
+                          Admin
+                        </span>
+                      }
+                    </div>
+                    <p class="mt-2 text-lg font-bold text-[var(--text)]">{{ userName() }}</p>
+                    <p class="mt-1 text-sm text-[var(--muted)]">{{ userEmail() }}</p>
+                  </div>
+
+                  <div class="flex flex-wrap gap-2">
+                    <a routerLink="/atlases" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
+                      <span class="material-symbols-outlined text-base">settings</span>
+                      <span>Settings</span>
+                    </a>
+                    <a routerLink="/wikis" class="primary-btn inline-flex !px-4 !py-2.5 text-sm">
+                      <span class="material-symbols-outlined text-base">dashboard</span>
+                      <span>My Wikis</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                    <p class="text-2xl font-black">{{ atlases().length }}</p>
+                    <p class="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Wikis</p>
+                  </div>
+                  <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                    <p class="text-2xl font-black">{{ businessClaims().length }}</p>
+                    <p class="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Business pages</p>
+                  </div>
+                  <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                    <p class="text-2xl font-black">{{ totalDocuments() }}</p>
+                    <p class="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Documents</p>
+                  </div>
+                  <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+                    <p class="text-2xl font-black">{{ linkedCount() }}</p>
+                    <p class="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--muted)]">Linked</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                  <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-4">
+                    <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">Account</p>
+                    <dl class="mt-3 grid gap-2 text-sm">
+                      <div class="flex items-center justify-between gap-4">
+                        <dt class="text-[var(--muted)]">Email verified</dt>
+                        <dd class="font-black">{{ profile()?.emailVerified ? 'Yes' : 'No' }}</dd>
+                      </div>
+                      <div class="flex items-center justify-between gap-4">
+                        <dt class="text-[var(--muted)]">Joined</dt>
+                        <dd class="font-black">{{ accountCreatedLabel() }}</dd>
+                      </div>
+                      <div class="flex items-center justify-between gap-4">
+                        <dt class="text-[var(--muted)]">Last sign in</dt>
+                        <dd class="font-black">{{ lastSignInLabel() }}</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-4">
+                    <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">Sign-in methods</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                      @for (provider of providerLabels(); track provider) {
+                        <span class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-black text-[var(--text)]">
+                          <span class="material-symbols-outlined text-[1rem]">verified_user</span>
+                          <span>{{ provider }}</span>
+                        </span>
+                      } @empty {
+                        <span class="text-sm text-[var(--muted)]">No sign-in methods found.</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="mt-8">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h3 class="text-sm font-black uppercase tracking-[0.18em] text-[var(--muted)]">Linked Wikis</h3>
+                <p class="mt-1 text-sm text-[var(--muted)]">{{ ownedWikis().length }} owned, {{ adminWikis().length }} shared admin, {{ publicWikis().length }} public.</p>
+              </div>
+              <a routerLink="/upload" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
+                <span class="material-symbols-outlined text-base">add</span>
+                <span>Add knowledge</span>
+              </a>
+            </div>
+
+            @if (isLoadingWikis()) {
+              <div class="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                @for (item of [1, 2, 3]; track item) {
+                  <div class="h-52 animate-pulse rounded-2xl border border-[var(--line)] bg-[var(--surface)]"></div>
+                }
+              </div>
+            } @else {
+              <div class="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                @for (atlas of recentWikis(); track atlas.id) {
+                  <article class="overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
+                    <a [routerLink]="libraryPath(atlas)" class="block aspect-[16/9] bg-[var(--soft-fill)]">
+                      @if (atlas.hero_url) {
+                        <img [src]="atlas.hero_url" [alt]="displayName(atlas) + ' cover image'" loading="lazy" class="h-full w-full object-cover" />
+                      } @else if (atlas.logo_url) {
+                        <div class="flex h-full w-full items-center justify-center">
+                          <img [src]="atlas.logo_url" [alt]="displayName(atlas) + ' logo'" loading="lazy" class="h-20 w-20 object-contain" />
+                        </div>
+                      } @else {
+                        <div class="flex h-full w-full items-center justify-center">
+                          <span class="flex h-20 w-20 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-2xl font-black text-[var(--accent)]">
+                            {{ initialsFor(displayName(atlas)) }}
+                          </span>
+                        </div>
+                      }
+                    </a>
+                    <div class="p-4">
+                      <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
+                          <h4 class="truncate text-lg font-black">{{ displayName(atlas) }}</h4>
+                          @if (cityCountryLabel(atlas); as location) {
+                            <p class="mt-1 truncate text-xs font-black uppercase tracking-[0.14em] text-[var(--muted)]">{{ location }}</p>
+                          }
+                        </div>
+                        @if (atlas.is_public) {
+                          <span class="shrink-0 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Public</span>
+                        }
+                      </div>
+                      <div class="mt-4 grid grid-cols-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-center">
+                        <div class="px-2 py-3">
+                          <p class="font-black">{{ atlas.stats?.documents ?? 0 }}</p>
+                          <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--muted)]">Docs</p>
+                        </div>
+                        <div class="border-x border-[var(--line)] px-2 py-3">
+                          <p class="font-black">{{ atlas.stats?.wiki_articles ?? 0 }}</p>
+                          <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--muted)]">Pages</p>
+                        </div>
+                        <div class="px-2 py-3">
+                          <p class="font-black">{{ atlas.stats?.chat_threads ?? 0 }}</p>
+                          <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--muted)]">Chats</p>
+                        </div>
+                      </div>
+                      <div class="mt-4 flex gap-2">
+                        <a [routerLink]="libraryPath(atlas)" class="primary-btn flex-1 justify-center !px-3 !py-2.5 text-xs">
+                          <span>Open</span>
+                        </a>
+                        <a [routerLink]="wikiPath(atlas)" class="ghost-btn !px-3 !py-2.5 text-xs" title="View Wiki" aria-label="View Wiki">
+                          <span class="material-symbols-outlined text-base">open_in_new</span>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                } @empty {
+                  <div class="rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-8 text-center sm:col-span-2 xl:col-span-3">
+                    <p class="text-lg font-black">No Wikis connected yet.</p>
+                    <a routerLink="/wikis" class="primary-btn mt-4 inline-flex !px-4 !py-2.5 text-sm">
+                      <span class="material-symbols-outlined text-base">add</span>
+                      <span>Create Wiki</span>
+                    </a>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+
+          <section class="mt-10">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h3 class="text-sm font-black uppercase tracking-[0.18em] text-[var(--muted)]">Business Pages</h3>
+                <p class="mt-1 text-sm text-[var(--muted)]">Claimed places and guide profiles linked to this account.</p>
+              </div>
+              <a routerLink="/business/claim" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
+                <span class="material-symbols-outlined text-base">add_business</span>
+                <span>Claim business</span>
+              </a>
+            </div>
+
+            @if (businessError()) {
+              <div class="mt-4 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">
+                {{ businessError() }}
+              </div>
+            } @else if (loadingBusinesses()) {
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                @for (item of [1, 2]; track item) {
+                  <div class="h-36 animate-pulse rounded-2xl border border-[var(--line)] bg-[var(--surface)]"></div>
+                }
+              </div>
+            } @else {
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                @for (business of businessClaims(); track business.claim_key) {
+                  <article class="flex gap-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)]">
+                    <a [routerLink]="businessPath(business)" class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)]">
+                      @if (businessImageUrl(business)) {
+                        <img [src]="businessImageUrl(business)" [alt]="business.business_name + ' image'" loading="lazy" class="h-full w-full object-cover" />
+                      } @else {
+                        <span class="text-xl font-black text-[var(--accent)]">{{ initialsFor(business.business_name) }}</span>
+                      }
+                    </a>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-start justify-between gap-3">
+                        <div class="min-w-0">
+                          <h4 class="truncate text-lg font-black">{{ business.business_name }}</h4>
+                          <p class="mt-1 truncate text-sm text-[var(--muted)]">{{ business.city_name }} &middot; {{ business.category || 'Business' }}</p>
+                        </div>
+                        <span class="shrink-0 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">
+                          {{ businessStatusLabel(business.status) }}
+                        </span>
+                      </div>
+                      <div class="mt-4 flex gap-2">
+                        <a [routerLink]="businessPath(business)" class="primary-btn flex-1 justify-center !px-3 !py-2.5 text-xs">
+                          <span>Open page</span>
+                        </a>
+                        <a [routerLink]="businessPath(business) + '/edit'" class="ghost-btn !px-3 !py-2.5 text-xs" title="Edit business" aria-label="Edit business">
+                          <span class="material-symbols-outlined text-base">edit</span>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                } @empty {
+                  <div class="rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-8 text-center md:col-span-2">
+                    <p class="text-lg font-black">No business pages linked yet.</p>
+                    <a routerLink="/business/claim" class="primary-btn mt-4 inline-flex !px-4 !py-2.5 text-sm">
+                      <span class="material-symbols-outlined text-base">add_business</span>
+                      <span>Claim business</span>
+                    </a>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+
+          <section class="mt-10 rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 class="text-sm font-black uppercase tracking-[0.18em] text-[var(--muted)]">Links</h3>
+                <p class="mt-1 text-sm text-[var(--muted)]">External links and saved profile attachments will appear here.</p>
+              </div>
+              <a routerLink="/atlases" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
+                <span class="material-symbols-outlined text-base">link</span>
+                <span>Manage links</span>
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

@@ -38,6 +38,7 @@ export class MobileMenuComponent {
     { route: '/library', icon: 'library_books', label: 'Source Files', key: 'library' },
     { route: '/scrapper', icon: 'travel_explore', label: 'Scraper', key: 'scrapper', workspaceOnly: true },
     { route: '/wiki', icon: 'menu_book', label: 'Wiki', key: 'wiki' },
+    { route: '/profile', icon: 'account_circle', label: 'Profile', key: 'profile', workspaceOnly: true },
     { route: '/atlases', icon: 'settings', label: 'Settings', key: 'settings', workspaceOnly: true },
   ];
 
