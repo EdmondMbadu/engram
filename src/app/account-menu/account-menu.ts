@@ -27,7 +27,7 @@ export class AccountMenuComponent {
   readonly profile = this.authService.profile;
   readonly userName = this.authService.displayName;
   readonly userEmail = this.authService.email;
-  readonly userPhotoUrl = computed(() => this.profile()?.photoURL || this.authService.user()?.photoURL || '');
+  readonly userPhotoUrl = computed(() => this.profile()?.profilePictureType === 'image' ? this.profile()?.photoURL ?? '' : '');
   readonly userIcon = computed(() =>
     profileIconByCode(this.profile()?.profileIcon) ?? profileIconForSeed(this.authService.uid() || this.userEmail() || this.userName()),
   );

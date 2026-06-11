@@ -30,6 +30,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
     WorkspaceSidebarComponent,
   ],
   templateUrl: './profile.html',
+  styleUrl: './profile.css',
 })
 export class ProfileComponent {
   private readonly authService = inject(AuthService);
@@ -48,9 +49,10 @@ export class ProfileComponent {
   readonly profilePictureSaving = signal(false);
   readonly profilePictureError = signal<string | null>(null);
   readonly profilePictureMessage = signal<string | null>(null);
+  readonly iconChooserOpen = signal(false);
   readonly profileIconOptions = PROFILE_ICON_PRESETS;
 
-  readonly uploadedPhotoUrl = computed(() => this.profile()?.photoURL || this.user()?.photoURL || '');
+  readonly uploadedPhotoUrl = computed(() => this.profile()?.profilePictureType === 'image' ? this.profile()?.photoURL ?? '' : '');
   readonly activeIconPreset = computed(() => {
     const explicitIcon = profileIconByCode(this.profile()?.profileIcon);
     if (explicitIcon) {
@@ -147,6 +149,16 @@ export class ProfileComponent {
     return !this.uploadedPhotoUrl() && this.activeIconPreset().code === icon.code;
   }
 
+  openIconChooser(): void {
+    this.profilePictureError.set(null);
+    this.profilePictureMessage.set(null);
+    this.iconChooserOpen.set(true);
+  }
+
+  closeIconChooser(): void {
+    this.iconChooserOpen.set(false);
+  }
+
   async chooseIcon(icon: ProfileIconPreset): Promise<void> {
     if (this.profilePictureSaving()) {
       return;
@@ -157,6 +169,7 @@ export class ProfileComponent {
     try {
       await this.authService.chooseProfileIcon(icon.code);
       this.profilePictureMessage.set(`${icon.label} is now your profile picture.`);
+      this.closeIconChooser();
     } catch (error) {
       this.profilePictureError.set(error instanceof Error ? error.message : 'Could not save that icon.');
     } finally {

@@ -65,6 +65,7 @@ export interface AuthUserProfile {
   displayName: string | null;
   photoURL: string | null;
   profileIcon: string | null;
+  profilePictureType: 'icon' | 'image' | null;
   providers: string[];
   role: AuthUserRole;
   creationTime: string | null;
@@ -312,6 +313,7 @@ export class AuthService {
     await setDoc(doc(firestore, 'users', user.uid), {
       profileIcon: code,
       photoURL: null,
+      profilePictureType: 'icon',
       updatedAt: serverTimestamp(),
     }, { merge: true });
     await this.refreshUser();
@@ -337,6 +339,7 @@ export class AuthService {
     await setDoc(doc(firestore, 'users', user.uid), {
       photoURL: url,
       profileIcon: null,
+      profilePictureType: 'image',
       updatedAt: serverTimestamp(),
     }, { merge: true });
     await this.refreshUser();
@@ -349,6 +352,7 @@ export class AuthService {
     await setDoc(doc(firestore, 'users', user.uid), {
       photoURL: null,
       profileIcon: null,
+      profilePictureType: null,
       updatedAt: serverTimestamp(),
     }, { merge: true });
     await this.refreshUser();
@@ -490,6 +494,9 @@ export class AuthService {
       displayName: typeof data['displayName'] === 'string' ? data['displayName'] : null,
       photoURL: typeof data['photoURL'] === 'string' ? data['photoURL'] : null,
       profileIcon: typeof data['profileIcon'] === 'string' ? data['profileIcon'] : null,
+      profilePictureType: data['profilePictureType'] === 'icon' || data['profilePictureType'] === 'image'
+        ? data['profilePictureType']
+        : null,
       providers: Array.isArray(data['providers'])
         ? data['providers'].filter((provider): provider is string => typeof provider === 'string')
         : [],

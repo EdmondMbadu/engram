@@ -1,0 +1,84 @@
+.profile-sticker-avatar {
+  border: 4px solid #102018;
+  border-radius: 44% 56% 48% 52%;
+  background:
+    linear-gradient(90deg, rgba(16, 32, 24, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(16, 32, 24, 0.06) 1px, transparent 1px),
+    #fffef7;
+  background-size: 18px 18px, 18px 18px, auto;
+  box-shadow: 7px 7px 0 #102018;
+  color: #102018;
+  transform: rotate(-1.5deg);
+}
+
+.profile-sticker-avatar__icon {
+  color: var(--profile-icon-ink);
+  font-size: 5.8rem;
+  font-variation-settings: 'FILL' 1;
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.profile-icon-sticker {
+  --profile-icon-bg: #dffcf7;
+  --profile-icon-ink: #007f7a;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: center;
+  min-height: 5.2rem;
+  border: 3px solid #102018;
+  border-radius: 1.1rem 0.85rem 1.25rem 0.8rem;
+  background: var(--profile-icon-bg);
+  box-shadow: 4px 4px 0 #102018;
+  color: #102018;
+  padding: 0.58rem;
+  text-align: left;
+  transform: rotate(-0.8deg);
+}
+
+.profile-icon-sticker:nth-child(even) {
+  transform: rotate(0.75deg);
+}
+
+.profile-icon-sticker:hover,
+.profile-icon-sticker--selected {
+  transform: translateY(-2px) rotate(0deg);
+}
+
+.profile-icon-sticker__mark {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #102018;
+  border-radius: 42% 58% 54% 46%;
+  background: #fffef7;
+  box-shadow: 3px 3px 0 #102018;
+  color: var(--profile-icon-ink);
+}
+
+.profile-icon-sticker__mark .material-symbols-outlined {
+  font-size: 1.72rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.profile-icon-sticker__label {
+  display: block;
+  color: #102018;
+  font-size: 0.9rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+.profile-icon-sticker__status {
+  display: block;
+  margin-top: 0.22rem;
+  color: #526458;
+  font-size: 0.54rem;
+  font-weight: 950;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  text-transform: uppercase;
+}

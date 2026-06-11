@@ -57,7 +57,7 @@ export class WorkspaceSidebarComponent {
   readonly userProfile = this.authService.profile;
   readonly userEmail = this.authService.email;
   readonly userName = this.authService.displayName;
-  readonly userPhotoUrl = computed(() => this.userProfile()?.photoURL || this.authService.user()?.photoURL || '');
+  readonly userPhotoUrl = computed(() => this.userProfile()?.profilePictureType === 'image' ? this.userProfile()?.photoURL ?? '' : '');
   readonly userIcon = computed(() =>
     profileIconByCode(this.userProfile()?.profileIcon) ?? profileIconForSeed(this.authService.uid() || this.userEmail() || this.userName()),
   );
