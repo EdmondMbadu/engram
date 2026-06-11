@@ -60,6 +60,21 @@ interface PromptSuggestion {
   icon: string;
 }
 
+interface ChatCitySticker {
+  id: string;
+  label: string;
+  value: string;
+  caption: string;
+  icon: string;
+  palette: string;
+}
+
+interface ChatCityMoodSticker {
+  label: string;
+  icon: string;
+  palette: string;
+}
+
 interface SharePageModal {
   title: string;
   subtitle: string;
@@ -799,6 +814,97 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return name.replace(/^Living Wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
   });
   readonly currentWikiCountry = computed(() => this.localizedCountryName(this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? ''));
+  readonly chatCityStickers = computed<ChatCitySticker[]>(() => {
+    const atlas = this.currentWikiAtlas();
+    const config = atlas?.city_config;
+    const metadata = config?.metadata;
+    const stickers: ChatCitySticker[] = [];
+    const addSticker = (sticker: ChatCitySticker) => {
+      if (!stickers.some((existing) => existing.id === sticker.id)) {
+        stickers.push(sticker);
+      }
+    };
+
+    const country = this.currentWikiCountry();
+    const region = metadata?.global_region?.trim();
+    if (country || region) {
+      addSticker({
+        id: 'region',
+        label: region || 'Place',
+        value: country || region || '',
+        caption: 'City context',
+        icon: 'public',
+        palette: 'sky',
+      });
+    }
+
+    if (metadata?.population) {
+      addSticker({
+        id: 'population',
+        label: 'Population',
+        value: this.formatChatCompactNumber(metadata.population),
+        caption: metadata.population_year ? `${metadata.population_year} estimate` : 'Latest estimate',
+        icon: 'groups',
+        palette: 'coral',
+      });
+    }
+
+    const density = this.currentWikiDensityPerKm2();
+    if (density !== null) {
+      addSticker({
+        id: 'density',
+        label: 'Density',
+        value: `${this.formatChatCompactNumber(density)}/km²`,
+        caption: 'People per km²',
+        icon: 'grid_view',
+        palette: 'yellow',
+      });
+    }
+
+    if (config?.timezone) {
+      addSticker({
+        id: 'time',
+        label: 'Local time',
+        value: this.localChatTime(config.timezone),
+        caption: this.shortChatTimezone(config.timezone),
+        icon: 'schedule',
+        palette: 'purple',
+      });
+    }
+
+    if (metadata?.area_km2) {
+      addSticker({
+        id: 'area',
+        label: 'Area',
+        value: `${this.formatChatCompactNumber(metadata.area_km2)} km²`,
+        caption: 'Mapped area',
+        icon: 'map',
+        palette: 'green',
+      });
+    }
+
+    return stickers.slice(0, 4);
+  });
+  readonly chatCityMoodStickers = computed<ChatCityMoodSticker[]>(() => {
+    const options: ChatCityMoodSticker[] = [
+      { label: 'Food', icon: 'restaurant', palette: 'coral' },
+      { label: 'Markets', icon: 'storefront', palette: 'yellow' },
+      { label: 'Transit', icon: 'directions_transit', palette: 'blue' },
+      { label: 'Parks', icon: 'park', palette: 'green' },
+      { label: 'Music', icon: 'music_note', palette: 'purple' },
+      { label: 'Water', icon: 'waves', palette: 'sky' },
+      { label: 'Jobs', icon: 'work', palette: 'green' },
+      { label: 'Culture', icon: 'palette', palette: 'teal' },
+    ];
+    const source = `${this.currentWikiName()}-${this.currentWikiCountry()}`;
+    let seed = 0;
+    for (let i = 0; i < source.length; i++) {
+      seed = (seed * 31 + source.charCodeAt(i)) % 7919;
+    }
+    return [...options]
+      .sort((left, right) => ((seed + left.label.charCodeAt(0) * 17) % 97) - ((seed + right.label.charCodeAt(0) * 17) % 97))
+      .slice(0, 3);
+  });
   readonly canShowPlaceReviews = computed(() => {
     const atlas = this.currentWikiAtlas();
     return !!atlas?.id && atlas.city_config?.enabled === true && !this.publicNotFound();
@@ -6106,6 +6212,54 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   private defaultAnswerMode(atlas: AtlasItem | null | undefined): 'wiki' | 'internet' {
     return atlas?.default_answer_mode === 'internet' ? 'internet' : 'wiki';
+  }
+
+  private currentWikiDensityPerKm2(): number | null {
+    const metadata = this.currentWikiAtlas()?.city_config?.metadata;
+    if (
+      typeof metadata?.population_density_per_km2 === 'number' &&
+      Number.isFinite(metadata.population_density_per_km2) &&
+      metadata.population_density_per_km2 > 0
+    ) {
+      return Math.round(metadata.population_density_per_km2);
+    }
+
+    if (
+      typeof metadata?.area_km2 === 'number' &&
+      Number.isFinite(metadata.area_km2) &&
+      metadata.area_km2 > 0 &&
+      typeof metadata.population === 'number' &&
+      Number.isFinite(metadata.population) &&
+      metadata.population > 0
+    ) {
+      return Math.round(metadata.population / metadata.area_km2);
+    }
+
+    return null;
+  }
+
+  private formatChatCompactNumber(value: number): string {
+    return new Intl.NumberFormat('en-US', {
+      notation: Math.abs(value) >= 10_000 ? 'compact' : 'standard',
+      maximumFractionDigits: Math.abs(value) >= 10_000 ? 1 : 0,
+    }).format(value);
+  }
+
+  private shortChatTimezone(timezone: string): string {
+    const parts = timezone.split('/');
+    return (parts.at(-1) ?? timezone).replaceAll('_', ' ');
+  }
+
+  private localChatTime(timezone: string): string {
+    try {
+      return new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        hour: 'numeric',
+        minute: '2-digit',
+      }).format(new Date());
+    } catch {
+      return this.shortChatTimezone(timezone);
+    }
   }
 
   private resetPublicChatState(): void {

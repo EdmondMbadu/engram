@@ -18,18 +18,28 @@
         </a>
       </div>
       @if (currentWikiName()) {
-        <div class="mb-6 rounded-3xl border border-[var(--accent)]/25 bg-[var(--surface)] p-2.5 shadow-[var(--shadow-soft)]">
+        <div class="chat-city-sidebar-card mb-6">
           <div class="flex items-center gap-2">
-            <span class="flex h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[var(--accent)]/20 bg-[var(--soft-fill)] p-1.5 shadow-sm">
+            <span class="chat-city-sidebar-card__mark">
               <img src="/assets/image/living-cities.png" alt="LW" class="h-full w-full rounded-xl object-contain" />
 	            </span>
 	            <span class="min-w-0">
-	              <span class="block truncate text-2xl font-black tracking-[-0.06em] text-[var(--text)] lg:text-[1.65rem]">{{ currentWikiName() }}</span>
+	              <span class="chat-city-sidebar-card__name">{{ currentWikiName() }}</span>
 	              @if (currentWikiCountry()) {
-	                <span class="mt-0.5 block truncate text-[0.68rem] font-black uppercase tracking-[0.16em] text-[var(--muted)]">{{ currentWikiCountry() }}</span>
+	                <span class="chat-city-sidebar-card__country">{{ currentWikiCountry() }}</span>
 	              }
 	            </span>
 	          </div>
+          @if (chatCityStickers().length) {
+            <div class="chat-city-sidebar-card__stickers">
+              @for (sticker of chatCityStickers().slice(0, 2); track sticker.id) {
+                <span class="chat-mini-sticker chat-sticker-palette--{{ sticker.palette }}">
+                  <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                  <span>{{ sticker.value }}</span>
+                </span>
+              }
+            </div>
+          }
 	        </div>
       }
       @if (canStartFreshChat()) {
@@ -689,15 +699,41 @@
                       </div>
                     }
                   </div>
-                } @else {
-	                <h2 class="chat-hero-title mt-3">
-	                  {{ uiText('askLivingWiki') }}@if (currentWikiName()) {<span class="chat-hero-title__atlas"> · {{ currentWikiName() }}</span>}
-	                </h2>
-	                @if (currentWikiCountry()) {
-	                  <p class="mt-1 text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">{{ currentWikiCountry() }}</p>
-	                }
+	                } @else {
+                  <div class="chat-city-hero-sticker mt-3">
+                    <div class="chat-city-hero-sticker__mark">
+                      <img src="/assets/image/living-cities.png" alt="" class="h-full w-full object-contain" />
+                    </div>
+                    <div class="min-w-0">
+                      <p>{{ uiText('askLivingWiki') }}</p>
+                      <h2>{{ currentWikiName() || uiText('askThisWiki') }}</h2>
+                      @if (currentWikiCountry()) {
+                        <span>{{ currentWikiCountry() }}</span>
+                      }
+                    </div>
+                  </div>
 
-	                @if (currentWikiGuide(); as guide) {
+                  @if (chatCityStickers().length || chatCityMoodStickers().length) {
+                    <div class="chat-city-sticker-row" aria-label="City context stickers">
+                      @for (sticker of chatCityStickers(); track sticker.id) {
+                        <span class="chat-city-sticker chat-sticker-palette--{{ sticker.palette }}">
+                          <span class="chat-city-sticker__icon material-symbols-outlined">{{ sticker.icon }}</span>
+                          <span class="chat-city-sticker__text">
+                            <span class="chat-city-sticker__label">{{ sticker.label }}</span>
+                            <span class="chat-city-sticker__value">{{ sticker.value }}</span>
+                          </span>
+                        </span>
+                      }
+                      @for (sticker of chatCityMoodStickers(); track sticker.label) {
+                        <span class="chat-city-mood-sticker chat-sticker-palette--{{ sticker.palette }}">
+                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                          <span>{{ sticker.label }}</span>
+                        </span>
+                      }
+                    </div>
+                  }
+
+		                @if (currentWikiGuide(); as guide) {
                     @if (guide.image_url || guide.label || guide.name) {
                       <div class="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 shadow-[var(--shadow-soft)]">
                         @if (guide.image_url) {
