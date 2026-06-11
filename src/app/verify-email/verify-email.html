@@ -22,6 +22,14 @@
             <span class="font-semibold text-[var(--text)]"> {{ currentEmail() }}</span>
           }
         </p>
+        @if (isBusinessClaimRedirect) {
+          <div class="mt-6 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.08] px-4 py-3">
+            <p class="text-sm font-black text-[var(--text)]">Your business claim draft is saved.</p>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">
+              After verification, you will return to the business setup page to finish payment, AI tone, and document upload.
+            </p>
+          </div>
+        }
 
         @if (infoMessage()) {
           <div class="mt-6 rounded-2xl border border-[rgba(59,175,98,0.18)] bg-[rgba(59,175,98,0.08)] px-4 py-3 text-sm text-[var(--text)]">

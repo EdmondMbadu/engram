@@ -130,7 +130,11 @@ export class BusinessClaimComponent {
   readonly copiedLink = signal(false);
   readonly adminName = signal('');
   readonly adminEmail = signal('');
-  readonly accountRedirectParams = computed(() => ({ redirectTo: '/business/claim' }));
+  readonly accountRedirectParams = computed(() => ({
+    redirectTo: '/business/claim',
+    ...(this.adminName().trim() ? { name: this.adminName().trim() } : {}),
+    ...(this.adminEmail().trim() ? { email: this.adminEmail().trim() } : {}),
+  }));
 
   readonly businessPlans: BusinessPlanOption[] = [
     {
@@ -593,6 +597,14 @@ export class BusinessClaimComponent {
 
   async startBusinessCheckout(): Promise<void> {
     if (this.checkoutLoading()) {
+      return;
+    }
+    if (this.adminName().trim().length < 2) {
+      this.checkoutError.set('Add the business admin name before checkout so the payment is tied to the right account owner.');
+      return;
+    }
+    if (this.adminEmail().trim() && !this.isValidEmail(this.adminEmail())) {
+      this.checkoutError.set('Enter a valid account email before checkout.');
       return;
     }
     if (!this.paidBusinessPlan()) {

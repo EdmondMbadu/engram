@@ -31,6 +31,17 @@ export class CreateAccountComponent {
     { validators: passwordsMatchValidator },
   );
 
+  constructor() {
+    const name = this.route.snapshot.queryParamMap.get('name')?.trim();
+    const email = this.route.snapshot.queryParamMap.get('email')?.trim();
+    if (name) {
+      this.form.controls.fullName.setValue(name);
+    }
+    if (email) {
+      this.form.controls.email.setValue(email);
+    }
+  }
+
   async createAccount(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

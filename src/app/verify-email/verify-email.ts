@@ -23,6 +23,8 @@ export class VerifyEmailComponent {
 
   readonly currentUser = this.authService.user;
   readonly currentEmail = this.authService.email;
+  readonly redirectUrl = this.getRedirectUrl();
+  readonly isBusinessClaimRedirect = this.redirectUrl.startsWith('/business/claim');
 
   constructor() {
     if (this.isBrowser) {
@@ -38,7 +40,7 @@ export class VerifyEmailComponent {
     try {
       const user = await this.authService.refreshUser();
       if (user && !this.authService.needsEmailVerification()) {
-        await this.router.navigateByUrl(this.getRedirectUrl());
+        await this.router.navigateByUrl(this.redirectUrl);
         return;
       }
 
@@ -58,7 +60,7 @@ export class VerifyEmailComponent {
     this.isResending.set(true);
 
     try {
-      const sent = await this.authService.resendEmailVerification(this.getRedirectUrl());
+      const sent = await this.authService.resendEmailVerification(this.redirectUrl);
       this.infoMessage.set(
         sent
           ? 'Verification email sent. Check your inbox and spam folder.'
@@ -78,7 +80,7 @@ export class VerifyEmailComponent {
   async signOut(): Promise<void> {
     await this.authService.signOut();
     await this.router.navigate(['/sign-in'], {
-      queryParams: { redirectTo: this.getRedirectUrl() },
+      queryParams: { redirectTo: this.redirectUrl },
     });
   }
 
@@ -90,7 +92,7 @@ export class VerifyEmailComponent {
     }
 
     if (this.authService.isAuthenticated() && !this.authService.needsEmailVerification()) {
-      await this.router.navigateByUrl(this.getRedirectUrl());
+      await this.router.navigateByUrl(this.redirectUrl);
     }
   }
 
