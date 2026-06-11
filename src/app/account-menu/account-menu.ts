@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, computed, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons';
 
 @Component({
   selector: 'app-account-menu',
@@ -23,16 +24,13 @@ export class AccountMenuComponent {
 
   readonly isSignedIn = this.authService.isAuthenticated;
   readonly isAdmin = this.authService.isAdmin;
+  readonly profile = this.authService.profile;
   readonly userName = this.authService.displayName;
   readonly userEmail = this.authService.email;
-  readonly userInitials = computed(() => {
-    const name = this.userName().trim();
-    const email = this.userEmail().trim();
-    const source = name || email || 'U';
-    const parts = source.includes('@') ? [source[0] ?? 'U'] : source.split(/\s+/).slice(0, 2);
-    return parts.map((part) => part[0] ?? '').join('').toUpperCase() || 'U';
-  });
-
+  readonly userPhotoUrl = computed(() => this.profile()?.photoURL || this.authService.user()?.photoURL || '');
+  readonly userIcon = computed(() =>
+    profileIconByCode(this.profile()?.profileIcon) ?? profileIconForSeed(this.authService.uid() || this.userEmail() || this.userName()),
+  );
   toggleMenu(): void {
     this.menuOpen.update((open) => !open);
   }

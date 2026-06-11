@@ -23,13 +23,34 @@
         <div class="mx-auto w-full max-w-6xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
           <section class="border-b border-[var(--line)] pb-8">
             <div class="grid gap-8 md:grid-cols-[13rem_1fr] md:items-start">
-              <div class="flex justify-center md:justify-start">
+              <div class="flex flex-col items-center gap-3 md:items-start">
                 <div class="relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] shadow-[var(--shadow-floating)] sm:h-48 sm:w-48">
-                  @if (profilePhoto()) {
-                    <img [src]="profilePhoto()" [alt]="userName() + ' profile photo'" class="h-full w-full object-cover" />
+                  @if (uploadedPhotoUrl()) {
+                    <img [src]="uploadedPhotoUrl()" [alt]="userName() + ' profile photo'" class="h-full w-full object-cover" />
                   } @else {
-                    <span class="text-5xl font-black text-[var(--accent)]">{{ userInitials() }}</span>
+                    <div
+                      class="flex h-full w-full items-center justify-center"
+                      [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 28%), linear-gradient(135deg, ' + activeIconPreset().from + ', ' + activeIconPreset().to + ')'"
+                    >
+                      <span class="material-symbols-outlined text-7xl" [style.color]="activeIconPreset().ink">{{ activeIconPreset().icon }}</span>
+                    </div>
                   }
+                </div>
+                <div class="grid w-full max-w-48 gap-2">
+                  <label class="primary-btn inline-flex cursor-pointer justify-center !px-4 !py-2.5 text-sm" [class.pointer-events-none]="profilePictureSaving()">
+                    <span class="material-symbols-outlined text-base">upload</span>
+                    <span>{{ profilePictureSaving() ? 'Saving...' : 'Upload image' }}</span>
+                    <input type="file" accept="image/*" class="sr-only" [disabled]="profilePictureSaving()" (change)="uploadPhoto($event)" />
+                  </label>
+                  <button
+                    type="button"
+                    class="ghost-btn inline-flex justify-center !px-4 !py-2.5 text-sm"
+                    [disabled]="profilePictureSaving()"
+                    (click)="removeProfilePicture()"
+                  >
+                    <span class="material-symbols-outlined text-base">refresh</span>
+                    <span>Use icon</span>
+                  </button>
                 </div>
               </div>
 
@@ -111,6 +132,63 @@
                       }
                     </div>
                   </div>
+                </div>
+
+                <div class="mt-6 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+                  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                      <p class="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">Premade icons</p>
+                      <p class="mt-1 text-sm text-[var(--muted)]">Pick one of the Living Wiki profile marks, or upload your own image.</p>
+                    </div>
+                    @if (profile()?.profileIcon || uploadedPhotoUrl()) {
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-black text-[var(--muted)] transition hover:border-[var(--accent)]/35 hover:text-[var(--text)] disabled:cursor-wait disabled:opacity-60"
+                        [disabled]="profilePictureSaving()"
+                        (click)="removeProfilePicture()"
+                      >
+                        <span class="material-symbols-outlined text-[1rem]">close</span>
+                        <span>Remove choice</span>
+                      </button>
+                    }
+                  </div>
+
+                  <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    @for (icon of profileIconOptions; track icon.code) {
+                      <button
+                        type="button"
+                        class="group flex min-h-28 flex-col items-center justify-center gap-2 rounded-2xl border p-3 text-center transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-floating)] disabled:cursor-wait disabled:opacity-60"
+                        [class.border-[var(--accent)]]="iconSelected(icon)"
+                        [class.bg-[var(--surface)]]="iconSelected(icon)"
+                        [class.border-[var(--line)]]="!iconSelected(icon)"
+                        [class.bg-[var(--soft-fill)]]="!iconSelected(icon)"
+                        [disabled]="profilePictureSaving()"
+                        (click)="chooseIcon(icon)"
+                      >
+                        <span
+                          class="flex h-14 w-14 items-center justify-center rounded-full border border-white/60 shadow-[0_12px_24px_rgba(15,23,42,0.12)]"
+                          [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.86), transparent 30%), linear-gradient(135deg, ' + icon.from + ', ' + icon.to + ')'"
+                        >
+                          <span class="material-symbols-outlined text-3xl" [style.color]="icon.ink">{{ icon.icon }}</span>
+                        </span>
+                        <span class="text-xs font-black text-[var(--text)]">{{ icon.label }}</span>
+                        @if (iconSelected(icon)) {
+                          <span class="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Selected</span>
+                        }
+                      </button>
+                    }
+                  </div>
+
+                  @if (profilePictureError()) {
+                    <div class="mt-4 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm text-[var(--error-text)]">
+                      {{ profilePictureError() }}
+                    </div>
+                  }
+                  @if (profilePictureMessage()) {
+                    <div class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-3 text-sm font-semibold text-[var(--accent)]">
+                      {{ profilePictureMessage() }}
+                    </div>
+                  }
                 </div>
               </div>
             </div>

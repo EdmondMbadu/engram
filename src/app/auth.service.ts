@@ -33,7 +33,8 @@ import {
   setDoc,
   type Firestore,
 } from 'firebase/firestore/lite';
-import { getFirebaseApp } from './firebase.client';
+import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
+import { getFirebaseApp, getFirebaseStorage } from './firebase.client';
 
 export interface SignInPayload {
   email: string;
@@ -63,6 +64,7 @@ export interface AuthUserProfile {
   emailVerified: boolean;
   displayName: string | null;
   photoURL: string | null;
+  profileIcon: string | null;
   providers: string[];
   role: AuthUserRole;
   creationTime: string | null;
@@ -107,6 +109,9 @@ export class AuthService {
   private readonly auth: Auth | null = this.isBrowser ? getAuth(getFirebaseApp()) : null;
   private readonly firestore: Firestore | null = this.isBrowser
     ? getFirestore(getFirebaseApp())
+    : null;
+  private readonly storage: FirebaseStorage | null = this.isBrowser
+    ? getFirebaseStorage()
     : null;
   private readonly googleProvider = new GoogleAuthProvider();
   private resolveReady: (() => void) | null = null;
@@ -295,6 +300,60 @@ export class AuthService {
     await signOut(auth);
   }
 
+  async chooseProfileIcon(iconCode: string): Promise<void> {
+    const user = this.requireCurrentUser();
+    const firestore = this.requireFirestore();
+    const code = iconCode.trim();
+    if (!code) {
+      throw new Error('Choose a profile icon.');
+    }
+
+    await updateProfile(user, { photoURL: null });
+    await setDoc(doc(firestore, 'users', user.uid), {
+      profileIcon: code,
+      photoURL: null,
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
+    await this.refreshUser();
+  }
+
+  async uploadProfilePhoto(file: File): Promise<void> {
+    const user = this.requireCurrentUser();
+    const firestore = this.requireFirestore();
+    const storage = this.requireStorage();
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Only image files are supported.');
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      throw new Error('Image must be under 10 MB.');
+    }
+
+    const ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '') || 'png';
+    const ref = storageRef(storage, `users/${user.uid}/profile/photo-${Date.now()}.${ext}`);
+    await uploadBytes(ref, file, { contentType: file.type });
+    const url = await getDownloadURL(ref);
+
+    await updateProfile(user, { photoURL: url });
+    await setDoc(doc(firestore, 'users', user.uid), {
+      photoURL: url,
+      profileIcon: null,
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
+    await this.refreshUser();
+  }
+
+  async removeProfilePicture(): Promise<void> {
+    const user = this.requireCurrentUser();
+    const firestore = this.requireFirestore();
+    await updateProfile(user, { photoURL: null });
+    await setDoc(doc(firestore, 'users', user.uid), {
+      photoURL: null,
+      profileIcon: null,
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
+    await this.refreshUser();
+  }
+
   toFriendlyError(error: unknown): string {
     if (
       typeof error === 'object' &&
@@ -371,6 +430,14 @@ export class AuthService {
     return this.firestore;
   }
 
+  private requireStorage(): FirebaseStorage {
+    if (!this.storage) {
+      throw new Error('Storage is only available in the browser.');
+    }
+
+    return this.storage;
+  }
+
   private requireCurrentUser(): User {
     const user = this.requireAuth().currentUser;
     if (!user) {
@@ -422,6 +489,7 @@ export class AuthService {
       emailVerified: data['emailVerified'] === true,
       displayName: typeof data['displayName'] === 'string' ? data['displayName'] : null,
       photoURL: typeof data['photoURL'] === 'string' ? data['photoURL'] : null,
+      profileIcon: typeof data['profileIcon'] === 'string' ? data['profileIcon'] : null,
       providers: Array.isArray(data['providers'])
         ? data['providers'].filter((provider): provider is string => typeof provider === 'string')
         : [],

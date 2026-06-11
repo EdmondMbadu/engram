@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { AtlasSwitcherComponent } from '../atlas-switcher/atlas-switcher';
+import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons';
 
 export type WorkspaceSidebarActive =
   | 'wikis'
@@ -53,9 +54,13 @@ export class WorkspaceSidebarComponent {
 
   readonly signingOut = signal(false);
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
+  readonly userProfile = this.authService.profile;
   readonly userEmail = this.authService.email;
   readonly userName = this.authService.displayName;
-  readonly userInitial = computed(() => (this.userName().trim()[0] || this.userEmail().trim()[0] || 'U').toUpperCase());
+  readonly userPhotoUrl = computed(() => this.userProfile()?.photoURL || this.authService.user()?.photoURL || '');
+  readonly userIcon = computed(() =>
+    profileIconByCode(this.userProfile()?.profileIcon) ?? profileIconForSeed(this.authService.uid() || this.userEmail() || this.userName()),
+  );
   readonly showBusinessSection = computed(() => !!this.businessName()?.trim() && !!this.businessPath()?.trim());
   readonly moreOpen = signal(false);
 

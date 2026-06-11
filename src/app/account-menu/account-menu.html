@@ -2,13 +2,22 @@
   <div class="avatar-menu-wrapper relative">
     <button
       type="button"
-      class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-black text-[var(--accent)] shadow-[0_10px_24px_-20px_rgba(59,175,98,0.9)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
+      class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-xs font-black text-[var(--accent)] shadow-[0_10px_24px_-20px_rgba(59,175,98,0.9)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
       [attr.aria-expanded]="menuOpen()"
       aria-haspopup="menu"
       aria-label="Account menu"
       (click)="toggleMenu()"
     >
-      {{ userInitials() }}
+      @if (userPhotoUrl()) {
+        <img [src]="userPhotoUrl()" [alt]="userName() + ' profile photo'" class="h-full w-full object-cover" />
+      } @else {
+        <span
+          class="flex h-full w-full items-center justify-center"
+          [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + userIcon().from + ', ' + userIcon().to + ')'"
+        >
+          <span class="material-symbols-outlined text-[1.2rem]" [style.color]="userIcon().ink">{{ userIcon().icon }}</span>
+        </span>
+      }
     </button>
 
     @if (menuOpen()) {
@@ -19,8 +28,17 @@
       >
         <div class="border-b border-[var(--line)] px-4 py-4">
           <div class="flex items-center gap-3">
-            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-sm font-black text-[var(--accent)]">
-              {{ userInitials() }}
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-sm font-black text-[var(--accent)]">
+              @if (userPhotoUrl()) {
+                <img [src]="userPhotoUrl()" [alt]="userName() + ' profile photo'" class="h-full w-full object-cover" />
+              } @else {
+                <span
+                  class="flex h-full w-full items-center justify-center"
+                  [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + userIcon().from + ', ' + userIcon().to + ')'"
+                >
+                  <span class="material-symbols-outlined text-[1.35rem]" [style.color]="userIcon().ink">{{ userIcon().icon }}</span>
+                </span>
+              }
             </span>
             <span class="min-w-0">
               <span class="block truncate text-sm font-black text-[var(--text)]">{{ userName() }}</span>

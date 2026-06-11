@@ -137,7 +137,18 @@
 
   <section class="mt-5 border-t border-[var(--line)] pt-5">
     <div class="flex items-center gap-3 px-2">
-      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-sm font-black text-[var(--accent)]">{{ userInitial() }}</span>
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-sm font-black text-[var(--accent)]">
+        @if (userPhotoUrl()) {
+          <img [src]="userPhotoUrl()" [alt]="userName() + ' profile photo'" class="h-full w-full object-cover" />
+        } @else {
+          <span
+            class="flex h-full w-full items-center justify-center"
+            [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + userIcon().from + ', ' + userIcon().to + ')'"
+          >
+            <span class="material-symbols-outlined text-[1.35rem]" [style.color]="userIcon().ink">{{ userIcon().icon }}</span>
+          </span>
+        }
+      </span>
       <span class="min-w-0">
         <span class="block truncate text-sm font-black text-[var(--text)]">{{ userName() }}</span>
         <span class="mt-0.5 block truncate text-xs text-[var(--muted)]">{{ userEmail() }}</span>

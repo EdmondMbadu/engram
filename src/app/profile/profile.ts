@@ -10,6 +10,12 @@ import {
 } from '../business-claim/business-claim.service';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
+import {
+  PROFILE_ICON_PRESETS,
+  profileIconByCode,
+  profileIconForSeed,
+  type ProfileIconPreset,
+} from './profile-icons';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
@@ -39,8 +45,19 @@ export class ProfileComponent {
   readonly businessClaims = signal<BusinessClaimWorkspaceRecord[]>([]);
   readonly loadingBusinesses = signal(false);
   readonly businessError = signal<string | null>(null);
+  readonly profilePictureSaving = signal(false);
+  readonly profilePictureError = signal<string | null>(null);
+  readonly profilePictureMessage = signal<string | null>(null);
+  readonly profileIconOptions = PROFILE_ICON_PRESETS;
 
-  readonly profilePhoto = computed(() => this.profile()?.photoURL || this.user()?.photoURL || '');
+  readonly uploadedPhotoUrl = computed(() => this.profile()?.photoURL || this.user()?.photoURL || '');
+  readonly activeIconPreset = computed(() => {
+    const explicitIcon = profileIconByCode(this.profile()?.profileIcon);
+    if (explicitIcon) {
+      return explicitIcon;
+    }
+    return profileIconForSeed(this.user()?.uid || this.userEmail() || this.userName());
+  });
   readonly userInitials = computed(() => {
     const source = this.userName().trim() || this.userEmail().trim() || 'Living Wiki';
     const parts = source.includes('@') ? [source[0] ?? 'U'] : source.split(/\s+/).slice(0, 2);
@@ -124,6 +141,65 @@ export class ProfileComponent {
 
   businessImageUrl(business: BusinessClaimWorkspaceRecord): string {
     return business.profile_image_url?.trim() || business.logo_url?.trim() || '';
+  }
+
+  iconSelected(icon: ProfileIconPreset): boolean {
+    return !this.uploadedPhotoUrl() && this.activeIconPreset().code === icon.code;
+  }
+
+  async chooseIcon(icon: ProfileIconPreset): Promise<void> {
+    if (this.profilePictureSaving()) {
+      return;
+    }
+    this.profilePictureSaving.set(true);
+    this.profilePictureError.set(null);
+    this.profilePictureMessage.set(null);
+    try {
+      await this.authService.chooseProfileIcon(icon.code);
+      this.profilePictureMessage.set(`${icon.label} is now your profile picture.`);
+    } catch (error) {
+      this.profilePictureError.set(error instanceof Error ? error.message : 'Could not save that icon.');
+    } finally {
+      this.profilePictureSaving.set(false);
+    }
+  }
+
+  async uploadPhoto(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file || this.profilePictureSaving()) {
+      return;
+    }
+
+    this.profilePictureSaving.set(true);
+    this.profilePictureError.set(null);
+    this.profilePictureMessage.set(null);
+    try {
+      await this.authService.uploadProfilePhoto(file);
+      this.profilePictureMessage.set('Profile photo uploaded.');
+    } catch (error) {
+      this.profilePictureError.set(error instanceof Error ? error.message : 'Could not upload that image.');
+    } finally {
+      this.profilePictureSaving.set(false);
+      input.value = '';
+    }
+  }
+
+  async removeProfilePicture(): Promise<void> {
+    if (this.profilePictureSaving()) {
+      return;
+    }
+    this.profilePictureSaving.set(true);
+    this.profilePictureError.set(null);
+    this.profilePictureMessage.set(null);
+    try {
+      await this.authService.removeProfilePicture();
+      this.profilePictureMessage.set('Profile picture reset to your premade icon.');
+    } catch (error) {
+      this.profilePictureError.set(error instanceof Error ? error.message : 'Could not remove your profile picture.');
+    } finally {
+      this.profilePictureSaving.set(false);
+    }
   }
 
   initialsFor(text: string | null | undefined): string {
