@@ -19,6 +19,8 @@ import {
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
+type ProfileTab = 'account' | 'wikis' | 'business' | 'links';
+
 @Component({
   selector: 'app-profile',
   imports: [
@@ -50,7 +52,14 @@ export class ProfileComponent {
   readonly profilePictureError = signal<string | null>(null);
   readonly profilePictureMessage = signal<string | null>(null);
   readonly iconChooserOpen = signal(false);
+  readonly activeProfileTab = signal<ProfileTab>('account');
   readonly profileIconOptions = PROFILE_ICON_PRESETS;
+  readonly profileTabs: Array<{ key: ProfileTab; label: string; icon: string }> = [
+    { key: 'account', label: 'Account', icon: 'badge' },
+    { key: 'wikis', label: 'Wikis', icon: 'dashboard' },
+    { key: 'business', label: 'Business', icon: 'storefront' },
+    { key: 'links', label: 'Links', icon: 'link' },
+  ];
 
   readonly uploadedPhotoUrl = computed(() => this.profile()?.profilePictureType === 'image' ? this.profile()?.photoURL ?? '' : '');
   readonly activeIconPreset = computed(() => {
@@ -157,6 +166,10 @@ export class ProfileComponent {
 
   closeIconChooser(): void {
     this.iconChooserOpen.set(false);
+  }
+
+  setProfileTab(tab: ProfileTab): void {
+    this.activeProfileTab.set(tab);
   }
 
   async chooseIcon(icon: ProfileIconPreset): Promise<void> {
