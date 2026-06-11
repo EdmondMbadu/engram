@@ -247,25 +247,26 @@
             </div>
 
             @if (isCityAtlas()) {
-              <div class="relative overflow-hidden rounded-[2rem] border border-[rgba(28,124,65,0.22)] bg-[radial-gradient(circle_at_top_left,rgba(34,197,94,0.18),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.12),transparent_60%),linear-gradient(180deg,rgba(8,22,14,0.98),rgba(10,20,16,0.96))] p-5 text-white shadow-[0_24px_80px_rgba(8,28,15,0.38)] sm:p-6">
-                <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/40 to-transparent"></div>
-
-                <div class="mb-5 flex items-center justify-between gap-3">
+              <div class="city-sticker-board">
+                <div class="city-sticker-board__confetti" aria-hidden="true"></div>
+                <div class="relative z-[1] mb-6 flex items-start justify-between gap-3">
                   <div class="min-w-0">
-                    <div class="flex items-center gap-2 text-[rgba(181,221,194,0.82)]">
+                    <div class="city-sticker-board__eyebrow">
                       <span class="relative flex h-2 w-2 shrink-0">
-                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70"></span>
-                        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-300"></span>
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00a878]/55"></span>
+                        <span class="relative inline-flex h-2 w-2 rounded-full bg-[#00a878]"></span>
                       </span>
-                      <span class="text-[10px] font-black uppercase tracking-[0.24em]">Live · Worldometers</span>
+                      <span>Live city stickers</span>
                     </div>
-                    <h3 class="mt-2 font-headline text-3xl font-black tracking-normal text-white md:text-4xl">CityPulse</h3>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-[rgba(214,231,220,0.72)]">A live civic dashboard for the signals that shape Philly right now.</p>
+                    <h3 class="mt-2 font-headline text-3xl font-black tracking-normal text-[#102018] md:text-5xl">{{ cityPulseName() }} Pulse</h3>
+                    <p class="mt-2 max-w-2xl text-sm font-semibold leading-6 text-[#526458]">
+                      Bright civic signals for the details that shape {{ cityPulseName() }} right now.
+                    </p>
                   </div>
                   @if (isOwner()) {
                     <button
                       type="button"
-                      class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition hover:bg-white/10"
+                      class="city-sticker-board__action"
                       (click)="openWorldometers()"
                       aria-label="Maintain worldometers"
                     >
@@ -276,97 +277,110 @@
                 </div>
 
                 @if (cityPulseError()) {
-                  <div class="mb-4 rounded-[1.25rem] border border-[#8d3d3d] bg-[#331919] px-4 py-3 text-sm text-[#ffd1d1]">
+                  <div class="relative z-[1] mb-4 rounded-[1.25rem] border border-[#ff8a7a] bg-[#fff1ed] px-4 py-3 text-sm font-bold text-[#8d2d20]">
                     {{ cityPulseError() }}
                   </div>
                 }
 
                 @if (cityPulseMetrics().length === 0 && cityPulseLoading()) {
-                  <div class="rounded-[1.5rem] border border-white/8 bg-white/4 px-6 py-10 text-center text-sm text-[rgba(214,231,220,0.72)]">
+                  <div class="relative z-[1] rounded-[1.5rem] border-4 border-[#102018] bg-white px-6 py-10 text-center text-sm font-black text-[#526458] shadow-[8px_8px_0_#102018]">
                     Building the city pulse snapshot…
                   </div>
                 } @else if (cityPulseMetrics().length === 0) {
-                  <div class="rounded-[1.5rem] border border-white/8 bg-white/4 px-6 py-10 text-center text-sm text-[rgba(214,231,220,0.72)]">
+                  <div class="relative z-[1] rounded-[1.5rem] border-4 border-[#102018] bg-white px-6 py-10 text-center text-sm font-black text-[#526458] shadow-[8px_8px_0_#102018]">
                     No city metrics yet. Configure the atlas in settings and refresh the worldometers snapshot.
                   </div>
                 } @else {
-                  <div class="overflow-hidden rounded-[1.55rem] border border-white/10 bg-[#f7fbf8] text-[#102018] shadow-[0_20px_60px_rgba(0,0,0,0.28)]">
-                    <div class="border-b border-[#dbe8df] bg-white px-5 py-4 text-center">
-                      <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[#35764c]">Philadelphia live counters</p>
-                      <p class="mt-1 text-xs font-semibold text-[#68776d]">Snapshot refreshed {{ cityPulseSnapshotRefreshedAt() }}</p>
-                    </div>
+                  <div class="relative z-[1] grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    @for (sticker of cityDetailStickers(); track sticker.id) {
+                      <article class="city-detail-sticker sticker-palette--{{ sticker.palette }}">
+                        <div class="city-detail-sticker__icon">
+                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                        </div>
+                        <div class="min-w-0">
+                          <p class="city-detail-sticker__label">{{ sticker.label }}</p>
+                          <p class="city-detail-sticker__value">{{ sticker.value }}</p>
+                          <p class="city-detail-sticker__caption">{{ sticker.caption }}</p>
+                        </div>
+                      </article>
+                    }
+                  </div>
 
+                  <div class="city-pulse-sticker-sheet">
+                    <div class="city-pulse-sticker-sheet__header">
+                      <p>{{ cityPulseName() }} live counters</p>
+                      <span>Snapshot refreshed {{ cityPulseSnapshotRefreshedAt() }}</span>
+                    </div>
                     @if (cityPulsePrimaryMetric(); as primaryMetric) {
-                      <section class="px-5 py-7 text-center sm:px-8">
-                        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#e5f4ea] text-[#247a3d]">
-                          <span class="material-symbols-outlined text-3xl">{{ cityPulseMetricIcon(primaryMetric) }}</span>
+                      <section class="city-primary-sticker sticker-palette--{{ cityPulseMetricPalette(primaryMetric) }}">
+                        <div class="city-primary-sticker__icon">
+                          <span class="material-symbols-outlined">{{ cityPulseMetricIcon(primaryMetric) }}</span>
                         </div>
-                        <p class="text-sm font-black uppercase tracking-[0.18em] text-[#526458]">{{ primaryMetric.label }}</p>
-                        <div class="mt-3 font-headline text-4xl font-black leading-none text-[#198239] sm:text-5xl md:text-6xl" style="font-variant-numeric: tabular-nums;">
-                          {{ cityPulseWorldometerValue(primaryMetric) }}
-                        </div>
-                        <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#526458]">{{ primaryMetric.description }}</p>
-                        <div class="mt-5 flex flex-wrap justify-center gap-2">
-                          <span class="inline-flex items-center gap-1.5 rounded-full bg-[#dff4e6] px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[#166534]">
-                            <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-[#16a34a]"></span>
-                            {{ cityPulseMetricStatus(primaryMetric) }}
-                          </span>
-                          <span class="rounded-full border border-[#d8e7dd] bg-white px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[#526458]">
-                            {{ cityPulseMetricFrequency(primaryMetric) }}
-                          </span>
-                          <span class="rounded-full border border-[#d8e7dd] bg-white px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[#526458]">
-                            As of {{ cityPulseMetricAsOf(primaryMetric) }}
-                          </span>
+                        <div class="city-primary-sticker__content">
+                          <p class="city-primary-sticker__label">{{ primaryMetric.label }}</p>
+                          <div class="city-primary-sticker__value">
+                            {{ cityPulseWorldometerValue(primaryMetric) }}
+                          </div>
+                          <p class="city-primary-sticker__description">{{ primaryMetric.description }}</p>
+                          <div class="city-primary-sticker__chips">
+                            <span>
+                              <i aria-hidden="true"></i>
+                              {{ cityPulseMetricStatus(primaryMetric) }}
+                            </span>
+                            <span>{{ cityPulseMetricFrequency(primaryMetric) }}</span>
+                            <span>As of {{ cityPulseMetricAsOf(primaryMetric) }}</span>
+                          </div>
                         </div>
                       </section>
                     }
 
-                    <div class="divide-y divide-[#dbe8df] border-t border-[#dbe8df] bg-white">
+                    <div class="city-metric-sticker-grid">
                       @for (metric of cityPulseSecondaryMetrics(); track metric.id) {
-                        <article class="grid gap-4 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
-                          <div class="flex min-w-0 items-start gap-3">
-                            <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eef6f1] text-[#247a3d]">
-                              <span class="material-symbols-outlined text-[22px]">{{ cityPulseMetricIcon(metric) }}</span>
-                            </div>
-                            <div class="min-w-0">
-                              <div class="flex flex-wrap items-center gap-2">
-                                <h4 class="text-sm font-black uppercase tracking-[0.14em] text-[#25382b]">{{ metric.short_label }}</h4>
-                                <span class="rounded-full bg-[#eef3f0] px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-[#607168]">{{ cityPulseMetricStatus(metric) }}</span>
-                              </div>
-                              <p class="mt-1 text-sm font-semibold text-[#526458]">{{ metric.label }}</p>
-                              <p class="mt-1 text-xs leading-5 text-[#6d7f73]">{{ metric.source_label }} · {{ cityPulseMetricAsOf(metric) }}</p>
-                            </div>
+                        <article class="city-metric-sticker sticker-palette--{{ cityPulseMetricPalette(metric) }}">
+                          <div class="city-metric-sticker__icon">
+                            <span class="material-symbols-outlined">{{ cityPulseMetricIcon(metric) }}</span>
                           </div>
-                          <div class="text-left sm:text-right">
-                            <p class="font-headline text-3xl font-black leading-none text-[#198239]" style="font-variant-numeric: tabular-nums;">{{ cityPulseWorldometerValue(metric) }}</p>
-                            <p class="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#7b8b82]">{{ cityPulseMetricFrequency(metric) }}</p>
+                          <div>
+                            <p class="city-metric-sticker__short">{{ metric.short_label }}</p>
+                            <p class="city-metric-sticker__value">{{ cityPulseWorldometerValue(metric) }}</p>
+                            <p class="city-metric-sticker__label">{{ metric.label }}</p>
+                            <p class="city-metric-sticker__meta">{{ cityPulseMetricStatus(metric) }} · {{ cityPulseMetricAsOf(metric) }}</p>
                           </div>
                         </article>
                       }
                     </div>
+
+                    <div class="city-mood-sticker-row" aria-label="City feeling stickers">
+                      @for (sticker of cityMoodStickers(); track sticker.label) {
+                        <span class="city-mood-sticker sticker-palette--{{ sticker.palette }}">
+                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                          <span>{{ sticker.label }}</span>
+                        </span>
+                      }
+                    </div>
                   </div>
 
-                  <details class="group mt-6 overflow-hidden rounded-[1.25rem] border border-white/8 bg-white/3">
-                    <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-3.5 text-[rgba(181,221,194,0.82)] transition hover:bg-white/5">
+                  <details class="city-sources-panel group">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-3.5 text-[#102018] transition hover:bg-white/50">
                       <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-[18px]">info</span>
                         <span class="text-xs font-black uppercase tracking-[0.18em]">Sources &amp; Methods</span>
                       </div>
                       <span class="material-symbols-outlined text-[20px] transition group-open:rotate-180">expand_more</span>
                     </summary>
-                    <div class="grid gap-2 border-t border-white/8 px-4 py-3 md:grid-cols-2">
+                    <div class="grid gap-2 border-t border-[#102018]/10 px-4 py-3 md:grid-cols-2">
                       @for (metric of cityPulseMetrics(); track metric.id + '-method') {
-                        <div class="rounded-[0.875rem] border border-white/7 bg-black/15 px-3 py-2.5">
+                        <div class="rounded-[1rem] border-2 border-[#102018]/10 bg-white/70 px-3 py-2.5">
                           <div class="flex items-baseline justify-between gap-2">
-                            <p class="min-w-0 truncate text-xs font-bold text-white">{{ metric.label }}</p>
-                            <p class="shrink-0 text-[10px] uppercase tracking-[0.14em] text-[rgba(181,221,194,0.62)]">{{ cityPulseMetricAsOf(metric) }}</p>
+                            <p class="min-w-0 truncate text-xs font-bold text-[#102018]">{{ metric.label }}</p>
+                            <p class="shrink-0 text-[10px] uppercase tracking-[0.14em] text-[#526458]">{{ cityPulseMetricAsOf(metric) }}</p>
                           </div>
-                          <p class="mt-1 text-[11px] text-[rgba(214,231,220,0.7)]">{{ metric.source_label }}</p>
+                          <p class="mt-1 text-[11px] font-semibold text-[#526458]">{{ metric.source_label }}</p>
                           @if (metric.methodology) {
-                            <p class="mt-1.5 text-[11px] leading-5 text-[rgba(214,231,220,0.6)]">{{ metric.methodology }}</p>
+                            <p class="mt-1.5 text-[11px] leading-5 text-[#68776d]">{{ metric.methodology }}</p>
                           }
                           @if (metric.source_url) {
-                            <a [href]="metric.source_url" target="_blank" rel="noreferrer noopener" class="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-[rgba(181,221,194,0.92)] hover:text-white hover:underline">
+                            <a [href]="metric.source_url" target="_blank" rel="noreferrer noopener" class="mt-2 inline-flex items-center gap-1 text-[11px] font-black text-[#007f7a] hover:underline">
                               <span>View source</span>
                               <span class="material-symbols-outlined text-[12px]">open_in_new</span>
                             </a>

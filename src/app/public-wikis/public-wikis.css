@@ -1,0 +1,310 @@
+.public-wiki-grid {
+  align-items: stretch;
+}
+
+.public-wiki-card {
+  border: 4px solid #102018;
+  border-radius: 1.45rem 1rem 1.65rem 1.1rem;
+  background:
+    linear-gradient(90deg, rgba(16, 32, 24, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(16, 32, 24, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, #fffef7, var(--surface));
+  background-size: 24px 24px, 24px 24px, auto;
+  box-shadow: 6px 6px 0 #102018, 0 18px 42px rgba(16, 32, 24, 0.12);
+  color: var(--text);
+  text-decoration: none;
+  transform: rotate(-0.4deg);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.public-wiki-card:nth-child(2n) {
+  border-radius: 1rem 1.55rem 1.2rem 1.65rem;
+  transform: rotate(0.35deg);
+}
+
+.public-wiki-card:nth-child(3n) {
+  border-radius: 1.55rem 1.15rem 1.05rem 1.7rem;
+}
+
+.public-wiki-card:hover {
+  transform: translate(-2px, -4px) rotate(0deg);
+  box-shadow: 8px 8px 0 #102018, 0 24px 50px rgba(16, 32, 24, 0.18);
+}
+
+.public-wiki-rank,
+.public-wiki-live-sticker,
+.public-wiki-city-mark {
+  border: 3px solid #102018;
+  background: #ffffff;
+  box-shadow: 4px 4px 0 #102018;
+}
+
+.public-wiki-rank {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 20;
+  display: flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% 44% 52% 48%;
+  color: #102018;
+  font-size: 1rem;
+  font-weight: 950;
+  transform: rotate(-8deg);
+}
+
+.public-wiki-live-sticker {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  border-radius: 999px;
+  color: #00846f;
+  padding: 0.32rem 0.65rem;
+  font-size: 0.65rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  transform: rotate(5deg);
+}
+
+.public-wiki-city-mark {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 42% 58% 47% 53%;
+  padding: 0.32rem;
+  transform: rotate(-5deg);
+}
+
+.public-wiki-card__body {
+  background:
+    linear-gradient(135deg, rgba(255, 207, 69, 0.1), transparent 34%),
+    linear-gradient(315deg, rgba(0, 166, 166, 0.1), transparent 42%);
+}
+
+.public-wiki-title-sticker {
+  display: inline-block;
+  max-width: 100%;
+  border: 3px solid #102018;
+  border-radius: 1rem 0.8rem 1rem 0.7rem;
+  background: #ffffff;
+  box-shadow: 4px 4px 0 #102018;
+  padding: 0.45rem 0.65rem 0.55rem;
+  transform: rotate(-0.8deg);
+}
+
+.public-wiki-title-sticker p,
+.public-wiki-title-sticker h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.public-wiki-title-sticker p {
+  color: #00846f;
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.public-wiki-title-sticker h3 {
+  margin-top: 0.22rem;
+  color: #102018;
+  font-size: clamp(1.1rem, 2.3vw, 1.45rem);
+  font-weight: 950;
+  line-height: 1;
+  transition: color 180ms ease;
+}
+
+.public-wiki-card:hover .public-wiki-title-sticker h3 {
+  color: #00846f;
+}
+
+.city-attribute-sticker,
+.city-feeling-sticker {
+  --sticker-bg: #dffcf7;
+  --sticker-ink: #007f7a;
+  --sticker-soft: rgba(0, 166, 166, 0.14);
+}
+
+.sticker-palette--teal {
+  --sticker-bg: #dffcf7;
+  --sticker-ink: #007f7a;
+  --sticker-soft: rgba(0, 166, 166, 0.14);
+}
+
+.sticker-palette--coral {
+  --sticker-bg: #ffe2d7;
+  --sticker-ink: #d94d2b;
+  --sticker-soft: rgba(255, 122, 89, 0.17);
+}
+
+.sticker-palette--yellow {
+  --sticker-bg: #fff0b8;
+  --sticker-ink: #9a6500;
+  --sticker-soft: rgba(255, 207, 69, 0.22);
+}
+
+.sticker-palette--green {
+  --sticker-bg: #daf8c8;
+  --sticker-ink: #28853c;
+  --sticker-soft: rgba(76, 175, 80, 0.16);
+}
+
+.sticker-palette--blue {
+  --sticker-bg: #ddeeff;
+  --sticker-ink: #1f62c8;
+  --sticker-soft: rgba(47, 128, 237, 0.16);
+}
+
+.sticker-palette--sky {
+  --sticker-bg: #dff7ff;
+  --sticker-ink: #087b99;
+  --sticker-soft: rgba(39, 190, 221, 0.16);
+}
+
+.sticker-palette--purple {
+  --sticker-bg: #f0e4ff;
+  --sticker-ink: #7c3ec8;
+  --sticker-soft: rgba(124, 62, 200, 0.15);
+}
+
+.city-attribute-sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.city-attribute-sticker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: center;
+  min-height: 3.85rem;
+  border: 3px solid #102018;
+  border-radius: 1rem 0.8rem 1.08rem 0.75rem;
+  background: var(--sticker-bg);
+  box-shadow: 4px 4px 0 #102018;
+  color: #102018;
+  padding: 0.42rem;
+  transform: rotate(-0.9deg);
+}
+
+.city-attribute-sticker:nth-child(even) {
+  transform: rotate(0.8deg);
+}
+
+.city-attribute-sticker__icon {
+  display: flex;
+  width: 1.9rem;
+  height: 1.9rem;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #102018;
+  border-radius: 44% 56% 50% 50%;
+  background: #fffef7;
+  box-shadow: 2px 2px 0 #102018;
+  color: var(--sticker-ink);
+  font-size: 1.08rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.city-attribute-sticker__text {
+  min-width: 0;
+}
+
+.city-attribute-sticker__label,
+.city-attribute-sticker__caption {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 0.5rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: #526458;
+}
+
+.city-attribute-sticker__value {
+  display: block;
+  margin-top: 0.12rem;
+  overflow-wrap: anywhere;
+  font-size: clamp(0.78rem, 1.7vw, 0.96rem);
+  font-weight: 950;
+  line-height: 1.08;
+  color: #102018;
+}
+
+.city-attribute-sticker__caption {
+  margin-top: 0.1rem;
+  color: #68776d;
+  letter-spacing: 0.04em;
+}
+
+.city-feeling-sticker-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+}
+
+.city-feeling-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 3px solid #102018;
+  border-radius: 999px;
+  background: var(--sticker-bg);
+  box-shadow: 3px 3px 0 #102018;
+  color: #102018;
+  padding: 0.32rem 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.city-feeling-sticker .material-symbols-outlined {
+  color: var(--sticker-ink);
+  font-size: 0.92rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+@media (max-width: 640px) {
+  .public-wiki-card {
+    border-width: 3px;
+    border-radius: 1.15rem;
+    box-shadow: 5px 5px 0 #102018;
+    transform: none;
+  }
+
+  .public-wiki-card:nth-child(2n),
+  .public-wiki-card:nth-child(3n) {
+    transform: none;
+  }
+
+  .city-attribute-sticker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .public-wiki-title-sticker h3 {
+    font-size: 1.15rem;
+  }
+
+  .city-attribute-sticker {
+    min-height: 3.65rem;
+  }
+
+  .city-attribute-sticker__caption {
+    display: none;
+  }
+}

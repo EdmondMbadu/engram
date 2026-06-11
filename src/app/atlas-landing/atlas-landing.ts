@@ -13,10 +13,26 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
+interface CityDetailSticker {
+  id: string;
+  label: string;
+  value: string;
+  caption: string;
+  icon: string;
+  palette: string;
+}
+
+interface CityMoodSticker {
+  label: string;
+  icon: string;
+  palette: string;
+}
+
 @Component({
   selector: 'app-atlas-landing',
   imports: [FormsModule, RouterLink, ThemeToggleComponent, WorkspaceSidebarComponent, AccountMenuComponent],
   templateUrl: './atlas-landing.html',
+  styleUrl: './atlas-landing.css',
 })
 export class AtlasLandingComponent {
   private readonly authService = inject(AuthService);
@@ -150,7 +166,7 @@ export class AtlasLandingComponent {
     return null;
   });
   readonly isCityAtlas = computed(() => this.atlas()?.city_config?.enabled === true);
-  readonly cityPulseMetrics = computed(() => this.cityPulseSnapshot()?.metrics.slice(0, 6) ?? []);
+  readonly cityPulseMetrics = computed(() => this.cityPulseSnapshot()?.metrics ?? []);
   readonly cityPulsePrimaryMetric = computed(
     () => this.cityPulseMetrics().find((metric) => metric.id === 'population-now') ?? this.cityPulseMetrics()[0] ?? null,
   );
@@ -168,6 +184,129 @@ export class AtlasLandingComponent {
     }
     const name = this.atlasService.displayName(atlas);
     return name && name !== 'Select atlas' ? name : '';
+  });
+  readonly cityPulseName = computed(() => {
+    const atlas = this.atlas();
+    return (
+      this.cityPulseSnapshot()?.city_name?.trim() ||
+      atlas?.city_config?.city_name?.trim() ||
+      this.displayName()
+    );
+  });
+  readonly cityDetailStickers = computed<CityDetailSticker[]>(() => {
+    const atlas = this.atlas();
+    const config = atlas?.city_config;
+    const metadata = config?.metadata;
+    const stickers: CityDetailSticker[] = [];
+
+    const addSticker = (sticker: CityDetailSticker) => {
+      if (!stickers.some((existing) => existing.id === sticker.id)) {
+        stickers.push(sticker);
+      }
+    };
+
+    const cityName = config?.city_name?.trim() || this.cityPulseSnapshot()?.city_name?.trim() || '';
+    if (cityName) {
+      addSticker({
+        id: 'city-name',
+        label: 'City',
+        value: cityName,
+        caption: config?.region_name?.trim() || config?.country_code?.trim() || 'City profile',
+        icon: 'location_city',
+        palette: 'teal',
+      });
+    }
+
+    const regionParts = [config?.region_name?.trim(), config?.country_code?.trim()].filter(Boolean);
+    if (regionParts.length) {
+      addSticker({
+        id: 'region',
+        label: 'Region',
+        value: regionParts.join(', '),
+        caption: metadata?.global_region || 'Mapped location',
+        icon: 'public',
+        palette: 'sky',
+      });
+    }
+
+    if (metadata?.population && !this.cityPulseMetrics().some((metric) => metric.id === 'population-now')) {
+      addSticker({
+        id: 'population',
+        label: 'Population',
+        value: this.compactNumber(metadata.population),
+        caption: metadata.population_year ? `Estimate year ${metadata.population_year}` : 'Latest attached estimate',
+        icon: 'groups',
+        palette: 'coral',
+      });
+    }
+
+    if (metadata?.population_density_per_km2) {
+      addSticker({
+        id: 'density',
+        label: 'Density',
+        value: `${this.compactNumber(metadata.population_density_per_km2)}/km²`,
+        caption: 'People per square kilometer',
+        icon: 'grid_view',
+        palette: 'yellow',
+      });
+    }
+
+    if (metadata?.area_km2) {
+      addSticker({
+        id: 'area',
+        label: 'Area',
+        value: `${this.compactNumber(metadata.area_km2)} km²`,
+        caption: metadata.population_scope ? this.titleize(metadata.population_scope.replaceAll('_', ' ')) : 'Mapped area',
+        icon: 'map',
+        palette: 'green',
+      });
+    }
+
+    if (config?.timezone) {
+      addSticker({
+        id: 'timezone',
+        label: 'Time',
+        value: this.shortTimezone(config.timezone),
+        caption: config.timezone,
+        icon: 'schedule',
+        palette: 'purple',
+      });
+    }
+
+    if (typeof config?.latitude === 'number' && typeof config.longitude === 'number') {
+      addSticker({
+        id: 'coordinates',
+        label: 'Coordinates',
+        value: `${config.latitude.toFixed(2)}, ${config.longitude.toFixed(2)}`,
+        caption: 'Map position',
+        icon: 'explore',
+        palette: 'blue',
+      });
+    }
+
+    return stickers.slice(0, 8);
+  });
+  readonly cityMoodStickers = computed<CityMoodSticker[]>(() => {
+    const options: CityMoodSticker[] = [
+      { label: 'Food streets', icon: 'restaurant', palette: 'coral' },
+      { label: 'Parks', icon: 'park', palette: 'green' },
+      { label: 'Transit pulse', icon: 'directions_transit', palette: 'blue' },
+      { label: 'Local markets', icon: 'storefront', palette: 'yellow' },
+      { label: 'Night lights', icon: 'nightlife', palette: 'purple' },
+      { label: 'Public art', icon: 'palette', palette: 'teal' },
+      { label: 'Waterfront', icon: 'waves', palette: 'sky' },
+      { label: 'Neighborhoods', icon: 'home_work', palette: 'coral' },
+      { label: 'Campuses', icon: 'school', palette: 'blue' },
+      { label: 'Green jobs', icon: 'eco', palette: 'green' },
+    ];
+    const seedSource = `${this.cityPulseName()}-${this.atlas()?.city_config?.country_code ?? ''}`;
+    let seed = 0;
+    for (let i = 0; i < seedSource.length; i++) {
+      seed = (seed * 31 + seedSource.charCodeAt(i)) % 9973;
+    }
+    return [...options]
+      .sort((left, right) => ((seed + left.label.length * 17) % 101) - ((seed + right.label.length * 17) % 101))
+      .slice(0, 5);
   });
   readonly canSubscribeToAtlasUpdates = computed(() => {
     const atlas = this.atlas();
@@ -595,6 +734,7 @@ export class AtlasLandingComponent {
   }
 
   cityPulseMetricIcon(metric: CityPulseMetric): string {
+    const haystack = `${metric.id} ${metric.label} ${metric.short_label} ${metric.description}`.toLowerCase();
     switch (metric.id) {
       case 'population-now':
       case 'population-change-annual':
@@ -608,12 +748,54 @@ export class AtlasLandingComponent {
       case 'green-jobs-open':
         return 'eco';
       default:
+        if (haystack.includes('density')) return 'grid_view';
+        if (haystack.includes('rent') || haystack.includes('home') || haystack.includes('housing')) return 'apartment';
+        if (haystack.includes('income') || haystack.includes('cost') || haystack.includes('price')) return 'payments';
+        if (haystack.includes('job') || haystack.includes('employment')) return 'work';
+        if (haystack.includes('school') || haystack.includes('education')) return 'school';
+        if (haystack.includes('transit') || haystack.includes('commute')) return 'directions_transit';
+        if (haystack.includes('park') || haystack.includes('green')) return 'park';
+        if (haystack.includes('safety') || haystack.includes('crime')) return 'shield';
+        if (haystack.includes('health')) return 'local_hospital';
+        if (haystack.includes('weather') || haystack.includes('temperature')) return 'partly_cloudy_day';
+        if (haystack.includes('air')) return 'air';
         return metric.format === 'currency'
           ? 'attach_money'
           : metric.format === 'percent'
             ? 'percent'
             : 'monitoring';
     }
+  }
+
+  cityPulseMetricPalette(metric: CityPulseMetric): string {
+    const haystack = `${metric.id} ${metric.label} ${metric.short_label} ${metric.description}`.toLowerCase();
+    if (metric.id === 'population-now' || metric.id === 'population-change-annual') return 'teal';
+    if (metric.id === 'median-household-income' || haystack.includes('income')) return 'yellow';
+    if (metric.id === 'median-gross-rent' || haystack.includes('rent')) return 'purple';
+    if (metric.id === 'median-home-value' || haystack.includes('home')) return 'blue';
+    if (metric.id === 'green-jobs-open' || haystack.includes('green') || haystack.includes('park')) return 'green';
+    if (haystack.includes('density')) return 'coral';
+    if (haystack.includes('transit') || haystack.includes('commute')) return 'sky';
+    if (haystack.includes('safety') || haystack.includes('crime')) return 'blue';
+    if (metric.format === 'currency') return 'yellow';
+    if (metric.format === 'percent') return 'coral';
+    return 'teal';
+  }
+
+  private compactNumber(value: number): string {
+    return new Intl.NumberFormat('en-US', {
+      notation: Math.abs(value) >= 10_000 ? 'compact' : 'standard',
+      maximumFractionDigits: Math.abs(value) >= 10_000 ? 1 : 0,
+    }).format(value);
+  }
+
+  private shortTimezone(timezone: string): string {
+    const parts = timezone.split('/');
+    return this.titleize((parts.at(-1) ?? timezone).replaceAll('_', ' '));
+  }
+
+  private titleize(value: string): string {
+    return value.replace(/\w\S*/g, (part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase());
   }
 
   cityPulseMetricAccent(metric: CityPulseMetric): string {

@@ -341,6 +341,21 @@ interface OpenMeteoLocationResponse {
   } | null;
 }
 
+interface PublicWikiStickerAttribute {
+  id: string;
+  label: string;
+  value: string;
+  caption: string;
+  icon: string;
+  palette: string;
+}
+
+interface PublicWikiFeelingSticker {
+  label: string;
+  icon: string;
+  palette: string;
+}
+
 @Component({
   selector: 'app-public-wikis',
   imports: [
@@ -351,6 +366,7 @@ interface OpenMeteoLocationResponse {
     AccountMenuComponent,
   ],
   templateUrl: './public-wikis.html',
+  styleUrl: './public-wikis.css',
 })
 export class PublicWikisComponent implements OnInit {
   private readonly atlasService = inject(AtlasService);
@@ -446,6 +462,17 @@ export class PublicWikisComponent implements OnInit {
     return this.normalizeVisibleWikiTitle(wiki.title);
   }
 
+  cityDisplayName(wiki: PublicWikiCatalogItem): string {
+    return this.displayWikiTitle(wiki)
+      .replace(/^Living Wiki:\s*/i, '')
+      .replace(/^My Living Wiki:\s*/i, '')
+      .trim();
+  }
+
+  cityTitleKicker(wiki: PublicWikiCatalogItem): string {
+    return this.categoryForWiki(wiki) === CITIES_CATEGORY ? 'Living Wiki city' : wiki.subtitle;
+  }
+
   setCategory(cat: PublicWikiCategory): void {
     this.activeCategory.set(cat);
     if (cat !== CITIES_CATEGORY) {
@@ -535,6 +562,133 @@ export class PublicWikisComponent implements OnInit {
 
   densityHeroLabel(wiki: PublicWikiCatalogItem): string {
     return this.densityLabel(wiki) ?? 'Density needed';
+  }
+
+  cityStickerAttributes(wiki: PublicWikiCatalogItem): PublicWikiStickerAttribute[] {
+    const stickers: PublicWikiStickerAttribute[] = [];
+    const addSticker = (sticker: PublicWikiStickerAttribute) => {
+      if (!stickers.some((existing) => existing.id === sticker.id)) {
+        stickers.push(sticker);
+      }
+    };
+
+    const region = this.globalRegionForWiki(wiki);
+    const country = wiki.countryLabel?.trim();
+    if (country || region !== 'Other') {
+      addSticker({
+        id: 'region',
+        label: region === 'Other' ? 'Place' : region,
+        value: country || region,
+        caption: 'Region',
+        icon: 'public',
+        palette: 'sky',
+      });
+    }
+
+    if (wiki.population) {
+      addSticker({
+        id: 'population',
+        label: 'Population',
+        value: this.formatCompactNumber(wiki.population),
+        caption: wiki.populationYear ? `${wiki.populationYear} estimate` : 'Latest estimate',
+        icon: 'groups',
+        palette: 'coral',
+      });
+    }
+
+    const density = this.populationDensityForWiki(wiki);
+    if (density !== null) {
+      addSticker({
+        id: 'density',
+        label: 'Density',
+        value: `${this.formatCompactNumber(density)}/km²`,
+        caption: 'People per km²',
+        icon: 'grid_view',
+        palette: 'yellow',
+      });
+    }
+
+    const localTime = this.localTimeLabel(wiki);
+    if (localTime) {
+      addSticker({
+        id: 'time',
+        label: 'Local time',
+        value: localTime,
+        caption: wiki.timezone ? this.shortTimezone(wiki.timezone) : 'Timezone',
+        icon: this.timeIcon(wiki),
+        palette: 'purple',
+      });
+    }
+
+    const temp = this.temperatureLabel(wiki);
+    if (temp) {
+      addSticker({
+        id: 'temperature',
+        label: 'Weather',
+        value: temp,
+        caption: this.temperatureAssistiveLabel(wiki),
+        icon: 'partly_cloudy_day',
+        palette: 'blue',
+      });
+    }
+
+    if (wiki.areaKm2) {
+      addSticker({
+        id: 'area',
+        label: 'Area',
+        value: `${this.formatCompactNumber(wiki.areaKm2)} km²`,
+        caption: 'Mapped area',
+        icon: 'map',
+        palette: 'green',
+      });
+    }
+
+    if (this.coordinatePair(wiki)) {
+      addSticker({
+        id: 'map',
+        label: 'Map',
+        value: 'Located',
+        caption: 'Coordinates attached',
+        icon: 'explore',
+        palette: 'teal',
+      });
+    }
+
+    const priority =
+      this.activeSort() === 'temp'
+        ? ['region', 'temperature', 'time', 'population', 'density', 'area', 'map']
+        : this.activeSort() === 'density'
+          ? ['region', 'density', 'population', 'time', 'area', 'map']
+          : this.activeSort() === 'time'
+            ? ['region', 'time', 'population', 'density', 'map']
+            : ['region', 'population', 'density', 'time', 'temperature', 'area', 'map'];
+
+    return stickers
+      .sort((left, right) => priority.indexOf(left.id) - priority.indexOf(right.id))
+      .slice(0, 4);
+  }
+
+  cityFeelingStickers(wiki: PublicWikiCatalogItem): PublicWikiFeelingSticker[] {
+    const options: PublicWikiFeelingSticker[] = [
+      { label: 'Food', icon: 'restaurant', palette: 'coral' },
+      { label: 'Parks', icon: 'park', palette: 'green' },
+      { label: 'Transit', icon: 'directions_transit', palette: 'blue' },
+      { label: 'Markets', icon: 'storefront', palette: 'yellow' },
+      { label: 'Music', icon: 'music_note', palette: 'purple' },
+      { label: 'Art', icon: 'palette', palette: 'teal' },
+      { label: 'Water', icon: 'waves', palette: 'sky' },
+      { label: 'Homes', icon: 'home_work', palette: 'coral' },
+      { label: 'Schools', icon: 'school', palette: 'blue' },
+      { label: 'Jobs', icon: 'work', palette: 'green' },
+    ];
+    let seed = 0;
+    const source = `${this.cityNameKey(wiki)}-${wiki.countryLabel ?? ''}`;
+    for (let i = 0; i < source.length; i++) {
+      seed = (seed * 33 + source.charCodeAt(i)) % 7919;
+    }
+    return [...options]
+      .sort((left, right) => ((seed + left.label.charCodeAt(0) * 13) % 97) - ((seed + right.label.charCodeAt(0) * 13) % 97))
+      .slice(0, 2);
   }
 
   densityBandBackground(wiki: PublicWikiCatalogItem): string | null {
@@ -1025,5 +1179,18 @@ export class PublicWikisComponent implements OnInit {
 
   private wikiKey(wiki: PublicWikiCatalogItem): string {
     return wiki.slug?.trim().toLowerCase() || this.titleKey(wiki);
+  }
+
+  private formatCompactNumber(value: number): string {
+    return new Intl.NumberFormat('en-US', {
+      notation: Math.abs(value) >= 10_000 ? 'compact' : 'standard',
+      maximumFractionDigits: Math.abs(value) >= 10_000 ? 1 : 0,
+    }).format(value);
+  }
+
+  private shortTimezone(timezone: string): string {
+    const parts = timezone.split('/');
+    const label = parts.length > 0 ? parts[parts.length - 1] : timezone;
+    return label.replaceAll('_', ' ');
   }
 }

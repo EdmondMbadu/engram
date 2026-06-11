@@ -1,0 +1,472 @@
+.city-sticker-board {
+  position: relative;
+  overflow: hidden;
+  border: 4px solid #102018;
+  border-radius: 1.8rem;
+  background:
+    linear-gradient(90deg, rgba(16, 32, 24, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(16, 32, 24, 0.06) 1px, transparent 1px),
+    linear-gradient(135deg, #fff8df 0%, #f2fff2 36%, #e9fbff 68%, #fff2ee 100%);
+  background-size: 28px 28px, 28px 28px, auto;
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  color: #102018;
+  box-shadow: 10px 10px 0 #102018, 0 28px 70px rgba(16, 32, 24, 0.18);
+}
+
+.city-sticker-board::before,
+.city-sticker-board::after,
+.city-sticker-board__confetti {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.city-sticker-board::before {
+  inset: -3rem auto auto -2rem;
+  width: 14rem;
+  height: 5rem;
+  border: 4px solid #102018;
+  border-radius: 40% 60% 55% 45%;
+  background: #ffcf45;
+  transform: rotate(-18deg);
+  opacity: 0.55;
+}
+
+.city-sticker-board::after {
+  right: -2.5rem;
+  bottom: 1rem;
+  width: 11rem;
+  height: 4.5rem;
+  border: 4px solid #102018;
+  border-radius: 52% 48% 36% 64%;
+  background: #ff7a59;
+  transform: rotate(14deg);
+  opacity: 0.32;
+}
+
+.city-sticker-board__confetti {
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, transparent 45%, #00a6a6 45% 55%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, #ff7a59 45% 55%, transparent 55%),
+    radial-gradient(circle, #ffcf45 0 3px, transparent 3.5px),
+    radial-gradient(circle, #2f80ed 0 3px, transparent 3.5px);
+  background-position: 9% 22%, 87% 16%, 18% 82%, 72% 88%;
+  background-repeat: no-repeat;
+  background-size: 22px 22px, 18px 18px, 12px 12px, 12px 12px;
+  opacity: 0.8;
+}
+
+.city-sticker-board__eyebrow,
+.city-sticker-board__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 3px solid #102018;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 4px 4px 0 #102018;
+  color: #102018;
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.city-sticker-board__eyebrow {
+  padding: 0.45rem 0.75rem;
+}
+
+.city-sticker-board__action {
+  flex-shrink: 0;
+  padding: 0.5rem 0.8rem;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.city-sticker-board__action:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #102018;
+}
+
+.city-detail-sticker,
+.city-metric-sticker,
+.city-primary-sticker,
+.city-mood-sticker {
+  --sticker-bg: #e6fffb;
+  --sticker-ink: #007f7a;
+  --sticker-soft: rgba(0, 127, 122, 0.12);
+}
+
+.sticker-palette--teal {
+  --sticker-bg: #dffcf7;
+  --sticker-ink: #007f7a;
+  --sticker-soft: rgba(0, 166, 166, 0.14);
+}
+
+.sticker-palette--coral {
+  --sticker-bg: #ffe2d7;
+  --sticker-ink: #d94d2b;
+  --sticker-soft: rgba(255, 122, 89, 0.17);
+}
+
+.sticker-palette--yellow {
+  --sticker-bg: #fff0b8;
+  --sticker-ink: #9a6500;
+  --sticker-soft: rgba(255, 207, 69, 0.22);
+}
+
+.sticker-palette--green {
+  --sticker-bg: #daf8c8;
+  --sticker-ink: #28853c;
+  --sticker-soft: rgba(76, 175, 80, 0.16);
+}
+
+.sticker-palette--blue {
+  --sticker-bg: #ddeeff;
+  --sticker-ink: #1f62c8;
+  --sticker-soft: rgba(47, 128, 237, 0.16);
+}
+
+.sticker-palette--sky {
+  --sticker-bg: #dff7ff;
+  --sticker-ink: #087b99;
+  --sticker-soft: rgba(39, 190, 221, 0.16);
+}
+
+.sticker-palette--purple {
+  --sticker-bg: #f0e4ff;
+  --sticker-ink: #7c3ec8;
+  --sticker-soft: rgba(124, 62, 200, 0.15);
+}
+
+.city-detail-sticker {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: center;
+  min-height: 7rem;
+  border: 4px solid #102018;
+  border-radius: 1.45rem 1.05rem 1.65rem 1rem;
+  background: var(--sticker-bg);
+  padding: 0.9rem;
+  box-shadow: 6px 6px 0 #102018;
+  transform: rotate(-1.2deg);
+}
+
+.city-detail-sticker:nth-child(even) {
+  transform: rotate(1.1deg);
+}
+
+.city-detail-sticker__icon,
+.city-metric-sticker__icon,
+.city-primary-sticker__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #102018;
+  background: #fffdf3;
+  color: var(--sticker-ink);
+  box-shadow: 4px 4px 0 #102018;
+}
+
+.city-detail-sticker__icon {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 42% 58% 54% 46%;
+}
+
+.city-detail-sticker__icon .material-symbols-outlined {
+  font-size: 1.95rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.city-detail-sticker__label,
+.city-primary-sticker__label,
+.city-metric-sticker__short {
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #526458;
+}
+
+.city-detail-sticker__value {
+  margin-top: 0.35rem;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+  font-weight: 950;
+  line-height: 1.05;
+  color: #102018;
+}
+
+.city-detail-sticker__caption,
+.city-primary-sticker__description,
+.city-metric-sticker__label,
+.city-metric-sticker__meta {
+  overflow-wrap: anywhere;
+  color: #526458;
+}
+
+.city-detail-sticker__caption {
+  margin-top: 0.25rem;
+  font-size: 0.73rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.city-pulse-sticker-sheet {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border: 4px solid #102018;
+  border-radius: 1.7rem;
+  background:
+    linear-gradient(135deg, rgba(255, 207, 69, 0.18), transparent 36%),
+    linear-gradient(315deg, rgba(0, 166, 166, 0.16), transparent 42%),
+    #fffdf3;
+  box-shadow: 8px 8px 0 #102018;
+}
+
+.city-pulse-sticker-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 4px solid #102018;
+  background: #ffffff;
+  padding: 1rem 1.15rem;
+}
+
+.city-pulse-sticker-sheet__header p,
+.city-pulse-sticker-sheet__header span {
+  margin: 0;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.city-pulse-sticker-sheet__header p {
+  color: #102018;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+}
+
+.city-pulse-sticker-sheet__header span {
+  color: #68776d;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+
+.city-primary-sticker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: center;
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+
+.city-primary-sticker__icon {
+  width: clamp(5.5rem, 14vw, 8rem);
+  height: clamp(5.5rem, 14vw, 8rem);
+  border-radius: 46% 54% 39% 61%;
+  background: var(--sticker-bg);
+  transform: rotate(-6deg);
+}
+
+.city-primary-sticker__icon .material-symbols-outlined {
+  font-size: clamp(3rem, 8vw, 4.8rem);
+  font-variation-settings: 'FILL' 1;
+}
+
+.city-primary-sticker__value {
+  margin-top: 0.45rem;
+  overflow-wrap: anywhere;
+  font-family: var(--font-headline);
+  font-size: clamp(2.4rem, 7vw, 4.8rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 950;
+  line-height: 0.95;
+  color: var(--sticker-ink);
+  text-shadow: 2px 2px 0 #ffffff;
+}
+
+.city-primary-sticker__description {
+  max-width: 40rem;
+  margin-top: 0.65rem;
+  font-size: 0.93rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.city-primary-sticker__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+}
+
+.city-primary-sticker__chips span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 2px solid #102018;
+  border-radius: 999px;
+  background: #ffffff;
+  padding: 0.42rem 0.62rem;
+  color: #102018;
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.city-primary-sticker__chips i {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #00a878;
+}
+
+.city-metric-sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 1rem;
+  padding: 0 1.1rem 1.2rem;
+}
+
+.city-metric-sticker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  min-height: 10.5rem;
+  border: 4px solid #102018;
+  border-radius: 1.25rem 1.55rem 1.05rem 1.35rem;
+  background: linear-gradient(180deg, var(--sticker-bg), #ffffff);
+  padding: 0.95rem;
+  box-shadow: 5px 5px 0 #102018;
+  transform: rotate(0.8deg);
+}
+
+.city-metric-sticker:nth-child(odd) {
+  transform: rotate(-0.8deg);
+}
+
+.city-metric-sticker__icon {
+  width: 3.15rem;
+  height: 3.15rem;
+  border-radius: 58% 42% 48% 52%;
+}
+
+.city-metric-sticker__icon .material-symbols-outlined {
+  font-size: 1.85rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.city-metric-sticker__value {
+  margin-top: 0.45rem;
+  overflow-wrap: anywhere;
+  font-family: var(--font-headline);
+  font-size: clamp(1.8rem, 4vw, 2.55rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 950;
+  line-height: 0.95;
+  color: var(--sticker-ink);
+}
+
+.city-metric-sticker__label {
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.city-metric-sticker__meta {
+  margin-top: 0.45rem;
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.city-mood-sticker-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0 1.1rem 1.2rem;
+}
+
+.city-mood-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 3px solid #102018;
+  border-radius: 999px;
+  background: var(--sticker-bg);
+  box-shadow: 4px 4px 0 #102018;
+  color: #102018;
+  padding: 0.48rem 0.72rem;
+  font-size: 0.72rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.city-mood-sticker .material-symbols-outlined {
+  color: var(--sticker-ink);
+  font-size: 1.05rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.city-sources-panel {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border: 3px solid #102018;
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 5px 5px 0 #102018;
+}
+
+@media (max-width: 720px) {
+  .city-sticker-board {
+    border-width: 3px;
+    border-radius: 1.2rem;
+    box-shadow: 6px 6px 0 #102018;
+  }
+
+  .city-sticker-board__action span:not(.material-symbols-outlined) {
+    display: none;
+  }
+
+  .city-pulse-sticker-sheet__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .city-pulse-sticker-sheet__header span {
+    text-align: left;
+  }
+
+  .city-primary-sticker {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .city-primary-sticker__icon {
+    margin: 0 auto;
+  }
+
+  .city-primary-sticker__chips {
+    justify-content: center;
+  }
+
+  .city-metric-sticker-grid {
+    grid-template-columns: 1fr;
+  }
+}
