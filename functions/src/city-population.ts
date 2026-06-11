@@ -201,6 +201,122 @@ const COUNTRY_CODE_BY_TIMEZONE: Record<string, string> = {
   'Europe/Zurich': 'CH',
   'Pacific/Auckland': 'NZ',
 };
+const US_CENSUS_STATE_CODE_BY_NAME: Record<string, string> = {
+  alabama: '01',
+  alaska: '02',
+  arizona: '04',
+  arkansas: '05',
+  california: '06',
+  colorado: '08',
+  connecticut: '09',
+  delaware: '10',
+  'district-of-columbia': '11',
+  dc: '11',
+  florida: '12',
+  georgia: '13',
+  hawaii: '15',
+  idaho: '16',
+  illinois: '17',
+  indiana: '18',
+  iowa: '19',
+  kansas: '20',
+  kentucky: '21',
+  louisiana: '22',
+  maine: '23',
+  maryland: '24',
+  massachusetts: '25',
+  michigan: '26',
+  minnesota: '27',
+  mississippi: '28',
+  missouri: '29',
+  montana: '30',
+  nebraska: '31',
+  nevada: '32',
+  'new-hampshire': '33',
+  'new-jersey': '34',
+  'new-mexico': '35',
+  'new-york': '36',
+  'north-carolina': '37',
+  'north-dakota': '38',
+  ohio: '39',
+  oklahoma: '40',
+  oregon: '41',
+  pennsylvania: '42',
+  'puerto-rico': '72',
+  'rhode-island': '44',
+  'south-carolina': '45',
+  'south-dakota': '46',
+  tennessee: '47',
+  texas: '48',
+  utah: '49',
+  vermont: '50',
+  virginia: '51',
+  washington: '53',
+  'west-virginia': '54',
+  wisconsin: '55',
+  wyoming: '56',
+};
+const US_STATE_ABBREVIATION_BY_NAME: Record<string, string> = {
+  alabama: 'AL',
+  alaska: 'AK',
+  arizona: 'AZ',
+  arkansas: 'AR',
+  california: 'CA',
+  colorado: 'CO',
+  connecticut: 'CT',
+  delaware: 'DE',
+  'district-of-columbia': 'DC',
+  dc: 'DC',
+  florida: 'FL',
+  georgia: 'GA',
+  hawaii: 'HI',
+  idaho: 'ID',
+  illinois: 'IL',
+  indiana: 'IN',
+  iowa: 'IA',
+  kansas: 'KS',
+  kentucky: 'KY',
+  louisiana: 'LA',
+  maine: 'ME',
+  maryland: 'MD',
+  massachusetts: 'MA',
+  michigan: 'MI',
+  minnesota: 'MN',
+  mississippi: 'MS',
+  missouri: 'MO',
+  montana: 'MT',
+  nebraska: 'NE',
+  nevada: 'NV',
+  'new-hampshire': 'NH',
+  'new-jersey': 'NJ',
+  'new-mexico': 'NM',
+  'new-york': 'NY',
+  'north-carolina': 'NC',
+  'north-dakota': 'ND',
+  ohio: 'OH',
+  oklahoma: 'OK',
+  oregon: 'OR',
+  pennsylvania: 'PA',
+  'puerto-rico': 'PR',
+  'rhode-island': 'RI',
+  'south-carolina': 'SC',
+  'south-dakota': 'SD',
+  tennessee: 'TN',
+  texas: 'TX',
+  utah: 'UT',
+  vermont: 'VT',
+  virginia: 'VA',
+  washington: 'WA',
+  'west-virginia': 'WV',
+  wisconsin: 'WI',
+  wyoming: 'WY',
+};
+const US_CENSUS_STATE_CODE_BY_ABBREVIATION = Object.fromEntries(
+  Object.entries(US_STATE_ABBREVIATION_BY_NAME).map(([stateName, abbreviation]) => [
+    abbreviation,
+    US_CENSUS_STATE_CODE_BY_NAME[stateName],
+  ]),
+);
 const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'>> = {
   'abu-dhabi-ae': seededPopulation(1650000, 2023, 'Abu Dhabi Statistics Centre estimate'),
   'accra-gh': seededPopulation(2841000, 2021, 'Ghana 2021 census metropolitan district estimate'),
@@ -368,9 +484,23 @@ export async function refreshCityPopulationMetadata(
     };
   }
 
+  const censusCodes = censusCodesFromCandidate(candidate);
+  const inferredCountryCode = inferCountryCode(cityConfig);
+  const existingCountryCode = typeof cityConfig.country_code === 'string'
+    ? cityConfig.country_code.trim().toUpperCase()
+    : '';
   await ATLASES_COLLECTION.doc(atlasId).update({
     city_config: {
       ...cityConfig,
+      ...(inferredCountryCode && inferredCountryCode !== existingCountryCode
+        ? { country_code: inferredCountryCode }
+        : {}),
+      ...(censusCodes
+        ? {
+            census_state_code: censusCodes.stateCode,
+            census_place_code: censusCodes.placeCode,
+          }
+        : {}),
       metadata: {
         ...(cityConfig.metadata ?? {}),
         population: candidate.value,
@@ -405,11 +535,6 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
   const countryCode = inferCountryCode(cityConfig);
   const regionName = typeof cityConfig.region_name === 'string' ? cityConfig.region_name.trim() : '';
 
-  const globalAgglomeration = globalAgglomerationPopulationFor(cityName, countryCode);
-  if (globalAgglomeration) {
-    return globalAgglomeration;
-  }
-
   if (countryCode === 'US' && cityConfig.census_state_code && cityConfig.census_place_code) {
     const census = await fetchCensusPopulation(
       String(cityConfig.census_state_code),
@@ -418,6 +543,21 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
     if (census) {
       return census;
     }
+  }
+
+  if (countryCode === 'US') {
+    const stateCode = inferUsCensusStateCode(regionName) ?? inferUsCensusStateCode(cityName);
+    if (stateCode) {
+      const census = await fetchCensusPopulationByName(stateCode, cityName);
+      if (census) {
+        return census;
+      }
+    }
+  }
+
+  const globalAgglomeration = globalAgglomerationPopulationFor(cityName, countryCode);
+  if (globalAgglomeration) {
+    return globalAgglomeration;
   }
 
   const seeded = seededPopulationFor(cityName, countryCode);
@@ -441,21 +581,51 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
 async function fetchCensusPopulation(stateCode: string, placeCode: string): Promise<PopulationCandidate | null> {
   const normalizedStateCode = stateCode.padStart(2, '0');
   const normalizedPlaceCode = placeCode.padStart(5, '0');
+  const censusStateFilenameCode = String(Number(normalizedStateCode));
   const datasetUrl =
     `https://www2.census.gov/programs-surveys/popest/datasets/2020-${CENSUS_CITY_POPULATION_VINTAGE}/cities/totals/` +
-    `sub-est${CENSUS_CITY_POPULATION_VINTAGE}_${normalizedStateCode}.csv`;
+    `sub-est${CENSUS_CITY_POPULATION_VINTAGE}_${censusStateFilenameCode}.csv`;
 
   const row = await fetchCsvPlacePopulationRow(datasetUrl, normalizedStateCode, normalizedPlaceCode);
   if (!row) {
     return null;
   }
 
+  return candidateFromCensusRow(row, datasetUrl, normalizedStateCode, normalizedPlaceCode, 'census_codes');
+}
+
+async function fetchCensusPopulationByName(stateCode: string, cityName: string): Promise<PopulationCandidate | null> {
+  const normalizedStateCode = stateCode.padStart(2, '0');
+  const censusStateFilenameCode = String(Number(normalizedStateCode));
+  const datasetUrl =
+    `https://www2.census.gov/programs-surveys/popest/datasets/2020-${CENSUS_CITY_POPULATION_VINTAGE}/cities/totals/` +
+    `sub-est${CENSUS_CITY_POPULATION_VINTAGE}_${censusStateFilenameCode}.csv`;
+
+  const row = await fetchCsvPlacePopulationRowByName(datasetUrl, normalizedStateCode, cityName);
+  if (!row) {
+    return null;
+  }
+
+  const placeCode = String(row['PLACE'] ?? '').trim().padStart(5, '0');
+  if (!/^\d{5}$/.test(placeCode) || placeCode === '00000') {
+    return null;
+  }
+
+  return candidateFromCensusRow(row, datasetUrl, normalizedStateCode, placeCode, 'name_country_region');
+}
+
+function candidateFromCensusRow(
+  row: Record<string, string>,
+  datasetUrl: string,
+  normalizedStateCode: string,
+  normalizedPlaceCode: string,
+  matchMethod: CityPopulationMatchMethod,
+): PopulationCandidate | null {
   const latestPopulation = Number(row[`POPESTIMATE${CENSUS_CITY_POPULATION_VINTAGE}`]);
   if (!Number.isFinite(latestPopulation) || latestPopulation <= 0) {
     return null;
   }
 
-  const geographyName = String(row['NAME'] ?? '').trim() || `Place ${normalizedPlaceCode}`;
   return {
     value: Math.round(latestPopulation),
     year: CENSUS_CITY_POPULATION_VINTAGE,
@@ -465,7 +635,7 @@ async function fetchCensusPopulation(stateCode: string, placeCode: string): Prom
     sourceUrl: datasetUrl,
     sourceRecordId: `${normalizedStateCode}-${normalizedPlaceCode}`,
     confidence: 'high',
-    matchMethod: 'census_codes',
+    matchMethod,
   };
 }
 
@@ -782,6 +952,68 @@ async function fetchCsvPlacePopulationRow(
   }
 }
 
+async function fetchCsvPlacePopulationRowByName(
+  url: string,
+  normalizedStateCode: string,
+  cityName: string,
+): Promise<Record<string, string> | null> {
+  const expectedName = normalizeCensusPlaceName(cityName);
+  if (!expectedName) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'text/csv,text/plain;q=0.9,*/*;q=0.8',
+      },
+    });
+    if (!response.ok) {
+      return null;
+    }
+
+    const text = await response.text();
+    const lines = text
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+    const header = parseCsvLine(lines[0] ?? '');
+    if (header.length === 0) {
+      return null;
+    }
+
+    const candidates: Record<string, string>[] = [];
+    for (const line of lines.slice(1)) {
+      const values = parseCsvLine(line);
+      if (values.length !== header.length) {
+        continue;
+      }
+      const row = Object.fromEntries(header.map((key, index) => [key, values[index] ?? '']));
+      if (row['STATE'] !== normalizedStateCode || !['162', '157', '071'].includes(row['SUMLEV'])) {
+        continue;
+      }
+      if (normalizeCensusPlaceName(row['NAME'] ?? '') === expectedName) {
+        candidates.push(row);
+      }
+    }
+
+    return (
+      candidates.find((row) => row['SUMLEV'] === '162') ??
+      candidates.find((row) => row['SUMLEV'] === '157') ??
+      candidates.find((row) => row['PRIMGEO_FLAG'] === '1') ??
+      candidates[0] ??
+      null
+    );
+  } catch (error) {
+    logger.warn('Census population name lookup failed', {
+      url,
+      cityName,
+      message: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
 function parseCsvLine(line: string): string[] {
   const values: string[] = [];
   let current = '';
@@ -859,6 +1091,53 @@ function inferCountryCode(cityConfig: NonNullable<AtlasRecord['city_config']>): 
   }
 
   return '';
+}
+
+function inferUsCensusStateCode(regionName: string): string | null {
+  const abbreviationMatch = regionName.trim().match(/(?:^|,\s*)([A-Z]{2})$/i);
+  if (abbreviationMatch) {
+    const abbreviationCode = US_CENSUS_STATE_CODE_BY_ABBREVIATION[abbreviationMatch[1].toUpperCase()];
+    if (abbreviationCode) {
+      return abbreviationCode;
+    }
+  }
+
+  const regionKey = normalizeSeedKey(regionName);
+  return US_CENSUS_STATE_CODE_BY_NAME[regionKey] ?? null;
+}
+
+function normalizeCensusPlaceName(value: string): string {
+  const base = value
+    .replace(/\s*,\s*[A-Z]{2}\s*$/i, '')
+    .replace(/\s*\([^)]*\)\s*$/g, '')
+    .trim();
+  const normalizedBase = normalizeForMatch(base)
+    .replace(/\b(city|town|village|borough|municipality|cdp|urban county|balance)\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (normalizedBase) {
+    return normalizedBase;
+  }
+
+  const regionKey = normalizeSeedKey(base);
+  const stateAbbreviation = US_STATE_ABBREVIATION_BY_NAME[regionKey];
+  return stateAbbreviation
+    ? normalizeForMatch(value.replace(new RegExp(`,\\s*${stateAbbreviation}\\s*$`, 'i'), ''))
+    : normalizedBase;
+}
+
+function censusCodesFromCandidate(candidate: PopulationCandidate): { stateCode: string; placeCode: string } | null {
+  if (candidate.source !== 'us_census_pep' || !candidate.sourceRecordId) {
+    return null;
+  }
+  const match = candidate.sourceRecordId.match(/^(\d{2})-(\d{5})$/);
+  if (!match) {
+    return null;
+  }
+  return {
+    stateCode: match[1],
+    placeCode: match[2],
+  };
 }
 
 function numberOrNull(value: unknown): number | null {
