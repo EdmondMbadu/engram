@@ -25,7 +25,7 @@
     </div>
   </nav>
 
-  <main class="mx-auto grid max-w-[90rem] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.82fr)] lg:px-10 lg:py-12 xl:gap-10">
+  <main class="mx-auto grid max-w-[90rem] gap-5 px-3 py-6 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.82fr)] lg:px-10 lg:py-12 xl:gap-10">
     <section>
       <div class="border-b border-[var(--line)] pb-8">
         <div class="flex flex-wrap items-center gap-3">
@@ -568,7 +568,7 @@
                       </div>
                       <button
                         type="button"
-                        class="primary-btn shrink-0 justify-center !px-5 !py-3 text-sm disabled:cursor-wait disabled:opacity-60"
+                        class="primary-btn w-full shrink-0 justify-center !px-5 !py-3 text-sm disabled:cursor-wait disabled:opacity-60 sm:w-auto"
                         [disabled]="checkoutLoading()"
                         (click)="startBusinessCheckout()"
                       >
@@ -687,7 +687,7 @@
               </p>
             </div>
             @if (authService.isAuthenticated()) {
-              <button type="button" class="primary-btn shrink-0 justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
+              <button type="button" class="primary-btn w-full shrink-0 justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
                 @if (claimSaving()) {
                   <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
                   <span>Saving</span>
@@ -697,7 +697,7 @@
                 }
               </button>
             } @else {
-              <a routerLink="/create-account" [queryParams]="accountRedirectParams()" class="primary-btn shrink-0 justify-center !px-5 !py-3 text-sm" (click)="saveCurrentDraftForAccount()">
+              <a routerLink="/create-account" [queryParams]="accountRedirectParams()" class="primary-btn w-full shrink-0 justify-center !px-5 !py-3 text-sm sm:w-auto" (click)="saveCurrentDraftForAccount()">
                 <span class="material-symbols-outlined text-base">person_add</span>
                 <span>Create account to claim</span>
               </a>
@@ -707,7 +707,7 @@
             <div class="error-banner mt-4 rounded-2xl px-4 py-3 text-sm">{{ claimError() }}</div>
           }
         </article>
-    <aside class="lg:col-start-2 lg:row-start-1 lg:self-start">
+    <aside class="hidden lg:col-start-2 lg:row-start-1 lg:block lg:self-start">
       <div class="space-y-4">
         <div class="mb-4 flex items-center justify-between gap-3">
           <div>
