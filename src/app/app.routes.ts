@@ -68,6 +68,11 @@ export const routes: Routes = [
     loadComponent: () => import('./dymaxion/dymaxion').then((m) => m.DymaxionComponent),
     title: 'Dymaxion Map | Living Wiki',
   },
+  {
+    path: 'fence-line',
+    loadComponent: () => import('./fence-line/fence-line').then((m) => m.FenceLineComponent),
+    title: 'The Fenceline Network | Living Wiki',
+  },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | Living Wiki', canActivate: [authGuard] },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | Living Wiki' },

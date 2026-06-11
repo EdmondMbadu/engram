@@ -26,20 +26,40 @@
   </nav>
 
   @if (isSignedIn()) {
-    <section class="border-b border-[var(--line)] bg-[var(--surface)]">
+    <section class="border-b border-[var(--line)] bg-[linear-gradient(180deg,var(--surface),var(--bg))]">
       <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10">
-        <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div class="max-w-3xl">
-            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Business workspace</p>
-            <h1 class="mt-2 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">Your businesses</h1>
-            <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
-              Manage every claimed business attached to {{ ownerEmail() || 'this account' }}. Open the public page, edit details, or claim a new business from one place.
-            </p>
+        <div class="relative overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-elevated)] sm:p-6">
+          <div class="absolute right-6 top-6 hidden h-32 w-32 rounded-full border border-[var(--line)] bg-[radial-gradient(circle_at_35%_30%,color-mix(in_srgb,var(--accent)_22%,white),transparent_62%)] opacity-60 lg:block"></div>
+          <div class="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div class="max-w-3xl">
+              <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Business workspace</p>
+              <h1 class="mt-2 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">Your businesses</h1>
+              <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
+                Manage every claimed business attached to {{ ownerEmail() || 'this account' }}. Open the public page, edit details, or claim a new business from one place.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-2 sm:flex sm:items-center">
+              <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-center shadow-[var(--shadow-floating)] sm:min-w-24">
+                <span class="block text-lg font-black text-[var(--text)]">{{ ownedBusinesses().length }}</span>
+                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Total</span>
+              </div>
+              <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-center shadow-[var(--shadow-floating)] sm:min-w-24">
+                <span class="block text-lg font-black text-[var(--text)]">{{ ownedVerifiedCount() }}</span>
+                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Verified</span>
+              </div>
+              <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-center shadow-[var(--shadow-floating)] sm:min-w-24">
+                <span class="block text-lg font-black text-[var(--text)]">{{ ownedPendingCount() }}</span>
+                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Pending</span>
+              </div>
+            </div>
           </div>
-          <a routerLink="/business/claim" class="primary-btn justify-center !px-5 !py-3 text-sm">
-            <span class="material-symbols-outlined text-base">add_business</span>
-            <span>Claim a business</span>
-          </a>
+
+          <div class="relative mt-5 flex flex-wrap items-center gap-3">
+            <a routerLink="/business/claim" class="primary-btn justify-center !px-5 !py-3 text-sm">
+              <span class="material-symbols-outlined text-base">add_business</span>
+              <span>Claim a business</span>
+            </a>
+          </div>
         </div>
 
         @if (ownedBusinessesError()) {
@@ -54,38 +74,74 @@
             </div>
           </div>
         } @else if (ownedBusinesses().length > 0) {
-          <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            @for (business of ownedBusinesses(); track business.claim_key) {
-              <article class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5 shadow-[var(--shadow-floating)]">
-                <div class="flex items-start justify-between gap-4">
-                  <div class="min-w-0">
-                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">{{ businessStatusLabel(business) }}</p>
-                    <h2 class="mt-2 truncate text-xl font-black tracking-tight text-[var(--text)]">{{ business.business_name }}</h2>
-                    <p class="mt-1 truncate text-sm font-semibold text-[var(--muted)]">{{ business.city_name }} · {{ business.category }}</p>
-                  </div>
-                  <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)]">
-                    <span class="material-symbols-outlined">storefront</span>
-                  </span>
-                </div>
-                <p class="mt-4 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{{ business.business_address || business.preview_url }}</p>
-                <div class="mt-5 flex flex-wrap gap-2">
-                  <a [routerLink]="businessDetailPath(business)" class="ghost-btn !px-4 !py-2.5 text-xs">
-                    <span class="material-symbols-outlined text-base">info</span>
-                    <span>Details</span>
-                  </a>
-                  <a [routerLink]="businessEditPath(business)" class="ghost-btn !px-4 !py-2.5 text-xs">
-                    <span class="material-symbols-outlined text-base">edit</span>
-                    <span>Edit</span>
-                  </a>
-                  <button
-                    type="button"
-                    class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-2.5 text-xs font-black text-[var(--error-text)] transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0"
-                    [disabled]="isDeletingBusiness(business)"
-                    (click)="deleteBusiness(business)"
+          <div class="mt-6 grid gap-3">
+            @for (business of ownedBusinesses(); track business.claim_key; let i = $index) {
+              <article class="group overflow-hidden rounded-[1.25rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-elevated)]">
+                <div class="grid gap-4 p-4 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:p-5">
+                  <div
+                    [class]="'relative flex h-20 w-20 shrink-0 items-center justify-center rounded-[1.25rem] border bg-gradient-to-br text-4xl shadow-[0_18px_48px_-34px_rgba(15,23,42,0.8)] ' + businessWorkspacePalette(i)"
+                    aria-hidden="true"
                   >
-                    <span class="material-symbols-outlined text-base">delete</span>
-                    <span>{{ isDeletingBusiness(business) ? 'Deleting...' : 'Delete' }}</span>
-                  </button>
+                    @if (business.logo_url || business.profile_image_url) {
+                      <img [src]="business.logo_url || business.profile_image_url" alt="" class="h-full w-full rounded-[1.15rem] object-cover" />
+                    } @else {
+                      <span class="drop-shadow-sm">{{ businessWorkspaceEmoji(business) }}</span>
+                    }
+                    <span class="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--bg)] text-[var(--accent)] shadow-[var(--shadow-floating)]">
+                      <span class="material-symbols-outlined text-[1rem]">storefront</span>
+                    </span>
+                  </div>
+
+                  <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span
+                        class="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em]"
+                        [class.border-emerald-300]="business.status === 'verified'"
+                        [class.bg-emerald-50]="business.status === 'verified'"
+                        [class.text-emerald-700]="business.status === 'verified'"
+                        [class.border-amber-300]="business.status === 'pending'"
+                        [class.bg-amber-50]="business.status === 'pending'"
+                        [class.text-amber-700]="business.status === 'pending'"
+                        [class.border-rose-300]="business.status === 'rejected'"
+                        [class.bg-rose-50]="business.status === 'rejected'"
+                        [class.text-rose-700]="business.status === 'rejected'"
+                      >
+                        <span class="material-symbols-outlined text-[0.9rem]">{{ businessStatusIcon(business) }}</span>
+                        {{ businessStatusLabel(business) }}
+                      </span>
+                      <span class="inline-flex min-w-0 items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[11px] font-black text-[var(--muted)]">
+                        <span class="material-symbols-outlined text-[0.9rem] text-[var(--accent)]">location_on</span>
+                        <span class="truncate">{{ business.city_name }}</span>
+                      </span>
+                      <span class="inline-flex min-w-0 items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[11px] font-black text-[var(--muted)]">
+                        <span class="material-symbols-outlined text-[0.9rem] text-[var(--accent)]">category</span>
+                        <span class="truncate">{{ business.category || 'Business' }}</span>
+                      </span>
+                    </div>
+                    <h2 class="mt-3 truncate text-2xl font-black tracking-tight text-[var(--text)]">{{ business.business_name }}</h2>
+                    <p class="mt-2 flex min-w-0 items-center gap-2 text-sm font-semibold leading-6 text-[var(--muted)]">
+                      <span class="material-symbols-outlined shrink-0 text-base text-[var(--accent)]">pin_drop</span>
+                      <span class="truncate">{{ businessLocationLabel(business) }}</span>
+                    </p>
+                  </div>
+
+                  <div class="flex flex-wrap gap-2 sm:justify-end">
+                    <a [routerLink]="businessDetailPath(business)" class="ghost-btn !h-10 !w-10 !rounded-full !p-0" aria-label="Open business details">
+                      <span class="material-symbols-outlined text-base">open_in_new</span>
+                    </a>
+                    <a [routerLink]="businessEditPath(business)" class="ghost-btn !h-10 !w-10 !rounded-full !p-0" aria-label="Edit business">
+                      <span class="material-symbols-outlined text-base">edit</span>
+                    </a>
+                    <button
+                      type="button"
+                      class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] text-[var(--error-text)] transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0"
+                      [disabled]="isDeletingBusiness(business)"
+                      [attr.aria-label]="isDeletingBusiness(business) ? 'Deleting business' : 'Delete business'"
+                      (click)="deleteBusiness(business)"
+                    >
+                      <span class="material-symbols-outlined text-base">{{ isDeletingBusiness(business) ? 'progress_activity' : 'delete' }}</span>
+                    </button>
+                  </div>
                 </div>
               </article>
             }

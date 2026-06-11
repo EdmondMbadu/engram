@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../business-claim/business-claim.service';
+import { businessBadgeEmoji } from '../business-badge-icons';
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
@@ -42,6 +43,29 @@ type BusinessPlan = {
   featured?: boolean;
   cta: string;
   features: string[];
+};
+
+const BUSINESS_WORKSPACE_PALETTES = [
+  'from-[#dffcf7] to-[#fff0b8] text-[#007f7a] border-[#9bd8cf]',
+  'from-[#ffe2d7] to-[#dff7ff] text-[#d94d2b] border-[#f2b8a5]',
+  'from-[#ddeeff] to-[#daf8c8] text-[#1f62c8] border-[#b7d0f7]',
+  'from-[#fff0b8] to-[#f0e4ff] text-[#9a6500] border-[#ebd173]',
+  'from-[#daf8c8] to-[#dffcf7] text-[#28853c] border-[#a7dda0]',
+  'from-[#f0e4ff] to-[#ddeeff] text-[#7c3ec8] border-[#d4b8f7]',
+];
+
+const BUSINESS_CATEGORY_ICON_BY_NAME: Record<string, string> = {
+  attraction: 'landmark',
+  bakery: 'bread',
+  bar: 'cocktail',
+  cafe: 'coffee',
+  gallery: 'gallery',
+  hotel: 'hotel',
+  market: 'market',
+  restaurant: 'restaurant',
+  shop: 'shop',
+  store: 'shop',
+  venue: 'events',
 };
 
 @Component({
@@ -226,6 +250,12 @@ export class BusinessComponent {
   });
   readonly isSignedIn = this.authService.isAuthenticated;
   readonly ownerEmail = this.authService.email;
+  readonly ownedVerifiedCount = computed(
+    () => this.ownedBusinesses().filter((business) => business.status === 'verified').length,
+  );
+  readonly ownedPendingCount = computed(
+    () => this.ownedBusinesses().filter((business) => business.status === 'pending').length,
+  );
 
   constructor() {
     effect(() => {
@@ -258,6 +288,34 @@ export class BusinessComponent {
       default:
         return 'Pending';
     }
+  }
+
+  businessStatusIcon(business: BusinessClaimWorkspaceRecord): string {
+    switch (business.status) {
+      case 'verified':
+        return 'verified';
+      case 'rejected':
+        return 'warning';
+      default:
+        return 'pending';
+    }
+  }
+
+  businessWorkspacePalette(index: number): string {
+    return BUSINESS_WORKSPACE_PALETTES[index % BUSINESS_WORKSPACE_PALETTES.length] ?? BUSINESS_WORKSPACE_PALETTES[0];
+  }
+
+  businessWorkspaceEmoji(business: BusinessClaimWorkspaceRecord): string {
+    const selectedIcon = business.badge_icons?.[0]?.trim();
+    if (selectedIcon) {
+      return businessBadgeEmoji(selectedIcon);
+    }
+    const categoryIcon = BUSINESS_CATEGORY_ICON_BY_NAME[this.slugify(business.category || '')];
+    return categoryIcon ? businessBadgeEmoji(categoryIcon) : businessBadgeEmoji('local');
+  }
+
+  businessLocationLabel(business: BusinessClaimWorkspaceRecord): string {
+    return business.business_address || business.preview_url || business.city_name;
   }
 
   isDeletingBusiness(business: BusinessClaimWorkspaceRecord): boolean {

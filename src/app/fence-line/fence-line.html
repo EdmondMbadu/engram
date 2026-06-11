@@ -1,0 +1,288 @@
+<div class="fence-page">
+  <header class="fence-hero">
+    <nav class="fence-topbar" aria-label="Fenceline page">
+      <a routerLink="/" class="brand-link" aria-label="Living Wiki home">
+        <img src="/assets/image/livingwiki.png" alt="Living Wiki" />
+      </a>
+      <div class="topbar-actions">
+        <a routerLink="/atlas/philly" class="topbar-link">
+          <span class="material-symbols-outlined" aria-hidden="true">travel_explore</span>
+          Philly Atlas
+        </a>
+        <button type="button" class="icon-button" title="Copy share link" aria-label="Copy share link" (click)="copyShareLink()">
+          <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Living Wiki Commons Project · Draft v0.1</p>
+        <h1>The Fenceline <span>Network</span></h1>
+        <p class="hero-subtitle">Sister cities for environmental justice</p>
+        <p class="hero-thesis">
+          Chester, Pennsylvania has lived beside the nation's largest trash incinerator
+          for more than thirty years. It is not alone. Twenty-three communities, one shared
+          scorecard, no sacrifice zones.
+        </p>
+
+        <div class="hero-actions" aria-label="Page sections">
+          <a href="#network">Explore network</a>
+          <a href="#scorecard">Shared scorecard</a>
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Network summary">
+        <div class="panel-stat">
+          <strong>23</strong>
+          <span>communities</span>
+        </div>
+        <div class="panel-stat">
+          <strong>16</strong>
+          <span>states</span>
+        </div>
+        <div class="panel-stat">
+          <strong>4</strong>
+          <span>shared struggles</span>
+        </div>
+        <div class="deadline">
+          <span class="material-symbols-outlined" aria-hidden="true">event</span>
+          June 30, 2026: Philadelphia waste contracts expire.
+        </div>
+      </aside>
+    </div>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        @for (community of communities; track community.id) {
+          <span><b>{{ community.name }} {{ community.state }}</b> · {{ community.issue }} · <i>{{ community.status }}</i></span>
+        }
+        @for (community of communities; track community.id + '-duplicate') {
+          <span><b>{{ community.name }} {{ community.state }}</b> · {{ community.issue }} · <i>{{ community.status }}</i></span>
+        }
+      </div>
+    </div>
+  </header>
+
+  <nav class="section-nav" aria-label="Fenceline sections">
+    <a href="#chester">Chester hub</a>
+    <a href="#network">Network explorer</a>
+    <a href="#scorecard">Data spine</a>
+  </nav>
+
+  <main>
+    <section class="chester-section" id="chester">
+      <div class="section-wrap chester-grid">
+        <div>
+          <p class="section-kicker">The hub city</p>
+          <h2>Chester, Pennsylvania</h2>
+          <p>
+            A majority-Black city on the Delaware River hosts Reworld Delaware Valley,
+            formerly Covanta, burning up to 3,500 tons of waste per day. Only a tiny
+            fraction of the trash burned here is Chester's own.
+          </p>
+        </div>
+        <div class="fact-list" aria-label="Chester facts">
+          <div><b>Facility</b><span>Reworld Delaware Valley, operating since 1992</span></div>
+          <div><b>Scale</b><span>Roughly 1.2 million tons of waste burned per year</span></div>
+          <div><b>Local leaders</b><span>CRCQL · Delco Environmental Justice · Energy Justice Network</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="network-section" id="network">
+      <div class="section-wrap">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Interactive network</p>
+            <h2>Find the shared pattern</h2>
+          </div>
+          <p>
+            Filter by struggle, search by city or issue, then select a community to compare its
+            local story against Chester's shared fenceline frame.
+          </p>
+        </div>
+
+        <div class="toolbar" aria-label="Network controls">
+          <label class="search-box">
+            <span class="material-symbols-outlined" aria-hidden="true">search</span>
+            <input
+              type="search"
+              [ngModel]="searchTerm()"
+              (ngModelChange)="onSearchInput($event)"
+              placeholder="Search city, state, status, or issue"
+            />
+            @if (searchTerm()) {
+              <button type="button" class="search-clear" title="Clear search" aria-label="Clear search" (click)="onSearchInput('')">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            }
+          </label>
+
+          <div class="chip-row" aria-label="Filter by struggle">
+            <button type="button" [class.active]="activeCategory() === 'all'" (click)="setCategory('all')">
+              All <b>{{ communities.length }}</b>
+            </button>
+            @for (category of categories; track category) {
+              <button type="button" [class.active]="activeCategory() === category" (click)="setCategory(category)">
+                <span class="material-symbols-outlined" aria-hidden="true">{{ categoryIcon(category) }}</span>
+                {{ categoryShortLabel(category) }} <b>{{ categoryCount(category) }}</b>
+              </button>
+            }
+          </div>
+
+          <div class="chip-row status-row" aria-label="Filter by status">
+            @for (status of statuses; track status) {
+              <button type="button" [class.active]="activeStatus() === status" (click)="setStatus(status)">
+                {{ status }}
+              </button>
+            }
+            <button type="button" class="reset-button" (click)="resetFilters()">
+              <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="explorer-grid">
+          <div class="map-panel" aria-label="Community map">
+            <div class="map-summary">
+              <div>
+                <strong>{{ filteredCommunities().length }}</strong>
+                <span>visible communities</span>
+              </div>
+              <div>
+                <strong>{{ activeFightCount() }}</strong>
+                <span>active fights</span>
+              </div>
+              <div>
+                <strong>{{ filteredAverageBurden() }}</strong>
+                <span>avg. burden score</span>
+              </div>
+            </div>
+
+            <div class="network-map">
+              <div class="map-grid" aria-hidden="true"></div>
+              <div class="map-line map-line-one" aria-hidden="true"></div>
+              <div class="map-line map-line-two" aria-hidden="true"></div>
+              @for (community of filteredCommunities(); track community.id) {
+                <button
+                  type="button"
+                  class="map-pin"
+                  [class.selected]="selectedCommunity().id === community.id"
+                  [class]="'map-pin category-' + community.category"
+                  [style.left.%]="community.x"
+                  [style.top.%]="community.y"
+                  (click)="selectCommunity(community.id)"
+                  [attr.aria-label]="'Select ' + community.name"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">{{ categoryIcon(community.category) }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <aside class="spotlight" [class]="'spotlight category-' + selectedCommunity().category" aria-live="polite">
+            <p class="spotlight-kicker">{{ categoryLabel(selectedCommunity().category) }}</p>
+            <h3>{{ selectedCommunity().name }}</h3>
+            <p class="spotlight-place">{{ selectedCommunity().place }} · {{ selectedCommunity().state }}</p>
+            <span class="status-badge">{{ selectedCommunity().status }}</span>
+            <p>{{ selectedCommunity().summary }}</p>
+            <div class="key-stat">{{ selectedCommunity().keyStat }}</div>
+            <div class="indicator-list">
+              @for (indicator of selectedCommunity().indicators; track indicator.label) {
+                <div class="indicator">
+                  <div class="indicator-label">
+                    <span>{{ indicator.label }}</span>
+                    <b>{{ indicator.value }}</b>
+                  </div>
+                  <div class="indicator-bar"><i [style.width.%]="indicator.value"></i></div>
+                </div>
+              }
+            </div>
+          </aside>
+        </div>
+
+        <div class="card-grid" aria-label="Fenceline community cards">
+          @for (community of filteredCommunities(); track community.id) {
+            <button
+              type="button"
+              class="community-card"
+              [class.selected]="selectedCommunity().id === community.id"
+              [class]="'community-card category-' + community.category"
+              (click)="selectCommunity(community.id)"
+            >
+              <span class="card-icon material-symbols-outlined" aria-hidden="true">{{ categoryIcon(community.category) }}</span>
+              <span class="card-body">
+                <span class="card-meta">{{ community.place }} · {{ community.state }}</span>
+                <strong>{{ community.name }}</strong>
+                <span>{{ community.issue }}</span>
+              </span>
+              <span class="card-status">{{ community.status }}</span>
+            </button>
+          } @empty {
+            <div class="empty-state">
+              <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+              No communities match the current filters.
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="scorecard-section" id="scorecard">
+      <div class="section-wrap">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">How sisterhood works</p>
+            <h2>One shared scorecard</h2>
+          </div>
+          <p>
+            Every sister city carries the same data spine, so residents can see the common
+            burden across air, health, enforcement, and community monitoring.
+          </p>
+        </div>
+
+        <div class="scorecard-grid">
+          <article>
+            <span class="material-symbols-outlined" aria-hidden="true">dataset</span>
+            <h3>EJScreen mirrored</h3>
+            <p>Block-group environmental justice percentiles preserved for community review.</p>
+            <code>screening-tools.com/epa-ejscreen</code>
+          </article>
+          <article>
+            <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+            <h3>EPA TRI + ECHO</h3>
+            <p>Facility toxic releases, permit violations, and enforcement history.</p>
+            <code>enviro.epa.gov · echo.epa.gov</code>
+          </article>
+          <article>
+            <span class="material-symbols-outlined" aria-hidden="true">monitor_heart</span>
+            <h3>CDC PLACES + EJI</h3>
+            <p>Census-tract health outcomes connecting pollution exposure to people.</p>
+            <code>cdc.gov/places</code>
+          </article>
+          <article>
+            <span class="material-symbols-outlined" aria-hidden="true">sensors</span>
+            <h3>Community monitors</h3>
+            <p>Local and PurpleAir sensor networks for real-time PM2.5 observations.</p>
+            <code>purpleair.com / local networks</code>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="fence-footer">
+    <div class="section-wrap footer-grid">
+      <div>
+        <strong>The Fenceline Network</strong>
+        <p>
+          A Sister Cities commons inside Living Wiki. Burden percentiles shown are illustrative
+          placeholders pending live data ingestion.
+        </p>
+      </div>
+      <div class="share-toast" [class.visible]="copied()">Share link copied</div>
+    </div>
+  </footer>
+</div>
