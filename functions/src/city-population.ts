@@ -1,5 +1,6 @@
 import { logger } from 'firebase-functions';
 import { FieldValue } from 'firebase-admin/firestore';
+import JSZip from 'jszip';
 import { db } from './firebase';
 import type { AtlasRecord } from './types';
 
@@ -24,6 +25,8 @@ interface PopulationCandidate {
   value: number;
   year: number | null;
   scope: 'city_proper' | 'urban_agglomeration' | 'metro' | 'unknown';
+  areaKm2?: number | null;
+  areaSourceUrl?: string | null;
   source: CityPopulationSource;
   sourceLabel: string;
   sourceUrl: string;
@@ -44,8 +47,20 @@ interface WikidataPopulationClaim {
   rank: string;
 }
 
+interface CensusPlaceGazetteerEntry {
+  geoid: string;
+  name: string;
+  stateCode: string;
+  placeCode: string;
+  areaKm2: number;
+}
+
 const CENSUS_CITY_POPULATION_VINTAGE = 2024;
+const CENSUS_PLACE_GAZETTEER_URL =
+  `https://www2.census.gov/geo/docs/maps-data/data/gazetteer/${CENSUS_CITY_POPULATION_VINTAGE}_Gazetteer/` +
+  `${CENSUS_CITY_POPULATION_VINTAGE}_Gaz_place_national.zip`;
 const ATLASES_COLLECTION = db.collection('atlases');
+let censusPlaceGazetteerCache: Promise<Map<string, CensusPlaceGazetteerEntry>> | null = null;
 const COUNTRY_ITEM_BY_CODE: Record<string, string> = {
   AE: 'Q878',
   AR: 'Q414',
@@ -317,6 +332,14 @@ const US_CENSUS_STATE_CODE_BY_ABBREVIATION = Object.fromEntries(
     US_CENSUS_STATE_CODE_BY_NAME[stateName],
   ]),
 );
+const US_CENSUS_PLACE_NAME_ALIASES_BY_CITY_KEY: Record<string, string[]> = {
+  honolulu: ['urban honolulu'],
+  nashville: ['nashville davidson metropolitan government'],
+};
+const US_CENSUS_PLACE_CODE_OVERRIDE_BY_CITY_KEY: Record<string, { stateCode: string; placeCode: string }> = {
+  honolulu: { stateCode: '15', placeCode: '71550' },
+  nashville: { stateCode: '47', placeCode: '52006' },
+};
 const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' | 'sourceRecordId'>> = {
   'abu-dhabi-ae': seededPopulation(1650000, 2023, 'Abu Dhabi Statistics Centre estimate'),
   'accra-gh': seededPopulation(2841000, 2021, 'Ghana 2021 census metropolitan district estimate'),
@@ -328,6 +351,7 @@ const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' |
   'buenos-aires-ar': seededPopulation(3121707, 2022, 'INDEC city estimate'),
   'dubai-ae': seededPopulation(3825000, 2025, 'Dubai Statistics Center population clock estimate'),
   'doha-qa': seededPopulation(1186000, 2024, 'Qatar Planning and Statistics Authority municipality estimate'),
+  'edinburgh-gb': seededPopulation(514543, 2022, 'Scotland Census 2022 City of Edinburgh council area count'),
   'helsinki-fi': seededPopulation(684018, 2024, 'Statistics Finland municipal estimate'),
   'hong-kong-cn': seededPopulation(7531800, 2024, 'Hong Kong Census and Statistics Department estimate'),
   'istanbul-tr': seededPopulation(15655924, 2023, 'Turkish Statistical Institute province estimate'),
@@ -338,7 +362,7 @@ const SEEDED_POPULATIONS: Record<string, Omit<PopulationCandidate, 'sourceUrl' |
   'mumbai-in': seededPopulation(12442373, 2011, 'India Census municipal corporation count'),
   'nairobi-ke': seededPopulation(5545000, 2024, 'UN urban agglomeration estimate'),
   'oslo-no': seededPopulation(717710, 2024, 'Statistics Norway municipal estimate'),
-  'santiago-cl': seededPopulation(6257516, 2017, 'Chile census metropolitan estimate'),
+  'santiago-cl': seededPopulation(7400741, 2024, 'Chile INE 2024 Census Santiago Metropolitan Region count'),
   'seoul-kr': seededPopulation(9367000, 2024, 'Seoul resident registration estimate'),
   'shanghai-cn': seededPopulation(24870000, 2023, 'Shanghai municipal statistical estimate'),
   'singapore-sg': seededPopulation(6040000, 2024, 'Singapore Department of Statistics estimate'),
@@ -512,6 +536,14 @@ export async function refreshCityPopulationMetadata(
         population_fetched_at: new Date().toISOString(),
         population_confidence: candidate.confidence,
         population_match_method: candidate.matchMethod,
+        ...(candidate.areaKm2
+          ? {
+              area_km2: candidate.areaKm2,
+              area_source_url: candidate.areaSourceUrl ?? null,
+              population_density_per_km2: Math.round(candidate.value / candidate.areaKm2),
+              population_density_source: candidate.areaSourceUrl ?? null,
+            }
+          : {}),
       },
     },
     updated_at: FieldValue.serverTimestamp(),
@@ -535,6 +567,16 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
   const countryCode = inferCountryCode(cityConfig);
   const regionName = typeof cityConfig.region_name === 'string' ? cityConfig.region_name.trim() : '';
 
+  if (countryCode === 'US') {
+    const override = US_CENSUS_PLACE_CODE_OVERRIDE_BY_CITY_KEY[normalizeCensusPlaceName(cityName)];
+    if (override) {
+      const census = await fetchCensusPopulation(override.stateCode, override.placeCode);
+      if (census) {
+        return { ...census, matchMethod: 'exact_id' };
+      }
+    }
+  }
+
   if (countryCode === 'US' && cityConfig.census_state_code && cityConfig.census_place_code) {
     const census = await fetchCensusPopulation(
       String(cityConfig.census_state_code),
@@ -549,6 +591,13 @@ async function resolvePopulation(atlas: AtlasRecord & { id: string }, cityName: 
     const stateCode = inferUsCensusStateCode(regionName) ?? inferUsCensusStateCode(cityName);
     if (stateCode) {
       const census = await fetchCensusPopulationByName(stateCode, cityName);
+      if (census) {
+        return census;
+      }
+    }
+
+    if (isBroadUnitedStatesRegion(regionName)) {
+      const census = await fetchCensusPopulationByNationalName(cityName);
       if (census) {
         return census;
       }
@@ -591,7 +640,7 @@ async function fetchCensusPopulation(stateCode: string, placeCode: string): Prom
     return null;
   }
 
-  return candidateFromCensusRow(row, datasetUrl, normalizedStateCode, normalizedPlaceCode, 'census_codes');
+  return await candidateFromCensusRow(row, datasetUrl, normalizedStateCode, normalizedPlaceCode, 'census_codes');
 }
 
 async function fetchCensusPopulationByName(stateCode: string, cityName: string): Promise<PopulationCandidate | null> {
@@ -611,25 +660,58 @@ async function fetchCensusPopulationByName(stateCode: string, cityName: string):
     return null;
   }
 
-  return candidateFromCensusRow(row, datasetUrl, normalizedStateCode, placeCode, 'name_country_region');
+  return await candidateFromCensusRow(row, datasetUrl, normalizedStateCode, placeCode, 'name_country_region');
 }
 
-function candidateFromCensusRow(
+async function fetchCensusPopulationByNationalName(cityName: string): Promise<PopulationCandidate | null> {
+  const expectedNames = censusPlaceNameKeys(cityName);
+  if (expectedNames.size === 0) {
+    return null;
+  }
+
+  const gazetteer = await getCensusPlaceGazetteer();
+  const entries = Array.from(gazetteer.values())
+    .filter((entry) => expectedNames.has(normalizeCensusPlaceName(entry.name)));
+  if (entries.length === 0) {
+    return null;
+  }
+
+  const resolved = await Promise.all(
+    entries.map(async (entry) => {
+      const candidate = await fetchCensusPopulation(entry.stateCode, entry.placeCode);
+      return candidate ? { ...candidate, matchMethod: 'name_country_region' as const } : null;
+    }),
+  );
+  const candidates: PopulationCandidate[] = [];
+  for (const candidate of resolved) {
+    if (candidate) {
+      candidates.push(candidate);
+    }
+  }
+  candidates.sort((a, b) => b.value - a.value);
+
+  return candidates[0] ?? null;
+}
+
+async function candidateFromCensusRow(
   row: Record<string, string>,
   datasetUrl: string,
   normalizedStateCode: string,
   normalizedPlaceCode: string,
   matchMethod: CityPopulationMatchMethod,
-): PopulationCandidate | null {
+): Promise<PopulationCandidate | null> {
   const latestPopulation = Number(row[`POPESTIMATE${CENSUS_CITY_POPULATION_VINTAGE}`]);
   if (!Number.isFinite(latestPopulation) || latestPopulation <= 0) {
     return null;
   }
+  const placeArea = await fetchCensusPlaceArea(normalizedStateCode, normalizedPlaceCode);
 
   return {
     value: Math.round(latestPopulation),
     year: CENSUS_CITY_POPULATION_VINTAGE,
     scope: 'city_proper',
+    areaKm2: placeArea?.areaKm2 ?? null,
+    areaSourceUrl: placeArea ? CENSUS_PLACE_GAZETTEER_URL : null,
     source: 'us_census_pep',
     sourceLabel: 'U.S. Census Population Estimates Program',
     sourceUrl: datasetUrl,
@@ -957,8 +1039,8 @@ async function fetchCsvPlacePopulationRowByName(
   normalizedStateCode: string,
   cityName: string,
 ): Promise<Record<string, string> | null> {
-  const expectedName = normalizeCensusPlaceName(cityName);
-  if (!expectedName) {
+  const expectedNames = censusPlaceNameKeys(cityName);
+  if (expectedNames.size === 0) {
     return null;
   }
 
@@ -992,7 +1074,7 @@ async function fetchCsvPlacePopulationRowByName(
       if (row['STATE'] !== normalizedStateCode || !['162', '157', '071'].includes(row['SUMLEV'])) {
         continue;
       }
-      if (normalizeCensusPlaceName(row['NAME'] ?? '') === expectedName) {
+      if (expectedNames.has(normalizeCensusPlaceName(row['NAME'] ?? ''))) {
         candidates.push(row);
       }
     }
@@ -1012,6 +1094,79 @@ async function fetchCsvPlacePopulationRowByName(
     });
     return null;
   }
+}
+
+async function fetchCensusPlaceArea(
+  normalizedStateCode: string,
+  normalizedPlaceCode: string,
+): Promise<CensusPlaceGazetteerEntry | null> {
+  try {
+    const map = await getCensusPlaceGazetteer();
+    return map.get(`${normalizedStateCode}${normalizedPlaceCode}`) ?? null;
+  } catch (error) {
+    logger.warn('Census gazetteer area lookup failed', {
+      stateCode: normalizedStateCode,
+      placeCode: normalizedPlaceCode,
+      message: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+async function getCensusPlaceGazetteer(): Promise<Map<string, CensusPlaceGazetteerEntry>> {
+  censusPlaceGazetteerCache ??= loadCensusPlaceGazetteer();
+  return await censusPlaceGazetteerCache;
+}
+
+async function loadCensusPlaceGazetteer(): Promise<Map<string, CensusPlaceGazetteerEntry>> {
+  const response = await fetch(CENSUS_PLACE_GAZETTEER_URL, {
+    headers: {
+      Accept: 'application/zip,*/*;q=0.8',
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  const zip = await JSZip.loadAsync(Buffer.from(await response.arrayBuffer()));
+  const file = zip.file(`${CENSUS_CITY_POPULATION_VINTAGE}_Gaz_place_national.txt`)
+    ?? Object.values(zip.files).find((candidate) => candidate.name.endsWith('_Gaz_place_national.txt'));
+  if (!file) {
+    throw new Error('Gazetteer text file missing from Census zip.');
+  }
+
+  const text = await file.async('string');
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+  const header = (lines[0] ?? '').split(/\t+/).map((value) => value.trim());
+  const geoidIndex = header.indexOf('GEOID');
+  const nameIndex = header.indexOf('NAME');
+  const landAreaIndex = header.indexOf('ALAND');
+  if (geoidIndex < 0 || nameIndex < 0 || landAreaIndex < 0) {
+    throw new Error('Gazetteer header is missing GEOID, NAME, or ALAND.');
+  }
+
+  const map = new Map<string, CensusPlaceGazetteerEntry>();
+  for (const line of lines.slice(1)) {
+    const values = line.split(/\t+/).map((value) => value.trim());
+    const geoid = values[geoidIndex] ?? '';
+    const name = values[nameIndex] ?? '';
+    const alandM2 = Number(values[landAreaIndex]);
+    if (!/^\d{7}$/.test(geoid) || !Number.isFinite(alandM2) || alandM2 <= 0) {
+      continue;
+    }
+    map.set(geoid, {
+      geoid,
+      name,
+      stateCode: geoid.slice(0, 2),
+      placeCode: geoid.slice(2),
+      areaKm2: Math.round((alandM2 / 1_000_000) * 100) / 100,
+    });
+  }
+
+  return map;
 }
 
 function parseCsvLine(line: string): string[] {
@@ -1104,6 +1259,23 @@ function inferUsCensusStateCode(regionName: string): string | null {
 
   const regionKey = normalizeSeedKey(regionName);
   return US_CENSUS_STATE_CODE_BY_NAME[regionKey] ?? null;
+}
+
+function isBroadUnitedStatesRegion(regionName: string): boolean {
+  const regionKey = normalizeSeedKey(regionName);
+  return !regionKey || regionKey === 'united-states' || regionKey === 'usa' || regionKey === 'us';
+}
+
+function censusPlaceNameKeys(cityName: string): Set<string> {
+  const primary = normalizeCensusPlaceName(cityName);
+  const keys = new Set<string>(primary ? [primary] : []);
+  for (const alias of US_CENSUS_PLACE_NAME_ALIASES_BY_CITY_KEY[primary] ?? []) {
+    const normalizedAlias = normalizeCensusPlaceName(alias);
+    if (normalizedAlias) {
+      keys.add(normalizedAlias);
+    }
+  }
+  return keys;
 }
 
 function normalizeCensusPlaceName(value: string): string {
