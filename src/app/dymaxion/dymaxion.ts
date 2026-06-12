@@ -328,7 +328,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!pos) continue;
 
       const name = (cfg?.city_name?.trim() || atlas.name || '')
-        .replace(/^Living Wiki:\s*/i, '')
+        .replace(/^Living\s*Wiki:\s*/i, '')
         .trim();
       if (!name) continue;
 
@@ -1168,7 +1168,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       ? 'large metropolitan region'
       : c.population && c.population < 500_000
         ? 'smaller urban community'
-        : 'city-scale living wiki';
+        : 'city-scale LivingWiki page';
     return `A ${scale} snapshot centered on neighborhoods, movement, public life, work, and everyday local decisions.`;
   }
 
@@ -1218,6 +1218,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     const normalized = value.toLowerCase();
     return (
       normalized.includes('living wiki:') ||
+      normalized.includes('livingwiki:') ||
       normalized.includes('intelligence platform') ||
       normalized.includes('consolidates') ||
       normalized.includes('database')

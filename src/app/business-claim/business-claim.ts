@@ -245,7 +245,7 @@ export class BusinessClaimComponent {
       return city.city_config.city_name;
     }
     if (city?.name) {
-      return city.name.replace(/^Living Wiki:\s*/i, '').trim();
+      return city.name.replace(/^Living\s*Wiki:\s*/i, '').trim();
     }
     return this.selectedFallbackCity()?.name ?? 'Philadelphia';
   });
@@ -269,7 +269,7 @@ export class BusinessClaimComponent {
       .filter((atlas) => atlas.city_config?.enabled === true)
       .map((atlas) => ({
         id: atlas.id,
-        name: atlas.city_config?.city_name || atlas.name.replace(/^Living Wiki:\s*/i, ''),
+        name: atlas.city_config?.city_name || atlas.name.replace(/^Living\s*Wiki:\s*/i, ''),
         region: atlas.city_config?.region_name || atlas.city_config?.country_code || '',
         slug: atlas.slug,
         live: true,
@@ -399,7 +399,7 @@ export class BusinessClaimComponent {
       }
 
       const displayName = this.authService.displayName().trim();
-      if (this.authService.isAuthenticated() && !this.adminName().trim() && displayName && displayName !== 'Living Wiki') {
+      if (this.authService.isAuthenticated() && !this.adminName().trim() && displayName && displayName !== 'LivingWiki') {
         this.adminName.set(displayName);
       }
     });

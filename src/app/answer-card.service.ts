@@ -103,7 +103,7 @@ export class AnswerCardService {
       question: String(data['question'] ?? ''),
       answerPreview: String(data['answerPreview'] ?? ''),
       title: String(data['title'] ?? 'A Philly Answer Worth Sharing'),
-      subtitle: String(data['subtitle'] ?? 'A fast, shareable summary from Living Wiki Philly.'),
+      subtitle: String(data['subtitle'] ?? 'A fast, shareable summary from LivingWiki Philly.'),
       keyFacts: this.hydrateStringList(data['keyFacts'], 5),
       didYouKnow: this.hydrateStringList(data['didYouKnow'], 3),
       mappableLocations: this.hydrateLocations(data['mappableLocations']),

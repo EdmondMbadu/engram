@@ -277,8 +277,8 @@ function normalizeVoiceSearchText(value: string): string {
 // message so the conversation feels seamless from the very first second.
 // De-duplicated by country; languages reuse codes where countries share one.
 const LEGACY_VOICE_LANGUAGES: VoiceLanguageOption[] = [
-  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m your living wiki voice guide. Ask me anything and I’ll answer out loud.' },
-  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m your living wiki voice guide. What would you like to know?' },
+  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m your LivingWiki voice guide. Ask me anything and I’ll answer out loud.' },
+  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m your LivingWiki voice guide. What would you like to know?' },
   { country: 'Mexico', flag: '🇲🇽', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras y te respondo en voz alta.' },
   { country: 'Argentina', flag: '🇦🇷', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿En qué puedo ayudarte hoy?' },
   { country: 'Brazil', flag: '🇧🇷', language: 'Português', code: 'pt-br', greeting: 'Olá! Eu sou o seu guia de voz. Pergunte o que quiser e eu respondo em voz alta.' },
@@ -288,7 +288,7 @@ const LEGACY_VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Paraguay', flag: '🇵🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Estoy aquí para responder tus preguntas.' },
   { country: 'France', flag: '🇫🇷', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi vos questions, j’y réponds à voix haute.' },
   { country: 'Spain', flag: '🇪🇸', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
-  { country: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', language: 'English', code: 'en', greeting: 'Hello! I’m your LivingWiki voice guide. Ask me anything.' },
   { country: 'Germany', flag: '🇩🇪', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir eine Frage und ich antworte dir laut.' },
   { country: 'Netherlands', flag: '🇳🇱', language: 'Nederlands', code: 'nl', greeting: 'Hallo! Ik ben je spraakgids. Stel me een vraag en ik antwoord hardop.' },
   { country: 'Portugal', flag: '🇵🇹', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
@@ -326,11 +326,11 @@ const LEGACY_VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Senegal', flag: '🇸🇳', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
   { country: 'Ivory Coast', flag: '🇨🇮', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Comment puis-je vous aider ?' },
   { country: 'Cameroon', flag: '🇨🇲', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Que souhaitez-vous savoir ?' },
-  { country: 'Nigeria', flag: '🇳🇬', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. Ask me anything at all.' },
-  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m your living wiki voice guide. How can I help you today?' },
-  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Nigeria', flag: '🇳🇬', language: 'English', code: 'en', greeting: 'Hello! I’m your LivingWiki voice guide. Ask me anything at all.' },
+  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m your LivingWiki voice guide. How can I help you today?' },
+  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m your LivingWiki voice guide. Ask me anything.' },
   { country: 'Kenya', flag: '🇰🇪', language: 'Kiswahili', code: 'sw', greeting: 'Habari! Mimi ni kiongozi wako wa sauti. Niulize chochote.' },
-  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m the Living Wiki voice guide. Ask me anything.' },
+  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m the LivingWiki voice guide. Ask me anything.' },
   { country: 'Japan (J-League)', flag: '🇯🇵', language: '日本語', code: 'ja', greeting: 'こんにちは！音声ガイドです。何でもお聞きください。' },
   { country: 'Indonesia', flag: '🇮🇩', language: 'Bahasa Indonesia', code: 'id', greeting: 'Halo! Saya pemandu suara Anda. Tanyakan apa saja.' },
   { country: 'Malaysia', flag: '🇲🇾', language: 'Bahasa Melayu', code: 'ms', greeting: 'Helo! Saya pemandu suara anda. Tanya saya apa sahaja.' },
@@ -343,12 +343,12 @@ const LEGACY_VOICE_LANGUAGES: VoiceLanguageOption[] = [
 const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Argentina', flag: '🇦🇷', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿En qué puedo ayudarte hoy?' },
   { country: 'Algeria', flag: '🇩🇿', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
-  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m your living wiki voice guide. Ask me anything.' },
+  { country: 'Australia', flag: '🇦🇺', language: 'English', code: 'en', greeting: 'G’day! I’m your LivingWiki voice guide. Ask me anything.' },
   { country: 'Austria', flag: '🇦🇹', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir gerne eine Frage.' },
   { country: 'Belgium', flag: '🇧🇪', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Que souhaitez-vous savoir ?' },
   { country: 'Bosnia & Herzegovina', flag: '🇧🇦', language: 'Bosanski', code: 'hr', greeting: 'Zdravo! Ja sam vaš glasovni vodič. Pitajte me bilo šta.' },
   { country: 'Brazil', flag: '🇧🇷', language: 'Português', code: 'pt-br', greeting: 'Olá! Eu sou o seu guia de voz. Pergunte o que quiser e eu respondo em voz alta.' },
-  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m the Living Wiki voice guide. What would you like to know?' },
+  { country: 'Canada', flag: '🇨🇦', language: 'English', code: 'en', greeting: 'Hey! I’m the LivingWiki voice guide. What would you like to know?' },
   { country: 'Cape Verde', flag: '🇨🇻', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
   { country: 'Colombia', flag: '🇨🇴', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
   { country: 'Croatia', flag: '🇭🇷', language: 'Hrvatski', code: 'hr', greeting: 'Bok! Ja sam tvoj glasovni vodič. Pitaj me bilo što i odgovorit ću naglas.' },
@@ -357,10 +357,10 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'DR Congo', flag: '🇨🇩', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
   { country: 'Ecuador', flag: '🇪🇨', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Cómo puedo ayudarte?' },
   { country: 'Egypt', flag: '🇪🇬', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
-  { country: 'England', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m the Living Wiki voice guide. Ask me anything.' },
+  { country: 'England', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m the LivingWiki voice guide. Ask me anything.' },
   { country: 'France', flag: '🇫🇷', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi vos questions, j’y réponds à voix haute.' },
   { country: 'Germany', flag: '🇩🇪', language: 'Deutsch', code: 'de', greeting: 'Hallo! Ich bin dein Sprachassistent. Stell mir eine Frage und ich antworte dir laut.' },
-  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m the Living Wiki voice guide. How can I help you today?' },
+  { country: 'Ghana', flag: '🇬🇭', language: 'English', code: 'en', greeting: 'Hello! I’m the LivingWiki voice guide. How can I help you today?' },
   { country: 'Haiti', flag: '🇭🇹', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Comment puis-je vous aider ?' },
   { country: 'Iran', flag: '🇮🇷', language: 'فارسی', code: 'fa', greeting: 'سلام! من راهنمای صوتی شما هستم. هر چه می‌خواهید بپرسید.' },
   { country: 'Iraq', flag: '🇮🇶', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. كيف يمكنني مساعدتك؟' },
@@ -370,16 +370,16 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Mexico', flag: '🇲🇽', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras y te respondo en voz alta.' },
   { country: 'Morocco', flag: '🇲🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. كيف يمكنني مساعدتك؟' },
   { country: 'Netherlands', flag: '🇳🇱', language: 'Nederlands', code: 'nl', greeting: 'Hallo! Ik ben je spraakgids. Stel me een vraag en ik antwoord hardop.' },
-  { country: 'New Zealand', flag: '🇳🇿', language: 'English', code: 'en', greeting: 'Kia ora! I’m the Living Wiki voice guide. Ask me anything.' },
+  { country: 'New Zealand', flag: '🇳🇿', language: 'English', code: 'en', greeting: 'Kia ora! I’m the LivingWiki voice guide. Ask me anything.' },
   { country: 'Norway', flag: '🇳🇴', language: 'Norsk', code: 'no', greeting: 'Hei! Jeg er din stemmeguide. Spør meg om hva som helst.' },
   { country: 'Panama', flag: '🇵🇦', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
   { country: 'Paraguay', flag: '🇵🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Estoy aquí para responder tus preguntas.' },
   { country: 'Portugal', flag: '🇵🇹', language: 'Português', code: 'pt', greeting: 'Olá! Sou o seu guia de voz. Pergunte o que quiser.' },
   { country: 'Qatar', flag: '🇶🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عمّا تريد.' },
   { country: 'Saudi Arabia', flag: '🇸🇦', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. اسألني عن أي شيء.' },
-  { country: 'Scotland', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m the Living Wiki voice guide. Ask me anything.' },
+  { country: 'Scotland', flag: '🏴', language: 'English', code: 'en', greeting: 'Hello! I’m the LivingWiki voice guide. Ask me anything.' },
   { country: 'Senegal', flag: '🇸🇳', language: 'Français', code: 'fr', greeting: 'Bonjour ! Je suis votre guide vocal. Posez-moi toutes vos questions.' },
-  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m the Living Wiki voice guide. Ask me anything.' },
+  { country: 'South Africa', flag: '🇿🇦', language: 'English', code: 'en', greeting: 'Hi! I’m the LivingWiki voice guide. Ask me anything.' },
   { country: 'South Korea', flag: '🇰🇷', language: '한국어', code: 'ko', greeting: '안녕하세요! 저는 음성 가이드입니다. 무엇이든 물어보세요.' },
   { country: 'Spain', flag: '🇪🇸', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. Pregúntame lo que quieras.' },
   { country: 'Sweden', flag: '🇸🇪', language: 'Svenska', code: 'sv', greeting: 'Hej! Jag är din röstguide. Fråga mig vad du vill.' },
@@ -387,7 +387,7 @@ const VOICE_LANGUAGES: VoiceLanguageOption[] = [
   { country: 'Tunisia', flag: '🇹🇳', language: 'العربية', code: 'ar', greeting: 'مرحباً! أنا دليلك الصوتي. تفضّل بالسؤال.' },
   { country: 'Türkiye', flag: '🇹🇷', language: 'Türkçe', code: 'tr', greeting: 'Merhaba! Ben senin sesli rehberinim. Bana istediğini sorabilirsin.' },
   { country: 'Uruguay', flag: '🇺🇾', language: 'Español', code: 'es', greeting: '¡Hola! Soy tu guía de voz. ¿Qué te gustaría saber?' },
-  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m the Living Wiki voice guide. Ask me anything and I’ll answer out loud.' },
+  { country: 'United States', flag: '🇺🇸', language: 'English', code: 'en', greeting: 'Hi there! I’m the LivingWiki voice guide. Ask me anything and I’ll answer out loud.' },
   { country: 'Uzbekistan', flag: '🇺🇿', language: 'Русский', code: 'ru', greeting: 'Здравствуйте! Я ваш голосовой гид. Спрашивайте меня о чём угодно.' },
   { country: 'China', flag: '🇨🇳', language: '中文（普通话）', code: 'zh', greeting: '你好！我是你的语音向导。有什么问题都可以问我。' },
   { country: 'Russia', flag: '🇷🇺', language: 'Русский', code: 'ru', greeting: 'Здравствуйте! Я ваш голосовой гид. Спрашивайте меня о чём угодно.' },
@@ -731,7 +731,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   });
   readonly pageTitle = computed(() =>
     this.businessPageContext()
-      ? `${this.businessPageName()} | Living Wiki`
+      ? `${this.businessPageName()} | LivingWiki`
       : this.isPublicView()
       ? this.uiText('chatTitle', { city: this.atlasService.displayName(this.publicAtlas()) })
       : this.uiText('chat'),
@@ -811,7 +811,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (!name || name === 'Select atlas') {
       return '';
     }
-    return name.replace(/^Living Wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
+    return name.replace(/^Living\s*Wiki:\s*/i, '').replace(/\s*\(flagship\)\s*$/i, '').trim();
   });
   readonly currentWikiCountry = computed(() => this.localizedCountryName(this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? ''));
   readonly chatCityStickers = computed<ChatCitySticker[]>(() => {
@@ -989,7 +989,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     if (this.businessPageContext()) {
       return this.businessPagePending()
         ? `${this.businessPageName()} has been submitted and is pending review. This QR link is reserved for the business page.`
-        : `Ask ${this.businessPageName()}'s Living Wiki guide about this business and the surrounding city.`;
+        : `Ask ${this.businessPageName()}'s LivingWiki guide about this business and the surrounding city.`;
     }
 
     if (this.showSignInCta()) {
@@ -1179,7 +1179,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   cityWikiLocationLabel(wiki: PublicWikiCatalogItem): string {
-    return wiki.title.replace(/^Living Wiki:\s*/i, '').trim();
+    return wiki.title.replace(/^Living\s*Wiki:\s*/i, '').trim();
   }
 
   private localInternetPlaceholder(): string {
@@ -1219,8 +1219,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         joining: 'Joining...',
         joinForFree: 'Join for free',
         weeklyUpdates: 'Weekly updates and staying in the know.',
-        askLivingWiki: 'Ask Living Wiki',
-        guideAlt: 'Living Wiki guide',
+        askLivingWiki: 'Ask LivingWiki',
+        guideAlt: 'LivingWiki guide',
         answerMode: 'Answer mode',
         wiki: 'Wiki',
         internet: 'Internet',
@@ -1237,11 +1237,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         openBoardFirstPlace: 'Open the board to add the first place.',
         newChat: 'New Chat',
         exploreCities: 'Explore cities',
-        publicLivingWikis: 'Public living wikis',
+        publicLivingWikis: 'Public LivingWiki pages',
         seeAll: 'See all',
         signIn: 'Sign in',
         subscribe: 'Subscribe',
-        messageLivingWiki: 'Message Living Wiki...',
+        messageLivingWiki: 'Message LivingWiki...',
         publicLimitReached: 'Public question limit reached',
         askFiveNoSignIn: 'Ask up to 5 questions without signing in',
         signedInVisitorsFree: 'Signed-in visitors can chat freely with this atlas',
@@ -1255,7 +1255,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         askCitySources: 'Ask {city} anything from your sources.',
         askSources: 'Ask anything from your sources.',
         internetModeLabel: 'Internet mode',
-        myLivingWikiLabel: 'Living Wiki',
+        myLivingWikiLabel: 'LivingWiki',
         askYourWiki: 'Ask your Wiki',
         askThisWiki: 'Ask this Wiki',
         signInKeepChatting: 'Sign in to keep chatting',
@@ -1267,13 +1267,13 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         signInGroundedQuestions: 'Sign in to continue asking grounded questions.',
         heroInternetPrompt: 'Ask anything with full internet context and live public sources.',
         heroCitySourcesPrompt: 'Ask {city} anything from your sources.',
-        heroWikiSourcesPrompt: 'Ask your living wiki anything from your sources.',
+        heroWikiSourcesPrompt: 'Ask your LivingWiki guide anything from your sources.',
         signInKeepConversation: 'You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.',
         heroInternetSupporting: 'Internet mode is not limited to your documents. It uses public web sources and broader general knowledge.',
         heroCityIndexed: '{city} is indexed into documents and wiki pages so every answer can stay grounded in the material you uploaded.',
         heroIndexed: 'Your documents and wiki pages are indexed so every answer can stay grounded in the material you uploaded.',
         publicAtlasLive: 'Public atlas live',
-        myLivingWikiLive: 'Living Wiki live',
+        myLivingWikiLive: 'LivingWiki live',
         knowledgeReady: 'Knowledge ready',
         anonymousSessionPaused: 'Anonymous session paused',
         internetModeEnabled: 'Internet mode enabled',
@@ -1281,7 +1281,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         manyIndexedSources: '{count} indexed sources ready',
         internetNoDocumentsHelper: 'Internet mode searches the web because this Wiki does not have source documents yet.',
         internetModeHelper: 'Internet mode searches the web and answers beyond your uploaded sources.',
-        wikiModeHelper: 'Living Wiki mode stays grounded in your indexed documents and wiki pages.',
+        wikiModeHelper: 'LivingWiki mode stays grounded in your indexed documents and wiki pages.',
         anonymousQuestionsRemaining: '{count} of 5 anonymous questions remaining.',
         savedWithNameEmail: 'Your questions are saved with your name and email for the atlas owner.',
         latestUpdates: 'Latest updates',
@@ -1321,8 +1321,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         ratings: '{count} ratings',
         newPlace: 'New',
         you: 'You',
-        myLivingWiki: 'Living Wiki',
-        guideLabel: 'Your Living Wiki {city} tour guide',
+        myLivingWiki: 'LivingWiki',
+        guideLabel: 'Your LivingWiki {city} tour guide',
         chat: 'Chat',
         chatTitle: '{city} Chat',
         threads: 'Threads',
@@ -1334,7 +1334,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         signOut: 'Sign out',
         live: 'Live',
         preview: 'Preview',
-        useMyWikiMode: 'Use Living Wiki mode',
+        useMyWikiMode: 'Use LivingWiki mode',
         useInternetMode: 'Use internet mode',
         openWikiAdmin: 'Open wiki admin',
         admin: 'Admin',
@@ -1365,9 +1365,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         sendVoiceTextMessage: 'Send voice text message',
         close: 'Close',
         closeSubscribeDialog: 'Close subscribe dialog',
-        freeAccess: 'Free Living Wiki access',
+        freeAccess: 'Free LivingWiki access',
         subscribeToWiki: 'Subscribe to {city}',
-        joinWiki: 'Join Living Wiki {city}',
+        joinWiki: 'Join LivingWiki {city}',
         thisWiki: 'this wiki',
         subscribeIntro: 'Get the weekly {city} brief now. Phone access and the rest of the member perks unlock once you join.',
         weeklyUpdatesOn: 'Weekly updates on {city}',
@@ -1378,7 +1378,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         callInNumber: 'Your call-in number:',
         joinUnlockPhone: 'Join to unlock the phone number for real-time {city} answers when the line is available.',
         moreAccess: 'More access after joining',
-        revealFeatures: 'We will reveal additional member features as they come online for this Living Wiki.',
+        revealFeatures: 'We will reveal additional member features as they come online for this LivingWiki.',
         subscribing: 'Subscribing...',
         voiceRecap: 'Voice recap',
         emailRecap: 'Email recap',
@@ -3198,7 +3198,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       return city ? this.uiText('guideLabel', { city }) : this.uiText('guideAlt');
     }
 
-    if (/living wiki/i.test(trimmed) && /tour guide|guide/i.test(trimmed)) {
+    if (/living\s*wiki/i.test(trimmed) && /tour guide|guide/i.test(trimmed)) {
       return city ? this.uiText('guideLabel', { city }) : this.uiText('guideAlt');
     }
 
@@ -4094,7 +4094,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           atlasId,
           atlasName: this.currentWikiName(),
           anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
-          participantName: this.currentUserName() || this.currentUserEmail() || 'Living Wiki visitor',
+          participantName: this.currentUserName() || this.currentUserEmail() || 'LivingWiki visitor',
           voiceLanguageCode: language?.code ?? null,
           voiceLanguage: language?.language ?? null,
           voiceCountry: language?.country ?? null,
@@ -4110,12 +4110,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         ...(session.dynamicVariables ?? {}),
         current_city: cityName,
         current_city_country: cityCountry,
-        current_living_wiki: cityName ? `Living Wiki, ${cityName}` : 'Living Wiki',
+        current_living_wiki: cityName ? `LivingWiki, ${cityName}` : 'LivingWiki',
         requested_intro_greeting: greeting,
         link_delivery_instruction: linkDeliveryInstruction,
         city_context_instruction: cityName
-          ? `This voice conversation is for the Living Wiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${linkDeliveryInstruction}`
-          : `This voice conversation is for the current Living Wiki page. ${linkDeliveryInstruction}`,
+          ? `This voice conversation is for the LivingWiki city page for ${cityName}${cityCountry ? `, ${cityCountry}` : ''}. Invite questions about ${cityName}, while still answering broader questions when asked. ${linkDeliveryInstruction}`
+          : `This voice conversation is for the current LivingWiki page. ${linkDeliveryInstruction}`,
       };
       const voiceOverrides = {
         ...(session.firstMessageOverrideEnabled
@@ -4488,48 +4488,48 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const city = this.currentWikiName();
     if (!city) {
       return language?.greeting
-        ?? 'Hi, I’m your Living Wiki voice guide. Ask me anything and I’ll answer out loud.';
+        ?? 'Hi, I’m your LivingWiki voice guide. Ask me anything and I’ll answer out loud.';
     }
 
     switch (language?.code) {
       case 'ar':
-        return `مرحباً بك في Living Wiki، ${city}. كيف يمكنني مساعدتك بشأن ${city} اليوم؟`;
+        return `مرحباً بك في LivingWiki، ${city}. كيف يمكنني مساعدتك بشأن ${city} اليوم؟`;
       case 'cs':
-        return `Vítejte v Living Wiki, ${city}. Jak vám dnes mohu pomoci s ${city}?`;
+        return `Vítejte v LivingWiki, ${city}. Jak vám dnes mohu pomoci s ${city}?`;
       case 'de':
-        return `Willkommen bei Living Wiki, ${city}. Wie kann ich dir heute zu ${city} helfen?`;
+        return `Willkommen bei LivingWiki, ${city}. Wie kann ich dir heute zu ${city} helfen?`;
       case 'es':
         return `Bienvenido a Wiki Viva, ${city}. ¿Cómo puedo ayudarte con ${city} hoy?`;
       case 'fa':
-        return `به Living Wiki، ${city} خوش آمدید. امروز درباره ${city} چطور می‌توانم کمک کنم؟`;
+        return `به LivingWiki، ${city} خوش آمدید. امروز درباره ${city} چطور می‌توانم کمک کنم؟`;
       case 'fr':
-        return `Bienvenue sur Living Wiki, ${city}. Comment puis-je vous aider avec ${city} aujourd’hui ?`;
+        return `Bienvenue sur LivingWiki, ${city}. Comment puis-je vous aider avec ${city} aujourd’hui ?`;
       case 'hi':
-        return `Living Wiki, ${city} में आपका स्वागत है। आज मैं ${city} के बारे में आपकी कैसे मदद कर सकता हूँ?`;
+        return `LivingWiki, ${city} में आपका स्वागत है। आज मैं ${city} के बारे में आपकी कैसे मदद कर सकता हूँ?`;
       case 'hr':
-        return `Dobrodošli u Living Wiki, ${city}. Kako vam danas mogu pomoći s ${city}?`;
+        return `Dobrodošli u LivingWiki, ${city}. Kako vam danas mogu pomoći s ${city}?`;
       case 'ja':
-        return `Living Wiki、${city}へようこそ。今日は${city}について、どのようにお手伝いできますか？`;
+        return `LivingWiki、${city}へようこそ。今日は${city}について、どのようにお手伝いできますか？`;
       case 'ko':
-        return `Living Wiki, ${city}에 오신 것을 환영합니다. 오늘 ${city}에 대해 어떻게 도와드릴까요?`;
+        return `LivingWiki, ${city}에 오신 것을 환영합니다. 오늘 ${city}에 대해 어떻게 도와드릴까요?`;
       case 'nl':
-        return `Welkom bij Living Wiki, ${city}. Hoe kan ik u vandaag helpen met ${city}?`;
+        return `Welkom bij LivingWiki, ${city}. Hoe kan ik u vandaag helpen met ${city}?`;
       case 'no':
-        return `Velkommen til Living Wiki, ${city}. Hvordan kan jeg hjelpe deg med ${city} i dag?`;
+        return `Velkommen til LivingWiki, ${city}. Hvordan kan jeg hjelpe deg med ${city} i dag?`;
       case 'pt':
       case 'pt-br':
-        return `Bem-vindo ao Living Wiki, ${city}. Como posso ajudar com ${city} hoje?`;
+        return `Bem-vindo ao LivingWiki, ${city}. Como posso ajudar com ${city} hoje?`;
       case 'ru':
-        return `Добро пожаловать в Living Wiki, ${city}. Чем я могу помочь вам сегодня по ${city}?`;
+        return `Добро пожаловать в LivingWiki, ${city}. Чем я могу помочь вам сегодня по ${city}?`;
       case 'sv':
-        return `Välkommen till Living Wiki, ${city}. Hur kan jag hjälpa dig med ${city} idag?`;
+        return `Välkommen till LivingWiki, ${city}. Hur kan jag hjälpa dig med ${city} idag?`;
       case 'tr':
-        return `Living Wiki, ${city} sayfasına hoş geldiniz. Bugün ${city} hakkında size nasıl yardımcı olabilirim?`;
+        return `LivingWiki, ${city} sayfasına hoş geldiniz. Bugün ${city} hakkında size nasıl yardımcı olabilirim?`;
       case 'zh':
-        return `欢迎来到 Living Wiki，${city}。今天我可以怎样帮你了解 ${city}？`;
+        return `欢迎来到 LivingWiki，${city}。今天我可以怎样帮你了解 ${city}？`;
       case 'en':
       default:
-        return `Welcome to Living Wiki, ${city}. How can I help?`;
+        return `Welcome to LivingWiki, ${city}. How can I help?`;
     }
   }
 
@@ -4544,7 +4544,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const prompt = [
       `Please greet me now in ${language.language} for ${language.country}.`,
       `Say exactly this greeting first: "${greeting}"`,
-      `The current Living Wiki city context is ${this.currentWikiName() || 'the selected city wiki'}.`,
+      `The current LivingWiki city context is ${this.currentWikiName() || 'the selected city wiki'}.`,
       accentProfile.instruction,
       'For the rest of this voice session, keep speaking in this language and accent unless I ask to switch.',
       this.currentWikiName()
@@ -4563,7 +4563,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       try {
         conversation.sendContextualUpdate([
           `The visitor selected ${language.country} / ${language.language}.`,
-          `The current Living Wiki context is ${this.currentWikiName() || 'the selected city wiki'}.`,
+          `The current LivingWiki context is ${this.currentWikiName() || 'the selected city wiki'}.`,
           `Voice and accent target: ${accentProfile.label}.`,
           voiceName ? `Selected ElevenLabs voice: ${voiceName}.` : 'No dedicated ElevenLabs native voice was selected; use the closest available native accent.',
           accentProfile.instruction,
@@ -5553,7 +5553,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
       const question = this.questionBeforeMessage(message.id);
       const atlas = this.currentWikiAtlas();
       const card = await this.answerCardService.createAnswerCard({
-        question: question || 'Living Wiki question',
+        question: question || 'LivingWiki question',
         answer: message.text,
         atlasId: atlas?.id ?? null,
         threadId: this.activeThreadId(),

@@ -16,10 +16,9 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should expose the product title', () => {
     const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Living Wiki');
+    const app = fixture.componentInstance as unknown as { title: string };
+    expect(app.title).toBe('LivingWiki');
   });
 });

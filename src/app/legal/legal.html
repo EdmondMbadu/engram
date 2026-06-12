@@ -8,7 +8,7 @@
     <header class="theme-nav flex items-center justify-between rounded-full border px-4 py-3 sm:px-5 sm:py-4">
       <a routerLink="/" class="flex items-center">
         <div class="flex h-10 w-28 sm:h-12 sm:w-48 shrink-0 items-center justify-start">
-          <img src="/assets/image/livingwiki.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" class="h-full w-full object-contain" />
         </div>
       </a>
       <div class="flex items-center gap-2 sm:gap-3">
@@ -46,10 +46,13 @@
 
     <footer class="theme-line border-t px-2 py-8">
       <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <p class="text-xs font-medium text-[var(--muted)]">Living Wiki legal pages are a working draft and may be updated as the product evolves.</p>
-        <div class="flex items-center gap-6">
+        <p class="max-w-2xl text-xs leading-6 text-[var(--muted)]">LivingWiki™ is a product of Mind Palace Inc. LivingWiki is an independent product and is not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.</p>
+        <div class="flex flex-wrap items-center gap-5">
+          <a routerLink="/landing" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">About</a>
           <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Privacy</a>
           <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Terms</a>
+          <a href="mailto:jim.walker@mindpalace.com?subject=LivingWiki%20update%20suggestion" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Suggest an Update</a>
+          <a href="mailto:jim.walker@mindpalace.com" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Contact</a>
         </div>
       </div>
     </footer>

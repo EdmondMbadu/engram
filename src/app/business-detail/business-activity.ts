@@ -72,7 +72,7 @@ export class BusinessActivityComponent {
       void this.loadBusiness(claimKey);
     });
     effect(() => {
-      this.title.setTitle(`${this.pageTitle()} | ${this.businessName()} | Living Wiki`);
+      this.title.setTitle(`${this.pageTitle()} | ${this.businessName()} | LivingWiki`);
     });
   }
 

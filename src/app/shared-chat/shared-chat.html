@@ -4,7 +4,7 @@
       <div class="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3">
         <a routerLink="/" class="flex min-w-0 items-center gap-4">
           <div class="flex h-10 w-40 shrink-0 items-center justify-start">
-            <img src="/assets/image/livingwiki.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+            <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" class="h-full w-full object-contain" />
           </div>
           <div class="min-w-0">
             <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Shared thread</p>
@@ -91,14 +91,14 @@
               } @else {
                 <div class="assistant-message flex gap-5">
                   <div class="assistant-message__avatar">
-                    <img src="/assets/image/livingwiki.png" alt="Living Wiki" class="assistant-message__logo" />
+                    <img src="/assets/image/livingwiki.png" alt="LivingWiki" class="assistant-message__logo" />
                   </div>
                   <div class="min-w-0 flex-1 pt-1">
                     <div class="assistant-message__card">
                       <div class="assistant-message__header">
                         <div class="assistant-message__badge">
                           <span class="assistant-message__badge-dot"></span>
-                          <span>Living Wiki</span>
+                          <span>LivingWiki</span>
                         </div>
                       </div>
                       @if (msg.knowledgeGap) {
@@ -302,6 +302,9 @@
                           }
                         </div>
                       }
+                      <p class="mt-3 text-[11px] leading-5 text-[var(--muted)]">
+                        LivingWiki answers are generated from available source material and may require human review.
+                      </p>
                       <div class="chat-message-footer">
                         @if (canShowAnswerCardAction(msg)) {
                           @if (answerCardLinks()[msg.id]) {

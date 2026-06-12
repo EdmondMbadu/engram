@@ -93,7 +93,7 @@ export class BusinessEditComponent {
       void this.loadBusiness(claimKey);
     });
     effect(() => {
-      this.title.setTitle(`Edit ${this.businessName()} | Living Wiki`);
+      this.title.setTitle(`Edit ${this.businessName()} | LivingWiki`);
     });
   }
 

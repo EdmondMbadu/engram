@@ -481,7 +481,7 @@ export class BusinessComponent {
       <rect x="36" y="34" width="42" height="42" rx="10" fill="#1e8f45"/>
       <text x="98" y="65" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="900" fill="#092616">${business}</text>
       <rect x="618" y="34" width="42" height="42" rx="10" fill="#1e8f45"/>
-      <text x="676" y="65" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#092616">Living Wiki · <tspan fill="#1e8f45">Philly</tspan></text>
+      <text x="676" y="65" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#092616">LivingWiki · <tspan fill="#1e8f45">Philly</tspan></text>
       ${greetings}
       <g transform="translate(210 192)">
         <rect x="0" y="0" width="118" height="184" rx="32" fill="#071b10"/>

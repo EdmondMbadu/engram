@@ -100,7 +100,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     title: 'OpenClaw & the Agentic AI Revolution',
     subtitle: 'AI & Tech',
     description:
-      'Living Wiki of the OpenClaw phenomenon — 247K GitHub stars, the viral mechanics, the lobster culture, security incidents, and the broader shift to autonomous AI agents.',
+      'LivingWiki of the OpenClaw phenomenon — 247K GitHub stars, the viral mechanics, the lobster culture, security incidents, and the broader shift to autonomous AI agents.',
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'high',
@@ -112,7 +112,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     title: 'LLM Knowledge Bases & the Karpathy Pattern',
     subtitle: 'AI & Tech',
     description:
-      'Technical reference wiki covering the Living Wiki architecture — compile-once vs. RAG, implementation patterns, known deployments, and the academic literature.',
+      'Technical reference wiki covering the LivingWiki architecture — compile-once vs. RAG, implementation patterns, known deployments, and the academic literature.',
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'high',
@@ -159,7 +159,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== CLIMATE & SUSTAINABILITY =====
   {
-    title: 'Living Wiki: Philly (Flagship)',
+    title: 'LivingWiki: Philly (Flagship)',
     slug: 'philly',
     subtitle: 'Climate & Sustainability',
     description:
@@ -175,7 +175,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     title: 'Global Climate Action Tracker',
     subtitle: 'Climate & Sustainability',
     description:
-      "Living Wiki of every country's climate commitments, actual emissions, NDC progress, and policy implementations — the COP process made navigable.",
+      "LivingWiki of every country's climate commitments, actual emissions, NDC progress, and policy implementations — the COP process made navigable.",
     status: 'coming-soon',
     category: 'Climate & Sustainability',
     priority: 'high',
@@ -261,7 +261,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     title: 'The Marvel & DC Cinematic Universe',
     subtitle: 'Culture & Entertainment',
     description:
-      'Complete living timeline of every MCU and DCU film, show, character, and interconnection — the most complex fictional narrative ever created, mapped as a Living Wiki.',
+      'Complete living timeline of every MCU and DCU film, show, character, and interconnection — the most complex fictional narrative ever created, mapped as a LivingWiki.',
     status: 'coming-soon',
     category: 'Culture & Entertainment',
     priority: 'high',
@@ -421,7 +421,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     title: 'The Tariff & Trade War Tracker',
     subtitle: 'Business & Finance',
     description:
-      "Living Wiki of every tariff, trade restriction, and retaliatory measure in the current global trade environment — what's taxed, who's affected, and what it costs.",
+      "LivingWiki of every tariff, trade restriction, and retaliatory measure in the current global trade environment — what's taxed, who's affected, and what it costs.",
     status: 'coming-soon',
     category: 'Business & Finance',
     priority: 'high',
@@ -493,7 +493,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== CITIES & REGIONS =====
   {
-    title: 'Living Wiki: Boston',
+    title: 'LivingWiki: Boston',
     slug: 'boston',
     subtitle: 'Cities & Regions',
     description:
@@ -506,7 +506,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Boston Open Data, MBTA, Mass.gov, EPA, Census, Harvard/MIT public research',
   },
   {
-    title: 'Living Wiki: Portland',
+    title: 'LivingWiki: Portland',
     slug: 'portland',
     subtitle: 'Cities & Regions',
     description:
@@ -519,7 +519,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Portland Open Data, TriMet, Oregon DEQ, Metro regional government',
   },
   {
-    title: 'Living Wiki: Austin',
+    title: 'LivingWiki: Austin',
     slug: 'austin',
     subtitle: 'Cities & Regions',
     description:
@@ -531,7 +531,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     sources: 'Austin Open Data, ERCOT, Texas PUC, Census, Austin Energy',
   },
   {
-    title: 'Living Wiki: San Francisco',
+    title: 'LivingWiki: San Francisco',
     slug: 'san-francisco',
     subtitle: 'Cities & Regions',
     description:
@@ -543,7 +543,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     sources: 'DataSF, SFMTA, SFPUC, Bay Area Census, California state data',
   },
   {
-    title: 'Living Wiki: New York City',
+    title: 'LivingWiki: New York City',
     slug: 'new-york-city',
     subtitle: 'Cities & Regions',
     description:
@@ -764,7 +764,7 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
   return {
     title,
     subtitle: presentation.subtitle ?? 'Public Atlas',
-    description: atlas.description?.trim() || `Explore ${title} in Living Wiki.`,
+    description: atlas.description?.trim() || `Explore ${title} in LivingWiki.`,
     status: 'live',
     slug,
     category: presentation.category ?? 'Public Atlases',

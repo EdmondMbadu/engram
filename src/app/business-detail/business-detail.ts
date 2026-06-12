@@ -156,7 +156,7 @@ export class BusinessDetailComponent {
   readonly editPath = computed(() => `${this.detailPath()}/edit`);
   readonly aboutText = computed(() =>
     this.guidePrompt()
-      || `${this.businessName()} is a local ${this.business()?.category || 'business'} connected to Living Wiki for ${this.cityName()}. Visitors can ask questions by text or voice in their preferred language.`,
+      || `${this.businessName()} is a local ${this.business()?.category || 'business'} connected to LivingWiki for ${this.cityName()}. Visitors can ask questions by text or voice in their preferred language.`,
   );
   readonly filteredLanguages = computed(() => {
     const query = this.normalizeSearch(this.languageSearch());
@@ -181,7 +181,7 @@ export class BusinessDetailComponent {
       void this.loadBusiness(claimKey);
     });
     effect(() => {
-      this.title.setTitle(`${this.businessName()} | Business | Living Wiki`);
+      this.title.setTitle(`${this.businessName()} | Business | LivingWiki`);
     });
   }
 
@@ -256,7 +256,7 @@ export class BusinessDetailComponent {
 
   async shareBusinessGuide(): Promise<void> {
     const shareData = {
-      title: `${this.businessName()} on Living Wiki`,
+      title: `${this.businessName()} on LivingWiki`,
       text: `Chat with ${this.businessName()} in your language.`,
       url: this.publicChatUrl(),
     };

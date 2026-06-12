@@ -1,6 +1,6 @@
-# Living Wiki
+# LivingWiki
 
-Living Wiki is an Angular app prepared for Firebase Hosting, with the Firebase Web SDK initialized on the client for future Auth and Firestore integration.
+LivingWiki is an Angular app prepared for Firebase Hosting, with the Firebase Web SDK initialized on the client for future Auth and Firestore integration.
 
 ## Development server
 

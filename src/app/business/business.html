@@ -8,7 +8,7 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
       <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
         <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
-          <img src="/assets/image/livingwiki.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" class="h-full w-full object-contain" />
         </div>
       </a>
 
@@ -179,7 +179,7 @@
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-70"></span>
               <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--accent)]"></span>
             </span>
-            <span class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">Living Wiki for business</span>
+            <span class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">LivingWiki for business</span>
           </div>
 
           <h1 class="mt-6 max-w-4xl text-[2.75rem] font-black leading-[0.96] tracking-[-0.02em] text-[var(--text)] sm:text-7xl">
@@ -188,7 +188,7 @@
             <span class="bg-[linear-gradient(120deg,var(--accent-soft),var(--accent))] bg-clip-text text-transparent">already looking.</span>
           </h1>
           <p class="mt-6 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">
-            Living Wiki gives local businesses a place inside the living map of a city: a profile, a pin, guide placement, and signals that help people find the real local places search engines flatten.
+            LivingWiki gives local businesses a place inside the living map of a city: a profile, a pin, guide placement, and signals that help people find the real local places search engines flatten.
           </p>
 
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -205,7 +205,7 @@
           <button
             type="button"
             (click)="openBusinessVideo()"
-            aria-label="Play the welcome video: see how Living Wiki works for local businesses"
+            aria-label="Play the welcome video: see how LivingWiki works for local businesses"
             class="group relative mt-8 flex w-full max-w-xl items-center gap-4 overflow-hidden rounded-2xl border border-[var(--accent)]/35 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_16%,var(--surface)),var(--surface))] p-3 text-left shadow-[0_24px_60px_-30px_rgba(59,175,98,0.85)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/60 hover:shadow-[0_30px_70px_-32px_rgba(59,175,98,1)]"
           >
             <span class="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent)] opacity-0 transition-all duration-700 group-hover:left-full group-hover:opacity-100"></span>
@@ -601,14 +601,20 @@
         <div class="flex h-10 w-40 items-center justify-start">
           <img src="/assets/image/livingwiki.png" alt="" class="h-full w-full object-contain" />
         </div>
-        <p class="text-[11px] text-[var(--muted)]">Brought to you by <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
+        <p class="text-[11px] text-[var(--muted)]">LivingWiki™ is a product of <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
       </div>
       <div class="flex flex-wrap items-center justify-center gap-5">
         <a routerLink="/" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Public Wikis</a>
+        <a routerLink="/landing" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">About LivingWiki</a>
         <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Privacy</a>
         <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Terms</a>
+        <a href="mailto:jim.walker@mindpalace.com?subject=LivingWiki%20business%20update" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Suggest an Update</a>
+        <a href="mailto:jim.walker@mindpalace.com" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Contact</a>
       </div>
-      <p class="text-[11px] font-medium text-[var(--muted)]">© 2026 Living Wiki. All rights reserved.</p>
+      <div class="text-center sm:text-right">
+        <p class="text-[11px] font-medium text-[var(--muted)]">© 2026 Mind Palace Inc. LivingWiki™. All rights reserved.</p>
+        <p class="mt-1 max-w-sm text-[11px] leading-5 text-[var(--muted)]">Independent product. Not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.</p>
+      </div>
     </div>
   </footer>
   </div>
@@ -628,7 +634,7 @@
         <div class="flex items-center justify-between gap-4 border-b border-white/10 bg-black/70 px-4 py-3 text-white backdrop-blur-md sm:px-5">
           <div>
             <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent-soft)]">Business explainer</p>
-            <h2 id="business-video-title" class="mt-1 text-lg font-black tracking-tight sm:text-xl">Living Wiki for business</h2>
+            <h2 id="business-video-title" class="mt-1 text-lg font-black tracking-tight sm:text-xl">LivingWiki for business</h2>
           </div>
           <button
             type="button"
@@ -646,7 +652,7 @@
           autoplay
           playsinline
           preload="metadata"
-          aria-label="Video explaining Living Wiki for business"
+          aria-label="Video explaining LivingWiki for business"
         ></video>
       </div>
     </div>

@@ -484,13 +484,13 @@ export class PublicWikisComponent implements OnInit {
 
   cityDisplayName(wiki: PublicWikiCatalogItem): string {
     return this.displayWikiTitle(wiki)
-      .replace(/^Living Wiki:\s*/i, '')
-      .replace(/^My Living Wiki:\s*/i, '')
+      .replace(/^Living\s*Wiki:\s*/i, '')
+      .replace(/^My\s+Living\s*Wiki:\s*/i, '')
       .trim();
   }
 
   cityTitleKicker(wiki: PublicWikiCatalogItem): string {
-    return this.categoryForWiki(wiki) === CITIES_CATEGORY ? 'Living Wiki city' : wiki.subtitle;
+    return this.categoryForWiki(wiki) === CITIES_CATEGORY ? 'LivingWiki city' : wiki.subtitle;
   }
 
   setCategory(cat: PublicWikiCategory): void {
@@ -944,19 +944,19 @@ export class PublicWikisComponent implements OnInit {
   }
 
   private titleKey(wiki: PublicWikiCatalogItem): string {
-    return this.normalizeVisibleWikiTitle(wiki.title).replace(/^living wiki:\s*/i, '').trim().toLowerCase();
+    return this.normalizeVisibleWikiTitle(wiki.title).replace(/^living\s*wiki:\s*/i, '').trim().toLowerCase();
   }
 
   private cityNameKey(wiki: PublicWikiCatalogItem): string {
     return this.normalizeVisibleWikiTitle(wiki.title)
-      .replace(/^living wiki:\s*/i, '')
+      .replace(/^living\s*wiki:\s*/i, '')
       .replace(/[^\p{L}\p{N}]+/gu, ' ')
       .trim()
       .toLowerCase();
   }
 
   private normalizeVisibleWikiTitle(title: string): string {
-    return title.replace(/^my\s+living\s+wiki:/i, 'Living Wiki:').trim();
+    return title.replace(/^my\s+living\s*wiki:/i, 'LivingWiki:').trim();
   }
 
   private globalRegionForWiki(wiki: PublicWikiCatalogItem): string {

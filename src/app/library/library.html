@@ -20,7 +20,7 @@
       <div class="mb-10 px-2">
         <a routerLink="/" class="flex items-center">
           <div class="flex h-10 w-44 items-center justify-start">
-            <img src="/assets/image/livingwiki.png" alt="Living Wiki logo" class="h-full w-full object-contain" />
+            <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" class="h-full w-full object-contain" />
           </div>
         </a>
       </div>
@@ -220,7 +220,7 @@
                       type="text"
                       [ngModel]="urlToImport()"
                       (ngModelChange)="urlToImport.set($event)"
-                      placeholder="Paste a URL to ingest into Living Wiki..."
+                      placeholder="Paste a URL to ingest into LivingWiki..."
                       class="min-w-0 flex-1 bg-transparent text-sm text-[var(--text)] placeholder:text-[var(--muted)]/60 focus:outline-none"
                     />
                     <button type="button" class="ghost-btn !px-4 !py-2 text-xs" [disabled]="isUploading()" (click)="submitUrl()">
@@ -417,7 +417,7 @@
                           </div>
                           <div>
                             <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent)]">Upload in progress</p>
-                            <p class="text-[11px] text-[var(--muted)]">Sending file to Living Wiki before indexing starts.</p>
+                            <p class="text-[11px] text-[var(--muted)]">Sending file to LivingWiki before indexing starts.</p>
                           </div>
                         </div>
                         <span class="text-xs font-semibold text-[var(--text)]">{{ progress }}%</span>

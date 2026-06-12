@@ -70,7 +70,7 @@ export class ProfileComponent {
     return profileIconForSeed(this.user()?.uid || this.userEmail() || this.userName());
   });
   readonly userInitials = computed(() => {
-    const source = this.userName().trim() || this.userEmail().trim() || 'Living Wiki';
+    const source = this.userName().trim() || this.userEmail().trim() || 'LivingWiki';
     const parts = source.includes('@') ? [source[0] ?? 'U'] : source.split(/\s+/).slice(0, 2);
     return parts.map((part) => part[0] ?? '').join('').toUpperCase() || 'U';
   });

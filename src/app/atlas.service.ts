@@ -270,7 +270,7 @@ export interface BulkCityAtlasCreateResponse {
 function normalizeCityIdentity(value: string | null | undefined): string {
   return (value ?? '')
     .toLowerCase()
-    .replace(/^living wiki:\s*/i, '')
+    .replace(/^living\s*wiki:\s*/i, '')
     .replace(/\s*\(flagship\)\s*$/i, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
@@ -605,7 +605,7 @@ export class AtlasService {
     }
 
     const regionName = input.regionName?.trim() || null;
-    const name = input.name?.trim() || `Living Wiki: ${cityName}`;
+    const name = input.name?.trim() || `LivingWiki: ${cityName}`;
     const slug = this.slugify(name);
 	    const description = input.description?.trim()
 	      || `${cityName}'s practical local knowledge, civic updates, transit, culture, climate, jobs, food, neighborhoods, and public information.`;
@@ -700,7 +700,7 @@ export class AtlasService {
         banner_url: null,
       } satisfies AtlasChatGuideConfig,
       persona_prompt: [
-        `You are the Living Wiki guide for ${regionPhrase}.`,
+        `You are the LivingWiki guide for ${regionPhrase}.`,
         `Speak with practical local confidence about ${cityName}, while staying source-aware and clear about uncertainty.`,
         'Use live internet grounding by default because this city was created before source ingestion.',
         'Keep answers concise, readable, energetic, and useful for residents, visitors, builders, researchers, and local operators.',
@@ -1226,7 +1226,7 @@ export class AtlasService {
 	  displayName(atlas: AtlasItem | null | undefined): string {
 	    if (!atlas) return 'Select Wiki';
 	    const trimmed = atlas.name?.trim();
-	    if (trimmed) return trimmed.replace(/^my\s+living\s+wiki:/i, 'Living Wiki:');
+	    if (trimmed) return trimmed.replace(/^my\s+living\s*wiki:/i, 'LivingWiki:');
 	    return `Wiki ${atlas.id.slice(0, 6)}`;
 	  }
 
@@ -1609,7 +1609,7 @@ export class AtlasService {
 
   defaultNewsletterPrompt(): string {
     return [
-      'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
+      'Create a premium weekly LivingWiki email briefing with exactly five of the biggest headlines for this specific wiki.',
       'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
       'For Philadelphia wikis, prioritize Philadelphia and the surrounding region.',
       'Use fresh web search, include dates when available, avoid rumors, and keep every item concise.',
