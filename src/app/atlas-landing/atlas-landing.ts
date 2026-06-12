@@ -18,6 +18,7 @@ interface CityDetailSticker {
   label: string;
   value: string;
   caption: string;
+  captionIcon?: string;
   icon: string;
   palette: string;
 }
@@ -244,9 +245,10 @@ export class AtlasLandingComponent {
       addSticker({
         id: 'density',
         label: 'Density',
-        value: `${this.compactNumber(metadata.population_density_per_km2)}/km²`,
-        caption: 'People per square kilometer',
-        icon: 'grid_view',
+        value: this.compactNumber(metadata.population_density_per_km2),
+        caption: '/km²',
+        captionIcon: 'groups',
+        icon: 'groups',
         palette: 'yellow',
       });
     }

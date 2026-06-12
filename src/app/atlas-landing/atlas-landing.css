@@ -211,10 +211,20 @@
 }
 
 .city-detail-sticker__caption {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   margin-top: 0.25rem;
   font-size: 0.73rem;
   font-weight: 800;
   line-height: 1.35;
+}
+
+.city-detail-sticker__caption-icon {
+  color: var(--sticker-ink);
+  font-size: 0.95rem;
+  font-variation-settings: 'FILL' 1;
+  line-height: 1;
 }
 
 .city-pulse-sticker-sheet {

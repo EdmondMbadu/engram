@@ -363,6 +363,7 @@ interface PublicWikiStickerAttribute {
   label: string;
   value: string;
   caption: string;
+  captionIcon?: string;
   icon: string;
   palette: string;
 }
@@ -576,7 +577,7 @@ export class PublicWikisComponent implements OnInit {
       return null;
     }
 
-    return `${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(density)} pers/km²`;
+    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(density);
   }
 
   densityHeroLabel(wiki: PublicWikiCatalogItem): string {
@@ -620,9 +621,10 @@ export class PublicWikisComponent implements OnInit {
       addSticker({
         id: 'density',
         label: 'Density',
-        value: `${this.formatCompactNumber(density)}/km²`,
-        caption: 'People per km²',
-        icon: 'grid_view',
+        value: this.formatCompactNumber(density),
+        caption: '/km²',
+        captionIcon: 'groups',
+        icon: 'groups',
         palette: 'yellow',
       });
     }

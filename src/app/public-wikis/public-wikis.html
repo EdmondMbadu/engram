@@ -331,8 +331,14 @@
                 @if (isDensitySort()) {
                   <div class="border-y border-white/15 px-5 py-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]" [style.background]="densityBandBackground(wiki)">
                     <div class="flex items-center justify-between gap-4">
-                      <span class="text-3xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl">
-                        {{ densityHeroLabel(wiki) }}
+                      <span class="flex min-w-0 items-center gap-2 text-3xl font-black leading-none tracking-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl" [attr.aria-label]="densityLabel(wiki) ? densityLabel(wiki) + ' people per square kilometer' : null">
+                        <span class="truncate">{{ densityHeroLabel(wiki) }}</span>
+                        @if (densityLabel(wiki)) {
+                          <span class="density-unit-badge" aria-hidden="true">
+                            <span class="material-symbols-outlined">groups</span>
+                            <span>/km²</span>
+                          </span>
+                        }
                       </span>
                       <span class="material-symbols-outlined text-3xl text-white/80 drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
                         apps
@@ -402,7 +408,12 @@
                           <span class="city-attribute-sticker__text">
                             <span class="city-attribute-sticker__label">{{ attribute.label }}</span>
                             <span class="city-attribute-sticker__value">{{ attribute.value }}</span>
-                            <span class="city-attribute-sticker__caption">{{ attribute.caption }}</span>
+                            <span class="city-attribute-sticker__caption" [attr.aria-label]="attribute.captionIcon ? 'People per square kilometer' : null">
+                              @if (attribute.captionIcon) {
+                                <span class="city-attribute-sticker__caption-icon material-symbols-outlined" aria-hidden="true">{{ attribute.captionIcon }}</span>
+                              }
+                              <span>{{ attribute.caption }}</span>
+                            </span>
                           </span>
                         </span>
                       }

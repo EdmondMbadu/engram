@@ -600,7 +600,10 @@
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">
                           @if (row.population_density_per_km2) {
                             <span class="font-bold text-[var(--text)]">{{ row.population_density_per_km2 }}</span>
-                            <span class="block text-[10px] uppercase tracking-[0.14em]">pers/km²</span>
+                            <span class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.14em]" aria-label="People per square kilometer">
+                              <span class="material-symbols-outlined text-[0.78rem]" aria-hidden="true">groups</span>
+                              <span>/km²</span>
+                            </span>
                           } @else if (row.area_km2) {
                             <span class="font-bold text-[var(--text)]">{{ row.area_km2 }}</span>
                             <span class="block text-[10px] uppercase tracking-[0.14em]">area km²</span>

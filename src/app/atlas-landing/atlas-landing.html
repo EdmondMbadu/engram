@@ -300,7 +300,12 @@
                         <div class="min-w-0">
                           <p class="city-detail-sticker__label">{{ sticker.label }}</p>
                           <p class="city-detail-sticker__value">{{ sticker.value }}</p>
-                          <p class="city-detail-sticker__caption">{{ sticker.caption }}</p>
+                          <p class="city-detail-sticker__caption" [attr.aria-label]="sticker.captionIcon ? 'People per square kilometer' : null">
+                            @if (sticker.captionIcon) {
+                              <span class="city-detail-sticker__caption-icon material-symbols-outlined" aria-hidden="true">{{ sticker.captionIcon }}</span>
+                            }
+                            <span>{{ sticker.caption }}</span>
+                          </p>
                         </div>
                       </article>
                     }
