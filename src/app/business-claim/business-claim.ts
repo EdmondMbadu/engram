@@ -337,8 +337,8 @@ export class BusinessClaimComponent {
   readonly decalDownloadHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.buildDecalSvg())}`);
   readonly decalFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-local-insider-badge.svg`);
   readonly decalPngFilename = computed(() => `${this.businessSlug() || 'my-living-wiki'}-${this.selectedCitySlug()}-local-insider-badge.png`);
-  readonly localDuplicateClaim = computed(() => this.localClaimKeys().includes(this.claimKey()));
-  readonly hasDuplicateClaim = computed(() => !!this.existingClaim() || this.localDuplicateClaim());
+  readonly localDraftForCurrentClaim = computed(() => this.localClaimKeys().includes(this.claimKey()));
+  readonly hasDuplicateClaim = computed(() => !!this.existingClaim());
   readonly reviewedPlaceMatch = computed(() => {
     const businessSlug = this.businessSlug();
     return this.placeResults().find((place) => place.source === 'reviewed' && this.slugify(place.name) === businessSlug) ?? null;
@@ -719,9 +719,8 @@ export class BusinessClaimComponent {
       this.claimStatus.set('Business page created and marked pending review.');
       await this.router.navigateByUrl(this.businessDetailPath());
     } catch {
-      this.saveLocalDraft(this.currentDraft());
-      this.localClaimKeys.update((keys) => [...new Set([...keys, claimKey])]);
-      this.claimStatus.set('Saved locally. Once the claim registry is available, this same key will be used to prevent duplicates.');
+      this.savePendingDraft();
+      this.claimError.set('We could not create this business claim. Please try again, or refresh before submitting if the page has been open for a while.');
     } finally {
       this.claimSaving.set(false);
     }
@@ -826,10 +825,6 @@ export class BusinessClaimComponent {
   }
 
   private async checkExistingClaim(claimKey: string): Promise<void> {
-    if (this.localClaimKeys().includes(claimKey)) {
-      return;
-    }
-
     this.lastClaimCheckKey = claimKey;
     this.claimCheckLoading.set(true);
     try {

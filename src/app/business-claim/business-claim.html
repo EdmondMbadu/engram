@@ -206,6 +206,9 @@
                     } @else if (reviewedPlaceMatch()) {
                       <p class="text-sm font-black text-[var(--text)]">Existing city profile found.</p>
                       <p class="mt-1 text-sm leading-6 text-[var(--muted)]">This will claim the existing place profile rather than creating a duplicate listing.</p>
+                    } @else if (localDraftForCurrentClaim()) {
+                      <p class="text-sm font-black text-[var(--text)]">Local draft found for this name and city.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">No existing pending claim was found online. You can submit this draft when the details are ready.</p>
                     } @else {
                       <p class="text-sm font-black text-[var(--text)]">No duplicate claim found for this name and city.</p>
                       <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Claim key: {{ claimKey() }}</p>

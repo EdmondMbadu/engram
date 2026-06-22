@@ -135,6 +135,9 @@ service cloud.firestore {
           'category',
           'place_id',
           'preview_url',
+          'business_plan',
+          'business_paid',
+          'payment_status',
           'status',
           'created_at'
         ])
@@ -161,6 +164,18 @@ service cloud.firestore {
         && request.resource.data.category.size() <= 80
         && request.resource.data.preview_url is string
         && request.resource.data.preview_url.matches('https://livingwiki\\.com/.*')
+        && (
+          !request.resource.data.keys().hasAny(['business_plan'])
+          || request.resource.data.business_plan in ['free', 'local', 'favorite', 'sponsor']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['business_paid'])
+          || request.resource.data.business_paid == true
+        )
+        && (
+          !request.resource.data.keys().hasAny(['payment_status'])
+          || request.resource.data.payment_status == 'paid'
+        )
         && request.resource.data.status == 'pending'
         && request.resource.data.created_at == request.time
         && !exists(/databases/$(database)/documents/business_claims/$(claimId));
@@ -216,6 +231,11 @@ service cloud.firestore {
           'admin_email',
           'guide_prompt',
           'badge_icons',
+          'business_plan',
+          'ai_tone',
+          'business_documents_enabled',
+          'payment_status',
+          'business_paid',
           'status',
           'created_at'
         ])
@@ -252,7 +272,27 @@ service cloud.firestore {
         && request.resource.data.guide_prompt is string
         && request.resource.data.guide_prompt.size() <= 5000
         && request.resource.data.badge_icons is list
-        && request.resource.data.badge_icons.size() <= 3
+        && request.resource.data.badge_icons.size() <= 4
+        && (
+          !request.resource.data.keys().hasAny(['business_plan'])
+          || request.resource.data.business_plan in ['free', 'local', 'favorite', 'sponsor']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['ai_tone'])
+          || request.resource.data.ai_tone in ['warm', 'calm', 'upbeat', 'professional', 'concise', 'premium']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['business_documents_enabled'])
+          || request.resource.data.business_documents_enabled is bool
+        )
+        && (
+          !request.resource.data.keys().hasAny(['payment_status'])
+          || request.resource.data.payment_status == 'paid'
+        )
+        && (
+          !request.resource.data.keys().hasAny(['business_paid'])
+          || request.resource.data.business_paid == true
+        )
         && request.resource.data.status == 'pending'
         && request.resource.data.created_at == request.time
         && !exists(/databases/$(database)/documents/business_claim_requests/$(claimId));
@@ -262,21 +302,47 @@ service cloud.firestore {
         && request.resource.data.owner_user_id == resource.data.owner_user_id
         && request.resource.data.claim_key == resource.data.claim_key
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'city_name',
+          'city_slug',
+          'business_name',
+          'business_slug',
           'business_address',
           'category',
+          'preview_url',
           'admin_name',
           'admin_email',
           'guide_prompt',
           'badge_icons',
+          'business_plan',
+          'ai_tone',
+          'business_documents_enabled',
+          'payment_status',
+          'business_paid',
           'logo_url',
           'profile_image_url',
           'cover_image_url',
+          'status',
+          'created_at',
           'updated_at'
         ])
+        && request.resource.data.city_name is string
+        && request.resource.data.city_name.size() >= 2
+        && request.resource.data.city_name.size() <= 90
+        && request.resource.data.city_slug is string
+        && request.resource.data.city_slug.size() >= 2
+        && request.resource.data.city_slug.size() <= 90
+        && request.resource.data.business_name is string
+        && request.resource.data.business_name.size() >= 2
+        && request.resource.data.business_name.size() <= 120
+        && request.resource.data.business_slug is string
+        && request.resource.data.business_slug.size() >= 2
+        && request.resource.data.business_slug.size() <= 90
         && request.resource.data.business_address is string
         && request.resource.data.business_address.size() <= 180
         && request.resource.data.category is string
         && request.resource.data.category.size() <= 80
+        && request.resource.data.preview_url is string
+        && request.resource.data.preview_url.matches('https://livingwiki\\.com/.*')
         && request.resource.data.admin_name is string
         && request.resource.data.admin_name.size() >= 2
         && request.resource.data.admin_name.size() <= 90
@@ -287,14 +353,67 @@ service cloud.firestore {
         && request.resource.data.guide_prompt is string
         && request.resource.data.guide_prompt.size() <= 5000
         && request.resource.data.badge_icons is list
-        && request.resource.data.badge_icons.size() <= 3
-        && request.resource.data.logo_url is string
-        && request.resource.data.logo_url.size() <= 1200
-        && request.resource.data.profile_image_url is string
-        && request.resource.data.profile_image_url.size() <= 1200
-        && request.resource.data.cover_image_url is string
-        && request.resource.data.cover_image_url.size() <= 1200
-        && request.resource.data.updated_at == request.time
+        && request.resource.data.badge_icons.size() <= 4
+        && (
+          !request.resource.data.keys().hasAny(['business_plan'])
+          || request.resource.data.business_plan in ['free', 'local', 'favorite', 'sponsor']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['ai_tone'])
+          || request.resource.data.ai_tone in ['warm', 'calm', 'upbeat', 'professional', 'concise', 'premium']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['business_documents_enabled'])
+          || request.resource.data.business_documents_enabled is bool
+        )
+        && (
+          !request.resource.data.keys().hasAny(['payment_status'])
+          || request.resource.data.payment_status in ['idle', 'checkout_started', 'paid', 'cancelled']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['business_paid'])
+          || request.resource.data.business_paid is bool
+        )
+        && (
+          !request.resource.data.keys().hasAny(['logo_url'])
+          || (
+            request.resource.data.logo_url is string
+            && request.resource.data.logo_url.size() <= 1200
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['profile_image_url'])
+          || (
+            request.resource.data.profile_image_url is string
+            && request.resource.data.profile_image_url.size() <= 1200
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['cover_image_url'])
+          || (
+            request.resource.data.cover_image_url is string
+            && request.resource.data.cover_image_url.size() <= 1200
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['status'])
+          || request.resource.data.status in ['pending', 'verified', 'rejected']
+        )
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status'])
+          || (
+            !resource.data.keys().hasAny(['status'])
+            && request.resource.data.status == 'pending'
+          )
+        )
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['created_at'])
+          || request.resource.data.created_at == request.time
+        )
+        && (
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['updated_at'])
+          || request.resource.data.updated_at == request.time
+        )
       ) || (
         isPlatformAdmin()
         && request.resource.data.owner_user_id == resource.data.owner_user_id
