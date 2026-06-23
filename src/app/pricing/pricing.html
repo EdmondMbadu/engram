@@ -27,8 +27,21 @@
       </nav>
 
       <main>
-        <section class="relative overflow-hidden border-b border-[var(--line)]">
+        <section class="pricing-hero-section relative border-b border-[var(--line)]">
           <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--soft-fill),transparent_42%),linear-gradient(to_right,var(--line)_1px,transparent_1px),linear-gradient(to_bottom,var(--line)_1px,transparent_1px)] bg-[size:auto,72px_72px,72px_72px] opacity-60"></div>
+          <div class="pricing-spill-art" aria-hidden="true">
+            <span class="pricing-spill pricing-spill--cities">
+              <img src="/assets/image/living-cities.png" alt="" />
+            </span>
+            <span class="pricing-spill pricing-spill--wiki">
+              <img src="/assets/image/my-living-wiki.png" alt="" />
+            </span>
+            <span class="pricing-spill pricing-spill--ring">
+              <img src="/assets/image/ring-countries.png" alt="" />
+            </span>
+            <span class="pricing-spill pricing-spill--spark pricing-spill--spark-one"></span>
+            <span class="pricing-spill pricing-spill--spark pricing-spill--spark-two"></span>
+          </div>
           <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
             <div class="max-w-4xl">
               <div class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-1.5 shadow-[var(--shadow-floating)]">
@@ -44,8 +57,17 @@
           </div>
         </section>
 
-        <section class="border-b border-[var(--line)] bg-[linear-gradient(180deg,var(--surface),var(--soft-fill)_72%,var(--surface))]">
-          <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
+        <section class="pricing-plans-section relative border-b border-[var(--line)] bg-[linear-gradient(180deg,var(--surface),var(--soft-fill)_72%,var(--surface))]">
+          <div class="pricing-plan-spill-art" aria-hidden="true">
+            <span class="pricing-plan-spill pricing-plan-spill--logo">
+              <img src="/assets/image/livingwiki.png" alt="" />
+            </span>
+            <span class="pricing-plan-spill pricing-plan-spill--cities">
+              <img src="/assets/image/living-cities.png" alt="" />
+            </span>
+            <span class="pricing-plan-spill pricing-plan-spill--tile"></span>
+          </div>
+          <div class="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
             @if (showUpgradePrompt()) {
               <div class="mb-8 overflow-hidden rounded-[1.5rem] border border-[var(--accent)]/30 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_14%,var(--surface)),var(--surface))] p-5 shadow-[var(--shadow-floating)] sm:p-6">
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
