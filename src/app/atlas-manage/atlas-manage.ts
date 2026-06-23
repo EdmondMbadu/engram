@@ -250,6 +250,7 @@ export class AtlasManageComponent {
   readonly wikiSearch = signal('');
   readonly deletingId = signal<string | null>(null);
   readonly pageError = signal<string | null>(null);
+  readonly canCreateWikis = this.authService.canCreateWikis;
   readonly cityTemplates = CITY_ATLAS_TEMPLATES;
   readonly creatingCitySlug = signal<string | null>(null);
   readonly creatingCustomCity = signal(false);
@@ -349,7 +350,10 @@ export class AtlasManageComponent {
     this.atlasService.slugify(this.customCityDraft().city_name.trim() || this.customCityNamePreview()),
   );
   readonly canCreateCustomCity = computed(() =>
-    !!this.customCityDraft().city_name.trim() && !this.creatingCustomCity() && !this.creatingCitySlug(),
+    this.canCreateWikis()
+    && !!this.customCityDraft().city_name.trim()
+    && !this.creatingCustomCity()
+    && !this.creatingCitySlug(),
   );
   readonly validBulkCityRows = computed(() =>
     this.bulkCityRows().filter((row) =>
@@ -369,7 +373,8 @@ export class AtlasManageComponent {
 	    ),
 	  );
   readonly canCreateBulkCities = computed(() =>
-    this.validBulkCityRows().length > 0
+    this.canCreateWikis()
+    && this.validBulkCityRows().length > 0
     && !this.creatingBulkCities()
     && !this.creatingCustomCity()
     && !this.creatingCitySlug(),
@@ -1329,6 +1334,10 @@ export class AtlasManageComponent {
 
   async createCustomCityAtlas(event: Event): Promise<void> {
     event.preventDefault();
+    if (!this.canCreateWikis()) {
+      this.pageError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      return;
+    }
     if (!this.canCreateCustomCity()) {
       return;
     }
@@ -1653,6 +1662,10 @@ export class AtlasManageComponent {
 	  }
 
 	  async createBulkCityAtlases(): Promise<void> {
+    if (!this.canCreateWikis()) {
+      this.bulkCityError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      return;
+    }
     this.refreshBulkCityDuplicateStatus();
     const rows = this.validBulkCityRows();
     if (rows.length === 0 || this.creatingBulkCities()) {
@@ -2169,10 +2182,17 @@ export class AtlasManageComponent {
     if (this.creatingCitySlug() === template.slug) {
       return 'Creating...';
     }
+    if (!this.canCreateWikis() && !this.cityTemplateExists(template)) {
+      return 'Upgrade required';
+    }
     return this.cityTemplateExists(template) ? 'Created' : 'Create live city';
   }
 
   async createCityAtlas(template: CityAtlasTemplate): Promise<void> {
+    if (!this.canCreateWikis()) {
+      this.pageError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      return;
+    }
     if (this.cityTemplateExists(template) || this.creatingCitySlug()) {
       return;
     }

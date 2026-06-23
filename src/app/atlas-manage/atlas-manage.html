@@ -312,6 +312,16 @@
             {{ cityCreationMessage() }}
           </div>
         }
+        @if (!canCreateWikis()) {
+          <div class="mx-5 mt-5 rounded-2xl border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-3">
+            <p class="text-sm font-black text-[var(--text)]">Upgrade required to create new Wikis.</p>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Personal Plus, Creator, or platform admin access is required for fresh city, template, and bulk Wiki creation.</p>
+            <a routerLink="/pricing" [queryParams]="{ audience: 'general' }" class="mt-3 inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)]">
+              <span class="material-symbols-outlined text-[1rem]">upgrade</span>
+              <span>View pricing</span>
+            </a>
+          </div>
+        }
 
         <section class="m-5 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
           <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
@@ -468,7 +478,7 @@
               class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
             >
               <span class="material-symbols-outlined text-[1rem]">add_location_alt</span>
-              <span>{{ creatingCustomCity() ? 'Creating...' : 'Create fresh city' }}</span>
+              <span>{{ creatingCustomCity() ? 'Creating...' : canCreateWikis() ? 'Create fresh city' : 'Upgrade required' }}</span>
             </button>
           </div>
         </form>
@@ -540,7 +550,7 @@
                   class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <span class="material-symbols-outlined text-[1rem]">playlist_add_check</span>
-	                  <span>{{ creatingBulkCities() ? 'Creating...' : 'Create valid rows' }}</span>
+	                  <span>{{ creatingBulkCities() ? 'Creating...' : canCreateWikis() ? 'Create valid rows' : 'Upgrade required' }}</span>
 	                </button>
 	              </div>
 	              @if (bulkCityProgress()) {
@@ -761,7 +771,7 @@
               <button
                 type="button"
                 (click)="createCityAtlas(template)"
-                [disabled]="!!creatingCitySlug()"
+                [disabled]="!!creatingCitySlug() || !canCreateWikis()"
                 class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
               >
                 <span class="material-symbols-outlined text-[1rem]">add_location_alt</span>

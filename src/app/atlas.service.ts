@@ -453,7 +453,7 @@ export class AtlasService {
         this.atlases.set(items);
 
         if (items.length === 0) {
-          if (!this.autoCreateAttempted) {
+          if (this.authService.canCreateWikis() && !this.autoCreateAttempted) {
             this.autoCreateAttempted = true;
             const created = await this.createDefaultAtlas(uid);
             if (created) {
@@ -523,6 +523,7 @@ export class AtlasService {
     if (!this.firestore) return null;
     const uid = this.authService.uid();
     if (!uid) return null;
+    this.assertCanCreateWiki();
 
     const name = input.name.trim() || 'Untitled Wiki';
     const slug = this.slugify(name);
@@ -548,6 +549,7 @@ export class AtlasService {
     if (!this.firestore) return null;
     const uid = this.authService.uid();
     if (!uid) return null;
+    this.assertCanCreateWiki();
 
     const slug = template.slug.trim().toLowerCase();
     if (!slug) {
@@ -598,6 +600,7 @@ export class AtlasService {
     if (!this.firestore) return null;
     const uid = this.authService.uid();
     if (!uid) return null;
+    this.assertCanCreateWiki();
 
     const cityName = input.cityName.trim();
     if (!cityName) {
@@ -798,6 +801,7 @@ export class AtlasService {
   }
 
   async createBulkCityAtlases(rows: BulkCityAtlasInput[]): Promise<BulkCityAtlasCreateResponse> {
+    this.assertCanCreateWiki();
     if (!this.functions) {
       throw new Error('Functions unavailable.');
     }
@@ -1283,6 +1287,7 @@ export class AtlasService {
 
   private async createDefaultAtlas(uid: string): Promise<string | null> {
     if (!this.firestore) return null;
+    this.assertCanCreateWiki();
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
       name: 'My Wiki',
@@ -1299,6 +1304,12 @@ export class AtlasService {
       updated_at: serverTimestamp(),
     });
     return ref.id;
+  }
+
+  private assertCanCreateWiki(): void {
+    if (!this.authService.canCreateWikis()) {
+      throw new Error('Upgrade to Personal Plus or Creator to create Wikis.');
+    }
   }
 
   private loadActiveId(): string | null {

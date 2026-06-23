@@ -83,6 +83,7 @@ export class AuthService {
   readonly initialized = signal(false);
   readonly isAuthenticated = computed(() => this.user() !== null);
   readonly isAdmin = computed(() => this.profile()?.role === 'admin');
+  readonly canCreateWikis = computed(() => this.isAdmin() || this.hasActivePersonalWikiPlan());
   readonly uid = computed(() => this.user()?.uid ?? '');
   readonly emailVerified = computed(() => this.user()?.emailVerified ?? false);
   readonly needsEmailVerification = computed(() => {
@@ -305,6 +306,14 @@ export class AuthService {
     await signOut(auth);
   }
 
+  hasActivePersonalWikiPlan(): boolean {
+    const profile = this.profile();
+    const plan = (profile?.pricingPlan ?? '').trim().toLowerCase();
+    const status = (profile?.subscriptionStatus ?? '').trim().toLowerCase();
+    return ['personal_plus', 'creator'].includes(plan)
+      && ['active', 'trialing', 'paid'].includes(status);
+  }
+
   async chooseProfileIcon(iconCode: string): Promise<void> {
     const user = this.requireCurrentUser();
     const firestore = this.requireFirestore();
@@ -517,7 +526,7 @@ export class AuthService {
   private stringField(data: Record<string, unknown>, ...keys: string[]): string | null {
     for (const key of keys) {
       const value = data[key];
-      if (typeof value === 'string') {
+      if (typeof value === 'string' && value.trim()) {
         return value;
       }
     }

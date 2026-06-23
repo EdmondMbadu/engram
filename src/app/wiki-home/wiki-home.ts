@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import type { AtlasItem, AtlasUsage } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AtlasBadgeComponent } from '../atlas-badge/atlas-badge';
+import { AuthService } from '../auth.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
@@ -22,6 +23,7 @@ import { AccountMenuComponent } from '../account-menu/account-menu';
 })
 export class WikiHomeComponent {
   private readonly atlasService = inject(AtlasService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   readonly atlases = this.atlasService.atlases;
@@ -31,6 +33,7 @@ export class WikiHomeComponent {
   readonly createName = signal('');
   readonly isCreating = signal(false);
   readonly createError = signal<string | null>(null);
+  readonly canCreateWikis = this.authService.canCreateWikis;
   readonly usageById = signal<Record<string, AtlasUsage>>({});
   readonly loadingUsageById = signal<Record<string, boolean>>({});
   readonly wikiSearch = signal('');
@@ -141,6 +144,10 @@ export class WikiHomeComponent {
   }
 
   openCreate(): void {
+    if (!this.canCreateWikis()) {
+      this.createError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      return;
+    }
     this.createOpen.set(true);
     this.createError.set(null);
     this.createName.set('');
@@ -171,6 +178,10 @@ export class WikiHomeComponent {
     event.preventDefault();
     const name = this.createName().trim();
     if (!name || this.isCreating()) {
+      return;
+    }
+    if (!this.canCreateWikis()) {
+      this.createError.set('Upgrade to Personal Plus or Creator to create Wikis.');
       return;
     }
 

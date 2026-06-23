@@ -15,6 +15,43 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    function userProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function hasActivePersonalWikiPlan() {
+      return isSignedIn()
+        && (
+          userProfile().pricingPlan in ['personal_plus', 'creator']
+          || userProfile().pricing_plan in ['personal_plus', 'creator']
+        )
+        && (
+          userProfile().subscriptionStatus in ['active', 'trialing', 'paid']
+          || userProfile().subscription_status in ['active', 'trialing', 'paid']
+        );
+    }
+
+    function canCreateWiki() {
+      return isPlatformAdmin() || hasActivePersonalWikiPlan();
+    }
+
+    function userEditableProfileKeys() {
+      return [
+        'id',
+        'authUid',
+        'email',
+        'emailVerified',
+        'displayName',
+        'photoURL',
+        'profileIcon',
+        'profilePictureType',
+        'providers',
+        'creationTime',
+        'lastSignInTime',
+        'updatedAt'
+      ];
+    }
+
     function isAtlasAdmin(data) {
       return isSignedIn()
         && data.admin_user_ids is list
@@ -22,7 +59,12 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read: if isOwner(userId) || isPlatformAdmin();
+      allow create: if isOwner(userId)
+        && request.resource.data.keys().hasOnly(userEditableProfileKeys());
+      allow update: if isOwner(userId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(userEditableProfileKeys());
+      allow delete: if false;
     }
 
     match /atlases/{atlasId} {
@@ -30,7 +72,9 @@ service cloud.firestore {
         || (isSignedIn() && resource.data.user_id == request.auth.uid)
         || isAtlasAdmin(resource.data);
       allow list: if isSignedIn();
-      allow create: if isSignedIn() && request.resource.data.user_id == request.auth.uid;
+      allow create: if isSignedIn()
+        && request.resource.data.user_id == request.auth.uid
+        && canCreateWiki();
       allow update: if (isSignedIn() && resource.data.user_id == request.auth.uid)
         || (
           isAtlasAdmin(resource.data)

@@ -13,14 +13,25 @@
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <button
-            type="button"
-            class="primary-btn inline-flex items-center gap-2 !px-4 !py-2.5 text-sm"
-            (click)="openCreate()"
-          >
-            <span class="material-symbols-outlined text-[1.1rem]">add</span>
-            <span class="hidden sm:inline">New Wiki</span>
-          </button>
+          @if (canCreateWikis()) {
+            <button
+              type="button"
+              class="primary-btn inline-flex items-center gap-2 !px-4 !py-2.5 text-sm"
+              (click)="openCreate()"
+            >
+              <span class="material-symbols-outlined text-[1.1rem]">add</span>
+              <span class="hidden sm:inline">New Wiki</span>
+            </button>
+          } @else {
+            <a
+              routerLink="/pricing"
+              [queryParams]="{ audience: 'general' }"
+              class="primary-btn inline-flex items-center gap-2 !px-4 !py-2.5 text-sm"
+            >
+              <span class="material-symbols-outlined text-[1.1rem]">upgrade</span>
+              <span class="hidden sm:inline">Upgrade</span>
+            </a>
+          }
           <app-atlas-badge></app-atlas-badge>
           <app-theme-toggle></app-theme-toggle>
           <app-account-menu></app-account-menu>
@@ -39,10 +50,17 @@
             Each Wiki is an isolated knowledge workspace. Wikis shared with you as an admin appear here alongside the ones you own.
           </p>
           <div class="mt-6 flex flex-wrap gap-2">
-            <button type="button" class="primary-btn !px-4 !py-2.5 text-sm" (click)="openCreate()">
-              <span class="material-symbols-outlined text-base">add</span>
-              <span>Create Wiki</span>
-            </button>
+            @if (canCreateWikis()) {
+              <button type="button" class="primary-btn !px-4 !py-2.5 text-sm" (click)="openCreate()">
+                <span class="material-symbols-outlined text-base">add</span>
+                <span>Create Wiki</span>
+              </button>
+            } @else {
+              <a routerLink="/pricing" [queryParams]="{ audience: 'general' }" class="primary-btn inline-flex !px-4 !py-2.5 text-sm">
+                <span class="material-symbols-outlined text-base">upgrade</span>
+                <span>Upgrade to create</span>
+              </a>
+            }
             <a routerLink="/atlases" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
               <span class="material-symbols-outlined text-base">tune</span>
               <span>Manage settings</span>
@@ -102,15 +120,19 @@
           <button
             type="button"
             class="group flex min-h-[21rem] flex-col rounded-[1.5rem] border border-dashed border-[var(--accent)]/45 bg-[var(--surface)] p-5 text-left transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--soft-fill)] hover:shadow-[var(--shadow-floating)]"
-            (click)="openCreate()"
+            (click)="canCreateWikis() ? openCreate() : null"
+            [routerLink]="canCreateWikis() ? null : '/pricing'"
+            [queryParams]="canCreateWikis() ? null : { audience: 'general' }"
           >
             <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent)] text-[var(--accent-contrast)] shadow-[0_14px_30px_rgba(59,175,98,0.20)]">
-              <span class="material-symbols-outlined text-[1.6rem]">add</span>
+              <span class="material-symbols-outlined text-[1.6rem]">{{ canCreateWikis() ? 'add' : 'upgrade' }}</span>
             </span>
-            <span class="mt-5 text-xl font-black tracking-tight">Create Wiki</span>
-            <span class="mt-2 max-w-64 text-sm leading-6 text-[var(--muted)]">Name a focused workspace, then add documents to grow its knowledge base.</span>
+            <span class="mt-5 text-xl font-black tracking-tight">{{ canCreateWikis() ? 'Create Wiki' : 'Upgrade to create Wikis' }}</span>
+            <span class="mt-2 max-w-64 text-sm leading-6 text-[var(--muted)]">
+              {{ canCreateWikis() ? 'Name a focused workspace, then add documents to grow its knowledge base.' : 'Personal Plus or Creator is required for new Wiki workspaces.' }}
+            </span>
             <span class="mt-auto inline-flex items-center gap-2 text-sm font-bold text-[var(--accent)]">
-              <span>Start a blank Wiki</span>
+              <span>{{ canCreateWikis() ? 'Start a blank Wiki' : 'View pricing' }}</span>
               <span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-0.5">arrow_forward</span>
             </span>
           </button>

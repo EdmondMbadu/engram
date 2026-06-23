@@ -162,6 +162,26 @@ async function assertPlatformAdmin(userId: string): Promise<void> {
   }
 }
 
+function hasActivePersonalWikiPlan(profile: Record<string, unknown> | undefined): boolean {
+  const camelPlan = typeof profile?.pricingPlan === 'string' ? profile.pricingPlan.trim().toLowerCase() : '';
+  const snakePlan = typeof profile?.pricing_plan === 'string' ? profile.pricing_plan.trim().toLowerCase() : '';
+  const camelStatus = typeof profile?.subscriptionStatus === 'string' ? profile.subscriptionStatus.trim().toLowerCase() : '';
+  const snakeStatus = typeof profile?.subscription_status === 'string' ? profile.subscription_status.trim().toLowerCase() : '';
+  const plan = camelPlan || snakePlan;
+  const status = camelStatus || snakeStatus;
+  return (plan === 'personal_plus' || plan === 'creator')
+    && (status === 'active' || status === 'trialing' || status === 'paid');
+}
+
+async function assertCanCreateWiki(userId: string): Promise<void> {
+  const snapshot = await db.collection('users').doc(userId).get();
+  const profile = snapshot.data() as Record<string, unknown> | undefined;
+  if (profile?.role === 'admin' || hasActivePersonalWikiPlan(profile)) {
+    return;
+  }
+  throw new HttpsError('permission-denied', 'Upgrade to Personal Plus or Creator to create Wikis.');
+}
+
 type BusinessCheckoutPlanKey = 'local' | 'favorite' | 'sponsor';
 type UserPricingPlanKey = 'personal_plus' | 'creator';
 type UserPricingBillingCycle = 'monthly' | 'annual';
@@ -7949,6 +7969,7 @@ export const createBulkCityAtlases = onCall(
     if (!uid) {
       throw new HttpsError('unauthenticated', 'Authentication is required.');
     }
+    await assertCanCreateWiki(uid);
 
     const rows = Array.isArray(request.data?.rows)
       ? (request.data.rows as BulkCityCreateRow[])
