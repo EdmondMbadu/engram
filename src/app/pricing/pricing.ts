@@ -1,14 +1,24 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { httpsCallable } from 'firebase/functions';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AuthService } from '../auth.service';
+import { getFirebaseFunctions } from '../firebase.client';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type PricingAudience = 'general' | 'business';
 type BillingCycle = 'monthly' | 'annual';
+type PersonalPaidPlanId = 'personal_plus' | 'creator';
+type PricingPlanId =
+  | 'reader'
+  | PersonalPaidPlanId
+  | 'business_local'
+  | 'business_favorite'
+  | 'business_sponsor';
 
 type PricingPlan = {
+  id: PricingPlanId;
   audience: PricingAudience;
   name: string;
   description: string;
@@ -27,15 +37,21 @@ type PricingPlan = {
   templateUrl: './pricing.html',
   styleUrl: './pricing.css',
 })
-export class PricingComponent {
+export class PricingComponent implements OnInit {
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   readonly isSignedIn = this.authService.isAuthenticated;
   readonly activeAudience = signal<PricingAudience>('general');
   readonly billingCycle = signal<BillingCycle>('monthly');
+  readonly checkoutLoading = signal<string | null>(null);
+  readonly checkoutError = signal<string | null>(null);
+  readonly checkoutStatus = signal<string | null>(null);
 
   readonly plans: PricingPlan[] = [
     {
+      id: 'reader',
       audience: 'general',
       name: 'Reader',
       description: 'Follow public LivingWiki pages and keep a lightweight local knowledge home.',
@@ -52,6 +68,7 @@ export class PricingComponent {
       ],
     },
     {
+      id: 'personal_plus',
       audience: 'general',
       name: 'Personal Plus',
       description: 'Build private source-aware wikis for trips, research, family projects, or local obsessions.',
@@ -69,6 +86,7 @@ export class PricingComponent {
       ],
     },
     {
+      id: 'creator',
       audience: 'general',
       name: 'Creator',
       description: 'Publish richer LivingWiki pages for communities, collections, classes, or public projects.',
@@ -85,6 +103,7 @@ export class PricingComponent {
       ],
     },
     {
+      id: 'business_local',
       audience: 'business',
       name: 'Local',
       description: 'Get on the city map and give people a better first answer than a static listing.',
@@ -101,6 +120,7 @@ export class PricingComponent {
       ],
     },
     {
+      id: 'business_favorite',
       audience: 'business',
       name: 'Local Favorite',
       description: 'Stand out with trust signals, featured context, and a clearer business voice.',
@@ -119,6 +139,7 @@ export class PricingComponent {
       ],
     },
     {
+      id: 'business_sponsor',
       audience: 'business',
       name: 'City Sponsor',
       description: 'Anchor a city wiki with citywide placement and deeper local discovery signals.',
@@ -187,11 +208,125 @@ export class PricingComponent {
       }));
   });
 
+  ngOnInit(): void {
+    void this.restoreCheckoutReturn();
+  }
+
   setAudience(audience: PricingAudience): void {
+    this.checkoutError.set(null);
     this.activeAudience.set(audience);
   }
 
   setBillingCycle(cycle: BillingCycle): void {
+    this.checkoutError.set(null);
     this.billingCycle.set(cycle);
+  }
+
+  isPersonalPaidPlan(plan: PricingPlan): plan is PricingPlan & { id: PersonalPaidPlanId } {
+    return plan.id === 'personal_plus' || plan.id === 'creator';
+  }
+
+  checkoutKey(plan: PricingPlan): string {
+    return `${plan.id}:${this.billingCycle()}`;
+  }
+
+  async startPersonalCheckout(plan: PricingPlan): Promise<void> {
+    if (!this.isPersonalPaidPlan(plan) || this.checkoutLoading()) {
+      return;
+    }
+
+    if (!this.isSignedIn()) {
+      await this.router.navigate(['/create-account'], {
+        queryParams: {
+          redirectTo: `/pricing?audience=general&plan=${plan.id}&billing=${this.billingCycle()}`,
+        },
+      });
+      return;
+    }
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const billingCycle = this.billingCycle();
+    const checkoutKey = this.checkoutKey(plan);
+    this.checkoutLoading.set(checkoutKey);
+    this.checkoutError.set(null);
+    this.checkoutStatus.set(null);
+
+    const origin = window.location.origin;
+    const successUrl = `${origin}/pricing?pricingPayment=success&audience=general&plan=${encodeURIComponent(plan.id)}&billing=${encodeURIComponent(billingCycle)}&session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${origin}/pricing?pricingPayment=cancelled&audience=general&plan=${encodeURIComponent(plan.id)}&billing=${encodeURIComponent(billingCycle)}`;
+
+    try {
+      const createCheckoutSession = httpsCallable(getFirebaseFunctions(), 'createUserCheckoutSession');
+      const result = await createCheckoutSession({
+        plan: plan.id,
+        billingCycle,
+        successUrl,
+        cancelUrl,
+      });
+      const data = result.data as { url?: string; sessionUrl?: string };
+      const checkoutUrl = data.url || data.sessionUrl;
+      if (!checkoutUrl) {
+        throw new Error('Checkout URL was not returned.');
+      }
+      window.location.href = checkoutUrl;
+    } catch {
+      this.checkoutError.set('Checkout could not be started. Check the Stripe price configuration and try again.');
+      this.checkoutLoading.set(null);
+    }
+  }
+
+  private async restoreCheckoutReturn(): Promise<void> {
+    const audience = this.route.snapshot.queryParamMap.get('audience');
+    const billing = this.route.snapshot.queryParamMap.get('billing');
+    const plan = this.route.snapshot.queryParamMap.get('plan');
+    const payment = this.route.snapshot.queryParamMap.get('pricingPayment');
+    const sessionId = this.route.snapshot.queryParamMap.get('session_id');
+
+    if (audience === 'general' || audience === 'business') {
+      this.activeAudience.set(audience);
+    }
+    if (billing === 'monthly' || billing === 'annual') {
+      this.billingCycle.set(billing);
+    }
+
+    if (payment === 'cancelled') {
+      this.checkoutError.set('Checkout was cancelled. You can pick a plan whenever you are ready.');
+      return;
+    }
+
+    if (payment !== 'success') {
+      return;
+    }
+
+    if (!sessionId) {
+      this.checkoutError.set('Payment returned without a checkout session. Please try checkout again.');
+      return;
+    }
+
+    this.checkoutLoading.set(`${plan || 'personal'}:${billing || this.billingCycle()}`);
+    this.checkoutError.set(null);
+    this.checkoutStatus.set('Confirming your subscription...');
+
+    try {
+      const confirmCheckout = httpsCallable(getFirebaseFunctions(), 'confirmUserCheckoutSession');
+      const result = await confirmCheckout({ sessionId });
+      const data = result.data as { paid?: boolean; plan?: unknown; billingCycle?: unknown };
+      if (!data.paid) {
+        throw new Error('Checkout was not paid.');
+      }
+      if (data.billingCycle === 'monthly' || data.billingCycle === 'annual') {
+        this.billingCycle.set(data.billingCycle);
+      }
+      await this.authService.refreshUser();
+      this.checkoutStatus.set('Subscription confirmed. Your paid plan is active.');
+    } catch {
+      this.checkoutError.set('We could not confirm the payment yet. If your card was charged, refresh in a moment or contact support.');
+      this.checkoutStatus.set(null);
+    } finally {
+      this.checkoutLoading.set(null);
+    }
   }
 }

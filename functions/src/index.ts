@@ -66,6 +66,10 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
+const stripePersonalPlusMonthlyPriceId = defineString('STRIPE_PRICE_PERSONAL_PLUS_MONTHLY', { default: '' });
+const stripePersonalPlusAnnualPriceId = defineString('STRIPE_PRICE_PERSONAL_PLUS_ANNUAL', { default: '' });
+const stripeCreatorMonthlyPriceId = defineString('STRIPE_PRICE_CREATOR_MONTHLY', { default: '' });
+const stripeCreatorAnnualPriceId = defineString('STRIPE_PRICE_CREATOR_ANNUAL', { default: '' });
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://livingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
@@ -159,6 +163,8 @@ async function assertPlatformAdmin(userId: string): Promise<void> {
 }
 
 type BusinessCheckoutPlanKey = 'local' | 'favorite' | 'sponsor';
+type UserPricingPlanKey = 'personal_plus' | 'creator';
+type UserPricingBillingCycle = 'monthly' | 'annual';
 
 const businessCheckoutPlans: Record<BusinessCheckoutPlanKey, {
   amount: number;
@@ -180,6 +186,11 @@ const businessCheckoutPlans: Record<BusinessCheckoutPlanKey, {
     name: 'LivingWiki City Sponsor',
     description: 'Citywide visibility with deeper support for launch and growth.',
   },
+};
+
+const userPricingPlanLabels: Record<UserPricingPlanKey, string> = {
+  personal_plus: 'LivingWiki Personal Plus',
+  creator: 'LivingWiki Creator',
 };
 
 const allowedCheckoutOrigins = new Set([
@@ -210,6 +221,50 @@ function normalizeBusinessCheckoutPlan(value: unknown): BusinessCheckoutPlanKey 
   }
   const plan = value.toLowerCase();
   return plan === 'local' || plan === 'favorite' || plan === 'sponsor' ? plan : null;
+}
+
+function normalizeUserPricingPlan(value: unknown): UserPricingPlanKey | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const plan = value.toLowerCase();
+  return plan === 'personal_plus' || plan === 'creator' ? plan : null;
+}
+
+function normalizeUserPricingBillingCycle(value: unknown): UserPricingBillingCycle | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const cycle = value.toLowerCase();
+  return cycle === 'monthly' || cycle === 'annual' ? cycle : null;
+}
+
+function getUserPricingPriceId(plan: UserPricingPlanKey, billingCycle: UserPricingBillingCycle): string {
+  const priceId = plan === 'personal_plus'
+    ? (billingCycle === 'annual' ? stripePersonalPlusAnnualPriceId.value() : stripePersonalPlusMonthlyPriceId.value())
+    : (billingCycle === 'annual' ? stripeCreatorAnnualPriceId.value() : stripeCreatorMonthlyPriceId.value());
+  if (!priceId) {
+    throw new HttpsError('failed-precondition', 'User pricing is not configured.');
+  }
+  return priceId;
+}
+
+function userPricingPlanForPriceId(priceId: string | null | undefined): { plan: UserPricingPlanKey; billingCycle: UserPricingBillingCycle } | null {
+  if (!priceId) {
+    return null;
+  }
+  const entries: Array<[UserPricingPlanKey, UserPricingBillingCycle, string]> = [
+    ['personal_plus', 'monthly', stripePersonalPlusMonthlyPriceId.value()],
+    ['personal_plus', 'annual', stripePersonalPlusAnnualPriceId.value()],
+    ['creator', 'monthly', stripeCreatorMonthlyPriceId.value()],
+    ['creator', 'annual', stripeCreatorAnnualPriceId.value()],
+  ];
+  const match = entries.find(([, , configuredPriceId]) => configuredPriceId && configuredPriceId === priceId);
+  return match ? { plan: match[0], billingCycle: match[1] } : null;
+}
+
+function firstSubscriptionPriceId(subscription: Stripe.Subscription): string | null {
+  return subscription.items.data[0]?.price?.id ?? null;
 }
 
 function resolveCheckoutUrl(value: unknown, fallbackPath: string, requestOrigin?: string): string {
@@ -268,6 +323,46 @@ async function markBusinessCheckoutPaid(session: Stripe.Checkout.Session): Promi
   }
 }
 
+async function markUserCheckoutPaid(session: Stripe.Checkout.Session): Promise<void> {
+  const userId = session.metadata?.userId?.trim();
+  const plan = normalizeUserPricingPlan(session.metadata?.planType);
+  const billingCycle = normalizeUserPricingBillingCycle(session.metadata?.billingCycle);
+  const priceId = session.metadata?.priceId?.trim() || null;
+  if (!userId || !plan || !billingCycle) {
+    throw new HttpsError('invalid-argument', 'Checkout session is missing user pricing metadata.');
+  }
+
+  const paid = session.payment_status === 'paid' || session.status === 'complete';
+  if (!paid) {
+    throw new HttpsError('failed-precondition', 'Checkout has not completed yet.');
+  }
+
+  await db.collection('users').doc(userId).set({
+    pricingPlan: plan,
+    pricing_plan: plan,
+    pricingPlanLabel: userPricingPlanLabels[plan],
+    pricing_plan_label: userPricingPlanLabels[plan],
+    billingCycle,
+    billing_cycle: billingCycle,
+    subscriptionStatus: 'paid',
+    subscription_status: 'paid',
+    userBillingActive: true,
+    user_billing_active: true,
+    stripeCheckoutSessionId: session.id,
+    stripe_checkout_session_id: session.id,
+    stripeCustomerId: typeof session.customer === 'string' ? session.customer : null,
+    stripe_customer_id: typeof session.customer === 'string' ? session.customer : null,
+    stripeSubscriptionId: typeof session.subscription === 'string' ? session.subscription : null,
+    stripe_subscription_id: typeof session.subscription === 'string' ? session.subscription : null,
+    stripePriceId: priceId,
+    stripe_price_id: priceId,
+    paidAt: FieldValue.serverTimestamp(),
+    paid_at: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp(),
+    updated_at: FieldValue.serverTimestamp(),
+  }, { merge: true });
+}
+
 async function updateBusinessRecordsForSubscription(
   subscriptionId: string,
   update: Record<string, unknown>,
@@ -292,6 +387,33 @@ async function updateBusinessRecordsForSubscription(
   }));
 }
 
+async function updateUserRecordsForSubscription(
+  subscriptionId: string,
+  update: Record<string, unknown>,
+): Promise<void> {
+  if (!subscriptionId) {
+    return;
+  }
+
+  const [snakeSnapshot, camelSnapshot] = await Promise.all([
+    db.collection('users')
+      .where('stripe_subscription_id', '==', subscriptionId)
+      .limit(10)
+      .get(),
+    db.collection('users')
+      .where('stripeSubscriptionId', '==', subscriptionId)
+      .limit(10)
+      .get(),
+  ]);
+
+  const docs = new Map<string, DocumentReference>();
+  for (const userDoc of [...snakeSnapshot.docs, ...camelSnapshot.docs]) {
+    docs.set(userDoc.id, userDoc.ref);
+  }
+
+  await Promise.all([...docs.values()].map((userRef) => userRef.set(update, { merge: true })));
+}
+
 function subscriptionAccessEnabled(status: unknown): boolean {
   return status === 'active' || status === 'trialing';
 }
@@ -314,6 +436,47 @@ function getSubscriptionUpdate(subscription: Stripe.Subscription): Record<string
       : null,
     updated_at: FieldValue.serverTimestamp(),
   };
+}
+
+function getUserSubscriptionUpdate(subscription: Stripe.Subscription): Record<string, unknown> {
+  const subscriptionRecord = subscription as Stripe.Subscription & {
+    current_period_end?: number | null;
+    cancel_at_period_end?: boolean | null;
+  };
+  const enabled = subscriptionAccessEnabled(subscription.status);
+  const priceId = firstSubscriptionPriceId(subscription);
+  const mappedPlan = userPricingPlanForPriceId(priceId);
+  const update: Record<string, unknown> = {
+    subscriptionStatus: subscription.status,
+    subscription_status: subscription.status,
+    userBillingActive: enabled,
+    user_billing_active: enabled,
+    stripeSubscriptionId: subscription.id,
+    stripe_subscription_id: subscription.id,
+    stripePriceId: priceId,
+    stripe_price_id: priceId,
+    subscriptionCancelAtPeriodEnd: subscriptionRecord.cancel_at_period_end === true,
+    subscription_cancel_at_period_end: subscriptionRecord.cancel_at_period_end === true,
+    subscriptionCurrentPeriodEnd: typeof subscriptionRecord.current_period_end === 'number'
+      ? new Date(subscriptionRecord.current_period_end * 1000)
+      : null,
+    subscription_current_period_end: typeof subscriptionRecord.current_period_end === 'number'
+      ? new Date(subscriptionRecord.current_period_end * 1000)
+      : null,
+    updatedAt: FieldValue.serverTimestamp(),
+    updated_at: FieldValue.serverTimestamp(),
+  };
+
+  if (mappedPlan) {
+    update.pricingPlan = mappedPlan.plan;
+    update.pricing_plan = mappedPlan.plan;
+    update.pricingPlanLabel = userPricingPlanLabels[mappedPlan.plan];
+    update.pricing_plan_label = userPricingPlanLabels[mappedPlan.plan];
+    update.billingCycle = mappedPlan.billingCycle;
+    update.billing_cycle = mappedPlan.billingCycle;
+  }
+
+  return update;
 }
 
 function getInvoiceSubscriptionId(invoice: Stripe.Invoice): string | null {
@@ -420,6 +583,111 @@ export const createBusinessCheckoutSession = onCall(
   },
 );
 
+export const createUserCheckoutSession = onCall(
+  { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to start checkout.');
+    }
+
+    const plan = normalizeUserPricingPlan(request.data?.plan);
+    const billingCycle = normalizeUserPricingBillingCycle(request.data?.billingCycle);
+    if (!plan || !billingCycle) {
+      throw new HttpsError('invalid-argument', 'Choose a paid personal plan.');
+    }
+
+    const originHeader = request.rawRequest.headers.origin;
+    const requestOrigin = typeof originHeader === 'string' ? originHeader : undefined;
+    const successUrl = resolveCheckoutUrl(request.data?.successUrl, '/pricing?pricingPayment=success', requestOrigin);
+    const cancelUrl = resolveCheckoutUrl(request.data?.cancelUrl, '/pricing?pricingPayment=cancelled', requestOrigin);
+    const customerEmail = typeof request.auth?.token.email === 'string' ? request.auth.token.email : undefined;
+    const priceId = getUserPricingPriceId(plan, billingCycle);
+
+    try {
+      const stripe = getStripeClient();
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        payment_method_types: ['card'],
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        client_reference_id: userId,
+        allow_promotion_codes: true,
+        metadata: {
+          source: 'user_pricing',
+          userId,
+          planType: plan,
+          billingCycle,
+          priceId,
+        },
+        customer_email: customerEmail,
+      });
+
+      await db.collection('users').doc(userId).set({
+        pricingPlan: plan,
+        pricing_plan: plan,
+        pricingPlanLabel: userPricingPlanLabels[plan],
+        pricing_plan_label: userPricingPlanLabels[plan],
+        billingCycle,
+        billing_cycle: billingCycle,
+        subscriptionStatus: 'checkout_started',
+        subscription_status: 'checkout_started',
+        userBillingActive: false,
+        user_billing_active: false,
+        stripeCheckoutSessionId: session.id,
+        stripe_checkout_session_id: session.id,
+        stripePriceId: priceId,
+        stripe_price_id: priceId,
+        updatedAt: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+
+      return { sessionId: session.id, url: session.url ?? null };
+    } catch (error) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      logger.error('Failed to create user checkout session', error);
+      throw new HttpsError('internal', 'Checkout could not be started. Please try again.');
+    }
+  },
+);
+
+export const confirmUserCheckoutSession = onCall(
+  { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to confirm checkout.');
+    }
+
+    const sessionId = typeof request.data?.sessionId === 'string' ? request.data.sessionId.trim() : '';
+    if (!sessionId) {
+      throw new HttpsError('invalid-argument', 'Checkout session ID is required.');
+    }
+
+    try {
+      const session = await getStripeClient().checkout.sessions.retrieve(sessionId);
+      if (session.metadata?.source !== 'user_pricing' || session.metadata?.userId !== userId) {
+        throw new HttpsError('permission-denied', 'This checkout session does not belong to your account.');
+      }
+      await markUserCheckoutPaid(session);
+      return {
+        paid: true,
+        plan: normalizeUserPricingPlan(session.metadata?.planType),
+        billingCycle: normalizeUserPricingBillingCycle(session.metadata?.billingCycle),
+      };
+    } catch (error) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      logger.error('Failed to confirm user checkout session', error);
+      throw new HttpsError('internal', 'Checkout could not be confirmed. Please try again.');
+    }
+  },
+);
+
 export const confirmBusinessCheckoutSession = onCall(
   { region: callableRegion, cors: true, secrets: [stripeSecretKey] },
   async (request) => {
@@ -485,6 +753,8 @@ export const stripeBusinessWebhook = onRequest(
           const session = event.data.object as Stripe.Checkout.Session;
           if (session.metadata?.source === 'business_claim') {
             await markBusinessCheckoutPaid(session);
+          } else if (session.metadata?.source === 'user_pricing') {
+            await markUserCheckoutPaid(session);
           }
           break;
         }
@@ -492,34 +762,64 @@ export const stripeBusinessWebhook = onRequest(
         case 'customer.subscription.updated':
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription;
-          await updateBusinessRecordsForSubscription(subscription.id, getSubscriptionUpdate(subscription));
+          await Promise.all([
+            updateBusinessRecordsForSubscription(subscription.id, getSubscriptionUpdate(subscription)),
+            updateUserRecordsForSubscription(subscription.id, getUserSubscriptionUpdate(subscription)),
+          ]);
           break;
         }
         case 'invoice.paid':
         case 'invoice.payment_succeeded': {
           const invoice = event.data.object as Stripe.Invoice;
           const subscriptionId = getInvoiceSubscriptionId(invoice);
-          await updateBusinessRecordsForSubscription(subscriptionId ?? '', {
-            business_paid: true,
-            business_documents_enabled: true,
-            payment_status: 'paid',
-            latest_invoice_id: invoice.id,
-            last_payment_at: FieldValue.serverTimestamp(),
-            updated_at: FieldValue.serverTimestamp(),
-          });
+          await Promise.all([
+            updateBusinessRecordsForSubscription(subscriptionId ?? '', {
+              business_paid: true,
+              business_documents_enabled: true,
+              payment_status: 'paid',
+              latest_invoice_id: invoice.id,
+              last_payment_at: FieldValue.serverTimestamp(),
+              updated_at: FieldValue.serverTimestamp(),
+            }),
+            updateUserRecordsForSubscription(subscriptionId ?? '', {
+              subscriptionStatus: 'paid',
+              subscription_status: 'paid',
+              userBillingActive: true,
+              user_billing_active: true,
+              latestInvoiceId: invoice.id,
+              latest_invoice_id: invoice.id,
+              lastPaymentAt: FieldValue.serverTimestamp(),
+              last_payment_at: FieldValue.serverTimestamp(),
+              updatedAt: FieldValue.serverTimestamp(),
+              updated_at: FieldValue.serverTimestamp(),
+            }),
+          ]);
           break;
         }
         case 'invoice.payment_failed':
         case 'invoice.payment_action_required': {
           const invoice = event.data.object as Stripe.Invoice;
           const subscriptionId = getInvoiceSubscriptionId(invoice);
-          await updateBusinessRecordsForSubscription(subscriptionId ?? '', {
-            business_paid: false,
-            business_documents_enabled: false,
-            payment_status: event.type === 'invoice.payment_action_required' ? 'payment_action_required' : 'payment_failed',
-            latest_invoice_id: invoice.id,
-            updated_at: FieldValue.serverTimestamp(),
-          });
+          const paymentStatus = event.type === 'invoice.payment_action_required' ? 'payment_action_required' : 'payment_failed';
+          await Promise.all([
+            updateBusinessRecordsForSubscription(subscriptionId ?? '', {
+              business_paid: false,
+              business_documents_enabled: false,
+              payment_status: paymentStatus,
+              latest_invoice_id: invoice.id,
+              updated_at: FieldValue.serverTimestamp(),
+            }),
+            updateUserRecordsForSubscription(subscriptionId ?? '', {
+              subscriptionStatus: paymentStatus,
+              subscription_status: paymentStatus,
+              userBillingActive: false,
+              user_billing_active: false,
+              latestInvoiceId: invoice.id,
+              latest_invoice_id: invoice.id,
+              updatedAt: FieldValue.serverTimestamp(),
+              updated_at: FieldValue.serverTimestamp(),
+            }),
+          ]);
           break;
         }
         default:

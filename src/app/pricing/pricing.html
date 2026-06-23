@@ -144,8 +144,18 @@
               </div>
             </div>
 
+            @if (checkoutStatus() || checkoutError()) {
+              <div
+                class="pricing-checkout-message mt-8"
+                [class.pricing-checkout-message--error]="checkoutError()"
+              >
+                <span class="pricing-checkout-message__mark" aria-hidden="true"></span>
+                <p>{{ checkoutError() || checkoutStatus() }}</p>
+              </div>
+            }
+
             <div class="pricing-card-grid mt-10">
-              @for (plan of activePlans(); track plan.name) {
+              @for (plan of activePlans(); track plan.id) {
                 <article
                   class="pricing-card"
                   [class.pricing-card--featured]="plan.featured"
@@ -202,13 +212,25 @@
                     }
                   </ul>
 
-                  <a
-                    [routerLink]="plan.route"
-                    class="pricing-card__cta"
-                  >
-                    {{ plan.cta }}
-                    <span class="pricing-card__arrow" aria-hidden="true"></span>
-                  </a>
+                  @if (isPersonalPaidPlan(plan)) {
+                    <button
+                      type="button"
+                      class="pricing-card__cta"
+                      [disabled]="checkoutLoading() !== null"
+                      (click)="startPersonalCheckout(plan)"
+                    >
+                      {{ checkoutLoading() === checkoutKey(plan) ? 'Starting checkout...' : plan.cta }}
+                      <span class="pricing-card__arrow" aria-hidden="true"></span>
+                    </button>
+                  } @else {
+                    <a
+                      [routerLink]="plan.route"
+                      class="pricing-card__cta"
+                    >
+                      {{ plan.cta }}
+                      <span class="pricing-card__arrow" aria-hidden="true"></span>
+                    </a>
+                  }
                 </article>
               }
             </div>

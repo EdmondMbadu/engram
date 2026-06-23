@@ -361,6 +361,77 @@
   padding: 0;
 }
 
+.pricing-checkout-message {
+  align-items: center;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 1rem;
+  color: var(--text);
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem;
+  box-shadow: var(--shadow-floating);
+}
+
+.pricing-checkout-message--error {
+  background: color-mix(in srgb, #f87171 10%, var(--surface));
+  border-color: color-mix(in srgb, #f87171 38%, var(--line));
+}
+
+.pricing-checkout-message__mark {
+  position: relative;
+  display: inline-flex;
+  width: 1.45rem;
+  height: 1.45rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.pricing-checkout-message__mark::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 0.35rem;
+  width: 0.42rem;
+  height: 0.7rem;
+  border-bottom: 0.14rem solid var(--accent-contrast);
+  border-right: 0.14rem solid var(--accent-contrast);
+  transform: rotate(42deg);
+}
+
+.pricing-checkout-message--error .pricing-checkout-message__mark {
+  background: #dc2626;
+}
+
+.pricing-checkout-message--error .pricing-checkout-message__mark::before,
+.pricing-checkout-message--error .pricing-checkout-message__mark::after {
+  content: "";
+  position: absolute;
+  left: 0.42rem;
+  right: 0.42rem;
+  top: 0.66rem;
+  height: 0.14rem;
+  border: 0;
+  background: #fff;
+}
+
+.pricing-checkout-message--error .pricing-checkout-message__mark::before {
+  transform: rotate(45deg);
+}
+
+.pricing-checkout-message--error .pricing-checkout-message__mark::after {
+  transform: rotate(-45deg);
+}
+
+.pricing-checkout-message p {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.45;
+  margin: 0;
+}
+
 .pricing-card__feature {
   align-items: flex-start;
   color: var(--muted);
@@ -396,8 +467,10 @@
 .pricing-card__cta {
   align-items: center;
   background: var(--accent);
+  border: 0;
   border-radius: 0.9rem;
   color: var(--accent-contrast);
+  cursor: pointer;
   display: inline-flex;
   font-size: 0.94rem;
   font-weight: 950;
@@ -415,6 +488,12 @@
 
 .pricing-card__cta:hover {
   transform: translateY(-0.12rem);
+}
+
+.pricing-card__cta:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
 }
 
 .pricing-card__arrow {
