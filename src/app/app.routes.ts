@@ -29,6 +29,11 @@ import { adminGuard, authGuard, guestOnlyGuard } from './auth.guards';
 
 export const routes: Routes = [
   { path: '', component: PublicWikisComponent, title: 'Public Wikis | LivingWiki' },
+  {
+    path: 'pricing',
+    loadComponent: () => import('./pricing/pricing').then((m) => m.PricingComponent),
+    title: 'Pricing | LivingWiki',
+  },
   { path: 'landing', component: MarketingComponent, title: 'LivingWiki' },
   { path: 'marketing', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'business', component: BusinessComponent, title: 'For Business | LivingWiki' },

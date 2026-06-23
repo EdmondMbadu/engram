@@ -505,13 +505,23 @@ export class AuthService {
         ? data['providers'].filter((provider): provider is string => typeof provider === 'string')
         : [],
       role: data['role'] === 'admin' ? 'admin' : 'user',
-      pricingPlan: typeof data['pricingPlan'] === 'string' ? data['pricingPlan'] : null,
-      businessPlan: typeof data['businessPlan'] === 'string' ? data['businessPlan'] : null,
-      subscriptionStatus: typeof data['subscriptionStatus'] === 'string' ? data['subscriptionStatus'] : null,
-      stripeSubscriptionId: typeof data['stripeSubscriptionId'] === 'string' ? data['stripeSubscriptionId'] : null,
+      pricingPlan: this.stringField(data, 'pricingPlan', 'pricing_plan'),
+      businessPlan: this.stringField(data, 'businessPlan', 'business_plan'),
+      subscriptionStatus: this.stringField(data, 'subscriptionStatus', 'subscription_status'),
+      stripeSubscriptionId: this.stringField(data, 'stripeSubscriptionId', 'stripe_subscription_id'),
       creationTime: typeof data['creationTime'] === 'string' ? data['creationTime'] : null,
       lastSignInTime: typeof data['lastSignInTime'] === 'string' ? data['lastSignInTime'] : null,
     });
+  }
+
+  private stringField(data: Record<string, unknown>, ...keys: string[]): string | null {
+    for (const key of keys) {
+      const value = data[key];
+      if (typeof value === 'string') {
+        return value;
+      }
+    }
+    return null;
   }
 
   private async sendVerificationEmail(

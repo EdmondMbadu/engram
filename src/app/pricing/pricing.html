@@ -1,0 +1,216 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <div class="relative flex min-h-screen flex-col" [class.md:flex-row]="isSignedIn()">
+    @if (isSignedIn()) {
+      <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
+    }
+
+    <div class="min-w-0 flex-1">
+      <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
+          <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
+            <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
+              <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" class="h-full w-full object-contain" />
+            </div>
+          </a>
+
+          <div class="flex items-center gap-2 sm:gap-3">
+            <a routerLink="/" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+              Public Wikis
+            </a>
+            <a routerLink="/business" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] md:inline-flex">
+              Business
+            </a>
+            <app-theme-toggle></app-theme-toggle>
+            <app-account-menu></app-account-menu>
+          </div>
+        </div>
+      </nav>
+
+      <main>
+        <section class="relative overflow-hidden border-b border-[var(--line)]">
+          <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--soft-fill),transparent_42%),linear-gradient(to_right,var(--line)_1px,transparent_1px),linear-gradient(to_bottom,var(--line)_1px,transparent_1px)] bg-[size:auto,72px_72px,72px_72px] opacity-60"></div>
+          <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
+            <div class="max-w-4xl">
+              <div class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-1.5 shadow-[var(--shadow-floating)]">
+                <span class="text-[10px] font-bold uppercase tracking-[0.26em] text-[var(--accent)]">LivingWiki pricing</span>
+              </div>
+              <h1 class="mt-5 text-4xl font-black leading-[0.98] tracking-normal text-[var(--text)] sm:text-6xl lg:text-7xl">
+                Pick the plan that matches how you use LivingWiki.
+              </h1>
+              <p class="mt-5 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">
+                A simple starting point for personal knowledge spaces, public wiki publishing, and local business discovery.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-[var(--line)] bg-[linear-gradient(180deg,var(--surface),var(--soft-fill)_72%,var(--surface))]">
+          <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
+            @if (showUpgradePrompt()) {
+              <div class="mb-8 overflow-hidden rounded-[1.5rem] border border-[var(--accent)]/30 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_14%,var(--surface)),var(--surface))] p-5 shadow-[var(--shadow-floating)] sm:p-6">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div class="flex min-w-0 gap-4">
+                    <span class="pricing-prompt-mark" aria-hidden="true"></span>
+                    <div class="min-w-0">
+                      <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">No paid plan detected</p>
+                      <h2 class="mt-1 text-2xl font-black tracking-tight text-[var(--text)] sm:text-3xl">{{ promptTitle() }}</h2>
+                      <p class="mt-2 max-w-3xl text-sm leading-6 text-[var(--muted)]">{{ promptDescription() }}</p>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-2 sm:flex-row lg:shrink-0">
+                    <button type="button" (click)="setAudience('general')" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:-translate-y-0.5">
+                      Personal
+                    </button>
+                    <button type="button" (click)="setAudience('business')" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-5 py-3 text-sm font-black text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[var(--accent)]/45 hover:text-[var(--accent)]">
+                      Business
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div class="max-w-3xl">
+                <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">{{ activeCopy().eyebrow }}</p>
+                <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">{{ activeCopy().title }}</h2>
+                <p class="mt-4 text-base leading-7 text-[var(--muted)]">{{ activeCopy().description }}</p>
+              </div>
+
+              <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
+                <div class="flex w-full items-center rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--shadow-floating)] sm:w-auto">
+                  <button
+                    type="button"
+                    (click)="setAudience('general')"
+                    class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:flex-none sm:px-4"
+                    [style.background-color]="activeAudience() === 'general' ? 'var(--accent)' : null"
+                    [style.color]="activeAudience() === 'general' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                  >
+                    <span>Personal users</span>
+                  </button>
+                  <button
+                    type="button"
+                    (click)="setAudience('business')"
+                    class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:flex-none sm:px-4"
+                    [style.background-color]="activeAudience() === 'business' ? 'var(--accent)' : null"
+                    [style.color]="activeAudience() === 'business' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                  >
+                    <span>Businesses</span>
+                  </button>
+                </div>
+
+                <div class="flex w-full items-center rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--shadow-floating)] sm:w-auto">
+                  <button
+                    type="button"
+                    (click)="setBillingCycle('monthly')"
+                    class="min-h-10 flex-1 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:px-4"
+                    [style.background-color]="billingCycle() === 'monthly' ? 'var(--accent)' : null"
+                    [style.color]="billingCycle() === 'monthly' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    type="button"
+                    (click)="setBillingCycle('annual')"
+                    class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:px-4"
+                    [style.background-color]="billingCycle() === 'annual' ? 'var(--accent)' : null"
+                    [style.color]="billingCycle() === 'annual' ? 'var(--accent-contrast)' : 'var(--muted)'"
+                  >
+                    Annual
+                    <span class="hidden rounded-full bg-current/10 px-1.5 py-0.5 text-[9px] min-[420px]:inline">Save</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="pricing-card-grid mt-10">
+              @for (plan of activePlans(); track plan.name) {
+                <article
+                  class="pricing-card"
+                  [class.pricing-card--featured]="plan.featured"
+                >
+                  @if (plan.featured) {
+                    <span class="pricing-card__badge">
+                      Suggested
+                    </span>
+                  }
+
+                  <div class="pricing-card__topline" aria-hidden="true"></div>
+
+                  <div class="pricing-card__header">
+                    <span class="pricing-card__mark" aria-hidden="true"></span>
+                    <div class="min-w-0">
+                      <p class="pricing-card__eyebrow">
+                        {{ activeAudience() === 'business' ? 'Business plan' : 'Personal plan' }}
+                      </p>
+                      <h3 class="pricing-card__title">{{ plan.name }}</h3>
+                    </div>
+                  </div>
+
+                  <p class="pricing-card__description">
+                    {{ plan.description }}
+                  </p>
+
+                  <div class="pricing-card__price-row">
+                    <div>
+                      @if (plan.price === 0) {
+                        <p class="pricing-card__price">Free</p>
+                      } @else {
+                        <div class="flex flex-wrap items-baseline gap-2">
+                          <p class="pricing-card__price">${{ plan.price }}</p>
+                          <span class="pricing-card__period">/mo</span>
+                          @if (plan.showStrike) {
+                            <span class="pricing-card__strike">${{ plan.monthlyPrice }}</span>
+                          }
+                        </div>
+                      }
+                      <p class="pricing-card__cadence">{{ plan.cadence }}</p>
+                    </div>
+                  </div>
+
+                  <div class="pricing-card__features-header">
+                    Included
+                  </div>
+
+                  <ul class="pricing-card__features">
+                    @for (feature of plan.features; track feature) {
+                      <li class="pricing-card__feature">
+                        <span class="pricing-card__check" aria-hidden="true"></span>
+                        <span>{{ feature }}</span>
+                      </li>
+                    }
+                  </ul>
+
+                  <a
+                    [routerLink]="plan.route"
+                    class="pricing-card__cta"
+                  >
+                    {{ plan.cta }}
+                    <span class="pricing-card__arrow" aria-hidden="true"></span>
+                  </a>
+                </article>
+              }
+            </div>
+
+            <p class="mt-6 text-center text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+              Example launch pricing for review. Exact checkout and limits can be adjusted after you approve the tiers.
+            </p>
+          </div>
+        </section>
+
+        <footer class="border-t border-white/5">
+          <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-10 sm:flex-row sm:px-6 lg:px-10">
+            <div class="flex h-10 w-40 items-center justify-start">
+              <img src="/assets/image/livingwiki.png" alt="" class="h-full w-full object-contain" />
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-2">
+              <a routerLink="/" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Public Wikis</a>
+              <a routerLink="/business" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Business</a>
+              <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Privacy</a>
+              <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Terms</a>
+            </div>
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+</div>
