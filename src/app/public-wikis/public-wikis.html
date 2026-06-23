@@ -28,6 +28,15 @@
           <span class="material-symbols-outlined text-[1rem] text-[var(--accent)] transition-transform group-hover:scale-110">storefront</span>
           <span>Business</span>
         </a>
+        @if (showUpgradePrompt()) {
+          <a
+            href="#upgrade"
+            class="group inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/35 bg-[var(--accent)] px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-[var(--accent-contrast)] shadow-[0_14px_30px_-20px_rgba(59,175,98,1)] transition-all hover:-translate-y-0.5 hover:shadow-[0_20px_38px_-22px_rgba(59,175,98,1)]"
+          >
+            <span class="material-symbols-outlined text-[1rem] transition-transform group-hover:scale-110">upgrade</span>
+            <span class="hidden sm:inline">Upgrade</span>
+          </a>
+        }
         <app-theme-toggle></app-theme-toggle>
         <app-account-menu></app-account-menu>
       </div>
@@ -440,6 +449,192 @@
             }
           }
         </div>
+      </div>
+    </section>
+
+    <section id="upgrade" class="border-t border-[var(--line)] bg-[linear-gradient(180deg,var(--surface),var(--soft-fill)_72%,var(--surface))]">
+      <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
+        @if (showUpgradePrompt()) {
+          <div class="mb-8 overflow-hidden rounded-[1.5rem] border border-[var(--accent)]/30 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_14%,var(--surface)),var(--surface))] p-5 shadow-[var(--shadow-floating)] sm:p-6">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div class="flex min-w-0 gap-4">
+                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent)] text-[var(--accent-contrast)] shadow-[0_16px_32px_-22px_rgba(59,175,98,1)]">
+                  <span class="material-symbols-outlined text-2xl">upgrade</span>
+                </span>
+                <div class="min-w-0">
+                  <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">No paid plan detected</p>
+                  <h2 class="mt-1 text-2xl font-black tracking-tight text-[var(--text)] sm:text-3xl">{{ upgradePromptTitle() }}</h2>
+                  <p class="mt-2 max-w-3xl text-sm leading-6 text-[var(--muted)]">{{ upgradePromptDescription() }}</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 sm:flex-row lg:shrink-0">
+                <a routerLink="/create-account" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:-translate-y-0.5">
+                  <span class="material-symbols-outlined text-base">person_add</span>
+                  Personal
+                </a>
+                <a routerLink="/business" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-5 py-3 text-sm font-black text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[var(--accent)]/45 hover:text-[var(--accent)]">
+                  <span class="material-symbols-outlined text-base text-[var(--accent)]">storefront</span>
+                  Business
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-3xl">
+            <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">{{ activePricingCopy().eyebrow }}</p>
+            <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">{{ activePricingCopy().title }}</h2>
+            <p class="mt-4 text-base leading-7 text-[var(--muted)]">{{ activePricingCopy().description }}</p>
+          </div>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
+            <div class="flex w-full items-center rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--shadow-floating)] sm:w-auto">
+              <button
+                type="button"
+                (click)="setPricingAudience('general')"
+                class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:flex-none sm:px-4"
+                [style.background-color]="activePricingAudience() === 'general' ? 'var(--accent)' : null"
+                [style.color]="activePricingAudience() === 'general' ? 'var(--accent-contrast)' : 'var(--muted)'"
+              >
+                <span class="material-symbols-outlined text-[1rem]">person</span>
+                <span>Personal users</span>
+              </button>
+              <button
+                type="button"
+                (click)="setPricingAudience('business')"
+                class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:flex-none sm:px-4"
+                [style.background-color]="activePricingAudience() === 'business' ? 'var(--accent)' : null"
+                [style.color]="activePricingAudience() === 'business' ? 'var(--accent-contrast)' : 'var(--muted)'"
+              >
+                <span class="material-symbols-outlined text-[1rem]">storefront</span>
+                <span>Businesses</span>
+              </button>
+            </div>
+
+            <div class="flex w-full items-center rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--shadow-floating)] sm:w-auto">
+              <button
+                type="button"
+                (click)="setPricingBillingCycle('monthly')"
+                class="min-h-10 flex-1 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:px-4"
+                [style.background-color]="pricingBillingCycle() === 'monthly' ? 'var(--accent)' : null"
+                [style.color]="pricingBillingCycle() === 'monthly' ? 'var(--accent-contrast)' : 'var(--muted)'"
+              >
+                Monthly
+              </button>
+              <button
+                type="button"
+                (click)="setPricingBillingCycle('annual')"
+                class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:px-4"
+                [style.background-color]="pricingBillingCycle() === 'annual' ? 'var(--accent)' : null"
+                [style.color]="pricingBillingCycle() === 'annual' ? 'var(--accent-contrast)' : 'var(--muted)'"
+              >
+                Annual
+                <span class="hidden rounded-full bg-current/10 px-1.5 py-0.5 text-[9px] min-[420px]:inline">Save</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 grid gap-5 lg:grid-cols-3">
+          @for (plan of activePricingPlans(); track plan.name) {
+            <article
+              class="relative flex min-h-full flex-col overflow-hidden rounded-[1.5rem] border p-6 shadow-[var(--shadow-floating)] transition-all duration-300 hover:-translate-y-1"
+              [style.background]="plan.featured ? 'linear-gradient(160deg,var(--accent),color-mix(in srgb,var(--accent) 78%,#0f1720 22%))' : null"
+              [style.background-color]="plan.featured ? null : 'var(--surface)'"
+              [style.border-color]="plan.featured ? 'var(--accent)' : 'var(--line)'"
+              [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--text)'"
+            >
+              @if (plan.featured) {
+                <span class="absolute right-5 top-5 inline-flex items-center gap-1 rounded-full bg-[var(--accent-contrast)]/16 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent-contrast)]">
+                  <span class="material-symbols-outlined text-sm">star</span>
+                  Suggested
+                </span>
+              }
+
+              <div class="pr-24">
+                <span
+                  class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border"
+                  [style.border-color]="plan.featured ? 'color-mix(in srgb, var(--accent-contrast) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 20%, transparent)'"
+                  [style.background-color]="plan.featured ? 'color-mix(in srgb, var(--accent-contrast) 14%, transparent)' : 'color-mix(in srgb, var(--accent) 8%, transparent)'"
+                  [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--accent)'"
+                >
+                  <span class="material-symbols-outlined text-2xl">{{ plan.icon }}</span>
+                </span>
+                <p
+                  class="mt-5 text-[10px] font-black uppercase tracking-[0.22em]"
+                  [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--accent)'"
+                >
+                  {{ plan.name }}
+                </p>
+                <p
+                  class="mt-3 min-h-12 text-sm leading-6"
+                  [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
+                >
+                  {{ plan.description }}
+                </p>
+              </div>
+
+              <div class="mt-6">
+                <div class="flex flex-wrap items-baseline gap-2">
+                  @if (plan.price === 0) {
+                    <p class="text-5xl font-black tracking-tight">Free</p>
+                  } @else {
+                    <p class="text-5xl font-black tracking-tight">${{ plan.price }}</p>
+                    <span
+                      class="text-sm font-bold"
+                      [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
+                    >/mo</span>
+                  }
+                  @if (plan.showStrike) {
+                    <span
+                      class="text-sm font-bold line-through opacity-60"
+                      [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
+                    >${{ plan.monthlyPrice }}</span>
+                  }
+                </div>
+                <p
+                  class="mt-2 text-xs font-bold uppercase tracking-[0.16em]"
+                  [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
+                >
+                  {{ plan.cadence }}
+                </p>
+              </div>
+
+              <ul class="mt-7 grid gap-3">
+                @for (feature of plan.features; track feature) {
+                  <li class="flex gap-3 text-sm leading-6">
+                    <span
+                      class="material-symbols-outlined mt-0.5 text-base"
+                      [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--accent)'"
+                    >
+                      check_circle
+                    </span>
+                    <span
+                      [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
+                    >
+                      {{ feature }}
+                    </span>
+                  </li>
+                }
+              </ul>
+
+              <a
+                [routerLink]="plan.route"
+                class="mt-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-black transition-all hover:-translate-y-0.5"
+                [style.background-color]="plan.featured ? 'var(--accent-contrast)' : 'var(--accent)'"
+                [style.color]="plan.featured ? 'var(--accent)' : 'var(--accent-contrast)'"
+              >
+                {{ plan.cta }}
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </a>
+            </article>
+          }
+        </div>
+
+        <p class="mt-6 text-center text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+          Example launch pricing for review. Exact checkout and limits can be adjusted after you approve the tiers.
+        </p>
       </div>
     </section>
 
