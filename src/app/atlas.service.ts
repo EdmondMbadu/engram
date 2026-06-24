@@ -1518,9 +1518,11 @@ export class AtlasService {
       area_km2: typeof data['area_km2'] === 'number' && Number.isFinite(data['area_km2'])
         ? data['area_km2']
         : null,
+      area_source_url: typeof data['area_source_url'] === 'string' ? data['area_source_url'] : null,
       population_density_per_km2: typeof data['population_density_per_km2'] === 'number' && Number.isFinite(data['population_density_per_km2'])
         ? data['population_density_per_km2']
         : null,
+      population_density_source: typeof data['population_density_source'] === 'string' ? data['population_density_source'] : null,
       population_scope: this.hydratePopulationScope(data['population_scope']),
       population_source: this.hydratePopulationSource(data['population_source']),
       population_source_url: typeof data['population_source_url'] === 'string' ? data['population_source_url'] : null,

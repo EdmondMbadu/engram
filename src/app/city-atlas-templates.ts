@@ -1,6 +1,7 @@
 import type {
   AtlasChatGuideConfig,
   CityAtlasConfig,
+  CityAtlasMetadata,
 } from './atlas.models';
 import type {
   PublicWikiBadge,
@@ -42,6 +43,9 @@ function cityConfig(input: {
   censusStateCode: string;
   censusPlaceCode: string;
   airnowZipCode: string;
+  latitude?: number;
+  longitude?: number;
+  metadata?: CityAtlasMetadata | null;
 }): CityAtlasConfig {
   return {
     enabled: true,
@@ -52,6 +56,9 @@ function cityConfig(input: {
     census_state_code: input.censusStateCode,
     census_place_code: input.censusPlaceCode,
     airnow_zip_code: input.airnowZipCode,
+    latitude: input.latitude ?? null,
+    longitude: input.longitude ?? null,
+    metadata: input.metadata ?? null,
     manual_metrics: null,
   };
 }
@@ -179,6 +186,56 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
       'Austin',
       'Texas',
       'ERCOT, Austin Energy, tech jobs, housing pressure, transit, growth, music, neighborhoods, and climate stress',
+    ),
+  },
+  {
+    slug: 'gainesville',
+    name: 'LivingWiki: Gainesville',
+    description:
+      "Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.",
+    landingSummary:
+      'A practical guide to Gainesville civic life, University of Florida context, neighborhoods, RTS transit, climate resilience, jobs, food, culture, and local updates.',
+    sources:
+      'City of Gainesville Open Data, Alachua County, RTS, University of Florida, EPA, Census',
+    priority: 'med',
+    badges: ['geo', 'evergreen'],
+    coverColor: '#1f6f61',
+    logoUrl: livingCitiesLogoUrl,
+    heroUrl: null,
+    cityConfig: cityConfig({
+      cityName: 'Gainesville',
+      regionName: 'Florida',
+      timezone: 'America/New_York',
+      censusStateCode: '12',
+      censusPlaceCode: '25175',
+      airnowZipCode: '32601',
+      latitude: 29.679537,
+      longitude: -82.346793,
+      metadata: {
+        global_region: 'Americas',
+        population: 148720,
+        population_year: 2024,
+        area_km2: 165.79,
+        area_source_url:
+          'https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2024_Gazetteer/2024_Gaz_place_national.zip',
+        population_density_per_km2: 897,
+        population_density_source:
+          'Computed from Census 2024 subcounty population estimate and 2024 Gazetteer land area.',
+        population_scope: 'city_proper',
+        population_source: 'us_census_pep',
+        population_source_url:
+          'https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/cities/totals/sub-est2024_12.csv',
+        population_source_record_id: '12-25175',
+        population_fetched_at: '2026-06-24T00:00:00.000Z',
+        population_confidence: 'high',
+        population_match_method: 'census_codes',
+      },
+    }),
+    chatGuide: chatGuide('Gainesville'),
+    personaPrompt: buildCityPersona(
+      'Gainesville',
+      'Florida',
+      'University of Florida, RTS, neighborhoods, housing, city services, climate resilience, healthcare, local jobs, food, culture, and North Central Florida civic data',
     ),
   },
   {

@@ -36,6 +36,7 @@ const COORDS: Record<string, [number, number]> = {
   'my-living-wiki-portland': [45.5152, -122.6784],
   'my-living-wiki-denver': [39.7392, -104.9903],
   'my-living-wiki-austin': [30.2672, -97.7431],
+  'gainesville': [29.679537, -82.346793],
   'my-living-wiki-dallas': [32.7767, -96.797],
   'my-living-wiki-houston': [29.7604, -95.3698],
   'my-living-wiki-phoenix': [33.4484, -112.074],

@@ -157,6 +157,7 @@ const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
   fortaleza: 8300,
   foshan: 1900,
   fukuoka: 4700,
+  gainesville: 897,
   geneva: 12500,
   glasgow: 3600,
   guadalajara: 8900,

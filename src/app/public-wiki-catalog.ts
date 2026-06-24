@@ -531,6 +531,19 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     sources: 'Austin Open Data, ERCOT, Texas PUC, Census, Austin Energy',
   },
   {
+    title: 'LivingWiki: Gainesville',
+    slug: 'gainesville',
+    subtitle: 'Cities & Regions',
+    description:
+      "Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.",
+    status: 'coming-soon',
+    category: 'Cities & Regions',
+    priority: 'med',
+    badges: ['geo', 'evergreen'],
+    sources:
+      'City of Gainesville Open Data, Alachua County, RTS, University of Florida, EPA, Census',
+  },
+  {
     title: 'LivingWiki: San Francisco',
     slug: 'san-francisco',
     subtitle: 'Cities & Regions',

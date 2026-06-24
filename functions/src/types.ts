@@ -337,6 +337,8 @@ export interface AtlasRecord {
     census_state_code?: string | null;
     census_place_code?: string | null;
     airnow_zip_code?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
     metadata?: {
       global_region?: string | null;
       population?: number | null;
