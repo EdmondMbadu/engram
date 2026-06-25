@@ -319,6 +319,12 @@
                     @if (card.subtitle) {
                       <p class="detail-card__subtitle">{{ card.subtitle }}</p>
                     }
+                    @if (card.googleMapsUrl) {
+                      <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener">
+                        <span class="material-symbols-outlined">map</span>
+                        Open place
+                      </a>
+                    }
                     @if (card.notes) {
                       <p class="detail-card__notes">{{ card.notes }}</p>
                     }
@@ -499,6 +505,91 @@
         </div>
 
         <form class="boards-form" (submit)="saveCard($event)">
+          <section class="boards-form-section boards-form-section--feature">
+            <div class="boards-form-section__head">
+              <span class="material-symbols-outlined">travel_explore</span>
+              <div>
+                <p>Fast place fill</p>
+                <h4>Enter a place or thing</h4>
+              </div>
+            </div>
+            <div class="boards-form__split">
+              <label>
+                <span>Place, restaurant, venue, or thing</span>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Zahav, Ocean City boardwalk, MoMA..."
+                  [value]="cardDraft().placeQuery"
+                  (input)="onPlaceQueryInput($any($event.target).value)"
+                />
+              </label>
+              <label>
+                <span>City optional</span>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Philadelphia, New York, Lisbon..."
+                  [value]="cardDraft().placeCity"
+                  (input)="onPlaceCityInput($any($event.target).value)"
+                />
+              </label>
+            </div>
+            @if (cityMatchSuggestions().length) {
+              <div class="boards-city-matches" aria-label="Matching cities">
+                @for (city of cityMatchSuggestions(); track city.id) {
+                  <button type="button" (click)="selectPlaceCity(city)">
+                    <span class="material-symbols-outlined">location_city</span>
+                    <strong>{{ city.name }}</strong>
+                    @if (city.region) {
+                      <small>{{ city.region }}</small>
+                    }
+                  </button>
+                }
+              </div>
+            }
+            <div class="boards-place-status">
+              @if (placeSearchLoading()) {
+                <span class="boards-place-status__loading"></span>
+                Looking up place and photo...
+              } @else if (cardDraft().placeId) {
+                <span class="material-symbols-outlined">check_circle</span>
+                Place details added.
+              } @else if (placeSearchHint()) {
+                <span class="material-symbols-outlined">location_on</span>
+                {{ placeSearchHint() }}
+              } @else {
+                <span class="material-symbols-outlined">bolt</span>
+                Optional. You can still type the card manually.
+              }
+            </div>
+            @if (placeSuggestions().length) {
+              <div class="boards-place-suggestions">
+                @for (place of placeSuggestions(); track place.placeId) {
+                  <button type="button" (click)="selectPlaceSuggestion(place)">
+                    @if (place.photoUrl) {
+                      <img [src]="place.photoUrl" [alt]="place.name" loading="lazy" />
+                    } @else {
+                      <span class="boards-place-suggestions__icon">
+                        <span class="material-symbols-outlined">place</span>
+                      </span>
+                    }
+                    <span>
+                      <strong>{{ place.name }}</strong>
+                      <small>{{ place.address || place.types[0] }}</small>
+                    </span>
+                    @if (place.rating) {
+                      <em>{{ place.rating.toFixed(1) }}</em>
+                    }
+                  </button>
+                }
+              </div>
+            }
+            @if (placeSearchError()) {
+              <div class="boards-form__soft-error">{{ placeSearchError() }}</div>
+            }
+          </section>
+
           <div class="boards-form__split">
             <label>
               <span>Title</span>

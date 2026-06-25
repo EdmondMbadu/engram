@@ -24,7 +24,6 @@ import { CityPulseAdminComponent } from './city-pulse-admin/city-pulse-admin';
 import { AdminUsersComponent } from './admin-users/admin-users';
 import { CityPlacesComponent } from './city-places/city-places';
 import { BusinessComponent } from './business/business';
-import { BoardsComponent } from './boards/boards';
 import { NotFoundComponent } from './not-found/not-found';
 import { adminGuard, authGuard, guestOnlyGuard } from './auth.guards';
 
@@ -81,8 +80,18 @@ export const routes: Routes = [
   },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | LivingWiki', canActivate: [authGuard] },
-  { path: 'boards', component: BoardsComponent, title: 'Boards | LivingWiki', canActivate: [authGuard] },
-  { path: 'boards/:boardId', component: BoardsComponent, title: 'Board | LivingWiki', canActivate: [authGuard] },
+  {
+    path: 'boards',
+    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    title: 'Boards | LivingWiki',
+    canActivate: [authGuard],
+  },
+  {
+    path: 'boards/:boardId',
+    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    title: 'Board | LivingWiki',
+    canActivate: [authGuard],
+  },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | LivingWiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | LivingWiki', canActivate: [authGuard] },
   { path: 'chat/shared/:threadId', component: SharedChatComponent, title: 'Shared Chat | LivingWiki' },

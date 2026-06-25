@@ -28,7 +28,47 @@ type GoogleMapsNamespace = {
     marker?: {
       AdvancedMarkerElement: new (options: Record<string, unknown>) => unknown;
     };
+    places?: {
+      PlacesService: new (element: HTMLElement) => {
+        textSearch: (
+          request: { query: string },
+          callback: (
+            results: GooglePlaceResult[] | null,
+            status: string,
+          ) => void,
+        ) => void;
+        getDetails: (
+          request: { placeId: string; fields: string[] },
+          callback: (result: GooglePlaceResult | null, status: string) => void,
+        ) => void;
+      };
+      PlacesServiceStatus?: {
+        OK: string;
+      };
+    };
   };
+};
+
+type GooglePlaceResult = {
+  place_id?: string;
+  name?: string;
+  formatted_address?: string;
+  types?: string[];
+  rating?: number;
+  url?: string;
+  photos?: Array<{
+    getUrl: (options?: { maxWidth?: number; maxHeight?: number }) => string;
+  }>;
+};
+
+export type PlaceSearchResult = {
+  placeId: string;
+  name: string;
+  address: string;
+  types: string[];
+  rating: number | null;
+  googleMapsUrl: string;
+  photoUrl: string;
 };
 
 export type ResolvedMappableLocation = MappableLocation & {
@@ -43,6 +83,8 @@ export class GoogleMapsService {
   private readonly callbackName = '__livingWikiGoogleMapsReady';
   private loadPromise: Promise<GoogleMapsNamespace> | null = null;
   private readonly geocodeCache = new Map<string, ResolvedMappableLocation | null>();
+  private readonly placeSearchCache = new Map<string, PlaceSearchResult[]>();
+  private placesContainer: HTMLElement | null = null;
 
   isConfigured(): boolean {
     if (!this.isBrowser) {
@@ -98,7 +140,7 @@ export class GoogleMapsService {
         v: 'weekly',
         loading: 'async',
         callback: this.callbackName,
-        libraries: 'maps,marker,geocoding',
+        libraries: 'maps,marker,geocoding,places',
       });
       script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
       script.onerror = () => reject(new Error('Google Maps failed to load.'));
@@ -162,6 +204,47 @@ export class GoogleMapsService {
     return resolved.filter((location): location is ResolvedMappableLocation => !!location);
   }
 
+  async searchPlaces(query: string, cityHint = ''): Promise<PlaceSearchResult[]> {
+    const searchText = [query.trim(), cityHint.trim()].filter(Boolean).join(', ');
+    if (!searchText || query.trim().length < 2) {
+      return [];
+    }
+
+    const cacheKey = searchText.toLowerCase();
+    if (this.placeSearchCache.has(cacheKey)) {
+      return this.placeSearchCache.get(cacheKey) ?? [];
+    }
+
+    const google = await this.load();
+    if (google.maps.importLibrary) {
+      await google.maps.importLibrary('places');
+    }
+
+    const places = google.maps.places;
+    if (!places?.PlacesService) {
+      throw new Error('Google Places is not available.');
+    }
+
+    const service = new places.PlacesService(this.ensurePlacesContainer());
+    const okStatus = places.PlacesServiceStatus?.OK ?? 'OK';
+    const textResults = await new Promise<GooglePlaceResult[]>((resolve, reject) => {
+      service.textSearch({ query: searchText }, (results, status) => {
+        if (status !== okStatus) {
+          reject(new Error('No matching places found.'));
+          return;
+        }
+        resolve((results ?? []).slice(0, 5));
+      });
+    });
+
+    const enriched = await Promise.all(
+      textResults.map((place) => this.fetchPlaceDetails(service, place, okStatus)),
+    );
+    const results = enriched.filter((place): place is PlaceSearchResult => !!place);
+    this.placeSearchCache.set(cacheKey, results);
+    return results;
+  }
+
   private requireGoogleMaps(): GoogleMapsNamespace {
     const google = this.googleMapsWindow();
     if (!google) {
@@ -193,5 +276,55 @@ export class GoogleMapsService {
     const candidate = value as Partial<GoogleMapsNamespace>;
     const maps = candidate.maps as Partial<GoogleMapsNamespace['maps']> | undefined;
     return maps?.Map && maps.Geocoder ? candidate as GoogleMapsNamespace : null;
+  }
+
+  private ensurePlacesContainer(): HTMLElement {
+    if (this.placesContainer) {
+      return this.placesContainer;
+    }
+
+    const element = document.createElement('div');
+    element.hidden = true;
+    element.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(element);
+    this.placesContainer = element;
+    return element;
+  }
+
+  private async fetchPlaceDetails(
+    service: GoogleMapsNamespace['maps']['places'] extends infer Places
+      ? Places extends { PlacesService: new (element: HTMLElement) => infer Service }
+        ? Service
+        : never
+      : never,
+    place: GooglePlaceResult,
+    okStatus: string,
+  ): Promise<PlaceSearchResult | null> {
+    const placeId = place.place_id;
+    if (!placeId) {
+      return null;
+    }
+
+    const detailed = await new Promise<GooglePlaceResult>((resolve) => {
+      service.getDetails(
+        {
+          placeId,
+          fields: ['place_id', 'name', 'formatted_address', 'photos', 'types', 'rating', 'url'],
+        },
+        (result, status) => {
+          resolve(status === okStatus && result ? result : place);
+        },
+      );
+    });
+
+    return {
+      placeId,
+      name: detailed.name ?? place.name ?? 'Untitled place',
+      address: detailed.formatted_address ?? place.formatted_address ?? '',
+      types: detailed.types ?? place.types ?? [],
+      rating: typeof detailed.rating === 'number' ? detailed.rating : null,
+      googleMapsUrl: detailed.url ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(detailed.name ?? place.name ?? placeId)}`,
+      photoUrl: detailed.photos?.[0]?.getUrl({ maxWidth: 1000, maxHeight: 1000 }) ?? '',
+    };
   }
 }

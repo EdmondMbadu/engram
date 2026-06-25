@@ -2,8 +2,12 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountMenuComponent } from '../account-menu/account-menu';
+import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { GoogleMapsService, type PlaceSearchResult } from '../google-maps.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
+import type { AtlasItem } from '../atlas.models';
+import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
 import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
@@ -22,6 +26,8 @@ type BoardCard = {
   status: BoardCardStatus;
   rating: number;
   imageUrl: string;
+  placeId: string;
+  googleMapsUrl: string;
   tags: string[];
   createdAt: string;
   updatedAt: string;
@@ -55,12 +61,23 @@ type CardDraft = {
   status: BoardCardStatus;
   rating: string;
   imageUrl: string;
+  placeQuery: string;
+  placeCity: string;
+  placeId: string;
+  googleMapsUrl: string;
   tags: string;
 };
 
 type GalleryCard = {
   card: BoardCard;
   board: Board;
+};
+
+type BoardCityOption = {
+  id: string;
+  name: string;
+  region: string;
+  slug: string;
 };
 
 const STORAGE_KEY = 'livingwiki-boards-v1';
@@ -113,12 +130,17 @@ const BOARD_ICONS = [
   styleUrl: './boards.css',
 })
 export class BoardsComponent {
+  private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly googleMapsService = inject(GoogleMapsService);
+  private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private hasLoaded = false;
+  private placeSearchTimer: ReturnType<typeof setTimeout> | null = null;
+  private placeSearchRun = 0;
 
   readonly tones = BOARD_TONES;
   readonly cardTypes = CARD_TYPES;
@@ -126,6 +148,8 @@ export class BoardsComponent {
   readonly boardIcons = BOARD_ICONS;
 
   readonly boards = signal<Board[]>([]);
+  readonly publicCities = signal<BoardCityOption[]>([]);
+  readonly citiesLoading = signal(false);
   readonly selectedBoardId = signal<string | null>(null);
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
@@ -136,6 +160,10 @@ export class BoardsComponent {
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly placeSuggestions = signal<PlaceSearchResult[]>([]);
+  readonly placeSearchLoading = signal(false);
+  readonly placeSearchError = signal<string | null>(null);
+  readonly placeSearchHint = signal<string | null>(null);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -152,6 +180,10 @@ export class BoardsComponent {
     status: 'saved',
     rating: '4',
     imageUrl: '',
+    placeQuery: '',
+    placeCity: '',
+    placeId: '',
+    googleMapsUrl: '',
     tags: '',
   });
 
@@ -240,9 +272,27 @@ export class BoardsComponent {
       0,
     ),
   );
+  readonly cityMatchSuggestions = computed(() => {
+    const query = this.cardDraft().placeCity.trim().toLowerCase();
+    if (query.length < 2) {
+      return [];
+    }
+    return this.publicCities()
+      .filter((city) => this.citySearchText(city).includes(query))
+      .sort((left, right) => {
+        const leftName = left.name.toLowerCase();
+        const rightName = right.name.toLowerCase();
+        const leftStarts = leftName.startsWith(query) ? 0 : 1;
+        const rightStarts = rightName.startsWith(query) ? 0 : 1;
+        return leftStarts - rightStarts || leftName.localeCompare(rightName);
+      })
+      .slice(0, 4);
+  });
+  readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
 
   constructor() {
     this.loadBoards();
+    void this.loadCities();
     this.route.paramMap.subscribe((params) => {
       this.selectedBoardId.set(params.get('boardId'));
       this.cardSearch.set('');
@@ -374,6 +424,10 @@ export class BoardsComponent {
       status: 'saved',
       rating: '4',
       imageUrl: '',
+      placeQuery: '',
+      placeCity: '',
+      placeId: '',
+      googleMapsUrl: '',
       tags: '',
     });
     this.cardDialogOpen.set(true);
@@ -390,6 +444,10 @@ export class BoardsComponent {
       status: card.status,
       rating: String(card.rating),
       imageUrl: card.imageUrl,
+      placeQuery: card.title,
+      placeCity: '',
+      placeId: card.placeId,
+      googleMapsUrl: card.googleMapsUrl,
       tags: card.tags.join(', '),
     });
     this.cardDialogOpen.set(true);
@@ -403,6 +461,7 @@ export class BoardsComponent {
   closeCardDialog(): void {
     this.cardDialogOpen.set(false);
     this.editingCardId.set(null);
+    this.clearPlaceSearch();
   }
 
   async onBoardImageSelected(event: Event): Promise<void> {
@@ -453,6 +512,47 @@ export class BoardsComponent {
     this.imageUploadError.set(null);
   }
 
+  onPlaceQueryInput(value: string): void {
+    this.updateCardDraft('placeQuery', value);
+    if (!this.cardDraft().title.trim()) {
+      this.updateCardDraft('title', value);
+    }
+    this.schedulePlaceSearch();
+  }
+
+  onPlaceCityInput(value: string): void {
+    this.updateCardDraft('placeCity', value);
+    this.schedulePlaceSearch();
+  }
+
+  selectPlaceCity(city: BoardCityOption): void {
+    this.updateCardDraft('placeCity', city.name);
+    this.schedulePlaceSearch();
+  }
+
+  selectPlaceSuggestion(place: PlaceSearchResult): void {
+    this.applyPlaceSuggestion(place, true);
+  }
+
+  private applyPlaceSuggestion(place: PlaceSearchResult, closeSuggestions: boolean): void {
+    const inferredType = this.inferCardType(place);
+    this.cardDraft.update((draft) => ({
+      ...draft,
+      title: place.name,
+      subtitle: place.address,
+      type: inferredType,
+      imageUrl: place.photoUrl || draft.imageUrl,
+      placeQuery: place.name,
+      placeId: place.placeId,
+      googleMapsUrl: place.googleMapsUrl,
+      tags: this.placeTags(place).join(', '),
+    }));
+    if (closeSuggestions) {
+      this.placeSuggestions.set([]);
+    }
+    this.placeSearchError.set(null);
+  }
+
   saveCard(event: Event): void {
     event.preventDefault();
     const board = this.selectedBoard();
@@ -489,6 +589,8 @@ export class BoardsComponent {
                     status: draft.status,
                     rating,
                     imageUrl: draft.imageUrl.trim(),
+                    placeId: draft.placeId,
+                    googleMapsUrl: draft.googleMapsUrl,
                     tags,
                     updatedAt: now,
                   }
@@ -504,6 +606,8 @@ export class BoardsComponent {
                 status: draft.status,
                 rating,
                 imageUrl: draft.imageUrl.trim(),
+                placeId: draft.placeId,
+                googleMapsUrl: draft.googleMapsUrl,
                 tags,
                 createdAt: now,
                 updatedAt: now,
@@ -630,6 +734,24 @@ export class BoardsComponent {
     this.hasLoaded = true;
   }
 
+  private async loadCities(): Promise<void> {
+    this.citiesLoading.set(true);
+    try {
+      const cities = (await this.atlasService.listPublicAtlases())
+        .filter((atlas) => atlas.city_config?.enabled === true)
+        .map((atlas) => this.cityOptionFromAtlas(atlas))
+        .sort((left, right) => left.name.localeCompare(right.name));
+      this.publicCities.set(cities);
+    } catch {
+      this.publicCities.set([]);
+    } finally {
+      this.citiesLoading.set(false);
+      if (this.cardDialogOpen()) {
+        this.schedulePlaceSearch();
+      }
+    }
+  }
+
   private parseBoards(raw: string): Board[] | null {
     try {
       const value = JSON.parse(raw) as Board[];
@@ -644,6 +766,8 @@ export class BoardsComponent {
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
+            placeId: card.placeId ?? '',
+            googleMapsUrl: card.googleMapsUrl ?? '',
           })),
         }));
     } catch {
@@ -673,6 +797,8 @@ export class BoardsComponent {
             status: 'favorite',
             rating: 5,
             imageUrl: '',
+            placeId: '',
+            googleMapsUrl: '',
             tags: ['shore', 'walks', 'summer'],
             createdAt: now,
             updatedAt: now,
@@ -686,6 +812,8 @@ export class BoardsComponent {
             status: 'visited',
             rating: 4,
             imageUrl: '',
+            placeId: '',
+            googleMapsUrl: '',
             tags: ['park', 'picnic'],
             createdAt: now,
             updatedAt: now,
@@ -711,6 +839,8 @@ export class BoardsComponent {
             status: 'saved',
             rating: 5,
             imageUrl: '',
+            placeId: '',
+            googleMapsUrl: '',
             tags: ['noodles', 'comfort'],
             createdAt: now,
             updatedAt: now,
@@ -751,6 +881,243 @@ export class BoardsComponent {
       return window.crypto.randomUUID();
     }
     return `board-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  private schedulePlaceSearch(): void {
+    if (this.placeSearchTimer) {
+      clearTimeout(this.placeSearchTimer);
+    }
+
+    const query = this.cardDraft().placeQuery.trim();
+    const city = this.cardDraft().placeCity.trim();
+    const matchedCity = this.findCityOption(city);
+    if (query.length < 2) {
+      if (matchedCity && this.isExactCityInput(city, matchedCity)) {
+        this.placeSearchLoading.set(true);
+        this.placeSearchError.set(null);
+        this.placeSearchHint.set(`Filling ${matchedCity.name} as the card place and looking for a photo.`);
+        this.placeSearchTimer = setTimeout(() => {
+          void this.runPlaceSearch();
+        }, 260);
+        return;
+      }
+      this.placeSuggestions.set([]);
+      this.placeSearchLoading.set(false);
+      this.placeSearchError.set(null);
+      this.placeSearchHint.set(this.cityOnlyHint(city, matchedCity));
+      return;
+    }
+
+    this.placeSearchLoading.set(true);
+    this.placeSearchError.set(null);
+    this.placeSearchHint.set(
+      matchedCity
+        ? `Searching ${matchedCity.name} with the city place API, then adding photos.`
+        : city
+          ? `Searching near ${city} and looking for a photo.`
+          : 'Searching places and looking for a photo.',
+    );
+    this.placeSearchTimer = setTimeout(() => {
+      void this.runPlaceSearch();
+    }, 260);
+  }
+
+  private async runPlaceSearch(): Promise<void> {
+    const placeQuery = this.cardDraft().placeQuery.trim();
+    const city = this.cardDraft().placeCity.trim();
+    const matchedCity = this.findCityOption(city);
+    const cityAsPlace = !placeQuery && !!matchedCity && this.isExactCityInput(city, matchedCity);
+    const query = cityAsPlace ? matchedCity.name : placeQuery;
+    const runId = ++this.placeSearchRun;
+
+    if (query.length < 2) {
+      this.placeSearchLoading.set(false);
+      return;
+    }
+
+    let cityResults: PlaceSearchResult[] = [];
+    let cityLookupFailed = false;
+    if (matchedCity && !cityAsPlace) {
+      try {
+        const places = await this.placeReviewsService.searchCityPlaces(matchedCity.id, query);
+        if (runId !== this.placeSearchRun) {
+          return;
+        }
+        cityResults = places.map((place) => this.cityPlaceToSearchResult(place));
+        if (cityResults.length) {
+          this.placeSuggestions.set(cityResults);
+          this.placeSearchError.set(null);
+          this.placeSearchHint.set(`Found matches in ${matchedCity.name}. Adding photos now.`);
+        }
+      } catch {
+        cityLookupFailed = true;
+      }
+    }
+
+    let googleResults: PlaceSearchResult[] = [];
+    let googleLookupError: unknown = null;
+    try {
+      googleResults = await this.googleMapsService.searchPlaces(
+        query,
+        cityAsPlace ? matchedCity?.region ?? '' : matchedCity?.name ?? city,
+      );
+      if (runId !== this.placeSearchRun) {
+        return;
+      }
+    } catch (error) {
+      googleLookupError = error;
+    }
+
+    if (runId !== this.placeSearchRun) {
+      return;
+    }
+
+    const results = this.mergePlaceResults(cityResults, googleResults);
+    this.placeSuggestions.set(results);
+    this.placeSearchHint.set(
+      results.some((place) => place.photoUrl)
+        ? 'Place details and photo are ready.'
+        : results.length
+          ? 'Place details are ready. No photo was returned for these matches.'
+          : null,
+    );
+    if (results.length) {
+      this.placeSearchError.set(null);
+      const draft = this.cardDraft();
+      const first = results[0];
+      if (first && !draft.placeId && (!draft.imageUrl || !draft.subtitle.trim())) {
+        this.applyPlaceSuggestion(first, false);
+      }
+    } else if (googleLookupError instanceof Error) {
+      this.placeSearchError.set(googleLookupError.message);
+    } else if (cityLookupFailed) {
+      this.placeSearchError.set('Place search is unavailable right now. You can still type the card manually.');
+    } else {
+      this.placeSearchError.set('No matching places found.');
+    }
+
+    if (runId === this.placeSearchRun) {
+      this.placeSearchLoading.set(false);
+    }
+  }
+
+  private clearPlaceSearch(): void {
+    if (this.placeSearchTimer) {
+      clearTimeout(this.placeSearchTimer);
+      this.placeSearchTimer = null;
+    }
+    this.placeSearchRun++;
+    this.placeSuggestions.set([]);
+    this.placeSearchLoading.set(false);
+    this.placeSearchError.set(null);
+    this.placeSearchHint.set(null);
+  }
+
+  private cityOptionFromAtlas(atlas: AtlasItem): BoardCityOption {
+    return {
+      id: atlas.id,
+      name: atlas.city_config?.city_name || atlas.name.replace(/^Living\s*Wiki:\s*/i, '').trim(),
+      region: atlas.city_config?.region_name || atlas.city_config?.country_code || '',
+      slug: atlas.slug,
+    };
+  }
+
+  private findCityOption(value: string): BoardCityOption | null {
+    const query = value.trim().toLowerCase();
+    if (query.length < 2) {
+      return null;
+    }
+    return this.publicCities().find((city) => {
+      const name = city.name.trim().toLowerCase();
+      const slug = city.slug.trim().toLowerCase();
+      return name === query || slug === query || this.citySearchText(city).includes(query);
+    }) ?? null;
+  }
+
+  private citySearchText(city: BoardCityOption): string {
+    return `${city.name} ${city.region} ${city.slug}`.toLowerCase();
+  }
+
+  private isExactCityInput(value: string, city: BoardCityOption): boolean {
+    const query = value.trim().toLowerCase();
+    return query === city.name.trim().toLowerCase() || query === city.slug.trim().toLowerCase();
+  }
+
+  private cityOnlyHint(city: string, matchedCity: BoardCityOption | null): string | null {
+    if (!city) {
+      return null;
+    }
+    if (this.citiesLoading()) {
+      return 'Checking LivingWiki cities...';
+    }
+    if (matchedCity) {
+      return `${matchedCity.name} selected. Type a place, restaurant, venue, or thing to fill the card.`;
+    }
+    return `No LivingWiki city match yet for "${city}". Type a place and we will still search with that city as context.`;
+  }
+
+  private cityPlaceToSearchResult(place: CityPlaceCandidate): PlaceSearchResult {
+    return {
+      placeId: place.placeId || place.id || `${place.name}-${place.address}`,
+      name: place.name,
+      address: place.address,
+      types: place.types ?? [],
+      rating: typeof place.ratingAvg === 'number' ? place.ratingAvg : null,
+      googleMapsUrl: place.googleMapsUrl,
+      photoUrl: '',
+    };
+  }
+
+  private mergePlaceResults(primary: PlaceSearchResult[], photoResults: PlaceSearchResult[]): PlaceSearchResult[] {
+    const merged = new Map<string, PlaceSearchResult>();
+    for (const result of primary) {
+      merged.set(this.placeMergeKey(result), result);
+    }
+    for (const result of photoResults) {
+      const key = this.placeMergeKey(result);
+      const existing = merged.get(key);
+      if (existing) {
+        merged.set(key, {
+          ...existing,
+          address: existing.address || result.address,
+          types: existing.types.length ? existing.types : result.types,
+          rating: existing.rating ?? result.rating,
+          googleMapsUrl: existing.googleMapsUrl || result.googleMapsUrl,
+          photoUrl: existing.photoUrl || result.photoUrl,
+        });
+      } else {
+        merged.set(key, result);
+      }
+    }
+    return [...merged.values()].slice(0, 6);
+  }
+
+  private placeMergeKey(place: PlaceSearchResult): string {
+    return place.placeId || `${place.name} ${place.address}`.trim().toLowerCase();
+  }
+
+  private inferCardType(place: PlaceSearchResult): BoardCardType {
+    const types = new Set(place.types);
+    if (
+      types.has('restaurant') ||
+      types.has('cafe') ||
+      types.has('bakery') ||
+      types.has('bar') ||
+      types.has('meal_takeaway')
+    ) {
+      return 'food';
+    }
+    if (types.has('store') || types.has('shopping_mall')) {
+      return 'shop';
+    }
+    return 'place';
+  }
+
+  private placeTags(place: PlaceSearchResult): string[] {
+    return place.types
+      .map((type) => type.replaceAll('_', ' '))
+      .filter((type) => !['point of interest', 'establishment'].includes(type))
+      .slice(0, 4);
   }
 
   private async readImageFile(file: File): Promise<string> {
