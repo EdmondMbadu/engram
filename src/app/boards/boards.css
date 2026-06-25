@@ -865,7 +865,9 @@
 .detail-card__sticker {
   position: absolute;
   --sticker-bg: #fff0b8;
+  --sticker-bg-2: #ff4d8d;
   --sticker-ink: #8a5200;
+  --sticker-shadow: #00a7ff;
   display: grid;
   width: 2.35rem;
   height: 2.35rem;
@@ -873,11 +875,13 @@
   border: 2px solid var(--ink);
   border-radius: 0.75rem 0.55rem 0.82rem 0.58rem;
   background:
-    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.72), transparent 28%),
-    var(--sticker-bg);
-  box-shadow: 2px 2px 0 var(--ink);
+    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.9) 0 12%, transparent 13%),
+    radial-gradient(circle at 78% 72%, color-mix(in srgb, var(--sticker-shadow) 75%, transparent) 0 13%, transparent 14%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0 4px, transparent 4px 9px),
+    linear-gradient(135deg, var(--sticker-bg), var(--sticker-bg-2));
+  box-shadow: 2px 2px 0 var(--ink), -2px 2px 0 var(--sticker-shadow);
   color: var(--sticker-ink);
-  opacity: 0.92;
+  opacity: 0.96;
 }
 
 .detail-card__sticker .material-symbols-outlined {
@@ -1601,8 +1605,6 @@
 
 .boards-sticker-panel--prominent {
   border: 3px solid var(--modal-ink, var(--ink));
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--surface-strong)), var(--surface));
   box-shadow: 4px 4px 0 var(--modal-ink, var(--ink));
 }
 
@@ -1613,25 +1615,21 @@
   gap: 0.75rem;
 }
 
-.boards-sticker-panel__head div {
-  display: grid;
-  gap: 0.18rem;
-}
-
 .boards-sticker-panel__head span {
+  display: block;
   color: var(--muted);
   font-size: 0.68rem;
   font-weight: 950;
   letter-spacing: 0.16em;
-  line-height: 1;
   text-transform: uppercase;
 }
 
 .boards-sticker-panel__head strong {
+  display: block;
+  margin-top: 0.18rem;
   color: var(--text);
   font-size: 0.86rem;
   font-weight: 900;
-  line-height: 1.2;
 }
 
 .boards-sticker-panel__head button {
@@ -1639,11 +1637,8 @@
   border-radius: 999px;
   background: var(--surface);
   color: var(--text);
-  cursor: pointer;
   font: inherit;
-  font-size: 0.75rem;
   font-weight: 900;
-  line-height: 1;
   padding: 0.5rem 0.7rem;
 }
 
@@ -1658,7 +1653,9 @@
 
 .boards-sticker-choice {
   --sticker-bg: var(--surface);
+  --sticker-bg-2: var(--surface-strong);
   --sticker-ink: var(--muted);
+  --sticker-shadow: var(--accent);
   display: grid;
   aspect-ratio: 1;
   place-items: center;
@@ -1668,20 +1665,14 @@
   color: var(--muted);
   cursor: pointer;
   font: inherit;
-  transition: transform 160ms ease, background 160ms ease;
-}
-
-.boards-sticker-choice:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-  background: color-mix(in srgb, var(--sticker-bg) 44%, var(--surface));
-  color: var(--sticker-ink);
-  transform: translateY(-1px) rotate(-2deg);
 }
 
 .boards-sticker-choice--active {
   border: 2px solid var(--modal-ink, var(--ink));
-  background: var(--sticker-bg);
-  box-shadow: 2px 2px 0 var(--modal-ink, var(--ink));
+  background:
+    radial-gradient(circle at 76% 72%, color-mix(in srgb, var(--sticker-shadow) 80%, transparent) 0 14%, transparent 15%),
+    linear-gradient(135deg, var(--sticker-bg), var(--sticker-bg-2));
+  box-shadow: 2px 2px 0 var(--modal-ink, var(--ink)), -2px 2px 0 var(--sticker-shadow);
   color: var(--sticker-ink);
 }
 
@@ -1838,10 +1829,6 @@
   gap: 0.8rem;
 }
 
-.boards-form__split--thirds {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .boards-tone-row {
   display: flex;
   flex-wrap: wrap;
@@ -1984,8 +1971,7 @@
     grid-template-columns: 1fr;
   }
 
-  .boards-form__split,
-  .boards-form__split--thirds {
+  .boards-form__split {
     grid-template-columns: 1fr;
   }
 

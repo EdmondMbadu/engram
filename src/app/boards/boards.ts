@@ -201,18 +201,18 @@ const CARD_STICKER_ICONS = [
 ];
 
 const STICKER_COLORS = [
-  { bg: '#fff0b8', ink: '#8a5200' },
-  { bg: '#ffe2d7', ink: '#a43318' },
-  { bg: '#dffcf7', ink: '#006f68' },
-  { bg: '#ddeeff', ink: '#174ea6' },
-  { bg: '#f0e4ff', ink: '#6d2eb5' },
-  { bg: '#daf8c8', ink: '#236f31' },
-  { bg: '#ffddeb', ink: '#a61f5b' },
-  { bg: '#dff7ff', ink: '#08708c' },
-  { bg: '#fff6db', ink: '#735600' },
-  { bg: '#e7f0ff', ink: '#27458c' },
-  { bg: '#f4e8d8', ink: '#6e4218' },
-  { bg: '#e9ffd8', ink: '#477000' },
+  { bg: '#ffef3d', bg2: '#ff4d8d', ink: '#321200', shadow: '#00a7ff' },
+  { bg: '#00e0ff', bg2: '#6c5cff', ink: '#ffffff', shadow: '#ffef3d' },
+  { bg: '#ff6b00', bg2: '#ffdd00', ink: '#2d1300', shadow: '#00d084' },
+  { bg: '#7cff00', bg2: '#00c853', ink: '#073b16', shadow: '#ff4d8d' },
+  { bg: '#ff3df2', bg2: '#7c3cff', ink: '#ffffff', shadow: '#00e0ff' },
+  { bg: '#ff3b30', bg2: '#ff9f0a', ink: '#fff7d6', shadow: '#7cff00' },
+  { bg: '#00d084', bg2: '#00b2ff', ink: '#031f2d', shadow: '#ff3df2' },
+  { bg: '#ffe600', bg2: '#00d1ff', ink: '#102018', shadow: '#ff3b30' },
+  { bg: '#b45cff', bg2: '#ff5ca8', ink: '#ffffff', shadow: '#ffe600' },
+  { bg: '#111827', bg2: '#3b82f6', ink: '#dbeafe', shadow: '#f97316' },
+  { bg: '#f97316', bg2: '#ef4444', ink: '#ffffff', shadow: '#22c55e' },
+  { bg: '#22c55e', bg2: '#bef264', ink: '#052e16', shadow: '#a855f7' },
 ];
 
 const SHARE_TARGETS: Array<{ id: ShareTarget; label: string; icon: string }> = [
@@ -1160,8 +1160,16 @@ export class BoardsComponent {
     return STICKER_COLORS[index % STICKER_COLORS.length].bg;
   }
 
+  stickerBackgroundAlt(index: number): string {
+    return STICKER_COLORS[index % STICKER_COLORS.length].bg2;
+  }
+
   stickerInk(index: number): string {
     return STICKER_COLORS[index % STICKER_COLORS.length].ink;
+  }
+
+  stickerShadow(index: number): string {
+    return STICKER_COLORS[index % STICKER_COLORS.length].shadow;
   }
 
   private async prepareBoardImagesForFirebase(board: Board, uid: string): Promise<Board> {
