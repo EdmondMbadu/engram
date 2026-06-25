@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { buildBusinessBadgeSvg } from '../business-badge';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord } from '../business-claim/business-claim.service';
+import { generateQrSvg } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { AccountMenuComponent } from '../account-menu/account-menu';
@@ -148,6 +149,13 @@ export class BusinessDetailComponent {
   readonly badgeSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.badgeSvg())}`);
   readonly badgeSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.svg`);
   readonly badgePngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.png`);
+  readonly additionalQrLabel = computed(() => this.business()?.additional_qr_label?.trim() || 'Additional QR code');
+  readonly additionalQrUrl = computed(() => this.business()?.additional_qr_url?.trim() || '');
+  readonly hasAdditionalQr = computed(() => this.additionalQrUrl().length > 0);
+  readonly additionalQrSvg = computed(() => generateQrSvg(this.additionalQrUrl() || this.publicChatUrl()));
+  readonly additionalQrSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.additionalQrSvg())}`);
+  readonly additionalQrSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-additional-qr.svg`);
+  readonly additionalQrPngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-additional-qr.png`);
   readonly contactEmail = computed(() => this.ownerCanViewPrivateDetails() ? this.business()?.admin_email?.trim() || '' : '');
   readonly guidePrompt = computed(() => this.business()?.guide_prompt?.trim() || '');
   readonly logoUrl = computed(() => this.business()?.logo_url?.trim() || '');
@@ -296,6 +304,28 @@ export class BusinessDetailComponent {
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
     link.download = this.badgePngFilename();
+    link.click();
+  }
+
+  async downloadAdditionalQrPng(): Promise<void> {
+    if (typeof document === 'undefined' || !this.hasAdditionalQr()) {
+      return;
+    }
+    const image = await this.loadImage(this.additionalQrSvgHref());
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 1024;
+    const context = canvas.getContext('2d');
+    if (!context) {
+      this.loadError.set('Could not render the additional QR PNG.');
+      return;
+    }
+    context.fillStyle = '#ffffff';
+    context.fillRect(0, 0, 1024, 1024);
+    context.drawImage(image, 0, 0, 1024, 1024);
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = this.additionalQrPngFilename();
     link.click();
   }
 

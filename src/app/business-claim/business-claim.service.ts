@@ -41,6 +41,8 @@ export interface BusinessClaimContactRecord {
   logo_url?: string;
   profile_image_url?: string;
   cover_image_url?: string;
+  additional_qr_label?: string;
+  additional_qr_url?: string;
 }
 
 export type BusinessClaimWorkspaceRecord = BusinessClaimRegistryRecord & Partial<BusinessClaimContactRecord>;
@@ -59,6 +61,8 @@ export interface BusinessClaimWorkspaceUpdate {
   logo_url?: string;
   profile_image_url?: string;
   cover_image_url?: string;
+  additional_qr_label?: string;
+  additional_qr_url?: string;
 }
 
 export type BusinessImageKind = 'logo' | 'profile' | 'cover';
@@ -234,6 +238,8 @@ export class BusinessClaimService {
       logo_url: update.logo_url?.trim() ?? '',
       profile_image_url: update.profile_image_url?.trim() ?? '',
       cover_image_url: update.cover_image_url?.trim() ?? '',
+      additional_qr_label: update.additional_qr_label?.trim() ?? '',
+      additional_qr_url: update.additional_qr_url?.trim() ?? '',
       updated_at: serverTimestamp(),
     }, { merge: true });
     await batch.commit();
@@ -325,6 +331,8 @@ export class BusinessClaimService {
       logo_url: typeof request.logo_url === 'string' ? request.logo_url : undefined,
       profile_image_url: typeof request.profile_image_url === 'string' ? request.profile_image_url : undefined,
       cover_image_url: typeof request.cover_image_url === 'string' ? request.cover_image_url : undefined,
+      additional_qr_label: typeof request.additional_qr_label === 'string' ? request.additional_qr_label : undefined,
+      additional_qr_url: typeof request.additional_qr_url === 'string' ? request.additional_qr_url : undefined,
     };
   }
 }

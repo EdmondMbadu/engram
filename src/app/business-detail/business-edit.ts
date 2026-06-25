@@ -24,6 +24,8 @@ type BusinessEditDraft = {
   logo_url: string;
   profile_image_url: string;
   cover_image_url: string;
+  additional_qr_label: string;
+  additional_qr_url: string;
 };
 
 @Component({
@@ -70,9 +72,16 @@ export class BusinessEditComponent {
   readonly chatUrl = computed(() => `https://livingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly qrOnlySvg = computed(() => generateQrSvg(this.chatUrl()));
   readonly qrOnlySvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.qrOnlySvg())}`);
+  readonly additionalQrLabel = computed(() => this.draft().additional_qr_label.trim() || 'Additional QR code');
+  readonly additionalQrUrl = computed(() => this.draft().additional_qr_url.trim());
+  readonly hasAdditionalQr = computed(() => this.additionalQrUrl().length > 0);
+  readonly additionalQrSvg = computed(() => generateQrSvg(this.additionalQrUrl() || this.chatUrl()));
+  readonly additionalQrSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.additionalQrSvg())}`);
   readonly badgeSvg = computed(() => this.buildBadgeSvg());
   readonly badgeSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.badgeSvg())}`);
   readonly qrOnlyPngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-qr.png`);
+  readonly additionalQrSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-additional-qr.svg`);
+  readonly additionalQrPngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-additional-qr.png`);
   readonly badgeSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.svg`);
   readonly badgePngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.png`);
   readonly selectedIconCodes = computed(() => this.draft().badge_icons.split(',').map((icon) => icon.trim()).filter(Boolean).slice(0, 4));
@@ -164,6 +173,8 @@ export class BusinessEditComponent {
       logo_url: draft.logo_url.trim(),
       profile_image_url: draft.profile_image_url.trim(),
       cover_image_url: draft.cover_image_url.trim(),
+      additional_qr_label: draft.additional_qr_label.trim(),
+      additional_qr_url: draft.additional_qr_url.trim(),
     };
     this.saving.set(true);
     this.loadError.set(null);
@@ -187,6 +198,13 @@ export class BusinessEditComponent {
 
   async downloadQrOnlyPng(): Promise<void> {
     await this.downloadSvgAsPng(this.qrOnlySvgHref(), this.qrOnlyPngFilename(), 1024);
+  }
+
+  async downloadAdditionalQrPng(): Promise<void> {
+    if (!this.hasAdditionalQr()) {
+      return;
+    }
+    await this.downloadSvgAsPng(this.additionalQrSvgHref(), this.additionalQrPngFilename(), 1024);
   }
 
   private async downloadSvgAsPng(svgUrl: string, filename: string, size: number, backgroundImageUrl?: string): Promise<void> {
@@ -245,6 +263,8 @@ export class BusinessEditComponent {
       logo_url: business.logo_url ?? '',
       profile_image_url: business.profile_image_url ?? '',
       cover_image_url: business.cover_image_url ?? '',
+      additional_qr_label: business.additional_qr_label ?? '',
+      additional_qr_url: business.additional_qr_url ?? '',
     };
   }
 
@@ -259,6 +279,8 @@ export class BusinessEditComponent {
       logo_url: '',
       profile_image_url: '',
       cover_image_url: '',
+      additional_qr_label: '',
+      additional_qr_url: '',
     };
   }
 

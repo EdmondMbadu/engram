@@ -224,6 +224,26 @@
                 </div>
               }
             </section>
+
+            <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-2xl text-[var(--accent)]">qr_code_2</span>
+                <div>
+                  <h2 class="text-lg font-black">Additional QR code</h2>
+                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Add a simple standalone QR code that points to another location, form, menu, map, or page.</p>
+                </div>
+              </div>
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">QR label</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().additional_qr_label" (input)="updateDraft('additional_qr_label', $any($event.target).value)" placeholder="Menu, event check-in, parking map..." />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">QR destination URL</span>
+                  <input type="url" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().additional_qr_url" (input)="updateDraft('additional_qr_url', $any($event.target).value)" placeholder="https://..." />
+                </label>
+              </div>
+            </section>
           </div>
         </section>
 
@@ -283,6 +303,35 @@
                 <span>Download QR only</span>
               </button>
             </div>
+          </section>
+
+          <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
+            <h2 class="text-lg font-black">Additional QR</h2>
+            @if (hasAdditionalQr()) {
+              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">{{ additionalQrLabel() }}</p>
+              <p class="mt-2 break-all rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-2 text-xs font-bold text-[var(--muted)]">{{ additionalQrUrl() }}</p>
+              <div class="mt-4 overflow-hidden rounded-3xl border border-[var(--line)] bg-white p-4">
+                <img [src]="additionalQrSvgHref()" [alt]="additionalQrLabel() + ' QR preview'" class="aspect-square w-full object-contain" />
+              </div>
+              <div class="mt-4 grid gap-2">
+                <a [href]="additionalQrUrl()" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--accent)]">
+                  <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
+                  <span>Open destination</span>
+                </a>
+                <a [href]="additionalQrSvgHref()" [download]="additionalQrSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)]">
+                  <span class="material-symbols-outlined text-[1rem]">download</span>
+                  <span>Download SVG</span>
+                </a>
+                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadAdditionalQrPng()">
+                  <span class="material-symbols-outlined text-[1rem]">image</span>
+                  <span>Download PNG</span>
+                </button>
+              </div>
+            } @else {
+              <div class="mt-3 rounded-2xl border border-dashed border-[var(--line)] bg-[var(--soft-fill)] px-4 py-6 text-sm leading-6 text-[var(--muted)]">
+                Add a destination URL to preview and download another simple QR code.
+              </div>
+            }
           </section>
           </aside>
         </div>

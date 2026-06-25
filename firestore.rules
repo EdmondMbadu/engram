@@ -275,6 +275,8 @@ service cloud.firestore {
           'admin_email',
           'guide_prompt',
           'badge_icons',
+          'additional_qr_label',
+          'additional_qr_url',
           'business_plan',
           'ai_tone',
           'business_documents_enabled',
@@ -317,6 +319,20 @@ service cloud.firestore {
         && request.resource.data.guide_prompt.size() <= 5000
         && request.resource.data.badge_icons is list
         && request.resource.data.badge_icons.size() <= 4
+        && (
+          !request.resource.data.keys().hasAny(['additional_qr_label'])
+          || (
+            request.resource.data.additional_qr_label is string
+            && request.resource.data.additional_qr_label.size() <= 120
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['additional_qr_url'])
+          || (
+            request.resource.data.additional_qr_url is string
+            && request.resource.data.additional_qr_url.size() <= 1200
+          )
+        )
         && (
           !request.resource.data.keys().hasAny(['business_plan'])
           || request.resource.data.business_plan in ['free', 'local', 'favorite', 'sponsor']
@@ -365,6 +381,8 @@ service cloud.firestore {
           'logo_url',
           'profile_image_url',
           'cover_image_url',
+          'additional_qr_label',
+          'additional_qr_url',
           'status',
           'created_at',
           'updated_at'
@@ -398,6 +416,20 @@ service cloud.firestore {
         && request.resource.data.guide_prompt.size() <= 5000
         && request.resource.data.badge_icons is list
         && request.resource.data.badge_icons.size() <= 4
+        && (
+          !request.resource.data.keys().hasAny(['additional_qr_label'])
+          || (
+            request.resource.data.additional_qr_label is string
+            && request.resource.data.additional_qr_label.size() <= 120
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['additional_qr_url'])
+          || (
+            request.resource.data.additional_qr_url is string
+            && request.resource.data.additional_qr_url.size() <= 1200
+          )
+        )
         && (
           !request.resource.data.keys().hasAny(['business_plan'])
           || request.resource.data.business_plan in ['free', 'local', 'favorite', 'sponsor']
