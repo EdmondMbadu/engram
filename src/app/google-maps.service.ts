@@ -317,6 +317,8 @@ export class GoogleMapsService {
       );
     });
 
+    const photos = detailed.photos?.length ? detailed.photos : place.photos ?? [];
+
     return {
       placeId,
       name: detailed.name ?? place.name ?? 'Untitled place',
@@ -324,7 +326,7 @@ export class GoogleMapsService {
       types: detailed.types ?? place.types ?? [],
       rating: typeof detailed.rating === 'number' ? detailed.rating : null,
       googleMapsUrl: detailed.url ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(detailed.name ?? place.name ?? placeId)}`,
-      photoUrl: detailed.photos?.[0]?.getUrl({ maxWidth: 1000, maxHeight: 1000 }) ?? '',
+      photoUrl: photos[0]?.getUrl({ maxWidth: 1000, maxHeight: 1000 }) ?? '',
     };
   }
 }

@@ -16,6 +16,7 @@ type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purpl
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
+type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 
 type BoardCard = {
   id: string;
@@ -123,6 +124,15 @@ const BOARD_ICONS = [
   'public',
 ];
 
+const SHARE_TARGETS: Array<{ id: ShareTarget; label: string; icon: string }> = [
+  { id: 'facebook', label: 'Facebook', icon: 'public' },
+  { id: 'x', label: 'X', icon: 'alternate_email' },
+  { id: 'linkedin', label: 'LinkedIn', icon: 'work' },
+  { id: 'whatsapp', label: 'WhatsApp', icon: 'chat' },
+  { id: 'reddit', label: 'Reddit', icon: 'forum' },
+  { id: 'email', label: 'Email', icon: 'mail' },
+];
+
 @Component({
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent],
@@ -147,6 +157,7 @@ export class BoardsComponent {
   readonly cardStatuses = CARD_STATUSES;
   readonly boardIcons = BOARD_ICONS;
   readonly ratingOptions = [1, 2, 3, 4, 5];
+  readonly shareTargets = SHARE_TARGETS;
 
   readonly boards = signal<Board[]>([]);
   readonly publicCities = signal<BoardCityOption[]>([]);
@@ -161,6 +172,7 @@ export class BoardsComponent {
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly sharePanelOpen = signal(false);
   readonly cardImageLocked = signal(false);
   readonly placeSuggestions = signal<PlaceSearchResult[]>([]);
   readonly placeSearchLoading = signal(false);
@@ -299,6 +311,7 @@ export class BoardsComponent {
       this.selectedBoardId.set(params.get('boardId'));
       this.cardSearch.set('');
       this.shareMessage.set(null);
+      this.sharePanelOpen.set(false);
     });
 
     effect(() => {
@@ -706,12 +719,38 @@ export class BoardsComponent {
     return value.startsWith('data:') ? '' : value;
   }
 
-  async shareBoard(board: Board): Promise<void> {
+  toggleSharePanel(): void {
+    this.sharePanelOpen.update((open) => !open);
+    this.shareMessage.set(null);
+  }
+
+  boardShareUrl(board: Board): string {
+    if (!this.isBrowser) {
+      return `/boards/${board.id}`;
+    }
+    return `${window.location.origin}/boards/${board.id}`;
+  }
+
+  async copyBoardUrl(board: Board): Promise<void> {
     if (!this.isBrowser) {
       return;
     }
 
-    const url = `${window.location.origin}/boards/${board.id}`;
+    const url = this.boardShareUrl(board);
+    try {
+      await navigator.clipboard.writeText(url);
+      this.shareMessage.set('Board link copied.');
+    } catch {
+      this.shareMessage.set(url);
+    }
+  }
+
+  async nativeShareBoard(board: Board): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const url = this.boardShareUrl(board);
     try {
       if (navigator.share) {
         await navigator.share({
@@ -723,10 +762,30 @@ export class BoardsComponent {
         return;
       }
 
-      await navigator.clipboard.writeText(url);
-      this.shareMessage.set('Board link copied.');
+      await this.copyBoardUrl(board);
     } catch {
       this.shareMessage.set(url);
+    }
+  }
+
+  shareTargetUrl(target: ShareTarget, board: Board): string {
+    const url = this.boardShareUrl(board);
+    const encodedUrl = encodeURIComponent(url);
+    const title = encodeURIComponent(board.title);
+    const text = encodeURIComponent(board.description || board.title);
+    switch (target) {
+      case 'facebook':
+        return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+      case 'x':
+        return `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${title}`;
+      case 'linkedin':
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+      case 'whatsapp':
+        return `https://wa.me/?text=${text}%20${encodedUrl}`;
+      case 'reddit':
+        return `https://www.reddit.com/submit?url=${encodedUrl}&title=${title}`;
+      case 'email':
+        return `mailto:?subject=${title}&body=${text}%0A%0A${encodedUrl}`;
     }
   }
 
@@ -973,6 +1032,14 @@ export class BoardsComponent {
         query,
         cityAsPlace ? matchedCity?.region ?? '' : matchedCity?.name ?? city,
       );
+      if (!googleResults.some((result) => result.photoUrl) && cityResults.length) {
+        const bestCityResult = cityResults[0];
+        const retryResults = await this.googleMapsService.searchPlaces(
+          bestCityResult.name,
+          bestCityResult.address || matchedCity?.name || city,
+        );
+        googleResults = this.mergePlaceResults(googleResults, retryResults);
+      }
       if (runId !== this.placeSearchRun) {
         return;
       }

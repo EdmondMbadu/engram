@@ -684,6 +684,80 @@
   max-width: 100%;
 }
 
+.board-share-panel {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 0.65rem;
+  border: 3px solid var(--ink);
+  border-radius: 1.15rem 0.92rem 1.25rem 0.98rem;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 0.72rem;
+}
+
+.board-share-panel__url {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.board-share-panel__url > span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft-fill);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 0.68rem 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-share-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.board-share-panel__url button,
+.board-share-panel__actions button,
+.board-share-panel__actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2.35rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--board-accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 950;
+  line-height: 1;
+  padding: 0.58rem 0.72rem;
+  text-decoration: none;
+}
+
+.board-share-panel__url button:hover,
+.board-share-panel__actions button:hover,
+.board-share-panel__actions a:hover {
+  background: color-mix(in srgb, var(--board-accent) 10%, #ffffff);
+  transform: translateY(-1px);
+}
+
+.board-share-panel .material-symbols-outlined {
+  font-size: 1rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .board-detail__stats {
   display: grid;
   gap: 0.65rem;
@@ -1746,6 +1820,15 @@
   .boards-form__split,
   .boards-form__split--thirds {
     grid-template-columns: 1fr;
+  }
+
+  .board-share-panel__url {
+    grid-template-columns: 1fr;
+  }
+
+  .boards-choice-grid--types,
+  .boards-choice-grid--status {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .boards-upload {

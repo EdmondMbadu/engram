@@ -220,7 +220,7 @@
                 <span class="material-symbols-outlined">arrow_back</span>
                 Boards
               </button>
-              <button type="button" class="boards-share-button" (click)="shareBoard(board)">
+              <button type="button" class="boards-share-button" (click)="toggleSharePanel()">
                 <span class="material-symbols-outlined">ios_share</span>
                 Share
               </button>
@@ -251,6 +251,35 @@
                 </div>
               </div>
             </div>
+
+            @if (sharePanelOpen()) {
+              <div class="board-share-panel" aria-label="Share board">
+                <div class="board-share-panel__url">
+                  <span>{{ boardShareUrl(board) }}</span>
+                  <button type="button" (click)="copyBoardUrl(board)">
+                    <span class="material-symbols-outlined">content_copy</span>
+                    Copy URL
+                  </button>
+                </div>
+
+                <div class="board-share-panel__actions">
+                  <button type="button" (click)="nativeShareBoard(board)">
+                    <span class="material-symbols-outlined">ios_share</span>
+                    Share
+                  </button>
+                  @for (target of shareTargets; track target.id) {
+                    <a
+                      [href]="shareTargetUrl(target.id, board)"
+                      [attr.target]="target.id === 'email' ? null : '_blank'"
+                      rel="noopener"
+                    >
+                      <span class="material-symbols-outlined">{{ target.icon }}</span>
+                      {{ target.label }}
+                    </a>
+                  }
+                </div>
+              </div>
+            }
           </div>
 
           <div class="board-detail__toolbar">
