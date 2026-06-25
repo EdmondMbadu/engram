@@ -1455,6 +1455,116 @@
   padding: 0.3rem 0.42rem;
 }
 
+.boards-choice-panel {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.boards-choice-group {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.boards-choice-group > span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.boards-choice-grid {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.boards-choice-grid--types {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.boards-choice-grid--status {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.boards-choice {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 2.7rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  border: 1px solid var(--line);
+  border-radius: 0.95rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.48rem 0.55rem;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.boards-choice:hover {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  transform: translateY(-1px);
+}
+
+.boards-choice--active {
+  border: 2px solid var(--ink);
+  background: color-mix(in srgb, var(--accent) 15%, #ffffff);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--accent);
+}
+
+.boards-choice .material-symbols-outlined {
+  flex: 0 0 auto;
+  font-size: 1.12rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.boards-choice strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+  font-weight: 950;
+  line-height: 1.05;
+}
+
+.boards-rating-picker {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  gap: 0.32rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 0.35rem;
+}
+
+.boards-rating-picker button {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: color-mix(in srgb, var(--muted) 72%, transparent);
+  cursor: pointer;
+}
+
+.boards-rating-picker button:hover,
+.boards-rating-picker__star--active {
+  background: #fff0b8;
+  color: #9a6500;
+}
+
+.boards-rating-picker .material-symbols-outlined {
+  font-size: 1.28rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .boards-form input,
 .boards-form textarea,
 .boards-form select {

@@ -146,6 +146,7 @@ export class BoardsComponent {
   readonly cardTypes = CARD_TYPES;
   readonly cardStatuses = CARD_STATUSES;
   readonly boardIcons = BOARD_ICONS;
+  readonly ratingOptions = [1, 2, 3, 4, 5];
 
   readonly boards = signal<Board[]>([]);
   readonly publicCities = signal<BoardCityOption[]>([]);
@@ -160,6 +161,7 @@ export class BoardsComponent {
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly cardImageLocked = signal(false);
   readonly placeSuggestions = signal<PlaceSearchResult[]>([]);
   readonly placeSearchLoading = signal(false);
   readonly placeSearchError = signal<string | null>(null);
@@ -415,6 +417,7 @@ export class BoardsComponent {
     }
     this.selectedBoardId.set(boardId);
     this.imageUploadError.set(null);
+    this.cardImageLocked.set(false);
     this.editingCardId.set(null);
     this.cardDraft.set({
       title: '',
@@ -436,6 +439,7 @@ export class BoardsComponent {
   openEditCard(card: BoardCard): void {
     this.editingCardId.set(card.id);
     this.imageUploadError.set(null);
+    this.cardImageLocked.set(!!card.imageUrl);
     this.cardDraft.set({
       title: card.title,
       subtitle: card.subtitle,
@@ -461,6 +465,7 @@ export class BoardsComponent {
   closeCardDialog(): void {
     this.cardDialogOpen.set(false);
     this.editingCardId.set(null);
+    this.cardImageLocked.set(false);
     this.clearPlaceSearch();
   }
 
@@ -493,6 +498,7 @@ export class BoardsComponent {
 
     try {
       const imageUrl = await this.readImageFile(file);
+      this.cardImageLocked.set(true);
       this.updateCardDraft('imageUrl', imageUrl);
       this.imageUploadError.set(null);
     } catch (error) {
@@ -508,8 +514,14 @@ export class BoardsComponent {
   }
 
   clearCardImage(): void {
+    this.cardImageLocked.set(true);
     this.updateCardDraft('imageUrl', '');
     this.imageUploadError.set(null);
+  }
+
+  onCardImageUrlInput(value: string): void {
+    this.cardImageLocked.set(true);
+    this.updateCardDraft('imageUrl', value);
   }
 
   onPlaceQueryInput(value: string): void {
@@ -541,7 +553,7 @@ export class BoardsComponent {
       title: place.name,
       subtitle: place.address,
       type: inferredType,
-      imageUrl: place.photoUrl || draft.imageUrl,
+      imageUrl: this.cardImageLocked() ? draft.imageUrl : place.photoUrl || draft.imageUrl,
       placeQuery: place.name,
       placeId: place.placeId,
       googleMapsUrl: place.googleMapsUrl,
@@ -988,6 +1000,7 @@ export class BoardsComponent {
       if (first && !draft.placeId && (!draft.imageUrl || !draft.subtitle.trim())) {
         this.applyPlaceSuggestion(first, false);
       }
+      this.autoPopulateCardImage(results);
     } else if (googleLookupError instanceof Error) {
       this.placeSearchError.set(googleLookupError.message);
     } else if (cityLookupFailed) {
@@ -1094,6 +1107,63 @@ export class BoardsComponent {
 
   private placeMergeKey(place: PlaceSearchResult): string {
     return place.placeId || `${place.name} ${place.address}`.trim().toLowerCase();
+  }
+
+  private autoPopulateCardImage(results: PlaceSearchResult[]): void {
+    const draft = this.cardDraft();
+    if (this.cardImageLocked() || draft.imageUrl) {
+      return;
+    }
+
+    const photoResult = this.bestPhotoResult(results, draft);
+    if (!photoResult?.photoUrl) {
+      return;
+    }
+
+    this.cardDraft.update((current) => ({
+      ...current,
+      imageUrl: photoResult.photoUrl,
+      placeId: current.placeId || photoResult.placeId,
+      googleMapsUrl: current.googleMapsUrl || photoResult.googleMapsUrl,
+    }));
+    this.placeSearchHint.set('Place details and image are ready.');
+  }
+
+  private bestPhotoResult(results: PlaceSearchResult[], draft: CardDraft): PlaceSearchResult | null {
+    const withPhotos = results.filter((result) => !!result.photoUrl);
+    if (!withPhotos.length) {
+      return null;
+    }
+
+    const currentPlaceId = draft.placeId.trim();
+    if (currentPlaceId) {
+      const exact = withPhotos.find((result) => result.placeId === currentPlaceId);
+      if (exact) {
+        return exact;
+      }
+    }
+
+    const title = this.normalizePlaceName(draft.title || draft.placeQuery);
+    if (title) {
+      const nameMatch = withPhotos.find((result) => {
+        const name = this.normalizePlaceName(result.name);
+        return name === title || name.includes(title) || title.includes(name);
+      });
+      if (nameMatch) {
+        return nameMatch;
+      }
+    }
+
+    return withPhotos[0];
+  }
+
+  private normalizePlaceName(value: string): string {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\b(the|a|an|at|in|of|and)\b/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   private inferCardType(place: PlaceSearchResult): BoardCardType {

@@ -625,42 +625,59 @@
             ></textarea>
           </label>
 
-          <div class="boards-form__split boards-form__split--thirds">
-            <label>
+          <div class="boards-choice-panel">
+            <div class="boards-choice-group">
               <span>Type</span>
-              <select
-                [value]="cardDraft().type"
-                (change)="updateCardDraft('type', $any($event.target).value)"
-              >
+              <div class="boards-choice-grid boards-choice-grid--types">
                 @for (type of cardTypes; track type.id) {
-                  <option [value]="type.id">{{ type.label }}</option>
+                  <button
+                    type="button"
+                    class="boards-choice"
+                    [class.boards-choice--active]="cardDraft().type === type.id"
+                    [attr.aria-pressed]="cardDraft().type === type.id"
+                    (click)="updateCardDraft('type', type.id)"
+                  >
+                    <span class="material-symbols-outlined">{{ type.icon }}</span>
+                    <strong>{{ type.label }}</strong>
+                  </button>
                 }
-              </select>
-            </label>
-            <label>
+              </div>
+            </div>
+
+            <div class="boards-choice-group">
               <span>Status</span>
-              <select
-                [value]="cardDraft().status"
-                (change)="updateCardDraft('status', $any($event.target).value)"
-              >
+              <div class="boards-choice-grid boards-choice-grid--status">
                 @for (status of cardStatuses; track status.id) {
-                  <option [value]="status.id">{{ status.label }}</option>
+                  <button
+                    type="button"
+                    class="boards-choice"
+                    [class.boards-choice--active]="cardDraft().status === status.id"
+                    [attr.aria-pressed]="cardDraft().status === status.id"
+                    (click)="updateCardDraft('status', status.id)"
+                  >
+                    <span class="material-symbols-outlined">{{ status.icon }}</span>
+                    <strong>{{ status.label }}</strong>
+                  </button>
                 }
-              </select>
-            </label>
-            <label>
+              </div>
+            </div>
+
+            <div class="boards-choice-group">
               <span>Rating</span>
-              <select
-                [value]="cardDraft().rating"
-                (change)="updateCardDraft('rating', $any($event.target).value)"
-              >
-                <option value="1">1 star</option>
-                <option value="2">2 stars</option>
-                <option value="3">3 stars</option>
-                <option value="4">4 stars</option>
-                <option value="5">5 stars</option>
-              </select>
-            </label>
+              <div class="boards-rating-picker" role="group" aria-label="Card rating">
+                @for (rating of ratingOptions; track rating) {
+                  <button
+                    type="button"
+                    [class.boards-rating-picker__star--active]="+cardDraft().rating >= rating"
+                    [attr.aria-pressed]="+cardDraft().rating === rating"
+                    [attr.aria-label]="rating + ' star rating'"
+                    (click)="updateCardDraft('rating', '' + rating)"
+                  >
+                    <span class="material-symbols-outlined">kid_star</span>
+                  </button>
+                }
+              </div>
+            </div>
           </div>
 
           <div class="boards-upload-field">
@@ -695,7 +712,7 @@
               type="url"
               placeholder="https://..."
               [value]="imageUrlInputValue(cardDraft().imageUrl)"
-              (input)="updateCardDraft('imageUrl', $any($event.target).value)"
+              (input)="onCardImageUrlInput($any($event.target).value)"
             />
           </label>
           <label>
