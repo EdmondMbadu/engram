@@ -200,6 +200,21 @@ const CARD_STICKER_ICONS = [
   'warning',
 ];
 
+const STICKER_COLORS = [
+  { bg: '#fff0b8', ink: '#8a5200' },
+  { bg: '#ffe2d7', ink: '#a43318' },
+  { bg: '#dffcf7', ink: '#006f68' },
+  { bg: '#ddeeff', ink: '#174ea6' },
+  { bg: '#f0e4ff', ink: '#6d2eb5' },
+  { bg: '#daf8c8', ink: '#236f31' },
+  { bg: '#ffddeb', ink: '#a61f5b' },
+  { bg: '#dff7ff', ink: '#08708c' },
+  { bg: '#fff6db', ink: '#735600' },
+  { bg: '#e7f0ff', ink: '#27458c' },
+  { bg: '#f4e8d8', ink: '#6e4218' },
+  { bg: '#e9ffd8', ink: '#477000' },
+];
+
 const SHARE_TARGETS: Array<{ id: ShareTarget; label: string; icon: string }> = [
   { id: 'facebook', label: 'Facebook', icon: 'public' },
   { id: 'x', label: 'X', icon: 'alternate_email' },
@@ -1139,6 +1154,14 @@ export class BoardsComponent {
   stickerScale(index: number): number {
     const scales = [1, 0.82, 1.18, 0.94, 1.3, 0.76, 1.08, 0.9, 1.22, 0.84, 1.12, 0.98];
     return scales[index % scales.length];
+  }
+
+  stickerBackground(index: number): string {
+    return STICKER_COLORS[index % STICKER_COLORS.length].bg;
+  }
+
+  stickerInk(index: number): string {
+    return STICKER_COLORS[index % STICKER_COLORS.length].ink;
   }
 
   private async prepareBoardImagesForFirebase(board: Board, uid: string): Promise<Board> {

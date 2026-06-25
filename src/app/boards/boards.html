@@ -336,6 +336,8 @@
                           [style.left.%]="stickerLeft($index)"
                           [style.top.%]="stickerTop($index)"
                           [style.transform]="'rotate(' + stickerRotation($index) + 'deg) scale(' + stickerScale($index) + ')'"
+                          [style.--sticker-bg]="stickerBackground($index)"
+                          [style.--sticker-ink]="stickerInk($index)"
                         >
                           <span class="material-symbols-outlined">{{ sticker }}</span>
                         </span>
@@ -657,6 +659,8 @@
                   [class.boards-sticker-choice--active]="cardDraft().stickers.includes(icon)"
                   [attr.aria-pressed]="cardDraft().stickers.includes(icon)"
                   [attr.aria-label]="'Toggle ' + icon + ' sticker'"
+                  [style.--sticker-bg]="stickerBackground($index)"
+                  [style.--sticker-ink]="stickerInk($index)"
                   (click)="toggleCardSticker(icon)"
                 >
                   <span class="material-symbols-outlined">{{ icon }}</span>

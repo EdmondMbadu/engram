@@ -864,16 +864,20 @@
 
 .detail-card__sticker {
   position: absolute;
+  --sticker-bg: #fff0b8;
+  --sticker-ink: #8a5200;
   display: grid;
   width: 2.35rem;
   height: 2.35rem;
   place-items: center;
   border: 2px solid var(--ink);
   border-radius: 0.75rem 0.55rem 0.82rem 0.58rem;
-  background: color-mix(in srgb, var(--board-soft) 70%, #ffffff);
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.72), transparent 28%),
+    var(--sticker-bg);
   box-shadow: 2px 2px 0 var(--ink);
-  color: var(--board-accent);
-  opacity: 0.86;
+  color: var(--sticker-ink);
+  opacity: 0.92;
 }
 
 .detail-card__sticker .material-symbols-outlined {
@@ -1653,9 +1657,10 @@
 }
 
 .boards-sticker-choice {
+  --sticker-bg: var(--surface);
+  --sticker-ink: var(--muted);
   display: grid;
   aspect-ratio: 1;
-  min-width: 0;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 0.8rem;
@@ -1663,20 +1668,21 @@
   color: var(--muted);
   cursor: pointer;
   font: inherit;
-  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  transition: transform 160ms ease, background 160ms ease;
 }
 
 .boards-sticker-choice:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-  color: var(--text);
+  background: color-mix(in srgb, var(--sticker-bg) 44%, var(--surface));
+  color: var(--sticker-ink);
   transform: translateY(-1px) rotate(-2deg);
 }
 
 .boards-sticker-choice--active {
   border: 2px solid var(--modal-ink, var(--ink));
-  background: color-mix(in srgb, var(--accent) 16%, var(--surface-strong));
+  background: var(--sticker-bg);
   box-shadow: 2px 2px 0 var(--modal-ink, var(--ink));
-  color: var(--accent);
+  color: var(--sticker-ink);
 }
 
 .boards-sticker-choice .material-symbols-outlined {
