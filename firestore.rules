@@ -276,6 +276,7 @@ service cloud.firestore {
           'visibility',
           'title',
           'description',
+          'backNote',
           'icon',
           'tone',
           'imageUrl',
@@ -291,6 +292,8 @@ service cloud.firestore {
         && request.resource.data.title.size() <= 90
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 240
+        && request.resource.data.backNote is string
+        && request.resource.data.backNote.size() <= 300
         && request.resource.data.icon is string
         && request.resource.data.icon.size() <= 64
         && request.resource.data.tone in ['teal', 'coral', 'yellow', 'green', 'blue', 'sky', 'purple']

@@ -64,6 +64,7 @@ type Board = {
   id: string;
   title: string;
   description: string;
+  backNote: string;
   icon: string;
   tone: BoardTone;
   imageUrl: string;
@@ -76,6 +77,7 @@ type Board = {
 type BoardDraft = {
   title: string;
   description: string;
+  backNote: string;
   icon: string;
   tone: BoardTone;
   imageUrl: string;
@@ -284,6 +286,7 @@ export class BoardsComponent {
   readonly publicCities = signal<BoardCityOption[]>([]);
   readonly citiesLoading = signal(false);
   readonly selectedBoardId = signal<string | null>(null);
+  readonly flippedBoardIds = signal<Set<string>>(new Set());
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
@@ -305,6 +308,7 @@ export class BoardsComponent {
   readonly boardDraft = signal<BoardDraft>({
     title: '',
     description: '',
+    backNote: '',
     icon: 'dashboard',
     tone: 'teal',
     imageUrl: '',
@@ -354,7 +358,7 @@ export class BoardsComponent {
     }
 
     return boards.filter((board) =>
-      [board.title, board.description, board.cards.map((card) => card.title).join(' ')]
+      [board.title, board.description, board.backNote, board.cards.map((card) => card.title).join(' ')]
         .join(' ')
         .toLowerCase()
         .includes(query),
@@ -467,12 +471,29 @@ export class BoardsComponent {
     void this.router.navigate(['/boards']);
   }
 
+  isBoardFlipped(boardId: string): boolean {
+    return this.flippedBoardIds().has(boardId);
+  }
+
+  toggleBoardFlip(boardId: string): void {
+    this.flippedBoardIds.update((flipped) => {
+      const next = new Set(flipped);
+      if (next.has(boardId)) {
+        next.delete(boardId);
+      } else {
+        next.add(boardId);
+      }
+      return next;
+    });
+  }
+
   openCreateBoard(): void {
     this.editingBoardId.set(null);
     this.imageUploadError.set(null);
     this.boardDraft.set({
       title: '',
       description: '',
+      backNote: '',
       icon: 'dashboard',
       tone: this.tones[this.boards().length % this.tones.length]?.id ?? 'teal',
       imageUrl: '',
@@ -487,6 +508,7 @@ export class BoardsComponent {
     this.boardDraft.set({
       title: board.title,
       description: board.description,
+      backNote: board.backNote,
       icon: board.icon,
       tone: board.tone,
       imageUrl: board.imageUrl,
@@ -521,6 +543,7 @@ export class BoardsComponent {
                 ...board,
                 title,
                 description: draft.description.trim(),
+                backNote: draft.backNote.trim(),
                 icon: draft.icon,
                 tone: draft.tone,
                 imageUrl: draft.imageUrl.trim(),
@@ -535,6 +558,7 @@ export class BoardsComponent {
         id: this.createId(),
         title,
         description: draft.description.trim(),
+        backNote: draft.backNote.trim(),
         icon: draft.icon,
         tone: draft.tone,
         imageUrl: draft.imageUrl.trim(),
@@ -835,13 +859,23 @@ export class BoardsComponent {
     }
 
     const now = new Date().toISOString();
+    let nextBoard: Board | null = null;
     this.boards.update((boards) =>
-      boards.map((item) =>
-        item.id === board.id
-          ? { ...item, cards: item.cards.filter((existing) => existing.id !== card.id), updatedAt: now }
-          : item,
-      ),
+      boards.map((item) => {
+        if (item.id !== board.id) {
+          return item;
+        }
+        nextBoard = {
+          ...item,
+          cards: item.cards.filter((existing) => existing.id !== card.id),
+          updatedAt: now,
+        };
+        return nextBoard;
+      }),
     );
+    if (nextBoard) {
+      void this.persistAndReplaceBoard(nextBoard);
+    }
   }
 
   deleteGalleryCard(boardId: string, card: BoardCard): void {
@@ -1074,6 +1108,7 @@ export class BoardsComponent {
         .map((board) => ({
           ...board,
           imageUrl: board.imageUrl ?? '',
+          backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
           cards: board.cards.map((card) => ({
             ...card,
@@ -1147,6 +1182,7 @@ export class BoardsComponent {
       id,
       title,
       description: typeof data['description'] === 'string' ? data['description'] : '',
+      backNote: typeof data['backNote'] === 'string' ? data['backNote'] : '',
       icon: typeof data['icon'] === 'string' ? data['icon'] : 'dashboard',
       tone: this.isBoardTone(data['tone']) ? data['tone'] : 'teal',
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',

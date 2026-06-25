@@ -127,49 +127,70 @@
             @for (board of filteredBoards(); track board.id) {
               <article
                 class="board-square"
+                [class.board-square--flipped]="isBoardFlipped(board.id)"
                 [style.--board-accent]="toneAccent(board.tone)"
                 [style.--board-soft]="toneSoft(board.tone)"
               >
-                <button type="button" class="board-square__open" (click)="selectBoard(board.id)">
-                  @if (board.imageUrl) {
-                    <img class="board-square__image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" loading="lazy" />
-                  }
-                  @if (board.stickers.length) {
-                    <span class="board-square__stickers" aria-hidden="true">
-                      @for (sticker of board.stickers; track sticker.id) {
-                        <span
-                          class="board-sticker"
-                          [class.board-sticker--dragging]="draggedStickerId() === sticker.id"
-                          [style.left.%]="sticker.x"
-                          [style.top.%]="sticker.y"
-                          [style.transform]="stickerTransform(sticker)"
-                          [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
-                          [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
-                          [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
-                          [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
-                          (pointerdown)="beginStickerDrag($event, 'board', board.id, sticker.id)"
-                        >
-                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
-                        </span>
+                <div class="board-square__rotor">
+                  <button type="button" class="board-square__open board-square__face board-square__face--front" (click)="selectBoard(board.id)">
+                    @if (board.imageUrl) {
+                      <img class="board-square__image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" loading="lazy" />
+                    }
+                    @if (board.stickers.length) {
+                      <span class="board-square__stickers" aria-hidden="true">
+                        @for (sticker of board.stickers; track sticker.id) {
+                          <span
+                            class="board-sticker"
+                            [class.board-sticker--dragging]="draggedStickerId() === sticker.id"
+                            [style.left.%]="sticker.x"
+                            [style.top.%]="sticker.y"
+                            [style.transform]="stickerTransform(sticker)"
+                            [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                            [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                            [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                            [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                            (pointerdown)="beginStickerDrag($event, 'board', board.id, sticker.id)"
+                          >
+                            <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                          </span>
+                        }
+                      </span>
+                    }
+                    <span class="board-square__icon">
+                      <span class="material-symbols-outlined">{{ board.icon }}</span>
+                    </span>
+                    <span class="board-square__meta">
+                      <strong>{{ board.title }}</strong>
+                      <small>{{ board.cards.length }} cards</small>
+                    </span>
+                    <span class="board-square__stack" aria-hidden="true">
+                      @for (card of board.cards.slice(0, 3); track card.id) {
+                        <i>
+                          <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                        </i>
                       }
                     </span>
-                  }
-                  <span class="board-square__icon">
-                    <span class="material-symbols-outlined">{{ board.icon }}</span>
-                  </span>
-                  <span class="board-square__meta">
-                    <strong>{{ board.title }}</strong>
-                    <small>{{ board.cards.length }} cards</small>
-                  </span>
-                  <span class="board-square__stack" aria-hidden="true">
-                    @for (card of board.cards.slice(0, 3); track card.id) {
+                  </button>
+
+                  <button type="button" class="board-square__open board-square__face board-square__face--back" (click)="selectBoard(board.id)">
+                    <span class="board-square__icon">
+                      <span class="material-symbols-outlined">{{ board.icon }}</span>
+                    </span>
+                    <span class="board-square__meta board-square__meta--back">
+                      <strong>{{ board.backNote || board.description || 'Add a secret note, a memory, or a tiny fun fact for this collection.' }}</strong>
+                      <small>{{ board.cards.length }} cards · {{ boardUpdatedLabel(board) }}</small>
+                    </span>
+                    <span class="board-square__stack" aria-hidden="true">
                       <i>
-                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
                       </i>
-                    }
-                  </span>
-                </button>
+                    </span>
+                  </button>
+                </div>
                 <div class="board-square__tools">
+                  <button type="button" [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'" (click)="toggleBoardFlip(board.id)">
+                    <span class="material-symbols-outlined">{{ isBoardFlipped(board.id) ? 'flip_to_front' : 'flip_to_back' }}</span>
+                  </button>
                   <button type="button" aria-label="Edit board" (click)="openEditBoard(board)">
                     <span class="material-symbols-outlined">edit</span>
                   </button>
@@ -212,10 +233,10 @@
                   </span>
                 </button>
                 <div class="mosaic-card__tools">
-                  <button type="button" aria-label="Edit card" (click)="openEditGalleryCard(item.board.id, item.card)">
+                  <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditGalleryCard(item.board.id, item.card)">
                     <span class="material-symbols-outlined">edit</span>
                   </button>
-                  <button type="button" aria-label="Delete card" (click)="deleteGalleryCard(item.board.id, item.card)">
+                  <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteGalleryCard(item.board.id, item.card)">
                     <span class="material-symbols-outlined">delete</span>
                   </button>
                 </div>
@@ -436,10 +457,10 @@
                   <div class="detail-card__footer">
                     <span>Updated {{ cardUpdatedLabel(card) }}</span>
                     <span class="detail-card__buttons">
-                      <button type="button" aria-label="Edit card" (click)="openEditCard(card)">
+                      <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
                         <span class="material-symbols-outlined">edit</span>
                       </button>
-                      <button type="button" aria-label="Delete card" (click)="deleteCard(card)">
+                      <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteCard(card)">
                         <span class="material-symbols-outlined">delete</span>
                       </button>
                     </span>
@@ -494,6 +515,16 @@
               placeholder="What belongs in this collection?"
               [value]="boardDraft().description"
               (input)="updateBoardDraft('description', $any($event.target).value)"
+            ></textarea>
+          </label>
+          <label>
+            <span>Back note</span>
+            <textarea
+              rows="3"
+              maxlength="260"
+              placeholder="A hidden fun fact, favorite memory, or private-feeling note for the back of this board."
+              [value]="boardDraft().backNote"
+              (input)="updateBoardDraft('backNote', $any($event.target).value)"
             ></textarea>
           </label>
 
