@@ -497,6 +497,7 @@ export class BoardsComponent {
   readonly citiesLoading = signal(false);
   readonly selectedBoardId = signal<string | null>(null);
   readonly flippedBoardIds = signal<Set<string>>(new Set());
+  readonly flippedCardIds = signal<Set<string>>(new Set());
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
@@ -704,7 +705,8 @@ export class BoardsComponent {
     return this.flippedBoardIds().has(boardId);
   }
 
-  toggleBoardFlip(boardId: string): void {
+  toggleBoardFlip(boardId: string, event?: Event): void {
+    this.keepScrollPosition(event);
     this.flippedBoardIds.update((flipped) => {
       const next = new Set(flipped);
       if (next.has(boardId)) {
@@ -714,6 +716,34 @@ export class BoardsComponent {
       }
       return next;
     });
+  }
+
+  isCardFlipped(cardId: string): boolean {
+    return this.flippedCardIds().has(cardId);
+  }
+
+  toggleCardFlip(cardId: string, event?: Event): void {
+    this.keepScrollPosition(event);
+    this.flippedCardIds.update((flipped) => {
+      const next = new Set(flipped);
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+      return next;
+    });
+  }
+
+  private keepScrollPosition(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.isBrowser) {
+      return;
+    }
+    const x = window.scrollX;
+    const y = window.scrollY;
+    window.requestAnimationFrame(() => window.scrollTo(x, y));
   }
 
   openCreateBoard(): void {

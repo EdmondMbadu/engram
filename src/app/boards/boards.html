@@ -17,10 +17,17 @@
         </div>
 
         <div class="boards-topbar__actions">
-          <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
-            <span class="material-symbols-outlined">add</span>
-            <span class="hidden sm:inline">New Board</span>
-          </button>
+          @if (selectedBoard(); as topBoard) {
+            <button type="button" class="boards-primary-action" (click)="openCreateCard(topBoard.id)">
+              <span class="material-symbols-outlined">add</span>
+              <span class="hidden sm:inline">New Card</span>
+            </button>
+          } @else {
+            <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
+              <span class="material-symbols-outlined">add</span>
+              <span class="hidden sm:inline">New Board</span>
+            </button>
+          }
           <app-theme-toggle></app-theme-toggle>
           <app-account-menu></app-account-menu>
         </div>
@@ -188,7 +195,7 @@
                   </button>
                 </div>
                 <div class="board-square__tools">
-                  <button type="button" [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'" (click)="toggleBoardFlip(board.id)">
+                  <button type="button" [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'" (click)="toggleBoardFlip(board.id, $event)">
                     <span class="material-symbols-outlined">{{ isBoardFlipped(board.id) ? 'flip_to_front' : 'flip_to_back' }}</span>
                   </button>
                   <button type="button" aria-label="Edit board" (click)="openEditBoard(board)">
@@ -405,10 +412,6 @@
               />
             </label>
             <div class="board-detail__actions">
-              <button type="button" class="boards-ghost-action" (click)="openEditBoard(board)">
-                <span class="material-symbols-outlined">tune</span>
-                Edit board
-              </button>
               <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
                 <span class="material-symbols-outlined">add</span>
                 Add card
@@ -432,6 +435,8 @@
                 <article
                   class="detail-card"
                   [class.detail-card--favorite]="card.status === 'favorite'"
+                  [class.board-square--flipped]="isCardFlipped(card.id)"
+                  style="overflow: visible; perspective: 1200px;"
                   (pointerdown)="beginCardStickerDrag($event, board.id, card)"
                 >
                   @if (card.stickers.length) {
@@ -454,64 +459,127 @@
                       }
                     </div>
                   }
-                  <div class="detail-card__media">
-                    @if (card.imageUrl) {
-                      <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
-                    } @else {
-                      <span class="detail-card__fallback">
-                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                      </span>
-                    }
-                    <span class="detail-card__status">
-                      <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
-                      {{ statusLabel(card.status) }}
-                    </span>
-                  </div>
+                  <div class="board-square__rotor" style="min-height: 23.5rem;">
+                    <div
+                      class="board-square__face"
+                      [style.pointer-events]="isCardFlipped(card.id) ? 'none' : 'auto'"
+                      [style.z-index]="isCardFlipped(card.id) ? 1 : 2"
+                      style="display: flex; flex-direction: column; overflow: hidden; border-radius: inherit; background: #fff;"
+                    >
+                      <div class="detail-card__media">
+                        @if (card.imageUrl) {
+                          <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                        } @else {
+                          <span class="detail-card__fallback">
+                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                          </span>
+                        }
+                        <span class="detail-card__status">
+                          <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
+                          {{ statusLabel(card.status) }}
+                        </span>
+                      </div>
 
-                  <div class="detail-card__body">
-                    <div class="detail-card__line">
-                      <span>
-                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                        {{ cardTypeLabel(card.type) }}
-                      </span>
-                      <span>
-                        <span class="material-symbols-outlined">{{ cardScopeIcon(card.scope) }}</span>
-                        {{ cardScopeLabel(card.scope) }}
-                      </span>
-                      <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
-                    </div>
-                    <h2>{{ card.title }}</h2>
-                    @if (card.subtitle) {
-                      <p class="detail-card__subtitle">{{ card.subtitle }}</p>
-                    }
-                    @if (card.googleMapsUrl) {
-                      <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener">
-                        <span class="material-symbols-outlined">map</span>
-                        Open place
-                      </a>
-                    }
-                    @if (card.notes) {
-                      <p class="detail-card__notes">{{ card.notes }}</p>
-                    }
-                    @if (card.tags.length) {
-                      <div class="detail-card__tags">
-                        @for (tag of card.tags; track tag) {
-                          <span>{{ tag }}</span>
+                      <div class="detail-card__body">
+                        <div class="detail-card__line">
+                          <span>
+                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                            {{ cardTypeLabel(card.type) }}
+                          </span>
+                          <span>
+                            <span class="material-symbols-outlined">{{ cardScopeIcon(card.scope) }}</span>
+                            {{ cardScopeLabel(card.scope) }}
+                          </span>
+                          <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
+                        </div>
+                        <h2>{{ card.title }}</h2>
+                        @if (card.subtitle) {
+                          <p class="detail-card__subtitle">{{ card.subtitle }}</p>
+                        }
+                        @if (card.googleMapsUrl) {
+                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener">
+                            <span class="material-symbols-outlined">map</span>
+                            Open place
+                          </a>
+                        }
+                        @if (card.notes) {
+                          <p class="detail-card__notes">{{ card.notes }}</p>
+                        }
+                        @if (card.tags.length) {
+                          <div class="detail-card__tags">
+                            @for (tag of card.tags; track tag) {
+                              <span>{{ tag }}</span>
+                            }
+                          </div>
                         }
                       </div>
-                    }
-                  </div>
 
-                  <div class="detail-card__footer">
-                    <span>Updated {{ cardUpdatedLabel(card) }}</span>
-                    <span class="detail-card__buttons">
-                      <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteCard(card)">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </span>
+                      <div class="detail-card__footer">
+                        <span>Updated {{ cardUpdatedLabel(card) }}</span>
+                        <span class="detail-card__buttons">
+                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)">
+                            <span class="material-symbols-outlined">flip_to_back</span>
+                          </button>
+                          <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
+                            <span class="material-symbols-outlined">edit</span>
+                          </button>
+                          <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteCard(card)">
+                            <span class="material-symbols-outlined">delete</span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div
+                      class="board-square__face board-square__face--back"
+                      [style.pointer-events]="isCardFlipped(card.id) ? 'auto' : 'none'"
+                      [style.z-index]="isCardFlipped(card.id) ? 2 : 1"
+                      style="display: flex; flex-direction: column; overflow: hidden; border-radius: inherit; background: radial-gradient(circle at 18% 14%, rgba(255,255,255,.95), transparent 22%), linear-gradient(135deg, var(--board-soft), #fff);"
+                    >
+                      <div class="detail-card__body" style="justify-content: space-between;">
+                        <div>
+                          <div class="detail-card__line">
+                            <span>
+                              <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                              Card back
+                            </span>
+                            <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
+                          </div>
+                          <h2>{{ card.title }}</h2>
+                          <p class="detail-card__notes" style="-webkit-line-clamp: 8;">
+                            {{ card.notes || card.subtitle || 'Add notes, memories, details, or fun facts when editing this card.' }}
+                          </p>
+                          @if (card.tags.length) {
+                            <div class="detail-card__tags">
+                              @for (tag of card.tags; track tag) {
+                                <span>{{ tag }}</span>
+                              }
+                            </div>
+                          }
+                        </div>
+                        @if (card.googleMapsUrl) {
+                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener">
+                            <span class="material-symbols-outlined">map</span>
+                            Open place
+                          </a>
+                        }
+                      </div>
+
+                      <div class="detail-card__footer">
+                        <span>{{ statusLabel(card.status) }} · {{ cardScopeLabel(card.scope) }}</span>
+                        <span class="detail-card__buttons">
+                          <button type="button" aria-label="Show card front" (click)="toggleCardFlip(card.id, $event)">
+                            <span class="material-symbols-outlined">flip_to_front</span>
+                          </button>
+                          <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
+                            <span class="material-symbols-outlined">edit</span>
+                          </button>
+                          <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteCard(card)">
+                            <span class="material-symbols-outlined">delete</span>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </article>
               } @empty {
