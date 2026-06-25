@@ -322,6 +322,30 @@
                 <p>Board</p>
                 <h1>{{ board.title }}</h1>
                 <span>{{ board.description || 'Add cards to shape this collection.' }}</span>
+                <div
+                  class="board-detail__owner"
+                  style="display: inline-flex; align-items: center; width: fit-content; max-width: 100%; gap: .65rem; margin-top: 1rem; border: 2px solid var(--ink); border-radius: 999px; background: rgba(255,255,255,.92); box-shadow: 3px 3px 0 var(--ink); padding: .45rem .75rem .45rem .5rem;"
+                >
+                  @if (userPhotoUrl()) {
+                    <img
+                      [src]="userPhotoUrl()"
+                      [alt]="userName() + ' profile photo'"
+                      style="width: 2.35rem; height: 2.35rem; border: 2px solid var(--ink); border-radius: 999px; object-fit: cover;"
+                    />
+                  } @else {
+                    <span
+                      class="board-detail__owner-avatar"
+                      [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + userIcon().from + ', ' + userIcon().to + ')'"
+                      style="display: grid; width: 2.35rem; height: 2.35rem; place-items: center; border: 2px solid var(--ink); border-radius: 999px;"
+                    >
+                      <span class="material-symbols-outlined" [style.color]="userIcon().ink">{{ userIcon().icon }}</span>
+                    </span>
+                  }
+                  <span style="display: grid; min-width: 0; gap: .12rem;">
+                    <small style="color: var(--board-accent); font-size: .66rem; font-weight: 950; letter-spacing: .08em; line-height: 1; text-transform: uppercase;">Curated by</small>
+                    <strong style="overflow: hidden; color: var(--ink); font-size: 1rem; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap;">{{ userName() }}</strong>
+                  </span>
+                </div>
                 @if (shareMessage()) {
                   <small class="board-detail__share-note">{{ shareMessage() }}</small>
                 }

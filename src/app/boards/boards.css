@@ -785,7 +785,7 @@
   line-height: 0.9;
 }
 
-.board-detail__copy span {
+.board-detail__copy > span {
   display: block;
   max-width: 38rem;
   margin-top: 0.85rem;
