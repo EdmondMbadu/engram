@@ -279,6 +279,7 @@ service cloud.firestore {
           'icon',
           'tone',
           'imageUrl',
+          'stickers',
           'cards',
           'created_at_iso',
           'updated_at_iso',
@@ -295,6 +296,8 @@ service cloud.firestore {
         && request.resource.data.tone in ['teal', 'coral', 'yellow', 'green', 'blue', 'sky', 'purple']
         && request.resource.data.imageUrl is string
         && request.resource.data.imageUrl.size() <= 2000
+        && request.resource.data.stickers is list
+        && request.resource.data.stickers.size() <= 48
         && request.resource.data.cards is list
         && request.resource.data.cards.size() <= 200
         && request.resource.data.created_at_iso is string

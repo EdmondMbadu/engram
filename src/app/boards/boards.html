@@ -134,6 +134,26 @@
                   @if (board.imageUrl) {
                     <img class="board-square__image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" loading="lazy" />
                   }
+                  @if (board.stickers.length) {
+                    <span class="board-square__stickers" aria-hidden="true">
+                      @for (sticker of board.stickers; track sticker.id) {
+                        <span
+                          class="board-sticker"
+                          [class.board-sticker--dragging]="draggedStickerId() === sticker.id"
+                          [style.left.%]="sticker.x"
+                          [style.top.%]="sticker.y"
+                          [style.transform]="stickerTransform(sticker)"
+                          [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                          [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                          [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                          [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                          (pointerdown)="beginStickerDrag($event, 'board', board.id, sticker.id)"
+                        >
+                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                        </span>
+                      }
+                    </span>
+                  }
                   <span class="board-square__icon">
                     <span class="material-symbols-outlined">{{ board.icon }}</span>
                   </span>
@@ -220,6 +240,26 @@
           <div class="board-detail__cover">
             @if (board.imageUrl) {
               <img class="board-detail__cover-image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" />
+            }
+            @if (board.stickers.length) {
+              <div class="board-detail__stickers" aria-hidden="true">
+                @for (sticker of board.stickers; track sticker.id) {
+                  <span
+                    class="board-sticker"
+                    [class.board-sticker--dragging]="draggedStickerId() === sticker.id"
+                    [style.left.%]="sticker.x"
+                    [style.top.%]="sticker.y"
+                    [style.transform]="stickerTransform(sticker)"
+                    [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                    [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                    [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                    [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                    (pointerdown)="beginStickerDrag($event, 'board', board.id, sticker.id)"
+                  >
+                    <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                  </span>
+                }
+              </div>
             }
             <div class="board-detail__top">
               <button type="button" class="boards-back-button" (click)="closeBoardDetail()">
@@ -330,18 +370,20 @@
                 >
                   @if (card.stickers.length) {
                     <div class="detail-card__stickers" aria-hidden="true">
-                      @for (sticker of card.stickers; track sticker + $index) {
+                      @for (sticker of card.stickers; track sticker.id) {
                         <span
                           class="detail-card__sticker"
-                          [style.left.%]="stickerLeft($index)"
-                          [style.top.%]="stickerTop($index)"
-                          [style.transform]="'rotate(' + stickerRotation($index) + 'deg) scale(' + stickerScale($index) + ')'"
-                          [style.--sticker-bg]="stickerBackground($index)"
-                          [style.--sticker-bg-2]="stickerBackgroundAlt($index)"
-                          [style.--sticker-ink]="stickerInk($index)"
-                          [style.--sticker-shadow]="stickerShadow($index)"
+                          [class.detail-card__sticker--dragging]="draggedStickerId() === sticker.id"
+                          [style.left.%]="sticker.x"
+                          [style.top.%]="sticker.y"
+                          [style.transform]="stickerTransform(sticker)"
+                          [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                          [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                          [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                          [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                          (pointerdown)="beginStickerDrag($event, 'card', board.id, sticker.id, card.id)"
                         >
-                          <span class="material-symbols-outlined">{{ sticker }}</span>
+                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
                         </span>
                       }
                     </div>
@@ -528,6 +570,36 @@
               ></button>
             }
           </div>
+
+          <section class="boards-sticker-panel">
+            <div class="boards-sticker-panel__head">
+              <div>
+                <span>Board stickers</span>
+                <strong>Add icons across this collection · {{ boardDraft().stickers.length }} selected</strong>
+              </div>
+              @if (boardDraft().stickers.length) {
+                <button type="button" (click)="clearBoardStickers()">Clear</button>
+              }
+            </div>
+            <div class="boards-sticker-grid" aria-label="Board icon stickers">
+              @for (icon of cardStickerIcons; track icon) {
+                <button
+                  type="button"
+                  class="boards-sticker-choice"
+                  [class.boards-sticker-choice--active]="hasSticker(boardDraft().stickers, icon)"
+                  [attr.aria-pressed]="hasSticker(boardDraft().stickers, icon)"
+                  [attr.aria-label]="'Toggle ' + icon + ' sticker'"
+                  [style.--sticker-bg]="stickerBackground($index)"
+                  [style.--sticker-bg-2]="stickerBackgroundAlt($index)"
+                  [style.--sticker-ink]="stickerInk($index)"
+                  [style.--sticker-shadow]="stickerShadow($index)"
+                  (click)="toggleBoardSticker(icon)"
+                >
+                  <span class="material-symbols-outlined">{{ icon }}</span>
+                </button>
+              }
+            </div>
+          </section>
           @if (imageUploadError()) {
             <div class="boards-form__error">{{ imageUploadError() }}</div>
           }
@@ -658,8 +730,8 @@
                 <button
                   type="button"
                   class="boards-sticker-choice"
-                  [class.boards-sticker-choice--active]="cardDraft().stickers.includes(icon)"
-                  [attr.aria-pressed]="cardDraft().stickers.includes(icon)"
+                  [class.boards-sticker-choice--active]="hasSticker(cardDraft().stickers, icon)"
+                  [attr.aria-pressed]="hasSticker(cardDraft().stickers, icon)"
                   [attr.aria-label]="'Toggle ' + icon + ' sticker'"
                   [style.--sticker-bg]="stickerBackground($index)"
                   [style.--sticker-bg-2]="stickerBackgroundAlt($index)"

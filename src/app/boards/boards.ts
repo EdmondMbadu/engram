@@ -20,6 +20,28 @@ type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
+type StickerSurface = 'board' | 'card';
+
+type BoardSticker = {
+  id: string;
+  icon: string;
+  x: number;
+  y: number;
+  rotation: number;
+  scale: number;
+  colorIndex: number;
+};
+
+type StickerDragState = {
+  boardId: string;
+  cardId: string | null;
+  stickerId: string;
+  surface: StickerSurface;
+  rect: DOMRect;
+  pointerId: number;
+  target: HTMLElement;
+  moved: boolean;
+};
 
 type BoardCard = {
   id: string;
@@ -33,7 +55,7 @@ type BoardCard = {
   placeId: string;
   googleMapsUrl: string;
   tags: string[];
-  stickers: string[];
+  stickers: BoardSticker[];
   createdAt: string;
   updatedAt: string;
 };
@@ -45,6 +67,7 @@ type Board = {
   icon: string;
   tone: BoardTone;
   imageUrl: string;
+  stickers: BoardSticker[];
   cards: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -56,6 +79,7 @@ type BoardDraft = {
   icon: string;
   tone: BoardTone;
   imageUrl: string;
+  stickers: BoardSticker[];
 };
 
 type CardDraft = {
@@ -71,7 +95,7 @@ type CardDraft = {
   placeId: string;
   googleMapsUrl: string;
   tags: string;
-  stickers: string[];
+  stickers: BoardSticker[];
 };
 
 type GalleryCard = {
@@ -245,6 +269,8 @@ export class BoardsComponent {
   private loadedStoredLocalBoards = false;
   private placeSearchTimer: ReturnType<typeof setTimeout> | null = null;
   private placeSearchRun = 0;
+  private stickerDragState: StickerDragState | null = null;
+  private suppressNextBoardOpen = false;
 
   readonly tones = BOARD_TONES;
   readonly cardTypes = CARD_TYPES;
@@ -270,6 +296,7 @@ export class BoardsComponent {
   readonly boardsSyncError = signal<string | null>(null);
   readonly sharePanelOpen = signal(false);
   readonly cardImageLocked = signal(false);
+  readonly draggedStickerId = signal<string | null>(null);
   readonly placeSuggestions = signal<PlaceSearchResult[]>([]);
   readonly placeSearchLoading = signal(false);
   readonly placeSearchError = signal<string | null>(null);
@@ -281,6 +308,7 @@ export class BoardsComponent {
     icon: 'dashboard',
     tone: 'teal',
     imageUrl: '',
+    stickers: [],
   });
   readonly cardDraft = signal<CardDraft>({
     title: '',
@@ -428,6 +456,10 @@ export class BoardsComponent {
   }
 
   selectBoard(boardId: string): void {
+    if (this.suppressNextBoardOpen) {
+      this.suppressNextBoardOpen = false;
+      return;
+    }
     void this.router.navigate(['/boards', boardId]);
   }
 
@@ -444,6 +476,7 @@ export class BoardsComponent {
       icon: 'dashboard',
       tone: this.tones[this.boards().length % this.tones.length]?.id ?? 'teal',
       imageUrl: '',
+      stickers: [],
     });
     this.boardDialogOpen.set(true);
   }
@@ -457,6 +490,7 @@ export class BoardsComponent {
       icon: board.icon,
       tone: board.tone,
       imageUrl: board.imageUrl,
+      stickers: board.stickers ?? [],
     });
     this.boardDialogOpen.set(true);
   }
@@ -490,6 +524,7 @@ export class BoardsComponent {
                 icon: draft.icon,
                 tone: draft.tone,
                 imageUrl: draft.imageUrl.trim(),
+                stickers: draft.stickers,
                 updatedAt: now,
           };
           return nextBoard;
@@ -503,6 +538,7 @@ export class BoardsComponent {
         icon: draft.icon,
         tone: draft.tone,
         imageUrl: draft.imageUrl.trim(),
+        stickers: draft.stickers,
         cards: [],
         createdAt: now,
         updatedAt: now,
@@ -646,18 +682,30 @@ export class BoardsComponent {
     this.updateCardDraft('imageUrl', value);
   }
 
+  toggleBoardSticker(icon: string): void {
+    this.boardDraft.update((draft) => ({
+      ...draft,
+      stickers: this.toggleSticker(draft.stickers, icon),
+    }));
+  }
+
+  clearBoardStickers(): void {
+    this.boardDraft.update((draft) => ({ ...draft, stickers: [] }));
+  }
+
   toggleCardSticker(icon: string): void {
-    this.cardDraft.update((draft) => {
-      const selected = draft.stickers.includes(icon);
-      const stickers = selected
-        ? draft.stickers.filter((item) => item !== icon)
-        : [...draft.stickers, icon].slice(0, 48);
-      return { ...draft, stickers };
-    });
+    this.cardDraft.update((draft) => ({
+      ...draft,
+      stickers: this.toggleSticker(draft.stickers, icon),
+    }));
   }
 
   clearCardStickers(): void {
     this.cardDraft.update((draft) => ({ ...draft, stickers: [] }));
+  }
+
+  hasSticker(stickers: BoardSticker[], icon: string): boolean {
+    return stickers.some((sticker) => sticker.icon === icon);
   }
 
   onPlaceQueryInput(value: string): void {
@@ -1026,12 +1074,13 @@ export class BoardsComponent {
         .map((board) => ({
           ...board,
           imageUrl: board.imageUrl ?? '',
+          stickers: this.normalizeStickers((board as Board).stickers),
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
             placeId: card.placeId ?? '',
             googleMapsUrl: card.googleMapsUrl ?? '',
-            stickers: Array.isArray(card.stickers) ? card.stickers : [],
+            stickers: this.normalizeStickers(card.stickers),
           })),
         }));
     } catch {
@@ -1101,6 +1150,7 @@ export class BoardsComponent {
       icon: typeof data['icon'] === 'string' ? data['icon'] : 'dashboard',
       tone: this.isBoardTone(data['tone']) ? data['tone'] : 'teal',
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
+      stickers: this.normalizeStickers(data['stickers']),
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
       createdAt: typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : new Date().toISOString(),
       updatedAt: typeof data['updated_at_iso'] === 'string' ? data['updated_at_iso'] : new Date().toISOString(),
@@ -1128,9 +1178,7 @@ export class BoardsComponent {
       placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
-      stickers: Array.isArray(data['stickers'])
-        ? data['stickers'].filter((icon): icon is string => typeof icon === 'string').slice(0, 48)
-        : [],
+      stickers: this.normalizeStickers(data['stickers']),
       createdAt: typeof data['createdAt'] === 'string' ? data['createdAt'] : new Date().toISOString(),
       updatedAt: typeof data['updatedAt'] === 'string' ? data['updatedAt'] : new Date().toISOString(),
     };
@@ -1156,6 +1204,10 @@ export class BoardsComponent {
     return scales[index % scales.length];
   }
 
+  stickerTransform(sticker: BoardSticker): string {
+    return `rotate(${sticker.rotation}deg) scale(${sticker.scale})`;
+  }
+
   stickerBackground(index: number): string {
     return STICKER_COLORS[index % STICKER_COLORS.length].bg;
   }
@@ -1170,6 +1222,182 @@ export class BoardsComponent {
 
   stickerShadow(index: number): string {
     return STICKER_COLORS[index % STICKER_COLORS.length].shadow;
+  }
+
+  stickerColor(sticker: BoardSticker, index: number): number {
+    return Number.isFinite(sticker.colorIndex) ? sticker.colorIndex : index;
+  }
+
+  beginStickerDrag(
+    event: PointerEvent,
+    surface: StickerSurface,
+    boardId: string,
+    stickerId: string,
+    cardId: string | null = null,
+  ): void {
+    if (!(event.currentTarget instanceof HTMLElement)) {
+      return;
+    }
+
+    const layer = event.currentTarget.parentElement;
+    if (!layer) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    this.suppressNextBoardOpen = true;
+    this.draggedStickerId.set(stickerId);
+    this.stickerDragState = {
+      boardId,
+      cardId,
+      stickerId,
+      surface,
+      rect: layer.getBoundingClientRect(),
+      pointerId: event.pointerId,
+      target: event.currentTarget,
+      moved: false,
+    };
+    window.addEventListener('pointermove', this.handleStickerPointerMove);
+    window.addEventListener('pointerup', this.handleStickerPointerEnd, { once: true });
+    window.addEventListener('pointercancel', this.handleStickerPointerEnd, { once: true });
+  }
+
+  private readonly handleStickerPointerMove = (event: PointerEvent): void => {
+    const state = this.stickerDragState;
+    if (!state || event.pointerId !== state.pointerId) {
+      return;
+    }
+
+    const x = this.clamp(((event.clientX - state.rect.left) / state.rect.width) * 100, 4, 92);
+    const y = this.clamp(((event.clientY - state.rect.top) / state.rect.height) * 100, 4, 92);
+    state.moved = true;
+    this.updateStickerPosition(state, x, y);
+  };
+
+  private readonly handleStickerPointerEnd = (): void => {
+    const state = this.stickerDragState;
+    window.removeEventListener('pointermove', this.handleStickerPointerMove);
+    window.removeEventListener('pointerup', this.handleStickerPointerEnd);
+    window.removeEventListener('pointercancel', this.handleStickerPointerEnd);
+    this.draggedStickerId.set(null);
+    this.stickerDragState = null;
+
+    if (!state || !state.moved) {
+      setTimeout(() => {
+        this.suppressNextBoardOpen = false;
+      });
+      return;
+    }
+
+    const board = this.boards().find((item) => item.id === state.boardId);
+    if (board) {
+      void this.persistAndReplaceBoard({ ...board, updatedAt: new Date().toISOString() });
+    }
+    setTimeout(() => {
+      this.suppressNextBoardOpen = false;
+    });
+  };
+
+  private updateStickerPosition(state: StickerDragState, x: number, y: number): void {
+    const now = new Date().toISOString();
+    this.boards.update((boards) =>
+      boards.map((board) => {
+        if (board.id !== state.boardId) {
+          return board;
+        }
+
+        if (state.surface === 'board') {
+          return {
+            ...board,
+            stickers: board.stickers.map((sticker) =>
+              sticker.id === state.stickerId ? { ...sticker, x, y } : sticker,
+            ),
+            updatedAt: now,
+          };
+        }
+
+        return {
+          ...board,
+          cards: board.cards.map((card) =>
+            card.id === state.cardId
+              ? {
+                  ...card,
+                  stickers: card.stickers.map((sticker) =>
+                    sticker.id === state.stickerId ? { ...sticker, x, y } : sticker,
+                  ),
+                  updatedAt: now,
+                }
+              : card,
+          ),
+          updatedAt: now,
+        };
+      }),
+    );
+  }
+
+  private toggleSticker(stickers: BoardSticker[], icon: string): BoardSticker[] {
+    if (stickers.some((sticker) => sticker.icon === icon)) {
+      return stickers.filter((sticker) => sticker.icon !== icon);
+    }
+    return [...stickers, this.createSticker(icon, stickers.length)].slice(0, 48);
+  }
+
+  private normalizeStickers(value: unknown): BoardSticker[] {
+    if (!Array.isArray(value)) {
+      return [];
+    }
+    return value
+      .map((item, index) => this.normalizeSticker(item, index))
+      .filter((sticker): sticker is BoardSticker => !!sticker)
+      .slice(0, 48);
+  }
+
+  private normalizeSticker(value: unknown, index: number): BoardSticker | null {
+    if (typeof value === 'string') {
+      return this.createSticker(value, index);
+    }
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const icon = typeof data['icon'] === 'string' ? data['icon'] : '';
+    if (!icon) {
+      return null;
+    }
+
+    return {
+      id: typeof data['id'] === 'string' ? data['id'] : this.createId(),
+      icon,
+      x: this.readStickerNumber(data['x'], this.stickerLeft(index), 0, 100),
+      y: this.readStickerNumber(data['y'], this.stickerTop(index), 0, 100),
+      rotation: this.readStickerNumber(data['rotation'], this.stickerRotation(index), -45, 45),
+      scale: this.readStickerNumber(data['scale'], this.stickerScale(index), 0.65, 1.45),
+      colorIndex: this.readStickerNumber(data['colorIndex'], index, 0, STICKER_COLORS.length - 1),
+    };
+  }
+
+  private createSticker(icon: string, index: number): BoardSticker {
+    return {
+      id: this.createId(),
+      icon,
+      x: this.stickerLeft(index),
+      y: this.stickerTop(index),
+      rotation: this.stickerRotation(index),
+      scale: this.stickerScale(index),
+      colorIndex: index % STICKER_COLORS.length,
+    };
+  }
+
+  private readStickerNumber(value: unknown, fallback: number, min: number, max: number): number {
+    return typeof value === 'number' && Number.isFinite(value)
+      ? this.clamp(value, min, max)
+      : fallback;
+  }
+
+  private clamp(value: number, min: number, max: number): number {
+    return Math.min(max, Math.max(min, value));
   }
 
   private async prepareBoardImagesForFirebase(board: Board, uid: string): Promise<Board> {

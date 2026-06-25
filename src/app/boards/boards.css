@@ -477,6 +477,60 @@
   font-variation-settings: 'FILL' 1;
 }
 
+.board-square__stickers,
+.board-detail__stickers,
+.detail-card__stickers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.board-square__stickers {
+  z-index: 3;
+}
+
+.board-detail__stickers,
+.detail-card__stickers {
+  z-index: 2;
+}
+
+.board-sticker,
+.detail-card__sticker {
+  --sticker-bg: #fff0b8;
+  --sticker-bg-2: #ff4d8d;
+  --sticker-ink: #8a5200;
+  --sticker-shadow: #00a7ff;
+  position: absolute;
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 0.75rem 0.55rem 0.82rem 0.58rem;
+  background:
+    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.9) 0 13%, transparent 14%),
+    linear-gradient(135deg, var(--sticker-bg), var(--sticker-bg-2));
+  box-shadow: 2px 2px 0 var(--ink), -2px 2px 0 var(--sticker-shadow);
+  color: var(--sticker-ink);
+  cursor: grab;
+  opacity: 0.96;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+}
+
+.board-sticker--dragging,
+.detail-card__sticker--dragging {
+  z-index: 8;
+  cursor: grabbing;
+}
+
+.board-sticker .material-symbols-outlined,
+.detail-card__sticker .material-symbols-outlined {
+  font-size: 1.25rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .board-square__tools,
 .mosaic-card__tools {
   position: absolute;
@@ -601,7 +655,13 @@
   z-index: 1;
 }
 
+.board-detail__cover > .board-detail__stickers {
+  position: absolute;
+  z-index: 2;
+}
+
 .board-detail__top {
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -853,40 +913,6 @@
   background: #ffffff;
   box-shadow: 5px 5px 0 var(--ink), 0 18px 42px rgba(16, 32, 24, 0.1);
   color: var(--ink);
-}
-
-.detail-card__stickers {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.detail-card__sticker {
-  position: absolute;
-  --sticker-bg: #fff0b8;
-  --sticker-bg-2: #ff4d8d;
-  --sticker-ink: #8a5200;
-  --sticker-shadow: #00a7ff;
-  display: grid;
-  width: 2.35rem;
-  height: 2.35rem;
-  place-items: center;
-  border: 2px solid var(--ink);
-  border-radius: 0.75rem 0.55rem 0.82rem 0.58rem;
-  background:
-    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.9) 0 12%, transparent 13%),
-    radial-gradient(circle at 78% 72%, color-mix(in srgb, var(--sticker-shadow) 75%, transparent) 0 13%, transparent 14%),
-    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0 4px, transparent 4px 9px),
-    linear-gradient(135deg, var(--sticker-bg), var(--sticker-bg-2));
-  box-shadow: 2px 2px 0 var(--ink), -2px 2px 0 var(--sticker-shadow);
-  color: var(--sticker-ink);
-  opacity: 0.96;
-}
-
-.detail-card__sticker .material-symbols-outlined {
-  font-size: 1.25rem;
-  font-variation-settings: 'FILL' 1;
 }
 
 .detail-card__media {
