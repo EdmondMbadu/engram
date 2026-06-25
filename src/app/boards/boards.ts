@@ -350,9 +350,7 @@ export class BoardsComponent {
 
   readonly filteredBoards = computed(() => {
     const query = this.boardSearch().trim().toLowerCase();
-    const boards = [...this.boards()].sort(
-      (a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt),
-    );
+    const boards = [...this.boards()].sort((a, b) => this.compareBoards(a, b));
     if (!query) {
       return boards;
     }
@@ -371,7 +369,7 @@ export class BoardsComponent {
     if (!board) {
       return [];
     }
-    const cards = [...board.cards].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+    const cards = [...board.cards].sort((a, b) => this.compareCards(a, b));
     if (!query) {
       return cards;
     }
@@ -392,7 +390,7 @@ export class BoardsComponent {
     const query = this.boardSearch().trim().toLowerCase();
     const cards = this.allGalleryCards()
       .filter((item) => this.activeGalleryTab() !== 'favorites' || item.card.status === 'favorite')
-      .sort((a, b) => Date.parse(b.card.updatedAt) - Date.parse(a.card.updatedAt));
+      .sort((a, b) => this.compareCards(a.card, b.card) || this.compareBoards(a.board, b.board));
 
     if (!query) {
       return cards;
@@ -1064,7 +1062,7 @@ export class BoardsComponent {
     return snapshot.docs
       .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
       .filter((board): board is Board => !!board)
-      .sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt));
+      .sort((left, right) => this.compareBoards(left, right));
   }
 
   private async loadBoardById(boardId: string): Promise<Board | null> {
@@ -1523,6 +1521,31 @@ export class BoardsComponent {
 
   private toneMeta(tone: BoardTone): { id: BoardTone; label: string; accent: string; soft: string } {
     return this.tones.find((item) => item.id === tone) ?? this.tones[0];
+  }
+
+  private compareBoards(left: Board, right: Board): number {
+    return (
+      this.compareDatesDesc(left.createdAt, right.createdAt) ||
+      left.title.localeCompare(right.title) ||
+      left.id.localeCompare(right.id)
+    );
+  }
+
+  private compareCards(left: BoardCard, right: BoardCard): number {
+    return (
+      this.compareDatesDesc(left.createdAt, right.createdAt) ||
+      left.title.localeCompare(right.title) ||
+      left.id.localeCompare(right.id)
+    );
+  }
+
+  private compareDatesDesc(left: string, right: string): number {
+    return this.dateValue(right) - this.dateValue(left);
+  }
+
+  private dateValue(value: string): number {
+    const time = Date.parse(value);
+    return Number.isNaN(time) ? 0 : time;
   }
 
   private formatDate(value: string): string {
