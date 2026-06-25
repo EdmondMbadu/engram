@@ -75,6 +75,17 @@ export class BusinessEditComponent {
   readonly additionalQrLabel = computed(() => this.draft().additional_qr_label.trim() || 'Additional QR code');
   readonly additionalQrUrl = computed(() => this.draft().additional_qr_url.trim());
   readonly hasAdditionalQr = computed(() => this.additionalQrUrl().length > 0);
+  readonly savedAdditionalQrUrl = computed(() => this.business()?.additional_qr_url?.trim() || '');
+  readonly hasSavedAdditionalQr = computed(() => this.savedAdditionalQrUrl().length > 0);
+  readonly additionalQrPrimaryActionLabel = computed(() => {
+    if (this.saving()) {
+      return 'Saving...';
+    }
+    if (!this.additionalQrUrl()) {
+      return 'Clear QR code';
+    }
+    return this.hasSavedAdditionalQr() ? 'Save QR code' : 'Add QR code';
+  });
   readonly additionalQrSvg = computed(() => generateQrSvg(this.additionalQrUrl() || this.chatUrl()));
   readonly additionalQrSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.additionalQrSvg())}`);
   readonly badgeSvg = computed(() => this.buildBadgeSvg());
@@ -190,6 +201,22 @@ export class BusinessEditComponent {
     } finally {
       this.saving.set(false);
     }
+  }
+
+  async saveAdditionalQr(): Promise<void> {
+    const saved = await this.save();
+    if (saved) {
+      this.savedMessage.set(this.hasAdditionalQr() ? 'Additional QR code saved.' : 'Additional QR code cleared.');
+    }
+  }
+
+  async deleteAdditionalQr(): Promise<void> {
+    this.draft.update((current) => ({
+      ...current,
+      additional_qr_label: '',
+      additional_qr_url: '',
+    }));
+    await this.saveAdditionalQr();
   }
 
   async downloadBadgePng(): Promise<void> {

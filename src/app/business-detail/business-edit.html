@@ -226,11 +226,25 @@
             </section>
 
             <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
-              <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-2xl text-[var(--accent)]">qr_code_2</span>
-                <div>
-                  <h2 class="text-lg font-black">Additional QR code</h2>
-                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Add a simple standalone QR code that points to another location, form, menu, map, or page.</p>
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-outlined text-2xl text-[var(--accent)]">qr_code_2</span>
+                  <div>
+                    <h2 class="text-lg font-black">Additional QR code</h2>
+                    <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Add a simple standalone QR code that points to another location, form, menu, map, or page.</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  @if (hasAdditionalQr() || hasSavedAdditionalQr()) {
+                    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-2.5 text-sm font-black text-[var(--error-text)] disabled:cursor-not-allowed disabled:opacity-50" [disabled]="saving()" (click)="deleteAdditionalQr()">
+                      <span class="material-symbols-outlined text-[1rem]">delete</span>
+                      <span>Delete QR code</span>
+                    </button>
+                  }
+                  <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-2.5 text-sm font-black text-[var(--accent-contrast)] disabled:cursor-not-allowed disabled:opacity-50" [disabled]="saving() || (!additionalQrUrl() && !hasSavedAdditionalQr())" (click)="saveAdditionalQr()">
+                    <span class="material-symbols-outlined text-[1rem]">save</span>
+                    <span>{{ additionalQrPrimaryActionLabel() }}</span>
+                  </button>
                 </div>
               </div>
               <div class="mt-4 grid gap-4 md:grid-cols-2">
@@ -314,6 +328,10 @@
                 <img [src]="additionalQrSvgHref()" [alt]="additionalQrLabel() + ' QR preview'" class="aspect-square w-full object-contain" />
               </div>
               <div class="mt-4 grid gap-2">
+                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)] disabled:cursor-not-allowed disabled:opacity-50" [disabled]="saving()" (click)="saveAdditionalQr()">
+                  <span class="material-symbols-outlined text-[1rem]">save</span>
+                  <span>{{ saving() ? 'Saving...' : 'Save QR code' }}</span>
+                </button>
                 <a [href]="additionalQrUrl()" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--accent)]">
                   <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
                   <span>Open destination</span>
@@ -325,6 +343,10 @@
                 <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadAdditionalQrPng()">
                   <span class="material-symbols-outlined text-[1rem]">image</span>
                   <span>Download PNG</span>
+                </button>
+                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm font-black text-[var(--error-text)] disabled:cursor-not-allowed disabled:opacity-50" [disabled]="saving()" (click)="deleteAdditionalQr()">
+                  <span class="material-symbols-outlined text-[1rem]">delete</span>
+                  <span>Delete QR code</span>
                 </button>
               </div>
             } @else {
