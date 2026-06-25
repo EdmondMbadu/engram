@@ -90,7 +90,6 @@ export const routes: Routes = [
     path: 'boards/:boardId',
     loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
     title: 'Board | LivingWiki',
-    canActivate: [authGuard],
   },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | LivingWiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | LivingWiki', canActivate: [authGuard] },

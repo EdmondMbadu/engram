@@ -255,6 +255,55 @@ service cloud.firestore {
       ) || isPlatformAdmin();
     }
 
+    match /boards/{boardId} {
+      allow get: if resource.data.visibility == 'public'
+        || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
+        || isPlatformAdmin();
+      allow list: if isSignedIn();
+      allow create, update: if isSignedIn()
+        && request.resource.data.owner_user_id == request.auth.uid
+        && (
+          request.method == 'create'
+          || (
+            resource.data.owner_user_id == request.auth.uid
+            && request.resource.data.owner_user_id == resource.data.owner_user_id
+          )
+        )
+        && request.resource.data.visibility == 'public'
+        && request.resource.data.keys().hasOnly([
+          'id',
+          'owner_user_id',
+          'visibility',
+          'title',
+          'description',
+          'icon',
+          'tone',
+          'imageUrl',
+          'cards',
+          'created_at_iso',
+          'updated_at_iso',
+          'server_updated_at'
+        ])
+        && request.resource.data.id == boardId
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 90
+        && request.resource.data.description is string
+        && request.resource.data.description.size() <= 240
+        && request.resource.data.icon is string
+        && request.resource.data.icon.size() <= 64
+        && request.resource.data.tone in ['teal', 'coral', 'yellow', 'green', 'blue', 'sky', 'purple']
+        && request.resource.data.imageUrl is string
+        && request.resource.data.imageUrl.size() <= 2000
+        && request.resource.data.cards is list
+        && request.resource.data.cards.size() <= 200
+        && request.resource.data.created_at_iso is string
+        && request.resource.data.updated_at_iso is string
+        && request.resource.data.server_updated_at == request.time;
+      allow delete: if isSignedIn()
+        && resource.data.owner_user_id == request.auth.uid;
+    }
+
     match /business_claim_requests/{claimId} {
       allow read: if (
         isSignedIn()

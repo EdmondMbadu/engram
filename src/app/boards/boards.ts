@@ -1,9 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
+import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { getFirebaseFirestore, getFirebaseStorage } from '../firebase.client';
 import { GoogleMapsService, type PlaceSearchResult } from '../google-maps.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { AtlasItem } from '../atlas.models';
@@ -81,6 +84,13 @@ type BoardCityOption = {
   slug: string;
 };
 
+type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
+  owner_user_id: string;
+  visibility: 'public';
+  created_at_iso: string;
+  updated_at_iso: string;
+};
+
 const STORAGE_KEY = 'livingwiki-boards-v1';
 
 const BOARD_TONES: Array<{ id: BoardTone; label: string; accent: string; soft: string }> = [
@@ -148,7 +158,10 @@ export class BoardsComponent {
   private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
+  private readonly storage: FirebaseStorage | null = this.isBrowser ? getFirebaseStorage() : null;
   private hasLoaded = false;
+  private loadedStoredLocalBoards = false;
   private placeSearchTimer: ReturnType<typeof setTimeout> | null = null;
   private placeSearchRun = 0;
 
@@ -172,6 +185,7 @@ export class BoardsComponent {
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly boardsSyncError = signal<string | null>(null);
   readonly sharePanelOpen = signal(false);
   readonly cardImageLocked = signal(false);
   readonly placeSuggestions = signal<PlaceSearchResult[]>([]);
@@ -305,13 +319,15 @@ export class BoardsComponent {
   readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
 
   constructor() {
-    this.loadBoards();
+    this.loadLocalBoards();
     void this.loadCities();
     this.route.paramMap.subscribe((params) => {
-      this.selectedBoardId.set(params.get('boardId'));
+      const boardId = params.get('boardId');
+      this.selectedBoardId.set(boardId);
       this.cardSearch.set('');
       this.shareMessage.set(null);
       this.sharePanelOpen.set(false);
+      void this.loadBoards(boardId);
     });
 
     effect(() => {
@@ -367,7 +383,7 @@ export class BoardsComponent {
     this.editingBoardId.set(null);
   }
 
-  saveBoard(event: Event): void {
+  async saveBoard(event: Event): Promise<void> {
     event.preventDefault();
     const draft = this.boardDraft();
     const title = draft.title.trim();
@@ -377,11 +393,14 @@ export class BoardsComponent {
 
     const now = new Date().toISOString();
     const editingId = this.editingBoardId();
+    let nextBoard: Board | null = null;
     if (editingId) {
       this.boards.update((boards) =>
-        boards.map((board) =>
-          board.id === editingId
-            ? {
+        boards.map((board) => {
+          if (board.id !== editingId) {
+            return board;
+          }
+          nextBoard = {
                 ...board,
                 title,
                 description: draft.description.trim(),
@@ -389,9 +408,9 @@ export class BoardsComponent {
                 tone: draft.tone,
                 imageUrl: draft.imageUrl.trim(),
                 updatedAt: now,
-              }
-            : board,
-        ),
+          };
+          return nextBoard;
+        }),
       );
     } else {
       const board: Board = {
@@ -405,10 +424,14 @@ export class BoardsComponent {
         createdAt: now,
         updatedAt: now,
       };
+      nextBoard = board;
       this.boards.update((boards) => [board, ...boards]);
       void this.router.navigate(['/boards', board.id]);
     }
 
+    if (nextBoard) {
+      await this.persistAndReplaceBoard(nextBoard);
+    }
     this.closeBoardDialog();
   }
 
@@ -422,6 +445,7 @@ export class BoardsComponent {
     if (this.selectedBoardId() === board.id) {
       void this.router.navigate(['/boards']);
     }
+    void this.deleteRemoteBoard(board.id);
   }
 
   openCreateCard(boardId = this.selectedBoard()?.id ?? null): void {
@@ -578,7 +602,7 @@ export class BoardsComponent {
     this.placeSearchError.set(null);
   }
 
-  saveCard(event: Event): void {
+  async saveCard(event: Event): Promise<void> {
     event.preventDefault();
     const board = this.selectedBoard();
     const draft = this.cardDraft();
@@ -595,6 +619,7 @@ export class BoardsComponent {
       .slice(0, 6);
     const rating = Math.max(1, Math.min(5, Number.parseInt(draft.rating, 10) || 1));
     const editingId = this.editingCardId();
+    let nextBoard: Board | null = null;
 
     this.boards.update((boards) =>
       boards.map((item) => {
@@ -640,10 +665,14 @@ export class BoardsComponent {
               ...item.cards,
             ];
 
-        return { ...item, cards: nextCards, updatedAt: now };
+        nextBoard = { ...item, cards: nextCards, updatedAt: now };
+        return nextBoard;
       }),
     );
 
+    if (nextBoard) {
+      await this.persistAndReplaceBoard(nextBoard);
+    }
     this.closeCardDialog();
   }
 
@@ -789,20 +818,81 @@ export class BoardsComponent {
     }
   }
 
-  private loadBoards(): void {
+  private loadLocalBoards(): void {
     if (!this.isBrowser) {
       this.boards.set(this.seedBoards());
-      this.selectedBoardId.set(null);
       this.hasLoaded = true;
       return;
     }
 
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? this.parseBoards(raw) : null;
+    this.loadedStoredLocalBoards = !!parsed?.length;
     const boards = parsed?.length ? parsed : this.seedBoards();
     this.boards.set(boards);
-    this.selectedBoardId.set(null);
     this.hasLoaded = true;
+  }
+
+  private async loadBoards(boardId: string | null): Promise<void> {
+    if (!this.isBrowser || !this.firestore) {
+      return;
+    }
+
+    await this.authService.waitForReady();
+    const uid = this.authService.uid();
+    this.boardsSyncError.set(null);
+
+    try {
+      const loaded: Board[] = [];
+      if (uid) {
+        loaded.push(...await this.loadUserBoards(uid));
+      }
+
+      if (boardId && !loaded.some((board) => board.id === boardId)) {
+        const sharedBoard = await this.loadBoardById(boardId);
+        if (sharedBoard) {
+          loaded.unshift(sharedBoard);
+        }
+      }
+
+      if (loaded.length) {
+        this.boards.set(loaded);
+      } else if (uid && this.loadedStoredLocalBoards) {
+        await Promise.all(this.boards().map((board) => this.persistBoard(board)));
+        const migrated = await this.loadUserBoards(uid);
+        if (migrated.length) {
+          this.boards.set(migrated);
+        }
+      }
+    } catch {
+      this.boardsSyncError.set('Boards are using this browser for now. Firebase sync is unavailable.');
+    }
+  }
+
+  private async loadUserBoards(uid: string): Promise<Board[]> {
+    if (!this.firestore) {
+      return [];
+    }
+
+    const snapshot = await getDocs(
+      query(collection(this.firestore, 'boards'), where('owner_user_id', '==', uid)),
+    );
+    return snapshot.docs
+      .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
+      .filter((board): board is Board => !!board)
+      .sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt));
+  }
+
+  private async loadBoardById(boardId: string): Promise<Board | null> {
+    if (!this.firestore) {
+      return null;
+    }
+
+    const snapshot = await getDoc(doc(this.firestore, 'boards', boardId));
+    if (!snapshot.exists()) {
+      return null;
+    }
+    return this.boardFromRecord(snapshot.id, snapshot.data());
   }
 
   private async loadCities(): Promise<void> {
@@ -844,6 +934,138 @@ export class BoardsComponent {
     } catch {
       return null;
     }
+  }
+
+  private async persistAndReplaceBoard(board: Board): Promise<void> {
+    try {
+      const persisted = await this.persistBoard(board);
+      this.boards.update((boards) => boards.map((item) => (item.id === persisted.id ? persisted : item)));
+      this.boardsSyncError.set(null);
+    } catch {
+      this.boardsSyncError.set('Saved on this browser, but Firebase sync failed.');
+    }
+  }
+
+  private async persistBoard(board: Board): Promise<Board> {
+    const uid = this.authService.uid();
+    if (!this.firestore || !uid) {
+      return board;
+    }
+
+    const prepared = await this.prepareBoardImagesForFirebase(board, uid);
+    const record: BoardRecord & { server_updated_at: unknown } = {
+      ...prepared,
+      owner_user_id: uid,
+      visibility: 'public',
+      created_at_iso: prepared.createdAt,
+      updated_at_iso: prepared.updatedAt,
+      server_updated_at: serverTimestamp(),
+    };
+    const { createdAt, updatedAt, ...persistable } = record as BoardRecord & {
+      createdAt?: string;
+      updatedAt?: string;
+      server_updated_at: unknown;
+    };
+    await setDoc(doc(this.firestore, 'boards', prepared.id), persistable);
+    return prepared;
+  }
+
+  private async deleteRemoteBoard(boardId: string): Promise<void> {
+    const uid = this.authService.uid();
+    if (!this.firestore || !uid) {
+      return;
+    }
+
+    try {
+      await deleteDoc(doc(this.firestore, 'boards', boardId));
+      this.boardsSyncError.set(null);
+    } catch {
+      this.boardsSyncError.set('Removed locally, but Firebase delete failed.');
+    }
+  }
+
+  private boardFromRecord(id: string, data: Record<string, unknown>): Board | null {
+    const title = typeof data['title'] === 'string' ? data['title'] : '';
+    if (!title) {
+      return null;
+    }
+
+    const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
+    return {
+      id,
+      title,
+      description: typeof data['description'] === 'string' ? data['description'] : '',
+      icon: typeof data['icon'] === 'string' ? data['icon'] : 'dashboard',
+      tone: this.isBoardTone(data['tone']) ? data['tone'] : 'teal',
+      imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
+      cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
+      createdAt: typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : new Date().toISOString(),
+      updatedAt: typeof data['updated_at_iso'] === 'string' ? data['updated_at_iso'] : new Date().toISOString(),
+    };
+  }
+
+  private cardFromRecord(value: unknown): BoardCard | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const title = typeof data['title'] === 'string' ? data['title'] : '';
+    if (!title) {
+      return null;
+    }
+    return {
+      id: typeof data['id'] === 'string' ? data['id'] : this.createId(),
+      title,
+      subtitle: typeof data['subtitle'] === 'string' ? data['subtitle'] : '',
+      notes: typeof data['notes'] === 'string' ? data['notes'] : '',
+      type: this.isBoardCardType(data['type']) ? data['type'] : 'place',
+      status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
+      rating: typeof data['rating'] === 'number' ? Math.max(1, Math.min(5, data['rating'])) : 4,
+      imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
+      placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
+      googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
+      tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
+      createdAt: typeof data['createdAt'] === 'string' ? data['createdAt'] : new Date().toISOString(),
+      updatedAt: typeof data['updatedAt'] === 'string' ? data['updatedAt'] : new Date().toISOString(),
+    };
+  }
+
+  private async prepareBoardImagesForFirebase(board: Board, uid: string): Promise<Board> {
+    const imageUrl = await this.persistImageIfNeeded(board.imageUrl, `users/${uid}/boards/${board.id}/cover.jpg`);
+    const cards = await Promise.all(
+      board.cards.map(async (card) => ({
+        ...card,
+        imageUrl: await this.persistImageIfNeeded(
+          card.imageUrl,
+          `users/${uid}/boards/${board.id}/cards/${card.id}.jpg`,
+        ),
+      })),
+    );
+    return { ...board, imageUrl, cards };
+  }
+
+  private async persistImageIfNeeded(imageUrl: string, path: string): Promise<string> {
+    if (!imageUrl.startsWith('data:') || !this.storage) {
+      return imageUrl;
+    }
+
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    const ref = storageRef(this.storage, path);
+    await uploadBytes(ref, blob, { contentType: blob.type || 'image/jpeg' });
+    return getDownloadURL(ref);
+  }
+
+  private isBoardTone(value: unknown): value is BoardTone {
+    return typeof value === 'string' && this.tones.some((tone) => tone.id === value);
+  }
+
+  private isBoardCardType(value: unknown): value is BoardCardType {
+    return typeof value === 'string' && this.cardTypes.some((type) => type.id === value);
+  }
+
+  private isBoardCardStatus(value: unknown): value is BoardCardStatus {
+    return typeof value === 'string' && this.cardStatuses.some((status) => status.id === value);
   }
 
   private seedBoards(): Board[] {

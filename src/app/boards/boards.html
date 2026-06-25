@@ -27,6 +27,12 @@
       </header>
 
       <main class="boards-shell">
+    @if (boardsSyncError()) {
+      <div class="boards-sync-banner">
+        <span class="material-symbols-outlined">cloud_off</span>
+        {{ boardsSyncError() }}
+      </div>
+    }
     @if (!selectedBoard()) {
       <section class="boards-profile" aria-label="Boards profile">
         <div class="boards-profile__avatar">

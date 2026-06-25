@@ -90,6 +90,29 @@
   padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 5rem;
 }
 
+.boards-sync-banner {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff0b8;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: #7a4d00;
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1.25;
+  padding: 0.5rem 0.7rem;
+}
+
+.boards-sync-banner .material-symbols-outlined {
+  font-size: 1rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .boards-profile {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
