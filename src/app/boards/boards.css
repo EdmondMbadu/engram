@@ -855,6 +855,32 @@
   color: var(--ink);
 }
 
+.detail-card__stickers {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.detail-card__sticker {
+  position: absolute;
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 0.75rem 0.55rem 0.82rem 0.58rem;
+  background: color-mix(in srgb, var(--board-soft) 70%, #ffffff);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--board-accent);
+  opacity: 0.86;
+}
+
+.detail-card__sticker .material-symbols-outlined {
+  font-size: 1.25rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .detail-card__media {
   position: relative;
   height: 9.25rem;
@@ -922,6 +948,8 @@
 }
 
 .detail-card__body {
+  position: relative;
+  z-index: 3;
   display: flex;
   min-height: 0;
   flex: 1;
@@ -1033,6 +1061,8 @@
 }
 
 .detail-card__footer {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1554,6 +1584,104 @@
   font-style: normal;
   font-weight: 950;
   padding: 0.3rem 0.42rem;
+}
+
+.boards-sticker-panel {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 1.1rem;
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  padding: 0.75rem;
+}
+
+.boards-sticker-panel--prominent {
+  border: 3px solid var(--modal-ink, var(--ink));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--surface-strong)), var(--surface));
+  box-shadow: 4px 4px 0 var(--modal-ink, var(--ink));
+}
+
+.boards-sticker-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.boards-sticker-panel__head div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.boards-sticker-panel__head span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.boards-sticker-panel__head strong {
+  color: var(--text);
+  font-size: 0.86rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.boards-sticker-panel__head button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+  padding: 0.5rem 0.7rem;
+}
+
+.boards-sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(2.35rem, 1fr));
+  gap: 0.45rem;
+  max-height: 11rem;
+  overflow-y: auto;
+  padding: 0.15rem;
+}
+
+.boards-sticker-choice {
+  display: grid;
+  aspect-ratio: 1;
+  min-width: 0;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.boards-sticker-choice:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+  color: var(--text);
+  transform: translateY(-1px) rotate(-2deg);
+}
+
+.boards-sticker-choice--active {
+  border: 2px solid var(--modal-ink, var(--ink));
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface-strong));
+  box-shadow: 2px 2px 0 var(--modal-ink, var(--ink));
+  color: var(--accent);
+}
+
+.boards-sticker-choice .material-symbols-outlined {
+  font-size: 1.22rem;
+  font-variation-settings: 'FILL' 1;
 }
 
 .boards-choice-panel {

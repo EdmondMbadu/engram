@@ -328,6 +328,20 @@
                   class="detail-card"
                   [class.detail-card--favorite]="card.status === 'favorite'"
                 >
+                  @if (card.stickers.length) {
+                    <div class="detail-card__stickers" aria-hidden="true">
+                      @for (sticker of card.stickers; track sticker + $index) {
+                        <span
+                          class="detail-card__sticker"
+                          [style.left.%]="stickerLeft($index)"
+                          [style.top.%]="stickerTop($index)"
+                          [style.transform]="'rotate(' + stickerRotation($index) + 'deg) scale(' + stickerScale($index) + ')'"
+                        >
+                          <span class="material-symbols-outlined">{{ sticker }}</span>
+                        </span>
+                      }
+                    </div>
+                  }
                   <div class="detail-card__media">
                     @if (card.imageUrl) {
                       <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
@@ -623,6 +637,32 @@
             @if (placeSearchError()) {
               <div class="boards-form__soft-error">{{ placeSearchError() }}</div>
             }
+          </section>
+
+          <section class="boards-sticker-panel boards-sticker-panel--prominent">
+            <div class="boards-sticker-panel__head">
+              <div>
+                <span>Card stickers</span>
+                <strong>Add icons across this card · {{ cardDraft().stickers.length }} selected</strong>
+              </div>
+              @if (cardDraft().stickers.length) {
+                <button type="button" (click)="clearCardStickers()">Clear</button>
+              }
+            </div>
+            <div class="boards-sticker-grid" aria-label="Card icon stickers">
+              @for (icon of cardStickerIcons; track icon) {
+                <button
+                  type="button"
+                  class="boards-sticker-choice"
+                  [class.boards-sticker-choice--active]="cardDraft().stickers.includes(icon)"
+                  [attr.aria-pressed]="cardDraft().stickers.includes(icon)"
+                  [attr.aria-label]="'Toggle ' + icon + ' sticker'"
+                  (click)="toggleCardSticker(icon)"
+                >
+                  <span class="material-symbols-outlined">{{ icon }}</span>
+                </button>
+              }
+            </div>
           </section>
 
           <div class="boards-form__split">

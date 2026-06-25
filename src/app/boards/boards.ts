@@ -33,6 +33,7 @@ type BoardCard = {
   placeId: string;
   googleMapsUrl: string;
   tags: string[];
+  stickers: string[];
   createdAt: string;
   updatedAt: string;
 };
@@ -70,6 +71,7 @@ type CardDraft = {
   placeId: string;
   googleMapsUrl: string;
   tags: string;
+  stickers: string[];
 };
 
 type GalleryCard = {
@@ -135,6 +137,69 @@ const BOARD_ICONS = [
   'public',
 ];
 
+const CARD_STICKER_ICONS = [
+  'location_on',
+  'restaurant',
+  'local_cafe',
+  'ramen_dining',
+  'bakery_dining',
+  'icecream',
+  'local_bar',
+  'sports_bar',
+  'park',
+  'beach_access',
+  'hiking',
+  'directions_bike',
+  'directions_walk',
+  'train',
+  'flight',
+  'museum',
+  'theater_comedy',
+  'stadium',
+  'music_note',
+  'festival',
+  'photo_camera',
+  'palette',
+  'auto_stories',
+  'school',
+  'apartment',
+  'storefront',
+  'shopping_bag',
+  'local_florist',
+  'pets',
+  'sports_basketball',
+  'sports_soccer',
+  'fitness_center',
+  'favorite',
+  'kid_star',
+  'bolt',
+  'auto_awesome',
+  'psychology',
+  'emoji_objects',
+  'rocket_launch',
+  'public',
+  'map',
+  'explore',
+  'wb_sunny',
+  'dark_mode',
+  'water_drop',
+  'local_fire_department',
+  'skull',
+  'sentiment_very_satisfied',
+  'celebration',
+  'workspace_premium',
+  'computer',
+  'videogame_asset',
+  'headphones',
+  'smartphone',
+  'code',
+  'memory',
+  'terminal',
+  'bug_report',
+  'construction',
+  'warning',
+];
+
 const SHARE_TARGETS: Array<{ id: ShareTarget; label: string; icon: string }> = [
   { id: 'facebook', label: 'Facebook', icon: 'public' },
   { id: 'x', label: 'X', icon: 'alternate_email' },
@@ -170,6 +235,7 @@ export class BoardsComponent {
   readonly cardTypes = CARD_TYPES;
   readonly cardStatuses = CARD_STATUSES;
   readonly boardIcons = BOARD_ICONS;
+  readonly cardStickerIcons = CARD_STICKER_ICONS;
   readonly ratingOptions = [1, 2, 3, 4, 5];
   readonly shareTargets = SHARE_TARGETS;
 
@@ -214,6 +280,7 @@ export class BoardsComponent {
     placeId: '',
     googleMapsUrl: '',
     tags: '',
+    stickers: [],
   });
 
   readonly profile = this.authService.profile;
@@ -470,6 +537,7 @@ export class BoardsComponent {
       placeId: '',
       googleMapsUrl: '',
       tags: '',
+      stickers: [],
     });
     this.cardDialogOpen.set(true);
   }
@@ -491,6 +559,7 @@ export class BoardsComponent {
       placeId: card.placeId,
       googleMapsUrl: card.googleMapsUrl,
       tags: card.tags.join(', '),
+      stickers: card.stickers ?? [],
     });
     this.cardDialogOpen.set(true);
   }
@@ -560,6 +629,20 @@ export class BoardsComponent {
   onCardImageUrlInput(value: string): void {
     this.cardImageLocked.set(true);
     this.updateCardDraft('imageUrl', value);
+  }
+
+  toggleCardSticker(icon: string): void {
+    this.cardDraft.update((draft) => {
+      const selected = draft.stickers.includes(icon);
+      const stickers = selected
+        ? draft.stickers.filter((item) => item !== icon)
+        : [...draft.stickers, icon].slice(0, 48);
+      return { ...draft, stickers };
+    });
+  }
+
+  clearCardStickers(): void {
+    this.cardDraft.update((draft) => ({ ...draft, stickers: [] }));
   }
 
   onPlaceQueryInput(value: string): void {
@@ -643,6 +726,7 @@ export class BoardsComponent {
                     placeId: draft.placeId,
                     googleMapsUrl: draft.googleMapsUrl,
                     tags,
+                    stickers: draft.stickers,
                     updatedAt: now,
                   }
                 : card,
@@ -660,6 +744,7 @@ export class BoardsComponent {
                 placeId: draft.placeId,
                 googleMapsUrl: draft.googleMapsUrl,
                 tags,
+                stickers: draft.stickers,
                 createdAt: now,
                 updatedAt: now,
               },
@@ -931,6 +1016,7 @@ export class BoardsComponent {
             imageUrl: card.imageUrl ?? '',
             placeId: card.placeId ?? '',
             googleMapsUrl: card.googleMapsUrl ?? '',
+            stickers: Array.isArray(card.stickers) ? card.stickers : [],
           })),
         }));
     } catch {
@@ -1027,9 +1113,32 @@ export class BoardsComponent {
       placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
+      stickers: Array.isArray(data['stickers'])
+        ? data['stickers'].filter((icon): icon is string => typeof icon === 'string').slice(0, 48)
+        : [],
       createdAt: typeof data['createdAt'] === 'string' ? data['createdAt'] : new Date().toISOString(),
       updatedAt: typeof data['updatedAt'] === 'string' ? data['updatedAt'] : new Date().toISOString(),
     };
+  }
+
+  stickerLeft(index: number): number {
+    const positions = [8, 72, 38, 16, 84, 55, 28, 66, 10, 48, 78, 34];
+    return positions[index % positions.length];
+  }
+
+  stickerTop(index: number): number {
+    const positions = [12, 8, 24, 43, 38, 58, 72, 76, 86, 6, 63, 31];
+    return positions[index % positions.length];
+  }
+
+  stickerRotation(index: number): number {
+    const rotations = [-18, 14, -7, 22, -25, 9, -12, 18, -5, 26, -20, 11];
+    return rotations[index % rotations.length];
+  }
+
+  stickerScale(index: number): number {
+    const scales = [1, 0.82, 1.18, 0.94, 1.3, 0.76, 1.08, 0.9, 1.22, 0.84, 1.12, 0.98];
+    return scales[index % scales.length];
   }
 
   private async prepareBoardImagesForFirebase(board: Board, uid: string): Promise<Board> {
