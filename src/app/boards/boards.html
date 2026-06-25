@@ -125,6 +125,9 @@
                 [style.--board-soft]="toneSoft(board.tone)"
               >
                 <button type="button" class="board-square__open" (click)="selectBoard(board.id)">
+                  @if (board.imageUrl) {
+                    <img class="board-square__image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" loading="lazy" />
+                  }
                   <span class="board-square__icon">
                     <span class="material-symbols-outlined">{{ board.icon }}</span>
                   </span>
@@ -209,29 +212,43 @@
           [style.--board-soft]="toneSoft(board.tone)"
         >
           <div class="board-detail__cover">
-            <button type="button" class="boards-back-button" (click)="closeBoardDetail()">
-              <span class="material-symbols-outlined">arrow_back</span>
-              Boards
-            </button>
-
-            <div class="board-detail__mark">
-              <span class="material-symbols-outlined">{{ board.icon }}</span>
+            @if (board.imageUrl) {
+              <img class="board-detail__cover-image" [src]="board.imageUrl" [alt]="board.title + ' cover image'" />
+            }
+            <div class="board-detail__top">
+              <button type="button" class="boards-back-button" (click)="closeBoardDetail()">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Boards
+              </button>
+              <button type="button" class="boards-share-button" (click)="shareBoard(board)">
+                <span class="material-symbols-outlined">ios_share</span>
+                Share
+              </button>
             </div>
 
-            <div class="board-detail__copy">
-              <p>Board</p>
-              <h1>{{ board.title }}</h1>
-              <span>{{ board.description || 'Add cards to shape this collection.' }}</span>
-            </div>
-
-            <div class="board-detail__stats">
-              <div>
-                <strong>{{ board.cards.length }}</strong>
-                <span>Cards</span>
+            <div class="board-detail__summary">
+              <div class="board-detail__mark">
+                <span class="material-symbols-outlined">{{ board.icon }}</span>
               </div>
-              <div>
-                <strong>{{ board.cards.length ? boardUpdatedLabel(board) : 'New' }}</strong>
-                <span>Updated</span>
+
+              <div class="board-detail__copy">
+                <p>Board</p>
+                <h1>{{ board.title }}</h1>
+                <span>{{ board.description || 'Add cards to shape this collection.' }}</span>
+                @if (shareMessage()) {
+                  <small class="board-detail__share-note">{{ shareMessage() }}</small>
+                }
+              </div>
+
+              <div class="board-detail__stats">
+                <div>
+                  <strong>{{ board.cards.length }}</strong>
+                  <span>Cards</span>
+                </div>
+                <div>
+                  <strong>{{ board.cards.length ? boardUpdatedLabel(board) : 'New' }}</strong>
+                  <span>Updated</span>
+                </div>
               </div>
             </div>
           </div>
@@ -378,6 +395,42 @@
             ></textarea>
           </label>
 
+          <div class="boards-upload-field">
+            <span>Board image</span>
+            <div class="boards-upload">
+              @if (boardDraft().imageUrl) {
+                <img [src]="boardDraft().imageUrl" alt="Board image preview" />
+              } @else {
+                <span class="boards-upload__placeholder">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                </span>
+              }
+              <div class="boards-upload__actions">
+                <label class="boards-upload__button">
+                  <span class="material-symbols-outlined">upload</span>
+                  Upload picture
+                  <input type="file" accept="image/*" (change)="onBoardImageSelected($event)" />
+                </label>
+                @if (boardDraft().imageUrl) {
+                  <button type="button" class="boards-upload__clear" (click)="clearBoardImage()">
+                    <span class="material-symbols-outlined">close</span>
+                    Remove
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <label>
+            <span>Image URL fallback</span>
+            <input
+              type="url"
+              placeholder="https://..."
+              [value]="imageUrlInputValue(boardDraft().imageUrl)"
+              (input)="updateBoardDraft('imageUrl', $any($event.target).value)"
+            />
+          </label>
+
           <div class="boards-form__split">
             <label>
               <span>Icon</span>
@@ -416,6 +469,9 @@
               ></button>
             }
           </div>
+          @if (imageUploadError()) {
+            <div class="boards-form__error">{{ imageUploadError() }}</div>
+          }
 
           <div class="boards-form__actions">
             <button type="button" class="boards-ghost-action" (click)="closeBoardDialog()">Cancel</button>
@@ -516,12 +572,38 @@
             </label>
           </div>
 
+          <div class="boards-upload-field">
+            <span>Card image</span>
+            <div class="boards-upload">
+              @if (cardDraft().imageUrl) {
+                <img [src]="cardDraft().imageUrl" alt="Card image preview" />
+              } @else {
+                <span class="boards-upload__placeholder">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                </span>
+              }
+              <div class="boards-upload__actions">
+                <label class="boards-upload__button">
+                  <span class="material-symbols-outlined">upload</span>
+                  Upload picture
+                  <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
+                </label>
+                @if (cardDraft().imageUrl) {
+                  <button type="button" class="boards-upload__clear" (click)="clearCardImage()">
+                    <span class="material-symbols-outlined">close</span>
+                    Remove
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
           <label>
-            <span>Image URL</span>
+            <span>Image URL fallback</span>
             <input
               type="url"
               placeholder="https://..."
-              [value]="cardDraft().imageUrl"
+              [value]="imageUrlInputValue(cardDraft().imageUrl)"
               (input)="updateCardDraft('imageUrl', $any($event.target).value)"
             />
           </label>
@@ -534,6 +616,9 @@
               (input)="updateCardDraft('tags', $any($event.target).value)"
             />
           </label>
+          @if (imageUploadError()) {
+            <div class="boards-form__error">{{ imageUploadError() }}</div>
+          }
 
           <div class="boards-form__actions">
             <button type="button" class="boards-ghost-action" (click)="closeCardDialog()">Cancel</button>

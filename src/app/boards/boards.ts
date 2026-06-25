@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AuthService } from '../auth.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
@@ -32,6 +33,7 @@ type Board = {
   description: string;
   icon: string;
   tone: BoardTone;
+  imageUrl: string;
   cards: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -42,6 +44,7 @@ type BoardDraft = {
   description: string;
   icon: string;
   tone: BoardTone;
+  imageUrl: string;
 };
 
 type CardDraft = {
@@ -111,6 +114,8 @@ const BOARD_ICONS = [
 })
 export class BoardsComponent {
   private readonly authService = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private hasLoaded = false;
@@ -129,12 +134,15 @@ export class BoardsComponent {
   readonly cardDialogOpen = signal(false);
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
+  readonly imageUploadError = signal<string | null>(null);
+  readonly shareMessage = signal<string | null>(null);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
     description: '',
     icon: 'dashboard',
     tone: 'teal',
+    imageUrl: '',
   });
   readonly cardDraft = signal<CardDraft>({
     title: '',
@@ -235,6 +243,11 @@ export class BoardsComponent {
 
   constructor() {
     this.loadBoards();
+    this.route.paramMap.subscribe((params) => {
+      this.selectedBoardId.set(params.get('boardId'));
+      this.cardSearch.set('');
+      this.shareMessage.set(null);
+    });
 
     effect(() => {
       const boards = this.boards();
@@ -251,33 +264,35 @@ export class BoardsComponent {
   }
 
   selectBoard(boardId: string): void {
-    this.selectedBoardId.set(boardId);
-    this.cardSearch.set('');
+    void this.router.navigate(['/boards', boardId]);
   }
 
   closeBoardDetail(): void {
-    this.selectedBoardId.set(null);
-    this.cardSearch.set('');
+    void this.router.navigate(['/boards']);
   }
 
   openCreateBoard(): void {
     this.editingBoardId.set(null);
+    this.imageUploadError.set(null);
     this.boardDraft.set({
       title: '',
       description: '',
       icon: 'dashboard',
       tone: this.tones[this.boards().length % this.tones.length]?.id ?? 'teal',
+      imageUrl: '',
     });
     this.boardDialogOpen.set(true);
   }
 
   openEditBoard(board: Board): void {
     this.editingBoardId.set(board.id);
+    this.imageUploadError.set(null);
     this.boardDraft.set({
       title: board.title,
       description: board.description,
       icon: board.icon,
       tone: board.tone,
+      imageUrl: board.imageUrl,
     });
     this.boardDialogOpen.set(true);
   }
@@ -307,6 +322,7 @@ export class BoardsComponent {
                 description: draft.description.trim(),
                 icon: draft.icon,
                 tone: draft.tone,
+                imageUrl: draft.imageUrl.trim(),
                 updatedAt: now,
               }
             : board,
@@ -319,12 +335,13 @@ export class BoardsComponent {
         description: draft.description.trim(),
         icon: draft.icon,
         tone: draft.tone,
+        imageUrl: draft.imageUrl.trim(),
         cards: [],
         createdAt: now,
         updatedAt: now,
       };
       this.boards.update((boards) => [board, ...boards]);
-      this.selectedBoardId.set(board.id);
+      void this.router.navigate(['/boards', board.id]);
     }
 
     this.closeBoardDialog();
@@ -338,7 +355,7 @@ export class BoardsComponent {
 
     this.boards.update((boards) => boards.filter((item) => item.id !== board.id));
     if (this.selectedBoardId() === board.id) {
-      this.selectedBoardId.set(null);
+      void this.router.navigate(['/boards']);
     }
   }
 
@@ -347,6 +364,7 @@ export class BoardsComponent {
       return;
     }
     this.selectedBoardId.set(boardId);
+    this.imageUploadError.set(null);
     this.editingCardId.set(null);
     this.cardDraft.set({
       title: '',
@@ -363,6 +381,7 @@ export class BoardsComponent {
 
   openEditCard(card: BoardCard): void {
     this.editingCardId.set(card.id);
+    this.imageUploadError.set(null);
     this.cardDraft.set({
       title: card.title,
       subtitle: card.subtitle,
@@ -384,6 +403,54 @@ export class BoardsComponent {
   closeCardDialog(): void {
     this.cardDialogOpen.set(false);
     this.editingCardId.set(null);
+  }
+
+  async onBoardImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) {
+      return;
+    }
+
+    try {
+      const imageUrl = await this.readImageFile(file);
+      this.updateBoardDraft('imageUrl', imageUrl);
+      this.imageUploadError.set(null);
+    } catch (error) {
+      this.imageUploadError.set(
+        error instanceof Error ? error.message : 'Could not use that image.',
+      );
+    }
+  }
+
+  async onCardImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) {
+      return;
+    }
+
+    try {
+      const imageUrl = await this.readImageFile(file);
+      this.updateCardDraft('imageUrl', imageUrl);
+      this.imageUploadError.set(null);
+    } catch (error) {
+      this.imageUploadError.set(
+        error instanceof Error ? error.message : 'Could not use that image.',
+      );
+    }
+  }
+
+  clearBoardImage(): void {
+    this.updateBoardDraft('imageUrl', '');
+    this.imageUploadError.set(null);
+  }
+
+  clearCardImage(): void {
+    this.updateCardDraft('imageUrl', '');
+    this.imageUploadError.set(null);
   }
 
   saveCard(event: Event): void {
@@ -519,6 +586,34 @@ export class BoardsComponent {
     return '★★★★★'.slice(0, Math.max(1, Math.min(5, rating)));
   }
 
+  imageUrlInputValue(value: string): string {
+    return value.startsWith('data:') ? '' : value;
+  }
+
+  async shareBoard(board: Board): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const url = `${window.location.origin}/boards/${board.id}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: board.title,
+          text: board.description || 'LivingWiki board',
+          url,
+        });
+        this.shareMessage.set('Share sheet opened.');
+        return;
+      }
+
+      await navigator.clipboard.writeText(url);
+      this.shareMessage.set('Board link copied.');
+    } catch {
+      this.shareMessage.set(url);
+    }
+  }
+
   private loadBoards(): void {
     if (!this.isBrowser) {
       this.boards.set(this.seedBoards());
@@ -541,7 +636,16 @@ export class BoardsComponent {
       if (!Array.isArray(value)) {
         return null;
       }
-      return value.filter((board) => board?.id && board?.title && Array.isArray(board.cards));
+      return value
+        .filter((board) => board?.id && board?.title && Array.isArray(board.cards))
+        .map((board) => ({
+          ...board,
+          imageUrl: board.imageUrl ?? '',
+          cards: board.cards.map((card) => ({
+            ...card,
+            imageUrl: card.imageUrl ?? '',
+          })),
+        }));
     } catch {
       return null;
     }
@@ -556,6 +660,7 @@ export class BoardsComponent {
         description: 'A bright trail of beaches, cafes, parks, and long walks worth remembering.',
         icon: 'beach_access',
         tone: 'teal',
+        imageUrl: '',
         createdAt: now,
         updatedAt: now,
         cards: [
@@ -593,6 +698,7 @@ export class BoardsComponent {
         description: 'The reliable hits: cozy counters, special occasion rooms, and quick cravings.',
         icon: 'restaurant',
         tone: 'coral',
+        imageUrl: '',
         createdAt: now,
         updatedAt: now,
         cards: [
@@ -617,6 +723,7 @@ export class BoardsComponent {
         description: 'Small adventures queued up for the next open day.',
         icon: 'auto_awesome',
         tone: 'yellow',
+        imageUrl: '',
         createdAt: now,
         updatedAt: now,
         cards: [],
@@ -644,5 +751,59 @@ export class BoardsComponent {
       return window.crypto.randomUUID();
     }
     return `board-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  private async readImageFile(file: File): Promise<string> {
+    if (!this.isBrowser) {
+      throw new Error('Image uploads are available in the browser.');
+    }
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Choose an image file.');
+    }
+
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          resolve(reader.result);
+        } else {
+          reject(new Error('Could not read that image.'));
+        }
+      };
+      reader.onerror = () => reject(new Error('Could not read that image.'));
+      reader.readAsDataURL(file);
+    });
+
+    return this.resizeImageDataUrl(dataUrl);
+  }
+
+  private resizeImageDataUrl(dataUrl: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        const width = image.naturalWidth || image.width;
+        const height = image.naturalHeight || image.height;
+        if (!width || !height) {
+          resolve(dataUrl);
+          return;
+        }
+
+        const maxSide = 1400;
+        const scale = Math.min(1, maxSide / Math.max(width, height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(width * scale));
+        canvas.height = Math.max(1, Math.round(height * scale));
+        const context = canvas.getContext('2d');
+        if (!context) {
+          resolve(dataUrl);
+          return;
+        }
+
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.84));
+      };
+      image.onerror = () => reject(new Error('Could not load that image.'));
+      image.src = dataUrl;
+    });
   }
 }
