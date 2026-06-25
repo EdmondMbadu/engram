@@ -7,6 +7,17 @@
   min-height: 100vh;
 }
 
+.boards-frame {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.boards-main {
+  min-width: 0;
+  flex: 1;
+}
+
 .boards-topbar {
   position: sticky;
   top: 0;
@@ -20,6 +31,13 @@
   background: var(--nav-bg);
   padding: 0.8rem clamp(1rem, 3vw, 2rem);
   backdrop-filter: blur(18px);
+}
+
+.boards-topbar__brand {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .boards-logo {
@@ -1080,6 +1098,19 @@
   .board-detail__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     min-width: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .boards-frame {
+    height: 100vh;
+    flex-direction: row;
+    overflow: hidden;
+  }
+
+  .boards-main {
+    height: 100vh;
+    overflow-y: auto;
   }
 }
 

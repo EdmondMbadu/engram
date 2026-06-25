@@ -2,8 +2,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AuthService } from '../auth.service';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
@@ -103,7 +105,7 @@ const BOARD_ICONS = [
 
 @Component({
   selector: 'app-boards',
-  imports: [ThemeToggleComponent, AccountMenuComponent],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent],
   templateUrl: './boards.html',
   styleUrl: './boards.css',
 })

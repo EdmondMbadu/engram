@@ -1,25 +1,32 @@
 <div class="boards-page min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
-  <header class="boards-topbar">
-    <a href="/" class="boards-logo" aria-label="LivingWiki home">
-      <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" />
-    </a>
+  <div class="boards-frame">
+    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
 
-    <div class="boards-topbar__title">
-      <span class="material-symbols-outlined">dashboard_customize</span>
-      <span>Boards</span>
-    </div>
+    <div class="boards-main">
+      <header class="boards-topbar">
+        <div class="boards-topbar__brand">
+          <app-mobile-menu activePage="home"></app-mobile-menu>
+          <a href="/" class="boards-logo" aria-label="LivingWiki home">
+            <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" />
+          </a>
+        </div>
 
-    <div class="boards-topbar__actions">
-      <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
-        <span class="material-symbols-outlined">add</span>
-        <span class="hidden sm:inline">New Board</span>
-      </button>
-      <app-theme-toggle></app-theme-toggle>
-      <app-account-menu></app-account-menu>
-    </div>
-  </header>
+        <div class="boards-topbar__title">
+          <span class="material-symbols-outlined">dashboard_customize</span>
+          <span>Boards</span>
+        </div>
 
-  <main class="boards-shell">
+        <div class="boards-topbar__actions">
+          <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
+            <span class="material-symbols-outlined">add</span>
+            <span class="hidden sm:inline">New Board</span>
+          </button>
+          <app-theme-toggle></app-theme-toggle>
+          <app-account-menu></app-account-menu>
+        </div>
+      </header>
+
+      <main class="boards-shell">
     @if (!selectedBoard()) {
       <section class="boards-profile" aria-label="Boards profile">
         <div class="boards-profile__avatar">
@@ -331,7 +338,9 @@
         </section>
       }
     }
-  </main>
+      </main>
+    </div>
+  </div>
 
   @if (boardDialogOpen()) {
     <div class="boards-modal-backdrop" (click)="closeBoardDialog()">
