@@ -1,13 +1,14 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { AccountMenuComponent } from '../account-menu/account-menu';
-import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
+import { AuthService } from '../auth.service';
+import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
-import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
+type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 
 type BoardCard = {
   id: string;
@@ -50,6 +51,11 @@ type CardDraft = {
   rating: string;
   imageUrl: string;
   tags: string;
+};
+
+type GalleryCard = {
+  card: BoardCard;
+  board: Board;
 };
 
 const STORAGE_KEY = 'livingwiki-boards-v1';
@@ -97,16 +103,12 @@ const BOARD_ICONS = [
 
 @Component({
   selector: 'app-boards',
-  imports: [
-    WorkspaceSidebarComponent,
-    MobileMenuComponent,
-    ThemeToggleComponent,
-    AccountMenuComponent,
-  ],
+  imports: [ThemeToggleComponent, AccountMenuComponent],
   templateUrl: './boards.html',
   styleUrl: './boards.css',
 })
 export class BoardsComponent {
+  private readonly authService = inject(AuthService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private hasLoaded = false;
@@ -118,6 +120,7 @@ export class BoardsComponent {
 
   readonly boards = signal<Board[]>([]);
   readonly selectedBoardId = signal<string | null>(null);
+  readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
   readonly boardDialogOpen = signal(false);
@@ -142,9 +145,21 @@ export class BoardsComponent {
     tags: '',
   });
 
+  readonly profile = this.authService.profile;
+  readonly userName = this.authService.displayName;
+  readonly userEmail = this.authService.email;
+  readonly userPhotoUrl = computed(() =>
+    this.profile()?.profilePictureType === 'image' ? this.profile()?.photoURL ?? '' : '',
+  );
+  readonly userIcon = computed(
+    () =>
+      profileIconByCode(this.profile()?.profileIcon) ??
+      profileIconForSeed(this.authService.uid() || this.userEmail() || this.userName()),
+  );
+
   readonly selectedBoard = computed(() => {
     const selectedId = this.selectedBoardId();
-    return this.boards().find((board) => board.id === selectedId) ?? this.boards()[0] ?? null;
+    return this.boards().find((board) => board.id === selectedId) ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
 
@@ -184,6 +199,28 @@ export class BoardsComponent {
     );
   });
 
+  readonly allGalleryCards = computed<GalleryCard[]>(() =>
+    this.boards().flatMap((board) => board.cards.map((card) => ({ card, board }))),
+  );
+
+  readonly visibleGalleryCards = computed<GalleryCard[]>(() => {
+    const query = this.boardSearch().trim().toLowerCase();
+    const cards = this.allGalleryCards()
+      .filter((item) => this.activeGalleryTab() !== 'favorites' || item.card.status === 'favorite')
+      .sort((a, b) => Date.parse(b.card.updatedAt) - Date.parse(a.card.updatedAt));
+
+    if (!query) {
+      return cards;
+    }
+
+    return cards.filter(({ card, board }) =>
+      [card.title, card.subtitle, card.notes, card.type, card.status, card.tags.join(' '), board.title]
+        .join(' ')
+        .toLowerCase()
+        .includes(query),
+    );
+  });
+
   readonly totalCards = computed(() =>
     this.boards().reduce((total, board) => total + board.cards.length, 0),
   );
@@ -206,8 +243,18 @@ export class BoardsComponent {
     });
   }
 
+  setGalleryTab(tab: BoardGalleryTab): void {
+    this.activeGalleryTab.set(tab);
+    this.boardSearch.set('');
+  }
+
   selectBoard(boardId: string): void {
     this.selectedBoardId.set(boardId);
+    this.cardSearch.set('');
+  }
+
+  closeBoardDetail(): void {
+    this.selectedBoardId.set(null);
     this.cardSearch.set('');
   }
 
@@ -289,7 +336,7 @@ export class BoardsComponent {
 
     this.boards.update((boards) => boards.filter((item) => item.id !== board.id));
     if (this.selectedBoardId() === board.id) {
-      this.selectedBoardId.set(this.boards()[0]?.id ?? null);
+      this.selectedBoardId.set(null);
     }
   }
 
@@ -325,6 +372,11 @@ export class BoardsComponent {
       tags: card.tags.join(', '),
     });
     this.cardDialogOpen.set(true);
+  }
+
+  openEditGalleryCard(boardId: string, card: BoardCard): void {
+    this.selectedBoardId.set(boardId);
+    this.openEditCard(card);
   }
 
   closeCardDialog(): void {
@@ -416,6 +468,11 @@ export class BoardsComponent {
     );
   }
 
+  deleteGalleryCard(boardId: string, card: BoardCard): void {
+    this.selectedBoardId.set(boardId);
+    this.deleteCard(card);
+  }
+
   updateBoardDraft<K extends keyof BoardDraft>(field: K, value: BoardDraft[K]): void {
     this.boardDraft.update((draft) => ({ ...draft, [field]: value }));
   }
@@ -463,7 +520,7 @@ export class BoardsComponent {
   private loadBoards(): void {
     if (!this.isBrowser) {
       this.boards.set(this.seedBoards());
-      this.selectedBoardId.set(this.boards()[0]?.id ?? null);
+      this.selectedBoardId.set(null);
       this.hasLoaded = true;
       return;
     }
@@ -472,7 +529,7 @@ export class BoardsComponent {
     const parsed = raw ? this.parseBoards(raw) : null;
     const boards = parsed?.length ? parsed : this.seedBoards();
     this.boards.set(boards);
-    this.selectedBoardId.set(boards[0]?.id ?? null);
+    this.selectedBoardId.set(null);
     this.hasLoaded = true;
   }
 

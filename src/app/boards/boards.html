@@ -1,269 +1,337 @@
 <div class="boards-page min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
-  <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
-    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
+  <header class="boards-topbar">
+    <a href="/" class="boards-logo" aria-label="LivingWiki home">
+      <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" />
+    </a>
 
-    <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
-      <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
-        <div class="flex min-w-0 items-center gap-3 md:gap-8">
-          <app-mobile-menu activePage="home"></app-mobile-menu>
-          <div class="min-w-0">
-            <h1 class="truncate text-2xl font-black tracking-tight text-[var(--text)]">Boards</h1>
-            <p class="hidden text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block">Collections and cards</p>
+    <div class="boards-topbar__title">
+      <span class="material-symbols-outlined">dashboard_customize</span>
+      <span>Boards</span>
+    </div>
+
+    <div class="boards-topbar__actions">
+      <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
+        <span class="material-symbols-outlined">add</span>
+        <span class="hidden sm:inline">New Board</span>
+      </button>
+      <app-theme-toggle></app-theme-toggle>
+      <app-account-menu></app-account-menu>
+    </div>
+  </header>
+
+  <main class="boards-shell">
+    @if (!selectedBoard()) {
+      <section class="boards-profile" aria-label="Boards profile">
+        <div class="boards-profile__avatar">
+          @if (userPhotoUrl()) {
+            <img [src]="userPhotoUrl()" [alt]="userName() + ' profile photo'" />
+          } @else {
+            <span
+              class="boards-profile__avatar-fallback"
+              [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + userIcon().from + ', ' + userIcon().to + ')'"
+            >
+              <span class="material-symbols-outlined" [style.color]="userIcon().ink">{{ userIcon().icon }}</span>
+            </span>
+          }
+        </div>
+
+        <div class="boards-profile__body">
+          <div class="boards-profile__identity">
+            <div>
+              <p>LivingWiki collections</p>
+              <h1>{{ userName() }}</h1>
+              <span>{{ userEmail() }}</span>
+            </div>
+            <button type="button" class="boards-ghost-action" (click)="openCreateBoard()">
+              <span class="material-symbols-outlined">add</span>
+              Create
+            </button>
+          </div>
+
+          <div class="boards-profile__stats" aria-label="Boards summary">
+            <div>
+              <strong>{{ boards().length }}</strong>
+              <span>Boards</span>
+            </div>
+            <div>
+              <strong>{{ totalCards() }}</strong>
+              <span>Cards</span>
+            </div>
+            <div>
+              <strong>{{ favoriteCards() }}</strong>
+              <span>Favorites</span>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div class="flex items-center gap-2 sm:gap-3">
-          <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
-            <span class="material-symbols-outlined text-[1.1rem]">add</span>
-            <span class="hidden sm:inline">New Board</span>
-          </button>
-          <app-theme-toggle></app-theme-toggle>
-          <app-account-menu></app-account-menu>
+      <nav class="boards-tabbar" aria-label="Boards views">
+        <button
+          type="button"
+          [class.boards-tabbar__item--active]="activeGalleryTab() === 'boards'"
+          class="boards-tabbar__item"
+          (click)="setGalleryTab('boards')"
+        >
+          <span class="material-symbols-outlined">grid_on</span>
+          Boards
+        </button>
+        <button
+          type="button"
+          [class.boards-tabbar__item--active]="activeGalleryTab() === 'cards'"
+          class="boards-tabbar__item"
+          (click)="setGalleryTab('cards')"
+        >
+          <span class="material-symbols-outlined">crop_square</span>
+          Cards
+        </button>
+        <button
+          type="button"
+          [class.boards-tabbar__item--active]="activeGalleryTab() === 'favorites'"
+          class="boards-tabbar__item"
+          (click)="setGalleryTab('favorites')"
+        >
+          <span class="material-symbols-outlined">kid_star</span>
+          Favorites
+        </button>
+      </nav>
+
+      <section class="boards-feed">
+        <div class="boards-feed__toolbar">
+          <label class="boards-search">
+            <span class="material-symbols-outlined">search</span>
+            <input
+              type="search"
+              autocomplete="off"
+              [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : 'Search cards...'"
+              [value]="boardSearch()"
+              (input)="boardSearch.set($any($event.target).value)"
+            />
+          </label>
         </div>
-      </header>
 
-      <div class="boards-scroll flex-1 overflow-y-auto">
-        <div class="mx-auto w-full max-w-7xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
-          <section class="boards-hero">
-            <div class="boards-hero__grid"></div>
-            <div class="boards-hero__content">
-              <div class="boards-sticker boards-sticker--hero">
+        @if (activeGalleryTab() === 'boards') {
+          <div class="boards-grid">
+            @for (board of filteredBoards(); track board.id) {
+              <article
+                class="board-square"
+                [style.--board-accent]="toneAccent(board.tone)"
+                [style.--board-soft]="toneSoft(board.tone)"
+              >
+                <button type="button" class="board-square__open" (click)="selectBoard(board.id)">
+                  <span class="board-square__icon">
+                    <span class="material-symbols-outlined">{{ board.icon }}</span>
+                  </span>
+                  <span class="board-square__meta">
+                    <strong>{{ board.title }}</strong>
+                    <small>{{ board.cards.length }} cards</small>
+                  </span>
+                  <span class="board-square__stack" aria-hidden="true">
+                    @for (card of board.cards.slice(0, 3); track card.id) {
+                      <i>
+                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                      </i>
+                    }
+                  </span>
+                </button>
+                <div class="board-square__tools">
+                  <button type="button" aria-label="Edit board" (click)="openEditBoard(board)">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button type="button" aria-label="Delete board" (click)="deleteBoard(board)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </article>
+            } @empty {
+              <div class="boards-empty-state">
                 <span class="material-symbols-outlined">dashboard_customize</span>
-                LivingWiki Boards
-              </div>
-              <h2>Turn anything into a collection.</h2>
-              <p>
-                Build boards for favorite restaurants, summer visits, research trails, trip ideas,
-                local gems, and the small details you want to keep.
-              </p>
-              <div class="boards-hero__actions">
-                <button type="button" class="boards-primary-action boards-primary-action--large" (click)="openCreateBoard()">
+                <h2>No boards yet.</h2>
+                <p>Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.</p>
+                <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
                   <span class="material-symbols-outlined">add</span>
                   Create board
                 </button>
-                @if (selectedBoard(); as board) {
-                  <button type="button" class="boards-ghost-action" (click)="openCreateCard(board.id)">
-                    <span class="material-symbols-outlined">add_card</span>
-                    Add card
-                  </button>
-                }
               </div>
-            </div>
-
-            <div class="boards-hero__stats" aria-label="Boards summary">
-              <div>
-                <span>{{ boards().length }}</span>
-                <p>Boards</p>
-              </div>
-              <div>
-                <span>{{ totalCards() }}</span>
-                <p>Cards</p>
-              </div>
-              <div>
-                <span>{{ favoriteCards() }}</span>
-                <p>Favorites</p>
-              </div>
-            </div>
-          </section>
-
-          <section class="boards-layout">
-            <aside class="boards-panel boards-panel--list">
-              <div class="boards-section-head">
-                <div>
-                  <p>Collections</p>
-                  <h3>Your boards</h3>
-                </div>
-                <button type="button" class="boards-icon-button" aria-label="Create board" (click)="openCreateBoard()">
-                  <span class="material-symbols-outlined">add</span>
+            }
+          </div>
+        } @else {
+          <div class="cards-mosaic">
+            @for (item of visibleGalleryCards(); track item.board.id + item.card.id) {
+              <article
+                class="mosaic-card"
+                [style.--board-accent]="toneAccent(item.board.tone)"
+                [style.--board-soft]="toneSoft(item.board.tone)"
+              >
+                <button type="button" class="mosaic-card__open" (click)="selectBoard(item.board.id)">
+                  @if (item.card.imageUrl) {
+                    <img [src]="item.card.imageUrl" [alt]="item.card.title" loading="lazy" />
+                  } @else {
+                    <span class="mosaic-card__fallback">
+                      <span class="material-symbols-outlined">{{ cardTypeIcon(item.card.type) }}</span>
+                    </span>
+                  }
+                  <span class="mosaic-card__overlay">
+                    <strong>{{ item.card.title }}</strong>
+                    <small>{{ item.board.title }}</small>
+                  </span>
                 </button>
+                <div class="mosaic-card__tools">
+                  <button type="button" aria-label="Edit card" (click)="openEditGalleryCard(item.board.id, item.card)">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button type="button" aria-label="Delete card" (click)="deleteGalleryCard(item.board.id, item.card)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </article>
+            } @empty {
+              <div class="boards-empty-state">
+                <span class="material-symbols-outlined">crop_square</span>
+                <h2>{{ activeGalleryTab() === 'favorites' ? 'No favorites yet.' : 'No cards yet.' }}</h2>
+                <p>Open a board and add cards to build out your collection feed.</p>
               </div>
+            }
+          </div>
+        }
+      </section>
+    } @else {
+      @if (selectedBoard(); as board) {
+        <section
+          class="board-detail"
+          [style.--board-accent]="toneAccent(board.tone)"
+          [style.--board-soft]="toneSoft(board.tone)"
+        >
+          <div class="board-detail__cover">
+            <button type="button" class="boards-back-button" (click)="closeBoardDetail()">
+              <span class="material-symbols-outlined">arrow_back</span>
+              Boards
+            </button>
 
-              <label class="boards-search">
-                <span class="material-symbols-outlined">search</span>
-                <input
-                  type="search"
-                  autocomplete="off"
-                  placeholder="Search boards..."
-                  [value]="boardSearch()"
-                  (input)="boardSearch.set($any($event.target).value)"
-                />
-              </label>
+            <div class="board-detail__mark">
+              <span class="material-symbols-outlined">{{ board.icon }}</span>
+            </div>
 
-              <div class="boards-list">
-                @for (board of filteredBoards(); track board.id) {
-                  <article
-                    class="board-tile"
-                    [class.board-tile--active]="selectedBoardId() === board.id"
-                    [style.--board-accent]="toneAccent(board.tone)"
-                    [style.--board-soft]="toneSoft(board.tone)"
-                  >
-                    <button type="button" class="board-tile__open" (click)="selectBoard(board.id)">
-                      <span class="board-tile__icon">
-                        <span class="material-symbols-outlined">{{ board.icon }}</span>
-                      </span>
-                      <span class="board-tile__copy">
-                        <span class="board-tile__label">{{ board.cards.length }} cards</span>
-                        <strong>{{ board.title }}</strong>
-                        <small>{{ board.description || 'A blank collection ready for cards.' }}</small>
-                      </span>
-                    </button>
-                    <div class="board-tile__tools">
-                      <button type="button" aria-label="Edit board" (click)="openEditBoard(board)">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button type="button" aria-label="Delete board" (click)="deleteBoard(board)">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </div>
-                  </article>
-                } @empty {
-                  <div class="boards-empty-mini">
-                    <span class="material-symbols-outlined">dashboard_customize</span>
-                    <p>No boards match that search.</p>
-                  </div>
-                }
+            <div class="board-detail__copy">
+              <p>Board</p>
+              <h1>{{ board.title }}</h1>
+              <span>{{ board.description || 'Add cards to shape this collection.' }}</span>
+            </div>
+
+            <div class="board-detail__stats">
+              <div>
+                <strong>{{ board.cards.length }}</strong>
+                <span>Cards</span>
               </div>
-            </aside>
+              <div>
+                <strong>{{ board.cards.length ? boardUpdatedLabel(board) : 'New' }}</strong>
+                <span>Updated</span>
+              </div>
+            </div>
+          </div>
 
-            <section class="boards-panel boards-panel--detail">
-              @if (selectedBoard(); as board) {
-                <div
-                  class="board-detail-head"
-                  [style.--board-accent]="toneAccent(board.tone)"
-                  [style.--board-soft]="toneSoft(board.tone)"
+          <div class="board-detail__toolbar">
+            <label class="boards-search boards-search--detail">
+              <span class="material-symbols-outlined">search</span>
+              <input
+                type="search"
+                autocomplete="off"
+                placeholder="Search this board..."
+                [value]="cardSearch()"
+                (input)="cardSearch.set($any($event.target).value)"
+              />
+            </label>
+            <div class="board-detail__actions">
+              <button type="button" class="boards-ghost-action" (click)="openEditBoard(board)">
+                <span class="material-symbols-outlined">tune</span>
+                Edit board
+              </button>
+              <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
+                <span class="material-symbols-outlined">add</span>
+                Add card
+              </button>
+            </div>
+          </div>
+
+          @if (board.cards.length === 0) {
+            <div class="boards-empty-state boards-empty-state--detail">
+              <span class="material-symbols-outlined">add_card</span>
+              <h2>This board is ready for its first card.</h2>
+              <p>Add a place, meal, memory, idea, shop, or note. Cards can carry tags, ratings, status, and an optional image URL.</p>
+              <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
+                <span class="material-symbols-outlined">add</span>
+                Add first card
+              </button>
+            </div>
+          } @else {
+            <div class="detail-cards-grid">
+              @for (card of filteredCards(); track card.id) {
+                <article
+                  class="detail-card"
+                  [class.detail-card--favorite]="card.status === 'favorite'"
                 >
-                  <div class="board-detail-head__mark">
-                    <span class="material-symbols-outlined">{{ board.icon }}</span>
+                  <div class="detail-card__media">
+                    @if (card.imageUrl) {
+                      <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                    } @else {
+                      <span class="detail-card__fallback">
+                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                      </span>
+                    }
+                    <span class="detail-card__status">
+                      <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
+                      {{ statusLabel(card.status) }}
+                    </span>
                   </div>
-                  <div class="min-w-0">
-                    <p>Board</p>
-                    <h3>{{ board.title }}</h3>
-                    <span>{{ board.description || 'Add cards to shape this collection.' }}</span>
-                  </div>
-                  <div class="board-detail-head__actions">
-                    <button type="button" class="boards-ghost-action" (click)="openEditBoard(board)">
-                      <span class="material-symbols-outlined">tune</span>
-                      Edit
-                    </button>
-                    <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
-                      <span class="material-symbols-outlined">add_card</span>
-                      Card
-                    </button>
-                  </div>
-                </div>
 
-                <div class="board-detail-toolbar">
-                  <div class="board-metrics">
-                    <span><b>{{ board.cards.length }}</b> cards</span>
-                    <span><b>{{ boardUpdatedLabel(board) }}</b> updated</span>
-                  </div>
-                  <label class="boards-search boards-search--compact">
-                    <span class="material-symbols-outlined">search</span>
-                    <input
-                      type="search"
-                      autocomplete="off"
-                      placeholder="Search cards..."
-                      [value]="cardSearch()"
-                      (input)="cardSearch.set($any($event.target).value)"
-                    />
-                  </label>
-                </div>
-
-                @if (board.cards.length === 0) {
-                  <div class="boards-empty-state">
-                    <span class="material-symbols-outlined">add_card</span>
-                    <h4>This board is ready for its first card.</h4>
-                    <p>Add a place, meal, memory, idea, shop, or note. Each card can carry tags, ratings, status, and an optional image URL.</p>
-                    <button type="button" class="boards-primary-action boards-primary-action--large" (click)="openCreateCard(board.id)">
-                      <span class="material-symbols-outlined">add</span>
-                      Add first card
-                    </button>
-                  </div>
-                } @else {
-                  <div class="cards-grid">
-                    @for (card of filteredCards(); track card.id) {
-                      <article
-                        class="collection-card"
-                        [class.collection-card--favorite]="card.status === 'favorite'"
-                        [style.--board-accent]="toneAccent(board.tone)"
-                        [style.--board-soft]="toneSoft(board.tone)"
-                      >
-                        <div class="collection-card__art">
-                          @if (card.imageUrl) {
-                            <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
-                          } @else {
-                            <div class="collection-card__scene">
-                              <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                            </div>
-                          }
-                          <span class="collection-card__status">
-                            <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
-                            {{ statusLabel(card.status) }}
-                          </span>
-                        </div>
-
-                        <div class="collection-card__body">
-                          <div class="collection-card__topline">
-                            <span>
-                              <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                              {{ cardTypeLabel(card.type) }}
-                            </span>
-                            <span class="collection-card__rating" aria-label="Rating">{{ ratingStars(card.rating) }}</span>
-                          </div>
-                          <h4>{{ card.title }}</h4>
-                          @if (card.subtitle) {
-                            <p class="collection-card__subtitle">{{ card.subtitle }}</p>
-                          }
-                          @if (card.notes) {
-                            <p class="collection-card__notes">{{ card.notes }}</p>
-                          }
-                          @if (card.tags.length) {
-                            <div class="collection-card__tags">
-                              @for (tag of card.tags; track tag) {
-                                <span>{{ tag }}</span>
-                              }
-                            </div>
-                          }
-                        </div>
-
-                        <div class="collection-card__footer">
-                          <span>Updated {{ cardUpdatedLabel(card) }}</span>
-                          <span class="collection-card__buttons">
-                            <button type="button" aria-label="Edit card" (click)="openEditCard(card)">
-                              <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button type="button" aria-label="Delete card" (click)="deleteCard(card)">
-                              <span class="material-symbols-outlined">delete</span>
-                            </button>
-                          </span>
-                        </div>
-                      </article>
-                    } @empty {
-                      <div class="boards-empty-state boards-empty-state--inline">
-                        <span class="material-symbols-outlined">search_off</span>
-                        <h4>No cards match that search.</h4>
-                        <p>Clear the card search or add a new card to this board.</p>
+                  <div class="detail-card__body">
+                    <div class="detail-card__line">
+                      <span>
+                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                        {{ cardTypeLabel(card.type) }}
+                      </span>
+                      <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
+                    </div>
+                    <h2>{{ card.title }}</h2>
+                    @if (card.subtitle) {
+                      <p class="detail-card__subtitle">{{ card.subtitle }}</p>
+                    }
+                    @if (card.notes) {
+                      <p class="detail-card__notes">{{ card.notes }}</p>
+                    }
+                    @if (card.tags.length) {
+                      <div class="detail-card__tags">
+                        @for (tag of card.tags; track tag) {
+                          <span>{{ tag }}</span>
+                        }
                       </div>
                     }
                   </div>
-                }
-              } @else {
-                <div class="boards-empty-state">
-                  <span class="material-symbols-outlined">dashboard_customize</span>
-                  <h4>Create your first board.</h4>
-                  <p>Boards are collections. Cards are the places, ideas, memories, and notes inside them.</p>
-                  <button type="button" class="boards-primary-action boards-primary-action--large" (click)="openCreateBoard()">
-                    <span class="material-symbols-outlined">add</span>
-                    Create board
-                  </button>
+
+                  <div class="detail-card__footer">
+                    <span>Updated {{ cardUpdatedLabel(card) }}</span>
+                    <span class="detail-card__buttons">
+                      <button type="button" aria-label="Edit card" (click)="openEditCard(card)">
+                        <span class="material-symbols-outlined">edit</span>
+                      </button>
+                      <button type="button" aria-label="Delete card" (click)="deleteCard(card)">
+                        <span class="material-symbols-outlined">delete</span>
+                      </button>
+                    </span>
+                  </div>
+                </article>
+              } @empty {
+                <div class="boards-empty-state boards-empty-state--detail">
+                  <span class="material-symbols-outlined">search_off</span>
+                  <h2>No cards match that search.</h2>
+                  <p>Clear the search or add another card to this board.</p>
                 </div>
               }
-            </section>
-          </section>
-        </div>
-      </div>
-    </main>
-  </div>
+            </div>
+          }
+        </section>
+      }
+    }
+  </main>
 
   @if (boardDialogOpen()) {
     <div class="boards-modal-backdrop" (click)="closeBoardDialog()">
