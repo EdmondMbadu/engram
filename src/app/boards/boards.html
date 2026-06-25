@@ -367,6 +367,7 @@
                 <article
                   class="detail-card"
                   [class.detail-card--favorite]="card.status === 'favorite'"
+                  (pointerdown)="beginCardStickerDrag($event, board.id, card)"
                 >
                   @if (card.stickers.length) {
                     <div class="detail-card__stickers" aria-hidden="true">

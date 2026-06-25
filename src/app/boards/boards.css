@@ -486,11 +486,14 @@
 }
 
 .board-square__stickers {
-  z-index: 3;
+  z-index: 4;
 }
 
-.board-detail__stickers,
 .detail-card__stickers {
+  z-index: 2;
+}
+
+.board-detail__stickers {
   z-index: 2;
 }
 

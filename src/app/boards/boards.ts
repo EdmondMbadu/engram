@@ -1264,6 +1264,42 @@ export class BoardsComponent {
     window.addEventListener('pointercancel', this.handleStickerPointerEnd, { once: true });
   }
 
+  beginCardStickerDrag(event: PointerEvent, boardId: string, card: BoardCard): void {
+    if (event.button !== 0 || !card.stickers.length || !(event.currentTarget instanceof HTMLElement)) {
+      return;
+    }
+    if (event.target instanceof HTMLElement && event.target.closest('a, button, input, textarea, select, label')) {
+      return;
+    }
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    const sticker = this.findStickerAtPoint(card.stickers, x, y);
+    if (!sticker) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    this.suppressNextBoardOpen = true;
+    this.draggedStickerId.set(sticker.id);
+    this.stickerDragState = {
+      boardId,
+      cardId: card.id,
+      stickerId: sticker.id,
+      surface: 'card',
+      rect,
+      pointerId: event.pointerId,
+      target: event.currentTarget,
+      moved: false,
+    };
+    window.addEventListener('pointermove', this.handleStickerPointerMove);
+    window.addEventListener('pointerup', this.handleStickerPointerEnd, { once: true });
+    window.addEventListener('pointercancel', this.handleStickerPointerEnd, { once: true });
+  }
+
   private readonly handleStickerPointerMove = (event: PointerEvent): void => {
     const state = this.stickerDragState;
     if (!state || event.pointerId !== state.pointerId) {
@@ -1342,6 +1378,17 @@ export class BoardsComponent {
       return stickers.filter((sticker) => sticker.icon !== icon);
     }
     return [...stickers, this.createSticker(icon, stickers.length)].slice(0, 48);
+  }
+
+  private findStickerAtPoint(stickers: BoardSticker[], x: number, y: number): BoardSticker | null {
+    let closest: { sticker: BoardSticker; distance: number } | null = null;
+    for (const sticker of stickers) {
+      const distance = Math.hypot(sticker.x - x, sticker.y - y);
+      if (distance <= 9 && (!closest || distance < closest.distance)) {
+        closest = { sticker, distance };
+      }
+    }
+    return closest?.sticker ?? null;
   }
 
   private normalizeStickers(value: unknown): BoardSticker[] {
