@@ -510,7 +510,8 @@
 
 .board-square__stickers,
 .board-detail__stickers,
-.detail-card__stickers {
+.detail-card__stickers,
+.mosaic-card__stickers {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -521,6 +522,10 @@
 }
 
 .detail-card__stickers {
+  z-index: 2;
+}
+
+.mosaic-card__stickers {
   z-index: 2;
 }
 
@@ -627,10 +632,16 @@
 .mosaic-card__overlay {
   position: absolute;
   inset: auto 0 0;
+  z-index: 3;
   display: block;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.74), transparent);
   color: #ffffff;
   padding: 3rem 0.85rem 0.8rem;
+}
+
+.mosaic-card__sticker {
+  width: 2rem;
+  height: 2rem;
 }
 
 .mosaic-card__overlay strong,
@@ -1027,6 +1038,7 @@
 
 .detail-card__line {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.6rem;

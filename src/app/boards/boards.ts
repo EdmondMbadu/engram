@@ -17,6 +17,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
+type BoardCardScope = 'place' | 'city' | 'country' | 'region';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
@@ -49,6 +50,7 @@ type BoardCard = {
   subtitle: string;
   notes: string;
   type: BoardCardType;
+  scope: BoardCardScope;
   status: BoardCardStatus;
   rating: number;
   imageUrl: string;
@@ -89,6 +91,7 @@ type CardDraft = {
   subtitle: string;
   notes: string;
   type: BoardCardType;
+  scope: BoardCardScope;
   status: BoardCardStatus;
   rating: string;
   imageUrl: string;
@@ -141,11 +144,35 @@ const CARD_TYPES: Array<{ id: BoardCardType; label: string; icon: string }> = [
   { id: 'note', label: 'Note', icon: 'sticky_note_2' },
 ];
 
+const CARD_SCOPES: Array<{ id: BoardCardScope; label: string; icon: string }> = [
+  { id: 'place', label: 'Place', icon: 'location_on' },
+  { id: 'city', label: 'City', icon: 'location_city' },
+  { id: 'country', label: 'Country', icon: 'flag' },
+  { id: 'region', label: 'Region', icon: 'map' },
+];
+
 const CARD_STATUSES: Array<{ id: BoardCardStatus; label: string; icon: string }> = [
   { id: 'planned', label: 'Planned', icon: 'event' },
   { id: 'saved', label: 'Saved', icon: 'bookmark' },
   { id: 'visited', label: 'Visited', icon: 'check_circle' },
   { id: 'favorite', label: 'Favorite', icon: 'kid_star' },
+];
+
+const COUNTRY_NAMES = [
+  'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia',
+  'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belgium', 'Belize',
+  'Benin', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Bulgaria', 'Burkina Faso',
+  'Cambodia', 'Cameroon', 'Canada', 'Chile', 'China', 'Colombia', 'Costa Rica', 'Croatia', 'Cuba',
+  'Cyprus', 'Czechia', 'Denmark', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador',
+  'Estonia', 'Ethiopia', 'Finland', 'France', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Guatemala',
+  'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Ireland', 'Israel', 'Italy',
+  'Jamaica', 'Japan', 'Jordan', 'Kenya', 'Kuwait', 'Latvia', 'Lebanon', 'Liberia', 'Lithuania',
+  'Luxembourg', 'Malaysia', 'Mexico', 'Morocco', 'Netherlands', 'New Zealand', 'Nigeria', 'Norway',
+  'Pakistan', 'Panama', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Rwanda',
+  'Saudi Arabia', 'Senegal', 'Serbia', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa',
+  'South Korea', 'Spain', 'Sri Lanka', 'Sweden', 'Switzerland', 'Taiwan', 'Tanzania', 'Thailand',
+  'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Uganda', 'Ukraine', 'United Arab Emirates',
+  'United Kingdom', 'United States', 'Uruguay', 'Vietnam', 'Zambia', 'Zimbabwe',
 ];
 
 const BOARD_ICONS = [
@@ -276,6 +303,7 @@ export class BoardsComponent {
 
   readonly tones = BOARD_TONES;
   readonly cardTypes = CARD_TYPES;
+  readonly cardScopes = CARD_SCOPES;
   readonly cardStatuses = CARD_STATUSES;
   readonly boardIcons = BOARD_ICONS;
   readonly cardStickerIcons = CARD_STICKER_ICONS;
@@ -319,6 +347,7 @@ export class BoardsComponent {
     subtitle: '',
     notes: '',
     type: 'place',
+    scope: 'place',
     status: 'saved',
     rating: '4',
     imageUrl: '',
@@ -375,7 +404,7 @@ export class BoardsComponent {
     }
 
     return cards.filter((card) =>
-      [card.title, card.subtitle, card.notes, card.type, card.status, card.tags.join(' ')]
+      [card.title, card.subtitle, card.notes, card.type, card.scope, card.status, card.tags.join(' ')]
         .join(' ')
         .toLowerCase()
         .includes(query),
@@ -397,7 +426,7 @@ export class BoardsComponent {
     }
 
     return cards.filter(({ card, board }) =>
-      [card.title, card.subtitle, card.notes, card.type, card.status, card.tags.join(' '), board.title]
+      [card.title, card.subtitle, card.notes, card.type, card.scope, card.status, card.tags.join(' '), board.title]
         .join(' ')
         .toLowerCase()
         .includes(query),
@@ -414,7 +443,8 @@ export class BoardsComponent {
     ),
   );
   readonly cityMatchSuggestions = computed(() => {
-    const query = this.cardDraft().placeCity.trim().toLowerCase();
+    const draft = this.cardDraft();
+    const query = (draft.scope === 'city' ? draft.placeQuery : draft.placeCity).trim().toLowerCase();
     if (query.length < 2) {
       return [];
     }
@@ -430,6 +460,26 @@ export class BoardsComponent {
       .slice(0, 4);
   });
   readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
+  readonly countryMatchSuggestions = computed(() => {
+    const draft = this.cardDraft();
+    if (draft.scope !== 'country') {
+      return [];
+    }
+    const query = draft.placeQuery.trim().toLowerCase();
+    if (query.length < 2) {
+      return [];
+    }
+    return COUNTRY_NAMES
+      .filter((country) => country.toLowerCase().includes(query))
+      .sort((left, right) => {
+        const leftName = left.toLowerCase();
+        const rightName = right.toLowerCase();
+        const leftStarts = leftName.startsWith(query) ? 0 : 1;
+        const rightStarts = rightName.startsWith(query) ? 0 : 1;
+        return leftStarts - rightStarts || left.localeCompare(right);
+      })
+      .slice(0, 4);
+  });
 
   constructor() {
     this.loadLocalBoards();
@@ -602,6 +652,7 @@ export class BoardsComponent {
       subtitle: '',
       notes: '',
       type: 'place',
+      scope: 'place',
       status: 'saved',
       rating: '4',
       imageUrl: '',
@@ -624,6 +675,7 @@ export class BoardsComponent {
       subtitle: card.subtitle,
       notes: card.notes,
       type: card.type,
+      scope: card.scope,
       status: card.status,
       rating: String(card.rating),
       imageUrl: card.imageUrl,
@@ -730,10 +782,57 @@ export class BoardsComponent {
     return stickers.some((sticker) => sticker.icon === icon);
   }
 
+  setCardScope(scope: BoardCardScope): void {
+    this.cardDraft.update((draft) => ({
+      ...draft,
+      scope,
+      placeCity: scope === 'place' ? draft.placeCity : '',
+    }));
+    this.schedulePlaceSearch();
+  }
+
+  cardScopeQueryLabel(scope: BoardCardScope): string {
+    switch (scope) {
+      case 'city':
+        return 'City';
+      case 'country':
+        return 'Country';
+      case 'region':
+        return 'Region';
+      default:
+        return 'Place, restaurant, venue, or thing';
+    }
+  }
+
+  cardScopeQueryPlaceholder(scope: BoardCardScope): string {
+    switch (scope) {
+      case 'city':
+        return 'Atlanta, Philadelphia, Lisbon...';
+      case 'country':
+        return 'Ghana, Japan, Italy...';
+      case 'region':
+        return 'Bay Area, New England, Tuscany...';
+      default:
+        return 'Zahav, Ocean City boardwalk, MoMA...';
+    }
+  }
+
+  showCardCityContext(): boolean {
+    return this.cardDraft().scope === 'place';
+  }
+
   onPlaceQueryInput(value: string): void {
     this.updateCardDraft('placeQuery', value);
     if (!this.cardDraft().title.trim()) {
       this.updateCardDraft('title', value);
+    }
+    const scope = this.cardDraft().scope;
+    const city = scope === 'city' ? this.findExactCityOption(value) : null;
+    const country = scope === 'country' ? this.findCountryOption(value) : null;
+    if (city) {
+      this.applyCitySuggestion(city, false);
+    } else if (country) {
+      this.applyCountrySuggestion(country, false);
     }
     this.schedulePlaceSearch();
   }
@@ -745,6 +844,9 @@ export class BoardsComponent {
 
   selectPlaceCity(city: BoardCityOption): void {
     this.updateCardDraft('placeCity', city.name);
+    if (this.cardDraft().scope === 'city' || !this.cardDraft().placeQuery.trim()) {
+      this.applyCitySuggestion(city, false);
+    }
     this.schedulePlaceSearch();
   }
 
@@ -752,22 +854,69 @@ export class BoardsComponent {
     this.applyPlaceSuggestion(place, true);
   }
 
+  selectCountrySuggestion(country: string): void {
+    this.applyCountrySuggestion(country, true);
+    this.schedulePlaceSearch();
+  }
+
   private applyPlaceSuggestion(place: PlaceSearchResult, closeSuggestions: boolean): void {
     const inferredType = this.inferCardType(place);
+    const inferredScope = this.inferCardScope(place);
+    this.cardDraft.update((draft) => {
+      const scope = inferredScope === 'place' ? draft.scope : inferredScope;
+      return {
+        ...draft,
+        title: place.name,
+        subtitle: place.address,
+        type: scope === 'place' ? inferredType : draft.type,
+        scope,
+        imageUrl: this.cardImageLocked() ? draft.imageUrl : place.photoUrl || draft.imageUrl,
+        placeQuery: place.name,
+        placeId: place.placeId,
+        googleMapsUrl: place.googleMapsUrl,
+        tags: scope === 'place'
+          ? this.placeTags(place).join(', ')
+          : this.mergeTagText(draft.tags, [scope, ...this.placeTags(place)]),
+      };
+    });
+    if (closeSuggestions) {
+      this.placeSuggestions.set([]);
+    }
+    this.placeSearchError.set(null);
+  }
+
+  private applyCountrySuggestion(country: string, closeSuggestions: boolean): void {
     this.cardDraft.update((draft) => ({
       ...draft,
-      title: place.name,
-      subtitle: place.address,
-      type: inferredType,
-      imageUrl: this.cardImageLocked() ? draft.imageUrl : place.photoUrl || draft.imageUrl,
-      placeQuery: place.name,
-      placeId: place.placeId,
-      googleMapsUrl: place.googleMapsUrl,
-      tags: this.placeTags(place).join(', '),
+      title: country,
+      subtitle: 'Country',
+      type: draft.type === 'place' ? 'memory' : draft.type,
+      scope: 'country',
+      placeQuery: country,
+      tags: this.mergeTagText(draft.tags, ['country', 'travel']),
     }));
     if (closeSuggestions) {
       this.placeSuggestions.set([]);
     }
+    this.placeSearchHint.set(`Country card selected. Looking for a map link and photo for ${country}.`);
+    this.placeSearchError.set(null);
+  }
+
+  private applyCitySuggestion(city: BoardCityOption, closeSuggestions: boolean): void {
+    this.cardDraft.update((draft) => ({
+      ...draft,
+      title: city.name,
+      subtitle: city.region || 'City',
+      type: draft.type === 'place' ? 'memory' : draft.type,
+      scope: 'city',
+      placeQuery: city.name,
+      placeCity: city.name,
+      tags: this.mergeTagText(draft.tags, ['city', 'travel']),
+    }));
+    if (closeSuggestions) {
+      this.placeSuggestions.set([]);
+    }
+    this.placeSearchHint.set(`City card selected from LivingWiki cities. Looking for a map link and photo for ${city.name}.`);
     this.placeSearchError.set(null);
   }
 
@@ -805,6 +954,7 @@ export class BoardsComponent {
                     subtitle: draft.subtitle.trim(),
                     notes: draft.notes.trim(),
                     type: draft.type,
+                    scope: draft.scope,
                     status: draft.status,
                     rating,
                     imageUrl: draft.imageUrl.trim(),
@@ -823,6 +973,7 @@ export class BoardsComponent {
                 subtitle: draft.subtitle.trim(),
                 notes: draft.notes.trim(),
                 type: draft.type,
+                scope: draft.scope,
                 status: draft.status,
                 rating,
                 imageUrl: draft.imageUrl.trim(),
@@ -903,6 +1054,14 @@ export class BoardsComponent {
 
   cardTypeLabel(type: BoardCardType): string {
     return this.cardTypes.find((item) => item.id === type)?.label ?? 'Note';
+  }
+
+  cardScopeIcon(scope: BoardCardScope): string {
+    return this.cardScopes.find((item) => item.id === scope)?.icon ?? 'location_on';
+  }
+
+  cardScopeLabel(scope: BoardCardScope): string {
+    return this.cardScopes.find((item) => item.id === scope)?.label ?? 'Place';
   }
 
   statusLabel(status: BoardCardStatus): string {
@@ -1113,6 +1272,7 @@ export class BoardsComponent {
             imageUrl: card.imageUrl ?? '',
             placeId: card.placeId ?? '',
             googleMapsUrl: card.googleMapsUrl ?? '',
+            scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
             stickers: this.normalizeStickers(card.stickers),
           })),
         }));
@@ -1206,6 +1366,7 @@ export class BoardsComponent {
       subtitle: typeof data['subtitle'] === 'string' ? data['subtitle'] : '',
       notes: typeof data['notes'] === 'string' ? data['notes'] : '',
       type: this.isBoardCardType(data['type']) ? data['type'] : 'place',
+      scope: this.isBoardCardScope(data['scope']) ? data['scope'] : this.inferLegacyCardScope(data),
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: typeof data['rating'] === 'number' ? Math.max(1, Math.min(5, data['rating'])) : 4,
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
@@ -1515,6 +1676,10 @@ export class BoardsComponent {
     return typeof value === 'string' && this.cardTypes.some((type) => type.id === value);
   }
 
+  private isBoardCardScope(value: unknown): value is BoardCardScope {
+    return typeof value === 'string' && this.cardScopes.some((scope) => scope.id === value);
+  }
+
   private isBoardCardStatus(value: unknown): value is BoardCardStatus {
     return typeof value === 'string' && this.cardStatuses.some((status) => status.id === value);
   }
@@ -1726,6 +1891,22 @@ export class BoardsComponent {
     }) ?? null;
   }
 
+  private findExactCityOption(value: string): BoardCityOption | null {
+    const query = value.trim().toLowerCase();
+    if (query.length < 2) {
+      return null;
+    }
+    return this.publicCities().find((city) => this.isExactCityInput(query, city)) ?? null;
+  }
+
+  private findCountryOption(value: string): string | null {
+    const query = value.trim().toLowerCase();
+    if (query.length < 2) {
+      return null;
+    }
+    return COUNTRY_NAMES.find((country) => country.toLowerCase() === query) ?? null;
+  }
+
   private citySearchText(city: BoardCityOption): string {
     return `${city.name} ${city.region} ${city.slug}`.toLowerCase();
   }
@@ -1862,11 +2043,55 @@ export class BoardsComponent {
     return 'place';
   }
 
+  private inferCardScope(place: PlaceSearchResult): BoardCardScope {
+    const types = new Set(place.types);
+    if (types.has('country')) {
+      return 'country';
+    }
+    if (types.has('locality') || types.has('postal_town')) {
+      return 'city';
+    }
+    if (
+      types.has('administrative_area_level_1') ||
+      types.has('administrative_area_level_2') ||
+      types.has('natural_feature')
+    ) {
+      return 'region';
+    }
+    return 'place';
+  }
+
+  private inferLegacyCardScope(data: Record<string, unknown>): BoardCardScope {
+    const tags = Array.isArray(data['tags'])
+      ? data['tags'].filter((tag): tag is string => typeof tag === 'string').map((tag) => tag.toLowerCase())
+      : [];
+    if (tags.includes('country')) {
+      return 'country';
+    }
+    if (tags.includes('city')) {
+      return 'city';
+    }
+    return 'place';
+  }
+
   private placeTags(place: PlaceSearchResult): string[] {
     return place.types
       .map((type) => type.replaceAll('_', ' '))
       .filter((type) => !['point of interest', 'establishment'].includes(type))
       .slice(0, 4);
+  }
+
+  private mergeTagText(current: string, tags: string[]): string {
+    const merged = new Set(
+      current
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+    );
+    for (const tag of tags) {
+      merged.add(tag);
+    }
+    return [...merged].slice(0, 6).join(', ');
   }
 
   private async readImageFile(file: File): Promise<string> {

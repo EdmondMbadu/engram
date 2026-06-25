@@ -227,6 +227,26 @@
                       <span class="material-symbols-outlined">{{ cardTypeIcon(item.card.type) }}</span>
                     </span>
                   }
+                  @if (item.card.stickers.length) {
+                    <span class="mosaic-card__stickers" aria-hidden="true">
+                      @for (sticker of item.card.stickers; track sticker.id) {
+                        <span
+                          class="detail-card__sticker mosaic-card__sticker"
+                          [class.detail-card__sticker--dragging]="draggedStickerId() === sticker.id"
+                          [style.left.%]="sticker.x"
+                          [style.top.%]="sticker.y"
+                          [style.transform]="stickerTransform(sticker)"
+                          [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                          [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                          [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                          [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                          (pointerdown)="beginStickerDrag($event, 'card', item.board.id, sticker.id, item.card.id)"
+                        >
+                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                        </span>
+                      }
+                    </span>
+                  }
                   <span class="mosaic-card__overlay">
                     <strong>{{ item.card.title }}</strong>
                     <small>{{ item.board.title }}</small>
@@ -429,6 +449,10 @@
                       <span>
                         <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                         {{ cardTypeLabel(card.type) }}
+                      </span>
+                      <span>
+                        <span class="material-symbols-outlined">{{ cardScopeIcon(card.scope) }}</span>
+                        {{ cardScopeLabel(card.scope) }}
                       </span>
                       <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
                     </div>
@@ -667,30 +691,46 @@
               <span class="material-symbols-outlined">travel_explore</span>
               <div>
                 <p>Fast place fill</p>
-                <h4>Enter a place or thing</h4>
+                <h4>Choose the scope, then enter the card</h4>
               </div>
+            </div>
+            <div class="boards-choice-grid boards-choice-grid--status" aria-label="Card scope">
+              @for (scope of cardScopes; track scope.id) {
+                <button
+                  type="button"
+                  class="boards-choice"
+                  [class.boards-choice--active]="cardDraft().scope === scope.id"
+                  [attr.aria-pressed]="cardDraft().scope === scope.id"
+                  (click)="setCardScope(scope.id)"
+                >
+                  <span class="material-symbols-outlined">{{ scope.icon }}</span>
+                  <strong>{{ scope.label }}</strong>
+                </button>
+              }
             </div>
             <div class="boards-form__split">
               <label>
-                <span>Place, restaurant, venue, or thing</span>
+                <span>{{ cardScopeQueryLabel(cardDraft().scope) }}</span>
                 <input
                   type="text"
                   autocomplete="off"
-                  placeholder="Zahav, Ocean City boardwalk, MoMA..."
+                  [placeholder]="cardScopeQueryPlaceholder(cardDraft().scope)"
                   [value]="cardDraft().placeQuery"
                   (input)="onPlaceQueryInput($any($event.target).value)"
                 />
               </label>
-              <label>
-                <span>City optional</span>
-                <input
-                  type="text"
-                  autocomplete="off"
-                  placeholder="Philadelphia, New York, Lisbon..."
-                  [value]="cardDraft().placeCity"
-                  (input)="onPlaceCityInput($any($event.target).value)"
-                />
-              </label>
+              @if (showCardCityContext()) {
+                <label>
+                  <span>City optional</span>
+                  <input
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Philadelphia, New York, Lisbon..."
+                    [value]="cardDraft().placeCity"
+                    (input)="onPlaceCityInput($any($event.target).value)"
+                  />
+                </label>
+              }
             </div>
             @if (cityMatchSuggestions().length) {
               <div class="boards-city-matches" aria-label="Matching cities">
@@ -705,13 +745,24 @@
                 }
               </div>
             }
+            @if (countryMatchSuggestions().length) {
+              <div class="boards-city-matches" aria-label="Matching countries">
+                @for (country of countryMatchSuggestions(); track country) {
+                  <button type="button" (click)="selectCountrySuggestion(country)">
+                    <span class="material-symbols-outlined">flag</span>
+                    <strong>{{ country }}</strong>
+                    <small>Country</small>
+                  </button>
+                }
+              </div>
+            }
             <div class="boards-place-status">
               @if (placeSearchLoading()) {
                 <span class="boards-place-status__loading"></span>
                 Looking up place and photo...
               } @else if (cardDraft().placeId) {
                 <span class="material-symbols-outlined">check_circle</span>
-                Place details added.
+                Details added.
               } @else if (placeSearchHint()) {
                 <span class="material-symbols-outlined">location_on</span>
                 {{ placeSearchHint() }}
