@@ -92,6 +92,7 @@ type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
 };
 
 const STORAGE_KEY = 'livingwiki-boards-v1';
+const DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 
 const BOARD_TONES: Array<{ id: BoardTone; label: string; accent: string; soft: string }> = [
   { id: 'teal', label: 'Teal', accent: '#007f7a', soft: '#dffcf7' },
@@ -820,15 +821,16 @@ export class BoardsComponent {
 
   private loadLocalBoards(): void {
     if (!this.isBrowser) {
-      this.boards.set(this.seedBoards());
+      this.boards.set([]);
       this.hasLoaded = true;
       return;
     }
 
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? this.parseBoards(raw) : null;
-    this.loadedStoredLocalBoards = !!parsed?.length;
-    const boards = parsed?.length ? parsed : this.seedBoards();
+    const userBoards = (parsed ?? []).filter((board) => !DEMO_BOARD_IDS.has(board.id));
+    this.loadedStoredLocalBoards = userBoards.length > 0;
+    const boards = userBoards;
     this.boards.set(boards);
     this.hasLoaded = true;
   }
@@ -1066,92 +1068,6 @@ export class BoardsComponent {
 
   private isBoardCardStatus(value: unknown): value is BoardCardStatus {
     return typeof value === 'string' && this.cardStatuses.some((status) => status.id === value);
-  }
-
-  private seedBoards(): Board[] {
-    const now = new Date().toISOString();
-    return [
-      {
-        id: 'board-summer-places',
-        title: 'Places visited this summer',
-        description: 'A bright trail of beaches, cafes, parks, and long walks worth remembering.',
-        icon: 'beach_access',
-        tone: 'teal',
-        imageUrl: '',
-        createdAt: now,
-        updatedAt: now,
-        cards: [
-          {
-            id: 'card-ocean-city',
-            title: 'Ocean City boardwalk',
-            subtitle: 'Salt air, arcade lights, late fries',
-            notes: 'Best at golden hour. Add photos from the pier and the little dessert stop near 9th.',
-            type: 'place',
-            status: 'favorite',
-            rating: 5,
-            imageUrl: '',
-            placeId: '',
-            googleMapsUrl: '',
-            tags: ['shore', 'walks', 'summer'],
-            createdAt: now,
-            updatedAt: now,
-          },
-          {
-            id: 'card-fairmount',
-            title: 'Fairmount picnic hill',
-            subtitle: 'Quiet view over the city',
-            notes: 'Bring a blanket and something citrusy. Good spot for a low-key Sunday.',
-            type: 'memory',
-            status: 'visited',
-            rating: 4,
-            imageUrl: '',
-            placeId: '',
-            googleMapsUrl: '',
-            tags: ['park', 'picnic'],
-            createdAt: now,
-            updatedAt: now,
-          },
-        ],
-      },
-      {
-        id: 'board-eats',
-        title: 'Places I like to eat',
-        description: 'The reliable hits: cozy counters, special occasion rooms, and quick cravings.',
-        icon: 'restaurant',
-        tone: 'coral',
-        imageUrl: '',
-        createdAt: now,
-        updatedAt: now,
-        cards: [
-          {
-            id: 'card-noodle-bar',
-            title: 'Late-night noodle bar',
-            subtitle: 'Warm broth, fast service',
-            notes: 'Order the spicy miso and split dumplings. Better for two than a group.',
-            type: 'food',
-            status: 'saved',
-            rating: 5,
-            imageUrl: '',
-            placeId: '',
-            googleMapsUrl: '',
-            tags: ['noodles', 'comfort'],
-            createdAt: now,
-            updatedAt: now,
-          },
-        ],
-      },
-      {
-        id: 'board-weekend',
-        title: 'Next free Saturday',
-        description: 'Small adventures queued up for the next open day.',
-        icon: 'auto_awesome',
-        tone: 'yellow',
-        imageUrl: '',
-        createdAt: now,
-        updatedAt: now,
-        cards: [],
-      },
-    ];
   }
 
   private toneMeta(tone: BoardTone): { id: BoardTone; label: string; accent: string; soft: string } {
