@@ -34,6 +34,7 @@ import {
   type Firestore,
 } from 'firebase/firestore/lite';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
+import { getPublicAppUrl } from './firebase.config';
 import { getFirebaseApp, getFirebaseStorage } from './firebase.client';
 
 export interface SignInPayload {
@@ -161,23 +162,22 @@ export class AuthService {
       payload.remember ? browserLocalPersistence : browserSessionPersistence,
     );
 
-    const credential = await signInWithEmailAndPassword(
+    await signInWithEmailAndPassword(
       auth,
       this.normalizeEmail(payload.email),
       payload.password,
     );
 
+    let refreshedUser: User | null = null;
     try {
-      await this.syncUserProfile(credential.user);
+      refreshedUser = await this.refreshUser();
     } catch (error) {
       await signOut(auth);
       throw error;
     }
 
-    await this.refreshUser();
-
     return {
-      needsEmailVerification: this.userNeedsEmailVerification(credential.user),
+      needsEmailVerification: refreshedUser ? this.userNeedsEmailVerification(refreshedUser) : false,
     };
   }
 
@@ -185,19 +185,18 @@ export class AuthService {
     const auth = this.requireAuth();
     await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
 
-    const credential = await signInWithPopup(auth, this.googleProvider);
+    await signInWithPopup(auth, this.googleProvider);
 
+    let refreshedUser: User | null = null;
     try {
-      await this.syncUserProfile(credential.user);
+      refreshedUser = await this.refreshUser();
     } catch (error) {
       await signOut(auth);
       throw error;
     }
 
-    await this.refreshUser();
-
     return {
-      needsEmailVerification: this.userNeedsEmailVerification(credential.user),
+      needsEmailVerification: refreshedUser ? this.userNeedsEmailVerification(refreshedUser) : false,
     };
   }
 
@@ -221,7 +220,6 @@ export class AuthService {
       }
 
       await this.refreshUser();
-      await this.syncUserProfile(auth.currentUser ?? credential.user);
     } catch (error) {
       try {
         await deleteUser(credential.user);
@@ -232,15 +230,20 @@ export class AuthService {
       throw error;
     }
 
-    const verificationEmailSent = await this.sendVerificationEmail(
-      credential.user,
-      payload.redirectTo,
-    );
+    let verificationEmailSent = false;
+    try {
+      verificationEmailSent = await this.sendVerificationEmail(
+        auth.currentUser ?? credential.user,
+        payload.redirectTo,
+      );
+    } catch {
+      verificationEmailSent = false;
+    }
 
-    await this.refreshUser();
+    const refreshedUser = await this.refreshUser();
 
     return {
-      needsEmailVerification: this.userNeedsEmailVerification(credential.user),
+      needsEmailVerification: refreshedUser ? this.userNeedsEmailVerification(refreshedUser) : true,
       verificationEmailSent,
     };
   }
@@ -251,8 +254,8 @@ export class AuthService {
   }
 
   async resendEmailVerification(redirectTo?: string | null): Promise<boolean> {
-    const user = this.requireCurrentUser();
-    return this.sendVerificationEmail(user, redirectTo);
+    await this.refreshUser();
+    return this.sendVerificationEmail(this.requireCurrentUser(), redirectTo);
   }
 
   async refreshUser(): Promise<User | null> {
@@ -372,6 +375,53 @@ export class AuthService {
   }
 
   toFriendlyError(error: unknown): string {
+    if (error instanceof FirebaseError) {
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          return 'An account already exists for that email address.';
+        case 'auth/invalid-email':
+          return 'Enter a valid email address.';
+        case 'auth/invalid-credential':
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+          return 'Incorrect email or password.';
+        case 'auth/weak-password':
+          return 'Use at least 8 characters for your password.';
+        case 'auth/popup-closed-by-user':
+          return 'Google sign-in was closed before it finished.';
+        case 'auth/popup-blocked':
+          return 'Your browser blocked the Google sign-in popup. Allow popups and try again.';
+        case 'auth/cancelled-popup-request':
+          return 'Another sign-in window is already open.';
+        case 'auth/network-request-failed':
+          return 'Network error. Check your connection and try again.';
+        case 'auth/too-many-requests':
+          return 'Too many attempts. Wait a moment and try again.';
+        case 'auth/user-disabled':
+          return 'This account has been disabled.';
+        case 'auth/operation-not-allowed':
+          return 'This sign-in method is not enabled in Firebase Auth yet.';
+        case 'auth/unauthorized-domain':
+          return 'This domain is not authorized for Firebase sign-in yet.';
+        case 'auth/invalid-continue-uri':
+          return 'The verification email redirect URL is invalid. Check the configured public app URL.';
+        case 'auth/unauthorized-continue-uri':
+          return 'Firebase is blocking the verification email redirect URL. Add the app domain to Firebase Auth authorized domains.';
+        case 'auth/invalid-action-code':
+          return 'This email link is invalid or has already been used.';
+        case 'auth/expired-action-code':
+          return 'This email link has expired. Request a new one and try again.';
+        case 'auth/requires-recent-login':
+          return 'Please sign in again before making that change.';
+        case 'permission-denied':
+          return 'Authentication succeeded, but we could not save your profile. Check Firestore rules for users/{uid}.';
+        case 'unavailable':
+          return 'The profile service is temporarily unavailable. Please try again.';
+        default:
+          return 'Authentication failed. Please try again.';
+      }
+    }
+
     if (
       typeof error === 'object' &&
       error !== null &&
@@ -385,50 +435,7 @@ export class AuthService {
       }
     }
 
-    if (!(error instanceof FirebaseError)) {
-      return 'Something went wrong. Please try again.';
-    }
-
-    switch (error.code) {
-      case 'auth/email-already-in-use':
-        return 'An account already exists for that email address.';
-      case 'auth/invalid-email':
-        return 'Enter a valid email address.';
-      case 'auth/invalid-credential':
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-        return 'Incorrect email or password.';
-      case 'auth/weak-password':
-        return 'Use at least 8 characters for your password.';
-      case 'auth/popup-closed-by-user':
-        return 'Google sign-in was closed before it finished.';
-      case 'auth/popup-blocked':
-        return 'Your browser blocked the Google sign-in popup. Allow popups and try again.';
-      case 'auth/cancelled-popup-request':
-        return 'Another sign-in window is already open.';
-      case 'auth/network-request-failed':
-        return 'Network error. Check your connection and try again.';
-      case 'auth/too-many-requests':
-        return 'Too many attempts. Wait a moment and try again.';
-      case 'auth/user-disabled':
-        return 'This account has been disabled.';
-      case 'auth/operation-not-allowed':
-        return 'This sign-in method is not enabled in Firebase Auth yet.';
-      case 'auth/unauthorized-domain':
-        return 'This domain is not authorized for Firebase sign-in yet.';
-      case 'auth/invalid-action-code':
-        return 'This email link is invalid or has already been used.';
-      case 'auth/expired-action-code':
-        return 'This email link has expired. Request a new one and try again.';
-      case 'auth/requires-recent-login':
-        return 'Please sign in again before making that change.';
-      case 'permission-denied':
-        return 'Authentication succeeded, but we could not save your profile. Check Firestore rules for users/{uid}.';
-      case 'unavailable':
-        return 'The profile service is temporarily unavailable. Please try again.';
-      default:
-        return 'Authentication failed. Please try again.';
-    }
+    return 'Something went wrong. Please try again.';
   }
 
   private requireAuth(): Auth {
@@ -541,12 +548,8 @@ export class AuthService {
       return false;
     }
 
-    try {
-      await sendEmailVerification(user, this.getActionCodeSettings('verifyEmailComplete', redirectTo));
-      return true;
-    } catch {
-      return false;
-    }
+    await sendEmailVerification(user, this.getActionCodeSettings('verifyEmailComplete', redirectTo));
+    return true;
   }
 
   private getActionCodeSettings(
@@ -557,7 +560,7 @@ export class AuthService {
       return undefined;
     }
 
-    const url = new URL('/auth/action', window.location.origin);
+    const url = new URL('/auth/action', this.getActionCodeBaseUrl());
     url.searchParams.set('flow', flow);
 
     if (this.isSafeRedirect(redirectTo)) {
@@ -568,6 +571,24 @@ export class AuthService {
       url: url.toString(),
       handleCodeInApp: false,
     };
+  }
+
+  private getActionCodeBaseUrl(): string {
+    const configuredUrl = getPublicAppUrl();
+    if (!configuredUrl) {
+      return window.location.origin;
+    }
+
+    try {
+      const url = new URL(configuredUrl);
+      if (url.protocol === 'http:' || url.protocol === 'https:') {
+        return url.origin;
+      }
+    } catch {
+      return window.location.origin;
+    }
+
+    return window.location.origin;
   }
 
   private userNeedsEmailVerification(user: User): boolean {

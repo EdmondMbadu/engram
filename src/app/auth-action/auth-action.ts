@@ -101,8 +101,63 @@ export class AuthActionComponent {
     const mode = query.get('mode');
     const oobCode = query.get('oobCode');
 
+    if (mode && oobCode) {
+      try {
+        switch (mode) {
+          case 'verifyEmail':
+            await this.authService.applyEmailVerificationCode(oobCode);
+            this.state.set('success');
+            this.title.set('Email verified');
+            this.description.set('Your email has been verified. You can continue now.');
+            return;
+          case 'resetPassword':
+            await this.authService.validatePasswordResetCode(oobCode);
+            this.resetCode = oobCode;
+            this.state.set('ready');
+            this.title.set('Choose a new password');
+            this.description.set('Set a new password for your LivingWiki account.');
+            return;
+          case 'recoverEmail': {
+            const restoredEmail = await this.authService.restoreEmailFromCode(oobCode);
+            this.state.set('success');
+            this.title.set('Email restored');
+            this.description.set(
+              restoredEmail
+                ? `${restoredEmail} has been restored for this account.`
+                : 'Your email address has been restored for this account.',
+            );
+            return;
+          }
+          default:
+            this.state.set('error');
+            this.title.set('Unsupported action');
+            this.description.set('This email action is not supported in the app.');
+        }
+      } catch (error) {
+        this.state.set('error');
+        this.submitError.set(this.authService.toFriendlyError(error));
+        this.title.set('Link unavailable');
+        this.description.set('Request a fresh email and try again.');
+      }
+      return;
+    }
+
     if (flow === 'verifyEmailComplete') {
-      await this.authService.refreshUser().catch(() => null);
+      await this.authService.waitForReady();
+
+      if (this.authService.isAuthenticated()) {
+        await this.authService.refreshUser().catch(() => null);
+
+        if (this.authService.needsEmailVerification()) {
+          this.state.set('error');
+          this.title.set('Verification not confirmed');
+          this.description.set(
+            'Open the latest verification email and make sure the link finishes before continuing.',
+          );
+          return;
+        }
+      }
+
       this.state.set('success');
       this.title.set('Email verified');
       this.description.set('Your email has been verified. You can continue to your workspace.');
@@ -116,50 +171,9 @@ export class AuthActionComponent {
       return;
     }
 
-    if (!mode || !oobCode) {
-      this.state.set('error');
-      this.title.set('Invalid link');
-      this.description.set('This email action link is missing required information.');
-      return;
-    }
-
-    try {
-      switch (mode) {
-        case 'verifyEmail':
-          await this.authService.applyEmailVerificationCode(oobCode);
-          this.state.set('success');
-          this.title.set('Email verified');
-          this.description.set('Your email has been verified. You can continue now.');
-          return;
-        case 'resetPassword':
-          await this.authService.validatePasswordResetCode(oobCode);
-          this.resetCode = oobCode;
-          this.state.set('ready');
-          this.title.set('Choose a new password');
-          this.description.set('Set a new password for your LivingWiki account.');
-          return;
-        case 'recoverEmail': {
-          const restoredEmail = await this.authService.restoreEmailFromCode(oobCode);
-          this.state.set('success');
-          this.title.set('Email restored');
-          this.description.set(
-            restoredEmail
-              ? `${restoredEmail} has been restored for this account.`
-              : 'Your email address has been restored for this account.',
-          );
-          return;
-        }
-        default:
-          this.state.set('error');
-          this.title.set('Unsupported action');
-          this.description.set('This email action is not supported in the app.');
-      }
-    } catch (error) {
-      this.state.set('error');
-      this.submitError.set(this.authService.toFriendlyError(error));
-      this.title.set('Link unavailable');
-      this.description.set('Request a fresh email and try again.');
-    }
+    this.state.set('error');
+    this.title.set('Invalid link');
+    this.description.set('This email action link is missing required information.');
   }
 
   private getRedirectUrl(): string {

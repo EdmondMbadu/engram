@@ -45,7 +45,7 @@ export class VerifyEmailComponent {
       }
 
       this.infoMessage.set(
-        'Your account is still waiting for verification. Open the latest email and click the verification link.',
+        'We could not confirm verification for this session. Open the latest email, let the verification link finish, then try again.',
       );
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
