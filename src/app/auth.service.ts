@@ -13,14 +13,12 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   reload,
-  sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
   verifyPasswordResetCode,
-  type ActionCodeSettings,
   type Auth,
   type User,
 } from 'firebase/auth';
@@ -34,7 +32,6 @@ import {
   type Firestore,
 } from 'firebase/firestore/lite';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
-import { getPublicAppUrl } from './firebase.config';
 import { getFirebaseApp, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
 export interface SignInPayload {
@@ -250,8 +247,11 @@ export class AuthService {
   }
 
   async sendPasswordReset(email: string): Promise<void> {
-    const auth = this.requireAuth();
-    await sendPasswordResetEmail(auth, this.normalizeEmail(email), this.getActionCodeSettings('resetPasswordComplete'));
+    const sendAccountPasswordResetEmail = httpsCallable<
+      { email: string },
+      { sent?: boolean }
+    >(this.requireFunctions(), 'sendAccountPasswordResetEmail');
+    await sendAccountPasswordResetEmail({ email: this.normalizeEmail(email) });
   }
 
   async resendEmailVerification(redirectTo?: string | null): Promise<boolean> {
@@ -566,45 +566,6 @@ export class AuthService {
     });
 
     return result.data.sent === true;
-  }
-
-  private getActionCodeSettings(
-    flow: 'verifyEmailComplete' | 'resetPasswordComplete',
-    redirectTo?: string | null,
-  ): ActionCodeSettings | undefined {
-    if (!this.isBrowser) {
-      return undefined;
-    }
-
-    const url = new URL('/auth/action', this.getActionCodeBaseUrl());
-    url.searchParams.set('flow', flow);
-
-    if (this.isSafeRedirect(redirectTo)) {
-      url.searchParams.set('redirectTo', redirectTo);
-    }
-
-    return {
-      url: url.toString(),
-      handleCodeInApp: false,
-    };
-  }
-
-  private getActionCodeBaseUrl(): string {
-    const configuredUrl = getPublicAppUrl();
-    if (!configuredUrl) {
-      return window.location.origin;
-    }
-
-    try {
-      const url = new URL(configuredUrl);
-      if (url.protocol === 'http:' || url.protocol === 'https:') {
-        return url.origin;
-      }
-    } catch {
-      return window.location.origin;
-    }
-
-    return window.location.origin;
   }
 
   private userNeedsEmailVerification(user: User): boolean {

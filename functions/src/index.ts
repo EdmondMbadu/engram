@@ -1942,6 +1942,25 @@ function buildAppActionUrl(
   return url.toString();
 }
 
+function publicAuthActionLinkFromGeneratedLink(generatedLink: string, redirectTo?: unknown): string {
+  const generatedUrl = new URL(generatedLink);
+  const actionUrl = new URL('/auth/action', publicAppUrl);
+  const passthroughParams = ['mode', 'oobCode', 'apiKey', 'lang'];
+
+  for (const param of passthroughParams) {
+    const value = generatedUrl.searchParams.get(param);
+    if (value) {
+      actionUrl.searchParams.set(param, value);
+    }
+  }
+
+  if (isSafeAppRedirect(redirectTo)) {
+    actionUrl.searchParams.set('redirectTo', redirectTo);
+  }
+
+  return actionUrl.toString();
+}
+
 function buildVerifyAccountEmail(params: {
   recipientEmail: string;
   recipientName: string | null;
@@ -2016,6 +2035,77 @@ The LivingWiki Team`;
   return { subject, text, html };
 }
 
+function buildPasswordResetEmail(params: {
+  recipientEmail: string;
+  recipientName: string | null;
+  resetUrl: string;
+}) {
+  const displayName = params.recipientName?.trim() || 'there';
+  const subject = 'Reset your LivingWiki password';
+  const safeDisplayName = escapeHtml(displayName);
+  const safeResetUrl = escapeHtml(params.resetUrl);
+
+  const text = `Hi ${displayName},
+
+We received a request to reset the password for your LivingWiki account.
+
+Reset your password:
+${params.resetUrl}
+
+This link expires for your security. If you did not request a password reset, you can ignore this email.
+
+The LivingWiki Team`;
+
+  const html = `
+    <div style="margin:0;padding:0;background:#f5f7f6;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#102017;">
+      <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
+        Reset your LivingWiki password.
+      </div>
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#f5f7f6;margin:0;padding:0;">
+        <tr>
+          <td align="center" style="padding:32px 16px;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;max-width:640px;background:#ffffff;border:1px solid #dfe8e2;border-radius:18px;overflow:hidden;">
+              <tr>
+                <td style="background:#0e2518;padding:30px 32px;">
+                  <div style="font-size:28px;line-height:1.1;font-weight:900;color:#ffffff;letter-spacing:0;">LivingWiki</div>
+                  <div style="margin-top:10px;font-size:12px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#9bd7ad;">Password recovery</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:34px 32px 30px;">
+                  <h1 style="margin:0 0 14px;color:#102017;font-size:26px;line-height:1.25;font-weight:850;">Reset your password</h1>
+                  <p style="margin:0 0 18px;color:#3f4f46;font-size:16px;line-height:1.65;">Hi ${safeDisplayName},</p>
+                  <p style="margin:0 0 22px;color:#3f4f46;font-size:16px;line-height:1.65;">
+                    We received a request to reset the password for your <strong style="color:#102017;">LivingWiki</strong> account.
+                  </p>
+                  <div style="text-align:center;margin:30px 0;">
+                    <a href="${safeResetUrl}" style="display:inline-block;background:#1c7c41;color:#ffffff;text-decoration:none;border-radius:999px;padding:15px 28px;font-size:15px;font-weight:850;">
+                      Reset Password
+                    </a>
+                  </div>
+                  <div style="background:#f7faf8;border:1px solid #dfe8e2;border-radius:14px;padding:18px 18px;margin:0 0 22px;">
+                    <p style="margin:0;color:#52625a;font-size:14px;line-height:1.65;">
+                      This secure link expires for your protection. If you did not request a password reset, no action is needed.
+                    </p>
+                  </div>
+                  <p style="margin:0 0 8px;color:#6c7971;font-size:13px;line-height:1.65;">If the button does not work, paste this link into your browser:</p>
+                  <p style="margin:0;word-break:break-all;color:#1c7c41;font-size:13px;line-height:1.6;">
+                    <a href="${safeResetUrl}" style="color:#1c7c41;text-decoration:underline;">${safeResetUrl}</a>
+                  </p>
+                  <hr style="border:none;border-top:1px solid #e5ece7;margin:28px 0 18px;">
+                  <p style="margin:0;color:#9aa6a0;font-size:12px;line-height:1.55;">The LivingWiki Team</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+
+  return { subject, text, html };
+}
+
 async function sendLivingWikiVerificationEmail(params: {
   recipientEmail: string;
   recipientName: string | null;
@@ -2028,6 +2118,34 @@ async function sendLivingWikiVerificationEmail(params: {
 
   sgMail.setApiKey(apiKey);
   const email = buildVerifyAccountEmail(params);
+  const [response] = await sgMail.send({
+    to: params.recipientEmail,
+    from: {
+      email: inviteSenderEmail,
+      name: 'LivingWiki',
+    },
+    subject: email.subject,
+    text: email.text,
+    html: email.html,
+  });
+
+  return typeof response.headers?.['x-message-id'] === 'string'
+    ? response.headers['x-message-id']
+    : null;
+}
+
+async function sendLivingWikiPasswordResetEmail(params: {
+  recipientEmail: string;
+  recipientName: string | null;
+  resetUrl: string;
+}): Promise<string | null> {
+  const apiKey = sendgridApiKey.value();
+  if (!apiKey) {
+    throw new HttpsError('failed-precondition', 'SendGrid API key is not configured.');
+  }
+
+  sgMail.setApiKey(apiKey);
+  const email = buildPasswordResetEmail(params);
   const [response] = await sgMail.send({
     to: params.recipientEmail,
     from: {
@@ -2068,10 +2186,14 @@ export const sendAccountVerificationEmail = onCall(
     }
 
     const actionUrl = buildAppActionUrl('verifyEmailComplete', request.data?.redirectTo);
-    const verificationUrl = await getAuth().generateEmailVerificationLink(user.email, {
+    const generatedVerificationUrl = await getAuth().generateEmailVerificationLink(user.email, {
       url: actionUrl,
       handleCodeInApp: false,
     });
+    const verificationUrl = publicAuthActionLinkFromGeneratedLink(
+      generatedVerificationUrl,
+      request.data?.redirectTo,
+    );
     const messageId = await sendLivingWikiVerificationEmail({
       recipientEmail: user.email,
       recipientName: firstNameFromDisplayName(user.displayName),
@@ -2085,6 +2207,44 @@ export const sendAccountVerificationEmail = onCall(
     });
 
     return { sent: true, alreadyVerified: false };
+  },
+);
+
+export const sendAccountPasswordResetEmail = onCall(
+  { region: callableRegion, cors: true, secrets: [sendgridApiKey] },
+  async (request) => {
+    const email = normalizeUserEmail(request.data?.email);
+    if (!isValidEmail(email)) {
+      throw new HttpsError('invalid-argument', 'Enter a valid email address.');
+    }
+
+    let user;
+    try {
+      user = await getAuth().getUserByEmail(email);
+    } catch (error) {
+      logger.info('Password reset requested for unknown email.', { email });
+      return { sent: false };
+    }
+
+    const actionUrl = buildAppActionUrl('resetPasswordComplete');
+    const generatedResetUrl = await getAuth().generatePasswordResetLink(email, {
+      url: actionUrl,
+      handleCodeInApp: false,
+    });
+    const resetUrl = publicAuthActionLinkFromGeneratedLink(generatedResetUrl);
+    const messageId = await sendLivingWikiPasswordResetEmail({
+      recipientEmail: email,
+      recipientName: firstNameFromDisplayName(user.displayName),
+      resetUrl,
+    });
+
+    logger.info('LivingWiki password reset email accepted by SendGrid.', {
+      uid: user.uid,
+      recipientEmail: email,
+      messageId,
+    });
+
+    return { sent: true };
   },
 );
 
