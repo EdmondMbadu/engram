@@ -1924,6 +1924,170 @@ function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;');
 }
 
+function isSafeAppRedirect(value: unknown): value is string {
+  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
+}
+
+function buildAppActionUrl(
+  flow: 'verifyEmailComplete' | 'resetPasswordComplete',
+  redirectTo?: unknown,
+): string {
+  const url = new URL('/auth/action', publicAppUrl);
+  url.searchParams.set('flow', flow);
+
+  if (isSafeAppRedirect(redirectTo)) {
+    url.searchParams.set('redirectTo', redirectTo);
+  }
+
+  return url.toString();
+}
+
+function buildVerifyAccountEmail(params: {
+  recipientEmail: string;
+  recipientName: string | null;
+  verificationUrl: string;
+}) {
+  const displayName = params.recipientName?.trim() || 'there';
+  const subject = 'Verify your LivingWiki account';
+  const safeDisplayName = escapeHtml(displayName);
+  const safeVerificationUrl = escapeHtml(params.verificationUrl);
+
+  const text = `Hi ${displayName},
+
+Welcome to LivingWiki. Verify your email address to activate your account and continue to your workspace.
+
+Verify your email:
+${params.verificationUrl}
+
+This verification link expires for your security. If you did not create a LivingWiki account, you can ignore this email.
+
+The LivingWiki Team`;
+
+  const html = `
+    <div style="margin:0;padding:0;background:#f5f7f6;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#102017;">
+      <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
+        Verify your email address to activate your LivingWiki account.
+      </div>
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#f5f7f6;margin:0;padding:0;">
+        <tr>
+          <td align="center" style="padding:32px 16px;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;max-width:640px;background:#ffffff;border:1px solid #dfe8e2;border-radius:18px;overflow:hidden;">
+              <tr>
+                <td style="background:#0e2518;padding:30px 32px;">
+                  <div style="font-size:28px;line-height:1.1;font-weight:900;color:#ffffff;letter-spacing:0;">LivingWiki</div>
+                  <div style="margin-top:10px;font-size:12px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#9bd7ad;">Account verification</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:34px 32px 30px;">
+                  <h1 style="margin:0 0 14px;color:#102017;font-size:26px;line-height:1.25;font-weight:850;">Verify your email address</h1>
+                  <p style="margin:0 0 18px;color:#3f4f46;font-size:16px;line-height:1.65;">Hi ${safeDisplayName},</p>
+                  <p style="margin:0 0 22px;color:#3f4f46;font-size:16px;line-height:1.65;">
+                    Welcome to <strong style="color:#102017;">LivingWiki</strong>. Confirm this email address to activate your account and continue to your workspace.
+                  </p>
+                  <div style="text-align:center;margin:30px 0;">
+                    <a href="${safeVerificationUrl}" style="display:inline-block;background:#1c7c41;color:#ffffff;text-decoration:none;border-radius:999px;padding:15px 28px;font-size:15px;font-weight:850;">
+                      Verify Email
+                    </a>
+                  </div>
+                  <div style="background:#f7faf8;border:1px solid #dfe8e2;border-radius:14px;padding:18px 18px;margin:0 0 22px;">
+                    <p style="margin:0;color:#52625a;font-size:14px;line-height:1.65;">
+                      This secure link expires for your protection. If you requested multiple verification emails, use the newest one.
+                    </p>
+                  </div>
+                  <p style="margin:0 0 8px;color:#6c7971;font-size:13px;line-height:1.65;">If the button does not work, paste this link into your browser:</p>
+                  <p style="margin:0;word-break:break-all;color:#1c7c41;font-size:13px;line-height:1.6;">
+                    <a href="${safeVerificationUrl}" style="color:#1c7c41;text-decoration:underline;">${safeVerificationUrl}</a>
+                  </p>
+                  <hr style="border:none;border-top:1px solid #e5ece7;margin:28px 0 18px;">
+                  <p style="margin:0;color:#8a968f;font-size:12px;line-height:1.6;">
+                    You received this email because a LivingWiki account was created with this address. If this was not you, no action is needed.
+                  </p>
+                  <p style="margin:10px 0 0;color:#9aa6a0;font-size:12px;line-height:1.55;">The LivingWiki Team</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+
+  return { subject, text, html };
+}
+
+async function sendLivingWikiVerificationEmail(params: {
+  recipientEmail: string;
+  recipientName: string | null;
+  verificationUrl: string;
+}): Promise<string | null> {
+  const apiKey = sendgridApiKey.value();
+  if (!apiKey) {
+    throw new HttpsError('failed-precondition', 'SendGrid API key is not configured.');
+  }
+
+  sgMail.setApiKey(apiKey);
+  const email = buildVerifyAccountEmail(params);
+  const [response] = await sgMail.send({
+    to: params.recipientEmail,
+    from: {
+      email: inviteSenderEmail,
+      name: 'LivingWiki',
+    },
+    subject: email.subject,
+    text: email.text,
+    html: email.html,
+  });
+
+  return typeof response.headers?.['x-message-id'] === 'string'
+    ? response.headers['x-message-id']
+    : null;
+}
+
+export const sendAccountVerificationEmail = onCall(
+  { region: callableRegion, cors: true, secrets: [sendgridApiKey] },
+  async (request) => {
+    const uid = request.auth?.uid;
+    if (!uid) {
+      throw new HttpsError('unauthenticated', 'Sign in before requesting verification email.');
+    }
+
+    const user = await getAuth().getUser(uid);
+    if (!user.email) {
+      throw new HttpsError('failed-precondition', 'This account does not have an email address.');
+    }
+
+    if (user.emailVerified) {
+      return { sent: false, alreadyVerified: true };
+    }
+
+    const authEmail = normalizeUserEmail(request.auth?.token.email);
+    const userEmail = normalizeUserEmail(user.email);
+    if (authEmail && authEmail !== userEmail) {
+      throw new HttpsError('permission-denied', 'The signed-in account does not match this email address.');
+    }
+
+    const actionUrl = buildAppActionUrl('verifyEmailComplete', request.data?.redirectTo);
+    const verificationUrl = await getAuth().generateEmailVerificationLink(user.email, {
+      url: actionUrl,
+      handleCodeInApp: false,
+    });
+    const messageId = await sendLivingWikiVerificationEmail({
+      recipientEmail: user.email,
+      recipientName: firstNameFromDisplayName(user.displayName),
+      verificationUrl,
+    });
+
+    logger.info('LivingWiki account verification email accepted by SendGrid.', {
+      uid,
+      recipientEmail: user.email,
+      messageId,
+    });
+
+    return { sent: true, alreadyVerified: false };
+  },
+);
+
 function atlasDisplayName(atlas: Record<string, unknown>, atlasId: string): string {
   const name = typeof atlas.name === 'string' ? atlas.name.trim() : '';
   return name || `Wiki ${atlasId.slice(0, 6)}`;

@@ -13,7 +13,6 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   reload,
-  sendEmailVerification,
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
@@ -25,6 +24,7 @@ import {
   type Auth,
   type User,
 } from 'firebase/auth';
+import { httpsCallable, type Functions } from 'firebase/functions';
 import {
   doc,
   getDoc,
@@ -35,7 +35,7 @@ import {
 } from 'firebase/firestore/lite';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { getPublicAppUrl } from './firebase.config';
-import { getFirebaseApp, getFirebaseStorage } from './firebase.client';
+import { getFirebaseApp, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
 
 export interface SignInPayload {
   email: string;
@@ -120,6 +120,7 @@ export class AuthService {
   private readonly storage: FirebaseStorage | null = this.isBrowser
     ? getFirebaseStorage()
     : null;
+  private readonly functions: Functions | null = this.isBrowser ? getFirebaseFunctions() : null;
   private readonly googleProvider = new GoogleAuthProvider();
   private resolveReady: (() => void) | null = null;
   private readonly readyPromise = new Promise<void>((resolve) => {
@@ -462,6 +463,14 @@ export class AuthService {
     return this.storage;
   }
 
+  private requireFunctions(): Functions {
+    if (!this.functions) {
+      throw new Error('Functions are only available in the browser.');
+    }
+
+    return this.functions;
+  }
+
   private requireCurrentUser(): User {
     const user = this.requireAuth().currentUser;
     if (!user) {
@@ -548,8 +557,15 @@ export class AuthService {
       return false;
     }
 
-    await sendEmailVerification(user, this.getActionCodeSettings('verifyEmailComplete', redirectTo));
-    return true;
+    const sendAccountVerificationEmail = httpsCallable<
+      { redirectTo: string | null },
+      { sent?: boolean; alreadyVerified?: boolean }
+    >(this.requireFunctions(), 'sendAccountVerificationEmail');
+    const result = await sendAccountVerificationEmail({
+      redirectTo: this.isSafeRedirect(redirectTo) ? redirectTo : null,
+    });
+
+    return result.data.sent === true;
   }
 
   private getActionCodeSettings(
