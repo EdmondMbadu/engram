@@ -552,6 +552,7 @@ export class BoardsComponent {
   });
 
   readonly profile = this.authService.profile;
+  readonly isSignedIn = this.authService.isAuthenticated;
   readonly userName = this.authService.displayName;
   readonly userEmail = this.authService.email;
   readonly userPhotoUrl = computed(() =>

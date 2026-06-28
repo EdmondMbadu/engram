@@ -1,11 +1,15 @@
 <div class="boards-page min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
   <div class="boards-frame">
-    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
+    @if (isSignedIn()) {
+      <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
+    }
 
     <div class="boards-main">
       <header class="boards-topbar">
         <div class="boards-topbar__brand">
-          <app-mobile-menu activePage="home"></app-mobile-menu>
+          @if (isSignedIn()) {
+            <app-mobile-menu activePage="home"></app-mobile-menu>
+          }
           <a href="/" class="boards-logo" aria-label="LivingWiki home">
             <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" />
           </a>
