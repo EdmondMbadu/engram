@@ -273,6 +273,10 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly([
           'id',
           'owner_user_id',
+          'owner_display_name',
+          'owner_photo_url',
+          'owner_profile_icon',
+          'owner_profile_picture_type',
           'visibility',
           'title',
           'description',
@@ -287,6 +291,16 @@ service cloud.firestore {
           'server_updated_at'
         ])
         && request.resource.data.id == boardId
+        && request.resource.data.owner_display_name is string
+        && request.resource.data.owner_display_name.size() <= 120
+        && request.resource.data.owner_photo_url is string
+        && request.resource.data.owner_photo_url.size() <= 2000
+        && request.resource.data.owner_profile_icon is string
+        && request.resource.data.owner_profile_icon.size() <= 64
+        && (
+          request.resource.data.owner_profile_picture_type == null
+          || request.resource.data.owner_profile_picture_type in ['icon', 'image']
+        )
         && request.resource.data.title is string
         && request.resource.data.title.size() >= 1
         && request.resource.data.title.size() <= 90

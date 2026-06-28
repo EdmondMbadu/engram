@@ -64,6 +64,11 @@ type BoardCard = {
 
 type Board = {
   id: string;
+  ownerUserId: string;
+  ownerDisplayName: string;
+  ownerPhotoUrl: string;
+  ownerProfileIcon: string;
+  ownerProfilePictureType: 'icon' | 'image' | null;
   title: string;
   description: string;
   backNote: string;
@@ -117,6 +122,10 @@ type BoardCityOption = {
 
 type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
   owner_user_id: string;
+  owner_display_name: string;
+  owner_photo_url: string;
+  owner_profile_icon: string;
+  owner_profile_picture_type: 'icon' | 'image' | null;
   visibility: 'public';
   created_at_iso: string;
   updated_at_iso: string;
@@ -559,6 +568,7 @@ export class BoardsComponent {
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
+  readonly canCreateBoard = computed(() => this.authService.isAuthenticated());
 
   readonly filteredBoards = computed(() => {
     const query = this.boardSearch().trim().toLowerCase();
@@ -680,7 +690,10 @@ export class BoardsComponent {
       if (!this.isBrowser || !this.hasLoaded) {
         return;
       }
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(boards));
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(boards.filter((board) => this.canStoreBoardLocally(board))),
+      );
     });
   }
 
@@ -747,6 +760,10 @@ export class BoardsComponent {
   }
 
   openCreateBoard(): void {
+    if (!this.canCreateBoard()) {
+      this.boardsSyncError.set('Sign in to create a board.');
+      return;
+    }
     this.editingBoardId.set(null);
     this.imageUploadError.set(null);
     this.boardDraft.set({
@@ -762,6 +779,10 @@ export class BoardsComponent {
   }
 
   openEditBoard(board: Board): void {
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can edit this board.');
+      return;
+    }
     this.editingBoardId.set(board.id);
     this.imageUploadError.set(null);
     this.boardDraft.set({
@@ -793,6 +814,11 @@ export class BoardsComponent {
     const editingId = this.editingBoardId();
     let nextBoard: Board | null = null;
     if (editingId) {
+      const editingBoard = this.boards().find((board) => board.id === editingId);
+      if (!editingBoard || !this.canEditBoard(editingBoard)) {
+        this.boardsSyncError.set('Only the board owner can edit this board.');
+        return;
+      }
       this.boards.update((boards) =>
         boards.map((board) => {
           if (board.id !== editingId) {
@@ -815,6 +841,7 @@ export class BoardsComponent {
     } else {
       const board: Board = {
         id: this.createId(),
+        ...this.currentOwnerSnapshot(),
         title,
         description: draft.description.trim(),
         backNote: draft.backNote.trim(),
@@ -838,6 +865,10 @@ export class BoardsComponent {
   }
 
   deleteBoard(board: Board): void {
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can delete this board.');
+      return;
+    }
     const message = `Delete "${board.title}" and its ${board.cards.length} card${board.cards.length === 1 ? '' : 's'}?`;
     if (this.isBrowser && !window.confirm(message)) {
       return;
@@ -851,7 +882,9 @@ export class BoardsComponent {
   }
 
   openCreateCard(boardId = this.selectedBoard()?.id ?? null): void {
-    if (!boardId) {
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can add cards.');
       return;
     }
     this.selectedBoardId.set(boardId);
@@ -878,6 +911,11 @@ export class BoardsComponent {
   }
 
   openEditCard(card: BoardCard): void {
+    const board = this.selectedBoard();
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can edit cards.');
+      return;
+    }
     this.editingCardId.set(card.id);
     this.imageUploadError.set(null);
     this.cardImageLocked.set(!!card.imageUrl);
@@ -901,6 +939,11 @@ export class BoardsComponent {
   }
 
   openEditGalleryCard(boardId: string, card: BoardCard): void {
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can edit cards.');
+      return;
+    }
     this.selectedBoardId.set(boardId);
     this.openEditCard(card);
   }
@@ -1139,6 +1182,10 @@ export class BoardsComponent {
     if (!board || !title) {
       return;
     }
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can edit cards.');
+      return;
+    }
 
     const now = new Date().toISOString();
     const tags = draft.tags
@@ -1214,6 +1261,10 @@ export class BoardsComponent {
     if (!board) {
       return;
     }
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can delete cards.');
+      return;
+    }
     if (this.isBrowser && !window.confirm(`Delete "${card.title}"?`)) {
       return;
     }
@@ -1239,6 +1290,11 @@ export class BoardsComponent {
   }
 
   deleteGalleryCard(boardId: string, card: BoardCard): void {
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can delete cards.');
+      return;
+    }
     this.selectedBoardId.set(boardId);
     this.deleteCard(card);
   }
@@ -1297,6 +1353,36 @@ export class BoardsComponent {
 
   imageUrlInputValue(value: string): string {
     return value.startsWith('data:') ? '' : value;
+  }
+
+  canEditBoard(board: Board | null | undefined): boolean {
+    if (!board) {
+      return false;
+    }
+    const uid = this.authService.uid();
+    return !!uid && (!board.ownerUserId || board.ownerUserId === uid);
+  }
+
+  ownerName(board: Board): string {
+    const name = board.ownerDisplayName.trim();
+    if (name) {
+      return name;
+    }
+    if (this.canEditBoard(board)) {
+      return this.userName();
+    }
+    return 'LivingWiki curator';
+  }
+
+  ownerPhotoUrl(board: Board): string {
+    return board.ownerProfilePictureType === 'image' ? board.ownerPhotoUrl : '';
+  }
+
+  ownerIcon(board: Board): ReturnType<typeof profileIconForSeed> {
+    return (
+      profileIconByCode(board.ownerProfileIcon) ??
+      profileIconForSeed(board.ownerUserId || this.ownerName(board))
+    );
   }
 
   toggleSharePanel(): void {
@@ -1378,7 +1464,10 @@ export class BoardsComponent {
 
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? this.parseBoards(raw) : null;
-    const userBoards = (parsed ?? []).filter((board) => !DEMO_BOARD_IDS.has(board.id));
+    const uid = this.authService.uid();
+    const userBoards = (parsed ?? []).filter(
+      (board) => !DEMO_BOARD_IDS.has(board.id) && (!board.ownerUserId || board.ownerUserId === uid),
+    );
     this.loadedStoredLocalBoards = userBoards.length > 0;
     const boards = userBoards;
     this.boards.set(boards);
@@ -1429,10 +1518,16 @@ export class BoardsComponent {
     const snapshot = await getDocs(
       query(collection(this.firestore, 'boards'), where('owner_user_id', '==', uid)),
     );
-    return snapshot.docs
+    const boards = snapshot.docs
       .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
       .filter((board): board is Board => !!board)
       .sort((left, right) => this.compareBoards(left, right));
+    void Promise.all(
+      boards
+        .filter((board) => this.boardNeedsOwnerSnapshot(board))
+        .map((board) => this.persistBoard(board)),
+    ).catch(() => undefined);
+    return boards;
   }
 
   private async loadBoardById(boardId: string): Promise<Board | null> {
@@ -1475,6 +1570,13 @@ export class BoardsComponent {
         .filter((board) => board?.id && board?.title && Array.isArray(board.cards))
         .map((board) => ({
           ...board,
+          ownerUserId: typeof board.ownerUserId === 'string' ? board.ownerUserId : '',
+          ownerDisplayName: typeof board.ownerDisplayName === 'string' ? board.ownerDisplayName : '',
+          ownerPhotoUrl: typeof board.ownerPhotoUrl === 'string' ? board.ownerPhotoUrl : '',
+          ownerProfileIcon: typeof board.ownerProfileIcon === 'string' ? board.ownerProfileIcon : '',
+          ownerProfilePictureType: this.isProfilePictureType(board.ownerProfilePictureType)
+            ? board.ownerProfilePictureType
+            : null,
           imageUrl: board.imageUrl ?? '',
           backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
@@ -1493,6 +1595,10 @@ export class BoardsComponent {
   }
 
   private async persistAndReplaceBoard(board: Board): Promise<void> {
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can save changes.');
+      return;
+    }
     try {
       const persisted = await this.persistBoard(board);
       this.boards.update((boards) => boards.map((item) => (item.id === persisted.id ? persisted : item)));
@@ -1507,23 +1613,72 @@ export class BoardsComponent {
     if (!this.firestore || !uid) {
       return board;
     }
+    if (board.ownerUserId && board.ownerUserId !== uid) {
+      throw new Error('Only the board owner can save changes.');
+    }
 
-    const prepared = await this.prepareBoardImagesForFirebase(board, uid);
+    const boardWithOwner = {
+      ...board,
+      ...this.currentOwnerSnapshot(),
+    };
+    const prepared = await this.prepareBoardImagesForFirebase(boardWithOwner, uid);
     const record: BoardRecord & { server_updated_at: unknown } = {
       ...prepared,
       owner_user_id: uid,
+      owner_display_name: prepared.ownerDisplayName,
+      owner_photo_url: prepared.ownerPhotoUrl,
+      owner_profile_icon: prepared.ownerProfileIcon,
+      owner_profile_picture_type: prepared.ownerProfilePictureType,
       visibility: 'public',
       created_at_iso: prepared.createdAt,
       updated_at_iso: prepared.updatedAt,
       server_updated_at: serverTimestamp(),
     };
-    const { createdAt, updatedAt, ...persistable } = record as BoardRecord & {
+    const {
+      createdAt,
+      updatedAt,
+      ownerUserId,
+      ownerDisplayName,
+      ownerPhotoUrl,
+      ownerProfileIcon,
+      ownerProfilePictureType,
+      ...persistable
+    } = record as BoardRecord & {
       createdAt?: string;
       updatedAt?: string;
+      ownerUserId?: string;
+      ownerDisplayName?: string;
+      ownerPhotoUrl?: string;
+      ownerProfileIcon?: string;
+      ownerProfilePictureType?: 'icon' | 'image' | null;
       server_updated_at: unknown;
     };
     await setDoc(doc(this.firestore, 'boards', prepared.id), persistable);
     return prepared;
+  }
+
+  private currentOwnerSnapshot(): Pick<
+    Board,
+    'ownerUserId' | 'ownerDisplayName' | 'ownerPhotoUrl' | 'ownerProfileIcon' | 'ownerProfilePictureType'
+  > {
+    const profile = this.profile();
+    const photoUrl = profile?.profilePictureType === 'image' ? profile.photoURL ?? '' : '';
+    return {
+      ownerUserId: this.authService.uid(),
+      ownerDisplayName: this.userName(),
+      ownerPhotoUrl: photoUrl,
+      ownerProfileIcon: profile?.profilePictureType === 'icon' ? profile.profileIcon ?? '' : '',
+      ownerProfilePictureType: profile?.profilePictureType ?? null,
+    };
+  }
+
+  private canStoreBoardLocally(board: Board): boolean {
+    const uid = this.authService.uid();
+    return !board.ownerUserId || (!!uid && board.ownerUserId === uid);
+  }
+
+  private boardNeedsOwnerSnapshot(board: Board): boolean {
+    return this.canEditBoard(board) && !board.ownerDisplayName.trim();
   }
 
   private async deleteRemoteBoard(boardId: string): Promise<void> {
@@ -1549,6 +1704,13 @@ export class BoardsComponent {
     const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
     return {
       id,
+      ownerUserId: typeof data['owner_user_id'] === 'string' ? data['owner_user_id'] : '',
+      ownerDisplayName: typeof data['owner_display_name'] === 'string' ? data['owner_display_name'] : '',
+      ownerPhotoUrl: typeof data['owner_photo_url'] === 'string' ? data['owner_photo_url'] : '',
+      ownerProfileIcon: typeof data['owner_profile_icon'] === 'string' ? data['owner_profile_icon'] : '',
+      ownerProfilePictureType: this.isProfilePictureType(data['owner_profile_picture_type'])
+        ? data['owner_profile_picture_type']
+        : null,
       title,
       description: typeof data['description'] === 'string' ? data['description'] : '',
       backNote: typeof data['backNote'] === 'string' ? data['backNote'] : '',
@@ -1641,6 +1803,10 @@ export class BoardsComponent {
     stickerId: string,
     cardId: string | null = null,
   ): void {
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!this.canEditBoard(board)) {
+      return;
+    }
     if (!(event.currentTarget instanceof HTMLElement)) {
       return;
     }
@@ -1671,6 +1837,10 @@ export class BoardsComponent {
   }
 
   beginCardStickerDrag(event: PointerEvent, boardId: string, card: BoardCard): void {
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!this.canEditBoard(board)) {
+      return;
+    }
     if (event.button !== 0 || !card.stickers.length || !(event.currentTarget instanceof HTMLElement)) {
       return;
     }
@@ -1734,7 +1904,7 @@ export class BoardsComponent {
     }
 
     const board = this.boards().find((item) => item.id === state.boardId);
-    if (board) {
+    if (board && this.canEditBoard(board)) {
       void this.persistAndReplaceBoard({ ...board, updatedAt: new Date().toISOString() });
     }
     setTimeout(() => {
@@ -1743,6 +1913,10 @@ export class BoardsComponent {
   };
 
   private updateStickerPosition(state: StickerDragState, x: number, y: number): void {
+    const targetBoard = this.boards().find((board) => board.id === state.boardId);
+    if (!this.canEditBoard(targetBoard)) {
+      return;
+    }
     const now = new Date().toISOString();
     this.boards.update((boards) =>
       boards.map((board) => {
@@ -1893,6 +2067,10 @@ export class BoardsComponent {
 
   private isBoardCardStatus(value: unknown): value is BoardCardStatus {
     return typeof value === 'string' && this.cardStatuses.some((status) => status.id === value);
+  }
+
+  private isProfilePictureType(value: unknown): value is 'icon' | 'image' {
+    return value === 'icon' || value === 'image';
   }
 
   private toneMeta(tone: BoardTone): { id: BoardTone; label: string; accent: string; soft: string } {
