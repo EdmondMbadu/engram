@@ -2,11 +2,12 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
+import { httpsCallable, type Functions } from 'firebase/functions';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
-import { getFirebaseFirestore, getFirebaseStorage } from '../firebase.client';
+import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from '../firebase.client';
 import { GoogleMapsService, type PlaceSearchResult } from '../google-maps.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { AtlasItem } from '../atlas.models';
@@ -22,6 +23,9 @@ type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
+type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url';
+type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'preview' | 'done';
+type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
 
 type BoardSticker = {
   id: string;
@@ -131,6 +135,40 @@ type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
   updated_at_iso: string;
 };
 
+type BoardWizardGeneratedCard = {
+  title: string;
+  subtitle: string;
+  notes: string;
+  type: BoardCardType;
+  scope: BoardCardScope;
+  status: BoardCardStatus;
+  rating: number;
+  tags: string[];
+  image_query: string;
+  place_query: string;
+  imageUrl?: string;
+  placeId?: string;
+  googleMapsUrl?: string;
+};
+
+type BoardWizardGeneratedBatch = {
+  board: {
+    title: string;
+    description: string;
+    icon: string;
+    tone: BoardTone;
+  };
+  cards: BoardWizardGeneratedCard[];
+};
+
+type BoardWizardPreviewCard = BoardWizardGeneratedCard & {
+  id: string;
+  imageUrl: string;
+  placeId: string;
+  googleMapsUrl: string;
+  editing: boolean;
+};
+
 const STORAGE_KEY = 'livingwiki-boards-v1';
 const DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 
@@ -165,6 +203,60 @@ const CARD_STATUSES: Array<{ id: BoardCardStatus; label: string; icon: string }>
   { id: 'saved', label: 'Saved', icon: 'bookmark' },
   { id: 'visited', label: 'Visited', icon: 'check_circle' },
   { id: 'favorite', label: 'Favorite', icon: 'kid_star' },
+];
+
+const BOARD_WIZARD_MODES: Array<{
+  id: BoardWizardMode | 'manual';
+  label: string;
+  description: string;
+  icon: string;
+}> = [
+  {
+    id: 'manual',
+    label: 'Add board manually',
+    description: 'Create an empty board with the current form.',
+    icon: 'edit_square',
+  },
+  {
+    id: 'describe',
+    label: 'Describe it',
+    description: 'Tell the wizard what you want and preview generated cards.',
+    icon: 'auto_awesome',
+  },
+  {
+    id: 'paste',
+    label: 'Paste a list',
+    description: 'Turn names, notes, or bullets into editable cards.',
+    icon: 'format_list_bulleted_add',
+  },
+  {
+    id: 'photos',
+    label: 'Use photos',
+    description: 'Start from image filenames and captions for a memory board.',
+    icon: 'photo_library',
+  },
+  {
+    id: 'url',
+    label: 'Use a URL',
+    description: 'Extract a page or guide into a board draft.',
+    icon: 'link',
+  },
+];
+
+const BOARD_WIZARD_VIBES: Array<{ id: BoardWizardVibe; label: string; icon: string }> = [
+  { id: 'playful', label: 'Playful', icon: 'celebration' },
+  { id: 'foodie', label: 'Foodie', icon: 'restaurant' },
+  { id: 'traveler', label: 'Traveler', icon: 'travel_explore' },
+  { id: 'curator', label: 'Curator', icon: 'interests' },
+  { id: 'memory', label: 'Memory', icon: 'auto_stories' },
+];
+
+const BOARD_WIZARD_STATUS_MESSAGES = [
+  'Reading the source',
+  'Drafting board structure',
+  'Generating editable cards',
+  'Searching places and images',
+  'Preparing preview',
 ];
 
 const COUNTRY_OPTIONS: Array<{ name: string; aliases?: string[] }> = [
@@ -484,6 +576,7 @@ export class BoardsComponent {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
+  private readonly functions: Functions | null = this.isBrowser ? getFirebaseFunctions() : null;
   private readonly storage: FirebaseStorage | null = this.isBrowser ? getFirebaseStorage() : null;
   private hasLoaded = false;
   private loadedStoredLocalBoards = false;
@@ -496,6 +589,8 @@ export class BoardsComponent {
   readonly cardTypes = CARD_TYPES;
   readonly cardScopes = CARD_SCOPES;
   readonly cardStatuses = CARD_STATUSES;
+  readonly wizardModes = BOARD_WIZARD_MODES;
+  readonly wizardVibes = BOARD_WIZARD_VIBES;
   readonly boardIcons = BOARD_ICONS;
   readonly cardStickerIcons = CARD_STICKER_ICONS;
   readonly ratingOptions = [1, 2, 3, 4, 5];
@@ -512,6 +607,7 @@ export class BoardsComponent {
   readonly cardSearch = signal('');
   readonly boardDialogOpen = signal(false);
   readonly cardDialogOpen = signal(false);
+  readonly boardDeleteCandidate = signal<Board | null>(null);
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
@@ -524,6 +620,24 @@ export class BoardsComponent {
   readonly placeSearchLoading = signal(false);
   readonly placeSearchError = signal<string | null>(null);
   readonly placeSearchHint = signal<string | null>(null);
+  readonly wizardOpen = signal(false);
+  readonly wizardStep = signal<BoardWizardStep>('choose');
+  readonly wizardMode = signal<BoardWizardMode>('describe');
+  readonly wizardTargetBoardId = signal('new');
+  readonly wizardDefaultType = signal<BoardCardType>('place');
+  readonly wizardCount = signal(12);
+  readonly wizardVibe = signal<BoardWizardVibe>('playful');
+  readonly wizardPrompt = signal('');
+  readonly wizardPastedList = signal('');
+  readonly wizardUrl = signal('');
+  readonly wizardPhotoNames = signal('');
+  readonly wizardRefineText = signal('');
+  readonly wizardLoadingIndex = signal(0);
+  readonly wizardError = signal<string | null>(null);
+  readonly wizardResult = signal<BoardWizardGeneratedBatch | null>(null);
+  readonly wizardPreviewCards = signal<BoardWizardPreviewCard[]>([]);
+  readonly wizardSelectedCardIds = signal<Set<string>>(new Set());
+  readonly wizardSaving = signal(false);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -654,6 +768,21 @@ export class BoardsComponent {
       .slice(0, 4);
   });
   readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
+  readonly wizardTargetBoards = computed(() => this.boards().filter((board) => this.canEditBoard(board)));
+  readonly wizardSelectedCount = computed(() => this.wizardSelectedCardIds().size);
+  readonly wizardCanGenerate = computed(() => {
+    const mode = this.wizardMode();
+    if (mode === 'describe') {
+      return this.wizardPrompt().trim().length >= 4;
+    }
+    if (mode === 'paste') {
+      return this.wizardPastedList().trim().length >= 2;
+    }
+    if (mode === 'url') {
+      return /^https?:\/\/\S+/i.test(this.wizardUrl().trim());
+    }
+    return this.wizardPhotoNamesList().length > 0 || this.wizardPrompt().trim().length >= 4;
+  });
   readonly countryMatchSuggestions = computed(() => {
     const draft = this.cardDraft();
     if (draft.scope !== 'country') {
@@ -761,6 +890,31 @@ export class BoardsComponent {
   }
 
   openCreateBoard(): void {
+    this.openBoardWizard();
+  }
+
+  openBoardWizard(): void {
+    if (!this.canCreateBoard()) {
+      this.boardsSyncError.set('Sign in to create a board.');
+      return;
+    }
+    this.resetBoardWizard();
+    this.wizardOpen.set(true);
+  }
+
+  chooseWizardMode(mode: BoardWizardMode | 'manual'): void {
+    if (mode === 'manual') {
+      this.closeBoardWizard();
+      this.openManualBoard();
+      return;
+    }
+    this.wizardMode.set(mode);
+    this.wizardDefaultType.set(mode === 'photos' ? 'memory' : mode === 'paste' ? 'place' : this.wizardDefaultType());
+    this.wizardVibe.set(mode === 'photos' ? 'memory' : mode === 'url' ? 'curator' : this.wizardVibe());
+    this.wizardStep.set('configure');
+  }
+
+  openManualBoard(): void {
     if (!this.canCreateBoard()) {
       this.boardsSyncError.set('Sign in to create a board.');
       return;
@@ -779,7 +933,261 @@ export class BoardsComponent {
     this.boardDialogOpen.set(true);
   }
 
-  openEditBoard(board: Board): void {
+  closeBoardWizard(): void {
+    this.wizardOpen.set(false);
+    this.wizardStep.set('choose');
+    this.wizardError.set(null);
+    this.wizardSaving.set(false);
+  }
+
+  backWizardStep(): void {
+    const step = this.wizardStep();
+    if (step === 'configure') {
+      this.wizardStep.set('choose');
+    } else if (step === 'preview') {
+      this.wizardStep.set('configure');
+    }
+  }
+
+  setWizardCount(value: string | number): void {
+    const count = typeof value === 'number' ? value : Number.parseInt(value, 10);
+    this.wizardCount.set(Math.max(1, Math.min(100, Number.isFinite(count) ? count : 12)));
+  }
+
+  wizardPhotoNamesList(): string[] {
+    return this.wizardPhotoNames()
+      .split(/\n|,|;/)
+      .map((name) => name.trim())
+      .filter(Boolean)
+      .slice(0, 100);
+  }
+
+  onWizardPhotosSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+    input.value = '';
+    if (!files.length) {
+      return;
+    }
+    const names = files.map((file) => file.name).filter(Boolean);
+    this.wizardPhotoNames.set([...this.wizardPhotoNamesList(), ...names].slice(0, 100).join('\n'));
+  }
+
+  wizardInputPlaceholder(): string {
+    switch (this.wizardMode()) {
+      case 'paste':
+        return 'Zahav\nKalaya\nMiddle Child Clubhouse\nSuraya';
+      case 'photos':
+        return 'IMG_2041 beach sunrise.jpg\nbirthday-dinner-kalaya.png\nmuseum-day.jpeg';
+      case 'url':
+        return 'https://example.com/best-weekend-guide';
+      default:
+        return 'Best sushi in Philly for a date night, casual lunch, and splurge dinner.';
+    }
+  }
+
+  async generateWizardBatch(refinement = ''): Promise<void> {
+    if (!this.wizardCanGenerate() || this.wizardSaving()) {
+      return;
+    }
+    this.wizardError.set(null);
+    this.wizardStep.set('loading');
+    this.wizardLoadingIndex.set(0);
+    const interval = this.isBrowser
+      ? window.setInterval(() => {
+          this.wizardLoadingIndex.update((index) => Math.min(index + 1, BOARD_WIZARD_STATUS_MESSAGES.length - 1));
+        }, 900)
+      : null;
+
+    try {
+      const batch = await this.requestWizardBatch(refinement);
+      const previewCards = await this.enrichWizardCards(batch.cards);
+      this.wizardResult.set({ ...batch, cards: previewCards });
+      this.wizardPreviewCards.set(previewCards);
+      this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
+      this.wizardStep.set('preview');
+    } catch (error) {
+      const fallback = this.buildLocalWizardBatch(refinement);
+      const previewCards = await this.enrichWizardCards(fallback.cards);
+      this.wizardResult.set({ ...fallback, cards: previewCards });
+      this.wizardPreviewCards.set(previewCards);
+      this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
+      this.wizardError.set(error instanceof Error ? `${error.message} Using a local draft instead.` : 'Using a local draft because AI generation failed.');
+      this.wizardStep.set('preview');
+    } finally {
+      if (interval) {
+        window.clearInterval(interval);
+      }
+    }
+  }
+
+  async refineWizardBatch(): Promise<void> {
+    const refinement = this.wizardRefineText().trim();
+    if (!refinement) {
+      return;
+    }
+    await this.generateWizardBatch(refinement);
+    this.wizardRefineText.set('');
+  }
+
+  async addMoreWizardCards(): Promise<void> {
+    const previousCount = this.wizardCount();
+    this.setWizardCount(Math.min(100, previousCount + 5));
+    await this.generateWizardBatch('Add five more cards that do not duplicate the current preview.');
+    this.setWizardCount(previousCount);
+  }
+
+  async redoWizardCard(cardId: string): Promise<void> {
+    const card = this.wizardPreviewCards().find((item) => item.id === cardId);
+    if (!card) {
+      return;
+    }
+    const previousCount = this.wizardCount();
+    this.setWizardCount(1);
+    try {
+      const batch = await this.requestWizardBatch(`Replace only this card with a better alternative: ${card.title}.`);
+      const [replacement] = await this.enrichWizardCards(batch.cards.slice(0, 1));
+      if (replacement) {
+        this.wizardPreviewCards.update((cards) => cards.map((item) => item.id === cardId ? { ...replacement, id: cardId } : item));
+        this.wizardSelectedCardIds.update((ids) => new Set(ids).add(cardId));
+      }
+    } catch {
+      this.wizardPreviewCards.update((cards) =>
+        cards.map((item) =>
+          item.id === cardId
+            ? {
+                ...item,
+                subtitle: 'Regenerated draft',
+                notes: `${item.notes} Add your own detail or rerun the wizard for another option.`.slice(0, 260),
+              }
+            : item,
+        ),
+      );
+    } finally {
+      this.setWizardCount(previousCount);
+    }
+  }
+
+  toggleWizardCard(cardId: string): void {
+    this.wizardSelectedCardIds.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+      return next;
+    });
+  }
+
+  isWizardCardSelected(cardId: string): boolean {
+    return this.wizardSelectedCardIds().has(cardId);
+  }
+
+  selectAllWizardCards(): void {
+    this.wizardSelectedCardIds.set(new Set(this.wizardPreviewCards().map((card) => card.id)));
+  }
+
+  clearWizardSelection(): void {
+    this.wizardSelectedCardIds.set(new Set());
+  }
+
+  toggleWizardCardEditing(cardId: string): void {
+    this.wizardPreviewCards.update((cards) =>
+      cards.map((card) => card.id === cardId ? { ...card, editing: !card.editing } : card),
+    );
+  }
+
+  updateWizardCard<K extends keyof BoardWizardPreviewCard>(
+    cardId: string,
+    field: K,
+    value: BoardWizardPreviewCard[K],
+  ): void {
+    this.wizardPreviewCards.update((cards) =>
+      cards.map((card) => card.id === cardId ? { ...card, [field]: value } : card),
+    );
+  }
+
+  updateWizardCardTags(cardId: string, value: string): void {
+    this.updateWizardCard(
+      cardId,
+      'tags',
+      value.split(',').map((tag) => tag.trim().toLowerCase()).filter(Boolean).slice(0, 6),
+    );
+  }
+
+  async saveWizardBatch(): Promise<void> {
+    const result = this.wizardResult();
+    const selectedIds = this.wizardSelectedCardIds();
+    const selectedCards = this.wizardPreviewCards().filter((card) => selectedIds.has(card.id));
+    if (!result || !selectedCards.length || this.wizardSaving()) {
+      return;
+    }
+    this.wizardSaving.set(true);
+    this.wizardError.set(null);
+
+    const now = new Date().toISOString();
+    const cards = selectedCards.map((card): BoardCard => ({
+      id: card.id,
+      title: card.title.trim(),
+      subtitle: card.subtitle.trim(),
+      notes: card.notes.trim(),
+      type: card.type,
+      scope: card.scope,
+      status: card.status,
+      rating: Math.max(1, Math.min(5, Math.round(card.rating) || 4)),
+      imageUrl: card.imageUrl,
+      placeId: card.placeId,
+      googleMapsUrl: card.googleMapsUrl,
+      tags: card.tags.slice(0, 6),
+      stickers: [],
+      createdAt: now,
+      updatedAt: now,
+    })).filter((card) => card.title);
+
+    const targetId = this.wizardTargetBoardId();
+    const existingBoard = targetId === 'new' ? null : this.boards().find((board) => board.id === targetId) ?? null;
+    if (existingBoard && !this.canEditBoard(existingBoard)) {
+      this.wizardError.set('Only the board owner can add cards to this board.');
+      this.wizardSaving.set(false);
+      return;
+    }
+
+    const nextBoard: Board = existingBoard
+      ? {
+          ...existingBoard,
+          cards: [...cards, ...existingBoard.cards],
+          updatedAt: now,
+        }
+      : {
+          id: this.createId(),
+          ...this.currentOwnerSnapshot(),
+          title: result.board.title.trim() || 'Wizard board',
+          description: result.board.description.trim(),
+          backNote: `Started with the LivingWiki Wizard from ${this.wizardMode()} input.`,
+          icon: result.board.icon || 'auto_awesome',
+          tone: result.board.tone,
+          imageUrl: cards.find((card) => card.imageUrl)?.imageUrl ?? '',
+          stickers: [],
+          cards,
+          createdAt: now,
+          updatedAt: now,
+        };
+
+    if (existingBoard) {
+      this.boards.update((boards) => boards.map((board) => board.id === existingBoard.id ? nextBoard : board));
+    } else {
+      this.boards.update((boards) => [nextBoard, ...boards]);
+    }
+    await this.persistAndReplaceBoard(nextBoard);
+    this.wizardSaving.set(false);
+    this.wizardStep.set('done');
+    void this.router.navigate(['/boards', nextBoard.id]);
+  }
+
+  openEditBoard(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
     if (!this.canEditBoard(board)) {
       this.boardsSyncError.set('Only the board owner can edit this board.');
       return;
@@ -865,15 +1273,35 @@ export class BoardsComponent {
     this.closeBoardDialog();
   }
 
-  deleteBoard(board: Board): void {
+  deleteBoard(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
     if (!this.canEditBoard(board)) {
       this.boardsSyncError.set('Only the board owner can delete this board.');
       return;
     }
-    const message = `Delete "${board.title}" and its ${board.cards.length} card${board.cards.length === 1 ? '' : 's'}?`;
-    if (this.isBrowser && !window.confirm(message)) {
+    this.boardDeleteCandidate.set(board);
+  }
+
+  closeBoardDeleteDialog(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.boardDeleteCandidate.set(null);
+  }
+
+  confirmDeleteBoard(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.boardDeleteCandidate();
+    if (!board) {
       return;
     }
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can delete this board.');
+      this.boardDeleteCandidate.set(null);
+      return;
+    }
+    this.boardDeleteCandidate.set(null);
 
     this.boards.update((boards) => boards.filter((item) => item.id !== board.id));
     if (this.selectedBoardId() === board.id) {
@@ -1454,6 +1882,276 @@ export class BoardsComponent {
       case 'email':
         return `mailto:?subject=${title}&body=${text}%0A%0A${encodedUrl}`;
     }
+  }
+
+  wizardModeLabel(): string {
+    return this.wizardModes.find((mode) => mode.id === this.wizardMode())?.label ?? 'Wizard';
+  }
+
+  wizardLoadingMessage(): string {
+    return BOARD_WIZARD_STATUS_MESSAGES[this.wizardLoadingIndex()] ?? BOARD_WIZARD_STATUS_MESSAGES[0];
+  }
+
+  wizardTargetBoardTitle(): string {
+    const targetId = this.wizardTargetBoardId();
+    if (targetId === 'new') {
+      return 'New board';
+    }
+    return this.boards().find((board) => board.id === targetId)?.title ?? 'Selected board';
+  }
+
+  private resetBoardWizard(): void {
+    const selectedBoard = this.selectedBoard();
+    const editableSelectedBoard = selectedBoard && this.canEditBoard(selectedBoard) ? selectedBoard : null;
+    this.wizardStep.set('choose');
+    this.wizardMode.set('describe');
+    this.wizardTargetBoardId.set(editableSelectedBoard?.id ?? 'new');
+    this.wizardDefaultType.set('place');
+    this.wizardCount.set(12);
+    this.wizardVibe.set('playful');
+    this.wizardPrompt.set('');
+    this.wizardPastedList.set('');
+    this.wizardUrl.set('');
+    this.wizardPhotoNames.set('');
+    this.wizardRefineText.set('');
+    this.wizardLoadingIndex.set(0);
+    this.wizardError.set(null);
+    this.wizardResult.set(null);
+    this.wizardPreviewCards.set([]);
+    this.wizardSelectedCardIds.set(new Set());
+    this.wizardSaving.set(false);
+  }
+
+  private async requestWizardBatch(refinement = ''): Promise<BoardWizardGeneratedBatch> {
+    if (!this.functions) {
+      throw new Error('Firebase Functions are not available in this browser session.');
+    }
+    const targetBoard = this.wizardTargetBoardId() === 'new'
+      ? null
+      : this.boards().find((board) => board.id === this.wizardTargetBoardId()) ?? null;
+    const prompt = [
+      this.wizardPrompt().trim(),
+      refinement ? `Refinement: ${refinement}` : '',
+    ].filter(Boolean).join('\n');
+    const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch');
+    const response = await callable({
+      mode: this.wizardMode(),
+      prompt,
+      pastedList: this.wizardMode() === 'paste' ? this.wizardPastedList().trim() : '',
+      url: this.wizardMode() === 'url' ? this.wizardUrl().trim() : '',
+      photoNames: this.wizardMode() === 'photos' ? this.wizardPhotoNamesList() : [],
+      targetBoardId: targetBoard?.id ?? '',
+      targetBoardTitle: targetBoard?.title ?? '',
+      defaultType: this.wizardDefaultType(),
+      count: this.wizardCount(),
+      vibe: this.wizardVibe(),
+      existingCards: targetBoard?.cards.slice(0, 80).map((card) => ({
+        title: card.title,
+        subtitle: card.subtitle,
+        tags: card.tags,
+      })) ?? [],
+    });
+    return this.normalizeWizardBatch(response.data);
+  }
+
+  private normalizeWizardBatch(value: unknown): BoardWizardGeneratedBatch {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const boardData = data['board'] && typeof data['board'] === 'object'
+      ? data['board'] as Record<string, unknown>
+      : {};
+    const cards = Array.isArray(data['cards'])
+      ? data['cards'].map((card) => this.normalizeWizardGeneratedCard(card)).filter((card): card is BoardWizardGeneratedCard => !!card)
+      : [];
+    const fallback = this.buildLocalWizardBatch();
+    return {
+      board: {
+        title: this.stringValue(boardData['title'], fallback.board.title, 90),
+        description: this.stringValue(boardData['description'], fallback.board.description, 220),
+        icon: this.stringValue(boardData['icon'], fallback.board.icon, 64),
+        tone: this.isBoardTone(boardData['tone']) ? boardData['tone'] : fallback.board.tone,
+      },
+      cards: (cards.length ? cards : fallback.cards).slice(0, this.wizardCount()),
+    };
+  }
+
+  private normalizeWizardGeneratedCard(value: unknown): BoardWizardGeneratedCard | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const title = this.stringValue(data['title'], '', 80);
+    if (!title) {
+      return null;
+    }
+    const type = this.isBoardCardType(data['type']) ? data['type'] : this.wizardDefaultType();
+    return {
+      title,
+      subtitle: this.stringValue(data['subtitle'], 'Wizard draft', 90),
+      notes: this.stringValue(data['notes'], 'Review and edit this card before saving.', 260),
+      type,
+      scope: this.isBoardCardScope(data['scope']) ? data['scope'] : 'place',
+      status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
+      rating: this.numberValue(data['rating'], 4, 1, 5),
+      tags: Array.isArray(data['tags'])
+        ? data['tags'].map((tag) => this.stringValue(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
+        : [this.wizardVibe(), type].slice(0, 6),
+      image_query: this.stringValue(data['image_query'], title, 120),
+      place_query: this.stringValue(data['place_query'], title, 140),
+      imageUrl: this.stringValue(data['imageUrl'], '', 2000),
+      placeId: this.stringValue(data['placeId'], '', 240),
+      googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
+    };
+  }
+
+  private async enrichWizardCards(cards: BoardWizardGeneratedCard[]): Promise<BoardWizardPreviewCard[]> {
+    const preview: BoardWizardPreviewCard[] = [];
+    for (const card of cards.slice(0, this.wizardCount())) {
+      let enriched: BoardWizardPreviewCard = {
+        ...card,
+        id: this.createId(),
+        imageUrl: card.imageUrl ?? '',
+        placeId: card.placeId ?? '',
+        googleMapsUrl: card.googleMapsUrl ?? '',
+        editing: false,
+      };
+
+      if (this.shouldEnrichWizardCard(card) && (!enriched.imageUrl || !enriched.placeId)) {
+        try {
+          const place = await this.findWizardPlace(card);
+          if (place) {
+            enriched = {
+              ...enriched,
+              title: place.name || enriched.title,
+              subtitle: place.address || enriched.subtitle,
+              rating: place.rating ? Math.round(place.rating) : enriched.rating,
+              imageUrl: place.photoUrl || enriched.imageUrl,
+              placeId: place.placeId,
+              googleMapsUrl: place.googleMapsUrl,
+              tags: this.mergeWizardTags(enriched.tags, this.placeTags(place)),
+            };
+          }
+        } catch {
+          // Place enrichment is best-effort; the generated card remains editable.
+        }
+      }
+      preview.push(enriched);
+    }
+    return preview;
+  }
+
+  private shouldEnrichWizardCard(card: BoardWizardGeneratedCard): boolean {
+    return card.scope === 'place' && (card.type === 'place' || card.type === 'food' || card.type === 'shop');
+  }
+
+  private async findWizardPlace(card: BoardWizardGeneratedCard): Promise<PlaceSearchResult | null> {
+    const query = card.place_query || card.title;
+    const context = this.wizardPrompt().trim() || this.wizardTargetBoardTitle();
+    const results = await this.googleMapsService.searchPlaces(query, context);
+    return results[0] ?? null;
+  }
+
+  private buildLocalWizardBatch(refinement = ''): BoardWizardGeneratedBatch {
+    const mode = this.wizardMode();
+    const source = mode === 'paste'
+      ? this.wizardPastedList()
+      : mode === 'photos'
+        ? this.wizardPhotoNamesList().join('\n')
+        : mode === 'url'
+          ? this.wizardUrl()
+          : this.wizardPrompt();
+    const items = this.localWizardItems(source || refinement || 'Wizard card', mode === 'paste' || mode === 'photos').slice(0, this.wizardCount());
+    const title = this.wizardTargetBoardId() === 'new'
+      ? this.titleFromWizardInput(source || refinement || 'Wizard board')
+      : this.wizardTargetBoardTitle();
+    const defaultType = this.wizardDefaultType();
+    return {
+      board: {
+        title,
+        description: `${this.wizardVibe()} board draft generated from ${mode} input.`,
+        icon: defaultType === 'food' ? 'restaurant' : defaultType === 'shop' ? 'storefront' : 'auto_awesome',
+        tone: this.wizardVibe() === 'foodie'
+          ? 'coral'
+          : this.wizardVibe() === 'traveler'
+            ? 'sky'
+            : this.wizardVibe() === 'memory'
+              ? 'purple'
+              : 'teal',
+      },
+      cards: items.map((titleValue, index) => ({
+        title: titleValue,
+        subtitle: mode === 'photos' ? 'Photo-inspired memory' : 'Wizard draft',
+        notes: refinement || 'Generated as a starting point. Edit details, tags, rating, and images before saving.',
+        type: defaultType,
+        scope: 'place',
+        status: index % 5 === 0 ? 'favorite' : 'saved',
+        rating: Math.max(3, 5 - (index % 3)),
+        tags: [this.wizardVibe(), defaultType].slice(0, 6),
+        image_query: `${titleValue} ${title}`,
+        place_query: titleValue,
+      })),
+    };
+  }
+
+  private localWizardItems(source: string, preserveSingleItemList = false): string[] {
+    const lines = source
+      .split(/\n|,|;/)
+      .map((line) => line.replace(/^[-*\d.)\s]+/, '').replace(/\.[a-z0-9]{2,5}$/i, '').replace(/[-_]+/g, ' ').trim())
+      .filter((line) => line.length > 1);
+    if (lines.length > 1 || (preserveSingleItemList && lines.length)) {
+      return lines;
+    }
+    const title = this.titleFromWizardInput(source);
+    return this.localWizardSearchSeeds(title);
+  }
+
+  private localWizardSearchSeeds(title: string): string[] {
+    const count = this.wizardCount();
+    const lower = title.toLowerCase();
+    if (lower.includes('eat') || lower.includes('food') || lower.includes('restaurant')) {
+      const place = this.inferPlaceFromWizardText(title);
+      return [
+        `best restaurants ${place}`,
+        `best casual restaurants ${place}`,
+        `best fine dining ${place}`,
+        `best lunch spots ${place}`,
+        `best dinner spots ${place}`,
+        `best cafes ${place}`,
+        `best bakeries ${place}`,
+        `best pizza ${place}`,
+        `best tacos ${place}`,
+        `best sushi ${place}`,
+        `best brunch ${place}`,
+        `best dessert ${place}`,
+      ].slice(0, count);
+    }
+    return Array.from({ length: count }, (_, index) => `${title} option ${index + 1}`);
+  }
+
+  private inferPlaceFromWizardText(value: string): string {
+    const match = value.match(/\bin\s+([a-zA-Z\s.'-]+)$/i);
+    return match?.[1]?.trim() || value;
+  }
+
+  private titleFromWizardInput(value: string): string {
+    const text = value.replace(/^https?:\/\/\S+/i, 'URL board').replace(/\s+/g, ' ').trim();
+    if (!text) {
+      return 'Wizard board';
+    }
+    return text.slice(0, 72);
+  }
+
+  private mergeWizardTags(left: string[], right: string[]): string[] {
+    return Array.from(new Set([...left, ...right].map((tag) => tag.trim().toLowerCase()).filter(Boolean))).slice(0, 6);
+  }
+
+  private stringValue(value: unknown, fallback: string, maxLength: number): string {
+    const text = typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
+    return (text || fallback).slice(0, maxLength);
+  }
+
+  private numberValue(value: unknown, fallback: number, min: number, max: number): number {
+    const number = typeof value === 'number' ? value : typeof value === 'string' ? Number.parseFloat(value) : fallback;
+    return Math.max(min, Math.min(max, Number.isFinite(number) ? Math.round(number) : fallback));
   }
 
   private loadLocalBoards(): void {

@@ -136,6 +136,45 @@ const answerQuizSchema = {
   required: ['title', 'description', 'questions'],
 } as const;
 
+const boardWizardBatchSchema = {
+  type: 'object',
+  properties: {
+    board: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        description: { type: 'string' },
+        icon: { type: 'string' },
+        tone: { type: 'string' },
+      },
+      required: ['title', 'description', 'icon', 'tone'],
+    },
+    cards: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          title: { type: 'string' },
+          subtitle: { type: 'string' },
+          notes: { type: 'string' },
+          type: { type: 'string' },
+          scope: { type: 'string' },
+          status: { type: 'string' },
+          rating: { type: 'integer' },
+          tags: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+          image_query: { type: 'string' },
+          place_query: { type: 'string' },
+        },
+        required: ['title', 'subtitle', 'notes', 'type', 'scope', 'status', 'rating', 'tags', 'image_query', 'place_query'],
+      },
+    },
+  },
+  required: ['board', 'cards'],
+} as const;
+
 const lineArraySchema = {
   type: 'array',
   items: { type: 'string' },
@@ -283,6 +322,33 @@ export type GeneratedAnswerQuiz = {
   title: string;
   description: string;
   questions: GeneratedQuizQuestion[];
+};
+
+export type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url' | 'expand';
+export type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
+export type GeneratedBoardWizardCard = {
+  title: string;
+  subtitle: string;
+  notes: string;
+  type: 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
+  scope: 'place' | 'city' | 'country' | 'region';
+  status: 'planned' | 'saved' | 'visited' | 'favorite';
+  rating: number;
+  tags: string[];
+  image_query: string;
+  place_query: string;
+  imageUrl?: string;
+  placeId?: string;
+  googleMapsUrl?: string;
+};
+export type GeneratedBoardWizardBatch = {
+  board: {
+    title: string;
+    description: string;
+    icon: string;
+    tone: 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
+  };
+  cards: GeneratedBoardWizardCard[];
 };
 
 function createClient(): GoogleGenAI {
@@ -1013,6 +1079,245 @@ export async function generateAnswerCard(params: {
     });
     return buildFallbackAnswerCard(question, answer);
   }
+}
+
+export async function generateBoardWizardBatch(params: {
+  mode: BoardWizardMode;
+  prompt: string;
+  pastedList?: string;
+  url?: string;
+  photoNames?: string[];
+  targetBoardTitle?: string | null;
+  defaultType: GeneratedBoardWizardCard['type'];
+  count: number;
+  vibe: BoardWizardVibe;
+  existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+}): Promise<GeneratedBoardWizardBatch> {
+  const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
+  const prompt = buildBoardWizardPrompt({ ...params, count });
+
+  try {
+    const response = await generateContentWithRetry({
+      model: internetSearchModel,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: boardWizardBatchSchema,
+        temperature: 0.45,
+        maxOutputTokens: Math.min(8192, 900 + count * 360),
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+    return normalizeBoardWizardBatch(parseJsonResponse<unknown>(response.text ?? '{}'), params, count);
+  } catch (error) {
+    logger.warn('Failed to generate board wizard batch with Gemini.', {
+      mode: params.mode,
+      count,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return buildFallbackBoardWizardBatch(params, count);
+  }
+}
+
+function buildBoardWizardPrompt(params: {
+  mode: BoardWizardMode;
+  prompt: string;
+  pastedList?: string;
+  url?: string;
+  photoNames?: string[];
+  targetBoardTitle?: string | null;
+  defaultType: GeneratedBoardWizardCard['type'];
+  count: number;
+  vibe: BoardWizardVibe;
+  existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+}): string {
+  const vibeInstructions: Record<BoardWizardVibe, string> = {
+    playful: 'bright, surprising, fun, but still useful and specific',
+    foodie: 'food-aware, sensory, practical about taste, price, neighborhoods, and mood',
+    traveler: 'curious, place-aware, useful for planning and discovery',
+    curator: 'selective, polished, opinionated, gallery-like, and concise',
+    memory: 'warm, story-forward, personal, and emotionally specific',
+  };
+  return [
+    'You are the LivingWiki Wizard. Create an editable board batch for a user.',
+    'Return only valid JSON matching the schema.',
+    'Every card must be concrete and useful, not filler.',
+    'Do not include duplicates. Prefer diversity across neighborhoods, styles, categories, or angles.',
+    'Each title should be max 70 characters. Each subtitle max 90 characters. Each notes field max 260 characters.',
+    'Card type must be one of: place, food, memory, idea, shop, note.',
+    'Scope must be one of: place, city, country, region.',
+    'Status must be one of: planned, saved, visited, favorite.',
+    'Rating must be an integer from 1 to 5.',
+    'Tags should be lowercase, 1-6 items, short and useful.',
+    'image_query should be a short search phrase for a representative image.',
+    'place_query should be a Google Places-style lookup query when the item is a real place; otherwise use the title.',
+    `Generate exactly ${params.count} cards.`,
+    `Default card type: ${params.defaultType}.`,
+    `Vibe: ${params.vibe} (${vibeInstructions[params.vibe]}).`,
+    params.targetBoardTitle ? `Target board title: ${params.targetBoardTitle}` : 'Create a clear board title.',
+    params.existingCards?.length ? 'Avoid duplicating these existing cards:' : '',
+    params.existingCards?.length ? JSON.stringify(params.existingCards.slice(0, 40)) : '',
+    '',
+    'User input:',
+    JSON.stringify({
+      mode: params.mode,
+      prompt: params.prompt.slice(0, 4000),
+      pastedList: params.pastedList?.slice(0, 8000) ?? '',
+      url: params.url?.slice(0, 1000) ?? '',
+      photoNames: params.photoNames?.slice(0, 100) ?? [],
+    }),
+  ].filter(Boolean).join('\n');
+}
+
+function normalizeBoardWizardBatch(
+  value: unknown,
+  params: {
+    prompt: string;
+    targetBoardTitle?: string | null;
+    defaultType: GeneratedBoardWizardCard['type'];
+    vibe: BoardWizardVibe;
+  },
+  count: number,
+): GeneratedBoardWizardBatch {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const boardData = data.board && typeof data.board === 'object' ? data.board as Record<string, unknown> : {};
+  const cards = Array.isArray(data.cards)
+    ? data.cards.map((item) => normalizeBoardWizardCard(item, params.defaultType)).filter((card): card is GeneratedBoardWizardCard => !!card)
+    : [];
+  const fallback = buildFallbackBoardWizardBatch({ ...params, mode: 'describe', count }, count);
+  return {
+    board: {
+      title: cleanLine(boardData.title, fallback.board.title, 90),
+      description: cleanLine(boardData.description, fallback.board.description, 220),
+      icon: cleanLine(boardData.icon, fallback.board.icon, 64),
+      tone: normalizeBoardWizardTone(boardData.tone, fallback.board.tone),
+    },
+    cards: (cards.length ? cards : fallback.cards).slice(0, count),
+  };
+}
+
+function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWizardCard['type']): GeneratedBoardWizardCard | null {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const title = cleanLine(data.title, '', 80);
+  if (!title) {
+    return null;
+  }
+  const type = normalizeBoardWizardCardType(data.type, fallbackType);
+  const tags = Array.isArray(data.tags)
+    ? data.tags.map((tag) => cleanLine(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
+    : [];
+  return {
+    title,
+    subtitle: cleanLine(data.subtitle, type === 'food' ? 'Worth saving for later' : 'Generated by the LivingWiki Wizard', 90),
+    notes: cleanLine(data.notes, 'Review and edit this generated card before sharing the board.', 260),
+    type,
+    scope: normalizeBoardWizardScope(data.scope),
+    status: normalizeBoardWizardStatus(data.status),
+    rating: normalizeRating(data.rating),
+    tags,
+    image_query: cleanLine(data.image_query, title, 120),
+    place_query: cleanLine(data.place_query, title, 140),
+  };
+}
+
+function buildFallbackBoardWizardBatch(
+  params: {
+    prompt: string;
+    pastedList?: string;
+    url?: string;
+    photoNames?: string[];
+    targetBoardTitle?: string | null;
+    defaultType: GeneratedBoardWizardCard['type'];
+    vibe: BoardWizardVibe;
+    count?: number;
+    mode?: BoardWizardMode;
+  },
+  count: number,
+): GeneratedBoardWizardBatch {
+  const sourceItems = fallbackWizardItems(params).slice(0, count);
+  const baseTitle = params.targetBoardTitle?.trim() || titleFromPrompt(params.prompt || params.pastedList || params.url || 'Wizard board');
+  const cards = sourceItems.map((title, index): GeneratedBoardWizardCard => ({
+    title,
+    subtitle: params.vibe === 'memory' ? 'A memory worth keeping' : 'A wizard-generated starting point',
+    notes: 'Generated as a draft. Edit the details, tags, image, and rating before sharing.',
+    type: params.defaultType,
+    scope: params.defaultType === 'place' || params.defaultType === 'food' || params.defaultType === 'shop' ? 'place' : 'place',
+    status: index % 5 === 0 ? 'favorite' : 'saved',
+    rating: Math.max(3, 5 - (index % 3)),
+    tags: [params.vibe, params.defaultType].filter(Boolean).slice(0, 6),
+    image_query: `${title} ${baseTitle}`,
+    place_query: title,
+  }));
+  return {
+    board: {
+      title: baseTitle,
+      description: `A ${params.vibe} batch generated from your ${params.mode ?? 'wizard'} input.`,
+      icon: params.defaultType === 'food' ? 'restaurant' : params.defaultType === 'shop' ? 'storefront' : 'auto_awesome',
+      tone: params.vibe === 'foodie' ? 'coral' : params.vibe === 'traveler' ? 'sky' : params.vibe === 'memory' ? 'purple' : 'teal',
+    },
+    cards,
+  };
+}
+
+function fallbackWizardItems(params: {
+  prompt: string;
+  pastedList?: string;
+  url?: string;
+  photoNames?: string[];
+}): string[] {
+  const pasted = (params.pastedList ?? '')
+    .split(/\n|,|;/)
+    .map((line) => line.replace(/^[-*\d.)\s]+/, '').trim())
+    .filter((line) => line.length > 1);
+  if (pasted.length) {
+    return pasted;
+  }
+  if (params.photoNames?.length) {
+    return params.photoNames.map((name) => name.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ').trim()).filter(Boolean);
+  }
+  const prompt = params.prompt || params.url || 'Wizard card';
+  return Array.from({ length: 100 }, (_, index) => `${titleFromPrompt(prompt)} ${index + 1}`);
+}
+
+function titleFromPrompt(value: string): string {
+  const cleaned = value
+    .replace(/^https?:\/\/\S+/i, 'Article-inspired board')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!cleaned) {
+    return 'Wizard board';
+  }
+  const withoutCount = cleaned.replace(/\b(the\s+)?\d+\s+(best|top|favorite|greatest)\b/i, 'Best').trim();
+  return withoutCount.slice(0, 72);
+}
+
+function cleanLine(value: unknown, fallback: string, maxLength: number): string {
+  const text = typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
+  return (text || fallback).slice(0, maxLength);
+}
+
+function normalizeBoardWizardTone(value: unknown, fallback: GeneratedBoardWizardBatch['board']['tone']): GeneratedBoardWizardBatch['board']['tone'] {
+  return value === 'teal' || value === 'coral' || value === 'yellow' || value === 'green' || value === 'blue' || value === 'sky' || value === 'purple'
+    ? value
+    : fallback;
+}
+
+function normalizeBoardWizardCardType(value: unknown, fallback: GeneratedBoardWizardCard['type']): GeneratedBoardWizardCard['type'] {
+  return value === 'place' || value === 'food' || value === 'memory' || value === 'idea' || value === 'shop' || value === 'note'
+    ? value
+    : fallback;
+}
+
+function normalizeBoardWizardScope(value: unknown): GeneratedBoardWizardCard['scope'] {
+  return value === 'city' || value === 'country' || value === 'region' ? value : 'place';
+}
+
+function normalizeBoardWizardStatus(value: unknown): GeneratedBoardWizardCard['status'] {
+  return value === 'planned' || value === 'visited' || value === 'favorite' ? value : 'saved';
+}
+
+function normalizeRating(value: unknown): number {
+  return Math.max(1, Math.min(5, typeof value === 'number' ? Math.round(value) : 4));
 }
 
 function normalizeRecapLines(value: unknown, limit: number, maxLength: number): string[] {

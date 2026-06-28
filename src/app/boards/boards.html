@@ -207,10 +207,10 @@
                     <span class="material-symbols-outlined">{{ isBoardFlipped(board.id) ? 'flip_to_front' : 'flip_to_back' }}</span>
                   </button>
                   @if (canEditBoard(board)) {
-                    <button type="button" aria-label="Edit board" (click)="openEditBoard(board)">
+                    <button type="button" aria-label="Edit board" (click)="openEditBoard(board, $event)">
                       <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button type="button" aria-label="Delete board" (click)="deleteBoard(board)">
+                    <button type="button" aria-label="Delete board" (click)="deleteBoard(board, $event)">
                       <span class="material-symbols-outlined">delete</span>
                     </button>
                   }
@@ -619,6 +619,382 @@
       </main>
     </div>
   </div>
+
+  @if (wizardOpen()) {
+    <div class="boards-modal-backdrop" (click)="closeBoardWizard()">
+      <section class="boards-modal boards-modal--wizard" aria-label="New board wizard" (click)="$event.stopPropagation()">
+        <div class="boards-modal__head">
+          <div>
+            <p>New board</p>
+            <h3>{{ wizardStep() === 'choose' ? 'Choose how to start' : wizardModeLabel() }}</h3>
+          </div>
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardWizard()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        @if (wizardStep() === 'choose') {
+          <div class="boards-wizard">
+            <div class="boards-wizard__intro">
+              <span class="material-symbols-outlined">auto_awesome</span>
+              <div>
+                <h4>Build a board from whatever you already have.</h4>
+                <p>Everything opens as an editable preview before it is saved.</p>
+              </div>
+            </div>
+            <div class="boards-wizard-mode-grid">
+              @for (mode of wizardModes; track mode.id) {
+                <button type="button" class="boards-wizard-mode" (click)="chooseWizardMode(mode.id)">
+                  <span class="material-symbols-outlined">{{ mode.icon }}</span>
+                  <strong>{{ mode.label }}</strong>
+                  <small>{{ mode.description }}</small>
+                </button>
+              }
+            </div>
+          </div>
+        } @else if (wizardStep() === 'configure') {
+          <form class="boards-form boards-wizard" (submit)="$event.preventDefault(); generateWizardBatch()">
+            <section class="boards-form-section boards-form-section--feature">
+              <div class="boards-form-section__head">
+                <span class="material-symbols-outlined">tune</span>
+                <div>
+                  <p>Source</p>
+                  <h4>{{ wizardModeLabel() }}</h4>
+                </div>
+              </div>
+
+              @if (wizardMode() === 'describe') {
+                <label>
+                  <span>Describe the board</span>
+                  <textarea
+                    rows="5"
+                    maxlength="2000"
+                    [placeholder]="wizardInputPlaceholder()"
+                    [value]="wizardPrompt()"
+                    (input)="wizardPrompt.set($any($event.target).value)"
+                  ></textarea>
+                </label>
+              } @else if (wizardMode() === 'paste') {
+                <label>
+                  <span>Paste list</span>
+                  <textarea
+                    rows="7"
+                    maxlength="8000"
+                    [placeholder]="wizardInputPlaceholder()"
+                    [value]="wizardPastedList()"
+                    (input)="wizardPastedList.set($any($event.target).value)"
+                  ></textarea>
+                </label>
+              } @else if (wizardMode() === 'photos') {
+                <div class="boards-upload-field">
+                  <span>Photos</span>
+                  <label class="boards-upload__button boards-wizard-file">
+                    <span class="material-symbols-outlined">upload</span>
+                    Choose photos
+                    <input type="file" accept="image/*" multiple (change)="onWizardPhotosSelected($event)" />
+                  </label>
+                </div>
+                <label>
+                  <span>Photo names or captions</span>
+                  <textarea
+                    rows="7"
+                    maxlength="8000"
+                    [placeholder]="wizardInputPlaceholder()"
+                    [value]="wizardPhotoNames()"
+                    (input)="wizardPhotoNames.set($any($event.target).value)"
+                  ></textarea>
+                </label>
+                <label>
+                  <span>Optional direction</span>
+                  <input
+                    type="text"
+                    maxlength="220"
+                    placeholder="Family vacation in Lisbon, summer 2026"
+                    [value]="wizardPrompt()"
+                    (input)="wizardPrompt.set($any($event.target).value)"
+                  />
+                </label>
+              } @else {
+                <label>
+                  <span>URL</span>
+                  <input
+                    type="url"
+                    required
+                    [placeholder]="wizardInputPlaceholder()"
+                    [value]="wizardUrl()"
+                    (input)="wizardUrl.set($any($event.target).value)"
+                  />
+                </label>
+                <label>
+                  <span>Optional direction</span>
+                  <input
+                    type="text"
+                    maxlength="220"
+                    placeholder="Focus on places, food, and things worth saving"
+                    [value]="wizardPrompt()"
+                    (input)="wizardPrompt.set($any($event.target).value)"
+                  />
+                </label>
+              }
+            </section>
+
+            <section class="boards-wizard-config">
+              <label>
+                <span>Save into</span>
+                <select [value]="wizardTargetBoardId()" (change)="wizardTargetBoardId.set($any($event.target).value)">
+                  <option value="new">Create a new board</option>
+                  @for (board of wizardTargetBoards(); track board.id) {
+                    <option [value]="board.id">{{ board.title }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                <span>How many cards</span>
+                <div class="boards-wizard-count">
+                  <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    [value]="wizardCount()"
+                    (input)="setWizardCount($any($event.target).value)"
+                  />
+                  <input
+                    type="number"
+                    min="1"
+                    max="100"
+                    [value]="wizardCount()"
+                    (input)="setWizardCount($any($event.target).value)"
+                  />
+                </div>
+              </label>
+            </section>
+
+            <section>
+              <span class="boards-wizard-label">Default card type</span>
+              <div class="boards-choice-grid boards-choice-grid--types">
+                @for (type of cardTypes; track type.id) {
+                  <button
+                    type="button"
+                    class="boards-choice"
+                    [class.boards-choice--active]="wizardDefaultType() === type.id"
+                    [attr.aria-pressed]="wizardDefaultType() === type.id"
+                    (click)="wizardDefaultType.set(type.id)"
+                  >
+                    <span class="material-symbols-outlined">{{ type.icon }}</span>
+                    <strong>{{ type.label }}</strong>
+                  </button>
+                }
+              </div>
+            </section>
+
+            <section>
+              <span class="boards-wizard-label">Vibe</span>
+              <div class="boards-wizard-vibes">
+                @for (vibe of wizardVibes; track vibe.id) {
+                  <button
+                    type="button"
+                    [class.boards-wizard-vibe--active]="wizardVibe() === vibe.id"
+                    [attr.aria-pressed]="wizardVibe() === vibe.id"
+                    (click)="wizardVibe.set(vibe.id)"
+                  >
+                    <span class="material-symbols-outlined">{{ vibe.icon }}</span>
+                    {{ vibe.label }}
+                  </button>
+                }
+              </div>
+            </section>
+
+            @if (wizardError()) {
+              <div class="boards-form__soft-error">{{ wizardError() }}</div>
+            }
+
+            <div class="boards-form__actions">
+              <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
+              <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()">
+                <span class="material-symbols-outlined">auto_awesome</span>
+                Generate preview
+              </button>
+            </div>
+          </form>
+        } @else if (wizardStep() === 'loading') {
+          <div class="boards-wizard boards-wizard-loading">
+            <span class="boards-wizard-loading__mark">
+              <span class="material-symbols-outlined">auto_awesome</span>
+            </span>
+            <h4>{{ wizardLoadingMessage() }}</h4>
+            <div class="boards-wizard-progress">
+              <span [style.width.%]="(wizardLoadingIndex() + 1) * 20"></span>
+            </div>
+          </div>
+        } @else if (wizardStep() === 'preview') {
+          <div class="boards-wizard boards-wizard-preview">
+            <div class="boards-wizard-preview__bar">
+              <div>
+                <strong>{{ wizardSelectedCount() }} of {{ wizardPreviewCards().length }} selected</strong>
+                <small>Saving to {{ wizardTargetBoardTitle() }}</small>
+              </div>
+              <div>
+                <button type="button" class="boards-ghost-action" (click)="selectAllWizardCards()">Select all</button>
+                <button type="button" class="boards-ghost-action" (click)="clearWizardSelection()">Clear</button>
+              </div>
+            </div>
+
+            @if (wizardError()) {
+              <div class="boards-form__soft-error">{{ wizardError() }}</div>
+            }
+
+            <div class="boards-wizard-preview__layout">
+              <div class="boards-wizard-card-grid">
+                @for (card of wizardPreviewCards(); track card.id) {
+                  <article class="boards-wizard-card" [class.boards-wizard-card--off]="!isWizardCardSelected(card.id)">
+                    <div class="boards-wizard-card__media">
+                      @if (card.imageUrl) {
+                        <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                      } @else {
+                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                      }
+                      <button
+                        type="button"
+                        class="boards-wizard-card__check"
+                        [attr.aria-pressed]="isWizardCardSelected(card.id)"
+                        (click)="toggleWizardCard(card.id)"
+                      >
+                        <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                      </button>
+                    </div>
+                    @if (card.editing) {
+                      <div class="boards-wizard-card__edit">
+                        <input
+                          type="text"
+                          maxlength="80"
+                          [value]="card.title"
+                          (input)="updateWizardCard(card.id, 'title', $any($event.target).value)"
+                        />
+                        <input
+                          type="text"
+                          maxlength="90"
+                          [value]="card.subtitle"
+                          (input)="updateWizardCard(card.id, 'subtitle', $any($event.target).value)"
+                        />
+                        <textarea
+                          rows="3"
+                          maxlength="260"
+                          [value]="card.notes"
+                          (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"
+                        ></textarea>
+                        <div class="boards-form__split">
+                          <select [value]="card.type" (change)="updateWizardCard(card.id, 'type', $any($event.target).value)">
+                            @for (type of cardTypes; track type.id) {
+                              <option [value]="type.id">{{ type.label }}</option>
+                            }
+                          </select>
+                          <select [value]="card.status" (change)="updateWizardCard(card.id, 'status', $any($event.target).value)">
+                            @for (status of cardStatuses; track status.id) {
+                              <option [value]="status.id">{{ status.label }}</option>
+                            }
+                          </select>
+                        </div>
+                        <input
+                          type="text"
+                          [value]="card.tags.join(', ')"
+                          (input)="updateWizardCardTags(card.id, $any($event.target).value)"
+                        />
+                      </div>
+                    } @else {
+                      <div class="boards-wizard-card__body">
+                        <strong>{{ card.title }}</strong>
+                        <small>{{ card.subtitle }}</small>
+                        <p>{{ card.notes }}</p>
+                        <div class="boards-wizard-card__tags">
+                          @for (tag of card.tags; track tag) {
+                            <span>{{ tag }}</span>
+                          }
+                        </div>
+                      </div>
+                    }
+                    <div class="boards-wizard-card__actions">
+                      <button type="button" (click)="toggleWizardCardEditing(card.id)">
+                        <span class="material-symbols-outlined">{{ card.editing ? 'done' : 'edit' }}</span>
+                      </button>
+                      <button type="button" (click)="redoWizardCard(card.id)">
+                        <span class="material-symbols-outlined">refresh</span>
+                      </button>
+                    </div>
+                  </article>
+                }
+              </div>
+
+              <aside class="boards-wizard-refine">
+                <h4>Refine</h4>
+                <textarea
+                  rows="5"
+                  placeholder="Make it more kid-friendly, add cheaper options, remove duplicates..."
+                  [value]="wizardRefineText()"
+                  (input)="wizardRefineText.set($any($event.target).value)"
+                ></textarea>
+                <button type="button" class="boards-primary-action" (click)="refineWizardBatch()" [disabled]="!wizardRefineText().trim()">
+                  <span class="material-symbols-outlined">forum</span>
+                  Refine batch
+                </button>
+                <button type="button" class="boards-ghost-action" (click)="addMoreWizardCards()">
+                  <span class="material-symbols-outlined">add</span>
+                  Add 5 more
+                </button>
+              </aside>
+            </div>
+
+            <div class="boards-form__actions boards-wizard-savebar">
+              <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
+              <button
+                type="button"
+                class="boards-primary-action"
+                [disabled]="!wizardSelectedCount() || wizardSaving()"
+                (click)="saveWizardBatch()"
+              >
+                <span class="material-symbols-outlined">save</span>
+                {{ wizardSaving() ? 'Saving...' : 'Save selected cards' }}
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div class="boards-wizard boards-wizard-done">
+            <span class="material-symbols-outlined">check_circle</span>
+            <h4>Board saved</h4>
+            <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">Done</button>
+          </div>
+        }
+      </section>
+    </div>
+  }
+
+  @if (boardDeleteCandidate(); as board) {
+    <div class="boards-modal-backdrop" (click)="closeBoardDeleteDialog($event)">
+      <section class="boards-modal boards-modal--confirm" aria-label="Delete board confirmation" (click)="$event.stopPropagation()">
+        <div class="boards-modal__head">
+          <div>
+            <p>Delete board</p>
+            <h3>{{ board.title }}</h3>
+          </div>
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardDeleteDialog($event)">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="boards-confirm">
+          <span class="material-symbols-outlined">warning</span>
+          <p>
+            Delete this board and its {{ board.cards.length }} card{{ board.cards.length === 1 ? '' : 's' }}?
+          </p>
+        </div>
+        <div class="boards-form__actions">
+          <button type="button" class="boards-ghost-action" (click)="closeBoardDeleteDialog($event)">Cancel</button>
+          <button type="button" class="boards-danger-action" (click)="confirmDeleteBoard($event)">
+            <span class="material-symbols-outlined">delete</span>
+            Delete board
+          </button>
+        </div>
+      </section>
+    </div>
+  }
 
   @if (boardDialogOpen()) {
     <div class="boards-modal-backdrop" (click)="closeBoardDialog()">

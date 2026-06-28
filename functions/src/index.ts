@@ -17,7 +17,11 @@ import {
   geminiApiKey,
   generateAnswerCard,
   generateAnswerQuiz,
+  generateBoardWizardBatch as generateBoardWizardBatchWithGemini,
   generateVoiceConversationRecap,
+  type BoardWizardMode,
+  type BoardWizardVibe,
+  type GeneratedBoardWizardCard,
 } from './gemini';
 import {
   getStoredCityPulseSnapshot,
@@ -1706,6 +1710,11 @@ type GooglePlacesTextSearchResponse = {
     types?: string[];
     rating?: number;
     user_ratings_total?: number;
+    photos?: Array<{
+      photo_reference?: string;
+      width?: number;
+      height?: number;
+    }>;
     geometry?: {
       location?: {
         lat?: number;
@@ -1727,6 +1736,11 @@ type GooglePlaceDetailsResponse = {
     rating?: number;
     user_ratings_total?: number;
     types?: string[];
+    photos?: Array<{
+      photo_reference?: string;
+      width?: number;
+      height?: number;
+    }>;
     geometry?: {
       location?: {
         lat?: number;
@@ -3722,6 +3736,341 @@ export const searchCityPlaces = onCall(
     return { places: reviewedPlaces, candidates: [...reviewedPlaces, ...googlePlaces].slice(0, 10) };
   },
 );
+
+type BoardWizardCallableData = {
+  mode?: unknown;
+  prompt?: unknown;
+  pastedList?: unknown;
+  url?: unknown;
+  photoNames?: unknown;
+  targetBoardId?: unknown;
+  targetBoardTitle?: unknown;
+  defaultType?: unknown;
+  count?: unknown;
+  vibe?: unknown;
+  existingCards?: unknown;
+};
+
+export const boardPlacePhoto = onRequest(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 30,
+    memory: '512MiB',
+    secrets: [googlePlacesApiKey],
+  },
+  async (request, response) => {
+    const photoReference = textFromUnknown(request.query['ref']).slice(0, 1200);
+    if (!photoReference) {
+      response.status(400).send('Missing photo reference.');
+      return;
+    }
+
+    const apiKey = googlePlacesApiKey.value();
+    if (!apiKey) {
+      response.status(503).send('Google Places is not configured.');
+      return;
+    }
+
+    try {
+      const url = new URL('https://maps.googleapis.com/maps/api/place/photo');
+      url.searchParams.set('maxwidth', '1000');
+      url.searchParams.set('photo_reference', photoReference);
+      url.searchParams.set('key', apiKey);
+      const upstream = await fetch(url.toString(), {
+        redirect: 'follow',
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!upstream.ok) {
+        response.status(upstream.status).send('Place photo unavailable.');
+        return;
+      }
+      const contentType = upstream.headers.get('content-type') || 'image/jpeg';
+      const bytes = Buffer.from(await upstream.arrayBuffer());
+      response.setHeader('Content-Type', contentType);
+      response.setHeader('Cache-Control', 'public, max-age=604800, s-maxage=604800');
+      response.status(200).send(bytes);
+    } catch (error) {
+      logger.warn('Board place photo proxy failed.', {
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      response.status(502).send('Place photo unavailable.');
+    }
+  },
+);
+
+export const generateBoardWizardBatch = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 120,
+    memory: '1GiB',
+    secrets: [geminiApiKey, googlePlacesApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to use the LivingWiki Wizard.');
+    }
+
+    const data = (request.data ?? {}) as BoardWizardCallableData;
+    const mode = normalizeBoardWizardMode(data.mode);
+    const defaultType = normalizeBoardWizardDefaultType(data.defaultType);
+    const vibe = normalizeBoardWizardVibe(data.vibe);
+    const count = Math.max(1, Math.min(100, Number(data.count) || 12));
+    const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
+    const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
+    const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
+    const pastedList = stringOrEmpty(data.pastedList).slice(0, 12000);
+    const url = stringOrEmpty(data.url).slice(0, 1000);
+    const photoNames = Array.isArray(data.photoNames)
+      ? data.photoNames.map((name) => stringOrEmpty(name).slice(0, 180)).filter(Boolean).slice(0, 100)
+      : [];
+    const existingCards = Array.isArray(data.existingCards)
+      ? data.existingCards.map(normalizeExistingBoardWizardCard).filter((card): card is { title: string; subtitle?: string; tags?: string[] } => !!card).slice(0, 40)
+      : [];
+
+    let urlContext = '';
+    if (mode === 'url' && url) {
+      try {
+        const fetched = await fetchHtmlWithFallback(url);
+        if (!looksLikeAntiBotChallenge(fetched.html)) {
+          urlContext = stripHtmlForBoardWizard(fetched.html).slice(0, 6000);
+        }
+      } catch (error) {
+        logger.warn('Board wizard URL intake failed.', {
+          userId,
+          url,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
+
+    const effectivePrompt = [
+      prompt,
+      urlContext ? `URL extracted text:\n${urlContext}` : '',
+    ].filter(Boolean).join('\n\n').trim();
+
+    if (!effectivePrompt && !pastedList && photoNames.length === 0 && !url) {
+      throw new HttpsError('invalid-argument', 'Describe the board, paste a list, upload photo names, or provide a URL.');
+    }
+
+    const generated = await generateBoardWizardBatchWithGemini({
+      mode,
+      prompt: effectivePrompt || url || photoNames.join(', '),
+      pastedList,
+      url,
+      photoNames,
+      targetBoardTitle,
+      defaultType,
+      count,
+      vibe,
+      existingCards,
+    });
+    const result = await enrichBoardWizardBatchWithPlaces(generated, {
+      mode,
+      prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
+      targetBoardTitle,
+      defaultType,
+    });
+
+    await db.collection('board_wizard_batches').add({
+      owner_user_id: userId,
+      mode,
+      target_board_id: targetBoardId || null,
+      target_board_title: targetBoardTitle || null,
+      default_type: defaultType,
+      vibe,
+      requested_count: count,
+      generated_count: result.cards.length,
+      prompt_preview: (prompt || pastedList || url || photoNames.join(', ')).slice(0, 500),
+      board_title: result.board.title,
+      card_titles: result.cards.map((card) => card.title).slice(0, 100),
+      created_at: FieldValue.serverTimestamp(),
+    });
+
+    return result;
+  },
+);
+
+async function enrichBoardWizardBatchWithPlaces(
+  batch: { board: { title: string; description: string; icon: string; tone: string }; cards: GeneratedBoardWizardCard[] },
+  context: {
+    mode: BoardWizardMode;
+    prompt: string;
+    targetBoardTitle: string;
+    defaultType: GeneratedBoardWizardCard['type'];
+  },
+): Promise<typeof batch> {
+  const apiKey = googlePlacesApiKey.value();
+  if (!apiKey) {
+    return batch;
+  }
+
+  const searchContext = inferBoardWizardPlaceContext(context.prompt, context.targetBoardTitle || batch.board.title);
+  const enrichedCards = await Promise.all(
+    batch.cards.map((card) => enrichBoardWizardCardWithPlace(card, searchContext, apiKey)),
+  );
+  return { ...batch, cards: enrichedCards };
+}
+
+async function enrichBoardWizardCardWithPlace(
+  card: GeneratedBoardWizardCard,
+  searchContext: string,
+  apiKey: string,
+): Promise<GeneratedBoardWizardCard> {
+  if (card.scope !== 'place' || !['place', 'food', 'shop'].includes(card.type)) {
+    return card;
+  }
+
+  const baseQuery = textFromUnknown(card.place_query || card.title).slice(0, 160);
+  if (baseQuery.length < 2) {
+    return card;
+  }
+
+  const query = [baseQuery, searchContext].filter(Boolean).join(', ').slice(0, 240);
+  try {
+    const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
+    searchUrl.searchParams.set('query', query);
+    searchUrl.searchParams.set('key', apiKey);
+    const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
+    if (search.status && search.status !== 'OK' && search.status !== 'ZERO_RESULTS') {
+      logger.warn('Board wizard Google Places text search failed.', {
+        status: search.status,
+        error: search.error_message,
+        query,
+      });
+      return card;
+    }
+
+    const place = search.results?.[0];
+    const placeId = textFromUnknown(place?.place_id);
+    if (!placeId) {
+      return card;
+    }
+
+    const details = await fetchGooglePlaceDetailsForBoardWizard(placeId, apiKey);
+    const photos = details?.photos?.length ? details.photos : place?.photos ?? [];
+    const photoReference = textFromUnknown(photos[0]?.photo_reference);
+    const name = textFromUnknown(details?.name) || textFromUnknown(place?.name) || card.title;
+    const address = textFromUnknown(details?.formatted_address) || textFromUnknown(place?.formatted_address);
+    const types = Array.isArray(details?.types) ? details.types.map((type) => textFromUnknown(type)).filter(Boolean) : Array.isArray(place?.types) ? place.types.map((type) => textFromUnknown(type)).filter(Boolean) : [];
+    const rating = typeof details?.rating === 'number'
+      ? details.rating
+      : typeof place?.rating === 'number'
+        ? place.rating
+        : card.rating;
+
+    return {
+      ...card,
+      title: name.slice(0, 80),
+      subtitle: address ? address.slice(0, 90) : card.subtitle,
+      rating: Math.max(1, Math.min(5, Math.round(rating || card.rating || 4))),
+      tags: mergeBoardWizardTags(card.tags, types.map((type) => type.replace(/_/g, ' '))),
+      place_query: query,
+      placeId,
+      googleMapsUrl: textFromUnknown(details?.url) || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`,
+      imageUrl: photoReference ? `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(photoReference)}` : card.imageUrl,
+    };
+  } catch (error) {
+    logger.warn('Board wizard place enrichment failed.', {
+      title: card.title,
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return card;
+  }
+}
+
+async function fetchGooglePlaceDetailsForBoardWizard(
+  placeId: string,
+  apiKey: string,
+): Promise<GooglePlaceDetailsResponse['result'] | null> {
+  const detailsUrl = new URL('https://maps.googleapis.com/maps/api/place/details/json');
+  detailsUrl.searchParams.set('place_id', placeId);
+  detailsUrl.searchParams.set('fields', 'place_id,name,formatted_address,url,rating,user_ratings_total,types,photos');
+  detailsUrl.searchParams.set('key', apiKey);
+  const details = await fetchJson<GooglePlaceDetailsResponse>(detailsUrl.toString());
+  if (details.status && details.status !== 'OK') {
+    logger.warn('Board wizard Google Place Details failed.', {
+      placeId,
+      status: details.status,
+      error: details.error_message,
+    });
+    return null;
+  }
+  return details.result ?? null;
+}
+
+function inferBoardWizardPlaceContext(prompt: string, boardTitle: string): string {
+  const text = `${prompt} ${boardTitle}`.replace(/\s+/g, ' ');
+  const explicitIn = text.match(/\bin\s+([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,4})/);
+  if (explicitIn?.[1]) {
+    return explicitIn[1].replace(/[,.!?].*$/, '').trim();
+  }
+  const explicitNear = text.match(/\bnear\s+([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,4})/);
+  if (explicitNear?.[1]) {
+    return explicitNear[1].replace(/[,.!?].*$/, '').trim();
+  }
+  return boardTitle;
+}
+
+function mergeBoardWizardTags(existing: string[], additions: string[]): string[] {
+  return Array.from(
+    new Set(
+      [...existing, ...additions]
+        .map((tag) => tag.trim().toLowerCase())
+        .filter(Boolean),
+    ),
+  ).slice(0, 6);
+}
+
+function stringOrEmpty(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function normalizeBoardWizardMode(value: unknown): BoardWizardMode {
+  return value === 'paste' || value === 'photos' || value === 'url' || value === 'expand' ? value : 'describe';
+}
+
+function normalizeBoardWizardVibe(value: unknown): BoardWizardVibe {
+  return value === 'playful' || value === 'traveler' || value === 'curator' || value === 'memory' ? value : 'foodie';
+}
+
+function normalizeBoardWizardDefaultType(value: unknown): GeneratedBoardWizardCard['type'] {
+  return value === 'place' || value === 'memory' || value === 'idea' || value === 'shop' || value === 'note' ? value : 'food';
+}
+
+function normalizeExistingBoardWizardCard(value: unknown): { title: string; subtitle?: string; tags?: string[] } | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const data = value as Record<string, unknown>;
+  const title = stringOrEmpty(data.title).slice(0, 90);
+  if (!title) {
+    return null;
+  }
+  return {
+    title,
+    subtitle: stringOrEmpty(data.subtitle).slice(0, 120) || undefined,
+    tags: Array.isArray(data.tags)
+      ? data.tags.map((tag) => stringOrEmpty(tag).slice(0, 40)).filter(Boolean).slice(0, 8)
+      : undefined,
+  };
+}
+
+function stripHtmlForBoardWizard(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 export const listCityPlaceReviews = onCall({ region: callableRegion, cors: true }, async (request) => {
   const atlasId = textFromUnknown(request.data?.atlasId);
