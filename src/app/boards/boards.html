@@ -956,11 +956,21 @@
                       </div>
                     }
                     <div class="boards-wizard-card__actions">
+                      <button type="button" (click)="toggleWizardCard(card.id)">
+                        <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                        {{ isWizardCardSelected(card.id) ? 'Unselect' : 'Select' }}
+                      </button>
                       <button type="button" (click)="toggleWizardCardEditing(card.id)">
                         <span class="material-symbols-outlined">{{ card.editing ? 'done' : 'edit' }}</span>
+                        {{ card.editing ? 'Done' : 'Edit' }}
                       </button>
                       <button type="button" (click)="redoWizardCard(card.id)">
                         <span class="material-symbols-outlined">refresh</span>
+                        Redo
+                      </button>
+                      <button type="button" class="boards-wizard-card__remove" (click)="removeWizardCard(card.id)">
+                        <span class="material-symbols-outlined">delete</span>
+                        Remove
                       </button>
                     </div>
                   </article>

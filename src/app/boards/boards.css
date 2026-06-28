@@ -1754,23 +1754,35 @@
 }
 
 .boards-wizard-card__actions {
-  display: flex;
-  justify-content: end;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.35rem;
   border-top: 1px solid var(--line);
   padding: 0.55rem;
 }
 
 .boards-wizard-card__actions button {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
+  display: inline-flex;
+  min-height: 2.1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
   border: 1px solid var(--line);
   border-radius: 0.65rem;
   background: var(--surface-strong);
   color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 950;
   cursor: pointer;
+}
+
+.boards-wizard-card__actions .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.boards-wizard-card__actions .boards-wizard-card__remove {
+  border-color: color-mix(in srgb, #d92323 36%, var(--line));
+  color: #d92323;
 }
 
 .boards-wizard-card__edit input,

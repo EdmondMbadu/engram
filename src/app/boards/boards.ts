@@ -1110,6 +1110,15 @@ export class BoardsComponent {
     this.wizardSelectedCardIds.set(new Set());
   }
 
+  removeWizardCard(cardId: string): void {
+    this.wizardPreviewCards.update((cards) => cards.filter((card) => card.id !== cardId));
+    this.wizardSelectedCardIds.update((ids) => {
+      const next = new Set(ids);
+      next.delete(cardId);
+      return next;
+    });
+  }
+
   toggleWizardCardEditing(cardId: string): void {
     this.wizardPreviewCards.update((cards) =>
       cards.map((card) => card.id === cardId ? { ...card, editing: !card.editing } : card),
