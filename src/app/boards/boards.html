@@ -1,4 +1,110 @@
 <div class="boards-page min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  @if (stackDirectView()) {
+    @if (selectedBoard(); as board) {
+      <section
+        class="stack-viewer-page"
+        [style.--board-accent]="toneAccent(board.tone)"
+        [style.--board-soft]="toneSoft(board.tone)"
+      >
+        <header class="stack-viewer-header">
+          <a href="/" class="boards-logo" aria-label="LivingWiki home">
+            <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" />
+          </a>
+          <div>
+            <strong>{{ board.title }}</strong>
+            <span>{{ stackSelectedCount() }} cards · {{ ownerName(board) }}</span>
+          </div>
+          <div class="stack-viewer-header__actions">
+            <button type="button" class="boards-ghost-action" (click)="copyStackUrl(board)">
+              <span class="material-symbols-outlined">content_copy</span>
+              Copy
+            </button>
+            <button type="button" class="boards-ghost-action" (click)="closeStackView(board)">
+              <span class="material-symbols-outlined">dashboard_customize</span>
+              Board
+            </button>
+          </div>
+        </header>
+
+        <div class="stack-viewer-stage">
+          <aside class="stack-viewer-copy">
+            <p>LivingWiki Stack</p>
+            <h1>{{ stackCoverTitle() || board.title }}</h1>
+            <span>{{ stackCoverSubtitle() }}</span>
+            <div class="stack-viewer-share">
+              @for (target of stackExportTargets; track target.id) {
+                <button type="button" (click)="shareStackTo(target.id)">
+                  <span class="material-symbols-outlined">{{ target.icon }}</span>
+                  {{ target.label }}
+                </button>
+              }
+            </div>
+            @if (stackShareMessage() || shareMessage()) {
+              <small>{{ stackShareMessage() || shareMessage() }}</small>
+            }
+          </aside>
+
+          <main class="stack-viewer-reel" aria-label="Stack reel">
+            @if (stackCurrentFrame(); as frame) {
+              <div class="stack-preview stack-preview--viewer">
+                @if (frame.kind === 'cover') {
+                  @if (stackCoverImage(board)) {
+                    <img class="stack-preview__media" [src]="stackCoverImage(board)" [alt]="stackCoverTitle()" />
+                  }
+                  <div class="stack-preview__shade"></div>
+                  <div class="stack-preview__content stack-preview__content--cover">
+                    <span>A LivingWiki Stack</span>
+                    <h4>{{ stackCoverTitle() || board.title }}</h4>
+                    <p>{{ stackCoverSubtitle() }}</p>
+                  </div>
+                } @else if (frame.kind === 'card') {
+                  @if (frame.card; as card) {
+                    @if (card.imageUrl) {
+                      <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
+                    }
+                    <div class="stack-preview__shade"></div>
+                    <div class="stack-preview__brand">LivingWiki</div>
+                    <div class="stack-preview__content">
+                      <span>{{ card.status }} · {{ card.rating }}/5</span>
+                      <h4>{{ card.title }}</h4>
+                      <p>{{ card.subtitle || card.notes }}</p>
+                    </div>
+                  }
+                } @else {
+                  <div class="stack-preview__closing">
+                    <span class="material-symbols-outlined">auto_awesome_motion</span>
+                    <h4>Made with LivingWiki</h4>
+                    <p>{{ board.title }}</p>
+                    <img [src]="stackQrImageUrl(board)" alt="Stack QR code" />
+                    <strong>{{ stackClosingUrlLabel(board) }}</strong>
+                  </div>
+                }
+              </div>
+            }
+
+            <div class="stack-viewer-controls">
+              <button type="button" class="boards-ghost-action" aria-label="Previous frame" (click)="previousStackFrame()">
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <span>{{ stackFramePosition(stackCurrentFrame()) }}</span>
+              <button type="button" class="boards-primary-action" (click)="toggleStackPlayback()">
+                <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
+                {{ stackPlaying() ? 'Pause' : 'Play' }}
+              </button>
+              <button type="button" class="boards-ghost-action" aria-label="Next frame" (click)="nextStackFrame()">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+          </main>
+        </div>
+      </section>
+    } @else {
+      <section class="stack-viewer-page stack-viewer-page--loading">
+        <span class="material-symbols-outlined">auto_awesome_motion</span>
+        <strong>Loading Stack</strong>
+      </section>
+    }
+  } @else {
   <div class="boards-frame">
     @if (isSignedIn()) {
       <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
@@ -332,6 +438,10 @@
                 <span class="material-symbols-outlined">ios_share</span>
                 Share
               </button>
+              <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)">
+                <span class="material-symbols-outlined">auto_awesome_motion</span>
+                Studio
+              </button>
             </div>
 
             <div class="board-detail__summary">
@@ -387,21 +497,29 @@
             @if (sharePanelOpen()) {
               <div class="board-share-panel" aria-label="Share board">
                 <div class="board-share-panel__url">
-                  <span>{{ boardShareUrl(board) }}</span>
-                  <button type="button" (click)="copyBoardUrl(board)">
+                  <span>{{ stackShareUrl(board) }}</span>
+                  <button type="button" (click)="copyStackUrl(board)">
                     <span class="material-symbols-outlined">content_copy</span>
-                    Copy URL
+                    Copy Stack
                   </button>
                 </div>
 
                 <div class="board-share-panel__actions">
+                  <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)">
+                    <span class="material-symbols-outlined">smart_display</span>
+                    Open Reel
+                  </button>
+                  <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
+                    <span class="material-symbols-outlined">auto_awesome_motion</span>
+                    Stack Studio
+                  </button>
                   <button type="button" (click)="nativeShareBoard(board)">
                     <span class="material-symbols-outlined">ios_share</span>
                     Share
                   </button>
                   @for (target of shareTargets; track target.id) {
                     <a
-                      [href]="shareTargetUrl(target.id, board)"
+                      [href]="shareTargetUrl(target.id, board, true)"
                       [attr.target]="target.id === 'email' ? null : '_blank'"
                       rel="noopener"
                     >
@@ -662,6 +780,7 @@
       </main>
     </div>
   </div>
+  }
 
   @if (wizardOpen()) {
     <div class="boards-modal-backdrop" (click)="closeBoardWizard()">
@@ -1018,6 +1137,274 @@
         }
       </section>
     </div>
+  }
+
+  @if (stackStudioOpen()) {
+    @if (stackBoard(); as board) {
+      <div class="boards-modal-backdrop" (click)="closeStackStudio()">
+        <section class="boards-modal boards-modal--stack-studio" aria-label="Stack Studio" (click)="$event.stopPropagation()">
+          <div class="boards-modal__head">
+            <div>
+              <p>Stack Studio</p>
+              <h3>Share your Stack</h3>
+            </div>
+            <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackStudio()">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <div class="stack-studio">
+            <header class="stack-studio__context">
+              <div class="stack-studio__thumb">
+                @if (stackCoverImage(board)) {
+                  <img [src]="stackCoverImage(board)" [alt]="board.title" />
+                } @else {
+                  <span class="material-symbols-outlined">{{ board.icon }}</span>
+                }
+              </div>
+              <div>
+                <strong>{{ board.title }}</strong>
+                <span>{{ stackSelectedCount() }} of {{ board.cards.length }} cards selected · {{ stackFormatLabel() }}</span>
+              </div>
+              <a [href]="boardShareUrl(board)" target="_blank" rel="noopener">
+                <span class="material-symbols-outlined">open_in_new</span>
+                Live board
+              </a>
+            </header>
+
+            <div class="stack-studio__grid">
+              <div class="stack-editor">
+                <section class="stack-panel">
+                  <div class="stack-panel__head">
+                    <div>
+                      <p>Cards</p>
+                      <h4>{{ stackSelectedCount() }} selected</h4>
+                    </div>
+                    <div class="stack-panel__actions">
+                      <button type="button" class="boards-ghost-action" (click)="selectAllStackCards(board)">Select all</button>
+                      <button type="button" class="boards-ghost-action" (click)="clearStackCards()">Clear</button>
+                    </div>
+                  </div>
+                  <div class="stack-card-strip">
+                    @for (card of board.cards; track card.id) {
+                      <button
+                        type="button"
+                        class="stack-card-chip"
+                        [class.stack-card-chip--off]="!isStackCardSelected(card.id)"
+                        [attr.aria-pressed]="isStackCardSelected(card.id)"
+                        (click)="toggleStackCard(card.id)"
+                      >
+                        @if (card.imageUrl) {
+                          <img [src]="card.imageUrl" [alt]="card.title" />
+                        } @else {
+                          <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                        }
+                        <span class="stack-card-chip__count">{{ $index + 1 }}</span>
+                        <strong>{{ card.title }}</strong>
+                      </button>
+                    } @empty {
+                      <div class="stack-empty-note">
+                        <span class="material-symbols-outlined">add_card</span>
+                        <strong>No cards yet</strong>
+                      </div>
+                    }
+                  </div>
+                </section>
+
+                <section class="stack-panel">
+                  <div class="stack-panel__head">
+                    <div>
+                      <p>Cover</p>
+                      <h4>Caption</h4>
+                    </div>
+                  </div>
+                  <div class="stack-fields">
+                    <label>
+                      <span>Cover title</span>
+                      <input
+                        type="text"
+                        maxlength="80"
+                        [value]="stackCoverTitle()"
+                        (input)="stackCoverTitle.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Cover subtitle</span>
+                      <input
+                        type="text"
+                        maxlength="140"
+                        [value]="stackCoverSubtitle()"
+                        (input)="stackCoverSubtitle.set($any($event.target).value)"
+                      />
+                    </label>
+                    <label>
+                      <span>Share caption</span>
+                      <textarea
+                        rows="4"
+                        maxlength="320"
+                        [value]="stackCaption()"
+                        (input)="stackCaption.set($any($event.target).value)"
+                      ></textarea>
+                    </label>
+                  </div>
+                </section>
+
+                <section class="stack-panel">
+                  <div class="stack-panel__head">
+                    <div>
+                      <p>Format</p>
+                      <h4>{{ stackFormatLabel() }}</h4>
+                    </div>
+                  </div>
+                  <div class="stack-format-grid">
+                    @for (format of stackFormats; track format.id) {
+                      <button
+                        type="button"
+                        [class.stack-format--active]="stackFormat() === format.id"
+                        [attr.aria-pressed]="stackFormat() === format.id"
+                        (click)="setStackFormat(format.id)"
+                      >
+                        <span class="material-symbols-outlined">{{ format.icon }}</span>
+                        <strong>{{ format.label }}</strong>
+                        <small>{{ format.hint }}</small>
+                      </button>
+                    }
+                  </div>
+                </section>
+
+                <section class="stack-panel stack-panel--soon">
+                  <div class="stack-panel__head">
+                    <div>
+                      <p>Studio motion</p>
+                      <h4>Coming soon</h4>
+                    </div>
+                    <span class="stack-soon-pill">Notify ready</span>
+                  </div>
+                  <div class="stack-soon-grid" aria-disabled="true">
+                    <label>
+                      <span>Music</span>
+                      <select disabled>
+                        <option>Bright city beat</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Vibe</span>
+                      <select disabled>
+                        <option>Clean editorial</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Transitions</span>
+                      <select disabled>
+                        <option>Soft slide</option>
+                      </select>
+                    </label>
+                  </div>
+                  <p>Studio motion tools are coming soon. You will be notified when they are ready.</p>
+                </section>
+              </div>
+
+              <aside class="stack-preview-panel">
+                <div class="stack-preview-toolbar">
+                  <div>
+                    <strong>{{ stackFrameLabel(stackCurrentFrame()) }}</strong>
+                    <span>{{ stackFramePosition(stackCurrentFrame()) }}</span>
+                  </div>
+                  <div class="stack-ratio-tabs">
+                    @for (ratio of stackRatios; track ratio.id) {
+                      <button
+                        type="button"
+                        [class.stack-ratio-tabs__active]="stackRatio() === ratio.id"
+                        [attr.aria-label]="ratio.label"
+                        [attr.aria-pressed]="stackRatio() === ratio.id"
+                        (click)="setStackRatio(ratio.id)"
+                      >
+                        <span class="material-symbols-outlined">{{ ratio.icon }}</span>
+                      </button>
+                    }
+                  </div>
+                </div>
+
+                @if (stackCurrentFrame(); as frame) {
+                  <div
+                    class="stack-preview"
+                    [class.stack-preview--vertical]="stackRatio() === 'vertical'"
+                    [class.stack-preview--square]="stackRatio() === 'square'"
+                    [class.stack-preview--landscape]="stackRatio() === 'landscape'"
+                  >
+                    @if (frame.kind === 'cover') {
+                      @if (stackCoverImage(board)) {
+                        <img class="stack-preview__media" [src]="stackCoverImage(board)" [alt]="stackCoverTitle()" />
+                      }
+                      <div class="stack-preview__shade"></div>
+                      <div class="stack-preview__content stack-preview__content--cover">
+                        <span>A LivingWiki Stack</span>
+                        <h4>{{ stackCoverTitle() || board.title }}</h4>
+                        <p>{{ stackCoverSubtitle() }}</p>
+                      </div>
+                    } @else if (frame.kind === 'card') {
+                      @if (frame.card; as card) {
+                        @if (card.imageUrl) {
+                          <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
+                        }
+                        <div class="stack-preview__shade"></div>
+                        <div class="stack-preview__brand">LivingWiki</div>
+                        <div class="stack-preview__content">
+                          <span>{{ card.status }} · {{ card.rating }}/5</span>
+                          <h4>{{ card.title }}</h4>
+                          <p>{{ card.subtitle || card.notes }}</p>
+                        </div>
+                      }
+                    } @else {
+                      <div class="stack-preview__closing">
+                        <span class="material-symbols-outlined">auto_awesome_motion</span>
+                        <h4>Made with LivingWiki</h4>
+                        <p>{{ board.title }}</p>
+                        <img [src]="stackQrImageUrl(board)" alt="Board QR code" />
+                        <strong>{{ stackClosingUrlLabel(board) }}</strong>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <div class="stack-preview-controls">
+                  <button type="button" class="boards-ghost-action" aria-label="Previous frame" (click)="previousStackFrame()">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                  </button>
+                  <button type="button" class="boards-primary-action" (click)="toggleStackPlayback()">
+                    <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
+                    {{ stackPlaying() ? 'Pause' : 'Play' }}
+                  </button>
+                  <button type="button" class="boards-ghost-action" aria-label="Next frame" (click)="nextStackFrame()">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                  </button>
+                </div>
+
+                <section class="stack-export">
+                  <div class="stack-panel__head">
+                    <div>
+                      <p>Send</p>
+                      <h4>Share Stack</h4>
+                    </div>
+                  </div>
+                  <div class="stack-export-grid">
+                    @for (target of stackExportTargets; track target.id) {
+                      <button type="button" (click)="shareStackTo(target.id)">
+                        <span class="material-symbols-outlined">{{ target.icon }}</span>
+                        {{ target.label }}
+                      </button>
+                    }
+                  </div>
+                  @if (stackShareMessage()) {
+                    <small>{{ stackShareMessage() }}</small>
+                  }
+                </section>
+              </aside>
+            </div>
+          </div>
+        </section>
+      </div>
+    }
   }
 
   @if (boardDeleteCandidate(); as board) {

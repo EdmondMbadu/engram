@@ -13,6 +13,7 @@ import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { AtlasItem } from '../atlas.models';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
 import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons';
+import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
@@ -26,6 +27,9 @@ type StickerSurface = 'board' | 'card';
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
+type StackFormat = 'carousel' | 'reel' | 'both';
+type StackRatio = 'vertical' | 'square' | 'landscape';
+type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
 
 type BoardSticker = {
   id: string;
@@ -179,6 +183,13 @@ type BoardWizardPreviewCard = BoardWizardGeneratedCard & {
   placeId: string;
   googleMapsUrl: string;
   editing: boolean;
+};
+
+type StackFrame = {
+  kind: 'cover' | 'card' | 'closing';
+  card?: BoardCard;
+  index: number;
+  total: number;
 };
 
 const STORAGE_KEY = 'livingwiki-boards-v1';
@@ -572,6 +583,27 @@ const SHARE_TARGETS: Array<{ id: ShareTarget; label: string; icon: string }> = [
   { id: 'email', label: 'Email', icon: 'mail' },
 ];
 
+const STACK_FORMATS: Array<{ id: StackFormat; label: string; icon: string; hint: string }> = [
+  { id: 'carousel', label: 'Carousel', icon: 'view_carousel', hint: 'Swipe cards' },
+  { id: 'reel', label: 'Reel', icon: 'smart_display', hint: 'Story flow' },
+  { id: 'both', label: 'Both', icon: 'auto_awesome_motion', hint: 'Share pack' },
+];
+
+const STACK_RATIOS: Array<{ id: StackRatio; label: string; icon: string }> = [
+  { id: 'vertical', label: '9:16', icon: 'stay_current_portrait' },
+  { id: 'square', label: '1:1', icon: 'crop_square' },
+  { id: 'landscape', label: '16:9', icon: 'crop_16_9' },
+];
+
+const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: string }> = [
+  { id: 'whatsapp', label: 'WhatsApp', icon: 'chat' },
+  { id: 'facebook', label: 'Facebook', icon: 'public' },
+  { id: 'instagram', label: 'Instagram', icon: 'photo_camera' },
+  { id: 'tiktok', label: 'TikTok', icon: 'music_note' },
+  { id: 'x', label: 'X', icon: 'alternate_email' },
+  { id: 'download', label: 'Download', icon: 'download' },
+];
+
 @Component({
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent],
@@ -596,6 +628,7 @@ export class BoardsComponent {
   private placeSearchRun = 0;
   private stickerDragState: StickerDragState | null = null;
   private suppressNextBoardOpen = false;
+  private stackPlaybackTimer: ReturnType<typeof setInterval> | null = null;
 
   readonly tones = BOARD_TONES;
   readonly cardTypes = CARD_TYPES;
@@ -603,6 +636,9 @@ export class BoardsComponent {
   readonly cardStatuses = CARD_STATUSES;
   readonly wizardModes = BOARD_WIZARD_MODES;
   readonly wizardVibes = BOARD_WIZARD_VIBES;
+  readonly stackFormats = STACK_FORMATS;
+  readonly stackRatios = STACK_RATIOS;
+  readonly stackExportTargets = STACK_EXPORT_TARGETS;
   readonly boardIcons = BOARD_ICONS;
   readonly cardStickerIcons = CARD_STICKER_ICONS;
   readonly ratingOptions = [1, 2, 3, 4, 5];
@@ -654,6 +690,18 @@ export class BoardsComponent {
   readonly wizardPreviewCards = signal<BoardWizardPreviewCard[]>([]);
   readonly wizardSelectedCardIds = signal<Set<string>>(new Set());
   readonly wizardSaving = signal(false);
+  readonly stackStudioOpen = signal(false);
+  readonly stackStudioBoardId = signal<string | null>(null);
+  readonly stackSelectedCardIds = signal<Set<string>>(new Set());
+  readonly stackCoverTitle = signal('');
+  readonly stackCoverSubtitle = signal('');
+  readonly stackCaption = signal('');
+  readonly stackFormat = signal<StackFormat>('both');
+  readonly stackRatio = signal<StackRatio>('vertical');
+  readonly stackFrameIndex = signal(0);
+  readonly stackPlaying = signal(false);
+  readonly stackShareMessage = signal<string | null>(null);
+  readonly stackDirectView = signal(false);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -787,6 +835,29 @@ export class BoardsComponent {
   readonly wizardTargetBoards = computed(() => this.boards().filter((board) => this.canEditBoard(board)));
   readonly wizardSelectedCount = computed(() => this.wizardSelectedCardIds().size);
   readonly selectedCardCount = computed(() => this.selectedCardIds().size);
+  readonly stackBoard = computed(() => {
+    const boardId = this.stackStudioBoardId();
+    return this.boards().find((board) => board.id === boardId) ?? null;
+  });
+  readonly stackSelectedCards = computed(() => {
+    const board = this.stackBoard();
+    const selectedIds = this.stackSelectedCardIds();
+    return board ? board.cards.filter((card) => selectedIds.has(card.id)) : [];
+  });
+  readonly stackSelectedCount = computed(() => this.stackSelectedCardIds().size);
+  readonly stackFrameCount = computed(() => this.stackSelectedCards().length + 2);
+  readonly stackCurrentFrame = computed<StackFrame>(() => {
+    const cards = this.stackSelectedCards();
+    const total = cards.length + 2;
+    const index = Math.max(0, Math.min(this.stackFrameIndex(), total - 1));
+    if (index === 0) {
+      return { kind: 'cover', index, total };
+    }
+    if (index === total - 1) {
+      return { kind: 'closing', index, total };
+    }
+    return { kind: 'card', card: cards[index - 1], index, total };
+  });
   readonly wizardCanGenerate = computed(() => {
     const mode = this.wizardMode();
     if (mode === 'describe') {
@@ -830,7 +901,14 @@ export class BoardsComponent {
       this.closeCardManageMode();
       this.shareMessage.set(null);
       this.sharePanelOpen.set(false);
-      void this.loadBoards(boardId);
+      this.closeStackStudio();
+      void this.loadBoards(boardId).then(() => this.syncStackDirectView());
+    });
+
+    this.route.queryParamMap.subscribe((params) => {
+      const view = params.get('view') ?? params.get('stack');
+      this.stackDirectView.set(view === 'stack' || view === 'reel');
+      this.syncStackDirectView();
     });
 
     effect(() => {
@@ -1994,6 +2072,10 @@ export class BoardsComponent {
     return `${window.location.origin}/boards/${board.id}`;
   }
 
+  stackShareUrl(board: Board): string {
+    return `${this.boardShareUrl(board)}?view=stack`;
+  }
+
   async copyBoardUrl(board: Board): Promise<void> {
     if (!this.isBrowser) {
       return;
@@ -2008,17 +2090,31 @@ export class BoardsComponent {
     }
   }
 
+  async copyStackUrl(board: Board): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const url = this.stackShareUrl(board);
+    try {
+      await navigator.clipboard.writeText(url);
+      this.shareMessage.set('Stack link copied.');
+    } catch {
+      this.shareMessage.set(url);
+    }
+  }
+
   async nativeShareBoard(board: Board): Promise<void> {
     if (!this.isBrowser) {
       return;
     }
 
-    const url = this.boardShareUrl(board);
+    const url = this.stackShareUrl(board);
     try {
       if (navigator.share) {
         await navigator.share({
           title: board.title,
-          text: board.description || 'LivingWiki board',
+          text: board.description || 'LivingWiki Stack',
           url,
         });
         this.shareMessage.set('Share sheet opened.');
@@ -2031,8 +2127,170 @@ export class BoardsComponent {
     }
   }
 
-  shareTargetUrl(target: ShareTarget, board: Board): string {
-    const url = this.boardShareUrl(board);
+  openStackStudio(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.prepareStackForBoard(board);
+    this.sharePanelOpen.set(false);
+    this.stackStudioOpen.set(true);
+  }
+
+  openStackView(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.prepareStackForBoard(board);
+    this.stackDirectView.set(true);
+    void this.router.navigate(['/boards', board.id], { queryParams: { view: 'stack' } });
+  }
+
+  closeStackView(board: Board): void {
+    this.stopStackPlayback();
+    this.stackDirectView.set(false);
+    void this.router.navigate(['/boards', board.id]);
+  }
+
+  closeStackStudio(): void {
+    this.stopStackPlayback();
+    this.stackStudioOpen.set(false);
+    this.stackShareMessage.set(null);
+  }
+
+  isStackCardSelected(cardId: string): boolean {
+    return this.stackSelectedCardIds().has(cardId);
+  }
+
+  toggleStackCard(cardId: string): void {
+    this.stopStackPlayback();
+    this.stackSelectedCardIds.update((selected) => {
+      const next = new Set(selected);
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+      return next;
+    });
+    this.clampStackFrameIndex();
+  }
+
+  selectAllStackCards(board: Board): void {
+    this.stackSelectedCardIds.set(new Set(board.cards.map((card) => card.id)));
+    this.clampStackFrameIndex();
+  }
+
+  clearStackCards(): void {
+    this.stopStackPlayback();
+    this.stackSelectedCardIds.set(new Set());
+    this.clampStackFrameIndex();
+  }
+
+  setStackFormat(format: StackFormat): void {
+    this.stackFormat.set(format);
+  }
+
+  setStackRatio(ratio: StackRatio): void {
+    this.stackRatio.set(ratio);
+  }
+
+  stackCoverImage(board: Board): string {
+    return board.imageUrl || board.cards.find((card) => card.imageUrl)?.imageUrl || '';
+  }
+
+  stackFramePosition(frame: StackFrame): string {
+    return `${frame.index + 1} / ${frame.total}`;
+  }
+
+  stackFrameLabel(frame: StackFrame): string {
+    if (frame.kind === 'cover') {
+      return 'Cover';
+    }
+    if (frame.kind === 'closing') {
+      return 'Closing';
+    }
+    return frame.card?.title || 'Card';
+  }
+
+  stackFormatLabel(): string {
+    return this.stackFormats.find((format) => format.id === this.stackFormat())?.label ?? 'Stack';
+  }
+
+  stackClosingUrlLabel(board: Board): string {
+    return this.stackShareUrl(board).replace(/^https?:\/\//, '');
+  }
+
+  stackQrImageUrl(board: Board): string {
+    return generateQrSvgDataUrl(this.stackShareUrl(board), { margin: 3 });
+  }
+
+  previousStackFrame(): void {
+    this.stopStackPlayback();
+    this.stackFrameIndex.update((index) => {
+      const count = this.stackFrameCount();
+      return count ? (index - 1 + count) % count : 0;
+    });
+  }
+
+  nextStackFrame(): void {
+    this.stopStackPlayback();
+    this.advanceStackFrame();
+  }
+
+  toggleStackPlayback(): void {
+    if (this.stackPlaying()) {
+      this.stopStackPlayback();
+      return;
+    }
+    this.stackPlaying.set(true);
+    this.stackPlaybackTimer = setInterval(() => this.advanceStackFrame(), 1600);
+  }
+
+  async shareStackTo(target: StackExportTarget): Promise<void> {
+    const board = this.stackBoard();
+    if (!board || !this.isBrowser) {
+      return;
+    }
+    const url = this.stackShareUrl(board);
+    const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
+    const text = `${caption}\n${url}`;
+    const encodedUrl = encodeURIComponent(url);
+    const encodedText = encodeURIComponent(text);
+    this.stackShareMessage.set(null);
+
+    if (target === 'download') {
+      await this.copyTextToClipboard(text);
+      this.stackShareMessage.set('Stack image and video export is coming soon. The share text is copied.');
+      return;
+    }
+
+    if (target === 'instagram' || target === 'tiktok') {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: board.title, text: caption, url });
+          this.stackShareMessage.set('Share sheet opened.');
+          return;
+        } catch {
+          this.stackShareMessage.set('Share was cancelled.');
+          return;
+        }
+      }
+      await this.copyTextToClipboard(text);
+      this.stackShareMessage.set(`${target === 'instagram' ? 'Instagram' : 'TikTok'} media export is coming soon. The share text is copied.`);
+      return;
+    }
+
+    const shareUrl =
+      target === 'whatsapp'
+        ? `https://wa.me/?text=${encodedText}`
+        : target === 'facebook'
+          ? `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+          : `https://twitter.com/intent/tweet?text=${encodeURIComponent(caption)}&url=${encodedUrl}`;
+    void this.copyTextToClipboard(text);
+    window.open(shareUrl, '_blank', 'noopener');
+    this.stackShareMessage.set(`${this.stackExportTargets.find((item) => item.id === target)?.label ?? 'Share'} opened. The share text is copied too.`);
+  }
+
+  shareTargetUrl(target: ShareTarget, board: Board, stack = false): string {
+    const url = stack ? this.stackShareUrl(board) : this.boardShareUrl(board);
     const encodedUrl = encodeURIComponent(url);
     const title = encodeURIComponent(board.title);
     const text = encodeURIComponent(board.description || board.title);
@@ -2049,6 +2307,65 @@ export class BoardsComponent {
         return `https://www.reddit.com/submit?url=${encodedUrl}&title=${title}`;
       case 'email':
         return `mailto:?subject=${title}&body=${text}%0A%0A${encodedUrl}`;
+    }
+  }
+
+  private prepareStackForBoard(board: Board): void {
+    this.stopStackPlayback();
+    const subtitle = board.description.trim() || `${board.cards.length} card${board.cards.length === 1 ? '' : 's'} curated by ${this.ownerName(board)}`;
+    this.stackStudioBoardId.set(board.id);
+    this.stackSelectedCardIds.set(new Set(board.cards.map((card) => card.id)));
+    this.stackCoverTitle.set(board.title);
+    this.stackCoverSubtitle.set(subtitle);
+    this.stackCaption.set(`I made a LivingWiki Stack: ${board.title}. Explore the full board.`);
+    this.stackFormat.set('reel');
+    this.stackRatio.set('vertical');
+    this.stackFrameIndex.set(0);
+    this.stackShareMessage.set(null);
+  }
+
+  private syncStackDirectView(): void {
+    if (!this.stackDirectView()) {
+      return;
+    }
+    const board = this.selectedBoard();
+    if (!board) {
+      return;
+    }
+    if (this.stackStudioBoardId() !== board.id) {
+      this.prepareStackForBoard(board);
+    }
+  }
+
+  private clampStackFrameIndex(): void {
+    const lastIndex = Math.max(0, this.stackFrameCount() - 1);
+    this.stackFrameIndex.update((index) => Math.max(0, Math.min(index, lastIndex)));
+  }
+
+  private advanceStackFrame(): void {
+    this.stackFrameIndex.update((index) => {
+      const count = this.stackFrameCount();
+      return count ? (index + 1) % count : 0;
+    });
+  }
+
+  private stopStackPlayback(): void {
+    if (this.stackPlaybackTimer) {
+      clearInterval(this.stackPlaybackTimer);
+      this.stackPlaybackTimer = null;
+    }
+    this.stackPlaying.set(false);
+  }
+
+  private async copyTextToClipboard(text: string): Promise<boolean> {
+    if (!this.isBrowser || !navigator.clipboard) {
+      return false;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
     }
   }
 
