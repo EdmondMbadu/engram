@@ -702,6 +702,7 @@ export class BoardsComponent {
   readonly stackPlaying = signal(false);
   readonly stackShareMessage = signal<string | null>(null);
   readonly stackDirectView = signal(false);
+  readonly stackShareDialogOpen = signal(false);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -2099,8 +2100,10 @@ export class BoardsComponent {
     try {
       await navigator.clipboard.writeText(url);
       this.shareMessage.set('Stack link copied.');
+      this.stackShareMessage.set('Stack link copied.');
     } catch {
       this.shareMessage.set(url);
+      this.stackShareMessage.set(url);
     }
   }
 
@@ -2121,7 +2124,7 @@ export class BoardsComponent {
         return;
       }
 
-      await this.copyBoardUrl(board);
+      await this.copyStackUrl(board);
     } catch {
       this.shareMessage.set(url);
     }
@@ -2146,6 +2149,7 @@ export class BoardsComponent {
   closeStackView(board: Board): void {
     this.stopStackPlayback();
     this.stackDirectView.set(false);
+    this.stackShareDialogOpen.set(false);
     void this.router.navigate(['/boards', board.id]);
   }
 
@@ -2153,6 +2157,21 @@ export class BoardsComponent {
     this.stopStackPlayback();
     this.stackStudioOpen.set(false);
     this.stackShareMessage.set(null);
+  }
+
+  openStackShareDialog(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.stackStudioBoardId() !== board.id) {
+      this.prepareStackForBoard(board);
+    }
+    this.stackShareDialogOpen.set(true);
+  }
+
+  closeStackShareDialog(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.stackShareDialogOpen.set(false);
   }
 
   isStackCardSelected(cardId: string): boolean {

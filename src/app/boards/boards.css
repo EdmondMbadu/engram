@@ -1512,7 +1512,14 @@
   font-weight: 850;
 }
 
-.stack-studio__context a {
+.stack-studio__context-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.stack-studio__context-actions button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1527,7 +1534,6 @@
   font-weight: 950;
   line-height: 1;
   padding: 0.55rem 0.72rem;
-  text-decoration: none;
 }
 
 .stack-studio__grid {
@@ -2033,17 +2039,15 @@
 
 .stack-viewer-page {
   --modal-ink: color-mix(in srgb, var(--text) 84%, var(--board-accent, var(--accent)));
-  display: grid;
-  min-height: 100vh;
-  align-content: start;
-  gap: 1.2rem;
-  background:
-    radial-gradient(circle at 14% 10%, color-mix(in srgb, var(--board-soft, var(--soft-fill)) 80%, transparent), transparent 28rem),
-    linear-gradient(135deg, color-mix(in srgb, var(--board-soft, var(--soft-fill)) 42%, #ffffff), var(--surface-strong));
-  padding: 1rem;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #050607;
+  color: #ffffff;
 }
 
 .stack-viewer-page--loading {
+  display: grid;
+  min-height: 100vh;
   place-items: center;
   align-content: center;
   color: var(--accent);
@@ -2055,169 +2059,217 @@
   font-size: 3rem;
 }
 
-.stack-viewer-header {
+.stack-viewer-reel {
+  position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.9rem;
-  width: min(100%, 72rem);
-  justify-self: center;
-  border: 2px solid var(--modal-ink);
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 3px 3px 0 var(--modal-ink);
-  padding: 0.75rem;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 12%, color-mix(in srgb, var(--board-accent, var(--accent)) 20%, transparent), transparent 26rem),
+    #050607;
 }
 
-.stack-viewer-header > div:not(.stack-viewer-header__actions) {
+.stack-preview--viewer {
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: min(100dvh, calc(100vw * 16 / 9));
+  max-height: none;
+  aspect-ratio: 9 / 16;
+  border-radius: 0;
+  border-width: 0;
+  box-shadow: none;
+}
+
+.stack-viewer-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  width: min(100vw, calc(100dvh * 9 / 16));
+  margin-inline: auto;
+  padding: max(0.85rem, env(safe-area-inset-top)) 0.9rem 0.85rem;
+  pointer-events: none;
+}
+
+.stack-viewer-overlay--top {
+  top: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.72), transparent);
+}
+
+.stack-viewer-overlay--bottom {
+  bottom: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.78), transparent);
+  padding-top: 3rem;
+  padding-bottom: max(0.9rem, env(safe-area-inset-bottom));
+}
+
+.stack-viewer-overlay > div {
   display: grid;
   min-width: 0;
   gap: 0.12rem;
 }
 
-.stack-viewer-header strong,
-.stack-viewer-header span {
+.stack-viewer-overlay > div:last-child {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 0.45rem;
+}
+
+.stack-viewer-overlay strong,
+.stack-viewer-overlay span {
   min-width: 0;
   overflow: hidden;
+  color: #ffffff;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.stack-viewer-header strong {
-  color: var(--text);
-  font-size: 0.98rem;
+.stack-viewer-overlay strong {
+  font-size: 0.92rem;
   font-weight: 950;
 }
 
-.stack-viewer-header span {
-  color: var(--muted);
-  font-size: 0.72rem;
+.stack-viewer-overlay > div > span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.7rem;
   font-weight: 850;
 }
 
-.stack-viewer-header__actions {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  justify-content: end;
-}
-
-.stack-viewer-header__actions .boards-ghost-action {
-  min-height: 2.25rem;
-  padding: 0.5rem 0.7rem;
-}
-
-.stack-viewer-stage {
-  display: grid;
-  grid-template-columns: minmax(16rem, 24rem) minmax(18rem, 30rem);
-  gap: clamp(1rem, 4vw, 3rem);
-  align-items: center;
-  justify-content: center;
-  width: min(100%, 72rem);
-  justify-self: center;
-  padding: 0.6rem 0 2rem;
-}
-
-.stack-viewer-copy {
-  display: grid;
-  gap: 0.9rem;
-  color: var(--text);
-}
-
-.stack-viewer-copy p {
-  margin: 0;
-  color: var(--board-accent, var(--accent));
-  font-size: 0.72rem;
-  font-weight: 950;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.stack-viewer-copy h1 {
-  margin: 0;
-  color: var(--text);
-  font-size: clamp(2rem, 6vw, 4.2rem);
-  font-weight: 950;
-  letter-spacing: 0;
-  line-height: 0.94;
-}
-
-.stack-viewer-copy > span {
-  color: var(--muted);
-  font-size: 1rem;
-  font-weight: 850;
-  line-height: 1.5;
-}
-
-.stack-viewer-copy small {
-  overflow-wrap: anywhere;
-  border: 2px solid var(--modal-ink);
-  border-radius: 0.85rem;
-  background: #ffffff;
-  box-shadow: 2px 2px 0 var(--modal-ink);
-  color: var(--board-accent, var(--accent));
-  font-size: 0.76rem;
-  font-weight: 900;
-  line-height: 1.35;
-  padding: 0.65rem;
-}
-
-.stack-viewer-share {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
-}
-
-.stack-viewer-share button {
+.stack-viewer-overlay button {
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  min-height: 2.6rem;
+  min-width: 2.55rem;
+  min-height: 2.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 950;
+  padding: 0.55rem 0.72rem;
+  backdrop-filter: blur(14px);
+}
+
+.stack-viewer-overlay button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.stack-viewer-play,
+.stack-viewer-share-button {
+  min-width: 5.3rem !important;
+}
+
+.stack-viewer-share-button {
+  background: color-mix(in srgb, var(--board-accent, var(--accent)) 84%, #111827) !important;
+}
+
+.stack-viewer-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 5.2rem;
+  z-index: 4;
+  width: min(22rem, calc(100vw - 2rem));
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 900;
+  line-height: 1.25;
+  padding: 0.62rem 0.8rem;
+  text-align: center;
+  backdrop-filter: blur(14px);
+}
+
+.boards-modal--stack-share {
+  width: min(100%, 32rem);
+}
+
+.stack-share-dialog {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.stack-share-dialog__link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.stack-share-dialog__link > span {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft-fill);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1;
+  padding: 0.75rem 0.85rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stack-share-dialog__link button,
+.stack-share-dialog__targets button,
+.stack-share-dialog__board {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  min-height: 2.55rem;
   border: 2px solid var(--modal-ink);
   border-radius: 999px;
   background: #ffffff;
   box-shadow: 2px 2px 0 var(--modal-ink);
-  color: var(--board-accent, var(--accent));
+  color: var(--accent);
   cursor: pointer;
   font: inherit;
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 950;
-  padding: 0.55rem 0.7rem;
+  line-height: 1;
+  padding: 0.62rem 0.78rem;
+  text-decoration: none;
 }
 
-.stack-viewer-reel {
+.stack-share-dialog__targets {
   display: grid;
-  justify-items: center;
-  gap: 1rem;
-}
-
-.stack-preview--viewer {
-  width: min(82vw, 25rem);
-  max-height: 72vh;
-  aspect-ratio: 9 / 16;
-}
-
-.stack-viewer-controls {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.55rem;
 }
 
-.stack-viewer-controls > span {
-  min-width: 3.2rem;
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 950;
-  text-align: center;
+.stack-share-dialog__targets button {
+  min-height: 4.3rem;
+  flex-direction: column;
 }
 
-.stack-viewer-controls .boards-ghost-action {
-  width: 2.6rem;
-  min-height: 2.6rem;
-  padding: 0;
+.stack-share-dialog__board {
+  width: 100%;
+}
+
+.stack-share-dialog small {
+  overflow-wrap: anywhere;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--accent) 8%, #ffffff);
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 900;
+  line-height: 1.35;
+  padding: 0.68rem;
 }
 
 .boards-wizard {
@@ -3252,20 +3304,8 @@
     position: static;
   }
 
-  .stack-preview {
+  .stack-preview-panel .stack-preview {
     width: min(100%, 20rem);
-  }
-
-  .stack-viewer-stage {
-    grid-template-columns: 1fr;
-  }
-
-  .stack-viewer-copy {
-    order: 2;
-  }
-
-  .stack-viewer-reel {
-    order: 1;
   }
 }
 
@@ -3367,9 +3407,14 @@
     grid-template-columns: auto minmax(0, 1fr);
   }
 
-  .stack-studio__context a {
+  .stack-studio__context-actions {
     grid-column: 1 / -1;
     width: 100%;
+    justify-content: stretch;
+  }
+
+  .stack-studio__context-actions button {
+    flex: 1;
   }
 
   .stack-format-grid,
@@ -3378,23 +3423,32 @@
     grid-template-columns: 1fr;
   }
 
-  .stack-viewer-header {
-    grid-template-columns: 1fr;
+  .stack-preview--viewer {
+    width: 100vw;
+    height: 100dvh;
   }
 
-  .stack-viewer-header__actions {
-    justify-content: stretch;
+  .stack-viewer-overlay {
+    width: 100vw;
   }
 
-  .stack-viewer-header__actions .boards-ghost-action {
-    flex: 1;
+  .stack-viewer-overlay--bottom {
+    gap: 0.42rem;
   }
 
-  .stack-viewer-copy {
-    text-align: center;
+  .stack-viewer-overlay button {
+    min-width: 2.35rem;
+    min-height: 2.35rem;
+    padding: 0.48rem 0.62rem;
   }
 
-  .stack-viewer-share {
+  .stack-viewer-play,
+  .stack-viewer-share-button {
+    min-width: 4.8rem !important;
+  }
+
+  .stack-share-dialog__link,
+  .stack-share-dialog__targets {
     grid-template-columns: 1fr;
   }
 
