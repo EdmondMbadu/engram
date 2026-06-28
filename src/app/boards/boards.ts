@@ -117,6 +117,12 @@ type GalleryCard = {
   board: Board;
 };
 
+type CardDeleteCandidate = {
+  boardId: string;
+  boardTitle: string;
+  card: BoardCard;
+};
+
 type BoardCityOption = {
   id: string;
   name: string;
@@ -608,6 +614,7 @@ export class BoardsComponent {
   readonly boardDialogOpen = signal(false);
   readonly cardDialogOpen = signal(false);
   readonly boardDeleteCandidate = signal<Board | null>(null);
+  readonly cardDeleteCandidate = signal<CardDeleteCandidate | null>(null);
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
@@ -1685,7 +1692,9 @@ export class BoardsComponent {
     this.closeCardDialog();
   }
 
-  deleteCard(card: BoardCard): void {
+  deleteCard(card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
     const board = this.selectedBoard();
     if (!board) {
       return;
@@ -1694,9 +1703,29 @@ export class BoardsComponent {
       this.boardsSyncError.set('Only the board owner can delete cards.');
       return;
     }
-    if (this.isBrowser && !window.confirm(`Delete "${card.title}"?`)) {
+    this.cardDeleteCandidate.set({ boardId: board.id, boardTitle: board.title, card });
+  }
+
+  closeCardDeleteDialog(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.cardDeleteCandidate.set(null);
+  }
+
+  confirmDeleteCard(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const candidate = this.cardDeleteCandidate();
+    if (!candidate) {
       return;
     }
+    const board = this.boards().find((item) => item.id === candidate.boardId) ?? null;
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can delete cards.');
+      this.cardDeleteCandidate.set(null);
+      return;
+    }
+    this.cardDeleteCandidate.set(null);
 
     const now = new Date().toISOString();
     let nextBoard: Board | null = null;
@@ -1707,7 +1736,7 @@ export class BoardsComponent {
         }
         nextBoard = {
           ...item,
-          cards: item.cards.filter((existing) => existing.id !== card.id),
+          cards: item.cards.filter((existing) => existing.id !== candidate.card.id),
           updatedAt: now,
         };
         return nextBoard;
@@ -1718,14 +1747,15 @@ export class BoardsComponent {
     }
   }
 
-  deleteGalleryCard(boardId: string, card: BoardCard): void {
+  deleteGalleryCard(boardId: string, card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
     const board = this.boards().find((item) => item.id === boardId);
     if (!board || !this.canEditBoard(board)) {
       this.boardsSyncError.set('Only the board owner can delete cards.');
       return;
     }
-    this.selectedBoardId.set(boardId);
-    this.deleteCard(card);
+    this.cardDeleteCandidate.set({ boardId: board.id, boardTitle: board.title, card });
   }
 
   updateBoardDraft<K extends keyof BoardDraft>(field: K, value: BoardDraft[K]): void {

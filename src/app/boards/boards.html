@@ -276,7 +276,7 @@
                     <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditGalleryCard(item.board.id, item.card)">
                       <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteGalleryCard(item.board.id, item.card)">
+                    <button type="button" aria-label="Delete card" (click)="deleteGalleryCard(item.board.id, item.card, $event)">
                       <span class="material-symbols-outlined">delete</span>
                     </button>
                   </div>
@@ -542,7 +542,7 @@
                             <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
                               <span class="material-symbols-outlined">edit</span>
                             </button>
-                            <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteCard(card)">
+                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)">
                               <span class="material-symbols-outlined">delete</span>
                             </button>
                           }
@@ -595,7 +595,7 @@
                             <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
                               <span class="material-symbols-outlined">edit</span>
                             </button>
-                            <button type="button" aria-label="Delete card" (click)="$event.stopPropagation(); deleteCard(card)">
+                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)">
                               <span class="material-symbols-outlined">delete</span>
                             </button>
                           }
@@ -990,6 +990,35 @@
           <button type="button" class="boards-danger-action" (click)="confirmDeleteBoard($event)">
             <span class="material-symbols-outlined">delete</span>
             Delete board
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+
+  @if (cardDeleteCandidate(); as candidate) {
+    <div class="boards-modal-backdrop" (click)="closeCardDeleteDialog($event)">
+      <section class="boards-modal boards-modal--confirm" aria-label="Delete card confirmation" (click)="$event.stopPropagation()">
+        <div class="boards-modal__head">
+          <div>
+            <p>Delete card</p>
+            <h3>{{ candidate.card.title }}</h3>
+          </div>
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDeleteDialog($event)">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="boards-confirm">
+          <span class="material-symbols-outlined">warning</span>
+          <p>
+            Delete this card from {{ candidate.boardTitle }}?
+          </p>
+        </div>
+        <div class="boards-form__actions">
+          <button type="button" class="boards-ghost-action" (click)="closeCardDeleteDialog($event)">Cancel</button>
+          <button type="button" class="boards-danger-action" (click)="confirmDeleteCard($event)">
+            <span class="material-symbols-outlined">delete</span>
+            Delete card
           </button>
         </div>
       </section>
