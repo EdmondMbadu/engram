@@ -427,6 +427,12 @@
             </label>
             @if (canEditBoard(board)) {
               <div class="board-detail__actions">
+                @if (board.cards.length) {
+                  <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
+                    <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'checklist' }}</span>
+                    {{ isManagingBoard(board.id) ? 'Done' : 'Manage' }}
+                  </button>
+                }
                 <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
                   <span class="material-symbols-outlined">add</span>
                   Add card
@@ -434,6 +440,29 @@
               </div>
             }
           </div>
+
+          @if (canEditBoard(board) && isManagingBoard(board.id)) {
+            <div class="board-bulk-actions">
+              <div>
+                <strong>{{ selectedCardCount() }} selected</strong>
+                <small>{{ filteredCards().length }} visible · {{ board.cards.length }} total</small>
+              </div>
+              <div class="board-bulk-actions__buttons">
+                <button type="button" class="boards-ghost-action" (click)="selectAllVisibleCards($event)">
+                  <span class="material-symbols-outlined">select_all</span>
+                  Select all
+                </button>
+                <button type="button" class="boards-ghost-action" (click)="clearCardSelection($event)">
+                  <span class="material-symbols-outlined">deselect</span>
+                  Clear
+                </button>
+                <button type="button" class="boards-danger-action" [disabled]="!selectedCardCount()" (click)="openBulkDeleteCards(board, $event)">
+                  <span class="material-symbols-outlined">delete</span>
+                  Delete selected
+                </button>
+              </div>
+            </div>
+          }
 
           @if (board.cards.length === 0) {
             <div class="boards-empty-state boards-empty-state--detail">
@@ -453,10 +482,24 @@
                 <article
                   class="detail-card"
                   [class.detail-card--favorite]="card.status === 'favorite'"
+                  [class.detail-card--selected]="isCardSelected(card.id)"
+                  [class.detail-card--managing]="isManagingBoard(board.id)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
                   style="overflow: visible; perspective: 1200px;"
-                  (pointerdown)="beginCardStickerDrag($event, board.id, card)"
+                  (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, board.id, card)"
                 >
+                  @if (isManagingBoard(board.id)) {
+                    <button
+                      type="button"
+                      class="detail-card__select"
+                      [class.detail-card__select--active]="isCardSelected(card.id)"
+                      [attr.aria-pressed]="isCardSelected(card.id)"
+                      [attr.aria-label]="'Select ' + card.title"
+                      (click)="toggleCardSelection(card.id, $event)"
+                    >
+                      <span class="material-symbols-outlined">{{ isCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                    </button>
+                  }
                   @if (card.stickers.length) {
                     <div class="detail-card__stickers" aria-hidden="true">
                       @for (sticker of card.stickers; track sticker.id) {
@@ -1019,6 +1062,35 @@
           <button type="button" class="boards-danger-action" (click)="confirmDeleteCard($event)">
             <span class="material-symbols-outlined">delete</span>
             Delete card
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+
+  @if (cardBulkDeleteCandidate(); as candidate) {
+    <div class="boards-modal-backdrop" (click)="closeBulkCardDeleteDialog($event)">
+      <section class="boards-modal boards-modal--confirm" aria-label="Delete selected cards confirmation" (click)="$event.stopPropagation()">
+        <div class="boards-modal__head">
+          <div>
+            <p>Delete selected</p>
+            <h3>{{ candidate.boardTitle }}</h3>
+          </div>
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBulkCardDeleteDialog($event)">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="boards-confirm">
+          <span class="material-symbols-outlined">warning</span>
+          <p>
+            Delete {{ candidate.cards.length }} selected card{{ candidate.cards.length === 1 ? '' : 's' }} from this board?
+          </p>
+        </div>
+        <div class="boards-form__actions">
+          <button type="button" class="boards-ghost-action" (click)="closeBulkCardDeleteDialog($event)">Cancel</button>
+          <button type="button" class="boards-danger-action" (click)="confirmBulkDeleteCards($event)">
+            <span class="material-symbols-outlined">delete</span>
+            Delete selected
           </button>
         </div>
       </section>

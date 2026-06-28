@@ -123,6 +123,12 @@ type CardDeleteCandidate = {
   card: BoardCard;
 };
 
+type CardBulkDeleteCandidate = {
+  boardId: string;
+  boardTitle: string;
+  cards: BoardCard[];
+};
+
 type BoardCityOption = {
   id: string;
   name: string;
@@ -615,6 +621,9 @@ export class BoardsComponent {
   readonly cardDialogOpen = signal(false);
   readonly boardDeleteCandidate = signal<Board | null>(null);
   readonly cardDeleteCandidate = signal<CardDeleteCandidate | null>(null);
+  readonly cardBulkDeleteCandidate = signal<CardBulkDeleteCandidate | null>(null);
+  readonly cardManageBoardId = signal<string | null>(null);
+  readonly selectedCardIds = signal<Set<string>>(new Set());
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
@@ -777,6 +786,7 @@ export class BoardsComponent {
   readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
   readonly wizardTargetBoards = computed(() => this.boards().filter((board) => this.canEditBoard(board)));
   readonly wizardSelectedCount = computed(() => this.wizardSelectedCardIds().size);
+  readonly selectedCardCount = computed(() => this.selectedCardIds().size);
   readonly wizardCanGenerate = computed(() => {
     const mode = this.wizardMode();
     if (mode === 'describe') {
@@ -817,6 +827,7 @@ export class BoardsComponent {
       const boardId = params.get('boardId');
       this.selectedBoardId.set(boardId);
       this.cardSearch.set('');
+      this.closeCardManageMode();
       this.shareMessage.set(null);
       this.sharePanelOpen.set(false);
       void this.loadBoards(boardId);
@@ -1743,8 +1754,126 @@ export class BoardsComponent {
       }),
     );
     if (nextBoard) {
+      this.selectedCardIds.update((ids) => {
+        const next = new Set(ids);
+        next.delete(candidate.card.id);
+        return next;
+      });
       void this.persistAndReplaceBoard(nextBoard);
     }
+  }
+
+  isManagingBoard(boardId: string): boolean {
+    return this.cardManageBoardId() === boardId;
+  }
+
+  toggleCardManageMode(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner or an admin can manage cards.');
+      return;
+    }
+    if (this.cardManageBoardId() === board.id) {
+      this.closeCardManageMode();
+      return;
+    }
+    this.cardManageBoardId.set(board.id);
+    this.selectedCardIds.set(new Set());
+    this.cardBulkDeleteCandidate.set(null);
+  }
+
+  closeCardManageMode(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.cardManageBoardId.set(null);
+    this.selectedCardIds.set(new Set());
+    this.cardBulkDeleteCandidate.set(null);
+  }
+
+  isCardSelected(cardId: string): boolean {
+    return this.selectedCardIds().has(cardId);
+  }
+
+  toggleCardSelection(cardId: string, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.selectedCardIds.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+      return next;
+    });
+  }
+
+  selectAllVisibleCards(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.selectedCardIds.set(new Set(this.filteredCards().map((card) => card.id)));
+  }
+
+  clearCardSelection(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.selectedCardIds.set(new Set());
+  }
+
+  openBulkDeleteCards(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner or an admin can delete cards.');
+      return;
+    }
+    const ids = this.selectedCardIds();
+    const cards = board.cards.filter((card) => ids.has(card.id));
+    if (!cards.length) {
+      return;
+    }
+    this.cardBulkDeleteCandidate.set({ boardId: board.id, boardTitle: board.title, cards });
+  }
+
+  closeBulkCardDeleteDialog(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.cardBulkDeleteCandidate.set(null);
+  }
+
+  confirmBulkDeleteCards(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const candidate = this.cardBulkDeleteCandidate();
+    if (!candidate) {
+      return;
+    }
+    const board = this.boards().find((item) => item.id === candidate.boardId) ?? null;
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner or an admin can delete cards.');
+      this.cardBulkDeleteCandidate.set(null);
+      return;
+    }
+
+    const deleteIds = new Set(candidate.cards.map((card) => card.id));
+    const now = new Date().toISOString();
+    const nextBoard = {
+      ...board,
+      cards: board.cards.filter((card) => !deleteIds.has(card.id)),
+      updatedAt: now,
+    };
+    this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+    this.selectedCardIds.update((ids) => {
+      const next = new Set(ids);
+      deleteIds.forEach((id) => next.delete(id));
+      return next;
+    });
+    this.cardBulkDeleteCandidate.set(null);
+    if (!nextBoard.cards.length) {
+      this.closeCardManageMode();
+    }
+    void this.persistAndReplaceBoard(nextBoard);
   }
 
   deleteGalleryCard(boardId: string, card: BoardCard, event?: Event): void {
@@ -1819,7 +1948,7 @@ export class BoardsComponent {
       return false;
     }
     const uid = this.authService.uid();
-    return !!uid && (!board.ownerUserId || board.ownerUserId === uid);
+    return !!uid && (this.authService.isAdmin() || !board.ownerUserId || board.ownerUserId === uid);
   }
 
   ownerName(board: Board): string {
@@ -2358,18 +2487,22 @@ export class BoardsComponent {
     if (!this.firestore || !uid) {
       return board;
     }
-    if (board.ownerUserId && board.ownerUserId !== uid) {
+    const isAdmin = this.authService.isAdmin();
+    if (board.ownerUserId && board.ownerUserId !== uid && !isAdmin) {
       throw new Error('Only the board owner can save changes.');
     }
 
-    const boardWithOwner = {
-      ...board,
-      ...this.currentOwnerSnapshot(),
-    };
-    const prepared = await this.prepareBoardImagesForFirebase(boardWithOwner, uid);
+    const boardWithOwner = board.ownerUserId && board.ownerUserId !== uid && isAdmin
+      ? board
+      : {
+          ...board,
+          ...this.currentOwnerSnapshot(),
+        };
+    const storageOwnerId = boardWithOwner.ownerUserId || uid;
+    const prepared = await this.prepareBoardImagesForFirebase(boardWithOwner, storageOwnerId);
     const record: BoardRecord & { server_updated_at: unknown } = {
       ...prepared,
-      owner_user_id: uid,
+      owner_user_id: prepared.ownerUserId || uid,
       owner_display_name: prepared.ownerDisplayName,
       owner_photo_url: prepared.ownerPhotoUrl,
       owner_profile_icon: prepared.ownerProfileIcon,
