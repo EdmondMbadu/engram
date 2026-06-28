@@ -1487,6 +1487,8 @@ export class BoardsComponent {
       const loaded: Board[] = [];
       if (uid) {
         loaded.push(...await this.loadUserBoards(uid));
+      } else if (!boardId) {
+        loaded.push(...await this.loadPublicBoards());
       }
 
       if (boardId && !loaded.some((board) => board.id === boardId)) {
@@ -1528,6 +1530,20 @@ export class BoardsComponent {
         .map((board) => this.persistBoard(board)),
     ).catch(() => undefined);
     return boards;
+  }
+
+  private async loadPublicBoards(): Promise<Board[]> {
+    if (!this.firestore) {
+      return [];
+    }
+
+    const snapshot = await getDocs(
+      query(collection(this.firestore, 'boards'), where('visibility', '==', 'public')),
+    );
+    return snapshot.docs
+      .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
+      .filter((board): board is Board => !!board)
+      .sort((left, right) => this.compareBoards(left, right));
   }
 
   private async loadBoardById(boardId: string): Promise<Board | null> {

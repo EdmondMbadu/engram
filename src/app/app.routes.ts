@@ -84,7 +84,6 @@ export const routes: Routes = [
     path: 'boards',
     loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
     title: 'Boards | LivingWiki',
-    canActivate: [authGuard],
   },
   {
     path: 'boards/:boardId',

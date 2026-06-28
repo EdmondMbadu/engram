@@ -259,7 +259,9 @@ service cloud.firestore {
       allow get: if resource.data.visibility == 'public'
         || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
         || isPlatformAdmin();
-      allow list: if isSignedIn();
+      allow list: if resource.data.visibility == 'public'
+        || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
+        || isPlatformAdmin();
       allow create, update: if isSignedIn()
         && request.resource.data.owner_user_id == request.auth.uid
         && (
