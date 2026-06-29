@@ -89,23 +89,6 @@
               </div>
             }
 
-            <div class="stack-viewer-overlay stack-viewer-overlay--bottom">
-              <button type="button" aria-label="Previous frame" (click)="previousStackFrame()">
-                <span class="material-symbols-outlined">chevron_left</span>
-              </button>
-              <button type="button" class="stack-viewer-play" (click)="toggleStackPlayback()">
-                <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
-                {{ stackFramePosition(stackCurrentFrame()) }}
-              </button>
-              <button type="button" aria-label="Next frame" (click)="nextStackFrame()">
-                <span class="material-symbols-outlined">chevron_right</span>
-              </button>
-              <button type="button" class="stack-viewer-share-button" (click)="openStackShareDialog(board, $event)">
-                <span class="material-symbols-outlined">ios_share</span>
-                Share
-              </button>
-            </div>
-
             @if (stackShareMessage() || shareMessage()) {
               <small class="stack-viewer-toast">{{ stackShareMessage() || shareMessage() }}</small>
             }

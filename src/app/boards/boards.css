@@ -2228,16 +2228,6 @@
   padding-top: 1.25rem;
 }
 
-.stack-viewer-overlay--bottom {
-  bottom: 0;
-  z-index: 8;
-  justify-content: center;
-  flex-wrap: wrap;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.78), transparent);
-  padding-top: 3rem;
-  padding-bottom: max(0.9rem, env(safe-area-inset-bottom));
-}
-
 .stack-viewer-titlebar {
   display: flex !important;
   align-items: center;
@@ -2267,7 +2257,7 @@
 .stack-viewer-actions {
   display: inline-flex !important;
   flex-shrink: 0;
-  gap: 0.45rem !important;
+  gap: 0.95rem !important;
 }
 
 .stack-viewer-overlay > div {
@@ -2316,6 +2306,19 @@
   backdrop-filter: blur(14px);
 }
 
+.stack-viewer-actions button {
+  min-width: 1.9rem;
+  min-height: 1.9rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+.stack-viewer-actions .material-symbols-outlined {
+  font-size: 2rem;
+}
+
 .stack-viewer-side {
   display: grid;
   width: clamp(3.5rem, 6vw, 5rem);
@@ -2337,19 +2340,10 @@
   justify-self: start;
 }
 
-.stack-viewer-play,
-.stack-viewer-share-button {
-  min-width: 5.3rem !important;
-}
-
-.stack-viewer-share-button {
-  background: color-mix(in srgb, var(--board-accent, var(--accent)) 84%, #111827) !important;
-}
-
 .stack-viewer-toast {
   position: absolute;
   left: 50%;
-  bottom: 5.2rem;
+  bottom: max(1.1rem, env(safe-area-inset-bottom));
   z-index: 9;
   width: min(22rem, calc(100vw - 2rem));
   transform: translateX(-50%);
@@ -3969,26 +3963,31 @@
   }
 
   .stack-viewer-side {
-    display: none;
+    position: absolute;
+    top: 50%;
+    z-index: 9;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-color: rgba(255, 255, 255, 0.32);
+    background: rgba(0, 0, 0, 0.24);
+    color: #ffffff;
+    transform: translateY(-50%);
   }
 
-  .stack-viewer-overlay--bottom {
-    gap: 0.42rem;
+  .stack-viewer-side--prev {
+    left: max(0.7rem, env(safe-area-inset-left));
   }
 
-  .stack-viewer-overlay button {
-    min-width: 2.35rem;
-    min-height: 2.35rem;
-    padding: 0.48rem 0.62rem;
+  .stack-viewer-side--next {
+    right: max(0.7rem, env(safe-area-inset-right));
   }
 
-  .stack-viewer-play,
-  .stack-viewer-share-button {
-    min-width: 4.8rem !important;
+  .stack-viewer-actions {
+    gap: 0.7rem !important;
   }
 
   .stack-preview--viewer .stack-preview__content {
-    padding: 6.7rem max(1.1rem, env(safe-area-inset-right)) 7rem max(1.1rem, env(safe-area-inset-left));
+    padding: 6.7rem max(1.1rem, env(safe-area-inset-right)) 4.2rem max(1.1rem, env(safe-area-inset-left));
   }
 
   .stack-share-dialog__link,
