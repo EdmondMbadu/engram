@@ -710,6 +710,7 @@ export class BoardsComponent {
   readonly stackShareMessage = signal<string | null>(null);
   readonly stackDirectView = signal(false);
   readonly stackShareDialogOpen = signal(false);
+  readonly stackFrameDurationMs = 4200;
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -902,6 +903,9 @@ export class BoardsComponent {
   });
   readonly stackSelectedCount = computed(() => this.stackSelectedCardIds().size);
   readonly stackFrameCount = computed(() => this.stackSelectedCards().length + 2);
+  readonly stackProgressFrames = computed(() =>
+    Array.from({ length: this.stackFrameCount() }, (_item, index) => index),
+  );
   readonly stackCurrentFrame = computed<StackFrame>(() => {
     const cards = this.stackSelectedCards();
     const total = cards.length + 2;
@@ -2630,7 +2634,7 @@ export class BoardsComponent {
       return;
     }
     this.stackPlaying.set(true);
-    this.stackPlaybackTimer = setInterval(() => this.advanceStackFrame(), 1800);
+    this.stackPlaybackTimer = setInterval(() => this.advanceStackFrame(), this.stackFrameDurationMs);
   }
 
   private stopStackPlayback(): void {

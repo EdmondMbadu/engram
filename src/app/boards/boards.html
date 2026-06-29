@@ -6,79 +6,114 @@
         [style.--board-accent]="toneAccent(board.tone)"
         [style.--board-soft]="toneSoft(board.tone)"
       >
-        <main class="stack-viewer-reel" aria-label="Stack reel">
-          <header class="stack-viewer-overlay stack-viewer-overlay--top">
-            <div>
-              <strong>{{ board.title }}</strong>
-              <span>{{ stackSelectedCount() }} cards · {{ ownerName(board) }}</span>
-            </div>
-            <div>
-              <button type="button" aria-label="Share Stack" (click)="openStackShareDialog(board, $event)">
-                <span class="material-symbols-outlined">ios_share</span>
-              </button>
-              <button type="button" aria-label="Open board" (click)="closeStackView(board)">
-                <span class="material-symbols-outlined">dashboard_customize</span>
-              </button>
-            </div>
-          </header>
+        <main class="stack-viewer-reel" aria-label="Stack reel" [style.--stack-frame-duration]="stackFrameDurationMs + 'ms'">
+          <button type="button" class="stack-viewer-side stack-viewer-side--prev" aria-label="Previous frame" (click)="previousStackFrame()">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
 
-          @if (stackCurrentFrame(); as frame) {
-            <div class="stack-preview stack-preview--viewer">
-              @if (frame.kind === 'cover') {
-                @if (stackCoverImage(board)) {
-                  <img class="stack-preview__media" [src]="stackCoverImage(board)" [alt]="stackCoverTitle()" />
-                }
-                <div class="stack-preview__shade"></div>
-                <div class="stack-preview__content stack-preview__content--cover">
-                  <span>A LivingWiki Stack</span>
-                  <h4>{{ stackCoverTitle() || board.title }}</h4>
-                  <p>{{ stackCoverSubtitle() }}</p>
-                </div>
-              } @else if (frame.kind === 'card') {
-                @if (frame.card; as card) {
-                  @if (card.imageUrl) {
-                    <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
-                  }
-                  <div class="stack-preview__shade"></div>
-                  <div class="stack-preview__brand">LivingWiki</div>
-                  <div class="stack-preview__content">
-                    <span>{{ card.status }} · {{ card.rating }}/5</span>
-                    <h4>{{ card.title }}</h4>
-                    <p>{{ card.subtitle || card.notes }}</p>
-                  </div>
-                }
-              } @else {
-                <div class="stack-preview__closing">
-                  <span class="material-symbols-outlined">auto_awesome_motion</span>
-                  <h4>Made with LivingWiki</h4>
-                  <p>{{ board.title }}</p>
-                  <img [src]="stackQrImageUrl(board)" alt="Stack QR code" />
-                  <strong>{{ stackClosingUrlLabel(board) }}</strong>
-                </div>
+          <section class="stack-viewer-story" aria-label="Stack story">
+            <div class="stack-viewer-progress" aria-label="Stack progress">
+              @for (frameIndex of stackProgressFrames(); track frameIndex) {
+                <span
+                  class="stack-viewer-progress__segment"
+                  [class.stack-viewer-progress__segment--done]="frameIndex < stackFrameIndex()"
+                  [class.stack-viewer-progress__segment--active]="frameIndex === stackFrameIndex()"
+                  [class.stack-viewer-progress__segment--paused]="!stackPlaying()"
+                >
+                  <i></i>
+                </span>
               }
             </div>
-          }
 
-          <div class="stack-viewer-overlay stack-viewer-overlay--bottom">
-            <button type="button" aria-label="Previous frame" (click)="previousStackFrame()">
-              <span class="material-symbols-outlined">chevron_left</span>
-            </button>
-            <button type="button" class="stack-viewer-play" (click)="toggleStackPlayback()">
-              <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
-              {{ stackFramePosition(stackCurrentFrame()) }}
-            </button>
-            <button type="button" aria-label="Next frame" (click)="nextStackFrame()">
-              <span class="material-symbols-outlined">chevron_right</span>
-            </button>
-            <button type="button" class="stack-viewer-share-button" (click)="openStackShareDialog(board, $event)">
-              <span class="material-symbols-outlined">ios_share</span>
-              Share
-            </button>
-          </div>
+            <header class="stack-viewer-overlay stack-viewer-overlay--top">
+              <div class="stack-viewer-titlebar">
+                <span class="stack-viewer-avatar">
+                  @if (stackCoverImage(board)) {
+                    <img [src]="stackCoverImage(board)" [alt]="board.title" />
+                  } @else {
+                    <span class="material-symbols-outlined">auto_awesome_motion</span>
+                  }
+                </span>
+                <div>
+                  <strong>{{ board.title }}</strong>
+                  <span>{{ stackSelectedCount() }} cards · {{ ownerName(board) }}</span>
+                </div>
+              </div>
+              <div class="stack-viewer-actions">
+                <button type="button" aria-label="{{ stackPlaying() ? 'Pause Stack' : 'Play Stack' }}" (click)="toggleStackPlayback()">
+                  <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
+                </button>
+                <button type="button" aria-label="Share Stack" (click)="openStackShareDialog(board, $event)">
+                  <span class="material-symbols-outlined">ios_share</span>
+                </button>
+                <button type="button" aria-label="Open board" (click)="closeStackView(board)">
+                  <span class="material-symbols-outlined">close</span>
+                </button>
+              </div>
+            </header>
 
-          @if (stackShareMessage() || shareMessage()) {
-            <small class="stack-viewer-toast">{{ stackShareMessage() || shareMessage() }}</small>
-          }
+            @if (stackCurrentFrame(); as frame) {
+              <div class="stack-preview stack-preview--viewer">
+                @if (frame.kind === 'cover') {
+                  @if (stackCoverImage(board)) {
+                    <img class="stack-preview__media" [src]="stackCoverImage(board)" [alt]="stackCoverTitle()" />
+                  }
+                  <div class="stack-preview__shade"></div>
+                  <div class="stack-preview__content stack-preview__content--cover">
+                    <span>A LivingWiki Stack</span>
+                    <h4>{{ stackCoverTitle() || board.title }}</h4>
+                    <p>{{ stackCoverSubtitle() }}</p>
+                  </div>
+                } @else if (frame.kind === 'card') {
+                  @if (frame.card; as card) {
+                    @if (card.imageUrl) {
+                      <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
+                    }
+                    <div class="stack-preview__shade"></div>
+                    <div class="stack-preview__brand">LivingWiki</div>
+                    <div class="stack-preview__content">
+                      <span>{{ card.status }} · {{ card.rating }}/5</span>
+                      <h4>{{ card.title }}</h4>
+                      <p>{{ card.subtitle || card.notes }}</p>
+                    </div>
+                  }
+                } @else {
+                  <div class="stack-preview__closing">
+                    <span class="material-symbols-outlined">auto_awesome_motion</span>
+                    <h4>Made with LivingWiki</h4>
+                    <p>{{ board.title }}</p>
+                    <img [src]="stackQrImageUrl(board)" alt="Stack QR code" />
+                    <strong>{{ stackClosingUrlLabel(board) }}</strong>
+                  </div>
+                }
+              </div>
+            }
+
+            <div class="stack-viewer-overlay stack-viewer-overlay--bottom">
+              <button type="button" aria-label="Previous frame" (click)="previousStackFrame()">
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <button type="button" class="stack-viewer-play" (click)="toggleStackPlayback()">
+                <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
+                {{ stackFramePosition(stackCurrentFrame()) }}
+              </button>
+              <button type="button" aria-label="Next frame" (click)="nextStackFrame()">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+              <button type="button" class="stack-viewer-share-button" (click)="openStackShareDialog(board, $event)">
+                <span class="material-symbols-outlined">ios_share</span>
+                Share
+              </button>
+            </div>
+
+            @if (stackShareMessage() || shareMessage()) {
+              <small class="stack-viewer-toast">{{ stackShareMessage() || shareMessage() }}</small>
+            }
+          </section>
+
+          <button type="button" class="stack-viewer-side stack-viewer-side--next" aria-label="Next frame" (click)="nextStackFrame()">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
         </main>
       </section>
     } @else {
