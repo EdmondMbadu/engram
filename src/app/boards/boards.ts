@@ -2142,7 +2142,11 @@ export class BoardsComponent {
     event?.preventDefault();
     event?.stopPropagation();
     this.prepareStackForBoard(board);
+    this.stackStudioOpen.set(false);
+    this.stackShareDialogOpen.set(false);
+    this.sharePanelOpen.set(false);
     this.stackDirectView.set(true);
+    this.startStackPlayback();
     void this.router.navigate(['/boards', board.id], { queryParams: { view: 'stack' } });
   }
 
@@ -2259,8 +2263,7 @@ export class BoardsComponent {
       this.stopStackPlayback();
       return;
     }
-    this.stackPlaying.set(true);
-    this.stackPlaybackTimer = setInterval(() => this.advanceStackFrame(), 1600);
+    this.startStackPlayback();
   }
 
   async shareStackTo(target: StackExportTarget): Promise<void> {
@@ -2354,6 +2357,8 @@ export class BoardsComponent {
     if (this.stackStudioBoardId() !== board.id) {
       this.prepareStackForBoard(board);
     }
+    this.stackStudioOpen.set(false);
+    this.startStackPlayback();
   }
 
   private clampStackFrameIndex(): void {
@@ -2366,6 +2371,14 @@ export class BoardsComponent {
       const count = this.stackFrameCount();
       return count ? (index + 1) % count : 0;
     });
+  }
+
+  private startStackPlayback(): void {
+    if (this.stackPlaying()) {
+      return;
+    }
+    this.stackPlaying.set(true);
+    this.stackPlaybackTimer = setInterval(() => this.advanceStackFrame(), 1800);
   }
 
   private stopStackPlayback(): void {
