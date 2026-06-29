@@ -73,6 +73,7 @@ type BoardCard = {
 type Board = {
   id: string;
   ownerUserId: string;
+  ownerPublicSlug: string;
   ownerDisplayName: string;
   ownerPhotoUrl: string;
   ownerProfileIcon: string;
@@ -142,6 +143,7 @@ type BoardCityOption = {
 
 type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
   owner_user_id: string;
+  owner_public_slug: string;
   owner_display_name: string;
   owner_photo_url: string;
   owner_profile_icon: string;
@@ -650,6 +652,9 @@ export class BoardsComponent {
   readonly publicCities = signal<BoardCityOption[]>([]);
   readonly citiesLoading = signal(false);
   readonly selectedBoardId = signal<string | null>(null);
+  readonly publicOwnerKey = signal<string | null>(null);
+  readonly publicOwnerUid = signal<string | null>(null);
+  readonly publicOwnerSlug = signal<string | null>(null);
   readonly flippedBoardIds = signal<Set<string>>(new Set());
   readonly flippedCardIds = signal<Set<string>>(new Set());
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
@@ -750,7 +755,42 @@ export class BoardsComponent {
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
-  readonly canCreateBoard = computed(() => this.authService.isAuthenticated());
+  readonly canCreateBoard = computed(() => {
+    const uid = this.authService.uid();
+    const publicOwnerKey = this.publicOwnerKey();
+    const publicOwnerUid = this.publicOwnerUid();
+    return this.authService.isAuthenticated() && (!publicOwnerKey || publicOwnerUid === uid);
+  });
+  readonly boardsProfileBoard = computed(() => this.boards().find((board) => board.ownerUserId) ?? null);
+  readonly boardsProfileName = computed(() => {
+    if (this.publicOwnerKey()) {
+      const boardOwnerName = this.boardsProfileBoard()?.ownerDisplayName.trim();
+      return boardOwnerName || this.publicOwnerHandleLabel();
+    }
+    return this.userName();
+  });
+  readonly boardsProfileSubtitle = computed(() => {
+    if (this.publicOwnerKey()) {
+      return this.boards().length ? 'Public LivingWiki boards' : 'No public boards found yet';
+    }
+    return this.userEmail();
+  });
+  readonly boardsProfilePhotoUrl = computed(() => {
+    const board = this.boardsProfileBoard();
+    if (this.publicOwnerKey()) {
+      return board?.ownerPhotoUrl.trim() || '';
+    }
+    return this.userPhotoUrl();
+  });
+  readonly boardsProfileIcon = computed(() => {
+    const board = this.boardsProfileBoard();
+    const boardIcon = board ? profileIconByCode(board.ownerProfileIcon) : null;
+    if (this.publicOwnerKey()) {
+      return boardIcon ?? profileIconForSeed(this.publicOwnerUid() || this.boardsProfileName());
+    }
+    return this.userIcon();
+  });
+  readonly canShareBoardsProfile = computed(() => !!this.boardsProfileShareUrl());
 
   readonly filteredBoards = computed(() => {
     const query = this.boardSearch().trim().toLowerCase();
@@ -899,13 +939,19 @@ export class BoardsComponent {
     void this.loadCities();
     this.route.paramMap.subscribe((params) => {
       const boardId = params.get('boardId');
+      const ownerKey = params.get('ownerKey');
+      const ownerUid = this.publicOwnerUidFromKey(ownerKey);
+      const ownerSlug = this.publicOwnerSlugFromKey(ownerKey);
       this.selectedBoardId.set(boardId);
+      this.publicOwnerKey.set(ownerKey);
+      this.publicOwnerUid.set(ownerUid);
+      this.publicOwnerSlug.set(ownerSlug);
       this.cardSearch.set('');
       this.closeCardManageMode();
       this.setShareMessage(null);
       this.sharePanelOpen.set(false);
       this.closeStackStudio();
-      void this.loadBoards(boardId).then(() => this.syncStackDirectView());
+      void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => this.syncStackDirectView());
     });
 
     this.route.queryParamMap.subscribe((params) => {
@@ -917,6 +963,12 @@ export class BoardsComponent {
     effect(() => {
       const boards = this.boards();
       if (!this.isBrowser || !this.hasLoaded) {
+        return;
+      }
+      const publicOwnerKey = this.publicOwnerKey();
+      const publicOwnerUid = this.publicOwnerUid();
+      const uid = this.authService.uid();
+      if (publicOwnerKey && publicOwnerUid !== uid) {
         return;
       }
       window.localStorage.setItem(
@@ -2083,8 +2135,70 @@ export class BoardsComponent {
     return `${window.location.origin}/boards/${board.id}`;
   }
 
+  boardsProfileShareUrl(): string {
+    const boardSlug = this.boardsProfileBoard()?.ownerPublicSlug.trim();
+    const ownerKey = boardSlug
+      || (this.publicOwnerUid() ? this.publicOwnerKey() : this.publicOwnerSlug())
+      || this.currentPublicOwnerKey();
+    if (!ownerKey) {
+      return '';
+    }
+    const path = `/boards/u/${encodeURIComponent(ownerKey)}`;
+    if (!this.isBrowser) {
+      return path;
+    }
+    return `${window.location.origin}${path}`;
+  }
+
   stackShareUrl(board: Board): string {
     return `${this.boardShareUrl(board)}?view=stack`;
+  }
+
+  async copyBoardsProfileUrl(): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const url = this.boardsProfileShareUrl();
+    if (!url) {
+      this.setShareMessage('Sign in to get your public boards link.');
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(url);
+      this.setShareMessage('Boards link copied.');
+    } catch {
+      this.setShareMessage('Copy blocked. The boards link is visible here.');
+    }
+  }
+
+  async nativeShareBoardsProfile(): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const url = this.boardsProfileShareUrl();
+    if (!url) {
+      this.setShareMessage('Sign in to get your public boards link.');
+      return;
+    }
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${this.boardsProfileName()} boards`,
+          text: 'Explore these LivingWiki boards.',
+          url,
+        });
+        this.setShareMessage('Share sheet opened.');
+        return;
+      }
+
+      await this.copyBoardsProfileUrl();
+    } catch {
+      this.setShareMessage('Share was cancelled or blocked.');
+    }
   }
 
   async copyBoardUrl(board: Board): Promise<void> {
@@ -2715,6 +2829,66 @@ export class BoardsComponent {
     return Array.from(new Set([...left, ...right].map((tag) => tag.trim().toLowerCase()).filter(Boolean))).slice(0, 6);
   }
 
+  private currentPublicOwnerKey(): string {
+    if (!this.authService.uid()) {
+      return '';
+    }
+    return this.publicHandleFromText(this.userName() || this.userEmail() || 'livingwiki-user');
+  }
+
+  private publicOwnerUidFromKey(ownerKey: string | null): string | null {
+    const trimmed = this.decodeOwnerKey(ownerKey).trim();
+    const separator = trimmed.lastIndexOf('~');
+    if (separator < 0 || separator === trimmed.length - 1) {
+      return null;
+    }
+    return trimmed.slice(separator + 1).trim() || null;
+  }
+
+  private publicOwnerSlugFromKey(ownerKey: string | null): string | null {
+    const trimmed = this.decodeOwnerKey(ownerKey).trim();
+    if (!trimmed) {
+      return null;
+    }
+    const separator = trimmed.lastIndexOf('~');
+    const handle = (separator >= 0 ? trimmed.slice(0, separator) : trimmed).trim();
+    return this.publicHandleFromText(handle);
+  }
+
+  private publicOwnerHandleLabel(): string {
+    const decoded = this.decodeOwnerKey(this.publicOwnerKey());
+    const separator = decoded.lastIndexOf('~');
+    const handle = (separator >= 0 ? decoded.slice(0, separator) : decoded).trim();
+    return handle
+      .split('-')
+      .filter(Boolean)
+      .map((part) => part[0]?.toUpperCase() + part.slice(1))
+      .join(' ') || 'LivingWiki curator';
+  }
+
+  private decodeOwnerKey(ownerKey: string | null): string {
+    if (!ownerKey) {
+      return '';
+    }
+    try {
+      return decodeURIComponent(ownerKey);
+    } catch {
+      return ownerKey;
+    }
+  }
+
+  private publicHandleFromText(value: string): string {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/@.*$/, '')
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 48) || 'livingwiki-user';
+  }
+
   private stringValue(value: unknown, fallback: string, maxLength: number): string {
     const text = typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
     return (text || fallback).slice(0, maxLength);
@@ -2744,7 +2918,12 @@ export class BoardsComponent {
     this.hasLoaded = true;
   }
 
-  private async loadBoards(boardId: string | null): Promise<void> {
+  private async loadBoards(
+    boardId: string | null,
+    publicOwnerUid: string | null = null,
+    publicOwnerSlug: string | null = null,
+    publicOwnerRouteActive = false,
+  ): Promise<void> {
     if (!this.isBrowser || !this.firestore) {
       return;
     }
@@ -2755,7 +2934,15 @@ export class BoardsComponent {
 
     try {
       const loaded: Board[] = [];
-      if (uid) {
+      if (publicOwnerRouteActive) {
+        if (publicOwnerUid) {
+          loaded.push(...await this.loadPublicBoardsForOwner(publicOwnerUid));
+        } else if (publicOwnerSlug) {
+          loaded.push(...await this.loadPublicBoardsForOwnerSlug(publicOwnerSlug));
+        }
+      } else if (publicOwnerUid) {
+        loaded.push(...await this.loadPublicBoardsForOwner(publicOwnerUid));
+      } else if (uid) {
         loaded.push(...await this.loadUserBoards(uid));
       } else if (!boardId) {
         loaded.push(...await this.loadPublicBoards());
@@ -2766,6 +2953,11 @@ export class BoardsComponent {
         if (sharedBoard) {
           loaded.unshift(sharedBoard);
         }
+      }
+
+      if (publicOwnerRouteActive) {
+        this.boards.set(loaded);
+        return;
       }
 
       if (loaded.length) {
@@ -2800,6 +2992,57 @@ export class BoardsComponent {
         .map((board) => this.persistBoard(board)),
     ).catch(() => undefined);
     return boards;
+  }
+
+  private async loadPublicBoardsForOwner(uid: string): Promise<Board[]> {
+    if (!this.firestore) {
+      return [];
+    }
+
+    try {
+      const snapshot = await getDocs(
+        query(
+          collection(this.firestore, 'boards'),
+          where('owner_user_id', '==', uid),
+          where('visibility', '==', 'public'),
+        ),
+      );
+      return snapshot.docs
+        .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
+        .filter((board): board is Board => !!board && board.ownerUserId === uid)
+        .sort((left, right) => this.compareBoards(left, right));
+    } catch {
+      const publicBoards = await this.loadPublicBoards();
+      return publicBoards.filter((board) => board.ownerUserId === uid);
+    }
+  }
+
+  private async loadPublicBoardsForOwnerSlug(slug: string): Promise<Board[]> {
+    if (!this.firestore) {
+      return [];
+    }
+
+    try {
+      const snapshot = await getDocs(
+        query(
+          collection(this.firestore, 'boards'),
+          where('owner_public_slug', '==', slug),
+          where('visibility', '==', 'public'),
+        ),
+      );
+      const boards = snapshot.docs
+        .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
+        .filter((board): board is Board => !!board && board.ownerPublicSlug === slug)
+        .sort((left, right) => this.compareBoards(left, right));
+      if (boards.length) {
+        return boards;
+      }
+      const publicBoards = await this.loadPublicBoards();
+      return publicBoards.filter((board) => this.boardMatchesPublicOwnerSlug(board, slug));
+    } catch {
+      const publicBoards = await this.loadPublicBoards();
+      return publicBoards.filter((board) => this.boardMatchesPublicOwnerSlug(board, slug));
+    }
   }
 
   private async loadPublicBoards(): Promise<Board[]> {
@@ -2857,6 +3100,7 @@ export class BoardsComponent {
         .map((board) => ({
           ...board,
           ownerUserId: typeof board.ownerUserId === 'string' ? board.ownerUserId : '',
+          ownerPublicSlug: typeof board.ownerPublicSlug === 'string' ? board.ownerPublicSlug : '',
           ownerDisplayName: typeof board.ownerDisplayName === 'string' ? board.ownerDisplayName : '',
           ownerPhotoUrl: typeof board.ownerPhotoUrl === 'string' ? board.ownerPhotoUrl : '',
           ownerProfileIcon: typeof board.ownerProfileIcon === 'string' ? board.ownerProfileIcon : '',
@@ -2911,10 +3155,12 @@ export class BoardsComponent {
           ...this.currentOwnerSnapshot(),
         };
     const storageOwnerId = boardWithOwner.ownerUserId || uid;
-    const prepared = await this.prepareBoardImagesForFirebase(boardWithOwner, storageOwnerId);
+    const resolvedOwnerPublicSlug = await this.resolveOwnerPublicSlug(boardWithOwner, storageOwnerId);
+    const prepared = await this.prepareBoardImagesForFirebase({ ...boardWithOwner, ownerPublicSlug: resolvedOwnerPublicSlug }, storageOwnerId);
     const record: BoardRecord & { server_updated_at: unknown } = {
       ...prepared,
       owner_user_id: prepared.ownerUserId || uid,
+      owner_public_slug: prepared.ownerPublicSlug,
       owner_display_name: prepared.ownerDisplayName,
       owner_photo_url: prepared.ownerPhotoUrl,
       owner_profile_icon: prepared.ownerProfileIcon,
@@ -2928,6 +3174,7 @@ export class BoardsComponent {
       createdAt,
       updatedAt,
       ownerUserId,
+      ownerPublicSlug: _ownerPublicSlug,
       ownerDisplayName,
       ownerPhotoUrl,
       ownerProfileIcon,
@@ -2937,6 +3184,7 @@ export class BoardsComponent {
       createdAt?: string;
       updatedAt?: string;
       ownerUserId?: string;
+      ownerPublicSlug?: string;
       ownerDisplayName?: string;
       ownerPhotoUrl?: string;
       ownerProfileIcon?: string;
@@ -2949,12 +3197,13 @@ export class BoardsComponent {
 
   private currentOwnerSnapshot(): Pick<
     Board,
-    'ownerUserId' | 'ownerDisplayName' | 'ownerPhotoUrl' | 'ownerProfileIcon' | 'ownerProfilePictureType'
+    'ownerUserId' | 'ownerPublicSlug' | 'ownerDisplayName' | 'ownerPhotoUrl' | 'ownerProfileIcon' | 'ownerProfilePictureType'
   > {
     const profile = this.profile();
     const photoUrl = profile?.profilePictureType === 'image' ? profile.photoURL ?? '' : '';
     return {
       ownerUserId: this.authService.uid(),
+      ownerPublicSlug: this.currentPublicOwnerKey(),
       ownerDisplayName: this.userName(),
       ownerPhotoUrl: photoUrl,
       ownerProfileIcon: profile?.profilePictureType === 'icon' ? profile.profileIcon ?? '' : '',
@@ -2968,7 +3217,63 @@ export class BoardsComponent {
   }
 
   private boardNeedsOwnerSnapshot(board: Board): boolean {
-    return this.canEditBoard(board) && !board.ownerDisplayName.trim();
+    return this.canEditBoard(board) && (!board.ownerDisplayName.trim() || !board.ownerPublicSlug.trim());
+  }
+
+  private boardMatchesPublicOwnerSlug(board: Board, slug: string): boolean {
+    if (board.ownerPublicSlug === slug) {
+      return true;
+    }
+    return !board.ownerPublicSlug && this.publicHandleFromText(board.ownerDisplayName) === slug;
+  }
+
+  private async resolveOwnerPublicSlug(board: Board, ownerUid: string): Promise<string> {
+    const base = this.publicHandleFromText(board.ownerDisplayName || this.userName() || this.userEmail() || 'livingwiki-user');
+    const uidSuffix = ownerUid.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const existing = board.ownerPublicSlug.trim() ? this.publicHandleFromText(board.ownerPublicSlug) : '';
+    const candidates = Array.from(new Set([
+      existing,
+      base,
+      uidSuffix ? `${base}-${uidSuffix.slice(0, 2)}` : '',
+      uidSuffix ? `${base}-${uidSuffix.slice(0, 4)}` : '',
+      uidSuffix ? `${base}-${uidSuffix.slice(0, 6)}` : '',
+    ].filter(Boolean)));
+
+    for (const candidate of candidates) {
+      if (await this.canUseOwnerPublicSlug(candidate, ownerUid, board.id)) {
+        return candidate;
+      }
+    }
+
+    return `${base}-${uidSuffix.slice(0, 10) || board.id.slice(0, 6).toLowerCase()}`;
+  }
+
+  private async canUseOwnerPublicSlug(slug: string, ownerUid: string, boardId: string): Promise<boolean> {
+    if (!this.firestore) {
+      return true;
+    }
+
+    try {
+      const snapshot = await getDocs(
+        query(
+          collection(this.firestore, 'boards'),
+          where('owner_public_slug', '==', slug),
+          where('visibility', '==', 'public'),
+        ),
+      );
+      return snapshot.docs.every((boardDoc) => {
+        if (boardDoc.id === boardId) {
+          return true;
+        }
+        const data = boardDoc.data();
+        return data['owner_user_id'] === ownerUid;
+      });
+    } catch {
+      const publicBoards = await this.loadPublicBoards().catch(() => []);
+      return publicBoards.every((item) =>
+        item.ownerPublicSlug !== slug || item.ownerUserId === ownerUid || item.id === boardId,
+      );
+    }
   }
 
   private async deleteRemoteBoard(boardId: string): Promise<void> {
@@ -2995,6 +3300,7 @@ export class BoardsComponent {
     return {
       id,
       ownerUserId: typeof data['owner_user_id'] === 'string' ? data['owner_user_id'] : '',
+      ownerPublicSlug: typeof data['owner_public_slug'] === 'string' ? data['owner_public_slug'] : '',
       ownerDisplayName: typeof data['owner_display_name'] === 'string' ? data['owner_display_name'] : '',
       ownerPhotoUrl: typeof data['owner_photo_url'] === 'string' ? data['owner_photo_url'] : '',
       ownerProfileIcon: typeof data['owner_profile_icon'] === 'string' ? data['owner_profile_icon'] : '',

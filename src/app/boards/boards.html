@@ -138,14 +138,14 @@
     @if (!selectedBoard()) {
       <section class="boards-profile" aria-label="Boards profile">
         <div class="boards-profile__avatar">
-          @if (userPhotoUrl()) {
-            <img [src]="userPhotoUrl()" [alt]="userName() + ' profile photo'" />
+          @if (boardsProfilePhotoUrl()) {
+            <img [src]="boardsProfilePhotoUrl()" [alt]="boardsProfileName() + ' profile photo'" />
           } @else {
             <span
               class="boards-profile__avatar-fallback"
-              [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + userIcon().from + ', ' + userIcon().to + ')'"
+              [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + boardsProfileIcon().from + ', ' + boardsProfileIcon().to + ')'"
             >
-              <span class="material-symbols-outlined" [style.color]="userIcon().ink">{{ userIcon().icon }}</span>
+              <span class="material-symbols-outlined" [style.color]="boardsProfileIcon().ink">{{ boardsProfileIcon().icon }}</span>
             </span>
           }
         </div>
@@ -154,15 +154,30 @@
           <div class="boards-profile__identity">
             <div>
               <p>LivingWiki collections</p>
-              <h1>{{ userName() }}</h1>
-              <span>{{ userEmail() }}</span>
+              <h1>{{ boardsProfileName() }}</h1>
+              <span>{{ boardsProfileSubtitle() }}</span>
+              @if (shareMessage()) {
+                <small class="boards-profile__share-note">{{ shareMessage() }}</small>
+              }
             </div>
-            @if (canCreateBoard()) {
-              <button type="button" class="boards-ghost-action" (click)="openCreateBoard()">
-                <span class="material-symbols-outlined">add</span>
-                Create
-              </button>
-            }
+            <div class="boards-profile__actions">
+              @if (canShareBoardsProfile()) {
+                <button type="button" class="boards-ghost-action" (click)="copyBoardsProfileUrl()">
+                  <span class="material-symbols-outlined">content_copy</span>
+                  Copy link
+                </button>
+                <button type="button" class="boards-ghost-action" (click)="nativeShareBoardsProfile()">
+                  <span class="material-symbols-outlined">ios_share</span>
+                  Share
+                </button>
+              }
+              @if (canCreateBoard()) {
+                <button type="button" class="boards-ghost-action" (click)="openCreateBoard()">
+                  <span class="material-symbols-outlined">add</span>
+                  Create
+                </button>
+              }
+            </div>
           </div>
 
           <div class="boards-profile__stats" aria-label="Boards summary">
@@ -308,8 +323,8 @@
             } @empty {
               <div class="boards-empty-state">
                 <span class="material-symbols-outlined">dashboard_customize</span>
-                <h2>No boards yet.</h2>
-                <p>Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.</p>
+                <h2>{{ publicOwnerKey() ? 'No public boards yet.' : 'No boards yet.' }}</h2>
+                <p>{{ publicOwnerKey() ? 'This public boards page is ready, but there are no public boards to show yet.' : 'Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.' }}</p>
                 @if (canCreateBoard()) {
                   <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
                     <span class="material-symbols-outlined">add</span>

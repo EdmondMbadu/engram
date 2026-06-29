@@ -158,6 +158,13 @@
   gap: 1rem;
 }
 
+.boards-profile__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
 .boards-profile__identity p {
   margin: 0;
   color: var(--accent);
@@ -187,6 +194,23 @@
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.boards-profile__share-note {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 0.65rem;
+  overflow-wrap: anywhere;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 950;
+  line-height: 1.25;
+  padding: 0.4rem 0.55rem;
 }
 
 .boards-profile__stats {
@@ -3371,6 +3395,24 @@
 
   .boards-profile__avatar {
     justify-self: center;
+  }
+
+  .boards-profile__identity {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .boards-profile__identity span {
+    white-space: normal;
+  }
+
+  .boards-profile__actions {
+    justify-content: center;
+  }
+
+  .boards-profile__share-note {
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .boards-profile__stats {
