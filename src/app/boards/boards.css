@@ -2118,22 +2118,22 @@
 
 .stack-viewer-progress {
   position: absolute;
-  top: max(0.78rem, env(safe-area-inset-top));
-  left: 1.35rem;
-  right: 1.35rem;
-  z-index: 7;
+  top: max(0.72rem, env(safe-area-inset-top));
+  left: 1.55rem;
+  right: 1.55rem;
+  z-index: 10;
   display: flex;
-  gap: 0.28rem;
+  gap: 0.42rem;
   pointer-events: none;
 }
 
 .stack-viewer-progress__segment {
   position: relative;
   flex: 1 1 0;
-  height: 0.22rem;
+  height: 0.2rem;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.26);
+  background: rgba(226, 232, 240, 0.48);
 }
 
 .stack-viewer-progress__segment i {
@@ -2141,7 +2141,7 @@
   inset: 0;
   width: 100%;
   border-radius: inherit;
-  background: #ffffff;
+  background: linear-gradient(90deg, #ffffff, #ffffff 82%, rgba(255, 255, 255, 0.72));
   transform: scaleX(0);
   transform-origin: left center;
 }
