@@ -2818,6 +2818,9 @@ export class BoardsComponent {
   }
 
   private shouldEnrichWizardCard(card: BoardWizardGeneratedCard): boolean {
+    if (card.type === 'food' && card.tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag.toLowerCase()))) {
+      return false;
+    }
     return card.scope === 'place' && (card.type === 'place' || card.type === 'food' || card.type === 'shop');
   }
 

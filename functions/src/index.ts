@@ -21,6 +21,7 @@ import {
   generateVoiceConversationRecap,
   type BoardWizardMode,
   type BoardWizardVibe,
+  type GeneratedBoardWizardBatch,
   type GeneratedBoardWizardCard,
 } from './gemini';
 import {
@@ -3751,6 +3752,348 @@ type BoardWizardCallableData = {
   existingCards?: unknown;
 };
 
+type BoardWizardUrlLink = {
+  label: string;
+  href: string;
+};
+
+type BoardWizardUrlImage = {
+  alt: string;
+  src: string;
+};
+
+type BoardWizardMenuItem = {
+  title: string;
+  description: string;
+  price: string;
+  category: string;
+  imageUrl: string;
+};
+
+type BoardWizardUrlExtraction = {
+  context: string;
+  restaurantLike: boolean;
+  menuItems: BoardWizardMenuItem[];
+};
+
+async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, html: string): Promise<BoardWizardUrlExtraction> {
+  const baseUrl = finalUrl || inputUrl;
+  const pageText = stripHtmlForBoardWizard(html).slice(0, 6500);
+  const pageLines = stripHtmlLinesForBoardWizard(html);
+  const title = firstHtmlMatch(html, /<title[^>]*>([\s\S]*?)<\/title>/i);
+  const description = firstHtmlMeta(html, ['description', 'og:description', 'twitter:description']);
+  const siteName = firstHtmlMeta(html, ['og:site_name']);
+  const jsonLd = extractBoardWizardJsonLdText(html).slice(0, 2400);
+  const links = extractBoardWizardLinks(html, baseUrl);
+  const importantLinks = links.filter(isBoardWizardRestaurantLink).slice(0, 18);
+  const images = extractBoardWizardImages(html, baseUrl).slice(0, 18);
+  const linkedContext = await fetchBoardWizardLinkedContext(importantLinks, baseUrl);
+  const restaurantLike = looksLikeRestaurantWizardUrl(inputUrl, pageText, importantLinks);
+  const menuItems = restaurantLike ? extractBoardWizardMenuItems(pageLines, images).slice(0, 50) : [];
+
+  const context = [
+    `Source URL: ${inputUrl}`,
+    finalUrl && finalUrl !== inputUrl ? `Final URL: ${finalUrl}` : '',
+    title ? `Page title: ${title}` : '',
+    siteName ? `Site name: ${siteName}` : '',
+    description ? `Page description: ${description}` : '',
+    restaurantLike ? 'Detected page type: restaurant/menu. Build one restaurant board with menu-item cards, location/contact cards, and reserve/order/menu action cards.' : '',
+    menuItems.length ? `Extracted menu item candidates:\n${menuItems.map((item) => `- ${item.title}${item.price ? ` (${item.price})` : ''}${item.category ? ` [${item.category}]` : ''}${item.description ? `: ${item.description}` : ''}${item.imageUrl ? ` | image: ${item.imageUrl}` : ''}`).join('\n')}` : '',
+    importantLinks.length ? `Important links:\n${importantLinks.map((link) => `- ${link.label}: ${link.href}`).join('\n')}` : '',
+    images.length ? `Image candidates:\n${images.map((image) => `- ${image.alt || 'image'}: ${image.src}`).join('\n')}` : '',
+    jsonLd ? `Structured data snippets:\n${jsonLd}` : '',
+    linkedContext ? `Linked page excerpts:\n${linkedContext}` : '',
+    pageText ? `Main page text:\n${pageText}` : '',
+  ].filter(Boolean).join('\n\n').slice(0, 12000);
+  return { context, restaurantLike, menuItems };
+}
+
+async function fetchBoardWizardLinkedContext(links: BoardWizardUrlLink[], baseUrl: string): Promise<string> {
+  const seen = new Set<string>();
+  const contexts: string[] = [];
+  for (const link of links) {
+    if (contexts.length >= 3) {
+      break;
+    }
+    if (seen.has(link.href) || /\.pdf(?:[?#]|$)/i.test(link.href)) {
+      continue;
+    }
+    seen.add(link.href);
+    try {
+      const url = new URL(link.href, baseUrl);
+      const base = new URL(baseUrl);
+      if (url.hostname !== base.hostname && !/(opentable|toasttab|resy|sevn|sevenrooms)/i.test(url.hostname)) {
+        continue;
+      }
+      const fetched = await fetchHtmlWithFallback(url.toString(), { timeoutMs: 20_000 });
+      if (looksLikeAntiBotChallenge(fetched.html)) {
+        continue;
+      }
+      const text = stripHtmlForBoardWizard(fetched.html).slice(0, 2200);
+      if (text) {
+        contexts.push(`From ${link.label} (${url.toString()}):\n${text}`);
+      }
+    } catch {
+      continue;
+    }
+  }
+  return contexts.join('\n\n').slice(0, 5000);
+}
+
+function extractBoardWizardLinks(html: string, baseUrl: string): BoardWizardUrlLink[] {
+  const links: BoardWizardUrlLink[] = [];
+  const anchorPattern = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
+  let match: RegExpExecArray | null;
+  while ((match = anchorPattern.exec(html)) && links.length < 80) {
+    const href = htmlAttribute(match[1], 'href');
+    if (!href || /^(mailto:|tel:|javascript:|#)/i.test(href)) {
+      continue;
+    }
+    const absolute = safeAbsoluteUrl(href, baseUrl);
+    if (!absolute) {
+      continue;
+    }
+    const label = stripHtmlForBoardWizard(match[2]).slice(0, 90) || absolute;
+    links.push({ label, href: absolute });
+  }
+  return dedupeBoardWizardLinks(links);
+}
+
+function extractBoardWizardImages(html: string, baseUrl: string): BoardWizardUrlImage[] {
+  const images: BoardWizardUrlImage[] = [];
+  const imagePattern = /<img\b([^>]*)>/gi;
+  let match: RegExpExecArray | null;
+  while ((match = imagePattern.exec(html)) && images.length < 40) {
+    const attrs = match[1];
+    const srcset = htmlAttribute(attrs, 'srcset') || htmlAttribute(attrs, 'data-srcset');
+    const src = htmlAttribute(attrs, 'src') || htmlAttribute(attrs, 'data-src') || htmlAttribute(attrs, 'data-original') || firstBoardWizardSrcsetUrl(srcset);
+    const absolute = src ? safeAbsoluteUrl(src, baseUrl) : '';
+    if (!absolute || !canTryCoverImageUrl(absolute)) {
+      continue;
+    }
+    const alt = htmlAttribute(attrs, 'alt').slice(0, 90);
+    if (/(logo|icon|avatar|spacer|tracking|pixel)/i.test(`${alt} ${absolute}`)) {
+      continue;
+    }
+    images.push({ alt, src: absolute });
+  }
+  const ogImage = firstHtmlMeta(html, ['og:image', 'twitter:image']);
+  const ogAbsolute = ogImage ? safeAbsoluteUrl(ogImage, baseUrl) : '';
+  if (ogAbsolute && canTryCoverImageUrl(ogAbsolute)) {
+    images.unshift({ alt: 'featured image', src: ogAbsolute });
+  }
+  for (const match of html.matchAll(/url\(["']?(https?:\/\/[^"')\s]+\.(?:png|jpe?g|webp)(?:\?[^"')\s]*)?)["']?\)/gi)) {
+    const src = match[1];
+    if (src && canTryCoverImageUrl(src)) {
+      images.push({ alt: 'background image', src });
+    }
+  }
+  const seen = new Set<string>();
+  return images.filter((image) => {
+    if (seen.has(image.src)) {
+      return false;
+    }
+    seen.add(image.src);
+    return true;
+  });
+}
+
+function firstBoardWizardSrcsetUrl(value: string): string {
+  return value.split(',').map((part) => part.trim().split(/\s+/)[0]).find(Boolean) ?? '';
+}
+
+function extractBoardWizardMenuItems(lines: string[], images: BoardWizardUrlImage[]): BoardWizardMenuItem[] {
+  const items: BoardWizardMenuItem[] = [];
+  const seen = new Set<string>();
+  let category = '';
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = cleanBoardWizardMenuLine(lines[index]);
+    if (!line) {
+      continue;
+    }
+    if (isBoardWizardMenuCategory(line)) {
+      category = line;
+      continue;
+    }
+    if (!isLikelyBoardWizardMenuTitle(line)) {
+      continue;
+    }
+    const lookahead = lines.slice(index + 1, index + 7).map(cleanBoardWizardMenuLine).filter(Boolean);
+    const price = lookahead.find((next) => /^\$[\d,.]+/.test(next)) ?? '';
+    const hasMenuEvidence = !!price || lookahead.some((next) => /^#\d+\s+most liked/i.test(next)) || !!category;
+    if (!hasMenuEvidence) {
+      continue;
+    }
+    const description = lookahead
+      .filter((next) => next !== price)
+      .filter((next) => !/^#\d+\s+most liked/i.test(next))
+      .filter((next) => !isLikelyBoardWizardMenuTitle(next))
+      .filter((next) => !isBoardWizardMenuNoise(next))
+      .join(' ')
+      .slice(0, 220);
+    const key = line.toLowerCase();
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    items.push({
+      title: line,
+      description,
+      price,
+      category,
+      imageUrl: matchBoardWizardMenuImage(line, images),
+    });
+    if (items.length >= 60) {
+      break;
+    }
+  }
+  return items;
+}
+
+function matchBoardWizardMenuImage(title: string, images: BoardWizardUrlImage[]): string {
+  const titleTokens = meaningfulBoardWizardTokens(title);
+  if (!titleTokens.length) {
+    return '';
+  }
+  const scored = images
+    .map((image) => {
+      const haystack = `${image.alt} ${decodeURIComponentSafe(image.src)}`.toLowerCase();
+      const score = titleTokens.reduce((total, token) => total + (haystack.includes(token) ? 1 : 0), 0);
+      return { image, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+  return scored[0]?.image.src ?? '';
+}
+
+function meaningfulBoardWizardTokens(value: string): string[] {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((token) => token.length > 3 && !['with', 'the', 'and', 'classic'].includes(token))
+    .slice(0, 8);
+}
+
+function cleanBoardWizardMenuLine(value: string | undefined): string {
+  return decodeBoardWizardHtmlEntities(value ?? '')
+    .replace(/\s+/g, ' ')
+    .replace(/^\W+|\W+$/g, '')
+    .trim()
+    .slice(0, 180);
+}
+
+function isLikelyBoardWizardMenuTitle(line: string): boolean {
+  if (line.length < 3 || line.length > 80 || isBoardWizardMenuNoise(line) || /^\$[\d,.]+/.test(line)) {
+    return false;
+  }
+  if (/[.!?]$/.test(line) || /\b(add|choose|select|delivery|pickup|checkout|rewards|sign in|order now)\b/i.test(line)) {
+    return false;
+  }
+  const words = line.split(/\s+/);
+  return words.length <= 9 && /[A-Za-z]/.test(line) && words.some((word) => /^[A-Z0-9#]/.test(word));
+}
+
+function isBoardWizardMenuCategory(line: string): boolean {
+  return /^(featured items|most ordered|favorites|sandwiches|subs|salads|sides|drinks|beverages|desserts|kids|combos|cheesesteaks|turkey subs|vegetarian|featured|popular)$/i.test(line);
+}
+
+function isBoardWizardMenuNoise(line: string): boolean {
+  return /^(icon loading|loading|popular|new|home|menu|locations|catering|rewards|about|careers|franchising|privacy policy|terms|skip to content)$/i.test(line)
+    || /^#\d+\s+most liked/i.test(line)
+    || /^\d+$/.test(line);
+}
+
+function stripHtmlLinesForBoardWizard(html: string): string[] {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, '\n')
+    .replace(/<style[\s\S]*?<\/style>/gi, '\n')
+    .replace(/<(br|\/p|\/div|\/li|\/h[1-6]|\/section|\/article)\b[^>]*>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .split(/\n+/)
+    .map((line) => cleanBoardWizardMenuLine(line))
+    .filter(Boolean)
+    .flatMap((line) => line.split(/\s{2,}/).map(cleanBoardWizardMenuLine).filter(Boolean));
+}
+
+function decodeURIComponentSafe(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function isBoardWizardRestaurantLink(link: BoardWizardUrlLink): boolean {
+  return /(menu|food|drink|brunch|lunch|dinner|happy hour|reserve|reservation|book|order|delivery|toast|opentable|resy|sevenrooms|pdf)/i
+    .test(`${link.label} ${link.href}`);
+}
+
+function looksLikeRestaurantWizardUrl(url: string, text: string, links: BoardWizardUrlLink[]): boolean {
+  return /(restaurant|bar|pub|menu|food|drink|brunch|lunch|dinner|reservation|opentable|toast)/i
+    .test(`${url} ${text.slice(0, 3000)} ${links.map((link) => `${link.label} ${link.href}`).join(' ')}`);
+}
+
+function dedupeBoardWizardLinks(links: BoardWizardUrlLink[]): BoardWizardUrlLink[] {
+  const seen = new Set<string>();
+  return links.filter((link) => {
+    if (seen.has(link.href)) {
+      return false;
+    }
+    seen.add(link.href);
+    return true;
+  });
+}
+
+function extractBoardWizardJsonLdText(html: string): string {
+  return Array.from(html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi))
+    .map((match) => stripHtmlForBoardWizard(match[1]).slice(0, 1200))
+    .filter(Boolean)
+    .slice(0, 4)
+    .join('\n');
+}
+
+function firstHtmlMeta(html: string, keys: string[]): string {
+  for (const key of keys) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`<meta\\b(?=[^>]*(?:name|property)=["']${escaped}["'])([^>]*)>`, 'i');
+    const match = html.match(pattern);
+    const content = match?.[1] ? htmlAttribute(match[1], 'content') : '';
+    if (content) {
+      return content.slice(0, 500);
+    }
+  }
+  return '';
+}
+
+function firstHtmlMatch(html: string, pattern: RegExp): string {
+  const match = html.match(pattern);
+  return match?.[1] ? stripHtmlForBoardWizard(match[1]).slice(0, 300) : '';
+}
+
+function htmlAttribute(attrs: string, name: string): string {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = attrs.match(new RegExp(`${escaped}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i'));
+  return decodeBoardWizardHtmlEntities((match?.[1] || match?.[2] || match?.[3] || '').trim());
+}
+
+function safeAbsoluteUrl(value: string, baseUrl: string): string {
+  try {
+    return new URL(value, baseUrl).toString();
+  } catch {
+    return '';
+  }
+}
+
+function decodeBoardWizardHtmlEntities(value: string): string {
+  return value
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, ' ');
+}
+
 export const boardPlacePhoto = onRequest(
   {
     region: callableRegion,
@@ -3832,12 +4175,12 @@ export const generateBoardWizardBatch = onCall(
       ? data.existingCards.map(normalizeExistingBoardWizardCard).filter((card): card is { title: string; subtitle?: string; tags?: string[] } => !!card).slice(0, 40)
       : [];
 
-    let urlContext = '';
+    let urlExtraction: BoardWizardUrlExtraction | null = null;
     if (mode === 'url' && url) {
       try {
-        const fetched = await fetchHtmlWithFallback(url);
+        const fetched = await fetchHtmlWithFallback(url, { timeoutMs: 90_000, preferBrowser: true });
         if (!looksLikeAntiBotChallenge(fetched.html)) {
-          urlContext = stripHtmlForBoardWizard(fetched.html).slice(0, 6000);
+          urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
         }
       } catch (error) {
         logger.warn('Board wizard URL intake failed.', {
@@ -3850,14 +4193,14 @@ export const generateBoardWizardBatch = onCall(
 
     const effectivePrompt = [
       prompt,
-      urlContext ? `URL extracted text:\n${urlContext}` : '',
+      urlExtraction?.context ? `URL extraction context:\n${urlExtraction.context}` : '',
     ].filter(Boolean).join('\n\n').trim();
 
     if (!effectivePrompt && !pastedList && photoNames.length === 0 && !url) {
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, upload photo names, or provide a URL.');
     }
 
-    const generated = await generateBoardWizardBatchWithGemini({
+    let generated = await generateBoardWizardBatchWithGemini({
       mode,
       prompt: effectivePrompt || url || photoNames.join(', '),
       pastedList,
@@ -3869,6 +4212,13 @@ export const generateBoardWizardBatch = onCall(
       vibe,
       existingCards,
     });
+    if (urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3) {
+      generated = shapeRestaurantMenuWizardBatch(generated, {
+        menuItems: urlExtraction.menuItems,
+        sourceUrl: url,
+        count,
+      });
+    }
     const result = await enrichBoardWizardBatchWithPlaces(generated, {
       mode,
       prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
@@ -3912,6 +4262,58 @@ async function enrichBoardWizardBatchWithPlaces(
   return { ...batch, cards: enrichedCards };
 }
 
+function shapeRestaurantMenuWizardBatch(
+  batch: GeneratedBoardWizardBatch,
+  options: {
+    menuItems: BoardWizardMenuItem[];
+    sourceUrl: string;
+    count: number;
+  },
+): GeneratedBoardWizardBatch {
+  const restaurantName = batch.board.title.replace(/\s+(menu|food|board|guide)$/i, '').trim() || batch.board.title;
+  const actionCard = batch.cards.find((card) =>
+    card.type === 'note' || /(menu|order|reserve|book)/i.test(`${card.title} ${card.subtitle} ${card.place_query}`),
+  );
+  const menuLimit = Math.min(options.menuItems.length, Math.max(1, options.count - (actionCard ? 1 : 0)));
+  const menuCards = options.menuItems.slice(0, menuLimit).map((item, index): GeneratedBoardWizardCard => ({
+    title: item.title.slice(0, 80),
+    subtitle: [item.category, item.price].filter(Boolean).join(' · ').slice(0, 90) || 'Menu item',
+    notes: (item.description || `A menu item from ${restaurantName}.`).slice(0, 260),
+    type: 'food',
+    scope: 'place',
+    status: index < 3 ? 'favorite' : 'saved',
+    rating: index < 3 ? 5 : 4,
+    tags: mergeBoardWizardTags(['menu-item', 'food'], [item.category]),
+    image_query: `${item.title} ${restaurantName} food`.slice(0, 120),
+    place_query: restaurantName.slice(0, 140),
+    imageUrl: item.imageUrl || undefined,
+  }));
+  const finalAction: GeneratedBoardWizardCard = actionCard
+    ? { ...actionCard, tags: mergeBoardWizardTags(actionCard.tags, ['action']) }
+    : {
+        title: 'Open Menu',
+        subtitle: 'View the source menu',
+        notes: 'Use this card as the action link back to the restaurant menu.',
+        type: 'note',
+        scope: 'place',
+        status: 'planned',
+        rating: 4,
+        tags: ['action', 'menu'],
+        image_query: `${restaurantName} menu`,
+        place_query: options.sourceUrl,
+      };
+  const cards = [...menuCards, finalAction].slice(0, options.count);
+  return {
+    ...batch,
+    board: {
+      ...batch.board,
+      icon: 'restaurant',
+      description: `Menu-item board generated from ${restaurantName}.`,
+    },
+    cards,
+  };
+}
+
 async function enrichBoardWizardCard(
   card: GeneratedBoardWizardCard,
   searchContext: string,
@@ -3929,6 +4331,9 @@ async function enrichBoardWizardCardWithPlace(
   searchContext: string,
   apiKey: string,
 ): Promise<GeneratedBoardWizardCard> {
+  if (isBoardWizardMenuItemCard(card)) {
+    return card;
+  }
   if (card.scope !== 'place' || !['place', 'food', 'shop'].includes(card.type)) {
     return card;
   }
@@ -3990,6 +4395,14 @@ async function enrichBoardWizardCardWithPlace(
     });
     return card;
   }
+}
+
+function isBoardWizardMenuItemCard(card: GeneratedBoardWizardCard): boolean {
+  if (card.type !== 'food') {
+    return false;
+  }
+  const tags = card.tags.map((tag) => tag.toLowerCase());
+  return tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag));
 }
 
 async function fetchGooglePlaceDetailsForBoardWizard(
