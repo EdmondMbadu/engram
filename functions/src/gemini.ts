@@ -12,6 +12,7 @@ export const geminiApiKey = defineSecret('GEMINI_API_KEY');
 
 const model = 'gemini-3-flash-preview';
 const internetSearchModel = 'gemini-2.5-flash';
+const boardWizardModels = [model, internetSearchModel] as const;
 
 const knowledgeEntrySchema = {
   type: 'array',
@@ -1096,27 +1097,31 @@ export async function generateBoardWizardBatch(params: {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
   const prompt = buildBoardWizardPrompt({ ...params, count });
 
-  try {
-    const response = await generateContentWithRetry({
-      model: internetSearchModel,
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        responseJsonSchema: boardWizardBatchSchema,
-        temperature: 0.45,
-        maxOutputTokens: Math.min(8192, 900 + count * 360),
-        thinkingConfig: { thinkingBudget: 0 },
-      },
-    });
-    return normalizeBoardWizardBatch(parseJsonResponse<unknown>(response.text ?? '{}'), params, count);
-  } catch (error) {
-    logger.warn('Failed to generate board wizard batch with Gemini.', {
-      mode: params.mode,
-      count,
-      errorMessage: error instanceof Error ? error.message : String(error),
-    });
-    return buildFallbackBoardWizardBatch(params, count);
+  for (const wizardModel of boardWizardModels) {
+    try {
+      const response = await generateContentWithRetry({
+        model: wizardModel,
+        contents: prompt,
+        config: {
+          responseMimeType: 'application/json',
+          responseJsonSchema: boardWizardBatchSchema,
+          temperature: 0.28,
+          maxOutputTokens: Math.min(16384, 1100 + count * 420),
+          thinkingConfig: { thinkingBudget: wizardModel === model ? 512 : 0 },
+        },
+      });
+      return normalizeBoardWizardBatch(parseJsonResponse<unknown>(response.text ?? '{}'), params, count);
+    } catch (error) {
+      logger.warn('Failed to generate board wizard batch with Gemini model.', {
+        model: wizardModel,
+        mode: params.mode,
+        count,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    }
   }
+
+  return buildFallbackBoardWizardBatch(params, count);
 }
 
 function buildBoardWizardPrompt(params: {
@@ -1143,6 +1148,13 @@ function buildBoardWizardPrompt(params: {
     'Return only valid JSON matching the schema.',
     'Every card must be concrete and useful, not filler.',
     'Do not include duplicates. Prefer diversity across neighborhoods, styles, categories, or angles.',
+    'Follow explicit user constraints before applying defaults: exact counts, named entities, sorting/grouping, required images, location, language, and source URL details.',
+    'If the user asks for a known complete set (for example "56 signers"), create cards for the actual set members, not generic examples.',
+    'If the user asks for sorting or grouping, order the cards in that requested order. For "sort by state", put the state at the start of subtitle and include a state tag.',
+    'If the user asks for pictures, make image_query a specific image-search phrase for each card, such as a person portrait, menu item, hotel room, landmark, or product.',
+    'For URL mode, treat the URL as primary evidence. Extract concrete items from the page text before inventing outside examples.',
+    'For restaurant/menu URLs: build a board for the restaurant. Include cards for signature/menu items, address/location, hours/contact if present, reservation/order link if present, and a final action card such as "Reserve" or "Order".',
+    'For hotel/Airbnb/lodging URLs: build a board for that listing. Include room/amenity/fact cards, location/neighborhood, house rules/guest notes if present, booking link, and a final action card such as "Book Now".',
     'Each title should be max 70 characters. Each subtitle max 90 characters. Each notes field max 260 characters.',
     'Card type must be one of: place, food, memory, idea, shop, note.',
     'Scope must be one of: place, city, country, region.',
@@ -1157,6 +1169,12 @@ function buildBoardWizardPrompt(params: {
     params.targetBoardTitle ? `Target board title: ${params.targetBoardTitle}` : 'Create a clear board title.',
     params.existingCards?.length ? 'Avoid duplicating these existing cards:' : '',
     params.existingCards?.length ? JSON.stringify(params.existingCards.slice(0, 40)) : '',
+    '',
+    'Quality bar:',
+    '- Titles should be distinct, human-readable, and specific.',
+    '- Notes should explain why the card matters or what action to take.',
+    '- For cards representing links/actions, use type "note", status "planned", rating 4, and place_query equal to the URL or action text.',
+    '- Do not alphabetize unless asked. Preserve requested order when the user gives one.',
     '',
     'User input:',
     JSON.stringify({

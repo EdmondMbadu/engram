@@ -1133,6 +1133,48 @@ export class BoardsComponent {
     this.wizardCount.set(Math.max(1, Math.min(100, Number.isFinite(count) ? count : 12)));
   }
 
+  inferWizardRequestedCount(): number | null {
+    const text = [
+      this.wizardPrompt(),
+      this.wizardMode() === 'paste' ? this.wizardPastedList() : '',
+      this.wizardTargetBoardTitle(),
+    ].join(' ').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (!text) {
+      return null;
+    }
+
+    const numericPatterns = [
+      /\b(?:make|create|build|generate|include|with|top|best)\s+(?:a\s+board\s+(?:with|of)\s+)?(\d{1,3})\b/,
+      /\b(\d{1,3})\s+(?:signers|people|persons|destinations|places|restaurants|cards|items|facts|rooms|amenities|cities)\b/,
+    ];
+    for (const pattern of numericPatterns) {
+      const match = text.match(pattern);
+      const count = match?.[1] ? Number(match[1]) : 0;
+      if (Number.isInteger(count) && count >= 1 && count <= 100) {
+        return count;
+      }
+    }
+
+    const wordCounts: Record<string, number> = {
+      one: 1,
+      two: 2,
+      three: 3,
+      four: 4,
+      five: 5,
+      six: 6,
+      seven: 7,
+      eight: 8,
+      nine: 9,
+      ten: 10,
+      eleven: 11,
+      twelve: 12,
+      fifteen: 15,
+      twenty: 20,
+    };
+    const wordMatch = text.match(/\b(?:top|best|include|with|make|create|build|generate)\s+(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty)\b/);
+    return wordMatch?.[1] ? wordCounts[wordMatch[1]] ?? null : null;
+  }
+
   wizardPhotoNamesList(): string[] {
     return this.wizardPhotoNames()
       .split(/\n|,|;/)
@@ -1159,9 +1201,9 @@ export class BoardsComponent {
       case 'photos':
         return 'IMG_2041 beach sunrise.jpg\nbirthday-dinner-kalaya.png\nmuseum-day.jpeg';
       case 'url':
-        return 'https://example.com/best-weekend-guide';
+        return 'https://www.nationalmechanics.com/foodmenu-1';
       default:
-        return 'Best sushi in Philly for a date night, casual lunch, and splurge dinner.';
+        return 'Make a board with the 56 signers, sorted by state, and include portrait pictures.';
     }
   }
 
@@ -1170,6 +1212,10 @@ export class BoardsComponent {
       return;
     }
     this.wizardError.set(null);
+    const inferredCount = this.inferWizardRequestedCount();
+    if (inferredCount) {
+      this.setWizardCount(inferredCount);
+    }
     this.wizardStep.set('loading');
     this.wizardLoadingIndex.set(0);
     const interval = this.isBrowser

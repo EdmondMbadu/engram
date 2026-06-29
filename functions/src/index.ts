@@ -3817,12 +3817,14 @@ export const generateBoardWizardBatch = onCall(
     const mode = normalizeBoardWizardMode(data.mode);
     const defaultType = normalizeBoardWizardDefaultType(data.defaultType);
     const vibe = normalizeBoardWizardVibe(data.vibe);
-    const count = Math.max(1, Math.min(100, Number(data.count) || 12));
     const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
     const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
     const pastedList = stringOrEmpty(data.pastedList).slice(0, 12000);
     const url = stringOrEmpty(data.url).slice(0, 1000);
+    const explicitCount = inferBoardWizardRequestedCount([prompt, pastedList, targetBoardTitle].join(' '));
+    const requestedCount = explicitCount ?? (Number(data.count) || 12);
+    const count = Math.max(1, Math.min(100, requestedCount));
     const photoNames = Array.isArray(data.photoNames)
       ? data.photoNames.map((name) => stringOrEmpty(name).slice(0, 180)).filter(Boolean).slice(0, 100)
       : [];
@@ -3903,15 +3905,23 @@ async function enrichBoardWizardBatchWithPlaces(
   },
 ): Promise<typeof batch> {
   const apiKey = googlePlacesApiKey.value();
-  if (!apiKey) {
-    return batch;
-  }
-
   const searchContext = inferBoardWizardPlaceContext(context.prompt, context.targetBoardTitle || batch.board.title);
   const enrichedCards = await Promise.all(
-    batch.cards.map((card) => enrichBoardWizardCardWithPlace(card, searchContext, apiKey)),
+    batch.cards.map((card) => enrichBoardWizardCard(card, searchContext, apiKey)),
   );
   return { ...batch, cards: enrichedCards };
+}
+
+async function enrichBoardWizardCard(
+  card: GeneratedBoardWizardCard,
+  searchContext: string,
+  apiKey: string,
+): Promise<GeneratedBoardWizardCard> {
+  const placeEnriched = apiKey ? await enrichBoardWizardCardWithPlace(card, searchContext, apiKey) : card;
+  if (placeEnriched.imageUrl) {
+    return placeEnriched;
+  }
+  return await enrichBoardWizardCardWithReferenceImage(placeEnriched);
 }
 
 async function enrichBoardWizardCardWithPlace(
@@ -4002,6 +4012,65 @@ async function fetchGooglePlaceDetailsForBoardWizard(
   return details.result ?? null;
 }
 
+async function enrichBoardWizardCardWithReferenceImage(card: GeneratedBoardWizardCard): Promise<GeneratedBoardWizardCard> {
+  if (card.imageUrl) {
+    return card;
+  }
+
+  const query = textFromUnknown(card.image_query || card.title).slice(0, 140);
+  if (query.length < 2) {
+    return card;
+  }
+
+  try {
+    const imageUrl = await findReferenceImageForBoardWizard(query);
+    return imageUrl ? { ...card, imageUrl } : card;
+  } catch (error) {
+    logger.warn('Board wizard reference image lookup failed.', {
+      title: card.title,
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return card;
+  }
+}
+
+async function findReferenceImageForBoardWizard(query: string): Promise<string> {
+  const searchUrl = new URL('https://en.wikipedia.org/w/api.php');
+  searchUrl.searchParams.set('action', 'query');
+  searchUrl.searchParams.set('list', 'search');
+  searchUrl.searchParams.set('format', 'json');
+  searchUrl.searchParams.set('srlimit', '4');
+  searchUrl.searchParams.set('srsearch', query);
+
+  const search = await fetchJson<WikipediaSearchResponse>(searchUrl.toString());
+  const pageIds = (search.query?.search ?? [])
+    .map((result) => result.pageid)
+    .filter((pageId): pageId is number => typeof pageId === 'number')
+    .slice(0, 4);
+  if (!pageIds.length) {
+    return '';
+  }
+
+  const imageUrl = new URL('https://en.wikipedia.org/w/api.php');
+  imageUrl.searchParams.set('action', 'query');
+  imageUrl.searchParams.set('format', 'json');
+  imageUrl.searchParams.set('prop', 'pageimages');
+  imageUrl.searchParams.set('piprop', 'original|thumbnail');
+  imageUrl.searchParams.set('pithumbsize', '900');
+  imageUrl.searchParams.set('pageids', pageIds.join('|'));
+
+  const pages = await fetchJson<WikipediaPageImagesResponse>(imageUrl.toString());
+  for (const page of Object.values(pages.query?.pages ?? {})) {
+    const source = page.thumbnail?.source || page.original?.source || '';
+    if (source && canTryCoverImageUrl(source)) {
+      return source;
+    }
+  }
+
+  return '';
+}
+
 function inferBoardWizardPlaceContext(prompt: string, boardTitle: string): string {
   const text = `${prompt} ${boardTitle}`.replace(/\s+/g, ' ');
   const explicitIn = text.match(/\bin\s+([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,4})/);
@@ -4013,6 +4082,44 @@ function inferBoardWizardPlaceContext(prompt: string, boardTitle: string): strin
     return explicitNear[1].replace(/[,.!?].*$/, '').trim();
   }
   return boardTitle;
+}
+
+function inferBoardWizardRequestedCount(text: string): number | null {
+  const normalized = text.replace(/\s+/g, ' ').trim().toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+
+  const numericPatterns = [
+    /\b(?:make|create|build|generate|include|with|top|best)\s+(?:a\s+board\s+(?:with|of)\s+)?(\d{1,3})\b/,
+    /\b(\d{1,3})\s+(?:signers|people|persons|destinations|places|restaurants|cards|items|facts|rooms|amenities|cities)\b/,
+  ];
+  for (const pattern of numericPatterns) {
+    const match = normalized.match(pattern);
+    const count = match?.[1] ? Number(match[1]) : 0;
+    if (Number.isInteger(count) && count >= 1 && count <= 100) {
+      return count;
+    }
+  }
+
+  const words: Record<string, number> = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+    ten: 10,
+    eleven: 11,
+    twelve: 12,
+    fifteen: 15,
+    twenty: 20,
+  };
+  const wordMatch = normalized.match(/\b(?:top|best|include|with|make|create|build|generate)\s+(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty)\b/);
+  return wordMatch?.[1] ? words[wordMatch[1]] ?? null : null;
 }
 
 function mergeBoardWizardTags(existing: string[], additions: string[]): string[] {
