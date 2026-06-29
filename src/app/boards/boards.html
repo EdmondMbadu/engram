@@ -421,10 +421,12 @@
                 <span class="material-symbols-outlined">ios_share</span>
                 Share
               </button>
-              <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)">
-                <span class="material-symbols-outlined">auto_awesome_motion</span>
-                Studio
-              </button>
+              @if (canUseStackStudio(board)) {
+                <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)">
+                  <span class="material-symbols-outlined">auto_awesome_motion</span>
+                  Studio
+                </button>
+              }
             </div>
 
             <div class="board-detail__summary">
@@ -492,10 +494,12 @@
                     <span class="material-symbols-outlined">smart_display</span>
                     Open Reel
                   </button>
-                  <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
-                    <span class="material-symbols-outlined">auto_awesome_motion</span>
-                    Stack Studio
-                  </button>
+                  @if (canUseStackStudio(board)) {
+                    <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
+                      <span class="material-symbols-outlined">auto_awesome_motion</span>
+                      Stack Studio
+                    </button>
+                  }
                   <button type="button" (click)="nativeShareBoard(board)">
                     <span class="material-symbols-outlined">ios_share</span>
                     Share
@@ -1261,36 +1265,6 @@
                   </div>
                 </section>
 
-                <section class="stack-panel stack-panel--soon">
-                  <div class="stack-panel__head">
-                    <div>
-                      <p>Studio motion</p>
-                      <h4>Coming soon</h4>
-                    </div>
-                    <span class="stack-soon-pill">Notify ready</span>
-                  </div>
-                  <div class="stack-soon-grid" aria-disabled="true">
-                    <label>
-                      <span>Music</span>
-                      <select disabled>
-                        <option>Bright city beat</option>
-                      </select>
-                    </label>
-                    <label>
-                      <span>Vibe</span>
-                      <select disabled>
-                        <option>Clean editorial</option>
-                      </select>
-                    </label>
-                    <label>
-                      <span>Transitions</span>
-                      <select disabled>
-                        <option>Soft slide</option>
-                      </select>
-                    </label>
-                  </div>
-                  <p>Studio motion tools are coming soon. You will be notified when they are ready.</p>
-                </section>
               </div>
 
               <aside class="stack-preview-panel">

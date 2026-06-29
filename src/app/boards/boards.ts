@@ -2039,6 +2039,14 @@ export class BoardsComponent {
     return !!uid && (this.authService.isAdmin() || !board.ownerUserId || board.ownerUserId === uid);
   }
 
+  canUseStackStudio(board: Board | null | undefined): boolean {
+    if (!board) {
+      return false;
+    }
+    const uid = this.authService.uid();
+    return !!uid && (this.authService.isAdmin() || board.ownerUserId === uid);
+  }
+
   ownerName(board: Board): string {
     const name = board.ownerDisplayName.trim();
     if (name) {
@@ -2133,6 +2141,11 @@ export class BoardsComponent {
   openStackStudio(board: Board, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
+    if (!this.canUseStackStudio(board)) {
+      this.sharePanelOpen.set(true);
+      this.shareMessage.set('Only the board owner can open Studio.');
+      return;
+    }
     this.prepareStackForBoard(board);
     this.sharePanelOpen.set(false);
     this.stackStudioOpen.set(true);
