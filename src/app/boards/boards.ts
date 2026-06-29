@@ -759,7 +759,20 @@ export class BoardsComponent {
     const uid = this.authService.uid();
     const publicOwnerKey = this.publicOwnerKey();
     const publicOwnerUid = this.publicOwnerUid();
-    return this.authService.isAuthenticated() && (!publicOwnerKey || publicOwnerUid === uid);
+    if (!this.authService.isAuthenticated()) {
+      return false;
+    }
+    if (!publicOwnerKey) {
+      return true;
+    }
+    if (publicOwnerUid) {
+      return publicOwnerUid === uid;
+    }
+    const ownerBoard = this.boardsProfileBoard();
+    if (ownerBoard?.ownerUserId) {
+      return ownerBoard.ownerUserId === uid;
+    }
+    return this.publicOwnerSlug() === this.currentPublicOwnerKey();
   });
   readonly boardsProfileBoard = computed(() => this.boards().find((board) => board.ownerUserId) ?? null);
   readonly boardsProfileName = computed(() => {
@@ -951,7 +964,10 @@ export class BoardsComponent {
       this.setShareMessage(null);
       this.sharePanelOpen.set(false);
       this.closeStackStudio();
-      void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => this.syncStackDirectView());
+      void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => {
+        this.syncStackDirectView();
+        this.canonicalizeBoardsRootRoute(boardId, ownerKey);
+      });
     });
 
     this.route.queryParamMap.subscribe((params) => {
@@ -968,8 +984,20 @@ export class BoardsComponent {
       const publicOwnerKey = this.publicOwnerKey();
       const publicOwnerUid = this.publicOwnerUid();
       const uid = this.authService.uid();
-      if (publicOwnerKey && publicOwnerUid !== uid) {
-        return;
+      if (publicOwnerKey) {
+        if (publicOwnerUid) {
+          if (publicOwnerUid !== uid) {
+            return;
+          }
+        } else {
+          const ownerBoard = this.boardsProfileBoard();
+          const isOwnShortShelf = ownerBoard?.ownerUserId
+            ? ownerBoard.ownerUserId === uid
+            : this.publicOwnerSlug() === this.currentPublicOwnerKey();
+          if (!isOwnShortShelf) {
+            return;
+          }
+        }
       }
       window.localStorage.setItem(
         STORAGE_KEY,
@@ -992,7 +1020,7 @@ export class BoardsComponent {
   }
 
   closeBoardDetail(): void {
-    void this.router.navigate(['/boards']);
+    void this.router.navigateByUrl(this.boardsProfileRoutePath());
   }
 
   isBoardFlipped(boardId: string): boolean {
@@ -1465,7 +1493,7 @@ export class BoardsComponent {
 
     this.boards.update((boards) => boards.filter((item) => item.id !== board.id));
     if (this.selectedBoardId() === board.id) {
-      void this.router.navigate(['/boards']);
+      void this.router.navigateByUrl(this.boardsProfileRoutePath());
     }
     void this.deleteRemoteBoard(board.id);
   }
@@ -2136,14 +2164,10 @@ export class BoardsComponent {
   }
 
   boardsProfileShareUrl(): string {
-    const boardSlug = this.boardsProfileBoard()?.ownerPublicSlug.trim();
-    const ownerKey = boardSlug
-      || (this.publicOwnerUid() ? this.publicOwnerKey() : this.publicOwnerSlug())
-      || this.currentPublicOwnerKey();
-    if (!ownerKey) {
+    const path = this.boardsProfileRoutePath();
+    if (path === '/boards') {
       return '';
     }
-    const path = `/boards/u/${encodeURIComponent(ownerKey)}`;
     if (!this.isBrowser) {
       return path;
     }
@@ -2494,6 +2518,25 @@ export class BoardsComponent {
     }
     this.stackStudioOpen.set(false);
     this.startStackPlayback();
+  }
+
+  private canonicalizeBoardsRootRoute(boardId: string | null, ownerKey: string | null): void {
+    if (!this.isBrowser || boardId || ownerKey !== null || !this.authService.uid()) {
+      return;
+    }
+
+    const path = this.boardsProfileRoutePath();
+    if (path !== '/boards') {
+      void this.router.navigateByUrl(path, { replaceUrl: true });
+    }
+  }
+
+  private boardsProfileRoutePath(): string {
+    const boardSlug = this.boardsProfileBoard()?.ownerPublicSlug.trim();
+    const ownerKey = boardSlug
+      || (this.publicOwnerUid() ? this.publicOwnerKey() : this.publicOwnerSlug())
+      || this.currentPublicOwnerKey();
+    return ownerKey ? `/boards/u/${encodeURIComponent(ownerKey)}` : '/boards';
   }
 
   private setShareMessage(message: string | null, autoClear = true): void {
