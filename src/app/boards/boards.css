@@ -795,21 +795,30 @@
   line-height: 1.55;
 }
 
-.board-detail__share-note {
+.board-share-panel__note,
+.stack-studio__notice {
   display: block;
-  margin-top: 0.65rem;
+  margin-top: 0.2rem;
   overflow-wrap: anywhere;
   border: 2px solid var(--ink);
   border-radius: 999px;
   background: #ffffff;
   box-shadow: 2px 2px 0 var(--ink);
-  color: var(--board-accent);
+  color: var(--accent);
   font-size: 0.68rem;
   font-weight: 950;
   line-height: 1.25;
   padding: 0.4rem 0.55rem;
   width: fit-content;
   max-width: 100%;
+}
+
+.board-share-panel__note {
+  color: var(--board-accent);
+}
+
+.stack-studio__notice {
+  margin: -0.35rem 0 0;
 }
 
 .board-share-panel {
@@ -2279,6 +2288,7 @@
 .boards-wizard__intro h4,
 .boards-wizard__intro p,
 .boards-wizard-loading h4,
+.boards-wizard-loading p,
 .boards-wizard-done h4 {
   margin: 0;
 }
@@ -2296,6 +2306,14 @@
   margin-top: 0.25rem;
   color: var(--muted);
   font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.boards-wizard-loading p {
+  max-width: 28rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
   line-height: 1.45;
 }
 
@@ -2399,8 +2417,13 @@
 .boards-wizard-loading,
 .boards-wizard-done {
   justify-items: center;
+  gap: 0.8rem;
   padding: 4rem 1rem;
   text-align: center;
+}
+
+.boards-wizard-loading__mark .material-symbols-outlined {
+  animation: boardsWizardSpin 1s linear infinite;
 }
 
 .boards-wizard-progress {
@@ -2415,10 +2438,32 @@
 
 .boards-wizard-progress span {
   display: block;
+  position: relative;
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #00d084, #ffef3d, #ff4d8d);
-  transition: width 0.25s ease;
+  transition: width 0.35s ease;
+}
+
+.boards-wizard-progress span::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.7) 48%, transparent 100%);
+  content: '';
+  transform: translateX(-100%);
+  animation: boardsWizardShine 1.1s ease-in-out infinite;
+}
+
+@keyframes boardsWizardSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes boardsWizardShine {
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .boards-wizard-preview__bar,
@@ -3825,5 +3870,10 @@
   .board-square__open::after,
   .detail-card::after {
     transition: none;
+  }
+
+  .boards-wizard-loading__mark .material-symbols-outlined,
+  .boards-wizard-progress span::after {
+    animation: none;
   }
 }

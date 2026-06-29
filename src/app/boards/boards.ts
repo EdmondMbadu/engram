@@ -629,6 +629,8 @@ export class BoardsComponent {
   private stickerDragState: StickerDragState | null = null;
   private suppressNextBoardOpen = false;
   private stackPlaybackTimer: ReturnType<typeof setInterval> | null = null;
+  private shareMessageTimer: ReturnType<typeof setTimeout> | null = null;
+  private stackShareMessageTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly tones = BOARD_TONES;
   readonly cardTypes = CARD_TYPES;
@@ -900,7 +902,7 @@ export class BoardsComponent {
       this.selectedBoardId.set(boardId);
       this.cardSearch.set('');
       this.closeCardManageMode();
-      this.shareMessage.set(null);
+      this.setShareMessage(null);
       this.sharePanelOpen.set(false);
       this.closeStackStudio();
       void this.loadBoards(boardId).then(() => this.syncStackDirectView());
@@ -1092,7 +1094,7 @@ export class BoardsComponent {
     this.wizardLoadingIndex.set(0);
     const interval = this.isBrowser
       ? window.setInterval(() => {
-          this.wizardLoadingIndex.update((index) => Math.min(index + 1, BOARD_WIZARD_STATUS_MESSAGES.length - 1));
+          this.wizardLoadingIndex.update((index) => (index + 1) % BOARD_WIZARD_STATUS_MESSAGES.length);
         }, 900)
       : null;
 
@@ -2071,7 +2073,7 @@ export class BoardsComponent {
 
   toggleSharePanel(): void {
     this.sharePanelOpen.update((open) => !open);
-    this.shareMessage.set(null);
+    this.setShareMessage(null);
   }
 
   boardShareUrl(board: Board): string {
@@ -2093,9 +2095,9 @@ export class BoardsComponent {
     const url = this.boardShareUrl(board);
     try {
       await navigator.clipboard.writeText(url);
-      this.shareMessage.set('Board link copied.');
+      this.setShareMessage('Board link copied.');
     } catch {
-      this.shareMessage.set(url);
+      this.setShareMessage('Copy blocked. The link is visible here.');
     }
   }
 
@@ -2107,11 +2109,17 @@ export class BoardsComponent {
     const url = this.stackShareUrl(board);
     try {
       await navigator.clipboard.writeText(url);
-      this.shareMessage.set('Stack link copied.');
-      this.stackShareMessage.set('Stack link copied.');
+      if (this.stackStudioOpen() || this.stackDirectView() || this.stackShareDialogOpen()) {
+        this.setStackShareMessage('Stack link copied.');
+      } else {
+        this.setShareMessage('Stack link copied.');
+      }
     } catch {
-      this.shareMessage.set(url);
-      this.stackShareMessage.set(url);
+      if (this.stackStudioOpen() || this.stackDirectView() || this.stackShareDialogOpen()) {
+        this.setStackShareMessage('Copy blocked. The Stack link is visible here.');
+      } else {
+        this.setShareMessage('Copy blocked. The Stack link is visible here.');
+      }
     }
   }
 
@@ -2128,13 +2136,13 @@ export class BoardsComponent {
           text: board.description || 'LivingWiki Stack',
           url,
         });
-        this.shareMessage.set('Share sheet opened.');
+        this.setShareMessage('Share sheet opened.');
         return;
       }
 
       await this.copyStackUrl(board);
     } catch {
-      this.shareMessage.set(url);
+      this.setShareMessage('Share was cancelled or blocked.');
     }
   }
 
@@ -2143,7 +2151,7 @@ export class BoardsComponent {
     event?.stopPropagation();
     if (!this.canUseStackStudio(board)) {
       this.sharePanelOpen.set(true);
-      this.shareMessage.set('Only the board owner can open Studio.');
+      this.setShareMessage('Only the board owner can open Studio.');
       return;
     }
     this.prepareStackForBoard(board);
@@ -2173,7 +2181,7 @@ export class BoardsComponent {
   closeStackStudio(): void {
     this.stopStackPlayback();
     this.stackStudioOpen.set(false);
-    this.stackShareMessage.set(null);
+    this.setStackShareMessage(null);
   }
 
   openStackShareDialog(board: Board, event?: Event): void {
@@ -2289,11 +2297,11 @@ export class BoardsComponent {
     const text = `${caption}\n${url}`;
     const encodedUrl = encodeURIComponent(url);
     const encodedText = encodeURIComponent(text);
-    this.stackShareMessage.set(null);
+    this.setStackShareMessage(null);
 
     if (target === 'download') {
       await this.copyTextToClipboard(text);
-      this.stackShareMessage.set('Stack image and video export is coming soon. The share text is copied.');
+      this.setStackShareMessage('Stack image and video export is coming soon. The share text is copied.');
       return;
     }
 
@@ -2301,15 +2309,15 @@ export class BoardsComponent {
       if (navigator.share) {
         try {
           await navigator.share({ title: board.title, text: caption, url });
-          this.stackShareMessage.set('Share sheet opened.');
+          this.setStackShareMessage('Share sheet opened.');
           return;
         } catch {
-          this.stackShareMessage.set('Share was cancelled.');
+          this.setStackShareMessage('Share was cancelled.');
           return;
         }
       }
       await this.copyTextToClipboard(text);
-      this.stackShareMessage.set(`${target === 'instagram' ? 'Instagram' : 'TikTok'} media export is coming soon. The share text is copied.`);
+      this.setStackShareMessage(`${target === 'instagram' ? 'Instagram' : 'TikTok'} media export is coming soon. The share text is copied.`);
       return;
     }
 
@@ -2321,7 +2329,7 @@ export class BoardsComponent {
           : `https://twitter.com/intent/tweet?text=${encodeURIComponent(caption)}&url=${encodedUrl}`;
     void this.copyTextToClipboard(text);
     window.open(shareUrl, '_blank', 'noopener');
-    this.stackShareMessage.set(`${this.stackExportTargets.find((item) => item.id === target)?.label ?? 'Share'} opened. The share text is copied too.`);
+    this.setStackShareMessage(`${this.stackExportTargets.find((item) => item.id === target)?.label ?? 'Share'} opened. The share text is copied too.`);
   }
 
   shareTargetUrl(target: ShareTarget, board: Board, stack = false): string {
@@ -2356,7 +2364,7 @@ export class BoardsComponent {
     this.stackFormat.set('reel');
     this.stackRatio.set('vertical');
     this.stackFrameIndex.set(0);
-    this.stackShareMessage.set(null);
+    this.setStackShareMessage(null);
   }
 
   private syncStackDirectView(): void {
@@ -2372,6 +2380,34 @@ export class BoardsComponent {
     }
     this.stackStudioOpen.set(false);
     this.startStackPlayback();
+  }
+
+  private setShareMessage(message: string | null, autoClear = true): void {
+    if (this.shareMessageTimer) {
+      clearTimeout(this.shareMessageTimer);
+      this.shareMessageTimer = null;
+    }
+    this.shareMessage.set(message);
+    if (message && autoClear) {
+      this.shareMessageTimer = setTimeout(() => {
+        this.shareMessage.set(null);
+        this.shareMessageTimer = null;
+      }, 2400);
+    }
+  }
+
+  private setStackShareMessage(message: string | null, autoClear = true): void {
+    if (this.stackShareMessageTimer) {
+      clearTimeout(this.stackShareMessageTimer);
+      this.stackShareMessageTimer = null;
+    }
+    this.stackShareMessage.set(message);
+    if (message && autoClear) {
+      this.stackShareMessageTimer = setTimeout(() => {
+        this.stackShareMessage.set(null);
+        this.stackShareMessageTimer = null;
+      }, 2400);
+    }
   }
 
   private clampStackFrameIndex(): void {
@@ -2420,6 +2456,11 @@ export class BoardsComponent {
 
   wizardLoadingMessage(): string {
     return BOARD_WIZARD_STATUS_MESSAGES[this.wizardLoadingIndex()] ?? BOARD_WIZARD_STATUS_MESSAGES[0];
+  }
+
+  wizardLoadingProgress(): number {
+    const stepCount = BOARD_WIZARD_STATUS_MESSAGES.length;
+    return ((this.wizardLoadingIndex() % stepCount) + 1) * (100 / stepCount);
   }
 
   wizardTargetBoardTitle(): string {

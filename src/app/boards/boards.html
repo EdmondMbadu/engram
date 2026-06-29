@@ -462,9 +462,6 @@
                     <strong style="overflow: hidden; color: var(--ink); font-size: 1rem; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap;">{{ ownerName(board) }}</strong>
                   </span>
                 </div>
-                @if (shareMessage()) {
-                  <small class="board-detail__share-note">{{ shareMessage() }}</small>
-                }
               </div>
 
               <div class="board-detail__stats">
@@ -515,6 +512,9 @@
                     </a>
                   }
                 </div>
+                @if (shareMessage()) {
+                  <small class="board-share-panel__note">{{ shareMessage() }}</small>
+                }
               </div>
             }
           </div>
@@ -966,13 +966,14 @@
             </div>
           </form>
         } @else if (wizardStep() === 'loading') {
-          <div class="boards-wizard boards-wizard-loading">
+          <div class="boards-wizard boards-wizard-loading" aria-live="polite">
             <span class="boards-wizard-loading__mark">
-              <span class="material-symbols-outlined">auto_awesome</span>
+              <span class="material-symbols-outlined">sync</span>
             </span>
             <h4>{{ wizardLoadingMessage() }}</h4>
+            <p>Building the preview. This stays active while places, images, and cards finish.</p>
             <div class="boards-wizard-progress">
-              <span [style.width.%]="(wizardLoadingIndex() + 1) * 20"></span>
+              <span [style.width.%]="wizardLoadingProgress()"></span>
             </div>
           </div>
         } @else if (wizardStep() === 'preview') {
@@ -1164,6 +1165,9 @@
                 </button>
               </div>
             </header>
+            @if (stackShareMessage()) {
+              <small class="stack-studio__notice">{{ stackShareMessage() }}</small>
+            }
 
             <div class="stack-studio__grid">
               <div class="stack-editor">
