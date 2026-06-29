@@ -2141,7 +2141,7 @@
   inset: 0;
   width: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #ffffff, #ffffff 82%, rgba(255, 255, 255, 0.72));
+  background: #ffffff;
   transform: scaleX(0);
   transform-origin: left center;
 }
@@ -2223,7 +2223,9 @@
 .stack-viewer-overlay--top {
   top: max(0.55rem, env(safe-area-inset-top));
   z-index: 8;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.72), transparent);
   padding-top: 1.25rem;
 }
@@ -2233,6 +2235,11 @@
   align-items: center;
   min-width: 0;
   gap: 0.68rem !important;
+}
+
+.stack-viewer-titlebar > div {
+  display: grid;
+  min-width: 0;
 }
 
 .stack-viewer-avatar {
@@ -2256,14 +2263,8 @@
 
 .stack-viewer-actions {
   display: inline-flex !important;
-  flex-shrink: 0;
+  justify-content: flex-end;
   gap: 0.95rem !important;
-}
-
-.stack-viewer-overlay > div {
-  display: grid;
-  min-width: 0;
-  gap: 0.12rem;
 }
 
 .stack-viewer-overlay strong,
@@ -2276,11 +2277,13 @@
 }
 
 .stack-viewer-overlay strong {
+  display: block;
   font-size: 0.92rem;
   font-weight: 950;
 }
 
-.stack-viewer-overlay > div > span {
+.stack-viewer-titlebar > div > span {
+  display: block;
   color: rgba(255, 255, 255, 0.72);
   font-size: 0.7rem;
   font-weight: 850;
@@ -2307,16 +2310,18 @@
 }
 
 .stack-viewer-actions button {
-  min-width: 1.9rem;
-  min-height: 1.9rem;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  min-height: 2rem;
   border: 0;
   background: transparent;
   padding: 0;
-  backdrop-filter: none;
 }
 
 .stack-viewer-actions .material-symbols-outlined {
-  font-size: 2rem;
+  font-size: 1.95rem;
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 40;
 }
 
 .stack-viewer-side {

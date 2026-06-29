@@ -44,7 +44,7 @@
                   <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
                 </button>
                 <button type="button" aria-label="Share Stack" (click)="openStackShareDialog(board, $event)">
-                  <span class="material-symbols-outlined">ios_share</span>
+                  <span class="material-symbols-outlined">near_me</span>
                 </button>
                 <button type="button" aria-label="Open board" (click)="closeStackView(board)">
                   <span class="material-symbols-outlined">close</span>
@@ -70,7 +70,6 @@
                       <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
                     }
                     <div class="stack-preview__shade"></div>
-                    <div class="stack-preview__brand">LivingWiki</div>
                     <div class="stack-preview__content">
                       <span>{{ card.status }} · {{ card.rating }}/5</span>
                       <h4>{{ card.title }}</h4>
