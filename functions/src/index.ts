@@ -69,6 +69,7 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
   default: 'false',
 });
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
+const googleCustomSearchApiKey = defineSecret('GOOGLE_CUSTOM_SEARCH_API_KEY');
 const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
 const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
@@ -4282,7 +4283,7 @@ export const generateBoardWizardBatch = onCall(
     cors: true,
     timeoutSeconds: 180,
     memory: '1GiB',
-    secrets: [geminiApiKey, googlePlacesApiKey],
+    secrets: [geminiApiKey, googlePlacesApiKey, googleCustomSearchApiKey],
   },
   async (request) => {
     const userId = request.auth?.uid;
@@ -4401,15 +4402,16 @@ async function enrichBoardWizardBatchWithPlaces(
   },
 ): Promise<typeof batch> {
   const apiKey = googlePlacesApiKey.value();
+  const customSearchApiKey = googleCustomSearchApiKey.value();
   const searchContext = inferBoardWizardPlaceContext(context.prompt, context.targetBoardTitle || batch.board.title);
   const menuImageCache = new Map<string, Promise<string>>();
   const restaurantPhotoUrls = apiKey && batch.cards.some((card) => isBoardWizardMenuItemCard(card) && !card.imageUrl)
-    ? await fetchBoardWizardRestaurantPhotoUrls(searchContext, apiKey)
+    ? await withBoardWizardTimeout(fetchBoardWizardRestaurantPhotoUrls(searchContext, apiKey), 5_000, [])
     : [];
   const enrichedCards = await Promise.all(
     batch.cards.map(async (card, index) => {
       if (isBoardWizardMenuItemCard(card) && !card.imageUrl) {
-        const itemImageUrl = await resolveBoardWizardMenuItemImage(card, searchContext, apiKey, menuImageCache);
+        const itemImageUrl = await resolveBoardWizardMenuItemImage(card, searchContext, customSearchApiKey, menuImageCache);
         if (itemImageUrl) {
           return { ...card, imageUrl: itemImageUrl };
         }
@@ -4638,30 +4640,34 @@ function isBoardWizardMenuItemCard(card: GeneratedBoardWizardCard): boolean {
   return tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag));
 }
 
+async function withBoardWizardTimeout<T>(promise: Promise<T>, timeoutMs: number, fallback: T): Promise<T> {
+  let timeout: NodeJS.Timeout | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<T>((resolve) => {
+        timeout = setTimeout(() => resolve(fallback), timeoutMs);
+      }),
+    ]);
+  } finally {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  }
+}
+
 async function resolveBoardWizardMenuItemImage(
   card: GeneratedBoardWizardCard,
   searchContext: string,
-  apiKey: string,
+  customSearchApiKey: string,
   cache: Map<string, Promise<string>>,
 ): Promise<string> {
-  const queries = buildBoardWizardMenuItemImageQueries(card, searchContext);
+  const queries = buildBoardWizardMenuItemImageQueries(card, searchContext).slice(0, 2);
   for (const query of queries) {
     const cacheKey = `web:${query.toLowerCase()}`;
     let pending = cache.get(cacheKey);
     if (!pending) {
-      pending = findBoardWizardMenuItemWebImage(query, apiKey);
-      cache.set(cacheKey, pending);
-    }
-    const imageUrl = await pending;
-    if (imageUrl) {
-      return imageUrl;
-    }
-  }
-  for (const query of queries) {
-    const cacheKey = `place:${query.toLowerCase()}`;
-    let pending = cache.get(cacheKey);
-    if (!pending) {
-      pending = apiKey ? findGooglePlaceFoodPhotoForBoardWizard(query, apiKey) : Promise.resolve('');
+      pending = withBoardWizardTimeout(findBoardWizardMenuItemWebImage(query, customSearchApiKey), 4_000, '');
       cache.set(cacheKey, pending);
     }
     const imageUrl = await pending;
@@ -4698,37 +4704,8 @@ function buildBoardWizardMenuItemImageQueries(card: GeneratedBoardWizardCard, se
     .slice(0, 5);
 }
 
-async function findBoardWizardMenuItemWebImage(query: string, apiKey: string): Promise<string> {
-  const googleImageUrl = apiKey ? await findGoogleCustomSearchImageForBoardWizard(query, apiKey) : '';
-  if (googleImageUrl) {
-    return googleImageUrl;
-  }
-
-  try {
-    const referenceImageUrl = await findReferenceImageForBoardWizard(query);
-    if (referenceImageUrl) {
-      return referenceImageUrl;
-    }
-  } catch (error) {
-    logger.warn('Board wizard menu item reference image failed.', {
-      query,
-      errorMessage: error instanceof Error ? error.message : String(error),
-    });
-  }
-
-  try {
-    const commonsImageUrl = await findCommonsReferenceImageForBoardWizard(query);
-    if (commonsImageUrl) {
-      return commonsImageUrl;
-    }
-  } catch (error) {
-    logger.warn('Board wizard menu item Commons image failed.', {
-      query,
-      errorMessage: error instanceof Error ? error.message : String(error),
-    });
-  }
-
-  return '';
+async function findBoardWizardMenuItemWebImage(query: string, customSearchApiKey: string): Promise<string> {
+  return customSearchApiKey ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey) : '';
 }
 
 async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: string): Promise<string> {
@@ -4746,7 +4723,22 @@ async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: 
     searchUrl.searchParams.set('safe', 'active');
     searchUrl.searchParams.set('imgType', 'photo');
     searchUrl.searchParams.set('num', '4');
-    const search = await fetchJson<GoogleCustomSearchImageResponse>(searchUrl.toString());
+    const response = await fetch(searchUrl.toString(), {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'LivingWiki/1.0 board-wizard (https://livingwiki.com)',
+      },
+      signal: AbortSignal.timeout(3500),
+    });
+    const search = await response.json() as GoogleCustomSearchImageResponse;
+    if (!response.ok) {
+      logger.warn('Board wizard Google image search failed.', {
+        query,
+        status: response.status,
+        error: search.error?.message,
+      });
+      return '';
+    }
     if (search.error?.message) {
       logger.warn('Board wizard Google image search failed.', {
         query,

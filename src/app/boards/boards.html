@@ -1047,6 +1047,12 @@
                     @if (card.editing) {
                       <div class="boards-wizard-card__edit">
                         <input
+                          type="url"
+                          placeholder="Image URL"
+                          [value]="card.imageUrl"
+                          (input)="updateWizardCard(card.id, 'imageUrl', $any($event.target).value)"
+                        />
+                        <input
                           type="text"
                           maxlength="80"
                           [value]="card.title"
@@ -1103,6 +1109,17 @@
                         <span class="material-symbols-outlined">{{ card.editing ? 'done' : 'edit' }}</span>
                         {{ card.editing ? 'Done' : 'Edit' }}
                       </button>
+                      <input #wizardCardImageInput hidden type="file" accept="image/*" (change)="onWizardCardImageSelected(card.id, $event)" />
+                      <button type="button" (click)="wizardCardImageInput.click()">
+                        <span class="material-symbols-outlined">add_photo_alternate</span>
+                        Picture
+                      </button>
+                      @if (card.imageUrl) {
+                        <button type="button" (click)="clearWizardCardImage(card.id)">
+                          <span class="material-symbols-outlined">hide_image</span>
+                          Clear
+                        </button>
+                      }
                       <button type="button" (click)="redoWizardCard(card.id)">
                         <span class="material-symbols-outlined">refresh</span>
                         Redo

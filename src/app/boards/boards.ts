@@ -1354,6 +1354,32 @@ export class BoardsComponent {
     );
   }
 
+  async onWizardCardImageSelected(cardId: string, event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) {
+      return;
+    }
+
+    try {
+      const imageUrl = await this.readImageFile(file);
+      this.updateWizardCard(cardId, 'imageUrl', imageUrl);
+      this.wizardError.set(null);
+      this.imageUploadError.set(null);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not use that image.';
+      this.wizardError.set(message);
+      this.imageUploadError.set(message);
+    }
+  }
+
+  clearWizardCardImage(cardId: string): void {
+    this.updateWizardCard(cardId, 'imageUrl', '');
+    this.wizardError.set(null);
+    this.imageUploadError.set(null);
+  }
+
   async saveWizardBatch(): Promise<void> {
     const result = this.wizardResult();
     const selectedIds = this.wizardSelectedCardIds();
