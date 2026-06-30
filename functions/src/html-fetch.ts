@@ -58,9 +58,10 @@ export function looksLikeAntiBotChallenge(html: string): boolean {
 
 export async function fetchHtmlWithFallback(
   url: string,
-  options?: { timeoutMs?: number; preferBrowser?: boolean },
+  options?: { timeoutMs?: number; preferBrowser?: boolean; allowBrowserFallback?: boolean },
 ): Promise<HtmlFetchResult> {
   const timeoutMs = options?.timeoutMs ?? 60_000;
+  const allowBrowserFallback = options?.allowBrowserFallback ?? true;
   if (options?.preferBrowser) {
     try {
       const browser = await fetchHtmlInBrowser(url, timeoutMs);
@@ -74,6 +75,10 @@ export async function fetchHtmlWithFallback(
 
   const raw = await fetchHtmlRaw(url, timeoutMs);
   if (raw.status > 0 && raw.status < 400 && !looksLikeAntiBotChallenge(raw.html)) {
+    return raw;
+  }
+
+  if (!allowBrowserFallback) {
     return raw;
   }
 

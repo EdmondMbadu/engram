@@ -2738,7 +2738,7 @@ export class BoardsComponent {
       refinement ? `Refinement: ${refinement}` : '',
     ].filter(Boolean).join('\n');
     const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
-      timeout: 180_000,
+      timeout: 75_000,
     });
     const response = await callable({
       mode: this.wizardMode(),

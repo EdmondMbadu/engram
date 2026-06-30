@@ -3805,7 +3805,7 @@ async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, ht
   const links = extractBoardWizardLinks(html, baseUrl);
   const importantLinks = links.filter(isBoardWizardRestaurantLink).slice(0, 18);
   const images = extractBoardWizardImages(html, baseUrl).slice(0, 18);
-  const linkedContext = await fetchBoardWizardLinkedContext(importantLinks, baseUrl);
+  const linkedContext = '';
   const restaurantLike = looksLikeRestaurantWizardUrl(inputUrl, pageText, importantLinks);
   const menuItems = restaurantLike ? extractBoardWizardMenuItems(pageLines, images).slice(0, 50) : [];
 
@@ -4316,18 +4316,12 @@ export const generateBoardWizardBatch = onCall(
     }
     if (mode === 'url' && url && !urlExtraction) {
       try {
-        const fetched = await fetchHtmlWithFallback(url, { timeoutMs: 25_000 });
+        const fetched = await fetchHtmlWithFallback(url, {
+          timeoutMs: 8_000,
+          allowBrowserFallback: false,
+        });
         if (!looksLikeAntiBotChallenge(fetched.html)) {
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
-        }
-        if ((urlExtraction?.restaurantLike && urlExtraction.menuItems.length < 3) || !urlExtraction) {
-          const rendered = await fetchHtmlWithFallback(url, { timeoutMs: 35_000, preferBrowser: true });
-          if (!looksLikeAntiBotChallenge(rendered.html)) {
-            const renderedExtraction = await buildBoardWizardUrlContext(url, rendered.finalUrl || url, rendered.html);
-            if (renderedExtraction.menuItems.length > (urlExtraction?.menuItems.length ?? 0)) {
-              urlExtraction = renderedExtraction;
-            }
-          }
         }
       } catch (error) {
         logger.warn('Board wizard URL intake failed.', {
