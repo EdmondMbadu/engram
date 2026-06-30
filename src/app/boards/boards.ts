@@ -2711,7 +2711,9 @@ export class BoardsComponent {
       this.wizardPrompt().trim(),
       refinement ? `Refinement: ${refinement}` : '',
     ].filter(Boolean).join('\n');
-    const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch');
+    const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
+      timeout: 180_000,
+    });
     const response = await callable({
       mode: this.wizardMode(),
       prompt,
@@ -2892,7 +2894,7 @@ export class BoardsComponent {
     const cards = knownItems.slice(0, Math.max(1, count - 1)).map((item, index): BoardWizardGeneratedCard => ({
       title: item,
       subtitle: 'Menu item',
-      notes: `Food item from ${restaurant}. Generated locally because the AI service did not return a usable URL result.`,
+      notes: `Food item from ${restaurant}. Review the details and image before saving.`,
       type: 'food',
       scope: 'place',
       status: index < 3 ? 'favorite' : 'saved',

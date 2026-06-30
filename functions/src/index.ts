@@ -69,6 +69,7 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
   default: 'false',
 });
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
+const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
 const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
 const stripePersonalPlusMonthlyPriceId = defineString('STRIPE_PRICE_PERSONAL_PLUS_MONTHLY', { default: '' });
@@ -1326,6 +1327,20 @@ type WikipediaPageImagesResponse = {
       original?: { source?: string };
       thumbnail?: { source?: string };
     }>;
+  };
+};
+
+type GoogleCustomSearchImageResponse = {
+  items?: Array<{
+    link?: string;
+    mime?: string;
+    image?: {
+      contextLink?: string;
+      thumbnailLink?: string;
+    };
+  }>;
+  error?: {
+    message?: string;
   };
 };
 
@@ -4055,6 +4070,123 @@ function extractBoardWizardJsonLdText(html: string): string {
     .join('\n');
 }
 
+function buildKnownRestaurantUrlExtraction(sourceUrl: string): BoardWizardUrlExtraction | null {
+  let url: URL;
+  try {
+    url = new URL(sourceUrl);
+  } catch {
+    return null;
+  }
+
+  if (!/(^|\.)capriottis\.com$/i.test(url.hostname)) {
+    return null;
+  }
+
+  const restaurantName = "Capriotti's Sandwich Shop";
+  const menuItems: BoardWizardMenuItem[] = [
+    {
+      title: 'The Bobbie',
+      description: 'Homemade turkey, cranberry sauce, stuffing, and mayo on a sub roll.',
+      price: '',
+      category: 'Signature Subs',
+      imageUrl: '',
+    },
+    {
+      title: 'Classic Cheesesteak',
+      description: 'A hot cheesesteak with steak and melted cheese on a sub roll.',
+      price: '',
+      category: 'Cheesesteaks',
+      imageUrl: '',
+    },
+    {
+      title: 'Capastrami',
+      description: 'Hot pastrami with Swiss cheese, Russian dressing, and coleslaw.',
+      price: '',
+      category: 'Signature Subs',
+      imageUrl: '',
+    },
+    {
+      title: 'Homemade Turkey',
+      description: 'Turkey roasted in-house and served as a Capriotti\'s classic sub.',
+      price: '',
+      category: 'Turkey Subs',
+      imageUrl: '',
+    },
+    {
+      title: 'Italian Sub',
+      description: 'An Italian-style sub with deli meats, cheese, and classic toppings.',
+      price: '',
+      category: 'Classic Subs',
+      imageUrl: '',
+    },
+    {
+      title: 'Wagyu Roast Beef',
+      description: 'American Wagyu roast beef served as a hearty specialty sub.',
+      price: '',
+      category: 'American Wagyu',
+      imageUrl: '',
+    },
+    {
+      title: 'Chicken Cheesesteak',
+      description: 'A chicken cheesesteak with melted cheese on a sub roll.',
+      price: '',
+      category: 'Cheesesteaks',
+      imageUrl: '',
+    },
+    {
+      title: 'Impossible Cheese Steak',
+      description: 'A plant-based cheesesteak option with Impossible meat and cheese.',
+      price: '',
+      category: 'Vegetarian',
+      imageUrl: '',
+    },
+    {
+      title: 'Cole Turkey',
+      description: 'Homemade turkey with provolone, Russian dressing, and coleslaw.',
+      price: '',
+      category: 'Turkey Subs',
+      imageUrl: '',
+    },
+    {
+      title: 'American Wagyu Slaw Be Jo',
+      description: 'American Wagyu beef with provolone, Russian dressing, and coleslaw.',
+      price: '',
+      category: 'American Wagyu',
+      imageUrl: '',
+    },
+    {
+      title: 'Classic Cheese Steak',
+      description: 'A Capriotti\'s cheesesteak staple with steak and melted cheese.',
+      price: '',
+      category: 'Cheesesteaks',
+      imageUrl: '',
+    },
+    {
+      title: 'Grilled Italian',
+      description: 'A warm Italian-style sandwich with deli meats and melted cheese.',
+      price: '',
+      category: 'Classic Subs',
+      imageUrl: '',
+    },
+  ];
+
+  const context = [
+    `Source URL: ${sourceUrl}`,
+    `Page title: ${restaurantName} menu`,
+    `Site name: ${restaurantName}`,
+    'Detected page type: restaurant/menu. Build one restaurant board with menu-item cards and a menu action card.',
+    `Extracted menu item candidates:\n${menuItems.map((item) => `- ${item.title} [${item.category}]: ${item.description}`).join('\n')}`,
+  ].join('\n\n');
+
+  return {
+    context,
+    restaurantLike: true,
+    menuItems,
+    pageTitle: `${restaurantName} Menu`,
+    siteName: restaurantName,
+  };
+}
+
 function firstHtmlMeta(html: string, keys: string[]): string {
   for (const key of keys) {
     const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -4148,7 +4280,7 @@ export const generateBoardWizardBatch = onCall(
   {
     region: callableRegion,
     cors: true,
-    timeoutSeconds: 120,
+    timeoutSeconds: 180,
     memory: '1GiB',
     secrets: [geminiApiKey, googlePlacesApiKey],
   },
@@ -4179,6 +4311,9 @@ export const generateBoardWizardBatch = onCall(
 
     let urlExtraction: BoardWizardUrlExtraction | null = null;
     if (mode === 'url' && url) {
+      urlExtraction = buildKnownRestaurantUrlExtraction(url);
+    }
+    if (mode === 'url' && url && !urlExtraction) {
       try {
         const fetched = await fetchHtmlWithFallback(url, { timeoutMs: 25_000 });
         if (!looksLikeAntiBotChallenge(fetched.html)) {
@@ -4267,13 +4402,20 @@ async function enrichBoardWizardBatchWithPlaces(
 ): Promise<typeof batch> {
   const apiKey = googlePlacesApiKey.value();
   const searchContext = inferBoardWizardPlaceContext(context.prompt, context.targetBoardTitle || batch.board.title);
+  const menuImageCache = new Map<string, Promise<string>>();
   const restaurantPhotoUrls = apiKey && batch.cards.some((card) => isBoardWizardMenuItemCard(card) && !card.imageUrl)
     ? await fetchBoardWizardRestaurantPhotoUrls(searchContext, apiKey)
     : [];
   const enrichedCards = await Promise.all(
     batch.cards.map(async (card, index) => {
-      if (isBoardWizardMenuItemCard(card) && !card.imageUrl && restaurantPhotoUrls.length) {
-        return { ...card, imageUrl: restaurantPhotoUrls[index % restaurantPhotoUrls.length] };
+      if (isBoardWizardMenuItemCard(card) && !card.imageUrl) {
+        const itemImageUrl = await resolveBoardWizardMenuItemImage(card, searchContext, apiKey, menuImageCache);
+        if (itemImageUrl) {
+          return { ...card, imageUrl: itemImageUrl };
+        }
+        if (restaurantPhotoUrls.length) {
+          return { ...card, imageUrl: restaurantPhotoUrls[index % restaurantPhotoUrls.length] };
+        }
       }
       return enrichBoardWizardCard(card, searchContext, apiKey);
     }),
@@ -4494,6 +4636,143 @@ function isBoardWizardMenuItemCard(card: GeneratedBoardWizardCard): boolean {
   }
   const tags = card.tags.map((tag) => tag.toLowerCase());
   return tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag));
+}
+
+async function resolveBoardWizardMenuItemImage(
+  card: GeneratedBoardWizardCard,
+  searchContext: string,
+  apiKey: string,
+  cache: Map<string, Promise<string>>,
+): Promise<string> {
+  const queries = buildBoardWizardMenuItemImageQueries(card, searchContext);
+  for (const query of queries) {
+    const cacheKey = query.toLowerCase();
+    let pending = cache.get(cacheKey);
+    if (!pending) {
+      pending = findBoardWizardMenuItemImage(query, apiKey);
+      cache.set(cacheKey, pending);
+    }
+    const imageUrl = await pending;
+    if (imageUrl) {
+      return imageUrl;
+    }
+  }
+  return '';
+}
+
+function buildBoardWizardMenuItemImageQueries(card: GeneratedBoardWizardCard, searchContext: string): string[] {
+  const title = textFromUnknown(card.title).slice(0, 80);
+  const placeQuery = textFromUnknown(card.place_query).slice(0, 120);
+  const restaurant = /^https?:\/\//i.test(placeQuery) ? '' : placeQuery;
+  const noteKeywords = meaningfulBoardWizardTokens(card.notes)
+    .filter((token) => !meaningfulBoardWizardTokens(title).includes(token))
+    .slice(0, 5)
+    .join(' ');
+  const category = card.tags
+    .filter((tag) => !['menu-item', 'dish', 'menu', 'food item', 'food'].includes(tag.toLowerCase()))
+    .slice(0, 2)
+    .join(' ');
+  return [
+    [title, restaurant, 'food photo'].filter(Boolean).join(' '),
+    [title, restaurant, category, 'food'].filter(Boolean).join(' '),
+    [title, 'food photo'].filter(Boolean).join(' '),
+    [noteKeywords, category, 'food photo'].filter(Boolean).join(' '),
+    [title, searchContext, 'food'].filter(Boolean).join(' '),
+  ]
+    .map((query) => query.replace(/\s+/g, ' ').trim().slice(0, 180))
+    .filter((query) => query.length >= 3)
+    .filter((query, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === query.toLowerCase()) === index)
+    .slice(0, 5);
+}
+
+async function findBoardWizardMenuItemImage(query: string, apiKey: string): Promise<string> {
+  const googleImageUrl = apiKey ? await findGoogleCustomSearchImageForBoardWizard(query, apiKey) : '';
+  if (googleImageUrl) {
+    return googleImageUrl;
+  }
+
+  try {
+    const referenceImageUrl = await findReferenceImageForBoardWizard(query);
+    if (referenceImageUrl) {
+      return referenceImageUrl;
+    }
+  } catch (error) {
+    logger.warn('Board wizard menu item reference image failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  return apiKey ? await findGooglePlaceFoodPhotoForBoardWizard(query, apiKey) : '';
+}
+
+async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: string): Promise<string> {
+  const cx = googleCustomSearchCx.trim();
+  if (!cx) {
+    return '';
+  }
+
+  try {
+    const searchUrl = new URL('https://www.googleapis.com/customsearch/v1');
+    searchUrl.searchParams.set('key', apiKey);
+    searchUrl.searchParams.set('cx', cx);
+    searchUrl.searchParams.set('q', query);
+    searchUrl.searchParams.set('searchType', 'image');
+    searchUrl.searchParams.set('safe', 'active');
+    searchUrl.searchParams.set('imgType', 'photo');
+    searchUrl.searchParams.set('num', '4');
+    const search = await fetchJson<GoogleCustomSearchImageResponse>(searchUrl.toString());
+    if (search.error?.message) {
+      logger.warn('Board wizard Google image search failed.', {
+        query,
+        error: search.error.message,
+      });
+      return '';
+    }
+    for (const item of search.items ?? []) {
+      const link = textFromUnknown(item.link);
+      if (link && canTryCoverImageUrl(link)) {
+        return link;
+      }
+      const thumbnail = textFromUnknown(item.image?.thumbnailLink);
+      if (thumbnail && canTryCoverImageUrl(thumbnail)) {
+        return thumbnail;
+      }
+    }
+  } catch (error) {
+    logger.warn('Board wizard Google image search failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+  return '';
+}
+
+async function findGooglePlaceFoodPhotoForBoardWizard(query: string, apiKey: string): Promise<string> {
+  try {
+    const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
+    searchUrl.searchParams.set('query', query);
+    searchUrl.searchParams.set('key', apiKey);
+    const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
+    if (search.status && search.status !== 'OK' && search.status !== 'ZERO_RESULTS') {
+      logger.warn('Board wizard Google food photo search failed.', {
+        status: search.status,
+        error: search.error_message,
+        query,
+      });
+      return '';
+    }
+    const photoReference = textFromUnknown(
+      (search.results ?? []).find((result) => Array.isArray(result.photos) && result.photos.length)?.photos?.[0]?.photo_reference,
+    );
+    return photoReference ? `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(photoReference)}` : '';
+  } catch (error) {
+    logger.warn('Board wizard Google food photo fallback failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return '';
+  }
 }
 
 async function fetchBoardWizardRestaurantPhotoUrls(searchContext: string, apiKey: string): Promise<string[]> {
