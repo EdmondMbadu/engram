@@ -3760,6 +3760,8 @@ type BoardWizardCallableData = {
   pastedList?: unknown;
   url?: unknown;
   photoNames?: unknown;
+  imageOnly?: unknown;
+  currentCard?: unknown;
   targetBoardId?: unknown;
   targetBoardTitle?: unknown;
   defaultType?: unknown;
@@ -3776,6 +3778,19 @@ type BoardWizardUrlLink = {
 type BoardWizardUrlImage = {
   alt: string;
   src: string;
+};
+
+type BoardWizardCurrentCard = {
+  title: string;
+  subtitle: string;
+  notes: string;
+  type: GeneratedBoardWizardCard['type'];
+  scope: GeneratedBoardWizardCard['scope'];
+  status: GeneratedBoardWizardCard['status'];
+  rating: number;
+  tags: string[];
+  image_query: string;
+  place_query: string;
 };
 
 type BoardWizardMenuItem = {
@@ -4627,6 +4642,34 @@ export const generateBoardWizardBatch = onCall(
     const existingCards = Array.isArray(data.existingCards)
       ? data.existingCards.map(normalizeExistingBoardWizardCard).filter((card): card is { title: string; subtitle?: string; tags?: string[] } => !!card).slice(0, 40)
       : [];
+    const currentCard = normalizeBoardWizardCurrentCard(data.currentCard, defaultType);
+
+    if (data.imageOnly === true) {
+      if (!currentCard) {
+        throw new HttpsError('invalid-argument', 'Provide the current card before replacing its image.');
+      }
+      const result = await buildBoardWizardImageOnlyBatch({
+        currentCard,
+        prompt,
+        targetBoardTitle,
+        defaultType,
+      });
+      await db.collection('board_wizard_batches').add({
+        owner_user_id: userId,
+        mode: 'card-image',
+        target_board_id: targetBoardId || null,
+        target_board_title: targetBoardTitle || null,
+        default_type: defaultType,
+        vibe,
+        requested_count: 1,
+        generated_count: result.cards.length,
+        prompt_preview: prompt.slice(0, 500),
+        board_title: result.board.title,
+        card_titles: result.cards.map((card) => card.title).slice(0, 100),
+        created_at: FieldValue.serverTimestamp(),
+      });
+      return result;
+    }
 
     let urlExtraction: BoardWizardUrlExtraction | null = null;
     let accommodationExtraction: BoardWizardAccommodationExtraction | null = null;
@@ -4749,6 +4792,73 @@ async function enrichBoardWizardBatchWithPlaces(
     }),
   );
   return { ...batch, cards: enrichedCards };
+}
+
+async function buildBoardWizardImageOnlyBatch(
+  options: {
+    currentCard: BoardWizardCurrentCard;
+    prompt: string;
+    targetBoardTitle: string;
+    defaultType: GeneratedBoardWizardCard['type'];
+  },
+): Promise<GeneratedBoardWizardBatch> {
+  const card: GeneratedBoardWizardCard = {
+    title: options.currentCard.title,
+    subtitle: options.currentCard.subtitle,
+    notes: options.currentCard.notes,
+    type: options.currentCard.type,
+    scope: options.currentCard.scope,
+    status: options.currentCard.status,
+    rating: options.currentCard.rating,
+    tags: options.currentCard.tags,
+    image_query: buildBoardWizardCardImageQuery(options.currentCard, options.prompt, options.targetBoardTitle),
+    place_query: options.currentCard.place_query || options.targetBoardTitle || options.currentCard.title,
+  };
+  const customSearchApiKey = googleCustomSearchApiKey.value();
+  const apiKey = googlePlacesApiKey.value();
+  let imageUrl = '';
+
+  if (isBoardWizardMenuItemCard(card)) {
+    imageUrl = await resolveBoardWizardMenuItemImage(card, options.targetBoardTitle, customSearchApiKey, new Map());
+  }
+  if (!imageUrl && (card.type === 'food' || /food|dish|dessert|cake|menu-item/i.test(`${card.title} ${card.tags.join(' ')}`))) {
+    imageUrl = customSearchApiKey ? await findBoardWizardMenuItemWebImage(card.image_query, customSearchApiKey) : '';
+  }
+  if (!imageUrl && card.type !== 'food' && card.scope === 'place' && apiKey) {
+    const enriched = await enrichBoardWizardCardWithPlace(card, options.targetBoardTitle, apiKey);
+    imageUrl = enriched.imageUrl || '';
+  }
+  if (!imageUrl) {
+    imageUrl = await findCommonsReferenceImageForBoardWizard(card.image_query);
+  }
+  if (!imageUrl && card.type !== 'food') {
+    imageUrl = await findReferenceImageForBoardWizard(card.image_query);
+  }
+
+  return {
+    board: {
+      title: options.targetBoardTitle || 'Card image',
+      description: 'Single-card image replacement.',
+      icon: 'image_search',
+      tone: 'teal',
+    },
+    cards: [{ ...card, imageUrl: imageUrl || undefined }],
+  };
+}
+
+function buildBoardWizardCardImageQuery(card: BoardWizardCurrentCard, prompt: string, boardTitle: string): string {
+  const title = card.title.replace(/\s+/g, ' ').trim();
+  const instruction = prompt.replace(/\b(replace|current|image|photo|picture|appropriate|better|wrong|random|fix|with|as|name|suggests)\b/gi, ' ');
+  const usefulInstruction = meaningfulBoardWizardTokens(instruction).slice(0, 5).join(' ');
+  const foodSuffix = card.type === 'food' || /food|dish|dessert|cake|menu-item/i.test(`${title} ${card.tags.join(' ')}`)
+    ? 'food photo'
+    : 'photo';
+  return [title, usefulInstruction, boardTitle, foodSuffix]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 180);
 }
 
 function buildRestaurantMenuWizardBatch(
@@ -5363,6 +5473,35 @@ function normalizeExistingBoardWizardCard(value: unknown): { title: string; subt
     tags: Array.isArray(data.tags)
       ? data.tags.map((tag) => stringOrEmpty(tag).slice(0, 40)).filter(Boolean).slice(0, 8)
       : undefined,
+  };
+}
+
+function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedBoardWizardCard['type']): BoardWizardCurrentCard | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const data = value as Record<string, unknown>;
+  const title = stringOrEmpty(data.title).slice(0, 90);
+  if (!title) {
+    return null;
+  }
+  const type = normalizeBoardWizardDefaultType(data.type || defaultType);
+  const scopeRaw = stringOrEmpty(data.scope);
+  const statusRaw = stringOrEmpty(data.status);
+  const ratingRaw = typeof data.rating === 'number' ? data.rating : Number(stringOrEmpty(data.rating));
+  return {
+    title,
+    subtitle: stringOrEmpty(data.subtitle).slice(0, 120),
+    notes: stringOrEmpty(data.notes).slice(0, 300),
+    type,
+    scope: scopeRaw === 'city' || scopeRaw === 'country' || scopeRaw === 'region' ? scopeRaw : 'place',
+    status: statusRaw === 'planned' || statusRaw === 'visited' || statusRaw === 'favorite' ? statusRaw : 'saved',
+    rating: Math.max(1, Math.min(5, Math.round(Number.isFinite(ratingRaw) ? ratingRaw : 4))),
+    tags: Array.isArray(data.tags)
+      ? data.tags.map((tag) => stringOrEmpty(tag).slice(0, 40).toLowerCase()).filter(Boolean).slice(0, 8)
+      : [],
+    image_query: stringOrEmpty(data.image_query).slice(0, 160),
+    place_query: stringOrEmpty(data.place_query).slice(0, 180),
   };
 }
 

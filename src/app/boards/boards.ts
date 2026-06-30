@@ -670,6 +670,9 @@ export class BoardsComponent {
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
+  readonly cardWizardPrompt = signal('');
+  readonly cardWizardLoading = signal(false);
+  readonly cardWizardError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
   readonly boardsSyncError = signal<string | null>(null);
   readonly sharePanelOpen = signal(false);
@@ -892,6 +895,17 @@ export class BoardsComponent {
   readonly wizardTargetBoards = computed(() => this.boards().filter((board) => this.canEditBoard(board)));
   readonly wizardSelectedCount = computed(() => this.wizardSelectedCardIds().size);
   readonly selectedCardCount = computed(() => this.selectedCardIds().size);
+  readonly cardWizardCanGenerate = computed(() => {
+    const draft = this.cardDraft();
+    return !this.cardWizardLoading()
+      && !!this.selectedBoard()
+      && (
+        this.cardWizardPrompt().trim().length >= 3
+        || draft.placeQuery.trim().length >= 3
+        || draft.title.trim().length >= 3
+        || draft.notes.trim().length >= 8
+      );
+  });
   readonly stackBoard = computed(() => {
     const boardId = this.stackStudioBoardId();
     return this.boards().find((board) => board.id === boardId) ?? null;
@@ -1582,6 +1596,7 @@ export class BoardsComponent {
     }
     this.selectedBoardId.set(boardId);
     this.imageUploadError.set(null);
+    this.resetCardWizard();
     this.cardImageLocked.set(false);
     this.editingCardId.set(null);
     this.cardDraft.set({
@@ -1611,6 +1626,7 @@ export class BoardsComponent {
     }
     this.editingCardId.set(card.id);
     this.imageUploadError.set(null);
+    this.resetCardWizard();
     this.cardImageLocked.set(!!card.imageUrl);
     this.cardDraft.set({
       title: card.title,
@@ -1645,7 +1661,14 @@ export class BoardsComponent {
     this.cardDialogOpen.set(false);
     this.editingCardId.set(null);
     this.cardImageLocked.set(false);
+    this.resetCardWizard();
     this.clearPlaceSearch();
+  }
+
+  private resetCardWizard(): void {
+    this.cardWizardPrompt.set('');
+    this.cardWizardLoading.set(false);
+    this.cardWizardError.set(null);
   }
 
   async onBoardImageSelected(event: Event): Promise<void> {
@@ -2139,6 +2162,152 @@ export class BoardsComponent {
 
   updateCardDraft<K extends keyof CardDraft>(field: K, value: CardDraft[K]): void {
     this.cardDraft.update((draft) => ({ ...draft, [field]: value }));
+  }
+
+  async runCardWizard(): Promise<void> {
+    const board = this.selectedBoard();
+    if (!board || !this.canEditBoard(board) || !this.functions || this.cardWizardLoading()) {
+      return;
+    }
+    const draft = this.cardDraft();
+    const prompt = this.buildCardWizardPrompt(board, draft);
+    if (!prompt) {
+      this.cardWizardError.set('Describe what this card should become, or start with a title/place first.');
+      return;
+    }
+
+    this.cardWizardLoading.set(true);
+    this.cardWizardError.set(null);
+    try {
+      const likelyFood = this.isLikelyFoodCardDraft(draft, this.cardWizardPrompt());
+      const replaceImage = this.shouldReplaceCardImage(draft);
+      const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
+        timeout: 75_000,
+      });
+      const response = await callable({
+        mode: 'describe',
+        prompt,
+        pastedList: '',
+        url: '',
+        photoNames: [],
+        imageOnly: replaceImage,
+        currentCard: replaceImage ? this.cardDraftToWizardCurrentCard(draft, likelyFood) : null,
+        targetBoardId: board.id,
+        targetBoardTitle: board.title,
+        defaultType: likelyFood ? 'food' : draft.type,
+        count: 1,
+        vibe: this.wizardVibe(),
+        existingCards: board.cards.slice(0, 80).map((card) => ({
+          title: card.title,
+          subtitle: card.subtitle,
+          tags: card.tags,
+        })),
+      });
+      const batch = this.normalizeWizardBatch(response.data);
+      const [generated] = batch.cards;
+      if (!generated) {
+        throw new Error('The Wizard did not return a usable card.');
+      }
+      this.applyGeneratedCardToDraft(generated, replaceImage);
+    } catch (error) {
+      this.cardWizardError.set(error instanceof Error ? error.message : 'The Wizard could not update this card.');
+    } finally {
+      this.cardWizardLoading.set(false);
+    }
+  }
+
+  private buildCardWizardPrompt(board: Board, draft: CardDraft): string {
+    const instruction = this.cardWizardPrompt().trim();
+    const wantsImageReplacement = this.shouldReplaceCardImage(draft);
+    const likelyFood = this.isLikelyFoodCardDraft(draft, instruction);
+    const existing = [
+      draft.title.trim() ? `Title: ${draft.title.trim()}` : '',
+      draft.subtitle.trim() ? `Subtitle: ${draft.subtitle.trim()}` : '',
+      draft.notes.trim() ? `Notes: ${draft.notes.trim()}` : '',
+      draft.placeQuery.trim() ? `Place/query: ${draft.placeQuery.trim()}` : '',
+      draft.tags.trim() ? `Tags: ${draft.tags.trim()}` : '',
+    ].filter(Boolean).join('\n');
+    const task = this.editingCardId()
+      ? 'Improve this existing card. Return exactly one polished card. Preserve the intent unless the user asks for a change.'
+      : 'Create exactly one polished card for this board.';
+    return [
+      task,
+      `Board: ${board.title}`,
+      board.description ? `Board description: ${board.description}` : '',
+      `Preferred card type: ${draft.type}`,
+      likelyFood
+        ? 'This card is a food, dish, dessert, or menu item. Return type "food", scope "place", include tags "menu-item" and "food", and make image_query an exact food-photo search phrase for the dish, for example "<dish name> food photo".'
+        : '',
+      wantsImageReplacement
+        ? 'The user wants the image replaced. Do not preserve the current image concept. Return a card whose image_query is specific enough to find the correct replacement image.'
+        : '',
+      instruction ? `User request: ${instruction}` : '',
+      existing ? `Current card draft:\n${existing}` : '',
+    ].filter(Boolean).join('\n\n').trim();
+  }
+
+  private applyGeneratedCardToDraft(card: BoardWizardGeneratedCard, replaceImage: boolean): void {
+    if (replaceImage) {
+      this.cardDraft.update((draft) => ({
+        ...draft,
+        imageUrl: card.imageUrl || '',
+      }));
+      this.cardImageLocked.set(!!card.imageUrl);
+      if (!card.imageUrl) {
+        this.cardWizardError.set('No better image was found, so the old image was removed.');
+      }
+      return;
+    }
+    this.cardDraft.update((draft) => ({
+      ...draft,
+      title: card.title || draft.title,
+      subtitle: card.subtitle || draft.subtitle,
+      notes: card.notes || draft.notes,
+      type: card.type || draft.type,
+      scope: card.scope || draft.scope,
+      status: card.status || draft.status,
+      rating: String(card.rating || draft.rating || 4),
+      imageUrl: card.imageUrl || (replaceImage ? '' : draft.imageUrl),
+      placeQuery: card.place_query || card.title || draft.placeQuery,
+      placeId: card.placeId || draft.placeId,
+      googleMapsUrl: card.googleMapsUrl || draft.googleMapsUrl,
+      tags: card.tags.length ? card.tags.join(', ') : draft.tags,
+    }));
+    if (card.imageUrl) {
+      this.cardImageLocked.set(true);
+    } else if (replaceImage) {
+      this.cardImageLocked.set(false);
+    }
+  }
+
+  private shouldReplaceCardImage(draft: CardDraft): boolean {
+    const instruction = this.cardWizardPrompt().toLowerCase();
+    return !!draft.imageUrl && /\b(replace|change|swap|fix|correct|appropriate|better|wrong|random|image|photo|picture)\b/i.test(instruction);
+  }
+
+  private isLikelyFoodCardDraft(draft: CardDraft, instruction: string): boolean {
+    const text = `${draft.title} ${draft.subtitle} ${draft.notes} ${draft.tags} ${instruction}`.toLowerCase();
+    return draft.type === 'food'
+      || /\b(food|dish|menu|dessert|cake|butter cake|cheesecake|burger|sandwich|steak|salmon|pasta|nachos|spring rolls|breakfast|chicken|coffee|drink|cocktail|pizza|taco|sushi)\b/.test(text);
+  }
+
+  private cardDraftToWizardCurrentCard(draft: CardDraft, likelyFood: boolean): Record<string, unknown> {
+    const tags = draft.tags
+      .split(',')
+      .map((tag) => tag.trim().toLowerCase())
+      .filter(Boolean);
+    return {
+      title: draft.title,
+      subtitle: draft.subtitle,
+      notes: draft.notes,
+      type: likelyFood ? 'food' : draft.type,
+      scope: draft.scope,
+      status: draft.status,
+      rating: Number.parseInt(draft.rating, 10) || 4,
+      tags: likelyFood ? Array.from(new Set([...tags, 'menu-item', 'food'])) : tags,
+      image_query: `${draft.title} ${likelyFood ? 'food photo' : 'photo'}`.trim(),
+      place_query: draft.placeQuery || draft.title,
+    };
   }
 
   toneAccent(tone: BoardTone): string {

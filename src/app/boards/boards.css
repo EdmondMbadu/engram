@@ -2952,6 +2952,71 @@
   line-height: 1;
 }
 
+.boards-card-wizard {
+  display: grid;
+  gap: 0.75rem;
+  border: 2px solid color-mix(in srgb, var(--accent) 36%, var(--modal-ink));
+  border-radius: 1.1rem;
+  background:
+    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 34%),
+    var(--surface);
+  box-shadow: 3px 3px 0 var(--modal-ink);
+  padding: 0.85rem;
+}
+
+.boards-card-wizard__head,
+.boards-card-wizard__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.boards-card-wizard__head > .material-symbols-outlined {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 2px solid var(--modal-ink);
+  border-radius: 0.8rem;
+  background: var(--surface-strong);
+  box-shadow: 2px 2px 0 var(--modal-ink);
+  color: var(--accent);
+  font-variation-settings: 'FILL' 1;
+}
+
+.boards-card-wizard__head p,
+.boards-card-wizard__head h4 {
+  margin: 0;
+}
+
+.boards-card-wizard__head p {
+  color: var(--accent);
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.boards-card-wizard__head h4 {
+  margin-top: 0.2rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.boards-card-wizard__actions {
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.boards-card-wizard__actions small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 .boards-form label {
   display: grid;
   gap: 0.45rem;

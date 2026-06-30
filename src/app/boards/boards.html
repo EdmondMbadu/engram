@@ -1865,6 +1865,36 @@
             }
           </section>
 
+          <section class="boards-card-wizard">
+            <div class="boards-card-wizard__head">
+              <span class="material-symbols-outlined">auto_awesome</span>
+              <div>
+                <p>Card Wizard</p>
+                <h4>{{ editingCardId() ? 'Improve this card' : 'Create this card' }}</h4>
+              </div>
+            </div>
+            <label>
+              <span>What should the Wizard do?</span>
+              <textarea
+                rows="3"
+                maxlength="360"
+                placeholder="Make this more useful, add a better description, find a place photo, turn this into a food card..."
+                [value]="cardWizardPrompt()"
+                (input)="cardWizardPrompt.set($any($event.target).value)"
+              ></textarea>
+            </label>
+            <div class="boards-card-wizard__actions">
+              <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="runCardWizard()">
+                <span class="material-symbols-outlined">{{ cardWizardLoading() ? 'progress_activity' : 'auto_awesome' }}</span>
+                {{ cardWizardLoading() ? 'Working...' : 'Fill with Wizard' }}
+              </button>
+              <small>Uses the current board and draft fields as context.</small>
+            </div>
+            @if (cardWizardError()) {
+              <div class="boards-form__soft-error">{{ cardWizardError() }}</div>
+            }
+          </section>
+
           <section class="boards-sticker-panel boards-sticker-panel--prominent">
             <div class="boards-sticker-panel__head">
               <div>
