@@ -1183,7 +1183,7 @@
           <div class="boards-modal__head">
             <div>
               <p>Stack Studio</p>
-              <h3>Share your Stack</h3>
+              <h3>{{ board.title }}</h3>
             </div>
             <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackStudio()">
               <span class="material-symbols-outlined">close</span>
@@ -1200,17 +1200,17 @@
                 }
               </div>
               <div>
-                <strong>{{ board.title }}</strong>
-                <span>{{ stackSelectedCount() }} of {{ board.cards.length }} cards selected · {{ stackFormatLabel() }}</span>
+                <strong>{{ stackSelectedCount() }} of {{ board.cards.length }} selected</strong>
+                <span>{{ stackFormatLabel() }} Stack</span>
               </div>
               <div class="stack-studio__context-actions">
                 <button type="button" (click)="copyStackUrl(board)">
                   <span class="material-symbols-outlined">content_copy</span>
-                  Copy link
+                  <span class="stack-action-label">Copy</span>
                 </button>
                 <button type="button" (click)="openStackView(board, $event)">
                   <span class="material-symbols-outlined">smart_display</span>
-                  Live
+                  <span class="stack-action-label">Live</span>
                 </button>
               </div>
             </header>
@@ -1257,13 +1257,14 @@
                   </div>
                 </section>
 
-                <section class="stack-panel">
-                  <div class="stack-panel__head">
+                <details class="stack-panel stack-panel--details">
+                  <summary class="stack-panel__summary">
                     <div>
                       <p>Cover</p>
                       <h4>Caption</h4>
                     </div>
-                  </div>
+                    <span class="material-symbols-outlined">expand_more</span>
+                  </summary>
                   <div class="stack-fields">
                     <label>
                       <span>Cover title</span>
@@ -1293,15 +1294,16 @@
                       ></textarea>
                     </label>
                   </div>
-                </section>
+                </details>
 
-                <section class="stack-panel">
-                  <div class="stack-panel__head">
+                <details class="stack-panel stack-panel--details">
+                  <summary class="stack-panel__summary">
                     <div>
                       <p>Format</p>
                       <h4>{{ stackFormatLabel() }}</h4>
                     </div>
-                  </div>
+                    <span class="material-symbols-outlined">expand_more</span>
+                  </summary>
                   <div class="stack-format-grid">
                     @for (format of stackFormats; track format.id) {
                       <button
@@ -1316,7 +1318,7 @@
                       </button>
                     }
                   </div>
-                </section>
+                </details>
 
               </div>
 
