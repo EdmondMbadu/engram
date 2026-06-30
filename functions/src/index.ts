@@ -3786,6 +3786,18 @@ type BoardWizardMenuItem = {
   imageUrl: string;
 };
 
+type BoardWizardAccommodationExtraction = {
+  sourceUrl: string;
+  listingName: string;
+  description: string;
+  location: string;
+  host: string;
+  images: BoardWizardUrlImage[];
+  amenities: string[];
+  pageTitle: string;
+  siteName: string;
+};
+
 type BoardWizardUrlExtraction = {
   context: string;
   restaurantLike: boolean;
@@ -4188,6 +4200,344 @@ function buildKnownRestaurantUrlExtraction(sourceUrl: string): BoardWizardUrlExt
   };
 }
 
+function buildBoardWizardAccommodationExtraction(inputUrl: string, finalUrl: string, html: string): BoardWizardAccommodationExtraction | null {
+  if (!isBoardWizardAccommodationUrl(inputUrl)) {
+    return null;
+  }
+
+  const baseUrl = finalUrl || inputUrl;
+  const pageText = stripHtmlForBoardWizard(html).slice(0, 8000);
+  const pageTitle = firstHtmlMatch(html, /<title[^>]*>([\s\S]*?)<\/title>/i);
+  const siteName = firstHtmlMeta(html, ['og:site_name']) || airbnbHostLabel(inputUrl);
+  const description = firstHtmlMeta(html, ['description', 'og:description', 'twitter:description'])
+    || firstUsefulAccommodationSentence(pageText);
+  const listingName = cleanAccommodationTitle(
+    firstHtmlMeta(html, ['og:title', 'twitter:title']) || pageTitle || siteName || 'Stay',
+    siteName,
+  );
+  const images = extractBoardWizardAccommodationImages(html, baseUrl).slice(0, 18);
+  const amenities = extractBoardWizardAccommodationAmenities(pageText);
+  const location = inferAccommodationLocation(listingName, description, pageText);
+  const host = inferAccommodationHost(pageText);
+
+  if (!listingName && !description && images.length === 0) {
+    return null;
+  }
+
+  return {
+    sourceUrl: inputUrl,
+    listingName: listingName || 'Stay',
+    description,
+    location,
+    host,
+    images,
+    amenities,
+    pageTitle,
+    siteName,
+  };
+}
+
+function buildFallbackAccommodationExtraction(sourceUrl: string): BoardWizardAccommodationExtraction {
+  return {
+    sourceUrl,
+    listingName: airbnbHostLabel(sourceUrl) === 'Airbnb' ? 'Airbnb Stay' : 'Lodging Stay',
+    description: 'Review the source listing for photos, rooms, amenities, house rules, pricing, availability, and booking terms.',
+    location: '',
+    host: '',
+    images: [],
+    amenities: [],
+    pageTitle: '',
+    siteName: airbnbHostLabel(sourceUrl),
+  };
+}
+
+function isBoardWizardAccommodationUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return /(^|\.)airbnb\./i.test(url.hostname)
+      || /(hotel|resort|inn|lodging|vacation-rental|vrbo|booking|expedia|marriott|hilton|hyatt)/i.test(`${url.hostname} ${url.pathname}`);
+  } catch {
+    return false;
+  }
+}
+
+function buildAccommodationWizardBatch(
+  options: {
+    extraction: BoardWizardAccommodationExtraction;
+    targetBoardTitle: string;
+    count: number;
+  },
+): GeneratedBoardWizardBatch {
+  const listingName = options.extraction.listingName;
+  const images = options.extraction.images;
+  const imageAt = (index: number): string | undefined => images[index]?.src || images[index % Math.max(1, images.length)]?.src;
+  const cards: GeneratedBoardWizardCard[] = [
+    {
+      title: listingName.slice(0, 80),
+      subtitle: options.extraction.location || options.extraction.siteName || 'Stay listing',
+      notes: (options.extraction.description || 'Overview of the stay, location, and booking details.').slice(0, 260),
+      type: 'place',
+      scope: 'place',
+      status: 'saved',
+      rating: 5,
+      tags: ['lodging', 'airbnb', 'overview'],
+      image_query: `${listingName} listing`,
+      place_query: options.extraction.location || listingName,
+      imageUrl: imageAt(0),
+    },
+    {
+      title: 'The Space',
+      subtitle: 'What the listing offers',
+      notes: buildAccommodationSpaceNote(options.extraction),
+      type: 'note',
+      scope: 'place',
+      status: 'saved',
+      rating: 4,
+      tags: ['lodging', 'details'],
+      image_query: `${listingName} room`,
+      place_query: options.extraction.sourceUrl,
+      imageUrl: imageAt(1),
+    },
+    {
+      title: 'Location',
+      subtitle: options.extraction.location || 'Listing area',
+      notes: options.extraction.location
+        ? `Located around ${options.extraction.location}. Confirm the exact address and neighborhood on the booking page.`
+        : 'Confirm the exact address, neighborhood, and travel times on the booking page.',
+      type: 'place',
+      scope: 'place',
+      status: 'planned',
+      rating: 4,
+      tags: ['lodging', 'location'],
+      image_query: `${listingName} location`,
+      place_query: options.extraction.location || listingName,
+      imageUrl: imageAt(2),
+    },
+  ];
+
+  const amenityCardCount = options.extraction.amenities.length ? 1 : 0;
+  const maxPhotoCards = Math.max(0, options.count - 4 - amenityCardCount);
+  const photoCards = images.slice(3, 3 + maxPhotoCards).map((image, index): GeneratedBoardWizardCard => ({
+    title: accommodationPhotoTitle(image.alt, index),
+    subtitle: 'Listing photo',
+    notes: image.alt ? `Source photo from the listing: ${image.alt}.` : 'Source photo from the listing.',
+    type: 'note',
+    scope: 'place',
+    status: 'saved',
+    rating: 4,
+    tags: ['lodging', 'photo', 'source-image'],
+    image_query: image.alt || `${listingName} listing photo`,
+    place_query: options.extraction.sourceUrl,
+    imageUrl: image.src,
+  }));
+
+  cards.push(...photoCards);
+
+  if (options.extraction.amenities.length) {
+    cards.push({
+      title: 'Amenities',
+      subtitle: `${options.extraction.amenities.slice(0, 3).join(', ')}${options.extraction.amenities.length > 3 ? '...' : ''}`.slice(0, 90),
+      notes: options.extraction.amenities.join(', ').slice(0, 260),
+      type: 'note',
+      scope: 'place',
+      status: 'saved',
+      rating: 4,
+      tags: ['lodging', 'amenities'],
+      image_query: `${listingName} amenities`,
+      place_query: options.extraction.sourceUrl,
+      imageUrl: imageAt(3),
+    });
+  }
+
+  cards.push({
+    title: 'Book Now',
+    subtitle: 'Open the original listing',
+    notes: 'Use this action card to review availability, price, fees, house rules, and booking terms on the source page.',
+    type: 'note',
+    scope: 'place',
+    status: 'planned',
+    rating: 4,
+    tags: ['action', 'booking', 'lodging'],
+    image_query: `${listingName} booking`,
+    place_query: options.extraction.sourceUrl,
+    imageUrl: imageAt(0),
+  });
+
+  return {
+    board: {
+      title: (options.targetBoardTitle || `${listingName} Stay`).slice(0, 90),
+      description: (options.extraction.description || `Lodging board generated from ${options.extraction.siteName || 'the listing'}.`).slice(0, 220),
+      icon: 'hotel',
+      tone: 'sky',
+    },
+    cards: cards.slice(0, options.count),
+  };
+}
+
+function extractBoardWizardAccommodationImages(html: string, baseUrl: string): BoardWizardUrlImage[] {
+  const images = [...extractBoardWizardImages(html, baseUrl)];
+  const imageUrlPattern = /https?:(?:\\?\/\\?\/|\/\/)[^"' <>)\\]+(?:muscache|airbnb|vrbo|expedia|booking|hotel|resort)[^"' <>)\\]+/gi;
+  for (const match of html.matchAll(imageUrlPattern)) {
+    const raw = normalizeEmbeddedImageUrl(match[0]);
+    const src = safeAbsoluteUrl(raw, baseUrl);
+    if (src && canTryCoverImageUrl(src) && isLikelyAccommodationSourcePhotoUrl(src)) {
+      images.push({ alt: inferAccommodationImageAlt(src), src });
+    }
+  }
+  const seen = new Set<string>();
+  return images
+    .filter((image) => isLikelyAccommodationSourcePhotoUrl(image.src))
+    .sort((a, b) => accommodationImagePriority(b.src) - accommodationImagePriority(a.src))
+    .filter((image) => {
+      const cleanSrc = image.src.split('?')[0] || image.src;
+      if (seen.has(cleanSrc)) {
+        return false;
+      }
+      seen.add(cleanSrc);
+      return true;
+    });
+}
+
+function isLikelyAccommodationSourcePhotoUrl(src: string): boolean {
+  const normalized = src.toLowerCase().split('?')[0] ?? '';
+  if (!normalized || /\.(?:js|css|svg|ico|json|map)$/i.test(normalized)) {
+    return false;
+  }
+  if (/(airbnb-platform-assets|static\/icons|search-bar-icons|favicon|apple-touch-icon|logo|avatar)/i.test(src)) {
+    return false;
+  }
+  if (/a\d\.muscache\.com\/im\/pictures\//i.test(src)) {
+    return /\/im\/pictures\/(?:miso\/|hosting\/|prohost-api\/|[0-9a-f-]{12,}\/)/i.test(src);
+  }
+  return /\.(?:png|jpe?g|webp)(?:[?#]|$)/i.test(src);
+}
+
+function accommodationImagePriority(src: string): number {
+  if (/\/im\/pictures\/(?:miso|hosting|prohost-api)\//i.test(src)) {
+    return 30;
+  }
+  if (/\/im\/pictures\//i.test(src)) {
+    return 20;
+  }
+  if (/\.(?:jpe?g|png|webp)(?:[?#]|$)/i.test(src)) {
+    return 10;
+  }
+  return 0;
+}
+
+function normalizeEmbeddedImageUrl(value: string): string {
+  return decodeBoardWizardHtmlEntities(value)
+    .replace(/\\u002F/gi, '/')
+    .replace(/\\\//g, '/')
+    .replace(/\\u0026/gi, '&')
+    .replace(/\\&/g, '&');
+}
+
+function extractBoardWizardAccommodationAmenities(text: string): string[] {
+  const amenities = [
+    'Wifi',
+    'Kitchen',
+    'Pool',
+    'Hot tub',
+    'Free parking',
+    'Washer',
+    'Dryer',
+    'Air conditioning',
+    'Heating',
+    'Dedicated workspace',
+    'Gym',
+    'Elevator',
+    'Patio',
+    'Balcony',
+    'TV',
+    'Coffee',
+  ];
+  const normalized = text.toLowerCase();
+  return amenities.filter((amenity) => normalized.includes(amenity.toLowerCase())).slice(0, 10);
+}
+
+function cleanAccommodationTitle(title: string, siteName: string): string {
+  return decodeBoardWizardHtmlEntities(title)
+    .replace(/\s*-\s*Airbnb.*$/i, '')
+    .replace(/\s*\|\s*Airbnb.*$/i, '')
+    .replace(siteName ? new RegExp(`\\s*[-|]\\s*${siteName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*$`, 'i') : /$^/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 90);
+}
+
+function firstUsefulAccommodationSentence(text: string): string {
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .map((line) => line.trim())
+    .find((line) => line.length > 40 && !/cookie|privacy|javascript|browser/i.test(line))
+    ?.slice(0, 260) ?? '';
+}
+
+function inferAccommodationLocation(title: string, description: string, text: string): string {
+  const source = `${title}. ${description}. ${text.slice(0, 1500)}`;
+  const patterns = [
+    /\bin\s+([A-Z][A-Za-z .'-]+,\s*[A-Z]{2}(?:,\s*[A-Za-z .'-]+)?)/,
+    /\bin\s+([A-Z][A-Za-z .'-]+(?:,\s*[A-Z][A-Za-z .'-]+){1,2})/,
+    /\bnear\s+([A-Z][A-Za-z .'-]+(?:,\s*[A-Z][A-Za-z .'-]+)?)/,
+  ];
+  for (const pattern of patterns) {
+    const match = source.match(pattern);
+    if (match?.[1]) {
+      return match[1].replace(/\s+/g, ' ').trim().slice(0, 90);
+    }
+  }
+  return '';
+}
+
+function inferAccommodationHost(text: string): string {
+  const match = text.match(/\bhosted by\s+([A-Z][A-Za-z .'-]{1,60})/i);
+  return match?.[1]?.replace(/\s+/g, ' ').trim().slice(0, 70) ?? '';
+}
+
+function buildAccommodationSpaceNote(extraction: BoardWizardAccommodationExtraction): string {
+  const parts = [
+    extraction.description,
+    extraction.host ? `Hosted by ${extraction.host}.` : '',
+    extraction.amenities.length ? `Amenities called out include ${extraction.amenities.slice(0, 6).join(', ')}.` : '',
+  ].filter(Boolean);
+  return (parts.join(' ') || 'Review the source listing for bedrooms, beds, baths, amenities, and house rules.').slice(0, 260);
+}
+
+function accommodationPhotoTitle(alt: string, index: number): string {
+  const cleaned = alt.replace(/\s+/g, ' ').trim();
+  if (cleaned && !/image|photo|featured/i.test(cleaned)) {
+    return cleaned.slice(0, 80);
+  }
+  const labels = ['Main Photo', 'Living Space', 'Bedroom', 'Kitchen', 'Bathroom', 'Outdoor Space', 'Amenity'];
+  return labels[index] ?? `Listing Photo ${index + 1}`;
+}
+
+function inferAccommodationImageAlt(src: string): string {
+  if (/bed(room)?/i.test(src)) {
+    return 'bedroom';
+  }
+  if (/kitchen/i.test(src)) {
+    return 'kitchen';
+  }
+  if (/bath/i.test(src)) {
+    return 'bathroom';
+  }
+  if (/pool|patio|balcony|terrace|outdoor/i.test(src)) {
+    return 'outdoor space';
+  }
+  return 'listing photo';
+}
+
+function airbnbHostLabel(value: string): string {
+  try {
+    const url = new URL(value);
+    return /airbnb/i.test(url.hostname) ? 'Airbnb' : url.hostname.replace(/^www\./, '');
+  } catch {
+    return 'Listing';
+  }
+}
+
 function firstHtmlMeta(html: string, keys: string[]): string {
   for (const key of keys) {
     const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -4311,6 +4661,7 @@ export const generateBoardWizardBatch = onCall(
       : [];
 
     let urlExtraction: BoardWizardUrlExtraction | null = null;
+    let accommodationExtraction: BoardWizardAccommodationExtraction | null = null;
     if (mode === 'url' && url) {
       urlExtraction = buildKnownRestaurantUrlExtraction(url);
     }
@@ -4322,6 +4673,7 @@ export const generateBoardWizardBatch = onCall(
         });
         if (!looksLikeAntiBotChallenge(fetched.html)) {
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
+          accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
         }
       } catch (error) {
         logger.warn('Board wizard URL intake failed.', {
@@ -4330,10 +4682,14 @@ export const generateBoardWizardBatch = onCall(
           errorMessage: error instanceof Error ? error.message : String(error),
         });
       }
+      if (!accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
+        accommodationExtraction = buildFallbackAccommodationExtraction(url);
+      }
     }
 
     const effectivePrompt = [
       prompt,
+      accommodationExtraction ? `Detected lodging listing: ${accommodationExtraction.listingName}` : '',
       urlExtraction?.context ? `URL extraction context:\n${urlExtraction.context}` : '',
     ].filter(Boolean).join('\n\n').trim();
 
@@ -4341,7 +4697,13 @@ export const generateBoardWizardBatch = onCall(
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, upload photo names, or provide a URL.');
     }
 
-    const generated = urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3
+    const generated = accommodationExtraction
+      ? buildAccommodationWizardBatch({
+          extraction: accommodationExtraction,
+          targetBoardTitle,
+          count,
+        })
+      : urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3
       ? buildRestaurantMenuWizardBatch({
           extraction: urlExtraction,
           sourceUrl: url,
@@ -4360,12 +4722,14 @@ export const generateBoardWizardBatch = onCall(
           vibe,
           existingCards,
         });
-    const result = await enrichBoardWizardBatchWithPlaces(generated, {
-      mode,
-      prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
-      targetBoardTitle,
-      defaultType,
-    });
+    const result = accommodationExtraction
+      ? generated
+      : await enrichBoardWizardBatchWithPlaces(generated, {
+          mode,
+          prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
+          targetBoardTitle,
+          defaultType,
+        });
 
     await db.collection('board_wizard_batches').add({
       owner_user_id: userId,
