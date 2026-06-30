@@ -1178,7 +1178,7 @@
 
   @if (stackStudioOpen()) {
     @if (stackBoard(); as board) {
-      <div class="boards-modal-backdrop" (click)="closeStackStudio()">
+      <div class="boards-modal-backdrop boards-modal-backdrop--stack-studio" (click)="closeStackStudio()">
         <section class="boards-modal boards-modal--stack-studio" aria-label="Stack Studio" (click)="$event.stopPropagation()">
           <div class="boards-modal__head">
             <div>

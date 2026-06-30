@@ -3603,15 +3603,13 @@
 
   .boards-grid,
   .cards-mosaic {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.85rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .board-square__open {
-    border-width: 2px;
-    border-radius: 1.15rem;
-    padding: 0.72rem;
-    box-shadow: 3px 3px 0 var(--ink);
+  .board-square,
+  .mosaic-card {
+    aspect-ratio: 4 / 3;
   }
 
   .board-square__stack {
@@ -3619,11 +3617,8 @@
   }
 
   .board-square__meta strong {
-    font-size: 0.98rem;
-  }
-
-  .board-square__meta small {
-    font-size: 0.55rem;
+    font-size: clamp(1.35rem, 8vw, 1.95rem);
+    line-height: 0.96;
   }
 
   .board-square__tools,
@@ -3834,10 +3829,23 @@
     grid-template-columns: 1fr;
   }
 
+  .boards-modal-backdrop--stack-studio {
+    align-items: stretch;
+    justify-items: stretch;
+    overflow: hidden;
+    padding: 0;
+  }
+
   .boards-modal--stack-studio {
-    width: min(100%, 42rem);
-    max-height: calc(100dvh - 1rem);
-    border-radius: 1.1rem;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
     padding: 0.75rem;
   }
 
@@ -3850,20 +3858,13 @@
   .stack-studio {
     gap: 0.75rem;
     margin-top: 0.75rem;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: 1rem;
   }
 
   .stack-studio__context {
     grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.65rem;
-    border-radius: 1rem;
-    box-shadow: 2px 2px 0 var(--modal-ink);
-    padding: 0.65rem;
-  }
-
-  .stack-studio__thumb {
-    width: 3.25rem;
-    height: 3.25rem;
-    border-radius: 0.75rem;
   }
 
   .stack-studio__context-actions {
@@ -3894,15 +3895,10 @@
   }
 
   .stack-preview-panel .stack-preview {
-    width: min(58vw, 13rem);
-    max-height: 23rem;
+    width: min(48vw, 11rem);
+    max-height: 34dvh;
     border-radius: 1rem;
     box-shadow: 3px 3px 0 var(--modal-ink);
-  }
-
-  .stack-preview-controls {
-    gap: 0.45rem;
-    margin: 0.65rem 0 0;
   }
 
   .stack-preview-controls .boards-primary-action {
