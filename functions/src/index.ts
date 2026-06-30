@@ -4646,10 +4646,22 @@ async function resolveBoardWizardMenuItemImage(
 ): Promise<string> {
   const queries = buildBoardWizardMenuItemImageQueries(card, searchContext);
   for (const query of queries) {
-    const cacheKey = query.toLowerCase();
+    const cacheKey = `web:${query.toLowerCase()}`;
     let pending = cache.get(cacheKey);
     if (!pending) {
-      pending = findBoardWizardMenuItemImage(query, apiKey);
+      pending = findBoardWizardMenuItemWebImage(query, apiKey);
+      cache.set(cacheKey, pending);
+    }
+    const imageUrl = await pending;
+    if (imageUrl) {
+      return imageUrl;
+    }
+  }
+  for (const query of queries) {
+    const cacheKey = `place:${query.toLowerCase()}`;
+    let pending = cache.get(cacheKey);
+    if (!pending) {
+      pending = apiKey ? findGooglePlaceFoodPhotoForBoardWizard(query, apiKey) : Promise.resolve('');
       cache.set(cacheKey, pending);
     }
     const imageUrl = await pending;
@@ -4673,10 +4685,11 @@ function buildBoardWizardMenuItemImageQueries(card: GeneratedBoardWizardCard, se
     .slice(0, 2)
     .join(' ');
   return [
+    [title, 'food photo'].filter(Boolean).join(' '),
+    [title, category, 'food photo'].filter(Boolean).join(' '),
+    [noteKeywords, category, 'food photo'].filter(Boolean).join(' '),
     [title, restaurant, 'food photo'].filter(Boolean).join(' '),
     [title, restaurant, category, 'food'].filter(Boolean).join(' '),
-    [title, 'food photo'].filter(Boolean).join(' '),
-    [noteKeywords, category, 'food photo'].filter(Boolean).join(' '),
     [title, searchContext, 'food'].filter(Boolean).join(' '),
   ]
     .map((query) => query.replace(/\s+/g, ' ').trim().slice(0, 180))
@@ -4685,7 +4698,7 @@ function buildBoardWizardMenuItemImageQueries(card: GeneratedBoardWizardCard, se
     .slice(0, 5);
 }
 
-async function findBoardWizardMenuItemImage(query: string, apiKey: string): Promise<string> {
+async function findBoardWizardMenuItemWebImage(query: string, apiKey: string): Promise<string> {
   const googleImageUrl = apiKey ? await findGoogleCustomSearchImageForBoardWizard(query, apiKey) : '';
   if (googleImageUrl) {
     return googleImageUrl;
@@ -4703,7 +4716,19 @@ async function findBoardWizardMenuItemImage(query: string, apiKey: string): Prom
     });
   }
 
-  return apiKey ? await findGooglePlaceFoodPhotoForBoardWizard(query, apiKey) : '';
+  try {
+    const commonsImageUrl = await findCommonsReferenceImageForBoardWizard(query);
+    if (commonsImageUrl) {
+      return commonsImageUrl;
+    }
+  } catch (error) {
+    logger.warn('Board wizard menu item Commons image failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  return '';
 }
 
 async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: string): Promise<string> {
@@ -4878,6 +4903,50 @@ async function findReferenceImageForBoardWizard(query: string): Promise<string> 
     const source = page.thumbnail?.source || page.original?.source || '';
     if (source && canTryCoverImageUrl(source)) {
       return source;
+    }
+  }
+
+  return '';
+}
+
+async function findCommonsReferenceImageForBoardWizard(query: string): Promise<string> {
+  const searchTerms = [
+    query,
+    `${query} food`,
+    `${meaningfulBoardWizardTokens(query).slice(0, 4).join(' ')} food`,
+  ]
+    .map((term) => term.replace(/\s+/g, ' ').trim())
+    .filter((term) => term.length >= 3)
+    .filter((term, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === term.toLowerCase()) === index)
+    .slice(0, 3);
+
+  for (const term of searchTerms) {
+    const url = new URL('https://commons.wikimedia.org/w/api.php');
+    url.searchParams.set('action', 'query');
+    url.searchParams.set('format', 'json');
+    url.searchParams.set('generator', 'search');
+    url.searchParams.set('gsrsearch', term);
+    url.searchParams.set('gsrnamespace', '6');
+    url.searchParams.set('gsrlimit', '6');
+    url.searchParams.set('prop', 'imageinfo');
+    url.searchParams.set('iiprop', 'url|mime|size');
+    url.searchParams.set('iiurlwidth', '1200');
+
+    const data = await fetchJson<WikimediaCommonsImageResponse>(url.toString());
+    for (const page of Object.values(data.query?.pages ?? {})) {
+      const image = page.imageinfo?.[0];
+      if (!image) {
+        continue;
+      }
+      const mime = image.mime?.toLowerCase() ?? '';
+      if (mime && !['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(mime)) {
+        continue;
+      }
+      for (const source of [image.thumburl, image.url]) {
+        if (source && canTryCoverImageUrl(source)) {
+          return source;
+        }
+      }
     }
   }
 
