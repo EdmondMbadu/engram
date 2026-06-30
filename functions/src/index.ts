@@ -3774,6 +3774,8 @@ type BoardWizardUrlExtraction = {
   context: string;
   restaurantLike: boolean;
   menuItems: BoardWizardMenuItem[];
+  pageTitle: string;
+  siteName: string;
 };
 
 async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, html: string): Promise<BoardWizardUrlExtraction> {
@@ -3805,7 +3807,7 @@ async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, ht
     linkedContext ? `Linked page excerpts:\n${linkedContext}` : '',
     pageText ? `Main page text:\n${pageText}` : '',
   ].filter(Boolean).join('\n\n').slice(0, 12000);
-  return { context, restaurantLike, menuItems };
+  return { context, restaurantLike, menuItems, pageTitle: title, siteName };
 }
 
 async function fetchBoardWizardLinkedContext(links: BoardWizardUrlLink[], baseUrl: string): Promise<string> {
@@ -4178,9 +4180,18 @@ export const generateBoardWizardBatch = onCall(
     let urlExtraction: BoardWizardUrlExtraction | null = null;
     if (mode === 'url' && url) {
       try {
-        const fetched = await fetchHtmlWithFallback(url, { timeoutMs: 90_000, preferBrowser: true });
+        const fetched = await fetchHtmlWithFallback(url, { timeoutMs: 25_000 });
         if (!looksLikeAntiBotChallenge(fetched.html)) {
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
+        }
+        if ((urlExtraction?.restaurantLike && urlExtraction.menuItems.length < 3) || !urlExtraction) {
+          const rendered = await fetchHtmlWithFallback(url, { timeoutMs: 35_000, preferBrowser: true });
+          if (!looksLikeAntiBotChallenge(rendered.html)) {
+            const renderedExtraction = await buildBoardWizardUrlContext(url, rendered.finalUrl || url, rendered.html);
+            if (renderedExtraction.menuItems.length > (urlExtraction?.menuItems.length ?? 0)) {
+              urlExtraction = renderedExtraction;
+            }
+          }
         }
       } catch (error) {
         logger.warn('Board wizard URL intake failed.', {
@@ -4200,25 +4211,25 @@ export const generateBoardWizardBatch = onCall(
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, upload photo names, or provide a URL.');
     }
 
-    let generated = await generateBoardWizardBatchWithGemini({
-      mode,
-      prompt: effectivePrompt || url || photoNames.join(', '),
-      pastedList,
-      url,
-      photoNames,
-      targetBoardTitle,
-      defaultType,
-      count,
-      vibe,
-      existingCards,
-    });
-    if (urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3) {
-      generated = shapeRestaurantMenuWizardBatch(generated, {
-        menuItems: urlExtraction.menuItems,
-        sourceUrl: url,
-        count,
-      });
-    }
+    const generated = urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3
+      ? buildRestaurantMenuWizardBatch({
+          extraction: urlExtraction,
+          sourceUrl: url,
+          targetBoardTitle,
+          count,
+        })
+      : await generateBoardWizardBatchWithGemini({
+          mode,
+          prompt: effectivePrompt || url || photoNames.join(', '),
+          pastedList,
+          url,
+          photoNames,
+          targetBoardTitle,
+          defaultType,
+          count,
+          vibe,
+          existingCards,
+        });
     const result = await enrichBoardWizardBatchWithPlaces(generated, {
       mode,
       prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
@@ -4256,10 +4267,90 @@ async function enrichBoardWizardBatchWithPlaces(
 ): Promise<typeof batch> {
   const apiKey = googlePlacesApiKey.value();
   const searchContext = inferBoardWizardPlaceContext(context.prompt, context.targetBoardTitle || batch.board.title);
+  const restaurantPhotoUrls = apiKey && batch.cards.some((card) => isBoardWizardMenuItemCard(card) && !card.imageUrl)
+    ? await fetchBoardWizardRestaurantPhotoUrls(searchContext, apiKey)
+    : [];
   const enrichedCards = await Promise.all(
-    batch.cards.map((card) => enrichBoardWizardCard(card, searchContext, apiKey)),
+    batch.cards.map(async (card, index) => {
+      if (isBoardWizardMenuItemCard(card) && !card.imageUrl && restaurantPhotoUrls.length) {
+        return { ...card, imageUrl: restaurantPhotoUrls[index % restaurantPhotoUrls.length] };
+      }
+      return enrichBoardWizardCard(card, searchContext, apiKey);
+    }),
   );
   return { ...batch, cards: enrichedCards };
+}
+
+function buildRestaurantMenuWizardBatch(
+  options: {
+    extraction: BoardWizardUrlExtraction;
+    sourceUrl: string;
+    targetBoardTitle: string;
+    count: number;
+  },
+): GeneratedBoardWizardBatch {
+  const restaurantName = inferRestaurantNameFromUrlExtraction(options.extraction, options.sourceUrl, options.targetBoardTitle);
+  const menuLimit = Math.max(1, Math.min(options.extraction.menuItems.length, options.count - 1));
+  const menuCards = options.extraction.menuItems.slice(0, menuLimit).map((item, index): GeneratedBoardWizardCard => ({
+    title: item.title.slice(0, 80),
+    subtitle: [item.category, item.price].filter(Boolean).join(' · ').slice(0, 90) || 'Menu item',
+    notes: (item.description || `A menu item from ${restaurantName}.`).slice(0, 260),
+    type: 'food',
+    scope: 'place',
+    status: index < 3 ? 'favorite' : 'saved',
+    rating: index < 3 ? 5 : 4,
+    tags: mergeBoardWizardTags(['menu-item', 'food'], [item.category]),
+    image_query: `${item.title} ${restaurantName} food`.slice(0, 120),
+    place_query: restaurantName.slice(0, 140),
+    imageUrl: item.imageUrl || undefined,
+  }));
+  const cards = [
+    ...menuCards,
+    {
+      title: 'Open Menu',
+      subtitle: 'View the original menu',
+      notes: 'Use this card as the action link back to the restaurant menu.',
+      type: 'note',
+      scope: 'place',
+      status: 'planned',
+      rating: 4,
+      tags: ['action', 'menu'],
+      image_query: `${restaurantName} menu`,
+      place_query: options.sourceUrl,
+    } satisfies GeneratedBoardWizardCard,
+  ].slice(0, options.count);
+
+  return {
+    board: {
+      title: (options.targetBoardTitle || `${restaurantName} Menu`).slice(0, 90),
+      description: `Food-item board generated from ${restaurantName}.`,
+      icon: 'restaurant',
+      tone: 'coral',
+    },
+    cards,
+  };
+}
+
+function inferRestaurantNameFromUrlExtraction(
+  extraction: BoardWizardUrlExtraction,
+  sourceUrl: string,
+  targetBoardTitle: string,
+): string {
+  if (targetBoardTitle.trim()) {
+    return targetBoardTitle.trim();
+  }
+  const title = (extraction.pageTitle || extraction.siteName)
+    .replace(/\s*[\-|–|—|]\s*(order|menu|location|official).*$/i, '')
+    .replace(/\s+(menu|location|restaurant)$/i, '')
+    .trim();
+  if (title) {
+    return title;
+  }
+  try {
+    return new URL(sourceUrl).hostname.replace(/^www\./, '').split('.')[0].replace(/[-_]+/g, ' ');
+  } catch {
+    return 'Restaurant';
+  }
 }
 
 function shapeRestaurantMenuWizardBatch(
@@ -4403,6 +4494,36 @@ function isBoardWizardMenuItemCard(card: GeneratedBoardWizardCard): boolean {
   }
   const tags = card.tags.map((tag) => tag.toLowerCase());
   return tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag));
+}
+
+async function fetchBoardWizardRestaurantPhotoUrls(searchContext: string, apiKey: string): Promise<string[]> {
+  const query = searchContext.trim().slice(0, 180);
+  if (query.length < 2) {
+    return [];
+  }
+  try {
+    const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
+    searchUrl.searchParams.set('query', query);
+    searchUrl.searchParams.set('key', apiKey);
+    const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
+    const placeId = textFromUnknown(search.results?.[0]?.place_id);
+    if (!placeId) {
+      return [];
+    }
+    const details = await fetchGooglePlaceDetailsForBoardWizard(placeId, apiKey);
+    const photos = details?.photos ?? [];
+    return photos
+      .map((photo) => textFromUnknown(photo.photo_reference))
+      .filter(Boolean)
+      .slice(0, 12)
+      .map((ref) => `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(ref)}`);
+  } catch (error) {
+    logger.warn('Board wizard restaurant photo fallback failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
 }
 
 async function fetchGooglePlaceDetailsForBoardWizard(
