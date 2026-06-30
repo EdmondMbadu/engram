@@ -830,7 +830,7 @@ export class BoardsComponent {
     if (!board) {
       return [];
     }
-    const cards = [...board.cards].sort((a, b) => this.compareCards(a, b));
+    const cards = [...board.cards];
     if (!query) {
       return cards;
     }
