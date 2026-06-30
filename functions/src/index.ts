@@ -4270,8 +4270,24 @@ function buildAccommodationWizardBatch(
 ): GeneratedBoardWizardBatch {
   const listingName = options.extraction.listingName;
   const images = options.extraction.images;
-  const imageAt = (index: number): string | undefined => images[index]?.src || images[index % Math.max(1, images.length)]?.src;
+  const hasAmenities = options.extraction.amenities.length > 0;
+  const infoCardCount = 3 + (hasAmenities ? 1 : 0);
+  const maxPhotoCards = Math.max(0, options.count - infoCardCount);
+  const photoCards = images.slice(0, maxPhotoCards).map((image): GeneratedBoardWizardCard => ({
+    title: accommodationPhotoTitle(),
+    subtitle: '',
+    notes: '',
+    type: 'note',
+    scope: 'place',
+    status: 'saved',
+    rating: 4,
+    tags: ['lodging', 'photo', 'source-image'],
+    image_query: image.alt || `${listingName} listing photo`,
+    place_query: options.extraction.sourceUrl,
+    imageUrl: image.src,
+  }));
   const cards: GeneratedBoardWizardCard[] = [
+    ...photoCards,
     {
       title: listingName.slice(0, 80),
       subtitle: options.extraction.location || options.extraction.siteName || 'Stay listing',
@@ -4283,20 +4299,7 @@ function buildAccommodationWizardBatch(
       tags: ['lodging', 'airbnb', 'overview'],
       image_query: `${listingName} listing`,
       place_query: options.extraction.location || listingName,
-      imageUrl: imageAt(0),
-    },
-    {
-      title: 'The Space',
-      subtitle: 'What the listing offers',
-      notes: buildAccommodationSpaceNote(options.extraction),
-      type: 'note',
-      scope: 'place',
-      status: 'saved',
-      rating: 4,
-      tags: ['lodging', 'details'],
-      image_query: `${listingName} room`,
-      place_query: options.extraction.sourceUrl,
-      imageUrl: imageAt(1),
+      imageUrl: undefined,
     },
     {
       title: 'Location',
@@ -4311,29 +4314,11 @@ function buildAccommodationWizardBatch(
       tags: ['lodging', 'location'],
       image_query: `${listingName} location`,
       place_query: options.extraction.location || listingName,
-      imageUrl: imageAt(2),
+      imageUrl: undefined,
     },
   ];
 
-  const amenityCardCount = options.extraction.amenities.length ? 1 : 0;
-  const maxPhotoCards = Math.max(0, options.count - 4 - amenityCardCount);
-  const photoCards = images.slice(3, 3 + maxPhotoCards).map((image, index): GeneratedBoardWizardCard => ({
-    title: accommodationPhotoTitle(image.alt, index),
-    subtitle: 'Listing photo',
-    notes: image.alt ? `Source photo from the listing: ${image.alt}.` : 'Source photo from the listing.',
-    type: 'note',
-    scope: 'place',
-    status: 'saved',
-    rating: 4,
-    tags: ['lodging', 'photo', 'source-image'],
-    image_query: image.alt || `${listingName} listing photo`,
-    place_query: options.extraction.sourceUrl,
-    imageUrl: image.src,
-  }));
-
-  cards.push(...photoCards);
-
-  if (options.extraction.amenities.length) {
+  if (hasAmenities) {
     cards.push({
       title: 'Amenities',
       subtitle: `${options.extraction.amenities.slice(0, 3).join(', ')}${options.extraction.amenities.length > 3 ? '...' : ''}`.slice(0, 90),
@@ -4345,7 +4330,7 @@ function buildAccommodationWizardBatch(
       tags: ['lodging', 'amenities'],
       image_query: `${listingName} amenities`,
       place_query: options.extraction.sourceUrl,
-      imageUrl: imageAt(3),
+      imageUrl: undefined,
     });
   }
 
@@ -4360,7 +4345,7 @@ function buildAccommodationWizardBatch(
     tags: ['action', 'booking', 'lodging'],
     image_query: `${listingName} booking`,
     place_query: options.extraction.sourceUrl,
-    imageUrl: imageAt(0),
+    imageUrl: undefined,
   });
 
   return {
@@ -4504,28 +4489,11 @@ function buildAccommodationSpaceNote(extraction: BoardWizardAccommodationExtract
   return (parts.join(' ') || 'Review the source listing for bedrooms, beds, baths, amenities, and house rules.').slice(0, 260);
 }
 
-function accommodationPhotoTitle(alt: string, index: number): string {
-  const cleaned = alt.replace(/\s+/g, ' ').trim();
-  if (cleaned && !/image|photo|featured/i.test(cleaned)) {
-    return cleaned.slice(0, 80);
-  }
-  const labels = ['Main Photo', 'Living Space', 'Bedroom', 'Kitchen', 'Bathroom', 'Outdoor Space', 'Amenity'];
-  return labels[index] ?? `Listing Photo ${index + 1}`;
+function accommodationPhotoTitle(): string {
+  return 'Photo';
 }
 
 function inferAccommodationImageAlt(src: string): string {
-  if (/bed(room)?/i.test(src)) {
-    return 'bedroom';
-  }
-  if (/kitchen/i.test(src)) {
-    return 'kitchen';
-  }
-  if (/bath/i.test(src)) {
-    return 'bathroom';
-  }
-  if (/pool|patio|balcony|terrace|outdoor/i.test(src)) {
-    return 'outdoor space';
-  }
   return 'listing photo';
 }
 

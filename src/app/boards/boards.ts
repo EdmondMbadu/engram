@@ -2157,6 +2157,17 @@ export class BoardsComponent {
     return this.cardTypes.find((item) => item.id === type)?.label ?? 'Note';
   }
 
+  isPhotoOnlyCard(card: Pick<BoardCard, 'imageUrl' | 'tags' | 'title'>): boolean {
+    if (!card.imageUrl || !card.tags.includes('lodging')) {
+      return false;
+    }
+    const title = card.title.trim().toLowerCase();
+    return card.tags.includes('source-image')
+      || card.tags.includes('photo')
+      || card.tags.includes('details')
+      || /^(photo|listing photo \d+|main photo|living space|bedroom|kitchen|bathroom|outdoor space|amenity)$/i.test(title);
+  }
+
   cardScopeIcon(scope: BoardCardScope): string {
     return this.cardScopes.find((item) => item.id === scope)?.icon ?? 'location_on';
   }

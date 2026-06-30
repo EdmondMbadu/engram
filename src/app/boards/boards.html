@@ -69,12 +69,14 @@
                     @if (card.imageUrl) {
                       <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
                     }
-                    <div class="stack-preview__shade"></div>
-                    <div class="stack-preview__content">
-                      <span>{{ card.status }} · {{ card.rating }}/5</span>
-                      <h4>{{ card.title }}</h4>
-                      <p>{{ card.subtitle || card.notes }}</p>
-                    </div>
+                    @if (!isPhotoOnlyCard(card)) {
+                      <div class="stack-preview__shade"></div>
+                      <div class="stack-preview__content">
+                        <span>{{ card.status }} · {{ card.rating }}/5</span>
+                        <h4>{{ card.title }}</h4>
+                        <p>{{ card.subtitle || card.notes }}</p>
+                      </div>
+                    }
                   }
                 } @else {
                   <div class="stack-preview__closing">
@@ -621,6 +623,7 @@
                   [class.detail-card--favorite]="card.status === 'favorite'"
                   [class.detail-card--selected]="isCardSelected(card.id)"
                   [class.detail-card--managing]="isManagingBoard(board.id)"
+                  [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
                   style="overflow: visible; perspective: 1200px;"
                   (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, board.id, card)"
@@ -672,12 +675,15 @@
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                           </span>
                         }
-                        <span class="detail-card__status">
-                          <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
-                          {{ statusLabel(card.status) }}
-                        </span>
+                        @if (!isPhotoOnlyCard(card)) {
+                          <span class="detail-card__status">
+                            <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
+                            {{ statusLabel(card.status) }}
+                          </span>
+                        }
                       </div>
 
+                      @if (!isPhotoOnlyCard(card)) {
                       <div class="detail-card__body">
                         <div class="detail-card__line">
                           <span>
@@ -711,6 +717,7 @@
                           </div>
                         }
                       </div>
+                      }
 
                       <div class="detail-card__footer">
                         <span>Updated {{ cardUpdatedLabel(card) }}</span>
@@ -1026,9 +1033,13 @@
             }
 
             <div class="boards-wizard-preview__layout">
-              <div class="boards-wizard-card-grid">
+                    <div class="boards-wizard-card-grid">
                 @for (card of wizardPreviewCards(); track card.id) {
-                  <article class="boards-wizard-card" [class.boards-wizard-card--off]="!isWizardCardSelected(card.id)">
+                  <article
+                    class="boards-wizard-card"
+                    [class.boards-wizard-card--off]="!isWizardCardSelected(card.id)"
+                    [class.boards-wizard-card--photo-only]="isPhotoOnlyCard(card)"
+                  >
                     <div class="boards-wizard-card__media">
                       @if (card.imageUrl) {
                         <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
@@ -1088,7 +1099,7 @@
                           (input)="updateWizardCardTags(card.id, $any($event.target).value)"
                         />
                       </div>
-                    } @else {
+                    } @else if (!isPhotoOnlyCard(card)) {
                       <div class="boards-wizard-card__body">
                         <strong>{{ card.title }}</strong>
                         <small>{{ card.subtitle }}</small>
@@ -1246,7 +1257,9 @@
                           <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                         }
                         <span class="stack-card-chip__count">{{ $index + 1 }}</span>
-                        <strong>{{ card.title }}</strong>
+                        @if (!isPhotoOnlyCard(card)) {
+                          <strong>{{ card.title }}</strong>
+                        }
                       </button>
                     } @empty {
                       <div class="stack-empty-note">
@@ -1365,13 +1378,15 @@
                         @if (card.imageUrl) {
                           <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
                         }
-                        <div class="stack-preview__shade"></div>
-                        <div class="stack-preview__brand">LivingWiki</div>
-                        <div class="stack-preview__content">
-                          <span>{{ card.status }} · {{ card.rating }}/5</span>
-                          <h4>{{ card.title }}</h4>
-                          <p>{{ card.subtitle || card.notes }}</p>
-                        </div>
+                        @if (!isPhotoOnlyCard(card)) {
+                          <div class="stack-preview__shade"></div>
+                          <div class="stack-preview__brand">LivingWiki</div>
+                          <div class="stack-preview__content">
+                            <span>{{ card.status }} · {{ card.rating }}/5</span>
+                            <h4>{{ card.title }}</h4>
+                            <p>{{ card.subtitle || card.notes }}</p>
+                          </div>
+                        }
                       }
                     } @else {
                       <div class="stack-preview__closing">
