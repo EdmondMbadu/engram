@@ -3001,7 +3001,7 @@ export class BoardsComponent {
         editing: false,
       };
 
-      if (this.shouldEnrichWizardCard(card) && (!enriched.imageUrl || !enriched.placeId)) {
+      if (this.shouldEnrichWizardCard(card) && !enriched.imageUrl) {
         try {
           const place = await this.findWizardPlace(card);
           if (place) {
@@ -3029,7 +3029,15 @@ export class BoardsComponent {
     if (card.type === 'food' && card.tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag.toLowerCase()))) {
       return false;
     }
+    if (this.isReferenceEntityWizardCard(card)) {
+      return false;
+    }
     return card.scope === 'place' && (card.type === 'place' || card.type === 'food' || card.type === 'shop');
+  }
+
+  private isReferenceEntityWizardCard(card: BoardWizardGeneratedCard): boolean {
+    const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query}`.toLowerCase();
+    return /\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|poet|philosopher|general|monarch|king|queen|emperor|saint|historical figure)\b/.test(text);
   }
 
   private async findWizardPlace(card: BoardWizardGeneratedCard): Promise<PlaceSearchResult | null> {

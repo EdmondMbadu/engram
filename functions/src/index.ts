@@ -4990,11 +4990,45 @@ async function enrichBoardWizardCard(
   searchContext: string,
   apiKey: string,
 ): Promise<GeneratedBoardWizardCard> {
+  if (shouldUseReferenceImageBeforePlaces(card, searchContext)) {
+    const referenceEnriched = await enrichBoardWizardCardWithReferenceImage({
+      ...card,
+      image_query: buildBoardWizardReferenceImageQuery(card),
+    });
+    return referenceEnriched.imageUrl ? referenceEnriched : card;
+  }
   const placeEnriched = apiKey ? await enrichBoardWizardCardWithPlace(card, searchContext, apiKey) : card;
   if (placeEnriched.imageUrl) {
     return placeEnriched;
   }
   return await enrichBoardWizardCardWithReferenceImage(placeEnriched);
+}
+
+function shouldUseReferenceImageBeforePlaces(card: GeneratedBoardWizardCard, searchContext: string): boolean {
+  if (isBoardWizardMenuItemCard(card)) {
+    return false;
+  }
+  const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`.toLowerCase();
+  if (/\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|poet|philosopher|general|monarch|king|queen|emperor|saint)\b/.test(text)) {
+    return true;
+  }
+  if (/\b(american presidents|u\.s\. presidents|us presidents|56 signers|declaration of independence|hall of fame|notable people|historical figures)\b/.test(text)) {
+    return true;
+  }
+  return card.type !== 'place'
+    && /\b(history|fact|facts|timeline|profile|figure|legacy|era|state|country)\b/.test(text);
+}
+
+function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard): string {
+  const title = textFromUnknown(card.title).replace(/\s+/g, ' ').trim();
+  const query = textFromUnknown(card.image_query).replace(/\s+/g, ' ').trim();
+  if (query && !/\b(building|house|library|museum|monument|memorial|school|university|bridge|park|airport|station)\b/i.test(query)) {
+    return query.slice(0, 140);
+  }
+  if (/\b(president|signer|portrait|born|died|biography)\b/i.test(`${card.subtitle} ${card.notes} ${card.tags.join(' ')}`)) {
+    return `${title} portrait`.slice(0, 140);
+  }
+  return title.slice(0, 140);
 }
 
 async function enrichBoardWizardCardWithPlace(
@@ -5302,6 +5336,11 @@ async function enrichBoardWizardCardWithReferenceImage(card: GeneratedBoardWizar
 }
 
 async function findReferenceImageForBoardWizard(query: string): Promise<string> {
+  const exactImage = await findExactWikipediaImageForBoardWizard(query);
+  if (exactImage) {
+    return exactImage;
+  }
+
   const searchUrl = new URL('https://en.wikipedia.org/w/api.php');
   searchUrl.searchParams.set('action', 'query');
   searchUrl.searchParams.set('list', 'search');
@@ -5335,6 +5374,51 @@ async function findReferenceImageForBoardWizard(query: string): Promise<string> 
   }
 
   return '';
+}
+
+async function findExactWikipediaImageForBoardWizard(query: string): Promise<string> {
+  const titles = exactWikipediaTitleCandidates(query);
+  if (!titles.length) {
+    return '';
+  }
+
+  const imageUrl = new URL('https://en.wikipedia.org/w/api.php');
+  imageUrl.searchParams.set('action', 'query');
+  imageUrl.searchParams.set('format', 'json');
+  imageUrl.searchParams.set('redirects', '1');
+  imageUrl.searchParams.set('prop', 'pageimages');
+  imageUrl.searchParams.set('piprop', 'original|thumbnail');
+  imageUrl.searchParams.set('pithumbsize', '900');
+  imageUrl.searchParams.set('titles', titles.join('|'));
+
+  const pages = await fetchJson<WikipediaPageImagesResponse>(imageUrl.toString());
+  const normalizedTitles = new Set(titles.map((title) => normalizeWikipediaTitleCandidate(title)));
+  const pageValues = Object.values(pages.query?.pages ?? {});
+  const exactPages = pageValues.filter((page) => normalizedTitles.has(normalizeWikipediaTitleCandidate(page.title ?? '')));
+  for (const page of [...exactPages, ...pageValues]) {
+    const source = page.thumbnail?.source || page.original?.source || '';
+    if (source && canTryCoverImageUrl(source)) {
+      return source;
+    }
+  }
+  return '';
+}
+
+function exactWikipediaTitleCandidates(query: string): string[] {
+  const raw = query.replace(/\s+/g, ' ').trim();
+  const withoutDescriptors = raw
+    .replace(/\b(official|public domain|photograph|photo|picture|image|portrait|biography|person|people|american|u\.s\.|us|united states|president|presidential|first lady|signer|founding father|historical figure)\b/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return [withoutDescriptors, raw]
+    .map((title) => title.replace(/[,:;|-].*$/, '').replace(/\s+/g, ' ').trim())
+    .filter((title) => title.length >= 3 && title.length <= 80)
+    .filter((title, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === title.toLowerCase()) === index)
+    .slice(0, 3);
+}
+
+function normalizeWikipediaTitleCandidate(value: string): string {
+  return value.replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
 async function findCommonsReferenceImageForBoardWizard(query: string): Promise<string> {
