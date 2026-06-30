@@ -3037,7 +3037,7 @@ export class BoardsComponent {
 
   private isReferenceEntityWizardCard(card: BoardWizardGeneratedCard): boolean {
     const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query}`.toLowerCase();
-    return /\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|poet|philosopher|general|monarch|king|queen|emperor|saint|historical figure)\b/.test(text);
+    return /\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|poet|philosopher|general|monarch|king|queen|emperor|saint|historical figure|world cup|fifa|national team|football team|soccer team|winner|winners|champion|champions|tournament|award|awards|record|records)\b/.test(text);
   }
 
   private async findWizardPlace(card: BoardWizardGeneratedCard): Promise<PlaceSearchResult | null> {

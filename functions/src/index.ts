@@ -4993,7 +4993,7 @@ async function enrichBoardWizardCard(
   if (shouldUseReferenceImageBeforePlaces(card, searchContext)) {
     const referenceEnriched = await enrichBoardWizardCardWithReferenceImage({
       ...card,
-      image_query: buildBoardWizardReferenceImageQuery(card),
+      image_query: buildBoardWizardReferenceImageQuery(card, searchContext),
     });
     return referenceEnriched.imageUrl ? referenceEnriched : card;
   }
@@ -5012,15 +5012,20 @@ function shouldUseReferenceImageBeforePlaces(card: GeneratedBoardWizardCard, sea
   if (/\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|poet|philosopher|general|monarch|king|queen|emperor|saint)\b/.test(text)) {
     return true;
   }
-  if (/\b(american presidents|u\.s\. presidents|us presidents|56 signers|declaration of independence|hall of fame|notable people|historical figures)\b/.test(text)) {
+  if (/\b(american presidents|u\.s\. presidents|us presidents|56 signers|declaration of independence|hall of fame|notable people|historical figures|world cup winners|fifa world cup|world cup champions|world cup winner|world cup champion|national team|football team|soccer team)\b/.test(text)) {
     return true;
   }
   return card.type !== 'place'
-    && /\b(history|fact|facts|timeline|profile|figure|legacy|era|state|country)\b/.test(text);
+    && /\b(history|fact|facts|timeline|profile|figure|legacy|era|state|country|winner|winners|champion|champions|tournament|award|awards|record|records)\b/.test(text);
 }
 
-function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard): string {
+function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard, searchContext = ''): string {
   const title = textFromUnknown(card.title).replace(/\s+/g, ' ').trim();
+  const text = `${title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`;
+  const worldCupTeamTitle = buildWorldCupTeamWikipediaTitle(title, text);
+  if (worldCupTeamTitle) {
+    return worldCupTeamTitle.slice(0, 140);
+  }
   const query = textFromUnknown(card.image_query).replace(/\s+/g, ' ').trim();
   if (query && !/\b(building|house|library|museum|monument|memorial|school|university|bridge|park|airport|station)\b/i.test(query)) {
     return query.slice(0, 140);
@@ -5029,6 +5034,41 @@ function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard): st
     return `${title} portrait`.slice(0, 140);
   }
   return title.slice(0, 140);
+}
+
+function buildWorldCupTeamWikipediaTitle(title: string, text: string): string {
+  if (!/\b(fifa\s+)?world cup|world cup winner|world cup champion|world cup winners|world cup champions\b/i.test(text)) {
+    return '';
+  }
+  const teamName = extractWorldCupWinnerTeamName(title);
+  return teamName ? `${teamName} national football team` : '';
+}
+
+function extractWorldCupWinnerTeamName(title: string): string {
+  const compact = title
+    .replace(/\b(19|20)\d{2}\b/g, ' ')
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/\b(winner|winners|champion|champions|fifa|world cup|men'?s|women'?s|team|national|football|soccer|titles?|wins?)\b/gi, ' ')
+    .replace(/[,:;|/]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const knownTeams = [
+    'Argentina',
+    'Brazil',
+    'England',
+    'France',
+    'Germany',
+    'Italy',
+    'Spain',
+    'Uruguay',
+    'West Germany',
+  ];
+  const text = `${title} ${compact}`;
+  const known = knownTeams.find((team) => new RegExp(`\\b${team.replace(/\s+/g, '\\s+')}\\b`, 'i').test(text));
+  if (known) {
+    return known;
+  }
+  return compact.replace(/^[\-–—]+|[\-–—]+$/g, '').trim().slice(0, 70);
 }
 
 async function enrichBoardWizardCardWithPlace(
