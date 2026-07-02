@@ -504,8 +504,26 @@
             </div>
 
             <div class="board-detail__summary">
-              <div class="board-detail__mark">
-                <span class="material-symbols-outlined">{{ board.icon }}</span>
+              <div
+                class="board-detail__mark"
+                [class.board-detail__mark--logo]="!!board.logoUrl"
+                [style.border]="board.logoUrl ? '0' : null"
+                [style.border-radius]="board.logoUrl ? '0' : null"
+                [style.background]="board.logoUrl ? 'transparent' : null"
+                [style.box-shadow]="board.logoUrl ? 'none' : null"
+                [style.padding]="board.logoUrl ? '0' : null"
+              >
+                @if (board.logoUrl) {
+                  @if (boardLogoHref(board)) {
+                    <a [href]="boardLogoHref(board)" target="_blank" rel="noopener" aria-label="Open board logo link" style="display: grid; width: 100%; height: 100%; place-items: center;">
+                      <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,.16));" />
+                    </a>
+                  } @else {
+                    <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,.16));" />
+                  }
+                } @else {
+                  <span class="material-symbols-outlined">{{ board.icon }}</span>
+                }
               </div>
 
               <div class="board-detail__copy">
@@ -536,17 +554,6 @@
                     <strong style="overflow: hidden; color: var(--ink); font-size: 1rem; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap;">{{ ownerName(board) }}</strong>
                   </span>
                 </div>
-                @if (board.logoUrl) {
-                  @if (boardLogoHref(board)) {
-                    <a class="board-detail__logo" [href]="boardLogoHref(board)" target="_blank" rel="noopener" style="display: inline-grid; max-width: min(15rem, 100%); place-items: center; margin-top: .8rem; overflow: hidden; border: 2px solid var(--ink); border-radius: .95rem; background: rgba(255,255,255,.95); box-shadow: 3px 3px 0 var(--ink); padding: .42rem .65rem; text-decoration: none;">
-                      <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="max-width: 13rem; height: clamp(2.1rem, 5vw, 3.6rem); object-fit: contain;" />
-                    </a>
-                  } @else {
-                    <span class="board-detail__logo" style="display: inline-grid; max-width: min(15rem, 100%); place-items: center; margin-top: .8rem; overflow: hidden; border: 2px solid var(--ink); border-radius: .95rem; background: rgba(255,255,255,.95); box-shadow: 3px 3px 0 var(--ink); padding: .42rem .65rem;">
-                      <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="max-width: 13rem; height: clamp(2.1rem, 5vw, 3.6rem); object-fit: contain;" />
-                    </span>
-                  }
-                }
                 @if (board.stackCtaLabel && stackCtaHref(board)) {
                   <a
                     [href]="stackCtaHref(board)"
