@@ -104,8 +104,9 @@
                     <h4>Made with LivingWiki</h4>
                     <p>{{ board.title }}</p>
                     @if (board.stackCtaLabel && stackCtaHref(board)) {
-                      <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener">
-                        {{ board.stackCtaLabel }}
+                      <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener" style="justify-content: center; gap: .5rem; max-width: min(88%, 20rem); border-width: 3px; background: linear-gradient(135deg, #ffffff, #fff3bd); box-shadow: 0 18px 34px rgba(0,0,0,.28); color: #111827; font-size: .92rem; line-height: 1; padding: .78rem 1rem .78rem .82rem;">
+                        <span class="material-symbols-outlined" style="display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border-radius: 999px; background: #111827; color: #ffffff; font-size: 1.16rem; font-variation-settings: 'FILL' 1;">ads_click</span>
+                        <strong style="min-width: 0; overflow: hidden; color: inherit; font-size: inherit; font-weight: 950; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</strong>
                       </a>
                     }
                     <img [src]="stackQrImageUrl(board)" alt="Stack QR code" />
@@ -545,6 +546,17 @@
                       <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="max-width: 13rem; height: clamp(2.1rem, 5vw, 3.6rem); object-fit: contain;" />
                     </span>
                   }
+                }
+                @if (board.stackCtaLabel && stackCtaHref(board)) {
+                  <a
+                    [href]="stackCtaHref(board)"
+                    target="_blank"
+                    rel="noopener"
+                    style="display: inline-flex; align-items: center; width: fit-content; max-width: 100%; gap: .5rem; margin-top: .8rem; border: 3px solid var(--ink); border-radius: 999px; background: var(--accent); box-shadow: 4px 4px 0 var(--ink); color: var(--surface); font-size: .92rem; font-weight: 950; line-height: 1; padding: .72rem .95rem .72rem .72rem; text-decoration: none;"
+                  >
+                    <span class="material-symbols-outlined" style="display: grid; width: 2rem; height: 2rem; place-items: center; border: 2px solid currentColor; border-radius: 999px; background: rgba(255,255,255,.16); font-size: 1.15rem; font-variation-settings: 'FILL' 1;">ads_click</span>
+                    <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</span>
+                  </a>
                 }
               </div>
 
@@ -1901,8 +1913,9 @@
                         <h4>Made with LivingWiki</h4>
                         <p>{{ board.title }}</p>
                         @if (board.stackCtaLabel && stackCtaHref(board)) {
-                          <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener">
-                            {{ board.stackCtaLabel }}
+                          <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener" style="justify-content: center; gap: .5rem; max-width: min(88%, 20rem); border-width: 3px; background: linear-gradient(135deg, #ffffff, #fff3bd); box-shadow: 0 18px 34px rgba(0,0,0,.28); color: #111827; font-size: .92rem; line-height: 1; padding: .78rem 1rem .78rem .82rem;">
+                            <span class="material-symbols-outlined" style="display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border-radius: 999px; background: #111827; color: #ffffff; font-size: 1.16rem; font-variation-settings: 'FILL' 1;">ads_click</span>
+                            <strong style="min-width: 0; overflow: hidden; color: inherit; font-size: inherit; font-weight: 950; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</strong>
                           </a>
                         }
                         <img [src]="stackQrImageUrl(board)" alt="Board QR code" />
