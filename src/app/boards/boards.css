@@ -3063,6 +3063,25 @@
   font-weight: 800;
 }
 
+.tour-board__audio-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.72rem 0.85rem;
+  border: 2px dashed var(--line);
+  border-radius: 0.55rem;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.tour-board__audio-notice .material-symbols-outlined {
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
 .tour-stop-card {
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);

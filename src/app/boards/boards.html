@@ -662,6 +662,12 @@
                       </button>
                       <small>Bridge cards show the path from each stop to the next.</small>
                     </div>
+                    @if (tourAudioNotice()) {
+                      <p class="tour-board__audio-notice">
+                        <span class="material-symbols-outlined">campaign</span>
+                        {{ tourAudioNotice() }}
+                      </p>
+                    }
 
                     @for (card of selectedBoardTourCards(); track card.id) {
                       <article

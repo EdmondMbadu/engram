@@ -87,10 +87,17 @@ const publicAppUrl = 'https://livingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
 const maxSmsReplyLength = 1200;
 const chatAnswerVoiceId = 'ed7fd7f55fa58dd74b904a15d1e38bf97763ae8d9faccdce8a27de3441bffa75';
+const elevenLabsPremadeNarratorVoiceIds = [
+  '21m00Tcm4TlvDq8ikWAM',
+  'EXAVITQu4vr4xnSDxMaL',
+  'pNInz6obpgDQGcFmaJgB',
+];
 const maxSpeechTextLength = 4000;
 const maxSpeechRecapWords = 28;
 const speechRecapVersion = 'v2';
+const tourSpeechVersion = 'v1';
 const chatAnswerSpeechModel = 'eleven_flash_v2_5';
+const tourGuideSpeechModel = 'eleven_multilingual_v2';
 const defaultNewsletterPrompt = [
   'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
@@ -10014,8 +10021,8 @@ export const synthesizeChatAnswerSpeech = onCall(
     secrets: [elevenLabsApiKey],
   },
   async (request) => {
-    const requestedMode = request.data?.mode === 'full' ? 'full' : 'recap';
-    const text = requestedMode === 'full'
+    const requestedMode = request.data?.mode === 'tour' ? 'tour' : request.data?.mode === 'full' ? 'full' : 'recap';
+    const text = requestedMode === 'full' || requestedMode === 'tour'
       ? normalizeSpeechText(request.data?.text)
       : buildSpeechRecapText(request.data?.question, request.data?.text);
     if (!text) {
@@ -10031,76 +10038,115 @@ export const synthesizeChatAnswerSpeech = onCall(
       throw new HttpsError('failed-precondition', 'ElevenLabs API key is not configured.');
     }
 
-    const textHash = createHash('sha256')
-      .update(`${chatAnswerVoiceId}:${chatAnswerSpeechModel}:${speechRecapVersion}:${requestedMode}:${text}`)
-      .digest('hex');
-    const storagePath = `chat-answer-speech/${requestedMode}/${speechRecapVersion}/${chatAnswerVoiceId}/${textHash}.mp3`;
-    const cachedFile = storage.bucket().file(storagePath);
-    const [cacheExists] = await cachedFile.exists();
-    if (cacheExists) {
+    const speechModel = requestedMode === 'tour' ? tourGuideSpeechModel : chatAnswerSpeechModel;
+    const voiceSettings = requestedMode === 'tour'
+      ? {
+          stability: 0.34,
+          similarity_boost: 0.86,
+          style: 0.72,
+          use_speaker_boost: true,
+        }
+      : {
+          stability: 0.5,
+          similarity_boost: 0.75,
+          style: 0,
+          use_speaker_boost: false,
+        };
+    const speechVersion = requestedMode === 'tour' ? tourSpeechVersion : speechRecapVersion;
+    const voiceIds = Array.from(new Set([chatAnswerVoiceId, ...elevenLabsPremadeNarratorVoiceIds].filter(Boolean)));
+    let lastErrorStatus: number | null = null;
+    let lastErrorBody = '';
+
+    for (const voiceId of voiceIds) {
+      const textHash = createHash('sha256')
+        .update(`${voiceId}:${speechModel}:${speechVersion}:${requestedMode}:${JSON.stringify(voiceSettings)}:${text}`)
+        .digest('hex');
+      const storagePath = `chat-answer-speech/${requestedMode}/${speechVersion}/${voiceId}/${textHash}.mp3`;
+      const cachedFile = storage.bucket().file(storagePath);
+      const [cacheExists] = await cachedFile.exists();
+      if (cacheExists) {
+        return {
+          audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
+          contentType: 'audio/mpeg',
+          voiceId,
+          speechText: text,
+          durationHintSeconds: requestedMode === 'recap' ? 15 : null,
+          provider: 'elevenlabs',
+          cached: true,
+        };
+      }
+
+      const response = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=mp3_44100_128&optimize_streaming_latency=3`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'xi-api-key': apiKey,
+          },
+          body: JSON.stringify({
+            text,
+            model_id: speechModel,
+            voice_settings: voiceSettings,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => '');
+        lastErrorStatus = response.status;
+        lastErrorBody = errorText.slice(0, 500);
+        logger.warn('ElevenLabs speech synthesis failed for voice candidate', {
+          status: response.status,
+          voiceId,
+          body: lastErrorBody,
+        });
+        if (response.status === 404) {
+          continue;
+        }
+        throw new HttpsError('internal', 'Failed to create audio for this answer.');
+      }
+
+      const audioBuffer = Buffer.from(await response.arrayBuffer());
+      await cachedFile.save(audioBuffer, {
+        resumable: false,
+        metadata: {
+          contentType: 'audio/mpeg',
+          cacheControl: 'public, max-age=31536000, immutable',
+          metadata: {
+            voiceId,
+            modelId: speechModel,
+            mode: requestedMode,
+            textHash,
+          },
+        },
+      });
+
+      if (voiceId !== chatAnswerVoiceId) {
+        logger.warn('Using fallback ElevenLabs voice for speech synthesis', {
+          requestedVoiceId: chatAnswerVoiceId,
+          fallbackVoiceId: voiceId,
+          mode: requestedMode,
+        });
+      }
+
       return {
         audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
         contentType: 'audio/mpeg',
-        voiceId: chatAnswerVoiceId,
+        voiceId,
         speechText: text,
         durationHintSeconds: requestedMode === 'recap' ? 15 : null,
-        cached: true,
+        provider: 'elevenlabs',
+        cached: false,
       };
     }
 
-    const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(chatAnswerVoiceId)}/stream?output_format=mp3_44100_128&optimize_streaming_latency=3`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'xi-api-key': apiKey,
-        },
-        body: JSON.stringify({
-          text,
-          model_id: chatAnswerSpeechModel,
-          voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.75,
-            style: 0,
-            use_speaker_boost: false,
-          },
-        }),
-      },
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text().catch(() => '');
-      logger.warn('ElevenLabs speech synthesis failed', {
-        status: response.status,
-        body: errorText.slice(0, 500),
-      });
-      throw new HttpsError('internal', 'Failed to create audio for this answer.');
-    }
-
-    const audioBuffer = Buffer.from(await response.arrayBuffer());
-    await cachedFile.save(audioBuffer, {
-      resumable: false,
-      metadata: {
-        contentType: 'audio/mpeg',
-        cacheControl: 'public, max-age=31536000, immutable',
-        metadata: {
-          voiceId: chatAnswerVoiceId,
-          modelId: chatAnswerSpeechModel,
-          mode: requestedMode,
-          textHash,
-        },
-      },
+    logger.warn('ElevenLabs speech synthesis failed for all voice candidates', {
+      status: lastErrorStatus,
+      body: lastErrorBody,
+      voiceIds,
     });
-
-    return {
-      audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
-      contentType: 'audio/mpeg',
-      voiceId: chatAnswerVoiceId,
-      speechText: text,
-      durationHintSeconds: requestedMode === 'recap' ? 15 : null,
-      cached: false,
-    };
+    throw new HttpsError('internal', 'Failed to create audio for this answer.');
   },
 );
 

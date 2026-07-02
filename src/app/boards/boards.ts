@@ -254,6 +254,8 @@ type TourSpeechResponse = {
   audioUrl?: string;
   audioBase64?: string;
   contentType?: string;
+  provider?: string;
+  voiceId?: string;
 };
 
 type TourMapPoint = {
@@ -839,6 +841,7 @@ export class BoardsComponent {
   readonly tourDeckIndex = signal(0);
   readonly tourSpeechPlaying = signal(false);
   readonly tourAudioLoadingKey = signal<string | null>(null);
+  readonly tourAudioNotice = signal<string | null>(null);
   readonly selectedTourCardId = signal<string | null>(null);
 
   readonly boardDraft = signal<BoardDraft>({
@@ -2575,6 +2578,7 @@ export class BoardsComponent {
       return;
     }
     this.stopTourSpeech();
+    this.tourAudioNotice.set(null);
     const audioUrl = await this.ensureTourAudioUrl(this.tourAudioKey(frame), text);
     if (audioUrl) {
       const audio = new Audio(audioUrl);
@@ -2583,16 +2587,17 @@ export class BoardsComponent {
       audio.onended = () => this.stopTourSpeech();
       audio.onerror = () => {
         this.stopTourSpeech();
-        this.speakTourWithBrowserVoice(text);
+        this.tourAudioNotice.set('The ElevenLabs narrator could not play this clip. Try Preview voice again.');
       };
       try {
         await audio.play();
         return;
       } catch {
         this.stopTourSpeech();
+        this.tourAudioNotice.set('The ElevenLabs narrator was blocked by the browser. Try Preview voice again.');
       }
     }
-    this.speakTourWithBrowserVoice(text);
+    this.tourAudioNotice.set('ElevenLabs tour narration is unavailable right now. Check the deployed function and ELEVENLABS_API_KEY.');
   }
 
   async focusTourStop(card: BoardCard, playPreview = true): Promise<void> {
@@ -2626,18 +2631,6 @@ export class BoardsComponent {
     this.tourSpeechPlaying.set(false);
   }
 
-  private speakTourWithBrowserVoice(text: string): void {
-    if (!this.isBrowser || typeof window.speechSynthesis === 'undefined') {
-      return;
-    }
-    const utterance = new SpeechSynthesisUtterance(text.slice(0, 3600));
-    utterance.rate = this.selectedBoard()?.kind === 'driving-tour' ? 0.98 : 0.95;
-    utterance.onend = () => this.tourSpeechPlaying.set(false);
-    utterance.onerror = () => this.tourSpeechPlaying.set(false);
-    this.tourSpeechPlaying.set(true);
-    window.setTimeout(() => window.speechSynthesis.speak(utterance), 120);
-  }
-
   private async ensureTourAudioUrl(key: string, text: string): Promise<string | null> {
     const cached = this.tourAudioUrls.get(key);
     if (cached) {
@@ -2655,14 +2648,14 @@ export class BoardsComponent {
     const promise = (async () => {
       try {
         const callable = httpsCallable<
-          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' },
+          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour' },
           TourSpeechResponse
         >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
         const response = await callable({
           text: text.slice(0, 3600),
-          question: 'Read this LivingWiki tour preview aloud.',
+          question: 'Read this LivingWiki tour preview aloud with a lively human tour-guide voice.',
           anonymousVisitorId: this.authService.uid() ? null : this.ensureTourAnonymousVisitorId(),
-          mode: 'full',
+          mode: 'tour',
         });
         const audioUrl = response.data.audioUrl || (response.data.audioBase64 ? this.audioUrlFromBase64(response.data.audioBase64, response.data.contentType || 'audio/mpeg') : '');
         if (audioUrl) {
@@ -2670,7 +2663,7 @@ export class BoardsComponent {
           return audioUrl;
         }
       } catch {
-        // ElevenLabs preview is best-effort; browser speech handles fallback.
+        this.tourAudioNotice.set('ElevenLabs tour narration failed to generate. Check the function logs if this persists.');
       } finally {
         this.tourAudioPromises.delete(key);
         if (this.tourAudioLoadingKey() === key) {
