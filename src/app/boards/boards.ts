@@ -5058,7 +5058,8 @@ export class BoardsComponent implements OnDestroy {
       const persisted = await this.persistBoard(board);
       this.boards.update((boards) => boards.map((item) => (item.id === persisted.id ? persisted : item)));
       this.boardsSyncError.set(null);
-    } catch {
+    } catch (error) {
+      console.error('Board Firebase sync failed', error, { boardId: board.id });
       this.boardsSyncError.set('Saved on this browser, but Firebase sync failed.');
     }
   }

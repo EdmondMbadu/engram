@@ -292,6 +292,10 @@ service cloud.firestore {
           'icon',
           'tone',
           'imageUrl',
+          'logoUrl',
+          'logoLinkUrl',
+          'stackCtaLabel',
+          'stackCtaUrl',
           'stickers',
           'tourMeta',
           'cards',
@@ -334,6 +338,14 @@ service cloud.firestore {
         && request.resource.data.tone in ['teal', 'coral', 'yellow', 'green', 'blue', 'sky', 'purple']
         && request.resource.data.imageUrl is string
         && request.resource.data.imageUrl.size() <= 2000
+        && request.resource.data.logoUrl is string
+        && request.resource.data.logoUrl.size() <= 2000
+        && request.resource.data.logoLinkUrl is string
+        && request.resource.data.logoLinkUrl.size() <= 240
+        && request.resource.data.stackCtaLabel is string
+        && request.resource.data.stackCtaLabel.size() <= 48
+        && request.resource.data.stackCtaUrl is string
+        && request.resource.data.stackCtaUrl.size() <= 240
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48
         && (
