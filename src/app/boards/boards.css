@@ -728,31 +728,44 @@
   padding: clamp(0.9rem, 2.5vw, 1.35rem);
 }
 
+.board-detail__cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.68) 42%, rgba(255, 255, 255, 0.28) 72%, rgba(255, 255, 255, 0.16) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.18) 42%, rgba(255, 255, 255, 0.58) 100%);
+  pointer-events: none;
+}
+
 .board-detail__cover-image {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.28;
-  filter: saturate(1.1);
+  opacity: 0.74;
+  filter: saturate(1.12) contrast(1.02);
 }
 
 .board-detail__cover > *:not(.board-detail__cover-image) {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .board-detail__cover > .board-detail__stickers {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
 }
 
 .board-detail__top {
   z-index: 3;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   gap: 0.75rem;
 }
 
@@ -776,6 +789,12 @@
 
 .boards-share-button {
   color: var(--board-accent);
+}
+
+.boards-share-button--edit {
+  margin-left: auto;
+  background: var(--board-accent);
+  color: #ffffff;
 }
 
 .board-detail__summary {
@@ -3781,19 +3800,20 @@
 
 .boards-upload {
   display: grid;
-  grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
+  grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr);
   gap: 0.85rem;
   align-items: stretch;
-  border: 1px solid var(--line);
+  border: 2px solid var(--modal-ink, var(--ink));
   border-radius: 1.1rem;
-  background: var(--soft-fill);
-  padding: 0.7rem;
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  box-shadow: 3px 3px 0 var(--modal-ink, var(--ink));
+  padding: 0.75rem;
 }
 
 .boards-upload img,
 .boards-upload__placeholder {
   width: 100%;
-  aspect-ratio: 1.25;
+  aspect-ratio: 1.55;
   border: 2px solid var(--ink);
   border-radius: 0.9rem;
   background: color-mix(in srgb, var(--accent) 12%, var(--surface));
@@ -4600,6 +4620,10 @@
     box-shadow: 2px 2px 0 var(--ink);
     font-size: 0.72rem;
     padding: 0.56rem 0.68rem;
+  }
+
+  .boards-share-button--edit {
+    margin-left: 0;
   }
 
   .board-detail__summary {

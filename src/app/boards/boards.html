@@ -481,6 +481,12 @@
                   Studio
                 </button>
               }
+              @if (canEditBoard(board)) {
+                <button type="button" class="boards-share-button boards-share-button--edit" (click)="openEditBoard(board, $event)">
+                  <span class="material-symbols-outlined">edit_square</span>
+                  Edit cover
+                </button>
+              }
             </div>
 
             <div class="board-detail__summary">
@@ -592,10 +598,6 @@
                     {{ isManagingBoard(board.id) ? 'Done' : 'Manage' }}
                   </button>
                 }
-                <button type="button" class="boards-ghost-action" (click)="openEditBoard(board, $event)">
-                  <span class="material-symbols-outlined">drive_file_rename_outline</span>
-                  Rename
-                </button>
                 <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
                   <span class="material-symbols-outlined">add</span>
                   Add card
@@ -2023,8 +2025,8 @@
       <section class="boards-modal" aria-label="Board form" (click)="$event.stopPropagation()">
         <div class="boards-modal__head">
           <div>
-            <p>{{ editingBoardId() ? 'Edit collection' : 'New collection' }}</p>
-            <h3>{{ editingBoardId() ? 'Update board' : 'Create board' }}</h3>
+            <p>{{ editingBoardId() ? 'Edit board cover' : 'New collection' }}</p>
+            <h3>{{ editingBoardId() ? 'Title, subtitle, and picture' : 'Create board' }}</h3>
           </div>
           <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardDialog()">
             <span class="material-symbols-outlined">close</span>
@@ -2033,7 +2035,7 @@
 
         <form class="boards-form" (submit)="saveBoard($event)">
           <label>
-            <span>Name</span>
+            <span>Board title</span>
             <input
               type="text"
               required
@@ -2044,7 +2046,7 @@
             />
           </label>
           <label>
-            <span>Description</span>
+            <span>Subtitle</span>
             <textarea
               rows="3"
               maxlength="180"
@@ -2065,7 +2067,7 @@
           </label>
 
           <div class="boards-upload-field">
-            <span>Board image</span>
+            <span>Cover image</span>
             <div class="boards-upload">
               @if (boardDraft().imageUrl) {
                 <img [src]="boardDraft().imageUrl" alt="Board image preview" />
