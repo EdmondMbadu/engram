@@ -75,6 +75,18 @@
                         <span>{{ card.status }} · {{ card.rating }}/5</span>
                         <h4>{{ card.title }}</h4>
                         <p>{{ card.subtitle || card.notes }}</p>
+                        @if (card.audioPreviewUrl) {
+                          <button
+                            type="button"
+                            class="song-preview-button song-preview-button--stack"
+                            [class.song-preview-button--playing]="isSongPreviewPlaying(card, 'stack-live')"
+                            [attr.aria-label]="isSongPreviewPlaying(card, 'stack-live') ? 'Pause song preview' : 'Play song preview'"
+                            (click)="toggleSongPreview(card, $event, 'stack-live')"
+                          >
+                            <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'stack-live') ? 'pause' : 'play_arrow' }}</span>
+                            <span>{{ isSongPreviewPlaying(card, 'stack-live') ? 'Playing preview' : 'Play preview' }}</span>
+                          </button>
+                        }
                       </div>
                     }
                   }
@@ -851,6 +863,18 @@
                             {{ statusLabel(card.status) }}
                           </span>
                         }
+                        @if (card.audioPreviewUrl) {
+                          <button
+                            type="button"
+                            class="song-preview-button song-preview-button--card"
+                            [class.song-preview-button--playing]="isSongPreviewPlaying(card)"
+                            [attr.aria-label]="isSongPreviewPlaying(card) ? 'Pause song preview' : 'Play song preview'"
+                            (click)="toggleSongPreview(card, $event)"
+                          >
+                            <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card) ? 'pause' : 'play_arrow' }}</span>
+                            <span>Preview</span>
+                          </button>
+                        }
                         <span class="detail-card__quick-actions">
                           <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)">
                             <span class="material-symbols-outlined">flip_to_back</span>
@@ -1468,6 +1492,17 @@
                         <span class="material-symbols-outlined">{{ card.imageUrl ? 'image_search' : 'add_photo_alternate' }}</span>
                         {{ card.imageUrl ? 'Fix image' : 'Find image' }}
                       </button>
+                      @if (card.audioPreviewUrl) {
+                        <button
+                          type="button"
+                          [disabled]="isWizardCardBusy(card.id)"
+                          [class.boards-wizard-card__action--playing]="isSongPreviewPlaying(card, 'wizard')"
+                          (click)="toggleSongPreview(card, $event, 'wizard')"
+                        >
+                          <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'wizard') ? 'pause' : 'play_arrow' }}</span>
+                          {{ isSongPreviewPlaying(card, 'wizard') ? 'Playing' : 'Preview' }}
+                        </button>
+                      }
                       @if (card.imageUrl) {
                         <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="clearWizardCardImage(card.id)">
                           <span class="material-symbols-outlined">hide_image</span>
@@ -1783,6 +1818,18 @@
                             <span>{{ card.status }} · {{ card.rating }}/5</span>
                             <h4>{{ card.title }}</h4>
                             <p>{{ card.subtitle || card.notes }}</p>
+                            @if (card.audioPreviewUrl) {
+                              <button
+                                type="button"
+                                class="song-preview-button song-preview-button--stack"
+                                [class.song-preview-button--playing]="isSongPreviewPlaying(card, 'stack-studio')"
+                                [attr.aria-label]="isSongPreviewPlaying(card, 'stack-studio') ? 'Pause song preview' : 'Play song preview'"
+                                (click)="toggleSongPreview(card, $event, 'stack-studio')"
+                              >
+                                <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'stack-studio') ? 'pause' : 'play_arrow' }}</span>
+                                <span>{{ isSongPreviewPlaying(card, 'stack-studio') ? 'Playing preview' : 'Play preview' }}</span>
+                              </button>
+                            }
                           </div>
                         }
                       }

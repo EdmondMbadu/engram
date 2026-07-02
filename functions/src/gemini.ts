@@ -400,6 +400,7 @@ export type GeneratedBoardWizardCard = {
   image_query: string;
   place_query: string;
   imageUrl?: string;
+  audioPreviewUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
   tour?: GeneratedBoardCardTour | null;

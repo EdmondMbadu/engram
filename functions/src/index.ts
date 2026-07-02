@@ -1379,6 +1379,7 @@ type AppleMusicSearchResponse = {
     collectionName?: string;
     artworkUrl100?: string;
     artworkUrl600?: string;
+    previewUrl?: string;
   }>;
 };
 
@@ -3835,6 +3836,7 @@ type BoardWizardCurrentCard = {
   tags: string[];
   image_query: string;
   place_query: string;
+  audioPreviewUrl?: string;
 };
 
 type BoardWizardMenuItem = {
@@ -5050,6 +5052,7 @@ async function buildBoardWizardImageOnlyBatch(
     tags: options.currentCard.tags,
     image_query: buildBoardWizardCardImageQuery(options.currentCard, options.prompt, options.targetBoardTitle),
     place_query: options.currentCard.place_query || options.targetBoardTitle || options.currentCard.title,
+    audioPreviewUrl: options.currentCard.audioPreviewUrl,
   };
   const customSearchApiKey = googleCustomSearchApiKey.value();
   const apiKey = googlePlacesApiKey.value();
@@ -5066,8 +5069,11 @@ async function buildBoardWizardImageOnlyBatch(
     const enriched = await enrichBoardWizardCardWithPlace(card, options.targetBoardTitle, apiKey);
     imageUrl = enriched.imageUrl || '';
   }
+  let audioPreviewUrl = card.audioPreviewUrl || '';
   if (!imageUrl && (referenceKind === 'song' || referenceKind === 'album')) {
-    imageUrl = await findAppleMusicArtworkForBoardWizard(card, options.targetBoardTitle, referenceKind);
+    const musicMedia = await findAppleMusicMediaForBoardWizard(card, options.targetBoardTitle, referenceKind);
+    imageUrl = musicMedia.imageUrl;
+    audioPreviewUrl = musicMedia.audioPreviewUrl || audioPreviewUrl;
   }
   if (!imageUrl && referenceKind && referenceKind !== 'person') {
     imageUrl = await findReferenceImageForBoardWizard(card.image_query);
@@ -5086,7 +5092,7 @@ async function buildBoardWizardImageOnlyBatch(
       icon: 'image_search',
       tone: 'teal',
     },
-    cards: [{ ...card, imageUrl: imageUrl || undefined }],
+    cards: [{ ...card, imageUrl: imageUrl || undefined, audioPreviewUrl: audioPreviewUrl || undefined }],
   };
 }
 
@@ -5243,9 +5249,14 @@ async function enrichBoardWizardCard(
     const imageQuery = buildBoardWizardReferenceImageQuery(card, searchContext);
     const referenceKind = boardWizardReferenceImageKind(card, searchContext);
     if (referenceKind === 'song' || referenceKind === 'album') {
-      const musicImageUrl = await findAppleMusicArtworkForBoardWizard(card, searchContext, referenceKind);
-      if (musicImageUrl) {
-        return { ...card, image_query: imageQuery, imageUrl: musicImageUrl };
+      const musicMedia = await findAppleMusicMediaForBoardWizard(card, searchContext, referenceKind);
+      if (musicMedia.imageUrl || musicMedia.audioPreviewUrl) {
+        return {
+          ...card,
+          image_query: imageQuery,
+          imageUrl: musicMedia.imageUrl || card.imageUrl,
+          audioPreviewUrl: musicMedia.audioPreviewUrl || card.audioPreviewUrl,
+        };
       }
     }
     const referenceEnriched = await enrichBoardWizardCardWithReferenceImage({
@@ -5591,14 +5602,14 @@ async function findBoardWizardReferenceWebImage(query: string, customSearchApiKe
   return customSearchApiKey ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, { imageType: 'any' }) : '';
 }
 
-async function findAppleMusicArtworkForBoardWizard(
+async function findAppleMusicMediaForBoardWizard(
   card: GeneratedBoardWizardCard | BoardWizardCurrentCard,
   searchContext: string,
   kind: 'song' | 'album',
-): Promise<string> {
+): Promise<{ imageUrl: string; audioPreviewUrl: string }> {
   const title = textFromUnknown(card.title).replace(/\s+/g, ' ').trim();
   if (title.length < 2) {
-    return '';
+    return { imageUrl: '', audioPreviewUrl: '' };
   }
   const artistHint = extractBoardWizardCreatorHint(`${card.subtitle} ${'notes' in card ? card.notes : ''} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''} ${card.image_query} ${searchContext}`);
   const searchTerm = [title, artistHint].filter(Boolean).join(' ').slice(0, 180);
@@ -5621,17 +5632,18 @@ async function findAppleMusicArtworkForBoardWizard(
         const artwork = textFromUnknown(result.artworkUrl600 || result.artworkUrl100)
           .replace(/\/\d+x\d+bb\./, '/1000x1000bb.')
           .replace(/\/\d+x\d+bb-/, '/1000x1000bb-');
+        const audioPreviewUrl = kind === 'song' ? textFromUnknown(result.previewUrl) : '';
         if (!artwork || !canTryCoverImageUrl(artwork)) {
-          return { artwork: '', score: 0 };
+          return { artwork: '', audioPreviewUrl: '', score: 0 };
         }
         const titleMatches = titleTokens.filter((token) => resultText.includes(token)).length;
         const artistMatches = artistTokens.filter((token) => resultText.includes(token)).length;
         const requiredTitleMatches = titleTokens.length <= 2 ? titleTokens.length : Math.min(2, titleTokens.length);
         if (requiredTitleMatches > 0 && titleMatches < requiredTitleMatches) {
-          return { artwork: '', score: 0 };
+          return { artwork: '', audioPreviewUrl: '', score: 0 };
         }
         if (artistTokens.length && artistMatches < Math.min(2, artistTokens.length)) {
-          return { artwork: '', score: 0 };
+          return { artwork: '', audioPreviewUrl: '', score: 0 };
         }
         const normalizedTitle = normalizeMusicArtworkText(title);
         const normalizedResultTitle = normalizeMusicArtworkText(resultTitle);
@@ -5647,19 +5659,26 @@ async function findAppleMusicArtworkForBoardWizard(
         if (kind === 'album' && result.wrapperType === 'collection') {
           score += 8;
         }
-        return { artwork, score };
+        if (audioPreviewUrl) {
+          score += 4;
+        }
+        return { artwork, audioPreviewUrl, score };
       })
       .filter((item) => item.artwork && item.score >= (artistHint ? 80 : 90))
       .sort((left, right) => right.score - left.score);
-    return scored[0]?.artwork ?? '';
+    const best = scored[0];
+    return {
+      imageUrl: best?.artwork ?? '',
+      audioPreviewUrl: best?.audioPreviewUrl ?? '',
+    };
   } catch (error) {
-    logger.warn('Board wizard Apple Music artwork lookup failed.', {
+    logger.warn('Board wizard Apple Music media lookup failed.', {
       title,
       artistHint,
       kind,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
-    return '';
+    return { imageUrl: '', audioPreviewUrl: '' };
   }
 }
 
@@ -6413,6 +6432,7 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
       : [],
     image_query: stringOrEmpty(data.image_query).slice(0, 160),
     place_query: stringOrEmpty(data.place_query).slice(0, 180),
+    audioPreviewUrl: stringOrEmpty(data.audioPreviewUrl).slice(0, 2000) || undefined,
   };
 }
 

@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, ElementRef, inject, PLATFORM_ID, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, OnDestroy, PLATFORM_ID, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
@@ -94,6 +94,7 @@ type BoardCard = {
   status: BoardCardStatus;
   rating: number;
   imageUrl: string;
+  audioPreviewUrl: string;
   placeId: string;
   googleMapsUrl: string;
   tags: string[];
@@ -145,6 +146,7 @@ type CardDraft = {
   status: BoardCardStatus;
   rating: string;
   imageUrl: string;
+  audioPreviewUrl: string;
   placeQuery: string;
   placeCity: string;
   placeId: string;
@@ -211,6 +213,7 @@ type BoardWizardGeneratedCard = {
   image_query: string;
   place_query: string;
   imageUrl?: string;
+  audioPreviewUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
   tour?: BoardCardTour | null;
@@ -714,7 +717,7 @@ const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: 
   templateUrl: './boards.html',
   styleUrl: './boards.css',
 })
-export class BoardsComponent {
+export class BoardsComponent implements OnDestroy {
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly googleMapsService = inject(GoogleMapsService);
@@ -742,6 +745,7 @@ export class BoardsComponent {
   private tourMapMarkers: unknown[] = [];
   private tourMapPolyline: unknown | null = null;
   private tourAudio: HTMLAudioElement | null = null;
+  private songPreviewAudio: HTMLAudioElement | null = null;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
 
@@ -830,6 +834,8 @@ export class BoardsComponent {
   readonly wizardRedoingCardIds = signal<Set<string>>(new Set());
   readonly wizardImageLoadingCardIds = signal<Set<string>>(new Set());
   readonly wizardSaving = signal(false);
+  readonly songPreviewPlayingKey = signal<string | null>(null);
+  readonly songPreviewError = signal<string | null>(null);
   readonly stackStudioOpen = signal(false);
   readonly stackStudioBoardId = signal<string | null>(null);
   readonly stackSelectedCardIds = signal<Set<string>>(new Set());
@@ -870,6 +876,7 @@ export class BoardsComponent {
     status: 'saved',
     rating: '4',
     imageUrl: '',
+    audioPreviewUrl: '',
     placeQuery: '',
     placeCity: '',
     placeId: '',
@@ -1207,6 +1214,24 @@ export class BoardsComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.stopSongPreview();
+    this.stopTourSpeech();
+    this.stopStackPlayback();
+    if (this.placeSearchTimer) {
+      clearTimeout(this.placeSearchTimer);
+      this.placeSearchTimer = null;
+    }
+    if (this.shareMessageTimer) {
+      clearTimeout(this.shareMessageTimer);
+      this.shareMessageTimer = null;
+    }
+    if (this.stackShareMessageTimer) {
+      clearTimeout(this.stackShareMessageTimer);
+      this.stackShareMessageTimer = null;
+    }
+  }
+
   setGalleryTab(tab: BoardGalleryTab): void {
     this.activeGalleryTab.set(tab);
     this.boardSearch.set('');
@@ -1221,6 +1246,7 @@ export class BoardsComponent {
   }
 
   closeBoardDetail(): void {
+    this.stopSongPreview();
     void this.router.navigateByUrl(this.boardsProfileRoutePath());
   }
 
@@ -1556,6 +1582,7 @@ export class BoardsComponent {
             ? {
                 ...item,
                 imageUrl: replacement.imageUrl ?? item.imageUrl,
+                audioPreviewUrl: replacement.audioPreviewUrl || item.audioPreviewUrl,
                 image_query: replacement.image_query || item.image_query,
                 placeId: replacement.placeId || item.placeId,
                 googleMapsUrl: replacement.googleMapsUrl || item.googleMapsUrl,
@@ -1738,6 +1765,7 @@ export class BoardsComponent {
       status: card.status,
       rating: Math.max(1, Math.min(5, Math.round(card.rating) || 4)),
       imageUrl: card.imageUrl,
+      audioPreviewUrl: card.audioPreviewUrl ?? '',
       placeId: card.placeId,
       googleMapsUrl: card.googleMapsUrl,
       tags: card.tags.slice(0, 6),
@@ -1948,6 +1976,7 @@ export class BoardsComponent {
       status: 'saved',
       rating: '4',
       imageUrl: '',
+      audioPreviewUrl: '',
       placeQuery: '',
       placeCity: '',
       placeId: '',
@@ -1988,6 +2017,7 @@ export class BoardsComponent {
       status: card.status,
       rating: String(card.rating),
       imageUrl: card.imageUrl,
+      audioPreviewUrl: card.audioPreviewUrl,
       placeQuery: card.title,
       placeCity: '',
       placeId: card.placeId,
@@ -2294,6 +2324,7 @@ export class BoardsComponent {
                     status: draft.status,
                     rating,
                     imageUrl: draft.imageUrl.trim(),
+                    audioPreviewUrl: draft.audioPreviewUrl.trim(),
                     placeId: draft.placeId,
                     googleMapsUrl: draft.googleMapsUrl,
                     tags,
@@ -2314,6 +2345,7 @@ export class BoardsComponent {
                 status: draft.status,
                 rating,
                 imageUrl: draft.imageUrl.trim(),
+                audioPreviewUrl: draft.audioPreviewUrl.trim(),
                 placeId: draft.placeId,
                 googleMapsUrl: draft.googleMapsUrl,
                 tags,
@@ -2949,6 +2981,66 @@ export class BoardsComponent {
     this.tourSpeechPlaying.set(false);
   }
 
+  isSongPreviewPlaying(card: Pick<BoardCard, 'id'> | BoardWizardPreviewCard, context = 'card'): boolean {
+    return this.songPreviewPlayingKey() === this.songPreviewKey(card.id, context);
+  }
+
+  async toggleSongPreview(
+    card: Pick<BoardCard, 'id' | 'title' | 'audioPreviewUrl'> | BoardWizardPreviewCard,
+    event?: Event,
+    context = 'card',
+  ): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const audioPreviewUrl = (card.audioPreviewUrl ?? '').trim();
+    if (!this.isBrowser || !audioPreviewUrl) {
+      return;
+    }
+
+    const key = this.songPreviewKey(card.id, context);
+    if (this.songPreviewPlayingKey() === key) {
+      this.stopSongPreview();
+      return;
+    }
+
+    this.stopSongPreview();
+    this.songPreviewError.set(null);
+    const audio = new Audio(audioPreviewUrl);
+    audio.loop = true;
+    audio.preload = 'auto';
+    this.songPreviewAudio = audio;
+    this.songPreviewPlayingKey.set(key);
+    audio.onerror = () => {
+      if (this.songPreviewAudio === audio) {
+        this.stopSongPreview();
+        this.songPreviewError.set(`Could not play the preview for "${card.title}".`);
+      }
+    };
+    try {
+      await audio.play();
+    } catch {
+      if (this.songPreviewAudio === audio) {
+        this.stopSongPreview();
+        this.songPreviewError.set(`Preview playback was blocked for "${card.title}". Tap play again.`);
+      }
+    }
+  }
+
+  stopSongPreview(): void {
+    if (this.songPreviewAudio) {
+      this.songPreviewAudio.pause();
+      this.songPreviewAudio.currentTime = 0;
+      this.songPreviewAudio.onended = null;
+      this.songPreviewAudio.onerror = null;
+      this.songPreviewAudio = null;
+    }
+    this.songPreviewPlayingKey.set(null);
+  }
+
+  private songPreviewKey(cardId: string, context: string): string {
+    return `${context}:${cardId}`;
+  }
+
   private async ensureTourAudioUrl(key: string, text: string): Promise<string | null> {
     const cached = this.tourAudioUrls.get(key);
     if (cached) {
@@ -3265,6 +3357,7 @@ export class BoardsComponent {
       this.cardDraft.update((draft) => ({
         ...draft,
         imageUrl: card.imageUrl || '',
+        audioPreviewUrl: card.audioPreviewUrl || draft.audioPreviewUrl,
       }));
       this.cardImageLocked.set(!!card.imageUrl);
       if (!card.imageUrl) {
@@ -3282,6 +3375,7 @@ export class BoardsComponent {
       status: card.status || draft.status,
       rating: String(card.rating || draft.rating || 4),
       imageUrl: card.imageUrl || (replaceImage ? '' : draft.imageUrl),
+      audioPreviewUrl: card.audioPreviewUrl || draft.audioPreviewUrl,
       placeQuery: card.place_query || card.title || draft.placeQuery,
       placeId: card.placeId || draft.placeId,
       googleMapsUrl: card.googleMapsUrl || draft.googleMapsUrl,
@@ -3321,6 +3415,7 @@ export class BoardsComponent {
       tags: likelyFood ? Array.from(new Set([...tags, 'menu-item', 'food'])) : tags,
       image_query: `${draft.title} ${likelyFood ? 'food photo' : 'photo'}`.trim(),
       place_query: draft.placeQuery || draft.title,
+      audioPreviewUrl: draft.audioPreviewUrl,
     };
   }
 
@@ -3580,6 +3675,7 @@ export class BoardsComponent {
   }
 
   closeStackView(board: Board): void {
+    this.stopSongPreview();
     this.stopStackPlayback();
     this.stackDirectView.set(false);
     this.stackShareDialogOpen.set(false);
@@ -3587,6 +3683,7 @@ export class BoardsComponent {
   }
 
   closeStackStudio(): void {
+    this.stopSongPreview();
     this.stopStackPlayback();
     this.stackStudioOpen.set(false);
     this.setStackShareMessage(null);
@@ -4013,6 +4110,7 @@ export class BoardsComponent {
       image_query: this.stringValue(data['image_query'], title, 120),
       place_query: this.stringValue(data['place_query'], title, 140),
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
+      audioPreviewUrl: this.stringValue(data['audioPreviewUrl'], '', 2000),
       placeId: this.stringValue(data['placeId'], '', 240),
       googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
       tour: this.normalizeCardTour(data['tour']),
@@ -4031,6 +4129,7 @@ export class BoardsComponent {
       tags: card.tags,
       image_query: card.image_query || `${card.title} image`,
       place_query: card.place_query || card.title,
+      audioPreviewUrl: card.audioPreviewUrl || '',
     };
   }
 
@@ -4041,6 +4140,7 @@ export class BoardsComponent {
         ...card,
         id: this.createId(),
         imageUrl: card.imageUrl ?? '',
+        audioPreviewUrl: card.audioPreviewUrl ?? '',
         placeId: card.placeId ?? '',
         googleMapsUrl: card.googleMapsUrl ?? '',
         editing: false,
@@ -4758,6 +4858,7 @@ export class BoardsComponent {
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
+            audioPreviewUrl: (card as Partial<BoardCard>).audioPreviewUrl ?? '',
             placeId: card.placeId ?? '',
             googleMapsUrl: card.googleMapsUrl ?? '',
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
@@ -4988,6 +5089,7 @@ export class BoardsComponent {
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: typeof data['rating'] === 'number' ? Math.max(1, Math.min(5, data['rating'])) : 4,
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
+      audioPreviewUrl: typeof data['audioPreviewUrl'] === 'string' ? data['audioPreviewUrl'] : '',
       placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],

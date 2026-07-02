@@ -1227,6 +1227,47 @@
   padding: 1rem;
 }
 
+.song-preview-button {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.15rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  border: 2px solid rgba(255, 255, 255, 0.78);
+  border-radius: 999px;
+  background: rgba(8, 14, 16, 0.58);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+  font-size: 0.72rem;
+  font-weight: 950;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+
+.song-preview-button .material-symbols-outlined {
+  font-size: 1.05rem;
+}
+
+.song-preview-button--playing {
+  border-color: #ffffff;
+  background: color-mix(in srgb, var(--board-accent) 86%, #101518);
+}
+
+.song-preview-button--card {
+  position: absolute;
+  top: 0.72rem;
+  left: 0.72rem;
+  z-index: 5;
+  padding: 0 0.72rem;
+}
+
+.song-preview-button--stack {
+  margin-top: 0.25rem;
+  padding: 0.48rem 0.72rem;
+}
+
 .detail-card__status {
   position: absolute;
   right: 0.65rem;
@@ -3120,6 +3161,12 @@
 
 .boards-wizard-card__actions .material-symbols-outlined {
   font-size: 1rem;
+}
+
+.boards-wizard-card__actions .boards-wizard-card__action--playing {
+  border-color: color-mix(in srgb, var(--accent) 56%, var(--line));
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface-strong));
+  color: var(--accent);
 }
 
 .boards-wizard-card__actions .boards-wizard-card__remove {
