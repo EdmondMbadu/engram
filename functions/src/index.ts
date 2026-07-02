@@ -5380,20 +5380,66 @@ function buildBoardWizardMediaImageQuery(
 function extractBoardWizardCreatorHint(text: string): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
   const patterns = [
-    /\b(?:by|from|made by|performed by|sung by|artist|featuring|feat\.?|starring)\s+([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})/i,
-    /\b([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})\s+(?:song|single|album|track|discography|hits?)\b/i,
+    /\b(?:by|made by|performed by|sung by|artist|featuring|feat\.?|starring)\s+([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})/i,
+    /\b([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})\s+(?:songs?|singles?|albums?|tracks?|discography|hits?)\b/i,
   ];
   for (const pattern of patterns) {
     const match = normalized.match(pattern);
     const value = match?.[1]
       ?.replace(/\b(?:movies?|films?|songs?|albums?|books?|discography|hits?|in order|ranked|chronological(?:ly)?|from|with|and)\b.*$/i, '')
+      .replace(/^(?:top|best|biggest|greatest|classic|major|popular|favorite|favourite|ultimate|essential)\s+/i, '')
+      .replace(/\s+(?:top|best|biggest|greatest|classic|major|popular|favorite|favourite|ultimate|essential)$/i, '')
       .replace(/[.,;:()[\]{}"'`]+$/g, '')
       .trim();
-    if (value && value.length <= 60) {
+    if (value && value.length <= 60 && !isGenericBoardWizardCreatorHint(value)) {
       return value;
     }
   }
   return '';
+}
+
+function isGenericBoardWizardCreatorHint(value: string): boolean {
+  const normalized = normalizeMusicArtworkText(value);
+  if (!normalized) {
+    return true;
+  }
+  const tokens = normalized.split(/\s+/).filter(Boolean);
+  const meaningfulTokens = tokens.filter((token) => !['the', 'a', 'an', 'of', 's'].includes(token));
+  if (!meaningfulTokens.length) {
+    return true;
+  }
+  const generic = new Set([
+    'ultimate',
+    'essential',
+    'definitive',
+    'greatest',
+    'biggest',
+    'best',
+    'top',
+    'classic',
+    'major',
+    'popular',
+    'favorite',
+    'favourite',
+    'hits',
+    'hit',
+    'songs',
+    'song',
+    'singles',
+    'single',
+    'tracks',
+    'track',
+    'collection',
+    'decade',
+    'decades',
+    'soundtrack',
+    'soundtracks',
+    'album',
+    'albums',
+    'king',
+    'pop',
+  ]);
+  return meaningfulTokens.every((token) => generic.has(token));
 }
 
 function extractBoardWizardYearHint(text: string): string {
@@ -5614,9 +5660,10 @@ async function findAppleMusicMediaForBoardWizard(
   if (title.length < 2) {
     return { imageUrl: '', audioPreviewUrl: '' };
   }
-  const artistHint = extractBoardWizardCreatorHint(`${card.subtitle} ${'notes' in card ? card.notes : ''} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''} ${card.image_query} ${searchContext}`);
+  const artistHints = buildAppleMusicArtistHints(card, searchContext);
+  const primaryArtistHint = artistHints[0] ?? '';
   const titleCandidates = buildAppleMusicTitleCandidates(title, card.image_query);
-  const searchTerms = buildAppleMusicSearchTerms(titleCandidates, artistHint);
+  const searchTerms = buildAppleMusicSearchTerms(titleCandidates, artistHints);
 
   try {
     const responses = await Promise.all(searchTerms.map(async (searchTerm) => {
@@ -5629,7 +5676,7 @@ async function findAppleMusicMediaForBoardWizard(
       return await fetchJson<AppleMusicSearchResponse>(searchUrl.toString());
     }));
     const titleTokenSets = titleCandidates.map((candidate) => musicArtworkTokens(candidate)).filter((tokens) => tokens.length);
-    const artistTokens = musicArtworkTokens(artistHint);
+    const artistTokenSets = artistHints.map((hint) => musicArtworkTokens(hint)).filter((tokens) => tokens.length);
     const seenResults = new Set<string>();
     const results = responses.flatMap((data) => data.results ?? []).filter((result) => {
       const key = [
@@ -5668,20 +5715,26 @@ async function findAppleMusicMediaForBoardWizard(
         if (!bestTitleMatch) {
           return { artwork: '', audioPreviewUrl: '', score: 0 };
         }
-        const artistMatches = artistTokens.filter((token) => resultText.includes(token)).length;
-        if (artistTokens.length && artistMatches < Math.min(2, artistTokens.length)) {
-          return { artwork: '', audioPreviewUrl: '', score: 0 };
-        }
+        const artistMatches = artistTokenSets.map((artistTokens) => artistTokens.filter((token) => resultText.includes(token)).length);
+        const bestArtistMatches = artistMatches.length ? Math.max(...artistMatches) : 0;
+        const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
+          artistMatches[index] >= Math.min(2, artistTokens.length),
+        );
         const normalizedTitles = titleCandidates.map((candidate) => normalizeMusicArtworkText(candidate)).filter(Boolean);
         const exactTitleMatch = normalizedTitles.some((normalizedTitle) => resultTitleText === normalizedTitle);
         const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
           resultTitleText.includes(normalizedTitle) || normalizedTitle.includes(resultTitleText),
         );
-        let score = bestTitleMatch.titleMatches * 18 + artistMatches * 24;
+        let score = bestTitleMatch.titleMatches * 18 + bestArtistMatches * 26;
         if (exactTitleMatch) {
           score += 90;
         } else if (closeTitleMatch) {
           score += 45;
+        }
+        if (hasStrongArtistMatch) {
+          score += 42;
+        } else if (artistTokenSets.length) {
+          score -= exactTitleMatch ? 8 : 24;
         }
         if (kind === 'song' && result.kind === 'song') {
           score += 8;
@@ -5700,9 +5753,22 @@ async function findAppleMusicMediaForBoardWizard(
         }
         return { artwork, audioPreviewUrl, score };
       })
-      .filter((item) => item.artwork && item.score >= (artistHint ? 72 : 82))
+      .filter((item) => item.artwork && item.score >= (artistHints.length ? 72 : 82))
       .sort((left, right) => right.score - left.score);
-    const best = scored[0];
+    const best = kind === 'song'
+      ? scored.find((item) => item.audioPreviewUrl) ?? scored[0]
+      : scored[0];
+    if (!best || (kind === 'song' && !best.audioPreviewUrl)) {
+      logger.info('Board wizard Apple Music media lookup returned no preview match.', {
+        title,
+        artistHint: primaryArtistHint,
+        artistHints,
+        kind,
+        searchTerms,
+        resultCount: results.length,
+        scoredCount: scored.length,
+      });
+    }
     return {
       imageUrl: best?.artwork ?? '',
       audioPreviewUrl: best?.audioPreviewUrl ?? '',
@@ -5710,13 +5776,30 @@ async function findAppleMusicMediaForBoardWizard(
   } catch (error) {
     logger.warn('Board wizard Apple Music media lookup failed.', {
       title,
-      artistHint,
+      artistHint: primaryArtistHint,
+      artistHints,
       kind,
       searchTerms,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
     return { imageUrl: '', audioPreviewUrl: '' };
   }
+}
+
+function buildAppleMusicArtistHints(
+  card: GeneratedBoardWizardCard | BoardWizardCurrentCard,
+  searchContext: string,
+): string[] {
+  const values = [
+    extractBoardWizardCreatorHint(searchContext),
+    extractBoardWizardCreatorHint(`${card.image_query} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''}`),
+    extractBoardWizardCreatorHint(`${card.subtitle} ${'notes' in card ? card.notes : ''}`),
+  ];
+  return values
+    .map((value) => value.replace(/\s+/g, ' ').trim())
+    .filter((value) => value && !isGenericBoardWizardCreatorHint(value))
+    .filter((value, index, all) => all.findIndex((candidate) => normalizeMusicArtworkText(candidate) === normalizeMusicArtworkText(value)) === index)
+    .slice(0, 3);
 }
 
 function buildAppleMusicTitleCandidates(title: string, imageQuery = ''): string[] {
@@ -5745,12 +5828,14 @@ function buildAppleMusicTitleCandidates(title: string, imageQuery = ''): string[
     .slice(0, 5);
 }
 
-function buildAppleMusicSearchTerms(titleCandidates: string[], artistHint: string): string[] {
+function buildAppleMusicSearchTerms(titleCandidates: string[], artistHints: string[]): string[] {
   const primaryTitle = titleCandidates[0] ?? '';
   const compactTitle = titleCandidates.find((candidate) => musicArtworkTokens(candidate).length <= 6) ?? primaryTitle;
+  const primaryArtistHint = artistHints[0] ?? '';
   return [
-    [compactTitle, artistHint].filter(Boolean).join(' '),
-    [primaryTitle, artistHint].filter(Boolean).join(' '),
+    [compactTitle, primaryArtistHint].filter(Boolean).join(' '),
+    [primaryTitle, primaryArtistHint].filter(Boolean).join(' '),
+    ...artistHints.slice(1).map((artistHint) => [compactTitle, artistHint].filter(Boolean).join(' ')),
     compactTitle,
     primaryTitle,
   ]
