@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, PLATFORM_ID, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
@@ -248,6 +248,17 @@ type TourDeckFrame = {
   nextCard: BoardCard | null;
   index: number;
   total: number;
+};
+
+type TourSpeechResponse = {
+  audioUrl?: string;
+  audioBase64?: string;
+  contentType?: string;
+};
+
+type TourMapPoint = {
+  card: BoardCard;
+  position: { lat: number; lng: number };
 };
 
 const STORAGE_KEY = 'livingwiki-boards-v1';
@@ -722,6 +733,22 @@ export class BoardsComponent {
   private stackPlaybackTimer: ReturnType<typeof setInterval> | null = null;
   private shareMessageTimer: ReturnType<typeof setTimeout> | null = null;
   private stackShareMessageTimer: ReturnType<typeof setTimeout> | null = null;
+  private tourMapElement: HTMLElement | null = null;
+  private tourMap: unknown | null = null;
+  private tourMapBoardId: string | null = null;
+  private tourMapMarkers: unknown[] = [];
+  private tourMapPolyline: unknown | null = null;
+  private tourAudio: HTMLAudioElement | null = null;
+  private readonly tourAudioUrls = new Map<string, string>();
+  private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
+
+  @ViewChild('tourMapCanvas')
+  set tourMapCanvasRef(value: ElementRef<HTMLElement> | undefined) {
+    this.tourMapElement = value?.nativeElement ?? null;
+    if (this.tourMapElement && this.isBrowser) {
+      window.setTimeout(() => void this.renderTourMap(), 0);
+    }
+  }
 
   readonly tones = BOARD_TONES;
   readonly cardTypes = CARD_TYPES;
@@ -811,6 +838,8 @@ export class BoardsComponent {
   readonly tourGuideOpen = signal(false);
   readonly tourDeckIndex = signal(0);
   readonly tourSpeechPlaying = signal(false);
+  readonly tourAudioLoadingKey = signal<string | null>(null);
+  readonly selectedTourCardId = signal<string | null>(null);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -1151,6 +1180,19 @@ export class BoardsComponent {
         STORAGE_KEY,
         JSON.stringify(boards.filter((board) => this.canStoreBoardLocally(board))),
       );
+    });
+
+    effect(() => {
+      const board = this.selectedBoard();
+      const tourSignature = this.tourCards(board)
+        .map((card) => `${card.id}:${card.tour?.sequence}:${card.tour?.lat}:${card.tour?.lng}:${card.title}`)
+        .join('|');
+      if (!this.isBrowser || !this.isTourBoard(board)) {
+        this.tourMapBoardId = null;
+        return;
+      }
+      void tourSignature;
+      window.setTimeout(() => void this.renderTourMap(), 0);
     });
   }
 
@@ -2411,7 +2453,7 @@ export class BoardsComponent {
     return this.wizardTourExtras().has(extra);
   }
 
-  isTourBoard(board: Board | null): boolean {
+  isTourBoard(board: Board | null): board is Board & { kind: 'walking-tour' | 'driving-tour' } {
     return !!board && (board.kind === 'walking-tour' || board.kind === 'driving-tour');
   }
 
@@ -2496,7 +2538,12 @@ export class BoardsComponent {
     }
     this.tourDeckIndex.set(Math.max(0, Math.min(stopIndex, frames.length - 1)));
     this.tourGuideOpen.set(true);
-    this.speakTourFrame();
+    void this.speakTourFrame();
+  }
+
+  openTourGuideForCard(card: BoardCard): void {
+    const frameIndex = this.tourDeckFrames().findIndex((frame) => frame.kind === 'stop' && frame.card.id === card.id);
+    this.openTourGuide(Math.max(0, frameIndex));
   }
 
   closeTourGuide(): void {
@@ -2510,15 +2557,15 @@ export class BoardsComponent {
       return;
     }
     this.tourDeckIndex.update((index) => Math.max(0, Math.min(count - 1, index + direction)));
-    this.speakTourFrame();
+    void this.speakTourFrame();
   }
 
   replayTourFrame(): void {
-    this.speakTourFrame();
+    void this.speakTourFrame();
   }
 
-  speakTourFrame(frame = this.tourCurrentFrame()): void {
-    if (!this.isBrowser || !frame || typeof window.speechSynthesis === 'undefined') {
+  async speakTourFrame(frame = this.tourCurrentFrame()): Promise<void> {
+    if (!this.isBrowser || !frame) {
       return;
     }
     const text = frame.kind === 'leg'
@@ -2528,6 +2575,61 @@ export class BoardsComponent {
       return;
     }
     this.stopTourSpeech();
+    const audioUrl = await this.ensureTourAudioUrl(this.tourAudioKey(frame), text);
+    if (audioUrl) {
+      const audio = new Audio(audioUrl);
+      this.tourAudio = audio;
+      this.tourSpeechPlaying.set(true);
+      audio.onended = () => this.stopTourSpeech();
+      audio.onerror = () => {
+        this.stopTourSpeech();
+        this.speakTourWithBrowserVoice(text);
+      };
+      try {
+        await audio.play();
+        return;
+      } catch {
+        this.stopTourSpeech();
+      }
+    }
+    this.speakTourWithBrowserVoice(text);
+  }
+
+  async focusTourStop(card: BoardCard, playPreview = true): Promise<void> {
+    this.selectedTourCardId.set(card.id);
+    this.updateTourMarkerStates();
+    const frameIndex = this.tourDeckFrames().findIndex((frame) => frame.kind === 'stop' && frame.card.id === card.id);
+    if (frameIndex >= 0) {
+      this.tourDeckIndex.set(frameIndex);
+    }
+    if (this.isBrowser) {
+      window.document.getElementById(`tour-stop-${card.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    if (playPreview) {
+      this.tourGuideOpen.set(true);
+      await this.speakTourFrame(this.tourCurrentFrame());
+    }
+  }
+
+  stopTourSpeech(): void {
+    if (this.tourAudio) {
+      this.tourAudio.pause();
+      this.tourAudio.currentTime = 0;
+      this.tourAudio.onended = null;
+      this.tourAudio.onerror = null;
+      this.tourAudio = null;
+    }
+    if (this.isBrowser && typeof window.speechSynthesis !== 'undefined') {
+      window.speechSynthesis.cancel();
+    }
+    this.tourAudioLoadingKey.set(null);
+    this.tourSpeechPlaying.set(false);
+  }
+
+  private speakTourWithBrowserVoice(text: string): void {
+    if (!this.isBrowser || typeof window.speechSynthesis === 'undefined') {
+      return;
+    }
     const utterance = new SpeechSynthesisUtterance(text.slice(0, 3600));
     utterance.rate = this.selectedBoard()?.kind === 'driving-tour' ? 0.98 : 0.95;
     utterance.onend = () => this.tourSpeechPlaying.set(false);
@@ -2536,11 +2638,233 @@ export class BoardsComponent {
     window.setTimeout(() => window.speechSynthesis.speak(utterance), 120);
   }
 
-  stopTourSpeech(): void {
-    if (this.isBrowser && typeof window.speechSynthesis !== 'undefined') {
-      window.speechSynthesis.cancel();
+  private async ensureTourAudioUrl(key: string, text: string): Promise<string | null> {
+    const cached = this.tourAudioUrls.get(key);
+    if (cached) {
+      return cached;
     }
-    this.tourSpeechPlaying.set(false);
+    const pending = this.tourAudioPromises.get(key);
+    if (pending) {
+      return pending;
+    }
+    const functions = this.functions;
+    if (!functions) {
+      return null;
+    }
+    this.tourAudioLoadingKey.set(key);
+    const promise = (async () => {
+      try {
+        const callable = httpsCallable<
+          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' },
+          TourSpeechResponse
+        >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
+        const response = await callable({
+          text: text.slice(0, 3600),
+          question: 'Read this LivingWiki tour preview aloud.',
+          anonymousVisitorId: this.authService.uid() ? null : this.ensureTourAnonymousVisitorId(),
+          mode: 'full',
+        });
+        const audioUrl = response.data.audioUrl || (response.data.audioBase64 ? this.audioUrlFromBase64(response.data.audioBase64, response.data.contentType || 'audio/mpeg') : '');
+        if (audioUrl) {
+          this.tourAudioUrls.set(key, audioUrl);
+          return audioUrl;
+        }
+      } catch {
+        // ElevenLabs preview is best-effort; browser speech handles fallback.
+      } finally {
+        this.tourAudioPromises.delete(key);
+        if (this.tourAudioLoadingKey() === key) {
+          this.tourAudioLoadingKey.set(null);
+        }
+      }
+      return null;
+    })();
+    this.tourAudioPromises.set(key, promise);
+    return promise;
+  }
+
+  private tourAudioKey(frame: TourDeckFrame): string {
+    return `${frame.kind}:${frame.card.id}:${frame.kind === 'leg' ? frame.nextCard?.id ?? 'end' : 'stop'}`;
+  }
+
+  private ensureTourAnonymousVisitorId(): string {
+    const key = 'livingwiki-tour-audio-visitor';
+    if (!this.isBrowser) {
+      return this.createId();
+    }
+    const existing = window.localStorage.getItem(key);
+    if (existing) {
+      return existing;
+    }
+    const next = this.createId();
+    window.localStorage.setItem(key, next);
+    return next;
+  }
+
+  private audioUrlFromBase64(audioBase64: string, contentType: string): string {
+    const binary = atob(audioBase64);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    return URL.createObjectURL(new Blob([bytes], { type: contentType }));
+  }
+
+  private async renderTourMap(): Promise<void> {
+    const board = this.selectedBoard();
+    const element = this.tourMapElement;
+    if (!this.isBrowser || !element || !this.isTourBoard(board)) {
+      return;
+    }
+    const tourBoard = board;
+    const tourCards = this.tourCards(tourBoard);
+    const points = await this.resolveTourMapPoints(tourCards, tourBoard);
+    if (!points.length) {
+      element.innerHTML = '<div class="tour-board__map-empty">Map pins appear after stops resolve to places.</div>';
+      return;
+    }
+
+    try {
+      const google = await this.googleMapsService.loadMapLibraries();
+      const maps = google.maps as typeof google.maps & Record<string, unknown>;
+      if (this.tourMapBoardId !== tourBoard.id || !this.tourMap) {
+        element.innerHTML = '';
+        this.tourMap = new maps.Map(element, {
+          mapId: this.googleMapsService.mapId(),
+          disableDefaultUI: false,
+          clickableIcons: false,
+          gestureHandling: 'greedy',
+          zoom: tourBoard.kind === 'driving-tour' ? 11 : 14,
+          center: points[0].position,
+        });
+        this.tourMapBoardId = tourBoard.id;
+      }
+
+      this.clearTourMapOverlays();
+      const bounds = new maps.LatLngBounds();
+      const path = points.map((point) => {
+        bounds.extend(point.position);
+        return point.position;
+      });
+      const Polyline = maps['Polyline'] as new (options: Record<string, unknown>) => unknown;
+      if (Polyline && path.length > 1) {
+        this.tourMapPolyline = new Polyline({
+          path,
+          map: this.tourMap,
+          strokeColor: this.toneAccent(tourBoard.tone),
+          strokeOpacity: 0.86,
+          strokeWeight: tourBoard.kind === 'driving-tour' ? 5 : 4,
+        });
+      }
+
+      const AdvancedMarkerElement = maps.marker?.AdvancedMarkerElement;
+      const Marker = maps['Marker'] as new (options: Record<string, unknown>) => unknown;
+      points.forEach(({ card, position }) => {
+        const markerContent = this.createTourMarkerElement(card);
+        const marker = AdvancedMarkerElement
+          ? new AdvancedMarkerElement({ map: this.tourMap, position, title: card.title, content: markerContent })
+          : Marker
+            ? new Marker({ map: this.tourMap, position, title: `${card.tour?.sequence}. ${card.title}` })
+            : null;
+        if (!marker) {
+          return;
+        }
+        const addListener = (marker as { addListener?: (name: string, listener: () => void) => void }).addListener;
+        addListener?.call(marker, 'click', () => void this.focusTourStop(card, true));
+        this.tourMapMarkers.push(marker);
+      });
+
+      (this.tourMap as { fitBounds?: (bounds: unknown, padding?: number) => void }).fitBounds?.(bounds, 48);
+    } catch {
+      element.innerHTML = '<div class="tour-board__map-empty">Map could not load. Use Open route for Google Maps directions.</div>';
+    }
+  }
+
+  private async resolveTourMapPoints(cards: BoardCard[], board: Board): Promise<TourMapPoint[]> {
+    const directPoints = new Map<string, TourMapPoint>();
+    const missingCards: BoardCard[] = [];
+
+    for (const card of cards) {
+      if (this.hasTourCoordinates(card)) {
+        directPoints.set(card.id, {
+          card,
+          position: { lat: card.tour?.lat ?? 0, lng: card.tour?.lng ?? 0 },
+        });
+      } else {
+        missingCards.push(card);
+      }
+    }
+
+    const fallbackPoints = new Map<string, { lat: number; lng: number }>();
+    if (missingCards.length) {
+      const locations = missingCards.map((card) => {
+        const query = [card.tour?.address, card.title, board.title].filter(Boolean).join(', ');
+        return {
+          name: card.id,
+          search_query: query,
+          address_hint: card.tour?.address || card.subtitle || null,
+        };
+      });
+      try {
+        const resolved = await this.googleMapsService.resolveLocations(locations, locations.length);
+        resolved.forEach((location) => fallbackPoints.set(location.name, location.position));
+      } catch {
+        // If geocoding is unavailable, the map still renders all stored coordinates.
+      }
+    }
+
+    return cards
+      .map((card) => {
+        const direct = directPoints.get(card.id);
+        if (direct) {
+          return direct;
+        }
+        const fallback = fallbackPoints.get(card.id);
+        return fallback ? { card, position: fallback } : null;
+      })
+      .filter((point): point is TourMapPoint => !!point);
+  }
+
+  private clearTourMapOverlays(): void {
+    for (const marker of this.tourMapMarkers) {
+      const writable = marker as { map?: unknown; setMap?: (map: unknown | null) => void };
+      if (typeof writable.setMap === 'function') {
+        writable.setMap(null);
+      } else {
+        writable.map = null;
+      }
+    }
+    this.tourMapMarkers = [];
+    const polyline = this.tourMapPolyline as { setMap?: (map: unknown | null) => void } | null;
+    polyline?.setMap?.(null);
+    this.tourMapPolyline = null;
+  }
+
+  private createTourMarkerElement(card: BoardCard): HTMLElement {
+    const marker = document.createElement('button');
+    marker.type = 'button';
+    marker.className = 'tour-map-marker';
+    marker.dataset['cardId'] = card.id;
+    marker.setAttribute('aria-label', `Preview stop ${card.tour?.sequence}: ${card.title}`);
+    const label = document.createElement('span');
+    label.textContent = String(card.tour?.sequence ?? '');
+    marker.appendChild(label);
+    if (this.selectedTourCardId() === card.id) {
+      marker.classList.add('tour-map-marker--active');
+    }
+    marker.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      void this.focusTourStop(card, true);
+    });
+    return marker;
+  }
+
+  private updateTourMarkerStates(): void {
+    const selectedId = this.selectedTourCardId();
+    this.tourMapElement?.querySelectorAll<HTMLElement>('.tour-map-marker').forEach((marker) => {
+      marker.classList.toggle('tour-map-marker--active', marker.dataset['cardId'] === selectedId);
+    });
   }
 
   async runCardWizard(): Promise<void> {
@@ -3407,6 +3731,14 @@ export class BoardsComponent {
               placeId: place.placeId,
               googleMapsUrl: place.googleMapsUrl,
               tags: this.mergeWizardTags(enriched.tags, this.placeTags(place)),
+              tour: enriched.tour
+                ? {
+                    ...enriched.tour,
+                    lat: place.lat,
+                    lng: place.lng,
+                    address: place.address || enriched.tour.address,
+                  }
+                : enriched.tour,
             };
           }
         } catch {
@@ -4932,6 +5264,8 @@ export class BoardsComponent {
       rating: typeof place.ratingAvg === 'number' ? place.ratingAvg : null,
       googleMapsUrl: place.googleMapsUrl,
       photoUrl: '',
+      lat: typeof place.lat === 'number' ? place.lat : null,
+      lng: typeof place.lng === 'number' ? place.lng : null,
     };
   }
 

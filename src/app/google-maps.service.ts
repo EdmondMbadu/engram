@@ -56,6 +56,12 @@ type GooglePlaceResult = {
   types?: string[];
   rating?: number;
   url?: string;
+  geometry?: {
+    location?: {
+      lat: () => number;
+      lng: () => number;
+    };
+  };
   photos?: Array<{
     getUrl: (options?: { maxWidth?: number; maxHeight?: number }) => string;
   }>;
@@ -69,6 +75,8 @@ export type PlaceSearchResult = {
   rating: number | null;
   googleMapsUrl: string;
   photoUrl: string;
+  lat: number | null;
+  lng: number | null;
 };
 
 export type ResolvedMappableLocation = MappableLocation & {
@@ -162,7 +170,7 @@ export class GoogleMapsService {
     return this.requireGoogleMaps();
   }
 
-  async resolveLocations(locations: MappableLocation[]): Promise<ResolvedMappableLocation[]> {
+  async resolveLocations(locations: MappableLocation[], limit = 6): Promise<ResolvedMappableLocation[]> {
     if (locations.length === 0) {
       return [];
     }
@@ -173,7 +181,7 @@ export class GoogleMapsService {
     }
     const geocoder = new google.maps.Geocoder();
     const resolved = await Promise.all(
-      locations.slice(0, 6).map(async (location) => {
+      locations.slice(0, Math.max(0, limit)).map(async (location) => {
         const key = location.search_query.trim().toLowerCase();
         if (this.geocodeCache.has(key)) {
           return this.geocodeCache.get(key);
@@ -309,7 +317,7 @@ export class GoogleMapsService {
       service.getDetails(
         {
           placeId,
-          fields: ['place_id', 'name', 'formatted_address', 'photos', 'types', 'rating', 'url'],
+          fields: ['place_id', 'name', 'formatted_address', 'photos', 'types', 'rating', 'url', 'geometry'],
         },
         (result, status) => {
           resolve(status === okStatus && result ? result : place);
@@ -327,6 +335,8 @@ export class GoogleMapsService {
       rating: typeof detailed.rating === 'number' ? detailed.rating : null,
       googleMapsUrl: detailed.url ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(detailed.name ?? place.name ?? placeId)}`,
       photoUrl: photos[0]?.getUrl({ maxWidth: 1000, maxHeight: 1000 }) ?? '',
+      lat: detailed.geometry?.location?.lat() ?? place.geometry?.location?.lat() ?? null,
+      lng: detailed.geometry?.location?.lng() ?? place.geometry?.location?.lng() ?? null,
     };
   }
 }

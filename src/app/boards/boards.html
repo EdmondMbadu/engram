@@ -641,12 +641,7 @@
 
                 <div class="tour-board__layout">
                   <aside class="tour-board__map">
-                    <iframe
-                      [src]="tourMapEmbedUrl(board)"
-                      [title]="board.title + ' map'"
-                      loading="lazy"
-                      referrerpolicy="no-referrer-when-downgrade"
-                    ></iframe>
+                    <div #tourMapCanvas class="tour-board__map-canvas" role="application" [attr.aria-label]="board.title + ' stops map'"></div>
                     <div class="tour-board__map-actions">
                       <a [href]="tourRouteUrl(board)" target="_blank" rel="noopener">
                         <span class="material-symbols-outlined">map</span>
@@ -669,7 +664,11 @@
                     </div>
 
                     @for (card of selectedBoardTourCards(); track card.id) {
-                      <article class="tour-stop-card">
+                      <article
+                        class="tour-stop-card"
+                        [id]="'tour-stop-' + card.id"
+                        [class.tour-stop-card--active]="selectedTourCardId() === card.id"
+                      >
                         <div class="tour-stop-card__media">
                           @if (card.imageUrl) {
                             <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
@@ -680,7 +679,7 @@
                         </div>
                         <div class="tour-stop-card__body">
                           <div class="tour-stop-card__head">
-                            <div>
+                            <div role="button" tabindex="0" (click)="focusTourStop(card, false)" (keydown.enter)="focusTourStop(card, false)">
                               <h3>{{ card.title }}</h3>
                               <p>{{ card.tour?.address || card.subtitle }}</p>
                             </div>
@@ -699,8 +698,8 @@
                           }
                           <div class="tour-stop-card__actions">
                             <button type="button" (click)="speakTourFrame({ kind: 'stop', card, nextCard: null, index: 0, total: 1 })">
-                              <span class="material-symbols-outlined">volume_up</span>
-                              Play guide
+                              <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'stop:' + card.id + ':stop' ? 'progress_activity' : 'volume_up' }}</span>
+                              Preview voice
                             </button>
                             @if (card.googleMapsUrl) {
                               <a [href]="card.googleMapsUrl" target="_blank" rel="noopener">
@@ -732,7 +731,7 @@
                               <p>{{ leg.instruction }}</p>
                               <div class="tour-stop-card__actions">
                                 <button type="button" (click)="speakTourFrame({ kind: 'leg', card, nextCard, index: 0, total: 1 })">
-                                  <span class="material-symbols-outlined">volume_up</span>
+                                  <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'leg:' + card.id + ':' + nextCard.id ? 'progress_activity' : 'volume_up' }}</span>
                                   Navigate
                                 </button>
                                 <a [href]="tourLegDirectionsUrl(board, card)" target="_blank" rel="noopener">

@@ -3009,11 +3009,11 @@
   overflow: hidden;
 }
 
-.tour-board__map iframe {
+.tour-board__map-canvas {
   display: block;
   width: 100%;
   height: 25rem;
-  border: 0;
+  background: var(--surface-strong);
 }
 
 .tour-board__map-actions,
@@ -3067,6 +3067,11 @@
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);
   overflow: hidden;
+}
+
+.tour-stop-card--active {
+  border-color: var(--accent);
+  box-shadow: 4px 4px 0 var(--accent);
 }
 
 .tour-stop-card__media {
@@ -3191,6 +3196,45 @@
   padding: 0.35rem 0.65rem;
   font-size: 0.68rem;
   font-weight: 950;
+}
+
+.tour-board__map-empty {
+  display: grid;
+  min-height: 25rem;
+  place-items: center;
+  padding: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.tour-map-marker {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 3px solid var(--ink);
+  border-radius: 50% 50% 50% 0.35rem;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transform: rotate(-45deg);
+}
+
+.tour-map-marker span {
+  transform: rotate(45deg);
+}
+
+.tour-map-marker--active,
+.tour-map-marker:hover {
+  background: #ffef3d;
+  color: #17120a;
 }
 
 .boards-modal--tour-guide {
