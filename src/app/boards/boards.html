@@ -780,11 +780,11 @@
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
                   [class.detail-card--drop-target]="isCardDropTarget(card.id)"
+                  [class.detail-card--drop-before]="isCardDropBefore(card.id)"
+                  [class.detail-card--drop-after]="isCardDropAfter(card.id)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
-                  [attr.draggable]="isManagingBoard(board.id) && canEditBoard(board) ? 'true' : null"
                   style="overflow: visible; perspective: 1200px;"
                   (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, board.id, card)"
-                  (dragstart)="beginCardReorderDrag($event, board, card)"
                   (dragover)="dragCardOver($event, board, card)"
                   (dragleave)="dragCardLeave(card)"
                   (drop)="dropCardOnCard($event, board, card)"
@@ -794,6 +794,20 @@
                   <span class="detail-card__framebreak" aria-hidden="true">
                     <span class="material-symbols-outlined">{{ framebreakIcon(card) }}</span>
                   </span>
+                  @if (canEditBoard(board) && board.cards.length > 1) {
+                    <button
+                      type="button"
+                      class="detail-card__drag-handle"
+                      draggable="true"
+                      [attr.aria-label]="'Drag ' + card.title + ' to reorder'"
+                      title="Drag to reorder"
+                      (click)="$event.stopPropagation()"
+                      (dragstart)="beginCardReorderDrag($event, board, card)"
+                      (dragend)="clearCardReorderDrag()"
+                    >
+                      <span class="material-symbols-outlined">drag_indicator</span>
+                    </button>
+                  }
                   @if (isManagingBoard(board.id)) {
                     <button
                       type="button"

@@ -789,6 +789,7 @@ export class BoardsComponent {
   readonly selectedCardIds = signal<Set<string>>(new Set());
   readonly draggedCardId = signal<string | null>(null);
   readonly cardDropTargetId = signal<string | null>(null);
+  readonly cardDropPlacement = signal<'before' | 'after'>('before');
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
@@ -2360,6 +2361,14 @@ export class BoardsComponent {
     return this.cardDropTargetId() === cardId && this.draggedCardId() !== cardId;
   }
 
+  isCardDropBefore(cardId: string): boolean {
+    return this.isCardDropTarget(cardId) && this.cardDropPlacement() === 'before';
+  }
+
+  isCardDropAfter(cardId: string): boolean {
+    return this.isCardDropTarget(cardId) && this.cardDropPlacement() === 'after';
+  }
+
   toggleCardSelection(cardId: string, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
@@ -2375,12 +2384,14 @@ export class BoardsComponent {
   }
 
   beginCardReorderDrag(event: DragEvent, board: Board, card: BoardCard): void {
-    if (!this.canEditBoard(board) || !this.isManagingBoard(board.id)) {
+    if (!this.canEditBoard(board) || board.cards.length < 2) {
       event.preventDefault();
       return;
     }
+    event.stopPropagation();
     this.draggedCardId.set(card.id);
     this.cardDropTargetId.set(null);
+    this.cardDropPlacement.set('before');
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.setData('text/plain', card.id);
@@ -2388,14 +2399,16 @@ export class BoardsComponent {
   }
 
   dragCardOver(event: DragEvent, board: Board, card: BoardCard): void {
-    if (!this.canEditBoard(board) || !this.isManagingBoard(board.id) || !this.draggedCardId()) {
+    if (!this.canEditBoard(board) || !this.draggedCardId()) {
       return;
     }
     event.preventDefault();
+    event.stopPropagation();
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move';
     }
     this.cardDropTargetId.set(card.id);
+    this.cardDropPlacement.set(this.cardDropPosition(event));
   }
 
   dragCardLeave(card: BoardCard): void {
@@ -2407,7 +2420,7 @@ export class BoardsComponent {
   async dropCardOnCard(event: DragEvent, board: Board, targetCard: BoardCard): Promise<void> {
     event.preventDefault();
     event.stopPropagation();
-    if (!this.canEditBoard(board) || !this.isManagingBoard(board.id)) {
+    if (!this.canEditBoard(board)) {
       this.clearCardReorderDrag();
       return;
     }
@@ -2432,7 +2445,7 @@ export class BoardsComponent {
     }
 
     const nextCards = [...cardsWithoutDragged];
-    nextCards.splice(targetIndex, 0, draggedCard);
+    nextCards.splice(targetIndex + (this.cardDropPosition(event) === 'after' ? 1 : 0), 0, draggedCard);
     const now = new Date().toISOString();
     const nextBoard: Board = { ...currentBoard, cards: nextCards, updatedAt: now };
 
@@ -2444,6 +2457,19 @@ export class BoardsComponent {
   clearCardReorderDrag(): void {
     this.draggedCardId.set(null);
     this.cardDropTargetId.set(null);
+    this.cardDropPlacement.set('before');
+  }
+
+  private cardDropPosition(event: DragEvent): 'before' | 'after' {
+    if (!(event.currentTarget instanceof HTMLElement)) {
+      return this.cardDropPlacement();
+    }
+    const rect = event.currentTarget.getBoundingClientRect();
+    const isNarrowCard = rect.width < 340;
+    const isAfter = isNarrowCard
+      ? event.clientY > rect.top + rect.height / 2
+      : event.clientX > rect.left + rect.width / 2;
+    return isAfter ? 'after' : 'before';
   }
 
   selectAllVisibleCards(event?: Event): void {
