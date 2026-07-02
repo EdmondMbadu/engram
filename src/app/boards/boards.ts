@@ -776,6 +776,7 @@ export class BoardsComponent {
   readonly publicOwnerSlug = signal<string | null>(null);
   readonly flippedBoardIds = signal<Set<string>>(new Set());
   readonly flippedCardIds = signal<Set<string>>(new Set());
+  readonly expandedCardIds = signal<Set<string>>(new Set());
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
@@ -786,6 +787,8 @@ export class BoardsComponent {
   readonly cardBulkDeleteCandidate = signal<CardBulkDeleteCandidate | null>(null);
   readonly cardManageBoardId = signal<string | null>(null);
   readonly selectedCardIds = signal<Set<string>>(new Set());
+  readonly draggedCardId = signal<string | null>(null);
+  readonly cardDropTargetId = signal<string | null>(null);
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
@@ -843,6 +846,7 @@ export class BoardsComponent {
   readonly tourAudioLoadingKey = signal<string | null>(null);
   readonly tourAudioNotice = signal<string | null>(null);
   readonly selectedTourCardId = signal<string | null>(null);
+  readonly livingBoardEffects = signal(true);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -2306,6 +2310,8 @@ export class BoardsComponent {
     this.cardManageBoardId.set(board.id);
     this.selectedCardIds.set(new Set());
     this.cardBulkDeleteCandidate.set(null);
+    this.draggedCardId.set(null);
+    this.cardDropTargetId.set(null);
   }
 
   closeCardManageMode(event?: Event): void {
@@ -2314,10 +2320,44 @@ export class BoardsComponent {
     this.cardManageBoardId.set(null);
     this.selectedCardIds.set(new Set());
     this.cardBulkDeleteCandidate.set(null);
+    this.draggedCardId.set(null);
+    this.cardDropTargetId.set(null);
   }
 
   isCardSelected(cardId: string): boolean {
     return this.selectedCardIds().has(cardId);
+  }
+
+  isCardExpanded(cardId: string): boolean {
+    return this.expandedCardIds().has(cardId);
+  }
+
+  toggleCardExpanded(cardId: string, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.expandedCardIds.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+      return next;
+    });
+  }
+
+  toggleLivingBoardEffects(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.livingBoardEffects.update((enabled) => !enabled);
+  }
+
+  isDraggingCard(cardId: string): boolean {
+    return this.draggedCardId() === cardId;
+  }
+
+  isCardDropTarget(cardId: string): boolean {
+    return this.cardDropTargetId() === cardId && this.draggedCardId() !== cardId;
   }
 
   toggleCardSelection(cardId: string, event?: Event): void {
@@ -2332,6 +2372,78 @@ export class BoardsComponent {
       }
       return next;
     });
+  }
+
+  beginCardReorderDrag(event: DragEvent, board: Board, card: BoardCard): void {
+    if (!this.canEditBoard(board) || !this.isManagingBoard(board.id)) {
+      event.preventDefault();
+      return;
+    }
+    this.draggedCardId.set(card.id);
+    this.cardDropTargetId.set(null);
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', card.id);
+    }
+  }
+
+  dragCardOver(event: DragEvent, board: Board, card: BoardCard): void {
+    if (!this.canEditBoard(board) || !this.isManagingBoard(board.id) || !this.draggedCardId()) {
+      return;
+    }
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+    this.cardDropTargetId.set(card.id);
+  }
+
+  dragCardLeave(card: BoardCard): void {
+    if (this.cardDropTargetId() === card.id) {
+      this.cardDropTargetId.set(null);
+    }
+  }
+
+  async dropCardOnCard(event: DragEvent, board: Board, targetCard: BoardCard): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.canEditBoard(board) || !this.isManagingBoard(board.id)) {
+      this.clearCardReorderDrag();
+      return;
+    }
+    const draggedId = this.draggedCardId() || event.dataTransfer?.getData('text/plain') || '';
+    if (!draggedId || draggedId === targetCard.id) {
+      this.clearCardReorderDrag();
+      return;
+    }
+
+    const currentBoard = this.boards().find((item) => item.id === board.id);
+    const draggedCard = currentBoard?.cards.find((card) => card.id === draggedId);
+    if (!currentBoard || !draggedCard) {
+      this.clearCardReorderDrag();
+      return;
+    }
+
+    const cardsWithoutDragged = currentBoard.cards.filter((card) => card.id !== draggedId);
+    const targetIndex = cardsWithoutDragged.findIndex((card) => card.id === targetCard.id);
+    if (targetIndex < 0) {
+      this.clearCardReorderDrag();
+      return;
+    }
+
+    const nextCards = [...cardsWithoutDragged];
+    nextCards.splice(targetIndex, 0, draggedCard);
+    const now = new Date().toISOString();
+    const nextBoard: Board = { ...currentBoard, cards: nextCards, updatedAt: now };
+
+    this.boards.update((boards) => boards.map((item) => item.id === nextBoard.id ? nextBoard : item));
+    this.clearCardReorderDrag();
+    await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  clearCardReorderDrag(): void {
+    this.draggedCardId.set(null);
+    this.cardDropTargetId.set(null);
   }
 
   selectAllVisibleCards(event?: Event): void {
@@ -3020,6 +3132,26 @@ export class BoardsComponent {
 
   cardTypeLabel(type: BoardCardType): string {
     return this.cardTypes.find((item) => item.id === type)?.label ?? 'Note';
+  }
+
+  framebreakIcon(card: Pick<BoardCard, 'type' | 'status'>): string {
+    if (card.status === 'favorite') {
+      return 'kid_star';
+    }
+    switch (card.type) {
+      case 'food':
+        return 'restaurant';
+      case 'place':
+        return 'location_on';
+      case 'memory':
+        return 'auto_awesome';
+      case 'idea':
+        return 'lightbulb';
+      case 'shop':
+        return 'local_mall';
+      default:
+        return 'stylus_note';
+    }
   }
 
   isPhotoOnlyCard(card: Pick<BoardCard, 'imageUrl' | 'tags' | 'title'>): boolean {

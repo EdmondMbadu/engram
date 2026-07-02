@@ -1026,7 +1026,7 @@
   --board-soft: inherit;
   position: relative;
   display: flex;
-  min-height: 23.5rem;
+  min-height: 24rem;
   flex-direction: column;
   overflow: hidden;
   border: 3px solid var(--ink);
@@ -1034,14 +1034,29 @@
   background: #ffffff;
   box-shadow: 5px 5px 0 var(--ink), 0 18px 42px rgba(16, 32, 24, 0.1);
   color: var(--ink);
+  transition: opacity 180ms ease, outline-color 160ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .detail-card .board-square__rotor {
-  min-height: 23.5rem;
+  min-height: 24rem;
 }
 
 .detail-card--managing {
-  cursor: default;
+  cursor: grab;
+}
+
+.detail-card--managing:active {
+  cursor: grabbing;
+}
+
+.detail-card--dragging {
+  opacity: 0.46;
+  transform: rotate(-1deg) scale(0.98);
+}
+
+.detail-card--drop-target {
+  outline: 4px dashed var(--board-accent);
+  outline-offset: 0.35rem;
 }
 
 .detail-card--selected {
@@ -1053,7 +1068,7 @@
   position: absolute;
   top: 0.65rem;
   left: 0.65rem;
-  z-index: 9;
+  z-index: 15;
   display: grid;
   width: 2.35rem;
   height: 2.35rem;
@@ -1071,12 +1086,89 @@
   color: var(--accent-contrast);
 }
 
+.detail-card__remove {
+  position: absolute;
+  top: -0.75rem;
+  right: -0.75rem;
+  z-index: 16;
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: #d92323;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.detail-card__remove .material-symbols-outlined {
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.detail-card__rank {
+  position: absolute;
+  top: -0.85rem;
+  left: -0.85rem;
+  z-index: 13;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff5b8, #f4d35e);
+  box-shadow: 4px 4px 0 var(--ink), 0 8px 18px rgba(16, 32, 24, 0.15);
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.detail-card__framebreak {
+  position: absolute;
+  top: -1rem;
+  right: 2.4rem;
+  z-index: 12;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 3px solid var(--ink);
+  border-radius: 50% 45% 52% 42%;
+  background: #ffffff;
+  box-shadow: 3px 3px 0 var(--board-accent);
+  color: var(--board-accent);
+  opacity: 0;
+  transform: translateY(0.45rem) rotate(8deg);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.board-detail--living-effects .detail-card__framebreak {
+  opacity: 1;
+  transform: translateY(0) rotate(8deg);
+}
+
+.detail-card__framebreak .material-symbols-outlined {
+  font-size: 1.55rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .detail-card__media {
   position: relative;
-  height: 9.25rem;
+  flex: 1;
+  height: auto;
   overflow: hidden;
-  border-bottom: 3px solid var(--ink);
+  border-bottom: 0;
   background: var(--board-soft);
+}
+
+.detail-card--expanded .detail-card__media,
+.board-square--flipped .detail-card__media {
+  flex: none;
+  height: 9.25rem;
+  border-bottom: 3px solid var(--ink);
 }
 
 .detail-card--photo-only .detail-card__media {
@@ -1138,6 +1230,10 @@
   text-transform: uppercase;
 }
 
+.detail-card--managing .detail-card__status {
+  display: none;
+}
+
 .detail-card__status .material-symbols-outlined {
   font-size: 0.95rem;
   font-variation-settings: 'FILL' 1;
@@ -1151,6 +1247,95 @@
   flex: 1;
   flex-direction: column;
   padding: 0.9rem;
+}
+
+.detail-card:not(.detail-card--expanded):not(.board-square--flipped) .detail-card__body,
+.detail-card:not(.detail-card--expanded):not(.board-square--flipped) .detail-card__footer {
+  display: none;
+}
+
+.detail-card__peek {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 6;
+  display: flex;
+  min-height: 4.8rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.85rem;
+  border: 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.55) 46%, transparent);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  padding: 2rem 0.95rem 0.85rem;
+  text-align: left;
+}
+
+.detail-card__peek span:first-child {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 1.05rem;
+  font-weight: 950;
+  line-height: 1.04;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.detail-card__peek .material-symbols-outlined {
+  flex: 0 0 auto;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 1.25rem;
+  padding: 0.12rem;
+}
+
+.detail-card--expanded .detail-card__peek,
+.board-square--flipped .detail-card__peek {
+  min-height: 3.25rem;
+  padding-top: 1.1rem;
+}
+
+.detail-card__quick-actions {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 7;
+  display: inline-flex;
+  gap: 0.35rem;
+  opacity: 0;
+  transform: translateY(-0.2rem);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.detail-card:hover .detail-card__quick-actions,
+.detail-card:focus-within .detail-card__quick-actions,
+.detail-card--expanded .detail-card__quick-actions,
+.detail-card--managing .detail-card__quick-actions {
+  opacity: 1;
+  transform: none;
+}
+
+.detail-card__quick-actions button {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.detail-card__quick-actions .material-symbols-outlined {
+  font-size: 1rem;
 }
 
 .detail-card__line {
@@ -1311,6 +1496,13 @@
   background: var(--surface);
   color: var(--text);
   padding: 0.68rem 1rem;
+}
+
+.boards-ghost-action--active {
+  border-color: var(--ink);
+  background: var(--board-soft, var(--surface-strong));
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
 }
 
 .boards-danger-action {
@@ -4368,9 +4560,24 @@
     min-height: 35.5rem;
   }
 
+  .detail-card:not(.detail-card--expanded):not(.board-square--flipped) .board-square__rotor {
+    min-height: 25rem;
+  }
+
   .detail-card__media {
     height: 14.5rem;
     border-bottom-width: 2px;
+  }
+
+  .detail-card:not(.detail-card--expanded):not(.board-square--flipped) .detail-card__media {
+    flex: 1;
+    height: auto;
+    border-bottom-width: 0;
+  }
+
+  .detail-card--expanded .detail-card__media,
+  .board-square--flipped .detail-card__media {
+    height: 14.5rem;
   }
 
   .detail-card__status {

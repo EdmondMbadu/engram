@@ -419,6 +419,7 @@
       @if (selectedBoard(); as board) {
         <section
           class="board-detail"
+          [class.board-detail--living-effects]="livingBoardEffects()"
           [style.--board-accent]="toneAccent(board.tone)"
           [style.--board-soft]="toneSoft(board.tone)"
         >
@@ -572,6 +573,20 @@
                     {{ isManagingBoard(board.id) ? 'Done' : 'Manage' }}
                   </button>
                 }
+                <button type="button" class="boards-ghost-action" (click)="openEditBoard(board, $event)">
+                  <span class="material-symbols-outlined">drive_file_rename_outline</span>
+                  Rename
+                </button>
+                <button
+                  type="button"
+                  class="boards-ghost-action"
+                  [class.boards-ghost-action--active]="livingBoardEffects()"
+                  [attr.aria-pressed]="livingBoardEffects()"
+                  (click)="toggleLivingBoardEffects($event)"
+                >
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  FrameBreak
+                </button>
                 <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
                   <span class="material-symbols-outlined">add</span>
                   Add card
@@ -762,10 +777,23 @@
                   [class.detail-card--selected]="isCardSelected(card.id)"
                   [class.detail-card--managing]="isManagingBoard(board.id)"
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
+                  [class.detail-card--expanded]="isCardExpanded(card.id)"
+                  [class.detail-card--dragging]="isDraggingCard(card.id)"
+                  [class.detail-card--drop-target]="isCardDropTarget(card.id)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
+                  [attr.draggable]="isManagingBoard(board.id) && canEditBoard(board) ? 'true' : null"
                   style="overflow: visible; perspective: 1200px;"
                   (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, board.id, card)"
+                  (dragstart)="beginCardReorderDrag($event, board, card)"
+                  (dragover)="dragCardOver($event, board, card)"
+                  (dragleave)="dragCardLeave(card)"
+                  (drop)="dropCardOnCard($event, board, card)"
+                  (dragend)="clearCardReorderDrag()"
                 >
+                  <span class="detail-card__rank" aria-label="Rank {{ $index + 1 }}">{{ $index + 1 }}</span>
+                  <span class="detail-card__framebreak" aria-hidden="true">
+                    <span class="material-symbols-outlined">{{ framebreakIcon(card) }}</span>
+                  </span>
                   @if (isManagingBoard(board.id)) {
                     <button
                       type="button"
@@ -776,6 +804,14 @@
                       (click)="toggleCardSelection(card.id, $event)"
                     >
                       <span class="material-symbols-outlined">{{ isCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="detail-card__remove"
+                      [attr.aria-label]="'Remove ' + card.title"
+                      (click)="deleteCard(card, $event)"
+                    >
+                      <span class="material-symbols-outlined">close</span>
                     </button>
                   }
                   @if (card.stickers.length) {
@@ -819,6 +855,25 @@
                             {{ statusLabel(card.status) }}
                           </span>
                         }
+                        <span class="detail-card__quick-actions">
+                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)">
+                            <span class="material-symbols-outlined">flip_to_back</span>
+                          </button>
+                          @if (canEditBoard(board)) {
+                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
+                              <span class="material-symbols-outlined">edit</span>
+                            </button>
+                          }
+                        </span>
+                        <button
+                          type="button"
+                          class="detail-card__peek"
+                          [attr.aria-expanded]="isCardExpanded(card.id)"
+                          (click)="toggleCardExpanded(card.id, $event)"
+                        >
+                          <span>{{ card.title }}</span>
+                          <span class="material-symbols-outlined">{{ isCardExpanded(card.id) ? 'expand_less' : 'expand_more' }}</span>
+                        </button>
                       </div>
 
                       @if (!isPhotoOnlyCard(card)) {
