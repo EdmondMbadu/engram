@@ -2388,6 +2388,10 @@ export class BoardsComponent {
       event.preventDefault();
       return;
     }
+    if (this.isBlockedCardReorderDragTarget(event.target)) {
+      event.preventDefault();
+      return;
+    }
     event.stopPropagation();
     this.draggedCardId.set(card.id);
     this.cardDropTargetId.set(null);
@@ -2470,6 +2474,16 @@ export class BoardsComponent {
       ? event.clientY > rect.top + rect.height / 2
       : event.clientX > rect.left + rect.width / 2;
     return isAfter ? 'after' : 'before';
+  }
+
+  private isBlockedCardReorderDragTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+    if (target.closest('.detail-card__drag-handle')) {
+      return false;
+    }
+    return Boolean(target.closest('a, button, input, textarea, select, label, .detail-card__sticker'));
   }
 
   selectAllVisibleCards(event?: Event): void {

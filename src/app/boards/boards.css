@@ -1037,6 +1037,33 @@
   transition: opacity 180ms ease, outline-color 160ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
+.detail-card[draggable='true'] {
+  cursor: grab;
+}
+
+.detail-card[draggable='true']:active {
+  cursor: grabbing;
+}
+
+.detail-card[draggable='true'] button,
+.detail-card[draggable='true'] a,
+.detail-card[draggable='true'] input,
+.detail-card[draggable='true'] textarea,
+.detail-card[draggable='true'] select,
+.detail-card[draggable='true'] label {
+  cursor: pointer;
+}
+
+.detail-card[draggable='true'] input,
+.detail-card[draggable='true'] textarea,
+.detail-card[draggable='true'] select {
+  cursor: text;
+}
+
+.detail-card[draggable='true'] .detail-card__drag-handle {
+  cursor: grab;
+}
+
 .detail-card .board-square__rotor {
   min-height: 24rem;
 }
@@ -1115,6 +1142,18 @@
   box-shadow: 3px 3px 0 var(--ink);
   color: #ffffff;
   cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.25rem) scale(0.92);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.detail-card:hover .detail-card__remove,
+.detail-card:focus-within .detail-card__remove,
+.detail-card--managing .detail-card__remove {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
 }
 
 .detail-card__remove .material-symbols-outlined {
