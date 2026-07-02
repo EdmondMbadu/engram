@@ -336,6 +336,25 @@
 .board-square {
   overflow: visible;
   perspective: 1200px;
+  transition: opacity 180ms ease, outline-color 160ms ease, transform 180ms ease;
+}
+
+.board-square[draggable='true'] {
+  cursor: grab;
+}
+
+.board-square[draggable='true']:active {
+  cursor: grabbing;
+}
+
+.board-square--dragging {
+  opacity: 0.46;
+  transform: rotate(-1deg) scale(0.98);
+}
+
+.board-square--drop-target {
+  outline: 4px dashed var(--board-accent);
+  outline-offset: 0.35rem;
 }
 
 .board-square__rotor {
@@ -1060,10 +1079,6 @@
   cursor: text;
 }
 
-.detail-card[draggable='true'] .detail-card__drag-handle {
-  cursor: grab;
-}
-
 .detail-card .board-square__rotor {
   min-height: 24rem;
 }
@@ -1076,28 +1091,6 @@
 .detail-card--drop-target {
   outline: 4px dashed var(--board-accent);
   outline-offset: 0.35rem;
-}
-
-.detail-card--drop-before::before,
-.detail-card--drop-after::after {
-  position: absolute;
-  top: -0.45rem;
-  bottom: -0.45rem;
-  z-index: 18;
-  width: 0.42rem;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  background: var(--board-accent);
-  box-shadow: 3px 3px 0 var(--ink);
-  content: '';
-}
-
-.detail-card--drop-before::before {
-  left: -0.72rem;
-}
-
-.detail-card--drop-after::after {
-  right: -0.72rem;
 }
 
 .detail-card--selected {
@@ -1161,44 +1154,6 @@
   font-weight: 900;
 }
 
-.detail-card__drag-handle {
-  position: absolute;
-  top: -0.95rem;
-  left: 50%;
-  z-index: 17;
-  display: grid;
-  width: 3.1rem;
-  height: 2.15rem;
-  place-items: center;
-  border: 3px solid var(--ink);
-  border-radius: 999px;
-  background: #ffffff;
-  box-shadow: 3px 3px 0 var(--board-accent);
-  color: var(--ink);
-  cursor: grab;
-  opacity: 0;
-  transform: translateX(-50%) translateY(0.25rem);
-  transition: opacity 160ms ease, transform 160ms ease, box-shadow 160ms ease;
-}
-
-.detail-card:hover .detail-card__drag-handle,
-.detail-card:focus-within .detail-card__drag-handle,
-.detail-card--managing .detail-card__drag-handle,
-.detail-card--dragging .detail-card__drag-handle {
-  opacity: 1;
-  transform: translateX(-50%);
-}
-
-.detail-card__drag-handle:active {
-  cursor: grabbing;
-  box-shadow: 1px 1px 0 var(--board-accent);
-}
-
-.detail-card__drag-handle .material-symbols-outlined {
-  font-size: 1.25rem;
-  font-variation-settings: 'FILL' 1;
-}
-
 .detail-card__rank {
   position: absolute;
   top: -0.85rem;
@@ -1215,35 +1170,6 @@
   color: var(--ink);
   font-size: 1.05rem;
   font-weight: 950;
-}
-
-.detail-card__framebreak {
-  position: absolute;
-  top: -1rem;
-  right: 2.4rem;
-  z-index: 12;
-  display: grid;
-  width: 3rem;
-  height: 3rem;
-  place-items: center;
-  border: 3px solid var(--ink);
-  border-radius: 50% 45% 52% 42%;
-  background: #ffffff;
-  box-shadow: 3px 3px 0 var(--board-accent);
-  color: var(--board-accent);
-  opacity: 0;
-  transform: translateY(0.45rem) rotate(8deg);
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.board-detail--living-effects .detail-card__framebreak {
-  opacity: 1;
-  transform: translateY(0) rotate(8deg);
-}
-
-.detail-card__framebreak .material-symbols-outlined {
-  font-size: 1.55rem;
-  font-variation-settings: 'FILL' 1;
 }
 
 .detail-card__media {

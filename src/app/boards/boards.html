@@ -266,8 +266,16 @@
               <article
                 class="board-square"
                 [class.board-square--flipped]="isBoardFlipped(board.id)"
+                [class.board-square--dragging]="isDraggingBoard(board.id)"
+                [class.board-square--drop-target]="isBoardDropTarget(board.id)"
                 [style.--board-accent]="toneAccent(board.tone)"
                 [style.--board-soft]="toneSoft(board.tone)"
+                [attr.draggable]="canEditBoard(board) && filteredBoards().length > 1 ? 'true' : null"
+                (dragstart)="beginBoardReorderDrag($event, board)"
+                (dragover)="dragBoardOver($event, board)"
+                (dragleave)="dragBoardLeave(board)"
+                (drop)="dropBoardOnBoard($event, board)"
+                (dragend)="clearBoardReorderDrag()"
               >
                 <div class="board-square__rotor">
                   <button type="button" class="board-square__open board-square__face board-square__face--front" (click)="selectBoard(board.id)">
@@ -419,7 +427,6 @@
       @if (selectedBoard(); as board) {
         <section
           class="board-detail"
-          [class.board-detail--living-effects]="livingBoardEffects()"
           [style.--board-accent]="toneAccent(board.tone)"
           [style.--board-soft]="toneSoft(board.tone)"
         >
@@ -576,16 +583,6 @@
                 <button type="button" class="boards-ghost-action" (click)="openEditBoard(board, $event)">
                   <span class="material-symbols-outlined">drive_file_rename_outline</span>
                   Rename
-                </button>
-                <button
-                  type="button"
-                  class="boards-ghost-action"
-                  [class.boards-ghost-action--active]="livingBoardEffects()"
-                  [attr.aria-pressed]="livingBoardEffects()"
-                  (click)="toggleLivingBoardEffects($event)"
-                >
-                  <span class="material-symbols-outlined">auto_awesome</span>
-                  FrameBreak
                 </button>
                 <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
                   <span class="material-symbols-outlined">add</span>
@@ -780,8 +777,6 @@
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
                   [class.detail-card--drop-target]="isCardDropTarget(card.id)"
-                  [class.detail-card--drop-before]="isCardDropBefore(card.id)"
-                  [class.detail-card--drop-after]="isCardDropAfter(card.id)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
                   [attr.draggable]="canEditBoard(board) && board.cards.length > 1 ? 'true' : null"
                   style="overflow: visible; perspective: 1200px;"
@@ -793,23 +788,6 @@
                   (dragend)="clearCardReorderDrag()"
                 >
                   <span class="detail-card__rank" aria-label="Rank {{ $index + 1 }}">{{ $index + 1 }}</span>
-                  <span class="detail-card__framebreak" aria-hidden="true">
-                    <span class="material-symbols-outlined">{{ framebreakIcon(card) }}</span>
-                  </span>
-                  @if (canEditBoard(board) && board.cards.length > 1) {
-                    <button
-                      type="button"
-                      class="detail-card__drag-handle"
-                      draggable="true"
-                      [attr.aria-label]="'Drag ' + card.title + ' to reorder'"
-                      title="Drag to reorder"
-                      (click)="$event.stopPropagation()"
-                      (dragstart)="beginCardReorderDrag($event, board, card)"
-                      (dragend)="clearCardReorderDrag()"
-                    >
-                      <span class="material-symbols-outlined">drag_indicator</span>
-                    </button>
-                  }
                   @if (isManagingBoard(board.id)) {
                     <button
                       type="button"

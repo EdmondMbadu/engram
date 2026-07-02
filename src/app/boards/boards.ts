@@ -106,6 +106,7 @@ type BoardCard = {
 type Board = {
   id: string;
   kind: BoardKind;
+  sortOrder: number;
   ownerUserId: string;
   ownerPublicSlug: string;
   ownerDisplayName: string;
@@ -783,13 +784,14 @@ export class BoardsComponent {
   readonly boardDialogOpen = signal(false);
   readonly cardDialogOpen = signal(false);
   readonly boardDeleteCandidate = signal<Board | null>(null);
+  readonly draggedBoardId = signal<string | null>(null);
+  readonly boardDropTargetId = signal<string | null>(null);
   readonly cardDeleteCandidate = signal<CardDeleteCandidate | null>(null);
   readonly cardBulkDeleteCandidate = signal<CardBulkDeleteCandidate | null>(null);
   readonly cardManageBoardId = signal<string | null>(null);
   readonly selectedCardIds = signal<Set<string>>(new Set());
   readonly draggedCardId = signal<string | null>(null);
   readonly cardDropTargetId = signal<string | null>(null);
-  readonly cardDropPlacement = signal<'before' | 'after'>('before');
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
@@ -847,7 +849,6 @@ export class BoardsComponent {
   readonly tourAudioLoadingKey = signal<string | null>(null);
   readonly tourAudioNotice = signal<string | null>(null);
   readonly selectedTourCardId = signal<string | null>(null);
-  readonly livingBoardEffects = signal(true);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -1674,6 +1675,7 @@ export class BoardsComponent {
           id: this.createId(),
           ...this.currentOwnerSnapshot(),
           kind: result.board.kind ?? this.wizardGeneratedBoardKind(),
+          sortOrder: this.nextBoardSortOrder(),
           title: result.board.title.trim() || 'Wizard board',
           description: result.board.description.trim(),
           backNote: `Started with the LivingWiki Wizard from ${this.wizardMode()} input.`,
@@ -1764,6 +1766,7 @@ export class BoardsComponent {
       const board: Board = {
         id: this.createId(),
         ...this.currentOwnerSnapshot(),
+        sortOrder: this.nextBoardSortOrder(),
         title,
         description: draft.description.trim(),
         backNote: draft.backNote.trim(),
@@ -2347,12 +2350,6 @@ export class BoardsComponent {
     });
   }
 
-  toggleLivingBoardEffects(event?: Event): void {
-    event?.preventDefault();
-    event?.stopPropagation();
-    this.livingBoardEffects.update((enabled) => !enabled);
-  }
-
   isDraggingCard(cardId: string): boolean {
     return this.draggedCardId() === cardId;
   }
@@ -2361,12 +2358,12 @@ export class BoardsComponent {
     return this.cardDropTargetId() === cardId && this.draggedCardId() !== cardId;
   }
 
-  isCardDropBefore(cardId: string): boolean {
-    return this.isCardDropTarget(cardId) && this.cardDropPlacement() === 'before';
+  isDraggingBoard(boardId: string): boolean {
+    return this.draggedBoardId() === boardId;
   }
 
-  isCardDropAfter(cardId: string): boolean {
-    return this.isCardDropTarget(cardId) && this.cardDropPlacement() === 'after';
+  isBoardDropTarget(boardId: string): boolean {
+    return this.boardDropTargetId() === boardId && this.draggedBoardId() !== boardId;
   }
 
   toggleCardSelection(cardId: string, event?: Event): void {
@@ -2395,7 +2392,6 @@ export class BoardsComponent {
     event.stopPropagation();
     this.draggedCardId.set(card.id);
     this.cardDropTargetId.set(null);
-    this.cardDropPlacement.set('before');
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.setData('text/plain', card.id);
@@ -2412,7 +2408,6 @@ export class BoardsComponent {
       event.dataTransfer.dropEffect = 'move';
     }
     this.cardDropTargetId.set(card.id);
-    this.cardDropPlacement.set(this.cardDropPosition(event));
   }
 
   dragCardLeave(card: BoardCard): void {
@@ -2435,21 +2430,20 @@ export class BoardsComponent {
     }
 
     const currentBoard = this.boards().find((item) => item.id === board.id);
-    const draggedCard = currentBoard?.cards.find((card) => card.id === draggedId);
-    if (!currentBoard || !draggedCard) {
+    if (!currentBoard) {
       this.clearCardReorderDrag();
       return;
     }
 
-    const cardsWithoutDragged = currentBoard.cards.filter((card) => card.id !== draggedId);
-    const targetIndex = cardsWithoutDragged.findIndex((card) => card.id === targetCard.id);
-    if (targetIndex < 0) {
+    const draggedIndex = currentBoard.cards.findIndex((card) => card.id === draggedId);
+    const targetIndex = currentBoard.cards.findIndex((card) => card.id === targetCard.id);
+    if (draggedIndex < 0 || targetIndex < 0) {
       this.clearCardReorderDrag();
       return;
     }
 
-    const nextCards = [...cardsWithoutDragged];
-    nextCards.splice(targetIndex + (this.cardDropPosition(event) === 'after' ? 1 : 0), 0, draggedCard);
+    const nextCards = [...currentBoard.cards];
+    [nextCards[draggedIndex], nextCards[targetIndex]] = [nextCards[targetIndex], nextCards[draggedIndex]];
     const now = new Date().toISOString();
     const nextBoard: Board = { ...currentBoard, cards: nextCards, updatedAt: now };
 
@@ -2461,29 +2455,101 @@ export class BoardsComponent {
   clearCardReorderDrag(): void {
     this.draggedCardId.set(null);
     this.cardDropTargetId.set(null);
-    this.cardDropPlacement.set('before');
   }
 
-  private cardDropPosition(event: DragEvent): 'before' | 'after' {
-    if (!(event.currentTarget instanceof HTMLElement)) {
-      return this.cardDropPlacement();
+  beginBoardReorderDrag(event: DragEvent, board: Board): void {
+    if (!this.canEditBoard(board) || this.filteredBoards().length < 2) {
+      event.preventDefault();
+      return;
     }
-    const rect = event.currentTarget.getBoundingClientRect();
-    const isNarrowCard = rect.width < 340;
-    const isAfter = isNarrowCard
-      ? event.clientY > rect.top + rect.height / 2
-      : event.clientX > rect.left + rect.width / 2;
-    return isAfter ? 'after' : 'before';
+    if (this.isBlockedBoardReorderDragTarget(event.target)) {
+      event.preventDefault();
+      return;
+    }
+    event.stopPropagation();
+    this.suppressNextBoardOpen = true;
+    this.draggedBoardId.set(board.id);
+    this.boardDropTargetId.set(null);
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', board.id);
+    }
+  }
+
+  dragBoardOver(event: DragEvent, board: Board): void {
+    if (!this.canEditBoard(board) || !this.draggedBoardId()) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+    this.boardDropTargetId.set(board.id);
+  }
+
+  dragBoardLeave(board: Board): void {
+    if (this.boardDropTargetId() === board.id) {
+      this.boardDropTargetId.set(null);
+    }
+  }
+
+  async dropBoardOnBoard(event: DragEvent, targetBoard: Board): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!this.canEditBoard(targetBoard)) {
+      this.clearBoardReorderDrag();
+      return;
+    }
+    const draggedId = this.draggedBoardId() || event.dataTransfer?.getData('text/plain') || '';
+    if (!draggedId || draggedId === targetBoard.id) {
+      this.clearBoardReorderDrag();
+      return;
+    }
+
+    const draggedBoard = this.boards().find((board) => board.id === draggedId);
+    const currentTargetBoard = this.boards().find((board) => board.id === targetBoard.id);
+    if (!draggedBoard || !currentTargetBoard || !this.canEditBoard(draggedBoard)) {
+      this.clearBoardReorderDrag();
+      return;
+    }
+
+    const draggedOrder = this.boardSortOrder(draggedBoard);
+    const targetOrder = this.boardSortOrder(currentTargetBoard);
+    const nextDraggedBoard = { ...draggedBoard, sortOrder: targetOrder };
+    const nextTargetBoard = { ...currentTargetBoard, sortOrder: draggedOrder };
+    const replacements = new Map([
+      [nextDraggedBoard.id, nextDraggedBoard],
+      [nextTargetBoard.id, nextTargetBoard],
+    ]);
+
+    this.boards.update((boards) => boards.map((board) => replacements.get(board.id) ?? board));
+    this.clearBoardReorderDrag();
+    await Promise.all([this.persistAndReplaceBoard(nextDraggedBoard), this.persistAndReplaceBoard(nextTargetBoard)]);
+  }
+
+  clearBoardReorderDrag(): void {
+    this.draggedBoardId.set(null);
+    this.boardDropTargetId.set(null);
+    if (this.suppressNextBoardOpen && this.isBrowser) {
+      window.setTimeout(() => {
+        this.suppressNextBoardOpen = false;
+      }, 250);
+    }
   }
 
   private isBlockedCardReorderDragTarget(target: EventTarget | null): boolean {
     if (!(target instanceof HTMLElement)) {
       return false;
     }
-    if (target.closest('.detail-card__drag-handle')) {
+    return Boolean(target.closest('a, button, input, textarea, select, label, .detail-card__sticker'));
+  }
+
+  private isBlockedBoardReorderDragTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) {
       return false;
     }
-    return Boolean(target.closest('a, button, input, textarea, select, label, .detail-card__sticker'));
+    return Boolean(target.closest('.board-square__tools, .board-sticker, a, input, textarea, select, label'));
   }
 
   selectAllVisibleCards(event?: Event): void {
@@ -3172,26 +3238,6 @@ export class BoardsComponent {
 
   cardTypeLabel(type: BoardCardType): string {
     return this.cardTypes.find((item) => item.id === type)?.label ?? 'Note';
-  }
-
-  framebreakIcon(card: Pick<BoardCard, 'type' | 'status'>): string {
-    if (card.status === 'favorite') {
-      return 'kid_star';
-    }
-    switch (card.type) {
-      case 'food':
-        return 'restaurant';
-      case 'place':
-        return 'location_on';
-      case 'memory':
-        return 'auto_awesome';
-      case 'idea':
-        return 'lightbulb';
-      case 'shop':
-        return 'local_mall';
-      default:
-        return 'stylus_note';
-    }
   }
 
   isPhotoOnlyCard(card: Pick<BoardCard, 'imageUrl' | 'tags' | 'title'>): boolean {
@@ -4579,6 +4625,7 @@ export class BoardsComponent {
         .map((board) => ({
           ...board,
           kind: this.isBoardKind((board as Board).kind) ? (board as Board).kind : 'standard',
+          sortOrder: this.normalizeBoardSortOrder((board as Partial<Board>).sortOrder, board.createdAt),
           ownerUserId: typeof board.ownerUserId === 'string' ? board.ownerUserId : '',
           ownerPublicSlug: typeof board.ownerPublicSlug === 'string' ? board.ownerPublicSlug : '',
           ownerDisplayName: typeof board.ownerDisplayName === 'string' ? board.ownerDisplayName : '',
@@ -4782,6 +4829,7 @@ export class BoardsComponent {
     return {
       id,
       kind: this.isBoardKind(data['kind']) ? data['kind'] : 'standard',
+      sortOrder: this.normalizeBoardSortOrder(data['sortOrder'], typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : ''),
       ownerUserId: typeof data['owner_user_id'] === 'string' ? data['owner_user_id'] : '',
       ownerPublicSlug: typeof data['owner_public_slug'] === 'string' ? data['owner_public_slug'] : '',
       ownerDisplayName: typeof data['owner_display_name'] === 'string' ? data['owner_display_name'] : '',
@@ -5169,10 +5217,28 @@ export class BoardsComponent {
 
   private compareBoards(left: Board, right: Board): number {
     return (
+      this.boardSortOrder(left) - this.boardSortOrder(right) ||
       this.compareDatesDesc(left.createdAt, right.createdAt) ||
       left.title.localeCompare(right.title) ||
       left.id.localeCompare(right.id)
     );
+  }
+
+  private nextBoardSortOrder(): number {
+    const orders = this.boards().map((board) => this.boardSortOrder(board)).filter((order) => Number.isFinite(order));
+    return orders.length ? Math.min(...orders) - 1 : 0;
+  }
+
+  private boardSortOrder(board: Pick<Board, 'sortOrder' | 'createdAt'>): number {
+    return this.normalizeBoardSortOrder(board.sortOrder, board.createdAt);
+  }
+
+  private normalizeBoardSortOrder(value: unknown, createdAt: string | undefined): number {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value;
+    }
+    const createdTime = createdAt ? Date.parse(createdAt) : NaN;
+    return Number.isFinite(createdTime) ? -createdTime : 0;
   }
 
   private compareCards(left: BoardCard, right: BoardCard): number {
