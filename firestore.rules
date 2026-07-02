@@ -274,7 +274,12 @@ service cloud.firestore {
             && request.resource.data.owner_user_id == resource.data.owner_user_id
           )
         )
-        && request.resource.data.visibility == 'public'
+        && request.resource.data.visibility in ['public', 'private']
+        && (
+          request.resource.data.visibility == 'public'
+          || isPlatformAdmin()
+          || hasActivePersonalWikiPlan()
+        )
         && request.resource.data.keys().hasOnly([
           'id',
           'owner_user_id',

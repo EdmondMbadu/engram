@@ -20,6 +20,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
 type BoardKind = 'standard' | 'walking-tour' | 'driving-tour';
+type BoardVisibility = 'public' | 'private';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardScope = 'place' | 'city' | 'country' | 'region';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
@@ -114,6 +115,7 @@ type Board = {
   ownerPhotoUrl: string;
   ownerProfileIcon: string;
   ownerProfilePictureType: 'icon' | 'image' | null;
+  visibility: BoardVisibility;
   title: string;
   description: string;
   backNote: string;
@@ -137,6 +139,7 @@ type BoardDraft = {
   backNote: string;
   icon: string;
   tone: BoardTone;
+  visibility: BoardVisibility;
   imageUrl: string;
   logoUrl: string;
   logoLinkUrl: string;
@@ -204,7 +207,7 @@ type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
   owner_photo_url: string;
   owner_profile_icon: string;
   owner_profile_picture_type: 'icon' | 'image' | null;
-  visibility: 'public';
+  visibility: BoardVisibility;
   created_at_iso: string;
   updated_at_iso: string;
 };
@@ -885,6 +888,7 @@ export class BoardsComponent implements OnDestroy {
     backNote: '',
     icon: 'dashboard',
     tone: 'teal',
+    visibility: 'public',
     imageUrl: '',
     logoUrl: '',
     logoLinkUrl: '',
@@ -1368,6 +1372,7 @@ export class BoardsComponent implements OnDestroy {
       backNote: '',
       icon: 'dashboard',
       tone: this.tones[this.boards().length % this.tones.length]?.id ?? 'teal',
+      visibility: 'public',
       imageUrl: '',
       logoUrl: '',
       logoLinkUrl: '',
@@ -1837,6 +1842,7 @@ export class BoardsComponent implements OnDestroy {
           logoLinkUrl: '',
           stackCtaLabel: this.wizardStackCtaLabel().trim(),
           stackCtaUrl: this.wizardStackCtaUrl().trim(),
+          visibility: 'public',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
           cards,
@@ -1878,6 +1884,7 @@ export class BoardsComponent implements OnDestroy {
       backNote: board.backNote,
       icon: board.icon,
       tone: board.tone,
+      visibility: board.visibility,
       imageUrl: board.imageUrl,
       logoUrl: board.logoUrl,
       logoLinkUrl: board.logoLinkUrl,
@@ -1898,6 +1905,10 @@ export class BoardsComponent implements OnDestroy {
     const draft = this.boardDraft();
     const title = draft.title.trim();
     if (!title) {
+      return;
+    }
+    if (draft.visibility === 'private' && !this.canUsePrivateBoards()) {
+      this.redirectToPrivateBoardsPricing();
       return;
     }
 
@@ -1922,6 +1933,7 @@ export class BoardsComponent implements OnDestroy {
                 backNote: draft.backNote.trim(),
                 icon: draft.icon,
                 tone: draft.tone,
+                visibility: draft.visibility,
                 imageUrl: draft.imageUrl.trim(),
                 logoUrl: draft.logoUrl.trim(),
                 logoLinkUrl: draft.logoLinkUrl.trim(),
@@ -1943,6 +1955,7 @@ export class BoardsComponent implements OnDestroy {
         backNote: draft.backNote.trim(),
         icon: draft.icon,
         tone: draft.tone,
+        visibility: draft.visibility,
         imageUrl: draft.imageUrl.trim(),
         logoUrl: draft.logoUrl.trim(),
         logoLinkUrl: draft.logoLinkUrl.trim(),
@@ -2837,6 +2850,14 @@ export class BoardsComponent implements OnDestroy {
     this.boardDraft.update((draft) => ({ ...draft, [field]: value }));
   }
 
+  setBoardDraftVisibility(visibility: BoardVisibility): void {
+    if (visibility === 'private' && !this.canUsePrivateBoards()) {
+      this.redirectToPrivateBoardsPricing();
+      return;
+    }
+    this.updateBoardDraft('visibility', visibility);
+  }
+
   updateCardDraft<K extends keyof CardDraft>(field: K, value: CardDraft[K]): void {
     this.cardDraft.update((draft) => ({ ...draft, [field]: value }));
   }
@@ -3563,6 +3584,15 @@ export class BoardsComponent implements OnDestroy {
     }
     const uid = this.authService.uid();
     return !!uid && (this.authService.isAdmin() || board.ownerUserId === uid);
+  }
+
+  canUsePrivateBoards(): boolean {
+    return this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan();
+  }
+
+  private redirectToPrivateBoardsPricing(): void {
+    this.boardsSyncError.set('Private boards are available on paid plans.');
+    void this.router.navigate(['/pricing'], { queryParams: { feature: 'private-boards' } });
   }
 
   ownerName(board: Board): string {
@@ -5025,6 +5055,7 @@ export class BoardsComponent implements OnDestroy {
           ownerProfilePictureType: this.isProfilePictureType(board.ownerProfilePictureType)
             ? board.ownerProfilePictureType
             : null,
+          visibility: this.isBoardVisibility((board as Partial<Board>).visibility) ? (board as Board).visibility : 'public',
           imageUrl: board.imageUrl ?? '',
           logoUrl: typeof board.logoUrl === 'string' ? board.logoUrl : '',
           logoLinkUrl: typeof board.logoLinkUrl === 'string' ? board.logoLinkUrl : '',
@@ -5091,7 +5122,7 @@ export class BoardsComponent implements OnDestroy {
       owner_photo_url: prepared.ownerPhotoUrl,
       owner_profile_icon: prepared.ownerProfileIcon,
       owner_profile_picture_type: prepared.ownerProfilePictureType,
-      visibility: 'public',
+      visibility: prepared.visibility,
       created_at_iso: prepared.createdAt,
       updated_at_iso: prepared.updatedAt,
       server_updated_at: serverTimestamp(),
@@ -5235,6 +5266,7 @@ export class BoardsComponent implements OnDestroy {
       ownerProfilePictureType: this.isProfilePictureType(data['owner_profile_picture_type'])
         ? data['owner_profile_picture_type']
         : null,
+      visibility: this.isBoardVisibility(data['visibility']) ? data['visibility'] : 'public',
       title,
       description: typeof data['description'] === 'string' ? data['description'] : '',
       backNote: typeof data['backNote'] === 'string' ? data['backNote'] : '',
@@ -5591,6 +5623,10 @@ export class BoardsComponent implements OnDestroy {
 
   private isBoardKind(value: unknown): value is BoardKind {
     return value === 'standard' || value === 'walking-tour' || value === 'driving-tour';
+  }
+
+  private isBoardVisibility(value: unknown): value is BoardVisibility {
+    return value === 'public' || value === 'private';
   }
 
   private wizardGeneratedBoardKind(): BoardKind {

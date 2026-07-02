@@ -2151,6 +2151,38 @@
             ></textarea>
           </label>
 
+          <section class="boards-sticker-panel" style="background: color-mix(in srgb, var(--accent) 8%, var(--surface));">
+            <div class="boards-sticker-panel__head">
+              <div>
+                <span>Visibility</span>
+                <strong>{{ boardDraft().visibility === 'private' ? 'Private board' : 'Public board' }}</strong>
+              </div>
+              <span class="material-symbols-outlined" style="color: var(--accent); font-size: 1.7rem; font-variation-settings: 'FILL' 1;">{{ boardDraft().visibility === 'private' ? 'lock' : 'public' }}</span>
+            </div>
+            <div class="boards-form__split">
+              <button
+                type="button"
+                class="boards-ghost-action"
+                [style.border-color]="boardDraft().visibility === 'public' ? 'var(--modal-ink, var(--ink))' : null"
+                [style.box-shadow]="boardDraft().visibility === 'public' ? '2px 2px 0 var(--modal-ink, var(--ink))' : null"
+                (click)="setBoardDraftVisibility('public')"
+              >
+                <span class="material-symbols-outlined">public</span>
+                Public
+              </button>
+              <button
+                type="button"
+                class="boards-ghost-action"
+                [style.border-color]="boardDraft().visibility === 'private' ? 'var(--modal-ink, var(--ink))' : null"
+                [style.box-shadow]="boardDraft().visibility === 'private' ? '2px 2px 0 var(--modal-ink, var(--ink))' : null"
+                (click)="setBoardDraftVisibility('private')"
+              >
+                <span class="material-symbols-outlined">lock</span>
+                Private
+              </button>
+            </div>
+          </section>
+
           <div class="boards-upload-field">
             <span>Cover image</span>
             <div class="boards-upload">
