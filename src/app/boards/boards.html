@@ -126,6 +126,11 @@
           </button>
         </main>
       </section>
+    } @else if (privateBoardBlocked()) {
+      <section class="stack-viewer-page stack-viewer-page--loading">
+        <span class="material-symbols-outlined">lock</span>
+        <strong>Private Board</strong>
+      </section>
     } @else {
       <section class="stack-viewer-page stack-viewer-page--loading">
         <span class="material-symbols-outlined">auto_awesome_motion</span>
@@ -174,13 +179,23 @@
       </header>
 
       <main class="boards-shell">
-    @if (boardsSyncError()) {
+    @if (boardsSyncError() && !privateBoardBlocked()) {
       <div class="boards-sync-banner">
         <span class="material-symbols-outlined">cloud_off</span>
         {{ boardsSyncError() }}
       </div>
     }
-    @if (!selectedBoard()) {
+    @if (privateBoardBlocked()) {
+      <section class="boards-empty-state" aria-label="Private board">
+        <span class="material-symbols-outlined">lock</span>
+        <h2>Private Board</h2>
+        <p>This board is private. Only the owner can open it.</p>
+        <a class="boards-primary-action" href="/boards">
+          <span class="material-symbols-outlined">dashboard_customize</span>
+          Boards
+        </a>
+      </section>
+    } @else if (!selectedBoard()) {
       <section class="boards-profile" aria-label="Boards profile">
         <div class="boards-profile__avatar">
           @if (boardsProfilePhotoUrl()) {

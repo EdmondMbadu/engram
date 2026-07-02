@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, ElementRef, inject, OnDestroy, PLATFORM_ID, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
+import { FirebaseError } from 'firebase/app';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
@@ -826,6 +827,7 @@ export class BoardsComponent implements OnDestroy {
   readonly cardWizardError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
   readonly boardsSyncError = signal<string | null>(null);
+  readonly privateBoardBlocked = signal(false);
   readonly sharePanelOpen = signal(false);
   readonly cardImageLocked = signal(false);
   readonly draggedStickerId = signal<string | null>(null);
@@ -4877,6 +4879,7 @@ export class BoardsComponent implements OnDestroy {
     await this.authService.waitForReady();
     const uid = this.authService.uid();
     this.boardsSyncError.set(null);
+    this.privateBoardBlocked.set(false);
 
     try {
       const loaded: Board[] = [];
@@ -4895,9 +4898,17 @@ export class BoardsComponent implements OnDestroy {
       }
 
       if (boardId && !loaded.some((board) => board.id === boardId)) {
-        const sharedBoard = await this.loadBoardById(boardId);
-        if (sharedBoard) {
-          loaded.unshift(sharedBoard);
+        try {
+          const sharedBoard = await this.loadBoardById(boardId);
+          if (sharedBoard) {
+            loaded.unshift(sharedBoard);
+          }
+        } catch (error) {
+          if (this.isPermissionDeniedError(error)) {
+            this.privateBoardBlocked.set(true);
+          } else {
+            throw error;
+          }
         }
       }
 
@@ -5627,6 +5638,10 @@ export class BoardsComponent implements OnDestroy {
 
   private isBoardVisibility(value: unknown): value is BoardVisibility {
     return value === 'public' || value === 'private';
+  }
+
+  private isPermissionDeniedError(error: unknown): boolean {
+    return error instanceof FirebaseError && error.code === 'permission-denied';
   }
 
   private wizardGeneratedBoardKind(): BoardKind {
