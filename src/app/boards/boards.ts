@@ -3631,19 +3631,19 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
-    const url = this.stackShareUrl(board);
+    const url = this.boardShareUrl(board);
     try {
       if (navigator.share) {
         await navigator.share({
           title: board.title,
-          text: board.description || 'LivingWiki Stack',
+          text: board.description || 'LivingWiki board',
           url,
         });
         this.setShareMessage('Share sheet opened.');
         return;
       }
 
-      await this.copyStackUrl(board);
+      await this.copyBoardUrl(board);
     } catch {
       this.setShareMessage('Share was cancelled or blocked.');
     }

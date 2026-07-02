@@ -539,17 +539,17 @@
             @if (sharePanelOpen()) {
               <div class="board-share-panel" aria-label="Share board">
                 <div class="board-share-panel__url">
-                  <span>{{ stackShareUrl(board) }}</span>
-                  <button type="button" (click)="copyStackUrl(board)">
+                  <span>{{ boardShareUrl(board) }}</span>
+                  <button type="button" (click)="copyBoardUrl(board)">
                     <span class="material-symbols-outlined">content_copy</span>
-                    Copy Stack
+                    Copy page
                   </button>
                 </div>
 
                 <div class="board-share-panel__actions">
                   <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)">
                     <span class="material-symbols-outlined">smart_display</span>
-                    Open Reel
+                    View Stack
                   </button>
                   @if (canUseStackStudio(board)) {
                     <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
@@ -559,11 +559,11 @@
                   }
                   <button type="button" (click)="nativeShareBoard(board)">
                     <span class="material-symbols-outlined">ios_share</span>
-                    Share
+                    Share page
                   </button>
                   @for (target of shareTargets; track target.id) {
                     <a
-                      [href]="shareTargetUrl(target.id, board, true)"
+                      [href]="shareTargetUrl(target.id, board)"
                       [attr.target]="target.id === 'email' ? null : '_blank'"
                       rel="noopener"
                     >
