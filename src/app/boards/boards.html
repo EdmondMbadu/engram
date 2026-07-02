@@ -130,6 +130,7 @@
       <section class="stack-viewer-page stack-viewer-page--loading">
         <span class="material-symbols-outlined">lock</span>
         <strong>Private Board</strong>
+        <small style="max-width: 24rem; color: rgba(255,255,255,.72); font-size: .9rem; font-weight: 800; line-height: 1.45; text-align: center;">Only the owner can view this LivingWiki board.</small>
       </section>
     } @else {
       <section class="stack-viewer-page stack-viewer-page--loading">
@@ -186,13 +187,13 @@
       </div>
     }
     @if (privateBoardBlocked()) {
-      <section class="boards-empty-state" aria-label="Private board">
-        <span class="material-symbols-outlined">lock</span>
+      <section class="boards-empty-state" aria-label="Private board" style="border-style: solid; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface));">
+        <span class="material-symbols-outlined" style="display: grid; width: 4.6rem; height: 4.6rem; place-items: center; border: 3px solid var(--ink); border-radius: 1.25rem; background: var(--surface); box-shadow: 4px 4px 0 var(--ink);">lock</span>
         <h2>Private Board</h2>
-        <p>This board is private. Only the owner can open it.</p>
-        <a class="boards-primary-action" href="/boards">
+        <p>This board is private. Only the owner can open it. You can keep exploring public LivingWiki boards.</p>
+        <a class="boards-primary-action" href="/boards" style="text-decoration: none;">
           <span class="material-symbols-outlined">dashboard_customize</span>
-          Boards
+          See other boards
         </a>
       </section>
     } @else if (!selectedBoard()) {
