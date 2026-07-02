@@ -5741,7 +5741,7 @@ async function findReferenceImageForBoardWizard(query: string): Promise<string> 
   searchUrl.searchParams.set('list', 'search');
   searchUrl.searchParams.set('format', 'json');
   searchUrl.searchParams.set('srlimit', '4');
-  searchUrl.searchParams.set('srsearch', query);
+  searchUrl.searchParams.set('srsearch', buildWikipediaSearchQueryForBoardWizard(query));
 
   const search = await fetchJson<WikipediaSearchResponse>(searchUrl.toString());
   const pageIds = (search.query?.search ?? [])
@@ -5925,6 +5925,12 @@ function scoreWikipediaMediaFileTitle(fileTitle: string, query: string, titleCan
     .filter((token) => token.length >= 3 && !['film', 'movie', 'song', 'album', 'book', 'novel', 'official', 'poster', 'cover'].includes(token));
   const uniqueTokens = Array.from(new Set(titleTokens)).slice(0, 8);
   const matchedTokens = uniqueTokens.filter((token) => normalizedFile.includes(token));
+  const requiredTokens = requestedEntityTokensForWikipediaImage(query, titleCandidates);
+  const matchedRequiredTokens = requiredTokens.filter((token) => normalizedFile.includes(token));
+  const requiredMatchCount = requiredTokens.length <= 2 ? requiredTokens.length : Math.min(2, requiredTokens.length);
+  if (requiredMatchCount > 0 && matchedRequiredTokens.length < requiredMatchCount) {
+    return 0;
+  }
   score += matchedTokens.length * 8;
   if (uniqueTokens.length && matchedTokens.length >= Math.min(3, uniqueTokens.length)) {
     score += 25;
@@ -5940,6 +5946,52 @@ function scoreWikipediaMediaFileTitle(fileTitle: string, query: string, titleCan
     score -= 80;
   }
   return score;
+}
+
+function requestedEntityTokensForWikipediaImage(query: string, titleCandidates: string[]): string[] {
+  const candidates = titleCandidates.length ? titleCandidates : [query];
+  const bestTitle = candidates
+    .map((title) => title
+      .replace(/\([^)]*\)/g, ' ')
+      .replace(/\b(18\d{2}|19\d{2}|20\d{2})\b/g, ' ')
+      .replace(/\b(official|movie|film|poster|song|single|album|book|novel|tv|television|series|video game|game|cover|art|portrait|photo|image|picture)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim())
+    .filter((title) => title.length >= 2)
+    .sort((left, right) => meaningfulBoardWizardTokens(left).length - meaningfulBoardWizardTokens(right).length)[0] ?? query;
+  return meaningfulBoardWizardTokens(bestTitle)
+    .filter((token) => token.length >= 3 && !['the', 'and', 'official', 'movie', 'film', 'poster', 'cover', 'art'].includes(token))
+    .slice(0, 5);
+}
+
+function buildWikipediaSearchQueryForBoardWizard(query: string): string {
+  const yearHint = extractBoardWizardYearHint(query);
+  const baseTitle = exactWikipediaTitleCandidates(query)[0] ?? query;
+  const title = baseTitle
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/\b(18\d{2}|19\d{2}|20\d{2})\b/g, ' ')
+    .replace(/\b(official|movie|film|poster|song|single|album|book|novel|tv|television|series|video game|game|cover|art|portrait|photo|image|picture)\b/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const kind = /\b(movie|film|poster)\b/i.test(query)
+    ? 'film'
+    : /\b(song|single)\b/i.test(query)
+      ? 'song'
+      : /\b(album|lp|ep)\b/i.test(query)
+        ? 'album'
+        : /\b(book|novel)\b/i.test(query)
+          ? 'book'
+          : /\b(tv|television|series)\b/i.test(query)
+            ? 'television'
+            : /\b(video game|game)\b/i.test(query)
+              ? 'video game'
+              : '';
+  return [title || query, yearHint && !(title || query).includes(yearHint) ? yearHint : '', kind]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 140);
 }
 
 async function findExactWikipediaImageForBoardWizard(query: string): Promise<string> {
@@ -5992,52 +6044,65 @@ function exactWikipediaTitleCandidates(query: string): string[] {
     const cleanedWithoutYear = yearHint
       ? cleanedTitle.replace(new RegExp(`\\b${yearHint}\\b`, 'g'), ' ').replace(/\s+/g, ' ').trim()
       : cleanedTitle;
+    if (cleanedWithoutYear.length >= 3) {
+      mediaTitles.push(cleanedWithoutYear);
+    }
     if (/\b(movie|film)\b/i.test(raw)) {
       if (yearHint && cleanedWithoutYear.length >= 3) {
         mediaTitles.push(`${cleanedWithoutYear} (${yearHint} film)`);
       }
-      mediaTitles.push(`${cleanedTitle} (film)`);
+      mediaTitles.push(`${cleanedWithoutYear || cleanedTitle} (film)`);
     }
     if (/\b(song|single)\b/i.test(raw)) {
       if (yearHint && cleanedWithoutYear.length >= 3) {
         mediaTitles.push(`${cleanedWithoutYear} (${yearHint} song)`);
       }
-      mediaTitles.push(`${cleanedTitle} (song)`);
+      mediaTitles.push(`${cleanedWithoutYear || cleanedTitle} (song)`);
     }
     if (/\b(album|lp|ep)\b/i.test(raw)) {
       if (yearHint && cleanedWithoutYear.length >= 3) {
         mediaTitles.push(`${cleanedWithoutYear} (${yearHint} album)`);
       }
-      mediaTitles.push(`${cleanedTitle} (album)`);
+      mediaTitles.push(`${cleanedWithoutYear || cleanedTitle} (album)`);
     }
     if (/\b(book|novel)\b/i.test(raw)) {
       if (yearHint && cleanedWithoutYear.length >= 3) {
         mediaTitles.push(`${cleanedWithoutYear} (${yearHint} book)`);
       }
-      mediaTitles.push(`${cleanedTitle}`);
-      mediaTitles.push(`${cleanedTitle} (novel)`);
+      mediaTitles.push(`${cleanedWithoutYear || cleanedTitle}`);
+      mediaTitles.push(`${cleanedWithoutYear || cleanedTitle} (novel)`);
     }
     if (/\b(tv|television|series)\b/i.test(raw)) {
       if (yearHint && cleanedWithoutYear.length >= 3) {
         mediaTitles.push(`${cleanedWithoutYear} (${yearHint} TV series)`);
       }
-      mediaTitles.push(`${cleanedTitle} (TV series)`);
+      mediaTitles.push(`${cleanedWithoutYear || cleanedTitle} (TV series)`);
     }
     if (/\b(video game|game)\b/i.test(raw)) {
       if (yearHint && cleanedWithoutYear.length >= 3) {
         mediaTitles.push(`${cleanedWithoutYear} (${yearHint} video game)`);
       }
-      mediaTitles.push(`${cleanedTitle} (video game)`);
+      mediaTitles.push(`${cleanedWithoutYear || cleanedTitle} (video game)`);
     }
   }
   return [...mediaTitles, ...baseTitles]
+    .flatMap((title) => wikipediaTitleCaseVariants(title))
     .filter((title) => title.length >= 3 && title.length <= 90)
-    .filter((title, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === title.toLowerCase()) === index)
+    .filter((title, index, all) => all.indexOf(title) === index)
     .slice(0, 6);
 }
 
 function normalizeWikipediaTitleCandidate(value: string): string {
   return value.replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+function wikipediaTitleCaseVariants(title: string): string[] {
+  const variants = [title];
+  const simplifiedMixedCase = title.replace(/\b[A-Z][a-z]+[A-Z][A-Za-z0-9']*\b/g, (word) => `${word.slice(0, 1)}${word.slice(1).toLowerCase()}`);
+  if (simplifiedMixedCase !== title) {
+    variants.push(simplifiedMixedCase);
+  }
+  return variants;
 }
 
 async function findCommonsReferenceImageForBoardWizard(query: string): Promise<string> {
