@@ -120,6 +120,10 @@ type Board = {
   icon: string;
   tone: BoardTone;
   imageUrl: string;
+  logoUrl: string;
+  logoLinkUrl: string;
+  stackCtaLabel: string;
+  stackCtaUrl: string;
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
   cards: BoardCard[];
@@ -134,6 +138,10 @@ type BoardDraft = {
   icon: string;
   tone: BoardTone;
   imageUrl: string;
+  logoUrl: string;
+  logoLinkUrl: string;
+  stackCtaLabel: string;
+  stackCtaUrl: string;
   stickers: BoardSticker[];
 };
 
@@ -876,6 +884,10 @@ export class BoardsComponent implements OnDestroy {
     icon: 'dashboard',
     tone: 'teal',
     imageUrl: '',
+    logoUrl: '',
+    logoLinkUrl: '',
+    stackCtaLabel: '',
+    stackCtaUrl: '',
     stickers: [],
   });
   readonly cardDraft = signal<CardDraft>({
@@ -1355,6 +1367,10 @@ export class BoardsComponent implements OnDestroy {
       icon: 'dashboard',
       tone: this.tones[this.boards().length % this.tones.length]?.id ?? 'teal',
       imageUrl: '',
+      logoUrl: '',
+      logoLinkUrl: '',
+      stackCtaLabel: '',
+      stackCtaUrl: '',
       stickers: [],
     });
     this.boardDialogOpen.set(true);
@@ -1813,6 +1829,10 @@ export class BoardsComponent implements OnDestroy {
           icon: result.board.icon || 'auto_awesome',
           tone: result.board.tone,
           imageUrl: cards.find((card) => card.imageUrl)?.imageUrl ?? '',
+          logoUrl: '',
+          logoLinkUrl: '',
+          stackCtaLabel: '',
+          stackCtaUrl: '',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
           cards,
@@ -1855,6 +1875,10 @@ export class BoardsComponent implements OnDestroy {
       icon: board.icon,
       tone: board.tone,
       imageUrl: board.imageUrl,
+      logoUrl: board.logoUrl,
+      logoLinkUrl: board.logoLinkUrl,
+      stackCtaLabel: board.stackCtaLabel,
+      stackCtaUrl: board.stackCtaUrl,
       stickers: board.stickers ?? [],
     });
     this.boardDialogOpen.set(true);
@@ -1895,6 +1919,10 @@ export class BoardsComponent implements OnDestroy {
                 icon: draft.icon,
                 tone: draft.tone,
                 imageUrl: draft.imageUrl.trim(),
+                logoUrl: draft.logoUrl.trim(),
+                logoLinkUrl: draft.logoLinkUrl.trim(),
+                stackCtaLabel: draft.stackCtaLabel.trim(),
+                stackCtaUrl: draft.stackCtaUrl.trim(),
                 stickers: draft.stickers,
                 updatedAt: now,
           };
@@ -1912,6 +1940,10 @@ export class BoardsComponent implements OnDestroy {
         icon: draft.icon,
         tone: draft.tone,
         imageUrl: draft.imageUrl.trim(),
+        logoUrl: draft.logoUrl.trim(),
+        logoLinkUrl: draft.logoLinkUrl.trim(),
+        stackCtaLabel: draft.stackCtaLabel.trim(),
+        stackCtaUrl: draft.stackCtaUrl.trim(),
         stickers: draft.stickers,
       cards: [],
       kind: 'standard',
@@ -2092,6 +2124,25 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
+  async onBoardLogoSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) {
+      return;
+    }
+
+    try {
+      const logoUrl = await this.readImageFile(file);
+      this.updateBoardDraft('logoUrl', logoUrl);
+      this.imageUploadError.set(null);
+    } catch (error) {
+      this.imageUploadError.set(
+        error instanceof Error ? error.message : 'Could not use that logo.',
+      );
+    }
+  }
+
   async onCardImageSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -2114,6 +2165,11 @@ export class BoardsComponent implements OnDestroy {
 
   clearBoardImage(): void {
     this.updateBoardDraft('imageUrl', '');
+    this.imageUploadError.set(null);
+  }
+
+  clearBoardLogo(): void {
+    this.updateBoardDraft('logoUrl', '');
     this.imageUploadError.set(null);
   }
 
@@ -3782,6 +3838,14 @@ export class BoardsComponent implements OnDestroy {
     return generateQrSvgDataUrl(this.stackShareUrl(board), { margin: 3 });
   }
 
+  boardLogoHref(board: Board): string {
+    return this.actionHref(board.logoLinkUrl);
+  }
+
+  stackCtaHref(board: Board): string {
+    return this.actionHref(board.stackCtaUrl);
+  }
+
   previousStackFrame(): void {
     this.stopStackPlayback();
     this.stackFrameIndex.update((index) => {
@@ -4018,6 +4082,24 @@ export class BoardsComponent implements OnDestroy {
   private isInteractiveStackSwipeTarget(target: EventTarget | null): boolean {
     return target instanceof Element
       && !!target.closest('button, a, input, textarea, select, label, [role="button"], [contenteditable="true"]');
+  }
+
+  private actionHref(value: string): string {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return '';
+    }
+    if (/^(https?:|mailto:|tel:)/i.test(trimmed)) {
+      return trimmed;
+    }
+    const phone = trimmed.replace(/[^\d+]/g, '');
+    if (/^\+?\d{7,15}$/.test(phone)) {
+      return `tel:${phone}`;
+    }
+    if (/^[\w.-]+\.[a-z]{2,}(?:\/.*)?$/i.test(trimmed)) {
+      return `https://${trimmed}`;
+    }
+    return trimmed;
   }
 
   private clampStackFrameIndex(): void {
@@ -4938,6 +5020,10 @@ export class BoardsComponent implements OnDestroy {
             ? board.ownerProfilePictureType
             : null,
           imageUrl: board.imageUrl ?? '',
+          logoUrl: typeof board.logoUrl === 'string' ? board.logoUrl : '',
+          logoLinkUrl: typeof board.logoLinkUrl === 'string' ? board.logoLinkUrl : '',
+          stackCtaLabel: typeof board.stackCtaLabel === 'string' ? board.stackCtaLabel : '',
+          stackCtaUrl: typeof board.stackCtaUrl === 'string' ? board.stackCtaUrl : '',
           backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
           tourMeta: this.normalizeTourMeta((board as Board).tourMeta),
@@ -5148,6 +5234,10 @@ export class BoardsComponent implements OnDestroy {
       icon: typeof data['icon'] === 'string' ? data['icon'] : 'dashboard',
       tone: this.isBoardTone(data['tone']) ? data['tone'] : 'teal',
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
+      logoUrl: typeof data['logoUrl'] === 'string' ? data['logoUrl'] : '',
+      logoLinkUrl: typeof data['logoLinkUrl'] === 'string' ? data['logoLinkUrl'] : '',
+      stackCtaLabel: typeof data['stackCtaLabel'] === 'string' ? data['stackCtaLabel'] : '',
+      stackCtaUrl: typeof data['stackCtaUrl'] === 'string' ? data['stackCtaUrl'] : '',
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
@@ -5463,6 +5553,7 @@ export class BoardsComponent implements OnDestroy {
 
   private async prepareBoardImagesForFirebase(board: Board, uid: string): Promise<Board> {
     const imageUrl = await this.persistImageIfNeeded(board.imageUrl, `users/${uid}/boards/${board.id}/cover.jpg`);
+    const logoUrl = await this.persistImageIfNeeded(board.logoUrl, `users/${uid}/boards/${board.id}/logo.jpg`);
     const cards = await Promise.all(
       board.cards.map(async (card) => ({
         ...card,
@@ -5472,7 +5563,7 @@ export class BoardsComponent implements OnDestroy {
         ),
       })),
     );
-    return { ...board, imageUrl, cards };
+    return { ...board, imageUrl, logoUrl, cards };
   }
 
   private async persistImageIfNeeded(imageUrl: string, path: string): Promise<string> {

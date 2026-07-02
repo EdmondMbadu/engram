@@ -103,6 +103,11 @@
                     <span class="material-symbols-outlined">auto_awesome_motion</span>
                     <h4>Made with LivingWiki</h4>
                     <p>{{ board.title }}</p>
+                    @if (board.stackCtaLabel && stackCtaHref(board)) {
+                      <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener">
+                        {{ board.stackCtaLabel }}
+                      </a>
+                    }
                     <img [src]="stackQrImageUrl(board)" alt="Stack QR code" />
                     <strong>{{ stackClosingUrlLabel(board) }}</strong>
                   </div>
@@ -530,6 +535,17 @@
                     <strong style="overflow: hidden; color: var(--ink); font-size: 1rem; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap;">{{ ownerName(board) }}</strong>
                   </span>
                 </div>
+                @if (board.logoUrl) {
+                  @if (boardLogoHref(board)) {
+                    <a class="board-detail__logo" [href]="boardLogoHref(board)" target="_blank" rel="noopener" style="display: inline-grid; max-width: min(15rem, 100%); place-items: center; margin-top: .8rem; overflow: hidden; border: 2px solid var(--ink); border-radius: .95rem; background: rgba(255,255,255,.95); box-shadow: 3px 3px 0 var(--ink); padding: .42rem .65rem; text-decoration: none;">
+                      <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="max-width: 13rem; height: clamp(2.1rem, 5vw, 3.6rem); object-fit: contain;" />
+                    </a>
+                  } @else {
+                    <span class="board-detail__logo" style="display: inline-grid; max-width: min(15rem, 100%); place-items: center; margin-top: .8rem; overflow: hidden; border: 2px solid var(--ink); border-radius: .95rem; background: rgba(255,255,255,.95); box-shadow: 3px 3px 0 var(--ink); padding: .42rem .65rem;">
+                      <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="max-width: 13rem; height: clamp(2.1rem, 5vw, 3.6rem); object-fit: contain;" />
+                    </span>
+                  }
+                }
               </div>
 
               <div class="board-detail__stats">
@@ -1848,6 +1864,11 @@
                         <span class="material-symbols-outlined">auto_awesome_motion</span>
                         <h4>Made with LivingWiki</h4>
                         <p>{{ board.title }}</p>
+                        @if (board.stackCtaLabel && stackCtaHref(board)) {
+                          <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener">
+                            {{ board.stackCtaLabel }}
+                          </a>
+                        }
                         <img [src]="stackQrImageUrl(board)" alt="Board QR code" />
                         <strong>{{ stackClosingUrlLabel(board) }}</strong>
                       </div>
@@ -2109,6 +2130,77 @@
               (input)="updateBoardDraft('imageUrl', $any($event.target).value)"
             />
           </label>
+
+          <div class="boards-upload-field">
+            <span>Logo</span>
+            <div class="boards-upload boards-upload--logo">
+              @if (boardDraft().logoUrl) {
+                <img [src]="boardDraft().logoUrl" alt="Board logo preview" />
+              } @else {
+                <span class="boards-upload__placeholder">
+                  <span class="material-symbols-outlined">business</span>
+                </span>
+              }
+              <div class="boards-upload__actions">
+                <label class="boards-upload__button">
+                  <span class="material-symbols-outlined">upload</span>
+                  Upload logo
+                  <input type="file" accept="image/*" (change)="onBoardLogoSelected($event)" />
+                </label>
+                @if (boardDraft().logoUrl) {
+                  <button type="button" class="boards-upload__clear" (click)="clearBoardLogo()">
+                    <span class="material-symbols-outlined">close</span>
+                    Remove
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="boards-form__split">
+            <label>
+              <span>Logo URL fallback</span>
+              <input
+                type="url"
+                placeholder="https://..."
+                [value]="imageUrlInputValue(boardDraft().logoUrl)"
+                (input)="updateBoardDraft('logoUrl', $any($event.target).value)"
+              />
+            </label>
+            <label>
+              <span>Logo link</span>
+              <input
+                type="text"
+                maxlength="240"
+                placeholder="https://sponsor.com"
+                [value]="boardDraft().logoLinkUrl"
+                (input)="updateBoardDraft('logoLinkUrl', $any($event.target).value)"
+              />
+            </label>
+          </div>
+
+          <div class="boards-form__split">
+            <label>
+              <span>Stack call to action</span>
+              <input
+                type="text"
+                maxlength="48"
+                placeholder="Check us out"
+                [value]="boardDraft().stackCtaLabel"
+                (input)="updateBoardDraft('stackCtaLabel', $any($event.target).value)"
+              />
+            </label>
+            <label>
+              <span>CTA link or phone</span>
+              <input
+                type="text"
+                maxlength="240"
+                placeholder="https://site.com or +1 555 123 4567"
+                [value]="boardDraft().stackCtaUrl"
+                (input)="updateBoardDraft('stackCtaUrl', $any($event.target).value)"
+              />
+            </label>
+          </div>
 
           <div class="boards-form__split">
             <label>

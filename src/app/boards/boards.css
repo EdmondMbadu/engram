@@ -2300,6 +2300,19 @@
   background: #ffffff;
 }
 
+.stack-preview__cta {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.82rem;
+  font-weight: 950;
+  padding: 0.72rem 1rem;
+  text-decoration: none;
+}
+
 .stack-preview__closing strong {
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -3839,6 +3852,14 @@
   background: color-mix(in srgb, var(--accent) 12%, var(--surface));
   box-shadow: 3px 3px 0 var(--ink);
   object-fit: cover;
+}
+
+.boards-upload--logo img,
+.boards-upload--logo .boards-upload__placeholder {
+  aspect-ratio: 1.7;
+  background: #ffffff;
+  object-fit: contain;
+  padding: 0.75rem;
 }
 
 .boards-upload__placeholder {
