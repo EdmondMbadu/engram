@@ -4812,7 +4812,7 @@ async function enrichBoardWizardBatchWithPlaces(
           return { ...card, imageUrl: restaurantPhotoUrls[index % restaurantPhotoUrls.length] };
         }
       }
-      return enrichBoardWizardCard(card, searchContext, apiKey);
+      return enrichBoardWizardCard(card, searchContext, apiKey, customSearchApiKey);
     }),
   );
   return { ...batch, cards: enrichedCards };
@@ -5060,6 +5060,10 @@ async function buildBoardWizardImageOnlyBatch(
 
 function buildBoardWizardCardImageQuery(card: BoardWizardCurrentCard, prompt: string, boardTitle: string): string {
   const title = card.title.replace(/\s+/g, ' ').trim();
+  const referenceKind = boardWizardReferenceImageKind(card, `${prompt} ${boardTitle}`);
+  if (referenceKind) {
+    return buildBoardWizardMediaImageQuery(title, card, `${prompt} ${boardTitle}`, referenceKind).slice(0, 180);
+  }
   const instruction = prompt.replace(/\b(replace|current|image|photo|picture|appropriate|better|wrong|random|fix|with|as|name|suggests)\b/gi, ' ');
   const usefulInstruction = meaningfulBoardWizardTokens(instruction).slice(0, 5).join(' ');
   const foodSuffix = card.type === 'food' || /food|dish|dessert|cake|menu-item/i.test(`${title} ${card.tags.join(' ')}`)
@@ -5201,13 +5205,25 @@ async function enrichBoardWizardCard(
   card: GeneratedBoardWizardCard,
   searchContext: string,
   apiKey: string,
+  customSearchApiKey = '',
 ): Promise<GeneratedBoardWizardCard> {
   if (shouldUseReferenceImageBeforePlaces(card, searchContext)) {
+    const imageQuery = buildBoardWizardReferenceImageQuery(card, searchContext);
     const referenceEnriched = await enrichBoardWizardCardWithReferenceImage({
       ...card,
-      image_query: buildBoardWizardReferenceImageQuery(card, searchContext),
+      image_query: imageQuery,
     });
-    return referenceEnriched.imageUrl ? referenceEnriched : card;
+    if (referenceEnriched.imageUrl) {
+      return referenceEnriched;
+    }
+    const referenceKind = boardWizardReferenceImageKind(card, searchContext);
+    if (customSearchApiKey && referenceKind && referenceKind !== 'person') {
+      const webImageUrl = await findBoardWizardReferenceWebImage(imageQuery, customSearchApiKey);
+      if (webImageUrl) {
+        return { ...card, image_query: imageQuery, imageUrl: webImageUrl };
+      }
+    }
+    return { ...card, image_query: imageQuery };
   }
   const placeEnriched = apiKey ? await enrichBoardWizardCardWithPlace(card, searchContext, apiKey) : card;
   if (placeEnriched.imageUrl) {
@@ -5221,6 +5237,9 @@ function shouldUseReferenceImageBeforePlaces(card: GeneratedBoardWizardCard, sea
     return false;
   }
   const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`.toLowerCase();
+  if (boardWizardReferenceImageKind(card, searchContext)) {
+    return true;
+  }
   if (/\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|poet|philosopher|general|monarch|king|queen|emperor|saint)\b/.test(text)) {
     return true;
   }
@@ -5238,6 +5257,10 @@ function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard, sea
   if (worldCupTeamTitle) {
     return worldCupTeamTitle.slice(0, 140);
   }
+  const referenceKind = boardWizardReferenceImageKind(card, searchContext);
+  if (referenceKind) {
+    return buildBoardWizardMediaImageQuery(title, card, searchContext, referenceKind).slice(0, 140);
+  }
   const query = textFromUnknown(card.image_query).replace(/\s+/g, ' ').trim();
   if (query && !/\b(building|house|library|museum|monument|memorial|school|university|bridge|park|airport|station)\b/i.test(query)) {
     return query.slice(0, 140);
@@ -5246,6 +5269,78 @@ function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard, sea
     return `${title} portrait`.slice(0, 140);
   }
   return title.slice(0, 140);
+}
+
+type BoardWizardReferenceImageKind = 'film' | 'song' | 'album' | 'book' | 'tv' | 'game' | 'person' | '';
+
+function boardWizardReferenceImageKind(card: GeneratedBoardWizardCard | BoardWizardCurrentCard, searchContext = ''): BoardWizardReferenceImageKind {
+  const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`.toLowerCase();
+  if (/\b(movie|movies|film|films|cinema|filmography|starring|directed by|screenplay|box office|oscars?|academy award)\b/.test(text)) {
+    return 'film';
+  }
+  if (/\b(song|songs|single|singles|track|tracks|lyrics|billboard|hot 100)\b/.test(text)) {
+    return 'song';
+  }
+  if (/\b(album|albums|ep|lp|record cover)\b/.test(text)) {
+    return 'album';
+  }
+  if (/\b(book|books|novel|novels|memoir|author|published|literature)\b/.test(text)) {
+    return 'book';
+  }
+  if (/\b(tv|television|series|season|episode|episodes|sitcom|streaming)\b/.test(text)) {
+    return 'tv';
+  }
+  if (/\b(video game|video games|game|games|console|playstation|xbox|nintendo|steam)\b/.test(text)) {
+    return 'game';
+  }
+  if (/\b(portrait|person|people|biography|born|died|actor|actress|artist|musician|author|athlete|director)\b/.test(text)) {
+    return 'person';
+  }
+  return '';
+}
+
+function buildBoardWizardMediaImageQuery(
+  title: string,
+  card: GeneratedBoardWizardCard | BoardWizardCurrentCard,
+  searchContext: string,
+  kind: BoardWizardReferenceImageKind,
+): string {
+  const cleanTitle = title.replace(/\s+/g, ' ').trim();
+  const artistOrCreator = extractBoardWizardCreatorHint(`${card.subtitle} ${'notes' in card ? card.notes : ''} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''} ${searchContext}`);
+  switch (kind) {
+    case 'film':
+      return `${cleanTitle} official movie poster`;
+    case 'song':
+      return [cleanTitle, artistOrCreator, 'song cover art'].filter(Boolean).join(' ');
+    case 'album':
+      return `${cleanTitle} album cover`;
+    case 'book':
+      return `${cleanTitle} book cover`;
+    case 'tv':
+      return `${cleanTitle} TV series poster`;
+    case 'game':
+      return `${cleanTitle} video game cover art`;
+    case 'person':
+      return `${cleanTitle} portrait`;
+    default:
+      return cleanTitle;
+  }
+}
+
+function extractBoardWizardCreatorHint(text: string): string {
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  const patterns = [
+    /\b(?:by|from|made by|performed by|sung by|artist|featuring|feat\.?|starring)\s+([A-Z][\w'.-]+(?:\s+[A-Z][\w'.-]+){0,3})/,
+    /\b([A-Z][\w'.-]+(?:\s+[A-Z][\w'.-]+){0,3})\s+(?:song|single|album|track)\b/,
+  ];
+  for (const pattern of patterns) {
+    const match = normalized.match(pattern);
+    const value = match?.[1]?.replace(/\b(?:movies?|films?|songs?|albums?|books?)\b.*$/i, '').trim();
+    if (value && value.length <= 60) {
+      return value;
+    }
+  }
+  return '';
 }
 
 function buildWorldCupTeamWikipediaTitle(title: string, text: string): string {
@@ -5448,7 +5543,11 @@ async function findBoardWizardMenuItemWebImage(query: string, customSearchApiKey
   return customSearchApiKey ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey) : '';
 }
 
-async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: string): Promise<string> {
+async function findBoardWizardReferenceWebImage(query: string, customSearchApiKey: string): Promise<string> {
+  return customSearchApiKey ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, { imageType: 'any' }) : '';
+}
+
+async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: string, options: { imageType?: 'photo' | 'any' } = {}): Promise<string> {
   const cx = googleCustomSearchCx.trim();
   if (!cx) {
     return '';
@@ -5461,7 +5560,9 @@ async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: 
     searchUrl.searchParams.set('q', query);
     searchUrl.searchParams.set('searchType', 'image');
     searchUrl.searchParams.set('safe', 'active');
-    searchUrl.searchParams.set('imgType', 'photo');
+    if (options.imageType !== 'any') {
+      searchUrl.searchParams.set('imgType', 'photo');
+    }
     searchUrl.searchParams.set('num', '4');
     const response = await fetch(searchUrl.toString(), {
       headers: {
@@ -5677,14 +5778,45 @@ async function findExactWikipediaImageForBoardWizard(query: string): Promise<str
 function exactWikipediaTitleCandidates(query: string): string[] {
   const raw = query.replace(/\s+/g, ' ').trim();
   const withoutDescriptors = raw
-    .replace(/\b(official|public domain|photograph|photo|picture|image|portrait|biography|person|people|american|u\.s\.|us|united states|president|presidential|first lady|signer|founding father|historical figure)\b/gi, ' ')
+    .replace(/\b(official|public domain|photograph|photo|picture|image|poster|cover|cover art|portrait|biography|person|people|american|u\.s\.|us|united states|president|presidential|first lady|signer|founding father|historical figure)\b/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  return [withoutDescriptors, raw]
+  const baseTitles = [withoutDescriptors, raw]
     .map((title) => title.replace(/[,:;|-].*$/, '').replace(/\s+/g, ' ').trim())
-    .filter((title) => title.length >= 3 && title.length <= 80)
+    .filter((title) => title.length >= 3 && title.length <= 80);
+  const mediaTitles: string[] = [];
+  for (const title of baseTitles) {
+    const cleanedTitle = title
+      .replace(/\b(movie|film|song|single|album|book|novel|tv|television|series|video game|game)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!cleanedTitle || cleanedTitle.length < 3) {
+      continue;
+    }
+    if (/\b(movie|film)\b/i.test(raw)) {
+      mediaTitles.push(`${cleanedTitle} (film)`);
+    }
+    if (/\b(song|single)\b/i.test(raw)) {
+      mediaTitles.push(`${cleanedTitle} (song)`);
+    }
+    if (/\b(album|lp|ep)\b/i.test(raw)) {
+      mediaTitles.push(`${cleanedTitle} (album)`);
+    }
+    if (/\b(book|novel)\b/i.test(raw)) {
+      mediaTitles.push(`${cleanedTitle}`);
+      mediaTitles.push(`${cleanedTitle} (novel)`);
+    }
+    if (/\b(tv|television|series)\b/i.test(raw)) {
+      mediaTitles.push(`${cleanedTitle} (TV series)`);
+    }
+    if (/\b(video game|game)\b/i.test(raw)) {
+      mediaTitles.push(`${cleanedTitle} (video game)`);
+    }
+  }
+  return [...mediaTitles, ...baseTitles]
+    .filter((title) => title.length >= 3 && title.length <= 90)
     .filter((title, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === title.toLowerCase()) === index)
-    .slice(0, 3);
+    .slice(0, 6);
 }
 
 function normalizeWikipediaTitleCandidate(value: string): string {
