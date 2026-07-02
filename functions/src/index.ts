@@ -1383,6 +1383,12 @@ type AppleMusicSearchResponse = {
   }>;
 };
 
+type AppleMusicMediaScore = {
+  artwork: string;
+  audioPreviewUrl: string;
+  score: number;
+};
+
 type WikimediaCommonsImageResponse = {
   query?: {
     pages?: Record<string, {
@@ -5248,14 +5254,16 @@ async function enrichBoardWizardCard(
   if (shouldUseReferenceImageBeforePlaces(card, searchContext)) {
     const imageQuery = buildBoardWizardReferenceImageQuery(card, searchContext);
     const referenceKind = boardWizardReferenceImageKind(card, searchContext);
+    let musicAudioPreviewUrl = '';
     if (referenceKind === 'song' || referenceKind === 'album') {
       const musicMedia = await findAppleMusicMediaForBoardWizard(card, searchContext, referenceKind);
-      if (musicMedia.imageUrl || musicMedia.audioPreviewUrl) {
+      musicAudioPreviewUrl = musicMedia.audioPreviewUrl || card.audioPreviewUrl || '';
+      if (musicMedia.imageUrl) {
         return {
           ...card,
           image_query: imageQuery,
           imageUrl: musicMedia.imageUrl || card.imageUrl,
-          audioPreviewUrl: musicMedia.audioPreviewUrl || card.audioPreviewUrl,
+          audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl,
         };
       }
     }
@@ -5264,15 +5272,23 @@ async function enrichBoardWizardCard(
       image_query: imageQuery,
     });
     if (referenceEnriched.imageUrl) {
-      return referenceEnriched;
+      return {
+        ...referenceEnriched,
+        audioPreviewUrl: musicAudioPreviewUrl || referenceEnriched.audioPreviewUrl || card.audioPreviewUrl,
+      };
     }
     if (customSearchApiKey && referenceKind && referenceKind !== 'person') {
       const webImageUrl = await findBoardWizardReferenceWebImage(imageQuery, customSearchApiKey);
       if (webImageUrl) {
-        return { ...card, image_query: imageQuery, imageUrl: webImageUrl };
+        return {
+          ...card,
+          image_query: imageQuery,
+          imageUrl: webImageUrl,
+          audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl,
+        };
       }
     }
-    return { ...card, image_query: imageQuery };
+    return { ...card, image_query: imageQuery, audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl };
   }
   const placeEnriched = apiKey ? await enrichBoardWizardCardWithPlace(card, searchContext, apiKey) : card;
   if (placeEnriched.imageUrl) {
@@ -5675,8 +5691,6 @@ async function findAppleMusicMediaForBoardWizard(
       searchUrl.searchParams.set('limit', '25');
       return await fetchJson<AppleMusicSearchResponse>(searchUrl.toString());
     }));
-    const titleTokenSets = titleCandidates.map((candidate) => musicArtworkTokens(candidate)).filter((tokens) => tokens.length);
-    const artistTokenSets = artistHints.map((hint) => musicArtworkTokens(hint)).filter((tokens) => tokens.length);
     const seenResults = new Set<string>();
     const results = responses.flatMap((data) => data.results ?? []).filter((result) => {
       const key = [
@@ -5690,74 +5704,24 @@ async function findAppleMusicMediaForBoardWizard(
       seenResults.add(key);
       return true;
     });
-    const scored = results
-      .map((result) => {
-        const resultTitle = kind === 'song' ? textFromUnknown(result.trackName) : textFromUnknown(result.collectionName);
-        const resultArtist = textFromUnknown(result.artistName);
-        const resultText = normalizeMusicArtworkText(`${resultTitle} ${resultArtist}`);
-        const resultTitleText = normalizeMusicArtworkText(resultTitle);
-        const resultCollectionText = normalizeMusicArtworkText(textFromUnknown(result.collectionName));
-        const artwork = textFromUnknown(result.artworkUrl600 || result.artworkUrl100)
-          .replace(/\/\d+x\d+bb\./, '/1000x1000bb.')
-          .replace(/\/\d+x\d+bb-/, '/1000x1000bb-');
-        const audioPreviewUrl = kind === 'song' ? textFromUnknown(result.previewUrl) : '';
-        if (!artwork || !canTryCoverImageUrl(artwork)) {
-          return { artwork: '', audioPreviewUrl: '', score: 0 };
-        }
-        const titleMatchScores = titleTokenSets.map((titleTokens) => {
-          const titleMatches = titleTokens.filter((token) => resultText.includes(token)).length;
-          const requiredTitleMatches = titleTokens.length <= 2 ? titleTokens.length : Math.min(2, titleTokens.length);
-          return { titleTokens, titleMatches, requiredTitleMatches };
-        });
-        const bestTitleMatch = titleMatchScores
-          .filter((item) => item.requiredTitleMatches > 0 && item.titleMatches >= item.requiredTitleMatches)
-          .sort((left, right) => right.titleMatches - left.titleMatches || left.titleTokens.length - right.titleTokens.length)[0];
-        if (!bestTitleMatch) {
-          return { artwork: '', audioPreviewUrl: '', score: 0 };
-        }
-        const artistMatches = artistTokenSets.map((artistTokens) => artistTokens.filter((token) => resultText.includes(token)).length);
-        const bestArtistMatches = artistMatches.length ? Math.max(...artistMatches) : 0;
-        const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
-          artistMatches[index] >= Math.min(2, artistTokens.length),
-        );
-        const normalizedTitles = titleCandidates.map((candidate) => normalizeMusicArtworkText(candidate)).filter(Boolean);
-        const exactTitleMatch = normalizedTitles.some((normalizedTitle) => resultTitleText === normalizedTitle);
-        const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
-          resultTitleText.includes(normalizedTitle) || normalizedTitle.includes(resultTitleText),
-        );
-        let score = bestTitleMatch.titleMatches * 18 + bestArtistMatches * 26;
-        if (exactTitleMatch) {
-          score += 90;
-        } else if (closeTitleMatch) {
-          score += 45;
-        }
-        if (hasStrongArtistMatch) {
-          score += 42;
-        } else if (artistTokenSets.length) {
-          score -= exactTitleMatch ? 8 : 24;
-        }
-        if (kind === 'song' && result.kind === 'song') {
-          score += 8;
-        }
-        if (kind === 'album' && result.wrapperType === 'collection') {
-          score += 8;
-        }
-        if (audioPreviewUrl) {
-          score += 4;
-        }
-        if (/\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(`${resultTitleText} ${resultCollectionText}`)) {
-          score -= /\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(normalizedTitles.join(' ')) ? 0 : 28;
-        }
-        if (/\b(definitive|number 1|greatest hits|essential|best of|anthology|collection)\b/.test(resultCollectionText)) {
-          score += exactTitleMatch ? 5 : 0;
-        }
-        return { artwork, audioPreviewUrl, score };
-      })
-      .filter((item) => item.artwork && item.score >= (artistHints.length ? 72 : 82))
-      .sort((left, right) => right.score - left.score);
+    let scored = scoreAppleMusicMediaResults(results, titleCandidates, artistHints, kind);
     const best = kind === 'song'
       ? scored.find((item) => item.audioPreviewUrl) ?? scored[0]
       : scored[0];
+    if (kind === 'song' && !best?.audioPreviewUrl) {
+      const fallbackPreview = await findAppleMusicPreviewFallback({
+        titleCandidates,
+        artistHints,
+        kind,
+        existingSearchTerms: searchTerms,
+      });
+      if (fallbackPreview) {
+        return {
+          imageUrl: best?.artwork ?? '',
+          audioPreviewUrl: fallbackPreview,
+        };
+      }
+    }
     if (!best || (kind === 'song' && !best.audioPreviewUrl)) {
       logger.info('Board wizard Apple Music media lookup returned no preview match.', {
         title,
@@ -5784,6 +5748,122 @@ async function findAppleMusicMediaForBoardWizard(
     });
     return { imageUrl: '', audioPreviewUrl: '' };
   }
+}
+
+function scoreAppleMusicMediaResults(
+  results: NonNullable<AppleMusicSearchResponse['results']>,
+  titleCandidates: string[],
+  artistHints: string[],
+  kind: 'song' | 'album',
+): AppleMusicMediaScore[] {
+  const titleTokenSets = titleCandidates.map((candidate) => musicArtworkTokens(candidate)).filter((tokens) => tokens.length);
+  const artistTokenSets = artistHints.map((hint) => musicArtworkTokens(hint)).filter((tokens) => tokens.length);
+  const normalizedTitles = titleCandidates.map((candidate) => normalizeMusicArtworkText(candidate)).filter(Boolean);
+  return results
+    .map((result) => {
+      const resultTitle = kind === 'song' ? textFromUnknown(result.trackName) : textFromUnknown(result.collectionName);
+      const resultArtist = textFromUnknown(result.artistName);
+      const resultText = normalizeMusicArtworkText(`${resultTitle} ${resultArtist}`);
+      const resultTitleText = normalizeMusicArtworkText(resultTitle);
+      const resultCollectionText = normalizeMusicArtworkText(textFromUnknown(result.collectionName));
+      const artwork = textFromUnknown(result.artworkUrl600 || result.artworkUrl100)
+        .replace(/\/\d+x\d+bb\./, '/1000x1000bb.')
+        .replace(/\/\d+x\d+bb-/, '/1000x1000bb-');
+      const audioPreviewUrl = kind === 'song' ? textFromUnknown(result.previewUrl) : '';
+      if (!artwork || !canTryCoverImageUrl(artwork)) {
+        return { artwork: '', audioPreviewUrl: '', score: 0 };
+      }
+      const titleMatchScores = titleTokenSets.map((titleTokens) => {
+        const titleMatches = titleTokens.filter((token) => resultText.includes(token)).length;
+        const requiredTitleMatches = titleTokens.length <= 2 ? titleTokens.length : Math.min(2, titleTokens.length);
+        return { titleTokens, titleMatches, requiredTitleMatches };
+      });
+      const bestTitleMatch = titleMatchScores
+        .filter((item) => item.requiredTitleMatches > 0 && item.titleMatches >= item.requiredTitleMatches)
+        .sort((left, right) => right.titleMatches - left.titleMatches || left.titleTokens.length - right.titleTokens.length)[0];
+      if (!bestTitleMatch) {
+        return { artwork: '', audioPreviewUrl: '', score: 0 };
+      }
+      const artistMatches = artistTokenSets.map((artistTokens) => artistTokens.filter((token) => resultText.includes(token)).length);
+      const bestArtistMatches = artistMatches.length ? Math.max(...artistMatches) : 0;
+      const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
+        artistMatches[index] >= Math.min(2, artistTokens.length),
+      );
+      const exactTitleMatch = normalizedTitles.some((normalizedTitle) => resultTitleText === normalizedTitle);
+      const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
+        resultTitleText.includes(normalizedTitle) || normalizedTitle.includes(resultTitleText),
+      );
+      let score = bestTitleMatch.titleMatches * 18 + bestArtistMatches * 26;
+      if (exactTitleMatch) {
+        score += 90;
+      } else if (closeTitleMatch) {
+        score += 45;
+      }
+      if (hasStrongArtistMatch) {
+        score += 42;
+      } else if (artistTokenSets.length) {
+        score -= exactTitleMatch ? 8 : 24;
+      }
+      if (kind === 'song' && result.kind === 'song') {
+        score += 8;
+      }
+      if (kind === 'album' && result.wrapperType === 'collection') {
+        score += 8;
+      }
+      if (audioPreviewUrl) {
+        score += 4;
+      }
+      if (/\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(`${resultTitleText} ${resultCollectionText}`)) {
+        score -= /\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(normalizedTitles.join(' ')) ? 0 : 28;
+      }
+      if (/\b(definitive|number 1|greatest hits|essential|best of|anthology|collection)\b/.test(resultCollectionText)) {
+        score += exactTitleMatch ? 5 : 0;
+      }
+      return { artwork, audioPreviewUrl, score };
+    })
+    .filter((item) => item.artwork && item.score >= (artistHints.length ? 72 : 82))
+    .sort((left, right) => right.score - left.score);
+}
+
+async function findAppleMusicPreviewFallback(options: {
+  titleCandidates: string[];
+  artistHints: string[];
+  kind: 'song' | 'album';
+  existingSearchTerms: string[];
+}): Promise<string> {
+  const fallbackTerms = buildAppleMusicSearchTerms(options.titleCandidates, options.artistHints)
+    .concat(options.titleCandidates)
+    .map((term) => term.replace(/\s+/g, ' ').trim().slice(0, 180))
+    .filter((term) => term.length >= 2)
+    .filter((term, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === term.toLowerCase()) === index)
+    .slice(0, 4);
+  const countries = ['CA', 'GB', 'AU', 'NZ'];
+  for (const country of countries) {
+    try {
+      const responses = await Promise.all(fallbackTerms.map(async (searchTerm) => {
+        const searchUrl = new URL('https://itunes.apple.com/search');
+        searchUrl.searchParams.set('term', searchTerm);
+        searchUrl.searchParams.set('media', 'music');
+        searchUrl.searchParams.set('entity', options.kind === 'song' ? 'song' : 'album');
+        searchUrl.searchParams.set('country', country);
+        searchUrl.searchParams.set('limit', '25');
+        return await fetchJson<AppleMusicSearchResponse>(searchUrl.toString());
+      }));
+      const scored = scoreAppleMusicMediaResults(
+        responses.flatMap((data) => data.results ?? []),
+        options.titleCandidates,
+        options.artistHints,
+        options.kind,
+      );
+      const preview = scored.find((item) => item.audioPreviewUrl)?.audioPreviewUrl;
+      if (preview) {
+        return preview;
+      }
+    } catch {
+      // Storefront fallback is best-effort; the main lookup already logged durable failures.
+    }
+  }
+  return '';
 }
 
 function buildAppleMusicArtistHints(
