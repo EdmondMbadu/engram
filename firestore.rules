@@ -285,6 +285,7 @@ service cloud.firestore {
           'owner_profile_picture_type',
           'visibility',
           'kind',
+          'sortOrder',
           'title',
           'description',
           'backNote',
@@ -302,6 +303,10 @@ service cloud.firestore {
         && (
           !request.resource.data.keys().hasAny(['kind'])
           || request.resource.data.kind in ['standard', 'walking-tour', 'driving-tour']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['sortOrder'])
+          || request.resource.data.sortOrder is number
         )
         && request.resource.data.owner_public_slug is string
         && request.resource.data.owner_public_slug.size() >= 2

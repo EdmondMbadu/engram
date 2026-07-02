@@ -1689,15 +1689,23 @@ export class BoardsComponent {
           updatedAt: now,
         };
 
-    if (existingBoard) {
-      this.boards.update((boards) => boards.map((board) => board.id === existingBoard.id ? nextBoard : board));
-    } else {
-      this.boards.update((boards) => [nextBoard, ...boards]);
+    try {
+      const persisted = await this.persistBoard(nextBoard);
+      if (existingBoard) {
+        this.boards.update((boards) => boards.map((board) => board.id === existingBoard.id ? persisted : board));
+      } else {
+        this.boards.update((boards) => [persisted, ...boards]);
+      }
+      this.boardsSyncError.set(null);
+      this.wizardSaving.set(false);
+      this.wizardStep.set('done');
+      void this.router.navigate(['/boards', persisted.id]);
+    } catch (error) {
+      const detail = error instanceof Error && error.message ? ` ${error.message}` : '';
+      this.wizardError.set(`Could not save this board to your account. Please try again.${detail}`);
+      this.boardsSyncError.set('Board save failed. Please try again.');
+      this.wizardSaving.set(false);
     }
-    await this.persistAndReplaceBoard(nextBoard);
-    this.wizardSaving.set(false);
-    this.wizardStep.set('done');
-    void this.router.navigate(['/boards', nextBoard.id]);
   }
 
   openEditBoard(board: Board, event?: Event): void {
