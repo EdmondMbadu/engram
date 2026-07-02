@@ -616,6 +616,139 @@
               }
             </div>
           } @else {
+            @if (isTourBoard(board)) {
+              <section class="tour-board">
+                <div class="tour-board__summary">
+                  <div>
+                    <span class="tour-board__eyebrow">
+                      <span class="material-symbols-outlined">{{ tourModeIcon(board) }}</span>
+                      {{ tourModeText(board) }}
+                    </span>
+                    <h2>{{ board.title }}</h2>
+                    <p>{{ board.description }}</p>
+                  </div>
+                  <div class="tour-board__stats">
+                    <span><strong>{{ selectedBoardTourCards().length }}</strong> Stops</span>
+                    @if (board.tourMeta?.totalDistanceText) {
+                      <span><strong>{{ board.tourMeta?.totalDistanceText }}</strong> Route</span>
+                    }
+                    @if (board.tourMeta?.totalDurationText) {
+                      <span><strong>{{ board.tourMeta?.totalDurationText }}</strong> Time</span>
+                    }
+                    <span><strong>{{ board.tourMeta?.voiceStyle || 'guide' }}</strong> Voice</span>
+                  </div>
+                </div>
+
+                <div class="tour-board__layout">
+                  <aside class="tour-board__map">
+                    <iframe
+                      [src]="tourMapEmbedUrl(board)"
+                      [title]="board.title + ' map'"
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                    <div class="tour-board__map-actions">
+                      <a [href]="tourRouteUrl(board)" target="_blank" rel="noopener">
+                        <span class="material-symbols-outlined">map</span>
+                        Open route
+                      </a>
+                      <button type="button" (click)="openTourGuide(0)">
+                        <span class="material-symbols-outlined">play_arrow</span>
+                        Play tour
+                      </button>
+                    </div>
+                  </aside>
+
+                  <div class="tour-board__itinerary">
+                    <div class="tour-board__tools">
+                      <button type="button" class="boards-ghost-action" (click)="toggleTourWayfinders()">
+                        <span class="material-symbols-outlined">assistant_direction</span>
+                        {{ tourWayfindersShown() ? 'Hide wayfinders' : 'Show wayfinders' }}
+                      </button>
+                      <small>Bridge cards show the path from each stop to the next.</small>
+                    </div>
+
+                    @for (card of selectedBoardTourCards(); track card.id) {
+                      <article class="tour-stop-card">
+                        <div class="tour-stop-card__media">
+                          @if (card.imageUrl) {
+                            <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                          } @else {
+                            <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                          }
+                          <span>{{ card.tour?.sequence }}</span>
+                        </div>
+                        <div class="tour-stop-card__body">
+                          <div class="tour-stop-card__head">
+                            <div>
+                              <h3>{{ card.title }}</h3>
+                              <p>{{ card.tour?.address || card.subtitle }}</p>
+                            </div>
+                            @if (canEditBoard(board)) {
+                              <button type="button" aria-label="Edit stop" (click)="openEditCard(card)">
+                                <span class="material-symbols-outlined">edit</span>
+                              </button>
+                            }
+                          </div>
+                          <p>{{ card.notes }}</p>
+                          @if (card.tour?.guideScript) {
+                            <div class="tour-stop-card__script">
+                              <span class="material-symbols-outlined">headphones</span>
+                              <p>{{ card.tour?.guideScript }}</p>
+                            </div>
+                          }
+                          <div class="tour-stop-card__actions">
+                            <button type="button" (click)="speakTourFrame({ kind: 'stop', card, nextCard: null, index: 0, total: 1 })">
+                              <span class="material-symbols-outlined">volume_up</span>
+                              Play guide
+                            </button>
+                            @if (card.googleMapsUrl) {
+                              <a [href]="card.googleMapsUrl" target="_blank" rel="noopener">
+                                <span class="material-symbols-outlined">place</span>
+                                Open place
+                              </a>
+                            }
+                          </div>
+                        </div>
+                      </article>
+
+                      @if (tourWayfindersShown() && card.tour?.legToNext; as leg) {
+                        @if (nextTourCard(card); as nextCard) {
+                          <article class="tour-wayfinder-card">
+                            <div class="tour-wayfinder-card__map">
+                              <iframe
+                                [src]="tourLegMapEmbedUrl(card, nextCard)"
+                                [title]="card.title + ' to ' + nextCard.title"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                              ></iframe>
+                            </div>
+                            <div>
+                              <span class="tour-wayfinder-card__pill">
+                                <span class="material-symbols-outlined">{{ board.kind === 'driving-tour' ? 'directions_car' : 'directions_walk' }}</span>
+                                {{ leg.durationText }} · {{ leg.distanceText }}
+                              </span>
+                              <h3>To {{ nextCard.title }}</h3>
+                              <p>{{ leg.instruction }}</p>
+                              <div class="tour-stop-card__actions">
+                                <button type="button" (click)="speakTourFrame({ kind: 'leg', card, nextCard, index: 0, total: 1 })">
+                                  <span class="material-symbols-outlined">volume_up</span>
+                                  Navigate
+                                </button>
+                                <a [href]="tourLegDirectionsUrl(board, card)" target="_blank" rel="noopener">
+                                  <span class="material-symbols-outlined">near_me</span>
+                                  Open directions
+                                </a>
+                              </div>
+                            </div>
+                          </article>
+                        }
+                      }
+                    }
+                  </div>
+                </div>
+              </section>
+            } @else {
             <div class="detail-cards-grid">
               @for (card of filteredCards(); track card.id) {
                 <article
@@ -799,6 +932,7 @@
                 </div>
               }
             </div>
+            }
           }
         </section>
       }
@@ -902,6 +1036,67 @@
                     (input)="wizardPrompt.set($any($event.target).value)"
                   />
                 </label>
+              } @else if (isTourWizardMode()) {
+                <label>
+                  <span>Describe the tour</span>
+                  <textarea
+                    rows="6"
+                    maxlength="2200"
+                    [placeholder]="wizardInputPlaceholder()"
+                    [value]="wizardPrompt()"
+                    (input)="wizardPrompt.set($any($event.target).value)"
+                  ></textarea>
+                </label>
+                <div class="boards-tour-wizard-grid">
+                  <section>
+                    <span class="boards-wizard-label">{{ wizardTourStyleLabel() }}</span>
+                    <div class="boards-wizard-vibes">
+                      @for (option of wizardTourStyleOptions(); track option) {
+                        <button
+                          type="button"
+                          [class.boards-wizard-vibe--active]="wizardTourPaceOrStyle() === option"
+                          [attr.aria-pressed]="wizardTourPaceOrStyle() === option"
+                          (click)="wizardTourPaceOrStyle.set(option)"
+                        >
+                          <span class="material-symbols-outlined">{{ wizardMode() === 'driving-tour' ? 'route' : 'speed' }}</span>
+                          {{ option }}
+                        </button>
+                      }
+                    </div>
+                  </section>
+                  <section>
+                    <span class="boards-wizard-label">Guide voice</span>
+                    <div class="boards-wizard-vibes">
+                      @for (voice of tourVoiceStyles; track voice.id) {
+                        <button
+                          type="button"
+                          [class.boards-wizard-vibe--active]="wizardTourVoiceStyle() === voice.id"
+                          [attr.aria-pressed]="wizardTourVoiceStyle() === voice.id"
+                          (click)="wizardTourVoiceStyle.set(voice.id)"
+                        >
+                          <span class="material-symbols-outlined">{{ voice.icon }}</span>
+                          {{ voice.label }}
+                        </button>
+                      }
+                    </div>
+                  </section>
+                </div>
+                <section>
+                  <span class="boards-wizard-label">Also include</span>
+                  <div class="boards-wizard-vibes">
+                    @for (extra of wizardTourExtraOptions(); track extra) {
+                      <button
+                        type="button"
+                        [class.boards-wizard-vibe--active]="isWizardTourExtraSelected(extra)"
+                        [attr.aria-pressed]="isWizardTourExtraSelected(extra)"
+                        (click)="toggleWizardTourExtra(extra)"
+                      >
+                        <span class="material-symbols-outlined">add_task</span>
+                        {{ extra }}
+                      </button>
+                    }
+                  </div>
+                </section>
               } @else {
                 <label>
                   <span>URL</span>
@@ -937,7 +1132,7 @@
                 </select>
               </label>
               <label>
-                <span>How many cards</span>
+                <span>{{ isTourWizardMode() ? 'How many stops' : 'How many cards' }}</span>
                 <div class="boards-wizard-count">
                   <input
                     type="range"
@@ -957,6 +1152,7 @@
               </label>
             </section>
 
+            @if (!isTourWizardMode()) {
             <section>
               <span class="boards-wizard-label">Default card type</span>
               <div class="boards-choice-grid boards-choice-grid--types">
@@ -991,6 +1187,7 @@
                 }
               </div>
             </section>
+            }
 
             @if (wizardError()) {
               <div class="boards-form__soft-error">{{ wizardError() }}</div>
@@ -1081,6 +1278,81 @@
                           [value]="card.notes"
                           (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"
                         ></textarea>
+                        @if (card.tour; as tour) {
+                          <div class="boards-wizard-tour-edit">
+                            <div class="boards-form__split">
+                              <input
+                                type="number"
+                                min="1"
+                                max="200"
+                                [value]="tour.sequence"
+                                (input)="updateWizardCardTour(card.id, 'sequence', $any($event.target).value)"
+                              />
+                              <input
+                                type="text"
+                                maxlength="180"
+                                placeholder="Tour address"
+                                [value]="tour.address"
+                                (input)="updateWizardCardTour(card.id, 'address', $any($event.target).value)"
+                              />
+                            </div>
+                            <div class="boards-form__split">
+                              <input
+                                type="number"
+                                step="0.000001"
+                                placeholder="Latitude"
+                                [value]="tour.lat ?? ''"
+                                (input)="updateWizardCardTour(card.id, 'lat', $any($event.target).value)"
+                              />
+                              <input
+                                type="number"
+                                step="0.000001"
+                                placeholder="Longitude"
+                                [value]="tour.lng ?? ''"
+                                (input)="updateWizardCardTour(card.id, 'lng', $any($event.target).value)"
+                              />
+                            </div>
+                            <textarea
+                              rows="5"
+                              maxlength="3600"
+                              placeholder="Guide narration"
+                              [value]="tour.guideScript"
+                              (input)="updateWizardCardTour(card.id, 'guideScript', $any($event.target).value)"
+                            ></textarea>
+                            @if (tour.legToNext; as leg) {
+                              <div class="boards-form__split">
+                                <input
+                                  type="text"
+                                  maxlength="32"
+                                  placeholder="Distance"
+                                  [value]="leg.distanceText"
+                                  (input)="updateWizardCardTourLeg(card.id, 'distanceText', $any($event.target).value)"
+                                />
+                                <input
+                                  type="text"
+                                  maxlength="32"
+                                  placeholder="Duration"
+                                  [value]="leg.durationText"
+                                  (input)="updateWizardCardTourLeg(card.id, 'durationText', $any($event.target).value)"
+                                />
+                              </div>
+                              <textarea
+                                rows="2"
+                                maxlength="260"
+                                placeholder="Wayfinder instruction"
+                                [value]="leg.instruction"
+                                (input)="updateWizardCardTourLeg(card.id, 'instruction', $any($event.target).value)"
+                              ></textarea>
+                              <textarea
+                                rows="3"
+                                maxlength="700"
+                                placeholder="Navigation narration"
+                                [value]="leg.navScript"
+                                (input)="updateWizardCardTourLeg(card.id, 'navScript', $any($event.target).value)"
+                              ></textarea>
+                            }
+                          </div>
+                        }
                         <div class="boards-form__split">
                           <select [value]="card.type" (change)="updateWizardCard(card.id, 'type', $any($event.target).value)">
                             @for (type of cardTypes; track type.id) {
@@ -1104,6 +1376,9 @@
                         <strong>{{ card.title }}</strong>
                         <small>{{ card.subtitle }}</small>
                         <p>{{ card.notes }}</p>
+                        @if (card.tour?.guideScript) {
+                          <p class="boards-wizard-card__tour-note">{{ card.tour?.guideScript }}</p>
+                        }
                         <div class="boards-wizard-card__tags">
                           @for (tag of card.tags; track tag) {
                             <span>{{ tag }}</span>
@@ -1181,6 +1456,61 @@
             <span class="material-symbols-outlined">check_circle</span>
             <h4>Board saved</h4>
             <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">Done</button>
+          </div>
+        }
+      </section>
+    </div>
+  }
+
+  @if (tourGuideOpen()) {
+    <div class="boards-modal-backdrop boards-modal-backdrop--tour-guide" (click)="closeTourGuide()">
+      <section class="boards-modal boards-modal--tour-guide" aria-label="Guided tour" (click)="$event.stopPropagation()">
+        <div class="boards-modal__head">
+          <div>
+            <p>Guided tour</p>
+            <h3>{{ selectedBoard()?.title }}</h3>
+          </div>
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeTourGuide()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        @if (tourCurrentFrame(); as frame) {
+          <div class="tour-guide">
+            <div class="tour-guide__progress">
+              <span [style.width.%]="((frame.index + 1) / frame.total) * 100"></span>
+            </div>
+            <iframe
+              [src]="frame.kind === 'leg' ? tourLegMapEmbedUrl(frame.card, frame.nextCard) : tourLegMapEmbedUrl(frame.card, null)"
+              [title]="frame.card.title + ' tour map'"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <div class="tour-guide__body">
+              <span>{{ frame.kind === 'leg' ? 'On the way' : 'Stop ' + frame.card.tour?.sequence }} · {{ frame.index + 1 }} / {{ frame.total }}</span>
+              <h2>{{ frame.kind === 'leg' && frame.nextCard ? 'To ' + frame.nextCard.title : frame.card.title }}</h2>
+              <p class="tour-guide__meta">
+                {{ frame.kind === 'leg' ? (frame.card.tour?.legToNext?.durationText || '') + ' · ' + (frame.card.tour?.legToNext?.distanceText || '') : (frame.card.tour?.address || frame.card.subtitle) }}
+              </p>
+              <div class="tour-guide__script">
+                <span class="material-symbols-outlined">{{ frame.kind === 'leg' ? 'assistant_direction' : 'headphones' }}</span>
+                <p>{{ frame.kind === 'leg' ? (frame.card.tour?.legToNext?.navScript || frame.card.tour?.legToNext?.instruction) : (frame.card.tour?.guideScript || frame.card.notes) }}</p>
+              </div>
+            </div>
+            <div class="tour-guide__actions">
+              <button type="button" class="boards-ghost-action" [disabled]="frame.index === 0" (click)="tourGuideStep(-1)">
+                <span class="material-symbols-outlined">chevron_left</span>
+                Prev
+              </button>
+              <button type="button" class="boards-ghost-action" (click)="tourSpeechPlaying() ? stopTourSpeech() : replayTourFrame()">
+                <span class="material-symbols-outlined">{{ tourSpeechPlaying() ? 'stop' : 'volume_up' }}</span>
+                {{ tourSpeechPlaying() ? 'Stop' : 'Replay' }}
+              </button>
+              <button type="button" class="boards-primary-action" [disabled]="frame.index >= frame.total - 1" (click)="tourGuideStep(1)">
+                Next
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
           </div>
         }
       </section>
@@ -1959,6 +2289,106 @@
               (input)="updateCardDraft('notes', $any($event.target).value)"
             ></textarea>
           </label>
+
+          @if (cardDraft().tourSequence || isTourBoard(selectedBoard())) {
+            <section class="boards-card-wizard boards-card-wizard--tour">
+              <div class="boards-card-wizard__head">
+                <span class="material-symbols-outlined">assistant_direction</span>
+                <div>
+                  <p>Tour stop</p>
+                  <h4>Guide script and wayfinder</h4>
+                </div>
+              </div>
+              <div class="boards-form__split">
+                <label>
+                  <span>Stop number</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="200"
+                    [value]="cardDraft().tourSequence"
+                    (input)="updateCardDraft('tourSequence', $any($event.target).value)"
+                  />
+                </label>
+                <label>
+                  <span>Tour address</span>
+                  <input
+                    type="text"
+                    maxlength="180"
+                    [value]="cardDraft().tourAddress"
+                    (input)="updateCardDraft('tourAddress', $any($event.target).value)"
+                  />
+                </label>
+              </div>
+              <div class="boards-form__split">
+                <label>
+                  <span>Latitude</span>
+                  <input
+                    type="number"
+                    step="0.000001"
+                    [value]="cardDraft().tourLat"
+                    (input)="updateCardDraft('tourLat', $any($event.target).value)"
+                  />
+                </label>
+                <label>
+                  <span>Longitude</span>
+                  <input
+                    type="number"
+                    step="0.000001"
+                    [value]="cardDraft().tourLng"
+                    (input)="updateCardDraft('tourLng', $any($event.target).value)"
+                  />
+                </label>
+              </div>
+              <label>
+                <span>Guide narration</span>
+                <textarea
+                  rows="6"
+                  maxlength="3600"
+                  [value]="cardDraft().tourGuideScript"
+                  (input)="updateCardDraft('tourGuideScript', $any($event.target).value)"
+                ></textarea>
+              </label>
+              <div class="boards-form__split">
+                <label>
+                  <span>Leg distance</span>
+                  <input
+                    type="text"
+                    maxlength="32"
+                    [value]="cardDraft().tourLegDistanceText"
+                    (input)="updateCardDraft('tourLegDistanceText', $any($event.target).value)"
+                  />
+                </label>
+                <label>
+                  <span>Leg duration</span>
+                  <input
+                    type="text"
+                    maxlength="32"
+                    [value]="cardDraft().tourLegDurationText"
+                    (input)="updateCardDraft('tourLegDurationText', $any($event.target).value)"
+                  />
+                </label>
+              </div>
+              <label>
+                <span>Wayfinder instruction</span>
+                <textarea
+                  rows="2"
+                  maxlength="260"
+                  [value]="cardDraft().tourLegInstruction"
+                  (input)="updateCardDraft('tourLegInstruction', $any($event.target).value)"
+                ></textarea>
+              </label>
+              <label>
+                <span>Navigation narration</span>
+                <textarea
+                  rows="3"
+                  maxlength="700"
+                  [value]="cardDraft().tourLegNavScript"
+                  (input)="updateCardDraft('tourLegNavScript', $any($event.target).value)"
+                ></textarea>
+              </label>
+            </section>
+          }
 
           <div class="boards-choice-panel">
             <div class="boards-choice-group">

@@ -147,6 +147,20 @@ const boardWizardBatchSchema = {
         description: { type: 'string' },
         icon: { type: 'string' },
         tone: { type: 'string' },
+        kind: { type: 'string' },
+        tourMeta: {
+          type: 'object',
+          properties: {
+            mode: { type: 'string' },
+            totalDistanceText: { type: 'string' },
+            totalDurationText: { type: 'string' },
+            routePolyline: { type: 'string' },
+            voiceStyle: { type: 'string' },
+            paceOrRouteStyle: { type: 'string' },
+            extras: { type: 'array', items: { type: 'string' } },
+            showWayfindersDefault: { type: 'boolean' },
+          },
+        },
       },
       required: ['title', 'description', 'icon', 'tone'],
     },
@@ -168,6 +182,26 @@ const boardWizardBatchSchema = {
           },
           image_query: { type: 'string' },
           place_query: { type: 'string' },
+          tour: {
+            type: 'object',
+            properties: {
+              sequence: { type: 'integer' },
+              lat: { type: 'number' },
+              lng: { type: 'number' },
+              address: { type: 'string' },
+              guideScript: { type: 'string' },
+              legToNext: {
+                type: 'object',
+                properties: {
+                  distanceText: { type: 'string' },
+                  durationText: { type: 'string' },
+                  instruction: { type: 'string' },
+                  navScript: { type: 'string' },
+                  encodedPolyline: { type: 'string' },
+                },
+              },
+            },
+          },
         },
         required: ['title', 'subtitle', 'notes', 'type', 'scope', 'status', 'rating', 'tags', 'image_query', 'place_query'],
       },
@@ -325,8 +359,35 @@ export type GeneratedAnswerQuiz = {
   questions: GeneratedQuizQuestion[];
 };
 
-export type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url' | 'expand';
+export type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url' | 'expand' | 'walking-tour' | 'driving-tour';
 export type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
+export type GeneratedBoardTourMode = 'walking' | 'driving';
+export type GeneratedBoardTourVoiceStyle = 'historian' | 'local' | 'kid-friendly';
+export type GeneratedBoardTourLeg = {
+  distanceText: string;
+  durationText: string;
+  instruction: string;
+  navScript: string;
+  encodedPolyline: string;
+};
+export type GeneratedBoardCardTour = {
+  sequence: number;
+  lat: number | null;
+  lng: number | null;
+  address: string;
+  guideScript: string;
+  legToNext: GeneratedBoardTourLeg | null;
+};
+export type GeneratedBoardTourMeta = {
+  mode: GeneratedBoardTourMode;
+  totalDistanceText: string;
+  totalDurationText: string;
+  routePolyline: string;
+  voiceStyle: GeneratedBoardTourVoiceStyle;
+  paceOrRouteStyle: string;
+  extras: string[];
+  showWayfindersDefault: boolean;
+};
 export type GeneratedBoardWizardCard = {
   title: string;
   subtitle: string;
@@ -341,6 +402,7 @@ export type GeneratedBoardWizardCard = {
   imageUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
+  tour?: GeneratedBoardCardTour | null;
 };
 export type GeneratedBoardWizardBatch = {
   board: {
@@ -348,6 +410,8 @@ export type GeneratedBoardWizardBatch = {
     description: string;
     icon: string;
     tone: 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
+    kind?: 'standard' | 'walking-tour' | 'driving-tour';
+    tourMeta?: GeneratedBoardTourMeta | null;
   };
   cards: GeneratedBoardWizardCard[];
 };
@@ -1092,6 +1156,11 @@ export async function generateBoardWizardBatch(params: {
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
   vibe: BoardWizardVibe;
+  tourOptions?: {
+    voiceStyle?: GeneratedBoardTourVoiceStyle;
+    paceOrRouteStyle?: string;
+    extras?: string[];
+  } | null;
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
 }): Promise<GeneratedBoardWizardBatch> {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
@@ -1134,6 +1203,11 @@ function buildBoardWizardPrompt(params: {
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
   vibe: BoardWizardVibe;
+  tourOptions?: {
+    voiceStyle?: GeneratedBoardTourVoiceStyle;
+    paceOrRouteStyle?: string;
+    extras?: string[];
+  } | null;
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
 }): string {
   const vibeInstructions: Record<BoardWizardVibe, string> = {
@@ -1158,6 +1232,21 @@ function buildBoardWizardPrompt(params: {
     'Restaurant location/action cards should use type "place" or "note". For action cards, put the exact reservation/order/menu URL in place_query when it appears in URL context.',
     'When URL context includes image candidates, prefer image_query phrases that match those concrete images, dishes, rooms, amenities, or page sections.',
     'For hotel/Airbnb/lodging URLs: build a board for that listing. Include room/amenity/fact cards, location/neighborhood, house rules/guest notes if present, booking link, and a final action card such as "Book Now".',
+    params.mode === 'walking-tour' || params.mode === 'driving-tour'
+      ? [
+          'TOUR MODE: Create a self-guided tour, not a generic board.',
+          `Tour kind: ${params.mode === 'driving-tour' ? 'driving' : 'walking'}.`,
+          `Guide voice: ${params.tourOptions?.voiceStyle ?? 'historian'}.`,
+          `Pace/route style: ${params.tourOptions?.paceOrRouteStyle ?? (params.mode === 'driving-tour' ? 'Balanced' : 'Standard')}.`,
+          `Extras requested: ${(params.tourOptions?.extras ?? []).join(', ') || 'none'}.`,
+          'Order stops in the sequence a visitor should experience them. Each card must be one real stop.',
+          'Set board.kind to "walking-tour" or "driving-tour". Set board.tourMeta with mode, voiceStyle, paceOrRouteStyle, extras, and showWayfindersDefault false.',
+          'Every tour card must include tour.sequence, tour.address if known, tour.guideScript, and tour.legToNext for every card except the final stop.',
+          'guideScript should be polished spoken narration, roughly 90-160 words, with concrete details and no markdown.',
+          'legToNext.instruction should be a concise direction summary. legToNext.navScript should be a spoken bridge from this stop to the next.',
+          'Use type "place", scope "place", status "planned" or "saved", and tags including "tour-stop".',
+        ].join('\n')
+      : '',
     'Each title should be max 70 characters. Each subtitle max 90 characters. Each notes field max 260 characters.',
     'Card type must be one of: place, food, memory, idea, shop, note.',
     'Scope must be one of: place, city, country, region.',
@@ -1186,6 +1275,7 @@ function buildBoardWizardPrompt(params: {
       pastedList: params.pastedList?.slice(0, 8000) ?? '',
       url: params.url?.slice(0, 1000) ?? '',
       photoNames: params.photoNames?.slice(0, 100) ?? [],
+      tourOptions: params.tourOptions ?? null,
     }),
   ].filter(Boolean).join('\n');
 }
@@ -1212,6 +1302,8 @@ function normalizeBoardWizardBatch(
       description: cleanLine(boardData.description, fallback.board.description, 220),
       icon: cleanLine(boardData.icon, fallback.board.icon, 64),
       tone: normalizeBoardWizardTone(boardData.tone, fallback.board.tone),
+      kind: normalizeBoardWizardKind(boardData.kind, fallback.board.kind),
+      tourMeta: normalizeBoardTourMeta(boardData.tourMeta, fallback.board.tourMeta),
     },
     cards: (cards.length ? cards : fallback.cards).slice(0, count),
   };
@@ -1238,7 +1330,80 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
     tags,
     image_query: cleanLine(data.image_query, title, 120),
     place_query: cleanLine(data.place_query, title, 140),
+    tour: normalizeBoardCardTour(data.tour),
   };
+}
+
+function normalizeBoardWizardKind(value: unknown, fallback?: 'standard' | 'walking-tour' | 'driving-tour'): 'standard' | 'walking-tour' | 'driving-tour' {
+  return value === 'walking-tour' || value === 'driving-tour' || value === 'standard' ? value : fallback ?? 'standard';
+}
+
+function normalizeBoardTourMeta(value: unknown, fallback?: GeneratedBoardTourMeta | null): GeneratedBoardTourMeta | null {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const mode = data.mode === 'driving' ? 'driving' : data.mode === 'walking' ? 'walking' : fallback?.mode;
+  if (!mode) {
+    return fallback ?? null;
+  }
+  const voiceStyle: GeneratedBoardTourVoiceStyle =
+    data.voiceStyle === 'local' || data.voiceStyle === 'kid-friendly' || data.voiceStyle === 'historian'
+      ? data.voiceStyle
+      : fallback?.voiceStyle ?? 'historian';
+  return {
+    mode,
+    totalDistanceText: cleanLine(data.totalDistanceText, fallback?.totalDistanceText ?? '', 32),
+    totalDurationText: cleanLine(data.totalDurationText, fallback?.totalDurationText ?? '', 32),
+    routePolyline: cleanLine(data.routePolyline, fallback?.routePolyline ?? '', 4000),
+    voiceStyle,
+    paceOrRouteStyle: cleanLine(data.paceOrRouteStyle, fallback?.paceOrRouteStyle ?? (mode === 'driving' ? 'Balanced' : 'Standard'), 40),
+    extras: Array.isArray(data.extras)
+      ? data.extras.map((extra) => cleanLine(extra, '', 40)).filter(Boolean).slice(0, 8)
+      : fallback?.extras ?? [],
+    showWayfindersDefault: data.showWayfindersDefault === true || fallback?.showWayfindersDefault === true,
+  };
+}
+
+function normalizeBoardCardTour(value: unknown): GeneratedBoardCardTour | null {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const sequence = normalizeInteger(data.sequence, 0, 0, 200);
+  const guideScript = cleanLine(data.guideScript, '', 3600);
+  const address = cleanLine(data.address, '', 180);
+  if (!sequence && !guideScript && !address) {
+    return null;
+  }
+  return {
+    sequence,
+    lat: normalizeDecimal(data.lat, -90, 90),
+    lng: normalizeDecimal(data.lng, -180, 180),
+    address,
+    guideScript,
+    legToNext: normalizeBoardTourLeg(data.legToNext),
+  };
+}
+
+function normalizeBoardTourLeg(value: unknown): GeneratedBoardTourLeg | null {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const instruction = cleanLine(data.instruction, '', 260);
+  const navScript = cleanLine(data.navScript, instruction, 700);
+  if (!instruction && !navScript) {
+    return null;
+  }
+  return {
+    distanceText: cleanLine(data.distanceText, '', 32),
+    durationText: cleanLine(data.durationText, '', 32),
+    instruction,
+    navScript,
+    encodedPolyline: cleanLine(data.encodedPolyline, '', 4000),
+  };
+}
+
+function normalizeInteger(value: unknown, fallback: number, min: number, max: number): number {
+  const number = typeof value === 'number' ? value : typeof value === 'string' ? Number.parseInt(value, 10) : fallback;
+  return Math.max(min, Math.min(max, Number.isFinite(number) ? Math.round(number) : fallback));
+}
+
+function normalizeDecimal(value: unknown, min: number, max: number): number | null {
+  const number = typeof value === 'number' ? value : typeof value === 'string' ? Number.parseFloat(value) : null;
+  return typeof number === 'number' && Number.isFinite(number) ? Math.max(min, Math.min(max, number)) : null;
 }
 
 function buildFallbackBoardWizardBatch(
@@ -1252,9 +1417,17 @@ function buildFallbackBoardWizardBatch(
     vibe: BoardWizardVibe;
     count?: number;
     mode?: BoardWizardMode;
+    tourOptions?: {
+      voiceStyle?: GeneratedBoardTourVoiceStyle;
+      paceOrRouteStyle?: string;
+      extras?: string[];
+    } | null;
   },
   count: number,
 ): GeneratedBoardWizardBatch {
+  if (params.mode === 'walking-tour' || params.mode === 'driving-tour') {
+    return buildFallbackTourWizardBatch(params, count);
+  }
   const sourceItems = fallbackWizardItems(params).slice(0, count);
   const baseTitle = params.targetBoardTitle?.trim() || titleFromPrompt(params.prompt || params.pastedList || params.url || 'Wizard board');
   const cards = sourceItems.map((title, index): GeneratedBoardWizardCard => ({
@@ -1275,6 +1448,80 @@ function buildFallbackBoardWizardBatch(
       description: `A ${params.vibe} batch generated from your ${params.mode ?? 'wizard'} input.`,
       icon: params.defaultType === 'food' ? 'restaurant' : params.defaultType === 'shop' ? 'storefront' : 'auto_awesome',
       tone: params.vibe === 'foodie' ? 'coral' : params.vibe === 'traveler' ? 'sky' : params.vibe === 'memory' ? 'purple' : 'teal',
+      kind: 'standard',
+      tourMeta: null,
+    },
+    cards,
+  };
+}
+
+function buildFallbackTourWizardBatch(
+  params: {
+    prompt: string;
+    targetBoardTitle?: string | null;
+    mode?: BoardWizardMode;
+    tourOptions?: {
+      voiceStyle?: GeneratedBoardTourVoiceStyle;
+      paceOrRouteStyle?: string;
+      extras?: string[];
+    } | null;
+  },
+  count: number,
+): GeneratedBoardWizardBatch {
+  const mode: GeneratedBoardTourMode = params.mode === 'driving-tour' ? 'driving' : 'walking';
+  const baseTitle = params.targetBoardTitle?.trim() || titleFromPrompt(params.prompt || `${mode} tour`);
+  const stops = fallbackWizardItems({ prompt: params.prompt || baseTitle }).slice(0, Math.max(2, count));
+  const cards = stops.map((title, index): GeneratedBoardWizardCard => {
+    const next = stops[index + 1] ?? '';
+    const finalStop = index === stops.length - 1;
+    const durationText = mode === 'driving' ? `${Math.max(4, 6 + index)} min` : `${Math.max(2, 3 + (index % 4))} min`;
+    const distanceText = mode === 'driving' ? `${(1 + index * 0.4).toFixed(1)} mi` : `${(0.1 + index * 0.06).toFixed(1)} mi`;
+    return {
+      title,
+      subtitle: `Stop ${index + 1}`,
+      notes: `Draft tour stop for ${baseTitle}.`,
+      type: 'place',
+      scope: 'place',
+      status: index === 0 ? 'favorite' : 'planned',
+      rating: 4,
+      tags: ['tour-stop', mode === 'driving' ? 'driving-tour' : 'walking-tour'],
+      image_query: `${title} ${baseTitle}`,
+      place_query: title,
+      tour: {
+        sequence: index + 1,
+        lat: null,
+        lng: null,
+        address: '',
+        guideScript: `Welcome to stop ${index + 1}: ${title}. This is a generated starting point for ${baseTitle}. Edit this script to add the exact story, sponsor language, and visitor guidance you want people to hear.`,
+        legToNext: finalStop
+          ? null
+          : {
+              distanceText,
+              durationText,
+              instruction: `${mode === 'driving' ? 'Drive' : 'Walk'} from ${title} to ${next}.`,
+              navScript: `From ${title}, ${mode === 'driving' ? 'drive' : 'walk'} about ${durationText}, roughly ${distanceText}, to your next stop: ${next}.`,
+              encodedPolyline: '',
+            },
+      },
+    };
+  });
+  return {
+    board: {
+      title: baseTitle,
+      description: `A self-guided ${mode} tour generated by the LivingWiki Wizard.`,
+      icon: mode === 'driving' ? 'directions_car' : 'directions_walk',
+      tone: mode === 'driving' ? 'green' : 'sky',
+      kind: mode === 'driving' ? 'driving-tour' : 'walking-tour',
+      tourMeta: {
+        mode,
+        totalDistanceText: '',
+        totalDurationText: '',
+        routePolyline: '',
+        voiceStyle: params.tourOptions?.voiceStyle ?? 'historian',
+        paceOrRouteStyle: params.tourOptions?.paceOrRouteStyle ?? (mode === 'driving' ? 'Balanced' : 'Standard'),
+        extras: params.tourOptions?.extras ?? [],
+        showWayfindersDefault: false,
+      },
     },
     cards,
   };

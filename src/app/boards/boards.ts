@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
@@ -18,15 +19,18 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
+type BoardKind = 'standard' | 'walking-tour' | 'driving-tour';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardScope = 'place' | 'city' | 'country' | 'region';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
-type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url';
+type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url' | 'walking-tour' | 'driving-tour';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
+type BoardTourMode = 'walking' | 'driving';
+type BoardTourVoiceStyle = 'historian' | 'local' | 'kid-friendly';
 type StackFormat = 'carousel' | 'reel' | 'both';
 type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
@@ -39,6 +43,34 @@ type BoardSticker = {
   rotation: number;
   scale: number;
   colorIndex: number;
+};
+
+type BoardTourLeg = {
+  distanceText: string;
+  durationText: string;
+  instruction: string;
+  navScript: string;
+  encodedPolyline: string;
+};
+
+type BoardCardTour = {
+  sequence: number;
+  lat: number | null;
+  lng: number | null;
+  address: string;
+  guideScript: string;
+  legToNext: BoardTourLeg | null;
+};
+
+type BoardTourMeta = {
+  mode: BoardTourMode;
+  totalDistanceText: string;
+  totalDurationText: string;
+  routePolyline: string;
+  voiceStyle: BoardTourVoiceStyle;
+  paceOrRouteStyle: string;
+  extras: string[];
+  showWayfindersDefault: boolean;
 };
 
 type StickerDragState = {
@@ -66,12 +98,14 @@ type BoardCard = {
   googleMapsUrl: string;
   tags: string[];
   stickers: BoardSticker[];
+  tour: BoardCardTour | null;
   createdAt: string;
   updatedAt: string;
 };
 
 type Board = {
   id: string;
+  kind: BoardKind;
   ownerUserId: string;
   ownerPublicSlug: string;
   ownerDisplayName: string;
@@ -85,6 +119,7 @@ type Board = {
   tone: BoardTone;
   imageUrl: string;
   stickers: BoardSticker[];
+  tourMeta: BoardTourMeta | null;
   cards: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -115,6 +150,16 @@ type CardDraft = {
   googleMapsUrl: string;
   tags: string;
   stickers: BoardSticker[];
+  tourSequence: string;
+  tourLat: string;
+  tourLng: string;
+  tourAddress: string;
+  tourGuideScript: string;
+  tourLegDistanceText: string;
+  tourLegDurationText: string;
+  tourLegInstruction: string;
+  tourLegNavScript: string;
+  tourLegEncodedPolyline: string;
 };
 
 type GalleryCard = {
@@ -167,6 +212,7 @@ type BoardWizardGeneratedCard = {
   imageUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
+  tour?: BoardCardTour | null;
 };
 
 type BoardWizardGeneratedBatch = {
@@ -175,6 +221,8 @@ type BoardWizardGeneratedBatch = {
     description: string;
     icon: string;
     tone: BoardTone;
+    kind?: BoardKind;
+    tourMeta?: BoardTourMeta | null;
   };
   cards: BoardWizardGeneratedCard[];
 };
@@ -190,6 +238,14 @@ type BoardWizardPreviewCard = BoardWizardGeneratedCard & {
 type StackFrame = {
   kind: 'cover' | 'card' | 'closing';
   card?: BoardCard;
+  index: number;
+  total: number;
+};
+
+type TourDeckFrame = {
+  kind: 'stop' | 'leg';
+  card: BoardCard;
+  nextCard: BoardCard | null;
   index: number;
   total: number;
 };
@@ -261,6 +317,18 @@ const BOARD_WIZARD_MODES: Array<{
     icon: 'photo_library',
   },
   {
+    id: 'walking-tour',
+    label: 'Walking tour',
+    description: 'Generate ordered stops, guide scripts, a route, and wayfinder cards.',
+    icon: 'directions_walk',
+  },
+  {
+    id: 'driving-tour',
+    label: 'Driving tour',
+    description: 'Turn a scenic drive into mapped stops, navigation legs, and narration.',
+    icon: 'directions_car',
+  },
+  {
     id: 'url',
     label: 'Use a URL',
     description: 'Extract a page or guide into a board draft.',
@@ -283,6 +351,26 @@ const BOARD_WIZARD_STATUS_MESSAGES = [
   'Searching places and images',
   'Preparing preview',
 ];
+
+const BOARD_TOUR_STATUS_MESSAGES = [
+  'Finding the stops',
+  'Ordering the route',
+  'Resolving places and photos',
+  'Calculating wayfinder legs',
+  'Writing guide scripts',
+  'Preparing preview',
+];
+
+const TOUR_VOICE_STYLES: Array<{ id: BoardTourVoiceStyle; label: string; icon: string }> = [
+  { id: 'historian', label: 'Historian', icon: 'school' },
+  { id: 'local', label: 'Local', icon: 'record_voice_over' },
+  { id: 'kid-friendly', label: 'Kid-friendly', icon: 'family_restroom' },
+];
+
+const WALKING_PACE_OPTIONS = ['Leisurely', 'Standard', 'Brisk'];
+const DRIVING_ROUTE_OPTIONS = ['Scenic', 'Balanced', 'Direct'];
+const WALKING_TOUR_EXTRAS = ['Photo stops', 'Coffee and rest breaks', 'Accessibility notes', 'Night version'];
+const DRIVING_TOUR_EXTRAS = ['Photo pull-offs', 'Parking and restrooms', 'Auto-play at each stop', 'Golden-hour timing'];
 
 const COUNTRY_OPTIONS: Array<{ name: string; aliases?: string[] }> = [
   { name: 'Afghanistan' },
@@ -619,6 +707,7 @@ export class BoardsComponent {
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly sanitizer = inject(DomSanitizer);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
@@ -640,6 +729,7 @@ export class BoardsComponent {
   readonly cardStatuses = CARD_STATUSES;
   readonly wizardModes = BOARD_WIZARD_MODES;
   readonly wizardVibes = BOARD_WIZARD_VIBES;
+  readonly tourVoiceStyles = TOUR_VOICE_STYLES;
   readonly stackFormats = STACK_FORMATS;
   readonly stackRatios = STACK_RATIOS;
   readonly stackExportTargets = STACK_EXPORT_TARGETS;
@@ -694,6 +784,9 @@ export class BoardsComponent {
   readonly wizardUrl = signal('');
   readonly wizardPhotoNames = signal('');
   readonly wizardRefineText = signal('');
+  readonly wizardTourVoiceStyle = signal<BoardTourVoiceStyle>('historian');
+  readonly wizardTourPaceOrStyle = signal('Standard');
+  readonly wizardTourExtras = signal<Set<string>>(new Set(['Photo stops', 'Accessibility notes']));
   readonly wizardLoadingIndex = signal(0);
   readonly wizardError = signal<string | null>(null);
   readonly wizardResult = signal<BoardWizardGeneratedBatch | null>(null);
@@ -714,6 +807,10 @@ export class BoardsComponent {
   readonly stackDirectView = signal(false);
   readonly stackShareDialogOpen = signal(false);
   readonly stackFrameDurationMs = 4200;
+  readonly tourWayfindersShown = signal(false);
+  readonly tourGuideOpen = signal(false);
+  readonly tourDeckIndex = signal(0);
+  readonly tourSpeechPlaying = signal(false);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -739,6 +836,16 @@ export class BoardsComponent {
     googleMapsUrl: '',
     tags: '',
     stickers: [],
+    tourSequence: '',
+    tourLat: '',
+    tourLng: '',
+    tourAddress: '',
+    tourGuideScript: '',
+    tourLegDistanceText: '',
+    tourLegDurationText: '',
+    tourLegInstruction: '',
+    tourLegNavScript: '',
+    tourLegEncodedPolyline: '',
   });
 
   readonly profile = this.authService.profile;
@@ -932,6 +1039,26 @@ export class BoardsComponent {
     }
     return { kind: 'card', card: cards[index - 1], index, total };
   });
+  readonly selectedBoardTourCards = computed(() => this.tourCards(this.selectedBoard()));
+  readonly tourDeckFrames = computed<TourDeckFrame[]>(() => {
+    const cards = this.selectedBoardTourCards();
+    const frames: TourDeckFrame[] = [];
+    cards.forEach((card) => {
+      frames.push({ kind: 'stop', card, nextCard: null, index: 0, total: 0 });
+      if (card.tour?.legToNext) {
+        frames.push({ kind: 'leg', card, nextCard: this.nextTourCard(card, cards), index: 0, total: 0 });
+      }
+    });
+    return frames.map((frame, index) => ({ ...frame, index, total: frames.length }));
+  });
+  readonly tourCurrentFrame = computed<TourDeckFrame | null>(() => {
+    const frames = this.tourDeckFrames();
+    if (!frames.length) {
+      return null;
+    }
+    const index = Math.max(0, Math.min(this.tourDeckIndex(), frames.length - 1));
+    return frames[index] ?? null;
+  });
   readonly wizardCanGenerate = computed(() => {
     const mode = this.wizardMode();
     if (mode === 'describe') {
@@ -942,6 +1069,9 @@ export class BoardsComponent {
     }
     if (mode === 'url') {
       return /^https?:\/\/\S+/i.test(this.wizardUrl().trim());
+    }
+    if (this.isTourWizardMode(mode)) {
+      return this.wizardPrompt().trim().length >= 4;
     }
     return this.wizardPhotoNamesList().length > 0 || this.wizardPrompt().trim().length >= 4;
   });
@@ -1106,6 +1236,16 @@ export class BoardsComponent {
       return;
     }
     this.wizardMode.set(mode);
+    if (this.isTourWizardMode(mode)) {
+      this.wizardDefaultType.set('place');
+      this.wizardVibe.set('traveler');
+      this.wizardCount.set(mode === 'driving-tour' ? 8 : 10);
+      this.wizardTourVoiceStyle.set('historian');
+      this.wizardTourPaceOrStyle.set(mode === 'driving-tour' ? 'Balanced' : 'Standard');
+      this.wizardTourExtras.set(new Set(mode === 'driving-tour' ? ['Photo pull-offs', 'Parking and restrooms'] : ['Photo stops', 'Accessibility notes']));
+      this.wizardStep.set('configure');
+      return;
+    }
     this.wizardDefaultType.set(mode === 'photos' ? 'memory' : mode === 'paste' ? 'place' : this.wizardDefaultType());
     this.wizardVibe.set(mode === 'photos' ? 'memory' : mode === 'url' ? 'curator' : this.wizardVibe());
     this.wizardStep.set('configure');
@@ -1220,6 +1360,10 @@ export class BoardsComponent {
         return 'IMG_2041 beach sunrise.jpg\nbirthday-dinner-kalaya.png\nmuseum-day.jpeg';
       case 'url':
         return 'https://www.nationalmechanics.com/foodmenu-1';
+      case 'walking-tour':
+        return 'A historical walking tour of Old City Philadelphia tracing where the Declaration of Independence was written, debated, and signed.';
+      case 'driving-tour':
+        return 'A driving tour of Gettysburg National Military Park following the three days of the battle in order.';
       default:
         return 'Make a board with the 56 signers, sorted by state, and include portrait pictures.';
     }
@@ -1236,9 +1380,10 @@ export class BoardsComponent {
     }
     this.wizardStep.set('loading');
     this.wizardLoadingIndex.set(0);
+    const loadingMessages = this.isTourWizardMode() ? BOARD_TOUR_STATUS_MESSAGES : BOARD_WIZARD_STATUS_MESSAGES;
     const interval = this.isBrowser
       ? window.setInterval(() => {
-          this.wizardLoadingIndex.update((index) => (index + 1) % BOARD_WIZARD_STATUS_MESSAGES.length);
+          this.wizardLoadingIndex.update((index) => (index + 1) % loadingMessages.length);
         }, 900)
       : null;
 
@@ -1368,6 +1513,41 @@ export class BoardsComponent {
     );
   }
 
+  updateWizardCardTour(cardId: string, field: keyof BoardCardTour, value: string | number | null): void {
+    this.wizardPreviewCards.update((cards) =>
+      cards.map((card) => {
+        if (card.id !== cardId || !card.tour) {
+          return card;
+        }
+        const tour = { ...card.tour };
+        if (field === 'sequence') {
+          tour.sequence = Math.max(1, Math.min(200, Number.parseInt(String(value), 10) || tour.sequence));
+        } else if (field === 'lat') {
+          tour.lat = this.decimalValue(value, null, -90, 90);
+        } else if (field === 'lng') {
+          tour.lng = this.decimalValue(value, null, -180, 180);
+        } else if (field === 'address') {
+          tour.address = String(value ?? '').slice(0, 180);
+        } else if (field === 'guideScript') {
+          tour.guideScript = String(value ?? '').slice(0, 3600);
+        }
+        return { ...card, tour };
+      }),
+    );
+  }
+
+  updateWizardCardTourLeg(cardId: string, field: keyof BoardTourLeg, value: string): void {
+    this.wizardPreviewCards.update((cards) =>
+      cards.map((card) => {
+        if (card.id !== cardId || !card.tour?.legToNext) {
+          return card;
+        }
+        const leg = { ...card.tour.legToNext, [field]: value };
+        return { ...card, tour: { ...card.tour, legToNext: this.normalizeTourLeg(leg) } };
+      }),
+    );
+  }
+
   async onWizardCardImageSelected(cardId: string, event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -1419,6 +1599,7 @@ export class BoardsComponent {
       googleMapsUrl: card.googleMapsUrl,
       tags: card.tags.slice(0, 6),
       stickers: [],
+      tour: card.tour ? this.normalizeCardTour(card.tour) : null,
       createdAt: now,
       updatedAt: now,
     })).filter((card) => card.title);
@@ -1434,12 +1615,15 @@ export class BoardsComponent {
     const nextBoard: Board = existingBoard
       ? {
           ...existingBoard,
+          kind: result.board.kind ?? existingBoard.kind,
+          tourMeta: result.board.tourMeta ?? existingBoard.tourMeta,
           cards: [...cards, ...existingBoard.cards],
           updatedAt: now,
         }
       : {
           id: this.createId(),
           ...this.currentOwnerSnapshot(),
+          kind: result.board.kind ?? this.wizardGeneratedBoardKind(),
           title: result.board.title.trim() || 'Wizard board',
           description: result.board.description.trim(),
           backNote: `Started with the LivingWiki Wizard from ${this.wizardMode()} input.`,
@@ -1447,6 +1631,7 @@ export class BoardsComponent {
           tone: result.board.tone,
           imageUrl: cards.find((card) => card.imageUrl)?.imageUrl ?? '',
           stickers: [],
+          tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
           cards,
           createdAt: now,
           updatedAt: now,
@@ -1536,10 +1721,12 @@ export class BoardsComponent {
         tone: draft.tone,
         imageUrl: draft.imageUrl.trim(),
         stickers: draft.stickers,
-        cards: [],
-        createdAt: now,
-        updatedAt: now,
-      };
+      cards: [],
+      kind: 'standard',
+      tourMeta: null,
+      createdAt: now,
+      updatedAt: now,
+    };
       nextBoard = board;
       this.boards.update((boards) => [board, ...boards]);
       void this.router.navigate(['/boards', board.id]);
@@ -1614,6 +1801,16 @@ export class BoardsComponent {
       googleMapsUrl: '',
       tags: '',
       stickers: [],
+      tourSequence: '',
+      tourLat: '',
+      tourLng: '',
+      tourAddress: '',
+      tourGuideScript: '',
+      tourLegDistanceText: '',
+      tourLegDurationText: '',
+      tourLegInstruction: '',
+      tourLegNavScript: '',
+      tourLegEncodedPolyline: '',
     });
     this.cardDialogOpen.set(true);
   }
@@ -1628,6 +1825,7 @@ export class BoardsComponent {
     this.imageUploadError.set(null);
     this.resetCardWizard();
     this.cardImageLocked.set(!!card.imageUrl);
+    const tour = card.tour;
     this.cardDraft.set({
       title: card.title,
       subtitle: card.subtitle,
@@ -1643,6 +1841,16 @@ export class BoardsComponent {
       googleMapsUrl: card.googleMapsUrl,
       tags: card.tags.join(', '),
       stickers: card.stickers ?? [],
+      tourSequence: tour ? String(tour.sequence) : '',
+      tourLat: tour?.lat === null || tour?.lat === undefined ? '' : String(tour.lat),
+      tourLng: tour?.lng === null || tour?.lng === undefined ? '' : String(tour.lng),
+      tourAddress: tour?.address ?? '',
+      tourGuideScript: tour?.guideScript ?? '',
+      tourLegDistanceText: tour?.legToNext?.distanceText ?? '',
+      tourLegDurationText: tour?.legToNext?.durationText ?? '',
+      tourLegInstruction: tour?.legToNext?.instruction ?? '',
+      tourLegNavScript: tour?.legToNext?.navScript ?? '',
+      tourLegEncodedPolyline: tour?.legToNext?.encodedPolyline ?? '',
     });
     this.cardDialogOpen.set(true);
   }
@@ -1911,6 +2119,7 @@ export class BoardsComponent {
       .slice(0, 6);
     const rating = Math.max(1, Math.min(5, Number.parseInt(draft.rating, 10) || 1));
     const editingId = this.editingCardId();
+    const draftTour = this.cardTourFromDraft(draft);
     let nextBoard: Board | null = null;
 
     this.boards.update((boards) =>
@@ -1936,6 +2145,7 @@ export class BoardsComponent {
                     googleMapsUrl: draft.googleMapsUrl,
                     tags,
                     stickers: draft.stickers,
+                    tour: draftTour ?? card.tour ?? null,
                     updatedAt: now,
                   }
                 : card,
@@ -1955,6 +2165,7 @@ export class BoardsComponent {
                 googleMapsUrl: draft.googleMapsUrl,
                 tags,
                 stickers: draft.stickers,
+                tour: draftTour,
                 createdAt: now,
                 updatedAt: now,
               },
@@ -2162,6 +2373,174 @@ export class BoardsComponent {
 
   updateCardDraft<K extends keyof CardDraft>(field: K, value: CardDraft[K]): void {
     this.cardDraft.update((draft) => ({ ...draft, [field]: value }));
+  }
+
+  isTourWizardMode(mode = this.wizardMode()): mode is 'walking-tour' | 'driving-tour' {
+    return mode === 'walking-tour' || mode === 'driving-tour';
+  }
+
+  wizardTourModeLabel(): string {
+    return this.wizardMode() === 'driving-tour' ? 'Driving tour' : 'Walking tour';
+  }
+
+  wizardTourStyleLabel(): string {
+    return this.wizardMode() === 'driving-tour' ? 'Route style' : 'Walking pace';
+  }
+
+  wizardTourStyleOptions(): string[] {
+    return this.wizardMode() === 'driving-tour' ? DRIVING_ROUTE_OPTIONS : WALKING_PACE_OPTIONS;
+  }
+
+  wizardTourExtraOptions(): string[] {
+    return this.wizardMode() === 'driving-tour' ? DRIVING_TOUR_EXTRAS : WALKING_TOUR_EXTRAS;
+  }
+
+  toggleWizardTourExtra(extra: string): void {
+    this.wizardTourExtras.update((extras) => {
+      const next = new Set(extras);
+      if (next.has(extra)) {
+        next.delete(extra);
+      } else {
+        next.add(extra);
+      }
+      return next;
+    });
+  }
+
+  isWizardTourExtraSelected(extra: string): boolean {
+    return this.wizardTourExtras().has(extra);
+  }
+
+  isTourBoard(board: Board | null): boolean {
+    return !!board && (board.kind === 'walking-tour' || board.kind === 'driving-tour');
+  }
+
+  tourCards(board: Board | null): BoardCard[] {
+    if (!board) {
+      return [];
+    }
+    return board.cards
+      .filter((card) => !!card.tour)
+      .sort((left, right) => (left.tour?.sequence ?? 0) - (right.tour?.sequence ?? 0));
+  }
+
+  nextTourCard(card: BoardCard, cards = this.selectedBoardTourCards()): BoardCard | null {
+    const sequence = card.tour?.sequence ?? 0;
+    return cards.find((item) => (item.tour?.sequence ?? 0) === sequence + 1) ?? null;
+  }
+
+  toggleTourWayfinders(): void {
+    this.tourWayfindersShown.update((shown) => !shown);
+  }
+
+  tourModeIcon(board: Board): string {
+    return board.kind === 'driving-tour' ? 'directions_car' : 'directions_walk';
+  }
+
+  tourModeText(board: Board): string {
+    return board.kind === 'driving-tour' ? 'Driving tour' : 'Walking tour';
+  }
+
+  tourRouteUrl(board: Board): string {
+    const cards = this.tourCards(board).filter((card) => this.hasTourCoordinates(card));
+    if (cards.length < 2) {
+      return 'https://www.google.com/maps';
+    }
+    const origin = this.tourCoordinateQuery(cards[0]);
+    const destination = this.tourCoordinateQuery(cards[cards.length - 1]);
+    const waypoints = cards.slice(1, -1).map((card) => this.tourCoordinateQuery(card)).join('|');
+    const url = new URL('https://www.google.com/maps/dir/');
+    url.searchParams.set('api', '1');
+    url.searchParams.set('origin', origin);
+    url.searchParams.set('destination', destination);
+    if (waypoints) {
+      url.searchParams.set('waypoints', waypoints);
+    }
+    url.searchParams.set('travelmode', board.kind === 'driving-tour' ? 'driving' : 'walking');
+    return url.toString();
+  }
+
+  tourLegDirectionsUrl(board: Board, card: BoardCard): string {
+    const next = this.nextTourCard(card, this.tourCards(board));
+    if (!next || !this.hasTourCoordinates(card) || !this.hasTourCoordinates(next)) {
+      return card.googleMapsUrl || this.tourRouteUrl(board);
+    }
+    const url = new URL('https://www.google.com/maps/dir/');
+    url.searchParams.set('api', '1');
+    url.searchParams.set('origin', this.tourCoordinateQuery(card));
+    url.searchParams.set('destination', this.tourCoordinateQuery(next));
+    url.searchParams.set('travelmode', board.kind === 'driving-tour' ? 'driving' : 'walking');
+    return url.toString();
+  }
+
+  tourMapEmbedUrl(board: Board): SafeResourceUrl {
+    const cards = this.tourCards(board).filter((card) => this.hasTourCoordinates(card));
+    if (!cards.length) {
+      return this.safeMapSearchUrl(board.title, 12);
+    }
+    const query = cards.map((card) => this.tourCoordinateQuery(card)).join(' to ');
+    return this.safeMapSearchUrl(query, board.kind === 'driving-tour' ? 11 : 14);
+  }
+
+  tourLegMapEmbedUrl(card: BoardCard, next: BoardCard | null): SafeResourceUrl {
+    const query = next && this.hasTourCoordinates(card) && this.hasTourCoordinates(next)
+      ? `${this.tourCoordinateQuery(card)} to ${this.tourCoordinateQuery(next)}`
+      : card.tour?.address || card.subtitle || card.title;
+    return this.safeMapSearchUrl(query, 15);
+  }
+
+  openTourGuide(stopIndex = 0): void {
+    const frames = this.tourDeckFrames();
+    if (!frames.length) {
+      return;
+    }
+    this.tourDeckIndex.set(Math.max(0, Math.min(stopIndex, frames.length - 1)));
+    this.tourGuideOpen.set(true);
+    this.speakTourFrame();
+  }
+
+  closeTourGuide(): void {
+    this.stopTourSpeech();
+    this.tourGuideOpen.set(false);
+  }
+
+  tourGuideStep(direction: number): void {
+    const count = this.tourDeckFrames().length;
+    if (!count) {
+      return;
+    }
+    this.tourDeckIndex.update((index) => Math.max(0, Math.min(count - 1, index + direction)));
+    this.speakTourFrame();
+  }
+
+  replayTourFrame(): void {
+    this.speakTourFrame();
+  }
+
+  speakTourFrame(frame = this.tourCurrentFrame()): void {
+    if (!this.isBrowser || !frame || typeof window.speechSynthesis === 'undefined') {
+      return;
+    }
+    const text = frame.kind === 'leg'
+      ? frame.card.tour?.legToNext?.navScript || frame.card.tour?.legToNext?.instruction || ''
+      : frame.card.tour?.guideScript || frame.card.notes || frame.card.subtitle;
+    if (!text.trim()) {
+      return;
+    }
+    this.stopTourSpeech();
+    const utterance = new SpeechSynthesisUtterance(text.slice(0, 3600));
+    utterance.rate = this.selectedBoard()?.kind === 'driving-tour' ? 0.98 : 0.95;
+    utterance.onend = () => this.tourSpeechPlaying.set(false);
+    utterance.onerror = () => this.tourSpeechPlaying.set(false);
+    this.tourSpeechPlaying.set(true);
+    window.setTimeout(() => window.speechSynthesis.speak(utterance), 120);
+  }
+
+  stopTourSpeech(): void {
+    if (this.isBrowser && typeof window.speechSynthesis !== 'undefined') {
+      window.speechSynthesis.cancel();
+    }
+    this.tourSpeechPlaying.set(false);
   }
 
   async runCardWizard(): Promise<void> {
@@ -2868,11 +3247,12 @@ export class BoardsComponent {
   }
 
   wizardLoadingMessage(): string {
-    return BOARD_WIZARD_STATUS_MESSAGES[this.wizardLoadingIndex()] ?? BOARD_WIZARD_STATUS_MESSAGES[0];
+    const messages = this.isTourWizardMode() ? BOARD_TOUR_STATUS_MESSAGES : BOARD_WIZARD_STATUS_MESSAGES;
+    return messages[this.wizardLoadingIndex()] ?? messages[0];
   }
 
   wizardLoadingProgress(): number {
-    const stepCount = BOARD_WIZARD_STATUS_MESSAGES.length;
+    const stepCount = this.isTourWizardMode() ? BOARD_TOUR_STATUS_MESSAGES.length : BOARD_WIZARD_STATUS_MESSAGES.length;
     return ((this.wizardLoadingIndex() % stepCount) + 1) * (100 / stepCount);
   }
 
@@ -2898,6 +3278,9 @@ export class BoardsComponent {
     this.wizardUrl.set('');
     this.wizardPhotoNames.set('');
     this.wizardRefineText.set('');
+    this.wizardTourVoiceStyle.set('historian');
+    this.wizardTourPaceOrStyle.set('Standard');
+    this.wizardTourExtras.set(new Set(['Photo stops', 'Accessibility notes']));
     this.wizardLoadingIndex.set(0);
     this.wizardError.set(null);
     this.wizardResult.set(null);
@@ -2931,6 +3314,13 @@ export class BoardsComponent {
       defaultType: this.wizardDefaultType(),
       count: this.wizardCount(),
       vibe: this.wizardVibe(),
+      tourOptions: this.isTourWizardMode(this.wizardMode())
+        ? {
+            voiceStyle: this.wizardTourVoiceStyle(),
+            paceOrRouteStyle: this.wizardTourPaceOrStyle(),
+            extras: Array.from(this.wizardTourExtras()),
+          }
+        : null,
       existingCards: targetBoard?.cards.slice(0, 80).map((card) => ({
         title: card.title,
         subtitle: card.subtitle,
@@ -2955,6 +3345,8 @@ export class BoardsComponent {
         description: this.stringValue(boardData['description'], fallback.board.description, 220),
         icon: this.stringValue(boardData['icon'], fallback.board.icon, 64),
         tone: this.isBoardTone(boardData['tone']) ? boardData['tone'] : fallback.board.tone,
+        kind: this.isBoardKind(boardData['kind']) ? boardData['kind'] : fallback.board.kind,
+        tourMeta: this.normalizeTourMeta(boardData['tourMeta']) ?? fallback.board.tourMeta,
       },
       cards: (cards.length ? cards : fallback.cards).slice(0, this.wizardCount()),
     };
@@ -2986,6 +3378,7 @@ export class BoardsComponent {
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
       placeId: this.stringValue(data['placeId'], '', 240),
       googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
+      tour: this.normalizeCardTour(data['tour']),
     };
   }
 
@@ -3062,6 +3455,9 @@ export class BoardsComponent {
         return restaurantFallback;
       }
     }
+    if (this.isTourWizardMode(mode)) {
+      return this.buildLocalTourWizardBatch(source || refinement || 'Local tour');
+    }
     const items = this.localWizardItems(source || refinement || 'Wizard card', mode === 'paste' || mode === 'photos').slice(0, this.wizardCount());
     const title = this.wizardTargetBoardId() === 'new'
       ? this.titleFromWizardInput(source || refinement || 'Wizard board')
@@ -3078,7 +3474,9 @@ export class BoardsComponent {
             ? 'sky'
             : this.wizardVibe() === 'memory'
               ? 'purple'
-              : 'teal',
+            : 'teal',
+        kind: 'standard',
+        tourMeta: null,
       },
       cards: items.map((titleValue, index) => ({
         title: titleValue,
@@ -3135,6 +3533,8 @@ export class BoardsComponent {
         description: 'Food-item board generated from a restaurant URL.',
         icon: 'restaurant',
         tone: 'coral',
+        kind: 'standard',
+        tourMeta: null,
       },
       cards: cards.slice(0, count),
     };
@@ -3260,6 +3660,225 @@ export class BoardsComponent {
   private numberValue(value: unknown, fallback: number, min: number, max: number): number {
     const number = typeof value === 'number' ? value : typeof value === 'string' ? Number.parseFloat(value) : fallback;
     return Math.max(min, Math.min(max, Number.isFinite(number) ? Math.round(number) : fallback));
+  }
+
+  private decimalValue(value: unknown, fallback: number | null, min: number, max: number): number | null {
+    const number = typeof value === 'number' ? value : typeof value === 'string' ? Number.parseFloat(value) : fallback;
+    if (typeof number !== 'number' || !Number.isFinite(number)) {
+      return fallback;
+    }
+    return Math.max(min, Math.min(max, number));
+  }
+
+  private safeMapSearchUrl(query: string, zoom: number): SafeResourceUrl {
+    const url = `https://www.google.com/maps?q=${encodeURIComponent(query)}&z=${zoom}&output=embed`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  private hasTourCoordinates(card: BoardCard): boolean {
+    return typeof card.tour?.lat === 'number' && typeof card.tour?.lng === 'number';
+  }
+
+  private tourCoordinateQuery(card: BoardCard): string {
+    return this.hasTourCoordinates(card)
+      ? `${card.tour?.lat},${card.tour?.lng}`
+      : card.tour?.address || card.subtitle || card.title;
+  }
+
+  private normalizeTourMeta(value: unknown): BoardTourMeta | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const mode = data['mode'] === 'driving' ? 'driving' : data['mode'] === 'walking' ? 'walking' : null;
+    if (!mode) {
+      return null;
+    }
+    const voiceStyle: BoardTourVoiceStyle =
+      data['voiceStyle'] === 'local' || data['voiceStyle'] === 'kid-friendly' || data['voiceStyle'] === 'historian'
+        ? data['voiceStyle']
+        : 'historian';
+    return {
+      mode,
+      totalDistanceText: this.stringValue(data['totalDistanceText'], '', 32),
+      totalDurationText: this.stringValue(data['totalDurationText'], '', 32),
+      routePolyline: this.stringValue(data['routePolyline'], '', 4000),
+      voiceStyle,
+      paceOrRouteStyle: this.stringValue(data['paceOrRouteStyle'], mode === 'driving' ? 'Balanced' : 'Standard', 40),
+      extras: Array.isArray(data['extras'])
+        ? data['extras'].map((extra) => this.stringValue(extra, '', 40)).filter(Boolean).slice(0, 8)
+        : [],
+      showWayfindersDefault: data['showWayfindersDefault'] === true,
+    };
+  }
+
+  private normalizeTourLeg(value: unknown): BoardTourLeg | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const instruction = this.stringValue(data['instruction'], '', 260);
+    const navScript = this.stringValue(data['navScript'], instruction, 700);
+    if (!instruction && !navScript) {
+      return null;
+    }
+    return {
+      distanceText: this.stringValue(data['distanceText'], '', 32),
+      durationText: this.stringValue(data['durationText'], '', 32),
+      instruction,
+      navScript,
+      encodedPolyline: this.stringValue(data['encodedPolyline'], '', 4000),
+    };
+  }
+
+  private normalizeCardTour(value: unknown): BoardCardTour | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const sequence = this.numberValue(data['sequence'], 0, 0, 200);
+    const guideScript = this.stringValue(data['guideScript'], '', 3600);
+    const address = this.stringValue(data['address'], '', 180);
+    if (!sequence && !guideScript && !address) {
+      return null;
+    }
+    return {
+      sequence,
+      lat: this.decimalValue(data['lat'], null, -90, 90),
+      lng: this.decimalValue(data['lng'], null, -180, 180),
+      address,
+      guideScript,
+      legToNext: this.normalizeTourLeg(data['legToNext']),
+    };
+  }
+
+  private cardTourFromDraft(draft: CardDraft): BoardCardTour | null {
+    const sequence = Number.parseInt(draft.tourSequence, 10);
+    const hasTourText = [
+      draft.tourGuideScript,
+      draft.tourAddress,
+      draft.tourLegInstruction,
+      draft.tourLegNavScript,
+    ].some((value) => value.trim());
+    if (!Number.isFinite(sequence) && !hasTourText) {
+      return null;
+    }
+    const legToNext = draft.tourLegInstruction.trim() || draft.tourLegNavScript.trim()
+      ? {
+          distanceText: draft.tourLegDistanceText.trim().slice(0, 32),
+          durationText: draft.tourLegDurationText.trim().slice(0, 32),
+          instruction: draft.tourLegInstruction.trim().slice(0, 260),
+          navScript: draft.tourLegNavScript.trim().slice(0, 700),
+          encodedPolyline: draft.tourLegEncodedPolyline.trim().slice(0, 4000),
+        }
+      : null;
+    return {
+      sequence: Number.isFinite(sequence) ? Math.max(1, Math.min(200, sequence)) : 1,
+      lat: this.decimalValue(draft.tourLat, null, -90, 90),
+      lng: this.decimalValue(draft.tourLng, null, -180, 180),
+      address: draft.tourAddress.trim().slice(0, 180),
+      guideScript: draft.tourGuideScript.trim().slice(0, 3600),
+      legToNext,
+    };
+  }
+
+  private buildWizardTourMeta(cards: BoardCard[]): BoardTourMeta | null {
+    if (!this.isTourWizardMode(this.wizardMode())) {
+      return null;
+    }
+    const tourCards = cards.filter((card) => card.tour).sort((left, right) => (left.tour?.sequence ?? 0) - (right.tour?.sequence ?? 0));
+    const distance = this.sumTourLegMiles(tourCards);
+    const duration = tourCards.reduce((total, card) => total + this.durationMinutes(card.tour?.legToNext?.durationText), 0);
+    const mode: BoardTourMode = this.wizardMode() === 'driving-tour' ? 'driving' : 'walking';
+    return {
+      mode,
+      totalDistanceText: distance ? `${distance.toFixed(distance >= 10 ? 0 : 1)} mi` : '',
+      totalDurationText: duration ? `${Math.round(duration)} min route` : '',
+      routePolyline: '',
+      voiceStyle: this.wizardTourVoiceStyle(),
+      paceOrRouteStyle: this.wizardTourPaceOrStyle(),
+      extras: Array.from(this.wizardTourExtras()).slice(0, 8),
+      showWayfindersDefault: false,
+    };
+  }
+
+  private sumTourLegMiles(cards: BoardCard[]): number {
+    return cards.reduce((total, card) => {
+      const text = card.tour?.legToNext?.distanceText ?? '';
+      const value = Number.parseFloat(text);
+      if (!Number.isFinite(value)) {
+        return total;
+      }
+      return total + (/\bft\b/i.test(text) ? value / 5280 : value);
+    }, 0);
+  }
+
+  private durationMinutes(text = ''): number {
+    const value = Number.parseFloat(text);
+    if (!Number.isFinite(value)) {
+      return 0;
+    }
+    return /\bhr|hour/i.test(text) ? value * 60 : value;
+  }
+
+  private buildLocalTourWizardBatch(source: string): BoardWizardGeneratedBatch {
+    const mode: BoardTourMode = this.wizardMode() === 'driving-tour' ? 'driving' : 'walking';
+    const stopNames = this.localWizardSearchSeeds(this.titleFromWizardInput(source)).slice(0, Math.max(2, this.wizardCount()));
+    const title = this.titleFromWizardInput(source || `${mode} tour`);
+    const cards = stopNames.map((name, index): BoardWizardGeneratedCard => {
+      const isLast = index === stopNames.length - 1;
+      const next = stopNames[index + 1] ?? '';
+      const durationText = mode === 'driving' ? `${Math.max(3, 5 + index)} min` : `${Math.max(2, 3 + (index % 4))} min`;
+      const distanceText = mode === 'driving' ? `${(0.8 + index * 0.3).toFixed(1)} mi` : `${(0.1 + index * 0.05).toFixed(1)} mi`;
+      return {
+        title: name,
+        subtitle: `Stop ${index + 1}`,
+        notes: `Draft stop for ${title}. Edit this text, address, guide script, and wayfinder details before sharing.`,
+        type: 'place',
+        scope: 'place',
+        status: index === 0 ? 'favorite' : 'planned',
+        rating: 4,
+        tags: [mode === 'driving' ? 'driving-tour' : 'walking-tour', 'stop'],
+        image_query: `${name} ${title}`,
+        place_query: name,
+        tour: {
+          sequence: index + 1,
+          lat: null,
+          lng: null,
+          address: '',
+          guideScript: `Welcome to stop ${index + 1}: ${name}. This is a generated starting point for the ${title} tour. Edit this narration with the story, sponsor language, or local context you want visitors to hear.`,
+          legToNext: isLast
+            ? null
+            : {
+                distanceText,
+                durationText,
+                instruction: `${mode === 'driving' ? 'Drive' : 'Walk'} from ${name} to ${next}.`,
+                navScript: `From ${name}, ${mode === 'driving' ? 'drive' : 'walk'} about ${durationText}, roughly ${distanceText}, to your next stop: ${next}.`,
+                encodedPolyline: '',
+              },
+        },
+      };
+    });
+    return {
+      board: {
+        title,
+        description: `A self-guided ${mode} tour generated from your prompt.`,
+        icon: mode === 'driving' ? 'directions_car' : 'directions_walk',
+        tone: mode === 'driving' ? 'green' : 'sky',
+        kind: mode === 'driving' ? 'driving-tour' : 'walking-tour',
+        tourMeta: {
+          mode,
+          totalDistanceText: '',
+          totalDurationText: '',
+          routePolyline: '',
+          voiceStyle: this.wizardTourVoiceStyle(),
+          paceOrRouteStyle: this.wizardTourPaceOrStyle(),
+          extras: Array.from(this.wizardTourExtras()),
+          showWayfindersDefault: false,
+        },
+      },
+      cards,
+    };
   }
 
   private loadLocalBoards(): void {
@@ -3462,6 +4081,7 @@ export class BoardsComponent {
         .filter((board) => board?.id && board?.title && Array.isArray(board.cards))
         .map((board) => ({
           ...board,
+          kind: this.isBoardKind((board as Board).kind) ? (board as Board).kind : 'standard',
           ownerUserId: typeof board.ownerUserId === 'string' ? board.ownerUserId : '',
           ownerPublicSlug: typeof board.ownerPublicSlug === 'string' ? board.ownerPublicSlug : '',
           ownerDisplayName: typeof board.ownerDisplayName === 'string' ? board.ownerDisplayName : '',
@@ -3473,6 +4093,7 @@ export class BoardsComponent {
           imageUrl: board.imageUrl ?? '',
           backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
+          tourMeta: this.normalizeTourMeta((board as Board).tourMeta),
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
@@ -3480,6 +4101,7 @@ export class BoardsComponent {
             googleMapsUrl: card.googleMapsUrl ?? '',
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
             stickers: this.normalizeStickers(card.stickers),
+            tour: this.normalizeCardTour((card as BoardCard).tour),
           })),
         }));
     } catch {
@@ -3662,6 +4284,7 @@ export class BoardsComponent {
     const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
     return {
       id,
+      kind: this.isBoardKind(data['kind']) ? data['kind'] : 'standard',
       ownerUserId: typeof data['owner_user_id'] === 'string' ? data['owner_user_id'] : '',
       ownerPublicSlug: typeof data['owner_public_slug'] === 'string' ? data['owner_public_slug'] : '',
       ownerDisplayName: typeof data['owner_display_name'] === 'string' ? data['owner_display_name'] : '',
@@ -3677,6 +4300,7 @@ export class BoardsComponent {
       tone: this.isBoardTone(data['tone']) ? data['tone'] : 'teal',
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
       stickers: this.normalizeStickers(data['stickers']),
+      tourMeta: this.normalizeTourMeta(data['tourMeta']),
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
       createdAt: typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : new Date().toISOString(),
       updatedAt: typeof data['updated_at_iso'] === 'string' ? data['updated_at_iso'] : new Date().toISOString(),
@@ -3706,6 +4330,7 @@ export class BoardsComponent {
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
       stickers: this.normalizeStickers(data['stickers']),
+      tour: this.normalizeCardTour(data['tour']),
       createdAt: typeof data['createdAt'] === 'string' ? data['createdAt'] : new Date().toISOString(),
       updatedAt: typeof data['updatedAt'] === 'string' ? data['updatedAt'] : new Date().toISOString(),
     };
@@ -4014,6 +4639,15 @@ export class BoardsComponent {
 
   private isBoardTone(value: unknown): value is BoardTone {
     return typeof value === 'string' && this.tones.some((tone) => tone.id === value);
+  }
+
+  private isBoardKind(value: unknown): value is BoardKind {
+    return value === 'standard' || value === 'walking-tour' || value === 'driving-tour';
+  }
+
+  private wizardGeneratedBoardKind(): BoardKind {
+    const mode = this.wizardMode();
+    return mode === 'walking-tour' || mode === 'driving-tour' ? mode : 'standard';
   }
 
   private isBoardCardType(value: unknown): value is BoardCardType {

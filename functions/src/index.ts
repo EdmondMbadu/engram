@@ -21,6 +21,11 @@ import {
   generateVoiceConversationRecap,
   type BoardWizardMode,
   type BoardWizardVibe,
+  type GeneratedBoardCardTour,
+  type GeneratedBoardTourLeg,
+  type GeneratedBoardTourMeta,
+  type GeneratedBoardTourMode,
+  type GeneratedBoardTourVoiceStyle,
   type GeneratedBoardWizardBatch,
   type GeneratedBoardWizardCard,
 } from './gemini';
@@ -3767,7 +3772,14 @@ type BoardWizardCallableData = {
   defaultType?: unknown;
   count?: unknown;
   vibe?: unknown;
+  tourOptions?: unknown;
   existingCards?: unknown;
+};
+
+type BoardWizardTourOptions = {
+  voiceStyle: GeneratedBoardTourVoiceStyle;
+  paceOrRouteStyle: string;
+  extras: string[];
 };
 
 type BoardWizardUrlLink = {
@@ -4628,6 +4640,7 @@ export const generateBoardWizardBatch = onCall(
     const mode = normalizeBoardWizardMode(data.mode);
     const defaultType = normalizeBoardWizardDefaultType(data.defaultType);
     const vibe = normalizeBoardWizardVibe(data.vibe);
+    const tourOptions = normalizeBoardWizardTourOptions(data.tourOptions, mode);
     const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
     const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
@@ -4731,6 +4744,7 @@ export const generateBoardWizardBatch = onCall(
           defaultType,
           count,
           vibe,
+          tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
           existingCards,
         });
     const result = accommodationExtraction
@@ -4741,6 +4755,9 @@ export const generateBoardWizardBatch = onCall(
           targetBoardTitle,
           defaultType,
         });
+    const routeReadyResult = isBoardWizardTourMode(mode)
+      ? await enrichBoardWizardTourBatchWithRoutes(result, mode, tourOptions)
+      : result;
 
     await db.collection('board_wizard_batches').add({
       owner_user_id: userId,
@@ -4750,26 +4767,26 @@ export const generateBoardWizardBatch = onCall(
       default_type: defaultType,
       vibe,
       requested_count: count,
-      generated_count: result.cards.length,
+      generated_count: routeReadyResult.cards.length,
       prompt_preview: (prompt || pastedList || url || photoNames.join(', ')).slice(0, 500),
-      board_title: result.board.title,
-      card_titles: result.cards.map((card) => card.title).slice(0, 100),
+      board_title: routeReadyResult.board.title,
+      card_titles: routeReadyResult.cards.map((card) => card.title).slice(0, 100),
       created_at: FieldValue.serverTimestamp(),
     });
 
-    return result;
+    return routeReadyResult;
   },
 );
 
 async function enrichBoardWizardBatchWithPlaces(
-  batch: { board: { title: string; description: string; icon: string; tone: string }; cards: GeneratedBoardWizardCard[] },
+  batch: GeneratedBoardWizardBatch,
   context: {
     mode: BoardWizardMode;
     prompt: string;
     targetBoardTitle: string;
     defaultType: GeneratedBoardWizardCard['type'];
   },
-): Promise<typeof batch> {
+): Promise<GeneratedBoardWizardBatch> {
   const apiKey = googlePlacesApiKey.value();
   const customSearchApiKey = googleCustomSearchApiKey.value();
   const searchContext = inferBoardWizardPlaceContext(context.prompt, context.targetBoardTitle || batch.board.title);
@@ -4792,6 +4809,194 @@ async function enrichBoardWizardBatchWithPlaces(
     }),
   );
   return { ...batch, cards: enrichedCards };
+}
+
+type GoogleRoutesComputeResponse = {
+  routes?: Array<{
+    distanceMeters?: number;
+    duration?: string;
+    polyline?: {
+      encodedPolyline?: string;
+    };
+  }>;
+};
+
+async function enrichBoardWizardTourBatchWithRoutes(
+  batch: GeneratedBoardWizardBatch,
+  wizardMode: 'walking-tour' | 'driving-tour',
+  tourOptions: BoardWizardTourOptions,
+): Promise<GeneratedBoardWizardBatch> {
+  const tourMode: GeneratedBoardTourMode = wizardMode === 'driving-tour' ? 'driving' : 'walking';
+  const sorted = [...batch.cards].sort((left, right) => (left.tour?.sequence ?? 0) - (right.tour?.sequence ?? 0));
+  const routePolylineParts: string[] = [];
+  let totalMeters = 0;
+  let totalSeconds = 0;
+  const cards = await Promise.all(
+    batch.cards.map(async (card) => {
+      if (!card.tour?.legToNext) {
+        return card;
+      }
+      const next = sorted.find((item) => (item.tour?.sequence ?? 0) === (card.tour?.sequence ?? 0) + 1) ?? null;
+      const computed = next ? await computeBoardWizardTourLeg(card, next, tourMode) : null;
+      if (computed?.encodedPolyline) {
+        routePolylineParts.push(computed.encodedPolyline);
+      }
+      if (computed?.meters) {
+        totalMeters += computed.meters;
+      } else {
+        totalMeters += metersFromDistanceText(card.tour.legToNext.distanceText);
+      }
+      if (computed?.seconds) {
+        totalSeconds += computed.seconds;
+      } else {
+        totalSeconds += secondsFromDurationText(card.tour.legToNext.durationText);
+      }
+      const leg: GeneratedBoardTourLeg = {
+        distanceText: computed?.distanceText || card.tour.legToNext.distanceText,
+        durationText: computed?.durationText || card.tour.legToNext.durationText,
+        instruction: card.tour.legToNext.instruction || buildBoardWizardTourInstruction(card, next, tourMode),
+        navScript: card.tour.legToNext.navScript || buildBoardWizardTourNavScript(card, next, tourMode, computed?.durationText || card.tour.legToNext.durationText, computed?.distanceText || card.tour.legToNext.distanceText),
+        encodedPolyline: computed?.encodedPolyline || card.tour.legToNext.encodedPolyline,
+      };
+      return { ...card, tour: { ...card.tour, legToNext: leg } };
+    }),
+  );
+
+  const fallbackDistance = sorted.reduce((sum, card) => sum + metersFromDistanceText(card.tour?.legToNext?.distanceText ?? ''), 0);
+  const fallbackSeconds = sorted.reduce((sum, card) => sum + secondsFromDurationText(card.tour?.legToNext?.durationText ?? ''), 0);
+  const meta: GeneratedBoardTourMeta = {
+    mode: tourMode,
+    totalDistanceText: formatMeters(totalMeters || fallbackDistance),
+    totalDurationText: formatSeconds(totalSeconds || fallbackSeconds),
+    routePolyline: routePolylineParts.join('|'),
+    voiceStyle: tourOptions.voiceStyle,
+    paceOrRouteStyle: tourOptions.paceOrRouteStyle,
+    extras: tourOptions.extras,
+    showWayfindersDefault: false,
+  };
+  return {
+    board: {
+      ...batch.board,
+      kind: wizardMode,
+      icon: batch.board.icon || (tourMode === 'driving' ? 'directions_car' : 'directions_walk'),
+      tourMeta: {
+        ...meta,
+        totalDistanceText: batch.board.tourMeta?.totalDistanceText || meta.totalDistanceText,
+        totalDurationText: batch.board.tourMeta?.totalDurationText || meta.totalDurationText,
+      },
+    },
+    cards,
+  };
+}
+
+async function computeBoardWizardTourLeg(
+  from: GeneratedBoardWizardCard,
+  to: GeneratedBoardWizardCard,
+  mode: GeneratedBoardTourMode,
+): Promise<{ distanceText: string; durationText: string; encodedPolyline: string; meters: number; seconds: number } | null> {
+  const apiKey = googlePlacesApiKey.value();
+  const fromLat = from.tour?.lat;
+  const fromLng = from.tour?.lng;
+  const toLat = to.tour?.lat;
+  const toLng = to.tour?.lng;
+  if (!apiKey || typeof fromLat !== 'number' || typeof fromLng !== 'number' || typeof toLat !== 'number' || typeof toLng !== 'number') {
+    return null;
+  }
+  try {
+    const response = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
+      },
+      body: JSON.stringify({
+        origin: { location: { latLng: { latitude: fromLat, longitude: fromLng } } },
+        destination: { location: { latLng: { latitude: toLat, longitude: toLng } } },
+        travelMode: mode === 'driving' ? 'DRIVE' : 'WALK',
+        routingPreference: mode === 'driving' ? 'TRAFFIC_UNAWARE' : undefined,
+        polylineQuality: 'OVERVIEW',
+      }),
+    });
+    if (!response.ok) {
+      logger.warn('Board wizard Routes API failed.', { status: response.status, from: from.title, to: to.title });
+      return null;
+    }
+    const data = await response.json() as GoogleRoutesComputeResponse;
+    const route = data.routes?.[0];
+    const meters = typeof route?.distanceMeters === 'number' ? route.distanceMeters : 0;
+    const seconds = secondsFromGoogleDuration(route?.duration);
+    if (!meters && !seconds) {
+      return null;
+    }
+    return {
+      distanceText: formatMeters(meters),
+      durationText: formatSeconds(seconds),
+      encodedPolyline: textFromUnknown(route?.polyline?.encodedPolyline),
+      meters,
+      seconds,
+    };
+  } catch (error) {
+    logger.warn('Board wizard route leg enrichment failed.', {
+      from: from.title,
+      to: to.title,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+function buildBoardWizardTourInstruction(from: GeneratedBoardWizardCard, to: GeneratedBoardWizardCard | null, mode: GeneratedBoardTourMode): string {
+  return to ? `${mode === 'driving' ? 'Drive' : 'Walk'} from ${from.title} to ${to.title}.` : '';
+}
+
+function buildBoardWizardTourNavScript(from: GeneratedBoardWizardCard, to: GeneratedBoardWizardCard | null, mode: GeneratedBoardTourMode, duration: string, distance: string): string {
+  return to ? `From ${from.title}, ${mode === 'driving' ? 'drive' : 'walk'} about ${duration || 'a short distance'}, roughly ${distance || 'nearby'}, to your next stop: ${to.title}.` : '';
+}
+
+function secondsFromGoogleDuration(value: unknown): number {
+  const text = textFromUnknown(value);
+  const seconds = Number.parseInt(text.replace(/s$/, ''), 10);
+  return Number.isFinite(seconds) ? seconds : 0;
+}
+
+function metersFromDistanceText(text: string): number {
+  const value = Number.parseFloat(text);
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+  return /\bft\b/i.test(text) ? value * 0.3048 : value * 1609.344;
+}
+
+function secondsFromDurationText(text: string): number {
+  const value = Number.parseFloat(text);
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+  return /\bhr|hour/i.test(text) ? value * 3600 : value * 60;
+}
+
+function formatMeters(meters: number): string {
+  if (!meters) {
+    return '';
+  }
+  if (meters < 305) {
+    return `${Math.round(meters / 0.3048)} ft`;
+  }
+  const miles = meters / 1609.344;
+  return `${miles.toFixed(miles >= 10 ? 0 : 1)} mi`;
+}
+
+function formatSeconds(seconds: number): string {
+  if (!seconds) {
+    return '';
+  }
+  const minutes = Math.max(1, Math.round(seconds / 60));
+  if (minutes < 90) {
+    return `${minutes} min`;
+  }
+  const hours = minutes / 60;
+  return `${hours.toFixed(hours >= 10 ? 0 : 1)} hr`;
 }
 
 async function buildBoardWizardImageOnlyBatch(
@@ -5120,6 +5325,16 @@ async function enrichBoardWizardCardWithPlace(
       : typeof place?.rating === 'number'
         ? place.rating
         : card.rating;
+    const lat = typeof details?.geometry?.location?.lat === 'number'
+      ? details.geometry.location.lat
+      : typeof place?.geometry?.location?.lat === 'number'
+        ? place.geometry.location.lat
+        : card.tour?.lat ?? null;
+    const lng = typeof details?.geometry?.location?.lng === 'number'
+      ? details.geometry.location.lng
+      : typeof place?.geometry?.location?.lng === 'number'
+        ? place.geometry.location.lng
+        : card.tour?.lng ?? null;
 
     return {
       ...card,
@@ -5131,6 +5346,14 @@ async function enrichBoardWizardCardWithPlace(
       placeId,
       googleMapsUrl: textFromUnknown(details?.url) || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`,
       imageUrl: photoReference ? `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(photoReference)}` : card.imageUrl,
+      tour: card.tour
+        ? {
+            ...card.tour,
+            lat,
+            lng,
+            address: address || card.tour.address,
+          }
+        : card.tour,
     };
   } catch (error) {
     logger.warn('Board wizard place enrichment failed.', {
@@ -5338,7 +5561,7 @@ async function fetchGooglePlaceDetailsForBoardWizard(
 ): Promise<GooglePlaceDetailsResponse['result'] | null> {
   const detailsUrl = new URL('https://maps.googleapis.com/maps/api/place/details/json');
   detailsUrl.searchParams.set('place_id', placeId);
-  detailsUrl.searchParams.set('fields', 'place_id,name,formatted_address,url,rating,user_ratings_total,types,photos');
+  detailsUrl.searchParams.set('fields', 'place_id,name,formatted_address,url,rating,user_ratings_total,types,photos,geometry');
   detailsUrl.searchParams.set('key', apiKey);
   const details = await fetchJson<GooglePlaceDetailsResponse>(detailsUrl.toString());
   if (details.status && details.status !== 'OK') {
@@ -5571,7 +5794,14 @@ function stringOrEmpty(value: unknown): string {
 }
 
 function normalizeBoardWizardMode(value: unknown): BoardWizardMode {
-  return value === 'paste' || value === 'photos' || value === 'url' || value === 'expand' ? value : 'describe';
+  return value === 'paste'
+    || value === 'photos'
+    || value === 'url'
+    || value === 'expand'
+    || value === 'walking-tour'
+    || value === 'driving-tour'
+    ? value
+    : 'describe';
 }
 
 function normalizeBoardWizardVibe(value: unknown): BoardWizardVibe {
@@ -5597,6 +5827,26 @@ function normalizeExistingBoardWizardCard(value: unknown): { title: string; subt
     tags: Array.isArray(data.tags)
       ? data.tags.map((tag) => stringOrEmpty(tag).slice(0, 40)).filter(Boolean).slice(0, 8)
       : undefined,
+  };
+}
+
+function isBoardWizardTourMode(mode: BoardWizardMode): mode is 'walking-tour' | 'driving-tour' {
+  return mode === 'walking-tour' || mode === 'driving-tour';
+}
+
+function normalizeBoardWizardTourOptions(value: unknown, mode: BoardWizardMode): BoardWizardTourOptions {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const voiceStyle: GeneratedBoardTourVoiceStyle =
+    data.voiceStyle === 'local' || data.voiceStyle === 'kid-friendly' || data.voiceStyle === 'historian'
+      ? data.voiceStyle
+      : 'historian';
+  const fallbackStyle = mode === 'driving-tour' ? 'Balanced' : 'Standard';
+  return {
+    voiceStyle,
+    paceOrRouteStyle: stringOrEmpty(data.paceOrRouteStyle).slice(0, 40) || fallbackStyle,
+    extras: Array.isArray(data.extras)
+      ? data.extras.map((extra) => stringOrEmpty(extra).slice(0, 40)).filter(Boolean).slice(0, 8)
+      : [],
   };
 }
 

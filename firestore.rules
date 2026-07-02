@@ -284,6 +284,7 @@ service cloud.firestore {
           'owner_profile_icon',
           'owner_profile_picture_type',
           'visibility',
+          'kind',
           'title',
           'description',
           'backNote',
@@ -291,12 +292,17 @@ service cloud.firestore {
           'tone',
           'imageUrl',
           'stickers',
+          'tourMeta',
           'cards',
           'created_at_iso',
           'updated_at_iso',
           'server_updated_at'
         ])
         && request.resource.data.id == boardId
+        && (
+          !request.resource.data.keys().hasAny(['kind'])
+          || request.resource.data.kind in ['standard', 'walking-tour', 'driving-tour']
+        )
         && request.resource.data.owner_public_slug is string
         && request.resource.data.owner_public_slug.size() >= 2
         && request.resource.data.owner_public_slug.size() <= 80
@@ -325,6 +331,11 @@ service cloud.firestore {
         && request.resource.data.imageUrl.size() <= 2000
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48
+        && (
+          !request.resource.data.keys().hasAny(['tourMeta'])
+          || request.resource.data.tourMeta == null
+          || request.resource.data.tourMeta is map
+        )
         && request.resource.data.cards is list
         && request.resource.data.cards.size() <= 200
         && request.resource.data.created_at_iso is string
