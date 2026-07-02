@@ -1343,6 +1343,19 @@ type WikipediaPageImagesResponse = {
   };
 };
 
+type WikipediaPageMediaResponse = {
+  query?: {
+    pages?: Record<string, {
+      pageid?: number;
+      title?: string;
+      images?: Array<{
+        ns?: number;
+        title?: string;
+      }>;
+    }>;
+  };
+};
+
 type GoogleCustomSearchImageResponse = {
   items?: Array<{
     link?: string;
@@ -5307,9 +5320,10 @@ function buildBoardWizardMediaImageQuery(
 ): string {
   const cleanTitle = title.replace(/\s+/g, ' ').trim();
   const artistOrCreator = extractBoardWizardCreatorHint(`${card.subtitle} ${'notes' in card ? card.notes : ''} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''} ${searchContext}`);
+  const yearHint = extractBoardWizardYearHint(`${card.title} ${card.subtitle} ${'notes' in card ? card.notes : ''} ${card.image_query} ${searchContext}`);
   switch (kind) {
     case 'film':
-      return `${cleanTitle} official movie poster`;
+      return [cleanTitle, cleanTitle.includes(yearHint) ? '' : yearHint, 'official movie poster'].filter(Boolean).join(' ');
     case 'song':
       return [cleanTitle, artistOrCreator, 'song cover art'].filter(Boolean).join(' ');
     case 'album':
@@ -5341,6 +5355,11 @@ function extractBoardWizardCreatorHint(text: string): string {
     }
   }
   return '';
+}
+
+function extractBoardWizardYearHint(text: string): string {
+  const match = text.match(/\b(18\d{2}|19\d{2}|20\d{2})\b/);
+  return match?.[1] ?? '';
 }
 
 function buildWorldCupTeamWikipediaTitle(title: string, text: string): string {
@@ -5712,6 +5731,11 @@ async function findReferenceImageForBoardWizard(query: string): Promise<string> 
     return exactImage;
   }
 
+  const exactMediaImage = await findExactWikipediaMediaFileImageForBoardWizard(query);
+  if (exactMediaImage) {
+    return exactMediaImage;
+  }
+
   const searchUrl = new URL('https://en.wikipedia.org/w/api.php');
   searchUrl.searchParams.set('action', 'query');
   searchUrl.searchParams.set('list', 'search');
@@ -5726,6 +5750,11 @@ async function findReferenceImageForBoardWizard(query: string): Promise<string> 
     .slice(0, 4);
   if (!pageIds.length) {
     return '';
+  }
+
+  const searchMediaImage = await findWikipediaPageMediaFileImageForBoardWizard(query, pageIds);
+  if (searchMediaImage) {
+    return searchMediaImage;
   }
 
   const imageUrl = new URL('https://en.wikipedia.org/w/api.php');
@@ -5745,6 +5774,172 @@ async function findReferenceImageForBoardWizard(query: string): Promise<string> 
   }
 
   return '';
+}
+
+async function findExactWikipediaMediaFileImageForBoardWizard(query: string): Promise<string> {
+  const titles = exactWikipediaTitleCandidates(query);
+  if (!titles.length) {
+    return '';
+  }
+
+  const mediaUrl = new URL('https://en.wikipedia.org/w/api.php');
+  mediaUrl.searchParams.set('action', 'query');
+  mediaUrl.searchParams.set('format', 'json');
+  mediaUrl.searchParams.set('redirects', '1');
+  mediaUrl.searchParams.set('prop', 'images');
+  mediaUrl.searchParams.set('imlimit', '50');
+  mediaUrl.searchParams.set('titles', titles.join('|'));
+
+  const media = await fetchJson<WikipediaPageMediaResponse>(mediaUrl.toString());
+  const fileTitles = Object.values(media.query?.pages ?? {})
+    .flatMap((page) => page.images ?? [])
+    .map((image) => textFromUnknown(image.title))
+    .filter((title) => title.startsWith('File:'));
+  const bestFiles = fileTitles
+    .map((title) => ({ title, score: scoreWikipediaMediaFileTitle(title, query, titles) }))
+    .filter((item) => item.score > 0)
+    .sort((left, right) => right.score - left.score)
+    .slice(0, 4)
+    .map((item) => item.title);
+  if (!bestFiles.length) {
+    return '';
+  }
+
+  const imageUrl = new URL('https://en.wikipedia.org/w/api.php');
+  imageUrl.searchParams.set('action', 'query');
+  imageUrl.searchParams.set('format', 'json');
+  imageUrl.searchParams.set('prop', 'imageinfo');
+  imageUrl.searchParams.set('iiprop', 'url|mime|size');
+  imageUrl.searchParams.set('iiurlwidth', '1200');
+  imageUrl.searchParams.set('titles', bestFiles.join('|'));
+
+  const data = await fetchJson<WikimediaCommonsImageResponse>(imageUrl.toString());
+  const pages = Object.values(data.query?.pages ?? {});
+  const orderedPages = bestFiles
+    .map((fileTitle) => pages.find((page) => normalizeWikipediaTitleCandidate(page.title ?? '') === normalizeWikipediaTitleCandidate(fileTitle)))
+    .filter((page): page is NonNullable<(typeof pages)[number]> => !!page);
+  for (const page of orderedPages) {
+    const image = page.imageinfo?.[0];
+    const mime = image?.mime?.toLowerCase() ?? '';
+    if (mime && !['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(mime)) {
+      continue;
+    }
+    for (const source of [image?.thumburl, image?.url]) {
+      if (source && canTryCoverImageUrl(source)) {
+        return source;
+      }
+    }
+  }
+
+  return '';
+}
+
+async function findWikipediaPageMediaFileImageForBoardWizard(query: string, pageIds: number[]): Promise<string> {
+  if (!pageIds.length) {
+    return '';
+  }
+
+  const mediaUrl = new URL('https://en.wikipedia.org/w/api.php');
+  mediaUrl.searchParams.set('action', 'query');
+  mediaUrl.searchParams.set('format', 'json');
+  mediaUrl.searchParams.set('prop', 'images');
+  mediaUrl.searchParams.set('imlimit', '50');
+  mediaUrl.searchParams.set('pageids', pageIds.slice(0, 4).join('|'));
+
+  const media = await fetchJson<WikipediaPageMediaResponse>(mediaUrl.toString());
+  const fileTitles = Object.values(media.query?.pages ?? {})
+    .flatMap((page) => page.images ?? [])
+    .map((image) => textFromUnknown(image.title))
+    .filter((title) => title.startsWith('File:'));
+  const scoringTitles = exactWikipediaTitleCandidates(query);
+  const bestFiles = fileTitles
+    .map((title) => ({ title, score: scoreWikipediaMediaFileTitle(title, query, scoringTitles.length ? scoringTitles : [query]) }))
+    .filter((item) => item.score > 0)
+    .sort((left, right) => right.score - left.score)
+    .slice(0, 4)
+    .map((item) => item.title);
+  if (!bestFiles.length) {
+    return '';
+  }
+
+  const imageUrl = new URL('https://en.wikipedia.org/w/api.php');
+  imageUrl.searchParams.set('action', 'query');
+  imageUrl.searchParams.set('format', 'json');
+  imageUrl.searchParams.set('prop', 'imageinfo');
+  imageUrl.searchParams.set('iiprop', 'url|mime|size');
+  imageUrl.searchParams.set('iiurlwidth', '1200');
+  imageUrl.searchParams.set('titles', bestFiles.join('|'));
+
+  const data = await fetchJson<WikimediaCommonsImageResponse>(imageUrl.toString());
+  const pages = Object.values(data.query?.pages ?? {});
+  const orderedPages = bestFiles
+    .map((fileTitle) => pages.find((page) => normalizeWikipediaTitleCandidate(page.title ?? '') === normalizeWikipediaTitleCandidate(fileTitle)))
+    .filter((page): page is NonNullable<(typeof pages)[number]> => !!page);
+  for (const page of orderedPages) {
+    const image = page.imageinfo?.[0];
+    const mime = image?.mime?.toLowerCase() ?? '';
+    if (mime && !['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(mime)) {
+      continue;
+    }
+    for (const source of [image?.thumburl, image?.url]) {
+      if (source && canTryCoverImageUrl(source)) {
+        return source;
+      }
+    }
+  }
+
+  return '';
+}
+
+function scoreWikipediaMediaFileTitle(fileTitle: string, query: string, titleCandidates: string[]): number {
+  const normalizedFile = normalizeWikipediaTitleCandidate(fileTitle.replace(/^File:/i, '').replace(/\.[a-z0-9]+$/i, ' '));
+  const normalizedQuery = normalizeWikipediaTitleCandidate(query);
+  const isFilm = /\b(movie|film|poster)\b/i.test(query);
+  const isSongOrAlbum = /\b(song|single|album|cover art|album cover)\b/i.test(query);
+  const isBook = /\b(book|novel|book cover)\b/i.test(query);
+  const isTv = /\b(tv|television|series)\b/i.test(query);
+  const isGame = /\b(video game|game|cover art)\b/i.test(query);
+  let score = 0;
+
+  if (/\b(poster|cover|cover art|album|single|key art|box art|book cover|dvd|blu ray)\b/i.test(normalizedFile)) {
+    score += 45;
+  }
+  if (isFilm && /\b(poster|film poster|movie poster|key art)\b/i.test(normalizedFile)) {
+    score += 80;
+  }
+  if (isSongOrAlbum && /\b(cover|cover art|album|single)\b/i.test(normalizedFile)) {
+    score += 80;
+  }
+  if (isBook && /\b(cover|book cover|novel)\b/i.test(normalizedFile)) {
+    score += 70;
+  }
+  if (isTv && /\b(poster|title card|key art)\b/i.test(normalizedFile)) {
+    score += 60;
+  }
+  if (isGame && /\b(cover|box art|cover art)\b/i.test(normalizedFile)) {
+    score += 70;
+  }
+
+  const titleTokens = titleCandidates
+    .flatMap((title) => meaningfulBoardWizardTokens(title.replace(/\([^)]*\)/g, ' ')))
+    .filter((token) => token.length >= 3 && !['film', 'movie', 'song', 'album', 'book', 'novel', 'official', 'poster', 'cover'].includes(token));
+  const uniqueTokens = Array.from(new Set(titleTokens)).slice(0, 8);
+  const matchedTokens = uniqueTokens.filter((token) => normalizedFile.includes(token));
+  score += matchedTokens.length * 8;
+  if (uniqueTokens.length && matchedTokens.length >= Math.min(3, uniqueTokens.length)) {
+    score += 25;
+  }
+
+  if (normalizedQuery.includes(normalizedFile) || normalizedFile.includes(normalizedQuery.replace(/\b(official|poster|cover|art|movie|film|song|album|book)\b/g, '').replace(/\s+/g, ' ').trim())) {
+    score += 12;
+  }
+  if (/\b(cannes|festival|premiere|red carpet|cropped|actor|actress|director|headshot|portrait)\b/i.test(normalizedFile) && !/\bposter|cover|key art|box art\b/i.test(normalizedFile)) {
+    score -= 35;
+  }
+  if (/\b(flag|logo|icon|edit|svg|map)\b/i.test(normalizedFile)) {
+    score -= 80;
+  }
+  return score;
 }
 
 async function findExactWikipediaImageForBoardWizard(query: string): Promise<string> {
@@ -5777,8 +5972,9 @@ async function findExactWikipediaImageForBoardWizard(query: string): Promise<str
 
 function exactWikipediaTitleCandidates(query: string): string[] {
   const raw = query.replace(/\s+/g, ' ').trim();
+  const yearHint = extractBoardWizardYearHint(raw);
   const withoutDescriptors = raw
-    .replace(/\b(official|public domain|photograph|photo|picture|image|poster|cover|cover art|portrait|biography|person|people|american|u\.s\.|us|united states|president|presidential|first lady|signer|founding father|historical figure)\b/gi, ' ')
+    .replace(/\b(official|public domain|photograph|photo|picture|image|poster|cover art|cover|portrait|biography|person|people|american|u\.s\.|us|united states|president|presidential|first lady|signer|founding father|historical figure)\b/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
   const baseTitles = [withoutDescriptors, raw]
@@ -5793,23 +5989,44 @@ function exactWikipediaTitleCandidates(query: string): string[] {
     if (!cleanedTitle || cleanedTitle.length < 3) {
       continue;
     }
+    const cleanedWithoutYear = yearHint
+      ? cleanedTitle.replace(new RegExp(`\\b${yearHint}\\b`, 'g'), ' ').replace(/\s+/g, ' ').trim()
+      : cleanedTitle;
     if (/\b(movie|film)\b/i.test(raw)) {
+      if (yearHint && cleanedWithoutYear.length >= 3) {
+        mediaTitles.push(`${cleanedWithoutYear} (${yearHint} film)`);
+      }
       mediaTitles.push(`${cleanedTitle} (film)`);
     }
     if (/\b(song|single)\b/i.test(raw)) {
+      if (yearHint && cleanedWithoutYear.length >= 3) {
+        mediaTitles.push(`${cleanedWithoutYear} (${yearHint} song)`);
+      }
       mediaTitles.push(`${cleanedTitle} (song)`);
     }
     if (/\b(album|lp|ep)\b/i.test(raw)) {
+      if (yearHint && cleanedWithoutYear.length >= 3) {
+        mediaTitles.push(`${cleanedWithoutYear} (${yearHint} album)`);
+      }
       mediaTitles.push(`${cleanedTitle} (album)`);
     }
     if (/\b(book|novel)\b/i.test(raw)) {
+      if (yearHint && cleanedWithoutYear.length >= 3) {
+        mediaTitles.push(`${cleanedWithoutYear} (${yearHint} book)`);
+      }
       mediaTitles.push(`${cleanedTitle}`);
       mediaTitles.push(`${cleanedTitle} (novel)`);
     }
     if (/\b(tv|television|series)\b/i.test(raw)) {
+      if (yearHint && cleanedWithoutYear.length >= 3) {
+        mediaTitles.push(`${cleanedWithoutYear} (${yearHint} TV series)`);
+      }
       mediaTitles.push(`${cleanedTitle} (TV series)`);
     }
     if (/\b(video game|game)\b/i.test(raw)) {
+      if (yearHint && cleanedWithoutYear.length >= 3) {
+        mediaTitles.push(`${cleanedWithoutYear} (${yearHint} video game)`);
+      }
       mediaTitles.push(`${cleanedTitle} (video game)`);
     }
   }
