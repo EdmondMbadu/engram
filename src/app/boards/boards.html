@@ -1331,6 +1331,42 @@
               </div>
             </div>
 
+            <section class="boards-sticker-panel boards-sticker-panel--prominent" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 60%);">
+              <div class="boards-sticker-panel__head">
+                <div>
+                  <span>Stack CTA</span>
+                  <strong>Final button</strong>
+                </div>
+                <span class="material-symbols-outlined" style="display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border: 2px solid var(--modal-ink, var(--ink)); border-radius: 999px; background: var(--accent); box-shadow: 2px 2px 0 var(--modal-ink, var(--ink)); color: var(--surface); font-size: 1.28rem; font-variation-settings: 'FILL' 1;">campaign</span>
+              </div>
+              <div style="display: inline-flex; align-items: center; gap: 0.42rem; width: fit-content; max-width: 100%; border: 2px solid var(--modal-ink, var(--ink)); border-radius: 999px; background: var(--modal-ink, var(--ink)); box-shadow: 3px 3px 0 color-mix(in srgb, var(--accent) 45%, transparent); color: var(--surface); padding: 0.52rem 0.72rem;" aria-hidden="true">
+                <span class="material-symbols-outlined">ads_click</span>
+                <strong style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ wizardStackCtaLabel().trim() || 'Check us out' }}</strong>
+              </div>
+              <div class="boards-form__split">
+                <label>
+                  <span>Text</span>
+                  <input
+                    type="text"
+                    maxlength="48"
+                    placeholder="Check us out"
+                    [value]="wizardStackCtaLabel()"
+                    (input)="wizardStackCtaLabel.set($any($event.target).value)"
+                  />
+                </label>
+                <label>
+                  <span>Link or phone</span>
+                  <input
+                    type="text"
+                    maxlength="240"
+                    placeholder="https://site.com or +1 555 123 4567"
+                    [value]="wizardStackCtaUrl()"
+                    (input)="wizardStackCtaUrl.set($any($event.target).value)"
+                  />
+                </label>
+              </div>
+            </section>
+
             @if (wizardError()) {
               <div class="boards-form__soft-error">{{ wizardError() }}</div>
             }
@@ -2179,28 +2215,41 @@
             </label>
           </div>
 
-          <div class="boards-form__split">
-            <label>
-              <span>Stack call to action</span>
-              <input
-                type="text"
-                maxlength="48"
-                placeholder="Check us out"
-                [value]="boardDraft().stackCtaLabel"
-                (input)="updateBoardDraft('stackCtaLabel', $any($event.target).value)"
-              />
-            </label>
-            <label>
-              <span>CTA link or phone</span>
-              <input
-                type="text"
-                maxlength="240"
-                placeholder="https://site.com or +1 555 123 4567"
-                [value]="boardDraft().stackCtaUrl"
-                (input)="updateBoardDraft('stackCtaUrl', $any($event.target).value)"
-              />
-            </label>
-          </div>
+          <section class="boards-sticker-panel boards-sticker-panel--prominent" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 60%);">
+            <div class="boards-sticker-panel__head">
+              <div>
+                <span>Stack CTA</span>
+                <strong>Final button</strong>
+              </div>
+              <span class="material-symbols-outlined" style="display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border: 2px solid var(--modal-ink, var(--ink)); border-radius: 999px; background: var(--accent); box-shadow: 2px 2px 0 var(--modal-ink, var(--ink)); color: var(--surface); font-size: 1.28rem; font-variation-settings: 'FILL' 1;">campaign</span>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 0.42rem; width: fit-content; max-width: 100%; border: 2px solid var(--modal-ink, var(--ink)); border-radius: 999px; background: var(--modal-ink, var(--ink)); box-shadow: 3px 3px 0 color-mix(in srgb, var(--accent) 45%, transparent); color: var(--surface); padding: 0.52rem 0.72rem;" aria-hidden="true">
+              <span class="material-symbols-outlined">ads_click</span>
+              <strong style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ boardDraft().stackCtaLabel.trim() || 'Check us out' }}</strong>
+            </div>
+            <div class="boards-form__split">
+              <label>
+                <span>Text</span>
+                <input
+                  type="text"
+                  maxlength="48"
+                  placeholder="Check us out"
+                  [value]="boardDraft().stackCtaLabel"
+                  (input)="updateBoardDraft('stackCtaLabel', $any($event.target).value)"
+                />
+              </label>
+              <label>
+                <span>Link or phone</span>
+                <input
+                  type="text"
+                  maxlength="240"
+                  placeholder="https://site.com or +1 555 123 4567"
+                  [value]="boardDraft().stackCtaUrl"
+                  (input)="updateBoardDraft('stackCtaUrl', $any($event.target).value)"
+                />
+              </label>
+            </div>
+          </section>
 
           <div class="boards-form__split">
             <label>

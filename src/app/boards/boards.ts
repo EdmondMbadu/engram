@@ -842,6 +842,8 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardUrl = signal('');
   readonly wizardPhotoNames = signal('');
   readonly wizardRefineText = signal('');
+  readonly wizardStackCtaLabel = signal('');
+  readonly wizardStackCtaUrl = signal('');
   readonly wizardTourVoiceStyle = signal<BoardTourVoiceStyle>('historian');
   readonly wizardTourPaceOrStyle = signal('Standard');
   readonly wizardTourExtras = signal<Set<string>>(new Set(['Photo stops', 'Accessibility notes']));
@@ -1815,6 +1817,8 @@ export class BoardsComponent implements OnDestroy {
           ...existingBoard,
           kind: result.board.kind ?? existingBoard.kind,
           tourMeta: result.board.tourMeta ?? existingBoard.tourMeta,
+          stackCtaLabel: this.wizardStackCtaLabel().trim() || existingBoard.stackCtaLabel,
+          stackCtaUrl: this.wizardStackCtaUrl().trim() || existingBoard.stackCtaUrl,
           cards: [...cards, ...existingBoard.cards],
           updatedAt: now,
         }
@@ -1831,8 +1835,8 @@ export class BoardsComponent implements OnDestroy {
           imageUrl: cards.find((card) => card.imageUrl)?.imageUrl ?? '',
           logoUrl: '',
           logoLinkUrl: '',
-          stackCtaLabel: '',
-          stackCtaUrl: '',
+          stackCtaLabel: this.wizardStackCtaLabel().trim(),
+          stackCtaUrl: this.wizardStackCtaUrl().trim(),
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
           cards,
@@ -4178,6 +4182,8 @@ export class BoardsComponent implements OnDestroy {
     this.wizardUrl.set('');
     this.wizardPhotoNames.set('');
     this.wizardRefineText.set('');
+    this.wizardStackCtaLabel.set(editableSelectedBoard?.stackCtaLabel ?? '');
+    this.wizardStackCtaUrl.set(editableSelectedBoard?.stackCtaUrl ?? '');
     this.wizardTourVoiceStyle.set('historian');
     this.wizardTourPaceOrStyle.set('Standard');
     this.wizardTourExtras.set(new Set(['Photo stops', 'Accessibility notes']));
