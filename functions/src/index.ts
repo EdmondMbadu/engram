@@ -5380,12 +5380,15 @@ function buildBoardWizardMediaImageQuery(
 function extractBoardWizardCreatorHint(text: string): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
   const patterns = [
-    /\b(?:by|from|made by|performed by|sung by|artist|featuring|feat\.?|starring)\s+([A-Z][\w'.-]+(?:\s+[A-Z][\w'.-]+){0,3})/,
-    /\b([A-Z][\w'.-]+(?:\s+[A-Z][\w'.-]+){0,3})\s+(?:song|single|album|track)\b/,
+    /\b(?:by|from|made by|performed by|sung by|artist|featuring|feat\.?|starring)\s+([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})/i,
+    /\b([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})\s+(?:song|single|album|track|discography|hits?)\b/i,
   ];
   for (const pattern of patterns) {
     const match = normalized.match(pattern);
-    const value = match?.[1]?.replace(/\b(?:movies?|films?|songs?|albums?|books?)\b.*$/i, '').trim();
+    const value = match?.[1]
+      ?.replace(/\b(?:movies?|films?|songs?|albums?|books?|discography|hits?|in order|ranked|chronological(?:ly)?|from|with|and)\b.*$/i, '')
+      .replace(/[.,;:()[\]{}"'`]+$/g, '')
+      .trim();
     if (value && value.length <= 60) {
       return value;
     }
@@ -5612,23 +5615,41 @@ async function findAppleMusicMediaForBoardWizard(
     return { imageUrl: '', audioPreviewUrl: '' };
   }
   const artistHint = extractBoardWizardCreatorHint(`${card.subtitle} ${'notes' in card ? card.notes : ''} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''} ${card.image_query} ${searchContext}`);
-  const searchTerm = [title, artistHint].filter(Boolean).join(' ').slice(0, 180);
+  const titleCandidates = buildAppleMusicTitleCandidates(title, card.image_query);
+  const searchTerms = buildAppleMusicSearchTerms(titleCandidates, artistHint);
 
   try {
-    const searchUrl = new URL('https://itunes.apple.com/search');
-    searchUrl.searchParams.set('term', searchTerm);
-    searchUrl.searchParams.set('media', 'music');
-    searchUrl.searchParams.set('entity', kind === 'song' ? 'song' : 'album');
-    searchUrl.searchParams.set('country', 'US');
-    searchUrl.searchParams.set('limit', '12');
-    const data = await fetchJson<AppleMusicSearchResponse>(searchUrl.toString());
-    const titleTokens = musicArtworkTokens(title);
+    const responses = await Promise.all(searchTerms.map(async (searchTerm) => {
+      const searchUrl = new URL('https://itunes.apple.com/search');
+      searchUrl.searchParams.set('term', searchTerm);
+      searchUrl.searchParams.set('media', 'music');
+      searchUrl.searchParams.set('entity', kind === 'song' ? 'song' : 'album');
+      searchUrl.searchParams.set('country', 'US');
+      searchUrl.searchParams.set('limit', '25');
+      return await fetchJson<AppleMusicSearchResponse>(searchUrl.toString());
+    }));
+    const titleTokenSets = titleCandidates.map((candidate) => musicArtworkTokens(candidate)).filter((tokens) => tokens.length);
     const artistTokens = musicArtworkTokens(artistHint);
-    const scored = (data.results ?? [])
+    const seenResults = new Set<string>();
+    const results = responses.flatMap((data) => data.results ?? []).filter((result) => {
+      const key = [
+        textFromUnknown(result.artistName).toLowerCase(),
+        textFromUnknown(result.trackName || result.collectionName).toLowerCase(),
+        textFromUnknown(result.collectionName).toLowerCase(),
+      ].join('|');
+      if (seenResults.has(key)) {
+        return false;
+      }
+      seenResults.add(key);
+      return true;
+    });
+    const scored = results
       .map((result) => {
         const resultTitle = kind === 'song' ? textFromUnknown(result.trackName) : textFromUnknown(result.collectionName);
         const resultArtist = textFromUnknown(result.artistName);
         const resultText = normalizeMusicArtworkText(`${resultTitle} ${resultArtist}`);
+        const resultTitleText = normalizeMusicArtworkText(resultTitle);
+        const resultCollectionText = normalizeMusicArtworkText(textFromUnknown(result.collectionName));
         const artwork = textFromUnknown(result.artworkUrl600 || result.artworkUrl100)
           .replace(/\/\d+x\d+bb\./, '/1000x1000bb.')
           .replace(/\/\d+x\d+bb-/, '/1000x1000bb-');
@@ -5636,21 +5657,30 @@ async function findAppleMusicMediaForBoardWizard(
         if (!artwork || !canTryCoverImageUrl(artwork)) {
           return { artwork: '', audioPreviewUrl: '', score: 0 };
         }
-        const titleMatches = titleTokens.filter((token) => resultText.includes(token)).length;
-        const artistMatches = artistTokens.filter((token) => resultText.includes(token)).length;
-        const requiredTitleMatches = titleTokens.length <= 2 ? titleTokens.length : Math.min(2, titleTokens.length);
-        if (requiredTitleMatches > 0 && titleMatches < requiredTitleMatches) {
+        const titleMatchScores = titleTokenSets.map((titleTokens) => {
+          const titleMatches = titleTokens.filter((token) => resultText.includes(token)).length;
+          const requiredTitleMatches = titleTokens.length <= 2 ? titleTokens.length : Math.min(2, titleTokens.length);
+          return { titleTokens, titleMatches, requiredTitleMatches };
+        });
+        const bestTitleMatch = titleMatchScores
+          .filter((item) => item.requiredTitleMatches > 0 && item.titleMatches >= item.requiredTitleMatches)
+          .sort((left, right) => right.titleMatches - left.titleMatches || left.titleTokens.length - right.titleTokens.length)[0];
+        if (!bestTitleMatch) {
           return { artwork: '', audioPreviewUrl: '', score: 0 };
         }
+        const artistMatches = artistTokens.filter((token) => resultText.includes(token)).length;
         if (artistTokens.length && artistMatches < Math.min(2, artistTokens.length)) {
           return { artwork: '', audioPreviewUrl: '', score: 0 };
         }
-        const normalizedTitle = normalizeMusicArtworkText(title);
-        const normalizedResultTitle = normalizeMusicArtworkText(resultTitle);
-        let score = titleMatches * 18 + artistMatches * 24;
-        if (normalizedResultTitle === normalizedTitle) {
+        const normalizedTitles = titleCandidates.map((candidate) => normalizeMusicArtworkText(candidate)).filter(Boolean);
+        const exactTitleMatch = normalizedTitles.some((normalizedTitle) => resultTitleText === normalizedTitle);
+        const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
+          resultTitleText.includes(normalizedTitle) || normalizedTitle.includes(resultTitleText),
+        );
+        let score = bestTitleMatch.titleMatches * 18 + artistMatches * 24;
+        if (exactTitleMatch) {
           score += 90;
-        } else if (normalizedResultTitle.includes(normalizedTitle) || normalizedTitle.includes(normalizedResultTitle)) {
+        } else if (closeTitleMatch) {
           score += 45;
         }
         if (kind === 'song' && result.kind === 'song') {
@@ -5662,9 +5692,15 @@ async function findAppleMusicMediaForBoardWizard(
         if (audioPreviewUrl) {
           score += 4;
         }
+        if (/\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(`${resultTitleText} ${resultCollectionText}`)) {
+          score -= /\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(normalizedTitles.join(' ')) ? 0 : 28;
+        }
+        if (/\b(definitive|number 1|greatest hits|essential|best of|anthology|collection)\b/.test(resultCollectionText)) {
+          score += exactTitleMatch ? 5 : 0;
+        }
         return { artwork, audioPreviewUrl, score };
       })
-      .filter((item) => item.artwork && item.score >= (artistHint ? 80 : 90))
+      .filter((item) => item.artwork && item.score >= (artistHint ? 72 : 82))
       .sort((left, right) => right.score - left.score);
     const best = scored[0];
     return {
@@ -5676,10 +5712,52 @@ async function findAppleMusicMediaForBoardWizard(
       title,
       artistHint,
       kind,
+      searchTerms,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
     return { imageUrl: '', audioPreviewUrl: '' };
   }
+}
+
+function buildAppleMusicTitleCandidates(title: string, imageQuery = ''): string[] {
+  const values = [
+    title,
+    imageQuery,
+    ...[title, imageQuery].flatMap((value) => {
+      const compact = textFromUnknown(value)
+        .replace(/\b(?:official|song|single|track|cover art|album art|audio preview|preview)\b/gi, ' ')
+        .replace(/\b(?:19|20)\d{2}\b/g, ' ')
+        .replace(/\([^)]*\)/g, ' ')
+        .replace(/^[\s#\d.)-]+/, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      const segments = compact
+        .split(/\s+[-–—:|]\s+/)
+        .map((segment) => segment.trim())
+        .filter((segment) => segment.length >= 2);
+      return [compact, segments[0] ?? '', segments.find((segment) => musicArtworkTokens(segment).length <= 6) ?? ''];
+    }),
+  ];
+  return values
+    .map((value) => textFromUnknown(value).replace(/\s+/g, ' ').trim())
+    .filter((value) => value.length >= 2 && musicArtworkTokens(value).length > 0)
+    .filter((value, index, all) => all.findIndex((candidate) => normalizeMusicArtworkText(candidate) === normalizeMusicArtworkText(value)) === index)
+    .slice(0, 5);
+}
+
+function buildAppleMusicSearchTerms(titleCandidates: string[], artistHint: string): string[] {
+  const primaryTitle = titleCandidates[0] ?? '';
+  const compactTitle = titleCandidates.find((candidate) => musicArtworkTokens(candidate).length <= 6) ?? primaryTitle;
+  return [
+    [compactTitle, artistHint].filter(Boolean).join(' '),
+    [primaryTitle, artistHint].filter(Boolean).join(' '),
+    compactTitle,
+    primaryTitle,
+  ]
+    .map((term) => term.replace(/\s+/g, ' ').trim().slice(0, 180))
+    .filter((term) => term.length >= 2)
+    .filter((term, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === term.toLowerCase()) === index)
+    .slice(0, 4);
 }
 
 function normalizeMusicArtworkText(value: string): string {
