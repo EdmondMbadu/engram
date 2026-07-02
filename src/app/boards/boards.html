@@ -11,7 +11,15 @@
             <span class="material-symbols-outlined">chevron_left</span>
           </button>
 
-          <section class="stack-viewer-story" aria-label="Stack story">
+          <section
+            class="stack-viewer-story"
+            aria-label="Stack story"
+            (pointerdown)="beginStackSwipe($event)"
+            (pointermove)="trackStackSwipe($event)"
+            (pointerup)="finishStackSwipe($event)"
+            (pointercancel)="cancelStackSwipe($event)"
+            (lostpointercapture)="cancelStackSwipe($event)"
+          >
             <div class="stack-viewer-progress" aria-label="Stack progress">
               @for (frameIndex of stackProgressFrames(); track frameIndex) {
                 <span

@@ -246,6 +246,16 @@ type StackFrame = {
   total: number;
 };
 
+type StackSwipeState = {
+  pointerId: number;
+  startX: number;
+  startY: number;
+  lastX: number;
+  lastY: number;
+  startedAt: number;
+  target: HTMLElement;
+};
+
 type TourDeckFrame = {
   kind: 'stop' | 'leg';
   card: BoardCard;
@@ -735,6 +745,7 @@ export class BoardsComponent implements OnDestroy {
   private placeSearchTimer: ReturnType<typeof setTimeout> | null = null;
   private placeSearchRun = 0;
   private stickerDragState: StickerDragState | null = null;
+  private stackSwipeState: StackSwipeState | null = null;
   private suppressNextBoardOpen = false;
   private stackPlaybackTimer: ReturnType<typeof setInterval> | null = null;
   private shareMessageTimer: ReturnType<typeof setTimeout> | null = null;
@@ -3784,6 +3795,76 @@ export class BoardsComponent implements OnDestroy {
     this.advanceStackFrame();
   }
 
+  beginStackSwipe(event: PointerEvent): void {
+    if (!this.stackDirectView() || this.stackFrameCount() < 2 || event.button !== 0 || this.isInteractiveStackSwipeTarget(event.target)) {
+      return;
+    }
+    const target = event.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+    if (!target) {
+      return;
+    }
+    this.stackSwipeState = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      lastX: event.clientX,
+      lastY: event.clientY,
+      startedAt: Date.now(),
+      target,
+    };
+    target.setPointerCapture?.(event.pointerId);
+  }
+
+  trackStackSwipe(event: PointerEvent): void {
+    const state = this.stackSwipeState;
+    if (!state || state.pointerId !== event.pointerId) {
+      return;
+    }
+    state.lastX = event.clientX;
+    state.lastY = event.clientY;
+    const deltaX = state.lastX - state.startX;
+    const deltaY = state.lastY - state.startY;
+    if (Math.abs(deltaX) > 14 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      event.preventDefault();
+    }
+  }
+
+  finishStackSwipe(event: PointerEvent): void {
+    const state = this.stackSwipeState;
+    if (!state || state.pointerId !== event.pointerId) {
+      return;
+    }
+    this.stackSwipeState = null;
+    state.target.releasePointerCapture?.(event.pointerId);
+    const deltaX = state.lastX - state.startX;
+    const deltaY = state.lastY - state.startY;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    const elapsed = Math.max(1, Date.now() - state.startedAt);
+    const threshold = Math.min(92, Math.max(44, state.target.clientWidth * 0.14));
+    const quickSwipe = elapsed < 320 && absX >= 34;
+    if (absX < threshold && !quickSwipe) {
+      return;
+    }
+    if (absX < absY * 1.25) {
+      return;
+    }
+    if (deltaX < 0) {
+      this.nextStackFrame();
+    } else {
+      this.previousStackFrame();
+    }
+  }
+
+  cancelStackSwipe(event: PointerEvent): void {
+    const state = this.stackSwipeState;
+    if (!state || state.pointerId !== event.pointerId) {
+      return;
+    }
+    this.stackSwipeState = null;
+    state.target.releasePointerCapture?.(event.pointerId);
+  }
+
   toggleStackPlayback(): void {
     if (this.stackPlaying()) {
       this.stopStackPlayback();
@@ -3932,6 +4013,11 @@ export class BoardsComponent implements OnDestroy {
         this.stackShareMessageTimer = null;
       }, 2400);
     }
+  }
+
+  private isInteractiveStackSwipeTarget(target: EventTarget | null): boolean {
+    return target instanceof Element
+      && !!target.closest('button, a, input, textarea, select, label, [role="button"], [contenteditable="true"]');
   }
 
   private clampStackFrameIndex(): void {
