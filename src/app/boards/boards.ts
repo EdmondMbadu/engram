@@ -827,6 +827,8 @@ export class BoardsComponent {
   readonly wizardResult = signal<BoardWizardGeneratedBatch | null>(null);
   readonly wizardPreviewCards = signal<BoardWizardPreviewCard[]>([]);
   readonly wizardSelectedCardIds = signal<Set<string>>(new Set());
+  readonly wizardRedoingCardIds = signal<Set<string>>(new Set());
+  readonly wizardImageLoadingCardIds = signal<Set<string>>(new Set());
   readonly wizardSaving = signal(false);
   readonly stackStudioOpen = signal(false);
   readonly stackStudioBoardId = signal<string | null>(null);
@@ -1478,9 +1480,11 @@ export class BoardsComponent {
 
   async redoWizardCard(cardId: string): Promise<void> {
     const card = this.wizardPreviewCards().find((item) => item.id === cardId);
-    if (!card) {
+    if (!card || this.isWizardCardBusy(cardId)) {
       return;
     }
+    this.wizardRedoingCardIds.update((ids) => new Set(ids).add(cardId));
+    this.wizardError.set(null);
     const previousCount = this.wizardCount();
     this.setWizardCount(1);
     try {
@@ -1504,7 +1508,85 @@ export class BoardsComponent {
       );
     } finally {
       this.setWizardCount(previousCount);
+      this.wizardRedoingCardIds.update((ids) => {
+        const next = new Set(ids);
+        next.delete(cardId);
+        return next;
+      });
     }
+  }
+
+  async retryWizardCardImage(cardId: string): Promise<void> {
+    const card = this.wizardPreviewCards().find((item) => item.id === cardId);
+    if (!card || this.isWizardCardBusy(cardId) || !this.functions) {
+      return;
+    }
+    this.wizardImageLoadingCardIds.update((ids) => new Set(ids).add(cardId));
+    this.wizardError.set(null);
+    try {
+      const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
+        timeout: 75_000,
+      });
+      const response = await callable({
+        mode: this.wizardMode(),
+        prompt: [
+          this.wizardPrompt().trim(),
+          `Find the most accurate image for this exact card only: ${card.title}. Preserve the title, text, and metadata.`,
+        ].filter(Boolean).join('\n'),
+        pastedList: '',
+        url: '',
+        photoNames: [],
+        imageOnly: true,
+        currentCard: this.wizardCardToCurrentCard(card),
+        targetBoardId: this.wizardTargetBoardId() === 'new' ? '' : this.wizardTargetBoardId(),
+        targetBoardTitle: this.wizardTargetBoardTitle(),
+        defaultType: card.type,
+        count: 1,
+        vibe: this.wizardVibe(),
+      });
+      const batch = this.normalizeWizardBatch(response.data);
+      const replacement = batch.cards[0];
+      if (!replacement?.imageUrl) {
+        this.wizardError.set(`No better image was found for "${card.title}". You can paste an image URL in Edit or upload one with Picture.`);
+        return;
+      }
+      this.wizardPreviewCards.update((cards) =>
+        cards.map((item) =>
+          item.id === cardId
+            ? {
+                ...item,
+                imageUrl: replacement.imageUrl ?? item.imageUrl,
+                image_query: replacement.image_query || item.image_query,
+                placeId: replacement.placeId || item.placeId,
+                googleMapsUrl: replacement.googleMapsUrl || item.googleMapsUrl,
+              }
+            : item,
+        ),
+      );
+      this.wizardSelectedCardIds.update((ids) => new Set(ids).add(cardId));
+    } catch (error) {
+      this.wizardError.set(error instanceof Error ? error.message : `Could not refresh the image for "${card.title}".`);
+    } finally {
+      this.wizardImageLoadingCardIds.update((ids) => {
+        const next = new Set(ids);
+        next.delete(cardId);
+        return next;
+      });
+    }
+  }
+
+  isWizardCardBusy(cardId: string): boolean {
+    return this.wizardRedoingCardIds().has(cardId) || this.wizardImageLoadingCardIds().has(cardId);
+  }
+
+  wizardCardBusyLabel(cardId: string): string {
+    if (this.wizardImageLoadingCardIds().has(cardId)) {
+      return 'Finding image';
+    }
+    if (this.wizardRedoingCardIds().has(cardId)) {
+      return 'Redoing card';
+    }
+    return '';
   }
 
   toggleWizardCard(cardId: string): void {
@@ -1534,6 +1616,16 @@ export class BoardsComponent {
   removeWizardCard(cardId: string): void {
     this.wizardPreviewCards.update((cards) => cards.filter((card) => card.id !== cardId));
     this.wizardSelectedCardIds.update((ids) => {
+      const next = new Set(ids);
+      next.delete(cardId);
+      return next;
+    });
+    this.wizardRedoingCardIds.update((ids) => {
+      const next = new Set(ids);
+      next.delete(cardId);
+      return next;
+    });
+    this.wizardImageLoadingCardIds.update((ids) => {
       const next = new Set(ids);
       next.delete(cardId);
       return next;
@@ -3829,6 +3921,8 @@ export class BoardsComponent {
     this.wizardResult.set(null);
     this.wizardPreviewCards.set([]);
     this.wizardSelectedCardIds.set(new Set());
+    this.wizardRedoingCardIds.set(new Set());
+    this.wizardImageLoadingCardIds.set(new Set());
     this.wizardSaving.set(false);
   }
 
@@ -3922,6 +4016,21 @@ export class BoardsComponent {
       placeId: this.stringValue(data['placeId'], '', 240),
       googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
       tour: this.normalizeCardTour(data['tour']),
+    };
+  }
+
+  private wizardCardToCurrentCard(card: BoardWizardPreviewCard): Record<string, unknown> {
+    return {
+      title: card.title,
+      subtitle: card.subtitle,
+      notes: card.notes,
+      type: card.type,
+      scope: card.scope,
+      status: card.status,
+      rating: card.rating,
+      tags: card.tags,
+      image_query: card.image_query || `${card.title} image`,
+      place_query: card.place_query || card.title,
     };
   }
 

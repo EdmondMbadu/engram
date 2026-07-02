@@ -1292,6 +1292,7 @@
                     class="boards-wizard-card"
                     [class.boards-wizard-card--off]="!isWizardCardSelected(card.id)"
                     [class.boards-wizard-card--photo-only]="isPhotoOnlyCard(card)"
+                    [class.boards-wizard-card--busy]="isWizardCardBusy(card.id)"
                   >
                     <div class="boards-wizard-card__media">
                       @if (card.imageUrl) {
@@ -1299,9 +1300,16 @@
                       } @else {
                         <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                       }
+                      @if (isWizardCardBusy(card.id)) {
+                        <div class="boards-wizard-card__loading" aria-live="polite">
+                          <span class="material-symbols-outlined">autorenew</span>
+                          <strong>{{ wizardCardBusyLabel(card.id) }}</strong>
+                        </div>
+                      }
                       <button
                         type="button"
                         class="boards-wizard-card__check"
+                        [disabled]="isWizardCardBusy(card.id)"
                         [attr.aria-pressed]="isWizardCardSelected(card.id)"
                         (click)="toggleWizardCard(card.id)"
                       >
@@ -1443,30 +1451,34 @@
                       </div>
                     }
                     <div class="boards-wizard-card__actions">
-                      <button type="button" (click)="toggleWizardCard(card.id)">
+                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="toggleWizardCard(card.id)">
                         <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
                         {{ isWizardCardSelected(card.id) ? 'Unselect' : 'Select' }}
                       </button>
-                      <button type="button" (click)="toggleWizardCardEditing(card.id)">
+                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="toggleWizardCardEditing(card.id)">
                         <span class="material-symbols-outlined">{{ card.editing ? 'done' : 'edit' }}</span>
                         {{ card.editing ? 'Done' : 'Edit' }}
                       </button>
                       <input #wizardCardImageInput hidden type="file" accept="image/*" (change)="onWizardCardImageSelected(card.id, $event)" />
-                      <button type="button" (click)="wizardCardImageInput.click()">
+                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="wizardCardImageInput.click()">
                         <span class="material-symbols-outlined">add_photo_alternate</span>
                         Picture
                       </button>
+                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="retryWizardCardImage(card.id)">
+                        <span class="material-symbols-outlined">{{ card.imageUrl ? 'image_search' : 'add_photo_alternate' }}</span>
+                        {{ card.imageUrl ? 'Fix image' : 'Find image' }}
+                      </button>
                       @if (card.imageUrl) {
-                        <button type="button" (click)="clearWizardCardImage(card.id)">
+                        <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="clearWizardCardImage(card.id)">
                           <span class="material-symbols-outlined">hide_image</span>
                           Clear
                         </button>
                       }
-                      <button type="button" (click)="redoWizardCard(card.id)">
+                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="redoWizardCard(card.id)">
                         <span class="material-symbols-outlined">refresh</span>
                         Redo
                       </button>
-                      <button type="button" class="boards-wizard-card__remove" (click)="removeWizardCard(card.id)">
+                      <button type="button" class="boards-wizard-card__remove" [disabled]="isWizardCardBusy(card.id)" (click)="removeWizardCard(card.id)">
                         <span class="material-symbols-outlined">delete</span>
                         Remove
                       </button>
