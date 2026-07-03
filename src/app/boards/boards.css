@@ -239,6 +239,235 @@
   font-weight: 850;
 }
 
+.boards-friends-panel {
+  display: grid;
+  gap: .9rem;
+  margin: clamp(1.1rem, 3vw, 1.6rem) 0;
+  border: 3px solid var(--ink);
+  border-radius: 1.15rem;
+  padding: clamp(1rem, 3vw, 1.35rem);
+}
+
+.boards-friends-panel__head,
+.boards-friend-request,
+.boards-friend-request__actions,
+.boards-friends-outgoing {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.boards-friends-panel__head,
+.boards-friend-request {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.boards-friends-panel__head p,
+.boards-friends-panel__head h2,
+.boards-friends-panel__head span,
+.boards-friends-requests h3 {
+  margin: 0;
+}
+
+.boards-friends-panel__head p {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.boards-friends-panel__head h2 {
+  margin-top: 0.4rem;
+  color: var(--text);
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+  font-weight: 950;
+  line-height: 1.08;
+}
+
+.boards-friends-panel__head span,
+.boards-friend-request span,
+.boards-friend-card__text small,
+.boards-friends-loading,
+.boards-friends-empty {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.boards-friends-panel__head span {
+  display: block;
+  max-width: 50rem;
+  margin-top: 0.4rem;
+  line-height: 1.45;
+}
+
+.boards-friends-invite,
+.boards-friends-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.boards-friends-invite {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.boards-friends-invite label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--muted);
+  padding: 0 0.85rem;
+}
+
+.boards-friends-invite input {
+  width: 100%;
+  min-height: 2.75rem;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+}
+
+.boards-friends-note,
+.boards-friends-outgoing span,
+.boards-friends-outgoing small {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  padding: 0.45rem 0.6rem;
+}
+
+.boards-friends-note {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.boards-friends-note--success {
+  background: #e9f8ee;
+  color: #126b34;
+}
+
+.boards-friends-note--error {
+  background: #fff0ee;
+  color: #9d1d1d;
+}
+
+.boards-friends-loading,
+.boards-friends-empty {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.boards-friends-requests {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.boards-friends-requests h3,
+.boards-friend-request strong,
+.boards-friend-card__text strong {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 950;
+}
+
+.boards-friend-request {
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--surface) 78%, #fff);
+  padding: 0.75rem;
+}
+
+.boards-friend-request strong,
+.boards-friend-request span,
+.boards-friend-card__text strong,
+.boards-friend-card__text small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.boards-friend-request__actions,
+.boards-friends-outgoing {
+  flex-wrap: wrap;
+}
+
+.boards-friend-request__actions {
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.boards-friends-grid {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.boards-friend-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: var(--surface);
+  color: inherit;
+  padding: 0.7rem;
+  text-decoration: none;
+}
+
+.boards-friend-card__avatar,
+.boards-friend-card__avatar img,
+.boards-friend-card__icon {
+  display: flex;
+  width: 2.8rem;
+  height: 2.8rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.boards-friend-card__avatar {
+  border: 2px solid var(--ink);
+  background: var(--surface-strong);
+}
+
+.boards-friend-card__avatar img {
+  object-fit: cover;
+}
+
+.boards-friend-card__text {
+  min-width: 0;
+}
+
+.boards-friends-outgoing {
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.boards-friends-outgoing span {
+  border-color: var(--ink);
+  color: var(--text);
+}
+
 .boards-tabbar {
   position: sticky;
   top: 4.75rem;
@@ -4026,12 +4255,6 @@
   animation: boards-spin 700ms linear infinite;
 }
 
-@keyframes boards-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .boards-place-suggestions {
   display: grid;
   gap: 0.45rem;
@@ -4380,6 +4603,25 @@
 
   .boards-profile__identity {
     flex-direction: column;
+  }
+
+  .boards-friends-panel__head,
+  .boards-friend-request {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .boards-friends-invite {
+    grid-template-columns: 1fr;
+  }
+
+  .boards-friend-request__actions {
+    justify-content: stretch;
+  }
+
+  .boards-friend-request__actions .boards-primary-action,
+  .boards-friend-request__actions .boards-ghost-action {
+    flex: 1;
   }
 
   .boards-feed__toolbar,

@@ -201,6 +201,34 @@ type BoardCityOption = {
   slug: string;
 };
 
+type BoardFriendProfile = {
+  userId: string;
+  email: string;
+  displayName: string;
+  photoURL: string;
+  profileIcon: string;
+  profilePictureType: 'icon' | 'image' | null;
+};
+
+type BoardFriendCandidate = BoardFriendProfile & {
+  relationshipStatus: 'available' | 'pending' | 'friend';
+};
+
+type BoardFriendRequestSummary = {
+  id: string;
+  fromUserId: string;
+  fromEmail: string;
+  fromDisplayName: string;
+  toEmail: string;
+  createdAt: string;
+};
+
+type BoardFriendsState = {
+  friends: BoardFriendProfile[];
+  incoming: BoardFriendRequestSummary[];
+  outgoing: BoardFriendRequestSummary[];
+};
+
 type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
   owner_user_id: string;
   owner_public_slug: string;
@@ -762,6 +790,8 @@ export class BoardsComponent implements OnDestroy {
   private stackPlaybackTimer: ReturnType<typeof setInterval> | null = null;
   private shareMessageTimer: ReturnType<typeof setTimeout> | null = null;
   private stackShareMessageTimer: ReturnType<typeof setTimeout> | null = null;
+  private boardFriendSearchTimer: ReturnType<typeof setTimeout> | null = null;
+  private boardFriendSearchRun = 0;
   private tourMapElement: HTMLElement | null = null;
   private tourMap: unknown | null = null;
   private tourMapBoardId: string | null = null;
@@ -771,6 +801,7 @@ export class BoardsComponent implements OnDestroy {
   private songPreviewAudio: HTMLAudioElement | null = null;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
+  private friendsLoadedForUid = '';
 
   @ViewChild('tourMapCanvas')
   set tourMapCanvasRef(value: ElementRef<HTMLElement> | undefined) {
@@ -828,6 +859,16 @@ export class BoardsComponent implements OnDestroy {
   readonly shareMessage = signal<string | null>(null);
   readonly boardsSyncError = signal<string | null>(null);
   readonly privateBoardBlocked = signal(false);
+  readonly boardFriends = signal<BoardFriendsState>({ friends: [], incoming: [], outgoing: [] });
+  readonly boardFriendEmail = signal('');
+  readonly boardFriendsLoading = signal(false);
+  readonly boardFriendSending = signal(false);
+  readonly boardFriendsMessage = signal<string | null>(null);
+  readonly boardFriendsError = signal<string | null>(null);
+  readonly boardFriendsFocusRequested = signal(false);
+  readonly friendsPage = signal(false);
+  readonly boardFriendCandidates = signal<BoardFriendCandidate[]>([]);
+  readonly boardFriendCandidateLoading = signal(false);
   readonly sharePanelOpen = signal(false);
   readonly cardImageLocked = signal(false);
   readonly draggedStickerId = signal<string | null>(null);
@@ -944,25 +985,8 @@ export class BoardsComponent implements OnDestroy {
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
-  readonly canCreateBoard = computed(() => {
-    const uid = this.authService.uid();
-    const publicOwnerKey = this.publicOwnerKey();
-    const publicOwnerUid = this.publicOwnerUid();
-    if (!this.authService.isAuthenticated()) {
-      return false;
-    }
-    if (!publicOwnerKey) {
-      return true;
-    }
-    if (publicOwnerUid) {
-      return publicOwnerUid === uid;
-    }
-    const ownerBoard = this.boardsProfileBoard();
-    if (ownerBoard?.ownerUserId) {
-      return ownerBoard.ownerUserId === uid;
-    }
-    return this.publicOwnerSlug() === this.currentPublicOwnerKey();
-  });
+  readonly canManageBoardFriends = computed(() => this.isOwnBoardsProfile());
+  readonly canCreateBoard = computed(() => this.isOwnBoardsProfile());
   readonly boardsProfileBoard = computed(() => this.boards().find((board) => board.ownerUserId) ?? null);
   readonly boardsProfileName = computed(() => {
     if (this.publicOwnerKey()) {
@@ -1177,6 +1201,7 @@ export class BoardsComponent implements OnDestroy {
     this.loadLocalBoards();
     void this.loadCities();
     this.route.paramMap.subscribe((params) => {
+      this.friendsPage.set(this.route.snapshot.routeConfig?.path === 'friends');
       const boardId = params.get('boardId');
       const ownerKey = params.get('ownerKey');
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
@@ -1193,13 +1218,21 @@ export class BoardsComponent implements OnDestroy {
       void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => {
         this.syncStackDirectView();
         this.canonicalizeBoardsRootRoute(boardId, ownerKey);
+        if (this.isBrowser && this.boardFriendsFocusRequested()) {
+          window.setTimeout(() => this.scrollToBoardFriends(), 80);
+        }
       });
     });
 
     this.route.queryParamMap.subscribe((params) => {
       const view = params.get('view') ?? params.get('stack');
+      const wantsFriends = params.get('friends') === '1';
+      this.boardFriendsFocusRequested.set(wantsFriends);
       this.stackDirectView.set(view === 'stack' || view === 'reel');
       this.syncStackDirectView();
+      if (this.isBrowser && wantsFriends) {
+        window.setTimeout(() => this.scrollToBoardFriends(), 120);
+      }
     });
 
     effect(() => {
@@ -1243,12 +1276,31 @@ export class BoardsComponent implements OnDestroy {
       void tourSignature;
       window.setTimeout(() => void this.renderTourMap(), 0);
     });
+
+    effect(() => {
+      const uid = this.authService.uid();
+      if (!this.isBrowser || !this.functions || !uid) {
+        this.friendsLoadedForUid = '';
+        this.boardFriends.set({ friends: [], incoming: [], outgoing: [] });
+        this.boardFriendsLoading.set(false);
+        return;
+      }
+      if (this.friendsLoadedForUid === uid) {
+        return;
+      }
+      this.friendsLoadedForUid = uid;
+      void this.loadBoardFriends();
+    });
   }
 
   ngOnDestroy(): void {
     this.stopSongPreview();
     this.stopTourSpeech();
     this.stopStackPlayback();
+    if (this.boardFriendSearchTimer) {
+      clearTimeout(this.boardFriendSearchTimer);
+      this.boardFriendSearchTimer = null;
+    }
     if (this.placeSearchTimer) {
       clearTimeout(this.placeSearchTimer);
       this.placeSearchTimer = null;
@@ -1279,6 +1331,156 @@ export class BoardsComponent implements OnDestroy {
   closeBoardDetail(): void {
     this.stopSongPreview();
     void this.router.navigateByUrl(this.boardsProfileRoutePath());
+  }
+
+  async loadBoardFriends(): Promise<void> {
+    if (!this.functions || !this.authService.uid()) {
+      return;
+    }
+    this.boardFriendsLoading.set(true);
+    this.boardFriendsError.set(null);
+    try {
+      const callable = httpsCallable<Record<string, never>, unknown>(this.functions, 'listBoardFriends');
+      const response = await callable({});
+      this.boardFriends.set(this.normalizeBoardFriendsState(response.data));
+    } catch (error) {
+      this.boardFriendsError.set(this.boardFriendErrorMessage(error, 'Could not load friends right now.'));
+    } finally {
+      this.boardFriendsLoading.set(false);
+    }
+  }
+
+  async inviteBoardFriend(event?: Event): Promise<void> {
+    event?.preventDefault();
+    if (!this.functions || !this.authService.uid()) {
+      this.boardFriendsError.set('Sign in before inviting friends.');
+      return;
+    }
+    const email = this.boardFriendEmail().trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.boardFriendsError.set('Enter a valid friend email address.');
+      return;
+    }
+
+    this.boardFriendSending.set(true);
+    this.boardFriendsError.set(null);
+    this.boardFriendsMessage.set(null);
+    try {
+      const callable = httpsCallable<{ email: string }, unknown>(this.functions, 'inviteBoardFriend');
+      const response = await callable({ email });
+      const status = this.objectField(
+        response.data && typeof response.data === 'object' ? response.data as Record<string, unknown> : null,
+        'status',
+      );
+      this.boardFriendEmail.set('');
+      this.boardFriendCandidates.set([]);
+      await this.loadBoardFriends();
+      this.boardFriendsMessage.set(status === 'already_friends'
+        ? 'You are already friends.'
+        : status === 'pending'
+          ? 'That friend request is already waiting.'
+          : 'Friend request sent.');
+    } catch (error) {
+      this.boardFriendsError.set(this.boardFriendErrorMessage(error, 'Could not send that friend request.'));
+    } finally {
+      this.boardFriendSending.set(false);
+    }
+  }
+
+  onBoardFriendEmailInput(value: string): void {
+    this.boardFriendEmail.set(value);
+    this.boardFriendsError.set(null);
+    this.boardFriendsMessage.set(null);
+    if (this.boardFriendSearchTimer) {
+      clearTimeout(this.boardFriendSearchTimer);
+      this.boardFriendSearchTimer = null;
+    }
+    const queryText = value.trim();
+    if (queryText.length < 2 || !this.functions || !this.authService.uid()) {
+      this.boardFriendCandidates.set([]);
+      this.boardFriendCandidateLoading.set(false);
+      return;
+    }
+    this.boardFriendCandidateLoading.set(true);
+    this.boardFriendSearchTimer = setTimeout(() => {
+      this.boardFriendSearchTimer = null;
+      void this.searchBoardFriendCandidates(queryText);
+    }, 220);
+  }
+
+  chooseBoardFriendCandidate(candidate: BoardFriendCandidate): void {
+    this.boardFriendEmail.set(candidate.email);
+    this.boardFriendCandidates.set([]);
+    this.boardFriendCandidateLoading.set(false);
+  }
+
+  boardFriendCandidateStatusLabel(candidate: BoardFriendCandidate): string {
+    if (candidate.relationshipStatus === 'friend') {
+      return 'Friend';
+    }
+    if (candidate.relationshipStatus === 'pending') {
+      return 'Pending';
+    }
+    return 'Invite';
+  }
+
+  private async searchBoardFriendCandidates(queryText: string): Promise<void> {
+    if (!this.functions || !this.authService.uid()) {
+      return;
+    }
+    const run = ++this.boardFriendSearchRun;
+    try {
+      const callable = httpsCallable<{ query: string }, unknown>(this.functions, 'searchBoardFriendCandidates');
+      const response = await callable({ query: queryText });
+      if (run !== this.boardFriendSearchRun) {
+        return;
+      }
+      this.boardFriendCandidates.set(this.normalizeBoardFriendCandidates(response.data));
+    } catch {
+      if (run === this.boardFriendSearchRun) {
+        this.boardFriendCandidates.set([]);
+      }
+    } finally {
+      if (run === this.boardFriendSearchRun) {
+        this.boardFriendCandidateLoading.set(false);
+      }
+    }
+  }
+
+  async respondBoardFriendRequest(requestId: string, action: 'accept' | 'decline'): Promise<void> {
+    if (!this.functions || !this.authService.uid()) {
+      this.boardFriendsError.set('Sign in to respond to friend requests.');
+      return;
+    }
+    this.boardFriendsError.set(null);
+    this.boardFriendsMessage.set(null);
+    try {
+      const callable = httpsCallable<{ requestId: string; action: 'accept' | 'decline' }, unknown>(
+        this.functions,
+        'respondBoardFriendRequest',
+      );
+      await callable({ requestId, action });
+      await this.loadBoardFriends();
+      this.boardFriendsMessage.set(action === 'accept' ? 'Friend request accepted.' : 'Friend request declined.');
+    } catch (error) {
+      this.boardFriendsError.set(this.boardFriendErrorMessage(error, 'Could not update that friend request.'));
+    }
+  }
+
+  boardFriendProfileUrl(friend: BoardFriendProfile): string {
+    const handle = this.publicHandleFromText(friend.displayName || friend.email || 'livingwiki-friend');
+    return `/boards/u/${encodeURIComponent(`${handle}~${friend.userId}`)}`;
+  }
+
+  boardFriendIcon(friend: BoardFriendProfile) {
+    return profileIconByCode(friend.profileIcon) ?? profileIconForSeed(friend.userId || friend.email || friend.displayName);
+  }
+
+  private scrollToBoardFriends(): void {
+    if (!this.isBrowser || !this.canManageBoardFriends()) {
+      return;
+    }
+    window.document.getElementById('board-friends')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   isBoardFlipped(boardId: string): boolean {
@@ -4069,13 +4271,14 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private canonicalizeBoardsRootRoute(boardId: string | null, ownerKey: string | null): void {
-    if (!this.isBrowser || boardId || ownerKey !== null || !this.authService.uid()) {
+    if (!this.isBrowser || this.friendsPage() || boardId || ownerKey !== null || !this.authService.uid()) {
       return;
     }
 
     const path = this.boardsProfileRoutePath();
+    const targetPath = this.route.snapshot.queryParamMap.get('friends') === '1' ? `${path}?friends=1` : path;
     if (path !== '/boards') {
-      void this.router.navigateByUrl(path, { replaceUrl: true });
+      void this.router.navigateByUrl(targetPath, { replaceUrl: true });
     }
   }
 
@@ -4113,6 +4316,96 @@ export class BoardsComponent implements OnDestroy {
         this.stackShareMessageTimer = null;
       }, 2400);
     }
+  }
+
+  private normalizeBoardFriendsState(value: unknown): BoardFriendsState {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const friends = Array.isArray(data['friends']) ? data['friends'] : [];
+    const incoming = Array.isArray(data['incoming']) ? data['incoming'] : [];
+    const outgoing = Array.isArray(data['outgoing']) ? data['outgoing'] : [];
+    return {
+      friends: friends
+        .map((item) => this.normalizeBoardFriendProfile(item))
+        .filter((friend): friend is BoardFriendProfile => !!friend),
+      incoming: incoming
+        .map((item) => this.normalizeBoardFriendRequest(item))
+        .filter((request): request is BoardFriendRequestSummary => !!request),
+      outgoing: outgoing
+        .map((item) => this.normalizeBoardFriendRequest(item))
+        .filter((request): request is BoardFriendRequestSummary => !!request),
+    };
+  }
+
+  private normalizeBoardFriendCandidates(value: unknown): BoardFriendCandidate[] {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const candidates = Array.isArray(data['candidates']) ? data['candidates'] : [];
+    return candidates
+      .map((item) => this.normalizeBoardFriendCandidate(item))
+      .filter((candidate): candidate is BoardFriendCandidate => !!candidate);
+  }
+
+  private normalizeBoardFriendCandidate(value: unknown): BoardFriendCandidate | null {
+    const profile = this.normalizeBoardFriendProfile(value);
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    if (!profile) {
+      return null;
+    }
+    return {
+      ...profile,
+      relationshipStatus: data['relationshipStatus'] === 'friend' || data['relationshipStatus'] === 'pending'
+        ? data['relationshipStatus']
+        : 'available',
+    };
+  }
+
+  private normalizeBoardFriendProfile(value: unknown): BoardFriendProfile | null {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : null;
+    const userId = this.objectField(data, 'userId');
+    if (!data || !userId) {
+      return null;
+    }
+    const email = this.objectField(data, 'email');
+    return {
+      userId,
+      email,
+      displayName: this.objectField(data, 'displayName') || email || 'LivingWiki friend',
+      photoURL: this.objectField(data, 'photoURL'),
+      profileIcon: this.objectField(data, 'profileIcon'),
+      profilePictureType: data['profilePictureType'] === 'image' || data['profilePictureType'] === 'icon'
+        ? data['profilePictureType']
+        : null,
+    };
+  }
+
+  private normalizeBoardFriendRequest(value: unknown): BoardFriendRequestSummary | null {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : null;
+    const id = this.objectField(data, 'id');
+    if (!data || !id) {
+      return null;
+    }
+    return {
+      id,
+      fromUserId: this.objectField(data, 'fromUserId'),
+      fromEmail: this.objectField(data, 'fromEmail'),
+      fromDisplayName: this.objectField(data, 'fromDisplayName'),
+      toEmail: this.objectField(data, 'toEmail'),
+      createdAt: this.objectField(data, 'createdAt'),
+    };
+  }
+
+  private objectField(data: Record<string, unknown> | null | undefined, field: string): string {
+    const value = data?.[field];
+    return typeof value === 'string' ? value.trim() : '';
+  }
+
+  private boardFriendErrorMessage(error: unknown, fallback: string): string {
+    if (error instanceof FirebaseError && typeof error.message === 'string') {
+      return error.message.replace(/^Firebase: /, '').trim() || fallback;
+    }
+    if (error instanceof Error && error.message.trim()) {
+      return error.message.trim();
+    }
+    return fallback;
   }
 
   private isInteractiveStackSwipeTarget(target: EventTarget | null): boolean {
@@ -4556,6 +4849,26 @@ export class BoardsComponent implements OnDestroy {
 
   private mergeWizardTags(left: string[], right: string[]): string[] {
     return Array.from(new Set([...left, ...right].map((tag) => tag.trim().toLowerCase()).filter(Boolean))).slice(0, 6);
+  }
+
+  private isOwnBoardsProfile(): boolean {
+    const uid = this.authService.uid();
+    const publicOwnerKey = this.publicOwnerKey();
+    const publicOwnerUid = this.publicOwnerUid();
+    if (!this.authService.isAuthenticated()) {
+      return false;
+    }
+    if (!publicOwnerKey) {
+      return true;
+    }
+    if (publicOwnerUid) {
+      return publicOwnerUid === uid;
+    }
+    const ownerBoard = this.boardsProfileBoard();
+    if (ownerBoard?.ownerUserId) {
+      return ownerBoard.ownerUserId === uid;
+    }
+    return this.publicOwnerSlug() === this.currentPublicOwnerKey();
   }
 
   private currentPublicOwnerKey(): string {

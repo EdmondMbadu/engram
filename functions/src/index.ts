@@ -2527,6 +2527,512 @@ async function sendAtlasAdminInviteEmail(params: {
   });
 }
 
+function boardFriendRequestId(fromUserId: string, toEmail: string): string {
+  return createHash('sha256')
+    .update(`${fromUserId}:${toEmail}`)
+    .digest('hex')
+    .slice(0, 48);
+}
+
+function boardFriendshipId(leftUserId: string, rightUserId: string): string {
+  return [leftUserId, rightUserId].sort().join('_');
+}
+
+function displayNameForUser(data: Record<string, unknown> | undefined, fallbackEmail: string, fallback = 'A LivingWiki friend'): string {
+  const displayName = typeof data?.displayName === 'string' ? data.displayName.trim() : '';
+  if (displayName) {
+    return displayName;
+  }
+  return fallbackEmail || fallback;
+}
+
+function boardFriendUserSummary(doc: FirebaseFirestore.QueryDocumentSnapshot | FirebaseFirestore.DocumentSnapshot) {
+  const data = doc.data() as Record<string, unknown> | undefined;
+  const email = normalizeUserEmail(data?.email);
+  return {
+    userId: doc.id,
+    email,
+    displayName: displayNameForUser(data, email),
+    photoURL: typeof data?.photoURL === 'string' ? data.photoURL : '',
+    profileIcon: typeof data?.profileIcon === 'string' ? data.profileIcon : '',
+    profilePictureType: data?.profilePictureType === 'image' || data?.profilePictureType === 'icon' ? data.profilePictureType : null,
+  };
+}
+
+function candidateNameQueries(queryText: string): string[] {
+  const trimmed = queryText.trim().replace(/\s+/g, ' ');
+  const titleCase = trimmed
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part[0]?.toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+  return Array.from(new Set([trimmed, trimmed.toLowerCase(), titleCase].filter((value) => value.length >= 2))).slice(0, 3);
+}
+
+function boardFriendInviteUrl(): string {
+  return `${publicAppUrl}/boards?friends=1`;
+}
+
+function buildBoardFriendInviteEmail(params: {
+  recipientEmail: string;
+  recipientName: string | null;
+  inviterName: string;
+  inviteUrl: string;
+  isExistingUser: boolean;
+}) {
+  const recipientName = params.recipientName?.trim() || params.recipientEmail;
+  const subject = `${params.inviterName} invited you to connect on LivingWiki`;
+  const safeRecipientName = escapeHtml(recipientName);
+  const safeInviterName = escapeHtml(params.inviterName);
+  const safeInviteUrl = escapeHtml(params.inviteUrl);
+  const actionText = params.isExistingUser ? 'Accept Friend Request' : 'Join and Accept';
+
+  const text = `Hi ${recipientName},
+
+${params.inviterName} invited you to connect as friends on LivingWiki.
+
+Friends can see each other's public board profiles and get updates when a new public board is added.
+
+Open LivingWiki:
+${params.inviteUrl}
+
+The LivingWiki Team`;
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 640px; margin: 0 auto;">
+      <div style="background: linear-gradient(135deg, #102017 0%, #38a169 100%); padding: 34px 30px; border-radius: 18px 18px 0 0;">
+        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 850;">LivingWiki</h1>
+        <p style="color: rgba(255,255,255,0.76); margin: 10px 0 0; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;">Friend request</p>
+      </div>
+      <div style="background: #ffffff; padding: 32px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 18px 18px;">
+        <p style="color: #111827; font-size: 16px; line-height: 1.6; margin: 0 0 18px;">Hi <strong>${safeRecipientName}</strong>,</p>
+        <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 22px;">
+          <strong>${safeInviterName}</strong> invited you to connect as friends on LivingWiki.
+        </p>
+        <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; padding: 20px; margin: 0 0 24px;">
+          <p style="color: #0f2417; font-size: 15px; line-height: 1.6; margin: 0;">
+            Friends can view each other's public board profiles and get a note when someone adds a new public board. Private boards stay private.
+          </p>
+        </div>
+        <div style="text-align: center; margin: 26px 0;">
+          <a href="${safeInviteUrl}" style="background: #1c7c41; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 999px; font-weight: 850; display: inline-block; font-size: 15px;">
+            ${actionText}
+          </a>
+        </div>
+        <p style="color: #9ca3af; font-size: 13px; margin: 0;">The LivingWiki Team</p>
+      </div>
+    </div>
+  `;
+
+  return { subject, text, html };
+}
+
+function buildBoardFriendNewBoardEmail(params: {
+  recipientName: string | null;
+  recipientEmail: string;
+  friendName: string;
+  boardTitle: string;
+  boardDescription: string;
+  boardUrl: string;
+}) {
+  const recipientName = params.recipientName?.trim() || params.recipientEmail;
+  const subject = `${params.friendName} added a board on LivingWiki`;
+  const safeRecipientName = escapeHtml(recipientName);
+  const safeFriendName = escapeHtml(params.friendName);
+  const safeBoardTitle = escapeHtml(params.boardTitle);
+  const safeBoardDescription = escapeHtml(params.boardDescription);
+  const safeBoardUrl = escapeHtml(params.boardUrl);
+
+  const text = `Hi ${recipientName},
+
+${params.friendName} added a new public LivingWiki board: ${params.boardTitle}
+
+${params.boardDescription}
+
+Open the board:
+${params.boardUrl}
+
+The LivingWiki Team`;
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 640px; margin: 0 auto;">
+      <div style="background: linear-gradient(135deg, #102017 0%, #1c7c41 100%); padding: 34px 30px; border-radius: 18px 18px 0 0;">
+        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 850;">LivingWiki</h1>
+        <p style="color: rgba(255,255,255,0.76); margin: 10px 0 0; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;">New board from a friend</p>
+      </div>
+      <div style="background: #ffffff; padding: 32px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 18px 18px;">
+        <p style="color: #111827; font-size: 16px; line-height: 1.6; margin: 0 0 18px;">Hi <strong>${safeRecipientName}</strong>,</p>
+        <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 22px;">
+          <strong>${safeFriendName}</strong> added a new public board.
+        </p>
+        <div style="background: #f8faf9; border: 1px solid #dbe8df; border-radius: 14px; padding: 20px; margin: 0 0 24px;">
+          <h2 style="color: #102017; font-size: 22px; line-height: 1.25; margin: 0 0 10px;">${safeBoardTitle}</h2>
+          ${safeBoardDescription ? `<p style="color: #4b5563; font-size: 15px; line-height: 1.6; margin: 0;">${safeBoardDescription}</p>` : ''}
+        </div>
+        <div style="text-align: center; margin: 26px 0;">
+          <a href="${safeBoardUrl}" style="background: #1c7c41; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 999px; font-weight: 850; display: inline-block; font-size: 15px;">
+            Open Board
+          </a>
+        </div>
+        <p style="color: #9ca3af; font-size: 13px; margin: 0;">Private boards are never sent to friends.</p>
+      </div>
+    </div>
+  `;
+
+  return { subject, text, html };
+}
+
+async function sendBoardFriendEmail(params: {
+  recipientEmail: string;
+  subject: string;
+  text: string;
+  html: string;
+}): Promise<void> {
+  const apiKey = sendgridApiKey.value();
+  if (!apiKey) {
+    throw new HttpsError('failed-precondition', 'SendGrid API key is not configured.');
+  }
+
+  sgMail.setApiKey(apiKey);
+  await sgMail.send({
+    to: params.recipientEmail,
+    from: {
+      email: inviteSenderEmail,
+      name: 'LivingWiki',
+    },
+    subject: params.subject,
+    text: params.text,
+    html: params.html,
+  });
+}
+
+export const inviteBoardFriend = onCall({ region: callableRegion, cors: true, secrets: [sendgridApiKey] }, async (request) => {
+  const fromUserId = request.auth?.uid ?? '';
+  if (!fromUserId) {
+    throw new HttpsError('unauthenticated', 'Sign in before inviting friends.');
+  }
+
+  const toEmail = normalizeUserEmail(request.data?.email);
+  if (!isValidEmail(toEmail)) {
+    throw new HttpsError('invalid-argument', 'Enter a valid friend email address.');
+  }
+
+  const fromEmail = normalizeUserEmail((request.auth?.token ?? {}).email);
+  if (fromEmail && fromEmail === toEmail) {
+    throw new HttpsError('invalid-argument', 'You cannot invite yourself.');
+  }
+
+  const fromUserSnapshot = await db.collection('users').doc(fromUserId).get();
+  const fromUser = fromUserSnapshot.data() as Record<string, unknown> | undefined;
+  const inviterName = displayNameForUser(fromUser, fromEmail, 'A LivingWiki user');
+  const targetSnapshot = await db.collection('users').where('email', '==', toEmail).limit(1).get();
+  const targetDoc = targetSnapshot.docs[0] ?? null;
+  const toUserId = targetDoc?.id ?? null;
+
+  if (toUserId) {
+    const friendshipSnapshot = await db.collection('board_friendships').doc(boardFriendshipId(fromUserId, toUserId)).get();
+    if (friendshipSnapshot.exists) {
+      return { status: 'already_friends' };
+    }
+  }
+
+  const requestId = boardFriendRequestId(fromUserId, toEmail);
+  const requestRef = db.collection('board_friend_requests').doc(requestId);
+  const now = new Date().toISOString();
+  const existingRequest = await requestRef.get();
+  const existingRequestData = existingRequest.data() as Record<string, unknown> | undefined;
+  const wasPending = existingRequestData?.status === 'pending';
+  await requestRef.set({
+    id: requestId,
+    from_user_id: fromUserId,
+    from_email: fromEmail,
+    from_display_name: inviterName,
+    to_email: toEmail,
+    to_user_id: toUserId,
+    status: 'pending',
+    created_at: typeof existingRequestData?.created_at === 'string' ? existingRequestData.created_at : now,
+    updated_at: now,
+    server_updated_at: FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  if (wasPending) {
+    return { status: 'pending', requestId, existingUser: !!targetDoc };
+  }
+
+  const email = buildBoardFriendInviteEmail({
+    recipientEmail: toEmail,
+    recipientName: targetDoc ? displayNameForUser(targetDoc.data() as Record<string, unknown>, toEmail) : null,
+    inviterName,
+    inviteUrl: boardFriendInviteUrl(),
+    isExistingUser: !!targetDoc,
+  });
+  await sendBoardFriendEmail({ recipientEmail: toEmail, ...email });
+
+  return { status: 'sent', requestId, existingUser: !!targetDoc };
+});
+
+export const searchBoardFriendCandidates = onCall({ region: callableRegion, cors: true }, async (request) => {
+  const uid = request.auth?.uid ?? '';
+  if (!uid) {
+    throw new HttpsError('unauthenticated', 'Sign in to search friends.');
+  }
+
+  const queryText = typeof request.data?.query === 'string' ? request.data.query.trim() : '';
+  if (queryText.length < 2) {
+    return { candidates: [] };
+  }
+
+  const authEmail = normalizeUserEmail((request.auth?.token ?? {}).email);
+  const byId = new Map<string, ReturnType<typeof boardFriendUserSummary>>();
+  const normalizedEmailQuery = normalizeUserEmail(queryText);
+  const addSnapshot = (snapshot: FirebaseFirestore.QuerySnapshot): void => {
+    snapshot.docs.forEach((doc) => {
+      if (doc.id === uid) {
+        return;
+      }
+      const candidate = boardFriendUserSummary(doc);
+      if (!candidate.email || candidate.email === authEmail) {
+        return;
+      }
+      byId.set(doc.id, candidate);
+    });
+  };
+
+  if (normalizedEmailQuery.length >= 2) {
+    const emailSnapshot = await db.collection('users')
+      .where('email', '>=', normalizedEmailQuery)
+      .where('email', '<=', `${normalizedEmailQuery}\uf8ff`)
+      .limit(8)
+      .get();
+    addSnapshot(emailSnapshot);
+  }
+
+  const nameSnapshots = await Promise.all(candidateNameQueries(queryText).map((nameQuery) =>
+    db.collection('users')
+      .where('displayName', '>=', nameQuery)
+      .where('displayName', '<=', `${nameQuery}\uf8ff`)
+      .limit(8)
+      .get(),
+  ));
+  nameSnapshots.forEach(addSnapshot);
+
+  const friendshipsSnapshot = await db.collection('board_friendships')
+    .where('user_ids', 'array-contains', uid)
+    .limit(100)
+    .get();
+  const friendIds = new Set(friendshipsSnapshot.docs
+    .flatMap((doc) => doc.data().user_ids as unknown[] | undefined ?? [])
+    .filter((id): id is string => typeof id === 'string' && id !== uid));
+
+  const outgoingSnapshot = await db.collection('board_friend_requests')
+    .where('from_user_id', '==', uid)
+    .where('status', '==', 'pending')
+    .limit(100)
+    .get();
+  const pendingEmails = new Set(outgoingSnapshot.docs.map((doc) => normalizeUserEmail(doc.data().to_email)).filter(Boolean));
+
+  const candidates = Array.from(byId.values())
+    .map((candidate) => ({
+      ...candidate,
+      relationshipStatus: friendIds.has(candidate.userId)
+        ? 'friend'
+        : pendingEmails.has(candidate.email)
+          ? 'pending'
+          : 'available',
+    }))
+    .sort((left, right) => {
+      const leftStatus = left.relationshipStatus === 'available' ? 0 : left.relationshipStatus === 'pending' ? 1 : 2;
+      const rightStatus = right.relationshipStatus === 'available' ? 0 : right.relationshipStatus === 'pending' ? 1 : 2;
+      return leftStatus - rightStatus || left.displayName.localeCompare(right.displayName);
+    })
+    .slice(0, 8);
+
+  return { candidates };
+});
+
+export const listBoardFriends = onCall({ region: callableRegion, cors: true }, async (request) => {
+  const uid = request.auth?.uid ?? '';
+  if (!uid) {
+    throw new HttpsError('unauthenticated', 'Sign in to view friends.');
+  }
+  const authEmail = normalizeUserEmail((request.auth?.token ?? {}).email);
+
+  const friendshipsSnapshot = await db.collection('board_friendships')
+    .where('user_ids', 'array-contains', uid)
+    .limit(100)
+    .get();
+  const friendIds = friendshipsSnapshot.docs
+    .map((doc) => (doc.data().user_ids as unknown[] | undefined)?.find((id) => typeof id === 'string' && id !== uid))
+    .filter((id): id is string => typeof id === 'string');
+  const friendDocs = await Promise.all(friendIds.map((id) => db.collection('users').doc(id).get()));
+  const friends = friendDocs
+    .filter((doc) => doc.exists)
+    .map((doc) => boardFriendUserSummary(doc));
+
+  const incomingSnapshots = authEmail
+    ? await db.collection('board_friend_requests').where('to_email', '==', authEmail).limit(50).get()
+    : null;
+  const incoming = (incomingSnapshots?.docs ?? [])
+    .map((doc): Record<string, unknown> & { id: string } => ({ id: doc.id, ...(doc.data() as Record<string, unknown>) }))
+    .filter((item) => item.status === 'pending')
+    .map((item) => ({
+      id: String(item.id),
+      fromUserId: String(item.from_user_id ?? ''),
+      fromEmail: String(item.from_email ?? ''),
+      fromDisplayName: String(item.from_display_name ?? 'LivingWiki friend'),
+      createdAt: String(item.created_at ?? ''),
+    }));
+
+  const outgoingSnapshot = await db.collection('board_friend_requests')
+    .where('from_user_id', '==', uid)
+    .limit(50)
+    .get();
+  const outgoing = outgoingSnapshot.docs
+    .map((doc): Record<string, unknown> & { id: string } => ({ id: doc.id, ...(doc.data() as Record<string, unknown>) }))
+    .filter((item) => item.status === 'pending')
+    .map((item) => ({
+      id: String(item.id),
+      toEmail: String(item.to_email ?? ''),
+      createdAt: String(item.created_at ?? ''),
+    }));
+
+  return { friends, incoming, outgoing };
+});
+
+export const respondBoardFriendRequest = onCall({ region: callableRegion, cors: true }, async (request) => {
+  const uid = request.auth?.uid ?? '';
+  if (!uid) {
+    throw new HttpsError('unauthenticated', 'Sign in to respond to friend requests.');
+  }
+
+  const requestId = typeof request.data?.requestId === 'string' ? request.data.requestId.trim() : '';
+  const action = request.data?.action === 'decline' ? 'decline' : request.data?.action === 'accept' ? 'accept' : '';
+  if (!requestId || !action) {
+    throw new HttpsError('invalid-argument', 'Choose a friend request response.');
+  }
+
+  const requestRef = db.collection('board_friend_requests').doc(requestId);
+  const snapshot = await requestRef.get();
+  if (!snapshot.exists) {
+    throw new HttpsError('not-found', 'Friend request not found.');
+  }
+  const data = snapshot.data() as Record<string, unknown>;
+  if (data.status !== 'pending') {
+    throw new HttpsError('failed-precondition', 'This request has already been handled.');
+  }
+
+  const authEmail = normalizeUserEmail((request.auth?.token ?? {}).email);
+  const toUserId = typeof data.to_user_id === 'string' ? data.to_user_id : '';
+  const toEmail = normalizeUserEmail(data.to_email);
+  if (toUserId && toUserId !== uid) {
+    throw new HttpsError('permission-denied', 'This friend request belongs to another account.');
+  }
+  if (!toUserId && (!authEmail || authEmail !== toEmail)) {
+    throw new HttpsError('permission-denied', 'This friend request belongs to another email address.');
+  }
+
+  const fromUserId = typeof data.from_user_id === 'string' ? data.from_user_id : '';
+  if (!fromUserId || fromUserId === uid) {
+    throw new HttpsError('failed-precondition', 'This friend request is invalid.');
+  }
+
+  const now = new Date().toISOString();
+  if (action === 'decline') {
+    await requestRef.update({
+      status: 'declined',
+      to_user_id: uid,
+      updated_at: now,
+      server_updated_at: FieldValue.serverTimestamp(),
+    });
+    return { status: 'declined' };
+  }
+
+  const friendshipId = boardFriendshipId(fromUserId, uid);
+  await db.collection('board_friendships').doc(friendshipId).set({
+    id: friendshipId,
+    user_ids: [fromUserId, uid].sort(),
+    requester_user_id: fromUserId,
+    accepted_user_id: uid,
+    created_at: now,
+    updated_at: now,
+    server_updated_at: FieldValue.serverTimestamp(),
+  }, { merge: true });
+  await requestRef.update({
+    status: 'accepted',
+    to_user_id: uid,
+    accepted_at: now,
+    updated_at: now,
+    server_updated_at: FieldValue.serverTimestamp(),
+  });
+  return { status: 'accepted' };
+});
+
+export const notifyBoardFriendsOnCreate = onDocumentCreated(
+  {
+    region: callableRegion,
+    document: 'boards/{boardId}',
+    secrets: [sendgridApiKey],
+  },
+  async (event) => {
+    const data = event.data?.data() as Record<string, unknown> | undefined;
+    if (!data || data.visibility !== 'public') {
+      return;
+    }
+    const ownerUserId = typeof data.owner_user_id === 'string' ? data.owner_user_id : '';
+    if (!ownerUserId) {
+      return;
+    }
+
+    const friendshipsSnapshot = await db.collection('board_friendships')
+      .where('user_ids', 'array-contains', ownerUserId)
+      .limit(100)
+      .get();
+    if (friendshipsSnapshot.empty) {
+      return;
+    }
+
+    const boardId = event.params.boardId;
+    const boardTitle = typeof data.title === 'string' && data.title.trim() ? data.title.trim() : 'New board';
+    const boardDescription = typeof data.description === 'string' ? data.description.trim() : '';
+    const friendName = typeof data.owner_display_name === 'string' && data.owner_display_name.trim()
+      ? data.owner_display_name.trim()
+      : 'A LivingWiki friend';
+    const boardUrl = `${publicAppUrl}/boards/${encodeURIComponent(boardId)}`;
+    const friendIds = friendshipsSnapshot.docs
+      .map((doc) => (doc.data().user_ids as unknown[] | undefined)?.find((id) => typeof id === 'string' && id !== ownerUserId))
+      .filter((id): id is string => typeof id === 'string');
+    const friendDocs = await Promise.all(friendIds.map((id) => db.collection('users').doc(id).get()));
+
+    await Promise.all(friendDocs.map(async (friendDoc) => {
+      if (!friendDoc.exists) {
+        return;
+      }
+      const friend = friendDoc.data() as Record<string, unknown>;
+      const recipientEmail = normalizeUserEmail(friend.email);
+      if (!isValidEmail(recipientEmail)) {
+        return;
+      }
+      const email = buildBoardFriendNewBoardEmail({
+        recipientEmail,
+        recipientName: displayNameForUser(friend, recipientEmail),
+        friendName,
+        boardTitle,
+        boardDescription,
+        boardUrl,
+      });
+      try {
+        await sendBoardFriendEmail({ recipientEmail, ...email });
+      } catch (error) {
+        logger.error('Failed to send board friend notification email.', {
+          boardId,
+          recipientUserId: friendDoc.id,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }));
+  },
+);
+
 function buildAtlasSubscriptionEmail(params: {
   recipientEmail: string;
   atlasName: string;

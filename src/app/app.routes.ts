@@ -86,6 +86,12 @@ export const routes: Routes = [
     title: 'Boards | LivingWiki',
   },
   {
+    path: 'friends',
+    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    title: 'Friends | LivingWiki',
+    canActivate: [authGuard],
+  },
+  {
     path: 'boards/u/:ownerKey',
     loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
     title: 'User Boards | LivingWiki',
