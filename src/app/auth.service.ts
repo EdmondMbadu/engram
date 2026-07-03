@@ -267,6 +267,7 @@ export class AuthService {
     }
 
     await reload(auth.currentUser);
+    this.user.set(null);
     this.user.set(auth.currentUser);
 
     if (auth.currentUser) {
@@ -274,6 +275,28 @@ export class AuthService {
     }
 
     return auth.currentUser;
+  }
+
+  async refreshVerificationState(): Promise<User | null> {
+    const auth = this.requireAuth();
+    await this.waitForReady();
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      this.user.set(null);
+      this.profile.set(null);
+      return null;
+    }
+
+    await reload(currentUser);
+    await currentUser.getIdToken(true).catch(() => null);
+    this.user.set(null);
+    this.user.set(currentUser);
+    await this.syncUserProfile(currentUser);
+    return currentUser;
+  }
+
+  needsVerificationForUser(user: User | null | undefined): boolean {
+    return user ? this.userNeedsEmailVerification(user) : false;
   }
 
   async getIdToken(): Promise<string> {
@@ -284,7 +307,7 @@ export class AuthService {
   async applyEmailVerificationCode(code: string): Promise<void> {
     const auth = this.requireAuth();
     await applyActionCode(auth, code);
-    await this.refreshUser().catch(() => null);
+    await this.refreshVerificationState().catch(() => null);
   }
 
   async validatePasswordResetCode(code: string): Promise<string> {

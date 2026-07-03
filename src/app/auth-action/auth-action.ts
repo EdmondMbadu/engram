@@ -78,11 +78,11 @@ export class AuthActionComponent {
     const flow = this.route.snapshot.queryParamMap.get('flow');
     const redirectTo = this.getRedirectUrl();
 
-    if (flow === 'verifyEmailComplete' || this.authService.isAuthenticated()) {
-      await this.authService.refreshUser().catch(() => null);
-    }
+    const user = flow === 'verifyEmailComplete' || this.authService.isAuthenticated()
+      ? await this.authService.refreshVerificationState().catch(() => null)
+      : null;
 
-    if (this.authService.isAuthenticated() && !this.authService.needsEmailVerification()) {
+    if (this.authService.isAuthenticated() && !this.authService.needsVerificationForUser(user ?? this.authService.user())) {
       await this.router.navigateByUrl(redirectTo);
       return;
     }
@@ -106,6 +106,10 @@ export class AuthActionComponent {
         switch (mode) {
           case 'verifyEmail':
             await this.authService.applyEmailVerificationCode(oobCode);
+            if (this.authService.isAuthenticated() && !this.authService.needsVerificationForUser(this.authService.user())) {
+              await this.router.navigateByUrl(this.getRedirectUrl());
+              return;
+            }
             this.state.set('success');
             this.title.set('Email verified');
             this.description.set('Your email has been verified. You can continue now.');
@@ -146,9 +150,9 @@ export class AuthActionComponent {
       await this.authService.waitForReady();
 
       if (this.authService.isAuthenticated()) {
-        await this.authService.refreshUser().catch(() => null);
+        const user = await this.authService.refreshVerificationState().catch(() => null);
 
-        if (this.authService.needsEmailVerification()) {
+        if (this.authService.needsVerificationForUser(user ?? this.authService.user())) {
           this.state.set('error');
           this.title.set('Verification not confirmed');
           this.description.set(

@@ -38,8 +38,8 @@ export class VerifyEmailComponent {
     this.isRefreshing.set(true);
 
     try {
-      const user = await this.authService.refreshUser();
-      if (user && !this.authService.needsEmailVerification()) {
+      const user = await this.authService.refreshVerificationState();
+      if (user && !this.authService.needsVerificationForUser(user)) {
         await this.router.navigateByUrl(this.redirectUrl);
         return;
       }
@@ -67,7 +67,8 @@ export class VerifyEmailComponent {
           : 'Your email is already verified. You can continue now.',
       );
 
-      if (!this.authService.needsEmailVerification()) {
+      const user = await this.authService.refreshVerificationState().catch(() => null);
+      if (user && !this.authService.needsVerificationForUser(user)) {
         await this.router.navigateByUrl(this.getRedirectUrl());
       }
     } catch (error) {
@@ -88,10 +89,11 @@ export class VerifyEmailComponent {
     await this.authService.waitForReady();
 
     if (this.authService.isAuthenticated() && this.authService.needsEmailVerification()) {
-      await this.authService.refreshUser().catch(() => null);
+      await this.authService.refreshVerificationState().catch(() => null);
     }
 
-    if (this.authService.isAuthenticated() && !this.authService.needsEmailVerification()) {
+    const user = this.currentUser();
+    if (this.authService.isAuthenticated() && !this.authService.needsVerificationForUser(user)) {
       await this.router.navigateByUrl(this.redirectUrl);
     }
   }

@@ -8,7 +8,11 @@
       </a>
       <div class="flex items-center gap-3">
         <app-theme-toggle></app-theme-toggle>
-        <a routerLink="/sign-in" class="ghost-btn !px-4 !py-2.5 text-sm">Sign In</a>
+        @if (state() === 'success' || state() === 'error') {
+          <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm" (click)="continue()">Continue</button>
+        } @else {
+          <a routerLink="/sign-in" class="ghost-btn !px-4 !py-2.5 text-sm">Sign In</a>
+        }
       </div>
     </header>
 
