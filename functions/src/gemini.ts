@@ -401,6 +401,12 @@ export type GeneratedBoardWizardCard = {
   place_query: string;
   imageUrl?: string;
   audioPreviewUrl?: string;
+  spotifyTrackId?: string;
+  spotifyTrackUrl?: string;
+  spotifyUri?: string;
+  spotifyArtistName?: string;
+  spotifyAlbumName?: string;
+  spotifyArtworkUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
   tour?: GeneratedBoardCardTour | null;

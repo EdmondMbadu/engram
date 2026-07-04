@@ -76,6 +76,8 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const googleCustomSearchApiKey = defineSecret('GOOGLE_CUSTOM_SEARCH_API_KEY');
 const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
+const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? '';
+const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? '';
 const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
 const stripePersonalPlusMonthlyPriceId = defineString('STRIPE_PRICE_PERSONAL_PLUS_MONTHLY', { default: '' });
@@ -1370,6 +1372,17 @@ type GoogleCustomSearchImageResponse = {
   };
 };
 
+type GoogleCustomSearchWebResponse = {
+  items?: Array<{
+    title?: string;
+    link?: string;
+    snippet?: string;
+  }>;
+  error?: {
+    message?: string;
+  };
+};
+
 type AppleMusicSearchResponse = {
   results?: Array<{
     wrapperType?: string;
@@ -1388,6 +1401,77 @@ type AppleMusicMediaScore = {
   audioPreviewUrl: string;
   score: number;
 };
+
+type DeezerTrackSearchResponse = {
+  data?: Array<{
+    id?: number;
+    readable?: boolean;
+    title?: string;
+    title_short?: string;
+    title_version?: string;
+    isrc?: string;
+    link?: string;
+    preview?: string;
+    rank?: number;
+    artist?: {
+      name?: string;
+    };
+    album?: {
+      title?: string;
+      cover_xl?: string;
+      cover_big?: string;
+      cover_medium?: string;
+    };
+  }>;
+  error?: {
+    message?: string;
+  };
+};
+
+type SpotifyTrackMatch = {
+  id: string;
+  trackUrl: string;
+  uri: string;
+  artistName: string;
+  albumName: string;
+  artworkUrl: string;
+};
+
+type SpotifySearchResponse = {
+  tracks?: {
+    items?: Array<{
+      id?: string;
+      name?: string;
+      uri?: string;
+      external_urls?: {
+        spotify?: string;
+      };
+      artists?: Array<{
+        name?: string;
+      }>;
+      album?: {
+        name?: string;
+        images?: Array<{
+          url?: string;
+          width?: number;
+          height?: number;
+        }>;
+      };
+    }>;
+  };
+  error?: {
+    message?: string;
+  };
+};
+
+type SpotifyTokenResponse = {
+  access_token?: string;
+  expires_in?: number;
+  error?: string;
+  error_description?: string;
+};
+
+let spotifyAccessTokenCache: { token: string; expiresAt: number } | null = null;
 
 type WikimediaCommonsImageResponse = {
   query?: {
@@ -4349,6 +4433,12 @@ type BoardWizardCurrentCard = {
   image_query: string;
   place_query: string;
   audioPreviewUrl?: string;
+  spotifyTrackId?: string;
+  spotifyTrackUrl?: string;
+  spotifyUri?: string;
+  spotifyArtistName?: string;
+  spotifyAlbumName?: string;
+  spotifyArtworkUrl?: string;
 };
 
 type BoardWizardMenuItem = {
@@ -5324,6 +5414,41 @@ export const generateBoardWizardBatch = onCall(
   },
 );
 
+export const resolveBoardSongSpotify = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 60,
+    memory: '512MiB',
+    secrets: [googleCustomSearchApiKey],
+  },
+  async (request) => {
+    const data = (request.data ?? {}) as Record<string, unknown>;
+    const boardTitle = stringOrEmpty(data.boardTitle).slice(0, 160);
+    const rawCards: unknown[] = Array.isArray(data.cards) ? data.cards : [];
+    const customSearchApiKey = googleCustomSearchApiKey.value();
+    const cards = rawCards
+      .map((card) => normalizeBoardWizardCurrentCard(card, 'note'))
+      .filter((card): card is BoardWizardCurrentCard => !!card)
+      .slice(0, 40);
+    const results = await Promise.all(cards.map(async (card) => {
+      const match = await findSpotifyTrackForBoardWizard(card, boardTitle, customSearchApiKey);
+      const audioPreviewUrl = card.audioPreviewUrl || await findSongAudioPreviewForBoardWizard(card, boardTitle);
+      return {
+        title: card.title,
+        audioPreviewUrl,
+        spotifyTrackId: match?.id ?? '',
+        spotifyTrackUrl: match?.trackUrl ?? '',
+        spotifyUri: match?.uri ?? '',
+        spotifyArtistName: match?.artistName ?? '',
+        spotifyAlbumName: match?.albumName ?? '',
+        spotifyArtworkUrl: match?.artworkUrl ?? '',
+      };
+    }));
+    return { cards: results };
+  },
+);
+
 async function enrichBoardWizardBatchWithPlaces(
   batch: GeneratedBoardWizardBatch,
   context: {
@@ -5565,6 +5690,12 @@ async function buildBoardWizardImageOnlyBatch(
     image_query: buildBoardWizardCardImageQuery(options.currentCard, options.prompt, options.targetBoardTitle),
     place_query: options.currentCard.place_query || options.targetBoardTitle || options.currentCard.title,
     audioPreviewUrl: options.currentCard.audioPreviewUrl,
+    spotifyTrackId: options.currentCard.spotifyTrackId,
+    spotifyTrackUrl: options.currentCard.spotifyTrackUrl,
+    spotifyUri: options.currentCard.spotifyUri,
+    spotifyArtistName: options.currentCard.spotifyArtistName,
+    spotifyAlbumName: options.currentCard.spotifyAlbumName,
+    spotifyArtworkUrl: options.currentCard.spotifyArtworkUrl,
   };
   const customSearchApiKey = googleCustomSearchApiKey.value();
   const apiKey = googlePlacesApiKey.value();
@@ -5582,10 +5713,15 @@ async function buildBoardWizardImageOnlyBatch(
     imageUrl = enriched.imageUrl || '';
   }
   let audioPreviewUrl = card.audioPreviewUrl || '';
+  let spotifyTrack: SpotifyTrackMatch | null = null;
   if (!imageUrl && (referenceKind === 'song' || referenceKind === 'album')) {
+    spotifyTrack = await findSpotifyTrackForBoardWizard(card, options.targetBoardTitle, customSearchApiKey);
     const musicMedia = await findAppleMusicMediaForBoardWizard(card, options.targetBoardTitle, referenceKind);
     imageUrl = musicMedia.imageUrl;
     audioPreviewUrl = musicMedia.audioPreviewUrl || audioPreviewUrl;
+    if (referenceKind === 'song' && !audioPreviewUrl) {
+      audioPreviewUrl = await findDeezerAudioPreviewForBoardWizard(card, options.targetBoardTitle);
+    }
   }
   if (!imageUrl && referenceKind && referenceKind !== 'person') {
     imageUrl = await findReferenceImageForBoardWizard(card.image_query);
@@ -5604,7 +5740,12 @@ async function buildBoardWizardImageOnlyBatch(
       icon: 'image_search',
       tone: 'teal',
     },
-    cards: [{ ...card, imageUrl: imageUrl || undefined, audioPreviewUrl: audioPreviewUrl || undefined }],
+    cards: [{
+      ...card,
+      ...spotifyFieldsForBoardWizardCard(spotifyTrack),
+      imageUrl: imageUrl || undefined,
+      audioPreviewUrl: audioPreviewUrl || undefined,
+    }],
   };
 }
 
@@ -5761,12 +5902,18 @@ async function enrichBoardWizardCard(
     const imageQuery = buildBoardWizardReferenceImageQuery(card, searchContext);
     const referenceKind = boardWizardReferenceImageKind(card, searchContext);
     let musicAudioPreviewUrl = '';
+    let spotifyTrack: SpotifyTrackMatch | null = null;
     if (referenceKind === 'song' || referenceKind === 'album') {
+      spotifyTrack = await findSpotifyTrackForBoardWizard(card, searchContext, customSearchApiKey);
       const musicMedia = await findAppleMusicMediaForBoardWizard(card, searchContext, referenceKind);
       musicAudioPreviewUrl = musicMedia.audioPreviewUrl || card.audioPreviewUrl || '';
+      if (referenceKind === 'song' && !musicAudioPreviewUrl) {
+        musicAudioPreviewUrl = await findDeezerAudioPreviewForBoardWizard(card, searchContext);
+      }
       if (musicMedia.imageUrl) {
         return {
           ...card,
+          ...spotifyFieldsForBoardWizardCard(spotifyTrack),
           image_query: imageQuery,
           imageUrl: musicMedia.imageUrl || card.imageUrl,
           audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl,
@@ -5780,6 +5927,7 @@ async function enrichBoardWizardCard(
     if (referenceEnriched.imageUrl) {
       return {
         ...referenceEnriched,
+        ...spotifyFieldsForBoardWizardCard(spotifyTrack),
         audioPreviewUrl: musicAudioPreviewUrl || referenceEnriched.audioPreviewUrl || card.audioPreviewUrl,
       };
     }
@@ -5788,13 +5936,19 @@ async function enrichBoardWizardCard(
       if (webImageUrl) {
         return {
           ...card,
+          ...spotifyFieldsForBoardWizardCard(spotifyTrack),
           image_query: imageQuery,
           imageUrl: webImageUrl,
           audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl,
         };
       }
     }
-    return { ...card, image_query: imageQuery, audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl };
+    return {
+      ...card,
+      ...spotifyFieldsForBoardWizardCard(spotifyTrack),
+      image_query: imageQuery,
+      audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl,
+    };
   }
   const placeEnriched = apiKey ? await enrichBoardWizardCardWithPlace(card, searchContext, apiKey) : card;
   if (placeEnriched.imageUrl) {
@@ -6254,6 +6408,417 @@ async function findAppleMusicMediaForBoardWizard(
     });
     return { imageUrl: '', audioPreviewUrl: '' };
   }
+}
+
+async function findSongAudioPreviewForBoardWizard(
+  card: GeneratedBoardWizardCard | BoardWizardCurrentCard,
+  searchContext: string,
+): Promise<string> {
+  if (card.audioPreviewUrl) {
+    return card.audioPreviewUrl;
+  }
+  const apple = await findAppleMusicMediaForBoardWizard(card, searchContext, 'song');
+  if (apple.audioPreviewUrl) {
+    return apple.audioPreviewUrl;
+  }
+  return await findDeezerAudioPreviewForBoardWizard(card, searchContext);
+}
+
+async function findSpotifyTrackForBoardWizard(
+  card: GeneratedBoardWizardCard | BoardWizardCurrentCard,
+  searchContext: string,
+  customSearchApiKey: string,
+): Promise<SpotifyTrackMatch | null> {
+  const title = textFromUnknown(card.title).replace(/\s+/g, ' ').trim();
+  if (title.length < 2) {
+    return null;
+  }
+  if (card.spotifyTrackId) {
+    return {
+      id: card.spotifyTrackId,
+      trackUrl: card.spotifyTrackUrl || `https://open.spotify.com/track/${card.spotifyTrackId}`,
+      uri: card.spotifyUri || `spotify:track:${card.spotifyTrackId}`,
+      artistName: card.spotifyArtistName || '',
+      albumName: card.spotifyAlbumName || '',
+      artworkUrl: card.spotifyArtworkUrl || '',
+    };
+  }
+  const artistHints = buildAppleMusicArtistHints(card, searchContext);
+  const titleCandidates = buildAppleMusicTitleCandidates(title, card.image_query);
+  const spotifyApiMatch = await findSpotifyTrackWithOfficialApi(titleCandidates, artistHints);
+  if (spotifyApiMatch) {
+    return spotifyApiMatch;
+  }
+  const cx = googleCustomSearchCx.trim();
+  if (!customSearchApiKey || !cx) {
+    return null;
+  }
+
+  const searchTerms = buildAppleMusicSearchTerms(titleCandidates, artistHints)
+    .map((term) => `${term} site:open.spotify.com/track`)
+    .slice(0, 4);
+
+  try {
+    const responses = await Promise.all(searchTerms.map(async (query) => {
+      const searchUrl = new URL('https://www.googleapis.com/customsearch/v1');
+      searchUrl.searchParams.set('key', customSearchApiKey);
+      searchUrl.searchParams.set('cx', cx);
+      searchUrl.searchParams.set('q', query);
+      searchUrl.searchParams.set('num', '5');
+      const response = await fetch(searchUrl.toString(), {
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'LivingWiki/1.0 spotify-track-resolver (https://livingwiki.com)',
+        },
+        signal: AbortSignal.timeout(4500),
+      });
+      const search = await response.json() as GoogleCustomSearchWebResponse;
+      if (!response.ok || search.error?.message) {
+        logger.warn('Board wizard Spotify track search failed.', {
+          query,
+          status: response.status,
+          error: search.error?.message,
+        });
+        return [] as NonNullable<GoogleCustomSearchWebResponse['items']>;
+      }
+      return search.items ?? [];
+    }));
+
+    const titleTokenSets = titleCandidates.map((candidate) => musicArtworkTokens(candidate)).filter((tokens) => tokens.length);
+    const artistTokenSets = artistHints.map((hint) => musicArtworkTokens(hint)).filter((tokens) => tokens.length);
+    const candidates = responses.flatMap((items) => items)
+      .map((item) => {
+        const link = textFromUnknown(item.link);
+        const id = spotifyTrackIdFromUrl(link);
+        if (!id) {
+          return null;
+        }
+        const text = `${item.title ?? ''} ${item.snippet ?? ''} ${link}`.toLowerCase();
+        const tokens = musicArtworkTokens(text);
+        const titleScore = Math.max(0, ...titleTokenSets.map((set) =>
+          set.filter((token) => tokens.includes(token)).length / set.length,
+        ));
+        const artistScore = artistTokenSets.length
+          ? Math.max(0, ...artistTokenSets.map((set) => set.filter((token) => tokens.includes(token)).length / set.length))
+          : 0.15;
+        const score = titleScore * 2 + artistScore + (/open\.spotify\.com\/track\//i.test(link) ? 0.5 : 0);
+        return {
+          id,
+          score,
+          match: {
+            id,
+            trackUrl: `https://open.spotify.com/track/${id}`,
+            uri: `spotify:track:${id}`,
+            artistName: artistHints[0] ?? '',
+            albumName: '',
+            artworkUrl: '',
+          } satisfies SpotifyTrackMatch,
+        };
+      })
+      .filter((item): item is { id: string; score: number; match: SpotifyTrackMatch } => !!item && item.score >= 1.4)
+      .sort((left, right) => right.score - left.score);
+    return candidates[0]?.match ?? null;
+  } catch (error) {
+    logger.warn('Board wizard Spotify track lookup failed.', {
+      title,
+      searchTerms,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+async function findSpotifyTrackWithOfficialApi(titleCandidates: string[], artistHints: string[]): Promise<SpotifyTrackMatch | null> {
+  const token = await getSpotifyClientCredentialsToken();
+  if (!token) {
+    return null;
+  }
+  const searchTerms = buildSpotifySearchTerms(titleCandidates, artistHints);
+  if (!searchTerms.length) {
+    return null;
+  }
+  const titleTokenSets = titleCandidates.map((candidate) => musicArtworkTokens(candidate)).filter((tokens) => tokens.length);
+  const artistTokenSets = artistHints.map((hint) => musicArtworkTokens(hint)).filter((tokens) => tokens.length);
+  const normalizedTitles = titleCandidates.map((candidate) => normalizeMusicArtworkText(candidate)).filter(Boolean);
+  try {
+    const responses = await Promise.all(searchTerms.map(async (query) => {
+      const searchUrl = new URL('https://api.spotify.com/v1/search');
+      searchUrl.searchParams.set('q', query);
+      searchUrl.searchParams.set('type', 'track');
+      searchUrl.searchParams.set('market', 'US');
+      searchUrl.searchParams.set('limit', '10');
+      const response = await fetch(searchUrl.toString(), {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'User-Agent': 'LivingWiki/1.0 spotify-track-resolver (https://livingwiki.com)',
+        },
+        signal: AbortSignal.timeout(5000),
+      });
+      const data = await response.json() as SpotifySearchResponse;
+      if (!response.ok || data.error?.message) {
+        logger.warn('Board wizard Spotify API search failed.', {
+          query,
+          status: response.status,
+          error: data.error?.message,
+        });
+        return [] as NonNullable<SpotifySearchResponse['tracks']>['items'];
+      }
+      return data.tracks?.items ?? [];
+    }));
+
+    const candidates = responses.flatMap((items) => items ?? [])
+      .map((track) => scoreSpotifyApiTrack(track, titleTokenSets, artistTokenSets, normalizedTitles))
+      .filter((item): item is { score: number; match: SpotifyTrackMatch } => !!item && item.score >= (artistTokenSets.length ? 78 : 92))
+      .sort((left, right) => right.score - left.score);
+    return candidates[0]?.match ?? null;
+  } catch (error) {
+    logger.warn('Board wizard Spotify API lookup failed.', {
+      searchTerms,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+async function getSpotifyClientCredentialsToken(): Promise<string> {
+  if (!spotifyClientId || !spotifyClientSecret) {
+    return '';
+  }
+  const now = Date.now();
+  if (spotifyAccessTokenCache && spotifyAccessTokenCache.expiresAt > now + 30_000) {
+    return spotifyAccessTokenCache.token;
+  }
+  try {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${Buffer.from(`${spotifyClientId}:${spotifyClientSecret}`).toString('base64')}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({ grant_type: 'client_credentials' }).toString(),
+      signal: AbortSignal.timeout(5000),
+    });
+    const data = await response.json() as SpotifyTokenResponse;
+    if (!response.ok || !data.access_token) {
+      logger.warn('Board wizard Spotify token request failed.', {
+        status: response.status,
+        error: data.error,
+        errorDescription: data.error_description,
+      });
+      spotifyAccessTokenCache = null;
+      return '';
+    }
+    const expiresInMs = Math.max(60, data.expires_in ?? 3600) * 1000;
+    spotifyAccessTokenCache = {
+      token: data.access_token,
+      expiresAt: now + expiresInMs,
+    };
+    return data.access_token;
+  } catch (error) {
+    logger.warn('Board wizard Spotify token request errored.', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    spotifyAccessTokenCache = null;
+    return '';
+  }
+}
+
+function buildSpotifySearchTerms(titleCandidates: string[], artistHints: string[]): string[] {
+  const primaryTitle = titleCandidates[0] ?? '';
+  const compactTitle = titleCandidates.find((candidate) => musicArtworkTokens(candidate).length <= 6) ?? primaryTitle;
+  const primaryArtist = artistHints[0] ?? '';
+  const quotedPrimary = primaryArtist ? `track:"${compactTitle}" artist:"${primaryArtist}"` : `track:"${compactTitle}"`;
+  return [
+    quotedPrimary,
+    [compactTitle, primaryArtist].filter(Boolean).join(' '),
+    [primaryTitle, primaryArtist].filter(Boolean).join(' '),
+    ...artistHints.slice(1).map((artist) => `track:"${compactTitle}" artist:"${artist}"`),
+    compactTitle,
+  ]
+    .map((term) => term.replace(/\s+/g, ' ').trim().slice(0, 180))
+    .filter((term) => term.length >= 2)
+    .filter((term, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === term.toLowerCase()) === index)
+    .slice(0, 5);
+}
+
+function scoreSpotifyApiTrack(
+  track: NonNullable<NonNullable<SpotifySearchResponse['tracks']>['items']>[number],
+  titleTokenSets: string[][],
+  artistTokenSets: string[][],
+  normalizedTitles: string[],
+): { score: number; match: SpotifyTrackMatch } | null {
+  const id = textFromUnknown(track.id);
+  const title = textFromUnknown(track.name);
+  const artists = (track.artists ?? []).map((artist) => textFromUnknown(artist.name)).filter(Boolean);
+  if (!id || !title) {
+    return null;
+  }
+  const artistText = artists.join(' ');
+  const resultText = normalizeMusicArtworkText(`${title} ${artistText}`);
+  const titleText = normalizeMusicArtworkText(title);
+  const titleMatches = titleTokenSets.map((titleTokens) => {
+    const matches = titleTokens.filter((token) => resultText.includes(token)).length;
+    const required = titleTokens.length <= 2 ? titleTokens.length : Math.min(2, titleTokens.length);
+    return { matches, required, tokenCount: titleTokens.length };
+  });
+  const bestTitle = titleMatches
+    .filter((item) => item.required > 0 && item.matches >= item.required)
+    .sort((left, right) => right.matches - left.matches || left.tokenCount - right.tokenCount)[0];
+  if (!bestTitle) {
+    return null;
+  }
+  const artistMatches = artistTokenSets.map((artistTokens) => artistTokens.filter((token) => resultText.includes(token)).length);
+  const bestArtistMatches = artistMatches.length ? Math.max(...artistMatches) : 0;
+  const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
+    artistMatches[index] >= Math.min(2, artistTokens.length),
+  );
+  const exactTitleMatch = normalizedTitles.some((normalizedTitle) => titleText === normalizedTitle);
+  const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
+    titleText.includes(normalizedTitle) || normalizedTitle.includes(titleText),
+  );
+  let score = bestTitle.matches * 18 + bestArtistMatches * 28;
+  if (exactTitleMatch) {
+    score += 92;
+  } else if (closeTitleMatch) {
+    score += 46;
+  }
+  if (hasStrongArtistMatch) {
+    score += 44;
+  } else if (artistTokenSets.length) {
+    score -= exactTitleMatch ? 10 : 32;
+  }
+  if (/\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(titleText) && !/\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(normalizedTitles.join(' '))) {
+    score -= 35;
+  }
+  const albumImages = [...(track.album?.images ?? [])].sort((left, right) => (right.width ?? 0) - (left.width ?? 0));
+  const trackUrl = textFromUnknown(track.external_urls?.spotify) || `https://open.spotify.com/track/${id}`;
+  return {
+    score,
+    match: {
+      id,
+      trackUrl,
+      uri: textFromUnknown(track.uri) || `spotify:track:${id}`,
+      artistName: artists[0] ?? '',
+      albumName: textFromUnknown(track.album?.name),
+      artworkUrl: textFromUnknown(albumImages[0]?.url),
+    },
+  };
+}
+
+function spotifyTrackIdFromUrl(value: string): string {
+  const match = value.match(/(?:open\.spotify\.com\/track\/|spotify:track:)([A-Za-z0-9]{12,32})/i);
+  return match?.[1] ?? '';
+}
+
+function spotifyFieldsForBoardWizardCard(match: SpotifyTrackMatch | null): Partial<GeneratedBoardWizardCard> {
+  if (!match) {
+    return {};
+  }
+  return {
+    spotifyTrackId: match.id,
+    spotifyTrackUrl: match.trackUrl,
+    spotifyUri: match.uri,
+    spotifyArtistName: match.artistName,
+    spotifyAlbumName: match.albumName,
+    spotifyArtworkUrl: match.artworkUrl,
+  };
+}
+
+async function findDeezerAudioPreviewForBoardWizard(
+  card: GeneratedBoardWizardCard | BoardWizardCurrentCard,
+  searchContext: string,
+): Promise<string> {
+  const title = textFromUnknown(card.title).replace(/\s+/g, ' ').trim();
+  if (title.length < 2) {
+    return '';
+  }
+  const artistHints = buildAppleMusicArtistHints(card, searchContext);
+  const titleCandidates = buildAppleMusicTitleCandidates(title, card.image_query);
+  const searchTerms = buildAppleMusicSearchTerms(titleCandidates, artistHints);
+  const titleTokenSets = titleCandidates.map((candidate) => musicArtworkTokens(candidate)).filter((tokens) => tokens.length);
+  const artistTokenSets = artistHints.map((hint) => musicArtworkTokens(hint)).filter((tokens) => tokens.length);
+  const normalizedTitles = titleCandidates.map((candidate) => normalizeMusicArtworkText(candidate)).filter(Boolean);
+
+  try {
+    const responses = await Promise.all(searchTerms.map(async (searchTerm) => {
+      const searchUrl = new URL('https://api.deezer.com/search/track');
+      searchUrl.searchParams.set('q', searchTerm);
+      searchUrl.searchParams.set('limit', '12');
+      return await fetchJson<DeezerTrackSearchResponse>(searchUrl.toString());
+    }));
+    const scored = responses
+      .flatMap((data) => data.data ?? [])
+      .map((track) => scoreDeezerAudioPreview(track, titleTokenSets, artistTokenSets, normalizedTitles))
+      .filter((item): item is { score: number; previewUrl: string } => !!item && item.score >= (artistTokenSets.length ? 78 : 92))
+      .sort((left, right) => right.score - left.score);
+    return scored[0]?.previewUrl ?? '';
+  } catch (error) {
+    logger.warn('Board wizard Deezer preview lookup failed.', {
+      title,
+      artistHint: artistHints[0] ?? '',
+      searchTerms,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return '';
+  }
+}
+
+function scoreDeezerAudioPreview(
+  track: NonNullable<DeezerTrackSearchResponse['data']>[number],
+  titleTokenSets: string[][],
+  artistTokenSets: string[][],
+  normalizedTitles: string[],
+): { score: number; previewUrl: string } | null {
+  const previewUrl = textFromUnknown(track.preview);
+  const title = textFromUnknown(track.title_short || track.title);
+  const artistName = textFromUnknown(track.artist?.name);
+  if (!previewUrl || !title) {
+    return null;
+  }
+  const resultTitleText = normalizeMusicArtworkText(title);
+  const resultText = normalizeMusicArtworkText(`${track.title ?? ''} ${track.title_short ?? ''} ${track.title_version ?? ''} ${artistName} ${track.album?.title ?? ''}`);
+  const titleMatches = titleTokenSets.map((titleTokens) => {
+    const matches = titleTokens.filter((token) => resultText.includes(token)).length;
+    const required = titleTokens.length <= 2 ? titleTokens.length : Math.min(2, titleTokens.length);
+    return { matches, required, tokenCount: titleTokens.length };
+  });
+  const bestTitle = titleMatches
+    .filter((item) => item.required > 0 && item.matches >= item.required)
+    .sort((left, right) => right.matches - left.matches || left.tokenCount - right.tokenCount)[0];
+  if (!bestTitle) {
+    return null;
+  }
+  const artistMatches = artistTokenSets.map((artistTokens) => artistTokens.filter((token) => resultText.includes(token)).length);
+  const bestArtistMatches = artistMatches.length ? Math.max(...artistMatches) : 0;
+  const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
+    artistMatches[index] >= Math.min(2, artistTokens.length),
+  );
+  const exactTitleMatch = normalizedTitles.some((normalizedTitle) => resultTitleText === normalizedTitle);
+  const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
+    resultTitleText.includes(normalizedTitle) || normalizedTitle.includes(resultTitleText),
+  );
+  let score = bestTitle.matches * 18 + bestArtistMatches * 28;
+  if (exactTitleMatch) {
+    score += 92;
+  } else if (closeTitleMatch) {
+    score += 46;
+  }
+  if (hasStrongArtistMatch) {
+    score += 44;
+  } else if (artistTokenSets.length) {
+    score -= exactTitleMatch ? 10 : 32;
+  }
+  if (track.readable === false) {
+    score -= 15;
+  }
+  if (typeof track.rank === 'number') {
+    score += Math.min(14, Math.max(0, track.rank / 100_000));
+  }
+  if (/\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(resultText) && !/\b(live|karaoke|tribute|cover|instrumental|mixed|dj mix|demo)\b/.test(normalizedTitles.join(' '))) {
+    score -= 35;
+  }
+  return { score, previewUrl };
 }
 
 function scoreAppleMusicMediaResults(
@@ -7182,6 +7747,12 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
     image_query: stringOrEmpty(data.image_query).slice(0, 160),
     place_query: stringOrEmpty(data.place_query).slice(0, 180),
     audioPreviewUrl: stringOrEmpty(data.audioPreviewUrl).slice(0, 2000) || undefined,
+    spotifyTrackId: stringOrEmpty(data.spotifyTrackId).slice(0, 120) || undefined,
+    spotifyTrackUrl: stringOrEmpty(data.spotifyTrackUrl).slice(0, 2000) || undefined,
+    spotifyUri: stringOrEmpty(data.spotifyUri).slice(0, 240) || undefined,
+    spotifyArtistName: stringOrEmpty(data.spotifyArtistName).slice(0, 180) || undefined,
+    spotifyAlbumName: stringOrEmpty(data.spotifyAlbumName).slice(0, 180) || undefined,
+    spotifyArtworkUrl: stringOrEmpty(data.spotifyArtworkUrl).slice(0, 2000) || undefined,
   };
 }
 

@@ -97,6 +97,12 @@ type BoardCard = {
   rating: number;
   imageUrl: string;
   audioPreviewUrl: string;
+  spotifyTrackId: string;
+  spotifyTrackUrl: string;
+  spotifyUri: string;
+  spotifyArtistName: string;
+  spotifyAlbumName: string;
+  spotifyArtworkUrl: string;
   placeId: string;
   googleMapsUrl: string;
   tags: string[];
@@ -254,6 +260,12 @@ type BoardWizardGeneratedCard = {
   place_query: string;
   imageUrl?: string;
   audioPreviewUrl?: string;
+  spotifyTrackId?: string;
+  spotifyTrackUrl?: string;
+  spotifyUri?: string;
+  spotifyArtistName?: string;
+  spotifyAlbumName?: string;
+  spotifyArtworkUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
   tour?: BoardCardTour | null;
@@ -310,6 +322,16 @@ type TourSpeechResponse = {
   contentType?: string;
   provider?: string;
   voiceId?: string;
+};
+
+type SpotifyResolvedCard = {
+  audioPreviewUrl: string;
+  spotifyTrackId: string;
+  spotifyTrackUrl: string;
+  spotifyUri: string;
+  spotifyArtistName: string;
+  spotifyAlbumName: string;
+  spotifyArtworkUrl: string;
 };
 
 type TourMapPoint = {
@@ -799,6 +821,9 @@ export class BoardsComponent implements OnDestroy {
   private tourMapPolyline: unknown | null = null;
   private tourAudio: HTMLAudioElement | null = null;
   private songPreviewAudio: HTMLAudioElement | null = null;
+  private readonly spotifyEnrichedBoardIds = new Set<string>();
+  private readonly spotifyEnrichmentInFlightBoardIds = new Set<string>();
+  private readonly spotifyEmbedUrls = new Map<string, SafeResourceUrl>();
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
   private friendsLoadedForUid = '';
@@ -1275,6 +1300,14 @@ export class BoardsComponent implements OnDestroy {
       }
       void tourSignature;
       window.setTimeout(() => void this.renderTourMap(), 0);
+    });
+
+    effect(() => {
+      const board = this.selectedBoard();
+      if (!this.isBrowser || !board || !board.cards.some((card) => this.isSongCard(card) && !card.spotifyTrackId)) {
+        return;
+      }
+      void this.enrichBoardSpotify(board);
     });
 
     effect(() => {
@@ -1821,6 +1854,12 @@ export class BoardsComponent implements OnDestroy {
                 ...item,
                 imageUrl: replacement.imageUrl ?? item.imageUrl,
                 audioPreviewUrl: replacement.audioPreviewUrl || item.audioPreviewUrl,
+                spotifyTrackId: replacement.spotifyTrackId || item.spotifyTrackId,
+                spotifyTrackUrl: replacement.spotifyTrackUrl || item.spotifyTrackUrl,
+                spotifyUri: replacement.spotifyUri || item.spotifyUri,
+                spotifyArtistName: replacement.spotifyArtistName || item.spotifyArtistName,
+                spotifyAlbumName: replacement.spotifyAlbumName || item.spotifyAlbumName,
+                spotifyArtworkUrl: replacement.spotifyArtworkUrl || item.spotifyArtworkUrl,
                 image_query: replacement.image_query || item.image_query,
                 placeId: replacement.placeId || item.placeId,
                 googleMapsUrl: replacement.googleMapsUrl || item.googleMapsUrl,
@@ -2004,6 +2043,12 @@ export class BoardsComponent implements OnDestroy {
       rating: Math.max(1, Math.min(5, Math.round(card.rating) || 4)),
       imageUrl: card.imageUrl,
       audioPreviewUrl: card.audioPreviewUrl ?? '',
+      spotifyTrackId: card.spotifyTrackId ?? '',
+      spotifyTrackUrl: card.spotifyTrackUrl ?? '',
+      spotifyUri: card.spotifyUri ?? '',
+      spotifyArtistName: card.spotifyArtistName ?? '',
+      spotifyAlbumName: card.spotifyAlbumName ?? '',
+      spotifyArtworkUrl: card.spotifyArtworkUrl ?? '',
       placeId: card.placeId,
       googleMapsUrl: card.googleMapsUrl,
       tags: card.tags.slice(0, 6),
@@ -2634,6 +2679,12 @@ export class BoardsComponent implements OnDestroy {
                 rating,
                 imageUrl: draft.imageUrl.trim(),
                 audioPreviewUrl: draft.audioPreviewUrl.trim(),
+                spotifyTrackId: '',
+                spotifyTrackUrl: '',
+                spotifyUri: '',
+                spotifyArtistName: '',
+                spotifyAlbumName: '',
+                spotifyArtworkUrl: '',
                 placeId: draft.placeId,
                 googleMapsUrl: draft.googleMapsUrl,
                 tags,
@@ -3335,6 +3386,102 @@ export class BoardsComponent implements OnDestroy {
 
   private songPreviewKey(cardId: string, context: string): string {
     return `${context}:${cardId}`;
+  }
+
+  private async enrichBoardSpotify(board: Board): Promise<void> {
+    if (!this.functions || this.spotifyEnrichedBoardIds.has(board.id) || this.spotifyEnrichmentInFlightBoardIds.has(board.id)) {
+      return;
+    }
+    const candidates = board.cards.filter((card) => this.isSongCard(card) && (!card.spotifyTrackId || !card.audioPreviewUrl)).slice(0, 40);
+    if (!candidates.length) {
+      this.spotifyEnrichedBoardIds.add(board.id);
+      return;
+    }
+    this.spotifyEnrichmentInFlightBoardIds.add(board.id);
+    try {
+      const callable = httpsCallable<
+        { boardTitle: string; cards: Array<Record<string, unknown>> },
+        { cards?: unknown[] }
+      >(this.functions, 'resolveBoardSongSpotify', { timeout: 60_000 });
+      const response = await callable({
+        boardTitle: board.title,
+        cards: candidates.map((card) => ({
+          title: card.title,
+          subtitle: card.subtitle,
+          notes: card.notes,
+          tags: card.tags,
+          audioPreviewUrl: card.audioPreviewUrl,
+          spotifyTrackId: card.spotifyTrackId,
+          spotifyTrackUrl: card.spotifyTrackUrl,
+          spotifyUri: card.spotifyUri,
+          spotifyArtistName: card.spotifyArtistName,
+          spotifyAlbumName: card.spotifyAlbumName,
+          spotifyArtworkUrl: card.spotifyArtworkUrl,
+        })),
+      });
+      const resolved = Array.isArray(response.data?.cards)
+        ? response.data.cards.map((item) => this.normalizeSpotifyResolvedCard(item))
+        : [];
+      const resolvedByCardId = new Map<string, SpotifyResolvedCard>();
+      candidates.forEach((card, index) => {
+        const match = resolved[index];
+        if (match?.spotifyTrackId || match?.audioPreviewUrl) {
+          resolvedByCardId.set(card.id, match);
+        }
+      });
+      if (!resolvedByCardId.size) {
+        return;
+      }
+      this.spotifyEnrichedBoardIds.add(board.id);
+      const now = new Date().toISOString();
+      const nextBoard: Board = {
+        ...board,
+        cards: board.cards.map((card) => {
+          const spotify = resolvedByCardId.get(card.id);
+          if (!spotify) {
+            return card;
+          }
+          return {
+            ...card,
+            spotifyTrackId: card.spotifyTrackId || spotify.spotifyTrackId,
+            spotifyTrackUrl: card.spotifyTrackUrl || spotify.spotifyTrackUrl,
+            spotifyUri: card.spotifyUri || spotify.spotifyUri,
+            spotifyArtistName: card.spotifyArtistName || spotify.spotifyArtistName,
+            spotifyAlbumName: card.spotifyAlbumName || spotify.spotifyAlbumName,
+            spotifyArtworkUrl: card.spotifyArtworkUrl || spotify.spotifyArtworkUrl,
+            audioPreviewUrl: card.audioPreviewUrl || spotify.audioPreviewUrl,
+            updatedAt: now,
+          };
+        }),
+        updatedAt: now,
+      };
+      this.boards.update((boards) => boards.map((item) => (item.id === nextBoard.id ? nextBoard : item)));
+      if (this.canEditBoard(nextBoard)) {
+        await this.persistAndReplaceBoard(nextBoard);
+      }
+    } catch (error) {
+      console.warn('Spotify board enrichment failed', error, { boardId: board.id });
+    } finally {
+      this.spotifyEnrichmentInFlightBoardIds.delete(board.id);
+    }
+  }
+
+  private normalizeSpotifyResolvedCard(value: unknown): SpotifyResolvedCard | null {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const spotifyTrackId = this.stringValue(data['spotifyTrackId'], '', 120);
+    const audioPreviewUrl = this.stringValue(data['audioPreviewUrl'], '', 2000);
+    if (!spotifyTrackId && !audioPreviewUrl) {
+      return null;
+    }
+    return {
+      audioPreviewUrl,
+      spotifyTrackId,
+      spotifyTrackUrl: this.stringValue(data['spotifyTrackUrl'], '', 2000),
+      spotifyUri: this.stringValue(data['spotifyUri'], '', 240),
+      spotifyArtistName: this.stringValue(data['spotifyArtistName'], '', 180),
+      spotifyAlbumName: this.stringValue(data['spotifyAlbumName'], '', 180),
+      spotifyArtworkUrl: this.stringValue(data['spotifyArtworkUrl'], '', 2000),
+    };
   }
 
   private async ensureTourAudioUrl(key: string, text: string): Promise<string | null> {
@@ -4050,6 +4197,58 @@ export class BoardsComponent implements OnDestroy {
     return board.imageUrl || board.cards.find((card) => card.imageUrl)?.imageUrl || '';
   }
 
+  isSongCard(card: Pick<BoardCard, 'title' | 'subtitle' | 'notes' | 'tags' | 'audioPreviewUrl' | 'spotifyTrackId' | 'spotifyTrackUrl'>): boolean {
+    if (card.spotifyTrackId || card.spotifyTrackUrl || card.audioPreviewUrl) {
+      return true;
+    }
+    const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')}`.toLowerCase();
+    return /\b(song|songs|music|album|single|track|hit|hits|singer|artist|spotify|playlist)\b/.test(text);
+  }
+
+  spotifyTrackEmbedUrl(card: BoardCard): SafeResourceUrl | null {
+    const trackId = this.spotifyTrackIdForCard(card);
+    if (!this.isSongCard(card) || !trackId) {
+      return null;
+    }
+    const cached = this.spotifyEmbedUrls.get(trackId);
+    if (cached) {
+      return cached;
+    }
+    const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://open.spotify.com/embed/track/${encodeURIComponent(trackId)}?utm_source=generator&theme=0`,
+    );
+    this.spotifyEmbedUrls.set(trackId, safeUrl);
+    return safeUrl;
+  }
+
+  spotifyTrackHref(card: BoardCard): string {
+    if (!this.isSongCard(card)) {
+      return '';
+    }
+    if (card.spotifyTrackUrl) {
+      return card.spotifyTrackUrl;
+    }
+    const trackId = this.spotifyTrackIdForCard(card);
+    if (trackId) {
+      return `https://open.spotify.com/track/${encodeURIComponent(trackId)}`;
+    }
+    const query = [card.title, card.spotifyArtistName || card.subtitle].filter(Boolean).join(' ');
+    return `https://open.spotify.com/search/${encodeURIComponent(query)}`;
+  }
+
+  hasSpotifyTrack(card: Pick<BoardCard, 'spotifyTrackId' | 'spotifyTrackUrl' | 'spotifyUri'>): boolean {
+    return !!this.spotifyTrackIdForCard(card);
+  }
+
+  private spotifyTrackIdForCard(card: Pick<BoardCard, 'spotifyTrackId' | 'spotifyTrackUrl' | 'spotifyUri'>): string {
+    const direct = card.spotifyTrackId.trim();
+    if (direct) {
+      return direct;
+    }
+    const match = `${card.spotifyTrackUrl} ${card.spotifyUri}`.match(/(?:open\.spotify\.com\/track\/|spotify:track:)([A-Za-z0-9]{12,32})/i);
+    return match?.[1] ?? '';
+  }
+
   stackFramePosition(frame: StackFrame): string {
     return `${frame.index + 1} / ${frame.total}`;
   }
@@ -4610,6 +4809,12 @@ export class BoardsComponent implements OnDestroy {
       place_query: this.stringValue(data['place_query'], title, 140),
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
       audioPreviewUrl: this.stringValue(data['audioPreviewUrl'], '', 2000),
+      spotifyTrackId: this.stringValue(data['spotifyTrackId'], '', 120),
+      spotifyTrackUrl: this.stringValue(data['spotifyTrackUrl'], '', 2000),
+      spotifyUri: this.stringValue(data['spotifyUri'], '', 240),
+      spotifyArtistName: this.stringValue(data['spotifyArtistName'], '', 180),
+      spotifyAlbumName: this.stringValue(data['spotifyAlbumName'], '', 180),
+      spotifyArtworkUrl: this.stringValue(data['spotifyArtworkUrl'], '', 2000),
       placeId: this.stringValue(data['placeId'], '', 240),
       googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
       tour: this.normalizeCardTour(data['tour']),
@@ -4629,6 +4834,12 @@ export class BoardsComponent implements OnDestroy {
       image_query: card.image_query || `${card.title} image`,
       place_query: card.place_query || card.title,
       audioPreviewUrl: card.audioPreviewUrl || '',
+      spotifyTrackId: card.spotifyTrackId || '',
+      spotifyTrackUrl: card.spotifyTrackUrl || '',
+      spotifyUri: card.spotifyUri || '',
+      spotifyArtistName: card.spotifyArtistName || '',
+      spotifyAlbumName: card.spotifyAlbumName || '',
+      spotifyArtworkUrl: card.spotifyArtworkUrl || '',
     };
   }
 
@@ -4640,6 +4851,12 @@ export class BoardsComponent implements OnDestroy {
         id: this.createId(),
         imageUrl: card.imageUrl ?? '',
         audioPreviewUrl: card.audioPreviewUrl ?? '',
+        spotifyTrackId: card.spotifyTrackId ?? '',
+        spotifyTrackUrl: card.spotifyTrackUrl ?? '',
+        spotifyUri: card.spotifyUri ?? '',
+        spotifyArtistName: card.spotifyArtistName ?? '',
+        spotifyAlbumName: card.spotifyAlbumName ?? '',
+        spotifyArtworkUrl: card.spotifyArtworkUrl ?? '',
         placeId: card.placeId ?? '',
         googleMapsUrl: card.googleMapsUrl ?? '',
         editing: false,
@@ -5392,6 +5609,12 @@ export class BoardsComponent implements OnDestroy {
             ...card,
             imageUrl: card.imageUrl ?? '',
             audioPreviewUrl: (card as Partial<BoardCard>).audioPreviewUrl ?? '',
+            spotifyTrackId: (card as Partial<BoardCard>).spotifyTrackId ?? '',
+            spotifyTrackUrl: (card as Partial<BoardCard>).spotifyTrackUrl ?? '',
+            spotifyUri: (card as Partial<BoardCard>).spotifyUri ?? '',
+            spotifyArtistName: (card as Partial<BoardCard>).spotifyArtistName ?? '',
+            spotifyAlbumName: (card as Partial<BoardCard>).spotifyAlbumName ?? '',
+            spotifyArtworkUrl: (card as Partial<BoardCard>).spotifyArtworkUrl ?? '',
             placeId: card.placeId ?? '',
             googleMapsUrl: card.googleMapsUrl ?? '',
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
@@ -5629,6 +5852,12 @@ export class BoardsComponent implements OnDestroy {
       rating: typeof data['rating'] === 'number' ? Math.max(1, Math.min(5, data['rating'])) : 4,
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
       audioPreviewUrl: typeof data['audioPreviewUrl'] === 'string' ? data['audioPreviewUrl'] : '',
+      spotifyTrackId: typeof data['spotifyTrackId'] === 'string' ? data['spotifyTrackId'] : '',
+      spotifyTrackUrl: typeof data['spotifyTrackUrl'] === 'string' ? data['spotifyTrackUrl'] : '',
+      spotifyUri: typeof data['spotifyUri'] === 'string' ? data['spotifyUri'] : '',
+      spotifyArtistName: typeof data['spotifyArtistName'] === 'string' ? data['spotifyArtistName'] : '',
+      spotifyAlbumName: typeof data['spotifyAlbumName'] === 'string' ? data['spotifyAlbumName'] : '',
+      spotifyArtworkUrl: typeof data['spotifyArtworkUrl'] === 'string' ? data['spotifyArtworkUrl'] : '',
       placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
