@@ -824,6 +824,8 @@ export class BoardsComponent implements OnDestroy {
   private readonly spotifyEnrichedBoardIds = new Set<string>();
   private readonly spotifyEnrichmentInFlightBoardIds = new Set<string>();
   private readonly spotifyEmbedUrls = new Map<string, SafeResourceUrl>();
+  private stackLivePreviewAutoplay = false;
+  private stackLivePreviewSwitchToken = 0;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
   private friendsLoadedForUid = '';
@@ -3346,11 +3348,14 @@ export class BoardsComponent implements OnDestroy {
 
     const key = this.songPreviewKey(card.id, context);
     if (this.songPreviewPlayingKey() === key) {
+      if (context === 'stack-live') {
+        this.stackLivePreviewAutoplay = false;
+      }
       this.stopSongPreview();
       return;
     }
 
-    this.stopSongPreview();
+    this.stopSongPreview({ preserveStackLiveAutoplay: context === 'stack-live' });
     this.songPreviewError.set(null);
     const audio = new Audio(audioPreviewUrl);
     audio.loop = true;
@@ -3365,15 +3370,24 @@ export class BoardsComponent implements OnDestroy {
     };
     try {
       await audio.play();
+      if (this.songPreviewAudio === audio && context === 'stack-live') {
+        this.stackLivePreviewAutoplay = true;
+      }
     } catch {
       if (this.songPreviewAudio === audio) {
+        if (context === 'stack-live') {
+          this.stackLivePreviewAutoplay = false;
+        }
         this.stopSongPreview();
         this.songPreviewError.set(`Preview playback was blocked for "${card.title}". Tap play again.`);
       }
     }
   }
 
-  stopSongPreview(): void {
+  stopSongPreview(options: { preserveStackLiveAutoplay?: boolean } = {}): void {
+    if (!options.preserveStackLiveAutoplay) {
+      this.stackLivePreviewAutoplay = false;
+    }
     if (this.songPreviewAudio) {
       this.songPreviewAudio.pause();
       this.songPreviewAudio.currentTime = 0;
@@ -3386,6 +3400,29 @@ export class BoardsComponent implements OnDestroy {
 
   private songPreviewKey(cardId: string, context: string): string {
     return `${context}:${cardId}`;
+  }
+
+  private syncStackLivePreviewAfterFrameChange(): void {
+    if (!this.isBrowser || !this.stackLivePreviewAutoplay || !this.stackDirectView()) {
+      return;
+    }
+    const token = ++this.stackLivePreviewSwitchToken;
+    window.setTimeout(() => {
+      if (token !== this.stackLivePreviewSwitchToken || !this.stackLivePreviewAutoplay || !this.stackDirectView()) {
+        return;
+      }
+      const frame = this.stackCurrentFrame();
+      const card = frame.kind === 'card' ? frame.card : null;
+      if (!card?.audioPreviewUrl) {
+        this.stopSongPreview({ preserveStackLiveAutoplay: true });
+        return;
+      }
+      const key = this.songPreviewKey(card.id, 'stack-live');
+      if (this.songPreviewPlayingKey() === key) {
+        return;
+      }
+      void this.toggleSongPreview(card, undefined, 'stack-live');
+    }, 0);
   }
 
   private async enrichBoardSpotify(board: Board): Promise<void> {
@@ -4289,6 +4326,7 @@ export class BoardsComponent implements OnDestroy {
       const count = this.stackFrameCount();
       return count ? (index - 1 + count) % count : 0;
     });
+    this.syncStackLivePreviewAfterFrameChange();
   }
 
   nextStackFrame(): void {
@@ -4640,6 +4678,7 @@ export class BoardsComponent implements OnDestroy {
       const count = this.stackFrameCount();
       return count ? (index + 1) % count : 0;
     });
+    this.syncStackLivePreviewAfterFrameChange();
   }
 
   private startStackPlayback(): void {
