@@ -240,6 +240,7 @@ type BoardFriendsState = {
   incoming: BoardFriendRequestSummary[];
   outgoing: BoardFriendRequestSummary[];
 };
+type BoardFriendsSort = 'name' | 'email';
 
 type BoardRecord = Omit<Board, 'createdAt' | 'updatedAt'> & {
   owner_user_id: string;
@@ -900,6 +901,8 @@ export class BoardsComponent implements OnDestroy {
   readonly privateBoardBlocked = signal(false);
   readonly boardFriends = signal<BoardFriendsState>({ friends: [], incoming: [], outgoing: [] });
   readonly boardFriendEmail = signal('');
+  readonly boardFriendsSearch = signal('');
+  readonly boardFriendsSort = signal<BoardFriendsSort>('name');
   readonly boardFriendsLoading = signal(false);
   readonly boardFriendSending = signal(false);
   readonly boardFriendsMessage = signal<string | null>(null);
@@ -1032,6 +1035,25 @@ export class BoardsComponent implements OnDestroy {
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
   readonly canManageBoardFriends = computed(() => this.isOwnBoardsProfile());
   readonly canCreateBoard = computed(() => this.isOwnBoardsProfile());
+  readonly filteredBoardFriends = computed(() => {
+    const query = this.boardFriendsSearch().trim().toLowerCase();
+    const sort = this.boardFriendsSort();
+    return this.boardFriends().friends
+      .filter((friend) => {
+        if (!query) {
+          return true;
+        }
+        return [
+          friend.displayName,
+          friend.email,
+        ].some((value) => value.toLowerCase().includes(query));
+      })
+      .sort((left, right) => {
+        const leftValue = sort === 'email' ? left.email || left.displayName : left.displayName || left.email;
+        const rightValue = sort === 'email' ? right.email || right.displayName : right.displayName || right.email;
+        return leftValue.localeCompare(rightValue);
+      });
+  });
   readonly boardsProfileBoard = computed(() => this.boards().find((board) => board.ownerUserId) ?? null);
   readonly boardsProfileName = computed(() => {
     if (this.publicOwnerKey()) {
@@ -1452,6 +1474,14 @@ export class BoardsComponent implements OnDestroy {
     }, 220);
   }
 
+  onBoardFriendsSearchInput(value: string): void {
+    this.boardFriendsSearch.set(value);
+  }
+
+  setBoardFriendsSort(value: string): void {
+    this.boardFriendsSort.set(value === 'email' ? 'email' : 'name');
+  }
+
   chooseBoardFriendCandidate(candidate: BoardFriendCandidate): void {
     this.boardFriendEmail.set(candidate.email);
     this.boardFriendCandidates.set([]);
@@ -1514,6 +1544,14 @@ export class BoardsComponent implements OnDestroy {
   boardFriendProfileUrl(friend: BoardFriendProfile): string {
     const handle = this.publicHandleFromText(friend.displayName || friend.email || 'livingwiki-friend');
     return `/boards/u/${encodeURIComponent(`${handle}~${friend.userId}`)}`;
+  }
+
+  boardFriendMessageUrl(friend: BoardFriendProfile): string {
+    return friend.email ? `mailto:${encodeURIComponent(friend.email)}` : this.boardFriendProfileUrl(friend);
+  }
+
+  boardFriendSecondary(friend: BoardFriendProfile): string {
+    return friend.email || 'Open public boards';
   }
 
   boardFriendIcon(friend: BoardFriendProfile) {
