@@ -5391,9 +5391,18 @@ export const generateBoardWizardBatch = onCall(
           targetBoardTitle,
           defaultType,
         });
+    const previewReadyResult = await enrichBoardWizardBatchWithSongAudioPreviews(
+      result,
+      [
+        effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
+        targetBoardTitle,
+        result.board.title,
+        result.board.description,
+      ].filter(Boolean).join(' '),
+    );
     const routeReadyResult = isBoardWizardTourMode(mode)
-      ? await enrichBoardWizardTourBatchWithRoutes(result, mode, tourOptions)
-      : result;
+      ? await enrichBoardWizardTourBatchWithRoutes(previewReadyResult, mode, tourOptions)
+      : previewReadyResult;
 
     await db.collection('board_wizard_batches').add({
       owner_user_id: userId,
@@ -5480,6 +5489,27 @@ async function enrichBoardWizardBatchWithPlaces(
     }),
   );
   return { ...batch, cards: enrichedCards };
+}
+
+async function enrichBoardWizardBatchWithSongAudioPreviews(
+  batch: GeneratedBoardWizardBatch,
+  searchContext: string,
+): Promise<GeneratedBoardWizardBatch> {
+  const songIndexes = batch.cards
+    .map((card, index) => ({ card, index }))
+    .filter(({ card }) => !card.audioPreviewUrl && boardWizardReferenceImageKind(card, searchContext) === 'song')
+    .slice(0, 40);
+  if (!songIndexes.length) {
+    return batch;
+  }
+  const cards = [...batch.cards];
+  for (const { card, index } of songIndexes) {
+    const audioPreviewUrl = await findSongAudioPreviewForBoardWizard(card, searchContext);
+    if (audioPreviewUrl) {
+      cards[index] = { ...cards[index], audioPreviewUrl };
+    }
+  }
+  return { ...batch, cards };
 }
 
 type GoogleRoutesComputeResponse = {
