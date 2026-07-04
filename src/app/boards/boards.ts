@@ -1157,16 +1157,7 @@ export class BoardsComponent implements OnDestroy {
     Array.from({ length: this.stackFrameCount() }, (_item, index) => index),
   );
   readonly stackCurrentFrame = computed<StackFrame>(() => {
-    const cards = this.stackSelectedCards();
-    const total = cards.length + 2;
-    const index = Math.max(0, Math.min(this.stackFrameIndex(), total - 1));
-    if (index === 0) {
-      return { kind: 'cover', index, total };
-    }
-    if (index === total - 1) {
-      return { kind: 'closing', index, total };
-    }
-    return { kind: 'card', card: cards[index - 1], index, total };
+    return this.stackFrameAtIndex(this.stackFrameIndex());
   });
   readonly selectedBoardTourCards = computed(() => this.tourCards(this.selectedBoard()));
   readonly tourDeckFrames = computed<TourDeckFrame[]>(() => {
@@ -3358,10 +3349,21 @@ export class BoardsComponent implements OnDestroy {
     this.stopSongPreview({ preserveStackLiveAutoplay: context === 'stack-live' });
     this.songPreviewError.set(null);
     const audio = new Audio(audioPreviewUrl);
-    audio.loop = true;
+    audio.loop = context !== 'stack-live';
     audio.preload = 'auto';
     this.songPreviewAudio = audio;
     this.songPreviewPlayingKey.set(key);
+    audio.onended = () => {
+      if (this.songPreviewAudio !== audio) {
+        return;
+      }
+      if (context === 'stack-live' && this.stackLivePreviewAutoplay) {
+        this.stopSongPreview({ preserveStackLiveAutoplay: true });
+        this.advanceStackFrameToNextPlayablePreview();
+        return;
+      }
+      this.stopSongPreview();
+    };
     audio.onerror = () => {
       if (this.songPreviewAudio === audio) {
         this.stopSongPreview();
@@ -3423,6 +3425,25 @@ export class BoardsComponent implements OnDestroy {
       }
       void this.toggleSongPreview(card, undefined, 'stack-live');
     }, 0);
+  }
+
+  private advanceStackFrameToNextPlayablePreview(): void {
+    const count = this.stackFrameCount();
+    if (!count) {
+      return;
+    }
+    const startIndex = this.stackFrameIndex();
+    for (let offset = 1; offset <= count; offset += 1) {
+      const candidateIndex = (startIndex + offset) % count;
+      const frame = this.stackFrameAtIndex(candidateIndex);
+      const card = frame.kind === 'card' ? frame.card : null;
+      if (card?.audioPreviewUrl) {
+        this.stackFrameIndex.set(candidateIndex);
+        this.syncStackLivePreviewAfterFrameChange();
+        return;
+      }
+    }
+    this.stackLivePreviewAutoplay = false;
   }
 
   private async enrichBoardSpotify(board: Board): Promise<void> {
@@ -4318,6 +4339,19 @@ export class BoardsComponent implements OnDestroy {
 
   stackCtaHref(board: Board): string {
     return this.actionHref(board.stackCtaUrl);
+  }
+
+  private stackFrameAtIndex(frameIndex: number): StackFrame {
+    const cards = this.stackSelectedCards();
+    const total = cards.length + 2;
+    const index = Math.max(0, Math.min(frameIndex, total - 1));
+    if (index === 0) {
+      return { kind: 'cover', index, total };
+    }
+    if (index === total - 1) {
+      return { kind: 'closing', index, total };
+    }
+    return { kind: 'card', card: cards[index - 1], index, total };
   }
 
   previousStackFrame(): void {
