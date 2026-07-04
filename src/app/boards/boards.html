@@ -2770,10 +2770,27 @@
               ></textarea>
             </label>
             <div class="boards-card-wizard__actions">
+              @if (editingCardId()) {
+                <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="fixCurrentCard()">
+                  <span class="material-symbols-outlined">{{ cardWizardLoading() ? 'progress_activity' : 'auto_fix_high' }}</span>
+                  {{ cardWizardLoading() ? 'Fixing...' : 'Fix Card' }}
+                </button>
+              }
               <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="runCardWizard()">
                 <span class="material-symbols-outlined">{{ cardWizardLoading() ? 'progress_activity' : 'auto_awesome' }}</span>
                 {{ cardWizardLoading() ? 'Working...' : 'Fill with Wizard' }}
               </button>
+              @if (cardDraft().audioPreviewUrl) {
+                <button
+                  type="button"
+                  class="boards-ghost-action"
+                  [class.boards-wizard-card__action--playing]="isSongPreviewPlaying(cardDraftPreviewCard(), 'card-draft')"
+                  (click)="toggleSongPreview(cardDraftPreviewCard(), $event, 'card-draft')"
+                >
+                  <span class="material-symbols-outlined">{{ isSongPreviewPlaying(cardDraftPreviewCard(), 'card-draft') ? 'pause' : 'music_note' }}</span>
+                  {{ isSongPreviewPlaying(cardDraftPreviewCard(), 'card-draft') ? 'Playing' : 'Preview song' }}
+                </button>
+              }
               <small>Uses the current board and draft fields as context.</small>
             </div>
             @if (cardWizardError()) {

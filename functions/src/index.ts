@@ -5442,7 +5442,28 @@ export const resolveBoardSongSpotify = onCall(
       .slice(0, 40);
     const results = await Promise.all(cards.map(async (card) => {
       const match = await findSpotifyTrackForBoardWizard(card, boardTitle, customSearchApiKey);
-      const audioPreviewUrl = card.audioPreviewUrl || await findSongAudioPreviewForBoardWizard(card, boardTitle);
+      const mediaCard = match
+        ? {
+            ...card,
+            tags: Array.from(new Set([...card.tags, 'song', 'music', match.artistName.toLowerCase()].filter(Boolean))),
+            image_query: [
+              card.image_query,
+              card.title,
+              match.artistName,
+              'song cover art',
+            ].filter(Boolean).join(' '),
+            spotifyTrackId: match.id,
+            spotifyTrackUrl: match.trackUrl,
+            spotifyUri: match.uri,
+            spotifyArtistName: match.artistName,
+            spotifyAlbumName: match.albumName,
+            spotifyArtworkUrl: match.artworkUrl,
+          }
+        : card;
+      const audioPreviewUrl = card.audioPreviewUrl || await findSongAudioPreviewForBoardWizard(
+        mediaCard,
+        [boardTitle, match?.artistName ?? '', match?.albumName ?? '', 'song preview'].filter(Boolean).join(' '),
+      );
       return {
         title: card.title,
         audioPreviewUrl,
@@ -6531,6 +6552,12 @@ async function findSpotifyTrackForBoardWizard(
         const artistScore = artistTokenSets.length
           ? Math.max(0, ...artistTokenSets.map((set) => set.filter((token) => tokens.includes(token)).length / set.length))
           : 0.15;
+        const hasStrongArtistMatch = artistTokenSets.some((artistTokens) =>
+          artistTokens.filter((token) => tokens.includes(token)).length >= Math.min(2, artistTokens.length),
+        );
+        if (artistTokenSets.length && !hasStrongArtistMatch) {
+          return null;
+        }
         const score = titleScore * 2 + artistScore + (/open\.spotify\.com\/track\//i.test(link) ? 0.5 : 0);
         return {
           id,
@@ -6703,6 +6730,9 @@ function scoreSpotifyApiTrack(
   const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
     artistMatches[index] >= Math.min(2, artistTokens.length),
   );
+  if (artistTokenSets.length && !hasStrongArtistMatch) {
+    return null;
+  }
   const exactTitleMatch = normalizedTitles.some((normalizedTitle) => titleText === normalizedTitle);
   const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
     titleText.includes(normalizedTitle) || normalizedTitle.includes(titleText),
@@ -6824,6 +6854,9 @@ function scoreDeezerAudioPreview(
   const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
     artistMatches[index] >= Math.min(2, artistTokens.length),
   );
+  if (artistTokenSets.length && !hasStrongArtistMatch) {
+    return null;
+  }
   const exactTitleMatch = normalizedTitles.some((normalizedTitle) => resultTitleText === normalizedTitle);
   const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
     resultTitleText.includes(normalizedTitle) || normalizedTitle.includes(resultTitleText),
@@ -6890,6 +6923,9 @@ function scoreAppleMusicMediaResults(
       const hasStrongArtistMatch = artistTokenSets.some((artistTokens, index) =>
         artistMatches[index] >= Math.min(2, artistTokens.length),
       );
+      if (artistTokenSets.length && !hasStrongArtistMatch) {
+        return { artwork: '', audioPreviewUrl: '', score: 0 };
+      }
       const exactTitleMatch = normalizedTitles.some((normalizedTitle) => resultTitleText === normalizedTitle);
       const closeTitleMatch = normalizedTitles.some((normalizedTitle) =>
         resultTitleText.includes(normalizedTitle) || normalizedTitle.includes(resultTitleText),

@@ -165,6 +165,12 @@ type CardDraft = {
   rating: string;
   imageUrl: string;
   audioPreviewUrl: string;
+  spotifyTrackId: string;
+  spotifyTrackUrl: string;
+  spotifyUri: string;
+  spotifyArtistName: string;
+  spotifyAlbumName: string;
+  spotifyArtworkUrl: string;
   placeQuery: string;
   placeCity: string;
   placeId: string;
@@ -332,6 +338,12 @@ type SpotifyResolvedCard = {
   spotifyArtistName: string;
   spotifyAlbumName: string;
   spotifyArtworkUrl: string;
+};
+
+type CardWizardRunOptions = {
+  promptOverride?: string;
+  forceImageLookup?: boolean;
+  preserveExistingImageOnMiss?: boolean;
 };
 
 type TourMapPoint = {
@@ -976,6 +988,12 @@ export class BoardsComponent implements OnDestroy {
     rating: '4',
     imageUrl: '',
     audioPreviewUrl: '',
+    spotifyTrackId: '',
+    spotifyTrackUrl: '',
+    spotifyUri: '',
+    spotifyArtistName: '',
+    spotifyAlbumName: '',
+    spotifyArtworkUrl: '',
     placeQuery: '',
     placeCity: '',
     placeId: '',
@@ -2279,6 +2297,12 @@ export class BoardsComponent implements OnDestroy {
       rating: '4',
       imageUrl: '',
       audioPreviewUrl: '',
+      spotifyTrackId: '',
+      spotifyTrackUrl: '',
+      spotifyUri: '',
+      spotifyArtistName: '',
+      spotifyAlbumName: '',
+      spotifyArtworkUrl: '',
       placeQuery: '',
       placeCity: '',
       placeId: '',
@@ -2320,6 +2344,12 @@ export class BoardsComponent implements OnDestroy {
       rating: String(card.rating),
       imageUrl: card.imageUrl,
       audioPreviewUrl: card.audioPreviewUrl,
+      spotifyTrackId: card.spotifyTrackId,
+      spotifyTrackUrl: card.spotifyTrackUrl,
+      spotifyUri: card.spotifyUri,
+      spotifyArtistName: card.spotifyArtistName,
+      spotifyAlbumName: card.spotifyAlbumName,
+      spotifyArtworkUrl: card.spotifyArtworkUrl,
       placeQuery: card.title,
       placeCity: '',
       placeId: card.placeId,
@@ -2651,6 +2681,12 @@ export class BoardsComponent implements OnDestroy {
                     rating,
                     imageUrl: draft.imageUrl.trim(),
                     audioPreviewUrl: draft.audioPreviewUrl.trim(),
+                    spotifyTrackId: draft.spotifyTrackId.trim(),
+                    spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
+                    spotifyUri: draft.spotifyUri.trim(),
+                    spotifyArtistName: draft.spotifyArtistName.trim(),
+                    spotifyAlbumName: draft.spotifyAlbumName.trim(),
+                    spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
                     placeId: draft.placeId,
                     googleMapsUrl: draft.googleMapsUrl,
                     tags,
@@ -2672,12 +2708,12 @@ export class BoardsComponent implements OnDestroy {
                 rating,
                 imageUrl: draft.imageUrl.trim(),
                 audioPreviewUrl: draft.audioPreviewUrl.trim(),
-                spotifyTrackId: '',
-                spotifyTrackUrl: '',
-                spotifyUri: '',
-                spotifyArtistName: '',
-                spotifyAlbumName: '',
-                spotifyArtworkUrl: '',
+                spotifyTrackId: draft.spotifyTrackId.trim(),
+                spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
+                spotifyUri: draft.spotifyUri.trim(),
+                spotifyArtistName: draft.spotifyArtistName.trim(),
+                spotifyAlbumName: draft.spotifyAlbumName.trim(),
+                spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
                 placeId: draft.placeId,
                 googleMapsUrl: draft.googleMapsUrl,
                 tags,
@@ -3446,6 +3482,15 @@ export class BoardsComponent implements OnDestroy {
     this.stackLivePreviewAutoplay = false;
   }
 
+  cardDraftPreviewCard(): Pick<BoardCard, 'id' | 'title' | 'audioPreviewUrl'> {
+    const draft = this.cardDraft();
+    return {
+      id: this.editingCardId() ?? 'card-draft',
+      title: draft.title || 'Card draft',
+      audioPreviewUrl: draft.audioPreviewUrl,
+    };
+  }
+
   private async enrichBoardSpotify(board: Board): Promise<void> {
     if (!this.functions || this.spotifyEnrichedBoardIds.has(board.id) || this.spotifyEnrichmentInFlightBoardIds.has(board.id)) {
       return;
@@ -3771,13 +3816,34 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
-  async runCardWizard(): Promise<void> {
+  async fixCurrentCard(): Promise<void> {
+    const board = this.selectedBoard();
+    const draft = this.cardDraft();
+    if (!board || !this.editingCardId()) {
+      return;
+    }
+    const likelySong = this.isSongBoard(board) || this.isLikelySongCardDraft(board, draft, '');
+    await this.runCardWizard({
+      forceImageLookup: true,
+      preserveExistingImageOnMiss: true,
+      promptOverride: [
+        'Fix this saved card using the current title, subtitle, notes, tags, and board context.',
+        'Recheck the image and return the most accurate image for this exact card.',
+        likelySong
+          ? 'This is a music/song board or card. If the song preview or Spotify metadata is missing, find and return the correct song media and preview URL.'
+          : 'If this card is actually a song or album, also return any available song preview and Spotify metadata.',
+        'Preserve the current card identity. Do not replace it with a different card.',
+      ].join('\n'),
+    });
+  }
+
+  async runCardWizard(options: CardWizardRunOptions = {}): Promise<void> {
     const board = this.selectedBoard();
     if (!board || !this.canEditBoard(board) || !this.functions || this.cardWizardLoading()) {
       return;
     }
     const draft = this.cardDraft();
-    const prompt = this.buildCardWizardPrompt(board, draft);
+    const prompt = this.buildCardWizardPrompt(board, draft, options.promptOverride, options.forceImageLookup === true);
     if (!prompt) {
       this.cardWizardError.set('Describe what this card should become, or start with a title/place first.');
       return;
@@ -3786,8 +3852,10 @@ export class BoardsComponent implements OnDestroy {
     this.cardWizardLoading.set(true);
     this.cardWizardError.set(null);
     try {
-      const likelyFood = this.isLikelyFoodCardDraft(draft, this.cardWizardPrompt());
-      const replaceImage = this.shouldReplaceCardImage(draft);
+      const instruction = options.promptOverride ?? this.cardWizardPrompt();
+      const likelyFood = this.isLikelyFoodCardDraft(draft, instruction);
+      const likelySong = this.isLikelySongCardDraft(board, draft, instruction);
+      const replaceImage = options.forceImageLookup === true || this.shouldReplaceCardImage(draft, instruction);
       const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
         timeout: 75_000,
       });
@@ -3798,7 +3866,7 @@ export class BoardsComponent implements OnDestroy {
         url: '',
         photoNames: [],
         imageOnly: replaceImage,
-        currentCard: replaceImage ? this.cardDraftToWizardCurrentCard(draft, likelyFood) : null,
+        currentCard: replaceImage ? this.cardDraftToWizardCurrentCard(draft, likelyFood, likelySong) : null,
         targetBoardId: board.id,
         targetBoardTitle: board.title,
         defaultType: likelyFood ? 'food' : draft.type,
@@ -3815,7 +3883,10 @@ export class BoardsComponent implements OnDestroy {
       if (!generated) {
         throw new Error('The Wizard did not return a usable card.');
       }
-      this.applyGeneratedCardToDraft(generated, replaceImage);
+      this.applyGeneratedCardToDraft(generated, replaceImage, options.preserveExistingImageOnMiss === true);
+      if (likelySong) {
+        await this.resolveCurrentCardDraftSongMedia(board);
+      }
     } catch (error) {
       this.cardWizardError.set(error instanceof Error ? error.message : 'The Wizard could not update this card.');
     } finally {
@@ -3823,10 +3894,11 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  private buildCardWizardPrompt(board: Board, draft: CardDraft): string {
-    const instruction = this.cardWizardPrompt().trim();
-    const wantsImageReplacement = this.shouldReplaceCardImage(draft);
+  private buildCardWizardPrompt(board: Board, draft: CardDraft, instructionOverride?: string, forceImageLookup = false): string {
+    const instruction = (instructionOverride ?? this.cardWizardPrompt()).trim();
+    const wantsImageReplacement = forceImageLookup || this.shouldReplaceCardImage(draft, instruction);
     const likelyFood = this.isLikelyFoodCardDraft(draft, instruction);
+    const likelySong = this.isLikelySongCardDraft(board, draft, instruction);
     const existing = [
       draft.title.trim() ? `Title: ${draft.title.trim()}` : '',
       draft.subtitle.trim() ? `Subtitle: ${draft.subtitle.trim()}` : '',
@@ -3848,21 +3920,34 @@ export class BoardsComponent implements OnDestroy {
       wantsImageReplacement
         ? 'The user wants the image replaced. Do not preserve the current image concept. Return a card whose image_query is specific enough to find the correct replacement image.'
         : '',
+      likelySong
+        ? 'This is a song, album, music, Spotify, or playlist card. Return exact cover art and include audioPreviewUrl plus Spotify metadata if available.'
+        : '',
       instruction ? `User request: ${instruction}` : '',
       existing ? `Current card draft:\n${existing}` : '',
     ].filter(Boolean).join('\n\n').trim();
   }
 
-  private applyGeneratedCardToDraft(card: BoardWizardGeneratedCard, replaceImage: boolean): void {
+  private applyGeneratedCardToDraft(card: BoardWizardGeneratedCard, replaceImage: boolean, preserveExistingImageOnMiss = false): void {
     if (replaceImage) {
       this.cardDraft.update((draft) => ({
         ...draft,
-        imageUrl: card.imageUrl || '',
+        imageUrl: card.imageUrl || (preserveExistingImageOnMiss ? draft.imageUrl : ''),
         audioPreviewUrl: card.audioPreviewUrl || draft.audioPreviewUrl,
+        spotifyTrackId: card.spotifyTrackId || draft.spotifyTrackId,
+        spotifyTrackUrl: card.spotifyTrackUrl || draft.spotifyTrackUrl,
+        spotifyUri: card.spotifyUri || draft.spotifyUri,
+        spotifyArtistName: card.spotifyArtistName || draft.spotifyArtistName,
+        spotifyAlbumName: card.spotifyAlbumName || draft.spotifyAlbumName,
+        spotifyArtworkUrl: card.spotifyArtworkUrl || draft.spotifyArtworkUrl,
       }));
       this.cardImageLocked.set(!!card.imageUrl);
       if (!card.imageUrl) {
-        this.cardWizardError.set('No better image was found, so the old image was removed.');
+        this.cardWizardError.set(
+          preserveExistingImageOnMiss
+            ? 'No better image was found, so the current image was kept.'
+            : 'No better image was found, so the old image was removed.',
+        );
       }
       return;
     }
@@ -3877,6 +3962,12 @@ export class BoardsComponent implements OnDestroy {
       rating: String(card.rating || draft.rating || 4),
       imageUrl: card.imageUrl || (replaceImage ? '' : draft.imageUrl),
       audioPreviewUrl: card.audioPreviewUrl || draft.audioPreviewUrl,
+      spotifyTrackId: card.spotifyTrackId || draft.spotifyTrackId,
+      spotifyTrackUrl: card.spotifyTrackUrl || draft.spotifyTrackUrl,
+      spotifyUri: card.spotifyUri || draft.spotifyUri,
+      spotifyArtistName: card.spotifyArtistName || draft.spotifyArtistName,
+      spotifyAlbumName: card.spotifyAlbumName || draft.spotifyAlbumName,
+      spotifyArtworkUrl: card.spotifyArtworkUrl || draft.spotifyArtworkUrl,
       placeQuery: card.place_query || card.title || draft.placeQuery,
       placeId: card.placeId || draft.placeId,
       googleMapsUrl: card.googleMapsUrl || draft.googleMapsUrl,
@@ -3889,8 +3980,8 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  private shouldReplaceCardImage(draft: CardDraft): boolean {
-    const instruction = this.cardWizardPrompt().toLowerCase();
+  private shouldReplaceCardImage(draft: CardDraft, instruction = this.cardWizardPrompt()): boolean {
+    instruction = instruction.toLowerCase();
     return !!draft.imageUrl && /\b(replace|change|swap|fix|correct|appropriate|better|wrong|random|image|photo|picture)\b/i.test(instruction);
   }
 
@@ -3900,11 +3991,128 @@ export class BoardsComponent implements OnDestroy {
       || /\b(food|dish|menu|dessert|cake|butter cake|cheesecake|burger|sandwich|steak|salmon|pasta|nachos|spring rolls|breakfast|chicken|coffee|drink|cocktail|pizza|taco|sushi)\b/.test(text);
   }
 
-  private cardDraftToWizardCurrentCard(draft: CardDraft, likelyFood: boolean): Record<string, unknown> {
+  private isLikelySongCardDraft(board: Board, draft: CardDraft, instruction: string): boolean {
+    if (draft.spotifyTrackId || draft.spotifyTrackUrl || draft.audioPreviewUrl) {
+      return true;
+    }
+    const text = [
+      board.title,
+      board.description,
+      draft.title,
+      draft.subtitle,
+      draft.notes,
+      draft.tags,
+      instruction,
+    ].join(' ').toLowerCase();
+    return /\b(song|songs|music|album|single|track|tracks|hit|hits|singer|artist|spotify|playlist|cover art|audio preview)\b/.test(text);
+  }
+
+  private isSongBoard(board: Board): boolean {
+    if (/\b(song|songs|music|album|single|tracks|hits|spotify|playlist|discography)\b/i.test(`${board.title} ${board.description}`)) {
+      return true;
+    }
+    const sample = board.cards.slice(0, 24);
+    if (!sample.length) {
+      return false;
+    }
+    const songSignals = sample.filter((card) => this.isSongCard(card)).length;
+    return songSignals >= Math.max(2, Math.ceil(sample.length * 0.35));
+  }
+
+  private boardSongArtistContext(board: Board): string {
+    const counts = new Map<string, { label: string; count: number }>();
+    for (const card of board.cards) {
+      const artist = card.spotifyArtistName.trim();
+      if (!artist) {
+        continue;
+      }
+      const key = artist.toLowerCase();
+      const current = counts.get(key);
+      counts.set(key, { label: current?.label ?? artist, count: (current?.count ?? 0) + 1 });
+    }
+    const dominant = Array.from(counts.values()).sort((left, right) => right.count - left.count)[0];
+    if (dominant && dominant.count >= 2) {
+      return dominant.label;
+    }
+    const match = `${board.title} ${board.description}`.match(/\b(?:by|artist|singer|songs? by)\s+([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})|\b([a-z][\w'.-]+(?:\s+[a-z][\w'.-]+){0,4})\s+(?:songs?|singles?|albums?|tracks?|discography|hits?)\b/i);
+    return (match?.[1] || match?.[2] || '')
+      .replace(/\b(?:top|best|biggest|greatest|classic|popular|favorite|favourite|essential)\s+/i, '')
+      .trim();
+  }
+
+  private async resolveCurrentCardDraftSongMedia(board: Board): Promise<void> {
+    if (!this.functions) {
+      return;
+    }
+    const draft = this.cardDraft();
+    if (draft.spotifyTrackId && draft.audioPreviewUrl) {
+      return;
+    }
+    const tags = draft.tags
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+    const artistContext = draft.spotifyArtistName || this.boardSongArtistContext(board);
+    try {
+      const callable = httpsCallable<
+        { boardTitle: string; cards: Array<Record<string, unknown>> },
+        { cards?: unknown[] }
+      >(this.functions, 'resolveBoardSongSpotify', { timeout: 60_000 });
+      const response = await callable({
+        boardTitle: [board.title, board.description, artistContext ? `artist ${artistContext}` : '', 'song preview audio'].filter(Boolean).join(' - '),
+        cards: [{
+          title: draft.title,
+          subtitle: [draft.subtitle, artistContext ? `artist ${artistContext}` : ''].filter(Boolean).join(' - '),
+          notes: [draft.notes, artistContext ? `Performed by ${artistContext}.` : ''].filter(Boolean).join(' '),
+          tags: Array.from(new Set([...tags, 'song', 'music'])),
+          image_query: `${draft.title} ${artistContext} song cover art`.trim(),
+          audioPreviewUrl: draft.audioPreviewUrl,
+          spotifyTrackId: draft.spotifyTrackId,
+          spotifyTrackUrl: draft.spotifyTrackUrl,
+          spotifyUri: draft.spotifyUri,
+          spotifyArtistName: draft.spotifyArtistName,
+          spotifyAlbumName: draft.spotifyAlbumName,
+          spotifyArtworkUrl: draft.spotifyArtworkUrl,
+        }],
+      });
+      const [resolved] = Array.isArray(response.data?.cards)
+        ? response.data.cards.map((item) => this.normalizeSpotifyResolvedCard(item))
+        : [];
+      if (!resolved?.spotifyTrackId && !resolved?.audioPreviewUrl) {
+        this.cardWizardError.set('Card details were refreshed, but no matching song preview was found.');
+        return;
+      }
+      this.cardDraft.update((current) => ({
+        ...current,
+        audioPreviewUrl: current.audioPreviewUrl || resolved.audioPreviewUrl,
+        spotifyTrackId: current.spotifyTrackId || resolved.spotifyTrackId,
+        spotifyTrackUrl: current.spotifyTrackUrl || resolved.spotifyTrackUrl,
+        spotifyUri: current.spotifyUri || resolved.spotifyUri,
+        spotifyArtistName: current.spotifyArtistName || resolved.spotifyArtistName,
+        spotifyAlbumName: current.spotifyAlbumName || resolved.spotifyAlbumName,
+        spotifyArtworkUrl: current.spotifyArtworkUrl || resolved.spotifyArtworkUrl,
+        imageUrl: current.imageUrl || resolved.spotifyArtworkUrl,
+      }));
+      if (resolved.audioPreviewUrl) {
+        this.cardWizardError.set(null);
+      } else {
+        this.cardWizardError.set('A Spotify track was found, but no playable preview URL was available for this song.');
+      }
+    } catch (error) {
+      this.cardWizardError.set(error instanceof Error ? error.message : 'Card details were refreshed, but song media could not be resolved.');
+    }
+  }
+
+  private cardDraftToWizardCurrentCard(draft: CardDraft, likelyFood: boolean, likelySong = false): Record<string, unknown> {
     const tags = draft.tags
       .split(',')
       .map((tag) => tag.trim().toLowerCase())
       .filter(Boolean);
+    const enrichedTags = likelyFood
+      ? Array.from(new Set([...tags, 'menu-item', 'food']))
+      : likelySong
+        ? Array.from(new Set([...tags, 'song', 'music']))
+        : tags;
     return {
       title: draft.title,
       subtitle: draft.subtitle,
@@ -3913,10 +4121,16 @@ export class BoardsComponent implements OnDestroy {
       scope: draft.scope,
       status: draft.status,
       rating: Number.parseInt(draft.rating, 10) || 4,
-      tags: likelyFood ? Array.from(new Set([...tags, 'menu-item', 'food'])) : tags,
-      image_query: `${draft.title} ${likelyFood ? 'food photo' : 'photo'}`.trim(),
+      tags: enrichedTags,
+      image_query: `${draft.title} ${likelyFood ? 'food photo' : likelySong ? 'song cover art' : 'photo'}`.trim(),
       place_query: draft.placeQuery || draft.title,
       audioPreviewUrl: draft.audioPreviewUrl,
+      spotifyTrackId: draft.spotifyTrackId,
+      spotifyTrackUrl: draft.spotifyTrackUrl,
+      spotifyUri: draft.spotifyUri,
+      spotifyArtistName: draft.spotifyArtistName,
+      spotifyAlbumName: draft.spotifyAlbumName,
+      spotifyArtworkUrl: draft.spotifyArtworkUrl,
     };
   }
 
