@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, effect, ElementRef, inject, OnDestroy, PLATFORM_ID, signal, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
@@ -798,7 +798,7 @@ const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: 
 
 @Component({
   selector: 'app-boards',
-  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
   styleUrl: './boards.css',
 })
@@ -1035,6 +1035,10 @@ export class BoardsComponent implements OnDestroy {
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
   readonly canManageBoardFriends = computed(() => this.isOwnBoardsProfile());
   readonly canCreateBoard = computed(() => this.isOwnBoardsProfile());
+  readonly boardFriendsCountLabel = computed(() => {
+    const count = this.boardFriends().friends.length;
+    return `${count} friend${count === 1 ? '' : 's'}`;
+  });
   readonly filteredBoardFriends = computed(() => {
     const query = this.boardFriendsSearch().trim().toLowerCase();
     const sort = this.boardFriendsSort();

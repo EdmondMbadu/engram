@@ -289,27 +289,38 @@
             <div>
               <p>{{ friendsPage() ? 'Connections' : 'Friends' }}</p>
               <h2>
-                {{
-                  friendsPage()
-                    ? boardFriends().friends.length + ' connection' + (boardFriends().friends.length === 1 ? '' : 's')
-                    : 'Share board life with people you know'
-                }}
+                @if (friendsPage()) {
+                  {{ boardFriendsCountLabel() }}
+                } @else {
+                  <a class="boards-friends-count-link" routerLink="/friends">{{ boardFriendsLoading() ? 'Loading friends...' : boardFriendsCountLabel() }}</a>
+                }
               </h2>
               <span>
                 {{
                   friendsPage()
                     ? 'Search your LivingWiki friends, open their public board profiles, or send a quick message.'
-                    : 'Friends can see each other\'s public boards and get an email when a new public board is added. Private boards stay private.'
+                    : 'Open your friends page to manage invites and see the people connected to your boards.'
                 }}
               </span>
             </div>
-            <button type="button" class="boards-ghost-action boards-friends-refresh" (click)="loadBoardFriends()" [disabled]="boardFriendsLoading()">
-              <span class="material-symbols-outlined">sync</span>
-              Refresh
-            </button>
+            @if (friendsPage()) {
+              <button type="button" class="boards-ghost-action boards-friends-refresh" (click)="loadBoardFriends()" [disabled]="boardFriendsLoading()">
+                <span class="material-symbols-outlined">sync</span>
+                Refresh
+              </button>
+            } @else {
+              <a class="boards-primary-action boards-friends-manage" routerLink="/friends">
+                <span class="material-symbols-outlined">group</span>
+                View friends
+              </a>
+            }
           </div>
 
-          @if (friendsPage()) {
+          @if (!friendsPage()) {
+            @if (boardFriendsError()) {
+              <small class="boards-friends-note boards-friends-note--error">{{ boardFriendsError() }}</small>
+            }
+          } @else {
             <div class="boards-friends-directory-toolbar" aria-label="Friends search and sort">
               <label class="boards-friends-search">
                 <span class="material-symbols-outlined">search</span>
@@ -332,95 +343,93 @@
                 {{ filteredBoardFriends().length }} shown
               </span>
             </div>
-          }
 
-          <form class="boards-friends-invite" [class.boards-friends-invite--directory]="friendsPage()" (submit)="inviteBoardFriend($event)">
-            <label>
-              <span class="material-symbols-outlined">person_add</span>
-              <input
-                type="email"
-                autocomplete="email"
-                placeholder="Friend's email or name"
-                [value]="boardFriendEmail()"
-                (input)="onBoardFriendEmailInput($any($event.target).value)"
-              />
-            </label>
-            <button type="submit" class="boards-primary-action" [disabled]="boardFriendSending()">
-              <span class="material-symbols-outlined">{{ boardFriendSending() ? 'hourglass_top' : 'mail' }}</span>
-              {{ boardFriendSending() ? 'Sending' : 'Invite' }}
-            </button>
-          </form>
+            <form class="boards-friends-invite boards-friends-invite--directory" (submit)="inviteBoardFriend($event)">
+              <label>
+                <span class="material-symbols-outlined">person_add</span>
+                <input
+                  type="email"
+                  autocomplete="email"
+                  placeholder="Friend's email or name"
+                  [value]="boardFriendEmail()"
+                  (input)="onBoardFriendEmailInput($any($event.target).value)"
+                />
+              </label>
+              <button type="submit" class="boards-primary-action" [disabled]="boardFriendSending()">
+                <span class="material-symbols-outlined">{{ boardFriendSending() ? 'hourglass_top' : 'mail' }}</span>
+                {{ boardFriendSending() ? 'Sending' : 'Invite' }}
+              </button>
+            </form>
 
-          @if (boardFriendCandidateLoading() || boardFriendCandidates().length) {
-            <div class="boards-friends-grid" aria-label="Matching LivingWiki users">
-              @if (boardFriendCandidateLoading()) {
-                <div class="boards-friends-empty">
-                  <span class="material-symbols-outlined">progress_activity</span>
-                  Searching people...
-                </div>
-              }
-              @for (candidate of boardFriendCandidates(); track candidate.userId) {
-                <button type="button" class="boards-friend-card" style="text-align: left;" (click)="chooseBoardFriendCandidate(candidate)">
-                  <span class="boards-friend-card__avatar">
-                    @if (candidate.profilePictureType === 'image' && candidate.photoURL) {
-                      <img [src]="candidate.photoURL" [alt]="candidate.displayName + ' profile photo'" loading="lazy" />
-                    } @else {
-                      <span
-                        class="boards-friend-card__icon"
-                        [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + boardFriendIcon(candidate).from + ', ' + boardFriendIcon(candidate).to + ')'"
-                      >
-                        <span class="material-symbols-outlined" [style.color]="boardFriendIcon(candidate).ink">{{ boardFriendIcon(candidate).icon }}</span>
-                      </span>
-                    }
-                  </span>
-                  <span class="boards-friend-card__text">
-                    <strong>{{ candidate.displayName }}</strong>
-                    <small>{{ candidate.email }}</small>
-                  </span>
-                  <span class="boards-friends-note">{{ boardFriendCandidateStatusLabel(candidate) }}</span>
-                </button>
-              }
-            </div>
-          }
-
-          @if (boardFriendsMessage()) {
-            <small class="boards-friends-note boards-friends-note--success">{{ boardFriendsMessage() }}</small>
-          }
-          @if (boardFriendsError()) {
-            <small class="boards-friends-note boards-friends-note--error">{{ boardFriendsError() }}</small>
-          }
-
-          @if (boardFriendsLoading()) {
-            <div class="boards-friends-loading">
-              <span class="material-symbols-outlined">progress_activity</span>
-              Loading friends...
-            </div>
-          } @else {
-            @if (boardFriends().incoming.length) {
-              <div class="boards-friends-requests">
-                <h3>Requests waiting</h3>
-                @for (request of boardFriends().incoming; track request.id) {
-                  <div class="boards-friend-request">
-                    <div>
-                      <strong>{{ request.fromDisplayName || request.fromEmail || 'LivingWiki friend' }}</strong>
-                      <span>{{ request.fromEmail }}</span>
-                    </div>
-                    <div class="boards-friend-request__actions">
-                      <button type="button" class="boards-primary-action" (click)="respondBoardFriendRequest(request.id, 'accept')">
-                        <span class="material-symbols-outlined">check</span>
-                        Accept
-                      </button>
-                      <button type="button" class="boards-ghost-action" (click)="respondBoardFriendRequest(request.id, 'decline')">
-                        <span class="material-symbols-outlined">close</span>
-                        Decline
-                      </button>
-                    </div>
+            @if (boardFriendCandidateLoading() || boardFriendCandidates().length) {
+              <div class="boards-friends-grid" aria-label="Matching LivingWiki users">
+                @if (boardFriendCandidateLoading()) {
+                  <div class="boards-friends-empty">
+                    <span class="material-symbols-outlined">progress_activity</span>
+                    Searching people...
                   </div>
+                }
+                @for (candidate of boardFriendCandidates(); track candidate.userId) {
+                  <button type="button" class="boards-friend-card" style="text-align: left;" (click)="chooseBoardFriendCandidate(candidate)">
+                    <span class="boards-friend-card__avatar">
+                      @if (candidate.profilePictureType === 'image' && candidate.photoURL) {
+                        <img [src]="candidate.photoURL" [alt]="candidate.displayName + ' profile photo'" loading="lazy" />
+                      } @else {
+                        <span
+                          class="boards-friend-card__icon"
+                          [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + boardFriendIcon(candidate).from + ', ' + boardFriendIcon(candidate).to + ')'"
+                        >
+                          <span class="material-symbols-outlined" [style.color]="boardFriendIcon(candidate).ink">{{ boardFriendIcon(candidate).icon }}</span>
+                        </span>
+                      }
+                    </span>
+                    <span class="boards-friend-card__text">
+                      <strong>{{ candidate.displayName }}</strong>
+                      <small>{{ candidate.email }}</small>
+                    </span>
+                    <span class="boards-friends-note">{{ boardFriendCandidateStatusLabel(candidate) }}</span>
+                  </button>
                 }
               </div>
             }
 
-            @if (friendsPage()) {
+            @if (boardFriendsMessage()) {
+              <small class="boards-friends-note boards-friends-note--success">{{ boardFriendsMessage() }}</small>
+            }
+            @if (boardFriendsError()) {
+              <small class="boards-friends-note boards-friends-note--error">{{ boardFriendsError() }}</small>
+            }
+
+            @if (boardFriendsLoading()) {
+              <div class="boards-friends-loading">
+                <span class="material-symbols-outlined">progress_activity</span>
+                Loading friends...
+              </div>
+            } @else {
+              @if (boardFriends().incoming.length) {
+                <div class="boards-friends-requests">
+                  <h3>Requests waiting</h3>
+                  @for (request of boardFriends().incoming; track request.id) {
+                    <div class="boards-friend-request">
+                      <div>
+                        <strong>{{ request.fromDisplayName || request.fromEmail || 'LivingWiki friend' }}</strong>
+                        <span>{{ request.fromEmail }}</span>
+                      </div>
+                      <div class="boards-friend-request__actions">
+                        <button type="button" class="boards-primary-action" (click)="respondBoardFriendRequest(request.id, 'accept')">
+                          <span class="material-symbols-outlined">check</span>
+                          Accept
+                        </button>
+                        <button type="button" class="boards-ghost-action" (click)="respondBoardFriendRequest(request.id, 'decline')">
+                          <span class="material-symbols-outlined">close</span>
+                          Decline
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+
               <div class="boards-friends-directory-list">
                 @for (friend of filteredBoardFriends(); track friend.userId) {
                   <article class="boards-friend-row">
@@ -460,44 +469,15 @@
                   </div>
                 }
               </div>
-            } @else {
-              <div class="boards-friends-grid">
-                @for (friend of boardFriends().friends; track friend.userId) {
-                  <a class="boards-friend-card" [href]="boardFriendProfileUrl(friend)">
-                    <span class="boards-friend-card__avatar">
-                      @if (friend.profilePictureType === 'image' && friend.photoURL) {
-                        <img [src]="friend.photoURL" [alt]="friend.displayName + ' profile photo'" loading="lazy" />
-                      } @else {
-                        <span
-                          class="boards-friend-card__icon"
-                          [style.background]="'radial-gradient(circle at 28% 22%, rgba(255,255,255,0.84), transparent 30%), linear-gradient(135deg, ' + boardFriendIcon(friend).from + ', ' + boardFriendIcon(friend).to + ')'"
-                        >
-                          <span class="material-symbols-outlined" [style.color]="boardFriendIcon(friend).ink">{{ boardFriendIcon(friend).icon }}</span>
-                        </span>
-                      }
-                    </span>
-                    <span class="boards-friend-card__text">
-                      <strong>{{ friend.displayName }}</strong>
-                      <small>{{ friend.email || 'View boards' }}</small>
-                    </span>
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                  </a>
-                } @empty {
-                  <div class="boards-friends-empty">
-                    <span class="material-symbols-outlined">group</span>
-                    Invite a friend to start sharing board updates.
-                  </div>
-                }
-              </div>
-            }
 
-            @if (boardFriends().outgoing.length) {
-              <div class="boards-friends-outgoing" aria-label="Pending friend requests">
-                <span>Pending</span>
-                @for (request of boardFriends().outgoing; track request.id) {
-                  <small>{{ request.toEmail }}</small>
-                }
-              </div>
+              @if (boardFriends().outgoing.length) {
+                <div class="boards-friends-outgoing" aria-label="Pending friend requests">
+                  <span>Pending</span>
+                  @for (request of boardFriends().outgoing; track request.id) {
+                    <small>{{ request.toEmail }}</small>
+                  }
+                </div>
+              }
             }
           }
         </section>

@@ -302,6 +302,17 @@
   line-height: 1.45;
 }
 
+.boards-friends-manage {
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.boards-friends-count-link {
+  color: inherit;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.14em;
+}
+
 .boards-friends-invite,
 .boards-friends-grid {
   display: grid;
