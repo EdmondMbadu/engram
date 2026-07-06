@@ -298,8 +298,8 @@
               <span>
                 {{
                   friendsPage()
-                    ? 'Search your LivingWiki friends, open their public board profiles, or send a quick message.'
-                    : 'Open your friends page to manage invites and see the people connected to your boards.'
+                    ? 'Invite people you know, manage requests, and open public board profiles from one place.'
+                    : 'Invite friends so they can access your public boards and get updates when you add a new public board. Private boards stay private.'
                 }}
               </span>
             </div>
@@ -310,8 +310,8 @@
               </button>
             } @else {
               <a class="boards-primary-action boards-friends-manage" routerLink="/friends">
-                <span class="material-symbols-outlined">group</span>
-                View friends
+                <span class="material-symbols-outlined">person_add</span>
+                Invite friends
               </a>
             }
           </div>
