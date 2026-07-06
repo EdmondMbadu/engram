@@ -4087,10 +4087,21 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     ]);
     this.answerMode.set('internet');
 
+    const startupStartedAt = performance.now();
+    const startupTimings: Record<string, number | Record<string, number>> = {};
+    const markStartupTiming = (key: string, since: number): number => {
+      const now = performance.now();
+      startupTimings[key] = Math.round(now - since);
+      return now;
+    };
+
     try {
-      const [stream, session] = await Promise.all([
-        navigator.mediaDevices.getUserMedia({ audio: true }),
-        this.chatService.createElevenLabsVoiceSession({
+      const streamPromise = navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          markStartupTiming('microphoneMs', startupStartedAt);
+          return stream;
+        });
+      const sessionPromise = this.chatService.createElevenLabsVoiceSession({
           atlasId,
           atlasName: this.currentWikiName(),
           anonymousVisitorId: this.isAnonymousPublicVisitor() ? this.ensureAnonymousVisitorId() : null,
@@ -4099,8 +4110,21 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           voiceLanguage: language?.language ?? null,
           voiceCountry: language?.country ?? null,
           voiceAccent: accentProfile?.label ?? null,
-        }),
-      ]);
+        })
+        .then((session) => {
+          markStartupTiming('callableMs', startupStartedAt);
+          if (session?.timings) {
+            startupTimings['server'] = session.timings;
+          }
+          return session;
+        });
+      const sdkImportStartedAt = performance.now();
+      const conversationModulePromise = import('@elevenlabs/client')
+        .then((module) => {
+          markStartupTiming('sdkImportMs', sdkImportStartedAt);
+          return module;
+        });
+      const [stream, session, conversationModule] = await Promise.all([streamPromise, sessionPromise, conversationModulePromise]);
       stream.getTracks().forEach((track) => track.stop());
       if (!session) {
         throw new Error('Voice service is unavailable.');
@@ -4137,7 +4161,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         ? { overrides: voiceOverrides }
         : {};
 
-      const { Conversation } = await import('@elevenlabs/client');
+      let checkpoint = performance.now();
+      const { Conversation } = conversationModule;
       const conversation = await Conversation.startSession({
         conversationToken: session.conversationToken,
         connectionType: 'webrtc',
@@ -4156,6 +4181,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
             }
           : { dynamicVariables: voiceDynamicVariables, ...voiceOverrideOptions }),
         onConnect: ({ conversationId }) => {
+          startupTimings['startSessionConnectMs'] = Math.round(performance.now() - checkpoint);
+          markStartupTiming('connectCallbackMs', startupStartedAt);
+          startupTimings['totalToConnectMs'] = Math.round(performance.now() - startupStartedAt);
+          console.info('[Voice startup] connected', startupTimings);
           this.realtimeVoiceConversationId.set(conversationId);
           this.realtimeVoiceStatus.set('connected');
         },
@@ -4195,6 +4224,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           this.realtimeVoiceError.set(message || 'Realtime voice failed.');
         },
       });
+      markStartupTiming('startSessionReturnMs', checkpoint);
 
       this.realtimeVoiceConversation = conversation;
       this.startRealtimeVoiceMeter(conversation);

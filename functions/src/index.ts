@@ -100,6 +100,10 @@ const speechRecapVersion = 'v2';
 const tourSpeechVersion = 'v1';
 const chatAnswerSpeechModel = 'eleven_flash_v2_5';
 const tourGuideSpeechModel = 'eleven_multilingual_v2';
+const elevenLabsVoiceCacheTtlMs = 6 * 60 * 60 * 1000;
+const elevenLabsVoiceSearchDeadlineMs = 950;
+const elevenLabsTokenRequestTimeoutMs = 5000;
+const elevenLabsVoiceCache = new Map<string, ElevenLabsVoiceCacheEntry>();
 const defaultNewsletterPrompt = [
   'Create a premium weekly Living Wiki email briefing with exactly five of the biggest headlines for this specific wiki.',
   'Focus on the latest verified public information, news, civic updates, development, culture, public safety, transportation, economy, and community signals that matter most to readers.',
@@ -906,6 +910,12 @@ type ElevenLabsResolvedVoice = {
   name: string;
   accent: string | null;
   score: number;
+};
+
+type ElevenLabsVoiceCacheEntry = {
+  preferenceKey: string;
+  voice: ElevenLabsResolvedVoice | null;
+  cachedAt: number;
 };
 
 type ElevenLabsVoiceRecord = {
@@ -8660,6 +8670,14 @@ export const createElevenLabsVoiceSession = onCall(
     secrets: [elevenLabsApiKey],
   },
   async (request) => {
+    const startedAt = Date.now();
+    const timings: Record<string, number> = {};
+    const markTiming = (key: string, since: number): number => {
+      const now = Date.now();
+      timings[key] = now - since;
+      return now;
+    };
+
     const atlasId = normalizeAtlasId(request.data?.atlasId);
     const anonymousVisitorId = normalizeAnonymousVisitorId(request.data?.anonymousVisitorId);
     const uid = request.auth?.uid ?? null;
@@ -8668,6 +8686,7 @@ export const createElevenLabsVoiceSession = onCall(
     }
 
     let atlasName = textValue(request.data?.atlasName, 120) || null;
+    let checkpoint = Date.now();
     if (atlasId) {
       if (uid) {
         const { atlas } = await loadAtlasForAdminAccess(atlasId, uid);
@@ -8677,6 +8696,7 @@ export const createElevenLabsVoiceSession = onCall(
         atlasName = textValue(atlas.name, 120) || atlasName;
       }
     }
+    checkpoint = markTiming('atlasLoadMs', checkpoint);
 
     const apiKey = elevenLabsApiKey.value();
     if (!apiKey) {
@@ -8696,10 +8716,12 @@ export const createElevenLabsVoiceSession = onCall(
 
     const voicePreference = normalizeElevenLabsVoicePreference(request.data);
     const voiceOverrideEnabled = isTruthyParam(elevenLabsTtsVoiceOverridesEnabled.value());
-    const firstMessageOverrideEnabled = isTruthyParam(elevenLabsFirstMessageOverridesEnabled.value());
+    const firstMessageOverrideEnabled = elevenLabsFirstMessageOverridesEnabled.value().trim().toLowerCase() !== 'false';
+    const voiceCacheKey = elevenLabsVoicePreferenceCacheKey(voicePreference);
     const selectedVoice = voiceOverrideEnabled
-      ? await resolveElevenLabsVoiceForPreference(apiKey, voicePreference)
+      ? await resolveElevenLabsVoiceForPreference(apiKey, voicePreference, voiceCacheKey)
       : null;
+    checkpoint = markTiming('voiceResolveMs', checkpoint);
     if (voicePreference.languageCode && !voiceOverrideEnabled) {
       logger.warn('ElevenLabs TTS voice override is disabled; using the agent default voice.', {
         languageCode: voicePreference.languageCode,
@@ -8713,12 +8735,13 @@ export const createElevenLabsVoiceSession = onCall(
       environment: 'production',
     });
 
-    const response = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/token?${params.toString()}`, {
+    const response = await fetchWithTimeout(`https://api.elevenlabs.io/v1/convai/conversation/token?${params.toString()}`, {
       method: 'GET',
       headers: {
         'xi-api-key': apiKey,
       },
-    });
+    }, elevenLabsTokenRequestTimeoutMs);
+    markTiming('tokenRequestMs', checkpoint);
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => '');
@@ -8741,12 +8764,25 @@ export const createElevenLabsVoiceSession = onCall(
       throw new HttpsError('internal', 'ElevenLabs did not return a conversation token.');
     }
 
+    timings.totalMs = Date.now() - startedAt;
+    logger.info('ElevenLabs voice session prepared.', {
+      atlasId,
+      uidPresent: Boolean(uid),
+      anonymousVisitorIdPresent: Boolean(anonymousVisitorId),
+      voiceOverrideEnabled,
+      firstMessageOverrideEnabled,
+      voiceCacheKey,
+      selectedVoiceId: selectedVoice?.voiceId ?? null,
+      timings,
+    });
+
     return {
       conversationToken,
       agentId,
       userId: visitorId,
       voiceOverrideEnabled,
       firstMessageOverrideEnabled,
+      timings,
       voiceId: selectedVoice?.voiceId ?? null,
       voiceName: selectedVoice?.name ?? null,
       voiceAccent: selectedVoice?.accent ?? voicePreference.accent,
@@ -8784,16 +8820,39 @@ function isTruthyParam(value: string): boolean {
 async function resolveElevenLabsVoiceForPreference(
   apiKey: string,
   preference: ElevenLabsVoicePreference,
+  cacheKey = elevenLabsVoicePreferenceCacheKey(preference),
 ): Promise<ElevenLabsResolvedVoice | null> {
   if (!preference.languageCode && !preference.language && !preference.country) {
     return null;
   }
 
-  const searchTerms = buildElevenLabsVoiceSearchTerms(preference);
+  const cached = readCachedElevenLabsVoice(cacheKey);
+  if (cached !== undefined) {
+    logger.info('Using cached ElevenLabs native voice selection.', {
+      preference,
+      cacheKey,
+      voiceId: cached?.voiceId ?? null,
+      voiceName: cached?.name ?? null,
+    });
+    return cached;
+  }
+
+  const searchStartedAt = Date.now();
+  const searchTerms = buildElevenLabsVoiceSearchTerms(preference).slice(0, 4);
   const candidates = new Map<string, ElevenLabsVoiceRecord>();
 
   for (const term of searchTerms) {
-    const voices = await fetchElevenLabsVoices(apiKey, term);
+    if (Date.now() - searchStartedAt > elevenLabsVoiceSearchDeadlineMs) {
+      logger.warn('ElevenLabs native voice search deadline reached; falling back to agent default voice.', {
+        preference,
+        cacheKey,
+        elapsedMs: Date.now() - searchStartedAt,
+      });
+      cacheElevenLabsVoice(cacheKey, null);
+      return null;
+    }
+    const remainingMs = Math.max(150, elevenLabsVoiceSearchDeadlineMs - (Date.now() - searchStartedAt));
+    const voices = await fetchElevenLabsVoices(apiKey, term, remainingMs);
     for (const voice of voices) {
       const voiceId = textValue(voice.voice_id, 120);
       if (voiceId && !candidates.has(voiceId)) {
@@ -8821,6 +8880,7 @@ async function resolveElevenLabsVoiceForPreference(
       preference,
       best,
     });
+    cacheElevenLabsVoice(cacheKey, null);
     return null;
   }
 
@@ -8830,8 +8890,52 @@ async function resolveElevenLabsVoiceForPreference(
     name: best.name,
     accent: best.accent,
     score: best.score,
+    elapsedMs: Date.now() - searchStartedAt,
   });
+  cacheElevenLabsVoice(cacheKey, best);
   return best;
+}
+
+function elevenLabsVoicePreferenceCacheKey(preference: ElevenLabsVoicePreference): string {
+  return [
+    preference.languageCode ?? '',
+    preference.language ?? '',
+    preference.country ?? '',
+    preference.accent ?? '',
+  ].map((value) => value.trim().toLowerCase().replace(/\s+/g, ' ')).join('|');
+}
+
+function readCachedElevenLabsVoice(cacheKey: string): ElevenLabsResolvedVoice | null | undefined {
+  const cached = elevenLabsVoiceCache.get(cacheKey);
+  if (!cached) {
+    return undefined;
+  }
+  if (Date.now() - cached.cachedAt > elevenLabsVoiceCacheTtlMs) {
+    elevenLabsVoiceCache.delete(cacheKey);
+    return undefined;
+  }
+  return cached.voice;
+}
+
+function cacheElevenLabsVoice(cacheKey: string, voice: ElevenLabsResolvedVoice | null): void {
+  elevenLabsVoiceCache.set(cacheKey, {
+    preferenceKey: cacheKey,
+    voice,
+    cachedAt: Date.now(),
+  });
+}
+
+async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      ...init,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function buildElevenLabsVoiceSearchTerms(preference: ElevenLabsVoicePreference): string[] {
@@ -8854,12 +8958,22 @@ function buildElevenLabsVoiceSearchTerms(preference: ElevenLabsVoicePreference):
   ].map((term) => term.replace(/\s+/g, ' ').trim()).filter(Boolean)));
 }
 
-async function fetchElevenLabsVoices(apiKey: string, search: string): Promise<ElevenLabsVoiceRecord[]> {
+async function fetchElevenLabsVoices(apiKey: string, search: string, timeoutMs: number): Promise<ElevenLabsVoiceRecord[]> {
   const params = new URLSearchParams({ page_size: '100', search });
-  const response = await fetch(`https://api.elevenlabs.io/v2/voices?${params.toString()}`, {
-    method: 'GET',
-    headers: { 'xi-api-key': apiKey },
-  });
+  let response: Response;
+  try {
+    response = await fetchWithTimeout(`https://api.elevenlabs.io/v2/voices?${params.toString()}`, {
+      method: 'GET',
+      headers: { 'xi-api-key': apiKey },
+    }, timeoutMs);
+  } catch (error) {
+    logger.warn('ElevenLabs voice search timed out or failed.', {
+      search,
+      timeoutMs,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
 
   if (!response.ok) {
     const body = await response.text().catch(() => '');
