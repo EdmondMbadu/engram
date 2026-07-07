@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Starfold City · a LivingWiki arcade — Serendipity Crane</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#0d3823; --green:#1ea64a; --green-dk:#0d5c28;
+  --yellow:#f4d35e; --yellow-dk:#c9a52e;
+  --mint:#d9f2e2; --mint-dk:#a9d9bc; --paper:#eef9f2;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--deep);
+  background-image:radial-gradient(rgba(217,242,226,.05) 1.2px, transparent 1.2px);
+  background-size:26px 26px;
+  font-family:'Inter',system-ui,sans-serif;
+  overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation;
+  display:flex;align-items:center;justify-content:center;
+}
+#stage{position:relative}
+canvas{display:block;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+#btnMute{
+  position:absolute;top:10px;right:10px;z-index:20;
+  width:42px;height:42px;border-radius:12px;border:none;cursor:pointer;
+  background:rgba(13,56,35,.35);color:#fff;font-size:18px;backdrop-filter:blur(2px);
+}
+
+/* ---------- splash ---------- */
+#splash{
+  position:absolute;inset:0;z-index:50;border-radius:14px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  text-align:center;padding:26px 20px;
+  background:radial-gradient(120% 90% at 50% 0%, #14512f 0%, var(--deep) 55%, #082217 100%);
+  transition:opacity .45s ease, transform .45s ease;
+}
+#splash.hide{opacity:0;transform:scale(1.06);pointer-events:none}
+#splash::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(217,242,226,.08) 1.2px, transparent 1.2px);
+  background-size:26px 26px;pointer-events:none;
+}
+.twinkle{position:absolute;color:var(--yellow);pointer-events:none;animation:tw 2.6s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15;transform:scale(.7) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(18deg)}}
+.sp-crane{width:172px;height:143px;animation:spBob 3.2s ease-in-out infinite;filter:drop-shadow(0 12px 22px rgba(0,0,0,.45));position:relative;z-index:2}
+@keyframes spBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-16px) rotate(3deg)}}
+.sp-eyebrow{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:2px;color:var(--mint);opacity:.75;margin-top:10px;position:relative;z-index:2}
+.sp-title{font-family:'Press Start 2P',monospace;line-height:1.5;position:relative;z-index:2;margin-top:6px}
+.sp-title .t1{display:block;font-size:26px;color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.35)}
+.sp-title .t2{display:block;font-size:26px;color:var(--yellow);text-shadow:0 4px 0 rgba(0,0,0,.35)}
+.sp-sub{font-size:13px;font-weight:700;color:var(--mint);opacity:.85;margin-top:10px;position:relative;z-index:2}
+#btnStart{
+  margin-top:22px;position:relative;z-index:2;
+  font-family:'Press Start 2P',monospace;font-size:12px;color:var(--deep);
+  background:var(--yellow);border:none;cursor:pointer;padding:17px 28px;border-radius:999px;
+  box-shadow:0 5px 0 var(--yellow-dk), 0 12px 24px rgba(0,0,0,.35);
+  transition:transform .08s, box-shadow .08s;
+  animation:pulse 1.6s ease-in-out infinite;
+}
+#btnStart:active{transform:translateY(4px);box-shadow:0 1px 0 var(--yellow-dk)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.sp-stats{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;color:var(--mint);opacity:.7;margin-top:18px;line-height:2;position:relative;z-index:2}
+.sp-modes-label{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:2px;color:var(--yellow);margin-top:20px;position:relative;z-index:2}
+.sp-modes{display:flex;gap:8px;margin-top:10px;position:relative;z-index:2}
+.mode-chip{
+  font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.5px;
+  padding:12px 13px;border-radius:999px;cursor:pointer;
+  border:2px solid rgba(217,242,226,.35);background:transparent;color:var(--mint);
+  transition:transform .08s;
+}
+.mode-chip:active{transform:translateY(2px)}
+.mode-chip.sel{background:var(--mint);color:var(--deep);border-color:var(--mint);box-shadow:0 4px 0 var(--mint-dk)}
+.sp-mode-desc{font-size:11.5px;font-weight:700;color:var(--mint);opacity:.75;margin-top:10px;min-height:16px;position:relative;z-index:2}
+.btn.ghost{background:transparent;color:var(--green-dk);box-shadow:inset 0 0 0 2px rgba(13,92,40,.3);font-weight:800}
+.btn.ghost:active{transform:translateY(2px);box-shadow:inset 0 0 0 2px rgba(13,92,40,.3)}
+
+/* game-over overlay */
+#over{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:30;
+  background:rgba(6,26,16,.55);backdrop-filter:blur(2px);border-radius:14px;padding:18px;
+}
+#over.show{display:flex}
+.card{
+  width:100%;max-width:300px;background:var(--paper);border-radius:22px;
+  padding:22px 20px 20px;text-align:center;color:var(--deep);
+  box-shadow:0 24px 60px rgba(0,0,0,.55);
+  animation:pop .3s cubic-bezier(.34,1.5,.5,1);
+}
+@keyframes pop{from{transform:scale(.7) translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.go-title{font-family:'Press Start 2P',monospace;font-size:13px;letter-spacing:.5px;color:var(--green-dk);margin-bottom:12px}
+.medal{font-size:44px;line-height:1;margin-bottom:6px}
+.go-score{font-family:'Press Start 2P',monospace;font-size:30px;color:var(--deep)}
+.go-sub{font-size:12px;font-weight:800;color:var(--green-dk);margin-top:6px}
+.go-stars{margin-top:10px;font-size:13px;font-weight:800;color:var(--yellow-dk);background:rgba(244,211,94,.25);border-radius:999px;padding:8px 12px;display:inline-block}
+.btn{
+  display:block;width:100%;margin-top:12px;
+  font-family:'Inter',sans-serif;font-weight:900;font-size:16px;color:#fff;
+  background:var(--green);border:none;cursor:pointer;padding:14px;border-radius:999px;
+  box-shadow:0 5px 0 var(--green-dk);transition:transform .08s, box-shadow .08s;
+}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--green-dk)}
+.btn.gold{background:var(--yellow);color:var(--deep);box-shadow:0 5px 0 var(--yellow-dk)}
+.btn.gold:active{box-shadow:0 1px 0 var(--yellow-dk)}
+
+#toast{
+  position:absolute;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);
+  background:var(--paper);color:var(--deep);font-weight:800;font-size:13px;
+  padding:11px 18px;border-radius:999px;box-shadow:0 10px 26px rgba(0,0,0,.4);
+  opacity:0;transition:.3s;z-index:40;pointer-events:none;white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%)}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="cv"></canvas>
+  <button id="btnMute">🔊</button>
+
+  <div id="splash">
+    <span class="twinkle" style="top:9%;left:14%;font-size:14px">✦</span>
+    <span class="twinkle" style="top:16%;right:12%;font-size:20px;animation-delay:.6s">✦</span>
+    <span class="twinkle" style="top:36%;left:7%;font-size:11px;animation-delay:1.2s">✦</span>
+    <span class="twinkle" style="bottom:30%;right:9%;font-size:15px;animation-delay:.3s">✦</span>
+    <span class="twinkle" style="bottom:14%;left:16%;font-size:18px;animation-delay:1.7s">✦</span>
+    <span class="twinkle" style="top:52%;right:20%;font-size:10px;animation-delay:2.1s">✦</span>
+    <div class="sp-crane" id="spCrane"></div>
+    <div class="sp-eyebrow">A LIVINGWIKI ARCADE</div>
+    <div class="sp-title"><span class="t1">STARFOLD</span><span class="t2">CITY</span></div>
+    <div class="sp-sub">Fold through the towers. Snag the stars.</div>
+    <div class="sp-modes-label">SKILL LEVEL</div>
+    <div class="sp-modes" id="spModes"></div>
+    <div class="sp-mode-desc" id="spModeDesc"></div>
+    <button id="btnStart">🕊️ TAP TO FLY</button>
+    <div class="sp-stats" id="spStats">BEST 0<br>⭐ STAR BANK 0</div>
+  </div>
+
+  <div id="over">
+    <div class="card">
+      <div class="go-title">FLIGHT OVER</div>
+      <div class="medal" id="goMedal">🥉</div>
+      <div class="go-score" id="goScore">0</div>
+      <div class="go-sub" id="goBest">BEST 0</div>
+      <div class="go-stars" id="goStars">⭐ 0 stars · Star Bank 0</div>
+      <button class="btn gold" id="btnAgain">🕊️ Fly again</button>
+      <button class="btn" id="btnShare">📣 Challenge a friend</button>
+      <button class="btn ghost" id="btnMenu">Menu & skill level</button>
+    </div>
+  </div>
+  <div id="toast"></div>
+</div>
+<script>
+'use strict';
+/* ============================================================
+   STARFOLD CITY — a LivingWiki arcade · Serendipity Crane
+   One thumb. Golden stars. Pure flight.
+   ============================================================ */
+
+const CRANE_SVG = `
+<svg viewBox="0 0 130 108" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+  <polygon points="6,66 42,52 38,74" fill="#a9d9bc"/>
+  <polygon points="6,66 42,52 30,48" fill="#8fcaa6"/>
+  <polygon points="52,60 96,10 88,62" fill="#d9f2e2" stroke="#7bbf95" stroke-width="1.4" stroke-linejoin="round"/>
+  <polygon points="52,60 70,26 96,10" fill="#eef9f2" stroke="#7bbf95" stroke-width="1.2" stroke-linejoin="round"/>
+  <polygon points="34,64 92,44 100,76 48,84" fill="#bfe8cd" stroke="#7bbf95" stroke-width="1.4" stroke-linejoin="round"/>
+  <polygon points="34,64 66,60 48,84" fill="#a9d9bc"/>
+  <polygon points="92,44 112,26 100,60" fill="#d9f2e2" stroke="#7bbf95" stroke-width="1.4" stroke-linejoin="round"/>
+  <polygon points="112,26 124,22 110,36" fill="#f4d35e" stroke="#c9a52e" stroke-width="1.2" stroke-linejoin="round"/>
+  <circle cx="109" cy="30" r="1.6" fill="#0d3823"/>
+  <g transform="translate(14,26)">
+    <polygon points="10,0 12.8,6.4 19.8,7 14.5,11.6 16.1,18.5 10,14.8 3.9,18.5 5.5,11.6 0.2,7 7.2,6.4"
+      fill="#f4d35e" stroke="#c9a52e" stroke-width="1.4" stroke-linejoin="round"/>
+  </g>
+</svg>`;
+
+const W = 420, H = 740;            // logical resolution
+const GROUND_H = 88;
+const CRANE_X = 118, CRANE_R = 15;
+const TOWER_W = 76;
+const RUSH_TIME = 4.0, RUSH_STARS = 5;
+
+/* ---------- skill levels ---------- */
+const DIFFS = [
+  { id:'breeze', name:'🐣 BREEZE', desc:'Floaty and friendly. Big gaps, calm sky.',
+    grav: 920, flap:-322, maxfall:500, speed0:120, speedMax:178, ramp:0.7,
+    gap0:236, gapMin:190, gapStep:0.8, spacing:292 },
+  { id:'glide',  name:'🕊️ GLIDE',  desc:'The classic flight. Fair but focused.',
+    grav:1320, flap:-405, maxfall:660, speed0:148, speedMax:224, ramp:1.0,
+    gap0:208, gapMin:160, gapStep:1.05, spacing:260 },
+  { id:'storm',  name:'🌪️ STORM',  desc:'Tight gaps, fast winds. For legends.',
+    grav:1620, flap:-452, maxfall:760, speed0:176, speedMax:262, ramp:1.3,
+    gap0:186, gapMin:144, gapStep:1.2, spacing:238 },
+];
+
+const CITIES = [
+  { name:'PHILADELPHIA', flag:'🇺🇸' },
+  { name:'NEW YORK',     flag:'🇺🇸' },
+  { name:'LONDON',       flag:'🇬🇧' },
+  { name:'PARIS',        flag:'🇫🇷' },
+  { name:'MARRAKECH',    flag:'🇲🇦' },
+  { name:'TOKYO',        flag:'🇯🇵' },
+  { name:'SYDNEY',       flag:'🇦🇺' },
+  { name:'RIO',          flag:'🇧🇷' },
+];
+const CITY_EVERY = 8; // pipes per city
+
+/* ---------- storage (safe everywhere) ---------- */
+const store = {
+  mem:{},
+  get(k,d){ try{ const v=localStorage.getItem('craneArc_'+k); return v?JSON.parse(v):d; }catch(e){ return (k in this.mem)?this.mem[k]:d; } },
+  set(k,v){ try{ localStorage.setItem('craneArc_'+k, JSON.stringify(v)); }catch(e){} this.mem[k]=v; }
+};
+let diff = store.get('diff', 0);
+let D = DIFFS[diff];
+let bests = store.get('bests', { breeze:0, glide:0, storm:0 });
+// migrate any old single best onto glide
+const legacyBest = store.get('best', 0);
+if(legacyBest > bests.glide){ bests.glide = legacyBest; store.set('bests', bests); }
+let starBank = store.get('starBank', 0);
+function best(){ return bests[D.id] || 0; }
+
+/* ---------- sound ---------- */
+let soundOn = true, actx = null;
+function sfx(freq, dur=.12, type='triangle', vol=.09, slide=0){
+  if(!soundOn) return;
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, actx.currentTime);
+    if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(40,freq+slide), actx.currentTime+dur);
+    g.gain.setValueAtTime(vol, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime+dur);
+    o.connect(g); g.connect(actx.destination);
+    o.start(); o.stop(actx.currentTime+dur+.02);
+  }catch(e){}
+}
+const sFlap = ()=>sfx(340,.09,'triangle',.07,120);
+const sStar = ()=>sfx(760,.12,'square',.05,240);
+const sRush = ()=>{ sfx(520,.3,'sawtooth',.05,500); setTimeout(()=>sfx(780,.3,'sawtooth',.04,400),120); };
+const sHit  = ()=>sfx(160,.3,'sawtooth',.11,-110);
+const sPass = ()=>sfx(620,.07,'triangle',.045,60);
+
+/* ---------- canvas setup ---------- */
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+let DPR = 1, VIEW_S = 1;
+function fit(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const vw = window.innerWidth, vh = window.innerHeight;
+  VIEW_S = Math.min(vw / W, vh / H);
+  cv.style.width  = Math.round(W * VIEW_S) + 'px';
+  cv.style.height = Math.round(H * VIEW_S) + 'px';
+  cv.width  = Math.round(W * VIEW_S * DPR);
+  cv.height = Math.round(H * VIEW_S * DPR);
+}
+fit();
+window.addEventListener('resize', fit);
+
+/* ---------- game state ---------- */
+let state = 'READY';      // READY | PLAY | DYING | DEAD
+let crane, towers, stars, parts, score, runStars, rushMeter, rush, speed;
+let cityIdx, banner, shake, flash, tPrev, dist, wingKick, readyBob = 0;
+
+function reset(){
+  crane = { y: H*0.44, vy: 0, ang: 0 };
+  towers = []; stars = []; parts = [];
+  score = 0; runStars = 0; rushMeter = 0; rush = 0;
+  speed = D.speed0; cityIdx = 0; banner = 0; shake = 0; flash = 0;
+  dist = 0; wingKick = 0;
+  spawnTower(W + 160);
+  spawnTower(W + 160 + D.spacing);
+  spawnTower(W + 160 + D.spacing*2);
+}
+
+function gapSize(){ return Math.max(D.gapMin, D.gap0 - score * D.gapStep); }
+
+let towerSeed = 1;
+function spawnTower(x){
+  const g = gapSize();
+  const margin = 70;
+  const gy = margin + Math.random() * (H - GROUND_H - margin*2 - g);
+  const t = { x, gy, g, passed:false, id: towerSeed++ };
+  towers.push(t);
+  // star in the gap (65%)
+  if(Math.random() < .65){
+    stars.push({ x: x + TOWER_W/2, y: gy + g/2, r: 13, tw: Math.random()*6.28, dead:false });
+  }
+  // arc of 3 stars after the tower (45%)
+  if(Math.random() < .45){
+    const baseY = 130 + Math.random() * (H - GROUND_H - 260);
+    for(let i=0;i<3;i++){
+      stars.push({ x: x + TOWER_W + 62 + i*44, y: baseY + Math.sin(i*1.1)*36, r: 13, tw: Math.random()*6.28, dead:false });
+    }
+  }
+}
+
+/* ---------- input ---------- */
+function flap(){
+  if(state === 'READY'){ state = 'PLAY'; }
+  if(state !== 'PLAY') return;
+  crane.vy = D.flap;
+  wingKick = 1;
+  sFlap();
+  for(let i=0;i<4;i++) parts.push(puff(CRANE_X-14, crane.y+10));
+}
+cv.addEventListener('pointerdown', e => { e.preventDefault(); flap(); });
+window.addEventListener('keydown', e => {
+  if(e.code === 'Space' || e.code === 'ArrowUp'){ e.preventDefault(); flap(); }
+});
+
+/* ---------- particles ---------- */
+function puff(x,y){ return { x, y, vx:-40-Math.random()*60, vy:20+Math.random()*40, r:4+Math.random()*4, a:.55, da:-1.6, kind:'puff' }; }
+function sparkle(x,y,gold=true){
+  const a = Math.random()*6.28, sp = 60+Math.random()*160;
+  return { x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, r:2.5+Math.random()*3, a:1, da:-2.2, kind: gold?'gold':'paper' };
+}
+function trailStar(x,y){ return { x, y, vx:-speed*.6, vy:(Math.random()-.5)*40, r:5+Math.random()*4, a:.9, da:-1.4, kind:'trail' }; }
+
+/* ---------- update ---------- */
+function update(dt){
+  readyBob += dt;
+  if(state === 'READY'){
+    crane.y = H*0.44 + Math.sin(readyBob*2.4)*12;
+    crane.ang = Math.sin(readyBob*2.4)*0.08;
+    dist += speed*dt*.4;
+    return;
+  }
+  if(state === 'DEAD') return;
+
+  // physics
+  crane.vy = Math.min(crane.vy + D.grav*dt, D.maxfall);
+  crane.y += crane.vy*dt;
+  const targ = crane.vy < 0 ? -0.42 : Math.min(1.35, crane.vy/520);
+  crane.ang += (targ - crane.ang) * Math.min(1, dt*9);
+  wingKick = Math.max(0, wingKick - dt*3.4);
+  if(crane.y < CRANE_R + 4){ crane.y = CRANE_R + 4; crane.vy = 0; }
+
+  const groundY = H - GROUND_H;
+  if(crane.y > groundY - CRANE_R + 4){
+    crane.y = groundY - CRANE_R + 4;
+    if(state === 'PLAY') die();
+    if(state === 'DYING') settleDeath();
+  }
+
+  if(state === 'DYING'){ shake = Math.max(0, shake - dt*3); return; }
+
+  // world
+  dist += speed*dt;
+  if(rush > 0){
+    rush -= dt;
+    if(rush <= 0){ rush = 0; toast('Rush over — keep flying!'); }
+    if(Math.random() < .5) parts.push(trailStar(CRANE_X-18, crane.y+6));
+  }
+  const spd = speed * (rush > 0 ? 1.28 : 1);
+
+  for(const t of towers) t.x -= spd*dt;
+  for(const s of stars)  s.x -= spd*dt;
+
+  // recycle towers
+  if(towers.length && towers[0].x < -TOWER_W - 20){
+    towers.shift();
+    spawnTower(towers[towers.length-1].x + D.spacing);
+  }
+  stars = stars.filter(s => !s.dead && s.x > -30);
+
+  // pass + score
+  for(const t of towers){
+    if(!t.passed && t.x + TOWER_W < CRANE_X){
+      t.passed = true;
+      score += rush > 0 ? 2 : 1;
+      speed = Math.min(D.speedMax, speed + D.ramp);
+      sPass();
+      const ci = Math.floor(score / CITY_EVERY) % CITIES.length;
+      if(ci !== cityIdx){ cityIdx = ci; banner = 2.2; sfx(500,.15,'triangle',.06,180); }
+    }
+  }
+
+  // tower collision (skipped during rush — paper-burst instead)
+  for(const t of towers){
+    if(CRANE_X + CRANE_R > t.x + 6 && CRANE_X - CRANE_R < t.x + TOWER_W - 6){
+      const inGap = crane.y - CRANE_R > t.gy + 4 && crane.y + CRANE_R < t.gy + t.g - 4;
+      if(!inGap){
+        if(rush > 0){
+          if(!t.burst){ t.burst = true; for(let i=0;i<10;i++) parts.push(sparkle(CRANE_X+14, crane.y, false)); sfx(300,.1,'square',.05,80); }
+        } else { die(); break; }
+      }
+    }
+  }
+
+  // stars: magnet + collect
+  for(const s of stars){
+    s.tw += dt*6;
+    if(rush > 0){
+      const dx = CRANE_X - s.x, dy = crane.y - s.y, d = Math.hypot(dx,dy);
+      if(d < 170 && d > 1){ s.x += dx/d * 330*dt; s.y += dy/d * 330*dt; }
+    }
+    const d = Math.hypot(CRANE_X - s.x, crane.y - s.y);
+    if(d < CRANE_R + s.r + 2){
+      s.dead = true;
+      runStars++; starBank++; store.set('starBank', starBank);
+      sStar();
+      for(let i=0;i<8;i++) parts.push(sparkle(s.x, s.y));
+      if(rush <= 0){
+        rushMeter++;
+        if(rushMeter >= RUSH_STARS){
+          rushMeter = 0; rush = RUSH_TIME;
+          sRush(); flash = .5; shake = Math.max(shake,.25);
+          toast('✨ SERENDIPITY RUSH! ✨');
+        }
+      }
+    }
+  }
+
+  // particles
+  for(const p of parts){
+    p.x += p.vx*dt; p.y += p.vy*dt; p.a += p.da*dt;
+    if(p.kind==='gold'||p.kind==='paper') p.vy += 300*dt;
+  }
+  parts = parts.filter(p => p.a > 0);
+
+  shake = Math.max(0, shake - dt*2.2);
+  flash = Math.max(0, flash - dt*1.4);
+  if(banner > 0) banner -= dt;
+}
+
+function die(){
+  state = 'DYING';
+  crane.vy = -260;
+  shake = .8; flash = .8;
+  sHit();
+  for(let i=0;i<16;i++) parts.push(sparkle(CRANE_X, crane.y, false));
+}
+function settleDeath(){
+  state = 'DEAD';
+  const isBest = score > best();
+  if(isBest){ bests[D.id] = score; store.set('bests', bests); }
+  setTimeout(()=>{
+    document.getElementById('goMedal').textContent = medal(score);
+    document.getElementById('goScore').textContent = score;
+    document.getElementById('goBest').textContent = (isBest ? '★ NEW BEST ★' : 'BEST ' + best());
+    document.getElementById('goStars').textContent = `⭐ ${runStars} stars · Star Bank ${starBank.toLocaleString()}`;
+    document.getElementById('over').classList.add('show');
+    refreshSplashStats();
+  }, 350);
+}
+function medal(s){ return s >= 100 ? '💎' : s >= 50 ? '🥇' : s >= 25 ? '🥈' : s >= 10 ? '🥉' : '🪶'; }
+
+/* ---------- drawing ---------- */
+function draw(){
+  ctx.setTransform(DPR*VIEW_S, 0, 0, DPR*VIEW_S, 0, 0);
+  const sx = (Math.random()-.5) * shake * 14;
+  const sy = (Math.random()-.5) * shake * 14;
+  ctx.save();
+  ctx.translate(sx, sy);
+
+  drawSky();
+  drawSkyline();
+  drawTowers();
+  drawStars();
+  drawGround();
+  drawParticles();
+  drawCrane(CRANE_X, crane.y, crane.ang);
+  if(rush > 0) drawRushGlow();
+  drawHUD();
+
+  ctx.restore();
+  if(flash > 0){
+    ctx.fillStyle = `rgba(244,211,94,${flash*.5})`;
+    ctx.fillRect(0,0,W,H);
+  }
+}
+
+function drawSky(){
+  const g = ctx.createLinearGradient(0,0,0,H);
+  if(rush > 0){
+    g.addColorStop(0,'#ffe89a'); g.addColorStop(.55,'#f9f2d0'); g.addColorStop(1,'#eef9f2');
+  } else {
+    g.addColorStop(0,'#c8ecd7'); g.addColorStop(.55,'#e6f7ec'); g.addColorStop(1,'#f4fbf6');
+  }
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  // sun-star
+  ctx.save();
+  ctx.translate(W-74, 86);
+  ctx.rotate(dist*.0004);
+  starPath(ctx, 0, 0, 26, 12, 5);
+  ctx.fillStyle = 'rgba(244,211,94,.85)'; ctx.fill();
+  ctx.restore();
+  // drifting clouds
+  ctx.fillStyle = 'rgba(255,255,255,.75)';
+  for(let i=0;i<4;i++){
+    const cx = W - ((dist*.24 + i*230) % (W+220)) - 60;
+    const cy = 90 + (i*97)%230;
+    cloud(cx, cy, 1 - i*.12);
+  }
+}
+function cloud(x,y,s){
+  ctx.beginPath();
+  ctx.arc(x, y, 20*s, 0, 7);
+  ctx.arc(x+22*s, y-8*s, 16*s, 0, 7);
+  ctx.arc(x+44*s, y, 18*s, 0, 7);
+  ctx.fill();
+}
+
+function drawSkyline(){
+  const base = H - GROUND_H;
+  const off = (dist*.45) % 260;
+  ctx.fillStyle = 'rgba(13,56,35,.16)';
+  for(let i=-1;i<3;i++){
+    const bx = i*260 - off;
+    silhouette(bx, base, cityIdx);
+  }
+}
+function silhouette(bx, base, ci){
+  // generic blocks
+  const hs = [64, 96, 52, 118, 74, 88];
+  for(let i=0;i<6;i++){
+    const w = 34, x = bx + i*40 + 6;
+    ctx.fillRect(x, base - hs[(i+ci)%6], w, hs[(i+ci)%6]);
+  }
+  // landmark per city
+  ctx.save();
+  ctx.translate(bx + 128, base);
+  switch(ci){
+    case 0: ctx.fillRect(-8,-150,16,150); ctx.beginPath(); ctx.moveTo(0,-186); ctx.lineTo(-10,-150); ctx.lineTo(10,-150); ctx.fill(); break;           // Philly City Hall
+    case 1: ctx.fillRect(-10,-160,20,160); ctx.fillRect(-4,-192,8,34); break;                                                                            // NYC spire
+    case 2: ctx.fillRect(-9,-140,18,140); ctx.fillRect(-13,-152,26,14); ctx.beginPath(); ctx.moveTo(0,-176); ctx.lineTo(-9,-152); ctx.lineTo(9,-152); ctx.fill(); break; // Big Ben
+    case 3: ctx.beginPath(); ctx.moveTo(0,-190); ctx.lineTo(-26,0); ctx.lineTo(-12,0); ctx.lineTo(0,-120); ctx.lineTo(12,0); ctx.lineTo(26,0); ctx.fill(); ctx.fillRect(-20,-64,40,7); break; // Eiffel
+    case 4: ctx.fillRect(-8,-128,16,128); ctx.beginPath(); ctx.arc(0,-128,12,Math.PI,0); ctx.fill(); ctx.fillRect(-2,-152,4,14); break;                 // minaret
+    case 5: ctx.beginPath(); ctx.moveTo(0,-184); ctx.lineTo(-24,0); ctx.lineTo(24,0); ctx.fill(); ctx.fillRect(-28,-70,56,7); break;                     // Tokyo Tower
+    case 6: for(let k=0;k<3;k++){ ctx.beginPath(); ctx.arc(k*22-22, 0, 26-k*4, Math.PI, Math.PI*1.55); ctx.lineTo(k*22-22,0); ctx.fill(); } break;       // Opera House
+    case 7: ctx.beginPath(); ctx.moveTo(-30,0); ctx.quadraticCurveTo(0,-96,30,0); ctx.fill(); ctx.fillRect(-3,-128,6,34); ctx.fillRect(-16,-118,32,6); break; // Corcovado
+  }
+  ctx.restore();
+}
+
+function drawTowers(){
+  for(const t of towers){
+    const ghost = rush > 0;
+    ctx.save();
+    if(ghost) ctx.globalAlpha = .38;
+    towerRect(t.x, -8, TOWER_W, t.gy + 8, true);
+    towerRect(t.x, t.gy + t.g, TOWER_W, H - GROUND_H - (t.gy + t.g) + 8, false);
+    ctx.restore();
+  }
+}
+function towerRect(x, y, w, h, isTop){
+  if(h <= 0) return;
+  const g = ctx.createLinearGradient(x, 0, x+w, 0);
+  g.addColorStop(0,'#25b656'); g.addColorStop(.5,'#1ea64a'); g.addColorStop(1,'#128038');
+  ctx.fillStyle = g;
+  ctx.fillRect(x, y, w, h);
+  // origami fold stripes
+  ctx.fillStyle = 'rgba(238,249,242,.16)';
+  for(let yy = y + 14; yy < y + h - 8; yy += 34){
+    ctx.beginPath();
+    ctx.moveTo(x, yy); ctx.lineTo(x+w, yy-12); ctx.lineTo(x+w, yy-6); ctx.lineTo(x, yy+6);
+    ctx.fill();
+  }
+  // cap at the gap edge
+  const capY = isTop ? y + h - 16 : y;
+  ctx.fillStyle = '#0d5c28';
+  ctx.fillRect(x-5, capY, w+10, 16);
+  ctx.fillStyle = 'rgba(238,249,242,.25)';
+  ctx.fillRect(x-5, isTop ? capY : capY+13, w+10, 3);
+}
+
+function drawStars(){
+  for(const s of stars){
+    const bob = Math.sin(s.tw)*3;
+    ctx.save();
+    ctx.translate(s.x, s.y + bob);
+    ctx.rotate(Math.sin(s.tw*.7)*.25);
+    starPath(ctx, 0, 0, s.r, s.r*.46, 5);
+    ctx.fillStyle = '#f4d35e'; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = '#c9a52e'; ctx.stroke();
+    starPath(ctx, -2, -2, s.r*.4, s.r*.18, 5);
+    ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.fill();
+    ctx.restore();
+  }
+}
+function starPath(c, x, y, R, r, n){
+  c.beginPath();
+  for(let i=0;i<n*2;i++){
+    const rad = i%2===0 ? R : r;
+    const a = (i*Math.PI/n) - Math.PI/2;
+    const px = x + Math.cos(a)*rad, py = y + Math.sin(a)*rad;
+    i===0 ? c.moveTo(px,py) : c.lineTo(px,py);
+  }
+  c.closePath();
+}
+
+function drawGround(){
+  const y = H - GROUND_H;
+  ctx.fillStyle = '#0d3823';
+  ctx.fillRect(0, y, W, GROUND_H);
+  // grass fringe
+  ctx.fillStyle = '#1ea64a';
+  ctx.fillRect(0, y, W, 10);
+  const off = (dist) % 28;
+  ctx.fillStyle = '#35c765';
+  for(let x = -off; x < W; x += 28){
+    ctx.beginPath(); ctx.moveTo(x, y+10); ctx.lineTo(x+9, y); ctx.lineTo(x+18, y+10); ctx.fill();
+  }
+  // dots
+  ctx.fillStyle = 'rgba(217,242,226,.14)';
+  for(let x = -(dist*.7 % 26); x < W; x += 26)
+    for(let yy = y + 26; yy < H; yy += 22)
+      ctx.fillRect(x, yy, 2.4, 2.4);
+}
+
+function drawParticles(){
+  for(const p of parts){
+    ctx.globalAlpha = Math.max(0, Math.min(1, p.a));
+    if(p.kind === 'gold' || p.kind === 'trail'){
+      starPath(ctx, p.x, p.y, p.r, p.r*.45, 5);
+      ctx.fillStyle = '#f4d35e'; ctx.fill();
+    } else if(p.kind === 'paper'){
+      ctx.fillStyle = '#d9f2e2';
+      ctx.fillRect(p.x, p.y, p.r*1.6, p.r*1.1);
+    } else {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7);
+      ctx.fillStyle = '#ffffff'; ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* the serendipity crane, in flight */
+function drawCrane(x, y, ang){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(ang);
+  if(rush > 0){
+    ctx.shadowColor = 'rgba(244,211,94,.9)'; ctx.shadowBlur = 24;
+  }
+  const s = .52;
+  ctx.scale(s, s);
+  ctx.translate(-65, -60);
+  ctx.lineJoin = 'round';
+
+  // tail
+  poly([[6,66],[42,52],[38,74]], '#a9d9bc');
+  poly([[6,66],[42,52],[30,48]], '#8fcaa6');
+  // wing (flaps)
+  ctx.save();
+  ctx.translate(52, 60);
+  ctx.rotate(-0.15 - wingKick*0.85 + Math.sin(readyBob*10)*0.05*wingKick);
+  poly([[0,0],[44,-50],[36,2]], '#d9f2e2', '#7bbf95');
+  poly([[0,0],[18,-34],[44,-50]], '#eef9f2', '#7bbf95');
+  ctx.restore();
+  // body
+  poly([[34,64],[92,44],[100,76],[48,84]], '#bfe8cd', '#7bbf95');
+  poly([[34,64],[66,60],[48,84]], '#a9d9bc');
+  // neck + beak
+  poly([[92,44],[112,26],[100,60]], '#d9f2e2', '#7bbf95');
+  poly([[112,26],[124,22],[110,36]], '#f4d35e', '#c9a52e');
+  // eye
+  ctx.beginPath(); ctx.arc(109, 30, 1.8, 0, 7); ctx.fillStyle = '#0d3823'; ctx.fill();
+  ctx.restore();
+}
+function poly(pts, fill, stroke){
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
+  ctx.closePath();
+  ctx.fillStyle = fill; ctx.fill();
+  if(stroke){ ctx.lineWidth = 2.4; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+
+function drawRushGlow(){
+  const g = ctx.createRadialGradient(W/2, H/2, H*.25, W/2, H/2, H*.62);
+  g.addColorStop(0, 'rgba(244,211,94,0)');
+  g.addColorStop(1, 'rgba(244,211,94,.22)');
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+}
+
+function drawHUD(){
+  ctx.textAlign = 'center';
+  if(state === 'READY'){
+    ctx.fillStyle = '#0d5c28';
+    ctx.font = '900 17px "Press Start 2P", monospace';
+    ctx.fillText('GET READY!', W/2, 168);
+    const blink = Math.sin(readyBob*4) > -0.2;
+    if(blink){
+      ctx.font = '900 11px "Press Start 2P", monospace';
+      ctx.fillStyle = '#0d3823';
+      ctx.fillText('TAP TO FLY', W/2, H*0.62);
+    }
+    ctx.font = '600 12px Inter, sans-serif';
+    ctx.fillStyle = 'rgba(13,56,35,.65)';
+    ctx.fillText('⭐ 5 stars = SERENDIPITY RUSH', W/2, H*0.62 + 30);
+    return;
+  }
+  // score
+  ctx.font = '900 34px "Press Start 2P", monospace';
+  ctx.lineWidth = 8; ctx.strokeStyle = 'rgba(13,56,35,.85)';
+  ctx.strokeText(String(score), W/2, 84);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(String(score), W/2, 84);
+
+  // rush meter (5 star slots) top-left
+  for(let i=0;i<RUSH_STARS;i++){
+    const filled = rush > 0 ? true : i < rushMeter;
+    ctx.save();
+    ctx.translate(26 + i*26, 34);
+    starPath(ctx, 0, 0, 9, 4.2, 5);
+    ctx.fillStyle = filled ? '#f4d35e' : 'rgba(13,56,35,.18)';
+    ctx.fill();
+    if(filled){ ctx.lineWidth = 1.6; ctx.strokeStyle = '#c9a52e'; ctx.stroke(); }
+    ctx.restore();
+  }
+  if(rush > 0){
+    ctx.font = '900 9px "Press Start 2P", monospace';
+    ctx.fillStyle = '#c9a52e';
+    ctx.textAlign = 'left';
+    ctx.fillText('RUSH ' + rush.toFixed(1), 16, 58);
+    ctx.textAlign = 'center';
+  }
+  // star count top-right
+  ctx.font = '900 12px "Press Start 2P", monospace';
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#0d3823';
+  ctx.fillText('⭐' + runStars, W - 64, 40);
+  ctx.textAlign = 'center';
+
+  // city banner
+  if(banner > 0){
+    const a = Math.min(1, banner > 1.9 ? (2.2-banner)*3.3 : banner < .5 ? banner*2 : 1);
+    ctx.globalAlpha = a;
+    ctx.fillStyle = 'rgba(13,56,35,.82)';
+    const c = CITIES[cityIdx];
+    const label = 'NOW OVER: ' + c.name;
+    ctx.font = '900 11px "Press Start 2P", monospace';
+    const tw = ctx.measureText(label).width + 44;
+    roundRect((W-tw)/2, 118, tw, 38, 12);
+    ctx.fill();
+    ctx.fillStyle = '#f4d35e';
+    ctx.fillText(label, W/2, 142);
+    ctx.globalAlpha = 1;
+  }
+}
+function roundRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+/* ---------- loop ---------- */
+function frame(t){
+  if(tPrev === undefined) tPrev = t;
+  const dt = Math.min(1/30, (t - tPrev)/1000);
+  tPrev = t;
+  update(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+
+/* ---------- overlay ---------- */
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(()=>el.classList.remove('show'), 1800);
+}
+document.getElementById('btnAgain').addEventListener('click', ()=>{
+  document.getElementById('over').classList.remove('show');
+  reset(); state = 'READY';
+});
+document.getElementById('btnShare').addEventListener('click', async ()=>{
+  const c = CITIES[cityIdx];
+  const text =
+`🕊️ STARFOLD CITY — a LivingWiki arcade
+${medal(score)} Score ${score} · Best ${best()} · ${D.name} mode
+⭐ ${runStars} stars snagged over ${c.flag} ${c.name}
+Beat my flight ➜ LivingWiki.com`;
+  if(navigator.share){
+    try{ await navigator.share({ text }); return; }catch(e){ if(e && e.name==='AbortError') return; }
+  }
+  try{ await navigator.clipboard.writeText(text); toast('Challenge copied 💌'); }
+  catch(e){ toast('Sharing not available here'); }
+});
+document.getElementById('btnMute').addEventListener('click', ()=>{
+  soundOn = !soundOn;
+  document.getElementById('btnMute').textContent = soundOn ? '🔊' : '🔇';
+});
+
+/* ---------- splash ---------- */
+function refreshSplashStats(){
+  document.getElementById('spStats').innerHTML =
+    `BEST ${best()} · ${D.id.toUpperCase()}<br>⭐ STAR BANK ${starBank.toLocaleString()}`;
+}
+function renderModes(){
+  const wrap = document.getElementById('spModes');
+  wrap.innerHTML = '';
+  DIFFS.forEach((m, i)=>{
+    const b = document.createElement('button');
+    b.className = 'mode-chip' + (i === diff ? ' sel' : '');
+    b.textContent = m.name;
+    b.addEventListener('click', ()=>{
+      diff = i; D = DIFFS[i];
+      store.set('diff', i);
+      renderModes();
+      refreshSplashStats();
+      reset(); state = 'READY';   // rebuild towers with the new gaps
+      sfx(430 + i*90, .1, 'triangle', .05, 100);
+    });
+    wrap.appendChild(b);
+  });
+  document.getElementById('spModeDesc').textContent = D.desc;
+}
+document.getElementById('spCrane').innerHTML = CRANE_SVG;
+renderModes();
+refreshSplashStats();
+document.getElementById('btnStart').addEventListener('click', ()=>{
+  document.getElementById('splash').classList.add('hide');
+  sfx(520,.14,'triangle',.06,220);
+});
+document.getElementById('btnMenu').addEventListener('click', ()=>{
+  document.getElementById('over').classList.remove('show');
+  reset(); state = 'READY';
+  refreshSplashStats();
+  document.getElementById('splash').classList.remove('hide');
+});
+
+/* ---------- go ---------- */
+reset();
+requestAnimationFrame(frame);
+
+</script>
+</body>
+</html>

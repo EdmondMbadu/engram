@@ -26,6 +26,24 @@ const PUBLIC_WIKI_SORTS = [
 ] as const;
 type PublicWikiVisibleSortMode = (typeof PUBLIC_WIKI_SORTS)[number]['value'];
 type PublicWikiSortMode = 'featured' | PublicWikiVisibleSortMode;
+type MobileCitySortMode = Extract<PublicWikiVisibleSortMode, 'population' | 'temp' | 'region' | 'az'>;
+
+interface MobileHomeCard {
+  title: string;
+  chip: string;
+  icon: string;
+  accent: string;
+  link: string;
+}
+
+interface MobileHomeSection {
+  id: string;
+  label: string;
+  icon: string;
+  addLabel: string;
+  addLink: string;
+  cards: MobileHomeCard[];
+}
 
 const GLOBAL_REGION_ORDER = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Other'];
 const TEMPERATURE_BATCH_SIZE = 25;
@@ -83,6 +101,64 @@ const DENSITY_NEUTRAL_TONE = {
   surface: 'rgba(100,116,139,0.14)',
   border: 'rgba(148,163,184,0.3)',
 } as const;
+
+const MOBILE_CITY_SORTS: Array<{ value: MobileCitySortMode; label: string }> = [
+  { value: 'population', label: 'Pop' },
+  { value: 'temp', label: 'Temp' },
+  { value: 'region', label: 'Region' },
+  { value: 'az', label: 'A-Z' },
+];
+
+const MOBILE_HOME_SECTIONS: MobileHomeSection[] = [
+  {
+    id: 'boards',
+    label: 'My Boards',
+    icon: 'dashboard_customize',
+    addLabel: 'Add board',
+    addLink: '/boards',
+    cards: [
+      { title: 'Cape May: Unique Stays & Local Gems', chip: '7 cards', icon: 'cottage', accent: '#1f6fd6', link: '/boards' },
+      { title: 'Inverness Pub Crawl: Top Taverns & Hidden Gems', chip: '11 cards', icon: 'local_bar', accent: '#7a5c3e', link: '/boards' },
+      { title: 'Best Sushi in Philly', chip: '3 cards', icon: 'restaurant', accent: '#c96b6b', link: '/boards' },
+    ],
+  },
+  {
+    id: 'songs',
+    label: 'My Songs',
+    icon: 'music_note',
+    addLabel: 'Add song',
+    addLink: '/chat/philly',
+    cards: [
+      { title: "Don't Go Breaking My Heart", chip: 'favorite', icon: 'piano', accent: '#3a3a4d', link: '/chat/philly' },
+      { title: 'You Should Be Dancing', chip: 'preview', icon: 'graphic_eq', accent: '#4d3a5e', link: '/chat/philly' },
+      { title: 'The Boys Are Back in Town', chip: 'favorite', icon: 'album', accent: '#5e3a3a', link: '/chat/philly' },
+    ],
+  },
+  {
+    id: 'friends',
+    label: 'My Friends',
+    icon: 'group',
+    addLabel: 'Add friend',
+    addLink: '/friends',
+    cards: [
+      { title: "Sam's Fishtown Taco Trail", chip: '9 cards', icon: 'diversity_3', accent: '#d98f4e', link: '/friends' },
+      { title: "Maria's Lisbon Miradouros", chip: '12 cards', icon: 'sailing', accent: '#5ea3c9', link: '/friends' },
+      { title: "Ken's Quiet Kyoto Temples", chip: '8 cards', icon: 'temple_buddhist', accent: '#c96b8a', link: '/friends' },
+    ],
+  },
+  {
+    id: 'trips',
+    label: 'My Trips',
+    icon: 'map',
+    addLabel: 'Add trip',
+    addLink: '/chat/philly',
+    cards: [
+      { title: 'World Cup Week: Philadelphia', chip: 'dealt daily', icon: 'sports_soccer', accent: '#3f8f5a', link: '/chat/philly' },
+      { title: 'Gettysburg Driving Tour', chip: '6 stops', icon: 'directions_car', accent: '#8a8f5a', link: '/chat/philly' },
+      { title: 'Old City Philly Walking Tour', chip: '8 stops', icon: 'hiking', accent: '#b0743f', link: '/chat/philly' },
+    ],
+  },
+];
 
 const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
   'abu dhabi': 110,
@@ -397,6 +473,9 @@ export class PublicWikisComponent implements OnInit {
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
   readonly activeSort = signal<PublicWikiSortMode>('population');
+  readonly mobileDrawerOpen = signal(false);
+  readonly mobileAllCitiesOpen = signal(false);
+  readonly mobileSelectedCitySlug = signal<string | null>('philly');
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
   readonly cityTemperatureCoordinates = signal<Record<string, CityTemperatureCoordinates>>({});
   readonly isLoadingTemperatures = signal(false);
@@ -413,6 +492,8 @@ export class PublicWikisComponent implements OnInit {
   readonly publicWikis = computed(() => this.liveWikis());
 
   readonly liveCount = computed(() => this.liveWikis().length);
+  readonly mobileSections = MOBILE_HOME_SECTIONS;
+  readonly mobileCitySortOptions = MOBILE_CITY_SORTS;
 
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
   readonly sortOptions = computed(() => [...PUBLIC_WIKI_SORTS]);
@@ -421,6 +502,41 @@ export class PublicWikisComponent implements OnInit {
   readonly isPopulationSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'population');
   readonly isDensitySort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'density');
   readonly isOthersCategory = computed(() => this.activeCategory() === OTHERS_CATEGORY);
+  readonly mobileCityWikis = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const cityWikis = this.publicWikis().filter((wiki) => {
+      if (this.categoryForWiki(wiki) !== CITIES_CATEGORY) {
+        return false;
+      }
+      if (!term) {
+        return true;
+      }
+      return [
+        wiki.title,
+        wiki.subtitle,
+        wiki.description,
+        wiki.countryLabel ?? '',
+        this.globalRegionForWiki(wiki),
+      ].join(' ').toLowerCase().includes(term);
+    });
+    return this.sortWikis(cityWikis);
+  });
+  readonly mobileFeaturedCities = computed(() => this.mobileCityWikis().slice(0, 8));
+  readonly mobileSelectedCity = computed(() => {
+    const cityWikis = this.publicWikis().filter((wiki) => this.categoryForWiki(wiki) === CITIES_CATEGORY);
+    const selectedSlug = this.mobileSelectedCitySlug();
+    return (
+      cityWikis.find((wiki) => wiki.slug === selectedSlug) ??
+      cityWikis.find((wiki) => this.cityNameKey(wiki) === 'philadelphia' || wiki.slug === 'philly') ??
+      cityWikis[0] ??
+      null
+    );
+  });
+  readonly mobileSelectedCityLink = computed(() => this.mobileSelectedCity()?.link ?? '/chat/philly');
+  readonly mobileSelectedCityName = computed(() => {
+    const city = this.mobileSelectedCity();
+    return city ? this.cityDisplayName(city) : 'Pick your city';
+  });
 
   readonly hasPaidPricingPlan = computed(() => {
     const profile = this.authService.profile();
@@ -528,6 +644,36 @@ export class PublicWikisComponent implements OnInit {
     if (mode === 'temp') {
       void this.ensureTemperatures();
     }
+  }
+
+  setMobileSort(mode: MobileCitySortMode): void {
+    this.activeCategory.set(CITIES_CATEGORY);
+    this.setSort(mode);
+  }
+
+  toggleMobileDrawer(): void {
+    this.mobileDrawerOpen.update((open) => !open);
+  }
+
+  closeMobileDrawer(): void {
+    this.mobileDrawerOpen.set(false);
+  }
+
+  toggleMobileAllCities(): void {
+    this.mobileAllCitiesOpen.update((open) => !open);
+  }
+
+  selectMobileCity(wiki: PublicWikiCatalogItem): void {
+    this.mobileSelectedCitySlug.set(wiki.slug ?? null);
+    this.mobileAllCitiesOpen.set(false);
+  }
+
+  mobileSectionAddLink(section: MobileHomeSection): string {
+    return section.addLink === '/chat/philly' ? this.mobileSelectedCityLink() : section.addLink;
+  }
+
+  mobileCardLink(card: MobileHomeCard): string {
+    return card.link === '/chat/philly' ? this.mobileSelectedCityLink() : card.link;
   }
 
   openProductVideo(): void {
@@ -972,7 +1118,7 @@ export class PublicWikisComponent implements OnInit {
     return title.replace(/^my\s+living\s*wiki:/i, 'LivingWiki:').trim();
   }
 
-  private globalRegionForWiki(wiki: PublicWikiCatalogItem): string {
+  globalRegionForWiki(wiki: PublicWikiCatalogItem): string {
     const explicit = wiki.globalRegion?.trim();
     if (explicit) {
       return explicit;

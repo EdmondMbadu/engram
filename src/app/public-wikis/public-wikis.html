@@ -1,4 +1,242 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
+  <div class="mobile-public-home md:hidden">
+    <header class="mobile-home-header">
+      <button
+        type="button"
+        class="mobile-burger"
+        aria-label="Open menu"
+        (click)="toggleMobileDrawer()"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a routerLink="/" class="mobile-brand" aria-label="LivingWiki home">
+        <img src="/assets/image/lucky-paper-crane.png" alt="" />
+        <span><b>Living</b>Wiki</span>
+      </a>
+
+      <div class="mobile-head-actions">
+        <a
+          [routerLink]="mobileSelectedCityLink()"
+          class="mobile-head-action"
+          aria-label="Language and translation"
+        >
+          <span class="material-symbols-outlined">language</span>
+        </a>
+        <a href="#mobile-trove" class="mobile-head-action mobile-head-action--trove" aria-label="My Trove">
+          <span class="material-symbols-outlined">star</span>
+          <span class="mobile-badge">0</span>
+        </a>
+      </div>
+    </header>
+
+    <div
+      class="mobile-veil"
+      [class.open]="mobileDrawerOpen()"
+      (click)="closeMobileDrawer()"
+    ></div>
+    <aside class="mobile-drawer" [class.open]="mobileDrawerOpen()" aria-label="Mobile menu">
+      <div class="mobile-drawer-brand">
+        <img src="/assets/image/lucky-paper-crane.png" alt="" />
+        <div>
+          <b>LivingWiki</b>
+          <span>Find what lights you up.</span>
+        </div>
+      </div>
+      <nav>
+        <a href="#mobile-city" (click)="closeMobileDrawer()">
+          <span class="material-symbols-outlined">location_city</span>
+          My City · {{ mobileSelectedCityName() }}
+        </a>
+        @for (section of mobileSections; track section.id) {
+          <a [href]="'#mobile-' + section.id" (click)="closeMobileDrawer()">
+            <span class="material-symbols-outlined">{{ section.icon }}</span>
+            {{ section.label }}
+          </a>
+        }
+        <a href="#mobile-trove" class="mobile-drawer-game" (click)="closeMobileDrawer()">
+          <span class="material-symbols-outlined">star</span>
+          My Trove · Starfold City
+        </a>
+        <a routerLink="/business" (click)="closeMobileDrawer()">
+          <span class="material-symbols-outlined">storefront</span>
+          Business
+        </a>
+        <button type="button" (click)="openProductVideo(); closeMobileDrawer()">
+          <span class="material-symbols-outlined">info</span>
+          About
+        </button>
+      </nav>
+    </aside>
+
+    <main class="mobile-home-main">
+      <p class="mobile-tagline">Find what lights you up!</p>
+
+      <section id="mobile-city" class="mobile-city-block">
+        <div class="mobile-city-row">
+          <img src="/assets/image/living-cities.png" alt="" />
+          <span class="mobile-city-label">My City</span>
+          <button type="button" class="mobile-city-select" (click)="toggleMobileAllCities()">
+            <span>{{ mobileSelectedCityName() }}</span>
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+          <button type="button" class="mobile-all-cities-link" (click)="toggleMobileAllCities()">
+            All Cities
+          </button>
+        </div>
+
+        @if (mobileAllCitiesOpen()) {
+          <div class="mobile-city-panel">
+            <label class="mobile-city-search">
+              <span class="material-symbols-outlined">search</span>
+              <input
+                type="text"
+                [ngModel]="searchTerm()"
+                (ngModelChange)="onSearchInput($event)"
+                placeholder="Search all cities"
+              />
+            </label>
+            <div class="mobile-city-sorts" aria-label="Sort all cities">
+              @for (sort of mobileCitySortOptions; track sort.value) {
+                <button
+                  type="button"
+                  [class.active]="activeSort() === sort.value"
+                  (click)="setMobileSort(sort.value)"
+                >
+                  {{ sort.label }}
+                </button>
+              }
+            </div>
+            <div class="mobile-city-count">
+              {{ mobileCityWikis().length }} cities shown
+              @if (temperatureStatusLabel()) {
+                <span>{{ temperatureStatusLabel() }}</span>
+              }
+            </div>
+            <div class="mobile-city-list">
+              @if (isLoadingLiveWikis()) {
+                <p>Loading cities...</p>
+              } @else {
+                @for (city of mobileCityWikis(); track city.slug || city.title) {
+                  <button type="button" (click)="selectMobileCity(city)">
+                    <span>
+                      <b>{{ cityDisplayName(city) }}</b>
+                      <small>{{ city.countryLabel || globalRegionForWiki(city) }}</small>
+                    </span>
+                    <span>{{ populationLabel(city) || timeHeroLabel(city) }}</span>
+                  </button>
+                }
+              }
+            </div>
+          </div>
+        }
+
+        <div class="mobile-primary-actions">
+          <a [routerLink]="mobileSelectedCityLink()" class="mobile-talk-action">
+            <span class="material-symbols-outlined">graphic_eq</span>
+            <span>
+              <b>Talk with me</b>
+              <small>Live voice for {{ mobileSelectedCityName() }}</small>
+            </span>
+          </a>
+          @if (!isSignedIn()) {
+            <a routerLink="/create-account" class="mobile-join-action">Join for free</a>
+          }
+        </div>
+      </section>
+
+      <section class="mobile-search-wrap">
+        <label>
+          <span class="material-symbols-outlined">travel_explore</span>
+          <input
+            type="text"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchInput($event)"
+            placeholder="Search cities, boards, songs, friends..."
+          />
+        </label>
+      </section>
+
+      <section class="mobile-row-section mobile-featured-cities" aria-label="Featured cities">
+        <div class="mobile-card-row">
+          <button type="button" class="mobile-icon-tile" (click)="toggleMobileAllCities()">
+            <img src="/assets/image/living-cities.png" alt="" />
+            <span class="mobile-plus">+</span>
+          </button>
+          @for (city of mobileFeaturedCities(); track city.slug || city.title) {
+            <a [routerLink]="city.link || '/chat'" class="mobile-city-card">
+              <span class="mobile-city-card-mark">{{ initialsFor(cityDisplayName(city)) }}</span>
+              <span class="mobile-city-card-title">{{ cityDisplayName(city) }}</span>
+              <small>{{ city.countryLabel || globalRegionForWiki(city) }}</small>
+            </a>
+          }
+        </div>
+      </section>
+
+      @for (section of mobileSections; track section.id) {
+        <section class="mobile-row-section" [id]="'mobile-' + section.id">
+          <h2>
+            <span>{{ section.label }}</span>
+            <span class="material-symbols-outlined">expand_less</span>
+          </h2>
+          <div class="mobile-card-row">
+            <a [routerLink]="mobileSectionAddLink(section)" class="mobile-icon-tile">
+              <span class="material-symbols-outlined mobile-section-icon">{{ section.icon }}</span>
+              <span class="mobile-plus">+</span>
+            </a>
+            @for (card of section.cards; track card.title) {
+              <a
+                [routerLink]="mobileCardLink(card)"
+                class="mobile-content-card"
+                [style.--mobile-card-accent]="card.accent"
+              >
+                <span class="material-symbols-outlined">{{ card.icon }}</span>
+                <b>{{ card.title }}</b>
+                <small>{{ card.chip }}</small>
+              </a>
+            }
+          </div>
+        </section>
+      }
+
+      <section id="mobile-trove" class="mobile-game-section">
+        <div class="mobile-game-head">
+          <img src="/assets/image/lucky-paper-crane.png" alt="" />
+          <div>
+            <span>A LivingWiki Arcade</span>
+            <h2>My Trove · <b>Starfold City</b></h2>
+          </div>
+        </div>
+        <p>Fold through the towers. Snag the stars. Right here, no download.</p>
+        <div class="mobile-game-frame">
+          <iframe title="Starfold City" loading="lazy" src="/assets/starfold-city.html"></iframe>
+        </div>
+        <small>Stars you bank here join your LivingWiki Star Bank.</small>
+      </section>
+
+      <div class="mobile-cta-wrap">
+        <a href="#mobile-trove" class="mobile-game-cta">
+          <span class="material-symbols-outlined">star</span>
+          Play Starfold City
+        </a>
+      </div>
+
+      <footer class="mobile-home-footer">
+        <p><b>LivingWiki</b> · The Global Serendipity Engine</p>
+        <h2>Discover. Share. Belong.</h2>
+        <div>
+          <a routerLink="/business">Business</a>
+          <span>·</span>
+          <button type="button" (click)="openProductVideo()">About</button>
+        </div>
+        <small>Copyright, 2026, Mind Palace, Inc.</small>
+      </footer>
+    </main>
+  </div>
+
+  <div class="hidden md:block">
   <div class="relative flex min-h-screen flex-col" [class.md:h-screen]="isSignedIn()" [class.md:flex-row]="isSignedIn()" [class.md:overflow-hidden]="isSignedIn()">
   @if (isSignedIn()) {
     <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
@@ -504,6 +742,7 @@
       </div>
     </footer>
   </main>
+  </div>
   </div>
   </div>
 
