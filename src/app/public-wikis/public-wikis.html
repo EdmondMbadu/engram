@@ -25,7 +25,7 @@
         >
           <span class="material-symbols-outlined">language</span>
         </a>
-        <a href="#mobile-trove" class="mobile-head-action mobile-head-action--trove" aria-label="My Trove">
+        <a routerLink="/trove" class="mobile-head-action mobile-head-action--trove" aria-label="My Trove">
           <span class="material-symbols-outlined">star</span>
           <span class="mobile-badge">0</span>
         </a>
@@ -56,7 +56,7 @@
             {{ section.label }}
           </a>
         }
-        <a href="#mobile-trove" class="mobile-drawer-game" (click)="closeMobileDrawer()">
+        <a routerLink="/trove" class="mobile-drawer-game" (click)="closeMobileDrawer()">
           <span class="material-symbols-outlined">star</span>
           My Trove · Starfold City
         </a>
@@ -262,19 +262,12 @@
             <h2>My Trove · <b>Starfold City</b></h2>
           </div>
         </div>
-        <p>Fold through the towers. Snag the stars. Right here, no download.</p>
-        <div class="mobile-game-frame">
-          <iframe title="Starfold City" loading="lazy" src="/assets/starfold-city.html"></iframe>
-        </div>
-        <small>Stars you bank here join your LivingWiki Star Bank.</small>
-      </section>
-
-      <div class="mobile-cta-wrap">
-        <a href="#mobile-trove" class="mobile-game-cta">
+        <p>Fold through the towers. Snag the stars. Open the arcade in its own play space.</p>
+        <a routerLink="/trove" class="mobile-game-cta">
           <span class="material-symbols-outlined">star</span>
           Play Starfold City
         </a>
-      </div>
+      </section>
 
       <footer class="mobile-home-footer">
         <p><b>LivingWiki</b> · The Global Serendipity Engine</p>

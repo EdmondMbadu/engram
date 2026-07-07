@@ -79,6 +79,11 @@ export const routes: Routes = [
     title: 'The Fenceline Network | LivingWiki',
   },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
+  {
+    path: 'trove',
+    loadComponent: () => import('./trove/trove').then((m) => m.TroveComponent),
+    title: 'My Trove | LivingWiki',
+  },
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | LivingWiki', canActivate: [authGuard] },
   {
     path: 'boards',

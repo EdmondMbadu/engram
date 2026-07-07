@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d3823">
 <title>Starfold City · a LivingWiki arcade — Serendipity Crane</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
@@ -13,17 +17,18 @@
   --mint:#d9f2e2; --mint-dk:#a9d9bc; --paper:#eef9f2;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
+html,body{width:100%;height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
 body{
   background:var(--deep);
   background-image:radial-gradient(rgba(217,242,226,.05) 1.2px, transparent 1.2px);
   background-size:26px 26px;
   font-family:'Inter',system-ui,sans-serif;
-  overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation;
+  overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;
   display:flex;align-items:center;justify-content:center;
+  position:fixed;inset:0;width:100%;height:100dvh;
 }
 #stage{position:relative}
-canvas{display:block;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+canvas{display:block;border-radius:0;box-shadow:none;touch-action:none}
 
 #btnMute{
   position:absolute;top:10px;right:10px;z-index:20;
