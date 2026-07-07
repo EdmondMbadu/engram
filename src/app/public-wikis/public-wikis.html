@@ -76,7 +76,19 @@
 
       <section id="mobile-city" class="mobile-city-block">
         <div class="mobile-city-row">
-          <img src="/assets/image/living-cities.png" alt="" />
+          @if (mobileSelectedCity(); as selectedCity) {
+            <span class="mobile-selected-city-picture">
+              @if (selectedCity.heroUrl) {
+                <img [src]="selectedCity.heroUrl" [alt]="cityDisplayName(selectedCity) + ' image'" />
+              } @else {
+                <span>{{ initialsFor(cityDisplayName(selectedCity)) }}</span>
+              }
+            </span>
+          } @else {
+            <span class="mobile-selected-city-picture">
+              <span>LW</span>
+            </span>
+          }
           <span class="mobile-city-label">My City</span>
           <button type="button" class="mobile-city-select" (click)="toggleMobileAllCities()">
             <span>{{ mobileSelectedCityName() }}</span>
@@ -121,6 +133,16 @@
               } @else {
                 @for (city of mobileCityWikis(); track city.slug || city.title) {
                   <button type="button" (click)="selectMobileCity(city)">
+                    <span
+                      class="mobile-city-list-thumb"
+                      [style.backgroundColor]="city.coverColor || '#0d3823'"
+                    >
+                      @if (city.heroUrl) {
+                        <img [src]="city.heroUrl" [alt]="cityDisplayName(city) + ' image'" loading="lazy" />
+                      } @else {
+                        <span>{{ initialsFor(cityDisplayName(city)) }}</span>
+                      }
+                    </span>
                     <span>
                       <b>{{ cityDisplayName(city) }}</b>
                       <small>{{ city.countryLabel || globalRegionForWiki(city) }}</small>
@@ -166,8 +188,30 @@
             <span class="mobile-plus">+</span>
           </button>
           @for (city of mobileFeaturedCities(); track city.slug || city.title) {
-            <a [routerLink]="city.link || '/chat'" class="mobile-city-card">
-              <span class="mobile-city-card-mark">{{ initialsFor(cityDisplayName(city)) }}</span>
+            <a
+              [routerLink]="city.link || '/chat'"
+              class="mobile-city-card"
+              [style.backgroundColor]="city.coverColor || '#0d3823'"
+            >
+              @if (city.heroUrl) {
+                <img
+                  [src]="city.heroUrl"
+                  [alt]="cityDisplayName(city) + ' city image'"
+                  loading="lazy"
+                  class="mobile-city-card-image"
+                />
+              } @else {
+                <div class="mobile-city-card-image mobile-city-card-image--initials">
+                  {{ initialsFor(cityDisplayName(city)) }}
+                </div>
+              }
+              <span class="mobile-city-card-mark">
+                @if (city.logoUrl) {
+                  <img [src]="city.logoUrl" alt="" loading="lazy" />
+                } @else {
+                  {{ initialsFor(cityDisplayName(city)) }}
+                }
+              </span>
               <span class="mobile-city-card-title">{{ cityDisplayName(city) }}</span>
               <small>{{ city.countryLabel || globalRegionForWiki(city) }}</small>
             </a>
