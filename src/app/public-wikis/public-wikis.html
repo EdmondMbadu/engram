@@ -50,7 +50,7 @@
           <span class="material-symbols-outlined">location_city</span>
           My City · {{ mobileSelectedCityName() }}
         </a>
-        @for (section of mobileSections; track section.id) {
+        @for (section of mobileSections(); track section.id) {
           <a [href]="'#mobile-' + section.id" (click)="closeMobileDrawer()">
             <span class="material-symbols-outlined">{{ section.icon }}</span>
             {{ section.label }}
@@ -219,7 +219,7 @@
         </div>
       </section>
 
-      @for (section of mobileSections; track section.id) {
+      @for (section of mobileSections(); track section.id) {
         <section class="mobile-row-section" [id]="'mobile-' + section.id">
           <h2>
             <span>{{ section.label }}</span>
@@ -230,12 +230,21 @@
               <span class="material-symbols-outlined mobile-section-icon">{{ section.icon }}</span>
               <span class="mobile-plus">+</span>
             </a>
-            @for (card of section.cards; track card.title) {
+            @for (card of section.cards; track card.id) {
               <a
                 [routerLink]="mobileCardLink(card)"
                 class="mobile-content-card"
+                [class.mobile-content-card--with-image]="card.imageUrl"
                 [style.--mobile-card-accent]="card.accent"
               >
+                @if (card.imageUrl) {
+                  <img
+                    [src]="card.imageUrl"
+                    [alt]="card.imageAlt || card.title"
+                    loading="lazy"
+                    class="mobile-content-card-image"
+                  />
+                }
                 <span class="material-symbols-outlined">{{ card.icon }}</span>
                 <b>{{ card.title }}</b>
                 <small>{{ card.chip }}</small>

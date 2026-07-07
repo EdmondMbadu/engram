@@ -1,8 +1,12 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { collection, getDocs, query, where, type Firestore } from 'firebase/firestore';
+import { httpsCallable, type Functions } from 'firebase/functions';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { getFirebaseFirestore, getFirebaseFunctions } from '../firebase.client';
 import {
   buildPublicWikiLiveItem,
   type PublicWikiCatalogItem,
@@ -29,11 +33,14 @@ type PublicWikiSortMode = 'featured' | PublicWikiVisibleSortMode;
 type MobileCitySortMode = Extract<PublicWikiVisibleSortMode, 'population' | 'temp' | 'region' | 'az'>;
 
 interface MobileHomeCard {
+  id: string;
   title: string;
   chip: string;
   icon: string;
   accent: string;
   link: string;
+  imageUrl?: string;
+  imageAlt?: string;
 }
 
 interface MobileHomeSection {
@@ -43,6 +50,55 @@ interface MobileHomeSection {
   addLabel: string;
   addLink: string;
   cards: MobileHomeCard[];
+}
+
+interface MobileBoardCard {
+  id: string;
+  title: string;
+  subtitle: string;
+  notes: string;
+  type: string;
+  status: string;
+  imageUrl: string;
+  audioPreviewUrl: string;
+  spotifyTrackId: string;
+  spotifyTrackUrl: string;
+  spotifyUri: string;
+  spotifyArtistName: string;
+  spotifyAlbumName: string;
+  spotifyArtworkUrl: string;
+  tags: string[];
+}
+
+interface MobileBoard {
+  id: string;
+  kind: 'standard' | 'walking-tour' | 'driving-tour';
+  sortOrder: number;
+  ownerUserId: string;
+  ownerPublicSlug: string;
+  ownerDisplayName: string;
+  ownerPhotoUrl: string;
+  ownerProfileIcon: string;
+  ownerProfilePictureType: 'icon' | 'image' | null;
+  visibility: 'public' | 'private';
+  title: string;
+  description: string;
+  icon: string;
+  tone: string;
+  imageUrl: string;
+  logoUrl: string;
+  cards: MobileBoardCard[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface MobileFriend {
+  userId: string;
+  email: string;
+  displayName: string;
+  photoURL: string;
+  profileIcon: string;
+  profilePictureType: 'icon' | 'image' | null;
 }
 
 const GLOBAL_REGION_ORDER = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Other'];
@@ -108,57 +164,8 @@ const MOBILE_CITY_SORTS: Array<{ value: MobileCitySortMode; label: string }> = [
   { value: 'region', label: 'Region' },
   { value: 'az', label: 'A-Z' },
 ];
-
-const MOBILE_HOME_SECTIONS: MobileHomeSection[] = [
-  {
-    id: 'boards',
-    label: 'My Boards',
-    icon: 'dashboard_customize',
-    addLabel: 'Add board',
-    addLink: '/boards',
-    cards: [
-      { title: 'Cape May: Unique Stays & Local Gems', chip: '7 cards', icon: 'cottage', accent: '#1f6fd6', link: '/boards' },
-      { title: 'Inverness Pub Crawl: Top Taverns & Hidden Gems', chip: '11 cards', icon: 'local_bar', accent: '#7a5c3e', link: '/boards' },
-      { title: 'Best Sushi in Philly', chip: '3 cards', icon: 'restaurant', accent: '#c96b6b', link: '/boards' },
-    ],
-  },
-  {
-    id: 'songs',
-    label: 'My Songs',
-    icon: 'music_note',
-    addLabel: 'Add song',
-    addLink: '/chat/philly',
-    cards: [
-      { title: "Don't Go Breaking My Heart", chip: 'favorite', icon: 'piano', accent: '#3a3a4d', link: '/chat/philly' },
-      { title: 'You Should Be Dancing', chip: 'preview', icon: 'graphic_eq', accent: '#4d3a5e', link: '/chat/philly' },
-      { title: 'The Boys Are Back in Town', chip: 'favorite', icon: 'album', accent: '#5e3a3a', link: '/chat/philly' },
-    ],
-  },
-  {
-    id: 'friends',
-    label: 'My Friends',
-    icon: 'group',
-    addLabel: 'Add friend',
-    addLink: '/friends',
-    cards: [
-      { title: "Sam's Fishtown Taco Trail", chip: '9 cards', icon: 'diversity_3', accent: '#d98f4e', link: '/friends' },
-      { title: "Maria's Lisbon Miradouros", chip: '12 cards', icon: 'sailing', accent: '#5ea3c9', link: '/friends' },
-      { title: "Ken's Quiet Kyoto Temples", chip: '8 cards', icon: 'temple_buddhist', accent: '#c96b8a', link: '/friends' },
-    ],
-  },
-  {
-    id: 'trips',
-    label: 'My Trips',
-    icon: 'map',
-    addLabel: 'Add trip',
-    addLink: '/chat/philly',
-    cards: [
-      { title: 'World Cup Week: Philadelphia', chip: 'dealt daily', icon: 'sports_soccer', accent: '#3f8f5a', link: '/chat/philly' },
-      { title: 'Gettysburg Driving Tour', chip: '6 stops', icon: 'directions_car', accent: '#8a8f5a', link: '/chat/philly' },
-      { title: 'Old City Philly Walking Tour', chip: '8 stops', icon: 'hiking', accent: '#b0743f', link: '/chat/philly' },
-    ],
-  },
-];
+const MOBILE_BOARD_STORAGE_KEY = 'livingwiki-boards-v1';
+const MOBILE_DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 
 const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
   'abu dhabi': 110,
@@ -464,11 +471,19 @@ interface PublicWikiFeelingSticker {
   styleUrl: './public-wikis.css',
 })
 export class PublicWikisComponent implements OnInit {
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
+  private readonly functions: Functions | null = this.isBrowser ? getFirebaseFunctions() : null;
 
   readonly isSignedIn = this.authService.isAuthenticated;
   readonly liveWikis = signal<PublicWikiCatalogItem[]>([]);
+  readonly mobileBoards = signal<MobileBoard[]>([]);
+  readonly mobileFriends = signal<MobileFriend[]>([]);
+  readonly mobileBoardsLoading = signal(false);
+  readonly mobileFriendsLoading = signal(false);
   readonly isLoadingLiveWikis = signal(true);
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
@@ -492,7 +507,62 @@ export class PublicWikisComponent implements OnInit {
   readonly publicWikis = computed(() => this.liveWikis());
 
   readonly liveCount = computed(() => this.liveWikis().length);
-  readonly mobileSections = MOBILE_HOME_SECTIONS;
+  readonly mobileBoardCards = computed(() =>
+    this.mobileBoards()
+      .slice(0, 10)
+      .map((board) => this.mobileCardFromBoard(board, 'board')),
+  );
+  readonly mobileSongCards = computed(() =>
+    this.mobileBoards()
+      .filter((board) => this.boardSongCards(board).length > 0)
+      .slice(0, 10)
+      .map((board) => this.mobileCardFromBoard(board, 'song')),
+  );
+  readonly mobileFriendCards = computed(() =>
+    this.mobileFriends()
+      .slice(0, 10)
+      .map((friend) => this.mobileCardFromFriend(friend)),
+  );
+  readonly mobileTripCards = computed(() =>
+    this.mobileBoards()
+      .filter((board) => this.isTripBoard(board))
+      .slice(0, 10)
+      .map((board) => this.mobileCardFromBoard(board, 'trip')),
+  );
+  readonly mobileSections = computed<MobileHomeSection[]>(() => [
+    {
+      id: 'boards',
+      label: 'My Boards',
+      icon: 'dashboard_customize',
+      addLabel: 'Add board',
+      addLink: '/boards',
+      cards: this.mobileBoardCards(),
+    },
+    {
+      id: 'songs',
+      label: 'My Songs',
+      icon: 'music_note',
+      addLabel: 'Add song',
+      addLink: '/boards',
+      cards: this.mobileSongCards(),
+    },
+    {
+      id: 'friends',
+      label: 'My Friends',
+      icon: 'group',
+      addLabel: 'Add friend',
+      addLink: '/friends',
+      cards: this.mobileFriendCards(),
+    },
+    {
+      id: 'trips',
+      label: 'My Trips',
+      icon: 'map',
+      addLabel: 'Add trip',
+      addLink: this.mobileSelectedCityLink(),
+      cards: this.mobileTripCards(),
+    },
+  ]);
   readonly mobileCitySortOptions = MOBILE_CITY_SORTS;
 
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
@@ -588,6 +658,8 @@ export class PublicWikisComponent implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
+    void this.loadMobileBoards();
+    void this.loadMobileFriends();
     this.isLoadingLiveWikis.set(true);
 
 	    try {
@@ -674,6 +746,343 @@ export class PublicWikisComponent implements OnInit {
 
   mobileCardLink(card: MobileHomeCard): string {
     return card.link === '/chat/philly' ? this.mobileSelectedCityLink() : card.link;
+  }
+
+  private async loadMobileBoards(): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    this.mobileBoardsLoading.set(true);
+    try {
+      await this.authService.waitForReady();
+      const uid = this.authService.uid();
+      const localBoards = this.loadStoredMobileBoards(uid);
+      let remoteBoards: MobileBoard[] = [];
+
+      if (this.firestore) {
+        const boardQuery = uid
+          ? query(collection(this.firestore, 'boards'), where('owner_user_id', '==', uid))
+          : query(collection(this.firestore, 'boards'), where('visibility', '==', 'public'));
+        const snapshot = await getDocs(boardQuery);
+        remoteBoards = snapshot.docs
+          .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
+          .filter((board): board is MobileBoard => !!board);
+      }
+
+      const boardsById = new Map<string, MobileBoard>();
+      [...localBoards, ...remoteBoards].forEach((board) => {
+        if (!MOBILE_DEMO_BOARD_IDS.has(board.id)) {
+          boardsById.set(board.id, board);
+        }
+      });
+      this.mobileBoards.set(this.sortMobileBoards([...boardsById.values()]));
+    } catch {
+      this.mobileBoards.set(this.loadStoredMobileBoards(this.authService.uid()));
+    } finally {
+      this.mobileBoardsLoading.set(false);
+    }
+  }
+
+  private async loadMobileFriends(): Promise<void> {
+    if (!this.isBrowser || !this.functions) {
+      return;
+    }
+
+    await this.authService.waitForReady();
+    if (!this.authService.uid()) {
+      this.mobileFriends.set([]);
+      return;
+    }
+
+    this.mobileFriendsLoading.set(true);
+    try {
+      const callable = httpsCallable<Record<string, never>, unknown>(this.functions, 'listBoardFriends');
+      const response = await callable({});
+      this.mobileFriends.set(this.mobileFriendsFromResponse(response.data));
+    } catch {
+      this.mobileFriends.set([]);
+    } finally {
+      this.mobileFriendsLoading.set(false);
+    }
+  }
+
+  private loadStoredMobileBoards(uid: string): MobileBoard[] {
+    if (!this.isBrowser) {
+      return [];
+    }
+
+    const raw = window.localStorage.getItem(MOBILE_BOARD_STORAGE_KEY);
+    const boards = raw ? this.parseMobileBoards(raw) : [];
+    return this.sortMobileBoards(
+      boards.filter((board) => !MOBILE_DEMO_BOARD_IDS.has(board.id) && (!board.ownerUserId || board.ownerUserId === uid)),
+    );
+  }
+
+  private parseMobileBoards(raw: string): MobileBoard[] {
+    try {
+      const value = JSON.parse(raw) as unknown;
+      if (!Array.isArray(value)) {
+        return [];
+      }
+      return value
+        .map((board) => this.mobileBoardFromLocalRecord(board))
+        .filter((board): board is MobileBoard => !!board);
+    } catch {
+      return [];
+    }
+  }
+
+  private mobileBoardFromLocalRecord(value: unknown): MobileBoard | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    return this.mobileBoardFromRecord(this.stringField(data, 'id'), {
+      ...data,
+      owner_user_id: this.stringField(data, 'ownerUserId'),
+      owner_public_slug: this.stringField(data, 'ownerPublicSlug'),
+      owner_display_name: this.stringField(data, 'ownerDisplayName'),
+      owner_photo_url: this.stringField(data, 'ownerPhotoUrl'),
+      owner_profile_icon: this.stringField(data, 'ownerProfileIcon'),
+      owner_profile_picture_type: data['ownerProfilePictureType'],
+      created_at_iso: this.stringField(data, 'createdAt'),
+      updated_at_iso: this.stringField(data, 'updatedAt'),
+    });
+  }
+
+  private mobileBoardFromRecord(id: string, data: Record<string, unknown>): MobileBoard | null {
+    const title = this.stringField(data, 'title');
+    if (!id || !title) {
+      return null;
+    }
+
+    const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
+    const kind = data['kind'] === 'walking-tour' || data['kind'] === 'driving-tour' ? data['kind'] : 'standard';
+    const visibility = data['visibility'] === 'private' ? 'private' : 'public';
+    const profilePictureType = data['owner_profile_picture_type'] === 'image' || data['owner_profile_picture_type'] === 'icon'
+      ? data['owner_profile_picture_type']
+      : null;
+    return {
+      id,
+      kind,
+      sortOrder: this.numberField(data, 'sortOrder', Number.MAX_SAFE_INTEGER),
+      ownerUserId: this.stringField(data, 'owner_user_id'),
+      ownerPublicSlug: this.stringField(data, 'owner_public_slug'),
+      ownerDisplayName: this.stringField(data, 'owner_display_name'),
+      ownerPhotoUrl: this.stringField(data, 'owner_photo_url'),
+      ownerProfileIcon: this.stringField(data, 'owner_profile_icon'),
+      ownerProfilePictureType: profilePictureType,
+      visibility,
+      title,
+      description: this.stringField(data, 'description'),
+      icon: this.stringField(data, 'icon') || 'dashboard_customize',
+      tone: this.stringField(data, 'tone') || 'teal',
+      imageUrl: this.stringField(data, 'imageUrl'),
+      logoUrl: this.stringField(data, 'logoUrl'),
+      cards: rawCards
+        .map((card) => this.mobileBoardCardFromRecord(card))
+        .filter((card): card is MobileBoardCard => !!card),
+      createdAt: this.stringField(data, 'created_at_iso') || new Date(0).toISOString(),
+      updatedAt: this.stringField(data, 'updated_at_iso') || new Date(0).toISOString(),
+    };
+  }
+
+  private mobileBoardCardFromRecord(value: unknown): MobileBoardCard | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const title = this.stringField(data, 'title');
+    if (!title) {
+      return null;
+    }
+    return {
+      id: this.stringField(data, 'id') || title,
+      title,
+      subtitle: this.stringField(data, 'subtitle'),
+      notes: this.stringField(data, 'notes'),
+      type: this.stringField(data, 'type'),
+      status: this.stringField(data, 'status'),
+      imageUrl: this.stringField(data, 'imageUrl'),
+      audioPreviewUrl: this.stringField(data, 'audioPreviewUrl'),
+      spotifyTrackId: this.stringField(data, 'spotifyTrackId'),
+      spotifyTrackUrl: this.stringField(data, 'spotifyTrackUrl'),
+      spotifyUri: this.stringField(data, 'spotifyUri'),
+      spotifyArtistName: this.stringField(data, 'spotifyArtistName'),
+      spotifyAlbumName: this.stringField(data, 'spotifyAlbumName'),
+      spotifyArtworkUrl: this.stringField(data, 'spotifyArtworkUrl'),
+      tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string') : [],
+    };
+  }
+
+  private mobileFriendsFromResponse(value: unknown): MobileFriend[] {
+    const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const friends = Array.isArray(data['friends']) ? data['friends'] : [];
+    return friends
+      .map((friend) => this.mobileFriendFromRecord(friend))
+      .filter((friend): friend is MobileFriend => !!friend);
+  }
+
+  private mobileFriendFromRecord(value: unknown): MobileFriend | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+    const data = value as Record<string, unknown>;
+    const userId = this.stringField(data, 'userId');
+    if (!userId) {
+      return null;
+    }
+    const email = this.stringField(data, 'email');
+    return {
+      userId,
+      email,
+      displayName: this.stringField(data, 'displayName') || email || 'LivingWiki friend',
+      photoURL: this.stringField(data, 'photoURL'),
+      profileIcon: this.stringField(data, 'profileIcon'),
+      profilePictureType: data['profilePictureType'] === 'image' || data['profilePictureType'] === 'icon'
+        ? data['profilePictureType']
+        : null,
+    };
+  }
+
+  private mobileCardFromBoard(board: MobileBoard, mode: 'board' | 'song' | 'trip'): MobileHomeCard {
+    const songCards = mode === 'song' ? this.boardSongCards(board) : [];
+    const songImage = songCards.find((card) => card.spotifyArtworkUrl || card.imageUrl);
+    const title = mode === 'song' ? this.songBoardTitle(board, songCards) : board.title;
+    const icon = mode === 'song' ? 'music_note' : mode === 'trip' ? this.tripBoardIcon(board) : this.boardIcon(board);
+    const chip = mode === 'song'
+      ? this.countLabel(songCards.length, 'song')
+      : mode === 'trip'
+        ? this.countLabel(board.cards.length, board.kind === 'driving-tour' ? 'stop' : 'card')
+        : this.countLabel(board.cards.length, 'card');
+    return {
+      id: `${mode}-${board.id}`,
+      title,
+      chip,
+      icon,
+      accent: this.boardAccent(board),
+      link: `/boards/${encodeURIComponent(board.id)}`,
+      imageUrl: songImage?.spotifyArtworkUrl || songImage?.imageUrl || board.imageUrl || board.logoUrl || this.firstBoardCardImage(board),
+      imageAlt: title,
+    };
+  }
+
+  private mobileCardFromFriend(friend: MobileFriend): MobileHomeCard {
+    return {
+      id: `friend-${friend.userId}`,
+      title: friend.displayName,
+      chip: 'Friend',
+      icon: friend.profileIcon || 'person',
+      accent: '#1f6fd6',
+      link: this.friendProfileLink(friend),
+      imageUrl: friend.profilePictureType === 'image' ? friend.photoURL : '',
+      imageAlt: friend.displayName,
+    };
+  }
+
+  private boardSongCards(board: MobileBoard): MobileBoardCard[] {
+    return board.cards.filter((card) => this.isSongCard(card));
+  }
+
+  private isSongCard(card: MobileBoardCard): boolean {
+    if (card.spotifyTrackId || card.spotifyTrackUrl || card.spotifyUri || card.audioPreviewUrl || card.spotifyArtworkUrl) {
+      return true;
+    }
+    const text = [card.title, card.subtitle, card.notes, card.type, card.tags.join(' ')].join(' ').toLowerCase();
+    return /\b(song|songs|music|album|single|track|tracks|hit|hits|singer|artist|spotify|playlist)\b/.test(text);
+  }
+
+  private isTripBoard(board: MobileBoard): boolean {
+    if (board.kind === 'walking-tour' || board.kind === 'driving-tour') {
+      return true;
+    }
+    const text = [board.title, board.description, board.cards.map((card) => `${card.title} ${card.tags.join(' ')}`).join(' ')].join(' ').toLowerCase();
+    return /\b(trip|tour|travel|walk|walking|drive|driving|itinerary|route|stops|weekend)\b/.test(text);
+  }
+
+  private songBoardTitle(board: MobileBoard, songCards: MobileBoardCard[]): string {
+    const firstSong = songCards[0];
+    if (firstSong?.title && songCards.length === 1) {
+      return firstSong.spotifyArtistName ? `${firstSong.title} · ${firstSong.spotifyArtistName}` : firstSong.title;
+    }
+    return board.title;
+  }
+
+  private firstBoardCardImage(board: MobileBoard): string {
+    return board.cards.find((card) => card.imageUrl || card.spotifyArtworkUrl)?.imageUrl
+      || board.cards.find((card) => card.spotifyArtworkUrl)?.spotifyArtworkUrl
+      || '';
+  }
+
+  private boardIcon(board: MobileBoard): string {
+    if (board.icon && /^[a-z0-9_]+$/i.test(board.icon)) {
+      return board.icon;
+    }
+    if (board.kind === 'walking-tour') {
+      return 'hiking';
+    }
+    if (board.kind === 'driving-tour') {
+      return 'directions_car';
+    }
+    return 'dashboard_customize';
+  }
+
+  private tripBoardIcon(board: MobileBoard): string {
+    return board.kind === 'driving-tour' ? 'directions_car' : board.kind === 'walking-tour' ? 'hiking' : 'map';
+  }
+
+  private boardAccent(board: MobileBoard): string {
+    const accents: Record<string, string> = {
+      blue: '#1f6fd6',
+      coral: '#c96b6b',
+      green: '#3f8f5a',
+      purple: '#6d5bbf',
+      sky: '#2d8dbf',
+      teal: '#0f766e',
+      yellow: '#b7791f',
+    };
+    return accents[board.tone] ?? '#1f6fd6';
+  }
+
+  private countLabel(count: number, label: string): string {
+    return `${count} ${label}${count === 1 ? '' : 's'}`;
+  }
+
+  private friendProfileLink(friend: MobileFriend): string {
+    const handle = this.publicHandleFromText(friend.displayName || friend.email || 'livingwiki-friend');
+    return `/boards/u/${encodeURIComponent(`${handle}~${friend.userId}`)}`;
+  }
+
+  private publicHandleFromText(value: string): string {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/@.*$/, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 48) || 'livingwiki-user';
+  }
+
+  private sortMobileBoards(boards: MobileBoard[]): MobileBoard[] {
+    return [...boards].sort((left, right) => {
+      if (left.sortOrder !== right.sortOrder) {
+        return left.sortOrder - right.sortOrder;
+      }
+      const rightUpdated = Date.parse(right.updatedAt || right.createdAt) || 0;
+      const leftUpdated = Date.parse(left.updatedAt || left.createdAt) || 0;
+      return rightUpdated - leftUpdated || left.title.localeCompare(right.title);
+    });
+  }
+
+  private stringField(data: Record<string, unknown> | null, key: string): string {
+    const value = data?.[key];
+    return typeof value === 'string' ? value.trim() : '';
+  }
+
+  private numberField(data: Record<string, unknown>, key: string, fallback: number): number {
+    const value = data[key];
+    return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
   }
 
   openProductVideo(): void {
