@@ -1762,6 +1762,9 @@ body .chat-suggestion-card__icon {
 .song-board__cover-stack { position: relative; display: inline-grid; place-items: center; margin: 0.35rem 0 0.85rem; }
 .song-board__cover-stack img, .song-board__cover-stack > .material-symbols-outlined { display: grid; width: clamp(8rem, 24vw, 10.4rem); height: clamp(8rem, 24vw, 10.4rem); place-items: center; border-radius: 1rem; background: #e7f5ec; box-shadow: 0 8px 20px rgba(13, 56, 35, 0.3), 0 0 0 2px rgba(13, 56, 35, 0.12); color: #1ea64a; font-size: 4rem; object-fit: cover; }
 .song-board__cover-stack strong { position: absolute; left: 50%; bottom: -0.9rem; max-width: min(18rem, 86vw); overflow: hidden; transform: translateX(-50%) rotate(-1deg); border-radius: 0.78rem; background: #f4d35e; box-shadow: 0 3px 0 rgba(13, 56, 35, 0.5); color: #0d3823; font-size: 0.92rem; font-weight: 950; line-height: 1; padding: 0.55rem 0.9rem; text-overflow: ellipsis; white-space: nowrap; }
+.song-board__live-card { display: inline-flex; align-items: center; gap: 0.36rem; border: 1.5px solid #d3ecdd; border-radius: 999px; background: #e7f5ec; box-shadow: 0 3px 0 rgba(13, 56, 35, 0.24); color: #1ea64a; cursor: pointer; font: inherit; font-size: 0.72rem; font-weight: 950; line-height: 1; padding: 0.48rem 0.7rem; text-transform: uppercase; }
+.song-board__live-card:hover { transform: translateY(-1px); }
+.song-board__live-card .material-symbols-outlined { font-size: 1rem; font-variation-settings: 'FILL' 1; }
 .song-board__hero > p { max-width: 44rem; margin: 0; color: #4a6b58; font-size: 0.95rem; font-weight: 800; line-height: 1.45; }
 .song-board__stats, .song-player-card__actions, .song-player-card__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .song-board__stats { justify-content: center; }

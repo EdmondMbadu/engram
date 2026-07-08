@@ -4515,6 +4515,18 @@ export class BoardsComponent implements OnDestroy {
     void this.router.navigate([this.songsPage() && this.isSongBoard(board) ? '/songs' : '/boards', board.id], { queryParams: { view: 'stack' } });
   }
 
+  openLiveCardVersion(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.prepareStackForBoard(board);
+    this.stackStudioOpen.set(false);
+    this.stackShareDialogOpen.set(false);
+    this.sharePanelOpen.set(false);
+    this.stackDirectView.set(true);
+    this.startStackPlayback();
+    void this.router.navigate(['/boards', board.id], { queryParams: { view: 'stack' } });
+  }
+
   closeStackView(board: Board): void {
     this.stopSongPreview();
     this.stopStackPlayback();

@@ -1179,6 +1179,10 @@
                     <strong>{{ board.title }}</strong>
                   </div>
 
+                  <button type="button" class="song-board__live-card" (click)="openLiveCardVersion(board, $event)">
+                    <span class="material-symbols-outlined">graphic_eq</span>
+                    Live card version
+                  </button>
                   <p>{{ board.description || 'Pick a card, preview the track, then open it in Spotify for full playback when your account has access.' }}</p>
                   <div class="song-board__stats">
                     <span><b>{{ selectedSongCards().length }}</b> songs</span>
