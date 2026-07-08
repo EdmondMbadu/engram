@@ -553,6 +553,12 @@
   margin-top: 1rem;
 }
 
+.mobile-city-block,
+.mobile-row-section,
+.mobile-game-section {
+  scroll-margin-top: 5rem;
+}
+
 .mobile-row-section h2 {
   display: inline-flex;
   align-items: center;

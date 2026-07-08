@@ -30,6 +30,7 @@
           <img [src]="homeIconUrls.trove" alt="" class="mobile-head-icon-image" />
           <span class="mobile-badge">0</span>
         </a>
+        <app-account-menu></app-account-menu>
       </div>
     </header>
 
@@ -50,19 +51,19 @@
         </button>
       </div>
       <nav>
-        <a href="#mobile-city" (click)="closeMobileDrawer()">
+        <button type="button" (click)="scrollToHomeSection('city')">
           <img [src]="homeIconUrls.cities" alt="" class="mobile-drawer-icon-image" />
           My City · {{ mobileSelectedCityName() }}
-        </a>
+        </button>
         @for (section of mobileSections(); track section.id) {
-          <a [href]="'#mobile-' + section.id" (click)="closeMobileDrawer()">
+          <button type="button" (click)="scrollToHomeSection(section.id)">
             @if (section.iconImageUrl) {
               <img [src]="section.iconImageUrl" alt="" class="mobile-drawer-icon-image" />
             } @else {
               <span class="material-symbols-outlined">{{ section.icon }}</span>
             }
             {{ section.label }}
-          </a>
+          </button>
         }
         <a routerLink="/trove" class="mobile-drawer-game" (click)="closeMobileDrawer()">
           <img [src]="homeIconUrls.trove" alt="" class="mobile-drawer-icon-image" />

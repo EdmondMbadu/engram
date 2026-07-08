@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { collection, getDocs, query, where, type Firestore } from 'firebase/firestore';
@@ -676,6 +676,7 @@ export class PublicWikisComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     void this.loadMobileBoards();
     void this.loadMobileFriends();
+    void this.handleMobileHomeHash();
     this.isLoadingLiveWikis.set(true);
 
 	    try {
@@ -693,6 +694,11 @@ export class PublicWikisComponent implements OnInit {
     } finally {
       this.isLoadingLiveWikis.set(false);
     }
+  }
+
+  @HostListener('window:hashchange')
+  onWindowHashChange(): void {
+    void this.handleMobileHomeHash();
   }
 
   displayWikiTitle(wiki: PublicWikiCatalogItem): string {
@@ -756,6 +762,55 @@ export class PublicWikisComponent implements OnInit {
 
   closeDesktopSidebar(): void {
     this.desktopSidebarClosed.set(true);
+  }
+
+  scrollToHomeSection(sectionId: string): void {
+    this.closeMobileDrawer();
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const targetId = sectionId.startsWith('mobile-') ? sectionId : `mobile-${sectionId}`;
+    const scrollToTarget = () => this.scrollHomeTargetIntoView(targetId);
+
+    if (window.location.pathname !== '/home') {
+      void this.router.navigate(['/home']).then(() => setTimeout(scrollToTarget, 0));
+      return;
+    }
+
+    requestAnimationFrame(scrollToTarget);
+  }
+
+  private async handleMobileHomeHash(): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const hash = window.location.hash;
+    if (!hash.startsWith('#mobile-')) {
+      return;
+    }
+
+    await this.authService.waitForReady();
+    if (!this.isSignedIn()) {
+      return;
+    }
+
+    const targetId = decodeURIComponent(hash.slice(1));
+    const scrollToTarget = () => this.scrollHomeTargetIntoView(targetId);
+
+    if (window.location.pathname !== '/home') {
+      await this.router.navigate(['/home'], { replaceUrl: true });
+      setTimeout(scrollToTarget, 0);
+      return;
+    }
+
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}`);
+    requestAnimationFrame(scrollToTarget);
+  }
+
+  private scrollHomeTargetIntoView(targetId: string): void {
+    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   toggleMobileAllCities(): void {
