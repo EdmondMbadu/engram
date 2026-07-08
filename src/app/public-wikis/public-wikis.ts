@@ -14,6 +14,7 @@ import {
 } from '../public-wiki-catalog';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AccountMenuComponent } from '../account-menu/account-menu';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 const CITIES_CATEGORY = 'Cities';
 const OTHERS_CATEGORY = 'Others';
@@ -472,6 +473,7 @@ interface PublicWikiFeelingSticker {
     ThemeToggleComponent,
     FormsModule,
     AccountMenuComponent,
+    WorkspaceSidebarComponent,
   ],
   templateUrl: './public-wikis.html',
   styleUrl: './public-wikis.css',

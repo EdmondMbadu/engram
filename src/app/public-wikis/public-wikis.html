@@ -296,9 +296,12 @@
   } @else {
 
   <div class="legacy-public-page">
-  <div class="relative flex min-h-screen flex-col">
+  <div class="relative flex min-h-screen flex-col" [class.md:h-screen]="isSignedIn()" [class.md:flex-row]="isSignedIn()" [class.md:overflow-hidden]="isSignedIn()">
+  @if (isSignedIn()) {
+    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
+  }
 
-  <div class="min-w-0 flex-1">
+  <div class="min-w-0 flex-1" [class.overflow-y-auto]="isSignedIn()">
   <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
       <a routerLink="/home" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]" (click)="showSignedInHome()">
