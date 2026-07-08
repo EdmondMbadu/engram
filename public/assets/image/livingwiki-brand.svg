@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1289 249" role="img" aria-labelledby="livingwikiBrandTitle">
+  <title id="livingwikiBrandTitle">LivingWiki</title>
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="9" stdDeviation="8" flood-color="#0d3823" flood-opacity="0.12" />
+    </filter>
+  </defs>
+  <rect width="1289" height="249" fill="none" />
+  <image href="/assets/image/lucky-paper-crane.png" x="30" y="36" width="226" height="161" preserveAspectRatio="xMidYMid meet" filter="url(#softShadow)" />
+  <text x="270" y="162" font-family="Inter, Arial, Helvetica, sans-serif" font-size="122" font-weight="950" letter-spacing="0">
+    <tspan fill="#1ea64a">Living</tspan><tspan fill="#102018">Wiki</tspan>
+  </text>
+</svg>

@@ -65,7 +65,7 @@ export class LibraryComponent {
     this.atlasService.isPublicCityVisitorAtlas(this.publicAtlas(), this.authService.uid()),
   );
 
-  readonly atlasLogo = '/assets/image/livingwiki.png';
+  readonly atlasLogo = '/assets/image/livingwiki-brand.svg';
   readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
   readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');
   readonly uploadLink = computed(() => this.publicRoute('upload') ?? '/upload');

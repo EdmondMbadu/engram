@@ -89,7 +89,7 @@ export class LandingComponent {
   readonly isGoogleDriveConfigured = this.googleDrivePickerService.isConfigured;
   readonly isGoogleDriveBusy = this.googleDrivePickerService.isBusy;
   readonly isGoogleDriveConnected = this.googleDrivePickerService.isConnected;
-  readonly userAvatar = '/assets/image/livingwiki.png';
+  readonly userAvatar = '/assets/image/livingwiki-brand.svg';
   readonly atlasWikiLink = computed(() => this.publicRoute('wiki') ?? this.atlasService.activeAtlasWikiLink());
   readonly chatLink = computed(() => this.publicRoute('chat') ?? '/chat');
   readonly uploadLink = computed(() => this.publicRoute('upload') ?? '/upload');
