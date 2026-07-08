@@ -2,6 +2,44 @@
   align-items: stretch;
 }
 
+.public-livingwiki-brand {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.4rem;
+  color: #111111;
+  text-decoration: none;
+}
+
+.public-livingwiki-brand img {
+  width: auto;
+  height: 2.65rem;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.public-livingwiki-brand span {
+  overflow: hidden;
+  font-size: 1.34rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.public-livingwiki-brand b {
+  color: #1ea64a;
+}
+
+.public-livingwiki-brand--footer img {
+  height: 2.35rem;
+}
+
+.public-livingwiki-brand--footer span {
+  font-size: 1.12rem;
+}
+
 .mobile-public-home {
   --mobile-deep: #0d3823;
   --mobile-green: #1ea64a;
