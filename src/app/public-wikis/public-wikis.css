@@ -206,18 +206,12 @@
   margin-bottom: 0.9rem;
 }
 
-.mobile-drawer-close {
-  display: none;
-  margin-left: auto;
-}
-
 .mobile-drawer-brand img {
   width: 2.6rem;
   height: auto;
 }
 
-.mobile-drawer-brand b,
-.mobile-drawer-brand span {
+.mobile-drawer-brand b {
   display: block;
 }
 
@@ -225,13 +219,6 @@
   color: var(--mobile-deep);
   font-size: 1rem;
   font-weight: 950;
-}
-
-.mobile-drawer-brand span {
-  margin-top: 0.1rem;
-  color: var(--mobile-green);
-  font-size: 0.7rem;
-  font-weight: 850;
 }
 
 .mobile-drawer nav {
@@ -1249,26 +1236,6 @@
 
   .mobile-drawer.desktop-closed {
     transform: translateX(-100%);
-  }
-
-  .mobile-drawer-close {
-    display: inline-flex;
-    width: 2.4rem;
-    height: 2.4rem;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    border: 1.5px solid rgba(13, 56, 35, 0.12);
-    border-radius: 0.75rem;
-    background: #f7fbf8;
-    color: #102018;
-    padding: 0;
-  }
-
-  .mobile-drawer-close .material-symbols-outlined {
-    width: auto;
-    color: #102018;
-    font-size: 1.25rem;
   }
 
   .mobile-veil.open {

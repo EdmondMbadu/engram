@@ -760,10 +760,6 @@ export class PublicWikisComponent implements OnInit {
     this.mobileDrawerOpen.set(false);
   }
 
-  closeDesktopSidebar(): void {
-    this.desktopSidebarClosed.set(true);
-  }
-
   scrollToHomeSection(sectionId: string): void {
     this.closeMobileDrawer();
     if (!this.isBrowser) {
