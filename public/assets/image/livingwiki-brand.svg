@@ -7,7 +7,7 @@
   </defs>
   <rect width="1289" height="249" fill="none" />
   <image href="/assets/image/lucky-paper-crane.png" x="30" y="36" width="226" height="161" preserveAspectRatio="xMidYMid meet" filter="url(#softShadow)" />
-  <text x="270" y="162" font-family="Inter, Arial, Helvetica, sans-serif" font-size="122" font-weight="950" letter-spacing="0">
+  <text x="270" y="162" font-family="Inter, Arial, Helvetica, sans-serif" font-size="122" font-weight="950" letter-spacing="0" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke fill">
     <tspan fill="#1ea64a">Living</tspan><tspan fill="#102018">Wiki</tspan>
   </text>
 </svg>

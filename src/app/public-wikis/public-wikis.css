@@ -216,9 +216,13 @@
 }
 
 .mobile-drawer-brand b {
-  color: var(--mobile-deep);
+  color: var(--text, var(--mobile-deep));
   font-size: 1rem;
   font-weight: 950;
+}
+
+.mobile-drawer-brand b span {
+  color: var(--mobile-green);
 }
 
 .mobile-drawer nav {
