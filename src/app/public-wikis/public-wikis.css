@@ -104,6 +104,12 @@
   font-variation-settings: 'FILL' 1;
 }
 
+.mobile-head-icon-image {
+  width: 2.15rem;
+  height: 2.15rem;
+  object-fit: contain;
+}
+
 .mobile-head-action--trove {
   color: var(--mobile-deep);
 }
@@ -223,6 +229,13 @@
   text-align: center;
   color: var(--mobile-green);
   font-variation-settings: 'FILL' 1;
+}
+
+.mobile-drawer-icon-image {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 2.2rem;
+  object-fit: contain;
 }
 
 .mobile-drawer-game {
@@ -601,6 +614,10 @@
   object-fit: contain;
 }
 
+.mobile-home-tile-icon {
+  max-height: 6.1rem;
+}
+
 .mobile-section-icon {
   color: var(--mobile-green);
   font-size: 4.3rem;
@@ -844,6 +861,12 @@
   font-size: 0.88rem;
   font-weight: 950;
   text-transform: uppercase;
+}
+
+.mobile-game-cta img {
+  width: 1.85rem;
+  height: 1.85rem;
+  object-fit: contain;
 }
 
 .mobile-game-section .mobile-game-cta {

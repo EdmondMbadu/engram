@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
-  @if (isSignedIn() && !showAllCitiesPage()) {
+  @if (isSignedIn() && isHomeRoute()) {
   <div class="mobile-public-home" [class.sidebar-closed]="desktopSidebarClosed()">
     <header class="mobile-home-header">
       <button
@@ -13,7 +13,7 @@
         <span></span>
       </button>
 
-      <a routerLink="/" class="mobile-brand" aria-label="LivingWiki home">
+      <a routerLink="/home" class="mobile-brand" aria-label="LivingWiki home">
         <img src="/assets/image/lucky-paper-crane.png" alt="" />
         <span><b>Living</b>Wiki</span>
       </a>
@@ -27,7 +27,7 @@
           <span class="material-symbols-outlined">language</span>
         </a>
         <a routerLink="/trove" class="mobile-head-action mobile-head-action--trove" aria-label="My Trove">
-          <span class="material-symbols-outlined">star</span>
+          <img [src]="homeIconUrls.trove" alt="" class="mobile-head-icon-image" />
           <span class="mobile-badge">0</span>
         </a>
       </div>
@@ -51,17 +51,21 @@
       </div>
       <nav>
         <a href="#mobile-city" (click)="closeMobileDrawer()">
-          <span class="material-symbols-outlined">location_city</span>
+          <img [src]="homeIconUrls.cities" alt="" class="mobile-drawer-icon-image" />
           My City · {{ mobileSelectedCityName() }}
         </a>
         @for (section of mobileSections(); track section.id) {
           <a [href]="'#mobile-' + section.id" (click)="closeMobileDrawer()">
-            <span class="material-symbols-outlined">{{ section.icon }}</span>
+            @if (section.iconImageUrl) {
+              <img [src]="section.iconImageUrl" alt="" class="mobile-drawer-icon-image" />
+            } @else {
+              <span class="material-symbols-outlined">{{ section.icon }}</span>
+            }
             {{ section.label }}
           </a>
         }
         <a routerLink="/trove" class="mobile-drawer-game" (click)="closeMobileDrawer()">
-          <span class="material-symbols-outlined">star</span>
+          <img [src]="homeIconUrls.trove" alt="" class="mobile-drawer-icon-image" />
           My Trove · Starfold City
         </a>
         <a routerLink="/business" (click)="closeMobileDrawer()">
@@ -188,7 +192,7 @@
       <section class="mobile-row-section mobile-featured-cities" aria-label="Featured cities">
         <div class="mobile-card-row">
           <button type="button" class="mobile-icon-tile" (click)="toggleMobileAllCities()">
-            <img src="/assets/image/living-cities.png" alt="" />
+            <img [src]="homeIconUrls.cities" alt="" class="mobile-home-tile-icon" />
             <span class="mobile-plus">+</span>
           </button>
           @for (city of mobileFeaturedCities(); track city.slug || city.title) {
@@ -231,7 +235,11 @@
           </h2>
           <div class="mobile-card-row">
             <a [routerLink]="mobileSectionAddLink(section)" class="mobile-icon-tile">
-              <span class="material-symbols-outlined mobile-section-icon">{{ section.icon }}</span>
+              @if (section.iconImageUrl) {
+                <img [src]="section.iconImageUrl" [alt]="section.addLabel" class="mobile-home-tile-icon" />
+              } @else {
+                <span class="material-symbols-outlined mobile-section-icon">{{ section.icon }}</span>
+              }
               <span class="mobile-plus">+</span>
             </a>
             @for (card of section.cards; track card.id) {
@@ -260,7 +268,7 @@
 
       <section id="mobile-trove" class="mobile-game-section">
         <div class="mobile-game-head">
-          <img src="/assets/image/lucky-paper-crane.png" alt="" />
+          <img [src]="homeIconUrls.trove" alt="" />
           <div>
             <span>A LivingWiki Arcade</span>
             <h2>My Trove · <b>Starfold City</b></h2>
@@ -268,7 +276,7 @@
         </div>
         <p>Fold through the towers. Snag the stars. Open the arcade in its own play space.</p>
         <a routerLink="/trove" class="mobile-game-cta">
-          <span class="material-symbols-outlined">star</span>
+          <img [src]="homeIconUrls.trove" alt="" />
           Play Starfold City
         </a>
       </section>
@@ -288,15 +296,12 @@
   } @else {
 
   <div class="legacy-public-page">
-  <div class="relative flex min-h-screen flex-col" [class.md:h-screen]="isSignedIn()" [class.md:flex-row]="isSignedIn()" [class.md:overflow-hidden]="isSignedIn()">
-  @if (isSignedIn()) {
-    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
-  }
+  <div class="relative flex min-h-screen flex-col">
 
-  <div class="min-w-0 flex-1" [class.overflow-y-auto]="isSignedIn()">
+  <div class="min-w-0 flex-1">
   <nav class="theme-nav sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
-      <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]" (click)="showSignedInHome()">
+      <a routerLink="/home" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]" (click)="showSignedInHome()">
         <div class="flex h-10 w-36 sm:h-12 sm:w-48 shrink-0 items-center justify-start">
           <img src="/assets/image/livingwiki.png" alt="LivingWiki logo" class="h-full w-full object-contain" />
         </div>

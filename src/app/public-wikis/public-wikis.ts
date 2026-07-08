@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { collection, getDocs, query, where, type Firestore } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { AtlasService } from '../atlas.service';
@@ -13,11 +13,17 @@ import {
   sortPublicAtlases,
 } from '../public-wiki-catalog';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
-import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 
 const CITIES_CATEGORY = 'Cities';
 const OTHERS_CATEGORY = 'Others';
+const HOME_ICON_URLS = {
+  boards: '/assets/image/home-icons/my-boards.png',
+  cities: '/assets/image/home-icons/my-cities.png',
+  songs: '/assets/image/home-icons/my-songs.png',
+  trips: '/assets/image/home-icons/my-trips.png',
+  trove: '/assets/image/home-icons/my-trove.png',
+} as const;
 const PUBLIC_WIKI_CATEGORIES = [CITIES_CATEGORY, OTHERS_CATEGORY] as const;
 type PublicWikiCategory = (typeof PUBLIC_WIKI_CATEGORIES)[number];
 const PUBLIC_WIKI_SORTS = [
@@ -47,6 +53,7 @@ interface MobileHomeSection {
   id: string;
   label: string;
   icon: string;
+  iconImageUrl?: string;
   addLabel: string;
   addLink: string;
   cards: MobileHomeCard[];
@@ -464,7 +471,6 @@ interface PublicWikiFeelingSticker {
     RouterLink,
     ThemeToggleComponent,
     FormsModule,
-    WorkspaceSidebarComponent,
     AccountMenuComponent,
   ],
   templateUrl: './public-wikis.html',
@@ -474,6 +480,8 @@ export class PublicWikisComponent implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
   private readonly functions: Functions | null = this.isBrowser ? getFirebaseFunctions() : null;
@@ -491,7 +499,8 @@ export class PublicWikisComponent implements OnInit {
   readonly mobileDrawerOpen = signal(false);
   readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
-  readonly showAllCitiesPage = signal(false);
+  readonly isHomeRoute = signal(Boolean(this.route.snapshot.data['signedInHome']));
+  readonly homeIconUrls = HOME_ICON_URLS;
   readonly mobileSelectedCitySlug = signal<string | null>('philly');
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
   readonly cityTemperatureCoordinates = signal<Record<string, CityTemperatureCoordinates>>({});
@@ -536,6 +545,7 @@ export class PublicWikisComponent implements OnInit {
       id: 'boards',
       label: 'My Boards',
       icon: 'dashboard_customize',
+      iconImageUrl: HOME_ICON_URLS.boards,
       addLabel: 'Add board',
       addLink: '/boards',
       cards: this.mobileBoardCards(),
@@ -544,6 +554,7 @@ export class PublicWikisComponent implements OnInit {
       id: 'songs',
       label: 'My Songs',
       icon: 'music_note',
+      iconImageUrl: HOME_ICON_URLS.songs,
       addLabel: 'Add song',
       addLink: '/boards',
       cards: this.mobileSongCards(),
@@ -560,6 +571,7 @@ export class PublicWikisComponent implements OnInit {
       id: 'trips',
       label: 'My Trips',
       icon: 'map',
+      iconImageUrl: HOME_ICON_URLS.trips,
       addLabel: 'Add trip',
       addLink: this.mobileSelectedCityLink(),
       cards: this.mobileTripCards(),
@@ -753,20 +765,20 @@ export class PublicWikisComponent implements OnInit {
   }
 
   openAllCities(): void {
-    this.showAllCitiesPage.set(true);
     this.mobileAllCitiesOpen.set(true);
     this.activeCategory.set(CITIES_CATEGORY);
     if (this.activeSort() === 'temp') {
       void this.ensureTemperatures();
     }
+    void this.router.navigate(['/']);
   }
 
   showSignedInHome(): void {
     if (!this.isSignedIn()) {
       return;
     }
-    this.showAllCitiesPage.set(false);
     this.mobileAllCitiesOpen.set(false);
+    void this.router.navigate(['/home']);
   }
 
   selectMobileCity(wiki: PublicWikiCatalogItem): void {
