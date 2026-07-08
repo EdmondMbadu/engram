@@ -44,7 +44,7 @@ export const guestOnlyGuard: CanActivateFn = async () => {
 
   return authService.needsEmailVerification()
     ? router.createUrlTree(['/verify-email'])
-    : router.createUrlTree(['/wikis']);
+    : router.createUrlTree(['/home']);
 };
 
 export const adminGuard: CanActivateFn = async (_route, state) => {
@@ -70,5 +70,5 @@ export const adminGuard: CanActivateFn = async (_route, state) => {
     return router.createUrlTree(['/verify-email'], { queryParams: { redirectTo: state.url } });
   }
 
-  return authService.isAdmin() ? true : router.createUrlTree(['/wikis']);
+  return authService.isAdmin() ? true : router.createUrlTree(['/home']);
 };

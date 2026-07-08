@@ -99,7 +99,7 @@ export class CreateAccountComponent {
 
   private getRedirectUrl(): string {
     const redirectTo = this.route.snapshot.queryParamMap.get('redirectTo');
-    return this.isSafeRedirect(redirectTo) ? redirectTo : '/wikis';
+    return this.isSafeRedirect(redirectTo) ? redirectTo : '/home';
   }
 
   private isSafeRedirect(value: string | null): value is string {
