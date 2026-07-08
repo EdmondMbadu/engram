@@ -489,7 +489,9 @@ export class PublicWikisComponent implements OnInit {
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
   readonly activeSort = signal<PublicWikiSortMode>('population');
   readonly mobileDrawerOpen = signal(false);
+  readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
+  readonly showAllCitiesPage = signal(false);
   readonly mobileSelectedCitySlug = signal<string | null>('philly');
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
   readonly cityTemperatureCoordinates = signal<Record<string, CityTemperatureCoordinates>>({});
@@ -723,16 +725,48 @@ export class PublicWikisComponent implements OnInit {
     this.setSort(mode);
   }
 
-  toggleMobileDrawer(): void {
+  toggleHomeMenu(): void {
+    if (this.isDesktopHomeShell()) {
+      this.desktopSidebarClosed.update((closed) => !closed);
+      return;
+    }
     this.mobileDrawerOpen.update((open) => !open);
   }
 
   closeMobileDrawer(): void {
+    if (this.isDesktopHomeShell()) {
+      return;
+    }
     this.mobileDrawerOpen.set(false);
   }
 
+  closeDesktopSidebar(): void {
+    this.desktopSidebarClosed.set(true);
+  }
+
   toggleMobileAllCities(): void {
-    this.mobileAllCitiesOpen.update((open) => !open);
+    const willOpen = !this.mobileAllCitiesOpen();
+    this.mobileAllCitiesOpen.set(willOpen);
+    if (willOpen) {
+      this.openAllCities();
+    }
+  }
+
+  openAllCities(): void {
+    this.showAllCitiesPage.set(true);
+    this.mobileAllCitiesOpen.set(true);
+    this.activeCategory.set(CITIES_CATEGORY);
+    if (this.activeSort() === 'temp') {
+      void this.ensureTemperatures();
+    }
+  }
+
+  showSignedInHome(): void {
+    if (!this.isSignedIn()) {
+      return;
+    }
+    this.showAllCitiesPage.set(false);
+    this.mobileAllCitiesOpen.set(false);
   }
 
   selectMobileCity(wiki: PublicWikiCatalogItem): void {
@@ -746,6 +780,10 @@ export class PublicWikisComponent implements OnInit {
 
   mobileCardLink(card: MobileHomeCard): string {
     return card.link === '/chat/philly' ? this.mobileSelectedCityLink() : card.link;
+  }
+
+  private isDesktopHomeShell(): boolean {
+    return this.isBrowser && window.matchMedia('(min-width: 1024px)').matches;
   }
 
   private async loadMobileBoards(): Promise<void> {
