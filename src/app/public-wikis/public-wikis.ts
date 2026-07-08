@@ -502,6 +502,7 @@ export class PublicWikisComponent implements OnInit {
   readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
   readonly isHomeRoute = signal(Boolean(this.route.snapshot.data['signedInHome']));
+  readonly isDirectoryRoute = signal(Boolean(this.route.snapshot.data['directoryPage']));
   readonly homeIconUrls = HOME_ICON_URLS;
   readonly mobileSelectedCitySlug = signal<string | null>('philly');
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
@@ -674,6 +675,10 @@ export class PublicWikisComponent implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
+    if (await this.redirectSignedInRootToHome()) {
+      return;
+    }
+
     void this.loadMobileBoards();
     void this.loadMobileFriends();
     void this.handleMobileHomeHash();
@@ -809,6 +814,25 @@ export class PublicWikisComponent implements OnInit {
     document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  private async redirectSignedInRootToHome(): Promise<boolean> {
+    if (!this.isBrowser || this.route.snapshot.routeConfig?.path !== '') {
+      return false;
+    }
+
+    await this.authService.waitForReady();
+    if (!this.isSignedIn()) {
+      return false;
+    }
+
+    const hash = window.location.hash;
+    await this.router.navigate(['/home'], { replaceUrl: true });
+    if (hash.startsWith('#mobile-')) {
+      const targetId = decodeURIComponent(hash.slice(1));
+      setTimeout(() => this.scrollHomeTargetIntoView(targetId), 0);
+    }
+    return true;
+  }
+
   toggleMobileAllCities(): void {
     const willOpen = !this.mobileAllCitiesOpen();
     this.mobileAllCitiesOpen.set(willOpen);
@@ -823,7 +847,7 @@ export class PublicWikisComponent implements OnInit {
     if (this.activeSort() === 'temp') {
       void this.ensureTemperatures();
     }
-    void this.router.navigate(['/']);
+    void this.router.navigate(['/all-cities']);
   }
 
   showSignedInHome(): void {
