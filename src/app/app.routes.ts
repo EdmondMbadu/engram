@@ -92,6 +92,12 @@ export const routes: Routes = [
     title: 'Boards | LivingWiki',
   },
   {
+    path: 'songs',
+    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    title: 'Songs | LivingWiki',
+    data: { songsPage: true },
+  },
+  {
     path: 'friends',
     loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
     title: 'Friends | LivingWiki',
@@ -106,6 +112,12 @@ export const routes: Routes = [
     path: 'boards/:boardId',
     loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
     title: 'Board | LivingWiki',
+  },
+  {
+    path: 'songs/:boardId',
+    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    title: 'Song Board | LivingWiki',
+    data: { songsPage: true },
   },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | LivingWiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | LivingWiki', canActivate: [authGuard] },

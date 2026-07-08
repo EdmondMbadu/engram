@@ -861,6 +861,7 @@ export class BoardsComponent implements OnDestroy {
   readonly stackFormats = STACK_FORMATS;
   readonly stackRatios = STACK_RATIOS;
   readonly stackExportTargets = STACK_EXPORT_TARGETS;
+  readonly songEqBars = Array.from({ length: 24 }, (_item, index) => index);
   readonly boardIcons = BOARD_ICONS;
   readonly cardStickerIcons = CARD_STICKER_ICONS;
   readonly ratingOptions = [1, 2, 3, 4, 5];
@@ -909,6 +910,7 @@ export class BoardsComponent implements OnDestroy {
   readonly boardFriendsError = signal<string | null>(null);
   readonly boardFriendsFocusRequested = signal(false);
   readonly friendsPage = signal(false);
+  readonly songsPage = signal(false);
   readonly boardFriendCandidates = signal<BoardFriendCandidate[]>([]);
   readonly boardFriendCandidateLoading = signal(false);
   readonly sharePanelOpen = signal(false);
@@ -943,6 +945,7 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardRedoingCardIds = signal<Set<string>>(new Set());
   readonly wizardImageLoadingCardIds = signal<Set<string>>(new Set());
   readonly wizardSaving = signal(false);
+  readonly songDeckIndex = signal(0);
   readonly songPreviewPlayingKey = signal<string | null>(null);
   readonly songPreviewError = signal<string | null>(null);
   readonly stackStudioOpen = signal(false);
@@ -1091,7 +1094,9 @@ export class BoardsComponent implements OnDestroy {
 
   readonly filteredBoards = computed(() => {
     const query = this.boardSearch().trim().toLowerCase();
-    const boards = [...this.boards()].sort((a, b) => this.compareBoards(a, b));
+    const boards = [...this.boards()]
+      .filter((board) => !this.songsPage() || this.isSongBoard(board))
+      .sort((a, b) => this.compareBoards(a, b));
     if (!query) {
       return boards;
     }
@@ -1121,6 +1126,26 @@ export class BoardsComponent implements OnDestroy {
         .toLowerCase()
         .includes(query),
     );
+  });
+
+  readonly selectedSongCards = computed(() => this.songCards(this.selectedBoard()).filter((card) => {
+    const query = this.cardSearch().trim().toLowerCase();
+    if (!query) {
+      return true;
+    }
+    return [card.title, card.subtitle, card.notes, card.spotifyArtistName, card.spotifyAlbumName, card.tags.join(' ')]
+      .join(' ')
+      .toLowerCase()
+      .includes(query);
+  }));
+
+  readonly selectedSongCard = computed(() => {
+    const cards = this.selectedSongCards();
+    if (!cards.length) {
+      return null;
+    }
+    const index = Math.max(0, Math.min(this.songDeckIndex(), cards.length - 1));
+    return cards[index] ?? cards[0] ?? null;
   });
 
   readonly allGalleryCards = computed<GalleryCard[]>(() =>
@@ -1263,7 +1288,9 @@ export class BoardsComponent implements OnDestroy {
     this.loadLocalBoards();
     void this.loadCities();
     this.route.paramMap.subscribe((params) => {
-      this.friendsPage.set(this.route.snapshot.routeConfig?.path === 'friends');
+      const routePath = this.route.snapshot.routeConfig?.path ?? '';
+      this.friendsPage.set(routePath === 'friends');
+      this.songsPage.set(routePath.startsWith('songs'));
       const boardId = params.get('boardId');
       const ownerKey = params.get('ownerKey');
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
@@ -1276,6 +1303,7 @@ export class BoardsComponent implements OnDestroy {
       this.closeCardManageMode();
       this.setShareMessage(null);
       this.sharePanelOpen.set(false);
+      this.songDeckIndex.set(0);
       this.closeStackStudio();
       void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => {
         this.syncStackDirectView();
@@ -1395,12 +1423,12 @@ export class BoardsComponent implements OnDestroy {
       this.suppressNextBoardOpen = false;
       return;
     }
-    void this.router.navigate(['/boards', boardId]);
+    void this.router.navigate([this.songsPage() ? '/songs' : '/boards', boardId]);
   }
 
   closeBoardDetail(): void {
     this.stopSongPreview();
-    void this.router.navigateByUrl(this.boardsProfileRoutePath());
+    void this.router.navigateByUrl(this.songsPage() ? '/songs' : this.boardsProfileRoutePath());
   }
 
   async loadBoardFriends(): Promise<void> {
@@ -3237,6 +3265,52 @@ export class BoardsComponent implements OnDestroy {
       .sort((left, right) => (left.tour?.sequence ?? 0) - (right.tour?.sequence ?? 0));
   }
 
+  songCards(board: Board | null): BoardCard[] {
+    if (!board) {
+      return [];
+    }
+    return board.cards.filter((card) => this.isSongCard(card));
+  }
+
+  selectSongCard(index: number, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.stopSongPreview();
+    const lastIndex = Math.max(0, this.selectedSongCards().length - 1);
+    this.songDeckIndex.set(Math.max(0, Math.min(index, lastIndex)));
+  }
+
+  stepSongCard(direction: number, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const count = this.selectedSongCards().length;
+    if (!count) {
+      return;
+    }
+    this.stopSongPreview();
+    this.songDeckIndex.update((index) => (index + direction + count) % count);
+  }
+
+  songCardPositionLabel(): string {
+    const count = this.selectedSongCards().length;
+    if (!count) {
+      return '0 / 0';
+    }
+    return `${Math.max(0, Math.min(this.songDeckIndex(), count - 1)) + 1} / ${count}`;
+  }
+
+  songArtwork(card: BoardCard, board: Board): string {
+    return card.spotifyArtworkUrl || card.imageUrl || board.imageUrl || board.logoUrl || '';
+  }
+
+  songArtistLabel(card: BoardCard): string {
+    return card.spotifyArtistName || card.subtitle || 'LivingWiki track';
+  }
+
+  songAlbumLabel(card: BoardCard): string {
+    return card.spotifyAlbumName || card.notes || 'Open your music service for full playback when available.';
+  }
+
   nextTourCard(card: BoardCard, cards = this.selectedBoardTourCards()): BoardCard | null {
     const sequence = card.tour?.sequence ?? 0;
     return cards.find((item) => (item.tour?.sequence ?? 0) === sequence + 1) ?? null;
@@ -4049,7 +4123,7 @@ export class BoardsComponent implements OnDestroy {
     return /\b(song|songs|music|album|single|track|tracks|hit|hits|singer|artist|spotify|playlist|cover art|audio preview)\b/.test(text);
   }
 
-  private isSongBoard(board: Board): boolean {
+  isSongBoard(board: Board): boolean {
     if (/\b(song|songs|music|album|single|tracks|hits|spotify|playlist|discography)\b/i.test(`${board.title} ${board.description}`)) {
       return true;
     }
@@ -4288,10 +4362,11 @@ export class BoardsComponent implements OnDestroy {
   }
 
   boardShareUrl(board: Board): string {
+    const route = this.songsPage() && this.isSongBoard(board) ? 'songs' : 'boards';
     if (!this.isBrowser) {
-      return `/boards/${board.id}`;
+      return `/${route}/${board.id}`;
     }
-    return `${window.location.origin}/boards/${board.id}`;
+    return `${window.location.origin}/${route}/${board.id}`;
   }
 
   boardsProfileShareUrl(): string {
@@ -4437,7 +4512,7 @@ export class BoardsComponent implements OnDestroy {
     this.sharePanelOpen.set(false);
     this.stackDirectView.set(true);
     this.startStackPlayback();
-    void this.router.navigate(['/boards', board.id], { queryParams: { view: 'stack' } });
+    void this.router.navigate([this.songsPage() && this.isSongBoard(board) ? '/songs' : '/boards', board.id], { queryParams: { view: 'stack' } });
   }
 
   closeStackView(board: Board): void {
@@ -4445,7 +4520,7 @@ export class BoardsComponent implements OnDestroy {
     this.stopStackPlayback();
     this.stackDirectView.set(false);
     this.stackShareDialogOpen.set(false);
-    void this.router.navigate(['/boards', board.id]);
+    void this.router.navigate([this.songsPage() && this.isSongBoard(board) ? '/songs' : '/boards', board.id]);
   }
 
   closeStackStudio(): void {
@@ -4798,7 +4873,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private canonicalizeBoardsRootRoute(boardId: string | null, ownerKey: string | null): void {
-    if (!this.isBrowser || this.friendsPage() || boardId || ownerKey !== null || !this.authService.uid()) {
+    if (!this.isBrowser || this.friendsPage() || this.songsPage() || boardId || ownerKey !== null || !this.authService.uid()) {
       return;
     }
 

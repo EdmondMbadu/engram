@@ -559,7 +559,7 @@ export class PublicWikisComponent implements OnInit {
       icon: 'music_note',
       iconImageUrl: HOME_ICON_URLS.songs,
       addLabel: 'Add song',
-      addLink: '/boards',
+      addLink: '/songs',
       cards: this.mobileSongCards(),
     },
     {
@@ -1089,7 +1089,7 @@ export class PublicWikisComponent implements OnInit {
       chip,
       icon,
       accent: this.boardAccent(board),
-      link: `/boards/${encodeURIComponent(board.id)}`,
+      link: mode === 'song' ? `/songs/${encodeURIComponent(board.id)}` : `/boards/${encodeURIComponent(board.id)}`,
       imageUrl: songImage?.spotifyArtworkUrl || songImage?.imageUrl || board.imageUrl || board.logoUrl || this.firstBoardCardImage(board),
       imageAlt: title,
     };
