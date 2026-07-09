@@ -23,6 +23,7 @@ export const serverRoutes: ServerRoute[] = [
 
   // Guarded pages require auth state — client-render them
   { path: 'home', renderMode: RenderMode.Client },
+  { path: 'discover', renderMode: RenderMode.Client },
   { path: 'all-cities', renderMode: RenderMode.Client },
   { path: 'trove', renderMode: RenderMode.Prerender },
   { path: 'wikis', renderMode: RenderMode.Client },

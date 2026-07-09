@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, HostListener, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit, PLATFORM_ID, signal, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { collection, getDocs, query, where, type Firestore } from 'firebase/firestore';
@@ -173,6 +173,7 @@ const MOBILE_CITY_SORTS: Array<{ value: MobileCitySortMode; label: string }> = [
   { value: 'az', label: 'A-Z' },
 ];
 const MOBILE_BOARD_STORAGE_KEY = 'livingwiki-boards-v1';
+const MOBILE_BOARD_ACTIONS_STORAGE_KEY = 'lw-board-actions';
 const MOBILE_DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 
 const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
@@ -491,9 +492,13 @@ export class PublicWikisComponent implements OnInit {
   readonly isSignedIn = this.authService.isAuthenticated;
   readonly liveWikis = signal<PublicWikiCatalogItem[]>([]);
   readonly mobileBoards = signal<MobileBoard[]>([]);
+  readonly mobileDiscoverBoards = signal<MobileBoard[]>([]);
   readonly mobileFriends = signal<MobileFriend[]>([]);
   readonly mobileBoardsLoading = signal(false);
+  readonly mobileDiscoverLoading = signal(false);
   readonly mobileFriendsLoading = signal(false);
+  readonly likedBoardIds = signal<Set<string>>(new Set());
+  readonly savedBoardIds = signal<Set<string>>(new Set());
   readonly isLoadingLiveWikis = signal(true);
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
@@ -502,6 +507,7 @@ export class PublicWikisComponent implements OnInit {
   readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
   readonly isHomeRoute = signal(Boolean(this.route.snapshot.data['signedInHome']));
+  readonly isDiscoverRoute = signal(Boolean(this.route.snapshot.data['discoverPage']));
   readonly isDirectoryRoute = signal(Boolean(this.route.snapshot.data['directoryPage']));
   readonly homeIconUrls = HOME_ICON_URLS;
   readonly mobileSelectedCitySlug = signal<string | null>('philly');
@@ -526,6 +532,20 @@ export class PublicWikisComponent implements OnInit {
       .slice(0, 10)
       .map((board) => this.mobileCardFromBoard(board, 'board')),
   );
+  readonly mobileDiscoverPreviewBoards = computed(() => this.mobileDiscoverBoards().filter((board) => board.imageUrl).slice(0, 4));
+  readonly mobileSavedBoardCards = computed(() => {
+    const saved = this.savedBoardIds();
+    if (!saved.size) {
+      return [];
+    }
+    const boardsById = new Map<string, MobileBoard>();
+    [...this.mobileDiscoverBoards(), ...this.mobileBoards()].forEach((board) => boardsById.set(board.id, board));
+    return [...saved]
+      .map((id) => boardsById.get(id))
+      .filter((board): board is MobileBoard => !!board)
+      .slice(0, 10)
+      .map((board) => this.mobileCardFromBoard(board, this.boardSongCards(board).length ? 'song' : 'board'));
+  });
   readonly mobileSongCards = computed(() =>
     this.mobileBoards()
       .filter((board) => this.boardSongCards(board).length > 0)
@@ -544,6 +564,16 @@ export class PublicWikisComponent implements OnInit {
       .map((board) => this.mobileCardFromBoard(board, 'trip')),
   );
   readonly mobileSections = computed<MobileHomeSection[]>(() => [
+    ...(this.mobileSavedBoardCards().length
+      ? [{
+          id: 'saved',
+          label: 'Saved Boards',
+          icon: 'bookmark',
+          addLabel: 'Discover boards',
+          addLink: '/home',
+          cards: this.mobileSavedBoardCards(),
+        }]
+      : []),
     {
       id: 'boards',
       label: 'My Boards',
@@ -679,7 +709,9 @@ export class PublicWikisComponent implements OnInit {
       return;
     }
 
+    this.loadBoardActionState();
     void this.loadMobileBoards();
+    void this.loadMobileDiscoverBoards();
     void this.loadMobileFriends();
     void this.handleMobileHomeHash();
     this.isLoadingLiveWikis.set(true);
@@ -911,6 +943,92 @@ export class PublicWikisComponent implements OnInit {
     }
   }
 
+  private async loadMobileDiscoverBoards(): Promise<void> {
+    if (!this.isBrowser || !this.firestore) {
+      this.mobileDiscoverBoards.set([]);
+      return;
+    }
+
+    this.mobileDiscoverLoading.set(true);
+    try {
+      await this.authService.waitForReady();
+      const uid = this.authService.uid();
+      const snapshot = await getDocs(query(collection(this.firestore, 'boards'), where('visibility', '==', 'public')));
+      const boards = snapshot.docs
+        .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
+        .filter((board): board is MobileBoard => !!board)
+        .filter((board) => !MOBILE_DEMO_BOARD_IDS.has(board.id) && board.ownerUserId !== uid);
+      this.mobileDiscoverBoards.set(this.sortMobileBoards(boards));
+    } catch {
+      this.mobileDiscoverBoards.set([]);
+    } finally {
+      this.mobileDiscoverLoading.set(false);
+    }
+  }
+
+  toggleBoardLike(boardId: string): void {
+    this.toggleIdSet(this.likedBoardIds, boardId);
+    this.saveBoardActionState();
+  }
+
+  toggleBoardSave(boardId: string): void {
+    this.toggleIdSet(this.savedBoardIds, boardId);
+    this.saveBoardActionState();
+  }
+
+  isBoardLiked(boardId: string): boolean {
+    return this.likedBoardIds().has(boardId);
+  }
+
+  isBoardSaved(boardId: string): boolean {
+    return this.savedBoardIds().has(boardId);
+  }
+
+  private toggleIdSet(target: WritableSignal<Set<string>>, id: string): void {
+    target.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }
+
+  private loadBoardActionState(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    try {
+      const raw = window.localStorage.getItem(this.boardActionStorageKey());
+      const data = raw ? JSON.parse(raw) as Record<string, unknown> : {};
+      this.likedBoardIds.set(this.stringArraySet(data['l']));
+      this.savedBoardIds.set(this.stringArraySet(data['s']));
+    } catch {
+      this.likedBoardIds.set(new Set());
+      this.savedBoardIds.set(new Set());
+    }
+  }
+
+  private saveBoardActionState(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    window.localStorage.setItem(this.boardActionStorageKey(), JSON.stringify({
+      l: [...this.likedBoardIds()],
+      s: [...this.savedBoardIds()],
+    }));
+  }
+
+  private boardActionStorageKey(): string {
+    return `${MOBILE_BOARD_ACTIONS_STORAGE_KEY}:${this.authService.uid() || 'guest'}`;
+  }
+
+  private stringArraySet(value: unknown): Set<string> {
+    return new Set(Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []);
+  }
+
   private async loadMobileFriends(): Promise<void> {
     if (!this.isBrowser || !this.functions) {
       return;
@@ -1108,8 +1226,12 @@ export class PublicWikisComponent implements OnInit {
     };
   }
 
-  private boardSongCards(board: MobileBoard): MobileBoardCard[] {
+  boardSongCards(board: MobileBoard): MobileBoardCard[] {
     return board.cards.filter((card) => this.isSongCard(card));
+  }
+
+  boardViewLink(board: MobileBoard): string {
+    return `${this.boardSongCards(board).length ? '/songs/' : '/boards/'}${board.id}`;
   }
 
   private isSongCard(card: MobileBoardCard): boolean {
@@ -1136,13 +1258,13 @@ export class PublicWikisComponent implements OnInit {
     return board.title;
   }
 
-  private firstBoardCardImage(board: MobileBoard): string {
+  firstBoardCardImage(board: MobileBoard): string {
     return board.cards.find((card) => card.imageUrl || card.spotifyArtworkUrl)?.imageUrl
       || board.cards.find((card) => card.spotifyArtworkUrl)?.spotifyArtworkUrl
       || '';
   }
 
-  private boardIcon(board: MobileBoard): string {
+  boardIcon(board: MobileBoard): string {
     if (board.icon && /^[a-z0-9_]+$/i.test(board.icon)) {
       return board.icon;
     }
@@ -1159,7 +1281,7 @@ export class PublicWikisComponent implements OnInit {
     return board.kind === 'driving-tour' ? 'directions_car' : board.kind === 'walking-tour' ? 'hiking' : 'map';
   }
 
-  private boardAccent(board: MobileBoard): string {
+  boardAccent(board: MobileBoard): string {
     const accents: Record<string, string> = {
       blue: '#1f6fd6',
       coral: '#c96b6b',
@@ -1172,8 +1294,16 @@ export class PublicWikisComponent implements OnInit {
     return accents[board.tone] ?? '#1f6fd6';
   }
 
-  private countLabel(count: number, label: string): string {
+  countLabel(count: number, label: string): string {
     return `${count} ${label}${count === 1 ? '' : 's'}`;
+  }
+
+  ownerLabel(board: MobileBoard): string {
+    return board.ownerDisplayName || board.ownerPublicSlug || 'LivingWiki creator';
+  }
+
+  boardSummary(board: MobileBoard): string {
+    return board.description || board.cards.slice(0, 3).map((card) => card.title).filter(Boolean).join(' · ') || 'A public LivingWiki board';
   }
 
   private friendProfileLink(friend: MobileFriend): string {

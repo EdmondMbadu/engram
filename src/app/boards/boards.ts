@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, ElementRef, inject, OnDestroy, PLATFORM_ID, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, OnDestroy, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
@@ -353,6 +353,7 @@ type TourMapPoint = {
 };
 
 const STORAGE_KEY = 'livingwiki-boards-v1';
+const BOARD_ACTIONS_STORAGE_KEY = 'livingwiki-board-actions-v1';
 const DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 
 const BOARD_TONES: Array<{ id: BoardTone; label: string; accent: string; soft: string }> = [
@@ -898,6 +899,9 @@ export class BoardsComponent implements OnDestroy {
   readonly cardWizardLoading = signal(false);
   readonly cardWizardError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly likedBoardIds = signal<Set<string>>(new Set());
+  readonly savedBoardIds = signal<Set<string>>(new Set());
+  readonly likedCardIds = signal<Set<string>>(new Set());
   readonly boardsSyncError = signal<string | null>(null);
   readonly privateBoardBlocked = signal(false);
   readonly boardFriends = signal<BoardFriendsState>({ friends: [], incoming: [], outgoing: [] });
@@ -1289,6 +1293,7 @@ export class BoardsComponent implements OnDestroy {
   });
 
   constructor() {
+    this.loadBoardActionState();
     this.loadLocalBoards();
     void this.loadCities();
     this.route.paramMap.subscribe((params) => {
@@ -4347,6 +4352,91 @@ export class BoardsComponent implements OnDestroy {
     }
     const uid = this.authService.uid();
     return !!uid && (this.authService.isAdmin() || !board.ownerUserId || board.ownerUserId === uid);
+  }
+
+  toggleBoardLike(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.toggleActionSet(this.likedBoardIds, board.id);
+    this.saveBoardActionState();
+  }
+
+  toggleBoardSave(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.toggleActionSet(this.savedBoardIds, board.id);
+    this.saveBoardActionState();
+  }
+
+  toggleCardLike(board: Board, card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.toggleActionSet(this.likedCardIds, this.cardActionId(board, card));
+    this.saveBoardActionState();
+  }
+
+  isBoardLiked(board: Board | null | undefined): boolean {
+    return !!board && this.likedBoardIds().has(board.id);
+  }
+
+  isBoardSaved(board: Board | null | undefined): boolean {
+    return !!board && this.savedBoardIds().has(board.id);
+  }
+
+  isCardLiked(board: Board | null | undefined, card: BoardCard): boolean {
+    return !!board && this.likedCardIds().has(this.cardActionId(board, card));
+  }
+
+  private toggleActionSet(target: WritableSignal<Set<string>>, id: string): void {
+    target.update((ids) => {
+      const next = new Set(ids);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }
+
+  private cardActionId(board: Board, card: BoardCard): string {
+    return `${board.id}:${card.id}`;
+  }
+
+  private loadBoardActionState(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    try {
+      const raw = window.localStorage.getItem(this.boardActionStorageKey());
+      const data = raw ? JSON.parse(raw) as Record<string, unknown> : {};
+      this.likedBoardIds.set(this.stringSet(data['likedBoardIds']));
+      this.savedBoardIds.set(this.stringSet(data['savedBoardIds']));
+      this.likedCardIds.set(this.stringSet(data['likedCardIds']));
+    } catch {
+      this.likedBoardIds.set(new Set());
+      this.savedBoardIds.set(new Set());
+      this.likedCardIds.set(new Set());
+    }
+  }
+
+  private saveBoardActionState(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    window.localStorage.setItem(this.boardActionStorageKey(), JSON.stringify({
+      likedBoardIds: [...this.likedBoardIds()],
+      savedBoardIds: [...this.savedBoardIds()],
+      likedCardIds: [...this.likedCardIds()],
+    }));
+  }
+
+  private boardActionStorageKey(): string {
+    return `${BOARD_ACTIONS_STORAGE_KEY}:${this.authService.uid() || 'guest'}`;
+  }
+
+  private stringSet(value: unknown): Set<string> {
+    return new Set(Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []);
   }
 
   isSongDeleteCandidate(candidate: CardDeleteCandidate): boolean {

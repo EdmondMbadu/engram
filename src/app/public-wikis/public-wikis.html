@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)] selection:text-[var(--accent-contrast)]">
-  @if (isSignedIn() && isHomeRoute()) {
+  @if (isSignedIn() && (isHomeRoute() || isDiscoverRoute())) {
   <div class="mobile-public-home" [class.sidebar-closed]="desktopSidebarClosed()">
     <header class="mobile-home-header">
       <button
@@ -47,6 +47,10 @@
         </div>
       </div>
       <nav>
+        <button type="button" (click)="scrollToHomeSection('discover')">
+          <span class="material-symbols-outlined">travel_explore</span>
+          Discover
+        </button>
         <button type="button" (click)="scrollToHomeSection('city')">
           <img [src]="homeIconUrls.cities" alt="" class="mobile-drawer-icon-image" />
           My City · {{ mobileSelectedCityName() }}
@@ -76,8 +80,42 @@
       </nav>
     </aside>
 
+    @if (isHomeRoute()) {
     <main class="mobile-home-main">
       <p class="mobile-tagline">Find what lights you up!</p>
+
+      <section id="mobile-discover" class="mobile-discover-section" aria-label="Discover boards">
+        <div class="mobile-discover-head">
+          <span class="material-symbols-outlined">travel_explore</span>
+          <div>
+            <p>Discover</p>
+            <h2>Boards from around LivingWiki</h2>
+          </div>
+        </div>
+        <div class="mobile-card-row">
+          <a routerLink="/discover" class="mobile-icon-tile">
+            <img [src]="homeIconUrls.boards" alt="" class="mobile-home-tile-icon" />
+            <span class="mobile-plus">+</span>
+          </a>
+          @if (mobileDiscoverLoading()) {
+            <div class="mobile-discover-empty">Loading...</div>
+          } @else if (mobileDiscoverPreviewBoards().length) {
+            @for (board of mobileDiscoverPreviewBoards(); track board.id) {
+              <a
+                [routerLink]="boardViewLink(board)"
+                class="mobile-content-card mobile-content-card--with-image"
+              >
+                <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" class="mobile-content-card-image" />
+                <span class="material-symbols-outlined">{{ boardIcon(board) }}</span>
+                <b>{{ board.title }}</b>
+                <small>{{ ownerLabel(board) }} · {{ countLabel(board.cards.length, boardSongCards(board).length ? 'song' : 'card') }}</small>
+              </a>
+            }
+          } @else {
+            <div class="mobile-discover-empty">No boards yet.</div>
+          }
+        </div>
+      </section>
 
       <section id="mobile-city" class="mobile-city-block">
         <div class="mobile-city-row">
@@ -289,6 +327,61 @@
         <small>Copyright, 2026, Mind Palace, Inc.</small>
       </footer>
     </main>
+    } @else {
+    <main class="mobile-home-main mobile-discover-page">
+      <section class="mobile-discover-section mobile-discover-section--page" aria-label="Explore more boards">
+        <div class="mobile-discover-page-hero">
+          <a routerLink="/home" class="mobile-discover-back">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Home
+          </a>
+          <img [src]="homeIconUrls.boards" alt="" />
+          <span class="mobile-plus">+</span>
+          <div>
+            <h1>Explore more</h1>
+          </div>
+        </div>
+
+        <div class="mobile-discover-page-grid">
+          @if (mobileDiscoverLoading()) {
+            <div class="mobile-discover-empty">Loading...</div>
+          } @else if (mobileDiscoverBoards().length) {
+            @for (board of mobileDiscoverBoards(); track board.id) {
+              <article class="mobile-discover-card">
+                <a [routerLink]="boardViewLink(board)" class="mobile-discover-card__media">
+                  @if (board.imageUrl) {
+                    <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" />
+                  } @else {
+                    <span class="material-symbols-outlined">{{ boardIcon(board) }}</span>
+                  }
+                </a>
+                <div class="mobile-discover-card__body">
+                  <small>{{ ownerLabel(board) }} · {{ countLabel(board.cards.length, boardSongCards(board).length ? 'song' : 'card') }}</small>
+                  <h3>{{ board.title }}</h3>
+                  <p>{{ boardSummary(board) }}</p>
+                </div>
+                <div class="mobile-discover-card__actions">
+                  <a [routerLink]="boardViewLink(board)">
+                    View
+                  </a>
+                  <button [class.active]="isBoardLiked(board.id)" (click)="toggleBoardLike(board.id)">
+                    <span class="material-symbols-outlined">favorite</span>
+                    Like
+                  </button>
+                  <button [class.active]="isBoardSaved(board.id)" (click)="toggleBoardSave(board.id)">
+                    <span class="material-symbols-outlined">bookmark</span>
+                    Save
+                  </button>
+                </div>
+              </article>
+            }
+          } @else {
+            <div class="mobile-discover-empty">No boards yet.</div>
+          }
+        </div>
+      </section>
+    </main>
+    }
   </div>
   } @else {
 

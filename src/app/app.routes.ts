@@ -80,6 +80,7 @@ export const routes: Routes = [
     title: 'The Fenceline Network | LivingWiki',
   },
   { path: 'home', component: PublicWikisComponent, title: 'Home | LivingWiki', canActivate: [authGuard], data: { signedInHome: true } },
+  { path: 'discover', component: PublicWikisComponent, canActivate: [authGuard], data: { discoverPage: true } },
   {
     path: 'trove',
     loadComponent: () => import('./trove/trove').then((m) => m.TroveComponent),

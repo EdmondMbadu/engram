@@ -602,6 +602,28 @@
                   </button>
                 </div>
                 <div class="board-square__tools">
+                  <button
+                    type="button"
+                    class="board-square__engage"
+                    [class.board-square__engage--active]="isBoardLiked(board)"
+                    [attr.aria-label]="isBoardLiked(board) ? 'Unlike board' : 'Like board'"
+                    [attr.aria-pressed]="isBoardLiked(board)"
+                    (click)="toggleBoardLike(board, $event)"
+                  >
+                    <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
+                    <span>Like</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="board-square__engage"
+                    [class.board-square__engage--active]="isBoardSaved(board)"
+                    [attr.aria-label]="isBoardSaved(board) ? 'Remove saved board' : 'Save board'"
+                    [attr.aria-pressed]="isBoardSaved(board)"
+                    (click)="toggleBoardSave(board, $event)"
+                  >
+                    <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
+                    <span>Save</span>
+                  </button>
                   <button type="button" [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'" (click)="toggleBoardFlip(board.id, $event)">
                     <span class="material-symbols-outlined">{{ isBoardFlipped(board.id) ? 'flip_to_front' : 'flip_to_back' }}</span>
                   </button>
@@ -733,6 +755,26 @@
               <button type="button" class="boards-share-button" (click)="toggleSharePanel()">
                 <span class="material-symbols-outlined">ios_share</span>
                 Share
+              </button>
+              <button
+                type="button"
+                class="boards-share-button boards-share-button--engage"
+                [class.boards-share-button--active]="isBoardLiked(board)"
+                [attr.aria-pressed]="isBoardLiked(board)"
+                (click)="toggleBoardLike(board, $event)"
+              >
+                <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
+                Like
+              </button>
+              <button
+                type="button"
+                class="boards-share-button boards-share-button--engage"
+                [class.boards-share-button--active]="isBoardSaved(board)"
+                [attr.aria-pressed]="isBoardSaved(board)"
+                (click)="toggleBoardSave(board, $event)"
+              >
+                <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
+                Save
               </button>
               @if (canUseStackStudio(board)) {
                 <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)">
@@ -1082,6 +1124,26 @@
                       <span class="material-symbols-outlined">ios_share</span>
                       Share
                     </button>
+                    <button
+                      type="button"
+                      class="boards-share-button boards-share-button--engage"
+                      [class.boards-share-button--active]="isBoardLiked(board)"
+                      [attr.aria-pressed]="isBoardLiked(board)"
+                      (click)="toggleBoardLike(board, $event)"
+                    >
+                      <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
+                      Like
+                    </button>
+                    <button
+                      type="button"
+                      class="boards-share-button boards-share-button--engage"
+                      [class.boards-share-button--active]="isBoardSaved(board)"
+                      [attr.aria-pressed]="isBoardSaved(board)"
+                      (click)="toggleBoardSave(board, $event)"
+                    >
+                      <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
+                      Save
+                    </button>
                     @if (canUseStackStudio(board)) {
                       <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)">
                         <span class="material-symbols-outlined">auto_awesome_motion</span>
@@ -1227,6 +1289,16 @@
                           }
 
                           <div class="song-player-card__actions">
+                            <button
+                              type="button"
+                              class="song-preview-button song-preview-button--juke"
+                              [class.song-preview-button--playing]="isCardLiked(board, song)"
+                              [attr.aria-pressed]="isCardLiked(board, song)"
+                              (click)="toggleCardLike(board, song, $event)"
+                            >
+                              <span class="material-symbols-outlined">{{ isCardLiked(board, song) ? 'favorite' : 'favorite_border' }}</span>
+                              <span>{{ isCardLiked(board, song) ? 'Liked' : 'Like card' }}</span>
+                            </button>
                             @if (song.audioPreviewUrl) {
                               <button
                                 type="button"
@@ -1348,6 +1420,16 @@
                       <span class="material-symbols-outlined">close</span>
                     </button>
                   }
+                  <button
+                    type="button"
+                    class="detail-card__like"
+                    [class.detail-card__like--active]="isCardLiked(board, card)"
+                    [attr.aria-label]="isCardLiked(board, card) ? 'Unlike card' : 'Like card'"
+                    [attr.aria-pressed]="isCardLiked(board, card)"
+                    (click)="toggleCardLike(board, card, $event)"
+                  >
+                    <span class="material-symbols-outlined">{{ isCardLiked(board, card) ? 'favorite' : 'favorite_border' }}</span>
+                  </button>
                   @if (card.stickers.length) {
                     <div class="detail-card__stickers" aria-hidden="true">
                       @for (sticker of card.stickers; track sticker.id) {
@@ -2955,6 +3037,13 @@
                     <span class="material-symbols-outlined">album</span>
                   </span>
                 }
+                <div class="boards-upload__actions boards-upload__actions--subtle">
+                  <label class="boards-upload__button boards-upload__button--subtle">
+                    <span class="material-symbols-outlined">upload</span>
+                    {{ cardDraft().imageUrl || cardDraft().spotifyArtworkUrl ? 'Change cover' : 'Upload cover' }}
+                    <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
+                  </label>
+                </div>
               </div>
               <div class="boards-form__split">
                 <label>
@@ -3056,11 +3145,22 @@
                   <h4>Edit anything before saving</h4>
                 </div>
               </div>
-              @if (cardDraft().imageUrl) {
-                <div class="boards-upload">
+              <div class="boards-upload">
+                @if (cardDraft().imageUrl) {
                   <img [src]="cardDraft().imageUrl" alt="Card image preview" />
+                } @else {
+                  <span class="boards-upload__placeholder">
+                    <span class="material-symbols-outlined">add_photo_alternate</span>
+                  </span>
+                }
+                <div class="boards-upload__actions boards-upload__actions--subtle">
+                  <label class="boards-upload__button boards-upload__button--subtle">
+                    <span class="material-symbols-outlined">upload</span>
+                    {{ cardDraft().imageUrl ? 'Change picture' : 'Upload picture' }}
+                    <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
+                  </label>
                 </div>
-              }
+              </div>
               <div class="boards-form__split">
                 <label>
                   <span>Title</span>

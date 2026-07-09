@@ -568,6 +568,210 @@
   padding: 0.75rem 0.75rem 0;
 }
 
+.mobile-discover-section {
+  scroll-margin-top: 5rem;
+  padding: 0.65rem 0.75rem 0.35rem;
+}
+
+.mobile-discover-head,
+.mobile-discover-page-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.75rem;
+}
+
+.mobile-discover-head p,
+.mobile-discover-head h2,
+.mobile-discover-page-hero p,
+.mobile-discover-page-hero h1,
+.mobile-discover-card__body h3,
+.mobile-discover-card__body p {
+  margin: 0;
+}
+
+.mobile-discover-head p,
+.mobile-discover-page-hero p {
+  color: var(--mobile-green);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.mobile-discover-head h2,
+.mobile-discover-page-hero h1 {
+  color: #102018;
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.mobile-discover-head h2 {
+  font-size: 1.08rem;
+}
+
+.mobile-discover-page-hero h1 {
+  font-size: clamp(1.7rem, 7vw, 3rem);
+}
+
+.mobile-discover-grid,
+.mobile-discover-page-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 0.75rem;
+}
+
+.mobile-discover-card,
+.mobile-discover-empty,
+.mobile-discover-page-hero {
+  border: 2px solid #102018;
+  border-radius: 0.9rem;
+  background: #fff;
+  box-shadow: 4px 4px 0 #102018;
+  overflow: hidden;
+}
+
+.mobile-discover-page-hero img {
+  width: min(7rem, 72%);
+  height: auto;
+  object-fit: contain;
+}
+
+.mobile-discover-card__media {
+  display: grid;
+  height: 8.5rem;
+  place-items: center;
+  background: linear-gradient(135deg, #eef8ef, #fff8d9);
+  color: var(--mobile-green);
+  text-decoration: none;
+}
+
+.mobile-discover-card__media > .material-symbols-outlined {
+  font-size: 3.25rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.mobile-discover-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobile-discover-card__body {
+  display: grid;
+  gap: 0.22rem;
+  padding: 0.72rem 0.78rem 0.6rem;
+}
+
+.mobile-discover-card__body small {
+  overflow: hidden;
+  color: var(--mobile-green);
+  font-size: 0.68rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mobile-discover-card__body h3 {
+  overflow: hidden;
+  color: #102018;
+  font-size: 1rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-discover-card__body p {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #526458;
+  font-size: 0.78rem;
+  font-weight: 760;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.mobile-discover-card__actions {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.4rem;
+  border-top: 1px solid rgba(16, 32, 24, 0.12);
+  padding: 0.55rem 0.65rem 0.65rem;
+}
+
+.mobile-discover-card__actions a,
+.mobile-discover-card__actions button {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  border: 1.5px solid #d7ded9;
+  border-radius: 999px;
+  background: #f8fbf8;
+  color: #102018;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 950;
+  padding: 0.54rem 0.66rem;
+  text-decoration: none;
+}
+
+.mobile-discover-card__actions a {
+  border-color: #102018;
+  background: var(--mobile-deep);
+  color: #fff;
+}
+
+.mobile-discover-card__actions button.active {
+  color: var(--mobile-green);
+}
+
+.mobile-discover-card__actions .material-symbols-outlined {
+  font-size: 1rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.mobile-discover-empty {
+  color: #526458;
+  font-size: 0.9rem;
+  font-weight: 850;
+  padding: 1rem;
+}
+
+.mobile-discover-page {
+  padding-top: 0.75rem;
+}
+
+.mobile-discover-section--page {
+  padding-bottom: 2rem;
+}
+
+.mobile-discover-page-hero {
+  background: linear-gradient(135deg, #fffef7, #e7f5ec);
+  padding: 1rem;
+}
+
+.mobile-discover-back {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.35rem;
+  border: 2px solid #102018;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 2px 2px 0 #102018;
+  color: #102018;
+  font-size: 0.78rem;
+  font-weight: 950;
+  line-height: 1;
+  padding: 0.55rem 0.7rem;
+  text-decoration: none;
+}
+
 .mobile-search-wrap label {
   display: flex;
   align-items: center;
