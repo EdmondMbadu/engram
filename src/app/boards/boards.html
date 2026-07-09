@@ -2873,7 +2873,7 @@
       <section class="boards-modal boards-modal--wide" aria-label="Card form" (click)="$event.stopPropagation()">
         <div class="boards-modal__head">
           <div>
-            <p>{{ editingCardId() ? 'Edit card' : 'New card' }}</p>
+            <p>{{ editingCardId() ? (isSongCardForm() ? 'Edit song' : 'Edit card') : (isSongCardForm() ? 'New song' : 'New card') }}</p>
             <h3>{{ selectedBoardTitle() }}</h3>
           </div>
           <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDialog()">
@@ -2882,132 +2882,253 @@
         </div>
 
         <form class="boards-form" (submit)="saveCard($event)">
-          <section class="boards-form-section boards-form-section--feature">
-            <div class="boards-form-section__head">
-              <span class="material-symbols-outlined">travel_explore</span>
-              <div>
-                <p>Fast place fill</p>
-                <h4>Choose the scope, then enter the card</h4>
+          @if (isSongCardForm()) {
+            <section class="boards-card-wizard">
+              <div class="boards-card-wizard__head">
+                <span class="material-symbols-outlined">music_note</span>
+                <div>
+                  <p>Song Wizard</p>
+                  <h4>{{ editingCardId() ? 'Improve this song' : 'Create this song' }}</h4>
+                </div>
               </div>
-            </div>
-            <div class="boards-choice-grid boards-choice-grid--status" aria-label="Card scope">
-              @for (scope of cardScopes; track scope.id) {
-                <button
-                  type="button"
-                  class="boards-choice"
-                  [class.boards-choice--active]="cardDraft().scope === scope.id"
-                  [attr.aria-pressed]="cardDraft().scope === scope.id"
-                  (click)="setCardScope(scope.id)"
-                >
-                  <span class="material-symbols-outlined">{{ scope.icon }}</span>
-                  <strong>{{ scope.label }}</strong>
-                </button>
-              }
-            </div>
-            <div class="boards-form__split">
               <label>
-                <span>{{ cardScopeQueryLabel(cardDraft().scope) }}</span>
+                <span>Describe the song</span>
+                <textarea
+                  rows="4"
+                  maxlength="360"
+                  placeholder="Type a song title, artist, album, Spotify link, or a short description..."
+                  [value]="cardWizardPrompt()"
+                  (input)="cardWizardPrompt.set($any($event.target).value)"
+                ></textarea>
+              </label>
+              <div class="boards-card-wizard__actions">
+                <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="runCardWizard()">
+                  <span class="material-symbols-outlined">{{ cardWizardLoading() ? 'progress_activity' : 'auto_awesome' }}</span>
+                  {{ cardWizardLoading() ? 'Populating...' : 'Populate song' }}
+                </button>
+                @if (cardDraft().audioPreviewUrl) {
+                  <button
+                    type="button"
+                    class="boards-ghost-action"
+                    [class.boards-wizard-card__action--playing]="isSongPreviewPlaying(cardDraftPreviewCard(), 'card-draft')"
+                    (click)="toggleSongPreview(cardDraftPreviewCard(), $event, 'card-draft')"
+                  >
+                    <span class="material-symbols-outlined">{{ isSongPreviewPlaying(cardDraftPreviewCard(), 'card-draft') ? 'pause' : 'play_arrow' }}</span>
+                    {{ isSongPreviewPlaying(cardDraftPreviewCard(), 'card-draft') ? 'Playing' : 'Preview' }}
+                  </button>
+                }
+              </div>
+              @if (cardWizardError()) {
+                <div class="boards-form__soft-error">{{ cardWizardError() }}</div>
+              }
+            </section>
+
+            <section class="boards-form-section boards-form-section--feature">
+              <div class="boards-form-section__head">
+                <span class="material-symbols-outlined">library_music</span>
+                <div>
+                  <p>Review</p>
+                  <h4>Verify and save</h4>
+                </div>
+              </div>
+              <div class="boards-upload">
+                @if (cardDraft().imageUrl || cardDraft().spotifyArtworkUrl) {
+                  <img [src]="cardDraft().imageUrl || cardDraft().spotifyArtworkUrl" alt="Cover art preview" />
+                } @else {
+                  <span class="boards-upload__placeholder">
+                    <span class="material-symbols-outlined">album</span>
+                  </span>
+                }
+              </div>
+              <div class="boards-form__split">
+                <label>
+                  <span>Song title</span>
+                  <input
+                    type="text"
+                    required
+                    maxlength="80"
+                    placeholder="Song title"
+                    [value]="cardDraft().title"
+                    (input)="updateCardDraft('title', $any($event.target).value)"
+                  />
+                </label>
+                <label>
+                  <span>Artist</span>
+                  <input
+                    type="text"
+                    maxlength="120"
+                    placeholder="Artist"
+                    [value]="cardDraft().spotifyArtistName || cardDraft().subtitle"
+                    (input)="onSongArtistInput($any($event.target).value)"
+                  />
+                </label>
+              </div>
+              <label>
+                <span>Album</span>
                 <input
                   type="text"
-                  autocomplete="off"
-                  [placeholder]="cardScopeQueryPlaceholder(cardDraft().scope)"
-                  [value]="cardDraft().placeQuery"
-                  (input)="onPlaceQueryInput($any($event.target).value)"
+                  maxlength="140"
+                  placeholder="Album"
+                  [value]="cardDraft().spotifyAlbumName"
+                  (input)="updateCardDraft('spotifyAlbumName', $any($event.target).value)"
                 />
               </label>
-              @if (showCardCityContext()) {
+              <label>
+                <span>Notes</span>
+                <textarea
+                  rows="3"
+                  maxlength="260"
+                  placeholder="Why this song belongs here."
+                  [value]="cardDraft().notes"
+                  (input)="updateCardDraft('notes', $any($event.target).value)"
+                ></textarea>
+              </label>
+              @if (cardDraft().spotifyTrackUrl) {
+                <a class="boards-ghost-action" [href]="cardDraft().spotifyTrackUrl" target="_blank" rel="noopener">
+                  <span class="material-symbols-outlined">open_in_new</span>
+                  Open Spotify
+                </a>
+              }
+            </section>
+
+            @if (imageUploadError()) {
+              <div class="boards-form__error">{{ imageUploadError() }}</div>
+            }
+
+            <div class="boards-form__actions">
+              <button type="button" class="boards-ghost-action" (click)="closeCardDialog()">Cancel</button>
+              <button type="submit" class="boards-primary-action">
+                <span class="material-symbols-outlined">check</span>
+                Save song
+              </button>
+            </div>
+          } @else {
+            <section class="boards-form-section boards-form-section--feature">
+              <div class="boards-form-section__head">
+                <span class="material-symbols-outlined">travel_explore</span>
+                <div>
+                  <p>Fast place fill</p>
+                  <h4>Choose the scope, then enter the card</h4>
+                </div>
+              </div>
+              <div class="boards-choice-grid boards-choice-grid--status" aria-label="Card scope">
+                @for (scope of cardScopes; track scope.id) {
+                  <button
+                    type="button"
+                    class="boards-choice"
+                    [class.boards-choice--active]="cardDraft().scope === scope.id"
+                    [attr.aria-pressed]="cardDraft().scope === scope.id"
+                    (click)="setCardScope(scope.id)"
+                  >
+                    <span class="material-symbols-outlined">{{ scope.icon }}</span>
+                    <strong>{{ scope.label }}</strong>
+                  </button>
+                }
+              </div>
+              <div class="boards-form__split">
                 <label>
-                  <span>City optional</span>
+                  <span>{{ cardScopeQueryLabel(cardDraft().scope) }}</span>
                   <input
                     type="text"
                     autocomplete="off"
-                    placeholder="Philadelphia, New York, Lisbon..."
-                    [value]="cardDraft().placeCity"
-                    (input)="onPlaceCityInput($any($event.target).value)"
+                    [placeholder]="cardScopeQueryPlaceholder(cardDraft().scope)"
+                    [value]="cardDraft().placeQuery"
+                    (input)="onPlaceQueryInput($any($event.target).value)"
                   />
                 </label>
-              }
-            </div>
-            @if (cityMatchSuggestions().length) {
-              <div class="boards-city-matches" aria-label="Matching cities">
-                @for (city of cityMatchSuggestions(); track city.id) {
-                  <button type="button" (click)="selectPlaceCity(city)">
-                    <span class="material-symbols-outlined">location_city</span>
-                    <strong>{{ city.name }}</strong>
-                    @if (city.region) {
-                      <small>{{ city.region }}</small>
-                    }
-                  </button>
+                @if (showCardCityContext()) {
+                  <label>
+                    <span>City optional</span>
+                    <input
+                      type="text"
+                      autocomplete="off"
+                      placeholder="Philadelphia, New York, Lisbon..."
+                      [value]="cardDraft().placeCity"
+                      (input)="onPlaceCityInput($any($event.target).value)"
+                    />
+                  </label>
                 }
               </div>
-            }
-            @if (countryMatchSuggestions().length) {
-              <div class="boards-city-matches" aria-label="Matching countries">
-                @for (country of countryMatchSuggestions(); track country) {
-                  <button type="button" (click)="selectCountrySuggestion(country)">
-                    <span class="material-symbols-outlined">flag</span>
-                    <strong>{{ country }}</strong>
-                    <small>Country</small>
-                  </button>
+              @if (cityMatchSuggestions().length) {
+                <div class="boards-city-matches" aria-label="Matching cities">
+                  @for (city of cityMatchSuggestions(); track city.id) {
+                    <button type="button" (click)="selectPlaceCity(city)">
+                      <span class="material-symbols-outlined">location_city</span>
+                      <strong>{{ city.name }}</strong>
+                      @if (city.region) {
+                        <small>{{ city.region }}</small>
+                      }
+                    </button>
+                  }
+                </div>
+              }
+              @if (countryMatchSuggestions().length) {
+                <div class="boards-city-matches" aria-label="Matching countries">
+                  @for (country of countryMatchSuggestions(); track country) {
+                    <button type="button" (click)="selectCountrySuggestion(country)">
+                      <span class="material-symbols-outlined">flag</span>
+                      <strong>{{ country }}</strong>
+                      <small>Country</small>
+                    </button>
+                  }
+                </div>
+              }
+              <div class="boards-place-status">
+                @if (placeSearchLoading()) {
+                  <span class="boards-place-status__loading"></span>
+                  Looking up place and photo...
+                } @else if (cardDraft().placeId) {
+                  <span class="material-symbols-outlined">check_circle</span>
+                  Details added.
+                } @else if (placeSearchHint()) {
+                  <span class="material-symbols-outlined">location_on</span>
+                  {{ placeSearchHint() }}
+                } @else {
+                  <span class="material-symbols-outlined">bolt</span>
+                  Optional. You can still type the card manually.
                 }
               </div>
-            }
-            <div class="boards-place-status">
-              @if (placeSearchLoading()) {
-                <span class="boards-place-status__loading"></span>
-                Looking up place and photo...
-              } @else if (cardDraft().placeId) {
-                <span class="material-symbols-outlined">check_circle</span>
-                Details added.
-              } @else if (placeSearchHint()) {
-                <span class="material-symbols-outlined">location_on</span>
-                {{ placeSearchHint() }}
-              } @else {
-                <span class="material-symbols-outlined">bolt</span>
-                Optional. You can still type the card manually.
-              }
-            </div>
-            @if (placeSuggestions().length) {
-              <div class="boards-place-suggestions">
-                @for (place of placeSuggestions(); track place.placeId) {
-                  <button type="button" (click)="selectPlaceSuggestion(place)">
-                    @if (place.photoUrl) {
-                      <img [src]="place.photoUrl" [alt]="place.name" loading="lazy" />
-                    } @else {
-                      <span class="boards-place-suggestions__icon">
-                        <span class="material-symbols-outlined">place</span>
+              @if (placeSuggestions().length) {
+                <div class="boards-place-suggestions">
+                  @for (place of placeSuggestions(); track place.placeId) {
+                    <button type="button" (click)="selectPlaceSuggestion(place)">
+                      @if (place.photoUrl) {
+                        <img [src]="place.photoUrl" [alt]="place.name" loading="lazy" />
+                      } @else {
+                        <span class="boards-place-suggestions__icon">
+                          <span class="material-symbols-outlined">place</span>
+                        </span>
+                      }
+                      <span>
+                        <strong>{{ place.name }}</strong>
+                        <small>{{ place.address || place.types[0] }}</small>
                       </span>
-                    }
-                    <span>
-                      <strong>{{ place.name }}</strong>
-                      <small>{{ place.address || place.types[0] }}</small>
-                    </span>
-                    @if (place.rating) {
-                      <em>{{ place.rating.toFixed(1) }}</em>
-                    }
-                  </button>
-                }
-              </div>
-            }
-            @if (placeSearchError()) {
-              <div class="boards-form__soft-error">{{ placeSearchError() }}</div>
-            }
-          </section>
+                      @if (place.rating) {
+                        <em>{{ place.rating.toFixed(1) }}</em>
+                      }
+                    </button>
+                  }
+                </div>
+              }
+              @if (placeSearchError()) {
+                <div class="boards-form__soft-error">{{ placeSearchError() }}</div>
+              }
+            </section>
 
           <section class="boards-card-wizard">
             <div class="boards-card-wizard__head">
-              <span class="material-symbols-outlined">auto_awesome</span>
+              <span class="material-symbols-outlined">{{ isSongCardForm() ? 'music_note' : 'auto_awesome' }}</span>
               <div>
-                <p>Card Wizard</p>
-                <h4>{{ editingCardId() ? 'Improve this card' : 'Create this card' }}</h4>
+                <p>{{ isSongCardForm() ? 'Song Wizard' : 'Card Wizard' }}</p>
+                <h4>{{ isSongCardForm() ? (editingCardId() ? 'Improve this song' : 'Create this song') : (editingCardId() ? 'Improve this card' : 'Create this card') }}</h4>
               </div>
             </div>
             <label>
-              <span>What should the Wizard do?</span>
+              <span>{{ isSongCardForm() ? 'What should the Song Wizard do?' : 'What should the Wizard do?' }}</span>
               <textarea
                 rows="3"
                 maxlength="360"
-                placeholder="Make this more useful, add a better description, find a place photo, turn this into a food card..."
+                [placeholder]="isSongCardForm() ? 'Find the correct song, cover art, artist, album, Spotify link, and preview audio...' : 'Make this more useful, add a better description, find a place photo, turn this into a food card...'"
                 [value]="cardWizardPrompt()"
                 (input)="cardWizardPrompt.set($any($event.target).value)"
               ></textarea>
@@ -3016,7 +3137,7 @@
               @if (editingCardId()) {
                 <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="fixCurrentCard()">
                   <span class="material-symbols-outlined">{{ cardWizardLoading() ? 'progress_activity' : 'auto_fix_high' }}</span>
-                  {{ cardWizardLoading() ? 'Fixing...' : 'Fix Card' }}
+                  {{ cardWizardLoading() ? 'Fixing...' : (isSongCardForm() ? 'Fix song' : 'Fix Card') }}
                 </button>
               }
               <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="runCardWizard()">
@@ -3034,7 +3155,7 @@
                   {{ isSongPreviewPlaying(cardDraftPreviewCard(), 'card-draft') ? 'Playing' : 'Preview song' }}
                 </button>
               }
-              <small>Uses the current board and draft fields as context.</small>
+              <small>{{ isSongCardForm() ? 'Uses the current song board and draft fields as context.' : 'Uses the current board and draft fields as context.' }}</small>
             </div>
             @if (cardWizardError()) {
               <div class="boards-form__soft-error">{{ cardWizardError() }}</div>
@@ -3044,14 +3165,14 @@
           <section class="boards-sticker-panel boards-sticker-panel--prominent">
             <div class="boards-sticker-panel__head">
               <div>
-                <span>Card stickers</span>
-                <strong>Add icons across this card · {{ cardDraft().stickers.length }} selected</strong>
+                <span>{{ isSongCardForm() ? 'Song stickers' : 'Card stickers' }}</span>
+                <strong>{{ isSongCardForm() ? 'Add icons across this song' : 'Add icons across this card' }} · {{ cardDraft().stickers.length }} selected</strong>
               </div>
               @if (cardDraft().stickers.length) {
                 <button type="button" (click)="clearCardStickers()">Clear</button>
               }
             </div>
-            <div class="boards-sticker-grid" aria-label="Card icon stickers">
+            <div class="boards-sticker-grid" [attr.aria-label]="isSongCardForm() ? 'Song icon stickers' : 'Card icon stickers'">
               @for (icon of cardStickerIcons; track icon) {
                 <button
                   type="button"
@@ -3073,22 +3194,22 @@
 
           <div class="boards-form__split">
             <label>
-              <span>Title</span>
+              <span>{{ isSongCardForm() ? 'Song title' : 'Title' }}</span>
               <input
                 type="text"
                 required
                 maxlength="80"
-                placeholder="Ocean City boardwalk"
+                [placeholder]="isSongCardForm() ? 'As' : 'Ocean City boardwalk'"
                 [value]="cardDraft().title"
                 (input)="updateCardDraft('title', $any($event.target).value)"
               />
             </label>
             <label>
-              <span>Subtitle</span>
+              <span>{{ isSongCardForm() ? 'Artist / hook' : 'Subtitle' }}</span>
               <input
                 type="text"
                 maxlength="90"
-                placeholder="Salt air, arcade lights"
+                [placeholder]="isSongCardForm() ? 'Stevie Wonder, 1976' : 'Salt air, arcade lights'"
                 [value]="cardDraft().subtitle"
                 (input)="updateCardDraft('subtitle', $any($event.target).value)"
               />
@@ -3096,17 +3217,17 @@
           </div>
 
           <label>
-            <span>Notes</span>
+            <span>{{ isSongCardForm() ? 'Song notes' : 'Notes' }}</span>
             <textarea
               rows="4"
               maxlength="260"
-              placeholder="Why is this card worth keeping?"
+              [placeholder]="isSongCardForm() ? 'Why this song belongs here, the mood, era, or story.' : 'Why is this card worth keeping?'"
               [value]="cardDraft().notes"
               (input)="updateCardDraft('notes', $any($event.target).value)"
             ></textarea>
           </label>
 
-          @if (cardDraft().tourSequence || isTourBoard(selectedBoard())) {
+          @if (!isSongCardForm() && (cardDraft().tourSequence || isTourBoard(selectedBoard()))) {
             <section class="boards-card-wizard boards-card-wizard--tour">
               <div class="boards-card-wizard__head">
                 <span class="material-symbols-outlined">assistant_direction</span>
@@ -3207,23 +3328,25 @@
           }
 
           <div class="boards-choice-panel">
-            <div class="boards-choice-group">
-              <span>Type</span>
-              <div class="boards-choice-grid boards-choice-grid--types">
-                @for (type of cardTypes; track type.id) {
-                  <button
-                    type="button"
-                    class="boards-choice"
-                    [class.boards-choice--active]="cardDraft().type === type.id"
-                    [attr.aria-pressed]="cardDraft().type === type.id"
-                    (click)="updateCardDraft('type', type.id)"
-                  >
-                    <span class="material-symbols-outlined">{{ type.icon }}</span>
-                    <strong>{{ type.label }}</strong>
-                  </button>
-                }
+            @if (!isSongCardForm()) {
+              <div class="boards-choice-group">
+                <span>Type</span>
+                <div class="boards-choice-grid boards-choice-grid--types">
+                  @for (type of cardTypes; track type.id) {
+                    <button
+                      type="button"
+                      class="boards-choice"
+                      [class.boards-choice--active]="cardDraft().type === type.id"
+                      [attr.aria-pressed]="cardDraft().type === type.id"
+                      (click)="updateCardDraft('type', type.id)"
+                    >
+                      <span class="material-symbols-outlined">{{ type.icon }}</span>
+                      <strong>{{ type.label }}</strong>
+                    </button>
+                  }
+                </div>
               </div>
-            </div>
+            }
 
             <div class="boards-choice-group">
               <span>Status</span>
@@ -3262,10 +3385,10 @@
           </div>
 
           <div class="boards-upload-field">
-            <span>Card image</span>
+            <span>{{ isSongCardForm() ? 'Cover art' : 'Card image' }}</span>
             <div class="boards-upload">
               @if (cardDraft().imageUrl) {
-                <img [src]="cardDraft().imageUrl" alt="Card image preview" />
+                <img [src]="cardDraft().imageUrl" [alt]="isSongCardForm() ? 'Cover art preview' : 'Card image preview'" />
               } @else {
                 <span class="boards-upload__placeholder">
                   <span class="material-symbols-outlined">add_photo_alternate</span>
@@ -3288,7 +3411,7 @@
           </div>
 
           <label>
-            <span>Image URL fallback</span>
+            <span>{{ isSongCardForm() ? 'Cover image URL fallback' : 'Image URL fallback' }}</span>
             <input
               type="url"
               placeholder="https://..."
@@ -3297,10 +3420,10 @@
             />
           </label>
           <label>
-            <span>Tags</span>
+            <span>{{ isSongCardForm() ? 'Song tags' : 'Tags' }}</span>
             <input
               type="text"
-              placeholder="shore, dinner, summer"
+              [placeholder]="isSongCardForm() ? 'soul, funk, love-song' : 'shore, dinner, summer'"
               [value]="cardDraft().tags"
               (input)="updateCardDraft('tags', $any($event.target).value)"
             />
@@ -3313,9 +3436,10 @@
             <button type="button" class="boards-ghost-action" (click)="closeCardDialog()">Cancel</button>
             <button type="submit" class="boards-primary-action">
               <span class="material-symbols-outlined">check</span>
-              Save card
+              {{ isSongCardForm() ? 'Save song' : 'Save card' }}
             </button>
           </div>
+          }
         </form>
       </section>
     </div>

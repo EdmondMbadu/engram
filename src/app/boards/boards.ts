@@ -1036,6 +1036,10 @@ export class BoardsComponent implements OnDestroy {
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
+  readonly isSongCardForm = computed(() => {
+    const board = this.selectedBoard();
+    return !!board && this.isSongBoard(board);
+  });
   readonly canManageBoardFriends = computed(() => this.isOwnBoardsProfile());
   readonly canCreateBoard = computed(() => this.isOwnBoardsProfile());
   readonly boardFriendsCountLabel = computed(() => {
@@ -2352,6 +2356,7 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set('Only the board owner can add cards.');
       return;
     }
+    const songMode = this.isSongBoard(board);
     this.selectedBoardId.set(boardId);
     this.imageUploadError.set(null);
     this.resetCardWizard();
@@ -2361,10 +2366,10 @@ export class BoardsComponent implements OnDestroy {
       title: '',
       subtitle: '',
       notes: '',
-      type: 'place',
+      type: songMode ? 'note' : 'place',
       scope: 'place',
       status: 'saved',
-      rating: '4',
+      rating: songMode ? '5' : '4',
       imageUrl: '',
       audioPreviewUrl: '',
       spotifyTrackId: '',
@@ -2377,7 +2382,7 @@ export class BoardsComponent implements OnDestroy {
       placeCity: '',
       placeId: '',
       googleMapsUrl: '',
-      tags: '',
+      tags: songMode ? 'song, music' : '',
       stickers: [],
       tourSequence: '',
       tourLat: '',
@@ -2541,6 +2546,26 @@ export class BoardsComponent implements OnDestroy {
   onCardImageUrlInput(value: string): void {
     this.cardImageLocked.set(true);
     this.updateCardDraft('imageUrl', value);
+  }
+
+  onSongArtworkUrlInput(value: string): void {
+    this.cardDraft.update((draft) => {
+      const previousArtworkUrl = draft.spotifyArtworkUrl.trim();
+      const currentImageUrl = draft.imageUrl.trim();
+      return {
+        ...draft,
+        spotifyArtworkUrl: value,
+        imageUrl: !currentImageUrl || currentImageUrl === previousArtworkUrl ? value : draft.imageUrl,
+      };
+    });
+  }
+
+  onSongArtistInput(value: string): void {
+    this.cardDraft.update((draft) => ({
+      ...draft,
+      spotifyArtistName: value,
+      subtitle: value,
+    }));
   }
 
   toggleBoardSticker(icon: string): void {
@@ -2721,14 +2746,21 @@ export class BoardsComponent implements OnDestroy {
     }
 
     const now = new Date().toISOString();
-    const tags = draft.tags
+    const songMode = this.isSongBoard(board);
+    const rawTags = draft.tags
       .split(',')
       .map((tag) => tag.trim())
       .filter(Boolean)
       .slice(0, 6);
+    const tags = songMode ? this.mergeWizardTags(rawTags, ['song', 'music']) : rawTags;
     const rating = Math.max(1, Math.min(5, Number.parseInt(draft.rating, 10) || 1));
     const editingId = this.editingCardId();
-    const draftTour = this.cardTourFromDraft(draft);
+    const draftTour = songMode ? null : this.cardTourFromDraft(draft);
+    const imageUrl = draft.imageUrl.trim() || (songMode ? draft.spotifyArtworkUrl.trim() : '');
+    const cardType = songMode ? 'note' : draft.type;
+    const cardScope = songMode ? 'place' : draft.scope;
+    const placeId = songMode ? '' : draft.placeId;
+    const googleMapsUrl = songMode ? '' : draft.googleMapsUrl;
     let nextBoard: Board | null = null;
 
     this.boards.update((boards) =>
@@ -2745,11 +2777,11 @@ export class BoardsComponent implements OnDestroy {
                     title,
                     subtitle: draft.subtitle.trim(),
                     notes: draft.notes.trim(),
-                    type: draft.type,
-                    scope: draft.scope,
+                    type: cardType,
+                    scope: cardScope,
                     status: draft.status,
                     rating,
-                    imageUrl: draft.imageUrl.trim(),
+                    imageUrl,
                     audioPreviewUrl: draft.audioPreviewUrl.trim(),
                     spotifyTrackId: draft.spotifyTrackId.trim(),
                     spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
@@ -2757,11 +2789,11 @@ export class BoardsComponent implements OnDestroy {
                     spotifyArtistName: draft.spotifyArtistName.trim(),
                     spotifyAlbumName: draft.spotifyAlbumName.trim(),
                     spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
-                    placeId: draft.placeId,
-                    googleMapsUrl: draft.googleMapsUrl,
+                    placeId,
+                    googleMapsUrl,
                     tags,
                     stickers: draft.stickers,
-                    tour: draftTour ?? card.tour ?? null,
+                    tour: songMode ? null : draftTour ?? card.tour ?? null,
                     updatedAt: now,
                   }
                 : card,
@@ -2772,11 +2804,11 @@ export class BoardsComponent implements OnDestroy {
                 title,
                 subtitle: draft.subtitle.trim(),
                 notes: draft.notes.trim(),
-                type: draft.type,
-                scope: draft.scope,
+                type: cardType,
+                scope: cardScope,
                 status: draft.status,
                 rating,
-                imageUrl: draft.imageUrl.trim(),
+                imageUrl,
                 audioPreviewUrl: draft.audioPreviewUrl.trim(),
                 spotifyTrackId: draft.spotifyTrackId.trim(),
                 spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
@@ -2784,8 +2816,8 @@ export class BoardsComponent implements OnDestroy {
                 spotifyArtistName: draft.spotifyArtistName.trim(),
                 spotifyAlbumName: draft.spotifyAlbumName.trim(),
                 spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
-                placeId: draft.placeId,
-                googleMapsUrl: draft.googleMapsUrl,
+                placeId,
+                googleMapsUrl,
                 tags,
                 stickers: draft.stickers,
                 tour: draftTour,
