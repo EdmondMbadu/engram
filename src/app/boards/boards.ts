@@ -122,6 +122,10 @@ type Board = {
   ownerPhotoUrl: string;
   ownerProfileIcon: string;
   ownerProfilePictureType: 'icon' | 'image' | null;
+  forkedFromBoardId: string;
+  forkedFromTitle: string;
+  forkedFromOwnerUserId: string;
+  forkedFromOwnerName: string;
   visibility: BoardVisibility;
   title: string;
   description: string;
@@ -2181,6 +2185,10 @@ export class BoardsComponent implements OnDestroy {
           logoLinkUrl: '',
           stackCtaLabel: this.wizardStackCtaLabel().trim(),
           stackCtaUrl: this.wizardStackCtaUrl().trim(),
+          forkedFromBoardId: '',
+          forkedFromTitle: '',
+          forkedFromOwnerUserId: '',
+          forkedFromOwnerName: '',
           visibility: 'public',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
@@ -2300,6 +2308,10 @@ export class BoardsComponent implements OnDestroy {
         logoLinkUrl: draft.logoLinkUrl.trim(),
         stackCtaLabel: draft.stackCtaLabel.trim(),
         stackCtaUrl: draft.stackCtaUrl.trim(),
+        forkedFromBoardId: '',
+        forkedFromTitle: '',
+        forkedFromOwnerUserId: '',
+        forkedFromOwnerName: '',
         stickers: draft.stickers,
       cards: [],
       kind: 'standard',
@@ -4354,6 +4366,57 @@ export class BoardsComponent implements OnDestroy {
     return !!uid && board.ownerUserId === uid;
   }
 
+  canForkBoard(board: Board | null | undefined): boolean {
+    const uid = this.authService.uid();
+    return !!board && !!uid && !!board.ownerUserId && board.ownerUserId !== uid;
+  }
+
+  async forkBoard(board: Board, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canForkBoard(board)) {
+      return;
+    }
+    const now = new Date().toISOString();
+    const forked: Board = {
+      ...board,
+      ...this.currentOwnerSnapshot(),
+      id: this.createId(),
+      sortOrder: this.nextBoardSortOrder(),
+      forkedFromBoardId: board.forkedFromBoardId || board.id,
+      forkedFromTitle: board.forkedFromTitle || board.title,
+      forkedFromOwnerUserId: board.forkedFromOwnerUserId || board.ownerUserId,
+      forkedFromOwnerName: board.forkedFromOwnerName || this.ownerName(board),
+      cards: board.cards.map((card) => ({
+        ...card,
+        id: this.createId(),
+        stickers: card.stickers.map((sticker) => ({ ...sticker })),
+        tour: card.tour
+          ? {
+              ...card.tour,
+              legToNext: card.tour.legToNext ? { ...card.tour.legToNext } : null,
+            }
+          : null,
+        createdAt: now,
+        updatedAt: now,
+      })),
+      stickers: board.stickers.map((sticker) => ({ ...sticker })),
+      tourMeta: board.tourMeta ? { ...board.tourMeta, extras: [...board.tourMeta.extras] } : null,
+      createdAt: now,
+      updatedAt: now,
+    };
+    try {
+      const persisted = await this.persistBoard(forked);
+      this.boards.update((boards) => [persisted, ...boards]);
+      this.boardsSyncError.set(null);
+      this.setShareMessage('Forked to your boards.');
+      void this.router.navigate(['/boards', persisted.id]);
+    } catch (error) {
+      console.error('Board fork failed', error, { boardId: board.id });
+      this.boardsSyncError.set('Could not fork this board. Please try again.');
+    }
+  }
+
   toggleBoardLike(board: Board, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
@@ -4470,6 +4533,10 @@ export class BoardsComponent implements OnDestroy {
       return this.userName();
     }
     return 'LivingWiki curator';
+  }
+
+  forkAttributionLabel(board: Board): string {
+    return board.forkedFromOwnerName ? `Forked from ${board.forkedFromOwnerName}` : '';
   }
 
   ownerPhotoUrl(board: Board): string {
@@ -6139,6 +6206,10 @@ export class BoardsComponent implements OnDestroy {
           ownerProfilePictureType: this.isProfilePictureType(board.ownerProfilePictureType)
             ? board.ownerProfilePictureType
             : null,
+          forkedFromBoardId: typeof board.forkedFromBoardId === 'string' ? board.forkedFromBoardId : '',
+          forkedFromTitle: typeof board.forkedFromTitle === 'string' ? board.forkedFromTitle : '',
+          forkedFromOwnerUserId: typeof board.forkedFromOwnerUserId === 'string' ? board.forkedFromOwnerUserId : '',
+          forkedFromOwnerName: typeof board.forkedFromOwnerName === 'string' ? board.forkedFromOwnerName : '',
           visibility: this.isBoardVisibility((board as Partial<Board>).visibility) ? (board as Board).visibility : 'public',
           imageUrl: board.imageUrl ?? '',
           logoUrl: typeof board.logoUrl === 'string' ? board.logoUrl : '',
@@ -6350,6 +6421,10 @@ export class BoardsComponent implements OnDestroy {
       ownerProfilePictureType: this.isProfilePictureType(data['owner_profile_picture_type'])
         ? data['owner_profile_picture_type']
         : null,
+      forkedFromBoardId: typeof data['forkedFromBoardId'] === 'string' ? data['forkedFromBoardId'] : '',
+      forkedFromTitle: typeof data['forkedFromTitle'] === 'string' ? data['forkedFromTitle'] : '',
+      forkedFromOwnerUserId: typeof data['forkedFromOwnerUserId'] === 'string' ? data['forkedFromOwnerUserId'] : '',
+      forkedFromOwnerName: typeof data['forkedFromOwnerName'] === 'string' ? data['forkedFromOwnerName'] : '',
       visibility: this.isBoardVisibility(data['visibility']) ? data['visibility'] : 'public',
       title,
       description: typeof data['description'] === 'string' ? data['description'] : '',

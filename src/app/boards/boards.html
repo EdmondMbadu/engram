@@ -782,6 +782,12 @@
                   Studio
                 </button>
               }
+              @if (canForkBoard(board)) {
+                <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)">
+                  <span class="material-symbols-outlined">call_split</span>
+                  Fork
+                </button>
+              }
               @if (canEditBoard(board)) {
                 <button type="button" class="boards-share-button boards-share-button--edit" (click)="openEditBoard(board, $event)">
                   <span class="material-symbols-outlined">edit_square</span>
@@ -851,6 +857,9 @@
                     <span class="material-symbols-outlined" style="display: grid; width: 2rem; height: 2rem; place-items: center; border: 2px solid currentColor; border-radius: 999px; background: rgba(255,255,255,.16); font-size: 1.15rem; font-variation-settings: 'FILL' 1;">ads_click</span>
                     <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</span>
                   </a>
+                }
+                @if (forkAttributionLabel(board)) {
+                  <small class="board-fork-label">{{ forkAttributionLabel(board) }}</small>
                 }
               </div>
 
@@ -1150,6 +1159,12 @@
                         Studio
                       </button>
                     }
+                    @if (canForkBoard(board)) {
+                      <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)">
+                        <span class="material-symbols-outlined">call_split</span>
+                        Fork
+                      </button>
+                    }
                     @if (canEditBoard(board)) {
                       <button type="button" class="boards-share-button boards-share-button--edit" (click)="openEditBoard(board, $event)">
                         <span class="material-symbols-outlined">edit_square</span>
@@ -1246,6 +1261,9 @@
                     Live card version
                   </button>
                   <p>{{ board.description || 'Pick a card, preview the track, then open it in Spotify for full playback when your account has access.' }}</p>
+                  @if (forkAttributionLabel(board)) {
+                    <small class="board-fork-label">{{ forkAttributionLabel(board) }}</small>
+                  }
                   <div class="song-board__stats">
                     <span><b>{{ selectedSongCards().length }}</b> songs</span>
                     <span><b>{{ songCardPositionLabel() }}</b> now</span>
@@ -1358,6 +1376,14 @@
                           <button
                             type="button"
                             class="song-strip__delete"
+                            [attr.aria-label]="'Edit ' + song.title"
+                            (click)="$event.stopPropagation(); openEditCard(song)"
+                          >
+                            <span class="material-symbols-outlined">edit</span>
+                          </button>
+                          <button
+                            type="button"
+                            class="song-strip__delete"
                             [attr.aria-label]="'Delete ' + song.title"
                             (click)="deleteCard(song, $event)"
                           >
@@ -1411,6 +1437,14 @@
                     </button>
                   }
                   @if (canEditBoard(board)) {
+                    <button
+                      type="button"
+                      class="detail-card__edit"
+                      [attr.aria-label]="'Edit ' + card.title"
+                      (click)="$event.stopPropagation(); openEditCard(card)"
+                    >
+                      <span class="material-symbols-outlined">edit</span>
+                    </button>
                     <button
                       type="button"
                       class="detail-card__remove"
