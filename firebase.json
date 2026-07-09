@@ -45,6 +45,13 @@
         }
       },
       {
+        "source": "/share/board/**",
+        "function": {
+          "functionId": "boardShare",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

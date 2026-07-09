@@ -10,7 +10,7 @@ import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
 import { db, storage } from './firebase';
-import { handleAnswerCardShare, handleTravelCardShare } from './answer-card-share';
+import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import {
   answerWithGoogleSearch,
   extractMappableLocations,
@@ -139,6 +139,16 @@ export const travelCardShare = onRequest(
     cors: true,
   },
   handleTravelCardShare,
+);
+
+export const boardShare = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '1GiB',
+    cors: true,
+  },
+  handleBoardShare,
 );
 
 type GoogleDriveImportSelection = {

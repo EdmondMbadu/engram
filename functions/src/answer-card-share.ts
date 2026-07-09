@@ -40,6 +40,26 @@ interface TravelCardShare {
   updatedAt: string | null;
 }
 
+interface BoardShareCard {
+  title: string;
+  subtitle: string;
+  imageUrl: string | null;
+  spotifyArtworkUrl: string | null;
+  hasSongMedia: boolean;
+}
+
+interface BoardShare {
+  id: string;
+  title: string;
+  description: string;
+  ownerName: string;
+  imageUrl: string | null;
+  logoUrl: string | null;
+  kind: string;
+  cards: BoardShareCard[];
+  updatedAt: string | null;
+}
+
 export async function handleAnswerCardShare(req: Request, res: Response): Promise<void> {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.set('Allow', 'GET, HEAD').status(405).send('Method not allowed');
@@ -111,6 +131,41 @@ export async function handleTravelCardShare(req: Request, res: Response): Promis
     .send(req.method === 'HEAD' ? undefined : buildTravelSharePageHtml(share));
 }
 
+export async function handleBoardShare(req: Request, res: Response): Promise<void> {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.set('Allow', 'GET, HEAD').status(405).send('Method not allowed');
+    return;
+  }
+
+  const parsed = parseBoardSharePath(req.originalUrl || req.url || '');
+  if (!parsed) {
+    res.status(404).send('Board share link not found.');
+    return;
+  }
+
+  const board = await loadBoardShare(parsed.boardId);
+  if (!board) {
+    res.status(404).send('Public board not found.');
+    return;
+  }
+
+  if (parsed.image) {
+    const image = await getOrRenderBoardShareImage(board);
+    res
+      .status(200)
+      .set('Content-Type', 'image/png')
+      .set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
+      .send(req.method === 'HEAD' ? undefined : image);
+    return;
+  }
+
+  res
+    .status(200)
+    .set('Content-Type', 'text/html; charset=utf-8')
+    .set('Cache-Control', 'public, max-age=300, s-maxage=3600')
+    .send(req.method === 'HEAD' ? undefined : buildBoardSharePageHtml(board, parsed.stack));
+}
+
 function parseSharePath(url: string): { cardId: string; kind: ShareImageKind | null } | null {
   const path = url.split('?')[0] ?? '';
   const match = path.match(/\/share\/answer-card\/([A-Za-z0-9_-]{8,128})(?:\/(og|story)\.png)?\/?$/);
@@ -134,6 +189,20 @@ function parseTravelSharePath(url: string): { shareId: string; kind: ShareImageK
   return {
     shareId: match[1],
     kind: match[2] === 'og' || match[2] === 'story' ? match[2] : null,
+  };
+}
+
+function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean } | null {
+  const [path, query = ''] = url.split('?');
+  const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/og\.png)?\/?$/);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    boardId: match[1],
+    image: /\/og\.png\/?$/.test(path ?? ''),
+    stack: new URLSearchParams(query).get('view') === 'stack',
   };
 }
 
@@ -187,6 +256,64 @@ async function loadTravelCardShare(shareId: string): Promise<TravelCardShare | n
     question: cleanText(data.question, 500) || null,
     card,
     updatedAt: timestampToIso(data.updated_at) ?? timestampToIso(data.created_at),
+  };
+}
+
+async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
+  const snapshot = await db.collection('boards').doc(boardId).get();
+  if (!snapshot.exists) {
+    return null;
+  }
+
+  const data = snapshot.data() ?? {};
+  if (data.visibility !== 'public') {
+    return null;
+  }
+
+  const title = cleanText(data.title, 160);
+  if (!title) {
+    return null;
+  }
+
+  const cards = Array.isArray(data.cards)
+    ? data.cards
+        .map(cleanBoardShareCard)
+        .filter((card): card is BoardShareCard => !!card)
+        .slice(0, 50)
+    : [];
+
+  return {
+    id: snapshot.id,
+    title,
+    description: cleanText(data.description, 320),
+    ownerName: cleanText(data.owner_display_name, 100) || 'LivingWiki curator',
+    imageUrl: safeUrl(data.imageUrl),
+    logoUrl: safeUrl(data.logoUrl),
+    kind: cleanText(data.kind, 40) || 'standard',
+    cards,
+    updatedAt: cleanText(data.updated_at_iso, 80) || timestampToIso(data.server_updated_at),
+  };
+}
+
+function cleanBoardShareCard(value: unknown): BoardShareCard | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const data = value as Record<string, unknown>;
+  const title = cleanText(data.title, 140);
+  if (!title) {
+    return null;
+  }
+  const spotifyArtworkUrl = safeUrl(data.spotifyArtworkUrl);
+  return {
+    title,
+    subtitle: cleanText(data.subtitle, 180),
+    imageUrl: safeUrl(data.imageUrl),
+    spotifyArtworkUrl,
+    hasSongMedia: !!cleanText(data.spotifyTrackId, 120)
+      || !!safeUrl(data.spotifyTrackUrl)
+      || !!safeUrl(data.audioPreviewUrl)
+      || !!spotifyArtworkUrl,
   };
 }
 
@@ -302,6 +429,48 @@ async function getOrRenderTravelImage(share: TravelCardShare, kind: ShareImageKi
   return image;
 }
 
+async function getOrRenderBoardShareImage(board: BoardShare): Promise<Buffer> {
+  const hash = createHash('sha256')
+    .update(JSON.stringify({
+      imageVersion,
+      title: board.title,
+      description: board.description,
+      ownerName: board.ownerName,
+      imageUrl: board.imageUrl,
+      logoUrl: board.logoUrl,
+      kind: board.kind,
+      cards: board.cards.slice(0, 4),
+      updatedAt: board.updatedAt,
+    }))
+    .digest('hex')
+    .slice(0, 18);
+  const path = `board-share/${board.id}/og-${hash}.png`;
+  const file = storage.bucket().file(path);
+
+  try {
+    const [exists] = await file.exists();
+    if (exists) {
+      const [cached] = await file.download();
+      return cached;
+    }
+  } catch (error) {
+    logger.warn('Failed to read cached board share image.', {
+      boardId: board.id,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  const image = await renderBoardShareImage(board);
+  await file.save(image, {
+    resumable: false,
+    contentType: 'image/png',
+    metadata: {
+      cacheControl: 'public,max-age=604800',
+    },
+  });
+  return image;
+}
+
 async function renderShareImage(card: ShareCard, kind: ShareImageKind): Promise<Buffer> {
   const { width, height } = imageSize(kind);
   const browser = await puppeteer.launch(await resolveLaunchOptions());
@@ -325,6 +494,22 @@ async function renderTravelImage(share: TravelCardShare, kind: ShareImageKind): 
     const page = await browser.newPage();
     await page.setViewport({ width, height, deviceScaleFactor: 1 });
     await page.setContent(buildTravelImageHtml(share, kind), { waitUntil: 'networkidle0' });
+    const image = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width, height } });
+    return Buffer.from(image);
+  } finally {
+    await browser.close();
+  }
+}
+
+async function renderBoardShareImage(board: BoardShare): Promise<Buffer> {
+  const width = 1200;
+  const height = 630;
+  const browser = await puppeteer.launch(await resolveLaunchOptions());
+
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width, height, deviceScaleFactor: 1 });
+    await page.setContent(buildBoardShareImageHtml(board), { waitUntil: 'networkidle0' });
     const image = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width, height } });
     return Buffer.from(image);
   } finally {
@@ -467,6 +652,145 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
   </main>
 </body>
 </html>`;
+}
+
+function buildBoardSharePageHtml(board: BoardShare, stack: boolean): string {
+  const description = boardShareDescription(board);
+  const route = boardShareRoute(board);
+  const shareVersion = encodeURIComponent(board.updatedAt ?? imageVersion);
+  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}?v=${shareVersion}${stack ? '&view=stack' : ''}`;
+  const appBoardUrl = `${appUrl}/${route}/${encodeURIComponent(board.id)}${stack ? '?view=stack' : ''}`;
+  const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
+  const ogImage = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(`${board.title} | LivingWiki`)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="${escapeHtml(shareUrl)}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LivingWiki">
+  <meta property="og:title" content="${escapeHtml(board.title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${escapeHtml(shareUrl)}">
+  <meta property="og:image" content="${escapeHtml(ogImage)}">
+  <meta property="og:image:secure_url" content="${escapeHtml(ogImage)}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${escapeHtml(`Cover preview for ${board.title}`)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(board.title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+  <meta name="twitter:image" content="${escapeHtml(ogImage)}">
+  <meta name="twitter:image:alt" content="${escapeHtml(`Cover preview for ${board.title}`)}">
+  <meta name="twitter:label1" content="Curator">
+  <meta name="twitter:data1" content="${escapeHtml(board.ownerName)}">
+  <meta name="twitter:label2" content="Collection">
+  <meta name="twitter:data2" content="${escapeHtml(`${board.cards.length} ${board.cards.length === 1 ? 'card' : 'cards'}`)}">
+  <script>window.location.replace(${JSON.stringify(appBoardUrl)});</script>
+  ${sharePageStyles()}
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="brand">
+        <img src="${appUrl}/assets/image/livingwiki.png" alt="LivingWiki">
+        <span>Shared board</span>
+      </div>
+      <p class="eyebrow">Opening board</p>
+      <h1>${escapeHtml(board.title)}</h1>
+      <p class="subtitle">${escapeHtml(description)}</p>
+      <div class="actions"><a href="${escapeHtml(appBoardUrl)}">Open board</a></div>
+    </section>
+  </main>
+</body>
+</html>`;
+}
+
+function buildBoardShareImageHtml(board: BoardShare): string {
+  const description = boardShareDescription(board);
+  const coverImage = board.imageUrl
+    || board.cards.find((card) => card.spotifyArtworkUrl || card.imageUrl)?.spotifyArtworkUrl
+    || board.cards.find((card) => card.imageUrl)?.imageUrl
+    || board.logoUrl;
+  const cardType = boardShareRoute(board) === 'songs' ? 'songs' : 'cards';
+  const previewCards = board.cards.slice(0, 3);
+  const cover = coverImage
+    ? `<img class="cover" src="${escapeHtml(coverImage)}" alt="">`
+    : `<div class="cover cover--empty"><img src="${appUrl}/assets/image/living-wiki-favicon.png" alt=""></div>`;
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; margin: 0; overflow: hidden; }
+    body { font-family: Inter, Arial, sans-serif; color: #17211d; background: #edf4ee; }
+    main { display: grid; grid-template-columns: 55% 45%; width: 100%; height: 100%; }
+    .visual { position: relative; min-width: 0; overflow: hidden; background: #dfe9e1; }
+    .cover { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cover--empty { display: grid; place-items: center; background: #dbeadd; }
+    .cover--empty img { width: 210px; height: 210px; object-fit: contain; }
+    .visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 68%, rgba(237,244,238,.82)); }
+    .content { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; padding: 46px 46px 40px 32px; }
+    .brand { display: flex; align-items: center; gap: 13px; color: #287a5c; font-size: 21px; font-weight: 900; }
+    .brand img { width: 48px; height: 48px; object-fit: contain; }
+    h1 { margin: 24px 0 0; font-size: 58px; line-height: .98; font-weight: 950; letter-spacing: 0; overflow-wrap: anywhere; }
+    .description { display: -webkit-box; margin: 17px 0 0; overflow: hidden; color: rgba(23,33,29,.72); font-size: 21px; line-height: 1.28; font-weight: 700; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+    .cards { display: grid; gap: 9px; margin-top: 22px; }
+    .card { display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 11px; min-width: 0; border-top: 1px solid rgba(23,33,29,.12); padding-top: 9px; }
+    .thumb { width: 42px; height: 42px; border-radius: 6px; object-fit: cover; background: white; }
+    .thumb--empty { display: grid; place-items: center; color: #287a5c; font-weight: 950; }
+    .card strong { display: block; overflow: hidden; font-size: 16px; line-height: 1.18; text-overflow: ellipsis; white-space: nowrap; }
+    .footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 20px; color: rgba(23,33,29,.6); font-size: 16px; font-weight: 850; }
+    .footer b { color: #17211d; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="visual">${cover}</section>
+    <section class="content">
+      <div>
+        <div class="brand"><img src="${appUrl}/assets/image/living-wiki-favicon.png" alt="">LivingWiki</div>
+        <h1>${escapeHtml(board.title)}</h1>
+        <p class="description">${escapeHtml(description)}</p>
+        <div class="cards">
+          ${previewCards.map((card) => {
+            const imageUrl = card.spotifyArtworkUrl || card.imageUrl;
+            const thumb = imageUrl
+              ? `<img class="thumb" src="${escapeHtml(imageUrl)}" alt="">`
+              : '<span class="thumb thumb--empty">+</span>';
+            return `<div class="card">${thumb}<strong>${escapeHtml(card.title)}</strong></div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="footer"><span>Curated by <b>${escapeHtml(board.ownerName)}</b></span><span>${board.cards.length} ${escapeHtml(cardType)}</span></div>
+    </section>
+  </main>
+</body>
+</html>`;
+}
+
+function boardShareDescription(board: BoardShare): string {
+  return board.description || `${board.cards.length} ${board.cards.length === 1 ? 'card' : 'cards'} curated by ${board.ownerName}.`;
+}
+
+function boardShareRoute(board: BoardShare): 'boards' | 'songs' | 'trips' {
+  if (board.kind === 'walking-tour' || board.kind === 'driving-tour') {
+    return 'trips';
+  }
+  const text = `${board.title} ${board.description}`;
+  if (/\b(song|songs|music|album|single|tracks|hits|spotify|playlist|discography)\b/i.test(text)) {
+    return 'songs';
+  }
+  const songCards = board.cards.filter((card) => card.hasSongMedia).length;
+  return songCards >= Math.max(2, Math.ceil(board.cards.length * 0.35)) ? 'songs' : 'boards';
 }
 
 function buildShareImageHtml(card: ShareCard, kind: ShareImageKind): string {

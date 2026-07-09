@@ -4569,11 +4569,18 @@ export class BoardsComponent implements OnDestroy {
   }
 
   boardShareUrl(board: Board): string {
-    const route = this.boardRouteRoot(board).slice(1);
+    const path = board.visibility === 'public'
+      ? `/share/board/${encodeURIComponent(board.id)}?v=${encodeURIComponent(board.updatedAt || board.id)}`
+      : this.boardPagePath(board);
     if (!this.isBrowser) {
-      return `/${route}/${board.id}`;
+      return path;
     }
-    return `${window.location.origin}/${route}/${board.id}`;
+    return `${window.location.origin}${path}`;
+  }
+
+  private boardPagePath(board: Board): string {
+    const route = this.boardRouteRoot(board).slice(1);
+    return `/${route}/${encodeURIComponent(board.id)}`;
   }
 
   boardsProfileShareUrl(): string {
@@ -4588,7 +4595,8 @@ export class BoardsComponent implements OnDestroy {
   }
 
   stackShareUrl(board: Board): string {
-    return `${this.boardShareUrl(board)}?view=stack`;
+    const separator = this.boardShareUrl(board).includes('?') ? '&' : '?';
+    return `${this.boardShareUrl(board)}${separator}view=stack`;
   }
 
   async copyBoardsProfileUrl(): Promise<void> {
