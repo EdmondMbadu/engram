@@ -4731,6 +4731,86 @@
   padding: 0.5rem 0.7rem;
 }
 
+.boards-cta-editor {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.5fr) minmax(0, 1.5fr);
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.boards-cta-editor__preview {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.36rem;
+  border: 2px solid var(--modal-ink, var(--ink));
+  border-radius: 999px;
+  background: var(--modal-ink, var(--ink));
+  color: var(--surface);
+  padding: 0.55rem 0.7rem;
+}
+
+.boards-cta-editor__preview strong {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.boards-cta-editor__fields {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.boards-cta-field {
+  display: grid !important;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: 0.5rem !important;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--input-bg);
+  padding: 0.5rem 0.62rem;
+}
+
+.boards-cta-field > .material-symbols-outlined {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  color: var(--accent);
+}
+
+.boards-cta-field__body {
+  display: grid;
+  min-width: 0;
+  gap: 0.22rem;
+}
+
+.boards-cta-field__body small {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.boards-cta-field input {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.boards-cta-field input:focus {
+  box-shadow: none;
+}
+
 .boards-sticker-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(2.35rem, 1fr));
@@ -5470,6 +5550,10 @@
   }
 
   .boards-form__split {
+    grid-template-columns: 1fr;
+  }
+
+  .boards-cta-editor {
     grid-template-columns: 1fr;
   }
 
