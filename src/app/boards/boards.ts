@@ -4351,7 +4351,7 @@ export class BoardsComponent implements OnDestroy {
       return false;
     }
     const uid = this.authService.uid();
-    return !!uid && (this.authService.isAdmin() || !board.ownerUserId || board.ownerUserId === uid);
+    return !!uid && board.ownerUserId === uid;
   }
 
   toggleBoardLike(board: Board, event?: Event): void {
@@ -4449,7 +4449,7 @@ export class BoardsComponent implements OnDestroy {
       return false;
     }
     const uid = this.authService.uid();
-    return !!uid && (this.authService.isAdmin() || board.ownerUserId === uid);
+    return !!uid && board.ownerUserId === uid;
   }
 
   canUsePrivateBoards(): boolean {
@@ -6190,17 +6190,11 @@ export class BoardsComponent implements OnDestroy {
     if (!this.firestore || !uid) {
       return board;
     }
-    const isAdmin = this.authService.isAdmin();
-    if (board.ownerUserId && board.ownerUserId !== uid && !isAdmin) {
+    if (board.ownerUserId !== uid) {
       throw new Error('Only the board owner can save changes.');
     }
 
-    const boardWithOwner = board.ownerUserId && board.ownerUserId !== uid && isAdmin
-      ? board
-      : {
-          ...board,
-          ...this.currentOwnerSnapshot(),
-        };
+    const boardWithOwner = { ...board, ...this.currentOwnerSnapshot() };
     const storageOwnerId = boardWithOwner.ownerUserId || uid;
     const resolvedOwnerPublicSlug = await this.resolveOwnerPublicSlug(boardWithOwner, storageOwnerId);
     const prepared = await this.prepareBoardImagesForFirebase({ ...boardWithOwner, ownerPublicSlug: resolvedOwnerPublicSlug }, storageOwnerId);
