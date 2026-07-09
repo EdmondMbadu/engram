@@ -6079,7 +6079,7 @@ function boardWizardReferenceImageKind(card: GeneratedBoardWizardCard | BoardWiz
   if (/\b(video game|video games|game|games|console|playstation|xbox|nintendo|steam)\b/.test(text)) {
     return 'game';
   }
-  if (/\b(portrait|person|people|biography|born|died|actor|actress|artist|musician|author|athlete|director)\b/.test(text)) {
+  if (/\b(portrait|person|people|biography|born|died|actor|actress|artist|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|author|athlete|director)\b/.test(text)) {
     return 'person';
   }
   return '';
@@ -6091,9 +6091,12 @@ function buildBoardWizardMediaImageQuery(
   searchContext: string,
   kind: BoardWizardReferenceImageKind,
 ): string {
-  const cleanTitle = title.replace(/\s+/g, ' ').trim();
+  const contextText = `${card.title} ${card.subtitle} ${'notes' in card ? card.notes : ''} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''} ${card.image_query} ${searchContext}`;
+  const cleanTitle = kind === 'person'
+    ? canonicalBoardWizardPersonImageTitle(title, contextText)
+    : title.replace(/\s+/g, ' ').trim();
   const artistOrCreator = extractBoardWizardCreatorHint(`${card.subtitle} ${'notes' in card ? card.notes : ''} ${Array.isArray(card.tags) ? card.tags.join(' ') : ''} ${searchContext}`);
-  const yearHint = extractBoardWizardYearHint(`${card.title} ${card.subtitle} ${'notes' in card ? card.notes : ''} ${card.image_query} ${searchContext}`);
+  const yearHint = extractBoardWizardYearHint(contextText);
   switch (kind) {
     case 'film':
       return [cleanTitle, cleanTitle.includes(yearHint) ? '' : yearHint, 'official movie poster'].filter(Boolean).join(' ');
@@ -6108,10 +6111,40 @@ function buildBoardWizardMediaImageQuery(
     case 'game':
       return `${cleanTitle} video game cover art`;
     case 'person':
-      return `${cleanTitle} portrait`;
+      return [cleanTitle, boardWizardPersonRoleHint(contextText), 'portrait'].filter(Boolean).join(' ');
     default:
       return cleanTitle;
   }
+}
+
+function canonicalBoardWizardPersonImageTitle(title: string, text: string): string {
+  const normalized = title.replace(/\s+/g, ' ').trim();
+  const match = normalized.match(/^[^:\u2013\u2014-]{2,36}[:\u2013\u2014-]\s*([^:\u2013\u2014-]{2,80})$/);
+  const subject = (match?.[1] ?? '').replace(/^["'`]+|["'`]+$/g, '').trim();
+  if (subject && isBoardWizardLikelyPersonSubject(subject, text)) {
+    return subject;
+  }
+  return normalized;
+}
+
+function isBoardWizardLikelyPersonSubject(subject: string, text: string): boolean {
+  const words = subject.split(/\s+/).filter(Boolean);
+  if (words.length < 2 || words.length > 5) {
+    return false;
+  }
+  if (!/\b(portrait|person|people|biography|born|died|artist|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|actor|actress|author|writer|poet|scientist|inventor|athlete|president|leader|historical figure)\b/i.test(text)) {
+    return false;
+  }
+  return words.some((word) => /^[A-Z][A-Za-z'.-]+$/.test(word));
+}
+
+function boardWizardPersonRoleHint(text: string): string {
+  const lower = text.toLowerCase();
+  if (/\bjazz\b/.test(lower) && /\bpianist\b/.test(lower)) {
+    return 'jazz pianist';
+  }
+  const roles = ['pianist', 'composer', 'singer', 'rapper', 'guitarist', 'drummer', 'bassist', 'saxophonist', 'trumpeter', 'vocalist', 'bandleader', 'musician', 'artist', 'actor', 'actress', 'author', 'writer', 'poet', 'scientist', 'inventor', 'athlete', 'president', 'leader'];
+  return roles.find((role) => new RegExp(`\\b${role}\\b`, 'i').test(text)) ?? '';
 }
 
 function extractBoardWizardCreatorHint(text: string): string {

@@ -5417,18 +5417,22 @@ export class BoardsComponent implements OnDestroy {
       return null;
     }
     const type = this.isBoardCardType(data['type']) ? data['type'] : this.wizardDefaultType();
+    const subtitle = this.stringValue(data['subtitle'], 'Wizard draft', 90);
+    const notes = this.stringValue(data['notes'], 'Review and edit this card before saving.', 260);
+    const tags = Array.isArray(data['tags'])
+      ? data['tags'].map((tag) => this.stringValue(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
+      : [this.wizardVibe(), type].slice(0, 6);
+    const imageQuery = this.stringValue(data['image_query'], title, 120);
     return {
       title,
-      subtitle: this.stringValue(data['subtitle'], 'Wizard draft', 90),
-      notes: this.stringValue(data['notes'], 'Review and edit this card before saving.', 260),
+      subtitle,
+      notes,
       type,
       scope: this.isBoardCardScope(data['scope']) ? data['scope'] : 'place',
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: this.numberValue(data['rating'], 4, 1, 5),
-      tags: Array.isArray(data['tags'])
-        ? data['tags'].map((tag) => this.stringValue(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
-        : [this.wizardVibe(), type].slice(0, 6),
-      image_query: this.stringValue(data['image_query'], title, 120),
+      tags,
+      image_query: this.normalizeWizardImageQuery(title, imageQuery, subtitle, notes, tags),
       place_query: this.stringValue(data['place_query'], title, 140),
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
       audioPreviewUrl: this.stringValue(data['audioPreviewUrl'], '', 2000),
@@ -5454,7 +5458,7 @@ export class BoardsComponent implements OnDestroy {
       status: card.status,
       rating: card.rating,
       tags: card.tags,
-      image_query: card.image_query || `${card.title} image`,
+      image_query: this.normalizeWizardImageQuery(card.title, card.image_query || `${card.title} image`, card.subtitle, card.notes, card.tags),
       place_query: card.place_query || card.title,
       audioPreviewUrl: card.audioPreviewUrl || '',
       spotifyTrackId: card.spotifyTrackId || '',
@@ -5529,7 +5533,42 @@ export class BoardsComponent implements OnDestroy {
 
   private isReferenceEntityWizardCard(card: BoardWizardGeneratedCard): boolean {
     const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query}`.toLowerCase();
-    return /\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|poet|philosopher|general|monarch|king|queen|emperor|saint|historical figure|world cup|fifa|national team|football team|soccer team|winner|winners|champion|champions|tournament|award|awards|record|records)\b/.test(text);
+    return /\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|poet|philosopher|general|monarch|king|queen|emperor|saint|historical figure|world cup|fifa|national team|football team|soccer team|winner|winners|champion|champions|tournament|award|awards|record|records)\b/.test(text);
+  }
+
+  private normalizeWizardImageQuery(title: string, imageQuery: string, subtitle: string, notes: string, tags: string[]): string {
+    const subject = this.canonicalWizardImageSubject(title);
+    const text = `${title} ${imageQuery} ${subtitle} ${notes} ${tags.join(' ')} ${this.wizardPrompt()} ${this.wizardTargetBoardTitle()}`;
+    if (subject && this.isLikelyWizardPersonSubject(subject, text)) {
+      return [subject, this.wizardPersonRoleHint(text), 'portrait'].filter(Boolean).join(' ').slice(0, 120);
+    }
+    return imageQuery.slice(0, 120);
+  }
+
+  private canonicalWizardImageSubject(title: string): string {
+    const match = title.replace(/\s+/g, ' ').trim().match(/^[^:\u2013\u2014-]{2,36}[:\u2013\u2014-]\s*([^:\u2013\u2014-]{2,80})$/);
+    return (match?.[1] ?? '').replace(/^["'`]+|["'`]+$/g, '').trim();
+  }
+
+  private isWizardPersonImageContext(text: string): boolean {
+    return /\b(portrait|person|people|biography|born|died|artist|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|actor|actress|author|writer|poet|scientist|inventor|athlete|president|leader|historical figure)\b/i.test(text);
+  }
+
+  private isLikelyWizardPersonSubject(subject: string, text: string): boolean {
+    const words = subject.split(/\s+/).filter(Boolean);
+    return words.length >= 2
+      && words.length <= 5
+      && words.some((word) => /^[A-Z][A-Za-z'.-]+$/.test(word))
+      && this.isWizardPersonImageContext(text);
+  }
+
+  private wizardPersonRoleHint(text: string): string {
+    const lower = text.toLowerCase();
+    if (/\bjazz\b/.test(lower) && /\bpianist\b/.test(lower)) {
+      return 'jazz pianist';
+    }
+    const roles = ['pianist', 'composer', 'singer', 'rapper', 'guitarist', 'drummer', 'bassist', 'saxophonist', 'trumpeter', 'vocalist', 'bandleader', 'musician', 'artist', 'actor', 'actress', 'author', 'writer', 'poet', 'scientist', 'inventor', 'athlete', 'president', 'leader'];
+    return roles.find((role) => new RegExp(`\\b${role}\\b`, 'i').test(text)) ?? '';
   }
 
   private async findWizardPlace(card: BoardWizardGeneratedCard): Promise<PlaceSearchResult | null> {
