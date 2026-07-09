@@ -961,7 +961,7 @@ export class PublicWikisComponent implements OnInit {
       const boards = snapshot.docs
         .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
         .filter((board): board is MobileBoard => !!board)
-        .filter((board) => !MOBILE_DEMO_BOARD_IDS.has(board.id) && board.ownerUserId !== uid);
+        .filter((board) => !!board.imageUrl && !MOBILE_DEMO_BOARD_IDS.has(board.id) && board.ownerUserId !== uid);
       this.mobileDiscoverBoards.set(this.sortMobileBoards(boards));
     } catch {
       this.mobileDiscoverBoards.set([]);
@@ -986,6 +986,11 @@ export class PublicWikisComponent implements OnInit {
 
   isBoardSaved(boardId: string): boolean {
     return this.savedBoardIds().has(boardId);
+  }
+
+  shareBoard(board: MobileBoard): void {
+    const url = location.origin + this.boardViewLink(board);
+    void (navigator.share ? navigator.share({ url }) : navigator.clipboard.writeText(url).then(() => alert('Copied')));
   }
 
   private toggleIdSet(target: WritableSignal<Set<string>>, id: string): void {
@@ -1239,7 +1244,7 @@ export class PublicWikisComponent implements OnInit {
   }
 
   boardViewLink(board: MobileBoard): string {
-    return `${this.boardSongCards(board).length ? '/songs/' : '/boards/'}${board.id}`;
+    return `${this.boardSongCards(board).length ? '/songs/' : this.isTripBoard(board) ? '/trips/' : '/boards/'}${board.id}`;
   }
 
   private isSongCard(card: MobileBoardCard): boolean {

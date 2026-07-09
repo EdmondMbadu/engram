@@ -349,28 +349,32 @@
             @for (board of mobileDiscoverBoards(); track board.id) {
               <article class="mobile-discover-card">
                 <a [routerLink]="boardViewLink(board)" class="mobile-discover-card__media">
-                  @if (board.imageUrl) {
-                    <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" />
-                  } @else {
+                  <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" />
+                  <span class="mobile-discover-card__icon">
                     <span class="material-symbols-outlined">{{ boardIcon(board) }}</span>
-                  }
+                  </span>
+                  <span class="mobile-discover-card__meta">
+                    <strong>{{ board.title }}</strong>
+                    <small>{{ ownerLabel(board) }} · {{ countLabel(board.cards.length, boardSongCards(board).length ? 'song' : 'card') }}</small>
+                  </span>
                 </a>
-                <div class="mobile-discover-card__body">
-                  <small>{{ ownerLabel(board) }} · {{ countLabel(board.cards.length, boardSongCards(board).length ? 'song' : 'card') }}</small>
-                  <h3>{{ board.title }}</h3>
-                  <p>{{ boardSummary(board) }}</p>
-                </div>
                 <div class="mobile-discover-card__actions">
-                  <a [routerLink]="boardViewLink(board)">
-                    View
-                  </a>
-                  <button [class.active]="isBoardLiked(board.id)" (click)="toggleBoardLike(board.id)">
+                  <button
+                    [class.active]="isBoardLiked(board.id)"
+                    (click)="toggleBoardLike(board.id)"
+                    title="Like"
+                  >
                     <span class="material-symbols-outlined">favorite</span>
-                    Like
                   </button>
-                  <button [class.active]="isBoardSaved(board.id)" (click)="toggleBoardSave(board.id)">
+                  <button
+                    [class.active]="isBoardSaved(board.id)"
+                    (click)="toggleBoardSave(board.id)"
+                    title="Save"
+                  >
                     <span class="material-symbols-outlined">bookmark</span>
-                    Save
+                  </button>
+                  <button (click)="shareBoard(board)" title="Share">
+                    <span class="material-symbols-outlined">share</span>
                   </button>
                 </div>
               </article>
