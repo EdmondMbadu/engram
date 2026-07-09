@@ -27,6 +27,8 @@ import { BusinessComponent } from './business/business';
 import { NotFoundComponent } from './not-found/not-found';
 import { adminGuard, authGuard, guestOnlyGuard } from './auth.guards';
 
+const loadBoardsComponent = () => import('./boards/boards').then((m) => m.BoardsComponent);
+
 export const routes: Routes = [
   { path: '', component: PublicWikisComponent, title: 'Public Wikis | LivingWiki' },
   { path: 'all-cities', component: PublicWikisComponent, title: 'All Cities | LivingWiki', data: { directoryPage: true } },
@@ -89,36 +91,44 @@ export const routes: Routes = [
   { path: 'wikis', component: WikiHomeComponent, title: 'My Wikis | LivingWiki', canActivate: [authGuard] },
   {
     path: 'boards',
-    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    loadComponent: loadBoardsComponent,
     title: 'Boards | LivingWiki',
   },
   {
     path: 'songs',
-    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    loadComponent: loadBoardsComponent,
     title: 'Songs | LivingWiki',
     data: { songsPage: true },
   },
   {
+    path: 'trips',
+    loadComponent: loadBoardsComponent,
+  },
+  {
     path: 'friends',
-    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    loadComponent: loadBoardsComponent,
     title: 'Friends | LivingWiki',
     canActivate: [authGuard],
   },
   {
     path: 'boards/u/:ownerKey',
-    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    loadComponent: loadBoardsComponent,
     title: 'User Boards | LivingWiki',
   },
   {
     path: 'boards/:boardId',
-    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    loadComponent: loadBoardsComponent,
     title: 'Board | LivingWiki',
   },
   {
     path: 'songs/:boardId',
-    loadComponent: () => import('./boards/boards').then((m) => m.BoardsComponent),
+    loadComponent: loadBoardsComponent,
     title: 'Song Board | LivingWiki',
     data: { songsPage: true },
+  },
+  {
+    path: 'trips/:boardId',
+    loadComponent: loadBoardsComponent,
   },
   { path: 'upload/:slug', component: LandingComponent, title: 'Upload | LivingWiki' },
   { path: 'upload', component: LandingComponent, title: 'Upload | LivingWiki', canActivate: [authGuard] },

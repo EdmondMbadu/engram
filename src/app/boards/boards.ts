@@ -919,6 +919,7 @@ export class BoardsComponent implements OnDestroy {
   readonly boardFriendsFocusRequested = signal(false);
   readonly friendsPage = signal(false);
   readonly songsPage = signal(false);
+  readonly tripsPage = signal(false);
   readonly boardFriendCandidates = signal<BoardFriendCandidate[]>([]);
   readonly boardFriendCandidateLoading = signal(false);
   readonly sharePanelOpen = signal(false);
@@ -1108,6 +1109,7 @@ export class BoardsComponent implements OnDestroy {
     const query = this.boardSearch().trim().toLowerCase();
     const boards = [...this.boards()]
       .filter((board) => !this.songsPage() || this.isSongBoard(board))
+      .filter((board) => !this.tripsPage() || this.isTourBoard(board))
       .sort((a, b) => this.compareBoards(a, b));
     if (!query) {
       return boards;
@@ -1304,6 +1306,7 @@ export class BoardsComponent implements OnDestroy {
       const routePath = this.route.snapshot.routeConfig?.path ?? '';
       this.friendsPage.set(routePath === 'friends');
       this.songsPage.set(routePath.startsWith('songs'));
+      this.tripsPage.set(routePath.startsWith('trips'));
       const boardId = params.get('boardId');
       const ownerKey = params.get('ownerKey');
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
@@ -1436,12 +1439,12 @@ export class BoardsComponent implements OnDestroy {
       this.suppressNextBoardOpen = false;
       return;
     }
-    void this.router.navigate([this.songsPage() ? '/songs' : '/boards', boardId]);
+    void this.router.navigate([this.boardRouteRoot(), boardId]);
   }
 
   closeBoardDetail(): void {
     this.stopSongPreview();
-    void this.router.navigateByUrl(this.songsPage() ? '/songs' : this.boardsProfileRoutePath());
+    void this.router.navigateByUrl(this.songsPage() || this.tripsPage() ? this.boardRouteRoot() : this.boardsProfileRoutePath());
   }
 
   async loadBoardFriends(): Promise<void> {
@@ -4555,8 +4558,18 @@ export class BoardsComponent implements OnDestroy {
     this.setShareMessage(null);
   }
 
+  boardRouteRoot(board: Board | null = this.selectedBoard()): string {
+    if (this.songsPage() && (!board || this.isSongBoard(board))) {
+      return '/songs';
+    }
+    if (this.tripsPage() && (!board || this.isTourBoard(board))) {
+      return '/trips';
+    }
+    return '/boards';
+  }
+
   boardShareUrl(board: Board): string {
-    const route = this.songsPage() && this.isSongBoard(board) ? 'songs' : 'boards';
+    const route = this.boardRouteRoot(board).slice(1);
     if (!this.isBrowser) {
       return `/${route}/${board.id}`;
     }
@@ -4706,7 +4719,7 @@ export class BoardsComponent implements OnDestroy {
     this.sharePanelOpen.set(false);
     this.stackDirectView.set(true);
     this.startStackPlayback();
-    void this.router.navigate([this.songsPage() && this.isSongBoard(board) ? '/songs' : '/boards', board.id], { queryParams: { view: 'stack' } });
+    void this.router.navigate([this.boardRouteRoot(board), board.id], { queryParams: { view: 'stack' } });
   }
 
   openLiveCardVersion(board: Board, event?: Event): void {
@@ -4726,7 +4739,7 @@ export class BoardsComponent implements OnDestroy {
     this.stopStackPlayback();
     this.stackDirectView.set(false);
     this.stackShareDialogOpen.set(false);
-    void this.router.navigate([this.songsPage() && this.isSongBoard(board) ? '/songs' : '/boards', board.id]);
+    void this.router.navigate([this.boardRouteRoot(board), board.id]);
   }
 
   closeStackStudio(): void {
@@ -5079,7 +5092,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private canonicalizeBoardsRootRoute(boardId: string | null, ownerKey: string | null): void {
-    if (!this.isBrowser || this.friendsPage() || this.songsPage() || boardId || ownerKey !== null || !this.authService.uid()) {
+    if (!this.isBrowser || this.friendsPage() || this.songsPage() || this.tripsPage() || boardId || ownerKey !== null || !this.authService.uid()) {
       return;
     }
 

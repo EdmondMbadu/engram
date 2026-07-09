@@ -606,7 +606,7 @@ export class PublicWikisComponent implements OnInit {
       icon: 'map',
       iconImageUrl: HOME_ICON_URLS.trips,
       addLabel: 'Add trip',
-      addLink: this.mobileSelectedCityLink(),
+      addLink: '/trips',
       cards: this.mobileTripCards(),
     },
   ]);
@@ -799,6 +799,10 @@ export class PublicWikisComponent implements OnInit {
 
   scrollToHomeSection(sectionId: string): void {
     this.closeMobileDrawer();
+    if (sectionId === 'songs' || sectionId === 'trips') {
+      void this.router.navigate([`/${sectionId}`]);
+      return;
+    }
     if (!this.isBrowser) {
       return;
     }
@@ -1207,7 +1211,11 @@ export class PublicWikisComponent implements OnInit {
       chip,
       icon,
       accent: this.boardAccent(board),
-      link: mode === 'song' ? `/songs/${encodeURIComponent(board.id)}` : `/boards/${encodeURIComponent(board.id)}`,
+      link: mode === 'song'
+        ? `/songs/${encodeURIComponent(board.id)}`
+        : mode === 'trip'
+          ? `/trips/${encodeURIComponent(board.id)}`
+          : `/boards/${encodeURIComponent(board.id)}`,
       imageUrl: songImage?.spotifyArtworkUrl || songImage?.imageUrl || board.imageUrl || board.logoUrl || this.firstBoardCardImage(board),
       imageAlt: title,
     };

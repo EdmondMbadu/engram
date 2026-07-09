@@ -179,8 +179,8 @@
         </div>
 
         <div class="boards-topbar__title">
-          <span class="material-symbols-outlined">{{ songsPage() ? 'music_note' : 'dashboard_customize' }}</span>
-          <span>{{ songsPage() ? 'Songs' : 'Boards' }}</span>
+          <span class="material-symbols-outlined">{{ songsPage() ? 'music_note' : tripsPage() ? 'map' : 'dashboard_customize' }}</span>
+          <span>{{ songsPage() ? 'Songs' : tripsPage() ? 'Trips' : 'Boards' }}</span>
         </div>
 
         <div class="boards-topbar__actions">
@@ -750,7 +750,7 @@
             <div class="board-detail__top">
               <button type="button" class="boards-back-button" (click)="closeBoardDetail()">
                 <span class="material-symbols-outlined">arrow_back</span>
-                Boards
+                {{ tripsPage() ? 'Trips' : 'Boards' }}
               </button>
               <button type="button" class="boards-share-button" (click)="toggleSharePanel()">
                 <span class="material-symbols-outlined">ios_share</span>
@@ -1127,7 +1127,7 @@
                   <div class="song-board__actions">
                     <button type="button" class="boards-back-button" (click)="closeBoardDetail()">
                       <span class="material-symbols-outlined">arrow_back</span>
-                      {{ songsPage() ? 'Songs' : 'Boards' }}
+                      {{ songsPage() ? 'Songs' : tripsPage() ? 'Trips' : 'Boards' }}
                     </button>
                     <button type="button" class="boards-share-button" (click)="toggleSharePanel()">
                       <span class="material-symbols-outlined">ios_share</span>
