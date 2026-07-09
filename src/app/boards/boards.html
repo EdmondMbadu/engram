@@ -1265,22 +1265,34 @@
 
                   <div class="song-strip" aria-label="Song cards">
                     @for (song of selectedSongCards(); track song.id; let index = $index) {
-                      <button
-                        type="button"
-                        [class.song-strip__item--active]="selectedSongCard()?.id === song.id"
-                        class="song-strip__item"
-                        (click)="selectSongCard(index, $event)"
-                      >
-                        @if (songArtwork(song, board)) {
-                          <img [src]="songArtwork(song, board)" [alt]="song.title" loading="lazy" />
-                        } @else {
-                          <span class="material-symbols-outlined">music_note</span>
+                      <div class="song-strip__row" [class.song-strip__row--active]="selectedSongCard()?.id === song.id">
+                        <button
+                          type="button"
+                          [class.song-strip__item--active]="selectedSongCard()?.id === song.id"
+                          class="song-strip__item"
+                          (click)="selectSongCard(index, $event)"
+                        >
+                          @if (songArtwork(song, board)) {
+                            <img [src]="songArtwork(song, board)" [alt]="song.title" loading="lazy" />
+                          } @else {
+                            <span class="material-symbols-outlined">music_note</span>
+                          }
+                          <span>
+                            <b>{{ song.title }}</b>
+                            <small>{{ songArtistLabel(song) }}</small>
+                          </span>
+                        </button>
+                        @if (canEditBoard(board)) {
+                          <button
+                            type="button"
+                            class="song-strip__delete"
+                            [attr.aria-label]="'Delete ' + song.title"
+                            (click)="deleteCard(song, $event)"
+                          >
+                            <span class="material-symbols-outlined">delete</span>
+                          </button>
                         }
-                        <span>
-                          <b>{{ song.title }}</b>
-                          <small>{{ songArtistLabel(song) }}</small>
-                        </span>
-                      </button>
+                      </div>
                     }
                   </div>
                 } @else {
@@ -2530,10 +2542,14 @@
 
   @if (cardDeleteCandidate(); as candidate) {
     <div class="boards-modal-backdrop" (click)="closeCardDeleteDialog($event)">
-      <section class="boards-modal boards-modal--confirm" aria-label="Delete card confirmation" (click)="$event.stopPropagation()">
+      <section
+        class="boards-modal boards-modal--confirm"
+        [attr.aria-label]="isSongDeleteCandidate(candidate) ? 'Delete song confirmation' : 'Delete card confirmation'"
+        (click)="$event.stopPropagation()"
+      >
         <div class="boards-modal__head">
           <div>
-            <p>Delete card</p>
+            <p>{{ isSongDeleteCandidate(candidate) ? 'Delete song' : 'Delete card' }}</p>
             <h3>{{ candidate.card.title }}</h3>
           </div>
           <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDeleteDialog($event)">
@@ -2543,14 +2559,14 @@
         <div class="boards-confirm">
           <span class="material-symbols-outlined">warning</span>
           <p>
-            Delete this card from {{ candidate.boardTitle }}?
+            Delete this {{ isSongDeleteCandidate(candidate) ? 'song' : 'card' }} from {{ candidate.boardTitle }}?
           </p>
         </div>
         <div class="boards-form__actions">
           <button type="button" class="boards-ghost-action" (click)="closeCardDeleteDialog($event)">Cancel</button>
           <button type="button" class="boards-danger-action" (click)="confirmDeleteCard($event)">
             <span class="material-symbols-outlined">delete</span>
-            Delete card
+            Delete {{ isSongDeleteCandidate(candidate) ? 'song' : 'card' }}
           </button>
         </div>
       </section>

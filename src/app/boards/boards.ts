@@ -4349,6 +4349,11 @@ export class BoardsComponent implements OnDestroy {
     return !!uid && (this.authService.isAdmin() || !board.ownerUserId || board.ownerUserId === uid);
   }
 
+  isSongDeleteCandidate(candidate: CardDeleteCandidate): boolean {
+    const board = this.boards().find((item) => item.id === candidate.boardId) ?? null;
+    return this.isSongCard(candidate.card) || (!!board && this.isSongBoard(board));
+  }
+
   canUseStackStudio(board: Board | null | undefined): boolean {
     if (!board) {
       return false;
