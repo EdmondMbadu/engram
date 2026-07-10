@@ -5486,8 +5486,10 @@ export const generateBoardCardImage = onCall(
     if (!userId) {
       throw new HttpsError('unauthenticated', 'Sign in to generate card images.');
     }
-    const boardId = boardCardImageIdentifier(request.data?.boardId, 'boardId');
-    await assertCanEditBoardImages(userId, boardId);
+    const boardId = optionalBoardCardImageIdentifier(request.data?.boardId);
+    if (boardId) {
+      await assertCanEditBoardImages(userId, boardId);
+    }
 
     const userPrompt = stringOrEmpty(request.data?.prompt).replace(/\s+/g, ' ').trim().slice(0, 700);
     const cardTitle = stringOrEmpty(request.data?.cardTitle).replace(/\s+/g, ' ').trim().slice(0, 120);
@@ -5550,8 +5552,10 @@ export const searchBoardCardImages = onCall(
     if (!userId) {
       throw new HttpsError('unauthenticated', 'Sign in to search for card images.');
     }
-    const boardId = boardCardImageIdentifier(request.data?.boardId, 'boardId');
-    await assertCanEditBoardImages(userId, boardId);
+    const boardId = optionalBoardCardImageIdentifier(request.data?.boardId);
+    if (boardId) {
+      await assertCanEditBoardImages(userId, boardId);
+    }
     const query = stringOrEmpty(request.data?.query).replace(/\s+/g, ' ').trim().slice(0, 180);
     if (query.length < 2) {
       throw new HttpsError('invalid-argument', 'Enter at least two characters to search for a photo.');
@@ -5560,7 +5564,23 @@ export const searchBoardCardImages = onCall(
     if (!apiKey) {
       throw new HttpsError('failed-precondition', 'Photo search is not configured.');
     }
-    const results = await findWikimediaCommonsImagesForBoardCard(query, 8);
+    const worldCupEventTitle = buildWorldCupTeamWikipediaTitle(query, query);
+    const [eventImageUrl, commonsResults] = await Promise.all([
+      worldCupEventTitle ? findReferenceImageForBoardWizard(worldCupEventTitle) : Promise.resolve(''),
+      findWikimediaCommonsImagesForBoardCard(query, 8),
+    ]);
+    const eventResult: Omit<BoardCardImageSearchResult, 'token'>[] = eventImageUrl
+      ? [{
+          imageUrl: eventImageUrl,
+          thumbnailUrl: eventImageUrl,
+          sourceUrl: `https://en.wikipedia.org/wiki/${encodeURIComponent(worldCupEventTitle.replace(/ /g, '_'))}`,
+          sourceLabel: 'Wikipedia · tournament event',
+          title: `${worldCupEventTitle} event photo`,
+        }]
+      : [];
+    const results = [...eventResult, ...commonsResults]
+      .filter((result, index, all) => all.findIndex((candidate) => candidate.imageUrl === result.imageUrl) === index)
+      .slice(0, 8);
     return {
       query,
       provider: 'Wikimedia Commons',
@@ -5585,8 +5605,10 @@ export const importBoardCardImage = onCall(
     if (!userId) {
       throw new HttpsError('unauthenticated', 'Sign in to use a searched card image.');
     }
-    const boardId = boardCardImageIdentifier(request.data?.boardId, 'boardId');
-    await assertCanEditBoardImages(userId, boardId);
+    const boardId = optionalBoardCardImageIdentifier(request.data?.boardId);
+    if (boardId) {
+      await assertCanEditBoardImages(userId, boardId);
+    }
     const query = stringOrEmpty(request.data?.query).replace(/\s+/g, ' ').trim().slice(0, 180);
     const result = boardCardImageSearchResultFromInput(request.data?.result);
     const token = stringOrEmpty(request.data?.token);
@@ -6408,7 +6430,14 @@ function buildWorldCupTeamWikipediaTitle(title: string, text: string): string {
     return '';
   }
   const teamName = extractWorldCupWinnerTeamName(title);
-  return teamName ? `${teamName} national football team` : '';
+  const year = extractBoardWizardYearHint(`${title} ${text}`);
+  if (!teamName || !year) {
+    return teamName ? `${teamName} national football team` : '';
+  }
+  if (year === '1950' && teamName === 'Uruguay') {
+    return 'Uruguay v Brazil (1950 FIFA World Cup)';
+  }
+  return `${year} FIFA World Cup final`;
 }
 
 function extractWorldCupWinnerTeamName(title: string): string {
@@ -7449,6 +7478,11 @@ function boardCardImageIdentifier(value: unknown, field: string): string {
     throw new HttpsError('invalid-argument', `${field} is invalid.`);
   }
   return id;
+}
+
+function optionalBoardCardImageIdentifier(value: unknown): string {
+  const id = stringOrEmpty(value);
+  return id ? boardCardImageIdentifier(id, 'boardId') : '';
 }
 
 async function assertCanEditBoardImages(userId: string, boardId: string): Promise<void> {

@@ -29,6 +29,7 @@ type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
 type CardImageToolMode = 'generate' | 'search' | null;
+type WizardCardEditorSection = 'details' | 'image';
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url' | 'walking-tour' | 'driving-tour';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
@@ -815,7 +816,7 @@ const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: 
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css'],
+  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly atlasService = inject(AtlasService);
@@ -974,6 +975,19 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardSelectedCardIds = signal<Set<string>>(new Set());
   readonly wizardRedoingCardIds = signal<Set<string>>(new Set());
   readonly wizardImageLoadingCardIds = signal<Set<string>>(new Set());
+  readonly wizardEditingCardId = signal<string | null>(null);
+  readonly wizardCardEditorSection = signal<WizardCardEditorSection>('details');
+  readonly wizardCardImageToolMode = signal<CardImageToolMode>(null);
+  readonly wizardCardImagePrompt = signal('');
+  readonly wizardCardImageGenerating = signal(false);
+  readonly wizardCardGeneratedImageUrl = signal('');
+  readonly wizardCardGeneratedImageModel = signal('');
+  readonly wizardCardImageSearchQuery = signal('');
+  readonly wizardCardImageSearchLoading = signal(false);
+  readonly wizardCardImageSearchResults = signal<CardImageSearchResult[]>([]);
+  readonly wizardCardImageSearchIndex = signal(0);
+  readonly wizardCardImageApplying = signal(false);
+  readonly wizardCardEditorError = signal<string | null>(null);
   readonly wizardSaving = signal(false);
   readonly songDeckIndex = signal(0);
   readonly songPreviewPlayingKey = signal<string | null>(null);
@@ -1248,6 +1262,12 @@ export class BoardsComponent implements OnDestroy {
   });
   readonly currentCardImageSearchResult = computed(() =>
     this.cardImageSearchResults()[this.cardImageSearchIndex()] ?? null,
+  );
+  readonly wizardEditingCard = computed(() =>
+    this.wizardPreviewCards().find((card) => card.id === this.wizardEditingCardId()) ?? null,
+  );
+  readonly currentWizardCardImageSearchResult = computed(() =>
+    this.wizardCardImageSearchResults()[this.wizardCardImageSearchIndex()] ?? null,
   );
   readonly stackBoard = computed(() => {
     const boardId = this.stackStudioBoardId();
@@ -1896,6 +1916,199 @@ export class BoardsComponent implements OnDestroy {
     this.setWizardCount(previousCount);
   }
 
+  openWizardCardEditor(cardId: string, section: WizardCardEditorSection = 'details'): void {
+    const card = this.wizardPreviewCards().find((item) => item.id === cardId);
+    if (!card || this.isWizardCardBusy(cardId)) {
+      return;
+    }
+    this.resetWizardCardImageTools();
+    this.wizardEditingCardId.set(cardId);
+    this.wizardCardEditorSection.set(section);
+    this.wizardCardImagePrompt.set(this.defaultWizardCardImageGenerationPrompt(card));
+    this.wizardCardImageSearchQuery.set(this.defaultWizardCardImageSearchQuery(card));
+    if (this.isBrowser) {
+      window.setTimeout(() => document.querySelector<HTMLElement>('.boards-modal--wizard')?.scrollTo({ top: 0 }), 0);
+    }
+    if (section === 'image') {
+      this.wizardCardImageToolMode.set('search');
+      void this.searchWizardCardImages();
+    }
+  }
+
+  closeWizardCardEditor(): void {
+    this.wizardEditingCardId.set(null);
+    this.resetWizardCardImageTools();
+  }
+
+  setWizardCardEditorSection(section: WizardCardEditorSection): void {
+    this.wizardCardEditorSection.set(section);
+  }
+
+  openWizardCardImageTool(mode: Exclude<CardImageToolMode, null>): void {
+    const card = this.wizardEditingCard();
+    if (!card) {
+      return;
+    }
+    this.wizardCardEditorSection.set('image');
+    this.wizardCardEditorError.set(null);
+    this.wizardCardImageToolMode.set(mode);
+    if (mode === 'generate') {
+      if (!this.wizardCardImagePrompt().trim()) {
+        this.wizardCardImagePrompt.set(this.defaultWizardCardImageGenerationPrompt(card));
+      }
+      return;
+    }
+    if (!this.wizardCardImageSearchQuery().trim()) {
+      this.wizardCardImageSearchQuery.set(this.defaultWizardCardImageSearchQuery(card));
+    }
+    if (!this.wizardCardImageSearchResults().length) {
+      void this.searchWizardCardImages();
+    }
+  }
+
+  async generateWizardCardImage(): Promise<void> {
+    const card = this.wizardEditingCard();
+    const prompt = this.wizardCardImagePrompt().trim();
+    if (!card || !this.functions || this.wizardCardImageGenerating()) {
+      return;
+    }
+    if (prompt.length < 3) {
+      this.wizardCardEditorError.set('Describe the picture you want.');
+      return;
+    }
+    this.wizardCardImageGenerating.set(true);
+    this.wizardCardEditorError.set(null);
+    try {
+      const callable = httpsCallable<
+        {
+          boardId: string;
+          prompt: string;
+          cardTitle: string;
+          cardSubtitle: string;
+          cardNotes: string;
+          boardTitle: string;
+          boardDescription: string;
+        },
+        { imageDataUrl?: string; model?: string }
+      >(this.functions, 'generateBoardCardImage');
+      const board = this.wizardResult()?.board;
+      const response = await callable({
+        boardId: this.wizardImageBoardId(),
+        prompt,
+        cardTitle: card.title,
+        cardSubtitle: card.subtitle,
+        cardNotes: card.notes,
+        boardTitle: board?.title || this.wizardTargetBoardTitle(),
+        boardDescription: board?.description || '',
+      });
+      const imageDataUrl = response.data.imageDataUrl?.trim() ?? '';
+      if (!imageDataUrl.startsWith('data:image/')) {
+        throw new Error('Nano Banana returned no usable image.');
+      }
+      this.wizardCardGeneratedImageUrl.set(imageDataUrl);
+      this.wizardCardGeneratedImageModel.set(response.data.model?.trim() ?? 'Nano Banana');
+    } catch (error) {
+      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, 'Nano Banana could not generate this picture.'));
+    } finally {
+      this.wizardCardImageGenerating.set(false);
+    }
+  }
+
+  useGeneratedWizardCardImage(): void {
+    const card = this.wizardEditingCard();
+    const imageUrl = this.wizardCardGeneratedImageUrl();
+    if (!card || !imageUrl) {
+      return;
+    }
+    this.updateWizardCard(card.id, 'imageUrl', imageUrl);
+    this.wizardSelectedCardIds.update((ids) => new Set(ids).add(card.id));
+    this.wizardCardEditorError.set(null);
+  }
+
+  async searchWizardCardImages(): Promise<void> {
+    const card = this.wizardEditingCard();
+    const query = this.wizardCardImageSearchQuery().replace(/\s+/g, ' ').trim();
+    if (!card || !this.functions || this.wizardCardImageSearchLoading()) {
+      return;
+    }
+    if (query.length < 2) {
+      this.wizardCardEditorError.set('Enter something to search for.');
+      return;
+    }
+    this.wizardCardImageSearchLoading.set(true);
+    this.wizardCardEditorError.set(null);
+    this.wizardCardImageSearchResults.set([]);
+    this.wizardCardImageSearchIndex.set(0);
+    try {
+      const callable = httpsCallable<
+        { boardId: string; query: string },
+        { results?: CardImageSearchResult[] }
+      >(this.functions, 'searchBoardCardImages');
+      const response = await callable({ boardId: this.wizardImageBoardId(), query });
+      const results = Array.isArray(response.data.results)
+        ? response.data.results.filter((item) => !!item?.imageUrl && !!item?.thumbnailUrl && !!item?.token).slice(0, 8)
+        : [];
+      this.wizardCardImageSearchResults.set(results);
+      if (!results.length) {
+        this.wizardCardEditorError.set('No usable pictures were found. Try the event, year, and subject together.');
+      }
+    } catch (error) {
+      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, 'Picture search is unavailable right now.'));
+    } finally {
+      this.wizardCardImageSearchLoading.set(false);
+    }
+  }
+
+  selectWizardCardImageSearchResult(index: number): void {
+    if (index < 0 || index >= this.wizardCardImageSearchResults().length) {
+      return;
+    }
+    this.wizardCardImageSearchIndex.set(index);
+    this.wizardCardEditorError.set(null);
+  }
+
+  stepWizardCardImageSearch(direction: -1 | 1): void {
+    const count = this.wizardCardImageSearchResults().length;
+    if (count < 2) {
+      return;
+    }
+    this.wizardCardImageSearchIndex.update((index) => (index + direction + count) % count);
+  }
+
+  wizardCardImageSearchPosition(): string {
+    const count = this.wizardCardImageSearchResults().length;
+    return count ? `${this.wizardCardImageSearchIndex() + 1} / ${count}` : '';
+  }
+
+  async useSearchedWizardCardImage(): Promise<void> {
+    const card = this.wizardEditingCard();
+    const result = this.currentWizardCardImageSearchResult();
+    const query = this.wizardCardImageSearchQuery().replace(/\s+/g, ' ').trim();
+    if (!card || !result || !this.functions || this.wizardCardImageApplying()) {
+      return;
+    }
+    this.wizardCardImageApplying.set(true);
+    this.wizardCardEditorError.set(null);
+    try {
+      const callable = httpsCallable<
+        { boardId: string; query: string; result: Omit<CardImageSearchResult, 'token'>; token: string },
+        { imageDataUrl?: string }
+      >(this.functions, 'importBoardCardImage');
+      const { token, ...selected } = result;
+      const response = await callable({ boardId: this.wizardImageBoardId(), query, result: selected, token });
+      const imageDataUrl = response.data.imageDataUrl?.trim() ?? '';
+      if (!imageDataUrl.startsWith('data:image/')) {
+        throw new Error('That picture could not be imported.');
+      }
+      this.updateWizardCard(card.id, 'imageUrl', imageDataUrl);
+      this.wizardSelectedCardIds.update((ids) => new Set(ids).add(card.id));
+    } catch (error) {
+      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, 'That picture could not be used.'));
+    } finally {
+      this.wizardCardImageApplying.set(false);
+    }
+  }
+
   async redoWizardCard(cardId: string): Promise<void> {
     const card = this.wizardPreviewCards().find((item) => item.id === cardId);
     if (!card || this.isWizardCardBusy(cardId)) {
@@ -2009,7 +2222,7 @@ export class BoardsComponent implements OnDestroy {
       return 'Finding image';
     }
     if (this.wizardRedoingCardIds().has(cardId)) {
-      return 'Redoing card';
+      return 'Replacing card';
     }
     return '';
   }
@@ -2039,6 +2252,9 @@ export class BoardsComponent implements OnDestroy {
   }
 
   removeWizardCard(cardId: string): void {
+    if (this.wizardEditingCardId() === cardId) {
+      this.closeWizardCardEditor();
+    }
     this.wizardPreviewCards.update((cards) => cards.filter((card) => card.id !== cardId));
     this.wizardSelectedCardIds.update((ids) => {
       const next = new Set(ids);
@@ -5588,7 +5804,52 @@ export class BoardsComponent implements OnDestroy {
     this.wizardSelectedCardIds.set(new Set());
     this.wizardRedoingCardIds.set(new Set());
     this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardEditingCardId.set(null);
+    this.resetWizardCardImageTools();
     this.wizardSaving.set(false);
+  }
+
+  private resetWizardCardImageTools(): void {
+    this.wizardCardEditorSection.set('details');
+    this.wizardCardImageToolMode.set(null);
+    this.wizardCardImagePrompt.set('');
+    this.wizardCardImageGenerating.set(false);
+    this.wizardCardGeneratedImageUrl.set('');
+    this.wizardCardGeneratedImageModel.set('');
+    this.wizardCardImageSearchQuery.set('');
+    this.wizardCardImageSearchLoading.set(false);
+    this.wizardCardImageSearchResults.set([]);
+    this.wizardCardImageSearchIndex.set(0);
+    this.wizardCardImageApplying.set(false);
+    this.wizardCardEditorError.set(null);
+  }
+
+  private wizardImageBoardId(): string {
+    return this.wizardTargetBoardId() === 'new' ? '' : this.wizardTargetBoardId();
+  }
+
+  private defaultWizardCardImageSearchQuery(card: BoardWizardPreviewCard): string {
+    const context = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${this.wizardPrompt()}`;
+    const year = context.match(/\b(18\d{2}|19\d{2}|20\d{2})\b/)?.[1] ?? '';
+    if (/\b(fifa\s+)?world cup|world cup winner|world cup champion/i.test(context) && year) {
+      const country = card.title
+        .replace(new RegExp(`\\b${year}\\b`, 'g'), ' ')
+        .replace(/\b(fifa|world cup|winner|winners|champion|champions|team)\b/gi, ' ')
+        .replace(/[:;|,()\-–—]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return `${year} ${country} FIFA World Cup champions team celebration`.replace(/\s+/g, ' ').trim().slice(0, 180);
+    }
+    return (card.image_query || `${card.title} ${card.subtitle} photo`).replace(/\s+/g, ' ').trim().slice(0, 180);
+  }
+
+  private defaultWizardCardImageGenerationPrompt(card: BoardWizardPreviewCard): string {
+    const searchQuery = this.defaultWizardCardImageSearchQuery(card);
+    const context = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${this.wizardPrompt()}`;
+    if (/\b(fifa\s+)?world cup|world cup winner|world cup champion/i.test(context)) {
+      return `${searchQuery}. Create a historically grounded editorial team photograph showing the winning squad or celebration from that tournament. No flag, federation crest, badge, logo, typography, or generic country symbol.`.slice(0, 700);
+    }
+    return `Create a specific, polished editorial image for "${card.title}". Use this context: ${card.subtitle}. ${card.notes} Show the actual subject, event, place, or moment rather than a generic symbol. No text or logos.`.replace(/\s+/g, ' ').trim().slice(0, 700);
   }
 
   private async requestWizardBatch(refinement = ''): Promise<BoardWizardGeneratedBatch> {

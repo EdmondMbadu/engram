@@ -1959,6 +1959,7 @@
               </div>
             </div>
 
+            @if (!wizardEditingCard()) {
             <section class="boards-sticker-panel boards-sticker-panel--prominent" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 60%);">
               <div class="boards-sticker-panel__head">
                 <div>
@@ -2002,243 +2003,376 @@
                 </div>
               </div>
             </section>
+            }
 
             @if (wizardError()) {
               <div class="boards-form__soft-error">{{ wizardError() }}</div>
             }
 
-            <div class="boards-wizard-preview__layout">
-                    <div class="boards-wizard-card-grid">
-                @for (card of wizardPreviewCards(); track card.id) {
-                  <article
-                    class="boards-wizard-card"
-                    [class.boards-wizard-card--off]="!isWizardCardSelected(card.id)"
-                    [class.boards-wizard-card--photo-only]="isPhotoOnlyCard(card)"
-                    [class.boards-wizard-card--busy]="isWizardCardBusy(card.id)"
+            @if (wizardEditingCard(); as card) {
+              <section class="wizard-card-editor" aria-label="Edit preview card">
+                <header class="wizard-card-editor__header">
+                  <button type="button" class="wizard-card-editor__back" (click)="closeWizardCardEditor()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    All cards
+                  </button>
+                  <div>
+                    <small>Editing preview</small>
+                    <h4>{{ card.title }}</h4>
+                  </div>
+                  <button
+                    type="button"
+                    class="wizard-card-editor__selected"
+                    [class.wizard-card-editor__selected--active]="isWizardCardSelected(card.id)"
+                    [attr.aria-pressed]="isWizardCardSelected(card.id)"
+                    (click)="toggleWizardCard(card.id)"
                   >
-                    <div class="boards-wizard-card__media">
+                    <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                    {{ isWizardCardSelected(card.id) ? 'Selected' : 'Not selected' }}
+                  </button>
+                </header>
+
+                <nav class="wizard-card-editor__tabs" aria-label="Card editor sections">
+                  <button
+                    type="button"
+                    [class.wizard-card-editor__tab--active]="wizardCardEditorSection() === 'details'"
+                    (click)="setWizardCardEditorSection('details')"
+                  >
+                    <span class="material-symbols-outlined">edit_note</span>
+                    Card details
+                  </button>
+                  <button
+                    type="button"
+                    [class.wizard-card-editor__tab--active]="wizardCardEditorSection() === 'image'"
+                    (click)="setWizardCardEditorSection('image')"
+                  >
+                    <span class="material-symbols-outlined">photo_camera</span>
+                    Picture
+                  </button>
+                </nav>
+
+                <div class="wizard-card-editor__layout">
+                  <div class="wizard-card-editor__visual">
+                    <div class="wizard-card-editor__image">
                       @if (card.imageUrl) {
-                        <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                        <img [src]="card.imageUrl" [alt]="card.title" />
                       } @else {
                         <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                       }
-                      @if (isWizardCardBusy(card.id)) {
-                        <div class="boards-wizard-card__loading" aria-live="polite">
-                          <span class="material-symbols-outlined">autorenew</span>
-                          <strong>{{ wizardCardBusyLabel(card.id) }}</strong>
-                        </div>
-                      }
+                    </div>
+                    <div class="wizard-card-editor__image-actions">
                       <button
                         type="button"
-                        class="boards-wizard-card__check"
-                        [disabled]="isWizardCardBusy(card.id)"
-                        [attr.aria-pressed]="isWizardCardSelected(card.id)"
-                        (click)="toggleWizardCard(card.id)"
+                        [class.wizard-card-editor__image-action--active]="wizardCardImageToolMode() === 'search'"
+                        (click)="openWizardCardImageTool('search')"
                       >
-                        <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                        <span class="material-symbols-outlined">image_search</span>
+                        Find photo
                       </button>
+                      <button
+                        type="button"
+                        [class.wizard-card-editor__image-action--active]="wizardCardImageToolMode() === 'generate'"
+                        (click)="openWizardCardImageTool('generate')"
+                      >
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        Generate
+                      </button>
+                      <label>
+                        <span class="material-symbols-outlined">upload</span>
+                        Upload
+                        <input type="file" accept="image/*" (change)="onWizardCardImageSelected(card.id, $event)" />
+                      </label>
                     </div>
-                    @if (card.editing) {
-                      <div class="boards-wizard-card__edit">
-                        <input
-                          type="url"
-                          placeholder="Image URL"
-                          [value]="card.imageUrl"
-                          (input)="updateWizardCard(card.id, 'imageUrl', $any($event.target).value)"
-                        />
-                        <input
-                          type="text"
-                          maxlength="80"
-                          [value]="card.title"
-                          (input)="updateWizardCard(card.id, 'title', $any($event.target).value)"
-                        />
-                        <input
-                          type="text"
-                          maxlength="90"
-                          [value]="card.subtitle"
-                          (input)="updateWizardCard(card.id, 'subtitle', $any($event.target).value)"
-                        />
-                        <textarea
-                          rows="3"
-                          maxlength="260"
-                          [value]="card.notes"
-                          (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"
-                        ></textarea>
-                        @if (card.tour; as tour) {
-                          <div class="boards-wizard-tour-edit">
-                            <div class="boards-form__split">
-                              <input
-                                type="number"
-                                min="1"
-                                max="200"
-                                [value]="tour.sequence"
-                                (input)="updateWizardCardTour(card.id, 'sequence', $any($event.target).value)"
-                              />
-                              <input
-                                type="text"
-                                maxlength="180"
-                                placeholder="Tour address"
-                                [value]="tour.address"
-                                (input)="updateWizardCardTour(card.id, 'address', $any($event.target).value)"
-                              />
+                    @if (card.imageUrl) {
+                      <button type="button" class="wizard-card-editor__remove-image" (click)="clearWizardCardImage(card.id)">
+                        <span class="material-symbols-outlined">hide_image</span>
+                        Remove picture
+                      </button>
+                    }
+                  </div>
+
+                  <div class="wizard-card-editor__workspace">
+                    @if (wizardCardEditorSection() === 'image') {
+                      @if (wizardCardImageToolMode() === 'generate') {
+                        <div class="wizard-card-image-tool">
+                          <div class="wizard-card-image-tool__heading">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                            <div>
+                              <strong>Generate a new picture</strong>
+                              <small>Nano Banana uses this card and board as context.</small>
                             </div>
-                            <div class="boards-form__split">
-                              <input
-                                type="number"
-                                step="0.000001"
-                                placeholder="Latitude"
-                                [value]="tour.lat ?? ''"
-                                (input)="updateWizardCardTour(card.id, 'lat', $any($event.target).value)"
-                              />
-                              <input
-                                type="number"
-                                step="0.000001"
-                                placeholder="Longitude"
-                                [value]="tour.lng ?? ''"
-                                (input)="updateWizardCardTour(card.id, 'lng', $any($event.target).value)"
-                              />
-                            </div>
-                            <textarea
-                              rows="5"
-                              maxlength="3600"
-                              placeholder="Guide narration"
-                              [value]="tour.guideScript"
-                              (input)="updateWizardCardTour(card.id, 'guideScript', $any($event.target).value)"
-                            ></textarea>
-                            @if (tour.legToNext; as leg) {
-                              <div class="boards-form__split">
-                                <input
-                                  type="text"
-                                  maxlength="32"
-                                  placeholder="Distance"
-                                  [value]="leg.distanceText"
-                                  (input)="updateWizardCardTourLeg(card.id, 'distanceText', $any($event.target).value)"
-                                />
-                                <input
-                                  type="text"
-                                  maxlength="32"
-                                  placeholder="Duration"
-                                  [value]="leg.durationText"
-                                  (input)="updateWizardCardTourLeg(card.id, 'durationText', $any($event.target).value)"
-                                />
-                              </div>
-                              <textarea
-                                rows="2"
-                                maxlength="260"
-                                placeholder="Wayfinder instruction"
-                                [value]="leg.instruction"
-                                (input)="updateWizardCardTourLeg(card.id, 'instruction', $any($event.target).value)"
-                              ></textarea>
-                              <textarea
-                                rows="3"
-                                maxlength="700"
-                                placeholder="Navigation narration"
-                                [value]="leg.navScript"
-                                (input)="updateWizardCardTourLeg(card.id, 'navScript', $any($event.target).value)"
-                              ></textarea>
-                            }
                           </div>
-                        }
-                        <div class="boards-form__split">
-                          <select [value]="card.type" (change)="updateWizardCard(card.id, 'type', $any($event.target).value)">
-                            @for (type of cardTypes; track type.id) {
-                              <option [value]="type.id">{{ type.label }}</option>
-                            }
-                          </select>
-                          <select [value]="card.status" (change)="updateWizardCard(card.id, 'status', $any($event.target).value)">
-                            @for (status of cardStatuses; track status.id) {
-                              <option [value]="status.id">{{ status.label }}</option>
-                            }
-                          </select>
-                        </div>
-                        <input
-                          type="text"
-                          [value]="card.tags.join(', ')"
-                          (input)="updateWizardCardTags(card.id, $any($event.target).value)"
-                        />
-                      </div>
-                    } @else if (!isPhotoOnlyCard(card)) {
-                      <div class="boards-wizard-card__body">
-                        <strong>{{ card.title }}</strong>
-                        <small>{{ card.subtitle }}</small>
-                        <p>{{ card.notes }}</p>
-                        @if (card.tour?.guideScript) {
-                          <p class="boards-wizard-card__tour-note">{{ card.tour?.guideScript }}</p>
-                        }
-                        <div class="boards-wizard-card__tags">
-                          @for (tag of card.tags; track tag) {
-                            <span>{{ tag }}</span>
+                          <label>
+                            <span>Describe the picture</span>
+                            <textarea
+                              rows="4"
+                              maxlength="700"
+                              [value]="wizardCardImagePrompt()"
+                              (input)="wizardCardImagePrompt.set($any($event.target).value)"
+                            ></textarea>
+                          </label>
+                          <button
+                            type="button"
+                            class="boards-primary-action"
+                            [disabled]="wizardCardImageGenerating() || wizardCardImagePrompt().trim().length < 3"
+                            (click)="generateWizardCardImage()"
+                          >
+                            <span class="material-symbols-outlined">{{ wizardCardImageGenerating() ? 'progress_activity' : 'auto_awesome' }}</span>
+                            {{ wizardCardImageGenerating() ? 'Creating picture...' : (wizardCardGeneratedImageUrl() ? 'Generate another' : 'Generate picture') }}
+                          </button>
+                          @if (wizardCardGeneratedImageUrl()) {
+                            <div class="wizard-card-image-tool__candidate">
+                              <img [src]="wizardCardGeneratedImageUrl()" alt="Generated card picture" />
+                              <div>
+                                <small>{{ wizardCardGeneratedImageModel() || 'Nano Banana' }}</small>
+                                <button type="button" class="boards-primary-action" (click)="useGeneratedWizardCardImage()">
+                                  <span class="material-symbols-outlined">check</span>
+                                  Use this picture
+                                </button>
+                              </div>
+                            </div>
                           }
                         </div>
+                      } @else {
+                        <div class="wizard-card-image-tool">
+                          <div class="wizard-card-image-tool__heading">
+                            <span class="material-symbols-outlined">image_search</span>
+                            <div>
+                              <strong>Find a real photo</strong>
+                              <small>Search by the specific subject, event, and year.</small>
+                            </div>
+                          </div>
+                          <div class="wizard-card-image-tool__search">
+                            <input
+                              type="search"
+                              maxlength="180"
+                              placeholder="Example: 1934 Italy World Cup champions"
+                              [value]="wizardCardImageSearchQuery()"
+                              (input)="wizardCardImageSearchQuery.set($any($event.target).value)"
+                              (keydown.enter)="$event.preventDefault(); searchWizardCardImages()"
+                            />
+                            <button
+                              type="button"
+                              aria-label="Search pictures"
+                              title="Search pictures"
+                              [disabled]="wizardCardImageSearchLoading() || wizardCardImageSearchQuery().trim().length < 2"
+                              (click)="searchWizardCardImages()"
+                            >
+                              <span class="material-symbols-outlined">{{ wizardCardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
+                            </button>
+                          </div>
+                          @if (wizardCardImageSearchLoading()) {
+                            <div class="wizard-card-image-tool__searching" role="status" aria-live="polite">
+                              <span class="material-symbols-outlined">progress_activity</span>
+                              <div>
+                                <strong>Searching for relevant photos...</strong>
+                                <small>{{ wizardCardImageSearchQuery() }}</small>
+                              </div>
+                            </div>
+                          }
+                          @if (currentWizardCardImageSearchResult(); as result) {
+                            <div class="wizard-card-image-tool__browser">
+                              <button type="button" aria-label="Previous picture" (click)="stepWizardCardImageSearch(-1)">
+                                <span class="material-symbols-outlined">chevron_left</span>
+                              </button>
+                              <img [src]="result.imageUrl" [alt]="result.title" />
+                              <button type="button" aria-label="Next picture" (click)="stepWizardCardImageSearch(1)">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                              </button>
+                            </div>
+                            <div class="wizard-card-image-tool__result-actions">
+                              <span>{{ wizardCardImageSearchPosition() }}</span>
+                              <a [href]="result.sourceUrl" target="_blank" rel="noopener noreferrer">{{ result.sourceLabel || 'View source' }}</a>
+                              <button type="button" class="boards-primary-action" [disabled]="wizardCardImageApplying()" (click)="useSearchedWizardCardImage()">
+                                <span class="material-symbols-outlined">{{ wizardCardImageApplying() ? 'progress_activity' : 'check' }}</span>
+                                {{ wizardCardImageApplying() ? 'Using picture...' : 'Use this picture' }}
+                              </button>
+                            </div>
+                            <div class="wizard-card-image-tool__thumbs" aria-label="Picture search results">
+                              @for (item of wizardCardImageSearchResults(); track item.token; let index = $index) {
+                                <button
+                                  type="button"
+                                  [class.wizard-card-image-tool__thumb--active]="index === wizardCardImageSearchIndex()"
+                                  [attr.aria-label]="'Select picture ' + (index + 1)"
+                                  [attr.aria-pressed]="index === wizardCardImageSearchIndex()"
+                                  (click)="selectWizardCardImageSearchResult(index)"
+                                >
+                                  <img [src]="item.thumbnailUrl" alt="" />
+                                </button>
+                              }
+                            </div>
+                          }
+                        </div>
+                      }
+                    } @else {
+                      <div class="wizard-card-editor__fields">
+                        <label>
+                          <span>Title</span>
+                          <input type="text" maxlength="80" [value]="card.title" (input)="updateWizardCard(card.id, 'title', $any($event.target).value)" />
+                        </label>
+                        <label>
+                          <span>Subtitle</span>
+                          <input type="text" maxlength="90" [value]="card.subtitle" (input)="updateWizardCard(card.id, 'subtitle', $any($event.target).value)" />
+                        </label>
+                        <label>
+                          <span>Notes</span>
+                          <textarea rows="5" maxlength="260" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
+                        </label>
+                        <div class="wizard-card-editor__field-pair">
+                          <label>
+                            <span>Type</span>
+                            <select [value]="card.type" (change)="updateWizardCard(card.id, 'type', $any($event.target).value)">
+                              @for (type of cardTypes; track type.id) {
+                                <option [value]="type.id" [selected]="type.id === card.type">{{ type.label }}</option>
+                              }
+                            </select>
+                          </label>
+                          <label>
+                            <span>Status</span>
+                            <select [value]="card.status" (change)="updateWizardCard(card.id, 'status', $any($event.target).value)">
+                              @for (status of cardStatuses; track status.id) {
+                                <option [value]="status.id" [selected]="status.id === card.status">{{ status.label }}</option>
+                              }
+                            </select>
+                          </label>
+                        </div>
+                        <label>
+                          <span>Tags</span>
+                          <input type="text" placeholder="history, champion, 1934" [value]="card.tags.join(', ')" (input)="updateWizardCardTags(card.id, $any($event.target).value)" />
+                        </label>
+                        @if (card.tour; as tour) {
+                          <div class="wizard-card-editor__tour-fields">
+                            <label>
+                              <span>Tour address</span>
+                              <input type="text" maxlength="180" [value]="tour.address" (input)="updateWizardCardTour(card.id, 'address', $any($event.target).value)" />
+                            </label>
+                            <label>
+                              <span>Guide narration</span>
+                              <textarea rows="5" maxlength="3600" [value]="tour.guideScript" (input)="updateWizardCardTour(card.id, 'guideScript', $any($event.target).value)"></textarea>
+                            </label>
+                          </div>
+                        }
                       </div>
                     }
-                    <div class="boards-wizard-card__actions">
-                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="toggleWizardCard(card.id)">
-                        <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
-                        {{ isWizardCardSelected(card.id) ? 'Unselect' : 'Select' }}
+
+                    @if (wizardCardEditorError()) {
+                      <div class="boards-form__soft-error">{{ wizardCardEditorError() }}</div>
+                    }
+
+                    <footer class="wizard-card-editor__footer">
+                      <div class="wizard-card-editor__secondary-actions">
+                        <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="redoWizardCard(card.id)">
+                          <span class="material-symbols-outlined">autorenew</span>
+                          <span>
+                            <strong>{{ wizardRedoingCardIds().has(card.id) ? 'Replacing card...' : 'Replace entire card' }}</strong>
+                            <small>Generate a different item for this position</small>
+                          </span>
+                        </button>
+                        <button type="button" class="wizard-card-editor__delete" [disabled]="isWizardCardBusy(card.id)" (click)="removeWizardCard(card.id)">
+                          <span class="material-symbols-outlined">delete</span>
+                          Remove card
+                        </button>
+                      </div>
+                      <button type="button" class="boards-primary-action" (click)="closeWizardCardEditor()">
+                        <span class="material-symbols-outlined">done</span>
+                        Done editing
                       </button>
-                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="toggleWizardCardEditing(card.id)">
-                        <span class="material-symbols-outlined">{{ card.editing ? 'done' : 'edit' }}</span>
-                        {{ card.editing ? 'Done' : 'Edit' }}
-                      </button>
-                      <input #wizardCardImageInput hidden type="file" accept="image/*" (change)="onWizardCardImageSelected(card.id, $event)" />
-                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="wizardCardImageInput.click()">
-                        <span class="material-symbols-outlined">add_photo_alternate</span>
-                        Picture
-                      </button>
-                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="retryWizardCardImage(card.id)">
-                        <span class="material-symbols-outlined">{{ card.imageUrl ? 'image_search' : 'add_photo_alternate' }}</span>
-                        {{ card.imageUrl ? 'Fix image' : 'Find image' }}
-                      </button>
-                      @if (card.audioPreviewUrl) {
+                    </footer>
+                  </div>
+                </div>
+              </section>
+            } @else {
+              <div class="boards-wizard-preview__layout">
+                <div class="boards-wizard-card-grid">
+                  @for (card of wizardPreviewCards(); track card.id) {
+                    <article
+                      class="boards-wizard-card"
+                      [class.boards-wizard-card--off]="!isWizardCardSelected(card.id)"
+                      [class.boards-wizard-card--photo-only]="isPhotoOnlyCard(card)"
+                      [class.boards-wizard-card--busy]="isWizardCardBusy(card.id)"
+                    >
+                      <div class="boards-wizard-card__media">
+                        @if (card.imageUrl) {
+                          <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                        } @else {
+                          <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                        }
+                        @if (isWizardCardBusy(card.id)) {
+                          <div class="boards-wizard-card__loading" aria-live="polite">
+                            <span class="material-symbols-outlined">autorenew</span>
+                            <strong>{{ wizardCardBusyLabel(card.id) }}</strong>
+                          </div>
+                        }
                         <button
                           type="button"
+                          class="boards-wizard-card__check"
                           [disabled]="isWizardCardBusy(card.id)"
-                          [class.boards-wizard-card__action--playing]="isSongPreviewPlaying(card, 'wizard')"
-                          (click)="toggleSongPreview(card, $event, 'wizard')"
+                          [attr.aria-label]="isWizardCardSelected(card.id) ? 'Unselect card' : 'Select card'"
+                          [attr.aria-pressed]="isWizardCardSelected(card.id)"
+                          (click)="toggleWizardCard(card.id)"
                         >
-                          <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'wizard') ? 'pause' : 'music_note' }}</span>
-                          {{ isSongPreviewPlaying(card, 'wizard') ? 'Playing' : 'Preview' }}
+                          <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
                         </button>
-                      }
-                      @if (card.imageUrl) {
-                        <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="clearWizardCardImage(card.id)">
-                          <span class="material-symbols-outlined">hide_image</span>
-                          Clear
+                        <button type="button" class="boards-wizard-card__change-image" [disabled]="isWizardCardBusy(card.id)" (click)="openWizardCardEditor(card.id, 'image')">
+                          <span class="material-symbols-outlined">photo_camera</span>
+                          Change image
                         </button>
+                      </div>
+                      @if (!isPhotoOnlyCard(card)) {
+                        <div class="boards-wizard-card__body">
+                          <strong>{{ card.title }}</strong>
+                          <small>{{ card.subtitle }}</small>
+                          <p>{{ card.notes }}</p>
+                          <div class="boards-wizard-card__tags">
+                            @for (tag of card.tags; track tag) {
+                              <span>{{ tag }}</span>
+                            }
+                          </div>
+                        </div>
                       }
-                      <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="redoWizardCard(card.id)">
-                        <span class="material-symbols-outlined">refresh</span>
-                        Redo
-                      </button>
-                      <button type="button" class="boards-wizard-card__remove" [disabled]="isWizardCardBusy(card.id)" (click)="removeWizardCard(card.id)">
-                        <span class="material-symbols-outlined">delete</span>
-                        Remove
-                      </button>
-                    </div>
-                  </article>
-                }
+                      <div class="boards-wizard-card__actions boards-wizard-card__actions--simple">
+                        <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="openWizardCardEditor(card.id, 'details')">
+                          <span class="material-symbols-outlined">edit</span>
+                          Edit card
+                        </button>
+                        @if (card.audioPreviewUrl) {
+                          <button
+                            type="button"
+                            class="boards-wizard-card__audio"
+                            [disabled]="isWizardCardBusy(card.id)"
+                            [attr.aria-label]="isSongPreviewPlaying(card, 'wizard') ? 'Pause preview' : 'Play preview'"
+                            [title]="isSongPreviewPlaying(card, 'wizard') ? 'Pause preview' : 'Play preview'"
+                            (click)="toggleSongPreview(card, $event, 'wizard')"
+                          >
+                            <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'wizard') ? 'pause' : 'play_arrow' }}</span>
+                          </button>
+                        }
+                      </div>
+                    </article>
+                  }
+                </div>
+
+                <aside class="boards-wizard-refine">
+                  <h4>Refine</h4>
+                  <textarea
+                    rows="5"
+                    placeholder="Make it more kid-friendly, add cheaper options, remove duplicates..."
+                    [value]="wizardRefineText()"
+                    (input)="wizardRefineText.set($any($event.target).value)"
+                  ></textarea>
+                  <button type="button" class="boards-primary-action" (click)="refineWizardBatch()" [disabled]="!wizardRefineText().trim()">
+                    <span class="material-symbols-outlined">forum</span>
+                    Refine batch
+                  </button>
+                  <button type="button" class="boards-ghost-action" (click)="addMoreWizardCards()">
+                    <span class="material-symbols-outlined">add</span>
+                    Add 5 more
+                  </button>
+                </aside>
               </div>
+            }
 
-              <aside class="boards-wizard-refine">
-                <h4>Refine</h4>
-                <textarea
-                  rows="5"
-                  placeholder="Make it more kid-friendly, add cheaper options, remove duplicates..."
-                  [value]="wizardRefineText()"
-                  (input)="wizardRefineText.set($any($event.target).value)"
-                ></textarea>
-                <button type="button" class="boards-primary-action" (click)="refineWizardBatch()" [disabled]="!wizardRefineText().trim()">
-                  <span class="material-symbols-outlined">forum</span>
-                  Refine batch
-                </button>
-                <button type="button" class="boards-ghost-action" (click)="addMoreWizardCards()">
-                  <span class="material-symbols-outlined">add</span>
-                  Add 5 more
-                </button>
-              </aside>
-            </div>
-
+            @if (!wizardEditingCard()) {
             <div class="boards-form__actions boards-wizard-savebar">
               <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
               <button
@@ -2251,6 +2385,7 @@
                 {{ wizardSaving() ? 'Saving...' : 'Save selected cards' }}
               </button>
             </div>
+            }
           </div>
         } @else {
           <div class="boards-wizard boards-wizard-done">
