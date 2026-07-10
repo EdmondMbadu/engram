@@ -816,7 +816,7 @@ const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: 
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css'],
+  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly atlasService = inject(AtlasService);

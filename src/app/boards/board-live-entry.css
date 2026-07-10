@@ -1,0 +1,119 @@
+.board-detail__experience-actions {
+  display: flex;
+  max-width: 38rem;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.board-detail__live-view,
+.board-detail__studio-entry {
+  display: inline-flex;
+  min-height: 3.2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border: 2px solid var(--ink);
+  border-radius: 0.5rem;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 950;
+  padding: 0.55rem 0.7rem;
+}
+
+.board-detail__live-view {
+  min-width: min(100%, 17rem);
+  flex: 1 1 16rem;
+  justify-content: flex-start;
+  background: var(--ink);
+  color: #ffffff;
+  text-align: left;
+}
+
+.board-detail__live-view:hover,
+.board-detail__live-view:focus-visible {
+  background: color-mix(in srgb, var(--board-accent) 30%, var(--ink));
+}
+
+.board-detail__live-view-icon {
+  display: grid;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: 0 0 2.1rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--board-accent);
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.board-detail__live-view-copy {
+  display: grid;
+  min-width: 0;
+  flex: 1 1 auto;
+  gap: 0.12rem;
+}
+
+.board-detail__live-view-copy strong,
+.board-detail__live-view-copy small {
+  display: block;
+}
+
+.board-detail__live-view-copy strong {
+  font-size: 0.86rem;
+  line-height: 1;
+}
+
+.board-detail__live-view-copy small {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.65rem;
+  font-weight: 750;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-detail__live-view > .material-symbols-outlined:last-child {
+  flex: 0 0 auto;
+  font-size: 1.1rem;
+}
+
+.board-detail__studio-entry {
+  flex: 0 0 auto;
+  background: #ffffff;
+  color: var(--board-accent);
+  font-size: 0.75rem;
+}
+
+.board-detail__studio-entry:hover,
+.board-detail__studio-entry:focus-visible {
+  background: color-mix(in srgb, var(--board-accent) 12%, #ffffff);
+}
+
+.board-detail__studio-entry .material-symbols-outlined {
+  font-size: 1.05rem;
+}
+
+@media (max-width: 520px) {
+  .board-detail__experience-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    width: 100%;
+  }
+
+  .board-detail__live-view {
+    min-width: 0;
+  }
+
+  .board-detail__live-view-copy small {
+    white-space: normal;
+  }
+
+  .board-detail__studio-entry {
+    padding-inline: 0.65rem;
+  }
+}

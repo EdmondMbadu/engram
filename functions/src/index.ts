@@ -5565,10 +5565,21 @@ export const searchBoardCardImages = onCall(
       throw new HttpsError('failed-precondition', 'Photo search is not configured.');
     }
     const worldCupEventTitle = buildWorldCupTeamWikipediaTitle(query, query);
-    const [eventImageUrl, commonsResults] = await Promise.all([
+    const searchQueries = buildBoardCardImageSearchQueries(query);
+    const [eventImageUrl, searchSettled] = await Promise.all([
       worldCupEventTitle ? findReferenceImageForBoardWizard(worldCupEventTitle) : Promise.resolve(''),
-      findWikimediaCommonsImagesForBoardCard(query, 8),
+      Promise.allSettled(searchQueries.map((searchQuery) => findWikimediaCommonsImagesForBoardCard(searchQuery, 8))),
     ]);
+    const successfulSearches = searchSettled.filter(
+      (result): result is PromiseFulfilledResult<Array<Omit<BoardCardImageSearchResult, 'token'>>> => result.status === 'fulfilled',
+    );
+    if (!successfulSearches.length) {
+      throw new HttpsError('unavailable', 'Photo search is temporarily unavailable.');
+    }
+    const searchedImages = successfulSearches
+      .flatMap((result) => result.value)
+      .filter((result) => !worldCupEventTitle || isUsefulWorldCupPhotoSearchResult(result));
+    const commonsResults = worldCupEventTitle ? rankWorldCupPhotoSearchResults(searchedImages, query) : searchedImages;
     const eventResult: Omit<BoardCardImageSearchResult, 'token'>[] = eventImageUrl
       ? [{
           imageUrl: eventImageUrl,
@@ -6465,6 +6476,62 @@ function extractWorldCupWinnerTeamName(title: string): string {
     return known;
   }
   return compact.replace(/^[\-–—]+|[\-–—]+$/g, '').trim().slice(0, 70);
+}
+
+function buildBoardCardImageSearchQueries(query: string): string[] {
+  const normalized = query.replace(/\s+/g, ' ').trim().slice(0, 180);
+  const worldCupEventTitle = buildWorldCupTeamWikipediaTitle(normalized, normalized);
+  if (!worldCupEventTitle) {
+    const broaderQuery = normalized
+      .replace(/\b(high quality|editorial|beautiful|authentic|specific|actual|real|showing|photo|picture|image)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return [normalized, broaderQuery]
+      .filter((value) => value.length >= 2)
+      .filter((value, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === value.toLowerCase()) === index);
+  }
+  const teamName = extractWorldCupWinnerTeamName(normalized);
+  const year = extractBoardWizardYearHint(normalized);
+  return [
+    normalized,
+    [teamName, 'national football team', year].filter(Boolean).join(' '),
+    [year, teamName, 'FIFA World Cup'].filter(Boolean).join(' '),
+    [year, 'FIFA World Cup final'].filter(Boolean).join(' '),
+  ]
+    .map((value) => value.replace(/\s+/g, ' ').trim().slice(0, 180))
+    .filter((value) => value.length >= 2)
+    .filter((value, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === value.toLowerCase()) === index);
+}
+
+function isUsefulWorldCupPhotoSearchResult(result: Omit<BoardCardImageSearchResult, 'token'>): boolean {
+  const title = result.title.toLowerCase();
+  if (/\b(map|qualification|qualifying|host|hosts|poster|stamp|logo|crest|badge|flag|coat of arms|emblem|kit graphic|formation diagram)\b/.test(title)) {
+    return false;
+  }
+  return !/^\d{4}( fifa)? world cup(?: with qualification)?$/.test(title)
+    && !/^fifa world cup appearances/.test(title)
+    && !/^countries in the fifa world cup/.test(title);
+}
+
+function rankWorldCupPhotoSearchResults(
+  results: Array<Omit<BoardCardImageSearchResult, 'token'>>,
+  query: string,
+): Array<Omit<BoardCardImageSearchResult, 'token'>> {
+  const teamName = extractWorldCupWinnerTeamName(query).toLowerCase();
+  const year = extractBoardWizardYearHint(query);
+  const unique = results.filter(
+    (result, index, all) => all.findIndex((candidate) => candidate.imageUrl === result.imageUrl) === index,
+  );
+  return unique.sort((left, right) => {
+    const score = (result: Omit<BoardCardImageSearchResult, 'token'>): number => {
+      const title = result.title.toLowerCase();
+      return (teamName && title.includes(teamName) ? 18 : 0)
+        + (year && title.includes(year) ? 12 : 0)
+        + (/\b(celebrating|celebration|champion|champions|squad|team)\b/.test(title) ? 10 : 0)
+        + (/\b(final|match|goal|victory|trophy)\b/.test(title) ? 6 : 0);
+    };
+    return score(right) - score(left);
+  });
 }
 
 async function enrichBoardWizardCardWithPlace(

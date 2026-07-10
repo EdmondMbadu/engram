@@ -776,12 +776,6 @@
                 <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
                 Save
               </button>
-              @if (canUseStackStudio(board)) {
-                <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)">
-                  <span class="material-symbols-outlined">auto_awesome_motion</span>
-                  Studio
-                </button>
-              }
               @if (canForkBoard(board)) {
                 <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)">
                   <span class="material-symbols-outlined">call_split</span>
@@ -823,6 +817,22 @@
                 <p>Board</p>
                 <h1>{{ board.title }}</h1>
                 <span>{{ board.description || 'Add cards to shape this collection.' }}</span>
+                <div class="board-detail__experience-actions" aria-label="Board viewing options">
+                  <button type="button" class="board-detail__live-view" (click)="openStackView(board, $event)">
+                    <span class="board-detail__live-view-icon material-symbols-outlined">play_arrow</span>
+                    <span class="board-detail__live-view-copy">
+                      <strong>Live view</strong>
+                      <small>Open the card-by-card experience</small>
+                    </span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                  @if (canUseStackStudio(board)) {
+                    <button type="button" class="board-detail__studio-entry" (click)="openStackStudio(board, $event)">
+                      <span class="material-symbols-outlined">auto_awesome_motion</span>
+                      Studio
+                    </button>
+                  }
+                </div>
                 <div
                   class="board-detail__owner"
                   style="display: inline-flex; align-items: center; width: fit-content; max-width: 100%; gap: .65rem; margin-top: 1rem; border: 2px solid var(--ink); border-radius: 999px; background: rgba(255,255,255,.92); box-shadow: 3px 3px 0 var(--ink); padding: .45rem .75rem .45rem .5rem;"
@@ -2139,7 +2149,15 @@
                             <span class="material-symbols-outlined">image_search</span>
                             <div>
                               <strong>Find a real photo</strong>
-                              <small>Search by the specific subject, event, and year.</small>
+                              <small>
+                                @if (wizardCardImageSearchLoading()) {
+                                  Searching related photo sources...
+                                } @else if (wizardCardImageSearchResults().length) {
+                                  {{ wizardCardImageSearchResults().length }} photos found. Choose any one below.
+                                } @else {
+                                  Search by the specific subject, event, and year.
+                                }
+                              </small>
                             </div>
                           </div>
                           <div class="wizard-card-image-tool__search">
