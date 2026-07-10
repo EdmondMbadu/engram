@@ -4,7 +4,7 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
 import { defineSecret, defineString } from 'firebase-functions/params';
-import { createHash, randomUUID } from 'node:crypto';
+import { createHash, createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
 import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
@@ -17,6 +17,7 @@ import {
   geminiApiKey,
   generateAnswerCard,
   generateAnswerQuiz,
+  generateBoardCardImageAsset,
   generateBoardWizardBatch as generateBoardWizardBatchWithGemini,
   generateVoiceConversationRecap,
   type BoardWizardMode,
@@ -1380,8 +1381,10 @@ type WikipediaPageMediaResponse = {
 
 type GoogleCustomSearchImageResponse = {
   items?: Array<{
+    title?: string;
     link?: string;
     mime?: string;
+    displayLink?: string;
     image?: {
       contextLink?: string;
       thumbnailLink?: string;
@@ -1390,6 +1393,15 @@ type GoogleCustomSearchImageResponse = {
   error?: {
     message?: string;
   };
+};
+
+type BoardCardImageSearchResult = {
+  imageUrl: string;
+  thumbnailUrl: string;
+  sourceUrl: string;
+  sourceLabel: string;
+  title: string;
+  token: string;
 };
 
 type GoogleCustomSearchWebResponse = {
@@ -5443,6 +5455,151 @@ export const generateBoardWizardBatch = onCall(
   },
 );
 
+export const generateBoardCardImage = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 120,
+    memory: '1GiB',
+    secrets: [geminiApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to generate card images.');
+    }
+    const boardId = boardCardImageIdentifier(request.data?.boardId, 'boardId');
+    await assertCanEditBoardImages(userId, boardId);
+
+    const userPrompt = stringOrEmpty(request.data?.prompt).replace(/\s+/g, ' ').trim().slice(0, 700);
+    const cardTitle = stringOrEmpty(request.data?.cardTitle).replace(/\s+/g, ' ').trim().slice(0, 120);
+    const cardSubtitle = stringOrEmpty(request.data?.cardSubtitle).replace(/\s+/g, ' ').trim().slice(0, 180);
+    const cardNotes = stringOrEmpty(request.data?.cardNotes).replace(/\s+/g, ' ').trim().slice(0, 320);
+    const boardTitle = stringOrEmpty(request.data?.boardTitle).replace(/\s+/g, ' ').trim().slice(0, 120);
+    const boardDescription = stringOrEmpty(request.data?.boardDescription).replace(/\s+/g, ' ').trim().slice(0, 240);
+    if (userPrompt.length < 3 && cardTitle.length < 3) {
+      throw new HttpsError('invalid-argument', 'Describe the image or add a card title first.');
+    }
+
+    const prompt = [
+      'Create one beautiful, high-quality editorial image for a LivingWiki card.',
+      'Use a polished photographic or premium illustrative composition appropriate to the subject.',
+      'The image must work as a landscape card cover with the main subject clear at thumbnail size.',
+      'Do not add words, captions, logos, UI, borders, watermarks, signatures, or mockup frames.',
+      'Do not imitate an existing album cover, poster, copyrighted character, or another artist\'s signature style.',
+      userPrompt ? `User direction: ${userPrompt}` : '',
+      cardTitle ? `Card title: ${cardTitle}` : '',
+      cardSubtitle ? `Card subtitle: ${cardSubtitle}` : '',
+      cardNotes ? `Card context: ${cardNotes}` : '',
+      boardTitle ? `Board: ${boardTitle}` : '',
+      boardDescription ? `Board context: ${boardDescription}` : '',
+    ].filter(Boolean).join('\n');
+
+    try {
+      const generated = await generateBoardCardImageAsset(prompt);
+      const bytes = Buffer.from(generated.base64, 'base64');
+      if (!bytes.length || bytes.length > 7 * 1024 * 1024) {
+        throw new HttpsError('resource-exhausted', 'Generated image was too large to return.');
+      }
+      return {
+        imageDataUrl: `data:${generated.mimeType};base64,${generated.base64}`,
+        model: generated.model,
+      };
+    } catch (error) {
+      if (error instanceof HttpsError) {
+        throw error;
+      }
+      logger.error('generateBoardCardImage failed.', {
+        userId,
+        boardId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      throw new HttpsError('internal', error instanceof Error ? error.message : 'Nano Banana could not generate this image.');
+    }
+  },
+);
+
+export const searchBoardCardImages = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    secrets: [googleCustomSearchApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to search for card images.');
+    }
+    const boardId = boardCardImageIdentifier(request.data?.boardId, 'boardId');
+    await assertCanEditBoardImages(userId, boardId);
+    const query = stringOrEmpty(request.data?.query).replace(/\s+/g, ' ').trim().slice(0, 180);
+    if (query.length < 2) {
+      throw new HttpsError('invalid-argument', 'Enter at least two characters to search for a photo.');
+    }
+    const apiKey = googleCustomSearchApiKey.value();
+    if (!apiKey || !googleCustomSearchCx.trim()) {
+      throw new HttpsError('failed-precondition', 'Google image search is not configured.');
+    }
+    const results = await findGoogleCustomSearchImagesForBoardCard(query, apiKey, 8);
+    return {
+      query,
+      results: results.map((result): BoardCardImageSearchResult => ({
+        ...result,
+        token: boardCardImageSearchToken(userId, query, result, apiKey),
+      })),
+    };
+  },
+);
+
+export const importBoardCardImage = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 45,
+    memory: '512MiB',
+    secrets: [googleCustomSearchApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to use a searched card image.');
+    }
+    const boardId = boardCardImageIdentifier(request.data?.boardId, 'boardId');
+    await assertCanEditBoardImages(userId, boardId);
+    const query = stringOrEmpty(request.data?.query).replace(/\s+/g, ' ').trim().slice(0, 180);
+    const result = boardCardImageSearchResultFromInput(request.data?.result);
+    const token = stringOrEmpty(request.data?.token);
+    const apiKey = googleCustomSearchApiKey.value();
+    if (!query || !result || !token || !boardCardImageSearchTokenMatches(userId, query, result, token, apiKey)) {
+      throw new HttpsError('permission-denied', 'That image selection could not be verified. Search again and retry.');
+    }
+
+    let image: { buffer: Buffer; contentType: string } | null = null;
+    for (const candidate of [result.imageUrl, result.thumbnailUrl].filter(Boolean)) {
+      try {
+        image = await fetchBoardCardImageAsset(candidate);
+        break;
+      } catch (error) {
+        logger.warn('Board card selected image candidate failed.', {
+          boardId,
+          candidate,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
+    if (!image) {
+      throw new HttpsError('unavailable', 'That image could not be downloaded. Choose another result.');
+    }
+    return {
+      imageDataUrl: `data:${image.contentType};base64,${image.buffer.toString('base64')}`,
+      sourceUrl: result.sourceUrl,
+      title: result.title,
+    };
+  },
+);
+
 export const resolveBoardSongSpotify = onCall(
   {
     region: callableRegion,
@@ -7191,6 +7348,251 @@ async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: 
     });
   }
   return '';
+}
+
+async function findGoogleCustomSearchImagesForBoardCard(
+  query: string,
+  apiKey: string,
+  limit: number,
+): Promise<Array<Omit<BoardCardImageSearchResult, 'token'>>> {
+  const cx = googleCustomSearchCx.trim();
+  if (!cx) {
+    return [];
+  }
+  try {
+    const searchUrl = new URL('https://www.googleapis.com/customsearch/v1');
+    searchUrl.searchParams.set('key', apiKey);
+    searchUrl.searchParams.set('cx', cx);
+    searchUrl.searchParams.set('q', query);
+    searchUrl.searchParams.set('searchType', 'image');
+    searchUrl.searchParams.set('safe', 'active');
+    searchUrl.searchParams.set('imgType', 'photo');
+    searchUrl.searchParams.set('num', String(Math.max(1, Math.min(10, limit))));
+    const response = await fetch(searchUrl.toString(), {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'LivingWiki/1.0 card-image-search (https://livingwiki.com)',
+      },
+      signal: AbortSignal.timeout(7000),
+    });
+    const search = await response.json() as GoogleCustomSearchImageResponse;
+    if (!response.ok || search.error?.message) {
+      logger.warn('Card editor Google image search failed.', {
+        query,
+        status: response.status,
+        error: search.error?.message,
+      });
+      throw new HttpsError('unavailable', 'Google image search is temporarily unavailable.');
+    }
+    const seen = new Set<string>();
+    return (search.items ?? [])
+      .map((item): Omit<BoardCardImageSearchResult, 'token'> | null => {
+        const imageUrl = safeBoardCardRemoteImageUrl(item.link);
+        const thumbnailUrl = safeBoardCardRemoteImageUrl(item.image?.thumbnailLink);
+        if (!imageUrl || seen.has(imageUrl)) {
+          return null;
+        }
+        seen.add(imageUrl);
+        const sourceUrl = safeBoardCardSourceUrl(item.image?.contextLink) || sourceOriginUrl(imageUrl);
+        const sourceLabel = textFromUnknown(item.displayLink).slice(0, 80)
+          || sourceHostLabel(sourceUrl)
+          || 'Web image';
+        return {
+          imageUrl,
+          thumbnailUrl: thumbnailUrl || imageUrl,
+          sourceUrl,
+          sourceLabel,
+          title: textFromUnknown(item.title).replace(/\s+/g, ' ').slice(0, 140) || query,
+        };
+      })
+      .filter((item): item is Omit<BoardCardImageSearchResult, 'token'> => !!item)
+      .slice(0, limit);
+  } catch (error) {
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    logger.warn('Card editor Google image search failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    throw new HttpsError('unavailable', 'Google image search is temporarily unavailable.');
+  }
+}
+
+function boardCardImageIdentifier(value: unknown, field: string): string {
+  const id = stringOrEmpty(value).slice(0, 128);
+  if (!/^[A-Za-z0-9_-]{8,128}$/.test(id)) {
+    throw new HttpsError('invalid-argument', `${field} is invalid.`);
+  }
+  return id;
+}
+
+async function assertCanEditBoardImages(userId: string, boardId: string): Promise<void> {
+  const snapshot = await db.collection('boards').doc(boardId).get();
+  if (!snapshot.exists) {
+    throw new HttpsError('not-found', 'Board not found.');
+  }
+  if (textFromUnknown(snapshot.data()?.owner_user_id) !== userId) {
+    throw new HttpsError('permission-denied', 'Only the board owner can change card images.');
+  }
+}
+
+function boardCardImageSearchToken(
+  userId: string,
+  query: string,
+  result: Omit<BoardCardImageSearchResult, 'token'>,
+  secret: string,
+): string {
+  return createHmac('sha256', secret)
+    .update(boardCardImageSearchTokenPayload(userId, query, result))
+    .digest('hex');
+}
+
+function boardCardImageSearchTokenMatches(
+  userId: string,
+  query: string,
+  result: Omit<BoardCardImageSearchResult, 'token'>,
+  token: string,
+  secret: string,
+): boolean {
+  if (!secret || !/^[a-f0-9]{64}$/i.test(token)) {
+    return false;
+  }
+  const expected = boardCardImageSearchToken(userId, query, result, secret);
+  return timingSafeEqual(Buffer.from(expected, 'hex'), Buffer.from(token, 'hex'));
+}
+
+function boardCardImageSearchTokenPayload(
+  userId: string,
+  query: string,
+  result: Omit<BoardCardImageSearchResult, 'token'>,
+): string {
+  return [userId, query, result.imageUrl, result.thumbnailUrl, result.sourceUrl, result.sourceLabel, result.title].join('\n');
+}
+
+function boardCardImageSearchResultFromInput(value: unknown): Omit<BoardCardImageSearchResult, 'token'> | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const data = value as Record<string, unknown>;
+  const imageUrl = safeBoardCardRemoteImageUrl(data.imageUrl);
+  const thumbnailUrl = safeBoardCardRemoteImageUrl(data.thumbnailUrl);
+  if (!imageUrl || !thumbnailUrl) {
+    return null;
+  }
+  return {
+    imageUrl,
+    thumbnailUrl,
+    sourceUrl: safeBoardCardSourceUrl(data.sourceUrl),
+    sourceLabel: stringOrEmpty(data.sourceLabel).replace(/\s+/g, ' ').slice(0, 80),
+    title: stringOrEmpty(data.title).replace(/\s+/g, ' ').slice(0, 140),
+  };
+}
+
+function safeBoardCardRemoteImageUrl(value: unknown): string {
+  const url = safeBoardCardSourceUrl(value);
+  if (!url || !canTryCoverImageUrl(url)) {
+    return '';
+  }
+  return url;
+}
+
+function safeBoardCardSourceUrl(value: unknown): string {
+  const raw = stringOrEmpty(value).slice(0, 2000);
+  if (!raw) {
+    return '';
+  }
+  try {
+    const url = new URL(raw);
+    if ((url.protocol !== 'https:' && url.protocol !== 'http:') || url.username || url.password || isBlockedBoardCardImageHost(url.hostname)) {
+      return '';
+    }
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+function isBlockedBoardCardImageHost(hostname: string): boolean {
+  const host = hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  return host === 'localhost'
+    || host === '0.0.0.0'
+    || host === '::1'
+    || host === 'metadata.google.internal'
+    || host.endsWith('.internal')
+    || host.endsWith('.local')
+    || /^127\./.test(host)
+    || /^10\./.test(host)
+    || /^100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(host)
+    || /^192\.168\./.test(host)
+    || /^169\.254\./.test(host)
+    || /^172\.(?:1[6-9]|2\d|3[01])\./.test(host)
+    || /^(?:fc|fd)[0-9a-f]{2}:/.test(host)
+    || /^fe[89ab][0-9a-f]:/.test(host)
+    || /^::ffff:(?:127\.|10\.|192\.168\.|169\.254\.|172\.(?:1[6-9]|2\d|3[01])\.)/.test(host);
+}
+
+function sourceOriginUrl(imageUrl: string): string {
+  try {
+    return new URL('/', imageUrl).toString();
+  } catch {
+    return '';
+  }
+}
+
+function sourceHostLabel(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+}
+
+async function fetchBoardCardImageAsset(url: string): Promise<{ buffer: Buffer; contentType: string }> {
+  let currentUrl = safeBoardCardRemoteImageUrl(url);
+  if (!currentUrl) {
+    throw new Error('Unsupported image URL.');
+  }
+  let response: Response | null = null;
+  for (let redirectCount = 0; redirectCount <= 2; redirectCount += 1) {
+    response = await fetch(currentUrl, {
+      redirect: 'manual',
+      headers: {
+        'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.8',
+        'User-Agent': 'LivingWiki/1.0 card-image-import (https://livingwiki.com)',
+      },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (response.status < 300 || response.status >= 400) {
+      break;
+    }
+    const location = response.headers.get('location');
+    const nextUrl = location ? safeBoardCardRemoteImageUrl(new URL(location, currentUrl).toString()) : '';
+    if (!nextUrl || redirectCount === 2) {
+      throw new Error('Image redirected to an unsupported location.');
+    }
+    currentUrl = nextUrl;
+  }
+  if (!response) {
+    throw new Error('Image download failed.');
+  }
+  if (!response.ok) {
+    throw new Error(`Image download failed with ${response.status}.`);
+  }
+  const contentType = (response.headers.get('content-type') ?? '').split(';')[0]?.trim().toLowerCase();
+  if (!contentType || !imageExtensionForContentType(contentType)) {
+    throw new Error('Search result is not a supported image type.');
+  }
+  const maxBytes = 4 * 1024 * 1024;
+  const contentLength = Number(response.headers.get('content-length') ?? '0');
+  if (Number.isFinite(contentLength) && contentLength > maxBytes) {
+    throw new Error('Search result is too large to import.');
+  }
+  const buffer = Buffer.from(await response.arrayBuffer());
+  if (buffer.length < 2048 || buffer.length > maxBytes) {
+    throw new Error('Search result image size is unsupported.');
+  }
+  return { buffer, contentType };
 }
 
 async function findGooglePlaceFoodPhotoForBoardWizard(query: string, apiKey: string): Promise<string> {

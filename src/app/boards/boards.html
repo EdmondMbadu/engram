@@ -3030,6 +3030,7 @@
         </div>
 
         <form class="boards-form" (submit)="saveCard($event)">
+
           @if (isSongCardForm()) {
             <section class="boards-card-wizard">
               <div class="boards-card-wizard__head">
@@ -3079,22 +3080,152 @@
                   <h4>Verify and save</h4>
                 </div>
               </div>
-              <div class="boards-upload">
-                @if (cardDraft().imageUrl || cardDraft().spotifyArtworkUrl) {
-                  <img [src]="cardDraft().imageUrl || cardDraft().spotifyArtworkUrl" alt="Cover art preview" />
-                } @else {
-                  <span class="boards-upload__placeholder">
-                    <span class="material-symbols-outlined">album</span>
-                  </span>
+            <div class="boards-upload boards-upload--card-image">
+              @if (cardDraft().imageUrl || (isSongCardForm() && cardDraft().spotifyArtworkUrl)) {
+                <img
+                  [src]="cardDraft().imageUrl || cardDraft().spotifyArtworkUrl"
+                  [alt]="isSongCardForm() ? 'Cover art preview' : 'Card image preview'"
+                />
+              } @else {
+                <span class="boards-upload__placeholder">
+                  <span class="material-symbols-outlined">{{ isSongCardForm() ? 'album' : 'add_photo_alternate' }}</span>
+                </span>
+              }
+              <div class="boards-card-image-actions">
+                <button
+                  type="button"
+                  class="boards-card-image-action"
+                  [class.boards-card-image-action--active]="cardImageToolMode() === 'generate'"
+                  [attr.aria-expanded]="cardImageToolMode() === 'generate'"
+                  (click)="openCardImageTool('generate')"
+                >
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  Generate
+                </button>
+                <button
+                  type="button"
+                  class="boards-card-image-action"
+                  [class.boards-card-image-action--active]="cardImageToolMode() === 'search'"
+                  [attr.aria-expanded]="cardImageToolMode() === 'search'"
+                  (click)="openCardImageTool('search')"
+                >
+                  <span class="material-symbols-outlined">image_search</span>
+                  Find photo
+                </button>
+                <label class="boards-card-image-action boards-card-image-action--upload">
+                  <span class="material-symbols-outlined">upload</span>
+                  Upload
+                  <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
+                </label>
+                @if (cardDraft().imageUrl) {
+                  <button type="button" class="boards-card-image-remove" aria-label="Remove picture" title="Remove picture" (click)="clearCardImage()">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
                 }
-                <div class="boards-upload__actions boards-upload__actions--subtle">
-                  <label class="boards-upload__button boards-upload__button--subtle">
-                    <span class="material-symbols-outlined">upload</span>
-                    {{ cardDraft().imageUrl || cardDraft().spotifyArtworkUrl ? 'Change cover' : 'Upload cover' }}
-                    <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
-                  </label>
-                </div>
               </div>
+            </div>
+
+            @if (cardImageToolMode() === 'generate') {
+              <section class="boards-card-image-tool" aria-label="Generate a card picture">
+                <div class="boards-card-image-tool__head">
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  <div>
+                    <strong>Nano Banana</strong>
+                    <small>Generate original card art</small>
+                  </div>
+                </div>
+                <div class="boards-card-image-tool__prompt">
+                  <textarea
+                    rows="2"
+                    maxlength="700"
+                    placeholder="Describe the picture you want..."
+                    [value]="cardImagePrompt()"
+                    (input)="cardImagePrompt.set($any($event.target).value)"
+                  ></textarea>
+                  <button type="button" class="boards-primary-action" [disabled]="cardImageGenerating() || cardImagePrompt().trim().length < 3" (click)="generateCardImage()">
+                    <span class="material-symbols-outlined">{{ cardImageGenerating() ? 'progress_activity' : 'auto_awesome' }}</span>
+                    {{ cardImageGenerating() ? 'Creating...' : (cardGeneratedImageUrl() ? 'Generate again' : 'Generate') }}
+                  </button>
+                </div>
+                @if (cardGeneratedImageUrl()) {
+                  <div class="boards-card-image-candidate">
+                    <img [src]="cardGeneratedImageUrl()" alt="Generated card image preview" />
+                    <div>
+                      <span>{{ cardGeneratedImageModel() || 'Nano Banana' }}</span>
+                      <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()">
+                        <span class="material-symbols-outlined">check</span>
+                        Use image
+                      </button>
+                    </div>
+                  </div>
+                }
+                @if (cardImageToolError()) {
+                  <div class="boards-form__soft-error">{{ cardImageToolError() }}</div>
+                }
+              </section>
+            } @else if (cardImageToolMode() === 'search') {
+              <section class="boards-card-image-tool" aria-label="Find a card picture">
+                <div class="boards-card-image-tool__head">
+                  <span class="material-symbols-outlined">image_search</span>
+                  <div>
+                    <strong>Find photo</strong>
+                    <small>Search images for this card</small>
+                  </div>
+                </div>
+                <div class="boards-card-image-searchbox">
+                  <input
+                    type="search"
+                    maxlength="180"
+                    placeholder="Search for a picture..."
+                    [value]="cardImageSearchQuery()"
+                    (input)="cardImageSearchQuery.set($any($event.target).value)"
+                    (keydown.enter)="$event.preventDefault(); searchCardImages()"
+                  />
+                  <button type="button" aria-label="Search pictures" title="Search pictures" [disabled]="cardImageSearchLoading() || cardImageSearchQuery().trim().length < 2" (click)="searchCardImages()">
+                    <span class="material-symbols-outlined">{{ cardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
+                  </button>
+                </div>
+                @if (currentCardImageSearchResult(); as result) {
+                  <div class="boards-card-image-browser">
+                    <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)">
+                      <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <img [src]="result.imageUrl" [alt]="result.title" />
+                    <button type="button" aria-label="Next picture" (click)="stepCardImageSearch(1)">
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                  </div>
+                  <div class="boards-card-image-browser__meta">
+                    <span>{{ cardImageSearchPosition() }}</span>
+                    @if (result.sourceUrl) {
+                      <a [href]="result.sourceUrl" target="_blank" rel="noopener noreferrer">{{ result.sourceLabel || 'View source' }}</a>
+                    } @else {
+                      <span>{{ result.sourceLabel }}</span>
+                    }
+                    <button type="button" class="boards-primary-action" [disabled]="cardImageApplying()" (click)="useSearchedCardImage()">
+                      <span class="material-symbols-outlined">{{ cardImageApplying() ? 'progress_activity' : 'check' }}</span>
+                      {{ cardImageApplying() ? 'Using...' : 'Use image' }}
+                    </button>
+                  </div>
+                  <div class="boards-card-image-thumbs" aria-label="Image search results">
+                    @for (item of cardImageSearchResults(); track item.token; let index = $index) {
+                      <button
+                        type="button"
+                        [class.boards-card-image-thumbs__active]="index === cardImageSearchIndex()"
+                        [attr.aria-label]="'Select picture ' + (index + 1)"
+                        [attr.aria-pressed]="index === cardImageSearchIndex()"
+                        (click)="selectCardImageSearchResult(index)"
+                      >
+                        <img [src]="item.thumbnailUrl" alt="" />
+                      </button>
+                    }
+                  </div>
+                }
+                @if (cardImageToolError()) {
+                  <div class="boards-form__soft-error">{{ cardImageToolError() }}</div>
+                }
+              </section>
+            }
               <div class="boards-form__split">
                 <label>
                   <span>Song title</span>
@@ -3195,22 +3326,152 @@
                   <h4>Edit anything before saving</h4>
                 </div>
               </div>
-              <div class="boards-upload">
+            <div class="boards-upload boards-upload--card-image">
+              @if (cardDraft().imageUrl || (isSongCardForm() && cardDraft().spotifyArtworkUrl)) {
+                <img
+                  [src]="cardDraft().imageUrl || cardDraft().spotifyArtworkUrl"
+                  [alt]="isSongCardForm() ? 'Cover art preview' : 'Card image preview'"
+                />
+              } @else {
+                <span class="boards-upload__placeholder">
+                  <span class="material-symbols-outlined">{{ isSongCardForm() ? 'album' : 'add_photo_alternate' }}</span>
+                </span>
+              }
+              <div class="boards-card-image-actions">
+                <button
+                  type="button"
+                  class="boards-card-image-action"
+                  [class.boards-card-image-action--active]="cardImageToolMode() === 'generate'"
+                  [attr.aria-expanded]="cardImageToolMode() === 'generate'"
+                  (click)="openCardImageTool('generate')"
+                >
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  Generate
+                </button>
+                <button
+                  type="button"
+                  class="boards-card-image-action"
+                  [class.boards-card-image-action--active]="cardImageToolMode() === 'search'"
+                  [attr.aria-expanded]="cardImageToolMode() === 'search'"
+                  (click)="openCardImageTool('search')"
+                >
+                  <span class="material-symbols-outlined">image_search</span>
+                  Find photo
+                </button>
+                <label class="boards-card-image-action boards-card-image-action--upload">
+                  <span class="material-symbols-outlined">upload</span>
+                  Upload
+                  <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
+                </label>
                 @if (cardDraft().imageUrl) {
-                  <img [src]="cardDraft().imageUrl" alt="Card image preview" />
-                } @else {
-                  <span class="boards-upload__placeholder">
-                    <span class="material-symbols-outlined">add_photo_alternate</span>
-                  </span>
+                  <button type="button" class="boards-card-image-remove" aria-label="Remove picture" title="Remove picture" (click)="clearCardImage()">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
                 }
-                <div class="boards-upload__actions boards-upload__actions--subtle">
-                  <label class="boards-upload__button boards-upload__button--subtle">
-                    <span class="material-symbols-outlined">upload</span>
-                    {{ cardDraft().imageUrl ? 'Change picture' : 'Upload picture' }}
-                    <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
-                  </label>
-                </div>
               </div>
+            </div>
+
+            @if (cardImageToolMode() === 'generate') {
+              <section class="boards-card-image-tool" aria-label="Generate a card picture">
+                <div class="boards-card-image-tool__head">
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  <div>
+                    <strong>Nano Banana</strong>
+                    <small>Generate original card art</small>
+                  </div>
+                </div>
+                <div class="boards-card-image-tool__prompt">
+                  <textarea
+                    rows="2"
+                    maxlength="700"
+                    placeholder="Describe the picture you want..."
+                    [value]="cardImagePrompt()"
+                    (input)="cardImagePrompt.set($any($event.target).value)"
+                  ></textarea>
+                  <button type="button" class="boards-primary-action" [disabled]="cardImageGenerating() || cardImagePrompt().trim().length < 3" (click)="generateCardImage()">
+                    <span class="material-symbols-outlined">{{ cardImageGenerating() ? 'progress_activity' : 'auto_awesome' }}</span>
+                    {{ cardImageGenerating() ? 'Creating...' : (cardGeneratedImageUrl() ? 'Generate again' : 'Generate') }}
+                  </button>
+                </div>
+                @if (cardGeneratedImageUrl()) {
+                  <div class="boards-card-image-candidate">
+                    <img [src]="cardGeneratedImageUrl()" alt="Generated card image preview" />
+                    <div>
+                      <span>{{ cardGeneratedImageModel() || 'Nano Banana' }}</span>
+                      <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()">
+                        <span class="material-symbols-outlined">check</span>
+                        Use image
+                      </button>
+                    </div>
+                  </div>
+                }
+                @if (cardImageToolError()) {
+                  <div class="boards-form__soft-error">{{ cardImageToolError() }}</div>
+                }
+              </section>
+            } @else if (cardImageToolMode() === 'search') {
+              <section class="boards-card-image-tool" aria-label="Find a card picture">
+                <div class="boards-card-image-tool__head">
+                  <span class="material-symbols-outlined">image_search</span>
+                  <div>
+                    <strong>Find photo</strong>
+                    <small>Search images for this card</small>
+                  </div>
+                </div>
+                <div class="boards-card-image-searchbox">
+                  <input
+                    type="search"
+                    maxlength="180"
+                    placeholder="Search for a picture..."
+                    [value]="cardImageSearchQuery()"
+                    (input)="cardImageSearchQuery.set($any($event.target).value)"
+                    (keydown.enter)="$event.preventDefault(); searchCardImages()"
+                  />
+                  <button type="button" aria-label="Search pictures" title="Search pictures" [disabled]="cardImageSearchLoading() || cardImageSearchQuery().trim().length < 2" (click)="searchCardImages()">
+                    <span class="material-symbols-outlined">{{ cardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
+                  </button>
+                </div>
+                @if (currentCardImageSearchResult(); as result) {
+                  <div class="boards-card-image-browser">
+                    <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)">
+                      <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <img [src]="result.imageUrl" [alt]="result.title" />
+                    <button type="button" aria-label="Next picture" (click)="stepCardImageSearch(1)">
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                  </div>
+                  <div class="boards-card-image-browser__meta">
+                    <span>{{ cardImageSearchPosition() }}</span>
+                    @if (result.sourceUrl) {
+                      <a [href]="result.sourceUrl" target="_blank" rel="noopener noreferrer">{{ result.sourceLabel || 'View source' }}</a>
+                    } @else {
+                      <span>{{ result.sourceLabel }}</span>
+                    }
+                    <button type="button" class="boards-primary-action" [disabled]="cardImageApplying()" (click)="useSearchedCardImage()">
+                      <span class="material-symbols-outlined">{{ cardImageApplying() ? 'progress_activity' : 'check' }}</span>
+                      {{ cardImageApplying() ? 'Using...' : 'Use image' }}
+                    </button>
+                  </div>
+                  <div class="boards-card-image-thumbs" aria-label="Image search results">
+                    @for (item of cardImageSearchResults(); track item.token; let index = $index) {
+                      <button
+                        type="button"
+                        [class.boards-card-image-thumbs__active]="index === cardImageSearchIndex()"
+                        [attr.aria-label]="'Select picture ' + (index + 1)"
+                        [attr.aria-pressed]="index === cardImageSearchIndex()"
+                        (click)="selectCardImageSearchResult(index)"
+                      >
+                        <img [src]="item.thumbnailUrl" alt="" />
+                      </button>
+                    }
+                  </div>
+                }
+                @if (cardImageToolError()) {
+                  <div class="boards-form__soft-error">{{ cardImageToolError() }}</div>
+                }
+              </section>
+            }
               <div class="boards-form__split">
                 <label>
                   <span>Title</span>

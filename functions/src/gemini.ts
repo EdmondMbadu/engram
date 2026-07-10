@@ -13,6 +13,7 @@ export const geminiApiKey = defineSecret('GEMINI_API_KEY');
 const model = 'gemini-3-flash-preview';
 const internetSearchModel = 'gemini-2.5-flash';
 const boardWizardModels = [model, internetSearchModel] as const;
+const boardCardImageModels = ['gemini-3.1-flash-image', 'gemini-2.5-flash-image'] as const;
 
 const knowledgeEntrySchema = {
   type: 'array',
@@ -514,6 +515,50 @@ function normalizeGeminiError(error: unknown): { message: string; retryable: boo
 
 function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+export async function generateBoardCardImageAsset(prompt: string): Promise<{
+  base64: string;
+  mimeType: string;
+  model: string;
+}> {
+  let lastError: unknown = null;
+  for (const imageModel of boardCardImageModels) {
+    try {
+      const response = await generateContentWithRetry({
+        model: imageModel,
+        contents: prompt,
+        config: {
+          responseModalities: ['IMAGE'],
+          imageConfig: {
+            aspectRatio: '3:2',
+            ...(imageModel === 'gemini-3.1-flash-image' ? { imageSize: '1K' } : {}),
+          },
+        },
+      });
+      for (const candidate of response.candidates ?? []) {
+        for (const part of candidate.content?.parts ?? []) {
+          const base64 = part.inlineData?.data?.trim();
+          if (!base64) {
+            continue;
+          }
+          const mimeType = part.inlineData?.mimeType?.trim() || 'image/png';
+          if (!/^image\/(?:png|jpeg|webp)$/i.test(mimeType)) {
+            continue;
+          }
+          return { base64, mimeType, model: imageModel };
+        }
+      }
+      lastError = new Error('Nano Banana returned no image.');
+    } catch (error) {
+      lastError = error;
+      logger.warn('Board card image generation model failed.', {
+        imageModel,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error('Nano Banana could not generate an image.');
 }
 
 function usageFromResponse(response: {

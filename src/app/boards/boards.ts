@@ -28,6 +28,7 @@ type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
+type CardImageToolMode = 'generate' | 'search' | null;
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'url' | 'walking-tour' | 'driving-tour';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
@@ -349,6 +350,15 @@ type CardWizardRunOptions = {
   promptOverride?: string;
   forceImageLookup?: boolean;
   preserveExistingImageOnMiss?: boolean;
+};
+
+type CardImageSearchResult = {
+  imageUrl: string;
+  thumbnailUrl: string;
+  sourceUrl: string;
+  sourceLabel: string;
+  title: string;
+  token: string;
 };
 
 type TourMapPoint = {
@@ -805,7 +815,7 @@ const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: 
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrl: './boards.css',
+  styleUrls: ['./boards.css', './card-image-tools.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly atlasService = inject(AtlasService);
@@ -902,6 +912,17 @@ export class BoardsComponent implements OnDestroy {
   readonly cardWizardPrompt = signal('');
   readonly cardWizardLoading = signal(false);
   readonly cardWizardError = signal<string | null>(null);
+  readonly cardImageToolMode = signal<CardImageToolMode>(null);
+  readonly cardImagePrompt = signal('');
+  readonly cardImageGenerating = signal(false);
+  readonly cardGeneratedImageUrl = signal('');
+  readonly cardGeneratedImageModel = signal('');
+  readonly cardImageSearchQuery = signal('');
+  readonly cardImageSearchLoading = signal(false);
+  readonly cardImageSearchResults = signal<CardImageSearchResult[]>([]);
+  readonly cardImageSearchIndex = signal(0);
+  readonly cardImageApplying = signal(false);
+  readonly cardImageToolError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
   readonly likedBoardIds = signal<Set<string>>(new Set());
   readonly savedBoardIds = signal<Set<string>>(new Set());
@@ -1225,6 +1246,9 @@ export class BoardsComponent implements OnDestroy {
         || draft.notes.trim().length >= 8
       );
   });
+  readonly currentCardImageSearchResult = computed(() =>
+    this.cardImageSearchResults()[this.cardImageSearchIndex()] ?? null,
+  );
   readonly stackBoard = computed(() => {
     const boardId = this.stackStudioBoardId();
     return this.boards().find((board) => board.id === boardId) ?? null;
@@ -2487,6 +2511,21 @@ export class BoardsComponent implements OnDestroy {
     this.cardWizardPrompt.set('');
     this.cardWizardLoading.set(false);
     this.cardWizardError.set(null);
+    this.resetCardImageTools();
+  }
+
+  private resetCardImageTools(): void {
+    this.cardImageToolMode.set(null);
+    this.cardImagePrompt.set('');
+    this.cardImageGenerating.set(false);
+    this.cardGeneratedImageUrl.set('');
+    this.cardGeneratedImageModel.set('');
+    this.cardImageSearchQuery.set('');
+    this.cardImageSearchLoading.set(false);
+    this.cardImageSearchResults.set([]);
+    this.cardImageSearchIndex.set(0);
+    this.cardImageApplying.set(false);
+    this.cardImageToolError.set(null);
   }
 
   async onBoardImageSelected(event: Event): Promise<void> {
@@ -2539,6 +2578,7 @@ export class BoardsComponent implements OnDestroy {
       const imageUrl = await this.readImageFile(file);
       this.cardImageLocked.set(true);
       this.updateCardDraft('imageUrl', imageUrl);
+      this.cardImageToolMode.set(null);
       this.imageUploadError.set(null);
     } catch (error) {
       this.imageUploadError.set(
@@ -4005,6 +4045,195 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
+  openCardImageTool(mode: Exclude<CardImageToolMode, null>): void {
+    if (this.cardImageToolMode() === mode) {
+      this.cardImageToolMode.set(null);
+      return;
+    }
+    const draft = this.cardDraft();
+    this.cardImageToolMode.set(mode);
+    this.cardImageToolError.set(null);
+    if (mode === 'generate') {
+      if (!this.cardImagePrompt().trim()) {
+        this.cardImagePrompt.set(this.defaultCardImageGenerationPrompt(draft));
+      }
+      return;
+    }
+    if (!this.cardImageSearchQuery().trim()) {
+      this.cardImageSearchQuery.set(this.defaultCardImageSearchQuery(draft));
+    }
+    if (!this.cardImageSearchResults().length && this.cardImageSearchQuery().trim().length >= 2) {
+      void this.searchCardImages();
+    }
+  }
+
+  async generateCardImage(): Promise<void> {
+    const board = this.selectedBoard();
+    const prompt = this.cardImagePrompt().trim();
+    if (!board || !this.canEditBoard(board) || !this.functions || this.cardImageGenerating()) {
+      return;
+    }
+    if (prompt.length < 3) {
+      this.cardImageToolError.set('Describe the picture you want.');
+      return;
+    }
+    const draft = this.cardDraft();
+    this.cardImageGenerating.set(true);
+    this.cardImageToolError.set(null);
+    try {
+      const callable = httpsCallable<
+        {
+          boardId: string;
+          prompt: string;
+          cardTitle: string;
+          cardSubtitle: string;
+          cardNotes: string;
+          boardTitle: string;
+          boardDescription: string;
+        },
+        { imageDataUrl?: string; model?: string }
+      >(this.functions, 'generateBoardCardImage');
+      const response = await callable({
+        boardId: board.id,
+        prompt,
+        cardTitle: draft.title,
+        cardSubtitle: draft.spotifyArtistName || draft.subtitle,
+        cardNotes: draft.notes,
+        boardTitle: board.title,
+        boardDescription: board.description,
+      });
+      const imageDataUrl = response.data.imageDataUrl?.trim() ?? '';
+      if (!imageDataUrl.startsWith('data:image/')) {
+        throw new Error('Nano Banana returned no usable image.');
+      }
+      this.cardGeneratedImageUrl.set(imageDataUrl);
+      this.cardGeneratedImageModel.set(response.data.model?.trim() ?? 'Nano Banana');
+    } catch (error) {
+      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, 'Nano Banana could not generate this picture.'));
+    } finally {
+      this.cardImageGenerating.set(false);
+    }
+  }
+
+  async searchCardImages(): Promise<void> {
+    const board = this.selectedBoard();
+    const query = this.cardImageSearchQuery().replace(/\s+/g, ' ').trim();
+    if (!board || !this.canEditBoard(board) || !this.functions || this.cardImageSearchLoading()) {
+      return;
+    }
+    if (query.length < 2) {
+      this.cardImageToolError.set('Enter something to search for.');
+      return;
+    }
+    this.cardImageSearchLoading.set(true);
+    this.cardImageToolError.set(null);
+    try {
+      const callable = httpsCallable<
+        { boardId: string; query: string },
+        { query?: string; results?: CardImageSearchResult[] }
+      >(this.functions, 'searchBoardCardImages');
+      const response = await callable({ boardId: board.id, query });
+      const results = Array.isArray(response.data.results)
+        ? response.data.results.filter((item) => !!item?.imageUrl && !!item?.thumbnailUrl && !!item?.token).slice(0, 8)
+        : [];
+      this.cardImageSearchResults.set(results);
+      this.cardImageSearchIndex.set(0);
+      if (!results.length) {
+        this.cardImageToolError.set('No usable pictures were found. Try a more specific search.');
+      }
+    } catch (error) {
+      this.cardImageSearchResults.set([]);
+      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, 'Picture search is unavailable right now.'));
+    } finally {
+      this.cardImageSearchLoading.set(false);
+    }
+  }
+
+  selectCardImageSearchResult(index: number): void {
+    if (index < 0 || index >= this.cardImageSearchResults().length) {
+      return;
+    }
+    this.cardImageSearchIndex.set(index);
+    this.cardImageToolError.set(null);
+  }
+
+  stepCardImageSearch(direction: -1 | 1): void {
+    const count = this.cardImageSearchResults().length;
+    if (count < 2) {
+      return;
+    }
+    this.cardImageSearchIndex.update((index) => (index + direction + count) % count);
+  }
+
+  useGeneratedCardImage(): void {
+    const imageDataUrl = this.cardGeneratedImageUrl();
+    if (!imageDataUrl) {
+      return;
+    }
+    this.applyCardImageSelection(imageDataUrl);
+  }
+
+  async useSearchedCardImage(): Promise<void> {
+    const board = this.selectedBoard();
+    const result = this.currentCardImageSearchResult();
+    const query = this.cardImageSearchQuery().replace(/\s+/g, ' ').trim();
+    if (!board || !result || !this.functions || this.cardImageApplying()) {
+      return;
+    }
+    this.cardImageApplying.set(true);
+    this.cardImageToolError.set(null);
+    try {
+      const callable = httpsCallable<
+        { boardId: string; query: string; result: Omit<CardImageSearchResult, 'token'>; token: string },
+        { imageDataUrl?: string }
+      >(this.functions, 'importBoardCardImage');
+      const { token, ...selected } = result;
+      const response = await callable({ boardId: board.id, query, result: selected, token });
+      const imageDataUrl = response.data.imageDataUrl?.trim() ?? '';
+      if (!imageDataUrl.startsWith('data:image/')) {
+        throw new Error('That picture could not be imported.');
+      }
+      this.applyCardImageSelection(imageDataUrl);
+    } catch (error) {
+      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, 'That picture could not be used.'));
+    } finally {
+      this.cardImageApplying.set(false);
+    }
+  }
+
+  cardImageSearchPosition(): string {
+    const count = this.cardImageSearchResults().length;
+    return count ? `${this.cardImageSearchIndex() + 1} / ${count}` : '';
+  }
+
+  private applyCardImageSelection(imageDataUrl: string): void {
+    this.cardDraft.update((draft) => ({ ...draft, imageUrl: imageDataUrl }));
+    this.cardImageLocked.set(true);
+    this.cardImageToolMode.set(null);
+    this.cardImageToolError.set(null);
+    this.imageUploadError.set(null);
+  }
+
+  private defaultCardImageGenerationPrompt(draft: CardDraft): string {
+    const subject = draft.title.trim() || draft.placeQuery.trim() || 'this card';
+    if (this.isSongCardForm()) {
+      const artist = draft.spotifyArtistName.trim() || draft.subtitle.trim();
+      return `Original, beautiful editorial artwork inspired by ${subject}${artist ? ` by ${artist}` : ''}`;
+    }
+    return `A beautiful editorial image of ${subject}${draft.subtitle.trim() ? `, ${draft.subtitle.trim()}` : ''}`;
+  }
+
+  private defaultCardImageSearchQuery(draft: CardDraft): string {
+    const board = this.selectedBoard();
+    const title = draft.title.trim() || draft.placeQuery.trim() || board?.title || '';
+    if (this.isSongCardForm()) {
+      const artist = draft.spotifyArtistName.trim() || draft.subtitle.trim();
+      return [title, artist, 'official cover art'].filter(Boolean).join(' ');
+    }
+    const tags = draft.tags.split(',').map((tag) => tag.trim()).filter(Boolean);
+    return this.normalizeWizardImageQuery(title, title, draft.subtitle, draft.notes, tags);
+  }
+
   async runCardWizard(options: CardWizardRunOptions = {}): Promise<void> {
     const board = this.selectedBoard();
     if (!board || !this.canEditBoard(board) || !this.functions || this.cardWizardLoading()) {
@@ -5235,6 +5464,14 @@ export class BoardsComponent implements OnDestroy {
       return error.message.trim();
     }
     return fallback;
+  }
+
+  private cardImageActionErrorMessage(error: unknown, fallback: string): string {
+    const message = error instanceof Error ? error.message.replace(/^Firebase: /, '').trim() : '';
+    if (!message || /^(?:functions\/)?(?:internal|unknown|unauthenticated)$/i.test(message)) {
+      return fallback;
+    }
+    return message;
   }
 
   private isInteractiveStackSwipeTarget(target: EventTarget | null): boolean {
