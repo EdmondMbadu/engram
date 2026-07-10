@@ -3109,8 +3109,8 @@
                   [attr.aria-expanded]="cardImageToolMode() === 'search'"
                   (click)="openCardImageTool('search')"
                 >
-                  <span class="material-symbols-outlined">image_search</span>
-                  Find photo
+                  <span class="material-symbols-outlined">{{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'progress_activity' : 'image_search' }}</span>
+                  {{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'Searching...' : 'Find photo' }}
                 </button>
                 <label class="boards-card-image-action boards-card-image-action--upload">
                   <span class="material-symbols-outlined">upload</span>
@@ -3169,7 +3169,7 @@
                   <span class="material-symbols-outlined">image_search</span>
                   <div>
                     <strong>Find photo</strong>
-                    <small>Search images for this card</small>
+                    <small>{{ cardImageSearchLoading() ? 'Searching Wikimedia Commons...' : 'Search reusable images for this card' }}</small>
                   </div>
                 </div>
                 <div class="boards-card-image-searchbox">
@@ -3185,6 +3185,15 @@
                     <span class="material-symbols-outlined">{{ cardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
                   </button>
                 </div>
+                @if (cardImageSearchLoading()) {
+                  <div class="boards-card-image-searching" role="status" aria-live="polite">
+                    <span class="material-symbols-outlined">progress_activity</span>
+                    <div>
+                      <strong>Searching photos...</strong>
+                      <small>Finding the best matches for {{ cardImageSearchQuery() }}</small>
+                    </div>
+                  </div>
+                }
                 @if (currentCardImageSearchResult(); as result) {
                   <div class="boards-card-image-browser">
                     <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)">
@@ -3355,8 +3364,8 @@
                   [attr.aria-expanded]="cardImageToolMode() === 'search'"
                   (click)="openCardImageTool('search')"
                 >
-                  <span class="material-symbols-outlined">image_search</span>
-                  Find photo
+                  <span class="material-symbols-outlined">{{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'progress_activity' : 'image_search' }}</span>
+                  {{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'Searching...' : 'Find photo' }}
                 </button>
                 <label class="boards-card-image-action boards-card-image-action--upload">
                   <span class="material-symbols-outlined">upload</span>
@@ -3415,7 +3424,7 @@
                   <span class="material-symbols-outlined">image_search</span>
                   <div>
                     <strong>Find photo</strong>
-                    <small>Search images for this card</small>
+                    <small>{{ cardImageSearchLoading() ? 'Searching Wikimedia Commons...' : 'Search reusable images for this card' }}</small>
                   </div>
                 </div>
                 <div class="boards-card-image-searchbox">
@@ -3431,6 +3440,15 @@
                     <span class="material-symbols-outlined">{{ cardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
                   </button>
                 </div>
+                @if (cardImageSearchLoading()) {
+                  <div class="boards-card-image-searching" role="status" aria-live="polite">
+                    <span class="material-symbols-outlined">progress_activity</span>
+                    <div>
+                      <strong>Searching photos...</strong>
+                      <small>Finding the best matches for {{ cardImageSearchQuery() }}</small>
+                    </div>
+                  </div>
+                }
                 @if (currentCardImageSearchResult(); as result) {
                   <div class="boards-card-image-browser">
                     <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)">

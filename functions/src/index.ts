@@ -1381,10 +1381,8 @@ type WikipediaPageMediaResponse = {
 
 type GoogleCustomSearchImageResponse = {
   items?: Array<{
-    title?: string;
     link?: string;
     mime?: string;
-    displayLink?: string;
     image?: {
       contextLink?: string;
       thumbnailLink?: string;
@@ -1402,6 +1400,26 @@ type BoardCardImageSearchResult = {
   sourceLabel: string;
   title: string;
   token: string;
+};
+
+type WikimediaCommonsImageSearchResponse = {
+  query?: {
+    pages?: Record<string, {
+      title?: string;
+      imageinfo?: Array<{
+        url?: string;
+        thumburl?: string;
+        descriptionurl?: string;
+        mime?: string;
+        extmetadata?: {
+          LicenseShortName?: { value?: string };
+        };
+      }>;
+    }>;
+  };
+  error?: {
+    info?: string;
+  };
 };
 
 type GoogleCustomSearchWebResponse = {
@@ -5539,12 +5557,13 @@ export const searchBoardCardImages = onCall(
       throw new HttpsError('invalid-argument', 'Enter at least two characters to search for a photo.');
     }
     const apiKey = googleCustomSearchApiKey.value();
-    if (!apiKey || !googleCustomSearchCx.trim()) {
-      throw new HttpsError('failed-precondition', 'Google image search is not configured.');
+    if (!apiKey) {
+      throw new HttpsError('failed-precondition', 'Photo search is not configured.');
     }
-    const results = await findGoogleCustomSearchImagesForBoardCard(query, apiKey, 8);
+    const results = await findWikimediaCommonsImagesForBoardCard(query, 8);
     return {
       query,
+      provider: 'Wikimedia Commons',
       results: results.map((result): BoardCardImageSearchResult => ({
         ...result,
         token: boardCardImageSearchToken(userId, query, result, apiKey),
@@ -7350,59 +7369,64 @@ async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: 
   return '';
 }
 
-async function findGoogleCustomSearchImagesForBoardCard(
+async function findWikimediaCommonsImagesForBoardCard(
   query: string,
-  apiKey: string,
   limit: number,
 ): Promise<Array<Omit<BoardCardImageSearchResult, 'token'>>> {
-  const cx = googleCustomSearchCx.trim();
-  if (!cx) {
-    return [];
-  }
   try {
-    const searchUrl = new URL('https://www.googleapis.com/customsearch/v1');
-    searchUrl.searchParams.set('key', apiKey);
-    searchUrl.searchParams.set('cx', cx);
-    searchUrl.searchParams.set('q', query);
-    searchUrl.searchParams.set('searchType', 'image');
-    searchUrl.searchParams.set('safe', 'active');
-    searchUrl.searchParams.set('imgType', 'photo');
-    searchUrl.searchParams.set('num', String(Math.max(1, Math.min(10, limit))));
+    const searchUrl = new URL('https://commons.wikimedia.org/w/api.php');
+    searchUrl.searchParams.set('action', 'query');
+    searchUrl.searchParams.set('format', 'json');
+    searchUrl.searchParams.set('formatversion', '2');
+    searchUrl.searchParams.set('generator', 'search');
+    searchUrl.searchParams.set('gsrsearch', query);
+    searchUrl.searchParams.set('gsrnamespace', '6');
+    searchUrl.searchParams.set('gsrlimit', String(Math.max(8, Math.min(30, limit * 3))));
+    searchUrl.searchParams.set('prop', 'imageinfo');
+    searchUrl.searchParams.set('iiprop', 'url|mime|extmetadata');
+    searchUrl.searchParams.set('iiurlwidth', '1400');
     const response = await fetch(searchUrl.toString(), {
       headers: {
         'Accept': 'application/json',
-        'User-Agent': 'LivingWiki/1.0 card-image-search (https://livingwiki.com)',
+        'User-Agent': 'LivingWiki/1.0 card-photo-search (https://livingwiki.com)',
       },
-      signal: AbortSignal.timeout(7000),
+      signal: AbortSignal.timeout(10000),
     });
-    const search = await response.json() as GoogleCustomSearchImageResponse;
-    if (!response.ok || search.error?.message) {
-      logger.warn('Card editor Google image search failed.', {
+    const search = await response.json() as WikimediaCommonsImageSearchResponse;
+    if (!response.ok || search.error?.info) {
+      logger.warn('Card editor Wikimedia Commons search failed.', {
         query,
         status: response.status,
-        error: search.error?.message,
+        error: search.error?.info,
       });
-      throw new HttpsError('unavailable', 'Google image search is temporarily unavailable.');
+      throw new HttpsError('unavailable', 'Photo search is temporarily unavailable.');
     }
     const seen = new Set<string>();
-    return (search.items ?? [])
-      .map((item): Omit<BoardCardImageSearchResult, 'token'> | null => {
-        const imageUrl = safeBoardCardRemoteImageUrl(item.link);
-        const thumbnailUrl = safeBoardCardRemoteImageUrl(item.image?.thumbnailLink);
+    return Object.values(search.query?.pages ?? {})
+      .map((page): Omit<BoardCardImageSearchResult, 'token'> | null => {
+        const imageInfo = page.imageinfo?.[0];
+        const mime = textFromUnknown(imageInfo?.mime).toLowerCase();
+        if (!['image/jpeg', 'image/png', 'image/webp'].includes(mime)) {
+          return null;
+        }
+        const imageUrl = safeBoardCardRemoteImageUrl(imageInfo?.thumburl || imageInfo?.url);
+        const thumbnailUrl = safeBoardCardRemoteImageUrl(imageInfo?.thumburl) || imageUrl;
         if (!imageUrl || seen.has(imageUrl)) {
           return null;
         }
         seen.add(imageUrl);
-        const sourceUrl = safeBoardCardSourceUrl(item.image?.contextLink) || sourceOriginUrl(imageUrl);
-        const sourceLabel = textFromUnknown(item.displayLink).slice(0, 80)
-          || sourceHostLabel(sourceUrl)
-          || 'Web image';
+        const sourceUrl = safeBoardCardSourceUrl(imageInfo?.descriptionurl) || 'https://commons.wikimedia.org/';
+        const license = textFromUnknown(imageInfo?.extmetadata?.LicenseShortName?.value)
+          .replace(/<[^>]+>/g, '')
+          .replace(/\s+/g, ' ')
+          .slice(0, 35);
+        const rawTitle = textFromUnknown(page.title).replace(/^File:/i, '').replace(/\.[^.]+$/, '');
         return {
           imageUrl,
           thumbnailUrl: thumbnailUrl || imageUrl,
           sourceUrl,
-          sourceLabel,
-          title: textFromUnknown(item.title).replace(/\s+/g, ' ').slice(0, 140) || query,
+          sourceLabel: `Wikimedia Commons${license ? ` · ${license}` : ''}`.slice(0, 80),
+          title: rawTitle.replace(/[_\s]+/g, ' ').slice(0, 140) || query,
         };
       })
       .filter((item): item is Omit<BoardCardImageSearchResult, 'token'> => !!item)
@@ -7411,11 +7435,11 @@ async function findGoogleCustomSearchImagesForBoardCard(
     if (error instanceof HttpsError) {
       throw error;
     }
-    logger.warn('Card editor Google image search failed.', {
+    logger.warn('Card editor Wikimedia Commons search failed.', {
       query,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
-    throw new HttpsError('unavailable', 'Google image search is temporarily unavailable.');
+    throw new HttpsError('unavailable', 'Photo search is temporarily unavailable.');
   }
 }
 
@@ -7530,22 +7554,6 @@ function isBlockedBoardCardImageHost(hostname: string): boolean {
     || /^(?:fc|fd)[0-9a-f]{2}:/.test(host)
     || /^fe[89ab][0-9a-f]:/.test(host)
     || /^::ffff:(?:127\.|10\.|192\.168\.|169\.254\.|172\.(?:1[6-9]|2\d|3[01])\.)/.test(host);
-}
-
-function sourceOriginUrl(imageUrl: string): string {
-  try {
-    return new URL('/', imageUrl).toString();
-  } catch {
-    return '';
-  }
-}
-
-function sourceHostLabel(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return '';
-  }
 }
 
 async function fetchBoardCardImageAsset(url: string): Promise<{ buffer: Buffer; contentType: string }> {

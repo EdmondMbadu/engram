@@ -4127,6 +4127,8 @@ export class BoardsComponent implements OnDestroy {
     }
     this.cardImageSearchLoading.set(true);
     this.cardImageToolError.set(null);
+    this.cardImageSearchResults.set([]);
+    this.cardImageSearchIndex.set(0);
     try {
       const callable = httpsCallable<
         { boardId: string; query: string },

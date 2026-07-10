@@ -191,6 +191,43 @@
   opacity: 0.55;
 }
 
+.boards-card-image-searching {
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+  gap: 0.75rem;
+  border: 2px solid color-mix(in srgb, var(--accent) 52%, var(--line));
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-strong, var(--surface)));
+  color: var(--text);
+  padding: 0.75rem 0.85rem;
+}
+
+.boards-card-image-searching > .material-symbols-outlined {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 1.65rem;
+  animation: boards-spin 0.8s linear infinite;
+}
+
+.boards-card-image-searching strong,
+.boards-card-image-searching small {
+  display: block;
+}
+
+.boards-card-image-searching strong {
+  font-size: 0.86rem;
+  font-weight: 950;
+}
+
+.boards-card-image-searching small {
+  margin-top: 0.15rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
 .boards-card-image-browser {
   display: grid;
   grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
