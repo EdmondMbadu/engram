@@ -4519,6 +4519,54 @@ type BoardWizardUrlExtraction = {
   siteName: string;
 };
 
+function firstHttpUrl(value: string): string {
+  return value.match(/https?:\/\/[^\s<>"']+/i)?.[0]?.replace(/[),.;!?]+$/, '') ?? '';
+}
+
+function isGoogleMapsUrl(value: string): boolean {
+  try {
+    const hostname = new URL(value).hostname.toLowerCase();
+    return hostname === 'maps.app.goo.gl'
+      || hostname === 'goo.gl'
+      || hostname === 'maps.google.com'
+      || hostname === 'www.google.com'
+      || hostname.endsWith('.google.com');
+  } catch {
+    return false;
+  }
+}
+
+function buildGoogleMapsTourContext(inputUrl: string, finalUrl: string): string {
+  if (!isGoogleMapsUrl(inputUrl) || !isGoogleMapsUrl(finalUrl)) {
+    return '';
+  }
+  try {
+    const parsed = new URL(finalUrl);
+    const marker = '/maps/dir/';
+    const markerIndex = parsed.pathname.indexOf(marker);
+    if (markerIndex < 0) {
+      return finalUrl !== inputUrl ? `Resolved Google Maps URL: ${finalUrl}` : '';
+    }
+    const routePath = parsed.pathname.slice(markerIndex + marker.length);
+    const stops = routePath
+      .split('/')
+      .filter((part) => part && !part.startsWith('@') && !part.startsWith('data='))
+      .map((part) => decodeURIComponent(part.replace(/\+/g, ' ')).trim())
+      .filter(Boolean)
+      .slice(0, 25);
+    if (!stops.length) {
+      return `Resolved Google Maps route URL: ${finalUrl}`;
+    }
+    return [
+      'Resolved Google Maps route. Treat these as authoritative ordered stops and preserve their country/region; do not substitute similarly named places elsewhere:',
+      ...stops.map((stop, index) => `${index + 1}. ${stop}`),
+      `Resolved route URL: ${finalUrl}`,
+    ].join('\n');
+  } catch {
+    return '';
+  }
+}
+
 async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, html: string): Promise<BoardWizardUrlExtraction> {
   const baseUrl = finalUrl || inputUrl;
   const pageText = stripHtmlForBoardWizard(html).slice(0, 6500);
@@ -5372,6 +5420,24 @@ export const generateBoardWizardBatch = onCall(
 
     let urlExtraction: BoardWizardUrlExtraction | null = null;
     let accommodationExtraction: BoardWizardAccommodationExtraction | null = null;
+    let mapsTourContext = '';
+    const tourPromptUrl = isBoardWizardTourMode(mode) ? firstHttpUrl(prompt) : '';
+    const sourceUrl = url || tourPromptUrl;
+    if (isBoardWizardTourMode(mode) && sourceUrl && isGoogleMapsUrl(sourceUrl)) {
+      try {
+        const fetched = await fetchHtmlWithFallback(sourceUrl, {
+          timeoutMs: 8_000,
+          allowBrowserFallback: false,
+        });
+        mapsTourContext = buildGoogleMapsTourContext(sourceUrl, fetched.finalUrl || sourceUrl);
+      } catch (error) {
+        logger.warn('Board wizard Google Maps tour URL resolution failed.', {
+          userId,
+          sourceUrl,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
     if (mode === 'url' && url) {
       urlExtraction = buildKnownRestaurantUrlExtraction(url);
     }
@@ -5399,6 +5465,7 @@ export const generateBoardWizardBatch = onCall(
 
     const effectivePrompt = [
       prompt,
+      mapsTourContext,
       accommodationExtraction ? `Detected lodging listing: ${accommodationExtraction.listingName}` : '',
       urlExtraction?.context ? `URL extraction context:\n${urlExtraction.context}` : '',
     ].filter(Boolean).join('\n\n').trim();
