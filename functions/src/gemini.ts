@@ -1298,6 +1298,7 @@ function buildBoardWizardPrompt(params: {
           `Pace/route style: ${params.tourOptions?.paceOrRouteStyle ?? (params.mode === 'driving-tour' ? 'Balanced' : 'Standard')}.`,
           `Extras requested: ${(params.tourOptions?.extras ?? []).join(', ') || 'none'}.`,
           'Order stops in the sequence a visitor should experience them. Each card must be one real stop.',
+          'When the input contains a resolved Google Maps route, use only its authoritative ordered stops. Never replace the route with another city or add unrelated stops. The country and full addresses in that route override every guess or prior assumption.',
           'Set board.kind to "walking-tour" or "driving-tour". Set board.tourMeta with mode, voiceStyle, paceOrRouteStyle, extras, and showWayfindersDefault false.',
           'Every tour card must include tour.sequence, tour.address if known, tour.guideScript, and tour.legToNext for every card except the final stop.',
           'guideScript should be polished spoken narration, roughly 90-160 words, with concrete details and no markdown.',

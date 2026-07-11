@@ -5430,6 +5430,9 @@ export const generateBoardWizardBatch = onCall(
           allowBrowserFallback: false,
         });
         mapsTourContext = buildGoogleMapsTourContext(sourceUrl, fetched.finalUrl || sourceUrl);
+        if (!mapsTourContext) {
+          throw new Error('Google Maps URL did not resolve to a usable route or place.');
+        }
       } catch (error) {
         logger.warn('Board wizard Google Maps tour URL resolution failed.', {
           userId,
@@ -5469,6 +5472,10 @@ export const generateBoardWizardBatch = onCall(
       accommodationExtraction ? `Detected lodging listing: ${accommodationExtraction.listingName}` : '',
       urlExtraction?.context ? `URL extraction context:\n${urlExtraction.context}` : '',
     ].filter(Boolean).join('\n\n').trim();
+    const mapsTourStopCount = mapsTourContext
+      ? (mapsTourContext.match(/^\d+\. /gm)?.length ?? 0)
+      : 0;
+    const generationCount = mapsTourStopCount || count;
 
     if (!effectivePrompt && !pastedList && photoNames.length === 0 && !url) {
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, upload photo names, or provide a URL.');
@@ -5491,11 +5498,11 @@ export const generateBoardWizardBatch = onCall(
           mode,
           prompt: effectivePrompt || url || photoNames.join(', '),
           pastedList,
-          url,
+          url: sourceUrl,
           photoNames,
           targetBoardTitle,
           defaultType,
-          count,
+          count: generationCount,
           vibe,
           tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
           existingCards,
