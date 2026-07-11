@@ -4528,12 +4528,39 @@ function isGoogleMapsUrl(value: string): boolean {
     const hostname = new URL(value).hostname.toLowerCase();
     return hostname === 'maps.app.goo.gl'
       || hostname === 'goo.gl'
-      || hostname === 'maps.google.com'
-      || hostname === 'www.google.com'
-      || hostname.endsWith('.google.com');
+      || /^(?:[^.]+\.)*google\.(?:com?|co)\.[a-z]{2}$/i.test(hostname)
+      || /^(?:[^.]+\.)*google\.[a-z]{2,}$/i.test(hostname);
   } catch {
     return false;
   }
+}
+
+async function resolveGoogleMapsUrl(inputUrl: string): Promise<string> {
+  let currentUrl = inputUrl;
+  for (let redirectCount = 0; redirectCount < 6; redirectCount += 1) {
+    const parsed = new URL(currentUrl);
+    if (!isGoogleMapsUrl(currentUrl)) {
+      throw new Error(`Google Maps redirected to an unexpected host: ${parsed.hostname}`);
+    }
+    if (parsed.pathname.includes('/maps/')) {
+      return currentUrl;
+    }
+    const response = await fetch(currentUrl, {
+      method: 'GET',
+      redirect: 'manual',
+      signal: AbortSignal.timeout(8_000),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; LivingWiki/1.0; +https://livingwiki.com)',
+        Accept: 'text/html,application/xhtml+xml,*/*;q=0.8',
+      },
+    });
+    const location = response.headers.get('location');
+    if (!location) {
+      return response.url || currentUrl;
+    }
+    currentUrl = new URL(location, currentUrl).toString();
+  }
+  throw new Error('Google Maps link exceeded the redirect limit.');
 }
 
 function buildGoogleMapsTourContext(inputUrl: string, finalUrl: string): string {
@@ -5425,11 +5452,8 @@ export const generateBoardWizardBatch = onCall(
     const sourceUrl = url || tourPromptUrl;
     if (isBoardWizardTourMode(mode) && sourceUrl && isGoogleMapsUrl(sourceUrl)) {
       try {
-        const fetched = await fetchHtmlWithFallback(sourceUrl, {
-          timeoutMs: 8_000,
-          allowBrowserFallback: false,
-        });
-        mapsTourContext = buildGoogleMapsTourContext(sourceUrl, fetched.finalUrl || sourceUrl);
+        const resolvedMapsUrl = await resolveGoogleMapsUrl(sourceUrl);
+        mapsTourContext = buildGoogleMapsTourContext(sourceUrl, resolvedMapsUrl);
         if (!mapsTourContext) {
           throw new Error('Google Maps URL did not resolve to a usable route or place.');
         }
@@ -5439,6 +5463,12 @@ export const generateBoardWizardBatch = onCall(
           sourceUrl,
           errorMessage: error instanceof Error ? error.message : String(error),
         });
+      }
+      if (!mapsTourContext) {
+        throw new HttpsError(
+          'unavailable',
+          'That Google Maps link could not be resolved. Please try again instead of generating an unrelated tour.',
+        );
       }
     }
     if (mode === 'url' && url) {

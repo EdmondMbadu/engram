@@ -1886,6 +1886,11 @@ export class BoardsComponent implements OnDestroy {
       this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
       this.wizardStep.set('preview');
     } catch (error) {
+      if (this.isTourWizardMode()) {
+        this.wizardError.set(error instanceof Error ? error.message : 'The tour could not be generated. Please try again.');
+        this.wizardStep.set('choose');
+        return;
+      }
       const fallback = this.buildLocalWizardBatch(refinement);
       const previewCards = await this.enrichWizardCards(fallback.cards);
       this.wizardResult.set({ ...fallback, cards: previewCards });
