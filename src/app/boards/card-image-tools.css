@@ -87,12 +87,20 @@
   .card-memory-gallery__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-.detail-card__photo-nav { position:absolute;right:.7rem;bottom:4.95rem;left:.7rem;z-index:8;display:flex;align-items:center;justify-content:center;gap:.4rem;pointer-events:none }
-.detail-card__photo-nav>span,.detail-card__photo-nav button,.detail-card__add-photos { border:1px solid rgba(255,255,255,.72);background:rgba(12,20,16,.68);box-shadow:0 8px 20px rgba(0,0,0,.2);color:#fff;backdrop-filter:blur(10px) }
-.detail-card__photo-nav>span { display:inline-flex;height:1.9rem;align-items:center;gap:.3rem;border-radius:999px;font-size:.68rem;font-weight:950;padding:0 .58rem }
-.detail-card__photo-nav>span .material-symbols-outlined { font-size:.95rem }
-.detail-card__photo-nav button { display:grid;width:1.9rem;height:1.9rem;place-items:center;border-radius:50%;cursor:pointer;pointer-events:auto }
-.detail-card__photo-nav button .material-symbols-outlined { font-size:1.1rem }
+.detail-card__memory-gallery { position:absolute;right:.58rem;bottom:4.85rem;left:.58rem;z-index:8;display:grid;gap:.38rem;border:1px solid rgba(255,255,255,.58);border-radius:.72rem;background:linear-gradient(135deg,rgba(12,20,16,.78),rgba(12,20,16,.58));box-shadow:0 10px 24px rgba(0,0,0,.24);padding:.46rem;backdrop-filter:blur(12px) }
+.detail-card__memory-label { display:flex;align-items:center;justify-content:space-between;gap:.5rem;color:#fff;font-size:.62rem;font-weight:950;letter-spacing:.07em;text-transform:uppercase }
+.detail-card__memory-label>span { display:inline-flex;align-items:center;gap:.25rem }
+.detail-card__memory-label .material-symbols-outlined { font-size:.9rem;font-variation-settings:'FILL' 1 }
+.detail-card__memory-label strong { border-radius:999px;background:rgba(255,255,255,.18);font-size:.6rem;padding:.2rem .38rem }
+.detail-card__memory-thumbs { display:flex;gap:.35rem;overflow-x:auto;scrollbar-width:none }
+.detail-card__memory-thumbs::-webkit-scrollbar { display:none }
+.detail-card__memory-thumbs button { position:relative;width:2.35rem;height:2.35rem;flex:0 0 2.35rem;overflow:hidden;border:2px solid rgba(255,255,255,.55);border-radius:.46rem;background:#fff;cursor:pointer;padding:0;opacity:.72;transition:opacity 150ms ease,transform 150ms ease,border-color 150ms ease }
+.detail-card__memory-thumbs button:hover { opacity:1;transform:translateY(-1px) }
+.detail-card__memory-thumbs button.detail-card__memory-thumb--active { border-color:#fff;box-shadow:0 0 0 2px var(--board-accent);opacity:1 }
+.detail-card__memory-thumbs button img { width:100%;height:100%;object-fit:cover }
+.detail-card--expanded.detail-card--has-memories .detail-card__media { height:12rem }
+.detail-card--expanded .detail-card__memory-gallery { bottom:3.4rem }
+.detail-card__add-photos { border:1px solid rgba(255,255,255,.72);background:rgba(12,20,16,.68);box-shadow:0 8px 20px rgba(0,0,0,.2);color:#fff;backdrop-filter:blur(10px) }
 .detail-card__add-photos { position:absolute;top:.65rem;left:.65rem;z-index:8;display:inline-flex;min-height:2rem;align-items:center;gap:.32rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.68rem;font-weight:950;padding:0 .58rem;opacity:.94;transition:background 160ms ease,transform 160ms ease }
 .detail-card__add-photos:hover { background:var(--board-accent);transform:translateY(-1px) }
 .detail-card__add-photos .material-symbols-outlined { font-size:1rem;font-variation-settings:'FILL' 1 }

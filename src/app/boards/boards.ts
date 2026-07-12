@@ -4860,6 +4860,19 @@ export class BoardsComponent implements OnDestroy {
     this.cardPhotoIndexes.update((indexes) => ({ ...indexes, [card.id]: next }));
   }
 
+  selectCardPhoto(
+    card: Pick<BoardCard, 'id' | 'imageUrl' | 'imageUrls'>,
+    index: number,
+    event: Event,
+  ): void {
+    event.stopPropagation();
+    const photos = this.cardImages(card);
+    if (index < 0 || index >= photos.length) {
+      return;
+    }
+    this.cardPhotoIndexes.update((indexes) => ({ ...indexes, [card.id]: index }));
+  }
+
   openEditCardPhotos(card: BoardCard, event: Event): void {
     event.stopPropagation();
     this.openEditCard(card);

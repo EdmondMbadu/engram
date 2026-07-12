@@ -1420,6 +1420,7 @@
                   [class.detail-card--selected]="isCardSelected(card.id)"
                   [class.detail-card--managing]="isManagingBoard(board.id)"
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
+                  [class.detail-card--has-memories]="cardImages(card).length > 1"
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
                   [class.detail-card--drop-target]="isCardDropTarget(card.id)"
@@ -1510,20 +1511,30 @@
                           </span>
                         }
                         @if (cardImages(card).length > 1) {
-                          <div class="detail-card__photo-nav" aria-label="Card photo gallery">
-                            <button type="button" aria-label="Previous photo" (click)="stepCardPhoto(card, -1, $event)">
-                              <span class="material-symbols-outlined">chevron_left</span>
-                            </button>
-                            <span><span class="material-symbols-outlined">photo_library</span>{{ currentCardPhotoPosition(card) }} / {{ cardImages(card).length }}</span>
-                            <button type="button" aria-label="Next photo" (click)="stepCardPhoto(card, 1, $event)">
-                              <span class="material-symbols-outlined">chevron_right</span>
-                            </button>
+                          <div class="detail-card__memory-gallery" aria-label="Card memories">
+                            <div class="detail-card__memory-label">
+                              <span><span class="material-symbols-outlined">photo_library</span> Memories</span>
+                              <strong>{{ currentCardPhotoPosition(card) }} of {{ cardImages(card).length }}</strong>
+                            </div>
+                            <div class="detail-card__memory-thumbs">
+                              @for (photo of cardImages(card); track photo; let photoIndex = $index) {
+                                <button
+                                  type="button"
+                                  [class.detail-card__memory-thumb--active]="currentCardPhotoPosition(card) === photoIndex + 1"
+                                  [attr.aria-label]="'Show memory ' + (photoIndex + 1) + ' of ' + cardImages(card).length"
+                                  [attr.aria-pressed]="currentCardPhotoPosition(card) === photoIndex + 1"
+                                  (click)="selectCardPhoto(card, photoIndex, $event)"
+                                >
+                                  <img [src]="photo" alt="" loading="lazy" />
+                                </button>
+                              }
+                            </div>
                           </div>
                         }
                         @if (canEditBoard(board)) {
                           <button type="button" class="detail-card__add-photos" (click)="openEditCardPhotos(card, $event)">
                             <span class="material-symbols-outlined">add_photo_alternate</span>
-                            <span>{{ cardImages(card).length ? 'Add memories' : 'Add photos' }}</span>
+                            <span>{{ cardImages(card).length ? 'Add memory' : 'Add photos' }}</span>
                           </button>
                         }
                         @if (!isPhotoOnlyCard(card)) {
