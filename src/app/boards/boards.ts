@@ -1016,6 +1016,7 @@ export class BoardsComponent implements OnDestroy {
   readonly tourAudioNotice = signal<string | null>(null);
   readonly selectedTourCardId = signal<string | null>(null);
   readonly cardPhotoIndexes = signal<Record<string, number>>({});
+  readonly collapsedCardMemoryGalleries = signal<Set<string>>(new Set());
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -4871,6 +4872,23 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.cardPhotoIndexes.update((indexes) => ({ ...indexes, [card.id]: index }));
+  }
+
+  isCardMemoryGalleryOpen(cardId: string): boolean {
+    return !this.collapsedCardMemoryGalleries().has(cardId);
+  }
+
+  toggleCardMemoryGallery(cardId: string, event: Event): void {
+    event.stopPropagation();
+    this.collapsedCardMemoryGalleries.update((collapsed) => {
+      const next = new Set(collapsed);
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+      return next;
+    });
   }
 
   openEditCardPhotos(card: BoardCard, event: Event): void {
