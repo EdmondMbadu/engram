@@ -1794,6 +1794,7 @@
 .detail-card__media img {
   display: block;
   object-fit: cover;
+  transition: opacity 180ms ease, transform 260ms ease;
 }
 
 .detail-card__fallback {

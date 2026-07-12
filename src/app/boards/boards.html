@@ -1502,12 +1502,29 @@
                       style="display: flex; flex-direction: column; overflow: hidden; border-radius: inherit; background: #fff;"
                     >
                       <div class="detail-card__media">
-                        @if (card.imageUrl) {
-                          <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                        @if (currentCardImage(card)) {
+                          <img [src]="currentCardImage(card)" [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)" loading="lazy" />
                         } @else {
                           <span class="detail-card__fallback">
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                           </span>
+                        }
+                        @if (cardImages(card).length > 1) {
+                          <div class="detail-card__photo-nav" aria-label="Card photo gallery">
+                            <button type="button" aria-label="Previous photo" (click)="stepCardPhoto(card, -1, $event)">
+                              <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <span><span class="material-symbols-outlined">photo_library</span>{{ currentCardPhotoPosition(card) }} / {{ cardImages(card).length }}</span>
+                            <button type="button" aria-label="Next photo" (click)="stepCardPhoto(card, 1, $event)">
+                              <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
+                          </div>
+                        }
+                        @if (canEditBoard(board)) {
+                          <button type="button" class="detail-card__add-photos" (click)="openEditCardPhotos(card, $event)">
+                            <span class="material-symbols-outlined">add_photo_alternate</span>
+                            <span>{{ cardImages(card).length ? 'Add memories' : 'Add photos' }}</span>
+                          </button>
                         }
                         @if (!isPhotoOnlyCard(card)) {
                           <span class="detail-card__status">
@@ -3233,18 +3250,48 @@
                   <h4>Verify and save</h4>
                 </div>
               </div>
-            <div class="boards-upload boards-upload--card-image">
-              @if (cardDraft().imageUrl || (isSongCardForm() && cardDraft().spotifyArtworkUrl)) {
-                <img
-                  [src]="cardDraft().imageUrl || cardDraft().spotifyArtworkUrl"
-                  [alt]="isSongCardForm() ? 'Cover art preview' : 'Card image preview'"
-                />
-              } @else {
-                <span class="boards-upload__placeholder">
-                  <span class="material-symbols-outlined">{{ isSongCardForm() ? 'album' : 'add_photo_alternate' }}</span>
-                </span>
+            <section class="card-memory-gallery" aria-label="Card photo memories">
+              <div class="card-memory-gallery__head">
+                <div>
+                  <span class="card-memory-gallery__eyebrow"><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
+                  <strong>Add the moments behind this card</strong>
+                  <small>Choose several photos now or come back anytime. The first photo is the card cover.</small>
+                </div>
+                <label class="card-memory-gallery__add">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                  {{ cardDraftImages().length ? 'Add more' : 'Add photos' }}
+                  <input type="file" accept="image/*" multiple (change)="onCardImageSelected($event)" />
+                </label>
+              </div>
+              @if (cardDraftImages().length) {
+                <div class="card-memory-gallery__grid">
+                  @for (photo of cardDraftImages(); track photo; let index = $index) {
+                    <figure [class.card-memory-gallery__item--cover]="index === 0">
+                      <img [src]="photo" [alt]="'Card photo ' + (index + 1)" />
+                      @if (index === 0) { <span>Cover</span> }
+                      <div class="card-memory-gallery__item-actions">
+                        @if (index > 0) {
+                          <button type="button" title="Make cover" [attr.aria-label]="'Make photo ' + (index + 1) + ' the cover'" (click)="makeCardDraftImageCover(index)">
+                            <span class="material-symbols-outlined">wallpaper</span>
+                          </button>
+                        }
+                        <button type="button" title="Remove photo" [attr.aria-label]="'Remove photo ' + (index + 1)" (click)="removeCardDraftImage(index)">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                      </div>
+                    </figure>
+                  }
+                  @if (cardDraftImages().length < 12) {
+                    <label class="card-memory-gallery__tile-add">
+                      <span class="material-symbols-outlined">add</span>
+                      <span>Add more</span>
+                      <input type="file" accept="image/*" multiple (change)="onCardImageSelected($event)" />
+                    </label>
+                  }
+                </div>
               }
-              <div class="boards-card-image-actions">
+            </section>
+            <div class="boards-card-image-actions boards-card-image-actions--creative" aria-label="More ways to add a photo">
                 <button
                   type="button"
                   class="boards-card-image-action"
@@ -3265,17 +3312,6 @@
                   <span class="material-symbols-outlined">{{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'progress_activity' : 'image_search' }}</span>
                   {{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'Searching...' : 'Find photo' }}
                 </button>
-                <label class="boards-card-image-action boards-card-image-action--upload">
-                  <span class="material-symbols-outlined">upload</span>
-                  Upload
-                  <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
-                </label>
-                @if (cardDraft().imageUrl) {
-                  <button type="button" class="boards-card-image-remove" aria-label="Remove picture" title="Remove picture" (click)="clearCardImage()">
-                    <span class="material-symbols-outlined">delete</span>
-                  </button>
-                }
-              </div>
             </div>
 
             @if (cardImageToolMode() === 'generate') {
@@ -3307,7 +3343,7 @@
                       <span>{{ cardGeneratedImageModel() || 'Nano Banana' }}</span>
                       <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()">
                         <span class="material-symbols-outlined">check</span>
-                        Use image
+                        Add to card
                       </button>
                     </div>
                   </div>
@@ -3366,7 +3402,7 @@
                     }
                     <button type="button" class="boards-primary-action" [disabled]="cardImageApplying()" (click)="useSearchedCardImage()">
                       <span class="material-symbols-outlined">{{ cardImageApplying() ? 'progress_activity' : 'check' }}</span>
-                      {{ cardImageApplying() ? 'Using...' : 'Use image' }}
+                      {{ cardImageApplying() ? 'Adding...' : 'Add to card' }}
                     </button>
                   </div>
                   <div class="boards-card-image-thumbs" aria-label="Image search results">
@@ -3488,18 +3524,48 @@
                   <h4>Edit anything before saving</h4>
                 </div>
               </div>
-            <div class="boards-upload boards-upload--card-image">
-              @if (cardDraft().imageUrl || (isSongCardForm() && cardDraft().spotifyArtworkUrl)) {
-                <img
-                  [src]="cardDraft().imageUrl || cardDraft().spotifyArtworkUrl"
-                  [alt]="isSongCardForm() ? 'Cover art preview' : 'Card image preview'"
-                />
-              } @else {
-                <span class="boards-upload__placeholder">
-                  <span class="material-symbols-outlined">{{ isSongCardForm() ? 'album' : 'add_photo_alternate' }}</span>
-                </span>
+            <section class="card-memory-gallery" aria-label="Card photo memories">
+              <div class="card-memory-gallery__head">
+                <div>
+                  <span class="card-memory-gallery__eyebrow"><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
+                  <strong>Add the moments behind this card</strong>
+                  <small>Choose several photos now or come back anytime. The first photo is the card cover.</small>
+                </div>
+                <label class="card-memory-gallery__add">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                  {{ cardDraftImages().length ? 'Add more' : 'Add photos' }}
+                  <input type="file" accept="image/*" multiple (change)="onCardImageSelected($event)" />
+                </label>
+              </div>
+              @if (cardDraftImages().length) {
+                <div class="card-memory-gallery__grid">
+                  @for (photo of cardDraftImages(); track photo; let index = $index) {
+                    <figure [class.card-memory-gallery__item--cover]="index === 0">
+                      <img [src]="photo" [alt]="'Card photo ' + (index + 1)" />
+                      @if (index === 0) { <span>Cover</span> }
+                      <div class="card-memory-gallery__item-actions">
+                        @if (index > 0) {
+                          <button type="button" title="Make cover" [attr.aria-label]="'Make photo ' + (index + 1) + ' the cover'" (click)="makeCardDraftImageCover(index)">
+                            <span class="material-symbols-outlined">wallpaper</span>
+                          </button>
+                        }
+                        <button type="button" title="Remove photo" [attr.aria-label]="'Remove photo ' + (index + 1)" (click)="removeCardDraftImage(index)">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                      </div>
+                    </figure>
+                  }
+                  @if (cardDraftImages().length < 12) {
+                    <label class="card-memory-gallery__tile-add">
+                      <span class="material-symbols-outlined">add</span>
+                      <span>Add more</span>
+                      <input type="file" accept="image/*" multiple (change)="onCardImageSelected($event)" />
+                    </label>
+                  }
+                </div>
               }
-              <div class="boards-card-image-actions">
+            </section>
+            <div class="boards-card-image-actions boards-card-image-actions--creative" aria-label="More ways to add a photo">
                 <button
                   type="button"
                   class="boards-card-image-action"
@@ -3520,17 +3586,6 @@
                   <span class="material-symbols-outlined">{{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'progress_activity' : 'image_search' }}</span>
                   {{ cardImageSearchLoading() && cardImageToolMode() === 'search' ? 'Searching...' : 'Find photo' }}
                 </button>
-                <label class="boards-card-image-action boards-card-image-action--upload">
-                  <span class="material-symbols-outlined">upload</span>
-                  Upload
-                  <input type="file" accept="image/*" (change)="onCardImageSelected($event)" />
-                </label>
-                @if (cardDraft().imageUrl) {
-                  <button type="button" class="boards-card-image-remove" aria-label="Remove picture" title="Remove picture" (click)="clearCardImage()">
-                    <span class="material-symbols-outlined">delete</span>
-                  </button>
-                }
-              </div>
             </div>
 
             @if (cardImageToolMode() === 'generate') {
@@ -3562,7 +3617,7 @@
                       <span>{{ cardGeneratedImageModel() || 'Nano Banana' }}</span>
                       <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()">
                         <span class="material-symbols-outlined">check</span>
-                        Use image
+                        Add to card
                       </button>
                     </div>
                   </div>
@@ -3621,7 +3676,7 @@
                     }
                     <button type="button" class="boards-primary-action" [disabled]="cardImageApplying()" (click)="useSearchedCardImage()">
                       <span class="material-symbols-outlined">{{ cardImageApplying() ? 'progress_activity' : 'check' }}</span>
-                      {{ cardImageApplying() ? 'Using...' : 'Use image' }}
+                      {{ cardImageApplying() ? 'Adding...' : 'Add to card' }}
                     </button>
                   </div>
                   <div class="boards-card-image-thumbs" aria-label="Image search results">

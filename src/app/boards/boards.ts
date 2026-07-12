@@ -98,6 +98,7 @@ type BoardCard = {
   status: BoardCardStatus;
   rating: number;
   imageUrl: string;
+  imageUrls: string[];
   audioPreviewUrl: string;
   spotifyTrackId: string;
   spotifyTrackUrl: string;
@@ -170,6 +171,7 @@ type CardDraft = {
   status: BoardCardStatus;
   rating: string;
   imageUrl: string;
+  imageUrls: string[];
   audioPreviewUrl: string;
   spotifyTrackId: string;
   spotifyTrackUrl: string;
@@ -1013,6 +1015,7 @@ export class BoardsComponent implements OnDestroy {
   readonly tourAudioLoadingKey = signal<string | null>(null);
   readonly tourAudioNotice = signal<string | null>(null);
   readonly selectedTourCardId = signal<string | null>(null);
+  readonly cardPhotoIndexes = signal<Record<string, number>>({});
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -1037,6 +1040,7 @@ export class BoardsComponent implements OnDestroy {
     status: 'saved',
     rating: '4',
     imageUrl: '',
+    imageUrls: [],
     audioPreviewUrl: '',
     spotifyTrackId: '',
     spotifyTrackUrl: '',
@@ -2384,6 +2388,7 @@ export class BoardsComponent implements OnDestroy {
       status: card.status,
       rating: Math.max(1, Math.min(5, Math.round(card.rating) || 4)),
       imageUrl: card.imageUrl,
+      imageUrls: card.imageUrl ? [card.imageUrl] : [],
       audioPreviewUrl: card.audioPreviewUrl ?? '',
       spotifyTrackId: card.spotifyTrackId ?? '',
       spotifyTrackUrl: card.spotifyTrackUrl ?? '',
@@ -2636,6 +2641,7 @@ export class BoardsComponent implements OnDestroy {
       status: 'saved',
       rating: songMode ? '5' : '4',
       imageUrl: '',
+      imageUrls: [],
       audioPreviewUrl: '',
       spotifyTrackId: '',
       spotifyTrackUrl: '',
@@ -2683,6 +2689,7 @@ export class BoardsComponent implements OnDestroy {
       status: card.status,
       rating: String(card.rating),
       imageUrl: card.imageUrl,
+      imageUrls: this.cardImages(card),
       audioPreviewUrl: card.audioPreviewUrl,
       spotifyTrackId: card.spotifyTrackId,
       spotifyTrackUrl: card.spotifyTrackUrl,
@@ -2789,21 +2796,30 @@ export class BoardsComponent implements OnDestroy {
 
   async onCardImageSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    const files = Array.from(input.files ?? []);
     input.value = '';
-    if (!file) {
+    if (!files.length) {
       return;
     }
 
     try {
-      const imageUrl = await this.readImageFile(file);
+      const existingCount = this.cardDraftImages().length;
+      const available = Math.max(0, 12 - existingCount);
+      if (!available) {
+        throw new Error('Each card can hold up to 12 photos.');
+      }
+      const imageUrls = await Promise.all(files.slice(0, available).map((file) => this.readImageFile(file)));
       this.cardImageLocked.set(true);
-      this.updateCardDraft('imageUrl', imageUrl);
+      this.cardDraft.update((draft) => {
+        const current = this.uniqueImageUrls([draft.imageUrl, ...draft.imageUrls]);
+        const next = this.uniqueImageUrls([...current, ...imageUrls]).slice(0, 12);
+        return { ...draft, imageUrl: next[0] ?? '', imageUrls: next };
+      });
       this.cardImageToolMode.set(null);
-      this.imageUploadError.set(null);
+      this.imageUploadError.set(files.length > available ? `Added ${available} photos. Cards can hold up to 12.` : null);
     } catch (error) {
       this.imageUploadError.set(
-        error instanceof Error ? error.message : 'Could not use that image.',
+        error instanceof Error ? error.message : 'Could not use those images.',
       );
     }
   }
@@ -2820,13 +2836,38 @@ export class BoardsComponent implements OnDestroy {
 
   clearCardImage(): void {
     this.cardImageLocked.set(true);
-    this.updateCardDraft('imageUrl', '');
+    this.cardDraft.update((draft) => ({ ...draft, imageUrl: '', imageUrls: [] }));
     this.imageUploadError.set(null);
+  }
+
+  removeCardDraftImage(index: number): void {
+    this.cardImageLocked.set(true);
+    this.cardDraft.update((draft) => {
+      const next = this.cardDraftImages(draft).filter((_, photoIndex) => photoIndex !== index);
+      return { ...draft, imageUrl: next[0] ?? '', imageUrls: next };
+    });
+    this.imageUploadError.set(null);
+  }
+
+  makeCardDraftImageCover(index: number): void {
+    this.cardImageLocked.set(true);
+    this.cardDraft.update((draft) => {
+      const photos = this.cardDraftImages(draft);
+      const selected = photos[index];
+      if (!selected) {
+        return draft;
+      }
+      const next = [selected, ...photos.filter((_, photoIndex) => photoIndex !== index)];
+      return { ...draft, imageUrl: selected, imageUrls: next };
+    });
   }
 
   onCardImageUrlInput(value: string): void {
     this.cardImageLocked.set(true);
-    this.updateCardDraft('imageUrl', value);
+    this.cardDraft.update((draft) => {
+      const next = this.uniqueImageUrls([value, ...draft.imageUrls.filter((url) => url !== draft.imageUrl)]);
+      return { ...draft, imageUrl: value, imageUrls: next };
+    });
   }
 
   onSongArtworkUrlInput(value: string): void {
@@ -3037,7 +3078,9 @@ export class BoardsComponent implements OnDestroy {
     const rating = Math.max(1, Math.min(5, Number.parseInt(draft.rating, 10) || 1));
     const editingId = this.editingCardId();
     const draftTour = songMode ? null : this.cardTourFromDraft(draft);
-    const imageUrl = draft.imageUrl.trim() || (songMode ? draft.spotifyArtworkUrl.trim() : '');
+    const draftImages = this.cardDraftImages(draft);
+    const imageUrl = draftImages[0] || (songMode ? draft.spotifyArtworkUrl.trim() : '');
+    const imageUrls = this.uniqueImageUrls([imageUrl, ...draftImages]);
     const cardType = songMode ? 'note' : draft.type;
     const cardScope = songMode ? 'place' : draft.scope;
     const placeId = songMode ? '' : draft.placeId;
@@ -3063,6 +3106,7 @@ export class BoardsComponent implements OnDestroy {
                     status: draft.status,
                     rating,
                     imageUrl,
+                    imageUrls,
                     audioPreviewUrl: draft.audioPreviewUrl.trim(),
                     spotifyTrackId: draft.spotifyTrackId.trim(),
                     spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
@@ -3090,6 +3134,7 @@ export class BoardsComponent implements OnDestroy {
                 status: draft.status,
                 rating,
                 imageUrl,
+                imageUrls,
                 audioPreviewUrl: draft.audioPreviewUrl.trim(),
                 spotifyTrackId: draft.spotifyTrackId.trim(),
                 spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
@@ -4430,7 +4475,11 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private applyCardImageSelection(imageDataUrl: string): void {
-    this.cardDraft.update((draft) => ({ ...draft, imageUrl: imageDataUrl }));
+    this.cardDraft.update((draft) => {
+      const current = this.cardDraftImages(draft);
+      const next = this.uniqueImageUrls([...current, imageDataUrl]).slice(0, 12);
+      return { ...draft, imageUrl: next[0] ?? imageDataUrl, imageUrls: next };
+    });
     this.cardImageLocked.set(true);
     this.cardImageToolMode.set(null);
     this.cardImageToolError.set(null);
@@ -4779,6 +4828,45 @@ export class BoardsComponent implements OnDestroy {
       || card.tags.includes('photo')
       || card.tags.includes('details')
       || /^(photo|listing photo \d+|main photo|living space|bedroom|kitchen|bathroom|outdoor space|amenity)$/i.test(title);
+  }
+
+  cardImages(card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>): string[] {
+    return this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]);
+  }
+
+  cardDraftImages(draft: CardDraft = this.cardDraft()): string[] {
+    return this.uniqueImageUrls([draft.imageUrl, ...draft.imageUrls]);
+  }
+
+  currentCardImage(card: Pick<BoardCard, 'id' | 'imageUrl' | 'imageUrls'>): string {
+    const photos = this.cardImages(card);
+    const index = Math.min(this.cardPhotoIndexes()[card.id] ?? 0, Math.max(0, photos.length - 1));
+    return photos[index] ?? '';
+  }
+
+  currentCardPhotoPosition(card: Pick<BoardCard, 'id' | 'imageUrl' | 'imageUrls'>): number {
+    const photos = this.cardImages(card);
+    return Math.min(this.cardPhotoIndexes()[card.id] ?? 0, Math.max(0, photos.length - 1)) + 1;
+  }
+
+  stepCardPhoto(card: Pick<BoardCard, 'id' | 'imageUrl' | 'imageUrls'>, direction: number, event: Event): void {
+    event.stopPropagation();
+    const photos = this.cardImages(card);
+    if (photos.length < 2) {
+      return;
+    }
+    const current = this.cardPhotoIndexes()[card.id] ?? 0;
+    const next = (current + direction + photos.length) % photos.length;
+    this.cardPhotoIndexes.update((indexes) => ({ ...indexes, [card.id]: next }));
+  }
+
+  openEditCardPhotos(card: BoardCard, event: Event): void {
+    event.stopPropagation();
+    this.openEditCard(card);
+  }
+
+  private uniqueImageUrls(urls: Array<string | null | undefined>): string[] {
+    return [...new Set(urls.map((url) => url?.trim() ?? '').filter(Boolean))];
   }
 
   cardScopeIcon(scope: BoardCardScope): string {
@@ -6787,6 +6875,10 @@ export class BoardsComponent implements OnDestroy {
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
+            imageUrls: this.uniqueImageUrls([
+              card.imageUrl ?? '',
+              ...((card as Partial<BoardCard>).imageUrls ?? []),
+            ]),
             audioPreviewUrl: (card as Partial<BoardCard>).audioPreviewUrl ?? '',
             spotifyTrackId: (card as Partial<BoardCard>).spotifyTrackId ?? '',
             spotifyTrackUrl: (card as Partial<BoardCard>).spotifyTrackUrl ?? '',
@@ -7028,6 +7120,10 @@ export class BoardsComponent implements OnDestroy {
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: typeof data['rating'] === 'number' ? Math.max(1, Math.min(5, data['rating'])) : 4,
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
+      imageUrls: this.uniqueImageUrls([
+        typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
+        ...(Array.isArray(data['imageUrls']) ? data['imageUrls'].filter((url): url is string => typeof url === 'string') : []),
+      ]).slice(0, 12),
       audioPreviewUrl: typeof data['audioPreviewUrl'] === 'string' ? data['audioPreviewUrl'] : '',
       spotifyTrackId: typeof data['spotifyTrackId'] === 'string' ? data['spotifyTrackId'] : '',
       spotifyTrackUrl: typeof data['spotifyTrackUrl'] === 'string' ? data['spotifyTrackUrl'] : '',
@@ -7324,13 +7420,15 @@ export class BoardsComponent implements OnDestroy {
     const imageUrl = await this.persistImageIfNeeded(board.imageUrl, `users/${uid}/boards/${board.id}/cover.jpg`);
     const logoUrl = await this.persistImageIfNeeded(board.logoUrl, `users/${uid}/boards/${board.id}/logo.jpg`);
     const cards = await Promise.all(
-      board.cards.map(async (card) => ({
-        ...card,
-        imageUrl: await this.persistImageIfNeeded(
-          card.imageUrl,
-          `users/${uid}/boards/${board.id}/cards/${card.id}.jpg`,
-        ),
-      })),
+      board.cards.map(async (card) => {
+        const sourceImages = this.cardImages(card);
+        const imageUrls = await Promise.all(
+          sourceImages.map((url, index) =>
+            this.persistImageIfNeeded(url, `users/${uid}/boards/${board.id}/cards/${card.id}/${index}.jpg`),
+          ),
+        );
+        return { ...card, imageUrl: imageUrls[0] ?? '', imageUrls };
+      }),
     );
     return { ...board, imageUrl, logoUrl, cards };
   }
