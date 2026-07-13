@@ -1055,11 +1055,21 @@
                       >
                         <div class="tour-stop-card__media">
                           @if (currentCardImage(card)) {
-                            <img
-                              [src]="currentCardImage(card)"
-                              [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)"
-                              loading="lazy"
-                            />
+                            <button
+                              type="button"
+                              class="tour-stop-card__photo-button"
+                              [attr.aria-label]="'Open ' + card.title + ' photos full screen'"
+                              (click)="openCardPhotoViewer(card, $event)"
+                            >
+                              <img
+                                [src]="currentCardImage(card)"
+                                [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)"
+                                loading="lazy"
+                              />
+                              <span class="tour-stop-card__photo-hint" aria-hidden="true">
+                                <span class="material-symbols-outlined">fullscreen</span>
+                              </span>
+                            </button>
                           } @else {
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                           }
@@ -1120,9 +1130,9 @@
                                   type="button"
                                   class="tour-stop-card__memory-thumb tour-stop-card__memory-thumb--cover"
                                   [class.tour-stop-card__memory-thumb--active]="currentCardPhotoPosition(card) === 1"
-                                  aria-label="Show cover photo"
+                                  aria-label="Open cover photo full screen"
                                   [attr.aria-pressed]="currentCardPhotoPosition(card) === 1"
-                                  (click)="selectCardPhoto(card, 0, $event)"
+                                  (click)="openCardPhotoViewerAt(card, 0, $event)"
                                 >
                                   <img [src]="cardImages(card)[0]" alt="" loading="lazy" />
                                   <span>Cover</span>
@@ -1132,9 +1142,9 @@
                                     type="button"
                                     class="tour-stop-card__memory-thumb"
                                     [class.tour-stop-card__memory-thumb--active]="currentCardPhotoPosition(card) === memoryIndex + 2"
-                                    [attr.aria-label]="'Show memory ' + (memoryIndex + 1) + ' of ' + cardMemoryCount(card)"
+                                    [attr.aria-label]="'Open memory ' + (memoryIndex + 1) + ' of ' + cardMemoryCount(card) + ' full screen'"
                                     [attr.aria-pressed]="currentCardPhotoPosition(card) === memoryIndex + 2"
-                                    (click)="selectCardPhoto(card, memoryIndex + 1, $event)"
+                                    (click)="openCardPhotoViewerAt(card, memoryIndex + 1, $event)"
                                   >
                                     <img [src]="photo" alt="" loading="lazy" />
                                   </button>
@@ -1573,7 +1583,17 @@
                     >
                       <div class="detail-card__media">
                         @if (currentCardImage(card)) {
-                          <img [src]="currentCardImage(card)" [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)" loading="lazy" />
+                          <button
+                            type="button"
+                            class="detail-card__photo-button"
+                            [attr.aria-label]="'Open ' + card.title + ' photos full screen'"
+                            (click)="openCardPhotoViewer(card, $event)"
+                          >
+                            <img [src]="currentCardImage(card)" [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)" loading="lazy" />
+                            <span class="detail-card__photo-hint" aria-hidden="true">
+                              <span class="material-symbols-outlined">fullscreen</span>
+                            </span>
+                          </button>
                         } @else {
                           <span class="detail-card__fallback">
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
@@ -1607,9 +1627,9 @@
                                   type="button"
                                   class="detail-card__memory-thumb detail-card__memory-thumb--cover"
                                   [class.detail-card__memory-thumb--active]="currentCardPhotoPosition(card) === 1"
-                                  aria-label="Show cover photo"
+                                  aria-label="Open cover photo full screen"
                                   [attr.aria-pressed]="currentCardPhotoPosition(card) === 1"
-                                  (click)="selectCardPhoto(card, 0, $event)"
+                                  (click)="openCardPhotoViewerAt(card, 0, $event)"
                                 >
                                   <img [src]="cardImages(card)[0]" alt="" loading="lazy" />
                                   <span>Cover</span>
@@ -1619,9 +1639,9 @@
                                     type="button"
                                     class="detail-card__memory-thumb"
                                     [class.detail-card__memory-thumb--active]="currentCardPhotoPosition(card) === memoryIndex + 2"
-                                    [attr.aria-label]="'Show memory ' + (memoryIndex + 1) + ' of ' + cardMemoryCount(card)"
+                                    [attr.aria-label]="'Open memory ' + (memoryIndex + 1) + ' of ' + cardMemoryCount(card) + ' full screen'"
                                     [attr.aria-pressed]="currentCardPhotoPosition(card) === memoryIndex + 2"
-                                    (click)="selectCardPhoto(card, memoryIndex + 1, $event)"
+                                    (click)="openCardPhotoViewerAt(card, memoryIndex + 1, $event)"
                                   >
                                     <img [src]="photo" alt="" loading="lazy" />
                                   </button>
@@ -1833,6 +1853,79 @@
       </main>
     </div>
   </div>
+  }
+
+  @if (cardPhotoViewerCard(); as photoCard) {
+    <div class="card-photo-lightbox" (click)="closeCardPhotoViewer($event)">
+      <section
+        class="card-photo-lightbox__dialog"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-labelledby]="'card-photo-lightbox-title-' + photoCard.id"
+        (click)="$event.stopPropagation()"
+      >
+        <header class="card-photo-lightbox__head">
+          <div>
+            <small>
+              {{ cardPhotoViewerPosition(photoCard) === 1 ? 'Cover photo' : 'Memory ' + (cardPhotoViewerPosition(photoCard) - 1) }}
+            </small>
+            <h2 [id]="'card-photo-lightbox-title-' + photoCard.id">{{ photoCard.title }}</h2>
+          </div>
+          <span class="card-photo-lightbox__count" aria-live="polite">
+            {{ cardPhotoViewerPosition(photoCard) }} / {{ cardImages(photoCard).length }}
+          </span>
+          <button type="button" autofocus aria-label="Close full-screen photo" (click)="closeCardPhotoViewer($event)">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </header>
+
+        <div class="card-photo-lightbox__stage">
+          @if (cardImages(photoCard).length > 1) {
+            <button
+              type="button"
+              class="card-photo-lightbox__nav card-photo-lightbox__nav--previous"
+              aria-label="Previous photo"
+              (click)="stepCardPhotoViewer(-1, $event)"
+            >
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+          }
+          <img
+            [src]="cardPhotoViewerImage(photoCard)"
+            [alt]="photoCard.title + ' photo ' + cardPhotoViewerPosition(photoCard) + ' of ' + cardImages(photoCard).length"
+          />
+          @if (cardImages(photoCard).length > 1) {
+            <button
+              type="button"
+              class="card-photo-lightbox__nav card-photo-lightbox__nav--next"
+              aria-label="Next photo"
+              (click)="stepCardPhotoViewer(1, $event)"
+            >
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          }
+        </div>
+
+        @if (cardImages(photoCard).length > 1) {
+          <footer class="card-photo-lightbox__thumbs" aria-label="Choose a photo">
+            @for (photo of cardImages(photoCard); track photo; let photoIndex = $index) {
+              <button
+                type="button"
+                [class.card-photo-lightbox__thumb--active]="cardPhotoViewerPosition(photoCard) === photoIndex + 1"
+                [attr.aria-label]="photoIndex === 0 ? 'Show cover photo' : 'Show memory ' + photoIndex + ' of ' + cardMemoryCount(photoCard)"
+                [attr.aria-pressed]="cardPhotoViewerPosition(photoCard) === photoIndex + 1"
+                (click)="selectCardPhotoViewer(photoCard, photoIndex, $event)"
+              >
+                <img [src]="photo" alt="" />
+                @if (photoIndex === 0) {
+                  <span>Cover</span>
+                }
+              </button>
+            }
+          </footer>
+        }
+      </section>
+    </div>
   }
 
   @if (wizardOpen()) {

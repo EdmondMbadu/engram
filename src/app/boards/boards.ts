@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, ElementRef, inject, OnDestroy, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
+import { Component, computed, effect, ElementRef, HostListener, inject, OnDestroy, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
@@ -1017,6 +1017,8 @@ export class BoardsComponent implements OnDestroy {
   readonly selectedTourCardId = signal<string | null>(null);
   readonly cardPhotoIndexes = signal<Record<string, number>>({});
   readonly openCardMemoryGalleries = signal<Set<string>>(new Set());
+  readonly cardPhotoViewerCardId = signal<string | null>(null);
+  readonly cardPhotoViewerIndex = signal(0);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -1083,6 +1085,10 @@ export class BoardsComponent implements OnDestroy {
   readonly selectedBoard = computed(() => {
     const selectedId = this.selectedBoardId();
     return this.boards().find((board) => board.id === selectedId) ?? null;
+  });
+  readonly cardPhotoViewerCard = computed(() => {
+    const cardId = this.cardPhotoViewerCardId();
+    return this.selectedBoard()?.cards.find((card) => card.id === cardId) ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
   readonly isSongCardForm = computed(() => {
@@ -4843,6 +4849,69 @@ export class BoardsComponent implements OnDestroy {
     return this.cardMemoryImages(card).length;
   }
 
+  openCardPhotoViewer(card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.cardImages(card).length) {
+      return;
+    }
+    const photos = this.cardImages(card);
+    const current = Math.min(this.cardPhotoIndexes()[card.id] ?? 0, photos.length - 1);
+    this.cardPhotoViewerIndex.set(current);
+    this.cardPhotoViewerCardId.set(card.id);
+  }
+
+  openCardPhotoViewerAt(card: BoardCard, index: number, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const photos = this.cardImages(card);
+    if (index < 0 || index >= photos.length) {
+      return;
+    }
+    this.cardPhotoViewerIndex.set(index);
+    this.cardPhotoViewerCardId.set(card.id);
+  }
+
+  closeCardPhotoViewer(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.cardPhotoViewerCardId.set(null);
+    this.cardPhotoViewerIndex.set(0);
+  }
+
+  stepCardPhotoViewer(direction: number, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const card = this.cardPhotoViewerCard();
+    if (!card) {
+      return;
+    }
+    const photos = this.cardImages(card);
+    if (photos.length < 2) {
+      return;
+    }
+    const current = Math.min(this.cardPhotoViewerIndex(), photos.length - 1);
+    const next = (current + direction + photos.length) % photos.length;
+    this.cardPhotoViewerIndex.set(next);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleCardPhotoViewerKeydown(event: KeyboardEvent): void {
+    if (!this.cardPhotoViewerCard()) {
+      return;
+    }
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.closeCardPhotoViewer();
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.stepCardPhotoViewer(-1);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      this.stepCardPhotoViewer(1);
+    }
+  }
+
   cardDraftImages(draft: CardDraft = this.cardDraft()): string[] {
     return this.uniqueImageUrls([draft.imageUrl, ...draft.imageUrls]);
   }
@@ -4856,6 +4925,30 @@ export class BoardsComponent implements OnDestroy {
   currentCardPhotoPosition(card: Pick<BoardCard, 'id' | 'imageUrl' | 'imageUrls'>): number {
     const photos = this.cardImages(card);
     return Math.min(this.cardPhotoIndexes()[card.id] ?? 0, Math.max(0, photos.length - 1)) + 1;
+  }
+
+  cardPhotoViewerImage(card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>): string {
+    const photos = this.cardImages(card);
+    const index = Math.min(this.cardPhotoViewerIndex(), Math.max(0, photos.length - 1));
+    return photos[index] ?? '';
+  }
+
+  cardPhotoViewerPosition(card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>): number {
+    const photos = this.cardImages(card);
+    return Math.min(this.cardPhotoViewerIndex(), Math.max(0, photos.length - 1)) + 1;
+  }
+
+  selectCardPhotoViewer(
+    card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>,
+    index: number,
+    event: Event,
+  ): void {
+    event.stopPropagation();
+    const photos = this.cardImages(card);
+    if (index < 0 || index >= photos.length) {
+      return;
+    }
+    this.cardPhotoViewerIndex.set(index);
   }
 
   stepCardPhoto(card: Pick<BoardCard, 'id' | 'imageUrl' | 'imageUrls'>, direction: number, event: Event): void {
