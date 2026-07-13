@@ -4983,11 +4983,11 @@ export class BoardsComponent implements OnDestroy {
       const persisted = await this.persistBoard(forked);
       this.boards.update((boards) => [persisted, ...boards]);
       this.boardsSyncError.set(null);
-      this.setShareMessage('Forked to your boards.');
+      this.setShareMessage('Added a copy to your boards.');
       void this.router.navigate(['/boards', persisted.id]);
     } catch (error) {
       console.error('Board fork failed', error, { boardId: board.id });
-      this.boardsSyncError.set('Could not fork this board. Please try again.');
+      this.boardsSyncError.set('Could not make a copy of this board. Please try again.');
     }
   }
 
@@ -5110,7 +5110,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   forkAttributionLabel(board: Board): string {
-    return board.forkedFromOwnerName ? `Forked from ${board.forkedFromOwnerName}` : '';
+    return board.forkedFromOwnerName ? `Copied from ${board.forkedFromOwnerName}` : '';
   }
 
   ownerPhotoUrl(board: Board): string {

@@ -778,8 +778,8 @@
               </button>
               @if (canForkBoard(board)) {
                 <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)">
-                  <span class="material-symbols-outlined">call_split</span>
-                  Fork
+                  <span class="material-symbols-outlined">content_copy</span>
+                  Make it mine
                 </button>
               }
               @if (canEditBoard(board)) {
@@ -1171,8 +1171,8 @@
                     }
                     @if (canForkBoard(board)) {
                       <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)">
-                        <span class="material-symbols-outlined">call_split</span>
-                        Fork
+                        <span class="material-symbols-outlined">content_copy</span>
+                        Make it mine
                       </button>
                     }
                     @if (canEditBoard(board)) {
