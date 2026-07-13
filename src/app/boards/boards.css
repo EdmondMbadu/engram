@@ -4029,7 +4029,7 @@
   font-size: 2.5rem;
 }
 
-.tour-stop-card__media > span:last-child {
+.tour-stop-card__sequence {
   position: absolute;
   top: 0.65rem;
   left: 0.65rem;

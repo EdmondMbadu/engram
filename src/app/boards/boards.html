@@ -1054,12 +1054,35 @@
                         [class.tour-stop-card--active]="selectedTourCardId() === card.id"
                       >
                         <div class="tour-stop-card__media">
-                          @if (card.imageUrl) {
-                            <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
+                          @if (currentCardImage(card)) {
+                            <img
+                              [src]="currentCardImage(card)"
+                              [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)"
+                              loading="lazy"
+                            />
                           } @else {
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                           }
-                          <span>{{ card.tour?.sequence }}</span>
+                          <span class="tour-stop-card__sequence">{{ card.tour?.sequence }}</span>
+                          @if (cardMemoryCount(card) > 0) {
+                            <button
+                              type="button"
+                              class="tour-stop-card__memory-summary"
+                              [attr.aria-label]="(isCardMemoryGalleryOpen(card.id) ? 'Hide ' : 'Show ') + cardMemoryCount(card) + (cardMemoryCount(card) === 1 ? ' memory' : ' memories')"
+                              [attr.aria-controls]="'tour-card-memory-panel-' + card.id"
+                              [attr.aria-expanded]="isCardMemoryGalleryOpen(card.id)"
+                              (click)="toggleCardMemoryGallery(card.id, $event)"
+                            >
+                              <span class="material-symbols-outlined">photo_library</span>
+                              <span>
+                                <strong>{{ cardMemoryCount(card) }}</strong>
+                                {{ cardMemoryCount(card) === 1 ? 'memory' : 'memories' }}
+                              </span>
+                              <span class="material-symbols-outlined">
+                                {{ isCardMemoryGalleryOpen(card.id) ? 'expand_less' : 'expand_more' }}
+                              </span>
+                            </button>
+                          }
                         </div>
                         <div class="tour-stop-card__body">
                           <div class="tour-stop-card__head">
@@ -1073,6 +1096,52 @@
                               </button>
                             }
                           </div>
+                          @if (cardMemoryCount(card) > 0 && isCardMemoryGalleryOpen(card.id)) {
+                            <section
+                              class="tour-stop-card__memories"
+                              [id]="'tour-card-memory-panel-' + card.id"
+                              aria-label="Memories from this stop"
+                            >
+                              <div class="tour-stop-card__memories-head">
+                                <span>
+                                  <span class="material-symbols-outlined">auto_awesome</span>
+                                  Memories from this stop
+                                </span>
+                                <button
+                                  type="button"
+                                  aria-label="Hide memories"
+                                  (click)="toggleCardMemoryGallery(card.id, $event)"
+                                >
+                                  <span class="material-symbols-outlined">close</span>
+                                </button>
+                              </div>
+                              <div class="tour-stop-card__memory-thumbs">
+                                <button
+                                  type="button"
+                                  class="tour-stop-card__memory-thumb tour-stop-card__memory-thumb--cover"
+                                  [class.tour-stop-card__memory-thumb--active]="currentCardPhotoPosition(card) === 1"
+                                  aria-label="Show cover photo"
+                                  [attr.aria-pressed]="currentCardPhotoPosition(card) === 1"
+                                  (click)="selectCardPhoto(card, 0, $event)"
+                                >
+                                  <img [src]="cardImages(card)[0]" alt="" loading="lazy" />
+                                  <span>Cover</span>
+                                </button>
+                                @for (photo of cardMemoryImages(card); track photo; let memoryIndex = $index) {
+                                  <button
+                                    type="button"
+                                    class="tour-stop-card__memory-thumb"
+                                    [class.tour-stop-card__memory-thumb--active]="currentCardPhotoPosition(card) === memoryIndex + 2"
+                                    [attr.aria-label]="'Show memory ' + (memoryIndex + 1) + ' of ' + cardMemoryCount(card)"
+                                    [attr.aria-pressed]="currentCardPhotoPosition(card) === memoryIndex + 2"
+                                    (click)="selectCardPhoto(card, memoryIndex + 1, $event)"
+                                  >
+                                    <img [src]="photo" alt="" loading="lazy" />
+                                  </button>
+                                }
+                              </div>
+                            </section>
+                          }
                           <p>{{ card.notes }}</p>
                           @if (card.tour?.guideScript) {
                             <div class="tour-stop-card__script">
@@ -1420,7 +1489,7 @@
                   [class.detail-card--selected]="isCardSelected(card.id)"
                   [class.detail-card--managing]="isManagingBoard(board.id)"
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
-                  [class.detail-card--has-memories]="cardImages(card).length > 1"
+                  [class.detail-card--has-memories]="cardMemoryCount(card) > 0"
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
                   [class.detail-card--drop-target]="isCardDropTarget(card.id)"
@@ -1510,26 +1579,49 @@
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                           </span>
                         }
-                        @if (cardImages(card).length > 1) {
+                        @if (cardMemoryCount(card) > 0) {
                           @if (isCardMemoryGalleryOpen(card.id)) {
-                            <div class="detail-card__memory-gallery" aria-label="Card memories">
+                            <div
+                              class="detail-card__memory-gallery"
+                              [id]="'card-memory-panel-' + card.id"
+                              aria-label="Card memories"
+                            >
                               <div class="detail-card__memory-label">
-                                <span><span class="material-symbols-outlined">photo_library</span> Memories</span>
+                                <span>
+                                  <span class="material-symbols-outlined">photo_library</span>
+                                  {{ cardMemoryCount(card) }} {{ cardMemoryCount(card) === 1 ? 'memory' : 'memories' }}
+                                </span>
                                 <span class="detail-card__memory-label-actions">
-                                  <strong>{{ currentCardPhotoPosition(card) }} of {{ cardImages(card).length }}</strong>
-                                  <button type="button" aria-label="Hide memory thumbnails" title="Show the full picture" (click)="toggleCardMemoryGallery(card.id, $event)">
+                                  <button
+                                    type="button"
+                                    aria-label="Hide memories"
+                                    title="Hide memories"
+                                    (click)="toggleCardMemoryGallery(card.id, $event)"
+                                  >
                                     <span class="material-symbols-outlined">keyboard_arrow_down</span>
                                   </button>
                                 </span>
                               </div>
                               <div class="detail-card__memory-thumbs">
-                                @for (photo of cardImages(card); track photo; let photoIndex = $index) {
+                                <button
+                                  type="button"
+                                  class="detail-card__memory-thumb detail-card__memory-thumb--cover"
+                                  [class.detail-card__memory-thumb--active]="currentCardPhotoPosition(card) === 1"
+                                  aria-label="Show cover photo"
+                                  [attr.aria-pressed]="currentCardPhotoPosition(card) === 1"
+                                  (click)="selectCardPhoto(card, 0, $event)"
+                                >
+                                  <img [src]="cardImages(card)[0]" alt="" loading="lazy" />
+                                  <span>Cover</span>
+                                </button>
+                                @for (photo of cardMemoryImages(card); track photo; let memoryIndex = $index) {
                                   <button
                                     type="button"
-                                    [class.detail-card__memory-thumb--active]="currentCardPhotoPosition(card) === photoIndex + 1"
-                                    [attr.aria-label]="'Show memory ' + (photoIndex + 1) + ' of ' + cardImages(card).length"
-                                    [attr.aria-pressed]="currentCardPhotoPosition(card) === photoIndex + 1"
-                                    (click)="selectCardPhoto(card, photoIndex, $event)"
+                                    class="detail-card__memory-thumb"
+                                    [class.detail-card__memory-thumb--active]="currentCardPhotoPosition(card) === memoryIndex + 2"
+                                    [attr.aria-label]="'Show memory ' + (memoryIndex + 1) + ' of ' + cardMemoryCount(card)"
+                                    [attr.aria-pressed]="currentCardPhotoPosition(card) === memoryIndex + 2"
+                                    (click)="selectCardPhoto(card, memoryIndex + 1, $event)"
                                   >
                                     <img [src]="photo" alt="" loading="lazy" />
                                   </button>
@@ -1539,14 +1631,24 @@
                           } @else {
                             <button
                               type="button"
-                              class="detail-card__memory-reopen"
-                              [attr.aria-label]="'Show ' + cardImages(card).length + ' memory thumbnails'"
+                              class="detail-card__memory-summary"
+                              [attr.aria-label]="'Show ' + cardMemoryCount(card) + (cardMemoryCount(card) === 1 ? ' memory' : ' memories')"
+                              [attr.aria-controls]="'card-memory-panel-' + card.id"
+                              aria-expanded="false"
                               title="Show memories"
                               (click)="toggleCardMemoryGallery(card.id, $event)"
                             >
-                              <span class="material-symbols-outlined">photo_library</span>
-                              <strong>{{ cardImages(card).length }} memories</strong>
-                              <span class="material-symbols-outlined">keyboard_arrow_up</span>
+                              <span class="detail-card__memory-stack" aria-hidden="true">
+                                <img [src]="cardMemoryImages(card)[0]" alt="" />
+                                @if (cardMemoryCount(card) > 1) {
+                                  <img [src]="cardMemoryImages(card)[1]" alt="" />
+                                }
+                              </span>
+                              <span class="detail-card__memory-summary-copy">
+                                <small>Memories</small>
+                                <strong>{{ cardMemoryCount(card) }} {{ cardMemoryCount(card) === 1 ? 'photo' : 'photos' }}</strong>
+                              </span>
+                              <span class="material-symbols-outlined">expand_more</span>
                             </button>
                           }
                         }

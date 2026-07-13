@@ -1016,7 +1016,7 @@ export class BoardsComponent implements OnDestroy {
   readonly tourAudioNotice = signal<string | null>(null);
   readonly selectedTourCardId = signal<string | null>(null);
   readonly cardPhotoIndexes = signal<Record<string, number>>({});
-  readonly collapsedCardMemoryGalleries = signal<Set<string>>(new Set());
+  readonly openCardMemoryGalleries = signal<Set<string>>(new Set());
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -4835,6 +4835,14 @@ export class BoardsComponent implements OnDestroy {
     return this.uniqueImageUrls([card.imageUrl, ...(card.imageUrls ?? [])]);
   }
 
+  cardMemoryImages(card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>): string[] {
+    return this.cardImages(card).slice(1);
+  }
+
+  cardMemoryCount(card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>): number {
+    return this.cardMemoryImages(card).length;
+  }
+
   cardDraftImages(draft: CardDraft = this.cardDraft()): string[] {
     return this.uniqueImageUrls([draft.imageUrl, ...draft.imageUrls]);
   }
@@ -4875,13 +4883,13 @@ export class BoardsComponent implements OnDestroy {
   }
 
   isCardMemoryGalleryOpen(cardId: string): boolean {
-    return !this.collapsedCardMemoryGalleries().has(cardId);
+    return this.openCardMemoryGalleries().has(cardId);
   }
 
   toggleCardMemoryGallery(cardId: string, event: Event): void {
     event.stopPropagation();
-    this.collapsedCardMemoryGalleries.update((collapsed) => {
-      const next = new Set(collapsed);
+    this.openCardMemoryGalleries.update((open) => {
+      const next = new Set(open);
       if (next.has(cardId)) {
         next.delete(cardId);
       } else {
