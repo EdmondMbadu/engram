@@ -811,11 +811,11 @@ const STACK_RATIOS: Array<{ id: StackRatio; label: string; icon: string }> = [
 ];
 
 const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: string }> = [
+  { id: 'x', label: 'X video', icon: 'alternate_email' },
   { id: 'whatsapp', label: 'WhatsApp', icon: 'chat' },
   { id: 'facebook', label: 'Facebook', icon: 'public' },
   { id: 'instagram', label: 'Instagram', icon: 'photo_camera' },
   { id: 'tiktok', label: 'TikTok', icon: 'music_note' },
-  { id: 'x', label: 'X', icon: 'alternate_email' },
   { id: 'download', label: 'Download', icon: 'download' },
 ];
 
@@ -868,6 +868,7 @@ export class BoardsComponent implements OnDestroy {
   private stackTourNarrationSwitchToken = 0;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
+  private readonly publishedStackVideoFiles = new Map<string, File>();
   private friendsLoadedForUid = '';
 
   @ViewChild('tourMapCanvas')
@@ -1016,6 +1017,8 @@ export class BoardsComponent implements OnDestroy {
   readonly stackShareMessage = signal<string | null>(null);
   readonly stackVideoExporting = signal(false);
   readonly stackVideoProgress = signal(0);
+  readonly stackPublishedVideoLoading = signal(false);
+  readonly stackPublishedVideoReady = signal(false);
   readonly stackDirectView = signal(false);
   readonly stackShareDialogOpen = signal(false);
   readonly stackFrameDurationMs = 4200;
@@ -5486,6 +5489,10 @@ export class BoardsComponent implements OnDestroy {
       this.prepareStackForBoard(board);
     }
     this.stackShareDialogOpen.set(true);
+    this.stackPublishedVideoReady.set(this.publishedStackVideoFiles.has(board.id));
+    if (board.socialVideoUrl && !this.publishedStackVideoFiles.has(board.id)) {
+      void this.preloadPublishedStackVideo(board);
+    }
   }
 
   closeStackShareDialog(event?: Event): void {
@@ -5895,6 +5902,8 @@ export class BoardsComponent implements OnDestroy {
         },
       });
       const videoUrl = await getDownloadURL(ref);
+      this.publishedStackVideoFiles.set(board.id, file);
+      this.stackPublishedVideoReady.set(true);
       const nextBoard: Board = {
         ...board,
         socialVideoUrl: videoUrl,
@@ -5916,22 +5925,15 @@ export class BoardsComponent implements OnDestroy {
 
   async sharePublishedStackVideo(board: Board): Promise<void> {
     if (!this.isBrowser || !board.socialVideoUrl || this.stackVideoExporting()) return;
-    this.setStackShareMessage('Preparing the published video for sharing…', false);
+    const file = this.publishedStackVideoFiles.get(board.id);
+    if (!file) {
+      void this.preloadPublishedStackVideo(board);
+      this.setStackShareMessage('Preparing the native video. Tap “Share video” again when it says ready.', false);
+      return;
+    }
+    const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
+    const url = this.socialVideoShareUrl(board);
     try {
-      const response = await fetch(board.socialVideoUrl, { mode: 'cors', credentials: 'omit' });
-      if (!response.ok) throw new Error('The published video could not be downloaded.');
-      const blob = await response.blob();
-      const extension = (board.socialVideoMimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
-      const result: StackVideoResult = {
-        blob,
-        mimeType: board.socialVideoMimeType || blob.type || `video/${extension}`,
-        extension,
-        xCompatible: extension === 'mp4',
-        durationSeconds: 0,
-      };
-      const file = this.stackVideoFile(board, result);
-      const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
-      const url = this.socialVideoShareUrl(board);
       if (this.canNativeShareFile(file)) {
         await navigator.share({ title: board.title, text: `${caption}\n${url}`, files: [file] });
         this.setStackShareMessage('Published video shared as native media.');
@@ -5950,6 +5952,34 @@ export class BoardsComponent implements OnDestroy {
       }
       const message = error instanceof Error ? error.message : 'Could not share the published video.';
       this.setStackShareMessage(message, false);
+    }
+  }
+
+  private async preloadPublishedStackVideo(board: Board): Promise<void> {
+    if (!this.isBrowser || !board.socialVideoUrl || this.publishedStackVideoFiles.has(board.id) || this.stackPublishedVideoLoading()) {
+      return;
+    }
+    this.stackPublishedVideoLoading.set(true);
+    this.stackPublishedVideoReady.set(false);
+    try {
+      const response = await fetch(board.socialVideoUrl, { mode: 'cors', credentials: 'omit' });
+      if (!response.ok) throw new Error('The permanent video could not be prepared.');
+      const blob = await response.blob();
+      const extension: StackVideoResult['extension'] = (board.socialVideoMimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
+      const result: StackVideoResult = {
+        blob,
+        mimeType: board.socialVideoMimeType || blob.type || `video/${extension}`,
+        extension,
+        xCompatible: extension === 'mp4',
+        durationSeconds: 0,
+      };
+      this.publishedStackVideoFiles.set(board.id, this.stackVideoFile(board, result));
+      this.stackPublishedVideoReady.set(true);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'The permanent video could not be prepared.';
+      this.setStackShareMessage(message, false);
+    } finally {
+      this.stackPublishedVideoLoading.set(false);
     }
   }
 

@@ -225,6 +225,74 @@
 }
 
 /* Compact share destinations keep raw URLs out of the primary UI. */
+.board-share-video-primary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  border: 3px solid var(--ink);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #0b765b, #0a9870);
+  box-shadow: 4px 4px 0 var(--ink);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.82rem;
+  text-align: left;
+}
+
+.board-share-video-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 6px 0 var(--ink);
+}
+
+.board-share-video-primary > .material-symbols-outlined {
+  display: grid;
+  width: 2.85rem;
+  height: 2.85rem;
+  place-items: center;
+  border: 2px solid rgba(255,255,255,.78);
+  border-radius: 0.85rem;
+  background: rgba(255,255,255,.14);
+  color: #ffffff;
+  font-size: 1.55rem !important;
+  font-variation-settings: 'FILL' 1;
+}
+
+.board-share-video-primary > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.board-share-video-primary strong {
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.board-share-video-primary small {
+  color: rgba(255,255,255,.78);
+  font-size: 0.71rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.board-share-video-primary em {
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0b765b;
+  font-size: 0.65rem;
+  font-style: normal;
+  font-weight: 950;
+  padding: 0.45rem 0.62rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .board-share-panel__destinations,
 .stack-share-dialog__link-actions {
   display: grid;
@@ -408,6 +476,21 @@
   padding: 0.55rem 0.65rem;
 }
 
+.stack-hosted-video__actions .stack-hosted-video__share {
+  grid-column: 1 / -1;
+  min-height: 3.15rem;
+  background: #126e55;
+  color: #ffffff;
+  font-size: 0.78rem;
+}
+
+.stack-share-dialog__link-actions { order: 1; }
+.stack-hosted-video { order: 2; }
+.stack-share-dialog__targets { order: 3; }
+.stack-share-dialog > .stack-video-note { order: 4; }
+.stack-share-dialog__board { order: 5; }
+.stack-share-dialog > small { order: 6; }
+
 .stack-hosted-video__publish {
   width: 100%;
   background: #126e55;
@@ -436,5 +519,194 @@
 
   .board-share-destination__action {
     font-size: 0;
+  }
+
+  .board-share-video-primary {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .board-share-video-primary em {
+    grid-column: 2;
+    width: fit-content;
+  }
+}
+
+/* Single-path social-video sharing. */
+.stack-video-single {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.62rem;
+  overflow: hidden;
+  border: 2px solid #126e55;
+  border-radius: 1.1rem;
+  background:
+    radial-gradient(circle at 50% 0, rgba(44, 196, 142, .2), transparent 40%),
+    linear-gradient(180deg, #f3fff9, #ffffff);
+  box-shadow: 3px 3px 0 #126e55;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.stack-video-single--stale {
+  border-color: #9a6500;
+  background:
+    radial-gradient(circle at 50% 0, rgba(255, 202, 61, .24), transparent 40%),
+    linear-gradient(180deg, #fff9e1, #ffffff);
+  box-shadow: 3px 3px 0 #9a6500;
+}
+
+.stack-video-single__visual {
+  display: grid;
+  width: 4.25rem;
+  height: 4.25rem;
+  place-items: center;
+  border: 3px solid #ffffff;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #0b765b, #11aa7b);
+  box-shadow: 0 12px 28px rgba(11, 118, 91, .22);
+  color: #ffffff;
+}
+
+.stack-video-single__visual .material-symbols-outlined {
+  font-size: 2.2rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.stack-video-single__eyebrow {
+  margin: 0;
+  color: #126e55;
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: .15em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stack-video-single h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.35rem;
+  font-weight: 950;
+  letter-spacing: -.025em;
+  line-height: 1.05;
+}
+
+.stack-video-single__description {
+  max-width: 25rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.stack-video-single__primary {
+  display: inline-flex;
+  width: min(100%, 22rem);
+  min-height: 3.35rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+  margin-top: 0.28rem;
+  border: 3px solid var(--modal-ink);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0b765b, #0a9870);
+  box-shadow: 3px 3px 0 var(--modal-ink);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 950;
+  padding: 0.7rem 1rem;
+}
+
+.stack-video-single__primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 4px 5px 0 var(--modal-ink);
+}
+
+.stack-video-single__primary:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
+.stack-video-single__primary .material-symbols-outlined {
+  font-size: 1.2rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.stack-video-single__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  color: #126e55;
+  font-size: 0.67rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.stack-video-single__status .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
+.stack-video-single__more {
+  width: 100%;
+  margin-top: 0.32rem;
+  border-top: 1px solid color-mix(in srgb, #126e55 22%, transparent);
+  padding-top: 0.65rem;
+}
+
+.stack-video-single__more summary {
+  width: fit-content;
+  margin: auto;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.69rem;
+  font-weight: 900;
+}
+
+.stack-video-single__more > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.42rem;
+  margin-top: 0.65rem;
+}
+
+.stack-video-single__more button {
+  display: inline-flex;
+  min-height: 2.45rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 850;
+  padding: 0.5rem 0.6rem;
+}
+
+.stack-video-single__more button:hover {
+  border-color: #126e55;
+  color: #126e55;
+}
+
+.stack-video-single__more button .material-symbols-outlined {
+  color: #126e55;
+  font-size: 1rem;
+}
+
+@media (max-width: 440px) {
+  .stack-video-single {
+    padding: 1rem .8rem;
+  }
+
+  .stack-video-single__more > div {
+    grid-template-columns: 1fr;
   }
 }
