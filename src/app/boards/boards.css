@@ -3324,7 +3324,7 @@
   width: 100%;
 }
 
-.stack-share-dialog small {
+.stack-share-dialog > small {
   overflow-wrap: anywhere;
   border-radius: 0.8rem;
   background: color-mix(in srgb, var(--accent) 8%, #ffffff);

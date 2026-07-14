@@ -163,6 +163,15 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
     return;
   }
 
+  if (parsed.rawVideo) {
+    if (!board.socialVideoUrl) {
+      res.status(404).send('This board does not have a published video yet.');
+      return;
+    }
+    await proxyBoardVideo(req, res, board);
+    return;
+  }
+
   if (parsed.video || parsed.player) {
     if (!board.socialVideoUrl) {
       res.status(404).send('This board does not have a published video yet.');
@@ -213,9 +222,9 @@ function parseTravelSharePath(url: string): { shareId: string; kind: ShareImageK
   };
 }
 
-function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean; video: boolean; player: boolean } | null {
+function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean; video: boolean; player: boolean; rawVideo: boolean } | null {
   const [path, query = ''] = url.split('?');
-  const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/(og\.png|video|video\/player))?\/?$/);
+  const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/(og\.png|video|video\/player|video\.mp4))?\/?$/);
   if (!match) {
     return null;
   }
@@ -226,7 +235,62 @@ function parseBoardSharePath(url: string): { boardId: string; image: boolean; st
     stack: new URLSearchParams(query).get('view') === 'stack',
     video: match[2] === 'video',
     player: match[2] === 'video/player',
+    rawVideo: match[2] === 'video.mp4',
   };
+}
+
+async function proxyBoardVideo(req: Request, res: Response, board: BoardShare): Promise<void> {
+  const videoUrl = board.socialVideoUrl;
+  if (!videoUrl) {
+    res.status(404).send('Video not found.');
+    return;
+  }
+
+  const requestHeaders: Record<string, string> = {};
+  const range = req.get('range');
+  if (range) requestHeaders['Range'] = range;
+
+  try {
+    const upstream = await fetch(videoUrl, {
+      method: req.method === 'HEAD' ? 'HEAD' : 'GET',
+      headers: requestHeaders,
+    });
+    if (!upstream.ok && upstream.status !== 206) {
+      logger.warn('Published board video proxy failed.', { boardId: board.id, status: upstream.status });
+      res.status(502).send('Published video is temporarily unavailable.');
+      return;
+    }
+
+    const contentType = upstream.headers.get('content-type') || board.socialVideoMimeType.split(';')[0] || 'video/mp4';
+    res.status(upstream.status);
+    res.set('Content-Type', contentType);
+    res.set('Cache-Control', 'public, max-age=3600, s-maxage=86400');
+    res.set('Accept-Ranges', upstream.headers.get('accept-ranges') || 'bytes');
+    res.set('Content-Disposition', `inline; filename="${safeFileName(board.title)}.mp4"`);
+    for (const header of ['content-range', 'content-length'] as const) {
+      const value = upstream.headers.get(header);
+      if (value) res.set(header, value);
+    }
+    if (req.method === 'HEAD') {
+      res.send();
+      return;
+    }
+    res.send(Buffer.from(await upstream.arrayBuffer()));
+  } catch (error) {
+    logger.error('Published board video proxy error.', {
+      boardId: board.id,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    res.status(502).send('Published video is temporarily unavailable.');
+  }
+}
+
+function safeFileName(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 70) || 'livingwiki-video';
 }
 
 async function loadShareCard(cardId: string): Promise<ShareCard | null> {
@@ -749,7 +813,7 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
   const boardUrl = `${appUrl}/${boardShareRoute(board)}/${encodeURIComponent(board.id)}?view=stack`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
-  const videoUrl = board.socialVideoUrl ?? '';
+  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video.mp4?v=${version}`;
   const videoType = board.socialVideoMimeType.split(';')[0] || 'video/mp4';
   const dimensions = boardVideoDimensions(board.socialVideoRatio);
 
@@ -822,7 +886,8 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
 }
 
 function buildBoardVideoPlayerHtml(board: BoardShare): string {
-  const videoUrl = board.socialVideoUrl ?? '';
+  const version = encodeURIComponent(board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion);
+  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video.mp4?v=${version}`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
   return `<!doctype html>
