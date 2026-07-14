@@ -851,12 +851,14 @@ export class BoardsComponent implements OnDestroy {
   private tourMapMarkers: unknown[] = [];
   private tourMapPolyline: unknown | null = null;
   private tourAudio: HTMLAudioElement | null = null;
+  private tourSpeechUtterance: SpeechSynthesisUtterance | null = null;
   private songPreviewAudio: HTMLAudioElement | null = null;
   private readonly spotifyEnrichedBoardIds = new Set<string>();
   private readonly spotifyEnrichmentInFlightBoardIds = new Set<string>();
   private readonly spotifyEmbedUrls = new Map<string, SafeResourceUrl>();
   private stackLivePreviewAutoplay = false;
   private stackLivePreviewSwitchToken = 0;
+  private stackTourNarrationSwitchToken = 0;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
   private friendsLoadedForUid = '';
@@ -1008,6 +1010,7 @@ export class BoardsComponent implements OnDestroy {
   readonly stackDirectView = signal(false);
   readonly stackShareDialogOpen = signal(false);
   readonly stackFrameDurationMs = 4200;
+  readonly stackActiveFrameDurationMs = signal(this.stackFrameDurationMs);
   readonly tourWayfindersShown = signal(false);
   readonly tourGuideOpen = signal(false);
   readonly tourDeckIndex = signal(0);
@@ -1289,6 +1292,7 @@ export class BoardsComponent implements OnDestroy {
     const selectedIds = this.stackSelectedCardIds();
     return board ? board.cards.filter((card) => selectedIds.has(card.id)) : [];
   });
+  readonly stackHasTourNarration = computed(() => this.stackSelectedCards().some((card) => !!card.tour));
   readonly stackSelectedCount = computed(() => this.stackSelectedCardIds().size);
   readonly stackFrameCount = computed(() => this.stackSelectedCards().length + 2);
   readonly stackProgressFrames = computed(() =>
@@ -1297,6 +1301,11 @@ export class BoardsComponent implements OnDestroy {
   readonly stackCurrentFrame = computed<StackFrame>(() => {
     return this.stackFrameAtIndex(this.stackFrameIndex());
   });
+  readonly stackCurrentTourCard = computed<BoardCard | null>(() => {
+    const frame = this.stackCurrentFrame();
+    return frame.kind === 'card' && frame.card?.tour ? frame.card : null;
+  });
+  readonly stackTourNarrationConsent = signal(false);
   readonly selectedBoardTourCards = computed(() => this.tourCards(this.selectedBoard()));
   readonly tourDeckFrames = computed<TourDeckFrame[]>(() => {
     const cards = this.selectedBoardTourCards();
@@ -1388,9 +1397,15 @@ export class BoardsComponent implements OnDestroy {
     this.route.queryParamMap.subscribe((params) => {
       const view = params.get('view') ?? params.get('stack');
       const wantsFriends = params.get('friends') === '1';
+      const wantsStack = view === 'stack' || view === 'reel';
       this.boardFriendsFocusRequested.set(wantsFriends);
-      this.stackDirectView.set(view === 'stack' || view === 'reel');
-      this.syncStackDirectView();
+      this.stackDirectView.set(wantsStack);
+      if (wantsStack) {
+        this.syncStackDirectView();
+      } else {
+        this.stopSongPreview();
+        this.stopStackPlayback();
+      }
       if (this.isBrowser && wantsFriends) {
         window.setTimeout(() => this.scrollToBoardFriends(), 120);
       }
@@ -3829,7 +3844,13 @@ export class BoardsComponent implements OnDestroy {
       this.tourAudio.currentTime = 0;
       this.tourAudio.onended = null;
       this.tourAudio.onerror = null;
+      this.tourAudio.onloadedmetadata = null;
       this.tourAudio = null;
+    }
+    if (this.tourSpeechUtterance) {
+      this.tourSpeechUtterance.onend = null;
+      this.tourSpeechUtterance.onerror = null;
+      this.tourSpeechUtterance = null;
     }
     if (this.isBrowser && typeof window.speechSynthesis !== 'undefined') {
       window.speechSynthesis.cancel();
@@ -4075,6 +4096,7 @@ export class BoardsComponent implements OnDestroy {
     }
     const pending = this.tourAudioPromises.get(key);
     if (pending) {
+      this.tourAudioLoadingKey.set(key);
       return pending;
     }
     const functions = this.functions;
@@ -5402,6 +5424,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackStudioOpen.set(false);
     this.stackShareDialogOpen.set(false);
     this.sharePanelOpen.set(false);
+    this.stackTourNarrationConsent.set(true);
     this.stackDirectView.set(true);
     this.startStackPlayback();
     void this.router.navigate([this.boardRouteRoot(board), board.id], { queryParams: { view: 'stack' } });
@@ -5414,6 +5437,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackStudioOpen.set(false);
     this.stackShareDialogOpen.set(false);
     this.sharePanelOpen.set(false);
+    this.stackTourNarrationConsent.set(true);
     this.stackDirectView.set(true);
     this.startStackPlayback();
     void this.router.navigate(['/boards', board.id], { queryParams: { view: 'stack' } });
@@ -5590,17 +5614,32 @@ export class BoardsComponent implements OnDestroy {
   }
 
   previousStackFrame(): void {
+    const resumeTourPlayback = this.isTourStackLiveView();
+    if (resumeTourPlayback) {
+      this.stackTourNarrationConsent.set(true);
+    }
     this.stopStackPlayback();
     this.stackFrameIndex.update((index) => {
       const count = this.stackFrameCount();
       return count ? (index - 1 + count) % count : 0;
     });
     this.syncStackLivePreviewAfterFrameChange();
+    if (resumeTourPlayback) {
+      this.stackPlaying.set(true);
+      this.syncStackTourNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
+    }
   }
 
   nextStackFrame(): void {
+    const resumeTourPlayback = this.isTourStackLiveView();
+    if (resumeTourPlayback) {
+      this.stackTourNarrationConsent.set(true);
+    }
     this.stopStackPlayback();
-    this.advanceStackFrame();
+    if (resumeTourPlayback) {
+      this.stackPlaying.set(true);
+    }
+    this.advanceStackFrame({ forceTourNarration: resumeTourPlayback });
   }
 
   beginStackSwipe(event: PointerEvent): void {
@@ -5678,7 +5717,34 @@ export class BoardsComponent implements OnDestroy {
       this.stopStackPlayback();
       return;
     }
+    if (this.isTourStackLiveView()) {
+      this.stackTourNarrationConsent.set(true);
+    }
     this.startStackPlayback();
+  }
+
+  startNarratedStack(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.stackTourNarrationConsent.set(true);
+    this.startStackPlayback();
+  }
+
+  stackTourNarrationLoading(): boolean {
+    const card = this.stackCurrentTourCard();
+    return !!card && this.tourAudioLoadingKey() === `stop:${card.id}:stop`;
+  }
+
+  replayStackTourNarration(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.stackCurrentTourCard()) {
+      return;
+    }
+    this.stackTourNarrationConsent.set(true);
+    this.stopStackPlayback();
+    this.stackPlaying.set(true);
+    this.syncStackTourNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
   }
 
   async shareStackTo(target: StackExportTarget): Promise<void> {
@@ -5758,6 +5824,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackFormat.set('reel');
     this.stackRatio.set('vertical');
     this.stackFrameIndex.set(0);
+    this.stackTourNarrationConsent.set(false);
     this.setStackShareMessage(null);
   }
 
@@ -5773,6 +5840,10 @@ export class BoardsComponent implements OnDestroy {
       this.prepareStackForBoard(board);
     }
     this.stackStudioOpen.set(false);
+    if (this.stackHasTourNarration() && !this.stackTourNarrationConsent()) {
+      this.stopStackPlayback();
+      return;
+    }
     this.startStackPlayback();
   }
 
@@ -5950,12 +6021,16 @@ export class BoardsComponent implements OnDestroy {
     this.stackFrameIndex.update((index) => Math.max(0, Math.min(index, lastIndex)));
   }
 
-  private advanceStackFrame(): void {
+  private advanceStackFrame(options: { forceTourNarration?: boolean } = {}): void {
     this.stackFrameIndex.update((index) => {
       const count = this.stackFrameCount();
       return count ? (index + 1) % count : 0;
     });
     this.syncStackLivePreviewAfterFrameChange();
+    this.syncStackTourNarrationAfterFrameChange({
+      autoAdvance: this.stackPlaying(),
+      forceNarration: options.forceTourNarration ?? false,
+    });
   }
 
   private startStackPlayback(): void {
@@ -5963,15 +6038,220 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.stackPlaying.set(true);
+    if (this.syncStackTourNarrationAfterFrameChange({ autoAdvance: true })) {
+      return;
+    }
     this.stackPlaybackTimer = setInterval(() => this.advanceStackFrame(), this.stackFrameDurationMs);
   }
 
   private stopStackPlayback(): void {
-    if (this.stackPlaybackTimer) {
-      clearInterval(this.stackPlaybackTimer);
-      this.stackPlaybackTimer = null;
-    }
+    this.clearStackPlaybackTimer();
+    this.stackTourNarrationSwitchToken += 1;
+    this.stopTourSpeech();
+    this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
     this.stackPlaying.set(false);
+  }
+
+  private clearStackPlaybackTimer(): void {
+    if (!this.stackPlaybackTimer) {
+      return;
+    }
+    clearInterval(this.stackPlaybackTimer);
+    this.stackPlaybackTimer = null;
+  }
+
+  private isTourStackLiveView(): boolean {
+    return this.stackDirectView() && this.stackHasTourNarration();
+  }
+
+  private syncStackTourNarrationAfterFrameChange(
+    options: { autoAdvance?: boolean; forceNarration?: boolean } = {},
+  ): boolean {
+    if (!this.isTourStackLiveView()) {
+      return false;
+    }
+
+    this.clearStackPlaybackTimer();
+    const token = ++this.stackTourNarrationSwitchToken;
+    this.stopTourSpeech();
+    this.tourAudioNotice.set(null);
+    this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
+
+    const autoAdvance = options.autoAdvance ?? this.stackPlaying();
+    const frame = this.stackCurrentFrame();
+    const card = frame.kind === 'card' && frame.card?.tour ? frame.card : null;
+    if (!card) {
+      if (autoAdvance && this.stackPlaying()) {
+        this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
+      }
+      return true;
+    }
+    if (!autoAdvance && !options.forceNarration) {
+      return true;
+    }
+
+    const tourFrame: TourDeckFrame = {
+      kind: 'stop',
+      card,
+      nextCard: null,
+      index: frame.index,
+      total: frame.total,
+    };
+    void this.playStackTourNarration(tourFrame, token, autoAdvance);
+    return true;
+  }
+
+  private async playStackTourNarration(
+    frame: TourDeckFrame,
+    token: number,
+    autoAdvance: boolean,
+  ): Promise<void> {
+    const text = frame.card.tour?.guideScript || frame.card.notes || frame.card.subtitle;
+    if (!text.trim()) {
+      if (autoAdvance && this.stackPlaying()) {
+        this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
+      }
+      return;
+    }
+
+    const startedAt = Date.now();
+    this.stackActiveFrameDurationMs.set(120_000);
+    const audioUrl = await this.ensureTourAudioUrl(this.tourAudioKey(frame), text);
+    if (!this.isStackTourNarrationCurrent(token, frame.card.id)) {
+      return;
+    }
+    if (!audioUrl) {
+      this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
+      if (autoAdvance && this.stackPlaying()) {
+        this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
+      }
+      return;
+    }
+
+    const audio = new Audio(audioUrl);
+    audio.preload = 'auto';
+    this.tourAudio = audio;
+    this.tourSpeechPlaying.set(true);
+    const syncProgressDuration = () => {
+      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || !Number.isFinite(audio.duration) || audio.duration <= 0) {
+        return;
+      }
+      const elapsedMs = Date.now() - startedAt;
+      this.stackActiveFrameDurationMs.set(Math.max(this.stackFrameDurationMs, Math.ceil(elapsedMs + audio.duration * 1000 + 450)));
+    };
+    audio.onloadedmetadata = syncProgressDuration;
+    audio.onended = () => {
+      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+        return;
+      }
+      this.stopTourSpeech();
+      if (autoAdvance && this.stackPlaying()) {
+        this.scheduleStackFrameAdvance(450, token);
+      }
+    };
+    audio.onerror = () => {
+      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+        return;
+      }
+      this.stopTourSpeech();
+      this.tourAudioNotice.set(null);
+      if (this.startStackBrowserNarration(frame, text, token, autoAdvance, startedAt)) {
+        return;
+      }
+      this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
+      this.tourAudioNotice.set('The tour narration could not play this location. Continuing to the next stop.');
+      if (autoAdvance && this.stackPlaying()) {
+        this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
+      }
+    };
+
+    try {
+      await audio.play();
+      syncProgressDuration();
+    } catch {
+      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+        return;
+      }
+      this.stopTourSpeech();
+      this.tourAudioNotice.set(null);
+      if (this.startStackBrowserNarration(frame, text, token, autoAdvance, startedAt)) {
+        return;
+      }
+      this.clearStackPlaybackTimer();
+      this.stackPlaying.set(false);
+      this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
+      this.tourAudioNotice.set('Your browser paused automatic narration. Tap the voice button to start this location.');
+    }
+  }
+
+  private startStackBrowserNarration(
+    frame: TourDeckFrame,
+    text: string,
+    token: number,
+    autoAdvance: boolean,
+    startedAt: number,
+  ): boolean {
+    if (!this.isBrowser
+      || typeof window.speechSynthesis === 'undefined'
+      || typeof window.SpeechSynthesisUtterance === 'undefined'
+      || !this.isStackTourNarrationCurrent(token, frame.card.id)) {
+      return false;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text.slice(0, 3600));
+    const language = navigator.language || 'en-US';
+    const languageRoot = language.split('-')[0]?.toLowerCase();
+    const voices = window.speechSynthesis.getVoices();
+    utterance.voice = voices.find((voice) => voice.lang.toLowerCase() === language.toLowerCase())
+      ?? voices.find((voice) => voice.lang.toLowerCase().startsWith(`${languageRoot}-`))
+      ?? null;
+    utterance.lang = utterance.voice?.lang || language;
+    utterance.rate = 0.96;
+    utterance.pitch = 1;
+    this.tourSpeechUtterance = utterance;
+    this.tourSpeechPlaying.set(true);
+    const estimatedSpeechMs = Math.max(this.stackFrameDurationMs, Math.ceil(utterance.text.trim().split(/\s+/).length / 2.45 * 1000));
+    this.stackActiveFrameDurationMs.set(Date.now() - startedAt + estimatedSpeechMs + 450);
+
+    utterance.onend = () => {
+      if (this.tourSpeechUtterance !== utterance || !this.isStackTourNarrationCurrent(token, frame.card.id)) {
+        return;
+      }
+      this.tourSpeechUtterance = null;
+      this.tourSpeechPlaying.set(false);
+      if (autoAdvance && this.stackPlaying()) {
+        this.scheduleStackFrameAdvance(450, token);
+      }
+    };
+    utterance.onerror = () => {
+      if (this.tourSpeechUtterance !== utterance || !this.isStackTourNarrationCurrent(token, frame.card.id)) {
+        return;
+      }
+      this.tourSpeechUtterance = null;
+      this.tourSpeechPlaying.set(false);
+      this.clearStackPlaybackTimer();
+      this.stackPlaying.set(false);
+      this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
+      this.tourAudioNotice.set('Narration could not start. Tap the voice button to try this location again.');
+    };
+    window.speechSynthesis.speak(utterance);
+    return true;
+  }
+
+  private isStackTourNarrationCurrent(token: number, cardId: string): boolean {
+    return token === this.stackTourNarrationSwitchToken
+      && this.isTourStackLiveView()
+      && this.stackCurrentTourCard()?.id === cardId;
+  }
+
+  private scheduleStackFrameAdvance(delayMs: number, token: number): void {
+    this.clearStackPlaybackTimer();
+    this.stackPlaybackTimer = setTimeout(() => {
+      if (token !== this.stackTourNarrationSwitchToken || !this.stackPlaying() || !this.isTourStackLiveView()) {
+        return;
+      }
+      this.advanceStackFrame();
+    }, delayMs);
   }
 
   private async copyTextToClipboard(text: string): Promise<boolean> {

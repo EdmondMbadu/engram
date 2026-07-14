@@ -6,7 +6,7 @@
         [style.--board-accent]="toneAccent(board.tone)"
         [style.--board-soft]="toneSoft(board.tone)"
       >
-        <main class="stack-viewer-reel" aria-label="Stack reel" [style.--stack-frame-duration]="stackFrameDurationMs + 'ms'">
+        <main class="stack-viewer-reel" aria-label="Stack reel" [style.--stack-frame-duration]="stackActiveFrameDurationMs() + 'ms'">
           <button type="button" class="stack-viewer-side stack-viewer-side--prev" aria-label="Previous frame" (click)="previousStackFrame()">
             <span class="material-symbols-outlined">chevron_left</span>
           </button>
@@ -48,6 +48,18 @@
                 </div>
               </div>
               <div class="stack-viewer-actions">
+                @if (stackCurrentTourCard()) {
+                  <button
+                    type="button"
+                    [attr.aria-label]="stackTourNarrationLoading() ? 'Preparing tour narration' : 'Replay tour narration'"
+                    [attr.title]="stackTourNarrationLoading() ? 'Preparing tour narration' : 'Replay tour narration'"
+                    (click)="replayStackTourNarration($event)"
+                  >
+                    <span class="material-symbols-outlined">
+                      {{ stackTourNarrationLoading() ? 'progress_activity' : tourSpeechPlaying() ? 'graphic_eq' : 'volume_up' }}
+                    </span>
+                  </button>
+                }
                 <button type="button" aria-label="{{ stackPlaying() ? 'Pause Stack' : 'Play Stack' }}" (click)="toggleStackPlayback()">
                   <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
                 </button>
@@ -71,6 +83,12 @@
                     <span>A LivingWiki Stack</span>
                     <h4>{{ stackCoverTitle() || board.title }}</h4>
                     <p>{{ stackCoverSubtitle() }}</p>
+                    @if (stackHasTourNarration() && !stackTourNarrationConsent()) {
+                      <button type="button" class="stack-tour-start" (click)="startNarratedStack($event)">
+                        <span class="material-symbols-outlined">volume_up</span>
+                        Start narrated tour
+                      </button>
+                    }
                   </div>
                 } @else if (frame.kind === 'card') {
                   @if (frame.card; as card) {
@@ -83,6 +101,20 @@
                         <span>{{ card.status }} · {{ card.rating }}/5</span>
                         <h4>{{ card.title }}</h4>
                         <p>{{ card.subtitle || card.notes }}</p>
+                        @if (card.tour) {
+                          <div
+                            class="stack-tour-narration"
+                            [class.stack-tour-narration--active]="tourSpeechPlaying()"
+                            aria-live="polite"
+                          >
+                            <span class="material-symbols-outlined">
+                              {{ stackTourNarrationLoading() ? 'progress_activity' : tourSpeechPlaying() ? 'graphic_eq' : 'volume_up' }}
+                            </span>
+                            <span>
+                              {{ stackTourNarrationLoading() ? 'Preparing tour narration' : tourSpeechPlaying() ? 'Tour guide speaking' : 'Tour narration ready' }}
+                            </span>
+                          </div>
+                        }
                         @if (spotifyTrackEmbedUrl(card); as spotifyEmbedUrl) {
                           <iframe
                             title="Spotify player for {{ card.title }}"
@@ -139,8 +171,8 @@
               </div>
             }
 
-            @if (stackShareMessage() || shareMessage()) {
-              <small class="stack-viewer-toast">{{ stackShareMessage() || shareMessage() }}</small>
+            @if (stackShareMessage() || shareMessage() || tourAudioNotice()) {
+              <small class="stack-viewer-toast">{{ stackShareMessage() || shareMessage() || tourAudioNotice() }}</small>
             }
           </section>
 
