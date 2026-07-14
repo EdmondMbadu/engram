@@ -56,6 +56,10 @@ interface BoardShare {
   imageUrl: string | null;
   logoUrl: string | null;
   kind: string;
+  socialVideoUrl: string | null;
+  socialVideoMimeType: string;
+  socialVideoUpdatedAt: string | null;
+  socialVideoRatio: 'vertical' | 'square' | 'landscape';
   cards: BoardShareCard[];
   updatedAt: string | null;
 }
@@ -159,6 +163,23 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
     return;
   }
 
+  if (parsed.video || parsed.player) {
+    if (!board.socialVideoUrl) {
+      res.status(404).send('This board does not have a published video yet.');
+      return;
+    }
+    res
+      .status(200)
+      .set('Content-Type', 'text/html; charset=utf-8')
+      .set('Cache-Control', 'public, max-age=300, s-maxage=3600')
+      .send(req.method === 'HEAD'
+        ? undefined
+        : parsed.player
+          ? buildBoardVideoPlayerHtml(board)
+          : buildBoardVideoSharePageHtml(board));
+    return;
+  }
+
   res
     .status(200)
     .set('Content-Type', 'text/html; charset=utf-8')
@@ -192,17 +213,19 @@ function parseTravelSharePath(url: string): { shareId: string; kind: ShareImageK
   };
 }
 
-function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean } | null {
+function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean; video: boolean; player: boolean } | null {
   const [path, query = ''] = url.split('?');
-  const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/og\.png)?\/?$/);
+  const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/(og\.png|video|video\/player))?\/?$/);
   if (!match) {
     return null;
   }
 
   return {
     boardId: match[1],
-    image: /\/og\.png\/?$/.test(path ?? ''),
+    image: match[2] === 'og.png',
     stack: new URLSearchParams(query).get('view') === 'stack',
+    video: match[2] === 'video',
+    player: match[2] === 'video/player',
   };
 }
 
@@ -290,6 +313,12 @@ async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
     imageUrl: safeUrl(data.imageUrl),
     logoUrl: safeUrl(data.logoUrl),
     kind: cleanText(data.kind, 40) || 'standard',
+    socialVideoUrl: safeUrl(data.socialVideoUrl),
+    socialVideoMimeType: cleanText(data.socialVideoMimeType, 120) || 'video/mp4',
+    socialVideoUpdatedAt: cleanText(data.socialVideoUpdatedAt, 80),
+    socialVideoRatio: data.socialVideoRatio === 'square' || data.socialVideoRatio === 'landscape'
+      ? data.socialVideoRatio
+      : 'vertical',
     cards,
     updatedAt: cleanText(data.updated_at_iso, 80) || timestampToIso(data.server_updated_at),
   };
@@ -710,6 +739,114 @@ function buildBoardSharePageHtml(board: BoardShare, stack: boolean): string {
   </main>
 </body>
 </html>`;
+}
+
+function buildBoardVideoSharePageHtml(board: BoardShare): string {
+  const description = `Watch ${board.title}, a LivingWiki video curated by ${board.ownerName}.`;
+  const version = encodeURIComponent(board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion);
+  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video?v=${version}`;
+  const playerUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video/player?v=${version}`;
+  const boardUrl = `${appUrl}/${boardShareRoute(board)}/${encodeURIComponent(board.id)}?view=stack`;
+  const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
+  const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
+  const videoUrl = board.socialVideoUrl ?? '';
+  const videoType = board.socialVideoMimeType.split(';')[0] || 'video/mp4';
+  const dimensions = boardVideoDimensions(board.socialVideoRatio);
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(`${board.title} | LivingWiki video`)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <meta name="robots" content="index,follow,max-video-preview:-1,max-image-preview:large">
+  <link rel="canonical" href="${escapeHtml(shareUrl)}">
+  <meta property="og:type" content="video.other">
+  <meta property="og:site_name" content="LivingWiki">
+  <meta property="og:title" content="${escapeHtml(board.title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${escapeHtml(shareUrl)}">
+  <meta property="og:image" content="${escapeHtml(posterUrl)}">
+  <meta property="og:image:secure_url" content="${escapeHtml(posterUrl)}">
+  <meta property="og:video" content="${escapeHtml(videoUrl)}">
+  <meta property="og:video:secure_url" content="${escapeHtml(videoUrl)}">
+  <meta property="og:video:type" content="${escapeHtml(videoType)}">
+  <meta property="og:video:width" content="${dimensions.width}">
+  <meta property="og:video:height" content="${dimensions.height}">
+  <meta name="twitter:card" content="player">
+  <meta name="twitter:title" content="${escapeHtml(board.title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+  <meta name="twitter:image" content="${escapeHtml(posterUrl)}">
+  <meta name="twitter:player" content="${escapeHtml(playerUrl)}">
+  <meta name="twitter:player:width" content="${dimensions.width}">
+  <meta name="twitter:player:height" content="${dimensions.height}">
+  <meta name="twitter:player:stream" content="${escapeHtml(videoUrl)}">
+  <meta name="twitter:player:stream:content_type" content="${escapeHtml(videoType)}">
+  <style>
+    * { box-sizing: border-box; }
+    html { color-scheme: dark; background: #050807; }
+    body { min-height: 100dvh; margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; color: #f7fff9; background: radial-gradient(circle at 50% 10%, #173d31, #050807 62%); }
+    main { display: grid; width: min(100% - 28px, 1160px); min-height: 100dvh; margin: auto; grid-template-columns: minmax(0, 1fr) minmax(260px, 360px); gap: clamp(24px, 5vw, 72px); align-items: center; padding: 28px 0; }
+    .player { display: grid; min-width: 0; place-items: center; }
+    video { display: block; width: ${board.socialVideoRatio === 'vertical' ? 'min(100%, 430px)' : '100%'}; max-height: calc(100dvh - 56px); border: 1px solid rgba(255,255,255,.32); border-radius: 24px; background: #000; box-shadow: 0 28px 80px rgba(0,0,0,.5); object-fit: contain; }
+    .copy { display: grid; gap: 18px; }
+    .brand { color: #8ff1c4; font-size: 14px; font-weight: 950; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(36px, 6vw, 70px); line-height: .95; letter-spacing: -.04em; }
+    p { margin: 0; color: rgba(247,255,249,.72); font-size: 17px; font-weight: 650; line-height: 1.5; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    a { display: inline-flex; align-items: center; min-height: 46px; border: 2px solid #8ff1c4; border-radius: 999px; color: #071a13; background: #8ff1c4; font-size: 14px; font-weight: 950; padding: 10px 18px; text-decoration: none; }
+    a.secondary { color: #eafff1; background: transparent; }
+    small { color: rgba(247,255,249,.48); font-weight: 700; line-height: 1.45; }
+    @media (max-width: 760px) { main { grid-template-columns: 1fr; align-content: start; } video { max-height: 68dvh; } .copy { padding-bottom: 24px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="player">
+      <video src="${escapeHtml(videoUrl)}" poster="${escapeHtml(posterUrl)}" autoplay muted loop playsinline controls preload="metadata"></video>
+    </section>
+    <section class="copy">
+      <span class="brand">LivingWiki video</span>
+      <h1>${escapeHtml(board.title)}</h1>
+      <p>${escapeHtml(description)}</p>
+      <div class="actions">
+        <a href="${escapeHtml(boardUrl)}">Open live view</a>
+        <a class="secondary" href="${escapeHtml(videoUrl)}" download>Open video file</a>
+      </div>
+      <small>For dependable inline playback on social media, attach the video file to the post. Platforms decide whether shared links autoplay.</small>
+    </section>
+  </main>
+</body>
+</html>`;
+}
+
+function buildBoardVideoPlayerHtml(board: BoardShare): string {
+  const videoUrl = board.socialVideoUrl ?? '';
+  const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
+  const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>${escapeHtml(board.title)}</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #000; }
+    video { display: block; width: 100%; height: 100%; background: #000; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <video src="${escapeHtml(videoUrl)}" poster="${escapeHtml(posterUrl)}" autoplay muted loop playsinline controls preload="metadata"></video>
+</body>
+</html>`;
+}
+
+function boardVideoDimensions(ratio: BoardShare['socialVideoRatio']): { width: number; height: number } {
+  if (ratio === 'square') return { width: 720, height: 720 };
+  if (ratio === 'landscape') return { width: 1280, height: 720 };
+  return { width: 720, height: 1280 };
 }
 
 function buildBoardShareImageHtml(board: BoardShare): string {

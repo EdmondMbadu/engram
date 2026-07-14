@@ -305,6 +305,10 @@ service cloud.firestore {
           'logoLinkUrl',
           'stackCtaLabel',
           'stackCtaUrl',
+          'socialVideoUrl',
+          'socialVideoMimeType',
+          'socialVideoUpdatedAt',
+          'socialVideoRatio',
           'stickers',
           'tourMeta',
           'cards',
@@ -355,6 +359,13 @@ service cloud.firestore {
         && request.resource.data.stackCtaLabel.size() <= 48
         && request.resource.data.stackCtaUrl is string
         && request.resource.data.stackCtaUrl.size() <= 240
+        && request.resource.data.socialVideoUrl is string
+        && request.resource.data.socialVideoUrl.size() <= 2000
+        && request.resource.data.socialVideoMimeType is string
+        && request.resource.data.socialVideoMimeType.size() <= 120
+        && request.resource.data.socialVideoUpdatedAt is string
+        && request.resource.data.socialVideoUpdatedAt.size() <= 80
+        && request.resource.data.socialVideoRatio in ['vertical', 'square', 'landscape']
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48
         && (

@@ -163,3 +163,278 @@
     padding-inline: 0.65rem;
   }
 }
+/* Native social-video export status and guidance. */
+.stack-export-grid button:disabled,
+.stack-share-dialog__targets button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.stack-export-grid button[aria-busy='true'] .material-symbols-outlined,
+.stack-share-dialog__targets button[aria-busy='true'] .material-symbols-outlined {
+  animation: stack-video-spin 0.9s linear infinite;
+}
+
+.stack-video-note {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.62rem;
+  align-items: start;
+  margin-top: 0.72rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 0.82rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, #ffffff), #ffffff);
+  color: var(--text);
+  padding: 0.68rem;
+}
+
+.stack-video-note > .material-symbols-outlined {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 0.58rem;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.stack-video-note p,
+.stack-video-note span {
+  display: block;
+  margin: 0;
+}
+
+.stack-video-note strong {
+  display: block;
+  margin-bottom: 0.18rem;
+  font-size: 0.76rem;
+  font-weight: 950;
+}
+
+.stack-video-note p span {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+@keyframes stack-video-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Compact share destinations keep raw URLs out of the primary UI. */
+.board-share-panel__destinations,
+.stack-share-dialog__link-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.board-share-destination,
+.stack-share-dialog__link-actions button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.62rem;
+  align-items: center;
+  min-width: 0;
+  border: 2px solid var(--ink);
+  border-radius: 0.9rem;
+  background: #ffffff;
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.66rem;
+  text-align: left;
+}
+
+.board-share-destination:hover,
+.stack-share-dialog__link-actions button:hover {
+  background: color-mix(in srgb, var(--board-accent, var(--accent)) 8%, #ffffff);
+  transform: translateY(-1px);
+}
+
+.board-share-destination__icon,
+.stack-share-dialog__link-actions button > .material-symbols-outlined:first-child {
+  display: grid;
+  width: 2.15rem;
+  height: 2.15rem;
+  place-items: center;
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--board-accent, var(--accent)) 13%, #ffffff);
+  color: var(--board-accent, var(--accent));
+  font-size: 1.15rem !important;
+}
+
+.board-share-destination > span:nth-child(2),
+.stack-share-dialog__link-actions button > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 0.16rem;
+}
+
+.board-share-destination strong,
+.stack-share-dialog__link-actions strong {
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.board-share-destination small,
+.stack-share-dialog__link-actions small {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.67rem;
+  font-weight: 750;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-share-destination__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.26rem;
+  color: var(--board-accent, var(--accent));
+  font-size: 0.69rem;
+  font-weight: 950;
+}
+
+.board-share-destination__action .material-symbols-outlined,
+.stack-share-dialog__link-actions button > .material-symbols-outlined:last-child {
+  color: var(--board-accent, var(--accent));
+  font-size: 1rem !important;
+}
+
+/* The hosted asset is distinct from the transient per-share export. */
+.stack-hosted-video {
+  display: grid;
+  gap: 0.7rem;
+  border: 2px solid #126e55;
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #effff8, #ffffff);
+  box-shadow: 2px 2px 0 #126e55;
+  padding: 0.75rem;
+}
+
+.stack-hosted-video--stale {
+  border-color: #9a6500;
+  background: linear-gradient(145deg, #fff8db, #ffffff);
+  box-shadow: 2px 2px 0 #9a6500;
+}
+
+.stack-hosted-video__heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.58rem;
+  align-items: center;
+}
+
+.stack-hosted-video__heading > .material-symbols-outlined {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 999px;
+  background: #126e55;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.stack-hosted-video--stale .stack-hosted-video__heading > .material-symbols-outlined {
+  background: #9a6500;
+}
+
+.stack-hosted-video__heading > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 0.16rem;
+}
+
+.stack-hosted-video__heading strong {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.stack-hosted-video__heading small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.stack-hosted-video__heading em {
+  border-radius: 999px;
+  background: #d8f9e9;
+  color: #126e55;
+  font-size: 0.63rem;
+  font-style: normal;
+  font-weight: 950;
+  padding: 0.35rem 0.5rem;
+  text-transform: uppercase;
+}
+
+.stack-hosted-video--stale .stack-hosted-video__heading em {
+  background: #ffecad;
+  color: #7a4d00;
+}
+
+.stack-hosted-video__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.stack-hosted-video__actions button,
+.stack-hosted-video__publish {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2.55rem;
+  border: 2px solid #126e55;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #126e55;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 950;
+  padding: 0.55rem 0.65rem;
+}
+
+.stack-hosted-video__publish {
+  width: 100%;
+  background: #126e55;
+  color: #ffffff;
+}
+
+.stack-hosted-video__actions button:disabled,
+.stack-hosted-video__publish:disabled {
+  cursor: wait;
+  opacity: 0.66;
+}
+
+.stack-hosted-video__owner-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+@media (max-width: 640px) {
+  .board-share-panel__destinations,
+  .stack-share-dialog__link-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .board-share-destination__action {
+    font-size: 0;
+  }
+}

@@ -919,20 +919,16 @@
 
             @if (sharePanelOpen()) {
               <div class="board-share-panel" aria-label="Share board">
-                <div class="board-share-panel__url">
-                  <small><span class="material-symbols-outlined">play_arrow</span> Live view</small>
-                  <span>{{ stackShareUrl(board) }}</span>
-                  <button type="button" (click)="copyStackUrl(board)">
-                    <span class="material-symbols-outlined">content_copy</span>
-                    Copy live view
+                <div class="board-share-panel__destinations" aria-label="Copy a board link">
+                  <button type="button" class="board-share-destination" (click)="copyStackUrl(board)">
+                    <span class="board-share-destination__icon material-symbols-outlined">play_arrow</span>
+                    <span><strong>Live view</strong><small>Immersive card-by-card experience</small></span>
+                    <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
                   </button>
-                </div>
-                <div class="board-share-panel__url">
-                  <small><span class="material-symbols-outlined">dashboard_customize</span> Board view</small>
-                  <span>{{ boardPageUrl(board) }}</span>
-                  <button type="button" (click)="copyBoardUrl(board)">
-                    <span class="material-symbols-outlined">content_copy</span>
-                    Copy board link
+                  <button type="button" class="board-share-destination" (click)="copyBoardUrl(board)">
+                    <span class="board-share-destination__icon material-symbols-outlined">dashboard_customize</span>
+                    <span><strong>Board view</strong><small>Full collection with every card</small></span>
+                    <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
                   </button>
                 </div>
 
@@ -952,14 +948,21 @@
                     Share page
                   </button>
                   @for (target of shareTargets; track target.id) {
-                    <a
-                      [href]="shareTargetUrl(target.id, board)"
-                      [attr.target]="target.id === 'email' ? null : '_blank'"
-                      rel="noopener"
-                    >
-                      <span class="material-symbols-outlined">{{ target.icon }}</span>
-                      {{ target.label }}
-                    </a>
+                    @if (target.id === 'x') {
+                      <button type="button" (click)="openStackShareDialog(board, $event)">
+                        <span class="material-symbols-outlined">smart_display</span>
+                        X video
+                      </button>
+                    } @else {
+                      <a
+                        [href]="shareTargetUrl(target.id, board)"
+                        [attr.target]="target.id === 'email' ? null : '_blank'"
+                        rel="noopener"
+                      >
+                        <span class="material-symbols-outlined">{{ target.icon }}</span>
+                        {{ target.label }}
+                      </a>
+                    }
                   }
                 </div>
                 @if (shareMessage()) {
@@ -1319,20 +1322,16 @@
 
                   @if (sharePanelOpen()) {
                     <div class="board-share-panel" aria-label="Share song board">
-                      <div class="board-share-panel__url">
-                        <small><span class="material-symbols-outlined">play_arrow</span> Live view</small>
-                        <span>{{ stackShareUrl(board) }}</span>
-                        <button type="button" (click)="copyStackUrl(board)">
-                          <span class="material-symbols-outlined">content_copy</span>
-                          Copy live view
+                      <div class="board-share-panel__destinations" aria-label="Copy a board link">
+                        <button type="button" class="board-share-destination" (click)="copyStackUrl(board)">
+                          <span class="board-share-destination__icon material-symbols-outlined">play_arrow</span>
+                          <span><strong>Live view</strong><small>Immersive card-by-card experience</small></span>
+                          <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
                         </button>
-                      </div>
-                      <div class="board-share-panel__url">
-                        <small><span class="material-symbols-outlined">dashboard_customize</span> Board view</small>
-                        <span>{{ boardPageUrl(board) }}</span>
-                        <button type="button" (click)="copyBoardUrl(board)">
-                          <span class="material-symbols-outlined">content_copy</span>
-                          Copy board link
+                        <button type="button" class="board-share-destination" (click)="copyBoardUrl(board)">
+                          <span class="board-share-destination__icon material-symbols-outlined">dashboard_customize</span>
+                          <span><strong>Board view</strong><small>Full collection with every card</small></span>
+                          <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
                         </button>
                       </div>
 
@@ -1352,14 +1351,21 @@
                           Share page
                         </button>
                         @for (target of shareTargets; track target.id) {
-                          <a
-                            [href]="shareTargetUrl(target.id, board)"
-                            [attr.target]="target.id === 'email' ? null : '_blank'"
-                            rel="noopener"
-                          >
-                            <span class="material-symbols-outlined">{{ target.icon }}</span>
-                            {{ target.label }}
-                          </a>
+                          @if (target.id === 'x') {
+                            <button type="button" (click)="openStackShareDialog(board, $event)">
+                              <span class="material-symbols-outlined">smart_display</span>
+                              X video
+                            </button>
+                          } @else {
+                            <a
+                              [href]="shareTargetUrl(target.id, board)"
+                              [attr.target]="target.id === 'email' ? null : '_blank'"
+                              rel="noopener"
+                            >
+                              <span class="material-symbols-outlined">{{ target.icon }}</span>
+                              {{ target.label }}
+                            </a>
+                          }
                         }
                       </div>
                       @if (shareMessage()) {
@@ -3016,11 +3022,20 @@
                   </div>
                   <div class="stack-export-grid">
                     @for (target of stackExportTargets; track target.id) {
-                      <button type="button" (click)="shareStackTo(target.id)">
-                        <span class="material-symbols-outlined">{{ target.icon }}</span>
-                        {{ target.label }}
+                      <button
+                        type="button"
+                        [disabled]="stackVideoExporting()"
+                        [attr.aria-busy]="stackVideoExporting()"
+                        (click)="shareStackTo(target.id)"
+                      >
+                        <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : target.icon }}</span>
+                        {{ stackVideoExporting() ? stackVideoProgress() + '%' : target.label }}
                       </button>
                     }
+                  </div>
+                  <div class="stack-video-note">
+                    <span class="material-symbols-outlined">smart_display</span>
+                    <p><strong>Native social video</strong><span>Choose an app to generate a real video that plays inline. On supported phones, select the app in the share sheet.</span></p>
                   </div>
                   @if (stackShareMessage()) {
                     <small>{{ stackShareMessage() }}</small>
@@ -3049,22 +3064,86 @@
           </div>
 
           <div class="stack-share-dialog">
-            <div class="stack-share-dialog__link">
-              <span>{{ stackShareUrl(board) }}</span>
+            <div class="stack-share-dialog__link-actions">
               <button type="button" (click)="copyStackUrl(board)">
+                <span class="material-symbols-outlined">play_arrow</span>
+                <span><strong>Live view</strong><small>Copy immersive link</small></span>
                 <span class="material-symbols-outlined">content_copy</span>
-                Copy
+              </button>
+              <button type="button" (click)="copyBoardUrl(board)">
+                <span class="material-symbols-outlined">dashboard_customize</span>
+                <span><strong>Board view</strong><small>Copy collection link</small></span>
+                <span class="material-symbols-outlined">content_copy</span>
               </button>
             </div>
 
             <div class="stack-share-dialog__targets">
               @for (target of stackExportTargets; track target.id) {
-                <button type="button" (click)="shareStackTo(target.id)">
-                  <span class="material-symbols-outlined">{{ target.icon }}</span>
-                  {{ target.label }}
+                <button
+                  type="button"
+                  [disabled]="stackVideoExporting()"
+                  [attr.aria-busy]="stackVideoExporting()"
+                  (click)="shareStackTo(target.id)"
+                >
+                  <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : target.icon }}</span>
+                  {{ stackVideoExporting() ? stackVideoProgress() + '%' : target.label }}
                 </button>
               }
             </div>
+
+            <div class="stack-video-note">
+              <span class="material-symbols-outlined">smart_display</span>
+              <p><strong>Made for inline playback</strong><span>This creates native video media; sharing only a link cannot guarantee autoplay inside X or another social app.</span></p>
+            </div>
+
+            <section class="stack-hosted-video" [class.stack-hosted-video--stale]="board.socialVideoUrl && !socialVideoIsCurrent(board)">
+              <div class="stack-hosted-video__heading">
+                <span class="material-symbols-outlined">cloud_done</span>
+                <span>
+                  <strong>{{ board.socialVideoUrl ? 'Reusable video link' : 'Publish this video' }}</strong>
+                  <small>
+                    @if (board.socialVideoUrl) {
+                      {{ socialVideoIsCurrent(board) ? 'Hosted and ready to share anywhere' : 'The board changed—refresh the video when ready' }}
+                    } @else {
+                      Create a standalone hosted version with its own link
+                    }
+                  </small>
+                </span>
+                @if (board.socialVideoUrl) {
+                  <em>{{ socialVideoIsCurrent(board) ? 'Ready' : 'Refresh' }}</em>
+                }
+              </div>
+
+              @if (board.socialVideoUrl) {
+                <div class="stack-hosted-video__actions">
+                  <button type="button" [disabled]="stackVideoExporting()" (click)="sharePublishedStackVideo(board)">
+                    <span class="material-symbols-outlined">ios_share</span>
+                    Share video
+                  </button>
+                  <button type="button" (click)="copySocialVideoUrl(board)">
+                    <span class="material-symbols-outlined">link</span>
+                    Copy video link
+                  </button>
+                  <button type="button" (click)="copySocialVideoFileUrl(board)">
+                    <span class="material-symbols-outlined">movie</span>
+                    Copy MP4 link
+                  </button>
+                  @if (canEditBoard(board)) {
+                    <button type="button" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
+                      <span class="material-symbols-outlined">refresh</span>
+                      Refresh
+                    </button>
+                  }
+                </div>
+              } @else if (canEditBoard(board)) {
+                <button type="button" class="stack-hosted-video__publish" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
+                  <span class="material-symbols-outlined">cloud_upload</span>
+                  {{ stackVideoExporting() ? 'Publishing ' + stackVideoProgress() + '%' : 'Create permanent video link' }}
+                </button>
+              } @else {
+                <p class="stack-hosted-video__owner-note">The board owner can publish the reusable video. You can still generate and share your own copy above.</p>
+              }
+            </section>
 
             <a class="stack-share-dialog__board" [href]="boardPageUrl(board)">
               <span class="material-symbols-outlined">dashboard_customize</span>

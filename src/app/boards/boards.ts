@@ -18,6 +18,7 @@ import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons'
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { generateStackVideo, type StackVideoResult } from './stack-video-export';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
 type BoardKind = 'standard' | 'walking-tour' | 'driving-tour';
@@ -140,6 +141,10 @@ type Board = {
   logoLinkUrl: string;
   stackCtaLabel: string;
   stackCtaUrl: string;
+  socialVideoUrl: string;
+  socialVideoMimeType: string;
+  socialVideoUpdatedAt: string;
+  socialVideoRatio: StackRatio;
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
   cards: BoardCard[];
@@ -814,6 +819,8 @@ const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: 
   { id: 'download', label: 'Download', icon: 'download' },
 ];
 
+const STACK_VIDEO_MAX_CARDS = 30;
+
 @Component({
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
@@ -1007,6 +1014,8 @@ export class BoardsComponent implements OnDestroy {
   readonly stackFrameIndex = signal(0);
   readonly stackPlaying = signal(false);
   readonly stackShareMessage = signal<string | null>(null);
+  readonly stackVideoExporting = signal(false);
+  readonly stackVideoProgress = signal(0);
   readonly stackDirectView = signal(false);
   readonly stackShareDialogOpen = signal(false);
   readonly stackFrameDurationMs = 4200;
@@ -2460,6 +2469,10 @@ export class BoardsComponent implements OnDestroy {
           logoLinkUrl: '',
           stackCtaLabel: this.wizardStackCtaLabel().trim(),
           stackCtaUrl: this.wizardStackCtaUrl().trim(),
+          socialVideoUrl: '',
+          socialVideoMimeType: '',
+          socialVideoUpdatedAt: '',
+          socialVideoRatio: 'vertical',
           forkedFromBoardId: '',
           forkedFromTitle: '',
           forkedFromOwnerUserId: '',
@@ -2583,6 +2596,10 @@ export class BoardsComponent implements OnDestroy {
         logoLinkUrl: draft.logoLinkUrl.trim(),
         stackCtaLabel: draft.stackCtaLabel.trim(),
         stackCtaUrl: draft.stackCtaUrl.trim(),
+        socialVideoUrl: '',
+        socialVideoMimeType: '',
+        socialVideoUpdatedAt: '',
+        socialVideoRatio: 'vertical',
         forkedFromBoardId: '',
         forkedFromTitle: '',
         forkedFromOwnerUserId: '',
@@ -5084,6 +5101,10 @@ export class BoardsComponent implements OnDestroy {
       forkedFromTitle: board.forkedFromTitle || board.title,
       forkedFromOwnerUserId: board.forkedFromOwnerUserId || board.ownerUserId,
       forkedFromOwnerName: board.forkedFromOwnerName || this.ownerName(board),
+      socialVideoUrl: '',
+      socialVideoMimeType: '',
+      socialVideoUpdatedAt: '',
+      socialVideoRatio: 'vertical',
       cards: board.cards.map((card) => ({
         ...card,
         id: this.createId(),
@@ -5749,47 +5770,241 @@ export class BoardsComponent implements OnDestroy {
 
   async shareStackTo(target: StackExportTarget): Promise<void> {
     const board = this.stackBoard();
-    if (!board || !this.isBrowser) {
+    if (!board || !this.isBrowser || this.stackVideoExporting()) {
       return;
     }
     const url = this.stackShareUrl(board);
     const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
     const text = `${caption}\n${url}`;
-    const encodedUrl = encodeURIComponent(url);
-    const encodedText = encodeURIComponent(text);
     this.setStackShareMessage(null);
+    this.stackVideoExporting.set(true);
+    this.stackVideoProgress.set(0);
+    this.setStackShareMessage('Preparing your social video…', false);
 
-    if (target === 'download') {
-      await this.copyTextToClipboard(text);
-      this.setStackShareMessage('Stack image and video export is coming soon. The share text is copied.');
-      return;
-    }
+    try {
+      const result = await this.createStackVideo(board);
+      const file = this.stackVideoFile(board, result);
 
-    if (target === 'instagram' || target === 'tiktok') {
-      if (navigator.share) {
+      if (target !== 'download' && this.canNativeShareFile(file)) {
         try {
-          await navigator.share({ title: board.title, text: caption, url });
-          this.setStackShareMessage('Share sheet opened.');
+          await navigator.share({
+            title: board.title,
+            text,
+            files: [file],
+          });
+          this.setStackShareMessage('Video shared as native media for inline playback.');
           return;
-        } catch {
-          this.setStackShareMessage('Share was cancelled.');
-          return;
+        } catch (error) {
+          if (error instanceof DOMException && error.name === 'AbortError') {
+            this.setStackShareMessage('Share was cancelled.');
+            return;
+          }
         }
       }
+
+      this.downloadStackVideo(file);
       await this.copyTextToClipboard(text);
-      this.setStackShareMessage(`${target === 'instagram' ? 'Instagram' : 'TikTok'} media export is coming soon. The share text is copied.`);
+      if (target === 'download') {
+        this.setStackShareMessage(result.xCompatible
+          ? 'MP4 downloaded. It is ready to upload as native social video; the caption is copied.'
+          : 'Video downloaded as WebM. The caption is copied; convert to MP4 before posting to X for guaranteed compatibility.', false);
+      } else {
+        this.setStackShareMessage(result.xCompatible
+          ? `Video downloaded. Attach it to ${this.stackTargetLabel(target)} for inline playback; the caption is copied.`
+          : `Video downloaded as WebM. Convert it to MP4, then attach it to ${this.stackTargetLabel(target)}; the caption is copied.`, false);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Video export failed.';
+      this.setStackShareMessage(message, false);
+    } finally {
+      this.stackVideoExporting.set(false);
+      this.stackVideoProgress.set(0);
+    }
+  }
+
+  socialVideoShareUrl(board: Board): string {
+    if (!board.socialVideoUrl) return '';
+    const version = encodeURIComponent(board.socialVideoUpdatedAt || board.updatedAt || board.id);
+    const path = `/share/board/${encodeURIComponent(board.id)}/video?v=${version}`;
+    return this.isBrowser ? `${window.location.origin}${path}` : path;
+  }
+
+  socialVideoIsCurrent(board: Board): boolean {
+    if (!board.socialVideoUrl || !board.socialVideoUpdatedAt) return false;
+    const videoTime = Date.parse(board.socialVideoUpdatedAt);
+    const boardTime = Date.parse(board.updatedAt);
+    return Number.isFinite(videoTime) && Number.isFinite(boardTime) && videoTime >= boardTime;
+  }
+
+  async copySocialVideoUrl(board: Board): Promise<void> {
+    const url = this.socialVideoShareUrl(board);
+    if (!url) {
+      this.setStackShareMessage('Publish the video first to create its reusable link.', false);
+      return;
+    }
+    if (await this.copyTextToClipboard(url)) {
+      this.setStackShareMessage('Hosted video link copied.');
+    } else {
+      this.setStackShareMessage('Copy was blocked. Try sharing the video instead.', false);
+    }
+  }
+
+  async copySocialVideoFileUrl(board: Board): Promise<void> {
+    if (!board.socialVideoUrl) return;
+    if (await this.copyTextToClipboard(board.socialVideoUrl)) {
+      this.setStackShareMessage('Direct video file link copied.');
+    } else {
+      this.setStackShareMessage('Copy was blocked.', false);
+    }
+  }
+
+  async publishStackVideo(board: Board): Promise<void> {
+    if (!this.isBrowser || this.stackVideoExporting()) return;
+    if (!this.canEditBoard(board)) {
+      this.setStackShareMessage('Only the board owner can publish a permanent video link.', false);
+      return;
+    }
+    if (board.visibility !== 'public') {
+      this.setStackShareMessage('Make this board public before publishing its video link.', false);
+      return;
+    }
+    const uid = this.authService.uid();
+    if (!uid || !this.storage) {
+      this.setStackShareMessage('Sign in to publish a permanent video link.', false);
       return;
     }
 
-    const shareUrl =
-      target === 'whatsapp'
-        ? `https://wa.me/?text=${encodedText}`
-        : target === 'facebook'
-          ? `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
-          : `https://twitter.com/intent/tweet?text=${encodeURIComponent(caption)}&url=${encodedUrl}`;
-    void this.copyTextToClipboard(text);
-    window.open(shareUrl, '_blank', 'noopener');
-    this.setStackShareMessage(`${this.stackExportTargets.find((item) => item.id === target)?.label ?? 'Share'} opened. The share text is copied too.`);
+    this.stackVideoExporting.set(true);
+    this.stackVideoProgress.set(0);
+    this.setStackShareMessage('Creating and publishing your video…', false);
+    try {
+      const result = await this.createStackVideo(board);
+      if (result.blob.size >= 100 * 1024 * 1024) {
+        throw new Error('The video is too large to publish. Select fewer cards and try again.');
+      }
+      const file = this.stackVideoFile(board, result);
+      const path = `users/${uid}/boards/${board.id}/social/stack.${result.extension}`;
+      const ref = storageRef(this.storage, path);
+      await uploadBytes(ref, result.blob, {
+        contentType: result.mimeType,
+        cacheControl: 'public,max-age=3600',
+        contentDisposition: `inline; filename="${file.name}"`,
+        customMetadata: {
+          boardId: board.id,
+          generatedAt: new Date().toISOString(),
+        },
+      });
+      const videoUrl = await getDownloadURL(ref);
+      const nextBoard: Board = {
+        ...board,
+        socialVideoUrl: videoUrl,
+        socialVideoMimeType: result.mimeType,
+        socialVideoUpdatedAt: new Date().toISOString(),
+        socialVideoRatio: this.stackRatio(),
+      };
+      const persisted = await this.persistBoard(nextBoard);
+      this.boards.update((boards) => boards.map((item) => item.id === persisted.id ? persisted : item));
+      this.setStackShareMessage('Permanent video link published. You can copy it or share the MP4 natively.', false);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not publish the video.';
+      this.setStackShareMessage(message, false);
+    } finally {
+      this.stackVideoExporting.set(false);
+      this.stackVideoProgress.set(0);
+    }
+  }
+
+  async sharePublishedStackVideo(board: Board): Promise<void> {
+    if (!this.isBrowser || !board.socialVideoUrl || this.stackVideoExporting()) return;
+    this.setStackShareMessage('Preparing the published video for sharing…', false);
+    try {
+      const response = await fetch(board.socialVideoUrl, { mode: 'cors', credentials: 'omit' });
+      if (!response.ok) throw new Error('The published video could not be downloaded.');
+      const blob = await response.blob();
+      const extension = (board.socialVideoMimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
+      const result: StackVideoResult = {
+        blob,
+        mimeType: board.socialVideoMimeType || blob.type || `video/${extension}`,
+        extension,
+        xCompatible: extension === 'mp4',
+        durationSeconds: 0,
+      };
+      const file = this.stackVideoFile(board, result);
+      const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
+      const url = this.socialVideoShareUrl(board);
+      if (this.canNativeShareFile(file)) {
+        await navigator.share({ title: board.title, text: `${caption}\n${url}`, files: [file] });
+        this.setStackShareMessage('Published video shared as native media.');
+        return;
+      }
+      if (navigator.share) {
+        await navigator.share({ title: board.title, text: caption, url });
+        this.setStackShareMessage('Hosted video link shared. Upload the MP4 itself when inline playback is required.', false);
+        return;
+      }
+      await this.copySocialVideoUrl(board);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        this.setStackShareMessage('Share was cancelled.');
+        return;
+      }
+      const message = error instanceof Error ? error.message : 'Could not share the published video.';
+      this.setStackShareMessage(message, false);
+    }
+  }
+
+  private createStackVideo(board: Board): Promise<StackVideoResult> {
+    const selectedCards = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS);
+    return generateStackVideo({
+      title: board.title,
+      subtitle: this.stackCoverSubtitle().trim() || board.description,
+      ownerName: this.ownerName(board),
+      coverImageUrl: this.stackCoverImage(board),
+      liveUrl: this.stackShareUrl(board),
+      qrImageUrl: this.stackQrImageUrl(board),
+      cards: selectedCards.map((card) => ({
+        title: card.title,
+        subtitle: card.subtitle,
+        notes: card.notes,
+        status: card.status,
+        rating: card.rating,
+        imageUrl: card.imageUrl,
+        imageUrls: card.imageUrls,
+        tourSequence: card.tour?.sequence ?? null,
+      })),
+    }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)));
+  }
+
+  private stackVideoFile(board: Board, result: StackVideoResult): File {
+    const slug = board.title
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 54) || 'livingwiki-stack';
+    return new File([result.blob], `${slug}.${result.extension}`, { type: result.mimeType });
+  }
+
+  private canNativeShareFile(file: File): boolean {
+    if (!navigator.share) return false;
+    try {
+      return typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] });
+    } catch {
+      return false;
+    }
+  }
+
+  private downloadStackVideo(file: File): void {
+    const href = URL.createObjectURL(file);
+    const anchor = document.createElement('a');
+    anchor.href = href;
+    anchor.download = file.name;
+    anchor.click();
+    window.setTimeout(() => URL.revokeObjectURL(href), 30_000);
+  }
+
+  private stackTargetLabel(target: StackExportTarget): string {
+    return this.stackExportTargets.find((item) => item.id === target)?.label ?? 'the social app';
   }
 
   shareTargetUrl(target: ShareTarget, board: Board, stack = false): string {
@@ -7306,6 +7521,12 @@ export class BoardsComponent implements OnDestroy {
           logoLinkUrl: typeof board.logoLinkUrl === 'string' ? board.logoLinkUrl : '',
           stackCtaLabel: typeof board.stackCtaLabel === 'string' ? board.stackCtaLabel : '',
           stackCtaUrl: typeof board.stackCtaUrl === 'string' ? board.stackCtaUrl : '',
+          socialVideoUrl: typeof board.socialVideoUrl === 'string' ? board.socialVideoUrl : '',
+          socialVideoMimeType: typeof board.socialVideoMimeType === 'string' ? board.socialVideoMimeType : '',
+          socialVideoUpdatedAt: typeof board.socialVideoUpdatedAt === 'string' ? board.socialVideoUpdatedAt : '',
+          socialVideoRatio: this.isStackRatio((board as Partial<Board>).socialVideoRatio)
+            ? (board as Board).socialVideoRatio
+            : 'vertical',
           backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
           tourMeta: this.normalizeTourMeta((board as Board).tourMeta),
@@ -7530,6 +7751,10 @@ export class BoardsComponent implements OnDestroy {
       logoLinkUrl: typeof data['logoLinkUrl'] === 'string' ? data['logoLinkUrl'] : '',
       stackCtaLabel: typeof data['stackCtaLabel'] === 'string' ? data['stackCtaLabel'] : '',
       stackCtaUrl: typeof data['stackCtaUrl'] === 'string' ? data['stackCtaUrl'] : '',
+      socialVideoUrl: typeof data['socialVideoUrl'] === 'string' ? data['socialVideoUrl'] : '',
+      socialVideoMimeType: typeof data['socialVideoMimeType'] === 'string' ? data['socialVideoMimeType'] : '',
+      socialVideoUpdatedAt: typeof data['socialVideoUpdatedAt'] === 'string' ? data['socialVideoUpdatedAt'] : '',
+      socialVideoRatio: this.isStackRatio(data['socialVideoRatio']) ? data['socialVideoRatio'] : 'vertical',
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
@@ -7892,6 +8117,10 @@ export class BoardsComponent implements OnDestroy {
 
   private isBoardVisibility(value: unknown): value is BoardVisibility {
     return value === 'public' || value === 'private';
+  }
+
+  private isStackRatio(value: unknown): value is StackRatio {
+    return value === 'vertical' || value === 'square' || value === 'landscape';
   }
 
   private isPermissionDeniedError(error: unknown): boolean {
