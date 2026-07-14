@@ -1426,9 +1426,14 @@
 
 .board-share-panel__url {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 7.5rem minmax(0, 1fr) auto;
   gap: 0.55rem;
   align-items: center;
+}
+
+.board-share-panel__url > small {
+  font-weight: 950;
+  text-transform: uppercase;
 }
 
 .board-share-panel__url > span {

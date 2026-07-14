@@ -5255,6 +5255,14 @@ export class BoardsComponent implements OnDestroy {
     return `/${route}/${encodeURIComponent(board.id)}`;
   }
 
+  boardPageUrl(board: Board): string {
+    const path = this.boardPagePath(board);
+    if (!this.isBrowser) {
+      return path;
+    }
+    return `${window.location.origin}${path}`;
+  }
+
   boardsProfileShareUrl(): string {
     const path = this.boardsProfileRoutePath();
     if (path === '/boards') {
@@ -5267,8 +5275,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   stackShareUrl(board: Board): string {
-    const separator = this.boardShareUrl(board).includes('?') ? '&' : '?';
-    return `${this.boardShareUrl(board)}${separator}view=stack`;
+    return `${this.boardPageUrl(board)}?view=stack`;
   }
 
   async copyBoardsProfileUrl(): Promise<void> {
@@ -5323,11 +5330,10 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
-    const url = this.boardShareUrl(board);
-    try {
-      await navigator.clipboard.writeText(url);
+    const url = this.boardPageUrl(board);
+    if (await this.copyTextToClipboard(url)) {
       this.setShareMessage('Board link copied.');
-    } catch {
+    } else {
       this.setShareMessage('Copy blocked. The link is visible here.');
     }
   }
@@ -5338,18 +5344,17 @@ export class BoardsComponent implements OnDestroy {
     }
 
     const url = this.stackShareUrl(board);
-    try {
-      await navigator.clipboard.writeText(url);
+    if (await this.copyTextToClipboard(url)) {
       if (this.stackStudioOpen() || this.stackDirectView() || this.stackShareDialogOpen()) {
-        this.setStackShareMessage('Stack link copied.');
+        this.setStackShareMessage('Live view link copied.');
       } else {
-        this.setShareMessage('Stack link copied.');
+        this.setShareMessage('Live view link copied.');
       }
-    } catch {
+    } else {
       if (this.stackStudioOpen() || this.stackDirectView() || this.stackShareDialogOpen()) {
-        this.setStackShareMessage('Copy blocked. The Stack link is visible here.');
+        this.setStackShareMessage('Copy blocked. The live view link is visible here.');
       } else {
-        this.setShareMessage('Copy blocked. The Stack link is visible here.');
+        this.setShareMessage('Copy blocked. The live view link is visible here.');
       }
     }
   }
@@ -5970,15 +5975,35 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private async copyTextToClipboard(text: string): Promise<boolean> {
-    if (!this.isBrowser || !navigator.clipboard) {
+    if (!this.isBrowser) {
       return false;
     }
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      return false;
+
+    if (navigator.clipboard?.writeText) {
+      try {
+        const copied = await Promise.race([
+          navigator.clipboard.writeText(text).then(() => true),
+          new Promise<boolean>((resolve) => window.setTimeout(() => resolve(false), 700)),
+        ]);
+        if (copied) {
+          return true;
+        }
+      } catch {
+        // Fall through to the selection-based copy method below.
+      }
     }
+
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.setAttribute('readonly', '');
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.select();
+    const copied = document.execCommand('copy');
+    textArea.remove();
+    return copied;
   }
 
   wizardModeLabel(): string {

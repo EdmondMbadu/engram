@@ -888,10 +888,19 @@
             @if (sharePanelOpen()) {
               <div class="board-share-panel" aria-label="Share board">
                 <div class="board-share-panel__url">
-                  <span>{{ boardShareUrl(board) }}</span>
+                  <small><span class="material-symbols-outlined">play_arrow</span> Live view</small>
+                  <span>{{ stackShareUrl(board) }}</span>
+                  <button type="button" (click)="copyStackUrl(board)">
+                    <span class="material-symbols-outlined">content_copy</span>
+                    Copy live view
+                  </button>
+                </div>
+                <div class="board-share-panel__url">
+                  <small><span class="material-symbols-outlined">dashboard_customize</span> Board view</small>
+                  <span>{{ boardPageUrl(board) }}</span>
                   <button type="button" (click)="copyBoardUrl(board)">
                     <span class="material-symbols-outlined">content_copy</span>
-                    Copy page
+                    Copy board link
                   </button>
                 </div>
 
@@ -1279,10 +1288,19 @@
                   @if (sharePanelOpen()) {
                     <div class="board-share-panel" aria-label="Share song board">
                       <div class="board-share-panel__url">
-                        <span>{{ boardShareUrl(board) }}</span>
+                        <small><span class="material-symbols-outlined">play_arrow</span> Live view</small>
+                        <span>{{ stackShareUrl(board) }}</span>
+                        <button type="button" (click)="copyStackUrl(board)">
+                          <span class="material-symbols-outlined">content_copy</span>
+                          Copy live view
+                        </button>
+                      </div>
+                      <div class="board-share-panel__url">
+                        <small><span class="material-symbols-outlined">dashboard_customize</span> Board view</small>
+                        <span>{{ boardPageUrl(board) }}</span>
                         <button type="button" (click)="copyBoardUrl(board)">
                           <span class="material-symbols-outlined">content_copy</span>
-                          Copy page
+                          Copy board link
                         </button>
                       </div>
 
@@ -3016,7 +3034,7 @@
               }
             </div>
 
-            <a class="stack-share-dialog__board" [href]="boardShareUrl(board)">
+            <a class="stack-share-dialog__board" [href]="boardPageUrl(board)">
               <span class="material-symbols-outlined">dashboard_customize</span>
               Open board view
             </a>
