@@ -5867,7 +5867,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   stackSelectedShareLabel(): string {
-    return this.stackShareMode() === 'video' ? 'Video link' : 'Live-view link';
+    return this.stackShareMode() === 'video' ? 'Permanent video page (optional)' : 'Live-view link';
   }
 
   async copySelectedStackShareUrl(board: Board): Promise<void> {
@@ -5885,6 +5885,10 @@ export class BoardsComponent implements OnDestroy {
 
   async shareSelectedStackLinkTo(target: StackLinkShareTarget, board: Board): Promise<void> {
     if (!this.isBrowser) return;
+    if (this.stackShareMode() === 'video') {
+      await this.sharePublishedStackVideo(board, target);
+      return;
+    }
     const url = this.stackSelectedShareUrl(board);
     if (!url) {
       this.setStackShareMessage('Create the video first to share its permanent link.', false);
@@ -5912,19 +5916,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
-    const encodedUrl = encodeURIComponent(url);
-    const encodedTitle = encodeURIComponent(title);
-    const encodedCaption = encodeURIComponent(caption);
-    const destination = target === 'x'
-      ? `https://twitter.com/intent/tweet?text=${encodedCaption}&url=${encodedUrl}`
-      : target === 'facebook'
-        ? `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
-        : target === 'linkedin'
-          ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
-          : target === 'reddit'
-            ? `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`
-            : `https://wa.me/?text=${encodedCaption}%20${encodedUrl}`;
-    window.open(destination, '_blank', 'noopener');
+    this.openStackLinkComposer(target, board, url, caption);
     this.setStackShareMessage(`${this.stackSelectedShareLabel()} opened for sharing.`);
   }
 
@@ -5985,7 +5977,7 @@ export class BoardsComponent implements OnDestroy {
       const path = `users/${uid}/boards/${board.id}/social/stack.${result.extension}`;
       const ref = storageRef(this.storage, path);
       await uploadBytes(ref, result.blob, {
-        contentType: result.mimeType,
+        contentType: this.normalizedVideoMimeType(result.mimeType),
         cacheControl: 'public,max-age=3600',
         contentDisposition: `inline; filename="${file.name}"`,
         customMetadata: {
@@ -5999,7 +5991,7 @@ export class BoardsComponent implements OnDestroy {
       const nextBoard: Board = {
         ...board,
         socialVideoUrl: videoUrl,
-        socialVideoMimeType: result.mimeType,
+        socialVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
         socialVideoUpdatedAt: new Date().toISOString(),
         socialVideoRatio: this.stackRatio(),
       };
@@ -6015,28 +6007,33 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  async sharePublishedStackVideo(board: Board): Promise<void> {
+  async sharePublishedStackVideo(board: Board, target: StackLinkShareTarget = 'more'): Promise<void> {
     if (!this.isBrowser || !board.socialVideoUrl || this.stackVideoExporting()) return;
     const file = this.publishedStackVideoFiles.get(board.id);
     if (!file) {
       void this.preloadPublishedStackVideo(board);
-      this.setStackShareMessage('Preparing the native video. Tap “Share video” again when it says ready.', false);
+      this.setStackShareMessage('Preparing the native MP4. Tap the social app again when “Share video file” is ready.', false);
       return;
     }
     const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
-    const url = this.socialVideoShareUrl(board);
+    const liveUrl = this.stackShareUrl(board);
+    const shareText = `${caption}\n${liveUrl}`;
+    const targetLabel = this.stackLinkTargetLabel(target);
     try {
       if (this.canNativeShareFile(file)) {
-        await navigator.share({ title: board.title, text: `${caption}\n${url}`, files: [file] });
-        this.setStackShareMessage('Published video shared as native media.');
+        await navigator.share({ title: board.title, text: shareText, files: [file] });
+        this.setStackShareMessage('MP4 shared as native media for in-feed playback.');
         return;
       }
-      if (navigator.share) {
-        await navigator.share({ title: board.title, text: caption, url });
-        this.setStackShareMessage('Hosted video link shared. Upload the MP4 itself when inline playback is required.', false);
-        return;
+
+      this.downloadStackVideo(file);
+      await this.copyTextToClipboard(shareText);
+      if (target !== 'more') {
+        this.openStackLinkComposer(target, board, liveUrl, caption);
       }
-      await this.copySocialVideoUrl(board);
+      this.setStackShareMessage(target === 'more'
+        ? 'MP4 downloaded and caption copied. Attach the file in your social app for native playback.'
+        : `MP4 downloaded and ${targetLabel} opened. Attach the downloaded video; the caption and live-view link are copied.`, false);
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
         this.setStackShareMessage('Share was cancelled.');
@@ -6045,6 +6042,26 @@ export class BoardsComponent implements OnDestroy {
       const message = error instanceof Error ? error.message : 'Could not share the published video.';
       this.setStackShareMessage(message, false);
     }
+  }
+
+  private openStackLinkComposer(target: Exclude<StackLinkShareTarget, 'more'>, board: Board, url: string, caption: string): void {
+    const encodedUrl = encodeURIComponent(url);
+    const encodedTitle = encodeURIComponent(board.title);
+    const encodedCaption = encodeURIComponent(caption);
+    const destination = target === 'x'
+      ? `https://twitter.com/intent/tweet?text=${encodedCaption}&url=${encodedUrl}`
+      : target === 'facebook'
+        ? `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+        : target === 'linkedin'
+          ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
+          : target === 'reddit'
+            ? `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`
+            : `https://wa.me/?text=${encodedCaption}%20${encodedUrl}`;
+    window.open(destination, '_blank', 'noopener');
+  }
+
+  private stackLinkTargetLabel(target: StackLinkShareTarget): string {
+    return this.stackLinkShareTargets.find((item) => item.id === target)?.label ?? 'your social app';
   }
 
   private async preloadPublishedStackVideo(board: Board): Promise<void> {
@@ -6063,7 +6080,7 @@ export class BoardsComponent implements OnDestroy {
       const extension: StackVideoResult['extension'] = (board.socialVideoMimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
       const result: StackVideoResult = {
         blob,
-        mimeType: board.socialVideoMimeType || blob.type || `video/${extension}`,
+        mimeType: this.normalizedVideoMimeType(board.socialVideoMimeType || blob.type || `video/${extension}`),
         extension,
         xCompatible: extension === 'mp4',
         durationSeconds: 0,
@@ -6107,7 +6124,11 @@ export class BoardsComponent implements OnDestroy {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
       .slice(0, 54) || 'livingwiki-stack';
-    return new File([result.blob], `${slug}.${result.extension}`, { type: result.mimeType });
+    return new File([result.blob], `${slug}.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
+  }
+
+  private normalizedVideoMimeType(value: string): string {
+    return value.split(';')[0]?.trim() || 'video/mp4';
   }
 
   private canNativeShareFile(file: File): boolean {

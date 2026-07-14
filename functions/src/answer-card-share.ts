@@ -261,7 +261,7 @@ async function proxyBoardVideo(req: Request, res: Response, board: BoardShare): 
       return;
     }
 
-    const contentType = upstream.headers.get('content-type') || board.socialVideoMimeType.split(';')[0] || 'video/mp4';
+    const contentType = (upstream.headers.get('content-type') || board.socialVideoMimeType || 'video/mp4').split(';')[0] || 'video/mp4';
     res.status(upstream.status);
     res.set('Content-Type', contentType);
     res.set('Cache-Control', 'public, max-age=3600, s-maxage=86400');

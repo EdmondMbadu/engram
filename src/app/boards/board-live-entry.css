@@ -682,6 +682,24 @@
   line-height: 1.35;
 }
 
+.stack-share-sheet__destination-head {
+  display: grid;
+  gap: 0.12rem;
+  text-align: center;
+}
+
+.stack-share-sheet__destination-head strong {
+  color: var(--text);
+  font-size: 0.74rem;
+  font-weight: 950;
+}
+
+.stack-share-sheet__destination-head span {
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 750;
+}
+
 .stack-share-sheet__destinations {
   display: grid;
   grid-template-columns: repeat(6, minmax(3.25rem, 1fr));
@@ -719,6 +737,15 @@
 
 .stack-share-sheet__destinations button:hover .stack-share-sheet__social-mark {
   transform: translateY(-2px);
+}
+
+.stack-share-sheet__destinations button:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
+.stack-share-sheet__destinations button:disabled .stack-share-sheet__social-mark {
+  transform: none;
 }
 
 .stack-share-sheet__destinations small {
@@ -783,6 +810,11 @@
   font-weight: 750;
   line-height: 1.35;
   text-align: center;
+}
+
+.stack-share-sheet__note strong {
+  color: var(--text);
+  font-weight: 950;
 }
 
 @media (max-width: 440px) {
