@@ -7,7 +7,7 @@ import puppeteer from 'puppeteer-extra';
 import { db, storage } from './firebase';
 import type { MappableLocation, TravelGuideCard } from './types';
 
-const appUrl = 'https://livingwiki.com';
+const appUrl = 'https://www.livingwiki.com';
 const imageVersion = 'v1';
 
 type ShareImageKind = 'og' | 'story';

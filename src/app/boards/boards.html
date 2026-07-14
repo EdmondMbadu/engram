@@ -3084,7 +3084,7 @@
                   </div>
                   <div class="stack-share-sheet__title">
                     <p>Share the video</p>
-                    <span>The social buttons now attach the MP4 itself for dependable in-feed playback.</span>
+                    <span>Share the MP4 for native playback, or open a social app directly with the video link.</span>
                   </div>
                   @if (!socialVideoIsCurrent(board) && canEditBoard(board)) {
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
@@ -3112,14 +3112,13 @@
                 }
 
                 <div class="stack-share-sheet__destination-head">
-                  <strong>{{ stackShareMode() === 'video' ? 'Share native video' : 'Share live-view link' }}</strong>
-                  <span>{{ stackShareMode() === 'video' ? 'The MP4 is attached—not just its URL.' : 'Opens the interactive board.' }}</span>
+                  <strong>{{ stackShareMode() === 'video' ? 'Share video link' : 'Share live-view link' }}</strong>
+                  <span>{{ stackShareMode() === 'video' ? 'Opens the selected app directly with a playable-page link.' : 'Includes the board picture and opens the interactive board.' }}</span>
                 </div>
                 <div class="stack-share-sheet__destinations" aria-label="Share destinations">
                   @for (target of stackLinkShareTargets; track target.id) {
                     <button
                       type="button"
-                      [disabled]="stackShareMode() === 'video' && stackPublishedVideoLoading()"
                       (click)="shareSelectedStackLinkTo(target.id, board)"
                     >
                       <span class="stack-share-sheet__social-mark" [style.--share-color]="target.color">{{ target.mark }}</span>
@@ -3134,7 +3133,7 @@
                 </div>
 
                 @if (stackShareMode() === 'video') {
-                  <small class="stack-share-sheet__note"><strong>Phone or tablet:</strong> choose the app in your device’s share sheet and the MP4 is attached. <strong>Desktop:</strong> the MP4 downloads and the selected composer opens; attach the downloaded file.</small>
+                  <small class="stack-share-sheet__note"><strong>Want guaranteed in-feed playback?</strong> Use “Share video file” above, then choose X in your device’s share sheet. Social icons open their app directly with the permanent video page instead.</small>
                 }
               }
 
