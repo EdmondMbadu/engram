@@ -1,16 +1,16 @@
 <main class="trove-page">
-  <section class="trove-stage" aria-label="Starfold City game">
+  <section class="trove-stage" aria-label="Starfold City game" i18n-aria-label>
     <iframe
       #gameFrame
       title="Starfold City"
       src="/assets/starfold-city.html"
       allow="fullscreen; autoplay"
       scrolling="no"
-    ></iframe>
+     i18n-title></iframe>
   </section>
 
-  <nav class="trove-hud" aria-label="Trove controls">
-    <a routerLink="/" class="trove-control" aria-label="Back to LivingWiki home">
+  <nav class="trove-hud" aria-label="Trove controls" i18n-aria-label>
+    <a routerLink="/" class="trove-control" aria-label="Back to LivingWiki home" i18n-aria-label>
       <span class="material-symbols-outlined">arrow_back</span>
     </a>
     <button
@@ -21,7 +21,7 @@
     >
       <span class="material-symbols-outlined">{{ isFullscreen() ? 'fullscreen_exit' : 'fullscreen' }}</span>
     </button>
-    <a routerLink="/boards" class="trove-control" aria-label="Open boards">
+    <a routerLink="/boards" class="trove-control" aria-label="Open boards" i18n-aria-label>
       <span class="material-symbols-outlined">dashboard_customize</span>
     </a>
   </nav>

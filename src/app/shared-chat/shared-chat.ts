@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, LOCALE_ID, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
@@ -39,6 +39,7 @@ interface SharePageModal {
   styleUrl: '../chat/chat.css',
 })
 export class SharedChatComponent {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly chatService = inject(ChatService);
@@ -51,7 +52,7 @@ export class SharedChatComponent {
   );
   readonly isLoading = signal(true);
   readonly error = signal<string | null>(null);
-  readonly title = signal('Shared chat');
+  readonly title = signal($localize`Shared chat`);
   readonly atlasName = signal<string | null>(null);
   readonly sharedAt = signal<{ toDate(): Date } | Date | null>(null);
   readonly messages = signal<SharedChatMessage[]>([]);
@@ -72,7 +73,7 @@ export class SharedChatComponent {
     if (atlasName) {
       return `Read-only shared conversation from ${atlasName}`;
     }
-    return 'Read-only shared conversation';
+    return $localize`Read-only shared conversation`;
   });
 
   constructor() {
@@ -80,7 +81,7 @@ export class SharedChatComponent {
       const threadId = this.threadId()?.trim();
       if (!threadId) {
         this.isLoading.set(false);
-        this.error.set('Shared chat link is incomplete.');
+        this.error.set($localize`Shared chat link is incomplete.`);
         this.messages.set([]);
         return;
       }
@@ -101,7 +102,7 @@ export class SharedChatComponent {
             return;
           }
 
-          this.title.set(thread.title || 'Shared chat');
+          this.title.set(thread.title || $localize`Shared chat`);
           this.atlasName.set(thread.atlasName ?? null);
           this.sharedAt.set(thread.sharedAt);
           const messages = thread.messages.map((message) => this.mapStoredMessage(message));
@@ -130,7 +131,7 @@ export class SharedChatComponent {
       return 'Just now';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -280,7 +281,7 @@ export class SharedChatComponent {
       });
       this.sharePageModal.set({
         title: card.title,
-        subtitle: 'This individual card now has its own public share page.',
+        subtitle: $localize`This individual card now has its own public share page.`,
         url: share.url,
       });
     } catch {
@@ -299,7 +300,7 @@ export class SharedChatComponent {
     if (existingCardId) {
       this.sharePageModal.set({
         title: message.travelGuide?.title || 'Share the full guide card',
-        subtitle: 'This opens the full Answer Card share page with social preview metadata.',
+        subtitle: $localize`This opens the full Answer Card share page with social preview metadata.`,
         url: this.buildAnswerCardShareUrl(existingCardId),
       });
       return;
@@ -327,11 +328,11 @@ export class SharedChatComponent {
       );
       this.sharePageModal.set({
         title: message.travelGuide?.title || 'Share the full guide card',
-        subtitle: 'This opens the full Answer Card share page with social preview metadata.',
+        subtitle: $localize`This opens the full Answer Card share page with social preview metadata.`,
         url: this.buildAnswerCardShareUrl(card.id),
       });
     } catch (error) {
-      this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create answer card.');
+      this.answerCardError.set(error instanceof Error ? error.message : $localize`Failed to create answer card.`);
       this.answerCardErrorMessageId.set(message.id);
     } finally {
       this.creatingAnswerCardId.set(null);
@@ -420,7 +421,7 @@ export class SharedChatComponent {
       );
       await this.router.navigateByUrl(`/answer-card/${card.id}`);
     } catch (error) {
-      this.answerCardError.set(error instanceof Error ? error.message : 'Failed to create answer card.');
+      this.answerCardError.set(error instanceof Error ? error.message : $localize`Failed to create answer card.`);
       this.answerCardErrorMessageId.set(message.id);
     } finally {
       this.creatingAnswerCardId.set(null);

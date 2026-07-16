@@ -66,7 +66,7 @@ export class PhillyGreenJobsService {
   readonly sources: SourceDefinition[] = [
     {
       id: 'pea-recent-opportunities',
-      label: 'PEA Recent Opportunities',
+      label: $localize`PEA Recent Opportunities`,
       url: 'https://philaenergy.org/',
       cadence: 'daily',
       bucket: 'jobs',
@@ -75,7 +75,7 @@ export class PhillyGreenJobsService {
     },
     {
       id: 'eca-open-roles',
-      label: 'Energy Coordinating Agency Open Roles',
+      label: $localize`Energy Coordinating Agency Open Roles`,
       url: 'https://ecasavesenergy.org/about/join-our-team/',
       cadence: 'daily',
       bucket: 'jobs',
@@ -84,7 +84,7 @@ export class PhillyGreenJobsService {
     },
     {
       id: 'eca-training-center',
-      label: 'ECA Training Center',
+      label: $localize`ECA Training Center`,
       url: 'https://ecasavesenergy.org/training-center/',
       cadence: 'weekly',
       bucket: 'pathways',
@@ -93,7 +93,7 @@ export class PhillyGreenJobsService {
     },
     {
       id: 'powercorps-apply-now',
-      label: 'PowerCorpsPHL Pathways',
+      label: $localize`PowerCorpsPHL Pathways`,
       url: 'https://powercorpsphl.org/apply-now/',
       cadence: 'weekly',
       bucket: 'pathways',
@@ -102,7 +102,7 @@ export class PhillyGreenJobsService {
     },
     {
       id: 'pwd-apprenticeship',
-      label: 'PWD Apprenticeships',
+      label: $localize`PWD Apprenticeships`,
       url: 'https://water.phila.gov/careers/apprenticeship/',
       cadence: 'weekly',
       bucket: 'pathways',
@@ -543,7 +543,7 @@ export class PhillyGreenJobsService {
     return [
       {
         id: source.id + ':apprenticeship-program',
-        title: 'PWD Apprenticeship Program',
+        title: $localize`PWD Apprenticeship Program`,
         organization: 'Philadelphia Water Department',
         summary: `Public-sector apprenticeship pathway into water, treatment, skilled trades, STEM, and green stormwater infrastructure work. Apprentices start with six months of temporary employment before becoming eligible for permanent civil service promotion. Included roles: ${listedPathways.join(', ')}.`,
         location: PHILADELPHIA,

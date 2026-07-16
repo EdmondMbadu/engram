@@ -4,7 +4,7 @@
   class="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--soft-fill-strong)] hover:text-[var(--text)]"
   (click)="toggleMenu()"
   aria-label="Open menu"
->
+ i18n-aria-label>
   <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 
@@ -26,7 +26,7 @@
     <div class="flex items-center justify-between px-5 py-5">
       <a routerLink="/" class="flex items-center" (click)="closeMenu()">
         <div class="flex h-10 w-40 items-center justify-start">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
       </a>
       <button
@@ -34,7 +34,7 @@
         class="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition-colors hover:text-[var(--text)]"
         (click)="closeMenu()"
         aria-label="Close menu"
-      >
+       i18n-aria-label>
         <span class="material-symbols-outlined text-lg">close</span>
       </button>
     </div>
@@ -48,7 +48,7 @@
           (click)="closeMenu()"
         >
           <span class="material-symbols-outlined">home</span>
-          <span>Home</span>
+          <span i18n>Home</span>
         </a>
       }
       @for (item of primaryNavItems; track item.key) {
@@ -87,7 +87,7 @@
             (click)="toggleMore()"
           >
             <span class="material-symbols-outlined">menu</span>
-            <span class="min-w-0 flex-1">More</span>
+            <span class="min-w-0 flex-1" i18n>More</span>
             <span
               class="material-symbols-outlined text-base transition-transform"
               [class.rotate-180]="showMoreItems()"
@@ -147,7 +147,7 @@
           (click)="closeMenu()"
         >
           <span class="material-symbols-outlined text-[1.1rem]">login</span>
-          <span>Sign in</span>
+          <span i18n>Sign in</span>
         </a>
       }
     </div>

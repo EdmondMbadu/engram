@@ -119,14 +119,14 @@ export class BusinessDetailComponent {
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());
   readonly statusLabel = computed(() => {
     switch (this.business()?.status) {
-      case 'verified':
-        return 'Verified';
-      case 'rejected':
-        return 'Rejected';
-      case 'pending':
-        return 'Pending';
+      case $localize`verified`:
+        return $localize`Verified`;
+      case $localize`rejected`:
+        return $localize`Rejected`;
+      case $localize`pending`:
+        return $localize`Pending`;
       default:
-        return 'Live';
+        return $localize`Live`;
     }
   });
   readonly ownerCanViewPrivateDetails = computed(() => !!this.authService.uid() && this.business()?.owner_user_id === this.authService.uid());
@@ -149,7 +149,7 @@ export class BusinessDetailComponent {
   readonly badgeSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.badgeSvg())}`);
   readonly badgeSvgFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.svg`);
   readonly badgePngFilename = computed(() => `${this.routeParams().businessSlug || 'business'}-${this.routeParams().citySlug || 'city'}-badge.png`);
-  readonly additionalQrLabel = computed(() => this.business()?.additional_qr_label?.trim() || 'Additional QR code');
+  readonly additionalQrLabel = computed(() => this.business()?.additional_qr_label?.trim() || $localize`Additional QR code`);
   readonly additionalQrUrl = computed(() => this.business()?.additional_qr_url?.trim() || '');
   readonly hasAdditionalQr = computed(() => this.additionalQrUrl().length > 0);
   readonly additionalQrSvg = computed(() => generateQrSvg(this.additionalQrUrl() || this.publicChatUrl()));
@@ -164,7 +164,7 @@ export class BusinessDetailComponent {
   readonly editPath = computed(() => `${this.detailPath()}/edit`);
   readonly aboutText = computed(() =>
     this.guidePrompt()
-      || `${this.businessName()} is a local ${this.business()?.category || 'business'} connected to LivingWiki for ${this.cityName()}. Visitors can ask questions by text or voice in their preferred language.`,
+      || `${this.businessName()} is a local ${this.business()?.category || $localize`business`} connected to LivingWiki for ${this.cityName()}. Visitors can ask questions by text or voice in their preferred language.`,
   );
   readonly filteredLanguages = computed(() => {
     const query = this.normalizeSearch(this.languageSearch());
@@ -248,7 +248,7 @@ export class BusinessDetailComponent {
       this.copiedLink.set(true);
       window.setTimeout(() => this.copiedLink.set(false), 1600);
     } catch {
-      this.loadError.set('Could not copy the business detail link.');
+      this.loadError.set($localize`Could not copy the business detail link.`);
     }
   }
 
@@ -258,7 +258,7 @@ export class BusinessDetailComponent {
       this.copiedGuideLink.set(true);
       window.setTimeout(() => this.copiedGuideLink.set(false), 1600);
     } catch {
-      this.loadError.set('Could not copy the business guide link.');
+      this.loadError.set($localize`Could not copy the business guide link.`);
     }
   }
 
@@ -294,7 +294,7 @@ export class BusinessDetailComponent {
     canvas.height = 900;
     const context = canvas.getContext('2d');
     if (!context) {
-      this.loadError.set('Could not render the badge PNG.');
+      this.loadError.set($localize`Could not render the badge PNG.`);
       return;
     }
     context.fillStyle = '#111211';
@@ -317,7 +317,7 @@ export class BusinessDetailComponent {
     canvas.height = 1024;
     const context = canvas.getContext('2d');
     if (!context) {
-      this.loadError.set('Could not render the additional QR PNG.');
+      this.loadError.set($localize`Could not render the additional QR PNG.`);
       return;
     }
     context.fillStyle = '#ffffff';
@@ -361,10 +361,10 @@ export class BusinessDetailComponent {
       const business = await this.businessClaimService.findWorkspaceByClaimKey(claimKey);
       this.business.set(business);
       if (!business) {
-        this.loadError.set('This business page has not been created yet.');
+        this.loadError.set($localize`This business page has not been created yet.`);
       }
     } catch (error) {
-      this.loadError.set(error instanceof Error ? error.message : 'Could not load this business page.');
+      this.loadError.set(error instanceof Error ? error.message : $localize`Could not load this business page.`);
     } finally {
       this.loading.set(false);
       window.setTimeout(() => this.syncLanguageScrollState(), 100);

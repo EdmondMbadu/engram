@@ -93,7 +93,7 @@ export class AtlasPersonaComponent {
       this.justSaved.set(true);
     } catch (error) {
       this.errorMessage.set(
-        error instanceof Error ? error.message : 'Failed to save the persona prompt.',
+        error instanceof Error ? error.message : $localize`Failed to save the persona prompt.`,
       );
     } finally {
       this.saving.set(false);
@@ -127,7 +127,7 @@ export class AtlasPersonaComponent {
       this.justSaved.set(true);
     } catch (error) {
       this.errorMessage.set(
-        error instanceof Error ? error.message : 'Failed to clear the persona prompt.',
+        error instanceof Error ? error.message : $localize`Failed to clear the persona prompt.`,
       );
     } finally {
       this.saving.set(false);
@@ -162,7 +162,7 @@ export class AtlasPersonaComponent {
       || file.type === 'text/plain'
       || file.type === '';
     if (!isMarkdown) {
-      this.errorMessage.set('Upload a Markdown or plain text persona file.');
+      this.errorMessage.set($localize`Upload a Markdown or plain text persona file.`);
       return;
     }
 
@@ -176,7 +176,7 @@ export class AtlasPersonaComponent {
       this.justSaved.set(false);
       this.errorMessage.set(null);
     } catch {
-      this.errorMessage.set('Failed to read the persona file.');
+      this.errorMessage.set($localize`Failed to read the persona file.`);
     }
   }
 

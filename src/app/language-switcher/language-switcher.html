@@ -1,0 +1,32 @@
+<div class="language-switcher">
+  <button
+    type="button"
+    class="language-switcher__button"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-label]="openLabel"
+    (click)="toggleMenu()"
+  >
+    <span class="material-symbols-outlined" aria-hidden="true">language</span>
+    <span class="language-switcher__code">{{ currentLocale.language.toUpperCase() }}</span>
+  </button>
+
+  @if (menuOpen()) {
+    <div class="language-switcher__menu" role="menu" aria-label="Languages" i18n-aria-label="@@languageSwitcher.menuLabel">
+      @for (locale of locales; track locale.id) {
+        <button
+          type="button"
+          role="menuitemradio"
+          [attr.aria-checked]="locale.id === currentLocale.id"
+          [class.language-switcher__option--active]="locale.id === currentLocale.id"
+          (click)="selectLocale(locale)"
+        >
+          <span lang="{{ locale.language }}">{{ locale.label }}</span>
+          @if (locale.id === currentLocale.id) {
+            <span class="material-symbols-outlined" aria-hidden="true">check</span>
+          }
+        </button>
+      }
+    </div>
+  }
+</div>

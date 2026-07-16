@@ -35,7 +35,7 @@ export class ForgotPasswordComponent {
     try {
       await this.authService.sendPasswordReset(this.form.controls.email.getRawValue());
       this.successMessage.set(
-        'If an account exists for that address, a reset email has been sent.',
+        $localize`If an account exists for that address, a reset email has been sent.`,
       );
       this.form.reset({ email: '' });
     } catch (error) {

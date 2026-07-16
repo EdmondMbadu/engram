@@ -96,10 +96,10 @@ export class LandingComponent {
   readonly libraryLink = computed(() => this.publicRoute('library') ?? '/library');
   readonly pageTitle = computed(() =>
     this.isBusinessUpload()
-      ? 'Upload business documents.'
+      ? $localize`Upload business documents.`
       : this.isPublicView()
       ? `Expand ${this.atlasService.displayName(this.publicAtlas())}`
-      : 'Welcome.',
+      : $localize`Welcome.`,
   );
   readonly currentWikiName = computed(() => {
     if (this.isBusinessUpload()) {

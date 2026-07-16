@@ -45,7 +45,7 @@ export class VerifyEmailComponent {
       }
 
       this.infoMessage.set(
-        'We could not confirm verification for this session. Open the latest email, let the verification link finish, then try again.',
+        $localize`We could not confirm verification for this session. Open the latest email, let the verification link finish, then try again.`,
       );
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
@@ -63,8 +63,8 @@ export class VerifyEmailComponent {
       const sent = await this.authService.resendEmailVerification(this.redirectUrl);
       this.infoMessage.set(
         sent
-          ? 'Verification email sent. Check your inbox and spam folder.'
-          : 'Your email is already verified. You can continue now.',
+          ? $localize`Verification email sent. Check your inbox and spam folder.`
+          : $localize`Your email is already verified. You can continue now.`,
       );
 
       const user = await this.authService.refreshVerificationState().catch(() => null);

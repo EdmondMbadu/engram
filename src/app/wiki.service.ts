@@ -210,7 +210,7 @@ export class WikiService {
           this.topicEntries.set([]);
           this.sourceDocuments.set([]);
           this.entriesError.set(
-            error instanceof Error ? error.message : 'Failed to load topic details.',
+            error instanceof Error ? error.message : $localize`Failed to load topic details.`,
           );
         } finally {
           if (!cancelled) {
@@ -332,7 +332,7 @@ export class WikiService {
           this.topicEntries.set([]);
           this.sourceDocuments.set([]);
           this.entriesError.set(
-            error instanceof Error ? error.message : 'Failed to load topic details.',
+            error instanceof Error ? error.message : $localize`Failed to load topic details.`,
           );
         } finally {
           if (!cancelled) {

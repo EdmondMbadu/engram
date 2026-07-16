@@ -1,0 +1,86 @@
+:host {
+  position: relative;
+  display: inline-flex;
+}
+
+.language-switcher {
+  position: relative;
+}
+
+.language-switcher__button {
+  display: inline-flex;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow-floating);
+}
+
+.language-switcher__button:hover,
+.language-switcher__button:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  color: var(--accent);
+  outline: none;
+}
+
+.language-switcher__button .material-symbols-outlined {
+  font-size: 1.2rem;
+}
+
+.language-switcher__code {
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.language-switcher__menu {
+  position: absolute;
+  z-index: 1000;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  display: grid;
+  min-width: 10.5rem;
+  gap: 0.2rem;
+  padding: 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-elevated);
+}
+
+.language-switcher__menu button {
+  display: flex;
+  width: 100%;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 750;
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+}
+
+.language-switcher__menu button:hover,
+.language-switcher__menu button:focus-visible,
+.language-switcher__option--active {
+  background: var(--soft-fill);
+  color: var(--accent);
+  outline: none;
+}
+
+.language-switcher__menu .material-symbols-outlined {
+  font-size: 1rem;
+}

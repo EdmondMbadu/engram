@@ -10,7 +10,7 @@ export type ProfileIconPreset = {
 export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   {
     code: 'city-scribe',
-    label: 'City Scribe',
+    label: $localize`City Scribe`,
     icon: 'edit_note',
     from: '#dffcf7',
     to: '#fff0b8',
@@ -18,7 +18,7 @@ export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   },
   {
     code: 'local-orbit',
-    label: 'Local Orbit',
+    label: $localize`Local Orbit`,
     icon: 'orbit',
     from: '#ddeeff',
     to: '#daf8c8',
@@ -26,7 +26,7 @@ export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   },
   {
     code: 'knowledge-map',
-    label: 'Knowledge Map',
+    label: $localize`Knowledge Map`,
     icon: 'travel_explore',
     from: '#ffe2d7',
     to: '#dff7ff',
@@ -34,7 +34,7 @@ export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   },
   {
     code: 'story-light',
-    label: 'Story Light',
+    label: $localize`Story Light`,
     icon: 'emoji_objects',
     from: '#fff0b8',
     to: '#f0e4ff',
@@ -42,7 +42,7 @@ export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   },
   {
     code: 'green-root',
-    label: 'Green Root',
+    label: $localize`Green Root`,
     icon: 'eco',
     from: '#daf8c8',
     to: '#dffcf7',
@@ -50,7 +50,7 @@ export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   },
   {
     code: 'archive-star',
-    label: 'Archive Star',
+    label: $localize`Archive Star`,
     icon: 'auto_stories',
     from: '#f0e4ff',
     to: '#ddeeff',
@@ -58,7 +58,7 @@ export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   },
   {
     code: 'public-pulse',
-    label: 'Public Pulse',
+    label: $localize`Public Pulse`,
     icon: 'public',
     from: '#dff7ff',
     to: '#ffe2d7',
@@ -66,7 +66,7 @@ export const PROFILE_ICON_PRESETS: ProfileIconPreset[] = [
   },
   {
     code: 'market-signal',
-    label: 'Market Signal',
+    label: $localize`Market Signal`,
     icon: 'storefront',
     from: '#fff0b8',
     to: '#ffe2d7',

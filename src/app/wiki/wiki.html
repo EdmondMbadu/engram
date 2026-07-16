@@ -14,13 +14,13 @@
         <div class="mb-8 px-2">
           <a routerLink="/" class="flex items-center">
             <div class="flex h-10 w-44 items-center justify-start">
-              <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+              <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
             </div>
           </a>
         </div>
 
         <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-5">
-          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Public Wiki</p>
+          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Public Wiki</p>
           <h2 class="mt-3 text-2xl font-black tracking-[-0.05em] text-[var(--text)]">
             @if (publicAtlas()) {
               {{ activeAtlasLabel() }}
@@ -71,11 +71,11 @@
 
             <a [routerLink]="['/atlas', publicAtlas()!.slug || publicAtlas()!.id]" class="flex items-center gap-3 rounded-xl border border-[var(--line)] px-4 py-3 text-sm text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]">
               <span class="material-symbols-outlined">public</span>
-              <span>View atlas landing page</span>
+              <span i18n>View atlas landing page</span>
             </a>
           }
           @if (!isSignedIn()) {
-            <a routerLink="/sign-in" class="primary-btn w-full justify-center !py-3 text-sm">Sign in to ask questions</a>
+            <a routerLink="/sign-in" class="primary-btn w-full justify-center !py-3 text-sm" i18n>Sign in to ask questions</a>
           }
         </div>
       </aside>
@@ -89,7 +89,7 @@
           } @else {
             <a routerLink="/" class="md:hidden flex items-center gap-2 text-sm font-bold text-[var(--text)]">
               <span class="material-symbols-outlined">arrow_back</span>
-              <span>Home</span>
+              <span i18n>Home</span>
             </a>
           }
           <div class="min-w-0">
@@ -116,7 +116,7 @@
           } @else {
             <span class="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1 text-xs font-semibold text-[var(--text)]">
               <span class="material-symbols-outlined text-[var(--accent)] text-[0.9rem]">public</span>
-              <span>Public wiki</span>
+              <span i18n>Public wiki</span>
             </span>
           }
           <app-theme-toggle></app-theme-toggle>
@@ -131,8 +131,8 @@
               <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[var(--line)] bg-white/5">
                 <span class="material-symbols-outlined animate-spin text-[var(--accent)]">progress_activity</span>
               </div>
-              <h2 class="mt-5 text-3xl font-black tracking-[-0.05em] text-[var(--text)]">Loading public wiki</h2>
-              <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+              <h2 class="mt-5 text-3xl font-black tracking-[-0.05em] text-[var(--text)]" i18n>Loading public wiki</h2>
+              <p class="mt-4 text-sm leading-7 text-[var(--muted)]" i18n>
                 Pulling wiki data and preparing the page.
               </p>
             </article>
@@ -140,11 +140,11 @@
         } @else if (publicAtlasNotFound()) {
           <div class="mx-auto flex h-full w-full max-w-4xl items-center justify-center px-5 py-12 md:px-8 lg:px-12">
             <article class="glass-card w-full rounded-[2rem] p-8 text-center">
-              <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]">Public wiki not found</h2>
-              <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+              <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]" i18n>Public wiki not found</h2>
+              <p class="mt-4 text-sm leading-7 text-[var(--muted)]" i18n>
                 This wiki is unavailable or not public.
               </p>
-              <a routerLink="/" class="primary-btn mt-6 inline-flex !py-3 !px-5 text-sm">Back to home</a>
+              <a routerLink="/" class="primary-btn mt-6 inline-flex !py-3 !px-5 text-sm" i18n>Back to home</a>
             </article>
           </div>
         } @else {
@@ -169,9 +169,9 @@
                     (ngModelChange)="searchQuery.set($event)"
                     placeholder="Search articles"
                     class="w-full bg-transparent text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none"
-                  />
+                   i18n-placeholder/>
                   @if (searchQuery()) {
-                    <button type="button" class="text-[var(--muted)] hover:text-[var(--text)]" (click)="searchQuery.set('')" aria-label="Clear search">
+                    <button type="button" class="text-[var(--muted)] hover:text-[var(--text)]" (click)="searchQuery.set('')" aria-label="Clear search" i18n-aria-label>
                       <span class="material-symbols-outlined text-[1.1rem]">close</span>
                     </button>
                   }
@@ -179,16 +179,16 @@
                 @if (hidePublicSourceFiles()) {
                   <p class="mt-3 text-[11px] text-[var(--muted)]">{{ hasArticles() ? 'Browse articles' : 'Browse topics' }}</p>
                 } @else if (hasArticles()) {
-                  <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredArticles().length }} of {{ articles().length }} articles</p>
+                  <p class="mt-3 text-[11px] text-[var(--muted)]" i18n>{{ filteredArticles().length }} of {{ articles().length }} articles</p>
                 } @else {
-                  <p class="mt-3 text-[11px] text-[var(--muted)]">{{ filteredTopics().length }} of {{ topics().length }} topics</p>
+                  <p class="mt-3 text-[11px] text-[var(--muted)]" i18n>{{ filteredTopics().length }} of {{ topics().length }} topics</p>
                 }
               </div>
 
               <div class="flex-1 min-h-0 space-y-3 md:overflow-y-auto md:pr-1">
                 @if (hasArticles()) {
                   @if (isLoadingArticles()) {
-                    <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]">Loading articles...</div>
+                    <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]" i18n>Loading articles...</div>
                   } @else if (filteredArticles().length === 0) {
                     <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
                       @if (searchQuery()) {
@@ -216,7 +216,7 @@
                           </span>
                         </div>
                         <p class="mt-1 text-xs text-[var(--muted)] line-clamp-2">{{ article.summary }}</p>
-                        <p class="mt-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                        <p class="mt-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                           {{ article.source_documents.length }} source{{ article.source_documents.length !== 1 ? 's' : '' }}
                           · {{ formatDate(article.last_updated) }}
                         </p>
@@ -225,7 +225,7 @@
                   }
                 } @else {
                   @if (isLoadingTopics()) {
-                    <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]">Loading topics...</div>
+                    <div class="glass-card rounded-[1.5rem] px-5 py-4 text-sm text-[var(--muted)]" i18n>Loading topics...</div>
                   } @else if (topics().length === 0) {
                     <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
                       @if (isPublicView()) {
@@ -235,7 +235,7 @@
                       }
                     </div>
                   } @else if (filteredTopics().length === 0) {
-                    <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]">
+                    <div class="glass-card rounded-[1.5rem] px-5 py-6 text-sm leading-7 text-[var(--muted)]" i18n>
                       No topics match "{{ searchQuery() }}".
                     </div>
                   } @else {
@@ -269,14 +269,14 @@
                 @if (selectedArticle(); as article) {
                   <article class="glass-card rounded-[2rem] p-6 md:p-8">
                     <div class="border-b border-white/5 pb-6">
-                      <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Wiki Article</p>
+                      <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]" i18n>Wiki Article</p>
                       <h1 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">{{ article.title }}</h1>
                       <div class="mt-4 flex flex-wrap items-center gap-2">
-                        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                           {{ article.word_count }} words
                         </span>
                         @if (article.source_documents.length > 0) {
-                          <span class="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                          <span class="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                             {{ article.source_documents.length }} source{{ article.source_documents.length === 1 ? '' : 's' }}
                           </span>
                         }
@@ -315,7 +315,7 @@
                       <div class="space-y-4">
                         @if (article.related_articles.length > 0) {
                           <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Related Articles</p>
+                            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Related Articles</p>
                             <div class="mt-3 space-y-2">
                               @for (related of article.related_articles; track related) {
                                 <p class="text-sm text-[var(--muted)]">{{ related }}</p>
@@ -325,7 +325,7 @@
                         }
 
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Source Documents</p>
+                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Source Documents</p>
                           <div class="mt-4 space-y-3">
                             @for (source of article.source_documents; track source.document_id) {
                               <button
@@ -336,11 +336,11 @@
                                 <div class="flex items-start justify-between gap-3">
                                   <p class="min-w-0 truncate text-sm font-bold text-[var(--text)]">{{ source.filename }}</p>
                                   @if (openingSourceDocumentId() === source.document_id) {
-                                    <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">Opening</span>
+                                    <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]" i18n>Opening</span>
                                   }
                                 </div>
                                 @if (source.pages.length > 0) {
-                                  <p class="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                                  <p class="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                                     Pages: {{ source.pages.join(', ') }}
                                   </p>
                                 }
@@ -353,7 +353,7 @@
                         </div>
 
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Ask About This</p>
+                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Ask About This</p>
                           <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
                             @if (isPublicView()) {
                               Sign in to ask questions against this wiki and get cited answers.
@@ -363,14 +363,14 @@
                           </p>
                           @if (isPublicView()) {
                             @if (!authInitialized()) {
-                              <span class="primary-btn mt-5 w-full justify-center !py-3 text-sm opacity-70 pointer-events-none">Loading account…</span>
+                              <span class="primary-btn mt-5 w-full justify-center !py-3 text-sm opacity-70 pointer-events-none" i18n>Loading account…</span>
                             } @else if (isSignedIn()) {
-                              <a [routerLink]="publicChatLink() ?? '/chat'" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Click to chat</a>
+                              <a [routerLink]="publicChatLink() ?? '/chat'" class="primary-btn mt-5 w-full justify-center !py-3 text-sm" i18n>Click to chat</a>
                             } @else {
-                              <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
+                              <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm" i18n>Sign in to ask</a>
                             }
                           } @else {
-                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to Chat</a>
+                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm" i18n>Go to Chat</a>
                           }
                         </div>
                       </div>
@@ -378,8 +378,8 @@
                   </article>
                 } @else {
                   <article class="glass-card rounded-[2rem] p-8 text-center">
-                    <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]">No article selected</h2>
-                    <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+                    <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]" i18n>No article selected</h2>
+                    <p class="mt-4 text-sm leading-7 text-[var(--muted)]" i18n>
                       Choose an article from the left to read compiled knowledge from the source documents.
                     </p>
                   </article>
@@ -388,7 +388,7 @@
                 @if (selectedTopic(); as topic) {
                   <article class="glass-card rounded-[2rem] p-6 md:p-8">
                     <div class="border-b border-white/5 pb-6">
-                      <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Knowledge synthesis</p>
+                      <p class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]" i18n>Knowledge synthesis</p>
                       <h1 class="mt-3 text-4xl font-black tracking-[-0.08em] text-[var(--text)] md:text-5xl">{{ topic.name }}</h1>
                       <p class="mt-5 max-w-3xl text-base leading-8 text-[var(--muted)]">{{ topic.summary }}</p>
                     </div>
@@ -396,14 +396,14 @@
                     <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.45fr)_20rem]">
                       <div>
                         <div class="mb-4 flex items-center justify-between gap-3">
-                          <h2 class="text-2xl font-black tracking-[-0.04em] text-[var(--text)]">Knowledge Entries</h2>
-                          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                          <h2 class="text-2xl font-black tracking-[-0.04em] text-[var(--text)]" i18n>Knowledge Entries</h2>
+                          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                             {{ topicEntries().length }} total
                           </span>
                         </div>
 
                         @if (isLoadingEntries()) {
-                          <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-[var(--muted)]">Loading topic entries...</div>
+                          <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-[var(--muted)]" i18n>Loading topic entries...</div>
                         } @else if (entriesError()) {
                           <div class="error-banner rounded-[1.5rem] px-5 py-4 text-sm">
                             {{ entriesError() }}
@@ -429,7 +429,7 @@
 
                       <div class="space-y-4">
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Source Documents</p>
+                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Source Documents</p>
                           <div class="mt-4 space-y-3">
                             @for (document of sourceDocuments(); track document.id) {
                               <button
@@ -440,7 +440,7 @@
                                 <div class="flex items-start justify-between gap-3">
                                   <p class="min-w-0 truncate text-sm font-bold text-[var(--text)]">{{ documentLabel(document) }}</p>
                                   @if (openingSourceDocumentId() === document.id) {
-                                    <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">Opening</span>
+                                    <span class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]" i18n>Opening</span>
                                   }
                                 </div>
                                 <p class="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
@@ -455,7 +455,7 @@
                         </div>
 
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Ask This Topic</p>
+                          <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Ask This Topic</p>
                           <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
                             @if (isPublicView()) {
                               Sign in to ask a scoped question about this topic with cited answers.
@@ -465,12 +465,12 @@
                           </p>
                           @if (isPublicView()) {
                             @if (isSignedIn()) {
-                              <a [routerLink]="publicChatLink() ?? '/chat'" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to Chat</a>
+                              <a [routerLink]="publicChatLink() ?? '/chat'" class="primary-btn mt-5 w-full justify-center !py-3 text-sm" i18n>Go to Chat</a>
                             } @else {
-                              <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Sign in to ask</a>
+                              <a routerLink="/sign-in" class="primary-btn mt-5 w-full justify-center !py-3 text-sm" i18n>Sign in to ask</a>
                             }
                           } @else {
-                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm">Go to Chat</a>
+                            <a routerLink="/chat" class="primary-btn mt-5 w-full justify-center !py-3 text-sm" i18n>Go to Chat</a>
                           }
                         </div>
                       </div>
@@ -478,8 +478,8 @@
                   </article>
                 } @else {
                   <article class="glass-card rounded-[2rem] p-8 text-center">
-                    <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]">No topic selected</h2>
-                    <p class="mt-4 text-sm leading-7 text-[var(--muted)]">
+                    <h2 class="text-3xl font-black tracking-[-0.05em] text-[var(--text)]" i18n>No topic selected</h2>
+                    <p class="mt-4 text-sm leading-7 text-[var(--muted)]" i18n>
                       Choose a topic from the left to read the compiled knowledge.
                     </p>
                   </article>

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, Validators, NonNullableFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -18,6 +18,12 @@ export class SignInComponent {
   readonly isSubmitting = signal(false);
   readonly submitError = signal<string | null>(null);
   readonly infoMessage = signal(this.getInitialInfoMessage());
+  readonly googleButtonLabel = computed(() =>
+    this.isSubmitting() ? $localize`Working...` : $localize`Continue with Google`,
+  );
+  readonly emailButtonLabel = computed(() =>
+    this.isSubmitting() ? $localize`Signing In...` : $localize`Sign In`,
+  );
 
   readonly form = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -88,15 +94,15 @@ export class SignInComponent {
 
   private getInitialInfoMessage(): string | null {
     if (this.route.snapshot.queryParamMap.has('redirectTo')) {
-      return 'Sign in to continue to your workspace.';
+      return $localize`Sign in to continue to your workspace.`;
     }
 
     if (this.route.snapshot.queryParamMap.get('reset') === 'sent') {
-      return 'Password reset email sent if an account exists for that address.';
+      return $localize`Password reset email sent if an account exists for that address.`;
     }
 
     if (this.route.snapshot.queryParamMap.get('reset') === 'complete') {
-      return 'Your password has been updated. Sign in with your new password.';
+      return $localize`Your password has been updated. Sign in with your new password.`;
     }
 
     return null;

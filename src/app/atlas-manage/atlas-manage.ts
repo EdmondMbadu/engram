@@ -394,10 +394,10 @@ export class AtlasManageComponent {
 
     const remainingRows = Math.max(0, progress.total - progress.processed);
     if (!this.creatingBulkCities()) {
-      return remainingRows > 0 ? 'Retry available' : 'Done';
+      return remainingRows > 0 ? $localize`Retry available` : $localize`Done`;
     }
     if (progress.processed <= 0) {
-      return 'Estimating...';
+      return $localize`Estimating...`;
     }
 
     const elapsedMs = Math.max(1, this.bulkCityEtaNowMs() - progress.started_at_ms);
@@ -435,10 +435,10 @@ export class AtlasManageComponent {
       return null;
     }
     if (!this.populationBackfillRunning()) {
-      return progress.processed >= progress.total ? 'Done' : 'Stopped';
+      return progress.processed >= progress.total ? $localize`Done` : $localize`Stopped`;
     }
     if (progress.processed <= 0) {
-      return 'Estimating...';
+      return $localize`Estimating...`;
     }
 
     const remainingRows = Math.max(0, progress.total - progress.processed);
@@ -458,13 +458,13 @@ export class AtlasManageComponent {
     return Math.min(100, Math.round((progress.processed / progress.total) * 100));
   });
   readonly weekdays = [
-    { value: 0, label: 'Sunday' },
-    { value: 1, label: 'Monday' },
-    { value: 2, label: 'Tuesday' },
-    { value: 3, label: 'Wednesday' },
-    { value: 4, label: 'Thursday' },
-    { value: 5, label: 'Friday' },
-    { value: 6, label: 'Saturday' },
+    { value: 0, label: $localize`Sunday` },
+    { value: 1, label: $localize`Monday` },
+    { value: 2, label: $localize`Tuesday` },
+    { value: 3, label: $localize`Wednesday` },
+    { value: 4, label: $localize`Thursday` },
+    { value: 5, label: $localize`Friday` },
+    { value: 6, label: $localize`Saturday` },
   ];
 
   constructor() {
@@ -605,7 +605,7 @@ export class AtlasManageComponent {
         }
       }, 1600);
     } catch {
-      this.businessError.set('Could not copy the business link.');
+      this.businessError.set($localize`Could not copy the business link.`);
     }
   }
 
@@ -641,7 +641,7 @@ export class AtlasManageComponent {
       this.businessSavedClaimKey.set(business.claim_key);
       this.editingBusinessClaimKey.set(null);
     } catch (error) {
-      this.businessError.set(error instanceof Error ? error.message : 'Failed to save business changes.');
+      this.businessError.set(error instanceof Error ? error.message : $localize`Failed to save business changes.`);
     } finally {
       this.savingBusinessClaimKey.set(null);
     }
@@ -660,7 +660,7 @@ export class AtlasManageComponent {
         Object.fromEntries(businesses.map((business) => [business.claim_key, this.createBusinessEditDraft(business)])),
       );
     } catch (error) {
-      this.businessError.set(error instanceof Error ? error.message : 'Failed to load account businesses.');
+      this.businessError.set(error instanceof Error ? error.message : $localize`Failed to load account businesses.`);
     } finally {
       if (this.authService.uid() === uid) {
         this.loadingBusinesses.set(false);
@@ -980,7 +980,7 @@ export class AtlasManageComponent {
       const config = await this.atlasService.getAtlasTextMessagingConfig(atlasId);
       this.textMessagingDraftById.update((current) => ({ ...current, [atlasId]: this.toTextMessagingDraft(config) }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to load text messaging settings.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to load text messaging settings.`);
     } finally {
       this.loadingTextMessagingById.update((current) => ({ ...current, [atlasId]: false }));
     }
@@ -1007,7 +1007,7 @@ export class AtlasManageComponent {
       );
       this.textMessagingDraftById.update((current) => ({ ...current, [atlas.id]: this.toTextMessagingDraft(saved) }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to save text messaging settings.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to save text messaging settings.`);
     } finally {
       this.savingTextMessagingById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -1022,7 +1022,7 @@ export class AtlasManageComponent {
       await navigator.clipboard.writeText(url);
       this.copiedTextMessagingById.update((current) => ({ ...current, [atlasId]: true }));
     } catch {
-      this.pageError.set('Could not copy the webhook URL.');
+      this.pageError.set($localize`Could not copy the webhook URL.`);
     }
   }
 
@@ -1072,7 +1072,7 @@ export class AtlasManageComponent {
       const config = await this.atlasService.getAtlasVoiceAgentConfig(atlasId);
       this.voiceAgentDraftById.update((current) => ({ ...current, [atlasId]: this.toVoiceAgentDraft(config) }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to load Vapi voice settings.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to load Vapi voice settings.`);
     } finally {
       this.loadingVoiceAgentById.update((current) => ({ ...current, [atlasId]: false }));
     }
@@ -1099,7 +1099,7 @@ export class AtlasManageComponent {
       );
       this.voiceAgentDraftById.update((current) => ({ ...current, [atlas.id]: this.toVoiceAgentDraft(saved) }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to save Vapi voice settings.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to save Vapi voice settings.`);
     } finally {
       this.savingVoiceAgentById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -1114,7 +1114,7 @@ export class AtlasManageComponent {
       await navigator.clipboard.writeText(url);
       this.copiedVoiceAgentById.update((current) => ({ ...current, [atlasId]: true }));
     } catch {
-      this.pageError.set('Could not copy the Vapi tool URL.');
+      this.pageError.set($localize`Could not copy the Vapi tool URL.`);
     }
   }
 
@@ -1136,7 +1136,7 @@ export class AtlasManageComponent {
       await this.atlasService.updateChatGuideConfig(atlas.id, config);
       this.chatGuideDraftById.update((current) => ({ ...current, [atlas.id]: nextDraft }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to upload guide image.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to upload guide image.`);
     } finally {
       this.uploadingChatGuideImageById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -1184,7 +1184,7 @@ export class AtlasManageComponent {
       await this.atlasService.addAtlasAdmin(atlas.id, email);
       this.adminEmailDraftById.update((current) => ({ ...current, [atlas.id]: '' }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to add admin.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to add admin.`);
     } finally {
       this.sharingAdminById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -1206,7 +1206,7 @@ export class AtlasManageComponent {
     try {
       await this.atlasService.removeAtlasAdmin(atlas.id, admin.user_id);
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to remove admin.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to remove admin.`);
     } finally {
       this.removingAdminKey.set(null);
     }
@@ -1228,7 +1228,7 @@ export class AtlasManageComponent {
         [atlas.id]: (current[atlas.id] ?? []).filter((item) => item.id !== subscription.id),
       }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to remove subscriber.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to remove subscriber.`);
     } finally {
       this.removingSubscriptionKey.set(null);
     }
@@ -1260,7 +1260,7 @@ export class AtlasManageComponent {
         [atlas.id]: `Saved: ${this.weekdayLabel(persistedDraft.day_of_week)} at ${persistedDraft.send_time} ${persistedDraft.timezone}.`,
       }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to save email settings.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to save email settings.`);
     } finally {
       this.savingNewsletterById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -1271,7 +1271,7 @@ export class AtlasManageComponent {
     const config = this.normalizeNewsletterDraft(draft);
     const recipientEmail = this.newsletterTestEmail(atlas.id).trim();
     if (!recipientEmail) {
-      this.pageError.set('Enter a test recipient email address.');
+      this.pageError.set($localize`Enter a test recipient email address.`);
       return;
     }
     this.sendingNewsletterTestById.update((current) => ({ ...current, [atlas.id]: true }));
@@ -1285,7 +1285,7 @@ export class AtlasManageComponent {
       const result = await this.atlasService.sendAtlasNewsletterTest(atlas.id, config, recipientEmail);
       this.newsletterTestResultById.update((current) => ({ ...current, [atlas.id]: result }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to send test newsletter.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to send test newsletter.`);
     } finally {
       this.sendingNewsletterTestById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -1300,7 +1300,7 @@ export class AtlasManageComponent {
       await this.atlasService.updateChatGuideConfig(atlas.id, config);
       this.chatGuideDraftById.update((current) => ({ ...current, [atlas.id]: this.toChatGuideDraft({ ...atlas, chat_guide: config }) }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to save chat guide.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to save chat guide.`);
     } finally {
       this.savingChatGuideById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -1335,7 +1335,7 @@ export class AtlasManageComponent {
   async createCustomCityAtlas(event: Event): Promise<void> {
     event.preventDefault();
     if (!this.canCreateWikis()) {
-      this.pageError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      this.pageError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
       return;
     }
     if (!this.canCreateCustomCity()) {
@@ -1346,17 +1346,17 @@ export class AtlasManageComponent {
     const latRaw = draft.latitude.trim();
     const lngRaw = draft.longitude.trim();
     if ((latRaw !== '') !== (lngRaw !== '')) {
-      this.pageError.set('Provide both latitude and longitude, or leave both blank.');
+      this.pageError.set($localize`Provide both latitude and longitude, or leave both blank.`);
       return;
     }
     const latitude = latRaw ? Number(latRaw) : null;
     const longitude = lngRaw ? Number(lngRaw) : null;
     if (latitude !== null && (!Number.isFinite(latitude) || latitude < -90 || latitude > 90)) {
-      this.pageError.set('Latitude must be a number between -90 and 90.');
+      this.pageError.set($localize`Latitude must be a number between -90 and 90.`);
       return;
     }
     if (longitude !== null && (!Number.isFinite(longitude) || longitude < -180 || longitude > 180)) {
-      this.pageError.set('Longitude must be a number between -180 and 180.');
+      this.pageError.set($localize`Longitude must be a number between -180 and 180.`);
       return;
     }
     const population = parseOptionalPositiveInteger(draft.population);
@@ -1364,19 +1364,19 @@ export class AtlasManageComponent {
     const areaKm2 = parseOptionalPositiveNumber(draft.area_km2);
     const populationDensityPerKm2 = parseOptionalPositiveInteger(draft.population_density_per_km2);
     if (Number.isNaN(population)) {
-      this.pageError.set('Population must be a positive number.');
+      this.pageError.set($localize`Population must be a positive number.`);
       return;
     }
     if (Number.isNaN(populationYear)) {
-      this.pageError.set('Population year must be a positive number.');
+      this.pageError.set($localize`Population year must be a positive number.`);
       return;
     }
     if (Number.isNaN(areaKm2)) {
-      this.pageError.set('Area km² must be a positive number.');
+      this.pageError.set($localize`Area km² must be a positive number.`);
       return;
     }
     if (Number.isNaN(populationDensityPerKm2)) {
-      this.pageError.set('Population density must be a positive number.');
+      this.pageError.set($localize`Population density must be a positive number.`);
       return;
     }
     const input: CustomCityAtlasInput = {
@@ -1418,7 +1418,7 @@ export class AtlasManageComponent {
         });
       }
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to create custom city Wiki.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to create custom city Wiki.`);
     } finally {
       this.creatingCustomCity.set(false);
     }
@@ -1437,7 +1437,7 @@ export class AtlasManageComponent {
     if (!file.name.toLowerCase().endsWith('.csv')) {
       this.bulkCityRows.set([]);
       this.bulkCityFileName.set(null);
-      this.bulkCityError.set('Upload a .csv file.');
+      this.bulkCityError.set($localize`Upload a .csv file.`);
       return;
     }
 
@@ -1448,7 +1448,7 @@ export class AtlasManageComponent {
     } catch (error) {
       this.bulkCityRows.set([]);
       this.bulkCityFileName.set(null);
-      this.bulkCityError.set(error instanceof Error ? error.message : 'Failed to read CSV file.');
+      this.bulkCityError.set(error instanceof Error ? error.message : $localize`Failed to read CSV file.`);
     }
   }
 
@@ -1496,8 +1496,8 @@ export class AtlasManageComponent {
     if (atlases.length === 0) {
       this.populationBackfillMessage.set(
         force
-          ? 'No city Wikis are available to refresh.'
-          : 'Every city Wiki already has population attached.',
+          ? $localize`No city Wikis are available to refresh.`
+          : $localize`Every city Wiki already has population attached.`,
       );
       return;
     }
@@ -1530,7 +1530,7 @@ export class AtlasManageComponent {
       if (progress) {
         const noun = progress.total === 1 ? 'city' : 'cities';
         this.populationBackfillMessage.set(
-          `${force ? 'Refresh' : 'Backfill'} finished for ${progress.total} ${noun}: ${progress.updated} updated, ${progress.skipped} skipped, ${progress.failed} failed.`,
+          `${force ? $localize`Refresh` : $localize`Backfill`} finished for ${progress.total} ${noun}: ${progress.updated} updated, ${progress.skipped} skipped, ${progress.failed} failed.`,
         );
       }
     } finally {
@@ -1553,7 +1553,7 @@ export class AtlasManageComponent {
     this.pageError.set(null);
     this.coverImageStatusById.update((current) => ({
       ...current,
-      [atlas.id]: { state: 'running', message: 'Finding and validating image...' },
+      [atlas.id]: { state: 'running', message: $localize`Finding and validating image...` },
     }));
 
 	    try {
@@ -1599,7 +1599,7 @@ export class AtlasManageComponent {
 	        this.automatingCoverImageId.set(atlas.id);
 	        this.coverImageStatusById.update((current) => ({
 	          ...current,
-	          [atlas.id]: { state: 'running', message: 'Finding and validating image...' },
+	          [atlas.id]: { state: 'running', message: $localize`Finding and validating image...` },
 	        }));
 	        try {
 	          const result = await this.autoUploadAtlasCoverImageWithTimeout(atlas.id);
@@ -1663,7 +1663,7 @@ export class AtlasManageComponent {
 
 	  async createBulkCityAtlases(): Promise<void> {
     if (!this.canCreateWikis()) {
-      this.bulkCityError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      this.bulkCityError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
       return;
     }
     this.refreshBulkCityDuplicateStatus();
@@ -2190,7 +2190,7 @@ export class AtlasManageComponent {
 
   async createCityAtlas(template: CityAtlasTemplate): Promise<void> {
     if (!this.canCreateWikis()) {
-      this.pageError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      this.pageError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
       return;
     }
     if (this.cityTemplateExists(template) || this.creatingCitySlug()) {
@@ -2207,7 +2207,7 @@ export class AtlasManageComponent {
         this.cityCreationMessage.set(`${template.name} is live with internet answers enabled.`);
       }
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to create city Wiki.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to create city Wiki.`);
     } finally {
       this.creatingCitySlug.set(null);
     }
@@ -2350,7 +2350,7 @@ export class AtlasManageComponent {
       await this.atlasService.renameAtlas(atlasId, name);
       this.cancelRename();
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to rename atlas.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to rename atlas.`);
     } finally {
       this.renaming.set(false);
     }
@@ -2423,7 +2423,7 @@ export class AtlasManageComponent {
       await this.atlasService.updateCityConfig(atlas.id, nextConfig);
       this.cancelCityEdit();
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to save city pulse settings.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to save city pulse settings.`);
     } finally {
       this.savingCityConfig.set(false);
     }
@@ -2439,7 +2439,7 @@ export class AtlasManageComponent {
     try {
       await this.atlasService.updateDefaultAnswerMode(atlas.id, mode);
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to save default search mode.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to save default search mode.`);
     } finally {
       this.savingDefaultModeById.update((current) => ({ ...current, [atlas.id]: false }));
     }
@@ -2488,7 +2488,7 @@ export class AtlasManageComponent {
         return next;
       });
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to delete atlas.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to delete atlas.`);
     } finally {
       this.deletingId.set(null);
     }
@@ -2587,7 +2587,7 @@ export class AtlasManageComponent {
       const subscriptions = await this.atlasService.listAtlasSubscriptions(atlasId);
       this.subscriptionsById.update((current) => ({ ...current, [atlasId]: subscriptions }));
     } catch (error) {
-      this.pageError.set(error instanceof Error ? error.message : 'Failed to load subscribers.');
+      this.pageError.set(error instanceof Error ? error.message : $localize`Failed to load subscribers.`);
     } finally {
       this.loadingSubscriptionsById.update((current) => ({ ...current, [atlasId]: false }));
     }

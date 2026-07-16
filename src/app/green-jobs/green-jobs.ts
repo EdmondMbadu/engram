@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, effect, inject, LOCALE_ID, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -21,6 +21,7 @@ import {
   styleUrl: './green-jobs.css',
 })
 export class GreenJobsComponent {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly greenJobsService = inject(PhillyGreenJobsService);
@@ -115,7 +116,7 @@ export class GreenJobsComponent {
       this.snapshot.set(snapshot);
     } catch (error) {
       if (force) {
-        this.loadError.set(error instanceof Error ? error.message : 'Could not refresh Philly green jobs.');
+        this.loadError.set(error instanceof Error ? error.message : $localize`Could not refresh Philly green jobs.`);
         return;
       }
 
@@ -124,7 +125,7 @@ export class GreenJobsComponent {
         this.snapshot.set(fallbackSnapshot);
       } catch (fallbackError) {
         this.loadError.set(
-          fallbackError instanceof Error ? fallbackError.message : 'Could not refresh Philly green jobs.',
+          fallbackError instanceof Error ? fallbackError.message : $localize`Could not refresh Philly green jobs.`,
         );
       }
     } finally {
@@ -202,7 +203,7 @@ export class GreenJobsComponent {
       return 'No refresh yet';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       hour: 'numeric',

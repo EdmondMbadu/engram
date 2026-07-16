@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Injectable, LOCALE_ID, PLATFORM_ID } from '@angular/core';
 import { httpsCallable } from 'firebase/functions';
 import type { CityPulseMetric, CityPulseSnapshot } from './atlas.models';
 import { getFirebaseFunctions } from './firebase.client';
@@ -17,6 +17,7 @@ const LANDING_METRIC_ORDER = [
 
 @Injectable({ providedIn: 'root' })
 export class CityPulseService {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly functions = this.isBrowser ? getFirebaseFunctions() : null;
@@ -110,7 +111,7 @@ export class CityPulseService {
       return `${value.toFixed(decimals)}%`;
     }
 
-    const formatter = new Intl.NumberFormat('en-US', {
+    const formatter = new Intl.NumberFormat(this.localeId, {
       maximumFractionDigits: decimals,
       minimumFractionDigits: decimals,
       style: metric.format === 'currency' ? 'currency' : 'decimal',
@@ -135,7 +136,7 @@ export class CityPulseService {
       return `${value.toFixed(decimals)}%`;
     }
 
-    const formatter = new Intl.NumberFormat('en-US', {
+    const formatter = new Intl.NumberFormat(this.localeId, {
       maximumFractionDigits: decimals,
       minimumFractionDigits: decimals,
       style: metric.format === 'currency' ? 'currency' : 'decimal',

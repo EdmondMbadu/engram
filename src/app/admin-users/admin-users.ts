@@ -133,7 +133,7 @@ export class AdminUsersComponent implements OnInit {
     try {
       this.businesses.set(await this.businessClaimService.listAll());
     } catch (error) {
-      this.businessError.set(error instanceof Error ? error.message : 'Failed to load businesses.');
+      this.businessError.set(error instanceof Error ? error.message : $localize`Failed to load businesses.`);
       this.businesses.set([]);
     } finally {
       this.businessesLoading.set(false);

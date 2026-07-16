@@ -54,7 +54,7 @@ export class PricingComponent implements OnInit {
       id: 'reader',
       audience: 'general',
       name: 'Reader',
-      description: 'Follow public LivingWiki pages and keep a lightweight local knowledge home.',
+      description: $localize`Follow public LivingWiki pages and keep a lightweight local knowledge home.`,
       monthlyPrice: 0,
       annualMonthlyPrice: 0,
       icon: 'explore',
@@ -71,7 +71,7 @@ export class PricingComponent implements OnInit {
       id: 'personal_plus',
       audience: 'general',
       name: 'Personal Plus',
-      description: 'Build private source-aware wikis for trips, research, family projects, or local obsessions.',
+      description: $localize`Build private source-aware wikis for trips, research, family projects, or local obsessions.`,
       monthlyPrice: 12,
       annualMonthlyPrice: 10,
       featured: true,
@@ -89,7 +89,7 @@ export class PricingComponent implements OnInit {
       id: 'creator',
       audience: 'general',
       name: 'Creator',
-      description: 'Publish richer LivingWiki pages for communities, collections, classes, or public projects.',
+      description: $localize`Publish richer LivingWiki pages for communities, collections, classes, or public projects.`,
       monthlyPrice: 29,
       annualMonthlyPrice: 24,
       icon: 'campaign',
@@ -106,7 +106,7 @@ export class PricingComponent implements OnInit {
       id: 'business_local',
       audience: 'business',
       name: 'Local',
-      description: 'Get on the city map and give people a better first answer than a static listing.',
+      description: $localize`Get on the city map and give people a better first answer than a static listing.`,
       monthlyPrice: 25,
       annualMonthlyPrice: 20,
       icon: 'location_on',
@@ -123,7 +123,7 @@ export class PricingComponent implements OnInit {
       id: 'business_favorite',
       audience: 'business',
       name: 'Local Favorite',
-      description: 'Stand out with trust signals, featured context, and a clearer business voice.',
+      description: $localize`Stand out with trust signals, featured context, and a clearer business voice.`,
       monthlyPrice: 65,
       annualMonthlyPrice: 54,
       featured: true,
@@ -142,7 +142,7 @@ export class PricingComponent implements OnInit {
       id: 'business_sponsor',
       audience: 'business',
       name: 'City Sponsor',
-      description: 'Anchor a city wiki with citywide placement and deeper local discovery signals.',
+      description: $localize`Anchor a city wiki with citywide placement and deeper local discovery signals.`,
       monthlyPrice: 180,
       annualMonthlyPrice: 150,
       icon: 'apartment',
@@ -172,27 +172,27 @@ export class PricingComponent implements OnInit {
 
   readonly promptTitle = computed(() =>
     this.isSignedIn()
-      ? 'Upgrade your LivingWiki account'
-      : 'Upgrade when you are ready for more than browsing',
+      ? $localize`Upgrade your LivingWiki account`
+      : $localize`Upgrade when you are ready for more than browsing`,
   );
 
   readonly promptDescription = computed(() =>
     this.isSignedIn()
-      ? 'You are not on a paid pricing plan yet. Pick a personal or business tier to unlock private spaces, richer publishing, or local business tools.'
-      : 'Browse the public directory for free, then choose a personal or business tier when you want to save work, publish, upload sources, or claim a local business.',
+      ? $localize`You are not on a paid pricing plan yet. Pick a personal or business tier to unlock private spaces, richer publishing, or local business tools.`
+      : $localize`Browse the public directory for free, then choose a personal or business tier when you want to save work, publish, upload sources, or claim a local business.`,
   );
 
   readonly activeCopy = computed(() =>
-    this.activeAudience() === 'business'
+    this.activeAudience() === $localize`business`
       ? {
-          eyebrow: 'Business upgrades',
-          title: 'Turn local discovery into an owned channel.',
-          description: 'Simple launch tiers for businesses that want a better profile, guide placement, badges, and insight into what people ask around the city.',
+          eyebrow: $localize`Business upgrades`,
+          title: $localize`Turn local discovery into an owned channel.`,
+          description: $localize`Simple launch tiers for businesses that want a better profile, guide placement, badges, and insight into what people ask around the city.`,
         }
       : {
-          eyebrow: 'Personal upgrades',
-          title: 'Build a LivingWiki for the things you care about.',
-          description: 'Start free, then upgrade when you need private spaces, document uploads, publishing, and stronger tools for personal research or community projects.',
+          eyebrow: $localize`Personal upgrades`,
+          title: $localize`Build a LivingWiki for the things you care about.`,
+          description: $localize`Start free, then upgrade when you need private spaces, document uploads, publishing, and stronger tools for personal research or community projects.`,
         },
   );
 
@@ -273,7 +273,7 @@ export class PricingComponent implements OnInit {
       }
       window.location.href = checkoutUrl;
     } catch {
-      this.checkoutError.set('Checkout could not be started. Check the Stripe price configuration and try again.');
+      this.checkoutError.set($localize`Checkout could not be started. Check the Stripe price configuration and try again.`);
       this.checkoutLoading.set(null);
     }
   }
@@ -293,7 +293,7 @@ export class PricingComponent implements OnInit {
     }
 
     if (payment === 'cancelled') {
-      this.checkoutError.set('Checkout was cancelled. You can pick a plan whenever you are ready.');
+      this.checkoutError.set($localize`Checkout was cancelled. You can pick a plan whenever you are ready.`);
       return;
     }
 
@@ -302,7 +302,7 @@ export class PricingComponent implements OnInit {
     }
 
     if (!sessionId) {
-      this.checkoutError.set('Payment returned without a checkout session. Please try checkout again.');
+      this.checkoutError.set($localize`Payment returned without a checkout session. Please try checkout again.`);
       return;
     }
 
@@ -323,7 +323,7 @@ export class PricingComponent implements OnInit {
       await this.authService.refreshUser();
       this.checkoutStatus.set('Subscription confirmed. Your paid plan is active.');
     } catch {
-      this.checkoutError.set('We could not confirm the payment yet. If your card was charged, refresh in a moment or contact support.');
+      this.checkoutError.set($localize`We could not confirm the payment yet. If your card was charged, refresh in a moment or contact support.`);
       this.checkoutStatus.set(null);
     } finally {
       this.checkoutLoading.set(null);

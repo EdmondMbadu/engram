@@ -3,10 +3,10 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
       <a [routerLink]="detailPath()" class="flex min-w-0 items-center gap-3">
         <span class="material-symbols-outlined text-[var(--accent)]">arrow_back</span>
-        <span class="truncate text-sm font-black">Back to {{ businessName() }}</span>
+        <span class="truncate text-sm font-black" i18n>Back to {{ businessName() }}</span>
       </a>
       <div class="flex items-center gap-2">
-        <a [routerLink]="detailPath()" class="hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-bold text-[var(--text)] sm:inline-flex">View page</a>
+        <a [routerLink]="detailPath()" class="hidden rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-bold text-[var(--text)] sm:inline-flex" i18n>View page</a>
         <app-theme-toggle></app-theme-toggle>
         <app-account-menu></app-account-menu>
       </div>
@@ -16,18 +16,18 @@
   <main>
     @if (loading()) {
       <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
-        <p class="text-sm font-semibold text-[var(--muted)]">Loading business editor...</p>
+        <p class="text-sm font-semibold text-[var(--muted)]" i18n>Loading business editor...</p>
       </section>
     } @else if (!authService.isAuthenticated()) {
       <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
-        <h1 class="mt-3 text-3xl font-black tracking-tight">Sign in to edit this business.</h1>
-        <a [routerLink]="['/sign-in']" [queryParams]="{ redirectTo: detailPath() + '/edit' }" class="mt-6 inline-flex rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">Sign in</a>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Business admin</p>
+        <h1 class="mt-3 text-3xl font-black tracking-tight" i18n>Sign in to edit this business.</h1>
+        <a [routerLink]="['/sign-in']" [queryParams]="{ redirectTo: detailPath() + '/edit' }" class="mt-6 inline-flex rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]" i18n>Sign in</a>
       </section>
     } @else if (!ownerCanEdit()) {
       <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
-        <h1 class="mt-3 text-3xl font-black tracking-tight">This account cannot edit {{ businessName() }}.</h1>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Business admin</p>
+        <h1 class="mt-3 text-3xl font-black tracking-tight" i18n>This account cannot edit {{ businessName() }}.</h1>
         <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ loadError() || 'Only the account that claimed this business can edit the page.' }}</p>
       </section>
     } @else {
@@ -50,9 +50,9 @@
           <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)] sm:p-6">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
-              <h1 class="mt-2 text-3xl font-black tracking-tight">Edit {{ businessName() }}</h1>
-              <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">Update the public page, guide prompt, images, and QR badge assets for this business.</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Business admin</p>
+              <h1 class="mt-2 text-3xl font-black tracking-tight" i18n>Edit {{ businessName() }}</h1>
+              <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>Update the public page, guide prompt, images, and QR badge assets for this business.</p>
             </div>
             <button type="button" (click)="save()" [disabled]="saving()" class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
               <span class="material-symbols-outlined text-[1rem]">save</span>
@@ -69,36 +69,36 @@
 
           <div class="mt-6 grid gap-5">
             <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
-              <h2 class="text-lg font-black">Business information</h2>
+              <h2 class="text-lg font-black" i18n>Business information</h2>
               <div class="mt-4 grid gap-4 md:grid-cols-2">
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Business name</span>
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Business name</span>
                   <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="businessName()" readonly />
                 </label>
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">City</span>
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>City</span>
                   <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="cityName()" readonly />
                 </label>
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Category</span>
-                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().category" (input)="updateDraft('category', $any($event.target).value)" placeholder="Restaurant, shop, cafe..." />
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Category</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().category" (input)="updateDraft('category', $any($event.target).value)" placeholder="Restaurant, shop, cafe..."  i18n-placeholder/>
                 </label>
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Location / address</span>
-                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().business_address" (input)="updateDraft('business_address', $any($event.target).value)" placeholder="Street, neighborhood, or address" />
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Location / address</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().business_address" (input)="updateDraft('business_address', $any($event.target).value)" placeholder="Street, neighborhood, or address"  i18n-placeholder/>
                 </label>
               </div>
             </section>
 
             <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
-              <h2 class="text-lg font-black">Images</h2>
-              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Upload the images that appear on the public business page. Direct URLs still work when media already lives elsewhere.</p>
+              <h2 class="text-lg font-black" i18n>Images</h2>
+              <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Upload the images that appear on the public business page. Direct URLs still work when media already lives elsewhere.</p>
               <div class="mt-4 grid gap-4">
                 <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
                   <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p class="text-sm font-black">Logo</p>
-                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Used in the page header and preview.</p>
+                      <p class="text-sm font-black" i18n>Logo</p>
+                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]" i18n>Used in the page header and preview.</p>
                     </div>
                     <label class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black text-[var(--text)]">
                       <span class="material-symbols-outlined text-[1rem]">upload</span>
@@ -106,14 +106,14 @@
                       <input type="file" accept="image/*" class="sr-only" [disabled]="imageUploading('logo')" (change)="uploadImage('logo', 'logo_url', $event)" />
                     </label>
                   </div>
-                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().logo_url" (input)="updateDraft('logo_url', $any($event.target).value)" placeholder="https://..." />
+                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().logo_url" (input)="updateDraft('logo_url', $any($event.target).value)" placeholder="https://..."  i18n-placeholder/>
                 </div>
 
                 <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
                   <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p class="text-sm font-black">Profile picture</p>
-                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Shown in the business guide chat module.</p>
+                      <p class="text-sm font-black" i18n>Profile picture</p>
+                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]" i18n>Shown in the business guide chat module.</p>
                     </div>
                     <label class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black text-[var(--text)]">
                       <span class="material-symbols-outlined text-[1rem]">upload</span>
@@ -121,14 +121,14 @@
                       <input type="file" accept="image/*" class="sr-only" [disabled]="imageUploading('profile')" (change)="uploadImage('profile', 'profile_image_url', $event)" />
                     </label>
                   </div>
-                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().profile_image_url" (input)="updateDraft('profile_image_url', $any($event.target).value)" placeholder="https://..." />
+                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().profile_image_url" (input)="updateDraft('profile_image_url', $any($event.target).value)" placeholder="https://..."  i18n-placeholder/>
                 </div>
 
                 <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
                   <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p class="text-sm font-black">Cover image</p>
-                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]">Used as the main storefront visual.</p>
+                      <p class="text-sm font-black" i18n>Cover image</p>
+                      <p class="mt-1 text-xs leading-5 text-[var(--muted)]" i18n>Used as the main storefront visual.</p>
                     </div>
                     <label class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black text-[var(--text)]">
                       <span class="material-symbols-outlined text-[1rem]">upload</span>
@@ -136,25 +136,25 @@
                       <input type="file" accept="image/*" class="sr-only" [disabled]="imageUploading('cover')" (change)="uploadImage('cover', 'cover_image_url', $event)" />
                     </label>
                   </div>
-                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().cover_image_url" (input)="updateDraft('cover_image_url', $any($event.target).value)" placeholder="https://..." />
+                  <input class="theme-input mt-3 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().cover_image_url" (input)="updateDraft('cover_image_url', $any($event.target).value)" placeholder="https://..."  i18n-placeholder/>
                 </div>
               </div>
             </section>
 
             <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
-              <h2 class="text-lg font-black">Guide and admin contact</h2>
+              <h2 class="text-lg font-black" i18n>Guide and admin contact</h2>
               <div class="mt-4 grid gap-4 md:grid-cols-2">
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin name</span>
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Admin name</span>
                   <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().admin_name" (input)="updateDraft('admin_name', $any($event.target).value)" />
                 </label>
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin email</span>
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Admin email</span>
                   <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().admin_email" (input)="updateDraft('admin_email', $any($event.target).value)" />
                 </label>
                 <label class="block md:col-span-2">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Business guide prompt</span>
-                  <textarea class="theme-input min-h-40 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().guide_prompt" (input)="updateDraft('guide_prompt', $any($event.target).value)" placeholder="What should the guide know about this business?"></textarea>
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Business guide prompt</span>
+                  <textarea class="theme-input min-h-40 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().guide_prompt" (input)="updateDraft('guide_prompt', $any($event.target).value)" placeholder="What should the guide know about this business?" i18n-placeholder></textarea>
                 </label>
               </div>
             </section>
@@ -162,10 +162,10 @@
             <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
               <div class="flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <h2 class="text-lg font-black">Badge icons</h2>
-                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose up to 4 icons for the circular QR badge.</p>
+                  <h2 class="text-lg font-black" i18n>Badge icons</h2>
+                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Choose up to 4 icons for the circular QR badge.</p>
                 </div>
-                <span class="rounded-full bg-[var(--soft-fill-strong)] px-3 py-1 text-[10px] font-black uppercase text-[var(--muted)]">{{ selectedIconCodes().length }}/4 selected</span>
+                <span class="rounded-full bg-[var(--soft-fill-strong)] px-3 py-1 text-[10px] font-black uppercase text-[var(--muted)]" i18n>{{ selectedIconCodes().length }}/4 selected</span>
               </div>
               <div class="mt-4 flex flex-wrap gap-2">
                 @for (icon of featuredIconOptions; track icon.code) {
@@ -196,7 +196,7 @@
                   <span class="material-symbols-outlined text-base">{{ showAllBadgeIcons() ? 'expand_less' : 'add' }}</span>
                   <span>{{ showAllBadgeIcons() ? 'Less icons' : 'More icons' }}</span>
                   @if (!showAllBadgeIcons() && hiddenSelectedIconCount() > 0) {
-                    <span class="rounded-full bg-[var(--accent)]/10 px-2 py-0.5 text-[10px] font-black text-[var(--accent)]">{{ hiddenSelectedIconCount() }} selected</span>
+                    <span class="rounded-full bg-[var(--accent)]/10 px-2 py-0.5 text-[10px] font-black text-[var(--accent)]" i18n>{{ hiddenSelectedIconCount() }} selected</span>
                   }
                 </button>
               </div>
@@ -230,15 +230,15 @@
                 <div class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-2xl text-[var(--accent)]">qr_code_2</span>
                   <div>
-                    <h2 class="text-lg font-black">Additional QR code</h2>
-                    <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Add a simple standalone QR code that points to another location, form, menu, map, or page.</p>
+                    <h2 class="text-lg font-black" i18n>Additional QR code</h2>
+                    <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Add a simple standalone QR code that points to another location, form, menu, map, or page.</p>
                   </div>
                 </div>
                 <div class="flex flex-wrap gap-2">
                   @if (hasAdditionalQr() || hasSavedAdditionalQr()) {
                     <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-2.5 text-sm font-black text-[var(--error-text)] disabled:cursor-not-allowed disabled:opacity-50" [disabled]="saving()" (click)="deleteAdditionalQr()">
                       <span class="material-symbols-outlined text-[1rem]">delete</span>
-                      <span>Delete QR code</span>
+                      <span i18n>Delete QR code</span>
                     </button>
                   }
                   <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-2.5 text-sm font-black text-[var(--accent-contrast)] disabled:cursor-not-allowed disabled:opacity-50" [disabled]="saving() || (!additionalQrUrl() && !hasSavedAdditionalQr())" (click)="saveAdditionalQr()">
@@ -249,12 +249,12 @@
               </div>
               <div class="mt-4 grid gap-4 md:grid-cols-2">
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">QR label</span>
-                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().additional_qr_label" (input)="updateDraft('additional_qr_label', $any($event.target).value)" placeholder="Menu, event check-in, parking map..." />
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>QR label</span>
+                  <input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().additional_qr_label" (input)="updateDraft('additional_qr_label', $any($event.target).value)" placeholder="Menu, event check-in, parking map..."  i18n-placeholder/>
                 </label>
                 <label class="block">
-                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">QR destination URL</span>
-                  <input type="url" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().additional_qr_url" (input)="updateDraft('additional_qr_url', $any($event.target).value)" placeholder="https://..." />
+                  <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>QR destination URL</span>
+                  <input type="url" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft().additional_qr_url" (input)="updateDraft('additional_qr_url', $any($event.target).value)" placeholder="https://..."  i18n-placeholder/>
                 </label>
               </div>
             </section>
@@ -263,11 +263,11 @@
 
         <aside class="grid h-max gap-5 lg:sticky lg:top-6">
           <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
-            <h2 class="text-lg font-black">Page preview</h2>
+            <h2 class="text-lg font-black" i18n>Page preview</h2>
             <div class="mt-4 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)]">
               <div class="flex h-36 items-center justify-center bg-[var(--soft-fill-strong)]">
                 @if (draft().cover_image_url) {
-                  <img [src]="draft().cover_image_url" alt="Cover preview" class="h-full w-full object-cover" />
+                  <img [src]="draft().cover_image_url" alt="Cover preview" class="h-full w-full object-cover"  i18n-alt/>
                 } @else {
                   <span class="material-symbols-outlined text-5xl text-[var(--accent)]">storefront</span>
                 }
@@ -276,7 +276,7 @@
                 <div class="flex items-center gap-3">
                   <div class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-xl font-black text-[var(--accent)]">
                     @if (draft().logo_url) {
-                      <img [src]="draft().logo_url" alt="Logo preview" class="h-full w-full object-cover" />
+                      <img [src]="draft().logo_url" alt="Logo preview" class="h-full w-full object-cover"  i18n-alt/>
                     } @else {
                       {{ businessInitial() }}
                     }
@@ -291,36 +291,36 @@
           </section>
 
           <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
-            <h2 class="text-lg font-black">QR badge</h2>
-            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">This badge links directly to the public business chat.</p>
+            <h2 class="text-lg font-black" i18n>QR badge</h2>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>This badge links directly to the public business chat.</p>
             <p class="mt-2 break-all rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-2 text-xs font-bold text-[var(--muted)]">{{ chatUrl() }}</p>
             <div class="mt-4 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-3">
               <div class="aspect-square w-full rounded-2xl bg-[#111211] bg-contain bg-center bg-no-repeat" style="background-image: url('/assets/image/ring-countries.png')">
-                <img [src]="badgeSvgHref()" alt="Business QR badge preview" class="h-full w-full rounded-2xl object-contain" />
+                <img [src]="badgeSvgHref()" alt="Business QR badge preview" class="h-full w-full rounded-2xl object-contain"  i18n-alt/>
               </div>
             </div>
             <div class="mt-4 grid gap-2">
               <a [href]="chatUrl()" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--accent)]">
                 <span class="material-symbols-outlined text-[1rem]">qr_code_scanner</span>
-                <span>Open QR destination</span>
+                <span i18n>Open QR destination</span>
               </a>
               <a [href]="badgeSvgHref()" [download]="badgeSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)]">
                 <span class="material-symbols-outlined text-[1rem]">download</span>
-                <span>Download SVG</span>
+                <span i18n>Download SVG</span>
               </a>
               <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadBadgePng()">
                 <span class="material-symbols-outlined text-[1rem]">image</span>
-                <span>Download PNG</span>
+                <span i18n>Download PNG</span>
               </button>
               <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadQrOnlyPng()">
                 <span class="material-symbols-outlined text-[1rem]">qr_code_2</span>
-                <span>Download QR only</span>
+                <span i18n>Download QR only</span>
               </button>
             </div>
           </section>
 
           <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
-            <h2 class="text-lg font-black">Additional QR</h2>
+            <h2 class="text-lg font-black" i18n>Additional QR</h2>
             @if (hasAdditionalQr()) {
               <p class="mt-1 text-sm leading-6 text-[var(--muted)]">{{ additionalQrLabel() }}</p>
               <p class="mt-2 break-all rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-2 text-xs font-bold text-[var(--muted)]">{{ additionalQrUrl() }}</p>
@@ -334,23 +334,23 @@
                 </button>
                 <a [href]="additionalQrUrl()" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--accent)]">
                   <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
-                  <span>Open destination</span>
+                  <span i18n>Open destination</span>
                 </a>
                 <a [href]="additionalQrSvgHref()" [download]="additionalQrSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)]">
                   <span class="material-symbols-outlined text-[1rem]">download</span>
-                  <span>Download SVG</span>
+                  <span i18n>Download SVG</span>
                 </a>
                 <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadAdditionalQrPng()">
                   <span class="material-symbols-outlined text-[1rem]">image</span>
-                  <span>Download PNG</span>
+                  <span i18n>Download PNG</span>
                 </button>
                 <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm font-black text-[var(--error-text)] disabled:cursor-not-allowed disabled:opacity-50" [disabled]="saving()" (click)="deleteAdditionalQr()">
                   <span class="material-symbols-outlined text-[1rem]">delete</span>
-                  <span>Delete QR code</span>
+                  <span i18n>Delete QR code</span>
                 </button>
               </div>
             } @else {
-              <div class="mt-3 rounded-2xl border border-dashed border-[var(--line)] bg-[var(--soft-fill)] px-4 py-6 text-sm leading-6 text-[var(--muted)]">
+              <div class="mt-3 rounded-2xl border border-dashed border-[var(--line)] bg-[var(--soft-fill)] px-4 py-6 text-sm leading-6 text-[var(--muted)]" i18n>
                 Add a destination URL to preview and download another simple QR code.
               </div>
             }

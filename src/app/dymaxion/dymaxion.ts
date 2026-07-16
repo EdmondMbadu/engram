@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   inject,
+  LOCALE_ID,
   OnDestroy,
   OnInit,
   PLATFORM_ID,
@@ -106,20 +107,20 @@ interface OpenMeteoLocationResponse {
 }
 
 const REGIONS: Region[] = [
-  { id: 'north-america', label: 'N. America' },
-  { id: 'south-america', label: 'S. America' },
-  { id: 'europe', label: 'Europe' },
-  { id: 'africa', label: 'Africa' },
-  { id: 'asia', label: 'Asia' },
-  { id: 'oceania', label: 'Oceania' },
+  { id: 'north-america', label: $localize`N. America` },
+  { id: 'south-america', label: $localize`S. America` },
+  { id: 'europe', label: $localize`Europe` },
+  { id: 'africa', label: $localize`Africa` },
+  { id: 'asia', label: $localize`Asia` },
+  { id: 'oceania', label: $localize`Oceania` },
 ];
 
 // Sub-zooms use a fixed box (the projected geographic extent of that area, in
 // % of the map) — carried over from the prototype's Fuller-projected values.
 const SUB_FOCI: Focus[] = [
-  { id: 'middle-east', label: 'Middle East', box: [27, 18, 39.5, 40] },
-  { id: 'japan', label: 'Japan', box: [36.5, 65, 42, 77.5] },
-  { id: 'us-east', label: 'US East Coast', box: [58.9, 39.2, 64.2, 43.2] },
+  { id: 'middle-east', label: $localize`Middle East`, box: [27, 18, 39.5, 40] },
+  { id: 'japan', label: $localize`Japan`, box: [36.5, 65, 42, 77.5] },
+  { id: 'us-east', label: $localize`US East Coast`, box: [58.9, 39.2, 64.2, 43.2] },
 ];
 
 const MAX_Z = 4.6; // region buttons
@@ -154,6 +155,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
   encapsulation: ViewEncapsulation.None,
 })
 export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
@@ -276,7 +278,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cities.some((c) => c.region === r.id),
     );
     this.foci.set([
-      { id: 'all', label: 'World' },
+      { id: 'all', label: $localize`World` },
       ...regionsWithCities.map((r) => ({ id: r.id, label: r.label, region: r.id })),
       ...SUB_FOCI,
     ]);
@@ -748,7 +750,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   setFocus(f: Focus): void {
     // Toggle back to world when clicking the active non-world chip.
     if (this.activeFocus() === f.id && f.id !== 'all') {
-      f = { id: 'all', label: 'World' };
+      f = { id: 'all', label: $localize`World` };
     }
     this.activeFocus.set(f.id);
     this.selectedCountry.set(null);
@@ -761,7 +763,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   resetToWorld(): void {
-    this.setFocus({ id: 'all', label: 'World' });
+    this.setFocus({ id: 'all', label: $localize`World` });
   }
 
   private inFocus(c: DymaxionCity): boolean {
@@ -1101,7 +1103,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!c.population) {
       return 'Not available';
     }
-    const value = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(c.population);
+    const value = new Intl.NumberFormat(this.localeId, { maximumFractionDigits: 0 }).format(c.population);
     return c.populationYear ? `${value} (${c.populationYear})` : value;
   }
   regionLabel(id: RegionId): string {
@@ -1142,7 +1144,7 @@ export class DymaxionComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     try {
-      return new Intl.DateTimeFormat('en-US', {
+      return new Intl.DateTimeFormat(this.localeId, {
         timeZone: timezone,
         hour: 'numeric',
         minute: '2-digit',

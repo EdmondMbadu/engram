@@ -17,7 +17,7 @@ type LegalPageContent = {
 
 const PRIVACY_CONTENT: LegalPageContent = {
   eyebrow: 'Privacy',
-  title: 'Privacy Policy',
+  title: $localize`Privacy Policy`,
   intro:
     'LivingWiki helps people upload documents, build atlas pages, and chat with knowledge derived from those materials. This page explains, in plain language, what information the product currently handles and why.',
   updatedLabel: 'Last updated April 18, 2026',
@@ -70,7 +70,7 @@ const PRIVACY_CONTENT: LegalPageContent = {
 
 const TERMS_CONTENT: LegalPageContent = {
   eyebrow: 'Terms',
-  title: 'Terms and Conditions',
+  title: $localize`Terms and Conditions`,
   intro:
     'These terms are a practical starting point for using LivingWiki. They are intentionally concise for now and will be refined as the product matures.',
   updatedLabel: 'Last updated April 18, 2026',

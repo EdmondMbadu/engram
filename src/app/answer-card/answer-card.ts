@@ -231,7 +231,7 @@ export class AnswerCardComponent {
 
   private async loadCard(cardId: string): Promise<void> {
     if (!cardId) {
-      this.errorMessage.set('Answer card not found.');
+      this.errorMessage.set($localize`Answer card not found.`);
       this.isLoading.set(false);
       return;
     }
@@ -241,7 +241,7 @@ export class AnswerCardComponent {
       this.card.set(card);
       this.liked.set(this.hasLiked(card.id));
     } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'Answer card not found.');
+      this.errorMessage.set(error instanceof Error ? error.message : $localize`Answer card not found.`);
     } finally {
       this.isLoading.set(false);
     }

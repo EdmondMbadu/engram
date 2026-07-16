@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, Validators, NonNullableFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
@@ -18,6 +18,12 @@ export class CreateAccountComponent {
 
   readonly isSubmitting = signal(false);
   readonly submitError = signal<string | null>(null);
+  readonly googleButtonLabel = computed(() =>
+    this.isSubmitting() ? $localize`Working...` : $localize`Continue with Google`,
+  );
+  readonly createButtonLabel = computed(() =>
+    this.isSubmitting() ? $localize`Creating Account...` : $localize`Create Account`,
+  );
 
   readonly form = this.formBuilder.group(
     {

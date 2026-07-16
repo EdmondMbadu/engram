@@ -8,16 +8,16 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
       <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
         <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
       </a>
 
       <div class="flex items-center gap-2 sm:gap-3">
-        <a routerLink="/" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+        <a routerLink="/" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex" i18n>
           Public Wikis
         </a>
         <app-theme-toggle></app-theme-toggle>
-        <a routerLink="/business/claim" class="primary-btn !px-3 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:!text-sm">
+        <a routerLink="/business/claim" class="primary-btn !px-3 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:!text-sm" i18n>
           Claim
         </a>
         <app-account-menu signInClass="ghost-btn !px-3 !py-2 text-xs sm:!px-4 sm:!py-2.5 sm:!text-sm"></app-account-menu>
@@ -32,24 +32,24 @@
           <div class="absolute right-6 top-6 hidden h-32 w-32 rounded-full border border-[var(--line)] bg-[radial-gradient(circle_at_35%_30%,color-mix(in_srgb,var(--accent)_22%,white),transparent_62%)] opacity-60 lg:block"></div>
           <div class="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-3xl">
-              <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Business workspace</p>
-              <h1 class="mt-2 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">Your businesses</h1>
-              <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
+              <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Business workspace</p>
+              <h1 class="mt-2 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl" i18n>Your businesses</h1>
+              <p class="mt-3 text-sm leading-6 text-[var(--muted)]" i18n>
                 Manage every claimed business attached to {{ ownerEmail() || 'this account' }}. Open the public page, edit details, or claim a new business from one place.
               </p>
             </div>
             <div class="grid grid-cols-3 gap-2 sm:flex sm:items-center">
               <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-center shadow-[var(--shadow-floating)] sm:min-w-24">
                 <span class="block text-lg font-black text-[var(--text)]">{{ ownedBusinesses().length }}</span>
-                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Total</span>
+                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Total</span>
               </div>
               <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-center shadow-[var(--shadow-floating)] sm:min-w-24">
                 <span class="block text-lg font-black text-[var(--text)]">{{ ownedVerifiedCount() }}</span>
-                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Verified</span>
+                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Verified</span>
               </div>
               <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-center shadow-[var(--shadow-floating)] sm:min-w-24">
                 <span class="block text-lg font-black text-[var(--text)]">{{ ownedPendingCount() }}</span>
-                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Pending</span>
+                <span class="block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Pending</span>
               </div>
             </div>
           </div>
@@ -57,7 +57,7 @@
           <div class="relative mt-5 flex flex-wrap items-center gap-3">
             <a routerLink="/business/claim" class="primary-btn justify-center !px-5 !py-3 text-sm">
               <span class="material-symbols-outlined text-base">add_business</span>
-              <span>Claim a business</span>
+              <span i18n>Claim a business</span>
             </a>
           </div>
         </div>
@@ -70,7 +70,7 @@
           <div class="mt-6 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-5 py-5">
             <div class="flex items-center gap-3 text-sm font-bold text-[var(--muted)]">
               <span class="material-symbols-outlined animate-spin text-[var(--accent)]">progress_activity</span>
-              <span>Loading your businesses...</span>
+              <span i18n>Loading your businesses...</span>
             </div>
           </div>
         } @else if (ownedBusinesses().length > 0) {
@@ -126,10 +126,10 @@
                   </div>
 
                   <div class="flex flex-wrap gap-2 sm:justify-end">
-                    <a [routerLink]="businessDetailPath(business)" class="ghost-btn !h-10 !w-10 !rounded-full !p-0" aria-label="Open business details">
+                    <a [routerLink]="businessDetailPath(business)" class="ghost-btn !h-10 !w-10 !rounded-full !p-0" aria-label="Open business details" i18n-aria-label>
                       <span class="material-symbols-outlined text-base">open_in_new</span>
                     </a>
-                    <a [routerLink]="businessEditPath(business)" class="ghost-btn !h-10 !w-10 !rounded-full !p-0" aria-label="Edit business">
+                    <a [routerLink]="businessEditPath(business)" class="ghost-btn !h-10 !w-10 !rounded-full !p-0" aria-label="Edit business" i18n-aria-label>
                       <span class="material-symbols-outlined text-base">edit</span>
                     </a>
                     <button
@@ -150,15 +150,15 @@
           <div class="mt-6 overflow-hidden rounded-[1.75rem] border border-[var(--accent)]/25 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_12%,var(--surface)),var(--surface))] p-6 shadow-[var(--shadow-elevated)]">
             <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
               <div>
-                <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">No businesses yet</p>
-                <h2 class="mt-2 text-2xl font-black tracking-tight text-[var(--text)]">Claim your first business page.</h2>
-                <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>No businesses yet</p>
+                <h2 class="mt-2 text-2xl font-black tracking-tight text-[var(--text)]" i18n>Claim your first business page.</h2>
+                <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                   Create a local business page, reserve the business key, and generate a multilingual QR badge connected to the city wiki.
                 </p>
               </div>
               <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm">
                 <span class="material-symbols-outlined text-base">add_business</span>
-                <span>Claim a business</span>
+                <span i18n>Claim a business</span>
               </a>
             </div>
           </div>
@@ -179,24 +179,24 @@
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-70"></span>
               <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--accent)]"></span>
             </span>
-            <span class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">LivingWiki for business</span>
+            <span class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]" i18n>LivingWiki for business</span>
           </div>
 
-          <h1 class="mt-6 max-w-4xl text-[2.75rem] font-black leading-[0.96] tracking-[-0.02em] text-[var(--text)] sm:text-7xl">
+          <h1 class="mt-6 max-w-4xl text-[2.75rem] font-black leading-[0.96] tracking-[-0.02em] text-[var(--text)] sm:text-7xl" i18n>
             Be found where your<br class="hidden sm:block" />
             city is
             <span class="bg-[linear-gradient(120deg,var(--accent-soft),var(--accent))] bg-clip-text text-transparent">already looking.</span>
           </h1>
-          <p class="mt-6 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">
+          <p class="mt-6 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg" i18n>
             LivingWiki gives local businesses a place inside the living map of a city: a profile, a pin, guide placement, and signals that help people find the real local places search engines flatten.
           </p>
 
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm">
+            <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm" i18n>
               Claim your business
               <span class="material-symbols-outlined text-base">arrow_forward</span>
             </a>
-            <a href="#plans" class="ghost-btn justify-center !px-6 !py-3 text-sm">
+            <a href="#plans" class="ghost-btn justify-center !px-6 !py-3 text-sm" i18n>
               See plans
             </a>
           </div>
@@ -207,7 +207,7 @@
             (click)="openBusinessVideo()"
             aria-label="Play the welcome video: see how LivingWiki works for local businesses"
             class="group relative mt-8 flex w-full max-w-xl items-center gap-4 overflow-hidden rounded-2xl border border-[var(--accent)]/35 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_16%,var(--surface)),var(--surface))] p-3 text-left shadow-[0_24px_60px_-30px_rgba(59,175,98,0.85)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/60 hover:shadow-[0_30px_70px_-32px_rgba(59,175,98,1)]"
-          >
+           i18n-aria-label>
             <span class="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent)] opacity-0 transition-all duration-700 group-hover:left-full group-hover:opacity-100"></span>
             <span class="relative flex aspect-video w-32 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[var(--accent)]/25 bg-[var(--surface-strong)] sm:w-40">
               <span class="absolute inset-0 bg-[radial-gradient(circle_at_30%_28%,color-mix(in_srgb,var(--accent)_38%,transparent),transparent_42%),radial-gradient(circle_at_78%_74%,color-mix(in_srgb,var(--accent-soft)_30%,transparent),transparent_44%)]"></span>
@@ -219,18 +219,18 @@
               </span>
             </span>
             <span class="min-w-0 flex-1">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)]/14 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)]/14 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]" i18n>
                 <span class="material-symbols-outlined text-sm">play_circle</span>
                 Watch · 60 sec
               </span>
-              <span class="mt-2 block text-[15px] font-black leading-5 text-[var(--text)]">See how it works for local businesses</span>
-              <span class="mt-1 block text-xs font-semibold leading-5 text-[var(--muted)]">New here? Start with the welcome video</span>
+              <span class="mt-2 block text-[15px] font-black leading-5 text-[var(--text)]" i18n>See how it works for local businesses</span>
+              <span class="mt-1 block text-xs font-semibold leading-5 text-[var(--muted)]" i18n>New here? Start with the welcome video</span>
             </span>
             <span class="material-symbols-outlined mr-1 hidden shrink-0 text-[var(--muted)] transition-all group-hover:translate-x-0.5 group-hover:text-[var(--accent)] sm:block">arrow_forward</span>
           </button>
 
           <div class="mt-10">
-            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--muted)]/80">Cities coming online</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--muted)]/80" i18n>Cities coming online</p>
             <div class="mt-3 flex flex-wrap gap-2">
               @for (city of citySignals; track city) {
                 <span class="rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--muted)]">
@@ -249,11 +249,11 @@
             <div class="border-b border-[var(--line)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_14%,var(--surface)),var(--surface))] px-5 py-4">
               <div class="flex items-center justify-between gap-4">
                 <div>
-                  <p class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">
+                  <p class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>
                     <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_24%,transparent)]"></span>
                     Live city profile
                   </p>
-                  <h2 class="mt-1.5 text-xl font-black tracking-tight text-[var(--text)]">Neighborhood sponsor view</h2>
+                  <h2 class="mt-1.5 text-xl font-black tracking-tight text-[var(--text)]" i18n>Neighborhood sponsor view</h2>
                 </div>
                 <span class="material-symbols-outlined rounded-full bg-[var(--accent)] p-2 text-[var(--accent-contrast)] shadow-[0_10px_28px_-14px_rgba(59,175,98,0.9)]">travel_explore</span>
               </div>
@@ -262,55 +262,55 @@
             <div class="grid gap-0 md:grid-cols-[0.92fr_1.08fr]">
               <div class="border-b border-[var(--line)] bg-[var(--surface-strong)] p-5 md:border-b-0 md:border-r">
                 <div class="flex aspect-square items-center justify-center rounded-2xl border border-[var(--line)] bg-[linear-gradient(145deg,color-mix(in_srgb,var(--accent)_12%,var(--soft-fill)),var(--soft-fill))] p-8">
-                  <img src="/assets/image/living-cities.png" alt="Living cities mark" class="h-full w-full object-contain" />
+                  <img src="/assets/image/living-cities.png" alt="Living cities mark" class="h-full w-full object-contain"  i18n-alt/>
                 </div>
                 <div class="mt-5 rounded-2xl border border-[var(--accent)]/20 bg-[var(--accent)]/[0.06] p-4">
-                  <p class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">
+                  <p class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]" i18n>
                     <span class="material-symbols-outlined text-sm">verified</span>
                     Local Favorite
                   </p>
-                  <p class="mt-2 text-sm leading-6 text-[var(--muted)]">A verified signal for people comparing places in the same neighborhood.</p>
+                  <p class="mt-2 text-sm leading-6 text-[var(--muted)]" i18n>A verified signal for people comparing places in the same neighborhood.</p>
                 </div>
               </div>
 
               <div class="p-5">
                 <div class="flex items-start justify-between gap-4">
                   <div>
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Profile</p>
-                    <h3 class="mt-1 text-2xl font-black tracking-tight">Greenline Coffee House</h3>
-                    <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Story, hours, links, photos, event notes, and local context in one living page.</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Profile</p>
+                    <h3 class="mt-1 text-2xl font-black tracking-tight" i18n>Greenline Coffee House</h3>
+                    <p class="mt-2 text-sm leading-6 text-[var(--muted)]" i18n>Story, hours, links, photos, event notes, and local context in one living page.</p>
                   </div>
                   <span class="material-symbols-outlined text-[var(--accent)]">verified</span>
                 </div>
 
                 <div class="mt-6 grid gap-3">
                   <div class="flex items-center justify-between rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
-                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>
                       <span class="material-symbols-outlined text-base text-[var(--accent)]">location_on</span>
                       Map pin
                     </span>
-                    <span class="text-sm font-black text-[var(--text)]">Cedar Park</span>
+                    <span class="text-sm font-black text-[var(--text)]" i18n>Cedar Park</span>
                   </div>
                   <div class="flex items-center justify-between rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
-                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>
                       <span class="material-symbols-outlined text-base text-[var(--accent)]">explore</span>
                       Guide
                     </span>
-                    <span class="text-sm font-black text-[var(--text)]">Hidden coffee</span>
+                    <span class="text-sm font-black text-[var(--text)]" i18n>Hidden coffee</span>
                   </div>
                   <div class="flex items-center justify-between rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.07] px-4 py-3">
-                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+                    <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>
                       <span class="material-symbols-outlined text-base text-[var(--accent)]">trending_up</span>
                       Signal
                     </span>
-                    <span class="text-sm font-black text-[var(--accent)]">Rising searches</span>
+                    <span class="text-sm font-black text-[var(--accent)]" i18n>Rising searches</span>
                   </div>
                 </div>
 
                 <div class="mt-6 border-t border-[var(--line)] pt-5">
                   <div class="flex items-center gap-3">
                     <span class="material-symbols-outlined text-[var(--accent)]">campaign</span>
-                    <p class="text-sm font-bold leading-6 text-[var(--text)]">Saturday tasting appears in the neighborhood guide and public chat context.</p>
+                    <p class="text-sm font-bold leading-6 text-[var(--text)]" i18n>Saturday tasting appears in the neighborhood guide and public chat context.</p>
                   </div>
                 </div>
               </div>
@@ -323,19 +323,19 @@
     <section id="claim" class="border-b border-[var(--line)] bg-[var(--surface)]">
       <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-10">
         <div>
-          <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">Claim your business</p>
-          <h2 class="mt-3 max-w-3xl text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">
+          <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]" i18n>Claim your business</p>
+          <h2 class="mt-3 max-w-3xl text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl" i18n>
             Your Local Insider. Any City. Any Language.
           </h2>
-          <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
+          <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]" i18n>
             The customer-facing product is a clean multilingual QR badge tied to one real business page. Claim flow happens on the next page; this page shows the finished signal.
           </p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm">
+            <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm" i18n>
               Claim your business
               <span class="material-symbols-outlined text-base">arrow_forward</span>
             </a>
-            <a class="ghost-btn justify-center !px-6 !py-3 text-sm" [href]="'https://' + businessChatUrl()" target="_blank" rel="noopener">
+            <a class="ghost-btn justify-center !px-6 !py-3 text-sm" [href]="'https://' + businessChatUrl()" target="_blank" rel="noopener" i18n>
               Test sample QR link
             </a>
           </div>
@@ -394,10 +394,10 @@
                 <text x="450" y="258" text-anchor="middle" font-size="28">🌍</text>
               </g>
               <text font-family="Inter, Arial, sans-serif" font-size="34" font-weight="900" fill="#f8f8f2" dy="8" filter="url(#businessTextLift)">
-                <textPath href="#businessTopArc" startOffset="50%" text-anchor="middle" textLength="510" lengthAdjust="spacingAndGlyphs">{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
+                <textPath href="#businessTopArc" startOffset="50%" text-anchor="middle" textLength="510" lengthAdjust="spacingAndGlyphs" i18n>{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
               </text>
               <text font-family="Inter, Arial, sans-serif" font-size="48" font-weight="900" fill="#f8f8f2" letter-spacing="1" dy="22" filter="url(#businessTextLift)">
-                <textPath href="#businessBottomArc" startOffset="50%" text-anchor="middle" textLength="470" lengthAdjust="spacingAndGlyphs">60+ Languages</textPath>
+                <textPath href="#businessBottomArc" startOffset="50%" text-anchor="middle" textLength="470" lengthAdjust="spacingAndGlyphs" i18n>60+ Languages</textPath>
               </text>
               <rect x="270" y="288" width="360" height="360" rx="28" fill="#fffdf6" stroke="url(#businessGoldEdge)" stroke-width="8" filter="url(#businessCoinShadow)"></rect>
               <rect x="286" y="304" width="328" height="328" rx="18" fill="#ffffff" stroke="#f1d48b" stroke-width="2"></rect>
@@ -410,7 +410,7 @@
                 </g>
               }
               <rect x="290" y="664" width="320" height="42" rx="21" fill="url(#businessGoldEdge)" stroke="#8f591e" stroke-width="2"></rect>
-              <text x="450" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#10391f">Powered by LivingWiki.com</text>
+              <text x="450" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#10391f" i18n>Powered by LivingWiki.com</text>
               <text x="450" y="746" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="900" fill="#f5d780" filter="url(#businessCoinShadow)">★ ★ ★ ★ ★</text>
             </svg>
           </div>
@@ -420,9 +420,9 @@
 
     <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-10">
       <div class="mx-auto max-w-3xl text-center">
-        <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">What you get</p>
-        <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">Not a dead listing. A page with a pulse.</h2>
-        <p class="mt-4 text-base leading-7 text-[var(--muted)]">
+        <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]" i18n>What you get</p>
+        <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl" i18n>Not a dead listing. A page with a pulse.</h2>
+        <p class="mt-4 text-base leading-7 text-[var(--muted)]" i18n>
           Built for hyper-local discovery, so businesses appear in the city context where visitors ask questions, scan maps, and compare where to go next.
         </p>
       </div>
@@ -448,9 +448,9 @@
       <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-10">
         <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div class="max-w-2xl">
-            <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">Sponsorship levels</p>
-            <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">Pick the reach that matches your footprint.</h2>
-            <p class="mt-4 text-base leading-7 text-[var(--muted)]">Start with a neighborhood presence, then grow into featured placement and citywide sponsorship as the public wiki expands.</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]" i18n>Sponsorship levels</p>
+            <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl" i18n>Pick the reach that matches your footprint.</h2>
+            <p class="mt-4 text-base leading-7 text-[var(--muted)]" i18n>Start with a neighborhood presence, then grow into featured placement and citywide sponsorship as the public wiki expands.</p>
           </div>
 
           <div class="flex w-full items-center rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--shadow-floating)] sm:w-auto">
@@ -460,7 +460,7 @@
               class="flex-1 rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.14em] transition-colors sm:flex-none"
               [style.background-color]="billingCycle() === 'monthly' ? 'var(--accent)' : null"
               [style.color]="billingCycle() === 'monthly' ? 'var(--accent-contrast)' : 'var(--muted)'"
-            >
+             i18n>
               Monthly
             </button>
             <button
@@ -469,7 +469,7 @@
               class="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.14em] transition-colors sm:flex-none"
               [style.background-color]="billingCycle() === 'annual' ? 'var(--accent)' : null"
               [style.color]="billingCycle() === 'annual' ? 'var(--accent-contrast)' : 'var(--muted)'"
-            >
+             i18n>
               Annual
               <span
                 class="rounded-full px-1.5 py-0.5 text-[9px] tracking-[0.1em]"
@@ -493,7 +493,7 @@
               [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--text)'"
             >
               @if (plan.featured) {
-                <span class="absolute right-5 top-5 inline-flex items-center gap-1 rounded-full bg-[var(--accent-contrast)]/16 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent-contrast)]">
+                <span class="absolute right-5 top-5 inline-flex items-center gap-1 rounded-full bg-[var(--accent-contrast)]/16 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent-contrast)]" i18n>
                   <span class="material-symbols-outlined text-sm">star</span>
                   Most popular
                 </span>
@@ -520,7 +520,7 @@
                   <span
                     class="text-sm font-bold"
                     [style.color]="plan.featured ? 'var(--accent-contrast)' : 'var(--muted)'"
-                  >/mo</span>
+                   i18n>/mo</span>
                   @if (plan.showStrike) {
                     <span
                       class="text-sm font-bold line-through opacity-60"
@@ -567,7 +567,7 @@
           }
         </div>
 
-        <p class="mt-6 text-center text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+        <p class="mt-6 text-center text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>
           Launch pricing. Free basic listing remains available as city coverage expands.
         </p>
       </div>
@@ -578,18 +578,18 @@
         <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[var(--accent)]/12 blur-3xl"></div>
         <div class="pointer-events-none absolute inset-x-0 -top-px h-px bg-[linear-gradient(90deg,transparent,color-mix(in_srgb,var(--accent)_70%,transparent),transparent)]"></div>
         <div class="relative">
-          <p class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">
+          <p class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]" i18n>
             <span class="material-symbols-outlined text-sm">new_releases</span>
             Founding businesses
           </p>
-          <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">You do not need a bigger ad budget. You need better local context.</h2>
-          <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
+          <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl" i18n>You do not need a bigger ad budget. You need better local context.</h2>
+          <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]" i18n>
             Claim your business, put down roots in your city wiki, and let people who already care about local discovery find you with more context than a generic search result can provide.
           </p>
         </div>
         <div class="relative flex flex-col gap-3">
-          <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm">Claim your business</a>
-          <a routerLink="/" class="ghost-btn justify-center !px-6 !py-3 text-sm">Explore public wikis</a>
+          <a routerLink="/business/claim" class="primary-btn justify-center !px-6 !py-3 text-sm" i18n>Claim your business</a>
+          <a routerLink="/" class="ghost-btn justify-center !px-6 !py-3 text-sm" i18n>Explore public wikis</a>
         </div>
       </div>
     </section>
@@ -601,19 +601,19 @@
         <div class="flex h-10 w-40 items-center justify-start">
           <img src="/assets/image/livingwiki-brand.svg" alt="" class="h-full w-full object-contain" />
         </div>
-        <p class="text-[11px] text-[var(--muted)]">LivingWiki™ is a product of <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
+        <p class="text-[11px] text-[var(--muted)]" i18n>LivingWiki™ is a product of <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
       </div>
       <div class="flex flex-wrap items-center justify-center gap-5">
-        <a routerLink="/" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Public Wikis</a>
-        <a routerLink="/landing" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">About LivingWiki</a>
-        <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Privacy</a>
-        <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Terms</a>
-        <a href="mailto:jim.walker@mindpalace.com?subject=LivingWiki%20business%20update" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Suggest an Update</a>
-        <a href="mailto:jim.walker@mindpalace.com" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]">Contact</a>
+        <a routerLink="/" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Public Wikis</a>
+        <a routerLink="/landing" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>About LivingWiki</a>
+        <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Privacy</a>
+        <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Terms</a>
+        <a href="mailto:jim.walker@mindpalace.com?subject=LivingWiki%20business%20update" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Suggest an Update</a>
+        <a href="mailto:jim.walker@mindpalace.com" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Contact</a>
       </div>
       <div class="text-center sm:text-right">
-        <p class="text-[11px] font-medium text-[var(--muted)]">© 2026 Mind Palace Inc. LivingWiki™. All rights reserved.</p>
-        <p class="mt-1 max-w-sm text-[11px] leading-5 text-[var(--muted)]">Independent product. Not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.</p>
+        <p class="text-[11px] font-medium text-[var(--muted)]" i18n>© 2026 Mind Palace Inc. LivingWiki™. All rights reserved.</p>
+        <p class="mt-1 max-w-sm text-[11px] leading-5 text-[var(--muted)]" i18n>Independent product. Not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.</p>
       </div>
     </div>
   </footer>
@@ -633,15 +633,15 @@
       >
         <div class="flex items-center justify-between gap-4 border-b border-white/10 bg-black/70 px-4 py-3 text-white backdrop-blur-md sm:px-5">
           <div>
-            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent-soft)]">Business explainer</p>
-            <h2 id="business-video-title" class="mt-1 text-lg font-black tracking-tight sm:text-xl">LivingWiki for business</h2>
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent-soft)]" i18n>Business explainer</p>
+            <h2 id="business-video-title" class="mt-1 text-lg font-black tracking-tight sm:text-xl" i18n>LivingWiki for business</h2>
           </div>
           <button
             type="button"
             (click)="closeBusinessVideo()"
             aria-label="Close video"
             class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/15"
-          >
+           i18n-aria-label>
             <span class="material-symbols-outlined text-xl">close</span>
           </button>
         </div>
@@ -653,7 +653,7 @@
           playsinline
           preload="metadata"
           aria-label="Video explaining LivingWiki for business"
-        ></video>
+         i18n-aria-label></video>
       </div>
     </div>
   }

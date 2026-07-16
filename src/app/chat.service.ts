@@ -437,7 +437,7 @@ export class ChatService {
     if (!this.functions) {
       return {
         threadId,
-        title: 'Shared chat',
+        title: $localize`Shared chat`,
         atlasName: null,
         sharedAt: null,
         messages: [],

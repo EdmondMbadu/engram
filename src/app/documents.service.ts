@@ -260,7 +260,7 @@ export class DocumentsService {
 
       if (failed.length > 0) {
         this.uploadError.set(
-          `${failed.length} Google Drive ${failed.length === 1 ? 'file failed' : 'files failed'} to import.`,
+          `${failed.length} Google Drive ${failed.length === 1 ? $localize`file failed` : $localize`files failed`} to import.`,
         );
       }
 

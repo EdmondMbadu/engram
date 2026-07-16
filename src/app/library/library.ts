@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, computed, effect, inject, LOCALE_ID, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -28,6 +28,7 @@ import { AccountMenuComponent } from '../account-menu/account-menu';
   styleUrl: './library.css',
 })
 export class LibraryComponent {
+  private readonly localeId = inject(LOCALE_ID);
   @ViewChild('fileInput') private fileInput?: ElementRef<HTMLInputElement>;
 
   private readonly authService = inject(AuthService);
@@ -73,9 +74,9 @@ export class LibraryComponent {
   readonly pageTitle = computed(() =>
     this.isPublicView()
       ? this.publicPageLoading()
-        ? 'Loading Source Files...'
+        ? $localize`Loading Source Files...`
         : `${this.atlasService.displayName(this.publicAtlas())} Source Files`
-      : 'Source Files',
+      : $localize`Source Files`,
   );
   readonly currentWikiName = computed(() => {
     if (this.publicNotFound()) {
@@ -204,7 +205,7 @@ export class LibraryComponent {
           this.publicAtlas.set(null);
           this.publicDocuments.set([]);
           this.publicError.set(
-            error instanceof Error ? error.message : 'Failed to load these public source files.',
+            error instanceof Error ? error.message : $localize`Failed to load these public source files.`,
           );
         })
         .finally(() => {
@@ -504,7 +505,7 @@ export class LibraryComponent {
       return 'Just now';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',

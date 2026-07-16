@@ -1,15 +1,15 @@
 <div class="fence-page">
   <header class="fence-hero">
-    <nav class="fence-topbar" aria-label="Fenceline page">
-      <a routerLink="/" class="brand-link" aria-label="LivingWiki home">
-        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki" />
+    <nav class="fence-topbar" aria-label="Fenceline page" i18n-aria-label>
+      <a routerLink="/" class="brand-link" aria-label="LivingWiki home" i18n-aria-label>
+        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki"  i18n-alt/>
       </a>
       <div class="topbar-actions">
-        <a [href]="phillyChatUrl" class="topbar-link">
+        <a [href]="phillyChatUrl" class="topbar-link" i18n>
           <span class="material-symbols-outlined" aria-hidden="true">travel_explore</span>
           Philly Atlas
         </a>
-        <button type="button" class="icon-button" title="Copy share link" aria-label="Copy share link" (click)="copyShareLink()">
+        <button type="button" class="icon-button" title="Copy share link" aria-label="Copy share link" (click)="copyShareLink()" i18n-title i18n-aria-label i18n-title i18n-aria-label>
           <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
         </button>
       </div>
@@ -17,35 +17,35 @@
 
     <div class="hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">LivingWiki Commons Project · Draft v0.1</p>
-        <h1>The Fenceline <span>Network</span></h1>
-        <p class="hero-subtitle">Sister cities for environmental justice</p>
-        <p class="hero-thesis">
+        <p class="eyebrow" i18n>LivingWiki Commons Project · Draft v0.1</p>
+        <h1 i18n>The Fenceline <span>Network</span></h1>
+        <p class="hero-subtitle" i18n>Sister cities for environmental justice</p>
+        <p class="hero-thesis" i18n>
           Chester, Pennsylvania has lived beside the nation's largest trash incinerator
           for more than thirty years. It is not alone. Twenty-three communities, one shared
           scorecard, no sacrifice zones.
         </p>
 
-        <div class="hero-actions" aria-label="Page sections">
-          <a routerLink="/fence-line" fragment="network">Explore network</a>
-          <a routerLink="/fence-line" fragment="scorecard">Shared scorecard</a>
+        <div class="hero-actions" aria-label="Page sections" i18n-aria-label>
+          <a routerLink="/fence-line" fragment="network" i18n>Explore network</a>
+          <a routerLink="/fence-line" fragment="scorecard" i18n>Shared scorecard</a>
         </div>
       </div>
 
-      <aside class="hero-panel" aria-label="Network summary">
+      <aside class="hero-panel" aria-label="Network summary" i18n-aria-label>
         <div class="panel-stat">
           <strong>23</strong>
-          <span>communities</span>
+          <span i18n>communities</span>
         </div>
         <div class="panel-stat">
           <strong>16</strong>
-          <span>states</span>
+          <span i18n>states</span>
         </div>
         <div class="panel-stat">
           <strong>4</strong>
-          <span>shared struggles</span>
+          <span i18n>shared struggles</span>
         </div>
-        <div class="deadline">
+        <div class="deadline" i18n>
           <span class="material-symbols-outlined" aria-hidden="true">event</span>
           June 30, 2026: Philadelphia waste contracts expire.
         </div>
@@ -64,28 +64,28 @@
     </div>
   </header>
 
-  <nav class="section-nav" aria-label="Fenceline sections">
-    <a routerLink="/fence-line" fragment="chester">Chester hub</a>
-    <a routerLink="/fence-line" fragment="network">Network explorer</a>
-    <a routerLink="/fence-line" fragment="scorecard">Data spine</a>
+  <nav class="section-nav" aria-label="Fenceline sections" i18n-aria-label>
+    <a routerLink="/fence-line" fragment="chester" i18n>Chester hub</a>
+    <a routerLink="/fence-line" fragment="network" i18n>Network explorer</a>
+    <a routerLink="/fence-line" fragment="scorecard" i18n>Data spine</a>
   </nav>
 
   <main>
     <section class="chester-section" id="chester">
       <div class="section-wrap chester-grid">
         <div>
-          <p class="section-kicker">The hub city</p>
-          <h2>Chester, Pennsylvania</h2>
-          <p>
+          <p class="section-kicker" i18n>The hub city</p>
+          <h2 i18n>Chester, Pennsylvania</h2>
+          <p i18n>
             A majority-Black city on the Delaware River hosts Reworld Delaware Valley,
             formerly Covanta, burning up to 3,500 tons of waste per day. Only a tiny
             fraction of the trash burned here is Chester's own.
           </p>
         </div>
-        <div class="fact-list" aria-label="Chester facts">
-          <div><b>Facility</b><span>Reworld Delaware Valley, operating since 1992</span></div>
-          <div><b>Scale</b><span>Roughly 1.2 million tons of waste burned per year</span></div>
-          <div><b>Local leaders</b><span>CRCQL · Delco Environmental Justice · Energy Justice Network</span></div>
+        <div class="fact-list" aria-label="Chester facts" i18n-aria-label>
+          <div><b i18n>Facility</b><span i18n>Reworld Delaware Valley, operating since 1992</span></div>
+          <div><b i18n>Scale</b><span i18n>Roughly 1.2 million tons of waste burned per year</span></div>
+          <div><b i18n>Local leaders</b><span i18n>CRCQL · Delco Environmental Justice · Energy Justice Network</span></div>
         </div>
       </div>
     </section>
@@ -94,16 +94,16 @@
       <div class="section-wrap">
         <div class="section-heading">
           <div>
-            <p class="section-kicker">Interactive network</p>
-            <h2>Find the shared pattern</h2>
+            <p class="section-kicker" i18n>Interactive network</p>
+            <h2 i18n>Find the shared pattern</h2>
           </div>
-          <p>
+          <p i18n>
             Filter by struggle, search by city or issue, then select a community to compare its
             local story against Chester's shared fenceline frame.
           </p>
         </div>
 
-        <div class="toolbar" aria-label="Network controls">
+        <div class="toolbar" aria-label="Network controls" i18n-aria-label>
           <label class="search-box">
             <span class="material-symbols-outlined" aria-hidden="true">search</span>
             <input
@@ -111,16 +111,16 @@
               [ngModel]="searchTerm()"
               (ngModelChange)="onSearchInput($event)"
               placeholder="Search city, state, status, or issue"
-            />
+             i18n-placeholder/>
             @if (searchTerm()) {
-              <button type="button" class="search-clear" title="Clear search" aria-label="Clear search" (click)="onSearchInput('')">
+              <button type="button" class="search-clear" title="Clear search" aria-label="Clear search" (click)="onSearchInput('')" i18n-title i18n-aria-label>
                 <span class="material-symbols-outlined" aria-hidden="true">close</span>
               </button>
             }
           </label>
 
-          <div class="chip-row" aria-label="Filter by struggle">
-            <button type="button" [class.active]="activeCategory() === 'all'" (click)="setCategory('all')">
+          <div class="chip-row" aria-label="Filter by struggle" i18n-aria-label>
+            <button type="button" [class.active]="activeCategory() === 'all'" (click)="setCategory('all')" i18n>
               All <b>{{ communities.length }}</b>
             </button>
             @for (category of categories; track category) {
@@ -131,13 +131,13 @@
             }
           </div>
 
-          <div class="chip-row status-row" aria-label="Filter by status">
+          <div class="chip-row status-row" aria-label="Filter by status" i18n-aria-label>
             @for (status of statuses; track status) {
               <button type="button" [class.active]="activeStatus() === status" (click)="setStatus(status)">
                 {{ status }}
               </button>
             }
-            <button type="button" class="reset-button" (click)="resetFilters()">
+            <button type="button" class="reset-button" (click)="resetFilters()" i18n>
               <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
               Reset
             </button>
@@ -145,19 +145,19 @@
         </div>
 
         <div class="explorer-grid">
-          <div class="map-panel" aria-label="Community map">
+          <div class="map-panel" aria-label="Community map" i18n-aria-label>
             <div class="map-summary">
               <div>
                 <strong>{{ filteredCommunities().length }}</strong>
-                <span>visible communities</span>
+                <span i18n>visible communities</span>
               </div>
               <div>
                 <strong>{{ activeFightCount() }}</strong>
-                <span>active fights</span>
+                <span i18n>active fights</span>
               </div>
               <div>
                 <strong>{{ filteredAverageBurden() }}</strong>
-                <span>avg. burden score</span>
+                <span i18n>avg. burden score</span>
               </div>
             </div>
 
@@ -203,7 +203,7 @@
           </aside>
         </div>
 
-        <div class="card-grid" aria-label="Fenceline community cards">
+        <div class="card-grid" aria-label="Fenceline community cards" i18n-aria-label>
           @for (community of filteredCommunities(); track community.id) {
             <button
               type="button"
@@ -221,7 +221,7 @@
               <span class="card-status">{{ community.status }}</span>
             </button>
           } @empty {
-            <div class="empty-state">
+            <div class="empty-state" i18n>
               <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
               No communities match the current filters.
             </div>
@@ -234,10 +234,10 @@
       <div class="section-wrap">
         <div class="section-heading">
           <div>
-            <p class="section-kicker">How sisterhood works</p>
-            <h2>One shared scorecard</h2>
+            <p class="section-kicker" i18n>How sisterhood works</p>
+            <h2 i18n>One shared scorecard</h2>
           </div>
-          <p>
+          <p i18n>
             Every sister city carries the same data spine, so residents can see the common
             burden across air, health, enforcement, and community monitoring.
           </p>
@@ -246,26 +246,26 @@
         <div class="scorecard-grid">
           <article>
             <span class="material-symbols-outlined" aria-hidden="true">dataset</span>
-            <h3>EJScreen mirrored</h3>
-            <p>Block-group environmental justice percentiles preserved for community review.</p>
+            <h3 i18n>EJScreen mirrored</h3>
+            <p i18n>Block-group environmental justice percentiles preserved for community review.</p>
             <code>screening-tools.com/epa-ejscreen</code>
           </article>
           <article>
             <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
-            <h3>EPA TRI + ECHO</h3>
-            <p>Facility toxic releases, permit violations, and enforcement history.</p>
+            <h3 i18n>EPA TRI + ECHO</h3>
+            <p i18n>Facility toxic releases, permit violations, and enforcement history.</p>
             <code>enviro.epa.gov · echo.epa.gov</code>
           </article>
           <article>
             <span class="material-symbols-outlined" aria-hidden="true">monitor_heart</span>
-            <h3>CDC PLACES + EJI</h3>
-            <p>Census-tract health outcomes connecting pollution exposure to people.</p>
+            <h3 i18n>CDC PLACES + EJI</h3>
+            <p i18n>Census-tract health outcomes connecting pollution exposure to people.</p>
             <code>cdc.gov/places</code>
           </article>
           <article>
             <span class="material-symbols-outlined" aria-hidden="true">sensors</span>
-            <h3>Community monitors</h3>
-            <p>Local and PurpleAir sensor networks for real-time PM2.5 observations.</p>
+            <h3 i18n>Community monitors</h3>
+            <p i18n>Local and PurpleAir sensor networks for real-time PM2.5 observations.</p>
             <code>purpleair.com / local networks</code>
           </article>
         </div>
@@ -276,13 +276,13 @@
   <footer class="fence-footer">
     <div class="section-wrap footer-grid">
       <div>
-        <strong>The Fenceline Network</strong>
-        <p>
+        <strong i18n>The Fenceline Network</strong>
+        <p i18n>
           A Sister Cities commons inside LivingWiki. Burden percentiles shown are illustrative
           placeholders pending live data ingestion.
         </p>
       </div>
-      <div class="share-toast" [class.visible]="copied()">Share link copied</div>
+      <div class="share-toast" [class.visible]="copied()" i18n>Share link copied</div>
     </div>
   </footer>
 </div>

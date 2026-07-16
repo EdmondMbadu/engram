@@ -15,7 +15,7 @@ export class MobileMenuComponent {
   readonly hidePublicKnowledgeSurfaces = input<boolean>(false);
   readonly adminNavigation = input<boolean>(true);
   readonly showJoinAction = input<boolean>(false);
-  readonly joinLabel = input<string>('Join for Free');
+  readonly joinLabel = input<string>($localize`Join for Free`);
   readonly showSignInAction = input<boolean>(false);
   readonly signInQueryParams = input<{ redirectTo: string } | null>(null);
   readonly join = output<void>();
@@ -27,19 +27,19 @@ export class MobileMenuComponent {
   readonly atlasWikiLink = this.atlasService.activeAtlasWikiLink;
 
   readonly primaryNavItems = [
-    { route: '/wikis', icon: 'dashboard', label: 'Wikis', key: 'wikis', workspaceOnly: true },
-    { route: '/chat', icon: 'chat', label: 'Chat', key: 'chat' },
-    { route: '/business', icon: 'storefront', label: 'Business', key: 'business', workspaceOnly: true },
+    { route: '/wikis', icon: 'dashboard', label: $localize`Wikis`, key: 'wikis', workspaceOnly: true },
+    { route: '/chat', icon: 'chat', label: $localize`Chat`, key: 'chat' },
+    { route: '/business', icon: 'storefront', label: $localize`Business`, key: 'business', workspaceOnly: true },
   ];
 
   readonly moreNavItems = [
-    { route: '/dymaxion', icon: 'public', label: 'World Map', key: 'dymaxion', workspaceOnly: true },
-    { route: '/upload', icon: 'neurology', label: 'Upload', key: 'upload' },
-    { route: '/library', icon: 'library_books', label: 'Source Files', key: 'library' },
-    { route: '/scrapper', icon: 'travel_explore', label: 'Scraper', key: 'scrapper', workspaceOnly: true },
-    { route: '/wiki', icon: 'menu_book', label: 'Wiki', key: 'wiki' },
-    { route: '/profile', icon: 'account_circle', label: 'Profile', key: 'profile', workspaceOnly: true },
-    { route: '/atlases', icon: 'settings', label: 'Settings', key: 'settings', workspaceOnly: true },
+    { route: '/dymaxion', icon: 'public', label: $localize`World Map`, key: 'dymaxion', workspaceOnly: true },
+    { route: '/upload', icon: 'neurology', label: $localize`Upload`, key: 'upload' },
+    { route: '/library', icon: 'library_books', label: $localize`Source Files`, key: 'library' },
+    { route: '/scrapper', icon: 'travel_explore', label: $localize`Scraper`, key: 'scrapper', workspaceOnly: true },
+    { route: '/wiki', icon: 'menu_book', label: $localize`Wiki`, key: 'wiki' },
+    { route: '/profile', icon: 'account_circle', label: $localize`Profile`, key: 'profile', workspaceOnly: true },
+    { route: '/atlases', icon: 'settings', label: $localize`Settings`, key: 'settings', workspaceOnly: true },
   ];
 
   readonly moreActive = computed(() =>

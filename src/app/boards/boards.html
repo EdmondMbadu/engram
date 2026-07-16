@@ -6,8 +6,8 @@
         [style.--board-accent]="toneAccent(board.tone)"
         [style.--board-soft]="toneSoft(board.tone)"
       >
-        <main class="stack-viewer-reel" aria-label="Stack reel" [style.--stack-frame-duration]="stackActiveFrameDurationMs() + 'ms'">
-          <button type="button" class="stack-viewer-side stack-viewer-side--prev" aria-label="Previous frame" (click)="previousStackFrame()">
+        <main class="stack-viewer-reel" aria-label="Stack reel" [style.--stack-frame-duration]="stackActiveFrameDurationMs() + 'ms'" i18n-aria-label>
+          <button type="button" class="stack-viewer-side stack-viewer-side--prev" aria-label="Previous frame" (click)="previousStackFrame()" i18n-aria-label>
             <span class="material-symbols-outlined">chevron_left</span>
           </button>
 
@@ -19,8 +19,8 @@
             (pointerup)="finishStackSwipe($event)"
             (pointercancel)="cancelStackSwipe($event)"
             (lostpointercapture)="cancelStackSwipe($event)"
-          >
-            <div class="stack-viewer-progress" aria-label="Stack progress">
+           i18n-aria-label>
+            <div class="stack-viewer-progress" aria-label="Stack progress" i18n-aria-label>
               @for (frameIndex of stackProgressFrames(); track frameIndex) {
                 <span
                   class="stack-viewer-progress__segment"
@@ -44,7 +44,7 @@
                 </span>
                 <div>
                   <strong>{{ board.title }}</strong>
-                  <span>{{ stackSelectedCount() }} cards · {{ ownerName(board) }}</span>
+                  <span i18n>{{ stackSelectedCount() }} cards · {{ ownerName(board) }}</span>
                 </div>
               </div>
               <div class="stack-viewer-actions">
@@ -63,10 +63,10 @@
                 <button type="button" aria-label="{{ stackPlaying() ? 'Pause Stack' : 'Play Stack' }}" (click)="toggleStackPlayback()">
                   <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
                 </button>
-                <button type="button" aria-label="Share Stack" (click)="openStackShareDialog(board, $event)">
+                <button type="button" aria-label="Share Stack" (click)="openStackShareDialog(board, $event)" i18n-aria-label>
                   <span class="material-symbols-outlined">near_me</span>
                 </button>
-                <button type="button" aria-label="Open board" (click)="closeStackView(board)">
+                <button type="button" aria-label="Open board" (click)="closeStackView(board)" i18n-aria-label>
                   <span class="material-symbols-outlined">close</span>
                 </button>
               </div>
@@ -80,11 +80,11 @@
                   }
                   <div class="stack-preview__shade"></div>
                   <div class="stack-preview__content stack-preview__content--cover">
-                    <span>A LivingWiki Stack</span>
+                    <span i18n>A LivingWiki Stack</span>
                     <h4>{{ stackCoverTitle() || board.title }}</h4>
                     <p>{{ stackCoverSubtitle() }}</p>
                     @if (stackHasTourNarration() && !stackTourNarrationConsent()) {
-                      <button type="button" class="stack-tour-start" (click)="startNarratedStack($event)">
+                      <button type="button" class="stack-tour-start" (click)="startNarratedStack($event)" i18n>
                         <span class="material-symbols-outlined">volume_up</span>
                         Start narrated tour
                       </button>
@@ -156,7 +156,7 @@
                 } @else {
                   <div class="stack-preview__closing">
                     <span class="material-symbols-outlined">auto_awesome_motion</span>
-                    <h4>Made with LivingWiki</h4>
+                    <h4 i18n>Made with LivingWiki</h4>
                     <p>{{ board.title }}</p>
                     @if (board.stackCtaLabel && stackCtaHref(board)) {
                       <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener" style="justify-content: center; gap: .5rem; max-width: min(88%, 20rem); border-width: 3px; background: linear-gradient(135deg, #ffffff, #fff3bd); box-shadow: 0 18px 34px rgba(0,0,0,.28); color: #111827; font-size: .92rem; line-height: 1; padding: .78rem 1rem .78rem .82rem;">
@@ -164,7 +164,7 @@
                         <strong style="min-width: 0; overflow: hidden; color: inherit; font-size: inherit; font-weight: 950; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</strong>
                       </a>
                     }
-                    <img [src]="stackQrImageUrl(board)" alt="Stack QR code" />
+                    <img [src]="stackQrImageUrl(board)" alt="Stack QR code"  i18n-alt/>
                     <strong>{{ stackClosingUrlLabel(board) }}</strong>
                   </div>
                 }
@@ -176,7 +176,7 @@
             }
           </section>
 
-          <button type="button" class="stack-viewer-side stack-viewer-side--next" aria-label="Next frame" (click)="nextStackFrame()">
+          <button type="button" class="stack-viewer-side stack-viewer-side--next" aria-label="Next frame" (click)="nextStackFrame()" i18n-aria-label>
             <span class="material-symbols-outlined">chevron_right</span>
           </button>
         </main>
@@ -184,13 +184,13 @@
     } @else if (privateBoardBlocked()) {
       <section class="stack-viewer-page stack-viewer-page--loading">
         <span class="material-symbols-outlined">lock</span>
-        <strong>Private Board</strong>
-        <small style="max-width: 24rem; color: rgba(255,255,255,.72); font-size: .9rem; font-weight: 800; line-height: 1.45; text-align: center;">Only the owner can view this LivingWiki board.</small>
+        <strong i18n>Private Board</strong>
+        <small style="max-width: 24rem; color: rgba(255,255,255,.72); font-size: .9rem; font-weight: 800; line-height: 1.45; text-align: center;" i18n>Only the owner can view this LivingWiki board.</small>
       </section>
     } @else {
       <section class="stack-viewer-page stack-viewer-page--loading">
         <span class="material-symbols-outlined">auto_awesome_motion</span>
-        <strong>Loading Stack</strong>
+        <strong i18n>Loading Stack</strong>
       </section>
     }
   } @else {
@@ -205,8 +205,8 @@
           @if (isSignedIn()) {
             <app-mobile-menu activePage="home"></app-mobile-menu>
           }
-          <a href="/" class="boards-logo" aria-label="LivingWiki home">
-            <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" />
+          <a href="/" class="boards-logo" aria-label="LivingWiki home" i18n-aria-label>
+            <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo"  i18n-alt/>
           </a>
         </div>
 
@@ -220,13 +220,13 @@
             @if (canEditBoard(topBoard)) {
               <button type="button" class="boards-primary-action" (click)="openCreateCard(topBoard.id)">
                 <span class="material-symbols-outlined">add</span>
-                <span class="hidden sm:inline">New Card</span>
+                <span class="hidden sm:inline" i18n>New Card</span>
               </button>
             }
           } @else if (canCreateBoard()) {
             <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
               <span class="material-symbols-outlined">add</span>
-              <span class="hidden sm:inline">New Board</span>
+              <span class="hidden sm:inline" i18n>New Board</span>
             </button>
           }
           <app-theme-toggle></app-theme-toggle>
@@ -242,18 +242,18 @@
       </div>
     }
     @if (privateBoardBlocked()) {
-      <section class="boards-empty-state" aria-label="Private board" style="border-style: solid; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface));">
+      <section class="boards-empty-state" aria-label="Private board" style="border-style: solid; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface));" i18n-aria-label>
         <span class="material-symbols-outlined" style="display: grid; width: 4.6rem; height: 4.6rem; place-items: center; border: 3px solid var(--ink); border-radius: 1.25rem; background: var(--surface); box-shadow: 4px 4px 0 var(--ink);">lock</span>
-        <h2>Private Board</h2>
-        <p>This board is private. Only the owner can open it. You can keep exploring public LivingWiki boards.</p>
-        <a class="boards-primary-action" href="/boards" style="text-decoration: none;">
+        <h2 i18n>Private Board</h2>
+        <p i18n>This board is private. Only the owner can open it. You can keep exploring public LivingWiki boards.</p>
+        <a class="boards-primary-action" href="/boards" style="text-decoration: none;" i18n>
           <span class="material-symbols-outlined">dashboard_customize</span>
           See other boards
         </a>
       </section>
     } @else if (!selectedBoard()) {
       @if (!friendsPage()) {
-        <section class="boards-profile" aria-label="Boards profile">
+        <section class="boards-profile" aria-label="Boards profile" i18n-aria-label>
         <div class="boards-profile__avatar">
           @if (boardsProfilePhotoUrl()) {
             <img [src]="boardsProfilePhotoUrl()" [alt]="boardsProfileName() + ' profile photo'" />
@@ -270,7 +270,7 @@
         <div class="boards-profile__body">
           <div class="boards-profile__identity">
             <div>
-              <p>LivingWiki collections</p>
+              <p i18n>LivingWiki collections</p>
               <h1>{{ boardsProfileName() }}</h1>
               <span>{{ boardsProfileSubtitle() }}</span>
               @if (shareMessage()) {
@@ -279,17 +279,17 @@
             </div>
             <div class="boards-profile__actions">
               @if (canShareBoardsProfile()) {
-                <button type="button" class="boards-ghost-action" (click)="copyBoardsProfileUrl()">
+                <button type="button" class="boards-ghost-action" (click)="copyBoardsProfileUrl()" i18n>
                   <span class="material-symbols-outlined">content_copy</span>
                   Copy link
                 </button>
-                <button type="button" class="boards-ghost-action" (click)="nativeShareBoardsProfile()">
+                <button type="button" class="boards-ghost-action" (click)="nativeShareBoardsProfile()" i18n>
                   <span class="material-symbols-outlined">ios_share</span>
                   Share
                 </button>
               }
               @if (canCreateBoard()) {
-                <button type="button" class="boards-ghost-action" (click)="openCreateBoard()">
+                <button type="button" class="boards-ghost-action" (click)="openCreateBoard()" i18n>
                   <span class="material-symbols-outlined">add</span>
                   Create
                 </button>
@@ -297,18 +297,18 @@
             </div>
           </div>
 
-          <div class="boards-profile__stats" aria-label="Boards summary">
+          <div class="boards-profile__stats" aria-label="Boards summary" i18n-aria-label>
             <div>
               <strong>{{ boards().length }}</strong>
-              <span>Boards</span>
+              <span i18n>Boards</span>
             </div>
             <div>
               <strong>{{ totalCards() }}</strong>
-              <span>Cards</span>
+              <span i18n>Cards</span>
             </div>
             <div>
               <strong>{{ favoriteCards() }}</strong>
-              <span>Favorites</span>
+              <span i18n>Favorites</span>
             </div>
           </div>
         </div>
@@ -316,7 +316,7 @@
       }
 
       @if (canManageBoardFriends()) {
-        <section id="board-friends" class="boards-friends-panel" [class.boards-friends-panel--directory]="friendsPage()" aria-label="Board friends">
+        <section id="board-friends" class="boards-friends-panel" [class.boards-friends-panel--directory]="friendsPage()" aria-label="Board friends" i18n-aria-label>
           <div class="boards-friends-panel__head">
             <div>
               <p>{{ friendsPage() ? 'Connections' : 'Friends' }}</p>
@@ -336,12 +336,12 @@
               </span>
             </div>
             @if (friendsPage()) {
-              <button type="button" class="boards-ghost-action boards-friends-refresh" (click)="loadBoardFriends()" [disabled]="boardFriendsLoading()">
+              <button type="button" class="boards-ghost-action boards-friends-refresh" (click)="loadBoardFriends()" [disabled]="boardFriendsLoading()" i18n>
                 <span class="material-symbols-outlined">sync</span>
                 Refresh
               </button>
             } @else {
-              <a class="boards-primary-action boards-friends-manage" routerLink="/friends">
+              <a class="boards-primary-action boards-friends-manage" routerLink="/friends" i18n>
                 <span class="material-symbols-outlined">person_add</span>
                 Invite friends
               </a>
@@ -353,7 +353,7 @@
               <small class="boards-friends-note boards-friends-note--error">{{ boardFriendsError() }}</small>
             }
           } @else {
-            <div class="boards-friends-directory-toolbar" aria-label="Friends search and sort">
+            <div class="boards-friends-directory-toolbar" aria-label="Friends search and sort" i18n-aria-label>
               <label class="boards-friends-search">
                 <span class="material-symbols-outlined">search</span>
                 <input
@@ -362,16 +362,16 @@
                   placeholder="Search by name or email"
                   [value]="boardFriendsSearch()"
                   (input)="onBoardFriendsSearchInput($any($event.target).value)"
-                />
+                 i18n-placeholder/>
               </label>
               <label class="boards-friends-sort">
-                <span>Sort by</span>
+                <span i18n>Sort by</span>
                 <select [value]="boardFriendsSort()" (change)="setBoardFriendsSort($any($event.target).value)">
-                  <option value="name">Name</option>
-                  <option value="email">Email</option>
+                  <option value="name" i18n>Name</option>
+                  <option value="email" i18n>Email</option>
                 </select>
               </label>
-              <span class="boards-friends-directory-count">
+              <span class="boards-friends-directory-count" i18n>
                 {{ filteredBoardFriends().length }} shown
               </span>
             </div>
@@ -385,7 +385,7 @@
                   placeholder="Friend's email or name"
                   [value]="boardFriendEmail()"
                   (input)="onBoardFriendEmailInput($any($event.target).value)"
-                />
+                 i18n-placeholder/>
               </label>
               <button type="submit" class="boards-primary-action" [disabled]="boardFriendSending()">
                 <span class="material-symbols-outlined">{{ boardFriendSending() ? 'hourglass_top' : 'mail' }}</span>
@@ -394,9 +394,9 @@
             </form>
 
             @if (boardFriendCandidateLoading() || boardFriendCandidates().length) {
-              <div class="boards-friends-grid" aria-label="Matching LivingWiki users">
+              <div class="boards-friends-grid" aria-label="Matching LivingWiki users" i18n-aria-label>
                 @if (boardFriendCandidateLoading()) {
-                  <div class="boards-friends-empty">
+                  <div class="boards-friends-empty" i18n>
                     <span class="material-symbols-outlined">progress_activity</span>
                     Searching people...
                   </div>
@@ -433,14 +433,14 @@
             }
 
             @if (boardFriendsLoading()) {
-              <div class="boards-friends-loading">
+              <div class="boards-friends-loading" i18n>
                 <span class="material-symbols-outlined">progress_activity</span>
                 Loading friends...
               </div>
             } @else {
               @if (boardFriends().incoming.length) {
                 <div class="boards-friends-requests">
-                  <h3>Requests waiting</h3>
+                  <h3 i18n>Requests waiting</h3>
                   @for (request of boardFriends().incoming; track request.id) {
                     <div class="boards-friend-request">
                       <div>
@@ -448,11 +448,11 @@
                         <span>{{ request.fromEmail }}</span>
                       </div>
                       <div class="boards-friend-request__actions">
-                        <button type="button" class="boards-primary-action" (click)="respondBoardFriendRequest(request.id, 'accept')">
+                        <button type="button" class="boards-primary-action" (click)="respondBoardFriendRequest(request.id, 'accept')" i18n>
                           <span class="material-symbols-outlined">check</span>
                           Accept
                         </button>
-                        <button type="button" class="boards-ghost-action" (click)="respondBoardFriendRequest(request.id, 'decline')">
+                        <button type="button" class="boards-ghost-action" (click)="respondBoardFriendRequest(request.id, 'decline')" i18n>
                           <span class="material-symbols-outlined">close</span>
                           Decline
                         </button>
@@ -481,15 +481,15 @@
                       <span class="boards-friend-row__text">
                         <strong>{{ friend.displayName }}</strong>
                         <small>{{ boardFriendSecondary(friend) }}</small>
-                        <em>LivingWiki friend</em>
+                        <em i18n>LivingWiki friend</em>
                       </span>
                     </a>
                     <div class="boards-friend-row__actions">
-                      <a class="boards-ghost-action" [href]="boardFriendMessageUrl(friend)">
+                      <a class="boards-ghost-action" [href]="boardFriendMessageUrl(friend)" i18n>
                         <span class="material-symbols-outlined">chat_bubble</span>
                         Message
                       </a>
-                      <a class="boards-icon-button" [href]="boardFriendProfileUrl(friend)" aria-label="Open friend boards">
+                      <a class="boards-icon-button" [href]="boardFriendProfileUrl(friend)" aria-label="Open friend boards" i18n-aria-label>
                         <span class="material-symbols-outlined">more_horiz</span>
                       </a>
                     </div>
@@ -503,8 +503,8 @@
               </div>
 
               @if (boardFriends().outgoing.length) {
-                <div class="boards-friends-outgoing" aria-label="Pending friend requests">
-                  <span>Pending</span>
+                <div class="boards-friends-outgoing" aria-label="Pending friend requests" i18n-aria-label>
+                  <span i18n>Pending</span>
                   @for (request of boardFriends().outgoing; track request.id) {
                     <small>{{ request.toEmail }}</small>
                   }
@@ -516,13 +516,13 @@
       }
 
       @if (!friendsPage()) {
-      <nav class="boards-tabbar" aria-label="Boards views">
+      <nav class="boards-tabbar" aria-label="Boards views" i18n-aria-label>
         <button
           type="button"
           [class.boards-tabbar__item--active]="activeGalleryTab() === 'boards'"
           class="boards-tabbar__item"
           (click)="setGalleryTab('boards')"
-        >
+         i18n>
           <span class="material-symbols-outlined">grid_on</span>
           Boards
         </button>
@@ -531,7 +531,7 @@
           [class.boards-tabbar__item--active]="activeGalleryTab() === 'cards'"
           class="boards-tabbar__item"
           (click)="setGalleryTab('cards')"
-        >
+         i18n>
           <span class="material-symbols-outlined">crop_square</span>
           Cards
         </button>
@@ -540,7 +540,7 @@
           [class.boards-tabbar__item--active]="activeGalleryTab() === 'favorites'"
           class="boards-tabbar__item"
           (click)="setGalleryTab('favorites')"
-        >
+         i18n>
           <span class="material-symbols-outlined">kid_star</span>
           Favorites
         </button>
@@ -607,7 +607,7 @@
                     </span>
                     <span class="board-square__meta">
                       <strong>{{ board.title }}</strong>
-                      <small>{{ board.cards.length }} cards</small>
+                      <small i18n>{{ board.cards.length }} cards</small>
                     </span>
                     <span class="board-square__stack" aria-hidden="true">
                       @for (card of board.cards.slice(0, 3); track card.id) {
@@ -624,7 +624,7 @@
                     </span>
                     <span class="board-square__meta board-square__meta--back">
                       <strong>{{ board.backNote || board.description || 'Add a secret note, a memory, or a tiny fun fact for this collection.' }}</strong>
-                      <small>{{ board.cards.length }} cards · {{ boardUpdatedLabel(board) }}</small>
+                      <small i18n>{{ board.cards.length }} cards · {{ boardUpdatedLabel(board) }}</small>
                     </span>
                     <span class="board-square__stack" aria-hidden="true">
                       <i>
@@ -643,7 +643,7 @@
                     (click)="toggleBoardLike(board, $event)"
                   >
                     <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
-                    <span>Like</span>
+                    <span i18n>Like</span>
                   </button>
                   <button
                     type="button"
@@ -654,16 +654,16 @@
                     (click)="toggleBoardSave(board, $event)"
                   >
                     <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
-                    <span>Save</span>
+                    <span i18n>Save</span>
                   </button>
                   <button type="button" [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'" (click)="toggleBoardFlip(board.id, $event)">
                     <span class="material-symbols-outlined">{{ isBoardFlipped(board.id) ? 'flip_to_front' : 'flip_to_back' }}</span>
                   </button>
                   @if (canEditBoard(board)) {
-                    <button type="button" aria-label="Edit board" (click)="openEditBoard(board, $event)">
+                    <button type="button" aria-label="Edit board" (click)="openEditBoard(board, $event)" i18n-aria-label>
                       <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button type="button" aria-label="Delete board" (click)="deleteBoard(board, $event)">
+                    <button type="button" aria-label="Delete board" (click)="deleteBoard(board, $event)" i18n-aria-label>
                       <span class="material-symbols-outlined">delete</span>
                     </button>
                   }
@@ -675,7 +675,7 @@
                 <h2>{{ publicOwnerKey() ? 'No public boards yet.' : 'No boards yet.' }}</h2>
                 <p>{{ publicOwnerKey() ? 'This public boards page is ready, but there are no public boards to show yet.' : 'Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.' }}</p>
                 @if (canCreateBoard()) {
-                  <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
+                  <button type="button" class="boards-primary-action" (click)="openCreateBoard()" i18n>
                     <span class="material-symbols-outlined">add</span>
                     Create board
                   </button>
@@ -726,10 +726,10 @@
                 </button>
                 @if (canEditBoard(item.board)) {
                   <div class="mosaic-card__tools">
-                    <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditGalleryCard(item.board.id, item.card)">
+                    <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditGalleryCard(item.board.id, item.card)" i18n-aria-label>
                       <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button type="button" aria-label="Delete card" (click)="deleteGalleryCard(item.board.id, item.card, $event)">
+                    <button type="button" aria-label="Delete card" (click)="deleteGalleryCard(item.board.id, item.card, $event)" i18n-aria-label>
                       <span class="material-symbols-outlined">delete</span>
                     </button>
                   </div>
@@ -739,7 +739,7 @@
               <div class="boards-empty-state">
                 <span class="material-symbols-outlined">crop_square</span>
                 <h2>{{ activeGalleryTab() === 'favorites' ? 'No favorites yet.' : 'No cards yet.' }}</h2>
-                <p>Open a board and add cards to build out your collection feed.</p>
+                <p i18n>Open a board and add cards to build out your collection feed.</p>
               </div>
             }
           </div>
@@ -784,7 +784,7 @@
                 <span class="material-symbols-outlined">arrow_back</span>
                 {{ tripsPage() ? 'Trips' : 'Boards' }}
               </button>
-              <button type="button" class="boards-share-button" (click)="toggleSharePanel()">
+              <button type="button" class="boards-share-button" (click)="toggleSharePanel()" i18n>
                 <span class="material-symbols-outlined">ios_share</span>
                 Share
               </button>
@@ -794,7 +794,7 @@
                 [class.boards-share-button--active]="isBoardLiked(board)"
                 [attr.aria-pressed]="isBoardLiked(board)"
                 (click)="toggleBoardLike(board, $event)"
-              >
+               i18n>
                 <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
                 Like
               </button>
@@ -804,18 +804,18 @@
                 [class.boards-share-button--active]="isBoardSaved(board)"
                 [attr.aria-pressed]="isBoardSaved(board)"
                 (click)="toggleBoardSave(board, $event)"
-              >
+               i18n>
                 <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
                 Save
               </button>
               @if (canForkBoard(board)) {
-                <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)">
+                <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)" i18n>
                   <span class="material-symbols-outlined">content_copy</span>
                   Make it mine
                 </button>
               }
               @if (canEditBoard(board)) {
-                <button type="button" class="boards-share-button boards-share-button--edit" (click)="openEditBoard(board, $event)">
+                <button type="button" class="boards-share-button boards-share-button--edit" (click)="openEditBoard(board, $event)" i18n>
                   <span class="material-symbols-outlined">edit_square</span>
                   Edit cover
                 </button>
@@ -834,7 +834,7 @@
               >
                 @if (board.logoUrl) {
                   @if (boardLogoHref(board)) {
-                    <a [href]="boardLogoHref(board)" target="_blank" rel="noopener" aria-label="Open board logo link" style="display: grid; width: 100%; height: 100%; place-items: center;">
+                    <a [href]="boardLogoHref(board)" target="_blank" rel="noopener" aria-label="Open board logo link" style="display: grid; width: 100%; height: 100%; place-items: center;" i18n-aria-label>
                       <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,.16));" />
                     </a>
                   } @else {
@@ -846,20 +846,20 @@
               </div>
 
               <div class="board-detail__copy">
-                <p>Board</p>
+                <p i18n>Board</p>
                 <h1>{{ board.title }}</h1>
                 <span>{{ board.description || 'Add cards to shape this collection.' }}</span>
-                <div class="board-detail__experience-actions" aria-label="Board viewing options">
+                <div class="board-detail__experience-actions" aria-label="Board viewing options" i18n-aria-label>
                   <button type="button" class="board-detail__live-view" (click)="openStackView(board, $event)">
                     <span class="board-detail__live-view-icon material-symbols-outlined">play_arrow</span>
                     <span class="board-detail__live-view-copy">
-                      <strong>Live view</strong>
-                      <small>Open the card-by-card experience</small>
+                      <strong i18n>Live view</strong>
+                      <small i18n>Open the card-by-card experience</small>
                     </span>
                     <span class="material-symbols-outlined">arrow_forward</span>
                   </button>
                   @if (canUseStackStudio(board)) {
-                    <button type="button" class="board-detail__studio-entry" (click)="openStackStudio(board, $event)">
+                    <button type="button" class="board-detail__studio-entry" (click)="openStackStudio(board, $event)" i18n>
                       <span class="material-symbols-outlined">auto_awesome_motion</span>
                       Studio
                     </button>
@@ -885,7 +885,7 @@
                     </span>
                   }
                   <span style="display: grid; min-width: 0; gap: .12rem;">
-                    <small style="color: var(--board-accent); font-size: .66rem; font-weight: 950; letter-spacing: .08em; line-height: 1; text-transform: uppercase;">Curated by</small>
+                    <small style="color: var(--board-accent); font-size: .66rem; font-weight: 950; letter-spacing: .08em; line-height: 1; text-transform: uppercase;" i18n>Curated by</small>
                     <strong style="overflow: hidden; color: var(--ink); font-size: 1rem; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap;">{{ ownerName(board) }}</strong>
                   </span>
                 </div>
@@ -908,50 +908,50 @@
               <div class="board-detail__stats">
                 <div>
                   <strong>{{ board.cards.length }}</strong>
-                  <span>Cards</span>
+                  <span i18n>Cards</span>
                 </div>
                 <div>
                   <strong>{{ board.cards.length ? boardUpdatedLabel(board) : 'New' }}</strong>
-                  <span>Updated</span>
+                  <span i18n>Updated</span>
                 </div>
               </div>
             </div>
 
             @if (sharePanelOpen()) {
-              <div class="board-share-panel" aria-label="Share board">
+              <div class="board-share-panel" aria-label="Share board" i18n-aria-label>
                 <button type="button" class="board-share-video-primary" (click)="openStackShareDialog(board, $event)">
                   <span class="material-symbols-outlined">smart_display</span>
                   <span>
-                    <strong>Share as native video</strong>
-                    <small>Create once, then send the MP4 to X or any social app for in-feed playback</small>
+                    <strong i18n>Share as native video</strong>
+                    <small i18n>Create once, then send the MP4 to X or any social app for in-feed playback</small>
                   </span>
                   <em>{{ board.socialVideoUrl ? 'Video ready' : 'Create video' }}</em>
                 </button>
-                <div class="board-share-panel__destinations" aria-label="Copy a board link">
+                <div class="board-share-panel__destinations" aria-label="Copy a board link" i18n-aria-label>
                   <button type="button" class="board-share-destination" (click)="copyStackUrl(board)">
                     <span class="board-share-destination__icon material-symbols-outlined">play_arrow</span>
-                    <span><strong>Live view</strong><small>Immersive card-by-card experience</small></span>
-                    <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
+                    <span><strong i18n>Live view</strong><small i18n>Immersive card-by-card experience</small></span>
+                    <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
                   </button>
                   <button type="button" class="board-share-destination" (click)="copyBoardUrl(board)">
                     <span class="board-share-destination__icon material-symbols-outlined">dashboard_customize</span>
-                    <span><strong>Board view</strong><small>Full collection with every card</small></span>
-                    <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
+                    <span><strong i18n>Board view</strong><small i18n>Full collection with every card</small></span>
+                    <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
                   </button>
                 </div>
 
                 <div class="board-share-panel__actions">
-                  <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)">
+                  <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)" i18n>
                     <span class="material-symbols-outlined">smart_display</span>
                     View Stack
                   </button>
                   @if (canUseStackStudio(board)) {
-                    <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
+                    <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)" i18n>
                       <span class="material-symbols-outlined">auto_awesome_motion</span>
                       Stack Studio
                     </button>
                   }
-                  <button type="button" (click)="nativeShareBoard(board)">
+                  <button type="button" (click)="nativeShareBoard(board)" i18n>
                     <span class="material-symbols-outlined">ios_share</span>
                     Share page
                   </button>
@@ -974,7 +974,7 @@
                 placeholder="Search this board..."
                 [value]="cardSearch()"
                 (input)="cardSearch.set($any($event.target).value)"
-              />
+               i18n-placeholder/>
             </label>
             @if (canEditBoard(board)) {
               <div class="board-detail__actions">
@@ -984,7 +984,7 @@
                     {{ isManagingBoard(board.id) ? 'Done' : 'Manage' }}
                   </button>
                 }
-                <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
+                <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
                   <span class="material-symbols-outlined">add</span>
                   Add card
                 </button>
@@ -996,19 +996,19 @@
           @if (!isSongBoard(board) && canEditBoard(board) && isManagingBoard(board.id)) {
             <div class="board-bulk-actions">
               <div>
-                <strong>{{ selectedCardCount() }} selected</strong>
-                <small>{{ filteredCards().length }} visible · {{ board.cards.length }} total</small>
+                <strong i18n>{{ selectedCardCount() }} selected</strong>
+                <small i18n>{{ filteredCards().length }} visible · {{ board.cards.length }} total</small>
               </div>
               <div class="board-bulk-actions__buttons">
-                <button type="button" class="boards-ghost-action" (click)="selectAllVisibleCards($event)">
+                <button type="button" class="boards-ghost-action" (click)="selectAllVisibleCards($event)" i18n>
                   <span class="material-symbols-outlined">select_all</span>
                   Select all
                 </button>
-                <button type="button" class="boards-ghost-action" (click)="clearCardSelection($event)">
+                <button type="button" class="boards-ghost-action" (click)="clearCardSelection($event)" i18n>
                   <span class="material-symbols-outlined">deselect</span>
                   Clear
                 </button>
-                <button type="button" class="boards-danger-action" [disabled]="!selectedCardCount()" (click)="openBulkDeleteCards(board, $event)">
+                <button type="button" class="boards-danger-action" [disabled]="!selectedCardCount()" (click)="openBulkDeleteCards(board, $event)" i18n>
                   <span class="material-symbols-outlined">delete</span>
                   Delete selected
                 </button>
@@ -1019,10 +1019,10 @@
           @if (!isSongBoard(board) && board.cards.length === 0) {
             <div class="boards-empty-state boards-empty-state--detail">
               <span class="material-symbols-outlined">add_card</span>
-              <h2>This board is ready for its first card.</h2>
-              <p>Add a place, meal, memory, idea, shop, or note. Cards can carry tags, ratings, status, and an optional image URL.</p>
+              <h2 i18n>This board is ready for its first card.</h2>
+              <p i18n>Add a place, meal, memory, idea, shop, or note. Cards can carry tags, ratings, status, and an optional image URL.</p>
               @if (canEditBoard(board)) {
-                <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
+                <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
                   <span class="material-symbols-outlined">add</span>
                   Add first card
                 </button>
@@ -1041,14 +1041,14 @@
                     <p>{{ board.description }}</p>
                   </div>
                   <div class="tour-board__stats">
-                    <span><strong>{{ selectedBoardTourCards().length }}</strong> Stops</span>
+                    <span i18n><strong>{{ selectedBoardTourCards().length }}</strong> Stops</span>
                     @if (board.tourMeta?.totalDistanceText) {
-                      <span><strong>{{ board.tourMeta?.totalDistanceText }}</strong> Route</span>
+                      <span i18n><strong>{{ board.tourMeta?.totalDistanceText }}</strong> Route</span>
                     }
                     @if (board.tourMeta?.totalDurationText) {
-                      <span><strong>{{ board.tourMeta?.totalDurationText }}</strong> Time</span>
+                      <span i18n><strong>{{ board.tourMeta?.totalDurationText }}</strong> Time</span>
                     }
-                    <span><strong>{{ board.tourMeta?.voiceStyle || 'guide' }}</strong> Voice</span>
+                    <span i18n><strong>{{ board.tourMeta?.voiceStyle || 'guide' }}</strong> Voice</span>
                   </div>
                 </div>
 
@@ -1056,11 +1056,11 @@
                   <aside class="tour-board__map">
                     <div #tourMapCanvas class="tour-board__map-canvas" role="application" [attr.aria-label]="board.title + ' stops map'"></div>
                     <div class="tour-board__map-actions">
-                      <a [href]="tourRouteUrl(board)" target="_blank" rel="noopener">
+                      <a [href]="tourRouteUrl(board)" target="_blank" rel="noopener" i18n>
                         <span class="material-symbols-outlined">map</span>
                         Open route
                       </a>
-                      <button type="button" (click)="openTourGuide(0)">
+                      <button type="button" (click)="openTourGuide(0)" i18n>
                         <span class="material-symbols-outlined">play_arrow</span>
                         Play tour
                       </button>
@@ -1073,7 +1073,7 @@
                         <span class="material-symbols-outlined">assistant_direction</span>
                         {{ tourWayfindersShown() ? 'Hide wayfinders' : 'Show wayfinders' }}
                       </button>
-                      <small>Bridge cards show the path from each stop to the next.</small>
+                      <small i18n>Bridge cards show the path from each stop to the next.</small>
                     </div>
                     @if (tourAudioNotice()) {
                       <p class="tour-board__audio-notice">
@@ -1136,7 +1136,7 @@
                               <p>{{ card.tour?.address || card.subtitle }}</p>
                             </div>
                             @if (canEditBoard(board)) {
-                              <button type="button" aria-label="Edit stop" (click)="openEditCard(card)">
+                              <button type="button" aria-label="Edit stop" (click)="openEditCard(card)" i18n-aria-label>
                                 <span class="material-symbols-outlined">edit</span>
                               </button>
                             }
@@ -1146,9 +1146,9 @@
                               class="tour-stop-card__memories"
                               [id]="'tour-card-memory-panel-' + card.id"
                               aria-label="Memories from this stop"
-                            >
+                             i18n-aria-label>
                               <div class="tour-stop-card__memories-head">
-                                <span>
+                                <span i18n>
                                   <span class="material-symbols-outlined">auto_awesome</span>
                                   Memories from this stop
                                 </span>
@@ -1156,7 +1156,7 @@
                                   type="button"
                                   aria-label="Hide memories"
                                   (click)="toggleCardMemoryGallery(card.id, $event)"
-                                >
+                                 i18n-aria-label>
                                   <span class="material-symbols-outlined">close</span>
                                 </button>
                               </div>
@@ -1168,9 +1168,9 @@
                                   aria-label="Open cover photo full screen"
                                   [attr.aria-pressed]="currentCardPhotoPosition(card) === 1"
                                   (click)="openCardPhotoViewerAt(card, 0, $event)"
-                                >
+                                 i18n-aria-label>
                                   <img [src]="cardImages(card)[0]" alt="" loading="lazy" />
-                                  <span>Cover</span>
+                                  <span i18n>Cover</span>
                                 </button>
                                 @for (photo of cardMemoryImages(card); track photo; let memoryIndex = $index) {
                                   <button
@@ -1195,12 +1195,12 @@
                             </div>
                           }
                           <div class="tour-stop-card__actions">
-                            <button type="button" (click)="speakTourFrame({ kind: 'stop', card, nextCard: null, index: 0, total: 1 })">
+                            <button type="button" (click)="speakTourFrame({ kind: 'stop', card, nextCard: null, index: 0, total: 1 })" i18n>
                               <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'stop:' + card.id + ':stop' ? 'progress_activity' : 'volume_up' }}</span>
                               Preview voice
                             </button>
                             @if (card.googleMapsUrl) {
-                              <a [href]="card.googleMapsUrl" target="_blank" rel="noopener">
+                              <a [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
                                 <span class="material-symbols-outlined">place</span>
                                 Open place
                               </a>
@@ -1225,14 +1225,14 @@
                                 <span class="material-symbols-outlined">{{ board.kind === 'driving-tour' ? 'directions_car' : 'directions_walk' }}</span>
                                 {{ leg.durationText }} · {{ leg.distanceText }}
                               </span>
-                              <h3>To {{ nextCard.title }}</h3>
+                              <h3 i18n>To {{ nextCard.title }}</h3>
                               <p>{{ leg.instruction }}</p>
                               <div class="tour-stop-card__actions">
-                                <button type="button" (click)="speakTourFrame({ kind: 'leg', card, nextCard, index: 0, total: 1 })">
+                                <button type="button" (click)="speakTourFrame({ kind: 'leg', card, nextCard, index: 0, total: 1 })" i18n>
                                   <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'leg:' + card.id + ':' + nextCard.id ? 'progress_activity' : 'volume_up' }}</span>
                                   Navigate
                                 </button>
-                                <a [href]="tourLegDirectionsUrl(board, card)" target="_blank" rel="noopener">
+                                <a [href]="tourLegDirectionsUrl(board, card)" target="_blank" rel="noopener" i18n>
                                   <span class="material-symbols-outlined">near_me</span>
                                   Open directions
                                 </a>
@@ -1246,14 +1246,14 @@
                 </div>
               </section>
             } @else if (isSongBoard(board)) {
-              <section class="song-board" aria-label="SuprrrJuke song board">
+              <section class="song-board" aria-label="SuprrrJuke song board" i18n-aria-label>
                 <div class="song-board__hero">
                   <div class="song-board__actions">
                     <button type="button" class="boards-back-button" (click)="closeBoardDetail()">
                       <span class="material-symbols-outlined">arrow_back</span>
                       {{ songsPage() ? 'Songs' : tripsPage() ? 'Trips' : 'Boards' }}
                     </button>
-                    <button type="button" class="boards-share-button" (click)="toggleSharePanel()">
+                    <button type="button" class="boards-share-button" (click)="toggleSharePanel()" i18n>
                       <span class="material-symbols-outlined">ios_share</span>
                       Share
                     </button>
@@ -1263,7 +1263,7 @@
                       [class.boards-share-button--active]="isBoardLiked(board)"
                       [attr.aria-pressed]="isBoardLiked(board)"
                       (click)="toggleBoardLike(board, $event)"
-                    >
+                     i18n>
                       <span class="material-symbols-outlined">{{ isBoardLiked(board) ? 'favorite' : 'favorite_border' }}</span>
                       Like
                     </button>
@@ -1273,28 +1273,28 @@
                       [class.boards-share-button--active]="isBoardSaved(board)"
                       [attr.aria-pressed]="isBoardSaved(board)"
                       (click)="toggleBoardSave(board, $event)"
-                    >
+                     i18n>
                       <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
                       Save
                     </button>
                     @if (canUseStackStudio(board)) {
-                      <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)">
+                      <button type="button" class="boards-share-button" (click)="openStackStudio(board, $event)" i18n>
                         <span class="material-symbols-outlined">auto_awesome_motion</span>
                         Studio
                       </button>
                     }
                     @if (canForkBoard(board)) {
-                      <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)">
+                      <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)" i18n>
                         <span class="material-symbols-outlined">content_copy</span>
                         Make it mine
                       </button>
                     }
                     @if (canEditBoard(board)) {
-                      <button type="button" class="boards-share-button boards-share-button--edit" (click)="openEditBoard(board, $event)">
+                      <button type="button" class="boards-share-button boards-share-button--edit" (click)="openEditBoard(board, $event)" i18n>
                         <span class="material-symbols-outlined">edit_square</span>
                         Edit cover
                       </button>
-                      <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)">
+                      <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
                         <span class="material-symbols-outlined">add</span>
                         Add song
                       </button>
@@ -1307,45 +1307,45 @@
                         placeholder="Search songs..."
                         [value]="cardSearch()"
                         (input)="cardSearch.set($any($event.target).value)"
-                      />
+                       i18n-placeholder/>
                     </label>
                   </div>
 
                   @if (sharePanelOpen()) {
-                    <div class="board-share-panel" aria-label="Share song board">
+                    <div class="board-share-panel" aria-label="Share song board" i18n-aria-label>
                       <button type="button" class="board-share-video-primary" (click)="openStackShareDialog(board, $event)">
                         <span class="material-symbols-outlined">smart_display</span>
                         <span>
-                          <strong>Share as native video</strong>
-                          <small>Create once, then send the MP4 to X or any social app for in-feed playback</small>
+                          <strong i18n>Share as native video</strong>
+                          <small i18n>Create once, then send the MP4 to X or any social app for in-feed playback</small>
                         </span>
                         <em>{{ board.socialVideoUrl ? 'Video ready' : 'Create video' }}</em>
                       </button>
-                      <div class="board-share-panel__destinations" aria-label="Copy a board link">
+                      <div class="board-share-panel__destinations" aria-label="Copy a board link" i18n-aria-label>
                         <button type="button" class="board-share-destination" (click)="copyStackUrl(board)">
                           <span class="board-share-destination__icon material-symbols-outlined">play_arrow</span>
-                          <span><strong>Live view</strong><small>Immersive card-by-card experience</small></span>
-                          <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
+                          <span><strong i18n>Live view</strong><small i18n>Immersive card-by-card experience</small></span>
+                          <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
                         </button>
                         <button type="button" class="board-share-destination" (click)="copyBoardUrl(board)">
                           <span class="board-share-destination__icon material-symbols-outlined">dashboard_customize</span>
-                          <span><strong>Board view</strong><small>Full collection with every card</small></span>
-                          <span class="board-share-destination__action"><span class="material-symbols-outlined">content_copy</span> Copy</span>
+                          <span><strong i18n>Board view</strong><small i18n>Full collection with every card</small></span>
+                          <span class="board-share-destination__action" i18n><span class="material-symbols-outlined">content_copy</span> Copy</span>
                         </button>
                       </div>
 
                       <div class="board-share-panel__actions">
-                        <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)">
+                        <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)" i18n>
                           <span class="material-symbols-outlined">smart_display</span>
                           View Stack
                         </button>
                         @if (canUseStackStudio(board)) {
-                          <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
+                          <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)" i18n>
                             <span class="material-symbols-outlined">auto_awesome_motion</span>
                             Stack Studio
                           </button>
                         }
-                        <button type="button" (click)="nativeShareBoard(board)">
+                        <button type="button" (click)="nativeShareBoard(board)" i18n>
                           <span class="material-symbols-outlined">ios_share</span>
                           Share page
                         </button>
@@ -1356,14 +1356,14 @@
                     </div>
                   }
 
-                  <div class="song-board__brand" aria-label="SuprrrJuke">
+                  <div class="song-board__brand" aria-label="SuprrrJuke" i18n-aria-label>
                     <img src="/assets/image/home-icons/my-songs.png" alt="" class="song-board__bird" />
                     <span class="song-board__waves" aria-hidden="true">
                       <i></i>
                       <i></i>
                       <i></i>
                     </span>
-                    <h2>Suprrr<span>Juke</span></h2>
+                    <h2 i18n>Suprrr<span>Juke</span></h2>
                     <span class="song-board__note song-board__note--left" aria-hidden="true">♪</span>
                     <span class="song-board__note song-board__note--right" aria-hidden="true">♫</span>
                   </div>
@@ -1383,7 +1383,7 @@
                     <strong>{{ board.title }}</strong>
                   </div>
 
-                  <button type="button" class="song-board__live-card" (click)="openLiveCardVersion(board, $event)">
+                  <button type="button" class="song-board__live-card" (click)="openLiveCardVersion(board, $event)" i18n>
                     <span class="material-symbols-outlined">graphic_eq</span>
                     Live card version
                   </button>
@@ -1392,15 +1392,15 @@
                     <small class="board-fork-label">{{ forkAttributionLabel(board) }}</small>
                   }
                   <div class="song-board__stats">
-                    <span><b>{{ selectedSongCards().length }}</b> songs</span>
-                    <span><b>{{ songCardPositionLabel() }}</b> now</span>
-                    <span><b>{{ ownerName(board) }}</b> curator</span>
+                    <span i18n><b>{{ selectedSongCards().length }}</b> songs</span>
+                    <span i18n><b>{{ songCardPositionLabel() }}</b> now</span>
+                    <span i18n><b>{{ ownerName(board) }}</b> curator</span>
                   </div>
                 </div>
 
                 @if (selectedSongCards().length) {
                   <div class="song-deck" [style.--board-accent]="toneAccent(board.tone)">
-                    <button type="button" class="song-deck__nav song-deck__nav--prev" aria-label="Previous song" (click)="stepSongCard(-1, $event)">
+                    <button type="button" class="song-deck__nav song-deck__nav--prev" aria-label="Previous song" (click)="stepSongCard(-1, $event)" i18n-aria-label>
                       <span class="material-symbols-outlined">chevron_left</span>
                     </button>
 
@@ -1416,7 +1416,7 @@
                         </div>
 
                         <div class="song-player-card__body">
-                          <p>Now playing</p>
+                          <p i18n>Now playing</p>
                           <h2>{{ song.title }}</h2>
                           <span>{{ songArtistLabel(song) }}</span>
                           <small>{{ songAlbumLabel(song) }}</small>
@@ -1462,7 +1462,7 @@
                             </a>
                           </div>
 
-                          <em>Preview length depends on the available audio source. Full-song playback happens in the connected music service when your account has access.</em>
+                          <em i18n>Preview length depends on the available audio source. Full-song playback happens in the connected music service when your account has access.</em>
 
                           @if (song.tags.length) {
                             <div class="song-player-card__tags">
@@ -1475,12 +1475,12 @@
                       </article>
                     }
 
-                    <button type="button" class="song-deck__nav song-deck__nav--next" aria-label="Next song" (click)="stepSongCard(1, $event)">
+                    <button type="button" class="song-deck__nav song-deck__nav--next" aria-label="Next song" (click)="stepSongCard(1, $event)" i18n-aria-label>
                       <span class="material-symbols-outlined">chevron_right</span>
                     </button>
                   </div>
 
-                  <div class="song-strip" aria-label="Song cards">
+                  <div class="song-strip" aria-label="Song cards" i18n-aria-label>
                     @for (song of selectedSongCards(); track song.id; let index = $index) {
                       <div class="song-strip__row" [class.song-strip__row--active]="selectedSongCard()?.id === song.id">
                         <button
@@ -1523,8 +1523,8 @@
                 } @else {
                   <div class="boards-empty-state boards-empty-state--detail">
                     <span class="material-symbols-outlined">music_off</span>
-                    <h2>No songs match that search.</h2>
-                    <p>Clear the search or add cards with song titles, Spotify metadata, or preview URLs.</p>
+                    <h2 i18n>No songs match that search.</h2>
+                    <p i18n>Clear the search or add cards with song titles, Spotify metadata, or preview URLs.</p>
                   </div>
                 }
               </section>
@@ -1643,7 +1643,7 @@
                               class="detail-card__memory-gallery"
                               [id]="'card-memory-panel-' + card.id"
                               aria-label="Card memories"
-                            >
+                             i18n-aria-label>
                               <div class="detail-card__memory-label">
                                 <span>
                                   <span class="material-symbols-outlined">photo_library</span>
@@ -1655,7 +1655,7 @@
                                     aria-label="Hide memories"
                                     title="Hide memories"
                                     (click)="toggleCardMemoryGallery(card.id, $event)"
-                                  >
+                                   i18n-aria-label i18n-title>
                                     <span class="material-symbols-outlined">keyboard_arrow_down</span>
                                   </button>
                                 </span>
@@ -1668,9 +1668,9 @@
                                   aria-label="Open cover photo full screen"
                                   [attr.aria-pressed]="currentCardPhotoPosition(card) === 1"
                                   (click)="openCardPhotoViewerAt(card, 0, $event)"
-                                >
+                                 i18n-aria-label>
                                   <img [src]="cardImages(card)[0]" alt="" loading="lazy" />
-                                  <span>Cover</span>
+                                  <span i18n>Cover</span>
                                 </button>
                                 @for (photo of cardMemoryImages(card); track photo; let memoryIndex = $index) {
                                   <button
@@ -1695,7 +1695,7 @@
                               aria-expanded="false"
                               title="Show memories"
                               (click)="toggleCardMemoryGallery(card.id, $event)"
-                            >
+                             i18n-title>
                               <span class="detail-card__memory-stack" aria-hidden="true">
                                 <img [src]="cardMemoryImages(card)[0]" alt="" />
                                 @if (cardMemoryCount(card) > 1) {
@@ -1703,7 +1703,7 @@
                                 }
                               </span>
                               <span class="detail-card__memory-summary-copy">
-                                <small>Memories</small>
+                                <small i18n>Memories</small>
                                 <strong>{{ cardMemoryCount(card) }} {{ cardMemoryCount(card) === 1 ? 'photo' : 'photos' }}</strong>
                               </span>
                               <span class="material-symbols-outlined">expand_more</span>
@@ -1731,7 +1731,7 @@
                             (click)="toggleSongPreview(card, $event)"
                           >
                             <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card) ? 'pause' : 'music_note' }}</span>
-                            <span>Preview</span>
+                            <span i18n>Preview</span>
                           </button>
                         }
                         @if (isSongCard(card) && spotifyTrackHref(card)) {
@@ -1742,16 +1742,16 @@
                             aria-label="Open song in Spotify"
                             style="position: absolute; right: .75rem; bottom: .75rem; display: inline-grid; width: 2.55rem; height: 2.55rem; place-items: center; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; background: rgba(29,185,84,.95); color: #fff; box-shadow: 0 10px 24px rgba(0,0,0,.22); text-decoration: none;"
                             (click)="$event.stopPropagation()"
-                          >
+                           i18n-aria-label>
                             <span class="material-symbols-outlined" style="font-size: 1.25rem;">music_note</span>
                           </a>
                         }
                         <span class="detail-card__quick-actions">
-                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)">
+                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)" i18n-aria-label>
                             <span class="material-symbols-outlined">flip_to_back</span>
                           </button>
                           @if (canEditBoard(board)) {
-                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
+                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
                               <span class="material-symbols-outlined">edit</span>
                             </button>
                           }
@@ -1785,7 +1785,7 @@
                           <p class="detail-card__subtitle">{{ card.subtitle }}</p>
                         }
                         @if (card.googleMapsUrl) {
-                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener">
+                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
                             <span class="material-symbols-outlined">map</span>
                             Open place
                           </a>
@@ -1804,16 +1804,16 @@
                       }
 
                       <div class="detail-card__footer">
-                        <span>Updated {{ cardUpdatedLabel(card) }}</span>
+                        <span i18n>Updated {{ cardUpdatedLabel(card) }}</span>
                         <span class="detail-card__buttons">
-                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)">
+                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)" i18n-aria-label>
                             <span class="material-symbols-outlined">flip_to_back</span>
                           </button>
                           @if (canEditBoard(board)) {
-                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
+                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
                               <span class="material-symbols-outlined">edit</span>
                             </button>
-                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)">
+                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)" i18n-aria-label>
                               <span class="material-symbols-outlined">delete</span>
                             </button>
                           }
@@ -1830,7 +1830,7 @@
                       <div class="detail-card__body" style="justify-content: space-between;">
                         <div>
                           <div class="detail-card__line">
-                            <span>
+                            <span i18n>
                               <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                               Card back
                             </span>
@@ -1849,7 +1849,7 @@
                           }
                         </div>
                         @if (card.googleMapsUrl) {
-                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener">
+                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
                             <span class="material-symbols-outlined">map</span>
                             Open place
                           </a>
@@ -1859,14 +1859,14 @@
                       <div class="detail-card__footer">
                         <span>{{ statusLabel(card.status) }} · {{ cardScopeLabel(card.scope) }}</span>
                         <span class="detail-card__buttons">
-                          <button type="button" aria-label="Show card front" (click)="toggleCardFlip(card.id, $event)">
+                          <button type="button" aria-label="Show card front" (click)="toggleCardFlip(card.id, $event)" i18n-aria-label>
                             <span class="material-symbols-outlined">flip_to_front</span>
                           </button>
                           @if (canEditBoard(board)) {
-                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)">
+                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
                               <span class="material-symbols-outlined">edit</span>
                             </button>
-                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)">
+                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)" i18n-aria-label>
                               <span class="material-symbols-outlined">delete</span>
                             </button>
                           }
@@ -1878,8 +1878,8 @@
               } @empty {
                 <div class="boards-empty-state boards-empty-state--detail">
                   <span class="material-symbols-outlined">search_off</span>
-                  <h2>No cards match that search.</h2>
-                  <p>Clear the search or add another card to this board.</p>
+                  <h2 i18n>No cards match that search.</h2>
+                  <p i18n>Clear the search or add another card to this board.</p>
                 </div>
               }
             </div>
@@ -1912,7 +1912,7 @@
           <span class="card-photo-lightbox__count" aria-live="polite">
             {{ cardPhotoViewerPosition(photoCard) }} / {{ cardImages(photoCard).length }}
           </span>
-          <button type="button" autofocus aria-label="Close full-screen photo" (click)="closeCardPhotoViewer($event)">
+          <button type="button" autofocus aria-label="Close full-screen photo" (click)="closeCardPhotoViewer($event)" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </header>
@@ -1924,7 +1924,7 @@
               class="card-photo-lightbox__nav card-photo-lightbox__nav--previous"
               aria-label="Previous photo"
               (click)="stepCardPhotoViewer(-1, $event)"
-            >
+             i18n-aria-label>
               <span class="material-symbols-outlined">chevron_left</span>
             </button>
           }
@@ -1938,14 +1938,14 @@
               class="card-photo-lightbox__nav card-photo-lightbox__nav--next"
               aria-label="Next photo"
               (click)="stepCardPhotoViewer(1, $event)"
-            >
+             i18n-aria-label>
               <span class="material-symbols-outlined">chevron_right</span>
             </button>
           }
         </div>
 
         @if (cardImages(photoCard).length > 1) {
-          <footer class="card-photo-lightbox__thumbs" aria-label="Choose a photo">
+          <footer class="card-photo-lightbox__thumbs" aria-label="Choose a photo" i18n-aria-label>
             @for (photo of cardImages(photoCard); track photo; let photoIndex = $index) {
               <button
                 type="button"
@@ -1956,7 +1956,7 @@
               >
                 <img [src]="photo" alt="" />
                 @if (photoIndex === 0) {
-                  <span>Cover</span>
+                  <span i18n>Cover</span>
                 }
               </button>
             }
@@ -1968,13 +1968,13 @@
 
   @if (wizardOpen()) {
     <div class="boards-modal-backdrop" (click)="closeBoardWizard()">
-      <section class="boards-modal boards-modal--wizard" aria-label="New board wizard" (click)="$event.stopPropagation()">
+      <section class="boards-modal boards-modal--wizard" aria-label="New board wizard" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
-            <p>New board</p>
+            <p i18n>New board</p>
             <h3>{{ wizardStep() === 'choose' ? 'Choose how to start' : wizardModeLabel() }}</h3>
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardWizard()">
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardWizard()" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -1984,8 +1984,8 @@
             <div class="boards-wizard__intro">
               <span class="material-symbols-outlined">auto_awesome</span>
               <div>
-                <h4>Build a board from whatever you already have.</h4>
-                <p>Everything opens as an editable preview before it is saved.</p>
+                <h4 i18n>Build a board from whatever you already have.</h4>
+                <p i18n>Everything opens as an editable preview before it is saved.</p>
               </div>
             </div>
             <div class="boards-wizard-mode-grid">
@@ -2004,14 +2004,14 @@
               <div class="boards-form-section__head">
                 <span class="material-symbols-outlined">tune</span>
                 <div>
-                  <p>Source</p>
+                  <p i18n>Source</p>
                   <h4>{{ wizardModeLabel() }}</h4>
                 </div>
               </div>
 
               @if (wizardMode() === 'describe') {
                 <label>
-                  <span>Describe the board</span>
+                  <span i18n>Describe the board</span>
                   <textarea
                     rows="5"
                     maxlength="2000"
@@ -2022,7 +2022,7 @@
                 </label>
               } @else if (wizardMode() === 'paste') {
                 <label>
-                  <span>Paste list</span>
+                  <span i18n>Paste list</span>
                   <textarea
                     rows="7"
                     maxlength="8000"
@@ -2033,15 +2033,15 @@
                 </label>
               } @else if (wizardMode() === 'photos') {
                 <div class="boards-upload-field">
-                  <span>Photos</span>
-                  <label class="boards-upload__button boards-wizard-file">
+                  <span i18n>Photos</span>
+                  <label class="boards-upload__button boards-wizard-file" i18n>
                     <span class="material-symbols-outlined">upload</span>
                     Choose photos
                     <input type="file" accept="image/*" multiple (change)="onWizardPhotosSelected($event)" />
                   </label>
                 </div>
                 <label>
-                  <span>Photo names or captions</span>
+                  <span i18n>Photo names or captions</span>
                   <textarea
                     rows="7"
                     maxlength="8000"
@@ -2051,18 +2051,18 @@
                   ></textarea>
                 </label>
                 <label>
-                  <span>Optional direction</span>
+                  <span i18n>Optional direction</span>
                   <input
                     type="text"
                     maxlength="220"
                     placeholder="Family vacation in Lisbon, summer 2026"
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
-                  />
+                   i18n-placeholder/>
                 </label>
               } @else if (isTourWizardMode()) {
                 <label>
-                  <span>Describe the tour</span>
+                  <span i18n>Describe the tour</span>
                   <textarea
                     rows="6"
                     maxlength="2200"
@@ -2089,7 +2089,7 @@
                     </div>
                   </section>
                   <section>
-                    <span class="boards-wizard-label">Guide voice</span>
+                    <span class="boards-wizard-label" i18n>Guide voice</span>
                     <div class="boards-wizard-vibes">
                       @for (voice of tourVoiceStyles; track voice.id) {
                         <button
@@ -2106,7 +2106,7 @@
                   </section>
                 </div>
                 <section>
-                  <span class="boards-wizard-label">Also include</span>
+                  <span class="boards-wizard-label" i18n>Also include</span>
                   <div class="boards-wizard-vibes">
                     @for (extra of wizardTourExtraOptions(); track extra) {
                       <button
@@ -2123,7 +2123,7 @@
                 </section>
               } @else {
                 <label>
-                  <span>URL</span>
+                  <span i18n>URL</span>
                   <input
                     type="url"
                     required
@@ -2133,23 +2133,23 @@
                   />
                 </label>
                 <label>
-                  <span>Optional direction</span>
+                  <span i18n>Optional direction</span>
                   <input
                     type="text"
                     maxlength="220"
                     placeholder="Focus on places, food, and things worth saving"
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
-                  />
+                   i18n-placeholder/>
                 </label>
               }
             </section>
 
             <section class="boards-wizard-config">
               <label>
-                <span>Save into</span>
+                <span i18n>Save into</span>
                 <select [value]="wizardTargetBoardId()" (change)="wizardTargetBoardId.set($any($event.target).value)">
-                  <option value="new">Create a new board</option>
+                  <option value="new" i18n>Create a new board</option>
                   @for (board of wizardTargetBoards(); track board.id) {
                     <option [value]="board.id">{{ board.title }}</option>
                   }
@@ -2178,7 +2178,7 @@
 
             @if (!isTourWizardMode()) {
             <section>
-              <span class="boards-wizard-label">Default card type</span>
+              <span class="boards-wizard-label" i18n>Default card type</span>
               <div class="boards-choice-grid boards-choice-grid--types">
                 @for (type of cardTypes; track type.id) {
                   <button
@@ -2196,7 +2196,7 @@
             </section>
 
             <section>
-              <span class="boards-wizard-label">Vibe</span>
+              <span class="boards-wizard-label" i18n>Vibe</span>
               <div class="boards-wizard-vibes">
                 @for (vibe of wizardVibes; track vibe.id) {
                   <button
@@ -2218,8 +2218,8 @@
             }
 
             <div class="boards-form__actions">
-              <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
-              <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()">
+              <button type="button" class="boards-ghost-action" (click)="backWizardStep()" i18n>Back</button>
+              <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()" i18n>
                 <span class="material-symbols-outlined">auto_awesome</span>
                 Generate preview
               </button>
@@ -2231,7 +2231,7 @@
               <span class="material-symbols-outlined">sync</span>
             </span>
             <h4>{{ wizardLoadingMessage() }}</h4>
-            <p>Building the preview. This stays active while places, images, and cards finish.</p>
+            <p i18n>Building the preview. This stays active while places, images, and cards finish.</p>
             <div class="boards-wizard-progress">
               <span [style.width.%]="wizardLoadingProgress()"></span>
             </div>
@@ -2240,12 +2240,12 @@
           <div class="boards-wizard boards-wizard-preview">
             <div class="boards-wizard-preview__bar">
               <div>
-                <strong>{{ wizardSelectedCount() }} of {{ wizardPreviewCards().length }} selected</strong>
-                <small>Saving to {{ wizardTargetBoardTitle() }}</small>
+                <strong i18n>{{ wizardSelectedCount() }} of {{ wizardPreviewCards().length }} selected</strong>
+                <small i18n>Saving to {{ wizardTargetBoardTitle() }}</small>
               </div>
               <div>
-                <button type="button" class="boards-ghost-action" (click)="selectAllWizardCards()">Select all</button>
-                <button type="button" class="boards-ghost-action" (click)="clearWizardSelection()">Clear</button>
+                <button type="button" class="boards-ghost-action" (click)="selectAllWizardCards()" i18n>Select all</button>
+                <button type="button" class="boards-ghost-action" (click)="clearWizardSelection()" i18n>Clear</button>
               </div>
             </div>
 
@@ -2253,8 +2253,8 @@
             <section class="boards-sticker-panel boards-sticker-panel--prominent" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 60%);">
               <div class="boards-sticker-panel__head">
                 <div>
-                  <span>Stack CTA</span>
-                  <strong>Final button</strong>
+                  <span i18n>Stack CTA</span>
+                  <strong i18n>Final button</strong>
                 </div>
                 <span class="material-symbols-outlined" style="display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border: 2px solid var(--modal-ink, var(--ink)); border-radius: 999px; background: var(--accent); box-shadow: 2px 2px 0 var(--modal-ink, var(--ink)); color: var(--surface); font-size: 1.28rem; font-variation-settings: 'FILL' 1;">campaign</span>
               </div>
@@ -2267,27 +2267,27 @@
                   <label class="boards-cta-field">
                     <span class="material-symbols-outlined">short_text</span>
                     <span class="boards-cta-field__body">
-                      <small>Button text</small>
+                      <small i18n>Button text</small>
                       <input
                         type="text"
                         maxlength="48"
                         placeholder="Book now"
                         [value]="wizardStackCtaLabel()"
                         (input)="wizardStackCtaLabel.set($any($event.target).value)"
-                      />
+                       i18n-placeholder/>
                     </span>
                   </label>
                   <label class="boards-cta-field boards-cta-field--destination">
                     <span class="material-symbols-outlined">add_link</span>
                     <span class="boards-cta-field__body">
-                      <small>Where should it open?</small>
+                      <small i18n>Where should it open?</small>
                       <input
                         type="text"
                         maxlength="240"
                         placeholder="Website, email, or phone"
                         [value]="wizardStackCtaUrl()"
                         (input)="wizardStackCtaUrl.set($any($event.target).value)"
-                      />
+                       i18n-placeholder/>
                     </span>
                   </label>
                 </div>
@@ -2300,14 +2300,14 @@
             }
 
             @if (wizardEditingCard(); as card) {
-              <section class="wizard-card-editor" aria-label="Edit preview card">
+              <section class="wizard-card-editor" aria-label="Edit preview card" i18n-aria-label>
                 <header class="wizard-card-editor__header">
-                  <button type="button" class="wizard-card-editor__back" (click)="closeWizardCardEditor()">
+                  <button type="button" class="wizard-card-editor__back" (click)="closeWizardCardEditor()" i18n>
                     <span class="material-symbols-outlined">arrow_back</span>
                     All cards
                   </button>
                   <div>
-                    <small>Editing preview</small>
+                    <small i18n>Editing preview</small>
                     <h4>{{ card.title }}</h4>
                   </div>
                   <button
@@ -2322,12 +2322,12 @@
                   </button>
                 </header>
 
-                <nav class="wizard-card-editor__tabs" aria-label="Card editor sections">
+                <nav class="wizard-card-editor__tabs" aria-label="Card editor sections" i18n-aria-label>
                   <button
                     type="button"
                     [class.wizard-card-editor__tab--active]="wizardCardEditorSection() === 'details'"
                     (click)="setWizardCardEditorSection('details')"
-                  >
+                   i18n>
                     <span class="material-symbols-outlined">edit_note</span>
                     Card details
                   </button>
@@ -2335,7 +2335,7 @@
                     type="button"
                     [class.wizard-card-editor__tab--active]="wizardCardEditorSection() === 'image'"
                     (click)="setWizardCardEditorSection('image')"
-                  >
+                   i18n>
                     <span class="material-symbols-outlined">photo_camera</span>
                     Picture
                   </button>
@@ -2355,7 +2355,7 @@
                         type="button"
                         [class.wizard-card-editor__image-action--active]="wizardCardImageToolMode() === 'search'"
                         (click)="openWizardCardImageTool('search')"
-                      >
+                       i18n>
                         <span class="material-symbols-outlined">image_search</span>
                         Find photo
                       </button>
@@ -2363,18 +2363,18 @@
                         type="button"
                         [class.wizard-card-editor__image-action--active]="wizardCardImageToolMode() === 'generate'"
                         (click)="openWizardCardImageTool('generate')"
-                      >
+                       i18n>
                         <span class="material-symbols-outlined">auto_awesome</span>
                         Generate
                       </button>
-                      <label>
+                      <label i18n>
                         <span class="material-symbols-outlined">upload</span>
                         Upload
                         <input type="file" accept="image/*" (change)="onWizardCardImageSelected(card.id, $event)" />
                       </label>
                     </div>
                     @if (card.imageUrl) {
-                      <button type="button" class="wizard-card-editor__remove-image" (click)="clearWizardCardImage(card.id)">
+                      <button type="button" class="wizard-card-editor__remove-image" (click)="clearWizardCardImage(card.id)" i18n>
                         <span class="material-symbols-outlined">hide_image</span>
                         Remove picture
                       </button>
@@ -2388,12 +2388,12 @@
                           <div class="wizard-card-image-tool__heading">
                             <span class="material-symbols-outlined">auto_awesome</span>
                             <div>
-                              <strong>Generate a new picture</strong>
-                              <small>Nano Banana uses this card and board as context.</small>
+                              <strong i18n>Generate a new picture</strong>
+                              <small i18n>Nano Banana uses this card and board as context.</small>
                             </div>
                           </div>
                           <label>
-                            <span>Describe the picture</span>
+                            <span i18n>Describe the picture</span>
                             <textarea
                               rows="4"
                               maxlength="700"
@@ -2412,10 +2412,10 @@
                           </button>
                           @if (wizardCardGeneratedImageUrl()) {
                             <div class="wizard-card-image-tool__candidate">
-                              <img [src]="wizardCardGeneratedImageUrl()" alt="Generated card picture" />
+                              <img [src]="wizardCardGeneratedImageUrl()" alt="Generated card picture"  i18n-alt/>
                               <div>
                                 <small>{{ wizardCardGeneratedImageModel() || 'Nano Banana' }}</small>
-                                <button type="button" class="boards-primary-action" (click)="useGeneratedWizardCardImage()">
+                                <button type="button" class="boards-primary-action" (click)="useGeneratedWizardCardImage()" i18n>
                                   <span class="material-symbols-outlined">check</span>
                                   Use this picture
                                 </button>
@@ -2428,7 +2428,7 @@
                           <div class="wizard-card-image-tool__heading">
                             <span class="material-symbols-outlined">image_search</span>
                             <div>
-                              <strong>Find a real photo</strong>
+                              <strong i18n>Find a real photo</strong>
                               <small>
                                 @if (wizardCardImageSearchLoading()) {
                                   Searching related photo sources...
@@ -2448,14 +2448,14 @@
                               [value]="wizardCardImageSearchQuery()"
                               (input)="wizardCardImageSearchQuery.set($any($event.target).value)"
                               (keydown.enter)="$event.preventDefault(); searchWizardCardImages()"
-                            />
+                             i18n-placeholder/>
                             <button
                               type="button"
                               aria-label="Search pictures"
                               title="Search pictures"
                               [disabled]="wizardCardImageSearchLoading() || wizardCardImageSearchQuery().trim().length < 2"
                               (click)="searchWizardCardImages()"
-                            >
+                             i18n-aria-label i18n-title>
                               <span class="material-symbols-outlined">{{ wizardCardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
                             </button>
                           </div>
@@ -2463,18 +2463,18 @@
                             <div class="wizard-card-image-tool__searching" role="status" aria-live="polite">
                               <span class="material-symbols-outlined">progress_activity</span>
                               <div>
-                                <strong>Searching for relevant photos...</strong>
+                                <strong i18n>Searching for relevant photos...</strong>
                                 <small>{{ wizardCardImageSearchQuery() }}</small>
                               </div>
                             </div>
                           }
                           @if (currentWizardCardImageSearchResult(); as result) {
                             <div class="wizard-card-image-tool__browser">
-                              <button type="button" aria-label="Previous picture" (click)="stepWizardCardImageSearch(-1)">
+                              <button type="button" aria-label="Previous picture" (click)="stepWizardCardImageSearch(-1)" i18n-aria-label>
                                 <span class="material-symbols-outlined">chevron_left</span>
                               </button>
                               <img [src]="result.imageUrl" [alt]="result.title" />
-                              <button type="button" aria-label="Next picture" (click)="stepWizardCardImageSearch(1)">
+                              <button type="button" aria-label="Next picture" (click)="stepWizardCardImageSearch(1)" i18n-aria-label>
                                 <span class="material-symbols-outlined">chevron_right</span>
                               </button>
                             </div>
@@ -2486,7 +2486,7 @@
                                 {{ wizardCardImageApplying() ? 'Using picture...' : 'Use this picture' }}
                               </button>
                             </div>
-                            <div class="wizard-card-image-tool__thumbs" aria-label="Picture search results">
+                            <div class="wizard-card-image-tool__thumbs" aria-label="Picture search results" i18n-aria-label>
                               @for (item of wizardCardImageSearchResults(); track item.token; let index = $index) {
                                 <button
                                   type="button"
@@ -2505,20 +2505,20 @@
                     } @else {
                       <div class="wizard-card-editor__fields">
                         <label>
-                          <span>Title</span>
+                          <span i18n>Title</span>
                           <input type="text" maxlength="80" [value]="card.title" (input)="updateWizardCard(card.id, 'title', $any($event.target).value)" />
                         </label>
                         <label>
-                          <span>Subtitle</span>
+                          <span i18n>Subtitle</span>
                           <input type="text" maxlength="90" [value]="card.subtitle" (input)="updateWizardCard(card.id, 'subtitle', $any($event.target).value)" />
                         </label>
                         <label>
-                          <span>Notes</span>
+                          <span i18n>Notes</span>
                           <textarea rows="5" maxlength="260" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
                         </label>
                         <div class="wizard-card-editor__field-pair">
                           <label>
-                            <span>Type</span>
+                            <span i18n>Type</span>
                             <select [value]="card.type" (change)="updateWizardCard(card.id, 'type', $any($event.target).value)">
                               @for (type of cardTypes; track type.id) {
                                 <option [value]="type.id" [selected]="type.id === card.type">{{ type.label }}</option>
@@ -2526,7 +2526,7 @@
                             </select>
                           </label>
                           <label>
-                            <span>Status</span>
+                            <span i18n>Status</span>
                             <select [value]="card.status" (change)="updateWizardCard(card.id, 'status', $any($event.target).value)">
                               @for (status of cardStatuses; track status.id) {
                                 <option [value]="status.id" [selected]="status.id === card.status">{{ status.label }}</option>
@@ -2535,17 +2535,17 @@
                           </label>
                         </div>
                         <label>
-                          <span>Tags</span>
-                          <input type="text" placeholder="history, champion, 1934" [value]="card.tags.join(', ')" (input)="updateWizardCardTags(card.id, $any($event.target).value)" />
+                          <span i18n>Tags</span>
+                          <input type="text" placeholder="history, champion, 1934" [value]="card.tags.join(', ')" (input)="updateWizardCardTags(card.id, $any($event.target).value)"  i18n-placeholder/>
                         </label>
                         @if (card.tour; as tour) {
                           <div class="wizard-card-editor__tour-fields">
                             <label>
-                              <span>Tour address</span>
+                              <span i18n>Tour address</span>
                               <input type="text" maxlength="180" [value]="tour.address" (input)="updateWizardCardTour(card.id, 'address', $any($event.target).value)" />
                             </label>
                             <label>
-                              <span>Guide narration</span>
+                              <span i18n>Guide narration</span>
                               <textarea rows="5" maxlength="3600" [value]="tour.guideScript" (input)="updateWizardCardTour(card.id, 'guideScript', $any($event.target).value)"></textarea>
                             </label>
                           </div>
@@ -2563,15 +2563,15 @@
                           <span class="material-symbols-outlined">autorenew</span>
                           <span>
                             <strong>{{ wizardRedoingCardIds().has(card.id) ? 'Replacing card...' : 'Replace entire card' }}</strong>
-                            <small>Generate a different item for this position</small>
+                            <small i18n>Generate a different item for this position</small>
                           </span>
                         </button>
-                        <button type="button" class="wizard-card-editor__delete" [disabled]="isWizardCardBusy(card.id)" (click)="removeWizardCard(card.id)">
+                        <button type="button" class="wizard-card-editor__delete" [disabled]="isWizardCardBusy(card.id)" (click)="removeWizardCard(card.id)" i18n>
                           <span class="material-symbols-outlined">delete</span>
                           Remove card
                         </button>
                       </div>
-                      <button type="button" class="boards-primary-action" (click)="closeWizardCardEditor()">
+                      <button type="button" class="boards-primary-action" (click)="closeWizardCardEditor()" i18n>
                         <span class="material-symbols-outlined">done</span>
                         Done editing
                       </button>
@@ -2611,7 +2611,7 @@
                         >
                           <span class="material-symbols-outlined">{{ isWizardCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
                         </button>
-                        <button type="button" class="boards-wizard-card__change-image" [disabled]="isWizardCardBusy(card.id)" (click)="openWizardCardEditor(card.id, 'image')">
+                        <button type="button" class="boards-wizard-card__change-image" [disabled]="isWizardCardBusy(card.id)" (click)="openWizardCardEditor(card.id, 'image')" i18n>
                           <span class="material-symbols-outlined">photo_camera</span>
                           Change image
                         </button>
@@ -2629,7 +2629,7 @@
                         </div>
                       }
                       <div class="boards-wizard-card__actions boards-wizard-card__actions--simple">
-                        <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="openWizardCardEditor(card.id, 'details')">
+                        <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="openWizardCardEditor(card.id, 'details')" i18n>
                           <span class="material-symbols-outlined">edit</span>
                           Edit card
                         </button>
@@ -2651,18 +2651,18 @@
                 </div>
 
                 <aside class="boards-wizard-refine">
-                  <h4>Refine</h4>
+                  <h4 i18n>Refine</h4>
                   <textarea
                     rows="5"
                     placeholder="Make it more kid-friendly, add cheaper options, remove duplicates..."
                     [value]="wizardRefineText()"
                     (input)="wizardRefineText.set($any($event.target).value)"
-                  ></textarea>
-                  <button type="button" class="boards-primary-action" (click)="refineWizardBatch()" [disabled]="!wizardRefineText().trim()">
+                   i18n-placeholder></textarea>
+                  <button type="button" class="boards-primary-action" (click)="refineWizardBatch()" [disabled]="!wizardRefineText().trim()" i18n>
                     <span class="material-symbols-outlined">forum</span>
                     Refine batch
                   </button>
-                  <button type="button" class="boards-ghost-action" (click)="addMoreWizardCards()">
+                  <button type="button" class="boards-ghost-action" (click)="addMoreWizardCards()" i18n>
                     <span class="material-symbols-outlined">add</span>
                     Add 5 more
                   </button>
@@ -2672,7 +2672,7 @@
 
             @if (!wizardEditingCard()) {
             <div class="boards-form__actions boards-wizard-savebar">
-              <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
+              <button type="button" class="boards-ghost-action" (click)="backWizardStep()" i18n>Back</button>
               <button
                 type="button"
                 class="boards-primary-action"
@@ -2688,8 +2688,8 @@
         } @else {
           <div class="boards-wizard boards-wizard-done">
             <span class="material-symbols-outlined">check_circle</span>
-            <h4>Board saved</h4>
-            <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">Done</button>
+            <h4 i18n>Board saved</h4>
+            <button type="button" class="boards-primary-action" (click)="closeBoardWizard()" i18n>Done</button>
           </div>
         }
       </section>
@@ -2698,13 +2698,13 @@
 
   @if (tourGuideOpen()) {
     <div class="boards-modal-backdrop boards-modal-backdrop--tour-guide" (click)="closeTourGuide()">
-      <section class="boards-modal boards-modal--tour-guide" aria-label="Guided tour" (click)="$event.stopPropagation()">
+      <section class="boards-modal boards-modal--tour-guide" aria-label="Guided tour" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
-            <p>Guided tour</p>
+            <p i18n>Guided tour</p>
             <h3>{{ selectedBoard()?.title }}</h3>
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeTourGuide()">
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeTourGuide()" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -2732,7 +2732,7 @@
               </div>
             </div>
             <div class="tour-guide__actions">
-              <button type="button" class="boards-ghost-action" [disabled]="frame.index === 0" (click)="tourGuideStep(-1)">
+              <button type="button" class="boards-ghost-action" [disabled]="frame.index === 0" (click)="tourGuideStep(-1)" i18n>
                 <span class="material-symbols-outlined">chevron_left</span>
                 Prev
               </button>
@@ -2740,7 +2740,7 @@
                 <span class="material-symbols-outlined">{{ tourSpeechPlaying() ? 'stop' : 'volume_up' }}</span>
                 {{ tourSpeechPlaying() ? 'Stop' : 'Replay' }}
               </button>
-              <button type="button" class="boards-primary-action" [disabled]="frame.index >= frame.total - 1" (click)="tourGuideStep(1)">
+              <button type="button" class="boards-primary-action" [disabled]="frame.index >= frame.total - 1" (click)="tourGuideStep(1)" i18n>
                 Next
                 <span class="material-symbols-outlined">chevron_right</span>
               </button>
@@ -2754,13 +2754,13 @@
   @if (stackStudioOpen()) {
     @if (stackBoard(); as board) {
       <div class="boards-modal-backdrop boards-modal-backdrop--stack-studio" (click)="closeStackStudio()">
-        <section class="boards-modal boards-modal--stack-studio" aria-label="Stack Studio" (click)="$event.stopPropagation()">
+        <section class="boards-modal boards-modal--stack-studio" aria-label="Stack Studio" (click)="$event.stopPropagation()" i18n-aria-label>
           <div class="boards-modal__head">
             <div>
-              <p>Stack Studio</p>
+              <p i18n>Stack Studio</p>
               <h3>{{ board.title }}</h3>
             </div>
-            <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackStudio()">
+            <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackStudio()" i18n-aria-label>
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
@@ -2775,17 +2775,17 @@
                 }
               </div>
               <div>
-                <strong>{{ stackSelectedCount() }} of {{ board.cards.length }} selected</strong>
-                <span>{{ stackFormatLabel() }} Stack</span>
+                <strong i18n>{{ stackSelectedCount() }} of {{ board.cards.length }} selected</strong>
+                <span i18n>{{ stackFormatLabel() }} Stack</span>
               </div>
               <div class="stack-studio__context-actions">
                 <button type="button" (click)="copyStackUrl(board)">
                   <span class="material-symbols-outlined">content_copy</span>
-                  <span class="stack-action-label">Copy</span>
+                  <span class="stack-action-label" i18n>Copy</span>
                 </button>
                 <button type="button" (click)="openStackView(board, $event)">
                   <span class="material-symbols-outlined">smart_display</span>
-                  <span class="stack-action-label">Live</span>
+                  <span class="stack-action-label" i18n>Live</span>
                 </button>
               </div>
             </header>
@@ -2798,12 +2798,12 @@
                 <section class="stack-panel">
                   <div class="stack-panel__head">
                     <div>
-                      <p>Cards</p>
-                      <h4>{{ stackSelectedCount() }} selected</h4>
+                      <p i18n>Cards</p>
+                      <h4 i18n>{{ stackSelectedCount() }} selected</h4>
                     </div>
                     <div class="stack-panel__actions">
-                      <button type="button" class="boards-ghost-action" (click)="selectAllStackCards(board)">Select all</button>
-                      <button type="button" class="boards-ghost-action" (click)="clearStackCards()">Clear</button>
+                      <button type="button" class="boards-ghost-action" (click)="selectAllStackCards(board)" i18n>Select all</button>
+                      <button type="button" class="boards-ghost-action" (click)="clearStackCards()" i18n>Clear</button>
                     </div>
                   </div>
                   <div class="stack-card-strip">
@@ -2828,7 +2828,7 @@
                     } @empty {
                       <div class="stack-empty-note">
                         <span class="material-symbols-outlined">add_card</span>
-                        <strong>No cards yet</strong>
+                        <strong i18n>No cards yet</strong>
                       </div>
                     }
                   </div>
@@ -2837,14 +2837,14 @@
                 <details class="stack-panel stack-panel--details">
                   <summary class="stack-panel__summary">
                     <div>
-                      <p>Cover</p>
-                      <h4>Caption</h4>
+                      <p i18n>Cover</p>
+                      <h4 i18n>Caption</h4>
                     </div>
                     <span class="material-symbols-outlined">expand_more</span>
                   </summary>
                   <div class="stack-fields">
                     <label>
-                      <span>Cover title</span>
+                      <span i18n>Cover title</span>
                       <input
                         type="text"
                         maxlength="80"
@@ -2853,7 +2853,7 @@
                       />
                     </label>
                     <label>
-                      <span>Cover subtitle</span>
+                      <span i18n>Cover subtitle</span>
                       <input
                         type="text"
                         maxlength="140"
@@ -2862,7 +2862,7 @@
                       />
                     </label>
                     <label>
-                      <span>Share caption</span>
+                      <span i18n>Share caption</span>
                       <textarea
                         rows="4"
                         maxlength="320"
@@ -2876,7 +2876,7 @@
                 <details class="stack-panel stack-panel--details">
                   <summary class="stack-panel__summary">
                     <div>
-                      <p>Format</p>
+                      <p i18n>Format</p>
                       <h4>{{ stackFormatLabel() }}</h4>
                     </div>
                     <span class="material-symbols-outlined">expand_more</span>
@@ -2933,7 +2933,7 @@
                       }
                       <div class="stack-preview__shade"></div>
                       <div class="stack-preview__content stack-preview__content--cover">
-                        <span>A LivingWiki Stack</span>
+                        <span i18n>A LivingWiki Stack</span>
                         <h4>{{ stackCoverTitle() || board.title }}</h4>
                         <p>{{ stackCoverSubtitle() }}</p>
                       </div>
@@ -2944,7 +2944,7 @@
                         }
                         @if (!isPhotoOnlyCard(card)) {
                           <div class="stack-preview__shade"></div>
-                          <div class="stack-preview__brand">LivingWiki</div>
+                          <div class="stack-preview__brand" i18n>LivingWiki</div>
                           <div class="stack-preview__content">
                             <span>{{ card.status }} · {{ card.rating }}/5</span>
                             <h4>{{ card.title }}</h4>
@@ -2967,7 +2967,7 @@
                     } @else {
                       <div class="stack-preview__closing">
                         <span class="material-symbols-outlined">auto_awesome_motion</span>
-                        <h4>Made with LivingWiki</h4>
+                        <h4 i18n>Made with LivingWiki</h4>
                         <p>{{ board.title }}</p>
                         @if (board.stackCtaLabel && stackCtaHref(board)) {
                           <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener" style="justify-content: center; gap: .5rem; max-width: min(88%, 20rem); border-width: 3px; background: linear-gradient(135deg, #ffffff, #fff3bd); box-shadow: 0 18px 34px rgba(0,0,0,.28); color: #111827; font-size: .92rem; line-height: 1; padding: .78rem 1rem .78rem .82rem;">
@@ -2975,7 +2975,7 @@
                             <strong style="min-width: 0; overflow: hidden; color: inherit; font-size: inherit; font-weight: 950; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</strong>
                           </a>
                         }
-                        <img [src]="stackQrImageUrl(board)" alt="Board QR code" />
+                        <img [src]="stackQrImageUrl(board)" alt="Board QR code"  i18n-alt/>
                         <strong>{{ stackClosingUrlLabel(board) }}</strong>
                       </div>
                     }
@@ -2983,14 +2983,14 @@
                 }
 
                 <div class="stack-preview-controls">
-                  <button type="button" class="boards-ghost-action" aria-label="Previous frame" (click)="previousStackFrame()">
+                  <button type="button" class="boards-ghost-action" aria-label="Previous frame" (click)="previousStackFrame()" i18n-aria-label>
                     <span class="material-symbols-outlined">chevron_left</span>
                   </button>
                   <button type="button" class="boards-primary-action" (click)="toggleStackPlayback()">
                     <span class="material-symbols-outlined">{{ stackPlaying() ? 'pause' : 'play_arrow' }}</span>
                     {{ stackPlaying() ? 'Pause' : 'Play' }}
                   </button>
-                  <button type="button" class="boards-ghost-action" aria-label="Next frame" (click)="nextStackFrame()">
+                  <button type="button" class="boards-ghost-action" aria-label="Next frame" (click)="nextStackFrame()" i18n-aria-label>
                     <span class="material-symbols-outlined">chevron_right</span>
                   </button>
                 </div>
@@ -2998,8 +2998,8 @@
                 <section class="stack-export">
                   <div class="stack-panel__head">
                     <div>
-                      <p>Send</p>
-                      <h4>Share Stack</h4>
+                      <p i18n>Send</p>
+                      <h4 i18n>Share Stack</h4>
                     </div>
                   </div>
                   <div class="stack-export-grid">
@@ -3017,7 +3017,7 @@
                   </div>
                   <div class="stack-video-note">
                     <span class="material-symbols-outlined">smart_display</span>
-                    <p><strong>Native social video</strong><span>Choose an app to generate a real video that plays inline. On supported phones, select the app in the share sheet.</span></p>
+                    <p><strong i18n>Native social video</strong><span i18n>Choose an app to generate a real video that plays inline. On supported phones, select the app in the share sheet.</span></p>
                   </div>
                   @if (stackShareMessage()) {
                     <small>{{ stackShareMessage() }}</small>
@@ -3034,25 +3034,25 @@
   @if (stackShareDialogOpen()) {
     @if (stackBoard(); as board) {
       <div class="boards-modal-backdrop boards-modal-backdrop--stack-share" (click)="closeStackShareDialog($event)">
-        <section class="boards-modal boards-modal--stack-share" aria-label="Share Stack" (click)="$event.stopPropagation()">
+        <section class="boards-modal boards-modal--stack-share" aria-label="Share Stack" (click)="$event.stopPropagation()" i18n-aria-label>
           <div class="boards-modal__head">
             <div>
-              <p>Share Stack</p>
+              <p i18n>Share Stack</p>
               <h3>{{ board.title }}</h3>
             </div>
-            <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackShareDialog($event)">
+            <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackShareDialog($event)" i18n-aria-label>
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
 
           <div class="stack-share-dialog">
             <section class="stack-share-sheet" [class.stack-share-sheet--stale]="board.socialVideoUrl && !socialVideoIsCurrent(board)">
-              <div class="stack-share-sheet__modes" aria-label="Choose what to share">
-                <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'video'" (click)="setStackShareMode('video')">
+              <div class="stack-share-sheet__modes" aria-label="Choose what to share" i18n-aria-label>
+                <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'video'" (click)="setStackShareMode('video')" i18n>
                   <span class="material-symbols-outlined">smart_display</span>
                   Video
                 </button>
-                <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'live'" (click)="setStackShareMode('live')">
+                <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'live'" (click)="setStackShareMode('live')" i18n>
                   <span class="material-symbols-outlined">play_arrow</span>
                   Live view
                 </button>
@@ -3061,9 +3061,9 @@
               @if (stackShareMode() === 'video' && !board.socialVideoUrl) {
                 <div class="stack-share-sheet__empty">
                   <span class="stack-share-sheet__hero-icon material-symbols-outlined">movie</span>
-                  <p>Social video</p>
-                  <h4>Create the video once</h4>
-                  <span>LivingWiki will generate and permanently host an MP4 of this live view.</span>
+                  <p i18n>Social video</p>
+                  <h4 i18n>Create the video once</h4>
+                  <span i18n>LivingWiki will generate and permanently host an MP4 of this live view.</span>
                   @if (canEditBoard(board)) {
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
                       <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'movie' }}</span>
@@ -3080,11 +3080,11 @@
                 @if (stackShareMode() === 'video') {
                   <div class="stack-share-sheet__video-preview">
                     <video [src]="board.socialVideoUrl" [poster]="stackCoverImage(board)" muted playsinline controls preload="metadata"></video>
-                    <span><span class="material-symbols-outlined">check_circle</span> Permanent video ready</span>
+                    <span i18n><span class="material-symbols-outlined">check_circle</span> Permanent video ready</span>
                   </div>
                   <div class="stack-share-sheet__title">
-                    <p>Share the video</p>
-                    <span>Share the MP4 for native playback, or open a social app directly with the video link.</span>
+                    <p i18n>Share the video</p>
+                    <span i18n>Share the MP4 for native playback, or open a social app directly with the video link.</span>
                   </div>
                   @if (!socialVideoIsCurrent(board) && canEditBoard(board)) {
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
@@ -3103,11 +3103,11 @@
                       <img [src]="stackCoverImage(board)" [alt]="board.title" />
                     }
                     <span class="material-symbols-outlined">play_circle</span>
-                    <div><small>Interactive live view</small><strong>{{ board.title }}</strong></div>
+                    <div><small i18n>Interactive live view</small><strong>{{ board.title }}</strong></div>
                   </div>
                   <div class="stack-share-sheet__title">
-                    <p>Share the live view</p>
-                    <span>People open the interactive, card-by-card board experience.</span>
+                    <p i18n>Share the live view</p>
+                    <span i18n>People open the interactive, card-by-card board experience.</span>
                   </div>
                 }
 
@@ -3115,7 +3115,7 @@
                   <strong>{{ stackShareMode() === 'video' ? 'Share video link' : 'Share live-view link' }}</strong>
                   <span>{{ stackShareMode() === 'video' ? 'Opens the selected app directly with a playable-page link.' : 'Includes the board picture and opens the interactive board.' }}</span>
                 </div>
-                <div class="stack-share-sheet__destinations" aria-label="Share destinations">
+                <div class="stack-share-sheet__destinations" aria-label="Share destinations" i18n-aria-label>
                   @for (target of stackLinkShareTargets; track target.id) {
                     <button
                       type="button"
@@ -3129,22 +3129,22 @@
 
                 <div class="stack-share-sheet__link">
                   <span><small>{{ stackSelectedShareLabel() }}</small><strong>{{ stackSelectedShareUrl(board) }}</strong></span>
-                  <button type="button" (click)="copySelectedStackShareUrl(board)">Copy</button>
+                  <button type="button" (click)="copySelectedStackShareUrl(board)" i18n>Copy</button>
                 </div>
 
                 @if (stackShareMode() === 'video') {
-                  <small class="stack-share-sheet__note"><strong>Want guaranteed in-feed playback?</strong> Use “Share video file” above, then choose X in your device’s share sheet. Social icons open their app directly with the permanent video page instead.</small>
+                  <small class="stack-share-sheet__note" i18n><strong>Want guaranteed in-feed playback?</strong> Use “Share video file” above, then choose X in your device’s share sheet. Social icons open their app directly with the permanent video page instead.</small>
                 }
               }
 
               <details class="stack-video-single__more">
-                <summary>More options</summary>
+                <summary i18n>More options</summary>
                 <div>
-                  <button type="button" (click)="copyBoardUrl(board)"><span class="material-symbols-outlined">dashboard_customize</span> Copy board link</button>
+                  <button type="button" (click)="copyBoardUrl(board)" i18n><span class="material-symbols-outlined">dashboard_customize</span> Copy board link</button>
                   @if (board.socialVideoUrl) {
-                    <button type="button" (click)="copySocialVideoFileUrl(board)"><span class="material-symbols-outlined">movie</span> Copy direct MP4</button>
+                    <button type="button" (click)="copySocialVideoFileUrl(board)" i18n><span class="material-symbols-outlined">movie</span> Copy direct MP4</button>
                   }
-                  <button type="button" [disabled]="stackVideoExporting()" (click)="shareStackTo('download')"><span class="material-symbols-outlined">download</span> Download video</button>
+                  <button type="button" [disabled]="stackVideoExporting()" (click)="shareStackTo('download')" i18n><span class="material-symbols-outlined">download</span> Download video</button>
                 </div>
               </details>
             </section>
@@ -3160,25 +3160,25 @@
 
   @if (boardDeleteCandidate(); as board) {
     <div class="boards-modal-backdrop" (click)="closeBoardDeleteDialog($event)">
-      <section class="boards-modal boards-modal--confirm" aria-label="Delete board confirmation" (click)="$event.stopPropagation()">
+      <section class="boards-modal boards-modal--confirm" aria-label="Delete board confirmation" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
-            <p>Delete board</p>
+            <p i18n>Delete board</p>
             <h3>{{ board.title }}</h3>
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardDeleteDialog($event)">
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardDeleteDialog($event)" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
         <div class="boards-confirm">
           <span class="material-symbols-outlined">warning</span>
-          <p>
+          <p i18n>
             Delete this board and its {{ board.cards.length }} card{{ board.cards.length === 1 ? '' : 's' }}?
           </p>
         </div>
         <div class="boards-form__actions">
-          <button type="button" class="boards-ghost-action" (click)="closeBoardDeleteDialog($event)">Cancel</button>
-          <button type="button" class="boards-danger-action" (click)="confirmDeleteBoard($event)">
+          <button type="button" class="boards-ghost-action" (click)="closeBoardDeleteDialog($event)" i18n>Cancel</button>
+          <button type="button" class="boards-danger-action" (click)="confirmDeleteBoard($event)" i18n>
             <span class="material-symbols-outlined">delete</span>
             Delete board
           </button>
@@ -3199,19 +3199,19 @@
             <p>{{ isSongDeleteCandidate(candidate) ? 'Delete song' : 'Delete card' }}</p>
             <h3>{{ candidate.card.title }}</h3>
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDeleteDialog($event)">
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDeleteDialog($event)" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
         <div class="boards-confirm">
           <span class="material-symbols-outlined">warning</span>
-          <p>
+          <p i18n>
             Delete this {{ isSongDeleteCandidate(candidate) ? 'song' : 'card' }} from {{ candidate.boardTitle }}?
           </p>
         </div>
         <div class="boards-form__actions">
-          <button type="button" class="boards-ghost-action" (click)="closeCardDeleteDialog($event)">Cancel</button>
-          <button type="button" class="boards-danger-action" (click)="confirmDeleteCard($event)">
+          <button type="button" class="boards-ghost-action" (click)="closeCardDeleteDialog($event)" i18n>Cancel</button>
+          <button type="button" class="boards-danger-action" (click)="confirmDeleteCard($event)" i18n>
             <span class="material-symbols-outlined">delete</span>
             Delete {{ isSongDeleteCandidate(candidate) ? 'song' : 'card' }}
           </button>
@@ -3222,25 +3222,25 @@
 
   @if (cardBulkDeleteCandidate(); as candidate) {
     <div class="boards-modal-backdrop" (click)="closeBulkCardDeleteDialog($event)">
-      <section class="boards-modal boards-modal--confirm" aria-label="Delete selected cards confirmation" (click)="$event.stopPropagation()">
+      <section class="boards-modal boards-modal--confirm" aria-label="Delete selected cards confirmation" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
-            <p>Delete selected</p>
+            <p i18n>Delete selected</p>
             <h3>{{ candidate.boardTitle }}</h3>
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBulkCardDeleteDialog($event)">
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBulkCardDeleteDialog($event)" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
         <div class="boards-confirm">
           <span class="material-symbols-outlined">warning</span>
-          <p>
+          <p i18n>
             Delete {{ candidate.cards.length }} selected card{{ candidate.cards.length === 1 ? '' : 's' }} from this board?
           </p>
         </div>
         <div class="boards-form__actions">
-          <button type="button" class="boards-ghost-action" (click)="closeBulkCardDeleteDialog($event)">Cancel</button>
-          <button type="button" class="boards-danger-action" (click)="confirmBulkDeleteCards($event)">
+          <button type="button" class="boards-ghost-action" (click)="closeBulkCardDeleteDialog($event)" i18n>Cancel</button>
+          <button type="button" class="boards-danger-action" (click)="confirmBulkDeleteCards($event)" i18n>
             <span class="material-symbols-outlined">delete</span>
             Delete selected
           </button>
@@ -3251,20 +3251,20 @@
 
   @if (boardDialogOpen()) {
     <div class="boards-modal-backdrop" (click)="closeBoardDialog()">
-      <section class="boards-modal" aria-label="Board form" (click)="$event.stopPropagation()">
+      <section class="boards-modal" aria-label="Board form" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
             <p>{{ editingBoardId() ? 'Edit board cover' : 'New collection' }}</p>
             <h3>{{ editingBoardId() ? 'Title, subtitle, and picture' : 'Create board' }}</h3>
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardDialog()">
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardDialog()" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
 
         <form class="boards-form" (submit)="saveBoard($event)">
           <label>
-            <span>Board title</span>
+            <span i18n>Board title</span>
             <input
               type="text"
               required
@@ -3272,33 +3272,33 @@
               placeholder="Places I like to eat"
               [value]="boardDraft().title"
               (input)="updateBoardDraft('title', $any($event.target).value)"
-            />
+             i18n-placeholder/>
           </label>
           <label>
-            <span>Subtitle</span>
+            <span i18n>Subtitle</span>
             <textarea
               rows="3"
               maxlength="180"
               placeholder="What belongs in this collection?"
               [value]="boardDraft().description"
               (input)="updateBoardDraft('description', $any($event.target).value)"
-            ></textarea>
+             i18n-placeholder></textarea>
           </label>
           <label>
-            <span>Back note</span>
+            <span i18n>Back note</span>
             <textarea
               rows="3"
               maxlength="260"
               placeholder="A hidden fun fact, favorite memory, or private-feeling note for the back of this board."
               [value]="boardDraft().backNote"
               (input)="updateBoardDraft('backNote', $any($event.target).value)"
-            ></textarea>
+             i18n-placeholder></textarea>
           </label>
 
           <section class="boards-sticker-panel" style="background: color-mix(in srgb, var(--accent) 8%, var(--surface));">
             <div class="boards-sticker-panel__head">
               <div>
-                <span>Visibility</span>
+                <span i18n>Visibility</span>
                 <strong>{{ boardDraft().visibility === 'private' ? 'Private board' : 'Public board' }}</strong>
               </div>
               <span class="material-symbols-outlined" style="color: var(--accent); font-size: 1.7rem; font-variation-settings: 'FILL' 1;">{{ boardDraft().visibility === 'private' ? 'lock' : 'public' }}</span>
@@ -3310,7 +3310,7 @@
                 [style.border-color]="boardDraft().visibility === 'public' ? 'var(--modal-ink, var(--ink))' : null"
                 [style.box-shadow]="boardDraft().visibility === 'public' ? '2px 2px 0 var(--modal-ink, var(--ink))' : null"
                 (click)="setBoardDraftVisibility('public')"
-              >
+               i18n>
                 <span class="material-symbols-outlined">public</span>
                 Public
               </button>
@@ -3320,7 +3320,7 @@
                 [style.border-color]="boardDraft().visibility === 'private' ? 'var(--modal-ink, var(--ink))' : null"
                 [style.box-shadow]="boardDraft().visibility === 'private' ? '2px 2px 0 var(--modal-ink, var(--ink))' : null"
                 (click)="setBoardDraftVisibility('private')"
-              >
+               i18n>
                 <span class="material-symbols-outlined">lock</span>
                 Private
               </button>
@@ -3328,23 +3328,23 @@
           </section>
 
           <div class="boards-upload-field">
-            <span>Cover image</span>
+            <span i18n>Cover image</span>
             <div class="boards-upload">
               @if (boardDraft().imageUrl) {
-                <img [src]="boardDraft().imageUrl" alt="Board image preview" />
+                <img [src]="boardDraft().imageUrl" alt="Board image preview"  i18n-alt/>
               } @else {
                 <span class="boards-upload__placeholder">
                   <span class="material-symbols-outlined">add_photo_alternate</span>
                 </span>
               }
               <div class="boards-upload__actions">
-                <label class="boards-upload__button">
+                <label class="boards-upload__button" i18n>
                   <span class="material-symbols-outlined">upload</span>
                   Upload picture
                   <input type="file" accept="image/*" (change)="onBoardImageSelected($event)" />
                 </label>
                 @if (boardDraft().imageUrl) {
-                  <button type="button" class="boards-upload__clear" (click)="clearBoardImage()">
+                  <button type="button" class="boards-upload__clear" (click)="clearBoardImage()" i18n>
                     <span class="material-symbols-outlined">close</span>
                     Remove
                   </button>
@@ -3354,33 +3354,33 @@
           </div>
 
           <label>
-            <span>Image URL fallback</span>
+            <span i18n>Image URL fallback</span>
             <input
               type="url"
               placeholder="https://..."
               [value]="imageUrlInputValue(boardDraft().imageUrl)"
               (input)="updateBoardDraft('imageUrl', $any($event.target).value)"
-            />
+             i18n-placeholder/>
           </label>
 
           <div class="boards-upload-field">
-            <span>Logo</span>
+            <span i18n>Logo</span>
             <div class="boards-upload boards-upload--logo">
               @if (boardDraft().logoUrl) {
-                <img [src]="boardDraft().logoUrl" alt="Board logo preview" />
+                <img [src]="boardDraft().logoUrl" alt="Board logo preview"  i18n-alt/>
               } @else {
                 <span class="boards-upload__placeholder">
                   <span class="material-symbols-outlined">business</span>
                 </span>
               }
               <div class="boards-upload__actions">
-                <label class="boards-upload__button">
+                <label class="boards-upload__button" i18n>
                   <span class="material-symbols-outlined">upload</span>
                   Upload logo
                   <input type="file" accept="image/*" (change)="onBoardLogoSelected($event)" />
                 </label>
                 @if (boardDraft().logoUrl) {
-                  <button type="button" class="boards-upload__clear" (click)="clearBoardLogo()">
+                  <button type="button" class="boards-upload__clear" (click)="clearBoardLogo()" i18n>
                     <span class="material-symbols-outlined">close</span>
                     Remove
                   </button>
@@ -3391,31 +3391,31 @@
 
           <div class="boards-form__split">
             <label>
-              <span>Logo URL fallback</span>
+              <span i18n>Logo URL fallback</span>
               <input
                 type="url"
                 placeholder="https://..."
                 [value]="imageUrlInputValue(boardDraft().logoUrl)"
                 (input)="updateBoardDraft('logoUrl', $any($event.target).value)"
-              />
+               i18n-placeholder/>
             </label>
             <label>
-              <span>Logo link</span>
+              <span i18n>Logo link</span>
               <input
                 type="text"
                 maxlength="240"
                 placeholder="https://sponsor.com"
                 [value]="boardDraft().logoLinkUrl"
                 (input)="updateBoardDraft('logoLinkUrl', $any($event.target).value)"
-              />
+               i18n-placeholder/>
             </label>
           </div>
 
           <section class="boards-sticker-panel boards-sticker-panel--prominent" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 60%);">
             <div class="boards-sticker-panel__head">
               <div>
-                <span>Stack CTA</span>
-                <strong>Final button</strong>
+                <span i18n>Stack CTA</span>
+                <strong i18n>Final button</strong>
               </div>
               <span class="material-symbols-outlined" style="display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border: 2px solid var(--modal-ink, var(--ink)); border-radius: 999px; background: var(--accent); box-shadow: 2px 2px 0 var(--modal-ink, var(--ink)); color: var(--surface); font-size: 1.28rem; font-variation-settings: 'FILL' 1;">campaign</span>
             </div>
@@ -3428,27 +3428,27 @@
                 <label class="boards-cta-field">
                   <span class="material-symbols-outlined">short_text</span>
                   <span class="boards-cta-field__body">
-                    <small>Button text</small>
+                    <small i18n>Button text</small>
                     <input
                       type="text"
                       maxlength="48"
                       placeholder="Book now"
                       [value]="boardDraft().stackCtaLabel"
                       (input)="updateBoardDraft('stackCtaLabel', $any($event.target).value)"
-                    />
+                     i18n-placeholder/>
                   </span>
                 </label>
                 <label class="boards-cta-field boards-cta-field--destination">
                   <span class="material-symbols-outlined">add_link</span>
                   <span class="boards-cta-field__body">
-                    <small>Where should it open?</small>
+                    <small i18n>Where should it open?</small>
                     <input
                       type="text"
                       maxlength="240"
                       placeholder="Website, email, or phone"
                       [value]="boardDraft().stackCtaUrl"
                       (input)="updateBoardDraft('stackCtaUrl', $any($event.target).value)"
-                    />
+                     i18n-placeholder/>
                   </span>
                 </label>
               </div>
@@ -3457,7 +3457,7 @@
 
           <div class="boards-form__split">
             <label>
-              <span>Icon</span>
+              <span i18n>Icon</span>
               <select
                 [value]="boardDraft().icon"
                 (change)="updateBoardDraft('icon', $any($event.target).value)"
@@ -3468,7 +3468,7 @@
               </select>
             </label>
             <label>
-              <span>Tone</span>
+              <span i18n>Tone</span>
               <select
                 [value]="boardDraft().tone"
                 (change)="updateBoardDraft('tone', $any($event.target).value)"
@@ -3497,14 +3497,14 @@
           <section class="boards-sticker-panel">
             <div class="boards-sticker-panel__head">
               <div>
-                <span>Board stickers</span>
-                <strong>Add icons across this collection · {{ boardDraft().stickers.length }} selected</strong>
+                <span i18n>Board stickers</span>
+                <strong i18n>Add icons across this collection · {{ boardDraft().stickers.length }} selected</strong>
               </div>
               @if (boardDraft().stickers.length) {
-                <button type="button" (click)="clearBoardStickers()">Clear</button>
+                <button type="button" (click)="clearBoardStickers()" i18n>Clear</button>
               }
             </div>
-            <div class="boards-sticker-grid" aria-label="Board icon stickers">
+            <div class="boards-sticker-grid" aria-label="Board icon stickers" i18n-aria-label>
               @for (icon of cardStickerIcons; track icon) {
                 <button
                   type="button"
@@ -3528,8 +3528,8 @@
           }
 
           <div class="boards-form__actions">
-            <button type="button" class="boards-ghost-action" (click)="closeBoardDialog()">Cancel</button>
-            <button type="submit" class="boards-primary-action">
+            <button type="button" class="boards-ghost-action" (click)="closeBoardDialog()" i18n>Cancel</button>
+            <button type="submit" class="boards-primary-action" i18n>
               <span class="material-symbols-outlined">check</span>
               Save board
             </button>
@@ -3541,13 +3541,13 @@
 
   @if (cardDialogOpen()) {
     <div class="boards-modal-backdrop" (click)="closeCardDialog()">
-      <section class="boards-modal boards-modal--wide" aria-label="Card form" (click)="$event.stopPropagation()">
+      <section class="boards-modal boards-modal--wide" aria-label="Card form" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
             <p>{{ editingCardId() ? (isSongCardForm() ? 'Edit song' : 'Edit card') : (isSongCardForm() ? 'New song' : 'New card') }}</p>
             <h3>{{ selectedBoardTitle() }}</h3>
           </div>
-          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDialog()">
+          <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDialog()" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -3559,19 +3559,19 @@
               <div class="boards-card-wizard__head">
                 <span class="material-symbols-outlined">music_note</span>
                 <div>
-                  <p>Song Wizard</p>
+                  <p i18n>Song Wizard</p>
                   <h4>{{ editingCardId() ? 'Improve this song' : 'Create this song' }}</h4>
                 </div>
               </div>
               <label>
-                <span>Describe the song</span>
+                <span i18n>Describe the song</span>
                 <textarea
                   rows="4"
                   maxlength="360"
                   placeholder="Type a song title, artist, album, Spotify link, or a short description..."
                   [value]="cardWizardPrompt()"
                   (input)="cardWizardPrompt.set($any($event.target).value)"
-                ></textarea>
+                 i18n-placeholder></textarea>
               </label>
               <div class="boards-card-wizard__actions">
                 <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="runCardWizard()">
@@ -3599,16 +3599,16 @@
               <div class="boards-form-section__head">
                 <span class="material-symbols-outlined">library_music</span>
                 <div>
-                  <p>Review</p>
-                  <h4>Verify and save</h4>
+                  <p i18n>Review</p>
+                  <h4 i18n>Verify and save</h4>
                 </div>
               </div>
-            <section class="card-memory-gallery" aria-label="Card photo memories">
+            <section class="card-memory-gallery" aria-label="Card photo memories" i18n-aria-label>
               <div class="card-memory-gallery__head">
                 <div>
-                  <span class="card-memory-gallery__eyebrow"><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
-                  <strong>Add the moments behind this card</strong>
-                  <small>Choose several photos now or come back anytime. The first photo is the card cover.</small>
+                  <span class="card-memory-gallery__eyebrow" i18n><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
+                  <strong i18n>Add the moments behind this card</strong>
+                  <small i18n>Choose several photos now or come back anytime. The first photo is the card cover.</small>
                 </div>
                 <label class="card-memory-gallery__add">
                   <span class="material-symbols-outlined">add_photo_alternate</span>
@@ -3621,14 +3621,14 @@
                   @for (photo of cardDraftImages(); track photo; let index = $index) {
                     <figure [class.card-memory-gallery__item--cover]="index === 0">
                       <img [src]="photo" [alt]="'Card photo ' + (index + 1)" />
-                      @if (index === 0) { <span>Cover</span> }
+                      @if (index === 0) { <span i18n>Cover</span> }
                       <div class="card-memory-gallery__item-actions">
                         @if (index > 0) {
-                          <button type="button" title="Make cover" [attr.aria-label]="'Make photo ' + (index + 1) + ' the cover'" (click)="makeCardDraftImageCover(index)">
+                          <button type="button" title="Make cover" [attr.aria-label]="'Make photo ' + (index + 1) + ' the cover'" (click)="makeCardDraftImageCover(index)" i18n-title>
                             <span class="material-symbols-outlined">wallpaper</span>
                           </button>
                         }
-                        <button type="button" title="Remove photo" [attr.aria-label]="'Remove photo ' + (index + 1)" (click)="removeCardDraftImage(index)">
+                        <button type="button" title="Remove photo" [attr.aria-label]="'Remove photo ' + (index + 1)" (click)="removeCardDraftImage(index)" i18n-title>
                           <span class="material-symbols-outlined">close</span>
                         </button>
                       </div>
@@ -3637,21 +3637,21 @@
                   @if (cardDraftImages().length < 12) {
                     <label class="card-memory-gallery__tile-add">
                       <span class="material-symbols-outlined">add</span>
-                      <span>Add more</span>
+                      <span i18n>Add more</span>
                       <input type="file" accept="image/*" multiple (change)="onCardImageSelected($event)" />
                     </label>
                   }
                 </div>
               }
             </section>
-            <div class="boards-card-image-actions boards-card-image-actions--creative" aria-label="More ways to add a photo">
+            <div class="boards-card-image-actions boards-card-image-actions--creative" aria-label="More ways to add a photo" i18n-aria-label>
                 <button
                   type="button"
                   class="boards-card-image-action"
                   [class.boards-card-image-action--active]="cardImageToolMode() === 'generate'"
                   [attr.aria-expanded]="cardImageToolMode() === 'generate'"
                   (click)="openCardImageTool('generate')"
-                >
+                 i18n>
                   <span class="material-symbols-outlined">auto_awesome</span>
                   Generate
                 </button>
@@ -3668,12 +3668,12 @@
             </div>
 
             @if (cardImageToolMode() === 'generate') {
-              <section class="boards-card-image-tool" aria-label="Generate a card picture">
+              <section class="boards-card-image-tool" aria-label="Generate a card picture" i18n-aria-label>
                 <div class="boards-card-image-tool__head">
                   <span class="material-symbols-outlined">auto_awesome</span>
                   <div>
-                    <strong>Nano Banana</strong>
-                    <small>Generate original card art</small>
+                    <strong i18n>Nano Banana</strong>
+                    <small i18n>Generate original card art</small>
                   </div>
                 </div>
                 <div class="boards-card-image-tool__prompt">
@@ -3683,7 +3683,7 @@
                     placeholder="Describe the picture you want..."
                     [value]="cardImagePrompt()"
                     (input)="cardImagePrompt.set($any($event.target).value)"
-                  ></textarea>
+                   i18n-placeholder></textarea>
                   <button type="button" class="boards-primary-action" [disabled]="cardImageGenerating() || cardImagePrompt().trim().length < 3" (click)="generateCardImage()">
                     <span class="material-symbols-outlined">{{ cardImageGenerating() ? 'progress_activity' : 'auto_awesome' }}</span>
                     {{ cardImageGenerating() ? 'Creating...' : (cardGeneratedImageUrl() ? 'Generate again' : 'Generate') }}
@@ -3691,10 +3691,10 @@
                 </div>
                 @if (cardGeneratedImageUrl()) {
                   <div class="boards-card-image-candidate">
-                    <img [src]="cardGeneratedImageUrl()" alt="Generated card image preview" />
+                    <img [src]="cardGeneratedImageUrl()" alt="Generated card image preview"  i18n-alt/>
                     <div>
                       <span>{{ cardGeneratedImageModel() || 'Nano Banana' }}</span>
-                      <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()">
+                      <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()" i18n>
                         <span class="material-symbols-outlined">check</span>
                         Add to card
                       </button>
@@ -3706,11 +3706,11 @@
                 }
               </section>
             } @else if (cardImageToolMode() === 'search') {
-              <section class="boards-card-image-tool" aria-label="Find a card picture">
+              <section class="boards-card-image-tool" aria-label="Find a card picture" i18n-aria-label>
                 <div class="boards-card-image-tool__head">
                   <span class="material-symbols-outlined">image_search</span>
                   <div>
-                    <strong>Find photo</strong>
+                    <strong i18n>Find photo</strong>
                     <small>{{ cardImageSearchLoading() ? 'Searching Wikimedia Commons...' : 'Search reusable images for this card' }}</small>
                   </div>
                 </div>
@@ -3722,8 +3722,8 @@
                     [value]="cardImageSearchQuery()"
                     (input)="cardImageSearchQuery.set($any($event.target).value)"
                     (keydown.enter)="$event.preventDefault(); searchCardImages()"
-                  />
-                  <button type="button" aria-label="Search pictures" title="Search pictures" [disabled]="cardImageSearchLoading() || cardImageSearchQuery().trim().length < 2" (click)="searchCardImages()">
+                   i18n-placeholder/>
+                  <button type="button" aria-label="Search pictures" title="Search pictures" [disabled]="cardImageSearchLoading() || cardImageSearchQuery().trim().length < 2" (click)="searchCardImages()" i18n-aria-label i18n-title>
                     <span class="material-symbols-outlined">{{ cardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
                   </button>
                 </div>
@@ -3731,18 +3731,18 @@
                   <div class="boards-card-image-searching" role="status" aria-live="polite">
                     <span class="material-symbols-outlined">progress_activity</span>
                     <div>
-                      <strong>Searching photos...</strong>
-                      <small>Finding the best matches for {{ cardImageSearchQuery() }}</small>
+                      <strong i18n>Searching photos...</strong>
+                      <small i18n>Finding the best matches for {{ cardImageSearchQuery() }}</small>
                     </div>
                   </div>
                 }
                 @if (currentCardImageSearchResult(); as result) {
                   <div class="boards-card-image-browser">
-                    <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)">
+                    <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)" i18n-aria-label>
                       <span class="material-symbols-outlined">chevron_left</span>
                     </button>
                     <img [src]="result.imageUrl" [alt]="result.title" />
-                    <button type="button" aria-label="Next picture" (click)="stepCardImageSearch(1)">
+                    <button type="button" aria-label="Next picture" (click)="stepCardImageSearch(1)" i18n-aria-label>
                       <span class="material-symbols-outlined">chevron_right</span>
                     </button>
                   </div>
@@ -3758,7 +3758,7 @@
                       {{ cardImageApplying() ? 'Adding...' : 'Add to card' }}
                     </button>
                   </div>
-                  <div class="boards-card-image-thumbs" aria-label="Image search results">
+                  <div class="boards-card-image-thumbs" aria-label="Image search results" i18n-aria-label>
                     @for (item of cardImageSearchResults(); track item.token; let index = $index) {
                       <button
                         type="button"
@@ -3779,7 +3779,7 @@
             }
               <div class="boards-form__split">
                 <label>
-                  <span>Song title</span>
+                  <span i18n>Song title</span>
                   <input
                     type="text"
                     required
@@ -3787,41 +3787,41 @@
                     placeholder="Song title"
                     [value]="cardDraft().title"
                     (input)="updateCardDraft('title', $any($event.target).value)"
-                  />
+                   i18n-placeholder/>
                 </label>
                 <label>
-                  <span>Artist</span>
+                  <span i18n>Artist</span>
                   <input
                     type="text"
                     maxlength="120"
                     placeholder="Artist"
                     [value]="cardDraft().spotifyArtistName || cardDraft().subtitle"
                     (input)="onSongArtistInput($any($event.target).value)"
-                  />
+                   i18n-placeholder/>
                 </label>
               </div>
               <label>
-                <span>Album</span>
+                <span i18n>Album</span>
                 <input
                   type="text"
                   maxlength="140"
                   placeholder="Album"
                   [value]="cardDraft().spotifyAlbumName"
                   (input)="updateCardDraft('spotifyAlbumName', $any($event.target).value)"
-                />
+                 i18n-placeholder/>
               </label>
               <label>
-                <span>Notes</span>
+                <span i18n>Notes</span>
                 <textarea
                   rows="3"
                   maxlength="260"
                   placeholder="Why this song belongs here."
                   [value]="cardDraft().notes"
                   (input)="updateCardDraft('notes', $any($event.target).value)"
-                ></textarea>
+                 i18n-placeholder></textarea>
               </label>
               @if (cardDraft().spotifyTrackUrl) {
-                <a class="boards-ghost-action" [href]="cardDraft().spotifyTrackUrl" target="_blank" rel="noopener">
+                <a class="boards-ghost-action" [href]="cardDraft().spotifyTrackUrl" target="_blank" rel="noopener" i18n>
                   <span class="material-symbols-outlined">open_in_new</span>
                   Open Spotify
                 </a>
@@ -3833,8 +3833,8 @@
             }
 
             <div class="boards-form__actions">
-              <button type="button" class="boards-ghost-action" (click)="closeCardDialog()">Cancel</button>
-              <button type="submit" class="boards-primary-action">
+              <button type="button" class="boards-ghost-action" (click)="closeCardDialog()" i18n>Cancel</button>
+              <button type="submit" class="boards-primary-action" i18n>
                 <span class="material-symbols-outlined">check</span>
                 Save song
               </button>
@@ -3844,19 +3844,19 @@
               <div class="boards-card-wizard__head">
                 <span class="material-symbols-outlined">auto_awesome</span>
                 <div>
-                  <p>Card Wizard</p>
+                  <p i18n>Card Wizard</p>
                   <h4>{{ editingCardId() ? 'Improve this card' : 'Create this card' }}</h4>
                 </div>
               </div>
               <label>
-                <span>Describe the card</span>
+                <span i18n>Describe the card</span>
                 <textarea
                   rows="4"
                   maxlength="360"
                   placeholder="Type a place, restaurant, idea, memory, shop, or anything you want on this board..."
                   [value]="cardWizardPrompt()"
                   (input)="cardWizardPrompt.set($any($event.target).value)"
-                ></textarea>
+                 i18n-placeholder></textarea>
               </label>
               <div class="boards-card-wizard__actions">
                 <button type="button" class="boards-primary-action" [disabled]="!cardWizardCanGenerate()" (click)="runCardWizard()">
@@ -3873,16 +3873,16 @@
               <div class="boards-form-section__head">
                 <span class="material-symbols-outlined">sticky_note_2</span>
                 <div>
-                  <p>Review</p>
-                  <h4>Edit anything before saving</h4>
+                  <p i18n>Review</p>
+                  <h4 i18n>Edit anything before saving</h4>
                 </div>
               </div>
-            <section class="card-memory-gallery" aria-label="Card photo memories">
+            <section class="card-memory-gallery" aria-label="Card photo memories" i18n-aria-label>
               <div class="card-memory-gallery__head">
                 <div>
-                  <span class="card-memory-gallery__eyebrow"><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
-                  <strong>Add the moments behind this card</strong>
-                  <small>Choose several photos now or come back anytime. The first photo is the card cover.</small>
+                  <span class="card-memory-gallery__eyebrow" i18n><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
+                  <strong i18n>Add the moments behind this card</strong>
+                  <small i18n>Choose several photos now or come back anytime. The first photo is the card cover.</small>
                 </div>
                 <label class="card-memory-gallery__add">
                   <span class="material-symbols-outlined">add_photo_alternate</span>
@@ -3895,14 +3895,14 @@
                   @for (photo of cardDraftImages(); track photo; let index = $index) {
                     <figure [class.card-memory-gallery__item--cover]="index === 0">
                       <img [src]="photo" [alt]="'Card photo ' + (index + 1)" />
-                      @if (index === 0) { <span>Cover</span> }
+                      @if (index === 0) { <span i18n>Cover</span> }
                       <div class="card-memory-gallery__item-actions">
                         @if (index > 0) {
-                          <button type="button" title="Make cover" [attr.aria-label]="'Make photo ' + (index + 1) + ' the cover'" (click)="makeCardDraftImageCover(index)">
+                          <button type="button" title="Make cover" [attr.aria-label]="'Make photo ' + (index + 1) + ' the cover'" (click)="makeCardDraftImageCover(index)" i18n-title>
                             <span class="material-symbols-outlined">wallpaper</span>
                           </button>
                         }
-                        <button type="button" title="Remove photo" [attr.aria-label]="'Remove photo ' + (index + 1)" (click)="removeCardDraftImage(index)">
+                        <button type="button" title="Remove photo" [attr.aria-label]="'Remove photo ' + (index + 1)" (click)="removeCardDraftImage(index)" i18n-title>
                           <span class="material-symbols-outlined">close</span>
                         </button>
                       </div>
@@ -3911,21 +3911,21 @@
                   @if (cardDraftImages().length < 12) {
                     <label class="card-memory-gallery__tile-add">
                       <span class="material-symbols-outlined">add</span>
-                      <span>Add more</span>
+                      <span i18n>Add more</span>
                       <input type="file" accept="image/*" multiple (change)="onCardImageSelected($event)" />
                     </label>
                   }
                 </div>
               }
             </section>
-            <div class="boards-card-image-actions boards-card-image-actions--creative" aria-label="More ways to add a photo">
+            <div class="boards-card-image-actions boards-card-image-actions--creative" aria-label="More ways to add a photo" i18n-aria-label>
                 <button
                   type="button"
                   class="boards-card-image-action"
                   [class.boards-card-image-action--active]="cardImageToolMode() === 'generate'"
                   [attr.aria-expanded]="cardImageToolMode() === 'generate'"
                   (click)="openCardImageTool('generate')"
-                >
+                 i18n>
                   <span class="material-symbols-outlined">auto_awesome</span>
                   Generate
                 </button>
@@ -3942,12 +3942,12 @@
             </div>
 
             @if (cardImageToolMode() === 'generate') {
-              <section class="boards-card-image-tool" aria-label="Generate a card picture">
+              <section class="boards-card-image-tool" aria-label="Generate a card picture" i18n-aria-label>
                 <div class="boards-card-image-tool__head">
                   <span class="material-symbols-outlined">auto_awesome</span>
                   <div>
-                    <strong>Nano Banana</strong>
-                    <small>Generate original card art</small>
+                    <strong i18n>Nano Banana</strong>
+                    <small i18n>Generate original card art</small>
                   </div>
                 </div>
                 <div class="boards-card-image-tool__prompt">
@@ -3957,7 +3957,7 @@
                     placeholder="Describe the picture you want..."
                     [value]="cardImagePrompt()"
                     (input)="cardImagePrompt.set($any($event.target).value)"
-                  ></textarea>
+                   i18n-placeholder></textarea>
                   <button type="button" class="boards-primary-action" [disabled]="cardImageGenerating() || cardImagePrompt().trim().length < 3" (click)="generateCardImage()">
                     <span class="material-symbols-outlined">{{ cardImageGenerating() ? 'progress_activity' : 'auto_awesome' }}</span>
                     {{ cardImageGenerating() ? 'Creating...' : (cardGeneratedImageUrl() ? 'Generate again' : 'Generate') }}
@@ -3965,10 +3965,10 @@
                 </div>
                 @if (cardGeneratedImageUrl()) {
                   <div class="boards-card-image-candidate">
-                    <img [src]="cardGeneratedImageUrl()" alt="Generated card image preview" />
+                    <img [src]="cardGeneratedImageUrl()" alt="Generated card image preview"  i18n-alt/>
                     <div>
                       <span>{{ cardGeneratedImageModel() || 'Nano Banana' }}</span>
-                      <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()">
+                      <button type="button" class="boards-primary-action" (click)="useGeneratedCardImage()" i18n>
                         <span class="material-symbols-outlined">check</span>
                         Add to card
                       </button>
@@ -3980,11 +3980,11 @@
                 }
               </section>
             } @else if (cardImageToolMode() === 'search') {
-              <section class="boards-card-image-tool" aria-label="Find a card picture">
+              <section class="boards-card-image-tool" aria-label="Find a card picture" i18n-aria-label>
                 <div class="boards-card-image-tool__head">
                   <span class="material-symbols-outlined">image_search</span>
                   <div>
-                    <strong>Find photo</strong>
+                    <strong i18n>Find photo</strong>
                     <small>{{ cardImageSearchLoading() ? 'Searching Wikimedia Commons...' : 'Search reusable images for this card' }}</small>
                   </div>
                 </div>
@@ -3996,8 +3996,8 @@
                     [value]="cardImageSearchQuery()"
                     (input)="cardImageSearchQuery.set($any($event.target).value)"
                     (keydown.enter)="$event.preventDefault(); searchCardImages()"
-                  />
-                  <button type="button" aria-label="Search pictures" title="Search pictures" [disabled]="cardImageSearchLoading() || cardImageSearchQuery().trim().length < 2" (click)="searchCardImages()">
+                   i18n-placeholder/>
+                  <button type="button" aria-label="Search pictures" title="Search pictures" [disabled]="cardImageSearchLoading() || cardImageSearchQuery().trim().length < 2" (click)="searchCardImages()" i18n-aria-label i18n-title>
                     <span class="material-symbols-outlined">{{ cardImageSearchLoading() ? 'progress_activity' : 'search' }}</span>
                   </button>
                 </div>
@@ -4005,18 +4005,18 @@
                   <div class="boards-card-image-searching" role="status" aria-live="polite">
                     <span class="material-symbols-outlined">progress_activity</span>
                     <div>
-                      <strong>Searching photos...</strong>
-                      <small>Finding the best matches for {{ cardImageSearchQuery() }}</small>
+                      <strong i18n>Searching photos...</strong>
+                      <small i18n>Finding the best matches for {{ cardImageSearchQuery() }}</small>
                     </div>
                   </div>
                 }
                 @if (currentCardImageSearchResult(); as result) {
                   <div class="boards-card-image-browser">
-                    <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)">
+                    <button type="button" aria-label="Previous picture" (click)="stepCardImageSearch(-1)" i18n-aria-label>
                       <span class="material-symbols-outlined">chevron_left</span>
                     </button>
                     <img [src]="result.imageUrl" [alt]="result.title" />
-                    <button type="button" aria-label="Next picture" (click)="stepCardImageSearch(1)">
+                    <button type="button" aria-label="Next picture" (click)="stepCardImageSearch(1)" i18n-aria-label>
                       <span class="material-symbols-outlined">chevron_right</span>
                     </button>
                   </div>
@@ -4032,7 +4032,7 @@
                       {{ cardImageApplying() ? 'Adding...' : 'Add to card' }}
                     </button>
                   </div>
-                  <div class="boards-card-image-thumbs" aria-label="Image search results">
+                  <div class="boards-card-image-thumbs" aria-label="Image search results" i18n-aria-label>
                     @for (item of cardImageSearchResults(); track item.token; let index = $index) {
                       <button
                         type="button"
@@ -4053,7 +4053,7 @@
             }
               <div class="boards-form__split">
                 <label>
-                  <span>Title</span>
+                  <span i18n>Title</span>
                   <input
                     type="text"
                     required
@@ -4061,31 +4061,31 @@
                     placeholder="Grand Lux Cafe"
                     [value]="cardDraft().title"
                     (input)="updateCardDraft('title', $any($event.target).value)"
-                  />
+                   i18n-placeholder/>
                 </label>
                 <label>
-                  <span>Subtitle</span>
+                  <span i18n>Subtitle</span>
                   <input
                     type="text"
                     maxlength="90"
                     placeholder="Venetian Las Vegas"
                     [value]="cardDraft().subtitle"
                     (input)="updateCardDraft('subtitle', $any($event.target).value)"
-                  />
+                   i18n-placeholder/>
                 </label>
               </div>
               <label>
-                <span>Notes</span>
+                <span i18n>Notes</span>
                 <textarea
                   rows="3"
                   maxlength="260"
                   placeholder="Why this belongs on the board."
                   [value]="cardDraft().notes"
                   (input)="updateCardDraft('notes', $any($event.target).value)"
-                ></textarea>
+                 i18n-placeholder></textarea>
               </label>
               <label>
-                <span>Type</span>
+                <span i18n>Type</span>
                 <select
                   [value]="cardDraft().type"
                   (change)="updateCardDraft('type', $any($event.target).value)"
@@ -4102,8 +4102,8 @@
             }
 
             <div class="boards-form__actions">
-              <button type="button" class="boards-ghost-action" (click)="closeCardDialog()">Cancel</button>
-              <button type="submit" class="boards-primary-action">
+              <button type="button" class="boards-ghost-action" (click)="closeCardDialog()" i18n>Cancel</button>
+              <button type="submit" class="boards-primary-action" i18n>
                 <span class="material-symbols-outlined">check</span>
                 Save card
               </button>

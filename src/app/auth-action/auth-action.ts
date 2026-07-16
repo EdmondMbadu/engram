@@ -23,8 +23,8 @@ export class AuthActionComponent {
 
   readonly state = signal<AuthActionState>('processing');
   readonly isSubmitting = signal(false);
-  readonly title = signal('Checking link');
-  readonly description = signal('Please wait while we validate this email action.');
+  readonly title = signal($localize`Checking link`);
+  readonly description = signal($localize`Please wait while we validate this email action.`);
   readonly submitError = signal<string | null>(null);
 
   readonly form = this.formBuilder.group(
@@ -46,8 +46,8 @@ export class AuthActionComponent {
   async saveNewPassword(): Promise<void> {
     if (!this.resetCode) {
       this.state.set('error');
-      this.title.set('Password reset unavailable');
-      this.description.set('Request a new password reset email and try again.');
+      this.title.set($localize`Password reset unavailable`);
+      this.description.set($localize`Request a new password reset email and try again.`);
       return;
     }
 
@@ -65,8 +65,8 @@ export class AuthActionComponent {
         this.form.controls.password.getRawValue(),
       );
       this.state.set('success');
-      this.title.set('Password updated');
-      this.description.set('Your password has been reset. Sign in with your new password.');
+      this.title.set($localize`Password updated`);
+      this.description.set($localize`Your password has been reset. Sign in with your new password.`);
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
     } finally {
@@ -111,37 +111,37 @@ export class AuthActionComponent {
               return;
             }
             this.state.set('success');
-            this.title.set('Email verified');
-            this.description.set('Your email has been verified. You can continue now.');
+            this.title.set($localize`Email verified`);
+            this.description.set($localize`Your email has been verified. You can continue now.`);
             return;
           case 'resetPassword':
             await this.authService.validatePasswordResetCode(oobCode);
             this.resetCode = oobCode;
             this.state.set('ready');
-            this.title.set('Choose a new password');
-            this.description.set('Set a new password for your LivingWiki account.');
+            this.title.set($localize`Choose a new password`);
+            this.description.set($localize`Set a new password for your LivingWiki account.`);
             return;
           case 'recoverEmail': {
             const restoredEmail = await this.authService.restoreEmailFromCode(oobCode);
             this.state.set('success');
-            this.title.set('Email restored');
+            this.title.set($localize`Email restored`);
             this.description.set(
               restoredEmail
                 ? `${restoredEmail} has been restored for this account.`
-                : 'Your email address has been restored for this account.',
+                : $localize`Your email address has been restored for this account.`,
             );
             return;
           }
           default:
             this.state.set('error');
-            this.title.set('Unsupported action');
-            this.description.set('This email action is not supported in the app.');
+            this.title.set($localize`Unsupported action`);
+            this.description.set($localize`This email action is not supported in the app.`);
         }
       } catch (error) {
         this.state.set('error');
         this.submitError.set(this.authService.toFriendlyError(error));
-        this.title.set('Link unavailable');
-        this.description.set('Request a fresh email and try again.');
+        this.title.set($localize`Link unavailable`);
+        this.description.set($localize`Request a fresh email and try again.`);
       }
       return;
     }
@@ -154,30 +154,30 @@ export class AuthActionComponent {
 
         if (this.authService.needsVerificationForUser(user ?? this.authService.user())) {
           this.state.set('error');
-          this.title.set('Verification not confirmed');
+          this.title.set($localize`Verification not confirmed`);
           this.description.set(
-            'Open the latest verification email and make sure the link finishes before continuing.',
+            $localize`Open the latest verification email and make sure the link finishes before continuing.`,
           );
           return;
         }
       }
 
       this.state.set('success');
-      this.title.set('Email verified');
-      this.description.set('Your email has been verified. You can continue to your workspace.');
+      this.title.set($localize`Email verified`);
+      this.description.set($localize`Your email has been verified. You can continue to your workspace.`);
       return;
     }
 
     if (flow === 'resetPasswordComplete') {
       this.state.set('success');
-      this.title.set('Password reset complete');
-      this.description.set('Your password has been updated. Sign in with your new password.');
+      this.title.set($localize`Password reset complete`);
+      this.description.set($localize`Your password has been updated. Sign in with your new password.`);
       return;
     }
 
     this.state.set('error');
-    this.title.set('Invalid link');
-    this.description.set('This email action link is missing required information.');
+    this.title.set($localize`Invalid link`);
+    this.description.set($localize`This email action link is missing required information.`);
   }
 
   private getRedirectUrl(): string {

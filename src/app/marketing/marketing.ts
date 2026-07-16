@@ -22,10 +22,10 @@ export class MarketingComponent implements OnInit {
   private readonly atlasService = inject(AtlasService);
 
   navItems = [
-    { label: 'Public Wikis', href: '#public-wikis' },
-    { label: 'Features', href: '#features' },
-    { label: 'Security', href: '#security' },
-    { label: 'Pricing', href: '#pricing' },
+    { label: $localize`Public Wikis`, href: '#public-wikis' },
+    { label: $localize`Features`, href: '#features' },
+    { label: $localize`Security`, href: '#security' },
+    { label: $localize`Pricing`, href: '#pricing' },
   ];
 
   readonly isProductVideoOpen = signal(false);
@@ -38,23 +38,23 @@ export class MarketingComponent implements OnInit {
 
   workflowSteps = [
     {
-      title: 'Reading document',
-      description: 'PDFs, Whitepapers, and Code repositories analyzed.',
+      title: $localize`Reading document`,
+      description: $localize`PDFs, Whitepapers, and Code repositories analyzed.`,
       icon: 'upload_file',
     },
     {
-      title: 'Extracting knowledge',
-      description: 'Semantic entities and logic chains mapped in real-time.',
+      title: $localize`Extracting knowledge`,
+      description: $localize`Semantic entities and logic chains mapped in real-time.`,
       icon: 'psychology',
     },
     {
-      title: 'Updating wiki',
-      description: 'Your private encyclopedia evolves with every page read.',
+      title: $localize`Updating wiki`,
+      description: $localize`Your private encyclopedia evolves with every page read.`,
       icon: 'account_tree',
     },
     {
-      title: 'Done',
-      description: 'Instantly queryable, forever stored in your LivingWiki.',
+      title: $localize`Done`,
+      description: $localize`Instantly queryable, forever stored in your LivingWiki.`,
       icon: 'check_circle',
     },
   ];

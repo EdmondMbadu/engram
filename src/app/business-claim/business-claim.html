@@ -8,15 +8,15 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
       <a routerLink="/" class="flex items-center text-lg font-bold text-[var(--text)]">
         <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
       </a>
 
       <div class="flex items-center gap-2 sm:gap-3">
-        <a routerLink="/business" class="hidden text-xs font-bold uppercase text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+        <a routerLink="/business" class="hidden text-xs font-bold uppercase text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex" i18n>
           Business
         </a>
-        <a routerLink="/dymaxion" class="hidden text-xs font-bold uppercase text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+        <a routerLink="/dymaxion" class="hidden text-xs font-bold uppercase text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex" i18n>
           City map
         </a>
         <app-theme-toggle></app-theme-toggle>
@@ -31,25 +31,25 @@
         <div class="flex flex-wrap items-center gap-3">
           <span class="claim-pill">
             <span class="claim-pill__dot"></span>
-            <span>Business claim</span>
+            <span i18n>Business claim</span>
           </span>
           <span class="claim-pill claim-pill--soft">
             <span class="material-symbols-outlined text-sm">verified</span>
-            <span>Account-owned setup</span>
+            <span i18n>Account-owned setup</span>
           </span>
         </div>
-        <h1 class="mt-6 max-w-4xl text-4xl font-black leading-[0.98] text-[var(--text)] sm:text-6xl">
+        <h1 class="mt-6 max-w-4xl text-4xl font-black leading-[0.98] text-[var(--text)] sm:text-6xl" i18n>
           Your Local Insider
           <span class="claim-gradient-text block">Any City. Any Language.</span>
         </h1>
-        <p class="mt-5 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg sm:leading-8">
+        <p class="mt-5 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg sm:leading-8" i18n>
           Claim the page, generate the QR badge, and launch an AI front desk that can answer calls and customer questions in 60+ languages.
         </p>
         <div class="mt-6 flex flex-wrap gap-2">
-          <span class="claim-chip"><span class="material-symbols-outlined">support_agent</span><span>60+ languages</span></span>
-          <span class="claim-chip"><span class="material-symbols-outlined">qr_code_2</span><span>Storefront QR badge</span></span>
-          <span class="claim-chip"><span class="material-symbols-outlined">description</span><span>Business documents</span></span>
-          <span class="claim-chip"><span class="material-symbols-outlined">credit_card</span><span>Stripe billing</span></span>
+          <span class="claim-chip"><span class="material-symbols-outlined">support_agent</span><span i18n>60+ languages</span></span>
+          <span class="claim-chip"><span class="material-symbols-outlined">qr_code_2</span><span i18n>Storefront QR badge</span></span>
+          <span class="claim-chip"><span class="material-symbols-outlined">description</span><span i18n>Business documents</span></span>
+          <span class="claim-chip"><span class="material-symbols-outlined">credit_card</span><span i18n>Stripe billing</span></span>
         </div>
       </div>
 
@@ -58,11 +58,11 @@
           <div class="flex items-start gap-4">
             <span class="claim-step">1</span>
             <div class="min-w-0 flex-1">
-              <p class="claim-kicker">Market</p>
-              <h2 class="mt-1 text-xl font-black">Select a city</h2>
+              <p class="claim-kicker" i18n>Market</p>
+              <h2 class="mt-1 text-xl font-black" i18n>Select a city</h2>
               <div class="relative mt-4">
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">City</span>
+                  <span class="text-sm font-bold text-[var(--muted)]" i18n>City</span>
                   <span class="relative mt-2 block">
                     <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">location_city</span>
                     <input
@@ -73,7 +73,7 @@
                       (input)="onCitySearchInput($event)"
                       placeholder="Select a city"
                       autocomplete="off"
-                    />
+                     i18n-placeholder/>
                   </span>
                 </label>
 
@@ -86,18 +86,18 @@
                           <span class="mt-0.5 block truncate text-xs font-semibold text-[var(--muted)]">{{ city.region || 'City wiki' }}</span>
                         </span>
                         @if (city.live) {
-                          <span class="shrink-0 rounded-full bg-[var(--accent)]/12 px-2 py-1 text-[9px] font-black uppercase text-[var(--accent)]">Live</span>
+                          <span class="shrink-0 rounded-full bg-[var(--accent)]/12 px-2 py-1 text-[9px] font-black uppercase text-[var(--accent)]" i18n>Live</span>
                         }
                       </button>
                     } @empty {
-                      <p class="px-4 py-3 text-sm font-semibold text-[var(--muted)]">No city matches yet. Keep typing or open the map.</p>
+                      <p class="px-4 py-3 text-sm font-semibold text-[var(--muted)]" i18n>No city matches yet. Keep typing or open the map.</p>
                     }
                   </div>
                 }
               </div>
 
               <div class="mt-4 flex flex-wrap items-center gap-3">
-                <p class="text-sm font-semibold text-[var(--muted)]">
+                <p class="text-sm font-semibold text-[var(--muted)]" i18n>
                   Current city: <span class="font-black text-[var(--text)]">{{ selectedCityName() }}</span>
                   @if (selectedCityRegion()) {
                     <span> ({{ selectedCityRegion() }})</span>
@@ -105,7 +105,7 @@
                 </p>
                 <a routerLink="/dymaxion" class="inline-flex items-center gap-1 text-sm font-black text-[var(--accent)] underline-offset-4 hover:underline">
                   <span class="material-symbols-outlined text-base">public</span>
-                  <span>Open map</span>
+                  <span i18n>Open map</span>
                 </a>
               </div>
             </div>
@@ -116,11 +116,11 @@
           <div class="flex items-start gap-4">
             <span class="claim-step">2</span>
             <div class="min-w-0 flex-1">
-              <p class="claim-kicker">Listing</p>
-              <h2 class="mt-1 text-xl font-black">Find your business</h2>
+              <p class="claim-kicker" i18n>Listing</p>
+              <h2 class="mt-1 text-xl font-black" i18n>Find your business</h2>
               <div class="relative mt-4">
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Business name</span>
+                  <span class="text-sm font-bold text-[var(--muted)]" i18n>Business name</span>
                   <span class="relative mt-2 block">
                     <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">search</span>
                     <input
@@ -131,7 +131,7 @@
                       (input)="onBusinessQueryInput($event)"
                       placeholder="Example: Brauhaus Schmitz"
                       autocomplete="off"
-                    />
+                     i18n-placeholder/>
                     @if (placeSearchLoading()) {
                       <span class="absolute right-4 top-1/2 inline-block h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent"></span>
                     }
@@ -149,7 +149,7 @@
                         <span class="shrink-0 rounded-full bg-[var(--soft-fill)] px-2 py-1 text-[9px] font-black uppercase text-[var(--muted)]">{{ place.source }}</span>
                       </button>
                     }
-                    <button type="button" class="w-full border-t border-[var(--line)] px-4 py-3 text-left text-sm font-black text-[var(--accent)] hover:bg-[var(--soft-fill)]" (click)="useManualBusiness()">
+                    <button type="button" class="w-full border-t border-[var(--line)] px-4 py-3 text-left text-sm font-black text-[var(--accent)] hover:bg-[var(--soft-fill)]" (click)="useManualBusiness()" i18n>
                       Add as a new business instead
                     </button>
                   </div>
@@ -162,17 +162,17 @@
 
               <div class="mt-4 grid gap-4 sm:grid-cols-2">
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Neighborhood or address</span>
+                  <span class="text-sm font-bold text-[var(--muted)]" i18n>Neighborhood or address</span>
                   <input
                     type="text"
                     class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
                     [value]="neighborhood()"
                     (input)="onNeighborhoodInput($event)"
                     placeholder="Street, neighborhood, or area"
-                  />
+                   i18n-placeholder/>
                 </label>
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Category</span>
+                  <span class="text-sm font-bold text-[var(--muted)]" i18n>Category</span>
                   <select
                     class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
                     [value]="category()"
@@ -201,17 +201,17 @@
                   >{{ hasDuplicateClaim() ? 'block' : reviewedPlaceMatch() ? 'verified' : 'task_alt' }}</span>
                   <div>
                     @if (hasDuplicateClaim()) {
-                      <p class="text-sm font-black text-[var(--text)]">Duplicate check found an existing pending claim.</p>
-                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Use the existing claim for {{ businessName() }} in {{ selectedCityName() }} instead of creating another business page.</p>
+                      <p class="text-sm font-black text-[var(--text)]" i18n>Duplicate check found an existing pending claim.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Use the existing claim for {{ businessName() }} in {{ selectedCityName() }} instead of creating another business page.</p>
                     } @else if (reviewedPlaceMatch()) {
-                      <p class="text-sm font-black text-[var(--text)]">Existing city profile found.</p>
-                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">This will claim the existing place profile rather than creating a duplicate listing.</p>
+                      <p class="text-sm font-black text-[var(--text)]" i18n>Existing city profile found.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>This will claim the existing place profile rather than creating a duplicate listing.</p>
                     } @else if (localDraftForCurrentClaim()) {
-                      <p class="text-sm font-black text-[var(--text)]">Local draft found for this name and city.</p>
-                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">No existing pending claim was found online. You can submit this draft when the details are ready.</p>
+                      <p class="text-sm font-black text-[var(--text)]" i18n>Local draft found for this name and city.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>No existing pending claim was found online. You can submit this draft when the details are ready.</p>
                     } @else {
-                      <p class="text-sm font-black text-[var(--text)]">No duplicate claim found for this name and city.</p>
-                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Claim key: {{ claimKey() }}</p>
+                      <p class="text-sm font-black text-[var(--text)]" i18n>No duplicate claim found for this name and city.</p>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Claim key: {{ claimKey() }}</p>
                     }
                   </div>
                 </div>
@@ -226,24 +226,24 @@
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p class="claim-kicker">Knowledge</p>
-                  <h2 class="mt-1 text-xl font-black">Business guide prompt</h2>
+                  <p class="claim-kicker" i18n>Knowledge</p>
+                  <h2 class="mt-1 text-xl font-black" i18n>Business guide prompt</h2>
                 </div>
                 <button type="button" class="ghost-btn justify-center !px-4 !py-2.5 text-sm" (click)="refineGuidePrompt()">
                   <span class="material-symbols-outlined text-base">auto_awesome</span>
-                  <span>Refine with AI</span>
+                  <span i18n>Refine with AI</span>
                 </button>
               </div>
               <label class="mt-4 block">
-                <span class="text-sm font-bold text-[var(--muted)]">General guide about the business</span>
+                <span class="text-sm font-bold text-[var(--muted)]" i18n>General guide about the business</span>
                 <textarea
                   class="theme-input mt-2 min-h-40 w-full resize-y rounded-xl px-4 py-3 text-base font-semibold leading-7 text-[var(--text)]"
                   [value]="guidePrompt()"
                   (input)="onGuidePromptInput($event)"
                   placeholder="Tell the guide what this business is, what customers ask about, what makes it local, and what it should never guess."
-                ></textarea>
+                 i18n-placeholder></textarea>
               </label>
-              <p class="mt-3 text-sm leading-6 text-[var(--muted)]">
+              <p class="mt-3 text-sm leading-6 text-[var(--muted)]" i18n>
                 This creates the first version of the business guide. Paid plans can add tone control and company documents below so the AI answers with more precision.
               </p>
             </div>
@@ -256,25 +256,25 @@
           <div class="flex items-start gap-4">
             <span class="claim-step">4</span>
             <div class="min-w-0 flex-1">
-              <p class="claim-kicker">Owner</p>
-              <h2 class="mt-1 text-xl font-black">Business admin</h2>
-              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+              <p class="claim-kicker" i18n>Owner</p>
+              <h2 class="mt-1 text-xl font-black" i18n>Business admin</h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)]" i18n>
                 This is the account owner for the claim, payment, documents, and future business edits. Payment is tied to the signed-in account email.
               </p>
               @if (authService.isAuthenticated()) {
                 <div class="mt-4 rounded-2xl border border-emerald-400/35 bg-emerald-400/10 px-4 py-3">
-                  <p class="text-sm font-black text-[var(--text)]">Signed in as {{ authService.email() }}</p>
-                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Stripe checkout and this business claim will be attached to this account.</p>
+                  <p class="text-sm font-black text-[var(--text)]" i18n>Signed in as {{ authService.email() }}</p>
+                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Stripe checkout and this business claim will be attached to this account.</p>
                 </div>
               } @else {
                 <div class="mt-4 rounded-2xl border border-amber-400/40 bg-amber-400/10 px-4 py-3">
-                  <p class="text-sm font-black text-[var(--text)]">Create or sign in before checkout.</p>
-                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Your draft is saved, then payment and business access are tied to the account you use.</p>
+                  <p class="text-sm font-black text-[var(--text)]" i18n>Create or sign in before checkout.</p>
+                  <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Your draft is saved, then payment and business access are tied to the account you use.</p>
                 </div>
               }
               <div class="mt-4 grid gap-4 sm:grid-cols-2">
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Admin name</span>
+                  <span class="text-sm font-bold text-[var(--muted)]" i18n>Admin name</span>
                   <input
                     type="text"
                     class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
@@ -282,10 +282,10 @@
                     (input)="onAdminNameInput($event)"
                     placeholder="Jane Smith"
                     autocomplete="name"
-                  />
+                   i18n-placeholder/>
                 </label>
                 <label class="block">
-                  <span class="text-sm font-bold text-[var(--muted)]">Account email</span>
+                  <span class="text-sm font-bold text-[var(--muted)]" i18n>Account email</span>
                   <input
                     type="email"
                     class="theme-input mt-2 w-full rounded-xl px-4 py-3 text-base font-semibold text-[var(--text)]"
@@ -294,7 +294,7 @@
                     placeholder="jane@example.com"
                     autocomplete="email"
                     [readonly]="authService.isAuthenticated()"
-                  />
+                   i18n-placeholder/>
                 </label>
               </div>
             </div>
@@ -305,38 +305,38 @@
           <div class="flex items-start gap-4">
             <span class="claim-step">5</span>
             <div class="min-w-0 flex-1">
-              <p class="claim-kicker">Badge</p>
-              <h2 class="mt-1 text-xl font-black">24/7 multilingual service</h2>
-              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+              <p class="claim-kicker" i18n>Badge</p>
+              <h2 class="mt-1 text-xl font-black" i18n>24/7 multilingual service</h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)]" i18n>
                 Every claimed business gets an always-on customer-service agent that can answer calls, explain the business, and guide customers in 60+ languages. Customers choose the language when they scan or call, so there is nothing for the business to configure here.
               </p>
               <div class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.08] p-4">
                 <div class="flex flex-wrap items-center gap-2">
                   <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">support_agent</span>
-                  <p class="text-sm font-black text-[var(--text)]">Built-in customer service in 60+ languages</p>
+                  <p class="text-sm font-black text-[var(--text)]" i18n>Built-in customer service in 60+ languages</p>
                 </div>
-                <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)]" i18n>
                   It can handle common questions about hours, menus, services, events, accessibility, directions, nearby recommendations, and what makes the place worth visiting.
                 </p>
               </div>
-              <div class="mt-4 flex flex-wrap gap-2" aria-label="Example supported languages">
+              <div class="mt-4 flex flex-wrap gap-2" aria-label="Example supported languages" i18n-aria-label>
                 @for (language of languages; track language.code) {
                   <span class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-sm font-bold text-[var(--text)]">
                     <span>{{ language.flag }}</span>
                     <span>{{ language.label }}</span>
                   </span>
                 }
-                <span class="inline-flex items-center rounded-full border border-[var(--accent)]/35 bg-[var(--accent)]/10 px-3 py-2 text-sm font-black text-[var(--accent)]">+ more</span>
+                <span class="inline-flex items-center rounded-full border border-[var(--accent)]/35 bg-[var(--accent)]/10 px-3 py-2 text-sm font-black text-[var(--accent)]" i18n>+ more</span>
               </div>
 
               <div class="claim-badge-workbench mt-6">
                 <div class="min-w-0">
                   <div class="flex flex-wrap items-end justify-between gap-3">
                     <div>
-                      <h3 class="text-sm font-black text-[var(--text)]">Badge side icons</h3>
-                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose up to 4 icons that fit this business. The preview updates as you change the selection.</p>
+                      <h3 class="text-sm font-black text-[var(--text)]" i18n>Badge side icons</h3>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Choose up to 4 icons that fit this business. The preview updates as you change the selection.</p>
                     </div>
-                    <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase text-[var(--muted)]">{{ selectedIconCodes().length }}/4 selected</span>
+                    <span class="rounded-full bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase text-[var(--muted)]" i18n>{{ selectedIconCodes().length }}/4 selected</span>
                   </div>
                   <div class="mt-3 flex flex-wrap gap-2">
                     @for (icon of featuredBadgeIcons; track icon.code) {
@@ -367,7 +367,7 @@
                       <span class="material-symbols-outlined text-base">{{ showAllBadgeIcons() ? 'expand_less' : 'add' }}</span>
                       <span>{{ showAllBadgeIcons() ? 'Less icons' : 'More icons' }}</span>
                       @if (!showAllBadgeIcons() && hiddenSelectedIconCount() > 0) {
-                        <span class="rounded-full bg-[var(--accent)]/10 px-2 py-0.5 text-[10px] font-black text-[var(--accent)]">{{ hiddenSelectedIconCount() }} selected</span>
+                        <span class="rounded-full bg-[var(--accent)]/10 px-2 py-0.5 text-[10px] font-black text-[var(--accent)]" i18n>{{ hiddenSelectedIconCount() }} selected</span>
                       }
                     </button>
                   </div>
@@ -415,8 +415,8 @@
 
                 <div class="claim-mini-preview">
                   <div class="flex items-center justify-between gap-3">
-                    <p class="claim-kicker">Live badge</p>
-                    <span class="rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 text-[9px] font-black uppercase text-[var(--muted)]">Updates live</span>
+                    <p class="claim-kicker" i18n>Live badge</p>
+                    <span class="rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 text-[9px] font-black uppercase text-[var(--muted)]" i18n>Updates live</span>
                   </div>
                   <svg viewBox="0 0 900 900" role="img" [attr.aria-label]="'Live badge icon preview for ' + businessName()" class="mt-3 aspect-square w-full">
                     <defs>
@@ -462,10 +462,10 @@
                     <text x="450" y="258" text-anchor="middle" font-size="28">🌍</text>
 
                     <text font-family="Inter, Arial, sans-serif" font-size="34" font-weight="900" fill="#f8f8f2" dy="8" filter="url(#claimMiniTextLift)">
-                      <textPath href="#claimMiniTopArc" startOffset="50%" text-anchor="middle" textLength="510" lengthAdjust="spacingAndGlyphs">{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
+                      <textPath href="#claimMiniTopArc" startOffset="50%" text-anchor="middle" textLength="510" lengthAdjust="spacingAndGlyphs" i18n>{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
                     </text>
                     <text font-family="Inter, Arial, sans-serif" font-size="48" font-weight="900" fill="#f8f8f2" letter-spacing="1" dy="22" filter="url(#claimMiniTextLift)">
-                      <textPath href="#claimMiniBottomArc" startOffset="50%" text-anchor="middle" textLength="470" lengthAdjust="spacingAndGlyphs">60+ Languages</textPath>
+                      <textPath href="#claimMiniBottomArc" startOffset="50%" text-anchor="middle" textLength="470" lengthAdjust="spacingAndGlyphs" i18n>60+ Languages</textPath>
                     </text>
 
                     <rect x="278" y="296" width="344" height="344" rx="28" fill="#fffdf6" stroke="url(#claimMiniGoldEdge)" stroke-width="8" filter="url(#claimMiniCoinShadow)"></rect>
@@ -480,9 +480,9 @@
                       </g>
                     }
                     <rect x="290" y="664" width="320" height="42" rx="21" fill="url(#claimMiniGoldEdge)" stroke="#8f591e" stroke-width="2"></rect>
-                    <text x="450" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#10391f">Powered by LivingWiki.com</text>
+                    <text x="450" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#10391f" i18n>Powered by LivingWiki.com</text>
                   </svg>
-                  <p class="mt-3 text-xs font-semibold leading-5 text-[var(--muted)]">
+                  <p class="mt-3 text-xs font-semibold leading-5 text-[var(--muted)]" i18n>
                     Icon choices appear on both sides of the printed badge.
                   </p>
                 </div>
@@ -498,18 +498,18 @@
               <div class="claim-subpanel p-5">
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div class="min-w-0">
-                    <p class="claim-kicker">Business AI</p>
-                    <h2 class="mt-1 text-2xl font-black text-[var(--text)]">AI setup</h2>
+                    <p class="claim-kicker" i18n>Business AI</p>
+                    <h2 class="mt-1 text-2xl font-black text-[var(--text)]" i18n>AI setup</h2>
                     @if (paidFeaturesUnlocked()) {
-                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                         Payment is confirmed. Tone control, company documents, conversation details, and 200+ conversation minutes are unlocked.
                       </p>
                     } @else if (paidBusinessPlan()) {
-                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                         {{ selectedBusinessPlanOption().label }} is selected. Complete checkout to unlock AI tone, company documents, conversation details, and 200+ conversation minutes.
                       </p>
                     } @else {
-                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                      <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                         Free preview is selected. Tone and document upload stay locked, with up to 15 call minutes while billing is finalized.
                       </p>
                     }
@@ -539,7 +539,7 @@
                       (click)="selectBusinessPlan(plan.id)"
                     >
                       @if (plan.id === 'local') {
-                        <span class="claim-plan__ribbon">Default</span>
+                        <span class="claim-plan__ribbon" i18n>Default</span>
                       }
                       <span class="material-symbols-outlined claim-plan__check">check_circle</span>
                       <span class="claim-plan__label">{{ plan.label }}</span>
@@ -564,8 +564,8 @@
                   <div class="mt-4 rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.08] p-4">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <div class="min-w-0">
-                        <p class="text-sm font-black text-[var(--text)]">Complete payment to unlock business AI</p>
-                        <p class="mt-1 text-sm leading-6 text-[var(--muted)]">
+                        <p class="text-sm font-black text-[var(--text)]" i18n>Complete payment to unlock business AI</p>
+                        <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>
                           You will return here after checkout, then document upload continues from this same draft.
                         </p>
                       </div>
@@ -587,8 +587,8 @@
                     </div>
                     @if (!authService.isAuthenticated()) {
                       <div class="mt-3 flex flex-wrap items-center gap-3 text-xs font-semibold text-[var(--muted)]">
-                        <span>Already have an account?</span>
-                        <a routerLink="/sign-in" [queryParams]="accountRedirectParams()" class="font-black text-[var(--accent)] underline-offset-4 hover:underline" (click)="saveCurrentDraftForAccount()">Sign in first</a>
+                        <span i18n>Already have an account?</span>
+                        <a routerLink="/sign-in" [queryParams]="accountRedirectParams()" class="font-black text-[var(--accent)] underline-offset-4 hover:underline" (click)="saveCurrentDraftForAccount()" i18n>Sign in first</a>
                       </div>
                     }
                     @if (checkoutError()) {
@@ -604,8 +604,8 @@
                 <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5">
                   <div class="flex items-center justify-between gap-3">
                     <div>
-                      <h3 class="text-sm font-black text-[var(--text)]">AI tone</h3>
-                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Choose how the customer-service agent should sound on calls and chat.</p>
+                      <h3 class="text-sm font-black text-[var(--text)]" i18n>AI tone</h3>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Choose how the customer-service agent should sound on calls and chat.</p>
                     </div>
                     @if (!paidFeaturesUnlocked()) {
                       <span class="material-symbols-outlined text-[var(--muted)]">lock</span>
@@ -632,7 +632,7 @@
                       </button>
                     }
                   </div>
-                  <p class="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--muted)]">
+                  <p class="mt-4 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--muted)]" i18n>
                     Current tone: <span class="font-black text-[var(--text)]">{{ selectedAiToneOption().label }}</span> - {{ selectedAiToneOption().detail }}
                   </p>
                 </div>
@@ -640,17 +640,17 @@
                 <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg)] p-5">
                   <div class="flex items-center justify-between gap-3">
                     <div>
-                      <h3 class="text-sm font-black text-[var(--text)]">Business documents</h3>
-                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Add company knowledge so the AI answers from real source material.</p>
+                      <h3 class="text-sm font-black text-[var(--text)]" i18n>Business documents</h3>
+                      <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Add company knowledge so the AI answers from real source material.</p>
                     </div>
                     @if (!paidFeaturesUnlocked()) {
                       <span class="material-symbols-outlined text-[var(--muted)]">lock</span>
                     }
                   </div>
                   <div class="mt-4 grid gap-2 text-sm font-semibold text-[var(--muted)]">
-                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span>Up to 10 documents per upload</span></p>
-                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span>Menus, FAQs, policies, service sheets, and training notes</span></p>
-                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span>Used to guide business-specific answers</span></p>
+                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span i18n>Up to 10 documents per upload</span></p>
+                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span i18n>Menus, FAQs, policies, service sheets, and training notes</span></p>
+                    <p class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-[var(--accent)]">task_alt</span><span i18n>Used to guide business-specific answers</span></p>
                   </div>
                   <button
                     type="button"
@@ -670,7 +670,7 @@
                     </span>
                   </button>
                   @if (!paidFeaturesUnlocked()) {
-                    <p class="mt-3 text-xs font-semibold leading-5 text-[var(--muted)]">
+                    <p class="mt-3 text-xs font-semibold leading-5 text-[var(--muted)]" i18n>
                       Document uploads are available after payment. The upload page will return here when files are added.
                     </p>
                   }
@@ -683,9 +683,9 @@
         <article class="claim-cta p-5 sm:p-6 lg:col-span-2">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Ready to create the page</p>
-              <h2 class="mt-2 text-xl font-black text-[var(--text)]">Submit {{ businessName() }} for review.</h2>
-              <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Ready to create the page</p>
+              <h2 class="mt-2 text-xl font-black text-[var(--text)]" i18n>Submit {{ businessName() }} for review.</h2>
+              <p class="mt-2 text-sm leading-6 text-[var(--muted)]" i18n>
                 A pending business page will be created at {{ businessDetailPath() }} and attached to your account.
               </p>
             </div>
@@ -693,16 +693,16 @@
               <button type="button" class="primary-btn w-full shrink-0 justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
                 @if (claimSaving()) {
                   <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-                  <span>Saving</span>
+                  <span i18n>Saving</span>
                 } @else {
                   <span class="material-symbols-outlined text-base">add_business</span>
-                  <span>Submit claim request</span>
+                  <span i18n>Submit claim request</span>
                 }
               </button>
             } @else {
               <a routerLink="/create-account" [queryParams]="accountRedirectParams()" class="primary-btn w-full shrink-0 justify-center !px-5 !py-3 text-sm sm:w-auto" (click)="saveCurrentDraftForAccount()">
                 <span class="material-symbols-outlined text-base">person_add</span>
-                <span>Create account to claim</span>
+                <span i18n>Create account to claim</span>
               </a>
             }
           </div>
@@ -714,12 +714,12 @@
       <div class="space-y-4">
         <div class="mb-4 flex items-center justify-between gap-3">
           <div>
-            <p class="claim-kicker">Live preview</p>
-            <h2 class="mt-1 text-lg font-black text-[var(--text)]">Storefront badge</h2>
+            <p class="claim-kicker" i18n>Live preview</p>
+            <h2 class="mt-1 text-lg font-black text-[var(--text)]" i18n>Storefront badge</h2>
           </div>
           <span class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-[10px] font-black uppercase text-[var(--muted)]">
             <span class="material-symbols-outlined text-sm text-[var(--accent)]">qr_code_2</span>
-            <span>QR ready</span>
+            <span i18n>QR ready</span>
           </span>
         </div>
         <div class="claim-preview-frame">
@@ -776,10 +776,10 @@
             </g>
 
             <text font-family="Inter, Arial, sans-serif" font-size="34" font-weight="900" fill="#f8f8f2" dy="8" filter="url(#claimTextLift)">
-              <textPath href="#claimTopArc" startOffset="50%" text-anchor="middle" textLength="510" lengthAdjust="spacingAndGlyphs">{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
+              <textPath href="#claimTopArc" startOffset="50%" text-anchor="middle" textLength="510" lengthAdjust="spacingAndGlyphs" i18n>{{ decalBusinessTitle() }} · LivingWiki Chat</textPath>
             </text>
             <text font-family="Inter, Arial, sans-serif" font-size="48" font-weight="900" fill="#f8f8f2" letter-spacing="1" dy="22" filter="url(#claimTextLift)">
-              <textPath href="#claimBottomArc" startOffset="50%" text-anchor="middle" textLength="470" lengthAdjust="spacingAndGlyphs">60+ Languages</textPath>
+              <textPath href="#claimBottomArc" startOffset="50%" text-anchor="middle" textLength="470" lengthAdjust="spacingAndGlyphs" i18n>60+ Languages</textPath>
             </text>
 
             <rect x="270" y="288" width="360" height="360" rx="28" fill="#fffdf6" stroke="url(#claimGoldEdge)" stroke-width="8" filter="url(#claimCoinShadow)"></rect>
@@ -794,18 +794,18 @@
               </g>
             }
             <rect x="290" y="664" width="320" height="42" rx="21" fill="url(#claimGoldEdge)" stroke="#8f591e" stroke-width="2"></rect>
-            <text x="450" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#10391f">Powered by LivingWiki.com</text>
+            <text x="450" y="692" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#10391f" i18n>Powered by LivingWiki.com</text>
             <text x="450" y="746" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="900" fill="#f5d780" filter="url(#claimCoinShadow)">★ ★ ★ ★ ★</text>
           </svg>
         </div>
 
         <div class="claim-linkcard p-4">
           <div class="flex items-center justify-between gap-3">
-            <p class="text-[10px] font-black uppercase text-[var(--accent)]">Business page</p>
+            <p class="text-[10px] font-black uppercase text-[var(--accent)]" i18n>Business page</p>
             <span class="material-symbols-outlined text-base text-[var(--muted)]">open_in_new</span>
           </div>
           <p class="mt-2 break-all text-sm font-black text-[var(--text)]">{{ businessDetailUrl() }}</p>
-          <p class="mt-4 text-[10px] font-black uppercase text-[var(--accent)]">QR guide link</p>
+          <p class="mt-4 text-[10px] font-black uppercase text-[var(--accent)]" i18n>QR guide link</p>
           <p class="mt-2 break-all text-sm font-black text-[var(--text)]">{{ previewUrl() }}</p>
           <p class="mt-4 border-t border-[var(--line)] pt-4 text-sm leading-6 text-[var(--muted)]">{{ guideSummary() }}</p>
         </div>
@@ -822,33 +822,33 @@
             <button type="button" class="primary-btn justify-center !px-5 !py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60" [disabled]="!canSaveClaim()" (click)="saveClaimDraft()">
               @if (claimSaving()) {
                 <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
-                <span>Saving</span>
+                <span i18n>Saving</span>
               } @else {
                 <span class="material-symbols-outlined text-base">add_business</span>
-                <span>Submit claim request</span>
+                <span i18n>Submit claim request</span>
               }
             </button>
           } @else {
             <a routerLink="/create-account" [queryParams]="accountRedirectParams()" class="primary-btn justify-center !px-5 !py-3 text-sm" (click)="saveCurrentDraftForAccount()">
               <span class="material-symbols-outlined text-base">person_add</span>
-              <span>Create account to claim</span>
+              <span i18n>Create account to claim</span>
             </a>
             <a routerLink="/sign-in" [queryParams]="accountRedirectParams()" class="ghost-btn justify-center !px-5 !py-3 text-sm" (click)="saveCurrentDraftForAccount()">
               <span class="material-symbols-outlined text-base">login</span>
-              <span>Sign in instead</span>
+              <span i18n>Sign in instead</span>
             </a>
           }
           <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="decalDownloadHref()" [download]="decalFilename()">
             <span class="material-symbols-outlined text-base">download</span>
-            <span>Download badge SVG</span>
+            <span i18n>Download badge SVG</span>
           </a>
           <button type="button" class="ghost-btn justify-center !px-5 !py-3 text-sm" (click)="downloadDecalPng()">
             <span class="material-symbols-outlined text-base">image</span>
-            <span>Download badge PNG</span>
+            <span i18n>Download badge PNG</span>
           </button>
           <a class="ghost-btn justify-center !px-5 !py-3 text-sm" [href]="previewUrl()" target="_blank" rel="noopener">
             <span class="material-symbols-outlined text-base">qr_code_2</span>
-            <span>Test QR link</span>
+            <span i18n>Test QR link</span>
           </a>
           <button type="button" class="ghost-btn justify-center !px-5 !py-3 text-sm" (click)="copyLink()">
             <span class="material-symbols-outlined text-base">{{ copiedLink() ? 'check' : 'content_copy' }}</span>

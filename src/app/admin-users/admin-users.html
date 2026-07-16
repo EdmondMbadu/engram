@@ -3,18 +3,18 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
       <a routerLink="/wikis" class="flex min-w-0 items-center gap-4">
         <div class="flex h-10 w-40 shrink-0 items-center justify-start">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
         <div class="min-w-0">
-          <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Platform admin</p>
-          <h1 class="truncate text-xl font-black tracking-tighter">Users</h1>
+          <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]" i18n>Platform admin</p>
+          <h1 class="truncate text-xl font-black tracking-tighter" i18n>Users</h1>
         </div>
       </a>
 
       <div class="flex items-center gap-3">
         <a routerLink="/atlases" class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]">
           <span class="material-symbols-outlined text-[1rem]">admin_panel_settings</span>
-          <span>Wiki Admin</span>
+          <span i18n>Wiki Admin</span>
         </a>
         <app-theme-toggle></app-theme-toggle>
         <app-account-menu></app-account-menu>
@@ -24,11 +24,11 @@
 
   <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
     <section class="border-b border-[var(--line)] pb-6">
-      <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">Admin management</p>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]" i18n>Admin management</p>
       <div class="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h2 class="text-3xl font-black tracking-tight sm:text-4xl">All users</h2>
-          <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+          <h2 class="text-3xl font-black tracking-tight sm:text-4xl" i18n>All users</h2>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
             Signed-in users synced from Firebase Auth into the LivingWiki user profile collection.
           </p>
         </div>
@@ -47,29 +47,29 @@
 
     <section class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Total users</p>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Total users</p>
         <p class="mt-2 text-3xl font-black">{{ users().length }}</p>
       </div>
       <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Admins</p>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Admins</p>
         <p class="mt-2 text-3xl font-black">{{ adminCount() }}</p>
       </div>
       <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Verified emails</p>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Verified emails</p>
         <p class="mt-2 text-3xl font-black">{{ verifiedCount() }}</p>
       </div>
       <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-floating)]">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Businesses</p>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Businesses</p>
         <p class="mt-2 text-3xl font-black">{{ businesses().length }}</p>
-        <p class="mt-1 text-xs font-bold text-[var(--muted)]">{{ verifiedBusinessCount() }} verified · {{ pendingBusinessCount() }} pending</p>
+        <p class="mt-1 text-xs font-bold text-[var(--muted)]" i18n>{{ verifiedBusinessCount() }} verified · {{ pendingBusinessCount() }} pending</p>
       </div>
     </section>
 
     <section class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
       <button type="button" class="flex w-full items-center justify-between gap-4 border-b border-[var(--line)] px-5 py-4 text-left" (click)="toggleUsers()" [attr.aria-expanded]="usersOpen()">
         <span>
-          <span class="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">User list</span>
-          <span class="mt-1 block text-sm font-semibold text-[var(--muted)]">{{ filteredUsers().length }} of {{ users().length }} users shown</span>
+          <span class="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>User list</span>
+          <span class="mt-1 block text-sm font-semibold text-[var(--muted)]" i18n>{{ filteredUsers().length }} of {{ users().length }} users shown</span>
         </span>
         <span class="material-symbols-outlined text-[var(--muted)]">{{ usersOpen() ? 'expand_less' : 'expand_more' }}</span>
       </button>
@@ -78,9 +78,9 @@
         <div class="border-b border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
           <label class="relative block max-w-xl">
             <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">search</span>
-            <input type="search" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Search users by name, email, id, role, or provider..." [value]="userSearch()" (input)="onUserSearchInput($event)" />
+            <input type="search" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Search users by name, email, id, role, or provider..." [value]="userSearch()" (input)="onUserSearchInput($event)"  i18n-placeholder/>
             @if (userSearch()) {
-              <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear user search" (click)="clearUserSearch()">
+              <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear user search" (click)="clearUserSearch()" i18n-aria-label>
                 <span class="material-symbols-outlined text-[1rem]">close</span>
               </button>
             }
@@ -88,20 +88,20 @@
         </div>
 
         @if (isLoading()) {
-          <div class="p-5 text-sm text-[var(--muted)]">Loading users...</div>
+          <div class="p-5 text-sm text-[var(--muted)]" i18n>Loading users...</div>
         } @else if (filteredUsers().length === 0) {
-          <div class="p-5 text-sm text-[var(--muted)]">No users match this search.</div>
+          <div class="p-5 text-sm text-[var(--muted)]" i18n>No users match this search.</div>
         } @else {
           <div class="overflow-x-auto">
             <table class="w-full min-w-[860px] text-left text-sm">
               <thead class="border-b border-[var(--line)] bg-[var(--soft-fill)] text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
                 <tr>
-                  <th class="px-5 py-3 font-black">User</th>
-                  <th class="px-5 py-3 font-black">Role</th>
-                  <th class="px-5 py-3 font-black">Verified</th>
-                  <th class="px-5 py-3 font-black">Providers</th>
-                  <th class="px-5 py-3 font-black">Last sign in</th>
-                  <th class="px-5 py-3 font-black">Created</th>
+                  <th class="px-5 py-3 font-black" i18n>User</th>
+                  <th class="px-5 py-3 font-black" i18n>Role</th>
+                  <th class="px-5 py-3 font-black" i18n>Verified</th>
+                  <th class="px-5 py-3 font-black" i18n>Providers</th>
+                  <th class="px-5 py-3 font-black" i18n>Last sign in</th>
+                  <th class="px-5 py-3 font-black" i18n>Created</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-[var(--line)]">
@@ -144,8 +144,8 @@
     <section class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
       <button type="button" class="flex w-full items-center justify-between gap-4 border-b border-[var(--line)] px-5 py-4 text-left" (click)="toggleBusinesses()" [attr.aria-expanded]="businessesOpen()">
         <span>
-          <span class="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business list</span>
-          <span class="mt-1 block text-sm font-semibold text-[var(--muted)]">{{ filteredBusinesses().length }} of {{ businesses().length }} businesses shown</span>
+          <span class="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Business list</span>
+          <span class="mt-1 block text-sm font-semibold text-[var(--muted)]" i18n>{{ filteredBusinesses().length }} of {{ businesses().length }} businesses shown</span>
         </span>
         <span class="material-symbols-outlined text-[var(--muted)]">{{ businessesOpen() ? 'expand_less' : 'expand_more' }}</span>
       </button>
@@ -154,9 +154,9 @@
         <div class="grid gap-4 border-b border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4 lg:grid-cols-[1fr_auto] lg:items-center">
           <label class="relative block max-w-xl">
             <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-base text-[var(--muted)]">search</span>
-            <input type="search" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Search businesses by name, owner, admin, city, status, or category..." [value]="businessSearch()" (input)="onBusinessSearchInput($event)" />
+            <input type="search" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Search businesses by name, owner, admin, city, status, or category..." [value]="businessSearch()" (input)="onBusinessSearchInput($event)"  i18n-placeholder/>
             @if (businessSearch()) {
-              <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear business search" (click)="clearBusinessSearch()">
+              <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear business search" (click)="clearBusinessSearch()" i18n-aria-label>
                 <span class="material-symbols-outlined text-[1rem]">close</span>
               </button>
             }
@@ -186,9 +186,9 @@
         }
 
         @if (businessesLoading()) {
-          <div class="p-5 text-sm text-[var(--muted)]">Loading businesses...</div>
+          <div class="p-5 text-sm text-[var(--muted)]" i18n>Loading businesses...</div>
         } @else if (filteredBusinesses().length === 0) {
-          <div class="p-5 text-sm text-[var(--muted)]">No businesses match this search or status filter.</div>
+          <div class="p-5 text-sm text-[var(--muted)]" i18n>No businesses match this search or status filter.</div>
         } @else {
           <div class="grid gap-4 p-5">
             @for (business of filteredBusinesses(); track trackBusiness($index, business)) {
@@ -214,12 +214,12 @@
 
                     <dl class="mt-4 grid gap-3 text-sm md:grid-cols-2">
                       <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-                        <dt class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Author / account</dt>
+                        <dt class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Author / account</dt>
                         <dd class="mt-1 font-bold text-[var(--text)]">{{ businessAuthorLabel(business) }}</dd>
                         <dd class="mt-0.5 truncate text-xs text-[var(--muted)]">{{ businessAuthorEmail(business) || business.owner_user_id }}</dd>
                       </div>
                       <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-                        <dt class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Business admin</dt>
+                        <dt class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Business admin</dt>
                         <dd class="mt-1 font-bold text-[var(--text)]">{{ business.admin_name || 'Not set' }}</dd>
                         <dd class="mt-0.5 truncate text-xs text-[var(--muted)]">{{ business.admin_email || 'No admin email' }}</dd>
                       </div>
@@ -228,17 +228,17 @@
                     <div class="mt-4 flex flex-wrap gap-2">
                       <a [routerLink]="businessDetailPath(business)" class="ghost-btn !px-4 !py-2.5 text-xs">
                         <span class="material-symbols-outlined text-base">info</span>
-                        <span>Details</span>
+                        <span i18n>Details</span>
                       </a>
                       <a [routerLink]="businessEditPath(business)" class="ghost-btn !px-4 !py-2.5 text-xs">
                         <span class="material-symbols-outlined text-base">edit</span>
-                        <span>Edit</span>
+                        <span i18n>Edit</span>
                       </a>
                     </div>
                   </div>
 
                   <div class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-4">
-                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Review status</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Review status</p>
                     <div class="mt-3 grid gap-2">
                       @for (status of businessStatuses; track status) {
                         <button

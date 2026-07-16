@@ -73,9 +73,9 @@ export class AnswerQuizComponent {
     this.statusMessage.set(null);
     try {
       this.grade.set(await this.quizService.gradeAttempt(quiz.id, this.answerPayload()));
-      this.statusMessage.set('Score ready. Sign in to add it to the leaderboard.');
+      this.statusMessage.set($localize`Score ready. Sign in to add it to the leaderboard.`);
     } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'Could not grade this quiz.');
+      this.errorMessage.set(error instanceof Error ? error.message : $localize`Could not grade this quiz.`);
     } finally {
       this.isGrading.set(false);
     }
@@ -93,9 +93,9 @@ export class AnswerQuizComponent {
       const result = await this.quizService.submitScore(quiz.id, this.answerPayload(), Date.now() - this.startedAt);
       this.grade.set(result.grade);
       this.leaderboard.set(result.leaderboard);
-      this.statusMessage.set(result.savedBest ? 'Saved to the leaderboard.' : 'Attempt recorded. Your best score stayed on the board.');
+      this.statusMessage.set(result.savedBest ? $localize`Saved to the leaderboard.` : $localize`Attempt recorded. Your best score stayed on the board.`);
     } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'Could not save your score.');
+      this.errorMessage.set(error instanceof Error ? error.message : $localize`Could not save your score.`);
     } finally {
       this.isSubmitting.set(false);
     }
@@ -229,7 +229,7 @@ export class AnswerQuizComponent {
 
   private async loadQuiz(quizId: string): Promise<void> {
     if (!quizId) {
-      this.errorMessage.set('Quiz not found.');
+      this.errorMessage.set($localize`Quiz not found.`);
       this.isLoading.set(false);
       return;
     }
@@ -239,7 +239,7 @@ export class AnswerQuizComponent {
       this.quiz.set(quiz);
       this.leaderboard.set(quiz.leaderboard);
     } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'Quiz not found.');
+      this.errorMessage.set(error instanceof Error ? error.message : $localize`Quiz not found.`);
     } finally {
       this.isLoading.set(false);
     }

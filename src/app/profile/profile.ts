@@ -55,10 +55,10 @@ export class ProfileComponent {
   readonly activeProfileTab = signal<ProfileTab>('account');
   readonly profileIconOptions = PROFILE_ICON_PRESETS;
   readonly profileTabs: Array<{ key: ProfileTab; label: string; icon: string }> = [
-    { key: 'account', label: 'Account', icon: 'badge' },
-    { key: 'wikis', label: 'Wikis', icon: 'dashboard' },
-    { key: 'business', label: 'Business', icon: 'storefront' },
-    { key: 'links', label: 'Links', icon: 'link' },
+    { key: 'account', label: $localize`Account`, icon: 'badge' },
+    { key: 'wikis', label: $localize`Wikis`, icon: 'dashboard' },
+    { key: 'business', label: $localize`Business`, icon: 'storefront' },
+    { key: 'links', label: $localize`Links`, icon: 'link' },
   ];
 
   readonly uploadedPhotoUrl = computed(() => this.profile()?.profilePictureType === 'image' ? this.profile()?.photoURL ?? '' : '');
@@ -184,7 +184,7 @@ export class ProfileComponent {
       this.profilePictureMessage.set(`${icon.label} is now your profile picture.`);
       this.closeIconChooser();
     } catch (error) {
-      this.profilePictureError.set(error instanceof Error ? error.message : 'Could not save that icon.');
+      this.profilePictureError.set(error instanceof Error ? error.message : $localize`Could not save that icon.`);
     } finally {
       this.profilePictureSaving.set(false);
     }
@@ -202,9 +202,9 @@ export class ProfileComponent {
     this.profilePictureMessage.set(null);
     try {
       await this.authService.uploadProfilePhoto(file);
-      this.profilePictureMessage.set('Profile photo uploaded.');
+      this.profilePictureMessage.set($localize`Profile photo uploaded.`);
     } catch (error) {
-      this.profilePictureError.set(error instanceof Error ? error.message : 'Could not upload that image.');
+      this.profilePictureError.set(error instanceof Error ? error.message : $localize`Could not upload that image.`);
     } finally {
       this.profilePictureSaving.set(false);
       input.value = '';
@@ -220,9 +220,9 @@ export class ProfileComponent {
     this.profilePictureMessage.set(null);
     try {
       await this.authService.removeProfilePicture();
-      this.profilePictureMessage.set('Profile picture reset to your premade icon.');
+      this.profilePictureMessage.set($localize`Profile picture reset to your premade icon.`);
     } catch (error) {
-      this.profilePictureError.set(error instanceof Error ? error.message : 'Could not remove your profile picture.');
+      this.profilePictureError.set(error instanceof Error ? error.message : $localize`Could not remove your profile picture.`);
     } finally {
       this.profilePictureSaving.set(false);
     }
@@ -248,7 +248,7 @@ export class ProfileComponent {
       }
       this.businessClaims.set(businesses);
     } catch (error) {
-      this.businessError.set(error instanceof Error ? error.message : 'Failed to load connected businesses.');
+      this.businessError.set(error instanceof Error ? error.message : $localize`Failed to load connected businesses.`);
     } finally {
       if (this.authService.uid() === uid) {
         this.loadingBusinesses.set(false);

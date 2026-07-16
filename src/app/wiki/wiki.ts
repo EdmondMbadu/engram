@@ -1,4 +1,4 @@
-import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, LOCALE_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -27,6 +27,7 @@ import { AccountMenuComponent } from '../account-menu/account-menu';
   templateUrl: './wiki.html',
 })
 export class WikiComponent {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly wikiService = inject(WikiService);
@@ -54,12 +55,12 @@ export class WikiComponent {
         (!this.publicAtlasNotFound() &&
           (!this.publicAtlas() || this.isLoadingArticles() || this.isLoadingTopics()))),
   );
-  readonly pageTitle = computed(() => (this.isPublicView() ? 'Public Wiki' : 'Wiki'));
+  readonly pageTitle = computed(() => (this.isPublicView() ? $localize`Public Wiki` : $localize`Wiki`));
   readonly pageSubtitle = computed(() => {
     if (this.isPublicView()) {
-      return this.publicAtlas()?.description ?? 'Browse this atlas without signing in.';
+      return this.publicAtlas()?.description ?? $localize`Browse this atlas without signing in.`;
     }
-    return 'Compiled knowledge from your uploaded documents';
+    return $localize`Compiled knowledge from your uploaded documents`;
   });
   readonly activeAtlasLabel = computed(() => {
     const atlas = this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas();
@@ -198,7 +199,7 @@ export class WikiComponent {
       return 'Just now';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -273,14 +274,14 @@ export class WikiComponent {
         filename: filename ?? null,
       });
       if (!url) {
-        this.sourceDocumentError.set('Source document unavailable.');
+        this.sourceDocumentError.set($localize`Source document unavailable.`);
         return;
       }
 
       window.open(this.withPdfPageAnchor(url, page), '_blank', 'noopener,noreferrer');
     } catch (error) {
       this.sourceDocumentError.set(
-        error instanceof Error ? error.message : 'Failed to open source document.',
+        error instanceof Error ? error.message : $localize`Failed to open source document.`,
       );
     } finally {
       this.openingSourceDocumentId.set(null);

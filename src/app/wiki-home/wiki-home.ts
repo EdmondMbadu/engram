@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, LOCALE_ID, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import type { AtlasItem, AtlasUsage } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
@@ -22,6 +22,7 @@ import { AccountMenuComponent } from '../account-menu/account-menu';
   templateUrl: './wiki-home.html',
 })
 export class WikiHomeComponent {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
@@ -136,7 +137,7 @@ export class WikiHomeComponent {
       return 'Recently created';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -145,7 +146,7 @@ export class WikiHomeComponent {
 
   openCreate(): void {
     if (!this.canCreateWikis()) {
-      this.createError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      this.createError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
       return;
     }
     this.createOpen.set(true);
@@ -181,7 +182,7 @@ export class WikiHomeComponent {
       return;
     }
     if (!this.canCreateWikis()) {
-      this.createError.set('Upgrade to Personal Plus or Creator to create Wikis.');
+      this.createError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
       return;
     }
 
@@ -195,7 +196,7 @@ export class WikiHomeComponent {
       this.createOpen.set(false);
       this.createName.set('');
     } catch (error) {
-      this.createError.set(error instanceof Error ? error.message : 'Failed to create Wiki.');
+      this.createError.set(error instanceof Error ? error.message : $localize`Failed to create Wiki.`);
     } finally {
       this.isCreating.set(false);
     }

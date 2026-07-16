@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, HostListener, inject, OnInit, PLATFORM_ID, signal, type WritableSignal } from '@angular/core';
+import { Component, computed, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { collection, getDocs, query, where, type Firestore } from 'firebase/firestore';
@@ -15,6 +15,7 @@ import {
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher';
 
 const CITIES_CATEGORY = 'Cities';
 const OTHERS_CATEGORY = 'Others';
@@ -29,11 +30,11 @@ const PUBLIC_WIKI_CATEGORIES = [CITIES_CATEGORY, OTHERS_CATEGORY] as const;
 type PublicWikiCategory = (typeof PUBLIC_WIKI_CATEGORIES)[number];
 const PUBLIC_WIKI_SORTS = [
   { value: 'az', label: 'A-Z' },
-  { value: 'population', label: 'Population' },
-  { value: 'density', label: 'Density' },
-  { value: 'region', label: 'Region' },
-  { value: 'time', label: 'Time' },
-  { value: 'temp', label: 'Temp' },
+  { value: 'population', label: $localize`Population` },
+  { value: 'density', label: $localize`Density` },
+  { value: 'region', label: $localize`Region` },
+  { value: 'time', label: $localize`Time` },
+  { value: 'temp', label: $localize`Temp` },
 ] as const;
 type PublicWikiVisibleSortMode = (typeof PUBLIC_WIKI_SORTS)[number]['value'];
 type PublicWikiSortMode = 'featured' | PublicWikiVisibleSortMode;
@@ -167,9 +168,9 @@ const DENSITY_NEUTRAL_TONE = {
 } as const;
 
 const MOBILE_CITY_SORTS: Array<{ value: MobileCitySortMode; label: string }> = [
-  { value: 'population', label: 'Pop' },
-  { value: 'temp', label: 'Temp' },
-  { value: 'region', label: 'Region' },
+  { value: 'population', label: $localize`Pop` },
+  { value: 'temp', label: $localize`Temp` },
+  { value: 'region', label: $localize`Region` },
   { value: 'az', label: 'A-Z' },
 ];
 const MOBILE_BOARD_STORAGE_KEY = 'livingwiki-boards-v1';
@@ -475,11 +476,13 @@ interface PublicWikiFeelingSticker {
     FormsModule,
     AccountMenuComponent,
     WorkspaceSidebarComponent,
+    LanguageSwitcherComponent,
   ],
   templateUrl: './public-wikis.html',
   styleUrl: './public-wikis.css',
 })
 export class PublicWikisComponent implements OnInit {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
@@ -567,45 +570,45 @@ export class PublicWikisComponent implements OnInit {
     ...(this.mobileSavedBoardCards().length
       ? [{
           id: 'saved',
-          label: 'Saved Boards',
+          label: $localize`Saved Boards`,
           icon: 'bookmark',
-          addLabel: 'Discover boards',
+          addLabel: $localize`Discover boards`,
           addLink: '/home',
           cards: this.mobileSavedBoardCards(),
         }]
       : []),
     {
       id: 'boards',
-      label: 'My Boards',
+      label: $localize`My Boards`,
       icon: 'dashboard_customize',
       iconImageUrl: HOME_ICON_URLS.boards,
-      addLabel: 'Add board',
+      addLabel: $localize`Add board`,
       addLink: '/boards',
       cards: this.mobileBoardCards(),
     },
     {
       id: 'songs',
-      label: 'My Songs',
+      label: $localize`My Songs`,
       icon: 'music_note',
       iconImageUrl: HOME_ICON_URLS.songs,
-      addLabel: 'Add song',
+      addLabel: $localize`Add song`,
       addLink: '/songs',
       cards: this.mobileSongCards(),
     },
     {
       id: 'friends',
-      label: 'My Friends',
+      label: $localize`My Friends`,
       icon: 'group',
-      addLabel: 'Add friend',
+      addLabel: $localize`Add friend`,
       addLink: '/friends',
       cards: this.mobileFriendCards(),
     },
     {
       id: 'trips',
-      label: 'My Trips',
+      label: $localize`My Trips`,
       icon: 'map',
       iconImageUrl: HOME_ICON_URLS.trips,
-      addLabel: 'Add trip',
+      addLabel: $localize`Add trip`,
       addLink: '/trips',
       cards: this.mobileTripCards(),
     },
@@ -613,6 +616,16 @@ export class PublicWikisComponent implements OnInit {
   readonly mobileCitySortOptions = MOBILE_CITY_SORTS;
 
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
+
+  categoryLabel(category: PublicWikiCategory): string {
+    return category === CITIES_CATEGORY ? $localize`Cities` : $localize`Others`;
+  }
+
+  activeCategoryTitle(): string {
+    return this.activeCategory() === CITIES_CATEGORY
+      ? $localize`City LivingWiki pages`
+      : $localize`Public LivingWiki pages`;
+  }
   readonly sortOptions = computed(() => [...PUBLIC_WIKI_SORTS]);
   readonly isTemperatureSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'temp');
   readonly isTimeSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'time');
@@ -750,7 +763,7 @@ export class PublicWikisComponent implements OnInit {
   }
 
   cityTitleKicker(wiki: PublicWikiCatalogItem): string {
-    return this.categoryForWiki(wiki) === CITIES_CATEGORY ? 'LivingWiki city' : wiki.subtitle;
+    return this.categoryForWiki(wiki) === CITIES_CATEGORY ? $localize`LivingWiki city` : wiki.subtitle;
   }
 
   setCategory(cat: PublicWikiCategory): void {
@@ -1377,7 +1390,7 @@ export class PublicWikisComponent implements OnInit {
     if (!wiki.population) {
       return null;
     }
-    const formatted = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(wiki.population);
+    const formatted = new Intl.NumberFormat(this.localeId, { maximumFractionDigits: 0 }).format(wiki.population);
     return wiki.populationYear ? `${formatted} (${wiki.populationYear})` : formatted;
   }
 
@@ -1386,7 +1399,7 @@ export class PublicWikisComponent implements OnInit {
       return 'No population';
     }
 
-    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(wiki.population);
+    return new Intl.NumberFormat(this.localeId, { maximumFractionDigits: 0 }).format(wiki.population);
   }
 
   populationBandBackground(): string | null {
@@ -1415,7 +1428,7 @@ export class PublicWikisComponent implements OnInit {
       return null;
     }
 
-    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(density);
+    return new Intl.NumberFormat(this.localeId, { maximumFractionDigits: 0 }).format(density);
   }
 
   densityHeroLabel(wiki: PublicWikiCatalogItem): string {
@@ -1437,7 +1450,7 @@ export class PublicWikisComponent implements OnInit {
         id: 'region',
         label: region === 'Other' ? 'Place' : region,
         value: country || region,
-        caption: 'Region',
+        caption: $localize`Region`,
         icon: 'public',
         palette: 'sky',
       });
@@ -1446,7 +1459,7 @@ export class PublicWikisComponent implements OnInit {
     if (wiki.population) {
       addSticker({
         id: 'population',
-        label: 'Population',
+        label: $localize`Population`,
         value: this.formatCompactNumber(wiki.population),
         caption: wiki.populationYear ? `${wiki.populationYear} estimate` : 'Latest estimate',
         icon: 'groups',
@@ -1458,9 +1471,9 @@ export class PublicWikisComponent implements OnInit {
     if (density !== null) {
       addSticker({
         id: 'density',
-        label: 'Density',
+        label: $localize`Density`,
         value: this.formatCompactNumber(density),
-        caption: '/km²',
+        caption: $localize`/km²`,
         captionIcon: 'groups',
         icon: 'groups',
         palette: 'yellow',
@@ -1471,7 +1484,7 @@ export class PublicWikisComponent implements OnInit {
     if (localTime) {
       addSticker({
         id: 'time',
-        label: 'Local time',
+        label: $localize`Local time`,
         value: localTime,
         caption: wiki.timezone ? this.shortTimezone(wiki.timezone) : 'Timezone',
         icon: this.timeIcon(wiki),
@@ -1483,7 +1496,7 @@ export class PublicWikisComponent implements OnInit {
     if (temp) {
       addSticker({
         id: 'temperature',
-        label: 'Weather',
+        label: $localize`Weather`,
         value: temp,
         caption: this.temperatureAssistiveLabel(wiki),
         icon: 'partly_cloudy_day',
@@ -1494,9 +1507,9 @@ export class PublicWikisComponent implements OnInit {
     if (wiki.areaKm2) {
       addSticker({
         id: 'area',
-        label: 'Area',
+        label: $localize`Area`,
         value: `${this.formatCompactNumber(wiki.areaKm2)} km²`,
-        caption: 'Mapped area',
+        caption: $localize`Mapped area`,
         icon: 'map',
         palette: 'green',
       });
@@ -1505,9 +1518,9 @@ export class PublicWikisComponent implements OnInit {
     if (this.coordinatePair(wiki)) {
       addSticker({
         id: 'map',
-        label: 'Map',
+        label: $localize`Map`,
         value: 'Located',
-        caption: 'Coordinates attached',
+        caption: $localize`Coordinates attached`,
         icon: 'explore',
         palette: 'teal',
       });
@@ -1529,16 +1542,16 @@ export class PublicWikisComponent implements OnInit {
 
   cityFeelingStickers(wiki: PublicWikiCatalogItem): PublicWikiFeelingSticker[] {
     const options: PublicWikiFeelingSticker[] = [
-      { label: 'Food', icon: 'restaurant', palette: 'coral' },
-      { label: 'Parks', icon: 'park', palette: 'green' },
-      { label: 'Transit', icon: 'directions_transit', palette: 'blue' },
-      { label: 'Markets', icon: 'storefront', palette: 'yellow' },
-      { label: 'Music', icon: 'music_note', palette: 'purple' },
-      { label: 'Art', icon: 'palette', palette: 'teal' },
-      { label: 'Water', icon: 'waves', palette: 'sky' },
-      { label: 'Homes', icon: 'home_work', palette: 'coral' },
-      { label: 'Schools', icon: 'school', palette: 'blue' },
-      { label: 'Jobs', icon: 'work', palette: 'green' },
+      { label: $localize`Food`, icon: 'restaurant', palette: 'coral' },
+      { label: $localize`Parks`, icon: 'park', palette: 'green' },
+      { label: $localize`Transit`, icon: 'directions_transit', palette: 'blue' },
+      { label: $localize`Markets`, icon: 'storefront', palette: 'yellow' },
+      { label: $localize`Music`, icon: 'music_note', palette: 'purple' },
+      { label: $localize`Art`, icon: 'palette', palette: 'teal' },
+      { label: $localize`Water`, icon: 'waves', palette: 'sky' },
+      { label: $localize`Homes`, icon: 'home_work', palette: 'coral' },
+      { label: $localize`Schools`, icon: 'school', palette: 'blue' },
+      { label: $localize`Jobs`, icon: 'work', palette: 'green' },
     ];
     let seed = 0;
     const source = `${this.cityNameKey(wiki)}-${wiki.countryLabel ?? ''}`;
@@ -1833,7 +1846,7 @@ export class PublicWikisComponent implements OnInit {
       return cached;
     }
 
-    const formatter = new Intl.DateTimeFormat('en-US', {
+    const formatter = new Intl.DateTimeFormat(this.localeId, {
       timeZone: timezone,
       hour: 'numeric',
       minute: '2-digit',
@@ -1848,7 +1861,7 @@ export class PublicWikisComponent implements OnInit {
       return cached;
     }
 
-    const formatter = new Intl.DateTimeFormat('en-US', {
+    const formatter = new Intl.DateTimeFormat(this.localeId, {
       timeZone: timezone,
       hour: '2-digit',
       minute: '2-digit',
@@ -1864,7 +1877,7 @@ export class PublicWikisComponent implements OnInit {
       return cached;
     }
 
-    const formatter = new Intl.DateTimeFormat('en-GB', {
+    const formatter = new Intl.DateTimeFormat(this.localeId, {
       timeZone: timezone,
       hour: '2-digit',
       minute: '2-digit',
@@ -1880,7 +1893,7 @@ export class PublicWikisComponent implements OnInit {
       return cached;
     }
 
-    const formatter = new Intl.DateTimeFormat('en-US', {
+    const formatter = new Intl.DateTimeFormat(this.localeId, {
       timeZone: timezone,
       timeZoneName: 'short',
     });
@@ -1915,7 +1928,7 @@ export class PublicWikisComponent implements OnInit {
       }
     } finally {
       if (failedBatches > 0) {
-        this.temperatureError.set(`${failedBatches} temperature batch${failedBatches === 1 ? '' : 'es'} failed.`);
+        this.temperatureError.set(`${failedBatches} temperature batch${failedBatches === 1 ? '' : $localize`es`} failed.`);
       }
       this.isLoadingTemperatures.set(false);
     }
@@ -2147,7 +2160,7 @@ export class PublicWikisComponent implements OnInit {
   }
 
   private formatCompactNumber(value: number): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat(this.localeId, {
       notation: Math.abs(value) >= 10_000 ? 'compact' : 'standard',
       maximumFractionDigits: Math.abs(value) >= 10_000 ? 1 : 0,
     }).format(value);

@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, ElementRef, HostListener, inject, OnDestroy, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
+import { Component, computed, effect, ElementRef, HostListener, inject, LOCALE_ID, OnDestroy, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
@@ -381,36 +381,36 @@ const BOARD_ACTIONS_STORAGE_KEY = 'livingwiki-board-actions-v1';
 const DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
 
 const BOARD_TONES: Array<{ id: BoardTone; label: string; accent: string; soft: string }> = [
-  { id: 'teal', label: 'Teal', accent: '#007f7a', soft: '#dffcf7' },
-  { id: 'coral', label: 'Coral', accent: '#d94d2b', soft: '#ffe2d7' },
-  { id: 'yellow', label: 'Gold', accent: '#9a6500', soft: '#fff0b8' },
-  { id: 'green', label: 'Green', accent: '#28853c', soft: '#daf8c8' },
-  { id: 'blue', label: 'Blue', accent: '#1f62c8', soft: '#ddeeff' },
-  { id: 'sky', label: 'Sky', accent: '#087b99', soft: '#dff7ff' },
-  { id: 'purple', label: 'Purple', accent: '#7c3ec8', soft: '#f0e4ff' },
+  { id: 'teal', label: $localize`Teal`, accent: '#007f7a', soft: '#dffcf7' },
+  { id: 'coral', label: $localize`Coral`, accent: '#d94d2b', soft: '#ffe2d7' },
+  { id: 'yellow', label: $localize`Gold`, accent: '#9a6500', soft: '#fff0b8' },
+  { id: 'green', label: $localize`Green`, accent: '#28853c', soft: '#daf8c8' },
+  { id: 'blue', label: $localize`Blue`, accent: '#1f62c8', soft: '#ddeeff' },
+  { id: 'sky', label: $localize`Sky`, accent: '#087b99', soft: '#dff7ff' },
+  { id: 'purple', label: $localize`Purple`, accent: '#7c3ec8', soft: '#f0e4ff' },
 ];
 
 const CARD_TYPES: Array<{ id: BoardCardType; label: string; icon: string }> = [
-  { id: 'place', label: 'Place', icon: 'location_on' },
-  { id: 'food', label: 'Food', icon: 'restaurant' },
-  { id: 'memory', label: 'Memory', icon: 'auto_stories' },
-  { id: 'idea', label: 'Idea', icon: 'lightbulb' },
-  { id: 'shop', label: 'Shop', icon: 'storefront' },
-  { id: 'note', label: 'Note', icon: 'sticky_note_2' },
+  { id: 'place', label: $localize`Place`, icon: 'location_on' },
+  { id: 'food', label: $localize`Food`, icon: 'restaurant' },
+  { id: 'memory', label: $localize`Memory`, icon: 'auto_stories' },
+  { id: 'idea', label: $localize`Idea`, icon: 'lightbulb' },
+  { id: 'shop', label: $localize`Shop`, icon: 'storefront' },
+  { id: 'note', label: $localize`Note`, icon: 'sticky_note_2' },
 ];
 
 const CARD_SCOPES: Array<{ id: BoardCardScope; label: string; icon: string }> = [
-  { id: 'place', label: 'Place', icon: 'location_on' },
-  { id: 'city', label: 'City', icon: 'location_city' },
-  { id: 'country', label: 'Country', icon: 'flag' },
-  { id: 'region', label: 'Region', icon: 'map' },
+  { id: 'place', label: $localize`Place`, icon: 'location_on' },
+  { id: 'city', label: $localize`City`, icon: 'location_city' },
+  { id: 'country', label: $localize`Country`, icon: 'flag' },
+  { id: 'region', label: $localize`Region`, icon: 'map' },
 ];
 
 const CARD_STATUSES: Array<{ id: BoardCardStatus; label: string; icon: string }> = [
-  { id: 'planned', label: 'Planned', icon: 'event' },
-  { id: 'saved', label: 'Saved', icon: 'bookmark' },
-  { id: 'visited', label: 'Visited', icon: 'check_circle' },
-  { id: 'favorite', label: 'Favorite', icon: 'kid_star' },
+  { id: 'planned', label: $localize`Planned`, icon: 'event' },
+  { id: 'saved', label: $localize`Saved`, icon: 'bookmark' },
+  { id: 'visited', label: $localize`Visited`, icon: 'check_circle' },
+  { id: 'favorite', label: $localize`Favorite`, icon: 'kid_star' },
 ];
 
 const BOARD_WIZARD_MODES: Array<{
@@ -421,54 +421,54 @@ const BOARD_WIZARD_MODES: Array<{
 }> = [
   {
     id: 'manual',
-    label: 'Add board manually',
-    description: 'Create an empty board with the current form.',
+    label: $localize`Add board manually`,
+    description: $localize`Create an empty board with the current form.`,
     icon: 'edit_square',
   },
   {
     id: 'describe',
-    label: 'Describe it',
-    description: 'Tell the wizard what you want and preview generated cards.',
+    label: $localize`Describe it`,
+    description: $localize`Tell the wizard what you want and preview generated cards.`,
     icon: 'auto_awesome',
   },
   {
     id: 'paste',
-    label: 'Paste a list',
-    description: 'Turn names, notes, or bullets into editable cards.',
+    label: $localize`Paste a list`,
+    description: $localize`Turn names, notes, or bullets into editable cards.`,
     icon: 'format_list_bulleted_add',
   },
   {
     id: 'photos',
-    label: 'Use photos',
-    description: 'Start from image filenames and captions for a memory board.',
+    label: $localize`Use photos`,
+    description: $localize`Start from image filenames and captions for a memory board.`,
     icon: 'photo_library',
   },
   {
     id: 'walking-tour',
-    label: 'Walking tour',
-    description: 'Generate ordered stops, guide scripts, a route, and wayfinder cards.',
+    label: $localize`Walking tour`,
+    description: $localize`Generate ordered stops, guide scripts, a route, and wayfinder cards.`,
     icon: 'directions_walk',
   },
   {
     id: 'driving-tour',
-    label: 'Driving tour',
-    description: 'Turn a scenic drive into mapped stops, navigation legs, and narration.',
+    label: $localize`Driving tour`,
+    description: $localize`Turn a scenic drive into mapped stops, navigation legs, and narration.`,
     icon: 'directions_car',
   },
   {
     id: 'url',
-    label: 'Use a URL',
-    description: 'Extract a page or guide into a board draft.',
+    label: $localize`Use a URL`,
+    description: $localize`Extract a page or guide into a board draft.`,
     icon: 'link',
   },
 ];
 
 const BOARD_WIZARD_VIBES: Array<{ id: BoardWizardVibe; label: string; icon: string }> = [
-  { id: 'playful', label: 'Playful', icon: 'celebration' },
-  { id: 'foodie', label: 'Foodie', icon: 'restaurant' },
-  { id: 'traveler', label: 'Traveler', icon: 'travel_explore' },
-  { id: 'curator', label: 'Curator', icon: 'interests' },
-  { id: 'memory', label: 'Memory', icon: 'auto_stories' },
+  { id: 'playful', label: $localize`Playful`, icon: 'celebration' },
+  { id: 'foodie', label: $localize`Foodie`, icon: 'restaurant' },
+  { id: 'traveler', label: $localize`Traveler`, icon: 'travel_explore' },
+  { id: 'curator', label: $localize`Curator`, icon: 'interests' },
+  { id: 'memory', label: $localize`Memory`, icon: 'auto_stories' },
 ];
 
 const BOARD_WIZARD_STATUS_MESSAGES = [
@@ -489,9 +489,9 @@ const BOARD_TOUR_STATUS_MESSAGES = [
 ];
 
 const TOUR_VOICE_STYLES: Array<{ id: BoardTourVoiceStyle; label: string; icon: string }> = [
-  { id: 'historian', label: 'Historian', icon: 'school' },
-  { id: 'local', label: 'Local', icon: 'record_voice_over' },
-  { id: 'kid-friendly', label: 'Kid-friendly', icon: 'family_restroom' },
+  { id: 'historian', label: $localize`Historian`, icon: 'school' },
+  { id: 'local', label: $localize`Local`, icon: 'record_voice_over' },
+  { id: 'kid-friendly', label: $localize`Kid-friendly`, icon: 'family_restroom' },
 ];
 
 const WALKING_PACE_OPTIONS = ['Leisurely', 'Standard', 'Brisk'];
@@ -792,18 +792,18 @@ const STICKER_COLORS = [
 ];
 
 const SHARE_TARGETS: Array<{ id: ShareTarget; label: string; icon: string }> = [
-  { id: 'facebook', label: 'Facebook', icon: 'public' },
+  { id: 'facebook', label: $localize`Facebook`, icon: 'public' },
   { id: 'x', label: 'X', icon: 'alternate_email' },
-  { id: 'linkedin', label: 'LinkedIn', icon: 'work' },
-  { id: 'whatsapp', label: 'WhatsApp', icon: 'chat' },
-  { id: 'reddit', label: 'Reddit', icon: 'forum' },
-  { id: 'email', label: 'Email', icon: 'mail' },
+  { id: 'linkedin', label: $localize`LinkedIn`, icon: 'work' },
+  { id: 'whatsapp', label: $localize`WhatsApp`, icon: 'chat' },
+  { id: 'reddit', label: $localize`Reddit`, icon: 'forum' },
+  { id: 'email', label: $localize`Email`, icon: 'mail' },
 ];
 
 const STACK_FORMATS: Array<{ id: StackFormat; label: string; icon: string; hint: string }> = [
-  { id: 'carousel', label: 'Carousel', icon: 'view_carousel', hint: 'Swipe cards' },
-  { id: 'reel', label: 'Reel', icon: 'smart_display', hint: 'Story flow' },
-  { id: 'both', label: 'Both', icon: 'auto_awesome_motion', hint: 'Share pack' },
+  { id: 'carousel', label: $localize`Carousel`, icon: 'view_carousel', hint: $localize`Swipe cards` },
+  { id: 'reel', label: $localize`Reel`, icon: 'smart_display', hint: $localize`Story flow` },
+  { id: 'both', label: $localize`Both`, icon: 'auto_awesome_motion', hint: $localize`Share pack` },
 ];
 
 const STACK_RATIOS: Array<{ id: StackRatio; label: string; icon: string }> = [
@@ -813,21 +813,21 @@ const STACK_RATIOS: Array<{ id: StackRatio; label: string; icon: string }> = [
 ];
 
 const STACK_EXPORT_TARGETS: Array<{ id: StackExportTarget; label: string; icon: string }> = [
-  { id: 'x', label: 'X video', icon: 'alternate_email' },
-  { id: 'whatsapp', label: 'WhatsApp', icon: 'chat' },
-  { id: 'facebook', label: 'Facebook', icon: 'public' },
-  { id: 'instagram', label: 'Instagram', icon: 'photo_camera' },
-  { id: 'tiktok', label: 'TikTok', icon: 'music_note' },
-  { id: 'download', label: 'Download', icon: 'download' },
+  { id: 'x', label: $localize`X video`, icon: 'alternate_email' },
+  { id: 'whatsapp', label: $localize`WhatsApp`, icon: 'chat' },
+  { id: 'facebook', label: $localize`Facebook`, icon: 'public' },
+  { id: 'instagram', label: $localize`Instagram`, icon: 'photo_camera' },
+  { id: 'tiktok', label: $localize`TikTok`, icon: 'music_note' },
+  { id: 'download', label: $localize`Download`, icon: 'download' },
 ];
 
 const STACK_LINK_SHARE_TARGETS: Array<{ id: StackLinkShareTarget; label: string; mark: string; color: string }> = [
   { id: 'x', label: 'X', mark: '𝕏', color: '#111111' },
-  { id: 'facebook', label: 'Facebook', mark: 'f', color: '#1877f2' },
-  { id: 'linkedin', label: 'LinkedIn', mark: 'in', color: '#0a66c2' },
-  { id: 'reddit', label: 'Reddit', mark: 'r/', color: '#ff4500' },
-  { id: 'whatsapp', label: 'WhatsApp', mark: '◉', color: '#25d366' },
-  { id: 'more', label: 'More', mark: '•••', color: '#52615a' },
+  { id: 'facebook', label: $localize`Facebook`, mark: 'f', color: '#1877f2' },
+  { id: 'linkedin', label: $localize`LinkedIn`, mark: 'in', color: '#0a66c2' },
+  { id: 'reddit', label: $localize`Reddit`, mark: 'r/', color: '#ff4500' },
+  { id: 'whatsapp', label: $localize`WhatsApp`, mark: '◉', color: '#25d366' },
+  { id: 'more', label: $localize`More`, mark: '•••', color: '#52615a' },
 ];
 
 const STACK_VIDEO_MAX_CARDS = 30;
@@ -839,6 +839,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css'],
 })
 export class BoardsComponent implements OnDestroy {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
   private readonly googleMapsService = inject(GoogleMapsService);
@@ -1118,7 +1119,7 @@ export class BoardsComponent implements OnDestroy {
     const cardId = this.cardPhotoViewerCardId();
     return this.selectedBoard()?.cards.find((card) => card.id === cardId) ?? null;
   });
-  readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? 'Card');
+  readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? $localize`Card`);
   readonly isSongCardForm = computed(() => {
     const board = this.selectedBoard();
     return !!board && this.isSongBoard(board);
@@ -1158,7 +1159,7 @@ export class BoardsComponent implements OnDestroy {
   });
   readonly boardsProfileSubtitle = computed(() => {
     if (this.publicOwnerKey()) {
-      return this.boards().length ? 'Public LivingWiki boards' : 'No public boards found yet';
+      return this.boards().length ? $localize`Public LivingWiki boards` : $localize`No public boards found yet`;
     }
     return this.userEmail();
   });
@@ -1553,7 +1554,7 @@ export class BoardsComponent implements OnDestroy {
       const response = await callable({});
       this.boardFriends.set(this.normalizeBoardFriendsState(response.data));
     } catch (error) {
-      this.boardFriendsError.set(this.boardFriendErrorMessage(error, 'Could not load friends right now.'));
+      this.boardFriendsError.set(this.boardFriendErrorMessage(error, $localize`Could not load friends right now.`));
     } finally {
       this.boardFriendsLoading.set(false);
     }
@@ -1562,12 +1563,12 @@ export class BoardsComponent implements OnDestroy {
   async inviteBoardFriend(event?: Event): Promise<void> {
     event?.preventDefault();
     if (!this.functions || !this.authService.uid()) {
-      this.boardFriendsError.set('Sign in before inviting friends.');
+      this.boardFriendsError.set($localize`Sign in before inviting friends.`);
       return;
     }
     const email = this.boardFriendEmail().trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      this.boardFriendsError.set('Enter a valid friend email address.');
+      this.boardFriendsError.set($localize`Enter a valid friend email address.`);
       return;
     }
 
@@ -1584,13 +1585,13 @@ export class BoardsComponent implements OnDestroy {
       this.boardFriendEmail.set('');
       this.boardFriendCandidates.set([]);
       await this.loadBoardFriends();
-      this.boardFriendsMessage.set(status === 'already_friends'
-        ? 'You are already friends.'
-        : status === 'pending'
-          ? 'That friend request is already waiting.'
-          : 'Friend request sent.');
+      this.boardFriendsMessage.set(status === $localize`already_friends`
+        ? $localize`You are already friends.`
+        : status === $localize`pending`
+          ? $localize`That friend request is already waiting.`
+          : $localize`Friend request sent.`);
     } catch (error) {
-      this.boardFriendsError.set(this.boardFriendErrorMessage(error, 'Could not send that friend request.'));
+      this.boardFriendsError.set(this.boardFriendErrorMessage(error, $localize`Could not send that friend request.`));
     } finally {
       this.boardFriendSending.set(false);
     }
@@ -1666,7 +1667,7 @@ export class BoardsComponent implements OnDestroy {
 
   async respondBoardFriendRequest(requestId: string, action: 'accept' | 'decline'): Promise<void> {
     if (!this.functions || !this.authService.uid()) {
-      this.boardFriendsError.set('Sign in to respond to friend requests.');
+      this.boardFriendsError.set($localize`Sign in to respond to friend requests.`);
       return;
     }
     this.boardFriendsError.set(null);
@@ -1678,9 +1679,9 @@ export class BoardsComponent implements OnDestroy {
       );
       await callable({ requestId, action });
       await this.loadBoardFriends();
-      this.boardFriendsMessage.set(action === 'accept' ? 'Friend request accepted.' : 'Friend request declined.');
+      this.boardFriendsMessage.set(action === $localize`accept` ? $localize`Friend request accepted.` : $localize`Friend request declined.`);
     } catch (error) {
-      this.boardFriendsError.set(this.boardFriendErrorMessage(error, 'Could not update that friend request.'));
+      this.boardFriendsError.set(this.boardFriendErrorMessage(error, $localize`Could not update that friend request.`));
     }
   }
 
@@ -1759,7 +1760,7 @@ export class BoardsComponent implements OnDestroy {
 
   openBoardWizard(): void {
     if (!this.canCreateBoard()) {
-      this.boardsSyncError.set('Sign in to create a board.');
+      this.boardsSyncError.set($localize`Sign in to create a board.`);
       return;
     }
     this.resetBoardWizard();
@@ -1790,7 +1791,7 @@ export class BoardsComponent implements OnDestroy {
 
   openManualBoard(): void {
     if (!this.canCreateBoard()) {
-      this.boardsSyncError.set('Sign in to create a board.');
+      this.boardsSyncError.set($localize`Sign in to create a board.`);
       return;
     }
     this.editingBoardId.set(null);
@@ -1938,7 +1939,7 @@ export class BoardsComponent implements OnDestroy {
       this.wizardStep.set('preview');
     } catch (error) {
       if (this.isTourWizardMode()) {
-        this.wizardError.set(error instanceof Error ? error.message : 'The tour could not be generated. Please try again.');
+        this.wizardError.set(error instanceof Error ? error.message : $localize`The tour could not be generated. Please try again.`);
         this.wizardStep.set('choose');
         return;
       }
@@ -1947,7 +1948,7 @@ export class BoardsComponent implements OnDestroy {
       this.wizardResult.set({ ...fallback, cards: previewCards });
       this.wizardPreviewCards.set(previewCards);
       this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
-      this.wizardError.set(error instanceof Error ? `${error.message} Using a local draft instead.` : 'Using a local draft because AI generation failed.');
+      this.wizardError.set(error instanceof Error ? `${error.message} Using a local draft instead.` : $localize`Using a local draft because AI generation failed.`);
       this.wizardStep.set('preview');
     } finally {
       if (interval) {
@@ -2029,7 +2030,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     if (prompt.length < 3) {
-      this.wizardCardEditorError.set('Describe the picture you want.');
+      this.wizardCardEditorError.set($localize`Describe the picture you want.`);
       return;
     }
     this.wizardCardImageGenerating.set(true);
@@ -2064,7 +2065,7 @@ export class BoardsComponent implements OnDestroy {
       this.wizardCardGeneratedImageUrl.set(imageDataUrl);
       this.wizardCardGeneratedImageModel.set(response.data.model?.trim() ?? 'Nano Banana');
     } catch (error) {
-      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, 'Nano Banana could not generate this picture.'));
+      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, $localize`Nano Banana could not generate this picture.`));
     } finally {
       this.wizardCardImageGenerating.set(false);
     }
@@ -2088,7 +2089,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     if (query.length < 2) {
-      this.wizardCardEditorError.set('Enter something to search for.');
+      this.wizardCardEditorError.set($localize`Enter something to search for.`);
       return;
     }
     this.wizardCardImageSearchLoading.set(true);
@@ -2106,10 +2107,10 @@ export class BoardsComponent implements OnDestroy {
         : [];
       this.wizardCardImageSearchResults.set(results);
       if (!results.length) {
-        this.wizardCardEditorError.set('No usable pictures were found. Try the event, year, and subject together.');
+        this.wizardCardEditorError.set($localize`No usable pictures were found. Try the event, year, and subject together.`);
       }
     } catch (error) {
-      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, 'Picture search is unavailable right now.'));
+      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, $localize`Picture search is unavailable right now.`));
     } finally {
       this.wizardCardImageSearchLoading.set(false);
     }
@@ -2159,7 +2160,7 @@ export class BoardsComponent implements OnDestroy {
       this.updateWizardCard(card.id, 'imageUrl', imageDataUrl);
       this.wizardSelectedCardIds.update((ids) => new Set(ids).add(card.id));
     } catch (error) {
-      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, 'That picture could not be used.'));
+      this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, $localize`That picture could not be used.`));
     } finally {
       this.wizardCardImageApplying.set(false);
     }
@@ -2187,7 +2188,7 @@ export class BoardsComponent implements OnDestroy {
           item.id === cardId
             ? {
                 ...item,
-                subtitle: 'Regenerated draft',
+                subtitle: $localize`Regenerated draft`,
                 notes: `${item.notes} Add your own detail or rerun the wizard for another option.`.slice(0, 260),
               }
             : item,
@@ -2455,7 +2456,7 @@ export class BoardsComponent implements OnDestroy {
     const targetId = this.wizardTargetBoardId();
     const existingBoard = targetId === 'new' ? null : this.boards().find((board) => board.id === targetId) ?? null;
     if (existingBoard && !this.canEditBoard(existingBoard)) {
-      this.wizardError.set('Only the board owner can add cards to this board.');
+      this.wizardError.set($localize`Only the board owner can add cards to this board.`);
       this.wizardSaving.set(false);
       return;
     }
@@ -2515,7 +2516,7 @@ export class BoardsComponent implements OnDestroy {
     } catch (error) {
       const detail = error instanceof Error && error.message ? ` ${error.message}` : '';
       this.wizardError.set(`Could not save this board to your account. Please try again.${detail}`);
-      this.boardsSyncError.set('Board save failed. Please try again.');
+      this.boardsSyncError.set($localize`Board save failed. Please try again.`);
       this.wizardSaving.set(false);
     }
   }
@@ -2524,7 +2525,7 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can edit this board.');
+      this.boardsSyncError.set($localize`Only the board owner can edit this board.`);
       return;
     }
     this.editingBoardId.set(board.id);
@@ -2569,7 +2570,7 @@ export class BoardsComponent implements OnDestroy {
     if (editingId) {
       const editingBoard = this.boards().find((board) => board.id === editingId);
       if (!editingBoard || !this.canEditBoard(editingBoard)) {
-        this.boardsSyncError.set('Only the board owner can edit this board.');
+        this.boardsSyncError.set($localize`Only the board owner can edit this board.`);
         return;
       }
       this.boards.update((boards) =>
@@ -2642,7 +2643,7 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can delete this board.');
+      this.boardsSyncError.set($localize`Only the board owner can delete this board.`);
       return;
     }
     this.boardDeleteCandidate.set(board);
@@ -2662,7 +2663,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can delete this board.');
+      this.boardsSyncError.set($localize`Only the board owner can delete this board.`);
       this.boardDeleteCandidate.set(null);
       return;
     }
@@ -2678,7 +2679,7 @@ export class BoardsComponent implements OnDestroy {
   openCreateCard(boardId = this.selectedBoard()?.id ?? null): void {
     const board = this.boards().find((item) => item.id === boardId);
     if (!board || !this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can add cards.');
+      this.boardsSyncError.set($localize`Only the board owner can add cards.`);
       return;
     }
     const songMode = this.isSongBoard(board);
@@ -2727,7 +2728,7 @@ export class BoardsComponent implements OnDestroy {
   openEditCard(card: BoardCard): void {
     const board = this.selectedBoard();
     if (!board || !this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can edit cards.');
+      this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
       return;
     }
     this.editingCardId.set(card.id);
@@ -2775,7 +2776,7 @@ export class BoardsComponent implements OnDestroy {
   openEditGalleryCard(boardId: string, card: BoardCard): void {
     const board = this.boards().find((item) => item.id === boardId);
     if (!board || !this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can edit cards.');
+      this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
       return;
     }
     this.selectedBoardId.set(boardId);
@@ -2825,7 +2826,7 @@ export class BoardsComponent implements OnDestroy {
       this.imageUploadError.set(null);
     } catch (error) {
       this.imageUploadError.set(
-        error instanceof Error ? error.message : 'Could not use that image.',
+        error instanceof Error ? error.message : $localize`Could not use that image.`,
       );
     }
   }
@@ -2844,7 +2845,7 @@ export class BoardsComponent implements OnDestroy {
       this.imageUploadError.set(null);
     } catch (error) {
       this.imageUploadError.set(
-        error instanceof Error ? error.message : 'Could not use that logo.',
+        error instanceof Error ? error.message : $localize`Could not use that logo.`,
       );
     }
   }
@@ -2874,7 +2875,7 @@ export class BoardsComponent implements OnDestroy {
       this.imageUploadError.set(files.length > available ? `Added ${available} photos. Cards can hold up to 12.` : null);
     } catch (error) {
       this.imageUploadError.set(
-        error instanceof Error ? error.message : 'Could not use those images.',
+        error instanceof Error ? error.message : $localize`Could not use those images.`,
       );
     }
   }
@@ -3078,7 +3079,7 @@ export class BoardsComponent implements OnDestroy {
     this.cardDraft.update((draft) => ({
       ...draft,
       title: country,
-      subtitle: 'Country',
+      subtitle: $localize`Country`,
       type: draft.type === 'place' ? 'memory' : draft.type,
       scope: 'country',
       placeQuery: country,
@@ -3118,7 +3119,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can edit cards.');
+      this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
       return;
     }
 
@@ -3227,7 +3228,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can delete cards.');
+      this.boardsSyncError.set($localize`Only the board owner can delete cards.`);
       return;
     }
     this.cardDeleteCandidate.set({ boardId: board.id, boardTitle: board.title, card });
@@ -3248,7 +3249,7 @@ export class BoardsComponent implements OnDestroy {
     }
     const board = this.boards().find((item) => item.id === candidate.boardId) ?? null;
     if (!board || !this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can delete cards.');
+      this.boardsSyncError.set($localize`Only the board owner can delete cards.`);
       this.cardDeleteCandidate.set(null);
       return;
     }
@@ -3287,7 +3288,7 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner or an admin can manage cards.');
+      this.boardsSyncError.set($localize`Only the board owner or an admin can manage cards.`);
       return;
     }
     if (this.cardManageBoardId() === board.id) {
@@ -3551,7 +3552,7 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner or an admin can delete cards.');
+      this.boardsSyncError.set($localize`Only the board owner or an admin can delete cards.`);
       return;
     }
     const ids = this.selectedCardIds();
@@ -3577,7 +3578,7 @@ export class BoardsComponent implements OnDestroy {
     }
     const board = this.boards().find((item) => item.id === candidate.boardId) ?? null;
     if (!board || !this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner or an admin can delete cards.');
+      this.boardsSyncError.set($localize`Only the board owner or an admin can delete cards.`);
       this.cardBulkDeleteCandidate.set(null);
       return;
     }
@@ -3607,7 +3608,7 @@ export class BoardsComponent implements OnDestroy {
     event?.stopPropagation();
     const board = this.boards().find((item) => item.id === boardId);
     if (!board || !this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can delete cards.');
+      this.boardsSyncError.set($localize`Only the board owner can delete cards.`);
       return;
     }
     this.cardDeleteCandidate.set({ boardId: board.id, boardTitle: board.title, card });
@@ -4145,7 +4146,7 @@ export class BoardsComponent implements OnDestroy {
         >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
         const response = await callable({
           text: text.slice(0, 3600),
-          question: 'Read this LivingWiki tour preview aloud with a lively human tour-guide voice.',
+          question: $localize`Read this LivingWiki tour preview aloud with a lively human tour-guide voice.`,
           anonymousVisitorId: this.authService.uid() ? null : this.ensureTourAnonymousVisitorId(),
           mode: 'tour',
         });
@@ -4402,7 +4403,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     if (prompt.length < 3) {
-      this.cardImageToolError.set('Describe the picture you want.');
+      this.cardImageToolError.set($localize`Describe the picture you want.`);
       return;
     }
     const draft = this.cardDraft();
@@ -4437,7 +4438,7 @@ export class BoardsComponent implements OnDestroy {
       this.cardGeneratedImageUrl.set(imageDataUrl);
       this.cardGeneratedImageModel.set(response.data.model?.trim() ?? 'Nano Banana');
     } catch (error) {
-      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, 'Nano Banana could not generate this picture.'));
+      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, $localize`Nano Banana could not generate this picture.`));
     } finally {
       this.cardImageGenerating.set(false);
     }
@@ -4450,7 +4451,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     if (query.length < 2) {
-      this.cardImageToolError.set('Enter something to search for.');
+      this.cardImageToolError.set($localize`Enter something to search for.`);
       return;
     }
     this.cardImageSearchLoading.set(true);
@@ -4469,11 +4470,11 @@ export class BoardsComponent implements OnDestroy {
       this.cardImageSearchResults.set(results);
       this.cardImageSearchIndex.set(0);
       if (!results.length) {
-        this.cardImageToolError.set('No usable pictures were found. Try a more specific search.');
+        this.cardImageToolError.set($localize`No usable pictures were found. Try a more specific search.`);
       }
     } catch (error) {
       this.cardImageSearchResults.set([]);
-      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, 'Picture search is unavailable right now.'));
+      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, $localize`Picture search is unavailable right now.`));
     } finally {
       this.cardImageSearchLoading.set(false);
     }
@@ -4525,7 +4526,7 @@ export class BoardsComponent implements OnDestroy {
       }
       this.applyCardImageSelection(imageDataUrl);
     } catch (error) {
-      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, 'That picture could not be used.'));
+      this.cardImageToolError.set(this.cardImageActionErrorMessage(error, $localize`That picture could not be used.`));
     } finally {
       this.cardImageApplying.set(false);
     }
@@ -4576,7 +4577,7 @@ export class BoardsComponent implements OnDestroy {
     const draft = this.cardDraft();
     const prompt = this.buildCardWizardPrompt(board, draft, options.promptOverride, options.forceImageLookup === true);
     if (!prompt) {
-      this.cardWizardError.set('Describe what this card should become, or start with a title/place first.');
+      this.cardWizardError.set($localize`Describe what this card should become, or start with a title/place first.`);
       return;
     }
 
@@ -4619,7 +4620,7 @@ export class BoardsComponent implements OnDestroy {
         await this.resolveCurrentCardDraftSongMedia(board);
       }
     } catch (error) {
-      this.cardWizardError.set(error instanceof Error ? error.message : 'The Wizard could not update this card.');
+      this.cardWizardError.set(error instanceof Error ? error.message : $localize`The Wizard could not update this card.`);
     } finally {
       this.cardWizardLoading.set(false);
     }
@@ -4676,8 +4677,8 @@ export class BoardsComponent implements OnDestroy {
       if (!card.imageUrl) {
         this.cardWizardError.set(
           preserveExistingImageOnMiss
-            ? 'No better image was found, so the current image was kept.'
-            : 'No better image was found, so the old image was removed.',
+            ? $localize`No better image was found, so the current image was kept.`
+            : $localize`No better image was found, so the old image was removed.`,
         );
       }
       return;
@@ -4810,7 +4811,7 @@ export class BoardsComponent implements OnDestroy {
         ? response.data.cards.map((item) => this.normalizeSpotifyResolvedCard(item))
         : [];
       if (!resolved?.spotifyTrackId && !resolved?.audioPreviewUrl) {
-        this.cardWizardError.set('Card details were refreshed, but no matching song preview was found.');
+        this.cardWizardError.set($localize`Card details were refreshed, but no matching song preview was found.`);
         return;
       }
       this.cardDraft.update((current) => ({
@@ -4827,10 +4828,10 @@ export class BoardsComponent implements OnDestroy {
       if (resolved.audioPreviewUrl) {
         this.cardWizardError.set(null);
       } else {
-        this.cardWizardError.set('A Spotify track was found, but no playable preview URL was available for this song.');
+        this.cardWizardError.set($localize`A Spotify track was found, but no playable preview URL was available for this song.`);
       }
     } catch (error) {
-      this.cardWizardError.set(error instanceof Error ? error.message : 'Card details were refreshed, but song media could not be resolved.');
+      this.cardWizardError.set(error instanceof Error ? error.message : $localize`Card details were refreshed, but song media could not be resolved.`);
     }
   }
 
@@ -5147,7 +5148,7 @@ export class BoardsComponent implements OnDestroy {
       void this.router.navigate(['/boards', persisted.id]);
     } catch (error) {
       console.error('Board fork failed', error, { boardId: board.id });
-      this.boardsSyncError.set('Could not make a copy of this board. Please try again.');
+      this.boardsSyncError.set($localize`Could not make a copy of this board. Please try again.`);
     }
   }
 
@@ -5254,7 +5255,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private redirectToPrivateBoardsPricing(): void {
-    this.boardsSyncError.set('Private boards are available on paid plans.');
+    this.boardsSyncError.set($localize`Private boards are available on paid plans.`);
     void this.router.navigate(['/pricing'], { queryParams: { feature: 'private-boards' } });
   }
 
@@ -7036,7 +7037,7 @@ export class BoardsComponent implements OnDestroy {
     const restaurant = lower.includes('capriottis.com') ? "Capriotti's Sandwich Shop" : this.titleFromWizardInput(source);
     const cards = knownItems.slice(0, Math.max(1, count - 1)).map((item, index): BoardWizardGeneratedCard => ({
       title: item,
-      subtitle: 'Menu item',
+      subtitle: $localize`Menu item`,
       notes: `Food item from ${restaurant}. Review the details and image before saving.`,
       type: 'food',
       scope: 'place',
@@ -7047,9 +7048,9 @@ export class BoardsComponent implements OnDestroy {
       place_query: restaurant,
     }));
     cards.push({
-      title: 'Open Menu',
-      subtitle: 'Original URL',
-      notes: 'Open the source menu and edit this action card if needed.',
+      title: $localize`Open Menu`,
+      subtitle: $localize`Original URL`,
+      notes: $localize`Open the source menu and edit this action card if needed.`,
       type: 'note',
       scope: 'place',
       status: 'planned',
@@ -7061,7 +7062,7 @@ export class BoardsComponent implements OnDestroy {
     return {
       board: {
         title: `${restaurant} Menu`,
-        description: 'Food-item board generated from a restaurant URL.',
+        description: $localize`Food-item board generated from a restaurant URL.`,
         icon: 'restaurant',
         tone: 'coral',
         kind: 'standard',
@@ -7512,7 +7513,7 @@ export class BoardsComponent implements OnDestroy {
         }
       }
     } catch {
-      this.boardsSyncError.set('Boards are using this browser for now. Firebase sync is unavailable.');
+      this.boardsSyncError.set($localize`Boards are using this browser for now. Firebase sync is unavailable.`);
     }
   }
 
@@ -7698,7 +7699,7 @@ export class BoardsComponent implements OnDestroy {
 
   private async persistAndReplaceBoard(board: Board): Promise<void> {
     if (!this.canEditBoard(board)) {
-      this.boardsSyncError.set('Only the board owner can save changes.');
+      this.boardsSyncError.set($localize`Only the board owner can save changes.`);
       return;
     }
     try {
@@ -7707,7 +7708,7 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set(null);
     } catch (error) {
       console.error('Board Firebase sync failed', error, { boardId: board.id });
-      this.boardsSyncError.set('Saved on this browser, but Firebase sync failed.');
+      this.boardsSyncError.set($localize`Saved on this browser, but Firebase sync failed.`);
     }
   }
 
@@ -7853,7 +7854,7 @@ export class BoardsComponent implements OnDestroy {
       await deleteDoc(doc(this.firestore, 'boards', boardId));
       this.boardsSyncError.set(null);
     } catch {
-      this.boardsSyncError.set('Removed locally, but Firebase delete failed.');
+      this.boardsSyncError.set($localize`Removed locally, but Firebase delete failed.`);
     }
   }
 
@@ -8340,7 +8341,7 @@ export class BoardsComponent implements OnDestroy {
     if (Number.isNaN(date.getTime())) {
       return 'Recently';
     }
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
     }).format(date);
@@ -8385,7 +8386,7 @@ export class BoardsComponent implements OnDestroy {
         ? `Searching ${matchedCity.name} with the city place API, then adding photos.`
         : city
           ? `Searching near ${city} and looking for a photo.`
-          : 'Searching places and looking for a photo.',
+          : $localize`Searching places and looking for a photo.`,
     );
     this.placeSearchTimer = setTimeout(() => {
       void this.runPlaceSearch();
@@ -8454,9 +8455,9 @@ export class BoardsComponent implements OnDestroy {
     this.placeSuggestions.set(results);
     this.placeSearchHint.set(
       results.some((place) => place.photoUrl)
-        ? 'Place details and photo are ready.'
+        ? $localize`Place details and photo are ready.`
         : results.length
-          ? 'Place details are ready. No photo was returned for these matches.'
+          ? $localize`Place details are ready. No photo was returned for these matches.`
           : null,
     );
     if (results.length) {
@@ -8470,9 +8471,9 @@ export class BoardsComponent implements OnDestroy {
     } else if (googleLookupError instanceof Error) {
       this.placeSearchError.set(googleLookupError.message);
     } else if (cityLookupFailed) {
-      this.placeSearchError.set('Place search is unavailable right now. You can still type the card manually.');
+      this.placeSearchError.set($localize`Place search is unavailable right now. You can still type the card manually.`);
     } else {
-      this.placeSearchError.set('No matching places found.');
+      this.placeSearchError.set($localize`No matching places found.`);
     }
 
     if (runId === this.placeSearchRun) {
@@ -8622,7 +8623,7 @@ export class BoardsComponent implements OnDestroy {
       placeId: current.placeId || photoResult.placeId,
       googleMapsUrl: current.googleMapsUrl || photoResult.googleMapsUrl,
     }));
-    this.placeSearchHint.set('Place details and image are ready.');
+    this.placeSearchHint.set($localize`Place details and image are ready.`);
   }
 
   private bestPhotoResult(results: PlaceSearchResult[], draft: CardDraft): PlaceSearchResult | null {

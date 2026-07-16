@@ -65,31 +65,31 @@ export class WorkspaceSidebarComponent {
   readonly moreOpen = signal(false);
 
   readonly workspacePrimaryItems = computed<WorkspaceNavItem[]>(() => [
-    { key: 'home', label: 'Home', icon: 'home', route: '/' },
-    { key: 'wikis', label: 'Wikis', icon: 'dashboard', route: '/wikis' },
-    { key: 'chat', label: 'Chat', icon: 'chat', route: '/chat' },
-    { key: 'business', label: 'Business', icon: 'storefront', route: '/business' },
+    { key: 'home', label: $localize`Home`, icon: 'home', route: '/' },
+    { key: 'wikis', label: $localize`Wikis`, icon: 'dashboard', route: '/wikis' },
+    { key: 'chat', label: $localize`Chat`, icon: 'chat', route: '/chat' },
+    { key: 'business', label: $localize`Business`, icon: 'storefront', route: '/business' },
   ]);
 
   readonly workspaceMoreItems = computed<WorkspaceNavItem[]>(() => [
-    { key: 'dymaxion', label: 'World Map', icon: 'public', route: '/dymaxion' },
-    { key: 'upload', label: 'Upload Knowledge', icon: 'neurology', route: '/upload' },
-    { key: 'library', label: 'Source Files', icon: 'library_books', route: '/library' },
-    { key: 'scrapper', label: 'Scraper', icon: 'travel_explore', route: '/scrapper' },
-    { key: 'wiki', label: 'Wiki Reader', icon: 'menu_book', route: this.atlasWikiLink() },
-    { key: 'profile', label: 'Profile', icon: 'account_circle', route: '/profile' },
-    { key: 'settings', label: 'Settings', icon: 'settings', route: '/atlases' },
+    { key: 'dymaxion', label: $localize`World Map`, icon: 'public', route: '/dymaxion' },
+    { key: 'upload', label: $localize`Upload Knowledge`, icon: 'neurology', route: '/upload' },
+    { key: 'library', label: $localize`Source Files`, icon: 'library_books', route: '/library' },
+    { key: 'scrapper', label: $localize`Scraper`, icon: 'travel_explore', route: '/scrapper' },
+    { key: 'wiki', label: $localize`Wiki Reader`, icon: 'menu_book', route: this.atlasWikiLink() },
+    { key: 'profile', label: $localize`Profile`, icon: 'account_circle', route: '/profile' },
+    { key: 'settings', label: $localize`Settings`, icon: 'settings', route: '/atlases' },
   ]);
 
   readonly moreActive = computed(() => this.workspaceMoreItems().some((item) => this.isActive(item.key)));
   readonly showMoreItems = computed(() => this.moreOpen() || this.moreActive());
 
   readonly businessItems = computed(() => [
-    { key: 'business', label: 'Business Page', icon: 'business_center', route: this.businessPath() },
-    { key: 'business-edit', label: 'Edit Page', icon: 'edit', route: this.businessEditPath() },
-    { key: 'business-badge', label: 'Badge', icon: 'qr_code_2', route: this.businessBadgePath() || this.businessEditPath() },
-    { key: 'business-voice', label: 'Voice Assistant', icon: 'mic', route: this.businessVoicePath() },
-    { key: 'business-chat', label: 'Direct Chat', icon: 'forum', route: this.businessChatPath() },
+    { key: 'business', label: $localize`Business Page`, icon: 'business_center', route: this.businessPath() },
+    { key: 'business-edit', label: $localize`Edit Page`, icon: 'edit', route: this.businessEditPath() },
+    { key: 'business-badge', label: $localize`Badge`, icon: 'qr_code_2', route: this.businessBadgePath() || this.businessEditPath() },
+    { key: 'business-voice', label: $localize`Voice Assistant`, icon: 'mic', route: this.businessVoicePath() },
+    { key: 'business-chat', label: $localize`Direct Chat`, icon: 'forum', route: this.businessChatPath() },
   ].filter((item): item is { key: WorkspaceSidebarActive; label: string; icon: string; route: string } => !!item.route));
 
   isActive(key: string): boolean {

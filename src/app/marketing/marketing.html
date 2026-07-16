@@ -4,7 +4,7 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
       <a routerLink="/" class="flex items-center text-lg sm:text-xl font-bold tracking-tighter text-[var(--text)]">
         <div class="flex h-10 w-36 sm:h-12 sm:w-48 shrink-0 items-center justify-start">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
       </a>
       <div class="hidden items-center gap-6 lg:gap-10 md:flex">
@@ -17,7 +17,7 @@
       <div class="flex items-center gap-2 sm:gap-3">
         <app-theme-toggle></app-theme-toggle>
         <app-account-menu signInClass="ghost-btn !px-3 !py-2 text-xs sm:!px-4 sm:!py-2.5 sm:!text-sm"></app-account-menu>
-        <button routerLink="/create-account" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm">
+        <button routerLink="/create-account" class="primary-btn !py-2 !px-3 sm:!py-2.5 sm:!px-6 text-xs sm:!text-sm" i18n>
           Create Account
         </button>
       </div>
@@ -30,25 +30,25 @@
       <div class="grid gap-10 sm:gap-20 lg:grid-cols-[1.1fr_0.9fr] items-center">
         <div class="animate-fade-up">
           <div class="mb-6 sm:mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--accent-soft)]">
-            <span>Now in Early Access</span>
+            <span i18n>Now in Early Access</span>
             <div class="h-1 w-1 rounded-full bg-[var(--accent)]"></div>
           </div>
-          <h1 class="text-4xl sm:text-6xl font-bold leading-[0.95] tracking-tight text-[var(--text)] lg:text-8xl">
+          <h1 class="text-4xl sm:text-6xl font-bold leading-[0.95] tracking-tight text-[var(--text)] lg:text-8xl" i18n>
             Upload once.<br/>Know forever.
           </h1>
-          <p class="mt-6 sm:mt-8 max-w-xl text-base sm:text-xl leading-relaxed text-[var(--muted)]">
+          <p class="mt-6 sm:mt-8 max-w-xl text-base sm:text-xl leading-relaxed text-[var(--muted)]" i18n>
             Drop your documents and ask anything. LivingWiki reads, remembers, and answers with exact citations so you always know where the truth came from.
           </p>
-          <p class="mt-4 text-xs font-bold uppercase tracking-[0.24em] text-[var(--accent-soft)]">
+          <p class="mt-4 text-xs font-bold uppercase tracking-[0.24em] text-[var(--accent-soft)]" i18n>
             Based on the work of Andrej Karpathy.
           </p>
           <div class="mt-12 flex flex-wrap gap-4">
-            <button routerLink="/create-account" class="primary-btn flex items-center gap-3">
+            <button routerLink="/create-account" class="primary-btn flex items-center gap-3" i18n>
               Create Account
               <span class="material-symbols-outlined">arrow_forward</span>
             </button>
-            <button routerLink="/sign-in" class="secondary-btn">Sign In</button>
-            <button type="button" (click)="openProductVideo()" class="ghost-btn rounded-xl !px-4 !py-3">
+            <button routerLink="/sign-in" class="secondary-btn" i18n>Sign In</button>
+            <button type="button" (click)="openProductVideo()" class="ghost-btn rounded-xl !px-4 !py-3" i18n>
               <span class="material-symbols-outlined text-base">play_arrow</span>
               What is the LivingWiki platform?
             </button>
@@ -67,13 +67,13 @@
     <section class="mx-auto max-w-7xl px-6 pb-24 lg:px-10" id="public-wikis">
       <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div class="max-w-2xl">
-          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Public Wiki Pages</p>
-          <h2 class="mt-4 text-4xl font-bold tracking-tight text-[var(--text)] lg:text-5xl">Start with the public collection.</h2>
-          <p class="mt-5 text-lg leading-relaxed text-[var(--muted)]">
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]" i18n>Public Wiki Pages</p>
+          <h2 class="mt-4 text-4xl font-bold tracking-tight text-[var(--text)] lg:text-5xl" i18n>Start with the public collection.</h2>
+          <p class="mt-5 text-lg leading-relaxed text-[var(--muted)]" i18n>
             These are the public wikis available right now. Open the full catalog to browse every public page and see what is coming next.
           </p>
         </div>
-        <a routerLink="/public-wikis" class="secondary-btn inline-flex items-center justify-center gap-2 self-start lg:self-auto">
+        <a routerLink="/public-wikis" class="secondary-btn inline-flex items-center justify-center gap-2 self-start lg:self-auto" i18n>
           View all public wikis
           <span class="material-symbols-outlined text-base">arrow_forward</span>
         </a>
@@ -92,7 +92,7 @@
             </div>
           }
         } @else if (featuredPublicWikis().length === 0) {
-          <div class="rounded-[2rem] border border-dashed border-white/10 bg-[var(--surface)]/50 px-6 py-10 text-sm text-[var(--muted)] lg:col-span-3">
+          <div class="rounded-[2rem] border border-dashed border-white/10 bg-[var(--surface)]/50 px-6 py-10 text-sm text-[var(--muted)] lg:col-span-3" i18n>
             No public wikis are available yet.
           </div>
         } @else {
@@ -135,7 +135,7 @@
                 <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--accent-soft)]">{{ wiki.subtitle }}</p>
                 <h3 class="mt-2 line-clamp-2 text-xl font-bold tracking-tight text-[var(--text)] transition-colors group-hover:text-[var(--accent)]">{{ wiki.title }}</h3>
                 <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-[var(--muted)]">{{ wiki.description }}</p>
-                <div class="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--accent)]">
+                <div class="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--accent)]" i18n>
                   Open atlas
                   <span class="material-symbols-outlined text-base transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
                 </div>
@@ -150,8 +150,8 @@
     <section class="theme-muted-section border-y py-32" id="workflow">
       <div class="mx-auto max-w-7xl px-6 lg:px-10">
         <div class="mb-20">
-          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Operational Flow</p>
-          <h2 class="mt-4 text-4xl font-bold text-[var(--text)] lg:text-5xl">The Neural Ingestion</h2>
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]" i18n>Operational Flow</p>
+          <h2 class="mt-4 text-4xl font-bold text-[var(--text)] lg:text-5xl" i18n>The Neural Ingestion</h2>
         </div>
 
         <div class="grid gap-px overflow-hidden rounded-3xl border border-white/[0.05] bg-white/[0.05] md:grid-cols-4">
@@ -160,7 +160,7 @@
               <div class="mb-8 text-[var(--accent)]">
                 <span class="material-symbols-outlined text-4xl leading-none">{{ step.icon }}</span>
               </div>
-              <p class="text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-2">Step 0{{ index + 1 }}</p>
+              <p class="text-xs font-bold text-[var(--muted)] uppercase tracking-widest mb-2" i18n>Step 0{{ index + 1 }}</p>
               <h3 class="text-xl font-bold text-[var(--text)] mb-3">{{ step.title }}</h3>
               <p class="text-sm leading-relaxed text-[var(--muted)]">{{ step.description }}</p>
             </div>
@@ -173,8 +173,8 @@
     <section class="mx-auto max-w-7xl px-6 py-32 lg:px-10" id="features">
       <div class="mb-16 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
         <div class="max-w-2xl">
-          <h2 class="text-4xl font-bold text-[var(--text)] lg:text-5xl">Engineered for Complexity</h2>
-          <p class="mt-5 text-lg text-[var(--muted)]">Most AI tools hallucinate. LivingWiki provides a verifiable ground-truth for your most critical technical data.</p>
+          <h2 class="text-4xl font-bold text-[var(--text)] lg:text-5xl" i18n>Engineered for Complexity</h2>
+          <p class="mt-5 text-lg text-[var(--muted)]" i18n>Most AI tools hallucinate. LivingWiki provides a verifiable ground-truth for your most critical technical data.</p>
         </div>
         <div class="h-px flex-1 bg-white/[0.05] mb-6 hidden lg:block"></div>
       </div>
@@ -186,17 +186,17 @@
             <div class="mb-6 h-12 w-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">
               <span class="material-symbols-outlined">menu_book</span>
             </div>
-            <h3 class="text-3xl font-bold text-[var(--text)] mb-4">Precise Citations</h3>
-            <p class="text-[var(--muted)] leading-relaxed mb-10">Never trust a claim without proof. Every answer highlights the exact source, page, and paragraph it was derived from.</p>
+            <h3 class="text-3xl font-bold text-[var(--text)] mb-4" i18n>Precise Citations</h3>
+            <p class="text-[var(--muted)] leading-relaxed mb-10" i18n>Never trust a claim without proof. Every answer highlights the exact source, page, and paragraph it was derived from.</p>
             
             <div class="mt-auto space-y-3">
               <div class="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4 transition-colors hover:bg-white/10">
-                <span class="text-sm font-medium text-[var(--muted)] truncate">Revenue growth in Q3...</span>
-                <span class="rounded bg-[var(--accent)]/20 px-2 py-1 text-[10px] font-bold text-[var(--accent-soft)]">PAGE 42</span>
+                <span class="text-sm font-medium text-[var(--muted)] truncate" i18n>Revenue growth in Q3...</span>
+                <span class="rounded bg-[var(--accent)]/20 px-2 py-1 text-[10px] font-bold text-[var(--accent-soft)]" i18n>PAGE 42</span>
               </div>
               <div class="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4 opacity-50">
-                <span class="text-sm font-medium text-[var(--muted)] truncate">Supply chain logistics...</span>
-                <span class="rounded bg-white/10 px-2 py-1 text-[10px] font-bold text-[var(--muted)]">PAGE 12</span>
+                <span class="text-sm font-medium text-[var(--muted)] truncate" i18n>Supply chain logistics...</span>
+                <span class="rounded bg-white/10 px-2 py-1 text-[10px] font-bold text-[var(--muted)]" i18n>PAGE 12</span>
               </div>
             </div>
           </div>
@@ -212,8 +212,8 @@
           <div class="mb-6 h-12 w-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">
             <span class="material-symbols-outlined">bubble_chart</span>
           </div>
-          <h3 class="text-2xl font-bold text-[var(--text)] mb-4">Knowledge Graph</h3>
-          <p class="text-[var(--muted)] text-sm mb-8">Visualize the hidden connections between disparate documents and research papers.</p>
+          <h3 class="text-2xl font-bold text-[var(--text)] mb-4" i18n>Knowledge Graph</h3>
+          <p class="text-[var(--muted)] text-sm mb-8" i18n>Visualize the hidden connections between disparate documents and research papers.</p>
           <div class="overflow-hidden rounded-2xl border border-white/5 h-64 lg:h-1/2">
             <app-graph-animation></app-graph-animation>
           </div>
@@ -224,14 +224,14 @@
           <div class="mb-6 text-[var(--accent)]">
             <span class="material-symbols-outlined text-3xl">article</span>
           </div>
-          <h3 class="text-2xl font-bold text-[var(--text)] mb-3">Auto-Generated Wiki</h3>
-          <p class="text-[var(--muted)] text-sm mb-8">LivingWiki automatically organizes your data into a structured system that updates as you learn.</p>
+          <h3 class="text-2xl font-bold text-[var(--text)] mb-3" i18n>Auto-Generated Wiki</h3>
+          <p class="text-[var(--muted)] text-sm mb-8" i18n>LivingWiki automatically organizes your data into a structured system that updates as you learn.</p>
           <div class="space-y-3 rounded-2xl border-l-4 border-[var(--accent)] bg-white/5 p-6">
              <div class="h-2 w-3/4 rounded-full bg-white/10"></div>
              <div class="h-2 w-1/2 rounded-full bg-white/10"></div>
              <div class="h-2 w-2/3 rounded-full bg-white/5"></div>
           </div>
-          <a routerLink="/wiki" class="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[var(--accent-soft)] transition-colors hover:text-[var(--text)]">
+          <a routerLink="/wiki" class="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[var(--accent-soft)] transition-colors hover:text-[var(--text)]" i18n>
             Preview wiki page
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
@@ -242,11 +242,11 @@
           <div class="mb-6 text-[var(--accent)]">
             <span class="material-symbols-outlined text-3xl">hub</span>
           </div>
-          <h3 class="text-2xl font-bold text-[var(--text)] mb-3">Global Intelligence</h3>
-          <p class="text-[var(--muted)] text-sm mb-8">One command bar to search across your source files, web results, and existing LivingWiki simultaneously.</p>
+          <h3 class="text-2xl font-bold text-[var(--text)] mb-3" i18n>Global Intelligence</h3>
+          <p class="text-[var(--muted)] text-sm mb-8" i18n>One command bar to search across your source files, web results, and existing LivingWiki simultaneously.</p>
           <div class="theme-line-strong theme-surface flex items-center gap-3 rounded-xl border px-5 py-4">
              <span class="material-symbols-outlined text-[var(--accent)]">search</span>
-             <span class="italic text-[var(--muted)] text-sm">Ask anything about your research...</span>
+             <span class="italic text-[var(--muted)] text-sm" i18n>Ask anything about your research...</span>
           </div>
         </div>
       </div>
@@ -255,7 +255,7 @@
     <!-- Social Proof -->
     <section class="py-24">
       <div class="mx-auto max-w-7xl px-6 lg:px-10 text-center">
-        <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[var(--muted)] mb-12">Trusted by teams at the frontier</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-[var(--muted)] mb-12" i18n>Trusted by teams at the frontier</p>
         <div class="flex flex-wrap justify-center items-center gap-x-20 gap-y-10 opacity-30 grayscale contrast-125">
           @for (mark of trustMarks; track mark) {
             <span class="text-xl font-black tracking-tighter">{{ mark }}</span>
@@ -268,9 +268,9 @@
     <section class="mx-auto max-w-7xl px-6 py-32 lg:px-10" id="security">
       <div class="grid gap-20 lg:grid-cols-2">
         <div>
-          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Security</p>
-          <h2 class="mt-4 text-4xl font-bold text-[var(--text)] lg:text-5xl leading-tight">Serious knowledge deserves serious boundaries.</h2>
-          <p class="mt-8 text-lg text-[var(--muted)] leading-relaxed">The product direction is clear: private contexts, explicit provenance, and controls that make internal adoption realistic.</p>
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]" i18n>Security</p>
+          <h2 class="mt-4 text-4xl font-bold text-[var(--text)] lg:text-5xl leading-tight" i18n>Serious knowledge deserves serious boundaries.</h2>
+          <p class="mt-8 text-lg text-[var(--muted)] leading-relaxed" i18n>The product direction is clear: private contexts, explicit provenance, and controls that make internal adoption realistic.</p>
         </div>
         <div class="grid gap-4">
           @for (point of securityPoints; track point) {
@@ -287,13 +287,13 @@
     <section class="mx-auto max-w-7xl px-6 py-32 lg:px-10" id="pricing">
       <div class="theme-line relative overflow-hidden rounded-[3rem] bg-[var(--surface)] border p-12 lg:p-20 text-center">
         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[var(--accent)]/10 blur-[120px]"></div>
-        <h2 class="relative z-10 text-5xl font-bold tracking-tight text-[var(--text)] lg:text-7xl">Start Building Your LivingWiki.</h2>
-        <p class="relative z-10 mt-8 mx-auto max-w-2xl text-xl text-[var(--muted)]">Stop losing insights in a sea of browser tabs. Centralize your intelligence today.</p>
+        <h2 class="relative z-10 text-5xl font-bold tracking-tight text-[var(--text)] lg:text-7xl" i18n>Start Building Your LivingWiki.</h2>
+        <p class="relative z-10 mt-8 mx-auto max-w-2xl text-xl text-[var(--muted)]" i18n>Stop losing insights in a sea of browser tabs. Centralize your intelligence today.</p>
         <div class="relative z-10 mt-12 flex flex-col sm:flex-row justify-center gap-6">
-          <button routerLink="/create-account" class="primary-btn text-lg">Create Account</button>
-          <button routerLink="/sign-in" class="secondary-btn text-lg">Sign In</button>
+          <button routerLink="/create-account" class="primary-btn text-lg" i18n>Create Account</button>
+          <button routerLink="/sign-in" class="secondary-btn text-lg" i18n>Sign In</button>
         </div>
-        <p class="mt-10 text-xs font-bold uppercase tracking-widest text-[var(--muted)]">No credit card required. 1GB free storage.</p>
+        <p class="mt-10 text-xs font-bold uppercase tracking-widest text-[var(--muted)]" i18n>No credit card required. 1GB free storage.</p>
       </div>
     </section>
   </main>
@@ -303,22 +303,22 @@
     <div class="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-8">
       <div class="flex items-center gap-3 text-lg font-bold tracking-tighter text-[var(--text)]">
         <div class="flex h-10 w-40 items-center justify-start">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
         <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]"></span>
       </div>
       <div class="flex flex-wrap justify-center gap-5 sm:gap-8">
-        <a routerLink="/landing" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors">About LivingWiki</a>
-        <a routerLink="/business" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors">Business</a>
-        <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors">Privacy</a>
-        <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors">Terms</a>
-        <a href="mailto:jim.walker@mindpalace.com?subject=LivingWiki%20update%20suggestion" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors">Suggest an Update</a>
-        <a href="mailto:jim.walker@mindpalace.com" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors">Contact</a>
+        <a routerLink="/landing" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" i18n>About LivingWiki</a>
+        <a routerLink="/business" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" i18n>Business</a>
+        <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" i18n>Privacy</a>
+        <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" i18n>Terms</a>
+        <a href="mailto:jim.walker@mindpalace.com?subject=LivingWiki%20update%20suggestion" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" i18n>Suggest an Update</a>
+        <a href="mailto:jim.walker@mindpalace.com" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--text)] transition-colors" i18n>Contact</a>
       </div>
       <div class="text-right">
-        <p class="text-xs font-medium text-[var(--muted)]">© 2026 Mind Palace Inc. LivingWiki™. All rights reserved.</p>
-        <p class="mt-1 text-[11px] font-medium text-[var(--muted)]">LivingWiki™ is a product of <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
-        <p class="mt-2 max-w-sm text-[11px] leading-5 text-[var(--muted)]">Independent product. Not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.</p>
+        <p class="text-xs font-medium text-[var(--muted)]" i18n>© 2026 Mind Palace Inc. LivingWiki™. All rights reserved.</p>
+        <p class="mt-1 text-[11px] font-medium text-[var(--muted)]" i18n>LivingWiki™ is a product of <span class="font-bold text-[var(--text)]">Mind Palace Inc.</span></p>
+        <p class="mt-2 max-w-sm text-[11px] leading-5 text-[var(--muted)]" i18n>Independent product. Not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.</p>
       </div>
     </div>
   </footer>
@@ -337,15 +337,15 @@
       >
         <div class="flex items-center justify-between gap-4 border-b border-white/10 bg-black/70 px-4 py-3 text-white backdrop-blur-md sm:px-5">
           <div>
-            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent-soft)]">Product explainer</p>
-            <h2 id="marketing-product-video-title" class="mt-1 text-lg font-black tracking-tight sm:text-xl">What is the LivingWiki platform?</h2>
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent-soft)]" i18n>Product explainer</p>
+            <h2 id="marketing-product-video-title" class="mt-1 text-lg font-black tracking-tight sm:text-xl" i18n>What is the LivingWiki platform?</h2>
           </div>
           <button
             type="button"
             (click)="closeProductVideo()"
             aria-label="Close video"
             class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/15"
-          >
+           i18n-aria-label>
             <span class="material-symbols-outlined text-xl">close</span>
           </button>
         </div>
@@ -357,7 +357,7 @@
           playsinline
           preload="metadata"
           aria-label="Video explaining the LivingWiki platform"
-        ></video>
+         i18n-aria-label></video>
       </div>
     </div>
   }

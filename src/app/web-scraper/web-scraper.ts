@@ -66,7 +66,7 @@ export class WebScraperComponent {
   readonly scrapeCount = signal(0);
   readonly skipAlreadyIngested = signal(true);
   readonly currentArticle = signal<DiscoveredArticle | null>(null);
-  readonly currentStageLabel = signal('Waiting to begin');
+  readonly currentStageLabel = signal($localize`Waiting to begin`);
   readonly completedCount = signal(0);
   readonly successfulCount = signal(0);
   readonly failures = signal<ScrapeFailure[]>([]);
@@ -116,22 +116,22 @@ export class WebScraperComponent {
   });
   readonly pageSubtitle = computed(() => {
     switch (this.state()) {
-      case 'DISCOVERING':
+      case $localize`DISCOVERING`:
         return this.discoveryDomain()
           ? `Finding articles on ${this.discoveryDomain()}`
-          : 'Finding article links';
-      case 'PREVIEW':
-        return 'Review the links, choose a count, and queue them into the current atlas.';
-      case 'SCRAPING':
-        return 'Queueing article URLs one by one and waiting for ingestion to finish.';
-      case 'DONE':
+          : $localize`Finding article links`;
+      case $localize`PREVIEW`:
+        return $localize`Review the links, choose a count, and queue them into the current atlas.`;
+      case $localize`SCRAPING`:
+        return $localize`Queueing article URLs one by one and waiting for ingestion to finish.`;
+      case $localize`DONE`:
         return this.runCancelled()
-          ? 'The run stopped after the current article completed.'
-          : 'The scrape run has finished.';
-      case 'ERROR':
-        return 'Fix the issue below and try another source.';
+          ? $localize`The run stopped after the current article completed.`
+          : $localize`The scrape run has finished.`;
+      case $localize`ERROR`:
+        return $localize`Fix the issue below and try another source.`;
       default:
-        return 'Discover article links from a source page and ingest them into the active atlas.';
+        return $localize`Discover article links from a source page and ingest them into the active atlas.`;
     }
   });
 
@@ -155,7 +155,7 @@ export class WebScraperComponent {
     const normalizedUrl = this.normalizeInputUrl(this.sourceUrl());
     if (!normalizedUrl) {
       this.state.set('ERROR');
-      this.statusMessage.set('Enter a valid listing page URL.');
+      this.statusMessage.set($localize`Enter a valid listing page URL.`);
       return;
     }
 
@@ -165,7 +165,7 @@ export class WebScraperComponent {
     this.discoveredArticles.set([]);
     this.scrapeCount.set(0);
     this.currentArticle.set(null);
-    this.currentStageLabel.set('Waiting to begin');
+    this.currentStageLabel.set($localize`Waiting to begin`);
     this.completedCount.set(0);
     this.successfulCount.set(0);
     this.failures.set([]);
@@ -179,7 +179,7 @@ export class WebScraperComponent {
       if (articles.length === 0) {
         this.state.set('ERROR');
         this.statusMessage.set(
-          'No same-domain article links matched the current discovery rules on that page.',
+          $localize`No same-domain article links matched the current discovery rules on that page.`,
         );
         return;
       }
@@ -194,7 +194,7 @@ export class WebScraperComponent {
     } catch (error) {
       this.state.set('ERROR');
       this.statusMessage.set(
-        error instanceof Error ? error.message : 'Discovery failed. Try another source URL.',
+        error instanceof Error ? error.message : $localize`Discovery failed. Try another source URL.`,
       );
     }
   }
@@ -223,13 +223,13 @@ export class WebScraperComponent {
 
     if (!atlasId) {
       this.state.set('ERROR');
-      this.statusMessage.set('Select an atlas before starting a scrape run.');
+      this.statusMessage.set($localize`Select an atlas before starting a scrape run.`);
       return;
     }
 
     if (targets.length === 0) {
       this.state.set('ERROR');
-      this.statusMessage.set('Discover at least one article before starting.');
+      this.statusMessage.set($localize`Discover at least one article before starting.`);
       return;
     }
 
@@ -245,7 +245,7 @@ export class WebScraperComponent {
     for (let index = 0; index < targets.length; index += 1) {
       const article = targets[index];
       this.currentArticle.set(article);
-      this.currentStageLabel.set('Queueing URL for background ingestion');
+      this.currentStageLabel.set($localize`Queueing URL for background ingestion`);
 
       try {
         await this.documentsService.queueUrlDocument(article.url, { atlasId });
@@ -269,7 +269,7 @@ export class WebScraperComponent {
       }
 
       if (index < targets.length - 1) {
-        this.currentStageLabel.set('Rate limiting before the next queue');
+        this.currentStageLabel.set($localize`Rate limiting before the next queue`);
         await this.delay(1100);
       }
     }
@@ -277,15 +277,15 @@ export class WebScraperComponent {
     this.currentArticle.set(null);
     this.currentStageLabel.set(
       this.runCancelled()
-        ? 'Queueing stopped after the current article.'
-        : 'Queueing complete. Background ingestion continues in Source Files.',
+        ? $localize`Queueing stopped after the current article.`
+        : $localize`Queueing complete. Background ingestion continues in Source Files.`,
     );
     this.state.set('DONE');
   }
 
   requestCancel(): void {
     this.cancelRequested.set(true);
-    this.currentStageLabel.set('Cancel requested. Finishing the current article first.');
+    this.currentStageLabel.set($localize`Cancel requested. Finishing the current article first.`);
   }
 
   reset(): void {
@@ -294,7 +294,7 @@ export class WebScraperComponent {
     this.discoveredArticles.set([]);
     this.scrapeCount.set(0);
     this.currentArticle.set(null);
-    this.currentStageLabel.set('Waiting to begin');
+    this.currentStageLabel.set($localize`Waiting to begin`);
     this.completedCount.set(0);
     this.successfulCount.set(0);
     this.failures.set([]);

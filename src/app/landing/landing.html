@@ -5,7 +5,7 @@
   <aside class="theme-sidebar hidden h-screen w-64 border-r md:flex flex-col py-6 px-4 shrink-0 font-display">
     <a routerLink="/" class="flex items-center px-2 mb-10">
       <div class="flex h-10 w-44 items-center justify-start">
-        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
       </div>
       <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)] animate-pulse"></span>
     </a>
@@ -15,28 +15,28 @@
         class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
       >
         <span class="material-symbols-outlined">home</span>
-        <span>Home</span>
+        <span i18n>Home</span>
       </a>
       <a
         routerLink="/wikis"
         class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
       >
         <span class="material-symbols-outlined">dashboard</span>
-        <span>Wikis</span>
+        <span i18n>Wikis</span>
       </a>
       <a
         [routerLink]="chatLink()"
         class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
       >
         <span class="material-symbols-outlined">chat</span>
-        <span>Chat</span>
+        <span i18n>Chat</span>
       </a>
       <a
         [routerLink]="uploadLink()"
         class="flex items-center gap-3 rounded-xl border border-[var(--line-strong)] bg-white/5 px-3 py-3 font-bold text-[var(--accent)] shadow-[inset_0_0_0_1px_rgba(59,175,98,0.08)]"
       >
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">neurology</span>
-        <span>Upload</span>
+        <span i18n>Upload</span>
       </a>
       @if (!hidePublicSourceFiles()) {
         <a
@@ -44,7 +44,7 @@
           class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
         >
           <span class="material-symbols-outlined">library_books</span>
-          <span>Source Files</span>
+          <span i18n>Source Files</span>
         </a>
       }
       @if (!isPublicView()) {
@@ -53,7 +53,7 @@
           class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
         >
           <span class="material-symbols-outlined">travel_explore</span>
-          <span>Scrapper</span>
+          <span i18n>Scrapper</span>
         </a>
       }
       <a
@@ -61,7 +61,7 @@
         class="flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 text-[var(--muted)] transition-colors duration-200 hover:bg-white/5 hover:text-[var(--text)]"
       >
         <span class="material-symbols-outlined">menu_book</span>
-        <span>Wiki</span>
+        <span i18n>Wiki</span>
       </a>
     </nav>
   </aside>
@@ -75,12 +75,12 @@
         <app-mobile-menu activePage="upload" [publicSlug]="routeSlug()" [hidePublicKnowledgeSurfaces]="hidePublicSourceFiles()"></app-mobile-menu>
         <div class="relative w-64 group hidden md:block">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm">search</span>
-          <input class="theme-input w-full rounded-lg pl-10 py-1.5 text-sm transition-all text-[var(--text)] placeholder:text-[var(--muted)]/50" placeholder="Search thoughts..." type="text"/>
+          <input class="theme-input w-full rounded-lg pl-10 py-1.5 text-sm transition-all text-[var(--text)] placeholder:text-[var(--muted)]/50" placeholder="Search thoughts..." type="text" i18n-placeholder/>
         </div>
         <nav class="hidden md:flex items-center gap-6">
-          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--accent)] border-b border-[var(--accent)] py-1" href="#">Deep Search</a>
-          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--muted)] hover:text-[var(--accent)] transition-all py-1" href="#">Graph</a>
-          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--muted)] hover:text-[var(--accent)] transition-all py-1" href="#">Timeline</a>
+          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--accent)] border-b border-[var(--accent)] py-1" href="#" i18n>Deep Search</a>
+          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--muted)] hover:text-[var(--accent)] transition-all py-1" href="#" i18n>Graph</a>
+          <a class="text-[10px] font-bold tracking-widest uppercase text-[var(--muted)] hover:text-[var(--accent)] transition-all py-1" href="#" i18n>Timeline</a>
         </nav>
       </div>
       <div class="flex items-center gap-3">
@@ -119,7 +119,7 @@
       <div class="max-w-2xl w-full text-center z-10 animate-fade-up">
         <h1 class="text-4xl sm:text-7xl font-bold tracking-tighter text-[var(--text)] mb-2 leading-none">{{ pageTitle() }}</h1>
         <div class="mx-auto mb-5 flex w-full max-w-xl flex-col items-center gap-2 rounded-2xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 py-3 sm:mb-6">
-          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Current wiki</p>
+          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Current wiki</p>
           <p class="max-w-full truncate text-xl font-black tracking-tight text-[var(--text)] sm:text-2xl">{{ currentWikiName() }}</p>
         </div>
         <p class="text-[10px] font-black tracking-widest uppercase text-[var(--accent)] mb-8 sm:mb-12">{{ isBusinessUpload() ? 'Business AI source files' : isPublicView() ? 'Public access' : 'Cognitive Synchronization Active' }}</p>
@@ -139,16 +139,16 @@
               Upload menus, FAQs, service sheets, policies, training notes, or company docs. LivingWiki will use them as source material for the business AI. You can add up to 10 documents in one upload.
             } @else {
               Drop your first document. LivingWiki will read it, learn from it, and remember it
-              <span class="text-[var(--accent-soft)] font-bold">forever.</span>
+              <span class="text-[var(--accent-soft)] font-bold" i18n>forever.</span>
             }
           </p>
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             @if (isPublicView()) {
-              <a routerLink="/sign-in" class="primary-btn !py-3 sm:!py-4 text-center">Sign in to upload</a>
+              <a routerLink="/sign-in" class="primary-btn !py-3 sm:!py-4 text-center" i18n>Sign in to upload</a>
               @if (!hidePublicSourceFiles()) {
-                <a [routerLink]="libraryLink()" class="secondary-btn !py-3 sm:!py-4 text-center">Browse source files</a>
+                <a [routerLink]="libraryLink()" class="secondary-btn !py-3 sm:!py-4 text-center" i18n>Browse source files</a>
               } @else {
-                <a [routerLink]="atlasWikiLink()" class="secondary-btn !py-3 sm:!py-4 text-center">Browse wiki</a>
+                <a [routerLink]="atlasWikiLink()" class="secondary-btn !py-3 sm:!py-4 text-center" i18n>Browse wiki</a>
               }
             } @else {
               <button type="button" class="primary-btn !py-3 sm:!py-4" [disabled]="isUploading()" (click)="openFilePicker()">
@@ -171,7 +171,7 @@
             }
           </div>
           @if (!isPublicView() && isActiveAtlasOwner() && !isGoogleDriveConfigured()) {
-            <div class="mt-4 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-[var(--muted)]">
+            <div class="mt-4 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-[var(--muted)]" i18n>
               Google Drive import is available after Google Picker OAuth is configured for this app.
             </div>
           }
@@ -187,7 +187,7 @@
               @for (upload of activeUploads(); track upload.id) {
                 <div class="rounded-2xl border border-[var(--accent)]/10 bg-[var(--accent)]/[0.03] px-4 py-3">
                   <div class="flex items-center justify-between mb-2">
-                    <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent)]">Uploading file</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent)]" i18n>Uploading file</p>
                     <span class="text-xs font-semibold text-[var(--text)]">{{ upload.percentage }}%</span>
                   </div>
                   <div class="h-2 overflow-hidden rounded-full bg-white/5">
@@ -204,7 +204,7 @@
                 <div class="rounded-2xl border border-amber-500/10 bg-amber-500/[0.03] px-4 py-3">
                   <div class="flex items-center justify-between mb-2">
                     <div>
-                      <p class="text-xs font-bold uppercase tracking-[0.16em] text-amber-400">Ingesting: {{ doc.title || doc.filename }}</p>
+                      <p class="text-xs font-bold uppercase tracking-[0.16em] text-amber-400" i18n>Ingesting: {{ doc.title || doc.filename }}</p>
                       <p class="text-[11px] text-[var(--muted)]">{{ processingLabel(doc) }}</p>
                     </div>
                     <span class="text-xs font-semibold text-[var(--text)]">{{ ingestionProgress(doc) }}%</span>
@@ -225,16 +225,16 @@
 
         <!-- Cognitive Chips -->
         <div class="mt-8 sm:mt-16 flex flex-wrap justify-center gap-2 sm:gap-3">
-          <span class="px-3 sm:px-5 py-1.5 sm:py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5">Neural Indexing</span>
-          <span class="px-3 sm:px-5 py-1.5 sm:py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5">Semantic Search</span>
-          <span class="px-3 sm:px-5 py-1.5 sm:py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5">Zero-Loss Retention</span>
+          <span class="px-3 sm:px-5 py-1.5 sm:py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5" i18n>Neural Indexing</span>
+          <span class="px-3 sm:px-5 py-1.5 sm:py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5" i18n>Semantic Search</span>
+          <span class="px-3 sm:px-5 py-1.5 sm:py-2 bg-white/5 text-[var(--muted)] text-[10px] uppercase tracking-widest font-bold rounded-full border border-white/5" i18n>Zero-Loss Retention</span>
         </div>
       </div>
 
       <!-- Footer Metadata -->
       <div class="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 text-right opacity-30 hidden sm:block">
-        <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--text)]">System Status: Optimal</p>
-        <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--muted)]">Location: Local Node 077</p>
+        <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--text)]" i18n>System Status: Optimal</p>
+        <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--muted)]" i18n>Location: Local Node 077</p>
       </div>
     </div>
   </main>

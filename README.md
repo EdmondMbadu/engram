@@ -4,13 +4,16 @@ LivingWiki is an Angular app prepared for Firebase Hosting, with the Firebase We
 
 ## Development server
 
-To start a local development server, run:
+To build and serve English, French, and Japanese together at `localhost:4200`, run:
 
 ```bash
-ng serve
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The localized server mirrors Firebase's locale fallbacks, so `/`, `/fr/`, and `/ja/` can be
+tested from the same origin. For faster English-only development with automatic reload, run
+`npm run start:dev`. Single-locale development builds are also available through
+`npm run start:fr` and `npm run start:ja`.
 
 ## Code scaffolding
 
@@ -35,6 +38,31 @@ ng build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Internationalization
+
+English is served at `/`, French at `/fr/`, and Japanese at `/ja/`. Angular builds one
+compile-time localized application per locale, so routing, SSR/prerendered HTML, page titles,
+accessibility text, and locale-aware date/number formatting all use the same locale.
+
+When adding or changing visible copy:
+
+```bash
+npm run i18n:mark
+npm run i18n:extract
+# update src/locale/messages.fr.json and messages.ja.json
+npm run i18n:check
+npm run build
+```
+
+Use `npm run start:fr` or `npm run start:ja` for a single localized development build. The
+production build fails on missing or duplicate translations, and `i18n:check` additionally
+rejects stale message IDs or changed placeholders.
+
+To add another language, add it to `src/app/i18n/locales.ts`, `angular.json`, the catalog
+checker/translation target list, and Firebase's locale fallback rewrites. Then create a complete
+target catalog before enabling the production locale build. The language switcher reads the
+shared locale manifest, so it does not require page-by-page changes.
 
 ## Firebase Hosting
 

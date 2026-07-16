@@ -3,27 +3,27 @@
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
       <a routerLink="/business" class="flex min-w-0 items-center gap-3">
         <div class="flex h-10 w-40 shrink-0 items-center justify-start">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
         <span class="hidden h-8 w-px bg-[var(--line)] sm:block"></span>
         <span class="hidden truncate text-sm font-black text-[var(--text)] sm:block">{{ businessName() }}</span>
       </a>
 
-      <nav class="hidden min-w-0 flex-1 items-center gap-2 overflow-x-auto px-2 text-sm font-bold text-[var(--muted)] md:flex" aria-label="Business page sections">
-        <button type="button" class="shrink-0 rounded-full bg-[var(--soft-fill)] px-3 py-2 text-[var(--accent)] transition hover:text-[var(--text)]" (click)="scrollToSection('business-info')">Overview</button>
-        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('voice')">Voice</button>
-        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('contact')">Contact</button>
-        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('badge')">Badge</button>
-        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('direct-chat')">Chat</button>
+      <nav class="hidden min-w-0 flex-1 items-center gap-2 overflow-x-auto px-2 text-sm font-bold text-[var(--muted)] md:flex" aria-label="Business page sections" i18n-aria-label>
+        <button type="button" class="shrink-0 rounded-full bg-[var(--soft-fill)] px-3 py-2 text-[var(--accent)] transition hover:text-[var(--text)]" (click)="scrollToSection('business-info')" i18n>Overview</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('voice')" i18n>Voice</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('contact')" i18n>Contact</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('badge')" i18n>Badge</button>
+        <button type="button" class="shrink-0 rounded-full px-3 py-2 transition hover:bg-[var(--soft-fill)] hover:text-[var(--text)]" (click)="scrollToSection('direct-chat')" i18n>Chat</button>
       </nav>
 
       <div class="flex items-center gap-2">
-        <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition hover:text-[var(--text)]" (click)="copyDetailLink()" aria-label="Copy business detail link">
+        <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition hover:text-[var(--text)]" (click)="copyDetailLink()" aria-label="Copy business detail link" i18n-aria-label>
           <span class="material-symbols-outlined text-[1.1rem]">content_copy</span>
         </button>
         <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="hidden items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2.5 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 sm:inline-flex">
           <span class="material-symbols-outlined text-[1rem]">forum</span>
-          <span>Chat</span>
+          <span i18n>Chat</span>
         </a>
         <app-theme-toggle></app-theme-toggle>
         <app-account-menu></app-account-menu>
@@ -55,16 +55,16 @@
     <div class="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
       @if (loading()) {
         <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] px-6 py-8 shadow-[var(--shadow-floating)]">
-          <p class="text-sm font-semibold text-[var(--muted)]">Loading business page...</p>
+          <p class="text-sm font-semibold text-[var(--muted)]" i18n>Loading business page...</p>
         </section>
       } @else if (!business()) {
         <section class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] px-6 py-10 shadow-[var(--shadow-floating)]">
-          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business page</p>
-          <h1 class="mt-3 text-3xl font-black tracking-tight">This business is not available yet.</h1>
+          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Business page</p>
+          <h1 class="mt-3 text-3xl font-black tracking-tight" i18n>This business is not available yet.</h1>
           <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ loadError() || 'The business page could not be found.' }}</p>
           <a routerLink="/business/claim" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">
             <span class="material-symbols-outlined text-[1rem]">add_business</span>
-            <span>Claim a business</span>
+            <span i18n>Claim a business</span>
           </a>
         </section>
       } @else {
@@ -85,21 +85,21 @@
 
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-2">
-                <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">LivingWiki for Business</span>
+                <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]" i18n>LivingWiki for Business</span>
                 <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">{{ statusLabel() }}</span>
               </div>
               <h1 class="mt-3 truncate text-4xl font-black tracking-tight sm:text-5xl">{{ businessName() }}</h1>
-              <p class="mt-2 text-xs font-black uppercase tracking-[0.24em] text-[var(--muted)]">{{ cityName() }} Business Page</p>
+              <p class="mt-2 text-xs font-black uppercase tracking-[0.24em] text-[var(--muted)]" i18n>{{ cityName() }} Business Page</p>
             </div>
 
             <div class="flex w-full flex-wrap items-center gap-3 md:w-auto md:justify-end">
               @if (ownerCanViewPrivateDetails()) {
                 <a [routerLink]="editPath()" class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2.5 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90">
                   <span class="material-symbols-outlined text-[1rem]">edit</span>
-                  <span>Edit this page</span>
+                  <span i18n>Edit this page</span>
                 </a>
               }
-              <div class="inline-flex w-max items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-[var(--text)]">
+              <div class="inline-flex w-max items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-[var(--text)]" i18n>
                 <span class="h-2.5 w-2.5 rounded-full bg-[var(--accent)]"></span>
                 Open Now
               </div>
@@ -111,31 +111,31 @@
               <div class="flex items-start gap-3">
                 <span class="material-symbols-outlined text-3xl text-[var(--accent)]">record_voice_over</span>
                 <div>
-                  <h2 class="text-sm font-black uppercase tracking-[0.18em] text-[var(--accent)]">Voice in your language</h2>
-                  <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ selectedGreeting() }} Talk with {{ businessName() }} through the {{ cityName() }} city wiki.</p>
+                  <h2 class="text-sm font-black uppercase tracking-[0.18em] text-[var(--accent)]" i18n>Voice in your language</h2>
+                  <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>{{ selectedGreeting() }} Talk with {{ businessName() }} through the {{ cityName() }} city wiki.</p>
                 </div>
               </div>
               <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90" (click)="startVoiceMode()">
                 <span class="material-symbols-outlined text-[1rem]">mic</span>
-                <span>Start voice mode in {{ selectedLanguage().language }}</span>
+                <span i18n>Start voice mode in {{ selectedLanguage().language }}</span>
               </button>
             </div>
 
             <div class="mt-5 grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
               <label class="relative block">
                 <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[1.1rem] text-[var(--muted)]">search</span>
-                <input type="search" autocomplete="off" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Find country or language" [value]="languageSearch()" (input)="onLanguageSearchInput($event)" />
+                <input type="search" autocomplete="off" class="theme-input w-full rounded-2xl py-3 pl-11 pr-12 text-sm" placeholder="Find country or language" [value]="languageSearch()" (input)="onLanguageSearchInput($event)"  i18n-placeholder/>
                 @if (languageSearch()) {
-                  <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear language search" (click)="clearLanguageSearch()">
+                  <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear language search" (click)="clearLanguageSearch()" i18n-aria-label>
                     <span class="material-symbols-outlined text-[1rem]">close</span>
                   </button>
                 }
               </label>
               <div class="flex gap-2">
-                <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--text)] transition hover:border-[var(--accent)]/35 disabled:opacity-40" [disabled]="languageAtStart()" (click)="scrollLanguages(-1)" aria-label="Previous languages">
+                <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--text)] transition hover:border-[var(--accent)]/35 disabled:opacity-40" [disabled]="languageAtStart()" (click)="scrollLanguages(-1)" aria-label="Previous languages" i18n-aria-label>
                   <span class="material-symbols-outlined">chevron_left</span>
                 </button>
-                <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--text)] transition hover:border-[var(--accent)]/35 disabled:opacity-40" [disabled]="languageAtEnd()" (click)="scrollLanguages(1)" aria-label="More languages">
+                <button type="button" class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--text)] transition hover:border-[var(--accent)]/35 disabled:opacity-40" [disabled]="languageAtEnd()" (click)="scrollLanguages(1)" aria-label="More languages" i18n-aria-label>
                   <span class="material-symbols-outlined">chevron_right</span>
                 </button>
               </div>
@@ -160,7 +160,7 @@
                   <span class="max-w-full truncate text-[10px] font-bold text-[var(--muted)]">{{ language.country }}</span>
                 </button>
               } @empty {
-                <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--muted)]">No matching languages.</div>
+                <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--muted)]" i18n>No matching languages.</div>
               }
             </div>
           </section>
@@ -168,13 +168,13 @@
 
         <div class="grid gap-6 md:grid-cols-2">
           <article class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)]">
-            <h2 class="text-2xl font-black tracking-tight">About Us</h2>
+            <h2 class="text-2xl font-black tracking-tight" i18n>About Us</h2>
             <p class="mt-4 text-sm leading-7 text-[var(--muted)]">{{ aboutText() }}</p>
             <div class="mt-6 flex items-center gap-3 border-t border-[var(--line)] pt-5">
               <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--soft-fill)] text-[var(--accent)]">
                 <span class="material-symbols-outlined text-[1.1rem]">history</span>
               </div>
-              <span class="text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]">Created in {{ cityName() }}</span>
+              <span class="text-xs font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Created in {{ cityName() }}</span>
             </div>
           </article>
 
@@ -189,10 +189,10 @@
             <div class="p-6">
               <div class="flex items-start justify-between gap-3">
                 <h2 class="text-xl font-black tracking-tight">{{ business()?.category || 'Local guide' }}</h2>
-                <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]">Featured</span>
+                <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Featured</span>
               </div>
-              <p class="mt-3 text-sm leading-6 text-[var(--muted)]">Personalized local answers for visitors, customers, and residents through LivingWiki.</p>
-              <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="mt-5 inline-flex items-center gap-1 text-sm font-black text-[var(--accent)]">
+              <p class="mt-3 text-sm leading-6 text-[var(--muted)]" i18n>Personalized local answers for visitors, customers, and residents through LivingWiki.</p>
+              <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="mt-5 inline-flex items-center gap-1 text-sm font-black text-[var(--accent)]" i18n>
                 Explore guide
                 <span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
               </a>
@@ -203,7 +203,7 @@
         <section id="contact" class="rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[var(--shadow-floating)]">
           <div class="grid gap-6 md:grid-cols-2">
             <div>
-              <h2 class="text-2xl font-black tracking-tight">Location & Contact</h2>
+              <h2 class="text-2xl font-black tracking-tight" i18n>Location & Contact</h2>
               <div class="mt-5 grid gap-4">
                 <div class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-[var(--accent)]">location_on</span>
@@ -222,15 +222,15 @@
                 <div class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-[var(--accent)]">link</span>
                   <div>
-                    <p class="font-black text-[var(--text)]">Business detail page</p>
-                    <p class="text-sm text-[var(--muted)]">Use the copy button below to share this page.</p>
+                    <p class="font-black text-[var(--text)]" i18n>Business detail page</p>
+                    <p class="text-sm text-[var(--muted)]" i18n>Use the copy button below to share this page.</p>
                   </div>
                 </div>
               </div>
               <div class="mt-6 flex flex-wrap gap-3">
                 <a [href]="'https://www.google.com/maps/search/?api=1&query=' + (businessName() + ' ' + cityName())" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">
                   <span class="material-symbols-outlined text-[1rem]">directions</span>
-                  <span>Directions</span>
+                  <span i18n>Directions</span>
                 </a>
                 <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-5 py-3 text-sm font-black text-[var(--accent)]" (click)="copyDetailLink()">
                   <span class="material-symbols-outlined text-[1rem]">content_copy</span>
@@ -261,19 +261,19 @@
               </div>
             </div>
             <div class="p-6 sm:p-8">
-              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Share the guide</p>
-              <h2 class="mt-2 text-2xl font-black tracking-tight">Badge and QR code</h2>
-              <p class="mt-3 text-sm leading-7 text-[var(--muted)]">Share this badge on a website, menu, poster, window, or message. It opens the voice-first guide for {{ businessName() }}.</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Share the guide</p>
+              <h2 class="mt-2 text-2xl font-black tracking-tight" i18n>Badge and QR code</h2>
+              <p class="mt-3 text-sm leading-7 text-[var(--muted)]" i18n>Share this badge on a website, menu, poster, window, or message. It opens the voice-first guide for {{ businessName() }}.</p>
               <p class="mt-4 break-all rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-xs font-bold text-[var(--muted)]">{{ publicChatUrl() }}</p>
 
               <div class="mt-5 grid gap-3 sm:grid-cols-2">
                 <a [href]="publicChatUrl()" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)]">
                   <span class="material-symbols-outlined text-[1rem]">forum</span>
-                  <span>Open guide</span>
+                  <span i18n>Open guide</span>
                 </a>
                 <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--accent)]" (click)="shareBusinessGuide()">
                   <span class="material-symbols-outlined text-[1rem]">ios_share</span>
-                  <span>Share</span>
+                  <span i18n>Share</span>
                 </button>
                 <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="copyGuideLink()">
                   <span class="material-symbols-outlined text-[1rem]">{{ copiedGuideLink() ? 'check' : 'content_copy' }}</span>
@@ -282,11 +282,11 @@
                 @if (ownerCanViewPrivateDetails()) {
                   <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]" (click)="downloadBadgePng()">
                     <span class="material-symbols-outlined text-[1rem]">image</span>
-                    <span>Download PNG</span>
+                    <span i18n>Download PNG</span>
                   </button>
                   <a [href]="badgeSvgHref()" [download]="badgeSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)] sm:col-span-2">
                     <span class="material-symbols-outlined text-[1rem]">download</span>
-                    <span>Download SVG</span>
+                    <span i18n>Download SVG</span>
                   </a>
                 }
               </div>
@@ -301,23 +301,23 @@
                 <img [src]="additionalQrSvgHref()" [alt]="additionalQrLabel() + ' QR code'" class="aspect-square w-full max-w-xs object-contain" />
               </div>
               <div class="p-6 sm:p-8">
-                <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Additional QR</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Additional QR</p>
                 <h2 class="mt-2 text-2xl font-black tracking-tight">{{ additionalQrLabel() }}</h2>
-                <p class="mt-3 text-sm leading-7 text-[var(--muted)]">Use this simple QR code for the saved destination.</p>
+                <p class="mt-3 text-sm leading-7 text-[var(--muted)]" i18n>Use this simple QR code for the saved destination.</p>
                 <p class="mt-4 break-all rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-xs font-bold text-[var(--muted)]">{{ additionalQrUrl() }}</p>
 
                 <div class="mt-5 grid gap-3 sm:grid-cols-2">
                   <a [href]="additionalQrUrl()" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-3 text-sm font-black text-[var(--accent-contrast)]">
                     <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
-                    <span>Open destination</span>
+                    <span i18n>Open destination</span>
                   </a>
                   <a [href]="additionalQrSvgHref()" [download]="additionalQrSvgFilename()" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)]">
                     <span class="material-symbols-outlined text-[1rem]">download</span>
-                    <span>Download SVG</span>
+                    <span i18n>Download SVG</span>
                   </a>
                   <button type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-black text-[var(--text)] sm:col-span-2" (click)="downloadAdditionalQrPng()">
                     <span class="material-symbols-outlined text-[1rem]">image</span>
-                    <span>Download PNG</span>
+                    <span i18n>Download PNG</span>
                   </button>
                 </div>
               </div>
@@ -332,11 +332,11 @@
                 <span class="material-symbols-outlined">forum</span>
               </div>
               <div>
-                <h2 class="text-lg font-black">Direct Connection</h2>
-                <p class="text-sm opacity-85">Ask anything about {{ businessName() }} or {{ cityName() }}</p>
+                <h2 class="text-lg font-black" i18n>Direct Connection</h2>
+                <p class="text-sm opacity-85" i18n>Ask anything about {{ businessName() }} or {{ cityName() }}</p>
               </div>
             </div>
-            <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="hidden rounded-full bg-white/15 px-4 py-2 text-sm font-black transition hover:bg-white/25 sm:inline-flex">Open chat</a>
+            <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="hidden rounded-full bg-white/15 px-4 py-2 text-sm font-black transition hover:bg-white/25 sm:inline-flex" i18n>Open chat</a>
           </div>
           <div class="grid gap-4 bg-[var(--soft-fill)] px-5 py-6 sm:px-6">
             @if (profileImageUrl()) {
@@ -344,23 +344,23 @@
                 <img [src]="profileImageUrl()" [alt]="businessName() + ' profile image'" class="h-12 w-12 rounded-full object-cover" />
                 <div class="min-w-0">
                   <p class="truncate text-sm font-black text-[var(--text)]">{{ businessName() }}</p>
-                  <p class="truncate text-xs text-[var(--muted)]">Business guide profile</p>
+                  <p class="truncate text-xs text-[var(--muted)]" i18n>Business guide profile</p>
                 </div>
               </div>
             }
-            <div class="max-w-[82%] rounded-b-2xl rounded-tr-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--muted)]">
+            <div class="max-w-[82%] rounded-b-2xl rounded-tr-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--muted)]" i18n>
               Ask about hours, menu, services, directions, language support, and local recommendations.
             </div>
-            <div class="ml-auto max-w-[82%] rounded-b-2xl rounded-tl-2xl bg-[var(--accent)] px-4 py-3 text-sm leading-6 text-[var(--accent-contrast)]">
+            <div class="ml-auto max-w-[82%] rounded-b-2xl rounded-tl-2xl bg-[var(--accent)] px-4 py-3 text-sm leading-6 text-[var(--accent-contrast)]" i18n>
               What should I know before visiting {{ businessName() }}?
             </div>
-            <div class="max-w-[82%] rounded-b-2xl rounded-tr-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--text)]">
+            <div class="max-w-[82%] rounded-b-2xl rounded-tr-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm leading-6 text-[var(--text)]" i18n>
               I can answer in your chosen language and connect the business context with the {{ cityName() }} wiki.
             </div>
           </div>
           <div class="border-t border-[var(--line)] bg-[var(--surface)] px-5 py-5 sm:px-6">
             <button type="button" class="flex w-full items-center justify-between gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-4 text-left text-sm font-semibold text-[var(--muted)] transition hover:border-[var(--accent)]/35" (click)="startVoiceMode()">
-              <span>Open the live chat and voice assistant for {{ businessName() }}</span>
+              <span i18n>Open the live chat and voice assistant for {{ businessName() }}</span>
               <span class="material-symbols-outlined text-[var(--accent)]">arrow_forward</span>
             </button>
           </div>
@@ -368,21 +368,21 @@
 
         @if (ownerCanViewPrivateDetails()) {
           <section class="rounded-3xl border border-[var(--accent)]/25 bg-[var(--soft-fill)] p-6">
-            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
-            <h2 class="mt-2 text-2xl font-black tracking-tight">Owner controls</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--muted)]">This account owns the business claim. Edit operational details, the guide prompt, badge icons, and pending setup from the account admin page.</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Business admin</p>
+            <h2 class="mt-2 text-2xl font-black tracking-tight" i18n>Owner controls</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--muted)]" i18n>This account owns the business claim. Edit operational details, the guide prompt, badge icons, and pending setup from the account admin page.</p>
             <div class="mt-5 flex flex-wrap gap-3">
               <a routerLink="/atlases" class="inline-flex items-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">
                 <span class="material-symbols-outlined text-[1rem]">settings</span>
-                <span>Edit in account admin</span>
+                <span i18n>Edit in account admin</span>
               </a>
               <a [routerLink]="editPath()" class="inline-flex items-center gap-2 rounded-2xl border border-[var(--accent)]/35 bg-[var(--surface)] px-5 py-3 text-sm font-black text-[var(--accent)]">
                 <span class="material-symbols-outlined text-[1rem]">edit</span>
-                <span>Edit this page</span>
+                <span i18n>Edit this page</span>
               </a>
               <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="inline-flex items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-5 py-3 text-sm font-black text-[var(--text)]">
                 <span class="material-symbols-outlined text-[1rem]">qr_code_2</span>
-                <span>Test QR destination</span>
+                <span i18n>Test QR destination</span>
               </a>
             </div>
           </section>
@@ -395,11 +395,11 @@
   <footer class="mt-12 border-t border-[var(--line)] bg-[var(--surface)]">
     <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-[var(--muted)] sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
       <p class="font-black text-[var(--accent)]">{{ businessName() }}</p>
-      <p>LivingWiki business page for {{ cityName() }}.</p>
+      <p i18n>LivingWiki business page for {{ cityName() }}.</p>
       <div class="flex gap-4">
-        <a routerLink="/privacy" class="transition hover:text-[var(--text)]">Privacy</a>
-        <a routerLink="/terms" class="transition hover:text-[var(--text)]">Terms</a>
-        <a routerLink="/business" class="transition hover:text-[var(--text)]">Business</a>
+        <a routerLink="/privacy" class="transition hover:text-[var(--text)]" i18n>Privacy</a>
+        <a routerLink="/terms" class="transition hover:text-[var(--text)]" i18n>Terms</a>
+        <a routerLink="/business" class="transition hover:text-[var(--text)]" i18n>Business</a>
       </div>
     </div>
   </footer>

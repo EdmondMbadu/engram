@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, LOCALE_ID, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -15,6 +15,7 @@ import { AccountMenuComponent } from '../account-menu/account-menu';
   templateUrl: './city-pulse-admin.html',
 })
 export class CityPulseAdminComponent {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly route = inject(ActivatedRoute);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
@@ -113,7 +114,7 @@ export class CityPulseAdminComponent {
         })
         .catch((error) => {
           if (!cancelled) {
-            this.loadError.set(error instanceof Error ? error.message : 'Could not load city pulse snapshot.');
+            this.loadError.set(error instanceof Error ? error.message : $localize`Could not load city pulse snapshot.`);
           }
         })
         .finally(() => {
@@ -149,7 +150,7 @@ export class CityPulseAdminComponent {
       const snapshot = await this.cityPulseService.refreshStoredSnapshot(atlasId);
       this.snapshot.set(snapshot);
     } catch (error) {
-      this.loadError.set(error instanceof Error ? error.message : 'Could not refresh city pulse snapshot.');
+      this.loadError.set(error instanceof Error ? error.message : $localize`Could not refresh city pulse snapshot.`);
     } finally {
       this.isRefreshing.set(false);
     }
@@ -180,7 +181,7 @@ export class CityPulseAdminComponent {
       return 'No timestamp';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -198,7 +199,7 @@ export class CityPulseAdminComponent {
       return 'No refresh yet';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       hour: 'numeric',

@@ -8,15 +8,15 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-10">
       <a routerLink="/" class="flex items-center text-lg font-bold tracking-tighter text-[var(--text)]">
         <div class="flex h-10 w-36 shrink-0 items-center justify-start sm:h-12 sm:w-48">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
       </a>
       <div class="flex items-center gap-2 sm:gap-3">
-        <a routerLink="/" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex">
+        <a routerLink="/" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex" i18n>
           Public Wikis
         </a>
         <app-theme-toggle></app-theme-toggle>
-        <a routerLink="/create-account" class="primary-btn !px-3 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:!text-sm">
+        <a routerLink="/create-account" class="primary-btn !px-3 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:!text-sm" i18n>
           Claim
         </a>
         <app-account-menu signInClass="ghost-btn !px-3 !py-2 text-xs sm:!px-4 sm:!py-2.5 sm:!text-sm"></app-account-menu>
@@ -28,13 +28,13 @@
     <!-- header -->
     <header class="flex flex-wrap items-end justify-between gap-5 border-b border-[var(--line)] pb-5">
       <div>
-        <p class="text-[11px] font-black uppercase tracking-[0.34em] text-[var(--accent)]">
+        <p class="text-[11px] font-black uppercase tracking-[0.34em] text-[var(--accent)]" i18n>
           Dymaxion Navigation
         </p>
-        <h1 class="mt-1 text-[2rem] font-black leading-[0.98] tracking-[-0.01em] text-[var(--text)] sm:text-5xl">
+        <h1 class="mt-1 text-[2rem] font-black leading-[0.98] tracking-[-0.01em] text-[var(--text)] sm:text-5xl" i18n>
           The world, undistorted.
         </h1>
-        <p class="mt-2 max-w-[48ch] text-sm leading-6 text-[var(--muted)]">
+        <p class="mt-2 max-w-[48ch] text-sm leading-6 text-[var(--muted)]" i18n>
           One world, one map, no distortion. Hover the Fuller projection to find a city —
           click a marker to open its chat.
         </p>
@@ -48,9 +48,9 @@
             autocomplete="off"
             [ngModel]="searchValue()"
             (ngModelChange)="onSearch($event)"
-          />
+           i18n-placeholder/>
         </label>
-        <span class="text-[10.5px] font-medium uppercase tracking-[0.12em] text-[var(--muted)]">
+        <span class="text-[10.5px] font-medium uppercase tracking-[0.12em] text-[var(--muted)]" i18n>
           {{ shownCount() }} / {{ cityCount() }} shown
         </span>
       </div>
@@ -81,20 +81,20 @@
       >
         <span class="dym-tick tl"></span><span class="dym-tick tr"></span>
         <span class="dym-tick bl"></span><span class="dym-tick br"></span>
-        <div class="dym-zoom-controls" aria-label="Map zoom controls">
-          <button class="dym-zoomctl" type="button" (click)="zoomBy(1.45)" aria-label="Zoom in">
+        <div class="dym-zoom-controls" aria-label="Map zoom controls" i18n-aria-label>
+          <button class="dym-zoomctl" type="button" (click)="zoomBy(1.45)" aria-label="Zoom in" i18n-aria-label>
             <span class="material-symbols-outlined">add</span>
           </button>
-          <button class="dym-zoomctl" type="button" (click)="zoomBy(1 / 1.45)" aria-label="Zoom out">
+          <button class="dym-zoomctl" type="button" (click)="zoomBy(1 / 1.45)" aria-label="Zoom out" i18n-aria-label>
             <span class="material-symbols-outlined">remove</span>
           </button>
         </div>
-        <button class="dym-zoomout" type="button" #zoomout (click)="resetToWorld()" aria-label="Zoom back out to the whole world">
+        <button class="dym-zoomout" type="button" #zoomout (click)="resetToWorld()" aria-label="Zoom back out to the whole world" i18n-aria-label i18n>
           <span class="material-symbols-outlined" style="font-size:15px">public</span>
           World
         </button>
         <div class="dym-map-canvas" #canvas>
-          <img src="/assets/image/dymaxion-map.png" alt="Dymaxion (Fuller) projection world map" draggable="false" />
+          <img src="/assets/image/dymaxion-map.png" alt="Dymaxion (Fuller) projection world map" draggable="false"  i18n-alt/>
           <svg
             class="dym-country-layer"
             #countryLayer
@@ -102,31 +102,31 @@
             preserveAspectRatio="none"
             role="img"
             aria-label="Projected country boundaries"
-          ></svg>
+           i18n-aria-label></svg>
           <div #clusterLayer></div>
           <!-- markers injected here -->
         </div>
         @if (cityDataLoading()) {
-          <div class="dym-map-loading" aria-live="polite" aria-label="Loading city points">
+          <div class="dym-map-loading" aria-live="polite" aria-label="Loading city points" i18n-aria-label>
             <span class="dym-loading-spinner" aria-hidden="true"></span>
-            <span>Loading city points…</span>
+            <span i18n>Loading city points…</span>
           </div>
         }
         @if (isLoading()) {
-          <div class="dym-hint">Loading the world…</div>
+          <div class="dym-hint" i18n>Loading the world…</div>
         } @else {
-          <div class="dym-hint" #hint>
+          <div class="dym-hint" #hint i18n>
             Scroll to zoom · drag to pan · hover cities
           </div>
         }
       </div>
-      <div class="dym-picker" #picker role="dialog" aria-label="Cities at this location"></div>
+      <div class="dym-picker" #picker role="dialog" aria-label="Cities at this location" i18n-aria-label></div>
     </div>
 
     <!-- city panel below the map -->
     <div id="dymaxion-panel" class="dym-panel" [class.empty]="!selected()">
       @if (selected(); as c) {
-        <article class="dym-city-card" aria-label="Selected city snapshot">
+        <article class="dym-city-card" aria-label="Selected city snapshot" i18n-aria-label>
           <section class="dym-city-visual">
             @if (c.imageUrl) {
               <img [src]="c.imageUrl" [alt]="cityImageAlt(c)" />
@@ -145,7 +145,7 @@
           <section class="dym-city-content">
             <p class="dym-city-intro">{{ identityLine(c) }}</p>
 
-            <div class="dym-tag-row" aria-label="City themes">
+            <div class="dym-tag-row" aria-label="City themes" i18n-aria-label>
               @for (tag of cityTags(c); track tag) {
                 <span>{{ tag }}</span>
               }
@@ -155,28 +155,28 @@
               <div class="dym-metric">
                 <span class="material-symbols-outlined">groups</span>
                 <div>
-                  <div class="k">Population</div>
+                  <div class="k" i18n>Population</div>
                   <div class="v">{{ fmtPopulation(c) }}</div>
                 </div>
               </div>
               <div class="dym-metric">
                 <span class="material-symbols-outlined">location_on</span>
                 <div>
-                  <div class="k">Coordinates</div>
+                  <div class="k" i18n>Coordinates</div>
                   <div class="v">{{ fmtLat(c.lat) }}, {{ fmtLng(c.lng) }}</div>
                 </div>
               </div>
               <div class="dym-metric live">
                 <span class="material-symbols-outlined">schedule</span>
                 <div>
-                  <div class="k">Local time <i aria-hidden="true"></i></div>
+                  <div class="k" i18n>Local time <i aria-hidden="true"></i></div>
                   <div class="v">{{ localTimeLabel(c) }}</div>
                 </div>
               </div>
               <div class="dym-metric">
                 <span class="material-symbols-outlined">thermostat</span>
                 <div>
-                  <div class="k">Temperature</div>
+                  <div class="k" i18n>Temperature</div>
                   <div class="v">{{ temperatureLabel(c) }}</div>
                 </div>
               </div>
@@ -186,32 +186,32 @@
               <div class="dym-context-item">
                 <span class="material-symbols-outlined">directions_transit</span>
                 <div>
-                  <h3>Urban &amp; Mobility</h3>
+                  <h3 i18n>Urban &amp; Mobility</h3>
                   <p>{{ urbanSummary(c) }}</p>
                 </div>
               </div>
               <div class="dym-context-item">
                 <span class="material-symbols-outlined">wb_sunny</span>
                 <div>
-                  <h3>Climate Context</h3>
+                  <h3 i18n>Climate Context</h3>
                   <p>{{ climateSummary(c) }}</p>
                 </div>
               </div>
             </div>
 
             <div class="dym-actions">
-              <a class="primary-btn dym-open" [routerLink]="['/chat', c.slug]">
+              <a class="primary-btn dym-open" [routerLink]="['/chat', c.slug]" i18n>
                 <span class="material-symbols-outlined">forum</span>
                 Open LivingWiki Chat
               </a>
-              <div class="dym-urlrow">/chat/{{ c.slug }}</div>
+              <div class="dym-urlrow" i18n>/chat/{{ c.slug }}</div>
             </div>
           </section>
         </article>
       } @else {
         <div class="dym-empty-inner">
-          <div class="big">Choose a city to begin.</div>
-          <div class="sub">— its LivingWiki opens from here —</div>
+          <div class="big" i18n>Choose a city to begin.</div>
+          <div class="sub" i18n>— its LivingWiki opens from here —</div>
         </div>
       }
     </div>

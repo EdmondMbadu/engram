@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, LOCALE_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -36,6 +36,7 @@ interface CityMoodSticker {
   styleUrl: './atlas-landing.css',
 })
 export class AtlasLandingComponent {
+  private readonly localeId = inject(LOCALE_ID);
   private readonly authService = inject(AuthService);
   private readonly atlasService = inject(AtlasService);
   private readonly cityPulseService = inject(CityPulseService);
@@ -210,7 +211,7 @@ export class AtlasLandingComponent {
     if (cityName) {
       addSticker({
         id: 'city-name',
-        label: 'City',
+        label: $localize`City`,
         value: cityName,
         caption: config?.region_name?.trim() || config?.country_code?.trim() || 'City profile',
         icon: 'location_city',
@@ -222,7 +223,7 @@ export class AtlasLandingComponent {
     if (regionParts.length) {
       addSticker({
         id: 'region',
-        label: 'Region',
+        label: $localize`Region`,
         value: regionParts.join(', '),
         caption: metadata?.global_region || 'Mapped location',
         icon: 'public',
@@ -233,7 +234,7 @@ export class AtlasLandingComponent {
     if (metadata?.population && !this.cityPulseMetrics().some((metric) => metric.id === 'population-now')) {
       addSticker({
         id: 'population',
-        label: 'Population',
+        label: $localize`Population`,
         value: this.compactNumber(metadata.population),
         caption: metadata.population_year ? `Estimate year ${metadata.population_year}` : 'Latest attached estimate',
         icon: 'groups',
@@ -244,9 +245,9 @@ export class AtlasLandingComponent {
     if (metadata?.population_density_per_km2) {
       addSticker({
         id: 'density',
-        label: 'Density',
+        label: $localize`Density`,
         value: this.compactNumber(metadata.population_density_per_km2),
-        caption: '/km²',
+        caption: $localize`/km²`,
         captionIcon: 'groups',
         icon: 'groups',
         palette: 'yellow',
@@ -256,7 +257,7 @@ export class AtlasLandingComponent {
     if (metadata?.area_km2) {
       addSticker({
         id: 'area',
-        label: 'Area',
+        label: $localize`Area`,
         value: `${this.compactNumber(metadata.area_km2)} km²`,
         caption: metadata.population_scope ? this.titleize(metadata.population_scope.replaceAll('_', ' ')) : 'Mapped area',
         icon: 'map',
@@ -267,7 +268,7 @@ export class AtlasLandingComponent {
     if (config?.timezone) {
       addSticker({
         id: 'timezone',
-        label: 'Time',
+        label: $localize`Time`,
         value: this.shortTimezone(config.timezone),
         caption: config.timezone,
         icon: 'schedule',
@@ -278,9 +279,9 @@ export class AtlasLandingComponent {
     if (typeof config?.latitude === 'number' && typeof config.longitude === 'number') {
       addSticker({
         id: 'coordinates',
-        label: 'Coordinates',
+        label: $localize`Coordinates`,
         value: `${config.latitude.toFixed(2)}, ${config.longitude.toFixed(2)}`,
-        caption: 'Map position',
+        caption: $localize`Map position`,
         icon: 'explore',
         palette: 'blue',
       });
@@ -290,16 +291,16 @@ export class AtlasLandingComponent {
   });
   readonly cityMoodStickers = computed<CityMoodSticker[]>(() => {
     const options: CityMoodSticker[] = [
-      { label: 'Food streets', icon: 'restaurant', palette: 'coral' },
-      { label: 'Parks', icon: 'park', palette: 'green' },
-      { label: 'Transit pulse', icon: 'directions_transit', palette: 'blue' },
-      { label: 'Local markets', icon: 'storefront', palette: 'yellow' },
-      { label: 'Night lights', icon: 'nightlife', palette: 'purple' },
-      { label: 'Public art', icon: 'palette', palette: 'teal' },
-      { label: 'Waterfront', icon: 'waves', palette: 'sky' },
-      { label: 'Neighborhoods', icon: 'home_work', palette: 'coral' },
-      { label: 'Campuses', icon: 'school', palette: 'blue' },
-      { label: 'Green jobs', icon: 'eco', palette: 'green' },
+      { label: $localize`Food streets`, icon: 'restaurant', palette: 'coral' },
+      { label: $localize`Parks`, icon: 'park', palette: 'green' },
+      { label: $localize`Transit pulse`, icon: 'directions_transit', palette: 'blue' },
+      { label: $localize`Local markets`, icon: 'storefront', palette: 'yellow' },
+      { label: $localize`Night lights`, icon: 'nightlife', palette: 'purple' },
+      { label: $localize`Public art`, icon: 'palette', palette: 'teal' },
+      { label: $localize`Waterfront`, icon: 'waves', palette: 'sky' },
+      { label: $localize`Neighborhoods`, icon: 'home_work', palette: 'coral' },
+      { label: $localize`Campuses`, icon: 'school', palette: 'blue' },
+      { label: $localize`Green jobs`, icon: 'eco', palette: 'green' },
     ];
     const seedSource = `${this.cityPulseName()}-${this.atlas()?.city_config?.country_code ?? ''}`;
     let seed = 0;
@@ -417,7 +418,7 @@ export class AtlasLandingComponent {
         })
         .catch((error) => {
           if (!cancelled) {
-            this.cityPulseError.set(error instanceof Error ? error.message : 'Failed to load city pulse.');
+            this.cityPulseError.set(error instanceof Error ? error.message : $localize`Failed to load city pulse.`);
           }
         })
         .finally(() => {
@@ -520,7 +521,7 @@ export class AtlasLandingComponent {
     if (!raw) return null;
     const date = raw instanceof Date ? raw : raw.toDate?.();
     if (!date) return null;
-    return date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+    return date.toLocaleDateString(this.localeId, { month: 'short', year: 'numeric' });
   });
 
   readonly displayName = computed(() => this.atlasService.displayName(this.atlas()));
@@ -590,7 +591,7 @@ export class AtlasLandingComponent {
       return;
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      this.subscribeError.set('Enter a valid email address.');
+      this.subscribeError.set($localize`Enter a valid email address.`);
       return;
     }
 
@@ -727,7 +728,7 @@ export class AtlasLandingComponent {
       return 'Snapshot pending';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       hour: 'numeric',
@@ -785,7 +786,7 @@ export class AtlasLandingComponent {
   }
 
   private compactNumber(value: number): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat(this.localeId, {
       notation: Math.abs(value) >= 10_000 ? 'compact' : 'standard',
       maximumFractionDigits: Math.abs(value) >= 10_000 ? 1 : 0,
     }).format(value);
@@ -851,7 +852,7 @@ export class AtlasLandingComponent {
       return 'No timestamp';
     }
 
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(this.localeId, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -890,7 +891,7 @@ export class AtlasLandingComponent {
       });
       this.editing.set(false);
     } catch (error) {
-      this.editError.set(error instanceof Error ? error.message : 'Failed to save changes.');
+      this.editError.set(error instanceof Error ? error.message : $localize`Failed to save changes.`);
     } finally {
       this.saving.set(false);
     }
@@ -916,7 +917,7 @@ export class AtlasLandingComponent {
       }
       await this.atlasService.updateAtlas(a.id, kind === 'logo' ? { logo_url: url } : { hero_url: url });
     } catch (error) {
-      this.editError.set(error instanceof Error ? error.message : 'Upload failed.');
+      this.editError.set(error instanceof Error ? error.message : $localize`Upload failed.`);
     } finally {
       busy.set(false);
     }
@@ -947,7 +948,7 @@ export class AtlasLandingComponent {
       const url = await this.atlasService.uploadAtlasVideo(a.id, file);
       await this.atlasService.updateAtlas(a.id, { video_url: url });
     } catch (error) {
-      this.editError.set(error instanceof Error ? error.message : 'Video upload failed.');
+      this.editError.set(error instanceof Error ? error.message : $localize`Video upload failed.`);
     } finally {
       this.uploadingVideo.set(false);
     }
@@ -960,7 +961,7 @@ export class AtlasLandingComponent {
     try {
       await this.atlasService.removeAtlasVideo(a.id, a.video_url);
     } catch (error) {
-      this.editError.set(error instanceof Error ? error.message : 'Failed to remove video.');
+      this.editError.set(error instanceof Error ? error.message : $localize`Failed to remove video.`);
     } finally {
       this.removingVideo.set(false);
     }

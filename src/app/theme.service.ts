@@ -31,7 +31,7 @@ export class ThemeService {
   }
 
   themeActionLabel(): string {
-    return this.currentTheme() === 'dark' ? 'Light mode' : 'Dark mode';
+    return this.currentTheme() === 'dark' ? $localize`Light mode` : $localize`Dark mode`;
   }
 
   private getInitialTheme(): Theme {

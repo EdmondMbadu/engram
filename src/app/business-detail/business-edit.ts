@@ -72,19 +72,19 @@ export class BusinessEditComponent {
   readonly chatUrl = computed(() => `https://livingwiki.com${this.chatPath()}?business=${encodeURIComponent(this.routeParams().businessSlug)}`);
   readonly qrOnlySvg = computed(() => generateQrSvg(this.chatUrl()));
   readonly qrOnlySvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.qrOnlySvg())}`);
-  readonly additionalQrLabel = computed(() => this.draft().additional_qr_label.trim() || 'Additional QR code');
+  readonly additionalQrLabel = computed(() => this.draft().additional_qr_label.trim() || $localize`Additional QR code`);
   readonly additionalQrUrl = computed(() => this.draft().additional_qr_url.trim());
   readonly hasAdditionalQr = computed(() => this.additionalQrUrl().length > 0);
   readonly savedAdditionalQrUrl = computed(() => this.business()?.additional_qr_url?.trim() || '');
   readonly hasSavedAdditionalQr = computed(() => this.savedAdditionalQrUrl().length > 0);
   readonly additionalQrPrimaryActionLabel = computed(() => {
     if (this.saving()) {
-      return 'Saving...';
+      return $localize`Saving...`;
     }
     if (!this.additionalQrUrl()) {
-      return 'Clear QR code';
+      return $localize`Clear QR code`;
     }
-    return this.hasSavedAdditionalQr() ? 'Save QR code' : 'Add QR code';
+    return this.hasSavedAdditionalQr() ? $localize`Save QR code` : $localize`Add QR code`;
   });
   readonly additionalQrSvg = computed(() => generateQrSvg(this.additionalQrUrl() || this.chatUrl()));
   readonly additionalQrSvgHref = computed(() => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(this.additionalQrSvg())}`);
@@ -193,10 +193,10 @@ export class BusinessEditComponent {
     try {
       await this.businessClaimService.updateWorkspaceRecord(business.claim_key, update);
       this.business.set({ ...business, ...update });
-      this.savedMessage.set('Business page changes saved.');
+      this.savedMessage.set($localize`Business page changes saved.`);
       return true;
     } catch (error) {
-      this.loadError.set(error instanceof Error ? error.message : 'Could not save business changes.');
+      this.loadError.set(error instanceof Error ? error.message : $localize`Could not save business changes.`);
       return false;
     } finally {
       this.saving.set(false);
@@ -206,7 +206,7 @@ export class BusinessEditComponent {
   async saveAdditionalQr(): Promise<void> {
     const saved = await this.save();
     if (saved) {
-      this.savedMessage.set(this.hasAdditionalQr() ? 'Additional QR code saved.' : 'Additional QR code cleared.');
+      this.savedMessage.set(this.hasAdditionalQr() ? $localize`Additional QR code saved.` : $localize`Additional QR code cleared.`);
     }
   }
 
@@ -268,12 +268,12 @@ export class BusinessEditComponent {
       const business = await this.businessClaimService.findWorkspaceByClaimKey(claimKey);
       this.business.set(business);
       if (!business) {
-        this.loadError.set('This business page has not been created yet.');
+        this.loadError.set($localize`This business page has not been created yet.`);
       } else {
         this.draft.set(this.toDraft(business));
       }
     } catch (error) {
-      this.loadError.set(error instanceof Error ? error.message : 'Could not load this business page.');
+      this.loadError.set(error instanceof Error ? error.message : $localize`Could not load this business page.`);
     } finally {
       this.loading.set(false);
     }

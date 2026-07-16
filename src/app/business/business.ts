@@ -86,7 +86,7 @@ export class BusinessComponent {
   readonly businessName = signal('Brauhaus Schmitz');
   readonly businessNeighborhood = signal('South Street');
   readonly businessCategory = signal('German bierhall');
-  readonly businessDescription = signal('Authentic German beer hall, 40+ taps, WC watch parties, private events, and a South Street crowd that wants the real thing.');
+  readonly businessDescription = signal($localize`Authentic German beer hall, 40+ taps, WC watch parties, private events, and a South Street crowd that wants the real thing.`);
   readonly selectedLanguageCodes = signal(['en', 'es', 'de', 'pt', 'fr']);
   readonly selectedDecalSize = signal('window');
   readonly copiedBusinessLink = signal(false);
@@ -96,28 +96,28 @@ export class BusinessComponent {
   readonly citySignals = ['Philadelphia', 'Austin', 'London', 'Tokyo', 'Nairobi', 'Sao Paulo'];
 
   readonly decalLanguages: DecalLanguage[] = [
-    { code: 'en', flag: '🇺🇸', label: 'English', greeting: 'Hello' },
-    { code: 'es', flag: '🇪🇸', label: 'Español', greeting: '¡Hola!' },
-    { code: 'de', flag: '🇩🇪', label: 'Deutsch', greeting: 'Guten Tag' },
-    { code: 'pt', flag: '🇧🇷', label: 'Português', greeting: 'Olá' },
-    { code: 'fr', flag: '🇫🇷', label: 'Français', greeting: 'Bonjour' },
-    { code: 'zh', flag: '🇨🇳', label: '中文', greeting: '你好' },
-    { code: 'ar', flag: '🇸🇦', label: 'العربية', greeting: 'مرحبا' },
-    { code: 'ko', flag: '🇰🇷', label: '한국어', greeting: '안녕' },
+    { code: 'en', flag: '🇺🇸', label: $localize`English`, greeting: 'Hello' },
+    { code: 'es', flag: '🇪🇸', label: $localize`Español`, greeting: '¡Hola!' },
+    { code: 'de', flag: '🇩🇪', label: $localize`Deutsch`, greeting: 'Guten Tag' },
+    { code: 'pt', flag: '🇧🇷', label: $localize`Português`, greeting: 'Olá' },
+    { code: 'fr', flag: '🇫🇷', label: $localize`Français`, greeting: 'Bonjour' },
+    { code: 'zh', flag: '🇨🇳', label: $localize`中文`, greeting: '你好' },
+    { code: 'ar', flag: '🇸🇦', label: $localize`العربية`, greeting: 'مرحبا' },
+    { code: 'ko', flag: '🇰🇷', label: $localize`한국어`, greeting: '안녕' },
   ];
 
   readonly businessBadgeIcons: BadgeIcon[] = [
-    { code: 'hat', emoji: '🎩', label: 'Heritage' },
-    { code: 'pretzel', emoji: '🥨', label: 'Pretzel' },
-    { code: 'beer', emoji: '🍺', label: 'Beer' },
-    { code: 'music', emoji: '🎵', label: 'Live music' },
+    { code: 'hat', emoji: '🎩', label: $localize`Heritage` },
+    { code: 'pretzel', emoji: '🥨', label: $localize`Pretzel` },
+    { code: 'beer', emoji: '🍺', label: $localize`Beer` },
+    { code: 'music', emoji: '🎵', label: $localize`Live music` },
   ];
 
   readonly decalSizes: DecalSize[] = [
-    { id: 'window', label: 'Window cling 8×10"', detail: 'Best for storefront glass' },
-    { id: 'door', label: 'Door decal 5×7"', detail: 'Compact entrance sticker' },
-    { id: 'tent', label: 'Table tent 4×6"', detail: 'Countertop or host stand' },
-    { id: 'card', label: 'Counter card', detail: 'Small checkout display' },
+    { id: 'window', label: $localize`Window cling 8×10"`, detail: 'Best for storefront glass' },
+    { id: 'door', label: $localize`Door decal 5×7"`, detail: 'Compact entrance sticker' },
+    { id: 'tent', label: $localize`Table tent 4×6"`, detail: 'Countertop or host stand' },
+    { id: 'card', label: $localize`Counter card`, detail: 'Small checkout display' },
   ];
 
   readonly businessCategories = [
@@ -156,46 +156,46 @@ export class BusinessComponent {
   readonly features: BusinessFeature[] = [
     {
       icon: 'storefront',
-      title: 'A living business profile',
+      title: $localize`A living business profile`,
       description:
-        'Tell the story behind the place, keep hours and links current, and give people a richer page than a static directory listing.',
+        $localize`Tell the story behind the place, keep hours and links current, and give people a richer page than a static directory listing.`,
     },
     {
       icon: 'location_on',
-      title: 'A pin on the city map',
+      title: $localize`A pin on the city map`,
       description:
-        'Show up in the neighborhood context where visitors are already exploring food, culture, jobs, events, and local guides.',
+        $localize`Show up in the neighborhood context where visitors are already exploring food, culture, jobs, events, and local guides.`,
     },
     {
       icon: 'explore',
-      title: 'Featured guide placement',
+      title: $localize`Featured guide placement`,
       description:
-        'Surface in curated local paths like hidden coffee, founder-friendly blocks, weekend plans, or places locals actually recommend.',
+        $localize`Surface in curated local paths like hidden coffee, founder-friendly blocks, weekend plans, or places locals actually recommend.`,
     },
     {
       icon: 'verified',
-      title: 'Local Favorite trust badge',
+      title: $localize`Local Favorite trust badge`,
       description:
-        'Add a visible signal that this is a real, community-relevant business worth checking before the usual generic results.',
+        $localize`Add a visible signal that this is a real, community-relevant business worth checking before the usual generic results.`,
     },
     {
       icon: 'monitoring',
-      title: 'Local search insights',
+      title: $localize`Local search insights`,
       description:
-        'Learn what people are asking around your city so promotions, events, staffing, and inventory can follow actual demand.',
+        $localize`Learn what people are asking around your city so promotions, events, staffing, and inventory can follow actual demand.`,
     },
     {
       icon: 'new_releases',
-      title: 'Founding-business status',
+      title: $localize`Founding-business status`,
       description:
-        'Plant your flag early in a launch city with launch placement, a founding badge, and a stronger voice in how the wiki grows.',
+        $localize`Plant your flag early in a launch city with launch placement, a founding badge, and a stronger voice in how the wiki grows.`,
     },
   ];
 
   readonly plans: BusinessPlan[] = [
     {
       name: 'Local',
-      description: 'Get on the map and start being found around your neighborhood.',
+      description: $localize`Get on the map and start being found around your neighborhood.`,
       monthlyPrice: 25,
       annualMonthlyPrice: 20,
       cta: 'Get started',
@@ -208,7 +208,7 @@ export class BusinessComponent {
     },
     {
       name: 'Local Favorite',
-      description: 'Stand out, build trust, and understand what nearby people want.',
+      description: $localize`Stand out, build trust, and understand what nearby people want.`,
       monthlyPrice: 65,
       annualMonthlyPrice: 54,
       featured: true,
@@ -224,7 +224,7 @@ export class BusinessComponent {
     },
     {
       name: 'City Sponsor',
-      description: 'Anchor a city wiki with maximum visibility and deeper insight.',
+      description: $localize`Anchor a city wiki with maximum visibility and deeper insight.`,
       monthlyPrice: 180,
       annualMonthlyPrice: 150,
       cta: 'Start a conversation',
@@ -338,7 +338,7 @@ export class BusinessComponent {
       `To confirm you are really sure, type DELETE ${business.business_name}`,
     );
     if (typed !== `DELETE ${business.business_name}`) {
-      this.ownedBusinessesError.set('Business deletion cancelled. The confirmation text did not match.');
+      this.ownedBusinessesError.set($localize`Business deletion cancelled. The confirmation text did not match.`);
       return;
     }
 
@@ -348,7 +348,7 @@ export class BusinessComponent {
       await this.businessClaimService.deleteBusiness(business.claim_key);
       this.ownedBusinesses.update((items) => items.filter((item) => item.claim_key !== business.claim_key));
     } catch (error) {
-      this.ownedBusinessesError.set(error instanceof Error ? error.message : 'Failed to delete this business.');
+      this.ownedBusinessesError.set(error instanceof Error ? error.message : $localize`Failed to delete this business.`);
     } finally {
       this.deletingBusinessKey.set(null);
     }
@@ -519,7 +519,7 @@ export class BusinessComponent {
     } catch (error) {
       this.ownedBusinesses.set([]);
       this.ownedBusinessesError.set(
-        error instanceof Error ? error.message : 'Failed to load your businesses.',
+        error instanceof Error ? error.message : $localize`Failed to load your businesses.`,
       );
     } finally {
       this.ownedBusinessesLoading.set(false);

@@ -77,7 +77,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     slug: 'philly',
     name: 'LivingWiki: Philly',
     description:
-      'LivingWiki: Philly consolidates the Delaware Valley’s fragmented sustainability and economic data — currently scattered across 60+ agencies, portals, and databases — into the region’s living institutional memory.',
+      $localize`LivingWiki: Philly consolidates the Delaware Valley’s fragmented sustainability and economic data — currently scattered across 60+ agencies, portals, and databases — into the region’s living institutional memory.`,
     landingSummary:
       'A city-first civic guide for Philadelphia and the Delaware Valley, focused on sustainability, local updates, neighborhoods, transit, jobs, food, climate, and public data.',
     sources:
@@ -106,7 +106,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     slug: 'boston',
     name: 'LivingWiki: Boston',
     description:
-      "Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.",
+      $localize`Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.`,
     landingSummary:
       'A practical guide to Boston civic life, innovation, universities, transit, climate resilience, public health, neighborhoods, and local updates.',
     sources:
@@ -135,7 +135,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     slug: 'portland',
     name: 'LivingWiki: Portland',
     description:
-      "Portland's sustainability ecosystem — urban planning, transit, climate action, food systems, and the green economy of the Pacific Northwest.",
+      $localize`Portland's sustainability ecosystem — urban planning, transit, climate action, food systems, and the green economy of the Pacific Northwest.`,
     landingSummary:
       'A practical guide to Portland sustainability, planning, transit, climate action, food systems, local culture, public data, and regional updates.',
     sources:
@@ -164,7 +164,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     slug: 'austin',
     name: 'LivingWiki: Austin',
     description:
-      "Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.",
+      $localize`Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.`,
     landingSummary:
       'A practical guide to Austin growth, tech, energy, transit, housing, climate, music culture, local government, and civic data.',
     sources: 'Austin Open Data, ERCOT, Texas PUC, Census, Austin Energy',
@@ -192,7 +192,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     slug: 'gainesville',
     name: 'LivingWiki: Gainesville',
     description:
-      "Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.",
+      $localize`Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.`,
     landingSummary:
       'A practical guide to Gainesville civic life, University of Florida context, neighborhoods, RTS transit, climate resilience, jobs, food, culture, and local updates.',
     sources:
@@ -242,7 +242,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     slug: 'san-francisco',
     name: 'LivingWiki: San Francisco',
     description:
-      "SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.",
+      $localize`SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.`,
     landingSummary:
       'A practical guide to San Francisco civic life, technology, housing, transit, climate policy, neighborhoods, public data, and city updates.',
     sources: 'DataSF, SFMTA, SFPUC, Bay Area Census, California state data',
@@ -270,7 +270,7 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
     slug: 'new-york-city',
     name: 'LivingWiki: New York City',
     description:
-      "NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.",
+      $localize`NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.`,
     landingSummary:
       'A practical guide to New York City civic life, transit, climate resilience, housing, jobs, neighborhoods, culture, public services, and local updates.',
     sources: 'NYC Open Data (2,700+ datasets), MTA, NYC DEP, PlaNYC, Census',

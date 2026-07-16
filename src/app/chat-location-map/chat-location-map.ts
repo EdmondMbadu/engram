@@ -28,7 +28,7 @@ export class ChatLocationMapComponent implements OnChanges {
 
   private mapCanvas?: ElementRef<HTMLElement>;
 
-  readonly mapTitle = 'Places mentioned';
+  readonly mapTitle = $localize`Places mentioned`;
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
   readonly resolvedLocations = signal<ResolvedMappableLocation[]>([]);
@@ -153,7 +153,7 @@ export class ChatLocationMapComponent implements OnChanges {
       }
     } catch (error) {
       if (currentRender === this.renderId) {
-        this.error.set(error instanceof Error ? error.message : 'Map could not be loaded.');
+        this.error.set(error instanceof Error ? error.message : $localize`Map could not be loaded.`);
         this.resolvedLocations.set([]);
         this.currentMap = null;
       }

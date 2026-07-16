@@ -7,8 +7,8 @@
         <div class="flex min-w-0 items-center gap-3 md:gap-8">
           <app-mobile-menu activePage="profile"></app-mobile-menu>
           <div class="min-w-0">
-            <h1 class="truncate text-2xl font-black text-[var(--text)]">Profile</h1>
-            <p class="hidden text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block">Account and linked spaces</p>
+            <h1 class="truncate text-2xl font-black text-[var(--text)]" i18n>Profile</h1>
+            <p class="hidden text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block" i18n>Account and linked spaces</p>
           </div>
         </div>
 
@@ -46,12 +46,12 @@
                   </label>
                   <button type="button" class="ghost-btn inline-flex justify-center !px-4 !py-2.5 text-sm" [disabled]="profilePictureSaving()" (click)="openIconChooser()">
                     <span class="material-symbols-outlined text-base">palette</span>
-                    <span>Choose icon</span>
+                    <span i18n>Choose icon</span>
                   </button>
                   @if (profile()?.profileIcon || uploadedPhotoUrl()) {
                     <button type="button" class="ghost-btn inline-flex justify-center !px-4 !py-2.5 text-sm" [disabled]="profilePictureSaving()" (click)="removeProfilePicture()">
                       <span class="material-symbols-outlined text-base">close</span>
-                      <span>Reset</span>
+                      <span i18n>Reset</span>
                     </button>
                   }
                 </div>
@@ -63,7 +63,7 @@
                     <div class="flex flex-wrap items-center gap-3">
                       <h2 class="min-w-0 text-4xl font-black tracking-tight text-[var(--text)]">{{ profileHandle() }}</h2>
                       @if (profile()?.role === 'admin') {
-                        <span class="profile-pill">
+                        <span class="profile-pill" i18n>
                           <span class="material-symbols-outlined text-[1rem]">admin_panel_settings</span>
                           Admin
                         </span>
@@ -86,11 +86,11 @@
                   <div class="flex flex-wrap gap-2">
                     <a routerLink="/atlases" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
                       <span class="material-symbols-outlined text-base">settings</span>
-                      <span>Settings</span>
+                      <span i18n>Settings</span>
                     </a>
                     <a routerLink="/wikis" class="primary-btn inline-flex !px-4 !py-2.5 text-sm">
                       <span class="material-symbols-outlined text-base">dashboard</span>
-                      <span>My Wikis</span>
+                      <span i18n>My Wikis</span>
                     </a>
                   </div>
                 </div>
@@ -98,26 +98,26 @@
                 <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
                   <div class="profile-stat-sticker sticker-palette--teal">
                     <span class="profile-stat-sticker__value">{{ atlases().length }}</span>
-                    <span class="profile-stat-sticker__label">Wikis</span>
+                    <span class="profile-stat-sticker__label" i18n>Wikis</span>
                   </div>
                   <div class="profile-stat-sticker sticker-palette--coral">
                     <span class="profile-stat-sticker__value">{{ businessClaims().length }}</span>
-                    <span class="profile-stat-sticker__label">Business</span>
+                    <span class="profile-stat-sticker__label" i18n>Business</span>
                   </div>
                   <div class="profile-stat-sticker sticker-palette--yellow">
                     <span class="profile-stat-sticker__value">{{ totalDocuments() }}</span>
-                    <span class="profile-stat-sticker__label">Docs</span>
+                    <span class="profile-stat-sticker__label" i18n>Docs</span>
                   </div>
                   <div class="profile-stat-sticker sticker-palette--blue">
                     <span class="profile-stat-sticker__value">{{ linkedCount() }}</span>
-                    <span class="profile-stat-sticker__label">Linked</span>
+                    <span class="profile-stat-sticker__label" i18n>Linked</span>
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          <nav class="profile-tab-nav" aria-label="Profile sections">
+          <nav class="profile-tab-nav" aria-label="Profile sections" i18n-aria-label>
             @for (tab of profileTabs; track tab.key) {
               <button
                 type="button"
@@ -138,22 +138,22 @@
                 <div class="grid gap-4 md:grid-cols-2">
                   <div class="profile-info-sticker sticker-palette--green">
                     <span class="profile-info-sticker__icon material-symbols-outlined">verified_user</span>
-                    <span class="profile-info-sticker__label">Email verified</span>
+                    <span class="profile-info-sticker__label" i18n>Email verified</span>
                     <span class="profile-info-sticker__value">{{ profile()?.emailVerified ? 'Yes' : 'No' }}</span>
                   </div>
                   <div class="profile-info-sticker sticker-palette--yellow">
                     <span class="profile-info-sticker__icon material-symbols-outlined">calendar_month</span>
-                    <span class="profile-info-sticker__label">Joined</span>
+                    <span class="profile-info-sticker__label" i18n>Joined</span>
                     <span class="profile-info-sticker__value">{{ accountCreatedLabel() }}</span>
                   </div>
                   <div class="profile-info-sticker sticker-palette--sky">
                     <span class="profile-info-sticker__icon material-symbols-outlined">login</span>
-                    <span class="profile-info-sticker__label">Last sign in</span>
+                    <span class="profile-info-sticker__label" i18n>Last sign in</span>
                     <span class="profile-info-sticker__value">{{ lastSignInLabel() }}</span>
                   </div>
                   <div class="profile-info-sticker sticker-palette--purple">
                     <span class="profile-info-sticker__icon material-symbols-outlined">key</span>
-                    <span class="profile-info-sticker__label">Methods</span>
+                    <span class="profile-info-sticker__label" i18n>Methods</span>
                     <span class="profile-info-sticker__value">
                       @for (provider of providerLabels(); track provider; let last = $last) {
                         {{ provider }}{{ last ? '' : ', ' }}
@@ -167,10 +167,10 @@
 
               @case ('wikis') {
                 <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p class="text-sm text-[var(--muted)]">{{ ownedWikis().length }} owned, {{ adminWikis().length }} shared admin, {{ publicWikis().length }} public.</p>
+                  <p class="text-sm text-[var(--muted)]" i18n>{{ ownedWikis().length }} owned, {{ adminWikis().length }} shared admin, {{ publicWikis().length }} public.</p>
                   <a routerLink="/upload" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
                     <span class="material-symbols-outlined text-base">add</span>
-                    <span>Add knowledge</span>
+                    <span i18n>Add knowledge</span>
                   </a>
                 </div>
                 @if (isLoadingWikis()) {
@@ -196,19 +196,19 @@
                             </span>
                           </span>
                           @if (atlas.is_public) {
-                            <span class="profile-card-sticker__badge">Public</span>
+                            <span class="profile-card-sticker__badge" i18n>Public</span>
                           }
                           <span class="profile-card-sticker__chevron material-symbols-outlined">expand_more</span>
                         </summary>
                         <div class="profile-card-sticker__body">
                           <div class="grid grid-cols-3 gap-2 text-center">
-                            <span class="profile-card-sticker__metric"><strong>{{ atlas.stats?.documents ?? 0 }}</strong><small>Docs</small></span>
-                            <span class="profile-card-sticker__metric"><strong>{{ atlas.stats?.wiki_articles ?? 0 }}</strong><small>Pages</small></span>
-                            <span class="profile-card-sticker__metric"><strong>{{ atlas.stats?.chat_threads ?? 0 }}</strong><small>Chats</small></span>
+                            <span class="profile-card-sticker__metric"><strong>{{ atlas.stats?.documents ?? 0 }}</strong><small i18n>Docs</small></span>
+                            <span class="profile-card-sticker__metric"><strong>{{ atlas.stats?.wiki_articles ?? 0 }}</strong><small i18n>Pages</small></span>
+                            <span class="profile-card-sticker__metric"><strong>{{ atlas.stats?.chat_threads ?? 0 }}</strong><small i18n>Chats</small></span>
                           </div>
                           <div class="mt-4 flex gap-2">
-                            <a [routerLink]="libraryPath(atlas)" class="primary-btn flex-1 justify-center !px-3 !py-2.5 text-xs">Open</a>
-                            <a [routerLink]="wikiPath(atlas)" class="ghost-btn !px-3 !py-2.5 text-xs" title="View Wiki" aria-label="View Wiki">
+                            <a [routerLink]="libraryPath(atlas)" class="primary-btn flex-1 justify-center !px-3 !py-2.5 text-xs" i18n>Open</a>
+                            <a [routerLink]="wikiPath(atlas)" class="ghost-btn !px-3 !py-2.5 text-xs" title="View Wiki" aria-label="View Wiki" i18n-title i18n-aria-label>
                               <span class="material-symbols-outlined text-base">open_in_new</span>
                             </a>
                           </div>
@@ -217,8 +217,8 @@
                     } @empty {
                       <div class="profile-empty-sticker sticker-palette--blue">
                         <span class="material-symbols-outlined">add</span>
-                        <span>No Wikis connected yet.</span>
-                        <a routerLink="/wikis">Create Wiki</a>
+                        <span i18n>No Wikis connected yet.</span>
+                        <a routerLink="/wikis" i18n>Create Wiki</a>
                       </div>
                     }
                   </div>
@@ -229,7 +229,7 @@
                 <div class="mb-4 flex justify-end">
                   <a routerLink="/business/claim" class="ghost-btn inline-flex !px-4 !py-2.5 text-sm">
                     <span class="material-symbols-outlined text-base">add_business</span>
-                    <span>Claim business</span>
+                    <span i18n>Claim business</span>
                   </a>
                 </div>
                 @if (businessError()) {
@@ -250,7 +250,7 @@
                           <span class="profile-card-sticker__icon material-symbols-outlined">storefront</span>
                           <span class="min-w-0 flex-1">
                             <span class="profile-card-sticker__title">{{ business.business_name }}</span>
-                            <span class="profile-card-sticker__subtitle">{{ business.city_name }} &middot; {{ business.category || 'Business' }}</span>
+                            <span class="profile-card-sticker__subtitle" i18n>{{ business.city_name }} &middot; {{ business.category || 'Business' }}</span>
                           </span>
                           <span class="profile-card-sticker__badge">{{ businessStatusLabel(business.status) }}</span>
                           <span class="profile-card-sticker__chevron material-symbols-outlined">expand_more</span>
@@ -269,8 +269,8 @@
                             </div>
                           </div>
                           <div class="mt-4 flex gap-2">
-                            <a [routerLink]="businessPath(business)" class="primary-btn flex-1 justify-center !px-3 !py-2.5 text-xs">Open page</a>
-                            <a [routerLink]="businessPath(business) + '/edit'" class="ghost-btn !px-3 !py-2.5 text-xs" title="Edit business" aria-label="Edit business">
+                            <a [routerLink]="businessPath(business)" class="primary-btn flex-1 justify-center !px-3 !py-2.5 text-xs" i18n>Open page</a>
+                            <a [routerLink]="businessPath(business) + '/edit'" class="ghost-btn !px-3 !py-2.5 text-xs" title="Edit business" aria-label="Edit business" i18n-title i18n-aria-label>
                               <span class="material-symbols-outlined text-base">edit</span>
                             </a>
                           </div>
@@ -279,8 +279,8 @@
                     } @empty {
                       <div class="profile-empty-sticker sticker-palette--coral">
                         <span class="material-symbols-outlined">add_business</span>
-                        <span>No business pages linked yet.</span>
-                        <a routerLink="/business/claim">Claim business</a>
+                        <span i18n>No business pages linked yet.</span>
+                        <a routerLink="/business/claim" i18n>Claim business</a>
                       </div>
                     }
                   </div>
@@ -290,8 +290,8 @@
               @case ('links') {
                 <div class="profile-empty-sticker sticker-palette--sky">
                   <span class="material-symbols-outlined">link</span>
-                  <span>External links and saved profile attachments will appear here.</span>
-                  <a routerLink="/atlases">Manage links</a>
+                  <span i18n>External links and saved profile attachments will appear here.</span>
+                  <a routerLink="/atlases" i18n>Manage links</a>
                 </div>
               }
             }
@@ -302,15 +302,15 @@
               <div class="max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-elevated)]" (click)="$event.stopPropagation()">
                 <div class="flex items-start justify-between gap-4">
                   <div>
-                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">Choose icon</p>
-                    <h3 id="profile-icon-dialog-title" class="mt-1 text-2xl font-black tracking-tight">Pick a profile sticker.</h3>
+                    <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]" i18n>Choose icon</p>
+                    <h3 id="profile-icon-dialog-title" class="mt-1 text-2xl font-black tracking-tight" i18n>Pick a profile sticker.</h3>
                   </div>
                   <button
                     type="button"
                     class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition hover:text-[var(--text)]"
                     aria-label="Close icon chooser"
                     (click)="closeIconChooser()"
-                  >
+                   i18n-aria-label>
                     <span class="material-symbols-outlined text-[1.15rem]">close</span>
                   </button>
                 </div>

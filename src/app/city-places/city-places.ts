@@ -74,7 +74,7 @@ export class CityPlacesComponent implements OnDestroy {
   readonly mapLocationLabel = computed(() => {
     const place = this.mapPlace();
     if (place) {
-      return place.address || place.category || 'Selected place';
+      return place.address || place.category || $localize`Selected place`;
     }
     return [this.cityName(), this.country()].filter(Boolean).join(', ');
   });
@@ -108,12 +108,12 @@ export class CityPlacesComponent implements OnDestroy {
     return url.toString();
   });
   readonly shareTitle = computed(() => {
-    const city = this.cityName() || 'this city';
+    const city = this.cityName() || $localize`this city`;
     const place = this.selectedDetailPlace();
     return place ? `${place.name} on LivingWiki: ${city}` : `Share your best place in ${city}`;
   });
   readonly shareInviteText = computed(() => {
-    const city = this.cityName() || 'this city';
+    const city = this.cityName() || $localize`this city`;
     const country = this.country();
     const cityLabel = country ? `${city}, ${country}` : city;
     const place = this.selectedDetailPlace();
@@ -124,7 +124,7 @@ export class CityPlacesComponent implements OnDestroy {
   });
   readonly reviewedPlacesCountLabel = computed(() => {
     const count = this.reviewedPlaces().length;
-    return count === 1 ? '1 reviewed place' : `${count} reviewed places`;
+    return count === 1 ? $localize`1 reviewed place` : `${count} reviewed places`;
   });
   readonly mapPlace = computed(() => this.selectedReviewPlace() ?? this.selectedMapPlace());
   readonly filteredReviewedPlaces = computed(() => {
@@ -150,7 +150,7 @@ export class CityPlacesComponent implements OnDestroy {
     if (!this.reviewedPlaceSearchQuery().trim()) {
       return this.reviewedPlacesCountLabel();
     }
-    return count === 1 ? '1 match' : `${count} matches`;
+    return count === 1 ? $localize`1 match` : `${count} matches`;
   });
   readonly canSubmitPlaceReview = computed(() =>
     !!this.atlas()?.id
@@ -174,7 +174,7 @@ export class CityPlacesComponent implements OnDestroy {
 
       if (!slug) {
         this.atlasLoading.set(false);
-        this.atlasError.set('City not found.');
+        this.atlasError.set($localize`City not found.`);
         return;
       }
 
@@ -183,7 +183,7 @@ export class CityPlacesComponent implements OnDestroy {
         .then((atlas) => {
           if (cancelled) return;
           if (!atlas || atlas.city_config?.enabled !== true) {
-            this.atlasError.set('City places are only available for public city wikis.');
+            this.atlasError.set($localize`City places are only available for public city wikis.`);
             this.atlas.set(null);
             return;
           }
@@ -191,7 +191,7 @@ export class CityPlacesComponent implements OnDestroy {
         })
         .catch(() => {
           if (!cancelled) {
-            this.atlasError.set('Could not load this city.');
+            this.atlasError.set($localize`Could not load this city.`);
           }
         })
         .finally(() => {

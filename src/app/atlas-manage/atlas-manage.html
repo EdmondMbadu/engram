@@ -6,11 +6,11 @@
       <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
         <a routerLink="/wikis" class="flex min-w-0 items-center gap-4">
           <div class="flex h-10 w-40 shrink-0 items-center justify-start">
-            <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+            <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
           </div>
           <div class="min-w-0">
-            <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]">Workspace</p>
-            <h1 class="truncate text-xl font-black tracking-tighter">Wiki Admin</h1>
+            <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--muted)]" i18n>Workspace</p>
+            <h1 class="truncate text-xl font-black tracking-tighter" i18n>Wiki Admin</h1>
           </div>
         </a>
 
@@ -20,7 +20,7 @@
             class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
           >
             <span class="material-symbols-outlined text-[1rem]">arrow_back</span>
-            <span>Back to Wikis</span>
+            <span i18n>Back to Wikis</span>
           </a>
           <app-theme-toggle></app-theme-toggle>
           <app-account-menu></app-account-menu>
@@ -32,9 +32,9 @@
     <section class="border-b border-[var(--line)] pb-6">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">Admin console</p>
-          <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Manage each Wiki from one place.</h2>
-          <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--accent)]" i18n>Admin console</p>
+          <h2 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl" i18n>Manage each Wiki from one place.</h2>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
             Sections stay collapsed until you need them. Open a row to edit voice, access, search behavior, city data, or contents.
           </p>
         </div>
@@ -43,7 +43,7 @@
           class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--soft-fill-strong)]"
         >
           <span class="material-symbols-outlined text-[1rem]">dashboard</span>
-          <span>All Wikis</span>
+          <span i18n>All Wikis</span>
         </a>
       </div>
     </section>
@@ -62,8 +62,8 @@
         [attr.aria-expanded]="businessListOpen()"
       >
         <span class="min-w-0">
-          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Account businesses</span>
-          <span class="mt-2 block text-2xl font-black tracking-tight">Manage claimed business pages.</span>
+          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Account businesses</span>
+          <span class="mt-2 block text-2xl font-black tracking-tight" i18n>Manage claimed business pages.</span>
           <span class="mt-2 block text-sm leading-6 text-[var(--muted)]">
             {{ loadingBusinesses() ? 'Loading businesses...' : businessClaims().length + ' businesses connected to this account.' }}
           </span>
@@ -71,7 +71,7 @@
         <span class="flex shrink-0 items-center gap-3">
           <span class="hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm sm:inline-flex">
             <span class="font-black text-[var(--text)]">{{ businessClaims().length }}</span>
-            <span class="ml-1 text-[var(--muted)]"> businesses</span>
+            <span class="ml-1 text-[var(--muted)]" i18n> businesses</span>
           </span>
           <span class="material-symbols-outlined text-[1.4rem] text-[var(--muted)]">{{ businessListOpen() ? 'expand_less' : 'expand_more' }}</span>
         </span>
@@ -82,7 +82,7 @@
           <div class="mb-4 flex justify-end">
             <a routerLink="/business/claim" class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]">
               <span class="material-symbols-outlined text-[1rem]">add_business</span>
-              <span>Add business</span>
+              <span i18n>Add business</span>
             </a>
           </div>
 
@@ -93,20 +93,20 @@
           }
 
           @if (loadingBusinesses()) {
-            <div class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]">
+            <div class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]" i18n>
               Loading account businesses...
             </div>
           } @else if (businessClaims().length === 0) {
             <div class="grid gap-4 rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 md:grid-cols-[1fr_auto] md:items-center">
               <div>
-                <p class="text-lg font-black tracking-tight text-[var(--text)]">No claimed businesses yet.</p>
-                <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                <p class="text-lg font-black tracking-tight text-[var(--text)]" i18n>No claimed businesses yet.</p>
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                   Claim a business to reserve its QR/chat link, review status, and profile settings under this account.
                 </p>
               </div>
               <a routerLink="/business/claim" class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90">
                 <span class="material-symbols-outlined text-[1rem]">add_business</span>
-                <span>Claim a business</span>
+                <span i18n>Claim a business</span>
               </a>
             </div>
           } @else {
@@ -120,14 +120,14 @@
                   placeholder="Search businesses by name, city, category, admin, or link..."
                   [value]="businessSearch()"
                   (input)="onBusinessSearchInput($event)"
-                />
+                 i18n-placeholder/>
                 @if (businessSearch()) {
-                  <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear business search" (click)="clearBusinessSearch()">
+                  <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear business search" (click)="clearBusinessSearch()" i18n-aria-label>
                     <span class="material-symbols-outlined text-[1rem]">close</span>
                   </button>
                 }
               </label>
-              <p class="px-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+              <p class="px-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>
                 {{ filteredBusinessClaims().length }} of {{ businessClaims().length }} shown
               </p>
             </div>
@@ -151,7 +151,7 @@
                       </p>
 
                       <label class="mt-4 block">
-                        <span class="mb-1 block text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Business QR / chat link</span>
+                        <span class="mb-1 block text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Business QR / chat link</span>
                         <input
                           type="text"
                           class="theme-input w-full rounded-2xl px-4 py-3 text-xs font-semibold text-[var(--text)]"
@@ -167,14 +167,14 @@
                           class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]"
                         >
                           <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
-                          <span>Open business page</span>
+                          <span i18n>Open business page</span>
                         </a>
                         <a
                           [routerLink]="businessDetailPath(business)"
                           class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
                         >
                           <span class="material-symbols-outlined text-[1rem]">storefront</span>
-                          <span>Business details</span>
+                          <span i18n>Business details</span>
                         </a>
                         <button
                           type="button"
@@ -196,19 +196,19 @@
                     </div>
 
                     <div class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
-                      <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Current setup</p>
+                      <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Current setup</p>
                       <dl class="mt-3 grid gap-3 text-sm">
                         <div>
-                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">Admin</dt>
+                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Admin</dt>
                           <dd class="mt-1 font-semibold text-[var(--text)]">{{ business.admin_name || 'Not set' }}</dd>
                           <dd class="mt-0.5 truncate text-xs text-[var(--muted)]">{{ business.admin_email || 'No admin email' }}</dd>
                         </div>
                         <div>
-                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">Badge icons</dt>
+                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Badge icons</dt>
                           <dd class="mt-1 font-semibold text-[var(--text)]">{{ businessIconLabels(business) }}</dd>
                         </div>
                         <div>
-                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">Guide prompt</dt>
+                          <dt class="text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Guide prompt</dt>
                           <dd class="mt-1 line-clamp-4 text-sm leading-6 text-[var(--muted)]">{{ business.guide_prompt || 'No guide prompt saved yet.' }}</dd>
                         </div>
                       </dl>
@@ -220,29 +220,29 @@
                       <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-5">
                         <div class="grid gap-4 lg:grid-cols-2">
                           <label class="block">
-                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Category</span>
-                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.category" (input)="updateBusinessEditDraft(business.claim_key, 'category', $any($event.target).value)" placeholder="Restaurant, bar, shop..." />
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Category</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.category" (input)="updateBusinessEditDraft(business.claim_key, 'category', $any($event.target).value)" placeholder="Restaurant, bar, shop..."  i18n-placeholder/>
                           </label>
                           <label class="block">
-                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Location / neighborhood</span>
-                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.business_address" (input)="updateBusinessEditDraft(business.claim_key, 'business_address', $any($event.target).value)" placeholder="Street, neighborhood, or address" />
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Location / neighborhood</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.business_address" (input)="updateBusinessEditDraft(business.claim_key, 'business_address', $any($event.target).value)" placeholder="Street, neighborhood, or address"  i18n-placeholder/>
                           </label>
                           <label class="block">
-                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin name</span>
-                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.admin_name" (input)="updateBusinessEditDraft(business.claim_key, 'admin_name', $any($event.target).value)" placeholder="Owner or manager name" />
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Admin name</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.admin_name" (input)="updateBusinessEditDraft(business.claim_key, 'admin_name', $any($event.target).value)" placeholder="Owner or manager name"  i18n-placeholder/>
                           </label>
                           <label class="block">
-                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Admin email</span>
-                            <input type="email" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.admin_email" (input)="updateBusinessEditDraft(business.claim_key, 'admin_email', $any($event.target).value)" placeholder="admin@example.com" />
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Admin email</span>
+                            <input type="email" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.admin_email" (input)="updateBusinessEditDraft(business.claim_key, 'admin_email', $any($event.target).value)" placeholder="admin@example.com"  i18n-placeholder/>
                           </label>
                           <label class="block lg:col-span-2">
-                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Business guide prompt</span>
-                            <textarea class="theme-input min-h-32 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.guide_prompt" (input)="updateBusinessEditDraft(business.claim_key, 'guide_prompt', $any($event.target).value)" placeholder="What should the business guide know about this place?"></textarea>
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Business guide prompt</span>
+                            <textarea class="theme-input min-h-32 w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.guide_prompt" (input)="updateBusinessEditDraft(business.claim_key, 'guide_prompt', $any($event.target).value)" placeholder="What should the business guide know about this place?" i18n-placeholder></textarea>
                           </label>
                           <label class="block lg:col-span-2">
-                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Badge icons</span>
-                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.badge_icons" (input)="updateBusinessEditDraft(business.claim_key, 'badge_icons', $any($event.target).value)" placeholder="beer, coffee, music" />
-                            <span class="mt-1 block text-xs leading-5 text-[var(--muted)]">Comma-separated icon codes. The badge uses the first 3.</span>
+                            <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Badge icons</span>
+                            <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.badge_icons" (input)="updateBusinessEditDraft(business.claim_key, 'badge_icons', $any($event.target).value)" placeholder="beer, coffee, music"  i18n-placeholder/>
+                            <span class="mt-1 block text-xs leading-5 text-[var(--muted)]" i18n>Comma-separated icon codes. The badge uses the first 3.</span>
                           </label>
                         </div>
 
@@ -260,11 +260,11 @@
                             type="button"
                             (click)="toggleBusinessEdit(business)"
                             class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35"
-                          >
+                           i18n>
                             Cancel
                           </button>
                           @if (businessSavedClaimKey() === business.claim_key) {
-                            <span class="text-sm font-semibold text-[var(--accent)]">Saved.</span>
+                            <span class="text-sm font-semibold text-[var(--accent)]" i18n>Saved.</span>
                           }
                         </div>
                       </div>
@@ -272,7 +272,7 @@
                   }
                 </article>
               } @empty {
-                <div class="rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]">
+                <div class="rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]" i18n>
                   No businesses match "{{ businessSearch() }}".
                 </div>
               }
@@ -290,16 +290,16 @@
         [attr.aria-expanded]="cityLaunchOpen()"
       >
         <span class="min-w-0">
-          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">City launch flow</span>
-          <span class="mt-2 block text-2xl font-black tracking-tight">Create public city Wikis in minutes.</span>
-          <span class="mt-2 block max-w-3xl text-sm leading-6 text-[var(--muted)]">
+          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>City launch flow</span>
+          <span class="mt-2 block text-2xl font-black tracking-tight" i18n>Create public city Wikis in minutes.</span>
+          <span class="mt-2 block max-w-3xl text-sm leading-6 text-[var(--muted)]" i18n>
             Start a fresh city from scratch or use a template. New cities go live with internet answers enabled; source ingestion can be added later.
           </span>
         </span>
         <span class="flex shrink-0 items-center gap-3">
           <span class="hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm sm:inline-flex">
             <span class="font-black text-[var(--text)]">{{ remainingCityTemplates().length }}</span>
-            <span class="ml-1 text-[var(--muted)]"> templates left</span>
+            <span class="ml-1 text-[var(--muted)]" i18n> templates left</span>
           </span>
           <span class="material-symbols-outlined text-[1.4rem] text-[var(--muted)]">{{ cityLaunchOpen() ? 'expand_less' : 'expand_more' }}</span>
         </span>
@@ -314,11 +314,11 @@
         }
         @if (!canCreateWikis()) {
           <div class="mx-5 mt-5 rounded-2xl border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-4 py-3">
-            <p class="text-sm font-black text-[var(--text)]">Upgrade required to create new Wikis.</p>
-            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Personal Plus, Creator, or platform admin access is required for fresh city, template, and bulk Wiki creation.</p>
+            <p class="text-sm font-black text-[var(--text)]" i18n>Upgrade required to create new Wikis.</p>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]" i18n>Personal Plus, Creator, or platform admin access is required for fresh city, template, and bulk Wiki creation.</p>
             <a routerLink="/pricing" [queryParams]="{ audience: 'general' }" class="mt-3 inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)]">
               <span class="material-symbols-outlined text-[1rem]">upgrade</span>
-              <span>View pricing</span>
+              <span i18n>View pricing</span>
             </a>
           </div>
         }
@@ -326,9 +326,9 @@
         <section class="m-5 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
           <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Population backfill</p>
-              <h4 class="mt-1 text-lg font-black tracking-tight">Attach population to city Wikis.</h4>
-              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Population backfill</p>
+              <h4 class="mt-1 text-lg font-black tracking-tight" i18n>Attach population to city Wikis.</h4>
+              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                 Backfill only cities missing population, or refresh all city population metadata from configured sources.
               </p>
             </div>
@@ -340,7 +340,7 @@
                 class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35 disabled:cursor-not-allowed disabled:opacity-45"
               >
                 <span class="material-symbols-outlined text-[1rem]">data_object</span>
-                <span>Backfill missing</span>
+                <span i18n>Backfill missing</span>
               </button>
               <button
                 type="button"
@@ -349,22 +349,22 @@
                 class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-black text-[var(--accent-contrast)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
               >
                 <span class="material-symbols-outlined text-[1rem]" [class.animate-spin]="populationBackfillRunning()">refresh</span>
-                <span>Refresh populations</span>
+                <span i18n>Refresh populations</span>
               </button>
             </div>
           </div>
 
           <div class="mt-4 grid gap-3 md:grid-cols-3">
             <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-              <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">City Wikis</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>City Wikis</p>
               <p class="mt-1 text-2xl font-black text-[var(--text)]">{{ cityPopulationAtlases().length }}</p>
             </div>
             <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-              <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Missing population</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Missing population</p>
               <p class="mt-1 text-2xl font-black text-[var(--text)]">{{ missingPopulationAtlases().length }}</p>
             </div>
             <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
-              <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">Last run</p>
+              <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Last run</p>
               <p class="mt-1 text-sm font-bold text-[var(--text)]">{{ populationBackfillMessage() || 'Not run yet' }}</p>
             </div>
           </div>
@@ -381,7 +381,7 @@
                   [style.width.%]="populationBackfillProgressPercent()"
                 ></div>
               </div>
-              <p class="mt-3 text-xs font-semibold text-[var(--muted)]">
+              <p class="mt-3 text-xs font-semibold text-[var(--muted)]" i18n>
                 {{ populationBackfillProgress()?.processed }} of {{ populationBackfillProgress()?.total }} processed ·
                 {{ populationBackfillProgress()?.updated }} updated ·
                 {{ populationBackfillProgress()?.skipped }} skipped ·
@@ -392,7 +392,7 @@
 
           @if (populationBackfillFailures().length) {
             <div class="mt-4 rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3">
-              <p class="text-xs font-black uppercase tracking-[0.18em] text-[var(--error-text)]">Failed cities</p>
+              <p class="text-xs font-black uppercase tracking-[0.18em] text-[var(--error-text)]" i18n>Failed cities</p>
               <div class="mt-2 grid gap-2">
                 @for (result of populationBackfillFailures().slice(0, 6); track result.atlasId) {
                   <p class="text-xs leading-5 text-[var(--error-text)]">
@@ -407,9 +407,9 @@
         <form class="m-5 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4" (submit)="createCustomCityAtlas($event)">
           <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Fresh city</p>
-              <h4 class="mt-1 text-lg font-black tracking-tight">Create a city not listed below.</h4>
-              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Fresh city</p>
+              <h4 class="mt-1 text-lg font-black tracking-tight" i18n>Create a city not listed below.</h4>
+              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                 This creates a live city Wiki from your fields, with a generated guide voice and internet answers by default.
               </p>
             </div>
@@ -420,58 +420,58 @@
 
           <div class="mt-4 grid gap-3 md:grid-cols-2">
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">City name</span>
-              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().city_name" (input)="updateCustomCityDraft('city_name', $any($event.target).value)" placeholder="Chicago" />
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>City name</span>
+              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().city_name" (input)="updateCustomCityDraft('city_name', $any($event.target).value)" placeholder="Chicago"  i18n-placeholder/>
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Region / state</span>
-              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().region_name" (input)="updateCustomCityDraft('region_name', $any($event.target).value)" placeholder="Illinois" />
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Region / state</span>
+              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().region_name" (input)="updateCustomCityDraft('region_name', $any($event.target).value)" placeholder="Illinois"  i18n-placeholder/>
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Timezone</span>
-              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().timezone" (input)="updateCustomCityDraft('timezone', $any($event.target).value)" placeholder="America/Chicago" />
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Timezone</span>
+              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().timezone" (input)="updateCustomCityDraft('timezone', $any($event.target).value)" placeholder="America/Chicago"  i18n-placeholder/>
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Global region</span>
-              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().global_region" (input)="updateCustomCityDraft('global_region', $any($event.target).value)" placeholder="Americas" />
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Global region</span>
+              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().global_region" (input)="updateCustomCityDraft('global_region', $any($event.target).value)" placeholder="Americas"  i18n-placeholder/>
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Population <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
               <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().population" (input)="updateCustomCityDraft('population', $any($event.target).value)" placeholder="2,664,452" />
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population year</span>
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Population year</span>
               <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().population_year" (input)="updateCustomCityDraft('population_year', $any($event.target).value)" placeholder="2024" />
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Area km² <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Area km² <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
               <input type="text" inputmode="decimal" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().area_km2" (input)="updateCustomCityDraft('area_km2', $any($event.target).value)" placeholder="606.1" />
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Density / km² <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Density / km² <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional)</span></span>
               <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().population_density_per_km2" (input)="updateCustomCityDraft('population_density_per_km2', $any($event.target).value)" placeholder="4,397" />
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Public title</span>
-              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().name" (input)="updateCustomCityDraft('name', $any($event.target).value)" placeholder="LivingWiki: Chicago" />
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Public title</span>
+              <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().name" (input)="updateCustomCityDraft('name', $any($event.target).value)" placeholder="LivingWiki: Chicago"  i18n-placeholder/>
             </label>
             <label class="block md:col-span-2">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Description</span>
-              <textarea rows="3" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().description" (input)="updateCustomCityDraft('description', $any($event.target).value)" placeholder="Leave blank to generate a practical city description."></textarea>
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Description</span>
+              <textarea rows="3" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().description" (input)="updateCustomCityDraft('description', $any($event.target).value)" placeholder="Leave blank to generate a practical city description." i18n-placeholder></textarea>
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Latitude <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional · for the map)</span></span>
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Latitude <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional · for the map)</span></span>
               <input type="text" inputmode="decimal" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().latitude" (input)="updateCustomCityDraft('latitude', $any($event.target).value)" placeholder="41.8781" />
             </label>
             <label class="block">
-              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Longitude <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional · for the map)</span></span>
+              <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Longitude <span class="font-normal normal-case tracking-normal text-[var(--muted)]">(optional · for the map)</span></span>
               <input type="text" inputmode="decimal" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="customCityDraft().longitude" (input)="updateCustomCityDraft('longitude', $any($event.target).value)" placeholder="-87.6298" />
             </label>
           </div>
-          <p class="mt-2 text-xs leading-5 text-[var(--muted)]">Add coordinates to drop this city on the <a routerLink="/dymaxion" class="font-bold text-[var(--accent)] hover:underline">Dymaxion map</a>. Leave blank to skip the map.</p>
+          <p class="mt-2 text-xs leading-5 text-[var(--muted)]" i18n>Add coordinates to drop this city on the <a routerLink="/dymaxion" class="font-bold text-[var(--accent)] hover:underline">Dymaxion map</a>. Leave blank to skip the map.</p>
 
           <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-            <p class="text-xs leading-5 text-[var(--muted)]">Preview: {{ customCityNamePreview() }} will be public and promptable immediately.</p>
+            <p class="text-xs leading-5 text-[var(--muted)]" i18n>Preview: {{ customCityNamePreview() }} will be public and promptable immediately.</p>
             <button
               type="submit"
               [disabled]="!canCreateCustomCity()"
@@ -486,9 +486,9 @@
         <section class="m-5 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
           <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Bulk city CSV</p>
-              <h4 class="mt-1 text-lg font-black tracking-tight">Create public city Wikis in bulk.</h4>
-              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Bulk city CSV</p>
+              <h4 class="mt-1 text-lg font-black tracking-tight" i18n>Create public city Wikis in bulk.</h4>
+              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                 Upload a CSV, preview rows, skip duplicates, then create all valid city Wikis with internet answers enabled.
               </p>
             </div>
@@ -498,15 +498,15 @@
               class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35"
             >
               <span class="material-symbols-outlined text-[1rem]">download</span>
-              <span>Sample CSV</span>
+              <span i18n>Sample CSV</span>
             </button>
           </div>
 
           <div class="mt-4 rounded-2xl border border-dashed border-[var(--line)] bg-[var(--surface)] px-4 py-4">
             <label class="flex cursor-pointer flex-col items-center justify-center gap-2 text-center">
               <span class="material-symbols-outlined text-3xl text-[var(--accent)]">upload_file</span>
-              <span class="text-sm font-black text-[var(--text)]">Upload city CSV</span>
-              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]">Required column: city_name. Optional: region_name, country_code, global_region, population, population_year, area_km2, population_density_per_km2, timezone, public_title, description, latitude, longitude. Add density directly, or add area_km2 so density can be computed.</span>
+              <span class="text-sm font-black text-[var(--text)]" i18n>Upload city CSV</span>
+              <span class="max-w-xl text-xs leading-5 text-[var(--muted)]" i18n>Required column: city_name. Optional: region_name, country_code, global_region, population, population_year, area_km2, population_density_per_km2, timezone, public_title, description, latitude, longitude. Add density directly, or add area_km2 so density can be computed.</span>
               <input type="file" accept=".csv,text/csv" class="sr-only" (change)="onBulkCityCsvSelected($event)" />
             </label>
           </div>
@@ -515,11 +515,11 @@
             <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
               <div class="min-w-0">
                 <p class="truncate text-sm font-black text-[var(--text)]">{{ bulkCityFileName() }}</p>
-                <p class="mt-1 text-xs text-[var(--muted)]">
+                <p class="mt-1 text-xs text-[var(--muted)]" i18n>
 	                  {{ validBulkCityRows().length }} ready/retry · {{ skippedBulkCityRows().length }} skipped/created
                 </p>
               </div>
-              <button type="button" class="rounded-full border border-[var(--line)] px-3 py-1.5 text-xs font-bold text-[var(--muted)] transition hover:text-[var(--text)]" (click)="clearBulkCityCsv()" [disabled]="creatingBulkCities()">Clear</button>
+              <button type="button" class="rounded-full border border-[var(--line)] px-3 py-1.5 text-xs font-bold text-[var(--muted)] transition hover:text-[var(--text)]" (click)="clearBulkCityCsv()" [disabled]="creatingBulkCities()" i18n>Clear</button>
             </div>
           }
 
@@ -533,9 +533,9 @@
 	            <div class="mt-4 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
 	              <div class="flex flex-col gap-3 border-b border-[var(--line)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
 	                <div>
-	                  <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">Preview</p>
+	                  <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Preview</p>
 	                  @if (bulkCityProgress()) {
-	                    <p class="mt-1 text-xs font-semibold text-[var(--muted)]">
+	                    <p class="mt-1 text-xs font-semibold text-[var(--muted)]" i18n>
 	                      {{ bulkCityProgress()?.processed }} of {{ bulkCityProgress()?.total }} processed ·
 	                      {{ bulkCityProgress()?.created }} created ·
 	                      {{ bulkCityProgress()?.failed }} failed ·
@@ -556,7 +556,7 @@
 	              @if (bulkCityProgress()) {
 	                <div class="border-b border-[var(--line)] px-4 py-3">
 		                  <div class="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
-		                    <span>Bulk import progress</span>
+		                    <span i18n>Bulk import progress</span>
 		                    <span>{{ bulkCityProgressPercent() }}% · {{ bulkCityEtaLabel() }}</span>
 		                  </div>
 	                  <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--soft-fill)]">
@@ -571,15 +571,15 @@
                 <table class="w-full min-w-[860px] text-left text-sm">
                   <thead class="border-b border-[var(--line)] bg-[var(--soft-fill)] text-[10px] uppercase tracking-[0.16em] text-[var(--muted)]">
                     <tr>
-                      <th class="px-4 py-3 font-black">Row</th>
-                      <th class="px-4 py-3 font-black">City</th>
-                      <th class="px-4 py-3 font-black">Region</th>
-                      <th class="px-4 py-3 font-black">Population</th>
-                      <th class="px-4 py-3 font-black">Density</th>
-                      <th class="px-4 py-3 font-black">Timezone</th>
-                      <th class="px-4 py-3 font-black">Map</th>
-                      <th class="px-4 py-3 font-black">Slug</th>
-                      <th class="px-4 py-3 font-black">Status</th>
+                      <th class="px-4 py-3 font-black" i18n>Row</th>
+                      <th class="px-4 py-3 font-black" i18n>City</th>
+                      <th class="px-4 py-3 font-black" i18n>Region</th>
+                      <th class="px-4 py-3 font-black" i18n>Population</th>
+                      <th class="px-4 py-3 font-black" i18n>Density</th>
+                      <th class="px-4 py-3 font-black" i18n>Timezone</th>
+                      <th class="px-4 py-3 font-black" i18n>Map</th>
+                      <th class="px-4 py-3 font-black" i18n>Slug</th>
+                      <th class="px-4 py-3 font-black" i18n>Status</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-[var(--line)]">
@@ -610,13 +610,13 @@
                         <td class="px-4 py-3 text-xs text-[var(--muted)]">
                           @if (row.population_density_per_km2) {
                             <span class="font-bold text-[var(--text)]">{{ row.population_density_per_km2 }}</span>
-                            <span class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.14em]" aria-label="People per square kilometer">
+                            <span class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.14em]" aria-label="People per square kilometer" i18n-aria-label>
                               <span class="material-symbols-outlined text-[0.78rem]" aria-hidden="true">groups</span>
-                              <span>/km²</span>
+                              <span i18n>/km²</span>
                             </span>
                           } @else if (row.area_km2) {
                             <span class="font-bold text-[var(--text)]">{{ row.area_km2 }}</span>
-                            <span class="block text-[10px] uppercase tracking-[0.14em]">area km²</span>
+                            <span class="block text-[10px] uppercase tracking-[0.14em]" i18n>area km²</span>
                           } @else {
                             —
                           }
@@ -634,17 +634,17 @@
 	                          @if (row.errors.length) {
 	                            <span class="inline-flex rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--error-text)]">{{ row.errors.join(', ') }}</span>
 	                          } @else if (row.create_status === 'creating') {
-	                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Creating</span>
+	                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]" i18n>Creating</span>
 		                          } @else if (row.create_status === 'created') {
-		                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Created</span>
+		                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]" i18n>Created</span>
 		                          } @else if (row.create_status === 'skipped') {
-		                            <span class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">Already created</span>
+		                            <span class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]" i18n>Already created</span>
 		                          } @else if (row.create_status === 'failed') {
-	                            <span class="inline-flex max-w-[16rem] rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--error-text)]">Failed: {{ row.create_error || 'Retry available' }}</span>
+	                            <span class="inline-flex max-w-[16rem] rounded-full border border-[var(--error-border)] bg-[var(--error-bg)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--error-text)]" i18n>Failed: {{ row.create_error || 'Retry available' }}</span>
 	                          } @else if (row.duplicate) {
-	                            <span class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]">Duplicate / created</span>
+	                            <span class="inline-flex rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--muted)]" i18n>Duplicate / created</span>
 	                          } @else {
-                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]">Ready</span>
+                            <span class="inline-flex rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--accent)]" i18n>Ready</span>
                           }
                         </td>
                       </tr>
@@ -659,9 +659,9 @@
 	        <section class="m-5 rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
 	          <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
 	            <div>
-	              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Cover image automation</p>
-	              <h4 class="mt-1 text-lg font-black tracking-tight">Add valid cover images for cities missing one.</h4>
-	              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+	              <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Cover image automation</p>
+	              <h4 class="mt-1 text-lg font-black tracking-tight" i18n>Add valid cover images for cities missing one.</h4>
+	              <p class="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
 	                Finds a Wikimedia image for each location, validates the image response, uploads it to our storage, then saves it as the public cover.
 	              </p>
 	            </div>
@@ -685,7 +685,7 @@
 	          @if (coverImageProgress()) {
 	            <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
 	              <div class="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
-	                <span>{{ coverImageProgress()?.processed }} of {{ coverImageProgress()?.total }} processed · {{ coverImageProgress()?.created }} added · {{ coverImageProgress()?.failed }} failed</span>
+	                <span i18n>{{ coverImageProgress()?.processed }} of {{ coverImageProgress()?.total }} processed · {{ coverImageProgress()?.created }} added · {{ coverImageProgress()?.failed }} failed</span>
 	                <span>{{ coverImageProgressPercent() }}%</span>
 	              </div>
 	              <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--soft-fill)]">
@@ -695,12 +695,12 @@
 	          }
 
 	          @if (coverlessCityAtlases().length === 0 && !coverImageProgress()) {
-	            <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4 text-sm font-semibold text-[var(--muted)]">
+	            <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-4 text-sm font-semibold text-[var(--muted)]" i18n>
 	              Every public city Wiki currently has a cover image.
 	            </div>
 	          } @else {
 	            <div class="mt-4 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]">
-	              <div class="border-b border-[var(--line)] px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]">
+	              <div class="border-b border-[var(--line)] px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)]" i18n>
 	                Missing covers
 	              </div>
 	              <div class="divide-y divide-[var(--line)]">
@@ -732,7 +732,7 @@
 	        </section>
 
 	        <div class="border-t border-[var(--line)] px-5 py-4">
-	          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Templates</p>
+	          <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Templates</p>
 	        </div>
 
         <div class="grid gap-0 divide-y divide-[var(--line)]">
@@ -743,29 +743,29 @@
                 <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
                   {{ template.cityConfig.city_name }}
                 </span>
-                <span class="rounded-full border border-[var(--line)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">
+                <span class="rounded-full border border-[var(--line)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                   /chat/{{ template.slug }}
                 </span>
                 @if (cityTemplateExists(template)) {
-                  <span class="rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]">
+                  <span class="rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--accent)]" i18n>
                     Live or created
                   </span>
                 } @else {
-                  <span class="rounded-full border border-[var(--line)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]">
+                  <span class="rounded-full border border-[var(--line)] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                     Ready
                   </span>
                 }
               </div>
               <h4 class="mt-3 text-lg font-black tracking-tight text-[var(--text)]">{{ template.name }}</h4>
               <p class="mt-1 max-w-3xl text-sm leading-6 text-[var(--muted)]">{{ template.description }}</p>
-              <p class="mt-2 line-clamp-1 text-xs text-[var(--muted)]">
+              <p class="mt-2 line-clamp-1 text-xs text-[var(--muted)]" i18n>
                 Sources later: {{ template.sources }}
               </p>
             </div>
             @if (cityTemplateExists(template)) {
               <span class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-black text-[var(--accent)]">
                 <span class="material-symbols-outlined text-[1rem]">check_circle</span>
-                <span>Created</span>
+                <span i18n>Created</span>
               </span>
             } @else {
               <button
@@ -793,9 +793,9 @@
         [attr.aria-expanded]="wikiListOpen()"
       >
         <span>
-          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">Current Wikis</span>
-          <span class="mt-2 block text-2xl font-black tracking-tight">Manage existing Wikis.</span>
-          <span class="mt-2 block text-sm leading-6 text-[var(--muted)]">{{ atlases().length }} Wikis available in this workspace.</span>
+          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]" i18n>Current Wikis</span>
+          <span class="mt-2 block text-2xl font-black tracking-tight" i18n>Manage existing Wikis.</span>
+          <span class="mt-2 block text-sm leading-6 text-[var(--muted)]" i18n>{{ atlases().length }} Wikis available in this workspace.</span>
         </span>
         <span class="material-symbols-outlined text-[1.4rem] text-[var(--muted)]">{{ wikiListOpen() ? 'expand_less' : 'expand_more' }}</span>
       </button>
@@ -812,14 +812,14 @@
             placeholder="Search Wikis by name, city, region, slug, or ID..."
             [value]="wikiSearch()"
             (input)="onWikiSearchInput($event)"
-          />
+           i18n-placeholder/>
           @if (wikiSearch()) {
-            <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear Wiki search" (click)="clearWikiSearch()">
+            <button type="button" class="absolute right-3 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--muted)] transition hover:bg-[var(--surface)] hover:text-[var(--text)]" aria-label="Clear Wiki search" (click)="clearWikiSearch()" i18n-aria-label>
               <span class="material-symbols-outlined text-[1rem]">close</span>
             </button>
           }
         </label>
-        <p class="px-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+        <p class="px-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--muted)]" i18n>
           {{ filteredAtlases().length }} of {{ atlases().length }} shown
         </p>
       </div>
@@ -829,16 +829,16 @@
           <div class="flex flex-col gap-4 px-5 py-5 lg:flex-row lg:items-start lg:justify-between">
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-2">
-                <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
+                <span class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" i18n>
                   ID {{ atlasMeta(atlas) }}
                 </span>
                 @if (atlas.id === activeAtlasId()) {
-                  <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                  <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]" i18n>
                     Active
                   </span>
                 }
                 @if (isAdmin(atlas) && !isOwner(atlas)) {
-                  <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                  <span class="rounded-full border border-[var(--accent)]/30 bg-[var(--soft-fill)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]" i18n>
                     Added admin
                   </span>
                 }
@@ -863,7 +863,7 @@
                       type="button"
                       (click)="cancelRename()"
                       class="rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]"
-                    >Cancel</button>
+                     i18n>Cancel</button>
                   </div>
                 </form>
               } @else {
@@ -880,65 +880,65 @@
 
               <div class="mt-5 grid gap-3 xl:grid-cols-2">
                 <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-3">
-                  <p class="px-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Open</p>
+                  <p class="px-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Open</p>
                   <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5 xl:grid-cols-2">
                     <a [routerLink]="['/atlas', atlas.slug || atlas.id]" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">home</span>
-                      <span>Landing</span>
+                      <span i18n>Landing</span>
                     </a>
                     <button type="button" (click)="openAtlasChat(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">chat</span>
-                      <span>Chat</span>
+                      <span i18n>Chat</span>
                     </button>
                     <button type="button" (click)="openAtlasUpload(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">neurology</span>
-                      <span>Upload</span>
+                      <span i18n>Upload</span>
                     </button>
                     <button type="button" (click)="openAtlasSources(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">library_books</span>
-                      <span>Sources</span>
+                      <span i18n>Sources</span>
                     </button>
                     <button type="button" (click)="openAtlasWiki(atlas)" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">menu_book</span>
-                      <span>Wiki</span>
+                      <span i18n>Wiki</span>
                     </button>
                   </div>
                 </div>
 
                 <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-3">
-                  <p class="px-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]">Configure</p>
+                  <p class="px-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--muted)]" i18n>Configure</p>
                   <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-2">
                     <button type="button" (click)="openAtlasSection(atlas, 'voice')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">record_voice_over</span>
-                      <span>Voice</span>
+                      <span i18n>Voice</span>
                     </button>
                     <button type="button" (click)="openAtlasSection(atlas, 'chat-guide')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">person_pin</span>
-                      <span>Guide</span>
+                      <span i18n>Guide</span>
                     </button>
                     <button type="button" (click)="openAtlasSection(atlas, 'voice-agent')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">phone_in_talk</span>
-                      <span>Vapi</span>
+                      <span i18n>Vapi</span>
                     </button>
                     <button type="button" (click)="openAtlasSection(atlas, 'text-messaging')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">sms</span>
-                      <span>SMS</span>
+                      <span i18n>SMS</span>
                     </button>
                     <button type="button" (click)="openAtlasSection(atlas, 'newsletter')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">campaign</span>
-                      <span>Email</span>
+                      <span i18n>Email</span>
                     </button>
                     <button type="button" (click)="openAtlasSection(atlas, 'search')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">travel_explore</span>
-                      <span>Search</span>
+                      <span i18n>Search</span>
                     </button>
                     <button type="button" (click)="openAtlasSection(atlas, 'city')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">location_city</span>
-                      <span>City</span>
+                      <span i18n>City</span>
                     </button>
                     <button type="button" (click)="openAtlasSection(atlas, 'contents')" class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                       <span class="material-symbols-outlined text-[1rem]">inventory_2</span>
-                      <span>Contents</span>
+                      <span i18n>Contents</span>
                     </button>
                   </div>
                 </div>
@@ -951,14 +951,14 @@
                 class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--soft-fill-strong)]"
               >
                 <span class="material-symbols-outlined text-[1rem]">open_in_new</span>
-                <span>Open</span>
+                <span i18n>Open</span>
               </a>
               @if (atlas.id !== activeAtlasId()) {
                 <button
                   type="button"
                   (click)="selectAtlas(atlas.id)"
                   class="rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
-                >Use Wiki</button>
+                 i18n>Use Wiki</button>
               }
               @if (renamingId() !== atlas.id) {
                 <button
@@ -967,7 +967,7 @@
                   class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:bg-[var(--soft-fill-strong)]"
                 >
                   <span class="material-symbols-outlined text-[1rem]">edit</span>
-                  <span>Rename</span>
+                  <span i18n>Rename</span>
                 </button>
               }
               <button
@@ -986,7 +986,7 @@
                   [disabled]="!canDelete(atlas) || deletingId() === atlas.id"
                   class="inline-flex items-center gap-2 rounded-full border border-[var(--danger-text)]/25 bg-[var(--soft-fill)] px-4 py-2 text-sm font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)] disabled:cursor-not-allowed disabled:opacity-35"
                   title="Delete is available for empty Wikis."
-                >
+                 i18n-title>
                   <span class="material-symbols-outlined text-[1rem]">delete</span>
                   <span>{{ deletingId() === atlas.id ? 'Deleting...' : 'Delete' }}</span>
                 </button>
@@ -1005,7 +1005,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">record_voice_over</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Voice & personality</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Voice & personality</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ personaSummary(atlas) }}</span>
                 </span>
               </span>
@@ -1014,7 +1014,7 @@
             @if (isSectionOpen(atlas, 'voice')) {
               <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                     Control how the assistant sounds for this Wiki. Grounding, citations, and safety rules still stay automatic.
                   </p>
                   <a
@@ -1039,7 +1039,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">phone_in_talk</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Vapi voice agent</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Vapi voice agent</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ voiceAgentSummary(atlas) }}</span>
                 </span>
               </span>
@@ -1048,14 +1048,14 @@
             @if (isSectionOpen(atlas, 'voice-agent')) {
               <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                 @if (isLoadingVoiceAgent(atlas.id)) {
-                  <p class="text-sm text-[var(--muted)]">Loading Vapi settings...</p>
+                  <p class="text-sm text-[var(--muted)]" i18n>Loading Vapi settings...</p>
                 } @else if (voiceAgentDraft(atlas.id); as voiceDraft) {
                   <div class="grid gap-4 lg:grid-cols-2">
                     <label class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 lg:col-span-2">
                       <span class="flex items-center justify-between gap-4">
                         <span>
-                          <span class="block text-sm font-bold text-[var(--text)]">Enable Vapi tool endpoint</span>
-                          <span class="block text-xs leading-5 text-[var(--muted)]">Connects Vapi voice calls to this Wiki's answer pipeline.</span>
+                          <span class="block text-sm font-bold text-[var(--text)]" i18n>Enable Vapi tool endpoint</span>
+                          <span class="block text-xs leading-5 text-[var(--muted)]" i18n>Connects Vapi voice calls to this Wiki's answer pipeline.</span>
                         </span>
                         <input
                           type="checkbox"
@@ -1067,7 +1067,7 @@
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Public call-in phone number</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Public call-in phone number</span>
                       <input
                         type="text"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
@@ -1075,33 +1075,33 @@
                         (input)="updateVoiceAgentDraft(atlas.id, 'phone_number', $any($event.target).value)"
                         placeholder="+1 (864) 734 3013"
                       />
-                      <span class="mt-1 block text-xs leading-5 text-[var(--muted)]">Shown to visitors after they join. Keep blank until the phone experience is ready.</span>
+                      <span class="mt-1 block text-xs leading-5 text-[var(--muted)]" i18n>Shown to visitors after they join. Keep blank until the phone experience is ready.</span>
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Vapi phone number ID</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Vapi phone number ID</span>
                       <input
                         type="text"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                         [value]="voiceDraft.vapi_phone_number_id"
                         (input)="updateVoiceAgentDraft(atlas.id, 'vapi_phone_number_id', $any($event.target).value)"
                         placeholder="c9dddd68-d5a2-4017-a41b-53df70419bea"
-                      />
+                       i18n-placeholder/>
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Vapi assistant ID</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Vapi assistant ID</span>
                       <input
                         type="text"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                         [value]="voiceDraft.vapi_assistant_id"
                         (input)="updateVoiceAgentDraft(atlas.id, 'vapi_assistant_id', $any($event.target).value)"
                         placeholder="Assistant ID"
-                      />
+                       i18n-placeholder/>
                     </label>
 
                     <label class="block lg:col-span-2">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Vapi tool server URL</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Vapi tool server URL</span>
                       <input
                         type="text"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-xs"
@@ -1137,7 +1137,7 @@
                       (click)="saveVoiceAgentConfig(atlas, true)"
                     >
                       <span class="material-symbols-outlined text-[1rem]">sync_lock</span>
-                      <span>Rotate token</span>
+                      <span i18n>Rotate token</span>
                     </button>
                   </div>
                 }
@@ -1155,7 +1155,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">sms</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Text messaging</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Text messaging</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ textMessagingSummary(atlas) }}</span>
                 </span>
               </span>
@@ -1164,14 +1164,14 @@
             @if (isSectionOpen(atlas, 'text-messaging')) {
               <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                 @if (isLoadingTextMessaging(atlas.id)) {
-                  <p class="text-sm text-[var(--muted)]">Loading text settings...</p>
+                  <p class="text-sm text-[var(--muted)]" i18n>Loading text settings...</p>
                 } @else if (textMessagingDraft(atlas.id); as textDraft) {
                   <div class="grid gap-4 lg:grid-cols-2">
                     <label class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 lg:col-span-2">
                       <span class="flex items-center justify-between gap-4">
                         <span>
-                          <span class="block text-sm font-bold text-[var(--text)]">Enable inbound SMS webhook</span>
-                          <span class="block text-xs leading-5 text-[var(--muted)]">Use a Twilio SMS-capable number, or a Vapi setup that exposes Twilio SMS webhooks.</span>
+                          <span class="block text-sm font-bold text-[var(--text)]" i18n>Enable inbound SMS webhook</span>
+                          <span class="block text-xs leading-5 text-[var(--muted)]" i18n>Use a Twilio SMS-capable number, or a Vapi setup that exposes Twilio SMS webhooks.</span>
                         </span>
                         <input
                           type="checkbox"
@@ -1183,20 +1183,20 @@
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Provider record</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Provider record</span>
                       <select
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                         [ngModel]="textDraft.provider"
                         [ngModelOptions]="{ standalone: true }"
                         (ngModelChange)="updateTextMessagingDraft(atlas.id, 'provider', $any($event))"
                       >
-                        <option [ngValue]="'twilio'">Twilio SMS webhook</option>
-                        <option [ngValue]="'vapi'">Vapi number record</option>
+                        <option [ngValue]="'twilio'" i18n>Twilio SMS webhook</option>
+                        <option [ngValue]="'vapi'" i18n>Vapi number record</option>
                       </select>
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Phone number</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Phone number</span>
                       <input
                         type="tel"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
@@ -1207,18 +1207,18 @@
                     </label>
 
                     <label class="block lg:col-span-2">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Vapi phone number ID</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Vapi phone number ID</span>
                       <input
                         type="text"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                         [value]="textDraft.vapi_phone_number_id"
                         (input)="updateTextMessagingDraft(atlas.id, 'vapi_phone_number_id', $any($event.target).value)"
                         placeholder="c9dddd68-d5a2-4017-a41b-53df70419bea"
-                      />
+                       i18n-placeholder/>
                     </label>
 
                     <label class="block lg:col-span-2">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">SMS webhook URL</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>SMS webhook URL</span>
                       <input
                         type="text"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-xs"
@@ -1254,7 +1254,7 @@
                       (click)="saveTextMessagingConfig(atlas, true)"
                     >
                       <span class="material-symbols-outlined text-[1rem]">sync_lock</span>
-                      <span>Rotate token</span>
+                      <span i18n>Rotate token</span>
                     </button>
                   </div>
                 }
@@ -1272,7 +1272,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">person_pin</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Chat guide</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Chat guide</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ chatGuideSummary(atlas) }}</span>
                 </span>
               </span>
@@ -1313,48 +1313,48 @@
                             class="inline-flex w-28 items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold text-[var(--danger-text)] transition hover:bg-[var(--soft-fill-strong)]"
                             [disabled]="isUploadingChatGuideImage(atlas.id)"
                             (click)="clearChatGuideImage(atlas)"
-                          >
+                           i18n>
                             Remove
                           </button>
                         }
                       </div>
                       <div class="grid gap-3 md:grid-cols-2">
                       <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Guide label</span>
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Guide label</span>
                         <input
                           type="text"
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                           [value]="guideDraft.label"
                           (input)="updateChatGuideDraft(atlas.id, 'label', $any($event.target).value)"
                           placeholder="Your LivingWiki tour guide"
-                        />
+                         i18n-placeholder/>
                       </label>
                       <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Guide name</span>
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Guide name</span>
                         <input
                           type="text"
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                           [value]="guideDraft.name"
                           (input)="updateChatGuideDraft(atlas.id, 'name', $any($event.target).value)"
                           placeholder="B. Franklin"
-                        />
+                         i18n-placeholder/>
                       </label>
                       <label class="block md:col-span-2">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Banner URL</span>
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Banner URL</span>
                         <input
                           type="url"
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                           [value]="guideDraft.banner_url"
                           (input)="updateChatGuideDraft(atlas.id, 'banner_url', $any($event.target).value)"
                           placeholder="https://..."
-                        />
+                         i18n-placeholder/>
                       </label>
                       <div class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 md:col-span-2">
                         <div class="flex items-start gap-3">
                           <span class="material-symbols-outlined mt-0.5 text-[1.1rem] text-[var(--accent)]">image</span>
                           <div>
-                            <p class="text-sm font-bold text-[var(--text)]">Guide picture</p>
-                            <p class="mt-1 text-xs leading-5 text-[var(--muted)]">
+                            <p class="text-sm font-bold text-[var(--text)]" i18n>Guide picture</p>
+                            <p class="mt-1 text-xs leading-5 text-[var(--muted)]" i18n>
                               Upload a square portrait or character image. The picture saves immediately after upload; use Save chat guide for name, label, banner, or removals.
                             </p>
                           </div>
@@ -1389,7 +1389,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">campaign</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Email content</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Email content</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ newsletterSummary(atlas) }} · {{ newsletterLastSentLabel(atlas) }}</span>
                 </span>
               </span>
@@ -1402,8 +1402,8 @@
                     <label class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 lg:col-span-2">
                       <span class="flex items-center justify-between gap-4">
                         <span>
-                          <span class="block text-sm font-bold text-[var(--text)]">Send weekly email updates</span>
-                          <span class="block text-xs leading-5 text-[var(--muted)]">Off by default. When enabled, active subscribers receive a professionally generated weekly update for this Wiki.</span>
+                          <span class="block text-sm font-bold text-[var(--text)]" i18n>Send weekly email updates</span>
+                          <span class="block text-xs leading-5 text-[var(--muted)]" i18n>Off by default. When enabled, active subscribers receive a professionally generated weekly update for this Wiki.</span>
                         </span>
                         <input
                           type="checkbox"
@@ -1415,7 +1415,7 @@
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Prompt</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Prompt</span>
                       <textarea
                         rows="8"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
@@ -1426,7 +1426,7 @@
 
                     <div class="grid content-start gap-3">
                       <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Day</span>
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Day</span>
                         <select
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                           [ngModel]="draft.day_of_week"
@@ -1440,7 +1440,7 @@
                       </label>
 
                       <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Time</span>
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Time</span>
                         <input
                           type="time"
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
@@ -1450,28 +1450,28 @@
                       </label>
 
                       <label class="block">
-                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Timezone</span>
+                        <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Timezone</span>
                         <input
                           type="text"
                           class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                           [value]="draft.timezone"
                           (input)="updateNewsletterDraft(atlas.id, 'timezone', $any($event.target).value)"
                           placeholder="America/New_York"
-                        />
+                         i18n-placeholder/>
                       </label>
                     </div>
                   </div>
 
                   <div class="mt-4 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-end">
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Test recipient</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Test recipient</span>
                       <input
                         type="email"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-sm"
                         [value]="newsletterTestEmail(atlas.id)"
                         (input)="updateNewsletterTestEmail(atlas.id, $any($event.target).value)"
                         placeholder="name@example.com"
-                      />
+                       i18n-placeholder/>
                     </label>
                     <div class="flex flex-wrap items-center gap-2">
                     <button
@@ -1497,7 +1497,7 @@
 
                   @if (newsletterTestResult(atlas.id); as result) {
                     <div class="mt-4 rounded-2xl border border-[var(--accent)]/20 bg-[var(--surface)] px-4 py-3">
-                      <p class="text-sm font-bold text-[var(--text)]">Test sent to {{ result.sentTo }}</p>
+                      <p class="text-sm font-bold text-[var(--text)]" i18n>Test sent to {{ result.sentTo }}</p>
                       <p class="mt-1 text-xs text-[var(--muted)]">{{ result.subject }}</p>
                       <p class="mt-2 line-clamp-3 text-sm leading-6 text-[var(--muted)]">{{ result.previewText }}</p>
                     </div>
@@ -1523,7 +1523,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">travel_explore</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Default search mode</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Default search mode</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ defaultAnswerModeSummary(atlas) }}</span>
                 </span>
               </span>
@@ -1532,7 +1532,7 @@
             @if (isSectionOpen(atlas, 'search')) {
               <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                 <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                     Choose the mode chat starts with for this Wiki.
                   </p>
                   <div class="flex w-full rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 sm:w-auto">
@@ -1545,7 +1545,7 @@
                       (click)="updateDefaultAnswerMode(atlas, 'wiki')"
                     >
                       <span class="material-symbols-outlined text-[1rem]">menu_book</span>
-                      <span>LivingWiki</span>
+                      <span i18n>LivingWiki</span>
                     </button>
                     <button
                       type="button"
@@ -1556,7 +1556,7 @@
                       (click)="updateDefaultAnswerMode(atlas, 'internet')"
                     >
                       <span class="material-symbols-outlined text-[1rem]">public</span>
-                      <span>Internet</span>
+                      <span i18n>Internet</span>
                     </button>
                   </div>
                 </div>
@@ -1575,7 +1575,7 @@
                 <span class="flex min-w-0 items-center gap-3">
                   <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">admin_panel_settings</span>
                   <span class="min-w-0">
-                    <span class="block text-sm font-black text-[var(--text)]">Admins</span>
+                    <span class="block text-sm font-black text-[var(--text)]" i18n>Admins</span>
                     <span class="block truncate text-xs text-[var(--muted)]">
                       {{ adminProfiles(atlas).length ? adminProfiles(atlas).length + ' shared admin' + (adminProfiles(atlas).length === 1 ? '' : 's') : 'Owner only' }}
                     </span>
@@ -1586,7 +1586,7 @@
               @if (isSectionOpen(atlas, 'admins')) {
                 <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                   <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                    <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                       Add an existing LivingWiki user by email. They receive an email invite and can edit this Wiki's admin settings.
                     </p>
                     <form class="flex w-full flex-col gap-2 sm:flex-row lg:max-w-md" (submit)="shareAdmin($event, atlas)">
@@ -1596,7 +1596,7 @@
                         [value]="adminEmailDraft(atlas.id)"
                         (input)="onAdminEmailInput(atlas.id, $event)"
                         placeholder="person@example.com"
-                      />
+                       i18n-placeholder/>
                       <button
                         type="submit"
                         class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50"
@@ -1619,7 +1619,7 @@
                             [disabled]="removingAdminKey() === atlas.id + ':' + admin.user_id"
                             (click)="removeAdmin(atlas, admin)"
                             aria-label="Remove admin"
-                          >
+                           i18n-aria-label>
                             <span class="material-symbols-outlined text-[1rem]">close</span>
                           </button>
                         </div>
@@ -1641,7 +1641,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">mark_email_read</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Weekly subscribers</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Weekly subscribers</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ subscriberCountLabel(atlas.id) }}</span>
                 </span>
               </span>
@@ -1650,14 +1650,14 @@
             @if (isSectionOpen(atlas, 'subscribers')) {
               <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                 @if (isLoadingSubscriptions(atlas.id)) {
-                  <p class="text-sm text-[var(--muted)]">Loading subscribers...</p>
+                  <p class="text-sm text-[var(--muted)]" i18n>Loading subscribers...</p>
                 } @else if (subscriptions(atlas.id).length) {
                   <div class="grid gap-2">
                     @for (subscription of subscriptions(atlas.id); track subscription.id) {
                       <div class="flex flex-col gap-1 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                         <div class="min-w-0">
                           <span class="block truncate text-sm font-semibold text-[var(--text)]">{{ subscription.email }}</span>
-                          <span class="block text-xs text-[var(--muted)]">Subscribed {{ subscriptionDate(subscription) }}</span>
+                          <span class="block text-xs text-[var(--muted)]" i18n>Subscribed {{ subscriptionDate(subscription) }}</span>
                         </div>
                         <button
                           type="button"
@@ -1672,7 +1672,7 @@
                     }
                   </div>
                 } @else {
-                  <p class="text-sm text-[var(--muted)]">No one has subscribed to weekly updates for this Wiki yet.</p>
+                  <p class="text-sm text-[var(--muted)]" i18n>No one has subscribed to weekly updates for this Wiki yet.</p>
                 }
               </div>
             }
@@ -1688,7 +1688,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">location_city</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">City pulse</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>City pulse</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ cityConfigSummary(atlas) }}</span>
                 </span>
               </span>
@@ -1697,7 +1697,7 @@
             @if (isSectionOpen(atlas, 'city')) {
               <div class="border-t border-[var(--line)] bg-[var(--soft-fill)] px-5 py-4">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                  <p class="max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>
                     Optional city-aware landing data and worldometer-style metrics.
                   </p>
                   <div class="flex flex-wrap gap-2">
@@ -1707,7 +1707,7 @@
                         class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--accent)] transition hover:border-[var(--accent)]/50"
                       >
                         <span class="material-symbols-outlined text-[1rem]">monitoring</span>
-                        <span>Maintenance</span>
+                        <span i18n>Maintenance</span>
                       </a>
                     }
                     @if (!(cityEditingId() === atlas.id && cityDraft())) {
@@ -1728,8 +1728,8 @@
                     <label class="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 md:col-span-2">
                       <span class="flex items-center justify-between gap-4">
                         <span>
-                          <span class="block text-sm font-bold text-[var(--text)]">Enable city pulse</span>
-                          <span class="block text-xs text-[var(--muted)]">Turns this wiki into a city-aware landing page with live-style metrics.</span>
+                          <span class="block text-sm font-bold text-[var(--text)]" i18n>Enable city pulse</span>
+                          <span class="block text-xs text-[var(--muted)]" i18n>Turns this wiki into a city-aware landing page with live-style metrics.</span>
                         </span>
                         <input
                           type="checkbox"
@@ -1741,64 +1741,64 @@
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">City name</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>City name</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.city_name" (input)="updateCityDraft('city_name', $any($event.target).value)" />
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Region / state</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Region / state</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.region_name" (input)="updateCityDraft('region_name', $any($event.target).value)" />
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Country code</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Country code</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.country_code" (input)="updateCityDraft('country_code', $any($event.target).value)" />
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Timezone</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Timezone</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.timezone" (input)="updateCityDraft('timezone', $any($event.target).value)" />
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Global region</span>
-                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.global_region" (input)="updateCityDraft('global_region', $any($event.target).value)" placeholder="Europe" />
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Global region</span>
+                      <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.global_region" (input)="updateCityDraft('global_region', $any($event.target).value)" placeholder="Europe"  i18n-placeholder/>
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Population</span>
                       <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.population" (input)="updateCityDraft('population', $any($event.target).value)" placeholder="8,978,000" />
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Population year</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Population year</span>
                       <input type="text" inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.population_year" (input)="updateCityDraft('population_year', $any($event.target).value)" placeholder="2024" />
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Census state code</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Census state code</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.census_state_code" (input)="updateCityDraft('census_state_code', $any($event.target).value)" placeholder="42" />
                     </label>
 
                     <label class="block">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Census place code</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Census place code</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.census_place_code" (input)="updateCityDraft('census_place_code', $any($event.target).value)" placeholder="60000" />
                     </label>
 
                     <label class="block md:col-span-2">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">AirNow zip code</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>AirNow zip code</span>
                       <input type="text" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="draft.airnow_zip_code" (input)="updateCityDraft('airnow_zip_code', $any($event.target).value)" placeholder="19102" />
                     </label>
 
                     <label class="block md:col-span-2">
-                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Manual metrics JSON</span>
+                      <span class="mb-1 block text-xs font-bold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Manual metrics JSON</span>
                       <textarea
                         rows="8"
                         class="theme-input w-full rounded-2xl px-4 py-3 text-xs"
                         [value]="draft.manual_metrics_json"
                         (input)="updateCityDraft('manual_metrics_json', $any($event.target).value)"
                         placeholder='[{"id":"aqi-now","label":"AQI now","short_label":"AQI","format":"number","value":42,"source_label":"AirNow manual import","cadence":"manual"}]'
-                      ></textarea>
+                       i18n-placeholder></textarea>
                     </label>
                   </div>
 
@@ -1806,7 +1806,7 @@
                     <button type="button" class="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-50" [disabled]="savingCityConfig()" (click)="saveCityConfig(atlas)">
                       {{ savingCityConfig() ? 'Saving...' : 'Save city pulse' }}
                     </button>
-                    <button type="button" class="rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]" [disabled]="savingCityConfig()" (click)="cancelCityEdit()">Cancel</button>
+                    <button type="button" class="rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]" [disabled]="savingCityConfig()" (click)="cancelCityEdit()" i18n>Cancel</button>
                   </div>
                 }
               </div>
@@ -1823,7 +1823,7 @@
               <span class="flex min-w-0 items-center gap-3">
                 <span class="material-symbols-outlined text-[1.2rem] text-[var(--accent)]">inventory_2</span>
                 <span class="min-w-0">
-                  <span class="block text-sm font-black text-[var(--text)]">Contents</span>
+                  <span class="block text-sm font-black text-[var(--text)]" i18n>Contents</span>
                   <span class="block truncate text-xs text-[var(--muted)]">{{ usageLabel(usage(atlas.id)) }}</span>
                 </span>
               </span>
@@ -1834,19 +1834,19 @@
                 @if (usage(atlas.id); as details) {
                   <div class="grid gap-2 sm:grid-cols-4">
                     <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
-                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Documents</p>
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Documents</p>
                       <p class="mt-1 text-xl font-black">{{ details.documents }}</p>
                     </div>
                     <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
-                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Knowledge</p>
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Knowledge</p>
                       <p class="mt-1 text-xl font-black">{{ details.knowledge_entries }}</p>
                     </div>
                     <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
-                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Topics</p>
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Topics</p>
                       <p class="mt-1 text-xl font-black">{{ details.wiki_topics }}</p>
                     </div>
                     <div class="border-l-2 border-[var(--accent)] bg-[var(--surface)] px-3 py-3">
-                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">Chats</p>
+                      <p class="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Chats</p>
                       <p class="mt-1 text-xl font-black">{{ chatCount(details) }}</p>
                     </div>
                   </div>
@@ -1854,7 +1854,7 @@
                     <div class="mt-4 flex flex-wrap items-center gap-2">
                       <a routerLink="/library" class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35">
                         <span class="material-symbols-outlined text-[1rem]">upload_file</span>
-                        <span>Upload sources</span>
+                        <span i18n>Upload sources</span>
                       </a>
                       <button
                         type="button"
@@ -1867,13 +1867,13 @@
                       </button>
                     </div>
                     @if (!hasMultipleAtlases()) {
-                      <p class="mt-3 text-xs text-[var(--muted)]">You must keep at least one Wiki.</p>
+                      <p class="mt-3 text-xs text-[var(--muted)]" i18n>You must keep at least one Wiki.</p>
                     } @else if (details.total > 0) {
-                      <p class="mt-3 text-xs text-[var(--muted)]">Delete becomes available only when a Wiki is empty.</p>
+                      <p class="mt-3 text-xs text-[var(--muted)]" i18n>Delete becomes available only when a Wiki is empty.</p>
                     }
                   }
                 } @else {
-                  <p class="text-sm text-[var(--muted)]">Usage details are not available yet.</p>
+                  <p class="text-sm text-[var(--muted)]" i18n>Usage details are not available yet.</p>
                 }
               </div>
             }
@@ -1881,7 +1881,7 @@
           }
         </article>
       } @empty {
-        <div class="rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]">
+        <div class="rounded-3xl border border-dashed border-[var(--line-strong)] bg-[var(--soft-fill)] px-5 py-6 text-sm font-semibold text-[var(--muted)]" i18n>
           No Wikis match "{{ wikiSearch() }}".
         </div>
       }

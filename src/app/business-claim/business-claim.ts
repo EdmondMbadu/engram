@@ -140,7 +140,7 @@ export class BusinessClaimComponent {
   readonly businessPlans: BusinessPlanOption[] = [
     {
       id: 'free',
-      label: 'Free preview',
+      label: $localize`Free preview`,
       price: '$0',
       detail: 'Basic claim with up to 15 minutes of calls while billing is finalized.',
       included: '15 call minutes',
@@ -148,7 +148,7 @@ export class BusinessClaimComponent {
     },
     {
       id: 'local',
-      label: 'Local',
+      label: $localize`Local`,
       price: '$25/mo',
       detail: 'Unlock AI tone, business documents, conversation details, and more minutes.',
       included: '200+ conversation minutes',
@@ -156,7 +156,7 @@ export class BusinessClaimComponent {
     },
     {
       id: 'favorite',
-      label: 'Local Favorite',
+      label: $localize`Local Favorite`,
       price: '$65/mo',
       detail: 'Adds stronger placement and priority support for a busier local profile.',
       included: '200+ conversation minutes',
@@ -164,7 +164,7 @@ export class BusinessClaimComponent {
     },
     {
       id: 'sponsor',
-      label: 'City Sponsor',
+      label: $localize`City Sponsor`,
       price: '$180/mo',
       detail: 'Citywide visibility with deeper support for launch and growth.',
       included: '200+ conversation minutes',
@@ -173,12 +173,12 @@ export class BusinessClaimComponent {
   ];
 
   readonly aiToneOptions: AiToneOption[] = [
-    { id: 'warm', label: 'Warm', detail: 'Friendly, patient, and welcoming.' },
-    { id: 'calm', label: 'Calm', detail: 'Steady, clear, and reassuring.' },
-    { id: 'upbeat', label: 'Happy', detail: 'Bright, energetic, and positive.' },
-    { id: 'professional', label: 'Professional', detail: 'Polished, precise, and service-minded.' },
-    { id: 'concise', label: 'Concise', detail: 'Direct answers with minimal extra detail.' },
-    { id: 'premium', label: 'Premium', detail: 'Refined, attentive, and high-touch.' },
+    { id: 'warm', label: $localize`Warm`, detail: 'Friendly, patient, and welcoming.' },
+    { id: 'calm', label: $localize`Calm`, detail: 'Steady, clear, and reassuring.' },
+    { id: 'upbeat', label: $localize`Happy`, detail: 'Bright, energetic, and positive.' },
+    { id: 'professional', label: $localize`Professional`, detail: 'Polished, precise, and service-minded.' },
+    { id: 'concise', label: $localize`Concise`, detail: 'Direct answers with minimal extra detail.' },
+    { id: 'premium', label: $localize`Premium`, detail: 'Refined, attentive, and high-touch.' },
   ];
 
   readonly fallbackCities: ClaimCityFallback[] = [
@@ -191,14 +191,14 @@ export class BusinessClaimComponent {
   ];
 
   readonly languages: DecalLanguage[] = [
-    { code: 'en', flag: '🇺🇸', label: 'English', greeting: 'Hello' },
-    { code: 'fr', flag: '🇫🇷', label: 'Francais', greeting: 'Bonjour' },
-    { code: 'pt', flag: '🇧🇷', label: 'Portugues', greeting: 'Ola' },
-    { code: 'zh', flag: '🇨🇳', label: 'Chinese', greeting: 'Ni hao' },
-    { code: 'de', flag: '🇩🇪', label: 'Deutsch', greeting: 'Guten Tag' },
-    { code: 'es', flag: '🇪🇸', label: 'Espanol', greeting: 'Hola' },
-    { code: 'ar', flag: '🇸🇦', label: 'Arabic', greeting: 'Marhaba' },
-    { code: 'ko', flag: '🇰🇷', label: 'Korean', greeting: 'Annyeong' },
+    { code: 'en', flag: '🇺🇸', label: $localize`English`, greeting: 'Hello' },
+    { code: 'fr', flag: '🇫🇷', label: $localize`Francais`, greeting: 'Bonjour' },
+    { code: 'pt', flag: '🇧🇷', label: $localize`Portugues`, greeting: 'Ola' },
+    { code: 'zh', flag: '🇨🇳', label: $localize`Chinese`, greeting: 'Ni hao' },
+    { code: 'de', flag: '🇩🇪', label: $localize`Deutsch`, greeting: 'Guten Tag' },
+    { code: 'es', flag: '🇪🇸', label: $localize`Espanol`, greeting: 'Hola' },
+    { code: 'ar', flag: '🇸🇦', label: $localize`Arabic`, greeting: 'Marhaba' },
+    { code: 'ko', flag: '🇰🇷', label: $localize`Korean`, greeting: 'Annyeong' },
   ];
 
   readonly badgeIcons: BadgeIcon[] = BUSINESS_BADGE_ICONS;
@@ -210,10 +210,10 @@ export class BusinessClaimComponent {
   });
 
   readonly sizes: DecalSize[] = [
-    { id: 'window', label: 'Window cling 8x10"', detail: 'Best for glass storefronts' },
-    { id: 'door', label: 'Door decal 5x7"', detail: 'Compact entrance sticker' },
-    { id: 'tent', label: 'Table tent 4x6"', detail: 'Host stand or counter' },
-    { id: 'card', label: 'Counter card', detail: 'Checkout display' },
+    { id: 'window', label: $localize`Window cling 8x10"`, detail: 'Best for glass storefronts' },
+    { id: 'door', label: $localize`Door decal 5x7"`, detail: 'Compact entrance sticker' },
+    { id: 'tent', label: $localize`Table tent 4x6"`, detail: 'Host stand or counter' },
+    { id: 'card', label: $localize`Counter card`, detail: 'Checkout display' },
   ];
 
   readonly categories = [
@@ -511,7 +511,7 @@ export class BusinessClaimComponent {
       this.businessSuggestionsOpen.set(true);
     } catch {
       if (this.lastPlaceSearchKey === searchKey) {
-        this.placeSearchError.set('Place search is unavailable right now. You can still type the business manually.');
+        this.placeSearchError.set($localize`Place search is unavailable right now. You can still type the business manually.`);
         this.placeResults.set([]);
       }
     } finally {
@@ -601,11 +601,11 @@ export class BusinessClaimComponent {
       return;
     }
     if (this.adminName().trim().length < 2) {
-      this.checkoutError.set('Add the business admin name before checkout so the payment is tied to the right account owner.');
+      this.checkoutError.set($localize`Add the business admin name before checkout so the payment is tied to the right account owner.`);
       return;
     }
     if (this.adminEmail().trim() && !this.isValidEmail(this.adminEmail())) {
-      this.checkoutError.set('Enter a valid account email before checkout.');
+      this.checkoutError.set($localize`Enter a valid account email before checkout.`);
       return;
     }
     if (!this.paidBusinessPlan()) {
@@ -648,7 +648,7 @@ export class BusinessClaimComponent {
       window.location.href = checkoutUrl;
     } catch {
       this.businessPaymentStatus.set('idle');
-      this.checkoutError.set('Checkout could not be started. Please try again.');
+      this.checkoutError.set($localize`Checkout could not be started. Please try again.`);
       this.checkoutLoading.set(false);
     }
   }
@@ -656,7 +656,7 @@ export class BusinessClaimComponent {
   async openBusinessUpload(): Promise<void> {
     if (!this.paidBusinessPlan()) {
       this.selectedBusinessPlan.set('local');
-      this.checkoutError.set('Choose a paid plan before uploading business documents.');
+      this.checkoutError.set($localize`Choose a paid plan before uploading business documents.`);
       return;
     }
     if (!this.paidFeaturesUnlocked()) {
@@ -699,7 +699,7 @@ export class BusinessClaimComponent {
       const existing = await this.businessClaimService.findByClaimKey(claimKey);
       if (existing) {
         this.existingClaim.set(existing);
-        this.claimError.set('This business already has a pending page draft. Use the existing claim instead of creating a duplicate.');
+        this.claimError.set($localize`This business already has a pending page draft. Use the existing claim instead of creating a duplicate.`);
         return;
       }
       const saved = await this.businessClaimService.create(record, {
@@ -720,7 +720,7 @@ export class BusinessClaimComponent {
       await this.router.navigateByUrl(this.businessDetailPath());
     } catch {
       this.savePendingDraft();
-      this.claimError.set('We could not create this business claim. Please try again, or refresh before submitting if the page has been open for a while.');
+      this.claimError.set($localize`We could not create this business claim. Please try again, or refresh before submitting if the page has been open for a while.`);
     } finally {
       this.claimSaving.set(false);
     }
@@ -977,7 +977,7 @@ export class BusinessClaimComponent {
 
     if (payment === 'cancelled') {
       this.businessPaymentStatus.set('cancelled');
-      this.checkoutError.set('Checkout was cancelled. Your draft is still here when you are ready.');
+      this.checkoutError.set($localize`Checkout was cancelled. Your draft is still here when you are ready.`);
       return;
     }
 
@@ -987,7 +987,7 @@ export class BusinessClaimComponent {
 
     if (!sessionId) {
       this.businessPaymentStatus.set('checkout_started');
-      this.checkoutError.set('Payment returned without a checkout session. Please try checkout again.');
+      this.checkoutError.set($localize`Payment returned without a checkout session. Please try checkout again.`);
       return;
     }
 
@@ -1009,7 +1009,7 @@ export class BusinessClaimComponent {
       this.savePendingDraft();
     } catch {
       this.businessPaymentStatus.set('checkout_started');
-      this.checkoutError.set('We could not confirm the payment yet. If the card was charged, refresh in a moment or contact support.');
+      this.checkoutError.set($localize`We could not confirm the payment yet. If the card was charged, refresh in a moment or contact support.`);
     } finally {
       this.checkoutLoading.set(false);
     }

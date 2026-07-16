@@ -9,12 +9,31 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": {
+          "code": "en-US",
+          "subPath": ""
+        },
+        "locales": {
+          "fr": {
+            "translation": "src/locale/messages.fr.json",
+            "subPath": "fr"
+          },
+          "ja": {
+            "translation": "src/locale/messages.ja.json",
+            "subPath": "ja"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "polyfills": [
+              "@angular/localize/init"
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -32,11 +51,14 @@
           },
           "configurations": {
             "production": {
+              "localize": true,
+              "i18nMissingTranslation": "error",
+              "i18nDuplicateTranslation": "error",
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2.25MB",
-                  "maximumError": "2.5MB"
+                  "maximumWarning": "2.6MB",
+                  "maximumError": "2.75MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -47,9 +69,20 @@
               "outputHashing": "all"
             },
             "development": {
+              "localize": false,
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "fr": {
+              "localize": [
+                "fr"
+              ]
+            },
+            "ja": {
+              "localize": [
+                "ja"
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -62,6 +95,12 @@
             },
             "development": {
               "buildTarget": "living-atlast:build:development"
+            },
+            "fr": {
+              "buildTarget": "living-atlast:build:development,fr"
+            },
+            "ja": {
+              "buildTarget": "living-atlast:build:development,ja"
             }
           },
           "defaultConfiguration": "development"
@@ -73,6 +112,9 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "tsconfig.spec.json",
+            "polyfills": [
+              "@angular/localize/init"
+            ],
             "assets": [
               {
                 "glob": "**/*",

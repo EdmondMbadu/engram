@@ -3,7 +3,7 @@
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
       <a [routerLink]="detailPath()" class="flex min-w-0 items-center gap-3">
         <div class="flex h-10 w-40 shrink-0 items-center justify-start">
-          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain" />
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-full w-full object-contain"  i18n-alt/>
         </div>
         <span class="hidden h-8 w-px bg-[var(--line)] sm:block"></span>
         <span class="hidden truncate text-sm font-black text-[var(--text)] sm:block">{{ businessName() }}</span>
@@ -12,7 +12,7 @@
       <div class="flex items-center gap-2">
         <a [routerLink]="detailPath()" class="hidden items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2.5 text-sm font-black text-[var(--text)] transition hover:border-[var(--accent)]/35 sm:inline-flex">
           <span class="material-symbols-outlined text-[1rem]">arrow_back</span>
-          <span>Business page</span>
+          <span i18n>Business page</span>
         </a>
         <app-theme-toggle></app-theme-toggle>
         <app-account-menu></app-account-menu>
@@ -23,16 +23,16 @@
   <main>
     @if (loading()) {
       <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
-        <p class="text-sm font-semibold text-[var(--muted)]">Loading business admin page...</p>
+        <p class="text-sm font-semibold text-[var(--muted)]" i18n>Loading business admin page...</p>
       </section>
     } @else if (!business()) {
       <section class="mx-4 my-8 max-w-7xl rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[var(--shadow-floating)] sm:mx-6 lg:mx-auto">
-        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Business admin</p>
-        <h1 class="mt-3 text-3xl font-black tracking-tight">This business page is not available yet.</h1>
+        <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Business admin</p>
+        <h1 class="mt-3 text-3xl font-black tracking-tight" i18n>This business page is not available yet.</h1>
         <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">{{ loadError() || 'The business page could not be found.' }}</p>
         <a routerLink="/business/claim" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">
           <span class="material-symbols-outlined text-[1rem]">add_business</span>
-          <span>Claim a business</span>
+          <span i18n>Claim a business</span>
         </a>
       </section>
     } @else if (!ownerCanView()) {
@@ -40,17 +40,17 @@
         <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--accent)]">
           <span class="material-symbols-outlined text-3xl">lock</span>
         </div>
-        <p class="mt-6 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Admin only</p>
+        <p class="mt-6 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Admin only</p>
         <h1 class="mt-3 text-3xl font-black tracking-tight">{{ pageTitle() }}</h1>
-        <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">This page is only visible to the account that owns {{ businessName() }}. Public visitors can use the business page and live guide instead.</p>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]" i18n>This page is only visible to the account that owns {{ businessName() }}. Public visitors can use the business page and live guide instead.</p>
         <div class="mt-6 flex flex-wrap gap-3">
           <a [routerLink]="detailPath()" class="inline-flex items-center gap-2 rounded-2xl bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)]">
             <span class="material-symbols-outlined text-[1rem]">storefront</span>
-            <span>View business page</span>
+            <span i18n>View business page</span>
           </a>
           <a [routerLink]="chatPath()" [queryParams]="chatQueryParams()" class="inline-flex items-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-5 py-3 text-sm font-black text-[var(--text)]">
             <span class="material-symbols-outlined text-[1rem]">forum</span>
-            <span>Open live guide</span>
+            <span i18n>Open live guide</span>
           </a>
         </div>
       </section>
@@ -108,13 +108,13 @@
             <div class="mt-6 grid gap-4 md:grid-cols-3">
               <article class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
                 <span class="material-symbols-outlined text-[var(--accent)]">person</span>
-                <h3 class="mt-3 text-sm font-black">Visitor identity</h3>
-                <p class="mt-2 text-xs leading-5 text-[var(--muted)]">Name, email, anonymous label, or device session.</p>
+                <h3 class="mt-3 text-sm font-black" i18n>Visitor identity</h3>
+                <p class="mt-2 text-xs leading-5 text-[var(--muted)]" i18n>Name, email, anonymous label, or device session.</p>
               </article>
               <article class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
                 <span class="material-symbols-outlined text-[var(--accent)]">schedule</span>
-                <h3 class="mt-3 text-sm font-black">Timestamp</h3>
-                <p class="mt-2 text-xs leading-5 text-[var(--muted)]">Recent activity ordered by latest visitor interaction.</p>
+                <h3 class="mt-3 text-sm font-black" i18n>Timestamp</h3>
+                <p class="mt-2 text-xs leading-5 text-[var(--muted)]" i18n>Recent activity ordered by latest visitor interaction.</p>
               </article>
               <article class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
                 <span class="material-symbols-outlined text-[var(--accent)]">{{ activity() === 'voice' ? 'play_circle' : 'chat_bubble' }}</span>

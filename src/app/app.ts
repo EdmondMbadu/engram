@@ -9,6 +9,6 @@ import { ThemeService } from './theme.service';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = 'LivingWiki';
+  protected readonly title = $localize`LivingWiki`;
   private readonly themeService = inject(ThemeService);
 }

@@ -50,7 +50,7 @@ const CITY_PUBLIC_WIKI_PRESENTATION_BY_SLUG = Object.fromEntries(
     template.slug,
     {
       title: template.name,
-      subtitle: 'Cities & Regions',
+      subtitle: $localize`Cities & Regions`,
       category: 'Cities & Regions',
       priority: template.priority,
       badges: template.badges,
@@ -64,31 +64,31 @@ const CITY_PUBLIC_WIKI_PRESENTATION_BY_SLUG = Object.fromEntries(
 const PUBLIC_WIKI_PRESENTATION_BY_SLUG: Record<string, PublicWikiPresentation> = {
   ...CITY_PUBLIC_WIKI_PRESENTATION_BY_SLUG,
   'newworld-game': {
-    subtitle: 'Platform Atlas',
+    subtitle: $localize`Platform Atlas`,
     category: 'Culture & Entertainment',
     fallbackHeroUrl: '/assets/public-wikis/newworld-game-hero.jpg',
     fallbackLogoUrl: '/assets/public-wikis/newworld-game-logo.png',
   },
   bookmakers: {
-    subtitle: 'Industry Atlas',
+    subtitle: $localize`Industry Atlas`,
     category: 'Business & Finance',
   },
   'ms-bookmakers': {
-    subtitle: 'Industry Atlas',
+    subtitle: $localize`Industry Atlas`,
     category: 'Business & Finance',
   },
   'ms-bomakers': {
-    subtitle: 'Industry Atlas',
+    subtitle: $localize`Industry Atlas`,
     category: 'Business & Finance',
   },
 };
 
 export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   {
-    title: 'The AI Landscape 2026',
-    subtitle: 'AI & Tech',
+    title: $localize`The AI Landscape 2026`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'Complete living map of every major AI company, model, funding round, and technical breakthrough — compiled from arXiv, Crunchbase, GitHub, SEC filings, and tech press.',
+      $localize`Complete living map of every major AI company, model, funding round, and technical breakthrough — compiled from arXiv, Crunchbase, GitHub, SEC filings, and tech press.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'high',
@@ -97,10 +97,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'arXiv, Crunchbase, GitHub, PitchBook, SEC EDGAR, TechCrunch, The Information',
   },
   {
-    title: 'OpenClaw & the Agentic AI Revolution',
-    subtitle: 'AI & Tech',
+    title: $localize`OpenClaw & the Agentic AI Revolution`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'LivingWiki of the OpenClaw phenomenon — 247K GitHub stars, the viral mechanics, the lobster culture, security incidents, and the broader shift to autonomous AI agents.',
+      $localize`LivingWiki of the OpenClaw phenomenon — 247K GitHub stars, the viral mechanics, the lobster culture, security incidents, and the broader shift to autonomous AI agents.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'high',
@@ -109,10 +109,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'GitHub, Wikipedia, Wired, Fortune, KDnuggets, CoinMarketCap, Medium',
   },
   {
-    title: 'LLM Knowledge Bases & the Karpathy Pattern',
-    subtitle: 'AI & Tech',
+    title: $localize`LLM Knowledge Bases & the Karpathy Pattern`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'Technical reference wiki covering the LivingWiki architecture — compile-once vs. RAG, implementation patterns, known deployments, and the academic literature.',
+      $localize`Technical reference wiki covering the LivingWiki architecture — compile-once vs. RAG, implementation patterns, known deployments, and the academic literature.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'high',
@@ -121,10 +121,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       "Karpathy's publications, arXiv, GitHub repos, Hacker News discussions, AI newsletters",
   },
   {
-    title: 'AI Safety & Alignment',
-    subtitle: 'AI & Tech',
+    title: $localize`AI Safety & Alignment`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'Living reference on AI safety research — alignment techniques, interpretability, major papers, key researchers, policy proposals, and the safety vs. capabilities debate.',
+      $localize`Living reference on AI safety research — alignment techniques, interpretability, major papers, key researchers, policy proposals, and the safety vs. capabilities debate.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'med',
@@ -133,10 +133,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'arXiv, Anthropic research, OpenAI safety publications, MIRI, ARC, government AI safety institutes',
   },
   {
-    title: 'The AI Startup Ecosystem',
-    subtitle: 'AI & Tech',
+    title: $localize`The AI Startup Ecosystem`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'Every funded AI startup by vertical — valuations, investors, revenue estimates, competitive landscapes, and founder backgrounds. The living PitchBook of AI.',
+      $localize`Every funded AI startup by vertical — valuations, investors, revenue estimates, competitive landscapes, and founder backgrounds. The living PitchBook of AI.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'high',
@@ -145,10 +145,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Crunchbase, PitchBook, SEC filings, Y Combinator, a16z portfolio data',
   },
   {
-    title: 'Foundation Models Compared',
-    subtitle: 'AI & Tech',
+    title: $localize`Foundation Models Compared`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'Living benchmark comparison of GPT-4.5, Claude 4.6, Gemini 2.5, DeepSeek, Llama 4, Mistral, and emerging models — capabilities, pricing, benchmarks, use cases.',
+      $localize`Living benchmark comparison of GPT-4.5, Claude 4.6, Gemini 2.5, DeepSeek, Llama 4, Mistral, and emerging models — capabilities, pricing, benchmarks, use cases.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'med',
@@ -159,11 +159,11 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== CLIMATE & SUSTAINABILITY =====
   {
-    title: 'LivingWiki: Philly (Flagship)',
+    title: $localize`LivingWiki: Philly (Flagship)`,
     slug: 'philly',
-    subtitle: 'Climate & Sustainability',
+    subtitle: $localize`Climate & Sustainability`,
     description:
-      "The Delaware Valley's living institutional memory — 60+ sources of sustainability, economic, environmental justice, and green infrastructure data for the nine-county region.",
+      $localize`The Delaware Valley's living institutional memory — 60+ sources of sustainability, economic, environmental justice, and green infrastructure data for the nine-county region.`,
     status: 'coming-soon',
     category: 'Climate & Sustainability',
     priority: 'high',
@@ -172,10 +172,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'OpenDataPhilly, DVRPC, PWD, PEA, EPA, Census Bureau, SBN, Green Philly, SEPTA',
   },
   {
-    title: 'Global Climate Action Tracker',
-    subtitle: 'Climate & Sustainability',
+    title: $localize`Global Climate Action Tracker`,
+    subtitle: $localize`Climate & Sustainability`,
     description:
-      "LivingWiki of every country's climate commitments, actual emissions, NDC progress, and policy implementations — the COP process made navigable.",
+      $localize`LivingWiki of every country's climate commitments, actual emissions, NDC progress, and policy implementations — the COP process made navigable.`,
     status: 'coming-soon',
     category: 'Climate & Sustainability',
     priority: 'high',
@@ -184,10 +184,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'UNFCCC, Climate Action Tracker, Our World in Data, World Bank Climate, IPCC reports, national NDCs',
   },
   {
-    title: 'ESG Reporting & Compliance',
-    subtitle: 'Climate & Sustainability',
+    title: $localize`ESG Reporting & Compliance`,
+    subtitle: $localize`Climate & Sustainability`,
     description:
-      'Living reference for corporate ESG — CSRD requirements, SEC climate rules, California SB 253/261, ISSB standards, GRI, SASB, and the evolving compliance landscape.',
+      $localize`Living reference for corporate ESG — CSRD requirements, SEC climate rules, California SB 253/261, ISSB standards, GRI, SASB, and the evolving compliance landscape.`,
     status: 'coming-soon',
     category: 'Climate & Sustainability',
     priority: 'high',
@@ -196,10 +196,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'SEC, EU CSRD text, California legislature, GRI standards, SASB, ISSB, Big Four guidance',
   },
   {
-    title: 'Renewable Energy Atlas',
-    subtitle: 'Climate & Sustainability',
+    title: $localize`Renewable Energy Atlas`,
+    subtitle: $localize`Climate & Sustainability`,
     description:
-      'Solar, wind, geothermal, and battery storage installations globally — capacity, growth rates, policy incentives, and cost curves compiled from public energy data.',
+      $localize`Solar, wind, geothermal, and battery storage installations globally — capacity, growth rates, policy incentives, and cost curves compiled from public energy data.`,
     status: 'coming-soon',
     category: 'Climate & Sustainability',
     priority: 'med',
@@ -208,10 +208,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'EIA, IRENA, IEA, DOE, state PUC filings, NREL, BloombergNEF (public data)',
   },
   {
-    title: 'Environmental Justice Atlas',
-    subtitle: 'Climate & Sustainability',
+    title: $localize`Environmental Justice Atlas`,
+    subtitle: $localize`Climate & Sustainability`,
     description:
-      'Mapping environmental injustice — EPA EJScreen data, pollution burden, health disparities, frontline communities, and the intersection of race, poverty, and environmental harm.',
+      $localize`Mapping environmental injustice — EPA EJScreen data, pollution burden, health disparities, frontline communities, and the intersection of race, poverty, and environmental harm.`,
     status: 'coming-soon',
     category: 'Climate & Sustainability',
     priority: 'med',
@@ -220,10 +220,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'EPA EJScreen, CDC Environmental Health, Census ACS, state DEQ data, academic research',
   },
   {
-    title: 'Urban Green Infrastructure',
-    subtitle: 'Climate & Sustainability',
+    title: $localize`Urban Green Infrastructure`,
+    subtitle: $localize`Climate & Sustainability`,
     description:
-      "Green roofs, rain gardens, permeable pavement, urban forests, and stormwater management across U.S. cities — what works, what doesn't, and why.",
+      $localize`Green roofs, rain gardens, permeable pavement, urban forests, and stormwater management across U.S. cities — what works, what doesn't, and why.`,
     status: 'coming-soon',
     category: 'Climate & Sustainability',
     priority: 'med',
@@ -234,10 +234,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== CULTURE & ENTERTAINMENT =====
   {
-    title: '2026 FIFA World Cup',
-    subtitle: 'Culture & Entertainment',
+    title: $localize`2026 FIFA World Cup`,
+    subtitle: $localize`Culture & Entertainment`,
     description:
-      'Every team, player, match, group, venue, and storyline for the 2026 World Cup in the US, Canada, and Mexico — the biggest sporting event of the year.',
+      $localize`Every team, player, match, group, venue, and storyline for the 2026 World Cup in the US, Canada, and Mexico — the biggest sporting event of the year.`,
     status: 'coming-soon',
     category: 'Culture & Entertainment',
     priority: 'high',
@@ -246,10 +246,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'FIFA.com, Wikipedia, ESPN, BBC Sport, official team federations',
   },
   {
-    title: 'The Streaming Wars 2026',
-    subtitle: 'Culture & Entertainment',
+    title: $localize`The Streaming Wars 2026`,
+    subtitle: $localize`Culture & Entertainment`,
     description:
-      'Every major streaming platform — content libraries, subscriber counts, pricing, original productions, and the business models behind Netflix, Disney+, Max, Apple TV+, and newcomers.',
+      $localize`Every major streaming platform — content libraries, subscriber counts, pricing, original productions, and the business models behind Netflix, Disney+, Max, Apple TV+, and newcomers.`,
     status: 'coming-soon',
     category: 'Culture & Entertainment',
     priority: 'med',
@@ -258,10 +258,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'SEC filings, press releases, Nielsen data (public), trade press (Variety, Deadline, Hollywood Reporter)',
   },
   {
-    title: 'The Marvel & DC Cinematic Universe',
-    subtitle: 'Culture & Entertainment',
+    title: $localize`The Marvel & DC Cinematic Universe`,
+    subtitle: $localize`Culture & Entertainment`,
     description:
-      'Complete living timeline of every MCU and DCU film, show, character, and interconnection — the most complex fictional narrative ever created, mapped as a LivingWiki.',
+      $localize`Complete living timeline of every MCU and DCU film, show, character, and interconnection — the most complex fictional narrative ever created, mapped as a LivingWiki.`,
     status: 'coming-soon',
     category: 'Culture & Entertainment',
     priority: 'high',
@@ -270,10 +270,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Wikipedia, Marvel.com, DC.com, Box Office Mojo, Rotten Tomatoes, fan wikis (transformed)',
   },
   {
-    title: 'Taylor Swift: The Living Discography',
-    subtitle: 'Culture & Entertainment',
+    title: $localize`Taylor Swift: The Living Discography`,
+    subtitle: $localize`Culture & Entertainment`,
     description:
-      'Every album, song, tour, cultural moment, and business decision — compiled from public sources into the definitive Taylor Swift knowledge base.',
+      $localize`Every album, song, tour, cultural moment, and business decision — compiled from public sources into the definitive Taylor Swift knowledge base.`,
     status: 'coming-soon',
     category: 'Culture & Entertainment',
     priority: 'med',
@@ -282,10 +282,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Wikipedia, Billboard, Spotify public data, concert databases, press interviews, SEC filings (Eras Tour economics)',
   },
   {
-    title: 'The Podcast Universe',
-    subtitle: 'Culture & Entertainment',
+    title: $localize`The Podcast Universe`,
+    subtitle: $localize`Culture & Entertainment`,
     description:
-      'Top 500 podcasts mapped by genre, audience, ad rates, and influence — with the business model of podcasting analyzed through public data.',
+      $localize`Top 500 podcasts mapped by genre, audience, ad rates, and influence — with the business model of podcasting analyzed through public data.`,
     status: 'coming-soon',
     category: 'Culture & Entertainment',
     priority: 'low',
@@ -294,10 +294,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Apple Podcasts charts, Spotify data, Podtrac, Edison Research, IAB data',
   },
   {
-    title: 'Video Game Industry Atlas',
-    subtitle: 'Culture & Entertainment',
+    title: $localize`Video Game Industry Atlas`,
+    subtitle: $localize`Culture & Entertainment`,
     description:
-      'Every major game studio, franchise, release, and business metric — from indie to AAA, console to mobile, mapped as a living knowledge base.',
+      $localize`Every major game studio, franchise, release, and business metric — from indie to AAA, console to mobile, mapped as a living knowledge base.`,
     status: 'coming-soon',
     category: 'Culture & Entertainment',
     priority: 'med',
@@ -308,10 +308,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== SCIENCE & HEALTH =====
   {
-    title: 'The Space Exploration Wiki',
-    subtitle: 'Science & Health',
+    title: $localize`The Space Exploration Wiki`,
+    subtitle: $localize`Science & Health`,
     description:
-      'Every active space mission, launch manifest, satellite constellation, and planetary science program — from NASA to SpaceX to ISRO to ESA.',
+      $localize`Every active space mission, launch manifest, satellite constellation, and planetary science program — from NASA to SpaceX to ISRO to ESA.`,
     status: 'coming-soon',
     category: 'Science & Health',
     priority: 'med',
@@ -320,10 +320,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'NASA, ESA, ISRO, SpaceX manifests, launch databases, arXiv astrophysics',
   },
   {
-    title: 'The Human Body: A Living Medical Reference',
-    subtitle: 'Science & Health',
+    title: $localize`The Human Body: A Living Medical Reference`,
+    subtitle: $localize`Science & Health`,
     description:
-      'Major body systems, common conditions, treatments, and prevention — compiled from NIH, WHO, and peer-reviewed medical literature for general audiences.',
+      $localize`Major body systems, common conditions, treatments, and prevention — compiled from NIH, WHO, and peer-reviewed medical literature for general audiences.`,
     status: 'coming-soon',
     category: 'Science & Health',
     priority: 'med',
@@ -332,10 +332,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'NIH, WHO, PubMed (abstracts), CDC, Mayo Clinic (public), WebMD (public)',
   },
   {
-    title: 'The Nutrition & Diet Science Wiki',
-    subtitle: 'Science & Health',
+    title: $localize`The Nutrition & Diet Science Wiki`,
+    subtitle: $localize`Science & Health`,
     description:
-      'Evidence-based nutrition — what the research actually says about diets, supplements, macronutrients, and food science, stripped of marketing hype.',
+      $localize`Evidence-based nutrition — what the research actually says about diets, supplements, macronutrients, and food science, stripped of marketing hype.`,
     status: 'coming-soon',
     category: 'Science & Health',
     priority: 'med',
@@ -344,10 +344,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'USDA FoodData Central, NIH ODS, PubMed nutrition research, WHO dietary guidelines',
   },
   {
-    title: 'The Mental Health Knowledge Base',
-    subtitle: 'Science & Health',
+    title: $localize`The Mental Health Knowledge Base`,
+    subtitle: $localize`Science & Health`,
     description:
-      'Conditions, therapies, medications, crisis resources, and the science of mental health — compiled from clinical literature for accessible understanding.',
+      $localize`Conditions, therapies, medications, crisis resources, and the science of mental health — compiled from clinical literature for accessible understanding.`,
     status: 'coming-soon',
     category: 'Science & Health',
     priority: 'med',
@@ -356,10 +356,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'NIMH, APA, WHO, PubMed psychiatry, SAMHSA, crisis resource databases',
   },
   {
-    title: 'Pandemic Preparedness & Response',
-    subtitle: 'Science & Health',
+    title: $localize`Pandemic Preparedness & Response`,
+    subtitle: $localize`Science & Health`,
     description:
-      "Lessons from COVID-19, bird flu surveillance, mpox tracking, and the global health security architecture — what we learned and what we haven't fixed.",
+      $localize`Lessons from COVID-19, bird flu surveillance, mpox tracking, and the global health security architecture — what we learned and what we haven't fixed.`,
     status: 'coming-soon',
     category: 'Science & Health',
     priority: 'low',
@@ -370,10 +370,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== BUSINESS & FINANCE =====
   {
-    title: 'The Fortune 500 Living Directory',
-    subtitle: 'Business & Finance',
+    title: $localize`The Fortune 500 Living Directory`,
+    subtitle: $localize`Business & Finance`,
     description:
-      'Every Fortune 500 company — revenue, leadership, strategy, ESG commitments, recent news, and competitive positioning, compiled from public filings.',
+      $localize`Every Fortune 500 company — revenue, leadership, strategy, ESG commitments, recent news, and competitive positioning, compiled from public filings.`,
     status: 'coming-soon',
     category: 'Business & Finance',
     priority: 'high',
@@ -382,10 +382,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'SEC EDGAR, Fortune, annual reports, proxy statements, press releases',
   },
   {
-    title: 'Venture Capital & Startup Funding',
-    subtitle: 'Business & Finance',
+    title: $localize`Venture Capital & Startup Funding`,
+    subtitle: $localize`Business & Finance`,
     description:
-      'VC firms, fund sizes, portfolio companies, investment theses, and the funding landscape — a living Crunchbase alternative compiled from public data.',
+      $localize`VC firms, fund sizes, portfolio companies, investment theses, and the funding landscape — a living Crunchbase alternative compiled from public data.`,
     status: 'coming-soon',
     category: 'Business & Finance',
     priority: 'med',
@@ -394,10 +394,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Crunchbase (public data), SEC Form D filings, press releases, PitchBook (public summaries)',
   },
   {
-    title: 'Cryptocurrency & DeFi Atlas',
-    subtitle: 'Business & Finance',
+    title: $localize`Cryptocurrency & DeFi Atlas`,
+    subtitle: $localize`Business & Finance`,
     description:
-      'Major protocols, tokens, exchanges, regulatory actions, and the evolving crypto landscape — objective, data-driven, continuously updated.',
+      $localize`Major protocols, tokens, exchanges, regulatory actions, and the evolving crypto landscape — objective, data-driven, continuously updated.`,
     status: 'coming-soon',
     category: 'Business & Finance',
     priority: 'med',
@@ -406,10 +406,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'CoinGecko, CoinMarketCap, DeFi Llama, SEC enforcement actions, on-chain data (public)',
   },
   {
-    title: 'The Real Estate Market Wiki',
-    subtitle: 'Business & Finance',
+    title: $localize`The Real Estate Market Wiki`,
+    subtitle: $localize`Business & Finance`,
     description:
-      'Housing markets across major U.S. metros — prices, inventory, mortgage rates, construction activity, and affordability metrics from public data.',
+      $localize`Housing markets across major U.S. metros — prices, inventory, mortgage rates, construction activity, and affordability metrics from public data.`,
     status: 'coming-soon',
     category: 'Business & Finance',
     priority: 'med',
@@ -418,10 +418,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Census Bureau, FHFA, Freddie Mac, Zillow Research (public), NAR (public data), Fed FRED',
   },
   {
-    title: 'The Tariff & Trade War Tracker',
-    subtitle: 'Business & Finance',
+    title: $localize`The Tariff & Trade War Tracker`,
+    subtitle: $localize`Business & Finance`,
     description:
-      "LivingWiki of every tariff, trade restriction, and retaliatory measure in the current global trade environment — what's taxed, who's affected, and what it costs.",
+      $localize`LivingWiki of every tariff, trade restriction, and retaliatory measure in the current global trade environment — what's taxed, who's affected, and what it costs.`,
     status: 'coming-soon',
     category: 'Business & Finance',
     priority: 'high',
@@ -432,10 +432,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== POLITICS & SOCIETY =====
   {
-    title: 'The 2026 U.S. Midterm Elections',
-    subtitle: 'Politics & Society',
+    title: $localize`The 2026 U.S. Midterm Elections`,
+    subtitle: $localize`Politics & Society`,
     description:
-      'Every Senate, House, and Governor race — candidates, polling, fundraising, issues, and district-level data compiled from public election sources.',
+      $localize`Every Senate, House, and Governor race — candidates, polling, fundraising, issues, and district-level data compiled from public election sources.`,
     status: 'coming-soon',
     category: 'Politics & Society',
     priority: 'high',
@@ -444,10 +444,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'FEC, Cook Political Report (public ratings), 538 (public), state election boards, OpenSecrets',
   },
   {
-    title: 'Pope Leo XIV & the Modern Catholic Church',
-    subtitle: 'Politics & Society',
+    title: $localize`Pope Leo XIV & the Modern Catholic Church`,
+    subtitle: $localize`Politics & Society`,
     description:
-      'The new Pope, his papacy, Vatican reforms, and the global Catholic Church — compiled from Vatican sources, news coverage, and church records.',
+      $localize`The new Pope, his papacy, Vatican reforms, and the global Catholic Church — compiled from Vatican sources, news coverage, and church records.`,
     status: 'coming-soon',
     category: 'Politics & Society',
     priority: 'med',
@@ -456,10 +456,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Vatican News, Catholic News Agency, AP/Reuters coverage, historical church records',
   },
   {
-    title: 'The Immigration & Border Policy Wiki',
-    subtitle: 'Politics & Society',
+    title: $localize`The Immigration & Border Policy Wiki`,
+    subtitle: $localize`Politics & Society`,
     description:
-      'Current U.S. immigration policy, border data, visa categories, asylum process, and the policy debate — facts and data, not opinion.',
+      $localize`Current U.S. immigration policy, border data, visa categories, asylum process, and the policy debate — facts and data, not opinion.`,
     status: 'coming-soon',
     category: 'Politics & Society',
     priority: 'med',
@@ -468,10 +468,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'CBP, USCIS, DHS, Census Bureau, CRS reports, court filings (PACER)',
   },
   {
-    title: 'Gun Violence Data & Policy',
-    subtitle: 'Politics & Society',
+    title: $localize`Gun Violence Data & Policy`,
+    subtitle: $localize`Politics & Society`,
     description:
-      'Mass shootings, firearms statistics, state-by-state gun laws, and the policy landscape — compiled from public safety and legislative data.',
+      $localize`Mass shootings, firearms statistics, state-by-state gun laws, and the policy landscape — compiled from public safety and legislative data.`,
     status: 'coming-soon',
     category: 'Politics & Society',
     priority: 'low',
@@ -479,10 +479,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     sources: 'FBI UCR, CDC WONDER, Gun Violence Archive, state legislatures, ATF data',
   },
   {
-    title: 'The Ukraine-Russia Conflict',
-    subtitle: 'Politics & Society',
+    title: $localize`The Ukraine-Russia Conflict`,
+    subtitle: $localize`Politics & Society`,
     description:
-      'Timeline, territorial changes, sanctions, humanitarian impact, and diplomatic efforts — compiled from international sources and open-source intelligence.',
+      $localize`Timeline, territorial changes, sanctions, humanitarian impact, and diplomatic efforts — compiled from international sources and open-source intelligence.`,
     status: 'coming-soon',
     category: 'Politics & Society',
     priority: 'med',
@@ -493,11 +493,11 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== CITIES & REGIONS =====
   {
-    title: 'LivingWiki: Boston',
+    title: $localize`LivingWiki: Boston`,
     slug: 'boston',
-    subtitle: 'Cities & Regions',
+    subtitle: $localize`Cities & Regions`,
     description:
-      "Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.",
+      $localize`Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.`,
     status: 'coming-soon',
     category: 'Cities & Regions',
     priority: 'high',
@@ -506,11 +506,11 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Boston Open Data, MBTA, Mass.gov, EPA, Census, Harvard/MIT public research',
   },
   {
-    title: 'LivingWiki: Portland',
+    title: $localize`LivingWiki: Portland`,
     slug: 'portland',
-    subtitle: 'Cities & Regions',
+    subtitle: $localize`Cities & Regions`,
     description:
-      "Portland's sustainability ecosystem — urban planning, transit, climate action, food systems, and the green economy of the Pacific Northwest.",
+      $localize`Portland's sustainability ecosystem — urban planning, transit, climate action, food systems, and the green economy of the Pacific Northwest.`,
     status: 'coming-soon',
     category: 'Cities & Regions',
     priority: 'med',
@@ -519,11 +519,11 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Portland Open Data, TriMet, Oregon DEQ, Metro regional government',
   },
   {
-    title: 'LivingWiki: Austin',
+    title: $localize`LivingWiki: Austin`,
     slug: 'austin',
-    subtitle: 'Cities & Regions',
+    subtitle: $localize`Cities & Regions`,
     description:
-      "Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.",
+      $localize`Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.`,
     status: 'coming-soon',
     category: 'Cities & Regions',
     priority: 'med',
@@ -531,11 +531,11 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     sources: 'Austin Open Data, ERCOT, Texas PUC, Census, Austin Energy',
   },
   {
-    title: 'LivingWiki: Gainesville',
+    title: $localize`LivingWiki: Gainesville`,
     slug: 'gainesville',
-    subtitle: 'Cities & Regions',
+    subtitle: $localize`Cities & Regions`,
     description:
-      "Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.",
+      $localize`Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.`,
     status: 'coming-soon',
     category: 'Cities & Regions',
     priority: 'med',
@@ -544,11 +544,11 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'City of Gainesville Open Data, Alachua County, RTS, University of Florida, EPA, Census',
   },
   {
-    title: 'LivingWiki: San Francisco',
+    title: $localize`LivingWiki: San Francisco`,
     slug: 'san-francisco',
-    subtitle: 'Cities & Regions',
+    subtitle: $localize`Cities & Regions`,
     description:
-      "SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.",
+      $localize`SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.`,
     status: 'coming-soon',
     category: 'Cities & Regions',
     priority: 'med',
@@ -556,11 +556,11 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
     sources: 'DataSF, SFMTA, SFPUC, Bay Area Census, California state data',
   },
   {
-    title: 'LivingWiki: New York City',
+    title: $localize`LivingWiki: New York City`,
     slug: 'new-york-city',
-    subtitle: 'Cities & Regions',
+    subtitle: $localize`Cities & Regions`,
     description:
-      "NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.",
+      $localize`NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.`,
     status: 'coming-soon',
     category: 'Cities & Regions',
     priority: 'med',
@@ -570,10 +570,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== EDUCATION & REFERENCE =====
   {
-    title: "The World's Universities Ranked",
-    subtitle: 'Education & Reference',
+    title: $localize`The World's Universities Ranked`,
+    subtitle: $localize`Education & Reference`,
     description:
-      'Global universities — rankings, research output, notable alumni, endowments, and program strengths compiled from public academic data.',
+      $localize`Global universities — rankings, research output, notable alumni, endowments, and program strengths compiled from public academic data.`,
     status: 'coming-soon',
     category: 'Education & Reference',
     priority: 'med',
@@ -582,10 +582,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'IPEDS, QS (public data), THE (public data), NCES, university websites, NSF HERD',
   },
   {
-    title: 'The History of the Internet',
-    subtitle: 'Education & Reference',
+    title: $localize`The History of the Internet`,
+    subtitle: $localize`Education & Reference`,
     description:
-      'From ARPANET to AI agents — the complete living history of the internet, its protocols, its companies, and its cultural impact.',
+      $localize`From ARPANET to AI agents — the complete living history of the internet, its protocols, its companies, and its cultural impact.`,
     status: 'coming-soon',
     category: 'Education & Reference',
     priority: 'low',
@@ -594,10 +594,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Internet Archive, RFC documents, W3C, Wikipedia (as source), tech history archives',
   },
   {
-    title: 'The Open Source Software Atlas',
-    subtitle: 'Education & Reference',
+    title: $localize`The Open Source Software Atlas`,
+    subtitle: $localize`Education & Reference`,
     description:
-      'Major open-source projects, their maintainers, funding models, license types, and community health — the living map of open-source.',
+      $localize`Major open-source projects, their maintainers, funding models, license types, and community health — the living map of open-source.`,
     status: 'coming-soon',
     category: 'Education & Reference',
     priority: 'med',
@@ -606,10 +606,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'GitHub, OpenSSF, Linux Foundation, Apache Foundation, license databases',
   },
   {
-    title: 'Nobel Prize Winners & Discoveries',
-    subtitle: 'Education & Reference',
+    title: $localize`Nobel Prize Winners & Discoveries`,
+    subtitle: $localize`Education & Reference`,
     description:
-      'Every Nobel Prize in every category — laureates, discoveries, historical context, and the impact of their work, compiled chronologically.',
+      $localize`Every Nobel Prize in every category — laureates, discoveries, historical context, and the impact of their work, compiled chronologically.`,
     status: 'coming-soon',
     category: 'Education & Reference',
     priority: 'low',
@@ -619,10 +619,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
 
   // ===== TRENDING FIGURES & WILDCARDS =====
   {
-    title: 'Elon Musk: The Complete Timeline',
-    subtitle: 'Trending Figures',
+    title: $localize`Elon Musk: The Complete Timeline`,
+    subtitle: $localize`Trending Figures`,
     description:
-      'Every company, product, controversy, and statement — from PayPal to Tesla to SpaceX to X to xAI to DOGE, compiled from public records and press.',
+      $localize`Every company, product, controversy, and statement — from PayPal to Tesla to SpaceX to X to xAI to DOGE, compiled from public records and press.`,
     status: 'coming-soon',
     category: 'Trending Figures',
     priority: 'high',
@@ -631,10 +631,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'SEC filings, court records (PACER), press coverage, X.com posts, company announcements',
   },
   {
-    title: 'Donald Trump: Policies & Impact',
-    subtitle: 'Trending Figures',
+    title: $localize`Donald Trump: Policies & Impact`,
+    subtitle: $localize`Trending Figures`,
     description:
-      'Executive orders, policy changes, court challenges, and measurable impacts of the current administration — compiled from Federal Register and government data.',
+      $localize`Executive orders, policy changes, court challenges, and measurable impacts of the current administration — compiled from Federal Register and government data.`,
     status: 'coming-soon',
     category: 'Trending Figures',
     priority: 'high',
@@ -643,10 +643,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Federal Register, WhiteHouse.gov, CBO, CRS, court filings, executive orders',
   },
   {
-    title: 'The MrBeast Business Empire',
-    subtitle: 'Trending Figures',
+    title: $localize`The MrBeast Business Empire`,
+    subtitle: $localize`Trending Figures`,
     description:
-      "YouTube's biggest creator — subscriber growth, business ventures (Feastables, Beast Burger), revenue estimates, and the creator economy he represents.",
+      $localize`YouTube's biggest creator — subscriber growth, business ventures (Feastables, Beast Burger), revenue estimates, and the creator economy he represents.`,
     status: 'coming-soon',
     category: 'Trending Figures',
     priority: 'med',
@@ -655,10 +655,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'YouTube public data, Social Blade, SEC filings (if applicable), press coverage',
   },
   {
-    title: 'The Ozempic & GLP-1 Revolution',
-    subtitle: 'Science & Health',
+    title: $localize`The Ozempic & GLP-1 Revolution`,
+    subtitle: $localize`Science & Health`,
     description:
-      'GLP-1 receptor agonists, clinical trial data, off-label use, side effects, market impact, and the pharmaceutical companies behind the weight-loss drug revolution.',
+      $localize`GLP-1 receptor agonists, clinical trial data, off-label use, side effects, market impact, and the pharmaceutical companies behind the weight-loss drug revolution.`,
     status: 'coming-soon',
     category: 'Science & Health',
     priority: 'high',
@@ -667,10 +667,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'FDA, ClinicalTrials.gov, PubMed, SEC filings (Novo Nordisk, Eli Lilly), WHO',
   },
   {
-    title: 'The Student Loan & Higher Ed Crisis',
-    subtitle: 'Politics & Society',
+    title: $localize`The Student Loan & Higher Ed Crisis`,
+    subtitle: $localize`Politics & Society`,
     description:
-      'Federal student loan data, repayment plans, forgiveness programs, default rates, and the economics of higher education in America.',
+      $localize`Federal student loan data, repayment plans, forgiveness programs, default rates, and the economics of higher education in America.`,
     status: 'coming-soon',
     category: 'Politics & Society',
     priority: 'med',
@@ -679,10 +679,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'Federal Student Aid, NCES, CBO, Department of Education, Census',
   },
   {
-    title: 'The Electric Vehicle Market',
-    subtitle: 'Business & Finance',
+    title: $localize`The Electric Vehicle Market`,
+    subtitle: $localize`Business & Finance`,
     description:
-      'Every EV model, manufacturer, charging network, battery technology, and policy incentive — the complete living map of the EV transition.',
+      $localize`Every EV model, manufacturer, charging network, battery technology, and policy incentive — the complete living map of the EV transition.`,
     status: 'coming-soon',
     category: 'Business & Finance',
     priority: 'med',
@@ -691,10 +691,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'DOE AFDC, EPA fuel economy, IEA Global EV Outlook, SEC filings, state incentive databases',
   },
   {
-    title: 'The Artificial Superintelligence Debate',
-    subtitle: 'AI & Tech',
+    title: $localize`The Artificial Superintelligence Debate`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'AGI timelines, capability research, existential risk arguments, policy proposals, and the philosophical questions around superintelligent AI.',
+      $localize`AGI timelines, capability research, existential risk arguments, policy proposals, and the philosophical questions around superintelligent AI.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'med',
@@ -703,10 +703,10 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
       'arXiv, AI safety institute publications, Congressional testimony, think tank reports, FLI',
   },
   {
-    title: 'The Data Privacy & Surveillance Atlas',
-    subtitle: 'AI & Tech',
+    title: $localize`The Data Privacy & Surveillance Atlas`,
+    subtitle: $localize`AI & Tech`,
     description:
-      'GDPR, CCPA, facial recognition bans, data broker industry, government surveillance programs, and the evolving landscape of digital privacy.',
+      $localize`GDPR, CCPA, facial recognition bans, data broker industry, government surveillance programs, and the evolving landscape of digital privacy.`,
     status: 'coming-soon',
     category: 'AI & Tech',
     priority: 'med',
@@ -745,7 +745,7 @@ function inferPresentation(atlas: AtlasItem): PublicWikiPresentation {
   if (atlas.city_config?.enabled) {
     return {
       title: atlas.name?.trim() || undefined,
-      subtitle: 'Cities & Regions',
+      subtitle: $localize`Cities & Regions`,
       category: 'Cities & Regions',
       priority: 'med',
       badges: ['geo'],
@@ -754,7 +754,7 @@ function inferPresentation(atlas: AtlasItem): PublicWikiPresentation {
     };
   }
   return {
-    subtitle: 'Public Atlas',
+    subtitle: $localize`Public Atlas`,
     category: 'Public Atlases',
   };
 }

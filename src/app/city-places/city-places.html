@@ -7,13 +7,13 @@
   <header class="theme-nav sticky top-0 z-30 border-b border-[var(--line)] px-5 py-2.5 backdrop-blur-xl md:px-8">
     <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
       <a routerLink="/" class="flex items-center no-underline">
-        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-8 w-40 object-contain" />
+        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-8 w-40 object-contain"  i18n-alt/>
       </a>
       <div class="flex items-center gap-2">
         <a
           [routerLink]="chatLink()"
           class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--text)] no-underline transition hover:border-[var(--line-strong)] hover:bg-[var(--soft-fill)]"
-        >
+         i18n>
           <span class="material-symbols-outlined text-[1.05rem] text-[var(--accent)]">chat</span>
           Back to chat
         </a>
@@ -31,16 +31,16 @@
       </div>
     } @else if (atlasError()) {
       <div class="rounded-3xl border border-red-500/15 bg-red-500/[0.06] p-10 shadow-[var(--shadow-soft)]">
-        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-red-400">Places unavailable</p>
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-red-400" i18n>Places unavailable</p>
         <h1 class="mt-3 text-2xl font-semibold tracking-[-0.02em] text-[var(--text)]">{{ atlasError() }}</h1>
-        <a [routerLink]="chatLink()" class="mt-6 inline-flex items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--text)] no-underline transition hover:bg-[var(--soft-fill)]">
+        <a [routerLink]="chatLink()" class="mt-6 inline-flex items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--text)] no-underline transition hover:bg-[var(--soft-fill)]" i18n>
           <span class="material-symbols-outlined text-[1.05rem]">arrow_back</span>
           Back to chat
         </a>
       </div>
     } @else {
       <div class="mb-3">
-        <div class="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
+        <div class="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[var(--muted)]" i18n>
           <span class="inline-block h-px w-8 bg-[var(--line-strong)]"></span>
           City places
         </div>
@@ -58,23 +58,23 @@
               type="button"
               class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--text)] shadow-[var(--shadow-soft)] transition hover:border-[var(--accent)]/35 hover:text-[var(--accent)]"
               (click)="openShareModal()"
-            >
+             i18n>
               <span class="material-symbols-outlined text-[1.05rem] text-[var(--accent)]">ios_share</span>
               Share board
             </button>
             <div class="hidden h-10 w-px bg-[var(--line)] sm:block"></div>
             <div class="text-right">
-              <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Local reviews</p>
+              <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Local reviews</p>
               <p class="mt-1.5 text-2xl font-semibold tracking-[-0.02em] text-[var(--text)]">{{ reviewedPlaces().length }}</p>
             </div>
             <div class="h-10 w-px bg-[var(--line)]"></div>
             <div class="text-right">
-              <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Access</p>
-              <p class="mt-1.5 text-2xl font-semibold tracking-[-0.02em] text-[var(--text)]">Public</p>
+              <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Access</p>
+              <p class="mt-1.5 text-2xl font-semibold tracking-[-0.02em] text-[var(--text)]" i18n>Public</p>
             </div>
           </div>
         </div>
-        <p class="mt-2 max-w-xl text-[0.9rem] font-normal leading-6 text-[var(--muted)]">
+        <p class="mt-2 max-w-xl text-[0.9rem] font-normal leading-6 text-[var(--muted)]" i18n>
           Search a restaurant, cafe, attraction, park, or local spot. Google finds the address, then your review becomes part of this city wiki.
         </p>
       </div>
@@ -88,16 +88,16 @@
             <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#254c89] via-[#f3ba4f] to-[#d9413c]"></div>
             <div class="flex items-start justify-between gap-4 pt-1">
               <div class="min-w-0">
-                <p class="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">Write a local review</p>
-                <h2 class="mt-1.5 text-2xl font-semibold tracking-[-0.035em] text-[var(--text)] md:text-[1.7rem]">Start with the place name</h2>
-                <p class="mt-1.5 max-w-xl text-sm font-normal leading-5 text-[var(--muted)]">Find the address, choose your stars, and leave the note that should help the next person.</p>
+                <p class="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]" i18n>Write a local review</p>
+                <h2 class="mt-1.5 text-2xl font-semibold tracking-[-0.035em] text-[var(--text)] md:text-[1.7rem]" i18n>Start with the place name</h2>
+                <p class="mt-1.5 max-w-xl text-sm font-normal leading-5 text-[var(--muted)]" i18n>Find the address, choose your stars, and leave the note that should help the next person.</p>
               </div>
-              <span class="inline-grid h-12 w-12 shrink-0 rotate-[7deg] place-items-center rounded-full border border-[var(--line-strong)] text-[0.72rem] font-black uppercase tracking-[0.12em] text-[var(--muted)]">
+              <span class="inline-grid h-12 w-12 shrink-0 rotate-[7deg] place-items-center rounded-full border border-[var(--line-strong)] text-[0.72rem] font-black uppercase tracking-[0.12em] text-[var(--muted)]" i18n>
                 LW
               </span>
             </div>
 
-            <label class="mt-4 block text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" for="city-place-search-page">Find a place</label>
+            <label class="mt-4 block text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" for="city-place-search-page" i18n>Find a place</label>
             <div class="mt-2 flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2.5 transition focus-within:border-[var(--accent)]/40 focus-within:bg-[var(--soft-fill-strong)]">
               <span class="material-symbols-outlined text-[1.2rem] text-[var(--muted)]">search</span>
               <input
@@ -108,7 +108,7 @@
                 class="min-w-0 flex-1 bg-transparent text-[0.95rem] font-medium text-[var(--text)] outline-none placeholder:text-[var(--muted)]"
                 placeholder="Try Suraya, Reading Terminal, a park..."
                 autocomplete="off"
-              />
+               i18n-placeholder/>
               @if (placeSearchLoading()) {
                 <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent"></span>
               }
@@ -139,7 +139,7 @@
                 }
               </div>
             } @else if (placeSearchQuery().trim().length >= 2 && !placeSearchLoading() && !placeReviewError() && !selectedReviewPlace()) {
-              <p class="mt-4 px-1 text-sm font-normal leading-6 text-[var(--muted)]">
+              <p class="mt-4 px-1 text-sm font-normal leading-6 text-[var(--muted)]" i18n>
                 No match yet. Try the exact place name plus a neighborhood.
               </p>
             }
@@ -150,7 +150,7 @@
                   {{ placeInitial(selectedPlace.name) }}
                   </span>
                   <div class="min-w-0 flex-1">
-                    <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Selected place</p>
+                    <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]" i18n>Selected place</p>
                     <h3 class="mt-1.5 truncate text-xl font-semibold tracking-[-0.02em] text-[var(--text)]">{{ selectedPlace.name }}</h3>
                     <p class="mt-1 line-clamp-2 text-sm font-normal leading-6 text-[var(--muted)]">{{ selectedPlace.address || selectedPlace.category }}</p>
                   </div>
@@ -158,7 +158,7 @@
                     type="button"
                     class="inline-flex shrink-0 items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--accent)] transition hover:border-[var(--accent)]/35"
                     (click)="changeSelectedPlace()"
-                  >
+                   i18n>
                     Change
                   </button>
                 </div>
@@ -168,13 +168,13 @@
                 <span class="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)]">
                   <span class="material-symbols-outlined">touch_app</span>
                 </span>
-                <p class="mt-3 text-sm font-semibold text-[var(--text)]">Choose a search result to unlock the review form.</p>
-                <p class="mt-1 text-xs font-normal leading-5 text-[var(--muted)]">The review area stays here so the main action is always visible.</p>
+                <p class="mt-3 text-sm font-semibold text-[var(--text)]" i18n>Choose a search result to unlock the review form.</p>
+                <p class="mt-1 text-xs font-normal leading-5 text-[var(--muted)]" i18n>The review area stays here so the main action is always visible.</p>
               </div>
             }
 
             <div class="mt-4 flex items-center justify-between rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-2.5">
-                <span class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">Your rating</span>
+                <span class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]" i18n>Your rating</span>
                 <div class="flex items-center gap-0.5">
                   @for (star of starValues; track star) {
                     <button
@@ -199,7 +199,7 @@
                 (input)="placeReviewText.set($any($event.target).value)"
                 class="mt-3 min-h-28 w-full resize-none rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-[0.95rem] font-normal leading-6 text-[var(--text)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)]/40 focus:bg-[var(--soft-fill-strong)]"
                 placeholder="What should someone know before they go?"
-              ></textarea>
+               i18n-placeholder></textarea>
 
             <button
               type="submit"
@@ -228,11 +228,11 @@
 	          <div class="rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] p-4 shadow-[var(--shadow-soft)]">
 		          <div class="flex items-start justify-between gap-3">
 	              <div>
-	                <p class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Community reviews</p>
-		              <h2 class="mt-1 text-xl font-semibold tracking-[-0.035em] text-[var(--text)]">Reviewed places</h2>
+	                <p class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]" i18n>Community reviews</p>
+		              <h2 class="mt-1 text-xl font-semibold tracking-[-0.035em] text-[var(--text)]" i18n>Reviewed places</h2>
 	              </div>
             @if (reviewedPlacesLoading()) {
-              <span class="inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
+              <span class="inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>
                 <span class="inline-block h-2.5 w-2.5 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
                 Loading
               </span>
@@ -250,7 +250,7 @@
                 class="min-w-0 flex-1 bg-transparent text-sm font-medium text-[var(--text)] outline-none placeholder:text-[var(--muted)]"
                 placeholder="Search reviewed places..."
                 autocomplete="off"
-              />
+               i18n-placeholder/>
             </div>
           }
 
@@ -259,8 +259,8 @@
               <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--line)] bg-[var(--surface)] text-[var(--accent)]">
                 <span class="material-symbols-outlined">add_location_alt</span>
               </span>
-              <p class="mt-5 text-base font-semibold tracking-[-0.01em] text-[var(--text)]">No reviewed places yet</p>
-              <p class="mt-1.5 text-sm font-normal leading-6 text-[var(--muted)]">Search a place and leave the first local note.</p>
+              <p class="mt-5 text-base font-semibold tracking-[-0.01em] text-[var(--text)]" i18n>No reviewed places yet</p>
+              <p class="mt-1.5 text-sm font-normal leading-6 text-[var(--muted)]" i18n>Search a place and leave the first local note.</p>
             </div>
           } @else {
 		            <div class="mt-4 max-h-[18rem] space-y-2 overflow-y-auto pr-1">
@@ -285,7 +285,7 @@
                     </span>
                   </div>
                   @if (place.latestReviewText) {
-	                    <p class="mt-3 border-l-2 border-[var(--accent)]/40 pl-3 text-sm font-normal italic leading-5 text-[var(--text)]/85">
+	                    <p class="mt-3 border-l-2 border-[var(--accent)]/40 pl-3 text-sm font-normal italic leading-5 text-[var(--text)]/85" i18n>
 	                      &ldquo;{{ truncatePlaceText(place.latestReviewText, 92) }}&rdquo;
                     </p>
                   }
@@ -296,7 +296,7 @@
                           type="button"
                           class="inline-flex items-center gap-1 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[var(--accent)] transition hover:opacity-75"
                           (click)="$event.stopPropagation(); openPlaceDrawer(place)"
-                        >
+                         i18n>
                           View here
                           <span class="material-symbols-outlined text-[0.85rem]">reviews</span>
                         </button>
@@ -306,7 +306,7 @@
 	                        rel="noopener noreferrer"
 	                        class="inline-flex items-center gap-1 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[var(--accent)] no-underline transition hover:opacity-75"
                           (click)="$event.stopPropagation()"
-	                      >
+	                       i18n>
 	                        Open map
 	                        <span class="material-symbols-outlined text-[0.85rem]">arrow_outward</span>
 	                      </a>
@@ -315,7 +315,7 @@
 	                </article>
               } @empty {
                 <div class="rounded-3xl border border-dashed border-[var(--line-strong)] bg-transparent p-6 text-center">
-                  <p class="text-sm font-semibold text-[var(--text)]">No reviewed places match that search.</p>
+                  <p class="text-sm font-semibold text-[var(--text)]" i18n>No reviewed places match that search.</p>
                 </div>
               }
             </div>
@@ -327,7 +327,7 @@
               <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#254c89] via-[#f3ba4f] to-[#d9413c]"></div>
               <div class="flex items-start justify-between gap-4 pt-1">
                 <div class="min-w-0">
-                  <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Map context</p>
+                  <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]" i18n>Map context</p>
 	                  <h2 class="mt-1 truncate text-lg font-semibold tracking-[-0.02em] text-[var(--text)]">{{ mapPlace()?.name || cityName() }}</h2>
                   <p class="mt-1 line-clamp-1 text-xs font-normal leading-5 text-[var(--muted)]">{{ mapLocationLabel() }}</p>
                 </div>
@@ -349,7 +349,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--accent)] no-underline transition hover:opacity-75"
-                >
+                 i18n>
                   Open Google Maps
                   <span class="material-symbols-outlined text-[0.85rem]">arrow_outward</span>
                 </a>
@@ -369,7 +369,7 @@
                 class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition hover:text-[var(--text)]"
                 (click)="closePlaceDrawer()"
                 aria-label="Close place reviews"
-              >
+               i18n-aria-label>
                 <span class="material-symbols-outlined text-[1.1rem]">chevron_right</span>
               </button>
               <div class="flex items-center gap-2">
@@ -377,7 +377,7 @@
                   type="button"
                   class="inline-flex items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--text)] transition hover:border-[var(--accent)]/35 hover:text-[var(--accent)]"
                   (click)="openShareModal()"
-                >
+                 i18n>
                   Share
                   <span class="material-symbols-outlined text-[0.85rem]">ios_share</span>
                 </button>
@@ -386,7 +386,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--accent)] no-underline transition hover:border-[var(--accent)]/35"
-                >
+                 i18n>
                   Open map
                   <span class="material-symbols-outlined text-[0.85rem]">arrow_outward</span>
                 </a>
@@ -401,34 +401,34 @@
                     {{ placeInitial(detailPlace.name) }}
                   </span>
                   <div class="min-w-0 flex-1">
-                    <p class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Place reviews</p>
+                    <p class="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]" i18n>Place reviews</p>
                     <h2 class="mt-1 text-2xl font-semibold leading-tight tracking-[-0.035em] text-[var(--text)]">{{ detailPlace.name }}</h2>
                     <p class="mt-2 text-sm font-normal leading-6 text-[var(--muted)]">{{ detailPlace.address || detailPlace.category }}</p>
                   </div>
                 </div>
                 <div class="mt-5 grid grid-cols-2 gap-3">
                   <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
-                    <p class="text-[0.64rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">Local rating</p>
+                    <p class="text-[0.64rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Local rating</p>
                     <p class="mt-1 flex items-center gap-1 text-xl font-semibold text-[var(--text)]">
                       <span class="material-symbols-outlined text-[1rem] text-[var(--accent)]">star</span>
                       {{ (detailPlace.ratingAvg || 0).toFixed(1) }}
                     </p>
                   </div>
                   <div class="rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3">
-                    <p class="text-[0.64rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">Reviews</p>
+                    <p class="text-[0.64rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Reviews</p>
                     <p class="mt-1 text-xl font-semibold text-[var(--text)]">{{ placeReviewCountLabel(detailPlace) }}</p>
                   </div>
                 </div>
                 @if (detailPlace.latestReviewText) {
                   <div class="mt-4 rounded-2xl border border-[var(--accent)]/20 bg-[var(--accent)]/[0.06] px-4 py-3">
                     <div class="mb-2 flex items-center justify-between gap-3">
-                      <span class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">Latest review</span>
+                      <span class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Latest review</span>
                       <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--accent)]/12 px-2.5 py-1 text-xs font-semibold text-[var(--accent)]">
                         <span class="material-symbols-outlined text-[0.9rem]">star</span>
                         {{ (detailPlace.latestReviewRating || detailPlace.ratingAvg || 0).toFixed(1) }}
                       </span>
                     </div>
-                    <p class="text-sm font-normal italic leading-6 text-[var(--text)]/90">
+                    <p class="text-sm font-normal italic leading-6 text-[var(--text)]/90" i18n>
                       &ldquo;{{ detailPlace.latestReviewText }}&rdquo;
                     </p>
                   </div>
@@ -437,9 +437,9 @@
 
               <div class="p-5">
                 <div class="mb-4 flex items-center justify-between">
-                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">All comments</h3>
+                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>All comments</h3>
                   @if (placeDetailReviewsLoading()) {
-                    <span class="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                    <span class="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]" i18n>
                       <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
                       Loading
                     </span>
@@ -449,7 +449,7 @@
                 @if (placeDetailError()) {
                   <p class="rounded-2xl border border-red-500/15 bg-red-500/[0.06] px-4 py-3 text-sm font-medium leading-6 text-red-400">{{ placeDetailError() }}</p>
                 } @else if (placeDetailReviews().length === 0 && !placeDetailReviewsLoading()) {
-                  <p class="rounded-2xl border border-dashed border-[var(--line-strong)] px-4 py-6 text-center text-sm font-medium leading-6 text-[var(--muted)]">
+                  <p class="rounded-2xl border border-dashed border-[var(--line-strong)] px-4 py-6 text-center text-sm font-medium leading-6 text-[var(--muted)]" i18n>
                     No comments loaded yet for this place.
                   </p>
                 } @else {
@@ -475,7 +475,7 @@
                 <div class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)]">
                   <div class="flex items-center justify-between gap-3 border-b border-[var(--line)] px-4 py-3">
                     <div class="min-w-0">
-                      <p class="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Map</p>
+                      <p class="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--accent)]" i18n>Map</p>
                       <p class="truncate text-sm font-semibold text-[var(--text)]">{{ detailPlace.name }}</p>
                     </div>
                     <a
@@ -483,7 +483,7 @@
                       target="_blank"
                       rel="noopener noreferrer"
                       class="inline-flex shrink-0 items-center gap-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--accent)] no-underline"
-                    >
+                     i18n>
                       Open
                       <span class="material-symbols-outlined text-[0.85rem]">arrow_outward</span>
                     </a>
@@ -527,7 +527,7 @@
                 class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--soft-fill)] text-[var(--muted)] transition hover:text-[var(--text)]"
                 (click)="closeShareModal()"
                 aria-label="Close share dialog"
-              >
+               i18n-aria-label>
                 <span class="material-symbols-outlined text-[1.1rem]">close</span>
               </button>
             </div>
@@ -549,7 +549,7 @@
               </div>
 
               <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-3 py-2">
-                <p class="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">Share link</p>
+                <p class="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>Share link</p>
                 <input
                   class="mt-1 w-full border-0 bg-transparent p-0 text-sm font-medium text-[var(--text)] outline-none"
                   type="text"
@@ -559,7 +559,7 @@
               </div>
 
               @if (shareCopied()) {
-                <p class="mt-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.08] px-4 py-2 text-sm font-semibold text-emerald-500">
+                <p class="mt-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.08] px-4 py-2 text-sm font-semibold text-emerald-500" i18n>
                   Link copied.
                 </p>
               }
@@ -569,7 +569,7 @@
                   type="button"
                   class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--text)] px-4 py-3 text-sm font-semibold text-[var(--surface)] transition hover:opacity-90"
                   (click)="nativeSharePlace()"
-                >
+                 i18n>
                   <span class="material-symbols-outlined text-[1rem]">ios_share</span>
                   Share invite
                 </button>
@@ -577,14 +577,14 @@
                   type="button"
                   class="inline-flex items-center justify-center gap-2 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)]/35"
                   (click)="copyShareInvite()"
-                >
+                 i18n>
                   <span class="material-symbols-outlined text-[1rem]">content_copy</span>
                   Copy link
                 </button>
               </div>
 
               <div class="mt-5">
-                <p class="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">Share directly</p>
+                <p class="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]" i18n>Share directly</p>
                 <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
                   <a
                     class="group flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-3 text-sm font-semibold text-[var(--text)] no-underline transition hover:-translate-y-0.5 hover:border-[var(--line-strong)]"
@@ -602,7 +602,7 @@
                     rel="noopener noreferrer"
                   >
                     <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#1877f2] text-lg font-black text-white">f</span>
-                    <span>Facebook</span>
+                    <span i18n>Facebook</span>
                   </a>
                   <a
                     class="group flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-3 text-sm font-semibold text-[var(--text)] no-underline transition hover:-translate-y-0.5 hover:border-[var(--line-strong)]"
@@ -610,8 +610,8 @@
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#0a66c2] text-xs font-black text-white">in</span>
-                    <span>LinkedIn</span>
+                    <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#0a66c2] text-xs font-black text-white" i18n>in</span>
+                    <span i18n>LinkedIn</span>
                   </a>
                   <a
                     class="group flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-3 text-sm font-semibold text-[var(--text)] no-underline transition hover:-translate-y-0.5 hover:border-[var(--line-strong)]"
@@ -620,7 +620,7 @@
                     rel="noopener noreferrer"
                   >
                     <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#ff4500] text-sm font-black text-white">r</span>
-                    <span>Reddit</span>
+                    <span i18n>Reddit</span>
                   </a>
                   <a
                     class="group flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-3 text-sm font-semibold text-[var(--text)] no-underline transition hover:-translate-y-0.5 hover:border-[var(--line-strong)]"
@@ -629,7 +629,7 @@
                     rel="noopener noreferrer"
                   >
                     <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#25d366] text-sm font-black text-black">w</span>
-                    <span>WhatsApp</span>
+                    <span i18n>WhatsApp</span>
                   </a>
                   <a
                     class="group flex items-center gap-3 rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-3 text-sm font-semibold text-[var(--text)] no-underline transition hover:-translate-y-0.5 hover:border-[var(--line-strong)]"
@@ -638,7 +638,7 @@
                     <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-[var(--accent-contrast)]">
                       <span class="material-symbols-outlined text-[1rem]">mail</span>
                     </span>
-                    <span>Email</span>
+                    <span i18n>Email</span>
                   </a>
                 </div>
               </div>

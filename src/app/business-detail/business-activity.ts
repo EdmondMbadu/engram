@@ -52,11 +52,11 @@ export class BusinessActivityComponent {
   readonly cityName = computed(() => this.business()?.city_name || this.titleizeSlug(this.routeParams().citySlug || 'city'));
   readonly businessInitial = computed(() => (this.businessName().trim()[0] || 'B').toUpperCase());
   readonly ownerCanView = computed(() => !!this.authService.uid() && this.business()?.owner_user_id === this.authService.uid());
-  readonly pageTitle = computed(() => this.activity() === 'voice' ? 'Voice Assistant' : 'Direct Chat History');
+  readonly pageTitle = computed(() => this.activity() === $localize`voice` ? $localize`Voice Assistant` : $localize`Direct Chat History`);
   readonly pageEyebrow = computed(() => this.activity() === 'voice' ? 'Business voice' : 'Business chat');
   readonly pageIcon = computed(() => this.activity() === 'voice' ? 'mic' : 'forum');
   readonly sidebarActive = computed<WorkspaceSidebarActive>(() => this.activity() === 'voice' ? 'business-voice' : 'business-chat');
-  readonly emptyTitle = computed(() => this.activity() === 'voice' ? 'Voice recordings will appear here.' : 'Visitor chat threads will appear here.');
+  readonly emptyTitle = computed(() => this.activity() === $localize`voice` ? $localize`Voice recordings will appear here.` : $localize`Visitor chat threads will appear here.`);
   readonly emptyBody = computed(() => this.activity() === 'voice'
     ? 'This placeholder is ready for recorded voice sessions, transcripts, timestamps, and playback controls once the voice provider saves business-specific audio records.'
     : 'This placeholder is ready for visitor threads, timestamps, names when available, and full conversations once chat records save the business slug or claim key.',
@@ -83,10 +83,10 @@ export class BusinessActivityComponent {
       const business = await this.businessClaimService.findWorkspaceByClaimKey(claimKey);
       this.business.set(business);
       if (!business) {
-        this.loadError.set('This business page has not been created yet.');
+        this.loadError.set($localize`This business page has not been created yet.`);
       }
     } catch (error) {
-      this.loadError.set(error instanceof Error ? error.message : 'Could not load this business admin page.');
+      this.loadError.set(error instanceof Error ? error.message : $localize`Could not load this business admin page.`);
     } finally {
       this.loading.set(false);
     }
