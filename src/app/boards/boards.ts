@@ -18,6 +18,7 @@ import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons'
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import { generateStackVideo, type StackVideoResult } from './stack-video-export';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
@@ -433,8 +434,8 @@ const BOARD_WIZARD_MODES: Array<{
   },
   {
     id: 'paste',
-    label: $localize`Paste a list`,
-    description: $localize`Turn names, notes, or bullets into editable cards.`,
+    label: $localize`Paste text or a list`,
+    description: $localize`Turn articles, ranked lists, notes, or bullets into editable cards.`,
     icon: 'format_list_bulleted_add',
   },
   {
@@ -985,6 +986,9 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardVibe = signal<BoardWizardVibe>('playful');
   readonly wizardPrompt = signal('');
   readonly wizardPastedList = signal('');
+  readonly wizardPasteMaxLength = BOARD_WIZARD_PASTE_MAX_LENGTH;
+  readonly wizardNumberedSource = computed(() => parseNumberedBoardSource(this.wizardPastedList()));
+  readonly wizardDetectedPasteCount = computed(() => this.wizardNumberedSource()?.items.length ?? 0);
   readonly wizardUrl = signal('');
   readonly wizardPhotoNames = signal('');
   readonly wizardRefineText = signal('');
@@ -1834,7 +1838,20 @@ export class BoardsComponent implements OnDestroy {
     this.wizardCount.set(Math.max(1, Math.min(100, Number.isFinite(count) ? count : 12)));
   }
 
+  updateWizardPastedList(value: string): void {
+    const pastedText = value.slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH);
+    this.wizardPastedList.set(pastedText);
+    const detectedCount = parseNumberedBoardSource(pastedText)?.items.length ?? 0;
+    if (detectedCount) {
+      this.setWizardCount(detectedCount);
+    }
+  }
+
   inferWizardRequestedCount(): number | null {
+    const structuredCount = this.wizardMode() === 'paste' ? this.wizardDetectedPasteCount() : 0;
+    if (structuredCount) {
+      return structuredCount;
+    }
     const text = [
       this.wizardPrompt(),
       this.wizardMode() === 'paste' ? this.wizardPastedList() : '',
@@ -1898,7 +1915,7 @@ export class BoardsComponent implements OnDestroy {
   wizardInputPlaceholder(): string {
     switch (this.wizardMode()) {
       case 'paste':
-        return 'Zahav\nKalaya\nMiddle Child Clubhouse\nSuraya';
+        return 'Top Caribbean islands\n1. Dominica — Wild nature and waterfalls\nA short note about why it belongs on the board.\n\n2. Grenada — Beaches, rainforest, and spice\nAnother source-backed note.';
       case 'photos':
         return 'IMG_2041 beach sunrise.jpg\nbirthday-dinner-kalaya.png\nmuseum-day.jpeg';
       case 'url':

@@ -1,6 +1,7 @@
 import { GoogleGenAI, type GenerateContentResponse } from '@google/genai';
 import { defineSecret } from 'firebase-functions/params';
 import { logger } from 'firebase-functions';
+import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import type { ExtractBlock, KnowledgeEntryDraft, MappableLocation, ModelUsage, WikiArticleDraft, WikiArticlePlan } from './types';
 import {
   normalizeRelatedTopics,
@@ -1262,6 +1263,7 @@ function buildBoardWizardPrompt(params: {
   } | null;
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
 }): string {
+  const numberedSource = params.mode === 'paste' ? parseNumberedBoardSource(params.pastedList ?? '') : null;
   const vibeInstructions: Record<BoardWizardVibe, string> = {
     playful: 'bright, surprising, fun, but still useful and specific',
     foodie: 'food-aware, sensory, practical about taste, price, neighborhoods, and mood',
@@ -1290,6 +1292,15 @@ function buildBoardWizardPrompt(params: {
     'Restaurant location/action cards should use type "place" or "note". For action cards, put the exact reservation/order/menu URL in place_query when it appears in URL context.',
     'When URL context includes image candidates, prefer image_query phrases that match those concrete images, dishes, rooms, amenities, or page sections.',
     'For hotel/Airbnb/lodging URLs: build a board for that listing. Include room/amenity/fact cards, location/neighborhood, house rules/guest notes if present, booking link, and a final action card such as "Book Now".',
+    numberedSource
+      ? [
+          'SOURCE-FIDELITY MODE: The pasted text is a structured numbered source.',
+          `It contains exactly ${numberedSource.items.length} ordered items. Return exactly one card for every item in the same order.`,
+          'Use each source item title as the card title. Do not omit, merge, replace, reorder, or invent items.',
+          'Use the source heading/tagline for the subtitle and condense only that item body for notes.',
+          'Facts in the source override general knowledge. Do not add unsupported claims.',
+        ].join('\n')
+      : '',
     params.mode === 'walking-tour' || params.mode === 'driving-tour'
       ? [
           'TOUR MODE: Create a self-guided tour, not a generic board.',
@@ -1331,7 +1342,8 @@ function buildBoardWizardPrompt(params: {
     JSON.stringify({
       mode: params.mode,
       prompt: params.prompt.slice(0, 4000),
-      pastedList: params.pastedList?.slice(0, 8000) ?? '',
+      pastedList: numberedSource ? '' : params.pastedList?.slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH) ?? '',
+      numberedSource,
       url: params.url?.slice(0, 1000) ?? '',
       photoNames: params.photoNames?.slice(0, 100) ?? [],
       tourOptions: params.tourOptions ?? null,

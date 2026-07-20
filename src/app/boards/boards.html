@@ -2022,14 +2022,19 @@
                 </label>
               } @else if (wizardMode() === 'paste') {
                 <label>
-                  <span i18n>Paste list</span>
+                  <span i18n>Paste text or a list</span>
                   <textarea
-                    rows="7"
-                    maxlength="8000"
+                    rows="10"
+                    [attr.maxlength]="wizardPasteMaxLength"
                     [placeholder]="wizardInputPlaceholder()"
                     [value]="wizardPastedList()"
-                    (input)="wizardPastedList.set($any($event.target).value)"
+                    (input)="updateWizardPastedList($any($event.target).value)"
                   ></textarea>
+                  @if (wizardDetectedPasteCount()) {
+                    <small aria-live="polite" i18n>
+                      Detected {{ wizardDetectedPasteCount() }} numbered items. The preview will keep one card per item in this order.
+                    </small>
+                  }
                 </label>
               } @else if (wizardMode() === 'photos') {
                 <div class="boards-upload-field">
@@ -2162,6 +2167,7 @@
                     type="range"
                     min="1"
                     max="100"
+                    [disabled]="wizardMode() === 'paste' && wizardDetectedPasteCount() > 0"
                     [value]="wizardCount()"
                     (input)="setWizardCount($any($event.target).value)"
                   />
@@ -2169,6 +2175,7 @@
                     type="number"
                     min="1"
                     max="100"
+                    [disabled]="wizardMode() === 'paste' && wizardDetectedPasteCount() > 0"
                     [value]="wizardCount()"
                     (input)="setWizardCount($any($event.target).value)"
                   />

@@ -603,6 +603,10 @@
     "source": "Window cling 8x10\"",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "1482373112335427196": {
+    "source": "Paste text or a list",
+    "file": "src/app/boards/boards.html"
+  },
   "1485829895525020351": {
     "source": " Dymaxion Navigation ",
     "file": "src/app/dymaxion/dymaxion.html"
@@ -3691,10 +3695,6 @@
     "source": " Signed-in users synced from Firebase Auth into the LivingWiki user profile collection. ",
     "file": "src/app/admin-users/admin-users.html"
   },
-  "3925276822346755510": {
-    "source": "Paste a list",
-    "file": "src/app/boards/boards.ts"
-  },
   "3926265586042118276": {
     "source": "Share Stack",
     "file": "src/app/boards/boards.html"
@@ -4454,6 +4454,10 @@
   "4567023320422021982": {
     "source": "A century of steel industry pollution and decades of disinvestment burden a majority-Black city built by heavy industry.",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "4568998332883224453": {
+    "source": " Detected {$INTERPOLATION} numbered items. The preview will keep one card per item in this order. ",
+    "file": "src/app/boards/boards.html"
   },
   "4569977374738300624": {
     "source": "{$START_TAG_SPAN}add{$CLOSE_TAG_SPAN} Add card ",
@@ -7031,10 +7035,6 @@
     "source": "Send a concise summary, useful links, and the transcript to your email.",
     "file": "src/app/chat/chat.ts"
   },
-  "6555916007290138067": {
-    "source": "Turn names, notes, or bullets into editable cards.",
-    "file": "src/app/boards/boards.ts"
-  },
   "6556985624398131463": {
     "source": "Turns this wiki into a city-aware landing page with live-style metrics.",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -7354,6 +7354,10 @@
   "6814295386768519176": {
     "source": "Timeline",
     "file": "src/app/landing/landing.html"
+  },
+  "6814713037499727799": {
+    "source": "Turn articles, ranked lists, notes, or bullets into editable cards.",
+    "file": "src/app/boards/boards.ts"
   },
   "681621014272236674": {
     "source": "Could not save your score.",
@@ -9134,10 +9138,6 @@
   "8368814891875142171": {
     "source": "es",
     "file": "src/app/public-wikis/public-wikis.ts"
-  },
-  "8372725330564493287": {
-    "source": "Paste list",
-    "file": "src/app/boards/boards.html"
   },
   "8377043753309401269": {
     "source": "YouTube's biggest creator — subscriber growth, business ventures (Feastables, Beast Burger), revenue estimates, and the creator economy he represents.",

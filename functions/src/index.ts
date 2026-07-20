@@ -9,6 +9,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
+import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedBoardSource } from './board-wizard-source';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import {
@@ -5405,10 +5406,11 @@ export const generateBoardWizardBatch = onCall(
     const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
     const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
-    const pastedList = stringOrEmpty(data.pastedList).slice(0, 12000);
+    const pastedList = stringOrEmpty(data.pastedList).slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH);
     const url = stringOrEmpty(data.url).slice(0, 1000);
+    const numberedSource = mode === 'paste' ? parseNumberedBoardSource(pastedList) : null;
     const explicitCount = inferBoardWizardRequestedCount([prompt, pastedList, targetBoardTitle].join(' '));
-    const requestedCount = explicitCount ?? (Number(data.count) || 12);
+    const requestedCount = numberedSource?.items.length ?? explicitCount ?? (Number(data.count) || 12);
     const count = Math.max(1, Math.min(100, requestedCount));
     const photoNames = Array.isArray(data.photoNames)
       ? data.photoNames.map((name) => stringOrEmpty(name).slice(0, 180)).filter(Boolean).slice(0, 100)
@@ -5477,8 +5479,8 @@ export const generateBoardWizardBatch = onCall(
     if (mode === 'url' && url && !urlExtraction) {
       try {
         const fetched = await fetchHtmlWithFallback(url, {
-          timeoutMs: 8_000,
-          allowBrowserFallback: false,
+          timeoutMs: 12_000,
+          allowBrowserFallback: true,
         });
         if (!looksLikeAntiBotChallenge(fetched.html)) {
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
@@ -5494,6 +5496,12 @@ export const generateBoardWizardBatch = onCall(
       if (!accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
         accommodationExtraction = buildFallbackAccommodationExtraction(url);
       }
+      if (!urlExtraction && !accommodationExtraction) {
+        throw new HttpsError(
+          'unavailable',
+          'LivingWiki could not read that page. Paste the article text with “Paste text or a list” instead.',
+        );
+      }
     }
 
     const effectivePrompt = [
@@ -5505,7 +5513,7 @@ export const generateBoardWizardBatch = onCall(
     const mapsTourStopCount = mapsTourContext
       ? (mapsTourContext.match(/^\d+\. /gm)?.length ?? 0)
       : 0;
-    const generationCount = mapsTourStopCount || count;
+    const generationCount = numberedSource?.items.length || mapsTourStopCount || count;
 
     if (!effectivePrompt && !pastedList && photoNames.length === 0 && !url) {
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, upload photo names, or provide a URL.');
@@ -5537,14 +5545,20 @@ export const generateBoardWizardBatch = onCall(
           tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
           existingCards,
         });
-    const result = accommodationExtraction
-      ? generated
-      : await enrichBoardWizardBatchWithPlaces(generated, {
+    const sourceShapedGenerated = numberedSource
+      ? shapeNumberedSourceWizardBatch(generated, numberedSource, defaultType)
+      : generated;
+    const enrichedResult = accommodationExtraction
+      ? sourceShapedGenerated
+      : await enrichBoardWizardBatchWithPlaces(sourceShapedGenerated, {
           mode,
           prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
           targetBoardTitle,
           defaultType,
         });
+    const result = numberedSource
+      ? shapeNumberedSourceWizardBatch(enrichedResult, numberedSource, defaultType)
+      : enrichedResult;
     const previewReadyResult = await enrichBoardWizardBatchWithSongAudioPreviews(
       result,
       [
@@ -5565,7 +5579,7 @@ export const generateBoardWizardBatch = onCall(
       target_board_title: targetBoardTitle || null,
       default_type: defaultType,
       vibe,
-      requested_count: count,
+      requested_count: generationCount,
       generated_count: routeReadyResult.cards.length,
       prompt_preview: (prompt || pastedList || url || photoNames.join(', ')).slice(0, 500),
       board_title: routeReadyResult.board.title,
@@ -8381,6 +8395,54 @@ function inferBoardWizardRequestedCount(text: string): number | null {
   };
   const wordMatch = normalized.match(/\b(?:top|best|include|with|make|create|build|generate)\s+(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty)\b/);
   return wordMatch?.[1] ? words[wordMatch[1]] ?? null : null;
+}
+
+function shapeNumberedSourceWizardBatch(
+  batch: GeneratedBoardWizardBatch,
+  source: NumberedBoardSource,
+  defaultType: GeneratedBoardWizardCard['type'],
+): GeneratedBoardWizardBatch {
+  const sourceTitle = source.title.replace(/\s+/g, ' ').trim().slice(0, 90);
+  const cards = source.items.map((item, index): GeneratedBoardWizardCard => {
+    const generated = batch.cards[index];
+    const subtitle = item.subtitle
+      ? `#${item.rank} · ${item.subtitle}`
+      : `Rank #${item.rank}`;
+    const notes = item.body || generated?.notes || 'Imported from the pasted source.';
+    const type = generated?.type ?? defaultType;
+    return {
+      title: item.title.replace(/\s+/g, ' ').trim().slice(0, 80),
+      subtitle: subtitle.slice(0, 90),
+      notes: notes.replace(/\s+/g, ' ').trim().slice(0, 260),
+      type,
+      scope: generated?.scope ?? 'place',
+      status: generated?.status ?? 'saved',
+      rating: generated?.rating ?? 4,
+      tags: mergeBoardWizardTags([`rank-${item.rank}`, 'source-item'], generated?.tags ?? []),
+      image_query: (generated?.image_query || `${item.title} ${sourceTitle} travel photo`).slice(0, 120),
+      place_query: (generated?.place_query || item.title).slice(0, 140),
+      imageUrl: generated?.imageUrl,
+      audioPreviewUrl: generated?.audioPreviewUrl,
+      spotifyTrackId: generated?.spotifyTrackId,
+      spotifyTrackUrl: generated?.spotifyTrackUrl,
+      spotifyUri: generated?.spotifyUri,
+      spotifyArtistName: generated?.spotifyArtistName,
+      spotifyAlbumName: generated?.spotifyAlbumName,
+      spotifyArtworkUrl: generated?.spotifyArtworkUrl,
+      placeId: generated?.placeId,
+      googleMapsUrl: generated?.googleMapsUrl,
+      tour: generated?.tour,
+    };
+  });
+
+  return {
+    board: {
+      ...batch.board,
+      title: sourceTitle || batch.board.title,
+      description: batch.board.description || `${cards.length} ordered items imported from pasted text.`,
+    },
+    cards,
+  };
 }
 
 function mergeBoardWizardTags(existing: string[], additions: string[]): string[] {
