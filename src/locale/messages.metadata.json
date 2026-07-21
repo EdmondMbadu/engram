@@ -2603,6 +2603,10 @@
     "source": "Lead service lines",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "3104204545608255268": {
+    "source": "{$START_TAG_STRONG}For in-feed playback{$CLOSE_TAG_STRONG}, attach the MP4 as native media. The permanent video-page link remains available above as an optional fallback.",
+    "file": "src/app/boards/boards.html"
+  },
   "3104789030240019173": {
     "source": "active fights",
     "file": "src/app/fence-line/fence-line.html"
@@ -10214,10 +10218,6 @@
   "959598523431136546": {
     "source": "Answer card not found.",
     "file": "src/app/answer-card/answer-card.ts"
-  },
-  "962076015677166052": {
-    "source": "{$START_TAG_STRONG}Want guaranteed in-feed playback?{$CLOSE_TAG_STRONG} Use “Share video file” above, then choose X in your device’s share sheet. Social icons open their app directly with the permanent video page instead.",
-    "file": "src/app/boards/boards.html"
   },
   "964020914369402704": {
     "source": "Network summary",

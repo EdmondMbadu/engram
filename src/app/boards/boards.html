@@ -3119,8 +3119,8 @@
                 }
 
                 <div class="stack-share-sheet__destination-head">
-                  <strong>{{ stackShareMode() === 'video' ? 'Share video link' : 'Share live-view link' }}</strong>
-                  <span>{{ stackShareMode() === 'video' ? 'Opens the selected app directly with a playable-page link.' : 'Includes the board picture and opens the interactive board.' }}</span>
+                  <strong>{{ stackShareMode() === 'video' ? 'Share native video' : 'Share live-view link' }}</strong>
+                  <span>{{ stackShareMode() === 'video' ? 'Sends the MP4 through your device share sheet, or downloads it for attachment.' : 'Includes the board picture and opens the interactive board.' }}</span>
                 </div>
                 <div class="stack-share-sheet__destinations" aria-label="Share destinations" i18n-aria-label>
                   @for (target of stackLinkShareTargets; track target.id) {
@@ -3140,7 +3140,7 @@
                 </div>
 
                 @if (stackShareMode() === 'video') {
-                  <small class="stack-share-sheet__note" i18n><strong>Want guaranteed in-feed playback?</strong> Use “Share video file” above, then choose X in your device’s share sheet. Social icons open their app directly with the permanent video page instead.</small>
+                  <small class="stack-share-sheet__note" i18n><strong>For in-feed playback</strong>, attach the MP4 as native media. The permanent video-page link remains available above as an optional fallback.</small>
                 }
               }
 

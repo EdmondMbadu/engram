@@ -57,7 +57,7 @@
       },
       {
         "source": "/fr/**",
-        "destination": "/fr/index.html"
+        "destination": "/fr/index.csr.html"
       },
       {
         "source": "/ja",
@@ -65,11 +65,11 @@
       },
       {
         "source": "/ja/**",
-        "destination": "/ja/index.html"
+        "destination": "/ja/index.csr.html"
       },
       {
         "source": "**",
-        "destination": "/index.html"
+        "destination": "/index.csr.html"
       }
     ],
     "headers": [

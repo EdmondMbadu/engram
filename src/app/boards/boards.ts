@@ -5352,15 +5352,15 @@ export class BoardsComponent implements OnDestroy {
   }
 
   stackShareUrl(board: Board): string {
-    return `${this.boardPageUrl(board)}?view=stack`;
-  }
-
-  stackSocialShareUrl(board: Board): string {
     if (board.visibility !== 'public') {
-      return this.stackShareUrl(board);
+      return `${this.boardPageUrl(board)}?view=stack`;
     }
     const separator = this.boardShareUrl(board).includes('?') ? '&' : '?';
     return `${this.boardShareUrl(board)}${separator}view=stack`;
+  }
+
+  stackSocialShareUrl(board: Board): string {
+    return this.stackShareUrl(board);
   }
 
   async copyBoardsProfileUrl(): Promise<void> {
@@ -5415,7 +5415,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
-    const url = this.boardPageUrl(board);
+    const url = this.boardShareUrl(board);
     if (await this.copyTextToClipboard(url)) {
       this.setShareMessage('Board link copied.');
     } else {
@@ -5911,15 +5911,17 @@ export class BoardsComponent implements OnDestroy {
 
   async shareSelectedStackLinkTo(target: StackLinkShareTarget, board: Board): Promise<void> {
     if (!this.isBrowser) return;
+    if (this.stackShareMode() === 'video') {
+      await this.sharePublishedStackVideo(board, target);
+      return;
+    }
     const url = this.stackSelectedShareUrl(board);
     if (!url) {
       this.setStackShareMessage('Create the video first to share its permanent link.', false);
       return;
     }
     const title = board.title;
-    const caption = this.stackShareMode() === 'video'
-      ? `Watch ${board.title} as a LivingWiki video.`
-      : `Explore ${board.title} in LivingWiki's live view.`;
+    const caption = `Explore ${board.title} in LivingWiki's live view.`;
 
     if (target === 'more') {
       if (navigator.share) {
@@ -6029,7 +6031,7 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  async sharePublishedStackVideo(board: Board): Promise<void> {
+  async sharePublishedStackVideo(board: Board, target: StackLinkShareTarget = 'more'): Promise<void> {
     if (!this.isBrowser || !board.socialVideoUrl || this.stackVideoExporting()) return;
     const file = this.publishedStackVideoFiles.get(board.id);
     if (!file) {
@@ -6049,7 +6051,13 @@ export class BoardsComponent implements OnDestroy {
 
       this.downloadStackVideo(file);
       await this.copyTextToClipboard(shareText);
-      this.setStackShareMessage('MP4 downloaded and caption copied. Attach the file in your social app for native playback.', false);
+      if (target !== 'more') {
+        this.openStackLinkComposer(target, board, liveUrl, caption);
+      }
+      const targetLabel = this.stackLinkShareTargets.find((item) => item.id === target)?.label ?? 'your social app';
+      this.setStackShareMessage(target === 'more'
+        ? 'MP4 downloaded and caption copied. Attach the file in your social app for native playback.'
+        : `MP4 downloaded and ${targetLabel} opened. Attach the downloaded video for native playback; the caption and preview link are copied.`, false);
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
         this.setStackShareMessage('Share was cancelled.');
