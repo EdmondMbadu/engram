@@ -310,7 +310,7 @@ function drawClosingFrame(
   }
   context.fillStyle = 'rgba(255,255,255,.76)';
   context.font = `750 ${Math.round(width * 0.028)}px Inter, Arial, sans-serif`;
-  context.fillText(`Curated by ${board.ownerName}`, width / 2, height * 0.89);
+  context.fillText('Made with LivingWiki', width / 2, height * 0.89);
   context.font = `800 ${Math.round(width * 0.024)}px Inter, Arial, sans-serif`;
   context.fillText(shortDisplayUrl(board.liveUrl), width / 2, height * 0.93);
   context.restore();

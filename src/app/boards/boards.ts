@@ -382,6 +382,7 @@ type TourMapPoint = {
 const STORAGE_KEY = 'livingwiki-boards-v1';
 const BOARD_ACTIONS_STORAGE_KEY = 'livingwiki-board-actions-v1';
 const DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
+const PUBLIC_APP_URL = 'https://www.livingwiki.com';
 
 const BOARD_TONES: Array<{ id: BoardTone; label: string; accent: string; soft: string }> = [
   { id: 'teal', label: $localize`Teal`, accent: '#007f7a', soft: '#dffcf7' },
@@ -5323,6 +5324,9 @@ export class BoardsComponent implements OnDestroy {
     const path = board.visibility === 'public'
       ? `/share/board/${encodeURIComponent(board.id)}?v=${encodeURIComponent(board.updatedAt || board.id)}`
       : this.boardPagePath(board);
+    if (board.visibility === 'public') {
+      return `${PUBLIC_APP_URL}${path}`;
+    }
     if (!this.isBrowser) {
       return path;
     }
@@ -5882,6 +5886,9 @@ export class BoardsComponent implements OnDestroy {
       `${board.socialVideoUpdatedAt || board.updatedAt || board.id}-${playerCardVersion}`,
     );
     const path = `/share/board/${encodeURIComponent(board.id)}/video?v=${version}`;
+    if (board.visibility === 'public') {
+      return `${PUBLIC_APP_URL}${path}`;
+    }
     return this.isBrowser ? `${window.location.origin}${path}` : path;
   }
 
@@ -5889,6 +5896,9 @@ export class BoardsComponent implements OnDestroy {
     if (!board.socialVideoUrl) return '';
     const version = encodeURIComponent(board.socialVideoUpdatedAt || board.updatedAt || board.id);
     const path = `/share/board/${encodeURIComponent(board.id)}/video.mp4?v=${version}`;
+    if (board.visibility === 'public') {
+      return `${PUBLIC_APP_URL}${path}`;
+    }
     return this.isBrowser ? `${window.location.origin}${path}` : path;
   }
 
