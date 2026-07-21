@@ -43,6 +43,8 @@ type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' 
 type StackShareMode = 'video' | 'live';
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
 
+const playerCardVersion = 'x-player-v2';
+
 type BoardSticker = {
   id: string;
   icon: string;
@@ -5876,7 +5878,9 @@ export class BoardsComponent implements OnDestroy {
 
   socialVideoShareUrl(board: Board): string {
     if (!board.socialVideoUrl) return '';
-    const version = encodeURIComponent(board.socialVideoUpdatedAt || board.updatedAt || board.id);
+    const version = encodeURIComponent(
+      `${board.socialVideoUpdatedAt || board.updatedAt || board.id}-${playerCardVersion}`,
+    );
     const path = `/share/board/${encodeURIComponent(board.id)}/video?v=${version}`;
     return this.isBrowser ? `${window.location.origin}${path}` : path;
   }

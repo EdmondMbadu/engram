@@ -9,6 +9,7 @@ import type { MappableLocation, TravelGuideCard } from './types';
 
 const appUrl = 'https://www.livingwiki.com';
 const imageVersion = 'v1';
+const playerCardVersion = 'x-player-v2';
 
 type ShareImageKind = 'og' | 'story';
 
@@ -807,7 +808,7 @@ function buildBoardSharePageHtml(board: BoardShare, stack: boolean): string {
 
 function buildBoardVideoSharePageHtml(board: BoardShare): string {
   const description = `Watch ${board.title}, a LivingWiki video curated by ${board.ownerName}.`;
-  const version = encodeURIComponent(board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion);
+  const version = boardVideoVersion(board);
   const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video?v=${version}`;
   const playerUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video/player?v=${version}`;
   const boardUrl = `${appUrl}/${boardShareRoute(board)}/${encodeURIComponent(board.id)}?view=stack`;
@@ -815,7 +816,8 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
   const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video.mp4?v=${version}`;
   const videoType = board.socialVideoMimeType.split(';')[0] || 'video/mp4';
-  const dimensions = boardVideoDimensions(board.socialVideoRatio);
+  const sourceDimensions = boardVideoSourceDimensions(board.socialVideoRatio);
+  const playerDimensions = boardVideoPlayerDimensions(board.socialVideoRatio);
 
   return `<!doctype html>
 <html lang="en">
@@ -833,18 +835,24 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
   <meta property="og:url" content="${escapeHtml(shareUrl)}">
   <meta property="og:image" content="${escapeHtml(posterUrl)}">
   <meta property="og:image:secure_url" content="${escapeHtml(posterUrl)}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${escapeHtml(`Cover preview for ${board.title}`)}">
   <meta property="og:video" content="${escapeHtml(videoUrl)}">
   <meta property="og:video:secure_url" content="${escapeHtml(videoUrl)}">
   <meta property="og:video:type" content="${escapeHtml(videoType)}">
-  <meta property="og:video:width" content="${dimensions.width}">
-  <meta property="og:video:height" content="${dimensions.height}">
+  <meta property="og:video:width" content="${sourceDimensions.width}">
+  <meta property="og:video:height" content="${sourceDimensions.height}">
   <meta name="twitter:card" content="player">
+  <meta name="twitter:url" content="${escapeHtml(shareUrl)}">
   <meta name="twitter:title" content="${escapeHtml(board.title)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
   <meta name="twitter:image" content="${escapeHtml(posterUrl)}">
+  <meta name="twitter:image:alt" content="${escapeHtml(`Cover preview for ${board.title}`)}">
   <meta name="twitter:player" content="${escapeHtml(playerUrl)}">
-  <meta name="twitter:player:width" content="${dimensions.width}">
-  <meta name="twitter:player:height" content="${dimensions.height}">
+  <meta name="twitter:player:width" content="${playerDimensions.width}">
+  <meta name="twitter:player:height" content="${playerDimensions.height}">
   <meta name="twitter:player:stream" content="${escapeHtml(videoUrl)}">
   <meta name="twitter:player:stream:content_type" content="${escapeHtml(videoType)}">
   <style>
@@ -886,7 +894,7 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
 }
 
 function buildBoardVideoPlayerHtml(board: BoardShare): string {
-  const version = encodeURIComponent(board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion);
+  const version = boardVideoVersion(board);
   const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video.mp4?v=${version}`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
@@ -903,15 +911,26 @@ function buildBoardVideoPlayerHtml(board: BoardShare): string {
   </style>
 </head>
 <body>
-  <video src="${escapeHtml(videoUrl)}" poster="${escapeHtml(posterUrl)}" autoplay muted loop playsinline controls preload="metadata"></video>
+  <video src="${escapeHtml(videoUrl)}" poster="${escapeHtml(posterUrl)}" playsinline controls preload="metadata"></video>
 </body>
 </html>`;
 }
 
-function boardVideoDimensions(ratio: BoardShare['socialVideoRatio']): { width: number; height: number } {
+function boardVideoVersion(board: BoardShare): string {
+  const videoVersion = board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion;
+  return encodeURIComponent(`${videoVersion}-${playerCardVersion}`);
+}
+
+function boardVideoSourceDimensions(ratio: BoardShare['socialVideoRatio']): { width: number; height: number } {
   if (ratio === 'square') return { width: 720, height: 720 };
   if (ratio === 'landscape') return { width: 1280, height: 720 };
   return { width: 720, height: 1280 };
+}
+
+function boardVideoPlayerDimensions(ratio: BoardShare['socialVideoRatio']): { width: number; height: number } {
+  if (ratio === 'square') return { width: 720, height: 720 };
+  if (ratio === 'landscape') return { width: 1280, height: 720 };
+  return { width: 405, height: 720 };
 }
 
 function buildBoardShareImageHtml(board: BoardShare): string {
