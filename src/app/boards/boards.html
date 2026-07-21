@@ -3119,8 +3119,8 @@
                 }
 
                 <div class="stack-share-sheet__destination-head">
-                  <strong>{{ stackShareMode() === 'video' ? 'Share native video' : 'Share live-view link' }}</strong>
-                  <span>{{ stackShareMode() === 'video' ? 'Sends the MP4 through your device share sheet, or downloads it for attachment.' : 'Includes the board picture and opens the interactive board.' }}</span>
+                  <strong>{{ stackShareMode() === 'video' ? 'Open a social composer' : 'Share live-view link' }}</strong>
+                  <span>{{ stackShareMode() === 'video' ? 'Downloads the MP4 and opens the selected composer. Attach the downloaded video for in-feed playback.' : 'Includes the board picture and opens the interactive board.' }}</span>
                 </div>
                 <div class="stack-share-sheet__destinations" aria-label="Share destinations" i18n-aria-label>
                   @for (target of stackLinkShareTargets; track target.id) {

@@ -6047,17 +6047,17 @@ export class BoardsComponent implements OnDestroy {
     const liveUrl = this.stackSocialShareUrl(board);
     const shareText = `${caption}\n${liveUrl}`;
     try {
-      if (this.canNativeShareFile(file)) {
+      if (target === 'more' && this.canNativeShareFile(file)) {
         await navigator.share({ title: board.title, text: shareText, files: [file] });
         this.setStackShareMessage('MP4 shared as native media for in-feed playback.');
         return;
       }
 
       this.downloadStackVideo(file);
-      await this.copyTextToClipboard(shareText);
       if (target !== 'more') {
         this.openStackLinkComposer(target, board, liveUrl, caption);
       }
+      await this.copyTextToClipboard(shareText);
       const targetLabel = this.stackLinkShareTargets.find((item) => item.id === target)?.label ?? 'your social app';
       this.setStackShareMessage(target === 'more'
         ? 'MP4 downloaded and caption copied. Attach the file in your social app for native playback.'
