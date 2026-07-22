@@ -1629,17 +1629,34 @@ function imageExtensionForContentType(contentType: string): string | null {
 }
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url, {
-    headers: {
-      'Accept': 'application/json',
-      'User-Agent': 'LivingWiki/1.0 cover-image-automation (https://livingwiki.com)',
-    },
-    signal: AbortSignal.timeout(15000),
-  });
-  if (!response.ok) {
-    throw new Error(`Request failed with ${response.status}.`);
+  const hostname = new URL(url).hostname.toLowerCase();
+  const retries = hostname === 'en.wikipedia.org' || hostname === 'commons.wikimedia.org' ? 2 : 0;
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'LivingWiki/1.0 cover-image-automation (https://livingwiki.com)',
+      },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (response.ok) {
+      return await response.json() as T;
+    }
+
+    const retryable = [429, 502, 503, 504].includes(response.status);
+    if (!retryable || attempt >= retries) {
+      throw new Error(`Request failed with ${response.status}.`);
+    }
+
+    const retryAfterSeconds = Number(response.headers.get('retry-after'));
+    const retryDelayMs = Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0
+      ? Math.min(5000, retryAfterSeconds * 1000)
+      : 400 * (2 ** attempt);
+    await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
   }
-  return await response.json() as T;
+
+  throw new Error('Request failed after retries.');
 }
 
 function canTryCoverImageUrl(url: string): boolean {
@@ -5842,8 +5859,12 @@ async function enrichBoardWizardBatchWithPlaces(
   const restaurantPhotoUrls = apiKey && batch.cards.some((card) => isBoardWizardMenuItemCard(card) && !card.imageUrl)
     ? await withBoardWizardTimeout(fetchBoardWizardRestaurantPhotoUrls(searchContext, apiKey), 5_000, [])
     : [];
-  const enrichedCards = await Promise.all(
-    batch.cards.map(async (card, index) => {
+  // Reference boards can contain dozens of cards. Keep outbound enrichment
+  // bounded so Wikimedia and the other providers do not receive one large burst.
+  const enrichedCards = await mapWithConcurrency(
+    batch.cards,
+    3,
+    async (card, index) => {
       if (isBoardWizardMenuItemCard(card) && !card.imageUrl) {
         const itemImageUrl = await resolveBoardWizardMenuItemImage(card, searchContext, customSearchApiKey, menuImageCache);
         if (itemImageUrl) {
@@ -5854,9 +5875,33 @@ async function enrichBoardWizardBatchWithPlaces(
         }
       }
       return enrichBoardWizardCard(card, searchContext, apiKey, customSearchApiKey);
-    }),
+    },
   );
   return { ...batch, cards: enrichedCards };
+}
+
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  concurrency: number,
+  mapper: (item: T, index: number) => Promise<R>,
+): Promise<R[]> {
+  if (!items.length) {
+    return [];
+  }
+  const results = new Array<R>(items.length);
+  let nextIndex = 0;
+  const workers = Array.from(
+    { length: Math.min(Math.max(1, Math.trunc(concurrency)), items.length) },
+    async () => {
+      while (nextIndex < items.length) {
+        const index = nextIndex;
+        nextIndex += 1;
+        results[index] = await mapper(items[index]!, index);
+      }
+    },
+  );
+  await Promise.all(workers);
+  return results;
 }
 
 async function enrichBoardWizardBatchWithSongAudioPreviews(
@@ -6374,7 +6419,7 @@ function shouldUseReferenceImageBeforePlaces(card: GeneratedBoardWizardCard, sea
 }
 
 function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard, searchContext = ''): string {
-  const title = textFromUnknown(card.title).replace(/\s+/g, ' ').trim();
+  const title = stripBoardWizardListPrefix(textFromUnknown(card.title));
   const text = `${title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`;
   const worldCupTeamTitle = buildWorldCupTeamWikipediaTitle(title, text);
   if (worldCupTeamTitle) {
@@ -6398,6 +6443,10 @@ type BoardWizardReferenceImageKind = 'film' | 'song' | 'album' | 'book' | 'tv' |
 
 function boardWizardReferenceImageKind(card: GeneratedBoardWizardCard | BoardWizardCurrentCard, searchContext = ''): BoardWizardReferenceImageKind {
   const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`.toLowerCase();
+  const cardText = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')}`.toLowerCase();
+  if (/\b(president|presidential|first lady|signer|founding father|politician|governor|senator|representative|justice)\b/.test(cardText)) {
+    return 'person';
+  }
   if (/\b(movie|movies|film|films|cinema|filmography|starring|directed by|screenplay|box office|oscars?|academy award)\b/.test(text)) {
     return 'film';
   }
@@ -6416,7 +6465,7 @@ function boardWizardReferenceImageKind(card: GeneratedBoardWizardCard | BoardWiz
   if (/\b(video game|video games|game|games|console|playstation|xbox|nintendo|steam)\b/.test(text)) {
     return 'game';
   }
-  if (/\b(portrait|person|people|biography|born|died|actor|actress|artist|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|author|athlete|director)\b/.test(text)) {
+  if (/\b(portrait|person|people|biography|born|died|president|presidential|first lady|signer|founding father|politician|governor|senator|representative|justice|actor|actress|artist|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|author|athlete|director)\b/.test(text)) {
     return 'person';
   }
   return '';
@@ -6455,7 +6504,7 @@ function buildBoardWizardMediaImageQuery(
 }
 
 function canonicalBoardWizardPersonImageTitle(title: string, text: string): string {
-  const normalized = title.replace(/\s+/g, ' ').trim();
+  const normalized = stripBoardWizardListPrefix(title);
   const match = normalized.match(/^[^:\u2013\u2014-]{2,36}[:\u2013\u2014-]\s*([^:\u2013\u2014-]{2,80})$/);
   const subject = (match?.[1] ?? '').replace(/^["'`]+|["'`]+$/g, '').trim();
   if (subject && isBoardWizardLikelyPersonSubject(subject, text)) {
@@ -8220,7 +8269,7 @@ async function findExactWikipediaImageForBoardWizard(query: string): Promise<str
 }
 
 function exactWikipediaTitleCandidates(query: string): string[] {
-  const raw = query.replace(/\s+/g, ' ').trim();
+  const raw = stripBoardWizardListPrefix(query);
   const yearHint = extractBoardWizardYearHint(raw);
   const withoutDescriptors = raw
     .replace(/\b(official|public domain|photograph|photo|picture|image|poster|cover art|cover|portrait|biography|person|people|american|u\.s\.|us|united states|president|presidential|first lady|signer|founding father|historical figure)\b/gi, ' ')
@@ -8287,6 +8336,13 @@ function exactWikipediaTitleCandidates(query: string): string[] {
     .filter((title) => title.length >= 3 && title.length <= 90)
     .filter((title, index, all) => all.indexOf(title) === index)
     .slice(0, 6);
+}
+
+function stripBoardWizardListPrefix(value: string): string {
+  return value
+    .replace(/^\s*(?:[#№]?\d{1,3}(?:st|nd|rd|th)?\s*(?:[.):\]-]|–|—)\s*|[-*•]\s+)/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function normalizeWikipediaTitleCandidate(value: string): string {
