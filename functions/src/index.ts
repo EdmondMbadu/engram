@@ -10,6 +10,7 @@ import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedBoardSource } from './board-wizard-source';
+import { wikipediaPageTitleMatchScore } from './board-wizard-image-quality';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import {
@@ -1367,6 +1368,20 @@ type WikipediaPageImagesResponse = {
   };
 };
 
+type WikipediaBatchPageImagesResponse = {
+  query?: {
+    normalized?: Array<{ from?: string; to?: string }>;
+    redirects?: Array<{ from?: string; to?: string }>;
+    pages?: Record<string, {
+      pageid?: number;
+      title?: string;
+      original?: { source?: string };
+      thumbnail?: { source?: string };
+      terms?: { description?: string[] };
+    }>;
+  };
+};
+
 type WikipediaPageMediaResponse = {
   query?: {
     pages?: Record<string, {
@@ -1628,35 +1643,52 @@ function imageExtensionForContentType(contentType: string): string | null {
   return null;
 }
 
+let wikimediaFetchQueue: Promise<void> = Promise.resolve();
+const wikipediaImageCache = new Map<string, { imageUrl: string; expiresAt: number }>();
+const WIKIPEDIA_IMAGE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const WIKIPEDIA_IMAGE_CACHE_MAX_ENTRIES = 1200;
+
 async function fetchJson<T>(url: string): Promise<T> {
   const hostname = new URL(url).hostname.toLowerCase();
-  const retries = hostname === 'en.wikipedia.org' || hostname === 'commons.wikimedia.org' ? 2 : 0;
+  const isWikimedia = hostname === 'en.wikipedia.org'
+    || hostname === 'commons.wikimedia.org'
+    || hostname === 'www.wikidata.org';
+  const retries = isWikimedia ? 2 : 0;
 
-  for (let attempt = 0; attempt <= retries; attempt += 1) {
-    const response = await fetch(url, {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'LivingWiki/1.0 cover-image-automation (https://livingwiki.com)',
-      },
-      signal: AbortSignal.timeout(15000),
-    });
-    if (response.ok) {
-      return await response.json() as T;
+  const execute = async (): Promise<T> => {
+    for (let attempt = 0; attempt <= retries; attempt += 1) {
+      const response = await fetch(url, {
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'LivingWikiBot/1.0 (https://livingwiki.com) board-image-resolution',
+        },
+        signal: AbortSignal.timeout(15000),
+      });
+      if (response.ok) {
+        return await response.json() as T;
+      }
+
+      const retryable = [429, 502, 503, 504].includes(response.status);
+      if (!retryable || attempt >= retries) {
+        throw new Error(`Request failed with ${response.status}.`);
+      }
+
+      const retryAfterSeconds = Number(response.headers.get('retry-after'));
+      const retryDelayMs = Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0
+        ? Math.min(5000, retryAfterSeconds * 1000)
+        : 400 * (2 ** attempt);
+      await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
     }
 
-    const retryable = [429, 502, 503, 504].includes(response.status);
-    if (!retryable || attempt >= retries) {
-      throw new Error(`Request failed with ${response.status}.`);
-    }
+    throw new Error('Request failed after retries.');
+  };
 
-    const retryAfterSeconds = Number(response.headers.get('retry-after'));
-    const retryDelayMs = Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0
-      ? Math.min(5000, retryAfterSeconds * 1000)
-      : 400 * (2 ** attempt);
-    await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+  if (!isWikimedia) {
+    return execute();
   }
-
-  throw new Error('Request failed after retries.');
+  const queued = wikimediaFetchQueue.then(execute, execute);
+  wikimediaFetchQueue = queued.then(() => undefined, () => undefined);
+  return queued;
 }
 
 function canTryCoverImageUrl(url: string): boolean {
@@ -5558,6 +5590,7 @@ export const generateBoardWizardBatch = onCall(
           targetBoardTitle,
           defaultType,
           count: generationCount,
+          countIsExplicit: !!numberedSource || explicitCount !== null || photoNames.length > 0,
           vibe,
           tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
           existingCards,
@@ -5859,12 +5892,17 @@ async function enrichBoardWizardBatchWithPlaces(
   const restaurantPhotoUrls = apiKey && batch.cards.some((card) => isBoardWizardMenuItemCard(card) && !card.imageUrl)
     ? await withBoardWizardTimeout(fetchBoardWizardRestaurantPhotoUrls(searchContext, apiKey), 5_000, [])
     : [];
+  const exactReferenceImages = await findBatchExactWikipediaImagesForBoardWizard(batch.cards, searchContext);
   // Reference boards can contain dozens of cards. Keep outbound enrichment
   // bounded so Wikimedia and the other providers do not receive one large burst.
   const enrichedCards = await mapWithConcurrency(
     batch.cards,
     3,
     async (card, index) => {
+      const exactReferenceImage = exactReferenceImages.get(index);
+      if (!card.imageUrl && exactReferenceImage) {
+        card = { ...card, imageUrl: exactReferenceImage };
+      }
       if (isBoardWizardMenuItemCard(card) && !card.imageUrl) {
         const itemImageUrl = await resolveBoardWizardMenuItemImage(card, searchContext, customSearchApiKey, menuImageCache);
         if (itemImageUrl) {
@@ -6404,6 +6442,12 @@ function shouldUseReferenceImageBeforePlaces(card: GeneratedBoardWizardCard, sea
   if (isBoardWizardMenuItemCard(card)) {
     return false;
   }
+  if (card.entity_type && ['person', 'event', 'work', 'product', 'organization'].includes(card.entity_type)) {
+    return true;
+  }
+  if (card.image_intent && ['portrait', 'event', 'cover', 'product', 'logo'].includes(card.image_intent)) {
+    return true;
+  }
   const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`.toLowerCase();
   if (boardWizardReferenceImageKind(card, searchContext)) {
     return true;
@@ -6419,7 +6463,7 @@ function shouldUseReferenceImageBeforePlaces(card: GeneratedBoardWizardCard, sea
 }
 
 function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard, searchContext = ''): string {
-  const title = stripBoardWizardListPrefix(textFromUnknown(card.title));
+  const title = stripBoardWizardListPrefix(textFromUnknown(card.entity_name || card.title));
   const text = `${title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`;
   const worldCupTeamTitle = buildWorldCupTeamWikipediaTitle(title, text);
   if (worldCupTeamTitle) {
@@ -6442,6 +6486,21 @@ function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard, sea
 type BoardWizardReferenceImageKind = 'film' | 'song' | 'album' | 'book' | 'tv' | 'game' | 'person' | '';
 
 function boardWizardReferenceImageKind(card: GeneratedBoardWizardCard | BoardWizardCurrentCard, searchContext = ''): BoardWizardReferenceImageKind {
+  if ('entity_type' in card && card.entity_type === 'person') {
+    return 'person';
+  }
+  if ('image_intent' in card) {
+    if (card.image_intent === 'portrait') return 'person';
+    if (card.image_intent === 'cover') {
+      const explicitText = `${card.image_query} ${'image_context' in card ? card.image_context ?? '' : ''}`.toLowerCase();
+      if (/\b(song|single|track)\b/.test(explicitText)) return 'song';
+      if (/\b(album|ep|lp)\b/.test(explicitText)) return 'album';
+      if (/\b(book|novel|memoir)\b/.test(explicitText)) return 'book';
+      if (/\b(tv|television|series|season)\b/.test(explicitText)) return 'tv';
+      if (/\b(video game|game|console)\b/.test(explicitText)) return 'game';
+      if (/\b(movie|film|cinema)\b/.test(explicitText)) return 'film';
+    }
+  }
   const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`.toLowerCase();
   const cardText = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')}`.toLowerCase();
   if (/\b(president|presidential|first lady|signer|founding father|politician|governor|senator|representative|justice)\b/.test(cardText)) {
@@ -7990,7 +8049,9 @@ async function findReferenceImageForBoardWizard(query: string): Promise<string> 
   searchUrl.searchParams.set('srsearch', buildWikipediaSearchQueryForBoardWizard(query));
 
   const search = await fetchJson<WikipediaSearchResponse>(searchUrl.toString());
-  const pageIds = (search.query?.search ?? [])
+  const confidentSearchResults = (search.query?.search ?? [])
+    .filter((result) => isConfidentWikipediaPageTitleMatch(query, textFromUnknown(result.title)));
+  const pageIds = confidentSearchResults
     .map((result) => result.pageid)
     .filter((pageId): pageId is number => typeof pageId === 'number')
     .slice(0, 4);
@@ -8145,6 +8206,7 @@ function scoreWikipediaMediaFileTitle(fileTitle: string, query: string, titleCan
   const isBook = /\b(book|novel|book cover)\b/i.test(query);
   const isTv = /\b(tv|television|series)\b/i.test(query);
   const isGame = /\b(video game|game|cover art)\b/i.test(query);
+  const isPerson = /\b(portrait|person|people|biography|born|died|politician|leader|author|artist|scientist|athlete|actor|musician|composer|singer|president)\b/i.test(query);
   let score = 0;
 
   if (/\b(poster|cover|cover art|album|single|key art|box art|book cover|dvd|blu ray)\b/i.test(normalizedFile)) {
@@ -8185,7 +8247,10 @@ function scoreWikipediaMediaFileTitle(fileTitle: string, query: string, titleCan
   if (normalizedQuery.includes(normalizedFile) || normalizedFile.includes(normalizedQuery.replace(/\b(official|poster|cover|art|movie|film|song|album|book)\b/g, '').replace(/\s+/g, ' ').trim())) {
     score += 12;
   }
-  if (/\b(cannes|festival|premiere|red carpet|cropped|actor|actress|director|headshot|portrait)\b/i.test(normalizedFile) && !/\bposter|cover|key art|box art\b/i.test(normalizedFile)) {
+  if (isPerson && /\b(headshot|portrait|official portrait|photograph|photo)\b/i.test(normalizedFile)) {
+    score += 55;
+  }
+  if (!isPerson && /\b(cannes|festival|premiere|red carpet|cropped|actor|actress|director|headshot|portrait)\b/i.test(normalizedFile) && !/\bposter|cover|key art|box art\b/i.test(normalizedFile)) {
     score -= 35;
   }
   if (/\b(flag|logo|icon|edit|svg|map)\b/i.test(normalizedFile)) {
@@ -8241,6 +8306,10 @@ function buildWikipediaSearchQueryForBoardWizard(query: string): string {
 }
 
 async function findExactWikipediaImageForBoardWizard(query: string): Promise<string> {
+  const cached = getCachedWikipediaImage(query);
+  if (cached !== null) {
+    return cached;
+  }
   const titles = exactWikipediaTitleCandidates(query);
   if (!titles.length) {
     return '';
@@ -8257,15 +8326,122 @@ async function findExactWikipediaImageForBoardWizard(query: string): Promise<str
 
   const pages = await fetchJson<WikipediaPageImagesResponse>(imageUrl.toString());
   const normalizedTitles = new Set(titles.map((title) => normalizeWikipediaTitleCandidate(title)));
-  const pageValues = Object.values(pages.query?.pages ?? {});
-  const exactPages = pageValues.filter((page) => normalizedTitles.has(normalizeWikipediaTitleCandidate(page.title ?? '')));
-  for (const page of [...exactPages, ...pageValues]) {
+  const exactPages = Object.values(pages.query?.pages ?? {}).filter((page) =>
+    normalizedTitles.has(normalizeWikipediaTitleCandidate(page.title ?? ''))
+      || isConfidentWikipediaPageTitleMatch(query, textFromUnknown(page.title)),
+  );
+  for (const page of exactPages) {
     const source = page.thumbnail?.source || page.original?.source || '';
     if (source && canTryCoverImageUrl(source)) {
+      setCachedWikipediaImage(query, source);
       return source;
     }
   }
+  setCachedWikipediaImage(query, '');
   return '';
+}
+
+async function findBatchExactWikipediaImagesForBoardWizard(
+  cards: GeneratedBoardWizardCard[],
+  searchContext: string,
+): Promise<Map<number, string>> {
+  const images = new Map<number, string>();
+  const pending: Array<{ index: number; query: string; titles: string[] }> = [];
+  cards.forEach((card, index) => {
+    if (card.imageUrl || !shouldUseReferenceImageBeforePlaces(card, searchContext)) {
+      return;
+    }
+    const query = buildBoardWizardReferenceImageQuery(card, searchContext);
+    const cached = getCachedWikipediaImage(query);
+    if (cached) {
+      images.set(index, cached);
+      return;
+    }
+    if (cached === '') {
+      return;
+    }
+    const entityName = stripBoardWizardListPrefix(textFromUnknown(card.entity_name || card.title));
+    const titles = [...exactWikipediaTitleCandidates(query), ...exactWikipediaTitleCandidates(entityName)]
+      .filter((title, titleIndex, all) => all.findIndex((candidate) =>
+        normalizeWikipediaTitleCandidate(candidate) === normalizeWikipediaTitleCandidate(title)) === titleIndex)
+      .slice(0, 6);
+    if (query.length >= 2 && titles.length) {
+      pending.push({ index, query, titles });
+    }
+  });
+
+  const requestedTitles = pending.flatMap((entry) => entry.titles)
+    .filter((title, index, all) => all.findIndex((candidate) =>
+      normalizeWikipediaTitleCandidate(candidate) === normalizeWikipediaTitleCandidate(title)) === index);
+  for (let offset = 0; offset < requestedTitles.length; offset += 40) {
+    const chunk = requestedTitles.slice(offset, offset + 40);
+    const imageUrl = new URL('https://en.wikipedia.org/w/api.php');
+    imageUrl.searchParams.set('action', 'query');
+    imageUrl.searchParams.set('format', 'json');
+    imageUrl.searchParams.set('redirects', '1');
+    imageUrl.searchParams.set('prop', 'pageimages|pageterms');
+    imageUrl.searchParams.set('piprop', 'original|thumbnail');
+    imageUrl.searchParams.set('pithumbsize', '900');
+    imageUrl.searchParams.set('wbptterms', 'description');
+    imageUrl.searchParams.set('titles', chunk.join('|'));
+    try {
+      const data = await fetchJson<WikipediaBatchPageImagesResponse>(imageUrl.toString());
+      for (const page of Object.values(data.query?.pages ?? {})) {
+        const source = page.thumbnail?.source || page.original?.source || '';
+        if (!source || !canTryCoverImageUrl(source)) {
+          continue;
+        }
+        const matches = pending
+          .filter((entry) => !images.has(entry.index))
+          .map((entry) => ({
+            entry,
+            score: wikipediaPageTitleMatchScore(entry.query, textFromUnknown(page.title), entry.titles),
+          }))
+          .filter((match) => match.score >= 80)
+          .sort((left, right) => right.score - left.score);
+        const best = matches[0]?.entry;
+        if (best) {
+          images.set(best.index, source);
+          setCachedWikipediaImage(best.query, source);
+        }
+      }
+    } catch (error) {
+      logger.warn('Board wizard batch Wikipedia image lookup failed.', {
+        requestedTitleCount: chunk.length,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  return images;
+}
+
+function getCachedWikipediaImage(query: string): string | null {
+  const key = normalizeWikipediaTitleCandidate(query);
+  const cached = wikipediaImageCache.get(key);
+  if (!cached) {
+    return null;
+  }
+  if (cached.expiresAt <= Date.now()) {
+    wikipediaImageCache.delete(key);
+    return null;
+  }
+  return cached.imageUrl;
+}
+
+function setCachedWikipediaImage(query: string, imageUrl: string): void {
+  const key = normalizeWikipediaTitleCandidate(query);
+  if (!key) {
+    return;
+  }
+  if (wikipediaImageCache.size >= WIKIPEDIA_IMAGE_CACHE_MAX_ENTRIES) {
+    const oldestKey = wikipediaImageCache.keys().next().value as string | undefined;
+    if (oldestKey) wikipediaImageCache.delete(oldestKey);
+  }
+  wikipediaImageCache.set(key, { imageUrl, expiresAt: Date.now() + WIKIPEDIA_IMAGE_CACHE_TTL_MS });
+}
+
+function isConfidentWikipediaPageTitleMatch(query: string, pageTitle: string): boolean {
+  return wikipediaPageTitleMatchScore(query, pageTitle, exactWikipediaTitleCandidates(query)) >= 80;
 }
 
 function exactWikipediaTitleCandidates(query: string): string[] {
@@ -8359,11 +8535,8 @@ function wikipediaTitleCaseVariants(title: string): string[] {
 }
 
 async function findCommonsReferenceImageForBoardWizard(query: string): Promise<string> {
-  const searchTerms = [
-    query,
-    `${query} food`,
-    `${meaningfulBoardWizardTokens(query).slice(0, 4).join(' ')} food`,
-  ]
+  const isFoodQuery = /\b(food|dish|meal|dessert|drink|restaurant|menu)\b/i.test(query);
+  const searchTerms = [query, isFoodQuery ? `${query} food` : '']
     .map((term) => term.replace(/\s+/g, ' ').trim())
     .filter((term) => term.length >= 3)
     .filter((term, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === term.toLowerCase()) === index)
@@ -8382,7 +8555,14 @@ async function findCommonsReferenceImageForBoardWizard(query: string): Promise<s
     url.searchParams.set('iiurlwidth', '1200');
 
     const data = await fetchJson<WikimediaCommonsImageResponse>(url.toString());
-    for (const page of Object.values(data.query?.pages ?? {})) {
+    const rankedPages = Object.values(data.query?.pages ?? {})
+      .map((page) => ({
+        page,
+        score: scoreWikipediaMediaFileTitle(textFromUnknown(page.title), query, exactWikipediaTitleCandidates(query)),
+      }))
+      .filter((item) => item.score >= 20)
+      .sort((left, right) => right.score - left.score);
+    for (const { page } of rankedPages) {
       const image = page.imageinfo?.[0];
       if (!image) {
         continue;

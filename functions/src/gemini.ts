@@ -2,6 +2,7 @@ import { GoogleGenAI, type GenerateContentResponse } from '@google/genai';
 import { defineSecret } from 'firebase-functions/params';
 import { logger } from 'firebase-functions';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import { shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
 import type { ExtractBlock, KnowledgeEntryDraft, MappableLocation, ModelUsage, WikiArticleDraft, WikiArticlePlan } from './types';
 import {
   normalizeRelatedTopics,
@@ -183,6 +184,10 @@ const boardWizardBatchSchema = {
             items: { type: 'string' },
           },
           image_query: { type: 'string' },
+          entity_name: { type: 'string' },
+          entity_type: { type: 'string' },
+          image_intent: { type: 'string' },
+          image_context: { type: 'string' },
           place_query: { type: 'string' },
           tour: {
             type: 'object',
@@ -205,7 +210,22 @@ const boardWizardBatchSchema = {
             },
           },
         },
-        required: ['title', 'subtitle', 'notes', 'type', 'scope', 'status', 'rating', 'tags', 'image_query', 'place_query'],
+        required: [
+          'title',
+          'subtitle',
+          'notes',
+          'type',
+          'scope',
+          'status',
+          'rating',
+          'tags',
+          'image_query',
+          'entity_name',
+          'entity_type',
+          'image_intent',
+          'image_context',
+          'place_query',
+        ],
       },
     },
   },
@@ -400,6 +420,10 @@ export type GeneratedBoardWizardCard = {
   rating: number;
   tags: string[];
   image_query: string;
+  entity_name?: string;
+  entity_type?: 'person' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
+  image_intent?: 'portrait' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
+  image_context?: string;
   place_query: string;
   imageUrl?: string;
   audioPreviewUrl?: string;
@@ -1208,6 +1232,7 @@ export async function generateBoardWizardBatch(params: {
   targetBoardTitle?: string | null;
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
+  countIsExplicit?: boolean;
   vibe: BoardWizardVibe;
   tourOptions?: {
     voiceStyle?: GeneratedBoardTourVoiceStyle;
@@ -1217,7 +1242,9 @@ export async function generateBoardWizardBatch(params: {
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
 }): Promise<GeneratedBoardWizardBatch> {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
-  const prompt = buildBoardWizardPrompt({ ...params, count });
+  const verificationRequired = shouldVerifyBoardWizardBatch(params, count);
+  const cardLimit = params.countIsExplicit ? count : verificationRequired ? 100 : count;
+  const prompt = buildBoardWizardPrompt({ ...params, count, verificationRequired });
 
   for (const wizardModel of boardWizardModels) {
     try {
@@ -1228,11 +1255,24 @@ export async function generateBoardWizardBatch(params: {
           responseMimeType: 'application/json',
           responseJsonSchema: boardWizardBatchSchema,
           temperature: 0.28,
-          maxOutputTokens: Math.min(16384, 1100 + count * 420),
+          maxOutputTokens: verificationRequired ? 16384 : Math.min(16384, 1100 + count * 420),
           thinkingConfig: { thinkingBudget: wizardModel === model ? 512 : 0 },
         },
       });
-      return normalizeBoardWizardBatch(parseJsonResponse<unknown>(response.text ?? '{}'), params, count);
+      const draft = normalizeBoardWizardBatch(parseJsonResponse<unknown>(response.text ?? '{}'), params, cardLimit);
+      if (!verificationRequired || wizardModel !== model) {
+        return draft;
+      }
+      try {
+        return await verifyBoardWizardBatch(params, draft, count, cardLimit);
+      } catch (error) {
+        logger.warn('Board wizard verification pass failed; returning the generated draft.', {
+          mode: params.mode,
+          count,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+        return draft;
+      }
     } catch (error) {
       logger.warn('Failed to generate board wizard batch with Gemini model.', {
         model: wizardModel,
@@ -1246,6 +1286,91 @@ export async function generateBoardWizardBatch(params: {
   return buildFallbackBoardWizardBatch(params, count);
 }
 
+function shouldVerifyBoardWizardBatch(
+  params: {
+    mode: BoardWizardMode;
+    prompt: string;
+    pastedList?: string;
+    targetBoardTitle?: string | null;
+  },
+  count: number,
+): boolean {
+  return shouldGroundAndVerifyBoardWizardBatch({ ...params, count });
+}
+
+async function verifyBoardWizardBatch(
+  params: {
+    mode: BoardWizardMode;
+    prompt: string;
+    pastedList?: string;
+    targetBoardTitle?: string | null;
+    defaultType: GeneratedBoardWizardCard['type'];
+    vibe: BoardWizardVibe;
+    countIsExplicit?: boolean;
+  },
+  draft: GeneratedBoardWizardBatch,
+  targetCount: number,
+  cardLimit: number,
+): Promise<GeneratedBoardWizardBatch> {
+  const verificationPrompt = [
+    'You are the factual verification editor for a LivingWiki board.',
+    'Use Google Search to verify the requested scope, membership, ordering, dates, current status, and entity identities.',
+    'Return only corrected JSON matching the schema.',
+    'Do not merely critique the draft; repair it.',
+    'Remove duplicates unless the same entity legitimately appears more than once for distinct terms, years, editions, works, or events.',
+    'Remove adjacent filler: a complete-set request may contain only actual members of that set, never related buildings, institutions, resources, generic facts, or action cards.',
+    'For a closed or complete real-world set, completeness and the evidence-backed cardinality override the UI target count unless the user explicitly supplied a numeric count.',
+    params.countIsExplicit
+      ? `The user explicitly requested ${targetCount} cards. Return exactly that many in the requested scope.`
+      : `The UI target is ${targetCount} cards, but it is not an explicit user constraint. Use the real set size when the request asks for a complete set.`,
+    `Treat ${new Date().toISOString().slice(0, 10)} as the current date. Replace stale "Present" labels and include current entities when the request requires them.`,
+    'Each card must identify its canonical subject independently from its prose:',
+    '- entity_name: canonical real subject name without numbering, slogans, or decorative prefixes.',
+    '- entity_type: person, place, event, work, product, food, organization, or other.',
+    '- image_intent: portrait, place, event, cover, product, food, logo, or other.',
+    '- image_context: short disambiguation such as role, creator, location, year, edition, term, or event.',
+    'image_query must target entity_name plus image_context and image_intent. Never let incidental words in notes change the depicted subject.',
+    '',
+    'Original user request:',
+    JSON.stringify({
+      mode: params.mode,
+      prompt: params.prompt.slice(0, 4000),
+      pastedList: params.pastedList?.slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH) ?? '',
+      targetBoardTitle: params.targetBoardTitle ?? '',
+    }),
+    '',
+    'Draft to verify and repair:',
+    JSON.stringify(draft),
+  ].join('\n');
+  const response = await generateContentWithRetry({
+    model,
+    contents: verificationPrompt,
+    config: {
+      tools: [{ googleSearch: {} }],
+      responseMimeType: 'application/json',
+      responseJsonSchema: boardWizardBatchSchema,
+      temperature: 0,
+      maxOutputTokens: 16384,
+      thinkingConfig: { thinkingBudget: 1024 },
+    },
+  });
+  const verified = normalizeBoardWizardBatch(
+    parseJsonResponse<unknown>(response.text ?? '{}'),
+    params,
+    cardLimit,
+  );
+  logger.info('Board wizard verification pass completed.', {
+    targetCount,
+    draftCount: draft.cards.length,
+    verifiedCount: verified.cards.length,
+    webSearchQueryCount: response.candidates?.reduce(
+      (total, candidate) => total + (candidate.groundingMetadata?.webSearchQueries?.length ?? 0),
+      0,
+    ) ?? 0,
+  });
+  return verified;
+}
+
 function buildBoardWizardPrompt(params: {
   mode: BoardWizardMode;
   prompt: string;
@@ -1255,6 +1380,8 @@ function buildBoardWizardPrompt(params: {
   targetBoardTitle?: string | null;
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
+  countIsExplicit?: boolean;
+  verificationRequired?: boolean;
   vibe: BoardWizardVibe;
   tourOptions?: {
     voiceStyle?: GeneratedBoardTourVoiceStyle;
@@ -1277,13 +1404,13 @@ function buildBoardWizardPrompt(params: {
     'Every card must be concrete and useful, not filler.',
     'Do not include duplicates. Prefer diversity across neighborhoods, styles, categories, or angles.',
     'Follow explicit user constraints before applying defaults: exact counts, named entities, sorting/grouping, required images, location, language, and source URL details.',
-    'If the user asks for a known complete set (for example "56 signers"), create cards for the actual set members, not generic examples.',
+    'If the user asks for a known complete set (for example "56 signers"), create cards for the actual set members, not generic examples or related places, institutions, and resources.',
     'If the user asks for sorting or grouping, order the cards in that requested order. For "sort by state", put the state at the start of subtitle and include a state tag.',
     'Do not prefix card titles or image_query values with list numbers or ordinals. The card order already communicates sequence.',
     'If the user asks for pictures, make image_query a specific image-search phrase for each card, such as a person portrait, menu item, hotel room, landmark, product, movie poster, song cover art, album cover, book cover, TV poster, or game cover.',
     'For entertainment/reference boards, image_query must match the card entity itself, not the creator/person in the prompt. Movies should use "<movie title> official movie poster" or "<movie title> film poster"; songs should use "<song title> <artist if known> cover art"; albums should use "<album title> album cover"; books should use "<book title> book cover". Do not use actor/artist portraits unless the card is actually about that person.',
     'For people, image_query must use the canonical person name plus role/context and "portrait", not a poetic nickname or title prefix. Example: title "The God: Art Tatum" should use image_query "Art Tatum jazz pianist portrait".',
-    'For presidents and other historical people, always request a portrait of that person even when their notes mention books, writings, buildings, spouses, or events.',
+    'For any person entity, always request a portrait of that exact person even when the notes mention books, writings, buildings, relatives, organizations, or events.',
     'If a display title has a prefix before a colon or dash, use the real subject after the separator for image_query when that subject is the card entity.',
     'For dated history, sports, award, election, launch, opening, or championship cards, image_query must describe the specific event and year, not merely the country, organization, or person. Prefer an event photograph, winning team, celebration, ceremony, or action from that moment.',
     'For FIFA World Cup winner cards, use "<year> <country> FIFA World Cup champions team celebration photo". Do not use a flag, federation crest, badge, kit graphic, logo, or generic national-team identity image.',
@@ -1326,8 +1453,13 @@ function buildBoardWizardPrompt(params: {
     'Rating must be an integer from 1 to 5.',
     'Tags should be lowercase, 1-6 items, short and useful.',
     'image_query should be a short search phrase for the most accurate image for that exact card entity.',
+    'For every card, set entity_name to the canonical depicted subject; set entity_type to person, place, event, work, product, food, organization, or other; set image_intent to portrait, place, event, cover, product, food, logo, or other; and set image_context to the minimum role, creator, location, year, edition, term, or event needed to disambiguate it.',
+    'The entity fields are authoritative for image selection. Incidental nouns in notes must never replace the entity being depicted.',
     'place_query should be a Google Places-style lookup query when the item is a real place; otherwise use the title.',
-    `Generate exactly ${params.count} cards.`,
+    params.countIsExplicit
+      ? `Generate exactly ${params.count} cards because the user explicitly supplied that count.`
+      : `Use ${params.count} cards as the UI target. If the user requests a complete real-world set, return the evidence-backed complete set instead and never pad or truncate it to this target.`,
+    params.verificationRequired ? 'This factual/list request will be verified after generation. Favor canonical names, explicit dates, and zero filler.' : '',
     `Default card type: ${params.defaultType}.`,
     `Vibe: ${params.vibe} (${vibeInstructions[params.vibe]}).`,
     params.targetBoardTitle ? `Target board title: ${params.targetBoardTitle}` : 'Create a clear board title.',
@@ -1404,9 +1536,57 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
     rating: normalizeRating(data.rating),
     tags,
     image_query: normalizeGeneratedBoardWizardImageQuery(title, cleanLine(data.image_query, title, 120), subtitle, notes, tags),
+    entity_name: cleanLine(data.entity_name, canonicalBoardWizardEntityName(title), 100),
+    entity_type: normalizeBoardWizardEntityType(data.entity_type, type),
+    image_intent: normalizeBoardWizardImageIntent(data.image_intent, title, subtitle, notes, tags),
+    image_context: cleanLine(data.image_context, boardWizardImageContext(subtitle, notes), 120),
     place_query: cleanLine(data.place_query, title, 140),
     tour: normalizeBoardCardTour(data.tour),
   };
+}
+
+function canonicalBoardWizardEntityName(title: string): string {
+  return title
+    .replace(/^\s*(?:[#№]?\d{1,3}(?:st|nd|rd|th)?\s*[.):\]-]?\s*|[-*•]\s+)/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeBoardWizardEntityType(
+  value: unknown,
+  cardType: GeneratedBoardWizardCard['type'],
+): NonNullable<GeneratedBoardWizardCard['entity_type']> {
+  if (value === 'person' || value === 'place' || value === 'event' || value === 'work'
+    || value === 'product' || value === 'food' || value === 'organization' || value === 'other') {
+    return value;
+  }
+  if (cardType === 'place' || cardType === 'shop') return 'place';
+  if (cardType === 'food') return 'food';
+  return 'other';
+}
+
+function normalizeBoardWizardImageIntent(
+  value: unknown,
+  title: string,
+  subtitle: string,
+  notes: string,
+  tags: string[],
+): NonNullable<GeneratedBoardWizardCard['image_intent']> {
+  if (value === 'portrait' || value === 'place' || value === 'event' || value === 'cover'
+    || value === 'product' || value === 'food' || value === 'logo' || value === 'other') {
+    return value;
+  }
+  const text = `${title} ${subtitle} ${notes} ${tags.join(' ')}`.toLowerCase();
+  if (/\b(portrait|person|born|president|politician|artist|author|athlete|actor|singer|leader)\b/.test(text)) return 'portrait';
+  if (/\b(movie|film|album|song|book|novel|game|poster|cover)\b/.test(text)) return 'cover';
+  if (/\b(event|final|championship|ceremony|election|launch|opening|year)\b/.test(text)) return 'event';
+  if (/\b(food|dish|meal|dessert|menu)\b/.test(text)) return 'food';
+  return 'other';
+}
+
+function boardWizardImageContext(subtitle: string, notes: string): string {
+  const year = `${subtitle} ${notes}`.match(/\b(18\d{2}|19\d{2}|20\d{2})(?:\s*[–—-]\s*(?:18\d{2}|19\d{2}|20\d{2}|present))?/i)?.[0] ?? '';
+  return year.replace(/\s+/g, ' ').trim();
 }
 
 function normalizeGeneratedBoardWizardImageQuery(
