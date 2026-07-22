@@ -5781,8 +5781,14 @@ export class BoardsComponent implements OnDestroy {
   }
 
   stackTitleClass(title: string): string {
-    if (title.length >= 30) return 'stack-preview__title--very-long';
-    if (title.length >= 16) return 'stack-preview__title--long';
+    const normalized = title.replace(/\s+/g, ' ').trim();
+    const longestWordLength = normalized
+      .split(/\s+/)
+      .reduce((length, word) => Math.max(length, word.replace(/[^\p{L}\p{N}'’-]/gu, '').length), 0);
+    if (normalized.length >= 52) return 'stack-preview__title--extra-long';
+    if (normalized.length >= 30) return 'stack-preview__title--very-long';
+    if (longestWordLength >= 12 && normalized.length < 24) return 'stack-preview__title--long-word';
+    if (normalized.length >= 16) return 'stack-preview__title--long';
     return '';
   }
 

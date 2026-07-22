@@ -81,7 +81,7 @@
                   <div class="stack-preview__shade"></div>
                   <div class="stack-preview__content stack-preview__content--cover">
                     <span i18n>A LivingWiki Stack</span>
-                    <h4>{{ stackCoverTitle() || board.title }}</h4>
+                    <h4 [class]="stackTitleClass(stackCoverTitle() || board.title)">{{ stackCoverTitle() || board.title }}</h4>
                     <p>{{ stackCoverSubtitle() }}</p>
                     @if (stackHasTourNarration() && !stackTourNarrationConsent()) {
                       <button type="button" class="stack-tour-start" (click)="startNarratedStack($event)" i18n>
