@@ -34,4 +34,23 @@ describe('board wizard pasted sources', () => {
     expect(source.length).toBeLessThan(BOARD_WIZARD_PASTE_MAX_LENGTH);
     expect(parseNumberedBoardSource(source)?.items.length).toBe(3);
   });
+
+  it('removes markdown emphasis from source titles without losing the entity', () => {
+    const parsed = parseNumberedBoardSource([
+      'Ranked places',
+      '1. **The Balvenie** — Dufftown',
+      'Book a tour to see traditional whisky craft.',
+      '2. **Glenfiddich** — Speyside',
+      'Known for single malt and visitor tours.',
+      '3. **Springbank** — Campbeltown',
+      'An old-school working distillery.',
+    ].join('\n'));
+    expect(parsed?.items.map((item) => item.title)).toEqual(['The Balvenie', 'Glenfiddich', 'Springbank']);
+  });
+
+  it('preserves the source ranking criterion separately from its title', () => {
+    const parsed = parseNumberedBoardSource('Top visits\nRanked for memorable experiences, not prestige.\n1. One\nA\n2. Two\nB\n3. Three\nC');
+    expect(parsed?.title).toBe('Top visits');
+    expect(parsed?.description).toBe('Ranked for memorable experiences, not prestige.');
+  });
 });

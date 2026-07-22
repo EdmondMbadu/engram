@@ -48,12 +48,12 @@
                 </div>
               </div>
               <div class="stack-viewer-actions">
-                @if (stackCurrentTourCard()) {
+                @if (stackCurrentCard(); as narratableCard) {
                   <button
                     type="button"
-                    [attr.aria-label]="stackTourNarrationLoading() ? 'Preparing tour narration' : 'Replay tour narration'"
-                    [attr.title]="stackTourNarrationLoading() ? 'Preparing tour narration' : 'Replay tour narration'"
-                    (click)="replayStackTourNarration($event)"
+                    [attr.aria-label]="tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
+                    [attr.title]="tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
+                    (click)="tourSpeechPlaying() ? stopTourSpeech() : (narratableCard.tour ? replayStackTourNarration($event) : replayStackCardNarration(narratableCard, $event))"
                   >
                     <span class="material-symbols-outlined">
                       {{ stackTourNarrationLoading() ? 'progress_activity' : tourSpeechPlaying() ? 'graphic_eq' : 'volume_up' }}
@@ -98,9 +98,23 @@
                     @if (!isPhotoOnlyCard(card)) {
                       <div class="stack-preview__shade"></div>
                       <div class="stack-preview__content">
-                        <span>{{ card.status }} · {{ card.rating }}/5</span>
-                        <h4>{{ card.title }}</h4>
-                        <p>{{ card.subtitle || card.notes }}</p>
+                        <span>{{ stackCardEyebrow(card) }}</span>
+                        <h4 [class]="stackTitleClass(card.title)">{{ card.title }}</h4>
+                        <p>{{ stackCardSummary(card) }}</p>
+                        @if (stackCardHasMore(card)) {
+                          <button type="button" class="stack-preview__read-more" (click)="toggleStackCardDetails(card, $event)">
+                            {{ stackExpandedCardId() === card.id ? 'Close' : 'Read more' }}
+                          </button>
+                        }
+                        @if (stackExpandedCardId() === card.id) {
+                          <div class="stack-preview__details" role="region" aria-label="Card details">
+                            <p>{{ card.notes }}</p>
+                            <button type="button" (click)="replayStackCardNarration(card, $event)">
+                              <span class="material-symbols-outlined">volume_up</span>
+                              Listen
+                            </button>
+                          </div>
+                        }
                         @if (card.tour) {
                           <div
                             class="stack-tour-narration"
@@ -2521,7 +2535,7 @@
                         </label>
                         <label>
                           <span i18n>Notes</span>
-                          <textarea rows="5" maxlength="260" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
+                          <textarea rows="7" maxlength="3600" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
                         </label>
                         <div class="wizard-card-editor__field-pair">
                           <label>
@@ -2659,6 +2673,14 @@
 
                 <aside class="boards-wizard-refine">
                   <h4 i18n>Refine</h4>
+                  <p class="boards-wizard-refine__quality">
+                    <strong>{{ wizardImageCoveragePercent() }}% image coverage</strong>
+                    @if (wizardMissingImageCount()) {
+                      <span>{{ wizardMissingImageCount() }} card{{ wizardMissingImageCount() === 1 ? '' : 's' }} still need a verified image.</span>
+                    } @else {
+                      <span>Every card has an image.</span>
+                    }
+                  </p>
                   <textarea
                     rows="5"
                     placeholder="Make it more kid-friendly, add cheaper options, remove duplicates..."

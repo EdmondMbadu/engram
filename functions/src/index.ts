@@ -10,7 +10,15 @@ import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedBoardSource } from './board-wizard-source';
-import { wikipediaPageTitleMatchScore } from './board-wizard-image-quality';
+import {
+  boardWizardImageEntityName,
+  buildBoardWizardCommonsSearchQueries,
+  buildBoardWizardPlaceSearchQueries,
+  rankBoardWizardPlaceCandidates,
+  shouldResolveBoardWizardCardAsPlace,
+  wikipediaPageTitleMatchScore,
+} from './board-wizard-image-quality';
+import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import {
@@ -1397,8 +1405,11 @@ type WikipediaPageMediaResponse = {
 
 type GoogleCustomSearchImageResponse = {
   items?: Array<{
+    title?: string;
     link?: string;
     mime?: string;
+    displayLink?: string;
+    snippet?: string;
     image?: {
       contextLink?: string;
       thumbnailLink?: string;
@@ -1538,6 +1549,7 @@ type SpotifyTokenResponse = {
 };
 
 let spotifyAccessTokenCache: { token: string; expiresAt: number } | null = null;
+let googleCustomSearchUnavailableUntil = 0;
 
 type WikimediaCommonsImageResponse = {
   query?: {
@@ -4532,6 +4544,13 @@ type BoardWizardCurrentCard = {
   tags: string[];
   image_query: string;
   place_query: string;
+  entity_name?: string;
+  entity_type?: GeneratedBoardWizardCard['entity_type'];
+  image_intent?: GeneratedBoardWizardCard['image_intent'];
+  image_context?: string;
+  media_kind?: GeneratedBoardWizardCard['media_kind'];
+  short_summary?: string;
+  rank?: number;
   audioPreviewUrl?: string;
   spotifyTrackId?: string;
   spotifyTrackUrl?: string;
@@ -5897,7 +5916,7 @@ async function enrichBoardWizardBatchWithPlaces(
   // bounded so Wikimedia and the other providers do not receive one large burst.
   const enrichedCards = await mapWithConcurrency(
     batch.cards,
-    3,
+    5,
     async (card, index) => {
       const exactReferenceImage = exactReferenceImages.get(index);
       if (!card.imageUrl && exactReferenceImage) {
@@ -5915,7 +5934,46 @@ async function enrichBoardWizardBatchWithPlaces(
       return enrichBoardWizardCard(card, searchContext, apiKey, customSearchApiKey);
     },
   );
-  return { ...batch, cards: enrichedCards };
+  const repairedCards = await mapWithConcurrency(enrichedCards, 3, async (card) => {
+    if (card.imageUrl || isBoardWizardMenuItemCard(card)) return card;
+    const startedAt = Date.now();
+    let imageUrl = await withBoardWizardTimeout(
+      findCommonsReferenceImageForBoardWizard(card, searchContext),
+      6_000,
+      '',
+    );
+    let provider = imageUrl ? 'wikimedia' : '';
+    if (!imageUrl && customSearchApiKey) {
+      imageUrl = await withBoardWizardTimeout(
+        findBoardWizardVerifiedWebImage(card, searchContext, customSearchApiKey),
+        5_000,
+        '',
+      );
+      if (imageUrl) provider = 'verified-web';
+    }
+    logger.info('Board wizard final image repair completed.', {
+      entity: boardWizardImageEntityName(card),
+      resolved: !!imageUrl,
+      provider,
+      durationMs: Date.now() - startedAt,
+    });
+    return imageUrl ? { ...card, imageUrl } : card;
+  });
+  const resolvedImageCount = repairedCards.filter((card) => !!card.imageUrl).length;
+  const providerCounts = repairedCards.reduce<Record<string, number>>((counts, card) => {
+    if (!card.imageUrl) return counts;
+    const provider = boardWizardImageProvider(card.imageUrl);
+    counts[provider] = (counts[provider] ?? 0) + 1;
+    return counts;
+  }, {});
+  logger.info('Board wizard image coverage completed.', {
+    cardCount: repairedCards.length,
+    resolvedImageCount,
+    coveragePercent: repairedCards.length ? Math.round(resolvedImageCount / repairedCards.length * 100) : 100,
+    providerCounts,
+    missingEntities: repairedCards.filter((card) => !card.imageUrl).map((card) => card.entity_name || card.title).slice(0, 30),
+  });
+  return { ...batch, cards: repairedCards };
 }
 
 async function mapWithConcurrency<T, R>(
@@ -6170,6 +6228,13 @@ async function buildBoardWizardImageOnlyBatch(
     tags: options.currentCard.tags,
     image_query: buildBoardWizardCardImageQuery(options.currentCard, options.prompt, options.targetBoardTitle),
     place_query: options.currentCard.place_query || options.targetBoardTitle || options.currentCard.title,
+    entity_name: options.currentCard.entity_name,
+    entity_type: options.currentCard.entity_type,
+    image_intent: options.currentCard.image_intent,
+    image_context: options.currentCard.image_context,
+    media_kind: options.currentCard.media_kind,
+    short_summary: options.currentCard.short_summary,
+    rank: options.currentCard.rank,
     audioPreviewUrl: options.currentCard.audioPreviewUrl,
     spotifyTrackId: options.currentCard.spotifyTrackId,
     spotifyTrackUrl: options.currentCard.spotifyTrackUrl,
@@ -6189,7 +6254,7 @@ async function buildBoardWizardImageOnlyBatch(
   if (!imageUrl && (card.type === 'food' || /food|dish|dessert|cake|menu-item/i.test(`${card.title} ${card.tags.join(' ')}`))) {
     imageUrl = customSearchApiKey ? await findBoardWizardMenuItemWebImage(card.image_query, customSearchApiKey) : '';
   }
-  if (!imageUrl && card.type !== 'food' && card.scope === 'place' && apiKey) {
+  if (!imageUrl && card.type !== 'food' && shouldResolveBoardWizardCardAsPlace(card) && apiKey) {
     const enriched = await enrichBoardWizardCardWithPlace(card, options.targetBoardTitle, apiKey);
     imageUrl = enriched.imageUrl || '';
   }
@@ -6208,7 +6273,7 @@ async function buildBoardWizardImageOnlyBatch(
     imageUrl = await findReferenceImageForBoardWizard(card.image_query);
   }
   if (!imageUrl) {
-    imageUrl = await findCommonsReferenceImageForBoardWizard(card.image_query);
+    imageUrl = await findCommonsReferenceImageForBoardWizard(card, options.targetBoardTitle);
   }
   if (!imageUrl && card.type !== 'food') {
     imageUrl = await findReferenceImageForBoardWizard(card.image_query);
@@ -6431,7 +6496,9 @@ async function enrichBoardWizardCard(
       audioPreviewUrl: musicAudioPreviewUrl || card.audioPreviewUrl,
     };
   }
-  const placeEnriched = apiKey ? await enrichBoardWizardCardWithPlace(card, searchContext, apiKey) : card;
+  const placeEnriched = apiKey && shouldResolveBoardWizardCardAsPlace(card)
+    ? await withBoardWizardTimeout(enrichBoardWizardCardWithPlace(card, searchContext, apiKey), 7_000, card)
+    : card;
   if (placeEnriched.imageUrl) {
     return placeEnriched;
   }
@@ -6440,6 +6507,9 @@ async function enrichBoardWizardCard(
 
 function shouldUseReferenceImageBeforePlaces(card: GeneratedBoardWizardCard, searchContext: string): boolean {
   if (isBoardWizardMenuItemCard(card)) {
+    return false;
+  }
+  if (shouldResolveBoardWizardCardAsPlace(card)) {
     return false;
   }
   if (card.entity_type && ['person', 'event', 'work', 'product', 'organization'].includes(card.entity_type)) {
@@ -6483,25 +6553,20 @@ function buildBoardWizardReferenceImageQuery(card: GeneratedBoardWizardCard, sea
   return title.slice(0, 140);
 }
 
-type BoardWizardReferenceImageKind = 'film' | 'song' | 'album' | 'book' | 'tv' | 'game' | 'person' | '';
+type BoardWizardReferenceImageKind = Exclude<BoardWizardMediaKind, 'none'> | 'person' | '';
 
 function boardWizardReferenceImageKind(card: GeneratedBoardWizardCard | BoardWizardCurrentCard, searchContext = ''): BoardWizardReferenceImageKind {
   if ('entity_type' in card && card.entity_type === 'person') {
     return 'person';
   }
-  if ('image_intent' in card) {
-    if (card.image_intent === 'portrait') return 'person';
-    if (card.image_intent === 'cover') {
-      const explicitText = `${card.image_query} ${'image_context' in card ? card.image_context ?? '' : ''}`.toLowerCase();
-      if (/\b(song|single|track)\b/.test(explicitText)) return 'song';
-      if (/\b(album|ep|lp)\b/.test(explicitText)) return 'album';
-      if (/\b(book|novel|memoir)\b/.test(explicitText)) return 'book';
-      if (/\b(tv|television|series|season)\b/.test(explicitText)) return 'tv';
-      if (/\b(video game|game|console)\b/.test(explicitText)) return 'game';
-      if (/\b(movie|film|cinema)\b/.test(explicitText)) return 'film';
-    }
-  }
-  const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${searchContext}`.toLowerCase();
+  if ('image_intent' in card && card.image_intent === 'portrait') return 'person';
+  const mediaKind = resolveBoardWizardMediaKind(card);
+  if (mediaKind !== 'none') return mediaKind;
+  if ('media_kind' in card && card.media_kind) return '';
+
+  // Legacy fallback only: use card-local content. Global board context must
+  // never turn every card into the same media type.
+  const text = `${card.title} ${card.subtitle} ${card.tags.join(' ')} ${card.image_query}`.toLowerCase();
   const cardText = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')}`.toLowerCase();
   if (/\b(president|presidential|first lady|signer|founding father|politician|governor|senator|representative|justice)\b/.test(cardText)) {
     return 'person';
@@ -6768,65 +6833,104 @@ async function enrichBoardWizardCardWithPlace(
   if (isBoardWizardMenuItemCard(card)) {
     return card;
   }
-  if (card.scope !== 'place' || !['place', 'food', 'shop'].includes(card.type)) {
+  if (!shouldResolveBoardWizardCardAsPlace(card)) {
     return card;
   }
 
-  const baseQuery = textFromUnknown(card.place_query || card.title).slice(0, 160);
-  if (baseQuery.length < 2) {
+  const queries = buildBoardWizardPlaceSearchQueries(card, searchContext);
+  if (!queries.length) {
     return card;
   }
 
-  const query = [baseQuery, searchContext].filter(Boolean).join(', ').slice(0, 240);
+  const startedAt = Date.now();
+  let attemptedQueries = 0;
+  let candidateCount = 0;
+  let selectedQuery = '';
+  let selectedScore = 0;
+  let selectedPlace: NonNullable<GooglePlacesTextSearchResponse['results']>[number] | null = null;
   try {
-    const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
-    searchUrl.searchParams.set('query', query);
-    searchUrl.searchParams.set('key', apiKey);
-    const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
-    if (search.status && search.status !== 'OK' && search.status !== 'ZERO_RESULTS') {
-      logger.warn('Board wizard Google Places text search failed.', {
-        status: search.status,
-        error: search.error_message,
-        query,
+    for (const query of queries) {
+      attemptedQueries += 1;
+      const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
+      searchUrl.searchParams.set('query', query);
+      searchUrl.searchParams.set('key', apiKey);
+      const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
+      if (search.status && search.status !== 'OK' && search.status !== 'ZERO_RESULTS') {
+        logger.warn('Board wizard Google Places text search failed.', {
+          status: search.status,
+          error: search.error_message,
+          entity: boardWizardImageEntityName(card),
+          query,
+        });
+        continue;
+      }
+
+      const results = search.results ?? [];
+      candidateCount += results.length;
+      const ranked = rankBoardWizardPlaceCandidates(card, results, searchContext);
+      const best = ranked[0];
+      if (!best) continue;
+      const bestHasPhoto = !!bestBoardWizardPlacePhotoReference(best.candidate.photos ?? []);
+      const selectedHasPhoto = !!bestBoardWizardPlacePhotoReference(selectedPlace?.photos ?? []);
+      if (!selectedPlace || (bestHasPhoto && !selectedHasPhoto) || best.score > selectedScore) {
+        selectedPlace = best.candidate;
+        selectedScore = best.score;
+        selectedQuery = query;
+      }
+      if (bestHasPhoto) break;
+    }
+
+    const placeId = textFromUnknown(selectedPlace?.place_id);
+    if (!placeId) {
+      logger.info('Board wizard place image lookup completed.', {
+        entity: boardWizardImageEntityName(card),
+        resolved: false,
+        attemptedQueries,
+        candidateCount,
+        durationMs: Date.now() - startedAt,
       });
       return card;
     }
 
-    const place = search.results?.[0];
-    const placeId = textFromUnknown(place?.place_id);
-    if (!placeId) {
-      return card;
-    }
-
-    const details = await fetchGooglePlaceDetailsForBoardWizard(placeId, apiKey);
-    const photos = details?.photos?.length ? details.photos : place?.photos ?? [];
-    const photoReference = textFromUnknown(photos[0]?.photo_reference);
-    const name = textFromUnknown(details?.name) || textFromUnknown(place?.name) || card.title;
-    const address = textFromUnknown(details?.formatted_address) || textFromUnknown(place?.formatted_address);
-    const types = Array.isArray(details?.types) ? details.types.map((type) => textFromUnknown(type)).filter(Boolean) : Array.isArray(place?.types) ? place.types.map((type) => textFromUnknown(type)).filter(Boolean) : [];
-    const rating = typeof details?.rating === 'number'
-      ? details.rating
-      : typeof place?.rating === 'number'
-        ? place.rating
-        : card.rating;
+    const selectedPhotos = selectedPlace?.photos ?? [];
+    const details = bestBoardWizardPlacePhotoReference(selectedPhotos)
+      ? null
+      : await fetchGooglePlaceDetailsForBoardWizard(placeId, apiKey);
+    const photos = details?.photos?.length ? details.photos : selectedPhotos;
+    const photoReference = bestBoardWizardPlacePhotoReference(photos);
+    const matchedName = textFromUnknown(details?.name) || textFromUnknown(selectedPlace?.name) || card.title;
+    const address = textFromUnknown(details?.formatted_address) || textFromUnknown(selectedPlace?.formatted_address);
+    const types = Array.isArray(details?.types)
+      ? details.types.map((type) => textFromUnknown(type)).filter(Boolean)
+      : Array.isArray(selectedPlace?.types)
+        ? selectedPlace.types.map((type) => textFromUnknown(type)).filter(Boolean)
+        : [];
     const lat = typeof details?.geometry?.location?.lat === 'number'
       ? details.geometry.location.lat
-      : typeof place?.geometry?.location?.lat === 'number'
-        ? place.geometry.location.lat
+      : typeof selectedPlace?.geometry?.location?.lat === 'number'
+        ? selectedPlace.geometry.location.lat
         : card.tour?.lat ?? null;
     const lng = typeof details?.geometry?.location?.lng === 'number'
       ? details.geometry.location.lng
-      : typeof place?.geometry?.location?.lng === 'number'
-        ? place.geometry.location.lng
+      : typeof selectedPlace?.geometry?.location?.lng === 'number'
+        ? selectedPlace.geometry.location.lng
         : card.tour?.lng ?? null;
+
+    logger.info('Board wizard place image lookup completed.', {
+      entity: boardWizardImageEntityName(card),
+      resolved: !!photoReference,
+      matchedName,
+      selectedScore,
+      selectedQuery,
+      attemptedQueries,
+      candidateCount,
+      durationMs: Date.now() - startedAt,
+    });
 
     return {
       ...card,
-      title: name.slice(0, 80),
-      subtitle: address ? address.slice(0, 90) : card.subtitle,
-      rating: Math.max(1, Math.min(5, Math.round(rating || card.rating || 4))),
       tags: mergeBoardWizardTags(card.tags, types.map((type) => type.replace(/_/g, ' '))),
-      place_query: query,
+      place_query: selectedQuery || card.place_query,
       placeId,
       googleMapsUrl: textFromUnknown(details?.url) || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`,
       imageUrl: photoReference ? `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(photoReference)}` : card.imageUrl,
@@ -6842,11 +6946,29 @@ async function enrichBoardWizardCardWithPlace(
   } catch (error) {
     logger.warn('Board wizard place enrichment failed.', {
       title: card.title,
-      query,
+      entity: boardWizardImageEntityName(card),
+      attemptedQueries,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
     return card;
   }
+}
+
+function bestBoardWizardPlacePhotoReference(
+  photos: Array<{ photo_reference?: string; width?: number; height?: number }>,
+): string {
+  return photos
+    .map((photo, index) => {
+      const photoReference = textFromUnknown(photo.photo_reference);
+      const width = typeof photo.width === 'number' ? photo.width : 0;
+      const height = typeof photo.height === 'number' ? photo.height : 0;
+      const ratio = width > 0 && height > 0 ? width / height : 1;
+      const landscapeScore = ratio >= 1.15 && ratio <= 2.4 ? 45 : ratio >= 0.9 && ratio < 1.15 ? 20 : 0;
+      const resolutionScore = Math.min(30, Math.round(Math.max(width, height) / 120));
+      return { photoReference, score: landscapeScore + resolutionScore - index * 2 };
+    })
+    .filter((item) => !!item.photoReference)
+    .sort((left, right) => right.score - left.score)[0]?.photoReference ?? '';
 }
 
 function isBoardWizardMenuItemCard(card: GeneratedBoardWizardCard): boolean {
@@ -6927,6 +7049,23 @@ async function findBoardWizardMenuItemWebImage(query: string, customSearchApiKey
 
 async function findBoardWizardReferenceWebImage(query: string, customSearchApiKey: string): Promise<string> {
   return customSearchApiKey ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, { imageType: 'any' }) : '';
+}
+
+async function findBoardWizardVerifiedWebImage(
+  card: GeneratedBoardWizardCard,
+  searchContext: string,
+  customSearchApiKey: string,
+): Promise<string> {
+  const entityName = boardWizardImageEntityName(card);
+  const queries = buildBoardWizardCommonsSearchQueries(card, searchContext).slice(0, 2);
+  for (const query of queries) {
+    const imageUrl = await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, {
+      imageType: card.image_intent === 'place' || card.image_intent === 'portrait' ? 'photo' : 'any',
+      entityName,
+    });
+    if (imageUrl) return imageUrl;
+  }
+  return '';
 }
 
 async function findAppleMusicMediaForBoardWizard(
@@ -7052,7 +7191,7 @@ async function findSpotifyTrackForBoardWizard(
     return spotifyApiMatch;
   }
   const cx = googleCustomSearchCx.trim();
-  if (!customSearchApiKey || !cx) {
+  if (!customSearchApiKey || !cx || Date.now() < googleCustomSearchUnavailableUntil) {
     return null;
   }
 
@@ -7076,6 +7215,9 @@ async function findSpotifyTrackForBoardWizard(
       });
       const search = await response.json() as GoogleCustomSearchWebResponse;
       if (!response.ok || search.error?.message) {
+        if (response.status === 403 || response.status === 429) {
+          googleCustomSearchUnavailableUntil = Date.now() + (response.status === 403 ? 60 * 60 * 1000 : 60 * 1000);
+        }
         logger.warn('Board wizard Spotify track search failed.', {
           query,
           status: response.status,
@@ -7632,9 +7774,13 @@ function musicArtworkTokens(value: string): string[] {
     .slice(0, 6);
 }
 
-async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: string, options: { imageType?: 'photo' | 'any' } = {}): Promise<string> {
+async function findGoogleCustomSearchImageForBoardWizard(
+  query: string,
+  apiKey: string,
+  options: { imageType?: 'photo' | 'any'; entityName?: string } = {},
+): Promise<string> {
   const cx = googleCustomSearchCx.trim();
-  if (!cx) {
+  if (!cx || Date.now() < googleCustomSearchUnavailableUntil) {
     return '';
   }
 
@@ -7658,6 +7804,9 @@ async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: 
     });
     const search = await response.json() as GoogleCustomSearchImageResponse;
     if (!response.ok) {
+      if (response.status === 403 || response.status === 429) {
+        googleCustomSearchUnavailableUntil = Date.now() + (response.status === 403 ? 60 * 60 * 1000 : 60 * 1000);
+      }
       logger.warn('Board wizard Google image search failed.', {
         query,
         status: response.status,
@@ -7672,7 +7821,10 @@ async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: 
       });
       return '';
     }
-    for (const item of search.items ?? []) {
+    const items = options.entityName
+      ? rankGoogleImageResultsForBoardWizard(search.items ?? [], options.entityName)
+      : search.items ?? [];
+    for (const item of items) {
       const link = textFromUnknown(item.link);
       if (link && canTryCoverImageUrl(link)) {
         return link;
@@ -7689,6 +7841,39 @@ async function findGoogleCustomSearchImageForBoardWizard(query: string, apiKey: 
     });
   }
   return '';
+}
+
+function rankGoogleImageResultsForBoardWizard(
+  items: NonNullable<GoogleCustomSearchImageResponse['items']>,
+  entityName: string,
+): NonNullable<GoogleCustomSearchImageResponse['items']> {
+  const entityTokens = meaningfulBoardWizardTokens(entityName)
+    .filter((token) => !['official', 'photo', 'image', 'picture'].includes(token))
+    .slice(0, 5);
+  if (!entityTokens.length) return [];
+  const requiredMatches = entityTokens.length <= 2 ? entityTokens.length : Math.max(2, Math.ceil(entityTokens.length * 0.67));
+  return items
+    .map((item, index) => {
+      const haystack = [
+        item.title,
+        item.snippet,
+        item.displayLink,
+        item.image?.contextLink,
+        item.link,
+      ].map((value) => textFromUnknown(value).toLowerCase()).join(' ');
+      const matches = entityTokens.filter((token) => haystack.includes(token)).length;
+      const url = textFromUnknown(item.link).toLowerCase();
+      const unsafeAsset = /\b(?:sprite|placeholder|avatar-default|favicon|loading)[-_.]/.test(url)
+        || /\.(?:svg|gif)(?:\?|$)/.test(url);
+      return {
+        item,
+        matches,
+        score: matches * 30 - index * 2 - (unsafeAsset ? 100 : 0),
+      };
+    })
+    .filter((result) => result.matches >= requiredMatches && result.score > 0)
+    .sort((left, right) => right.score - left.score)
+    .map((result) => result.item);
 }
 
 async function findWikimediaCommonsImagesForBoardCard(
@@ -8534,13 +8719,22 @@ function wikipediaTitleCaseVariants(title: string): string[] {
   return variants;
 }
 
-async function findCommonsReferenceImageForBoardWizard(query: string): Promise<string> {
+async function findCommonsReferenceImageForBoardWizard(
+  queryOrCard: string | GeneratedBoardWizardCard,
+  searchContext = '',
+): Promise<string> {
+  const card = typeof queryOrCard === 'string' ? null : queryOrCard;
+  const query = typeof queryOrCard === 'string'
+    ? queryOrCard
+    : buildBoardWizardReferenceImageQuery(queryOrCard, searchContext);
   const isFoodQuery = /\b(food|dish|meal|dessert|drink|restaurant|menu)\b/i.test(query);
-  const searchTerms = [query, isFoodQuery ? `${query} food` : '']
-    .map((term) => term.replace(/\s+/g, ' ').trim())
-    .filter((term) => term.length >= 3)
-    .filter((term, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === term.toLowerCase()) === index)
-    .slice(0, 3);
+  const searchTerms = card
+    ? buildBoardWizardCommonsSearchQueries(card, searchContext)
+    : [query, isFoodQuery ? `${query} food` : '']
+      .map((term) => term.replace(/\s+/g, ' ').trim())
+      .filter((term) => term.length >= 3)
+      .filter((term, index, all) => all.findIndex((candidate) => candidate.toLowerCase() === term.toLowerCase()) === index)
+      .slice(0, 4);
 
   for (const term of searchTerms) {
     const url = new URL('https://commons.wikimedia.org/w/api.php');
@@ -8549,7 +8743,7 @@ async function findCommonsReferenceImageForBoardWizard(query: string): Promise<s
     url.searchParams.set('generator', 'search');
     url.searchParams.set('gsrsearch', term);
     url.searchParams.set('gsrnamespace', '6');
-    url.searchParams.set('gsrlimit', '6');
+    url.searchParams.set('gsrlimit', '12');
     url.searchParams.set('prop', 'imageinfo');
     url.searchParams.set('iiprop', 'url|mime|size');
     url.searchParams.set('iiurlwidth', '1200');
@@ -8558,7 +8752,12 @@ async function findCommonsReferenceImageForBoardWizard(query: string): Promise<s
     const rankedPages = Object.values(data.query?.pages ?? {})
       .map((page) => ({
         page,
-        score: scoreWikipediaMediaFileTitle(textFromUnknown(page.title), query, exactWikipediaTitleCandidates(query)),
+        score: scoreBoardWizardCommonsCandidate(
+          textFromUnknown(page.title),
+          term,
+          exactWikipediaTitleCandidates(term),
+          card,
+        ),
       }))
       .filter((item) => item.score >= 20)
       .sort((left, right) => right.score - left.score);
@@ -8580,6 +8779,37 @@ async function findCommonsReferenceImageForBoardWizard(query: string): Promise<s
   }
 
   return '';
+}
+
+function scoreBoardWizardCommonsCandidate(
+  fileTitle: string,
+  query: string,
+  titleCandidates: string[],
+  card: GeneratedBoardWizardCard | null,
+): number {
+  let score = scoreWikipediaMediaFileTitle(fileTitle, query, titleCandidates);
+  if (!score || !card) return score;
+  const normalized = fileTitle.toLowerCase();
+  if (shouldResolveBoardWizardCardAsPlace(card)) {
+    if (/\b(distillery|building|exterior|entrance|visitor|centre|center|estate|view|facade|façade)\b/.test(normalized)) {
+      score += 30;
+    }
+    if (/\b(bottle|bottling|label|packaging|box|advert|advertisement|logo|map|diagram)\b/.test(normalized)) {
+      score -= 70;
+    }
+  }
+  if (card.image_intent === 'portrait' && /\b(portrait|headshot|photograph|photo)\b/.test(normalized)) {
+    score += 25;
+  }
+  return score;
+}
+
+function boardWizardImageProvider(imageUrl: string): string {
+  if (imageUrl.includes('/boardPlacePhoto?')) return 'google-places';
+  if (/upload\.wikimedia\.org|wikimedia\.org|wikipedia\.org/i.test(imageUrl)) return 'wikimedia';
+  if (/googleusercontent\.com|gstatic\.com/i.test(imageUrl)) return 'google';
+  if (/mzstatic\.com|spotifycdn\.com|scdn\.co|deezer/i.test(imageUrl)) return 'music-provider';
+  return 'web-or-source';
 }
 
 function inferBoardWizardPlaceContext(prompt: string, boardTitle: string): string {
@@ -8647,9 +8877,9 @@ function shapeNumberedSourceWizardBatch(
     const notes = item.body || generated?.notes || 'Imported from the pasted source.';
     const type = generated?.type ?? defaultType;
     return {
-      title: item.title.replace(/\s+/g, ' ').trim().slice(0, 80),
-      subtitle: subtitle.slice(0, 90),
-      notes: notes.replace(/\s+/g, ' ').trim().slice(0, 260),
+      title: cleanBoardWizardSourceText(item.title).slice(0, 80),
+      subtitle: cleanBoardWizardSourceText(subtitle).slice(0, 120),
+      notes: cleanBoardWizardSourceText(notes).slice(0, 3600),
       type,
       scope: generated?.scope ?? 'place',
       status: generated?.status ?? 'saved',
@@ -8657,6 +8887,13 @@ function shapeNumberedSourceWizardBatch(
       tags: mergeBoardWizardTags([`rank-${item.rank}`, 'source-item'], generated?.tags ?? []),
       image_query: (generated?.image_query || `${item.title} ${sourceTitle} travel photo`).slice(0, 120),
       place_query: (generated?.place_query || item.title).slice(0, 140),
+      entity_name: cleanBoardWizardSourceText(generated?.entity_name || item.title).slice(0, 100),
+      entity_type: generated?.entity_type ?? (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
+      image_intent: generated?.image_intent ?? (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
+      image_context: generated?.image_context || item.subtitle,
+      media_kind: generated?.media_kind ?? 'none',
+      short_summary: generated?.short_summary || item.subtitle || firstBoardWizardSentence(notes),
+      rank: item.rank,
       imageUrl: generated?.imageUrl,
       audioPreviewUrl: generated?.audioPreviewUrl,
       spotifyTrackId: generated?.spotifyTrackId,
@@ -8675,10 +8912,24 @@ function shapeNumberedSourceWizardBatch(
     board: {
       ...batch.board,
       title: sourceTitle || batch.board.title,
-      description: batch.board.description || `${cards.length} ordered items imported from pasted text.`,
+      description: source.description.slice(0, 500) || batch.board.description || `${cards.length} ordered items imported from pasted text.`,
     },
     cards,
   };
+}
+
+function cleanBoardWizardSourceText(value: string): string {
+  return value
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/^[#>*_`~\s-]+|[*_`~]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function firstBoardWizardSentence(value: string): string {
+  const cleaned = cleanBoardWizardSourceText(value);
+  return (cleaned.match(/^(.{1,155}?[.!?])(?:\s|$)/)?.[1] ?? cleaned.slice(0, 160)).trim();
 }
 
 function mergeBoardWizardTags(existing: string[], additions: string[]): string[] {
@@ -8768,7 +9019,7 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
   return {
     title,
     subtitle: stringOrEmpty(data.subtitle).slice(0, 120),
-    notes: stringOrEmpty(data.notes).slice(0, 300),
+    notes: stringOrEmpty(data.notes).slice(0, 3600),
     type,
     scope: scopeRaw === 'city' || scopeRaw === 'country' || scopeRaw === 'region' ? scopeRaw : 'place',
     status: statusRaw === 'planned' || statusRaw === 'visited' || statusRaw === 'favorite' ? statusRaw : 'saved',
@@ -8778,6 +9029,13 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
       : [],
     image_query: stringOrEmpty(data.image_query).slice(0, 160),
     place_query: stringOrEmpty(data.place_query).slice(0, 180),
+    entity_name: stringOrEmpty(data.entity_name).slice(0, 100) || undefined,
+    entity_type: normalizeBoardWizardEntityTypeValue(data.entity_type),
+    image_intent: normalizeBoardWizardImageIntentValue(data.image_intent),
+    image_context: stringOrEmpty(data.image_context).slice(0, 120) || undefined,
+    media_kind: normalizeBoardWizardMediaKindValue(data.media_kind),
+    short_summary: stringOrEmpty(data.short_summary).slice(0, 160) || undefined,
+    rank: normalizeBoardWizardRankValue(data.rank),
     audioPreviewUrl: stringOrEmpty(data.audioPreviewUrl).slice(0, 2000) || undefined,
     spotifyTrackId: stringOrEmpty(data.spotifyTrackId).slice(0, 120) || undefined,
     spotifyTrackUrl: stringOrEmpty(data.spotifyTrackUrl).slice(0, 2000) || undefined,
@@ -8786,6 +9044,26 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
     spotifyAlbumName: stringOrEmpty(data.spotifyAlbumName).slice(0, 180) || undefined,
     spotifyArtworkUrl: stringOrEmpty(data.spotifyArtworkUrl).slice(0, 2000) || undefined,
   };
+}
+
+function normalizeBoardWizardEntityTypeValue(value: unknown): GeneratedBoardWizardCard['entity_type'] | undefined {
+  return value === 'person' || value === 'place' || value === 'event' || value === 'work'
+    || value === 'product' || value === 'food' || value === 'organization' || value === 'other' ? value : undefined;
+}
+
+function normalizeBoardWizardImageIntentValue(value: unknown): GeneratedBoardWizardCard['image_intent'] | undefined {
+  return value === 'portrait' || value === 'place' || value === 'event' || value === 'cover'
+    || value === 'product' || value === 'food' || value === 'logo' || value === 'other' ? value : undefined;
+}
+
+function normalizeBoardWizardMediaKindValue(value: unknown): GeneratedBoardWizardCard['media_kind'] | undefined {
+  return value === 'none' || value === 'song' || value === 'album' || value === 'film'
+    || value === 'book' || value === 'tv' || value === 'game' ? value : undefined;
+}
+
+function normalizeBoardWizardRankValue(value: unknown): number | undefined {
+  const rank = typeof value === 'number' ? Math.trunc(value) : Number.parseInt(stringOrEmpty(value), 10);
+  return Number.isFinite(rank) && rank > 0 && rank <= 100 ? rank : undefined;
 }
 
 function stripHtmlForBoardWizard(html: string): string {

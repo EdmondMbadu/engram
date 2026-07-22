@@ -2,7 +2,7 @@ import { GoogleGenAI, type GenerateContentResponse } from '@google/genai';
 import { defineSecret } from 'firebase-functions/params';
 import { logger } from 'firebase-functions';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
-import { shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
+import { boardWizardResearchMode, shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
 import type { ExtractBlock, KnowledgeEntryDraft, MappableLocation, ModelUsage, WikiArticleDraft, WikiArticlePlan } from './types';
 import {
   normalizeRelatedTopics,
@@ -188,6 +188,9 @@ const boardWizardBatchSchema = {
           entity_type: { type: 'string' },
           image_intent: { type: 'string' },
           image_context: { type: 'string' },
+          media_kind: { type: 'string' },
+          short_summary: { type: 'string' },
+          rank: { type: 'integer' },
           place_query: { type: 'string' },
           tour: {
             type: 'object',
@@ -224,6 +227,9 @@ const boardWizardBatchSchema = {
           'entity_type',
           'image_intent',
           'image_context',
+          'media_kind',
+          'short_summary',
+          'rank',
           'place_query',
         ],
       },
@@ -424,6 +430,9 @@ export type GeneratedBoardWizardCard = {
   entity_type?: 'person' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
   image_intent?: 'portrait' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
   image_context?: string;
+  media_kind?: 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
+  short_summary?: string;
+  rank?: number;
   place_query: string;
   imageUrl?: string;
   audioPreviewUrl?: string;
@@ -1243,6 +1252,7 @@ export async function generateBoardWizardBatch(params: {
 }): Promise<GeneratedBoardWizardBatch> {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
   const verificationRequired = shouldVerifyBoardWizardBatch(params, count);
+  const researchMode = boardWizardResearchMode(params);
   const cardLimit = params.countIsExplicit ? count : verificationRequired ? 100 : count;
   const prompt = buildBoardWizardPrompt({ ...params, count, verificationRequired });
 
@@ -1256,7 +1266,8 @@ export async function generateBoardWizardBatch(params: {
           responseJsonSchema: boardWizardBatchSchema,
           temperature: 0.28,
           maxOutputTokens: verificationRequired ? 16384 : Math.min(16384, 1100 + count * 420),
-          thinkingConfig: { thinkingBudget: wizardModel === model ? 512 : 0 },
+          tools: verificationRequired && researchMode !== 'source' ? [{ googleSearch: {} }] : undefined,
+          thinkingConfig: { thinkingBudget: wizardModel === model ? (researchMode === 'curated' ? 1536 : 768) : 0 },
         },
       });
       const draft = normalizeBoardWizardBatch(parseJsonResponse<unknown>(response.text ?? '{}'), params, cardLimit);
@@ -1312,6 +1323,7 @@ async function verifyBoardWizardBatch(
   targetCount: number,
   cardLimit: number,
 ): Promise<GeneratedBoardWizardBatch> {
+  const researchMode = boardWizardResearchMode(params);
   const verificationPrompt = [
     'You are the factual verification editor for a LivingWiki board.',
     'Use Google Search to verify the requested scope, membership, ordering, dates, current status, and entity identities.',
@@ -1319,6 +1331,15 @@ async function verifyBoardWizardBatch(
     'Do not merely critique the draft; repair it.',
     'Remove duplicates unless the same entity legitimately appears more than once for distinct terms, years, editions, works, or events.',
     'Remove adjacent filler: a complete-set request may contain only actual members of that set, never related buildings, institutions, resources, generic facts, or action cards.',
+    researchMode === 'curated'
+      ? 'This is a curated recommendation or ranking. Research a broad candidate pool, infer the requested ranking criterion, compare candidates against that criterion, and return a defensible ordered selection rather than a fame list.'
+      : '',
+    researchMode === 'curated'
+      ? 'Every description must contain concrete, entity-specific reasons for its position and maintain the requested editorial voice. Reject interchangeable promotional filler.'
+      : '',
+    researchMode === 'source'
+      ? 'The pasted source is authoritative for membership, order, titles, viewpoint, and notes. Do not replace its selections or rewrite away its voice; only repair metadata and clearly unsupported factual errors.'
+      : '',
     'For a closed or complete real-world set, completeness and the evidence-backed cardinality override the UI target count unless the user explicitly supplied a numeric count.',
     params.countIsExplicit
       ? `The user explicitly requested ${targetCount} cards. Return exactly that many in the requested scope.`
@@ -1329,6 +1350,9 @@ async function verifyBoardWizardBatch(
     '- entity_type: person, place, event, work, product, food, organization, or other.',
     '- image_intent: portrait, place, event, cover, product, food, logo, or other.',
     '- image_context: short disambiguation such as role, creator, location, year, edition, term, or event.',
+    '- media_kind: none, song, album, film, book, tv, or game. Use none for people, places, events, products, food, and organizations even if their prose mentions media words.',
+    '- short_summary: a vivid standalone hook of at most 160 characters for compact and Live View presentation.',
+    '- rank: the requested one-based rank, sequence, or source position; otherwise 0.',
     'image_query must target entity_name plus image_context and image_intent. Never let incidental words in notes change the depicted subject.',
     '',
     'Original user request:',
@@ -1426,7 +1450,7 @@ function buildBoardWizardPrompt(params: {
           'SOURCE-FIDELITY MODE: The pasted text is a structured numbered source.',
           `It contains exactly ${numberedSource.items.length} ordered items. Return exactly one card for every item in the same order.`,
           'Use each source item title as the card title. Do not omit, merge, replace, reorder, or invent items.',
-          'Use the source heading/tagline for the subtitle and condense only that item body for notes.',
+          'Preserve the complete source item body in notes without truncating or moving text between items. Create short_summary separately for compact display.',
           'Facts in the source override general knowledge. Do not add unsupported claims.',
         ].join('\n')
       : '',
@@ -1446,7 +1470,7 @@ function buildBoardWizardPrompt(params: {
           'Use type "place", scope "place", status "planned" or "saved", and tags including "tour-stop".',
         ].join('\n')
       : '',
-    'Each title should be max 70 characters. Each subtitle max 90 characters. Each notes field max 260 characters.',
+    'Each title should be max 70 characters. Each subtitle max 120 characters. Notes may be up to 3600 characters when the source or requested voice warrants detail; never cut a sentence in half.',
     'Card type must be one of: place, food, memory, idea, shop, note.',
     'Scope must be one of: place, city, country, region.',
     'Status must be one of: planned, saved, visited, favorite.',
@@ -1454,6 +1478,8 @@ function buildBoardWizardPrompt(params: {
     'Tags should be lowercase, 1-6 items, short and useful.',
     'image_query should be a short search phrase for the most accurate image for that exact card entity.',
     'For every card, set entity_name to the canonical depicted subject; set entity_type to person, place, event, work, product, food, organization, or other; set image_intent to portrait, place, event, cover, product, food, logo, or other; and set image_context to the minimum role, creator, location, year, edition, term, or event needed to disambiguate it.',
+    'Set media_kind to none unless the card entity itself is a song, album, film, book, TV work, or video game. Words in notes such as "single malt", "book a tour", "track record", or "artist-designed" never make a card media.',
+    'Set short_summary to a specific, vivid hook of at most 160 characters. Set rank to the requested one-based position or 0 when the board is not ordered.',
     'The entity fields are authoritative for image selection. Incidental nouns in notes must never replace the entity being depicted.',
     'place_query should be a Google Places-style lookup query when the item is a real place; otherwise use the title.',
     params.countIsExplicit
@@ -1521,8 +1547,8 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
     return null;
   }
   const type = normalizeBoardWizardCardType(data.type, fallbackType);
-  const subtitle = cleanLine(data.subtitle, type === 'food' ? 'Worth saving for later' : 'Generated by the LivingWiki Wizard', 90);
-  const notes = cleanLine(data.notes, 'Review and edit this generated card before sharing the board.', 260);
+  const subtitle = cleanLine(data.subtitle, type === 'food' ? 'Worth saving for later' : 'Generated by the LivingWiki Wizard', 120);
+  const notes = cleanLine(data.notes, 'Review and edit this generated card before sharing the board.', 3600);
   const tags = Array.isArray(data.tags)
     ? data.tags.map((tag) => cleanLine(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
     : [];
@@ -1540,9 +1566,27 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
     entity_type: normalizeBoardWizardEntityType(data.entity_type, type),
     image_intent: normalizeBoardWizardImageIntent(data.image_intent, title, subtitle, notes, tags),
     image_context: cleanLine(data.image_context, boardWizardImageContext(subtitle, notes), 120),
+    media_kind: normalizeBoardWizardMediaKind(data.media_kind),
+    short_summary: cleanLine(data.short_summary, subtitle || firstBoardWizardSentence(notes), 160),
+    rank: normalizeBoardWizardRank(data.rank),
     place_query: cleanLine(data.place_query, title, 140),
     tour: normalizeBoardCardTour(data.tour),
   };
+}
+
+function normalizeBoardWizardMediaKind(value: unknown): NonNullable<GeneratedBoardWizardCard['media_kind']> {
+  return value === 'song' || value === 'album' || value === 'film' || value === 'book'
+    || value === 'tv' || value === 'game' ? value : 'none';
+}
+
+function normalizeBoardWizardRank(value: unknown): number {
+  const rank = typeof value === 'number' ? Math.trunc(value) : Number.parseInt(String(value ?? ''), 10);
+  return Number.isFinite(rank) && rank > 0 && rank <= 100 ? rank : 0;
+}
+
+function firstBoardWizardSentence(value: string): string {
+  const sentence = value.match(/^(.{1,155}?[.!?])(?:\s|$)/)?.[1] ?? value.slice(0, 160);
+  return sentence.trim();
 }
 
 function canonicalBoardWizardEntityName(title: string): string {

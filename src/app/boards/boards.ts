@@ -27,6 +27,9 @@ type BoardVisibility = 'public' | 'private';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardScope = 'place' | 'city' | 'country' | 'region';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
+type BoardEntityType = 'person' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
+type BoardImageIntent = 'portrait' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
+type BoardMediaKind = 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
@@ -103,6 +106,13 @@ type BoardCard = {
   scope: BoardCardScope;
   status: BoardCardStatus;
   rating: number;
+  entityName?: string;
+  entityType?: BoardEntityType;
+  imageIntent?: BoardImageIntent;
+  imageContext?: string;
+  mediaKind?: BoardMediaKind;
+  shortSummary?: string;
+  rank?: number;
   imageUrl: string;
   imageUrls: string[];
   audioPreviewUrl: string;
@@ -283,6 +293,13 @@ type BoardWizardGeneratedCard = {
   tags: string[];
   image_query: string;
   place_query: string;
+  entity_name?: string;
+  entity_type?: BoardEntityType;
+  image_intent?: BoardImageIntent;
+  image_context?: string;
+  media_kind?: BoardMediaKind;
+  short_summary?: string;
+  rank?: number;
   imageUrl?: string;
   audioPreviewUrl?: string;
   spotifyTrackId?: string;
@@ -1041,6 +1058,7 @@ export class BoardsComponent implements OnDestroy {
   readonly stackPublishedVideoReady = signal(false);
   readonly stackShareMode = signal<StackShareMode>('video');
   readonly stackDirectView = signal(false);
+  readonly stackExpandedCardId = signal<string | null>(null);
   readonly stackShareDialogOpen = signal(false);
   readonly stackFrameDurationMs = 4200;
   readonly stackActiveFrameDurationMs = signal(this.stackFrameDurationMs);
@@ -1295,6 +1313,11 @@ export class BoardsComponent implements OnDestroy {
   readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
   readonly wizardTargetBoards = computed(() => this.boards().filter((board) => this.canEditBoard(board)));
   readonly wizardSelectedCount = computed(() => this.wizardSelectedCardIds().size);
+  readonly wizardMissingImageCount = computed(() => this.wizardPreviewCards().filter((card) => !card.imageUrl).length);
+  readonly wizardImageCoveragePercent = computed(() => {
+    const cards = this.wizardPreviewCards();
+    return cards.length ? Math.round((cards.length - this.wizardMissingImageCount()) / cards.length * 100) : 100;
+  });
   readonly selectedCardCount = computed(() => this.selectedCardIds().size);
   readonly cardWizardCanGenerate = computed(() => {
     const draft = this.cardDraft();
@@ -1333,6 +1356,10 @@ export class BoardsComponent implements OnDestroy {
   );
   readonly stackCurrentFrame = computed<StackFrame>(() => {
     return this.stackFrameAtIndex(this.stackFrameIndex());
+  });
+  readonly stackCurrentCard = computed<BoardCard | null>(() => {
+    const frame = this.stackCurrentFrame();
+    return frame.kind === 'card' ? frame.card ?? null : null;
   });
   readonly stackCurrentTourCard = computed<BoardCard | null>(() => {
     const frame = this.stackCurrentFrame();
@@ -2455,6 +2482,13 @@ export class BoardsComponent implements OnDestroy {
       scope: card.scope,
       status: card.status,
       rating: Math.max(1, Math.min(5, Math.round(card.rating) || 4)),
+      entityName: card.entity_name?.trim() || card.title.trim(),
+      entityType: card.entity_type ?? (card.type === 'place' || card.type === 'shop' ? 'place' : card.type === 'food' ? 'food' : 'other'),
+      imageIntent: card.image_intent ?? (card.type === 'place' || card.type === 'shop' ? 'place' : card.type === 'food' ? 'food' : 'other'),
+      imageContext: card.image_context?.trim() ?? '',
+      mediaKind: card.media_kind ?? 'none',
+      shortSummary: card.short_summary?.trim() || card.subtitle.trim(),
+      rank: Math.max(0, Math.min(100, Math.trunc(card.rank ?? 0))),
       imageUrl: card.imageUrl,
       imageUrls: card.imageUrl ? [card.imageUrl] : [],
       audioPreviewUrl: card.audioPreviewUrl ?? '',
@@ -5593,12 +5627,13 @@ export class BoardsComponent implements OnDestroy {
     return board.imageUrl || board.cards.find((card) => card.imageUrl)?.imageUrl || '';
   }
 
-  isSongCard(card: Pick<BoardCard, 'title' | 'subtitle' | 'notes' | 'tags' | 'audioPreviewUrl' | 'spotifyTrackId' | 'spotifyTrackUrl'>): boolean {
+  isSongCard(card: Pick<BoardCard, 'title' | 'subtitle' | 'tags' | 'audioPreviewUrl' | 'spotifyTrackId' | 'spotifyTrackUrl' | 'mediaKind' | 'entityType'>): boolean {
     if (card.spotifyTrackId || card.spotifyTrackUrl || card.audioPreviewUrl) {
       return true;
     }
-    const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')}`.toLowerCase();
-    return /\b(song|songs|music|album|single|track|hit|hits|singer|artist|spotify|playlist)\b/.test(text);
+    if (card.mediaKind) return card.mediaKind === 'song';
+    if (card.entityType && card.entityType !== 'work') return false;
+    return card.tags.some((tag) => ['song', 'songs', 'music-track', 'spotify-track'].includes(tag.toLowerCase()));
   }
 
   spotifyTrackEmbedUrl(card: BoardCard): SafeResourceUrl | null {
@@ -5719,6 +5754,63 @@ export class BoardsComponent implements OnDestroy {
       this.stackPlaying.set(true);
     }
     this.advanceStackFrame({ forceTourNarration: resumeTourPlayback });
+  }
+
+  toggleStackCardDetails(card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const opening = this.stackExpandedCardId() !== card.id;
+    if (opening) this.stopStackPlayback();
+    this.stackExpandedCardId.set(opening ? card.id : null);
+  }
+
+  stackCardEyebrow(card: BoardCard): string {
+    const rank = card.rank || this.rankFromTags(card.tags);
+    return [rank ? `#${rank}` : '', card.subtitle].filter(Boolean).join(' · ');
+  }
+
+  stackCardSummary(card: BoardCard): string {
+    const summary = (card.shortSummary || card.subtitle || '').trim();
+    if (summary && summary !== card.subtitle) return summary;
+    const sentence = card.notes.match(/^(.{1,155}?[.!?])(?:\s|$)/)?.[1] ?? '';
+    return sentence || card.subtitle;
+  }
+
+  stackCardHasMore(card: BoardCard): boolean {
+    return card.notes.trim().length > 0 && card.notes.trim() !== this.stackCardSummary(card).trim();
+  }
+
+  stackTitleClass(title: string): string {
+    if (title.length >= 30) return 'stack-preview__title--very-long';
+    if (title.length >= 16) return 'stack-preview__title--long';
+    return '';
+  }
+
+  replayStackCardNarration(card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const text = (card.notes || card.shortSummary || card.subtitle).trim();
+    if (!text || !this.isBrowser || typeof window.speechSynthesis === 'undefined') return;
+    this.stopStackPlayback();
+    this.stopTourSpeech();
+    const utterance = new SpeechSynthesisUtterance(text.slice(0, 3600));
+    const language = navigator.language || 'en-US';
+    const root = language.split('-')[0]?.toLowerCase();
+    const voices = window.speechSynthesis.getVoices();
+    utterance.voice = voices.find((voice) => voice.lang.toLowerCase() === language.toLowerCase())
+      ?? voices.find((voice) => voice.lang.toLowerCase().startsWith(`${root}-`))
+      ?? null;
+    utterance.lang = utterance.voice?.lang || language;
+    utterance.rate = 0.96;
+    this.tourSpeechUtterance = utterance;
+    this.tourSpeechPlaying.set(true);
+    utterance.onend = utterance.onerror = () => {
+      if (this.tourSpeechUtterance === utterance) {
+        this.tourSpeechUtterance = null;
+        this.tourSpeechPlaying.set(false);
+      }
+    };
+    window.speechSynthesis.speak(utterance);
   }
 
   beginStackSwipe(event: PointerEvent): void {
@@ -6417,6 +6509,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private advanceStackFrame(options: { forceTourNarration?: boolean } = {}): void {
+    this.stackExpandedCardId.set(null);
     this.stackFrameIndex.update((index) => {
       const count = this.stackFrameCount();
       return count ? (index + 1) % count : 0;
@@ -6830,13 +6923,15 @@ export class BoardsComponent implements OnDestroy {
     return {
       board: {
         title: this.stringValue(boardData['title'], fallback.board.title, 90),
-        description: this.stringValue(boardData['description'], fallback.board.description, 220),
+        description: this.stringValue(boardData['description'], fallback.board.description, 500),
         icon: this.stringValue(boardData['icon'], fallback.board.icon, 64),
         tone: this.isBoardTone(boardData['tone']) ? boardData['tone'] : fallback.board.tone,
         kind: this.isBoardKind(boardData['kind']) ? boardData['kind'] : fallback.board.kind,
         tourMeta: this.normalizeTourMeta(boardData['tourMeta']) ?? fallback.board.tourMeta,
       },
-      cards: (cards.length ? cards : fallback.cards).slice(0, this.wizardCount()),
+      // The server owns explicit-count and complete-set cardinality decisions.
+      // Do not truncate a verified complete set back to the UI's default count.
+      cards: (cards.length ? cards : fallback.cards).slice(0, 100),
     };
   }
 
@@ -6850,8 +6945,8 @@ export class BoardsComponent implements OnDestroy {
       return null;
     }
     const type = this.isBoardCardType(data['type']) ? data['type'] : this.wizardDefaultType();
-    const subtitle = this.stringValue(data['subtitle'], 'Wizard draft', 90);
-    const notes = this.stringValue(data['notes'], 'Review and edit this card before saving.', 260);
+    const subtitle = this.stringValue(data['subtitle'], 'Wizard draft', 120);
+    const notes = this.stringValue(data['notes'], 'Review and edit this card before saving.', 3600);
     const tags = Array.isArray(data['tags'])
       ? data['tags'].map((tag) => this.stringValue(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
       : [this.wizardVibe(), type].slice(0, 6);
@@ -6867,6 +6962,13 @@ export class BoardsComponent implements OnDestroy {
       tags,
       image_query: this.normalizeWizardImageQuery(title, imageQuery, subtitle, notes, tags),
       place_query: this.stringValue(data['place_query'], title, 140),
+      entity_name: this.stringValue(data['entity_name'], title, 100),
+      entity_type: this.isBoardEntityType(data['entity_type']) ? data['entity_type'] : (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
+      image_intent: this.isBoardImageIntent(data['image_intent']) ? data['image_intent'] : (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
+      image_context: this.stringValue(data['image_context'], '', 120),
+      media_kind: this.isBoardMediaKind(data['media_kind']) ? data['media_kind'] : 'none',
+      short_summary: this.stringValue(data['short_summary'], subtitle, 160),
+      rank: this.numberValue(data['rank'], 0, 0, 100),
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
       audioPreviewUrl: this.stringValue(data['audioPreviewUrl'], '', 2000),
       spotifyTrackId: this.stringValue(data['spotifyTrackId'], '', 120),
@@ -6893,6 +6995,13 @@ export class BoardsComponent implements OnDestroy {
       tags: card.tags,
       image_query: this.normalizeWizardImageQuery(card.title, card.image_query || `${card.title} image`, card.subtitle, card.notes, card.tags),
       place_query: card.place_query || card.title,
+      entity_name: card.entity_name || card.title,
+      entity_type: card.entity_type,
+      image_intent: card.image_intent,
+      image_context: card.image_context || '',
+      media_kind: card.media_kind || 'none',
+      short_summary: card.short_summary || card.subtitle,
+      rank: card.rank || 0,
       audioPreviewUrl: card.audioPreviewUrl || '',
       spotifyTrackId: card.spotifyTrackId || '',
       spotifyTrackUrl: card.spotifyTrackUrl || '',
@@ -6905,7 +7014,7 @@ export class BoardsComponent implements OnDestroy {
 
   private async enrichWizardCards(cards: BoardWizardGeneratedCard[]): Promise<BoardWizardPreviewCard[]> {
     const preview: BoardWizardPreviewCard[] = [];
-    for (const card of cards.slice(0, this.wizardCount())) {
+    for (const card of cards.slice(0, 100)) {
       let enriched: BoardWizardPreviewCard = {
         ...card,
         id: this.createId(),
@@ -6928,9 +7037,6 @@ export class BoardsComponent implements OnDestroy {
           if (place) {
             enriched = {
               ...enriched,
-              title: place.name || enriched.title,
-              subtitle: place.address || enriched.subtitle,
-              rating: place.rating ? Math.round(place.rating) : enriched.rating,
               imageUrl: place.photoUrl || enriched.imageUrl,
               placeId: place.placeId,
               googleMapsUrl: place.googleMapsUrl,
@@ -6965,6 +7071,10 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private isReferenceEntityWizardCard(card: BoardWizardGeneratedCard): boolean {
+    if (card.entity_type) {
+      if (card.media_kind && card.media_kind !== 'none') return true;
+      return ['person', 'event', 'work', 'product', 'organization'].includes(card.entity_type);
+    }
     const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query}`.toLowerCase();
     return /\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|poet|philosopher|general|monarch|king|queen|emperor|saint|historical figure|world cup|fifa|national team|football team|soccer team|winner|winners|champion|champions|tournament|award|awards|record|records)\b/.test(text);
   }
@@ -7961,6 +8071,13 @@ export class BoardsComponent implements OnDestroy {
       scope: this.isBoardCardScope(data['scope']) ? data['scope'] : this.inferLegacyCardScope(data),
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: typeof data['rating'] === 'number' ? Math.max(1, Math.min(5, data['rating'])) : 4,
+      entityName: typeof data['entityName'] === 'string' ? data['entityName'] : title,
+      entityType: this.isBoardEntityType(data['entityType']) ? data['entityType'] : (this.isBoardCardType(data['type']) && (data['type'] === 'place' || data['type'] === 'shop') ? 'place' : 'other'),
+      imageIntent: this.isBoardImageIntent(data['imageIntent']) ? data['imageIntent'] : 'other',
+      imageContext: typeof data['imageContext'] === 'string' ? data['imageContext'] : '',
+      mediaKind: this.isBoardMediaKind(data['mediaKind']) ? data['mediaKind'] : 'none',
+      shortSummary: typeof data['shortSummary'] === 'string' ? data['shortSummary'] : (typeof data['subtitle'] === 'string' ? data['subtitle'] : ''),
+      rank: typeof data['rank'] === 'number' ? Math.max(0, Math.min(100, Math.trunc(data['rank']))) : this.rankFromTags(data['tags']),
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
       imageUrls: this.uniqueImageUrls([
         typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
@@ -8322,6 +8439,30 @@ export class BoardsComponent implements OnDestroy {
 
   private isBoardCardStatus(value: unknown): value is BoardCardStatus {
     return typeof value === 'string' && this.cardStatuses.some((status) => status.id === value);
+  }
+
+  private isBoardEntityType(value: unknown): value is BoardEntityType {
+    return value === 'person' || value === 'place' || value === 'event' || value === 'work'
+      || value === 'product' || value === 'food' || value === 'organization' || value === 'other';
+  }
+
+  private isBoardImageIntent(value: unknown): value is BoardImageIntent {
+    return value === 'portrait' || value === 'place' || value === 'event' || value === 'cover'
+      || value === 'product' || value === 'food' || value === 'logo' || value === 'other';
+  }
+
+  private isBoardMediaKind(value: unknown): value is BoardMediaKind {
+    return value === 'none' || value === 'song' || value === 'album' || value === 'film'
+      || value === 'book' || value === 'tv' || value === 'game';
+  }
+
+  private rankFromTags(value: unknown): number {
+    if (!Array.isArray(value)) return 0;
+    for (const tag of value) {
+      const match = typeof tag === 'string' ? tag.match(/^rank-(\d{1,3})$/i) : null;
+      if (match?.[1]) return Math.max(0, Math.min(100, Number.parseInt(match[1], 10)));
+    }
+    return 0;
   }
 
   private isProfilePictureType(value: unknown): value is 'icon' | 'image' {

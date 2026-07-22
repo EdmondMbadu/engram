@@ -10,6 +10,7 @@ export type NumberedBoardSourceItem = {
 
 export type NumberedBoardSource = {
   title: string;
+  description: string;
   items: NumberedBoardSourceItem[];
 };
 
@@ -23,7 +24,7 @@ export function parseNumberedBoardSource(value: string): NumberedBoardSource | n
     if (!current) {
       return;
     }
-    current.body = current.body.replace(/\s+/g, ' ').trim();
+    current.body = cleanSourceMarkdown(current.body);
     items.push(current);
     current = null;
   };
@@ -34,7 +35,7 @@ export function parseNumberedBoardSource(value: string): NumberedBoardSource | n
     if (marker?.[1] && marker[2]) {
       finishCurrent();
       const rank = Number.parseInt(marker[1], 10);
-      const heading = marker[2].replace(/\s+/g, ' ').trim();
+      const heading = cleanSourceMarkdown(marker[2]);
       const headingParts = heading.match(/^(.+?)\s+(?:—|–|-)\s+(.+)$/);
       current = {
         rank,
@@ -61,7 +62,17 @@ export function parseNumberedBoardSource(value: string): NumberedBoardSource | n
   }
 
   return {
-    title: preamble.at(-1)?.replace(/\s+/g, ' ').trim() ?? '',
+    title: cleanSourceMarkdown(preamble[0] ?? ''),
+    description: cleanSourceMarkdown(preamble.slice(1).join(' ')),
     items,
   };
+}
+
+function cleanSourceMarkdown(value: string): string {
+  return value
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/^[#>*_`~\s-]+|[*_`~]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
