@@ -2037,7 +2037,7 @@
 
               @if (learnBoard.learningQuiz?.published) {
                 <div class="board-learning__published-actions">
-                  <button type="button" class="board-learning__secondary" (click)="shareBoardQuiz(learnBoard)" i18n>
+                  <button type="button" class="board-learning__secondary" (click)="openBoardQuizShare()" i18n>
                     <span class="material-symbols-outlined">ios_share</span>
                     Share quiz
                   </button>
@@ -2335,7 +2335,7 @@
                         Start quiz
                         <span class="material-symbols-outlined">arrow_forward</span>
                       </button>
-                      <button type="button" class="board-learning__secondary" (click)="shareBoardQuiz(learnBoard)" i18n>
+                      <button type="button" class="board-learning__secondary" (click)="openBoardQuizShare()" i18n>
                         <span class="material-symbols-outlined">ios_share</span>
                         Share
                       </button>
@@ -2579,7 +2579,7 @@
                 }
 
                 <div class="board-learning__footer-actions board-learning__footer-actions--center">
-                  <button type="button" class="board-learning__secondary" (click)="shareBoardQuiz(learnBoard, true)" i18n>
+                  <button type="button" class="board-learning__secondary" (click)="openBoardQuizShare(true)" i18n>
                     <span class="material-symbols-outlined">ios_share</span>
                     Share challenge
                   </button>
@@ -2605,6 +2605,94 @@
           }
         </div>
       </section>
+
+      @if (boardLearnQuizShareMode(); as shareMode) {
+        <div class="board-quiz-share" (click)="closeBoardQuizShare($event)">
+          <section
+            class="board-quiz-share__sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="board-quiz-share-title"
+            (click)="$event.stopPropagation()"
+          >
+            <header class="board-quiz-share__header">
+              <div>
+                <span class="board-learning__eyebrow" i18n>Share the challenge</span>
+                <h2 id="board-quiz-share-title">
+                  @if (shareMode === 'score') {
+                    <ng-container i18n>Who can beat your score?</ng-container>
+                  } @else {
+                    <ng-container i18n>Invite friends to play</ng-container>
+                  }
+                </h2>
+              </div>
+              <button type="button" aria-label="Close sharing" (click)="closeBoardQuizShare($event)" i18n-aria-label>
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </header>
+
+            <div class="board-quiz-share__preview">
+              <div class="board-quiz-share__art">
+                @if (stackCoverImage(learnBoard); as shareImage) {
+                  <img [src]="shareImage" alt="" />
+                } @else {
+                  <span class="material-symbols-outlined">quiz</span>
+                }
+                <span class="board-quiz-share__art-badge material-symbols-outlined">school</span>
+              </div>
+              <div class="board-quiz-share__preview-copy">
+                <small i18n>Living Wiki quiz</small>
+                <strong>{{ boardQuizShareTitle(learnBoard) }}</strong>
+                <p>{{ boardQuizShareText(learnBoard, shareMode) }}</p>
+                <span>
+                  <span class="material-symbols-outlined">help</span>
+                  <ng-container i18n>{{ learnBoard.learningQuiz?.questions?.length || 0 }} questions</ng-container>
+                  @if (shareMode === 'score' && boardLearnQuizGrade(); as shareGrade) {
+                    <b i18n>{{ shareGrade.score }}/{{ shareGrade.total }} score</b>
+                  }
+                </span>
+              </div>
+            </div>
+
+            <div class="board-quiz-share__destinations" aria-label="Choose a social network" i18n-aria-label>
+              <button type="button" class="board-quiz-share__destination board-quiz-share__destination--whatsapp" (click)="shareBoardQuizTo(learnBoard, 'whatsapp')">
+                <span class="board-quiz-share__social-mark material-symbols-outlined">chat</span>
+                <strong i18n>WhatsApp</strong>
+                <small i18n>Send to friends</small>
+              </button>
+              <button type="button" class="board-quiz-share__destination board-quiz-share__destination--facebook" (click)="shareBoardQuizTo(learnBoard, 'facebook')">
+                <span class="board-quiz-share__social-mark">f</span>
+                <strong i18n>Facebook</strong>
+                <small i18n>Share to your feed</small>
+              </button>
+              <button type="button" class="board-quiz-share__destination board-quiz-share__destination--x" (click)="shareBoardQuizTo(learnBoard, 'x')">
+                <span class="board-quiz-share__social-mark">𝕏</span>
+                <strong>X</strong>
+                <small i18n>Post the challenge</small>
+              </button>
+              <button type="button" class="board-quiz-share__destination board-quiz-share__destination--copy" (click)="copyBoardQuizUrl(learnBoard)">
+                <span class="board-quiz-share__social-mark material-symbols-outlined">link</span>
+                <strong i18n>Copy link</strong>
+                <small i18n>Paste it anywhere</small>
+              </button>
+            </div>
+
+            <button type="button" class="board-quiz-share__more" (click)="shareBoardQuizMore(learnBoard)" i18n>
+              <span class="material-symbols-outlined">more_horiz</span>
+              More sharing options
+            </button>
+            <p class="board-quiz-share__privacy" i18n>
+              The shared link opens this quiz directly. Your answers are never included.
+            </p>
+            @if (boardLearnQuizShareStatus()) {
+              <p class="board-quiz-share__status" aria-live="polite">
+                <span class="material-symbols-outlined">info</span>
+                {{ boardLearnQuizShareStatus() }}
+              </p>
+            }
+          </section>
+        </div>
+      }
     </div>
   }
 

@@ -49,6 +49,13 @@ interface BoardShareCard {
   hasSongMedia: boolean;
 }
 
+interface BoardShareQuiz {
+  title: string;
+  description: string;
+  questionCount: number;
+  leaderboardEnabled: boolean;
+}
+
 interface BoardShare {
   id: string;
   title: string;
@@ -61,6 +68,7 @@ interface BoardShare {
   socialVideoMimeType: string;
   socialVideoUpdatedAt: string | null;
   socialVideoRatio: 'vertical' | 'square' | 'landscape';
+  quiz: BoardShareQuiz | null;
   cards: BoardShareCard[];
   updatedAt: string | null;
 }
@@ -155,7 +163,7 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
   }
 
   if (parsed.image) {
-    const image = await getOrRenderBoardShareImage(board);
+    const image = await getOrRenderBoardShareImage(board, parsed.quiz);
     res
       .status(200)
       .set('Content-Type', 'image/png')
@@ -191,10 +199,10 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
   }
 
   res
-    .status(200)
-    .set('Content-Type', 'text/html; charset=utf-8')
-    .set('Cache-Control', 'public, max-age=300, s-maxage=3600')
-    .send(req.method === 'HEAD' ? undefined : buildBoardSharePageHtml(board, parsed.stack));
+      .status(200)
+      .set('Content-Type', 'text/html; charset=utf-8')
+      .set('Cache-Control', 'public, max-age=300, s-maxage=3600')
+      .send(req.method === 'HEAD' ? undefined : buildBoardSharePageHtml(board, parsed.stack, parsed.quiz));
 }
 
 function parseSharePath(url: string): { cardId: string; kind: ShareImageKind | null } | null {
@@ -223,7 +231,7 @@ function parseTravelSharePath(url: string): { shareId: string; kind: ShareImageK
   };
 }
 
-function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean; video: boolean; player: boolean; rawVideo: boolean } | null {
+function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean; quiz: boolean; video: boolean; player: boolean; rawVideo: boolean } | null {
   const [path, query = ''] = url.split('?');
   const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/(og\.png|video|video\/player|video\.mp4))?\/?$/);
   if (!match) {
@@ -234,6 +242,7 @@ function parseBoardSharePath(url: string): { boardId: string; image: boolean; st
     boardId: match[1],
     image: match[2] === 'og.png',
     stack: new URLSearchParams(query).get('view') === 'stack',
+    quiz: new URLSearchParams(query).get('learn') === 'quiz',
     video: match[2] === 'video',
     player: match[2] === 'video/player',
     rawVideo: match[2] === 'video.mp4',
@@ -369,6 +378,7 @@ async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
         .filter((card): card is BoardShareCard => !!card)
         .slice(0, 50)
     : [];
+  const quiz = cleanBoardShareQuiz(data.learningQuiz);
 
   return {
     id: snapshot.id,
@@ -384,8 +394,26 @@ async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
     socialVideoRatio: data.socialVideoRatio === 'square' || data.socialVideoRatio === 'landscape'
       ? data.socialVideoRatio
       : 'vertical',
+    quiz,
     cards,
     updatedAt: cleanText(data.updated_at_iso, 80) || timestampToIso(data.server_updated_at),
+  };
+}
+
+function cleanBoardShareQuiz(value: unknown): BoardShareQuiz | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const data = value as Record<string, unknown>;
+  const questions = Array.isArray(data.questions) ? data.questions : [];
+  if (data.published !== true || questions.length < 1) {
+    return null;
+  }
+  return {
+    title: cleanText(data.title, 120) || 'Board challenge',
+    description: cleanText(data.description, 300),
+    questionCount: Math.min(12, questions.length),
+    leaderboardEnabled: data.leaderboardEnabled === true,
   };
 }
 
@@ -523,7 +551,7 @@ async function getOrRenderTravelImage(share: TravelCardShare, kind: ShareImageKi
   return image;
 }
 
-async function getOrRenderBoardShareImage(board: BoardShare): Promise<Buffer> {
+async function getOrRenderBoardShareImage(board: BoardShare, quiz = false): Promise<Buffer> {
   const hash = createHash('sha256')
     .update(JSON.stringify({
       imageVersion,
@@ -534,11 +562,12 @@ async function getOrRenderBoardShareImage(board: BoardShare): Promise<Buffer> {
       logoUrl: board.logoUrl,
       kind: board.kind,
       cards: board.cards.slice(0, 4),
+      quiz: quiz ? board.quiz : null,
       updatedAt: board.updatedAt,
     }))
     .digest('hex')
     .slice(0, 18);
-  const path = `board-share/${board.id}/og-${hash}.png`;
+  const path = `board-share/${board.id}/${quiz ? 'quiz-' : ''}og-${hash}.png`;
   const file = storage.bucket().file(path);
 
   try {
@@ -554,7 +583,7 @@ async function getOrRenderBoardShareImage(board: BoardShare): Promise<Buffer> {
     });
   }
 
-  const image = await renderBoardShareImage(board);
+  const image = await renderBoardShareImage(board, quiz);
   await file.save(image, {
     resumable: false,
     contentType: 'image/png',
@@ -595,7 +624,7 @@ async function renderTravelImage(share: TravelCardShare, kind: ShareImageKind): 
   }
 }
 
-async function renderBoardShareImage(board: BoardShare): Promise<Buffer> {
+async function renderBoardShareImage(board: BoardShare, quiz = false): Promise<Buffer> {
   const width = 1200;
   const height = 630;
   const browser = await puppeteer.launch(await resolveLaunchOptions());
@@ -603,7 +632,7 @@ async function renderBoardShareImage(board: BoardShare): Promise<Buffer> {
   try {
     const page = await browser.newPage();
     await page.setViewport({ width, height, deviceScaleFactor: 1 });
-    await page.setContent(buildBoardShareImageHtml(board), { waitUntil: 'networkidle0' });
+    await page.setContent(buildBoardShareImageHtml(board, quiz), { waitUntil: 'networkidle0' });
     const image = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width, height } });
     return Buffer.from(image);
   } finally {
@@ -748,27 +777,33 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
 </html>`;
 }
 
-function buildBoardSharePageHtml(board: BoardShare, stack: boolean): string {
-  const description = boardShareDescription(board);
+function buildBoardSharePageHtml(board: BoardShare, stack: boolean, quiz: boolean): string {
+  const sharedQuiz = quiz ? board.quiz : null;
+  const title = sharedQuiz?.title || board.title;
+  const description = sharedQuiz
+    ? sharedQuiz.description || `Take this ${sharedQuiz.questionCount}-question challenge from ${board.title}.`
+    : boardShareDescription(board);
   const route = boardShareRoute(board);
   const shareVersion = encodeURIComponent(board.updatedAt ?? imageVersion);
-  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}?v=${shareVersion}${stack ? '&view=stack' : ''}`;
-  const appBoardUrl = `${appUrl}/${route}/${encodeURIComponent(board.id)}${stack ? '?view=stack' : ''}`;
+  const modeQuery = stack ? '&view=stack' : sharedQuiz ? '&learn=quiz' : '';
+  const appModeQuery = stack ? '?view=stack' : sharedQuiz ? '?learn=quiz' : '';
+  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}?v=${shareVersion}${modeQuery}`;
+  const appBoardUrl = `${appUrl}/${route}/${encodeURIComponent(board.id)}${appModeQuery}`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
-  const ogImage = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
+  const ogImage = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}${sharedQuiz ? '&learn=quiz' : ''}`;
 
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(`${board.title} | LivingWiki`)}</title>
+  <title>${escapeHtml(`${title} | LivingWiki`)}</title>
   <meta name="description" content="${escapeHtml(description)}">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="${escapeHtml(shareUrl)}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="LivingWiki">
-  <meta property="og:title" content="${escapeHtml(board.title)}">
+  <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${escapeHtml(shareUrl)}">
   <meta property="og:image" content="${escapeHtml(ogImage)}">
@@ -776,16 +811,16 @@ function buildBoardSharePageHtml(board: BoardShare, stack: boolean): string {
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="${escapeHtml(`Cover preview for ${board.title}`)}">
+  <meta property="og:image:alt" content="${escapeHtml(sharedQuiz ? `Quiz preview for ${title}` : `Cover preview for ${board.title}`)}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${escapeHtml(board.title)}">
+  <meta name="twitter:title" content="${escapeHtml(title)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
   <meta name="twitter:image" content="${escapeHtml(ogImage)}">
-  <meta name="twitter:image:alt" content="${escapeHtml(`Cover preview for ${board.title}`)}">
+  <meta name="twitter:image:alt" content="${escapeHtml(sharedQuiz ? `Quiz preview for ${title}` : `Cover preview for ${board.title}`)}">
   <meta name="twitter:label1" content="Curator">
   <meta name="twitter:data1" content="${escapeHtml(board.ownerName)}">
-  <meta name="twitter:label2" content="Collection">
-  <meta name="twitter:data2" content="${escapeHtml(`${board.cards.length} ${board.cards.length === 1 ? 'card' : 'cards'}`)}">
+  <meta name="twitter:label2" content="${sharedQuiz ? 'Challenge' : 'Collection'}">
+  <meta name="twitter:data2" content="${escapeHtml(sharedQuiz ? `${sharedQuiz.questionCount} questions` : `${board.cards.length} ${board.cards.length === 1 ? 'card' : 'cards'}`)}">
   <script>window.location.replace(${JSON.stringify(appBoardUrl)});</script>
   ${sharePageStyles()}
 </head>
@@ -796,10 +831,10 @@ function buildBoardSharePageHtml(board: BoardShare, stack: boolean): string {
         <img src="${appUrl}/assets/image/livingwiki.png" alt="LivingWiki">
         <span>Shared board</span>
       </div>
-      <p class="eyebrow">Opening board</p>
-      <h1>${escapeHtml(board.title)}</h1>
+      <p class="eyebrow">${sharedQuiz ? 'Opening quiz challenge' : 'Opening board'}</p>
+      <h1>${escapeHtml(title)}</h1>
       <p class="subtitle">${escapeHtml(description)}</p>
-      <div class="actions"><a href="${escapeHtml(appBoardUrl)}">Open board</a></div>
+      <div class="actions"><a href="${escapeHtml(appBoardUrl)}">${sharedQuiz ? 'Take the quiz' : 'Open board'}</a></div>
     </section>
   </main>
 </body>
@@ -933,14 +968,18 @@ function boardVideoPlayerDimensions(ratio: BoardShare['socialVideoRatio']): { wi
   return { width: 405, height: 720 };
 }
 
-function buildBoardShareImageHtml(board: BoardShare): string {
-  const description = boardShareDescription(board);
+function buildBoardShareImageHtml(board: BoardShare, quiz = false): string {
+  const sharedQuiz = quiz ? board.quiz : null;
+  const title = sharedQuiz?.title || board.title;
+  const description = sharedQuiz
+    ? sharedQuiz.description || `A ${sharedQuiz.questionCount}-question challenge from ${board.title}.`
+    : boardShareDescription(board);
   const coverImage = board.imageUrl
     || board.cards.find((card) => card.spotifyArtworkUrl || card.imageUrl)?.spotifyArtworkUrl
     || board.cards.find((card) => card.imageUrl)?.imageUrl
     || board.logoUrl;
   const cardType = boardShareRoute(board) === 'songs' ? 'songs' : 'cards';
-  const previewCards = board.cards.slice(0, 3);
+  const previewCards = sharedQuiz ? [] : board.cards.slice(0, 3);
   const cover = coverImage
     ? `<img class="cover" src="${escapeHtml(coverImage)}" alt="">`
     : `<div class="cover cover--empty"><img src="${appUrl}/assets/image/living-wiki-favicon.png" alt=""></div>`;
@@ -962,6 +1001,7 @@ function buildBoardShareImageHtml(board: BoardShare): string {
     .content { display: flex; min-width: 0; flex-direction: column; justify-content: space-between; padding: 46px 46px 40px 32px; }
     .brand { display: flex; align-items: center; gap: 13px; color: #287a5c; font-size: 21px; font-weight: 900; }
     .brand img { width: 48px; height: 48px; object-fit: contain; }
+    .quiz-badge { display: inline-flex; width: fit-content; margin-top: 26px; padding: 9px 14px; border-radius: 999px; background: #5e4ce6; color: white; font-size: 16px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
     h1 { margin: 24px 0 0; font-size: 58px; line-height: .98; font-weight: 950; letter-spacing: 0; overflow-wrap: anywhere; }
     .description { display: -webkit-box; margin: 17px 0 0; overflow: hidden; color: rgba(23,33,29,.72); font-size: 21px; line-height: 1.28; font-weight: 700; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
     .cards { display: grid; gap: 9px; margin-top: 22px; }
@@ -979,7 +1019,8 @@ function buildBoardShareImageHtml(board: BoardShare): string {
     <section class="content">
       <div>
         <div class="brand"><img src="${appUrl}/assets/image/living-wiki-favicon.png" alt="">LivingWiki</div>
-        <h1>${escapeHtml(board.title)}</h1>
+        ${sharedQuiz ? '<div class="quiz-badge">Board challenge</div>' : ''}
+        <h1>${escapeHtml(title)}</h1>
         <p class="description">${escapeHtml(description)}</p>
         <div class="cards">
           ${previewCards.map((card) => {
@@ -991,7 +1032,10 @@ function buildBoardShareImageHtml(board: BoardShare): string {
           }).join('')}
         </div>
       </div>
-      <div class="footer"><span>Curated by <b>${escapeHtml(board.ownerName)}</b></span><span>${board.cards.length} ${escapeHtml(cardType)}</span></div>
+      <div class="footer">
+        <span>${sharedQuiz ? `From <b>${escapeHtml(board.title)}</b>` : `Curated by <b>${escapeHtml(board.ownerName)}</b>`}</span>
+        <span>${sharedQuiz ? `${sharedQuiz.questionCount} questions${sharedQuiz.leaderboardEnabled ? ' · Leaderboard' : ''}` : `${board.cards.length} ${escapeHtml(cardType)}`}</span>
+      </div>
     </section>
   </main>
 </body>

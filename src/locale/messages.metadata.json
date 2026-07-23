@@ -127,6 +127,10 @@
     "source": "The Podcast Universe",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "1112337411579796862": {
+    "source": "Can you beat my score?",
+    "file": "src/app/boards/boards.ts"
+  },
   "1113448493935779306": {
     "source": "Knowledge ready",
     "file": "src/app/chat/chat.ts"
@@ -387,10 +391,6 @@
     "source": " Finds a Wikimedia image for each location, validates the image response, uploads it to our storage, then saves it as the public cover. ",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
-  "1302112181200501100": {
-    "source": "Share sheet opened.",
-    "file": "src/app/boards/boards.ts"
-  },
   "1302951071814792138": {
     "source": "Ask questions",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -574,6 +574,10 @@
   "1437716361546173370": {
     "source": "Vapi assistant ID",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "1438432207083669786": {
+    "source": "More sharing options opened.",
+    "file": "src/app/boards/boards.ts"
   },
   "1441541755814400436": {
     "source": "Quiz Challenge | LivingWiki",
@@ -851,6 +855,10 @@
     "source": "\"Sound calm, direct, and avoid hedging language.\"",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
+  "16005692485610512": {
+    "source": "and see how well you know this board.",
+    "file": "src/app/boards/boards.ts"
+  },
   "1606806526214470410": {
     "source": "No description yet — click \"Edit cover\" to add one.",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -974,6 +982,10 @@
   "1738932212761922063": {
     "source": "City themes",
     "file": "src/app/dymaxion/dymaxion.html"
+  },
+  "1739699747793109589": {
+    "source": "More sharing options could not be opened.",
+    "file": "src/app/boards/boards.ts"
   },
   "1744587461905705029": {
     "source": "Loading your businesses...",
@@ -1190,6 +1202,10 @@
   "1905338138080894943": {
     "source": "Loading cities...",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "1910853702226231310": {
+    "source": "{$START_TAG_SPAN}more_horiz{$CLOSE_TAG_SPAN} More sharing options ",
+    "file": "src/app/boards/boards.html"
   },
   "1913846141774600880": {
     "source": "{$START_TAG_SPAN}progress_activity{$CLOSE_TAG_SPAN} Searching people... ",
@@ -1551,6 +1567,10 @@
     "source": "Only the board owner can delete this board.",
     "file": "src/app/boards/boards.ts"
   },
+  "2175761888402868267": {
+    "source": "Close sharing",
+    "file": "src/app/boards/boards.html"
+  },
   "2184619916211262318": {
     "source": "Copy URL",
     "file": "src/app/chat/chat.ts"
@@ -1730,6 +1750,10 @@
   "2327133521228874688": {
     "source": "Storefront badge",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "2328887072862683678": {
+    "source": "Send to friends",
+    "file": "src/app/boards/boards.html"
   },
   "2329404498126809883": {
     "source": " {$INTERPOLATION} wiki pages ",
@@ -2193,7 +2217,7 @@
   },
   "2618101617221155143": {
     "source": "Copy link",
-    "file": "src/app/chat/chat.ts"
+    "file": "src/app/boards/boards.html"
   },
   "2624150611982326277": {
     "source": "GLP-1 receptor agonists, clinical trial data, off-label use, side effects, market impact, and the pharmaceutical companies behind the weight-loss drug revolution.",
@@ -2290,6 +2314,10 @@
   "2702200797962830082": {
     "source": "Region",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "2702608066914659606": {
+    "source": " The shared link opens this quiz directly. Your answers are never included. ",
+    "file": "src/app/boards/boards.html"
   },
   "2705451968788327147": {
     "source": "Noodles",
@@ -3103,6 +3131,10 @@
     "source": "Teal",
     "file": "src/app/boards/boards.ts"
   },
+  "3301425242131896798": {
+    "source": "Share to your feed",
+    "file": "src/app/boards/boards.html"
+  },
   "3302837907109287968": {
     "source": "A pin on the city map",
     "file": "src/app/business/business.ts"
@@ -3298,10 +3330,6 @@
   "342822285875320469": {
     "source": "Engineered for Complexity",
     "file": "src/app/marketing/marketing.html"
-  },
-  "3428367980660408943": {
-    "source": "Copy was blocked. Try the share button again.",
-    "file": "src/app/boards/boards.ts"
   },
   "3430356428724646742": {
     "source": "{$START_TAG_SPAN}forum{$CLOSE_TAG_SPAN} Open LivingWiki Chat ",
@@ -4055,6 +4083,10 @@
     "source": "The Electric Vehicle Market",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "3985063625595050205": {
+    "source": "{$INTERPOLATION}/{$INTERPOLATION_1} score",
+    "file": "src/app/boards/boards.html"
+  },
   "3985179772764523433": {
     "source": "How to recognize the spot, the best time to visit, or what to bring.",
     "file": "src/app/boards/boards.html"
@@ -4114,6 +4146,10 @@
   "4056340931744707484": {
     "source": "Ending voice mode",
     "file": "src/app/chat/chat.ts"
+  },
+  "4056444989950615988": {
+    "source": "Copy was blocked. Try copying the link instead.",
+    "file": "src/app/boards/boards.ts"
   },
   "4071424234285464370": {
     "source": "Payment returned without a checkout session. Please try checkout again.",
@@ -4186,6 +4222,10 @@
   "4100067899555498514": {
     "source": "Business workspace",
     "file": "src/app/business/business.html"
+  },
+  "4101941266124151376": {
+    "source": "on",
+    "file": "src/app/boards/boards.ts"
   },
   "4108391399616807589": {
     "source": "Choose an app to generate a real video that plays inline. On supported phones, select the app in the share sheet.",
@@ -4698,6 +4738,10 @@
   "4484676174227819130": {
     "source": "Loading business page...",
     "file": "src/app/business-detail/business-detail.html"
+  },
+  "4489024129911784899": {
+    "source": "Facebook opened with your quiz link.",
+    "file": "src/app/boards/boards.ts"
   },
   "4496054669828455745": {
     "source": " View here {$START_TAG_SPAN}reviews{$CLOSE_TAG_SPAN}",
@@ -5519,6 +5563,10 @@
     "source": "Matching LivingWiki users",
     "file": "src/app/boards/boards.html"
   },
+  "5068390791452461168": {
+    "source": "Choose a social network",
+    "file": "src/app/boards/boards.html"
+  },
   "506869882843017649": {
     "source": "Total users",
     "file": "src/app/admin-users/admin-users.html"
@@ -6127,6 +6175,10 @@
     "source": " Close ",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "5548033121436492830": {
+    "source": "Your browser blocked the social window. Copy the link instead.",
+    "file": "src/app/boards/boards.ts"
+  },
   "5548899014377876749": {
     "source": "Sign in to continue",
     "file": "src/app/chat/chat.ts"
@@ -6278,10 +6330,6 @@
   "5647385237943731686": {
     "source": "Cover title",
     "file": "src/app/boards/boards.html"
-  },
-  "5648100405922534843": {
-    "source": "on this board quiz. Can you beat my score?",
-    "file": "src/app/boards/boards.ts"
   },
   "5648528895501098027": {
     "source": "Full collection with every card",
@@ -6975,6 +7023,10 @@
     "source": "Checkout was cancelled. Your draft is still here when you are ready.",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "6165308040554736592": {
+    "source": "X opened with your challenge.",
+    "file": "src/app/boards/boards.ts"
+  },
   "6166411589217463623": {
     "source": "Search pictures",
     "file": "src/app/boards/boards.html"
@@ -6986,10 +7038,6 @@
   "6175856071551146216": {
     "source": "Build private source-aware wikis for trips, research, family projects, or local obsessions.",
     "file": "src/app/pricing/pricing.ts"
-  },
-  "6177373943345489295": {
-    "source": "Take this quiz and see how well you know the board.",
-    "file": "src/app/boards/boards.ts"
   },
   "6177474145653525036": {
     "source": " Claim a business to reserve its QR/chat link, review status, and profile settings under this account. ",
@@ -7203,6 +7251,10 @@
     "source": "Global Climate Action Tracker",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "6310985708589225867": {
+    "source": "Living Wiki quiz",
+    "file": "src/app/boards/boards.html"
+  },
   "6313744038957006342": {
     "source": "This individual card now has its own public share page.",
     "file": "src/app/shared-chat/shared-chat.ts"
@@ -7350,6 +7402,10 @@
   "640826005727057164": {
     "source": "Start with the highest-signal summary from the wiki.",
     "file": "src/app/chat/chat.ts"
+  },
+  "6408664080844295092": {
+    "source": "WhatsApp opened with your challenge.",
+    "file": "src/app/boards/boards.ts"
   },
   "6410644807984501295": {
     "source": "Memories from this stop",
@@ -7754,6 +7810,10 @@
   "6672617702016717708": {
     "source": "Sign in to edit this business.",
     "file": "src/app/business-detail/business-edit.html"
+  },
+  "6675314400486618269": {
+    "source": "Post the challenge",
+    "file": "src/app/boards/boards.html"
   },
   "6680125243225488662": {
     "source": "Your password has been updated. Sign in with your new password.",
@@ -8583,6 +8643,10 @@
     "source": "{$START_TAG_SPAN}refresh{$CLOSE_TAG_SPAN} Refresh my location ",
     "file": "src/app/boards/boards.html"
   },
+  "7396365326609607164": {
+    "source": "Paste it anywhere",
+    "file": "src/app/boards/boards.html"
+  },
   "7400407362759733641": {
     "source": " Pathways {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
     "file": "src/app/green-jobs/green-jobs.html"
@@ -8994,6 +9058,10 @@
   "7741102765121622071": {
     "source": "Topics",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "7744028351858758325": {
+    "source": "Who can beat your score?",
+    "file": "src/app/boards/boards.html"
   },
   "7745243601458940241": {
     "source": "{$START_TAG_SPAN}forum{$CLOSE_TAG_SPAN} Refine batch ",
@@ -9491,6 +9559,10 @@
     "source": "Badge",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "809541642370719476": {
+    "source": "Take",
+    "file": "src/app/boards/boards.ts"
+  },
   "8101261929942565807": {
     "source": "The Data Privacy & Surveillance Atlas",
     "file": "src/app/public-wiki-catalog.ts"
@@ -9606,10 +9678,6 @@
   "8160405922451154962": {
     "source": "Nano Banana uses this card and board as context.",
     "file": "src/app/boards/boards.html"
-  },
-  "8171495541098302013": {
-    "source": "Sharing was cancelled or blocked.",
-    "file": "src/app/boards/boards.ts"
   },
   "817502314469018929": {
     "source": "Card Wizard",
@@ -10023,6 +10091,10 @@
     "source": "Song Board | LivingWiki",
     "file": "src/app/app.routes.ts"
   },
+  "8500486778808537311": {
+    "source": "Invite friends to play",
+    "file": "src/app/boards/boards.html"
+  },
   "8509550095023837712": {
     "source": "PWD Apprenticeship Program",
     "file": "src/app/green-jobs/philly-green-jobs.service.ts"
@@ -10250,6 +10322,10 @@
   "872393250941917477": {
     "source": "Pick the reach that matches your footprint.",
     "file": "src/app/business/business.html"
+  },
+  "8727178487027768435": {
+    "source": "Share the challenge",
+    "file": "src/app/boards/boards.html"
   },
   "8733628623355862210": {
     "source": "No claimed businesses yet.",

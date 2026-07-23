@@ -66,6 +66,8 @@ type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' 
 type StackShareMode = 'video' | 'live';
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
 type BoardLearnView = 'menu' | 'study' | 'quiz-edit' | 'quiz-welcome' | 'quiz-play' | 'quiz-result';
+type BoardQuizShareMode = 'invite' | 'score';
+type BoardQuizShareTarget = Extract<ShareTarget, 'whatsapp' | 'facebook' | 'x'>;
 
 const playerCardVersion = 'x-player-v2';
 
@@ -1145,6 +1147,7 @@ export class BoardsComponent implements OnDestroy {
   readonly boardLearnQuizGuestSkipped = signal(false);
   readonly boardLearnQuizScoreSaved = signal(false);
   readonly boardLearnQuizShareStatus = signal<string | null>(null);
+  readonly boardLearnQuizShareMode = signal<BoardQuizShareMode | null>(null);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -5567,6 +5570,7 @@ export class BoardsComponent implements OnDestroy {
     this.boardLearnQuizGuestSkipped.set(false);
     this.boardLearnQuizScoreSaved.set(false);
     this.boardLearnQuizShareStatus.set(null);
+    this.boardLearnQuizShareMode.set(null);
     if (this.canEditBoard(board) && board.learningQuiz?.published) {
       void this.loadBoardQuizStats(board.id);
     }
@@ -5585,6 +5589,7 @@ export class BoardsComponent implements OnDestroy {
     this.boardLearnQuizStatus.set(null);
     this.boardLearnQuizError.set(null);
     this.boardLearnQuizShareStatus.set(null);
+    this.boardLearnQuizShareMode.set(null);
   }
 
   returnToBoardLearnMenu(): void {
@@ -5594,6 +5599,7 @@ export class BoardsComponent implements OnDestroy {
     this.boardLearnQuizStatus.set(null);
     this.boardLearnQuizError.set(null);
     this.boardLearnQuizShareStatus.set(null);
+    this.boardLearnQuizShareMode.set(null);
   }
 
   boardQuizEligibleCount(board: Board): number {
@@ -5937,6 +5943,10 @@ export class BoardsComponent implements OnDestroy {
   }
 
   boardQuizShareUrl(board: Board): string {
+    if (board.visibility === 'public') {
+      const version = encodeURIComponent(board.updatedAt || board.id);
+      return `${PUBLIC_APP_URL}/share/board/${encodeURIComponent(board.id)}?v=${version}&learn=quiz`;
+    }
     const path = `${this.boardPagePath(board)}?learn=quiz`;
     if (!this.isBrowser) {
       return path;
@@ -5955,32 +5965,80 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  async shareBoardQuiz(board: Board, includeScore = false): Promise<void> {
+  openBoardQuizShare(includeScore = false): void {
+    this.boardLearnQuizShareStatus.set(null);
+    this.boardLearnQuizShareMode.set(includeScore ? 'score' : 'invite');
+  }
+
+  closeBoardQuizShare(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.boardLearnQuizShareMode.set(null);
+    this.boardLearnQuizShareStatus.set(null);
+  }
+
+  boardQuizShareTitle(board: Board): string {
+    return normalizeBoardLearningQuiz(board.learningQuiz)?.title || board.title;
+  }
+
+  boardQuizShareText(board: Board, mode = this.boardLearnQuizShareMode()): string {
+    const quizTitle = this.boardQuizShareTitle(board);
+    const grade = mode === 'score' ? this.boardLearnQuizGrade() : null;
+    return grade
+      ? `${$localize`I scored`} ${grade.score}/${grade.total} ${$localize`on`} “${quizTitle}”. ${$localize`Can you beat my score?`}`
+      : `${$localize`Take`} “${quizTitle}” ${$localize`and see how well you know this board.`}`;
+  }
+
+  shareBoardQuizTo(board: Board, target: BoardQuizShareTarget): void {
     if (!this.isBrowser) {
       return;
     }
-    const quiz = normalizeBoardLearningQuiz(board.learningQuiz);
-    const grade = includeScore ? this.boardLearnQuizGrade() : null;
-    const text = grade
-      ? `${$localize`I scored`} ${grade.score}/${grade.total} ${$localize`on this board quiz. Can you beat my score?`}`
-      : $localize`Take this quiz and see how well you know the board.`;
+    const url = this.boardQuizShareUrl(board);
+    const text = this.boardQuizShareText(board);
+    const encodedUrl = encodeURIComponent(url);
+    const encodedText = encodeURIComponent(text);
+    const destination = target === 'whatsapp'
+      ? `https://wa.me/?text=${encodedText}%0A${encodedUrl}`
+      : target === 'facebook'
+        ? `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+        : `https://x.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+    const popup = window.open(destination, '_blank', 'noopener,noreferrer');
+    this.boardLearnQuizShareStatus.set(
+      popup
+        ? target === 'whatsapp'
+          ? $localize`WhatsApp opened with your challenge.`
+          : target === 'facebook'
+            ? $localize`Facebook opened with your quiz link.`
+            : $localize`X opened with your challenge.`
+        : $localize`Your browser blocked the social window. Copy the link instead.`,
+    );
+  }
+
+  async shareBoardQuizMore(board: Board): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+    const text = this.boardQuizShareText(board);
     try {
       if (navigator.share) {
         await navigator.share({
-          title: quiz?.title || board.title,
+          title: this.boardQuizShareTitle(board),
           text,
           url: this.boardQuizShareUrl(board),
         });
-        this.boardLearnQuizShareStatus.set($localize`Share sheet opened.`);
+        this.boardLearnQuizShareStatus.set($localize`More sharing options opened.`);
         return;
       }
       if (await this.copyTextToClipboard(`${text}\n${this.boardQuizShareUrl(board)}`)) {
         this.boardLearnQuizShareStatus.set($localize`Challenge message copied.`);
       } else {
-        this.boardLearnQuizShareStatus.set($localize`Copy was blocked. Try the share button again.`);
+        this.boardLearnQuizShareStatus.set($localize`Copy was blocked. Try copying the link instead.`);
       }
-    } catch {
-      this.boardLearnQuizShareStatus.set($localize`Sharing was cancelled or blocked.`);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        return;
+      }
+      this.boardLearnQuizShareStatus.set($localize`More sharing options could not be opened.`);
     }
   }
 
