@@ -74,6 +74,7 @@ export class PlaceReviewsService {
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly functions = this.isBrowser ? getFirebaseFunctions() : null;
   private readonly anonymousReviewStorageKey = 'living-wiki:placeReviewVisitorId';
+  private readonly placeSearchCache = new Map<string, CityPlaceCandidate[]>();
 
   async listCityReviewedPlaces(atlasId: string): Promise<CityReviewedPlace[]> {
     if (!this.functions || !atlasId) {
@@ -93,12 +94,21 @@ export class PlaceReviewsService {
       return [];
     }
 
+    const normalizedQuery = query.trim();
+    const cacheKey = `${atlasId}::${normalizedQuery.toLocaleLowerCase()}`;
+    const cached = this.placeSearchCache.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const callable = httpsCallable<{ atlasId: string; query: string }, SearchCityPlacesResponse>(
       this.functions,
       'searchCityPlaces',
     );
-    const result = await callable({ atlasId, query: query.trim() });
-    return Array.isArray(result.data.candidates) ? result.data.candidates : [];
+    const result = await callable({ atlasId, query: normalizedQuery });
+    const candidates = Array.isArray(result.data.candidates) ? result.data.candidates : [];
+    this.placeSearchCache.set(cacheKey, candidates);
+    return candidates;
   }
 
   async listCityPlaceReviews(atlasId: string, placeId: string): Promise<CityPlaceReview[]> {

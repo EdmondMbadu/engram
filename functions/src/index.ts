@@ -46,6 +46,7 @@ import {
   refreshStoredCityPulseSnapshot,
 } from './city-pulse';
 import { refreshCityPopulationMetadata } from './city-population';
+import { buildCityPlaceTextSearchRequest } from './city-place-search';
 import {
   getStoredPhillyGreenJobsSnapshot,
   refreshStoredPhillyGreenJobsSnapshot,
@@ -2103,6 +2104,17 @@ function cityAtlasSearchContext(atlas: Record<string, unknown>): string {
   const region = textFromUnknown(cityConfig.region_name);
   const country = textFromUnknown(cityConfig.country_code);
   return [name, region, country].filter(Boolean).join(', ');
+}
+
+function cityAtlasPlaceSearchBias(atlas: Record<string, unknown>) {
+  const cityConfig = (atlas.city_config ?? {}) as Record<string, unknown>;
+  return {
+    cityName: textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^Living Wiki:\s*/i, ''),
+    regionName: textFromUnknown(cityConfig.region_name),
+    countryCode: textFromUnknown(cityConfig.country_code),
+    latitude: cityConfig.latitude,
+    longitude: cityConfig.longitude,
+  };
 }
 
 function assertPublicCityAtlas(atlas: Record<string, unknown>): void {
@@ -4617,8 +4629,18 @@ export const searchCityPlaces = onCall(
       return { places: reviewedPlaces, candidates: reviewedPlaces };
     }
 
+    const searchRequest = buildCityPlaceTextSearchRequest(query, cityAtlasPlaceSearchBias(atlas));
     const url = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
-    url.searchParams.set('query', `${query} ${cityAtlasSearchContext(atlas)}`.trim());
+    url.searchParams.set('query', searchRequest.query);
+    if (searchRequest.location) {
+      url.searchParams.set('location', searchRequest.location);
+    }
+    if (searchRequest.radius) {
+      url.searchParams.set('radius', String(searchRequest.radius));
+    }
+    if (searchRequest.region) {
+      url.searchParams.set('region', searchRequest.region);
+    }
     url.searchParams.set('key', key);
 
     const data = await fetchJson<GooglePlacesTextSearchResponse>(url.toString());
@@ -4638,9 +4660,9 @@ export const searchCityPlaces = onCall(
         seen.add(candidate.placeId);
         return true;
       })
-      .slice(0, 7);
+      .slice(0, 10);
 
-    return { places: reviewedPlaces, candidates: [...reviewedPlaces, ...googlePlaces].slice(0, 10) };
+    return { places: reviewedPlaces, candidates: [...reviewedPlaces, ...googlePlaces].slice(0, 12) };
   },
 );
 

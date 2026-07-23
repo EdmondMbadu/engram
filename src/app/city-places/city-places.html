@@ -75,7 +75,7 @@
           </div>
         </div>
         <p class="mt-2 max-w-xl text-[0.9rem] font-normal leading-6 text-[var(--muted)]" i18n>
-          Search a restaurant, cafe, attraction, park, or local spot. Google finds the address, then your review becomes part of this city wiki.
+          Search a restaurant, cafe, attraction, park, or local spot in {{ cityName() }} and the surrounding area. Google finds the address, then your review becomes part of this city wiki.
         </p>
       </div>
 
@@ -140,7 +140,7 @@
               </div>
             } @else if (placeSearchQuery().trim().length >= 2 && !placeSearchLoading() && !placeReviewError() && !selectedReviewPlace()) {
               <p class="mt-4 px-1 text-sm font-normal leading-6 text-[var(--muted)]" i18n>
-                No match yet. Try the exact place name plus a neighborhood.
+                No match yet. Try the exact place name plus a neighborhood or nearby town.
               </p>
             }
             @if (selectedReviewPlace(); as selectedPlace) {

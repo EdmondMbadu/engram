@@ -267,10 +267,6 @@
     "source": "Email content",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
-  "1239868159968254071": {
-    "source": " No match yet. Try the exact place name plus a neighborhood. ",
-    "file": "src/app/city-places/city-places.html"
-  },
   "1241348629231510663": {
     "source": "End",
     "file": "src/app/chat/chat.ts"
@@ -8047,6 +8043,10 @@
     "source": "Personal users",
     "file": "src/app/pricing/pricing.html"
   },
+  "7245359390430279659": {
+    "source": " Search a restaurant, cafe, attraction, park, or local spot in {$INTERPOLATION} and the surrounding area. Google finds the address, then your review becomes part of this city wiki. ",
+    "file": "src/app/city-places/city-places.html"
+  },
   "724768127591825886": {
     "source": "Hazardous waste landfill",
     "file": "src/app/fence-line/fence-line.ts"
@@ -8983,10 +8983,6 @@
     "source": "Education",
     "file": "src/app/business-badge-icons.ts"
   },
-  "8023620499216015167": {
-    "source": " Search a restaurant, cafe, attraction, park, or local spot. Google finds the address, then your review becomes part of this city wiki. ",
-    "file": "src/app/city-places/city-places.html"
-  },
   "8025899844026015559": {
     "source": "Tell the story behind the place, keep hours and links current, and give people a richer page than a static directory listing.",
     "file": "src/app/business/business.ts"
@@ -9838,6 +9834,10 @@
   "8747508979074382451": {
     "source": "Choose a strong password",
     "file": "src/app/auth-action/auth-action.html"
+  },
+  "8753815833860304936": {
+    "source": " No match yet. Try the exact place name plus a neighborhood or nearby town. ",
+    "file": "src/app/city-places/city-places.html"
   },
   "8756910227198054359": {
     "source": "Pets",

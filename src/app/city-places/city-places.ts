@@ -292,7 +292,7 @@ export class CityPlacesComponent implements OnDestroy {
     this.placeSearchLoading.set(true);
     this.placeSearchTimer = setTimeout(() => {
       void this.searchPlacesForReview(query);
-    }, 350);
+    }, 250);
   }
 
   selectPlaceForReview(place: CityPlaceCandidate): void {
