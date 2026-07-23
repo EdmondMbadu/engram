@@ -319,7 +319,7 @@ service cloud.firestore {
         && request.resource.data.id == boardId
         && (
           !request.resource.data.keys().hasAny(['kind'])
-          || request.resource.data.kind in ['standard', 'walking-tour', 'driving-tour']
+          || request.resource.data.kind in ['standard', 'off-grid', 'walking-tour', 'driving-tour']
         )
         && (
           !request.resource.data.keys().hasAny(['sortOrder'])

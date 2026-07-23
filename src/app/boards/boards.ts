@@ -3,7 +3,7 @@ import { Component, computed, effect, ElementRef, HostListener, inject, LOCALE_I
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
-import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where, type Firestore } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, where, type Firestore, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
@@ -917,6 +917,7 @@ export class BoardsComponent implements OnDestroy {
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
   private wizardOffGridLocationRun = 0;
+  private selectedBoardUnsubscribe: Unsubscribe | null = null;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
   private readonly publishedStackVideoFiles = new Map<string, File>();
@@ -1019,6 +1020,7 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardStep = signal<BoardWizardStep>('choose');
   readonly wizardMode = signal<BoardWizardMode>('describe');
   readonly wizardTargetBoardId = signal('new');
+  readonly wizardContributionBoardId = signal<string | null>(null);
   readonly wizardDefaultType = signal<BoardCardType>('place');
   readonly wizardCount = signal(12);
   readonly wizardVibe = signal<BoardWizardVibe>('playful');
@@ -1343,6 +1345,10 @@ export class BoardsComponent implements OnDestroy {
   });
   readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
   readonly wizardTargetBoards = computed(() => this.boards().filter((board) => this.canEditBoard(board)));
+  readonly wizardContributionBoard = computed(() => {
+    const boardId = this.wizardContributionBoardId();
+    return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;
+  });
   readonly wizardSelectedCount = computed(() => this.wizardSelectedCardIds().size);
   readonly wizardMissingImageCount = computed(() => this.wizardPreviewCards().filter((card) => !card.imageUrl).length);
   readonly wizardImageCoveragePercent = computed(() => {
@@ -1482,6 +1488,9 @@ export class BoardsComponent implements OnDestroy {
       this.songDeckIndex.set(0);
       this.closeStackStudio();
       void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => {
+        if (this.selectedBoardId() === boardId) {
+          this.watchSelectedBoard(boardId);
+        }
         this.syncStackDirectView();
         this.canonicalizeBoardsRootRoute(boardId, ownerKey);
         if (this.isBrowser && this.boardFriendsFocusRequested()) {
@@ -1575,6 +1584,8 @@ export class BoardsComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.wizardOffGridLocationRun += 1;
+    this.selectedBoardUnsubscribe?.();
+    this.selectedBoardUnsubscribe = null;
     this.stopSongPreview();
     this.stopTourSpeech();
     this.stopStackPlayback();
@@ -1838,6 +1849,32 @@ export class BoardsComponent implements OnDestroy {
     this.wizardOpen.set(true);
   }
 
+  openOffGridContribution(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (board.kind !== 'off-grid' || board.visibility !== 'public') {
+      this.boardsSyncError.set($localize`This board is not open for Off-grid contributions.`);
+      return;
+    }
+    if (!this.authService.isAuthenticated()) {
+      void this.router.navigate(['/sign-in'], { queryParams: { redirectTo: this.router.url } });
+      return;
+    }
+    if (!this.functions || !this.firestore) {
+      this.boardsSyncError.set($localize`Board sync is not ready. Refresh and try again.`);
+      return;
+    }
+    this.resetBoardWizard();
+    this.wizardMode.set('off-grid');
+    this.wizardDefaultType.set('place');
+    this.wizardVibe.set('traveler');
+    this.wizardCount.set(1);
+    this.wizardTargetBoardId.set(board.id);
+    this.wizardContributionBoardId.set(board.id);
+    this.wizardStep.set('configure');
+    this.wizardOpen.set(true);
+  }
+
   chooseWizardMode(mode: BoardWizardMode | 'manual'): void {
     if (mode === 'manual') {
       this.closeBoardWizard();
@@ -1895,6 +1932,7 @@ export class BoardsComponent implements OnDestroy {
   closeBoardWizard(): void {
     this.wizardOpen.set(false);
     this.wizardStep.set('choose');
+    this.wizardContributionBoardId.set(null);
     this.wizardError.set(null);
     this.wizardSaving.set(false);
   }
@@ -1902,6 +1940,10 @@ export class BoardsComponent implements OnDestroy {
   backWizardStep(): void {
     const step = this.wizardStep();
     if (step === 'configure') {
+      if (this.wizardContributionBoardId()) {
+        this.closeBoardWizard();
+        return;
+      }
       this.wizardStep.set('choose');
     } else if (step === 'preview') {
       this.wizardStep.set('configure');
@@ -2717,6 +2759,26 @@ export class BoardsComponent implements OnDestroy {
       updatedAt: now,
     })).filter((card) => card.title);
 
+    const contributionBoard = this.wizardContributionBoard();
+    if (contributionBoard) {
+      try {
+        await this.saveOffGridContribution(contributionBoard, cards[0]);
+        this.wizardSaving.set(false);
+        this.wizardStep.set('done');
+      } catch (error) {
+        const detail = error instanceof Error && error.message ? error.message : $localize`The card could not be added.`;
+        this.wizardError.set(detail);
+        this.wizardSaving.set(false);
+      }
+      return;
+    }
+
+    if (!this.firestore || !this.authService.uid()) {
+      this.wizardError.set($localize`Board sync is not ready. Refresh and try again before saving.`);
+      this.wizardSaving.set(false);
+      return;
+    }
+
     const targetId = this.wizardTargetBoardId();
     const existingBoard = targetId === 'new' ? null : this.boards().find((board) => board.id === targetId) ?? null;
     if (existingBoard && !this.canEditBoard(existingBoard)) {
@@ -2783,6 +2845,46 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set($localize`Board save failed. Please try again.`);
       this.wizardSaving.set(false);
     }
+  }
+
+  private async saveOffGridContribution(board: Board, card: BoardCard | undefined): Promise<void> {
+    const uid = this.authService.uid();
+    if (!card || !uid || !this.functions || !this.firestore) {
+      throw new Error($localize`Board sync is not ready. Refresh and try again.`);
+    }
+    if (board.kind !== 'off-grid' || board.visibility !== 'public') {
+      throw new Error($localize`This board is not open for Off-grid contributions.`);
+    }
+    if (card.imageUrl.startsWith('data:') && !this.storage) {
+      throw new Error($localize`Photo upload is not ready. Refresh and try again.`);
+    }
+
+    const imageUrl = await this.persistImageIfNeeded(
+      card.imageUrl,
+      `users/${uid}/boards/contributions/${board.id}/cards/${card.id}/0.jpg`,
+    );
+    const callable = httpsCallable<{
+      boardId: string;
+      card: Pick<BoardCard, 'title' | 'notes' | 'imageUrl' | 'what3wordsAddress'>;
+    }, unknown>(this.functions, 'addOffGridBoardCard');
+    await callable({
+      boardId: board.id,
+      card: {
+        title: card.title,
+        notes: card.notes,
+        imageUrl,
+        what3wordsAddress: card.what3wordsAddress,
+      },
+    });
+
+    const latestBoard = await this.loadBoardById(board.id);
+    if (!latestBoard) {
+      throw new Error($localize`The card was added, but the refreshed board could not be loaded.`);
+    }
+    this.boards.update((boards) => boards.some((item) => item.id === latestBoard.id)
+      ? boards.map((item) => item.id === latestBoard.id ? latestBoard : item)
+      : [latestBoard, ...boards]);
+    this.boardsSyncError.set(null);
   }
 
   openEditBoard(board: Board, event?: Event): void {
@@ -7049,6 +7151,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardStep.set('choose');
     this.wizardMode.set('describe');
     this.wizardTargetBoardId.set(editableSelectedBoard?.id ?? 'new');
+    this.wizardContributionBoardId.set(null);
     this.wizardDefaultType.set('place');
     this.wizardCount.set(12);
     this.wizardVibe.set('playful');
@@ -7966,6 +8069,30 @@ export class BoardsComponent implements OnDestroy {
     } catch {
       this.boardsSyncError.set($localize`Boards are using this browser for now. Firebase sync is unavailable.`);
     }
+  }
+
+  private watchSelectedBoard(boardId: string | null): void {
+    this.selectedBoardUnsubscribe?.();
+    this.selectedBoardUnsubscribe = null;
+    if (!this.isBrowser || !this.firestore || !boardId) {
+      return;
+    }
+    this.selectedBoardUnsubscribe = onSnapshot(
+      doc(this.firestore, 'boards', boardId),
+      (snapshot) => {
+        if (!snapshot.exists() || this.selectedBoardId() !== boardId) {
+          return;
+        }
+        const board = this.boardFromRecord(snapshot.id, snapshot.data());
+        if (!board) {
+          return;
+        }
+        this.boards.update((boards) => boards.some((item) => item.id === board.id)
+          ? boards.map((item) => item.id === board.id ? board : item)
+          : [board, ...boards]);
+      },
+      () => undefined,
+    );
   }
 
   private async loadUserBoards(uid: string): Promise<Board[]> {

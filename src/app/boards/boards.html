@@ -954,6 +954,16 @@
                   </button>
                 </div>
 
+                @if (board.kind === 'off-grid') {
+                  <div class="off-grid-share-note">
+                    <span class="material-symbols-outlined">group_add</span>
+                    <span>
+                      <strong i18n>Friends can drop locations here</strong>
+                      <small i18n>Share this board with an accepted LivingWiki friend. After signing in, they can add a photo and exact what3words square without editing your other cards.</small>
+                    </span>
+                  </div>
+                }
+
                 <div class="board-share-panel__actions">
                   <button type="button" class="board-share-panel__studio" (click)="openStackView(board, $event)" i18n>
                     <span class="material-symbols-outlined">smart_display</span>
@@ -990,18 +1000,25 @@
                 (input)="cardSearch.set($any($event.target).value)"
                i18n-placeholder/>
             </label>
-            @if (canEditBoard(board)) {
+            @if (canEditBoard(board) || board.kind === 'off-grid') {
               <div class="board-detail__actions">
-                @if (board.cards.length) {
+                @if (canEditBoard(board) && board.cards.length) {
                   <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
                     <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'checklist' }}</span>
                     {{ isManagingBoard(board.id) ? 'Done' : 'Manage' }}
                   </button>
                 }
-                <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
-                  <span class="material-symbols-outlined">add</span>
-                  Add card
-                </button>
+                @if (board.kind === 'off-grid') {
+                  <button type="button" class="boards-primary-action off-grid-drop-card-action" (click)="openOffGridContribution(board, $event)" i18n>
+                    <span class="material-symbols-outlined">add_location_alt</span>
+                    Drop a Card
+                  </button>
+                } @else if (canEditBoard(board)) {
+                  <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
+                    <span class="material-symbols-outlined">add</span>
+                    Add card
+                  </button>
+                }
               </div>
             }
           </div>
@@ -2106,8 +2123,13 @@
                 <div class="off-grid-wizard-intro">
                   <span class="material-symbols-outlined">explore_nearby</span>
                   <div>
-                    <strong i18n>Drop a card exactly where you are.</strong>
-                    <p i18n>Take a photo and LivingWiki will use GPS and what3words to pin the card to a precise 3 m square.</p>
+                    @if (wizardContributionBoard(); as contributionBoard) {
+                      <strong i18n>Drop a card on {{ contributionBoard.title }}.</strong>
+                      <p i18n>Your name, photo, and exact what3words square will be shared with everyone on this board.</p>
+                    } @else {
+                      <strong i18n>Drop a card exactly where you are.</strong>
+                      <p i18n>Take a photo and LivingWiki will use GPS and what3words to pin the card to a precise 3 m square.</p>
+                    }
                   </div>
                 </div>
                 <div class="off-grid-source-tabs" role="group" aria-label="How are you adding this place?" i18n-aria-label>
@@ -2361,15 +2383,25 @@
             </section>
 
             <section class="boards-wizard-config">
-              <label>
-                <span i18n>Save into</span>
-                <select [value]="wizardTargetBoardId()" (change)="wizardTargetBoardId.set($any($event.target).value)">
-                  <option value="new" i18n>Create a new board</option>
-                  @for (board of wizardTargetBoards(); track board.id) {
-                    <option [value]="board.id">{{ board.title }}</option>
-                  }
-                </select>
-              </label>
+              @if (wizardContributionBoard(); as contributionBoard) {
+                <div class="off-grid-contribution-target">
+                  <span class="material-symbols-outlined">group</span>
+                  <span>
+                    <small i18n>Adding to shared board</small>
+                    <strong>{{ contributionBoard.title }}</strong>
+                  </span>
+                </div>
+              } @else {
+                <label>
+                  <span i18n>Save into</span>
+                  <select [value]="wizardTargetBoardId()" (change)="wizardTargetBoardId.set($any($event.target).value)">
+                    <option value="new" i18n>Create a new board</option>
+                    @for (board of wizardTargetBoards(); track board.id) {
+                      <option [value]="board.id">{{ board.title }}</option>
+                    }
+                  </select>
+                </label>
+              }
               @if (wizardMode() !== 'off-grid') {
               <label>
                 <span>{{ isTourWizardMode() ? 'How many stops' : 'How many cards' }}</span>
@@ -2929,7 +2961,13 @@
                 (click)="saveWizardBatch()"
               >
                 <span class="material-symbols-outlined">save</span>
-                {{ wizardSaving() ? 'Saving...' : 'Save selected cards' }}
+                @if (wizardSaving()) {
+                  <span i18n>Saving...</span>
+                } @else if (wizardContributionBoard()) {
+                  <span i18n>Add card to board</span>
+                } @else {
+                  <span i18n>Save selected cards</span>
+                }
               </button>
             </div>
             }
@@ -2937,8 +2975,15 @@
         } @else {
           <div class="boards-wizard boards-wizard-done">
             <span class="material-symbols-outlined">check_circle</span>
-            <h4 i18n>Board saved</h4>
-            <button type="button" class="boards-primary-action" (click)="closeBoardWizard()" i18n>Done</button>
+            @if (wizardContributionBoard(); as contributionBoard) {
+              <h4 i18n>Card added to {{ contributionBoard.title }}</h4>
+              <p i18n>It is live on the shared board now. Everyone viewing this board will receive the new location.</p>
+              <button type="button" class="boards-primary-action" (click)="closeBoardWizard()" i18n>See it on the board</button>
+            } @else {
+              <h4 i18n>Board saved</h4>
+              <p i18n>Your new board is synced and ready on your board shelf.</p>
+              <button type="button" class="boards-primary-action" (click)="closeBoardWizard()" i18n>Open saved board</button>
+            }
           </div>
         }
       </section>

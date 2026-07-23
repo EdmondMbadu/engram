@@ -2734,6 +2734,92 @@ function boardFriendshipId(leftUserId: string, rightUserId: string): string {
   return [leftUserId, rightUserId].sort().join('_');
 }
 
+const offGridWordsPattern = /^[\p{L}]+(?:[-'][\p{L}]+)*\.[\p{L}]+(?:[-'][\p{L}]+)*\.[\p{L}]+(?:[-'][\p{L}]+)*$/u;
+
+function offGridContributionText(value: unknown, maxLength: number): string {
+  return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
+}
+
+function normalizeOffGridWords(value: unknown): string {
+  const words = offGridContributionText(value, 240)
+    .toLocaleLowerCase()
+    .replace(/^\/+/, '')
+    .replace(/[?#].*$/, '')
+    .replace(/\/+$/, '');
+  return offGridWordsPattern.test(words) ? words : '';
+}
+
+function offGridContributorName(
+  user: Record<string, unknown> | undefined,
+  token: Record<string, unknown>,
+): string {
+  const displayName = offGridContributionText(user?.displayName, 80)
+    || offGridContributionText(token.name, 80);
+  if (displayName) {
+    return displayName;
+  }
+  const email = normalizeUserEmail(user?.email ?? token.email);
+  return email ? email.split('@')[0]?.slice(0, 80) || 'A LivingWiki friend' : 'A LivingWiki friend';
+}
+
+function buildOffGridContributionCard(
+  value: unknown,
+  contributorName: string,
+  contributorUserId: string,
+): Record<string, unknown> {
+  const input = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const title = offGridContributionText(input.title, 80);
+  const words = normalizeOffGridWords(input.what3wordsAddress);
+  const tip = offGridContributionText(input.notes, 3600);
+  const imageUrl = offGridContributionText(input.imageUrl, 2000);
+  if (title.length < 2) {
+    throw new HttpsError('invalid-argument', 'Name this place before adding it.');
+  }
+  if (!words) {
+    throw new HttpsError('invalid-argument', 'A verified what3words address is required.');
+  }
+  if (imageUrl && !/^https:\/\/firebasestorage\.googleapis\.com\//i.test(imageUrl)) {
+    throw new HttpsError('invalid-argument', 'The card photo must be uploaded before adding it.');
+  }
+  const now = new Date().toISOString();
+  return {
+    id: randomUUID(),
+    title,
+    subtitle: `Pinned to ///${words} · Dropped by ${contributorName}`,
+    notes: tip || `Walk to ///${words}. This what3words address identifies an exact 3 m square.`,
+    type: 'place',
+    scope: 'place',
+    status: 'saved',
+    rating: 4,
+    entityName: title,
+    entityType: 'place',
+    imageIntent: 'place',
+    imageContext: '',
+    mediaKind: 'none',
+    shortSummary: `Exact location: ///${words}`,
+    rank: 0,
+    imageUrl,
+    imageUrls: imageUrl ? [imageUrl] : [],
+    audioPreviewUrl: '',
+    spotifyTrackId: '',
+    spotifyTrackUrl: '',
+    spotifyUri: '',
+    spotifyArtistName: '',
+    spotifyAlbumName: '',
+    spotifyArtworkUrl: '',
+    placeId: '',
+    googleMapsUrl: '',
+    what3wordsAddress: words,
+    tags: ['off-grid', 'what3words'],
+    stickers: [],
+    tour: null,
+    contributorUserId,
+    contributorName,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
 function displayNameForUser(data: Record<string, unknown> | undefined, fallbackEmail: string, fallback = 'A LivingWiki friend'): string {
   const displayName = typeof data?.displayName === 'string' ? data.displayName.trim() : '';
   if (displayName) {
@@ -3161,6 +3247,64 @@ export const respondBoardFriendRequest = onCall({ region: callableRegion, cors: 
     server_updated_at: FieldValue.serverTimestamp(),
   });
   return { status: 'accepted' };
+});
+
+export const addOffGridBoardCard = onCall({ region: callableRegion, cors: true }, async (request) => {
+  const contributorUserId = request.auth?.uid ?? '';
+  if (!contributorUserId) {
+    throw new HttpsError('unauthenticated', 'Sign in before dropping a card.');
+  }
+
+  const boardId = offGridContributionText(request.data?.boardId, 120);
+  if (!boardId || !/^[a-zA-Z0-9_-]+$/.test(boardId)) {
+    throw new HttpsError('invalid-argument', 'Choose a valid Off-grid board.');
+  }
+
+  const contributorSnapshot = await db.collection('users').doc(contributorUserId).get();
+  const contributor = contributorSnapshot.data() as Record<string, unknown> | undefined;
+  const contributorName = offGridContributorName(
+    contributor,
+    (request.auth?.token ?? {}) as Record<string, unknown>,
+  );
+  const card = buildOffGridContributionCard(request.data?.card, contributorName, contributorUserId);
+  const boardRef = db.collection('boards').doc(boardId);
+
+  await db.runTransaction(async (transaction) => {
+    const boardSnapshot = await transaction.get(boardRef);
+    if (!boardSnapshot.exists) {
+      throw new HttpsError('not-found', 'This Off-grid board no longer exists.');
+    }
+    const board = boardSnapshot.data() as Record<string, unknown>;
+    const ownerUserId = offGridContributionText(board.owner_user_id, 180);
+    if (board.visibility !== 'public' || board.kind !== 'off-grid' || !ownerUserId) {
+      throw new HttpsError('failed-precondition', 'This board is not open for Off-grid contributions.');
+    }
+
+    if (ownerUserId !== contributorUserId) {
+      const friendship = await transaction.get(
+        db.collection('board_friendships').doc(boardFriendshipId(ownerUserId, contributorUserId)),
+      );
+      if (!friendship.exists) {
+        throw new HttpsError(
+          'permission-denied',
+          'Only accepted LivingWiki friends of the board owner can add a location.',
+        );
+      }
+    }
+
+    const cards = Array.isArray(board.cards) ? board.cards : [];
+    if (cards.length >= 200) {
+      throw new HttpsError('resource-exhausted', 'This board has reached its 200-card limit.');
+    }
+    const updatedAt = new Date().toISOString();
+    transaction.update(boardRef, {
+      cards: [card, ...cards],
+      updated_at_iso: updatedAt,
+      server_updated_at: FieldValue.serverTimestamp(),
+    });
+  });
+
+  return { boardId, card };
 });
 
 export const notifyBoardFriendsOnCreate = onDocumentCreated(

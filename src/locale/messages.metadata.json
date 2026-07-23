@@ -399,6 +399,10 @@
     "source": "The review area stays here so the main action is always visible.",
     "file": "src/app/city-places/city-places.html"
   },
+  "1341042261649516036": {
+    "source": "Board sync is not ready. Refresh and try again.",
+    "file": "src/app/boards/boards.ts"
+  },
   "1342039955289279987": {
     "source": "{$INTERPOLATION} cards",
     "file": "src/app/boards/boards.html"
@@ -1027,6 +1031,10 @@
     "source": " Open map {$START_TAG_SPAN}arrow_outward{$CLOSE_TAG_SPAN}",
     "file": "src/app/city-places/city-places.html"
   },
+  "1829360884502517320": {
+    "source": "Add card to board",
+    "file": "src/app/boards/boards.html"
+  },
   "1830554030016307335": {
     "source": "Saturday",
     "file": "src/app/atlas-manage/atlas-manage.ts"
@@ -1094,6 +1102,10 @@
   "1880773357333664142": {
     "source": "Choose a city to begin.",
     "file": "src/app/dymaxion/dymaxion.html"
+  },
+  "1881254628236470139": {
+    "source": "Share this board with an accepted LivingWiki friend. After signing in, they can add a photo and exact what3words square without editing your other cards.",
+    "file": "src/app/boards/boards.html"
   },
   "18843475576340683": {
     "source": "Use a URL",
@@ -1439,6 +1451,10 @@
     "source": "Fix the issue below and try another source.",
     "file": "src/app/web-scraper/web-scraper.ts"
   },
+  "2146498151104175994": {
+    "source": "Photo upload is not ready. Refresh and try again.",
+    "file": "src/app/boards/boards.ts"
+  },
   "214821661453940993": {
     "source": "Map could not be loaded.",
     "file": "src/app/chat-location-map/chat-location-map.ts"
@@ -1742,6 +1758,10 @@
   "2379717302489613944": {
     "source": "Facility",
     "file": "src/app/fence-line/fence-line.html"
+  },
+  "2383411264307031004": {
+    "source": "Adding to shared board",
+    "file": "src/app/boards/boards.html"
   },
   "2387804651041584804": {
     "source": "{$START_TAG_STRONG}{$INTERPOLATION}{$CLOSE_TAG_STRONG} Time",
@@ -3121,7 +3141,7 @@
   },
   "3407061818321766940": {
     "source": "Saving...",
-    "file": "src/app/business-detail/business-edit.ts"
+    "file": "src/app/boards/boards.html"
   },
   "3409234041657436398": {
     "source": "No active article.",
@@ -3841,7 +3861,7 @@
   },
   "397098723873502323": {
     "source": "Done",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/atlas-manage/atlas-manage.ts"
   },
   "3971391472521012491": {
     "source": "Business AI",
@@ -4349,6 +4369,10 @@
   },
   "4373910011571956547": {
     "source": "Finding the best matches for {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
+  },
+  "4375565006899694512": {
+    "source": "It is live on the shared board now. Everyone viewing this board will receive the new location.",
     "file": "src/app/boards/boards.html"
   },
   "4376546714873789688": {
@@ -4971,6 +4995,10 @@
     "source": "Live listings + pathways",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "4840273334946881106": {
+    "source": "Board sync is not ready. Refresh and try again before saving.",
+    "file": "src/app/boards/boards.ts"
+  },
   "4844460211738479466": {
     "source": "{$START_TAG_SPAN}delete{$CLOSE_TAG_SPAN} Remove ",
     "file": "src/app/boards/boards.html"
@@ -5287,6 +5315,10 @@
     "source": "No cover",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "5115050338491264696": {
+    "source": "{$START_TAG_SPAN}add_location_alt{$CLOSE_TAG_SPAN} Drop a Card ",
+    "file": "src/app/boards/boards.html"
+  },
   "5117504445405165086": {
     "source": "Live music",
     "file": "src/app/business/business.ts"
@@ -5542,6 +5574,10 @@
   "5294698514860791556": {
     "source": "Not a dead listing. A page with a pulse.",
     "file": "src/app/business/business.html"
+  },
+  "5296359791909264394": {
+    "source": "Your new board is synced and ready on your board shelf.",
+    "file": "src/app/boards/boards.html"
   },
   "5299830934554879298": {
     "source": "SMS",
@@ -5991,6 +6027,10 @@
     "source": "Clear Wiki search",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "5661831613856753923": {
+    "source": "Drop a card on {$INTERPOLATION}.",
+    "file": "src/app/boards/boards.html"
+  },
   "566298320991927910": {
     "source": "Census state code",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -6291,6 +6331,10 @@
     "source": "Table tent 4×6\"",
     "file": "src/app/business/business.ts"
   },
+  "5900417438193392518": {
+    "source": "This board is not open for Off-grid contributions.",
+    "file": "src/app/boards/boards.ts"
+  },
   "5904884274970660140": {
     "source": "{$START_TAG_SPAN}progress_activity{$CLOSE_TAG_SPAN} Loading friends... ",
     "file": "src/app/boards/boards.html"
@@ -6418,6 +6462,10 @@
   "5990667807137294486": {
     "source": "Local Favorite",
     "file": "src/app/business-claim/business-claim.ts"
+  },
+  "5992904787075426387": {
+    "source": "Open saved board",
+    "file": "src/app/boards/boards.html"
   },
   "5995926993425996892": {
     "source": "Publish richer LivingWiki pages for communities, collections, classes, or public projects.",
@@ -7143,6 +7191,10 @@
     "source": "Continue chat",
     "file": "src/app/chat/chat.ts"
   },
+  "6524195253095237615": {
+    "source": "The card was added, but the refreshed board could not be loaded.",
+    "file": "src/app/boards/boards.ts"
+  },
   "6524202925316851488": {
     "source": "Public Wikis",
     "file": "src/app/business/business.html"
@@ -7739,6 +7791,10 @@
     "source": "Live preview",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7014471967051183149": {
+    "source": "See it on the board",
+    "file": "src/app/boards/boards.html"
+  },
   "701721694157980584": {
     "source": "Taco",
     "file": "src/app/business-badge-icons.ts"
@@ -7806,6 +7862,10 @@
   "7066875700485988101": {
     "source": "Atlas",
     "file": "src/app/green-jobs/green-jobs.html"
+  },
+  "7071055120332182136": {
+    "source": "Your name, photo, and exact what3words square will be shared with everyone on this board.",
+    "file": "src/app/boards/boards.html"
   },
   "7077855156909409528": {
     "source": "Local draft found for this name and city.",
@@ -8011,6 +8071,10 @@
     "source": "You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.",
     "file": "src/app/chat/chat.ts"
   },
+  "7276980897773952881": {
+    "source": "The card could not be added.",
+    "file": "src/app/boards/boards.ts"
+  },
   "7284318737681797324": {
     "source": "{$START_TAG_SPAN}settings{$CLOSE_TAG_SPAN} Settings ",
     "file": "src/app/account-menu/account-menu.html"
@@ -8086,6 +8150,10 @@
   "7345156790690988499": {
     "source": " {$INTERPOLATION} of {$INTERPOLATION_1} shown ",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "7347130830291696610": {
+    "source": "Card added to {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
   },
   "7352707375584001238": {
     "source": "Technical reference wiki covering the LivingWiki architecture — compile-once vs. RAG, implementation patterns, known deployments, and the academic literature.",
@@ -8563,6 +8631,10 @@
     "source": "General guide about the business",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7750187499038739309": {
+    "source": "Friends can drop locations here",
+    "file": "src/app/boards/boards.html"
+  },
   "775153140303396828": {
     "source": " Start a conversation ",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -8729,6 +8801,10 @@
   },
   "7886570921510760899": {
     "source": "Tags",
+    "file": "src/app/boards/boards.html"
+  },
+  "7886812346331249953": {
+    "source": "Save selected cards",
     "file": "src/app/boards/boards.html"
   },
   "7891736560934397673": {
