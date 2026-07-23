@@ -311,6 +311,7 @@ service cloud.firestore {
           'socialVideoRatio',
           'stickers',
           'tourMeta',
+          'learningQuiz',
           'cards',
           'created_at_iso',
           'updated_at_iso',
@@ -372,6 +373,38 @@ service cloud.firestore {
           !request.resource.data.keys().hasAny(['tourMeta'])
           || request.resource.data.tourMeta == null
           || request.resource.data.tourMeta is map
+        )
+        && (
+          !request.resource.data.keys().hasAny(['learningQuiz'])
+          || request.resource.data.learningQuiz == null
+          || (
+            request.resource.data.learningQuiz is map
+            && request.resource.data.learningQuiz.keys().hasOnly([
+              'id',
+              'title',
+              'description',
+              'published',
+              'questions',
+              'createdAt',
+              'updatedAt'
+            ])
+            && request.resource.data.learningQuiz.id is string
+            && request.resource.data.learningQuiz.id.size() >= 1
+            && request.resource.data.learningQuiz.id.size() <= 160
+            && request.resource.data.learningQuiz.title is string
+            && request.resource.data.learningQuiz.title.size() >= 1
+            && request.resource.data.learningQuiz.title.size() <= 120
+            && request.resource.data.learningQuiz.description is string
+            && request.resource.data.learningQuiz.description.size() <= 300
+            && request.resource.data.learningQuiz.published is bool
+            && request.resource.data.learningQuiz.questions is list
+            && request.resource.data.learningQuiz.questions.size() >= 3
+            && request.resource.data.learningQuiz.questions.size() <= 12
+            && request.resource.data.learningQuiz.createdAt is string
+            && request.resource.data.learningQuiz.createdAt.size() <= 80
+            && request.resource.data.learningQuiz.updatedAt is string
+            && request.resource.data.learningQuiz.updatedAt.size() <= 80
+          )
         )
         && request.resource.data.cards is list
         && request.resource.data.cards.size() <= 200

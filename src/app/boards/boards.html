@@ -1000,8 +1000,14 @@
                 (input)="cardSearch.set($any($event.target).value)"
                i18n-placeholder/>
             </label>
-            @if (canEditBoard(board) || board.kind === 'off-grid') {
+            @if (board.cards.length || canEditBoard(board) || board.kind === 'off-grid') {
               <div class="board-detail__actions">
+                @if (board.cards.length) {
+                  <button type="button" class="boards-primary-action board-learn-action" (click)="openBoardLearn(board, $event)" i18n>
+                    <span class="material-symbols-outlined">school</span>
+                    Learn
+                  </button>
+                }
                 @if (canEditBoard(board) && board.cards.length) {
                   <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
                     <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'checklist' }}</span>
@@ -1940,6 +1946,442 @@
       </main>
     </div>
   </div>
+  }
+
+  @if (boardLearnOpen() && boardLearnBoard(); as learnBoard) {
+    <div class="board-learning" (click)="closeBoardLearn($event)">
+      <section
+        class="board-learning__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="board-learning-title"
+        (click)="$event.stopPropagation()"
+      >
+        <header class="board-learning__header">
+          <button
+            type="button"
+            class="board-learning__back"
+            [class.board-learning__back--hidden]="boardLearnView() === 'menu'"
+            [disabled]="boardLearnView() === 'menu'"
+            aria-label="Back to learning choices"
+            (click)="returnToBoardLearnMenu()"
+            i18n-aria-label
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
+          <div class="board-learning__identity">
+            <span class="board-learning__mark material-symbols-outlined">school</span>
+            <div>
+              <small i18n>Learn from this board</small>
+              <h2 id="board-learning-title">{{ learnBoard.title }}</h2>
+            </div>
+          </div>
+          <button type="button" class="board-learning__close" aria-label="Close learning" (click)="closeBoardLearn($event)" i18n-aria-label>
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </header>
+
+        <div class="board-learning__body">
+          @switch (boardLearnView()) {
+            @case ('menu') {
+              <div class="board-learning__intro">
+                <span class="board-learning__eyebrow" i18n>Every card becomes something you can learn</span>
+                <h3 i18n>How would you like to explore?</h3>
+                <p i18n>Review the board at your own pace, or test what you remember with a short quiz.</p>
+              </div>
+
+              <div class="board-learning__choices">
+                <button type="button" class="board-learning__choice" (click)="startBoardStudy()">
+                  <span class="board-learning__choice-icon board-learning__choice-icon--study material-symbols-outlined">style</span>
+                  <span>
+                    <strong i18n>Study cards</strong>
+                    <small i18n>Flip through all {{ learnBoard.cards.length }} cards and reveal the details.</small>
+                  </span>
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+
+                @if (learnBoard.learningQuiz?.published) {
+                  <button type="button" class="board-learning__choice board-learning__choice--quiz" (click)="startPublishedBoardQuiz()">
+                    <span class="board-learning__choice-icon board-learning__choice-icon--quiz material-symbols-outlined">quiz</span>
+                    <span>
+                      <strong>{{ learnBoard.learningQuiz?.title }}</strong>
+                      <small i18n>{{ learnBoard.learningQuiz?.questions?.length || 0 }} questions · get your score instantly</small>
+                    </span>
+                    <span class="material-symbols-outlined">play_arrow</span>
+                  </button>
+                } @else if (canEditBoard(learnBoard)) {
+                  <button
+                    type="button"
+                    class="board-learning__choice board-learning__choice--quiz"
+                    [disabled]="boardQuizEligibleCount(learnBoard) < 3"
+                    (click)="openBoardQuizEditor()"
+                  >
+                    <span class="board-learning__choice-icon board-learning__choice-icon--quiz material-symbols-outlined">auto_awesome</span>
+                    <span>
+                      <strong i18n>Create a quiz</strong>
+                      <small i18n>Start with editable questions generated from your cards.</small>
+                    </span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                } @else {
+                  <div class="board-learning__choice board-learning__choice--disabled">
+                    <span class="board-learning__choice-icon material-symbols-outlined">quiz</span>
+                    <span>
+                      <strong i18n>Quiz coming soon</strong>
+                      <small i18n>The board owner has not published a quiz yet.</small>
+                    </span>
+                    <span class="material-symbols-outlined">lock</span>
+                  </div>
+                }
+              </div>
+
+              @if (canEditBoard(learnBoard)) {
+                <section class="board-learning__owner-panel">
+                  <div>
+                    <span class="material-symbols-outlined">tune</span>
+                    <span>
+                      <strong i18n>Quiz controls</strong>
+                      @if (learnBoard.learningQuiz?.published) {
+                        <small i18n>Your quiz is live for everyone who can view this board.</small>
+                      } @else {
+                        <small i18n>{{ boardQuizEligibleCount(learnBoard) }} cards have enough detail to generate questions.</small>
+                      }
+                    </span>
+                  </div>
+                  @if (learnBoard.learningQuiz?.published) {
+                    <button type="button" class="board-learning__text-button" (click)="openBoardQuizEditor()" i18n>
+                      <span class="material-symbols-outlined">edit</span>
+                      Edit quiz
+                    </button>
+                  }
+                </section>
+
+                @if (learnBoard.learningQuiz?.published) {
+                  <section class="board-learning__stats" aria-label="Quiz results" i18n-aria-label>
+                    <div class="board-learning__section-heading">
+                      <div>
+                        <small i18n>Owner view</small>
+                        <h3 i18n>How people are doing</h3>
+                      </div>
+                      @if (boardLearnQuizStatsLoading()) {
+                        <span class="board-learning__spinner" aria-label="Loading results" i18n-aria-label></span>
+                      }
+                    </div>
+                    @if (boardLearnQuizStats(); as stats) {
+                      <div class="board-learning__stat-grid">
+                        <div><strong>{{ stats.attemptCount }}</strong><span i18n>Attempts</span></div>
+                        <div><strong>{{ stats.averagePercent }}%</strong><span i18n>Average score</span></div>
+                        <div><strong>{{ stats.completionCount }}</strong><span i18n>Completed</span></div>
+                      </div>
+                      @if (stats.difficultCards.length) {
+                        <div class="board-learning__difficult">
+                          <strong i18n>Cards to reinforce</strong>
+                          @for (card of stats.difficultCards; track card.cardId) {
+                            <button type="button" (click)="startBoardStudy(card.cardId)">
+                              <span>{{ card.title }}</span>
+                              <small i18n>{{ card.correctPercent }}% correct</small>
+                            </button>
+                          }
+                        </div>
+                      }
+                    } @else if (!boardLearnQuizStatsLoading()) {
+                      <p class="board-learning__quiet" i18n>Results will appear here after the first signed-in learner finishes.</p>
+                    }
+                  </section>
+                }
+              }
+
+              @if (boardLearnQuizStatus()) {
+                <p class="board-learning__notice board-learning__notice--success">{{ boardLearnQuizStatus() }}</p>
+              }
+              @if (boardLearnQuizError()) {
+                <p class="board-learning__notice board-learning__notice--error">{{ boardLearnQuizError() }}</p>
+              }
+            }
+
+            @case ('study') {
+              @if (boardLearnStudyCard(); as studyCard) {
+                <div class="board-learning__progress-row">
+                  <span i18n>Card {{ boardLearnStudyIndex() + 1 }} of {{ learnBoard.cards.length }}</span>
+                  <div class="board-learning__progress">
+                    <span [style.width.%]="((boardLearnStudyIndex() + 1) / learnBoard.cards.length) * 100"></span>
+                  </div>
+                </div>
+
+                <article class="board-study-card" [class.board-study-card--revealed]="boardLearnStudyRevealed()">
+                  <div class="board-study-card__visual">
+                    @if (currentCardImage(studyCard)) {
+                      <img [src]="currentCardImage(studyCard)" [alt]="studyCard.title" />
+                    } @else {
+                      <span class="material-symbols-outlined">{{ cardScopeIcon(studyCard.scope) }}</span>
+                    }
+                  </div>
+                  <div class="board-study-card__content">
+                    <span class="board-learning__eyebrow">{{ cardScopeLabel(studyCard.scope) }}</span>
+                    <h3>{{ studyCard.title }}</h3>
+                    @if (studyCard.subtitle) {
+                      <p>{{ studyCard.subtitle }}</p>
+                    }
+                    @if (boardLearnStudyRevealed()) {
+                      <div class="board-study-card__answer">
+                        <small i18n>From the source card</small>
+                        <p>{{ studyCard.notes || studyCard.shortSummary || studyCard.subtitle }}</p>
+                        @if (studyCard.tags.length) {
+                          <div class="board-study-card__tags">
+                            @for (tag of studyCard.tags; track tag) {
+                              <span>#{{ tag }}</span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    } @else {
+                      <button type="button" class="board-learning__primary" (click)="toggleBoardStudyReveal()" i18n>
+                        <span class="material-symbols-outlined">visibility</span>
+                        Reveal details
+                      </button>
+                    }
+                  </div>
+                </article>
+
+                <div class="board-learning__footer-actions">
+                  <button type="button" class="board-learning__secondary" (click)="stepBoardStudy(-1)" i18n>
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Previous
+                  </button>
+                  @if (boardLearnStudyRevealed()) {
+                    <button type="button" class="board-learning__primary" (click)="stepBoardStudy(1)" i18n>
+                      Next card
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                  } @else {
+                    <button type="button" class="board-learning__secondary" (click)="stepBoardStudy(1)" i18n>
+                      Skip
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                  }
+                </div>
+              }
+            }
+
+            @case ('quiz-edit') {
+              @if (boardLearnQuizDraft(); as draft) {
+                <div class="board-learning__editor-heading">
+                  <div>
+                    <span class="board-learning__eyebrow" i18n>Editable preview</span>
+                    <h3 i18n>Make the quiz yours</h3>
+                    <p i18n>Questions begin with your card details. Edit anything before learners see it.</p>
+                  </div>
+                  <button type="button" class="board-learning__secondary" (click)="openBoardQuizEditor(true)" i18n>
+                    <span class="material-symbols-outlined">refresh</span>
+                    Regenerate
+                  </button>
+                </div>
+
+                <div class="board-learning__quiz-meta">
+                  <label>
+                    <span i18n>Quiz title</span>
+                    <input [value]="draft.title" maxlength="120" (input)="updateBoardQuizField('title', $any($event.target).value)" />
+                  </label>
+                  <label>
+                    <span i18n>Short description</span>
+                    <textarea rows="2" maxlength="300" [value]="draft.description" (input)="updateBoardQuizField('description', $any($event.target).value)"></textarea>
+                  </label>
+                </div>
+
+                <div class="board-learning__question-list">
+                  @for (question of draft.questions; track question.id; let questionIndex = $index) {
+                    <article class="board-quiz-editor">
+                      <header>
+                        <div>
+                          <small i18n>Question {{ questionIndex + 1 }}</small>
+                          <span i18n>From: {{ question.sourceCardTitle }}</span>
+                        </div>
+                        <button
+                          type="button"
+                          aria-label="Remove question"
+                          [disabled]="draft.questions.length <= 3"
+                          (click)="removeBoardQuizQuestion(question.id)"
+                          i18n-aria-label
+                        >
+                          <span class="material-symbols-outlined">delete</span>
+                        </button>
+                      </header>
+                      <label>
+                        <span i18n>Question</span>
+                        <textarea rows="2" maxlength="360" [value]="question.prompt" (input)="updateBoardQuizQuestion(question.id, 'prompt', $any($event.target).value)"></textarea>
+                      </label>
+                      <fieldset>
+                        <legend i18n>Answers — choose the correct one</legend>
+                        @for (option of question.options; track option.id) {
+                          <label class="board-quiz-editor__option">
+                            <input
+                              type="radio"
+                              [name]="'correct-answer-' + question.id"
+                              [checked]="question.correctOptionId === option.id"
+                              (change)="setBoardQuizCorrectOption(question.id, option.id)"
+                            />
+                            <input
+                              type="text"
+                              maxlength="160"
+                              [value]="option.text"
+                              (input)="updateBoardQuizOption(question.id, option.id, $any($event.target).value)"
+                            />
+                          </label>
+                        }
+                      </fieldset>
+                      <label>
+                        <span i18n>Explanation after answering</span>
+                        <textarea rows="2" maxlength="500" [value]="question.explanation" (input)="updateBoardQuizQuestion(question.id, 'explanation', $any($event.target).value)"></textarea>
+                      </label>
+                    </article>
+                  }
+                </div>
+
+                @if (boardLearnQuizError()) {
+                  <p class="board-learning__notice board-learning__notice--error">{{ boardLearnQuizError() }}</p>
+                }
+                <div class="board-learning__sticky-actions">
+                  <span i18n>{{ draft.questions.length }} questions</span>
+                  <div>
+                    <button type="button" class="board-learning__secondary" (click)="previewBoardQuiz()" i18n>
+                      <span class="material-symbols-outlined">play_circle</span>
+                      Preview
+                    </button>
+                    <button type="button" class="board-learning__primary" [disabled]="!boardLearnCanPublishQuiz() || boardLearnQuizSaving()" (click)="publishBoardQuiz()">
+                      <span class="material-symbols-outlined">publish</span>
+                      @if (boardLearnQuizSaving()) {
+                        <ng-container i18n>Publishing…</ng-container>
+                      } @else {
+                        <ng-container i18n>Publish quiz</ng-container>
+                      }
+                    </button>
+                  </div>
+                </div>
+              }
+            }
+
+            @case ('quiz-play') {
+              @if (boardLearnActiveQuiz(); as activeQuiz) {
+                @if (boardLearnCurrentQuestion(); as question) {
+                  <div class="board-learning__progress-row">
+                    <span i18n>Question {{ boardLearnQuizIndex() + 1 }} of {{ activeQuiz.questions.length }}</span>
+                    <div class="board-learning__progress">
+                      <span [style.width.%]="((boardLearnQuizIndex() + 1) / activeQuiz.questions.length) * 100"></span>
+                    </div>
+                  </div>
+                  <article class="board-quiz-player">
+                    <span class="board-learning__eyebrow">{{ activeQuiz.title }}</span>
+                    <h3>{{ question.prompt }}</h3>
+                    <div class="board-quiz-player__options">
+                      @for (option of question.options; track option.id; let optionIndex = $index) {
+                        <button
+                          type="button"
+                          [class.board-quiz-player__option--correct]="boardQuizOptionState(question, option.id) === 'correct'"
+                          [class.board-quiz-player__option--incorrect]="boardQuizOptionState(question, option.id) === 'incorrect'"
+                          [disabled]="!!boardLearnCurrentAnswer()"
+                          (click)="selectBoardQuizAnswer(option.id)"
+                        >
+                          <span>{{ optionIndex + 1 }}</span>
+                          <strong>{{ option.text }}</strong>
+                          @if (boardQuizOptionState(question, option.id) === 'correct') {
+                            <span class="material-symbols-outlined">check_circle</span>
+                          } @else if (boardQuizOptionState(question, option.id) === 'incorrect') {
+                            <span class="material-symbols-outlined">cancel</span>
+                          }
+                        </button>
+                      }
+                    </div>
+
+                    @if (boardLearnCurrentAnswer()) {
+                      <div class="board-quiz-player__feedback" [class.board-quiz-player__feedback--correct]="boardLearnCurrentAnswer() === question.correctOptionId">
+                        <strong>
+                          @if (boardLearnCurrentAnswer() === question.correctOptionId) {
+                            <ng-container i18n>That’s right.</ng-container>
+                          } @else {
+                            <ng-container i18n>Not quite—here’s the answer.</ng-container>
+                          }
+                        </strong>
+                        <p>{{ question.explanation }}</p>
+                        <button type="button" (click)="reviewBoardQuizSource(question)" i18n>
+                          <span class="material-symbols-outlined">style</span>
+                          Review source card
+                        </button>
+                      </div>
+                      <button type="button" class="board-learning__primary board-learning__continue" (click)="advanceBoardQuiz()">
+                        @if (boardLearnQuizIndex() === activeQuiz.questions.length - 1) {
+                          <ng-container i18n>See my score</ng-container>
+                        } @else {
+                          <ng-container i18n>Continue</ng-container>
+                        }
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                      </button>
+                    }
+                  </article>
+                }
+              }
+            }
+
+            @case ('quiz-result') {
+              @if (boardLearnQuizGrade(); as grade) {
+                <section class="board-quiz-result">
+                  <div class="board-quiz-result__score">
+                    <span class="material-symbols-outlined">{{ grade.percent >= 70 ? 'workspace_premium' : 'trending_up' }}</span>
+                    <strong>{{ grade.percent }}%</strong>
+                    <small i18n>{{ grade.score }} of {{ grade.total }} correct</small>
+                  </div>
+                  <div class="board-quiz-result__copy">
+                    <span class="board-learning__eyebrow" i18n>Quiz complete</span>
+                    <h3>
+                      @if (grade.percent >= 90) {
+                        <ng-container i18n>You know this board beautifully.</ng-container>
+                      } @else if (grade.percent >= 70) {
+                        <ng-container i18n>Nice work—you’ve got the important parts.</ng-container>
+                      } @else {
+                        <ng-container i18n>A strong first pass. The cards are here when you’re ready.</ng-container>
+                      }
+                    </h3>
+                    @if (boardLearnQuizSubmitting()) {
+                      <p i18n>Saving your result…</p>
+                    } @else if (boardLearnQuizStatus()) {
+                      <p>{{ boardLearnQuizStatus() }}</p>
+                    }
+                  </div>
+                </section>
+
+                @if (grade.score < grade.total && boardLearnActiveQuiz(); as resultQuiz) {
+                  <section class="board-quiz-result__review">
+                    <h3 i18n>Worth another look</h3>
+                    @for (question of resultQuiz.questions; track question.id) {
+                      @if (boardQuizResultFor(question.id); as result) {
+                        @if (!result.correct) {
+                          <button type="button" (click)="reviewBoardQuizSource(question)">
+                            <span>
+                              <strong>{{ question.sourceCardTitle }}</strong>
+                              <small>{{ question.explanation }}</small>
+                            </span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                          </button>
+                        }
+                      }
+                    }
+                  </section>
+                }
+
+                <div class="board-learning__footer-actions board-learning__footer-actions--center">
+                  <button type="button" class="board-learning__secondary" (click)="returnToBoardLearnMenu()" i18n>
+                    Learning home
+                  </button>
+                  <button type="button" class="board-learning__primary" (click)="retryBoardQuiz()" i18n>
+                    <span class="material-symbols-outlined">replay</span>
+                    Try again
+                  </button>
+                </div>
+              }
+            }
+          }
+        </div>
+      </section>
+    </div>
   }
 
   @if (cardPhotoViewerCard(); as photoCard) {

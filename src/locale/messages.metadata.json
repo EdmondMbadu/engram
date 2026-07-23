@@ -31,6 +31,10 @@
     "source": "Song title",
     "file": "src/app/boards/boards.html"
   },
+  "1029687662063960582": {
+    "source": "{$INTERPOLATION} cards have enough detail to generate questions.",
+    "file": "src/app/boards/boards.html"
+  },
   "1039414121458988593": {
     "source": "Backfill missing",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -186,6 +190,10 @@
   "1159014710668546082": {
     "source": "Map position",
     "file": "src/app/atlas-landing/atlas-landing.ts"
+  },
+  "1161299114153631702": {
+    "source": "Completed",
+    "file": "src/app/boards/boards.html"
   },
   "1169341252579540804": {
     "source": " No city metrics yet. Configure the atlas in settings and refresh the worldometers snapshot. ",
@@ -398,6 +406,10 @@
   "1335669222103870731": {
     "source": "The review area stays here so the main action is always visible.",
     "file": "src/app/city-places/city-places.html"
+  },
+  "133927534522374429": {
+    "source": "Loading results",
+    "file": "src/app/boards/boards.html"
   },
   "1341042261649516036": {
     "source": "Board sync is not ready. Refresh and try again.",
@@ -615,6 +627,10 @@
     "source": "Window cling 8x10\"",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "148220396868777558": {
+    "source": "See my score",
+    "file": "src/app/boards/boards.html"
+  },
   "1482373112335427196": {
     "source": "Paste text or a list",
     "file": "src/app/boards/boards.html"
@@ -767,6 +783,10 @@
     "source": "Voice Assistant",
     "file": "src/app/business-detail/business-activity.ts"
   },
+  "1569104502811885291": {
+    "source": " Skip {$START_TAG_SPAN}arrow_forward{$CLOSE_TAG_SPAN}",
+    "file": "src/app/boards/boards.html"
+  },
   "1574448164364998047": {
     "source": "Homes",
     "file": "src/app/public-wikis/public-wikis.ts"
@@ -782,6 +802,10 @@
   "1578572469729926875": {
     "source": "Heritage",
     "file": "src/app/business/business.ts"
+  },
+  "158221464148581588": {
+    "source": "How people are doing",
+    "file": "src/app/boards/boards.html"
   },
   "1582403693822286042": {
     "source": "Previous languages",
@@ -1123,6 +1147,10 @@
     "source": "{$START_TAG_SPAN}map{$CLOSE_TAG_SPAN} Open route ",
     "file": "src/app/boards/boards.html"
   },
+  "1888880364826197170": {
+    "source": "Answers — choose the correct one",
+    "file": "src/app/boards/boards.html"
+  },
   "1888947292108240065": {
     "source": "Internet mode is not limited to your documents. It uses public web sources and broader general knowledge.",
     "file": "src/app/chat/chat.ts"
@@ -1278,6 +1306,10 @@
   "2014080593821121610": {
     "source": "Longitude must be a number between -180 and 180.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
+  },
+  "2015134930602256591": {
+    "source": "From the source card",
+    "file": "src/app/boards/boards.html"
   },
   "2015446253062534443": {
     "source": "Failed to load city pulse.",
@@ -1739,6 +1771,10 @@
     "source": "Loading…",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
+  "2372741387711983760": {
+    "source": "Results will appear here after the first signed-in learner finishes.",
+    "file": "src/app/boards/boards.html"
+  },
   "2373296638471618086": {
     "source": "Weekly updates and staying in the know.",
     "file": "src/app/chat/chat.ts"
@@ -1923,6 +1959,10 @@
     "source": "Friend request declined.",
     "file": "src/app/boards/boards.ts"
   },
+  "2515886273855059001": {
+    "source": "{$START_TAG_SPAN}play_circle{$CLOSE_TAG_SPAN} Preview ",
+    "file": "src/app/boards/boards.html"
+  },
   "2516487279902526145": {
     "source": "Song cards",
     "file": "src/app/boards/boards.html"
@@ -2014,6 +2054,10 @@
   "2568533141500101071": {
     "source": "Converting your location to three words…",
     "file": "src/app/boards/boards.ts"
+  },
+  "257538373054146352": {
+    "source": "That’s right.",
+    "file": "src/app/boards/boards.html"
   },
   "2577354328429223424": {
     "source": "The 2022 collapse left roughly 150,000 people without reliable water.",
@@ -2251,6 +2295,10 @@
     "source": "Describe the card",
     "file": "src/app/boards/boards.html"
   },
+  "276612756910514598": {
+    "source": "Study cards",
+    "file": "src/app/boards/boards.html"
+  },
   "2769657962320512257": {
     "source": "Featured guide placement",
     "file": "src/app/business/business.ts"
@@ -2455,6 +2503,10 @@
     "source": "My City",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "2941170033894605998": {
+    "source": "Question {$INTERPOLATION} of {$INTERPOLATION_1}",
+    "file": "src/app/boards/boards.html"
+  },
   "2941977693311065466": {
     "source": "Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.",
     "file": "src/app/city-atlas-templates.ts"
@@ -2513,6 +2565,10 @@
   },
   "2967122621525898297": {
     "source": "Change photo",
+    "file": "src/app/boards/boards.html"
+  },
+  "2973928033612762715": {
+    "source": "Short description",
     "file": "src/app/boards/boards.html"
   },
   "2975562436092258507": {
@@ -2679,6 +2735,10 @@
     "source": "active fights",
     "file": "src/app/fence-line/fence-line.html"
   },
+  "3104971078801120577": {
+    "source": "{$START_TAG_SPAN}replay{$CLOSE_TAG_SPAN} Try again ",
+    "file": "src/app/boards/boards.html"
+  },
   "3107586371258082723": {
     "source": "Sign in to make {city} Answer Card",
     "file": "src/app/chat/chat.ts"
@@ -2738,6 +2798,10 @@
   "3144737072790374060": {
     "source": "Attempt recorded. Your best score stayed on the board.",
     "file": "src/app/answer-quiz/answer-quiz.ts"
+  },
+  "3151634115987524057": {
+    "source": "Review the board at your own pace, or test what you remember with a short quiz.",
+    "file": "src/app/boards/boards.html"
   },
   "3161045580446394854": {
     "source": "Your business claim draft is saved.",
@@ -2862,6 +2926,10 @@
   "3223441000184385962": {
     "source": "LivingWiki city",
     "file": "src/app/public-wikis/public-wikis.ts"
+  },
+  "3226091695375886368": {
+    "source": "Owner view",
+    "file": "src/app/boards/boards.html"
   },
   "3228811828827738441": {
     "source": "Oceania",
@@ -3079,6 +3147,10 @@
     "source": " No active session. {$START_LINK}Return to sign in{$CLOSE_LINK}",
     "file": "src/app/verify-email/verify-email.html"
   },
+  "3375687357699925721": {
+    "source": "Quiz coming soon",
+    "file": "src/app/boards/boards.html"
+  },
   "3378119430490179696": {
     "source": "No topic selected",
     "file": "src/app/wiki/wiki.html"
@@ -3147,6 +3219,10 @@
     "source": "Go there",
     "file": "src/app/boards/boards.html"
   },
+  "3411313811577590245": {
+    "source": "Your score is ready, but it could not be saved.",
+    "file": "src/app/boards/boards.ts"
+  },
   "3412510347304053829": {
     "source": " A majority-Black city on the Delaware River hosts Reworld Delaware Valley, formerly Covanta, burning up to 3,500 tons of waste per day. Only a tiny fraction of the trash burned here is Chester's own. ",
     "file": "src/app/fence-line/fence-line.html"
@@ -3158,6 +3234,10 @@
   "3423240913705580723": {
     "source": "Location / neighborhood",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "3427156126763245166": {
+    "source": "Every card becomes something you can learn",
+    "file": "src/app/boards/boards.html"
   },
   "342822285875320469": {
     "source": "Engineered for Complexity",
@@ -3467,6 +3547,10 @@
     "source": "Send a message to start a chat",
     "file": "src/app/chat/chat.ts"
   },
+  "365136080089384152": {
+    "source": "{$START_TAG_SPAN}style{$CLOSE_TAG_SPAN} Review source card ",
+    "file": "src/app/boards/boards.html"
+  },
   "3652454557898807430": {
     "source": " Trim to {$INTERPOLATION} characters or less. ",
     "file": "src/app/atlas-persona/atlas-persona.html"
@@ -3494,6 +3578,10 @@
   "3674456214240252950": {
     "source": "Listening",
     "file": "src/app/chat/chat.ts"
+  },
+  "3675084586027883487": {
+    "source": "Create a quiz",
+    "file": "src/app/boards/boards.html"
   },
   "3676305033706189085": {
     "source": "Founding-business status",
@@ -3583,6 +3671,14 @@
     "source": "Back to Wiki settings",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
+  "373517295923347413": {
+    "source": "{$START_TAG_SPAN}refresh{$CLOSE_TAG_SPAN} Regenerate ",
+    "file": "src/app/boards/boards.html"
+  },
+  "3735718779120438613": {
+    "source": "Questions begin with your card details. Edit anything before learners see it.",
+    "file": "src/app/boards/boards.html"
+  },
   "3747563688323690440": {
     "source": "Lines {$INTERPOLATION}-{$INTERPOLATION_1}",
     "file": "src/app/shared-chat/shared-chat.html"
@@ -3618,6 +3714,10 @@
   "3778301070648434818": {
     "source": "Account and linked spaces",
     "file": "src/app/profile/profile.html"
+  },
+  "3781832327366529005": {
+    "source": "A strong first pass. The cards are here when you’re ready.",
+    "file": "src/app/boards/boards.html"
   },
   "3782563238994348625": {
     "source": "Confirm password",
@@ -3690,6 +3790,10 @@
   "3824008398633159036": {
     "source": " Choose the mode chat starts with for this Wiki. ",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "3828503312435342569": {
+    "source": "Make the quiz yours",
+    "file": "src/app/boards/boards.html"
   },
   "3832759023700428927": {
     "source": "Speak to me in {language}",
@@ -4043,6 +4147,10 @@
     "source": "Create and grow a Wiki",
     "file": "src/app/wiki-home/wiki-home.html"
   },
+  "4127230645465554": {
+    "source": "Could not publish this quiz. Please try again.",
+    "file": "src/app/boards/boards.ts"
+  },
   "4128639052243140801": {
     "source": "Shared scorecard",
     "file": "src/app/fence-line/fence-line.html"
@@ -4335,6 +4443,10 @@
     "source": "{$START_TAG_SPAN}check_circle{$CLOSE_TAG_SPAN} Permanent video ready",
     "file": "src/app/boards/boards.html"
   },
+  "43385917889626108": {
+    "source": "Score ready. Sign in to save your result.",
+    "file": "src/app/boards/boards.ts"
+  },
   "4338868094909783075": {
     "source": "Knowledge Graph",
     "file": "src/app/marketing/marketing.html"
@@ -4401,6 +4513,10 @@
   },
   "4388879716045736175": {
     "source": "Note",
+    "file": "src/app/boards/boards.ts"
+  },
+  "4389024863638786578": {
+    "source": "Add at least three cards with a subtitle, summary, notes, or tags before making a quiz.",
     "file": "src/app/boards/boards.ts"
   },
   "4390526199409235204": {
@@ -4470,6 +4586,14 @@
   "4457078765960547082": {
     "source": "Test live guide",
     "file": "src/app/workspace-sidebar/workspace-sidebar.html"
+  },
+  "4457143351863870551": {
+    "source": "{$START_TAG_SPAN}visibility{$CLOSE_TAG_SPAN} Reveal details ",
+    "file": "src/app/boards/boards.html"
+  },
+  "4467730511941715714": {
+    "source": "Attempts",
+    "file": "src/app/boards/boards.html"
   },
   "4469117557205340807": {
     "source": "Verified real square",
@@ -4634,6 +4758,10 @@
   "4596750151911929850": {
     "source": "Type a place, restaurant, idea, memory, shop, or anything you want on this board...",
     "file": "src/app/boards/boards.html"
+  },
+  "4599837200839481247": {
+    "source": "This board does not have a published quiz yet.",
+    "file": "src/app/boards/boards.ts"
   },
   "4602337612647194323": {
     "source": "Saved Boards",
@@ -4830,6 +4958,10 @@
   "4740623127780801826": {
     "source": "Stripe checkout and this business claim will be attached to this account.",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "4741365775680406794": {
+    "source": "{$INTERPOLATION} questions · get your score instantly",
+    "file": "src/app/boards/boards.html"
   },
   "474368820102990943": {
     "source": "Copied question",
@@ -5163,6 +5295,10 @@
     "source": "Ending",
     "file": "src/app/chat/chat.ts"
   },
+  "4985738343362468441": {
+    "source": "Back to learning choices",
+    "file": "src/app/boards/boards.html"
+  },
   "4989395106592883421": {
     "source": "Failed to load topic details.",
     "file": "src/app/wiki.service.ts"
@@ -5182,6 +5318,10 @@
   "4992459469080693239": {
     "source": "City LivingWiki pages",
     "file": "src/app/public-wikis/public-wikis.ts"
+  },
+  "4995923777755036826": {
+    "source": "Nice work—you’ve got the important parts.",
+    "file": "src/app/boards/boards.html"
   },
   "5006980484283178280": {
     "source": " No tracked gaps yet ",
@@ -5218,6 +5358,10 @@
   "5022311860835674535": {
     "source": "Beer",
     "file": "src/app/business/business.ts"
+  },
+  "5026451956621817792": {
+    "source": "Publishing…",
+    "file": "src/app/boards/boards.html"
   },
   "5028777105388019087": {
     "source": "Details",
@@ -5487,6 +5631,10 @@
     "source": "Failed to save email settings.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
+  "5249499135310327185": {
+    "source": "{$START_TAG_SPAN}school{$CLOSE_TAG_SPAN} Learn ",
+    "file": "src/app/boards/boards.html"
+  },
   "5249573116861036420": {
     "source": "My Wikis",
     "file": "src/app/profile/profile.html"
@@ -5594,6 +5742,10 @@
   "5315420754614758463": {
     "source": "Choose a flag to switch {city} into your language.",
     "file": "src/app/chat/chat.ts"
+  },
+  "5320870651003627043": {
+    "source": "Question",
+    "file": "src/app/boards/boards.html"
   },
   "5323842471809602464": {
     "source": "Subscribe for weekly updates, or sign in to keep exploring the Philly guide.",
@@ -5790,6 +5942,10 @@
   "5484150022905820858": {
     "source": " This wiki is unavailable or not public. ",
     "file": "src/app/wiki/wiki.html"
+  },
+  "5485610234491443664": {
+    "source": "Preview complete. Publish the quiz to record scores.",
+    "file": "src/app/boards/boards.ts"
   },
   "5487440443275212765": {
     "source": "Vapi phone number ID",
@@ -5991,6 +6147,10 @@
     "source": "Methods",
     "file": "src/app/profile/profile.html"
   },
+  "5634010453799684193": {
+    "source": "Keep at least three complete questions before previewing.",
+    "file": "src/app/boards/boards.ts"
+  },
   "5634165998551202725": {
     "source": "Filter by struggle",
     "file": "src/app/fence-line/fence-line.html"
@@ -6071,6 +6231,10 @@
     "source": "Start a voice conversation in your language",
     "file": "src/app/chat/chat.ts"
   },
+  "5675427291143024452": {
+    "source": "Explanation after answering",
+    "file": "src/app/boards/boards.html"
+  },
   "5687578233861198468": {
     "source": "Founded by survivors of the last known slave ship, the Clotilda, and later encircled by paper mills and heavy industry.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -6094,6 +6258,10 @@
   "5698046514233867599": {
     "source": "Choose",
     "file": "src/app/chat/chat.ts"
+  },
+  "5699019814357231897": {
+    "source": "You know this board beautifully.",
+    "file": "src/app/boards/boards.html"
   },
   "5701618810648052610": {
     "source": "Title",
@@ -6167,6 +6335,10 @@
     "source": " Added admin ",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "5750014203548150508": {
+    "source": "Publish quiz",
+    "file": "src/app/boards/boards.html"
+  },
   "5760998463382989325": {
     "source": "The Ozempic & GLP-1 Revolution",
     "file": "src/app/public-wiki-catalog.ts"
@@ -6214,6 +6386,10 @@
   "5794522528765102598": {
     "source": "Discovery failed. Try another source URL.",
     "file": "src/app/web-scraper/web-scraper.ts"
+  },
+  "5794811201696000835": {
+    "source": "From: {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
   },
   "5800187103306660757": {
     "source": "Password updated",
@@ -6531,6 +6707,10 @@
     "source": "Rename",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "6041841516937148382": {
+    "source": "Average score",
+    "file": "src/app/boards/boards.html"
+  },
   "6044205483680277163": {
     "source": "Failed to save the persona prompt.",
     "file": "src/app/atlas-persona/atlas-persona.ts"
@@ -6671,6 +6851,10 @@
     "source": "Search pictures",
     "file": "src/app/boards/boards.html"
   },
+  "6175322351768154485": {
+    "source": "Saving your result…",
+    "file": "src/app/boards/boards.html"
+  },
   "6175856071551146216": {
     "source": "Build private source-aware wikis for trips, research, family projects, or local obsessions.",
     "file": "src/app/pricing/pricing.ts"
@@ -6714,6 +6898,10 @@
   "6191643918822075959": {
     "source": "Story card",
     "file": "src/app/answer-card/answer-card.html"
+  },
+  "619608034616931471": {
+    "source": "Start with editable questions generated from your cards.",
+    "file": "src/app/boards/boards.html"
   },
   "6197326814674300842": {
     "source": "Select an atlas before starting a scrape run.",
@@ -6843,6 +7031,10 @@
     "source": "{$START_TAG_SPAN}explore{$CLOSE_TAG_SPAN} Field guide ",
     "file": "src/app/shared-chat/shared-chat.html"
   },
+  "6281347408714210277": {
+    "source": "{$START_TAG_SPAN}edit{$CLOSE_TAG_SPAN} Edit quiz ",
+    "file": "src/app/boards/boards.html"
+  },
   "6283140141357239970": {
     "source": " Sections stay collapsed until you need them. Open a row to edit voice, access, search behavior, city data, or contents. ",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -6930,6 +7122,10 @@
   "634567348591498634": {
     "source": "Download PNG",
     "file": "src/app/business-detail/business-detail.html"
+  },
+  "6353018307824157180": {
+    "source": "Your quiz is live for everyone who can view this board.",
+    "file": "src/app/boards/boards.html"
   },
   "6357285887711067123": {
     "source": "Finding articles on {$INTERPOLATION}...",
@@ -7875,6 +8071,10 @@
     "source": "Guide and admin contact",
     "file": "src/app/business-detail/business-edit.html"
   },
+  "7087250153844702386": {
+    "source": "How would you like to explore?",
+    "file": "src/app/boards/boards.html"
+  },
   "7107218117130409950": {
     "source": "Boards",
     "file": "src/app/boards/boards.html"
@@ -8179,6 +8379,10 @@
     "source": "Password reset unavailable",
     "file": "src/app/auth-action/auth-action.ts"
   },
+  "7363628633042945653": {
+    "source": "Quiz published. Everyone with access to this board can take it.",
+    "file": "src/app/boards/boards.ts"
+  },
   "7364548409438077296": {
     "source": "Important topics",
     "file": "src/app/chat/chat.ts"
@@ -8259,6 +8463,10 @@
     "source": "Story, hours, links, photos, event notes, and local context in one living page.",
     "file": "src/app/business/business.html"
   },
+  "7439245463018515041": {
+    "source": "Close learning",
+    "file": "src/app/boards/boards.html"
+  },
   "7441806737971156915": {
     "source": "Atlas Settings | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -8319,6 +8527,10 @@
     "source": "Petrochemical corridor",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "7482050624420586131": {
+    "source": "Card {$INTERPOLATION} of {$INTERPOLATION_1}",
+    "file": "src/app/boards/boards.html"
+  },
   "7483323168256097668": {
     "source": "The Neural Ingestion",
     "file": "src/app/marketing/marketing.html"
@@ -8378,6 +8590,10 @@
   "7555209994333765049": {
     "source": "LivingWiki of every tariff, trade restriction, and retaliatory measure in the current global trade environment — what's taxed, who's affected, and what it costs.",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "7557056742671672272": {
+    "source": "Editable preview",
+    "file": "src/app/boards/boards.html"
   },
   "7557329051113630850": {
     "source": "{$START_TAG_SPAN}play_arrow{$CLOSE_TAG_SPAN} Live view ",
@@ -8538,6 +8754,10 @@
   "7676737305273121402": {
     "source": " This is the account owner for the claim, payment, documents, and future business edits. Payment is tied to the signed-in account email. ",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "7680532799355251190": {
+    "source": "{$START_TAG_SPAN}arrow_back{$CLOSE_TAG_SPAN} Previous ",
+    "file": "src/app/boards/boards.html"
   },
   "7695940436012380952": {
     "source": "Your draft is saved, then payment and business access are tied to the account you use.",
@@ -8819,6 +9039,10 @@
     "source": " Preview landing page ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
+  "7895238671495134949": {
+    "source": "Quiz controls",
+    "file": "src/app/boards/boards.html"
+  },
   "7895705680096978822": {
     "source": "View page",
     "file": "src/app/business-detail/business-edit.html"
@@ -8895,6 +9119,10 @@
     "source": "Book now",
     "file": "src/app/boards/boards.html"
   },
+  "7936419772245091810": {
+    "source": "Quiz complete",
+    "file": "src/app/boards/boards.html"
+  },
   "7937463611346687246": {
     "source": "Video upload failed.",
     "file": "src/app/atlas-landing/atlas-landing.ts"
@@ -8910,6 +9138,10 @@
   "7946391287907516342": {
     "source": "{$INTERPOLATION} configured override(s)",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
+  },
+  "7950796063672592069": {
+    "source": "Flip through all {$INTERPOLATION} cards and reveal the details.",
+    "file": "src/app/boards/boards.html"
   },
   "7963878862756701037": {
     "source": " Knowledge Gaps ",
@@ -8934,6 +9166,10 @@
   "7974971625915252532": {
     "source": "Community map",
     "file": "src/app/fence-line/fence-line.html"
+  },
+  "7981406851517511884": {
+    "source": "Learn from this board",
+    "file": "src/app/boards/boards.html"
   },
   "7987425617873257630": {
     "source": " Pick the plan that matches how you use LivingWiki. ",
@@ -8962,6 +9198,10 @@
   "8004467388938346882": {
     "source": "Owner access required",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
+  },
+  "8013488746619449985": {
+    "source": "Worth another look",
+    "file": "src/app/boards/boards.html"
   },
   "8014170380466555024": {
     "source": "Theater",
@@ -9082,6 +9322,10 @@
   "8101261929942565807": {
     "source": "The Data Privacy & Surveillance Atlas",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "8102301527914224440": {
+    "source": "Cards to reinforce",
+    "file": "src/app/boards/boards.html"
   },
   "8104421162933956065": {
     "source": "Notes",
@@ -9275,6 +9519,10 @@
     "source": "Home | LivingWiki",
     "file": "src/app/app.routes.ts"
   },
+  "8264702528227770819": {
+    "source": " Next card {$START_TAG_SPAN}arrow_forward{$CLOSE_TAG_SPAN}",
+    "file": "src/app/boards/boards.html"
+  },
   "8265782935899108723": {
     "source": "Serious knowledge deserves serious boundaries.",
     "file": "src/app/marketing/marketing.html"
@@ -9347,12 +9595,20 @@
     "source": "What are the key open questions about {city}?",
     "file": "src/app/chat/chat.ts"
   },
+  "8317560741856318079": {
+    "source": "{$INTERPOLATION} of {$INTERPOLATION_1} correct",
+    "file": "src/app/boards/boards.html"
+  },
   "8319228762989674126": {
     "source": "GDPR, CCPA, facial recognition bans, data broker industry, government surveillance programs, and the evolving landscape of digital privacy.",
     "file": "src/app/public-wiki-catalog.ts"
   },
   "8323027781252893267": {
     "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Card back ",
+    "file": "src/app/boards/boards.html"
+  },
+  "832532541878165420": {
+    "source": "Quiz title",
     "file": "src/app/boards/boards.html"
   },
   "8331031046367440412": {
@@ -9521,6 +9777,10 @@
   },
   "845653249497350772": {
     "source": "Add more",
+    "file": "src/app/boards/boards.html"
+  },
+  "8459445525340884775": {
+    "source": "Remove question",
     "file": "src/app/boards/boards.html"
   },
   "8461842260159597706": {
@@ -9727,6 +9987,10 @@
     "source": "Widely recognized as a birthplace of environmental justice organizing.",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "8650759828187977685": {
+    "source": "Not quite—here’s the answer.",
+    "file": "src/app/boards/boards.html"
+  },
   "8665908467789573930": {
     "source": "Wiki settings",
     "file": "src/app/library/library.html"
@@ -9778,6 +10042,10 @@
   "8702278603059042790": {
     "source": "Vapi voice agent",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "8708309041028579154": {
+    "source": "Quiz results",
+    "file": "src/app/boards/boards.html"
   },
   "8709864020583090718": {
     "source": "Card details were refreshed, but song media could not be resolved.",
@@ -9882,6 +10150,10 @@
   "8803977195874302490": {
     "source": "What are people debating about {city} right now?",
     "file": "src/app/chat/chat.ts"
+  },
+  "8811308202853248254": {
+    "source": "The board owner has not published a quiz yet.",
+    "file": "src/app/boards/boards.html"
   },
   "8811974889042173670": {
     "source": "Local Orbit",
@@ -10203,6 +10475,10 @@
     "source": "Admin console",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "9009594031171720664": {
+    "source": " Learning home ",
+    "file": "src/app/boards/boards.html"
+  },
   "9009733971381231945": {
     "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Save board ",
     "file": "src/app/boards/boards.html"
@@ -10371,6 +10647,10 @@
     "source": " Jobs {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
     "file": "src/app/green-jobs/green-jobs.html"
   },
+  "9153508585400405262": {
+    "source": "Question {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
+  },
   "9155608366859514313": {
     "source": "Source",
     "file": "src/app/boards/boards.html"
@@ -10466,6 +10746,10 @@
   "926039708040434207": {
     "source": "Add trip",
     "file": "src/app/public-wikis/public-wikis.ts"
+  },
+  "928605580772916369": {
+    "source": "Your score was saved to this board.",
+    "file": "src/app/boards/boards.ts"
   },
   "931442491473755242": {
     "source": "Network controls",

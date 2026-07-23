@@ -12933,6 +12933,300 @@ export const createTravelCardShare = onCall(
   },
 );
 
+type BoardQuizOption = {
+  id: string;
+  text: string;
+};
+
+type BoardQuizQuestion = {
+  id: string;
+  sourceCardId: string;
+  sourceCardTitle: string;
+  prompt: string;
+  options: BoardQuizOption[];
+  correctOptionId: string;
+  explanation: string;
+};
+
+type BoardQuiz = {
+  id: string;
+  title: string;
+  published: boolean;
+  questions: BoardQuizQuestion[];
+  updatedAt: string;
+};
+
+function boardQuizString(value: unknown, maxLength: number): string {
+  return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim().slice(0, maxLength) : '';
+}
+
+function normalizeBoardQuizIdentifier(value: unknown, fieldName: string): string {
+  const id = boardQuizString(value, 160);
+  if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) {
+    throw new HttpsError('invalid-argument', `${fieldName} is invalid.`);
+  }
+  return id;
+}
+
+function normalizeStoredBoardQuiz(value: unknown): BoardQuiz | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const data = value as Record<string, unknown>;
+  const questions = Array.isArray(data.questions)
+    ? data.questions
+        .map((question): BoardQuizQuestion | null => {
+          if (!question || typeof question !== 'object') {
+            return null;
+          }
+          const entry = question as Record<string, unknown>;
+          const options = Array.isArray(entry.options)
+            ? entry.options
+                .map((option): BoardQuizOption | null => {
+                  if (!option || typeof option !== 'object') {
+                    return null;
+                  }
+                  const optionData = option as Record<string, unknown>;
+                  const id = boardQuizString(optionData.id, 160);
+                  const text = boardQuizString(optionData.text, 160);
+                  return id && text ? { id, text } : null;
+                })
+                .filter((option): option is BoardQuizOption => Boolean(option))
+                .slice(0, 4)
+            : [];
+          const id = boardQuizString(entry.id, 160);
+          const sourceCardId = boardQuizString(entry.sourceCardId, 160);
+          const prompt = boardQuizString(entry.prompt, 360);
+          const correctOptionId = boardQuizString(entry.correctOptionId, 160);
+          if (
+            !id
+            || !sourceCardId
+            || !prompt
+            || options.length < 2
+            || !options.some((option) => option.id === correctOptionId)
+          ) {
+            return null;
+          }
+          return {
+            id,
+            sourceCardId,
+            sourceCardTitle: boardQuizString(entry.sourceCardTitle, 120),
+            prompt,
+            options,
+            correctOptionId,
+            explanation: boardQuizString(entry.explanation, 500),
+          };
+        })
+        .filter((question): question is BoardQuizQuestion => Boolean(question))
+        .slice(0, 12)
+    : [];
+  const id = boardQuizString(data.id, 160);
+  const title = boardQuizString(data.title, 120);
+  if (!id || !title || questions.length < 3) {
+    return null;
+  }
+  return {
+    id,
+    title,
+    published: data.published === true,
+    questions,
+    updatedAt: boardQuizString(data.updatedAt, 80),
+  };
+}
+
+function normalizeBoardQuizAnswers(value: unknown): Map<string, string> {
+  const answers = new Map<string, string>();
+  if (!Array.isArray(value)) {
+    return answers;
+  }
+  for (const answer of value.slice(0, 12)) {
+    if (!answer || typeof answer !== 'object') {
+      continue;
+    }
+    const entry = answer as Record<string, unknown>;
+    const questionId = boardQuizString(entry.questionId, 160);
+    const optionId = boardQuizString(entry.optionId, 160);
+    if (questionId && optionId) {
+      answers.set(questionId, optionId);
+    }
+  }
+  return answers;
+}
+
+function gradeStoredBoardQuiz(quiz: BoardQuiz, answers: Map<string, string>) {
+  const results = quiz.questions.map((question) => {
+    const selectedOptionId = answers.get(question.id) ?? null;
+    return {
+      questionId: question.id,
+      selectedOptionId,
+      correctOptionId: question.correctOptionId,
+      correct: selectedOptionId === question.correctOptionId,
+      sourceCardId: question.sourceCardId,
+      explanation: question.explanation,
+    };
+  });
+  const score = results.filter((result) => result.correct).length;
+  return {
+    score,
+    total: results.length,
+    percent: results.length ? Math.round((score / results.length) * 100) : 0,
+    results,
+  };
+}
+
+export const submitBoardQuizAttempt = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Sign in to save your board quiz result.');
+    }
+
+    const boardId = normalizeBoardQuizIdentifier(request.data?.boardId, 'boardId');
+    const quizId = normalizeBoardQuizIdentifier(request.data?.quizId, 'quizId');
+    const boardSnapshot = await db.collection('boards').doc(boardId).get();
+    if (!boardSnapshot.exists) {
+      throw new HttpsError('not-found', 'Board not found.');
+    }
+    const board = boardSnapshot.data() ?? {};
+    const ownerUserId = boardQuizString(board.owner_user_id, 160);
+    if (board.visibility !== 'public' && ownerUserId !== request.auth.uid) {
+      throw new HttpsError('permission-denied', 'You do not have access to this quiz.');
+    }
+    const quiz = normalizeStoredBoardQuiz(board.learningQuiz);
+    if (!quiz?.published || quiz.id !== quizId) {
+      throw new HttpsError('failed-precondition', 'This board quiz is not published.');
+    }
+
+    const answers = normalizeBoardQuizAnswers(request.data?.answers);
+    const hasCompleteValidAnswers = quiz.questions.every((question) => {
+      const optionId = answers.get(question.id);
+      return Boolean(optionId && question.options.some((option) => option.id === optionId));
+    });
+    if (!hasCompleteValidAnswers || answers.size !== quiz.questions.length) {
+      throw new HttpsError('invalid-argument', 'Answer every quiz question before submitting.');
+    }
+    const grade = gradeStoredBoardQuiz(quiz, answers);
+    const elapsedMs = Math.max(0, Math.min(Number(request.data?.elapsedMs ?? 0) || 0, 24 * 60 * 60 * 1000));
+    const token = (request.auth.token ?? {}) as { name?: unknown; email?: unknown };
+    const displayName = boardQuizString(token.name, 80)
+      || (typeof token.email === 'string' ? boardQuizString(token.email.split('@')[0], 80) : '')
+      || 'Living Wiki Learner';
+
+    await db.collection('board_quiz_attempts').add({
+      board_id: boardId,
+      board_owner_user_id: ownerUserId,
+      quiz_id: quiz.id,
+      quiz_updated_at: quiz.updatedAt,
+      user_id: request.auth.uid,
+      display_name: displayName,
+      score: grade.score,
+      total: grade.total,
+      percent: grade.percent,
+      elapsed_ms: elapsedMs,
+      results: grade.results.map((result) => ({
+        question_id: result.questionId,
+        source_card_id: result.sourceCardId,
+        correct: result.correct,
+      })),
+      created_at: FieldValue.serverTimestamp(),
+    });
+
+    return { grade };
+  },
+);
+
+export const getBoardQuizStats = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Sign in to view board quiz results.');
+    }
+
+    const boardId = normalizeBoardQuizIdentifier(request.data?.boardId, 'boardId');
+    const boardSnapshot = await db.collection('boards').doc(boardId).get();
+    if (!boardSnapshot.exists) {
+      throw new HttpsError('not-found', 'Board not found.');
+    }
+    const board = boardSnapshot.data() ?? {};
+    if (board.owner_user_id !== request.auth.uid) {
+      throw new HttpsError('permission-denied', 'Only the board owner can view quiz results.');
+    }
+    const quiz = normalizeStoredBoardQuiz(board.learningQuiz);
+    if (!quiz?.published) {
+      return {
+        stats: {
+          attemptCount: 0,
+          averagePercent: 0,
+          completionCount: 0,
+          difficultCards: [],
+        },
+      };
+    }
+
+    const attemptsSnapshot = await db.collection('board_quiz_attempts')
+      .where('board_id', '==', boardId)
+      .limit(500)
+      .get();
+    const attempts = attemptsSnapshot.docs
+      .map((document) => document.data())
+      .filter((attempt) => attempt.quiz_id === quiz.id && attempt.quiz_updated_at === quiz.updatedAt);
+    const cardTitles = new Map<string, string>(
+      (Array.isArray(board.cards) ? board.cards : [])
+        .filter((card): card is Record<string, unknown> => Boolean(card) && typeof card === 'object')
+        .map((card) => [boardQuizString(card.id, 160), boardQuizString(card.title, 120)]),
+    );
+    const perCard = new Map<string, { attempts: number; correct: number }>();
+    for (const attempt of attempts) {
+      const results = Array.isArray(attempt.results) ? attempt.results : [];
+      for (const result of results) {
+        if (!result || typeof result !== 'object') {
+          continue;
+        }
+        const resultData = result as Record<string, unknown>;
+        const cardId = boardQuizString(resultData.source_card_id, 160);
+        if (!cardId) {
+          continue;
+        }
+        const current = perCard.get(cardId) ?? { attempts: 0, correct: 0 };
+        current.attempts += 1;
+        current.correct += resultData.correct === true ? 1 : 0;
+        perCard.set(cardId, current);
+      }
+    }
+    const averagePercent = attempts.length
+      ? Math.round(attempts.reduce((sum, attempt) => sum + (Number(attempt.percent) || 0), 0) / attempts.length)
+      : 0;
+    const difficultCards = [...perCard.entries()]
+      .map(([cardId, values]) => ({
+        cardId,
+        title: cardTitles.get(cardId) || quiz.questions.find((question) => question.sourceCardId === cardId)?.sourceCardTitle || 'Board card',
+        attempts: values.attempts,
+        correctPercent: values.attempts ? Math.round((values.correct / values.attempts) * 100) : 0,
+      }))
+      .sort((left, right) => left.correctPercent - right.correctPercent || right.attempts - left.attempts)
+      .slice(0, 3);
+
+    return {
+      stats: {
+        attemptCount: attempts.length,
+        averagePercent,
+        completionCount: attempts.filter((attempt) => Number(attempt.total) === quiz.questions.length).length,
+        difficultCards,
+      },
+    };
+  },
+);
+
 export const getAnswerCard = onCall(
   {
     region: callableRegion,

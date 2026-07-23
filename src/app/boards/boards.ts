@@ -20,6 +20,16 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import {
+  boardQuizEligibleCardCount,
+  buildBoardLearningQuiz,
+  gradeBoardLearningQuiz,
+  normalizeBoardLearningQuiz,
+  type BoardLearningQuiz,
+  type BoardLearningQuizGrade,
+  type BoardLearningQuizQuestion,
+  type BoardLearningQuizStats,
+} from './board-learning';
+import {
   normalizeWhat3WordsAddress,
   resolveWhat3WordsAddress,
   type ResolvedWhat3WordsLocation,
@@ -53,6 +63,7 @@ type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
 type StackShareMode = 'video' | 'live';
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
+type BoardLearnView = 'menu' | 'study' | 'quiz-edit' | 'quiz-play' | 'quiz-result';
 
 const playerCardVersion = 'x-player-v2';
 
@@ -171,6 +182,7 @@ type Board = {
   socialVideoRatio: StackRatio;
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
+  learningQuiz?: BoardLearningQuiz | null;
   cards: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -874,7 +886,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css'],
+  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -917,6 +929,7 @@ export class BoardsComponent implements OnDestroy {
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
   private wizardOffGridLocationRun = 0;
+  private boardLearnStartedAt = 0;
   private selectedBoardUnsubscribe: Unsubscribe | null = null;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
@@ -1105,6 +1118,21 @@ export class BoardsComponent implements OnDestroy {
   readonly openCardMemoryGalleries = signal<Set<string>>(new Set());
   readonly cardPhotoViewerCardId = signal<string | null>(null);
   readonly cardPhotoViewerIndex = signal(0);
+  readonly boardLearnOpen = signal(false);
+  readonly boardLearnView = signal<BoardLearnView>('menu');
+  readonly boardLearnStudyIndex = signal(0);
+  readonly boardLearnStudyRevealed = signal(false);
+  readonly boardLearnQuizDraft = signal<BoardLearningQuiz | null>(null);
+  readonly boardLearnActiveQuiz = signal<BoardLearningQuiz | null>(null);
+  readonly boardLearnQuizIndex = signal(0);
+  readonly boardLearnQuizAnswers = signal<Record<string, string>>({});
+  readonly boardLearnQuizGrade = signal<BoardLearningQuizGrade | null>(null);
+  readonly boardLearnQuizSaving = signal(false);
+  readonly boardLearnQuizSubmitting = signal(false);
+  readonly boardLearnQuizStatus = signal<string | null>(null);
+  readonly boardLearnQuizError = signal<string | null>(null);
+  readonly boardLearnQuizStats = signal<BoardLearningQuizStats | null>(null);
+  readonly boardLearnQuizStatsLoading = signal(false);
 
   readonly boardDraft = signal<BoardDraft>({
     title: '',
@@ -1172,6 +1200,32 @@ export class BoardsComponent implements OnDestroy {
   readonly selectedBoard = computed(() => {
     const selectedId = this.selectedBoardId();
     return this.boards().find((board) => board.id === selectedId) ?? null;
+  });
+  readonly boardLearnBoard = computed(() => this.boardLearnOpen() ? this.selectedBoard() : null);
+  readonly boardLearnStudyCard = computed(() => {
+    const board = this.boardLearnBoard();
+    if (!board?.cards.length) {
+      return null;
+    }
+    return board.cards[Math.min(this.boardLearnStudyIndex(), board.cards.length - 1)] ?? null;
+  });
+  readonly boardLearnCurrentQuestion = computed(() => {
+    const quiz = this.boardLearnActiveQuiz();
+    return quiz?.questions[Math.min(this.boardLearnQuizIndex(), Math.max(0, quiz.questions.length - 1))] ?? null;
+  });
+  readonly boardLearnCurrentAnswer = computed(() => {
+    const question = this.boardLearnCurrentQuestion();
+    return question ? this.boardLearnQuizAnswers()[question.id] ?? null : null;
+  });
+  readonly boardLearnCanPublishQuiz = computed(() => {
+    const draft = normalizeBoardLearningQuiz(this.boardLearnQuizDraft());
+    return !!draft
+      && draft.questions.length >= 3
+      && draft.questions.every((question) =>
+        question.prompt.length >= 8
+        && question.options.length >= 2
+        && question.options.every((option) => option.text.length > 0)
+        && question.options.some((option) => option.id === question.correctOptionId));
   });
   readonly cardPhotoViewerCard = computed(() => {
     const cardId = this.cardPhotoViewerCardId();
@@ -1622,6 +1676,9 @@ export class BoardsComponent implements OnDestroy {
 
   closeBoardDetail(): void {
     this.stopSongPreview();
+    if (this.boardLearnOpen()) {
+      this.closeBoardLearn();
+    }
     void this.router.navigateByUrl(this.songsPage() || this.tripsPage() ? this.boardRouteRoot() : this.boardsProfileRoutePath());
   }
 
@@ -5332,6 +5389,19 @@ export class BoardsComponent implements OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   handleCardPhotoViewerKeydown(event: KeyboardEvent): void {
+    if (this.boardLearnOpen()) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        this.closeBoardLearn();
+      } else if (this.boardLearnView() === 'study' && event.key === 'ArrowLeft') {
+        event.preventDefault();
+        this.stepBoardStudy(-1);
+      } else if (this.boardLearnView() === 'study' && event.key === 'ArrowRight') {
+        event.preventDefault();
+        this.stepBoardStudy(1);
+      }
+      return;
+    }
     if (!this.cardPhotoViewerCard()) {
       return;
     }
@@ -5452,6 +5522,329 @@ export class BoardsComponent implements OnDestroy {
     return this.cardStatuses.find((item) => item.id === status)?.icon ?? 'bookmark';
   }
 
+  openBoardLearn(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!board.cards.length) {
+      return;
+    }
+    this.boardLearnOpen.set(true);
+    this.boardLearnView.set('menu');
+    this.boardLearnStudyIndex.set(0);
+    this.boardLearnStudyRevealed.set(false);
+    this.boardLearnQuizDraft.set(this.cloneBoardLearningQuiz(board.learningQuiz));
+    this.boardLearnActiveQuiz.set(null);
+    this.boardLearnQuizAnswers.set({});
+    this.boardLearnQuizGrade.set(null);
+    this.boardLearnQuizStatus.set(null);
+    this.boardLearnQuizError.set(null);
+    this.boardLearnQuizStats.set(null);
+    if (this.canEditBoard(board) && board.learningQuiz?.published) {
+      void this.loadBoardQuizStats(board.id);
+    }
+  }
+
+  closeBoardLearn(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.boardLearnOpen.set(false);
+    this.boardLearnView.set('menu');
+    this.boardLearnActiveQuiz.set(null);
+    this.boardLearnQuizGrade.set(null);
+    this.boardLearnQuizStatus.set(null);
+    this.boardLearnQuizError.set(null);
+  }
+
+  returnToBoardLearnMenu(): void {
+    this.boardLearnView.set('menu');
+    this.boardLearnActiveQuiz.set(null);
+    this.boardLearnQuizGrade.set(null);
+    this.boardLearnQuizStatus.set(null);
+    this.boardLearnQuizError.set(null);
+  }
+
+  boardQuizEligibleCount(board: Board): number {
+    return boardQuizEligibleCardCount(board.cards);
+  }
+
+  startBoardStudy(sourceCardId?: string): void {
+    const board = this.boardLearnBoard();
+    if (!board?.cards.length) {
+      return;
+    }
+    const index = sourceCardId ? board.cards.findIndex((card) => card.id === sourceCardId) : 0;
+    this.boardLearnStudyIndex.set(index >= 0 ? index : 0);
+    this.boardLearnStudyRevealed.set(false);
+    this.boardLearnView.set('study');
+  }
+
+  stepBoardStudy(direction: number): void {
+    const board = this.boardLearnBoard();
+    if (!board?.cards.length) {
+      return;
+    }
+    const next = (this.boardLearnStudyIndex() + direction + board.cards.length) % board.cards.length;
+    this.boardLearnStudyIndex.set(next);
+    this.boardLearnStudyRevealed.set(false);
+  }
+
+  toggleBoardStudyReveal(): void {
+    this.boardLearnStudyRevealed.update((revealed) => !revealed);
+  }
+
+  openBoardQuizEditor(regenerate = false): void {
+    const board = this.boardLearnBoard();
+    if (!board || !this.canEditBoard(board)) {
+      return;
+    }
+    const draft = !regenerate ? this.cloneBoardLearningQuiz(board.learningQuiz) : null;
+    const generated = draft ?? buildBoardLearningQuiz(board);
+    if (!generated) {
+      this.boardLearnQuizError.set($localize`Add at least three cards with a subtitle, summary, notes, or tags before making a quiz.`);
+      return;
+    }
+    this.boardLearnQuizDraft.set({ ...generated, published: false, updatedAt: new Date().toISOString() });
+    this.boardLearnQuizStatus.set(null);
+    this.boardLearnQuizError.set(null);
+    this.boardLearnView.set('quiz-edit');
+  }
+
+  updateBoardQuizField(field: 'title' | 'description', value: string): void {
+    this.boardLearnQuizDraft.update((draft) => draft ? {
+      ...draft,
+      [field]: value.slice(0, field === 'title' ? 120 : 300),
+      updatedAt: new Date().toISOString(),
+    } : null);
+  }
+
+  updateBoardQuizQuestion(
+    questionId: string,
+    field: 'prompt' | 'explanation',
+    value: string,
+  ): void {
+    this.boardLearnQuizDraft.update((draft) => draft ? {
+      ...draft,
+      questions: draft.questions.map((question) => question.id === questionId ? {
+        ...question,
+        [field]: value.slice(0, field === 'prompt' ? 360 : 500),
+      } : question),
+      updatedAt: new Date().toISOString(),
+    } : null);
+  }
+
+  updateBoardQuizOption(questionId: string, optionId: string, value: string): void {
+    this.boardLearnQuizDraft.update((draft) => draft ? {
+      ...draft,
+      questions: draft.questions.map((question) => question.id === questionId ? {
+        ...question,
+        options: question.options.map((option) => option.id === optionId
+          ? { ...option, text: value.slice(0, 160) }
+          : option),
+      } : question),
+      updatedAt: new Date().toISOString(),
+    } : null);
+  }
+
+  setBoardQuizCorrectOption(questionId: string, optionId: string): void {
+    this.boardLearnQuizDraft.update((draft) => draft ? {
+      ...draft,
+      questions: draft.questions.map((question) => question.id === questionId
+        ? { ...question, correctOptionId: optionId }
+        : question),
+      updatedAt: new Date().toISOString(),
+    } : null);
+  }
+
+  removeBoardQuizQuestion(questionId: string): void {
+    this.boardLearnQuizDraft.update((draft) => draft ? {
+      ...draft,
+      questions: draft.questions.filter((question) => question.id !== questionId),
+      updatedAt: new Date().toISOString(),
+    } : null);
+  }
+
+  previewBoardQuiz(): void {
+    const draft = normalizeBoardLearningQuiz(this.boardLearnQuizDraft());
+    if (!draft || draft.questions.length < 3) {
+      this.boardLearnQuizError.set($localize`Keep at least three complete questions before previewing.`);
+      return;
+    }
+    this.beginBoardQuiz(draft);
+  }
+
+  async publishBoardQuiz(): Promise<void> {
+    const board = this.boardLearnBoard();
+    const draft = normalizeBoardLearningQuiz(this.boardLearnQuizDraft());
+    if (!board || !this.canEditBoard(board) || !draft || !this.boardLearnCanPublishQuiz()) {
+      return;
+    }
+    const now = new Date().toISOString();
+    const published: BoardLearningQuiz = {
+      ...draft,
+      published: true,
+      createdAt: board.learningQuiz?.createdAt || draft.createdAt || now,
+      updatedAt: now,
+    };
+    this.boardLearnQuizSaving.set(true);
+    this.boardLearnQuizError.set(null);
+    try {
+      const persisted = await this.persistBoard({ ...board, learningQuiz: published, updatedAt: now });
+      this.boards.update((boards) => boards.map((item) => item.id === persisted.id ? persisted : item));
+      this.boardLearnQuizDraft.set(this.cloneBoardLearningQuiz(published));
+      this.boardLearnQuizStatus.set($localize`Quiz published. Everyone with access to this board can take it.`);
+      this.boardLearnView.set('menu');
+      void this.loadBoardQuizStats(board.id);
+    } catch (error) {
+      console.error('Board quiz publish failed', error, { boardId: board.id });
+      this.boardLearnQuizError.set($localize`Could not publish this quiz. Please try again.`);
+    } finally {
+      this.boardLearnQuizSaving.set(false);
+    }
+  }
+
+  startPublishedBoardQuiz(): void {
+    const quiz = normalizeBoardLearningQuiz(this.boardLearnBoard()?.learningQuiz);
+    if (!quiz?.published || quiz.questions.length < 3) {
+      this.boardLearnQuizError.set($localize`This board does not have a published quiz yet.`);
+      return;
+    }
+    this.beginBoardQuiz(quiz);
+  }
+
+  selectBoardQuizAnswer(optionId: string): void {
+    const question = this.boardLearnCurrentQuestion();
+    if (!question || this.boardLearnCurrentAnswer()) {
+      return;
+    }
+    this.boardLearnQuizAnswers.update((answers) => ({ ...answers, [question.id]: optionId }));
+  }
+
+  boardQuizOptionState(question: BoardLearningQuizQuestion, optionId: string): string {
+    const selected = this.boardLearnQuizAnswers()[question.id];
+    if (!selected) {
+      return '';
+    }
+    if (optionId === question.correctOptionId) {
+      return 'correct';
+    }
+    return selected === optionId ? 'incorrect' : '';
+  }
+
+  async advanceBoardQuiz(): Promise<void> {
+    const quiz = this.boardLearnActiveQuiz();
+    const question = this.boardLearnCurrentQuestion();
+    if (!quiz || !question || !this.boardLearnQuizAnswers()[question.id]) {
+      return;
+    }
+    if (this.boardLearnQuizIndex() < quiz.questions.length - 1) {
+      this.boardLearnQuizIndex.update((index) => index + 1);
+      return;
+    }
+    await this.finishBoardQuiz();
+  }
+
+  reviewBoardQuizSource(question: BoardLearningQuizQuestion): void {
+    this.startBoardStudy(question.sourceCardId);
+  }
+
+  boardQuizResultFor(questionId: string) {
+    return this.boardLearnQuizGrade()?.results.find((result) => result.questionId === questionId) ?? null;
+  }
+
+  async retryBoardQuiz(): Promise<void> {
+    const quiz = this.boardLearnActiveQuiz() ?? normalizeBoardLearningQuiz(this.boardLearnBoard()?.learningQuiz);
+    if (quiz) {
+      this.beginBoardQuiz(quiz);
+    }
+  }
+
+  private beginBoardQuiz(quiz: BoardLearningQuiz): void {
+    this.boardLearnActiveQuiz.set(this.cloneBoardLearningQuiz(quiz));
+    this.boardLearnQuizIndex.set(0);
+    this.boardLearnQuizAnswers.set({});
+    this.boardLearnQuizGrade.set(null);
+    this.boardLearnQuizStatus.set(null);
+    this.boardLearnQuizError.set(null);
+    this.boardLearnStartedAt = Date.now();
+    this.boardLearnView.set('quiz-play');
+  }
+
+  private async finishBoardQuiz(): Promise<void> {
+    const board = this.boardLearnBoard();
+    const quiz = this.boardLearnActiveQuiz();
+    if (!board || !quiz) {
+      return;
+    }
+    const answers = Object.entries(this.boardLearnQuizAnswers())
+      .map(([questionId, optionId]) => ({ questionId, optionId }));
+    const grade = gradeBoardLearningQuiz(quiz, answers);
+    this.boardLearnQuizGrade.set(grade);
+    this.boardLearnView.set('quiz-result');
+    if (!this.authService.uid() || !this.functions || !quiz.published) {
+      this.boardLearnQuizStatus.set(
+        this.authService.uid()
+          ? $localize`Preview complete. Publish the quiz to record scores.`
+          : $localize`Score ready. Sign in to save your result.`,
+      );
+      return;
+    }
+
+    this.boardLearnQuizSubmitting.set(true);
+    try {
+      const callable = httpsCallable<{
+        boardId: string;
+        quizId: string;
+        answers: Array<{ questionId: string; optionId: string }>;
+        elapsedMs: number;
+      }, { grade?: BoardLearningQuizGrade }>(this.functions, 'submitBoardQuizAttempt');
+      const response = await callable({
+        boardId: board.id,
+        quizId: quiz.id,
+        answers,
+        elapsedMs: Math.max(0, Date.now() - this.boardLearnStartedAt),
+      });
+      if (response.data.grade) {
+        this.boardLearnQuizGrade.set(response.data.grade);
+      }
+      this.boardLearnQuizStatus.set($localize`Your score was saved to this board.`);
+    } catch (error) {
+      console.error('Board quiz score save failed', error, { boardId: board.id });
+      this.boardLearnQuizStatus.set($localize`Your score is ready, but it could not be saved.`);
+    } finally {
+      this.boardLearnQuizSubmitting.set(false);
+    }
+  }
+
+  private async loadBoardQuizStats(boardId: string): Promise<void> {
+    if (!this.functions || !this.authService.uid()) {
+      return;
+    }
+    this.boardLearnQuizStatsLoading.set(true);
+    try {
+      const callable = httpsCallable<{ boardId: string }, { stats?: BoardLearningQuizStats }>(
+        this.functions,
+        'getBoardQuizStats',
+      );
+      const response = await callable({ boardId });
+      this.boardLearnQuizStats.set(response.data.stats ?? null);
+    } catch {
+      this.boardLearnQuizStats.set(null);
+    } finally {
+      this.boardLearnQuizStatsLoading.set(false);
+    }
+  }
+
+  private cloneBoardLearningQuiz(value: unknown): BoardLearningQuiz | null {
+    const quiz = normalizeBoardLearningQuiz(value);
+    return quiz ? {
+      ...quiz,
+      questions: quiz.questions.map((question) => ({
+        ...question,
+        options: question.options.map((option) => ({ ...option })),
+      })),
+    } : null;
+  }
+
   boardUpdatedLabel(board: Board): string {
     return this.formatDate(board.updatedAt);
   }
@@ -5516,6 +5909,7 @@ export class BoardsComponent implements OnDestroy {
       })),
       stickers: board.stickers.map((sticker) => ({ ...sticker })),
       tourMeta: board.tourMeta ? { ...board.tourMeta, extras: [...board.tourMeta.extras] } : null,
+      learningQuiz: null,
       createdAt: now,
       updatedAt: now,
     };
@@ -8249,6 +8643,7 @@ export class BoardsComponent implements OnDestroy {
           backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
           tourMeta: this.normalizeTourMeta((board as Board).tourMeta),
+          learningQuiz: normalizeBoardLearningQuiz((board as Board).learningQuiz),
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
@@ -8477,6 +8872,7 @@ export class BoardsComponent implements OnDestroy {
       socialVideoRatio: this.isStackRatio(data['socialVideoRatio']) ? data['socialVideoRatio'] : 'vertical',
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),
+      learningQuiz: normalizeBoardLearningQuiz(data['learningQuiz']),
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
       createdAt: typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : new Date().toISOString(),
       updatedAt: typeof data['updated_at_iso'] === 'string' ? data['updated_at_iso'] : new Date().toISOString(),
