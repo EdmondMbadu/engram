@@ -22,6 +22,8 @@ describe('board learning', () => {
 
     expect(quiz).not.toBeNull();
     expect(quiz?.questions.length).toBe(4);
+    expect(quiz?.leaderboardEnabled).toBeTrue();
+    expect(quiz?.allowGuestNames).toBeTrue();
     expect(new Set(quiz?.questions.map((question) =>
       question.options.findIndex((option) => option.id === question.correctOptionId),
     )).size).toBeGreaterThan(1);
@@ -39,6 +41,23 @@ describe('board learning', () => {
     const quiz = buildBoardLearningQuiz({ id: 'space', title: 'Planets', description: '', cards });
     const normalized = normalizeBoardLearningQuiz(quiz);
     expect(normalized).not.toBeNull();
+    expect(normalized?.leaderboardEnabled).toBeTrue();
+    expect(normalized?.allowGuestNames).toBeTrue();
+    const privateRanking = normalizeBoardLearningQuiz({
+      ...quiz,
+      leaderboardEnabled: false,
+      allowGuestNames: false,
+    });
+    expect(privateRanking?.leaderboardEnabled).toBeFalse();
+    expect(privateRanking?.allowGuestNames).toBeFalse();
+    const {
+      leaderboardEnabled: _leaderboardEnabled,
+      allowGuestNames: _allowGuestNames,
+      ...legacyQuiz
+    } = quiz!;
+    const legacyRanking = normalizeBoardLearningQuiz(legacyQuiz);
+    expect(legacyRanking?.leaderboardEnabled).toBeFalse();
+    expect(legacyRanking?.allowGuestNames).toBeFalse();
 
     const grade = gradeBoardLearningQuiz(normalized!, normalized!.questions.map((question, index) => ({
       questionId: question.id,

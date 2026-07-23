@@ -12952,8 +12952,11 @@ type BoardQuiz = {
   id: string;
   title: string;
   published: boolean;
+  leaderboardEnabled: boolean;
+  allowGuestNames: boolean;
   questions: BoardQuizQuestion[];
   updatedAt: string;
+  versionHash: string;
 };
 
 function boardQuizString(value: unknown, maxLength: number): string {
@@ -13025,13 +13028,39 @@ function normalizeStoredBoardQuiz(value: unknown): BoardQuiz | null {
   if (!id || !title || questions.length < 3) {
     return null;
   }
+  const versionHash = createHash('sha256')
+    .update(JSON.stringify(questions.map((question) => ({
+      id: question.id,
+      prompt: question.prompt,
+      options: question.options,
+      correctOptionId: question.correctOptionId,
+      sourceCardId: question.sourceCardId,
+    }))))
+    .digest('hex')
+    .slice(0, 24);
   return {
     id,
     title,
     published: data.published === true,
+    leaderboardEnabled: data.leaderboardEnabled === true,
+    allowGuestNames: data.allowGuestNames === true,
     questions,
     updatedAt: boardQuizString(data.updatedAt, 80),
+    versionHash,
   };
+}
+
+function boardQuizGuestSessionId(value: unknown): string {
+  const sessionId = boardQuizString(value, 120);
+  return /^[A-Za-z0-9_-]{16,120}$/.test(sessionId) ? sessionId : '';
+}
+
+function boardQuizIdentityHash(boardId: string, quizId: string, identity: string): string {
+  return createHash('sha256').update(`${boardId}:${quizId}:${identity}`).digest('hex');
+}
+
+function boardQuizMillis(value: unknown): number {
+  return Math.max(0, Math.min(Number(value ?? 0) || 0, 24 * 60 * 60 * 1000));
 }
 
 function normalizeBoardQuizAnswers(value: unknown): Map<string, string> {
@@ -13082,10 +13111,6 @@ export const submitBoardQuizAttempt = onCall(
     cors: true,
   },
   async (request) => {
-    if (!request.auth?.uid) {
-      throw new HttpsError('unauthenticated', 'Sign in to save your board quiz result.');
-    }
-
     const boardId = normalizeBoardQuizIdentifier(request.data?.boardId, 'boardId');
     const quizId = normalizeBoardQuizIdentifier(request.data?.quizId, 'quizId');
     const boardSnapshot = await db.collection('boards').doc(boardId).get();
@@ -13094,7 +13119,8 @@ export const submitBoardQuizAttempt = onCall(
     }
     const board = boardSnapshot.data() ?? {};
     const ownerUserId = boardQuizString(board.owner_user_id, 160);
-    if (board.visibility !== 'public' && ownerUserId !== request.auth.uid) {
+    const memberUserId = request.auth?.uid ?? '';
+    if (board.visibility !== 'public' && ownerUserId !== memberUserId) {
       throw new HttpsError('permission-denied', 'You do not have access to this quiz.');
     }
     const quiz = normalizeStoredBoardQuiz(board.learningQuiz);
@@ -13111,32 +13137,204 @@ export const submitBoardQuizAttempt = onCall(
       throw new HttpsError('invalid-argument', 'Answer every quiz question before submitting.');
     }
     const grade = gradeStoredBoardQuiz(quiz, answers);
-    const elapsedMs = Math.max(0, Math.min(Number(request.data?.elapsedMs ?? 0) || 0, 24 * 60 * 60 * 1000));
-    const token = (request.auth.token ?? {}) as { name?: unknown; email?: unknown };
-    const displayName = boardQuizString(token.name, 80)
-      || (typeof token.email === 'string' ? boardQuizString(token.email.split('@')[0], 80) : '')
-      || 'Living Wiki Learner';
+    const elapsedMs = boardQuizMillis(request.data?.elapsedMs);
+    const token = (request.auth?.token ?? {}) as { name?: unknown; email?: unknown; picture?: unknown };
+    const guestName = boardQuizString(request.data?.guestName, 40)
+      .replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g, '')
+      .trim();
+    const guestSessionId = boardQuizGuestSessionId(request.data?.guestSessionId);
+    const participantType = memberUserId ? 'member' : 'guest';
+    if (!memberUserId) {
+      if (!quiz.leaderboardEnabled || !quiz.allowGuestNames) {
+        throw new HttpsError('unauthenticated', 'Sign in to save your board quiz result.');
+      }
+      if (
+        guestName.length < 2
+        || !guestSessionId
+        || /(?:https?:\/\/|www\.)/i.test(guestName)
+      ) {
+        throw new HttpsError('invalid-argument', 'A guest name and quiz session are required.');
+      }
+    }
+    const displayName = memberUserId
+      ? boardQuizString(token.name, 80)
+        || (typeof token.email === 'string' ? boardQuizString(token.email.split('@')[0], 80) : '')
+        || 'Living Wiki Learner'
+      : guestName;
+    const photoUrl = memberUserId ? boardQuizString(token.picture, 1000) : '';
+    const identity = memberUserId ? `member:${memberUserId}` : `guest:${guestSessionId}`;
+    const identityHash = boardQuizIdentityHash(boardId, quiz.id, identity);
+    const attemptRef = db.collection('board_quiz_attempts').doc();
+    const scoreRef = db.collection('board_quiz_scores').doc(`bqs_${identityHash.slice(0, 48)}`);
+    const shouldPublishScore = quiz.leaderboardEnabled && (participantType === 'member' || quiz.allowGuestNames);
 
-    await db.collection('board_quiz_attempts').add({
-      board_id: boardId,
-      board_owner_user_id: ownerUserId,
-      quiz_id: quiz.id,
-      quiz_updated_at: quiz.updatedAt,
-      user_id: request.auth.uid,
-      display_name: displayName,
-      score: grade.score,
-      total: grade.total,
-      percent: grade.percent,
-      elapsed_ms: elapsedMs,
-      results: grade.results.map((result) => ({
-        question_id: result.questionId,
-        source_card_id: result.sourceCardId,
-        correct: result.correct,
-      })),
-      created_at: FieldValue.serverTimestamp(),
+    await db.runTransaction(async (transaction) => {
+      const previousScoreSnapshot = shouldPublishScore ? await transaction.get(scoreRef) : null;
+      transaction.set(attemptRef, {
+        board_id: boardId,
+        board_owner_user_id: ownerUserId,
+        quiz_id: quiz.id,
+        quiz_version: quiz.versionHash,
+        quiz_updated_at: quiz.updatedAt,
+        participant_type: participantType,
+        identity_hash: identityHash,
+        user_id: memberUserId || null,
+        display_name: displayName,
+        score: grade.score,
+        total: grade.total,
+        percent: grade.percent,
+        elapsed_ms: elapsedMs,
+        results: grade.results.map((result) => ({
+          question_id: result.questionId,
+          source_card_id: result.sourceCardId,
+          correct: result.correct,
+        })),
+        created_at: FieldValue.serverTimestamp(),
+      });
+
+      if (!shouldPublishScore) {
+        return;
+      }
+      const previous = previousScoreSnapshot?.data() ?? {};
+      const sameQuizVersion = previous.quiz_version === quiz.versionHash;
+      const previousBestScore = sameQuizVersion ? Number(previous.score ?? -1) : -1;
+      const previousBestElapsed = sameQuizVersion
+        ? Number(previous.elapsed_ms ?? Number.MAX_SAFE_INTEGER)
+        : Number.MAX_SAFE_INTEGER;
+      const isBetter = grade.score > previousBestScore
+        || (grade.score === previousBestScore && elapsedMs > 0 && elapsedMs < previousBestElapsed);
+      const attempts = (sameQuizVersion ? Math.max(0, Number(previous.attempts ?? 0) || 0) : 0) + 1;
+      const scoreRecord: Record<string, unknown> = {
+        board_id: boardId,
+        board_owner_user_id: ownerUserId,
+        quiz_id: quiz.id,
+        quiz_version: quiz.versionHash,
+        participant_type: participantType,
+        identity_hash: identityHash,
+        user_id: memberUserId || null,
+        display_name: displayName,
+        photo_url: photoUrl,
+        attempts,
+        latest_score: grade.score,
+        latest_total: grade.total,
+        latest_percent: grade.percent,
+        latest_elapsed_ms: elapsedMs,
+        last_attempt_at: FieldValue.serverTimestamp(),
+        created_at: previousScoreSnapshot?.exists && sameQuizVersion
+          ? previous.created_at ?? FieldValue.serverTimestamp()
+          : FieldValue.serverTimestamp(),
+      };
+      if (isBetter) {
+        scoreRecord.score = grade.score;
+        scoreRecord.total = grade.total;
+        scoreRecord.percent = grade.percent;
+        scoreRecord.elapsed_ms = elapsedMs;
+        scoreRecord.achieved_at = FieldValue.serverTimestamp();
+      }
+      transaction.set(scoreRef, scoreRecord, { merge: true });
     });
 
-    return { grade };
+    return {
+      grade,
+      leaderboardSaved: shouldPublishScore,
+      participantType,
+    };
+  },
+);
+
+export const getBoardQuizLeaderboard = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const boardId = normalizeBoardQuizIdentifier(request.data?.boardId, 'boardId');
+    const boardSnapshot = await db.collection('boards').doc(boardId).get();
+    if (!boardSnapshot.exists) {
+      throw new HttpsError('not-found', 'Board not found.');
+    }
+    const board = boardSnapshot.data() ?? {};
+    const ownerUserId = boardQuizString(board.owner_user_id, 160);
+    if (board.visibility !== 'public' && ownerUserId !== request.auth?.uid) {
+      throw new HttpsError('permission-denied', 'You do not have access to this leaderboard.');
+    }
+    const quiz = normalizeStoredBoardQuiz(board.learningQuiz);
+    if (!quiz?.published) {
+      throw new HttpsError('failed-precondition', 'This board quiz is not published.');
+    }
+    if (!quiz.leaderboardEnabled) {
+      return {
+        leaderboard: {
+          enabled: false,
+          totalPlayers: 0,
+          entries: [],
+        },
+      };
+    }
+
+    const scoresSnapshot = await db.collection('board_quiz_scores')
+      .where('board_id', '==', boardId)
+      .limit(500)
+      .get();
+    const scores = scoresSnapshot.docs
+      .map((document) => document.data())
+      .filter((score) => score.quiz_id === quiz.id && score.quiz_version === quiz.versionHash)
+      .map((score) => {
+        const achievedAt = score.achieved_at as { toMillis?: () => number } | undefined;
+        return {
+          identityHash: boardQuizString(score.identity_hash, 80),
+          displayName: boardQuizString(score.display_name, 80) || 'Living Wiki Learner',
+          photoUrl: score.participant_type === 'member' ? boardQuizString(score.photo_url, 1000) : '',
+          participantType: score.participant_type === 'guest' ? 'guest' as const : 'member' as const,
+          score: Math.max(0, Number(score.score) || 0),
+          total: Math.max(0, Number(score.total) || quiz.questions.length),
+          percent: Math.max(0, Math.min(100, Number(score.percent) || 0)),
+          elapsedMs: boardQuizMillis(score.elapsed_ms),
+          attempts: Math.max(1, Number(score.attempts) || 1),
+          achievedAt: typeof achievedAt?.toMillis === 'function' ? achievedAt.toMillis() : 0,
+        };
+      })
+      .sort((left, right) =>
+        right.score - left.score
+        || (left.elapsedMs || Number.MAX_SAFE_INTEGER) - (right.elapsedMs || Number.MAX_SAFE_INTEGER)
+        || left.achievedAt - right.achievedAt);
+
+    const guestSessionId = boardQuizGuestSessionId(request.data?.guestSessionId);
+    const currentIdentity = request.auth?.uid
+      ? `member:${request.auth.uid}`
+      : guestSessionId
+        ? `guest:${guestSessionId}`
+        : '';
+    const currentIdentityHash = currentIdentity
+      ? boardQuizIdentityHash(boardId, quiz.id, currentIdentity)
+      : '';
+    const rankedEntries = scores.map((score, index) => ({
+      rank: index + 1,
+      displayName: score.displayName,
+      photoUrl: score.photoUrl,
+      participantType: score.participantType,
+      score: score.score,
+      total: score.total,
+      percent: score.percent,
+      elapsedMs: score.elapsedMs,
+      attempts: score.attempts,
+      isCurrentPlayer: Boolean(currentIdentityHash && score.identityHash === currentIdentityHash),
+    }));
+    const visibleEntries = rankedEntries.slice(0, 25);
+    const currentEntry = rankedEntries.find((entry) => entry.isCurrentPlayer);
+    if (currentEntry && currentEntry.rank > 25) {
+      visibleEntries.push(currentEntry);
+    }
+
+    return {
+      leaderboard: {
+        enabled: true,
+        totalPlayers: scores.length,
+        entries: visibleEntries,
+      },
+    };
   },
 );
 
@@ -13179,7 +13377,7 @@ export const getBoardQuizStats = onCall(
       .get();
     const attempts = attemptsSnapshot.docs
       .map((document) => document.data())
-      .filter((attempt) => attempt.quiz_id === quiz.id && attempt.quiz_updated_at === quiz.updatedAt);
+      .filter((attempt) => attempt.quiz_id === quiz.id && attempt.quiz_version === quiz.versionHash);
     const cardTitles = new Map<string, string>(
       (Array.isArray(board.cards) ? board.cards : [])
         .filter((card): card is Record<string, unknown> => Boolean(card) && typeof card === 'object')

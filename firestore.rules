@@ -384,6 +384,8 @@ service cloud.firestore {
               'title',
               'description',
               'published',
+              'leaderboardEnabled',
+              'allowGuestNames',
               'questions',
               'createdAt',
               'updatedAt'
@@ -397,6 +399,8 @@ service cloud.firestore {
             && request.resource.data.learningQuiz.description is string
             && request.resource.data.learningQuiz.description.size() <= 300
             && request.resource.data.learningQuiz.published is bool
+            && request.resource.data.learningQuiz.leaderboardEnabled is bool
+            && request.resource.data.learningQuiz.allowGuestNames is bool
             && request.resource.data.learningQuiz.questions is list
             && request.resource.data.learningQuiz.questions.size() >= 3
             && request.resource.data.learningQuiz.questions.size() <= 12

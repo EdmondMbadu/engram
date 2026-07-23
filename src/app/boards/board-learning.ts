@@ -27,6 +27,8 @@ export type BoardLearningQuiz = {
   title: string;
   description: string;
   published: boolean;
+  leaderboardEnabled: boolean;
+  allowGuestNames: boolean;
   questions: BoardLearningQuizQuestion[];
   createdAt: string;
   updatedAt: string;
@@ -63,6 +65,25 @@ export type BoardLearningQuizStats = {
     attempts: number;
     correctPercent: number;
   }>;
+};
+
+export type BoardLearningQuizLeaderboardEntry = {
+  rank: number;
+  displayName: string;
+  photoUrl: string;
+  participantType: 'member' | 'guest';
+  score: number;
+  total: number;
+  percent: number;
+  elapsedMs: number;
+  attempts: number;
+  isCurrentPlayer: boolean;
+};
+
+export type BoardLearningQuizLeaderboard = {
+  enabled: boolean;
+  totalPlayers: number;
+  entries: BoardLearningQuizLeaderboardEntry[];
 };
 
 const compact = (value: unknown, max: number): string =>
@@ -146,6 +167,8 @@ export function buildBoardLearningQuiz(
       220,
     ),
     published: false,
+    leaderboardEnabled: true,
+    allowGuestNames: true,
     questions,
     createdAt: now,
     updatedAt: now,
@@ -174,6 +197,8 @@ export function normalizeBoardLearningQuiz(value: unknown): BoardLearningQuiz | 
     title,
     description: compact(data['description'], 300),
     published: data['published'] === true,
+    leaderboardEnabled: data['leaderboardEnabled'] === true,
+    allowGuestNames: data['allowGuestNames'] === true,
     questions,
     createdAt,
     updatedAt: compact(data['updatedAt'], 80) || createdAt,

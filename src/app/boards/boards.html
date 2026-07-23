@@ -2001,7 +2001,7 @@
                 </button>
 
                 @if (learnBoard.learningQuiz?.published) {
-                  <button type="button" class="board-learning__choice board-learning__choice--quiz" (click)="startPublishedBoardQuiz()">
+                  <button type="button" class="board-learning__choice board-learning__choice--quiz" (click)="openBoardQuizWelcome()">
                     <span class="board-learning__choice-icon board-learning__choice-icon--quiz material-symbols-outlined">quiz</span>
                     <span>
                       <strong>{{ learnBoard.learningQuiz?.title }}</strong>
@@ -2034,6 +2034,28 @@
                   </div>
                 }
               </div>
+
+              @if (learnBoard.learningQuiz?.published) {
+                <div class="board-learning__published-actions">
+                  <button type="button" class="board-learning__secondary" (click)="shareBoardQuiz(learnBoard)" i18n>
+                    <span class="material-symbols-outlined">ios_share</span>
+                    Share quiz
+                  </button>
+                  <button type="button" class="board-learning__secondary" (click)="copyBoardQuizUrl(learnBoard)" i18n>
+                    <span class="material-symbols-outlined">link</span>
+                    Copy quiz link
+                  </button>
+                  @if (learnBoard.learningQuiz?.leaderboardEnabled) {
+                    <button type="button" class="board-learning__text-button" (click)="openBoardQuizWelcome()" i18n>
+                      <span class="material-symbols-outlined">leaderboard</span>
+                      View leaderboard
+                    </button>
+                  }
+                </div>
+                @if (boardLearnQuizShareStatus()) {
+                  <p class="board-learning__share-status">{{ boardLearnQuizShareStatus() }}</p>
+                }
+              }
 
               @if (canEditBoard(learnBoard)) {
                 <section class="board-learning__owner-panel">
@@ -2085,7 +2107,7 @@
                         </div>
                       }
                     } @else if (!boardLearnQuizStatsLoading()) {
-                      <p class="board-learning__quiet" i18n>Results will appear here after the first signed-in learner finishes.</p>
+                      <p class="board-learning__quiet" i18n>Results will appear here after the first learner finishes and saves a score.</p>
                     }
                   </section>
                 }
@@ -2188,6 +2210,39 @@
                   </label>
                 </div>
 
+                <section class="board-quiz-sharing-settings">
+                  <div class="board-quiz-sharing-settings__heading">
+                    <span class="material-symbols-outlined">groups</span>
+                    <div>
+                      <strong i18n>Sharing and leaderboard</strong>
+                      <small i18n>Choose what people can see when you share this quiz.</small>
+                    </div>
+                  </div>
+                  <label class="board-quiz-sharing-settings__toggle">
+                    <span>
+                      <strong i18n>Show a public leaderboard</strong>
+                      <small i18n>Everyone with access to this board can see names and best scores.</small>
+                    </span>
+                    <input
+                      type="checkbox"
+                      [checked]="draft.leaderboardEnabled"
+                      (change)="updateBoardQuizSetting('leaderboardEnabled', $any($event.target).checked)"
+                    />
+                  </label>
+                  <label class="board-quiz-sharing-settings__toggle" [class.board-quiz-sharing-settings__toggle--disabled]="!draft.leaderboardEnabled">
+                    <span>
+                      <strong i18n>Let guests post a name</strong>
+                      <small i18n>People without an account can choose a display name after finishing.</small>
+                    </span>
+                    <input
+                      type="checkbox"
+                      [checked]="draft.allowGuestNames"
+                      [disabled]="!draft.leaderboardEnabled"
+                      (change)="updateBoardQuizSetting('allowGuestNames', $any($event.target).checked)"
+                    />
+                  </label>
+                </section>
+
                 <div class="board-learning__question-list">
                   @for (question of draft.questions; track question.id; let questionIndex = $index) {
                     <article class="board-quiz-editor">
@@ -2257,6 +2312,104 @@
                     </button>
                   </div>
                 </div>
+              }
+            }
+
+            @case ('quiz-welcome') {
+              @if (learnBoard.learningQuiz; as welcomeQuiz) {
+                <section class="board-quiz-welcome">
+                  <div class="board-quiz-welcome__hero">
+                    <span class="board-quiz-welcome__icon material-symbols-outlined">quiz</span>
+                    <span class="board-learning__eyebrow" i18n>Board challenge</span>
+                    <h3>{{ welcomeQuiz.title }}</h3>
+                    <p>{{ welcomeQuiz.description }}</p>
+                    <div class="board-quiz-welcome__facts">
+                      <span i18n><strong>{{ welcomeQuiz.questions.length }}</strong> questions</span>
+                      <span i18n><strong>Instant</strong> feedback</span>
+                      @if (welcomeQuiz.leaderboardEnabled) {
+                        <span i18n><strong>{{ boardLearnQuizLeaderboard()?.totalPlayers || 0 }}</strong> players</span>
+                      }
+                    </div>
+                    <div class="board-quiz-welcome__actions">
+                      <button type="button" class="board-learning__primary" (click)="startPublishedBoardQuiz()" i18n>
+                        Start quiz
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                      </button>
+                      <button type="button" class="board-learning__secondary" (click)="shareBoardQuiz(learnBoard)" i18n>
+                        <span class="material-symbols-outlined">ios_share</span>
+                        Share
+                      </button>
+                      <button type="button" class="board-learning__secondary" (click)="copyBoardQuizUrl(learnBoard)" aria-label="Copy quiz link" i18n-aria-label>
+                        <span class="material-symbols-outlined">link</span>
+                      </button>
+                    </div>
+                    @if (boardLearnQuizShareStatus()) {
+                      <p class="board-learning__share-status">{{ boardLearnQuizShareStatus() }}</p>
+                    }
+                  </div>
+
+                  @if (welcomeQuiz.leaderboardEnabled) {
+                    <section class="board-quiz-leaderboard" aria-label="Quiz leaderboard" i18n-aria-label>
+                      <header>
+                        <div>
+                          <span class="board-learning__eyebrow" i18n>Leaderboard</span>
+                          <h3 i18n>Top scores</h3>
+                        </div>
+                        <small i18n>Best score per person</small>
+                      </header>
+                      @if (boardLearnQuizLeaderboardLoading()) {
+                        <div class="board-quiz-leaderboard__loading">
+                          <span class="board-learning__spinner"></span>
+                          <span i18n>Loading scores…</span>
+                        </div>
+                      } @else if (boardLearnQuizLeaderboard(); as leaderboard) {
+                        @if (leaderboard.entries.length) {
+                          <div class="board-quiz-leaderboard__list">
+                            @for (entry of leaderboard.entries; track entry.rank) {
+                              <div class="board-quiz-leaderboard__entry" [class.board-quiz-leaderboard__entry--current]="entry.isCurrentPlayer">
+                                <strong class="board-quiz-leaderboard__rank">{{ entry.rank }}</strong>
+                                <span class="board-quiz-leaderboard__avatar">
+                                  @if (entry.photoUrl) {
+                                    <img [src]="entry.photoUrl" alt="" />
+                                  } @else {
+                                    {{ entry.displayName.slice(0, 1).toUpperCase() }}
+                                  }
+                                </span>
+                                <span class="board-quiz-leaderboard__person">
+                                  <strong>{{ entry.displayName }}</strong>
+                                  <small>
+                                    @if (entry.participantType === 'guest') {
+                                      <ng-container i18n>Guest · </ng-container>
+                                    }
+                                    <ng-container i18n>{{ entry.attempts }} attempts</ng-container>
+                                  </small>
+                                </span>
+                                <span class="board-quiz-leaderboard__time">{{ boardQuizElapsedLabel(entry.elapsedMs) }}</span>
+                                <span class="board-quiz-leaderboard__score">{{ entry.score }}/{{ entry.total }}</span>
+                              </div>
+                            }
+                          </div>
+                          @if (leaderboard.totalPlayers > leaderboard.entries.length) {
+                            <p class="board-learning__quiet" i18n>Showing the top {{ leaderboard.entries.length }} of {{ leaderboard.totalPlayers }} players.</p>
+                          }
+                        } @else {
+                          <div class="board-quiz-leaderboard__empty">
+                            <span class="material-symbols-outlined">emoji_events</span>
+                            <strong i18n>Be the first on the leaderboard</strong>
+                            <p i18n>Finish the quiz and save your score to claim the first spot.</p>
+                          </div>
+                        }
+                      }
+                      <p class="board-quiz-leaderboard__privacy">
+                        @if (welcomeQuiz.allowGuestNames) {
+                          <ng-container i18n>Members use their account name. Guests can choose a name after finishing.</ng-container>
+                        } @else {
+                          <ng-container i18n>Sign in to save a score to this leaderboard.</ng-container>
+                        }
+                      </p>
+                    </section>
+                  }
+                </section>
               }
             }
 
@@ -2348,6 +2501,64 @@
                   </div>
                 </section>
 
+                @if (!isSignedIn() && boardLearnActiveQuiz(); as completedQuiz) {
+                  @if (completedQuiz.published && completedQuiz.leaderboardEnabled && completedQuiz.allowGuestNames && !boardLearnQuizScoreSaved() && !boardLearnQuizGuestSkipped()) {
+                    <section class="board-quiz-guest-score">
+                      <span class="material-symbols-outlined">leaderboard</span>
+                      <div>
+                        <h3 i18n>Join the leaderboard</h3>
+                        <p i18n>No account is required. Choose the name your friends will see, or keep this result private.</p>
+                        <label>
+                          <span i18n>Your leaderboard name</span>
+                          <input
+                            type="text"
+                            maxlength="40"
+                            autocomplete="nickname"
+                            placeholder="Your name or nickname"
+                            [value]="boardLearnQuizGuestName()"
+                            (input)="boardLearnQuizGuestName.set($any($event.target).value)"
+                            (keydown.enter)="submitGuestBoardQuizScore()"
+                            i18n-placeholder
+                          />
+                        </label>
+                        @if (boardLearnQuizError()) {
+                          <p class="board-learning__notice board-learning__notice--error">{{ boardLearnQuizError() }}</p>
+                        }
+                        <div>
+                          <button
+                            type="button"
+                            class="board-learning__primary"
+                            [disabled]="boardLearnQuizGuestPosting()"
+                            (click)="submitGuestBoardQuizScore()"
+                          >
+                            <span class="material-symbols-outlined">publish</span>
+                            @if (boardLearnQuizGuestPosting()) {
+                              <ng-container i18n>Posting…</ng-container>
+                            } @else {
+                              <ng-container i18n>Post my score</ng-container>
+                            }
+                          </button>
+                          <button type="button" class="board-learning__text-button" (click)="keepGuestBoardQuizScorePrivate()" i18n>
+                            Keep it private
+                          </button>
+                        </div>
+                        <small i18n>Guest entries are labeled, and this browser remembers which score is yours.</small>
+                      </div>
+                    </section>
+                  }
+                }
+
+                @if (boardLearnCurrentLeaderboardEntry(); as myEntry) {
+                  <section class="board-quiz-result__rank">
+                    <span class="material-symbols-outlined">emoji_events</span>
+                    <div>
+                      <small i18n>Your leaderboard position</small>
+                      <strong i18n>#{{ myEntry.rank }} of {{ boardLearnQuizLeaderboard()?.totalPlayers || 0 }}</strong>
+                    </div>
+                    <span i18n>Best: {{ myEntry.score }}/{{ myEntry.total }}</span>
+                  </section>
+                }
+
                 @if (grade.score < grade.total && boardLearnActiveQuiz(); as resultQuiz) {
                   <section class="board-quiz-result__review">
                     <h3 i18n>Worth another look</h3>
@@ -2368,6 +2579,16 @@
                 }
 
                 <div class="board-learning__footer-actions board-learning__footer-actions--center">
+                  <button type="button" class="board-learning__secondary" (click)="shareBoardQuiz(learnBoard, true)" i18n>
+                    <span class="material-symbols-outlined">ios_share</span>
+                    Share challenge
+                  </button>
+                  @if (boardLearnActiveQuiz()?.leaderboardEnabled) {
+                    <button type="button" class="board-learning__secondary" (click)="openBoardQuizWelcome()" i18n>
+                      <span class="material-symbols-outlined">leaderboard</span>
+                      Leaderboard
+                    </button>
+                  }
                   <button type="button" class="board-learning__secondary" (click)="returnToBoardLearnMenu()" i18n>
                     Learning home
                   </button>
@@ -2376,6 +2597,9 @@
                     Try again
                   </button>
                 </div>
+                @if (boardLearnQuizShareStatus()) {
+                  <p class="board-learning__share-status">{{ boardLearnQuizShareStatus() }}</p>
+                }
               }
             }
           }
