@@ -1798,6 +1798,18 @@
                         @if (card.subtitle) {
                           <p class="detail-card__subtitle">{{ card.subtitle }}</p>
                         }
+                        @if (card.what3wordsAddress) {
+                          <div class="off-grid-card-location">
+                            <span>
+                              <small i18n>Exact 3 m square</small>
+                              <b><em>///</em>{{ card.what3wordsAddress }}</b>
+                            </span>
+                            <a [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
+                              <span class="material-symbols-outlined">near_me</span>
+                              <strong i18n>Go there</strong>
+                            </a>
+                          </div>
+                        }
                         @if (card.googleMapsUrl) {
                           <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
                             <span class="material-symbols-outlined">map</span>
@@ -1851,6 +1863,12 @@
                             <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
                           </div>
                           <h2>{{ card.title }}</h2>
+                          @if (card.what3wordsAddress) {
+                            <a class="off-grid-back-link" [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
+                              <span>///{{ card.what3wordsAddress }}</span>
+                              <b i18n>Go there</b>
+                            </a>
+                          }
                           <p class="detail-card__notes" style="-webkit-line-clamp: 8;">
                             {{ card.notes || card.subtitle || 'Add notes, memories, details, or fun facts when editing this card.' }}
                           </p>
@@ -2004,7 +2022,12 @@
             </div>
             <div class="boards-wizard-mode-grid">
               @for (mode of wizardModes; track mode.id) {
-                <button type="button" class="boards-wizard-mode" (click)="chooseWizardMode(mode.id)">
+                <button
+                  type="button"
+                  class="boards-wizard-mode"
+                  [class.boards-wizard-mode--off-grid]="mode.id === 'off-grid'"
+                  (click)="chooseWizardMode(mode.id)"
+                >
                   <span class="material-symbols-outlined">{{ mode.icon }}</span>
                   <strong>{{ mode.label }}</strong>
                   <small>{{ mode.description }}</small>
@@ -2078,6 +2101,179 @@
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
                    i18n-placeholder/>
+                </label>
+              } @else if (wizardMode() === 'off-grid') {
+                <div class="off-grid-wizard-intro">
+                  <span class="material-symbols-outlined">explore_nearby</span>
+                  <div>
+                    <strong i18n>Drop a card exactly where you are.</strong>
+                    <p i18n>Take a photo and LivingWiki will use GPS and what3words to pin the card to a precise 3 m square.</p>
+                  </div>
+                </div>
+                <div class="off-grid-source-tabs" role="group" aria-label="How are you adding this place?" i18n-aria-label>
+                  <button
+                    type="button"
+                    [class.off-grid-source-tabs__active]="wizardOffGridSource() === 'spot'"
+                    [attr.aria-pressed]="wizardOffGridSource() === 'spot'"
+                    (click)="setWizardOffGridSource('spot')"
+                  >
+                    <span class="material-symbols-outlined">my_location</span>
+                    <span><strong i18n>I'm at the spot</strong><small i18n>Camera + live GPS</small></span>
+                  </button>
+                  <button
+                    type="button"
+                    [class.off-grid-source-tabs__active]="wizardOffGridSource() === 'words'"
+                    [attr.aria-pressed]="wizardOffGridSource() === 'words'"
+                    (click)="setWizardOffGridSource('words')"
+                  >
+                    <span class="material-symbols-outlined">home_pin</span>
+                    <span><strong i18n>I have the words</strong><small i18n>Paste and verify</small></span>
+                  </button>
+                </div>
+
+                @if (wizardOffGridSource() === 'spot') {
+                  <section class="off-grid-capture-stage">
+                    @if (wizardOffGridPhoto()) {
+                      <img [src]="wizardOffGridPhoto()" alt="Photo of this off-grid place" i18n-alt />
+                      <div class="off-grid-capture-stage__photo-actions">
+                        <label>
+                          <span class="material-symbols-outlined">photo_camera</span>
+                          <span i18n>Retake photo</span>
+                          <input type="file" accept="image/*" capture="environment" (change)="onWizardOffGridPhotoSelected($event)" />
+                        </label>
+                        <button type="button" (click)="removeWizardOffGridPhoto()" i18n>
+                          <span class="material-symbols-outlined">delete</span>
+                          Remove
+                        </button>
+                      </div>
+                    } @else {
+                      <span class="off-grid-capture-stage__camera material-symbols-outlined">photo_camera</span>
+                      <strong i18n>Photograph the place you want to share</strong>
+                      <p i18n>On a phone, this opens the rear camera. After the photo, we will request your precise location and find its three words.</p>
+                      <label class="off-grid-capture-stage__primary">
+                        <span class="material-symbols-outlined">add_a_photo</span>
+                        <span i18n>Take photo & find my square</span>
+                        <input type="file" accept="image/*" capture="environment" (change)="onWizardOffGridPhotoSelected($event)" />
+                      </label>
+                    }
+
+                    @if (wizardOffGridLocating()) {
+                      <div class="off-grid-live-status off-grid-live-status--working" role="status" aria-live="polite">
+                        <span class="material-symbols-outlined">progress_activity</span>
+                        <span>{{ wizardOffGridStatus() }}</span>
+                      </div>
+                    } @else if (wizardOffGridResolvedLocation(); as location) {
+                      <div class="off-grid-live-location">
+                        <span class="material-symbols-outlined">where_to_vote</span>
+                        <span>
+                          <small i18n>You are pinning</small>
+                          <strong><b>///</b>{{ location.words }}</strong>
+                          <em>{{ wizardOffGridStatus() }}</em>
+                        </span>
+                        <a [href]="location.url" target="_blank" rel="noopener noreferrer" i18n>Check square</a>
+                      </div>
+                      <button type="button" class="off-grid-location-retry" (click)="findWizardOffGridCurrentLocation()" i18n>
+                        <span class="material-symbols-outlined">refresh</span>
+                        Refresh my location
+                      </button>
+                    } @else if (wizardOffGridPhoto()) {
+                      <button type="button" class="off-grid-location-retry off-grid-location-retry--primary" (click)="findWizardOffGridCurrentLocation()" i18n>
+                        <span class="material-symbols-outlined">my_location</span>
+                        Try finding my square again
+                      </button>
+                    }
+                  </section>
+                } @else {
+                  <section class="off-grid-home-stage">
+                    <label>
+                      <span i18n>what3words address or link</span>
+                      <span class="off-grid-verify-row">
+                        <input
+                          type="text"
+                          required
+                          maxlength="240"
+                          placeholder="///filled.count.soap or what3words.com/filled.count.soap"
+                          [value]="wizardOffGridAddress()"
+                          (input)="updateWizardOffGridAddress($any($event.target).value)"
+                          (keydown.enter)="$event.preventDefault(); verifyWizardOffGridAddress()"
+                         i18n-placeholder/>
+                        <button
+                          type="button"
+                          [class.off-grid-verify-row__working]="wizardOffGridVerifying()"
+                          [disabled]="wizardOffGridVerifying() || !wizardOffGridAddress().trim()"
+                          (click)="verifyWizardOffGridAddress()"
+                        >
+                          <span class="material-symbols-outlined">{{ wizardOffGridVerifying() ? 'progress_activity' : 'verified' }}</span>
+                          @if (wizardOffGridVerifying()) {
+                            <span i18n>Checking…</span>
+                          } @else {
+                            <span i18n>Verify</span>
+                          }
+                        </button>
+                      </span>
+                    </label>
+                    @if (wizardOffGridResolvedLocation(); as location) {
+                      <div class="off-grid-live-location">
+                        <span class="material-symbols-outlined">verified</span>
+                        <span>
+                          <small i18n>Verified square</small>
+                          <strong><b>///</b>{{ location.words }}</strong>
+                          <em>{{ wizardOffGridStatus() }}</em>
+                        </span>
+                        <a [href]="location.url" target="_blank" rel="noopener noreferrer" i18n>Check square</a>
+                      </div>
+                    } @else if (wizardOffGridVerifying()) {
+                      <div class="off-grid-live-status off-grid-live-status--working" role="status" aria-live="polite">
+                        <span class="material-symbols-outlined">progress_activity</span>
+                        <span>{{ wizardOffGridStatus() }}</span>
+                      </div>
+                    }
+                    <div class="off-grid-home-photo">
+                      @if (wizardOffGridPhoto()) {
+                        <img [src]="wizardOffGridPhoto()" alt="Photo of this off-grid place" i18n-alt />
+                        <button type="button" (click)="removeWizardOffGridPhoto()" aria-label="Remove photo" i18n-aria-label>
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                      }
+                      <label>
+                        <span class="material-symbols-outlined">add_photo_alternate</span>
+                        @if (wizardOffGridPhoto()) {
+                          <span i18n>Change photo</span>
+                        } @else {
+                          <span i18n>Add a photo (optional)</span>
+                        }
+                        <input type="file" accept="image/*" (change)="onWizardOffGridPhotoSelected($event)" />
+                      </label>
+                    </div>
+                  </section>
+                }
+
+                @if (wizardOffGridError()) {
+                  <div class="off-grid-live-status off-grid-live-status--error" role="alert">
+                    <span class="material-symbols-outlined">error</span>
+                    <span>{{ wizardOffGridError() }}</span>
+                  </div>
+                }
+                <label>
+                  <span i18n>Name this place</span>
+                  <input
+                    type="text"
+                    required
+                    maxlength="80"
+                    placeholder="The quiet overlook"
+                    [value]="wizardOffGridName()"
+                    (input)="wizardOffGridName.set($any($event.target).value)"
+                   i18n-placeholder/>
+                </label>
+                <label>
+                  <span i18n>Insider tip <small>(optional)</small></span>
+                  <textarea
+                    rows="4"
+                    maxlength="3600"
+                    placeholder="How to recognize the spot, the best time to visit, or what to bring."
+                    [value]="wizardOffGridTip()"
+                    (input)="wizardOffGridTip.set($any($event.target).value)"
+                   i18n-placeholder></textarea>
                 </label>
               } @else if (isTourWizardMode()) {
                 <label>
@@ -2174,6 +2370,7 @@
                   }
                 </select>
               </label>
+              @if (wizardMode() !== 'off-grid') {
               <label>
                 <span>{{ isTourWizardMode() ? 'How many stops' : 'How many cards' }}</span>
                 <div class="boards-wizard-count">
@@ -2195,9 +2392,10 @@
                   />
                 </div>
               </label>
+              }
             </section>
 
-            @if (!isTourWizardMode()) {
+            @if (!isTourWizardMode() && wizardMode() !== 'off-grid') {
             <section>
               <span class="boards-wizard-label" i18n>Default card type</span>
               <div class="boards-choice-grid boards-choice-grid--types">
@@ -2242,7 +2440,7 @@
               <button type="button" class="boards-ghost-action" (click)="backWizardStep()" i18n>Back</button>
               <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()" i18n>
                 <span class="material-symbols-outlined">auto_awesome</span>
-                Generate preview
+                {{ wizardMode() === 'off-grid' ? 'Preview card' : 'Generate preview' }}
               </button>
             </div>
           </form>
@@ -2537,6 +2735,12 @@
                           <span i18n>Notes</span>
                           <textarea rows="7" maxlength="3600" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
                         </label>
+                        @if (card.what3wordsAddress) {
+                          <label>
+                            <span i18n>what3words address</span>
+                            <input type="text" maxlength="240" [value]="card.what3wordsAddress" (input)="updateWizardCard(card.id, 'what3wordsAddress', $any($event.target).value)" />
+                          </label>
+                        }
                         <div class="wizard-card-editor__field-pair">
                           <label>
                             <span i18n>Type</span>
@@ -2580,6 +2784,7 @@
 
                     <footer class="wizard-card-editor__footer">
                       <div class="wizard-card-editor__secondary-actions">
+                        @if (wizardMode() !== 'off-grid') {
                         <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="redoWizardCard(card.id)">
                           <span class="material-symbols-outlined">autorenew</span>
                           <span>
@@ -2587,6 +2792,7 @@
                             <small i18n>Generate a different item for this position</small>
                           </span>
                         </button>
+                        }
                         <button type="button" class="wizard-card-editor__delete" [disabled]="isWizardCardBusy(card.id)" (click)="removeWizardCard(card.id)" i18n>
                           <span class="material-symbols-outlined">delete</span>
                           Remove card
@@ -2641,6 +2847,12 @@
                         <div class="boards-wizard-card__body">
                           <strong>{{ card.title }}</strong>
                           <small>{{ card.subtitle }}</small>
+                          @if (card.what3wordsAddress) {
+                            <a class="off-grid-preview-chip" [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
+                              <span>///{{ card.what3wordsAddress }}</span>
+                              <b i18n>Go there</b>
+                            </a>
+                          }
                           <p>{{ card.notes }}</p>
                           <div class="boards-wizard-card__tags">
                             @for (tag of card.tags; track tag) {
@@ -2672,6 +2884,13 @@
                 </div>
 
                 <aside class="boards-wizard-refine">
+                  @if (wizardMode() === 'off-grid') {
+                    <h4 i18n>Ready to drop</h4>
+                    <p class="boards-wizard-refine__quality">
+                      <strong i18n>Exact square saved</strong>
+                      <span i18n>Use Edit card to add a photo or adjust the name and tip before saving.</span>
+                    </p>
+                  } @else {
                   <h4 i18n>Refine</h4>
                   <p class="boards-wizard-refine__quality">
                     <strong>{{ wizardImageCoveragePercent() }}% image coverage</strong>
@@ -2695,6 +2914,7 @@
                     <span class="material-symbols-outlined">add</span>
                     Add 5 more
                   </button>
+                  }
                 </aside>
               </div>
             }
@@ -4112,6 +4332,19 @@
                   [value]="cardDraft().notes"
                   (input)="updateCardDraft('notes', $any($event.target).value)"
                  i18n-placeholder></textarea>
+              </label>
+              <label>
+                <span i18n>what3words address <small>(optional)</small></span>
+                <input
+                  type="text"
+                  maxlength="240"
+                  placeholder="///filled.count.soap"
+                  [value]="cardDraft().what3wordsAddress"
+                  (input)="updateCardDraft('what3wordsAddress', $any($event.target).value)"
+                 i18n-placeholder/>
+                @if (cardDraft().what3wordsAddress.trim() && !what3wordsUrlFor(cardDraft())) {
+                  <small class="off-grid-address-error" i18n>Use exactly three words separated by periods.</small>
+                }
               </label>
               <label>
                 <span i18n>Type</span>

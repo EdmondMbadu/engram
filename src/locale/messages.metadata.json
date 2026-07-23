@@ -95,6 +95,10 @@
     "source": "Sign in to respond to friend requests.",
     "file": "src/app/boards/boards.ts"
   },
+  "1097971834739448460": {
+    "source": "what3words address or link",
+    "file": "src/app/boards/boards.html"
+  },
   "109966970101812576": {
     "source": "Clear language search",
     "file": "src/app/business-detail/business-detail.html"
@@ -230,6 +234,10 @@
   "1202678873529936166": {
     "source": "Pandemic Preparedness & Response",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "1208734690079942041": {
+    "source": "Square found. Take a photo to finish the card.",
+    "file": "src/app/boards/boards.ts"
   },
   "1210069423269934042": {
     "source": "Change language",
@@ -615,6 +623,10 @@
     "source": "{$START_TAG_SPAN}deselect{$CLOSE_TAG_SPAN} Clear ",
     "file": "src/app/boards/boards.html"
   },
+  "1487226710079462152": {
+    "source": "{$START_TAG_SPAN}my_location{$CLOSE_TAG_SPAN} Try finding my square again ",
+    "file": "src/app/boards/boards.html"
+  },
   "1490158561488943835": {
     "source": "LivingWiki: Boston",
     "file": "src/app/public-wiki-catalog.ts"
@@ -819,6 +831,10 @@
     "source": "https://sponsor.com",
     "file": "src/app/boards/boards.html"
   },
+  "1647691526169863991": {
+    "source": "I'm at the spot",
+    "file": "src/app/boards/boards.html"
+  },
   "1650668817429924669": {
     "source": "{$START_TAG_SPAN}ios_share{$CLOSE_TAG_SPAN} Share board ",
     "file": "src/app/city-places/city-places.html"
@@ -1003,6 +1019,10 @@
     "source": "Census place code",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "1819399302294448870": {
+    "source": "Your location is unavailable. Move somewhere with a clearer GPS signal and try again.",
+    "file": "src/app/boards/boards.ts"
+  },
   "1823045341967427540": {
     "source": " Open map {$START_TAG_SPAN}arrow_outward{$CLOSE_TAG_SPAN}",
     "file": "src/app/city-places/city-places.html"
@@ -1066,6 +1086,10 @@
   "1876455841937355900": {
     "source": "Video explaining LivingWiki for business",
     "file": "src/app/business/business.html"
+  },
+  "1877445384389729898": {
+    "source": "Drop a card exactly where you are.",
+    "file": "src/app/boards/boards.html"
   },
   "1880773357333664142": {
     "source": "Choose a city to begin.",
@@ -1218,6 +1242,10 @@
   "2001611547850384126": {
     "source": "Send voice text message",
     "file": "src/app/chat/chat.ts"
+  },
+  "2003725109754034796": {
+    "source": "I have the words",
+    "file": "src/app/boards/boards.html"
   },
   "2005818722469409502": {
     "source": "Open menu",
@@ -1967,6 +1995,10 @@
     "source": "No business pages linked yet.",
     "file": "src/app/profile/profile.html"
   },
+  "2568533141500101071": {
+    "source": "Converting your location to three words…",
+    "file": "src/app/boards/boards.ts"
+  },
   "2577354328429223424": {
     "source": "The 2022 collapse left roughly 150,000 people without reliable water.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -2126,6 +2158,10 @@
   "2672094921307262573": {
     "source": "Source Citation",
     "file": "src/app/shared-chat/shared-chat.html"
+  },
+  "2673074391801104914": {
+    "source": "///filled.count.soap or what3words.com/filled.count.soap",
+    "file": "src/app/boards/boards.html"
   },
   "2674710062302522976": {
     "source": "Describe what this card should become, or start with a title/place first.",
@@ -2443,6 +2479,10 @@
     "source": "Purple",
     "file": "src/app/boards/boards.ts"
   },
+  "2961087325713378579": {
+    "source": "Name this place",
+    "file": "src/app/boards/boards.html"
+  },
   "2965732650458978515": {
     "source": "Get on the map and start being found around your neighborhood.",
     "file": "src/app/business/business.ts"
@@ -2454,6 +2494,10 @@
   "296687392793656438": {
     "source": "Enable Vapi tool endpoint",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "2967122621525898297": {
+    "source": "Change photo",
+    "file": "src/app/boards/boards.html"
   },
   "2975562436092258507": {
     "source": "Searching knowledge base",
@@ -2482,6 +2526,10 @@
   "29832309535656200": {
     "source": "System",
     "file": "src/app/answer-card/answer-card.html"
+  },
+  "2991576300940539223": {
+    "source": "Pin places without street addresses to an exact what3words square.",
+    "file": "src/app/boards/boards.ts"
   },
   "2994220939527853310": {
     "source": "Business list",
@@ -2514,6 +2562,10 @@
   "3022170119855890978": {
     "source": "Fitness",
     "file": "src/app/business-badge-icons.ts"
+  },
+  "3023338532329792149": {
+    "source": "Paste and verify",
+    "file": "src/app/boards/boards.html"
   },
   "3033903988434708190": {
     "source": "Back note",
@@ -2759,6 +2811,10 @@
     "source": "Asthma hospitalization rates are among the highest in the U.S.",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "3207515771220354317": {
+    "source": "Checking this square with what3words…",
+    "file": "src/app/boards/boards.ts"
+  },
   "3211777905184690981": {
     "source": "AirNow zip code",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -2999,6 +3055,10 @@
     "source": "The Nutrition & Diet Science Wiki",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "3367371637213241689": {
+    "source": "Photo ready. Finding your exact square…",
+    "file": "src/app/boards/boards.ts"
+  },
   "3374579908752564286": {
     "source": " No active session. {$START_LINK}Return to sign in{$CLOSE_LINK}",
     "file": "src/app/verify-email/verify-email.html"
@@ -3066,6 +3126,10 @@
   "3409234041657436398": {
     "source": "No active article.",
     "file": "src/app/web-scraper/web-scraper.html"
+  },
+  "3410996451751319663": {
+    "source": "Go there",
+    "file": "src/app/boards/boards.html"
   },
   "3412510347304053829": {
     "source": " A majority-Black city on the Delaware River hosts Reworld Delaware Valley, formerly Covanta, burning up to 3,500 tons of waste per day. Only a tiny fraction of the trash burned here is Chester's own. ",
@@ -3203,6 +3267,10 @@
     "source": "{$INTERPOLATION} of {$INTERPOLATION_1} processed · {$INTERPOLATION_2} added · {$INTERPOLATION_3} failed",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "3525446058135118382": {
+    "source": "Use Edit card to add a photo or adjust the name and tip before saving.",
+    "file": "src/app/boards/boards.html"
+  },
   "3526705040409139369": {
     "source": "Place details and photo are ready.",
     "file": "src/app/boards/boards.ts"
@@ -3210,6 +3278,10 @@
   "3528466809032347684": {
     "source": "{$INTERPOLATION} of {$INTERPOLATION_1} businesses shown",
     "file": "src/app/admin-users/admin-users.html"
+  },
+  "3530757317442810440": {
+    "source": "That photo could not be used.",
+    "file": "src/app/boards/boards.ts"
   },
   "3534420354847817720": {
     "source": "Find country",
@@ -3222,6 +3294,10 @@
   "3535442673191281172": {
     "source": "If an account exists for that address, a reset email has been sent.",
     "file": "src/app/forgot-password/forgot-password.ts"
+  },
+  "3535644945061753568": {
+    "source": "Retake photo",
+    "file": "src/app/boards/boards.html"
   },
   "3542894167131508434": {
     "source": "A LivingWiki Stack",
@@ -3599,6 +3675,10 @@
     "source": "Speak to me in {language}",
     "file": "src/app/chat/chat.ts"
   },
+  "3839549325919555225": {
+    "source": "Insider tip {$START_SMALL_TEXT}(optional){$CLOSE_SMALL_TEXT}",
+    "file": "src/app/boards/boards.html"
+  },
   "3843495765114158756": {
     "source": "1 stop",
     "file": "src/app/chat/chat.ts"
@@ -3739,6 +3819,10 @@
     "source": "No businesses match this search or status filter.",
     "file": "src/app/admin-users/admin-users.html"
   },
+  "3965896722885197133": {
+    "source": "Take a photo and LivingWiki will use GPS and what3words to pin the card to a precise 3 m square.",
+    "file": "src/app/boards/boards.html"
+  },
   "3966192584487354397": {
     "source": " Enter your email and we will send a password reset link if the account exists. The email will route you through Firebase's secure reset flow and back into the app. ",
     "file": "src/app/forgot-password/forgot-password.html"
@@ -3775,9 +3859,17 @@
     "source": "Knowledge synthesis",
     "file": "src/app/wiki/wiki.html"
   },
+  "3983481141170710649": {
+    "source": "This browser cannot access your location.",
+    "file": "src/app/boards/boards.ts"
+  },
   "398425368296312850": {
     "source": "The Electric Vehicle Market",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "3985179772764523433": {
+    "source": "How to recognize the spot, the best time to visit, or what to bring.",
+    "file": "src/app/boards/boards.html"
   },
   "3988695357691364512": {
     "source": "Board stickers",
@@ -3890,6 +3982,10 @@
   "408950232052355391": {
     "source": " Scroll to zoom · drag to pan · hover cities ",
     "file": "src/app/dymaxion/dymaxion.html"
+  },
+  "4094480467850085841": {
+    "source": "what3words address",
+    "file": "src/app/boards/boards.html"
   },
   "4099000115043897691": {
     "source": "Visitor identity",
@@ -4351,6 +4447,10 @@
     "source": "Test live guide",
     "file": "src/app/workspace-sidebar/workspace-sidebar.html"
   },
+  "4469117557205340807": {
+    "source": "Verified real square",
+    "file": "src/app/boards/boards.ts"
+  },
   "4471242384722989552": {
     "source": "Generate a card picture",
     "file": "src/app/boards/boards.html"
@@ -4631,6 +4731,10 @@
     "source": "Location & Contact",
     "file": "src/app/business-detail/business-detail.html"
   },
+  "4698948173781328601": {
+    "source": "Photograph the place you want to share",
+    "file": "src/app/boards/boards.html"
+  },
   "4701623216549890068": {
     "source": " Based on the work of Andrej Karpathy. ",
     "file": "src/app/marketing/marketing.html"
@@ -4867,6 +4971,10 @@
     "source": "Live listings + pathways",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "4844460211738479466": {
+    "source": "{$START_TAG_SPAN}delete{$CLOSE_TAG_SPAN} Remove ",
+    "file": "src/app/boards/boards.html"
+  },
   "4845700341905116949": {
     "source": "Close share page dialog",
     "file": "src/app/shared-chat/shared-chat.html"
@@ -4882,6 +4990,10 @@
   "4864453490767322244": {
     "source": "Anyone with the link can read this chat. Private account details are not included.",
     "file": "src/app/chat/chat.ts"
+  },
+  "487437195553280245": {
+    "source": "Fix the what3words address before saving. Use exactly three words separated by periods.",
+    "file": "src/app/boards/boards.ts"
   },
   "487781233169157136": {
     "source": "{$START_TAG_SPAN}{$CLOSE_TAG_SPAN} Open Now ",
@@ -5159,6 +5271,10 @@
     "source": " New uploads create document records immediately, then move through pending, processing, and indexed states as the ingestion function compiles knowledge and topic pages. ",
     "file": "src/app/library/library.html"
   },
+  "5098186893064472809": {
+    "source": "{$START_TAG_SPAN}auto_awesome{$CLOSE_TAG_SPAN} {$INTERPOLATION} ",
+    "file": "src/app/boards/boards.html"
+  },
   "5100760148289082697": {
     "source": "Discover. Share. Belong.",
     "file": "src/app/public-wikis/public-wikis.html"
@@ -5174,6 +5290,10 @@
   "5117504445405165086": {
     "source": "Live music",
     "file": "src/app/business/business.ts"
+  },
+  "5119748506118036161": {
+    "source": "what3words address {$START_SMALL_TEXT}(optional){$CLOSE_SMALL_TEXT}",
+    "file": "src/app/boards/boards.html"
   },
   "5126173772236763420": {
     "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Save card ",
@@ -5355,6 +5475,10 @@
     "source": "Directory",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "5256376152662558291": {
+    "source": "Check square",
+    "file": "src/app/boards/boards.html"
+  },
   "5257899700285331716": {
     "source": "Coffee",
     "file": "src/app/business-badge-icons.ts"
@@ -5491,6 +5615,14 @@
     "source": "Invalid link",
     "file": "src/app/auth-action/auth-action.ts"
   },
+  "5364696931613291610": {
+    "source": "Ready to drop",
+    "file": "src/app/boards/boards.html"
+  },
+  "5370514775040296334": {
+    "source": "Exact square saved",
+    "file": "src/app/boards/boards.html"
+  },
   "5373471252507137577": {
     "source": "Block-group environmental justice percentiles preserved for community review.",
     "file": "src/app/fence-line/fence-line.html"
@@ -5566,6 +5698,10 @@
   "5440220756012496602": {
     "source": " No public wikis are available yet. ",
     "file": "src/app/marketing/marketing.html"
+  },
+  "5444466177162484286": {
+    "source": "The quiet overlook",
+    "file": "src/app/boards/boards.html"
   },
   "5446743786160913264": {
     "source": "Every company, product, controversy, and statement — from PayPal to Tesla to SpaceX to X to xAI to DOGE, compiled from public records and press.",
@@ -5935,6 +6071,10 @@
     "source": "Open the source menu and edit this action card if needed.",
     "file": "src/app/boards/boards.ts"
   },
+  "5722293572997738324": {
+    "source": "How are you adding this place?",
+    "file": "src/app/boards/boards.html"
+  },
   "572598359870619579": {
     "source": "Read this LivingWiki tour preview aloud with a lively human tour-guide voice.",
     "file": "src/app/boards/boards.ts"
@@ -6002,6 +6142,10 @@
   "5764418230351686332": {
     "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Live ",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "5765832794884380721": {
+    "source": "Getting a precise GPS fix…",
+    "file": "src/app/boards/boards.ts"
   },
   "5780495571999615992": {
     "source": "Global Intelligence",
@@ -6323,6 +6467,10 @@
     "source": "Stand out with trust signals, featured context, and a clearer business voice.",
     "file": "src/app/pricing/pricing.ts"
   },
+  "6036400827568487024": {
+    "source": "You are pinning",
+    "file": "src/app/boards/boards.html"
+  },
   "603947103662630478": {
     "source": "Create an empty board with the current form.",
     "file": "src/app/boards/boards.ts"
@@ -6442,6 +6590,10 @@
   "6134752773677582122": {
     "source": "LivingWiki Field Card",
     "file": "src/app/answer-card/answer-card.html"
+  },
+  "6136141542559559740": {
+    "source": "Take photo & find my square",
+    "file": "src/app/boards/boards.html"
   },
   "6144154546407086739": {
     "source": "Public Wiki | LivingWiki",
@@ -6759,6 +6911,10 @@
     "source": "Market",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "6375150530694791110": {
+    "source": "Exact 3 m square",
+    "file": "src/app/boards/boards.html"
+  },
   "6376908297993110120": {
     "source": "What should I know right now about {city}?",
     "file": "src/app/chat/chat.ts"
@@ -6802,6 +6958,10 @@
   "6400363267939883815": {
     "source": "Start with practical local knowledge, then branch into culture, jobs, climate, food, transit, and civic life.",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "6400918143055384416": {
+    "source": "Camera + live GPS",
+    "file": "src/app/boards/boards.html"
   },
   "6401789205967709119": {
     "source": "Area km² must be a positive number.",
@@ -6966,6 +7126,10 @@
   "6506606820490206167": {
     "source": "QR ready",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "6513565723574706707": {
+    "source": "Location permission was denied. Allow location access and try again.",
+    "file": "src/app/boards/boards.ts"
   },
   "6513946951038879243": {
     "source": "Use photos",
@@ -7459,6 +7623,10 @@
     "source": " After verification, you will return to the business setup page to finish payment, AI tone, and document upload. ",
     "file": "src/app/verify-email/verify-email.html"
   },
+  "6921075755862829702": {
+    "source": "Photo of this off-grid place",
+    "file": "src/app/boards/boards.html"
+  },
   "6924884775601601984": {
     "source": "Search songs...",
     "file": "src/app/boards/boards.html"
@@ -7510,6 +7678,10 @@
   "6950140976689343775": {
     "source": "Sunday",
     "file": "src/app/atlas-manage/atlas-manage.ts"
+  },
+  "6951139727306411861": {
+    "source": "Add a photo (optional)",
+    "file": "src/app/boards/boards.html"
   },
   "6958097997696505580": {
     "source": " Chester, Pennsylvania has lived beside the nation's largest trash incinerator for more than thirty years. It is not alone. Twenty-three communities, one shared scorecard, no sacrifice zones. ",
@@ -7702,6 +7874,10 @@
   "7164496183311783842": {
     "source": " ID {$INTERPOLATION} ",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "7165989788096469412": {
+    "source": "This square could not be verified.",
+    "file": "src/app/boards/boards.ts"
   },
   "7179599845845789003": {
     "source": "Foodie",
@@ -7974,6 +8150,10 @@
   "7390642224797973637": {
     "source": "Discover boards",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "7390791410452143060": {
+    "source": "{$START_TAG_SPAN}refresh{$CLOSE_TAG_SPAN} Refresh my location ",
+    "file": "src/app/boards/boards.html"
   },
   "7400407362759733641": {
     "source": " Pathways {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
@@ -8391,6 +8571,10 @@
     "source": "Search your wikis...",
     "file": "src/app/wiki-home/wiki-home.html"
   },
+  "7760630792461594789": {
+    "source": "///filled.count.soap",
+    "file": "src/app/boards/boards.html"
+  },
   "7762885608137198662": {
     "source": "This answer card is unavailable",
     "file": "src/app/answer-card/answer-card.html"
@@ -8514,6 +8698,10 @@
   "7863557223969568039": {
     "source": " Missing covers ",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "786800898164022574": {
+    "source": "Use exactly three words separated by periods.",
+    "file": "src/app/boards/boards.html"
   },
   "7870351813533833454": {
     "source": "My Friends",
@@ -8726,6 +8914,10 @@
   "8025899844026015559": {
     "source": "Tell the story behind the place, keep hours and links current, and give people a richer page than a static directory listing.",
     "file": "src/app/business/business.ts"
+  },
+  "8027095439674660107": {
+    "source": "Off-grid places",
+    "file": "src/app/boards/boards.ts"
   },
   "8030085409686924148": {
     "source": "Copied answer",
@@ -9095,6 +9287,10 @@
     "source": "Set the voice of your AI.",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
+  "8335160499010387417": {
+    "source": "Verified square",
+    "file": "src/app/boards/boards.html"
+  },
   "8340082836740122639": {
     "source": "Create a city not listed below.",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -9198,6 +9394,10 @@
   "841108511783910136": {
     "source": "Population year must be a positive number.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
+  },
+  "8412870208077922475": {
+    "source": "Checking…",
+    "file": "src/app/boards/boards.html"
   },
   "8414184826107495635": {
     "source": "A small Black Belt town received millions of tons of coal ash from the TVA Kingston spill, shipped from a wealthier county into a poorer one.",
@@ -9422,6 +9622,10 @@
   "8629595768338818966": {
     "source": "Supply chain logistics...",
     "file": "src/app/marketing/marketing.html"
+  },
+  "8633250303431621645": {
+    "source": "On a phone, this opens the rear camera. After the photo, we will request your precise location and find its three words.",
+    "file": "src/app/boards/boards.html"
   },
   "8638312750987106240": {
     "source": "Coral",
@@ -9727,6 +9931,10 @@
     "source": "Roughly $300M in incinerator debt pushed the city into state receivership.",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "8913794084097958305": {
+    "source": "Verify",
+    "file": "src/app/boards/boards.html"
+  },
   "8914243769048279065": {
     "source": " Personal ",
     "file": "src/app/pricing/pricing.html"
@@ -9871,6 +10079,10 @@
     "source": "Location / address",
     "file": "src/app/business-detail/business-edit.html"
   },
+  "8980676193519110621": {
+    "source": "Photo ready. Verify the square when you are ready.",
+    "file": "src/app/boards/boards.ts"
+  },
   "8981371917325659597": {
     "source": "New here? Start with the welcome video",
     "file": "src/app/business/business.html"
@@ -9906,6 +10118,10 @@
   "899756889340497751": {
     "source": "Add QR code",
     "file": "src/app/business-detail/business-edit.ts"
+  },
+  "9005392867041288869": {
+    "source": "The location request timed out. Try again, preferably outdoors.",
+    "file": "src/app/boards/boards.ts"
   },
   "9006223843394542046": {
     "source": "Admin console",
@@ -10047,6 +10263,10 @@
     "source": "Public URL",
     "file": "src/app/shared-chat/shared-chat.html"
   },
+  "9122674476747675182": {
+    "source": "Your exact square could not be found. Please try again.",
+    "file": "src/app/boards/boards.ts"
+  },
   "9126593892835765061": {
     "source": "Made for quick sharing",
     "file": "src/app/answer-card/answer-card.html"
@@ -10126,10 +10346,6 @@
   "9199677421881026415": {
     "source": "WhatsApp",
     "file": "src/app/answer-card/answer-card.html"
-  },
-  "9200188798612154514": {
-    "source": "{$START_TAG_SPAN}auto_awesome{$CLOSE_TAG_SPAN} Generate preview ",
-    "file": "src/app/boards/boards.html"
   },
   "920232928891867801": {
     "source": " Included ",
