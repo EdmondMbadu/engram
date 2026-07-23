@@ -2368,11 +2368,18 @@
                             @for (entry of leaderboard.entries; track entry.rank) {
                               <div class="board-quiz-leaderboard__entry" [class.board-quiz-leaderboard__entry--current]="entry.isCurrentPlayer">
                                 <strong class="board-quiz-leaderboard__rank">{{ entry.rank }}</strong>
-                                <span class="board-quiz-leaderboard__avatar">
-                                  @if (entry.photoUrl) {
-                                    <img [src]="entry.photoUrl" alt="" />
-                                  } @else {
-                                    {{ entry.displayName.slice(0, 1).toUpperCase() }}
+                                <span
+                                  class="board-quiz-leaderboard__avatar"
+                                  [class.board-quiz-leaderboard__avatar--guest]="entry.participantType === 'guest'"
+                                  [style.--avatar-hue]="boardQuizAvatarHue(entry.displayName)"
+                                  aria-hidden="true"
+                                >
+                                  <span class="board-quiz-leaderboard__avatar-initials">{{ boardQuizAvatarInitials(entry.displayName) }}</span>
+                                  @if (entry.photoUrl.trim()) {
+                                    <span
+                                      class="board-quiz-leaderboard__avatar-photo"
+                                      [style.background-image]="'url(' + entry.photoUrl + ')'"
+                                    ></span>
                                   }
                                 </span>
                                 <span class="board-quiz-leaderboard__person">

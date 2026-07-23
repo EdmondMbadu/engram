@@ -744,21 +744,42 @@ button.board-learning__choice:hover:not(:disabled) {
 }
 
 .board-quiz-leaderboard__avatar {
+  position: relative;
   display: grid;
   width: 36px;
   height: 36px;
   place-items: center;
   overflow: hidden;
+  border: 1px solid hsl(var(--avatar-hue, 252) 55% 82%);
   border-radius: 50%;
-  background: linear-gradient(135deg, #e8e4ff, #d9f4eb);
-  color: #5e4ce6;
-  font-weight: 800;
+  background:
+    radial-gradient(circle at 28% 24%, rgba(255, 255, 255, 0.84), transparent 34%),
+    linear-gradient(145deg, hsl(var(--avatar-hue, 252) 78% 92%), hsl(calc(var(--avatar-hue, 252) + 42) 64% 84%));
+  color: hsl(var(--avatar-hue, 252) 58% 36%);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.46);
 }
 
-.board-quiz-leaderboard__avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.board-quiz-leaderboard__avatar--guest {
+  border-style: dashed;
+}
+
+.board-quiz-leaderboard__avatar-initials {
+  position: relative;
+  z-index: 0;
+  transform: translateY(0.5px);
+}
+
+.board-quiz-leaderboard__avatar-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .board-quiz-leaderboard__person {

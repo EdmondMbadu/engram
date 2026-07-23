@@ -5942,6 +5942,24 @@ export class BoardsComponent implements OnDestroy {
     return minutes ? `${minutes}:${String(seconds).padStart(2, '0')}` : `${seconds}s`;
   }
 
+  boardQuizAvatarInitials(displayName: string): string {
+    const parts = displayName.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) {
+      return '•';
+    }
+    const first = parts[0]?.charAt(0) ?? '';
+    const last = parts.length > 1 ? parts[parts.length - 1]?.charAt(0) ?? '' : '';
+    return `${first}${last}`.toLocaleUpperCase(this.localeId);
+  }
+
+  boardQuizAvatarHue(displayName: string): number {
+    const hash = Array.from(displayName).reduce(
+      (value, character) => ((value * 31) + (character.codePointAt(0) ?? 0)) >>> 0,
+      0,
+    );
+    return hash % 360;
+  }
+
   boardQuizShareUrl(board: Board): string {
     if (board.visibility === 'public') {
       const version = encodeURIComponent(board.updatedAt || board.id);
