@@ -1,6 +1,8 @@
 const assert = require('node:assert/strict');
 const {
   buildCityPlaceTextSearchRequest,
+  cityPlaceSearchCandidateLimit,
+  cityPlaceSearchGoogleResultLimit,
   cityPlaceSearchRadiusMeters,
 } = require('../lib/city-place-search.js');
 
@@ -19,6 +21,8 @@ assert.deepEqual(philadelphia, {
   region: 'us',
 });
 assert.equal(cityPlaceSearchRadiusMeters, 50_000);
+assert.equal(cityPlaceSearchGoogleResultLimit, 15);
+assert.equal(cityPlaceSearchCandidateLimit, 16);
 
 const fallback = buildCityPlaceTextSearchRequest('barber', {
   cityName: 'Philadelphia',
@@ -53,5 +57,33 @@ const ukRegion = buildCityPlaceTextSearchRequest('barber', {
 });
 
 assert.equal(ukRegion.region, 'uk');
+
+const legacyTokyoCoordinates = buildCityPlaceTextSearchRequest('coffee Yokohama', {
+  cityName: 'Tokyo',
+  regionName: 'Tokyo',
+  countryCode: 'JP',
+  latitude: '35.6762',
+  longitude: '139.6503',
+});
+
+assert.deepEqual(legacyTokyoCoordinates, {
+  query: 'coffee Yokohama',
+  location: '35.6762,139.6503',
+  radius: cityPlaceSearchRadiusMeters,
+  region: 'jp',
+});
+
+const invalidCoordinatesUseCityContext = buildCityPlaceTextSearchRequest('museum', {
+  cityName: 'Nairobi',
+  regionName: 'Nairobi County',
+  countryCode: 'KE',
+  latitude: 'not-a-coordinate',
+  longitude: 36.8219,
+});
+
+assert.deepEqual(invalidCoordinatesUseCityContext, {
+  query: 'museum near Nairobi, Nairobi County, KE',
+  region: 'ke',
+});
 
 console.log('City place search bias tests passed.');

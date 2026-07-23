@@ -1,4 +1,6 @@
 export const cityPlaceSearchRadiusMeters = 50_000;
+export const cityPlaceSearchGoogleResultLimit = 15;
+export const cityPlaceSearchCandidateLimit = 16;
 
 export type CityPlaceSearchBias = {
   cityName: string;
@@ -16,9 +18,12 @@ export type CityPlaceTextSearchRequest = {
 };
 
 function finiteCoordinate(value: unknown, min: number, max: number): number | null {
-  return typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max
+  const parsed = typeof value === 'number'
     ? value
-    : null;
+    : typeof value === 'string' && value.trim()
+      ? Number(value.trim())
+      : Number.NaN;
+  return Number.isFinite(parsed) && parsed >= min && parsed <= max ? parsed : null;
 }
 
 function googleRegionCode(countryCode: string): string | undefined {

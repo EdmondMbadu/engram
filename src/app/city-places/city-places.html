@@ -75,7 +75,7 @@
           </div>
         </div>
         <p class="mt-2 max-w-xl text-[0.9rem] font-normal leading-6 text-[var(--muted)]" i18n>
-          Search a restaurant, cafe, attraction, park, or local spot in {{ cityName() }} and the surrounding area. Google finds the address, then your review becomes part of this city wiki.
+          Search across {{ cityName() }}, its metropolitan area, nearby cities, and suburbs. Google finds the address, then your review becomes part of this city wiki.
         </p>
       </div>
 
@@ -106,7 +106,7 @@
                 [value]="placeSearchQuery()"
                 (input)="onPlaceSearchInput($event)"
                 class="min-w-0 flex-1 bg-transparent text-[0.95rem] font-medium text-[var(--text)] outline-none placeholder:text-[var(--muted)]"
-                placeholder="Try Suraya, Reading Terminal, a park..."
+                placeholder="Try a place name, neighborhood, suburb, or nearby town..."
                 autocomplete="off"
                i18n-placeholder/>
               @if (placeSearchLoading()) {

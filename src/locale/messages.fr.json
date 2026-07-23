@@ -1,6 +1,7 @@
 {
   "locale": "fr",
   "translations": {
+    "1001680708304794443": "Essayez un nom de lieu, un quartier, une banlieue ou une ville voisine...",
     "1008353818027938074": "Citations à vos sources wiki",
     "1009833687101567972": "Pourquoi cette chanson appartient ici.",
     "1009990728099019354": "Tirez un contexte plus large du web ouvert.",
@@ -466,7 +467,6 @@
     "2493709947946741315": "{$START_TAG_SPAN}près de  moi{$CLOSE_TAG_SPAN} Ouverture des directions ",
     "2496406326342613055": "Pas de langues correspondantes.",
     "2507063513175362648": "entreprises",
-    "2509258958660278390": "Essayez Suraya, Reading Terminal, un parc...",
     "2510855716218023915": "Utilisez les cartes ci-dessous comme plan. Ouvrir des notes complètes pour le contexte plus large et les mises en garde.",
     "2511144254752564815": "Seul le propriétaire de la carte peut modifier les cartes.",
     "2514931585841215791": "La demande d'ami a refusé.",
@@ -859,6 +859,7 @@
     "3690670725329336870": "Décrivez le tableau",
     "3698972093462003988": "{count} pays · Choisissez d'abord un drapeau.",
     "3699649574527410738": "Entreprises comptables",
+    "3701276374577758003": " Recherchez dans {$INTERPOLATION}, son aire métropolitaine, les villes voisines et les banlieues. Google trouve l’adresse, puis votre avis rejoint ce wiki local. ",
     "3705789926162159144": "Chaque LivingWiki est conçu pour organiser l'information publique en quelque chose de frontable et conversationnel.",
     "3706201042124579578": "Abonnez-vous à {$INTERPOLATION}",
     "3709609542387736422": "Ouvrir le guide en direct",
@@ -1952,7 +1953,6 @@
     "7235944444447714296": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Enregistrer ",
     "7239750919884229270": "Mise à jour",
     "7242507497265979260": "Utilisateurs personnels",
-    "7245359390430279659": " Recherchez un restaurant, un café, une attraction, un parc ou une adresse locale à {$INTERPOLATION} et dans les environs. Google trouve l’adresse, puis votre avis rejoint ce wiki local. ",
     "724768127591825886": "Mise en décharge des déchets dangereux",
     "7248589719043874303": "Effacer la recherche utilisateur",
     "7249432451235428907": "Dupliquer / créé",

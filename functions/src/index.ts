@@ -46,7 +46,11 @@ import {
   refreshStoredCityPulseSnapshot,
 } from './city-pulse';
 import { refreshCityPopulationMetadata } from './city-population';
-import { buildCityPlaceTextSearchRequest } from './city-place-search';
+import {
+  buildCityPlaceTextSearchRequest,
+  cityPlaceSearchCandidateLimit,
+  cityPlaceSearchGoogleResultLimit,
+} from './city-place-search';
 import {
   getStoredPhillyGreenJobsSnapshot,
   refreshStoredPhillyGreenJobsSnapshot,
@@ -2112,8 +2116,8 @@ function cityAtlasPlaceSearchBias(atlas: Record<string, unknown>) {
     cityName: textFromUnknown(cityConfig.city_name) || textFromUnknown(atlas.name).replace(/^Living Wiki:\s*/i, ''),
     regionName: textFromUnknown(cityConfig.region_name),
     countryCode: textFromUnknown(cityConfig.country_code),
-    latitude: cityConfig.latitude,
-    longitude: cityConfig.longitude,
+    latitude: cityConfig.latitude ?? atlas.latitude,
+    longitude: cityConfig.longitude ?? atlas.longitude,
   };
 }
 
@@ -4660,9 +4664,12 @@ export const searchCityPlaces = onCall(
         seen.add(candidate.placeId);
         return true;
       })
-      .slice(0, 10);
+      .slice(0, cityPlaceSearchGoogleResultLimit);
 
-    return { places: reviewedPlaces, candidates: [...reviewedPlaces, ...googlePlaces].slice(0, 12) };
+    return {
+      places: reviewedPlaces,
+      candidates: [...reviewedPlaces, ...googlePlaces].slice(0, cityPlaceSearchCandidateLimit),
+    };
   },
 );
 

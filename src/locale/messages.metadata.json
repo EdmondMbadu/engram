@@ -1,4 +1,8 @@
 {
+  "1001680708304794443": {
+    "source": "Try a place name, neighborhood, suburb, or nearby town...",
+    "file": "src/app/city-places/city-places.html"
+  },
   "1008353818027938074": {
     "source": "Citations to your wiki sources",
     "file": "src/app/atlas-persona/atlas-persona.html"
@@ -1907,10 +1911,6 @@
     "source": "business",
     "file": "src/app/business-detail/business-detail.ts"
   },
-  "2509258958660278390": {
-    "source": "Try Suraya, Reading Terminal, a park...",
-    "file": "src/app/city-places/city-places.html"
-  },
   "2510855716218023915": {
     "source": "Use the cards below as the plan. Open full notes for the broader context and caveats.",
     "file": "src/app/chat/chat.ts"
@@ -3530,6 +3530,10 @@
   "3699649574527410738": {
     "source": "Account businesses",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "3701276374577758003": {
+    "source": " Search across {$INTERPOLATION}, its metropolitan area, nearby cities, and suburbs. Google finds the address, then your review becomes part of this city wiki. ",
+    "file": "src/app/city-places/city-places.html"
   },
   "3705789926162159144": {
     "source": "Each LivingWiki is designed to organize public information into something browsable and conversational.",
@@ -8042,10 +8046,6 @@
   "7242507497265979260": {
     "source": "Personal users",
     "file": "src/app/pricing/pricing.html"
-  },
-  "7245359390430279659": {
-    "source": " Search a restaurant, cafe, attraction, park, or local spot in {$INTERPOLATION} and the surrounding area. Google finds the address, then your review becomes part of this city wiki. ",
-    "file": "src/app/city-places/city-places.html"
   },
   "724768127591825886": {
     "source": "Hazardous waste landfill",

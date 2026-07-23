@@ -1,6 +1,7 @@
 {
   "locale": "en-US",
   "translations": {
+    "1001680708304794443": "Try a place name, neighborhood, suburb, or nearby town...",
     "1008353818027938074": "Citations to your wiki sources",
     "1009833687101567972": "Why this song belongs here.",
     "1009990728099019354": "Pull broader context from the open web.",
@@ -478,7 +479,6 @@
     "2493709947946741315": "{$START_TAG_SPAN}near_me{$CLOSE_TAG_SPAN} Open directions ",
     "2496406326342613055": "No matching languages.",
     "2507063513175362648": "business",
-    "2509258958660278390": "Try Suraya, Reading Terminal, a park...",
     "2510855716218023915": "Use the cards below as the plan. Open full notes for the broader context and caveats.",
     "2511144254752564815": "Only the board owner can edit cards.",
     "2514931585841215791": "Friend request declined.",
@@ -884,6 +884,7 @@
     "3690670725329336870": "Describe the board",
     "3698972093462003988": "{count} countries · choose a flag first.",
     "3699649574527410738": "Account businesses",
+    "3701276374577758003": " Search across {$INTERPOLATION}, its metropolitan area, nearby cities, and suburbs. Google finds the address, then your review becomes part of this city wiki. ",
     "3705789926162159144": "Each LivingWiki is designed to organize public information into something browsable and conversational.",
     "3706201042124579578": "Subscribe to {$INTERPOLATION}",
     "3709609542387736422": "Open live guide",
@@ -2012,7 +2013,6 @@
     "7235944444447714296": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Save ",
     "7239750919884229270": "Updated",
     "7242507497265979260": "Personal users",
-    "7245359390430279659": " Search a restaurant, cafe, attraction, park, or local spot in {$INTERPOLATION} and the surrounding area. Google finds the address, then your review becomes part of this city wiki. ",
     "724768127591825886": "Hazardous waste landfill",
     "7248589719043874303": "Clear user search",
     "7249432451235428907": "Duplicate / created",
