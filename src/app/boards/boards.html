@@ -647,6 +647,20 @@
                     </span>
                   </button>
                 </div>
+                <button
+                  type="button"
+                  class="card-flip-button board-square__flip-button"
+                  [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'"
+                  [attr.aria-pressed]="isBoardFlipped(board.id)"
+                  (click)="toggleBoardFlip(board.id, $event)"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
+                    <path d="M13 2l1.5 3.5L11 6.5" />
+                    <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
+                    <path d="M11 22l-1.5-3.5L13 17.5" />
+                  </svg>
+                </button>
                 <div class="board-square__tools">
                   <button
                     type="button"
@@ -669,9 +683,6 @@
                   >
                     <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
                     <span i18n>Save</span>
-                  </button>
-                  <button type="button" [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'" (click)="toggleBoardFlip(board.id, $event)">
-                    <span class="material-symbols-outlined">{{ isBoardFlipped(board.id) ? 'flip_to_front' : 'flip_to_back' }}</span>
                   </button>
                   @if (canEditBoard(board)) {
                     <button type="button" aria-label="Edit board" (click)="openEditBoard(board, $event)" i18n-aria-label>
@@ -702,41 +713,77 @@
             @for (item of visibleGalleryCards(); track item.board.id + item.card.id) {
               <article
                 class="mosaic-card"
+                [class.board-square--flipped]="isCardFlipped(item.card.id)"
                 [style.--board-accent]="toneAccent(item.board.tone)"
                 [style.--board-soft]="toneSoft(item.board.tone)"
               >
-                <button type="button" class="mosaic-card__open" (click)="selectBoard(item.board.id)">
-                  @if (item.card.imageUrl) {
-                    <img [src]="item.card.imageUrl" [alt]="item.card.title" loading="lazy" />
-                  } @else {
-                    <span class="mosaic-card__fallback">
+                <div class="board-square__rotor">
+                  <button
+                    type="button"
+                    class="mosaic-card__open board-square__face"
+                    [style.pointer-events]="isCardFlipped(item.card.id) ? 'none' : 'auto'"
+                    (click)="selectBoard(item.board.id)"
+                  >
+                    @if (item.card.imageUrl) {
+                      <img [src]="item.card.imageUrl" [alt]="item.card.title" loading="lazy" />
+                    } @else {
+                      <span class="mosaic-card__fallback">
+                        <span class="material-symbols-outlined">{{ cardTypeIcon(item.card.type) }}</span>
+                      </span>
+                    }
+                    @if (item.card.stickers.length) {
+                      <span class="mosaic-card__stickers" aria-hidden="true">
+                        @for (sticker of item.card.stickers; track sticker.id) {
+                          <span
+                            class="detail-card__sticker mosaic-card__sticker"
+                            [class.detail-card__sticker--dragging]="draggedStickerId() === sticker.id"
+                            [style.left.%]="sticker.x"
+                            [style.top.%]="sticker.y"
+                            [style.transform]="stickerTransform(sticker)"
+                            [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
+                            [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
+                            [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
+                            [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
+                            (pointerdown)="beginStickerDrag($event, 'card', item.board.id, sticker.id, item.card.id)"
+                          >
+                            <span class="material-symbols-outlined">{{ sticker.icon }}</span>
+                          </span>
+                        }
+                      </span>
+                    }
+                    <span class="mosaic-card__overlay">
+                      <strong>{{ item.card.title }}</strong>
+                      <small>{{ item.board.title }}</small>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class="mosaic-card__open mosaic-card__back board-square__face board-square__face--back"
+                    [style.pointer-events]="isCardFlipped(item.card.id) ? 'auto' : 'none'"
+                    (click)="selectBoard(item.board.id)"
+                  >
+                    <span class="board-square__icon">
                       <span class="material-symbols-outlined">{{ cardTypeIcon(item.card.type) }}</span>
                     </span>
-                  }
-                  @if (item.card.stickers.length) {
-                    <span class="mosaic-card__stickers" aria-hidden="true">
-                      @for (sticker of item.card.stickers; track sticker.id) {
-                        <span
-                          class="detail-card__sticker mosaic-card__sticker"
-                          [class.detail-card__sticker--dragging]="draggedStickerId() === sticker.id"
-                          [style.left.%]="sticker.x"
-                          [style.top.%]="sticker.y"
-                          [style.transform]="stickerTransform(sticker)"
-                          [style.--sticker-bg]="stickerBackground(stickerColor(sticker, $index))"
-                          [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
-                          [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
-                          [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
-                          (pointerdown)="beginStickerDrag($event, 'card', item.board.id, sticker.id, item.card.id)"
-                        >
-                          <span class="material-symbols-outlined">{{ sticker.icon }}</span>
-                        </span>
-                      }
+                    <span class="board-square__meta board-square__meta--back">
+                      <strong>{{ item.card.notes || item.card.subtitle || item.card.title }}</strong>
+                      <small>{{ item.card.title }} · {{ item.board.title }}</small>
                     </span>
-                  }
-                  <span class="mosaic-card__overlay">
-                    <strong>{{ item.card.title }}</strong>
-                    <small>{{ item.board.title }}</small>
-                  </span>
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  class="card-flip-button mosaic-card__flip-button"
+                  [attr.aria-label]="isCardFlipped(item.card.id) ? 'Show card front' : 'Show card back'"
+                  [attr.aria-pressed]="isCardFlipped(item.card.id)"
+                  (click)="toggleCardFlip(item.card.id, $event)"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
+                    <path d="M13 2l1.5 3.5L11 6.5" />
+                    <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
+                    <path d="M11 22l-1.5-3.5L13 17.5" />
+                  </svg>
                 </button>
                 @if (canEditBoard(item.board)) {
                   <div class="mosaic-card__tools">
@@ -1580,7 +1627,7 @@
                   [class.detail-card--drop-target]="isCardDropTarget(card.id)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
                   [attr.draggable]="canEditBoard(board) && board.cards.length > 1 ? 'true' : null"
-                  style="overflow: visible; perspective: 1200px;"
+                  style="overflow: visible; perspective: 1400px;"
                   (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, board.id, card)"
                   (dragstart)="beginCardReorderDrag($event, board, card)"
                   (dragover)="dragCardOver($event, board, card)"
@@ -1657,6 +1704,19 @@
                       style="display: flex; flex-direction: column; overflow: hidden; border-radius: inherit; background: #fff;"
                     >
                       <div class="detail-card__media">
+                        <button
+                          type="button"
+                          class="card-flip-button detail-card__flip-button"
+                          aria-label="Show card back"
+                          (click)="toggleCardFlip(card.id, $event)"
+                         i18n-aria-label>
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
+                            <path d="M13 2l1.5 3.5L11 6.5" />
+                            <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
+                            <path d="M11 22l-1.5-3.5L13 17.5" />
+                          </svg>
+                        </button>
                         @if (currentCardImage(card)) {
                           <button
                             type="button"
@@ -1784,9 +1844,6 @@
                           </a>
                         }
                         <span class="detail-card__quick-actions">
-                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)" i18n-aria-label>
-                            <span class="material-symbols-outlined">flip_to_back</span>
-                          </button>
                           @if (canEditBoard(board)) {
                             <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
                               <span class="material-symbols-outlined">edit</span>
@@ -1855,9 +1912,6 @@
                       <div class="detail-card__footer">
                         <span i18n>Updated {{ cardUpdatedLabel(card) }}</span>
                         <span class="detail-card__buttons">
-                          <button type="button" aria-label="Show card back" (click)="toggleCardFlip(card.id, $event)" i18n-aria-label>
-                            <span class="material-symbols-outlined">flip_to_back</span>
-                          </button>
                           @if (canEditBoard(board)) {
                             <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
                               <span class="material-symbols-outlined">edit</span>
@@ -1876,6 +1930,19 @@
                       [style.z-index]="isCardFlipped(card.id) ? 2 : 1"
                       style="display: flex; flex-direction: column; overflow: hidden; border-radius: inherit; background: radial-gradient(circle at 18% 14%, rgba(255,255,255,.95), transparent 22%), linear-gradient(135deg, var(--board-soft), #fff);"
                     >
+                      <button
+                        type="button"
+                        class="card-flip-button detail-card__flip-button"
+                        aria-label="Show card front"
+                        (click)="toggleCardFlip(card.id, $event)"
+                       i18n-aria-label>
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M3 8c2.5-3.5 7-4.5 10.5-2.5" />
+                          <path d="M13 2l1.5 3.5L11 6.5" />
+                          <path d="M21 16c-2.5 3.5-7 4.5-10.5 2.5" />
+                          <path d="M11 22l-1.5-3.5L13 17.5" />
+                        </svg>
+                      </button>
                       <div class="detail-card__body" style="justify-content: space-between;">
                         <div>
                           <div class="detail-card__line">
@@ -1914,9 +1981,6 @@
                       <div class="detail-card__footer">
                         <span>{{ statusLabel(card.status) }} · {{ cardScopeLabel(card.scope) }}</span>
                         <span class="detail-card__buttons">
-                          <button type="button" aria-label="Show card front" (click)="toggleCardFlip(card.id, $event)" i18n-aria-label>
-                            <span class="material-symbols-outlined">flip_to_front</span>
-                          </button>
                           @if (canEditBoard(board)) {
                             <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
                               <span class="material-symbols-outlined">edit</span>
