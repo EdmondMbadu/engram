@@ -977,6 +977,7 @@ export class BoardsComponent implements OnDestroy {
   readonly publicOwnerSlug = signal<string | null>(null);
   readonly flippedBoardIds = signal<Set<string>>(new Set());
   readonly flippedCardIds = signal<Set<string>>(new Set());
+  readonly openCardActionMenuKey = signal<string | null>(null);
   readonly expandedCardIds = signal<Set<string>>(new Set());
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
@@ -1908,9 +1909,31 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
+  isCardActionMenuOpen(key: string): boolean {
+    return this.openCardActionMenuKey() === key;
+  }
+
+  toggleCardActionMenu(key: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.openCardActionMenuKey.update((openKey) => openKey === key ? null : key);
+  }
+
+  closeCardActionMenu(restoreFocus = false): void {
+    const key = this.openCardActionMenuKey();
+    this.openCardActionMenuKey.set(null);
+    if (!restoreFocus || !key || !this.isBrowser) {
+      return;
+    }
+    window.requestAnimationFrame(() => {
+      window.document.getElementById(`card-action-trigger-${key}`)?.focus();
+    });
+  }
+
   private keepScrollPosition(event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
+    this.openCardActionMenuKey.set(null);
     if (!this.isBrowser) {
       return;
     }
@@ -3232,6 +3255,16 @@ export class BoardsComponent implements OnDestroy {
     }
     this.selectedBoardId.set(boardId);
     this.openEditCard(card);
+  }
+
+  openEditGalleryCardPhotos(boardId: string, card: BoardCard, event?: Event): void {
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
+      return;
+    }
+    this.selectedBoardId.set(boardId);
+    this.openEditCardPhotos(card, event);
   }
 
   closeCardDialog(): void {
@@ -5415,6 +5448,11 @@ export class BoardsComponent implements OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   handleCardPhotoViewerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.openCardActionMenuKey()) {
+      event.preventDefault();
+      this.closeCardActionMenu(true);
+      return;
+    }
     if (this.boardLearnOpen()) {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -5441,6 +5479,11 @@ export class BoardsComponent implements OnDestroy {
       event.preventDefault();
       this.stepCardPhotoViewer(1);
     }
+  }
+
+  @HostListener('document:click')
+  closeCardActionMenuOnOutsideClick(): void {
+    this.closeCardActionMenu();
   }
 
   cardDraftImages(draft: CardDraft = this.cardDraft()): string[] {
@@ -5523,9 +5566,14 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
-  openEditCardPhotos(card: BoardCard, event: Event): void {
-    event.stopPropagation();
+  openEditCardPhotos(card: BoardCard, event?: Event): void {
+    event?.stopPropagation();
     this.openEditCard(card);
+    if (this.isBrowser) {
+      window.requestAnimationFrame(() => {
+        window.document.getElementById('card-photo-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
   }
 
   private uniqueImageUrls(urls: Array<string | null | undefined>): string[] {

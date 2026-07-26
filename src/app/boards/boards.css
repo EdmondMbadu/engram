@@ -852,7 +852,8 @@
   -webkit-backface-visibility: hidden;
 }
 
-.card-flip-button {
+.card-flip-button,
+.card-action-menu__trigger {
   display: grid;
   width: 2.25rem;
   height: 2.25rem;
@@ -864,6 +865,9 @@
   color: var(--ink);
   cursor: pointer;
   padding: 0;
+}
+
+.card-flip-button {
   transition: transform 150ms ease, box-shadow 100ms ease, background 150ms ease;
 }
 
@@ -895,8 +899,104 @@
 .mosaic-card__flip-button {
   position: absolute;
   top: 0.7rem;
-  right: 0.7rem;
+  right: 3.55rem;
   z-index: 8;
+}
+
+.card-flip-button--solo {
+  right: 0.7rem;
+}
+
+.card-action-menu {
+  position: absolute;
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-0.2rem) scale(0.96);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.card-action-menu--open,
+.board-square:hover .board-square__action-menu,
+.board-square:focus-within .board-square__action-menu,
+.mosaic-card:hover .mosaic-card__action-menu,
+.mosaic-card:focus-within .mosaic-card__action-menu,
+.detail-card:hover .detail-card__action-menu,
+.detail-card:focus-within .detail-card__action-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.board-square__action-menu,
+.mosaic-card__action-menu {
+  top: 0.7rem;
+  right: 0.7rem;
+}
+
+.detail-card__action-menu {
+  top: 0.65rem;
+  right: 0.65rem;
+}
+
+.card-action-menu__trigger .material-symbols-outlined {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.card-action-menu__panel {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  display: grid;
+  width: max-content;
+  min-width: 11.75rem;
+  gap: 0.12rem;
+  border: 2px solid var(--ink);
+  border-radius: 0.95rem;
+  background: #ffffff;
+  box-shadow: 4px 4px 0 var(--ink), 0 18px 38px rgba(16, 32, 24, 0.2);
+  padding: 0.38rem;
+}
+
+.card-action-menu__panel button {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 0;
+  border-radius: 0.62rem;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.62rem 0.7rem;
+  text-align: left;
+}
+
+.card-action-menu__panel button:hover,
+.card-action-menu__panel button:focus-visible {
+  background: var(--board-soft, #eef8f1);
+  outline: 0;
+}
+
+.card-action-menu__panel .card-action-menu__danger {
+  margin-top: 0.18rem;
+  box-shadow: inset 0 1px rgba(16, 32, 24, 0.16);
+  color: #b42318;
+}
+
+.card-action-menu__panel .material-symbols-outlined {
+  font-size: 1.12rem;
+}
+
+@media (hover: none) {
+  .card-action-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
 }
 
 .board-square__open,
@@ -1142,8 +1242,7 @@
   font-variation-settings: 'FILL' 1;
 }
 
-.board-square__tools,
-.mosaic-card__tools {
+.board-square__tools {
   position: absolute;
   right: 0.55rem;
   bottom: 0.55rem;
@@ -1156,16 +1255,12 @@
 }
 
 .board-square:hover .board-square__tools,
-.mosaic-card:hover .mosaic-card__tools,
-.board-square:focus-within .board-square__tools,
-.mosaic-card:focus-within .mosaic-card__tools {
+.board-square:focus-within .board-square__tools {
   opacity: 1;
   transform: translateY(0);
 }
 
 .board-square__tools button,
-.mosaic-card__tools button,
-.detail-card__buttons button,
 .boards-icon-button {
   display: inline-flex;
   width: 2.15rem;
@@ -1748,58 +1843,10 @@
   color: var(--accent-contrast);
 }
 
-.detail-card__edit,
-.detail-card__remove {
-  position: absolute;
-  top: -0.75rem;
-  z-index: 16;
-  display: grid;
-  width: 2.25rem;
-  height: 2.25rem;
-  place-items: center;
-  border: 3px solid #ffffff;
-  border-radius: 999px;
-  background: #d92323;
-  box-shadow: 3px 3px 0 var(--ink);
-  color: #ffffff;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(0.25rem) scale(0.92);
-  transition: opacity 160ms ease, transform 160ms ease;
-}
-
-.detail-card__edit {
-  right: 1.9rem;
-  background: var(--accent);
-  color: var(--accent-contrast);
-}
-
-.detail-card__remove {
-  right: -0.75rem;
-}
-
-.detail-card:hover .detail-card__edit,
-.detail-card:focus-within .detail-card__edit,
-.detail-card--managing .detail-card__edit,
-.detail-card:hover .detail-card__remove,
-.detail-card:focus-within .detail-card__remove,
-.detail-card--managing .detail-card__remove {
-  opacity: 1;
-  pointer-events: auto;
-  transform: none;
-}
-
-.detail-card__edit .material-symbols-outlined,
-.detail-card__remove .material-symbols-outlined {
-  font-size: 1.2rem;
-  font-weight: 900;
-}
-
 .detail-card__like {
   position: absolute;
   top: 0.65rem;
-  right: 3.45rem;
+  right: 6.25rem;
   z-index: 14;
   display: grid;
   width: 2.35rem;
@@ -1817,6 +1864,10 @@
   border-color: var(--board-accent);
   background: color-mix(in srgb, var(--board-accent) 16%, #ffffff);
   color: var(--board-accent);
+}
+
+.detail-card__like--solo {
+  right: 3.45rem;
 }
 
 .detail-card__like .material-symbols-outlined {
@@ -2031,48 +2082,21 @@
   padding-top: 1.1rem;
 }
 
-.detail-card__quick-actions {
-  position: absolute;
-  top: 0.65rem;
-  right: 6.15rem;
-  z-index: 7;
-  display: inline-flex;
-  gap: 0.35rem;
-  opacity: 0;
-  transform: translateY(-0.2rem);
-  transition: opacity 160ms ease, transform 160ms ease;
-}
-
 .detail-card__flip-button {
   position: absolute;
   top: 0.65rem;
-  right: 0.65rem;
+  right: 3.45rem;
   z-index: 12;
 }
 
-.detail-card:hover .detail-card__quick-actions,
-.detail-card:focus-within .detail-card__quick-actions,
-.detail-card--expanded .detail-card__quick-actions,
-.detail-card--managing .detail-card__quick-actions {
-  opacity: 1;
-  transform: none;
+.detail-card__flip-button--solo {
+  right: 0.65rem;
 }
 
-.detail-card__quick-actions button {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 2px 2px 0 var(--ink);
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.detail-card__quick-actions .material-symbols-outlined {
-  font-size: 1rem;
+.detail-card--managing .detail-card__like,
+.detail-card--managing .detail-card__flip-button,
+.detail-card--managing .detail-card__action-menu {
+  display: none;
 }
 
 .detail-card__line {
@@ -2193,11 +2217,6 @@
   font-weight: 950;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.detail-card__buttons {
-  display: inline-flex;
-  gap: 0.32rem;
 }
 
 .boards-primary-action,
@@ -5533,8 +5552,7 @@
     line-height: 0.96;
   }
 
-  .board-square__tools,
-  .mosaic-card__tools {
+  .board-square__tools {
     opacity: 1;
     transform: none;
   }
@@ -5731,18 +5749,6 @@
     padding: 0.75rem 1.05rem 0.95rem;
     font-size: 0.67rem;
     letter-spacing: 0.06em;
-  }
-
-  .detail-card__buttons {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.45rem;
-  }
-
-  .detail-card__buttons button {
-    width: 100%;
-    height: 2.4rem;
-    border-radius: 0.85rem;
   }
 
   .detail-card__select {
@@ -5952,8 +5958,6 @@
   }
 
   .board-square__tools button,
-  .mosaic-card__tools button,
-  .detail-card__buttons button,
   .boards-icon-button {
     width: 1.9rem;
     height: 1.9rem;
@@ -5969,11 +5973,11 @@
   .boards-ghost-action,
   .boards-icon-button,
   .board-square__tools,
-  .mosaic-card__tools,
   .board-square__open::after,
   .detail-card::after,
   .board-square__rotor,
-  .card-flip-button {
+  .card-flip-button,
+  .card-action-menu {
     transition: none;
   }
 

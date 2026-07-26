@@ -650,6 +650,7 @@
                 <button
                   type="button"
                   class="card-flip-button board-square__flip-button"
+                  [class.card-flip-button--solo]="!canEditBoard(board)"
                   [attr.aria-label]="isBoardFlipped(board.id) ? 'Show board front' : 'Show board back'"
                   [attr.aria-pressed]="isBoardFlipped(board.id)"
                   (click)="toggleBoardFlip(board.id, $event)"
@@ -661,6 +662,42 @@
                     <path d="M11 22l-1.5-3.5L13 17.5" />
                   </svg>
                 </button>
+                @if (canEditBoard(board)) {
+                  <div
+                    class="card-action-menu board-square__action-menu"
+                    [class.card-action-menu--open]="isCardActionMenuOpen('board:' + board.id)"
+                  >
+                    <button
+                      type="button"
+                      class="card-action-menu__trigger"
+                      [id]="'card-action-trigger-board:' + board.id"
+                      aria-label="Board actions"
+                      aria-haspopup="menu"
+                      [attr.aria-expanded]="isCardActionMenuOpen('board:' + board.id)"
+                      [attr.aria-controls]="'card-action-menu-board:' + board.id"
+                      (click)="toggleCardActionMenu('board:' + board.id, $event)"
+                    >
+                      <span class="material-symbols-outlined">more_horiz</span>
+                    </button>
+                    @if (isCardActionMenuOpen('board:' + board.id)) {
+                      <div
+                        class="card-action-menu__panel"
+                        [id]="'card-action-menu-board:' + board.id"
+                        role="menu"
+                        (click)="$event.stopPropagation()"
+                      >
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditBoard(board, $event)">
+                          <span class="material-symbols-outlined">edit</span>
+                          Edit board
+                        </button>
+                        <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteBoard(board, $event)">
+                          <span class="material-symbols-outlined">delete</span>
+                          Delete board
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
                 <div class="board-square__tools">
                   <button
                     type="button"
@@ -684,14 +721,6 @@
                     <span class="material-symbols-outlined">{{ isBoardSaved(board) ? 'bookmark' : 'bookmark_add' }}</span>
                     <span i18n>Save</span>
                   </button>
-                  @if (canEditBoard(board)) {
-                    <button type="button" aria-label="Edit board" (click)="openEditBoard(board, $event)" i18n-aria-label>
-                      <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button type="button" aria-label="Delete board" (click)="deleteBoard(board, $event)" i18n-aria-label>
-                      <span class="material-symbols-outlined">delete</span>
-                    </button>
-                  }
                 </div>
               </article>
             } @empty {
@@ -774,6 +803,7 @@
                 <button
                   type="button"
                   class="card-flip-button mosaic-card__flip-button"
+                  [class.card-flip-button--solo]="!canEditBoard(item.board)"
                   [attr.aria-label]="isCardFlipped(item.card.id) ? 'Show card front' : 'Show card back'"
                   [attr.aria-pressed]="isCardFlipped(item.card.id)"
                   (click)="toggleCardFlip(item.card.id, $event)"
@@ -786,13 +816,43 @@
                   </svg>
                 </button>
                 @if (canEditBoard(item.board)) {
-                  <div class="mosaic-card__tools">
-                    <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditGalleryCard(item.board.id, item.card)" i18n-aria-label>
-                      <span class="material-symbols-outlined">edit</span>
+                  <div
+                    class="card-action-menu mosaic-card__action-menu"
+                    [class.card-action-menu--open]="isCardActionMenuOpen('gallery:' + item.board.id + ':' + item.card.id)"
+                  >
+                    <button
+                      type="button"
+                      class="card-action-menu__trigger"
+                      [id]="'card-action-trigger-gallery:' + item.board.id + ':' + item.card.id"
+                      aria-label="Card actions"
+                      aria-haspopup="menu"
+                      [attr.aria-expanded]="isCardActionMenuOpen('gallery:' + item.board.id + ':' + item.card.id)"
+                      [attr.aria-controls]="'card-action-menu-gallery:' + item.board.id + ':' + item.card.id"
+                      (click)="toggleCardActionMenu('gallery:' + item.board.id + ':' + item.card.id, $event)"
+                    >
+                      <span class="material-symbols-outlined">more_horiz</span>
                     </button>
-                    <button type="button" aria-label="Delete card" (click)="deleteGalleryCard(item.board.id, item.card, $event)" i18n-aria-label>
-                      <span class="material-symbols-outlined">delete</span>
-                    </button>
+                    @if (isCardActionMenuOpen('gallery:' + item.board.id + ':' + item.card.id)) {
+                      <div
+                        class="card-action-menu__panel"
+                        [id]="'card-action-menu-gallery:' + item.board.id + ':' + item.card.id"
+                        role="menu"
+                        (click)="$event.stopPropagation()"
+                      >
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditGalleryCard(item.board.id, item.card)">
+                          <span class="material-symbols-outlined">edit</span>
+                          Edit card
+                        </button>
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditGalleryCardPhotos(item.board.id, item.card, $event)">
+                          <span class="material-symbols-outlined">add_photo_alternate</span>
+                          {{ cardImages(item.card).length ? 'Add memory' : 'Add photos' }}
+                        </button>
+                        <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteGalleryCard(item.board.id, item.card, $event)">
+                          <span class="material-symbols-outlined">delete</span>
+                          Delete card
+                        </button>
+                      </div>
+                    }
                   </div>
                 }
               </article>
@@ -1648,27 +1708,10 @@
                       <span class="material-symbols-outlined">{{ isCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
                     </button>
                   }
-                  @if (canEditBoard(board)) {
-                    <button
-                      type="button"
-                      class="detail-card__edit"
-                      [attr.aria-label]="'Edit ' + card.title"
-                      (click)="$event.stopPropagation(); openEditCard(card)"
-                    >
-                      <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button
-                      type="button"
-                      class="detail-card__remove"
-                      [attr.aria-label]="'Remove ' + card.title"
-                      (click)="deleteCard(card, $event)"
-                    >
-                      <span class="material-symbols-outlined">close</span>
-                    </button>
-                  }
                   <button
                     type="button"
                     class="detail-card__like"
+                    [class.detail-card__like--solo]="!canEditBoard(board)"
                     [class.detail-card__like--active]="isCardLiked(board, card)"
                     [attr.aria-label]="isCardLiked(board, card) ? 'Unlike card' : 'Like card'"
                     [attr.aria-pressed]="isCardLiked(board, card)"
@@ -1676,6 +1719,46 @@
                   >
                     <span class="material-symbols-outlined">{{ isCardLiked(board, card) ? 'favorite' : 'favorite_border' }}</span>
                   </button>
+                  @if (canEditBoard(board)) {
+                    <div
+                      class="card-action-menu detail-card__action-menu"
+                      [class.card-action-menu--open]="isCardActionMenuOpen('card:' + card.id)"
+                    >
+                      <button
+                        type="button"
+                        class="card-action-menu__trigger"
+                        [id]="'card-action-trigger-card:' + card.id"
+                        aria-label="Card actions"
+                        aria-haspopup="menu"
+                        [attr.aria-expanded]="isCardActionMenuOpen('card:' + card.id)"
+                        [attr.aria-controls]="'card-action-menu-card:' + card.id"
+                        (click)="toggleCardActionMenu('card:' + card.id, $event)"
+                      >
+                        <span class="material-symbols-outlined">more_horiz</span>
+                      </button>
+                      @if (isCardActionMenuOpen('card:' + card.id)) {
+                        <div
+                          class="card-action-menu__panel"
+                          [id]="'card-action-menu-card:' + card.id"
+                          role="menu"
+                          (click)="$event.stopPropagation()"
+                        >
+                          <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCard(card)">
+                            <span class="material-symbols-outlined">edit</span>
+                            Edit card
+                          </button>
+                          <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCardPhotos(card, $event)">
+                            <span class="material-symbols-outlined">add_photo_alternate</span>
+                            {{ cardImages(card).length ? 'Add memory' : 'Add photos' }}
+                          </button>
+                          <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
+                            <span class="material-symbols-outlined">delete</span>
+                            Delete card
+                          </button>
+                        </div>
+                      }
+                    </div>
+                  }
                   @if (card.stickers.length) {
                     <div class="detail-card__stickers" aria-hidden="true">
                       @for (sticker of card.stickers; track sticker.id) {
@@ -1707,6 +1790,7 @@
                         <button
                           type="button"
                           class="card-flip-button detail-card__flip-button"
+                          [class.detail-card__flip-button--solo]="!canEditBoard(board)"
                           aria-label="Show card back"
                           (click)="toggleCardFlip(card.id, $event)"
                          i18n-aria-label>
@@ -1807,12 +1891,6 @@
                             </button>
                           }
                         }
-                        @if (canEditBoard(board)) {
-                          <button type="button" class="detail-card__add-photos" (click)="openEditCardPhotos(card, $event)">
-                            <span class="material-symbols-outlined">add_photo_alternate</span>
-                            <span>{{ cardImages(card).length ? 'Add memory' : 'Add photos' }}</span>
-                          </button>
-                        }
                         @if (!isPhotoOnlyCard(card)) {
                           <span class="detail-card__status">
                             <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
@@ -1843,13 +1921,6 @@
                             <span class="material-symbols-outlined" style="font-size: 1.25rem;">music_note</span>
                           </a>
                         }
-                        <span class="detail-card__quick-actions">
-                          @if (canEditBoard(board)) {
-                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
-                              <span class="material-symbols-outlined">edit</span>
-                            </button>
-                          }
-                        </span>
                         <button
                           type="button"
                           class="detail-card__peek"
@@ -1911,16 +1982,6 @@
 
                       <div class="detail-card__footer">
                         <span i18n>Updated {{ cardUpdatedLabel(card) }}</span>
-                        <span class="detail-card__buttons">
-                          @if (canEditBoard(board)) {
-                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
-                              <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)" i18n-aria-label>
-                              <span class="material-symbols-outlined">delete</span>
-                            </button>
-                          }
-                        </span>
                       </div>
                     </div>
 
@@ -1933,6 +1994,7 @@
                       <button
                         type="button"
                         class="card-flip-button detail-card__flip-button"
+                        [class.detail-card__flip-button--solo]="!canEditBoard(board)"
                         aria-label="Show card front"
                         (click)="toggleCardFlip(card.id, $event)"
                        i18n-aria-label>
@@ -1980,16 +2042,6 @@
 
                       <div class="detail-card__footer">
                         <span>{{ statusLabel(card.status) }} · {{ cardScopeLabel(card.scope) }}</span>
-                        <span class="detail-card__buttons">
-                          @if (canEditBoard(board)) {
-                            <button type="button" aria-label="Edit card" (click)="$event.stopPropagation(); openEditCard(card)" i18n-aria-label>
-                              <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button type="button" aria-label="Delete card" (click)="deleteCard(card, $event)" i18n-aria-label>
-                              <span class="material-symbols-outlined">delete</span>
-                            </button>
-                          }
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -4722,7 +4774,7 @@
                   <h4 i18n>Verify and save</h4>
                 </div>
               </div>
-            <section class="card-memory-gallery" aria-label="Card photo memories" i18n-aria-label>
+            <section id="card-photo-editor" class="card-memory-gallery" aria-label="Card photo memories" i18n-aria-label>
               <div class="card-memory-gallery__head">
                 <div>
                   <span class="card-memory-gallery__eyebrow" i18n><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
@@ -4996,7 +5048,7 @@
                   <h4 i18n>Edit anything before saving</h4>
                 </div>
               </div>
-            <section class="card-memory-gallery" aria-label="Card photo memories" i18n-aria-label>
+            <section id="card-photo-editor" class="card-memory-gallery" aria-label="Card photo memories" i18n-aria-label>
               <div class="card-memory-gallery__head">
                 <div>
                   <span class="card-memory-gallery__eyebrow" i18n><span class="material-symbols-outlined">photo_library</span> Photo memories</span>
