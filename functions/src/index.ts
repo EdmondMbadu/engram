@@ -69,10 +69,10 @@ import {
 } from './board-wizard-menu-images';
 import { extractStructuredBoardWizardMenuItems } from './board-wizard-menu';
 import {
-  rankBoardWizardImageSearchResults,
-  searchBraveImages,
-  type BoardWizardImageSearchIntent,
-} from './board-wizard-image-search';
+  boardWizardReaderPageTitle,
+  extractBoardWizardReaderMenuItems,
+  fetchBoardWizardReaderPage,
+} from './board-wizard-reader';
 import {
   clientTimestamp,
   deleteChatEntityForUser,
@@ -108,7 +108,6 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
 });
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const googleCustomSearchApiKey = defineSecret('GOOGLE_CUSTOM_SEARCH_API_KEY');
-const braveSearchApiKey = defineSecret('BRAVE_SEARCH_API_KEY');
 const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? '';
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? '';
@@ -4939,6 +4938,50 @@ function buildBoardWizardResearchFallbackExtraction(inputUrl: string): BoardWiza
   };
 }
 
+function buildBoardWizardReaderExtraction(
+  inputUrl: string,
+  markdown: string,
+): BoardWizardUrlExtraction | null {
+  const menuItems = extractBoardWizardReaderMenuItems(markdown);
+  const pageTitle = boardWizardReaderPageTitle(markdown);
+  let siteName = pageTitle.replace(/\s*[|–—]\s*.*$/, '').trim();
+  if (!siteName) {
+    try {
+      siteName = new URL(inputUrl).hostname.replace(/^www\./, '');
+    } catch {
+      siteName = 'source page';
+    }
+  }
+  const restaurantLike = menuItems.length >= 3;
+  if (!restaurantLike && markdown.trim().length < 200) {
+    return null;
+  }
+  const context = [
+    `Source URL: ${inputUrl}`,
+    pageTitle ? `Page title: ${pageTitle}` : '',
+    siteName ? `Site name: ${siteName}` : '',
+    'The publisher blocked direct cloud extraction. This content was recovered from the public page through the no-key Reader fallback.',
+    restaurantLike
+      ? 'Detected page type: restaurant/menu. Build one restaurant board using these exact current menu records and their source-page photos.'
+      : '',
+    menuItems.length
+      ? `Extracted menu items:\n${menuItems.map((item) =>
+          `- ${item.title}${item.price ? ` (${item.price})` : ''}${item.category ? ` [${item.category}]` : ''}${item.description ? `: ${item.description}` : ''} | image: ${item.imageUrl}`,
+        ).join('\n')}`
+      : '',
+    !restaurantLike
+      ? `Reader page excerpt:\n${markdown.replace(/!\[[^\]]*\]\([^)]*\)/g, ' ').replace(/\s+/g, ' ').slice(0, 8_000)}`
+      : '',
+  ].filter(Boolean).join('\n\n').slice(0, 14_000);
+  return {
+    context,
+    restaurantLike,
+    menuItems: menuItems.slice(0, 100),
+    pageTitle,
+    siteName,
+  };
+}
+
 async function fetchBoardWizardLinkedContext(links: BoardWizardUrlLink[], baseUrl: string): Promise<string> {
   const seen = new Set<string>();
   const contexts: string[] = [];
@@ -5598,7 +5641,7 @@ export const generateBoardWizardBatch = onCall(
     memory: '2GiB',
     concurrency: 1,
     maxInstances: 20,
-    secrets: [geminiApiKey, googlePlacesApiKey, googleCustomSearchApiKey, braveSearchApiKey],
+    secrets: [geminiApiKey, googlePlacesApiKey, googleCustomSearchApiKey],
   },
   async (request) => {
     const userId = request.auth?.uid;
@@ -5738,7 +5781,8 @@ export const generateBoardWizardBatch = onCall(
           durationMs: Date.now() - urlIntakeStartedAt,
           attempts: fetched.attempts,
         });
-        if (!blocked) {
+        const usableResponse = fetched.status >= 200 && fetched.status < 400 && !blocked;
+        if (usableResponse) {
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
           logger.info('Board wizard URL extraction completed.', {
             userId,
@@ -5767,12 +5811,38 @@ export const generateBoardWizardBatch = onCall(
           if (!commerceExtraction) {
             accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
           }
+        } else {
+          logger.warn('Board wizard rejected an unusable source response.', {
+            userId,
+            urlHost: safeCommerceHostname(url),
+            method: fetched.method,
+            status: fetched.status,
+            blocked,
+            durationMs: Date.now() - urlIntakeStartedAt,
+          });
         }
       } catch (error) {
         logger.warn('Board wizard URL intake failed.', {
           userId,
           url,
           errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+      if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
+        const reader = await fetchBoardWizardReaderPage(url, { timeoutMs: 18_000 });
+        if (reader.markdown) {
+          urlExtraction = buildBoardWizardReaderExtraction(url, reader.markdown);
+        }
+        logger.info('Board wizard no-key Reader fallback completed.', {
+          userId,
+          urlHost: safeCommerceHostname(url),
+          status: reader.status,
+          markdownCharacters: reader.markdown.length,
+          restaurantLike: urlExtraction?.restaurantLike ?? false,
+          menuItemCount: urlExtraction?.menuItems.length ?? 0,
+          menuItemImageCount: urlExtraction?.menuItems.filter((item) => !!item.imageUrl).length ?? 0,
+          durationMs: reader.durationMs,
+          errorMessage: reader.errorMessage,
         });
       }
       if (!accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
@@ -8140,85 +8210,14 @@ async function findBoardWizardVerifiedWebImage(
   return '';
 }
 
-let braveImageSearchUnavailableUntil = 0;
-
 async function findWebSearchImageForBoardWizard(
   query: string,
   legacyGoogleApiKey: string,
   options: { imageType?: 'photo' | 'any'; entityName?: string; requireFoodContext?: boolean } = {},
 ): Promise<string> {
-  const braveApiKey = braveSearchApiKey.value().trim();
-  if (braveApiKey && Date.now() >= braveImageSearchUnavailableUntil) {
-    const outcome = await searchBraveImages(query, braveApiKey, { timeoutMs: 4_000 });
-    if (outcome.status === 401 || outcome.status === 403) {
-      braveImageSearchUnavailableUntil = Date.now() + 60 * 60 * 1000;
-    } else if (outcome.status === 429) {
-      braveImageSearchUnavailableUntil = Date.now() + 60 * 1000;
-    }
-    if (outcome.errorMessage || (outcome.status > 0 && outcome.status !== 200)) {
-      logger.warn('Board wizard Brave image search failed.', {
-        query,
-        status: outcome.status,
-        error: outcome.errorMessage,
-      });
-    }
-    const entityName = options.entityName || query;
-    const intent: BoardWizardImageSearchIntent = options.requireFoodContext ? 'food' : 'any';
-    const ranked = rankBoardWizardImageSearchResults(outcome.results, entityName, intent, query).slice(0, 4);
-    const verifiedUrls = await Promise.all(ranked.map(async (result) => {
-      for (const candidate of [result.imageUrl, result.thumbnailUrl]) {
-        if (candidate && await isUsableBoardWizardRemoteImage(candidate)) {
-          return candidate;
-        }
-      }
-      return '';
-    }));
-    const verifiedUrl = verifiedUrls.find(Boolean) ?? '';
-    if (verifiedUrl) {
-      return verifiedUrl;
-    }
-  }
-
   return legacyGoogleApiKey
     ? await findGoogleCustomSearchImageForBoardWizard(query, legacyGoogleApiKey, options)
     : '';
-}
-
-async function isUsableBoardWizardRemoteImage(value: string): Promise<boolean> {
-  let currentUrl = safeBoardCardRemoteImageUrl(value);
-  if (!currentUrl) return false;
-  try {
-    for (let redirectCount = 0; redirectCount <= 2; redirectCount += 1) {
-      const response = await fetch(currentUrl, {
-        method: 'GET',
-        redirect: 'manual',
-        headers: {
-          'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.5',
-          'Range': 'bytes=0-2047',
-          'User-Agent': 'LivingWiki/1.0 board-image-verification (https://livingwiki.com)',
-        },
-        signal: AbortSignal.timeout(2_500),
-      });
-      if (response.status >= 300 && response.status < 400) {
-        const location = response.headers.get('location');
-        currentUrl = location
-          ? safeBoardCardRemoteImageUrl(new URL(location, currentUrl).toString())
-          : '';
-        await response.body?.cancel();
-        if (!currentUrl) return false;
-        continue;
-      }
-      const contentType = (response.headers.get('content-type') ?? '').toLowerCase();
-      const contentLength = Number(response.headers.get('content-length') ?? '0');
-      await response.body?.cancel();
-      return response.ok
-        && /^image\/(?:jpeg|jpg|png|webp|avif)\b/.test(contentType)
-        && (!Number.isFinite(contentLength) || contentLength === 0 || contentLength <= 12 * 1024 * 1024);
-    }
-  } catch {
-    return false;
-  }
-  return false;
 }
 
 async function findAppleMusicMediaForBoardWizard(
