@@ -2034,11 +2034,11 @@
                         @if (card.subtitle) {
                           <p class="detail-card__subtitle">{{ card.subtitle }}</p>
                         }
-                        @if (card.what3wordsAddress) {
+                        @if (what3wordsAddressFor(card); as what3wordsAddress) {
                           <div class="off-grid-card-location">
                             <span>
                               <small i18n>Exact 3 m square</small>
-                              <b><em>///</em>{{ card.what3wordsAddress }}</b>
+                              <b><em>///</em>{{ what3wordsAddress }}</b>
                             </span>
                             <a [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
                               <span class="material-symbols-outlined">near_me</span>
@@ -2109,9 +2109,9 @@
                             <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
                           </div>
                           <h2>{{ card.title }}</h2>
-                          @if (card.what3wordsAddress) {
+                          @if (what3wordsAddressFor(card); as what3wordsAddress) {
                             <a class="off-grid-back-link" [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
-                              <span>///{{ card.what3wordsAddress }}</span>
+                              <span>///{{ what3wordsAddress }}</span>
                               <b i18n>Go there</b>
                             </a>
                           }
@@ -3945,10 +3945,10 @@
                           <span i18n>Notes</span>
                           <textarea rows="7" maxlength="3600" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
                         </label>
-                        @if (card.what3wordsAddress) {
+                        @if (what3wordsAddressFor(card); as what3wordsAddress) {
                           <label>
                             <span i18n>what3words address</span>
-                            <input type="text" maxlength="240" [value]="card.what3wordsAddress" (input)="updateWizardCard(card.id, 'what3wordsAddress', $any($event.target).value)" />
+                            <input type="text" maxlength="240" [value]="what3wordsAddress" (input)="updateWizardCard(card.id, 'what3wordsAddress', $any($event.target).value)" />
                           </label>
                         }
                         <div class="wizard-card-editor__field-pair">
@@ -4088,9 +4088,9 @@
                               </a>
                             </div>
                           }
-                          @if (card.what3wordsAddress) {
+                          @if (what3wordsAddressFor(card); as what3wordsAddress) {
                             <a class="off-grid-preview-chip" [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
-                              <span>///{{ card.what3wordsAddress }}</span>
+                              <span>///{{ what3wordsAddress }}</span>
                               <b i18n>Go there</b>
                             </a>
                           }

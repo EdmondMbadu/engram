@@ -1,4 +1,8 @@
-import { extractWhat3WordsAddress, parseWhat3WordsBoardSource } from './what3words-source';
+import {
+  extractWhat3WordsAddress,
+  parseWhat3WordsBoardSource,
+  what3WordsAddressFromCard,
+} from './what3words-source';
 
 describe('what3words pasted sources', () => {
   const canneryRowSource = [
@@ -84,5 +88,35 @@ describe('what3words pasted sources', () => {
 
   it('does not classify ordinary dotted prose as a what3words list', () => {
     expect(parseWhat3WordsBoardSource('Read example.com first.\nThen upload photo.jpg.')).toBeNull();
+  });
+
+  it('recovers a what3words address from an affected saved card subtitle', () => {
+    expect(what3WordsAddressFromCard({
+      what3wordsAddress: '',
+      title: 'Steinbeck Plaza',
+      subtitle: '///candy.sage.sticks',
+      notes: 'A scenic stop on Cannery Row.',
+      sourceUrl: '',
+    })).toBe('candy.sage.sticks');
+  });
+
+  it('recovers a what3words address from notes or a source link', () => {
+    expect(what3WordsAddressFromCard({
+      notes: 'Navigate with https://w3w.co/cool.hurry.orbit',
+    })).toBe('cool.hurry.orbit');
+    expect(what3WordsAddressFromCard({
+      sourceUrl: 'https://what3words.com/budget.like.echo?maptype=satellite',
+    })).toBe('budget.like.echo');
+  });
+
+  it('prefers the explicit address and ignores cards without what3words data', () => {
+    expect(what3WordsAddressFromCard({
+      what3wordsAddress: 'ships.valid.lowest',
+      subtitle: '///candy.sage.sticks',
+    })).toBe('ships.valid.lowest');
+    expect(what3WordsAddressFromCard({
+      title: 'Monterey Bay Aquarium',
+      subtitle: 'A waterfront attraction',
+    })).toBe('');
   });
 });

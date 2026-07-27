@@ -44,7 +44,9 @@ import { generateStackVideo, type StackVideoResult } from './stack-video-export'
 import {
   extractWhat3WordsAddress,
   parseWhat3WordsBoardSource,
+  what3WordsAddressFromCard,
   type What3WordsBoardSource,
+  type What3WordsCardLike,
 } from './what3words-source';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
@@ -3181,7 +3183,7 @@ export class BoardsComponent implements OnDestroy {
       ...(card.imageSource ? { imageSource: card.imageSource } : {}),
       extractionConfidence: Math.max(0, Math.min(1, card.extractionConfidence ?? 0)),
       extractedAt: card.extractedAt?.trim() || '',
-      what3wordsAddress: normalizeWhat3WordsAddress(card.what3wordsAddress),
+      what3wordsAddress: what3WordsAddressFromCard(card),
       tags: card.tags.slice(0, 6),
       stickers: [],
       tour: card.tour ? this.normalizeCardTour(card.tour) : null,
@@ -5737,8 +5739,12 @@ export class BoardsComponent implements OnDestroy {
     return this.cardTypes.find((item) => item.id === type)?.label ?? 'Note';
   }
 
-  what3wordsUrlFor(card: { what3wordsAddress?: string }): string {
-    return what3wordsLocation(card.what3wordsAddress)?.url ?? '';
+  what3wordsAddressFor(card: What3WordsCardLike): string {
+    return what3WordsAddressFromCard(card);
+  }
+
+  what3wordsUrlFor(card: What3WordsCardLike): string {
+    return what3wordsLocation(this.what3wordsAddressFor(card))?.url ?? '';
   }
 
   isPhotoOnlyCard(card: Pick<BoardCard, 'imageUrl' | 'tags' | 'title'>): boolean {
@@ -8525,10 +8531,13 @@ export class BoardsComponent implements OnDestroy {
     const subtitle = this.stringValue(data['subtitle'], 'Wizard draft', 120);
     const notes = this.stringValue(data['notes'], 'Review and edit this card before saving.', 3600);
     const sourceUrl = this.stringValue(data['sourceUrl'], '', 2000);
-    const what3wordsAddress = normalizeWhat3WordsAddress(data['what3wordsAddress'])
-      || extractWhat3WordsAddress(subtitle)
-      || extractWhat3WordsAddress(notes)
-      || extractWhat3WordsAddress(sourceUrl);
+    const what3wordsAddress = what3WordsAddressFromCard({
+      what3wordsAddress: data['what3wordsAddress'],
+      title,
+      subtitle,
+      notes,
+      sourceUrl,
+    });
     const tags = Array.isArray(data['tags'])
       ? data['tags'].map((tag) => this.stringValue(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
       : [this.wizardVibe(), type].slice(0, 6);
@@ -8634,6 +8643,7 @@ export class BoardsComponent implements OnDestroy {
       let enriched: BoardWizardPreviewCard = {
         ...card,
         id: this.createId(),
+        what3wordsAddress: what3WordsAddressFromCard(card),
         imageUrl: card.imageUrl ?? '',
         audioPreviewUrl: card.audioPreviewUrl ?? '',
         spotifyTrackId: card.spotifyTrackId ?? '',
@@ -9701,7 +9711,7 @@ export class BoardsComponent implements OnDestroy {
             googleMapsUrl: card.googleMapsUrl ?? '',
             locationLat: this.optionalCoordinate((card as Partial<BoardCard>).locationLat, -90, 90),
             locationLng: this.optionalCoordinate((card as Partial<BoardCard>).locationLng, -180, 180),
-            what3wordsAddress: normalizeWhat3WordsAddress((card as Partial<BoardCard>).what3wordsAddress),
+            what3wordsAddress: what3WordsAddressFromCard(card),
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
             stickers: this.normalizeStickers(card.stickers),
             tour: this.normalizeCardTour((card as BoardCard).tour),
@@ -9932,10 +9942,13 @@ export class BoardsComponent implements OnDestroy {
     const subtitle = typeof data['subtitle'] === 'string' ? data['subtitle'] : '';
     const notes = typeof data['notes'] === 'string' ? data['notes'] : '';
     const sourceUrl = typeof data['sourceUrl'] === 'string' ? data['sourceUrl'] : '';
-    const what3wordsAddress = normalizeWhat3WordsAddress(data['what3wordsAddress'])
-      || extractWhat3WordsAddress(subtitle)
-      || extractWhat3WordsAddress(notes)
-      || extractWhat3WordsAddress(sourceUrl);
+    const what3wordsAddress = what3WordsAddressFromCard({
+      what3wordsAddress: data['what3wordsAddress'],
+      title,
+      subtitle,
+      notes,
+      sourceUrl,
+    });
     return {
       id: typeof data['id'] === 'string' ? data['id'] : this.createId(),
       title,

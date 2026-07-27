@@ -18,6 +18,14 @@ export type What3WordsBoardSource = {
   issues: What3WordsSourceIssue[];
 };
 
+export type What3WordsCardLike = {
+  what3wordsAddress?: unknown;
+  title?: unknown;
+  subtitle?: unknown;
+  notes?: unknown;
+  sourceUrl?: unknown;
+};
+
 const WHAT3WORDS_URL =
   /https?:\/\/(?:www\.)?(?:what3words\.com|w3w\.co)\/[^\s<>()\]]+/giu;
 const SLASHED_ADDRESS = /\/\/\/[^\s<>()\]}\u2014\u2013,;|]+/gu;
@@ -134,6 +142,27 @@ export function extractWhat3WordsAddress(value: string): string {
     const words = normalizeWhat3WordsAddress(column);
     if (words) {
       return words;
+    }
+  }
+  return '';
+}
+
+/**
+ * Recovers authoritative what3words metadata from both current cards and
+ * legacy/generated cards that only carried the address in visible text.
+ */
+export function what3WordsAddressFromCard(card: What3WordsCardLike): string {
+  const explicit = normalizeWhat3WordsAddress(card.what3wordsAddress);
+  if (explicit) {
+    return explicit;
+  }
+  for (const value of [card.subtitle, card.notes, card.sourceUrl, card.title]) {
+    if (typeof value !== 'string' || !value.trim()) {
+      continue;
+    }
+    const recovered = extractWhat3WordsAddress(value);
+    if (recovered) {
+      return recovered;
     }
   }
   return '';
