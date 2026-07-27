@@ -11,6 +11,17 @@ export type BoardWizardReaderOutcome = {
   status: number;
   durationMs: number;
   errorMessage: string;
+  blocked: boolean;
+};
+
+export type BoardWizardReaderProduct = {
+  title: string;
+  description: string;
+  price: string;
+  category: string;
+  productUrl: string;
+  imageUrl: string;
+  sku: string;
 };
 
 const readerCache = new Map<string, {
@@ -33,6 +44,7 @@ export async function fetchBoardWizardReaderPage(
       status: 0,
       durationMs: Date.now() - startedAt,
       errorMessage: 'Reader target must be a public HTTP or HTTPS URL.',
+      blocked: false,
     };
   }
   const cached = readerCache.get(targetUrl);
@@ -53,13 +65,19 @@ export async function fetchBoardWizardReaderPage(
       signal: AbortSignal.timeout(Math.max(3_000, Math.min(options?.timeoutMs ?? 18_000, 25_000))),
     });
     const markdown = (await response.text()).slice(0, 1_500_000);
+    const blocked = response.ok && looksLikeBlockedBoardWizardReaderPage(markdown);
     const outcome: BoardWizardReaderOutcome = {
-      markdown: response.ok ? markdown : '',
+      markdown: response.ok && !blocked ? markdown : '',
       status: response.status,
       durationMs: Date.now() - startedAt,
-      errorMessage: response.ok ? '' : readerErrorMessage(markdown, response.status),
+      errorMessage: blocked
+        ? 'Reader recovered only an access-denied or challenge page from the publisher.'
+        : response.ok
+          ? ''
+          : readerErrorMessage(markdown, response.status),
+      blocked,
     };
-    if (response.ok && markdown.length >= 100) {
+    if (response.ok && !blocked && markdown.length >= 100) {
       readerCache.set(targetUrl, {
         expiresAt: Date.now() + 10 * 60 * 1000,
         outcome,
@@ -77,8 +95,47 @@ export async function fetchBoardWizardReaderPage(
       status: 0,
       durationMs: Date.now() - startedAt,
       errorMessage: error instanceof Error ? error.message.slice(0, 300) : String(error).slice(0, 300),
+      blocked: false,
     };
   }
+}
+
+export function looksLikeBlockedBoardWizardReaderPage(markdown: string): boolean {
+  const normalized = markdown.replace(/\s+/g, ' ').trim().toLowerCase();
+  if (!normalized) return false;
+
+  const absoluteMarkers = [
+    'warning: target url returned error 401',
+    'warning: target url returned error 403',
+    'warning: target url returned error 429',
+    'warning: target url returned error 500',
+    'warning: target url returned error 502',
+    'warning: target url returned error 503',
+    'warning: target url returned error 504',
+    'sorry, you have been blocked',
+    'attention required! | cloudflare',
+    'maintenance-page-desktop.jpg',
+    'class="lv-waiting"',
+  ];
+  if (absoluteMarkers.some((marker) => normalized.includes(marker))) {
+    return true;
+  }
+
+  const shortChallenge = normalized.length < 5_000;
+  const challengeEvidence = [
+    'access denied',
+    'access forbidden',
+    'request forbidden',
+    'enable javascript and cookies to continue',
+    'checking if the site connection is secure',
+    'checking your browser before accessing',
+    'return at a later time to complete your purchase',
+  ].some((marker) => normalized.includes(marker));
+  const referenceEvidence =
+    /\bref(?:erence)?\s*#\s*[a-z0-9.-]{4,}/i.test(markdown)
+    || /blob:http:\/\/localhost\//i.test(markdown)
+    || /\bray id\s*:/i.test(markdown);
+  return shortChallenge && challengeEvidence && referenceEvidence;
 }
 
 export function extractBoardWizardReaderMenuItems(
@@ -134,6 +191,122 @@ export function extractBoardWizardReaderMenuItems(
   return Array.from(deduped.values()).slice(0, 100);
 }
 
+export function extractBoardWizardReaderProducts(
+  markdown: string,
+  sourceUrl: string,
+): BoardWizardReaderProduct[] {
+  if (!markdown.trim() || looksLikeBlockedBoardWizardReaderPage(markdown)) {
+    return [];
+  }
+  const lines = markdown.split(/\r?\n/);
+  const headings = new Map<number, string>();
+  let category = '';
+  for (let index = 0; index < lines.length; index += 1) {
+    const heading = lines[index]?.trim().match(/^#{1,4}\s+(.+?)\s*$/);
+    if (heading) {
+      category = cleanReaderText(heading[1]).slice(0, 100);
+    }
+    headings.set(index, category);
+  }
+
+  const productLines = new Set<number>();
+  const linkCandidates: Array<{
+    index: number;
+    title: string;
+    productUrl: string;
+    linkedImageUrl: string;
+    linkedImageAlt: string;
+  }> = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index] ?? '';
+    const linkedImage = line.match(
+      /\[!\[([^\]]{0,240})\]\(((?:https?:\/\/|\/)[^\s)]+)\)\]\(((?:https?:\/\/|\/)[^\s)]+)\)/i,
+    );
+    if (linkedImage) {
+      const productUrl = safeReaderProductUrl(linkedImage[3], sourceUrl);
+      if (productUrl) {
+        linkCandidates.push({
+          index,
+          title: cleanReaderProductTitle(linkedImage[1]),
+          productUrl,
+          linkedImageUrl: safeReaderImageUrl(resolveReaderUrl(linkedImage[2], sourceUrl)),
+          linkedImageAlt: cleanReaderProductTitle(linkedImage[1]),
+        });
+        productLines.add(index);
+        continue;
+      }
+    }
+
+    const linkPattern = /(^|[^!])\[([^\]]{1,240})\]\(((?:https?:\/\/|\/)[^\s)]+)\)/gi;
+    let match: RegExpExecArray | null;
+    while ((match = linkPattern.exec(line))) {
+      const productUrl = safeReaderProductUrl(match[3], sourceUrl);
+      if (!productUrl) continue;
+      linkCandidates.push({
+        index,
+        title: cleanReaderProductTitle(match[2]),
+        productUrl,
+        linkedImageUrl: '',
+        linkedImageAlt: '',
+      });
+      productLines.add(index);
+    }
+  }
+
+  const images = lines.flatMap((line, index) =>
+    Array.from(line.matchAll(/!\[([^\]]{0,240})\]\(((?:https?:\/\/|\/)[^\s)]+)\)/gi))
+      .map((match) => ({
+        index,
+        alt: cleanReaderProductTitle(match[1]),
+        imageUrl: safeReaderImageUrl(resolveReaderUrl(match[2], sourceUrl)),
+      }))
+      .filter((image) => !!image.imageUrl && !isReaderNoiseImage(image.alt, image.imageUrl)),
+  );
+
+  const products: BoardWizardReaderProduct[] = [];
+  for (const candidate of linkCandidates) {
+    const nearbyImages = images
+      .filter((image) => Math.abs(image.index - candidate.index) <= 4)
+      .filter((image) => !hasReaderProductBoundary(productLines, candidate.index, image.index))
+      .sort((left, right) => {
+        const leftNameMatch = readerTitleSimilarity(candidate.title, left.alt);
+        const rightNameMatch = readerTitleSimilarity(candidate.title, right.alt);
+        return rightNameMatch - leftNameMatch
+          || Math.abs(left.index - candidate.index) - Math.abs(right.index - candidate.index);
+      });
+    const image = candidate.linkedImageUrl
+      ? { imageUrl: candidate.linkedImageUrl, alt: candidate.linkedImageAlt }
+      : nearbyImages[0];
+    const title = candidate.title || image?.alt || readerProductTitleFromUrl(candidate.productUrl);
+    if (!isValidReaderProductTitle(title)) continue;
+    const block = readerProductBlock(lines, productLines, candidate.index);
+    const blockText = cleanReaderText(block.join(' '));
+    const price = blockText.match(
+      /(?:US\$|CA\$|AU\$|NZ\$|HK\$|S\$|£|€|¥|\$)\s?\d[\d,.]*(?:\+)?(?:\s?(?:USD|CAD|AUD|EUR|GBP|JPY))?/i,
+    )?.[0] ?? '';
+    const description = cleanReaderDescription(blockText, title, price);
+    products.push({
+      title: title.slice(0, 180),
+      description,
+      price,
+      category: headings.get(candidate.index) ?? '',
+      productUrl: candidate.productUrl,
+      imageUrl: image?.imageUrl ?? '',
+      sku: readerSkuFromProductUrl(candidate.productUrl),
+    });
+  }
+
+  const deduped = new Map<string, BoardWizardReaderProduct>();
+  for (const product of products) {
+    const key = canonicalReaderUrl(product.productUrl);
+    const existing = deduped.get(key);
+    if (!existing || (!existing.imageUrl && !!product.imageUrl) || product.description.length > existing.description.length) {
+      deduped.set(key, product);
+    }
+  }
+  return Array.from(deduped.values()).slice(0, 100);
+}
+
 export function boardWizardReaderPageTitle(markdown: string): string {
   return cleanReaderText(markdown.match(/^Title:\s*(.+)$/mi)?.[1] ?? '').slice(0, 300);
 }
@@ -184,6 +357,128 @@ function normalizeReaderTitle(value: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
+}
+
+function cleanReaderProductTitle(value: string): string {
+  return cleanReaderText(value)
+    .replace(/^Image\s+\d+\s*:\s*/i, '')
+    .replace(/^Image:\s*/i, '')
+    .replace(/\s*[|–—]\s*(?:Louis Vuitton|Official.*)$/i, '')
+    .trim()
+    .slice(0, 180);
+}
+
+function isValidReaderProductTitle(value: string): boolean {
+  const normalized = normalizeReaderTitle(value);
+  return normalized.length >= 2
+    && normalized.length <= 150
+    && !/^(?:image|shop now|view|learn more|discover|explore|buy now|add to bag|quick view|women|men|beauty|home)$/.test(normalized);
+}
+
+function safeReaderProductUrl(value: string, sourceUrl: string): string {
+  const resolved = resolveReaderUrl(value, sourceUrl);
+  if (!resolved) return '';
+  try {
+    const url = new URL(resolved);
+    const source = new URL(sourceUrl);
+    if (!sameReaderMerchant(url.hostname, source.hostname)) return '';
+    if (!/\/(?:products?|p|dp|item|sku)\/|\/[^/?#]*-nvprod\d+|[?&](?:product|sku|pid|item)=/i.test(url.toString())) {
+      return '';
+    }
+    url.hash = '';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+function resolveReaderUrl(value: string, baseUrl: string): string {
+  try {
+    const url = new URL(value, baseUrl);
+    return ['https:', 'http:'].includes(url.protocol) ? url.toString() : '';
+  } catch {
+    return '';
+  }
+}
+
+function sameReaderMerchant(left: string, right: string): boolean {
+  const merchantRoot = (hostname: string) => {
+    const labels = hostname.toLowerCase().replace(/^www\./, '').split('.');
+    const countryCodeSecondLevel =
+      labels.length >= 3
+      && labels[labels.length - 1]?.length === 2
+      && /^(?:ac|co|com|gov|net|org)$/.test(labels[labels.length - 2] ?? '');
+    return labels.slice(countryCodeSecondLevel ? -3 : -2).join('.');
+  };
+  return merchantRoot(left) === merchantRoot(right);
+}
+
+function hasReaderProductBoundary(productLines: Set<number>, start: number, end: number): boolean {
+  const minimum = Math.min(start, end);
+  const maximum = Math.max(start, end);
+  for (let index = minimum + 1; index < maximum; index += 1) {
+    if (productLines.has(index)) return true;
+  }
+  return false;
+}
+
+function readerProductBlock(lines: string[], productLines: Set<number>, index: number): string[] {
+  const block: string[] = [];
+  for (let offset = index + 1; offset < lines.length && offset <= index + 9; offset += 1) {
+    const line = lines[offset]?.trim() ?? '';
+    if (productLines.has(offset) || /^#{1,4}\s+/.test(line)) break;
+    if (/^\[[^\]]+\]\((?:https?:\/\/|\/)[^)]+\)\s*$/.test(line)) break;
+    if (line && !/^!\[/.test(line)) block.push(line);
+  }
+  return block;
+}
+
+function readerTitleSimilarity(left: string, right: string): number {
+  const leftTokens = new Set(normalizeReaderTitle(left).split(/\s+/).filter(Boolean));
+  const rightTokens = normalizeReaderTitle(right).split(/\s+/).filter(Boolean);
+  return rightTokens.reduce((score, token) => score + (leftTokens.has(token) ? 1 : 0), 0);
+}
+
+function readerProductTitleFromUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    const segment = url.pathname.split('/').filter(Boolean).reverse().find((part) => /[a-z]/i.test(part)) ?? '';
+    return cleanReaderProductTitle(
+      decodeURIComponent(segment)
+        .replace(/-nvprod\d+v?$/i, '')
+        .replace(/[-_]+/g, ' '),
+    );
+  } catch {
+    return '';
+  }
+}
+
+function readerSkuFromProductUrl(value: string): string {
+  try {
+    const segments = new URL(value).pathname.split('/').filter(Boolean).reverse();
+    return segments.find((segment) => /^[A-Z]{1,5}\d{3,}$/i.test(segment))?.toUpperCase() ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function canonicalReaderUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    url.hash = '';
+    for (const key of Array.from(url.searchParams.keys())) {
+      if (/^(?:utm_|gclid|fbclid)/i.test(key)) url.searchParams.delete(key);
+    }
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
+
+function isReaderNoiseImage(alt: string, imageUrl: string): boolean {
+  return /(?:logo|icon|sprite|avatar|spacer|tracking|pixel|loader|placeholder|payment|flag|favicon|maintenance)/i.test(
+    `${alt} ${imageUrl}`,
+  );
 }
 
 function safeReaderImageUrl(value: string): string {

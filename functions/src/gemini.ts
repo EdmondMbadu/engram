@@ -192,6 +192,17 @@ const boardWizardBatchSchema = {
           short_summary: { type: 'string' },
           rank: { type: 'integer' },
           place_query: { type: 'string' },
+          imageUrl: { type: 'string' },
+          sourceUrl: { type: 'string' },
+          productUrl: { type: 'string' },
+          merchant: { type: 'string' },
+          price: { type: 'string' },
+          currency: { type: 'string' },
+          sku: { type: 'string' },
+          availability: { type: 'string' },
+          productCategory: { type: 'string' },
+          imageSource: { type: 'string' },
+          extractionConfidence: { type: 'number' },
           tour: {
             type: 'object',
             properties: {
@@ -467,6 +478,18 @@ export type GeneratedBoardWizardBatch = {
     tourMeta?: GeneratedBoardTourMeta | null;
   };
   cards: GeneratedBoardWizardCard[];
+  sourceReport?: GeneratedBoardWizardSourceReport;
+};
+export type GeneratedBoardWizardSourceReport = {
+  status: 'exact' | 'recovered' | 'partial';
+  method: 'page' | 'reader' | 'grounded-search';
+  sourceHost: string;
+  sourceBlocked: boolean;
+  productCount: number;
+  exactImageCount: number;
+  missingImageCount: number;
+  snapshotDate: string;
+  message: string;
 };
 
 type BoardWizardPhotoInput = {
@@ -1480,6 +1503,9 @@ function buildBoardWizardPrompt(params: {
     'For FIFA World Cup winner cards, use "<year> <country> FIFA World Cup champions team celebration photo". Do not use a flag, federation crest, badge, kit graphic, logo, or generic national-team identity image.',
     'When one entity appears in multiple cards, make every image_query distinct to that card\'s year, event, or achievement so the same image is not repeated.',
     'For URL mode, treat the URL as primary evidence. Extract concrete items from the page text, metadata, links, and image candidates before inventing outside examples.',
+    'For a shopping, collection, category, or merchant homepage, return only concrete products whose membership on that exact page is supported by the supplied extraction context or grounded search.',
+    'For every shopping product, set entity_type to "product", image_intent to "product", type to "shop", productUrl and place_query to the exact official product-detail URL, and sourceUrl to the submitted page URL.',
+    'When grounded search exposes an exact official product image URL, put it in imageUrl and set imageSource to "product-page". Never synthesize an image URL from a naming pattern and never substitute a boutique, logo, campaign, category, or merely similar product image. Leave imageUrl empty when an exact image cannot be verified.',
     'For restaurant/menu URLs: build one board for that restaurant, not a generic list. For a 12-card default, prefer 1 overview card, 1 location/hours card, 8-9 concrete menu/signature item cards, and 1 final action card such as "Reserve", "Order", "Menu", or "Book".',
     'Restaurant menu item cards must use type "food", scope "place", status "saved", and include the tag "menu-item". Their title should be the dish/item name, subtitle should include category or why to try it, place_query should be the restaurant name plus city, and image_query should be "<dish name> <restaurant name> food".',
     'Restaurant location/action cards should use type "place" or "note". For action cards, put the exact reservation/order/menu URL in place_query when it appears in URL context.',
@@ -1625,8 +1651,31 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
     short_summary: cleanLine(data.short_summary, subtitle || firstBoardWizardSentence(notes), 160),
     rank: normalizeBoardWizardRank(data.rank),
     place_query: cleanLine(data.place_query, title, 140),
+    imageUrl: cleanLine(data.imageUrl, '', 2000) || undefined,
+    sourceUrl: cleanLine(data.sourceUrl, '', 2000) || undefined,
+    productUrl: cleanLine(data.productUrl, '', 2000) || undefined,
+    merchant: cleanLine(data.merchant, '', 120) || undefined,
+    price: cleanLine(data.price, '', 80) || undefined,
+    currency: cleanLine(data.currency, '', 12) || undefined,
+    sku: cleanLine(data.sku, '', 100) || undefined,
+    availability: cleanLine(data.availability, '', 100) || undefined,
+    productCategory: cleanLine(data.productCategory, '', 100) || undefined,
+    imageSource: normalizeGeneratedBoardWizardImageSource(data.imageSource),
+    extractionConfidence: normalizeGeneratedBoardWizardConfidence(data.extractionConfidence),
     tour: normalizeBoardCardTour(data.tour),
   };
+}
+
+function normalizeGeneratedBoardWizardImageSource(
+  value: unknown,
+): GeneratedBoardWizardCard['imageSource'] | undefined {
+  return value === 'source-page' || value === 'product-page' || value === 'search'
+    || value === 'generated' || value === 'missing' ? value : undefined;
+}
+
+function normalizeGeneratedBoardWizardConfidence(value: unknown): number | undefined {
+  const confidence = typeof value === 'number' ? value : Number(value);
+  return Number.isFinite(confidence) ? Math.max(0, Math.min(1, confidence)) : undefined;
 }
 
 function normalizeBoardWizardMediaKind(value: unknown): NonNullable<GeneratedBoardWizardCard['media_kind']> {

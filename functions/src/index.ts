@@ -40,6 +40,7 @@ import {
   type GeneratedBoardTourVoiceStyle,
   type GeneratedBoardWizardBatch,
   type GeneratedBoardWizardCard,
+  type GeneratedBoardWizardSourceReport,
 } from './gemini';
 import {
   getStoredCityPulseSnapshot,
@@ -75,6 +76,7 @@ import {
 import {
   boardWizardReaderPageTitle,
   extractBoardWizardReaderMenuItems,
+  extractBoardWizardReaderProducts,
   fetchBoardWizardReaderPage,
 } from './board-wizard-reader';
 import {
@@ -4935,6 +4937,8 @@ function buildBoardWizardResearchFallbackExtraction(inputUrl: string): BoardWiza
       'First determine the page type. If it is a shopping, collection, category, or merchant homepage, return the complete set of concrete named products visibly featured on that page, not the merchant’s entire catalog.',
       'For each product, use entity_type "product", image_intent "product", type "shop", and an exact brand-plus-product image_query.',
       'When a verified canonical product detail URL is available in search results, put that URL in place_query so the saved card can link back to the exact product.',
+      'Also put the verified canonical product detail URL in productUrl. A product without an official detail URL is not sufficiently verified and must be omitted.',
+      'If public indexing exposes the exact official product image asset, put that absolute URL in imageUrl and use imageSource "product-page". Never guess an image URL or use a store, logo, category, campaign, or similar-product image; leave imageUrl empty instead.',
       'Never invent membership. If current page membership cannot be verified, say so in the board description and return only strongly supported items.',
     ].join('\n'),
     restaurantLike: false,
@@ -4985,6 +4989,49 @@ function buildBoardWizardReaderExtraction(
     menuItems: menuItems.slice(0, 100),
     pageTitle,
     siteName,
+  };
+}
+
+function buildBoardWizardReaderCommerceExtraction(
+  inputUrl: string,
+  markdown: string,
+): CommercePageExtraction | null {
+  const readerProducts = extractBoardWizardReaderProducts(markdown, inputUrl);
+  if (readerProducts.length < 2) return null;
+  const pageTitle = boardWizardReaderPageTitle(markdown);
+  const sourceHost = safeCommerceHostname(inputUrl);
+  const siteName = pageTitle.replace(/\s*[|–—]\s*.*$/, '').trim()
+    || sourceHost.replace(/^www\./, '');
+  const products = readerProducts.map((product, index) => ({
+    name: product.title,
+    description: product.description,
+    productUrl: product.productUrl,
+    imageUrl: product.imageUrl,
+    imageCandidates: product.imageUrl ? [product.imageUrl] : [],
+    imageSource: product.imageUrl ? 'source-page' as const : 'missing' as const,
+    price: product.price,
+    currency: /\$/.test(product.price) ? 'USD' : '',
+    brand: siteName,
+    category: product.category,
+    sku: product.sku,
+    availability: '',
+    position: index + 1,
+    confidence: product.imageUrl ? 0.9 : 0.82,
+    sourceKind: 'reader' as const,
+  }));
+  return {
+    isCommerce: true,
+    confidence: products.every((product) => !!product.imageUrl) ? 0.92 : 0.84,
+    sourceUrl: inputUrl,
+    finalUrl: inputUrl,
+    pageTitle,
+    siteName,
+    brand: siteName,
+    products,
+    evidence: [
+      `${products.length} official product links recovered from the public Reader representation`,
+      `${products.filter((product) => !!product.imageUrl).length} locally paired product images`,
+    ],
   };
 }
 
@@ -5743,6 +5790,8 @@ export const generateBoardWizardBatch = onCall(
     let accommodationExtraction: BoardWizardAccommodationExtraction | null = null;
     let commerceExtraction: CommercePageExtraction | null = null;
     let urlResearchFallback = false;
+    let urlSourceBlocked = false;
+    let urlRecoveryMethod: GeneratedBoardWizardSourceReport['method'] = 'page';
     let mapsTourContext = '';
     const tourPromptUrl = isBoardWizardTourMode(mode) ? firstHttpUrl(prompt) : '';
     const sourceUrl = url || tourPromptUrl;
@@ -5776,6 +5825,7 @@ export const generateBoardWizardBatch = onCall(
           allowBrowserFallback: true,
         });
         const blocked = looksLikeAntiBotChallenge(fetched.html);
+        urlSourceBlocked = blocked || fetched.status <= 0 || fetched.status >= 400;
         logger.info('Board wizard URL fetch completed.', {
           userId,
           urlHost: safeCommerceHostname(url),
@@ -5789,6 +5839,7 @@ export const generateBoardWizardBatch = onCall(
         });
         const usableResponse = fetched.status >= 200 && fetched.status < 400 && !blocked;
         if (usableResponse) {
+          urlRecoveryMethod = 'page';
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
           logger.info('Board wizard URL extraction completed.', {
             userId,
@@ -5838,7 +5889,14 @@ export const generateBoardWizardBatch = onCall(
         const reader = await fetchBoardWizardReaderPage(url, { timeoutMs: 18_000 });
         if (reader.markdown) {
           urlExtraction = buildBoardWizardReaderExtraction(url, reader.markdown);
+          if (!(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+            commerceExtraction = buildBoardWizardReaderCommerceExtraction(url, reader.markdown);
+          }
+          if (urlExtraction || commerceExtraction) {
+            urlRecoveryMethod = 'reader';
+          }
         }
+        urlSourceBlocked = urlSourceBlocked || reader.blocked;
         logger.info('Board wizard no-key Reader fallback completed.', {
           userId,
           urlHost: safeCommerceHostname(url),
@@ -5849,6 +5907,9 @@ export const generateBoardWizardBatch = onCall(
           menuItemImageCount: urlExtraction?.menuItems.filter((item) => !!item.imageUrl).length ?? 0,
           durationMs: reader.durationMs,
           errorMessage: reader.errorMessage,
+          blocked: reader.blocked,
+          commerceProductCount: commerceExtraction?.products.length ?? 0,
+          commerceProductImageCount: commerceExtraction?.products.filter((product) => !!product.imageUrl).length ?? 0,
         });
       }
       if (!accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
@@ -5857,6 +5918,7 @@ export const generateBoardWizardBatch = onCall(
       if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
         urlExtraction = buildBoardWizardResearchFallbackExtraction(url);
         urlResearchFallback = true;
+        urlRecoveryMethod = 'grounded-search';
         logger.warn('Board wizard URL extraction is using grounded research fallback.', {
           userId,
           urlHost: safeCommerceHostname(url),
@@ -5951,6 +6013,17 @@ export const generateBoardWizardBatch = onCall(
       ? await enrichBoardWizardTourBatchWithRoutes(previewReadyResult, mode, tourOptions)
       : previewReadyResult;
 
+    const resultWithSourceReport: GeneratedBoardWizardBatch = mode === 'url' && url
+      ? {
+          ...routeReadyResult,
+          sourceReport: buildBoardWizardSourceReport(routeReadyResult, {
+            sourceUrl: url,
+            sourceBlocked: urlSourceBlocked,
+            method: urlRecoveryMethod,
+          }),
+        }
+      : routeReadyResult;
+
     await db.collection('board_wizard_batches').add({
       owner_user_id: userId,
       mode,
@@ -5959,14 +6032,15 @@ export const generateBoardWizardBatch = onCall(
       default_type: defaultType,
       vibe,
       requested_count: generationCount,
-      generated_count: routeReadyResult.cards.length,
+      generated_count: resultWithSourceReport.cards.length,
       prompt_preview: (prompt || pastedList || url || photoNames.join(', ')).slice(0, 500),
-      board_title: routeReadyResult.board.title,
-      card_titles: routeReadyResult.cards.map((card) => card.title).slice(0, 100),
+      board_title: resultWithSourceReport.board.title,
+      card_titles: resultWithSourceReport.cards.map((card) => card.title).slice(0, 100),
+      source_report: resultWithSourceReport.sourceReport ?? null,
       created_at: FieldValue.serverTimestamp(),
     });
 
-    return routeReadyResult;
+    return resultWithSourceReport;
   },
 );
 
@@ -6856,6 +6930,17 @@ async function enrichBoardWizardBatchWithPlaces(
       if (isBoardWizardMenuActionCard(card)) {
         return card;
       }
+      if (isBoardWizardProductCard(card)) {
+        if (card.imageUrl) return card;
+        const exactProductImage = await withBoardWizardTimeout(
+          findBoardWizardVerifiedWebImage(card, searchContext, customSearchApiKey),
+          5_000,
+          '',
+        );
+        return exactProductImage
+          ? { ...card, imageUrl: exactProductImage, imageSource: 'search' as const }
+          : { ...card, imageSource: 'missing' as const };
+      }
       const exactReferenceImage = exactReferenceImages.get(index);
       if (!card.imageUrl && exactReferenceImage) {
         card = { ...card, imageUrl: exactReferenceImage };
@@ -6873,7 +6958,12 @@ async function enrichBoardWizardBatchWithPlaces(
     },
   );
   const repairedCards = await mapWithConcurrency(enrichedCards, 3, async (card) => {
-    if (card.imageUrl || isBoardWizardMenuItemCard(card) || isBoardWizardMenuActionCard(card)) return card;
+    if (
+      card.imageUrl
+      || isBoardWizardProductCard(card)
+      || isBoardWizardMenuItemCard(card)
+      || isBoardWizardMenuActionCard(card)
+    ) return card;
     const startedAt = Date.now();
     let imageUrl = await withBoardWizardTimeout(
       findCommonsReferenceImageForBoardWizard(card, searchContext),
@@ -6912,6 +7002,13 @@ async function enrichBoardWizardBatchWithPlaces(
     missingEntities: repairedCards.filter((card) => !card.imageUrl).map((card) => card.entity_name || card.title).slice(0, 30),
   });
   return { ...batch, cards: repairedCards };
+}
+
+function isBoardWizardProductCard(card: GeneratedBoardWizardCard): boolean {
+  return !!card.productUrl
+    || card.entity_type === 'product'
+    || card.image_intent === 'product'
+    || (card.type === 'shop' && card.tags.some((tag) => /\bproduct|shopping|handbag|perfume|beauty\b/i.test(tag)));
 }
 
 async function mapWithConcurrency<T, R>(
@@ -7301,6 +7398,45 @@ function safeCommerceHostname(value: string): string {
   }
 }
 
+function buildBoardWizardSourceReport(
+  batch: GeneratedBoardWizardBatch,
+  options: {
+    sourceUrl: string;
+    sourceBlocked: boolean;
+    method: GeneratedBoardWizardSourceReport['method'];
+  },
+): GeneratedBoardWizardSourceReport {
+  const productCards = batch.cards.filter((card) => !!card.productUrl);
+  const exactImageCount = productCards.filter((card) =>
+    !!card.imageUrl && (card.imageSource === 'source-page' || card.imageSource === 'product-page'),
+  ).length;
+  const missingImageCount = productCards.filter((card) => !card.imageUrl).length;
+  const recovered = options.method !== 'page' || options.sourceBlocked;
+  const status: GeneratedBoardWizardSourceReport['status'] = recovered
+    ? productCards.length > 0 && missingImageCount === 0
+      ? 'recovered'
+      : 'partial'
+    : 'exact';
+  const message = options.method === 'grounded-search'
+    ? productCards.length
+      ? `${productCards.length} product${productCards.length === 1 ? '' : 's'} verified from the public indexed representation because the publisher blocked direct extraction.`
+      : 'The publisher blocked direct extraction. Public search evidence was used, so review every card before saving.'
+    : options.method === 'reader'
+      ? `${productCards.length || batch.cards.length} item${(productCards.length || batch.cards.length) === 1 ? '' : 's'} recovered from the page’s public Reader representation.`
+      : `${productCards.length || batch.cards.length} item${(productCards.length || batch.cards.length) === 1 ? '' : 's'} extracted directly from the source page.`;
+  return {
+    status,
+    method: options.method,
+    sourceHost: safeCommerceHostname(options.sourceUrl).replace(/^www\./, ''),
+    sourceBlocked: options.sourceBlocked,
+    productCount: productCards.length,
+    exactImageCount,
+    missingImageCount,
+    snapshotDate: new Date().toISOString().slice(0, 10),
+    message,
+  };
+}
+
 function buildCommerceWizardBatch(options: {
   extraction: CommercePageExtraction;
   targetBoardTitle: string;
@@ -7412,34 +7548,99 @@ function shapeBoardWizardResearchFallbackBatch(
   if (!productCards.length) return batch;
   const merchant = safeCommerceHostname(sourceUrl).replace(/^www\./, '');
   const extractedAt = new Date().toISOString();
+  const verifiedCards = productCards.flatMap((card): GeneratedBoardWizardCard[] => {
+    const researchedProductUrl = verifiedBoardWizardResearchProductUrl(card, sourceUrl);
+    if (!researchedProductUrl) return [];
+    const exactOfficialImage = verifiedBoardWizardResearchProductImage(card.imageUrl, sourceUrl);
+    return [{
+      ...card,
+      type: 'shop',
+      scope: 'place',
+      entity_type: 'product',
+      image_intent: 'product',
+      image_query: [merchant, card.entity_name || card.title, card.image_context, 'official product']
+        .filter(Boolean)
+        .join(' ')
+        .slice(0, 120),
+      place_query: researchedProductUrl,
+      sourceUrl,
+      productUrl: researchedProductUrl,
+      merchant,
+      imageUrl: exactOfficialImage || undefined,
+      imageSource: exactOfficialImage ? 'product-page' : 'missing',
+      extractionConfidence: exactOfficialImage ? 0.82 : 0.72,
+      extractedAt,
+    }];
+  });
+  if (!verifiedCards.length) {
+    throw new HttpsError(
+      'unavailable',
+      'The publisher blocked this shopping page, and no exact official product links could be verified from its public indexed representation. Try again later or use a more specific collection URL.',
+    );
+  }
   return {
     board: {
       ...batch.board,
       icon: 'shopping_bag',
-      description: `${batch.board.description} The publisher blocked direct extraction, so item membership and fallback images were reconstructed from grounded public search results. Review the preview before saving.`.slice(0, 500),
+      description: `${verifiedCards.length} product${verifiedCards.length === 1 ? '' : 's'} recovered from the public indexed representation of ${merchant}. The publisher blocked direct extraction; every card includes a verified official product link, while unavailable images remain visibly blank.`.slice(0, 500),
     },
-    cards: batch.cards.map((card) => {
-      const isProduct = productCards.includes(card);
-      if (!isProduct) return card;
-      const researchedProductUrl = safeBoardCardSourceUrl(card.place_query);
-      return {
-        ...card,
-        type: 'shop',
-        entity_type: 'product',
-        image_intent: 'product',
-        image_query: [merchant, card.entity_name || card.title, card.image_context, 'product']
-          .filter(Boolean)
-          .join(' ')
-          .slice(0, 120),
-        sourceUrl,
-        productUrl: researchedProductUrl || sourceUrl,
-        merchant,
-        imageSource: card.imageUrl ? 'search' : 'missing',
-        extractionConfidence: 0.65,
-        extractedAt,
-      };
-    }),
+    cards: verifiedCards,
   };
+}
+
+function verifiedBoardWizardResearchProductUrl(
+  card: GeneratedBoardWizardCard,
+  sourceUrl: string,
+): string {
+  const candidates = [card.productUrl, card.place_query]
+    .map((value) => safeBoardCardSourceUrl(value))
+    .filter(Boolean);
+  for (const candidate of candidates) {
+    if (!sameBoardWizardMerchant(candidate, sourceUrl)) continue;
+    if (!/\/(?:products?|p|dp|item|sku)\/|\/[^/?#]*-nvprod\d+|[?&](?:product|sku|pid|item)=/i.test(candidate)) {
+      continue;
+    }
+    return candidate;
+  }
+  return '';
+}
+
+function verifiedBoardWizardResearchProductImage(
+  value: string | undefined,
+  sourceUrl: string,
+): string {
+  const imageUrl = safeBoardCardSourceUrl(value);
+  if (!imageUrl || !sameBoardWizardMerchant(imageUrl, sourceUrl)) return '';
+  try {
+    const url = new URL(imageUrl);
+    if (
+      !/\.(?:avif|gif|jpe?g|png|webp)(?:$|[?#])/i.test(url.toString())
+      && !/\/images?\/is\/image\//i.test(url.pathname)
+      && !/\/image\/upload\//i.test(url.pathname)
+    ) {
+      return '';
+    }
+    if (/(?:logo|icon|sprite|avatar|spacer|tracking|pixel|loader|placeholder|maintenance)/i.test(url.toString())) {
+      return '';
+    }
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+function sameBoardWizardMerchant(left: string, right: string): boolean {
+  const merchantRoot = (value: string) => {
+    const hostname = safeCommerceHostname(value).replace(/^www\./, '');
+    const labels = hostname.split('.');
+    const countryCodeSecondLevel =
+      labels.length >= 3
+      && labels[labels.length - 1]?.length === 2
+      && /^(?:ac|co|com|gov|net|org)$/.test(labels[labels.length - 2] ?? '');
+    return labels.slice(countryCodeSecondLevel ? -3 : -2).join('.');
+  };
+  const leftRoot = merchantRoot(left);
+  return !!leftRoot && leftRoot === merchantRoot(right);
 }
 
 function buildRestaurantMenuWizardBatch(

@@ -383,6 +383,19 @@ type BoardWizardGeneratedBatch = {
     tourMeta?: BoardTourMeta | null;
   };
   cards: BoardWizardGeneratedCard[];
+  sourceReport?: BoardWizardSourceReport;
+};
+
+type BoardWizardSourceReport = {
+  status: 'exact' | 'recovered' | 'partial';
+  method: 'page' | 'reader' | 'grounded-search';
+  sourceHost: string;
+  sourceBlocked: boolean;
+  productCount: number;
+  exactImageCount: number;
+  missingImageCount: number;
+  snapshotDate: string;
+  message: string;
 };
 
 type BoardWizardPreviewCard = BoardWizardGeneratedCard & {
@@ -1481,6 +1494,7 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardMissingProductImageCount = computed(() =>
     this.wizardPreviewCards().filter((card) => !!card.productUrl && !card.imageUrl).length,
   );
+  readonly wizardSourceReport = computed(() => this.wizardResult()?.sourceReport ?? null);
   readonly selectedCardCount = computed(() => this.selectedCardIds().size);
   readonly cardWizardCanGenerate = computed(() => {
     const draft = this.cardDraft();
@@ -2836,6 +2850,46 @@ export class BoardsComponent implements OnDestroy {
       : card.imageSource === 'missing'
         ? 'hide_image'
         : 'info';
+  }
+
+  wizardSourceReportTitle(report: BoardWizardSourceReport): string {
+    switch (report.status) {
+      case 'exact':
+        return 'Source page extracted';
+      case 'recovered':
+        return 'Source recovered';
+      default:
+        return 'Partial source recovery';
+    }
+  }
+
+  wizardSourceReportIcon(report: BoardWizardSourceReport): string {
+    return report.status === 'partial' ? 'warning' : report.status === 'recovered' ? 'travel_explore' : 'verified';
+  }
+
+  wizardSourceReportMethod(report: BoardWizardSourceReport): string {
+    switch (report.method) {
+      case 'reader':
+        return 'Public page reader';
+      case 'grounded-search':
+        return 'Verified public index';
+      default:
+        return 'Direct page extraction';
+    }
+  }
+
+  handleWizardImageError(cardId: string): void {
+    this.wizardPreviewCards.update((cards) =>
+      cards.map((card) =>
+        card.id === cardId
+          ? {
+              ...card,
+              imageUrl: '',
+              imageSource: card.productUrl ? 'missing' : card.imageSource,
+            }
+          : card,
+      ),
+    );
   }
 
   productCardCtaLabel(): string {
@@ -8324,6 +8378,29 @@ export class BoardsComponent implements OnDestroy {
       // The server owns explicit-count and complete-set cardinality decisions.
       // Do not truncate a verified complete set back to the UI's default count.
       cards: (cards.length ? cards : fallback.cards).slice(0, 100),
+      sourceReport: this.normalizeWizardSourceReport(data['sourceReport']),
+    };
+  }
+
+  private normalizeWizardSourceReport(value: unknown): BoardWizardSourceReport | undefined {
+    if (!value || typeof value !== 'object') return undefined;
+    const data = value as Record<string, unknown>;
+    const status = data['status'] === 'exact' || data['status'] === 'recovered' || data['status'] === 'partial'
+      ? data['status']
+      : 'partial';
+    const method = data['method'] === 'page' || data['method'] === 'reader' || data['method'] === 'grounded-search'
+      ? data['method']
+      : 'page';
+    return {
+      status,
+      method,
+      sourceHost: this.stringValue(data['sourceHost'], '', 180),
+      sourceBlocked: data['sourceBlocked'] === true,
+      productCount: Math.round(this.numberValue(data['productCount'], 0, 0, 100)),
+      exactImageCount: Math.round(this.numberValue(data['exactImageCount'], 0, 0, 100)),
+      missingImageCount: Math.round(this.numberValue(data['missingImageCount'], 0, 0, 100)),
+      snapshotDate: this.stringValue(data['snapshotDate'], '', 40),
+      message: this.stringValue(data['message'], '', 500),
     };
   }
 

@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 
 export type CommerceImageSource = 'source-page' | 'product-page' | 'missing';
-export type CommerceProductSource = 'structured-data' | 'dom' | 'product-meta';
+export type CommerceProductSource = 'structured-data' | 'dom' | 'product-meta' | 'reader';
 
 export type CommerceProduct = {
   name: string;
