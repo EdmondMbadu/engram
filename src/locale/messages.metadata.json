@@ -2487,10 +2487,6 @@
     "source": "Wiki pages",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
-  "2859854315038210963": {
-    "source": "Edit board",
-    "file": "src/app/boards/boards.html"
-  },
   "2861306361489095884": {
     "source": "Slug",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -2541,10 +2537,6 @@
   },
   "2906587845957718064": {
     "source": "Local",
-    "file": "src/app/boards/boards.ts"
-  },
-  "2907728438584328447": {
-    "source": "Start from image filenames and captions for a memory board.",
     "file": "src/app/boards/boards.ts"
   },
   "2908643309302177524": {
@@ -5475,6 +5467,10 @@
     "source": "Concise",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "500903504803685541": {
+    "source": "Shopping page detected · {$INTERPOLATION} products",
+    "file": "src/app/boards/boards.html"
+  },
   "5014648585910737453": {
     "source": "Pizza",
     "file": "src/app/business-badge-icons.ts"
@@ -5625,10 +5621,6 @@
   },
   "5126173772236763420": {
     "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Save card ",
-    "file": "src/app/boards/boards.html"
-  },
-  "5129978763934655501": {
-    "source": "Family vacation in Lisbon, summer 2026",
     "file": "src/app/boards/boards.html"
   },
   "5137439220826427060": {
@@ -6131,10 +6123,6 @@
     "source": "A historically Black community beside major Kanawha Valley chemical plants with a long record of leaks, explosions, and shelter-in-place orders.",
     "file": "src/app/fence-line/fence-line.ts"
   },
-  "551661030895097346": {
-    "source": "Open song in Spotify",
-    "file": "src/app/boards/boards.html"
-  },
   "5519405331313123411": {
     "source": "What should I read first about {city}?",
     "file": "src/app/chat/chat.ts"
@@ -6262,10 +6250,6 @@
   "5603970865625901336": {
     "source": "Give me the key facts about {topic}.",
     "file": "src/app/chat/chat.ts"
-  },
-  "5605581353461883101": {
-    "source": "{$START_TAG_SPAN}upload{$CLOSE_TAG_SPAN} Choose photos {$TAG_INPUT}",
-    "file": "src/app/boards/boards.html"
   },
   "5607669932062416162": {
     "source": "Default",
@@ -6903,10 +6887,6 @@
     "source": "Transit",
     "file": "src/app/public-wikis/public-wikis.ts"
   },
-  "6054906239344834604": {
-    "source": "Photo names or captions",
-    "file": "src/app/boards/boards.html"
-  },
   "6056311183977942343": {
     "source": "Viewing as a reader",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -6946,6 +6926,10 @@
   "6095357695778876239": {
     "source": "Article",
     "file": "src/app/shared-chat/shared-chat.html"
+  },
+  "6097498666421256976": {
+    "source": " Verify product {$START_TAG_SPAN}open_in_new{$CLOSE_TAG_SPAN}",
+    "file": "src/app/boards/boards.html"
   },
   "6097726220585319586": {
     "source": "Cover image automation",
@@ -8979,6 +8963,10 @@
     "source": " This is the account owner for the claim, payment, documents, and future business edits. Payment is tied to the signed-in account email. ",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7678734731502509550": {
+    "source": "Product import audit",
+    "file": "src/app/boards/boards.html"
+  },
   "7680532799355251190": {
     "source": "{$START_TAG_SPAN}arrow_back{$CLOSE_TAG_SPAN} Previous ",
     "file": "src/app/boards/boards.html"
@@ -9046,10 +9034,6 @@
   "7734872384161724625": {
     "source": "Wiki Settings",
     "file": "src/app/atlas-persona/atlas-persona.html"
-  },
-  "773668064257926548": {
-    "source": "Delete card",
-    "file": "src/app/boards/boards.html"
   },
   "7739304297906633618": {
     "source": "Auto-Generated Wiki",
@@ -9226,10 +9210,6 @@
   "7870351813533833454": {
     "source": "My Friends",
     "file": "src/app/public-wikis/public-wikis.ts"
-  },
-  "7871890980897156177": {
-    "source": "Preview length depends on the available audio source. Full-song playback happens in the connected music service when your account has access.",
-    "file": "src/app/boards/boards.html"
   },
   "7872085558134944197": {
     "source": "Enter a valid account email before checkout.",
@@ -9939,6 +9919,10 @@
     "source": "Every Senate, House, and Governor race — candidates, polling, fundraising, issues, and district-level data compiled from public election sources.",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "8387596802311469777": {
+    "source": "View product",
+    "file": "src/app/boards/boards.ts"
+  },
   "8389258107404387491": {
     "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Use this picture ",
     "file": "src/app/boards/boards.html"
@@ -9958,10 +9942,6 @@
   "840416921450426778": {
     "source": " {$INTERPOLATION} source{$INTERPOLATION_1} ",
     "file": "src/app/wiki/wiki.html"
-  },
-  "8405309693308875139": {
-    "source": "Photos",
-    "file": "src/app/boards/boards.html"
   },
   "840692109692540367": {
     "source": "Sign In",
@@ -10766,10 +10746,6 @@
   "9019779151642071529": {
     "source": "Delete thread {title}",
     "file": "src/app/chat/chat.ts"
-  },
-  "9027131328158506822": {
-    "source": "Edit card",
-    "file": "src/app/boards/boards.html"
   },
   "9027664889257013249": {
     "source": "Ask anything from your sources.",

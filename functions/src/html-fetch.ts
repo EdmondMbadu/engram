@@ -1,6 +1,7 @@
 import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import type { Page } from 'puppeteer-core';
 
 export type HtmlFetchMethod = 'raw' | 'browser';
 
@@ -37,6 +38,9 @@ export function looksLikeAntiBotChallenge(html: string): boolean {
     'error 1020',
     'error 1015',
     'ray id:',
+    'class="lv-waiting"',
+    'maintenance-page-desktop.jpg',
+    'reference error',
   ];
 
   if (strongBlockMarkers.some((marker) => normalized.includes(marker))) {
@@ -135,22 +139,81 @@ async function fetchHtmlInBrowser(
       'Accept-Language': 'en-US,en;q=0.9',
       'Upgrade-Insecure-Requests': '1',
     });
-    await page.goto(url, {
+    const navigationResponse = await page.goto(url, {
       waitUntil: 'networkidle2',
       timeout: timeoutMs,
     });
-    await sleep(750);
+    await hydrateBrowserPageForExtraction(page);
 
     return {
       html: await page.content(),
       contentType: 'text/html; charset=utf-8',
       finalUrl: page.url(),
-      status: 200,
+      status: navigationResponse?.status() ?? 0,
       method: 'browser',
     };
   } finally {
     await browser.close();
   }
+}
+
+async function hydrateBrowserPageForExtraction(page: Page): Promise<void> {
+  await page.evaluate(async () => {
+    const pause = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay));
+    const discoveredImages = new Map<string, { alt: string; src: string; srcset: string }>();
+    const captureVisibleImages = () => {
+      for (const image of Array.from(document.images)) {
+        const src = image.getAttribute('src') || image.currentSrc || image.src;
+        const srcset = image.getAttribute('srcset') || '';
+        if (!src && !srcset) continue;
+        const alt = image.getAttribute('alt') || '';
+        discoveredImages.set(`${alt}\n${src}\n${srcset}`, { alt, src, srcset });
+      }
+    };
+    const viewportHeight = Math.max(window.innerHeight, 700);
+    // Menu and collection pages are frequently much taller than eight viewports. Sample the
+    // full document instead of only its first ~7,000px so lazy-loaded item photos are present
+    // in the serialized DOM. The caps keep unusually long/infinite feeds bounded.
+    const maxScrollTop = Math.min(
+      Math.max(document.documentElement.scrollHeight - viewportHeight, 0),
+      120_000,
+    );
+    const stepCount = Math.min(48, Math.max(1, Math.ceil(maxScrollTop / 2_500)));
+    captureVisibleImages();
+    for (let step = 1; step <= stepCount; step += 1) {
+      window.scrollTo(0, Math.round((maxScrollTop * step) / stepCount));
+      await pause(120);
+      captureVisibleImages();
+    }
+    window.scrollTo(0, 0);
+    await pause(250);
+    captureVisibleImages();
+
+    for (const image of Array.from(document.images)) {
+      const currentSrc = image.currentSrc || image.src;
+      if (currentSrc) image.setAttribute('data-lw-current-src', currentSrc);
+    }
+    // Some commerce/menu UIs virtualize rows and remove off-screen images from the DOM.
+    // Preserve every image observed during scrolling in a hidden extraction-only container.
+    const extractionImages = document.createElement('div');
+    extractionImages.hidden = true;
+    extractionImages.setAttribute('data-lw-extraction-images', 'true');
+    for (const discovered of discoveredImages.values()) {
+      const image = document.createElement('img');
+      image.setAttribute('alt', discovered.alt);
+      if (discovered.src) image.setAttribute('src', discovered.src);
+      if (discovered.srcset) image.setAttribute('srcset', discovered.srcset);
+      extractionImages.appendChild(image);
+    }
+    document.body.appendChild(extractionImages);
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('[style*="background"], [class]')).slice(0, 2500);
+    for (const element of elements) {
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (backgroundImage && backgroundImage !== 'none' && /url\(/i.test(backgroundImage)) {
+        element.setAttribute('data-lw-background-image', backgroundImage);
+      }
+    }
+  });
 }
 
 function ensureStealth(): void {

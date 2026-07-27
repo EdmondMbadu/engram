@@ -31,6 +31,7 @@ assert.equal(shouldVerify('all championship winners in order'), true);
 assert.equal(shouldVerify('twenty independent items', 20), true);
 assert.equal(shouldVerify('five creative taco ideas', 5), false);
 assert.equal(shouldVerify('complete list from this source URL', 30, 'url'), false);
+assert.equal(shouldVerify('SOURCE PAGE COULD NOT BE FETCHED. Use grounded web research.', 12, 'url'), true);
 assert.equal(boardWizardResearchMode({mode:'describe', prompt:'Top places to visit, ranked with an insider point of view'}), 'curated');
 assert.equal(boardWizardResearchMode({mode:'paste', prompt:'', pastedList:'1. A'}), 'source');
 assert.equal(resolveBoardWizardMediaKind({

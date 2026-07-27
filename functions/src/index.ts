@@ -57,6 +57,17 @@ import {
 } from './green-jobs';
 import { fetchHtmlWithFallback, looksLikeAntiBotChallenge } from './html-fetch';
 import {
+  extractCommercePage,
+  mergeCommerceProductDetail,
+  type CommercePageExtraction,
+} from './board-wizard-commerce';
+import {
+  bestBoardWizardSrcsetUrl,
+  isPlausibleBoardWizardFoodImageContext,
+  matchBoardWizardMenuImage,
+} from './board-wizard-menu-images';
+import { extractStructuredBoardWizardMenuItems } from './board-wizard-menu';
+import {
   clientTimestamp,
   deleteChatEntityForUser,
   deleteDocumentForUser,
@@ -4742,6 +4753,17 @@ type BoardWizardCurrentCard = {
   spotifyArtistName?: string;
   spotifyAlbumName?: string;
   spotifyArtworkUrl?: string;
+  sourceUrl?: string;
+  productUrl?: string;
+  merchant?: string;
+  price?: string;
+  currency?: string;
+  sku?: string;
+  availability?: string;
+  productCategory?: string;
+  imageSource?: GeneratedBoardWizardCard['imageSource'];
+  extractionConfidence?: number;
+  extractedAt?: string;
 };
 
 type BoardWizardMenuItem = {
@@ -4857,10 +4879,17 @@ async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, ht
   const jsonLd = extractBoardWizardJsonLdText(html).slice(0, 2400);
   const links = extractBoardWizardLinks(html, baseUrl);
   const importantLinks = links.filter(isBoardWizardRestaurantLink).slice(0, 18);
-  const images = extractBoardWizardImages(html, baseUrl).slice(0, 18);
+  // Keep the complete bounded image set for item-to-photo matching. Only the small preview is
+  // included in the model context so a long menu does not crowd out the menu text.
+  const allImages = extractBoardWizardImages(html, baseUrl).slice(0, 220);
+  const images = allImages.slice(0, 24);
   const linkedContext = '';
   const restaurantLike = looksLikeRestaurantWizardUrl(inputUrl, pageText, importantLinks);
-  const menuItems = restaurantLike ? extractBoardWizardMenuItems(pageLines, images).slice(0, 50) : [];
+  const structuredMenuItems = restaurantLike
+    ? extractStructuredBoardWizardMenuItems(html, allImages)
+    : [];
+  const lineMenuItems = restaurantLike ? extractBoardWizardMenuItems(pageLines, allImages) : [];
+  const menuItems = mergeBoardWizardMenuItems(structuredMenuItems, lineMenuItems).slice(0, 50);
 
   const context = [
     `Source URL: ${inputUrl}`,
@@ -4877,6 +4906,30 @@ async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, ht
     pageText ? `Main page text:\n${pageText}` : '',
   ].filter(Boolean).join('\n\n').slice(0, 12000);
   return { context, restaurantLike, menuItems, pageTitle: title, siteName };
+}
+
+function buildBoardWizardResearchFallbackExtraction(inputUrl: string): BoardWizardUrlExtraction {
+  let siteName = '';
+  try {
+    siteName = new URL(inputUrl).hostname.replace(/^www\./, '');
+  } catch {
+    siteName = 'source page';
+  }
+  return {
+    context: [
+      `Source URL: ${inputUrl}`,
+      'The publisher did not expose usable page content to the importer.',
+      'Use Google Search as a fallback and stay scoped to this exact URL and its indexed public representation.',
+      'First determine the page type. If it is a shopping, collection, category, or merchant homepage, return the complete set of concrete named products visibly featured on that page, not the merchant’s entire catalog.',
+      'For each product, use entity_type "product", image_intent "product", type "shop", and an exact brand-plus-product image_query.',
+      'When a verified canonical product detail URL is available in search results, put that URL in place_query so the saved card can link back to the exact product.',
+      'Never invent membership. If current page membership cannot be verified, say so in the board description and return only strongly supported items.',
+    ].join('\n'),
+    restaurantLike: false,
+    menuItems: [],
+    pageTitle: '',
+    siteName,
+  };
 }
 
 async function fetchBoardWizardLinkedContext(links: BoardWizardUrlLink[], baseUrl: string): Promise<string> {
@@ -4934,10 +4987,14 @@ function extractBoardWizardImages(html: string, baseUrl: string): BoardWizardUrl
   const images: BoardWizardUrlImage[] = [];
   const imagePattern = /<img\b([^>]*)>/gi;
   let match: RegExpExecArray | null;
-  while ((match = imagePattern.exec(html)) && images.length < 40) {
+  while ((match = imagePattern.exec(html)) && images.length < 240) {
     const attrs = match[1];
     const srcset = htmlAttribute(attrs, 'srcset') || htmlAttribute(attrs, 'data-srcset');
-    const src = htmlAttribute(attrs, 'src') || htmlAttribute(attrs, 'data-src') || htmlAttribute(attrs, 'data-original') || firstBoardWizardSrcsetUrl(srcset);
+    const src = htmlAttribute(attrs, 'src')
+      || bestBoardWizardSrcsetUrl(srcset)
+      || htmlAttribute(attrs, 'data-lw-current-src')
+      || htmlAttribute(attrs, 'data-src')
+      || htmlAttribute(attrs, 'data-original');
     const absolute = src ? safeAbsoluteUrl(src, baseUrl) : '';
     if (!absolute || !canTryCoverImageUrl(absolute)) {
       continue;
@@ -4967,10 +5024,6 @@ function extractBoardWizardImages(html: string, baseUrl: string): BoardWizardUrl
     seen.add(image.src);
     return true;
   });
-}
-
-function firstBoardWizardSrcsetUrl(value: string): string {
-  return value.split(',').map((part) => part.trim().split(/\s+/)[0]).find(Boolean) ?? '';
 }
 
 function extractBoardWizardMenuItems(lines: string[], images: BoardWizardUrlImage[]): BoardWizardMenuItem[] {
@@ -5021,20 +5074,28 @@ function extractBoardWizardMenuItems(lines: string[], images: BoardWizardUrlImag
   return items;
 }
 
-function matchBoardWizardMenuImage(title: string, images: BoardWizardUrlImage[]): string {
-  const titleTokens = meaningfulBoardWizardTokens(title);
-  if (!titleTokens.length) {
-    return '';
+function mergeBoardWizardMenuItems(
+  primary: BoardWizardMenuItem[],
+  secondary: BoardWizardMenuItem[],
+): BoardWizardMenuItem[] {
+  const merged = new Map<string, BoardWizardMenuItem>();
+  for (const item of [...primary, ...secondary]) {
+    const key = item.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    if (!key) continue;
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, item);
+      continue;
+    }
+    merged.set(key, {
+      title: existing.title || item.title,
+      description: existing.description || item.description,
+      price: existing.price || item.price,
+      category: existing.category || item.category,
+      imageUrl: existing.imageUrl || item.imageUrl,
+    });
   }
-  const scored = images
-    .map((image) => {
-      const haystack = `${image.alt} ${decodeURIComponentSafe(image.src)}`.toLowerCase();
-      const score = titleTokens.reduce((total, token) => total + (haystack.includes(token) ? 1 : 0), 0);
-      return { image, score };
-    })
-    .filter((item) => item.score > 0)
-    .sort((a, b) => b.score - a.score);
-  return scored[0]?.image.src ?? '';
+  return [...merged.values()];
 }
 
 function meaningfulBoardWizardTokens(value: string): string[] {
@@ -5659,7 +5720,11 @@ export const generateBoardWizardBatch = onCall(
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
     const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
     const pastedList = stringOrEmpty(data.pastedList).slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH);
-    const url = stringOrEmpty(data.url).slice(0, 1000);
+    const submittedUrl = stringOrEmpty(data.url).slice(0, 1000);
+    const url = submittedUrl ? safeBoardCardSourceUrl(submittedUrl) : '';
+    if (mode === 'url' && submittedUrl && !url) {
+      throw new HttpsError('invalid-argument', 'Provide a public HTTP or HTTPS page URL.');
+    }
     const numberedSource = mode === 'paste' ? parseNumberedBoardSource(pastedList) : null;
     const explicitCount = inferBoardWizardRequestedCount([prompt, pastedList, targetBoardTitle].join(' '));
     const requestedCount = numberedSource?.items.length ?? explicitCount ?? (Number(data.count) || 12);
@@ -5732,6 +5797,8 @@ export const generateBoardWizardBatch = onCall(
 
     let urlExtraction: BoardWizardUrlExtraction | null = null;
     let accommodationExtraction: BoardWizardAccommodationExtraction | null = null;
+    let commerceExtraction: CommercePageExtraction | null = null;
+    let urlResearchFallback = false;
     let mapsTourContext = '';
     const tourPromptUrl = isBoardWizardTourMode(mode) ? firstHttpUrl(prompt) : '';
     const sourceUrl = url || tourPromptUrl;
@@ -5757,17 +5824,25 @@ export const generateBoardWizardBatch = onCall(
       }
     }
     if (mode === 'url' && url) {
-      urlExtraction = buildKnownRestaurantUrlExtraction(url);
-    }
-    if (mode === 'url' && url && !urlExtraction) {
       try {
         const fetched = await fetchHtmlWithFallback(url, {
-          timeoutMs: 12_000,
+          timeoutMs: 25_000,
+          preferBrowser: true,
           allowBrowserFallback: true,
         });
         if (!looksLikeAntiBotChallenge(fetched.html)) {
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
-          accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
+          // Restaurant menus can resemble product grids. Give a strongly extracted menu
+          // precedence so its food-card behavior and page-bound photos are preserved.
+          if (!(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+            const commerce = extractCommercePage(url, fetched.finalUrl || url, fetched.html);
+            commerceExtraction = commerce.isCommerce
+              ? await enrichCommerceProductDetails(commerce)
+              : null;
+          }
+          if (!commerceExtraction) {
+            accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
+          }
         }
       } catch (error) {
         logger.warn('Board wizard URL intake failed.', {
@@ -5779,17 +5854,26 @@ export const generateBoardWizardBatch = onCall(
       if (!accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
         accommodationExtraction = buildFallbackAccommodationExtraction(url);
       }
-      if (!urlExtraction && !accommodationExtraction) {
-        throw new HttpsError(
-          'unavailable',
-          'LivingWiki could not read that page. Paste the article text with “Paste text or a list” instead.',
-        );
+      if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
+        // Known-site data is a last-resort safety net only. It must never prevent a live
+        // page—with its exact item photos and current menu—from being extracted.
+        urlExtraction = buildKnownRestaurantUrlExtraction(url);
+      }
+      if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
+        urlExtraction = buildBoardWizardResearchFallbackExtraction(url);
+        urlResearchFallback = true;
       }
     }
 
     const effectivePrompt = [
       prompt,
       mapsTourContext,
+      urlResearchFallback
+        ? 'SOURCE PAGE COULD NOT BE FETCHED. Use grounded web research to reconstruct only the concrete named items publicly associated with this exact page.'
+        : '',
+      commerceExtraction
+        ? `Detected shopping page with ${commerceExtraction.products.length} locally bound product records.`
+        : '',
       accommodationExtraction ? `Detected lodging listing: ${accommodationExtraction.listingName}` : '',
       urlExtraction?.context ? `URL extraction context:\n${urlExtraction.context}` : '',
     ].filter(Boolean).join('\n\n').trim();
@@ -5802,7 +5886,13 @@ export const generateBoardWizardBatch = onCall(
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, choose photos, or provide a URL.');
     }
 
-    const generated = accommodationExtraction
+    const generated = commerceExtraction
+      ? buildCommerceWizardBatch({
+          extraction: commerceExtraction,
+          targetBoardTitle,
+          requestedCount: explicitCount,
+        })
+      : accommodationExtraction
       ? buildAccommodationWizardBatch({
           extraction: accommodationExtraction,
           targetBoardTitle,
@@ -5833,17 +5923,21 @@ export const generateBoardWizardBatch = onCall(
     const sourceShapedGenerated = numberedSource
       ? shapeNumberedSourceWizardBatch(generated, numberedSource, defaultType)
       : generated;
+    const urlFallbackShapedGenerated = urlResearchFallback
+      ? shapeBoardWizardResearchFallbackBatch(sourceShapedGenerated, url)
+      : sourceShapedGenerated;
     const enrichedResult = accommodationExtraction
-      ? sourceShapedGenerated
-      : await enrichBoardWizardBatchWithPlaces(sourceShapedGenerated, {
+      ? urlFallbackShapedGenerated
+      : await enrichBoardWizardBatchWithPlaces(urlFallbackShapedGenerated, {
           mode,
           prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
           targetBoardTitle,
           defaultType,
         });
+    const imageProvenanceResult = markCommerceImageFallbacks(enrichedResult);
     const result = numberedSource
-      ? shapeNumberedSourceWizardBatch(enrichedResult, numberedSource, defaultType)
-      : enrichedResult;
+      ? shapeNumberedSourceWizardBatch(imageProvenanceResult, numberedSource, defaultType)
+      : imageProvenanceResult;
     const previewReadyResult = await enrichBoardWizardBatchWithSongAudioPreviews(
       result,
       [
@@ -6752,9 +6846,6 @@ async function enrichBoardWizardBatchWithPlaces(
   const customSearchApiKey = googleCustomSearchApiKey.value();
   const searchContext = inferBoardWizardPlaceContext(context.prompt, context.targetBoardTitle || batch.board.title);
   const menuImageCache = new Map<string, Promise<string>>();
-  const restaurantPhotoUrls = apiKey && batch.cards.some((card) => isBoardWizardMenuItemCard(card) && !card.imageUrl)
-    ? await withBoardWizardTimeout(fetchBoardWizardRestaurantPhotoUrls(searchContext, apiKey), 5_000, [])
-    : [];
   const exactReferenceImages = await findBatchExactWikipediaImagesForBoardWizard(batch.cards, searchContext);
   // Reference boards can contain dozens of cards. Keep outbound enrichment
   // bounded so Wikimedia and the other providers do not receive one large burst.
@@ -6770,9 +6861,6 @@ async function enrichBoardWizardBatchWithPlaces(
         const itemImageUrl = await resolveBoardWizardMenuItemImage(card, searchContext, customSearchApiKey, menuImageCache);
         if (itemImageUrl) {
           return { ...card, imageUrl: itemImageUrl };
-        }
-        if (restaurantPhotoUrls.length) {
-          return { ...card, imageUrl: restaurantPhotoUrls[index % restaurantPhotoUrls.length] };
         }
       }
       return enrichBoardWizardCard(card, searchContext, apiKey, customSearchApiKey);
@@ -7096,7 +7184,9 @@ async function buildBoardWizardImageOnlyBatch(
     imageUrl = await resolveBoardWizardMenuItemImage(card, options.targetBoardTitle, customSearchApiKey, new Map());
   }
   if (!imageUrl && (card.type === 'food' || /food|dish|dessert|cake|menu-item/i.test(`${card.title} ${card.tags.join(' ')}`))) {
-    imageUrl = customSearchApiKey ? await findBoardWizardMenuItemWebImage(card.image_query, customSearchApiKey) : '';
+    imageUrl = customSearchApiKey
+      ? await findBoardWizardMenuItemWebImage(card.image_query, customSearchApiKey, card.title)
+      : '';
   }
   if (!imageUrl && card.type !== 'food' && shouldResolveBoardWizardCardAsPlace(card) && apiKey) {
     const enriched = await enrichBoardWizardCardWithPlace(card, options.targetBoardTitle, apiKey);
@@ -7158,6 +7248,196 @@ function buildBoardWizardCardImageQuery(card: BoardWizardCurrentCard, prompt: st
     .slice(0, 180);
 }
 
+async function enrichCommerceProductDetails(
+  extraction: CommercePageExtraction,
+): Promise<CommercePageExtraction> {
+  const sourceHost = safeCommerceHostname(extraction.finalUrl || extraction.sourceUrl);
+  if (!sourceHost) return extraction;
+  const missingProducts = extraction.products
+    .map((product, index) => ({ product, index }))
+    .filter(({ product }) => !product.imageUrl && !!product.productUrl)
+    .filter(({ product }) => safeCommerceHostname(product.productUrl) === sourceHost)
+    .slice(0, 12);
+  if (!missingProducts.length) return extraction;
+
+  const enriched = await mapWithConcurrency(missingProducts, 3, async ({ product, index }) => {
+    try {
+      const fetched = await fetchHtmlWithFallback(product.productUrl, {
+        timeoutMs: 8_000,
+        allowBrowserFallback: false,
+      });
+      if (
+        fetched.status <= 0 ||
+        fetched.status >= 400 ||
+        looksLikeAntiBotChallenge(fetched.html)
+      ) {
+        return { index, product };
+      }
+      const detail = extractCommercePage(
+        product.productUrl,
+        fetched.finalUrl || product.productUrl,
+        fetched.html,
+      );
+      return { index, product: mergeCommerceProductDetail(product, detail) };
+    } catch {
+      return { index, product };
+    }
+  });
+  const products = [...extraction.products];
+  for (const result of enriched) products[result.index] = result.product;
+  return { ...extraction, products };
+}
+
+function safeCommerceHostname(value: string): string {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:' ? url.hostname.toLowerCase() : '';
+  } catch {
+    return '';
+  }
+}
+
+function buildCommerceWizardBatch(options: {
+  extraction: CommercePageExtraction;
+  targetBoardTitle: string;
+  requestedCount: number | null;
+}): GeneratedBoardWizardBatch {
+  const extraction = options.extraction;
+  const cardLimit = options.requestedCount
+    ? Math.max(1, Math.min(100, options.requestedCount))
+    : 100;
+  const extractedAt = new Date().toISOString();
+  const merchant =
+    extraction.brand ||
+    extraction.siteName ||
+    safeCommerceHostname(extraction.finalUrl).replace(/^www\./, '');
+  const products = extraction.products.slice(0, cardLimit);
+  const cards = products.map((product, index): GeneratedBoardWizardCard => {
+    const subtitle = [product.category, product.price].filter(Boolean).join(' · ') || merchant || 'Product';
+    const brandTag = merchant.toLowerCase().replace(/\s+/g, '-').slice(0, 24);
+    const categoryTag = product.category.toLowerCase().replace(/\s+/g, '-').slice(0, 24);
+    return {
+      title: product.name.slice(0, 80),
+      subtitle: subtitle.slice(0, 120),
+      notes: (
+        product.description ||
+        `Featured by ${merchant || 'the merchant'} on the imported page. Review current details on the original product page.`
+      ).slice(0, 3600),
+      type: 'shop',
+      scope: 'place',
+      status: index < 4 ? 'favorite' : 'saved',
+      rating: index < 4 ? 5 : 4,
+      tags: mergeBoardWizardTags(
+        ['product', 'shopping'],
+        [brandTag, categoryTag, product.availability.toLowerCase()],
+      ),
+      image_query: [merchant, product.name, product.category, 'product'].filter(Boolean).join(' ').slice(0, 120),
+      place_query: product.productUrl || extraction.sourceUrl,
+      entity_name: product.name.slice(0, 100),
+      entity_type: 'product',
+      image_intent: 'product',
+      image_context: [merchant, product.category, product.sku].filter(Boolean).join(' · ').slice(0, 120),
+      media_kind: 'none',
+      short_summary: (product.description || subtitle).slice(0, 160),
+      rank: product.position || index + 1,
+      imageUrl: product.imageUrl || undefined,
+      sourceUrl: extraction.sourceUrl,
+      productUrl: product.productUrl || extraction.sourceUrl,
+      merchant: merchant.slice(0, 120),
+      price: product.price.slice(0, 80),
+      currency: product.currency.slice(0, 12),
+      sku: product.sku.slice(0, 100),
+      availability: product.availability.slice(0, 100),
+      productCategory: product.category.slice(0, 100),
+      imageSource: product.imageUrl ? product.imageSource : 'missing',
+      extractionConfidence: product.confidence,
+      extractedAt,
+    };
+  });
+  const imageCount = cards.filter((card) => !!card.imageUrl).length;
+  const title = (
+    options.targetBoardTitle ||
+    commerceBoardTitle(extraction, merchant)
+  ).slice(0, 90);
+  return {
+    board: {
+      title,
+      description: [
+        `${cards.length} product${cards.length === 1 ? '' : 's'} imported from ${merchant || 'a shopping page'}.`,
+        `${imageCount} exact source image${imageCount === 1 ? '' : 's'} matched before fallback enrichment.`,
+        `Snapshot captured ${extractedAt.slice(0, 10)}.`,
+      ].join(' '),
+      icon: 'shopping_bag',
+      tone: 'purple',
+    },
+    cards,
+  };
+}
+
+function commerceBoardTitle(extraction: CommercePageExtraction, merchant: string): string {
+  const pageTitle = extraction.pageTitle
+    .replace(/\s*[|–—-]\s*(?:official|home|homepage|shop).*$/i, '')
+    .trim();
+  if (pageTitle && pageTitle.length <= 72 && !/^home(?:page)?$/i.test(pageTitle)) return pageTitle;
+  return merchant ? `${merchant} Products` : 'Imported Products';
+}
+
+function markCommerceImageFallbacks(batch: GeneratedBoardWizardBatch): GeneratedBoardWizardBatch {
+  return {
+    ...batch,
+    cards: batch.cards.map((card) => {
+      if (!card.productUrl) return card;
+      if (card.imageSource === 'source-page' || card.imageSource === 'product-page') return card;
+      return {
+        ...card,
+        imageSource: card.imageUrl ? 'search' : 'missing',
+      };
+    }),
+  };
+}
+
+function shapeBoardWizardResearchFallbackBatch(
+  batch: GeneratedBoardWizardBatch,
+  sourceUrl: string,
+): GeneratedBoardWizardBatch {
+  const productCards = batch.cards.filter((card) =>
+    card.entity_type === 'product'
+    || card.image_intent === 'product'
+    || card.tags.some((tag) => /\bproduct|shopping|handbag|perfume|beauty\b/i.test(tag)),
+  );
+  if (!productCards.length) return batch;
+  const merchant = safeCommerceHostname(sourceUrl).replace(/^www\./, '');
+  const extractedAt = new Date().toISOString();
+  return {
+    board: {
+      ...batch.board,
+      icon: 'shopping_bag',
+      description: `${batch.board.description} The publisher blocked direct extraction, so item membership and fallback images were reconstructed from grounded public search results. Review the preview before saving.`.slice(0, 500),
+    },
+    cards: batch.cards.map((card) => {
+      const isProduct = productCards.includes(card);
+      if (!isProduct) return card;
+      const researchedProductUrl = safeBoardCardSourceUrl(card.place_query);
+      return {
+        ...card,
+        type: 'shop',
+        entity_type: 'product',
+        image_intent: 'product',
+        image_query: [merchant, card.entity_name || card.title, card.image_context, 'product']
+          .filter(Boolean)
+          .join(' ')
+          .slice(0, 120),
+        sourceUrl,
+        productUrl: researchedProductUrl || sourceUrl,
+        merchant,
+        imageSource: card.imageUrl ? 'search' : 'missing',
+        extractionConfidence: 0.65,
+        extractedAt,
+      };
+    }),
+  };
+}
+
 function buildRestaurantMenuWizardBatch(
   options: {
     extraction: BoardWizardUrlExtraction;
@@ -7216,8 +7496,10 @@ function inferRestaurantNameFromUrlExtraction(
   if (targetBoardTitle.trim()) {
     return targetBoardTitle.trim();
   }
-  const title = (extraction.pageTitle || extraction.siteName)
-    .replace(/\s*[\-|–|—|]\s*(order|menu|location|official).*$/i, '')
+  const title = (extraction.siteName || extraction.pageTitle)
+    .replace(/\s*[|–—]\s*.*$/i, '')
+    .replace(/\s+-\s+(order|menu|location|official|best|delivery|pickup).*$/i, '')
+    .replace(/^(order|menu for)\s+/i, '')
     .replace(/\s+(menu|location|restaurant)$/i, '')
     .trim();
   if (title) {
@@ -7288,6 +7570,11 @@ async function enrichBoardWizardCard(
   apiKey: string,
   customSearchApiKey = '',
 ): Promise<GeneratedBoardWizardCard> {
+  // A commerce image bound inside the same product record is stronger evidence than
+  // any subsequent place, Wikimedia, or web-search result.
+  if (card.productUrl && card.imageUrl) {
+    return card;
+  }
   if (shouldUseReferenceImageBeforePlaces(card, searchContext)) {
     const imageQuery = buildBoardWizardReferenceImageQuery(card, searchContext);
     const referenceKind = boardWizardReferenceImageKind(card, searchContext);
@@ -7850,7 +8137,11 @@ async function resolveBoardWizardMenuItemImage(
     const cacheKey = `web:${query.toLowerCase()}`;
     let pending = cache.get(cacheKey);
     if (!pending) {
-      pending = withBoardWizardTimeout(findBoardWizardMenuItemWebImage(query, customSearchApiKey), 4_000, '');
+      pending = withBoardWizardTimeout(
+        findBoardWizardMenuItemWebImage(query, customSearchApiKey, card.title),
+        4_000,
+        '',
+      );
       cache.set(cacheKey, pending);
     }
     const imageUrl = await pending;
@@ -7874,11 +8165,11 @@ function buildBoardWizardMenuItemImageQueries(card: GeneratedBoardWizardCard, se
     .slice(0, 2)
     .join(' ');
   return [
-    [title, 'food photo'].filter(Boolean).join(' '),
+    [title, restaurant, 'menu item'].filter(Boolean).join(' '),
+    [title, restaurant, category, 'food photo'].filter(Boolean).join(' '),
     [title, category, 'food photo'].filter(Boolean).join(' '),
+    [title, 'food photo'].filter(Boolean).join(' '),
     [noteKeywords, category, 'food photo'].filter(Boolean).join(' '),
-    [title, restaurant, 'food photo'].filter(Boolean).join(' '),
-    [title, restaurant, category, 'food'].filter(Boolean).join(' '),
     [title, searchContext, 'food'].filter(Boolean).join(' '),
   ]
     .map((query) => query.replace(/\s+/g, ' ').trim().slice(0, 180))
@@ -7887,8 +8178,18 @@ function buildBoardWizardMenuItemImageQueries(card: GeneratedBoardWizardCard, se
     .slice(0, 5);
 }
 
-async function findBoardWizardMenuItemWebImage(query: string, customSearchApiKey: string): Promise<string> {
-  return customSearchApiKey ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey) : '';
+async function findBoardWizardMenuItemWebImage(
+  query: string,
+  customSearchApiKey: string,
+  entityName = query,
+): Promise<string> {
+  return customSearchApiKey
+    ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, {
+        imageType: 'photo',
+        entityName,
+        requireFoodContext: true,
+      })
+    : '';
 }
 
 async function findBoardWizardReferenceWebImage(query: string, customSearchApiKey: string): Promise<string> {
@@ -8621,7 +8922,7 @@ function musicArtworkTokens(value: string): string[] {
 async function findGoogleCustomSearchImageForBoardWizard(
   query: string,
   apiKey: string,
-  options: { imageType?: 'photo' | 'any'; entityName?: string } = {},
+  options: { imageType?: 'photo' | 'any'; entityName?: string; requireFoodContext?: boolean } = {},
 ): Promise<string> {
   const cx = googleCustomSearchCx.trim();
   if (!cx || Date.now() < googleCustomSearchUnavailableUntil) {
@@ -8669,6 +8970,9 @@ async function findGoogleCustomSearchImageForBoardWizard(
       ? rankGoogleImageResultsForBoardWizard(search.items ?? [], options.entityName)
       : search.items ?? [];
     for (const item of items) {
+      if (options.requireFoodContext && !isPlausibleBoardWizardFoodImageResult(item)) {
+        continue;
+      }
       const link = textFromUnknown(item.link);
       if (link && canTryCoverImageUrl(link)) {
         return link;
@@ -8685,6 +8989,19 @@ async function findGoogleCustomSearchImageForBoardWizard(
     });
   }
   return '';
+}
+
+function isPlausibleBoardWizardFoodImageResult(
+  item: NonNullable<GoogleCustomSearchImageResponse['items']>[number],
+): boolean {
+  const context = [
+    item.title,
+    item.snippet,
+    item.displayLink,
+    item.image?.contextLink,
+    item.link,
+  ].map((value) => textFromUnknown(value).toLowerCase()).join(' ');
+  return isPlausibleBoardWizardFoodImageContext(context);
 }
 
 function rankGoogleImageResultsForBoardWizard(
@@ -8957,63 +9274,6 @@ async function fetchBoardCardImageAsset(url: string): Promise<{ buffer: Buffer; 
     throw new Error('Search result image size is unsupported.');
   }
   return { buffer, contentType };
-}
-
-async function findGooglePlaceFoodPhotoForBoardWizard(query: string, apiKey: string): Promise<string> {
-  try {
-    const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
-    searchUrl.searchParams.set('query', query);
-    searchUrl.searchParams.set('key', apiKey);
-    const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
-    if (search.status && search.status !== 'OK' && search.status !== 'ZERO_RESULTS') {
-      logger.warn('Board wizard Google food photo search failed.', {
-        status: search.status,
-        error: search.error_message,
-        query,
-      });
-      return '';
-    }
-    const photoReference = textFromUnknown(
-      (search.results ?? []).find((result) => Array.isArray(result.photos) && result.photos.length)?.photos?.[0]?.photo_reference,
-    );
-    return photoReference ? `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(photoReference)}` : '';
-  } catch (error) {
-    logger.warn('Board wizard Google food photo fallback failed.', {
-      query,
-      errorMessage: error instanceof Error ? error.message : String(error),
-    });
-    return '';
-  }
-}
-
-async function fetchBoardWizardRestaurantPhotoUrls(searchContext: string, apiKey: string): Promise<string[]> {
-  const query = searchContext.trim().slice(0, 180);
-  if (query.length < 2) {
-    return [];
-  }
-  try {
-    const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
-    searchUrl.searchParams.set('query', query);
-    searchUrl.searchParams.set('key', apiKey);
-    const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
-    const placeId = textFromUnknown(search.results?.[0]?.place_id);
-    if (!placeId) {
-      return [];
-    }
-    const details = await fetchGooglePlaceDetailsForBoardWizard(placeId, apiKey);
-    const photos = details?.photos ?? [];
-    return photos
-      .map((photo) => textFromUnknown(photo.photo_reference))
-      .filter(Boolean)
-      .slice(0, 12)
-      .map((ref) => `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(ref)}`);
-  } catch (error) {
-    logger.warn('Board wizard restaurant photo fallback failed.', {
-      query,
-      errorMessage: error instanceof Error ? error.message : String(error),
-    });
-    return [];
-  }
 }
 
 async function fetchGooglePlaceDetailsForBoardWizard(
@@ -9887,6 +10147,22 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
     spotifyArtistName: stringOrEmpty(data.spotifyArtistName).slice(0, 180) || undefined,
     spotifyAlbumName: stringOrEmpty(data.spotifyAlbumName).slice(0, 180) || undefined,
     spotifyArtworkUrl: stringOrEmpty(data.spotifyArtworkUrl).slice(0, 2000) || undefined,
+    sourceUrl: safeBoardCardSourceUrl(data.sourceUrl) || undefined,
+    productUrl: safeBoardCardSourceUrl(data.productUrl) || undefined,
+    merchant: stringOrEmpty(data.merchant).slice(0, 120) || undefined,
+    price: stringOrEmpty(data.price).slice(0, 80) || undefined,
+    currency: stringOrEmpty(data.currency).slice(0, 12) || undefined,
+    sku: stringOrEmpty(data.sku).slice(0, 100) || undefined,
+    availability: stringOrEmpty(data.availability).slice(0, 100) || undefined,
+    productCategory: stringOrEmpty(data.productCategory).slice(0, 100) || undefined,
+    imageSource: data.imageSource === 'source-page' || data.imageSource === 'product-page'
+      || data.imageSource === 'search' || data.imageSource === 'generated' || data.imageSource === 'missing'
+      ? data.imageSource
+      : undefined,
+    extractionConfidence: typeof data.extractionConfidence === 'number'
+      ? Math.max(0, Math.min(1, data.extractionConfidence))
+      : undefined,
+    extractedAt: stringOrEmpty(data.extractedAt).slice(0, 40) || undefined,
   };
 }
 

@@ -444,6 +444,17 @@ export type GeneratedBoardWizardCard = {
   spotifyArtworkUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
+  sourceUrl?: string;
+  productUrl?: string;
+  merchant?: string;
+  price?: string;
+  currency?: string;
+  sku?: string;
+  availability?: string;
+  productCategory?: string;
+  imageSource?: 'source-page' | 'product-page' | 'search' | 'generated' | 'missing';
+  extractionConfidence?: number;
+  extractedAt?: string;
   tour?: GeneratedBoardCardTour | null;
 };
 export type GeneratedBoardWizardBatch = {

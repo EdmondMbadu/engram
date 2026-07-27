@@ -148,6 +148,17 @@ type BoardCard = {
   spotifyArtworkUrl: string;
   placeId: string;
   googleMapsUrl: string;
+  sourceUrl?: string;
+  productUrl?: string;
+  merchant?: string;
+  price?: string;
+  currency?: string;
+  sku?: string;
+  availability?: string;
+  productCategory?: string;
+  imageSource?: 'source-page' | 'product-page' | 'search' | 'generated' | 'missing';
+  extractionConfidence?: number;
+  extractedAt?: string;
   what3wordsAddress?: string;
   tags: string[];
   stickers: BoardSticker[];
@@ -337,6 +348,17 @@ type BoardWizardGeneratedCard = {
   spotifyArtworkUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
+  sourceUrl?: string;
+  productUrl?: string;
+  merchant?: string;
+  price?: string;
+  currency?: string;
+  sku?: string;
+  availability?: string;
+  productCategory?: string;
+  imageSource?: 'source-page' | 'product-page' | 'search' | 'generated' | 'missing';
+  extractionConfidence?: number;
+  extractedAt?: string;
   what3wordsAddress?: string;
   tour?: BoardCardTour | null;
 };
@@ -1442,6 +1464,22 @@ export class BoardsComponent implements OnDestroy {
     const cards = this.wizardPreviewCards();
     return cards.length ? Math.round((cards.length - this.wizardMissingImageCount()) / cards.length * 100) : 100;
   });
+  readonly wizardProductCount = computed(() =>
+    this.wizardPreviewCards().filter((card) => !!card.productUrl).length,
+  );
+  readonly wizardExactProductImageCount = computed(() =>
+    this.wizardPreviewCards().filter((card) =>
+      !!card.productUrl && (card.imageSource === 'source-page' || card.imageSource === 'product-page'),
+    ).length,
+  );
+  readonly wizardFallbackProductImageCount = computed(() =>
+    this.wizardPreviewCards().filter((card) =>
+      !!card.productUrl && (card.imageSource === 'search' || card.imageSource === 'generated'),
+    ).length,
+  );
+  readonly wizardMissingProductImageCount = computed(() =>
+    this.wizardPreviewCards().filter((card) => !!card.productUrl && !card.imageUrl).length,
+  );
   readonly selectedCardCount = computed(() => this.selectedCardIds().size);
   readonly cardWizardCanGenerate = computed(() => {
     const draft = this.cardDraft();
@@ -2551,6 +2589,9 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.updateWizardCard(card.id, 'imageUrl', imageUrl);
+    if (card.productUrl) {
+      this.updateWizardCard(card.id, 'imageSource', 'generated');
+    }
     this.wizardSelectedCardIds.update((ids) => new Set(ids).add(card.id));
     this.wizardCardEditorError.set(null);
   }
@@ -2631,6 +2672,9 @@ export class BoardsComponent implements OnDestroy {
         throw new Error('That picture could not be imported.');
       }
       this.updateWizardCard(card.id, 'imageUrl', imageDataUrl);
+      if (card.productUrl) {
+        this.updateWizardCard(card.id, 'imageSource', 'search');
+      }
       this.wizardSelectedCardIds.update((ids) => new Set(ids).add(card.id));
     } catch (error) {
       this.wizardCardEditorError.set(this.cardImageActionErrorMessage(error, $localize`That picture could not be used.`));
@@ -2686,7 +2730,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardError.set(null);
     try {
       const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
-        timeout: 75_000,
+        timeout: 150_000,
       });
       const response = await callable({
         mode: this.wizardMode(),
@@ -2717,6 +2761,7 @@ export class BoardsComponent implements OnDestroy {
             ? {
                 ...item,
                 imageUrl: replacement.imageUrl ?? item.imageUrl,
+                imageSource: item.productUrl ? 'search' : item.imageSource,
                 audioPreviewUrl: replacement.audioPreviewUrl || item.audioPreviewUrl,
                 spotifyTrackId: replacement.spotifyTrackId || item.spotifyTrackId,
                 spotifyTrackUrl: replacement.spotifyTrackUrl || item.spotifyTrackUrl,
@@ -2755,6 +2800,33 @@ export class BoardsComponent implements OnDestroy {
       return 'Replacing card';
     }
     return '';
+  }
+
+  wizardProductImageLabel(card: BoardWizardPreviewCard): string {
+    switch (card.imageSource) {
+      case 'source-page':
+        return 'Exact page image';
+      case 'product-page':
+        return 'Exact product image';
+      case 'search':
+        return 'Search fallback';
+      case 'generated':
+        return 'Generated image';
+      default:
+        return 'Image missing';
+    }
+  }
+
+  wizardProductImageIcon(card: BoardWizardPreviewCard): string {
+    return card.imageSource === 'source-page' || card.imageSource === 'product-page'
+      ? 'verified'
+      : card.imageSource === 'missing'
+        ? 'hide_image'
+        : 'info';
+  }
+
+  productCardCtaLabel(): string {
+    return $localize`View product`;
   }
 
   toggleWizardCard(cardId: string): void {
@@ -2884,6 +2956,10 @@ export class BoardsComponent implements OnDestroy {
 
   clearWizardCardImage(cardId: string): void {
     this.updateWizardCard(cardId, 'imageUrl', '');
+    const card = this.wizardPreviewCards().find((item) => item.id === cardId);
+    if (card?.productUrl) {
+      this.updateWizardCard(cardId, 'imageSource', 'missing');
+    }
     this.wizardError.set(null);
     this.imageUploadError.set(null);
   }
@@ -2930,6 +3006,17 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: card.spotifyArtworkUrl ?? '',
       placeId: card.placeId,
       googleMapsUrl: card.googleMapsUrl,
+      sourceUrl: card.sourceUrl?.trim() || '',
+      productUrl: card.productUrl?.trim() || '',
+      merchant: card.merchant?.trim() || '',
+      price: card.price?.trim() || '',
+      currency: card.currency?.trim() || '',
+      sku: card.sku?.trim() || '',
+      availability: card.availability?.trim() || '',
+      productCategory: card.productCategory?.trim() || '',
+      imageSource: card.imageSource,
+      extractionConfidence: Math.max(0, Math.min(1, card.extractionConfidence ?? 0)),
+      extractedAt: card.extractedAt?.trim() || '',
       what3wordsAddress: normalizeWhat3WordsAddress(card.what3wordsAddress),
       tags: card.tags.slice(0, 6),
       stickers: [],
@@ -5188,7 +5275,7 @@ export class BoardsComponent implements OnDestroy {
       const likelySong = this.isLikelySongCardDraft(board, draft, instruction);
       const replaceImage = options.forceImageLookup === true || this.shouldReplaceCardImage(draft, instruction);
       const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
-        timeout: 75_000,
+        timeout: 150_000,
       });
       const response = await callable({
         mode: 'describe',
@@ -8161,7 +8248,7 @@ export class BoardsComponent implements OnDestroy {
       refinement ? `Refinement: ${refinement}` : '',
     ].filter(Boolean).join('\n');
     const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
-      timeout: 75_000,
+      timeout: 150_000,
     });
     const response = await callable({
       mode: this.wizardMode(),
@@ -8266,6 +8353,17 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: this.stringValue(data['spotifyArtworkUrl'], '', 2000),
       placeId: this.stringValue(data['placeId'], '', 240),
       googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
+      sourceUrl: this.stringValue(data['sourceUrl'], '', 2000),
+      productUrl: this.stringValue(data['productUrl'], '', 2000),
+      merchant: this.stringValue(data['merchant'], '', 120),
+      price: this.stringValue(data['price'], '', 80),
+      currency: this.stringValue(data['currency'], '', 12),
+      sku: this.stringValue(data['sku'], '', 100),
+      availability: this.stringValue(data['availability'], '', 100),
+      productCategory: this.stringValue(data['productCategory'], '', 100),
+      imageSource: this.isCommerceImageSource(data['imageSource']) ? data['imageSource'] : undefined,
+      extractionConfidence: this.numberValue(data['extractionConfidence'], 0, 0, 1),
+      extractedAt: this.stringValue(data['extractedAt'], '', 40),
       what3wordsAddress: normalizeWhat3WordsAddress(data['what3wordsAddress']),
       tour: this.normalizeCardTour(data['tour']),
     };
@@ -8297,6 +8395,17 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtistName: card.spotifyArtistName || '',
       spotifyAlbumName: card.spotifyAlbumName || '',
       spotifyArtworkUrl: card.spotifyArtworkUrl || '',
+      sourceUrl: card.sourceUrl || '',
+      productUrl: card.productUrl || '',
+      merchant: card.merchant || '',
+      price: card.price || '',
+      currency: card.currency || '',
+      sku: card.sku || '',
+      availability: card.availability || '',
+      productCategory: card.productCategory || '',
+      imageSource: card.imageSource || 'missing',
+      extractionConfidence: card.extractionConfidence || 0,
+      extractedAt: card.extractedAt || '',
     };
   }
 
@@ -9459,6 +9568,19 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: typeof data['spotifyArtworkUrl'] === 'string' ? data['spotifyArtworkUrl'] : '',
       placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
+      sourceUrl: typeof data['sourceUrl'] === 'string' ? data['sourceUrl'] : '',
+      productUrl: typeof data['productUrl'] === 'string' ? data['productUrl'] : '',
+      merchant: typeof data['merchant'] === 'string' ? data['merchant'] : '',
+      price: typeof data['price'] === 'string' ? data['price'] : '',
+      currency: typeof data['currency'] === 'string' ? data['currency'] : '',
+      sku: typeof data['sku'] === 'string' ? data['sku'] : '',
+      availability: typeof data['availability'] === 'string' ? data['availability'] : '',
+      productCategory: typeof data['productCategory'] === 'string' ? data['productCategory'] : '',
+      imageSource: this.isCommerceImageSource(data['imageSource']) ? data['imageSource'] : undefined,
+      extractionConfidence: typeof data['extractionConfidence'] === 'number'
+        ? Math.max(0, Math.min(1, data['extractionConfidence']))
+        : 0,
+      extractedAt: typeof data['extractedAt'] === 'string' ? data['extractedAt'] : '',
       what3wordsAddress: normalizeWhat3WordsAddress(data['what3wordsAddress']),
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
       stickers: this.normalizeStickers(data['stickers']),
@@ -9782,6 +9904,16 @@ export class BoardsComponent implements OnDestroy {
 
   private isBoardVisibility(value: unknown): value is BoardVisibility {
     return value === 'public' || value === 'private';
+  }
+
+  private isCommerceImageSource(
+    value: unknown,
+  ): value is 'source-page' | 'product-page' | 'search' | 'generated' | 'missing' {
+    return value === 'source-page'
+      || value === 'product-page'
+      || value === 'search'
+      || value === 'generated'
+      || value === 'missing';
   }
 
   private isStackRatio(value: unknown): value is StackRatio {

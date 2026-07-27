@@ -1997,6 +1997,15 @@
                             Open place
                           </a>
                         }
+                        @if (card.productUrl) {
+                          <a class="detail-card__map-link" [href]="card.productUrl" target="_blank" rel="noopener noreferrer">
+                            <span class="material-symbols-outlined">shopping_bag</span>
+                            <strong>{{ card.price || productCardCtaLabel() }}</strong>
+                            @if (card.merchant) {
+                              <small>{{ card.merchant }}</small>
+                            }
+                          </a>
+                        }
                         @if (card.notes) {
                           <p class="detail-card__notes">{{ card.notes }}</p>
                         }
@@ -3453,6 +3462,20 @@
               </div>
             </div>
 
+            @if (wizardProductCount()) {
+              <section class="boards-wizard__intro" aria-label="Product import audit" i18n-aria-label>
+                <span class="material-symbols-outlined">fact_check</span>
+                <div>
+                  <strong i18n>Shopping page detected · {{ wizardProductCount() }} products</strong>
+                  <small>
+                    {{ wizardExactProductImageCount() }} exact source images ·
+                    {{ wizardFallbackProductImageCount() }} fallbacks ·
+                    {{ wizardMissingProductImageCount() }} missing
+                  </small>
+                </div>
+              </section>
+            }
+
             @if (!wizardEditingCard()) {
             <section class="boards-sticker-panel boards-sticker-panel--prominent" style="background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface) 60%);">
               <div class="boards-sticker-panel__head">
@@ -3807,6 +3830,14 @@
                         } @else {
                           <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                         }
+                        @if (card.productUrl) {
+                          <span
+                            style="position: absolute; top: 0.55rem; left: 0.55rem; display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 999px; background: rgba(31, 41, 55, 0.86); padding: 0.3rem 0.48rem; color: #fff; font-size: 0.64rem; font-weight: 950;"
+                          >
+                            <span class="material-symbols-outlined">{{ wizardProductImageIcon(card) }}</span>
+                            {{ wizardProductImageLabel(card) }}
+                          </span>
+                        }
                         @if (isWizardCardBusy(card.id)) {
                           <div class="boards-wizard-card__loading" aria-live="polite">
                             <span class="material-symbols-outlined">autorenew</span>
@@ -3832,6 +3863,17 @@
                         <div class="boards-wizard-card__body">
                           <strong>{{ card.title }}</strong>
                           <small>{{ card.subtitle }}</small>
+                          @if (card.productUrl) {
+                            <div class="boards-wizard-card__tags">
+                              @if (card.price) {
+                                <b>{{ card.price }}{{ card.currency && !card.price.includes(card.currency) ? ' ' + card.currency : '' }}</b>
+                              }
+                              <a [href]="card.productUrl" target="_blank" rel="noopener noreferrer" i18n>
+                                Verify product
+                                <span class="material-symbols-outlined">open_in_new</span>
+                              </a>
+                            </div>
+                          }
                           @if (card.what3wordsAddress) {
                             <a class="off-grid-preview-chip" [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
                               <span>///{{ card.what3wordsAddress }}</span>

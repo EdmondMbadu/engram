@@ -5,8 +5,11 @@ export function shouldGroundAndVerifyBoardWizardBatch(input: {
   targetBoardTitle?: string | null;
   count: number;
 }): boolean {
-  if (input.mode === 'photos' || input.mode === 'url') {
+  if (input.mode === 'photos') {
     return false;
+  }
+  if (input.mode === 'url') {
+    return /source page could not be fetched/i.test(input.prompt);
   }
   const text = [input.prompt, input.pastedList, input.targetBoardTitle]
     .filter(Boolean)
