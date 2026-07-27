@@ -20,6 +20,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import { omitUndefinedDeep } from './firestore-payload';
 import {
   boardQuizEligibleCardCount,
   buildBoardLearningQuiz,
@@ -3026,7 +3027,7 @@ export class BoardsComponent implements OnDestroy {
       sku: card.sku?.trim() || '',
       availability: card.availability?.trim() || '',
       productCategory: card.productCategory?.trim() || '',
-      imageSource: card.imageSource,
+      ...(card.imageSource ? { imageSource: card.imageSource } : {}),
       extractionConfidence: Math.max(0, Math.min(1, card.extractionConfidence ?? 0)),
       extractedAt: card.extractedAt?.trim() || '',
       what3wordsAddress: normalizeWhat3WordsAddress(card.what3wordsAddress),
@@ -3118,6 +3119,11 @@ export class BoardsComponent implements OnDestroy {
       this.wizardStep.set('done');
       void this.router.navigate(['/boards', persisted.id]);
     } catch (error) {
+      console.error('Wizard board save failed', error, {
+        boardId: nextBoard.id,
+        mode: this.wizardMode(),
+        selectedCardCount: cards.length,
+      });
       const detail = error instanceof Error && error.message ? ` ${error.message}` : '';
       this.wizardError.set(`Could not save this board to your account. Please try again.${detail}`);
       this.boardsSyncError.set($localize`Board save failed. Please try again.`);
@@ -9342,7 +9348,7 @@ export class BoardsComponent implements OnDestroy {
       ownerProfilePictureType?: 'icon' | 'image' | null;
       server_updated_at: unknown;
     };
-    await setDoc(doc(this.firestore, 'boards', prepared.id), persistable);
+    await setDoc(doc(this.firestore, 'boards', prepared.id), omitUndefinedDeep(persistable));
     return prepared;
   }
 
