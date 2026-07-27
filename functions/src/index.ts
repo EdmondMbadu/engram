@@ -4767,6 +4767,10 @@ type BoardWizardCurrentCard = {
   spotifyArtistName?: string;
   spotifyAlbumName?: string;
   spotifyArtworkUrl?: string;
+  placeId?: string;
+  googleMapsUrl?: string;
+  locationLat?: number;
+  locationLng?: number;
   sourceUrl?: string;
   productUrl?: string;
   merchant?: string;
@@ -7277,11 +7281,16 @@ async function buildBoardWizardImageOnlyBatch(
     spotifyArtistName: options.currentCard.spotifyArtistName,
     spotifyAlbumName: options.currentCard.spotifyAlbumName,
     spotifyArtworkUrl: options.currentCard.spotifyArtworkUrl,
+    placeId: options.currentCard.placeId,
+    googleMapsUrl: options.currentCard.googleMapsUrl,
+    locationLat: options.currentCard.locationLat,
+    locationLng: options.currentCard.locationLng,
   };
   const customSearchApiKey = googleCustomSearchApiKey.value();
   const apiKey = googlePlacesApiKey.value();
   const referenceKind = boardWizardReferenceImageKind(card, `${options.prompt} ${options.targetBoardTitle}`);
   let imageUrl = '';
+  let placeEnrichment: GeneratedBoardWizardCard | null = null;
 
   if (isBoardWizardMenuItemCard(card)) {
     imageUrl = await resolveBoardWizardMenuItemImage(card, options.targetBoardTitle, customSearchApiKey, new Map());
@@ -7290,8 +7299,8 @@ async function buildBoardWizardImageOnlyBatch(
     imageUrl = await findBoardWizardMenuItemWebImage(card.image_query, customSearchApiKey, card.title);
   }
   if (!imageUrl && card.type !== 'food' && shouldResolveBoardWizardCardAsPlace(card) && apiKey) {
-    const enriched = await enrichBoardWizardCardWithPlace(card, options.targetBoardTitle, apiKey);
-    imageUrl = enriched.imageUrl || '';
+    placeEnrichment = await enrichBoardWizardCardWithPlace(card, options.targetBoardTitle, apiKey);
+    imageUrl = placeEnrichment.imageUrl || '';
   }
   let audioPreviewUrl = card.audioPreviewUrl || '';
   let spotifyTrack: SpotifyTrackMatch | null = null;
@@ -7323,6 +7332,10 @@ async function buildBoardWizardImageOnlyBatch(
     },
     cards: [{
       ...card,
+      tags: placeEnrichment?.tags ?? card.tags,
+      place_query: placeEnrichment?.place_query ?? card.place_query,
+      placeId: placeEnrichment?.placeId ?? card.placeId,
+      googleMapsUrl: placeEnrichment?.googleMapsUrl ?? card.googleMapsUrl,
       ...spotifyFieldsForBoardWizardCard(spotifyTrack),
       imageUrl: imageUrl || undefined,
       audioPreviewUrl: audioPreviewUrl || undefined,
@@ -8177,7 +8190,12 @@ async function enrichBoardWizardCardWithPlace(
     return card;
   }
 
-  const queries = buildBoardWizardPlaceSearchQueries(card, searchContext);
+  const lookupCard: GeneratedBoardWizardCard = {
+    ...card,
+    locationLat: card.locationLat ?? card.tour?.lat ?? undefined,
+    locationLng: card.locationLng ?? card.tour?.lng ?? undefined,
+  };
+  const queries = buildBoardWizardPlaceSearchQueries(lookupCard, searchContext);
   if (!queries.length) {
     return card;
   }
@@ -8188,11 +8206,26 @@ async function enrichBoardWizardCardWithPlace(
   let selectedQuery = '';
   let selectedScore = 0;
   let selectedPlace: NonNullable<GooglePlacesTextSearchResponse['results']>[number] | null = null;
+  let verifiedDetails: GooglePlaceDetailsResponse['result'] | null = null;
   try {
-    for (const query of queries) {
+    if (lookupCard.placeId) {
+      verifiedDetails = await fetchGooglePlaceDetailsForBoardWizard(lookupCard.placeId, apiKey);
+      if (verifiedDetails?.place_id) {
+        selectedPlace = verifiedDetails;
+        selectedScore = 1_000;
+        selectedQuery = 'verified place id';
+        candidateCount = 1;
+      }
+    }
+
+    for (const query of bestBoardWizardPlacePhotoReference(selectedPlace?.photos ?? []) ? [] : queries) {
       attemptedQueries += 1;
       const searchUrl = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
       searchUrl.searchParams.set('query', query);
+      if (Number.isFinite(lookupCard.locationLat) && Number.isFinite(lookupCard.locationLng)) {
+        searchUrl.searchParams.set('location', `${lookupCard.locationLat},${lookupCard.locationLng}`);
+        searchUrl.searchParams.set('radius', '5000');
+      }
       searchUrl.searchParams.set('key', apiKey);
       const search = await fetchJson<GooglePlacesTextSearchResponse>(searchUrl.toString());
       if (search.status && search.status !== 'OK' && search.status !== 'ZERO_RESULTS') {
@@ -8207,7 +8240,7 @@ async function enrichBoardWizardCardWithPlace(
 
       const results = search.results ?? [];
       candidateCount += results.length;
-      const ranked = rankBoardWizardPlaceCandidates(card, results, searchContext);
+      const ranked = rankBoardWizardPlaceCandidates(lookupCard, results, searchContext);
       const best = ranked[0];
       if (!best) continue;
       const bestHasPhoto = !!bestBoardWizardPlacePhotoReference(best.candidate.photos ?? []);
@@ -8233,9 +8266,9 @@ async function enrichBoardWizardCardWithPlace(
     }
 
     const selectedPhotos = selectedPlace?.photos ?? [];
-    const details = bestBoardWizardPlacePhotoReference(selectedPhotos)
+    const details = verifiedDetails ?? (bestBoardWizardPlacePhotoReference(selectedPhotos)
       ? null
-      : await fetchGooglePlaceDetailsForBoardWizard(placeId, apiKey);
+      : await fetchGooglePlaceDetailsForBoardWizard(placeId, apiKey));
     const photos = details?.photos?.length ? details.photos : selectedPhotos;
     const photoReference = bestBoardWizardPlacePhotoReference(photos);
     const matchedName = textFromUnknown(details?.name) || textFromUnknown(selectedPlace?.name) || card.title;
@@ -10368,6 +10401,10 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
     spotifyArtistName: stringOrEmpty(data.spotifyArtistName).slice(0, 180) || undefined,
     spotifyAlbumName: stringOrEmpty(data.spotifyAlbumName).slice(0, 180) || undefined,
     spotifyArtworkUrl: stringOrEmpty(data.spotifyArtworkUrl).slice(0, 2000) || undefined,
+    placeId: stringOrEmpty(data.placeId).slice(0, 240) || undefined,
+    googleMapsUrl: safeBoardCardSourceUrl(data.googleMapsUrl) || undefined,
+    locationLat: finiteBoardWizardCoordinate(data.locationLat, -90, 90),
+    locationLng: finiteBoardWizardCoordinate(data.locationLng, -180, 180),
     sourceUrl: safeBoardCardSourceUrl(data.sourceUrl) || undefined,
     productUrl: safeBoardCardSourceUrl(data.productUrl) || undefined,
     merchant: stringOrEmpty(data.merchant).slice(0, 120) || undefined,
@@ -10385,6 +10422,14 @@ function normalizeBoardWizardCurrentCard(value: unknown, defaultType: GeneratedB
       : undefined,
     extractedAt: stringOrEmpty(data.extractedAt).slice(0, 40) || undefined,
   };
+}
+
+function finiteBoardWizardCoordinate(value: unknown, min: number, max: number): number | undefined {
+  const text = typeof value === 'string' ? value.trim() : '';
+  const coordinate = typeof value === 'number' ? value : text ? Number(text) : Number.NaN;
+  return Number.isFinite(coordinate) && coordinate >= min && coordinate <= max
+    ? coordinate
+    : undefined;
 }
 
 function normalizeBoardWizardEntityTypeValue(value: unknown): GeneratedBoardWizardCard['entity_type'] | undefined {

@@ -455,6 +455,8 @@ export type GeneratedBoardWizardCard = {
   spotifyArtworkUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
+  locationLat?: number;
+  locationLng?: number;
   sourceUrl?: string;
   productUrl?: string;
   merchant?: string;

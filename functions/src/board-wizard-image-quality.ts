@@ -7,7 +7,7 @@ const IMAGE_QUERY_DESCRIPTORS = new Set([
 const PLACE_ENTITY_DESCRIPTORS = new Set([
   'the', 'and', 'for', 'of', 'at', 'in', 'on', 'distillery', 'distilleries',
   'estate', 'visitor', 'visitors', 'centre', 'center', 'experience', 'official',
-  'building', 'exterior', 'photo', 'image', 'picture',
+  'building', 'co', 'company', 'exterior', 'photo', 'image', 'picture',
 ]);
 
 const PLACE_CONTEXT_DESCRIPTORS = new Set([
@@ -28,6 +28,8 @@ export type BoardWizardImageCardLike = {
   image_intent?: string;
   image_context?: string;
   media_kind?: string;
+  locationLat?: number;
+  locationLng?: number;
 };
 
 export type BoardWizardPlaceCandidateLike = {
@@ -37,6 +39,12 @@ export type BoardWizardPlaceCandidateLike = {
   photos?: unknown[];
   rating?: number;
   user_ratings_total?: number;
+  geometry?: {
+    location?: {
+      lat?: number;
+      lng?: number;
+    };
+  };
 };
 
 export function normalizeWikipediaEntityTitle(value: string): string {
@@ -169,7 +177,12 @@ export function scoreBoardWizardPlaceCandidate(
   resultIndex = 0,
 ): number {
   const entity = boardWizardImageEntityName(card);
-  const entityTokens = meaningfulPlaceTokens(entity, PLACE_ENTITY_DESCRIPTORS);
+  const distanceMeters = boardWizardPlaceDistanceMeters(card, candidate);
+  const hasPreciseLocation = distanceMeters !== null;
+  const rawEntityTokens = meaningfulPlaceTokens(entity, PLACE_ENTITY_DESCRIPTORS);
+  const entityTokens = hasPreciseLocation
+    ? rawEntityTokens.filter((token) => !/^\d+$/.test(token))
+    : rawEntityTokens;
   const candidateName = cleanImageSearchText(candidate.name ?? '');
   const candidateTokens = meaningfulPlaceTokens(candidateName, PLACE_ENTITY_DESCRIPTORS);
   if (!entityTokens.length || !candidateTokens.length) return 0;
@@ -177,7 +190,8 @@ export function scoreBoardWizardPlaceCandidate(
   const candidateSet = new Set(candidateTokens);
   const matches = entityTokens.filter((token) => candidateSet.has(token)).length;
   const coverage = matches / entityTokens.length;
-  if (matches === 0 || (entityTokens.length >= 2 && coverage < 0.5)) return 0;
+  const closeParentPlace = distanceMeters !== null && distanceMeters <= 350 && matches >= 1;
+  if (matches === 0 || (entityTokens.length >= 2 && coverage < 0.5 && !closeParentPlace)) return 0;
 
   const normalizedEntity = normalizePlaceName(entity);
   const normalizedCandidate = normalizePlaceName(candidateName);
@@ -193,7 +207,16 @@ export function scoreBoardWizardPlaceCandidate(
   const addressTokens = new Set(meaningfulPlaceTokens(candidate.formatted_address ?? '', PLACE_CONTEXT_DESCRIPTORS));
   const contextMatches = contextTokens.filter((token) => addressTokens.has(token)).length;
   score += Math.min(36, contextMatches * 12);
-  if (contextTokens.length && !contextMatches) score -= 55;
+  if (contextTokens.length && !contextMatches && !(distanceMeters !== null && distanceMeters <= 10_000)) {
+    score -= 55;
+  }
+  if (distanceMeters !== null) {
+    if (distanceMeters <= 150) score += 150;
+    else if (distanceMeters <= 500) score += 105;
+    else if (distanceMeters <= 2_000) score += 60;
+    else if (distanceMeters <= 10_000) score += 20;
+    else if (distanceMeters > 25_000) score -= 140;
+  }
   if ((candidate.photos?.length ?? 0) > 0) score += 35;
   if ((candidate.user_ratings_total ?? 0) > 25) score += 8;
   if ((candidate.rating ?? 0) >= 4) score += 4;
@@ -290,8 +313,35 @@ function meaningfulPlaceTokens(value: string, descriptors: Set<string>): string[
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
-    .filter((token) => token.length >= 2 && !descriptors.has(token));
+    .filter((token) => token.length >= 2 && !descriptors.has(token))
+    .map((token) => /^(?:cannery|canneries|canning)$/.test(token) ? 'canner' : token);
   return Array.from(new Set(tokens));
+}
+
+function boardWizardPlaceDistanceMeters(
+  card: BoardWizardImageCardLike,
+  candidate: BoardWizardPlaceCandidateLike,
+): number | null {
+  const fromLat = card.locationLat;
+  const fromLng = card.locationLng;
+  const toLat = candidate.geometry?.location?.lat;
+  const toLng = candidate.geometry?.location?.lng;
+  if (
+    !Number.isFinite(fromLat)
+    || !Number.isFinite(fromLng)
+    || !Number.isFinite(toLat)
+    || !Number.isFinite(toLng)
+  ) {
+    return null;
+  }
+  const radians = (degrees: number) => degrees * Math.PI / 180;
+  const latitudeDelta = radians((toLat as number) - (fromLat as number));
+  const longitudeDelta = radians((toLng as number) - (fromLng as number));
+  const fromLatitude = radians(fromLat as number);
+  const toLatitude = radians(toLat as number);
+  const haversine = Math.sin(latitudeDelta / 2) ** 2
+    + Math.cos(fromLatitude) * Math.cos(toLatitude) * Math.sin(longitudeDelta / 2) ** 2;
+  return 6_371_000 * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
 }
 
 function normalizePlaceName(value: string): string {

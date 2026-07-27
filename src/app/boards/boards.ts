@@ -158,6 +158,8 @@ type BoardCard = {
   spotifyArtworkUrl: string;
   placeId: string;
   googleMapsUrl: string;
+  locationLat?: number;
+  locationLng?: number;
   sourceUrl?: string;
   productUrl?: string;
   merchant?: string;
@@ -358,6 +360,8 @@ type BoardWizardGeneratedCard = {
   spotifyArtworkUrl?: string;
   placeId?: string;
   googleMapsUrl?: string;
+  locationLat?: number;
+  locationLng?: number;
   sourceUrl?: string;
   productUrl?: string;
   merchant?: string;
@@ -2558,7 +2562,8 @@ export class BoardsComponent implements OnDestroy {
       const batch = this.wizardMode() === 'photos'
         ? this.attachWizardPhotosToBatch(generatedBatch)
         : generatedBatch;
-      const previewCards = await this.enrichWizardCards(batch.cards);
+      const placeEnrichedCards = await this.enrichWizardCards(batch.cards);
+      const previewCards = await this.enrichWizardMissingPlaceImages(placeEnrichedCards, batch.board.title);
       this.wizardResult.set({ ...batch, cards: previewCards });
       this.wizardPreviewCards.set(previewCards);
       this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
@@ -2585,7 +2590,8 @@ export class BoardsComponent implements OnDestroy {
       const fallback = this.wizardMode() === 'photos'
         ? this.attachWizardPhotosToBatch(localFallback)
         : localFallback;
-      const previewCards = await this.enrichWizardCards(fallback.cards);
+      const placeEnrichedCards = await this.enrichWizardCards(fallback.cards);
+      const previewCards = await this.enrichWizardMissingPlaceImages(placeEnrichedCards, fallback.board.title);
       this.wizardResult.set({ ...fallback, cards: previewCards });
       this.wizardPreviewCards.set(previewCards);
       this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
@@ -2824,7 +2830,8 @@ export class BoardsComponent implements OnDestroy {
     this.setWizardCount(1);
     try {
       const batch = await this.requestWizardBatch(`Replace only this card with a better alternative: ${card.title}.`);
-      const [replacement] = await this.enrichWizardCards(batch.cards.slice(0, 1));
+      const placeEnrichedCards = await this.enrichWizardCards(batch.cards.slice(0, 1));
+      const [replacement] = await this.enrichWizardMissingPlaceImages(placeEnrichedCards, batch.board.title);
       if (replacement) {
         this.wizardPreviewCards.update((cards) => cards.map((item) => item.id === cardId
           ? {
@@ -3161,6 +3168,8 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: card.spotifyArtworkUrl ?? '',
       placeId: card.placeId,
       googleMapsUrl: card.googleMapsUrl,
+      ...(Number.isFinite(card.locationLat) ? { locationLat: card.locationLat } : {}),
+      ...(Number.isFinite(card.locationLng) ? { locationLng: card.locationLng } : {}),
       sourceUrl: card.sourceUrl?.trim() || '',
       productUrl: card.productUrl?.trim() || '',
       merchant: card.merchant?.trim() || '',
@@ -8552,6 +8561,8 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: this.stringValue(data['spotifyArtworkUrl'], '', 2000),
       placeId: this.stringValue(data['placeId'], '', 240),
       googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
+      locationLat: this.optionalCoordinate(data['locationLat'], -90, 90),
+      locationLng: this.optionalCoordinate(data['locationLng'], -180, 180),
       sourceUrl,
       productUrl: this.stringValue(data['productUrl'], '', 2000),
       merchant: this.stringValue(data['merchant'], '', 120),
@@ -8594,6 +8605,10 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtistName: card.spotifyArtistName || '',
       spotifyAlbumName: card.spotifyAlbumName || '',
       spotifyArtworkUrl: card.spotifyArtworkUrl || '',
+      placeId: card.placeId || '',
+      googleMapsUrl: card.googleMapsUrl || '',
+      locationLat: card.locationLat ?? card.tour?.lat ?? undefined,
+      locationLng: card.locationLng ?? card.tour?.lng ?? undefined,
       sourceUrl: card.sourceUrl || '',
       productUrl: card.productUrl || '',
       merchant: card.merchant || '',
@@ -8888,6 +8903,8 @@ export class BoardsComponent implements OnDestroy {
           entity_type: 'place',
           image_intent: 'place',
           image_context: locationContext,
+          locationLat: location?.lat,
+          locationLng: location?.lng,
           short_summary: `Exact location: ///${item.words}`,
           what3wordsAddress: item.words,
           rank: index + 1,
@@ -8995,9 +9012,9 @@ export class BoardsComponent implements OnDestroy {
   private async enrichWizardMissingPlaceImages(
     cards: BoardWizardPreviewCard[],
     boardTitle: string,
-    onProgress: (completed: number, total: number) => void,
+    onProgress: (completed: number, total: number) => void = () => undefined,
   ): Promise<BoardWizardPreviewCard[]> {
-    const missingCards = cards.filter((card) => !card.imageUrl);
+    const missingCards = cards.filter((card) => !card.imageUrl && this.shouldEnrichWizardCard(card));
     if (!missingCards.length || !this.functions) {
       onProgress(missingCards.length, missingCards.length);
       return cards;
@@ -9177,6 +9194,11 @@ export class BoardsComponent implements OnDestroy {
   private numberValue(value: unknown, fallback: number, min: number, max: number): number {
     const number = typeof value === 'number' ? value : typeof value === 'string' ? Number.parseFloat(value) : fallback;
     return Math.max(min, Math.min(max, Number.isFinite(number) ? Math.round(number) : fallback));
+  }
+
+  private optionalCoordinate(value: unknown, min: number, max: number): number | undefined {
+    const number = typeof value === 'number' ? value : typeof value === 'string' ? Number.parseFloat(value) : Number.NaN;
+    return Number.isFinite(number) && number >= min && number <= max ? number : undefined;
   }
 
   private decimalValue(value: unknown, fallback: number | null, min: number, max: number): number | null {
@@ -9677,6 +9699,8 @@ export class BoardsComponent implements OnDestroy {
             spotifyArtworkUrl: (card as Partial<BoardCard>).spotifyArtworkUrl ?? '',
             placeId: card.placeId ?? '',
             googleMapsUrl: card.googleMapsUrl ?? '',
+            locationLat: this.optionalCoordinate((card as Partial<BoardCard>).locationLat, -90, 90),
+            locationLng: this.optionalCoordinate((card as Partial<BoardCard>).locationLng, -180, 180),
             what3wordsAddress: normalizeWhat3WordsAddress((card as Partial<BoardCard>).what3wordsAddress),
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
             stickers: this.normalizeStickers(card.stickers),
@@ -9942,6 +9966,8 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: typeof data['spotifyArtworkUrl'] === 'string' ? data['spotifyArtworkUrl'] : '',
       placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
+      locationLat: this.optionalCoordinate(data['locationLat'], -90, 90),
+      locationLng: this.optionalCoordinate(data['locationLng'], -180, 180),
       sourceUrl,
       productUrl: typeof data['productUrl'] === 'string' ? data['productUrl'] : '',
       merchant: typeof data['merchant'] === 'string' ? data['merchant'] : '',

@@ -129,4 +129,55 @@ const rankedPlaces = rankBoardWizardPlaceCandidates(highlandParkCard, [
 assert.equal(rankedPlaces[0].candidate.name, 'Highland Park Whisky Distillery');
 assert.ok(!rankedPlaces.some((item) => item.candidate.name === 'Scapa Distillery'));
 
+const canneryBuildingCard = {
+  title: 'Monterey Canning Co. Building 700',
+  type: 'place',
+  scope: 'place',
+  entity_name: 'Monterey Canning Co. Building 700',
+  entity_type: 'place',
+  image_intent: 'place',
+  image_context: 'Pacific Grove, California, US',
+  place_query: 'Monterey Canning Co. Building 700, Pacific Grove, California, US',
+  locationLat: 36.6154,
+  locationLng: -121.8977,
+};
+const rankedCanneryPlaces = rankBoardWizardPlaceCandidates(canneryBuildingCard, [
+  {
+    name: 'Cannery Row',
+    formatted_address: '700 Cannery Row, Monterey, CA',
+    types: ['tourist_attraction'],
+    photos: [{}],
+    geometry: { location: { lat: 36.6155, lng: -121.8978 } },
+  },
+  {
+    name: 'Cannery Row Antique Mall',
+    formatted_address: 'Elsewhere, California',
+    types: ['store'],
+    photos: [{}],
+    geometry: { location: { lat: 37.1, lng: -122.2 } },
+  },
+], 'Pacific Grove, California');
+assert.equal(rankedCanneryPlaces[0].candidate.name, 'Cannery Row');
+assert.ok(!rankedCanneryPlaces.some((item) => item.candidate.name === 'Cannery Row Antique Mall'));
+
+const hotelWithAdjacentCityHint = {
+  title: 'InterContinental the Clement Hotel',
+  type: 'place',
+  scope: 'place',
+  entity_name: 'InterContinental the Clement Hotel',
+  entity_type: 'place',
+  image_intent: 'place',
+  image_context: 'Pacific Grove, California, US',
+  locationLat: 36.6162,
+  locationLng: -121.8991,
+};
+const rankedAdjacentCityHotel = rankBoardWizardPlaceCandidates(hotelWithAdjacentCityHint, [{
+  name: 'InterContinental The Clement Monterey, an IHG Hotel',
+  formatted_address: '750 Cannery Row, Monterey, CA',
+  types: ['lodging'],
+  photos: [{}],
+  geometry: { location: { lat: 36.6163, lng: -121.8992 } },
+}], 'Pacific Grove, California');
+assert.equal(rankedAdjacentCityHotel[0].candidate.name, 'InterContinental The Clement Monterey, an IHG Hotel');
+
 console.log('Board wizard image-quality tests passed.');
