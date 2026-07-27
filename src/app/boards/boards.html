@@ -2968,33 +2968,79 @@
                   }
                 </label>
               } @else if (wizardMode() === 'photos') {
-                <div class="boards-upload-field">
-                  <span i18n>Photos</span>
-                  <label class="boards-upload__button boards-wizard-file" i18n>
-                    <span class="material-symbols-outlined">upload</span>
-                    Choose photos
-                    <input type="file" accept="image/*" multiple (change)="onWizardPhotosSelected($event)" />
-                  </label>
-                </div>
+                <section class="card-memory-gallery" aria-label="Photos for this board" [attr.aria-busy]="wizardPhotosLoading()">
+                  <div class="card-memory-gallery__head">
+                    <div>
+                      <span class="card-memory-gallery__eyebrow">
+                        <span class="material-symbols-outlined">photo_library</span>
+                        Your photos
+                      </span>
+                      <strong>
+                        {{ wizardPhotos().length ? wizardPhotos().length + (wizardPhotos().length === 1 ? ' photo ready' : ' photos ready') : 'Choose the moments to remember' }}
+                      </strong>
+                      <small>
+                        LivingWiki looks at the actual pictures to name the board and draft one editable card per photo.
+                        {{ wizardTargetBoardId() === 'new' ? 'The first photo becomes the board cover.' : 'The first photo becomes the first new card.' }}
+                      </small>
+                    </div>
+                    <label class="card-memory-gallery__add">
+                      <span class="material-symbols-outlined">{{ wizardPhotos().length ? 'add_photo_alternate' : 'upload' }}</span>
+                      {{ wizardPhotosLoading() ? 'Preparing…' : wizardPhotos().length ? 'Add more' : 'Choose photos' }}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.gif,.avif,.heic,.heif"
+                        multiple
+                        [disabled]="wizardPhotosLoading()"
+                        (change)="onWizardPhotosSelected($event)"
+                      />
+                    </label>
+                  </div>
+                  @if (wizardPhotos().length) {
+                    <div class="card-memory-gallery__grid">
+                      @for (photo of wizardPhotos(); track photo.id; let index = $index) {
+                        <figure [class.card-memory-gallery__item--cover]="index === 0" [title]="photo.name">
+                          <img [src]="photo.imageUrl" [alt]="'Selected photo ' + (index + 1)" />
+                          @if (index === 0) { <span>{{ wizardTargetBoardId() === 'new' ? 'Board cover' : 'First card' }}</span> }
+                          <div class="card-memory-gallery__item-actions">
+                            @if (index > 0) {
+                              <button type="button" title="Make first" [attr.aria-label]="'Make ' + photo.name + ' the first photo'" (click)="makeWizardPhotoCover(photo.id)">
+                                <span class="material-symbols-outlined">wallpaper</span>
+                              </button>
+                            }
+                            <button type="button" title="Remove photo" [attr.aria-label]="'Remove ' + photo.name" (click)="removeWizardPhoto(photo.id)">
+                              <span class="material-symbols-outlined">close</span>
+                            </button>
+                          </div>
+                        </figure>
+                      }
+                      @if (wizardPhotos().length < 24) {
+                        <label class="card-memory-gallery__tile-add">
+                          <span class="material-symbols-outlined">add</span>
+                          <span>Add more</span>
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.gif,.avif,.heic,.heif"
+                            multiple
+                            [disabled]="wizardPhotosLoading()"
+                            (change)="onWizardPhotosSelected($event)"
+                          />
+                        </label>
+                      }
+                    </div>
+                  }
+                </section>
+                @if (wizardPhotoError()) {
+                  <div class="boards-form__soft-error" role="alert">{{ wizardPhotoError() }}</div>
+                }
                 <label>
-                  <span i18n>Photo names or captions</span>
-                  <textarea
-                    rows="7"
-                    maxlength="8000"
-                    [placeholder]="wizardInputPlaceholder()"
-                    [value]="wizardPhotoNames()"
-                    (input)="wizardPhotoNames.set($any($event.target).value)"
-                  ></textarea>
-                </label>
-                <label>
-                  <span i18n>Optional direction</span>
+                  <span>Optional context</span>
                   <input
                     type="text"
                     maxlength="220"
-                    placeholder="Family vacation in Lisbon, summer 2026"
+                    placeholder="For example: Family vacation in Lisbon, summer 2026"
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
-                   i18n-placeholder/>
+                  />
                 </label>
               } @else if (wizardMode() === 'off-grid') {
                 <div class="off-grid-wizard-intro">
@@ -3287,7 +3333,7 @@
                     type="range"
                     min="1"
                     max="100"
-                    [disabled]="wizardMode() === 'paste' && wizardDetectedPasteCount() > 0"
+                    [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                     [value]="wizardCount()"
                     (input)="setWizardCount($any($event.target).value)"
                   />
@@ -3295,7 +3341,7 @@
                     type="number"
                     min="1"
                     max="100"
-                    [disabled]="wizardMode() === 'paste' && wizardDetectedPasteCount() > 0"
+                    [disabled]="wizardMode() === 'photos' || (wizardMode() === 'paste' && wizardDetectedPasteCount() > 0)"
                     [value]="wizardCount()"
                     (input)="setWizardCount($any($event.target).value)"
                   />

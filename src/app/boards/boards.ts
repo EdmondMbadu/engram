@@ -340,6 +340,15 @@ type BoardWizardGeneratedCard = {
   tour?: BoardCardTour | null;
 };
 
+type BoardWizardPhoto = {
+  id: string;
+  sourceKey: string;
+  name: string;
+  caption: string;
+  imageUrl: string;
+  analysisDataUrl: string;
+};
+
 type BoardWizardGeneratedBatch = {
   board: {
     title: string;
@@ -488,7 +497,7 @@ const BOARD_WIZARD_MODES: Array<{
   {
     id: 'photos',
     label: $localize`Use photos`,
-    description: $localize`Start from image filenames and captions for a memory board.`,
+    description: 'Turn your actual photos into a visual memory board.',
     icon: 'photo_library',
   },
   {
@@ -932,6 +941,7 @@ export class BoardsComponent implements OnDestroy {
   private stackLivePreviewAutoplay = false;
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
+  private wizardPhotoImportRun = 0;
   private wizardOffGridLocationRun = 0;
   private boardLearnStartedAt = 0;
   private boardLearnElapsedMs = 0;
@@ -1051,7 +1061,9 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardNumberedSource = computed(() => parseNumberedBoardSource(this.wizardPastedList()));
   readonly wizardDetectedPasteCount = computed(() => this.wizardNumberedSource()?.items.length ?? 0);
   readonly wizardUrl = signal('');
-  readonly wizardPhotoNames = signal('');
+  readonly wizardPhotos = signal<BoardWizardPhoto[]>([]);
+  readonly wizardPhotosLoading = signal(false);
+  readonly wizardPhotoError = signal<string | null>(null);
   readonly wizardOffGridName = signal('');
   readonly wizardOffGridAddress = signal('');
   readonly wizardOffGridTip = signal('');
@@ -1515,7 +1527,9 @@ export class BoardsComponent implements OnDestroy {
     if (this.isTourWizardMode(mode)) {
       return this.wizardPrompt().trim().length >= 4;
     }
-    return this.wizardPhotoNamesList().length > 0 || this.wizardPrompt().trim().length >= 4;
+    return mode === 'photos'
+      ? this.wizardPhotos().length > 0 && !this.wizardPhotosLoading()
+      : this.wizardPrompt().trim().length >= 4;
   });
   readonly countryMatchSuggestions = computed(() => {
     const draft = this.cardDraft();
@@ -2117,22 +2131,73 @@ export class BoardsComponent implements OnDestroy {
   }
 
   wizardPhotoNamesList(): string[] {
-    return this.wizardPhotoNames()
-      .split(/\n|,|;/)
-      .map((name) => name.trim())
-      .filter(Boolean)
-      .slice(0, 100);
+    return this.wizardPhotos()
+      .map((photo) => photo.caption.trim() || this.photoTitleFromFileName(photo.name))
+      .slice(0, 24);
   }
 
-  onWizardPhotosSelected(event: Event): void {
+  async onWizardPhotosSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const files = Array.from(input.files ?? []);
     input.value = '';
     if (!files.length) {
       return;
     }
-    const names = files.map((file) => file.name).filter(Boolean);
-    this.wizardPhotoNames.set([...this.wizardPhotoNamesList(), ...names].slice(0, 100).join('\n'));
+
+    const current = this.wizardPhotos();
+    const available = Math.max(0, 24 - current.length);
+    if (!available) {
+      this.wizardPhotoError.set('A photo board can hold up to 24 photos.');
+      return;
+    }
+
+    const existingKeys = new Set(current.map((photo) => photo.sourceKey));
+    const candidates = files
+      .filter((file) => !existingKeys.has(this.wizardPhotoSourceKey(file)))
+      .slice(0, available);
+    if (!candidates.length) {
+      this.wizardPhotoError.set('Those photos are already in this board.');
+      return;
+    }
+
+    const run = ++this.wizardPhotoImportRun;
+    this.wizardPhotosLoading.set(true);
+    this.wizardPhotoError.set(null);
+    const imported: BoardWizardPhoto[] = [];
+    const rejected: string[] = [];
+    for (const file of candidates) {
+      try {
+        imported.push(await this.readWizardPhoto(file));
+      } catch (error) {
+        rejected.push(error instanceof Error ? `${file.name}: ${error.message}` : file.name);
+      }
+    }
+    if (run !== this.wizardPhotoImportRun) {
+      return;
+    }
+    this.wizardPhotos.update((photos) => [...photos, ...imported].slice(0, 24));
+    this.wizardCount.set(Math.max(1, this.wizardPhotos().length));
+    this.wizardPhotosLoading.set(false);
+    if (rejected.length) {
+      this.wizardPhotoError.set(
+        `${rejected.length} ${rejected.length === 1 ? 'photo was' : 'photos were'} skipped. ${rejected.slice(0, 2).join(' ')}`,
+      );
+    } else if (files.length > candidates.length) {
+      this.wizardPhotoError.set(`Added ${imported.length} photos. Photo boards can hold up to 24.`);
+    }
+  }
+
+  removeWizardPhoto(photoId: string): void {
+    this.wizardPhotos.update((photos) => photos.filter((photo) => photo.id !== photoId));
+    this.wizardCount.set(Math.max(1, this.wizardPhotos().length));
+    this.wizardPhotoError.set(null);
+  }
+
+  makeWizardPhotoCover(photoId: string): void {
+    this.wizardPhotos.update((photos) => {
+      const index = photos.findIndex((photo) => photo.id === photoId);
+      return index > 0 ? [photos[index], ...photos.slice(0, index), ...photos.slice(index + 1)] : photos;
+    });
   }
 
   setWizardOffGridSource(source: OffGridLocationSource): void {
@@ -2317,7 +2382,7 @@ export class BoardsComponent implements OnDestroy {
       this.wizardStep.set('preview');
       return;
     }
-    const inferredCount = this.inferWizardRequestedCount();
+    const inferredCount = this.wizardMode() === 'photos' ? this.wizardPhotos().length : this.inferWizardRequestedCount();
     if (inferredCount) {
       this.setWizardCount(inferredCount);
     }
@@ -2331,7 +2396,10 @@ export class BoardsComponent implements OnDestroy {
       : null;
 
     try {
-      const batch = await this.requestWizardBatch(refinement);
+      const generatedBatch = await this.requestWizardBatch(refinement);
+      const batch = this.wizardMode() === 'photos'
+        ? this.attachWizardPhotosToBatch(generatedBatch)
+        : generatedBatch;
       const previewCards = await this.enrichWizardCards(batch.cards);
       this.wizardResult.set({ ...batch, cards: previewCards });
       this.wizardPreviewCards.set(previewCards);
@@ -2343,7 +2411,10 @@ export class BoardsComponent implements OnDestroy {
         this.wizardStep.set('choose');
         return;
       }
-      const fallback = this.buildLocalWizardBatch(refinement);
+      const localFallback = this.buildLocalWizardBatch(refinement);
+      const fallback = this.wizardMode() === 'photos'
+        ? this.attachWizardPhotosToBatch(localFallback)
+        : localFallback;
       const previewCards = await this.enrichWizardCards(fallback.cards);
       this.wizardResult.set({ ...fallback, cards: previewCards });
       this.wizardPreviewCards.set(previewCards);
@@ -7909,7 +7980,10 @@ export class BoardsComponent implements OnDestroy {
     this.wizardPrompt.set('');
     this.wizardPastedList.set('');
     this.wizardUrl.set('');
-    this.wizardPhotoNames.set('');
+    this.wizardPhotos.set([]);
+    this.wizardPhotoImportRun += 1;
+    this.wizardPhotosLoading.set(false);
+    this.wizardPhotoError.set(null);
     this.wizardOffGridName.set('');
     this.wizardOffGridAddress.set('');
     this.wizardOffGridTip.set('');
@@ -7958,6 +8032,37 @@ export class BoardsComponent implements OnDestroy {
     return this.wizardTargetBoardId() === 'new' ? '' : this.wizardTargetBoardId();
   }
 
+  private attachWizardPhotosToBatch(batch: BoardWizardGeneratedBatch): BoardWizardGeneratedBatch {
+    const photos = this.wizardPhotos();
+    const localCards = this.buildLocalWizardBatch().cards;
+    return {
+      ...batch,
+      cards: photos.map((photo, index) => ({
+        ...(batch.cards[index] ?? localCards[index] ?? {
+          title: this.photoTitleFromFileName(photo.name),
+          subtitle: 'A photo memory',
+          notes: 'Add the story behind this moment before sharing.',
+          type: 'memory' as BoardCardType,
+          scope: 'place' as BoardCardScope,
+          status: 'saved' as BoardCardStatus,
+          rating: 4,
+          tags: ['memory'],
+          image_query: this.photoTitleFromFileName(photo.name),
+          place_query: this.photoTitleFromFileName(photo.name),
+        }),
+        imageUrl: photo.imageUrl,
+      })),
+    };
+  }
+
+  private imageDataUrlPayload(dataUrl: string): { mimeType: string; base64: string } {
+    const match = dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/i);
+    if (!match) {
+      return { mimeType: 'image/jpeg', base64: '' };
+    }
+    return { mimeType: match[1].toLowerCase(), base64: match[2] };
+  }
+
   private defaultWizardCardImageSearchQuery(card: BoardWizardPreviewCard): string {
     const context = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query} ${this.wizardPrompt()}`;
     const year = context.match(/\b(18\d{2}|19\d{2}|20\d{2})\b/)?.[1] ?? '';
@@ -8002,6 +8107,14 @@ export class BoardsComponent implements OnDestroy {
       pastedList: this.wizardMode() === 'paste' ? this.wizardPastedList().trim() : '',
       url: this.wizardMode() === 'url' ? this.wizardUrl().trim() : '',
       photoNames: this.wizardMode() === 'photos' ? this.wizardPhotoNamesList() : [],
+      photos: this.wizardMode() === 'photos'
+        ? this.wizardPhotos().map((photo, index) => ({
+            index,
+            name: photo.name,
+            caption: photo.caption.trim(),
+            ...this.imageDataUrlPayload(photo.analysisDataUrl),
+          }))
+        : [],
       targetBoardId: targetBoard?.id ?? '',
       targetBoardTitle: targetBoard?.title ?? '',
       defaultType: this.wizardDefaultType(),
@@ -8255,15 +8368,24 @@ export class BoardsComponent implements OnDestroy {
     if (this.isTourWizardMode(mode)) {
       return this.buildLocalTourWizardBatch(source || refinement || 'Local tour');
     }
-    const items = this.localWizardItems(source || refinement || 'Wizard card', mode === 'paste' || mode === 'photos').slice(0, this.wizardCount());
+    const items = mode === 'photos'
+      ? this.wizardPhotos().map((photo, index) => {
+          const title = this.photoTitleFromFileName(photo.name);
+          return title === 'Photo memory' ? `Photo ${index + 1}` : title;
+        })
+      : this.localWizardItems(source || refinement || 'Wizard card', mode === 'paste').slice(0, this.wizardCount());
     const title = this.wizardTargetBoardId() === 'new'
-      ? this.titleFromWizardInput(source || refinement || 'Wizard board')
+      ? mode === 'photos'
+        ? this.titleFromWizardInput(this.wizardPrompt().trim() || 'Photo memories')
+        : this.titleFromWizardInput(source || refinement || 'Wizard board')
       : this.wizardTargetBoardTitle();
     const defaultType = this.wizardDefaultType();
     return {
       board: {
         title,
-        description: `${this.wizardVibe()} board draft generated from ${mode} input.`,
+        description: mode === 'photos'
+          ? 'A visual memory board created from your selected photos.'
+          : `${this.wizardVibe()} board draft generated from ${mode} input.`,
         icon: defaultType === 'food' ? 'restaurant' : defaultType === 'shop' ? 'storefront' : 'auto_awesome',
         tone: this.wizardVibe() === 'foodie'
           ? 'coral'
@@ -10095,15 +10217,73 @@ export class BoardsComponent implements OnDestroy {
     return [...merged].slice(0, 6).join(', ');
   }
 
-  private async readImageFile(file: File): Promise<string> {
-    if (!this.isBrowser) {
-      throw new Error('Image uploads are available in the browser.');
+  private wizardPhotoSourceKey(file: File): string {
+    return `${file.name}:${file.size}:${file.lastModified}`;
+  }
+
+  private photoTitleFromFileName(fileName: string): string {
+    const cleaned = fileName
+      .replace(/\.(?:jpe?g|png|webp|gif|avif|heic|heif|bmp)$/i, '')
+      .replace(/[_-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!cleaned || /^(?:img|dsc|dcim|photo|image)\s*\d+$/i.test(cleaned)) {
+      return 'Photo memory';
     }
-    if (!file.type.startsWith('image/')) {
-      throw new Error('Choose an image file.');
+    return cleaned.replace(/\b\w/g, (letter) => letter.toUpperCase()).slice(0, 80);
+  }
+
+  private async readWizardPhoto(file: File): Promise<BoardWizardPhoto> {
+    if (!this.isBrowser) {
+      throw new Error('Photo uploads are available in the browser.');
+    }
+    if (!this.isSupportedWizardPhoto(file)) {
+      throw new Error('Choose a JPEG, PNG, WebP, GIF, AVIF, HEIC, or HEIF photo.');
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      throw new Error('Photos must be 25 MB or smaller.');
     }
 
-    const dataUrl = await new Promise<string>((resolve, reject) => {
+    let photoBlob: Blob = file;
+    if (this.isHeicPhoto(file)) {
+      try {
+        const { default: convertHeic } = await import('heic2any');
+        const converted = await convertHeic({
+          blob: file,
+          toType: 'image/jpeg',
+          quality: 0.9,
+        });
+        photoBlob = Array.isArray(converted) ? converted[0] : converted;
+      } catch {
+        throw new Error('This HEIC photo could not be converted. Try exporting it as JPEG.');
+      }
+    }
+
+    const sourceDataUrl = await this.readBlobAsDataUrl(photoBlob);
+    const imageUrl = await this.resizeImageDataUrl(sourceDataUrl, 1400, 0.84);
+    const analysisDataUrl = await this.resizeImageDataUrl(imageUrl, 720, 0.72);
+    return {
+      id: this.createId(),
+      sourceKey: this.wizardPhotoSourceKey(file),
+      name: file.name,
+      caption: '',
+      imageUrl,
+      analysisDataUrl,
+    };
+  }
+
+  private isSupportedWizardPhoto(file: File): boolean {
+    const extension = file.name.split('.').pop()?.toLowerCase() ?? '';
+    return ['jpg', 'jpeg', 'png', 'webp', 'gif', 'avif', 'heic', 'heif', 'bmp'].includes(extension)
+      || /^image\/(?:jpeg|png|webp|gif|avif|heic|heif|bmp)$/i.test(file.type);
+  }
+
+  private isHeicPhoto(file: File): boolean {
+    return /\.(?:heic|heif)$/i.test(file.name) || /^image\/hei[cf]$/i.test(file.type);
+  }
+
+  private readBlobAsDataUrl(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
         if (typeof reader.result === 'string') {
@@ -10113,13 +10293,23 @@ export class BoardsComponent implements OnDestroy {
         }
       };
       reader.onerror = () => reject(new Error('Could not read that image.'));
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(blob);
     });
+  }
 
+  private async readImageFile(file: File): Promise<string> {
+    if (!this.isBrowser) {
+      throw new Error('Image uploads are available in the browser.');
+    }
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Choose an image file.');
+    }
+
+    const dataUrl = await this.readBlobAsDataUrl(file);
     return this.resizeImageDataUrl(dataUrl);
   }
 
-  private resizeImageDataUrl(dataUrl: string): Promise<string> {
+  private resizeImageDataUrl(dataUrl: string, maxSide = 1400, quality = 0.84): Promise<string> {
     return new Promise((resolve, reject) => {
       const image = new Image();
       image.onload = () => {
@@ -10130,7 +10320,6 @@ export class BoardsComponent implements OnDestroy {
           return;
         }
 
-        const maxSide = 1400;
         const scale = Math.min(1, maxSide / Math.max(width, height));
         const canvas = document.createElement('canvas');
         canvas.width = Math.max(1, Math.round(width * scale));
@@ -10142,7 +10331,7 @@ export class BoardsComponent implements OnDestroy {
         }
 
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', 0.84));
+        resolve(canvas.toDataURL('image/jpeg', quality));
       };
       image.onerror = () => reject(new Error('Could not load that image.'));
       image.src = dataUrl;

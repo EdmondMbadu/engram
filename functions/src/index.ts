@@ -4679,6 +4679,7 @@ type BoardWizardCallableData = {
   pastedList?: unknown;
   url?: unknown;
   photoNames?: unknown;
+  photos?: unknown;
   imageOnly?: unknown;
   currentCard?: unknown;
   targetBoardId?: unknown;
@@ -5656,6 +5657,37 @@ export const generateBoardWizardBatch = onCall(
     const photoNames = Array.isArray(data.photoNames)
       ? data.photoNames.map((name) => stringOrEmpty(name).slice(0, 180)).filter(Boolean).slice(0, 100)
       : [];
+    let photoPayloadCharacters = 0;
+    const photos = Array.isArray(data.photos)
+      ? data.photos
+          .map((value, index) => {
+            const photo = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+            const mimeType = stringOrEmpty(photo.mimeType).toLowerCase();
+            const base64 = stringOrEmpty(photo.base64);
+            if (!/^image\/(?:jpeg|png|webp)$/.test(mimeType)
+              || !base64
+              || base64.length > 600_000
+              || photoPayloadCharacters + base64.length > 9_000_000) {
+              return null;
+            }
+            photoPayloadCharacters += base64.length;
+            return {
+              index,
+              name: stringOrEmpty(photo.name).slice(0, 180),
+              caption: stringOrEmpty(photo.caption).slice(0, 280),
+              mimeType: mimeType as 'image/jpeg' | 'image/png' | 'image/webp',
+              base64,
+            };
+          })
+          .filter((photo): photo is {
+            index: number;
+            name: string;
+            caption: string;
+            mimeType: 'image/jpeg' | 'image/png' | 'image/webp';
+            base64: string;
+          } => !!photo)
+          .slice(0, 24)
+      : [];
     const existingCards = Array.isArray(data.existingCards)
       ? data.existingCards.map(normalizeExistingBoardWizardCard).filter((card): card is { title: string; subtitle?: string; tags?: string[] } => !!card).slice(0, 40)
       : [];
@@ -5754,10 +5786,10 @@ export const generateBoardWizardBatch = onCall(
     const mapsTourStopCount = mapsTourContext
       ? (mapsTourContext.match(/^\d+\. /gm)?.length ?? 0)
       : 0;
-    const generationCount = numberedSource?.items.length || mapsTourStopCount || count;
+    const generationCount = numberedSource?.items.length || mapsTourStopCount || photos.length || count;
 
-    if (!effectivePrompt && !pastedList && photoNames.length === 0 && !url) {
-      throw new HttpsError('invalid-argument', 'Describe the board, paste a list, upload photo names, or provide a URL.');
+    if (!effectivePrompt && !pastedList && photoNames.length === 0 && photos.length === 0 && !url) {
+      throw new HttpsError('invalid-argument', 'Describe the board, paste a list, choose photos, or provide a URL.');
     }
 
     const generated = accommodationExtraction
@@ -5779,10 +5811,11 @@ export const generateBoardWizardBatch = onCall(
           pastedList,
           url: sourceUrl,
           photoNames,
+          photos,
           targetBoardTitle,
           defaultType,
           count: generationCount,
-          countIsExplicit: !!numberedSource || explicitCount !== null || photoNames.length > 0,
+          countIsExplicit: !!numberedSource || explicitCount !== null || photoNames.length > 0 || photos.length > 0,
           vibe,
           tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
           existingCards,

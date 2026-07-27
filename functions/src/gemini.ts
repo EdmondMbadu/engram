@@ -458,6 +458,14 @@ export type GeneratedBoardWizardBatch = {
   cards: GeneratedBoardWizardCard[];
 };
 
+type BoardWizardPhotoInput = {
+  index: number;
+  name: string;
+  caption: string;
+  mimeType: 'image/jpeg' | 'image/png' | 'image/webp';
+  base64: string;
+};
+
 function createClient(): GoogleGenAI {
   return new GoogleGenAI({
     apiKey: geminiApiKey.value(),
@@ -1238,6 +1246,7 @@ export async function generateBoardWizardBatch(params: {
   pastedList?: string;
   url?: string;
   photoNames?: string[];
+  photos?: BoardWizardPhotoInput[];
   targetBoardTitle?: string | null;
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
@@ -1255,12 +1264,31 @@ export async function generateBoardWizardBatch(params: {
   const researchMode = boardWizardResearchMode(params);
   const cardLimit = params.countIsExplicit ? count : verificationRequired ? 100 : count;
   const prompt = buildBoardWizardPrompt({ ...params, count, verificationRequired });
+  const contents = params.photos?.length
+    ? [
+        { text: prompt },
+        ...params.photos.flatMap((photo, index) => [
+          {
+            text: `Photo ${index + 1} metadata: ${JSON.stringify({
+              filename: photo.name,
+              caption: photo.caption,
+            })}`,
+          },
+          {
+            inlineData: {
+              mimeType: photo.mimeType,
+              data: photo.base64,
+            },
+          },
+        ]),
+      ]
+    : prompt;
 
   for (const wizardModel of boardWizardModels) {
     try {
       const response = await generateContentWithRetry({
         model: wizardModel,
-        contents: prompt,
+        contents,
         config: {
           responseMimeType: 'application/json',
           responseJsonSchema: boardWizardBatchSchema,
@@ -1401,6 +1429,7 @@ function buildBoardWizardPrompt(params: {
   pastedList?: string;
   url?: string;
   photoNames?: string[];
+  photos?: BoardWizardPhotoInput[];
   targetBoardTitle?: string | null;
   defaultType: GeneratedBoardWizardCard['type'];
   count: number;
@@ -1452,6 +1481,16 @@ function buildBoardWizardPrompt(params: {
           'Use each source item title as the card title. Do not omit, merge, replace, reorder, or invent items.',
           'Preserve the complete source item body in notes without truncating or moving text between items. Create short_summary separately for compact display.',
           'Facts in the source override general knowledge. Do not add unsupported claims.',
+        ].join('\n')
+      : '',
+    params.mode === 'photos' && params.photos?.length
+      ? [
+          'PHOTO MODE: Inspect the actual attached images. The pixels are the primary source; filenames and user context are only supporting clues.',
+          `Return exactly ${params.photos.length} cards, one for each photo, in the exact attachment order.`,
+          'Create a specific, natural title, subtitle, and useful description for every image. Describe what is visibly supported and use the user context when it helps.',
+          'Never invent a person’s identity, an exact place, a private relationship, or an event that cannot be established from the image or supplied context. Express uncertainty honestly.',
+          'Name the new board and write its description from the collection as a whole. Use card type "memory" unless another type is clearly more useful.',
+          'The selected photo will be attached to its matching card by the client, so image_query should briefly describe that same visible image and must not request a replacement image.',
         ].join('\n')
       : '',
     params.mode === 'walking-tour' || params.mode === 'driving-tour'
@@ -1506,6 +1545,11 @@ function buildBoardWizardPrompt(params: {
       numberedSource,
       url: params.url?.slice(0, 1000) ?? '',
       photoNames: params.photoNames?.slice(0, 100) ?? [],
+      photos: params.photos?.map((photo, index) => ({
+        index,
+        filename: photo.name,
+        caption: photo.caption,
+      })) ?? [],
       tourOptions: params.tourOptions ?? null,
     }),
   ].filter(Boolean).join('\n');
