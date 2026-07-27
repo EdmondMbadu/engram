@@ -67,7 +67,10 @@ import {
   isPlausibleBoardWizardFoodImageContext,
   matchBoardWizardMenuImage,
 } from './board-wizard-menu-images';
-import { extractStructuredBoardWizardMenuItems } from './board-wizard-menu';
+import {
+  extractStructuredBoardWizardMenuItems,
+  isBoardWizardMenuActionCard,
+} from './board-wizard-menu';
 import {
   boardWizardReaderPageTitle,
   extractBoardWizardReaderMenuItems,
@@ -6847,6 +6850,9 @@ async function enrichBoardWizardBatchWithPlaces(
     batch.cards,
     5,
     async (card, index) => {
+      if (isBoardWizardMenuActionCard(card)) {
+        return card;
+      }
       const exactReferenceImage = exactReferenceImages.get(index);
       if (!card.imageUrl && exactReferenceImage) {
         card = { ...card, imageUrl: exactReferenceImage };
@@ -6864,7 +6870,7 @@ async function enrichBoardWizardBatchWithPlaces(
     },
   );
   const repairedCards = await mapWithConcurrency(enrichedCards, 3, async (card) => {
-    if (card.imageUrl || isBoardWizardMenuItemCard(card)) return card;
+    if (card.imageUrl || isBoardWizardMenuItemCard(card) || isBoardWizardMenuActionCard(card)) return card;
     const startedAt = Date.now();
     let imageUrl = await withBoardWizardTimeout(
       findCommonsReferenceImageForBoardWizard(card, searchContext),
@@ -9644,7 +9650,11 @@ async function findBatchExactWikipediaImagesForBoardWizard(
   const images = new Map<number, string>();
   const pending: Array<{ index: number; query: string; titles: string[] }> = [];
   cards.forEach((card, index) => {
-    if (card.imageUrl || !shouldUseReferenceImageBeforePlaces(card, searchContext)) {
+    if (
+      card.imageUrl
+      || isBoardWizardMenuActionCard(card)
+      || !shouldUseReferenceImageBeforePlaces(card, searchContext)
+    ) {
       return;
     }
     const query = buildBoardWizardReferenceImageQuery(card, searchContext);

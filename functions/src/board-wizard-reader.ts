@@ -189,7 +189,19 @@ function normalizeReaderTitle(value: string): string {
 function safeReaderImageUrl(value: string): string {
   try {
     const url = new URL(value);
-    return ['https:', 'http:'].includes(url.protocol) ? url.toString() : '';
+    if (!['https:', 'http:'].includes(url.protocol)) return '';
+    // DoorDash storefront markdown commonly exposes a very short 1200×228 banner crop.
+    // Request a contained rendition of the same publisher-owned photo so the complete dish
+    // remains visible in both cards and the full-image viewer.
+    const photoMarker = '/media/photosV2/';
+    const photoIndex = url.pathname.indexOf(photoMarker);
+    if (url.hostname === 'img.cdn4dd.com' && photoIndex >= 0) {
+      return new URL(
+        `/p/fit=contain,width=1200,height=1200,format=auto,quality=75${url.pathname.slice(photoIndex)}`,
+        url.origin,
+      ).toString();
+    }
+    return url.toString();
   } catch {
     return '';
   }

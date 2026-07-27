@@ -3824,7 +3824,10 @@
                       [class.boards-wizard-card--photo-only]="isPhotoOnlyCard(card)"
                       [class.boards-wizard-card--busy]="isWizardCardBusy(card.id)"
                     >
-                      <div class="boards-wizard-card__media">
+                      <div
+                        class="boards-wizard-card__media"
+                        [class.boards-wizard-card__media--contain]="card.type === 'food' && card.imageSource === 'source-page'"
+                      >
                         @if (card.imageUrl) {
                           <img [src]="card.imageUrl" [alt]="card.title" loading="lazy" />
                         } @else {

@@ -3843,6 +3843,14 @@
   object-fit: cover;
 }
 
+.boards-wizard-card__media--contain {
+  background: #ffffff;
+}
+
+.boards-wizard-card__media--contain img {
+  object-fit: contain;
+}
+
 .boards-wizard-card__media > .material-symbols-outlined {
   color: var(--accent);
   font-size: 2.4rem;

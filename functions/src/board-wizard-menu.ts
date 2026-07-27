@@ -11,6 +11,17 @@ export type StructuredBoardWizardMenuItem = {
   imageUrl: string;
 };
 
+export function isBoardWizardMenuActionCard(value: {
+  title: string;
+  type: string;
+  tags: string[];
+}): boolean {
+  if (value.type !== 'note') return false;
+  const tags = new Set(value.tags.map((tag) => tag.toLowerCase()));
+  return /^open\s+(?:the\s+)?menu$/i.test(value.title.trim())
+    || (tags.has('action') && tags.has('menu'));
+}
+
 export function extractStructuredBoardWizardMenuItems(
   html: string,
   images: BoardWizardMenuImageCandidate[],

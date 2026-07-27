@@ -7,6 +7,7 @@ const {
 } = require('../lib/board-wizard-menu-images.js');
 const {
   extractStructuredBoardWizardMenuItems,
+  isBoardWizardMenuActionCard,
 } = require('../lib/board-wizard-menu.js');
 const {
   looksLikeAntiBotChallenge,
@@ -137,6 +138,24 @@ assert.equal(
   looksLikeAntiBotChallenge('<html><title>Just a moment...</title>Checking if the site connection is secure</html>'),
   true,
   'still rejects a small challenge-only page',
+);
+assert.equal(
+  isBoardWizardMenuActionCard({
+    title: 'Open Menu',
+    type: 'note',
+    tags: ['action', 'menu'],
+  }),
+  true,
+  'keeps menu action cards out of generic image enrichment',
+);
+assert.equal(
+  isBoardWizardMenuActionCard({
+    title: 'Classic Cheesesteak',
+    type: 'food',
+    tags: ['menu-item', 'food'],
+  }),
+  false,
+  'does not classify a real menu item as an image-less action card',
 );
 
 console.log('board wizard menu extraction tests passed');
