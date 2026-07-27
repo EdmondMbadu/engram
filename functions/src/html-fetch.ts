@@ -1,9 +1,17 @@
 import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import type { Page } from 'puppeteer-core';
+import type { HTTPRequest, Page } from 'puppeteer-core';
 
 export type HtmlFetchMethod = 'raw' | 'browser';
+
+export interface HtmlFetchAttempt {
+  method: HtmlFetchMethod;
+  durationMs: number;
+  status: number;
+  blocked: boolean;
+  errorMessage: string;
+}
 
 export interface HtmlFetchResult {
   html: string;
@@ -11,6 +19,7 @@ export interface HtmlFetchResult {
   finalUrl: string;
   status: number;
   method: HtmlFetchMethod;
+  attempts: HtmlFetchAttempt[];
 }
 
 let stealthConfigured = false;
@@ -27,14 +36,9 @@ export function looksLikeAntiBotChallenge(html: string): boolean {
   // positives on amanet.org (193KB real content flagged as blocked).
   const isSmallPage = normalized.length < 50_000;
 
-  const strongBlockMarkers = [
+  const absoluteBlockMarkers = [
     'attention required! | cloudflare',
     'sorry, you have been blocked',
-    '<title>just a moment...</title>',
-    'checking if the site connection is secure',
-    'enable javascript and cookies to continue',
-    'performance &amp; security by cloudflare',
-    'performance & security by cloudflare',
     'error 1020',
     'error 1015',
     'ray id:',
@@ -43,17 +47,33 @@ export function looksLikeAntiBotChallenge(html: string): boolean {
     'reference error',
   ];
 
-  if (strongBlockMarkers.some((marker) => normalized.includes(marker))) {
+  if (absoluteBlockMarkers.some((marker) => normalized.includes(marker))) {
     return true;
   }
 
-  const weakBlockMarkers = [
+  const renderedContentEvidence = normalized.length >= 100_000
+    && (
+      /"@type"\s*:\s*"(?:menuitem|product|itemlist|restaurant)"/i.test(html)
+      || (html.match(/<img\b/gi)?.length ?? 0) >= 8
+      || (html.match(/data-testid=/gi)?.length ?? 0) >= 12
+    );
+  const challengeMarkers = [
+    '<title>just a moment...</title>',
+    'checking if the site connection is secure',
+    'checking if the site connection is secured',
+    'enable javascript and cookies to continue',
+    'performance &amp; security by cloudflare',
+    'performance & security by cloudflare',
     '_cf_chl_opt',
     'cf-mitigated',
     'challenge-platform',
   ];
 
-  if (isSmallPage && weakBlockMarkers.some((marker) => normalized.includes(marker))) {
+  if (
+    !renderedContentEvidence
+    && (isSmallPage || /<title>just a moment\.\.\.<\/title>/i.test(html))
+    && challengeMarkers.some((marker) => normalized.includes(marker))
+  ) {
     return true;
   }
 
@@ -64,33 +84,55 @@ export async function fetchHtmlWithFallback(
   url: string,
   options?: { timeoutMs?: number; preferBrowser?: boolean; allowBrowserFallback?: boolean },
 ): Promise<HtmlFetchResult> {
-  const timeoutMs = options?.timeoutMs ?? 60_000;
+  const timeoutMs = Math.max(3_000, Math.min(options?.timeoutMs ?? 30_000, 45_000));
   const allowBrowserFallback = options?.allowBrowserFallback ?? true;
-  if (options?.preferBrowser) {
+  const attempts: HtmlFetchAttempt[] = [];
+  let lastResult: HtmlFetchResult | null = null;
+  const strategies: HtmlFetchMethod[] = options?.preferBrowser
+    ? ['browser', 'raw']
+    : allowBrowserFallback
+      ? ['raw', 'browser']
+      : ['raw'];
+
+  for (const method of strategies) {
+    if (method === 'browser' && !allowBrowserFallback && !options?.preferBrowser) {
+      continue;
+    }
+    const startedAt = Date.now();
     try {
-      const browser = await fetchHtmlInBrowser(url, timeoutMs);
-      if (browser.status > 0 && browser.status < 400 && !looksLikeAntiBotChallenge(browser.html)) {
-        return browser;
+      const result = method === 'browser'
+        ? await fetchHtmlInBrowser(url, timeoutMs)
+        : await fetchHtmlRaw(url, Math.min(timeoutMs, 10_000));
+      const blocked = looksLikeAntiBotChallenge(result.html);
+      attempts.push({
+        method,
+        durationMs: Date.now() - startedAt,
+        status: result.status,
+        blocked,
+        errorMessage: '',
+      });
+      lastResult = { ...result, attempts: [...attempts] };
+      if (result.status > 0 && result.status < 400 && !blocked) {
+        return lastResult;
       }
-    } catch {
-      // Fall back to a raw fetch below.
+    } catch (error) {
+      attempts.push({
+        method,
+        durationMs: Date.now() - startedAt,
+        status: 0,
+        blocked: false,
+        errorMessage: error instanceof Error ? error.message.slice(0, 300) : String(error).slice(0, 300),
+      });
     }
   }
 
-  const raw = await fetchHtmlRaw(url, timeoutMs);
-  if (raw.status > 0 && raw.status < 400 && !looksLikeAntiBotChallenge(raw.html)) {
-    return raw;
+  if (lastResult) {
+    return { ...lastResult, attempts };
   }
-
-  if (!allowBrowserFallback) {
-    return raw;
-  }
-
-  try {
-    return await fetchHtmlInBrowser(url, timeoutMs);
-  } catch {
-    return raw;
-  }
+  throw new Error(
+    `URL fetch failed: ${attempts.map((attempt) =>
+      `${attempt.method} ${attempt.errorMessage || attempt.status || 'failed'}`).join('; ')}`,
+  );
 }
 
 async function fetchHtmlRaw(url: string, timeoutMs: number): Promise<HtmlFetchResult> {
@@ -117,6 +159,7 @@ async function fetchHtmlRaw(url: string, timeoutMs: number): Promise<HtmlFetchRe
       finalUrl: response.url || url,
       status: response.status,
       method: 'raw',
+      attempts: [],
     };
   } finally {
     clearTimeout(timeout);
@@ -128,10 +171,16 @@ async function fetchHtmlInBrowser(
   timeoutMs: number,
 ): Promise<HtmlFetchResult> {
   ensureStealth();
-
-  const browser = await puppeteer.launch(await resolveLaunchOptions());
-
-  try {
+  let browser: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
+  let expired = false;
+  const operation = async (): Promise<HtmlFetchResult> => {
+    browser = await puppeteer.launch({
+      ...await resolveLaunchOptions(),
+      timeout: Math.min(15_000, timeoutMs),
+    });
+    if (expired) {
+      throw new Error('Browser launch exceeded the extraction deadline.');
+    }
     const page = await browser.newPage();
     await page.setUserAgent(defaultUserAgent);
     await page.setViewport({ width: 1366, height: 900 });
@@ -139,10 +188,23 @@ async function fetchHtmlInBrowser(
       'Accept-Language': 'en-US,en;q=0.9',
       'Upgrade-Insecure-Requests': '1',
     });
-    const navigationResponse = await page.goto(url, {
-      waitUntil: 'networkidle2',
-      timeout: timeoutMs,
+    await page.setRequestInterception(true);
+    page.on('request', (request: HTTPRequest) => {
+      const resourceType = request.resourceType();
+      if (resourceType === 'font' || resourceType === 'media') {
+        void request.abort().catch(() => undefined);
+      } else {
+        void request.continue().catch(() => undefined);
+      }
     });
+    const navigationResponse = await page.goto(url, {
+      waitUntil: 'domcontentloaded',
+      timeout: Math.min(18_000, timeoutMs),
+    });
+    await page.waitForNetworkIdle({
+      idleTime: 400,
+      timeout: Math.min(4_000, Math.max(1_000, timeoutMs - 1_000)),
+    }).catch(() => undefined);
     await hydrateBrowserPageForExtraction(page);
 
     return {
@@ -151,9 +213,46 @@ async function fetchHtmlInBrowser(
       finalUrl: page.url(),
       status: navigationResponse?.status() ?? 0,
       method: 'browser',
+      attempts: [],
     };
+  };
+  let deadline: NodeJS.Timeout | undefined;
+  try {
+    return await Promise.race([
+      operation(),
+      new Promise<never>((_resolve, reject) => {
+        deadline = setTimeout(() => {
+          expired = true;
+          reject(new Error(`Browser extraction exceeded ${timeoutMs}ms.`));
+        }, timeoutMs);
+      }),
+    ]);
   } finally {
-    await browser.close();
+    if (deadline) clearTimeout(deadline);
+    expired = true;
+    if (browser) {
+      await closeBrowserWithin(browser, 2_500);
+    }
+  }
+}
+
+async function closeBrowserWithin(
+  browser: Awaited<ReturnType<typeof puppeteer.launch>>,
+  timeoutMs: number,
+): Promise<void> {
+  let closed = false;
+  try {
+    await Promise.race([
+      browser.close().then(() => {
+        closed = true;
+      }),
+      new Promise<void>((resolve) => setTimeout(resolve, timeoutMs)),
+    ]);
+  } catch {
+    // The process-level fallback below handles an unresponsive browser.
+  }
+  if (!closed) {
+    browser.process()?.kill('SIGKILL');
   }
 }
 
@@ -163,26 +262,39 @@ async function hydrateBrowserPageForExtraction(page: Page): Promise<void> {
     const discoveredImages = new Map<string, { alt: string; src: string; srcset: string }>();
     const captureVisibleImages = () => {
       for (const image of Array.from(document.images)) {
-        const src = image.getAttribute('src') || image.currentSrc || image.src;
+        // `src` often remains a shared lazy-loading placeholder after the browser has selected
+        // the real responsive asset. Capture the browser-resolved URL first so virtualized
+        // menu/product rows retain the photo that was actually rendered.
+        const src = image.currentSrc || image.src || image.getAttribute('src') || '';
         const srcset = image.getAttribute('srcset') || '';
         if (!src && !srcset) continue;
         const alt = image.getAttribute('alt') || '';
         discoveredImages.set(`${alt}\n${src}\n${srcset}`, { alt, src, srcset });
       }
     };
+    await pause(500);
     const viewportHeight = Math.max(window.innerHeight, 700);
     // Menu and collection pages are frequently much taller than eight viewports. Sample the
     // full document instead of only its first ~7,000px so lazy-loaded item photos are present
-    // in the serialized DOM. The caps keep unusually long/infinite feeds bounded.
-    const maxScrollTop = Math.min(
-      Math.max(document.documentElement.scrollHeight - viewportHeight, 0),
-      120_000,
-    );
-    const stepCount = Math.min(48, Math.max(1, Math.ceil(maxScrollTop / 2_500)));
+    // in the serialized DOM. Recompute the height as the app renders new sections; a single
+    // height measurement immediately after DOMContentLoaded is frequently incomplete.
+    const stepDistance = Math.max(650, Math.round(viewportHeight * 0.85));
+    let scrollTop = 0;
+    let stableBottomRounds = 0;
     captureVisibleImages();
-    for (let step = 1; step <= stepCount; step += 1) {
-      window.scrollTo(0, Math.round((maxScrollTop * step) / stepCount));
-      await pause(120);
+    for (let step = 0; step < 180 && stableBottomRounds < 3; step += 1) {
+      const maxScrollTop = Math.min(
+        Math.max(document.documentElement.scrollHeight - viewportHeight, 0),
+        140_000,
+      );
+      if (scrollTop < maxScrollTop) {
+        scrollTop = Math.min(maxScrollTop, scrollTop + stepDistance);
+        stableBottomRounds = 0;
+      } else {
+        stableBottomRounds += 1;
+      }
+      window.scrollTo(0, scrollTop);
+      await pause(scrollTop >= maxScrollTop ? 240 : 70);
       captureVisibleImages();
     }
     window.scrollTo(0, 0);
@@ -238,12 +350,8 @@ async function resolveLaunchOptions() {
 
   chromium.setGraphicsMode = false;
   return {
-    headless: true,
+    headless: 'shell' as const,
     executablePath: await chromium.executablePath(),
     args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
   };
-}
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }

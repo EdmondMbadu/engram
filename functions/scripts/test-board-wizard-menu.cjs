@@ -1,18 +1,24 @@
 const assert = require('node:assert/strict');
 const {
   bestBoardWizardSrcsetUrl,
+  extractBoardWizardPictureImages,
   isPlausibleBoardWizardFoodImageContext,
   matchBoardWizardMenuImage,
 } = require('../lib/board-wizard-menu-images.js');
 const {
   extractStructuredBoardWizardMenuItems,
 } = require('../lib/board-wizard-menu.js');
+const {
+  looksLikeAntiBotChallenge,
+} = require('../lib/html-fetch.js');
 
 const classicImage = 'https://img.cdn4dd.com/classic-cheesesteak.jpg';
 const chickenImage = 'https://img.cdn4dd.com/chicken-cheesesteak.jpg';
+const capsCreationImage = 'https://img.cdn4dd.com/caps-creation.jpg';
 const images = [
   { alt: 'Classic Cheesesteak', src: classicImage },
   { alt: 'Chicken Cheesesteak', src: chickenImage },
+  { alt: "CAP'S Creation", src: capsCreationImage },
   { alt: 'Retro game console', src: 'https://example.com/classic-console.jpg' },
 ];
 
@@ -25,6 +31,27 @@ assert.equal(
   bestBoardWizardSrcsetUrl('small.jpg 320w, large.jpg 1200w'),
   'large.jpg',
   'selects the widest srcset candidate',
+);
+assert.equal(
+  bestBoardWizardSrcsetUrl(
+    'https://cdn.example/fit=cover,width=400/photo.jpg 1x, https://cdn.example/fit=cover,width=800/photo.jpg 2x',
+  ),
+  'https://cdn.example/fit=cover,width=800/photo.jpg',
+  'does not split CDN transformation commas as srcset candidate boundaries',
+);
+assert.deepEqual(
+  extractBoardWizardPictureImages(`
+    <picture>
+      <source srcset="/food/chicken-small.jpg 1x, /food/chicken-large.jpg 2x">
+      <img src="/shared-lazy-placeholder.jpg" alt="">
+    </picture>
+    <div><span>Chicken Cheesesteak</span><span>Chicken and provolone.</span></div>
+  `, 'https://restaurant.example/menu'),
+  [{
+    alt: 'Chicken Cheesesteak',
+    src: 'https://restaurant.example/food/chicken-large.jpg',
+  }],
+  'preserves a picture source image instead of its nested lazy placeholder',
 );
 assert.equal(
   matchBoardWizardMenuImage('Chicken Cheesesteak', images),
@@ -60,11 +87,18 @@ const structuredHtml = `
         "hasMenuSection": [{
           "@type": "MenuSection",
           "name": "Cheesesteaks",
-          "hasMenuItem": [{
-            "@type": "MenuItem",
-            "name": "Chicken Cheesesteak",
-            "description": "Chicken, provolone &amp; onions."
-          }]
+          "hasMenuItem": [
+            {
+              "@type": "MenuItem",
+              "name": "Chicken Cheesesteak",
+              "description": "Chicken, provolone &amp; onions."
+            },
+            {
+              "@type": "MenuItem",
+              "name": "CAP&apos;S Creation",
+              "description": "Build your own sandwich."
+            }
+          ]
         }]
       }
     }
@@ -78,8 +112,31 @@ assert.deepEqual(
     price: '',
     category: 'Cheesesteaks',
     imageUrl: chickenImage,
+  }, {
+    title: "CAP'S Creation",
+    description: 'Build your own sandwich.',
+    price: '',
+    category: 'Cheesesteaks',
+    imageUrl: capsCreationImage,
   }],
-  'extracts current JSON-LD menu membership, category, description, and page-bound photo',
+  'extracts current JSON-LD menu membership, decodes entities, and binds page photos',
+);
+assert.equal(
+  looksLikeAntiBotChallenge(`
+    <html><head><title>Capriotti's Menu</title></head><body>
+      <p>Checking if the site connection is secured...</p>
+      <script type="application/ld+json">{"@type":"Restaurant","hasMenu":{"@type":"MenuItem"}}</script>
+      ${'<img src="food.jpg" alt="Menu item">'.repeat(20)}
+      ${'Current restaurant menu content '.repeat(5_000)}
+    </body></html>
+  `),
+  false,
+  'does not reject a complete rendered page because it retains challenge-banner text',
+);
+assert.equal(
+  looksLikeAntiBotChallenge('<html><title>Just a moment...</title>Checking if the site connection is secure</html>'),
+  true,
+  'still rejects a small challenge-only page',
 );
 
 console.log('board wizard menu extraction tests passed');

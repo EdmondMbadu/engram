@@ -63,10 +63,16 @@ import {
 } from './board-wizard-commerce';
 import {
   bestBoardWizardSrcsetUrl,
+  extractBoardWizardPictureImages,
   isPlausibleBoardWizardFoodImageContext,
   matchBoardWizardMenuImage,
 } from './board-wizard-menu-images';
 import { extractStructuredBoardWizardMenuItems } from './board-wizard-menu';
+import {
+  rankBoardWizardImageSearchResults,
+  searchBraveImages,
+  type BoardWizardImageSearchIntent,
+} from './board-wizard-image-search';
 import {
   clientTimestamp,
   deleteChatEntityForUser,
@@ -102,6 +108,7 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
 });
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const googleCustomSearchApiKey = defineSecret('GOOGLE_CUSTOM_SEARCH_API_KEY');
+const braveSearchApiKey = defineSecret('BRAVE_SEARCH_API_KEY');
 const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? '';
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? '';
@@ -4881,7 +4888,7 @@ async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, ht
   const importantLinks = links.filter(isBoardWizardRestaurantLink).slice(0, 18);
   // Keep the complete bounded image set for item-to-photo matching. Only the small preview is
   // included in the model context so a long menu does not crowd out the menu text.
-  const allImages = extractBoardWizardImages(html, baseUrl).slice(0, 220);
+  const allImages = extractBoardWizardImages(html, baseUrl).slice(0, 500);
   const images = allImages.slice(0, 24);
   const linkedContext = '';
   const restaurantLike = looksLikeRestaurantWizardUrl(inputUrl, pageText, importantLinks);
@@ -4984,17 +4991,20 @@ function extractBoardWizardLinks(html: string, baseUrl: string): BoardWizardUrlL
 }
 
 function extractBoardWizardImages(html: string, baseUrl: string): BoardWizardUrlImage[] {
-  const images: BoardWizardUrlImage[] = [];
+  // Responsive storefronts often keep the real asset exclusively on <picture><source>
+  // while the nested <img src> is a placeholder. Preserve the title-bearing picture
+  // association before collecting standalone images.
+  const images: BoardWizardUrlImage[] = extractBoardWizardPictureImages(html, baseUrl);
   const imagePattern = /<img\b([^>]*)>/gi;
   let match: RegExpExecArray | null;
-  while ((match = imagePattern.exec(html)) && images.length < 240) {
+  while ((match = imagePattern.exec(html)) && images.length < 600) {
     const attrs = match[1];
     const srcset = htmlAttribute(attrs, 'srcset') || htmlAttribute(attrs, 'data-srcset');
-    const src = htmlAttribute(attrs, 'src')
+    const src = htmlAttribute(attrs, 'data-lw-current-src')
       || bestBoardWizardSrcsetUrl(srcset)
-      || htmlAttribute(attrs, 'data-lw-current-src')
       || htmlAttribute(attrs, 'data-src')
-      || htmlAttribute(attrs, 'data-original');
+      || htmlAttribute(attrs, 'data-original')
+      || htmlAttribute(attrs, 'src');
     const absolute = src ? safeAbsoluteUrl(src, baseUrl) : '';
     if (!absolute || !canTryCoverImageUrl(absolute)) {
       continue;
@@ -5023,7 +5033,7 @@ function extractBoardWizardImages(html: string, baseUrl: string): BoardWizardUrl
     }
     seen.add(image.src);
     return true;
-  });
+  }).slice(0, 600);
 }
 
 function extractBoardWizardMenuItems(lines: string[], images: BoardWizardUrlImage[]): BoardWizardMenuItem[] {
@@ -5183,123 +5193,6 @@ function extractBoardWizardJsonLdText(html: string): string {
     .filter(Boolean)
     .slice(0, 4)
     .join('\n');
-}
-
-function buildKnownRestaurantUrlExtraction(sourceUrl: string): BoardWizardUrlExtraction | null {
-  let url: URL;
-  try {
-    url = new URL(sourceUrl);
-  } catch {
-    return null;
-  }
-
-  if (!/(^|\.)capriottis\.com$/i.test(url.hostname)) {
-    return null;
-  }
-
-  const restaurantName = "Capriotti's Sandwich Shop";
-  const menuItems: BoardWizardMenuItem[] = [
-    {
-      title: 'The Bobbie',
-      description: 'Homemade turkey, cranberry sauce, stuffing, and mayo on a sub roll.',
-      price: '',
-      category: 'Signature Subs',
-      imageUrl: '',
-    },
-    {
-      title: 'Classic Cheesesteak',
-      description: 'A hot cheesesteak with steak and melted cheese on a sub roll.',
-      price: '',
-      category: 'Cheesesteaks',
-      imageUrl: '',
-    },
-    {
-      title: 'Capastrami',
-      description: 'Hot pastrami with Swiss cheese, Russian dressing, and coleslaw.',
-      price: '',
-      category: 'Signature Subs',
-      imageUrl: '',
-    },
-    {
-      title: 'Homemade Turkey',
-      description: 'Turkey roasted in-house and served as a Capriotti\'s classic sub.',
-      price: '',
-      category: 'Turkey Subs',
-      imageUrl: '',
-    },
-    {
-      title: 'Italian Sub',
-      description: 'An Italian-style sub with deli meats, cheese, and classic toppings.',
-      price: '',
-      category: 'Classic Subs',
-      imageUrl: '',
-    },
-    {
-      title: 'Wagyu Roast Beef',
-      description: 'American Wagyu roast beef served as a hearty specialty sub.',
-      price: '',
-      category: 'American Wagyu',
-      imageUrl: '',
-    },
-    {
-      title: 'Chicken Cheesesteak',
-      description: 'A chicken cheesesteak with melted cheese on a sub roll.',
-      price: '',
-      category: 'Cheesesteaks',
-      imageUrl: '',
-    },
-    {
-      title: 'Impossible Cheese Steak',
-      description: 'A plant-based cheesesteak option with Impossible meat and cheese.',
-      price: '',
-      category: 'Vegetarian',
-      imageUrl: '',
-    },
-    {
-      title: 'Cole Turkey',
-      description: 'Homemade turkey with provolone, Russian dressing, and coleslaw.',
-      price: '',
-      category: 'Turkey Subs',
-      imageUrl: '',
-    },
-    {
-      title: 'American Wagyu Slaw Be Jo',
-      description: 'American Wagyu beef with provolone, Russian dressing, and coleslaw.',
-      price: '',
-      category: 'American Wagyu',
-      imageUrl: '',
-    },
-    {
-      title: 'Classic Cheese Steak',
-      description: 'A Capriotti\'s cheesesteak staple with steak and melted cheese.',
-      price: '',
-      category: 'Cheesesteaks',
-      imageUrl: '',
-    },
-    {
-      title: 'Grilled Italian',
-      description: 'A warm Italian-style sandwich with deli meats and melted cheese.',
-      price: '',
-      category: 'Classic Subs',
-      imageUrl: '',
-    },
-  ];
-
-  const context = [
-    `Source URL: ${sourceUrl}`,
-    `Page title: ${restaurantName} menu`,
-    `Site name: ${restaurantName}`,
-    'Detected page type: restaurant/menu. Build one restaurant board with menu-item cards and a menu action card.',
-    `Extracted menu item candidates:\n${menuItems.map((item) => `- ${item.title} [${item.category}]: ${item.description}`).join('\n')}`,
-  ].join('\n\n');
-
-  return {
-    context,
-    restaurantLike: true,
-    menuItems,
-    pageTitle: `${restaurantName} Menu`,
-    siteName: restaurantName,
-  };
 }
 
 function buildBoardWizardAccommodationExtraction(inputUrl: string, finalUrl: string, html: string): BoardWizardAccommodationExtraction | null {
@@ -5702,8 +5595,10 @@ export const generateBoardWizardBatch = onCall(
     region: callableRegion,
     cors: true,
     timeoutSeconds: 180,
-    memory: '1GiB',
-    secrets: [geminiApiKey, googlePlacesApiKey, googleCustomSearchApiKey],
+    memory: '2GiB',
+    concurrency: 1,
+    maxInstances: 20,
+    secrets: [geminiApiKey, googlePlacesApiKey, googleCustomSearchApiKey, braveSearchApiKey],
   },
   async (request) => {
     const userId = request.auth?.uid;
@@ -5824,14 +5719,35 @@ export const generateBoardWizardBatch = onCall(
       }
     }
     if (mode === 'url' && url) {
+      const urlIntakeStartedAt = Date.now();
       try {
         const fetched = await fetchHtmlWithFallback(url, {
-          timeoutMs: 25_000,
-          preferBrowser: true,
+          timeoutMs: 30_000,
+          preferBrowser: false,
           allowBrowserFallback: true,
         });
-        if (!looksLikeAntiBotChallenge(fetched.html)) {
+        const blocked = looksLikeAntiBotChallenge(fetched.html);
+        logger.info('Board wizard URL fetch completed.', {
+          userId,
+          urlHost: safeCommerceHostname(url),
+          finalHost: safeCommerceHostname(fetched.finalUrl || url),
+          method: fetched.method,
+          status: fetched.status,
+          blocked,
+          htmlCharacters: fetched.html.length,
+          durationMs: Date.now() - urlIntakeStartedAt,
+          attempts: fetched.attempts,
+        });
+        if (!blocked) {
           urlExtraction = await buildBoardWizardUrlContext(url, fetched.finalUrl || url, fetched.html);
+          logger.info('Board wizard URL extraction completed.', {
+            userId,
+            urlHost: safeCommerceHostname(url),
+            restaurantLike: urlExtraction.restaurantLike,
+            menuItemCount: urlExtraction.menuItems.length,
+            menuItemImageCount: urlExtraction.menuItems.filter((item) => !!item.imageUrl).length,
+            durationMs: Date.now() - urlIntakeStartedAt,
+          });
           // Restaurant menus can resemble product grids. Give a strongly extracted menu
           // precedence so its food-card behavior and page-bound photos are preserved.
           if (!(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
@@ -5839,6 +5755,14 @@ export const generateBoardWizardBatch = onCall(
             commerceExtraction = commerce.isCommerce
               ? await enrichCommerceProductDetails(commerce)
               : null;
+            logger.info('Board wizard commerce classification completed.', {
+              userId,
+              urlHost: safeCommerceHostname(url),
+              isCommerce: commerce.isCommerce,
+              productCount: commerce.products.length,
+              productImageCount: commerce.products.filter((product) => !!product.imageUrl).length,
+              durationMs: Date.now() - urlIntakeStartedAt,
+            });
           }
           if (!commerceExtraction) {
             accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
@@ -5855,13 +5779,13 @@ export const generateBoardWizardBatch = onCall(
         accommodationExtraction = buildFallbackAccommodationExtraction(url);
       }
       if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
-        // Known-site data is a last-resort safety net only. It must never prevent a live
-        // page—with its exact item photos and current menu—from being extracted.
-        urlExtraction = buildKnownRestaurantUrlExtraction(url);
-      }
-      if (!urlExtraction && !accommodationExtraction && !commerceExtraction) {
         urlExtraction = buildBoardWizardResearchFallbackExtraction(url);
         urlResearchFallback = true;
+        logger.warn('Board wizard URL extraction is using grounded research fallback.', {
+          userId,
+          urlHost: safeCommerceHostname(url),
+          durationMs: Date.now() - urlIntakeStartedAt,
+        });
       }
     }
 
@@ -6860,8 +6784,11 @@ async function enrichBoardWizardBatchWithPlaces(
       if (isBoardWizardMenuItemCard(card) && !card.imageUrl) {
         const itemImageUrl = await resolveBoardWizardMenuItemImage(card, searchContext, customSearchApiKey, menuImageCache);
         if (itemImageUrl) {
-          return { ...card, imageUrl: itemImageUrl };
+          return { ...card, imageUrl: itemImageUrl, imageSource: 'search' as const };
         }
+        // Restaurant dishes are not Wikipedia entities or generic places. If exact page and
+        // exact web-search images both fail, preserve an honest empty image.
+        return card;
       }
       return enrichBoardWizardCard(card, searchContext, apiKey, customSearchApiKey);
     },
@@ -6875,7 +6802,7 @@ async function enrichBoardWizardBatchWithPlaces(
       '',
     );
     let provider = imageUrl ? 'wikimedia' : '';
-    if (!imageUrl && customSearchApiKey) {
+    if (!imageUrl) {
       imageUrl = await withBoardWizardTimeout(
         findBoardWizardVerifiedWebImage(card, searchContext, customSearchApiKey),
         5_000,
@@ -7184,9 +7111,7 @@ async function buildBoardWizardImageOnlyBatch(
     imageUrl = await resolveBoardWizardMenuItemImage(card, options.targetBoardTitle, customSearchApiKey, new Map());
   }
   if (!imageUrl && (card.type === 'food' || /food|dish|dessert|cake|menu-item/i.test(`${card.title} ${card.tags.join(' ')}`))) {
-    imageUrl = customSearchApiKey
-      ? await findBoardWizardMenuItemWebImage(card.image_query, customSearchApiKey, card.title)
-      : '';
+    imageUrl = await findBoardWizardMenuItemWebImage(card.image_query, customSearchApiKey, card.title);
   }
   if (!imageUrl && card.type !== 'food' && shouldResolveBoardWizardCardAsPlace(card) && apiKey) {
     const enriched = await enrichBoardWizardCardWithPlace(card, options.targetBoardTitle, apiKey);
@@ -7460,6 +7385,8 @@ function buildRestaurantMenuWizardBatch(
     image_query: `${item.title} ${restaurantName} food`.slice(0, 120),
     place_query: restaurantName.slice(0, 140),
     imageUrl: item.imageUrl || undefined,
+    sourceUrl: options.sourceUrl,
+    imageSource: item.imageUrl ? 'source-page' : 'missing',
   }));
   const cards = [
     ...menuCards,
@@ -7537,6 +7464,8 @@ function shapeRestaurantMenuWizardBatch(
     image_query: `${item.title} ${restaurantName} food`.slice(0, 120),
     place_query: restaurantName.slice(0, 140),
     imageUrl: item.imageUrl || undefined,
+    sourceUrl: options.sourceUrl,
+    imageSource: item.imageUrl ? 'source-page' : 'missing',
   }));
   const finalAction: GeneratedBoardWizardCard = actionCard
     ? { ...actionCard, tags: mergeBoardWizardTags(actionCard.tags, ['action']) }
@@ -7608,7 +7537,7 @@ async function enrichBoardWizardCard(
         audioPreviewUrl: musicAudioPreviewUrl || referenceEnriched.audioPreviewUrl || card.audioPreviewUrl,
       };
     }
-    if (customSearchApiKey && referenceKind && referenceKind !== 'person') {
+    if (referenceKind && referenceKind !== 'person') {
       const webImageUrl = await findBoardWizardReferenceWebImage(imageQuery, customSearchApiKey);
       if (webImageUrl) {
         return {
@@ -8183,17 +8112,15 @@ async function findBoardWizardMenuItemWebImage(
   customSearchApiKey: string,
   entityName = query,
 ): Promise<string> {
-  return customSearchApiKey
-    ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, {
-        imageType: 'photo',
-        entityName,
-        requireFoodContext: true,
-      })
-    : '';
+  return await findWebSearchImageForBoardWizard(query, customSearchApiKey, {
+    imageType: 'photo',
+    entityName,
+    requireFoodContext: true,
+  });
 }
 
 async function findBoardWizardReferenceWebImage(query: string, customSearchApiKey: string): Promise<string> {
-  return customSearchApiKey ? await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, { imageType: 'any' }) : '';
+  return await findWebSearchImageForBoardWizard(query, customSearchApiKey, { imageType: 'any' });
 }
 
 async function findBoardWizardVerifiedWebImage(
@@ -8204,13 +8131,94 @@ async function findBoardWizardVerifiedWebImage(
   const entityName = boardWizardImageEntityName(card);
   const queries = buildBoardWizardCommonsSearchQueries(card, searchContext).slice(0, 2);
   for (const query of queries) {
-    const imageUrl = await findGoogleCustomSearchImageForBoardWizard(query, customSearchApiKey, {
+    const imageUrl = await findWebSearchImageForBoardWizard(query, customSearchApiKey, {
       imageType: card.image_intent === 'place' || card.image_intent === 'portrait' ? 'photo' : 'any',
       entityName,
     });
     if (imageUrl) return imageUrl;
   }
   return '';
+}
+
+let braveImageSearchUnavailableUntil = 0;
+
+async function findWebSearchImageForBoardWizard(
+  query: string,
+  legacyGoogleApiKey: string,
+  options: { imageType?: 'photo' | 'any'; entityName?: string; requireFoodContext?: boolean } = {},
+): Promise<string> {
+  const braveApiKey = braveSearchApiKey.value().trim();
+  if (braveApiKey && Date.now() >= braveImageSearchUnavailableUntil) {
+    const outcome = await searchBraveImages(query, braveApiKey, { timeoutMs: 4_000 });
+    if (outcome.status === 401 || outcome.status === 403) {
+      braveImageSearchUnavailableUntil = Date.now() + 60 * 60 * 1000;
+    } else if (outcome.status === 429) {
+      braveImageSearchUnavailableUntil = Date.now() + 60 * 1000;
+    }
+    if (outcome.errorMessage || (outcome.status > 0 && outcome.status !== 200)) {
+      logger.warn('Board wizard Brave image search failed.', {
+        query,
+        status: outcome.status,
+        error: outcome.errorMessage,
+      });
+    }
+    const entityName = options.entityName || query;
+    const intent: BoardWizardImageSearchIntent = options.requireFoodContext ? 'food' : 'any';
+    const ranked = rankBoardWizardImageSearchResults(outcome.results, entityName, intent, query).slice(0, 4);
+    const verifiedUrls = await Promise.all(ranked.map(async (result) => {
+      for (const candidate of [result.imageUrl, result.thumbnailUrl]) {
+        if (candidate && await isUsableBoardWizardRemoteImage(candidate)) {
+          return candidate;
+        }
+      }
+      return '';
+    }));
+    const verifiedUrl = verifiedUrls.find(Boolean) ?? '';
+    if (verifiedUrl) {
+      return verifiedUrl;
+    }
+  }
+
+  return legacyGoogleApiKey
+    ? await findGoogleCustomSearchImageForBoardWizard(query, legacyGoogleApiKey, options)
+    : '';
+}
+
+async function isUsableBoardWizardRemoteImage(value: string): Promise<boolean> {
+  let currentUrl = safeBoardCardRemoteImageUrl(value);
+  if (!currentUrl) return false;
+  try {
+    for (let redirectCount = 0; redirectCount <= 2; redirectCount += 1) {
+      const response = await fetch(currentUrl, {
+        method: 'GET',
+        redirect: 'manual',
+        headers: {
+          'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*;q=0.5',
+          'Range': 'bytes=0-2047',
+          'User-Agent': 'LivingWiki/1.0 board-image-verification (https://livingwiki.com)',
+        },
+        signal: AbortSignal.timeout(2_500),
+      });
+      if (response.status >= 300 && response.status < 400) {
+        const location = response.headers.get('location');
+        currentUrl = location
+          ? safeBoardCardRemoteImageUrl(new URL(location, currentUrl).toString())
+          : '';
+        await response.body?.cancel();
+        if (!currentUrl) return false;
+        continue;
+      }
+      const contentType = (response.headers.get('content-type') ?? '').toLowerCase();
+      const contentLength = Number(response.headers.get('content-length') ?? '0');
+      await response.body?.cancel();
+      return response.ok
+        && /^image\/(?:jpeg|jpg|png|webp|avif)\b/.test(contentType)
+        && (!Number.isFinite(contentLength) || contentLength === 0 || contentLength <= 12 * 1024 * 1024);
+    }
+  } catch {
+    return false;
+  }
+  return false;
 }
 
 async function findAppleMusicMediaForBoardWizard(

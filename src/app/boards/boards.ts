@@ -2451,6 +2451,18 @@ export class BoardsComponent implements OnDestroy {
         this.wizardStep.set('choose');
         return;
       }
+      if (this.wizardMode() === 'url') {
+        this.wizardError.set(
+          error instanceof Error
+            ? `${error.message} The source was not replaced with an offline draft.`
+            : 'That page could not be imported. The source was not replaced with an offline draft.',
+        );
+        this.wizardResult.set(null);
+        this.wizardPreviewCards.set([]);
+        this.wizardSelectedCardIds.set(new Set());
+        this.wizardStep.set('choose');
+        return;
+      }
       const localFallback = this.buildLocalWizardBatch(refinement);
       const fallback = this.wizardMode() === 'photos'
         ? this.attachWizardPhotosToBatch(localFallback)
@@ -8248,7 +8260,7 @@ export class BoardsComponent implements OnDestroy {
       refinement ? `Refinement: ${refinement}` : '',
     ].filter(Boolean).join('\n');
     const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
-      timeout: 150_000,
+      timeout: 170_000,
     });
     const response = await callable({
       mode: this.wizardMode(),
@@ -8530,12 +8542,6 @@ export class BoardsComponent implements OnDestroy {
         : mode === 'url'
           ? this.wizardUrl()
           : this.wizardPrompt();
-    if (mode === 'url') {
-      const restaurantFallback = this.buildLocalRestaurantUrlWizardBatch(source || refinement);
-      if (restaurantFallback) {
-        return restaurantFallback;
-      }
-    }
     if (this.isTourWizardMode(mode)) {
       return this.buildLocalTourWizardBatch(source || refinement || 'Local tour');
     }
@@ -8620,53 +8626,6 @@ export class BoardsComponent implements OnDestroy {
         short_summary: `Exact location: ///${words}`,
         what3wordsAddress: words,
       }],
-    };
-  }
-
-  private buildLocalRestaurantUrlWizardBatch(source: string): BoardWizardGeneratedBatch | null {
-    const lower = source.toLowerCase();
-    const knownItems = lower.includes('capriottis.com')
-      ? ['The Bobbie', 'Classic Cheesesteak', 'Capastrami', 'Homemade Turkey', 'Italian Sub', 'Wagyu Roast Beef', 'Chicken Cheesesteak', 'Impossible Cheese Steak', 'Cole Turkey', 'American Wagyu Slaw Be Jo']
-      : null;
-    if (!knownItems) {
-      return null;
-    }
-    const count = this.wizardCount();
-    const restaurant = lower.includes('capriottis.com') ? "Capriotti's Sandwich Shop" : this.titleFromWizardInput(source);
-    const cards = knownItems.slice(0, Math.max(1, count - 1)).map((item, index): BoardWizardGeneratedCard => ({
-      title: item,
-      subtitle: $localize`Menu item`,
-      notes: `Food item from ${restaurant}. Review the details and image before saving.`,
-      type: 'food',
-      scope: 'place',
-      status: index < 3 ? 'favorite' : 'saved',
-      rating: index < 3 ? 5 : 4,
-      tags: ['menu-item', 'food'],
-      image_query: `${item} ${restaurant} food`,
-      place_query: restaurant,
-    }));
-    cards.push({
-      title: $localize`Open Menu`,
-      subtitle: $localize`Original URL`,
-      notes: $localize`Open the source menu and edit this action card if needed.`,
-      type: 'note',
-      scope: 'place',
-      status: 'planned',
-      rating: 4,
-      tags: ['action', 'menu'],
-      image_query: `${restaurant} menu`,
-      place_query: source,
-    });
-    return {
-      board: {
-        title: `${restaurant} Menu`,
-        description: $localize`Food-item board generated from a restaurant URL.`,
-        icon: 'restaurant',
-        tone: 'coral',
-        kind: 'standard',
-        tourMeta: null,
-      },
-      cards: cards.slice(0, count),
     };
   }
 

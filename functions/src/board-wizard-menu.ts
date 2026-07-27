@@ -58,7 +58,7 @@ function visitJsonLdMenuNode(
     : inheritedCategory;
   const isMenuItem = types.some((type) => stringValue(type).toLowerCase() === 'menuitem');
   if (isMenuItem) {
-    const title = stringValue(record.name).replace(/\s+/g, ' ').trim().slice(0, 180);
+    const title = stripStructuredMenuMarkup(stringValue(record.name)).slice(0, 180);
     if (title) {
       items.push({
         title,

@@ -3830,7 +3830,7 @@
                         } @else {
                           <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                         }
-                        @if (card.productUrl) {
+                        @if (card.productUrl || card.sourceUrl) {
                           <span
                             style="position: absolute; top: 0.55rem; left: 0.55rem; display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 999px; background: rgba(31, 41, 55, 0.86); padding: 0.3rem 0.48rem; color: #fff; font-size: 0.64rem; font-weight: 950;"
                           >
