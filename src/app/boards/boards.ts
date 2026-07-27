@@ -18,6 +18,7 @@ import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons'
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import {
   boardQuizEligibleCardCount,
@@ -910,6 +911,7 @@ export class BoardsComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly sanitizer = inject(DomSanitizer);
+  readonly spotify = inject(SpotifyPlaybackService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
@@ -4287,6 +4289,41 @@ export class BoardsComponent implements OnDestroy {
     return card.spotifyAlbumName || card.notes || 'Open your music service for full playback when available.';
   }
 
+  openSpotifyConnection(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.spotify.openConnectionDialog();
+  }
+
+  playSongWithSpotify(
+    card: BoardCard,
+    board: Board | null = this.selectedBoard(),
+    event?: Event,
+  ): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const track = this.spotifyTrackForCard(card, board);
+    this.stopSongPreview();
+    if (this.spotify.isTrackActive(track.uri) && this.spotify.connected()) {
+      void this.spotify.togglePlayback();
+      return;
+    }
+    const queue = this.songCards(board)
+      .map((song) => this.spotifyTrackForCard(song, board));
+    void this.spotify.requestPlay(track, queue);
+  }
+
+  spotifyPlayLabel(card: BoardCard): string {
+    const uri = this.spotifyTrackUriForCard(card);
+    if (!this.spotify.connected()) {
+      return 'Connect & play';
+    }
+    if (!this.spotify.isTrackActive(uri)) {
+      return 'Play full song';
+    }
+    return this.spotify.playing() ? 'Pause' : 'Resume';
+  }
+
   nextTourCard(card: BoardCard, cards = this.selectedBoardTourCards()): BoardCard | null {
     const sequence = card.tour?.sequence ?? 0;
     return cards.find((item) => (item.tour?.sequence ?? 0) === sequence + 1) ?? null;
@@ -6816,6 +6853,31 @@ export class BoardsComponent implements OnDestroy {
 
   hasSpotifyTrack(card: Pick<BoardCard, 'spotifyTrackId' | 'spotifyTrackUrl' | 'spotifyUri'>): boolean {
     return !!this.spotifyTrackIdForCard(card);
+  }
+
+  spotifyTrackUriForCard(card: Pick<BoardCard, 'spotifyTrackId' | 'spotifyTrackUrl' | 'spotifyUri'>): string {
+    const trackId = this.spotifyTrackIdForCard(card);
+    return trackId ? `spotify:track:${trackId}` : '';
+  }
+
+  private spotifyTrackForCard(card: BoardCard, board: Board | null): SpotifyTrack {
+    const uri = this.spotifyTrackUriForCard(card);
+    const context = board?.title ?? '';
+    const inferredArtist = context
+      .replace(/[’']s\s+(?:greatest hits|best songs|discography|essentials).*$/i, '')
+      .replace(/\b(?:greatest hits|best songs|discography|essentials)\b.*$/i, '')
+      .trim();
+    return {
+      uri,
+      title: card.title,
+      artist: this.songArtistLabel(card),
+      album: card.spotifyAlbumName || '',
+      artworkUrl: card.spotifyArtworkUrl || card.imageUrl || board?.imageUrl || '',
+      spotifyUrl: this.spotifyTrackHref(card),
+      lookupTitle: card.title,
+      lookupArtist: card.spotifyArtistName || inferredArtist,
+      lookupContext: context,
+    };
   }
 
   private spotifyTrackIdForCard(card: Pick<BoardCard, 'spotifyTrackId' | 'spotifyTrackUrl' | 'spotifyUri'>): string {

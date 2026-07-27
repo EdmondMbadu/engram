@@ -1,0 +1,261 @@
+@if (spotify.connectDialogOpen()) {
+  <div
+    class="spotify-connect-backdrop"
+    role="presentation"
+    (click)="spotify.closeConnectionDialog()"
+  >
+    <section
+      class="spotify-connect-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spotify-connect-title"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        type="button"
+        class="spotify-connect-dialog__close"
+        aria-label="Close Spotify connection"
+        (click)="spotify.closeConnectionDialog()"
+      >
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <div class="spotify-connect-dialog__mark" aria-hidden="true">
+        <span class="material-symbols-outlined">graphic_eq</span>
+      </div>
+
+      @if (spotify.connected() && spotify.account(); as account) {
+        <span class="spotify-connect-dialog__eyebrow">
+          <i></i>
+          Connected to Spotify
+        </span>
+        <h2 id="spotify-connect-title">Music follows you across every board.</h2>
+        <p>
+          Your private connection is ready. Choose a song on any board and it can play in
+          LivingWiki without opening a new tab.
+        </p>
+
+        <div class="spotify-account-card">
+          @if (account.imageUrl) {
+            <img [src]="account.imageUrl" alt="" />
+          } @else {
+            <span class="material-symbols-outlined">person</span>
+          }
+          <div>
+            <small>Spotify account</small>
+            <strong>{{ account.displayName }}</strong>
+            <span>{{ account.product || 'Spotify' }} plan</span>
+          </div>
+          <span class="material-symbols-outlined spotify-account-card__check">check_circle</span>
+        </div>
+
+        @if (spotify.needsPremium()) {
+          <div class="spotify-connect-dialog__warning">
+            <span class="material-symbols-outlined">info</span>
+            Full-song browser playback requires Spotify Premium. Your connection is saved, but
+            Spotify may ask you to upgrade before audio starts.
+          </div>
+        }
+
+        @if (spotify.notice()) {
+          <p class="spotify-connect-dialog__notice" role="status">{{ spotify.notice() }}</p>
+        }
+        @if (spotify.error()) {
+          <p class="spotify-connect-dialog__error" role="alert">{{ spotify.error() }}</p>
+        }
+
+        <div class="spotify-connect-dialog__actions">
+          <button type="button" class="spotify-connect-primary" (click)="spotify.closeConnectionDialog()">
+            <span class="material-symbols-outlined">check</span>
+            Done
+          </button>
+          <button
+            type="button"
+            class="spotify-connect-secondary"
+            [disabled]="spotify.connecting()"
+            (click)="spotify.disconnect()"
+          >
+            {{ spotify.connecting() ? 'Disconnecting…' : 'Disconnect' }}
+          </button>
+        </div>
+      } @else {
+        <span class="spotify-connect-dialog__eyebrow">
+          <i></i>
+          Play with Spotify
+        </span>
+        <h2 id="spotify-connect-title">Full songs, right inside your boards.</h2>
+        <p>
+          Connect once, then tap any Spotify song on any LivingWiki board. Your account stays
+          private and the board never receives your credentials.
+        </p>
+
+        <div class="spotify-connect-benefits">
+          <div>
+            <span class="material-symbols-outlined">all_inclusive</span>
+            <strong>Connect once</strong>
+            <small>Use the same connection across every board.</small>
+          </div>
+          <div>
+            <span class="material-symbols-outlined">lock</span>
+            <strong>Private by design</strong>
+            <small>Only LivingWiki can access the encrypted connection.</small>
+          </div>
+          <div>
+            <span class="material-symbols-outlined">play_circle</span>
+            <strong>Stay in the moment</strong>
+            <small>Play, pause, skip, and switch devices here.</small>
+          </div>
+        </div>
+
+        <div class="spotify-connect-dialog__fine-print">
+          <span class="material-symbols-outlined">workspace_premium</span>
+          Spotify Premium is required for full-song playback in the browser.
+        </div>
+
+        @if (spotify.error()) {
+          <p class="spotify-connect-dialog__error" role="alert">{{ spotify.error() }}</p>
+        }
+
+        @if (spotify.connectionLoading()) {
+          <div class="spotify-connect-loading" role="status">
+            <span></span>
+            Checking your Spotify connection…
+          </div>
+        } @else if (!spotify.signedIn()) {
+          <a class="spotify-connect-primary" [href]="spotify.signInHref()">
+            <span class="material-symbols-outlined">login</span>
+            Sign in to LivingWiki
+          </a>
+          <small class="spotify-connect-dialog__account-note">
+            A LivingWiki account is needed so your Spotify connection can follow you safely.
+          </small>
+        } @else {
+          <button
+            type="button"
+            class="spotify-connect-primary"
+            [disabled]="spotify.connecting() || !spotify.connection().configured"
+            (click)="spotify.connect()"
+          >
+            <span class="material-symbols-outlined">graphic_eq</span>
+            {{ spotify.connecting() ? 'Opening Spotify…' : 'Continue with Spotify' }}
+          </button>
+          <small class="spotify-connect-dialog__account-note">
+            Spotify will ask you to approve playback access. We never see your password.
+          </small>
+        }
+      }
+    </section>
+  </div>
+}
+
+@if (spotify.currentTrack(); as track) {
+  <aside class="spotify-dock" [class.spotify-dock--compact]="compact()" aria-label="Spotify player">
+    <div class="spotify-dock__accent"></div>
+    <button
+      type="button"
+      class="spotify-dock__collapse"
+      [attr.aria-label]="compact() ? 'Expand Spotify player' : 'Minimize Spotify player'"
+      (click)="compact.set(!compact())"
+    >
+      <span class="material-symbols-outlined">{{ compact() ? 'expand_less' : 'expand_more' }}</span>
+    </button>
+
+    <div class="spotify-dock__track">
+      @if (track.artworkUrl) {
+        <img [src]="track.artworkUrl" [alt]="track.title + ' artwork'" />
+      } @else {
+        <span class="spotify-dock__fallback material-symbols-outlined">album</span>
+      }
+      <div>
+        <small>
+          <i [class.spotify-dock__live--playing]="spotify.playing()"></i>
+          {{ spotify.connected() ? (spotify.playing() ? 'Playing with Spotify' : 'Ready on Spotify') : 'Connect to play' }}
+        </small>
+        <strong>{{ track.title }}</strong>
+        <span>{{ track.artist }}{{ track.album ? ' · ' + track.album : '' }}</span>
+      </div>
+    </div>
+
+    <div class="spotify-dock__transport">
+      <button type="button" aria-label="Previous song" (click)="spotify.previous()">
+        <span class="material-symbols-outlined">skip_previous</span>
+      </button>
+      <button
+        type="button"
+        class="spotify-dock__play"
+        [attr.aria-label]="spotify.playing() ? 'Pause song' : 'Play song'"
+        [disabled]="spotify.playerInitializing()"
+        (click)="spotify.togglePlayback()"
+      >
+        <span class="material-symbols-outlined">
+          {{ spotify.playerInitializing() ? 'progress_activity' : (spotify.playing() ? 'pause' : 'play_arrow') }}
+        </span>
+      </button>
+      <button type="button" aria-label="Next song" (click)="spotify.next()">
+        <span class="material-symbols-outlined">skip_next</span>
+      </button>
+    </div>
+
+    <div class="spotify-dock__timeline">
+      <span>{{ spotify.formatTime(spotify.positionMs()) }}</span>
+      <input
+        type="range"
+        min="0"
+        [max]="spotify.durationMs() || 1"
+        [value]="spotify.positionMs()"
+        aria-label="Song position"
+        (change)="onSeek($event)"
+      />
+      <span>{{ spotify.formatTime(spotify.durationMs()) }}</span>
+    </div>
+
+    <div class="spotify-dock__tools">
+      @if (spotify.devices().length) {
+        <label>
+          <span class="material-symbols-outlined">speaker</span>
+          <select
+            aria-label="Spotify playback device"
+            [value]="spotify.selectedDeviceId()"
+            (change)="onDeviceChange($event)"
+          >
+            @for (device of spotify.devices(); track device.id) {
+              <option [value]="device.id">{{ device.name }}</option>
+            }
+          </select>
+        </label>
+      }
+      <button
+        type="button"
+        aria-label="Spotify connection settings"
+        (click)="spotify.openConnectionDialog()"
+      >
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+      <a [href]="track.spotifyUrl" target="_blank" rel="noopener" aria-label="Open this song in Spotify">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+
+    @if (!spotify.connected()) {
+      <button type="button" class="spotify-dock__connect" (click)="spotify.openConnectionDialog()">
+        Connect Spotify to play
+      </button>
+    }
+
+    @if (spotify.error()) {
+      <button
+        type="button"
+        class="spotify-dock__message spotify-dock__message--error"
+        (click)="spotify.openConnectionDialog()"
+      >
+        <span class="material-symbols-outlined">error</span>
+        {{ spotify.error() }}
+      </button>
+    } @else if (spotify.notice()) {
+      <p class="spotify-dock__message">
+        <span class="material-symbols-outlined">info</span>
+        {{ spotify.notice() }}
+      </p>
+    }
+  </aside>
+}

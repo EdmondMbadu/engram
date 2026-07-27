@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SpotifyPlayerComponent } from './spotify-player/spotify-player';
 import { ThemeService } from './theme.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SpotifyPlayerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

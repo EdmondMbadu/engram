@@ -4,7 +4,7 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
 import { defineSecret, defineString } from 'firebase-functions/params';
-import { createHash, createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto';
 import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
@@ -103,6 +103,16 @@ const stripeCreatorAnnualPriceId = defineString('STRIPE_PRICE_CREATOR_ANNUAL', {
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://livingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
+const spotifyOAuthRedirectUri = process.env.SPOTIFY_REDIRECT_URI
+  ?? `${publicFunctionsBaseUrl}/spotifyOAuthCallback`;
+const spotifyOAuthScopes = [
+  'streaming',
+  'user-read-playback-state',
+  'user-modify-playback-state',
+  'user-read-private',
+].join(' ');
+const spotifyOAuthStateTtlMs = 10 * 60 * 1000;
+const spotifyRefreshLifetimeMs = 183 * 24 * 60 * 60 * 1000;
 const maxSmsReplyLength = 1200;
 const chatAnswerVoiceId = 'ed7fd7f55fa58dd74b904a15d1e38bf97763ae8d9faccdce8a27de3441bffa75';
 const elevenLabsPremadeNarratorVoiceIds = [
@@ -6044,6 +6054,634 @@ export const importBoardCardImage = onCall(
     };
   },
 );
+
+type SpotifyConnectionRecord = {
+  owner_user_id: string;
+  account_id: string;
+  spotify_user_id: string;
+  display_name: string;
+  profile_image_url: string;
+  product: string;
+  scopes: string[];
+  access_token: string;
+  access_token_expires_at_ms: number;
+  refresh_token: string;
+  refresh_expires_at_ms: number;
+  status: 'connected' | 'reconnect';
+  connected_at_iso: string;
+  updated_at_iso: string;
+  last_used_at_iso: string;
+};
+
+type SpotifyOAuthStateRecord = {
+  owner_user_id: string;
+  verifier: string;
+  return_url: string;
+  expires_at_ms: number;
+  consumed_at_iso: string;
+  created_at_iso: string;
+};
+
+type SpotifyOAuthTokenResponse = {
+  access_token?: unknown;
+  expires_in?: unknown;
+  refresh_token?: unknown;
+  scope?: unknown;
+  error?: unknown;
+  error_description?: unknown;
+};
+
+type SpotifyProfileResponse = {
+  account_id?: unknown;
+  id?: unknown;
+  display_name?: unknown;
+  product?: unknown;
+  images?: unknown;
+};
+
+type SpotifyDeviceResponse = {
+  devices?: unknown;
+};
+
+type SpotifyPlaybackLookup = {
+  key: string;
+  title: string;
+  artist: string;
+  context: string;
+};
+
+export const getSpotifyConnection = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 20 },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      return {
+        configured: !!spotifyClientId,
+        connected: false,
+        needsReauthorization: false,
+      };
+    }
+    const snapshot = await db.collection('spotify_connections').doc(userId).get();
+    const data = snapshot.exists ? snapshot.data() as Partial<SpotifyConnectionRecord> : null;
+    const refreshExpiresAt = Number(data?.refresh_expires_at_ms ?? 0);
+    const connected = data?.status === 'connected'
+      && !!data.refresh_token
+      && refreshExpiresAt > Date.now();
+    return {
+      configured: !!spotifyClientId,
+      connected,
+      needsReauthorization: !!data && !connected,
+      account: data
+        ? {
+            accountId: data.account_id ?? '',
+            displayName: data.display_name ?? 'Spotify listener',
+            imageUrl: data.profile_image_url ?? '',
+            product: data.product ?? '',
+            connectedAt: data.connected_at_iso ?? '',
+            refreshExpiresAt: refreshExpiresAt ? new Date(refreshExpiresAt).toISOString() : '',
+          }
+        : null,
+    };
+  },
+);
+
+export const createSpotifyConnectionUrl = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 20 },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to connect Spotify.');
+    }
+    if (!spotifyClientId) {
+      throw new HttpsError('failed-precondition', 'Spotify is not configured for LivingWiki.');
+    }
+
+    const data = request.data && typeof request.data === 'object'
+      ? request.data as Record<string, unknown>
+      : {};
+    const returnUrl = normalizeSpotifyReturnUrl(data.returnUrl);
+    const state = randomBytes(32).toString('base64url');
+    const verifier = randomBytes(64).toString('base64url');
+    const challenge = createHash('sha256').update(verifier).digest('base64url');
+    const now = Date.now();
+    const stateRecord: SpotifyOAuthStateRecord = {
+      owner_user_id: userId,
+      verifier,
+      return_url: returnUrl,
+      expires_at_ms: now + spotifyOAuthStateTtlMs,
+      consumed_at_iso: '',
+      created_at_iso: new Date(now).toISOString(),
+    };
+    await db.collection('spotify_oauth_states').doc(spotifyOAuthStateId(state)).set(stateRecord);
+
+    const url = new URL('https://accounts.spotify.com/authorize');
+    url.searchParams.set('client_id', spotifyClientId);
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('redirect_uri', spotifyOAuthRedirectUri);
+    url.searchParams.set('scope', spotifyOAuthScopes);
+    url.searchParams.set('code_challenge_method', 'S256');
+    url.searchParams.set('code_challenge', challenge);
+    url.searchParams.set('state', state);
+    return { authorizationUrl: url.toString() };
+  },
+);
+
+export const spotifyOAuthCallback = onRequest(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 60,
+    memory: '512MiB',
+  },
+  async (request, response) => {
+    const state = stringOrEmpty(request.query.state).slice(0, 200);
+    const code = stringOrEmpty(request.query.code).slice(0, 2400);
+    const authorizationError = stringOrEmpty(request.query.error).slice(0, 120);
+    let returnUrl = `${publicAppUrl}/boards`;
+    try {
+      if (!state) {
+        throw new Error('The Spotify connection could not be verified.');
+      }
+      const stateRef = db.collection('spotify_oauth_states').doc(spotifyOAuthStateId(state));
+      const stateRecord = await db.runTransaction(async (transaction) => {
+        const snapshot = await transaction.get(stateRef);
+        if (!snapshot.exists) {
+          throw new Error('This Spotify connection link is no longer valid.');
+        }
+        const data = snapshot.data() as SpotifyOAuthStateRecord;
+        returnUrl = normalizeSpotifyReturnUrl(data.return_url);
+        if (data.consumed_at_iso || data.expires_at_ms <= Date.now()) {
+          throw new Error('This Spotify connection link has expired.');
+        }
+        transaction.update(stateRef, { consumed_at_iso: new Date().toISOString() });
+        return data;
+      });
+
+      if (authorizationError) {
+        throw new Error(authorizationError === 'access_denied'
+          ? 'Spotify connection was cancelled.'
+          : 'Spotify could not authorize this connection.');
+      }
+      if (!code) {
+        throw new Error('Spotify returned no authorization code.');
+      }
+
+      const token = await exchangeSpotifyAuthorizationCode(code, stateRecord.verifier);
+      const accessToken = stringOrEmpty(token.access_token);
+      const refreshToken = stringOrEmpty(token.refresh_token);
+      if (!accessToken || !refreshToken) {
+        throw new Error('Spotify returned incomplete authorization credentials.');
+      }
+      const profile = await fetchSpotifyProfile(accessToken);
+      const now = Date.now();
+      const existing = await db.collection('spotify_connections').doc(stateRecord.owner_user_id).get();
+      const connectedAt = existing.exists
+        ? stringOrEmpty(existing.data()?.connected_at_iso) || new Date(now).toISOString()
+        : new Date(now).toISOString();
+      const record: SpotifyConnectionRecord = {
+        owner_user_id: stateRecord.owner_user_id,
+        account_id: stringOrEmpty(profile.account_id) || stringOrEmpty(profile.id),
+        spotify_user_id: stringOrEmpty(profile.id),
+        display_name: stringOrEmpty(profile.display_name).slice(0, 160) || 'Spotify listener',
+        profile_image_url: spotifyProfileImage(profile),
+        product: stringOrEmpty(profile.product).slice(0, 40),
+        scopes: stringOrEmpty(token.scope).split(/\s+/).filter(Boolean),
+        access_token: accessToken,
+        access_token_expires_at_ms: now + spotifyTokenLifetimeMs(token.expires_in),
+        refresh_token: refreshToken,
+        refresh_expires_at_ms: now + spotifyRefreshLifetimeMs,
+        status: 'connected',
+        connected_at_iso: connectedAt,
+        updated_at_iso: new Date(now).toISOString(),
+        last_used_at_iso: '',
+      };
+      await db.collection('spotify_connections').doc(stateRecord.owner_user_id).set(record);
+      response.redirect(302, spotifyReturnUrl(returnUrl, 'connected'));
+    } catch (error) {
+      logger.warn('Spotify OAuth callback failed.', {
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      response.redirect(302, spotifyReturnUrl(
+        returnUrl,
+        'error',
+        spotifyPublicErrorCode(error),
+      ));
+    }
+  },
+);
+
+export const getSpotifyPlaybackToken = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 30 },
+  async (request) => {
+    const userId = requireCallableUserId(request.auth?.uid, 'Sign in to play with Spotify.');
+    const token = await spotifyAccessTokenForUser(userId);
+    return {
+      accessToken: token.accessToken,
+      expiresAt: new Date(token.expiresAtMs).toISOString(),
+    };
+  },
+);
+
+export const listSpotifyDevices = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 30 },
+  async (request) => {
+    const userId = requireCallableUserId(request.auth?.uid, 'Sign in to use Spotify devices.');
+    const result = await spotifyApiRequestForUser(userId, '/v1/me/player/devices', { method: 'GET' });
+    const payload = await result.json().catch(() => ({})) as SpotifyDeviceResponse;
+    const devices = Array.isArray(payload.devices)
+      ? payload.devices.map((value) => {
+          const device = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+          return {
+            id: stringOrEmpty(device.id).slice(0, 180),
+            name: stringOrEmpty(device.name).slice(0, 120) || 'Spotify device',
+            type: stringOrEmpty(device.type).slice(0, 60),
+            isActive: device.is_active === true,
+            isRestricted: device.is_restricted === true,
+            volumePercent: Math.max(0, Math.min(100, Number(device.volume_percent) || 0)),
+          };
+        }).filter((device) => device.id && !device.isRestricted)
+      : [];
+    return { devices };
+  },
+);
+
+export const resolveSpotifyPlaybackTracks = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 60, memory: '512MiB' },
+  async (request) => {
+    const userId = requireCallableUserId(request.auth?.uid, 'Sign in to find songs on Spotify.');
+    const data = request.data && typeof request.data === 'object'
+      ? request.data as Record<string, unknown>
+      : {};
+    const requests: SpotifyPlaybackLookup[] = (Array.isArray(data.tracks) ? data.tracks : [])
+      .slice(0, 40)
+      .map((value, index) => {
+        const track = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+        return {
+          key: stringOrEmpty(track.key).slice(0, 180) || String(index),
+          title: stringOrEmpty(track.title).slice(0, 220),
+          artist: stringOrEmpty(track.artist).slice(0, 220),
+          context: stringOrEmpty(track.context).slice(0, 220),
+        };
+      })
+      .filter((track) => track.title);
+    if (!requests.length) {
+      throw new HttpsError('invalid-argument', 'Choose at least one song to find.');
+    }
+
+    const tracks: Array<Record<string, unknown>> = [];
+    for (let index = 0; index < requests.length; index += 5) {
+      const batch = requests.slice(index, index + 5);
+      const matches = await Promise.all(batch.map((track) => (
+        resolveSpotifyPlaybackTrack(userId, track).catch(() => null)
+      )));
+      matches.forEach((match) => {
+        if (match) {
+          tracks.push(match);
+        }
+      });
+    }
+    return { tracks };
+  },
+);
+
+export const controlSpotifyPlayback = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 30 },
+  async (request) => {
+    const userId = requireCallableUserId(request.auth?.uid, 'Sign in to control Spotify.');
+    const data = request.data && typeof request.data === 'object'
+      ? request.data as Record<string, unknown>
+      : {};
+    const action = stringOrEmpty(data.action);
+    const deviceId = stringOrEmpty(data.deviceId).slice(0, 180);
+    const deviceQuery = deviceId ? `?device_id=${encodeURIComponent(deviceId)}` : '';
+
+    if (action === 'play') {
+      const uris = Array.isArray(data.uris)
+        ? data.uris.map((uri) => stringOrEmpty(uri)).filter(isSpotifyTrackUri).slice(0, 100)
+        : [];
+      if (!uris.length) {
+        throw new HttpsError('invalid-argument', 'Choose a Spotify track to play.');
+      }
+      await spotifyApiRequestForUser(userId, `/v1/me/player/play${deviceQuery}`, {
+        method: 'PUT',
+        body: JSON.stringify({ uris }),
+      });
+      return { ok: true };
+    }
+
+    if (action === 'transfer') {
+      if (!deviceId) {
+        throw new HttpsError('invalid-argument', 'Choose a Spotify device.');
+      }
+      await spotifyApiRequestForUser(userId, '/v1/me/player', {
+        method: 'PUT',
+        body: JSON.stringify({ device_ids: [deviceId], play: true }),
+      });
+      return { ok: true };
+    }
+
+    if (action === 'seek') {
+      const positionMs = Math.max(0, Math.min(24 * 60 * 60 * 1000, Number(data.positionMs) || 0));
+      const separator = deviceQuery ? '&' : '?';
+      await spotifyApiRequestForUser(
+        userId,
+        `/v1/me/player/seek${deviceQuery}${separator}position_ms=${Math.round(positionMs)}`,
+        { method: 'PUT' },
+      );
+      return { ok: true };
+    }
+
+    const command: Record<string, { path: string; method: 'POST' | 'PUT' }> = {
+      pause: { path: '/v1/me/player/pause', method: 'PUT' },
+      resume: { path: '/v1/me/player/play', method: 'PUT' },
+      next: { path: '/v1/me/player/next', method: 'POST' },
+      previous: { path: '/v1/me/player/previous', method: 'POST' },
+    };
+    const selected = command[action];
+    if (!selected) {
+      throw new HttpsError('invalid-argument', 'That Spotify playback action is not supported.');
+    }
+    await spotifyApiRequestForUser(userId, `${selected.path}${deviceQuery}`, {
+      method: selected.method,
+    });
+    return { ok: true };
+  },
+);
+
+export const disconnectSpotify = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 20 },
+  async (request) => {
+    const userId = requireCallableUserId(request.auth?.uid, 'Sign in to disconnect Spotify.');
+    await db.collection('spotify_connections').doc(userId).delete();
+    return { disconnected: true };
+  },
+);
+
+function requireCallableUserId(userId: string | undefined, message: string): string {
+  if (!userId) {
+    throw new HttpsError('unauthenticated', message);
+  }
+  return userId;
+}
+
+function normalizeSpotifyReturnUrl(value: unknown): string {
+  const fallback = `${publicAppUrl}/boards`;
+  const raw = stringOrEmpty(value) || fallback;
+  try {
+    const url = new URL(raw);
+    if (!allowedCheckoutOrigins.has(url.origin)) {
+      return fallback;
+    }
+    if (!/^\/(?:boards|songs)(?:\/|$)/.test(url.pathname)) {
+      url.pathname = '/boards';
+      url.search = '';
+    }
+    url.hash = '';
+    url.searchParams.delete('spotify');
+    url.searchParams.delete('spotify_error');
+    return url.toString();
+  } catch {
+    return fallback;
+  }
+}
+
+function spotifyOAuthStateId(state: string): string {
+  return createHash('sha256').update(state).digest('hex');
+}
+
+function spotifyReturnUrl(returnUrl: string, status: 'connected' | 'error', errorCode = ''): string {
+  const url = new URL(normalizeSpotifyReturnUrl(returnUrl));
+  url.searchParams.set('spotify', status);
+  if (errorCode) {
+    url.searchParams.set('spotify_error', errorCode);
+  }
+  return url.toString();
+}
+
+function spotifyPublicErrorCode(error: unknown): string {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  if (message.includes('cancel')) return 'cancelled';
+  if (message.includes('expired') || message.includes('no longer valid')) return 'expired';
+  if (message.includes('redirect') || message.includes('client')) return 'configuration';
+  return 'connection_failed';
+}
+
+function spotifyTokenLifetimeMs(value: unknown): number {
+  const seconds = Number(value);
+  return Math.max(60, Math.min(7200, Number.isFinite(seconds) ? seconds : 3600)) * 1000;
+}
+
+function spotifyProfileImage(profile: SpotifyProfileResponse): string {
+  if (!Array.isArray(profile.images)) {
+    return '';
+  }
+  for (const value of profile.images) {
+    const image = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    const url = stringOrEmpty(image.url);
+    if (/^https:\/\/i\.scdn\.co\//i.test(url)) {
+      return url.slice(0, 1000);
+    }
+  }
+  return '';
+}
+
+async function exchangeSpotifyAuthorizationCode(
+  code: string,
+  verifier: string,
+): Promise<SpotifyOAuthTokenResponse> {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: spotifyClientId,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: spotifyOAuthRedirectUri,
+      code_verifier: verifier,
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  const payload = await response.json().catch(() => ({})) as SpotifyOAuthTokenResponse;
+  if (!response.ok) {
+    throw new Error(
+      stringOrEmpty(payload.error_description)
+      || stringOrEmpty(payload.error)
+      || 'Spotify authorization failed.',
+    );
+  }
+  return payload;
+}
+
+async function fetchSpotifyProfile(accessToken: string): Promise<SpotifyProfileResponse> {
+  const response = await fetch('https://api.spotify.com/v1/me', {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    signal: AbortSignal.timeout(12_000),
+  });
+  if (!response.ok) {
+    throw new Error('Spotify account details could not be loaded.');
+  }
+  return response.json() as Promise<SpotifyProfileResponse>;
+}
+
+async function spotifyAccessTokenForUser(
+  userId: string,
+  forceRefresh = false,
+): Promise<{ accessToken: string; expiresAtMs: number }> {
+  const ref = db.collection('spotify_connections').doc(userId);
+  const snapshot = await ref.get();
+  if (!snapshot.exists) {
+    throw new HttpsError('failed-precondition', 'Connect Spotify before playing a full song.');
+  }
+  const connection = snapshot.data() as SpotifyConnectionRecord;
+  if (connection.status !== 'connected'
+    || !connection.refresh_token
+    || connection.refresh_expires_at_ms <= Date.now()) {
+    await ref.set({
+      status: 'reconnect',
+      updated_at_iso: new Date().toISOString(),
+    }, { merge: true });
+    throw new HttpsError('failed-precondition', 'Reconnect Spotify to continue listening.');
+  }
+  if (!forceRefresh
+    && connection.access_token
+    && connection.access_token_expires_at_ms > Date.now() + 90_000) {
+    return {
+      accessToken: connection.access_token,
+      expiresAtMs: connection.access_token_expires_at_ms,
+    };
+  }
+
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: spotifyClientId,
+      grant_type: 'refresh_token',
+      refresh_token: connection.refresh_token,
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  const payload = await response.json().catch(() => ({})) as SpotifyOAuthTokenResponse;
+  const accessToken = stringOrEmpty(payload.access_token);
+  if (!response.ok || !accessToken) {
+    if (stringOrEmpty(payload.error) === 'invalid_grant') {
+      await ref.set({
+        status: 'reconnect',
+        access_token: '',
+        updated_at_iso: new Date().toISOString(),
+      }, { merge: true });
+      throw new HttpsError('failed-precondition', 'Reconnect Spotify to continue listening.');
+    }
+    throw new HttpsError('unavailable', 'Spotify could not refresh this connection. Try again.');
+  }
+
+  const expiresAtMs = Date.now() + spotifyTokenLifetimeMs(payload.expires_in);
+  const nextRefreshToken = stringOrEmpty(payload.refresh_token) || connection.refresh_token;
+  await ref.set({
+    access_token: accessToken,
+    access_token_expires_at_ms: expiresAtMs,
+    refresh_token: nextRefreshToken,
+    status: 'connected',
+    updated_at_iso: new Date().toISOString(),
+    last_used_at_iso: new Date().toISOString(),
+  }, { merge: true });
+  return { accessToken, expiresAtMs };
+}
+
+async function spotifyApiRequestForUser(
+  userId: string,
+  path: string,
+  init: { method: 'GET' | 'POST' | 'PUT'; body?: string },
+): Promise<Response> {
+  const makeRequest = async (forceRefresh: boolean) => {
+    const token = await spotifyAccessTokenForUser(userId, forceRefresh);
+    return fetch(`https://api.spotify.com${path}`, {
+      method: init.method,
+      headers: {
+        Authorization: `Bearer ${token.accessToken}`,
+        ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+      },
+      body: init.body,
+      signal: AbortSignal.timeout(15_000),
+    });
+  };
+
+  let response = await makeRequest(false);
+  if (response.status === 401) {
+    response = await makeRequest(true);
+  }
+  if (response.ok) {
+    return response;
+  }
+  if (response.status === 403) {
+    throw new HttpsError(
+      'permission-denied',
+      'Spotify Premium and playback permission are required for full songs.',
+    );
+  }
+  if (response.status === 404) {
+    throw new HttpsError(
+      'failed-precondition',
+      'No Spotify player is available. Open Spotify on a device or try this browser again.',
+    );
+  }
+  if (response.status === 429) {
+    throw new HttpsError('resource-exhausted', 'Spotify is busy. Wait a moment and try again.');
+  }
+  throw new HttpsError('unavailable', 'Spotify playback is temporarily unavailable.');
+}
+
+function isSpotifyTrackUri(value: string): boolean {
+  return /^spotify:track:[A-Za-z0-9]{12,32}$/.test(value);
+}
+
+async function resolveSpotifyPlaybackTrack(
+  userId: string,
+  lookup: SpotifyPlaybackLookup,
+): Promise<Record<string, unknown> | null> {
+  const query = [lookup.title, lookup.artist, lookup.context].filter(Boolean).join(' ');
+  const path = `/v1/search?type=track&limit=5&q=${encodeURIComponent(query)}`;
+  const response = await spotifyApiRequestForUser(userId, path, { method: 'GET' });
+  const payload = await response.json().catch(() => ({})) as Record<string, unknown>;
+  const tracks = payload.tracks && typeof payload.tracks === 'object'
+    ? payload.tracks as Record<string, unknown>
+    : {};
+  const items = Array.isArray(tracks.items) ? tracks.items : [];
+  const first = items.find((item) => item && typeof item === 'object') as Record<string, unknown> | undefined;
+  if (!first) {
+    return null;
+  }
+  const id = stringOrEmpty(first.id);
+  const uri = stringOrEmpty(first.uri);
+  if (!id || !isSpotifyTrackUri(uri)) {
+    return null;
+  }
+  const artists = Array.isArray(first.artists)
+    ? first.artists
+        .map((artist) => artist && typeof artist === 'object'
+          ? stringOrEmpty((artist as Record<string, unknown>).name)
+          : '')
+        .filter(Boolean)
+    : [];
+  const album = first.album && typeof first.album === 'object'
+    ? first.album as Record<string, unknown>
+    : {};
+  const albumImages = Array.isArray(album.images) ? album.images : [];
+  const artwork = albumImages
+    .map((image) => image && typeof image === 'object'
+      ? stringOrEmpty((image as Record<string, unknown>).url)
+      : '')
+    .find((url) => /^https:\/\//i.test(url)) ?? '';
+  return {
+    key: lookup.key,
+    uri,
+    title: stringOrEmpty(first.name).slice(0, 220) || lookup.title,
+    artist: artists.join(', ').slice(0, 300) || lookup.artist,
+    album: stringOrEmpty(album.name).slice(0, 220),
+    artworkUrl: artwork.slice(0, 1000),
+    spotifyUrl: `https://open.spotify.com/track/${encodeURIComponent(id)}`,
+  };
+}
 
 export const resolveBoardSongSpotify = onCall(
   {

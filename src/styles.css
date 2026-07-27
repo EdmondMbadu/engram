@@ -1765,6 +1765,15 @@ body .chat-suggestion-card__icon {
 .song-board__live-card { display: inline-flex; align-items: center; gap: 0.36rem; border: 1.5px solid #d3ecdd; border-radius: 999px; background: #e7f5ec; box-shadow: 0 3px 0 rgba(13, 56, 35, 0.24); color: #1ea64a; cursor: pointer; font: inherit; font-size: 0.72rem; font-weight: 950; line-height: 1; padding: 0.48rem 0.7rem; text-transform: uppercase; }
 .song-board__live-card:hover { transform: translateY(-1px); }
 .song-board__live-card .material-symbols-outlined { font-size: 1rem; font-variation-settings: 'FILL' 1; }
+.spotify-board-connect { display: grid; width: min(100%, 22rem); grid-template-columns: auto auto minmax(0, 1fr) auto; gap: .55rem; align-items: center; border: 1px solid rgba(13, 56, 35, .14); border-radius: 1rem; background: #132119; box-shadow: 0 8px 20px rgba(13, 56, 35, .18); color: #fff; cursor: pointer; padding: .62rem .75rem; text-align: left; transition: transform 150ms ease, box-shadow 150ms ease; }
+.spotify-board-connect:hover { box-shadow: 0 11px 26px rgba(13, 56, 35, .23); transform: translateY(-1px); }
+.spotify-board-connect > .material-symbols-outlined { color: #1ed760; font-size: 1.25rem; }
+.spotify-board-connect > .material-symbols-outlined:last-child { color: #95a69b; }
+.spotify-board-connect__pulse { width: .46rem; height: .46rem; border-radius: 999px; background: #7d8a81; box-shadow: 0 0 0 .24rem rgba(125, 138, 129, .12); }
+.spotify-board-connect--connected .spotify-board-connect__pulse { background: #1ed760; box-shadow: 0 0 0 .24rem rgba(30, 215, 96, .13); }
+.spotify-board-connect > span:nth-child(3) { display: grid; min-width: 0; }
+.spotify-board-connect small { color: #9db0a3; font-size: .6rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+.spotify-board-connect strong { overflow: hidden; color: #fff; font-size: .79rem; text-overflow: ellipsis; white-space: nowrap; }
 .song-board__hero > p { max-width: 44rem; margin: 0; color: #4a6b58; font-size: 0.95rem; font-weight: 800; line-height: 1.45; }
 .song-board__stats, .song-player-card__actions, .song-player-card__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .song-board__stats { justify-content: center; }
@@ -1785,6 +1794,15 @@ body .chat-suggestion-card__icon {
 .song-player-card__actions { align-items: center; }
 .song-player-card__actions a { display: inline-flex; min-height: 2.55rem; align-items: center; justify-content: center; gap: 0.4rem; border: 2px solid #0d3823; border-radius: 999px; background: #e7f5ec; box-shadow: 0 4px 0 #0d3823; color: #0d3823; font-size: 0.82rem; font-weight: 950; line-height: 1; padding: 0.68rem 0.95rem; text-decoration: none; }
 .song-player-card__actions a .material-symbols-outlined { font-size: 1.1rem; font-variation-settings: 'FILL' 1; }
+.spotify-full-play { display: inline-flex; min-height: 2.55rem; align-items: center; justify-content: center; gap: .42rem; border: 2px solid #0d3823; border-radius: 999px; background: #1ed760; box-shadow: 0 4px 0 #0d3823; color: #07150c; cursor: pointer; font: inherit; font-size: .82rem; font-weight: 950; line-height: 1; padding: .68rem 1rem; text-decoration: none; transition: filter 140ms ease, transform 140ms ease; }
+.spotify-full-play:hover { filter: brightness(1.03); transform: translateY(-1px); }
+.spotify-full-play .material-symbols-outlined { font-size: 1.15rem; font-variation-settings: 'FILL' 1; }
+.spotify-full-play--active { background: #fff; color: #139243; }
+.spotify-full-play--stack { margin-top: .62rem; border-color: rgba(255, 255, 255, .58); box-shadow: 0 7px 20px rgba(0, 0, 0, .24); }
+.spotify-card-play { position: absolute; right: .75rem; bottom: .75rem; z-index: 5; display: inline-grid; width: 2.7rem; height: 2.7rem; place-items: center; border: 1px solid rgba(255, 255, 255, .5); border-radius: 999px; background: #1ed760; box-shadow: 0 10px 24px rgba(0, 0, 0, .25); color: #07150c; cursor: pointer; text-decoration: none; transition: transform 140ms ease, background 140ms ease; }
+.spotify-card-play:hover { transform: scale(1.06); }
+.spotify-card-play--active { background: #fff; color: #11953f; }
+.spotify-card-play .material-symbols-outlined { font-size: 1.3rem; font-variation-settings: 'FILL' 1; }
 .song-player-card__body em { display: block; margin-top: 0.1rem; color: #4a6b58; font-size: 0.78rem; font-style: normal; font-weight: 750; line-height: 1.42; }
 .song-player-card__tags { gap: 0.38rem; }
 .song-player-card__tags span { border: 1px solid #d3ecdd; border-radius: 999px; background: #fff; color: #0d3823; font-size: 0.68rem; font-weight: 900; line-height: 1; padding: 0.38rem 0.52rem; }
@@ -1822,5 +1840,5 @@ body .chat-suggestion-card__icon {
   .song-player-card__art { min-height: 0; }
   .song-player-card__art img, .song-player-card__art > .material-symbols-outlined { width: min(100%, 18rem); }
   .song-player-card__body { padding: 0 1rem 1.1rem; }
-  .song-player-card__actions, .song-player-card__actions a, .song-preview-button--juke { width: 100%; }
+  .song-player-card__actions, .song-player-card__actions a, .song-preview-button--juke, .song-player-card__actions .spotify-full-play { width: 100%; }
 }
