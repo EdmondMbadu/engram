@@ -21,6 +21,7 @@ import {
 import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
+import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
 import {
   answerWithGoogleSearch,
   extractMappableLocations,
@@ -123,8 +124,10 @@ const stripeCreatorAnnualPriceId = defineString('STRIPE_PRICE_CREATOR_ANNUAL', {
 const inviteSenderEmail = 'missioncontrol@rocketgoals.com';
 const publicAppUrl = 'https://livingwiki.com';
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
-const spotifyOAuthRedirectUri = process.env.SPOTIFY_REDIRECT_URI
-  ?? `${publicFunctionsBaseUrl}/spotifyOAuthCallback`;
+const spotifyOAuthRedirectUri = resolveSpotifyOAuthRedirectUri(
+  process.env.SPOTIFY_REDIRECT_URI,
+  publicAppUrl,
+);
 const spotifyOAuthScopes = [
   'streaming',
   'user-read-playback-state',

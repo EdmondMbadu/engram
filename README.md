@@ -133,6 +133,18 @@ firebase login --reauth
 npm run deploy:hosting
 ```
 
+### Spotify playback
+
+The Spotify Developer app must allowlist this exact production redirect URI:
+
+```text
+https://livingwiki.com/auth/spotify/callback
+```
+
+It is case-sensitive and must not include a trailing slash. Deploy both Functions and Hosting
+after changing the Spotify OAuth integration so the authorization request, token exchange, and
+Hosting callback route continue to use the same URI.
+
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:

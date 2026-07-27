@@ -11,6 +11,7 @@
     "test:board-wizard-commerce": "npm run build && node scripts/test-board-wizard-commerce.cjs",
     "test:board-wizard-menu": "npm run build && node scripts/test-board-wizard-menu.cjs",
     "test:board-wizard-reader": "npm run build && node scripts/test-board-wizard-reader.cjs",
+    "test:spotify-oauth": "npm run build && node scripts/test-spotify-oauth.cjs",
     "test:city-place-search": "npm run build && node scripts/test-city-place-search.cjs",
     "city-pulse:refresh": "npm run build && node scripts/refresh-city-pulse.cjs",
     "clean": "rimraf lib",

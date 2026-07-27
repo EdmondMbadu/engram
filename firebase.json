@@ -52,6 +52,13 @@
         }
       },
       {
+        "source": "/auth/spotify/callback",
+        "function": {
+          "functionId": "spotifyOAuthCallback",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "/fr",
         "destination": "/fr/index.html"
       },
