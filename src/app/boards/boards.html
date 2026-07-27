@@ -3055,7 +3055,20 @@
                     [value]="wizardPastedList()"
                     (input)="updateWizardPastedList($any($event.target).value)"
                   ></textarea>
-                  @if (wizardDetectedPasteCount()) {
+                  @if (wizardPastedWhat3WordsSource(); as what3wordsSource) {
+                    <small class="boards-wizard-paste-detected boards-wizard-paste-detected--what3words" aria-live="polite">
+                      <span class="material-symbols-outlined">where_to_vote</span>
+                      Recognized {{ what3wordsSource.items.length }}
+                      {{ what3wordsSource.items.length === 1 ? 'what3words place' : 'what3words places' }}.
+                      Each card will keep its exact clickable three-word address.
+                    </small>
+                    @if (what3wordsSource.issues.length) {
+                      <small class="boards-wizard-paste-warning" role="alert">
+                        {{ what3wordsSource.issues.length }}
+                        {{ what3wordsSource.issues.length === 1 ? 'row needs attention and will be skipped' : 'rows need attention and will be skipped' }}.
+                      </small>
+                    }
+                  } @else if (wizardDetectedPasteCount()) {
                     <small aria-live="polite" i18n>
                       Detected {{ wizardDetectedPasteCount() }} numbered items. The preview will keep one card per item in this order.
                     </small>
@@ -3225,65 +3238,155 @@
                 } @else {
                   <section class="off-grid-home-stage">
                     <label>
-                      <span i18n>what3words address or link</span>
+                      <span i18n>One place or a list of places</span>
                       <span class="off-grid-verify-row">
-                        <input
-                          type="text"
+                        <textarea
                           required
-                          maxlength="240"
-                          placeholder="///filled.count.soap or what3words.com/filled.count.soap"
+                          rows="6"
+                          [attr.maxlength]="wizardPasteMaxLength"
+                          placeholder="Steinbeck Plaza    ///candy.sage.sticks&#10;Monterey Bay Aquarium    https://w3w.co/sank.ticket.speeds"
                           [value]="wizardOffGridAddress()"
                           (input)="updateWizardOffGridAddress($any($event.target).value)"
-                          (keydown.enter)="$event.preventDefault(); verifyWizardOffGridAddress()"
-                         i18n-placeholder/>
+                         i18n-placeholder></textarea>
                         <button
                           type="button"
                           [class.off-grid-verify-row__working]="wizardOffGridVerifying()"
-                          [disabled]="wizardOffGridVerifying() || !wizardOffGridAddress().trim()"
+                          [disabled]="wizardOffGridVerifying() || !wizardOffGridParsedSource()?.items?.length"
                           (click)="verifyWizardOffGridAddress()"
                         >
                           <span class="material-symbols-outlined">{{ wizardOffGridVerifying() ? 'progress_activity' : 'verified' }}</span>
                           @if (wizardOffGridVerifying()) {
                             <span i18n>Checking…</span>
+                          } @else if (wizardOffGridIsBulk()) {
+                            <span i18n>Check all</span>
                           } @else {
-                            <span i18n>Verify</span>
+                            <span i18n>Verify coordinates</span>
                           }
                         </button>
                       </span>
+                      <small i18n>
+                        Paste tabs, a copied table, bullets, ///words, what3words.com links, or w3w.co links.
+                        Coordinate verification is optional; recognized links can still be saved.
+                      </small>
                     </label>
-                    @if (wizardOffGridResolvedLocation(); as location) {
-                      <div class="off-grid-live-location">
-                        <span class="material-symbols-outlined">verified</span>
+
+                    @if (wizardOffGridParsedSource(); as source) {
+                      <div class="off-grid-bulk-summary" aria-live="polite">
+                        <span class="material-symbols-outlined">playlist_add_check</span>
                         <span>
-                          <small i18n>Verified square</small>
-                          <strong><b>///</b>{{ location.words }}</strong>
-                          <em>{{ wizardOffGridStatus() }}</em>
+                          <strong>
+                            {{ source.items.length }}
+                            {{ source.items.length === 1 ? 'place recognized' : 'places recognized' }}
+                          </strong>
+                          <small>
+                            {{ wizardOffGridVerifiedCount() }} verified ·
+                            {{ source.items.length - wizardOffGridVerifiedCount() }} link-ready
+                          </small>
                         </span>
-                        <a [href]="location.url" target="_blank" rel="noopener noreferrer" i18n>Check square</a>
                       </div>
-                    } @else if (wizardOffGridVerifying()) {
-                      <div class="off-grid-live-status off-grid-live-status--working" role="status" aria-live="polite">
-                        <span class="material-symbols-outlined">progress_activity</span>
+
+                      <div class="off-grid-bulk-list">
+                        @for (item of source.items; track item.words) {
+                          <article class="off-grid-bulk-item">
+                            <span
+                              class="material-symbols-outlined"
+                              [class.off-grid-bulk-item__verified]="wizardOffGridVerifiedLocations()[item.words]"
+                              [class.off-grid-bulk-item__unverified]="!wizardOffGridVerifiedLocations()[item.words]"
+                            >
+                              {{ wizardOffGridVerifiedLocations()[item.words] ? 'verified' : 'add_location_alt' }}
+                            </span>
+                            <span>
+                              <strong>
+                                {{
+                                  item.name
+                                    || (source.items.length === 1
+                                      ? wizardOffGridName() || 'Name this place below'
+                                      : 'Name needed — edit the pasted row')
+                                }}
+                              </strong>
+                              <small><b>///</b>{{ item.words }}</small>
+                              @if (wizardOffGridVerifiedLocations()[item.words]; as location) {
+                                <em>{{ location.nearestPlace ? 'Verified near ' + location.nearestPlace : 'Coordinates verified' }}</em>
+                              } @else if (wizardOffGridVerificationFailures()[item.words]) {
+                                <em i18n>Link ready · coordinates not verified</em>
+                              } @else {
+                                <em i18n>Recognized · ready to link</em>
+                              }
+                            </span>
+                            <a
+                              [href]="what3wordsUrlFor({ what3wordsAddress: item.words })"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="Open this what3words square"
+                              i18n-aria-label
+                             i18n>Open</a>
+                            @if (source.items.length > 1) {
+                              <button
+                                type="button"
+                                (click)="removeWizardOffGridItem(item.words)"
+                                [attr.aria-label]="'Remove ' + (item.name || item.words)"
+                              >
+                                <span class="material-symbols-outlined">close</span>
+                              </button>
+                            }
+                          </article>
+                        }
+                      </div>
+
+                      @if (source.issues.length) {
+                        <div class="off-grid-bulk-issues" role="alert">
+                          <strong>
+                            {{ source.issues.length }}
+                            {{ source.issues.length === 1 ? 'row needs attention' : 'rows need attention' }}
+                          </strong>
+                          @for (issue of source.issues; track issue.sourceLine + '-' + issue.message) {
+                            <small>Line {{ issue.sourceLine }}: {{ issue.message }}</small>
+                          }
+                        </div>
+                      }
+                    }
+
+                    @if (wizardContributionBoard() && wizardOffGridIsBulk()) {
+                      <div class="off-grid-live-status off-grid-live-status--error" role="alert">
+                        <span class="material-symbols-outlined">info</span>
+                        <span i18n>Shared board contributions accept one place at a time. Keep one row here, or create the list on your own board.</span>
+                      </div>
+                    } @else if (wizardOffGridStatus()) {
+                      <div
+                        class="off-grid-live-status"
+                        [class.off-grid-live-status--working]="wizardOffGridVerifying()"
+                        role="status"
+                        aria-live="polite"
+                      >
+                        <span class="material-symbols-outlined">{{ wizardOffGridVerifying() ? 'progress_activity' : 'info' }}</span>
                         <span>{{ wizardOffGridStatus() }}</span>
                       </div>
                     }
-                    <div class="off-grid-home-photo">
-                      @if (wizardOffGridPhoto()) {
-                        <img [src]="wizardOffGridPhoto()" alt="Photo of this off-grid place" i18n-alt />
-                        <button type="button" (click)="removeWizardOffGridPhoto()" aria-label="Remove photo" i18n-aria-label>
-                          <span class="material-symbols-outlined">close</span>
-                        </button>
-                      }
-                      <label>
-                        <span class="material-symbols-outlined">add_photo_alternate</span>
+
+                    @if (!wizardOffGridIsBulk()) {
+                      <div class="off-grid-home-photo">
                         @if (wizardOffGridPhoto()) {
-                          <span i18n>Change photo</span>
-                        } @else {
-                          <span i18n>Add a photo (optional)</span>
+                          <img [src]="wizardOffGridPhoto()" alt="Photo of this off-grid place" i18n-alt />
+                          <button type="button" (click)="removeWizardOffGridPhoto()" aria-label="Remove photo" i18n-aria-label>
+                            <span class="material-symbols-outlined">close</span>
+                          </button>
                         }
-                        <input type="file" accept="image/*" (change)="onWizardOffGridPhotoSelected($event)" />
-                      </label>
-                    </div>
+                        <label>
+                          <span class="material-symbols-outlined">add_photo_alternate</span>
+                          @if (wizardOffGridPhoto()) {
+                            <span i18n>Change photo</span>
+                          } @else {
+                            <span i18n>Add a photo (optional)</span>
+                          }
+                          <input type="file" accept="image/*" (change)="onWizardOffGridPhotoSelected($event)" />
+                        </label>
+                      </div>
+                    } @else {
+                      <small class="off-grid-bulk-image-note" i18n>
+                        <span class="material-symbols-outlined">photo_spark</span>
+                        We will look for a relevant image for each named place. You can change every image in the preview.
+                      </small>
+                    }
                   </section>
                 }
 
@@ -3293,19 +3396,24 @@
                     <span>{{ wizardOffGridError() }}</span>
                   </div>
                 }
+                @if (wizardOffGridSource() === 'spot' || !wizardOffGridIsBulk()) {
+                  <label>
+                    <span i18n>Name this place</span>
+                    <input
+                      type="text"
+                      required
+                      maxlength="80"
+                      placeholder="The quiet overlook"
+                      [value]="wizardOffGridName()"
+                      (input)="wizardOffGridName.set($any($event.target).value)"
+                     i18n-placeholder/>
+                  </label>
+                }
                 <label>
-                  <span i18n>Name this place</span>
-                  <input
-                    type="text"
-                    required
-                    maxlength="80"
-                    placeholder="The quiet overlook"
-                    [value]="wizardOffGridName()"
-                    (input)="wizardOffGridName.set($any($event.target).value)"
-                   i18n-placeholder/>
-                </label>
-                <label>
-                  <span i18n>Insider tip <small>(optional)</small></span>
+                  <span>
+                    {{ wizardOffGridIsBulk() ? 'Note for these places' : 'Insider tip' }}
+                    <small i18n>(optional)</small>
+                  </span>
                   <textarea
                     rows="4"
                     maxlength="3600"

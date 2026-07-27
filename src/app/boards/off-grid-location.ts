@@ -17,7 +17,18 @@ type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Respo
 const WHAT3WORDS_API_KEY = '2BP05REC';
 const WHAT3WORDS_API_URL = 'https://api.what3words.com/v3';
 
-const THREE_WORD_ADDRESS = /^[\p{L}]+(?:[-'][\p{L}]+)*\.[\p{L}]+(?:[-'][\p{L}]+)*\.[\p{L}]+(?:[-'][\p{L}]+)*$/u;
+const WHAT3WORDS_HOSTS = new Set([
+  'what3words.com',
+  'www.what3words.com',
+  'w3w.co',
+  'www.w3w.co',
+]);
+const THREE_WORD_PART = String.raw`[\p{L}\p{M}]+(?:[ '\-\u2019][\p{L}\p{M}]+)*`;
+const THREE_WORD_ADDRESS = new RegExp(
+  `^${THREE_WORD_PART}\\.${THREE_WORD_PART}\\.${THREE_WORD_PART}$`,
+  'u',
+);
+const DOT_LIKE_CHARACTERS = /[｡。･・︒։။۔።।]/gu;
 
 export function normalizeWhat3WordsAddress(value: unknown): string {
   if (typeof value !== 'string') {
@@ -25,19 +36,27 @@ export function normalizeWhat3WordsAddress(value: unknown): string {
   }
 
   let candidate = value.trim().toLocaleLowerCase();
+  const markdownLink = candidate.match(
+    /\]\(\s*(https?:\/\/(?:www\.)?(?:what3words\.com|w3w\.co)\/[^)\s]+)\s*\)/i,
+  );
+  if (markdownLink?.[1]) {
+    candidate = markdownLink[1];
+  }
   try {
     const parsed = new URL(candidate);
-    if (parsed.hostname === 'what3words.com' || parsed.hostname === 'www.what3words.com') {
+    if (WHAT3WORDS_HOSTS.has(parsed.hostname.toLocaleLowerCase())) {
       candidate = decodeURIComponent(parsed.pathname);
     }
   } catch {
-    candidate = candidate.replace(/^https?:\/\/(?:www\.)?what3words\.com\//i, '');
+    candidate = candidate.replace(/^https?:\/\/(?:www\.)?(?:what3words\.com|w3w\.co)\//i, '');
   }
 
   candidate = candidate
     .replace(/^\/+/, '')
     .replace(/[?#].*$/, '')
     .replace(/\/+$/, '')
+    .replace(DOT_LIKE_CHARACTERS, '.')
+    .replace(/\s+/g, ' ')
     .trim();
   return THREE_WORD_ADDRESS.test(candidate) ? candidate : '';
 }

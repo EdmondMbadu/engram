@@ -14,6 +14,10 @@ describe('off-grid what3words locations', () => {
     expect(normalizeWhat3WordsAddress('https://what3words.com/filled.count.soap?maptype=satellite')).toBe(
       'filled.count.soap',
     );
+    expect(normalizeWhat3WordsAddress('https://w3w.co/Filled.Count.Soap')).toBe('filled.count.soap');
+    expect(normalizeWhat3WordsAddress('[///filled.count.soap](https://w3w.co/filled.count.soap)')).toBe(
+      'filled.count.soap',
+    );
   });
 
   it('rejects partial and ordinary addresses', () => {

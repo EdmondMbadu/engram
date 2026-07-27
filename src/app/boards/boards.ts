@@ -41,6 +41,11 @@ import {
   what3wordsLocation,
 } from './off-grid-location';
 import { generateStackVideo, type StackVideoResult } from './stack-video-export';
+import {
+  extractWhat3WordsAddress,
+  parseWhat3WordsBoardSource,
+  type What3WordsBoardSource,
+} from './what3words-source';
 
 type BoardTone = 'teal' | 'coral' | 'yellow' | 'green' | 'blue' | 'sky' | 'purple';
 type BoardKind = 'standard' | 'off-grid' | 'walking-tour' | 'driving-tour';
@@ -60,6 +65,10 @@ type OffGridLocationSource = 'spot' | 'words';
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'off-grid' | 'url' | 'walking-tour' | 'driving-tour';
 type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
+type WizardLoadingTask = {
+  message: string;
+  progress: number;
+};
 type BoardTourMode = 'walking' | 'driving';
 type BoardTourVoiceStyle = 'historian' | 'local' | 'kid-friendly';
 type StackFormat = 'carousel' | 'reel' | 'both';
@@ -1097,7 +1106,12 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardPastedList = signal('');
   readonly wizardPasteMaxLength = BOARD_WIZARD_PASTE_MAX_LENGTH;
   readonly wizardNumberedSource = computed(() => parseNumberedBoardSource(this.wizardPastedList()));
-  readonly wizardDetectedPasteCount = computed(() => this.wizardNumberedSource()?.items.length ?? 0);
+  readonly wizardPastedWhat3WordsSource = computed(() => parseWhat3WordsBoardSource(this.wizardPastedList()));
+  readonly wizardDetectedPasteCount = computed(() =>
+    this.wizardPastedWhat3WordsSource()?.items.length
+      ?? this.wizardNumberedSource()?.items.length
+      ?? 0,
+  );
   readonly wizardUrl = signal('');
   readonly wizardPhotos = signal<BoardWizardPhoto[]>([]);
   readonly wizardPhotosLoading = signal(false);
@@ -1106,6 +1120,13 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardOffGridAddress = signal('');
   readonly wizardOffGridTip = signal('');
   readonly wizardOffGridSource = signal<OffGridLocationSource>('spot');
+  readonly wizardOffGridParsedSource = computed(() => parseWhat3WordsBoardSource(this.wizardOffGridAddress()));
+  readonly wizardOffGridIsBulk = computed(() => (this.wizardOffGridParsedSource()?.items.length ?? 0) > 1);
+  readonly wizardOffGridVerifiedLocations = signal<Record<string, ResolvedWhat3WordsLocation>>({});
+  readonly wizardOffGridVerificationFailures = signal<Record<string, string>>({});
+  readonly wizardOffGridVerifiedCount = computed(() =>
+    Object.keys(this.wizardOffGridVerifiedLocations()).length,
+  );
   readonly wizardOffGridPhoto = signal('');
   readonly wizardOffGridResolvedLocation = signal<ResolvedWhat3WordsLocation | null>(null);
   readonly wizardOffGridLocation = computed(() => this.wizardOffGridResolvedLocation() ?? what3wordsLocation(this.wizardOffGridAddress()));
@@ -1121,6 +1142,7 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardTourPaceOrStyle = signal('Standard');
   readonly wizardTourExtras = signal<Set<string>>(new Set(['Photo stops', 'Accessibility notes']));
   readonly wizardLoadingIndex = signal(0);
+  readonly wizardLoadingTask = signal<WizardLoadingTask | null>(null);
   readonly wizardError = signal<string | null>(null);
   readonly wizardResult = signal<BoardWizardGeneratedBatch | null>(null);
   readonly wizardPreviewCards = signal<BoardWizardPreviewCard[]>([]);
@@ -1575,9 +1597,18 @@ export class BoardsComponent implements OnDestroy {
       return /^https?:\/\/\S+/i.test(this.wizardUrl().trim());
     }
     if (mode === 'off-grid') {
-      return this.wizardOffGridName().trim().length >= 2
-        && !!this.wizardOffGridResolvedLocation()
-        && (this.wizardOffGridSource() === 'words' || !!this.wizardOffGridPhoto());
+      if (this.wizardOffGridSource() === 'spot') {
+        return this.wizardOffGridName().trim().length >= 2
+          && !!this.wizardOffGridResolvedLocation()
+          && !!this.wizardOffGridPhoto();
+      }
+      const parsedItems = this.wizardOffGridParsedSource()?.items ?? [];
+      if (!parsedItems.length || (this.wizardContributionBoard() && parsedItems.length > 1)) {
+        return false;
+      }
+      return parsedItems.every((item, index) =>
+        (item.name || (index === 0 ? this.wizardOffGridName().trim() : '')).length >= 2,
+      );
     }
     if (this.isTourWizardMode(mode)) {
       return this.wizardPrompt().trim().length >= 4;
@@ -2133,7 +2164,9 @@ export class BoardsComponent implements OnDestroy {
   updateWizardPastedList(value: string): void {
     const pastedText = value.slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH);
     this.wizardPastedList.set(pastedText);
-    const detectedCount = parseNumberedBoardSource(pastedText)?.items.length ?? 0;
+    const detectedCount = parseWhat3WordsBoardSource(pastedText)?.items.length
+      ?? parseNumberedBoardSource(pastedText)?.items.length
+      ?? 0;
     if (detectedCount) {
       this.setWizardCount(detectedCount);
     }
@@ -2263,6 +2296,8 @@ export class BoardsComponent implements OnDestroy {
     this.wizardOffGridSource.set(source);
     this.wizardOffGridAddress.set('');
     this.wizardOffGridResolvedLocation.set(null);
+    this.wizardOffGridVerifiedLocations.set({});
+    this.wizardOffGridVerificationFailures.set({});
     this.wizardOffGridAccuracy.set(null);
     this.wizardOffGridStatus.set('');
     this.wizardOffGridError.set(null);
@@ -2274,6 +2309,8 @@ export class BoardsComponent implements OnDestroy {
     this.wizardOffGridLocationRun += 1;
     this.wizardOffGridAddress.set(value);
     this.wizardOffGridResolvedLocation.set(null);
+    this.wizardOffGridVerifiedLocations.set({});
+    this.wizardOffGridVerificationFailures.set({});
     this.wizardOffGridStatus.set('');
     this.wizardOffGridError.set(null);
     this.wizardOffGridVerifying.set(false);
@@ -2368,40 +2405,103 @@ export class BoardsComponent implements OnDestroy {
     if (this.wizardOffGridVerifying()) {
       return;
     }
-    const words = normalizeWhat3WordsAddress(this.wizardOffGridAddress());
-    if (!words) {
+    const parsedItems = this.wizardOffGridParsedSource()?.items ?? [];
+    if (!parsedItems.length) {
       this.wizardOffGridResolvedLocation.set(null);
-      this.wizardOffGridError.set($localize`Use exactly three words separated by periods.`);
+      this.wizardOffGridError.set($localize`Paste one or more places with exactly three words separated by periods.`);
       return;
     }
     const run = ++this.wizardOffGridLocationRun;
     this.wizardOffGridVerifying.set(true);
     this.wizardOffGridResolvedLocation.set(null);
+    this.wizardOffGridVerifiedLocations.set({});
+    this.wizardOffGridVerificationFailures.set({});
     this.wizardOffGridError.set(null);
-    this.wizardOffGridStatus.set($localize`Checking this square with what3words…`);
-    try {
-      const location = await resolveWhat3WordsAddress(words);
-      if (run !== this.wizardOffGridLocationRun) {
-        return;
+    this.wizardOffGridStatus.set(
+      parsedItems.length === 1
+        ? $localize`Checking this square with what3words…`
+        : `Checking ${parsedItems.length} squares with what3words…`,
+    );
+
+    const verified: Record<string, ResolvedWhat3WordsLocation> = {};
+    const failures: Record<string, string> = {};
+    let completed = 0;
+    let nextIndex = 0;
+    let verificationUnavailable = false;
+    const worker = async () => {
+      while (
+        nextIndex < parsedItems.length
+        && run === this.wizardOffGridLocationRun
+        && !verificationUnavailable
+      ) {
+        const item = parsedItems[nextIndex++];
+        try {
+          verified[item.words] = await resolveWhat3WordsAddress(item.words);
+        } catch (error) {
+          const message = error instanceof Error
+            ? error.message
+            : $localize`This square could not be verified.`;
+          failures[item.words] = message;
+          if (/\b402\b|payment|billing|plan|quota|not available|invalid key|missing key/iu.test(message)) {
+            verificationUnavailable = true;
+          }
+        }
+        completed += 1;
+        if (run === this.wizardOffGridLocationRun) {
+          this.wizardOffGridVerifiedLocations.set({ ...verified });
+          this.wizardOffGridVerificationFailures.set({ ...failures });
+          this.wizardOffGridStatus.set(
+            parsedItems.length === 1
+              ? (verified[item.words]?.nearestPlace
+                  ? `Verified real square near ${verified[item.words].nearestPlace}`
+                  : verified[item.words]
+                    ? $localize`Verified real square`
+                    : $localize`The address is recognized and can still be linked.`)
+              : `Checked ${completed} of ${parsedItems.length} squares…`,
+          );
+        }
       }
-      this.wizardOffGridAddress.set(location.words);
+    };
+
+    await Promise.all(
+      Array.from({ length: Math.min(3, parsedItems.length) }, () => worker()),
+    );
+    if (run !== this.wizardOffGridLocationRun) {
+      return;
+    }
+    const verifiedCount = Object.keys(verified).length;
+    if (parsedItems.length === 1 && verified[parsedItems[0].words]) {
+      const location = verified[parsedItems[0].words];
       this.wizardOffGridResolvedLocation.set(location);
+      this.wizardOffGridAddress.set(location.words);
       this.wizardOffGridStatus.set(
         location.nearestPlace
           ? `Verified real square near ${location.nearestPlace}`
           : $localize`Verified real square`,
       );
-    } catch (error) {
-      if (run !== this.wizardOffGridLocationRun) {
-        return;
-      }
-      this.wizardOffGridError.set(error instanceof Error ? error.message : $localize`This square could not be verified.`);
-      this.wizardOffGridStatus.set('');
-    } finally {
-      if (run === this.wizardOffGridLocationRun) {
-        this.wizardOffGridVerifying.set(false);
-      }
+    } else if (verifiedCount === parsedItems.length) {
+      this.wizardOffGridStatus.set(`All ${verifiedCount} squares verified.`);
+    } else if (verifiedCount) {
+      this.wizardOffGridStatus.set(
+        `${verifiedCount} verified · ${parsedItems.length - verifiedCount} recognized and link-ready.`,
+      );
+    } else {
+      this.wizardOffGridStatus.set(
+        `${parsedItems.length} ${parsedItems.length === 1 ? 'address is' : 'addresses are'} recognized and link-ready. Coordinate verification is unavailable right now.`,
+      );
     }
+    this.wizardOffGridVerifying.set(false);
+  }
+
+  removeWizardOffGridItem(words: string): void {
+    const parsed = this.wizardOffGridParsedSource();
+    if (!parsed) {
+      return;
+    }
+    const remaining = parsed.items.filter((item) => item.words !== words);
+    this.updateWizardOffGridAddress(
+      remaining.map((item) => `${item.name || 'Off-grid place'}\t///${item.words}`).join('\n'),
+    );
   }
 
   wizardInputPlaceholder(): string {
@@ -2428,13 +2528,15 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.wizardError.set(null);
+    const pastedWhat3Words = this.wizardMode() === 'paste'
+      ? this.wizardPastedWhat3WordsSource()
+      : null;
+    if (pastedWhat3Words) {
+      await this.generateWhat3WordsWizardPreview(pastedWhat3Words);
+      return;
+    }
     if (this.wizardMode() === 'off-grid') {
-      const batch = this.buildOffGridWizardBatch();
-      const previewCards = await this.enrichWizardCards(batch.cards);
-      this.wizardResult.set({ ...batch, cards: previewCards });
-      this.wizardPreviewCards.set(previewCards);
-      this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
-      this.wizardStep.set('preview');
+      await this.generateWhat3WordsWizardPreview(this.what3WordsSourceFromOffGridWizard(), true);
       return;
     }
     const inferredCount = this.wizardMode() === 'photos' ? this.wizardPhotos().length : this.inferWizardRequestedCount();
@@ -2443,6 +2545,7 @@ export class BoardsComponent implements OnDestroy {
     }
     this.wizardStep.set('loading');
     this.wizardLoadingIndex.set(0);
+    this.wizardLoadingTask.set(null);
     const loadingMessages = this.isTourWizardMode() ? BOARD_TOUR_STATUS_MESSAGES : BOARD_WIZARD_STATUS_MESSAGES;
     const interval = this.isBrowser
       ? window.setInterval(() => {
@@ -2723,7 +2826,13 @@ export class BoardsComponent implements OnDestroy {
       const batch = await this.requestWizardBatch(`Replace only this card with a better alternative: ${card.title}.`);
       const [replacement] = await this.enrichWizardCards(batch.cards.slice(0, 1));
       if (replacement) {
-        this.wizardPreviewCards.update((cards) => cards.map((item) => item.id === cardId ? { ...replacement, id: cardId } : item));
+        this.wizardPreviewCards.update((cards) => cards.map((item) => item.id === cardId
+          ? {
+              ...replacement,
+              id: cardId,
+              what3wordsAddress: item.what3wordsAddress || replacement.what3wordsAddress,
+            }
+          : item));
         this.wizardSelectedCardIds.update((ids) => new Set(ids).add(cardId));
       }
     } catch {
@@ -2756,28 +2865,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardImageLoadingCardIds.update((ids) => new Set(ids).add(cardId));
     this.wizardError.set(null);
     try {
-      const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
-        timeout: 150_000,
-      });
-      const response = await callable({
-        mode: this.wizardMode(),
-        prompt: [
-          this.wizardPrompt().trim(),
-          `Find the most accurate image for this exact card only: ${card.title}. Preserve the title, text, and metadata.`,
-        ].filter(Boolean).join('\n'),
-        pastedList: '',
-        url: '',
-        photoNames: [],
-        imageOnly: true,
-        currentCard: this.wizardCardToCurrentCard(card),
-        targetBoardId: this.wizardTargetBoardId() === 'new' ? '' : this.wizardTargetBoardId(),
-        targetBoardTitle: this.wizardTargetBoardTitle(),
-        defaultType: card.type,
-        count: 1,
-        vibe: this.wizardVibe(),
-      });
-      const batch = this.normalizeWizardBatch(response.data);
-      const replacement = batch.cards[0];
+      const replacement = await this.requestWizardCardImage(card, this.wizardTargetBoardTitle());
       if (!replacement?.imageUrl) {
         this.wizardError.set(`No better image was found for "${card.title}". You can paste an image URL in Edit or upload one with Picture.`);
         return;
@@ -8153,11 +8241,19 @@ export class BoardsComponent implements OnDestroy {
   }
 
   wizardLoadingMessage(): string {
+    const task = this.wizardLoadingTask();
+    if (task) {
+      return task.message;
+    }
     const messages = this.isTourWizardMode() ? BOARD_TOUR_STATUS_MESSAGES : BOARD_WIZARD_STATUS_MESSAGES;
     return messages[this.wizardLoadingIndex()] ?? messages[0];
   }
 
   wizardLoadingProgress(): number {
+    const task = this.wizardLoadingTask();
+    if (task) {
+      return Math.max(4, Math.min(100, task.progress));
+    }
     const stepCount = this.isTourWizardMode() ? BOARD_TOUR_STATUS_MESSAGES.length : BOARD_WIZARD_STATUS_MESSAGES.length;
     return ((this.wizardLoadingIndex() % stepCount) + 1) * (100 / stepCount);
   }
@@ -8211,6 +8307,8 @@ export class BoardsComponent implements OnDestroy {
     this.wizardOffGridSource.set('spot');
     this.wizardOffGridPhoto.set('');
     this.wizardOffGridResolvedLocation.set(null);
+    this.wizardOffGridVerifiedLocations.set({});
+    this.wizardOffGridVerificationFailures.set({});
     this.wizardOffGridLocating.set(false);
     this.wizardOffGridVerifying.set(false);
     this.wizardOffGridAccuracy.set(null);
@@ -8223,6 +8321,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardTourPaceOrStyle.set('Standard');
     this.wizardTourExtras.set(new Set(['Photo stops', 'Accessibility notes']));
     this.wizardLoadingIndex.set(0);
+    this.wizardLoadingTask.set(null);
     this.wizardError.set(null);
     this.wizardResult.set(null);
     this.wizardPreviewCards.set([]);
@@ -8416,6 +8515,11 @@ export class BoardsComponent implements OnDestroy {
     const type = this.isBoardCardType(data['type']) ? data['type'] : this.wizardDefaultType();
     const subtitle = this.stringValue(data['subtitle'], 'Wizard draft', 120);
     const notes = this.stringValue(data['notes'], 'Review and edit this card before saving.', 3600);
+    const sourceUrl = this.stringValue(data['sourceUrl'], '', 2000);
+    const what3wordsAddress = normalizeWhat3WordsAddress(data['what3wordsAddress'])
+      || extractWhat3WordsAddress(subtitle)
+      || extractWhat3WordsAddress(notes)
+      || extractWhat3WordsAddress(sourceUrl);
     const tags = Array.isArray(data['tags'])
       ? data['tags'].map((tag) => this.stringValue(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
       : [this.wizardVibe(), type].slice(0, 6);
@@ -8448,7 +8552,7 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: this.stringValue(data['spotifyArtworkUrl'], '', 2000),
       placeId: this.stringValue(data['placeId'], '', 240),
       googleMapsUrl: this.stringValue(data['googleMapsUrl'], '', 2000),
-      sourceUrl: this.stringValue(data['sourceUrl'], '', 2000),
+      sourceUrl,
       productUrl: this.stringValue(data['productUrl'], '', 2000),
       merchant: this.stringValue(data['merchant'], '', 120),
       price: this.stringValue(data['price'], '', 80),
@@ -8459,7 +8563,7 @@ export class BoardsComponent implements OnDestroy {
       imageSource: this.isCommerceImageSource(data['imageSource']) ? data['imageSource'] : undefined,
       extractionConfidence: this.numberValue(data['extractionConfidence'], 0, 0, 1),
       extractedAt: this.stringValue(data['extractedAt'], '', 40),
-      what3wordsAddress: normalizeWhat3WordsAddress(data['what3wordsAddress']),
+      what3wordsAddress,
       tour: this.normalizeCardTour(data['tour']),
     };
   }
@@ -8501,12 +8605,17 @@ export class BoardsComponent implements OnDestroy {
       imageSource: card.imageSource || 'missing',
       extractionConfidence: card.extractionConfidence || 0,
       extractedAt: card.extractedAt || '',
+      what3wordsAddress: card.what3wordsAddress || '',
     };
   }
 
-  private async enrichWizardCards(cards: BoardWizardGeneratedCard[]): Promise<BoardWizardPreviewCard[]> {
+  private async enrichWizardCards(
+    cards: BoardWizardGeneratedCard[],
+    onProgress?: (completed: number, total: number) => void,
+  ): Promise<BoardWizardPreviewCard[]> {
     const preview: BoardWizardPreviewCard[] = [];
-    for (const card of cards.slice(0, 100)) {
+    const candidates = cards.slice(0, 100);
+    for (const card of candidates) {
       let enriched: BoardWizardPreviewCard = {
         ...card,
         id: this.createId(),
@@ -8548,14 +8657,51 @@ export class BoardsComponent implements OnDestroy {
         }
       }
       preview.push(enriched);
+      onProgress?.(preview.length, candidates.length);
     }
     return preview;
   }
 
-  private shouldEnrichWizardCard(card: BoardWizardGeneratedCard): boolean {
-    if (card.what3wordsAddress) {
-      return false;
+  private async requestWizardCardImage(
+    card: BoardWizardPreviewCard,
+    targetBoardTitle: string,
+    promptContext = '',
+  ): Promise<BoardWizardGeneratedCard | null> {
+    if (!this.functions) {
+      return null;
     }
+    const locationContext = [
+      card.image_context,
+      targetBoardTitle,
+      promptContext,
+    ].filter(Boolean).join(' · ');
+    const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
+      timeout: 150_000,
+    });
+    const response = await callable({
+      mode: this.wizardMode(),
+      prompt: [
+        this.wizardPrompt().trim(),
+        `Find the most accurate real photograph for this exact place only: ${card.title}.`,
+        locationContext ? `Location context: ${locationContext}.` : '',
+        'Prefer an exact Google Place or authoritative reference photo. Do not use a map, icon, logo, illustration, generic object, or a similarly named place.',
+        'Preserve the title, text, what3words address, and all metadata.',
+      ].filter(Boolean).join('\n'),
+      pastedList: '',
+      url: '',
+      photoNames: [],
+      imageOnly: true,
+      currentCard: this.wizardCardToCurrentCard(card),
+      targetBoardId: this.wizardTargetBoardId() === 'new' ? '' : this.wizardTargetBoardId(),
+      targetBoardTitle,
+      defaultType: card.type,
+      count: 1,
+      vibe: this.wizardVibe(),
+    });
+    return this.normalizeWizardBatch(response.data).cards[0] ?? null;
+  }
+
+  private shouldEnrichWizardCard(card: BoardWizardGeneratedCard): boolean {
     if (card.type === 'food' && card.tags.some((tag) => ['menu-item', 'dish', 'menu', 'food item'].includes(tag.toLowerCase()))) {
       return false;
     }
@@ -8611,7 +8757,11 @@ export class BoardsComponent implements OnDestroy {
 
   private async findWizardPlace(card: BoardWizardGeneratedCard): Promise<PlaceSearchResult | null> {
     const query = card.place_query || card.title;
-    const context = this.wizardPrompt().trim() || this.wizardTargetBoardTitle();
+    const context = [
+      card.image_context,
+      this.wizardPrompt().trim(),
+      this.wizardTargetBoardTitle(),
+    ].filter(Boolean).join(', ');
     const results = await this.googleMapsService.searchPlaces(query, context);
     return results[0] ?? null;
   }
@@ -8672,44 +8822,219 @@ export class BoardsComponent implements OnDestroy {
     };
   }
 
-  private buildOffGridWizardBatch(): BoardWizardGeneratedBatch {
-    const location = this.wizardOffGridResolvedLocation();
-    const name = this.wizardOffGridName().trim().slice(0, 80) || 'Off-grid place';
-    const words = location?.words ?? '';
-    const nearby = location?.nearestPlace ? ` · near ${location.nearestPlace}` : '';
-    const tip = this.wizardOffGridTip().trim().slice(0, 3600);
+  private what3WordsSourceFromOffGridWizard(): What3WordsBoardSource {
+    const parsed = this.wizardOffGridParsedSource();
+    const singleLocation = this.wizardOffGridResolvedLocation();
+    const items = parsed?.items.length
+      ? parsed.items
+      : singleLocation
+        ? [{ name: '', words: singleLocation.words, sourceLine: 1 }]
+        : [];
+    return {
+      title: '',
+      items,
+      issues: parsed?.issues ?? [],
+    };
+  }
+
+  private buildWhat3WordsWizardBatch(
+    source: What3WordsBoardSource,
+    fromOffGridWizard = false,
+    resolvedLocations: Record<string, ResolvedWhat3WordsLocation> = {},
+  ): BoardWizardGeneratedBatch {
+    const verifiedLocations = {
+      ...(fromOffGridWizard ? this.wizardOffGridVerifiedLocations() : {}),
+      ...resolvedLocations,
+    };
+    const tip = fromOffGridWizard ? this.wizardOffGridTip().trim().slice(0, 3600) : '';
     const title = this.wizardTargetBoardId() === 'new'
-      ? 'Off-grid Places'
+      ? source.title || 'Off-grid Places'
       : this.wizardTargetBoardTitle();
+    const isSingle = source.items.length === 1;
     return {
       board: {
         title,
-        description: 'Exact places worth sharing, even when they do not have a street address.',
+        description: $localize`Exact places worth sharing, even when they do not have a street address.`,
         icon: 'location_on',
         tone: 'green',
-        kind: 'off-grid',
+        kind: this.wizardTargetBoardId() === 'new' ? 'off-grid' : undefined,
         tourMeta: null,
       },
-      cards: [{
-        title: name,
-        subtitle: `Pinned to ///${words}${nearby}`,
-        notes: tip || `This card points to a precise 3 m × 3 m what3words square. Use Go there to open it for navigation.`,
-        type: 'place',
-        scope: 'place',
-        status: 'saved',
-        rating: 4,
-        tags: ['off-grid', 'what3words'],
-        image_query: `${name} place photo`,
-        place_query: name,
-        imageUrl: this.wizardOffGridPhoto(),
-        entity_name: name,
-        entity_type: 'place',
-        image_intent: 'place',
-        image_context: location?.nearestPlace ?? '',
-        short_summary: `Exact location: ///${words}`,
-        what3wordsAddress: words,
-      }],
+      cards: source.items.slice(0, 100).map((item, index) => {
+        const location = verifiedLocations[item.words]
+          ?? (isSingle ? this.wizardOffGridResolvedLocation() : null);
+        const name = (
+          item.name
+          || (index === 0 ? this.wizardOffGridName().trim() : '')
+          || `Off-grid place ${index + 1}`
+        ).slice(0, 80);
+        const nearby = location?.nearestPlace ? ` · near ${location.nearestPlace}` : '';
+        const locationContext = [location?.nearestPlace, location?.country]
+          .filter(Boolean)
+          .join(', ');
+        return {
+          title: name,
+          subtitle: `Pinned to ///${item.words}${nearby}`,
+          notes: tip || `This card points to a precise 3 m × 3 m what3words square. Use Go there to open it for navigation.`,
+          type: 'place',
+          scope: 'place',
+          status: 'saved',
+          rating: 4,
+          tags: ['off-grid', 'what3words'],
+          image_query: `${name}${locationContext ? ` ${locationContext}` : ''} landmark place photo`,
+          place_query: [name, locationContext].filter(Boolean).join(', '),
+          imageUrl: fromOffGridWizard && isSingle ? this.wizardOffGridPhoto() : '',
+          entity_name: name,
+          entity_type: 'place',
+          image_intent: 'place',
+          image_context: locationContext,
+          short_summary: `Exact location: ///${item.words}`,
+          what3wordsAddress: item.words,
+          rank: index + 1,
+        };
+      }),
     };
+  }
+
+  private async generateWhat3WordsWizardPreview(
+    source: What3WordsBoardSource,
+    fromOffGridWizard = false,
+  ): Promise<void> {
+    const total = source.items.length;
+    this.wizardStep.set('loading');
+    this.wizardLoadingTask.set({
+      message: total === 1 ? 'Locating the exact square' : `Locating ${total} exact squares`,
+      progress: 6,
+    });
+
+    const seedLocations = fromOffGridWizard ? this.wizardOffGridVerifiedLocations() : {};
+    const resolvedLocations = await this.resolveWizardWhat3WordsLocations(
+      source,
+      seedLocations,
+      (completed) => {
+        this.wizardLoadingTask.set({
+          message: total === 1
+            ? 'Locating the exact square'
+            : `Located ${completed} of ${total} exact squares`,
+          progress: 6 + (completed / Math.max(1, total)) * 24,
+        });
+      },
+    );
+    if (fromOffGridWizard) {
+      this.wizardOffGridVerifiedLocations.set(resolvedLocations);
+    }
+
+    const batch = this.buildWhat3WordsWizardBatch(source, fromOffGridWizard, resolvedLocations);
+    this.wizardLoadingTask.set({
+      message: total === 1 ? 'Searching for an accurate place photo' : `Searching photos for ${total} places`,
+      progress: 32,
+    });
+    const previewCards = await this.enrichWizardCards(batch.cards, (completed) => {
+      this.wizardLoadingTask.set({
+        message: total === 1
+          ? 'Checking the place photo'
+          : `Checked place photos ${completed} of ${total}`,
+        progress: 32 + (completed / Math.max(1, total)) * 28,
+      });
+    });
+    const enrichedCards = await this.enrichWizardMissingPlaceImages(
+      previewCards,
+      batch.board.title,
+      (completed, missingTotal) => {
+        this.wizardLoadingTask.set({
+          message: missingTotal === 1
+            ? 'Trying trusted photo sources'
+            : `Trying trusted photo sources ${completed} of ${missingTotal}`,
+          progress: 62 + (completed / Math.max(1, missingTotal)) * 34,
+        });
+      },
+    );
+
+    this.wizardLoadingTask.set({ message: 'Preparing the editable preview', progress: 100 });
+    this.wizardResult.set({ ...batch, cards: enrichedCards });
+    this.wizardPreviewCards.set(enrichedCards);
+    this.wizardSelectedCardIds.set(new Set(enrichedCards.map((card) => card.id)));
+    const missingImages = enrichedCards.filter((card) => !card.imageUrl).length;
+    this.wizardError.set(
+      missingImages
+        ? `${enrichedCards.length - missingImages} of ${enrichedCards.length} place photos were found. The exact what3words links are preserved; missing photos can still be added in Edit.`
+        : null,
+    );
+    this.wizardStep.set('preview');
+    this.wizardLoadingTask.set(null);
+  }
+
+  private async resolveWizardWhat3WordsLocations(
+    source: What3WordsBoardSource,
+    seed: Record<string, ResolvedWhat3WordsLocation>,
+    onProgress: (completed: number) => void,
+  ): Promise<Record<string, ResolvedWhat3WordsLocation>> {
+    const resolved = { ...seed };
+    let nextIndex = 0;
+    let completed = 0;
+    const worker = async () => {
+      while (nextIndex < source.items.length) {
+        const item = source.items[nextIndex++];
+        if (!resolved[item.words]) {
+          try {
+            resolved[item.words] = await resolveWhat3WordsAddress(item.words);
+          } catch {
+            // The exact link remains useful and title-based photo search still runs.
+          }
+        }
+        completed += 1;
+        onProgress(completed);
+      }
+    };
+    await Promise.all(
+      Array.from({ length: Math.min(3, source.items.length) }, () => worker()),
+    );
+    return resolved;
+  }
+
+  private async enrichWizardMissingPlaceImages(
+    cards: BoardWizardPreviewCard[],
+    boardTitle: string,
+    onProgress: (completed: number, total: number) => void,
+  ): Promise<BoardWizardPreviewCard[]> {
+    const missingCards = cards.filter((card) => !card.imageUrl);
+    if (!missingCards.length || !this.functions) {
+      onProgress(missingCards.length, missingCards.length);
+      return cards;
+    }
+
+    const enrichedById = new Map(cards.map((card) => [card.id, card]));
+    let nextIndex = 0;
+    let completed = 0;
+    const worker = async () => {
+      while (nextIndex < missingCards.length) {
+        const card = missingCards[nextIndex++];
+        try {
+          const replacement = await this.requestWizardCardImage(
+            card,
+            boardTitle,
+            card.image_context || card.subtitle,
+          );
+          if (replacement?.imageUrl) {
+            enrichedById.set(card.id, {
+              ...card,
+              imageUrl: replacement.imageUrl,
+              imageSource: 'search',
+              placeId: replacement.placeId || card.placeId,
+              googleMapsUrl: replacement.googleMapsUrl || card.googleMapsUrl,
+            });
+          }
+        } catch {
+          // One unavailable image must not discard the other exact place cards.
+        }
+        completed += 1;
+        onProgress(completed, missingCards.length);
+      }
+    };
+    await Promise.all(
+      Array.from({ length: Math.min(3, missingCards.length) }, () => worker()),
+    );
+    return cards.map((card) => enrichedById.get(card.id) ?? card);
   }
 
   private localWizardItems(source: string, preserveSingleItemList = false): string[] {
@@ -9580,11 +9905,18 @@ export class BoardsComponent implements OnDestroy {
     if (!title) {
       return null;
     }
+    const subtitle = typeof data['subtitle'] === 'string' ? data['subtitle'] : '';
+    const notes = typeof data['notes'] === 'string' ? data['notes'] : '';
+    const sourceUrl = typeof data['sourceUrl'] === 'string' ? data['sourceUrl'] : '';
+    const what3wordsAddress = normalizeWhat3WordsAddress(data['what3wordsAddress'])
+      || extractWhat3WordsAddress(subtitle)
+      || extractWhat3WordsAddress(notes)
+      || extractWhat3WordsAddress(sourceUrl);
     return {
       id: typeof data['id'] === 'string' ? data['id'] : this.createId(),
       title,
-      subtitle: typeof data['subtitle'] === 'string' ? data['subtitle'] : '',
-      notes: typeof data['notes'] === 'string' ? data['notes'] : '',
+      subtitle,
+      notes,
       type: this.isBoardCardType(data['type']) ? data['type'] : 'place',
       scope: this.isBoardCardScope(data['scope']) ? data['scope'] : this.inferLegacyCardScope(data),
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
@@ -9610,7 +9942,7 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtworkUrl: typeof data['spotifyArtworkUrl'] === 'string' ? data['spotifyArtworkUrl'] : '',
       placeId: typeof data['placeId'] === 'string' ? data['placeId'] : '',
       googleMapsUrl: typeof data['googleMapsUrl'] === 'string' ? data['googleMapsUrl'] : '',
-      sourceUrl: typeof data['sourceUrl'] === 'string' ? data['sourceUrl'] : '',
+      sourceUrl,
       productUrl: typeof data['productUrl'] === 'string' ? data['productUrl'] : '',
       merchant: typeof data['merchant'] === 'string' ? data['merchant'] : '',
       price: typeof data['price'] === 'string' ? data['price'] : '',
@@ -9623,7 +9955,7 @@ export class BoardsComponent implements OnDestroy {
         ? Math.max(0, Math.min(1, data['extractionConfidence']))
         : 0,
       extractedAt: typeof data['extractedAt'] === 'string' ? data['extractedAt'] : '',
-      what3wordsAddress: normalizeWhat3WordsAddress(data['what3wordsAddress']),
+      what3wordsAddress,
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
       stickers: this.normalizeStickers(data['stickers']),
       tour: this.normalizeCardTour(data['tour']),
