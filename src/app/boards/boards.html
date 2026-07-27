@@ -129,7 +129,11 @@
                             </span>
                           </div>
                         }
-                        @if (!spotify.connected() && spotifyTrackEmbedUrl(card); as spotifyEmbedUrl) {
+                        @if (
+                          (!spotify.connected() || spotify.needsPremium()) &&
+                          spotifyTrackEmbedUrl(card);
+                          as spotifyEmbedUrl
+                        ) {
                           <iframe
                             title="Spotify player for {{ card.title }}"
                             [src]="spotifyEmbedUrl"
@@ -141,7 +145,12 @@
                             style="display: block; width: min(100%, 22rem); margin: .7rem auto 0; border: 0; border-radius: .85rem; background: #111;"
                           ></iframe>
                         }
-                        @if (isSongCard(card) && spotifyTrackHref(card)) {
+                        @if (
+                          isSongCard(card) &&
+                          spotifyTrackHref(card) &&
+                          spotify.connected() &&
+                          !spotify.needsPremium()
+                        ) {
                           <button
                             type="button"
                             class="spotify-full-play spotify-full-play--stack"
@@ -153,6 +162,17 @@
                             </span>
                             <span>{{ spotifyPlayLabel(card) }}</span>
                           </button>
+                        } @else if (isSongCard(card) && spotifyTrackHref(card)) {
+                          <a
+                            class="spotify-full-play spotify-full-play--stack"
+                            [href]="spotifyTrackHref(card)"
+                            target="_blank"
+                            rel="noopener"
+                            (click)="$event.stopPropagation()"
+                          >
+                            <span class="material-symbols-outlined">open_in_new</span>
+                            <span>Play on Spotify</span>
+                          </a>
                         }
                         @if (card.audioPreviewUrl) {
                           <button
@@ -1542,14 +1562,14 @@
                     <span class="spotify-board-connect__pulse"></span>
                     <span class="material-symbols-outlined">music_note</span>
                     <span>
-                      <small>{{ spotify.connected() ? 'Spotify connected' : 'Full-song playback' }}</small>
+                      <small>{{ spotify.connected() ? 'Spotify connected' : 'Premium in-app playback' }}</small>
                       <strong>
-                        {{ spotify.connected() ? (spotify.account()?.displayName || 'Manage Spotify') : 'Connect Spotify' }}
+                        {{ spotify.connected() ? (spotify.account()?.displayName || 'Manage Spotify') : 'Connect Spotify Premium' }}
                       </strong>
                     </span>
                     <span class="material-symbols-outlined">chevron_right</span>
                   </button>
-                  <p>{{ board.description || 'Pick a song and play it right here. Connect Spotify once and your music follows you across every board.' }}</p>
+                  <p>{{ board.description || 'Open any song in Spotify. Premium members can also connect for full-song playback inside LivingWiki.' }}</p>
                   @if (forkAttributionLabel(board)) {
                     <small class="board-fork-label">{{ forkAttributionLabel(board) }}</small>
                   }
@@ -1583,7 +1603,11 @@
                           <span>{{ songArtistLabel(song) }}</span>
                           <small>{{ songAlbumLabel(song) }}</small>
 
-                          @if (!spotify.connected() && spotifyTrackEmbedUrl(song); as spotifyEmbedUrl) {
+                          @if (
+                            (!spotify.connected() || spotify.needsPremium()) &&
+                            spotifyTrackEmbedUrl(song);
+                            as spotifyEmbedUrl
+                          ) {
                             <iframe
                               title="Spotify player for {{ song.title }}"
                               [src]="spotifyEmbedUrl"
@@ -1596,17 +1620,30 @@
                           }
 
                           <div class="song-player-card__actions">
-                            <button
-                              type="button"
-                              class="spotify-full-play"
-                              [class.spotify-full-play--active]="spotify.isTrackActive(spotifyTrackUriForCard(song))"
-                              (click)="playSongWithSpotify(song, board, $event)"
-                            >
-                              <span class="material-symbols-outlined">
-                                {{ spotify.isTrackActive(spotifyTrackUriForCard(song)) && spotify.playing() ? 'pause' : 'play_arrow' }}
-                              </span>
-                              <span>{{ spotifyPlayLabel(song) }}</span>
-                            </button>
+                            @if (spotify.connected() && !spotify.needsPremium()) {
+                              <button
+                                type="button"
+                                class="spotify-full-play"
+                                [class.spotify-full-play--active]="spotify.isTrackActive(spotifyTrackUriForCard(song))"
+                                (click)="playSongWithSpotify(song, board, $event)"
+                              >
+                                <span class="material-symbols-outlined">
+                                  {{ spotify.isTrackActive(spotifyTrackUriForCard(song)) && spotify.playing() ? 'pause' : 'play_arrow' }}
+                                </span>
+                                <span>{{ spotifyPlayLabel(song) }}</span>
+                              </button>
+                            } @else {
+                              <a
+                                class="spotify-full-play"
+                                [href]="spotifyTrackHref(song)"
+                                target="_blank"
+                                rel="noopener"
+                                (click)="$event.stopPropagation()"
+                              >
+                                <span class="material-symbols-outlined">open_in_new</span>
+                                <span>Play on Spotify</span>
+                              </a>
+                            }
                             <button
                               type="button"
                               class="song-preview-button song-preview-button--juke"
@@ -1629,10 +1666,12 @@
                                 <span>{{ isSongPreviewPlaying(song, 'song-deck') ? 'Pause preview' : 'Play preview' }}</span>
                               </button>
                             }
-                            <a [href]="spotifyTrackHref(song)" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
-                              <span class="material-symbols-outlined">graphic_eq</span>
-                              {{ hasSpotifyTrack(song) ? 'Open in Spotify' : 'Find on Spotify' }}
-                            </a>
+                            @if (spotify.connected() && !spotify.needsPremium()) {
+                              <a [href]="spotifyTrackHref(song)" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
+                                <span class="material-symbols-outlined">graphic_eq</span>
+                                {{ hasSpotifyTrack(song) ? 'Open in Spotify' : 'Find on Spotify' }}
+                              </a>
+                            }
                           </div>
 
                           <em>Spotify Premium enables full-song playback here. The preview remains available as a fallback.</em>
@@ -1938,7 +1977,12 @@
                             <span i18n>Preview</span>
                           </button>
                         }
-                        @if (isSongCard(card) && spotifyTrackHref(card)) {
+                        @if (
+                          isSongCard(card) &&
+                          spotifyTrackHref(card) &&
+                          spotify.connected() &&
+                          !spotify.needsPremium()
+                        ) {
                           <button
                             type="button"
                             class="spotify-card-play"
@@ -1950,6 +1994,17 @@
                               {{ spotify.isTrackActive(spotifyTrackUriForCard(card)) && spotify.playing() ? 'pause' : 'play_arrow' }}
                             </span>
                           </button>
+                        } @else if (isSongCard(card) && spotifyTrackHref(card)) {
+                          <a
+                            class="spotify-card-play"
+                            [href]="spotifyTrackHref(card)"
+                            target="_blank"
+                            rel="noopener"
+                            [attr.aria-label]="'Play on Spotify: ' + card.title"
+                            (click)="$event.stopPropagation()"
+                          >
+                            <span class="material-symbols-outlined">open_in_new</span>
+                          </a>
                         }
                         <button
                           type="button"
