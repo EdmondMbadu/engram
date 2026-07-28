@@ -35,6 +35,7 @@ import {
   snapshotFromVisitPlanRecord,
   visitEmailInvitationDocumentId,
   visitPlanDocumentId,
+  visitPlanEmailAttachments,
   visitPlanSnapshot,
   visitReminderAtMs,
   visitWhenLabel,
@@ -6351,17 +6352,26 @@ async function sendVisitTransactionalEmail(
     subject: email.subject,
     text: email.text,
     html: email.html,
-    ...(email.calendar
-      ? {
-          attachments: [{
-            content: Buffer.from(email.calendar.content, 'utf8').toString('base64'),
-            filename: email.calendar.filename,
-            type: 'text/calendar; charset=UTF-8; method=PUBLISH',
-            disposition: 'attachment',
-          }],
-        }
-      : {}),
+    ...(email.calendar ? { attachments: visitPlanEmailAttachments(email) } : {}),
   });
+}
+
+function visitEmailDeliveryError(error: unknown): string {
+  if (!error || typeof error !== 'object') {
+    return error instanceof Error ? error.message : 'Email delivery failed.';
+  }
+  const response = (error as {
+    response?: { body?: { errors?: Array<{ message?: unknown; field?: unknown }> } };
+  }).response;
+  const details = response?.body?.errors
+    ?.map((item) => {
+      const message = stringOrEmpty(item.message);
+      const field = stringOrEmpty(item.field);
+      return [field, message].filter(Boolean).join(': ');
+    })
+    .filter(Boolean)
+    .join(' · ');
+  return (details || (error instanceof Error ? error.message : 'Email delivery failed.')).slice(0, 500);
 }
 
 function visitInvitationUrl(token: string): string {
@@ -6435,14 +6445,15 @@ async function sendVisitInvitation(
     }, { merge: true });
     return { sent: true, url: invitation.url };
   } catch (error) {
+    const deliveryError = visitEmailDeliveryError(error);
     await invitation.ref.set({
-      delivery_error: error instanceof Error ? error.message.slice(0, 500) : 'Email delivery failed.',
+      delivery_error: deliveryError,
       updated_at: FieldValue.serverTimestamp(),
     }, { merge: true });
     logger.warn('Visit invitation email failed.', {
       planId: plan.id,
       recipientEmail,
-      errorMessage: error instanceof Error ? error.message : String(error),
+      errorMessage: deliveryError,
     });
     return { sent: false, url: invitation.url };
   }
@@ -6537,12 +6548,13 @@ export const createVisitPlan = onCall(
         confirmation_error: '',
       }, { merge: true });
     } catch (error) {
+      const deliveryError = visitEmailDeliveryError(error);
       await ref.set({
-        confirmation_error: error instanceof Error ? error.message.slice(0, 500) : 'Email delivery failed.',
+        confirmation_error: deliveryError,
       }, { merge: true });
       logger.warn('Visit plan confirmation email failed; plan remains saved.', {
         planId,
-        errorMessage: error instanceof Error ? error.message : String(error),
+        errorMessage: deliveryError,
       });
     }
 
@@ -6846,14 +6858,15 @@ export const sendVisitPlanReminders = onSchedule(
           server_updated_at: FieldValue.serverTimestamp(),
         }, { merge: true });
       } catch (error) {
+        const deliveryError = visitEmailDeliveryError(error);
         await document.ref.set({
           reminder_claimed_at_ms: null,
-          reminder_error: error instanceof Error ? error.message.slice(0, 500) : 'Reminder delivery failed.',
+          reminder_error: deliveryError,
           server_updated_at: FieldValue.serverTimestamp(),
         }, { merge: true });
         logger.warn('Visit plan reminder failed and will be retried.', {
           planId: plan.id,
-          errorMessage: error instanceof Error ? error.message : String(error),
+          errorMessage: deliveryError,
         });
       }
     }

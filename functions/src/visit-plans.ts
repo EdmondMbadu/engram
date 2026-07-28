@@ -10,6 +10,13 @@ export type VisitPlanEmail = {
   };
 };
 
+export type VisitPlanEmailAttachment = {
+  content: string;
+  filename: string;
+  type: 'text/calendar';
+  disposition: 'attachment';
+};
+
 export type VisitPlanSnapshot = {
   id: string;
   organizerName: string;
@@ -43,6 +50,18 @@ export function visitEmailInvitationDocumentId(planId: string, email: string): s
     .digest('hex')
     .slice(0, 48);
   return `vpi_${hash}`;
+}
+
+export function visitPlanEmailAttachments(email: VisitPlanEmail): VisitPlanEmailAttachment[] {
+  if (!email.calendar) {
+    return [];
+  }
+  return [{
+    content: Buffer.from(email.calendar.content, 'utf8').toString('base64'),
+    filename: email.calendar.filename,
+    type: 'text/calendar',
+    disposition: 'attachment',
+  }];
 }
 
 export function normalizeVisitPlanEmails(value: unknown, limit = 10): string[] {

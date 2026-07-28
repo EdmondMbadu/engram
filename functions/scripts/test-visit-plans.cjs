@@ -8,6 +8,7 @@ const {
   normalizeVisitTimezone,
   visitPlanDocumentId,
   visitMapsUrl,
+  visitPlanEmailAttachments,
   visitReminderAtMs,
 } = require('../lib/visit-plans.js');
 
@@ -68,6 +69,16 @@ const ics = buildVisitPlanIcs(plan, 'confirmed');
 assert.match(ics, /BEGIN:VALARM/);
 assert.match(ics, /TRIGGER:-PT1H/);
 assert.match(ics, /UID:vp_test@livingwiki.com/);
+const attachments = visitPlanEmailAttachments({
+  subject: 'Test',
+  text: 'Test',
+  html: '<p>Test</p>',
+  calendar: { content: ics, filename: 'test.ics' },
+});
+assert.equal(attachments.length, 1);
+assert.equal(attachments[0].type, 'text/calendar');
+assert.equal(attachments[0].type.includes(';'), false);
+assert.equal(Buffer.from(attachments[0].content, 'base64').toString('utf8'), ics);
 
 const guestPage = buildVisitGuestPage({
   plan,
