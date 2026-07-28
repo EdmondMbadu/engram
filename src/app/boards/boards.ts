@@ -20,6 +20,10 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import {
+  spotifyTrackEmbedUrl as buildSpotifyTrackEmbedUrl,
+  spotifyTrackIdFromReference,
+} from '../spotify-embed';
+import {
   localizedPath,
   LOCALE_STORAGE_KEY,
   supportedLocale,
@@ -4669,39 +4673,15 @@ export class BoardsComponent implements OnDestroy {
     return card.spotifyAlbumName || card.notes || 'Open your music service for full playback when available.';
   }
 
-  openSpotifyConnection(event?: Event): void {
-    event?.preventDefault();
-    event?.stopPropagation();
-    this.spotify.openConnectionDialog();
-  }
-
-  playSongWithSpotify(
+  playSongHere(
     card: BoardCard,
     board: Board | null = this.selectedBoard(),
     event?: Event,
   ): void {
     event?.preventDefault();
     event?.stopPropagation();
-    const track = this.spotifyTrackForCard(card, board);
     this.stopSongPreview();
-    if (this.spotify.isTrackActive(track.uri) && this.spotify.connected()) {
-      void this.spotify.togglePlayback();
-      return;
-    }
-    const queue = this.songCards(board)
-      .map((song) => this.spotifyTrackForCard(song, board));
-    void this.spotify.requestPlay(track, queue);
-  }
-
-  spotifyPlayLabel(card: BoardCard): string {
-    const uri = this.spotifyTrackUriForCard(card);
-    if (!this.spotify.connected()) {
-      return 'Connect & play';
-    }
-    if (!this.spotify.isTrackActive(uri)) {
-      return 'Play full song';
-    }
-    return this.spotify.playing() ? 'Pause' : 'Resume';
+    this.spotify.openEmbeddedPlayer(this.spotifyTrackForCard(card, board));
   }
 
   nextTourCard(card: BoardCard, cards = this.selectedBoardTourCards()): BoardCard | null {
@@ -7746,7 +7726,7 @@ export class BoardsComponent implements OnDestroy {
       return cached;
     }
     const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://open.spotify.com/embed/track/${encodeURIComponent(trackId)}?utm_source=generator&theme=0`,
+      buildSpotifyTrackEmbedUrl(trackId),
     );
     this.spotifyEmbedUrls.set(trackId, safeUrl);
     return safeUrl;
@@ -7797,12 +7777,9 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private spotifyTrackIdForCard(card: Pick<BoardCard, 'spotifyTrackId' | 'spotifyTrackUrl' | 'spotifyUri'>): string {
-    const direct = card.spotifyTrackId.trim();
-    if (direct) {
-      return direct;
-    }
-    const match = `${card.spotifyTrackUrl} ${card.spotifyUri}`.match(/(?:open\.spotify\.com\/track\/|spotify:track:)([A-Za-z0-9]{12,32})/i);
-    return match?.[1] ?? '';
+    return spotifyTrackIdFromReference(
+      `${card.spotifyTrackId} ${card.spotifyTrackUrl} ${card.spotifyUri}`,
+    );
   }
 
   stackFramePosition(frame: StackFrame): string {

@@ -142,7 +142,7 @@ const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const googleCustomSearchApiKey = defineSecret('GOOGLE_CUSTOM_SEARCH_API_KEY');
 const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? '';
-const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? '';
+const spotifyClientSecret = defineSecret('SPOTIFY_CLIENT_SECRET');
 const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
 const stripePersonalPlusMonthlyPriceId = defineString('STRIPE_PRICE_PERSONAL_PLUS_MONTHLY', { default: '' });
@@ -5969,7 +5969,7 @@ export const generateBoardWizardBatch = onCall(
     memory: '2GiB',
     concurrency: 1,
     maxInstances: 20,
-    secrets: [geminiApiKey, googlePlacesApiKey, googleCustomSearchApiKey],
+    secrets: [geminiApiKey, googlePlacesApiKey, googleCustomSearchApiKey, spotifyClientSecret],
   },
   async (request) => {
     const userId = request.auth?.uid;
@@ -7758,7 +7758,7 @@ export const resolveBoardSongSpotify = onCall(
     cors: true,
     timeoutSeconds: 60,
     memory: '512MiB',
-    secrets: [googleCustomSearchApiKey],
+    secrets: [googleCustomSearchApiKey, spotifyClientSecret],
   },
   async (request) => {
     const data = (request.data ?? {}) as Record<string, unknown>;
@@ -9624,7 +9624,8 @@ async function findSpotifyTrackWithOfficialApi(titleCandidates: string[], artist
 }
 
 async function getSpotifyClientCredentialsToken(): Promise<string> {
-  if (!spotifyClientId || !spotifyClientSecret) {
+  const clientSecret = spotifyClientSecret.value();
+  if (!spotifyClientId || !clientSecret) {
     return '';
   }
   const now = Date.now();
@@ -9635,7 +9636,7 @@ async function getSpotifyClientCredentialsToken(): Promise<string> {
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${spotifyClientId}:${spotifyClientSecret}`).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(`${spotifyClientId}:${clientSecret}`).toString('base64')}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({ grant_type: 'client_credentials' }).toString(),

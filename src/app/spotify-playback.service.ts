@@ -118,6 +118,7 @@ export class SpotifyPlaybackService {
   readonly playerReady = signal(false);
   readonly playing = signal(false);
   readonly currentTrack = signal<SpotifyTrack | null>(null);
+  readonly embeddedTrack = signal<SpotifyTrack | null>(null);
   readonly positionMs = signal(0);
   readonly durationMs = signal(0);
   readonly devices = signal<SpotifyDevice[]>([]);
@@ -172,6 +173,20 @@ export class SpotifyPlaybackService {
     if (this.authService.uid() && !this.connectionLoading()) {
       void this.loadConnection();
     }
+  }
+
+  openEmbeddedPlayer(track: SpotifyTrack): void {
+    this.error.set(null);
+    this.notice.set(null);
+    this.embeddedTrack.set(track);
+  }
+
+  closeEmbeddedPlayer(): void {
+    this.embeddedTrack.set(null);
+  }
+
+  isEmbeddedTrack(uri: string): boolean {
+    return !!uri && this.embeddedTrack()?.uri === uri;
   }
 
   closeConnectionDialog(): void {
@@ -781,8 +796,11 @@ export class SpotifyPlaybackService {
       expired: 'That Spotify connection link expired. Please try again.',
       configuration: 'Spotify is not configured for LivingWiki yet.',
       unavailable: 'Spotify is temporarily unavailable. Please try again.',
+      connection_failed:
+        'Spotify could not finish the optional account connection. You can still play songs here with the official Spotify player. Enhanced controls are currently limited to approved LivingWiki beta accounts.',
     };
-    return messages[code ?? ''] ?? 'Spotify could not be connected. Please try again.';
+    return messages[code ?? '']
+      ?? 'Spotify could not finish the optional connection. You can still use the official player on every music card.';
   }
 
   private friendlyError(error: unknown, fallback: string): string {

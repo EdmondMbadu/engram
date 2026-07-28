@@ -13,6 +13,7 @@ describe('App', () => {
           provide: SpotifyPlaybackService,
           useValue: {
             connectDialogOpen: signal(false),
+            embeddedTrack: signal(null),
             currentTrack: signal(null),
           },
         },

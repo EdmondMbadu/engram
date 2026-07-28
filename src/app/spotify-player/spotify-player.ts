@@ -1,4 +1,6 @@
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
+import { spotifyTrackEmbedUrl, spotifyTrackIdFromTrack } from '../spotify-embed';
 import { SpotifyPlaybackService } from '../spotify-playback.service';
 
 @Component({
@@ -8,23 +10,12 @@ import { SpotifyPlaybackService } from '../spotify-playback.service';
 })
 export class SpotifyPlayerComponent {
   readonly spotify = inject(SpotifyPlaybackService);
-  readonly compact = signal(false);
-  readonly devicesOpen = signal(false);
-
-  @HostListener('document:keydown.escape')
-  closeDialogOnEscape(): void {
-    if (this.spotify.connectDialogOpen()) {
-      this.spotify.closeConnectionDialog();
-    }
-  }
-
-  onSeek(event: Event): void {
-    const value = Number((event.target as HTMLInputElement).value);
-    void this.spotify.seek(value);
-  }
-
-  onDeviceChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    void this.spotify.selectDevice(value);
-  }
+  private readonly sanitizer = inject(DomSanitizer);
+  readonly officialCompact = signal(false);
+  readonly officialEmbedUrl = computed<SafeResourceUrl | null>(() => {
+    const track = this.spotify.embeddedTrack();
+    const trackId = track ? spotifyTrackIdFromTrack(track) : '';
+    const embedUrl = spotifyTrackEmbedUrl(trackId);
+    return embedUrl ? this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl) : null;
+  });
 }

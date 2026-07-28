@@ -1765,15 +1765,6 @@ body .chat-suggestion-card__icon {
 .song-board__live-card { display: inline-flex; align-items: center; gap: 0.36rem; border: 1.5px solid #d3ecdd; border-radius: 999px; background: #e7f5ec; box-shadow: 0 3px 0 rgba(13, 56, 35, 0.24); color: #1ea64a; cursor: pointer; font: inherit; font-size: 0.72rem; font-weight: 950; line-height: 1; padding: 0.48rem 0.7rem; text-transform: uppercase; }
 .song-board__live-card:hover { transform: translateY(-1px); }
 .song-board__live-card .material-symbols-outlined { font-size: 1rem; font-variation-settings: 'FILL' 1; }
-.spotify-board-connect { display: grid; width: min(100%, 22rem); grid-template-columns: auto auto minmax(0, 1fr) auto; gap: .55rem; align-items: center; border: 1px solid rgba(13, 56, 35, .14); border-radius: 1rem; background: #132119; box-shadow: 0 8px 20px rgba(13, 56, 35, .18); color: #fff; cursor: pointer; padding: .62rem .75rem; text-align: left; transition: transform 150ms ease, box-shadow 150ms ease; }
-.spotify-board-connect:hover { box-shadow: 0 11px 26px rgba(13, 56, 35, .23); transform: translateY(-1px); }
-.spotify-board-connect > .material-symbols-outlined { color: #1ed760; font-size: 1.25rem; }
-.spotify-board-connect > .material-symbols-outlined:last-child { color: #95a69b; }
-.spotify-board-connect__pulse { width: .46rem; height: .46rem; border-radius: 999px; background: #7d8a81; box-shadow: 0 0 0 .24rem rgba(125, 138, 129, .12); }
-.spotify-board-connect--connected .spotify-board-connect__pulse { background: #1ed760; box-shadow: 0 0 0 .24rem rgba(30, 215, 96, .13); }
-.spotify-board-connect > span:nth-child(3) { display: grid; min-width: 0; }
-.spotify-board-connect small { color: #9db0a3; font-size: .6rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
-.spotify-board-connect strong { overflow: hidden; color: #fff; font-size: .79rem; text-overflow: ellipsis; white-space: nowrap; }
 .song-board__hero > p { max-width: 44rem; margin: 0; color: #4a6b58; font-size: 0.95rem; font-weight: 800; line-height: 1.45; }
 .song-board__stats, .song-player-card__actions, .song-player-card__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .song-board__stats { justify-content: center; }
@@ -1790,7 +1781,16 @@ body .chat-suggestion-card__icon {
 .song-player-card__body h2 { margin: 0; overflow-wrap: anywhere; color: #10281b; font-size: clamp(1.8rem, 4vw, 3.1rem); font-weight: 950; letter-spacing: 0; line-height: 0.98; }
 .song-player-card__body > span { color: #0d3823; font-size: 1.02rem; font-weight: 900; line-height: 1.2; }
 .song-player-card__body > small { display: -webkit-box; overflow: hidden; color: #4a6b58; font-size: 0.86rem; font-weight: 760; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.song-player-card iframe { display: block; width: 100%; border: 0; border-radius: 0.8rem; background: #111; }
+.song-player-card__spotify { overflow: hidden; border: 2px solid #10281b; border-radius: 1rem; background: #101713; box-shadow: 0 5px 0 rgba(16, 40, 27, .9); color: #fff; }
+.song-player-card__spotify header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .55rem; align-items: center; padding: .7rem .8rem; }
+.song-player-card__spotify header > .material-symbols-outlined { color: #1ed760; font-size: 1.35rem; font-variation-settings: 'FILL' 1; }
+.song-player-card__spotify header > span:nth-child(2) { display: grid; min-width: 0; }
+.song-player-card__spotify header strong { font-size: .78rem; line-height: 1.2; }
+.song-player-card__spotify header small { color: #a9b5ac; font-size: .64rem; line-height: 1.25; }
+.song-player-card__spotify-badge { border: 1px solid rgba(30, 215, 96, .34); border-radius: 999px; background: rgba(30, 215, 96, .1); color: #8df0ae; font-size: .58rem; font-weight: 900; letter-spacing: .06em; padding: .36rem .5rem; text-transform: uppercase; }
+.song-player-card__spotify iframe { display: block; width: 100%; border: 0; background: #111; }
+.song-player-card__spotify footer { display: flex; align-items: center; gap: .4rem; color: #a9b5ac; font-size: .68rem; font-weight: 730; line-height: 1.35; padding: .62rem .8rem .68rem; }
+.song-player-card__spotify footer .material-symbols-outlined { color: #1ed760; flex: 0 0 auto; font-size: 1.05rem; font-variation-settings: 'FILL' 1; }
 .song-player-card__actions { align-items: center; }
 .song-player-card__actions a { display: inline-flex; min-height: 2.55rem; align-items: center; justify-content: center; gap: 0.4rem; border: 2px solid #0d3823; border-radius: 999px; background: #e7f5ec; box-shadow: 0 4px 0 #0d3823; color: #0d3823; font-size: 0.82rem; font-weight: 950; line-height: 1; padding: 0.68rem 0.95rem; text-decoration: none; }
 .song-player-card__actions a .material-symbols-outlined { font-size: 1.1rem; font-variation-settings: 'FILL' 1; }
@@ -1803,7 +1803,6 @@ body .chat-suggestion-card__icon {
 .spotify-card-play:hover { transform: scale(1.06); }
 .spotify-card-play--active { background: #fff; color: #11953f; }
 .spotify-card-play .material-symbols-outlined { font-size: 1.3rem; font-variation-settings: 'FILL' 1; }
-.song-player-card__body em { display: block; margin-top: 0.1rem; color: #4a6b58; font-size: 0.78rem; font-style: normal; font-weight: 750; line-height: 1.42; }
 .song-player-card__tags { gap: 0.38rem; }
 .song-player-card__tags span { border: 1px solid #d3ecdd; border-radius: 999px; background: #fff; color: #0d3823; font-size: 0.68rem; font-weight: 900; line-height: 1; padding: 0.38rem 0.52rem; }
 .song-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.65rem; }
@@ -1840,5 +1839,7 @@ body .chat-suggestion-card__icon {
   .song-player-card__art { min-height: 0; }
   .song-player-card__art img, .song-player-card__art > .material-symbols-outlined { width: min(100%, 18rem); }
   .song-player-card__body { padding: 0 1rem 1.1rem; }
+  .song-player-card__spotify header { grid-template-columns: auto minmax(0, 1fr); }
+  .song-player-card__spotify-badge { display: none; }
   .song-player-card__actions, .song-player-card__actions a, .song-preview-button--juke, .song-player-card__actions .spotify-full-play { width: 100%; }
 }
