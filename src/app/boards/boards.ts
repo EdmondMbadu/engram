@@ -20,6 +20,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
 import {
   boardQuizEligibleCardCount,
@@ -4192,6 +4193,15 @@ export class BoardsComponent implements OnDestroy {
 
   isCardExpanded(cardId: string): boolean {
     return this.expandedCardIds().has(cardId);
+  }
+
+  canReorderCard(board: Board, cardId: string): boolean {
+    return canReorderCardSurface(
+      this.canEditBoard(board),
+      board.cards.length,
+      this.isCardExpanded(cardId),
+      this.isCardFlipped(cardId),
+    );
   }
 
   toggleCardExpanded(cardId: string, event?: Event): void {

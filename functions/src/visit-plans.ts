@@ -530,6 +530,15 @@ function emailFrame(params: {
   const image = params.plan.imageUrl
     ? `<img src="${escapeHtml(params.plan.imageUrl)}" alt="" style="width:100%;height:240px;object-fit:cover;display:block;">`
     : '';
+  const hasRouteButtons = Boolean(
+    params.wordsUrl
+    && params.primaryUrl === params.mapsUrl
+    && params.primaryLabel === 'Get directions',
+  );
+  const primaryActions = hasRouteButtons
+    ? `<a href="${escapeHtml(params.mapsUrl)}" style="display:inline-block;margin:4px;background:#27b45b;color:#fff;text-decoration:none;border-radius:999px;padding:14px 22px;font-weight:900;">Google Maps</a>
+       <a href="${escapeHtml(params.wordsUrl)}" style="display:inline-block;margin:4px;background:#f4df5b;color:#10241a;text-decoration:none;border:1px solid #10241a;border-radius:999px;padding:14px 22px;font-weight:900;">Exact spot · ///${escapeHtml(params.plan.what3wordsAddress)}</a>`
+    : `<a href="${escapeHtml(params.primaryUrl)}" style="display:inline-block;background:#27b45b;color:#fff;text-decoration:none;border-radius:999px;padding:14px 26px;font-weight:900;">${escapeHtml(params.primaryLabel)}</a>`;
   return `<div style="font-family:Segoe UI,Tahoma,sans-serif;max-width:640px;margin:0 auto;color:#10241a;">
     <div style="background:#0d3823;color:#fff;padding:28px 30px;border-radius:20px 20px 0 0;">
       <div style="font-size:12px;font-weight:850;letter-spacing:.13em;text-transform:uppercase;color:#bde8ca;">${escapeHtml(params.eyebrow)}</div>
@@ -542,10 +551,10 @@ function emailFrame(params: {
         <strong style="font-size:21px;display:block;margin-bottom:8px;">${escapeHtml(params.plan.placeName)}</strong>
         <span style="font-size:16px;font-weight:800;display:block;margin-bottom:8px;">${escapeHtml(params.when)}</span>
         ${params.plan.placeAddress ? `<span style="display:block;color:#40584a;margin-bottom:6px;">📍 ${escapeHtml(params.plan.placeAddress)}</span>` : ''}
-        ${params.plan.what3wordsAddress ? `<span style="display:block;color:#40584a;">Exact spot: <strong>///${escapeHtml(params.plan.what3wordsAddress)}</strong></span>` : ''}
+        ${params.plan.what3wordsAddress ? `<span style="display:block;color:#40584a;">Exact spot: <a href="${escapeHtml(params.wordsUrl)}" style="color:#0d3823;font-weight:850;text-decoration:underline;"><strong>///${escapeHtml(params.plan.what3wordsAddress)}</strong></a></span>` : ''}
       </div>
       <div style="text-align:center;margin:24px 0;">
-        <a href="${escapeHtml(params.primaryUrl)}" style="display:inline-block;background:#27b45b;color:#fff;text-decoration:none;border-radius:999px;padding:14px 26px;font-weight:900;">${escapeHtml(params.primaryLabel)}</a>
+        ${primaryActions}
       </div>
       <p style="font-size:13px;text-align:center;color:#718078;margin:0;">
         <a href="${escapeHtml(params.mapsUrl)}" style="color:#0d3823;font-weight:800;">Google Maps</a>

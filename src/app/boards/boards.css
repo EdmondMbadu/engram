@@ -6009,7 +6009,7 @@
 
 .detail-card__place-actions .detail-card__map-link,
 .detail-card__place-actions .go-there-card-action__primary {
-  min-height: 2.4rem;
+  min-height: 2.8rem;
   margin-top: 0;
   padding-top: 0.55rem;
   padding-bottom: 0.55rem;
@@ -6022,10 +6022,30 @@
   padding-left: 0.35rem;
 }
 
+.detail-card__go-there-bar {
+  position: relative;
+  z-index: 40;
+  display: grid;
+  flex: 0 0 auto;
+  gap: 0.42rem;
+  border-top: 2px solid rgba(16, 36, 26, 0.14);
+  background: #ffffff;
+  padding: 0.72rem 0.85rem 0.9rem;
+}
+
+.detail-card__go-there-bar > small {
+  color: #64736b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding-left: 0.35rem;
+}
+
 .go-there-card-action__primary {
+  position: relative;
+  z-index: 5;
   display: inline-flex;
   width: fit-content;
-  min-height: 2.65rem;
+  min-height: 2.8rem;
   align-items: center;
   justify-content: center;
   gap: 0.46rem;
@@ -6041,7 +6061,15 @@
   line-height: 1.15;
   padding: 0.68rem 1rem;
   text-align: left;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
   transition: filter 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+}
+
+.go-there-card-action__primary:focus-visible {
+  outline: 3px solid color-mix(in srgb, #2fbd67 62%, #ffffff);
+  outline-offset: 3px;
 }
 
 .go-there-card-action__primary:hover {
@@ -6059,8 +6087,9 @@
   color: #fff;
 }
 
-.go-there-card-action__primary--back {
-  margin-top: 0;
+.go-there-card-action__primary--standalone {
+  width: 100%;
+  min-height: 3rem;
 }
 
 .go-there-card-action__primary .material-symbols-outlined {

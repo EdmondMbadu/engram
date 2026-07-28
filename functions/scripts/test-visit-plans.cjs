@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const {
   buildVisitGuestPage,
   buildVisitPlanIcs,
+  buildVisitPlanEmail,
   isVisitableBoardCard,
   normalizeVisitPlanEmails,
   normalizeVisitStart,
@@ -79,6 +80,13 @@ assert.equal(attachments.length, 1);
 assert.equal(attachments[0].type, 'text/calendar');
 assert.equal(attachments[0].type.includes(';'), false);
 assert.equal(Buffer.from(attachments[0].content, 'base64').toString('utf8'), ics);
+const confirmationEmail = buildVisitPlanEmail(plan, 'updated');
+assert.match(
+  confirmationEmail.html,
+  /href="https:\/\/what3words\.com\/candy\.sage\.sticks"[^>]*><strong>\/\/\/candy\.sage\.sticks<\/strong>/,
+);
+assert.match(confirmationEmail.html, />Google Maps<\/a>/);
+assert.match(confirmationEmail.html, />Exact spot · \/\/\/candy\.sage\.sticks<\/a>/);
 
 const guestPage = buildVisitGuestPage({
   plan,

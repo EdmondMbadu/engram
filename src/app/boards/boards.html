@@ -1754,7 +1754,7 @@
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
                   [class.detail-card--drop-target]="isCardDropTarget(card.id)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
-                  [attr.draggable]="canEditBoard(board) && board.cards.length > 1 ? 'true' : null"
+                  [attr.draggable]="canReorderCard(board, card.id) ? 'true' : null"
                   style="overflow: visible; perspective: 1400px;"
                   (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, board.id, card)"
                   (dragstart)="beginCardReorderDrag($event, board, card)"
@@ -2052,22 +2052,6 @@
                               <span class="material-symbols-outlined">map</span>
                               Directions
                             </a>
-                            @if (canGoThere(card)) {
-                              <div class="go-there-card-action">
-                                <button
-                                  type="button"
-                                  class="go-there-card-action__primary"
-                                  [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
-                                  (click)="openGoThere(board, card, $event)"
-                                >
-                                  <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
-                                  <span>{{ visitPlanCardLabel(card) }}</span>
-                                </button>
-                                @if (visitPlanFor(card); as visitPlan) {
-                                  <small>{{ visitPlanAttendeeLabel(visitPlan) }}</small>
-                                }
-                              </div>
-                            }
                           </div>
                         }
                         @if (card.productUrl) {
@@ -2150,17 +2134,6 @@
                               <span class="material-symbols-outlined">map</span>
                               Directions
                             </a>
-                            @if (canGoThere(card)) {
-                              <button
-                                type="button"
-                                class="go-there-card-action__primary go-there-card-action__primary--back"
-                                [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
-                                (click)="openGoThere(board, card, $event)"
-                              >
-                                <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
-                                <span>{{ visitPlanCardLabel(card) }}</span>
-                              </button>
-                            }
                           </div>
                         }
                       </div>
@@ -2170,6 +2143,24 @@
                       </div>
                     </div>
                   </div>
+                  @if (canGoThere(card) && (isCardExpanded(card.id) || isCardFlipped(card.id))) {
+                    <div class="detail-card__go-there-bar">
+                      <button
+                        type="button"
+                        class="go-there-card-action__primary go-there-card-action__primary--standalone"
+                        [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
+                        aria-haspopup="dialog"
+                        [attr.aria-label]="visitPlanCardLabel(card) + ': ' + card.title"
+                        (click)="openGoThere(board, card, $event)"
+                      >
+                        <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
+                        <span>{{ visitPlanCardLabel(card) }}</span>
+                      </button>
+                      @if (visitPlanFor(card); as visitPlan) {
+                        <small>{{ visitPlanAttendeeLabel(visitPlan) }}</small>
+                      }
+                    </div>
+                  }
                 </article>
               } @empty {
                 <div class="boards-empty-state boards-empty-state--detail">
