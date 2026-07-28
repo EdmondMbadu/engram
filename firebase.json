@@ -52,6 +52,13 @@
         }
       },
       {
+        "source": "/go/**",
+        "function": {
+          "functionId": "visitPlanGuest",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "/auth/spotify/callback",
         "function": {
           "functionId": "spotifyOAuthCallback",

@@ -2042,15 +2042,33 @@
                             </span>
                             <a [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
                               <span class="material-symbols-outlined">near_me</span>
-                              <strong i18n>Go there</strong>
+                              <strong i18n>Exact spot</strong>
                             </a>
                           </div>
                         }
-                        @if (card.googleMapsUrl) {
-                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
-                            <span class="material-symbols-outlined">map</span>
-                            Open place
-                          </a>
+                        @if (card.googleMapsUrl || canGoThere(card)) {
+                          <div class="detail-card__place-actions">
+                            <a class="detail-card__map-link" [href]="visitDirectionsUrl(card)" target="_blank" rel="noopener" i18n>
+                              <span class="material-symbols-outlined">map</span>
+                              Directions
+                            </a>
+                            @if (canGoThere(card)) {
+                              <div class="go-there-card-action">
+                                <button
+                                  type="button"
+                                  class="go-there-card-action__primary"
+                                  [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
+                                  (click)="openGoThere(board, card, $event)"
+                                >
+                                  <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
+                                  <span>{{ visitPlanCardLabel(card) }}</span>
+                                </button>
+                                @if (visitPlanFor(card); as visitPlan) {
+                                  <small>{{ visitPlanAttendeeLabel(visitPlan) }}</small>
+                                }
+                              </div>
+                            }
+                          </div>
                         }
                         @if (card.productUrl) {
                           <a class="detail-card__map-link" [href]="card.productUrl" target="_blank" rel="noopener noreferrer">
@@ -2112,7 +2130,7 @@
                           @if (what3wordsAddressFor(card); as what3wordsAddress) {
                             <a class="off-grid-back-link" [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
                               <span>///{{ what3wordsAddress }}</span>
-                              <b i18n>Go there</b>
+                              <b i18n>Exact spot</b>
                             </a>
                           }
                           <p class="detail-card__notes" style="-webkit-line-clamp: 8;">
@@ -2126,11 +2144,24 @@
                             </div>
                           }
                         </div>
-                        @if (card.googleMapsUrl) {
-                          <a class="detail-card__map-link" [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
-                            <span class="material-symbols-outlined">map</span>
-                            Open place
-                          </a>
+                        @if (card.googleMapsUrl || canGoThere(card)) {
+                          <div class="detail-card__place-actions">
+                            <a class="detail-card__map-link" [href]="visitDirectionsUrl(card)" target="_blank" rel="noopener" i18n>
+                              <span class="material-symbols-outlined">map</span>
+                              Directions
+                            </a>
+                            @if (canGoThere(card)) {
+                              <button
+                                type="button"
+                                class="go-there-card-action__primary go-there-card-action__primary--back"
+                                [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
+                                (click)="openGoThere(board, card, $event)"
+                              >
+                                <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
+                                <span>{{ visitPlanCardLabel(card) }}</span>
+                              </button>
+                            }
+                          </div>
                         }
                       </div>
 
@@ -4091,7 +4122,7 @@
                           @if (what3wordsAddressFor(card); as what3wordsAddress) {
                             <a class="off-grid-preview-chip" [href]="what3wordsUrlFor(card)" target="_blank" rel="noopener noreferrer">
                               <span>///{{ what3wordsAddress }}</span>
-                              <b i18n>Go there</b>
+                              <b i18n>Exact spot</b>
                             </a>
                           }
                           <p>{{ card.notes }}</p>
@@ -5630,3 +5661,185 @@
     </div>
   }
 </div>
+
+@if (visitPlanDialogOpen() && visitPlanBoard(); as goThereBoard) {
+  @if (visitPlanCard(); as goThereCard) {
+    <div class="go-there-backdrop" role="presentation" (click)="closeGoThere($event)">
+      <section
+        class="go-there-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="go-there-title"
+        (click)="$event.stopPropagation()"
+      >
+        <header class="go-there-sheet__header">
+          <span class="go-there-sheet__mark material-symbols-outlined">near_me</span>
+          <span>
+            <small i18n>Go there</small>
+            <h2 id="go-there-title">{{ goThereCard.title }}</h2>
+          </span>
+          <button type="button" aria-label="Close Go there plan" (click)="closeGoThere($event)" i18n-aria-label>
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </header>
+
+        <div class="go-there-sheet__body">
+          <div class="go-there-place">
+            @if (currentCardImage(goThereCard)) {
+              <img [src]="currentCardImage(goThereCard)" [alt]="goThereCard.title" />
+            } @else {
+              <span class="material-symbols-outlined">location_on</span>
+            }
+            <span>
+              <strong>{{ goThereCard.title }}</strong>
+              @if (goThereCard.subtitle) {
+                <small>{{ goThereCard.subtitle }}</small>
+              }
+            </span>
+          </div>
+
+          @if (activeVisitPlan(); as currentPlan) {
+            <div class="go-there-current">
+              <span class="material-symbols-outlined">event_available</span>
+              <span>
+                <strong>{{ visitPlanCardLabel(goThereCard) }}</strong>
+                <small>{{ visitPlanAttendeeLabel(currentPlan) }}</small>
+              </span>
+            </div>
+          }
+
+          <div class="go-there-section">
+            <span class="go-there-section__label" i18n>When are you going?</span>
+            <div class="go-there-quick-times">
+              <button type="button" (click)="setVisitPlanQuickTime('now')" i18n>Right now</button>
+              <button type="button" (click)="setVisitPlanQuickTime('today')" i18n>Today</button>
+              <button type="button" (click)="setVisitPlanQuickTime('tomorrow')" i18n>Tomorrow</button>
+            </div>
+            <label class="go-there-datetime">
+              <span i18n>Date and time</span>
+              <input
+                type="datetime-local"
+                required
+                [value]="visitPlanDateTime()"
+                (input)="updateVisitPlanDateTime($any($event.target).value)"
+              />
+            </label>
+            <small class="go-there-timezone">
+              <span class="material-symbols-outlined">schedule</span>
+              {{ visitPlanTimezone() }}
+            </small>
+          </div>
+
+          <div class="go-there-location-actions">
+            @if (canGoThere(goThereCard)) {
+              <a [href]="visitDirectionsUrl(goThereCard)" target="_blank" rel="noopener noreferrer">
+                <span class="material-symbols-outlined">map</span>
+                <strong i18n>Directions</strong>
+              </a>
+            }
+            @if (what3wordsUrlFor(goThereCard)) {
+              <a [href]="what3wordsUrlFor(goThereCard)" target="_blank" rel="noopener noreferrer">
+                <span class="material-symbols-outlined">my_location</span>
+                <strong i18n>Exact spot</strong>
+              </a>
+            }
+          </div>
+
+          <div class="go-there-section go-there-invite">
+            <button
+              type="button"
+              class="go-there-invite__toggle"
+              [attr.aria-expanded]="visitPlanInvitesExpanded()"
+              (click)="toggleVisitPlanInvites()"
+            >
+              <span class="material-symbols-outlined">person_add</span>
+              <span>
+                <strong i18n>Invite someone</strong>
+                <small i18n>Optional — just me is the default</small>
+              </span>
+              <span class="material-symbols-outlined">{{ visitPlanInvitesExpanded() ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            @if (visitPlanInvitesExpanded()) {
+              <div class="go-there-invite__fields">
+                <label>
+                  <span i18n>Email addresses</span>
+                  <input
+                    type="text"
+                    inputmode="email"
+                    autocomplete="off"
+                    placeholder="sam@example.com, maya@example.com"
+                    [value]="visitPlanInviteEmails()"
+                    (input)="updateVisitPlanInviteEmails($any($event.target).value)"
+                   i18n-placeholder/>
+                  <small i18n>Separate multiple addresses with commas. Guests can respond without an account.</small>
+                </label>
+                @if (activeVisitPlan()) {
+                  <button
+                    type="button"
+                    class="go-there-send-email"
+                    [disabled]="visitPlanSharing()"
+                    (click)="sendVisitPlanEmailInvites($event)"
+                  >
+                    <span class="material-symbols-outlined">send</span>
+                    <span>{{ visitPlanSharing() ? 'Sending…' : 'Send email invitation' }}</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+
+          @if (visitPlanError()) {
+            <div class="go-there-feedback go-there-feedback--error" role="alert">
+              <span class="material-symbols-outlined">error</span>
+              {{ visitPlanError() }}
+            </div>
+          }
+          @if (visitPlanMessage()) {
+            <div class="go-there-feedback go-there-feedback--success" role="status">
+              <span class="material-symbols-outlined">check_circle</span>
+              {{ visitPlanMessage() }}
+            </div>
+          }
+
+          @if (activeVisitPlan(); as currentPlan) {
+            <div class="go-there-share-row">
+              <button type="button" [disabled]="visitPlanSharing()" (click)="shareVisitPlan('text')">
+                <span class="material-symbols-outlined">sms</span>
+                <span i18n>Text invite</span>
+              </button>
+              <button type="button" [disabled]="visitPlanSharing()" (click)="shareVisitPlan('copy')">
+                <span class="material-symbols-outlined">content_copy</span>
+                <span i18n>Copy invite</span>
+              </button>
+            </div>
+          }
+        </div>
+
+        <footer class="go-there-sheet__footer">
+          @if (activeVisitPlan()) {
+            <button
+              type="button"
+              class="go-there-cancel-plan"
+              [disabled]="visitPlanSaving()"
+              (click)="cancelActiveVisitPlan()"
+              i18n
+            >
+              Cancel plan
+            </button>
+          } @else {
+            <span></span>
+          }
+          <button
+            type="button"
+            class="go-there-confirm"
+            [disabled]="visitPlanSaving() || visitPlanSharing()"
+            (click)="saveVisitPlan($event)"
+          >
+            <span class="material-symbols-outlined">{{ activeVisitPlan() ? 'event_available' : 'check' }}</span>
+            <span>{{ visitPlanSaving() ? 'Saving…' : activeVisitPlan() ? 'Update plan' : 'Confirm I’m going' }}</span>
+          </button>
+        </footer>
+      </section>
+    </div>
+  }
+}

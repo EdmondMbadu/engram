@@ -23,6 +23,25 @@ import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
 import {
+  buildVisitGuestPage,
+  buildVisitInvitationEmail,
+  buildVisitPlanEmail,
+  buildVisitResponseEmail,
+  isVisitableBoardCard,
+  normalizeVisitPlanEmails,
+  normalizeVisitStart,
+  normalizeVisitTimezone,
+  serializeVisitPlan,
+  snapshotFromVisitPlanRecord,
+  visitEmailInvitationDocumentId,
+  visitPlanDocumentId,
+  visitPlanSnapshot,
+  visitReminderAtMs,
+  visitWhenLabel,
+  type VisitPlanEmail,
+  type VisitPlanSnapshot,
+} from './visit-plans';
+import {
   answerWithGoogleSearch,
   extractMappableLocations,
   geminiApiKey,
@@ -6224,6 +6243,620 @@ export const importBoardCardImage = onCall(
       sourceUrl: result.sourceUrl,
       title: result.title,
     };
+  },
+);
+
+type VisitInvitationRecord = {
+  id: string;
+  plan_id: string;
+  token: string;
+  recipient_email: string | null;
+  channel: 'email' | 'text' | 'copy';
+  status: 'pending' | 'accepted' | 'declined';
+  guest_name: string;
+};
+
+function visitPlanIdentifier(value: unknown, field: string): string {
+  const identifier = stringOrEmpty(value).slice(0, 160);
+  if (!/^[A-Za-z0-9_-]{4,160}$/.test(identifier)) {
+    throw new HttpsError('invalid-argument', `${field} is invalid.`);
+  }
+  return identifier;
+}
+
+async function visitPlanBoardAndCard(
+  boardId: string,
+  cardId: string,
+  userId: string,
+): Promise<{ board: Record<string, unknown>; card: Record<string, unknown> }> {
+  const snapshot = await db.collection('boards').doc(boardId).get();
+  if (!snapshot.exists) {
+    throw new HttpsError('not-found', 'Board not found.');
+  }
+  const board: Record<string, unknown> = { id: snapshot.id, ...(snapshot.data() ?? {}) };
+  if (board.visibility !== 'public' && board.owner_user_id !== userId) {
+    throw new HttpsError('permission-denied', 'You do not have access to this board.');
+  }
+  const card = (Array.isArray(board.cards) ? board.cards : [])
+    .find((value: unknown): value is Record<string, unknown> =>
+      !!value && typeof value === 'object' && stringOrEmpty((value as Record<string, unknown>).id) === cardId);
+  if (!card) {
+    throw new HttpsError('not-found', 'Place card not found.');
+  }
+  if (!isVisitableBoardCard(card)) {
+    throw new HttpsError('failed-precondition', 'Go there is available only for cards with a verified place location.');
+  }
+  return { board, card };
+}
+
+async function visitPlanOrganizer(
+  userId: string,
+  authToken: Record<string, unknown>,
+): Promise<{ name: string; email: string }> {
+  const userSnapshot = await db.collection('users').doc(userId).get();
+  const user = userSnapshot.data() as Record<string, unknown> | undefined;
+  const email = normalizeUserEmail(user?.email ?? authToken.email);
+  if (!isValidEmail(email)) {
+    throw new HttpsError('failed-precondition', 'Add a valid email address to receive plan confirmations.');
+  }
+  return {
+    name: displayNameForUser(user, email, 'A LivingWiki member'),
+    email,
+  };
+}
+
+function visitPlanRecord(snapshot: VisitPlanSnapshot, startMs: number, nowMs: number) {
+  return {
+    id: snapshot.id,
+    organizer_name: snapshot.organizerName,
+    organizer_email: snapshot.organizerEmail,
+    board_id: snapshot.boardId,
+    board_title: snapshot.boardTitle,
+    card_id: snapshot.cardId,
+    place_name: snapshot.placeName,
+    place_address: snapshot.placeAddress,
+    image_url: snapshot.imageUrl,
+    google_maps_url: snapshot.googleMapsUrl,
+    location_lat: snapshot.locationLat,
+    location_lng: snapshot.locationLng,
+    what3words_address: snapshot.what3wordsAddress,
+    starts_at_iso: snapshot.startsAtIso,
+    starts_at_ms: startMs,
+    timezone: snapshot.timezone,
+    status: snapshot.status,
+    reminder_at_ms: visitReminderAtMs(startMs, nowMs),
+    reminder_claimed_at_ms: null,
+    reminder_sent_at_iso: '',
+    reminder_error: '',
+    updated_at_iso: new Date(nowMs).toISOString(),
+    server_updated_at: FieldValue.serverTimestamp(),
+  };
+}
+
+async function sendVisitTransactionalEmail(
+  recipientEmail: string,
+  email: VisitPlanEmail,
+): Promise<void> {
+  const apiKey = sendgridApiKey.value();
+  if (!apiKey) {
+    throw new Error('SendGrid API key is not configured.');
+  }
+  sgMail.setApiKey(apiKey);
+  await sgMail.send({
+    to: recipientEmail,
+    from: {
+      email: inviteSenderEmail,
+      name: 'LivingWiki',
+    },
+    subject: email.subject,
+    text: email.text,
+    html: email.html,
+    ...(email.calendar
+      ? {
+          attachments: [{
+            content: Buffer.from(email.calendar.content, 'utf8').toString('base64'),
+            filename: email.calendar.filename,
+            type: 'text/calendar; charset=UTF-8; method=PUBLISH',
+            disposition: 'attachment',
+          }],
+        }
+      : {}),
+  });
+}
+
+function visitInvitationUrl(token: string): string {
+  return `${publicAppUrl}/go/${encodeURIComponent(token)}`;
+}
+
+async function ensureVisitInvitation(
+  plan: VisitPlanSnapshot,
+  recipientEmail: string | null,
+  channel: VisitInvitationRecord['channel'],
+): Promise<{ ref: DocumentReference; record: VisitInvitationRecord; url: string; created: boolean }> {
+  const normalizedEmail = normalizeUserEmail(recipientEmail);
+  const token = randomBytes(24).toString('base64url');
+  const id = normalizedEmail
+    ? visitEmailInvitationDocumentId(plan.id, normalizedEmail)
+    : `vpi_${createHash('sha256').update(`${plan.id}\n${token}`).digest('hex').slice(0, 48)}`;
+  const ref = db.collection('visit_plan_invitations').doc(id);
+  const existing = await ref.get();
+  const existingData = existing.data() as Partial<VisitInvitationRecord> | undefined;
+  const resolvedToken = stringOrEmpty(existingData?.token) || token;
+  const record: VisitInvitationRecord = {
+    id,
+    plan_id: plan.id,
+    token: resolvedToken,
+    recipient_email: normalizedEmail || null,
+    channel,
+    status: existingData?.status === 'accepted' || existingData?.status === 'declined'
+      ? existingData.status
+      : 'pending',
+    guest_name: stringOrEmpty(existingData?.guest_name).slice(0, 80),
+  };
+  await ref.set({
+    ...record,
+    organizer_user_id: null,
+    place_name: plan.placeName,
+    sent_at_iso: new Date().toISOString(),
+    delivery_error: '',
+    created_at: existing.exists ? existing.data()?.created_at ?? FieldValue.serverTimestamp() : FieldValue.serverTimestamp(),
+    updated_at: FieldValue.serverTimestamp(),
+  }, { merge: true });
+  if (!existing.exists) {
+    await db.collection('visit_plans').doc(plan.id).set({
+      invited_count: FieldValue.increment(1),
+      pending_count: FieldValue.increment(1),
+      server_updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+  }
+  return {
+    ref,
+    record,
+    url: visitInvitationUrl(resolvedToken),
+    created: !existing.exists,
+  };
+}
+
+async function sendVisitInvitation(
+  plan: VisitPlanSnapshot,
+  recipientEmail: string,
+  kind: 'invitation' | 'updated' = 'invitation',
+): Promise<{ sent: boolean; url: string }> {
+  const invitation = await ensureVisitInvitation(plan, recipientEmail, 'email');
+  try {
+    await sendVisitTransactionalEmail(
+      recipientEmail,
+      buildVisitInvitationEmail(plan, invitation.url, kind),
+    );
+    await invitation.ref.set({
+      delivered_at_iso: new Date().toISOString(),
+      delivery_error: '',
+      updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+    return { sent: true, url: invitation.url };
+  } catch (error) {
+    await invitation.ref.set({
+      delivery_error: error instanceof Error ? error.message.slice(0, 500) : 'Email delivery failed.',
+      updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+    logger.warn('Visit invitation email failed.', {
+      planId: plan.id,
+      recipientEmail,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return { sent: false, url: invitation.url };
+  }
+}
+
+async function visitPlanInvitations(planId: string): Promise<Array<{
+  ref: DocumentReference;
+  record: VisitInvitationRecord;
+}>> {
+  const snapshot = await db.collection('visit_plan_invitations')
+    .where('plan_id', '==', planId)
+    .limit(100)
+    .get();
+  return snapshot.docs.map((document) => ({
+    ref: document.ref,
+    record: document.data() as VisitInvitationRecord,
+  }));
+}
+
+async function notifyExistingVisitInvitees(
+  plan: VisitPlanSnapshot,
+  kind: 'updated' | 'cancelled',
+): Promise<void> {
+  const invitations = await visitPlanInvitations(plan.id);
+  await Promise.allSettled(invitations
+    .filter(({ record }) => record.status !== 'declined' && isValidEmail(normalizeUserEmail(record.recipient_email)))
+    .map(async ({ ref, record }) => {
+      const recipientEmail = normalizeUserEmail(record.recipient_email);
+      const url = visitInvitationUrl(record.token);
+      const email = kind === 'updated'
+        ? buildVisitInvitationEmail(plan, url, 'updated')
+        : buildVisitPlanEmail({ ...plan, status: 'cancelled' }, 'cancelled');
+      await sendVisitTransactionalEmail(recipientEmail, email);
+      await ref.set({
+        last_update_sent_at_iso: new Date().toISOString(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+    }));
+}
+
+export const createVisitPlan = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+    secrets: [sendgridApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid ?? '';
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to make a Go there plan.');
+    }
+    const boardId = visitPlanIdentifier(request.data?.boardId, 'boardId');
+    const cardId = visitPlanIdentifier(request.data?.cardId, 'cardId');
+    const nowMs = Date.now();
+    let start: { iso: string; ms: number };
+    try {
+      start = normalizeVisitStart(request.data?.startsAtIso, nowMs);
+    } catch (error) {
+      throw new HttpsError('invalid-argument', error instanceof Error ? error.message : 'Choose a valid date and time.');
+    }
+    const timezone = normalizeVisitTimezone(request.data?.timezone);
+    const [{ board, card }, organizer] = await Promise.all([
+      visitPlanBoardAndCard(boardId, cardId, userId),
+      visitPlanOrganizer(userId, (request.auth?.token ?? {}) as Record<string, unknown>),
+    ]);
+    const planId = visitPlanDocumentId(userId, boardId, cardId);
+    const ref = db.collection('visit_plans').doc(planId);
+    const previous = await ref.get();
+    const previousData = previous.data() as Record<string, unknown> | undefined;
+    const previousStart = stringOrEmpty(previousData?.starts_at_iso);
+    const snapshot = visitPlanSnapshot(planId, board, card, organizer, start, timezone);
+    await ref.set({
+      ...visitPlanRecord(snapshot, start.ms, nowMs),
+      organizer_user_id: userId,
+      created_at_iso: stringOrEmpty(previousData?.created_at_iso) || new Date(nowMs).toISOString(),
+      invited_count: previous.exists ? Math.max(0, Number(previousData?.invited_count) || 0) : 0,
+      accepted_count: previous.exists ? Math.max(0, Number(previousData?.accepted_count) || 0) : 0,
+      pending_count: previous.exists ? Math.max(0, Number(previousData?.pending_count) || 0) : 0,
+    }, { merge: true });
+
+    let confirmationEmailSent = false;
+    try {
+      await sendVisitTransactionalEmail(
+        organizer.email,
+        buildVisitPlanEmail(snapshot, previous.exists ? 'updated' : 'confirmation'),
+      );
+      confirmationEmailSent = true;
+      await ref.set({
+        confirmation_sent_at_iso: new Date().toISOString(),
+        confirmation_error: '',
+      }, { merge: true });
+    } catch (error) {
+      await ref.set({
+        confirmation_error: error instanceof Error ? error.message.slice(0, 500) : 'Email delivery failed.',
+      }, { merge: true });
+      logger.warn('Visit plan confirmation email failed; plan remains saved.', {
+        planId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    }
+
+    if (previous.exists && previousStart && previousStart !== start.iso) {
+      await notifyExistingVisitInvitees(snapshot, 'updated');
+    }
+    const inviteEmails = normalizeVisitPlanEmails(request.data?.inviteEmails)
+      .filter((email) => email !== organizer.email);
+    const invitationResults = await Promise.all(inviteEmails.map((email) => sendVisitInvitation(snapshot, email)));
+    const saved = await ref.get();
+    return {
+      plan: serializeVisitPlan(saved.data() ?? {}),
+      confirmationEmailSent,
+      invitationsSent: invitationResults.filter((result) => result.sent).length,
+      invitationsFailed: invitationResults.filter((result) => !result.sent).length,
+    };
+  },
+);
+
+export const getMyVisitPlans = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const userId = request.auth?.uid ?? '';
+    if (!userId) {
+      return { plans: [] };
+    }
+    const boardId = visitPlanIdentifier(request.data?.boardId, 'boardId');
+    const cardIds = (Array.isArray(request.data?.cardIds) ? request.data.cardIds : [])
+      .map((cardId: unknown) => visitPlanIdentifier(cardId, 'cardId'))
+      .slice(0, 200);
+    if (!cardIds.length) {
+      return { plans: [] };
+    }
+    const snapshots = await db.getAll(
+      ...cardIds.map((cardId: string) =>
+        db.collection('visit_plans').doc(visitPlanDocumentId(userId, boardId, cardId))),
+    );
+    return {
+      plans: snapshots
+        .filter((snapshot) => snapshot.exists && snapshot.data()?.organizer_user_id === userId)
+        .map((snapshot) => serializeVisitPlan(snapshot.data() ?? {}))
+        .filter((plan) => plan.status === 'planned'),
+    };
+  },
+);
+
+export const inviteToVisitPlan = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 45,
+    memory: '256MiB',
+    cors: true,
+    secrets: [sendgridApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid ?? '';
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to invite someone.');
+    }
+    const planId = visitPlanIdentifier(request.data?.planId, 'planId');
+    const ref = db.collection('visit_plans').doc(planId);
+    const planDocument = await ref.get();
+    if (!planDocument.exists || planDocument.data()?.organizer_user_id !== userId) {
+      throw new HttpsError('not-found', 'Visit plan not found.');
+    }
+    const plan = snapshotFromVisitPlanRecord(planDocument.data() ?? {});
+    if (plan.status !== 'planned') {
+      throw new HttpsError('failed-precondition', 'This visit plan is no longer active.');
+    }
+    const recipientEmail = normalizeUserEmail(request.data?.email);
+    if (recipientEmail) {
+      if (!isValidEmail(recipientEmail)) {
+        throw new HttpsError('invalid-argument', 'Enter a valid email address.');
+      }
+      if (recipientEmail === plan.organizerEmail) {
+        throw new HttpsError('invalid-argument', 'You are already going.');
+      }
+      const result = await sendVisitInvitation(plan, recipientEmail);
+      return { shareUrl: result.url, emailSent: result.sent };
+    }
+    const channel = request.data?.channel === 'copy' ? 'copy' : 'text';
+    const invitation = await ensureVisitInvitation(plan, null, channel);
+    return { shareUrl: invitation.url, emailSent: false };
+  },
+);
+
+export const cancelVisitPlan = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+    secrets: [sendgridApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid ?? '';
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to cancel this plan.');
+    }
+    const planId = visitPlanIdentifier(request.data?.planId, 'planId');
+    const ref = db.collection('visit_plans').doc(planId);
+    const document = await ref.get();
+    if (!document.exists || document.data()?.organizer_user_id !== userId) {
+      throw new HttpsError('not-found', 'Visit plan not found.');
+    }
+    const plan = { ...snapshotFromVisitPlanRecord(document.data() ?? {}), status: 'cancelled' as const };
+    await ref.set({
+      status: 'cancelled',
+      reminder_at_ms: null,
+      reminder_claimed_at_ms: null,
+      cancelled_at_iso: new Date().toISOString(),
+      updated_at_iso: new Date().toISOString(),
+      server_updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+    await Promise.allSettled([
+      sendVisitTransactionalEmail(plan.organizerEmail, buildVisitPlanEmail(plan, 'cancelled')),
+      notifyExistingVisitInvitees(plan, 'cancelled'),
+    ]);
+    return { cancelled: true };
+  },
+);
+
+function visitInvitationTokenFromRequestPath(path: string): string {
+  const token = path.split('/').filter(Boolean).at(-1) ?? '';
+  return /^[A-Za-z0-9_-]{24,120}$/.test(token) ? token : '';
+}
+
+export const visitPlanGuest = onRequest(
+  {
+    region: callableRegion,
+    timeoutSeconds: 45,
+    memory: '256MiB',
+    cors: false,
+    secrets: [sendgridApiKey],
+  },
+  async (request, response) => {
+    response.set('Cache-Control', 'no-store, private');
+    response.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+    response.set('Content-Security-Policy', "default-src 'none'; img-src https: data:; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'");
+    const token = visitInvitationTokenFromRequestPath(request.path);
+    if (!token) {
+      response.status(404).send('Invitation not found.');
+      return;
+    }
+    const invitationId = `vpi_${createHash('sha256').update(token).digest('hex').slice(0, 48)}`;
+    let invitationDocument = await db.collection('visit_plan_invitations').doc(invitationId).get();
+    if (!invitationDocument.exists) {
+      const byToken = await db.collection('visit_plan_invitations').where('token', '==', token).limit(1).get();
+      invitationDocument = byToken.docs[0] ?? invitationDocument;
+    }
+    if (!invitationDocument.exists) {
+      response.status(404).send('Invitation not found.');
+      return;
+    }
+    const invitationRef = invitationDocument.ref;
+    const invitation = invitationDocument.data() as VisitInvitationRecord;
+    const planRef = db.collection('visit_plans').doc(visitPlanIdentifier(invitation.plan_id, 'planId'));
+    const planDocument = await planRef.get();
+    if (!planDocument.exists) {
+      response.status(404).send('Plan not found.');
+      return;
+    }
+    let plan = snapshotFromVisitPlanRecord(planDocument.data() ?? {});
+    let status: VisitInvitationRecord['status'] = invitation.status === 'accepted' || invitation.status === 'declined'
+      ? invitation.status
+      : 'pending';
+    let guestName = stringOrEmpty(invitation.guest_name).slice(0, 80);
+
+    if (request.method === 'POST' && plan.status === 'planned') {
+      const requestedStatus = request.body?.response === 'accepted' || request.body?.response === 'declined'
+        ? request.body.response as 'accepted' | 'declined'
+        : '';
+      guestName = stringOrEmpty(request.body?.guestName)
+        .replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g, '')
+        .slice(0, 80);
+      if (requestedStatus) {
+        const previousStatus = status;
+        await db.runTransaction(async (transaction) => {
+          const [freshInvitation, freshPlan] = await Promise.all([
+            transaction.get(invitationRef),
+            transaction.get(planRef),
+          ]);
+          if (!freshInvitation.exists || !freshPlan.exists || freshPlan.data()?.status !== 'planned') {
+            return;
+          }
+          const currentStatus = freshInvitation.data()?.status === 'accepted'
+            || freshInvitation.data()?.status === 'declined'
+            ? freshInvitation.data()?.status as 'accepted' | 'declined'
+            : 'pending';
+          const acceptedDelta = (requestedStatus === 'accepted' ? 1 : 0) - (currentStatus === 'accepted' ? 1 : 0);
+          const pendingDelta = 0 - (currentStatus === 'pending' ? 1 : 0);
+          transaction.set(invitationRef, {
+            status: requestedStatus,
+            guest_name: guestName,
+            responded_at_iso: new Date().toISOString(),
+            updated_at: FieldValue.serverTimestamp(),
+          }, { merge: true });
+          transaction.set(planRef, {
+            accepted_count: FieldValue.increment(acceptedDelta),
+            pending_count: FieldValue.increment(pendingDelta),
+            last_response_at_iso: new Date().toISOString(),
+            server_updated_at: FieldValue.serverTimestamp(),
+          }, { merge: true });
+        });
+        status = requestedStatus;
+        if (previousStatus !== requestedStatus) {
+          const guestLabel = guestName
+            || normalizeUserEmail(invitation.recipient_email)
+            || 'A guest';
+          await Promise.allSettled([
+            sendVisitTransactionalEmail(
+              plan.organizerEmail,
+              buildVisitResponseEmail(plan, guestLabel, requestedStatus),
+            ),
+            ...(requestedStatus === 'accepted' && isValidEmail(normalizeUserEmail(invitation.recipient_email))
+              ? [sendVisitTransactionalEmail(
+                  normalizeUserEmail(invitation.recipient_email),
+                  buildVisitPlanEmail(plan, 'confirmation'),
+                )]
+              : []),
+          ]);
+        }
+      }
+      const refreshedPlan = await planRef.get();
+      plan = snapshotFromVisitPlanRecord(refreshedPlan.data() ?? {});
+    }
+
+    const invitationUrl = `${publicAppUrl}/go/${encodeURIComponent(token)}`;
+    response.status(200).type('html').send(request.method === 'HEAD' ? undefined : buildVisitGuestPage({
+      plan,
+      invitationUrl,
+      responseStatus: status,
+      guestName,
+    }));
+  },
+);
+
+export const sendVisitPlanReminders = onSchedule(
+  {
+    region: callableRegion,
+    schedule: 'every 5 minutes',
+    timeZone: 'UTC',
+    timeoutSeconds: 300,
+    memory: '256MiB',
+    secrets: [sendgridApiKey],
+  },
+  async () => {
+    const nowMs = Date.now();
+    const due = await db.collection('visit_plans')
+      .where('reminder_at_ms', '<=', nowMs)
+      .orderBy('reminder_at_ms', 'asc')
+      .limit(100)
+      .get();
+    for (const document of due.docs) {
+      const claimed = await db.runTransaction(async (transaction) => {
+        const fresh = await transaction.get(document.ref);
+        const data = fresh.data() ?? {};
+        const reminderAtMs = Number(data.reminder_at_ms);
+        const claimedAtMs = Number(data.reminder_claimed_at_ms);
+        if (
+          data.status !== 'planned'
+          || !Number.isFinite(reminderAtMs)
+          || reminderAtMs > nowMs
+          || (Number.isFinite(claimedAtMs) && claimedAtMs > nowMs - 15 * 60 * 1000)
+        ) {
+          return false;
+        }
+        transaction.set(document.ref, {
+          reminder_claimed_at_ms: nowMs,
+          reminder_error: '',
+          server_updated_at: FieldValue.serverTimestamp(),
+        }, { merge: true });
+        return true;
+      });
+      if (!claimed) {
+        continue;
+      }
+      const plan = snapshotFromVisitPlanRecord(document.data());
+      try {
+        const invitations = await visitPlanInvitations(plan.id);
+        const recipients = new Set([
+          plan.organizerEmail,
+          ...invitations
+            .filter(({ record }) => record.status === 'accepted')
+            .map(({ record }) => normalizeUserEmail(record.recipient_email))
+            .filter(isValidEmail),
+        ]);
+        const email = buildVisitPlanEmail(plan, 'reminder');
+        await Promise.all([...recipients].map((recipient) => sendVisitTransactionalEmail(recipient, email)));
+        await document.ref.set({
+          reminder_at_ms: null,
+          reminder_claimed_at_ms: null,
+          reminder_sent_at_iso: new Date().toISOString(),
+          reminder_recipient_count: recipients.size,
+          reminder_error: '',
+          server_updated_at: FieldValue.serverTimestamp(),
+        }, { merge: true });
+      } catch (error) {
+        await document.ref.set({
+          reminder_claimed_at_ms: null,
+          reminder_error: error instanceof Error ? error.message.slice(0, 500) : 'Reminder delivery failed.',
+          server_updated_at: FieldValue.serverTimestamp(),
+        }, { merge: true });
+        logger.warn('Visit plan reminder failed and will be retried.', {
+          planId: plan.id,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
   },
 );
 
