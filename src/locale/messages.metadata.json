@@ -751,6 +751,10 @@
     "source": "Worldometers cards",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
+  "1536087519743707362": {
+    "source": "Dismiss",
+    "file": "src/app/boards/boards.html"
+  },
   "1536513107710530941": {
     "source": "VC firms, fund sizes, portfolio companies, investment theses, and the funding landscape — a living Crunchbase alternative compiled from public data.",
     "file": "src/app/public-wiki-catalog.ts"
@@ -887,9 +891,17 @@
     "source": "area km²",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "1613971242435858090": {
+    "source": "Translate",
+    "file": "src/app/boards/boards.ts"
+  },
   "1614114820020537854": {
     "source": "Close video",
     "file": "src/app/business/business.html"
+  },
+  "1617658171087305476": {
+    "source": "Translating…",
+    "file": "src/app/boards/boards.ts"
   },
   "1630112391999908058": {
     "source": "Search by name or email",
@@ -1431,6 +1443,10 @@
     "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} shown ",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "2049250303171272330": {
+    "source": "Translate board",
+    "file": "src/app/boards/boards.html"
+  },
   "2049883000600605468": {
     "source": "Population {$START_TAG_SPAN}(optional){$CLOSE_TAG_SPAN}",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -1606,6 +1622,10 @@
   "2189734075602206105": {
     "source": "{$START_TAG_SPAN}admin_panel_settings{$CLOSE_TAG_SPAN} Admin ",
     "file": "src/app/profile/profile.html"
+  },
+  "2189933208379626437": {
+    "source": "This board cannot be translated from this view.",
+    "file": "src/app/boards/boards.ts"
   },
   "2194567229076353822": {
     "source": "Walking tour",
@@ -2373,6 +2393,10 @@
   },
   "2751945587032314141": {
     "source": "Describe the card",
+    "file": "src/app/boards/boards.html"
+  },
+  "276188119057253094": {
+    "source": "Original links and locations stay unchanged.",
     "file": "src/app/boards/boards.html"
   },
   "276612756910514598": {
@@ -3215,6 +3239,10 @@
     "source": "The Mississippi River corridor between Baton Rouge and New Orleans carries some of the highest air-toxics cancer risk in America.",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "335464837566395534": {
+    "source": "Translating this board…",
+    "file": "src/app/boards/boards.html"
+  },
   "3358712560475498126": {
     "source": " Census state code and Census place code are missing. City demographics cannot refresh until both are saved in Atlas settings. ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
@@ -3478,6 +3506,10 @@
   "3530757317442810440": {
     "source": "That photo could not be used.",
     "file": "src/app/boards/boards.ts"
+  },
+  "3534178432926775489": {
+    "source": "The original stays available while we prepare it.",
+    "file": "src/app/boards/boards.html"
   },
   "3534420354847817720": {
     "source": "Find country",
@@ -4967,6 +4999,10 @@
     "source": "LivingWiki™ is a product of Mind Palace Inc. LivingWiki is an independent product and is not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.",
     "file": "src/app/legal/legal.html"
   },
+  "4635704663136718774": {
+    "source": "Show original",
+    "file": "src/app/boards/boards.html"
+  },
   "4636616640072565270": {
     "source": "Saving",
     "file": "src/app/business-claim/business-claim.html"
@@ -5455,6 +5491,10 @@
     "source": "Recognized · ready to link",
     "file": "src/app/boards/boards.html"
   },
+  "4958157744029961697": {
+    "source": "Translated into {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
+  },
   "4960474194717428075": {
     "source": "Boards | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -5726,6 +5766,10 @@
   "516176798986294299": {
     "source": "Country",
     "file": "src/app/boards/boards.ts"
+  },
+  "5164821362134878891": {
+    "source": "Show the board as written",
+    "file": "src/app/boards/boards.html"
   },
   "5170990160218179574": {
     "source": "Share page ready",
@@ -7319,6 +7363,10 @@
     "source": "Close Go there plan",
     "file": "src/app/boards/boards.html"
   },
+  "6293525535958609566": {
+    "source": "From {$INTERPOLATION} · Links and locations are unchanged.",
+    "file": "src/app/boards/boards.html"
+  },
   "629615905201130753": {
     "source": "What should the guide know about this business?",
     "file": "src/app/business-detail/business-edit.html"
@@ -7507,6 +7555,10 @@
     "source": "Memories from this stop",
     "file": "src/app/boards/boards.html"
   },
+  "6411069345315897122": {
+    "source": "Translate this board",
+    "file": "src/app/boards/boards.html"
+  },
   "6411177898752350772": {
     "source": "Leave blank to generate a practical city description.",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -7670,6 +7722,10 @@
   "6516285359606459572": {
     "source": "The Open Source Software Atlas",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "6520657827841534343": {
+    "source": "Translate board content",
+    "file": "src/app/boards/boards.html"
   },
   "6523758365860025284": {
     "source": "Continue chat",
@@ -8122,6 +8178,10 @@
   "6857611498925334466": {
     "source": "Stop recap",
     "file": "src/app/chat/chat.ts"
+  },
+  "6868573968045788053": {
+    "source": "No translation was needed.",
+    "file": "src/app/boards/boards.html"
   },
   "6873565845405383990": {
     "source": "Email restored",
@@ -8579,6 +8639,10 @@
     "source": "Loading answer card",
     "file": "src/app/answer-card/answer-card.html"
   },
+  "7272137869787504241": {
+    "source": "Translation is temporarily busy. Please try again in a little while.",
+    "file": "src/app/boards/boards.ts"
+  },
   "7272825947268421273": {
     "source": "You have used the anonymous question limit for this atlas. Sign in to keep the conversation going.",
     "file": "src/app/chat/chat.ts"
@@ -8642,6 +8706,10 @@
   "7326225715971826354": {
     "source": "Door decal 5×7\"",
     "file": "src/app/business/business.ts"
+  },
+  "7329217250595054697": {
+    "source": "Original",
+    "file": "src/app/boards/boards.html"
   },
   "7330229789256794800": {
     "source": "Build guide",
@@ -8891,6 +8959,10 @@
     "source": "QR guide link",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7527242895095482156": {
+    "source": "This board is already in {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
+  },
   "7535527225967694107": {
     "source": "Español",
     "file": "src/app/business/business.ts"
@@ -9062,6 +9134,10 @@
   "7659947268903589660": {
     "source": "PREVIEW",
     "file": "src/app/web-scraper/web-scraper.ts"
+  },
+  "7671686035273089740": {
+    "source": "We could not translate this board right now. Please try again.",
+    "file": "src/app/boards/boards.ts"
   },
   "7673270987266603377": {
     "source": "No public boards found yet",
@@ -10126,6 +10202,10 @@
   "8453274604209064197": {
     "source": "Business guide profile",
     "file": "src/app/business-detail/business-detail.html"
+  },
+  "8454050539454834352": {
+    "source": "Translation unavailable",
+    "file": "src/app/boards/boards.html"
   },
   "845653249497350772": {
     "source": "Add more",

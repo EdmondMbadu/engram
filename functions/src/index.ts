@@ -1,5 +1,5 @@
 import { onDocumentCreated, onDocumentUpdated } from 'firebase-functions/v2/firestore';
-import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
+import { HttpsError, onCall, onRequest, type CallableRequest } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
 import { logger } from 'firebase-functions';
@@ -19,6 +19,11 @@ import {
   wikipediaPageTitleMatchScore,
 } from './board-wizard-image-quality';
 import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
+import {
+  extractBoardTranslationSource,
+  isBoardTranslationLanguage,
+  type BoardTranslationSegment,
+} from './board-translation';
 import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
@@ -50,6 +55,7 @@ import {
   generateAnswerQuiz,
   generateBoardCardImageAsset,
   generateBoardWizardBatch as generateBoardWizardBatchWithGemini,
+  translateBoardTextSegments,
   generateVoiceConversationRecap,
   type BoardWizardMode,
   type BoardWizardVibe,
@@ -5709,6 +5715,251 @@ export const boardPlacePhoto = onRequest(
     }
   },
 );
+
+export const translateBoard = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 300,
+    memory: '1GiB',
+    concurrency: 8,
+    maxInstances: 10,
+    secrets: [geminiApiKey],
+  },
+  async (request) => {
+    const boardId = stringOrEmpty(request.data?.boardId).trim();
+    const targetLanguage = request.data?.targetLanguage;
+    if (!/^[A-Za-z0-9_-]{8,128}$/.test(boardId) || !isBoardTranslationLanguage(targetLanguage)) {
+      throw new HttpsError('invalid-argument', 'Choose a valid board and translation language.');
+    }
+
+    const boardSnapshot = await db.collection('boards').doc(boardId).get();
+    if (!boardSnapshot.exists) {
+      throw new HttpsError('not-found', 'This board could not be found.');
+    }
+    const board = boardSnapshot.data() as Record<string, unknown>;
+    const ownerUserId = stringOrEmpty(board['owner_user_id']);
+    const isOwner = !!request.auth?.uid && request.auth.uid === ownerUserId;
+    const isAdmin = request.auth?.token?.['admin'] === true;
+    if (board['visibility'] !== 'public' && !isOwner && !isAdmin) {
+      throw new HttpsError('permission-denied', 'This board is private.');
+    }
+
+    let source;
+    try {
+      source = extractBoardTranslationSource(board);
+    } catch (error) {
+      throw new HttpsError(
+        'resource-exhausted',
+        error instanceof Error ? error.message : 'This board is too large to translate.',
+      );
+    }
+    if (!source.segments.length) {
+      return {
+        boardId,
+        targetLanguage,
+        sourceLanguage: source.sourceLanguage,
+        fingerprint: source.fingerprint,
+        segments: source.segments,
+        cached: true,
+        changed: false,
+      };
+    }
+
+    const cacheId = createHash('sha256')
+      .update(`${boardId}:${targetLanguage}`)
+      .digest('hex');
+    const cacheRef = db.collection('board_translations').doc(cacheId);
+    const cached = await cacheRef.get();
+    const cachedData = cached.data() as Record<string, unknown> | undefined;
+    if (cached.exists
+      && cachedData?.['status'] === 'ready'
+      && cachedData['fingerprint'] === source.fingerprint) {
+      return boardTranslationCallableResponse(
+        boardId,
+        targetLanguage,
+        source.sourceLanguage,
+        source.fingerprint,
+        cachedData['segments'],
+        true,
+        cachedData['changed'] === true,
+      );
+    }
+
+    const leaseToken = randomUUID();
+    const now = Date.now();
+    const leaseExpiresAt = now + 5 * 60 * 1000;
+    const acquired = await db.runTransaction(async (transaction) => {
+      const snapshot = await transaction.get(cacheRef);
+      const value = snapshot.data() as Record<string, unknown> | undefined;
+      if (value?.['status'] === 'ready' && value['fingerprint'] === source.fingerprint) {
+        return 'ready';
+      }
+      const existingLease = typeof value?.['lease_expires_at_ms'] === 'number'
+        ? value['lease_expires_at_ms']
+        : 0;
+      if (value?.['status'] === 'generating'
+        && value['fingerprint'] === source.fingerprint
+        && existingLease > now) {
+        return 'wait';
+      }
+      transaction.set(cacheRef, {
+        board_id: boardId,
+        target_language: targetLanguage,
+        source_language: source.sourceLanguage,
+        fingerprint: source.fingerprint,
+        status: 'generating',
+        lease_token: leaseToken,
+        lease_expires_at_ms: leaseExpiresAt,
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+      return 'acquired';
+    });
+
+    if (acquired === 'ready') {
+      const ready = await cacheRef.get();
+      return boardTranslationCallableResponse(
+        boardId,
+        targetLanguage,
+        source.sourceLanguage,
+        source.fingerprint,
+        ready.data()?.['segments'],
+        true,
+        ready.data()?.['changed'] === true,
+      );
+    }
+    if (acquired === 'wait') {
+      for (let attempt = 0; attempt < 10; attempt += 1) {
+        await new Promise((resolve) => setTimeout(resolve, 1_200));
+        const ready = await cacheRef.get();
+        const value = ready.data() as Record<string, unknown> | undefined;
+        if (value?.['status'] === 'ready' && value['fingerprint'] === source.fingerprint) {
+          return boardTranslationCallableResponse(
+            boardId,
+            targetLanguage,
+            source.sourceLanguage,
+            source.fingerprint,
+            value['segments'],
+            true,
+            value['changed'] === true,
+          );
+        }
+        if (value?.['status'] !== 'generating') {
+          break;
+        }
+      }
+      throw new HttpsError('aborted', 'This translation is still being prepared. Please try again.');
+    }
+
+    await consumeBoardTranslationQuota(request, source.sourceCharacters);
+    try {
+      const segments = await translateBoardTextSegments(source.segments, targetLanguage);
+      const changed = segments.some(
+        (segment, index) => segment.text !== source.segments[index]?.text,
+      );
+      await cacheRef.set({
+        board_id: boardId,
+        target_language: targetLanguage,
+        source_language: source.sourceLanguage,
+        fingerprint: source.fingerprint,
+        status: 'ready',
+        segments,
+        changed,
+        source_characters: source.sourceCharacters,
+        lease_token: FieldValue.delete(),
+        lease_expires_at_ms: 0,
+        generated_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+      return boardTranslationCallableResponse(
+        boardId,
+        targetLanguage,
+        source.sourceLanguage,
+        source.fingerprint,
+        segments,
+        false,
+        changed,
+      );
+    } catch (error) {
+      logger.error('Board translation failed.', {
+        boardId,
+        targetLanguage,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      await cacheRef.set({
+        status: 'error',
+        lease_token: FieldValue.delete(),
+        lease_expires_at_ms: 0,
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+      throw new HttpsError('unavailable', 'We could not translate this board right now. Please try again.');
+    }
+  },
+);
+
+async function consumeBoardTranslationQuota(
+  request: CallableRequest<unknown>,
+  sourceCharacters: number,
+): Promise<void> {
+  const uid = request.auth?.uid ?? '';
+  const forwardedFor = stringOrEmpty(request.rawRequest.headers['x-forwarded-for']).split(',')[0]?.trim() ?? '';
+  const userAgent = stringOrEmpty(request.rawRequest.headers['user-agent']).slice(0, 240);
+  const actor = uid || `${forwardedFor}:${userAgent}`;
+  const actorHash = createHash('sha256').update(actor || 'anonymous').digest('hex');
+  const quotaRef = db.collection('board_translation_limits').doc(actorHash);
+  const windowMs = 30 * 60 * 1000;
+  const maximumRequests = uid ? 30 : 10;
+  const now = Date.now();
+  await db.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(quotaRef);
+    const value = snapshot.data() as Record<string, unknown> | undefined;
+    const windowStartedAt = typeof value?.['window_started_at_ms'] === 'number'
+      ? value['window_started_at_ms']
+      : 0;
+    const count = typeof value?.['count'] === 'number' ? value['count'] : 0;
+    const reset = now - windowStartedAt >= windowMs;
+    if (!reset && count >= maximumRequests) {
+      throw new HttpsError(
+        'resource-exhausted',
+        'You have translated several boards recently. Please try again in a little while.',
+      );
+    }
+    transaction.set(quotaRef, {
+      window_started_at_ms: reset || !windowStartedAt ? now : windowStartedAt,
+      count: reset ? 1 : count + 1,
+      source_characters: FieldValue.increment(sourceCharacters),
+      updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+  });
+}
+
+function boardTranslationCallableResponse(
+  boardId: string,
+  targetLanguage: 'en' | 'fr' | 'ja',
+  sourceLanguage: 'en' | 'fr' | 'ja',
+  fingerprint: string,
+  value: unknown,
+  cached: boolean,
+  changed: boolean,
+): {
+  boardId: string;
+  targetLanguage: 'en' | 'fr' | 'ja';
+  sourceLanguage: 'en' | 'fr' | 'ja';
+  fingerprint: string;
+  segments: BoardTranslationSegment[];
+  cached: boolean;
+  changed: boolean;
+} {
+  const segments = Array.isArray(value)
+    ? value.flatMap((item) => {
+        const record = item && typeof item === 'object' ? item as Record<string, unknown> : {};
+        const key = stringOrEmpty(record['key']).slice(0, 180);
+        const text = stringOrEmpty(record['text']).slice(0, 16_000);
+        return key && text ? [{ key, text }] : [];
+      })
+    : [];
+  return { boardId, targetLanguage, sourceLanguage, fingerprint, segments, cached, changed };
+}
 
 export const generateBoardWizardBatch = onCall(
   {

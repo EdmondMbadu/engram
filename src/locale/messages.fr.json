@@ -2814,6 +2814,26 @@
     "7744028351858758325": "Qui peut battre votre score ?",
     "809541642370719476": "Essayez",
     "8500486778808537311": "Invitez vos amis à jouer",
-    "8727178487027768435": "Partager le défi"
+    "8727178487027768435": "Partager le défi",
+    "1536087519743707362": "Fermer",
+    "1613971242435858090": "Traduire",
+    "1617658171087305476": "Traduction…",
+    "2049250303171272330": "Traduire le tableau",
+    "2189933208379626437": "Ce tableau ne peut pas être traduit depuis cette vue.",
+    "276188119057253094": "Les liens et les lieux d’origine restent inchangés.",
+    "335464837566395534": "Traduction de ce tableau…",
+    "3534178432926775489": "L’original reste disponible pendant la préparation.",
+    "4635704663136718774": "Afficher l’original",
+    "4958157744029961697": "Traduit en {$INTERPOLATION}",
+    "5164821362134878891": "Afficher le tableau tel qu’il a été rédigé",
+    "6293525535958609566": "Depuis {$INTERPOLATION} · Les liens et les lieux restent inchangés.",
+    "6411069345315897122": "Traduire ce tableau",
+    "6520657827841534343": "Traduire le contenu du tableau",
+    "6868573968045788053": "Aucune traduction n’était nécessaire.",
+    "7272137869787504241": "Le service de traduction est temporairement occupé. Réessayez dans quelques instants.",
+    "7329217250595054697": "Original",
+    "7527242895095482156": "Ce tableau est déjà en {$INTERPOLATION}",
+    "7671686035273089740": "Impossible de traduire ce tableau pour le moment. Réessayez.",
+    "8454050539454834352": "Traduction indisponible"
   }
 }

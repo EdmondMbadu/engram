@@ -19,6 +19,20 @@ import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
+import {
+  localizedPath,
+  LOCALE_STORAGE_KEY,
+  supportedLocale,
+} from '../i18n/locales';
+import {
+  applyBoardTranslation,
+  BOARD_TRANSLATION_LANGUAGES,
+  boardTranslationLanguageName,
+  isBoardTranslationLanguage,
+  normalizeBoardTranslationResult,
+  type BoardTranslationLanguage,
+  type BoardTranslationResult,
+} from './board-translation';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
@@ -1012,6 +1026,8 @@ export class BoardsComponent implements OnDestroy {
   private boardLearnElapsedMs = 0;
   private boardLearnDirectRequested = false;
   private boardLearnDirectOpenedFor = '';
+  private boardTranslationRun = 0;
+  private boardTranslationRequestKey = '';
   private selectedBoardUnsubscribe: Unsubscribe | null = null;
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
@@ -1087,6 +1103,13 @@ export class BoardsComponent implements OnDestroy {
   readonly cardImageApplying = signal(false);
   readonly cardImageToolError = signal<string | null>(null);
   readonly shareMessage = signal<string | null>(null);
+  readonly boardTranslationMenuOpen = signal(false);
+  readonly boardTranslationTarget = signal<BoardTranslationLanguage | null>(null);
+  readonly boardTranslationResult = signal<BoardTranslationResult | null>(null);
+  readonly boardTranslationVersion = signal('');
+  readonly boardTranslationLoading = signal(false);
+  readonly boardTranslationError = signal<string | null>(null);
+  readonly boardTranslationLanguages = BOARD_TRANSLATION_LANGUAGES;
   readonly visitPlans = signal<Record<string, VisitPlanSummary>>({});
   readonly visitPlanDialogOpen = signal(false);
   readonly visitPlanBoardId = signal<string | null>(null);
@@ -1316,9 +1339,30 @@ export class BoardsComponent implements OnDestroy {
       profileIconForSeed(this.authService.uid() || this.userEmail() || this.userName()),
   );
 
-  readonly selectedBoard = computed(() => {
+  readonly originalSelectedBoard = computed(() => {
     const selectedId = this.selectedBoardId();
     return this.boards().find((board) => board.id === selectedId) ?? null;
+  });
+  readonly boardTranslationActive = computed(() => {
+    const board = this.originalSelectedBoard();
+    const result = this.boardTranslationResult();
+    return !!board
+      && !!result
+      && result.boardId === board.id
+      && result.targetLanguage === this.boardTranslationTarget()
+      && result.changed
+      && this.boardTranslationVersion() === board.updatedAt;
+  });
+  readonly selectedBoard = computed(() => {
+    const board = this.originalSelectedBoard();
+    const result = this.boardTranslationResult();
+    if (!board
+      || !result
+      || !this.boardTranslationActive()
+      || result.targetLanguage !== this.boardTranslationTarget()) {
+      return board;
+    }
+    return applyBoardTranslation(board, result.segments);
   });
   readonly visitPlanBoard = computed(() => {
     const boardId = this.visitPlanBoardId();
@@ -1694,6 +1738,11 @@ export class BoardsComponent implements OnDestroy {
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
       const ownerSlug = this.publicOwnerSlugFromKey(ownerKey);
       this.selectedBoardId.set(boardId);
+      if (this.boardTranslationResult()?.boardId !== boardId) {
+        this.boardTranslationResult.set(null);
+        this.boardTranslationVersion.set('');
+        this.boardTranslationError.set(null);
+      }
       this.publicOwnerKey.set(ownerKey);
       this.publicOwnerUid.set(ownerUid);
       this.publicOwnerSlug.set(ownerSlug);
@@ -1709,6 +1758,7 @@ export class BoardsComponent implements OnDestroy {
         }
         this.syncStackDirectView();
         this.syncBoardLearnDirectView();
+        void this.syncRequestedBoardTranslation();
         this.canonicalizeBoardsRootRoute(boardId, ownerKey);
         if (this.isBrowser && this.boardFriendsFocusRequested()) {
           window.setTimeout(() => this.scrollToBoardFriends(), 80);
@@ -1720,6 +1770,15 @@ export class BoardsComponent implements OnDestroy {
       const view = params.get('view') ?? params.get('stack');
       const wantsFriends = params.get('friends') === '1';
       const wantsStack = view === 'stack' || view === 'reel';
+      const contentLanguage = params.get('contentLang');
+      this.boardTranslationTarget.set(
+        isBoardTranslationLanguage(contentLanguage) ? contentLanguage : null,
+      );
+      if (!isBoardTranslationLanguage(contentLanguage)) {
+        this.boardTranslationResult.set(null);
+        this.boardTranslationVersion.set('');
+        this.boardTranslationError.set(null);
+      }
       this.boardLearnDirectRequested = params.get('learn') === 'quiz';
       if (!this.boardLearnDirectRequested) {
         this.boardLearnDirectOpenedFor = '';
@@ -1738,6 +1797,7 @@ export class BoardsComponent implements OnDestroy {
       if (this.boardLearnDirectRequested) {
         this.syncBoardLearnDirectView();
       }
+      void this.syncRequestedBoardTranslation();
     });
 
     effect(() => {
@@ -6287,6 +6347,7 @@ export class BoardsComponent implements OnDestroy {
   @HostListener('document:click')
   closeCardActionMenuOnOutsideClick(): void {
     this.closeCardActionMenu();
+    this.closeBoardTranslationMenu();
   }
 
   cardDraftImages(draft: CardDraft = this.cardDraft()): string[] {
@@ -7005,6 +7066,150 @@ export class BoardsComponent implements OnDestroy {
     } : null;
   }
 
+  toggleBoardTranslationMenu(): void {
+    this.boardTranslationMenuOpen.update((open) => !open);
+  }
+
+  closeBoardTranslationMenu(): void {
+    this.boardTranslationMenuOpen.set(false);
+  }
+
+  boardTranslationControlLabel(): string {
+    if (this.boardTranslationLoading()) {
+      return $localize`Translating…`;
+    }
+    const target = this.boardTranslationActive()
+      ? this.boardTranslationResult()?.targetLanguage
+      : null;
+    return target
+      ? boardTranslationLanguageName(target)
+      : $localize`Translate`;
+  }
+
+  boardTranslationSourceLabel(): string {
+    const source = this.boardTranslationResult()?.sourceLanguage ?? 'en';
+    return boardTranslationLanguageName(source);
+  }
+
+  boardTranslationTargetLabel(): string {
+    const target = this.boardTranslationResult()?.targetLanguage
+      ?? this.boardTranslationTarget()
+      ?? 'en';
+    return boardTranslationLanguageName(target);
+  }
+
+  selectBoardTranslation(language: BoardTranslationLanguage, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.closeBoardTranslationMenu();
+    if (!this.isBrowser || !this.originalSelectedBoard()) {
+      return;
+    }
+
+    const targetLocale = supportedLocale(language);
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, targetLocale.id);
+    const currentLocale = supportedLocale(this.localeId);
+    if (targetLocale.id !== currentLocale.id) {
+      const query = new URLSearchParams(window.location.search);
+      query.set('contentLang', language);
+      const targetPath = localizedPath(window.location.pathname, targetLocale);
+      window.location.assign(`${targetPath}?${query.toString()}${window.location.hash}`);
+      return;
+    }
+
+    if (this.boardTranslationResult()?.targetLanguage !== language) {
+      this.boardTranslationResult.set(null);
+      this.boardTranslationVersion.set('');
+    }
+    this.boardTranslationTarget.set(language);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { contentLang: language },
+      queryParamsHandling: 'merge',
+    });
+    void this.syncRequestedBoardTranslation();
+  }
+
+  showOriginalBoard(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.closeBoardTranslationMenu();
+    this.boardTranslationRun += 1;
+    this.boardTranslationRequestKey = '';
+    this.boardTranslationTarget.set(null);
+    this.boardTranslationResult.set(null);
+    this.boardTranslationVersion.set('');
+    this.boardTranslationError.set(null);
+    this.boardTranslationLoading.set(false);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { contentLang: null },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  private async syncRequestedBoardTranslation(): Promise<void> {
+    const board = this.originalSelectedBoard();
+    const targetLanguage = this.boardTranslationTarget();
+    if (!board || !targetLanguage || !this.functions) {
+      return;
+    }
+    const current = this.boardTranslationResult();
+    if (current?.boardId === board.id
+      && current.targetLanguage === targetLanguage
+      && this.boardTranslationVersion() === board.updatedAt) {
+      return;
+    }
+    const requestKey = `${board.id}:${board.updatedAt}:${targetLanguage}`;
+    if (this.boardTranslationLoading() && this.boardTranslationRequestKey === requestKey) {
+      return;
+    }
+
+    const run = ++this.boardTranslationRun;
+    this.boardTranslationRequestKey = requestKey;
+    this.boardTranslationLoading.set(true);
+    this.boardTranslationError.set(null);
+    try {
+      const callable = httpsCallable<
+        { boardId: string; targetLanguage: BoardTranslationLanguage },
+        unknown
+      >(this.functions, 'translateBoard');
+      const response = await callable({ boardId: board.id, targetLanguage });
+      const result = normalizeBoardTranslationResult(response.data);
+      if (!result || result.boardId !== board.id || result.targetLanguage !== targetLanguage) {
+        throw new Error('The translation response was incomplete.');
+      }
+      if (run !== this.boardTranslationRun
+        || this.selectedBoardId() !== board.id
+        || this.boardTranslationTarget() !== targetLanguage) {
+        return;
+      }
+      this.boardTranslationResult.set(result);
+      this.boardTranslationVersion.set(board.updatedAt);
+    } catch (error) {
+      if (run !== this.boardTranslationRun) {
+        return;
+      }
+      console.error('Board translation failed', error, {
+        boardId: board.id,
+        targetLanguage,
+      });
+      const code = error instanceof FirebaseError ? error.code : '';
+      this.boardTranslationError.set(
+        code.includes('resource-exhausted')
+          ? $localize`Translation is temporarily busy. Please try again in a little while.`
+          : code.includes('permission-denied')
+            ? $localize`This board cannot be translated from this view.`
+            : $localize`We could not translate this board right now. Please try again.`,
+      );
+    } finally {
+      if (run === this.boardTranslationRun) {
+        this.boardTranslationLoading.set(false);
+        this.boardTranslationRequestKey = '';
+      }
+    }
+  }
+
   boardUpdatedLabel(board: Board): string {
     return this.formatDate(board.updatedAt);
   }
@@ -7023,6 +7228,9 @@ export class BoardsComponent implements OnDestroy {
 
   canEditBoard(board: Board | null | undefined): boolean {
     if (!board) {
+      return false;
+    }
+    if (this.boardTranslationActive() && board.id === this.selectedBoardId()) {
       return false;
     }
     const uid = this.authService.uid();
@@ -7179,6 +7387,9 @@ export class BoardsComponent implements OnDestroy {
     if (!board) {
       return false;
     }
+    if (this.boardTranslationActive() && board.id === this.selectedBoardId()) {
+      return false;
+    }
     const uid = this.authService.uid();
     return !!uid && board.ownerUserId === uid;
   }
@@ -7234,8 +7445,18 @@ export class BoardsComponent implements OnDestroy {
   }
 
   boardShareUrl(board: Board): string {
+    const publicQuery = new URLSearchParams({
+      v: board.updatedAt || board.id,
+      ui: supportedLocale(this.localeId).language,
+    });
+    const translation = this.boardTranslationResult();
+    if (this.boardTranslationActive()
+      && translation?.boardId === board.id
+      && translation.targetLanguage !== translation.sourceLanguage) {
+      publicQuery.set('lang', translation.targetLanguage);
+    }
     const path = board.visibility === 'public'
-      ? `/share/board/${encodeURIComponent(board.id)}?v=${encodeURIComponent(board.updatedAt || board.id)}`
+      ? `/share/board/${encodeURIComponent(board.id)}?${publicQuery.toString()}`
       : this.boardPagePath(board);
     if (board.visibility === 'public') {
       return `${PUBLIC_APP_URL}${path}`;
@@ -9966,6 +10187,13 @@ export class BoardsComponent implements OnDestroy {
         this.boards.update((boards) => boards.some((item) => item.id === board.id)
           ? boards.map((item) => item.id === board.id ? board : item)
           : [board, ...boards]);
+        if (this.boardTranslationTarget()
+          && this.boardTranslationVersion()
+          && this.boardTranslationVersion() !== board.updatedAt) {
+          this.boardTranslationResult.set(null);
+          this.boardTranslationVersion.set('');
+          void this.syncRequestedBoardTranslation();
+        }
       },
       () => undefined,
     );

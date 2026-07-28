@@ -202,7 +202,15 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
       .status(200)
       .set('Content-Type', 'text/html; charset=utf-8')
       .set('Cache-Control', 'public, max-age=300, s-maxage=3600')
-      .send(req.method === 'HEAD' ? undefined : buildBoardSharePageHtml(board, parsed.stack, parsed.quiz));
+      .send(req.method === 'HEAD'
+        ? undefined
+        : buildBoardSharePageHtml(
+            board,
+            parsed.stack,
+            parsed.quiz,
+            parsed.uiLanguage,
+            parsed.contentLanguage,
+          ));
 }
 
 function parseSharePath(url: string): { cardId: string; kind: ShareImageKind | null } | null {
@@ -231,22 +239,41 @@ function parseTravelSharePath(url: string): { shareId: string; kind: ShareImageK
   };
 }
 
-function parseBoardSharePath(url: string): { boardId: string; image: boolean; stack: boolean; quiz: boolean; video: boolean; player: boolean; rawVideo: boolean } | null {
+function parseBoardSharePath(url: string): {
+  boardId: string;
+  image: boolean;
+  stack: boolean;
+  quiz: boolean;
+  video: boolean;
+  player: boolean;
+  rawVideo: boolean;
+  uiLanguage: 'en' | 'fr' | 'ja';
+  contentLanguage: 'en' | 'fr' | 'ja' | null;
+} | null {
   const [path, query = ''] = url.split('?');
   const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/(og\.png|video|video\/player|video\.mp4))?\/?$/);
   if (!match) {
     return null;
   }
+  const queryParams = new URLSearchParams(query);
+  const contentLanguage = boardShareLanguage(queryParams.get('lang'));
+  const uiLanguage = boardShareLanguage(queryParams.get('ui')) ?? contentLanguage ?? 'en';
 
   return {
     boardId: match[1],
     image: match[2] === 'og.png',
-    stack: new URLSearchParams(query).get('view') === 'stack',
-    quiz: new URLSearchParams(query).get('learn') === 'quiz',
+    stack: queryParams.get('view') === 'stack',
+    quiz: queryParams.get('learn') === 'quiz',
     video: match[2] === 'video',
     player: match[2] === 'video/player',
     rawVideo: match[2] === 'video.mp4',
+    uiLanguage,
+    contentLanguage,
   };
+}
+
+function boardShareLanguage(value: string | null): 'en' | 'fr' | 'ja' | null {
+  return value === 'en' || value === 'fr' || value === 'ja' ? value : null;
 }
 
 async function proxyBoardVideo(req: Request, res: Response, board: BoardShare): Promise<void> {
@@ -777,23 +804,41 @@ function buildTravelSharePageHtml(share: TravelCardShare): string {
 </html>`;
 }
 
-function buildBoardSharePageHtml(board: BoardShare, stack: boolean, quiz: boolean): string {
+function buildBoardSharePageHtml(
+  board: BoardShare,
+  stack: boolean,
+  quiz: boolean,
+  uiLanguage: 'en' | 'fr' | 'ja' = 'en',
+  contentLanguage: 'en' | 'fr' | 'ja' | null = null,
+): string {
   const sharedQuiz = quiz ? board.quiz : null;
   const title = sharedQuiz?.title || board.title;
   const description = sharedQuiz
     ? sharedQuiz.description || `Take this ${sharedQuiz.questionCount}-question challenge from ${board.title}.`
     : boardShareDescription(board);
   const route = boardShareRoute(board);
-  const shareVersion = encodeURIComponent(board.updatedAt ?? imageVersion);
-  const modeQuery = stack ? '&view=stack' : sharedQuiz ? '&learn=quiz' : '';
-  const appModeQuery = stack ? '?view=stack' : sharedQuiz ? '?learn=quiz' : '';
-  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}?v=${shareVersion}${modeQuery}`;
-  const appBoardUrl = `${appUrl}/${route}/${encodeURIComponent(board.id)}${appModeQuery}`;
+  const shareVersion = board.updatedAt ?? imageVersion;
+  const shareQuery = new URLSearchParams({ v: shareVersion, ui: uiLanguage });
+  const appQuery = new URLSearchParams();
+  if (contentLanguage) {
+    shareQuery.set('lang', contentLanguage);
+    appQuery.set('contentLang', contentLanguage);
+  }
+  if (stack) {
+    shareQuery.set('view', 'stack');
+    appQuery.set('view', 'stack');
+  } else if (sharedQuiz) {
+    shareQuery.set('learn', 'quiz');
+    appQuery.set('learn', 'quiz');
+  }
+  const localePrefix = uiLanguage === 'en' ? '' : `/${uiLanguage}`;
+  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}?${shareQuery.toString()}`;
+  const appBoardUrl = `${appUrl}${localePrefix}/${route}/${encodeURIComponent(board.id)}${appQuery.size ? `?${appQuery.toString()}` : ''}`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const ogImage = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}${sharedQuiz ? '&learn=quiz' : ''}`;
 
   return `<!doctype html>
-<html lang="en">
+<html lang="${uiLanguage}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

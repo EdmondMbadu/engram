@@ -11,6 +11,7 @@
     "test:board-wizard-commerce": "npm run build && node scripts/test-board-wizard-commerce.cjs",
     "test:board-wizard-menu": "npm run build && node scripts/test-board-wizard-menu.cjs",
     "test:board-wizard-reader": "npm run build && node scripts/test-board-wizard-reader.cjs",
+    "test:board-translation": "npm run build && node scripts/test-board-translation.cjs",
     "test:spotify-oauth": "npm run build && node scripts/test-spotify-oauth.cjs",
     "test:visit-plans": "npm run build && node scripts/test-visit-plans.cjs",
     "test:visit-email-sandbox": "npm run build && node scripts/test-visit-email-sandbox.cjs",
