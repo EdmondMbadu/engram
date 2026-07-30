@@ -1306,6 +1306,49 @@
             </div>
           }
 
+          @if (isTourBoard(board) && !exploredRelatedCardParent()) {
+            <section class="tour-view-bar" aria-label="Tour viewing options" i18n-aria-label>
+              <div class="tour-view-switch" role="group" aria-label="Choose tour view" i18n-aria-label>
+                <button
+                  type="button"
+                  [class.tour-view-switch__button--active]="tourBoardView() === 'route'"
+                  [attr.aria-pressed]="tourBoardView() === 'route'"
+                  (click)="setTourBoardView('route', $event)"
+                >
+                  <span class="material-symbols-outlined">route</span>
+                  <span i18n>Route &amp; Map</span>
+                </button>
+                <button
+                  type="button"
+                  [class.tour-view-switch__button--active]="tourBoardView() === 'cards'"
+                  [attr.aria-pressed]="tourBoardView() === 'cards'"
+                  (click)="setTourBoardView('cards', $event)"
+                >
+                  <span class="material-symbols-outlined">dashboard</span>
+                  <span i18n>Cards</span>
+                </button>
+              </div>
+              <div class="tour-route-state" aria-live="polite">
+                @if (tourRouteUpdating()) {
+                  <span class="tour-route-state--updating">
+                    <span class="material-symbols-outlined">progress_activity</span>
+                    <span i18n>Updating route…</span>
+                  </span>
+                } @else if (tourRouteError()) {
+                  <span class="tour-route-state--error">
+                    <span class="material-symbols-outlined">error</span>
+                    {{ tourRouteError() }}
+                  </span>
+                } @else if (canEditBoard(board)) {
+                  <span>
+                    <span class="material-symbols-outlined">drag_indicator</span>
+                    <span i18n>Drag stops to change the route</span>
+                  </span>
+                }
+              </div>
+            </section>
+          }
+
           @if (exploredRelatedCardParent(); as relatedParent) {
             <section class="related-cards-context" aria-label="Related cards collection" i18n-aria-label>
               <button type="button" class="related-cards-context__back" (click)="closeRelatedCards($event)">
@@ -1363,7 +1406,7 @@
               }
             </div>
           } @else {
-            @if (isTourBoard(board) && !exploredRelatedCardParent()) {
+            @if (isTourBoard(board) && tourBoardView() === 'route' && !exploredRelatedCardParent()) {
               <section class="tour-board">
                 <div class="tour-board__summary">
                   <div>
@@ -1421,6 +1464,14 @@
                         class="tour-stop-card"
                         [id]="'tour-stop-' + card.id"
                         [class.tour-stop-card--active]="selectedTourCardId() === card.id"
+                        [class.tour-stop-card--dragging]="isDraggingCard(card.id)"
+                        [class.tour-stop-card--drop-target]="isCardDropTarget(card.id)"
+                        [class.tour-stop-card--drop-before]="isCardDropBefore(card.id)"
+                        [class.tour-stop-card--drop-after]="isCardDropAfter(card.id)"
+                        (dragover)="dragCardOver($event, board, card)"
+                        (dragleave)="dragCardLeave($event, card)"
+                        (dragend)="clearCardReorderDrag()"
+                        (drop)="dropCardOnCard($event, board, card)"
                       >
                         <div class="tour-stop-card__media">
                           @if (currentCardImage(card)) {
@@ -1463,9 +1514,44 @@
                               <p>{{ card.tour?.address || card.subtitle }}</p>
                             </div>
                             @if (canEditBoard(board)) {
-                              <button type="button" aria-label="Edit stop" (click)="openEditCard(card)" i18n-aria-label>
-                                <span class="material-symbols-outlined">edit</span>
-                              </button>
+                              <div class="tour-stop-card__order-actions">
+                                <button
+                                  type="button"
+                                  aria-label="Move stop earlier"
+                                  title="Move earlier"
+                                  [disabled]="!canMoveTourStop(card, -1)"
+                                  (click)="moveTourStop(card, -1, $event)"
+                                  i18n-aria-label i18n-title
+                                >
+                                  <span class="material-symbols-outlined">arrow_upward</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  aria-label="Move stop later"
+                                  title="Move later"
+                                  [disabled]="!canMoveTourStop(card, 1)"
+                                  (click)="moveTourStop(card, 1, $event)"
+                                  i18n-aria-label i18n-title
+                                >
+                                  <span class="material-symbols-outlined">arrow_downward</span>
+                                </button>
+                                <span
+                                  class="tour-stop-card__drag-handle"
+                                  role="button"
+                                  tabindex="0"
+                                  draggable="true"
+                                  aria-label="Drag to reorder stop"
+                                  title="Drag to reorder"
+                                  (dragstart)="beginCardReorderDrag($event, board, card)"
+                                  (dragend)="clearCardReorderDrag()"
+                                  i18n-aria-label i18n-title
+                                >
+                                  <span class="material-symbols-outlined">drag_indicator</span>
+                                </span>
+                                <button type="button" aria-label="Edit stop" (click)="openEditCard(card)" i18n-aria-label>
+                                  <span class="material-symbols-outlined">edit</span>
+                                </button>
+                              </div>
                             }
                           </div>
                           @if (cardMemoryCount(card) > 0 && isCardMemoryGalleryOpen(card.id)) {
@@ -1536,8 +1622,8 @@
                         </div>
                       </article>
 
-                      @if (tourWayfindersShown() && card.tour?.legToNext; as leg) {
-                        @if (nextTourCard(card); as nextCard) {
+                      @if (nextTourCard(card); as nextCard) {
+                        @if (tourWayfindersShown() && tourLegToNext(card, nextCard); as leg) {
                           <article class="tour-wayfinder-card">
                             <div class="tour-wayfinder-card__map">
                               <iframe

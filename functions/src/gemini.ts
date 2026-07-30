@@ -425,6 +425,7 @@ export type GeneratedBoardTourLeg = {
   instruction: string;
   navScript: string;
   encodedPolyline: string;
+  toCardId?: string;
 };
 export type GeneratedBoardCardTour = {
   sequence: number;
@@ -1933,6 +1934,7 @@ function normalizeBoardTourLeg(value: unknown): GeneratedBoardTourLeg | null {
     instruction,
     navScript,
     encodedPolyline: cleanLine(data.encodedPolyline, '', 4000),
+    toCardId: cleanLine(data.toCardId, '', 160) || undefined,
   };
 }
 

@@ -47,6 +47,12 @@ import {
   type ReorderDropPosition,
 } from './reorder';
 import {
+  moveTourCard,
+  orderedTourCards,
+  reorderTourCards,
+  tourOrderIds,
+} from './tour-order';
+import {
   boardQuizEligibleCardCount,
   buildBoardLearningQuiz,
   gradeBoardLearningQuiz,
@@ -111,6 +117,7 @@ type WizardLoadingTask = {
 };
 type BoardTourMode = 'walking' | 'driving';
 type BoardTourVoiceStyle = 'historian' | 'local' | 'kid-friendly';
+type TourBoardView = 'route' | 'cards';
 type StackFormat = 'carousel' | 'reel' | 'both';
 type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
@@ -139,6 +146,7 @@ type BoardTourLeg = {
   instruction: string;
   navScript: string;
   encodedPolyline: string;
+  toCardId: string;
 };
 
 type BoardCardTour = {
@@ -1004,7 +1012,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css'],
+  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css', './tour-order.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1037,7 +1045,7 @@ export class BoardsComponent implements OnDestroy {
   private tourMap: unknown | null = null;
   private tourMapBoardId: string | null = null;
   private tourMapMarkers: unknown[] = [];
-  private tourMapPolyline: unknown | null = null;
+  private tourMapPolylines: unknown[] = [];
   private tourAudio: HTMLAudioElement | null = null;
   private tourSpeechUtterance: SpeechSynthesisUtterance | null = null;
   private songPreviewAudio: HTMLAudioElement | null = null;
@@ -1297,6 +1305,9 @@ export class BoardsComponent implements OnDestroy {
   readonly stackFrameDurationMs = 4200;
   readonly stackActiveFrameDurationMs = signal(this.stackFrameDurationMs);
   readonly tourWayfindersShown = signal(false);
+  readonly tourBoardView = signal<TourBoardView>('route');
+  readonly tourRouteUpdating = signal(false);
+  readonly tourRouteError = signal<string | null>(null);
   readonly tourGuideOpen = signal(false);
   readonly tourDeckIndex = signal(0);
   readonly tourSpeechPlaying = signal(false);
@@ -1595,7 +1606,11 @@ export class BoardsComponent implements OnDestroy {
       return [];
     }
     const parent = this.exploredRelatedCardParent();
-    const cards = parent ? this.relatedCardsFor(parent) : [...board.cards];
+    const cards = parent
+      ? this.relatedCardsFor(parent)
+      : this.isTourBoard(board)
+        ? this.cardsInTourDisplayOrder(board.cards)
+        : [...board.cards];
     if (!query) {
       return cards;
     }
@@ -1758,9 +1773,10 @@ export class BoardsComponent implements OnDestroy {
     const cards = this.selectedBoardTourCards();
     const frames: TourDeckFrame[] = [];
     cards.forEach((card) => {
+      const nextCard = this.nextTourCard(card, cards);
       frames.push({ kind: 'stop', card, nextCard: null, index: 0, total: 0 });
-      if (card.tour?.legToNext) {
-        frames.push({ kind: 'leg', card, nextCard: this.nextTourCard(card, cards), index: 0, total: 0 });
+      if (nextCard && this.tourLegToNext(card, nextCard)) {
+        frames.push({ kind: 'leg', card, nextCard, index: 0, total: 0 });
       }
     });
     return frames.map((frame, index) => ({ ...frame, index, total: frames.length }));
@@ -1879,6 +1895,7 @@ export class BoardsComponent implements OnDestroy {
       const view = params.get('view') ?? params.get('stack');
       const wantsFriends = params.get('friends') === '1';
       const wantsStack = view === 'stack' || view === 'reel';
+      this.tourBoardView.set(view === 'cards' ? 'cards' : 'route');
       const contentLanguage = params.get('contentLang');
       this.boardTranslationTarget.set(
         isBoardTranslationLanguage(contentLanguage) ? contentLanguage : null,
@@ -1941,7 +1958,15 @@ export class BoardsComponent implements OnDestroy {
     effect(() => {
       const board = this.selectedBoard();
       const tourSignature = this.tourCards(board)
-        .map((card) => `${card.id}:${card.tour?.sequence}:${card.tour?.lat}:${card.tour?.lng}:${card.title}`)
+        .map((card) => [
+          card.id,
+          card.tour?.sequence,
+          card.tour?.lat,
+          card.tour?.lng,
+          card.tour?.legToNext?.toCardId,
+          card.tour?.legToNext?.encodedPolyline,
+          card.title,
+        ].join(':'))
         .join('|');
       if (!this.isBrowser || !this.isTourBoard(board)) {
         this.tourMapBoardId = null;
@@ -4834,7 +4859,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   beginCardReorderDrag(event: DragEvent, board: Board, card: BoardCard): void {
-    if (!this.canEditBoard(board) || board.cards.length < 2) {
+    if (!this.canEditBoard(board) || board.cards.length < 2 || this.tourRouteUpdating()) {
       event.preventDefault();
       return;
     }
@@ -4853,7 +4878,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   dragCardOver(event: DragEvent, board: Board, card: BoardCard): void {
-    if (!this.canEditBoard(board) || !this.draggedCardId()) {
+    if (!this.canEditBoard(board) || !this.draggedCardId() || this.tourRouteUpdating()) {
       return;
     }
     event.preventDefault();
@@ -4903,6 +4928,18 @@ export class BoardsComponent implements OnDestroy {
     const dropPosition = this.cardDropTargetId() === targetCard.id
       ? this.cardDropPosition() ?? this.reorderDropPosition(event)
       : this.reorderDropPosition(event);
+    const draggedCard = currentBoard.cards.find((card) => card.id === draggedId) ?? null;
+    if (this.isTourBoard(currentBoard) && draggedCard?.tour && targetCard.tour) {
+      const nextCards = reorderTourCards(
+        currentBoard.cards,
+        draggedId,
+        targetCard.id,
+        dropPosition,
+      );
+      this.clearCardReorderDrag();
+      await this.saveTourCardOrder(currentBoard, nextCards);
+      return;
+    }
     const nextCards = reorderRelativeToTarget(
       currentBoard.cards,
       draggedId,
@@ -4921,6 +4958,104 @@ export class BoardsComponent implements OnDestroy {
     this.boards.update((boards) => boards.map((item) => item.id === nextBoard.id ? nextBoard : item));
     this.clearCardReorderDrag();
     await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  async moveTourStop(card: BoardCard, direction: -1 | 1, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    if (!this.isTourBoard(board) || !card.tour || !this.canEditBoard(board) || this.tourRouteUpdating()) {
+      return;
+    }
+    const nextCards = moveTourCard(board.cards, card.id, direction);
+    if (tourOrderIds(nextCards).every((id, index) => id === tourOrderIds(board.cards)[index])) {
+      return;
+    }
+    await this.saveTourCardOrder(board, nextCards);
+  }
+
+  canMoveTourStop(card: BoardCard, direction: -1 | 1): boolean {
+    const board = this.originalSelectedBoard();
+    if (!this.isTourBoard(board) || !card.tour || !this.canEditBoard(board) || this.tourRouteUpdating()) {
+      return false;
+    }
+    const cards = this.tourCards(board);
+    const index = cards.findIndex((item) => item.id === card.id);
+    return index >= 0 && index + direction >= 0 && index + direction < cards.length;
+  }
+
+  private async saveTourCardOrder(board: Board, reorderedCards: BoardCard[]): Promise<void> {
+    if (!this.isTourBoard(board) || !this.canEditBoard(board) || this.tourRouteUpdating()) {
+      return;
+    }
+    const orderedCardIds = tourOrderIds(reorderedCards);
+    if (orderedCardIds.length < 2) {
+      return;
+    }
+
+    const previousBoard = board;
+    const now = new Date().toISOString();
+    const optimisticBoard: Board = {
+      ...board,
+      cards: reorderedCards,
+      tourMeta: board.tourMeta ? {
+        ...board.tourMeta,
+        totalDistanceText: '',
+        totalDurationText: '',
+        routePolyline: '',
+      } : null,
+      updatedAt: now,
+    };
+    this.tourRouteUpdating.set(true);
+    this.tourRouteError.set(null);
+    this.boards.update((boards) => boards.map((item) => item.id === board.id ? optimisticBoard : item));
+
+    try {
+      if (!this.functions) {
+        throw new Error($localize`Route recalculation is unavailable.`);
+      }
+      const callable = httpsCallable<
+        { boardId: string; orderedCardIds: string[]; baseUpdatedAt: string },
+        { cards?: unknown[]; tourMeta?: unknown; updatedAt?: string }
+      >(this.functions, 'recalculateBoardTourRoute', { timeout: 90_000 });
+      const response = await callable({
+        boardId: board.id,
+        orderedCardIds,
+        baseUpdatedAt: board.updatedAt,
+      });
+      const cards = Array.isArray(response.data?.cards)
+        ? response.data.cards
+          .map((card) => this.cardFromRecord(card))
+          .filter((card): card is BoardCard => !!card)
+        : [];
+      if (cards.length !== board.cards.length || tourOrderIds(cards).join('|') !== orderedCardIds.join('|')) {
+        throw new Error($localize`The updated tour route was incomplete.`);
+      }
+      const tourMeta = this.normalizeTourMeta(response.data?.tourMeta);
+      if (!tourMeta) {
+        throw new Error($localize`The updated tour summary was incomplete.`);
+      }
+      const savedBoard: Board = {
+        ...board,
+        cards,
+        tourMeta,
+        updatedAt: typeof response.data?.updatedAt === 'string' ? response.data.updatedAt : now,
+      };
+      this.boards.update((boards) => boards.map((item) => item.id === board.id ? savedBoard : item));
+      this.boardsSyncError.set(null);
+    } catch (error) {
+      console.error('Tour route reorder failed', error, { boardId: board.id, orderedCardIds });
+      this.boards.update((boards) => boards.map((item) =>
+        item.id === board.id && item.updatedAt === optimisticBoard.updatedAt ? previousBoard : item));
+      const message = error instanceof FirebaseError && error.code === 'functions/failed-precondition'
+        ? $localize`This tour changed elsewhere. Reload it and try again.`
+        : error instanceof Error && error.message
+          ? error.message
+          : $localize`The route could not be updated. Your previous order was restored.`;
+      this.tourRouteError.set(message);
+    } finally {
+      this.tourRouteUpdating.set(false);
+    }
   }
 
   clearCardReorderDrag(): void {
@@ -5227,9 +5362,28 @@ export class BoardsComponent implements OnDestroy {
     if (!board) {
       return [];
     }
-    return board.cards
-      .filter((card) => !!card.tour)
-      .sort((left, right) => (left.tour?.sequence ?? 0) - (right.tour?.sequence ?? 0));
+    return orderedTourCards(board.cards);
+  }
+
+  private cardsInTourDisplayOrder(cards: readonly BoardCard[]): BoardCard[] {
+    const tourCards = orderedTourCards(cards);
+    let tourIndex = 0;
+    return cards.map((card) => card.tour ? tourCards[tourIndex++] ?? card : card);
+  }
+
+  setTourBoardView(view: TourBoardView, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.tourBoardView() === view) {
+      return;
+    }
+    this.tourBoardView.set(view);
+    this.tourRouteError.set(null);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { view: view === 'cards' ? 'cards' : null },
+      queryParamsHandling: 'merge',
+    });
   }
 
   songCards(board: Board | null): BoardCard[] {
@@ -5290,8 +5444,21 @@ export class BoardsComponent implements OnDestroy {
   }
 
   nextTourCard(card: BoardCard, cards = this.selectedBoardTourCards()): BoardCard | null {
-    const sequence = card.tour?.sequence ?? 0;
-    return cards.find((item) => (item.tour?.sequence ?? 0) === sequence + 1) ?? null;
+    const index = cards.findIndex((item) => item.id === card.id);
+    return index >= 0 ? cards[index + 1] ?? null : null;
+  }
+
+  tourLegToNext(card: BoardCard, nextCard: BoardCard | null): BoardTourLeg | null {
+    const leg = card.tour?.legToNext ?? null;
+    if (!leg || !nextCard) {
+      return null;
+    }
+    if (leg.toCardId) {
+      return leg.toCardId === nextCard.id ? leg : null;
+    }
+    const nextTitle = this.normalizedTourRouteText(nextCard.title);
+    const legText = this.normalizedTourRouteText(`${leg.instruction} ${leg.navScript}`);
+    return nextTitle.length >= 4 && legText.includes(nextTitle) ? leg : null;
   }
 
   toggleTourWayfinders(): void {
@@ -5792,18 +5959,32 @@ export class BoardsComponent implements OnDestroy {
 
       this.clearTourMapOverlays();
       const bounds = new maps.LatLngBounds();
-      const path = points.map((point) => {
+      points.forEach((point) => {
         bounds.extend(point.position);
-        return point.position;
       });
       const Polyline = maps['Polyline'] as new (options: Record<string, unknown>) => unknown;
-      if (Polyline && path.length > 1) {
-        this.tourMapPolyline = new Polyline({
-          path,
-          map: this.tourMap,
-          strokeColor: this.toneAccent(tourBoard.tone),
-          strokeOpacity: 0.86,
-          strokeWeight: tourBoard.kind === 'driving-tour' ? 5 : 4,
+      const decodePath = maps.geometry?.encoding?.decodePath;
+      const positionByCardId = new Map(points.map((point) => [point.card.id, point.position]));
+      if (Polyline) {
+        tourCards.forEach((card, index) => {
+          const next = tourCards[index + 1];
+          const fromPosition = positionByCardId.get(card.id);
+          const toPosition = next ? positionByCardId.get(next.id) : null;
+          if (!next || !fromPosition || !toPosition) {
+            return;
+          }
+          const encodedPolyline = card.tour?.legToNext?.toCardId === next.id
+            ? card.tour?.legToNext?.encodedPolyline
+            : '';
+          const decodedPath = encodedPolyline && decodePath ? decodePath(encodedPolyline) : [];
+          const polyline = new Polyline({
+            path: decodedPath.length > 1 ? decodedPath : [fromPosition, toPosition],
+            map: this.tourMap,
+            strokeColor: this.toneAccent(tourBoard.tone),
+            strokeOpacity: encodedPolyline ? 0.92 : 0.68,
+            strokeWeight: tourBoard.kind === 'driving-tour' ? 5 : 4,
+          });
+          this.tourMapPolylines.push(polyline);
         });
       }
 
@@ -5885,9 +6066,10 @@ export class BoardsComponent implements OnDestroy {
       }
     }
     this.tourMapMarkers = [];
-    const polyline = this.tourMapPolyline as { setMap?: (map: unknown | null) => void } | null;
-    polyline?.setMap?.(null);
-    this.tourMapPolyline = null;
+    for (const polyline of this.tourMapPolylines) {
+      (polyline as { setMap?: (map: unknown | null) => void }).setMap?.(null);
+    }
+    this.tourMapPolylines = [];
   }
 
   private createTourMarkerElement(card: BoardCard): HTMLElement {
@@ -11020,6 +11202,15 @@ export class BoardsComponent implements OnDestroy {
       : card.tour?.address || card.subtitle || card.title;
   }
 
+  private normalizedTourRouteText(value: string): string {
+    return value
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+
   private normalizeTourMeta(value: unknown): BoardTourMeta | null {
     if (!value || typeof value !== 'object') {
       return null;
@@ -11063,6 +11254,7 @@ export class BoardsComponent implements OnDestroy {
       instruction,
       navScript,
       encodedPolyline: this.stringValue(data['encodedPolyline'], '', 4000),
+      toCardId: this.stringValue(data['toCardId'], '', 160),
     };
   }
 
@@ -11105,6 +11297,7 @@ export class BoardsComponent implements OnDestroy {
           instruction: draft.tourLegInstruction.trim().slice(0, 260),
           navScript: draft.tourLegNavScript.trim().slice(0, 700),
           encodedPolyline: draft.tourLegEncodedPolyline.trim().slice(0, 4000),
+          toCardId: '',
         }
       : null;
     return {
@@ -11190,6 +11383,7 @@ export class BoardsComponent implements OnDestroy {
                 instruction: `${mode === 'driving' ? 'Drive' : 'Walk'} from ${name} to ${next}.`,
                 navScript: `From ${name}, ${mode === 'driving' ? 'drive' : 'walk'} about ${durationText}, roughly ${distanceText}, to your next stop: ${next}.`,
                 encodedPolyline: '',
+                toCardId: '',
               },
         },
       };

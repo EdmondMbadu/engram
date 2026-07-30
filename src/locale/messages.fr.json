@@ -2912,6 +2912,22 @@
     "9027131328158506822": "Modifier la carte",
     "5116466601953365942": "Gérer la collection",
     "7234626662254065339": "La première photo est la couverture. Les autres apparaissent automatiquement comme cartes-souvenirs dans Explorer.",
-    "965231789753645648": "{$START_TAG_SPAN}photo_library{$CLOSE_TAG_SPAN} Photos et souvenirs"
+    "965231789753645648": "{$START_TAG_SPAN}photo_library{$CLOSE_TAG_SPAN} Photos et souvenirs",
+    "1204240386528941131": "Faites glisser les étapes pour modifier l’itinéraire",
+    "1355531462309529746": "Le recalcul de l’itinéraire n’est pas disponible.",
+    "1404563908210027739": "Déplacer l’étape plus tôt",
+    "2278916465859289721": "Choisir l’affichage du circuit",
+    "3284651014360368284": "Options d’affichage du circuit",
+    "338726413951771223": "L’itinéraire n’a pas pu être mis à jour. L’ordre précédent a été restauré.",
+    "3485897434992986955": "Itinéraire et carte",
+    "4349732922689603290": "Ce circuit a été modifié ailleurs. Rechargez-le et réessayez.",
+    "5374040124869117947": "Faire glisser pour réorganiser l’étape",
+    "5670251735546841727": "Faire glisser pour réorganiser",
+    "5925509353518968307": "Déplacer plus tôt",
+    "6150572843355387411": "Le récapitulatif du circuit mis à jour était incomplet.",
+    "6300806796199073767": "Mise à jour de l’itinéraire…",
+    "6388481387858277680": "Déplacer l’étape plus tard",
+    "7782046034071994657": "Déplacer plus tard",
+    "7991558504160580200": "L’itinéraire du circuit mis à jour était incomplet."
   }
 }

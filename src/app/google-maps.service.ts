@@ -28,6 +28,11 @@ type GoogleMapsNamespace = {
     marker?: {
       AdvancedMarkerElement: new (options: Record<string, unknown>) => unknown;
     };
+    geometry?: {
+      encoding?: {
+        decodePath: (encodedPath: string) => unknown[];
+      };
+    };
     places?: {
       PlacesService: new (element: HTMLElement) => {
         textSearch: (
@@ -148,7 +153,7 @@ export class GoogleMapsService {
         v: 'weekly',
         loading: 'async',
         callback: this.callbackName,
-        libraries: 'maps,marker,geocoding,places',
+        libraries: 'maps,marker,geocoding,places,geometry',
       });
       script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
       script.onerror = () => reject(new Error('Google Maps failed to load.'));
@@ -161,11 +166,15 @@ export class GoogleMapsService {
   async loadMapLibraries(): Promise<GoogleMapsNamespace> {
     const google = await this.load();
     if (google.maps.importLibrary) {
-      await Promise.all([
+      const [, , , geometryLibrary] = await Promise.all([
         google.maps.importLibrary('maps'),
         google.maps.importLibrary('marker'),
         google.maps.importLibrary('geocoding'),
+        google.maps.importLibrary('geometry'),
       ]);
+      if (!google.maps.geometry && geometryLibrary) {
+        google.maps.geometry = geometryLibrary as GoogleMapsNamespace['maps']['geometry'];
+      }
     }
     return this.requireGoogleMaps();
   }

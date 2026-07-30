@@ -1,0 +1,174 @@
+.tour-view-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  border: 2px solid var(--ink);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--board-accent) 6%, var(--surface));
+  box-shadow: 3px 3px 0 var(--ink);
+  padding: 0.65rem;
+}
+
+.tour-view-switch {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  padding: 0.25rem;
+}
+
+.tour-view-switch button {
+  display: inline-flex;
+  min-height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 950;
+  padding: 0 0.8rem;
+}
+
+.tour-view-switch button:hover {
+  color: var(--text);
+}
+
+.tour-view-switch .tour-view-switch__button--active {
+  background: var(--ink);
+  box-shadow: 2px 2px 0 var(--board-accent);
+  color: #fff;
+}
+
+.tour-view-switch .material-symbols-outlined {
+  font-size: 1.05rem;
+}
+
+.tour-route-state,
+.tour-route-state > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tour-route-state {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+.tour-route-state .material-symbols-outlined {
+  color: var(--board-accent);
+  font-size: 1.05rem;
+}
+
+.tour-route-state--updating .material-symbols-outlined {
+  animation: tour-route-spin 900ms linear infinite;
+}
+
+.tour-route-state .tour-route-state--error {
+  color: #a02323;
+}
+
+.tour-route-state .tour-route-state--error .material-symbols-outlined {
+  color: #c5362d;
+}
+
+.tour-stop-card--dragging {
+  opacity: 0.48;
+  transform: scale(0.985);
+}
+
+.tour-stop-card--drop-target {
+  overflow: visible;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--board-accent) 42%, transparent), 3px 3px 0 var(--ink);
+}
+
+.tour-stop-card--drop-before::before,
+.tour-stop-card--drop-after::before {
+  position: absolute;
+  right: 0.4rem;
+  left: 0.4rem;
+  z-index: 8;
+  height: 0.3rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--board-accent);
+  box-shadow: 2px 2px 0 var(--ink);
+  content: '';
+  pointer-events: none;
+}
+
+.tour-stop-card--drop-before::before {
+  top: -0.72rem;
+}
+
+.tour-stop-card--drop-after::before {
+  bottom: -0.72rem;
+}
+
+.tour-stop-card__order-actions {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.tour-stop-card__drag-handle {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--text);
+  cursor: grab;
+  touch-action: none;
+}
+
+.tour-stop-card__head button:disabled {
+  cursor: not-allowed;
+  opacity: 0.32;
+}
+
+.tour-stop-card__drag-handle:active {
+  background: var(--board-accent);
+  color: #fff;
+  cursor: grabbing;
+}
+
+@keyframes tour-route-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 700px) {
+  .tour-view-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tour-view-switch {
+    width: 100%;
+  }
+
+  .tour-route-state {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-route-state--updating .material-symbols-outlined {
+    animation-duration: 1.8s;
+  }
+}

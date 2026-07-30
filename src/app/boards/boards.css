@@ -4456,9 +4456,11 @@
 }
 
 .tour-stop-card {
+  position: relative;
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);
   overflow: hidden;
+  transition: opacity 150ms ease, transform 150ms ease, box-shadow 150ms ease;
 }
 
 .tour-stop-card--active {

@@ -8398,9 +8398,17 @@ async function enrichBoardWizardTourBatchWithRoutes(
   };
 }
 
+type BoardTourRoutePoint = {
+  title: string;
+  tour?: {
+    lat?: number | null;
+    lng?: number | null;
+  } | null;
+};
+
 async function computeBoardWizardTourLeg(
-  from: GeneratedBoardWizardCard,
-  to: GeneratedBoardWizardCard,
+  from: BoardTourRoutePoint,
+  to: BoardTourRoutePoint,
   mode: GeneratedBoardTourMode,
 ): Promise<{ distanceText: string; durationText: string; encodedPolyline: string; meters: number; seconds: number } | null> {
   const apiKey = googlePlacesApiKey.value();
@@ -8455,11 +8463,11 @@ async function computeBoardWizardTourLeg(
   }
 }
 
-function buildBoardWizardTourInstruction(from: GeneratedBoardWizardCard, to: GeneratedBoardWizardCard | null, mode: GeneratedBoardTourMode): string {
+function buildBoardWizardTourInstruction(from: BoardTourRoutePoint, to: BoardTourRoutePoint | null, mode: GeneratedBoardTourMode): string {
   return to ? `${mode === 'driving' ? 'Drive' : 'Walk'} from ${from.title} to ${to.title}.` : '';
 }
 
-function buildBoardWizardTourNavScript(from: GeneratedBoardWizardCard, to: GeneratedBoardWizardCard | null, mode: GeneratedBoardTourMode, duration: string, distance: string): string {
+function buildBoardWizardTourNavScript(from: BoardTourRoutePoint, to: BoardTourRoutePoint | null, mode: GeneratedBoardTourMode, duration: string, distance: string): string {
   return to ? `From ${from.title}, ${mode === 'driving' ? 'drive' : 'walk'} about ${duration || 'a short distance'}, roughly ${distance || 'nearby'}, to your next stop: ${to.title}.` : '';
 }
 
@@ -8507,6 +8515,203 @@ function formatSeconds(seconds: number): string {
   const hours = minutes / 60;
   return `${hours.toFixed(hours >= 10 ? 0 : 1)} hr`;
 }
+
+type StoredTourCard = Record<string, unknown> & {
+  id: string;
+  title: string;
+  tour: Record<string, unknown>;
+};
+
+function storedTourCard(value: unknown): StoredTourCard | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  const card = value as Record<string, unknown>;
+  const id = textFromUnknown(card.id).slice(0, 160);
+  const title = textFromUnknown(card.title).slice(0, 180);
+  const tour = card.tour && typeof card.tour === 'object'
+    ? card.tour as Record<string, unknown>
+    : null;
+  return id && title && tour ? { ...card, id, title, tour } : null;
+}
+
+function storedTourRoutePoint(card: StoredTourCard): BoardTourRoutePoint {
+  const lat = typeof card.tour.lat === 'number' && Number.isFinite(card.tour.lat) ? card.tour.lat : null;
+  const lng = typeof card.tour.lng === 'number' && Number.isFinite(card.tour.lng) ? card.tour.lng : null;
+  return { title: card.title, tour: { lat, lng } };
+}
+
+function normalizedTourRouteText(value: unknown): string {
+  return textFromUnknown(value)
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function existingTourLegTargetsCard(value: unknown, nextCard: StoredTourCard): boolean {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+  const leg = value as Record<string, unknown>;
+  const toCardId = textFromUnknown(leg.toCardId);
+  if (toCardId) {
+    return toCardId === nextCard.id;
+  }
+  const nextTitle = normalizedTourRouteText(nextCard.title);
+  const routeText = normalizedTourRouteText(`${textFromUnknown(leg.instruction)} ${textFromUnknown(leg.navScript)}`);
+  return nextTitle.length >= 4 && routeText.includes(nextTitle);
+}
+
+export const recalculateBoardTourRoute = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 90,
+    memory: '512MiB',
+    secrets: [googlePlacesApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid ?? '';
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to reorder a tour.');
+    }
+    const boardId = textFromUnknown(request.data?.boardId).slice(0, 160);
+    const baseUpdatedAt = textFromUnknown(request.data?.baseUpdatedAt).slice(0, 80);
+    const orderedCardIds: string[] = Array.isArray(request.data?.orderedCardIds)
+      ? request.data.orderedCardIds
+        .map((value: unknown) => textFromUnknown(value).slice(0, 160))
+        .filter(Boolean)
+        .slice(0, 100)
+      : [];
+    if (!boardId || orderedCardIds.length < 2 || new Set(orderedCardIds).size !== orderedCardIds.length) {
+      throw new HttpsError('invalid-argument', 'Provide every tour stop once, in the desired order.');
+    }
+
+    const boardRef = db.collection('boards').doc(boardId);
+    const snapshot = await boardRef.get();
+    if (!snapshot.exists) {
+      throw new HttpsError('not-found', 'This tour no longer exists.');
+    }
+    const board = snapshot.data() as Record<string, unknown>;
+    if (textFromUnknown(board.owner_user_id) !== userId) {
+      throw new HttpsError('permission-denied', 'Only the board owner can reorder this tour.');
+    }
+    const kind = textFromUnknown(board.kind);
+    if (kind !== 'walking-tour' && kind !== 'driving-tour') {
+      throw new HttpsError('failed-precondition', 'This board is not a walking or driving tour.');
+    }
+    const storedUpdatedAt = textFromUnknown(board.updated_at_iso);
+    if (baseUpdatedAt && storedUpdatedAt && baseUpdatedAt !== storedUpdatedAt) {
+      throw new HttpsError('failed-precondition', 'This tour changed elsewhere. Reload it and try again.');
+    }
+
+    const rawCards: unknown[] = Array.isArray(board.cards) ? board.cards : [];
+    const currentTourCards = rawCards
+      .map(storedTourCard)
+      .filter((card): card is StoredTourCard => !!card);
+    const currentIds = new Set(currentTourCards.map((card) => card.id));
+    if (currentIds.size !== orderedCardIds.length || orderedCardIds.some((id) => !currentIds.has(id))) {
+      throw new HttpsError('failed-precondition', 'The tour stops changed. Reload the board and try again.');
+    }
+    const cardById = new Map(currentTourCards.map((card) => [card.id, card]));
+    const orderedCards: StoredTourCard[] = orderedCardIds
+      .map((id) => cardById.get(id))
+      .filter((card): card is StoredTourCard => !!card);
+    const mode: GeneratedBoardTourMode = kind === 'driving-tour' ? 'driving' : 'walking';
+
+    const updatedTourCards = await mapWithConcurrency(orderedCards, 4, async (card, index) => {
+      const nextCard = orderedCards[index + 1] ?? null;
+      const tour = { ...card.tour, sequence: index + 1 };
+      if (!nextCard) {
+        return { ...card, tour: { ...tour, legToNext: null } };
+      }
+
+      const currentLeg = card.tour.legToNext;
+      if (existingTourLegTargetsCard(currentLeg, nextCard)) {
+        return {
+          ...card,
+          tour: {
+            ...tour,
+            legToNext: {
+              ...(currentLeg as Record<string, unknown>),
+              toCardId: nextCard.id,
+            },
+          },
+        };
+      }
+
+      const fromPoint = storedTourRoutePoint(card);
+      const toPoint = storedTourRoutePoint(nextCard);
+      const computed = await computeBoardWizardTourLeg(fromPoint, toPoint, mode);
+      const distanceText = computed?.distanceText ?? '';
+      const durationText = computed?.durationText ?? '';
+      return {
+        ...card,
+        tour: {
+          ...tour,
+          legToNext: {
+            distanceText,
+            durationText,
+            instruction: buildBoardWizardTourInstruction(fromPoint, toPoint, mode),
+            navScript: buildBoardWizardTourNavScript(fromPoint, toPoint, mode, durationText, distanceText),
+            encodedPolyline: computed?.encodedPolyline ?? '',
+            toCardId: nextCard.id,
+          },
+        },
+      };
+    });
+
+    let tourIndex = 0;
+    const updatedCards = rawCards.map((card) => storedTourCard(card)
+      ? updatedTourCards[tourIndex++] ?? card
+      : card);
+    const routeLegs: Record<string, unknown>[] = updatedTourCards.flatMap((card) => {
+      const leg = card.tour.legToNext;
+      return leg && typeof leg === 'object' ? [leg as Record<string, unknown>] : [];
+    });
+    const totalMeters = routeLegs.reduce(
+      (total, leg) => total + metersFromDistanceText(textFromUnknown(leg.distanceText)),
+      0,
+    );
+    const totalSeconds = routeLegs.reduce(
+      (total, leg) => total + secondsFromDurationText(textFromUnknown(leg.durationText)),
+      0,
+    );
+    const existingMeta = board.tourMeta && typeof board.tourMeta === 'object'
+      ? board.tourMeta as Record<string, unknown>
+      : {};
+    const tourMeta = {
+      ...existingMeta,
+      mode,
+      totalDistanceText: formatMeters(totalMeters),
+      totalDurationText: formatSeconds(totalSeconds),
+      routePolyline: routeLegs.map((leg) => textFromUnknown(leg.encodedPolyline)).filter(Boolean).join('|').slice(0, 4000),
+    };
+    const updatedAt = new Date().toISOString();
+
+    await db.runTransaction(async (transaction) => {
+      const latestSnapshot = await transaction.get(boardRef);
+      const latest = latestSnapshot.data() as Record<string, unknown> | undefined;
+      if (!latestSnapshot.exists || !latest || textFromUnknown(latest.owner_user_id) !== userId) {
+        throw new HttpsError('failed-precondition', 'This tour is no longer available to edit.');
+      }
+      const latestUpdatedAt = textFromUnknown(latest.updated_at_iso);
+      if (storedUpdatedAt && latestUpdatedAt !== storedUpdatedAt) {
+        throw new HttpsError('failed-precondition', 'This tour changed while the route was updating. Try again.');
+      }
+      transaction.update(boardRef, {
+        cards: updatedCards,
+        tourMeta,
+        updated_at_iso: updatedAt,
+        server_updated_at: FieldValue.serverTimestamp(),
+      });
+    });
+
+    return { cards: updatedCards, tourMeta, updatedAt };
+  },
+);
 
 async function buildBoardWizardImageOnlyBatch(
   options: {

@@ -267,6 +267,10 @@
     "source": "Pandemic Preparedness & Response",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "1204240386528941131": {
+    "source": "Drag stops to change the route",
+    "file": "src/app/boards/boards.html"
+  },
   "1208734690079942041": {
     "source": "Square found. Take a photo to finish the card.",
     "file": "src/app/boards/boards.ts"
@@ -467,6 +471,10 @@
     "source": "Failed to load businesses.",
     "file": "src/app/admin-users/admin-users.ts"
   },
+  "1355531462309529746": {
+    "source": "Route recalculation is unavailable.",
+    "file": "src/app/boards/boards.ts"
+  },
   "13567248190090141": {
     "source": " Delete this board and its {$INTERPOLATION} card{$INTERPOLATION_1}? ",
     "file": "src/app/boards/boards.html"
@@ -534,6 +542,10 @@
   "1400458101559558524": {
     "source": "The Marvel & DC Cinematic Universe",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "1404563908210027739": {
+    "source": "Move stop earlier",
+    "file": "src/app/boards/boards.html"
   },
   "1405156865820683072": {
     "source": "Confirm your inbox",
@@ -1786,6 +1798,10 @@
   "2278281789867800781": {
     "source": "Public Wiki Pages",
     "file": "src/app/marketing/marketing.html"
+  },
+  "2278916465859289721": {
+    "source": "Choose tour view",
+    "file": "src/app/boards/boards.html"
   },
   "2279947811324141620": {
     "source": "Wiki processing",
@@ -3247,6 +3263,10 @@
     "source": "Night lights",
     "file": "src/app/atlas-landing/atlas-landing.ts"
   },
+  "3284651014360368284": {
+    "source": "Tour viewing options",
+    "file": "src/app/boards/boards.html"
+  },
   "3286872174390014041": {
     "source": "Choose icon",
     "file": "src/app/profile/profile.html"
@@ -3402,6 +3422,10 @@
   "338535710257980201": {
     "source": "Quick overview",
     "file": "src/app/chat/chat.ts"
+  },
+  "338726413951771223": {
+    "source": "The route could not be updated. Your previous order was restored.",
+    "file": "src/app/boards/boards.ts"
   },
   "3388900232463518145": {
     "source": "Loading topics...",
@@ -3574,6 +3598,10 @@
   "3484984238852181071": {
     "source": "AI",
     "file": "src/app/chat/chat.ts"
+  },
+  "3485897434992986955": {
+    "source": "Route & Map",
+    "file": "src/app/boards/boards.html"
   },
   "3496615278735103700": {
     "source": "Refresh notes",
@@ -4774,6 +4802,10 @@
   "4342494733046033180": {
     "source": "NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.",
     "file": "src/app/city-atlas-templates.ts"
+  },
+  "4349732922689603290": {
+    "source": "This tour changed elsewhere. Reload it and try again.",
+    "file": "src/app/boards/boards.ts"
   },
   "4351801655798226456": {
     "source": "Sign in for card",
@@ -6271,6 +6303,10 @@
     "source": "Block-group environmental justice percentiles preserved for community review.",
     "file": "src/app/fence-line/fence-line.html"
   },
+  "5374040124869117947": {
+    "source": "Drag to reorder stop",
+    "file": "src/app/boards/boards.html"
+  },
   "5374090795835297683": {
     "source": " Saved. The next chat reply in this wiki will use this voice. ",
     "file": "src/app/atlas-persona/atlas-persona.html"
@@ -6695,6 +6731,10 @@
     "source": "{$START_TAG_SPAN}play_arrow{$CLOSE_TAG_SPAN} Play tour ",
     "file": "src/app/boards/boards.html"
   },
+  "5670251735546841727": {
+    "source": "Drag to reorder",
+    "file": "src/app/boards/boards.html"
+  },
   "5672342885880089752": {
     "source": "1 match",
     "file": "src/app/city-places/city-places.ts"
@@ -7051,6 +7091,10 @@
     "source": "Cities coming online",
     "file": "src/app/business/business.html"
   },
+  "5925509353518968307": {
+    "source": "Move earlier",
+    "file": "src/app/boards/boards.html"
+  },
   "5932584363984732247": {
     "source": "Incinerator debt",
     "file": "src/app/fence-line/fence-line.ts"
@@ -7343,6 +7387,10 @@
     "source": "Korean",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "6150572843355387411": {
+    "source": "The updated tour summary was incomplete.",
+    "file": "src/app/boards/boards.ts"
+  },
   "6152839494173485623": {
     "source": "{$START_TAG_SPAN}arrow_back{$CLOSE_TAG_SPAN} Back to Philly ",
     "file": "src/app/green-jobs/green-jobs.html"
@@ -7587,6 +7635,10 @@
     "source": "Start Building Your LivingWiki.",
     "file": "src/app/marketing/marketing.html"
   },
+  "6300806796199073767": {
+    "source": "Updating route…",
+    "file": "src/app/boards/boards.html"
+  },
   "6306138344256927663": {
     "source": "Read-only",
     "file": "src/app/shared-chat/shared-chat.html"
@@ -7710,6 +7762,10 @@
   "6384666188543760940": {
     "source": "Open jobs",
     "file": "src/app/green-jobs/green-jobs.html"
+  },
+  "6388481387858277680": {
+    "source": "Move stop later",
+    "file": "src/app/boards/boards.html"
   },
   "6389196264600918974": {
     "source": "Major open-source projects, their maintainers, funding models, license types, and community health — the living map of open-source.",
@@ -9547,6 +9603,10 @@
     "source": "LivingWiki: Gainesville",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "7782046034071994657": {
+    "source": "Move later",
+    "file": "src/app/boards/boards.html"
+  },
   "7784118488244760100": {
     "source": "{$START_TAG_SPAN}ios_share{$CLOSE_TAG_SPAN} Share invite ",
     "file": "src/app/city-places/city-places.html"
@@ -9838,6 +9898,10 @@
   "799051479085533019": {
     "source": "Best starting point",
     "file": "src/app/chat/chat.ts"
+  },
+  "7991558504160580200": {
+    "source": "The updated tour route was incomplete.",
+    "file": "src/app/boards/boards.ts"
   },
   "7992880003892329285": {
     "source": "Worldometers Maintenance",
