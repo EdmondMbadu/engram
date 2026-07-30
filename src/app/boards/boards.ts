@@ -40,6 +40,7 @@ import {
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
+import { legacyMemoryImages, relatedCardCollectionLabel } from './related-cards';
 import {
   boardQuizEligibleCardCount,
   buildBoardLearningQuiz,
@@ -210,6 +211,7 @@ type BoardCard = {
   tags: string[];
   stickers: BoardSticker[];
   tour: BoardCardTour | null;
+  relatedCards?: BoardCard[];
   createdAt: string;
   updatedAt: string;
 };
@@ -300,6 +302,19 @@ type CardDraft = {
   tourLegInstruction: string;
   tourLegNavScript: string;
   tourLegEncodedPolyline: string;
+};
+
+type RelatedCardDraft = {
+  title: string;
+  subtitle: string;
+  notes: string;
+  type: BoardCardType;
+  imageUrl: string;
+  imageName: string;
+  analysisDataUrl: string;
+  tags: string;
+  prompt: string;
+  generated: BoardWizardGeneratedCard | null;
 };
 
 type GalleryCard = {
@@ -1041,6 +1056,8 @@ export class BoardsComponent implements OnDestroy {
   private readonly publishedStackVideoFiles = new Map<string, File>();
   private friendsLoadedForUid = '';
   private visitPlansLoadedFor = '';
+  private relatedCardsReturnScrollY = 0;
+  private relatedCardsReturnSearch = '';
 
   @ViewChild('tourMapCanvas')
   set tourMapCanvasRef(value: ElementRef<HTMLElement> | undefined) {
@@ -1083,6 +1100,14 @@ export class BoardsComponent implements OnDestroy {
   readonly cardSearch = signal('');
   readonly boardDialogOpen = signal(false);
   readonly cardDialogOpen = signal(false);
+  readonly relatedCardEditorOpen = signal(false);
+  readonly relatedCardParentId = signal<string | null>(null);
+  readonly relatedCardEditingId = signal<string | null>(null);
+  readonly relatedCardAiLoading = signal(false);
+  readonly relatedCardAiError = signal<string | null>(null);
+  readonly relatedCardSaving = signal(false);
+  readonly relatedCardDeleteCandidateId = signal<string | null>(null);
+  readonly exploredRelatedCardParentId = signal<string | null>(null);
   readonly boardDeleteCandidate = signal<Board | null>(null);
   readonly draggedBoardId = signal<string | null>(null);
   readonly boardDropTargetId = signal<string | null>(null);
@@ -1348,6 +1373,18 @@ export class BoardsComponent implements OnDestroy {
     tourLegNavScript: '',
     tourLegEncodedPolyline: '',
   });
+  readonly relatedCardDraft = signal<RelatedCardDraft>({
+    title: '',
+    subtitle: '',
+    notes: '',
+    type: 'memory',
+    imageUrl: '',
+    imageName: '',
+    analysisDataUrl: '',
+    tags: 'memory',
+    prompt: '',
+    generated: null,
+  });
 
   readonly profile = this.authService.profile;
   readonly isSignedIn = this.authService.isAuthenticated;
@@ -1387,13 +1424,37 @@ export class BoardsComponent implements OnDestroy {
     }
     return applyBoardTranslation(board, result.segments);
   });
+  readonly exploredRelatedCardParent = computed(() => {
+    const parentId = this.exploredRelatedCardParentId();
+    return parentId
+      ? this.selectedBoard()?.cards.find((card) => card.id === parentId) ?? null
+      : null;
+  });
+  readonly relatedCardEditorParent = computed(() => {
+    const parentId = this.relatedCardParentId();
+    return parentId
+      ? this.originalSelectedBoard()?.cards.find((card) => card.id === parentId) ?? null
+      : null;
+  });
+  readonly editingParentCard = computed(() => {
+    const cardId = this.editingCardId();
+    return cardId
+      ? this.originalSelectedBoard()?.cards.find((card) => card.id === cardId) ?? null
+      : null;
+  });
   readonly visitPlanBoard = computed(() => {
     const boardId = this.visitPlanBoardId();
     return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;
   });
   readonly visitPlanCard = computed(() => {
     const cardId = this.visitPlanCardId();
-    return this.visitPlanBoard()?.cards.find((card) => card.id === cardId) ?? null;
+    const board = this.visitPlanBoard();
+    if (!board || !cardId) {
+      return null;
+    }
+    return board.cards.find((card) => card.id === cardId)
+      ?? board.cards.flatMap((card) => this.explicitRelatedCards(card)).find((card) => card.id === cardId)
+      ?? null;
   });
   readonly activeVisitPlan = computed(() => {
     const cardId = this.visitPlanCardId();
@@ -1436,7 +1497,10 @@ export class BoardsComponent implements OnDestroy {
   );
   readonly cardPhotoViewerCard = computed(() => {
     const cardId = this.cardPhotoViewerCardId();
-    return this.selectedBoard()?.cards.find((card) => card.id === cardId) ?? null;
+    const board = this.selectedBoard();
+    return board?.cards.find((card) => card.id === cardId)
+      ?? board?.cards.flatMap((card) => this.relatedCardsFor(card)).find((card) => card.id === cardId)
+      ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? $localize`Card`);
   readonly isSongCardForm = computed(() => {
@@ -1523,7 +1587,8 @@ export class BoardsComponent implements OnDestroy {
     if (!board) {
       return [];
     }
-    const cards = [...board.cards];
+    const parent = this.exploredRelatedCardParent();
+    const cards = parent ? this.relatedCardsFor(parent) : [...board.cards];
     if (!query) {
       return cards;
     }
@@ -1766,6 +1831,14 @@ export class BoardsComponent implements OnDestroy {
       const ownerKey = params.get('ownerKey');
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
       const ownerSlug = this.publicOwnerSlugFromKey(ownerKey);
+      if (this.selectedBoardId() !== boardId) {
+        this.exploredRelatedCardParentId.set(null);
+        this.relatedCardEditorOpen.set(false);
+        this.relatedCardParentId.set(null);
+        this.relatedCardEditingId.set(null);
+        this.relatedCardDeleteCandidateId.set(null);
+        this.relatedCardsReturnSearch = '';
+      }
       this.selectedBoardId.set(boardId);
       if (this.boardTranslationResult()?.boardId !== boardId) {
         this.boardTranslationResult.set(null);
@@ -1902,7 +1975,8 @@ export class BoardsComponent implements OnDestroy {
         this.visitPlans.set({});
         return;
       }
-      const loadKey = `${uid}:${board.id}:${board.cards.map((card) => card.id).join(',')}`;
+      const visitPlanCardIds = this.visitPlanCardIds(board);
+      const loadKey = `${uid}:${board.id}:${visitPlanCardIds.join(',')}`;
       if (this.visitPlansLoadedFor === loadKey) {
         return;
       }
@@ -3740,12 +3814,408 @@ export class BoardsComponent implements OnDestroy {
     this.openEditCardPhotos(card, event);
   }
 
+  openRelatedCardManagerFromGallery(boardId: string, card: BoardCard, event?: Event): void {
+    const board = this.boards().find((item) => item.id === boardId);
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
+      return;
+    }
+    this.selectedBoardId.set(boardId);
+    this.openRelatedCardManager(card, event);
+  }
+
   closeCardDialog(): void {
+    this.closeRelatedCardEditor();
     this.cardDialogOpen.set(false);
     this.editingCardId.set(null);
     this.cardImageLocked.set(false);
     this.resetCardWizard();
     this.clearPlaceSearch();
+  }
+
+  openCreateRelatedCard(parentId = this.editingCardId(), event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    const parent = board?.cards.find((card) => card.id === parentId);
+    if (!board || !parent || !this.canEditBoard(board)) {
+      this.boardsSyncError.set($localize`Save the parent card before adding related cards.`);
+      return;
+    }
+    this.relatedCardParentId.set(parent.id);
+    this.relatedCardEditingId.set(null);
+    this.relatedCardDeleteCandidateId.set(null);
+    this.relatedCardAiError.set(null);
+    this.relatedCardDraft.set(this.emptyRelatedCardDraft());
+    this.relatedCardEditorOpen.set(true);
+  }
+
+  scrollToRelatedCardManager(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.isBrowser) {
+      return;
+    }
+    document.getElementById('related-card-manager')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  }
+
+  openRelatedCardManager(card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.openEditCard(card);
+    if (this.isBrowser) {
+      window.setTimeout(() => this.scrollToRelatedCardManager(), 80);
+    }
+  }
+
+  openEditRelatedCard(parentId: string, card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    const parent = board?.cards.find((item) => item.id === parentId);
+    if (
+      !board
+      || !parent
+      || !this.canEditBoard(board)
+      || this.isLegacyMemoryRelatedCard(card)
+      || !this.explicitRelatedCards(parent).some((item) => item.id === card.id)
+    ) {
+      return;
+    }
+    this.relatedCardParentId.set(parent.id);
+    this.relatedCardEditingId.set(card.id);
+    this.relatedCardDeleteCandidateId.set(null);
+    this.relatedCardAiError.set(null);
+    this.relatedCardDraft.set({
+      title: card.title,
+      subtitle: card.subtitle,
+      notes: card.notes,
+      type: card.type,
+      imageUrl: card.imageUrl,
+      imageName: '',
+      analysisDataUrl: '',
+      tags: card.tags.filter((tag) => tag !== 'related-card').join(', '),
+      prompt: '',
+      generated: null,
+    });
+    this.relatedCardEditorOpen.set(true);
+  }
+
+  closeRelatedCardEditor(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.relatedCardSaving() || this.relatedCardAiLoading()) {
+      return;
+    }
+    this.relatedCardEditorOpen.set(false);
+    this.relatedCardParentId.set(null);
+    this.relatedCardEditingId.set(null);
+    this.relatedCardDeleteCandidateId.set(null);
+    this.relatedCardAiError.set(null);
+  }
+
+  updateRelatedCardDraft<K extends keyof RelatedCardDraft>(field: K, value: RelatedCardDraft[K]): void {
+    this.relatedCardDraft.update((draft) => ({ ...draft, [field]: value }));
+    this.relatedCardAiError.set(null);
+  }
+
+  async onRelatedCardImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) {
+      return;
+    }
+    try {
+      const photo = await this.readWizardPhoto(file);
+      this.relatedCardDraft.update((draft) => ({
+        ...draft,
+        imageUrl: photo.imageUrl,
+        imageName: photo.name,
+        analysisDataUrl: photo.analysisDataUrl,
+      }));
+      this.relatedCardAiError.set(null);
+      await this.prepareRelatedCardWithAi(true);
+    } catch (error) {
+      this.relatedCardAiError.set(
+        error instanceof Error ? error.message : $localize`Could not use that photo.`,
+      );
+    }
+  }
+
+  clearRelatedCardImage(): void {
+    this.relatedCardDraft.update((draft) => ({
+      ...draft,
+      imageUrl: '',
+      imageName: '',
+      analysisDataUrl: '',
+    }));
+    this.relatedCardAiError.set(null);
+  }
+
+  async prepareRelatedCardWithAi(automatic = false): Promise<void> {
+    const board = this.originalSelectedBoard();
+    const parent = this.relatedCardEditorParent();
+    const draft = this.relatedCardDraft();
+    if (
+      !board
+      || !parent
+      || !this.functions
+      || !this.canEditBoard(board)
+      || this.relatedCardAiLoading()
+    ) {
+      return;
+    }
+    if (!draft.analysisDataUrl && draft.prompt.trim().length < 3 && draft.title.trim().length < 3) {
+      if (!automatic) {
+        this.relatedCardAiError.set($localize`Add a photo or describe the related card first.`);
+      }
+      return;
+    }
+    this.relatedCardAiLoading.set(true);
+    this.relatedCardAiError.set(null);
+    try {
+      const callable = httpsCallable<Record<string, unknown>, unknown>(
+        this.functions,
+        'generateBoardWizardBatch',
+        { timeout: 170_000 },
+      );
+      const response = await callable({
+        mode: draft.analysisDataUrl ? 'photos' : 'describe',
+        prompt: [
+          `Create one related card that belongs inside "${parent.title}".`,
+          parent.subtitle ? `Parent context: ${parent.subtitle}` : '',
+          parent.notes ? `Parent notes: ${parent.notes}` : '',
+          draft.prompt.trim() ? `User description: ${draft.prompt.trim()}` : '',
+          'Write a warm, specific title, a concise subtitle, and a useful short description. Do not invent private facts.',
+        ].filter(Boolean).join('\n'),
+        pastedList: '',
+        url: '',
+        photoNames: draft.imageName ? [draft.imageName] : [],
+        photos: draft.analysisDataUrl
+          ? [{
+              index: 0,
+              name: draft.imageName || 'related-card-photo.jpg',
+              caption: draft.prompt.trim(),
+              ...this.imageDataUrlPayload(draft.analysisDataUrl),
+            }]
+          : [],
+        targetBoardId: board.id,
+        targetBoardTitle: board.title,
+        defaultType: draft.type,
+        count: 1,
+        vibe: draft.type === 'memory' ? 'memory' : 'curator',
+        existingCards: this.explicitRelatedCards(parent).slice(0, 40).map((card) => ({
+          title: card.title,
+          subtitle: card.subtitle,
+          tags: card.tags,
+        })),
+      });
+      const generated = this.normalizeWizardBatch(response.data).cards[0];
+      if (!generated) {
+        throw new Error('The Card Wizard did not return a usable related card.');
+      }
+      this.relatedCardDraft.update((current) => ({
+        ...current,
+        title: generated.title || current.title,
+        subtitle: generated.subtitle || current.subtitle,
+        notes: generated.notes || current.notes,
+        type: generated.type || current.type,
+        tags: generated.tags.length ? generated.tags.join(', ') : current.tags,
+        generated,
+      }));
+    } catch (error) {
+      this.relatedCardAiError.set(
+        error instanceof Error
+          ? error.message
+          : $localize`The Card Wizard could not prepare this related card.`,
+      );
+    } finally {
+      this.relatedCardAiLoading.set(false);
+    }
+  }
+
+  async saveRelatedCard(event?: Event, addAnother = false): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    const parent = this.relatedCardEditorParent();
+    const draft = this.relatedCardDraft();
+    const title = draft.title.trim();
+    if (!board || !parent || !title || !this.canEditBoard(board)) {
+      this.relatedCardAiError.set($localize`Give this related card a title before saving.`);
+      return;
+    }
+    const editingId = this.relatedCardEditingId();
+    const existing = editingId
+      ? this.explicitRelatedCards(parent).find((card) => card.id === editingId) ?? null
+      : null;
+    const generated = draft.generated;
+    const now = new Date().toISOString();
+    const tags = this.mergeWizardTags(
+      draft.tags.split(',').map((tag) => tag.trim()).filter(Boolean),
+      ['related-card', ...(draft.type === 'memory' ? ['memory'] : [])],
+    ).slice(0, 6);
+    const relatedCard: BoardCard = {
+      ...(existing ?? {}),
+      id: existing?.id ?? this.createId(),
+      title,
+      subtitle: draft.subtitle.trim(),
+      notes: draft.notes.trim(),
+      type: draft.type,
+      scope: generated?.scope ?? existing?.scope ?? 'place',
+      status: generated?.status ?? existing?.status ?? 'saved',
+      rating: generated?.rating ?? existing?.rating ?? 4,
+      entityName: generated?.entity_name || existing?.entityName || title,
+      entityType: generated?.entity_type || existing?.entityType || 'other',
+      imageIntent: generated?.image_intent || existing?.imageIntent || 'other',
+      imageContext: generated?.image_context || existing?.imageContext || parent.title,
+      mediaKind: generated?.media_kind || existing?.mediaKind || 'none',
+      shortSummary: generated?.short_summary || draft.subtitle.trim() || draft.notes.trim(),
+      rank: generated?.rank ?? existing?.rank ?? this.explicitRelatedCards(parent).length + 1,
+      imageUrl: draft.imageUrl || generated?.imageUrl || existing?.imageUrl || '',
+      imageUrls: this.uniqueImageUrls([
+        draft.imageUrl,
+        generated?.imageUrl ?? '',
+        ...(existing?.imageUrls ?? []),
+      ]).slice(0, 12),
+      audioPreviewUrl: generated?.audioPreviewUrl || existing?.audioPreviewUrl || '',
+      spotifyTrackId: generated?.spotifyTrackId || existing?.spotifyTrackId || '',
+      spotifyTrackUrl: generated?.spotifyTrackUrl || existing?.spotifyTrackUrl || '',
+      spotifyUri: generated?.spotifyUri || existing?.spotifyUri || '',
+      spotifyArtistName: generated?.spotifyArtistName || existing?.spotifyArtistName || '',
+      spotifyAlbumName: generated?.spotifyAlbumName || existing?.spotifyAlbumName || '',
+      spotifyArtworkUrl: generated?.spotifyArtworkUrl || existing?.spotifyArtworkUrl || '',
+      placeId: generated?.placeId || existing?.placeId || '',
+      googleMapsUrl: generated?.googleMapsUrl || existing?.googleMapsUrl || '',
+      locationLat: generated?.locationLat ?? existing?.locationLat,
+      locationLng: generated?.locationLng ?? existing?.locationLng,
+      sourceUrl: generated?.sourceUrl || existing?.sourceUrl || '',
+      productUrl: generated?.productUrl || existing?.productUrl || '',
+      merchant: generated?.merchant || existing?.merchant || '',
+      price: generated?.price || existing?.price || '',
+      currency: generated?.currency || existing?.currency || '',
+      sku: generated?.sku || existing?.sku || '',
+      availability: generated?.availability || existing?.availability || '',
+      productCategory: generated?.productCategory || existing?.productCategory || '',
+      imageSource: generated?.imageSource || existing?.imageSource,
+      extractionConfidence: generated?.extractionConfidence ?? existing?.extractionConfidence ?? 0,
+      extractedAt: generated?.extractedAt || existing?.extractedAt || '',
+      what3wordsAddress: generated?.what3wordsAddress || existing?.what3wordsAddress || '',
+      tags,
+      stickers: existing?.stickers ?? [],
+      tour: existing?.tour ?? null,
+      relatedCards: [],
+      createdAt: existing?.createdAt ?? now,
+      updatedAt: now,
+    };
+    const nextRelatedCards = editingId
+      ? this.explicitRelatedCards(parent).map((card) => card.id === editingId ? relatedCard : card)
+      : [...this.explicitRelatedCards(parent), relatedCard];
+    const nextBoard: Board = {
+      ...board,
+      cards: board.cards.map((card) =>
+        card.id === parent.id ? { ...card, relatedCards: nextRelatedCards, updatedAt: now } : card),
+      updatedAt: now,
+    };
+    this.relatedCardSaving.set(true);
+    try {
+      this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+      await this.persistAndReplaceBoard(nextBoard);
+      this.relatedCardEditingId.set(null);
+      this.relatedCardDeleteCandidateId.set(null);
+      this.relatedCardAiError.set(null);
+      if (addAnother) {
+        this.relatedCardDraft.set(this.emptyRelatedCardDraft());
+      } else {
+        this.relatedCardEditorOpen.set(false);
+        this.relatedCardParentId.set(null);
+      }
+    } finally {
+      this.relatedCardSaving.set(false);
+    }
+  }
+
+  requestDeleteRelatedCard(cardId: string, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.relatedCardDeleteCandidateId.set(cardId);
+  }
+
+  cancelDeleteRelatedCard(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.relatedCardDeleteCandidateId.set(null);
+  }
+
+  async confirmDeleteRelatedCard(parentId: string, cardId: string, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    const parent = board?.cards.find((card) => card.id === parentId);
+    if (!board || !parent || !this.canEditBoard(board)) {
+      return;
+    }
+    const now = new Date().toISOString();
+    const nextBoard: Board = {
+      ...board,
+      cards: board.cards.map((card) =>
+        card.id === parent.id
+          ? {
+              ...card,
+              relatedCards: this.explicitRelatedCards(parent).filter((related) => related.id !== cardId),
+              updatedAt: now,
+            }
+          : card),
+      updatedAt: now,
+    };
+    this.relatedCardDeleteCandidateId.set(null);
+    this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+    await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  async moveRelatedCard(parentId: string, cardId: string, direction: -1 | 1, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    const parent = board?.cards.find((card) => card.id === parentId);
+    if (!board || !parent || !this.canEditBoard(board)) {
+      return;
+    }
+    const relatedCards = [...this.explicitRelatedCards(parent)];
+    const index = relatedCards.findIndex((card) => card.id === cardId);
+    const target = index + direction;
+    if (index < 0 || target < 0 || target >= relatedCards.length) {
+      return;
+    }
+    [relatedCards[index], relatedCards[target]] = [relatedCards[target], relatedCards[index]];
+    const now = new Date().toISOString();
+    const nextBoard: Board = {
+      ...board,
+      cards: board.cards.map((card) =>
+        card.id === parent.id ? { ...card, relatedCards, updatedAt: now } : card),
+      updatedAt: now,
+    };
+    this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+    await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  private emptyRelatedCardDraft(): RelatedCardDraft {
+    return {
+      title: '',
+      subtitle: '',
+      notes: '',
+      type: 'memory',
+      imageUrl: '',
+      imageName: '',
+      analysisDataUrl: '',
+      tags: 'memory',
+      prompt: '',
+      generated: null,
+    };
   }
 
   private resetCardWizard(): void {
@@ -4167,6 +4637,7 @@ export class BoardsComponent implements OnDestroy {
                 tags,
                 stickers: draft.stickers,
                 tour: draftTour,
+                relatedCards: [],
                 createdAt: now,
                 updatedAt: now,
               },
@@ -6570,7 +7041,7 @@ export class BoardsComponent implements OnDestroy {
       );
       const response = await callable({
         boardId: board.id,
-        cardIds: board.cards.map((card) => card.id),
+        cardIds: this.visitPlanCardIds(board),
       });
       const data = response.data && typeof response.data === 'object'
         ? response.data as Record<string, unknown>
@@ -6582,6 +7053,13 @@ export class BoardsComponent implements OnDestroy {
     } catch (error) {
       console.warn('Visit plans could not be loaded.', error, { boardId: board.id });
     }
+  }
+
+  private visitPlanCardIds(board: Board): string[] {
+    return board.cards.flatMap((card) => [
+      card.id,
+      ...this.explicitRelatedCards(card).map((related) => related.id),
+    ]).slice(0, 200);
   }
 
   private normalizeVisitPlan(value: unknown): VisitPlanSummary | null {
@@ -6646,11 +7124,125 @@ export class BoardsComponent implements OnDestroy {
   }
 
   cardMemoryImages(card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>): string[] {
-    return this.cardImages(card).slice(1);
+    return legacyMemoryImages(card.imageUrl, card.imageUrls);
   }
 
   cardMemoryCount(card: Pick<BoardCard, 'imageUrl' | 'imageUrls'>): number {
     return this.cardMemoryImages(card).length;
+  }
+
+  legacyRelatedMemoryCount(card: BoardCard): number {
+    return this.legacyRelatedMemoryImages(card).length;
+  }
+
+  relatedCardsFor(card: BoardCard): BoardCard[] {
+    const explicitCards = Array.isArray(card.relatedCards) ? card.relatedCards : [];
+    const legacyMemories = this.legacyRelatedMemoryImages(card).map((imageUrl, index) =>
+      this.legacyMemoryCard(card, imageUrl, index));
+    return [...explicitCards, ...legacyMemories];
+  }
+
+  explicitRelatedCards(card: BoardCard | null | undefined): BoardCard[] {
+    return card && Array.isArray(card.relatedCards) ? card.relatedCards : [];
+  }
+
+  relatedCardCount(card: BoardCard): number {
+    return this.relatedCardsFor(card).length;
+  }
+
+  relatedCardExploreLabel(card: BoardCard): string {
+    return relatedCardCollectionLabel(
+      this.explicitRelatedCards(card).map((related) => related.type),
+      this.legacyRelatedMemoryImages(card).length,
+    );
+  }
+
+  isLegacyMemoryRelatedCard(card: Pick<BoardCard, 'id'>): boolean {
+    return card.id.startsWith('legacy-memory:');
+  }
+
+  exploreRelatedCards(card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.relatedCardCount(card)) {
+      return;
+    }
+    this.relatedCardsReturnScrollY = this.isBrowser ? window.scrollY : 0;
+    this.relatedCardsReturnSearch = this.cardSearch();
+    this.cardSearch.set('');
+    this.cardManageBoardId.set(null);
+    this.selectedCardIds.set(new Set());
+    this.exploredRelatedCardParentId.set(card.id);
+    this.closeCardActionMenu();
+    if (this.isBrowser) {
+      window.requestAnimationFrame(() => {
+        document.querySelector('.related-cards-context')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      });
+    }
+  }
+
+  closeRelatedCards(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.exploredRelatedCardParentId()) {
+      return;
+    }
+    const restoreY = this.relatedCardsReturnScrollY;
+    this.exploredRelatedCardParentId.set(null);
+    this.cardSearch.set(this.relatedCardsReturnSearch);
+    this.relatedCardsReturnSearch = '';
+    if (this.isBrowser) {
+      window.requestAnimationFrame(() => window.scrollTo({ top: restoreY, behavior: 'smooth' }));
+    }
+  }
+
+  private legacyMemoryCard(parent: BoardCard, imageUrl: string, index: number): BoardCard {
+    const position = index + 1;
+    return {
+      id: `legacy-memory:${parent.id}:${position}`,
+      title: `Memory ${position}`,
+      subtitle: parent.title,
+      notes: parent.notes || `A photo memory from ${parent.title}.`,
+      type: 'memory',
+      scope: parent.scope,
+      status: 'saved',
+      rating: parent.rating,
+      entityName: `Memory ${position}`,
+      entityType: 'other',
+      imageIntent: 'other',
+      imageContext: parent.title,
+      mediaKind: 'none',
+      shortSummary: parent.subtitle || `A moment from ${parent.title}`,
+      rank: position,
+      imageUrl,
+      imageUrls: [imageUrl],
+      audioPreviewUrl: '',
+      spotifyTrackId: '',
+      spotifyTrackUrl: '',
+      spotifyUri: '',
+      spotifyArtistName: '',
+      spotifyAlbumName: '',
+      spotifyArtworkUrl: '',
+      placeId: '',
+      googleMapsUrl: '',
+      tags: ['memory', 'related-card'],
+      stickers: [],
+      tour: null,
+      relatedCards: [],
+      createdAt: parent.createdAt,
+      updatedAt: parent.updatedAt,
+    };
+  }
+
+  private legacyRelatedMemoryImages(card: BoardCard): string[] {
+    return legacyMemoryImages(
+      card.imageUrl,
+      card.imageUrls,
+      this.explicitRelatedCards(card).flatMap((related) => this.cardImages(related)),
+    );
   }
 
   openCardPhotoViewer(card: BoardCard, event?: Event): void {
@@ -6701,9 +7293,19 @@ export class BoardsComponent implements OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   handleCardPhotoViewerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.relatedCardEditorOpen()) {
+      event.preventDefault();
+      this.closeRelatedCardEditor();
+      return;
+    }
     if (event.key === 'Escape' && this.visitPlanDialogOpen()) {
       event.preventDefault();
       this.closeGoThere();
+      return;
+    }
+    if (event.key === 'Escape' && this.exploredRelatedCardParentId()) {
+      event.preventDefault();
+      this.closeRelatedCards();
       return;
     }
     if (event.key === 'Escape' && this.openCardActionMenuKey()) {
@@ -10797,6 +11399,12 @@ export class BoardsComponent implements OnDestroy {
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
             stickers: this.normalizeStickers(card.stickers),
             tour: this.normalizeCardTour((card as BoardCard).tour),
+            relatedCards: Array.isArray((card as BoardCard).relatedCards)
+              ? ((card as BoardCard).relatedCards ?? [])
+                .map((related) => this.cardFromRecord(related, false))
+                .filter((related): related is BoardCard => !!related)
+                .slice(0, 100)
+              : [],
           })),
         }));
     } catch {
@@ -11012,7 +11620,7 @@ export class BoardsComponent implements OnDestroy {
     };
   }
 
-  private cardFromRecord(value: unknown): BoardCard | null {
+  private cardFromRecord(value: unknown, includeRelatedCards = true): BoardCard | null {
     if (!value || typeof value !== 'object') {
       return null;
     }
@@ -11080,6 +11688,12 @@ export class BoardsComponent implements OnDestroy {
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
       stickers: this.normalizeStickers(data['stickers']),
       tour: this.normalizeCardTour(data['tour']),
+      relatedCards: includeRelatedCards && Array.isArray(data['relatedCards'])
+        ? data['relatedCards']
+          .map((card) => this.cardFromRecord(card, false))
+          .filter((card): card is BoardCard => !!card)
+          .slice(0, 100)
+        : [],
       createdAt: typeof data['createdAt'] === 'string' ? data['createdAt'] : new Date().toISOString(),
       updatedAt: typeof data['updatedAt'] === 'string' ? data['updatedAt'] : new Date().toISOString(),
     };
@@ -11364,17 +11978,36 @@ export class BoardsComponent implements OnDestroy {
     const imageUrl = await this.persistImageIfNeeded(board.imageUrl, `users/${uid}/boards/${board.id}/cover.jpg`);
     const logoUrl = await this.persistImageIfNeeded(board.logoUrl, `users/${uid}/boards/${board.id}/logo.jpg`);
     const cards = await Promise.all(
-      board.cards.map(async (card) => {
-        const sourceImages = this.cardImages(card);
-        const imageUrls = await Promise.all(
-          sourceImages.map((url, index) =>
-            this.persistImageIfNeeded(url, `users/${uid}/boards/${board.id}/cards/${card.id}/${index}.jpg`),
-          ),
-        );
-        return { ...card, imageUrl: imageUrls[0] ?? '', imageUrls };
-      }),
+      board.cards.map((card) => this.prepareBoardCardImagesForFirebase(card, uid, board.id)),
     );
     return { ...board, imageUrl, logoUrl, cards };
+  }
+
+  private async prepareBoardCardImagesForFirebase(
+    card: BoardCard,
+    uid: string,
+    boardId: string,
+    parentId = '',
+  ): Promise<BoardCard> {
+    const cardPath = parentId
+      ? `users/${uid}/boards/${boardId}/cards/${parentId}/related/${card.id}`
+      : `users/${uid}/boards/${boardId}/cards/${card.id}`;
+    const sourceImages = this.cardImages(card);
+    const imageUrls = await Promise.all(
+      sourceImages.map((url, index) => this.persistImageIfNeeded(url, `${cardPath}/${index}.jpg`)),
+    );
+    const relatedCards = parentId
+      ? []
+      : await Promise.all(
+          this.explicitRelatedCards(card).map((related) =>
+            this.prepareBoardCardImagesForFirebase(related, uid, boardId, card.id)),
+        );
+    return {
+      ...card,
+      imageUrl: imageUrls[0] ?? '',
+      imageUrls,
+      relatedCards,
+    };
   }
 
   private async persistImageIfNeeded(imageUrl: string, path: string): Promise<string> {

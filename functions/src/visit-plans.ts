@@ -79,6 +79,21 @@ export function normalizeVisitPlanEmails(value: unknown, limit = 10): string[] {
     .slice(0, limit);
 }
 
+export function boardCardById(cards: unknown, cardId: string): Record<string, unknown> | null {
+  const topLevelCards = (Array.isArray(cards) ? cards : [])
+    .filter((value: unknown): value is Record<string, unknown> =>
+      !!value && typeof value === 'object');
+  return topLevelCards.find((card) => text(card.id, 160) === cardId)
+    ?? topLevelCards
+      .flatMap((card) =>
+        Array.isArray(card.relatedCards)
+          ? card.relatedCards.filter((related): related is Record<string, unknown> =>
+              !!related && typeof related === 'object')
+          : [])
+      .find((card) => text(card.id, 160) === cardId)
+    ?? null;
+}
+
 export function isVisitableBoardCard(value: unknown): boolean {
   if (!value || typeof value !== 'object') {
     return false;

@@ -28,6 +28,7 @@ import { db, storage } from './firebase';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
 import {
+  boardCardById,
   buildVisitGuestPage,
   buildVisitInterestAcknowledgementEmail,
   buildVisitInterestOwnerEmail,
@@ -6532,9 +6533,7 @@ async function visitPlanBoardAndCard(
   if (board.visibility !== 'public' && board.owner_user_id !== userId) {
     throw new HttpsError('permission-denied', 'You do not have access to this board.');
   }
-  const card = (Array.isArray(board.cards) ? board.cards : [])
-    .find((value: unknown): value is Record<string, unknown> =>
-      !!value && typeof value === 'object' && stringOrEmpty((value as Record<string, unknown>).id) === cardId);
+  const card = boardCardById(board.cards, cardId);
   if (!card) {
     throw new HttpsError('not-found', 'Place card not found.');
   }

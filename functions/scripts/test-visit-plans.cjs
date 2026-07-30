@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const {
+  boardCardById,
   buildVisitGuestPage,
   buildVisitInterestAcknowledgementEmail,
   buildVisitInterestOwnerEmail,
@@ -16,6 +17,16 @@ const {
   visitPlanEmailAttachments,
   visitReminderAtMs,
 } = require('../lib/visit-plans.js');
+
+const parentCard = {
+  id: 'parent-card',
+  relatedCards: [
+    { id: 'related-place', title: 'Hidden garden' },
+  ],
+};
+assert.equal(boardCardById([parentCard], 'parent-card').id, 'parent-card');
+assert.equal(boardCardById([parentCard], 'related-place').title, 'Hidden garden');
+assert.equal(boardCardById([parentCard], 'missing-card'), null);
 
 assert.equal(isVisitableBoardCard({
   type: 'place',

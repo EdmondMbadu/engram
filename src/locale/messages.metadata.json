@@ -223,6 +223,10 @@
     "source": "{$INTERPOLATION}/4 selected",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "1175957651801339062": {
+    "source": "Inside this card",
+    "file": "src/app/boards/boards.html"
+  },
   "1177294727529714800": {
     "source": "View Wiki",
     "file": "src/app/profile/profile.html"
@@ -406,6 +410,10 @@
   "1302951071814792138": {
     "source": "Ask questions",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "1310950307123362679": {
+    "source": "Story or notes",
+    "file": "src/app/boards/boards.html"
   },
   "1312779946545312155": {
     "source": "Story flow",
@@ -626,6 +634,10 @@
   "1459668651430224214": {
     "source": "Enable city pulse",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "1463627785024797377": {
+    "source": "Replace picture",
+    "file": "src/app/boards/boards.html"
   },
   "1464356151059047889": {
     "source": "Regenerated draft",
@@ -883,6 +895,10 @@
     "source": "\"Sound calm, direct, and avoid hedging language.\"",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
+  "1599863209701352467": {
+    "source": "Add the first related card",
+    "file": "src/app/boards/boards.html"
+  },
   "16005692485610512": {
     "source": "and see how well you know this board.",
     "file": "src/app/boards/boards.ts"
@@ -942,6 +958,10 @@
   "1659612898307405029": {
     "source": "City Scribe",
     "file": "src/app/profile/profile-icons.ts"
+  },
+  "1664811720083854077": {
+    "source": " Save and add another ",
+    "file": "src/app/boards/boards.html"
   },
   "1670921036890550007": {
     "source": "Open Source Files to watch indexing continue in the background.",
@@ -1062,6 +1082,10 @@
   "1785042287152969295": {
     "source": "Loading city points",
     "file": "src/app/dymaxion/dymaxion.html"
+  },
+  "1788189097163213511": {
+    "source": "Related cards become available after this card is saved",
+    "file": "src/app/boards/boards.html"
   },
   "1793201614434705102": {
     "source": "Claim Your Business | LivingWiki",
@@ -1314,6 +1338,10 @@
   "1969743407411924701": {
     "source": "ECA Training Center",
     "file": "src/app/green-jobs/philly-green-jobs.service.ts"
+  },
+  "1969899975721366254": {
+    "source": "Inside {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
   },
   "1970958531472550761": {
     "source": "{$START_TAG_SPAN}upload{$CLOSE_TAG_SPAN} Upload picture {$TAG_INPUT}",
@@ -1670,6 +1698,10 @@
   "2210344397870951219": {
     "source": " Shared {$INTERPOLATION} ",
     "file": "src/app/shared-chat/shared-chat.html"
+  },
+  "2210389655547013409": {
+    "source": " {$INTERPOLATION} existing photo {$INTERPOLATION_1} automatically when this collection is explored. ",
+    "file": "src/app/boards/boards.html"
   },
   "2210584698362899481": {
     "source": "View atlas landing page",
@@ -2411,6 +2443,10 @@
     "source": "Start realtime voice mode",
     "file": "src/app/chat/chat.ts"
   },
+  "2742100746542955671": {
+    "source": "Edit related card",
+    "file": "src/app/boards/boards.html"
+  },
   "2744939482590254957": {
     "source": "Pick a profile sticker.",
     "file": "src/app/profile/profile.html"
@@ -2635,6 +2671,10 @@
     "source": "My City",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "2940597258261263177": {
+    "source": "Creating a useful title and description. You can edit everything afterward.",
+    "file": "src/app/boards/boards.html"
+  },
   "2941170033894605998": {
     "source": "Question {$INTERPOLATION} of {$INTERPOLATION_1}",
     "file": "src/app/boards/boards.html"
@@ -2747,6 +2787,10 @@
     "source": "Business Chat History | LivingWiki",
     "file": "src/app/app.routes.ts"
   },
+  "3000436585277219288": {
+    "source": "Save the parent card before adding related cards.",
+    "file": "src/app/boards/boards.ts"
+  },
   "3002849458171106803": {
     "source": "{$START_TAG_SPAN}02{$CLOSE_TAG_SPAN} Places Mentioned",
     "file": "src/app/answer-card/answer-card.html"
@@ -2766,6 +2810,10 @@
   "301680295778366519": {
     "source": "Comma-separated icon codes. The badge uses the first 3.",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "3018176466139075798": {
+    "source": "Add a picture",
+    "file": "src/app/boards/boards.html"
   },
   "3022170119855890978": {
     "source": "Fitness",
@@ -2806,6 +2854,10 @@
   "3059442226224028515": {
     "source": "العربية",
     "file": "src/app/business/business.ts"
+  },
+  "3067816648882632734": {
+    "source": "Save the parent card first, then reopen it to build the collection inside.",
+    "file": "src/app/boards/boards.html"
   },
   "3069422820744216221": {
     "source": "Admin name",
@@ -3010,6 +3062,10 @@
   "3186452641234187874": {
     "source": " Every public city Wiki currently has a cover image. ",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "31884475587223189": {
+    "source": "Inside",
+    "file": "src/app/boards/boards.html"
   },
   "3189609218911693713": {
     "source": " Every sister city carries the same data spine, so residents can see the common burden across air, health, enforcement, and community monitoring. ",
@@ -3287,6 +3343,10 @@
     "source": "Translating this board…",
     "file": "src/app/boards/boards.html"
   },
+  "3358393674244870064": {
+    "source": "Name this moment",
+    "file": "src/app/boards/boards.html"
+  },
   "3358712560475498126": {
     "source": " Census state code and Census place code are missing. City demographics cannot refresh until both are saved in Atlas settings. ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
@@ -3317,6 +3377,10 @@
   },
   "3375687357699925721": {
     "source": "Quiz coming soon",
+    "file": "src/app/boards/boards.html"
+  },
+  "337786267560682973": {
+    "source": "A birthday dinner, a hidden place nearby, the story behind this photo...",
     "file": "src/app/boards/boards.html"
   },
   "3378119430490179696": {
@@ -3410,6 +3474,10 @@
   "3430356428724646742": {
     "source": "{$START_TAG_SPAN}forum{$CLOSE_TAG_SPAN} Open LivingWiki Chat ",
     "file": "src/app/dymaxion/dymaxion.html"
+  },
+  "3431637420041504872": {
+    "source": "Build a collection inside this card",
+    "file": "src/app/boards/boards.html"
   },
   "3434418851650366018": {
     "source": "LivingWiki of the OpenClaw phenomenon — 247K GitHub stars, the viral mechanics, the lobster culture, security incidents, and the broader shift to autonomous AI agents.",
@@ -3907,6 +3975,10 @@
     "source": "A strong first pass. The cards are here when you’re ready.",
     "file": "src/app/boards/boards.html"
   },
+  "3782022495545942129": {
+    "source": "Move related card down",
+    "file": "src/app/boards/boards.html"
+  },
   "3782563238994348625": {
     "source": "Confirm password",
     "file": "src/app/auth-action/auth-action.html"
@@ -4071,6 +4143,10 @@
     "source": "Open Philly Answer Card",
     "file": "src/app/shared-chat/shared-chat.html"
   },
+  "390666931892570060": {
+    "source": "A quick line people will see on the card",
+    "file": "src/app/boards/boards.html"
+  },
   "3907065043559352015": {
     "source": "Failed cities",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -4122,6 +4198,10 @@
   "3939628023968458470": {
     "source": "Upload the images that appear on the public business page. Direct URLs still work when media already lives elsewhere.",
     "file": "src/app/business-detail/business-edit.html"
+  },
+  "3940145862656856234": {
+    "source": "Add a photo or describe the related card first.",
+    "file": "src/app/boards/boards.ts"
   },
   "3944437374520392539": {
     "source": "Verify coordinates",
@@ -4262,6 +4342,10 @@
   "4056444989950615988": {
     "source": "Copy was blocked. Try copying the link instead.",
     "file": "src/app/boards/boards.ts"
+  },
+  "4062975828526117050": {
+    "source": "These cards fill the board when someone selects Explore.",
+    "file": "src/app/boards/boards.html"
   },
   "4071424234285464370": {
     "source": "Payment returned without a checkout session. Please try checkout again.",
@@ -4427,9 +4511,17 @@
     "source": "Loading text settings...",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "4155395024816191514": {
+    "source": "The Card Wizard could not prepare this related card.",
+    "file": "src/app/boards/boards.ts"
+  },
   "4157232470683063712": {
     "source": "Click to chat",
     "file": "src/app/wiki/wiki.html"
+  },
+  "4161412739226579751": {
+    "source": "Move related card up",
+    "file": "src/app/boards/boards.html"
   },
   "4163318164147974669": {
     "source": " This maintenance page is only available to the owner of the atlas. ",
@@ -4767,10 +4859,6 @@
     "source": "Failed to create Wiki.",
     "file": "src/app/wiki-home/wiki-home.ts"
   },
-  "4410088660376422395": {
-    "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Save song ",
-    "file": "src/app/boards/boards.html"
-  },
   "4411804916643972918": {
     "source": " Refreshing Philly green jobs… ",
     "file": "src/app/green-jobs/green-jobs.html"
@@ -4975,6 +5063,10 @@
     "source": "{$START_TAG_SPAN}add{$CLOSE_TAG_SPAN} Add card ",
     "file": "src/app/boards/boards.html"
   },
+  "457174328505067817": {
+    "source": "memory, family, Monterey",
+    "file": "src/app/boards/boards.html"
+  },
   "4572277330155711965": {
     "source": "Open business page",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -5075,6 +5167,10 @@
     "source": "Enter at least one valid email address.",
     "file": "src/app/boards/boards.ts"
   },
+  "4645610641159580304": {
+    "source": "AI will prepare a title and description for you.",
+    "file": "src/app/boards/boards.html"
+  },
   "4648079201550582996": {
     "source": "Shared thread",
     "file": "src/app/shared-chat/shared-chat.html"
@@ -5090,6 +5186,10 @@
   "4655740181540850401": {
     "source": "Independent product. Not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.",
     "file": "src/app/business/business.html"
+  },
+  "4656697408209433730": {
+    "source": " Remove? ",
+    "file": "src/app/boards/boards.html"
   },
   "4657483307199605160": {
     "source": "Stripe billing",
@@ -5147,6 +5247,10 @@
     "source": "Share the full guide card",
     "file": "src/app/chat/chat.ts"
   },
+  "4688960644378733456": {
+    "source": "Back to board",
+    "file": "src/app/boards/boards.html"
+  },
   "4697682349001884958": {
     "source": "Close full-screen photo",
     "file": "src/app/boards/boards.html"
@@ -5195,8 +5299,8 @@
     "source": "Signing In...",
     "file": "src/app/sign-in/sign-in.ts"
   },
-  "4716056050518633122": {
-    "source": "Search this board...",
+  "4717483914471381435": {
+    "source": "Add the story, context, or details behind this card.",
     "file": "src/app/boards/boards.html"
   },
   "4719529684091617239": {
@@ -5386,6 +5490,10 @@
   "482458110376487038": {
     "source": "Share link copied",
     "file": "src/app/fence-line/fence-line.html"
+  },
+  "4825044637626125039": {
+    "source": "Close related card editor",
+    "file": "src/app/boards/boards.html"
   },
   "4826094758703312227": {
     "source": "Add business",
@@ -5751,6 +5859,10 @@
     "source": "Added admin",
     "file": "src/app/wiki-home/wiki-home.html"
   },
+  "509510051761641614": {
+    "source": "Related card preview",
+    "file": "src/app/boards/boards.html"
+  },
   "5095922612316927650": {
     "source": "Failed to upload guide image.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
@@ -5779,16 +5891,16 @@
     "source": "{$START_TAG_SPAN}add_location_alt{$CLOSE_TAG_SPAN} Drop a Card ",
     "file": "src/app/boards/boards.html"
   },
+  "5116466601953365942": {
+    "source": "Manage collection",
+    "file": "src/app/boards/boards.html"
+  },
   "5117504445405165086": {
     "source": "Live music",
     "file": "src/app/business/business.ts"
   },
   "5119748506118036161": {
     "source": "what3words address {$START_SMALL_TEXT}(optional){$CLOSE_SMALL_TEXT}",
-    "file": "src/app/boards/boards.html"
-  },
-  "5126173772236763420": {
-    "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Save card ",
     "file": "src/app/boards/boards.html"
   },
   "5137439220826427060": {
@@ -5878,6 +5990,10 @@
   "51952318571096765": {
     "source": "Queueing stopped after the current article.",
     "file": "src/app/web-scraper/web-scraper.ts"
+  },
+  "5198365629850240797": {
+    "source": "Keep related card",
+    "file": "src/app/boards/boards.html"
   },
   "5198840835589008501": {
     "source": "{$START_TAG_SPAN}smart_display{$CLOSE_TAG_SPAN} Video ",
@@ -6083,6 +6199,10 @@
     "source": "Subscribe for weekly updates, or sign in to keep exploring the Philly guide.",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "5324861230273549567": {
+    "source": "Remove related card",
+    "file": "src/app/boards/boards.html"
+  },
   "5327783398991797788": {
     "source": "No account needed. We use your email only for this plan and its updates.",
     "file": "src/app/boards/boards.html"
@@ -6166,6 +6286,10 @@
   "5379361265080567233": {
     "source": "Shared chat",
     "file": "src/app/chat.service.ts"
+  },
+  "538135249327125203": {
+    "source": "Start with a photo or a short description. AI can prepare the details.",
+    "file": "src/app/boards/boards.html"
   },
   "5381580243787883372": {
     "source": "What are the latest updates about {city}?",
@@ -6366,6 +6490,10 @@
   "5551593943246562972": {
     "source": "City-first",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "5551736715528732892": {
+    "source": "Looking at the picture…",
+    "file": "src/app/boards/boards.html"
   },
   "5554669496175509358": {
     "source": "About highlight",
@@ -6910,10 +7038,6 @@
   "5911629878274755333": {
     "source": "{$INTERPOLATION} sources",
     "file": "src/app/green-jobs/green-jobs.html"
-  },
-  "5914664801907301043": {
-    "source": "Show memories",
-    "file": "src/app/boards/boards.html"
   },
   "591619750592164361": {
     "source": "This page is only visible to the account that owns {$INTERPOLATION}. Public visitors can use the business page and live guide instead.",
@@ -7695,6 +7819,10 @@
     "source": "Ask",
     "file": "src/app/chat/chat.ts"
   },
+  "6441651706353090470": {
+    "source": "Tags {$START_SMALL_TEXT}(optional){$CLOSE_SMALL_TEXT}",
+    "file": "src/app/boards/boards.html"
+  },
   "6443974028980764793": {
     "source": "articles queued successfully",
     "file": "src/app/web-scraper/web-scraper.html"
@@ -7959,10 +8087,6 @@
     "source": "No better image was found, so the current image was kept.",
     "file": "src/app/boards/boards.ts"
   },
-  "6603800071419215536": {
-    "source": "Memories",
-    "file": "src/app/boards/boards.html"
-  },
   "6605762420394590942": {
     "source": "PAGE 42",
     "file": "src/app/marketing/marketing.html"
@@ -8158,10 +8282,6 @@
   "6779918658461039547": {
     "source": "No better image was found, so the old image was removed.",
     "file": "src/app/boards/boards.ts"
-  },
-  "6784124564513275529": {
-    "source": "Card memories",
-    "file": "src/app/boards/boards.html"
   },
   "679158673089500689": {
     "source": " City map ",
@@ -8447,6 +8567,10 @@
     "source": "Live preview",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7008512926578259782": {
+    "source": "Add related card",
+    "file": "src/app/boards/boards.html"
+  },
   "7014471967051183149": {
     "source": "See it on the board",
     "file": "src/app/boards/boards.html"
@@ -8703,6 +8827,10 @@
     "source": "Door decal 5x7\"",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "7234626662254065339": {
+    "source": "The first photo is the cover. Extra photos automatically appear as memory cards inside Explore.",
+    "file": "src/app/boards/boards.html"
+  },
   "7235944444447714296": {
     "source": "{$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN} Save ",
     "file": "src/app/boards/boards.html"
@@ -8930,6 +9058,10 @@
   "7425863483295202714": {
     "source": "Stay connected",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "7427339465146081213": {
+    "source": "What is this card about?",
+    "file": "src/app/boards/boards.html"
   },
   "7427471338737489302": {
     "source": "Add company knowledge so the AI answers from real source material.",
@@ -9334,6 +9466,10 @@
   "7734872384161724625": {
     "source": "Wiki Settings",
     "file": "src/app/atlas-persona/atlas-persona.html"
+  },
+  "773668064257926548": {
+    "source": "Delete card",
+    "file": "src/app/boards/boards.html"
   },
   "7739304297906633618": {
     "source": "Auto-Generated Wiki",
@@ -9983,6 +10119,10 @@
     "source": "Nano Banana uses this card and board as context.",
     "file": "src/app/boards/boards.html"
   },
+  "8170232262940242221": {
+    "source": "Could not use that photo.",
+    "file": "src/app/boards/boards.ts"
+  },
   "817502314469018929": {
     "source": "Card Wizard",
     "file": "src/app/boards/boards.html"
@@ -10107,6 +10247,10 @@
     "source": "Checkout could not be started. Check the Stripe price configuration and try again.",
     "file": "src/app/pricing/pricing.ts"
   },
+  "8280690953751117430": {
+    "source": "Close related cards",
+    "file": "src/app/boards/boards.html"
+  },
   "8283643972361199066": {
     "source": "Close voice mode",
     "file": "src/app/chat/chat.ts"
@@ -10131,6 +10275,10 @@
     "source": "What it can become",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "8299507857762651018": {
+    "source": "Related cards collection",
+    "file": "src/app/boards/boards.html"
+  },
   "8301535046747035390": {
     "source": "Full name",
     "file": "src/app/create-account/create-account.html"
@@ -10142,6 +10290,10 @@
   "8307602980487099346": {
     "source": "TikTok",
     "file": "src/app/answer-card/answer-card.html"
+  },
+  "8308540020306715001": {
+    "source": "Give this related card a title before saving.",
+    "file": "src/app/boards/boards.ts"
   },
   "8313470300978955171": {
     "source": "What are the key open questions about {city}?",
@@ -10166,6 +10318,10 @@
   "8331031046367440412": {
     "source": "Set the voice of your AI.",
     "file": "src/app/atlas-persona/atlas-persona.html"
+  },
+  "8339700171814475774": {
+    "source": "Related cards",
+    "file": "src/app/boards/boards.html"
   },
   "8340082836740122639": {
     "source": "Create a city not listed below.",
@@ -10763,6 +10919,10 @@
     "source": "We could not confirm the payment yet. If the card was charged, refresh in a moment or contact support.",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "8825842595101217158": {
+    "source": "Remove related card photo",
+    "file": "src/app/boards/boards.html"
+  },
   "8826751380749402346": {
     "source": "No credit card required. 1GB free storage.",
     "file": "src/app/marketing/marketing.html"
@@ -11086,6 +11246,10 @@
   "9019779151642071529": {
     "source": "Delete thread {title}",
     "file": "src/app/chat/chat.ts"
+  },
+  "9027131328158506822": {
+    "source": "Edit card",
+    "file": "src/app/boards/boards.html"
   },
   "9027664889257013249": {
     "source": "Ask anything from your sources.",
@@ -11422,6 +11586,10 @@
   "965218006709575156": {
     "source": "you@company.com",
     "file": "src/app/create-account/create-account.html"
+  },
+  "965231789753645648": {
+    "source": "{$START_TAG_SPAN}photo_library{$CLOSE_TAG_SPAN} Photos & memories",
+    "file": "src/app/boards/boards.html"
   },
   "967028822522182738": {
     "source": "Personal Plus, Creator, or platform admin access is required for fresh city, template, and bulk Wiki creation.",
