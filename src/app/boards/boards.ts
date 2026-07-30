@@ -7894,31 +7894,60 @@ export class BoardsComponent implements OnDestroy {
     return '';
   }
 
-  replayStackCardNarration(card: BoardCard, event?: Event): void {
+  async replayStackCardNarration(card: BoardCard, event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
-    const text = (card.notes || card.shortSummary || card.subtitle).trim();
-    if (!text || !this.isBrowser || typeof window.speechSynthesis === 'undefined') return;
+    const text = this.stackCardNarrationText(card);
+    if (!text || !this.isBrowser) return;
     this.stopStackPlayback();
     this.stopTourSpeech();
-    const utterance = new SpeechSynthesisUtterance(text.slice(0, 3600));
-    const language = navigator.language || 'en-US';
-    const root = language.split('-')[0]?.toLowerCase();
-    const voices = window.speechSynthesis.getVoices();
-    utterance.voice = voices.find((voice) => voice.lang.toLowerCase() === language.toLowerCase())
-      ?? voices.find((voice) => voice.lang.toLowerCase().startsWith(`${root}-`))
-      ?? null;
-    utterance.lang = utterance.voice?.lang || language;
-    utterance.rate = 0.96;
-    this.tourSpeechUtterance = utterance;
+    this.tourAudioNotice.set(null);
+    const audioUrl = await this.ensureTourAudioUrl(this.stackCardAudioKey(card), text);
+    if (!audioUrl) {
+      this.tourAudioNotice.set('ElevenLabs narration is unavailable for this card right now.');
+      return;
+    }
+
+    const audio = new Audio(audioUrl);
+    audio.preload = 'auto';
+    this.tourAudio = audio;
     this.tourSpeechPlaying.set(true);
-    utterance.onend = utterance.onerror = () => {
-      if (this.tourSpeechUtterance === utterance) {
-        this.tourSpeechUtterance = null;
-        this.tourSpeechPlaying.set(false);
+    audio.onended = () => {
+      if (this.tourAudio === audio) {
+        this.stopTourSpeech();
       }
     };
-    window.speechSynthesis.speak(utterance);
+    audio.onerror = () => {
+      if (this.tourAudio === audio) {
+        this.stopTourSpeech();
+        this.tourAudioNotice.set('The ElevenLabs narrator could not play this card.');
+      }
+    };
+    try {
+      await audio.play();
+    } catch {
+      if (this.tourAudio === audio) {
+        this.stopTourSpeech();
+        this.tourAudioNotice.set('Your browser paused the ElevenLabs narrator. Tap Listen again.');
+      }
+    }
+  }
+
+  stackCardNarrationLoading(card: BoardCard): boolean {
+    return this.tourAudioLoadingKey() === this.stackCardAudioKey(card);
+  }
+
+  stackNarrationLoading(): boolean {
+    const card = this.stackCurrentCard();
+    return !!card && (card.tour ? this.stackTourNarrationLoading() : this.stackCardNarrationLoading(card));
+  }
+
+  private stackCardNarrationText(card: BoardCard): string {
+    return (card.notes || card.shortSummary || card.subtitle).trim();
+  }
+
+  private stackCardAudioKey(card: BoardCard): string {
+    return `stack-card:${card.id}:${this.stackCardNarrationText(card)}`;
   }
 
   beginStackSwipe(event: PointerEvent): void {

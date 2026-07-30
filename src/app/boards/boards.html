@@ -51,12 +51,13 @@
                 @if (stackCurrentCard(); as narratableCard) {
                   <button
                     type="button"
-                    [attr.aria-label]="tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
-                    [attr.title]="tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
+                    [disabled]="stackNarrationLoading()"
+                    [attr.aria-label]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
+                    [attr.title]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
                     (click)="tourSpeechPlaying() ? stopTourSpeech() : (narratableCard.tour ? replayStackTourNarration($event) : replayStackCardNarration(narratableCard, $event))"
                   >
                     <span class="material-symbols-outlined">
-                      {{ stackTourNarrationLoading() ? 'progress_activity' : tourSpeechPlaying() ? 'graphic_eq' : 'volume_up' }}
+                      {{ stackNarrationLoading() ? 'progress_activity' : tourSpeechPlaying() ? 'graphic_eq' : 'volume_up' }}
                     </span>
                   </button>
                 }
@@ -109,9 +110,15 @@
                         @if (stackExpandedCardId() === card.id) {
                           <div class="stack-preview__details" role="region" aria-label="Card details">
                             <p>{{ card.notes }}</p>
-                            <button type="button" (click)="replayStackCardNarration(card, $event)">
-                              <span class="material-symbols-outlined">volume_up</span>
-                              Listen
+                            <button
+                              type="button"
+                              [disabled]="stackCardNarrationLoading(card)"
+                              (click)="replayStackCardNarration(card, $event)"
+                            >
+                              <span class="material-symbols-outlined">
+                                {{ stackCardNarrationLoading(card) ? 'progress_activity' : 'volume_up' }}
+                              </span>
+                              {{ stackCardNarrationLoading(card) ? 'Preparing voice' : 'Listen' }}
                             </button>
                           </div>
                         }
