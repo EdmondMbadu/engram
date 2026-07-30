@@ -163,16 +163,16 @@
                             <span>Play on Spotify</span>
                           </a>
                         }
-                        @if (card.audioPreviewUrl) {
+                        @if (card.audioPreviewUrl && !hasSpotifyTrack(card)) {
                           <button
                             type="button"
                             class="song-preview-button song-preview-button--stack"
                             [class.song-preview-button--playing]="isSongPreviewPlaying(card, 'stack-live')"
-                            [attr.aria-label]="isSongPreviewPlaying(card, 'stack-live') ? 'Pause song preview' : 'Play song preview'"
+                            [attr.aria-label]="isSongPreviewPlaying(card, 'stack-live') ? 'Pause audio preview' : 'Play audio preview'"
                             (click)="toggleSongPreview(card, $event, 'stack-live')"
                           >
                             <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'stack-live') ? 'pause' : 'music_note' }}</span>
-                            <span>{{ isSongPreviewPlaying(card, 'stack-live') ? 'Playing preview' : 'Play preview' }}</span>
+                            <span>{{ isSongPreviewPlaying(card, 'stack-live') ? 'Playing preview' : 'Preview' }}</span>
                           </button>
                         }
                       </div>
@@ -1686,7 +1686,7 @@
                               <header>
                                 <span class="material-symbols-outlined">graphic_eq</span>
                                 <span>
-                                  <strong>Listen on Spotify</strong>
+                                  <strong>Full song on Spotify</strong>
                                   <small>No LivingWiki connection needed</small>
                                 </span>
                                 <span class="song-player-card__spotify-badge">Official player</span>
@@ -1702,7 +1702,7 @@
                               ></iframe>
                               <footer>
                                 <span class="material-symbols-outlined">play_circle</span>
-                                Press Play above. Spotify handles listening and any sign-in securely.
+                                Full playback is handled by Spotify when supported by your browser.
                               </footer>
                             </section>
                           }
@@ -1729,16 +1729,16 @@
                               <span class="material-symbols-outlined">{{ isCardLiked(board, song) ? 'favorite' : 'favorite_border' }}</span>
                               <span>{{ isCardLiked(board, song) ? 'Liked' : 'Like card' }}</span>
                             </button>
-                            @if (song.audioPreviewUrl) {
+                            @if (song.audioPreviewUrl && !hasSpotifyTrack(song)) {
                               <button
                                 type="button"
                                 class="song-preview-button song-preview-button--juke"
                                 [class.song-preview-button--playing]="isSongPreviewPlaying(song, 'song-deck')"
-                                [attr.aria-label]="isSongPreviewPlaying(song, 'song-deck') ? 'Pause song preview' : 'Play song preview'"
+                                [attr.aria-label]="isSongPreviewPlaying(song, 'song-deck') ? 'Pause audio preview' : 'Play audio preview'"
                                 (click)="toggleSongPreview(song, $event, 'song-deck')"
                               >
                                 <span class="material-symbols-outlined">{{ isSongPreviewPlaying(song, 'song-deck') ? 'pause' : 'play_arrow' }}</span>
-                                <span>{{ isSongPreviewPlaying(song, 'song-deck') ? 'Pause preview' : 'Play preview' }}</span>
+                                <span>{{ isSongPreviewPlaying(song, 'song-deck') ? 'Pause preview' : 'Preview' }}</span>
                               </button>
                             }
                             @if (spotifyTrackHref(song)) {
@@ -2038,12 +2038,12 @@
                             {{ statusLabel(card.status) }}
                           </span>
                         }
-                        @if (card.audioPreviewUrl) {
+                        @if (card.audioPreviewUrl && !hasSpotifyTrack(card)) {
                           <button
                             type="button"
                             class="song-preview-button song-preview-button--card"
                             [class.song-preview-button--playing]="isSongPreviewPlaying(card)"
-                            [attr.aria-label]="isSongPreviewPlaying(card) ? 'Pause song preview' : 'Play song preview'"
+                            [attr.aria-label]="isSongPreviewPlaying(card) ? 'Pause audio preview' : 'Play audio preview'"
                             (click)="toggleSongPreview(card, $event)"
                           >
                             <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card) ? 'pause' : 'music_note' }}</span>
@@ -4200,8 +4200,8 @@
                             type="button"
                             class="boards-wizard-card__audio"
                             [disabled]="isWizardCardBusy(card.id)"
-                            [attr.aria-label]="isSongPreviewPlaying(card, 'wizard') ? 'Pause preview' : 'Play preview'"
-                            [title]="isSongPreviewPlaying(card, 'wizard') ? 'Pause preview' : 'Play preview'"
+                            [attr.aria-label]="isSongPreviewPlaying(card, 'wizard') ? 'Pause audio preview' : 'Play audio preview'"
+                            [title]="isSongPreviewPlaying(card, 'wizard') ? 'Pause audio preview' : 'Play audio preview'"
                             (click)="toggleSongPreview(card, $event, 'wizard')"
                           >
                             <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'wizard') ? 'pause' : 'play_arrow' }}</span>
@@ -4540,16 +4540,16 @@
                             <span>{{ card.status }} · {{ card.rating }}/5</span>
                             <h4>{{ card.title }}</h4>
                             <p>{{ card.subtitle || card.notes }}</p>
-                            @if (card.audioPreviewUrl) {
+                            @if (card.audioPreviewUrl && !hasSpotifyTrack(card)) {
                               <button
                                 type="button"
                                 class="song-preview-button song-preview-button--stack"
                                 [class.song-preview-button--playing]="isSongPreviewPlaying(card, 'stack-studio')"
-                                [attr.aria-label]="isSongPreviewPlaying(card, 'stack-studio') ? 'Pause song preview' : 'Play song preview'"
+                                [attr.aria-label]="isSongPreviewPlaying(card, 'stack-studio') ? 'Pause audio preview' : 'Play audio preview'"
                                 (click)="toggleSongPreview(card, $event, 'stack-studio')"
                               >
                                 <span class="material-symbols-outlined">{{ isSongPreviewPlaying(card, 'stack-studio') ? 'pause' : 'music_note' }}</span>
-                                <span>{{ isSongPreviewPlaying(card, 'stack-studio') ? 'Playing preview' : 'Play preview' }}</span>
+                                <span>{{ isSongPreviewPlaying(card, 'stack-studio') ? 'Playing preview' : 'Preview' }}</span>
                               </button>
                             }
                           </div>
