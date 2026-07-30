@@ -5850,16 +5850,46 @@ export class BoardsComponent implements OnDestroy {
   }
 
   visitDirectionsUrl(card: BoardCard): string {
-    if (card.googleMapsUrl) {
-      return card.googleMapsUrl;
-    }
     const lat = typeof card.locationLat === 'number' ? card.locationLat : card.tour?.lat;
     const lng = typeof card.locationLng === 'number' ? card.locationLng : card.tour?.lng;
-    const query = typeof lat === 'number' && Number.isFinite(lat)
+    const hasCoordinates = typeof lat === 'number' && Number.isFinite(lat)
       && typeof lng === 'number' && Number.isFinite(lng)
+    const destination = hasCoordinates
       ? `${lat},${lng}`
       : [card.title, card.tour?.address || card.subtitle].filter(Boolean).join(', ');
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    const url = new URL('https://www.google.com/maps/dir/');
+    url.searchParams.set('api', '1');
+    url.searchParams.set('destination', destination);
+
+    // Coordinates are the most reliable mobile target, especially for
+    // what3words cards whose exact square may differ from the nearby POI.
+    // Otherwise use Google's documented destination_place_id parameter
+    // instead of the legacy `q=place_id:...` URL that mobile Maps may reject.
+    if (!hasCoordinates) {
+      const placeId = this.googleMapsPlaceIdForCard(card);
+      if (placeId) {
+        url.searchParams.set('destination_place_id', placeId);
+      }
+    }
+    return url.toString();
+  }
+
+  private googleMapsPlaceIdForCard(card: Pick<BoardCard, 'placeId' | 'googleMapsUrl'>): string {
+    const storedPlaceId = card.placeId.trim();
+    if (storedPlaceId) {
+      return storedPlaceId;
+    }
+    try {
+      const url = new URL(card.googleMapsUrl);
+      const explicitPlaceId = url.searchParams.get('destination_place_id')
+        || url.searchParams.get('query_place_id');
+      if (explicitPlaceId) {
+        return explicitPlaceId.trim();
+      }
+      return url.searchParams.get('q')?.match(/^place_id:(.+)$/i)?.[1]?.trim() ?? '';
+    } catch {
+      return '';
+    }
   }
 
   canGoThere(card: BoardCard): boolean {
