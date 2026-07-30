@@ -9,7 +9,7 @@ import {
   visitStartIso,
 } from './go-there';
 
-describe('Go there planning', () => {
+describe('Let’s go planning', () => {
   it('allows mapped and exact off-grid place cards', () => {
     expect(canPlanVisit({
       type: 'place',
@@ -23,7 +23,7 @@ describe('Go there planning', () => {
     })).toBeTrue();
   });
 
-  it('does not offer Go there to music, products, or unlocated notes', () => {
+  it('does not offer Let’s go to music, products, or unlocated notes', () => {
     expect(canPlanVisit({
       type: 'place',
       entityType: 'place',

@@ -18,9 +18,11 @@ export type VisitPlanSummary = {
   boardId: string;
   cardId: string;
   placeName: string;
+  organizerName: string;
   startsAtIso: string;
   timezone: string;
   status: VisitPlanStatus;
+  openToBoard: boolean;
   invitedCount: number;
   acceptedCount: number;
   pendingCount: number;

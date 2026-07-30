@@ -203,6 +203,20 @@
               </div>
             }
 
+            @if (stackCurrentCard(); as letsGoCard) {
+              @if (canGoThere(letsGoCard)) {
+                <button
+                  type="button"
+                  class="stack-viewer-lets-go"
+                  aria-label="Plan a visit to {{ letsGoCard.title }}"
+                  (click)="openGoThere(board, letsGoCard, $event, 'stack')"
+                >
+                  <span class="material-symbols-outlined">near_me</span>
+                  <strong i18n>Let’s go</strong>
+                </button>
+              }
+            }
+
             @if (stackShareMessage() || shareMessage() || tourAudioNotice()) {
               <small class="stack-viewer-toast">{{ stackShareMessage() || shareMessage() || tourAudioNotice() }}</small>
             }
@@ -5739,10 +5753,10 @@
         <header class="go-there-sheet__header">
           <span class="go-there-sheet__mark material-symbols-outlined">near_me</span>
           <span>
-            <small i18n>Go there</small>
+            <small i18n>Let’s go</small>
             <h2 id="go-there-title">{{ goThereCard.title }}</h2>
           </span>
-          <button type="button" aria-label="Close Go there plan" (click)="closeGoThere($event)" i18n-aria-label>
+          <button type="button" aria-label="Close Let’s go plan" (click)="closeGoThere($event)" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
           </button>
         </header>
@@ -5762,7 +5776,141 @@
             </span>
           </div>
 
-          @if (activeVisitPlan(); as currentPlan) {
+          @if (!visitPlanShowScheduler()) {
+            @if (visitPlanOpenPlansLoading()) {
+              <div class="go-there-social-state" role="status">
+                <span class="material-symbols-outlined">progress_activity</span>
+                <strong i18n>Finding plans for this place…</strong>
+              </div>
+            } @else if (visitPlanOpenPlans().length) {
+              <section class="go-there-social">
+                <header>
+                  <span>
+                    <small i18n>Choose a plan</small>
+                    <strong i18n>Who would you like to join?</strong>
+                  </span>
+                  @if (visitPlanOpenPlans().length > 1) {
+                    <em>{{ visitPlanOpenPlans().length }} times</em>
+                  }
+                </header>
+                <div class="go-there-plan-options">
+                  @for (plan of visitPlanOpenPlans(); track plan.id) {
+                    <button
+                      type="button"
+                      class="go-there-plan-option"
+                      [class.go-there-plan-option--selected]="selectedOpenVisitPlan().id === plan.id"
+                      [attr.aria-pressed]="selectedOpenVisitPlan().id === plan.id"
+                      (click)="selectOpenVisitPlan(plan, $event)"
+                    >
+                      <span class="material-symbols-outlined">
+                        {{ selectedOpenVisitPlan().id === plan.id ? 'check_circle' : 'calendar_month' }}
+                      </span>
+                      <span>
+                        <strong>{{ visitPlanTimeLabel(plan) }}</strong>
+                        <small>{{ plan.organizerName }} · {{ plan.acceptedCount + 1 }} going</small>
+                      </span>
+                    </button>
+                  }
+                </div>
+                @if (!isSignedIn()) {
+                  <div class="go-there-guest-fields">
+                    <label>
+                      <span i18n>Your name</span>
+                      <input
+                        type="text"
+                        maxlength="80"
+                        autocomplete="name"
+                        placeholder="How people will know you"
+                        [value]="visitPlanGuestName()"
+                        (input)="updateVisitPlanGuestName($any($event.target).value)"
+                        i18n-placeholder
+                      />
+                    </label>
+                    <label>
+                      <span i18n>Your email</span>
+                      <input
+                        type="email"
+                        maxlength="254"
+                        autocomplete="email"
+                        inputmode="email"
+                        placeholder="you@example.com"
+                        [value]="visitPlanGuestEmail()"
+                        (input)="updateVisitPlanGuestEmail($any($event.target).value)"
+                        i18n-placeholder
+                      />
+                    </label>
+                    <small i18n>No account needed. We use your email only for this plan and its updates.</small>
+                  </div>
+                }
+                <button
+                  type="button"
+                  class="go-there-social__primary"
+                  [disabled]="visitPlanSocialSaving()"
+                  (click)="joinSelectedOpenVisitPlan($event)"
+                >
+                  <span class="material-symbols-outlined">group_add</span>
+                  <span>{{ visitPlanSocialSaving() ? 'Joining…' : 'Join this plan' }}</span>
+                </button>
+                @if (isSignedIn()) {
+                  <button type="button" class="go-there-social__secondary" (click)="chooseOwnVisitTime($event)" i18n>
+                    Choose a different time
+                  </button>
+                }
+              </section>
+            } @else {
+              <section class="go-there-social go-there-social--empty">
+                <span class="go-there-social__icon material-symbols-outlined">notifications_active</span>
+                <h3 i18n>No time has been chosen yet</h3>
+                <p i18n>Say you’re interested. We’ll notify the organizer and email you when a plan is ready to confirm.</p>
+                @if (!isSignedIn()) {
+                  <div class="go-there-guest-fields">
+                    <label>
+                      <span i18n>Your name</span>
+                      <input
+                        type="text"
+                        maxlength="80"
+                        autocomplete="name"
+                        placeholder="How people will know you"
+                        [value]="visitPlanGuestName()"
+                        (input)="updateVisitPlanGuestName($any($event.target).value)"
+                        i18n-placeholder
+                      />
+                    </label>
+                    <label>
+                      <span i18n>Your email</span>
+                      <input
+                        type="email"
+                        maxlength="254"
+                        autocomplete="email"
+                        inputmode="email"
+                        placeholder="you@example.com"
+                        [value]="visitPlanGuestEmail()"
+                        (input)="updateVisitPlanGuestEmail($any($event.target).value)"
+                        i18n-placeholder
+                      />
+                    </label>
+                    <small i18n>No account needed. We’ll only email you about this place.</small>
+                  </div>
+                }
+                <button
+                  type="button"
+                  class="go-there-social__primary"
+                  [disabled]="visitPlanSocialSaving() || visitPlanInterestSaved()"
+                  (click)="expressVisitInterest($event)"
+                >
+                  <span class="material-symbols-outlined">{{ visitPlanInterestSaved() ? 'check' : 'favorite' }}</span>
+                  <span>{{ visitPlanSocialSaving() ? 'Saving…' : visitPlanInterestSaved() ? 'Interest saved' : 'I’m interested' }}</span>
+                </button>
+                @if (isSignedIn()) {
+                  <button type="button" class="go-there-social__secondary" (click)="chooseOwnVisitTime($event)" i18n>
+                    I’ll choose a time
+                  </button>
+                }
+              </section>
+            }
+          }
+
+          @if (visitPlanShowScheduler() ? activeVisitPlan() : selectedOpenVisitPlan(); as currentPlan) {
             <div class="go-there-current">
               <button
                 type="button"
@@ -5774,7 +5922,7 @@
                 <span class="material-symbols-outlined">group</span>
                 <span>
                   <strong>{{ visitPlanPeopleLabel(currentPlan) }}</strong>
-                  <small>{{ visitPlanCardLabel(goThereCard) }} · View people</small>
+                  <small>{{ visitPlanTimeLabel(currentPlan) }} · View people</small>
                 </span>
                 <span class="material-symbols-outlined">
                   {{ visitPlanAttendeesExpanded() ? 'expand_less' : 'expand_more' }}
@@ -5803,7 +5951,7 @@
                           </span>
                         </span>
                         <span>
-                          <strong>{{ attendee.role === 'organizer' ? 'You' : attendee.name }}</strong>
+                          <strong>{{ visitPlanAttendeeName(attendee) }}</strong>
                           <small>{{ visitPlanAttendeeStatus(attendee) }}</small>
                         </span>
                       </div>
@@ -5819,6 +5967,7 @@
             </div>
           }
 
+          @if (visitPlanShowScheduler()) {
           <div class="go-there-section">
             <span class="go-there-section__label" i18n>When are you going?</span>
             <div class="go-there-quick-times">
@@ -5845,7 +5994,21 @@
               <span class="material-symbols-outlined">schedule</span>
               {{ visitPlanTimezone() }}
             </small>
+            @if (goThereBoard.visibility === 'public') {
+              <label class="go-there-open-plan">
+                <input
+                  type="checkbox"
+                  [checked]="visitPlanOpenToBoard()"
+                  (change)="updateVisitPlanOpenToBoard($any($event.target).checked)"
+                />
+                <span>
+                  <strong i18n>Let board viewers join</strong>
+                  <small i18n>People can see the time and confirmed names, then join from the Stack.</small>
+                </span>
+              </label>
+            }
           </div>
+          }
 
           <div class="go-there-location-actions">
             @if (canGoThere(goThereCard)) {
@@ -5862,6 +6025,7 @@
             }
           </div>
 
+          @if (visitPlanShowScheduler()) {
           <div class="go-there-section go-there-invite">
             <button
               type="button"
@@ -5925,6 +6089,7 @@
               </div>
             }
           </div>
+          }
 
           @if (visitPlanError()) {
             <div class="go-there-feedback go-there-feedback--error" role="alert">
@@ -5941,6 +6106,7 @@
 
         </div>
 
+        @if (visitPlanShowScheduler()) {
         <footer class="go-there-sheet__footer">
           @if (activeVisitPlan()) {
             <button
@@ -5965,6 +6131,7 @@
             <span>{{ visitPlanSaving() ? 'Saving…' : activeVisitPlan() ? 'Update plan' : 'Confirm I’m going' }}</span>
           </button>
         </footer>
+        }
       </section>
     </div>
   }

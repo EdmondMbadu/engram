@@ -108,6 +108,7 @@ type BoardTourVoiceStyle = 'historian' | 'local' | 'kid-friendly';
 type StackFormat = 'carousel' | 'reel' | 'both';
 type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
+type VisitPlanContext = 'board' | 'stack';
 type StackShareMode = 'video' | 'live';
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
 type BoardLearnView = 'menu' | 'study' | 'quiz-edit' | 'quiz-welcome' | 'quiz-play' | 'quiz-result';
@@ -1124,6 +1125,17 @@ export class BoardsComponent implements OnDestroy {
   readonly visitPlanTimezone = signal(browserTimezone());
   readonly visitPlanTimeSelected = signal(false);
   readonly visitPlanInviteEmails = signal('');
+  readonly visitPlanContext = signal<VisitPlanContext>('board');
+  readonly visitPlanShowScheduler = signal(true);
+  readonly visitPlanOpenToBoard = signal(true);
+  readonly visitPlanOpenPlans = signal<VisitPlanSummary[]>([]);
+  readonly visitPlanOpenPlansLoading = signal(false);
+  readonly visitPlanSelectedOpenPlanId = signal<string | null>(null);
+  readonly visitPlanInterestCount = signal(0);
+  readonly visitPlanGuestName = signal('');
+  readonly visitPlanGuestEmail = signal('');
+  readonly visitPlanSocialSaving = signal(false);
+  readonly visitPlanInterestSaved = signal(false);
   readonly visitPlanInvitesExpanded = signal(false);
   readonly visitPlanAttendees = signal<VisitPlanAttendee[]>([]);
   readonly visitPlanAttendeesExpanded = signal(false);
@@ -1386,6 +1398,12 @@ export class BoardsComponent implements OnDestroy {
   readonly activeVisitPlan = computed(() => {
     const cardId = this.visitPlanCardId();
     return cardId ? this.visitPlans()[cardId] ?? null : null;
+  });
+  readonly selectedOpenVisitPlan = computed(() => {
+    const selectedId = this.visitPlanSelectedOpenPlanId();
+    return this.visitPlanOpenPlans().find((plan) => plan.id === selectedId)
+      ?? this.visitPlanOpenPlans()[0]
+      ?? null;
   });
   readonly boardLearnBoard = computed(() => this.boardLearnOpen() ? this.selectedBoard() : null);
   readonly boardLearnStudyCard = computed(() => {
@@ -5912,22 +5930,41 @@ export class BoardsComponent implements OnDestroy {
 
   visitPlanCardLabel(card: BoardCard): string {
     const plan = this.visitPlanFor(card);
-    return plan ? visitPlanLabel(plan) : $localize`Go there`;
+    return plan ? visitPlanLabel(plan) : $localize`Let’s go`;
   }
 
-  openGoThere(board: Board, card: BoardCard, event?: Event): void {
+  openGoThere(
+    board: Board,
+    card: BoardCard,
+    event?: Event,
+    context: VisitPlanContext = 'board',
+  ): void {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.canGoThere(card)) {
       return;
     }
-    if (!this.authService.isAuthenticated()) {
+    if (context === 'board' && !this.authService.isAuthenticated()) {
       void this.router.navigate(['/sign-in'], { queryParams: { redirectTo: this.router.url } });
       return;
     }
+    if (context === 'stack') {
+      this.stopStackPlayback();
+    }
     const existing = this.visitPlanFor(card);
+    const isBoardOwner = this.canEditBoard(board);
     this.visitPlanBoardId.set(board.id);
     this.visitPlanCardId.set(card.id);
+    this.visitPlanContext.set(context);
+    this.visitPlanShowScheduler.set(context === 'board' || isBoardOwner || !!existing);
+    this.visitPlanOpenToBoard.set(existing?.openToBoard ?? board.visibility === 'public');
+    this.visitPlanOpenPlans.set([]);
+    this.visitPlanSelectedOpenPlanId.set(null);
+    this.visitPlanInterestCount.set(0);
+    this.visitPlanGuestName.set(this.authService.isAuthenticated() ? this.userName() || '' : '');
+    this.visitPlanGuestEmail.set(this.authService.isAuthenticated() ? this.userEmail() || '' : '');
+    this.visitPlanSocialSaving.set(false);
+    this.visitPlanInterestSaved.set(false);
     this.visitPlanDateTime.set(existing
       ? this.localDateTimeFromIso(existing.startsAtIso)
       : '');
@@ -5941,14 +5978,21 @@ export class BoardsComponent implements OnDestroy {
     this.visitPlanError.set(null);
     this.visitPlanMessage.set(null);
     this.visitPlanDialogOpen.set(true);
-    void this.loadVisitPlans(board).then(() => {
-      const refreshed = this.visitPlans()[card.id];
-      if (refreshed && this.visitPlanCardId() === card.id) {
-        this.visitPlanDateTime.set(this.localDateTimeFromIso(refreshed.startsAtIso));
-        this.visitPlanTimezone.set(refreshed.timezone);
-        this.visitPlanTimeSelected.set(true);
-      }
-    });
+    if (this.authService.isAuthenticated()) {
+      void this.loadVisitPlans(board).then(() => {
+        const refreshed = this.visitPlans()[card.id];
+        if (refreshed && this.visitPlanCardId() === card.id) {
+          this.visitPlanDateTime.set(this.localDateTimeFromIso(refreshed.startsAtIso));
+          this.visitPlanTimezone.set(refreshed.timezone);
+          this.visitPlanOpenToBoard.set(refreshed.openToBoard);
+          this.visitPlanTimeSelected.set(true);
+          this.visitPlanShowScheduler.set(true);
+        }
+      });
+    }
+    if (context === 'stack' && !isBoardOwner && !existing) {
+      void this.loadOpenVisitPlans();
+    }
   }
 
   closeGoThere(event?: Event): void {
@@ -5961,11 +6005,188 @@ export class BoardsComponent implements OnDestroy {
     this.visitPlanBoardId.set(null);
     this.visitPlanCardId.set(null);
     this.visitPlanTimeSelected.set(false);
+    this.visitPlanContext.set('board');
+    this.visitPlanShowScheduler.set(true);
+    this.visitPlanOpenPlans.set([]);
+    this.visitPlanSelectedOpenPlanId.set(null);
+    this.visitPlanInterestCount.set(0);
+    this.visitPlanSocialSaving.set(false);
+    this.visitPlanInterestSaved.set(false);
     this.visitPlanAttendees.set([]);
     this.visitPlanAttendeesExpanded.set(false);
     this.visitPlanAttendeesError.set(null);
     this.visitPlanError.set(null);
     this.visitPlanMessage.set(null);
+  }
+
+  updateVisitPlanGuestName(value: string): void {
+    this.visitPlanGuestName.set(value.slice(0, 80));
+    this.visitPlanError.set(null);
+  }
+
+  updateVisitPlanGuestEmail(value: string): void {
+    this.visitPlanGuestEmail.set(value.slice(0, 254));
+    this.visitPlanError.set(null);
+  }
+
+  updateVisitPlanOpenToBoard(value: boolean): void {
+    this.visitPlanOpenToBoard.set(value);
+    this.visitPlanError.set(null);
+    this.visitPlanMessage.set(null);
+  }
+
+  chooseOwnVisitTime(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.authService.isAuthenticated()) {
+      void this.router.navigate(['/sign-in'], { queryParams: { redirectTo: this.router.url } });
+      return;
+    }
+    this.visitPlanShowScheduler.set(true);
+    this.visitPlanSelectedOpenPlanId.set(null);
+    this.visitPlanAttendees.set([]);
+    this.visitPlanAttendeesExpanded.set(false);
+    this.visitPlanError.set(null);
+    this.visitPlanMessage.set(null);
+  }
+
+  selectOpenVisitPlan(plan: VisitPlanSummary, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.visitPlanSelectedOpenPlanId.set(plan.id);
+    this.visitPlanAttendeesExpanded.set(false);
+    this.visitPlanAttendees.set([]);
+    this.visitPlanError.set(null);
+    this.visitPlanMessage.set(null);
+  }
+
+  async joinSelectedOpenVisitPlan(event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const plan = this.selectedOpenVisitPlan();
+    if (!plan || !this.functions) {
+      return;
+    }
+    const email = (this.userEmail() || this.visitPlanGuestEmail()).trim().toLowerCase();
+    const guestName = (this.userName() || this.visitPlanGuestName()).trim();
+    if (!this.authService.isAuthenticated() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.visitPlanError.set($localize`Enter a valid email address so we can send your plan.`);
+      return;
+    }
+    this.visitPlanSocialSaving.set(true);
+    this.visitPlanError.set(null);
+    this.visitPlanMessage.set(null);
+    try {
+      const callable = httpsCallable<{
+        planId: string;
+        email?: string;
+        guestName?: string;
+      }, unknown>(this.functions, 'joinOpenVisitPlan');
+      const response = await callable({
+        planId: plan.id,
+        ...(!this.authService.isAuthenticated() ? { email, guestName } : {}),
+      });
+      const data = response.data && typeof response.data === 'object'
+        ? response.data as Record<string, unknown>
+        : {};
+      const updated = this.normalizeVisitPlan(data['plan']);
+      if (updated) {
+        this.visitPlanOpenPlans.update((plans) =>
+          plans.map((candidate) => candidate.id === updated.id ? updated : candidate));
+      }
+      this.visitPlanMessage.set(data['alreadyJoined'] === true
+        ? $localize`You’re already on this plan.`
+        : data['emailSent'] === true
+          ? $localize`You’re in. We emailed the plan and calendar invite to you.`
+          : $localize`You’re in. The organizer can now see you on the list.`);
+      this.visitPlanAttendeesExpanded.set(true);
+      await this.loadVisitPlanAttendees(updated ?? plan);
+    } catch (error) {
+      this.visitPlanError.set(
+        this.boardFriendErrorMessage(error, $localize`Could not join this plan. Please try again.`),
+      );
+    } finally {
+      this.visitPlanSocialSaving.set(false);
+    }
+  }
+
+  async expressVisitInterest(event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.visitPlanBoard();
+    const card = this.visitPlanCard();
+    if (!board || !card || !this.functions) {
+      return;
+    }
+    const email = (this.userEmail() || this.visitPlanGuestEmail()).trim().toLowerCase();
+    const guestName = (this.userName() || this.visitPlanGuestName()).trim();
+    if (!this.authService.isAuthenticated() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.visitPlanError.set($localize`Enter a valid email address so we can keep you updated.`);
+      return;
+    }
+    this.visitPlanSocialSaving.set(true);
+    this.visitPlanError.set(null);
+    this.visitPlanMessage.set(null);
+    try {
+      const callable = httpsCallable<{
+        boardId: string;
+        cardId: string;
+        email?: string;
+        guestName?: string;
+      }, unknown>(this.functions, 'expressVisitInterest');
+      const response = await callable({
+        boardId: board.id,
+        cardId: card.id,
+        ...(!this.authService.isAuthenticated() ? { email, guestName } : {}),
+      });
+      const data = response.data && typeof response.data === 'object'
+        ? response.data as Record<string, unknown>
+        : {};
+      this.visitPlanInterestSaved.set(true);
+      this.visitPlanMessage.set(data['alreadySaved'] === true
+        ? $localize`You’re already on the interest list. We’ll email you when a time is chosen.`
+        : $localize`Interest saved. We told the organizer and will email you when a time is chosen.`);
+    } catch (error) {
+      this.visitPlanError.set(
+        this.boardFriendErrorMessage(error, $localize`Could not save your interest. Please try again.`),
+      );
+    } finally {
+      this.visitPlanSocialSaving.set(false);
+    }
+  }
+
+  private async loadOpenVisitPlans(): Promise<void> {
+    const board = this.visitPlanBoard();
+    const card = this.visitPlanCard();
+    if (!board || !card || !this.functions) {
+      return;
+    }
+    this.visitPlanOpenPlansLoading.set(true);
+    this.visitPlanError.set(null);
+    try {
+      const callable = httpsCallable<{ boardId: string; cardId: string }, unknown>(
+        this.functions,
+        'getOpenVisitPlans',
+      );
+      const response = await callable({ boardId: board.id, cardId: card.id });
+      const data = response.data && typeof response.data === 'object'
+        ? response.data as Record<string, unknown>
+        : {};
+      const plans = Array.isArray(data['plans'])
+        ? data['plans']
+          .map((value) => this.normalizeVisitPlan(value))
+          .filter((value): value is VisitPlanSummary => !!value)
+        : [];
+      this.visitPlanOpenPlans.set(plans);
+      this.visitPlanSelectedOpenPlanId.set(plans[0]?.id ?? null);
+      this.visitPlanInterestCount.set(this.nonNegativeInteger(data['interestCount']));
+    } catch (error) {
+      this.visitPlanError.set(
+        this.boardFriendErrorMessage(error, $localize`Could not load plans for this place.`),
+      );
+    } finally {
+      this.visitPlanOpenPlansLoading.set(false);
+    }
   }
 
   updateVisitPlanDateTime(value: string): void {
@@ -6002,7 +6223,9 @@ export class BoardsComponent implements OnDestroy {
     const expanded = !this.visitPlanAttendeesExpanded();
     this.visitPlanAttendeesExpanded.set(expanded);
     if (expanded) {
-      void this.loadVisitPlanAttendees();
+      void this.loadVisitPlanAttendees(
+        this.visitPlanShowScheduler() ? this.activeVisitPlan() : this.selectedOpenVisitPlan(),
+      );
     }
   }
 
@@ -6152,6 +6375,7 @@ export class BoardsComponent implements OnDestroy {
         startsAtIso: string;
         timezone: string;
         inviteEmails: string[];
+        openToBoard: boolean;
       }, unknown>(this.functions, 'createVisitPlan');
       const response = await callable({
         boardId: board.id,
@@ -6159,6 +6383,7 @@ export class BoardsComponent implements OnDestroy {
         startsAtIso,
         timezone: this.visitPlanTimezone(),
         inviteEmails,
+        openToBoard: board.visibility === 'public' && this.visitPlanOpenToBoard(),
       });
       const data = response.data && typeof response.data === 'object'
         ? response.data as Record<string, unknown>
@@ -6175,6 +6400,8 @@ export class BoardsComponent implements OnDestroy {
       const confirmationSent = data['confirmationEmailSent'] === true;
       const invitationsSent = this.nonNegativeInteger(data['invitationsSent']);
       const invitationsFailed = this.nonNegativeInteger(data['invitationsFailed']);
+      const interestsNotified = this.nonNegativeInteger(data['interestsNotified']);
+      const interestsFailed = this.nonNegativeInteger(data['interestsFailed']);
       if (announceResult) {
         this.visitPlanMessage.set([
           confirmationSent
@@ -6185,6 +6412,12 @@ export class BoardsComponent implements OnDestroy {
             : '',
           invitationsFailed
             ? `${invitationsFailed} ${invitationsFailed === 1 ? 'invitation could' : 'invitations could'} not be delivered.`
+            : '',
+          interestsNotified
+            ? `${interestsNotified} interested ${interestsNotified === 1 ? 'person was' : 'people were'} invited.`
+            : '',
+          interestsFailed
+            ? `${interestsFailed} interest ${interestsFailed === 1 ? 'notification needs' : 'notifications need'} another try.`
             : '',
         ].filter(Boolean).join(' '));
       }
@@ -6215,7 +6448,8 @@ export class BoardsComponent implements OnDestroy {
     const startsAtIso = visitStartIso(this.visitPlanDateTime());
     return !startsAtIso
       || startsAtIso !== plan.startsAtIso
-      || this.visitPlanTimezone() !== plan.timezone;
+      || this.visitPlanTimezone() !== plan.timezone
+      || this.visitPlanOpenToBoard() !== plan.openToBoard;
   }
 
   private async loadVisitPlanAttendees(plan = this.activeVisitPlan()): Promise<void> {
@@ -6269,11 +6503,22 @@ export class BoardsComponent implements OnDestroy {
       : goingLabel;
   }
 
+  visitPlanTimeLabel(plan: VisitPlanSummary): string {
+    return visitPlanInvitationTime(plan);
+  }
+
   visitPlanAttendeeStatus(attendee: VisitPlanAttendee): string {
     if (attendee.role === 'organizer') {
       return $localize`Organizer`;
     }
     return attendee.status === 'pending' ? $localize`Pending` : $localize`Going`;
+  }
+
+  visitPlanAttendeeName(attendee: VisitPlanAttendee): string {
+    if (attendee.role !== 'organizer') {
+      return attendee.name;
+    }
+    return this.visitPlanShowScheduler() ? $localize`You` : attendee.name;
   }
 
   async cancelActiveVisitPlan(): Promise<void> {
@@ -6356,9 +6601,11 @@ export class BoardsComponent implements OnDestroy {
       boardId,
       cardId,
       placeName: this.objectField(data, 'placeName') || $localize`LivingWiki place`,
+      organizerName: this.objectField(data, 'organizerName') || $localize`A LivingWiki member`,
       startsAtIso,
       timezone: this.objectField(data, 'timezone') || 'UTC',
       status: data['status'] === 'cancelled' ? 'cancelled' : 'planned',
+      openToBoard: data['openToBoard'] === true,
       invitedCount: this.nonNegativeInteger(data['invitedCount']),
       acceptedCount: this.nonNegativeInteger(data['acceptedCount']),
       pendingCount: this.nonNegativeInteger(data['pendingCount']),
@@ -9728,7 +9975,7 @@ export class BoardsComponent implements OnDestroy {
         return {
           title: name,
           subtitle: `Pinned to ///${item.words}${nearby}`,
-          notes: tip || `This card points to a precise 3 m × 3 m what3words square. Use Go there to open it for navigation.`,
+          notes: tip || `This card points to a precise 3 m × 3 m what3words square. Use Let’s go to open it for navigation.`,
           type: 'place',
           scope: 'place',
           status: 'saved',

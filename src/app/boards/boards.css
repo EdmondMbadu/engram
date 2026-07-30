@@ -3642,6 +3642,53 @@
   backdrop-filter: blur(14px);
 }
 
+.stack-viewer-lets-go {
+  position: absolute;
+  left: 50%;
+  bottom: max(1.15rem, calc(env(safe-area-inset-bottom) + 0.35rem));
+  z-index: 8;
+  display: inline-flex;
+  min-width: 7.75rem;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  transform: translateX(-50%);
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  background: rgba(13, 56, 35, 0.94);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.7rem 1.05rem;
+  backdrop-filter: blur(14px);
+}
+
+.stack-viewer-lets-go .material-symbols-outlined {
+  font-size: 1.15rem;
+  font-variation-settings: "FILL" 1;
+}
+
+.stack-viewer-lets-go strong {
+  font-size: 0.83rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.stack-viewer-lets-go:hover {
+  background: rgba(24, 117, 62, 0.97);
+}
+
+.stack-viewer-lets-go:focus-visible {
+  outline: 3px solid #f4df5b;
+  outline-offset: 3px;
+}
+
+.stack-viewer-story:has(.stack-viewer-lets-go) .stack-viewer-toast {
+  bottom: max(5rem, calc(env(safe-area-inset-bottom) + 4.25rem));
+}
+
 .boards-modal--stack-share {
   width: min(100%, 32rem);
 }
@@ -6586,6 +6633,231 @@
   padding: 0.9rem;
 }
 
+.go-there-social,
+.go-there-social-state {
+  display: grid;
+  gap: 0.8rem;
+  border: 1px solid #b8dfc5;
+  border-radius: 1.1rem;
+  background: linear-gradient(145deg, #f3fbf6, #fff);
+  padding: 1rem;
+}
+
+.go-there-social-state {
+  min-height: 8rem;
+  place-items: center;
+  align-content: center;
+  color: #527063;
+  text-align: center;
+}
+
+.go-there-social-state .material-symbols-outlined {
+  color: #24a957;
+  font-size: 1.8rem;
+}
+
+.go-there-social > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.go-there-social > header > span {
+  display: grid;
+  gap: 0.16rem;
+}
+
+.go-there-social > header small,
+.go-there-guest-fields label > span {
+  color: #4f695d;
+  font-size: 0.65rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.go-there-social > header strong {
+  color: #10241a;
+  font-size: 0.92rem;
+}
+
+.go-there-social > header em {
+  border-radius: 999px;
+  background: #e2f5e8;
+  color: #1a6e3b;
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 900;
+  padding: 0.35rem 0.55rem;
+  white-space: nowrap;
+}
+
+.go-there-plan-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.go-there-plan-option {
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.68rem;
+  border: 1.5px solid #bfd0c5;
+  border-radius: 0.9rem;
+  background: #fff;
+  color: #10241a;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.go-there-plan-option--selected {
+  border-color: #1ba253;
+  background: #e8f8ee;
+  box-shadow: 0 0 0 2px rgba(27, 162, 83, 0.12);
+}
+
+.go-there-plan-option > .material-symbols-outlined {
+  color: #1ba253;
+}
+
+.go-there-plan-option > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.go-there-plan-option strong,
+.go-there-plan-option small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.go-there-plan-option strong {
+  font-size: 0.78rem;
+}
+
+.go-there-plan-option small {
+  color: #5e7468;
+  font-size: 0.69rem;
+  font-weight: 750;
+}
+
+.go-there-guest-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.go-there-guest-fields label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.go-there-guest-fields input {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1.5px solid #9eb6a7;
+  border-radius: 0.8rem;
+  background: #fff;
+  color: #10241a;
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.65rem 0.72rem;
+}
+
+.go-there-guest-fields input:focus {
+  border-color: #20a754;
+  outline: 3px solid rgba(32, 167, 84, 0.14);
+}
+
+.go-there-guest-fields > small {
+  grid-column: 1 / -1;
+  color: #66796e;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.go-there-social__primary,
+.go-there-social__secondary {
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 950;
+}
+
+.go-there-social__primary {
+  display: inline-flex;
+  min-height: 2.9rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 2px solid #10241a;
+  background: #27b45b;
+  box-shadow: 0 3px 0 #10241a;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 0.7rem 1rem;
+}
+
+.go-there-social__primary:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
+.go-there-social__secondary {
+  justify-self: center;
+  border: 0;
+  background: transparent;
+  color: #315f45;
+  font-size: 0.72rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.go-there-social--empty {
+  justify-items: center;
+  padding: 1.15rem;
+  text-align: center;
+}
+
+.go-there-social__icon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border-radius: 999px;
+  background: #dff4e6;
+  color: #1ba253;
+  font-size: 1.4rem;
+}
+
+.go-there-social--empty h3,
+.go-there-social--empty p {
+  margin: 0;
+}
+
+.go-there-social--empty h3 {
+  font-size: 1rem;
+}
+
+.go-there-social--empty p {
+  max-width: 29rem;
+  color: #5c7266;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.go-there-social--empty .go-there-guest-fields {
+  width: 100%;
+  text-align: left;
+}
+
 .go-there-section__label,
 .go-there-datetime > span,
 .go-there-invite__fields label > span {
@@ -6665,6 +6937,39 @@
 
 .go-there-timezone .material-symbols-outlined {
   font-size: 0.92rem;
+}
+
+.go-there-open-plan {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 0.65rem;
+  border-top: 1px solid #dce8df;
+  padding-top: 0.75rem;
+}
+
+.go-there-open-plan input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.1rem 0 0;
+  accent-color: #1ba253;
+}
+
+.go-there-open-plan > span {
+  display: grid;
+  gap: 0.13rem;
+}
+
+.go-there-open-plan strong {
+  color: #193b28;
+  font-size: 0.76rem;
+}
+
+.go-there-open-plan small {
+  color: #65796e;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .go-there-location-actions,
@@ -6907,6 +7212,14 @@
 
   .go-there-confirm {
     flex: 1;
+  }
+
+  .go-there-guest-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .go-there-guest-fields > small {
+    grid-column: auto;
   }
 }
 

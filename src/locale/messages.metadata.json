@@ -419,6 +419,10 @@
     "source": "Add knowledge",
     "file": "src/app/profile/profile.html"
   },
+  "1320353499301538532": {
+    "source": "You’re in. The organizer can now see you on the list.",
+    "file": "src/app/boards/boards.ts"
+  },
   "1322625116797386139": {
     "source": "Free LivingWiki access",
     "file": "src/app/chat/chat.ts"
@@ -1051,6 +1055,10 @@
     "source": " Annual {$START_TAG_SPAN}Save{$CLOSE_TAG_SPAN}",
     "file": "src/app/pricing/pricing.html"
   },
+  "1769661379068269645": {
+    "source": "Your email",
+    "file": "src/app/boards/boards.html"
+  },
   "1785042287152969295": {
     "source": "Loading city points",
     "file": "src/app/dymaxion/dymaxion.html"
@@ -1514,6 +1522,10 @@
   "2099926152201934495": {
     "source": "Row",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "2100420227556233148": {
+    "source": "Enter a valid email address so we can send your plan.",
+    "file": "src/app/boards/boards.ts"
   },
   "2110094468894570961": {
     "source": "LivingWiki for business",
@@ -2163,6 +2175,10 @@
     "source": "Converting your location to three words…",
     "file": "src/app/boards/boards.ts"
   },
+  "2572120046524006698": {
+    "source": "Could not join this plan. Please try again.",
+    "file": "src/app/boards/boards.ts"
+  },
   "257538373054146352": {
     "source": "That’s right.",
     "file": "src/app/boards/boards.html"
@@ -2603,6 +2619,10 @@
     "source": "City Sponsor",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "2918542475227099076": {
+    "source": "Enter a valid email address so we can keep you updated.",
+    "file": "src/app/boards/boards.ts"
+  },
   "2925613552136887055": {
     "source": "CRCQL · Delco Environmental Justice · Energy Justice Network",
     "file": "src/app/fence-line/fence-line.html"
@@ -2843,6 +2863,10 @@
     "source": "Lead service lines",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "310293113681478416": {
+    "source": "Close Let’s go plan",
+    "file": "src/app/boards/boards.html"
+  },
   "3104204545608255268": {
     "source": "{$START_TAG_STRONG}For in-feed playback{$CLOSE_TAG_STRONG}, attach the MP4 as native media. The permanent video-page link remains available above as an optional fallback.",
     "file": "src/app/boards/boards.html"
@@ -2977,6 +3001,10 @@
   },
   "3184541958586845717": {
     "source": "Describe the tour",
+    "file": "src/app/boards/boards.html"
+  },
+  "3185198514626127525": {
+    "source": "How people will know you",
     "file": "src/app/boards/boards.html"
   },
   "3186452641234187874": {
@@ -3134,6 +3162,10 @@
   "3274221084458699744": {
     "source": "{$START_TAG_SPAN}edit{$CLOSE_TAG_SPAN} Edit cover ",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "3275068756845590930": {
+    "source": "Let’s go",
+    "file": "src/app/boards/boards.html"
   },
   "3275688485795157595": {
     "source": "Add board",
@@ -3350,10 +3382,6 @@
   "3409234041657436398": {
     "source": "No active article.",
     "file": "src/app/web-scraper/web-scraper.html"
-  },
-  "3410996451751319663": {
-    "source": "Go there",
-    "file": "src/app/boards/boards.html"
   },
   "3411313811577590245": {
     "source": "Your score is ready, but it could not be saved.",
@@ -3694,6 +3722,10 @@
   "3647578343321290452": {
     "source": "Send a message to start a chat",
     "file": "src/app/chat/chat.ts"
+  },
+  "3648754961885576356": {
+    "source": "No time has been chosen yet",
+    "file": "src/app/boards/boards.html"
   },
   "365136080089384152": {
     "source": "{$START_TAG_SPAN}style{$CLOSE_TAG_SPAN} Review source card ",
@@ -4054,6 +4086,10 @@
   "392017562171689836": {
     "source": "Internet mode uses general web knowledge and current public sources, not just your uploaded material.",
     "file": "src/app/chat/chat.ts"
+  },
+  "3920325388606506577": {
+    "source": "You’re already on the interest list. We’ll email you when a time is chosen.",
+    "file": "src/app/boards/boards.ts"
   },
   "3921860248030660154": {
     "source": "Page preview",
@@ -4623,6 +4659,10 @@
     "source": "Bridge cards show the path from each stop to the next.",
     "file": "src/app/boards/boards.html"
   },
+  "4328638021908943937": {
+    "source": "Who would you like to join?",
+    "file": "src/app/boards/boards.html"
+  },
   "4329235876894468241": {
     "source": " Admin ",
     "file": "src/app/account-menu/account-menu.html"
@@ -4854,6 +4894,10 @@
   "4520653876045408569": {
     "source": "Add icons across this collection · {$INTERPOLATION} selected",
     "file": "src/app/boards/boards.html"
+  },
+  "4521652227458170362": {
+    "source": "Could not load plans for this place.",
+    "file": "src/app/boards/boards.ts"
   },
   "4523595445630422797": {
     "source": "Trending Figures",
@@ -6027,6 +6071,10 @@
     "source": "Link ready · coordinates not verified",
     "file": "src/app/boards/boards.html"
   },
+  "5320579534656328845": {
+    "source": "You’re in. We emailed the plan and calendar invite to you.",
+    "file": "src/app/boards/boards.ts"
+  },
   "5320870651003627043": {
     "source": "Question",
     "file": "src/app/boards/boards.html"
@@ -6034,6 +6082,10 @@
   "5323842471809602464": {
     "source": "Subscribe for weekly updates, or sign in to keep exploring the Philly guide.",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "5327783398991797788": {
+    "source": "No account needed. We use your email only for this plan and its updates.",
+    "file": "src/app/boards/boards.html"
   },
   "5329663407415747998": {
     "source": "Chester, Pennsylvania",
@@ -6341,6 +6393,10 @@
   },
   "5574277100406011494": {
     "source": "A Spotify track was found, but no playable preview URL was available for this song.",
+    "file": "src/app/boards/boards.ts"
+  },
+  "5575268937361125192": {
+    "source": "Could not save your interest. Please try again.",
     "file": "src/app/boards/boards.ts"
   },
   "5577760239891590318": {
@@ -6809,6 +6865,10 @@
   },
   "5881758175018584835": {
     "source": "Edit stop",
+    "file": "src/app/boards/boards.html"
+  },
+  "5882923490690313525": {
+    "source": "Say you’re interested. We’ll notify the organizer and email you when a plan is ready to confirm.",
     "file": "src/app/boards/boards.html"
   },
   "5891064527381218201": {
@@ -7311,6 +7371,10 @@
     "source": "LivingWiki answers are generated from available source material, public records, uploaded documents, verified local sources, and user-submitted updates, and may require human review.",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "6231445180124635070": {
+    "source": "You’re already on this plan.",
+    "file": "src/app/boards/boards.ts"
+  },
   "6234386085176180250": {
     "source": "Coordinates",
     "file": "src/app/dymaxion/dymaxion.html"
@@ -7386,10 +7450,6 @@
   "6284442506490785579": {
     "source": "Useful links",
     "file": "src/app/chat/chat.ts"
-  },
-  "6284655290452468362": {
-    "source": "Close Go there plan",
-    "file": "src/app/boards/boards.html"
   },
   "6293525535958609566": {
     "source": "From {$INTERPOLATION} · Links and locations are unchanged.",
@@ -7946,6 +8006,10 @@
   "6620000610425232245": {
     "source": " LivingWiki answers are generated from available source material and may require human review. ",
     "file": "src/app/chat/chat.html"
+  },
+  "6624731951038051393": {
+    "source": "Let board viewers join",
+    "file": "src/app/boards/boards.html"
   },
   "6626189682857360296": {
     "source": "Toxic doughnut",
@@ -8589,7 +8653,7 @@
   },
   "720557322859638078": {
     "source": "You",
-    "file": "src/app/chat/chat.ts"
+    "file": "src/app/boards/boards.ts"
   },
   "7206216939716617656": {
     "source": "This opens the full Answer Card share page with social preview metadata.",
@@ -9003,6 +9067,10 @@
     "source": "Elon Musk: The Complete Timeline",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "7546732776556629045": {
+    "source": "No account needed. We’ll only email you about this place.",
+    "file": "src/app/boards/boards.html"
+  },
   "755320780261948199": {
     "source": "Saved on this browser, but Firebase sync failed.",
     "file": "src/app/boards/boards.ts"
@@ -9095,6 +9163,10 @@
     "source": "15-sec audio recap",
     "file": "src/app/chat/chat.ts"
   },
+  "7621406613067050365": {
+    "source": "A LivingWiki member",
+    "file": "src/app/boards/boards.ts"
+  },
   "7621497930537685975": {
     "source": "{$START_TAG_SPAN}public{$CLOSE_TAG_SPAN} Public ",
     "file": "src/app/boards/boards.html"
@@ -9186,6 +9258,10 @@
   "7676737305273121402": {
     "source": " This is the account owner for the claim, payment, documents, and future business edits. Payment is tied to the signed-in account email. ",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "7678148400723512147": {
+    "source": "Interest saved. We told the organizer and will email you when a time is chosen.",
+    "file": "src/app/boards/boards.ts"
   },
   "7678734731502509550": {
     "source": "Product import audit",
@@ -9457,6 +9533,10 @@
   },
   "7886812346331249953": {
     "source": "Save selected cards",
+    "file": "src/app/boards/boards.html"
+  },
+  "7886832344922735592": {
+    "source": "Finding plans for this place…",
     "file": "src/app/boards/boards.html"
   },
   "7891736560934397673": {
@@ -9935,6 +10015,10 @@
     "source": "Ada Lovelace",
     "file": "src/app/create-account/create-account.html"
   },
+  "8203367621031610680": {
+    "source": "Your name",
+    "file": "src/app/boards/boards.html"
+  },
   "8204176479746810612": {
     "source": "Active",
     "file": "src/app/wiki-home/wiki-home.html"
@@ -10101,6 +10185,10 @@
   },
   "834676576543270616": {
     "source": "{$START_TAG_SPAN}edit_note{$CLOSE_TAG_SPAN} Card details ",
+    "file": "src/app/boards/boards.html"
+  },
+  "8347941075839754092": {
+    "source": "Choose a plan",
     "file": "src/app/boards/boards.html"
   },
   "8350109327144196614": {
@@ -10506,6 +10594,10 @@
   "8686599201905477533": {
     "source": " Launch pricing. Free basic listing remains available as city coverage expands. ",
     "file": "src/app/business/business.html"
+  },
+  "8687049154298551658": {
+    "source": "People can see the time and confirmed names, then join from the Stack.",
+    "file": "src/app/boards/boards.html"
   },
   "8687947392811862262": {
     "source": "Deleting...",
@@ -10951,6 +11043,10 @@
     "source": "{$START_TAG_SPAN}travel_explore{$CLOSE_TAG_SPAN} Philly Atlas ",
     "file": "src/app/fence-line/fence-line.html"
   },
+  "8991021255842491809": {
+    "source": " I’ll choose a time ",
+    "file": "src/app/boards/boards.html"
+  },
   "8994650955745472257": {
     "source": "Open cover photo full screen",
     "file": "src/app/boards/boards.html"
@@ -11366,6 +11462,10 @@
   "988839528622692965": {
     "source": "Shown to visitors after they join. Keep blank until the phone experience is ready.",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "99319995922500877": {
+    "source": " Choose a different time ",
+    "file": "src/app/boards/boards.html"
   },
   "99359195923654024": {
     "source": "Wiki name",

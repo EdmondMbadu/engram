@@ -1,12 +1,16 @@
 const assert = require('node:assert/strict');
 const {
   buildVisitGuestPage,
+  buildVisitInterestAcknowledgementEmail,
+  buildVisitInterestOwnerEmail,
+  buildVisitJoinedEmail,
   buildVisitPlanIcs,
   buildVisitPlanEmail,
   isVisitableBoardCard,
   normalizeVisitPlanEmails,
   normalizeVisitStart,
   normalizeVisitTimezone,
+  serializeVisitPlan,
   visitPlanDocumentId,
   visitMapsUrl,
   visitPlanEmailAttachments,
@@ -87,6 +91,43 @@ assert.match(
 );
 assert.match(confirmationEmail.html, />Google Maps<\/a>/);
 assert.match(confirmationEmail.html, />Exact spot · \/\/\/candy\.sage\.sticks<\/a>/);
+const publicPlan = serializeVisitPlan({
+  id: 'vp_test',
+  board_id: 'board-one',
+  card_id: 'card-one',
+  place_name: 'Steinbeck Plaza',
+  organizer_name: 'Edmond',
+  starts_at_iso: plan.startsAtIso,
+  timezone: plan.timezone,
+  status: 'planned',
+  open_to_board: true,
+  invited_count: 4,
+  accepted_count: 2,
+  pending_count: 2,
+});
+assert.equal(publicPlan.organizerName, 'Edmond');
+assert.equal(publicPlan.openToBoard, true);
+const joinedEmail = buildVisitJoinedEmail(plan, 'https://livingwiki.com/go/token');
+assert.match(joinedEmail.subject, /You're in/);
+assert.match(joinedEmail.text, /View or change your response/);
+assert.match(joinedEmail.html, /Let&#039;s go/);
+const ownerInterestEmail = buildVisitInterestOwnerEmail({
+  organizerName: 'Edmond',
+  interestedName: 'Maya',
+  placeName: plan.placeName,
+  boardTitle: plan.boardTitle,
+  boardUrl: 'https://livingwiki.com/boards/board-one?view=stack',
+});
+assert.match(ownerInterestEmail.subject, /Maya wants to go/);
+assert.match(ownerInterestEmail.html, /Choose a time/);
+const interestAcknowledgement = buildVisitInterestAcknowledgementEmail({
+  interestedName: 'Maya',
+  placeName: plan.placeName,
+  boardTitle: plan.boardTitle,
+  boardUrl: 'https://livingwiki.com/boards/board-one?view=stack',
+});
+assert.match(interestAcknowledgement.subject, /We'll let you know/);
+assert.match(interestAcknowledgement.text, /email you an invitation/);
 
 const guestPage = buildVisitGuestPage({
   plan,

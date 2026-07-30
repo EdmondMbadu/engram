@@ -208,9 +208,11 @@ export function serializeVisitPlan(value: Record<string, unknown>) {
     boardId: text(value.board_id, 160),
     cardId: text(value.card_id, 160),
     placeName: text(value.place_name, 160),
+    organizerName: text(value.organizer_name, 120) || 'A LivingWiki member',
     startsAtIso: text(value.starts_at_iso, 80),
     timezone: normalizeVisitTimezone(value.timezone),
     status: value.status === 'cancelled' ? 'cancelled' as const : 'planned' as const,
+    openToBoard: value.open_to_board === true,
     invitedCount: nonNegativeInteger(value.invited_count),
     acceptedCount: nonNegativeInteger(value.accepted_count),
     pendingCount: nonNegativeInteger(value.pending_count),
@@ -323,7 +325,7 @@ export function buildVisitPlanEmail(
     subject: title,
     text: textBody,
     html: emailFrame({
-      eyebrow: kind === 'reminder' ? 'One-hour reminder' : kind === 'cancelled' ? 'Plan cancelled' : 'Go there',
+      eyebrow: kind === 'reminder' ? 'One-hour reminder' : kind === 'cancelled' ? 'Plan cancelled' : 'Let’s go',
       title,
       intro,
       plan,
@@ -412,6 +414,91 @@ export function buildVisitResponseEmail(
   };
 }
 
+export function buildVisitJoinedEmail(
+  plan: VisitPlanSnapshot,
+  invitationUrl: string,
+): VisitPlanEmail {
+  const when = visitWhenLabel(plan.startsAtIso, plan.timezone);
+  const mapsUrl = visitMapsUrl(plan);
+  const wordsUrl = visitWhat3WordsUrl(plan.what3wordsAddress);
+  const title = `You're in for ${plan.placeName}`;
+  return {
+    subject: title,
+    text: [
+      title,
+      '',
+      `${plan.organizerName} is organizing this plan.`,
+      when,
+      plan.placeAddress,
+      plan.what3wordsAddress ? `Exact spot: ///${plan.what3wordsAddress}` : '',
+      '',
+      `View or change your response: ${invitationUrl}`,
+      `Directions: ${mapsUrl}`,
+      wordsUrl ? `Exact spot: ${wordsUrl}` : '',
+    ].filter((line) => line !== '').join('\n'),
+    html: emailFrame({
+      eyebrow: "Let's go",
+      title,
+      intro: `${plan.organizerName} is organizing this plan. You can use the same link at any time to change your response.`,
+      plan,
+      when,
+      mapsUrl,
+      wordsUrl,
+      primaryLabel: 'View or change response',
+      primaryUrl: invitationUrl,
+    }),
+    calendar: {
+      content: buildVisitPlanIcs(plan, 'confirmed'),
+      filename: safeFilename(`${plan.placeName}.ics`),
+    },
+  };
+}
+
+export function buildVisitInterestOwnerEmail(params: {
+  organizerName: string;
+  interestedName: string;
+  placeName: string;
+  boardTitle: string;
+  boardUrl: string;
+}): VisitPlanEmail {
+  const title = `${params.interestedName} wants to go to ${params.placeName}`;
+  const intro = `Choose a date and time on the board. Once you save an open plan, everyone who expressed interest will receive an invitation to confirm.`;
+  return {
+    subject: title,
+    text: `${title}\n\n${intro}\n\nOpen board: ${params.boardUrl}`,
+    html: simpleVisitEmail({
+      eyebrow: "Let's go",
+      title,
+      intro: `Hi ${params.organizerName}. ${intro}`,
+      detail: params.boardTitle,
+      primaryLabel: 'Choose a time',
+      primaryUrl: params.boardUrl,
+    }),
+  };
+}
+
+export function buildVisitInterestAcknowledgementEmail(params: {
+  interestedName: string;
+  placeName: string;
+  boardTitle: string;
+  boardUrl: string;
+}): VisitPlanEmail {
+  const title = `We'll let you know about ${params.placeName}`;
+  const intro = `We told the board organizer you're interested. When an open date and time is chosen, we'll email you an invitation to confirm.`;
+  return {
+    subject: title,
+    text: `${title}\n\n${intro}\n\nBoard: ${params.boardUrl}`,
+    html: simpleVisitEmail({
+      eyebrow: 'Interest saved',
+      title,
+      intro: `Hi ${params.interestedName}. ${intro}`,
+      detail: params.boardTitle,
+      primaryLabel: 'Open board',
+      primaryUrl: params.boardUrl,
+    }),
+  };
+}
+
 export function buildVisitGuestPage(params: {
   plan: VisitPlanSnapshot;
   invitationUrl: string;
@@ -466,7 +553,7 @@ export function buildVisitGuestPage(params: {
 </head>
 <body>
   <main>
-    <div class="brand"><span>LivingWiki</span><small>Go there</small></div>
+    <div class="brand"><span>LivingWiki</span><small>Let’s go</small></div>
     ${image}
     <div class="body">
       <span class="status">${escapeHtml(cancelled ? 'Cancelled' : params.responseStatus === 'pending' ? 'Invitation' : params.responseStatus)}</span>
@@ -501,7 +588,7 @@ export function buildVisitPlanIcs(
   return [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//LivingWiki//Go There//EN',
+    'PRODID:-//LivingWiki//Lets Go//EN',
     'CALSCALE:GREGORIAN',
     state === 'cancelled' ? 'METHOD:CANCEL' : 'METHOD:PUBLISH',
     'BEGIN:VEVENT',
@@ -590,6 +677,29 @@ function emailFrame(params: {
         <a href="${escapeHtml(params.mapsUrl)}" style="color:#0d3823;font-weight:800;">Google Maps</a>
         ${params.wordsUrl ? ` · <a href="${escapeHtml(params.wordsUrl)}" style="color:#0d3823;font-weight:800;">Exact spot</a>` : ''}
       </p>
+    </div>
+  </div>`;
+}
+
+function simpleVisitEmail(params: {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  detail: string;
+  primaryLabel: string;
+  primaryUrl: string;
+}): string {
+  return `<div style="font-family:Segoe UI,Tahoma,sans-serif;max-width:640px;margin:0 auto;color:#10241a;">
+    <div style="background:#0d3823;color:#fff;padding:28px 30px;border-radius:20px 20px 0 0;">
+      <div style="font-size:12px;font-weight:850;letter-spacing:.13em;text-transform:uppercase;color:#bde8ca;">${escapeHtml(params.eyebrow)}</div>
+      <h1 style="font-size:28px;line-height:1.15;margin:10px 0 0;">${escapeHtml(params.title)}</h1>
+    </div>
+    <div style="background:#fff;border:1px solid #dbe8df;border-top:0;border-radius:0 0 20px 20px;padding:30px;">
+      <p style="font-size:16px;line-height:1.6;color:#40584a;margin:0 0 20px;">${escapeHtml(params.intro)}</p>
+      <div style="background:#edf8f0;border-radius:16px;padding:18px 20px;margin-bottom:22px;font-weight:850;">${escapeHtml(params.detail)}</div>
+      <div style="text-align:center;margin:24px 0;">
+        <a href="${escapeHtml(params.primaryUrl)}" style="display:inline-block;background:#27b45b;color:#fff;text-decoration:none;border-radius:999px;padding:14px 26px;font-weight:900;">${escapeHtml(params.primaryLabel)}</a>
+      </div>
     </div>
   </div>`;
 }
