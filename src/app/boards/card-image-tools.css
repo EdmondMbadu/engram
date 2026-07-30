@@ -154,6 +154,11 @@
 .related-card-shortcut--locked { grid-template-columns:auto minmax(0,1fr);border-style:dashed;box-shadow:none}
 .card-action-menu__panel button small { display:grid;min-width:1.25rem;height:1.25rem;place-items:center;border-radius:999px;background:var(--board-soft,#eef8f1);color:var(--board-accent,var(--accent));font-size:.62rem;font-weight:950;margin-left:auto;padding:0 .28rem}
 
+.board-square--drop-target,.detail-card--drop-target { outline:2px solid color-mix(in srgb,var(--board-accent,var(--accent)) 35%,transparent);outline-offset:.25rem}
+.board-square--drop-before::before,.board-square--drop-after::before,.detail-card--drop-before::before,.detail-card--drop-after::before { content:'';position:absolute;z-index:40;top:.7rem;bottom:.7rem;width:.36rem;border:2px solid #fff;border-radius:999px;background:var(--board-accent,var(--accent));box-shadow:0 3px 12px rgba(0,0,0,.3);pointer-events:none}
+.board-square--drop-before::before,.detail-card--drop-before::before { left:-.72rem}
+.board-square--drop-after::before,.detail-card--drop-after::before { right:-.72rem}
+
 .related-card-manager { display:grid;gap:.75rem;border:2px solid color-mix(in srgb,var(--accent) 42%,var(--line));border-radius:1rem;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 8%,var(--surface)),var(--surface));padding:.85rem}
 .related-card-manager__head { display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:.7rem}
 .related-card-manager__mark { display:grid;width:2.65rem;height:2.65rem;place-items:center;border-radius:.75rem;background:var(--accent);color:var(--accent-contrast);font-size:1.35rem}
@@ -227,6 +232,9 @@
 .related-card-editor__actions>span { display:flex;align-items:center;gap:.48rem}
 
 @media (max-width:700px) {
+  .board-square--drop-before::before,.board-square--drop-after::before,.detail-card--drop-before::before,.detail-card--drop-after::before { right:.7rem;left:.7rem;width:auto;height:.36rem}
+  .board-square--drop-before::before,.detail-card--drop-before::before { top:-.72rem;bottom:auto}
+  .board-square--drop-after::before,.detail-card--drop-after::before { top:auto;bottom:-.72rem}
   .related-card-shortcut { grid-template-columns:auto minmax(0,1fr)}
   .related-card-shortcut__actions { grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}
   .related-card-shortcut__actions .boards-primary-action,.related-card-shortcut__actions .boards-ghost-action { width:100%}

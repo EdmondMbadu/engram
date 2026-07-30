@@ -42,6 +42,11 @@ import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
 import { legacyMemoryImages, relatedCardCollectionLabel } from './related-cards';
 import {
+  insertionSortOrder,
+  reorderRelativeToTarget,
+  type ReorderDropPosition,
+} from './reorder';
+import {
   boardQuizEligibleCardCount,
   buildBoardLearningQuiz,
   gradeBoardLearningQuiz,
@@ -1111,12 +1116,14 @@ export class BoardsComponent implements OnDestroy {
   readonly boardDeleteCandidate = signal<Board | null>(null);
   readonly draggedBoardId = signal<string | null>(null);
   readonly boardDropTargetId = signal<string | null>(null);
+  readonly boardDropPosition = signal<ReorderDropPosition | null>(null);
   readonly cardDeleteCandidate = signal<CardDeleteCandidate | null>(null);
   readonly cardBulkDeleteCandidate = signal<CardBulkDeleteCandidate | null>(null);
   readonly cardManageBoardId = signal<string | null>(null);
   readonly selectedCardIds = signal<Set<string>>(new Set());
   readonly draggedCardId = signal<string | null>(null);
   readonly cardDropTargetId = signal<string | null>(null);
+  readonly cardDropPosition = signal<ReorderDropPosition | null>(null);
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
@@ -4735,6 +4742,7 @@ export class BoardsComponent implements OnDestroy {
     this.cardBulkDeleteCandidate.set(null);
     this.draggedCardId.set(null);
     this.cardDropTargetId.set(null);
+    this.cardDropPosition.set(null);
   }
 
   closeCardManageMode(event?: Event): void {
@@ -4745,6 +4753,7 @@ export class BoardsComponent implements OnDestroy {
     this.cardBulkDeleteCandidate.set(null);
     this.draggedCardId.set(null);
     this.cardDropTargetId.set(null);
+    this.cardDropPosition.set(null);
   }
 
   isCardSelected(cardId: string): boolean {
@@ -4786,12 +4795,28 @@ export class BoardsComponent implements OnDestroy {
     return this.cardDropTargetId() === cardId && this.draggedCardId() !== cardId;
   }
 
+  isCardDropBefore(cardId: string): boolean {
+    return this.isCardDropTarget(cardId) && this.cardDropPosition() === 'before';
+  }
+
+  isCardDropAfter(cardId: string): boolean {
+    return this.isCardDropTarget(cardId) && this.cardDropPosition() === 'after';
+  }
+
   isDraggingBoard(boardId: string): boolean {
     return this.draggedBoardId() === boardId;
   }
 
   isBoardDropTarget(boardId: string): boolean {
     return this.boardDropTargetId() === boardId && this.draggedBoardId() !== boardId;
+  }
+
+  isBoardDropBefore(boardId: string): boolean {
+    return this.isBoardDropTarget(boardId) && this.boardDropPosition() === 'before';
+  }
+
+  isBoardDropAfter(boardId: string): boolean {
+    return this.isBoardDropTarget(boardId) && this.boardDropPosition() === 'after';
   }
 
   toggleCardSelection(cardId: string, event?: Event): void {
@@ -4820,6 +4845,7 @@ export class BoardsComponent implements OnDestroy {
     event.stopPropagation();
     this.draggedCardId.set(card.id);
     this.cardDropTargetId.set(null);
+    this.cardDropPosition.set(null);
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.setData('text/plain', card.id);
@@ -4836,11 +4862,22 @@ export class BoardsComponent implements OnDestroy {
       event.dataTransfer.dropEffect = 'move';
     }
     this.cardDropTargetId.set(card.id);
+    this.cardDropPosition.set(
+      card.id === this.draggedCardId() ? null : this.reorderDropPosition(event),
+    );
   }
 
-  dragCardLeave(card: BoardCard): void {
+  dragCardLeave(event: DragEvent, card: BoardCard): void {
+    if (
+      event.currentTarget instanceof HTMLElement
+      && event.relatedTarget instanceof Node
+      && event.currentTarget.contains(event.relatedTarget)
+    ) {
+      return;
+    }
     if (this.cardDropTargetId() === card.id) {
       this.cardDropTargetId.set(null);
+      this.cardDropPosition.set(null);
     }
   }
 
@@ -4863,15 +4900,21 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
-    const draggedIndex = currentBoard.cards.findIndex((card) => card.id === draggedId);
-    const targetIndex = currentBoard.cards.findIndex((card) => card.id === targetCard.id);
-    if (draggedIndex < 0 || targetIndex < 0) {
+    const dropPosition = this.cardDropTargetId() === targetCard.id
+      ? this.cardDropPosition() ?? this.reorderDropPosition(event)
+      : this.reorderDropPosition(event);
+    const nextCards = reorderRelativeToTarget(
+      currentBoard.cards,
+      draggedId,
+      targetCard.id,
+      dropPosition,
+      (card) => card.id,
+    );
+    if (nextCards.every((card, index) => card.id === currentBoard.cards[index]?.id)) {
       this.clearCardReorderDrag();
       return;
     }
 
-    const nextCards = [...currentBoard.cards];
-    [nextCards[draggedIndex], nextCards[targetIndex]] = [nextCards[targetIndex], nextCards[draggedIndex]];
     const now = new Date().toISOString();
     const nextBoard: Board = { ...currentBoard, cards: nextCards, updatedAt: now };
 
@@ -4883,6 +4926,7 @@ export class BoardsComponent implements OnDestroy {
   clearCardReorderDrag(): void {
     this.draggedCardId.set(null);
     this.cardDropTargetId.set(null);
+    this.cardDropPosition.set(null);
   }
 
   beginBoardReorderDrag(event: DragEvent, board: Board): void {
@@ -4898,6 +4942,7 @@ export class BoardsComponent implements OnDestroy {
     this.suppressNextBoardOpen = true;
     this.draggedBoardId.set(board.id);
     this.boardDropTargetId.set(null);
+    this.boardDropPosition.set(null);
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.setData('text/plain', board.id);
@@ -4914,11 +4959,22 @@ export class BoardsComponent implements OnDestroy {
       event.dataTransfer.dropEffect = 'move';
     }
     this.boardDropTargetId.set(board.id);
+    this.boardDropPosition.set(
+      board.id === this.draggedBoardId() ? null : this.reorderDropPosition(event),
+    );
   }
 
-  dragBoardLeave(board: Board): void {
+  dragBoardLeave(event: DragEvent, board: Board): void {
+    if (
+      event.currentTarget instanceof HTMLElement
+      && event.relatedTarget instanceof Node
+      && event.currentTarget.contains(event.relatedTarget)
+    ) {
+      return;
+    }
     if (this.boardDropTargetId() === board.id) {
       this.boardDropTargetId.set(null);
+      this.boardDropPosition.set(null);
     }
   }
 
@@ -4935,30 +4991,65 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
-    const draggedBoard = this.boards().find((board) => board.id === draggedId);
-    const currentTargetBoard = this.boards().find((board) => board.id === targetBoard.id);
+    const orderedBoards = [...this.boards()].sort((left, right) => this.compareBoards(left, right));
+    const draggedBoard = orderedBoards.find((board) => board.id === draggedId);
+    const currentTargetBoard = orderedBoards.find((board) => board.id === targetBoard.id);
     if (!draggedBoard || !currentTargetBoard || !this.canEditBoard(draggedBoard)) {
       this.clearBoardReorderDrag();
       return;
     }
 
-    const draggedOrder = this.boardSortOrder(draggedBoard);
-    const targetOrder = this.boardSortOrder(currentTargetBoard);
-    const nextDraggedBoard = { ...draggedBoard, sortOrder: targetOrder };
-    const nextTargetBoard = { ...currentTargetBoard, sortOrder: draggedOrder };
-    const replacements = new Map([
-      [nextDraggedBoard.id, nextDraggedBoard],
-      [nextTargetBoard.id, nextTargetBoard],
-    ]);
+    const dropPosition = this.boardDropTargetId() === targetBoard.id
+      ? this.boardDropPosition() ?? this.reorderDropPosition(event)
+      : this.reorderDropPosition(event);
+    const reorderedBoards = reorderRelativeToTarget(
+      orderedBoards,
+      draggedId,
+      targetBoard.id,
+      dropPosition,
+      (board) => board.id,
+    );
+    const nextSortOrder = insertionSortOrder(
+      reorderedBoards,
+      draggedId,
+      (board) => board.id,
+      (board) => this.boardSortOrder(board),
+    );
+    if (nextSortOrder === null) {
+      const now = new Date().toISOString();
+      const normalizedBoards = reorderedBoards.map((board, index) => ({
+        ...board,
+        sortOrder: index,
+        updatedAt: board.sortOrder === index ? board.updatedAt : now,
+      }));
+      const originalBoardsById = new Map(orderedBoards.map((board) => [board.id, board]));
+      const replacements = new Map(normalizedBoards.map((board) => [board.id, board]));
+      this.boards.update((boards) => boards.map((board) => replacements.get(board.id) ?? board));
+      this.clearBoardReorderDrag();
+      await Promise.all(
+        normalizedBoards
+          .filter((board) =>
+            this.canEditBoard(board) && originalBoardsById.get(board.id)?.sortOrder !== board.sortOrder)
+          .map((board) => this.persistAndReplaceBoard(board)),
+      );
+      return;
+    }
 
-    this.boards.update((boards) => boards.map((board) => replacements.get(board.id) ?? board));
+    const nextDraggedBoard = {
+      ...draggedBoard,
+      sortOrder: nextSortOrder,
+      updatedAt: new Date().toISOString(),
+    };
+    this.boards.update((boards) =>
+      boards.map((board) => board.id === nextDraggedBoard.id ? nextDraggedBoard : board));
     this.clearBoardReorderDrag();
-    await Promise.all([this.persistAndReplaceBoard(nextDraggedBoard), this.persistAndReplaceBoard(nextTargetBoard)]);
+    await this.persistAndReplaceBoard(nextDraggedBoard);
   }
 
   clearBoardReorderDrag(): void {
     this.draggedBoardId.set(null);
     this.boardDropTargetId.set(null);
+    this.boardDropPosition.set(null);
     if (this.suppressNextBoardOpen && this.isBrowser) {
       window.setTimeout(() => {
         this.suppressNextBoardOpen = false;
@@ -4978,6 +5069,24 @@ export class BoardsComponent implements OnDestroy {
       return false;
     }
     return Boolean(target.closest('.board-square__tools, .board-sticker, a, input, textarea, select, label'));
+  }
+
+  private reorderDropPosition(event: DragEvent): ReorderDropPosition {
+    if (!this.isBrowser || !(event.currentTarget instanceof HTMLElement)) {
+      return 'after';
+    }
+    const target = event.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const parent = target.parentElement;
+    const columns = parent
+      ? window.getComputedStyle(parent).gridTemplateColumns.split(/\s+/).filter(Boolean).length
+      : 1;
+    const useVerticalEdge = columns <= 1;
+    const pointer = useVerticalEdge ? event.clientY : event.clientX;
+    const midpoint = useVerticalEdge
+      ? rect.top + rect.height / 2
+      : rect.left + rect.width / 2;
+    return pointer < midpoint ? 'before' : 'after';
   }
 
   selectAllVisibleCards(event?: Event): void {
