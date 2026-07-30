@@ -611,6 +611,10 @@
     "source": "Refine with AI",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "1451484137317286847": {
+    "source": "Could not load the people on this plan.",
+    "file": "src/app/boards/boards.ts"
+  },
   "1453675822145067970": {
     "source": "Everyone with access to this board can see names and best scores.",
     "file": "src/app/boards/boards.html"
@@ -730,6 +734,10 @@
   "1521366828705894124": {
     "source": " businesses",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "1526697022461205282": {
+    "source": "Loading people…",
+    "file": "src/app/boards/boards.html"
   },
   "1528163516676561552": {
     "source": "Source Files",
@@ -2575,6 +2583,10 @@
     "source": "Local",
     "file": "src/app/boards/boards.ts"
   },
+  "2907120007943470857": {
+    "source": "Organizer",
+    "file": "src/app/boards/boards.ts"
+  },
   "2908643309302177524": {
     "source": "Video Game Industry Atlas",
     "file": "src/app/public-wiki-catalog.ts"
@@ -4134,6 +4146,10 @@
   "3977402927601294134": {
     "source": "Knowledge synthesis",
     "file": "src/app/wiki/wiki.html"
+  },
+  "3978854126267726894": {
+    "source": "Send email invitation",
+    "file": "src/app/boards/boards.html"
   },
   "3983481141170710649": {
     "source": "This browser cannot access your location.",
@@ -5923,6 +5939,10 @@
     "source": "Coffee",
     "file": "src/app/business-badge-icons.ts"
   },
+  "5273198776882578076": {
+    "source": " Choose a quick option or enter the date and time before confirming or inviting. ",
+    "file": "src/app/boards/boards.html"
+  },
   "5274088121650769883": {
     "source": "Chinese",
     "file": "src/app/business-claim/business-claim.ts"
@@ -6951,6 +6971,10 @@
     "source": "AGI timelines, capability research, existential risk arguments, policy proposals, and the philosophical questions around superintelligent AI.",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "5999711108516045611": {
+    "source": " Choosing an invitation action will save your plan first. ",
+    "file": "src/app/boards/boards.html"
+  },
   "5999961190582530556": {
     "source": "visible communities",
     "file": "src/app/fence-line/fence-line.html"
@@ -7158,6 +7182,10 @@
   "6166411589217463623": {
     "source": "Search pictures",
     "file": "src/app/boards/boards.html"
+  },
+  "6174116609462531764": {
+    "source": "Plan saved.",
+    "file": "src/app/boards/boards.ts"
   },
   "6175322351768154485": {
     "source": "Saving your result…",
@@ -8407,6 +8435,10 @@
     "source": "© 2026 Mind Palace Inc. LivingWiki™. All rights reserved.",
     "file": "src/app/business/business.html"
   },
+  "7046682610560834138": {
+    "source": "Choose when you’re going first.",
+    "file": "src/app/boards/boards.ts"
+  },
   "7051535332948231705": {
     "source": " Refresh official city metrics, inspect the stored snapshot, and validate what the public landing page will render. ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
@@ -8977,6 +9009,10 @@
   },
   "7553278066673213143": {
     "source": "This board is ready for its first card.",
+    "file": "src/app/boards/boards.html"
+  },
+  "7554385645067100439": {
+    "source": "No responses yet.",
     "file": "src/app/boards/boards.html"
   },
   "7555209994333765049": {
@@ -9773,6 +9809,10 @@
   },
   "8115744689870578001": {
     "source": "Exact spot",
+    "file": "src/app/boards/boards.html"
+  },
+  "8118332921722098866": {
+    "source": " Guests can update their response from the same invitation. ",
     "file": "src/app/boards/boards.html"
   },
   "811887178541485672": {
@@ -11110,6 +11150,10 @@
   "9142603958883725949": {
     "source": " Jobs {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
     "file": "src/app/green-jobs/green-jobs.html"
+  },
+  "9145391012395389952": {
+    "source": "Going",
+    "file": "src/app/boards/boards.ts"
   },
   "9153508585400405262": {
     "source": "Question {$INTERPOLATION}",

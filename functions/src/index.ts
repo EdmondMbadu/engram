@@ -6603,6 +6603,12 @@ async function sendVisitTransactionalEmail(
     subject: email.subject,
     text: email.text,
     html: email.html,
+    trackingSettings: {
+      clickTracking: {
+        enable: false,
+        enableText: false,
+      },
+    },
     ...(email.calendar ? { attachments: visitPlanEmailAttachments(email) } : {}),
   });
 }
@@ -6777,6 +6783,7 @@ export const createVisitPlan = onCall(
     const previous = await ref.get();
     const previousData = previous.data() as Record<string, unknown> | undefined;
     const previousStart = stringOrEmpty(previousData?.starts_at_iso);
+    const previousTimezone = normalizeVisitTimezone(previousData?.timezone);
     const snapshot = visitPlanSnapshot(planId, board, card, organizer, start, timezone);
     await ref.set({
       ...visitPlanRecord(snapshot, start.ms, nowMs),
@@ -6809,7 +6816,11 @@ export const createVisitPlan = onCall(
       });
     }
 
-    if (previous.exists && previousStart && previousStart !== start.iso) {
+    if (
+      previous.exists
+      && previousStart
+      && (previousStart !== start.iso || previousTimezone !== timezone)
+    ) {
       await notifyExistingVisitInvitees(snapshot, 'updated');
     }
     const inviteEmails = normalizeVisitPlanEmails(request.data?.inviteEmails)
@@ -6853,6 +6864,70 @@ export const getMyVisitPlans = onCall(
         .filter((snapshot) => snapshot.exists && snapshot.data()?.organizer_user_id === userId)
         .map((snapshot) => serializeVisitPlan(snapshot.data() ?? {}))
         .filter((plan) => plan.status === 'planned'),
+    };
+  },
+);
+
+export const getVisitPlanAttendees = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    const userId = request.auth?.uid ?? '';
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to view this plan.');
+    }
+    const planId = visitPlanIdentifier(request.data?.planId, 'planId');
+    const planDocument = await db.collection('visit_plans').doc(planId).get();
+    const planData = planDocument.data() as Record<string, unknown> | undefined;
+    if (!planDocument.exists || planData?.organizer_user_id !== userId) {
+      throw new HttpsError('not-found', 'Visit plan not found.');
+    }
+    const organizerName = stringOrEmpty(planData.organizer_name).slice(0, 120) || 'You';
+    const invitations = await visitPlanInvitations(planId);
+    const guests = invitations
+      .map(({ record }) => {
+        const status = record.status === 'accepted'
+          ? 'going' as const
+          : record.status === 'pending'
+            ? 'pending' as const
+            : null;
+        if (!status) {
+          return null;
+        }
+        const recipientEmail = normalizeUserEmail(record.recipient_email);
+        const fallbackName = record.channel === 'text'
+          ? 'Text invitation'
+          : record.channel === 'copy'
+            ? 'Shared invitation'
+            : 'Invited guest';
+        return {
+          id: stringOrEmpty(record.id),
+          name: stringOrEmpty(record.guest_name).slice(0, 80) || recipientEmail || fallbackName,
+          role: 'guest' as const,
+          status,
+        };
+      })
+      .filter((attendee): attendee is NonNullable<typeof attendee> => !!attendee)
+      .sort((left, right) => {
+        if (left.status !== right.status) {
+          return left.status === 'going' ? -1 : 1;
+        }
+        return left.name.localeCompare(right.name);
+      });
+    return {
+      attendees: [
+        {
+          id: `organizer_${planId}`,
+          name: organizerName,
+          role: 'organizer' as const,
+          status: 'going' as const,
+        },
+        ...guests,
+      ],
     };
   },
 );

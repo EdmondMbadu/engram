@@ -5764,11 +5764,58 @@
 
           @if (activeVisitPlan(); as currentPlan) {
             <div class="go-there-current">
-              <span class="material-symbols-outlined">event_available</span>
-              <span>
-                <strong>{{ visitPlanCardLabel(goThereCard) }}</strong>
-                <small>{{ visitPlanAttendeeLabel(currentPlan) }}</small>
-              </span>
+              <button
+                type="button"
+                class="go-there-current__toggle"
+                [attr.aria-expanded]="visitPlanAttendeesExpanded()"
+                aria-controls="go-there-attendees"
+                (click)="toggleVisitPlanAttendees()"
+              >
+                <span class="material-symbols-outlined">group</span>
+                <span>
+                  <strong>{{ visitPlanPeopleLabel(currentPlan) }}</strong>
+                  <small>{{ visitPlanCardLabel(goThereCard) }} · View people</small>
+                </span>
+                <span class="material-symbols-outlined">
+                  {{ visitPlanAttendeesExpanded() ? 'expand_less' : 'expand_more' }}
+                </span>
+              </button>
+              @if (visitPlanAttendeesExpanded()) {
+                <div id="go-there-attendees" class="go-there-attendees">
+                  @if (visitPlanAttendeesLoading()) {
+                    <div class="go-there-attendees__state" role="status">
+                      <span class="material-symbols-outlined">progress_activity</span>
+                      <span i18n>Loading people…</span>
+                    </div>
+                  } @else if (visitPlanAttendeesError()) {
+                    <div class="go-there-attendees__state go-there-attendees__state--error" role="alert">
+                      {{ visitPlanAttendeesError() }}
+                    </div>
+                  } @else {
+                    @for (attendee of visitPlanAttendees(); track attendee.id) {
+                      <div class="go-there-attendee">
+                        <span
+                          class="go-there-attendee__avatar"
+                          [class.go-there-attendee__avatar--pending]="attendee.status === 'pending'"
+                        >
+                          <span class="material-symbols-outlined">
+                            {{ attendee.role === 'organizer' ? 'person' : attendee.status === 'going' ? 'check' : 'schedule' }}
+                          </span>
+                        </span>
+                        <span>
+                          <strong>{{ attendee.role === 'organizer' ? 'You' : attendee.name }}</strong>
+                          <small>{{ visitPlanAttendeeStatus(attendee) }}</small>
+                        </span>
+                      </div>
+                    } @empty {
+                      <div class="go-there-attendees__state" i18n>No responses yet.</div>
+                    }
+                  }
+                  <small class="go-there-attendees__note" i18n>
+                    Guests can update their response from the same invitation.
+                  </small>
+                </div>
+              }
             </div>
           }
 
@@ -5784,10 +5831,16 @@
               <input
                 type="datetime-local"
                 required
+                [attr.aria-invalid]="!visitPlanTimeSelected()"
                 [value]="visitPlanDateTime()"
                 (input)="updateVisitPlanDateTime($any($event.target).value)"
               />
             </label>
+            @if (!visitPlanTimeSelected()) {
+              <small class="go-there-time-prompt" i18n>
+                Choose a quick option or enter the date and time before confirming or inviting.
+              </small>
+            }
             <small class="go-there-timezone">
               <span class="material-symbols-outlined">schedule</span>
               {{ visitPlanTimezone() }}
@@ -5837,16 +5890,37 @@
                    i18n-placeholder/>
                   <small i18n>Separate multiple addresses with commas. Guests can respond without an account.</small>
                 </label>
-                @if (activeVisitPlan()) {
+                <button
+                  type="button"
+                  class="go-there-send-email"
+                  [disabled]="visitPlanSaving() || visitPlanSharing()"
+                  (click)="sendVisitPlanEmailInvites($event)"
+                >
+                  <span class="material-symbols-outlined">send</span>
+                  <span i18n>Send email invitation</span>
+                </button>
+                <div class="go-there-share-row">
                   <button
                     type="button"
-                    class="go-there-send-email"
-                    [disabled]="visitPlanSharing()"
-                    (click)="sendVisitPlanEmailInvites($event)"
+                    [disabled]="visitPlanSaving() || visitPlanSharing()"
+                    (click)="shareVisitPlan('text', $event)"
                   >
-                    <span class="material-symbols-outlined">send</span>
-                    <span>{{ visitPlanSharing() ? 'Sending…' : 'Send email invitation' }}</span>
+                    <span class="material-symbols-outlined">sms</span>
+                    <strong i18n>Text invite</strong>
                   </button>
+                  <button
+                    type="button"
+                    [disabled]="visitPlanSaving() || visitPlanSharing()"
+                    (click)="shareVisitPlan('copy', $event)"
+                  >
+                    <span class="material-symbols-outlined">content_copy</span>
+                    <strong i18n>Copy invite</strong>
+                  </button>
+                </div>
+                @if (!activeVisitPlan()) {
+                  <small class="go-there-invite__save-note" i18n>
+                    Choosing an invitation action will save your plan first.
+                  </small>
                 }
               </div>
             }
@@ -5865,18 +5939,6 @@
             </div>
           }
 
-          @if (activeVisitPlan(); as currentPlan) {
-            <div class="go-there-share-row">
-              <button type="button" [disabled]="visitPlanSharing()" (click)="shareVisitPlan('text')">
-                <span class="material-symbols-outlined">sms</span>
-                <span i18n>Text invite</span>
-              </button>
-              <button type="button" [disabled]="visitPlanSharing()" (click)="shareVisitPlan('copy')">
-                <span class="material-symbols-outlined">content_copy</span>
-                <span i18n>Copy invite</span>
-              </button>
-            </div>
-          }
         </div>
 
         <footer class="go-there-sheet__footer">

@@ -26,6 +26,13 @@ export type VisitPlanSummary = {
   pendingCount: number;
 };
 
+export type VisitPlanAttendee = {
+  id: string;
+  name: string;
+  role: 'organizer' | 'guest';
+  status: 'going' | 'pending';
+};
+
 export function canPlanVisit(card: GoThereCardLike): boolean {
   const mediaKind = stringValue(card.mediaKind).toLowerCase();
   const entityType = stringValue(card.entityType).toLowerCase();
@@ -134,6 +141,29 @@ export function visitPlanLabel(
     }).format(start)}`;
   } catch {
     return `Going · ${start.toLocaleString()}`;
+  }
+}
+
+export function visitPlanInvitationTime(
+  plan: Pick<VisitPlanSummary, 'startsAtIso' | 'timezone'>,
+): string {
+  const start = new Date(plan.startsAtIso);
+  if (!Number.isFinite(start.getTime())) {
+    return '';
+  }
+  try {
+    return new Intl.DateTimeFormat(undefined, {
+      timeZone: plan.timezone || undefined,
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+    }).format(start);
+  } catch {
+    return start.toLocaleString();
   }
 }
 

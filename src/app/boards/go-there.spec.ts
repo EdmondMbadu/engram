@@ -4,6 +4,7 @@ import {
   parseVisitInviteEmails,
   rightNowVisitDateTime,
   tomorrowVisitDateTime,
+  visitPlanInvitationTime,
   visitPlanLabel,
   visitStartIso,
 } from './go-there';
@@ -63,5 +64,15 @@ describe('Go there planning', () => {
       startsAtIso: '2026-07-28T17:00:00.000Z',
       timezone: 'UTC',
     }, now)).toContain('Going ·');
+  });
+
+  it('formats invitation times with the complete date, time, and timezone', () => {
+    const label = visitPlanInvitationTime({
+      startsAtIso: '2026-07-30T17:00:00.000Z',
+      timezone: 'America/Los_Angeles',
+    });
+    expect(label).toContain('2026');
+    expect(label).toContain('10:00');
+    expect(label).toMatch(/PDT|GMT-7/);
   });
 });
