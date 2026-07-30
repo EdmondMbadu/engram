@@ -4754,6 +4754,7 @@ type BoardWizardCallableData = {
   vibe?: unknown;
   tourOptions?: unknown;
   existingCards?: unknown;
+  singleTourStop?: unknown;
 };
 
 type BoardWizardTourOptions = {
@@ -6036,6 +6037,7 @@ export const generateBoardWizardBatch = onCall(
     const existingCards = Array.isArray(data.existingCards)
       ? data.existingCards.map(normalizeExistingBoardWizardCard).filter((card): card is { title: string; subtitle?: string; tags?: string[] } => !!card).slice(0, 40)
       : [];
+    const singleTourStop = data.singleTourStop === true && isBoardWizardTourMode(mode) && count === 1;
     const currentCard = normalizeBoardWizardCurrentCard(data.currentCard, defaultType);
 
     if (data.imageOnly === true) {
@@ -6227,40 +6229,56 @@ export const generateBoardWizardBatch = onCall(
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, choose photos, or provide a URL.');
     }
 
-    const generated = commerceExtraction
-      ? buildCommerceWizardBatch({
-          extraction: commerceExtraction,
-          targetBoardTitle,
-          requestedCount: explicitCount,
-        })
-      : accommodationExtraction
-      ? buildAccommodationWizardBatch({
-          extraction: accommodationExtraction,
-          targetBoardTitle,
-          count,
-        })
-      : urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3
-      ? buildRestaurantMenuWizardBatch({
-          extraction: urlExtraction,
-          sourceUrl: url,
-          targetBoardTitle,
-          count,
-        })
-      : await generateBoardWizardBatchWithGemini({
-          mode,
-          prompt: effectivePrompt || url || photoNames.join(', '),
-          pastedList,
-          url: sourceUrl,
-          photoNames,
-          photos,
-          targetBoardTitle,
-          defaultType,
-          count: generationCount,
-          countIsExplicit: !!numberedSource || explicitCount !== null || photoNames.length > 0 || photos.length > 0,
-          vibe,
-          tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
-          existingCards,
-        });
+    let generated: GeneratedBoardWizardBatch;
+    try {
+      generated = commerceExtraction
+        ? buildCommerceWizardBatch({
+            extraction: commerceExtraction,
+            targetBoardTitle,
+            requestedCount: explicitCount,
+          })
+        : accommodationExtraction
+        ? buildAccommodationWizardBatch({
+            extraction: accommodationExtraction,
+            targetBoardTitle,
+            count,
+          })
+        : urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3
+        ? buildRestaurantMenuWizardBatch({
+            extraction: urlExtraction,
+            sourceUrl: url,
+            targetBoardTitle,
+            count,
+          })
+        : await generateBoardWizardBatchWithGemini({
+            mode,
+            prompt: effectivePrompt || url || photoNames.join(', '),
+            pastedList,
+            url: sourceUrl,
+            photoNames,
+            photos,
+            targetBoardTitle,
+            defaultType,
+            count: generationCount,
+            countIsExplicit: !!numberedSource || explicitCount !== null || photoNames.length > 0 || photos.length > 0,
+            vibe,
+            tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
+            existingCards,
+            singleTourStop,
+          });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (/credits are depleted|prepayment|prepaid balance/iu.test(message)) {
+        throw new HttpsError(
+          'resource-exhausted',
+          'AI generation is paused because the Gemini API prepaid balance is empty. Add credits in Google AI Studio Billing, then try again.',
+        );
+      }
+      throw new HttpsError(
+        'unavailable',
+        message || 'AI generation is temporarily unavailable. Please try again.',
+      );
+    }
     const sourceShapedGenerated = numberedSource
       ? shapeNumberedSourceWizardBatch(generated, numberedSource, defaultType)
       : generated;
@@ -8522,6 +8540,12 @@ type StoredTourCard = Record<string, unknown> & {
   tour: Record<string, unknown>;
 };
 
+function storedCardId(value: unknown): string {
+  return value && typeof value === 'object'
+    ? textFromUnknown((value as Record<string, unknown>).id).slice(0, 160)
+    : '';
+}
+
 function storedTourCard(value: unknown): StoredTourCard | null {
   if (!value || typeof value !== 'object') {
     return null;
@@ -8575,17 +8599,30 @@ export const recalculateBoardTourRoute = onCall(
   async (request) => {
     const userId = request.auth?.uid ?? '';
     if (!userId) {
-      throw new HttpsError('unauthenticated', 'Sign in to reorder a tour.');
+      throw new HttpsError('unauthenticated', 'Sign in to edit a tour.');
     }
     const boardId = textFromUnknown(request.data?.boardId).slice(0, 160);
     const baseUpdatedAt = textFromUnknown(request.data?.baseUpdatedAt).slice(0, 80);
+    const addedCard = storedTourCard(request.data?.addedCard);
+    const deletedCardId = textFromUnknown(request.data?.deletedCardId).slice(0, 160);
+    const deletedCardIds = Array.from(new Set([
+      deletedCardId,
+      ...(Array.isArray(request.data?.deletedCardIds)
+        ? request.data.deletedCardIds.map((value: unknown) => textFromUnknown(value).slice(0, 160))
+        : []),
+    ].filter(Boolean))).slice(0, 100);
     const orderedCardIds: string[] = Array.isArray(request.data?.orderedCardIds)
       ? request.data.orderedCardIds
         .map((value: unknown) => textFromUnknown(value).slice(0, 160))
         .filter(Boolean)
         .slice(0, 100)
       : [];
-    if (!boardId || orderedCardIds.length < 2 || new Set(orderedCardIds).size !== orderedCardIds.length) {
+    if (
+      !boardId
+      || new Set(orderedCardIds).size !== orderedCardIds.length
+      || (addedCard && deletedCardIds.length)
+      || (!orderedCardIds.length && !deletedCardIds.length)
+    ) {
       throw new HttpsError('invalid-argument', 'Provide every tour stop once, in the desired order.');
     }
 
@@ -8596,7 +8633,7 @@ export const recalculateBoardTourRoute = onCall(
     }
     const board = snapshot.data() as Record<string, unknown>;
     if (textFromUnknown(board.owner_user_id) !== userId) {
-      throw new HttpsError('permission-denied', 'Only the board owner can reorder this tour.');
+      throw new HttpsError('permission-denied', 'Only the board owner can edit this tour.');
     }
     const kind = textFromUnknown(board.kind);
     if (kind !== 'walking-tour' && kind !== 'driving-tour') {
@@ -8608,7 +8645,23 @@ export const recalculateBoardTourRoute = onCall(
     }
 
     const rawCards: unknown[] = Array.isArray(board.cards) ? board.cards : [];
-    const currentTourCards = rawCards
+    const storedIds = new Set(rawCards.map(storedCardId).filter(Boolean));
+    if (addedCard && storedIds.has(addedCard.id)) {
+      throw new HttpsError('already-exists', 'That tour stop already exists.');
+    }
+    if (deletedCardIds.some((id) => !storedIds.has(id))) {
+      throw new HttpsError('failed-precondition', 'That tour stop was already removed.');
+    }
+    const deletedIds = new Set(deletedCardIds);
+    const mutatedRawCards = deletedIds.size
+      ? rawCards.filter((card) => {
+          const id = storedCardId(card);
+          return !id || !deletedIds.has(id);
+        })
+      : addedCard
+        ? [...rawCards, addedCard]
+        : rawCards;
+    const currentTourCards = mutatedRawCards
       .map(storedTourCard)
       .filter((card): card is StoredTourCard => !!card);
     const currentIds = new Set(currentTourCards.map((card) => card.id));
@@ -8664,7 +8717,7 @@ export const recalculateBoardTourRoute = onCall(
     });
 
     let tourIndex = 0;
-    const updatedCards = rawCards.map((card) => storedTourCard(card)
+    const updatedCards = mutatedRawCards.map((card) => storedTourCard(card)
       ? updatedTourCards[tourIndex++] ?? card
       : card);
     const routeLegs: Record<string, unknown>[] = updatedTourCards.flatMap((card) => {

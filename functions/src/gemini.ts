@@ -1388,6 +1388,7 @@ export async function generateBoardWizardBatch(params: {
     extras?: string[];
   } | null;
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+  singleTourStop?: boolean;
 }): Promise<GeneratedBoardWizardBatch> {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
   const verificationRequired = shouldVerifyBoardWizardBatch(params, count);
@@ -1413,6 +1414,7 @@ export async function generateBoardWizardBatch(params: {
         ]),
       ]
     : prompt;
+  let lastGenerationError: Error | null = null;
 
   for (const wizardModel of boardWizardModels) {
     try {
@@ -1443,6 +1445,7 @@ export async function generateBoardWizardBatch(params: {
         return draft;
       }
     } catch (error) {
+      lastGenerationError = error instanceof Error ? error : new Error(String(error));
       logger.warn('Failed to generate board wizard batch with Gemini model.', {
         model: wizardModel,
         mode: params.mode,
@@ -1452,7 +1455,7 @@ export async function generateBoardWizardBatch(params: {
     }
   }
 
-  return buildFallbackBoardWizardBatch(params, count);
+  throw lastGenerationError ?? new Error('Gemini did not return a usable board.');
 }
 
 function shouldVerifyBoardWizardBatch(
@@ -1572,6 +1575,7 @@ function buildBoardWizardPrompt(params: {
     extras?: string[];
   } | null;
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
+  singleTourStop?: boolean;
 }): string {
   const numberedSource = params.mode === 'paste' ? parseNumberedBoardSource(params.pastedList ?? '') : null;
   const vibeInstructions: Record<BoardWizardVibe, string> = {
@@ -1626,7 +1630,18 @@ function buildBoardWizardPrompt(params: {
           'The selected photo will be attached to its matching card by the client, so image_query should briefly describe that same visible image and must not request a replacement image.',
         ].join('\n')
       : '',
-    params.mode === 'walking-tour' || params.mode === 'driving-tour'
+    (params.mode === 'walking-tour' || params.mode === 'driving-tour') && params.singleTourStop
+      ? [
+          'SINGLE TOUR STOP MODE: Return exactly one card for the requested destination, not a complete tour.',
+          `Tour kind: ${params.mode === 'driving-tour' ? 'driving' : 'walking'}.`,
+          `Guide voice: ${params.tourOptions?.voiceStyle ?? 'historian'}.`,
+          'The requested destination is authoritative. Do not replace it with a suggested nearby stop and do not repeat these instructions as card content.',
+          'Resolve the canonical real place. Use its proper name, precise navigable address, latitude, longitude, and a specific image query.',
+          'Write a concise factual description and polished standalone spoken guide narration of roughly 90-160 words, with no markdown.',
+          'Set tour.sequence to 1 and tour.legToNext to null. Route insertion and neighboring legs are calculated separately after saving.',
+          'Use type "place", scope "place", status "planned" or "saved", and tags including "tour-stop".',
+        ].join('\n')
+      : params.mode === 'walking-tour' || params.mode === 'driving-tour'
       ? [
           'TOUR MODE: Create a self-guided tour, not a generic board.',
           `Tour kind: ${params.mode === 'driving-tour' ? 'driving' : 'walking'}.`,
@@ -1703,6 +1718,9 @@ function normalizeBoardWizardBatch(
   const cards = Array.isArray(data.cards)
     ? data.cards.map((item) => normalizeBoardWizardCard(item, params.defaultType)).filter((card): card is GeneratedBoardWizardCard => !!card)
     : [];
+  if (!cards.length) {
+    throw new Error('Gemini did not return any usable cards.');
+  }
   const fallback = buildFallbackBoardWizardBatch({ ...params, mode: 'describe', count }, count);
   return {
     board: {
@@ -1713,7 +1731,7 @@ function normalizeBoardWizardBatch(
       kind: normalizeBoardWizardKind(boardData.kind, fallback.board.kind),
       tourMeta: normalizeBoardTourMeta(boardData.tourMeta, fallback.board.tourMeta),
     },
-    cards: (cards.length ? cards : fallback.cards).slice(0, count),
+    cards: cards.slice(0, count),
   };
 }
 

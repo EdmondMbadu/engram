@@ -3,7 +3,7 @@
     class="spotify-official-dock"
     [class.spotify-official-dock--compact]="officialCompact()"
     aria-label="Official Spotify player"
-  >
+   i18n-aria-label>
     <div class="spotify-official-dock__header">
       @if (track.artworkUrl) {
         <img [src]="track.artworkUrl" [alt]="track.title + ' artwork'" />
@@ -11,7 +11,7 @@
         <span class="spotify-official-dock__fallback material-symbols-outlined">album</span>
       }
       <div>
-        <small>
+        <small i18n>
           <i></i>
           Official Spotify player
         </small>
@@ -31,7 +31,7 @@
         type="button"
         aria-label="Close official Spotify player"
         (click)="spotify.closeEmbeddedPlayer()"
-      >
+       i18n-aria-label>
         <span class="material-symbols-outlined">close</span>
       </button>
     </div>
@@ -49,11 +49,11 @@
         ></iframe>
       </div>
       <div class="spotify-official-dock__footer">
-        <span>
+        <span i18n>
           <span class="material-symbols-outlined">verified_user</span>
           Full playback is handled by Spotify when supported by your browser. No LivingWiki connection needed.
         </span>
-        <a [href]="track.spotifyUrl" target="_blank" rel="noopener">
+        <a [href]="track.spotifyUrl" target="_blank" rel="noopener" i18n>
           Open in Spotify
           <span class="material-symbols-outlined">open_in_new</span>
         </a>

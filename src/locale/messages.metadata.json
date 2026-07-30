@@ -55,6 +55,10 @@
     "source": "Save QR code",
     "file": "src/app/business-detail/business-edit.ts"
   },
+  "1043233646571593940": {
+    "source": "Keep player open",
+    "file": "src/app/boards/boards.html"
+  },
   "104629517498988019": {
     "source": "Place search is unavailable right now. You can still type the business manually.",
     "file": "src/app/business-claim/business-claim.ts"
@@ -151,6 +155,10 @@
     "source": "{count} of 5 anonymous questions remaining.",
     "file": "src/app/chat/chat.ts"
   },
+  "1125229702886578811": {
+    "source": "Replace photo",
+    "file": "src/app/boards/boards.html"
+  },
   "112743048893726724": {
     "source": "{count} local reviews",
     "file": "src/app/chat/chat.ts"
@@ -207,9 +215,17 @@
     "source": "Map position",
     "file": "src/app/atlas-landing/atlas-landing.ts"
   },
+  "1161230775313044883": {
+    "source": "{$START_TAG_SPAN}add_location_alt{$CLOSE_TAG_SPAN} Add stop ",
+    "file": "src/app/boards/boards.html"
+  },
   "1161299114153631702": {
     "source": "Completed",
     "file": "src/app/boards/boards.html"
+  },
+  "1169260545431807459": {
+    "source": "Spotify Premium is required for full-song playback inside LivingWiki.",
+    "file": "src/app/spotify-playback.service.ts"
   },
   "1169341252579540804": {
     "source": " No city metrics yet. Configure the atlas in settings and refresh the worldometers snapshot. ",
@@ -263,6 +279,10 @@
     "source": " LivingWiki™ is a product of Mind Palace Inc. It is not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project. ",
     "file": "src/app/create-account/create-account.html"
   },
+  "1198549113650077336": {
+    "source": "{$START_TAG_SPAN}verified_user{$CLOSE_TAG_SPAN} Full playback is handled by Spotify when supported by your browser. No LivingWiki connection needed. ",
+    "file": "src/app/spotify-player/spotify-player.html"
+  },
   "1202678873529936166": {
     "source": "Pandemic Preparedness & Response",
     "file": "src/app/public-wiki-catalog.ts"
@@ -290,6 +310,10 @@
   "1216482717248264089": {
     "source": "Enter a test recipient email address.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
+  },
+  "1218334388194408974": {
+    "source": "Before",
+    "file": "src/app/boards/boards.html"
   },
   "1228507903896075511": {
     "source": "Choose a valid date and time.",
@@ -751,6 +775,14 @@
     "source": "Cocktail",
     "file": "src/app/business-badge-icons.ts"
   },
+  "150836798187289724": {
+    "source": "Start of tour",
+    "file": "src/app/boards/boards.html"
+  },
+  "1514311915642092956": {
+    "source": "{$START_TAG_SPAN}play_circle{$CLOSE_TAG_SPAN} Full playback is handled by Spotify when supported by your browser. ",
+    "file": "src/app/boards/boards.html"
+  },
   "151445971223881996": {
     "source": "Tour address",
     "file": "src/app/boards/boards.html"
@@ -903,6 +935,10 @@
     "source": "Loading Source Files...",
     "file": "src/app/library/library.ts"
   },
+  "1597680822393816412": {
+    "source": "Photos for this board",
+    "file": "src/app/boards/boards.html"
+  },
   "1598474817296415453": {
     "source": "\"Sound calm, direct, and avoid hedging language.\"",
     "file": "src/app/atlas-persona/atlas-persona.html"
@@ -943,6 +979,10 @@
     "source": "Translating…",
     "file": "src/app/boards/boards.ts"
   },
+  "1619801148352211824": {
+    "source": "Make any changes before it joins the route.",
+    "file": "src/app/boards/boards.html"
+  },
   "1630112391999908058": {
     "source": "Search by name or email",
     "file": "src/app/boards/boards.html"
@@ -982,6 +1022,14 @@
   "167189657767887087": {
     "source": "The Human Body: A Living Medical Reference",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "167406533841467180": {
+    "source": "Resolved from the map location",
+    "file": "src/app/boards/boards.html"
+  },
+  "1693937864227883367": {
+    "source": " Open in Spotify {$START_TAG_SPAN}open_in_new{$CLOSE_TAG_SPAN}",
+    "file": "src/app/spotify-player/spotify-player.html"
   },
   "1699576322323865032": {
     "source": "{$START_TAG_SPAN}sync{$CLOSE_TAG_SPAN} Refresh ",
@@ -1171,6 +1219,10 @@
     "source": " Open map {$START_TAG_SPAN}arrow_outward{$CLOSE_TAG_SPAN}",
     "file": "src/app/city-places/city-places.html"
   },
+  "1824876591631529834": {
+    "source": "photos were",
+    "file": "src/app/boards/boards.ts"
+  },
   "1829360884502517320": {
     "source": "Add card to board",
     "file": "src/app/boards/boards.html"
@@ -1277,6 +1329,10 @@
   },
   "1890174366404475460": {
     "source": "Sign in to create a board.",
+    "file": "src/app/boards/boards.ts"
+  },
+  "1900652734060382700": {
+    "source": "Turn your actual photos into a visual memory board.",
     "file": "src/app/boards/boards.ts"
   },
   "1905338138080894943": {
@@ -1615,6 +1671,10 @@
     "source": "Checkout could not be started. Please try again.",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "2141429355459762963": {
+    "source": "Exact place name",
+    "file": "src/app/boards/boards.html"
+  },
   "2142062721718317578": {
     "source": "Add friend",
     "file": "src/app/public-wikis/public-wikis.ts"
@@ -1650,6 +1710,10 @@
   "2160383143010957646": {
     "source": "A public knowledge home for a community, company, collection, archive, event, or specialized dataset.",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "2163042958426436316": {
+    "source": " Open Gemini billing ",
+    "file": "src/app/boards/boards.html"
   },
   "2165743094994635243": {
     "source": "Share the MP4 for native playback, or open a social app directly with the video link.",
@@ -1755,6 +1819,10 @@
     "source": "Admins only",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
+  "2241508602425256033": {
+    "source": "First",
+    "file": "src/app/boards/boards.html"
+  },
   "2243192742931945608": {
     "source": "Francais",
     "file": "src/app/business-claim/business-claim.ts"
@@ -1822,6 +1890,10 @@
   "2288743149082371181": {
     "source": "Open wiki admin",
     "file": "src/app/chat/chat.ts"
+  },
+  "2289780309293539814": {
+    "source": "Anything visitors should know? {$START_SMALL_TEXT}(optional){$CLOSE_SMALL_TEXT}",
+    "file": "src/app/boards/boards.html"
   },
   "2291644959681375171": {
     "source": "What is the LivingWiki platform?",
@@ -1923,6 +1995,10 @@
     "source": "Describe the picture you want...",
     "file": "src/app/boards/boards.html"
   },
+  "2355401212720632731": {
+    "source": "photo was",
+    "file": "src/app/boards/boards.ts"
+  },
   "2359345457686408441": {
     "source": "{$START_TAG_SPAN}photo_library{$CLOSE_TAG_SPAN} Photo memories",
     "file": "src/app/boards/boards.html"
@@ -1958,6 +2034,14 @@
   "2383411264307031004": {
     "source": "Adding to shared board",
     "file": "src/app/boards/boards.html"
+  },
+  "2383659252810766756": {
+    "source": "What visitors will see on the card",
+    "file": "src/app/boards/boards.html"
+  },
+  "2386629954076041813": {
+    "source": "notification needs",
+    "file": "src/app/boards/boards.ts"
   },
   "2387804651041584804": {
     "source": "{$START_TAG_STRONG}{$INTERPOLATION}{$CLOSE_TAG_STRONG} Time",
@@ -2014,6 +2098,10 @@
   "2413222857032107156": {
     "source": "Sign in before inviting friends.",
     "file": "src/app/boards/boards.ts"
+  },
+  "2415160036974369493": {
+    "source": "Add next stop",
+    "file": "src/app/boards/boards.html"
   },
   "2423167179144495541": {
     "source": "Sort all cities",
@@ -2203,6 +2291,10 @@
     "source": "Could not copy the webhook URL.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
+  "2558911274148201496": {
+    "source": "Context, history, or practical details",
+    "file": "src/app/boards/boards.html"
+  },
   "2559987310622864783": {
     "source": "Ask this Wiki",
     "file": "src/app/chat/chat.ts"
@@ -2331,6 +2423,10 @@
     "source": "Copy link",
     "file": "src/app/boards/boards.html"
   },
+  "2620563489880551263": {
+    "source": "Optional context",
+    "file": "src/app/boards/boards.html"
+  },
   "2624150611982326277": {
     "source": "GLP-1 receptor agonists, clinical trial data, off-label use, side effects, market impact, and the pharmaceutical companies behind the weight-loss drug revolution.",
     "file": "src/app/public-wiki-catalog.ts"
@@ -2410,6 +2506,10 @@
   "268547016253190093": {
     "source": "Subscribe to {city}",
     "file": "src/app/chat/chat.ts"
+  },
+  "2687970831673782136": {
+    "source": "invitation could",
+    "file": "src/app/boards/boards.ts"
   },
   "2694185252937876534": {
     "source": "No matching country or language.",
@@ -2499,6 +2599,10 @@
     "source": "Remove photo",
     "file": "src/app/boards/boards.html"
   },
+  "2794030165042099587": {
+    "source": "Could not move playback to that device.",
+    "file": "src/app/spotify-playback.service.ts"
+  },
   "2796970041569303773": {
     "source": "or use your email",
     "file": "src/app/create-account/create-account.html"
@@ -2546,6 +2650,10 @@
   "2834187806765783378": {
     "source": "Ask up to 5 questions without signing in.",
     "file": "src/app/chat/chat.ts"
+  },
+  "2834854732447516913": {
+    "source": "Place found. AI description and narration are temporarily unavailable; you can add the stop now or try again.",
+    "file": "src/app/boards/boards.ts"
   },
   "2835562429542994456": {
     "source": "avg. burden score",
@@ -2598,6 +2706,10 @@
   "2858442205499517028": {
     "source": "Wiki pages",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "285881282114526825": {
+    "source": "Board actions",
+    "file": "src/app/boards/boards.html"
   },
   "2861306361489095884": {
     "source": "Slug",
@@ -2675,6 +2787,10 @@
     "source": "Enter a valid email address so we can keep you updated.",
     "file": "src/app/boards/boards.ts"
   },
+  "292009909064114176": {
+    "source": "This tour is ready for its first stop.",
+    "file": "src/app/boards/boards.html"
+  },
   "2925613552136887055": {
     "source": "CRCQL · Delco Environmental Justice · Energy Justice Network",
     "file": "src/app/fence-line/fence-line.html"
@@ -2683,12 +2799,20 @@
     "source": "Why it belongs",
     "file": "src/app/green-jobs/green-jobs.html"
   },
+  "2932261031104379488": {
+    "source": "Address {$START_SMALL_TEXT}(found automatically){$CLOSE_SMALL_TEXT}",
+    "file": "src/app/boards/boards.html"
+  },
   "2940010916792941547": {
     "source": "My City",
     "file": "src/app/public-wikis/public-wikis.html"
   },
   "2940597258261263177": {
     "source": "Creating a useful title and description. You can edit everything afterward.",
+    "file": "src/app/boards/boards.html"
+  },
+  "2940756236215867987": {
+    "source": "Card details",
     "file": "src/app/boards/boards.html"
   },
   "2941170033894605998": {
@@ -2851,6 +2975,10 @@
     "source": "{$START_TAG_SPAN}verified{$CLOSE_TAG_SPAN} Local Favorite ",
     "file": "src/app/business/business.html"
   },
+  "3043241215169697558": {
+    "source": "New tour stop preview",
+    "file": "src/app/boards/boards.html"
+  },
   "3044142083883783523": {
     "source": "Updated {$INTERPOLATION}",
     "file": "src/app/boards/boards.html"
@@ -2994,6 +3122,10 @@
   "3140845098662020693": {
     "source": "Open wiki",
     "file": "src/app/library/library.html"
+  },
+  "3141670057473983117": {
+    "source": "{$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT} Official Spotify player ",
+    "file": "src/app/spotify-player/spotify-player.html"
   },
   "3141910518244179274": {
     "source": "Listening for you",
@@ -3327,6 +3459,10 @@
     "source": "Could not render the badge PNG.",
     "file": "src/app/business-detail/business-detail.ts"
   },
+  "3333797706481562611": {
+    "source": "{$START_TAG_SPAN}add_location_alt{$CLOSE_TAG_SPAN} Add first stop ",
+    "file": "src/app/boards/boards.html"
+  },
   "3334296097679399198": {
     "source": " Add a destination URL to preview and download another simple QR code. ",
     "file": "src/app/business-detail/business-edit.html"
@@ -3487,6 +3623,10 @@
     "source": "Location / neighborhood",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "3425026759167529546": {
+    "source": "Exact map location found",
+    "file": "src/app/boards/boards.html"
+  },
   "3427156126763245166": {
     "source": "Every card becomes something you can learn",
     "file": "src/app/boards/boards.html"
@@ -3603,6 +3743,10 @@
     "source": "Route & Map",
     "file": "src/app/boards/boards.html"
   },
+  "3493716866023768278": {
+    "source": "What the tour voice will say at this stop",
+    "file": "src/app/boards/boards.html"
+  },
   "3496615278735103700": {
     "source": "Refresh notes",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
@@ -3663,6 +3807,10 @@
     "source": "Retake photo",
     "file": "src/app/boards/boards.html"
   },
+  "3538310262732979798": {
+    "source": "日本語",
+    "file": "src/app/boards/board-translation.ts"
+  },
   "3540443474970052764": {
     "source": "When are you going?",
     "file": "src/app/boards/boards.html"
@@ -3687,6 +3835,10 @@
     "source": "One shared scorecard",
     "file": "src/app/fence-line/fence-line.html"
   },
+  "3557514626345492822": {
+    "source": "Choose an exact place before adding this stop to the route.",
+    "file": "src/app/boards/boards.ts"
+  },
   "3558535687667776361": {
     "source": "Live badge",
     "file": "src/app/business-claim/business-claim.html"
@@ -3710,6 +3862,10 @@
   "3574474817114503952": {
     "source": "forever.",
     "file": "src/app/landing/landing.html"
+  },
+  "3574691365365975140": {
+    "source": "For example: Family vacation in Lisbon, summer 2026",
+    "file": "src/app/boards/boards.html"
   },
   "357532746009403277": {
     "source": "Visualize the hidden connections between disparate documents and research papers.",
@@ -4011,6 +4167,10 @@
     "source": "Confirm password",
     "file": "src/app/auth-action/auth-action.html"
   },
+  "3783064148266803578": {
+    "source": "Stop placement",
+    "file": "src/app/boards/boards.html"
+  },
   "3786725788701679426": {
     "source": " LivingWiki gives local businesses a place inside the living map of a city: a profile, a pin, guide placement, and signals that help people find the real local places search engines flatten. ",
     "file": "src/app/business/business.html"
@@ -4087,6 +4247,14 @@
     "source": "Right now",
     "file": "src/app/boards/boards.html"
   },
+  "3832232923476527550": {
+    "source": "Only the tour owner can add stops.",
+    "file": "src/app/boards/boards.ts"
+  },
+  "3832305623035212899": {
+    "source": "Delete stop",
+    "file": "src/app/boards/boards.html"
+  },
   "3832759023700428927": {
     "source": "Speak to me in {language}",
     "file": "src/app/chat/chat.ts"
@@ -4135,9 +4303,17 @@
     "source": "See all",
     "file": "src/app/chat/chat.ts"
   },
+  "3881817862923658256": {
+    "source": "Close official Spotify player",
+    "file": "src/app/spotify-player/spotify-player.html"
+  },
   "3883888492456466825": {
     "source": "Refineries, port diesel, oil wells",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "3884043895481897899": {
+    "source": "people were",
+    "file": "src/app/boards/boards.ts"
   },
   "3893119223050551800": {
     "source": "1 indexed source ready",
@@ -4250,6 +4426,10 @@
   "3953998553981218910": {
     "source": "No businesses match this search or status filter.",
     "file": "src/app/admin-users/admin-users.html"
+  },
+  "3956326186651231086": {
+    "source": "invitations could",
+    "file": "src/app/boards/boards.ts"
   },
   "3965896722885197133": {
     "source": "Take a photo and LivingWiki will use GPS and what3words to pin the card to a precise 3 m square.",
@@ -4455,6 +4635,10 @@
     "source": "Choose an app to generate a real video that plays inline. On supported phones, select the app in the share sheet.",
     "file": "src/app/boards/boards.html"
   },
+  "4108889246377479069": {
+    "source": "Add the story behind this moment before sharing.",
+    "file": "src/app/boards/boards.ts"
+  },
   "4109755214985264235": {
     "source": "A Covanta/Reworld incinerator, regional sewage plant, and scrap-metal operations stack into one poor, majority-minority neighborhood.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -4505,7 +4689,7 @@
   },
   "4134147244760971282": {
     "source": "Français",
-    "file": "src/app/business/business.ts"
+    "file": "src/app/boards/board-translation.ts"
   },
   "4134262242877689961": {
     "source": " The world, undistorted. ",
@@ -4518,6 +4702,10 @@
   "4138192808088568253": {
     "source": "Place reviews",
     "file": "src/app/city-places/city-places.html"
+  },
+  "4138474654223741718": {
+    "source": "Wait for the current route update to finish.",
+    "file": "src/app/boards/boards.ts"
   },
   "4141671496314952516": {
     "source": "Sign in to make Philly Answer Card",
@@ -4983,6 +5171,10 @@
     "source": "Facebook opened with your quiz link.",
     "file": "src/app/boards/boards.ts"
   },
+  "4492166930951826461": {
+    "source": "Spotify could not change playback.",
+    "file": "src/app/spotify-playback.service.ts"
+  },
   "4496054669828455745": {
     "source": " View here {$START_TAG_SPAN}reviews{$CLOSE_TAG_SPAN}",
     "file": "src/app/city-places/city-places.html"
@@ -5002,6 +5194,10 @@
   "4512340455215005741": {
     "source": "Could not copy the business detail link.",
     "file": "src/app/business-detail/business-detail.ts"
+  },
+  "451288923410334679": {
+    "source": "Those photos are already in this board.",
+    "file": "src/app/boards/boards.ts"
   },
   "4515054874938847912": {
     "source": "Map context",
@@ -5078,6 +5274,10 @@
   "4559807727876680480": {
     "source": "Reach readers exploring Philadelphia civic data, green jobs, and local knowledge.",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "4561710059554375491": {
+    "source": "Spotify could not play this track.",
+    "file": "src/app/spotify-playback.service.ts"
   },
   "4563965495368336177": {
     "source": "Skip",
@@ -5243,10 +5443,6 @@
     "source": "Fast start",
     "file": "src/app/public-wikis/public-wikis.html"
   },
-  "4672736734664212262": {
-    "source": "Using a local draft because AI generation failed.",
-    "file": "src/app/boards/boards.ts"
-  },
   "4672927057554884109": {
     "source": "Science & Health",
     "file": "src/app/public-wiki-catalog.ts"
@@ -5310,6 +5506,10 @@
   "4703848376604347254": {
     "source": "Profile picture",
     "file": "src/app/business-detail/business-edit.html"
+  },
+  "4709273745320055687": {
+    "source": "Your first stop",
+    "file": "src/app/boards/boards.html"
   },
   "470985312787558203": {
     "source": "Delete thread",
@@ -5386,6 +5586,10 @@
   "4744376889247353452": {
     "source": "Curator",
     "file": "src/app/boards/boards.ts"
+  },
+  "4750027354914341877": {
+    "source": "{$START_TAG_SPAN}edit{$CLOSE_TAG_SPAN} Edit board ",
+    "file": "src/app/boards/boards.html"
   },
   "4751854755490163162": {
     "source": "Manage each Wiki from one place.",
@@ -5503,6 +5707,10 @@
     "source": "Request a new password reset email and try again.",
     "file": "src/app/auth-action/auth-action.ts"
   },
+  "4813947619825537863": {
+    "source": "Play on Spotify",
+    "file": "src/app/boards/boards.html"
+  },
   "4814285799071780083": {
     "source": "Remove",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -5558,6 +5766,10 @@
   "4840273334946881106": {
     "source": "Board sync is not ready. Refresh and try again before saving.",
     "file": "src/app/boards/boards.ts"
+  },
+  "4842382834057549407": {
+    "source": "Adding to route…",
+    "file": "src/app/boards/boards.html"
   },
   "4844460211738479466": {
     "source": "{$START_TAG_SPAN}delete{$CLOSE_TAG_SPAN} Remove ",
@@ -5622,6 +5834,10 @@
   "4902817035128594900": {
     "source": "Description",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "49044585199010594": {
+    "source": "Every card has an image.",
+    "file": "src/app/boards/boards.html"
   },
   "4907781936438917046": {
     "source": "Latest pull",
@@ -5730,6 +5946,10 @@
   "497516847475509949": {
     "source": "All Files",
     "file": "src/app/library/library.html"
+  },
+  "4984881736808007613": {
+    "source": "Give this stop a title before adding it.",
+    "file": "src/app/boards/boards.ts"
   },
   "4985212313460084613": {
     "source": "Ending",
@@ -6127,6 +6347,10 @@
     "source": "Check square",
     "file": "src/app/boards/boards.html"
   },
+  "5256433419904683846": {
+    "source": "Describe the destination or add a photo. AI will prepare the exact place and guide narration.",
+    "file": "src/app/boards/boards.html"
+  },
   "5257899700285331716": {
     "source": "Coffee",
     "file": "src/app/business-badge-icons.ts"
@@ -6157,7 +6381,11 @@
   },
   "5280218112746407598": {
     "source": "New",
-    "file": "src/app/chat/chat.ts"
+    "file": "src/app/boards/boards.html"
+  },
+  "528087952301416664": {
+    "source": "End of tour",
+    "file": "src/app/boards/boards.html"
   },
   "5281589796232691455": {
     "source": "{$INTERPOLATION} visible · {$INTERPOLATION_1} total",
@@ -6203,6 +6431,10 @@
     "source": "SMS",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "5302975250493253189": {
+    "source": "{$START_TAG_SPAN}add_location_alt{$CLOSE_TAG_SPAN} Add next stop ",
+    "file": "src/app/boards/boards.html"
+  },
   "5305521700224184284": {
     "source": "Also include",
     "file": "src/app/boards/boards.html"
@@ -6211,9 +6443,17 @@
     "source": "Manage Wikis",
     "file": "src/app/atlas-switcher/atlas-switcher.html"
   },
+  "5310015949810950017": {
+    "source": "Saving updates every stop number, path, distance, and time.",
+    "file": "src/app/boards/boards.html"
+  },
   "5315420754614758463": {
     "source": "Choose a flag to switch {city} into your language.",
     "file": "src/app/chat/chat.ts"
+  },
+  "531610656871821471": {
+    "source": "The Card Wizard could not prepare this tour stop.",
+    "file": "src/app/boards/boards.ts"
   },
   "5319270740283486499": {
     "source": "Link ready · coordinates not verified",
@@ -6254,6 +6494,10 @@
   "5333231502989486217": {
     "source": "Email recap",
     "file": "src/app/chat/chat.ts"
+  },
+  "5335337306476425811": {
+    "source": "person was",
+    "file": "src/app/boards/boards.ts"
   },
   "5337667723415406345": {
     "source": "Sign in to continue to your workspace.",
@@ -6410,6 +6654,10 @@
   "5456804588552596464": {
     "source": "All Cities | LivingWiki",
     "file": "src/app/app.routes.ts"
+  },
+  "5462560691198459725": {
+    "source": "Card actions",
+    "file": "src/app/boards/boards.html"
   },
   "5464307029089203607": {
     "source": "Carousel",
@@ -6574,6 +6822,10 @@
   "5584107564920356978": {
     "source": "Dessert",
     "file": "src/app/business-badge-icons.ts"
+  },
+  "5584484697694224279": {
+    "source": "Add to tour",
+    "file": "src/app/boards/boards.html"
   },
   "5585336786825601578": {
     "source": " Manage every claimed business attached to {$INTERPOLATION}. Open the public page, edit details, or claim a new business from one place. ",
@@ -6819,6 +7071,10 @@
     "source": "Events",
     "file": "src/app/business-badge-icons.ts"
   },
+  "5730116573475753597": {
+    "source": "Spotify could not seek to that position.",
+    "file": "src/app/spotify-playback.service.ts"
+  },
   "5730731256330221398": {
     "source": "Business Page",
     "file": "src/app/workspace-sidebar/workspace-sidebar.ts"
@@ -6887,6 +7143,10 @@
     "source": "Your leaderboard position",
     "file": "src/app/boards/boards.html"
   },
+  "577073740156948139": {
+    "source": "Full song on Spotify",
+    "file": "src/app/boards/boards.html"
+  },
   "5780495571999615992": {
     "source": "Global Intelligence",
     "file": "src/app/marketing/marketing.html"
@@ -6922,10 +7182,6 @@
   "5800187103306660757": {
     "source": "Password updated",
     "file": "src/app/auth-action/auth-action.ts"
-  },
-  "5801842127293026892": {
-    "source": "The tour could not be generated. Please try again.",
-    "file": "src/app/boards/boards.ts"
   },
   "5804727202045600024": {
     "source": "Your score is on the leaderboard.",
@@ -6999,6 +7255,14 @@
     "source": "Access your LivingWiki",
     "file": "src/app/sign-in/sign-in.html"
   },
+  "5851628688228555592": {
+    "source": "AI generation is temporarily unavailable. No placeholder cards were created. Please try again shortly.",
+    "file": "src/app/boards/boards.ts"
+  },
+  "5853877569956439161": {
+    "source": "Could not start the Spotify connection.",
+    "file": "src/app/spotify-playback.service.ts"
+  },
   "5858816413566732341": {
     "source": "Temp",
     "file": "src/app/public-wikis/public-wikis.ts"
@@ -7011,9 +7275,13 @@
     "source": "The MrBeast Business Empire",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "586537480928898932": {
+    "source": "Your stop",
+    "file": "src/app/boards/boards.html"
+  },
   "5866254605255506989": {
     "source": "English",
-    "file": "src/app/business/business.ts"
+    "file": "src/app/boards/board-translation.ts"
   },
   "5867579308114836570": {
     "source": "Direct Chat",
@@ -7215,6 +7483,10 @@
     "source": "Source-aware",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "6017810601082211436": {
+    "source": "invitations",
+    "file": "src/app/boards/boards.ts"
+  },
   "6024645474739898779": {
     "source": "{$START_TAG_SPAN}upload{$CLOSE_TAG_SPAN} Upload logo {$TAG_INPUT}",
     "file": "src/app/boards/boards.html"
@@ -7246,6 +7518,10 @@
   "6036400827568487024": {
     "source": "You are pinning",
     "file": "src/app/boards/boards.html"
+  },
+  "6036496861941227405": {
+    "source": "invitation",
+    "file": "src/app/boards/boards.ts"
   },
   "603947103662630478": {
     "source": "Create an empty board with the current form.",
@@ -7747,6 +8023,14 @@
     "source": "Market",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "6371576811194810854": {
+    "source": "After",
+    "file": "src/app/boards/boards.html"
+  },
+  "6374812789573354793": {
+    "source": "Remove stop photo",
+    "file": "src/app/boards/boards.html"
+  },
   "6375150530694791110": {
     "source": "Exact 3 m square",
     "file": "src/app/boards/boards.html"
@@ -7843,6 +8127,10 @@
     "source": "Local reviews",
     "file": "src/app/city-places/city-places.html"
   },
+  "6422344292126662752": {
+    "source": "Visitor notes",
+    "file": "src/app/boards/boards.html"
+  },
   "6422748071654331548": {
     "source": " Free preview is selected. Tone and document upload stay locked, with up to 15 call minutes while billing is finalized. ",
     "file": "src/app/business-claim/business-claim.html"
@@ -7855,6 +8143,10 @@
     "source": "Ready",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "6423273728921952470": {
+    "source": "The Monterey Bay Aquarium, a hidden mural nearby, the café in this photo...",
+    "file": "src/app/boards/boards.html"
+  },
   "6424384710240015948": {
     "source": "Business name",
     "file": "src/app/business-claim/business-claim.html"
@@ -7866,6 +8158,10 @@
   "6435787049526690021": {
     "source": "{$INTERPOLATION} questions",
     "file": "src/app/answer-quiz/answer-quiz.html"
+  },
+  "6437071410205851907": {
+    "source": "This stop could not be added to the tour.",
+    "file": "src/app/boards/boards.ts"
   },
   "6438287125181219979": {
     "source": "Turn a scenic drive into mapped stops, navigation legs, and narration.",
@@ -7959,9 +8255,17 @@
     "source": "All comments",
     "file": "src/app/city-places/city-places.html"
   },
+  "6493872334366380402": {
+    "source": "The photo could not be uploaded. Remove it or try again.",
+    "file": "src/app/boards/boards.ts"
+  },
   "6495436628883419320": {
     "source": "No article selected",
     "file": "src/app/wiki/wiki.html"
+  },
+  "6496430333389515236": {
+    "source": "Finding the exact place…",
+    "file": "src/app/boards/boards.html"
   },
   "6499688420093992350": {
     "source": "Making card...",
@@ -8019,9 +8323,17 @@
     "source": "Delete board confirmation",
     "file": "src/app/boards/boards.html"
   },
+  "652662530334545437": {
+    "source": "Could not check your Spotify connection.",
+    "file": "src/app/spotify-playback.service.ts"
+  },
   "6526779070699511768": {
     "source": " Loading city pulse settings… ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
+  },
+  "6528006466294366161": {
+    "source": "AI generation did not return any usable cards. Please try again.",
+    "file": "src/app/boards/boards.ts"
   },
   "653080074482451123": {
     "source": "The Fortune 500 Living Directory",
@@ -8223,6 +8535,10 @@
     "source": "Manage existing Wikis.",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "6660037272092151638": {
+    "source": "A photo memory",
+    "file": "src/app/boards/boards.ts"
+  },
   "6667331822763138432": {
     "source": "{$START_TAG_SPAN}delete{$CLOSE_TAG_SPAN} Delete selected ",
     "file": "src/app/boards/boards.html"
@@ -8259,6 +8575,10 @@
     "source": "Song Wizard",
     "file": "src/app/boards/boards.html"
   },
+  "6687642910372837007": {
+    "source": "Play here",
+    "file": "src/app/boards/boards.html"
+  },
   "6690051303985096751": {
     "source": "Grounding in the wiki's knowledge base",
     "file": "src/app/atlas-persona/atlas-persona.html"
@@ -8266,6 +8586,10 @@
   "6693456370353058233": {
     "source": "Maintain worldometers",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "6695271591602705899": {
+    "source": "Stop name",
+    "file": "src/app/boards/boards.html"
   },
   "6696013729539857290": {
     "source": "Wine",
@@ -8335,6 +8659,10 @@
     "source": "Search cities, boards, songs, friends...",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "6775345672170917282": {
+    "source": "Find the exact place, photo, description, and guide narration",
+    "file": "src/app/boards/boards.html"
+  },
   "6779918658461039547": {
     "source": "No better image was found, so the old image was removed.",
     "file": "src/app/boards/boards.ts"
@@ -8395,6 +8723,10 @@
     "source": "Turn articles, ranked lists, notes, or bullets into editable cards.",
     "file": "src/app/boards/boards.ts"
   },
+  "6814854471535306924": {
+    "source": "{$INTERPOLATION} tour",
+    "file": "src/app/boards/boards.html"
+  },
   "681621014272236674": {
     "source": "Could not save your score.",
     "file": "src/app/answer-quiz/answer-quiz.ts"
@@ -8402,6 +8734,10 @@
   "6817597193178642106": {
     "source": "Open page",
     "file": "src/app/profile/profile.html"
+  },
+  "6819194627560207941": {
+    "source": "We could not find that exact stop. Add the city or a more specific place name and try again.",
+    "file": "src/app/boards/boards.ts"
   },
   "6819476158638856553": {
     "source": "This Wiki doesn't exist, isn't public, or you don't have access.",
@@ -8451,6 +8787,10 @@
     "source": "No translation was needed.",
     "file": "src/app/boards/boards.html"
   },
+  "6872376978035406366": {
+    "source": "We are checking the destination and preparing the guide voice. You can edit everything next.",
+    "file": "src/app/boards/boards.html"
+  },
   "6873565845405383990": {
     "source": "Email restored",
     "file": "src/app/auth-action/auth-action.ts"
@@ -8466,6 +8806,10 @@
   "6887340575629274796": {
     "source": "No public wikis match your search.",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "6887434403053428909": {
+    "source": "Preparing your stop…",
+    "file": "src/app/boards/boards.html"
   },
   "688901269573530260": {
     "source": "Landing",
@@ -8595,6 +8939,10 @@
     "source": "Saved to the leaderboard.",
     "file": "src/app/answer-quiz/answer-quiz.ts"
   },
+  "6977268630064997826": {
+    "source": "Add a photo {$START_SMALL_TEXT}(optional){$CLOSE_SMALL_TEXT}",
+    "file": "src/app/boards/boards.html"
+  },
   "6977420715961799813": {
     "source": "More cities and public topics are queued as the directory grows.",
     "file": "src/app/public-wikis/public-wikis.html"
@@ -8654,6 +9002,14 @@
   "7033016357492920394": {
     "source": "No duplicate claim found for this name and city.",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "7038348735575269146": {
+    "source": "Official player",
+    "file": "src/app/boards/boards.html"
+  },
+  "7038764733058707215": {
+    "source": "Describe the destination or add a photo first.",
+    "file": "src/app/boards/boards.ts"
   },
   "7040205503614397686": {
     "source": " All Cities ",
@@ -8935,6 +9291,10 @@
     "source": "{$START_TAG_SPAN}settings{$CLOSE_TAG_SPAN} Settings ",
     "file": "src/app/account-menu/account-menu.html"
   },
+  "7294634055242110420": {
+    "source": "{$START_TAG_SPAN}photo_library{$CLOSE_TAG_SPAN} Your photos ",
+    "file": "src/app/boards/boards.html"
+  },
   "7296330110163382143": {
     "source": "2. Add source documents",
     "file": "src/app/wiki-home/wiki-home.html"
@@ -8942,6 +9302,10 @@
   "7298334077666773361": {
     "source": " Pulling published documents and preparing the page. ",
     "file": "src/app/library/library.html"
+  },
+  "7300622486876768636": {
+    "source": "AI generation is paused because the Gemini API prepaid balance is empty. Add credits in Google AI Studio Billing, then try again.",
+    "file": "src/app/boards/boards.ts"
   },
   "7303598969591273900": {
     "source": "My Boards",
@@ -9091,9 +9455,17 @@
     "source": "Paste it anywhere",
     "file": "src/app/boards/boards.html"
   },
+  "7396401662440041726": {
+    "source": "Useful when the destination is easier to show than describe.",
+    "file": "src/app/boards/boards.html"
+  },
   "7400407362759733641": {
     "source": " Pathways {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
     "file": "src/app/green-jobs/green-jobs.html"
+  },
+  "7410470931053054860": {
+    "source": "Official Spotify player",
+    "file": "src/app/boards/boards.html"
   },
   "7410598877106672517": {
     "source": " Subscribe ",
@@ -9194,6 +9566,10 @@
   "7475428872235830386": {
     "source": "Enter your full name.",
     "file": "src/app/create-account/create-account.html"
+  },
+  "747928183172993761": {
+    "source": "Spotify could not start playback. Open Spotify once, then try again.",
+    "file": "src/app/spotify-playback.service.ts"
   },
   "7480977321698305816": {
     "source": "Petrochemical corridor",
@@ -9555,6 +9931,10 @@
     "source": "General guide about the business",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7750177544324578797": {
+    "source": "{$START_TAG_SPAN}delete{$CLOSE_TAG_SPAN} Delete card ",
+    "file": "src/app/boards/boards.html"
+  },
   "7750187499038739309": {
     "source": "Friends can drop locations here",
     "file": "src/app/boards/boards.html"
@@ -9602,6 +9982,10 @@
   "7777537614959681339": {
     "source": "LivingWiki: Gainesville",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "7780444731963875194": {
+    "source": "Could not load Spotify devices.",
+    "file": "src/app/spotify-playback.service.ts"
   },
   "7782046034071994657": {
     "source": "Move later",
@@ -9919,6 +10303,10 @@
     "source": "Owner access required",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
+  "8005558349818879272": {
+    "source": "Where should the tour go next?",
+    "file": "src/app/boards/boards.html"
+  },
   "8013488746619449985": {
     "source": "Worth another look",
     "file": "src/app/boards/boards.html"
@@ -10107,6 +10495,10 @@
     "source": "Phone number",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "8121170194184060012": {
+    "source": "Stop actions",
+    "file": "src/app/boards/boards.html"
+  },
   "8121611305404993937": {
     "source": "Name your Wiki",
     "file": "src/app/wiki-home/wiki-home.html"
@@ -10207,6 +10599,10 @@
     "source": "Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.",
     "file": "src/app/city-atlas-templates.ts"
   },
+  "8193904348671731346": {
+    "source": "Why it belongs here, accessibility notes, or what to notice",
+    "file": "src/app/boards/boards.html"
+  },
   "8197309704375996966": {
     "source": "Failed to rename atlas.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
@@ -10238,6 +10634,10 @@
   "8222661878067707662": {
     "source": "Subscribe for weekly updates from this Wiki.",
     "file": "src/app/chat/chat.ts"
+  },
+  "8223781054108300519": {
+    "source": "Make first",
+    "file": "src/app/boards/boards.html"
   },
   "8228222404681739736": {
     "source": "Complete living timeline of every MCU and DCU film, show, character, and interconnection — the most complex fictional narrative ever created, mapped as a LivingWiki.",
@@ -10349,6 +10749,10 @@
   },
   "8303020794738293298": {
     "source": "Open a board and add cards to build out your collection feed.",
+    "file": "src/app/boards/boards.html"
+  },
+  "8306321121301749525": {
+    "source": "Prepare stop with AI",
     "file": "src/app/boards/boards.html"
   },
   "8307602980487099346": {
@@ -10743,6 +11147,10 @@
     "source": "Supply chain logistics...",
     "file": "src/app/marketing/marketing.html"
   },
+  "863068956920422202": {
+    "source": "Close add stop",
+    "file": "src/app/boards/boards.html"
+  },
   "8633250303431621645": {
     "source": "On a phone, this opens the rear camera. After the photo, we will request your precise location and find its three words.",
     "file": "src/app/boards/boards.html"
@@ -10915,9 +11323,21 @@
     "source": "Facility toxic releases, permit violations, and enforcement history.",
     "file": "src/app/fence-line/fence-line.html"
   },
+  "8764914467347531922": {
+    "source": "No LivingWiki connection needed",
+    "file": "src/app/boards/boards.html"
+  },
+  "8774793818215319708": {
+    "source": "Review your stop",
+    "file": "src/app/boards/boards.html"
+  },
   "8775285861834538237": {
     "source": "Internet mode enabled",
     "file": "src/app/chat/chat.ts"
+  },
+  "87794999272632427": {
+    "source": "Could not disconnect Spotify.",
+    "file": "src/app/spotify-playback.service.ts"
   },
   "8779971019515821536": {
     "source": " No comments loaded yet for this place. ",
@@ -11427,6 +11847,10 @@
     "source": "Describe the song",
     "file": "src/app/boards/boards.html"
   },
+  "9105988835336491828": {
+    "source": "notifications need",
+    "file": "src/app/boards/boards.ts"
+  },
   "910814516685612626": {
     "source": "Board image preview",
     "file": "src/app/boards/boards.html"
@@ -11434,6 +11858,10 @@
   "9108179050199310445": {
     "source": "Wiki",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "9116808367150008810": {
+    "source": "Preparing the editable preview",
+    "file": "src/app/boards/boards.ts"
   },
   "9118928885179196531": {
     "source": "Public URL",
@@ -11466,6 +11894,10 @@
   "9137345098023582320": {
     "source": "Copy chat",
     "file": "src/app/chat/chat.ts"
+  },
+  "9138062646003916509": {
+    "source": "A photo board can hold up to 24 photos.",
+    "file": "src/app/boards/boards.ts"
   },
   "9142239541170509732": {
     "source": "Could not make a copy of this board. Please try again.",

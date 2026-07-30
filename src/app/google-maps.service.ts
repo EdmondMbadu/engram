@@ -13,7 +13,7 @@ type GoogleMapsNamespace = {
       extend: (position: LatLngLiteral) => void;
     };
     Geocoder: new () => {
-      geocode: (request: { address: string }) => Promise<{
+      geocode: (request: { address: string } | { location: LatLngLiteral }) => Promise<{
         results: Array<{
           formatted_address?: string;
           geometry?: {
@@ -260,6 +260,19 @@ export class GoogleMapsService {
     const results = enriched.filter((place): place is PlaceSearchResult => !!place);
     this.placeSearchCache.set(cacheKey, results);
     return results;
+  }
+
+  async reverseGeocode(lat: number, lng: number): Promise<string | null> {
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      return null;
+    }
+    const google = await this.load();
+    if (google.maps.importLibrary) {
+      await google.maps.importLibrary('geocoding');
+    }
+    const geocoder = new google.maps.Geocoder();
+    const response = await geocoder.geocode({ location: { lat, lng } });
+    return response.results.find((result) => !!result.formatted_address)?.formatted_address ?? null;
   }
 
   private requireGoogleMaps(): GoogleMapsNamespace {

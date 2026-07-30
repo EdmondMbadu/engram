@@ -216,7 +216,7 @@ export class SpotifyPlaybackService {
         void this.initializePlayer().catch(() => undefined);
       }
     } catch (error) {
-      this.error.set(this.friendlyError(error, 'Could not check your Spotify connection.'));
+      this.error.set(this.friendlyError(error, $localize`Could not check your Spotify connection.`));
     } finally {
       this.connectionLoading.set(false);
     }
@@ -241,7 +241,7 @@ export class SpotifyPlaybackService {
       window.location.assign(authorizationUrl);
     } catch (error) {
       this.connecting.set(false);
-      this.error.set(this.friendlyError(error, 'Could not start the Spotify connection.'));
+      this.error.set(this.friendlyError(error, $localize`Could not start the Spotify connection.`));
     }
   }
 
@@ -269,7 +269,7 @@ export class SpotifyPlaybackService {
       this.clearPendingPlayback();
       this.notice.set('Spotify has been disconnected from LivingWiki.');
     } catch (error) {
-      this.error.set(this.friendlyError(error, 'Could not disconnect Spotify.'));
+      this.error.set(this.friendlyError(error, $localize`Could not disconnect Spotify.`));
     } finally {
       this.connecting.set(false);
     }
@@ -287,7 +287,7 @@ export class SpotifyPlaybackService {
       return;
     }
     if (this.needsPremium()) {
-      this.error.set('Spotify Premium is required for full-song playback inside LivingWiki.');
+      this.error.set($localize`Spotify Premium is required for full-song playback inside LivingWiki.`);
       this.openConnectionDialog();
       return;
     }
@@ -317,7 +317,7 @@ export class SpotifyPlaybackService {
       this.playing.set(false);
       this.error.set(this.friendlyError(
         error,
-        'Spotify could not start playback. Open Spotify once, then try again.',
+        $localize`Spotify could not start playback. Open Spotify once, then try again.`,
       ));
     }
   }
@@ -347,7 +347,7 @@ export class SpotifyPlaybackService {
       });
       this.playing.update((playing) => !playing);
     } catch (error) {
-      this.error.set(this.friendlyError(error, 'Spotify could not change playback.'));
+      this.error.set(this.friendlyError(error, $localize`Spotify could not change playback.`));
     }
   }
 
@@ -372,7 +372,7 @@ export class SpotifyPlaybackService {
         });
       }
     } catch (error) {
-      this.error.set(this.friendlyError(error, 'Spotify could not seek to that position.'));
+      this.error.set(this.friendlyError(error, $localize`Spotify could not seek to that position.`));
     }
   }
 
@@ -404,7 +404,7 @@ export class SpotifyPlaybackService {
         this.selectedDeviceId.set(active?.id || this.browserDeviceId || devices[0]?.id || '');
       }
     } catch (error) {
-      this.error.set(this.friendlyError(error, 'Could not load Spotify devices.'));
+      this.error.set(this.friendlyError(error, $localize`Could not load Spotify devices.`));
     }
   }
 
@@ -422,7 +422,7 @@ export class SpotifyPlaybackService {
         isActive: device.id === deviceId,
       })));
     } catch (error) {
-      this.error.set(this.friendlyError(error, 'Could not move playback to that device.'));
+      this.error.set(this.friendlyError(error, $localize`Could not move playback to that device.`));
     }
   }
 
@@ -503,7 +503,7 @@ export class SpotifyPlaybackService {
       this.failPlayer('Spotify Premium is required for full-song playback inside LivingWiki.');
     });
     this.player.addListener('playback_error', ({ message }: { message?: string }) => {
-      this.error.set(message || 'Spotify could not play this track.');
+      this.error.set(message || $localize`Spotify could not play this track.`);
     });
     this.player.addListener('autoplay_failed', () => {
       this.notice.set('Tap play once to let this browser start Spotify audio.');

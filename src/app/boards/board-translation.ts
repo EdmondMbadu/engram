@@ -20,9 +20,9 @@ export const BOARD_TRANSLATION_LANGUAGES: ReadonlyArray<{
   label: string;
   shortLabel: string;
 }> = [
-  { id: 'en', label: 'English', shortLabel: 'EN' },
-  { id: 'fr', label: 'Français', shortLabel: 'FR' },
-  { id: 'ja', label: '日本語', shortLabel: '日本語' },
+  { id: 'en', label: $localize`English`, shortLabel: 'EN' },
+  { id: 'fr', label: $localize`Français`, shortLabel: 'FR' },
+  { id: 'ja', label: $localize`日本語`, shortLabel: '日本語' },
 ];
 
 export function isBoardTranslationLanguage(value: unknown): value is BoardTranslationLanguage {

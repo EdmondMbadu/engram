@@ -36,6 +36,41 @@ export function reorderTourCards<T extends TourOrderCard>(
   return cards.map((card) => card.tour ? reorderedTourCards[tourIndex++] ?? card : card);
 }
 
+export function normalizeTourCardSequences<T extends TourOrderCard>(cards: readonly T[]): T[] {
+  const normalizedTourCards = orderedTourCards(cards).map((card, index) => ({
+    ...card,
+    tour: card.tour ? { ...card.tour, sequence: index + 1 } : null,
+  })) as T[];
+  let tourIndex = 0;
+  return cards.map((card) => card.tour ? normalizedTourCards[tourIndex++] ?? card : card);
+}
+
+export function insertTourCardAfter<T extends TourOrderCard>(
+  cards: readonly T[],
+  card: T,
+  afterCardId: string | null,
+): T[] {
+  if (!card.tour || cards.some((existing) => existing.id === card.id)) {
+    return [...cards];
+  }
+  const tourCards = orderedTourCards(cards);
+  const afterIndex = afterCardId
+    ? tourCards.findIndex((existing) => existing.id === afterCardId)
+    : tourCards.length - 1;
+  const insertionIndex = afterIndex >= 0 ? afterIndex + 1 : tourCards.length;
+  const insertedTourCards = [...tourCards];
+  insertedTourCards.splice(insertionIndex, 0, card);
+  const normalizedTourCards = insertedTourCards.map((tourCard, index) => ({
+    ...tourCard,
+    tour: tourCard.tour ? { ...tourCard.tour, sequence: index + 1 } : null,
+  })) as T[];
+
+  const nextCards = [...cards, card];
+  let tourIndex = 0;
+  return nextCards.map((existing) =>
+    existing.tour ? normalizedTourCards[tourIndex++] ?? existing : existing);
+}
+
 export function moveTourCard<T extends TourOrderCard>(
   cards: readonly T[],
   cardId: string,

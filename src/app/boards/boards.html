@@ -108,7 +108,7 @@
                           </button>
                         }
                         @if (stackExpandedCardId() === card.id) {
-                          <div class="stack-preview__details" role="region" aria-label="Card details">
+                          <div class="stack-preview__details" role="region" aria-label="Card details" i18n-aria-label>
                             <p>{{ card.notes }}</p>
                             <button
                               type="button"
@@ -156,7 +156,7 @@
                             (click)="playSongHere(card, board, $event)"
                           >
                             <span class="material-symbols-outlined">play_circle</span>
-                            <span>Play here</span>
+                            <span i18n>Play here</span>
                           </button>
                         } @else if (isSongCard(card) && spotifyTrackHref(card)) {
                           <a
@@ -167,7 +167,7 @@
                             (click)="$event.stopPropagation()"
                           >
                             <span class="material-symbols-outlined">open_in_new</span>
-                            <span>Play on Spotify</span>
+                            <span i18n>Play on Spotify</span>
                           </a>
                         }
                         @if (card.audioPreviewUrl && !hasSpotifyTrack(card)) {
@@ -774,7 +774,7 @@
                       [attr.aria-expanded]="isCardActionMenuOpen('board:' + board.id)"
                       [attr.aria-controls]="'card-action-menu-board:' + board.id"
                       (click)="toggleCardActionMenu('board:' + board.id, $event)"
-                    >
+                     i18n-aria-label>
                       <span class="material-symbols-outlined">more_horiz</span>
                     </button>
                     @if (isCardActionMenuOpen('board:' + board.id)) {
@@ -784,11 +784,11 @@
                         role="menu"
                         (click)="$event.stopPropagation()"
                       >
-                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditBoard(board, $event)">
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditBoard(board, $event)" i18n>
                           <span class="material-symbols-outlined">edit</span>
                           Edit board
                         </button>
-                        <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteBoard(board, $event)">
+                        <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteBoard(board, $event)" i18n>
                           <span class="material-symbols-outlined">delete</span>
                           Delete board
                         </button>
@@ -927,7 +927,7 @@
                       [attr.aria-expanded]="isCardActionMenuOpen('gallery:' + item.board.id + ':' + item.card.id)"
                       [attr.aria-controls]="'card-action-menu-gallery:' + item.board.id + ':' + item.card.id"
                       (click)="toggleCardActionMenu('gallery:' + item.board.id + ':' + item.card.id, $event)"
-                    >
+                     i18n-aria-label>
                       <span class="material-symbols-outlined">more_horiz</span>
                     </button>
                     @if (isCardActionMenuOpen('gallery:' + item.board.id + ':' + item.card.id)) {
@@ -937,7 +937,7 @@
                         role="menu"
                         (click)="$event.stopPropagation()"
                       >
-                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditGalleryCard(item.board.id, item.card)">
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditGalleryCard(item.board.id, item.card)" i18n>
                           <span class="material-symbols-outlined">edit</span>
                           Edit card
                         </button>
@@ -952,7 +952,7 @@
                             <small>{{ relatedCardCount(item.card) }}</small>
                           }
                         </button>
-                        <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteGalleryCard(item.board.id, item.card, $event)">
+                        <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteGalleryCard(item.board.id, item.card, $event)" i18n>
                           <span class="material-symbols-outlined">delete</span>
                           Delete card
                         </button>
@@ -1273,10 +1273,23 @@
                     Drop a Card
                   </button>
                 } @else if (canEditBoard(board)) {
-                  <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
-                    <span class="material-symbols-outlined">add</span>
-                    Add card
-                  </button>
+                  @if (isTourBoard(board)) {
+                    <button
+                      type="button"
+                      class="boards-primary-action"
+                      [disabled]="tourRouteUpdating()"
+                      (click)="openAppendTourStop(board, $event)"
+                      i18n
+                    >
+                      <span class="material-symbols-outlined">add_location_alt</span>
+                      Add stop
+                    </button>
+                  } @else {
+                    <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
+                      <span class="material-symbols-outlined">add</span>
+                      Add card
+                    </button>
+                  }
                 }
               </div>
             }
@@ -1395,14 +1408,26 @@
 
           @if (!isSongBoard(board) && !exploredRelatedCardParent() && board.cards.length === 0) {
             <div class="boards-empty-state boards-empty-state--detail">
-              <span class="material-symbols-outlined">add_card</span>
-              <h2 i18n>This board is ready for its first card.</h2>
-              <p i18n>Add a place, meal, memory, idea, shop, or note. Cards can carry tags, ratings, status, and an optional image URL.</p>
-              @if (canEditBoard(board)) {
-                <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
-                  <span class="material-symbols-outlined">add</span>
-                  Add first card
-                </button>
+              @if (isTourBoard(board)) {
+                <span class="material-symbols-outlined">add_location_alt</span>
+                <h2 i18n>This tour is ready for its first stop.</h2>
+                <p i18n>Describe the destination or add a photo. AI will prepare the exact place and guide narration.</p>
+                @if (canEditBoard(board)) {
+                  <button type="button" class="boards-primary-action" (click)="openAddTourStop(null, $event)" i18n>
+                    <span class="material-symbols-outlined">add_location_alt</span>
+                    Add first stop
+                  </button>
+                }
+              } @else {
+                <span class="material-symbols-outlined">add_card</span>
+                <h2 i18n>This board is ready for its first card.</h2>
+                <p i18n>Add a place, meal, memory, idea, shop, or note. Cards can carry tags, ratings, status, and an optional image URL.</p>
+                @if (canEditBoard(board)) {
+                  <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
+                    <span class="material-symbols-outlined">add</span>
+                    Add first card
+                  </button>
+                }
               }
             </div>
           } @else {
@@ -1446,6 +1471,18 @@
 
                   <div class="tour-board__itinerary">
                     <div class="tour-board__tools">
+                      @if (canEditBoard(board)) {
+                        <button
+                          type="button"
+                          class="boards-primary-action tour-board__add-stop"
+                          [disabled]="tourRouteUpdating()"
+                          (click)="openAppendTourStop(board, $event)"
+                          i18n
+                        >
+                          <span class="material-symbols-outlined">add_location_alt</span>
+                          Add stop
+                        </button>
+                      }
                       <button type="button" class="boards-ghost-action" (click)="toggleTourWayfinders()">
                         <span class="material-symbols-outlined">assistant_direction</span>
                         {{ tourWayfindersShown() ? 'Hide wayfinders' : 'Show wayfinders' }}
@@ -1468,6 +1505,7 @@
                         [class.tour-stop-card--drop-target]="isCardDropTarget(card.id)"
                         [class.tour-stop-card--drop-before]="isCardDropBefore(card.id)"
                         [class.tour-stop-card--drop-after]="isCardDropAfter(card.id)"
+                        [class.tour-stop-card--menu-open]="isCardActionMenuOpen('tour:' + card.id)"
                         (dragover)="dragCardOver($event, board, card)"
                         (dragleave)="dragCardLeave($event, card)"
                         (dragend)="clearCardReorderDrag()"
@@ -1548,9 +1586,48 @@
                                 >
                                   <span class="material-symbols-outlined">drag_indicator</span>
                                 </span>
-                                <button type="button" aria-label="Edit stop" (click)="openEditCard(card)" i18n-aria-label>
-                                  <span class="material-symbols-outlined">edit</span>
-                                </button>
+                                <div
+                                  class="card-action-menu tour-stop-card__action-menu"
+                                  [class.card-action-menu--open]="isCardActionMenuOpen('tour:' + card.id)"
+                                >
+                                  <button
+                                    type="button"
+                                    class="card-action-menu__trigger"
+                                    aria-label="Stop actions"
+                                    aria-haspopup="menu"
+                                    [attr.aria-expanded]="isCardActionMenuOpen('tour:' + card.id)"
+                                    [attr.aria-controls]="'card-action-menu-tour:' + card.id"
+                                    (click)="toggleCardActionMenu('tour:' + card.id, $event)"
+                                    i18n-aria-label
+                                  >
+                                    <span class="material-symbols-outlined">more_horiz</span>
+                                  </button>
+                                  @if (isCardActionMenuOpen('tour:' + card.id)) {
+                                    <div
+                                      class="card-action-menu__panel"
+                                      [id]="'card-action-menu-tour:' + card.id"
+                                      role="menu"
+                                      (click)="$event.stopPropagation()"
+                                    >
+                                      <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCard(card)">
+                                        <span class="material-symbols-outlined">edit</span>
+                                        <span i18n>Edit stop</span>
+                                      </button>
+                                      <button type="button" role="menuitem" (click)="openAddTourStop(card.id, $event)">
+                                        <span class="material-symbols-outlined">add_location_alt</span>
+                                        <span i18n>Add next stop</span>
+                                      </button>
+                                      <button type="button" role="menuitem" (click)="closeCardActionMenu(); openRelatedCardManager(card, $event)">
+                                        <span class="material-symbols-outlined">account_tree</span>
+                                        <span i18n>Related cards</span>
+                                      </button>
+                                      <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
+                                        <span class="material-symbols-outlined">delete</span>
+                                        <span i18n>Delete stop</span>
+                                      </button>
+                                    </div>
+                                  }
+                                </div>
                               </div>
                             }
                           </div>
@@ -1612,6 +1689,18 @@
                               <span class="material-symbols-outlined">{{ tourAudioLoadingKey() === 'stop:' + card.id + ':stop' ? 'progress_activity' : 'volume_up' }}</span>
                               Preview voice
                             </button>
+                            @if (canEditBoard(board)) {
+                              <button
+                                type="button"
+                                class="tour-stop-card__add-next"
+                                [disabled]="tourRouteUpdating()"
+                                (click)="openAddTourStop(card.id, $event)"
+                                i18n
+                              >
+                                <span class="material-symbols-outlined">add_location_alt</span>
+                                Add next stop
+                              </button>
+                            }
                             @if (card.googleMapsUrl) {
                               <a [href]="card.googleMapsUrl" target="_blank" rel="noopener" i18n>
                                 <span class="material-symbols-outlined">place</span>
@@ -1835,14 +1924,14 @@
                           <small>{{ songAlbumLabel(song) }}</small>
 
                           @if (spotifyTrackEmbedUrl(song); as spotifyEmbedUrl) {
-                            <section class="song-player-card__spotify" aria-label="Official Spotify player">
+                            <section class="song-player-card__spotify" aria-label="Official Spotify player" i18n-aria-label>
                               <header>
                                 <span class="material-symbols-outlined">graphic_eq</span>
                                 <span>
-                                  <strong>Full song on Spotify</strong>
-                                  <small>No LivingWiki connection needed</small>
+                                  <strong i18n>Full song on Spotify</strong>
+                                  <small i18n>No LivingWiki connection needed</small>
                                 </span>
-                                <span class="song-player-card__spotify-badge">Official player</span>
+                                <span class="song-player-card__spotify-badge" i18n>Official player</span>
                               </header>
                               <iframe
                                 title="Spotify player for {{ song.title }}"
@@ -1853,7 +1942,7 @@
                                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                                 loading="eager"
                               ></iframe>
-                              <footer>
+                              <footer i18n>
                                 <span class="material-symbols-outlined">play_circle</span>
                                 Full playback is handled by Spotify when supported by your browser.
                               </footer>
@@ -1869,7 +1958,7 @@
                                 (click)="playSongHere(song, board, $event)"
                               >
                                 <span class="material-symbols-outlined">picture_in_picture_alt</span>
-                                <span>Keep player open</span>
+                                <span i18n>Keep player open</span>
                               </button>
                             }
                             <button
@@ -2029,7 +2118,7 @@
                         [attr.aria-expanded]="isCardActionMenuOpen('card:' + card.id)"
                         [attr.aria-controls]="'card-action-menu-card:' + card.id"
                         (click)="toggleCardActionMenu('card:' + card.id, $event)"
-                      >
+                       i18n-aria-label>
                         <span class="material-symbols-outlined">more_horiz</span>
                       </button>
                       @if (isCardActionMenuOpen('card:' + card.id)) {
@@ -2051,6 +2140,12 @@
                               <span class="material-symbols-outlined">edit</span>
                               <span i18n>Edit card</span>
                             </button>
+                            @if (isTourBoard(board) && card.tour) {
+                              <button type="button" role="menuitem" (click)="openAddTourStop(card.id, $event)">
+                                <span class="material-symbols-outlined">add_location_alt</span>
+                                <span i18n>Add next stop</span>
+                              </button>
+                            }
                             <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCardPhotos(card, $event)">
                               <span class="material-symbols-outlined">add_photo_alternate</span>
                               {{ cardImages(card).length ? 'Add memory' : 'Add photos' }}
@@ -3283,10 +3378,10 @@
                   }
                 </label>
               } @else if (wizardMode() === 'photos') {
-                <section class="card-memory-gallery" aria-label="Photos for this board" [attr.aria-busy]="wizardPhotosLoading()">
+                <section class="card-memory-gallery" aria-label="Photos for this board" [attr.aria-busy]="wizardPhotosLoading()" i18n-aria-label>
                   <div class="card-memory-gallery__head">
                     <div>
-                      <span class="card-memory-gallery__eyebrow">
+                      <span class="card-memory-gallery__eyebrow" i18n>
                         <span class="material-symbols-outlined">photo_library</span>
                         Your photos
                       </span>
@@ -3318,11 +3413,11 @@
                           @if (index === 0) { <span>{{ wizardTargetBoardId() === 'new' ? 'Board cover' : 'First card' }}</span> }
                           <div class="card-memory-gallery__item-actions">
                             @if (index > 0) {
-                              <button type="button" title="Make first" [attr.aria-label]="'Make ' + photo.name + ' the first photo'" (click)="makeWizardPhotoCover(photo.id)">
+                              <button type="button" title="Make first" [attr.aria-label]="'Make ' + photo.name + ' the first photo'" (click)="makeWizardPhotoCover(photo.id)" i18n-title>
                                 <span class="material-symbols-outlined">wallpaper</span>
                               </button>
                             }
-                            <button type="button" title="Remove photo" [attr.aria-label]="'Remove ' + photo.name" (click)="removeWizardPhoto(photo.id)">
+                            <button type="button" title="Remove photo" [attr.aria-label]="'Remove ' + photo.name" (click)="removeWizardPhoto(photo.id)" i18n-title>
                               <span class="material-symbols-outlined">close</span>
                             </button>
                           </div>
@@ -3331,7 +3426,7 @@
                       @if (wizardPhotos().length < 24) {
                         <label class="card-memory-gallery__tile-add">
                           <span class="material-symbols-outlined">add</span>
-                          <span>Add more</span>
+                          <span i18n>Add more</span>
                           <input
                             type="file"
                             accept="image/jpeg,image/png,image/webp,image/gif,image/avif,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.gif,.avif,.heic,.heif"
@@ -3348,14 +3443,14 @@
                   <div class="boards-form__soft-error" role="alert">{{ wizardPhotoError() }}</div>
                 }
                 <label>
-                  <span>Optional context</span>
+                  <span i18n>Optional context</span>
                   <input
                     type="text"
                     maxlength="220"
                     placeholder="For example: Family vacation in Lisbon, summer 2026"
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
-                  />
+                   i18n-placeholder/>
                 </label>
               } @else if (wizardMode() === 'off-grid') {
                 <div class="off-grid-wizard-intro">
@@ -3798,7 +3893,14 @@
             }
 
             @if (wizardError()) {
-              <div class="boards-form__soft-error">{{ wizardError() }}</div>
+              <div class="boards-form__soft-error">
+                <span>{{ wizardError() }}</span>
+                @if (wizardHasBillingError()) {
+                  <a href="https://aistudio.google.com/billing" target="_blank" rel="noopener noreferrer" i18n>
+                    Open Gemini billing
+                  </a>
+                }
+              </div>
             }
 
             <div class="boards-form__actions">
@@ -3894,7 +3996,14 @@
             }
 
             @if (wizardError()) {
-              <div class="boards-form__soft-error">{{ wizardError() }}</div>
+              <div class="boards-form__soft-error">
+                <span>{{ wizardError() }}</span>
+                @if (wizardHasBillingError()) {
+                  <a href="https://aistudio.google.com/billing" target="_blank" rel="noopener noreferrer" i18n>
+                    Open Gemini billing
+                  </a>
+                }
+              </div>
             }
 
             @if (!wizardEditingCard()) {
@@ -4346,7 +4455,7 @@
                     @if (wizardMissingImageCount()) {
                       <span>{{ wizardMissingImageCount() }} card{{ wizardMissingImageCount() === 1 ? '' : 's' }} still need a verified image.</span>
                     } @else {
-                      <span>Every card has an image.</span>
+                      <span i18n>Every card has an image.</span>
                     }
                   </p>
                   <textarea
@@ -5966,6 +6075,235 @@
     </div>
   }
 </div>
+
+@if (tourStopEditorOpen() && originalSelectedBoard(); as tourStopBoard) {
+  <div class="tour-stop-editor-backdrop" (click)="closeTourStopEditor($event)">
+    <section
+      class="tour-stop-editor"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tour-stop-editor-title"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="tour-stop-editor__header">
+        <span class="tour-stop-editor__mark material-symbols-outlined">add_location_alt</span>
+        <span>
+          <small i18n>{{ tourStopBoard.title }} tour</small>
+          <h2 id="tour-stop-editor-title" i18n>Add next stop</h2>
+        </span>
+        <button type="button" aria-label="Close add stop" (click)="closeTourStopEditor($event)" i18n-aria-label>
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <form class="tour-stop-editor__body" (submit)="saveTourStop($event)">
+        <section class="tour-stop-editor__placement" aria-label="Stop placement" i18n-aria-label>
+          @if (tourStopInsertAfterCard(); as afterCard) {
+            <span>
+              <small i18n>After</small>
+              <strong>{{ afterCard.title }}</strong>
+            </span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+            <span class="tour-stop-editor__placement-new">
+              <small i18n>New</small>
+              <strong i18n>Your stop</strong>
+            </span>
+            @if (tourStopInsertBeforeCard(); as beforeCard) {
+              <span class="material-symbols-outlined">arrow_forward</span>
+              <span>
+                <small i18n>Before</small>
+                <strong>{{ beforeCard.title }}</strong>
+              </span>
+            } @else {
+              <span class="tour-stop-editor__placement-end" i18n>End of tour</span>
+            }
+          } @else {
+            <span class="tour-stop-editor__placement-new">
+              <small i18n>First</small>
+              <strong i18n>Your first stop</strong>
+            </span>
+            <span class="tour-stop-editor__placement-end" i18n>Start of tour</span>
+          }
+        </section>
+
+        <section class="tour-stop-editor__start">
+          <label>
+            <strong i18n>Where should the tour go next?</strong>
+            <textarea
+              rows="3"
+              maxlength="500"
+              placeholder="The Monterey Bay Aquarium, a hidden mural nearby, the café in this photo..."
+              [value]="tourStopDraft().prompt"
+              (input)="updateTourStopDraft('prompt', $any($event.target).value)"
+              i18n-placeholder
+            ></textarea>
+          </label>
+          <label>
+            <span i18n>Anything visitors should know? <small>(optional)</small></span>
+            <input
+              type="text"
+              maxlength="360"
+              placeholder="Why it belongs here, accessibility notes, or what to notice"
+              [value]="tourStopDraft().visitorNotes"
+              (input)="updateTourStopDraft('visitorNotes', $any($event.target).value)"
+              i18n-placeholder
+            />
+          </label>
+        </section>
+
+        <section class="tour-stop-editor__photo">
+          @if (tourStopDraft().imageUrl) {
+            <img [src]="tourStopDraft().imageUrl" alt="New tour stop preview" i18n-alt />
+            <button type="button" aria-label="Remove stop photo" (click)="clearTourStopImage()" i18n-aria-label>
+              <span class="material-symbols-outlined">close</span>
+            </button>
+            <label class="tour-stop-editor__replace-photo">
+              <span class="material-symbols-outlined">photo_camera</span>
+              <span i18n>Replace photo</span>
+              <input type="file" accept="image/*" (change)="onTourStopImageSelected($event)" />
+            </label>
+          } @else {
+            <label>
+              <span class="material-symbols-outlined">add_photo_alternate</span>
+              <span>
+                <strong i18n>Add a photo <small>(optional)</small></strong>
+                <small i18n>Useful when the destination is easier to show than describe.</small>
+              </span>
+              <input type="file" accept="image/*" (change)="onTourStopImageSelected($event)" />
+            </label>
+          }
+        </section>
+
+        <button
+          type="button"
+          class="tour-stop-editor__prepare"
+          [disabled]="tourStopAiLoading() || tourStopSaving() || (!tourStopDraft().imageUrl && tourStopDraft().prompt.trim().length < 3 && tourStopDraft().title.trim().length < 3)"
+          (click)="prepareTourStopWithAi()"
+        >
+          <span class="material-symbols-outlined">{{ tourStopAiLoading() ? 'progress_activity' : 'auto_awesome' }}</span>
+          <span>
+            @if (tourStopAiLoading()) {
+              <strong i18n>Preparing your stop…</strong>
+            } @else {
+              <strong i18n>Prepare stop with AI</strong>
+            }
+            <small i18n>Find the exact place, photo, description, and guide narration</small>
+          </span>
+        </button>
+
+        @if (tourStopAiLoading()) {
+          <div class="tour-stop-editor__preparing" role="status">
+            <span class="material-symbols-outlined">route</span>
+            <span>
+              <strong i18n>Finding the exact place…</strong>
+              <small i18n>We are checking the destination and preparing the guide voice. You can edit everything next.</small>
+            </span>
+          </div>
+        }
+
+        <section class="tour-stop-editor__review">
+          <header>
+            <span class="material-symbols-outlined">fact_check</span>
+            <span>
+              <strong i18n>Review your stop</strong>
+              <small i18n>Make any changes before it joins the route.</small>
+            </span>
+          </header>
+          <div class="tour-stop-editor__fields">
+            <label>
+              <span i18n>Stop name</span>
+              <input
+                type="text"
+                required
+                maxlength="80"
+                placeholder="Exact place name"
+                [value]="tourStopDraft().title"
+                (input)="updateTourStopDraft('title', $any($event.target).value)"
+                i18n-placeholder
+              />
+            </label>
+            <label>
+              <span i18n>Address <small>(found automatically)</small></span>
+              <input
+                type="text"
+                maxlength="180"
+                placeholder="Resolved from the map location"
+                [value]="tourStopDraft().address"
+                (input)="updateTourStopDraft('address', $any($event.target).value)"
+                i18n-placeholder
+              />
+              @if (tourStopDraft().lat && tourStopDraft().lng) {
+                <small class="tour-stop-editor__exact">
+                  <span class="material-symbols-outlined">verified</span>
+                  <span i18n>Exact map location found</span>
+                </small>
+              }
+            </label>
+            <label>
+              <span i18n>Short description</span>
+              <input
+                type="text"
+                maxlength="120"
+                placeholder="What visitors will see on the card"
+                [value]="tourStopDraft().subtitle"
+                (input)="updateTourStopDraft('subtitle', $any($event.target).value)"
+                i18n-placeholder
+              />
+            </label>
+            <label>
+              <span i18n>Visitor notes</span>
+              <textarea
+                rows="3"
+                maxlength="1000"
+                placeholder="Context, history, or practical details"
+                [value]="tourStopDraft().notes"
+                (input)="updateTourStopDraft('notes', $any($event.target).value)"
+                i18n-placeholder
+              ></textarea>
+            </label>
+            <label>
+              <span i18n>Guide narration</span>
+              <textarea
+                rows="5"
+                maxlength="3600"
+                placeholder="What the tour voice will say at this stop"
+                [value]="tourStopDraft().guideScript"
+                (input)="updateTourStopDraft('guideScript', $any($event.target).value)"
+                i18n-placeholder
+              ></textarea>
+            </label>
+          </div>
+        </section>
+
+        @if (tourStopAiError()) {
+          <div class="boards-form__soft-error" role="alert">{{ tourStopAiError() }}</div>
+        }
+
+        <footer class="tour-stop-editor__actions">
+          <span>
+            <span class="material-symbols-outlined">route</span>
+            <small i18n>Saving updates every stop number, path, distance, and time.</small>
+          </span>
+          <div>
+            <button type="button" class="boards-ghost-action" (click)="closeTourStopEditor($event)" i18n>Cancel</button>
+            <button
+              type="submit"
+              class="boards-primary-action"
+              [disabled]="tourStopSaving() || tourStopAiLoading() || !tourStopDraft().title.trim()"
+            >
+              <span class="material-symbols-outlined">{{ tourStopSaving() ? 'progress_activity' : 'add_location_alt' }}</span>
+              @if (tourStopSaving()) {
+                <span i18n>Adding to route…</span>
+              } @else {
+                <span i18n>Add to tour</span>
+              }
+            </button>
+          </div>
+        </footer>
+      </form>
+    </section>
+  </div>
+}
 
 @if (relatedCardEditorOpen() && relatedCardEditorParent(); as relatedParent) {
   <div class="related-card-editor-backdrop" (click)="closeRelatedCardEditor($event)">

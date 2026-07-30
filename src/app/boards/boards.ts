@@ -47,11 +47,14 @@ import {
   type ReorderDropPosition,
 } from './reorder';
 import {
+  insertTourCardAfter,
   moveTourCard,
+  normalizeTourCardSequences,
   orderedTourCards,
   reorderTourCards,
   tourOrderIds,
 } from './tour-order';
+import { isGenericTourStopFallback, tourStopDestinationQuery } from './tour-stop';
 import {
   boardQuizEligibleCardCount,
   buildBoardLearningQuiz,
@@ -118,6 +121,11 @@ type WizardLoadingTask = {
 type BoardTourMode = 'walking' | 'driving';
 type BoardTourVoiceStyle = 'historian' | 'local' | 'kid-friendly';
 type TourBoardView = 'route' | 'cards';
+type TourRouteMutation = {
+  addedCard?: BoardCard;
+  deletedCardId?: string;
+  deletedCardIds?: string[];
+};
 type StackFormat = 'carousel' | 'reel' | 'both';
 type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
@@ -327,6 +335,25 @@ type RelatedCardDraft = {
   analysisDataUrl: string;
   tags: string;
   prompt: string;
+  generated: BoardWizardGeneratedCard | null;
+};
+
+type TourStopDraft = {
+  prompt: string;
+  visitorNotes: string;
+  title: string;
+  subtitle: string;
+  notes: string;
+  address: string;
+  guideScript: string;
+  imageUrl: string;
+  imageName: string;
+  analysisDataUrl: string;
+  tags: string;
+  placeId: string;
+  googleMapsUrl: string;
+  lat: string;
+  lng: string;
   generated: BoardWizardGeneratedCard | null;
 };
 
@@ -610,7 +637,7 @@ const BOARD_WIZARD_MODES: Array<{
   {
     id: 'photos',
     label: $localize`Use photos`,
-    description: 'Turn your actual photos into a visual memory board.',
+    description: $localize`Turn your actual photos into a visual memory board.`,
     icon: 'photo_library',
   },
   {
@@ -1012,7 +1039,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css', './tour-order.css'],
+  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1120,6 +1147,11 @@ export class BoardsComponent implements OnDestroy {
   readonly relatedCardAiError = signal<string | null>(null);
   readonly relatedCardSaving = signal(false);
   readonly relatedCardDeleteCandidateId = signal<string | null>(null);
+  readonly tourStopEditorOpen = signal(false);
+  readonly tourStopInsertAfterId = signal<string | null>(null);
+  readonly tourStopAiLoading = signal(false);
+  readonly tourStopAiError = signal<string | null>(null);
+  readonly tourStopSaving = signal(false);
   readonly exploredRelatedCardParentId = signal<string | null>(null);
   readonly boardDeleteCandidate = signal<Board | null>(null);
   readonly draggedBoardId = signal<string | null>(null);
@@ -1403,6 +1435,24 @@ export class BoardsComponent implements OnDestroy {
     prompt: '',
     generated: null,
   });
+  readonly tourStopDraft = signal<TourStopDraft>({
+    prompt: '',
+    visitorNotes: '',
+    title: '',
+    subtitle: '',
+    notes: '',
+    address: '',
+    guideScript: '',
+    imageUrl: '',
+    imageName: '',
+    analysisDataUrl: '',
+    tags: 'stop, tour',
+    placeId: '',
+    googleMapsUrl: '',
+    lat: '',
+    lng: '',
+    generated: null,
+  });
 
   readonly profile = this.authService.profile;
   readonly isSignedIn = this.authService.isAuthenticated;
@@ -1459,6 +1509,19 @@ export class BoardsComponent implements OnDestroy {
     return cardId
       ? this.originalSelectedBoard()?.cards.find((card) => card.id === cardId) ?? null
       : null;
+  });
+  readonly tourStopInsertAfterCard = computed(() => {
+    const board = this.originalSelectedBoard();
+    const cardId = this.tourStopInsertAfterId();
+    return board && cardId ? board.cards.find((card) => card.id === cardId) ?? null : null;
+  });
+  readonly tourStopInsertBeforeCard = computed(() => {
+    const board = this.originalSelectedBoard();
+    const afterCard = this.tourStopInsertAfterCard();
+    if (!board || !afterCard) {
+      return null;
+    }
+    return this.nextTourCard(afterCard, this.tourCards(board));
   });
   readonly visitPlanBoard = computed(() => {
     const boardId = this.visitPlanBoardId();
@@ -2057,6 +2120,7 @@ export class BoardsComponent implements OnDestroy {
 
   closeBoardDetail(): void {
     this.stopSongPreview();
+    this.closeTourStopEditor();
     if (this.boardLearnOpen()) {
       this.closeBoardLearn();
     }
@@ -2489,7 +2553,7 @@ export class BoardsComponent implements OnDestroy {
     const current = this.wizardPhotos();
     const available = Math.max(0, 24 - current.length);
     if (!available) {
-      this.wizardPhotoError.set('A photo board can hold up to 24 photos.');
+      this.wizardPhotoError.set($localize`A photo board can hold up to 24 photos.`);
       return;
     }
 
@@ -2498,7 +2562,7 @@ export class BoardsComponent implements OnDestroy {
       .filter((file) => !existingKeys.has(this.wizardPhotoSourceKey(file)))
       .slice(0, available);
     if (!candidates.length) {
-      this.wizardPhotoError.set('Those photos are already in this board.');
+      this.wizardPhotoError.set($localize`Those photos are already in this board.`);
       return;
     }
 
@@ -2522,7 +2586,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardPhotosLoading.set(false);
     if (rejected.length) {
       this.wizardPhotoError.set(
-        `${rejected.length} ${rejected.length === 1 ? 'photo was' : 'photos were'} skipped. ${rejected.slice(0, 2).join(' ')}`,
+        `${rejected.length} ${rejected.length === 1 ? $localize`photo was` : $localize`photos were`} skipped. ${rejected.slice(0, 2).join(' ')}`,
       );
     } else if (files.length > candidates.length) {
       this.wizardPhotoError.set(`Added ${imported.length} photos. Photo boards can hold up to 24.`);
@@ -2797,6 +2861,9 @@ export class BoardsComponent implements OnDestroy {
     if (inferredCount) {
       this.setWizardCount(inferredCount);
     }
+    const previousResult = this.wizardResult();
+    const previousPreviewCards = this.wizardPreviewCards();
+    const previousSelectedCardIds = new Set(this.wizardSelectedCardIds());
     this.wizardStep.set('loading');
     this.wizardLoadingIndex.set(0);
     this.wizardLoadingTask.set(null);
@@ -2819,39 +2886,27 @@ export class BoardsComponent implements OnDestroy {
       this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
       this.wizardStep.set('preview');
     } catch (error) {
-      if (this.isTourWizardMode()) {
-        this.wizardError.set(error instanceof Error ? error.message : $localize`The tour could not be generated. Please try again.`);
-        this.wizardStep.set('choose');
-        return;
-      }
-      if (this.wizardMode() === 'url') {
-        this.wizardError.set(
-          error instanceof Error
-            ? `${error.message} The source was not replaced with an offline draft.`
-            : 'That page could not be imported. The source was not replaced with an offline draft.',
-        );
+      this.wizardError.set(this.wizardGenerationErrorMessage(error));
+      if (previousResult && previousPreviewCards.length) {
+        this.wizardResult.set(previousResult);
+        this.wizardPreviewCards.set(previousPreviewCards);
+        this.wizardSelectedCardIds.set(previousSelectedCardIds);
+        this.wizardStep.set('preview');
+      } else {
         this.wizardResult.set(null);
         this.wizardPreviewCards.set([]);
         this.wizardSelectedCardIds.set(new Set());
         this.wizardStep.set('choose');
-        return;
       }
-      const localFallback = this.buildLocalWizardBatch(refinement);
-      const fallback = this.wizardMode() === 'photos'
-        ? this.attachWizardPhotosToBatch(localFallback)
-        : localFallback;
-      const placeEnrichedCards = await this.enrichWizardCards(fallback.cards);
-      const previewCards = await this.enrichWizardMissingPlaceImages(placeEnrichedCards, fallback.board.title);
-      this.wizardResult.set({ ...fallback, cards: previewCards });
-      this.wizardPreviewCards.set(previewCards);
-      this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
-      this.wizardError.set(error instanceof Error ? `${error.message} Using a local draft instead.` : $localize`Using a local draft because AI generation failed.`);
-      this.wizardStep.set('preview');
     } finally {
       if (interval) {
         window.clearInterval(interval);
       }
     }
+  }
+
+  wizardHasBillingError(): boolean {
+    return /gemini api|prepaid|credits? (?:are )?(?:empty|depleted)|billing/iu.test(this.wizardError() ?? '');
   }
 
   async refineWizardBatch(): Promise<void> {
@@ -4235,6 +4290,430 @@ export class BoardsComponent implements OnDestroy {
     await this.persistAndReplaceBoard(nextBoard);
   }
 
+  openAddTourStop(afterCardId: string | null, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    if (!this.isTourBoard(board) || !this.canEditBoard(board)) {
+      this.boardsSyncError.set($localize`Only the tour owner can add stops.`);
+      return;
+    }
+    if (this.tourRouteUpdating()) {
+      this.tourRouteError.set($localize`Wait for the current route update to finish.`);
+      return;
+    }
+    const anchor = afterCardId
+      ? this.tourCards(board).find((card) => card.id === afterCardId) ?? null
+      : null;
+    this.closeCardActionMenu();
+    this.tourStopInsertAfterId.set(anchor?.id ?? null);
+    this.tourStopDraft.set(this.emptyTourStopDraft());
+    this.tourStopAiError.set(null);
+    this.tourStopEditorOpen.set(true);
+  }
+
+  openAppendTourStop(board: Board, event?: Event): void {
+    const stops = this.tourCards(board);
+    this.openAddTourStop(stops.at(-1)?.id ?? null, event);
+  }
+
+  closeTourStopEditor(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.tourStopSaving() || this.tourStopAiLoading()) {
+      return;
+    }
+    this.tourStopEditorOpen.set(false);
+    this.tourStopInsertAfterId.set(null);
+    this.tourStopAiError.set(null);
+  }
+
+  updateTourStopDraft<K extends keyof TourStopDraft>(field: K, value: TourStopDraft[K]): void {
+    this.tourStopDraft.update((draft) => ({ ...draft, [field]: value }));
+    this.tourStopAiError.set(null);
+  }
+
+  async onTourStopImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) {
+      return;
+    }
+    try {
+      const photo = await this.readWizardPhoto(file);
+      this.tourStopDraft.update((draft) => ({
+        ...draft,
+        imageUrl: photo.imageUrl,
+        imageName: photo.name,
+        analysisDataUrl: photo.analysisDataUrl,
+      }));
+      this.tourStopAiError.set(null);
+      if (this.tourStopDraft().prompt.trim().length >= 3) {
+        await this.prepareTourStopWithAi(true);
+      }
+    } catch (error) {
+      this.tourStopAiError.set(
+        error instanceof Error ? error.message : $localize`Could not use that photo.`,
+      );
+    }
+  }
+
+  clearTourStopImage(): void {
+    this.tourStopDraft.update((draft) => ({
+      ...draft,
+      imageUrl: '',
+      imageName: '',
+      analysisDataUrl: '',
+    }));
+    this.tourStopAiError.set(null);
+  }
+
+  async prepareTourStopWithAi(automatic = false): Promise<void> {
+    const board = this.originalSelectedBoard();
+    const draft = this.tourStopDraft();
+    if (
+      !this.isTourBoard(board)
+      || !this.functions
+      || !this.canEditBoard(board)
+      || this.tourStopAiLoading()
+      || this.tourStopSaving()
+    ) {
+      return;
+    }
+    if (!draft.analysisDataUrl && draft.prompt.trim().length < 3 && draft.title.trim().length < 3) {
+      if (!automatic) {
+        this.tourStopAiError.set($localize`Describe the destination or add a photo first.`);
+      }
+      return;
+    }
+
+    const afterCard = this.tourStopInsertAfterCard();
+    const beforeCard = this.tourStopInsertBeforeCard();
+    const destinationQuery = tourStopDestinationQuery(draft.prompt.trim() || draft.title.trim());
+    this.tourStopAiLoading.set(true);
+    this.tourStopAiError.set(null);
+    try {
+      let place: PlaceSearchResult | null = null;
+      if (destinationQuery && this.googleMapsService.isConfigured()) {
+        try {
+          const exactResults = await this.googleMapsService.searchPlaces(destinationQuery);
+          place = exactResults[0] ?? null;
+        } catch {
+          // Retry below with the board title when the place name alone is ambiguous.
+        }
+        if (!place) {
+          try {
+            const contextualResults = await this.googleMapsService.searchPlaces(destinationQuery, board.title);
+            place = contextualResults[0] ?? null;
+          } catch {
+            // AI may still return an exact location if browser-side place lookup is unavailable.
+          }
+        }
+      }
+
+      const callable = httpsCallable<Record<string, unknown>, unknown>(
+        this.functions,
+        'generateBoardWizardBatch',
+        { timeout: 170_000 },
+      );
+      let generated: BoardWizardGeneratedCard | null = null;
+      let aiUnavailable = false;
+      try {
+        const response = await callable({
+          mode: board.kind,
+          singleTourStop: true,
+          prompt: [
+            destinationQuery ? `Requested destination: ${destinationQuery}` : '',
+            draft.prompt.trim() && draft.prompt.trim() !== destinationQuery
+              ? `User input or source: ${draft.prompt.trim()}`
+              : '',
+            `Existing tour: "${board.title}".`,
+            afterCard ? `Insert it after "${afterCard.title}".` : 'This is the first stop in the tour.',
+            beforeCard ? `The following stop is "${beforeCard.title}".` : 'This stop will be added at the end of the tour.',
+            draft.visitorNotes.trim() ? `Visitor context: ${draft.visitorNotes.trim()}` : '',
+          ].filter(Boolean).join('\n'),
+          pastedList: '',
+          url: '',
+          photoNames: draft.imageName ? [draft.imageName] : [],
+          photos: draft.analysisDataUrl
+            ? [{
+                index: 0,
+                name: draft.imageName || 'tour-stop-photo.jpg',
+                caption: draft.prompt.trim(),
+                ...this.imageDataUrlPayload(draft.analysisDataUrl),
+              }]
+            : [],
+          targetBoardId: board.id,
+          targetBoardTitle: board.title,
+          defaultType: 'place',
+          count: 1,
+          vibe: 'traveler',
+          tourOptions: {
+            voiceStyle: board.tourMeta?.voiceStyle ?? 'local',
+            paceOrRouteStyle: board.tourMeta?.paceOrRouteStyle ?? (board.kind === 'driving-tour' ? 'Balanced' : 'Standard'),
+            extras: board.tourMeta?.extras ?? [],
+          },
+          existingCards: this.tourCards(board).slice(0, 80).map((card) => ({
+            title: card.title,
+            subtitle: card.subtitle,
+            tags: card.tags,
+          })),
+        });
+        const responseData = response.data && typeof response.data === 'object'
+          ? response.data as Record<string, unknown>
+          : {};
+        generated = Array.isArray(responseData['cards'])
+          ? this.normalizeWizardGeneratedCard(responseData['cards'][0])
+          : null;
+        if (isGenericTourStopFallback(generated)) {
+          generated = null;
+          aiUnavailable = true;
+        }
+      } catch {
+        aiUnavailable = true;
+      }
+
+      if (!place && generated && this.googleMapsService.isConfigured()) {
+        try {
+          const results = await this.googleMapsService.searchPlaces(
+            generated.place_query || generated.title,
+            [generated.tour?.address, generated.image_context, board.title].filter(Boolean).join(', '),
+          );
+          place = results[0] ?? null;
+        } catch {
+          // The generated exact location remains editable if Google place enrichment is unavailable.
+        }
+      }
+      if (!generated && !place) {
+        this.tourStopDraft.update((current) => ({
+          ...current,
+          title: current.title || destinationQuery,
+        }));
+        throw new Error($localize`We could not find that exact stop. Add the city or a more specific place name and try again.`);
+      }
+
+      const lat = place?.lat ?? generated?.locationLat ?? generated?.tour?.lat ?? null;
+      const lng = place?.lng ?? generated?.locationLng ?? generated?.tour?.lng ?? null;
+      let resolvedAddress = place?.address || generated?.tour?.address || '';
+      if (!resolvedAddress && lat !== null && lng !== null && this.googleMapsService.isConfigured()) {
+        try {
+          resolvedAddress = await this.googleMapsService.reverseGeocode(lat, lng) ?? '';
+        } catch {
+          // Coordinates are authoritative even if no postal address exists for the landmark.
+        }
+      }
+      this.tourStopDraft.update((current) => ({
+        ...current,
+        title: place?.name || generated?.title || destinationQuery || current.title,
+        subtitle: generated?.subtitle || current.subtitle,
+        notes: generated?.notes || current.notes,
+        address: resolvedAddress || current.address || place?.name || generated?.title || destinationQuery,
+        guideScript: generated?.tour?.guideScript || generated?.notes || current.guideScript,
+        imageUrl: current.imageUrl || place?.photoUrl || generated?.imageUrl || '',
+        tags: generated?.tags.length ? generated.tags.join(', ') : current.tags,
+        placeId: place?.placeId || generated?.placeId || '',
+        googleMapsUrl: place?.googleMapsUrl || generated?.googleMapsUrl || '',
+        lat: lat === null ? '' : String(lat),
+        lng: lng === null ? '' : String(lng),
+        generated,
+      }));
+      if (aiUnavailable && place) {
+        this.tourStopAiError.set(
+          $localize`Place found. AI description and narration are temporarily unavailable; you can add the stop now or try again.`,
+        );
+      }
+    } catch (error) {
+      this.tourStopAiError.set(
+        error instanceof Error
+          ? error.message
+          : $localize`The Card Wizard could not prepare this tour stop.`,
+      );
+    } finally {
+      this.tourStopAiLoading.set(false);
+    }
+  }
+
+  async saveTourStop(event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    let draft = this.tourStopDraft();
+    if (!this.isTourBoard(board) || !this.canEditBoard(board)) {
+      return;
+    }
+    const title = draft.title.trim();
+    if (!title) {
+      this.tourStopAiError.set($localize`Give this stop a title before adding it.`);
+      return;
+    }
+
+    let lat = this.decimalValue(draft.lat, null, -90, 90);
+    let lng = this.decimalValue(draft.lng, null, -180, 180);
+    if ((lat === null || lng === null) && this.googleMapsService.isConfigured()) {
+      this.tourStopSaving.set(true);
+      try {
+        const placeQuery = draft.address.trim() || title;
+        let place: PlaceSearchResult | null = null;
+        try {
+          const exactResults = await this.googleMapsService.searchPlaces(placeQuery);
+          place = exactResults[0] ?? null;
+        } catch {
+          // Retry with tour context below.
+        }
+        if (!place) {
+          try {
+            const contextualResults = await this.googleMapsService.searchPlaces(placeQuery, board.title);
+            place = contextualResults[0] ?? null;
+          } catch {
+            // The validation below will explain that an exact place is still required.
+          }
+        }
+        if (place?.lat !== null && place?.lat !== undefined && place.lng !== null && place.lng !== undefined) {
+          lat = place.lat;
+          lng = place.lng;
+          draft = {
+            ...draft,
+            address: place.address || draft.address,
+            placeId: place.placeId || draft.placeId,
+            googleMapsUrl: place.googleMapsUrl || draft.googleMapsUrl,
+            imageUrl: draft.imageUrl || place.photoUrl,
+            lat: String(place.lat),
+            lng: String(place.lng),
+          };
+          this.tourStopDraft.set(draft);
+        }
+      } catch {
+        // The validation below provides one clear, actionable message.
+      } finally {
+        this.tourStopSaving.set(false);
+      }
+    }
+    if (!draft.address.trim() && lat !== null && lng !== null) {
+      let resolvedAddress = '';
+      if (this.googleMapsService.isConfigured()) {
+        try {
+          resolvedAddress = await this.googleMapsService.reverseGeocode(lat, lng) ?? '';
+        } catch {
+          // Some landmarks have coordinates but no standalone postal address.
+        }
+      }
+      draft = {
+        ...draft,
+        address: resolvedAddress || title,
+      };
+      this.tourStopDraft.set(draft);
+    }
+    if (lat === null || lng === null) {
+      this.tourStopAiError.set($localize`Choose an exact place before adding this stop to the route.`);
+      return;
+    }
+
+    const generated = draft.generated;
+    const now = new Date().toISOString();
+    const id = this.createId();
+    const tags = this.mergeWizardTags(
+      draft.tags.split(',').map((tag) => tag.trim()).filter(Boolean),
+      ['stop', 'tour', board.kind],
+    );
+    const stop: BoardCard = {
+      id,
+      title,
+      subtitle: draft.subtitle.trim(),
+      notes: draft.notes.trim(),
+      type: 'place',
+      scope: 'place',
+      status: generated?.status ?? 'saved',
+      rating: generated?.rating ?? 4,
+      entityName: generated?.entity_name || title,
+      entityType: 'place',
+      imageIntent: 'place',
+      imageContext: generated?.image_context || board.title,
+      mediaKind: 'none',
+      shortSummary: generated?.short_summary || draft.subtitle.trim() || draft.notes.trim(),
+      rank: this.tourCards(board).length + 1,
+      imageUrl: draft.imageUrl || generated?.imageUrl || '',
+      imageUrls: this.uniqueImageUrls([draft.imageUrl, generated?.imageUrl ?? '']).slice(0, 12),
+      audioPreviewUrl: '',
+      spotifyTrackId: '',
+      spotifyTrackUrl: '',
+      spotifyUri: '',
+      spotifyArtistName: '',
+      spotifyAlbumName: '',
+      spotifyArtworkUrl: '',
+      placeId: draft.placeId || generated?.placeId || '',
+      googleMapsUrl: draft.googleMapsUrl
+        || generated?.googleMapsUrl
+        || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${lat},${lng}`)}`,
+      locationLat: lat,
+      locationLng: lng,
+      sourceUrl: generated?.sourceUrl || '',
+      productUrl: '',
+      merchant: '',
+      price: '',
+      currency: '',
+      sku: '',
+      availability: '',
+      productCategory: '',
+      imageSource: generated?.imageSource ?? 'missing',
+      extractionConfidence: generated?.extractionConfidence ?? 0,
+      extractedAt: generated?.extractedAt || '',
+      what3wordsAddress: generated?.what3wordsAddress || '',
+      tags,
+      stickers: [],
+      tour: {
+        sequence: this.tourCards(board).length + 1,
+        lat,
+        lng,
+        address: draft.address.trim().slice(0, 180),
+        guideScript: (draft.guideScript.trim() || draft.notes.trim()).slice(0, 3600),
+        legToNext: null,
+      },
+      relatedCards: [],
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.tourStopSaving.set(true);
+    this.tourStopAiError.set(null);
+    try {
+      const uid = this.authService.uid();
+      const preparedStop = uid
+        ? await this.prepareBoardCardImagesForFirebase(stop, uid, board.id)
+        : stop;
+      if (preparedStop.imageUrls.some((url) => url.startsWith('data:'))) {
+        throw new Error($localize`The photo could not be uploaded. Remove it or try again.`);
+      }
+      const nextCards = insertTourCardAfter(
+        board.cards,
+        preparedStop,
+        this.tourStopInsertAfterId(),
+      );
+      const saved = await this.saveTourCardMutation(board, nextCards, { addedCard: preparedStop });
+      if (!saved) {
+        this.tourStopAiError.set(
+          this.tourRouteError() || $localize`This stop could not be added to the tour.`,
+        );
+        return;
+      }
+      this.tourStopEditorOpen.set(false);
+      this.tourStopInsertAfterId.set(null);
+      if (this.isBrowser) {
+        window.setTimeout(() => {
+          const savedStop = this.originalSelectedBoard()?.cards.find((card) => card.id === id);
+          if (savedStop) {
+            void this.focusTourStop(savedStop, false);
+          }
+        }, 80);
+      }
+    } catch (error) {
+      this.tourStopAiError.set(
+        error instanceof Error ? error.message : $localize`This stop could not be added to the tour.`,
+      );
+    } finally {
+      this.tourStopSaving.set(false);
+    }
+  }
+
   private emptyRelatedCardDraft(): RelatedCardDraft {
     return {
       title: '',
@@ -4246,6 +4725,27 @@ export class BoardsComponent implements OnDestroy {
       analysisDataUrl: '',
       tags: 'memory',
       prompt: '',
+      generated: null,
+    };
+  }
+
+  private emptyTourStopDraft(): TourStopDraft {
+    return {
+      prompt: '',
+      visitorNotes: '',
+      title: '',
+      subtitle: '',
+      notes: '',
+      address: '',
+      guideScript: '',
+      imageUrl: '',
+      imageName: '',
+      analysisDataUrl: '',
+      tags: 'stop, tour',
+      placeId: '',
+      googleMapsUrl: '',
+      lat: '',
+      lng: '',
       generated: null,
     };
   }
@@ -4707,7 +5207,7 @@ export class BoardsComponent implements OnDestroy {
     this.cardDeleteCandidate.set(null);
   }
 
-  confirmDeleteCard(event?: Event): void {
+  async confirmDeleteCard(event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
     const candidate = this.cardDeleteCandidate();
@@ -4721,6 +5221,19 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.cardDeleteCandidate.set(null);
+
+    if (this.isTourBoard(board) && candidate.card.tour) {
+      const nextCards = normalizeTourCardSequences(
+        board.cards.filter((card) => card.id !== candidate.card.id),
+      );
+      this.selectedCardIds.update((ids) => {
+        const next = new Set(ids);
+        next.delete(candidate.card.id);
+        return next;
+      });
+      await this.saveTourCardMutation(board, nextCards, { deletedCardId: candidate.card.id });
+      return;
+    }
 
     const now = new Date().toISOString();
     let nextBoard: Board | null = null;
@@ -4985,13 +5498,18 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private async saveTourCardOrder(board: Board, reorderedCards: BoardCard[]): Promise<void> {
+    await this.saveTourCardMutation(board, reorderedCards);
+  }
+
+  private async saveTourCardMutation(
+    board: Board,
+    reorderedCards: BoardCard[],
+    mutation: TourRouteMutation = {},
+  ): Promise<boolean> {
     if (!this.isTourBoard(board) || !this.canEditBoard(board) || this.tourRouteUpdating()) {
-      return;
+      return false;
     }
     const orderedCardIds = tourOrderIds(reorderedCards);
-    if (orderedCardIds.length < 2) {
-      return;
-    }
 
     const previousBoard = board;
     const now = new Date().toISOString();
@@ -5015,20 +5533,30 @@ export class BoardsComponent implements OnDestroy {
         throw new Error($localize`Route recalculation is unavailable.`);
       }
       const callable = httpsCallable<
-        { boardId: string; orderedCardIds: string[]; baseUpdatedAt: string },
+        {
+          boardId: string;
+          orderedCardIds: string[];
+          baseUpdatedAt: string;
+          addedCard?: BoardCard;
+          deletedCardId?: string;
+          deletedCardIds?: string[];
+        },
         { cards?: unknown[]; tourMeta?: unknown; updatedAt?: string }
       >(this.functions, 'recalculateBoardTourRoute', { timeout: 90_000 });
       const response = await callable({
         boardId: board.id,
         orderedCardIds,
         baseUpdatedAt: board.updatedAt,
+        ...(mutation.addedCard ? { addedCard: mutation.addedCard } : {}),
+        ...(mutation.deletedCardId ? { deletedCardId: mutation.deletedCardId } : {}),
+        ...(mutation.deletedCardIds?.length ? { deletedCardIds: mutation.deletedCardIds } : {}),
       });
       const cards = Array.isArray(response.data?.cards)
         ? response.data.cards
           .map((card) => this.cardFromRecord(card))
           .filter((card): card is BoardCard => !!card)
         : [];
-      if (cards.length !== board.cards.length || tourOrderIds(cards).join('|') !== orderedCardIds.join('|')) {
+      if (cards.length !== reorderedCards.length || tourOrderIds(cards).join('|') !== orderedCardIds.join('|')) {
         throw new Error($localize`The updated tour route was incomplete.`);
       }
       const tourMeta = this.normalizeTourMeta(response.data?.tourMeta);
@@ -5043,6 +5571,7 @@ export class BoardsComponent implements OnDestroy {
       };
       this.boards.update((boards) => boards.map((item) => item.id === board.id ? savedBoard : item));
       this.boardsSyncError.set(null);
+      return true;
     } catch (error) {
       console.error('Tour route reorder failed', error, { boardId: board.id, orderedCardIds });
       this.boards.update((boards) => boards.map((item) =>
@@ -5053,6 +5582,7 @@ export class BoardsComponent implements OnDestroy {
           ? error.message
           : $localize`The route could not be updated. Your previous order was restored.`;
       this.tourRouteError.set(message);
+      return false;
     } finally {
       this.tourRouteUpdating.set(false);
     }
@@ -5257,7 +5787,7 @@ export class BoardsComponent implements OnDestroy {
     this.cardBulkDeleteCandidate.set(null);
   }
 
-  confirmBulkDeleteCards(event?: Event): void {
+  async confirmBulkDeleteCards(event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
     const candidate = this.cardBulkDeleteCandidate();
@@ -5272,6 +5802,24 @@ export class BoardsComponent implements OnDestroy {
     }
 
     const deleteIds = new Set(candidate.cards.map((card) => card.id));
+    if (this.isTourBoard(board) && candidate.cards.some((card) => !!card.tour)) {
+      const nextCards = normalizeTourCardSequences(
+        board.cards.filter((card) => !deleteIds.has(card.id)),
+      );
+      this.selectedCardIds.update((ids) => {
+        const next = new Set(ids);
+        deleteIds.forEach((id) => next.delete(id));
+        return next;
+      });
+      this.cardBulkDeleteCandidate.set(null);
+      if (!nextCards.length) {
+        this.closeCardManageMode();
+      }
+      await this.saveTourCardMutation(board, nextCards, {
+        deletedCardIds: Array.from(deleteIds),
+      });
+      return;
+    }
     const now = new Date().toISOString();
     const nextBoard = {
       ...board,
@@ -7096,7 +7644,7 @@ export class BoardsComponent implements OnDestroy {
       }
       this.visitPlanMessage.set([
         planNeededSaving ? $localize`Plan saved.` : '',
-        sent ? `${sent} ${sent === 1 ? 'invitation' : 'invitations'} sent.` : '',
+        sent ? `${sent} ${sent === 1 ? $localize`invitation` : $localize`invitations`} sent.` : '',
         failed ? `${failed} could not be delivered.` : '',
       ].filter(Boolean).join(' '));
     } catch (error) {
@@ -7170,16 +7718,16 @@ export class BoardsComponent implements OnDestroy {
             ? $localize`Plan saved. Your confirmation and calendar invite are on the way.`
             : $localize`Plan saved. Email confirmation is temporarily unavailable.`,
           invitationsSent
-            ? `${invitationsSent} ${invitationsSent === 1 ? 'invitation' : 'invitations'} sent.`
+            ? `${invitationsSent} ${invitationsSent === 1 ? $localize`invitation` : $localize`invitations`} sent.`
             : '',
           invitationsFailed
-            ? `${invitationsFailed} ${invitationsFailed === 1 ? 'invitation could' : 'invitations could'} not be delivered.`
+            ? `${invitationsFailed} ${invitationsFailed === 1 ? $localize`invitation could` : $localize`invitations could`} not be delivered.`
             : '',
           interestsNotified
-            ? `${interestsNotified} interested ${interestsNotified === 1 ? 'person was' : 'people were'} invited.`
+            ? `${interestsNotified} interested ${interestsNotified === 1 ? $localize`person was` : $localize`people were`} invited.`
             : '',
           interestsFailed
-            ? `${interestsFailed} interest ${interestsFailed === 1 ? 'notification needs' : 'notifications need'} another try.`
+            ? `${interestsFailed} interest ${interestsFailed === 1 ? $localize`notification needs` : $localize`notifications need`} another try.`
             : '',
         ].filter(Boolean).join(' '));
       }
@@ -7584,6 +8132,11 @@ export class BoardsComponent implements OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   handleCardPhotoViewerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.tourStopEditorOpen()) {
+      event.preventDefault();
+      this.closeTourStopEditor();
+      return;
+    }
     if (event.key === 'Escape' && this.relatedCardEditorOpen()) {
       event.preventDefault();
       this.closeRelatedCardEditor();
@@ -10343,8 +10896,8 @@ export class BoardsComponent implements OnDestroy {
       cards: photos.map((photo, index) => ({
         ...(batch.cards[index] ?? localCards[index] ?? {
           title: this.photoTitleFromFileName(photo.name),
-          subtitle: 'A photo memory',
-          notes: 'Add the story behind this moment before sharing.',
+          subtitle: $localize`A photo memory`,
+          notes: $localize`Add the story behind this moment before sharing.`,
           type: 'memory' as BoardCardType,
           scope: 'place' as BoardCardScope,
           status: 'saved' as BoardCardStatus,
@@ -10447,6 +11000,9 @@ export class BoardsComponent implements OnDestroy {
     const cards = Array.isArray(data['cards'])
       ? data['cards'].map((card) => this.normalizeWizardGeneratedCard(card)).filter((card): card is BoardWizardGeneratedCard => !!card)
       : [];
+    if (!cards.length) {
+      throw new Error($localize`AI generation did not return any usable cards. Please try again.`);
+    }
     const fallback = this.buildLocalWizardBatch();
     return {
       board: {
@@ -10459,9 +11015,24 @@ export class BoardsComponent implements OnDestroy {
       },
       // The server owns explicit-count and complete-set cardinality decisions.
       // Do not truncate a verified complete set back to the UI's default count.
-      cards: (cards.length ? cards : fallback.cards).slice(0, 100),
+      cards: cards.slice(0, 100),
       sourceReport: this.normalizeWizardSourceReport(data['sourceReport']),
     };
+  }
+
+  private wizardGenerationErrorMessage(error: unknown): string {
+    const message = error instanceof Error ? error.message.replace(/^Firebase:\s*/i, '').trim() : '';
+    const code = error instanceof FirebaseError ? error.code : '';
+    if (
+      code === 'functions/resource-exhausted'
+      || /credits are depleted|prepayment|prepaid balance|gemini api prepaid/iu.test(message)
+    ) {
+      return $localize`AI generation is paused because the Gemini API prepaid balance is empty. Add credits in Google AI Studio Billing, then try again.`;
+    }
+    if (!message || /^(?:functions\/)?(?:internal|unknown)$/iu.test(message)) {
+      return $localize`AI generation is temporarily unavailable. No placeholder cards were created. Please try again shortly.`;
+    }
+    return message;
   }
 
   private normalizeWizardSourceReport(value: unknown): BoardWizardSourceReport | undefined {
@@ -10945,7 +11516,7 @@ export class BoardsComponent implements OnDestroy {
       },
     );
 
-    this.wizardLoadingTask.set({ message: 'Preparing the editable preview', progress: 100 });
+    this.wizardLoadingTask.set({ message: $localize`Preparing the editable preview`, progress: 100 });
     this.wizardResult.set({ ...batch, cards: enrichedCards });
     this.wizardPreviewCards.set(enrichedCards);
     this.wizardSelectedCardIds.set(new Set(enrichedCards.map((card) => card.id)));

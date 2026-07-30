@@ -1,4 +1,11 @@
-import { moveTourCard, orderedTourCards, reorderTourCards, tourOrderIds } from './tour-order';
+import {
+  insertTourCardAfter,
+  moveTourCard,
+  normalizeTourCardSequences,
+  orderedTourCards,
+  reorderTourCards,
+  tourOrderIds,
+} from './tour-order';
 
 type TestCard = {
   id: string;
@@ -28,5 +35,34 @@ describe('Tour stop ordering', () => {
   it('supports accessible earlier and later moves', () => {
     expect(tourOrderIds(moveTourCard(cards, 'C', -1))).toEqual(['A', 'C', 'B', 'D']);
     expect(tourOrderIds(moveTourCard(cards, 'B', 1))).toEqual(['A', 'C', 'B', 'D']);
+  });
+
+  it('normalizes gaps without changing adjacency', () => {
+    const normalized = normalizeTourCardSequences(cards);
+    expect(tourOrderIds(normalized)).toEqual(['A', 'B', 'C', 'D']);
+    expect(orderedTourCards(normalized).map((card) => card.tour?.sequence)).toEqual([1, 2, 3, 4]);
+  });
+
+  it('adds a new stop immediately after its anchor and preserves non-tour slots', () => {
+    const result = insertTourCardAfter(
+      cards,
+      { id: 'new', tour: { sequence: 99 } },
+      'B',
+    );
+
+    expect(tourOrderIds(result)).toEqual(['A', 'B', 'new', 'C', 'D']);
+    expect(result.map((card) => card.id)).toEqual(['A', 'B', 'new', 'note', 'C', 'D']);
+    expect(orderedTourCards(result).map((card) => card.tour?.sequence)).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it('appends a new stop when no anchor is provided', () => {
+    const result = insertTourCardAfter(
+      cards,
+      { id: 'new', tour: { sequence: 99 } },
+      null,
+    );
+
+    expect(tourOrderIds(result)).toEqual(['A', 'B', 'C', 'D', 'new']);
+    expect(orderedTourCards(result).map((card) => card.tour?.sequence)).toEqual([1, 2, 3, 4, 5]);
   });
 });
