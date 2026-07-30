@@ -97,6 +97,19 @@ assert.match(guestPage, /I'm in/);
 assert.match(guestPage, /Google Maps/);
 assert.match(guestPage, /\/\/\/candy\.sage\.sticks/);
 assert.doesNotMatch(guestPage, /<script/);
-assert.match(visitMapsUrl({ ...plan, googleMapsUrl: '' }), /36\.6177%2C-121\.9017/);
+const coordinateDirections = visitMapsUrl(plan);
+assert.match(coordinateDirections, /^https:\/\/www\.google\.com\/maps\/dir\//);
+assert.match(coordinateDirections, /destination=36\.6177%2C-121\.9017/);
+assert.doesNotMatch(coordinateDirections, /place_id%3A/);
+const legacyPlaceDirections = visitMapsUrl({
+  ...plan,
+  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=place_id%3AChIJtest123',
+  locationLat: null,
+  locationLng: null,
+});
+assert.match(legacyPlaceDirections, /^https:\/\/www\.google\.com\/maps\/dir\//);
+assert.match(legacyPlaceDirections, /destination=Steinbeck\+Plaza%2C\+Cannery\+Row/);
+assert.match(legacyPlaceDirections, /destination_place_id=ChIJtest123/);
+assert.doesNotMatch(legacyPlaceDirections, /place_id%3A/);
 
 console.log('Visit plan tests passed.');

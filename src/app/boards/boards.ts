@@ -5860,7 +5860,7 @@ export class BoardsComponent implements OnDestroy {
     const lat = typeof card.locationLat === 'number' ? card.locationLat : card.tour?.lat;
     const lng = typeof card.locationLng === 'number' ? card.locationLng : card.tour?.lng;
     const hasCoordinates = typeof lat === 'number' && Number.isFinite(lat)
-      && typeof lng === 'number' && Number.isFinite(lng)
+      && typeof lng === 'number' && Number.isFinite(lng);
     const destination = hasCoordinates
       ? `${lat},${lng}`
       : [card.title, card.tour?.address || card.subtitle].filter(Boolean).join(', ');

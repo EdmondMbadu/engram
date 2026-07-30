@@ -239,13 +239,43 @@ export function visitMapsUrl(plan: Pick<
   VisitPlanSnapshot,
   'googleMapsUrl' | 'locationLat' | 'locationLng' | 'placeName' | 'placeAddress'
 >): string {
-  if (plan.googleMapsUrl) {
-    return plan.googleMapsUrl;
-  }
-  const query = plan.locationLat !== null && plan.locationLng !== null
+  const destination = plan.locationLat !== null && plan.locationLng !== null
     ? `${plan.locationLat},${plan.locationLng}`
     : [plan.placeName, plan.placeAddress].filter(Boolean).join(', ');
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  if (plan.locationLat !== null && plan.locationLng !== null) {
+    return googleMapsDirectionsUrl(destination);
+  }
+  if (plan.googleMapsUrl) {
+    try {
+      const existing = new URL(plan.googleMapsUrl);
+      const legacyPlaceId = (
+        existing.searchParams.get('q')
+        || existing.searchParams.get('query')
+        || ''
+      ).match(/^place_id:(.+)$/i)?.[1]?.trim() ?? '';
+      const placeId = existing.searchParams.get('destination_place_id')
+        || existing.searchParams.get('query_place_id')
+        || legacyPlaceId;
+      if (placeId) {
+        return googleMapsDirectionsUrl(destination, placeId.trim());
+      }
+    } catch {
+      // safeGoogleMapsUrl already validates stored plan URLs. Fall through to
+      // the plain location fallback if a legacy record is malformed.
+    }
+    return plan.googleMapsUrl;
+  }
+  return googleMapsDirectionsUrl(destination);
+}
+
+function googleMapsDirectionsUrl(destination: string, placeId = ''): string {
+  const url = new URL('https://www.google.com/maps/dir/');
+  url.searchParams.set('api', '1');
+  url.searchParams.set('destination', destination);
+  if (placeId) {
+    url.searchParams.set('destination_place_id', placeId);
+  }
+  return url.toString();
 }
 
 export function visitWhat3WordsUrl(words: string): string {
