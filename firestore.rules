@@ -309,6 +309,8 @@ service cloud.firestore {
           'socialVideoMimeType',
           'socialVideoUpdatedAt',
           'socialVideoRatio',
+          'socialVideoAudioTrackId',
+          'socialVideoAudioVolume',
           'stickers',
           'tourMeta',
           'learningQuiz',
@@ -367,6 +369,21 @@ service cloud.firestore {
         && request.resource.data.socialVideoUpdatedAt is string
         && request.resource.data.socialVideoUpdatedAt.size() <= 80
         && request.resource.data.socialVideoRatio in ['vertical', 'square', 'landscape']
+        && (
+          !request.resource.data.keys().hasAny(['socialVideoAudioTrackId'])
+          || (
+            request.resource.data.socialVideoAudioTrackId is string
+            && request.resource.data.socialVideoAudioTrackId.size() <= 80
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['socialVideoAudioVolume'])
+          || (
+            request.resource.data.socialVideoAudioVolume is number
+            && request.resource.data.socialVideoAudioVolume >= 0
+            && request.resource.data.socialVideoAudioVolume <= 0.5
+          )
+        )
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48
         && (

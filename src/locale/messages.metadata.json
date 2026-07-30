@@ -319,6 +319,10 @@
     "source": "Choose a valid date and time.",
     "file": "src/app/boards/boards.ts"
   },
+  "1230154438678955604": {
+    "source": "Change",
+    "file": "src/app/boards/boards.html"
+  },
   "123106218626500579": {
     "source": "Business claim",
     "file": "src/app/business-claim/business-claim.html"
@@ -1003,6 +1007,10 @@
     "source": "{$START_TAG_SPAN}ios_share{$CLOSE_TAG_SPAN} Share board ",
     "file": "src/app/city-places/city-places.html"
   },
+  "1652785484698054486": {
+    "source": "{$START_TAG_SPAN}auto_awesome{$CLOSE_TAG_SPAN} Recommended ",
+    "file": "src/app/boards/boards.html"
+  },
   "1653769490095348498": {
     "source": "Searching photos...",
     "file": "src/app/boards/boards.html"
@@ -1025,6 +1033,10 @@
   },
   "167406533841467180": {
     "source": "Resolved from the map location",
+    "file": "src/app/boards/boards.html"
+  },
+  "1686251725256647635": {
+    "source": "Images and your selected background music are embedded in the downloaded video.",
     "file": "src/app/boards/boards.html"
   },
   "1693937864227883367": {
@@ -4631,10 +4643,6 @@
     "source": "on",
     "file": "src/app/boards/boards.ts"
   },
-  "4108391399616807589": {
-    "source": "Choose an app to generate a real video that plays inline. On supported phones, select the app in the share sheet.",
-    "file": "src/app/boards/boards.html"
-  },
   "4108889246377479069": {
     "source": "Add the story behind this moment before sharing.",
     "file": "src/app/boards/boards.ts"
@@ -5199,6 +5207,10 @@
     "source": "Those photos are already in this board.",
     "file": "src/app/boards/boards.ts"
   },
+  "4513648791769596529": {
+    "source": "Music level",
+    "file": "src/app/boards/boards.html"
+  },
   "4515054874938847912": {
     "source": "Map context",
     "file": "src/app/city-places/city-places.html"
@@ -5714,6 +5726,10 @@
   "4814285799071780083": {
     "source": "Remove",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "4816336191318334040": {
+    "source": "Preview a mood, choose a soundtrack, or keep the video silent.",
+    "file": "src/app/boards/boards.html"
   },
   "4817039226326957190": {
     "source": "Ask about {city} news, neighborhoods, transit, food, jobs, safety, events, and civic life...",
@@ -6267,6 +6283,10 @@
     "source": " Refreshed directly from institutional source pages — jobs and training pathways stay separate, so this is a real local dataset, not a dead list of links. ",
     "file": "src/app/green-jobs/green-jobs.html"
   },
+  "521586585216355507": {
+    "source": " Balanced quietly behind the video, with a smooth fade in and out. ",
+    "file": "src/app/boards/boards.html"
+  },
   "5215973201243165102": {
     "source": "Major body systems, common conditions, treatments, and prevention — compiled from NIH, WHO, and peer-reviewed medical literature for general audiences.",
     "file": "src/app/public-wiki-catalog.ts"
@@ -6586,6 +6606,10 @@
   "5401235049169008975": {
     "source": "Open source page",
     "file": "src/app/green-jobs/green-jobs.html"
+  },
+  "5403423213824917813": {
+    "source": "Golden Hour is selected for you. Preview a mood or choose a different soundtrack.",
+    "file": "src/app/boards/boards.html"
   },
   "5403950912722004779": {
     "source": "Your email address has been restored for this account.",
@@ -9435,6 +9459,10 @@
     "source": "Copy a board link",
     "file": "src/app/boards/boards.html"
   },
+  "7381623063898994695": {
+    "source": "Choose a background music mood",
+    "file": "src/app/boards/boards.html"
+  },
   "7384516335504872663": {
     "source": " Create a local business page, reserve the business key, and generate a multilingual QR badge connected to the city wiki. ",
     "file": "src/app/business/business.html"
@@ -10095,6 +10123,10 @@
     "source": "Enter a valid account email before checkout.",
     "file": "src/app/business-claim/business-claim.ts"
   },
+  "787229374303428392": {
+    "source": "Background music",
+    "file": "src/app/boards/boards.html"
+  },
   "7873546935822644988": {
     "source": "Make it more kid-friendly, add cheaper options, remove duplicates...",
     "file": "src/app/boards/boards.html"
@@ -10406,6 +10438,10 @@
   "8060023270476637134": {
     "source": "Make {city} Answer Card",
     "file": "src/app/chat/chat.ts"
+  },
+  "8060374261648930397": {
+    "source": "No music",
+    "file": "src/app/boards/boards.html"
   },
   "8063884985367538166": {
     "source": "Making quiz",
@@ -11482,6 +11518,10 @@
   "889875250701413969": {
     "source": "Traveler",
     "file": "src/app/boards/boards.ts"
+  },
+  "89011189933885173": {
+    "source": "Keep the video silent",
+    "file": "src/app/boards/boards.html"
   },
   "8906308433967346612": {
     "source": " Control how the assistant sounds for this Wiki. Grounding, citations, and safety rules still stay automatic. ",

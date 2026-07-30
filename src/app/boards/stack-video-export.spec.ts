@@ -1,4 +1,8 @@
-import { stackVideoCardImageCandidates } from './stack-video-export';
+import {
+  combineStackVideoMediaStream,
+  preferredRecorderMimeType,
+  stackVideoCardImageCandidates,
+} from './stack-video-export';
 import { reorderRelativeToTarget } from './reorder';
 
 describe('Stack video card images', () => {
@@ -39,5 +43,35 @@ describe('Stack video card images', () => {
       ['B', 'https://images.example/b.jpg'],
       ['A', 'https://images.example/a.jpg'],
     ]);
+  });
+
+  it('prefers a recorder format with an explicit audio codec when music is selected', () => {
+    spyOn(MediaRecorder, 'isTypeSupported').and.callFake((mimeType) =>
+      mimeType === 'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+    );
+
+    expect(preferredRecorderMimeType(true))
+      .toBe('video/mp4;codecs=avc1.42E01E,mp4a.40.2');
+  });
+
+  it('adds the decoded background music track to the recorded canvas stream', async () => {
+    const canvas = document.createElement('canvas');
+    const canvasStream = canvas.captureStream(1);
+    const audioContext = new AudioContext();
+    const audioDestination = audioContext.createMediaStreamDestination();
+
+    try {
+      const combined = combineStackVideoMediaStream(
+        canvasStream,
+        audioDestination.stream.getAudioTracks(),
+      );
+
+      expect(combined.getVideoTracks().length).toBe(1);
+      expect(combined.getAudioTracks().length).toBe(1);
+      combined.getTracks().forEach((track) => track.stop());
+    } finally {
+      canvasStream.getTracks().forEach((track) => track.stop());
+      await audioContext.close();
+    }
   });
 });

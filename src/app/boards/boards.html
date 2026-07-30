@@ -4654,6 +4654,120 @@
                   </div>
                 </section>
 
+                <section class="stack-panel stack-music-panel">
+                  <div class="stack-panel__head">
+                    <div>
+                      <p i18n>Background music</p>
+                      <h4>
+                        @if (stackSelectedAudioTrack(); as selectedTrack) {
+                          {{ selectedTrack.mood }}
+                        } @else {
+                          <span i18n>No music</span>
+                        }
+                      </h4>
+                    </div>
+                    @if (stackAudioTrackId() === defaultStackAudioTrackId) {
+                      <span class="stack-music-panel__default" i18n>
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        Recommended
+                      </span>
+                    }
+                  </div>
+                  <p class="stack-music-panel__intro">
+                    @if (stackAudioTrackId() === defaultStackAudioTrackId) {
+                      <span i18n>Golden Hour is selected for you. Preview a mood or choose a different soundtrack.</span>
+                    } @else {
+                      <span i18n>Preview a mood, choose a soundtrack, or keep the video silent.</span>
+                    }
+                  </p>
+
+                  <div class="stack-music-grid" role="radiogroup" aria-label="Choose a background music mood" i18n-aria-label>
+                    <button
+                      type="button"
+                      class="stack-music-option stack-music-option--none"
+                      [class.stack-music-option--active]="stackAudioTrackId() === noStackAudioTrackId"
+                      [attr.aria-checked]="stackAudioTrackId() === noStackAudioTrackId"
+                      role="radio"
+                      (click)="selectStackAudioTrack(board, noStackAudioTrackId)"
+                    >
+                      <span class="stack-music-option__icon material-symbols-outlined">music_off</span>
+                      <span class="stack-music-option__copy">
+                        <strong i18n>No music</strong>
+                        <small i18n>Keep the video silent</small>
+                      </span>
+                      @if (stackAudioTrackId() === noStackAudioTrackId) {
+                        <span class="stack-music-option__check material-symbols-outlined">check_circle</span>
+                      }
+                    </button>
+
+                    @for (track of stackAudioTracks; track track.id) {
+                      <div
+                        class="stack-music-option"
+                        [class.stack-music-option--active]="stackAudioTrackId() === track.id"
+                      >
+                        <button
+                          type="button"
+                          class="stack-music-option__select"
+                          role="radio"
+                          [attr.aria-checked]="stackAudioTrackId() === track.id"
+                          [attr.aria-label]="track.mood + ': ' + track.title"
+                          (click)="selectStackAudioTrack(board, track.id)"
+                        >
+                          <span class="stack-music-option__icon material-symbols-outlined">{{ track.icon }}</span>
+                          <span class="stack-music-option__copy">
+                            <strong>{{ track.mood }}</strong>
+                            <small>{{ track.title }}</small>
+                          </span>
+                          @if (stackAudioTrackId() === track.id) {
+                            <span class="stack-music-option__check material-symbols-outlined">check_circle</span>
+                          }
+                        </button>
+                        <button
+                          type="button"
+                          class="stack-music-option__preview"
+                          [class.stack-music-option__preview--playing]="isStackAudioPreviewing(track.id)"
+                          [disabled]="stackAudioPreviewLoadingId() === track.id"
+                          [attr.aria-label]="isStackAudioPreviewing(track.id) ? 'Stop ' + track.title + ' preview' : 'Preview ' + track.title"
+                          (click)="toggleStackAudioPreview(track, $event)"
+                        >
+                          <span class="material-symbols-outlined">
+                            {{ stackAudioPreviewLoadingId() === track.id ? 'progress_activity' : isStackAudioPreviewing(track.id) ? 'stop' : 'play_arrow' }}
+                          </span>
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                  @if (stackAudioTrackId() !== noStackAudioTrackId) {
+                    <label class="stack-music-volume">
+                      <span>
+                        <span class="material-symbols-outlined">volume_down</span>
+                        <strong i18n>Music level</strong>
+                      </span>
+                      <input
+                        type="range"
+                        [min]="minStackAudioVolume"
+                        [max]="maxStackAudioVolume"
+                        step="0.01"
+                        [value]="stackAudioVolume()"
+                        [attr.aria-valuetext]="stackAudioVolumePercent() + '% background music'"
+                        (input)="updateStackAudioVolume($any($event.target).value)"
+                        (change)="commitStackAudioVolume(board)"
+                      />
+                      <output>{{ stackAudioVolumePercent() }}%</output>
+                    </label>
+                    <small class="stack-music-volume__hint" i18n>
+                      Balanced quietly behind the video, with a smooth fade in and out.
+                    </small>
+                  }
+                  @if (stackAudioError()) {
+                    <small class="stack-music-panel__error">
+                      <span class="material-symbols-outlined">error</span>
+                      {{ stackAudioError() }}
+                    </small>
+                  }
+                </section>
+
                 <details class="stack-panel stack-panel--details">
                   <summary class="stack-panel__summary">
                     <div>
@@ -4837,7 +4951,10 @@
                   </div>
                   <div class="stack-video-note">
                     <span class="material-symbols-outlined">smart_display</span>
-                    <p><strong i18n>Native social video</strong><span i18n>Choose an app to generate a real video that plays inline. On supported phones, select the app in the share sheet.</span></p>
+                    <p>
+                      <strong i18n>Native social video</strong>
+                      <span i18n>Images and your selected background music are embedded in the downloaded video.</span>
+                    </p>
                   </div>
                   @if (stackShareMessage()) {
                     <small>{{ stackShareMessage() }}</small>
@@ -4878,6 +4995,25 @@
                 </button>
               </div>
 
+              @if (stackShareMode() === 'video') {
+                <div class="stack-share-sheet__music-summary">
+                  <span class="material-symbols-outlined">
+                    {{ stackSelectedAudioTrack() ? 'music_note' : 'music_off' }}
+                  </span>
+                  <div>
+                    <small i18n>Background music</small>
+                    @if (stackSelectedAudioTrack(); as selectedTrack) {
+                      <strong>{{ selectedTrack.mood }} · {{ selectedTrack.title }}</strong>
+                    } @else {
+                      <strong i18n>No music</strong>
+                    }
+                  </div>
+                  @if (canEditBoard(board)) {
+                    <button type="button" (click)="openStackMusicStudio()" i18n>Change</button>
+                  }
+                </div>
+              }
+
               @if (stackShareMode() === 'video' && !board.socialVideoUrl) {
                 <div class="stack-share-sheet__empty">
                   <span class="stack-share-sheet__hero-icon material-symbols-outlined">movie</span>
@@ -4899,7 +5035,7 @@
               } @else {
                 @if (stackShareMode() === 'video') {
                   <div class="stack-share-sheet__video-preview">
-                    <video [src]="board.socialVideoUrl" [poster]="stackCoverImage(board)" muted playsinline controls preload="metadata"></video>
+                    <video [src]="board.socialVideoUrl" [poster]="stackCoverImage(board)" playsinline controls preload="metadata"></video>
                     <span i18n><span class="material-symbols-outlined">check_circle</span> Permanent video ready</span>
                   </div>
                   <div class="stack-share-sheet__title">

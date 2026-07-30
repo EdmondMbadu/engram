@@ -74,7 +74,23 @@ import {
   what3wordsFromCoordinates,
   what3wordsLocation,
 } from './off-grid-location';
-import { generateStackVideo, type StackVideoResult } from './stack-video-export';
+import {
+  generateStackVideo,
+  type StackVideoBackgroundAudio,
+  type StackVideoResult,
+} from './stack-video-export';
+import {
+  DEFAULT_STACK_AUDIO_TRACK_ID,
+  DEFAULT_STACK_AUDIO_VOLUME,
+  MAX_STACK_AUDIO_VOLUME,
+  MIN_STACK_AUDIO_VOLUME,
+  NO_STACK_AUDIO_TRACK_ID,
+  STACK_AUDIO_TRACKS,
+  normalizeStackAudioTrackId,
+  normalizeStackAudioVolume,
+  stackAudioTrackById,
+  type StackAudioTrack,
+} from './stack-audio';
 import {
   browserTimezone,
   canPlanVisit,
@@ -266,6 +282,8 @@ type Board = {
   socialVideoMimeType: string;
   socialVideoUpdatedAt: string;
   socialVideoRatio: StackRatio;
+  socialVideoAudioTrackId: string;
+  socialVideoAudioVolume: number;
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
   learningQuiz?: BoardLearningQuiz | null;
@@ -1039,7 +1057,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css'],
+  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1082,6 +1100,7 @@ export class BoardsComponent implements OnDestroy {
   private stackLivePreviewAutoplay = false;
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
+  private stackAudioPreviewRun = 0;
   private wizardPhotoImportRun = 0;
   private wizardOffGridLocationRun = 0;
   private boardLearnStartedAt = 0;
@@ -1094,6 +1113,8 @@ export class BoardsComponent implements OnDestroy {
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
   private readonly publishedStackVideoFiles = new Map<string, File>();
+  private readonly stackAudioUrls = new Map<string, string>();
+  private stackAudioPreview: HTMLAudioElement | null = null;
   private friendsLoadedForUid = '';
   private visitPlansLoadedFor = '';
   private relatedCardsReturnScrollY = 0;
@@ -1118,6 +1139,11 @@ export class BoardsComponent implements OnDestroy {
   readonly stackRatios = STACK_RATIOS;
   readonly stackExportTargets = STACK_EXPORT_TARGETS;
   readonly stackLinkShareTargets = STACK_LINK_SHARE_TARGETS;
+  readonly stackAudioTracks = STACK_AUDIO_TRACKS;
+  readonly noStackAudioTrackId = NO_STACK_AUDIO_TRACK_ID;
+  readonly defaultStackAudioTrackId = DEFAULT_STACK_AUDIO_TRACK_ID;
+  readonly minStackAudioVolume = MIN_STACK_AUDIO_VOLUME;
+  readonly maxStackAudioVolume = MAX_STACK_AUDIO_VOLUME;
   readonly songEqBars = Array.from({ length: 24 }, (_item, index) => index);
   readonly boardIcons = BOARD_ICONS;
   readonly cardStickerIcons = CARD_STICKER_ICONS;
@@ -1323,6 +1349,11 @@ export class BoardsComponent implements OnDestroy {
   readonly stackCaption = signal('');
   readonly stackFormat = signal<StackFormat>('both');
   readonly stackRatio = signal<StackRatio>('vertical');
+  readonly stackAudioTrackId = signal(DEFAULT_STACK_AUDIO_TRACK_ID);
+  readonly stackAudioVolume = signal(DEFAULT_STACK_AUDIO_VOLUME);
+  readonly stackAudioPreviewingId = signal<string | null>(null);
+  readonly stackAudioPreviewLoadingId = signal<string | null>(null);
+  readonly stackAudioError = signal<string | null>(null);
   readonly stackFrameIndex = signal(0);
   readonly stackPlaying = signal(false);
   readonly stackShareMessage = signal<string | null>(null);
@@ -1813,6 +1844,12 @@ export class BoardsComponent implements OnDestroy {
     const selectedIds = this.stackSelectedCardIds();
     return board ? board.cards.filter((card) => selectedIds.has(card.id)) : [];
   });
+  readonly stackSelectedAudioTrack = computed(() =>
+    stackAudioTrackById(this.stackAudioTrackId()),
+  );
+  readonly stackAudioVolumePercent = computed(() =>
+    Math.round(this.stackAudioVolume() * 100),
+  );
   readonly stackHasTourNarration = computed(() => this.stackSelectedCards().some((card) => !!card.tour));
   readonly stackSelectedCount = computed(() => this.stackSelectedCardIds().size);
   readonly stackFrameCount = computed(() => this.stackSelectedCards().length + 2);
@@ -2085,6 +2122,7 @@ export class BoardsComponent implements OnDestroy {
     this.selectedBoardUnsubscribe?.();
     this.selectedBoardUnsubscribe = null;
     this.stopSongPreview();
+    this.stopStackAudioPreview();
     this.stopTourSpeech();
     this.stopStackPlayback();
     if (this.boardFriendSearchTimer) {
@@ -3551,6 +3589,8 @@ export class BoardsComponent implements OnDestroy {
           socialVideoMimeType: '',
           socialVideoUpdatedAt: '',
           socialVideoRatio: 'vertical',
+          socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
+          socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
           forkedFromBoardId: '',
           forkedFromTitle: '',
           forkedFromOwnerUserId: '',
@@ -3723,6 +3763,8 @@ export class BoardsComponent implements OnDestroy {
         socialVideoMimeType: '',
         socialVideoUpdatedAt: '',
         socialVideoRatio: 'vertical',
+        socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
+        socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
         forkedFromBoardId: '',
         forkedFromTitle: '',
         forkedFromOwnerUserId: '',
@@ -9103,6 +9145,8 @@ export class BoardsComponent implements OnDestroy {
       socialVideoMimeType: '',
       socialVideoUpdatedAt: '',
       socialVideoRatio: 'vertical',
+      socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
+      socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
       cards: board.cards.map((card) => ({
         ...card,
         id: this.createId(),
@@ -9497,6 +9541,7 @@ export class BoardsComponent implements OnDestroy {
 
   closeStackStudio(): void {
     this.stopSongPreview();
+    this.stopStackAudioPreview();
     this.stopStackPlayback();
     this.stackStudioOpen.set(false);
     this.setStackShareMessage(null);
@@ -9514,6 +9559,7 @@ export class BoardsComponent implements OnDestroy {
     if (board.socialVideoUrl && !this.publishedStackVideoFiles.has(board.id)) {
       void this.preloadPublishedStackVideo(board);
     }
+    void this.preloadStackAudioUrls();
   }
 
   closeStackShareDialog(event?: Event): void {
@@ -9562,6 +9608,97 @@ export class BoardsComponent implements OnDestroy {
 
   setStackRatio(ratio: StackRatio): void {
     this.stackRatio.set(ratio);
+  }
+
+  selectStackAudioTrack(board: Board, trackId: string): void {
+    const normalizedTrackId = normalizeStackAudioTrackId(trackId);
+    if (this.stackAudioTrackId() === normalizedTrackId) return;
+    this.stopStackAudioPreview();
+    this.stackAudioTrackId.set(normalizedTrackId);
+    this.stackAudioError.set(null);
+    this.saveStackAudioPreferences(board);
+  }
+
+  updateStackAudioVolume(value: string | number): void {
+    const volume = normalizeStackAudioVolume(Number(value));
+    this.stackAudioVolume.set(volume);
+    if (this.stackAudioPreview) {
+      this.stackAudioPreview.volume = this.stackAudioPreviewVolume(volume);
+    }
+  }
+
+  commitStackAudioVolume(board: Board): void {
+    this.saveStackAudioPreferences(board);
+  }
+
+  isStackAudioPreviewing(trackId: string): boolean {
+    return this.stackAudioPreviewingId() === trackId;
+  }
+
+  async toggleStackAudioPreview(track: StackAudioTrack, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.isBrowser) return;
+    if (this.isStackAudioPreviewing(track.id)) {
+      this.stopStackAudioPreview();
+      return;
+    }
+
+    this.stopSongPreview();
+    this.stopStackAudioPreview();
+    const run = ++this.stackAudioPreviewRun;
+    this.stackAudioPreviewLoadingId.set(track.id);
+    this.stackAudioError.set(null);
+    try {
+      const url = this.stackAudioTrackUrl(track);
+      if (run !== this.stackAudioPreviewRun) return;
+      const audio = new Audio(url);
+      audio.loop = true;
+      audio.preload = 'auto';
+      audio.volume = this.stackAudioPreviewVolume(this.stackAudioVolume());
+      audio.onended = () => {
+        if (this.stackAudioPreview === audio) this.stopStackAudioPreview();
+      };
+      audio.onerror = () => {
+        if (this.stackAudioPreview === audio) {
+          this.stopStackAudioPreview();
+          this.stackAudioError.set(`"${track.title}" could not be previewed. Try another mood.`);
+        }
+      };
+      this.stackAudioPreview = audio;
+      await audio.play();
+      if (run === this.stackAudioPreviewRun && this.stackAudioPreview === audio) {
+        this.stackAudioPreviewingId.set(track.id);
+      }
+    } catch {
+      if (run === this.stackAudioPreviewRun) {
+        this.stopStackAudioPreview();
+        this.stackAudioError.set(`Preview playback was blocked for "${track.title}". Tap play again.`);
+      }
+    } finally {
+      if (run === this.stackAudioPreviewRun) {
+        this.stackAudioPreviewLoadingId.set(null);
+      }
+    }
+  }
+
+  stopStackAudioPreview(): void {
+    this.stackAudioPreviewRun += 1;
+    if (this.stackAudioPreview) {
+      this.stackAudioPreview.pause();
+      this.stackAudioPreview.currentTime = 0;
+      this.stackAudioPreview.onended = null;
+      this.stackAudioPreview.onerror = null;
+      this.stackAudioPreview = null;
+    }
+    this.stackAudioPreviewingId.set(null);
+    this.stackAudioPreviewLoadingId.set(null);
+  }
+
+  openStackMusicStudio(): void {
+    this.stackShareDialogOpen.set(false);
+    this.stackStudioOpen.set(true);
+    void this.preloadStackAudioUrls();
   }
 
   stackCoverImage(board: Board): string {
@@ -10124,6 +10261,8 @@ export class BoardsComponent implements OnDestroy {
         socialVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
         socialVideoUpdatedAt: new Date().toISOString(),
         socialVideoRatio: this.stackRatio(),
+        socialVideoAudioTrackId: this.stackAudioTrackId(),
+        socialVideoAudioVolume: this.stackAudioVolume(),
       };
       const persisted = await this.persistBoard(nextBoard);
       this.boards.update((boards) => boards.map((item) => item.id === persisted.id ? persisted : item));
@@ -10221,8 +10360,9 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  private createStackVideo(board: Board): Promise<StackVideoResult> {
+  private async createStackVideo(board: Board): Promise<StackVideoResult> {
     const selectedCards = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS);
+    const backgroundAudio = this.stackVideoBackgroundAudio();
     return generateStackVideo({
       title: board.title,
       subtitle: this.stackCoverSubtitle().trim() || board.description,
@@ -10240,7 +10380,64 @@ export class BoardsComponent implements OnDestroy {
         imageUrls: this.cardImages(card),
         tourSequence: card.tour?.sequence ?? null,
       })),
-    }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)));
+    }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)), backgroundAudio);
+  }
+
+  private stackVideoBackgroundAudio(): StackVideoBackgroundAudio | null {
+    const track = this.stackSelectedAudioTrack();
+    if (!track || this.stackAudioTrackId() === NO_STACK_AUDIO_TRACK_ID) {
+      return null;
+    }
+    return {
+      url: this.stackAudioTrackUrl(track),
+      volume: this.stackAudioVolume(),
+    };
+  }
+
+  private stackAudioTrackUrl(track: StackAudioTrack): string {
+    const cached = this.stackAudioUrls.get(track.id);
+    if (cached) return cached;
+    const bucket = this.storage?.app.options.storageBucket;
+    if (!bucket) {
+      throw new Error('Background music is unavailable right now.');
+    }
+    const url = `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket)}/o/${encodeURIComponent(track.storagePath)}?alt=media`;
+    this.stackAudioUrls.set(track.id, url);
+    return url;
+  }
+
+  private async preloadStackAudioUrls(): Promise<void> {
+    if (!this.storage) return;
+    this.stackAudioTracks.forEach((track) => this.stackAudioTrackUrl(track));
+  }
+
+  private stackAudioPreviewVolume(volume: number): number {
+    return Math.min(0.8, Math.max(0.24, volume * 2.4));
+  }
+
+  private saveStackAudioPreferences(board: Board): void {
+    const currentBoard = this.boards().find((item) => item.id === board.id);
+    if (!currentBoard || !this.canEditBoard(currentBoard)) return;
+    const trackId = normalizeStackAudioTrackId(this.stackAudioTrackId());
+    const volume = normalizeStackAudioVolume(this.stackAudioVolume());
+    if (
+      currentBoard.socialVideoAudioTrackId === trackId
+      && currentBoard.socialVideoAudioVolume === volume
+    ) {
+      return;
+    }
+    const nextBoard: Board = {
+      ...currentBoard,
+      socialVideoAudioTrackId: trackId,
+      socialVideoAudioVolume: volume,
+      updatedAt: new Date().toISOString(),
+    };
+    this.boards.update((boards) =>
+      boards.map((item) => item.id === nextBoard.id ? nextBoard : item),
+    );
+    this.publishedStackVideoFiles.delete(board.id);
+    this.stackPublishedVideoReady.set(false);
+    void this.persistAndReplaceBoard(nextBoard);
   }
 
   private stackVideoFile(board: Board, result: StackVideoResult): File {
@@ -10302,6 +10499,7 @@ export class BoardsComponent implements OnDestroy {
 
   private prepareStackForBoard(board: Board): void {
     this.stopStackPlayback();
+    this.stopStackAudioPreview();
     const subtitle = board.description.trim() || `${board.cards.length} card${board.cards.length === 1 ? '' : 's'} curated by ${this.ownerName(board)}`;
     this.stackStudioBoardId.set(board.id);
     this.stackSelectedCardIds.set(new Set(board.cards.map((card) => card.id)));
@@ -10310,9 +10508,13 @@ export class BoardsComponent implements OnDestroy {
     this.stackCaption.set(`I made a LivingWiki Stack: ${board.title}. Explore the full board.`);
     this.stackFormat.set('reel');
     this.stackRatio.set('vertical');
+    this.stackAudioTrackId.set(normalizeStackAudioTrackId(board.socialVideoAudioTrackId));
+    this.stackAudioVolume.set(normalizeStackAudioVolume(board.socialVideoAudioVolume));
+    this.stackAudioError.set(null);
     this.stackFrameIndex.set(0);
     this.stackTourNarrationConsent.set(false);
     this.setStackShareMessage(null);
+    void this.preloadStackAudioUrls();
   }
 
   private syncStackDirectView(): void {
@@ -12249,6 +12451,12 @@ export class BoardsComponent implements OnDestroy {
           socialVideoRatio: this.isStackRatio((board as Partial<Board>).socialVideoRatio)
             ? (board as Board).socialVideoRatio
             : 'vertical',
+          socialVideoAudioTrackId: normalizeStackAudioTrackId(
+            (board as Partial<Board>).socialVideoAudioTrackId,
+          ),
+          socialVideoAudioVolume: normalizeStackAudioVolume(
+            (board as Partial<Board>).socialVideoAudioVolume,
+          ),
           backNote: board.backNote ?? '',
           stickers: this.normalizeStickers((board as Board).stickers),
           tourMeta: this.normalizeTourMeta((board as Board).tourMeta),
@@ -12487,6 +12695,8 @@ export class BoardsComponent implements OnDestroy {
       socialVideoMimeType: typeof data['socialVideoMimeType'] === 'string' ? data['socialVideoMimeType'] : '',
       socialVideoUpdatedAt: typeof data['socialVideoUpdatedAt'] === 'string' ? data['socialVideoUpdatedAt'] : '',
       socialVideoRatio: this.isStackRatio(data['socialVideoRatio']) ? data['socialVideoRatio'] : 'vertical',
+      socialVideoAudioTrackId: normalizeStackAudioTrackId(data['socialVideoAudioTrackId']),
+      socialVideoAudioVolume: normalizeStackAudioVolume(data['socialVideoAudioVolume']),
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),
       learningQuiz: normalizeBoardLearningQuiz(data['learningQuiz']),

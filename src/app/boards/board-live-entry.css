@@ -1255,6 +1255,67 @@
   font-size: 1.05rem;
 }
 
+.stack-share-sheet__music-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.82rem;
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  padding: 0.58rem 0.65rem;
+}
+
+.stack-share-sheet__music-summary > .material-symbols-outlined {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 0.62rem;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 1.08rem;
+}
+
+.stack-share-sheet__music-summary div {
+  display: grid;
+  min-width: 0;
+  gap: 0.16rem;
+}
+
+.stack-share-sheet__music-summary small,
+.stack-share-sheet__music-summary strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stack-share-sheet__music-summary small {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stack-share-sheet__music-summary strong {
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 950;
+}
+
+.stack-share-sheet__music-summary button {
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 950;
+  padding: 0.42rem 0.58rem;
+}
+
 .stack-share-sheet__empty {
   display: grid;
   justify-items: center;
