@@ -9565,7 +9565,9 @@ export class BoardsComponent implements OnDestroy {
   }
 
   stackCoverImage(board: Board): string {
-    return board.imageUrl || board.cards.find((card) => card.imageUrl)?.imageUrl || '';
+    return board.imageUrl
+      || board.cards.map((card) => this.cardImages(card)[0] ?? '').find(Boolean)
+      || '';
   }
 
   isSongCard(card: Pick<BoardCard, 'title' | 'subtitle' | 'tags' | 'audioPreviewUrl' | 'spotifyTrackId' | 'spotifyTrackUrl' | 'mediaKind' | 'entityType'>): boolean {
@@ -10234,8 +10236,8 @@ export class BoardsComponent implements OnDestroy {
         notes: card.notes,
         status: card.status,
         rating: card.rating,
-        imageUrl: card.imageUrl,
-        imageUrls: card.imageUrls,
+        imageUrl: this.cardImages(card)[0] ?? '',
+        imageUrls: this.cardImages(card),
         tourSequence: card.tour?.sequence ?? null,
       })),
     }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)));

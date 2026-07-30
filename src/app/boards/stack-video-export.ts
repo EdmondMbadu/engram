@@ -45,6 +45,14 @@ const FRAME_RATE = 30;
 const FRAME_DURATION_MS = 1900;
 const CLOSING_DURATION_MS = 2100;
 
+export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageUrl' | 'imageUrls'>): string[] {
+  return Array.from(new Set(
+    [card.imageUrl, ...(card.imageUrls ?? [])]
+      .map((url) => url.trim())
+      .filter(Boolean),
+  ));
+}
+
 export async function generateStackVideo(
   board: StackVideoBoard,
   ratio: StackVideoRatio,
@@ -68,17 +76,28 @@ export async function generateStackVideo(
     throw new Error('Could not prepare the video canvas.');
   }
 
-  const imageUrls = new Set<string>();
-  if (board.coverImageUrl) imageUrls.add(board.coverImageUrl);
-  if (board.qrImageUrl) imageUrls.add(board.qrImageUrl);
-  for (const card of board.cards) {
-    if (card.imageUrl) imageUrls.add(card.imageUrl);
-  }
   const images = new Map<string, LoadedImage>();
-  await Promise.all(Array.from(imageUrls).map(async (url) => {
-    const image = await loadImage(url);
+  const pendingImages = new Map<string, Promise<LoadedImage | null>>();
+  const loadCachedImage = async (url: string): Promise<LoadedImage | null> => {
+    if (!url) return null;
+    let pending = pendingImages.get(url);
+    if (!pending) {
+      pending = loadImage(url);
+      pendingImages.set(url, pending);
+    }
+    const image = await pending;
     if (image) images.set(url, image);
-  }));
+    return image;
+  };
+  await Promise.all([
+    loadCachedImage(board.coverImageUrl),
+    loadCachedImage(board.qrImageUrl),
+    ...board.cards.map(async (card) => {
+      for (const imageUrl of stackVideoCardImageCandidates(card)) {
+        if (await loadCachedImage(imageUrl)) return;
+      }
+    }),
+  ]);
 
   const frames: VideoFrame[] = [
     { kind: 'cover' },
@@ -185,12 +204,32 @@ function renderFrame(
   if (frame.kind === 'cover') {
     drawCoverFrame(context, width, height, board, images.get(board.coverImageUrl), progress);
   } else if (frame.kind === 'card') {
-    drawCardFrame(context, width, height, frame.card, frame.cardIndex, board.cards.length, images.get(frame.card.imageUrl), progress);
+    drawCardFrame(
+      context,
+      width,
+      height,
+      frame.card,
+      frame.cardIndex,
+      board.cards.length,
+      firstLoadedCardImage(frame.card, images),
+      progress,
+    );
   } else {
     drawClosingFrame(context, width, height, board, images.get(board.qrImageUrl), progress);
   }
   drawTimeline(context, width, height, frameIndex, frameCount, progress);
   context.restore();
+}
+
+function firstLoadedCardImage(
+  card: Pick<StackVideoCard, 'imageUrl' | 'imageUrls'>,
+  images: ReadonlyMap<string, LoadedImage>,
+): LoadedImage | undefined {
+  for (const imageUrl of stackVideoCardImageCandidates(card)) {
+    const image = images.get(imageUrl);
+    if (image) return image;
+  }
+  return undefined;
 }
 
 function drawBackdrop(context: CanvasRenderingContext2D, width: number, height: number): void {
