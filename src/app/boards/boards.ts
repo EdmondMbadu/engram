@@ -9833,8 +9833,8 @@ export class BoardsComponent implements OnDestroy {
   }
 
   previousStackFrame(): void {
-    const resumeTourPlayback = this.isTourStackLiveView();
-    if (resumeTourPlayback) {
+    const resumeNarratedPlayback = this.isNarratedStackLiveView() && this.stackPlaying();
+    if (resumeNarratedPlayback) {
       this.stackTourNarrationConsent.set(true);
     }
     this.stopStackPlayback();
@@ -9843,29 +9843,28 @@ export class BoardsComponent implements OnDestroy {
       return count ? (index - 1 + count) % count : 0;
     });
     this.syncStackLivePreviewAfterFrameChange();
-    if (resumeTourPlayback) {
+    if (resumeNarratedPlayback) {
       this.stackPlaying.set(true);
-      this.syncStackTourNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
+      this.syncStackNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
     }
   }
 
   nextStackFrame(): void {
-    const resumeTourPlayback = this.isTourStackLiveView();
-    if (resumeTourPlayback) {
+    const resumeNarratedPlayback = this.isNarratedStackLiveView() && this.stackPlaying();
+    if (resumeNarratedPlayback) {
       this.stackTourNarrationConsent.set(true);
     }
     this.stopStackPlayback();
-    if (resumeTourPlayback) {
+    if (resumeNarratedPlayback) {
       this.stackPlaying.set(true);
     }
-    this.advanceStackFrame({ forceTourNarration: resumeTourPlayback });
+    this.advanceStackFrame({ forceNarration: resumeNarratedPlayback });
   }
 
   toggleStackCardDetails(card: BoardCard, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
     const opening = this.stackExpandedCardId() !== card.id;
-    if (opening) this.stopStackPlayback();
     this.stackExpandedCardId.set(opening ? card.id : null);
   }
 
@@ -9897,43 +9896,13 @@ export class BoardsComponent implements OnDestroy {
     return '';
   }
 
-  async replayStackCardNarration(card: BoardCard, event?: Event): Promise<void> {
+  replayStackCardNarration(card: BoardCard, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
-    const text = this.stackCardNarrationText(card);
-    if (!text || !this.isBrowser) return;
+    if (!this.isBrowser || this.stackCurrentCard()?.id !== card.id) return;
     this.stopStackPlayback();
-    this.stopTourSpeech();
-    this.tourAudioNotice.set(null);
-    const audioUrl = await this.ensureTourAudioUrl(this.stackCardAudioKey(card), text);
-    if (!audioUrl) {
-      this.tourAudioNotice.set('ElevenLabs narration is unavailable for this card right now.');
-      return;
-    }
-
-    const audio = new Audio(audioUrl);
-    audio.preload = 'auto';
-    this.tourAudio = audio;
-    this.tourSpeechPlaying.set(true);
-    audio.onended = () => {
-      if (this.tourAudio === audio) {
-        this.stopTourSpeech();
-      }
-    };
-    audio.onerror = () => {
-      if (this.tourAudio === audio) {
-        this.stopTourSpeech();
-        this.tourAudioNotice.set('The ElevenLabs narrator could not play this card.');
-      }
-    };
-    try {
-      await audio.play();
-    } catch {
-      if (this.tourAudio === audio) {
-        this.stopTourSpeech();
-        this.tourAudioNotice.set('Your browser paused the ElevenLabs narrator. Tap Listen again.');
-      }
-    }
+    this.stackPlaying.set(true);
+    this.syncStackNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
   }
 
   stackCardNarrationLoading(card: BoardCard): boolean {
@@ -10028,10 +9997,16 @@ export class BoardsComponent implements OnDestroy {
       this.stopStackPlayback();
       return;
     }
-    if (this.isTourStackLiveView()) {
+    if (this.isNarratedStackLiveView()) {
       this.stackTourNarrationConsent.set(true);
     }
     this.startStackPlayback();
+  }
+
+  stopNarratedStack(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.stopStackPlayback();
   }
 
   startNarratedStack(event?: Event): void {
@@ -10055,7 +10030,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackTourNarrationConsent.set(true);
     this.stopStackPlayback();
     this.stackPlaying.set(true);
-    this.syncStackTourNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
+    this.syncStackNarrationAfterFrameChange({ autoAdvance: true, forceNarration: true });
   }
 
   async shareStackTo(target: StackExportTarget): Promise<void> {
@@ -10533,10 +10508,7 @@ export class BoardsComponent implements OnDestroy {
       this.prepareStackForBoard(board);
     }
     this.stackStudioOpen.set(false);
-    if (this.stackHasTourNarration() && !this.stackTourNarrationConsent()) {
-      this.stopStackPlayback();
-      return;
-    }
+    this.stackTourNarrationConsent.set(true);
     this.startStackPlayback();
   }
 
@@ -10714,16 +10686,16 @@ export class BoardsComponent implements OnDestroy {
     this.stackFrameIndex.update((index) => Math.max(0, Math.min(index, lastIndex)));
   }
 
-  private advanceStackFrame(options: { forceTourNarration?: boolean } = {}): void {
+  private advanceStackFrame(options: { forceNarration?: boolean } = {}): void {
     this.stackExpandedCardId.set(null);
     this.stackFrameIndex.update((index) => {
       const count = this.stackFrameCount();
       return count ? (index + 1) % count : 0;
     });
     this.syncStackLivePreviewAfterFrameChange();
-    this.syncStackTourNarrationAfterFrameChange({
+    this.syncStackNarrationAfterFrameChange({
       autoAdvance: this.stackPlaying(),
-      forceNarration: options.forceTourNarration ?? false,
+      forceNarration: options.forceNarration ?? false,
     });
   }
 
@@ -10732,7 +10704,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.stackPlaying.set(true);
-    if (this.syncStackTourNarrationAfterFrameChange({ autoAdvance: true })) {
+    if (this.syncStackNarrationAfterFrameChange({ autoAdvance: true })) {
       return;
     }
     this.stackPlaybackTimer = setInterval(() => this.advanceStackFrame(), this.stackFrameDurationMs);
@@ -10754,14 +10726,14 @@ export class BoardsComponent implements OnDestroy {
     this.stackPlaybackTimer = null;
   }
 
-  private isTourStackLiveView(): boolean {
-    return this.stackDirectView() && this.stackHasTourNarration();
+  private isNarratedStackLiveView(): boolean {
+    return this.stackDirectView();
   }
 
-  private syncStackTourNarrationAfterFrameChange(
+  private syncStackNarrationAfterFrameChange(
     options: { autoAdvance?: boolean; forceNarration?: boolean } = {},
   ): boolean {
-    if (!this.isTourStackLiveView()) {
+    if (!this.isNarratedStackLiveView()) {
       return false;
     }
 
@@ -10773,7 +10745,7 @@ export class BoardsComponent implements OnDestroy {
 
     const autoAdvance = options.autoAdvance ?? this.stackPlaying();
     const frame = this.stackCurrentFrame();
-    const card = frame.kind === 'card' && frame.card?.tour ? frame.card : null;
+    const card = frame.kind === 'card' ? frame.card ?? null : null;
     if (!card) {
       if (autoAdvance && this.stackPlaying()) {
         this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
@@ -10791,16 +10763,16 @@ export class BoardsComponent implements OnDestroy {
       index: frame.index,
       total: frame.total,
     };
-    void this.playStackTourNarration(tourFrame, token, autoAdvance);
+    void this.playStackNarration(tourFrame, token, autoAdvance);
     return true;
   }
 
-  private async playStackTourNarration(
+  private async playStackNarration(
     frame: TourDeckFrame,
     token: number,
     autoAdvance: boolean,
   ): Promise<void> {
-    const text = frame.card.tour?.guideScript || frame.card.notes || frame.card.subtitle;
+    const text = frame.card.tour?.guideScript || this.stackCardNarrationText(frame.card);
     if (!text.trim()) {
       if (autoAdvance && this.stackPlaying()) {
         this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
@@ -10810,8 +10782,9 @@ export class BoardsComponent implements OnDestroy {
 
     const startedAt = Date.now();
     this.stackActiveFrameDurationMs.set(120_000);
-    const audioUrl = await this.ensureTourAudioUrl(this.tourAudioKey(frame), text);
-    if (!this.isStackTourNarrationCurrent(token, frame.card.id)) {
+    const audioKey = frame.card.tour ? this.tourAudioKey(frame) : this.stackCardAudioKey(frame.card);
+    const audioUrl = await this.ensureTourAudioUrl(audioKey, text);
+    if (!this.isStackNarrationCurrent(token, frame.card.id)) {
       return;
     }
     if (!audioUrl) {
@@ -10827,7 +10800,7 @@ export class BoardsComponent implements OnDestroy {
     this.tourAudio = audio;
     this.tourSpeechPlaying.set(true);
     const syncProgressDuration = () => {
-      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || !Number.isFinite(audio.duration) || audio.duration <= 0) {
+      if (!this.isStackNarrationCurrent(token, frame.card.id) || !Number.isFinite(audio.duration) || audio.duration <= 0) {
         return;
       }
       const elapsedMs = Date.now() - startedAt;
@@ -10835,7 +10808,7 @@ export class BoardsComponent implements OnDestroy {
     };
     audio.onloadedmetadata = syncProgressDuration;
     audio.onended = () => {
-      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+      if (!this.isStackNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
         return;
       }
       this.stopTourSpeech();
@@ -10844,7 +10817,7 @@ export class BoardsComponent implements OnDestroy {
       }
     };
     audio.onerror = () => {
-      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+      if (!this.isStackNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
         return;
       }
       this.stopTourSpeech();
@@ -10853,7 +10826,7 @@ export class BoardsComponent implements OnDestroy {
         return;
       }
       this.stackActiveFrameDurationMs.set(this.stackFrameDurationMs);
-      this.tourAudioNotice.set('The tour narration could not play this location. Continuing to the next stop.');
+      this.tourAudioNotice.set('The narration could not play this card. Continuing to the next card.');
       if (autoAdvance && this.stackPlaying()) {
         this.scheduleStackFrameAdvance(this.stackFrameDurationMs, token);
       }
@@ -10863,7 +10836,7 @@ export class BoardsComponent implements OnDestroy {
       await audio.play();
       syncProgressDuration();
     } catch {
-      if (!this.isStackTourNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
+      if (!this.isStackNarrationCurrent(token, frame.card.id) || this.tourAudio !== audio) {
         return;
       }
       this.stopTourSpeech();
@@ -10888,7 +10861,7 @@ export class BoardsComponent implements OnDestroy {
     if (!this.isBrowser
       || typeof window.speechSynthesis === 'undefined'
       || typeof window.SpeechSynthesisUtterance === 'undefined'
-      || !this.isStackTourNarrationCurrent(token, frame.card.id)) {
+      || !this.isStackNarrationCurrent(token, frame.card.id)) {
       return false;
     }
 
@@ -10908,7 +10881,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackActiveFrameDurationMs.set(Date.now() - startedAt + estimatedSpeechMs + 450);
 
     utterance.onend = () => {
-      if (this.tourSpeechUtterance !== utterance || !this.isStackTourNarrationCurrent(token, frame.card.id)) {
+      if (this.tourSpeechUtterance !== utterance || !this.isStackNarrationCurrent(token, frame.card.id)) {
         return;
       }
       this.tourSpeechUtterance = null;
@@ -10918,7 +10891,7 @@ export class BoardsComponent implements OnDestroy {
       }
     };
     utterance.onerror = () => {
-      if (this.tourSpeechUtterance !== utterance || !this.isStackTourNarrationCurrent(token, frame.card.id)) {
+      if (this.tourSpeechUtterance !== utterance || !this.isStackNarrationCurrent(token, frame.card.id)) {
         return;
       }
       this.tourSpeechUtterance = null;
@@ -10932,16 +10905,16 @@ export class BoardsComponent implements OnDestroy {
     return true;
   }
 
-  private isStackTourNarrationCurrent(token: number, cardId: string): boolean {
+  private isStackNarrationCurrent(token: number, cardId: string): boolean {
     return token === this.stackTourNarrationSwitchToken
-      && this.isTourStackLiveView()
-      && this.stackCurrentTourCard()?.id === cardId;
+      && this.isNarratedStackLiveView()
+      && this.stackCurrentCard()?.id === cardId;
   }
 
   private scheduleStackFrameAdvance(delayMs: number, token: number): void {
     this.clearStackPlaybackTimer();
     this.stackPlaybackTimer = setTimeout(() => {
-      if (token !== this.stackTourNarrationSwitchToken || !this.stackPlaying() || !this.isTourStackLiveView()) {
+      if (token !== this.stackTourNarrationSwitchToken || !this.stackPlaying() || !this.isNarratedStackLiveView()) {
         return;
       }
       this.advanceStackFrame();

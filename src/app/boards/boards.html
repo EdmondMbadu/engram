@@ -54,7 +54,7 @@
                     [disabled]="stackNarrationLoading()"
                     [attr.aria-label]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
                     [attr.title]="stackNarrationLoading() ? 'Preparing ElevenLabs narration' : tourSpeechPlaying() ? 'Stop narration' : 'Listen to card'"
-                    (click)="tourSpeechPlaying() ? stopTourSpeech() : (narratableCard.tour ? replayStackTourNarration($event) : replayStackCardNarration(narratableCard, $event))"
+                    (click)="tourSpeechPlaying() ? stopNarratedStack($event) : (narratableCard.tour ? replayStackTourNarration($event) : replayStackCardNarration(narratableCard, $event))"
                   >
                     <span class="material-symbols-outlined">
                       {{ stackNarrationLoading() ? 'progress_activity' : tourSpeechPlaying() ? 'graphic_eq' : 'volume_up' }}
@@ -84,12 +84,6 @@
                     <span i18n>A LivingWiki Stack</span>
                     <h4 [class]="stackTitleClass(stackCoverTitle() || board.title)">{{ stackCoverTitle() || board.title }}</h4>
                     <p>{{ stackCoverSubtitle() }}</p>
-                    @if (stackHasTourNarration() && !stackTourNarrationConsent()) {
-                      <button type="button" class="stack-tour-start" (click)="startNarratedStack($event)" i18n>
-                        <span class="material-symbols-outlined">volume_up</span>
-                        Start narrated tour
-                      </button>
-                    }
                   </div>
                 } @else if (frame.kind === 'card') {
                   @if (frame.card; as card) {
@@ -102,10 +96,25 @@
                         <span>{{ stackCardEyebrow(card) }}</span>
                         <h4 [class]="stackTitleClass(card.title)">{{ card.title }}</h4>
                         <p>{{ stackCardSummary(card) }}</p>
-                        @if (stackCardHasMore(card)) {
-                          <button type="button" class="stack-preview__read-more" (click)="toggleStackCardDetails(card, $event)">
-                            {{ stackExpandedCardId() === card.id ? 'Close' : 'Read more' }}
-                          </button>
+                        @if (stackCardHasMore(card) || stackPlaying() || tourSpeechPlaying() || stackNarrationLoading()) {
+                          <div class="stack-preview__inline-actions">
+                            @if (stackCardHasMore(card)) {
+                              <button type="button" class="stack-preview__read-more" (click)="toggleStackCardDetails(card, $event)">
+                                {{ stackExpandedCardId() === card.id ? 'Close' : 'Read more' }}
+                              </button>
+                            }
+                            @if (stackPlaying() || tourSpeechPlaying() || stackNarrationLoading()) {
+                              <button
+                                type="button"
+                                class="stack-preview__stop"
+                                aria-label="Stop narration"
+                                title="Stop narration"
+                                (click)="stopNarratedStack($event)"
+                              >
+                                <span class="material-symbols-outlined">stop</span>
+                              </button>
+                            }
+                          </div>
                         }
                         @if (stackExpandedCardId() === card.id) {
                           <div class="stack-preview__details" role="region" aria-label="Card details" i18n-aria-label>
