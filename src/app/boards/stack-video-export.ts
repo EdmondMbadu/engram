@@ -4,8 +4,7 @@ export type StackVideoCard = {
   title: string;
   subtitle: string;
   notes: string;
-  status: string;
-  rating: number;
+  rank?: number | null;
   imageUrl: string;
   imageUrls: string[];
   tourSequence?: number | null;
@@ -56,10 +55,24 @@ const FRAME_RATE = 30;
 const FRAME_DURATION_MS = 1900;
 const CLOSING_DURATION_MS = 2100;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v2';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v4';
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
+}
+
+export function stackVideoCardKicker(
+  card: Pick<StackVideoCard, 'rank' | 'tourSequence'>,
+  _cardIndex: number,
+  _cardCount: number,
+): string {
+  if (card.tourSequence && card.tourSequence > 0) {
+    return `TOUR STOP ${card.tourSequence}`;
+  }
+  if (card.rank && card.rank > 0) {
+    return `RANK #${card.rank}`;
+  }
+  return '';
 }
 
 export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageUrl' | 'imageUrls'>): string[] {
@@ -404,15 +417,15 @@ function drawCardFrame(
   context.save();
   context.globalAlpha = reveal;
   context.translate(0, (1 - reveal) * height * 0.035);
-  context.fillStyle = '#bdfbe3';
-  context.font = `850 ${Math.round(width * 0.032)}px Inter, Arial, sans-serif`;
-  const kicker = card.tourSequence
-    ? `TOUR STOP ${card.tourSequence}  ·  ${cardIndex + 1} OF ${cardCount}`
-    : `${card.status.toUpperCase()}  ·  ${cardIndex + 1} OF ${cardCount}`;
-  context.fillText(kicker, padding, height * 0.64);
+  const kicker = stackVideoCardKicker(card, cardIndex, cardCount);
+  if (kicker) {
+    context.fillStyle = '#bdfbe3';
+    context.font = `850 ${Math.round(width * 0.032)}px Inter, Arial, sans-serif`;
+    context.fillText(kicker, padding, height * 0.64);
+  }
   context.fillStyle = '#ffffff';
   context.font = `950 ${Math.round(width * 0.09)}px Inter, Arial, sans-serif`;
-  const titleBottom = drawWrappedText(context, card.title, padding, height * 0.69, width - padding * 2, width * 0.095, 3);
+  const titleBottom = drawWrappedText(context, card.title, padding, height * (kicker ? 0.69 : 0.64), width - padding * 2, width * 0.095, 3);
   const detail = card.subtitle || card.notes;
   if (detail) {
     context.fillStyle = 'rgba(255,255,255,.86)';

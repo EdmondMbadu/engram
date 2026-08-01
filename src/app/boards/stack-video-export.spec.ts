@@ -1,6 +1,7 @@
 import {
   combineStackVideoMediaStream,
   preferredRecorderMimeType,
+  stackVideoCardKicker,
   stackVideoCardImageCandidates,
   stackVideoRenderIsCurrent,
 } from './stack-video-export';
@@ -10,7 +11,21 @@ describe('Stack video card images', () => {
   it('requires legacy videos to be regenerated after a renderer change', () => {
     expect(stackVideoRenderIsCurrent(undefined)).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v1')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v2')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v2')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v3')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v4')).toBeTrue();
+  });
+
+  it('uses only a rank label for ranked cards', () => {
+    expect(stackVideoCardKicker({ rank: 3 }, 2, 10)).toBe('RANK #3');
+  });
+
+  it('uses only the tour stop when a card is part of a tour', () => {
+    expect(stackVideoCardKicker({ rank: 3, tourSequence: 2 }, 1, 5)).toBe('TOUR STOP 2');
+  });
+
+  it('does not repeat card position when no rank or tour stop exists', () => {
+    expect(stackVideoCardKicker({}, 0, 4)).toBe('');
   });
 
   it('keeps gallery images available when the primary image is empty after reordering', () => {
