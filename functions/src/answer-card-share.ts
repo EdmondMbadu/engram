@@ -907,6 +907,8 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
   <title>${escapeHtml(`${board.title} | LivingWiki video`)}</title>
   <meta name="description" content="${escapeHtml(description)}">
   <meta name="robots" content="index,follow,max-video-preview:-1,max-image-preview:large">
+  <link rel="icon" type="image/png" sizes="64x64" href="${appUrl}/assets/image/living-wiki-favicon.png">
+  <link rel="apple-touch-icon" href="${appUrl}/assets/image/living-wiki-favicon.png">
   <link rel="canonical" href="${escapeHtml(shareUrl)}">
   <meta property="og:type" content="video.other">
   <meta property="og:site_name" content="LivingWiki">
@@ -984,6 +986,8 @@ function buildBoardVideoPlayerHtml(board: BoardShare): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>${escapeHtml(board.title)}</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="${appUrl}/assets/image/living-wiki-favicon.png">
+  <link rel="apple-touch-icon" href="${appUrl}/assets/image/living-wiki-favicon.png">
   <style>
     * { box-sizing: border-box; }
     html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #000; }

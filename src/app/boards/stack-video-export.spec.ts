@@ -2,10 +2,17 @@ import {
   combineStackVideoMediaStream,
   preferredRecorderMimeType,
   stackVideoCardImageCandidates,
+  stackVideoRenderIsCurrent,
 } from './stack-video-export';
 import { reorderRelativeToTarget } from './reorder';
 
 describe('Stack video card images', () => {
+  it('requires legacy videos to be regenerated after a renderer change', () => {
+    expect(stackVideoRenderIsCurrent(undefined)).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v1')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v2')).toBeTrue();
+  });
+
   it('keeps gallery images available when the primary image is empty after reordering', () => {
     expect(stackVideoCardImageCandidates({
       imageUrl: '',

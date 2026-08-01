@@ -76,6 +76,8 @@ import {
 } from './off-grid-location';
 import {
   generateStackVideo,
+  STACK_VIDEO_RENDER_VERSION,
+  stackVideoRenderIsCurrent,
   type StackVideoBackgroundAudio,
   type StackVideoResult,
 } from './stack-video-export';
@@ -281,6 +283,7 @@ type Board = {
   socialVideoUrl: string;
   socialVideoMimeType: string;
   socialVideoUpdatedAt: string;
+  socialVideoRenderVersion?: string;
   socialVideoRatio: StackRatio;
   socialVideoAudioTrackId: string;
   socialVideoAudioVolume: number;
@@ -10189,6 +10192,7 @@ export class BoardsComponent implements OnDestroy {
 
   socialVideoIsCurrent(board: Board): boolean {
     if (!board.socialVideoUrl || !board.socialVideoUpdatedAt) return false;
+    if (!stackVideoRenderIsCurrent(board.socialVideoRenderVersion)) return false;
     const videoTime = Date.parse(board.socialVideoUpdatedAt);
     const boardTime = Date.parse(board.updatedAt);
     return Number.isFinite(videoTime) && Number.isFinite(boardTime) && videoTime >= boardTime;
@@ -10260,6 +10264,7 @@ export class BoardsComponent implements OnDestroy {
         socialVideoUrl: videoUrl,
         socialVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
         socialVideoUpdatedAt: new Date().toISOString(),
+        socialVideoRenderVersion: STACK_VIDEO_RENDER_VERSION,
         socialVideoRatio: this.stackRatio(),
         socialVideoAudioTrackId: this.stackAudioTrackId(),
         socialVideoAudioVolume: this.stackAudioVolume(),
@@ -12448,6 +12453,7 @@ export class BoardsComponent implements OnDestroy {
           socialVideoUrl: typeof board.socialVideoUrl === 'string' ? board.socialVideoUrl : '',
           socialVideoMimeType: typeof board.socialVideoMimeType === 'string' ? board.socialVideoMimeType : '',
           socialVideoUpdatedAt: typeof board.socialVideoUpdatedAt === 'string' ? board.socialVideoUpdatedAt : '',
+          socialVideoRenderVersion: typeof board.socialVideoRenderVersion === 'string' ? board.socialVideoRenderVersion : '',
           socialVideoRatio: this.isStackRatio((board as Partial<Board>).socialVideoRatio)
             ? (board as Board).socialVideoRatio
             : 'vertical',
@@ -12694,6 +12700,7 @@ export class BoardsComponent implements OnDestroy {
       socialVideoUrl: typeof data['socialVideoUrl'] === 'string' ? data['socialVideoUrl'] : '',
       socialVideoMimeType: typeof data['socialVideoMimeType'] === 'string' ? data['socialVideoMimeType'] : '',
       socialVideoUpdatedAt: typeof data['socialVideoUpdatedAt'] === 'string' ? data['socialVideoUpdatedAt'] : '',
+      socialVideoRenderVersion: typeof data['socialVideoRenderVersion'] === 'string' ? data['socialVideoRenderVersion'] : '',
       socialVideoRatio: this.isStackRatio(data['socialVideoRatio']) ? data['socialVideoRatio'] : 'vertical',
       socialVideoAudioTrackId: normalizeStackAudioTrackId(data['socialVideoAudioTrackId']),
       socialVideoAudioVolume: normalizeStackAudioVolume(data['socialVideoAudioVolume']),

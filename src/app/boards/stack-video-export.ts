@@ -56,6 +56,12 @@ const FRAME_RATE = 30;
 const FRAME_DURATION_MS = 1900;
 const CLOSING_DURATION_MS = 2100;
 
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v2';
+
+export function stackVideoRenderIsCurrent(version: unknown): boolean {
+  return version === STACK_VIDEO_RENDER_VERSION;
+}
+
 export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageUrl' | 'imageUrls'>): string[] {
   return Array.from(new Set(
     [card.imageUrl, ...(card.imageUrls ?? [])]
@@ -413,11 +419,6 @@ function drawCardFrame(
     context.font = `750 ${Math.round(width * 0.037)}px Inter, Arial, sans-serif`;
     drawWrappedText(context, detail, padding, titleBottom + width * 0.036, width - padding * 2, width * 0.052, 3);
   }
-  const badges: string[] = [];
-  if (card.rating > 0) badges.push(`${'★'.repeat(Math.min(5, Math.round(card.rating)))} ${card.rating}/5`);
-  const memoryCount = Math.max(0, card.imageUrls.length - (card.imageUrl ? 1 : 0));
-  if (memoryCount > 0) badges.push(`${memoryCount} ${memoryCount === 1 ? 'memory' : 'memories'}`);
-  drawBadges(context, badges, padding, height - width * 0.13, width);
   context.restore();
 }
 
@@ -528,25 +529,6 @@ function drawShade(context: CanvasRenderingContext2D, width: number, height: num
   gradient.addColorStop(1, `rgba(0,0,0,${strength})`);
   context.fillStyle = gradient;
   context.fillRect(0, 0, width, height);
-}
-
-function drawBadges(context: CanvasRenderingContext2D, badges: string[], x: number, y: number, width: number): void {
-  let cursor = x;
-  context.font = `850 ${Math.round(width * 0.027)}px Inter, Arial, sans-serif`;
-  context.textBaseline = 'middle';
-  for (const badge of badges) {
-    const badgeWidth = context.measureText(badge).width + width * 0.055;
-    roundedRect(context, cursor, y - width * 0.031, badgeWidth, width * 0.062, width * 0.031);
-    context.fillStyle = 'rgba(255,255,255,.17)';
-    context.fill();
-    context.strokeStyle = 'rgba(255,255,255,.45)';
-    context.lineWidth = 1.5;
-    context.stroke();
-    context.fillStyle = '#ffffff';
-    context.fillText(badge, cursor + width * 0.0275, y);
-    cursor += badgeWidth + width * 0.018;
-  }
-  context.textBaseline = 'alphabetic';
 }
 
 function drawWrappedText(
