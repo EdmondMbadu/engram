@@ -308,6 +308,7 @@ service cloud.firestore {
           'socialVideoUrl',
           'socialVideoMimeType',
           'socialVideoUpdatedAt',
+          'socialVideoRenderVersion',
           'socialVideoRatio',
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
@@ -368,6 +369,13 @@ service cloud.firestore {
         && request.resource.data.socialVideoMimeType.size() <= 120
         && request.resource.data.socialVideoUpdatedAt is string
         && request.resource.data.socialVideoUpdatedAt.size() <= 80
+        && (
+          !request.resource.data.keys().hasAny(['socialVideoRenderVersion'])
+          || (
+            request.resource.data.socialVideoRenderVersion is string
+            && request.resource.data.socialVideoRenderVersion.size() <= 64
+          )
+        )
         && request.resource.data.socialVideoRatio in ['vertical', 'square', 'landscape']
         && (
           !request.resource.data.keys().hasAny(['socialVideoAudioTrackId'])
