@@ -175,6 +175,13 @@ const elevenLabsPremadeNarratorVoiceIds = [
   'EXAVITQu4vr4xnSDxMaL',
   'pNInz6obpgDQGcFmaJgB',
 ];
+const stackNarratorVoiceIds = {
+  'warm-storyteller': '21m00Tcm4TlvDq8ikWAM',
+  'inspiring-guide': 'EXAVITQu4vr4xnSDxMaL',
+  'confident-narrator': 'pNInz6obpgDQGcFmaJgB',
+  'energetic-host': 'TxGEqnHWrfWFTfGW9XjX',
+  'calm-documentary': 'yoZ06aMxZJJ28mfd3POQ',
+} as const;
 const maxSpeechTextLength = 4000;
 const maxSpeechRecapWords = 28;
 const speechRecapVersion = 'v2';
@@ -16703,6 +16710,13 @@ export const synthesizeChatAnswerSpeech = onCall(
   },
   async (request) => {
     const requestedMode = request.data?.mode === 'tour' ? 'tour' : request.data?.mode === 'full' ? 'full' : 'recap';
+    const requestedNarratorId = String(request.data?.narratorVoiceId ?? '').trim();
+    const requestedNarratorVoiceId = requestedNarratorId
+      ? stackNarratorVoiceIds[requestedNarratorId as keyof typeof stackNarratorVoiceIds]
+      : '';
+    if (requestedNarratorId && !requestedNarratorVoiceId) {
+      throw new HttpsError('invalid-argument', 'The selected narrator voice is not available.');
+    }
     const text = requestedMode === 'full' || requestedMode === 'tour'
       ? normalizeSpeechText(request.data?.text)
       : buildSpeechRecapText(request.data?.question, request.data?.text);
@@ -16734,7 +16748,11 @@ export const synthesizeChatAnswerSpeech = onCall(
           use_speaker_boost: false,
         };
     const speechVersion = requestedMode === 'tour' ? tourSpeechVersion : speechRecapVersion;
-    const voiceIds = Array.from(new Set([chatAnswerVoiceId, ...elevenLabsPremadeNarratorVoiceIds].filter(Boolean)));
+    const primaryVoiceId = requestedNarratorVoiceId || chatAnswerVoiceId;
+    const voiceIds = Array.from(new Set([
+      primaryVoiceId,
+      ...elevenLabsPremadeNarratorVoiceIds,
+    ].filter(Boolean)));
     let lastErrorStatus: number | null = null;
     let lastErrorBody = '';
 
@@ -16753,6 +16771,7 @@ export const synthesizeChatAnswerSpeech = onCall(
           speechText: text,
           durationHintSeconds: requestedMode === 'recap' ? 15 : null,
           provider: 'elevenlabs',
+          narratorVoiceId: requestedNarratorId || null,
           cached: true,
         };
       }
@@ -16803,9 +16822,9 @@ export const synthesizeChatAnswerSpeech = onCall(
         },
       });
 
-      if (voiceId !== chatAnswerVoiceId) {
+      if (voiceId !== primaryVoiceId) {
         logger.warn('Using fallback ElevenLabs voice for speech synthesis', {
-          requestedVoiceId: chatAnswerVoiceId,
+          requestedVoiceId: primaryVoiceId,
           fallbackVoiceId: voiceId,
           mode: requestedMode,
         });
@@ -16818,6 +16837,7 @@ export const synthesizeChatAnswerSpeech = onCall(
         speechText: text,
         durationHintSeconds: requestedMode === 'recap' ? 15 : null,
         provider: 'elevenlabs',
+        narratorVoiceId: requestedNarratorId || null,
         cached: false,
       };
     }

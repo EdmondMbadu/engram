@@ -33,6 +33,11 @@ export type StackVideoBackgroundAudio = {
   volume: number;
 };
 
+export type StackVideoNarration = {
+  cardAudioUrls: Array<string | null>;
+  volume: number;
+};
+
 type LoadedImage = {
   source: CanvasImageSource;
   width: number;
@@ -40,8 +45,9 @@ type LoadedImage = {
   close: () => void;
 };
 
-type PreparedBackgroundAudio = {
+type PreparedVideoAudio = {
   tracks: MediaStreamTrack[];
+  frameDurationsMs: number[];
   start: () => void;
   close: () => Promise<void>;
 };
@@ -55,7 +61,7 @@ const FRAME_RATE = 30;
 const FRAME_DURATION_MS = 1900;
 const CLOSING_DURATION_MS = 2100;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v4';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v5';
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
@@ -83,17 +89,24 @@ export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageU
   ));
 }
 
+export function stackVideoNarrationFrameDurationMs(durationSeconds: number, baseDurationMs = FRAME_DURATION_MS): number {
+  if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) return baseDurationMs;
+  return Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + 500);
+}
+
 export async function generateStackVideo(
   board: StackVideoBoard,
   ratio: StackVideoRatio,
   onProgress?: (progress: number) => void,
   backgroundAudio?: StackVideoBackgroundAudio | null,
+  narration?: StackVideoNarration | null,
 ): Promise<StackVideoResult> {
   if (typeof document === 'undefined' || typeof MediaRecorder === 'undefined') {
     throw new Error('Video export is not supported in this browser.');
   }
 
-  const mimeType = preferredRecorderMimeType(!!backgroundAudio?.url);
+  const hasNarration = narration?.cardAudioUrls.some(Boolean) ?? false;
+  const mimeType = preferredRecorderMimeType(!!backgroundAudio?.url || hasNarration);
   if (!mimeType) {
     throw new Error('This browser cannot record a social video.');
   }
@@ -135,12 +148,13 @@ export async function generateStackVideo(
     ...board.cards.map((card, cardIndex) => ({ kind: 'card' as const, card, cardIndex })),
     { kind: 'closing' },
   ];
-  const frameDurations = frames.map((frame) => frame.kind === 'closing' ? CLOSING_DURATION_MS : FRAME_DURATION_MS);
+  const baseFrameDurations = frames.map((frame) => frame.kind === 'closing' ? CLOSING_DURATION_MS : FRAME_DURATION_MS);
+  const preparedAudio = backgroundAudio?.url || hasNarration
+    ? await prepareVideoAudio(backgroundAudio, narration, baseFrameDurations)
+    : null;
+  const frameDurations = preparedAudio?.frameDurationsMs ?? baseFrameDurations;
   const totalDurationMs = frameDurations.reduce((total, duration) => total + duration, 0);
   const canvasStream = canvas.captureStream(FRAME_RATE);
-  const preparedAudio = backgroundAudio?.url
-    ? await prepareBackgroundAudio(backgroundAudio, totalDurationMs / 1000)
-    : null;
   const stream = combineStackVideoMediaStream(canvasStream, preparedAudio?.tracks);
   const chunks: Blob[] = [];
   const recorder = new MediaRecorder(stream, {
@@ -243,60 +257,120 @@ async function loadImage(url: string): Promise<LoadedImage | null> {
   }
 }
 
-async function prepareBackgroundAudio(
-  audio: StackVideoBackgroundAudio,
-  durationSeconds: number,
-): Promise<PreparedBackgroundAudio> {
+async function prepareVideoAudio(
+  backgroundAudio: StackVideoBackgroundAudio | null | undefined,
+  narration: StackVideoNarration | null | undefined,
+  baseFrameDurationsMs: number[],
+): Promise<PreparedVideoAudio> {
   const AudioContextConstructor = window.AudioContext
     ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!AudioContextConstructor) {
-    throw new Error('This browser cannot add background music to the video.');
-  }
-
-  const response = await fetch(audio.url, { mode: 'cors', credentials: 'omit' });
-  if (!response.ok) {
-    throw new Error('The selected background music could not be loaded. Choose another mood and try again.');
+    throw new Error('This browser cannot add narration or music to the video.');
   }
 
   const context = new AudioContextConstructor();
   let started = false;
   try {
     await context.resume();
-    const buffer = await context.decodeAudioData(await response.arrayBuffer());
-    const source = context.createBufferSource();
-    const gain = context.createGain();
     const destination = context.createMediaStreamDestination();
-    const volume = Math.min(0.5, Math.max(0, audio.volume));
-    source.buffer = buffer;
-    source.loop = buffer.duration + 0.05 < durationSeconds;
-    source.connect(gain);
-    gain.connect(destination);
+    const voiceBuffers = await Promise.all(
+      (narration?.cardAudioUrls ?? []).map((url) => url
+        ? loadAudioBuffer(context, url, 'A narrator clip could not be loaded. Try creating the video again.')
+        : Promise.resolve(null)),
+    );
+    const frameDurationsMs = [...baseFrameDurationsMs];
+    voiceBuffers.forEach((buffer, cardIndex) => {
+      if (!buffer || cardIndex + 1 >= frameDurationsMs.length - 1) return;
+      frameDurationsMs[cardIndex + 1] = stackVideoNarrationFrameDurationMs(
+        buffer.duration,
+        frameDurationsMs[cardIndex + 1],
+      );
+    });
+    const durationSeconds = frameDurationsMs.reduce((total, duration) => total + duration, 0) / 1000;
+    const sources: AudioBufferSourceNode[] = [];
+    const gains: GainNode[] = [];
+
+    let backgroundSource: AudioBufferSourceNode | null = null;
+    let backgroundGain: GainNode | null = null;
+    let backgroundVolume = 0;
+    if (backgroundAudio?.url) {
+      const buffer = await loadAudioBuffer(
+        context,
+        backgroundAudio.url,
+        'The selected background music could not be loaded. Choose another mood and try again.',
+      );
+      backgroundSource = context.createBufferSource();
+      backgroundGain = context.createGain();
+      backgroundVolume = Math.min(0.5, Math.max(0, backgroundAudio.volume));
+      backgroundSource.buffer = buffer;
+      backgroundSource.loop = buffer.duration + 0.05 < durationSeconds;
+      backgroundSource.connect(backgroundGain);
+      backgroundGain.connect(destination);
+      sources.push(backgroundSource);
+      gains.push(backgroundGain);
+    }
+
+    const voiceGain = context.createGain();
+    voiceGain.gain.value = Math.min(1, Math.max(0, narration?.volume ?? 1));
+    voiceGain.connect(destination);
+    gains.push(voiceGain);
+    const voiceSources = voiceBuffers.map((buffer) => {
+      if (!buffer) return null;
+      const source = context.createBufferSource();
+      source.buffer = buffer;
+      source.connect(voiceGain);
+      sources.push(source);
+      return source;
+    });
 
     return {
       tracks: destination.stream.getAudioTracks(),
+      frameDurationsMs,
       start: () => {
         const now = context.currentTime;
-        const fadeInSeconds = Math.min(0.7, Math.max(0.15, durationSeconds / 4));
-        const fadeOutSeconds = Math.min(1.2, Math.max(0.2, durationSeconds / 4));
-        const fadeOutAt = now + Math.max(fadeInSeconds, durationSeconds - fadeOutSeconds);
-        gain.gain.cancelScheduledValues(now);
-        gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.linearRampToValueAtTime(volume, now + fadeInSeconds);
-        gain.gain.setValueAtTime(volume, fadeOutAt);
-        gain.gain.linearRampToValueAtTime(0.0001, now + durationSeconds);
-        source.start(now);
+        if (backgroundSource && backgroundGain) {
+          const fadeInSeconds = Math.min(0.7, Math.max(0.15, durationSeconds / 4));
+          const fadeOutSeconds = Math.min(1.2, Math.max(0.2, durationSeconds / 4));
+          const fadeOutAt = now + Math.max(fadeInSeconds, durationSeconds - fadeOutSeconds);
+          backgroundGain.gain.cancelScheduledValues(now);
+          backgroundGain.gain.setValueAtTime(0.0001, now);
+          backgroundGain.gain.linearRampToValueAtTime(backgroundVolume, now + fadeInSeconds);
+          let frameStartSeconds = frameDurationsMs[0] / 1000;
+          voiceBuffers.forEach((buffer, cardIndex) => {
+            if (buffer) {
+              const duckAt = now + Math.max(fadeInSeconds, frameStartSeconds - 0.16);
+              const speechAt = now + frameStartSeconds + 0.1;
+              const restoreAt = speechAt + buffer.duration + 0.18;
+              backgroundGain!.gain.setValueAtTime(backgroundVolume, duckAt);
+              backgroundGain!.gain.linearRampToValueAtTime(backgroundVolume * 0.28, speechAt);
+              backgroundGain!.gain.setValueAtTime(backgroundVolume * 0.28, speechAt + buffer.duration);
+              backgroundGain!.gain.linearRampToValueAtTime(backgroundVolume, restoreAt);
+            }
+            frameStartSeconds += frameDurationsMs[cardIndex + 1] / 1000;
+          });
+          backgroundGain.gain.setValueAtTime(backgroundVolume, fadeOutAt);
+          backgroundGain.gain.linearRampToValueAtTime(0.0001, now + durationSeconds);
+          backgroundSource.start(now);
+        }
+        let frameStartSeconds = frameDurationsMs[0] / 1000;
+        voiceSources.forEach((source, cardIndex) => {
+          if (source) source.start(now + frameStartSeconds + 0.1);
+          frameStartSeconds += frameDurationsMs[cardIndex + 1] / 1000;
+        });
         started = true;
       },
       close: async () => {
         if (started) {
-          try {
-            source.stop();
-          } catch {
-            // The source already ended with the recording.
+          for (const source of sources) {
+            try {
+              source.stop();
+            } catch {
+              // The source already ended with the recording.
+            }
           }
         }
-        source.disconnect();
-        gain.disconnect();
+        sources.forEach((source) => source.disconnect());
+        gains.forEach((gain) => gain.disconnect());
         destination.disconnect();
         await context.close();
       },
@@ -304,7 +378,21 @@ async function prepareBackgroundAudio(
   } catch (error) {
     await context.close();
     if (error instanceof Error && error.message) throw error;
-    throw new Error('The selected background music could not be prepared.');
+    throw new Error('The video audio could not be prepared.');
+  }
+}
+
+async function loadAudioBuffer(
+  context: AudioContext,
+  url: string,
+  errorMessage: string,
+): Promise<AudioBuffer> {
+  const response = await fetch(url, { mode: 'cors', credentials: 'omit' });
+  if (!response.ok) throw new Error(errorMessage);
+  try {
+    return await context.decodeAudioData(await response.arrayBuffer());
+  } catch {
+    throw new Error(errorMessage);
   }
 }
 

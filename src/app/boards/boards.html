@@ -4966,6 +4966,61 @@
                         (input)="stackCoverSubtitle.set($any($event.target).value)"
                       />
                     </label>
+                    <div class="stack-voice-picker">
+                      <div class="stack-voice-picker__head">
+                        <div>
+                          <span i18n>Narrator voice</span>
+                          <strong>{{ stackSelectedNarratorVoice()?.name }}</strong>
+                        </div>
+                        <small i18n>Used in the live view and generated video</small>
+                      </div>
+                      <div class="stack-voice-grid" role="radiogroup" aria-label="Choose a narrator voice" i18n-aria-label>
+                        @for (voice of stackNarratorVoices; track voice.id) {
+                          <div
+                            class="stack-voice-option"
+                            [class.stack-voice-option--active]="stackNarratorVoiceId() === voice.id"
+                          >
+                            <button
+                              type="button"
+                              class="stack-voice-option__select"
+                              role="radio"
+                              [attr.aria-checked]="stackNarratorVoiceId() === voice.id"
+                              [attr.aria-label]="voice.name + ', ' + voice.presentation + ', ' + voice.style"
+                              (click)="selectStackNarratorVoice(board, voice.id)"
+                            >
+                              <span class="stack-voice-option__icon material-symbols-outlined">{{ voice.icon }}</span>
+                              <span class="stack-voice-option__copy">
+                                <strong>{{ voice.name }}</strong>
+                                <small>{{ voice.presentation }} · {{ voice.style }}</small>
+                                <span>{{ voice.description }}</span>
+                              </span>
+                              @if (stackNarratorVoiceId() === voice.id) {
+                                <span class="stack-voice-option__check material-symbols-outlined">check_circle</span>
+                              }
+                            </button>
+                            <button
+                              type="button"
+                              class="stack-voice-option__preview"
+                              [class.stack-voice-option__preview--playing]="isStackVoicePreviewing(voice.id)"
+                              [disabled]="stackVoicePreviewLoadingId() === voice.id"
+                              [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Listen to ' + voice.name"
+                              (click)="toggleStackVoicePreview(voice, $event)"
+                            >
+                              <span class="material-symbols-outlined">
+                                {{ stackVoicePreviewLoadingId() === voice.id ? 'progress_activity' : isStackVoicePreviewing(voice.id) ? 'stop' : 'play_arrow' }}
+                              </span>
+                              <span i18n>Preview</span>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                      @if (stackVoiceError()) {
+                        <small class="stack-voice-picker__error">
+                          <span class="material-symbols-outlined">error</span>
+                          {{ stackVoiceError() }}
+                        </small>
+                      }
+                    </div>
                     <label>
                       <span i18n>Share caption</span>
                       <textarea

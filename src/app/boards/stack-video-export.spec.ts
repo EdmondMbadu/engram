@@ -3,6 +3,7 @@ import {
   preferredRecorderMimeType,
   stackVideoCardKicker,
   stackVideoCardImageCandidates,
+  stackVideoNarrationFrameDurationMs,
   stackVideoRenderIsCurrent,
 } from './stack-video-export';
 import { reorderRelativeToTarget } from './reorder';
@@ -13,7 +14,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v1')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v2')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v3')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v4')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v4')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v5')).toBeTrue();
   });
 
   it('uses only a rank label for ranked cards', () => {
@@ -74,6 +76,11 @@ describe('Stack video card images', () => {
 
     expect(preferredRecorderMimeType(true))
       .toBe('video/mp4;codecs=avc1.42E01E,mp4a.40.2');
+  });
+
+  it('keeps each narrated card visible until its voice clip finishes', () => {
+    expect(stackVideoNarrationFrameDurationMs(0)).toBe(1900);
+    expect(stackVideoNarrationFrameDurationMs(3.25)).toBe(3750);
   });
 
   it('adds the decoded background music track to the recorded canvas stream', async () => {

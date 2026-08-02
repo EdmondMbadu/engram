@@ -3099,6 +3099,10 @@
     "source": " Every claimed business gets an always-on customer-service agent that can answer calls, explain the business, and guide customers in 60+ languages. Customers choose the language when they scan or call, so there is nothing for the business to configure here. ",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "3124095857098416458": {
+    "source": "Used in the live view and generated video",
+    "file": "src/app/boards/boards.html"
+  },
   "3128911811072399567": {
     "source": " {$INTERPOLATION} ready/retry · {$INTERPOLATION_1} skipped/created ",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -9079,6 +9083,10 @@
     "source": "Sky",
     "file": "src/app/boards/boards.ts"
   },
+  "7062082209527325705": {
+    "source": "Choose a narrator voice",
+    "file": "src/app/boards/boards.html"
+  },
   "7064098783390125905": {
     "source": "Made with LivingWiki",
     "file": "src/app/boards/boards.html"
@@ -9110,6 +9118,10 @@
   "7109926126126578845": {
     "source": "Subscribe to weekly updates",
     "file": "src/app/chat/chat.ts"
+  },
+  "7116646592650069934": {
+    "source": "Narrator voice",
+    "file": "src/app/boards/boards.html"
   },
   "7122661321319980206": {
     "source": "Reading document",
