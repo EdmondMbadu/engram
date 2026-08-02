@@ -40,7 +40,7 @@ import {
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
-import { legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
+import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 import {
   insertionSortOrder,
   reorderRelativeToTarget,
@@ -250,6 +250,7 @@ type BoardCard = {
   tags: string[];
   stickers: BoardSticker[];
   tour: BoardCardTour | null;
+  childBoardId?: string;
   relatedCards?: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -290,6 +291,10 @@ type Board = {
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
   learningQuiz?: BoardLearningQuiz | null;
+  parentBoardId?: string;
+  parentCardId?: string;
+  parentBoardTitle?: string;
+  parentCardTitle?: string;
   cards: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -308,6 +313,13 @@ type BoardDraft = {
   stackCtaLabel: string;
   stackCtaUrl: string;
   stickers: BoardSticker[];
+};
+
+type BoardInsideContext = {
+  parentBoardId: string;
+  parentCardId: string;
+  parentBoardTitle: string;
+  parentCardTitle: string;
 };
 
 type CardDraft = {
@@ -1170,6 +1182,7 @@ export class BoardsComponent implements OnDestroy {
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
   readonly boardDialogOpen = signal(false);
+  readonly creatingBoardInside = signal<BoardInsideContext | null>(null);
   readonly cardDialogOpen = signal(false);
   readonly relatedCardEditorOpen = signal(false);
   readonly relatedCardParentId = signal<string | null>(null);
@@ -1507,6 +1520,29 @@ export class BoardsComponent implements OnDestroy {
     const selectedId = this.selectedBoardId();
     return this.boards().find((board) => board.id === selectedId) ?? null;
   });
+  readonly selectedBoardParent = computed(() => {
+    const board = this.originalSelectedBoard();
+    return board?.parentBoardId
+      ? this.boards().find((candidate) => candidate.id === board.parentBoardId) ?? null
+      : null;
+  });
+  readonly boardDialogInsideContext = computed<BoardInsideContext | null>(() => {
+    const creating = this.creatingBoardInside();
+    if (creating) {
+      return creating;
+    }
+    const editingId = this.editingBoardId();
+    const board = editingId ? this.boards().find((candidate) => candidate.id === editingId) : null;
+    if (!board?.parentBoardId || !board.parentCardId) {
+      return null;
+    }
+    return {
+      parentBoardId: board.parentBoardId,
+      parentCardId: board.parentCardId,
+      parentBoardTitle: board.parentBoardTitle || 'Parent board',
+      parentCardTitle: board.parentCardTitle || 'Parent card',
+    };
+  });
   readonly boardTranslationActive = computed(() => {
     const board = this.originalSelectedBoard();
     const result = this.boardTranslationResult();
@@ -1649,7 +1685,11 @@ export class BoardsComponent implements OnDestroy {
         return leftValue.localeCompare(rightValue);
       });
   });
-  readonly boardsProfileBoard = computed(() => this.boards().find((board) => board.ownerUserId) ?? null);
+  readonly boardsProfileBoard = computed(() =>
+    this.boards().find((board) => !board.parentCardId && board.ownerUserId)
+      ?? this.boards().find((board) => board.ownerUserId)
+      ?? null,
+  );
   readonly boardsProfileName = computed(() => {
     if (this.publicOwnerKey()) {
       const boardOwnerName = this.boardsProfileBoard()?.ownerDisplayName.trim();
@@ -1683,6 +1723,7 @@ export class BoardsComponent implements OnDestroy {
   readonly filteredBoards = computed(() => {
     const query = this.boardSearch().trim().toLowerCase();
     const boards = [...this.boards()]
+      .filter((board) => !board.parentCardId)
       .filter((board) => !this.songsPage() || this.isSongBoard(board))
       .filter((board) => !this.tripsPage() || this.isTourBoard(board))
       .sort((a, b) => this.compareBoards(a, b));
@@ -1743,7 +1784,9 @@ export class BoardsComponent implements OnDestroy {
   });
 
   readonly allGalleryCards = computed<GalleryCard[]>(() =>
-    this.boards().flatMap((board) => board.cards.map((card) => ({ card, board }))),
+    this.boards()
+      .filter((board) => !board.parentCardId)
+      .flatMap((board) => board.cards.map((card) => ({ card, board }))),
   );
 
   readonly visibleGalleryCards = computed<GalleryCard[]>(() => {
@@ -1765,10 +1808,12 @@ export class BoardsComponent implements OnDestroy {
   });
 
   readonly totalCards = computed(() =>
-    this.boards().reduce((total, board) => total + board.cards.length, 0),
+    this.boards()
+      .filter((board) => !board.parentCardId)
+      .reduce((total, board) => total + board.cards.length, 0),
   );
   readonly favoriteCards = computed(() =>
-    this.boards().reduce(
+    this.boards().filter((board) => !board.parentCardId).reduce(
       (total, board) => total + board.cards.filter((card) => card.status === 'favorite').length,
       0,
     ),
@@ -2168,7 +2213,21 @@ export class BoardsComponent implements OnDestroy {
     if (this.boardLearnOpen()) {
       this.closeBoardLearn();
     }
+    const board = this.originalSelectedBoard();
+    if (board?.parentBoardId) {
+      void this.router.navigate(['/boards', board.parentBoardId]);
+      return;
+    }
     void this.router.navigateByUrl(this.songsPage() || this.tripsPage() ? this.boardRouteRoot() : this.boardsProfileRoutePath());
+  }
+
+  openParentBoard(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!board.parentBoardId) {
+      return;
+    }
+    void this.router.navigate(['/boards', board.parentBoardId]);
   }
 
   async loadBoardFriends(): Promise<void> {
@@ -2478,6 +2537,7 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set($localize`Sign in to create a board.`);
       return;
     }
+    this.creatingBoardInside.set(null);
     this.editingBoardId.set(null);
     this.imageUploadError.set(null);
     this.boardDraft.set({
@@ -3680,6 +3740,7 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set($localize`Only the board owner can edit this board.`);
       return;
     }
+    this.creatingBoardInside.set(null);
     this.editingBoardId.set(board.id);
     this.imageUploadError.set(null);
     this.boardDraft.set({
@@ -3702,6 +3763,7 @@ export class BoardsComponent implements OnDestroy {
   closeBoardDialog(): void {
     this.boardDialogOpen.set(false);
     this.editingBoardId.set(null);
+    this.creatingBoardInside.set(null);
   }
 
   async saveBoard(event: Event): Promise<void> {
@@ -3718,6 +3780,7 @@ export class BoardsComponent implements OnDestroy {
 
     const now = new Date().toISOString();
     const editingId = this.editingBoardId();
+    const insideContext = this.creatingBoardInside();
     let nextBoard: Board | null = null;
     if (editingId) {
       const editingBoard = this.boards().find((board) => board.id === editingId);
@@ -3737,7 +3800,7 @@ export class BoardsComponent implements OnDestroy {
                 backNote: draft.backNote.trim(),
                 icon: draft.icon,
                 tone: draft.tone,
-                visibility: draft.visibility,
+                visibility: board.parentCardId ? board.visibility : draft.visibility,
                 imageUrl: draft.imageUrl.trim(),
                 logoUrl: draft.logoUrl.trim(),
                 logoLinkUrl: draft.logoLinkUrl.trim(),
@@ -3750,6 +3813,14 @@ export class BoardsComponent implements OnDestroy {
         }),
       );
     } else {
+      const parentBoard = insideContext
+        ? this.boards().find((board) => board.id === insideContext.parentBoardId) ?? null
+        : null;
+      const parentCard = parentBoard?.cards.find((card) => card.id === insideContext?.parentCardId) ?? null;
+      if (insideContext && (!parentBoard || !parentCard || !this.canEditBoard(parentBoard))) {
+        this.boardsSyncError.set('The parent card could not be found.');
+        return;
+      }
       const board: Board = {
         id: this.createId(),
         ...this.currentOwnerSnapshot(),
@@ -3759,7 +3830,7 @@ export class BoardsComponent implements OnDestroy {
         backNote: draft.backNote.trim(),
         icon: draft.icon,
         tone: draft.tone,
-        visibility: draft.visibility,
+        visibility: parentBoard?.visibility ?? draft.visibility,
         imageUrl: draft.imageUrl.trim(),
         logoUrl: draft.logoUrl.trim(),
         logoLinkUrl: draft.logoLinkUrl.trim(),
@@ -3776,19 +3847,55 @@ export class BoardsComponent implements OnDestroy {
         forkedFromOwnerUserId: '',
         forkedFromOwnerName: '',
         stickers: draft.stickers,
-      cards: [],
-      kind: 'standard',
-      tourMeta: null,
-      createdAt: now,
-      updatedAt: now,
-    };
+        parentBoardId: insideContext?.parentBoardId ?? '',
+        parentCardId: insideContext?.parentCardId ?? '',
+        parentBoardTitle: insideContext?.parentBoardTitle ?? '',
+        parentCardTitle: insideContext?.parentCardTitle ?? '',
+        cards: parentCard ? cardsForNewBoardInside(this.relatedCardsFor(parentCard)) : [],
+        kind: 'standard',
+        tourMeta: null,
+        createdAt: now,
+        updatedAt: now,
+      };
       nextBoard = board;
-      this.boards.update((boards) => [board, ...boards]);
+      if (parentBoard && parentCard) {
+        const linkedParent: Board = {
+          ...parentBoard,
+          cards: parentBoard.cards.map((card) => card.id === parentCard.id
+            ? { ...card, childBoardId: board.id, updatedAt: now }
+            : card),
+          updatedAt: now,
+        };
+        this.boards.update((boards) => [
+          board,
+          ...boards.map((candidate) => candidate.id === linkedParent.id ? linkedParent : candidate),
+        ]);
+        await this.persistAndReplaceBoard(board);
+        await this.persistAndReplaceBoard(linkedParent);
+      } else {
+        this.boards.update((boards) => [board, ...boards]);
+      }
       void this.router.navigate(['/boards', board.id]);
     }
 
-    if (nextBoard) {
+    if (nextBoard && (editingId || !insideContext)) {
       await this.persistAndReplaceBoard(nextBoard);
+      if (editingId) {
+        const linkedChildren = this.nestedBoardsUnder(editingId)
+          .filter((board) => board.visibility !== draft.visibility
+            || (board.parentBoardId === editingId && board.parentBoardTitle !== title))
+          .map((board) => ({
+            ...board,
+            parentBoardTitle: board.parentBoardId === editingId ? title : board.parentBoardTitle,
+            visibility: draft.visibility,
+            updatedAt: now,
+          }));
+        if (linkedChildren.length) {
+          const linkedById = new Map(linkedChildren.map((board) => [board.id, board]));
+          this.boards.update((boards) => boards.map((board) => linkedById.get(board.id) ?? board));
+          await Promise.all(linkedChildren.map((board) => this.persistAndReplaceBoard(board)));
+        }
+      }
     }
     this.closeBoardDialog();
   }
@@ -3809,7 +3916,7 @@ export class BoardsComponent implements OnDestroy {
     this.boardDeleteCandidate.set(null);
   }
 
-  confirmDeleteBoard(event?: Event): void {
+  async confirmDeleteBoard(event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
     const board = this.boardDeleteCandidate();
@@ -3822,12 +3929,55 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.boardDeleteCandidate.set(null);
+    const descendantBoards = this.nestedBoardsUnder(board.id);
+    const boardIdsToDelete = new Set([board.id, ...descendantBoards.map((candidate) => candidate.id)]);
 
-    this.boards.update((boards) => boards.filter((item) => item.id !== board.id));
-    if (this.selectedBoardId() === board.id) {
-      void this.router.navigateByUrl(this.boardsProfileRoutePath());
+    const parentBoard = board.parentBoardId
+      ? this.boards().find((candidate) => candidate.id === board.parentBoardId) ?? null
+      : null;
+    if (parentBoard && board.parentCardId && this.canEditBoard(parentBoard)) {
+      const now = new Date().toISOString();
+      const unlinkedParent: Board = {
+        ...parentBoard,
+        cards: parentBoard.cards.map((card) => card.id === board.parentCardId
+          ? { ...card, childBoardId: '', updatedAt: now }
+          : card),
+        updatedAt: now,
+      };
+      this.boards.update((boards) => boards.map((candidate) => candidate.id === unlinkedParent.id ? unlinkedParent : candidate));
+      await this.persistAndReplaceBoard(unlinkedParent);
     }
-    void this.deleteRemoteBoard(board.id);
+
+    this.boards.update((boards) => boards.filter((item) => !boardIdsToDelete.has(item.id)));
+    if (this.selectedBoardId() === board.id) {
+      if (board.parentBoardId) {
+        void this.router.navigate(['/boards', board.parentBoardId]);
+      } else {
+        void this.router.navigateByUrl(this.boardsProfileRoutePath());
+      }
+    }
+    await Promise.all(Array.from(boardIdsToDelete, (boardId) => this.deleteRemoteBoard(boardId)));
+  }
+
+  nestedBoardCount(board: Board): number {
+    return this.nestedBoardsUnder(board.id).length;
+  }
+
+  private nestedBoardsUnder(parentBoardId: string): Board[] {
+    const descendants: Board[] = [];
+    const pending = [parentBoardId];
+    const visited = new Set<string>();
+    while (pending.length) {
+      const currentParentId = pending.shift()!;
+      if (visited.has(currentParentId)) {
+        continue;
+      }
+      visited.add(currentParentId);
+      const children = this.boards().filter((board) => board.parentBoardId === currentParentId);
+      descendants.push(...children);
+      pending.push(...children.map((board) => board.id));
+    }
+    return descendants;
   }
 
   openCreateCard(boardId = this.selectedBoard()?.id ?? null): void {
@@ -3999,13 +4149,70 @@ export class BoardsComponent implements OnDestroy {
   }
 
   openRelatedCardManager(card: BoardCard, event?: Event): void {
+    void this.openBoardInside(card, event);
+  }
+
+  async openBoardInside(card: BoardCard, event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
+    const parentBoard = this.originalSelectedBoard();
+    if (!parentBoard) {
+      return;
+    }
+    const childBoardId = card.childBoardId?.trim() ?? '';
+    if (childBoardId) {
+      let childBoard = this.boards().find((board) => board.id === childBoardId) ?? null;
+      if (!childBoard) {
+        childBoard = await this.loadBoardById(childBoardId);
+        if (childBoard) {
+          this.boards.update((boards) => boards.some((board) => board.id === childBoard!.id)
+            ? boards
+            : [childBoard!, ...boards]);
+        }
+      }
+      if (!childBoard) {
+        this.boardsSyncError.set('The board inside this card could not be loaded.');
+        return;
+      }
+      this.cardDialogOpen.set(false);
+      this.editingCardId.set(null);
+      this.closeCardActionMenu();
+      void this.router.navigate(['/boards', childBoard.id]);
+      return;
+    }
+    if (!this.canEditBoard(parentBoard)) {
+      if (this.relatedCardCount(card)) {
+        this.exploreRelatedCards(card, undefined, true);
+      }
+      return;
+    }
+
     this.cardDialogOpen.set(false);
     this.editingCardId.set(null);
     this.relatedCardParentId.set(null);
     this.relatedCardEditingId.set(null);
-    this.exploreRelatedCards(card, undefined, true);
+    this.creatingBoardInside.set({
+      parentBoardId: parentBoard.id,
+      parentCardId: card.id,
+      parentBoardTitle: parentBoard.title,
+      parentCardTitle: card.title,
+    });
+    this.imageUploadError.set(null);
+    this.boardDraft.set({
+      title: card.title,
+      description: '',
+      backNote: '',
+      icon: 'dashboard_customize',
+      tone: parentBoard.tone,
+      visibility: parentBoard.visibility,
+      imageUrl: card.imageUrl,
+      logoUrl: '',
+      logoLinkUrl: '',
+      stackCtaLabel: '',
+      stackCtaUrl: '',
+      stickers: [],
+    });
+    this.boardDialogOpen.set(true);
   }
 
   openEditRelatedCard(parentId: string, card: BoardCard, event?: Event): void {
@@ -5221,6 +5428,19 @@ export class BoardsComponent implements OnDestroy {
 
     if (nextBoard) {
       await this.persistAndReplaceBoard(nextBoard);
+      if (!relatedParentId && editingId) {
+        const updatedParentCard = this.boards()
+          .find((candidate) => candidate.id === board.id)
+          ?.cards.find((card) => card.id === editingId);
+        const childBoard = updatedParentCard?.childBoardId
+          ? this.boards().find((candidate) => candidate.id === updatedParentCard.childBoardId) ?? null
+          : null;
+        if (childBoard && childBoard.parentCardTitle !== title) {
+          const renamedChild = { ...childBoard, parentCardTitle: title, updatedAt: now };
+          this.boards.update((boards) => boards.map((candidate) => candidate.id === renamedChild.id ? renamedChild : candidate));
+          await this.persistAndReplaceBoard(renamedChild);
+        }
+      }
     }
     this.closeCardDialog();
   }
@@ -5293,6 +5513,7 @@ export class BoardsComponent implements OnDestroy {
         return next;
       });
       await this.saveTourCardMutation(board, nextCards, { deletedCardId: candidate.card.id });
+      await this.deleteBoardInsideForCard(candidate.card);
       return;
     }
 
@@ -5317,8 +5538,22 @@ export class BoardsComponent implements OnDestroy {
         next.delete(candidate.card.id);
         return next;
       });
-      void this.persistAndReplaceBoard(nextBoard);
+      await this.persistAndReplaceBoard(nextBoard);
+      await this.deleteBoardInsideForCard(candidate.card);
     }
+  }
+
+  private async deleteBoardInsideForCard(card: BoardCard): Promise<void> {
+    const childBoardId = card.childBoardId?.trim();
+    if (!childBoardId) {
+      return;
+    }
+    const boardIds = new Set([
+      childBoardId,
+      ...this.nestedBoardsUnder(childBoardId).map((board) => board.id),
+    ]);
+    this.boards.update((boards) => boards.filter((board) => !boardIds.has(board.id)));
+    await Promise.all(Array.from(boardIds, (boardId) => this.deleteRemoteBoard(boardId)));
   }
 
   isManagingBoard(boardId: string): boolean {
@@ -8055,6 +8290,30 @@ export class BoardsComponent implements OnDestroy {
     return this.relatedCardsFor(card).length;
   }
 
+  boardInsideFor(card: BoardCard): Board | null {
+    const childBoardId = card.childBoardId?.trim();
+    return childBoardId
+      ? this.boards().find((board) => board.id === childBoardId) ?? null
+      : null;
+  }
+
+  boardInsideCards(card: BoardCard): BoardCard[] {
+    return this.boardInsideFor(card)?.cards ?? this.relatedCardsFor(card);
+  }
+
+  boardInsideCardCount(card: BoardCard): number {
+    return this.boardInsideCards(card).length;
+  }
+
+  hasBoardInside(card: BoardCard): boolean {
+    return !!card.childBoardId?.trim();
+  }
+
+  boardInsideTitle(card: BoardCard): string {
+    return this.boardInsideFor(card)?.title
+      ?? (this.hasBoardInside(card) ? 'Board inside' : `Create board from ${this.relatedCardCount(card)} existing card${this.relatedCardCount(card) === 1 ? '' : 's'}`);
+  }
+
   relatedCardExploreLabel(card: BoardCard): string {
     return relatedCardCollectionLabel(
       this.explicitRelatedCards(card).map((related) => related.type),
@@ -9182,9 +9441,14 @@ export class BoardsComponent implements OnDestroy {
       socialVideoRatio: 'vertical',
       socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
       socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
+      parentBoardId: '',
+      parentCardId: '',
+      parentBoardTitle: '',
+      parentCardTitle: '',
       cards: board.cards.map((card) => ({
         ...card,
         id: this.createId(),
+        childBoardId: '',
         stickers: card.stickers.map((sticker) => ({ ...sticker })),
         tour: card.tour
           ? {
@@ -12549,6 +12813,10 @@ export class BoardsComponent implements OnDestroy {
           stickers: this.normalizeStickers((board as Board).stickers),
           tourMeta: this.normalizeTourMeta((board as Board).tourMeta),
           learningQuiz: normalizeBoardLearningQuiz((board as Board).learningQuiz),
+          parentBoardId: typeof (board as Board).parentBoardId === 'string' ? (board as Board).parentBoardId : '',
+          parentCardId: typeof (board as Board).parentCardId === 'string' ? (board as Board).parentCardId : '',
+          parentBoardTitle: typeof (board as Board).parentBoardTitle === 'string' ? (board as Board).parentBoardTitle : '',
+          parentCardTitle: typeof (board as Board).parentCardTitle === 'string' ? (board as Board).parentCardTitle : '',
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
@@ -12571,6 +12839,7 @@ export class BoardsComponent implements OnDestroy {
             scope: this.isBoardCardScope((card as BoardCard).scope) ? (card as BoardCard).scope : 'place',
             stickers: this.normalizeStickers(card.stickers),
             tour: this.normalizeCardTour((card as BoardCard).tour),
+            childBoardId: typeof (card as BoardCard).childBoardId === 'string' ? (card as BoardCard).childBoardId : '',
             relatedCards: Array.isArray((card as BoardCard).relatedCards)
               ? ((card as BoardCard).relatedCards ?? [])
                 .map((related) => this.cardFromRecord(related, false))
@@ -12789,6 +13058,10 @@ export class BoardsComponent implements OnDestroy {
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),
       learningQuiz: normalizeBoardLearningQuiz(data['learningQuiz']),
+      parentBoardId: typeof data['parentBoardId'] === 'string' ? data['parentBoardId'] : '',
+      parentCardId: typeof data['parentCardId'] === 'string' ? data['parentCardId'] : '',
+      parentBoardTitle: typeof data['parentBoardTitle'] === 'string' ? data['parentBoardTitle'] : '',
+      parentCardTitle: typeof data['parentCardTitle'] === 'string' ? data['parentCardTitle'] : '',
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
       createdAt: typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : new Date().toISOString(),
       updatedAt: typeof data['updated_at_iso'] === 'string' ? data['updated_at_iso'] : new Date().toISOString(),
@@ -12863,6 +13136,7 @@ export class BoardsComponent implements OnDestroy {
       tags: Array.isArray(data['tags']) ? data['tags'].filter((tag): tag is string => typeof tag === 'string').slice(0, 6) : [],
       stickers: this.normalizeStickers(data['stickers']),
       tour: this.normalizeCardTour(data['tour']),
+      childBoardId: typeof data['childBoardId'] === 'string' ? data['childBoardId'] : '',
       relatedCards: includeRelatedCards && Array.isArray(data['relatedCards'])
         ? data['relatedCards']
           .map((card) => this.cardFromRecord(card, false))

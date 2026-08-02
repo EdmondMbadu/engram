@@ -315,6 +315,10 @@ service cloud.firestore {
           'stickers',
           'tourMeta',
           'learningQuiz',
+          'parentBoardId',
+          'parentCardId',
+          'parentBoardTitle',
+          'parentCardTitle',
           'cards',
           'created_at_iso',
           'updated_at_iso',
@@ -328,6 +332,22 @@ service cloud.firestore {
         && (
           !request.resource.data.keys().hasAny(['sortOrder'])
           || request.resource.data.sortOrder is number
+        )
+        && (
+          !request.resource.data.keys().hasAny(['parentBoardId'])
+          || (request.resource.data.parentBoardId is string && request.resource.data.parentBoardId.size() <= 128)
+        )
+        && (
+          !request.resource.data.keys().hasAny(['parentCardId'])
+          || (request.resource.data.parentCardId is string && request.resource.data.parentCardId.size() <= 128)
+        )
+        && (
+          !request.resource.data.keys().hasAny(['parentBoardTitle'])
+          || (request.resource.data.parentBoardTitle is string && request.resource.data.parentBoardTitle.size() <= 90)
+        )
+        && (
+          !request.resource.data.keys().hasAny(['parentCardTitle'])
+          || (request.resource.data.parentCardTitle is string && request.resource.data.parentCardTitle.size() <= 120)
         )
         && request.resource.data.owner_public_slug is string
         && request.resource.data.owner_public_slug.size() >= 2

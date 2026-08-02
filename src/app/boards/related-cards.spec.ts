@@ -1,4 +1,4 @@
-import { legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
+import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 
 describe('Related card collections', () => {
   it('turns additional card photos into unique legacy memories', () => {
@@ -46,5 +46,14 @@ describe('Related card collections', () => {
       { id: 'first', title: 'Updated' },
       { id: 'second', title: 'Second' },
     ]);
+  });
+
+  it('copies every legacy nested card into a new board without sharing card objects', () => {
+    const legacyCards = [{ id: 'first' }, { id: 'second' }];
+    const migrated = cardsForNewBoardInside(legacyCards);
+
+    expect(migrated.map((card) => card.id)).toEqual(['first', 'second']);
+    expect(migrated[0]).not.toBe(legacyCards[0]);
+    expect(migrated[1]).not.toBe(legacyCards[1]);
   });
 });

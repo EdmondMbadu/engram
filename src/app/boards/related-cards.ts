@@ -46,3 +46,7 @@ export function upsertNestedCard<T extends { id: string }>(
   });
   return replaced ? next : [...next, card];
 }
+
+export function cardsForNewBoardInside<T extends object>(cards: readonly T[]): T[] {
+  return cards.map((card) => ({ ...card }));
+}
