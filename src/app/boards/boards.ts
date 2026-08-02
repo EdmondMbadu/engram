@@ -1186,6 +1186,7 @@ export class BoardsComponent implements OnDestroy {
   readonly openCardActionMenuKey = signal<string | null>(null);
   readonly expandedCardIds = signal<Set<string>>(new Set());
   readonly activeAlongsideBoardIds = signal<Set<string>>(new Set());
+  readonly boardInsideDisplaySavingId = signal<string | null>(null);
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
@@ -3736,7 +3737,7 @@ export class BoardsComponent implements OnDestroy {
           visibility: 'public',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
-          insideCardsDisplay: 'nested',
+          insideCardsDisplay: 'alongside',
           cards,
           createdAt: now,
           updatedAt: now,
@@ -3924,7 +3925,7 @@ export class BoardsComponent implements OnDestroy {
         parentCardId: insideContext?.parentCardId ?? '',
         parentBoardTitle: insideContext?.parentBoardTitle ?? '',
         parentCardTitle: insideContext?.parentCardTitle ?? '',
-        insideCardsDisplay: 'nested',
+        insideCardsDisplay: 'alongside',
         cards: parentCard ? cardsForNewBoardInside(this.relatedCardsFor(parentCard)) : [],
         kind: 'standard',
         tourMeta: null,
@@ -4069,7 +4070,14 @@ export class BoardsComponent implements OnDestroy {
     };
     this.activeAlongsideBoardIds.set(new Set());
     this.boards.update((boards) => boards.map((candidate) => candidate.id === nextBoard.id ? nextBoard : candidate));
-    await this.persistAndReplaceBoard(nextBoard);
+    this.boardInsideDisplaySavingId.set(board.id);
+    try {
+      await this.persistAndReplaceBoard(nextBoard);
+    } finally {
+      if (this.boardInsideDisplaySavingId() === board.id) {
+        this.boardInsideDisplaySavingId.set(null);
+      }
+    }
   }
 
   isAlongsideInnerCard(board: Board, card: BoardCard): boolean {

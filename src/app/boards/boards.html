@@ -1325,44 +1325,6 @@
           </div>
           }
 
-          @if (!isSongBoard(board) && !exploredRelatedCardParent() && canEditBoard(board) && boardHasCardsInside(board)) {
-            <section class="board-inside-display" aria-label="Cards inside display setting">
-              <div class="board-inside-display__copy">
-                <span class="material-symbols-outlined">account_tree</span>
-                <span>
-                  <strong>Show cards inside</strong>
-                  <small>Choose how boards inside this board appear.</small>
-                </span>
-              </div>
-              <div class="board-inside-display__switch" role="group" aria-label="Show cards inside">
-                <button
-                  type="button"
-                  [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'nested'"
-                  [attr.aria-pressed]="boardInsideDisplay(board) === 'nested'"
-                  (click)="setBoardInsideDisplay(board, 'nested', $event)"
-                >
-                  <span class="material-symbols-outlined">subdirectory_arrow_right</span>
-                  <span>
-                    <strong>Inside their parent</strong>
-                    <small>Open the board from its parent card</small>
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'alongside'"
-                  [attr.aria-pressed]="boardInsideDisplay(board) === 'alongside'"
-                  (click)="setBoardInsideDisplay(board, 'alongside', $event)"
-                >
-                  <span class="material-symbols-outlined">view_module</span>
-                  <span>
-                    <strong>Alongside board cards</strong>
-                    <small>Select Board inside on a card to show it here</small>
-                  </span>
-                </button>
-              </div>
-            </section>
-          }
-
           @if (!isSongBoard(board) && canEditBoard(board) && isManagingBoard(board.id)) {
             <div class="board-bulk-actions">
               <div>
@@ -1384,6 +1346,47 @@
                 </button>
               </div>
             </div>
+            @if (!exploredRelatedCardParent() && boardHasCardsInside(board)) {
+              <section class="board-inside-display" aria-label="Cards inside display setting">
+                <div class="board-inside-display__copy">
+                  <span class="material-symbols-outlined">account_tree</span>
+                  <span>
+                    <strong>Show cards inside</strong>
+                    <small>
+                      {{ boardInsideDisplaySavingId() === board.id ? 'Saving…' : 'Saved automatically for this board.' }}
+                    </small>
+                  </span>
+                </div>
+                <div class="board-inside-display__switch" role="group" aria-label="Show cards inside">
+                  <button
+                    type="button"
+                    [disabled]="boardInsideDisplaySavingId() === board.id"
+                    [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'nested'"
+                    [attr.aria-pressed]="boardInsideDisplay(board) === 'nested'"
+                    (click)="setBoardInsideDisplay(board, 'nested', $event)"
+                  >
+                    <span class="material-symbols-outlined">subdirectory_arrow_right</span>
+                    <span>
+                      <strong>Inside their parent</strong>
+                      <small>Open the board from its parent card</small>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    [disabled]="boardInsideDisplaySavingId() === board.id"
+                    [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'alongside'"
+                    [attr.aria-pressed]="boardInsideDisplay(board) === 'alongside'"
+                    (click)="setBoardInsideDisplay(board, 'alongside', $event)"
+                  >
+                    <span class="material-symbols-outlined">view_module</span>
+                    <span>
+                      <strong>Alongside board cards</strong>
+                      <small>Select Board inside on a card to show it here</small>
+                    </span>
+                  </button>
+                </div>
+              </section>
+            }
           }
 
           @if (isTourBoard(board) && !exploredRelatedCardParent()) {

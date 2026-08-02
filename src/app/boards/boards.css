@@ -1988,6 +1988,11 @@
   font-size: 1.08rem;
 }
 
+.board-inside-display__switch button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
 .board-inside-display__switch .board-inside-display__option--active {
   border-color: color-mix(in srgb, var(--board-accent) 34%, var(--line));
   background: #ffffff;
