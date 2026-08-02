@@ -38,6 +38,7 @@ import {
   type BoardTranslationResult,
 } from './board-translation';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import { appendBoardCards } from './board-batch';
 import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
 import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
@@ -1291,6 +1292,7 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardStep = signal<BoardWizardStep>('choose');
   readonly wizardMode = signal<BoardWizardMode>('describe');
   readonly wizardTargetBoardId = signal('new');
+  readonly wizardLockedTargetBoardId = signal<string | null>(null);
   readonly wizardContributionBoardId = signal<string | null>(null);
   readonly wizardDefaultType = signal<BoardCardType>('place');
   readonly wizardCount = signal(12);
@@ -1837,6 +1839,14 @@ export class BoardsComponent implements OnDestroy {
   });
   readonly selectedPlaceCity = computed(() => this.findCityOption(this.cardDraft().placeCity));
   readonly wizardTargetBoards = computed(() => this.boards().filter((board) => this.canEditBoard(board)));
+  readonly wizardLockedTargetBoard = computed(() => {
+    const boardId = this.wizardLockedTargetBoardId();
+    return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;
+  });
+  readonly wizardAvailableModes = computed(() => {
+    const board = this.wizardLockedTargetBoard();
+    return board ? this.boardBuildModes(board) : this.wizardModes;
+  });
   readonly wizardContributionBoard = computed(() => {
     const boardId = this.wizardContributionBoardId();
     return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;
@@ -2476,6 +2486,36 @@ export class BoardsComponent implements OnDestroy {
     this.wizardOpen.set(true);
   }
 
+  openBoardBuilder(
+    board: Board,
+    event?: Event,
+    mode?: BoardWizardMode | 'manual',
+  ): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set($localize`Only the board owner can add cards to this board.`);
+      return;
+    }
+    this.resetBoardWizard();
+    this.wizardTargetBoardId.set(board.id);
+    this.wizardLockedTargetBoardId.set(board.id);
+    this.wizardOpen.set(true);
+    if (mode) {
+      this.chooseWizardMode(mode);
+    }
+  }
+
+  boardBuildModes(board: Board): typeof BOARD_WIZARD_MODES {
+    if (!board.cards.length) {
+      return this.wizardModes;
+    }
+    return this.wizardModes.filter((mode) =>
+      mode.id !== 'off-grid'
+      && mode.id !== 'walking-tour'
+      && mode.id !== 'driving-tour');
+  }
+
   openOffGridContribution(board: Board, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
@@ -2504,8 +2544,13 @@ export class BoardsComponent implements OnDestroy {
 
   chooseWizardMode(mode: BoardWizardMode | 'manual'): void {
     if (mode === 'manual') {
+      const targetBoardId = this.wizardLockedTargetBoardId();
       this.closeBoardWizard();
-      this.openManualBoard();
+      if (targetBoardId) {
+        this.openCreateCard(targetBoardId);
+      } else {
+        this.openManualBoard();
+      }
       return;
     }
     this.wizardMode.set(mode);
@@ -2513,7 +2558,9 @@ export class BoardsComponent implements OnDestroy {
       this.wizardDefaultType.set('place');
       this.wizardVibe.set('traveler');
       this.wizardCount.set(1);
-      this.wizardTargetBoardId.set('new');
+      if (!this.wizardLockedTargetBoardId()) {
+        this.wizardTargetBoardId.set('new');
+      }
       this.wizardStep.set('configure');
       return;
     }
@@ -2560,6 +2607,7 @@ export class BoardsComponent implements OnDestroy {
   closeBoardWizard(): void {
     this.wizardOpen.set(false);
     this.wizardStep.set('choose');
+    this.wizardLockedTargetBoardId.set(null);
     this.wizardContributionBoardId.set(null);
     this.wizardError.set(null);
     this.wizardSaving.set(false);
@@ -3633,7 +3681,7 @@ export class BoardsComponent implements OnDestroy {
           tourMeta: result.board.tourMeta ?? existingBoard.tourMeta,
           stackCtaLabel: this.wizardStackCtaLabel().trim() || existingBoard.stackCtaLabel,
           stackCtaUrl: this.wizardStackCtaUrl().trim() || existingBoard.stackCtaUrl,
-          cards: [...cards, ...existingBoard.cards],
+          cards: appendBoardCards(existingBoard.cards, cards),
           updatedAt: now,
         }
       : {
@@ -11381,6 +11429,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardStep.set('choose');
     this.wizardMode.set('describe');
     this.wizardTargetBoardId.set(editableSelectedBoard?.id ?? 'new');
+    this.wizardLockedTargetBoardId.set(null);
     this.wizardContributionBoardId.set(null);
     this.wizardDefaultType.set('place');
     this.wizardCount.set(12);

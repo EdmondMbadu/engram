@@ -3806,6 +3806,20 @@
   margin-top: 1rem;
 }
 
+.boards-empty-board-builder {
+  width: 100%;
+  margin-top: 0;
+  text-align: left;
+}
+
+.boards-empty-state .boards-empty-board-builder .material-symbols-outlined {
+  font-size: 1.45rem;
+}
+
+.boards-empty-state .boards-empty-board-builder .boards-wizard__intro > .material-symbols-outlined {
+  font-size: 1.75rem;
+}
+
 .boards-wizard__intro {
   display: grid;
   grid-template-columns: auto 1fr;

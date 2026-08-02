@@ -1310,6 +1310,10 @@
                       Add stop
                     </button>
                   } @else {
+                    <button type="button" class="boards-ghost-action" (click)="openBoardBuilder(board, $event)">
+                      <span class="material-symbols-outlined">auto_awesome</span>
+                      Build cards
+                    </button>
                     <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
                       <span class="material-symbols-outlined">add</span>
                       Add card
@@ -1456,14 +1460,34 @@
                   </button>
                 }
               } @else {
-                <span class="material-symbols-outlined">add_card</span>
-                <h2 i18n>This board is ready for its first card.</h2>
-                <p i18n>Add a place, meal, memory, idea, shop, or note. Cards can carry tags, ratings, status, and an optional image URL.</p>
                 @if (canEditBoard(board)) {
-                  <button type="button" class="boards-primary-action" (click)="openCreateCard(board.id)" i18n>
-                    <span class="material-symbols-outlined">add</span>
-                    Add first card
-                  </button>
+                  <div class="boards-wizard boards-empty-board-builder">
+                    <div class="boards-wizard__intro">
+                      <span class="material-symbols-outlined">auto_awesome</span>
+                      <div>
+                        <h4>Add to this board</h4>
+                        <p>Start with one card or build several from a description, list, photos, places, a tour, or a URL.</p>
+                      </div>
+                    </div>
+                    <div class="boards-wizard-mode-grid">
+                      @for (mode of boardBuildModes(board); track mode.id) {
+                        <button
+                          type="button"
+                          class="boards-wizard-mode"
+                          [class.boards-wizard-mode--off-grid]="mode.id === 'off-grid'"
+                          (click)="openBoardBuilder(board, $event, mode.id)"
+                        >
+                          <span class="material-symbols-outlined">{{ mode.icon }}</span>
+                          <strong>{{ mode.id === 'manual' ? 'Add one card manually' : mode.label }}</strong>
+                          <small>{{ mode.id === 'manual' ? 'Create one card with the standard card editor.' : mode.description }}</small>
+                        </button>
+                      }
+                    </div>
+                  </div>
+                } @else {
+                  <span class="material-symbols-outlined">add_card</span>
+                  <h2>This board is ready for its first card.</h2>
+                  <p>The owner can add one card or build several cards at once.</p>
                 }
               }
             </div>
@@ -3354,11 +3378,11 @@
 
   @if (wizardOpen()) {
     <div class="boards-modal-backdrop" (click)="closeBoardWizard()">
-      <section class="boards-modal boards-modal--wizard" aria-label="New board wizard" (click)="$event.stopPropagation()" i18n-aria-label>
+      <section class="boards-modal boards-modal--wizard" aria-label="Board builder" (click)="$event.stopPropagation()">
         <div class="boards-modal__head">
           <div>
-            <p i18n>New board</p>
-            <h3>{{ wizardStep() === 'choose' ? 'Choose how to start' : wizardModeLabel() }}</h3>
+            <p>{{ wizardLockedTargetBoard() ? 'Add to this board' : 'New board' }}</p>
+            <h3>{{ wizardStep() === 'choose' ? (wizardLockedTargetBoard() ? 'Choose how to add cards' : 'Choose how to start') : wizardModeLabel() }}</h3>
           </div>
           <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardWizard()" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
@@ -3370,12 +3394,12 @@
             <div class="boards-wizard__intro">
               <span class="material-symbols-outlined">auto_awesome</span>
               <div>
-                <h4 i18n>Build a board from whatever you already have.</h4>
-                <p i18n>Everything opens as an editable preview before it is saved.</p>
+                <h4>{{ wizardLockedTargetBoard() ? 'Add one card or several at once to ' + wizardTargetBoardTitle() + '.' : 'Build a board from whatever you already have.' }}</h4>
+                <p>Everything opens as an editable preview before it is saved.</p>
               </div>
             </div>
             <div class="boards-wizard-mode-grid">
-              @for (mode of wizardModes; track mode.id) {
+              @for (mode of wizardAvailableModes(); track mode.id) {
                 <button
                   type="button"
                   class="boards-wizard-mode"
@@ -3383,11 +3407,14 @@
                   (click)="chooseWizardMode(mode.id)"
                 >
                   <span class="material-symbols-outlined">{{ mode.icon }}</span>
-                  <strong>{{ mode.label }}</strong>
-                  <small>{{ mode.description }}</small>
+                  <strong>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Add one card manually' : mode.label }}</strong>
+                  <small>{{ wizardLockedTargetBoard() && mode.id === 'manual' ? 'Create one card with the standard card editor.' : mode.description }}</small>
                 </button>
               }
             </div>
+            @if (wizardLockedTargetBoard()?.cards?.length) {
+              <small>Walking tours, driving tours, and off-grid structure are available before the board’s first card is added.</small>
+            }
           </div>
         } @else if (wizardStep() === 'configure') {
           <form class="boards-form boards-wizard" (submit)="$event.preventDefault(); generateWizardBatch()">
@@ -3402,7 +3429,7 @@
 
               @if (wizardMode() === 'describe') {
                 <label>
-                  <span i18n>Describe the board</span>
+                  <span>{{ wizardLockedTargetBoard() ? 'Describe the cards you want to add' : 'Describe the board' }}</span>
                   <textarea
                     rows="5"
                     maxlength="2000"
@@ -3452,7 +3479,7 @@
                         {{ wizardPhotos().length ? wizardPhotos().length + (wizardPhotos().length === 1 ? ' photo ready' : ' photos ready') : 'Choose the moments to remember' }}
                       </strong>
                       <small>
-                        LivingWiki looks at the actual pictures to name the board and draft one editable card per photo.
+                        LivingWiki looks at the actual pictures and drafts one editable card per photo.
                         {{ wizardTargetBoardId() === 'new' ? 'The first photo becomes the board cover.' : 'The first photo becomes the first new card.' }}
                       </small>
                     </div>
@@ -3880,6 +3907,14 @@
                   <span>
                     <small i18n>Adding to shared board</small>
                     <strong>{{ contributionBoard.title }}</strong>
+                  </span>
+                </div>
+              } @else if (wizardLockedTargetBoard(); as lockedBoard) {
+                <div class="off-grid-contribution-target">
+                  <span class="material-symbols-outlined">dashboard_customize</span>
+                  <span>
+                    <small>Adding to this board</small>
+                    <strong>{{ lockedBoard.title }}</strong>
                   </span>
                 </div>
               } @else {
@@ -4554,6 +4589,8 @@
                   <span i18n>Saving...</span>
                 } @else if (wizardContributionBoard()) {
                   <span i18n>Add card to board</span>
+                } @else if (wizardLockedTargetBoard()) {
+                  <span>Add {{ wizardSelectedCount() }} {{ wizardSelectedCount() === 1 ? 'card' : 'cards' }}</span>
                 } @else {
                   <span i18n>Save selected cards</span>
                 }
@@ -4568,6 +4605,10 @@
               <h4 i18n>Card added to {{ contributionBoard.title }}</h4>
               <p i18n>It is live on the shared board now. Everyone viewing this board will receive the new location.</p>
               <button type="button" class="boards-primary-action" (click)="closeBoardWizard()" i18n>See it on the board</button>
+            } @else if (wizardLockedTargetBoard(); as lockedBoard) {
+              <h4>Cards added to {{ lockedBoard.title }}</h4>
+              <p>Your selected cards were added without replacing the cards already there.</p>
+              <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">See them on the board</button>
             } @else {
               <h4 i18n>Board saved</h4>
               <p i18n>Your new board is synced and ready on your board shelf.</p>
