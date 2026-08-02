@@ -6,9 +6,9 @@ import {
 } from './stack-voice';
 
 describe('Stack narrator voice catalog', () => {
-  it('offers five distinct narrator choices', () => {
-    expect(STACK_NARRATOR_VOICES.length).toBe(5);
-    expect(new Set(STACK_NARRATOR_VOICES.map((voice) => voice.id)).size).toBe(5);
+  it('offers ten distinct narrator choices', () => {
+    expect(STACK_NARRATOR_VOICES.length).toBe(10);
+    expect(new Set(STACK_NARRATOR_VOICES.map((voice) => voice.id)).size).toBe(10);
   });
 
   it('includes female, male, and neutral presentations', () => {

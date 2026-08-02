@@ -181,6 +181,11 @@ const stackNarratorVoiceIds = {
   'confident-narrator': 'pNInz6obpgDQGcFmaJgB',
   'energetic-host': 'TxGEqnHWrfWFTfGW9XjX',
   'calm-documentary': 'yoZ06aMxZJJ28mfd3POQ',
+  'vibrant-presenter': 'AZnzlk1XvdvUeBnXmlld',
+  'elegant-guide': 'XB0fDUnXU5powFXDhCwa',
+  'british-storyteller': 'CYw3kZ02Hs0563khs1Fj',
+  'cinematic-narrator': 'ZQe5CZNOzWyzPSCn5a3c',
+  'friendly-explainer': 'ODq5zmih8GrVes37Dizd',
 } as const;
 const maxSpeechTextLength = 4000;
 const maxSpeechRecapWords = 28;

@@ -421,7 +421,12 @@ service cloud.firestore {
             'inspiring-guide',
             'confident-narrator',
             'energetic-host',
-            'calm-documentary'
+            'calm-documentary',
+            'vibrant-presenter',
+            'elegant-guide',
+            'british-storyteller',
+            'cinematic-narrator',
+            'friendly-explainer'
           ]
         )
         && (
