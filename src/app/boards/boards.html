@@ -1372,7 +1372,7 @@
           }
 
           @if (exploredRelatedCardParent(); as relatedParent) {
-            <section class="related-cards-context" aria-label="Related cards collection" i18n-aria-label>
+            <section class="related-cards-context" aria-label="Cards inside this card">
               <button type="button" class="related-cards-context__back" (click)="closeRelatedCards($event)">
                 <span class="material-symbols-outlined">arrow_back</span>
                 <span i18n>Back to board</span>
@@ -1387,18 +1387,14 @@
                 <strong>{{ relatedParent.title }}</strong>
                 <em>
                   {{ relatedCardCount(relatedParent) }}
-                  {{ relatedCardCount(relatedParent) === 1 ? 'related card' : 'related cards' }}
+                  {{ relatedCardCount(relatedParent) === 1 ? 'card' : 'cards' }}
                 </em>
               </span>
               @if (canEditBoard(board)) {
                 <span class="related-cards-context__actions">
                   <button type="button" class="boards-primary-action" (click)="openCreateRelatedCard(relatedParent.id, $event)">
                     <span class="material-symbols-outlined">add</span>
-                    <span i18n>Add related card</span>
-                  </button>
-                  <button type="button" class="boards-ghost-action" (click)="openRelatedCardManager(relatedParent, $event)">
-                    <span class="material-symbols-outlined">tune</span>
-                    <span i18n>Manage collection</span>
+                    <span>Add card</span>
                   </button>
                 </span>
               }
@@ -1413,6 +1409,22 @@
                 <span class="material-symbols-outlined">close</span>
               </button>
             </section>
+          }
+
+          @if (exploredRelatedCardParent(); as emptyCollectionParent) {
+            @if (relatedCardCount(emptyCollectionParent) === 0) {
+              <div class="boards-empty-state boards-empty-state--detail">
+                <span class="material-symbols-outlined">dashboard_customize</span>
+                <h2>This collection is ready for its first card.</h2>
+                <p>Cards inside this card use the same board card system and can grow from one card to many.</p>
+                @if (canEditBoard(board)) {
+                  <button type="button" class="boards-primary-action" (click)="openCreateRelatedCard(emptyCollectionParent.id, $event)">
+                    <span class="material-symbols-outlined">add</span>
+                    <span>Add first card</span>
+                  </button>
+                }
+              </div>
+            }
           }
 
           @if (!isSongBoard(board) && !exploredRelatedCardParent() && board.cards.length === 0) {
@@ -2141,7 +2153,33 @@
                             @if (!isLegacyMemoryRelatedCard(card)) {
                               <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditRelatedCard(relatedParent.id, card, $event)">
                                 <span class="material-symbols-outlined">edit</span>
-                                <span i18n>Edit related card</span>
+                                <span i18n>Edit card</span>
+                              </button>
+                              <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditRelatedCardPhotos(relatedParent.id, card, $event)">
+                                <span class="material-symbols-outlined">add_photo_alternate</span>
+                                {{ cardImages(card).length ? 'Add memory' : 'Add photos' }}
+                              </button>
+                              <button
+                                type="button"
+                                role="menuitem"
+                                [disabled]="!canMoveRelatedCard(relatedParent, card.id, -1)"
+                                (click)="closeCardActionMenu(); moveRelatedCard(relatedParent.id, card.id, -1, $event)"
+                              >
+                                <span class="material-symbols-outlined">arrow_upward</span>
+                                <span>Move earlier</span>
+                              </button>
+                              <button
+                                type="button"
+                                role="menuitem"
+                                [disabled]="!canMoveRelatedCard(relatedParent, card.id, 1)"
+                                (click)="closeCardActionMenu(); moveRelatedCard(relatedParent.id, card.id, 1, $event)"
+                              >
+                                <span class="material-symbols-outlined">arrow_downward</span>
+                                <span>Move later</span>
+                              </button>
+                              <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
+                                <span class="material-symbols-outlined">delete</span>
+                                <span i18n>Delete card</span>
                               </button>
                             }
                           } @else {
@@ -2161,7 +2199,7 @@
                             </button>
                             <button type="button" role="menuitem" (click)="closeCardActionMenu(); openRelatedCardManager(card, $event)">
                               <span class="material-symbols-outlined">account_tree</span>
-                              <span i18n>Related cards</span>
+                              <span>Cards inside</span>
                               @if (relatedCardCount(card) > 0) {
                                 <small>{{ relatedCardCount(card) }}</small>
                               }
@@ -5509,8 +5547,13 @@
       <section class="boards-modal boards-modal--wide" aria-label="Card form" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
-            <p>{{ editingCardId() ? (isSongCardForm() ? 'Edit song' : 'Edit card') : (isSongCardForm() ? 'New song' : 'New card') }}</p>
-            <h3>{{ selectedBoardTitle() }}</h3>
+            @if (relatedCardEditorParent(); as collectionParent) {
+              <p>{{ relatedCardEditingId() ? 'Edit card' : 'New card' }}</p>
+              <h3>Inside {{ collectionParent.title }}</h3>
+            } @else {
+              <p>{{ editingCardId() ? (isSongCardForm() ? 'Edit song' : 'Edit card') : (isSongCardForm() ? 'New song' : 'New card') }}</p>
+              <h3>{{ selectedBoardTitle() }}</h3>
+            }
           </div>
           <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeCardDialog()" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
@@ -5520,24 +5563,20 @@
         <form class="boards-form" (submit)="saveCard($event)">
           @if (editingCardId(); as parentCardId) {
             @if (editingParentCard(); as parentCard) {
-              <section class="related-card-shortcut" aria-label="Related cards" i18n-aria-label>
+              <section class="related-card-shortcut" aria-label="Cards inside this card">
                 <span class="related-card-shortcut__mark material-symbols-outlined">account_tree</span>
                 <span class="related-card-shortcut__copy">
-                  <small i18n>Related cards</small>
-                  <strong i18n>Build a collection inside this card</strong>
+                  <small>Cards inside this card</small>
+                  <strong>Open as a board collection</strong>
                   <em>
                     {{ relatedCardCount(parentCard) }}
                     {{ relatedCardCount(parentCard) === 1 ? 'item inside' : 'items inside' }}
                   </em>
                 </span>
                 <span class="related-card-shortcut__actions">
-                  <button type="button" class="boards-primary-action" (click)="openCreateRelatedCard(parentCardId, $event)">
-                    <span class="material-symbols-outlined">add</span>
-                    <span i18n>Add related card</span>
-                  </button>
-                  <button type="button" class="boards-ghost-action" (click)="scrollToRelatedCardManager($event)">
-                    <span class="material-symbols-outlined">tune</span>
-                    <span i18n>Manage collection</span>
+                  <button type="button" class="boards-primary-action" (click)="openRelatedCardManager(parentCard, $event)">
+                    <span class="material-symbols-outlined">dashboard_customize</span>
+                    <span>Open collection</span>
                   </button>
                 </span>
               </section>
@@ -5546,7 +5585,7 @@
             <section class="related-card-shortcut related-card-shortcut--locked">
               <span class="related-card-shortcut__mark material-symbols-outlined">account_tree</span>
               <span class="related-card-shortcut__copy">
-                <strong i18n>Related cards become available after this card is saved</strong>
+                <strong>Cards inside become available after this card is saved</strong>
                 <em i18n>Save the parent card first, then reopen it to build the collection inside.</em>
               </span>
             </section>
@@ -6097,111 +6136,6 @@
               </label>
             </section>
 
-          }
-
-          @if (editingCardId(); as parentCardId) {
-            @if (editingParentCard(); as parentCard) {
-              <section id="related-card-manager" class="related-card-manager" aria-labelledby="related-card-manager-title">
-                <div class="related-card-manager__head">
-                  <span class="related-card-manager__mark material-symbols-outlined">account_tree</span>
-                  <span>
-                    <small i18n>Related cards</small>
-                    <strong id="related-card-manager-title" i18n>Build a collection inside this card</strong>
-                    <em i18n>These cards fill the board when someone selects Explore.</em>
-                  </span>
-                  <button type="button" class="boards-primary-action" (click)="openCreateRelatedCard(parentCardId, $event)">
-                    <span class="material-symbols-outlined">add</span>
-                    <span i18n>Add related card</span>
-                  </button>
-                </div>
-
-                @if (explicitRelatedCards(parentCard).length) {
-                  <div class="related-card-manager__list">
-                    @for (related of explicitRelatedCards(parentCard); track related.id; let index = $index) {
-                      <article class="related-card-manager__item">
-                        @if (related.imageUrl) {
-                          <img [src]="related.imageUrl" [alt]="related.title" />
-                        } @else {
-                          <span class="related-card-manager__fallback material-symbols-outlined">{{ cardTypeIcon(related.type) }}</span>
-                        }
-                        <span class="related-card-manager__copy">
-                          <strong>{{ related.title }}</strong>
-                          <small>{{ related.subtitle || related.notes || 'Related card' }}</small>
-                        </span>
-                        <span class="related-card-manager__actions">
-                          <button
-                            type="button"
-                            aria-label="Move related card up"
-                            [disabled]="index === 0"
-                            (click)="moveRelatedCard(parentCard.id, related.id, -1, $event)"
-                            i18n-aria-label
-                          >
-                            <span class="material-symbols-outlined">arrow_upward</span>
-                          </button>
-                          <button
-                            type="button"
-                            aria-label="Move related card down"
-                            [disabled]="index === explicitRelatedCards(parentCard).length - 1"
-                            (click)="moveRelatedCard(parentCard.id, related.id, 1, $event)"
-                            i18n-aria-label
-                          >
-                            <span class="material-symbols-outlined">arrow_downward</span>
-                          </button>
-                          <button
-                            type="button"
-                            aria-label="Edit related card"
-                            (click)="openEditRelatedCard(parentCard.id, related, $event)"
-                            i18n-aria-label
-                          >
-                            <span class="material-symbols-outlined">edit</span>
-                          </button>
-                          @if (relatedCardDeleteCandidateId() === related.id) {
-                            <button
-                              type="button"
-                              class="related-card-manager__confirm-delete"
-                              (click)="confirmDeleteRelatedCard(parentCard.id, related.id, $event)"
-                              i18n
-                            >
-                              Remove?
-                            </button>
-                            <button type="button" aria-label="Keep related card" (click)="cancelDeleteRelatedCard($event)" i18n-aria-label>
-                              <span class="material-symbols-outlined">close</span>
-                            </button>
-                          } @else {
-                            <button
-                              type="button"
-                              class="related-card-manager__delete"
-                              aria-label="Remove related card"
-                              (click)="requestDeleteRelatedCard(related.id, $event)"
-                              i18n-aria-label
-                            >
-                              <span class="material-symbols-outlined">delete</span>
-                            </button>
-                          }
-                        </span>
-                      </article>
-                    }
-                  </div>
-                } @else {
-                  <button type="button" class="related-card-manager__empty" (click)="openCreateRelatedCard(parentCardId, $event)">
-                    <span class="material-symbols-outlined">add_photo_alternate</span>
-                    <span>
-                      <strong i18n>Add the first related card</strong>
-                      <small i18n>Start with a photo or a short description. AI can prepare the details.</small>
-                    </span>
-                  </button>
-                }
-
-                @if (legacyRelatedMemoryCount(parentCard) > 0) {
-                  <small class="related-card-manager__legacy-note">
-                    <span class="material-symbols-outlined">photo_library</span>
-                    <span i18n>
-                      {{ legacyRelatedMemoryCount(parentCard) }} existing photo {{ legacyRelatedMemoryCount(parentCard) === 1 ? 'memory appears' : 'memories appear' }} automatically when this collection is explored.
-                    </span>
-                  </small>
-                }
-              </section>
-            }
           }
 
           @if (imageUploadError()) {

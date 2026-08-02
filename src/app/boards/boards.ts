@@ -40,7 +40,7 @@ import {
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
-import { legacyMemoryImages, relatedCardCollectionLabel } from './related-cards';
+import { legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 import {
   insertionSortOrder,
   reorderRelativeToTarget,
@@ -387,6 +387,7 @@ type CardDeleteCandidate = {
   boardId: string;
   boardTitle: string;
   card: BoardCard;
+  parentCardId?: string | null;
 };
 
 type CardBulkDeleteCandidate = {
@@ -3841,6 +3842,8 @@ export class BoardsComponent implements OnDestroy {
     this.resetCardWizard();
     this.cardImageLocked.set(false);
     this.editingCardId.set(null);
+    this.relatedCardParentId.set(null);
+    this.relatedCardEditingId.set(null);
     this.cardDraft.set({
       title: '',
       subtitle: '',
@@ -3885,6 +3888,8 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
       return;
     }
+    this.relatedCardParentId.set(null);
+    this.relatedCardEditingId.set(null);
     this.editingCardId.set(card.id);
     this.imageUploadError.set(null);
     this.resetCardWizard();
@@ -3976,12 +3981,9 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set($localize`Save the parent card before adding related cards.`);
       return;
     }
+    this.openCreateCard(board.id);
     this.relatedCardParentId.set(parent.id);
     this.relatedCardEditingId.set(null);
-    this.relatedCardDeleteCandidateId.set(null);
-    this.relatedCardAiError.set(null);
-    this.relatedCardDraft.set(this.emptyRelatedCardDraft());
-    this.relatedCardEditorOpen.set(true);
   }
 
   scrollToRelatedCardManager(event?: Event): void {
@@ -3999,10 +4001,11 @@ export class BoardsComponent implements OnDestroy {
   openRelatedCardManager(card: BoardCard, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
-    this.openEditCard(card);
-    if (this.isBrowser) {
-      window.setTimeout(() => this.scrollToRelatedCardManager(), 80);
-    }
+    this.cardDialogOpen.set(false);
+    this.editingCardId.set(null);
+    this.relatedCardParentId.set(null);
+    this.relatedCardEditingId.set(null);
+    this.exploreRelatedCards(card, undefined, true);
   }
 
   openEditRelatedCard(parentId: string, card: BoardCard, event?: Event): void {
@@ -4019,23 +4022,9 @@ export class BoardsComponent implements OnDestroy {
     ) {
       return;
     }
+    this.openEditCard(card);
     this.relatedCardParentId.set(parent.id);
     this.relatedCardEditingId.set(card.id);
-    this.relatedCardDeleteCandidateId.set(null);
-    this.relatedCardAiError.set(null);
-    this.relatedCardDraft.set({
-      title: card.title,
-      subtitle: card.subtitle,
-      notes: card.notes,
-      type: card.type,
-      imageUrl: card.imageUrl,
-      imageName: '',
-      analysisDataUrl: '',
-      tags: card.tags.filter((tag) => tag !== 'related-card').join(', '),
-      prompt: '',
-      generated: null,
-    });
-    this.relatedCardEditorOpen.set(true);
   }
 
   closeRelatedCardEditor(event?: Event): void {
@@ -4335,6 +4324,13 @@ export class BoardsComponent implements OnDestroy {
     };
     this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
     await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  canMoveRelatedCard(parent: BoardCard, cardId: string, direction: -1 | 1): boolean {
+    const relatedCards = this.explicitRelatedCards(parent);
+    const index = relatedCards.findIndex((card) => card.id === cardId);
+    const target = index + direction;
+    return index >= 0 && target >= 0 && target < relatedCards.length;
   }
 
   openAddTourStop(afterCardId: string | null, event?: Event): void {
@@ -5152,6 +5148,40 @@ export class BoardsComponent implements OnDestroy {
     const placeId = songMode ? '' : draft.placeId;
     const googleMapsUrl = songMode ? '' : draft.googleMapsUrl;
     const what3wordsAddress = songMode ? '' : normalizeWhat3WordsAddress(draft.what3wordsAddress);
+    const relatedParentId = this.relatedCardParentId();
+    const relatedEditingId = this.relatedCardEditingId();
+    const effectiveTags = relatedParentId
+      ? this.mergeWizardTags(tags, ['related-card']).slice(0, 6)
+      : tags;
+    const cardFromDraft = (existing: BoardCard | null = null): BoardCard => ({
+      ...(existing ?? {}),
+      id: existing?.id ?? this.createId(),
+      title,
+      subtitle: draft.subtitle.trim(),
+      notes: draft.notes.trim(),
+      type: cardType,
+      scope: cardScope,
+      status: draft.status,
+      rating,
+      imageUrl,
+      imageUrls,
+      audioPreviewUrl: draft.audioPreviewUrl.trim(),
+      spotifyTrackId: draft.spotifyTrackId.trim(),
+      spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
+      spotifyUri: draft.spotifyUri.trim(),
+      spotifyArtistName: draft.spotifyArtistName.trim(),
+      spotifyAlbumName: draft.spotifyAlbumName.trim(),
+      spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
+      placeId,
+      googleMapsUrl,
+      what3wordsAddress,
+      tags: effectiveTags,
+      stickers: draft.stickers,
+      tour: songMode ? null : draftTour ?? existing?.tour ?? null,
+      relatedCards: existing?.relatedCards ?? [],
+      createdAt: existing?.createdAt ?? now,
+      updatedAt: now,
+    });
     let nextBoard: Board | null = null;
 
     this.boards.update((boards) =>
@@ -5160,68 +5190,29 @@ export class BoardsComponent implements OnDestroy {
           return item;
         }
 
-        const nextCards = editingId
-          ? item.cards.map((card) =>
-              card.id === editingId
-                ? {
-                    ...card,
-                    title,
-                    subtitle: draft.subtitle.trim(),
-                    notes: draft.notes.trim(),
-                    type: cardType,
-                    scope: cardScope,
-                    status: draft.status,
-                    rating,
-                    imageUrl,
-                    imageUrls,
-                    audioPreviewUrl: draft.audioPreviewUrl.trim(),
-                    spotifyTrackId: draft.spotifyTrackId.trim(),
-                    spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
-                    spotifyUri: draft.spotifyUri.trim(),
-                    spotifyArtistName: draft.spotifyArtistName.trim(),
-                    spotifyAlbumName: draft.spotifyAlbumName.trim(),
-                    spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
-                    placeId,
-                    googleMapsUrl,
-                    what3wordsAddress,
-                    tags,
-                    stickers: draft.stickers,
-                    tour: songMode ? null : draftTour ?? card.tour ?? null,
-                    updatedAt: now,
-                  }
-                : card,
-            )
-          : [
-              {
-                id: this.createId(),
-                title,
-                subtitle: draft.subtitle.trim(),
-                notes: draft.notes.trim(),
-                type: cardType,
-                scope: cardScope,
-                status: draft.status,
-                rating,
-                imageUrl,
-                imageUrls,
-                audioPreviewUrl: draft.audioPreviewUrl.trim(),
-                spotifyTrackId: draft.spotifyTrackId.trim(),
-                spotifyTrackUrl: draft.spotifyTrackUrl.trim(),
-                spotifyUri: draft.spotifyUri.trim(),
-                spotifyArtistName: draft.spotifyArtistName.trim(),
-                spotifyAlbumName: draft.spotifyAlbumName.trim(),
-                spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
-                placeId,
-                googleMapsUrl,
-                what3wordsAddress,
-                tags,
-                stickers: draft.stickers,
-                tour: draftTour,
-                relatedCards: [],
-                createdAt: now,
-                updatedAt: now,
-              },
-              ...item.cards,
-            ];
+        let nextCards: BoardCard[];
+        if (relatedParentId) {
+          const parent = item.cards.find((card) => card.id === relatedParentId);
+          if (!parent) {
+            return item;
+          }
+          const currentNestedCards = this.explicitRelatedCards(parent);
+          const existingNestedCard = relatedEditingId
+            ? currentNestedCards.find((card) => card.id === relatedEditingId) ?? null
+            : null;
+          const nestedCard = {
+            ...cardFromDraft(existingNestedCard),
+            rank: existingNestedCard?.rank ?? currentNestedCards.length + 1,
+          };
+          const nextNestedCards = upsertNestedCard(currentNestedCards, nestedCard, relatedEditingId);
+          nextCards = item.cards.map((card) => card.id === parent.id
+            ? { ...card, relatedCards: nextNestedCards, updatedAt: now }
+            : card);
+        } else if (editingId) {
+          nextCards = item.cards.map((card) => card.id === editingId ? cardFromDraft(card) : card);
+        } else {
+          nextCards = [cardFromDraft(), ...item.cards];
+        }
 
         nextBoard = { ...item, cards: nextCards, updatedAt: now };
         return nextBoard;
@@ -5245,7 +5236,12 @@ export class BoardsComponent implements OnDestroy {
       this.boardsSyncError.set($localize`Only the board owner can delete cards.`);
       return;
     }
-    this.cardDeleteCandidate.set({ boardId: board.id, boardTitle: board.title, card });
+    this.cardDeleteCandidate.set({
+      boardId: board.id,
+      boardTitle: board.title,
+      card,
+      parentCardId: this.exploredRelatedCardParentId(),
+    });
   }
 
   closeCardDeleteDialog(event?: Event): void {
@@ -5268,6 +5264,24 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.cardDeleteCandidate.set(null);
+
+    if (candidate.parentCardId) {
+      const now = new Date().toISOString();
+      const nextBoard: Board = {
+        ...board,
+        cards: board.cards.map((parent) => parent.id === candidate.parentCardId
+          ? {
+              ...parent,
+              relatedCards: this.explicitRelatedCards(parent).filter((card) => card.id !== candidate.card.id),
+              updatedAt: now,
+            }
+          : parent),
+        updatedAt: now,
+      };
+      this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+      void this.persistAndReplaceBoard(nextBoard);
+      return;
+    }
 
     if (this.isTourBoard(board) && candidate.card.tour) {
       const nextCards = normalizeTourCardSequences(
@@ -6916,6 +6930,9 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     const draft = this.cardDraft();
+    const collectionParent = this.relatedCardEditorParent();
+    const contextCards = collectionParent ? this.explicitRelatedCards(collectionParent) : board.cards;
+    const contextTitle = collectionParent ? `Inside ${collectionParent.title}` : board.title;
     const prompt = this.buildCardWizardPrompt(board, draft, options.promptOverride, options.forceImageLookup === true);
     if (!prompt) {
       this.cardWizardError.set($localize`Describe what this card should become, or start with a title/place first.`);
@@ -6941,11 +6958,11 @@ export class BoardsComponent implements OnDestroy {
         imageOnly: replaceImage,
         currentCard: replaceImage ? this.cardDraftToWizardCurrentCard(draft, likelyFood, likelySong) : null,
         targetBoardId: board.id,
-        targetBoardTitle: board.title,
+        targetBoardTitle: contextTitle,
         defaultType: likelyFood ? 'food' : draft.type,
         count: 1,
         vibe: this.wizardVibe(),
-        existingCards: board.cards.slice(0, 80).map((card) => ({
+        existingCards: contextCards.slice(0, 80).map((card) => ({
           title: card.title,
           subtitle: card.subtitle,
           tags: card.tags,
@@ -6982,9 +6999,11 @@ export class BoardsComponent implements OnDestroy {
     const task = this.editingCardId()
       ? 'Improve this existing card. Return exactly one polished card. Preserve the intent unless the user asks for a change.'
       : 'Create exactly one polished card for this board.';
+    const collectionParent = this.relatedCardEditorParent();
     return [
       task,
-      `Board: ${board.title}`,
+      collectionParent ? `Collection inside card: ${collectionParent.title}` : `Board: ${board.title}`,
+      collectionParent?.subtitle ? `Parent card context: ${collectionParent.subtitle}` : '',
       board.description ? `Board description: ${board.description}` : '',
       `Preferred card type: ${draft.type}`,
       likelyFood
@@ -8047,10 +8066,10 @@ export class BoardsComponent implements OnDestroy {
     return card.id.startsWith('legacy-memory:');
   }
 
-  exploreRelatedCards(card: BoardCard, event?: Event): void {
+  exploreRelatedCards(card: BoardCard, event?: Event, allowEmpty = false): void {
     event?.preventDefault();
     event?.stopPropagation();
-    if (!this.relatedCardCount(card)) {
+    if (!allowEmpty && !this.relatedCardCount(card)) {
       return;
     }
     this.relatedCardsReturnScrollY = this.isBrowser ? window.scrollY : 0;
@@ -8321,6 +8340,17 @@ export class BoardsComponent implements OnDestroy {
   openEditCardPhotos(card: BoardCard, event?: Event): void {
     event?.stopPropagation();
     this.openEditCard(card);
+    if (this.isBrowser) {
+      window.requestAnimationFrame(() => {
+        window.document.getElementById('card-photo-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  }
+
+  openEditRelatedCardPhotos(parentId: string, card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.openEditRelatedCard(parentId, card);
     if (this.isBrowser) {
       window.requestAnimationFrame(() => {
         window.document.getElementById('card-photo-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });

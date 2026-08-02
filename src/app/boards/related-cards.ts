@@ -25,5 +25,24 @@ export function relatedCardCollectionLabel(
   if (containsOnlyMemories) {
     return `Explore ${count} ${count === 1 ? 'memory' : 'memories'}`;
   }
-  return `Explore ${count} related ${count === 1 ? 'card' : 'cards'}`;
+  return `Explore ${count} ${count === 1 ? 'card' : 'cards'}`;
+}
+
+export function upsertNestedCard<T extends { id: string }>(
+  cards: readonly T[],
+  card: T,
+  editingId: string | null,
+): T[] {
+  if (!editingId) {
+    return [...cards, card];
+  }
+  let replaced = false;
+  const next = cards.map((existing) => {
+    if (existing.id !== editingId) {
+      return existing;
+    }
+    replaced = true;
+    return card;
+  });
+  return replaced ? next : [...next, card];
 }

@@ -1,4 +1,4 @@
-import { legacyMemoryImages, relatedCardCollectionLabel } from './related-cards';
+import { legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 
 describe('Related card collections', () => {
   it('turns additional card photos into unique legacy memories', () => {
@@ -25,7 +25,26 @@ describe('Related card collections', () => {
   });
 
   it('uses a general related-card label when the collection has another card type', () => {
-    expect(relatedCardCollectionLabel(['memory', 'place'], 1)).toBe('Explore 3 related cards');
-    expect(relatedCardCollectionLabel(['idea'], 0)).toBe('Explore 1 related card');
+    expect(relatedCardCollectionLabel(['memory', 'place'], 1)).toBe('Explore 3 cards');
+    expect(relatedCardCollectionLabel(['idea'], 0)).toBe('Explore 1 card');
+  });
+
+  it('adds a nested card without removing the existing collection', () => {
+    expect(upsertNestedCard(
+      [{ id: 'legacy-one', title: 'First' }, { id: 'legacy-two', title: 'Second' }],
+      { id: 'new-card', title: 'New' },
+      null,
+    ).map((card) => card.id)).toEqual(['legacy-one', 'legacy-two', 'new-card']);
+  });
+
+  it('updates one nested card while preserving its siblings and order', () => {
+    expect(upsertNestedCard(
+      [{ id: 'first', title: 'First' }, { id: 'second', title: 'Second' }],
+      { id: 'first', title: 'Updated' },
+      'first',
+    )).toEqual([
+      { id: 'first', title: 'Updated' },
+      { id: 'second', title: 'Second' },
+    ]);
   });
 });
