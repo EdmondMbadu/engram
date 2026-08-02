@@ -1199,7 +1199,7 @@
 
               <div class="board-detail__stats">
                 <div>
-                  <strong>{{ board.cards.length }}</strong>
+                  <strong>{{ boardDisplayCardCount(board) }}</strong>
                   <span i18n>Cards</span>
                 </div>
                 <div>
@@ -1325,11 +1325,49 @@
           </div>
           }
 
+          @if (!isSongBoard(board) && !exploredRelatedCardParent() && canEditBoard(board) && boardHasCardsInside(board)) {
+            <section class="board-inside-display" aria-label="Cards inside display setting">
+              <div class="board-inside-display__copy">
+                <span class="material-symbols-outlined">account_tree</span>
+                <span>
+                  <strong>Show cards inside</strong>
+                  <small>Choose how boards inside this board appear.</small>
+                </span>
+              </div>
+              <div class="board-inside-display__switch" role="group" aria-label="Show cards inside">
+                <button
+                  type="button"
+                  [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'nested'"
+                  [attr.aria-pressed]="boardInsideDisplay(board) === 'nested'"
+                  (click)="setBoardInsideDisplay(board, 'nested', $event)"
+                >
+                  <span class="material-symbols-outlined">subdirectory_arrow_right</span>
+                  <span>
+                    <strong>Inside their parent</strong>
+                    <small>Open the board from its parent card</small>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'alongside'"
+                  [attr.aria-pressed]="boardInsideDisplay(board) === 'alongside'"
+                  (click)="setBoardInsideDisplay(board, 'alongside', $event)"
+                >
+                  <span class="material-symbols-outlined">view_module</span>
+                  <span>
+                    <strong>Alongside board cards</strong>
+                    <small>Select Board inside on a card to show it here</small>
+                  </span>
+                </button>
+              </div>
+            </section>
+          }
+
           @if (!isSongBoard(board) && canEditBoard(board) && isManagingBoard(board.id)) {
             <div class="board-bulk-actions">
               <div>
                 <strong i18n>{{ selectedCardCount() }} selected</strong>
-                <small i18n>{{ filteredCards().length }} visible · {{ board.cards.length }} total</small>
+                <small i18n>{{ visibleManageCardCount() }} visible · {{ board.cards.length }} total</small>
               </div>
               <div class="board-bulk-actions__buttons">
                 <button type="button" class="boards-ghost-action" (click)="selectAllVisibleCards($event)" i18n>
@@ -2123,7 +2161,8 @@
                   class="detail-card"
                   [class.detail-card--favorite]="card.status === 'favorite'"
                   [class.detail-card--selected]="isCardSelected(card.id)"
-                  [class.detail-card--managing]="!exploredRelatedCardParent() && isManagingBoard(board.id)"
+                  [class.detail-card--managing]="!exploredRelatedCardParent() && !isAlongsideInnerCard(board, card) && isManagingBoard(board.id)"
+                  [class.detail-card--inside-alongside]="isAlongsideInnerCard(board, card)"
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
                   [class.detail-card--has-memories]="hasBoardInside(card) || relatedCardCount(card) > 0"
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
@@ -2132,9 +2171,9 @@
                   [class.detail-card--drop-before]="isCardDropBefore(card.id)"
                   [class.detail-card--drop-after]="isCardDropAfter(card.id)"
                   [class.board-square--flipped]="isCardFlipped(card.id)"
-                  [attr.draggable]="!exploredRelatedCardParent() && canReorderCard(board, card.id) ? 'true' : null"
+                  [attr.draggable]="!exploredRelatedCardParent() && !isAlongsideInnerCard(board, card) && canReorderCard(board, card.id) ? 'true' : null"
                   style="overflow: visible; perspective: 1400px;"
-                  (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, board.id, card)"
+                  (pointerdown)="!isManagingBoard(board.id) && beginCardStickerDrag($event, cardHostBoard(board, card).id, card)"
                   (dragstart)="beginCardReorderDrag($event, board, card)"
                   (dragover)="dragCardOver($event, board, card)"
                   (dragleave)="dragCardLeave($event, card)"
@@ -2142,7 +2181,29 @@
                   (dragend)="clearCardReorderDrag()"
                 >
                   <span class="detail-card__rank" aria-label="Rank {{ $index + 1 }}">{{ $index + 1 }}</span>
-                  @if (!exploredRelatedCardParent() && isManagingBoard(board.id)) {
+                  @if (isAlongsideInnerCard(board, card)) {
+                    <span class="detail-card__inside-context">
+                      <button
+                        type="button"
+                        class="detail-card__inside-context-link"
+                        [attr.aria-label]="'Open board inside ' + alongsideInnerCardParentTitle(board, card)"
+                        (click)="openAlongsideInnerBoard(board, card, $event)"
+                      >
+                        <span class="material-symbols-outlined">account_tree</span>
+                        <span>Inside {{ alongsideInnerCardParentTitle(board, card) }}</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="detail-card__inside-context-close"
+                        [attr.aria-label]="'Close cards inside ' + alongsideInnerCardParentTitle(board, card)"
+                        title="Close cards inside"
+                        (click)="collapseAlongsideInnerBoard(board, card, $event)"
+                      >
+                        <span class="material-symbols-outlined">close</span>
+                      </button>
+                    </span>
+                  }
+                  @if (!exploredRelatedCardParent() && !isAlongsideInnerCard(board, card) && isManagingBoard(board.id)) {
                     <button
                       type="button"
                       class="detail-card__select"
@@ -2157,15 +2218,15 @@
                   <button
                     type="button"
                     class="detail-card__like"
-                    [class.detail-card__like--solo]="!canEditBoard(board)"
-                    [class.detail-card__like--active]="isCardLiked(board, card)"
-                    [attr.aria-label]="isCardLiked(board, card) ? 'Unlike card' : 'Like card'"
-                    [attr.aria-pressed]="isCardLiked(board, card)"
-                    (click)="toggleCardLike(board, card, $event)"
+                    [class.detail-card__like--solo]="!canEditBoard(cardHostBoard(board, card))"
+                    [class.detail-card__like--active]="isCardLiked(cardHostBoard(board, card), card)"
+                    [attr.aria-label]="isCardLiked(cardHostBoard(board, card), card) ? 'Unlike card' : 'Like card'"
+                    [attr.aria-pressed]="isCardLiked(cardHostBoard(board, card), card)"
+                    (click)="toggleCardLike(cardHostBoard(board, card), card, $event)"
                   >
-                    <span class="material-symbols-outlined">{{ isCardLiked(board, card) ? 'favorite' : 'favorite_border' }}</span>
+                    <span class="material-symbols-outlined">{{ isCardLiked(cardHostBoard(board, card), card) ? 'favorite' : 'favorite_border' }}</span>
                   </button>
-                  @if (canEditBoard(board) && (!exploredRelatedCardParent() || !isLegacyMemoryRelatedCard(card))) {
+                  @if (canEditBoard(cardHostBoard(board, card)) && (!exploredRelatedCardParent() || !isLegacyMemoryRelatedCard(card))) {
                     <div
                       class="card-action-menu detail-card__action-menu"
                       [class.card-action-menu--open]="isCardActionMenuOpen('card:' + card.id)"
@@ -2223,7 +2284,7 @@
                               </button>
                             }
                           } @else {
-                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCard(card)">
+                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCard(card, cardHostBoard(board, card))">
                               <span class="material-symbols-outlined">edit</span>
                               <span i18n>Edit card</span>
                             </button>
@@ -2233,18 +2294,18 @@
                                 <span i18n>Add next stop</span>
                               </button>
                             }
-                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCardPhotos(card, $event)">
+                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCardPhotos(card, $event, cardHostBoard(board, card))">
                               <span class="material-symbols-outlined">add_photo_alternate</span>
                               {{ cardImages(card).length ? 'Add memory' : 'Add photos' }}
                             </button>
-                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); openBoardInside(card, $event)">
+                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); openBoardInside(card, $event, cardHostBoard(board, card))">
                               <span class="material-symbols-outlined">account_tree</span>
                               <span>Board inside</span>
                               @if (hasBoardInside(card) || relatedCardCount(card) > 0) {
                                 <small>{{ boardInsideCardCount(card) }}</small>
                               }
                             </button>
-                            <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
+                            <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event, cardHostBoard(board, card))">
                               <span class="material-symbols-outlined">delete</span>
                               <span i18n>Delete card</span>
                             </button>
@@ -2266,7 +2327,7 @@
                           [style.--sticker-bg-2]="stickerBackgroundAlt(stickerColor(sticker, $index))"
                           [style.--sticker-ink]="stickerInk(stickerColor(sticker, $index))"
                           [style.--sticker-shadow]="stickerShadow(stickerColor(sticker, $index))"
-                          (pointerdown)="beginStickerDrag($event, 'card', board.id, sticker.id, card.id)"
+                          (pointerdown)="beginStickerDrag($event, 'card', cardHostBoard(board, card).id, sticker.id, card.id)"
                         >
                           <span class="material-symbols-outlined">{{ sticker.icon }}</span>
                         </span>
@@ -2317,7 +2378,7 @@
                             type="button"
                             class="detail-card__explore-related"
                             [attr.aria-label]="'Open board inside ' + card.title"
-                            (click)="openBoardInside(card, $event)"
+                            (click)="openBoardInside(card, $event, cardHostBoard(board, card))"
                           >
                             <span class="detail-card__memory-stack" aria-hidden="true">
                               @if (boardInsideCards(card)[0]?.imageUrl) {
@@ -2519,7 +2580,7 @@
                         [class.go-there-card-action__primary--planned]="!!visitPlanFor(card)"
                         aria-haspopup="dialog"
                         [attr.aria-label]="visitPlanCardLabel(card) + ': ' + card.title"
-                        (click)="openGoThere(board, card, $event)"
+                        (click)="openGoThere(cardHostBoard(board, card), card, $event)"
                       >
                         <span class="material-symbols-outlined">{{ visitPlanFor(card) ? 'event_available' : 'near_me' }}</span>
                         <span>{{ visitPlanCardLabel(card) }}</span>

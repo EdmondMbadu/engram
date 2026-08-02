@@ -39,6 +39,11 @@ import {
 } from './board-translation';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import { appendBoardCards } from './board-batch';
+import {
+  cardsForBoardInsideDisplay,
+  normalizeBoardInsideDisplay,
+  type BoardInsideDisplay,
+} from './board-inside-display';
 import { canReorderCardSurface } from './card-interaction';
 import { omitUndefinedDeep } from './firestore-payload';
 import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
@@ -296,6 +301,7 @@ type Board = {
   parentCardId?: string;
   parentBoardTitle?: string;
   parentCardTitle?: string;
+  insideCardsDisplay: BoardInsideDisplay;
   cards: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -1179,6 +1185,7 @@ export class BoardsComponent implements OnDestroy {
   readonly flippedCardIds = signal<Set<string>>(new Set());
   readonly openCardActionMenuKey = signal<string | null>(null);
   readonly expandedCardIds = signal<Set<string>>(new Set());
+  readonly activeAlongsideBoardIds = signal<Set<string>>(new Set());
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
@@ -1211,6 +1218,7 @@ export class BoardsComponent implements OnDestroy {
   readonly cardDropPosition = signal<ReorderDropPosition | null>(null);
   readonly editingBoardId = signal<string | null>(null);
   readonly editingCardId = signal<string | null>(null);
+  readonly editingCardBoardId = signal<string | null>(null);
   readonly imageUploadError = signal<string | null>(null);
   readonly cardWizardPrompt = signal('');
   readonly cardWizardLoading = signal(false);
@@ -1580,8 +1588,9 @@ export class BoardsComponent implements OnDestroy {
   });
   readonly editingParentCard = computed(() => {
     const cardId = this.editingCardId();
+    const editingBoardId = this.editingCardBoardId();
     return cardId
-      ? this.originalSelectedBoard()?.cards.find((card) => card.id === cardId) ?? null
+      ? this.boards().find((board) => board.id === editingBoardId)?.cards.find((card) => card.id === cardId) ?? null
       : null;
   });
   readonly tourStopInsertAfterCard = computed(() => {
@@ -1752,7 +1761,13 @@ export class BoardsComponent implements OnDestroy {
       ? this.relatedCardsFor(parent)
       : this.isTourBoard(board)
         ? this.cardsInTourDisplayOrder(board.cards)
-        : [...board.cards];
+        : cardsForBoardInsideDisplay(
+            board.id,
+            board.cards,
+            this.boards(),
+            board.insideCardsDisplay,
+            this.activeAlongsideBoardIds(),
+          );
     if (!query) {
       return cards;
     }
@@ -1875,6 +1890,14 @@ export class BoardsComponent implements OnDestroy {
   );
   readonly wizardSourceReport = computed(() => this.wizardResult()?.sourceReport ?? null);
   readonly selectedCardCount = computed(() => this.selectedCardIds().size);
+  readonly visibleManageCardCount = computed(() => {
+    const board = this.originalSelectedBoard();
+    if (!board) {
+      return 0;
+    }
+    const primaryCardIds = new Set(board.cards.map((card) => card.id));
+    return this.filteredCards().filter((card) => primaryCardIds.has(card.id)).length;
+  });
   readonly cardWizardCanGenerate = computed(() => {
     const draft = this.cardDraft();
     return !this.cardWizardLoading()
@@ -2015,6 +2038,7 @@ export class BoardsComponent implements OnDestroy {
       const ownerUid = this.publicOwnerUidFromKey(ownerKey);
       const ownerSlug = this.publicOwnerSlugFromKey(ownerKey);
       if (this.selectedBoardId() !== boardId) {
+        this.activeAlongsideBoardIds.set(new Set());
         this.exploredRelatedCardParentId.set(null);
         this.relatedCardEditorOpen.set(false);
         this.relatedCardParentId.set(null);
@@ -3712,6 +3736,7 @@ export class BoardsComponent implements OnDestroy {
           visibility: 'public',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
+          insideCardsDisplay: 'nested',
           cards,
           createdAt: now,
           updatedAt: now,
@@ -3899,6 +3924,7 @@ export class BoardsComponent implements OnDestroy {
         parentCardId: insideContext?.parentCardId ?? '',
         parentBoardTitle: insideContext?.parentBoardTitle ?? '',
         parentCardTitle: insideContext?.parentCardTitle ?? '',
+        insideCardsDisplay: 'nested',
         cards: parentCard ? cardsForNewBoardInside(this.relatedCardsFor(parentCard)) : [],
         kind: 'standard',
         tourMeta: null,
@@ -4011,6 +4037,96 @@ export class BoardsComponent implements OnDestroy {
     return this.nestedBoardsUnder(board.id).length;
   }
 
+  boardHasCardsInside(board: Board): boolean {
+    return board.cards.some((card) => !!card.childBoardId?.trim());
+  }
+
+  boardDisplayCardCount(board: Board): number {
+    return cardsForBoardInsideDisplay(
+      board.id,
+      board.cards,
+      this.boards(),
+      board.insideCardsDisplay,
+      this.activeAlongsideBoardIds(),
+    ).length;
+  }
+
+  boardInsideDisplay(board: Board): BoardInsideDisplay {
+    return normalizeBoardInsideDisplay(board.insideCardsDisplay);
+  }
+
+  async setBoardInsideDisplay(board: Board, display: BoardInsideDisplay, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const current = this.boards().find((candidate) => candidate.id === board.id) ?? null;
+    if (!current || !this.canEditBoard(current) || current.insideCardsDisplay === display) {
+      return;
+    }
+    const nextBoard: Board = {
+      ...current,
+      insideCardsDisplay: display,
+      updatedAt: new Date().toISOString(),
+    };
+    this.activeAlongsideBoardIds.set(new Set());
+    this.boards.update((boards) => boards.map((candidate) => candidate.id === nextBoard.id ? nextBoard : candidate));
+    await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  isAlongsideInnerCard(board: Board, card: BoardCard): boolean {
+    return board.insideCardsDisplay === 'alongside' && !!this.alongsideCardContext(board, card);
+  }
+
+  alongsideInnerCardParentTitle(board: Board, card: BoardCard): string {
+    return this.alongsideCardContext(board, card)?.parentCard.title ?? 'Parent card';
+  }
+
+  cardHostBoard(board: Board, card: BoardCard): Board {
+    return this.alongsideCardContext(board, card)?.childBoard ?? board;
+  }
+
+  openAlongsideInnerBoard(board: Board, card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const childBoard = this.alongsideCardContext(board, card)?.childBoard;
+    if (childBoard) {
+      void this.router.navigate(['/boards', childBoard.id]);
+    }
+  }
+
+  collapseAlongsideInnerBoard(board: Board, card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const childBoardId = this.alongsideCardContext(board, card)?.childBoard.id;
+    if (!childBoardId) {
+      return;
+    }
+    this.activeAlongsideBoardIds.update((activeIds) => {
+      const next = new Set(activeIds);
+      next.delete(childBoardId);
+      return next;
+    });
+  }
+
+  private alongsideCardContext(board: Board, card: BoardCard): { parentCard: BoardCard; childBoard: Board } | null {
+    if (board.insideCardsDisplay !== 'alongside') {
+      return null;
+    }
+    for (const parentCard of board.cards) {
+      const childBoardId = parentCard.childBoardId?.trim();
+      if (!childBoardId || !this.activeAlongsideBoardIds().has(childBoardId)) {
+        continue;
+      }
+      const childBoard = this.boards().find((candidate) =>
+        candidate.id === childBoardId
+        && candidate.parentBoardId === board.id
+        && candidate.parentCardId === parentCard.id);
+      if (childBoard?.cards.some((candidate) => candidate.id === card.id)) {
+        return { parentCard, childBoard };
+      }
+    }
+    return null;
+  }
+
   private nestedBoardsUnder(parentBoardId: string): Board[] {
     const descendants: Board[] = [];
     const pending = [parentBoardId];
@@ -4040,6 +4156,7 @@ export class BoardsComponent implements OnDestroy {
     this.resetCardWizard();
     this.cardImageLocked.set(false);
     this.editingCardId.set(null);
+    this.editingCardBoardId.set(board.id);
     this.relatedCardParentId.set(null);
     this.relatedCardEditingId.set(null);
     this.cardDraft.set({
@@ -4080,8 +4197,8 @@ export class BoardsComponent implements OnDestroy {
     this.cardDialogOpen.set(true);
   }
 
-  openEditCard(card: BoardCard): void {
-    const board = this.selectedBoard();
+  openEditCard(card: BoardCard, boardOverride?: Board): void {
+    const board = boardOverride ?? this.selectedBoard();
     if (!board || !this.canEditBoard(board)) {
       this.boardsSyncError.set($localize`Only the board owner can edit cards.`);
       return;
@@ -4089,6 +4206,7 @@ export class BoardsComponent implements OnDestroy {
     this.relatedCardParentId.set(null);
     this.relatedCardEditingId.set(null);
     this.editingCardId.set(card.id);
+    this.editingCardBoardId.set(board.id);
     this.imageUploadError.set(null);
     this.resetCardWizard();
     this.cardImageLocked.set(!!card.imageUrl);
@@ -4165,6 +4283,7 @@ export class BoardsComponent implements OnDestroy {
     this.closeRelatedCardEditor();
     this.cardDialogOpen.set(false);
     this.editingCardId.set(null);
+    this.editingCardBoardId.set(null);
     this.cardImageLocked.set(false);
     this.resetCardWizard();
     this.clearPlaceSearch();
@@ -4200,10 +4319,10 @@ export class BoardsComponent implements OnDestroy {
     void this.openBoardInside(card, event);
   }
 
-  async openBoardInside(card: BoardCard, event?: Event): Promise<void> {
+  async openBoardInside(card: BoardCard, event?: Event, parentBoardOverride?: Board): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
-    const parentBoard = this.originalSelectedBoard();
+    const parentBoard = parentBoardOverride ?? this.originalSelectedBoard();
     if (!parentBoard) {
       return;
     }
@@ -4220,6 +4339,13 @@ export class BoardsComponent implements OnDestroy {
       }
       if (!childBoard) {
         this.boardsSyncError.set('The board inside this card could not be loaded.');
+        return;
+      }
+      if (parentBoard.insideCardsDisplay === 'alongside') {
+        this.activeAlongsideBoardIds.set(new Set([childBoard.id]));
+        this.cardDialogOpen.set(false);
+        this.editingCardId.set(null);
+        this.closeCardActionMenu();
         return;
       }
       this.cardDialogOpen.set(false);
@@ -5369,7 +5495,10 @@ export class BoardsComponent implements OnDestroy {
 
   async saveCard(event: Event): Promise<void> {
     event.preventDefault();
-    const board = this.selectedBoard();
+    const editingBoardId = this.editingCardBoardId();
+    const board = editingBoardId
+      ? this.boards().find((candidate) => candidate.id === editingBoardId) ?? null
+      : this.selectedBoard();
     const draft = this.cardDraft();
     const title = draft.title.trim();
     if (!board || !title) {
@@ -5493,10 +5622,10 @@ export class BoardsComponent implements OnDestroy {
     this.closeCardDialog();
   }
 
-  deleteCard(card: BoardCard, event?: Event): void {
+  deleteCard(card: BoardCard, event?: Event, boardOverride?: Board): void {
     event?.preventDefault();
     event?.stopPropagation();
-    const board = this.selectedBoard();
+    const board = boardOverride ?? this.selectedBoard();
     if (!board) {
       return;
     }
@@ -6101,7 +6230,11 @@ export class BoardsComponent implements OnDestroy {
   selectAllVisibleCards(event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
-    this.selectedCardIds.set(new Set(this.filteredCards().map((card) => card.id)));
+    const board = this.originalSelectedBoard();
+    const primaryCardIds = new Set(board?.cards.map((card) => card.id) ?? []);
+    this.selectedCardIds.set(new Set(
+      this.filteredCards().filter((card) => primaryCardIds.has(card.id)).map((card) => card.id),
+    ));
   }
 
   clearCardSelection(event?: Event): void {
@@ -8644,9 +8777,9 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
-  openEditCardPhotos(card: BoardCard, event?: Event): void {
+  openEditCardPhotos(card: BoardCard, event?: Event, boardOverride?: Board): void {
     event?.stopPropagation();
-    this.openEditCard(card);
+    this.openEditCard(card, boardOverride);
     if (this.isBrowser) {
       window.requestAnimationFrame(() => {
         window.document.getElementById('card-photo-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -12685,9 +12818,15 @@ export class BoardsComponent implements OnDestroy {
         if (!board) {
           return;
         }
-        this.boards.update((boards) => boards.some((item) => item.id === board.id)
-          ? boards.map((item) => item.id === board.id ? board : item)
-          : [board, ...boards]);
+        this.boards.update((boards) => {
+          const current = boards.find((item) => item.id === board.id) ?? null;
+          if (current && current.updatedAt > board.updatedAt) {
+            return boards;
+          }
+          return current
+            ? boards.map((item) => item.id === board.id ? board : item)
+            : [board, ...boards];
+        });
         if (this.boardTranslationTarget()
           && this.boardTranslationVersion()
           && this.boardTranslationVersion() !== board.updatedAt) {
@@ -12866,6 +13005,7 @@ export class BoardsComponent implements OnDestroy {
           parentCardId: typeof (board as Board).parentCardId === 'string' ? (board as Board).parentCardId : '',
           parentBoardTitle: typeof (board as Board).parentBoardTitle === 'string' ? (board as Board).parentBoardTitle : '',
           parentCardTitle: typeof (board as Board).parentCardTitle === 'string' ? (board as Board).parentCardTitle : '',
+          insideCardsDisplay: normalizeBoardInsideDisplay((board as Partial<Board>).insideCardsDisplay),
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
@@ -13111,6 +13251,7 @@ export class BoardsComponent implements OnDestroy {
       parentCardId: typeof data['parentCardId'] === 'string' ? data['parentCardId'] : '',
       parentBoardTitle: typeof data['parentBoardTitle'] === 'string' ? data['parentBoardTitle'] : '',
       parentCardTitle: typeof data['parentCardTitle'] === 'string' ? data['parentCardTitle'] : '',
+      insideCardsDisplay: normalizeBoardInsideDisplay(data['insideCardsDisplay']),
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
       createdAt: typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : new Date().toISOString(),
       updatedAt: typeof data['updated_at_iso'] === 'string' ? data['updated_at_iso'] : new Date().toISOString(),
