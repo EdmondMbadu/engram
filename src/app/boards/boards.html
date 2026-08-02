@@ -5003,7 +5003,7 @@
                               class="stack-voice-option__preview"
                               [class.stack-voice-option__preview--playing]="isStackVoicePreviewing(voice.id)"
                               [disabled]="stackVoicePreviewLoadingId() === voice.id"
-                              [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Listen to ' + voice.name"
+                              [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Select and listen to ' + voice.name"
                               (click)="toggleStackVoicePreview(voice, $event)"
                             >
                               <span class="material-symbols-outlined">

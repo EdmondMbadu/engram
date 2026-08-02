@@ -312,6 +312,7 @@ service cloud.firestore {
           'socialVideoRatio',
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
+          'stackNarratorVoiceId',
           'stickers',
           'tourMeta',
           'learningQuiz',
@@ -319,6 +320,7 @@ service cloud.firestore {
           'parentCardId',
           'parentBoardTitle',
           'parentCardTitle',
+          'insideCardsDisplay',
           'cards',
           'created_at_iso',
           'updated_at_iso',
@@ -411,6 +413,20 @@ service cloud.firestore {
             && request.resource.data.socialVideoAudioVolume >= 0
             && request.resource.data.socialVideoAudioVolume <= 0.5
           )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['stackNarratorVoiceId'])
+          || request.resource.data.stackNarratorVoiceId in [
+            'warm-storyteller',
+            'inspiring-guide',
+            'confident-narrator',
+            'energetic-host',
+            'calm-documentary'
+          ]
+        )
+        && (
+          !request.resource.data.keys().hasAny(['insideCardsDisplay'])
+          || request.resource.data.insideCardsDisplay in ['nested', 'alongside']
         )
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48

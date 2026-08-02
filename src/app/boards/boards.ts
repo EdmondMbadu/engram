@@ -10171,7 +10171,10 @@ export class BoardsComponent implements OnDestroy {
 
   selectStackNarratorVoice(board: Board, voiceId: string): void {
     const normalizedVoiceId = normalizeStackNarratorVoiceId(voiceId);
-    if (this.stackNarratorVoiceId() === normalizedVoiceId) return;
+    if (this.stackNarratorVoiceId() === normalizedVoiceId) {
+      this.saveStackNarratorPreference(board, true);
+      return;
+    }
     this.stopStackVoicePreview();
     this.stopStackPlayback();
     this.stackNarratorVoiceId.set(normalizedVoiceId);
@@ -10192,6 +10195,10 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
+    const board = this.stackBoard();
+    if (board) {
+      this.selectStackNarratorVoice(board, voice.id);
+    }
     this.stopStackVoicePreview();
     this.stopStackAudioPreview();
     this.stopSongPreview();
@@ -11093,11 +11100,11 @@ export class BoardsComponent implements OnDestroy {
     void this.persistAndReplaceBoard(nextBoard);
   }
 
-  private saveStackNarratorPreference(board: Board): void {
+  private saveStackNarratorPreference(board: Board, force = false): void {
     const currentBoard = this.boards().find((item) => item.id === board.id);
     if (!currentBoard || !this.canEditBoard(currentBoard)) return;
     const voiceId = normalizeStackNarratorVoiceId(this.stackNarratorVoiceId());
-    if (currentBoard.stackNarratorVoiceId === voiceId) return;
+    if (currentBoard.stackNarratorVoiceId === voiceId && !force) return;
     const nextBoard: Board = {
       ...currentBoard,
       stackNarratorVoiceId: voiceId,
@@ -11108,7 +11115,11 @@ export class BoardsComponent implements OnDestroy {
     );
     this.publishedStackVideoFiles.delete(board.id);
     this.stackPublishedVideoReady.set(false);
-    void this.persistAndReplaceBoard(nextBoard);
+    void this.persistAndReplaceBoard(nextBoard).then((saved) => {
+      this.stackVoiceError.set(saved
+        ? null
+        : 'The narrator changed here, but could not be saved. Check your connection and try Preview again.');
+    });
   }
 
   private stackVideoFile(board: Board, result: StackVideoResult): File {
@@ -13257,18 +13268,20 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  private async persistAndReplaceBoard(board: Board): Promise<void> {
+  private async persistAndReplaceBoard(board: Board): Promise<boolean> {
     if (!this.canEditBoard(board)) {
       this.boardsSyncError.set($localize`Only the board owner can save changes.`);
-      return;
+      return false;
     }
     try {
       const persisted = await this.persistBoard(board);
       this.boards.update((boards) => boards.map((item) => (item.id === persisted.id ? persisted : item)));
       this.boardsSyncError.set(null);
+      return true;
     } catch (error) {
       console.error('Board Firebase sync failed', error, { boardId: board.id });
       this.boardsSyncError.set($localize`Saved on this browser, but Firebase sync failed.`);
+      return false;
     }
   }
 
