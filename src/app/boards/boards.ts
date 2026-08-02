@@ -3,7 +3,7 @@ import { Component, computed, effect, ElementRef, HostListener, inject, LOCALE_I
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
-import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, where, type Firestore, type Unsubscribe } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where, type Firestore, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
@@ -11115,11 +11115,36 @@ export class BoardsComponent implements OnDestroy {
     );
     this.publishedStackVideoFiles.delete(board.id);
     this.stackPublishedVideoReady.set(false);
-    void this.persistAndReplaceBoard(nextBoard).then((saved) => {
+    void this.persistStackNarratorPreference(nextBoard).then((saved) => {
       this.stackVoiceError.set(saved
         ? null
         : 'The narrator changed here, but could not be saved. Check your connection and try Preview again.');
     });
+  }
+
+  private async persistStackNarratorPreference(board: Board): Promise<boolean> {
+    const uid = this.authService.uid();
+    if (!this.firestore || !uid) {
+      return true;
+    }
+    if (board.ownerUserId !== uid) {
+      this.boardsSyncError.set($localize`Only the board owner can save changes.`);
+      return false;
+    }
+
+    try {
+      await updateDoc(doc(this.firestore, 'boards', board.id), {
+        stackNarratorVoiceId: normalizeStackNarratorVoiceId(board.stackNarratorVoiceId),
+        updated_at_iso: board.updatedAt,
+        server_updated_at: serverTimestamp(),
+      });
+      this.boardsSyncError.set(null);
+      return true;
+    } catch (error) {
+      console.error('Board narrator Firebase sync failed', error, { boardId: board.id });
+      this.boardsSyncError.set($localize`Saved on this browser, but Firebase sync failed.`);
+      return false;
+    }
   }
 
   private stackVideoFile(board: Board, result: StackVideoResult): File {

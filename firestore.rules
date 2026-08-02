@@ -35,6 +35,21 @@ service cloud.firestore {
       return isPlatformAdmin() || hasActivePersonalWikiPlan();
     }
 
+    function isValidStackNarratorVoiceId(value) {
+      return value in [
+        'warm-storyteller',
+        'inspiring-guide',
+        'confident-narrator',
+        'energetic-host',
+        'calm-documentary',
+        'vibrant-presenter',
+        'elegant-guide',
+        'british-storyteller',
+        'cinematic-narrator',
+        'friendly-explainer'
+      ];
+    }
+
     function userEditableProfileKeys() {
       return [
         'id',
@@ -262,6 +277,17 @@ service cloud.firestore {
       allow list: if resource.data.visibility == 'public'
         || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
         || isPlatformAdmin();
+      allow update: if isSignedIn()
+        && resource.data.owner_user_id == request.auth.uid
+        && request.resource.data.owner_user_id == resource.data.owner_user_id
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'stackNarratorVoiceId',
+          'updated_at_iso',
+          'server_updated_at'
+        ])
+        && isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)
+        && request.resource.data.updated_at_iso is string
+        && request.resource.data.server_updated_at == request.time;
       allow create, update: if isSignedIn()
         && (
           (
@@ -416,18 +442,7 @@ service cloud.firestore {
         )
         && (
           !request.resource.data.keys().hasAny(['stackNarratorVoiceId'])
-          || request.resource.data.stackNarratorVoiceId in [
-            'warm-storyteller',
-            'inspiring-guide',
-            'confident-narrator',
-            'energetic-host',
-            'calm-documentary',
-            'vibrant-presenter',
-            'elegant-guide',
-            'british-storyteller',
-            'cinematic-narrator',
-            'friendly-explainer'
-          ]
+          || isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)
         )
         && (
           !request.resource.data.keys().hasAny(['insideCardsDisplay'])
