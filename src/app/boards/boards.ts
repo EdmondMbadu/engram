@@ -4056,6 +4056,13 @@ export class BoardsComponent implements OnDestroy {
     return normalizeBoardInsideDisplay(board.insideCardsDisplay);
   }
 
+  isAlongsideBoardInsideActive(board: Board, card: BoardCard): boolean {
+    const childBoardId = card.childBoardId?.trim();
+    return this.canUseAlongsideBoardInside(board)
+      && !!childBoardId
+      && this.activeAlongsideBoardIds().has(childBoardId);
+  }
+
   async setBoardInsideDisplay(board: Board, display: BoardInsideDisplay, event?: Event): Promise<void> {
     event?.preventDefault();
     event?.stopPropagation();
@@ -4336,6 +4343,15 @@ export class BoardsComponent implements OnDestroy {
     }
     const childBoardId = card.childBoardId?.trim() ?? '';
     if (childBoardId) {
+      if (this.isAlongsideBoardInsideActive(parentBoard, card)) {
+        this.activeAlongsideBoardIds.update((activeIds) => {
+          const next = new Set(activeIds);
+          next.delete(childBoardId);
+          return next;
+        });
+        this.closeCardActionMenu();
+        return;
+      }
       let childBoard = this.boards().find((board) => board.id === childBoardId) ?? null;
       if (!childBoard) {
         childBoard = await this.loadBoardById(childBoardId);
@@ -4349,7 +4365,7 @@ export class BoardsComponent implements OnDestroy {
         this.boardsSyncError.set('The board inside this card could not be loaded.');
         return;
       }
-      if (parentBoard.insideCardsDisplay === 'alongside') {
+      if (this.canUseAlongsideBoardInside(parentBoard)) {
         this.activeAlongsideBoardIds.set(new Set([childBoard.id]));
         this.cardDialogOpen.set(false);
         this.editingCardId.set(null);
@@ -4395,6 +4411,13 @@ export class BoardsComponent implements OnDestroy {
       stickers: [],
     });
     this.boardDialogOpen.set(true);
+  }
+
+  private canUseAlongsideBoardInside(board: Board): boolean {
+    return board.kind === 'standard'
+      && !this.isSongBoard(board)
+      && this.originalSelectedBoard()?.id === board.id
+      && board.insideCardsDisplay === 'alongside';
   }
 
   openEditRelatedCard(parentId: string, card: BoardCard, event?: Event): void {

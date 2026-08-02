@@ -2380,7 +2380,8 @@
                           <button
                             type="button"
                             class="detail-card__explore-related"
-                            [attr.aria-label]="'Open board inside ' + card.title"
+                            [class.detail-card__explore-related--active]="isAlongsideBoardInsideActive(cardHostBoard(board, card), card)"
+                            [attr.aria-label]="(isAlongsideBoardInsideActive(cardHostBoard(board, card), card) ? 'Close cards inside ' : 'Open board inside ') + card.title"
                             (click)="openBoardInside(card, $event, cardHostBoard(board, card))"
                           >
                             <span class="detail-card__memory-stack" aria-hidden="true">
@@ -2392,10 +2393,12 @@
                               }
                             </span>
                             <span class="detail-card__memory-summary-copy">
-                              <small>Board inside</small>
+                              <small>{{ isAlongsideBoardInsideActive(cardHostBoard(board, card), card) ? 'Hide board inside' : 'Board inside' }}</small>
                               <strong>{{ boardInsideTitle(card) }}</strong>
                             </span>
-                            <span class="material-symbols-outlined">arrow_forward</span>
+                            <span class="material-symbols-outlined">
+                              {{ isAlongsideBoardInsideActive(cardHostBoard(board, card), card) ? 'close' : 'arrow_forward' }}
+                            </span>
                           </button>
                         }
                         @if (!isPhotoOnlyCard(card)) {
