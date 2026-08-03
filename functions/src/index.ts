@@ -187,6 +187,12 @@ const stackNarratorVoiceIds = {
   'cinematic-narrator': 'ZQe5CZNOzWyzPSCn5a3c',
   'friendly-explainer': 'ODq5zmih8GrVes37Dizd',
 } as const;
+const personalStackNarratorVoiceId = 'personal-voice';
+const personalNarratorVoiceCollection = 'user_narrator_voices';
+const personalNarratorVoiceConsentVersion = 'v1';
+const personalNarratorVoiceMinDurationSeconds = 20;
+const personalNarratorVoiceMaxDurationSeconds = 180;
+const personalNarratorVoiceMaxBytes = 15 * 1024 * 1024;
 const maxSpeechTextLength = 4000;
 const maxSpeechRecapWords = 28;
 const speechRecapVersion = 'v2';
@@ -16705,6 +16711,349 @@ export const getPublicChatState = onCall(
   },
 );
 
+type PersonalNarratorVoiceRecord = {
+  owner_user_id?: unknown;
+  provider_voice_id?: unknown;
+  name?: unknown;
+  status?: unknown;
+  sample_storage_path?: unknown;
+  sample_duration_seconds?: unknown;
+  created_at?: unknown;
+  updated_at?: unknown;
+};
+
+function personalNarratorVoiceResponse(
+  record: PersonalNarratorVoiceRecord | undefined,
+): Record<string, unknown> | null {
+  if (!record || record.status !== 'ready' || typeof record.name !== 'string') {
+    return null;
+  }
+  return {
+    name: record.name.slice(0, 48),
+    status: 'ready',
+    sampleDurationSeconds: typeof record.sample_duration_seconds === 'number'
+      ? record.sample_duration_seconds
+      : null,
+    createdAt: timestampToIso(record.created_at),
+    updatedAt: timestampToIso(record.updated_at),
+  };
+}
+
+async function personalNarratorEligibility(userId: string): Promise<{
+  eligible: boolean;
+  profile: Record<string, unknown> | undefined;
+}> {
+  const profileSnapshot = await db.collection('users').doc(userId).get();
+  const profile = profileSnapshot.data() as Record<string, unknown> | undefined;
+  return {
+    eligible: profile?.role === 'admin' || hasActivePersonalWikiPlan(profile),
+    profile,
+  };
+}
+
+async function deleteElevenLabsPersonalVoice(
+  apiKey: string,
+  voiceId: string,
+  strict: boolean,
+): Promise<void> {
+  if (!voiceId) return;
+  const response = await fetch(
+    `https://api.elevenlabs.io/v1/voices/${encodeURIComponent(voiceId)}`,
+    {
+      method: 'DELETE',
+      headers: { 'xi-api-key': apiKey },
+    },
+  );
+  if (response.ok || response.status === 404) return;
+  const body = (await response.text().catch(() => '')).slice(0, 500);
+  logger.warn('ElevenLabs personal voice deletion failed', {
+    status: response.status,
+    body,
+  });
+  if (strict) {
+    throw new HttpsError('internal', 'The personal narrator could not be removed from the voice provider.');
+  }
+}
+
+function normalizeNarrationAuthorizationText(value: unknown): string {
+  return String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, maxSpeechTextLength);
+}
+
+function personalNarrationTextsFromCard(value: unknown): Set<string> {
+  const card = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const allowed = new Set<string>();
+  const add = (candidate: unknown) => {
+    const normalized = normalizeNarrationAuthorizationText(candidate);
+    if (normalized) allowed.add(normalized);
+  };
+  add(card['notes']);
+  add(card['shortSummary']);
+  add(card['subtitle']);
+
+  const tour = card['tour'] && typeof card['tour'] === 'object'
+    ? card['tour'] as Record<string, unknown>
+    : {};
+  add(tour['guideScript']);
+  const leg = tour['legToNext'] && typeof tour['legToNext'] === 'object'
+    ? tour['legToNext'] as Record<string, unknown>
+    : {};
+  add(leg['navScript']);
+  add(leg['instruction']);
+
+  const title = String(card['title'] ?? '').trim();
+  const detail = String(card['shortSummary'] ?? card['subtitle'] ?? card['notes'] ?? '').trim();
+  const firstSentence = detail.match(/^(.{1,320}?[.!?])(?:\s|$)/)?.[1] ?? detail.slice(0, 280);
+  add(`${title}. ${firstSentence.trim()}`.trim().slice(0, 420));
+  return allowed;
+}
+
+function publicBoardAllowsPersonalNarration(board: Record<string, unknown>, text: string): boolean {
+  const requestedText = normalizeNarrationAuthorizationText(text);
+  if (!requestedText || !Array.isArray(board['cards'])) return false;
+  return board['cards'].some((card) => personalNarrationTextsFromCard(card).has(requestedText));
+}
+
+export const getPersonalNarratorVoice = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    cors: true,
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const userId = request.auth.uid;
+    const [{ eligible }, voiceSnapshot] = await Promise.all([
+      personalNarratorEligibility(userId),
+      db.collection(personalNarratorVoiceCollection).doc(userId).get(),
+    ]);
+    return {
+      eligible,
+      voice: personalNarratorVoiceResponse(
+        voiceSnapshot.data() as PersonalNarratorVoiceRecord | undefined,
+      ),
+    };
+  },
+);
+
+export const createPersonalNarratorVoice = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 120,
+    memory: '512MiB',
+    cors: true,
+    secrets: [elevenLabsApiKey],
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const userId = request.auth.uid;
+    const { eligible } = await personalNarratorEligibility(userId);
+    if (!eligible) {
+      throw new HttpsError(
+        'permission-denied',
+        'A Personal Plus or Creator plan is required to create a personal narrator.',
+      );
+    }
+    if (request.data?.ownVoiceConfirmed !== true || request.data?.consentConfirmed !== true) {
+      throw new HttpsError(
+        'failed-precondition',
+        'Confirm that this is your voice and that you consent to creating the narrator.',
+      );
+    }
+
+    const name = String(request.data?.name ?? '').replace(/\s+/g, ' ').trim().slice(0, 48);
+    const sampleStoragePath = String(request.data?.sampleStoragePath ?? '').trim();
+    const sampleDurationSeconds = Number(request.data?.sampleDurationSeconds);
+    const expectedPrefix = `users/${userId}/voice-samples/`;
+    if (!name) {
+      throw new HttpsError('invalid-argument', 'Give your narrator a name.');
+    }
+    if (!sampleStoragePath.startsWith(expectedPrefix)
+      || sampleStoragePath.includes('..')
+      || sampleStoragePath.length > 500) {
+      throw new HttpsError('invalid-argument', 'The voice sample path is not valid.');
+    }
+    if (!Number.isFinite(sampleDurationSeconds)
+      || sampleDurationSeconds < personalNarratorVoiceMinDurationSeconds
+      || sampleDurationSeconds > personalNarratorVoiceMaxDurationSeconds) {
+      throw new HttpsError(
+        'invalid-argument',
+        `Use a voice sample between ${personalNarratorVoiceMinDurationSeconds} and ${personalNarratorVoiceMaxDurationSeconds} seconds.`,
+      );
+    }
+
+    const sampleFile = storage.bucket().file(sampleStoragePath);
+    const [exists] = await sampleFile.exists();
+    if (!exists) {
+      throw new HttpsError('not-found', 'The uploaded voice sample could not be found.');
+    }
+    const [sampleMetadata] = await sampleFile.getMetadata();
+    const contentType = String(sampleMetadata.contentType ?? '').toLowerCase();
+    const sampleSize = Number(sampleMetadata.size ?? 0);
+    if (!contentType.startsWith('audio/') || !sampleSize || sampleSize > personalNarratorVoiceMaxBytes) {
+      throw new HttpsError('invalid-argument', 'Upload an audio file no larger than 15 MB.');
+    }
+
+    const apiKey = elevenLabsApiKey.value();
+    if (!apiKey) {
+      throw new HttpsError('failed-precondition', 'ElevenLabs API key is not configured.');
+    }
+    const [sampleBuffer] = await sampleFile.download();
+    const form = new FormData();
+    form.append('name', name);
+    form.append('description', 'Personal LivingWiki narrator');
+    form.append('remove_background_noise', 'true');
+    const filename = sampleStoragePath.split('/').pop() || 'voice-sample.webm';
+    form.append('files', new Blob([Uint8Array.from(sampleBuffer)], { type: contentType }), filename);
+
+    const providerResponse = await fetch('https://api.elevenlabs.io/v1/voices/add', {
+      method: 'POST',
+      headers: { 'xi-api-key': apiKey },
+      body: form,
+    });
+    if (!providerResponse.ok) {
+      const providerBody = (await providerResponse.text().catch(() => '')).slice(0, 500);
+      logger.warn('ElevenLabs personal voice creation failed', {
+        userId,
+        status: providerResponse.status,
+        body: providerBody,
+      });
+      throw new HttpsError(
+        providerResponse.status === 400 || providerResponse.status === 422
+          ? 'invalid-argument'
+          : 'internal',
+        providerResponse.status === 400 || providerResponse.status === 422
+          ? 'ElevenLabs could not use this sample. Try a clearer recording with only your voice.'
+          : 'The personal narrator could not be created. Try again in a moment.',
+      );
+    }
+    const providerData = await providerResponse.json() as Record<string, unknown>;
+    const providerVoiceId = String(providerData['voice_id'] ?? '').trim();
+    if (!providerVoiceId) {
+      throw new HttpsError('internal', 'The voice provider did not return a narrator.');
+    }
+
+    const voiceRef = db.collection(personalNarratorVoiceCollection).doc(userId);
+    const previousSnapshot = await voiceRef.get();
+    const previous = previousSnapshot.data() as PersonalNarratorVoiceRecord | undefined;
+    const now = FieldValue.serverTimestamp();
+    try {
+      await voiceRef.set({
+        owner_user_id: userId,
+        provider_voice_id: providerVoiceId,
+        name,
+        status: 'ready',
+        sample_storage_path: sampleStoragePath,
+        sample_duration_seconds: sampleDurationSeconds,
+        consent_version: personalNarratorVoiceConsentVersion,
+        own_voice_confirmed: true,
+        consent_confirmed_at: now,
+        created_at: previous?.created_at ?? now,
+        updated_at: now,
+      });
+    } catch (error) {
+      await deleteElevenLabsPersonalVoice(apiKey, providerVoiceId, false);
+      logger.error('Personal narrator record could not be saved', {
+        userId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      throw new HttpsError('internal', 'The personal narrator could not be saved. Please try again.');
+    }
+
+    const previousProviderVoiceId = typeof previous?.provider_voice_id === 'string'
+      ? previous.provider_voice_id
+      : '';
+    const previousSamplePath = typeof previous?.sample_storage_path === 'string'
+      ? previous.sample_storage_path
+      : '';
+    if (previousProviderVoiceId && previousProviderVoiceId !== providerVoiceId) {
+      await deleteElevenLabsPersonalVoice(apiKey, previousProviderVoiceId, false);
+    }
+    if (previousSamplePath && previousSamplePath !== sampleStoragePath) {
+      await storage.bucket().file(previousSamplePath).delete({ ignoreNotFound: true }).catch((error) => {
+        logger.warn('Previous personal voice sample cleanup failed', {
+          userId,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      });
+    }
+
+    const savedSnapshot = await voiceRef.get();
+    return {
+      eligible: true,
+      voice: personalNarratorVoiceResponse(
+        savedSnapshot.data() as PersonalNarratorVoiceRecord | undefined,
+      ),
+    };
+  },
+);
+
+export const deletePersonalNarratorVoice = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 120,
+    memory: '512MiB',
+    cors: true,
+    secrets: [elevenLabsApiKey],
+  },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const userId = request.auth.uid;
+    const voiceRef = db.collection(personalNarratorVoiceCollection).doc(userId);
+    const voiceSnapshot = await voiceRef.get();
+    if (!voiceSnapshot.exists) return { deleted: true };
+    const voice = voiceSnapshot.data() as PersonalNarratorVoiceRecord;
+    if (voice.owner_user_id !== userId) {
+      throw new HttpsError('permission-denied', 'You cannot remove this narrator.');
+    }
+
+    const apiKey = elevenLabsApiKey.value();
+    const providerVoiceId = typeof voice.provider_voice_id === 'string' ? voice.provider_voice_id : '';
+    if (providerVoiceId && apiKey) {
+      await deleteElevenLabsPersonalVoice(apiKey, providerVoiceId, true);
+    }
+    const sampleStoragePath = typeof voice.sample_storage_path === 'string'
+      ? voice.sample_storage_path
+      : '';
+    if (sampleStoragePath) {
+      await storage.bucket().file(sampleStoragePath).delete({ ignoreNotFound: true });
+    }
+    await storage.bucket().deleteFiles({
+      prefix: `chat-answer-speech/personal/${userId}/`,
+      force: true,
+    }).catch((error) => {
+      logger.warn('Personal narrator audio cache cleanup failed', {
+        userId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    });
+
+    const boardSnapshot = await db.collection('boards').where('owner_user_id', '==', userId).get();
+    const personalBoards = boardSnapshot.docs.filter(
+      (doc) => doc.data()?.stackNarratorVoiceId === personalStackNarratorVoiceId,
+    );
+    for (let offset = 0; offset < personalBoards.length; offset += 450) {
+      const batch = db.batch();
+      personalBoards.slice(offset, offset + 450).forEach((doc) => {
+        batch.update(doc.ref, {
+          stackNarratorVoiceId: 'warm-storyteller',
+          updated_at: FieldValue.serverTimestamp(),
+          server_updated_at: FieldValue.serverTimestamp(),
+        });
+      });
+      await batch.commit();
+    }
+    await voiceRef.delete();
+    return { deleted: true };
+  },
+);
+
 export const synthesizeChatAnswerSpeech = onCall(
   {
     region: callableRegion,
@@ -16714,12 +17063,18 @@ export const synthesizeChatAnswerSpeech = onCall(
     secrets: [elevenLabsApiKey],
   },
   async (request) => {
+    if (!request.auth?.uid && !normalizeAnonymousVisitorId(request.data?.anonymousVisitorId)) {
+      throw new HttpsError('unauthenticated', 'Authentication or anonymousVisitorId is required.');
+    }
     const requestedMode = request.data?.mode === 'tour' ? 'tour' : request.data?.mode === 'full' ? 'full' : 'recap';
     const requestedNarratorId = String(request.data?.narratorVoiceId ?? '').trim();
-    const requestedNarratorVoiceId = requestedNarratorId
+    const boardId = String(request.data?.boardId ?? '').trim();
+    let requestedNarratorVoiceId = requestedNarratorId && requestedNarratorId !== personalStackNarratorVoiceId
       ? stackNarratorVoiceIds[requestedNarratorId as keyof typeof stackNarratorVoiceIds]
       : '';
-    if (requestedNarratorId && !requestedNarratorVoiceId) {
+    if (requestedNarratorId
+      && requestedNarratorId !== personalStackNarratorVoiceId
+      && !requestedNarratorVoiceId) {
       throw new HttpsError('invalid-argument', 'The selected narrator voice is not available.');
     }
     const text = requestedMode === 'full' || requestedMode === 'tour'
@@ -16729,8 +17084,43 @@ export const synthesizeChatAnswerSpeech = onCall(
       throw new HttpsError('invalid-argument', 'Answer text is required.');
     }
 
-    if (!request.auth?.uid && !normalizeAnonymousVisitorId(request.data?.anonymousVisitorId)) {
-      throw new HttpsError('unauthenticated', 'Authentication or anonymousVisitorId is required.');
+    const isPersonalNarrator = requestedNarratorId === personalStackNarratorVoiceId;
+    let personalVoiceOwnerId = '';
+    if (isPersonalNarrator) {
+      if (boardId) {
+        const boardSnapshot = await db.collection('boards').doc(boardId).get();
+        if (!boardSnapshot.exists) {
+          throw new HttpsError('not-found', 'The board for this narrator could not be found.');
+        }
+        const board = boardSnapshot.data() as Record<string, unknown>;
+        personalVoiceOwnerId = String(board['owner_user_id'] ?? '').trim();
+        const isOwner = !!request.auth?.uid && request.auth.uid === personalVoiceOwnerId;
+        const canUsePublicNarration = board['visibility'] === 'public'
+          && board['stackNarratorVoiceId'] === personalStackNarratorVoiceId
+          && publicBoardAllowsPersonalNarration(board, text);
+        if (!personalVoiceOwnerId || (!isOwner && !canUsePublicNarration)) {
+          throw new HttpsError('permission-denied', 'This personal narrator is not available for that text.');
+        }
+      } else if (request.auth?.uid) {
+        personalVoiceOwnerId = request.auth.uid;
+      } else {
+        throw new HttpsError('permission-denied', 'A board is required to use this personal narrator.');
+      }
+
+      const [{ eligible }, voiceSnapshot] = await Promise.all([
+        personalNarratorEligibility(personalVoiceOwnerId),
+        db.collection(personalNarratorVoiceCollection).doc(personalVoiceOwnerId).get(),
+      ]);
+      const voice = voiceSnapshot.data() as PersonalNarratorVoiceRecord | undefined;
+      requestedNarratorVoiceId = voice?.status === 'ready' && typeof voice.provider_voice_id === 'string'
+        ? voice.provider_voice_id
+        : '';
+      if (!eligible) {
+        throw new HttpsError('failed-precondition', 'This personal narrator requires an active paid plan.');
+      }
+      if (!requestedNarratorVoiceId) {
+        throw new HttpsError('failed-precondition', 'This personal narrator is not ready.');
+      }
     }
 
     const apiKey = elevenLabsApiKey.value();
@@ -16751,13 +17141,15 @@ export const synthesizeChatAnswerSpeech = onCall(
           similarity_boost: 0.75,
           style: 0,
           use_speaker_boost: false,
-        };
+    };
     const speechVersion = requestedMode === 'tour' ? tourSpeechVersion : speechRecapVersion;
     const primaryVoiceId = requestedNarratorVoiceId || chatAnswerVoiceId;
-    const voiceIds = Array.from(new Set([
-      primaryVoiceId,
-      ...elevenLabsPremadeNarratorVoiceIds,
-    ].filter(Boolean)));
+    const voiceIds = isPersonalNarrator
+      ? [primaryVoiceId]
+      : Array.from(new Set([
+          primaryVoiceId,
+          ...elevenLabsPremadeNarratorVoiceIds,
+        ].filter(Boolean)));
     let lastErrorStatus: number | null = null;
     let lastErrorBody = '';
 
@@ -16765,14 +17157,16 @@ export const synthesizeChatAnswerSpeech = onCall(
       const textHash = createHash('sha256')
         .update(`${voiceId}:${speechModel}:${speechVersion}:${requestedMode}:${JSON.stringify(voiceSettings)}:${text}`)
         .digest('hex');
-      const storagePath = `chat-answer-speech/${requestedMode}/${speechVersion}/${voiceId}/${textHash}.mp3`;
+      const storagePath = isPersonalNarrator
+        ? `chat-answer-speech/personal/${personalVoiceOwnerId}/${requestedMode}/${speechVersion}/${textHash}.mp3`
+        : `chat-answer-speech/${requestedMode}/${speechVersion}/${voiceId}/${textHash}.mp3`;
       const cachedFile = storage.bucket().file(storagePath);
       const [cacheExists] = await cachedFile.exists();
       if (cacheExists) {
         return {
           audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
           contentType: 'audio/mpeg',
-          voiceId,
+          voiceId: isPersonalNarrator ? null : voiceId,
           speechText: text,
           durationHintSeconds: requestedMode === 'recap' ? 15 : null,
           provider: 'elevenlabs',
@@ -16819,7 +17213,7 @@ export const synthesizeChatAnswerSpeech = onCall(
           contentType: 'audio/mpeg',
           cacheControl: 'public, max-age=31536000, immutable',
           metadata: {
-            voiceId,
+            voiceId: isPersonalNarrator ? personalStackNarratorVoiceId : voiceId,
             modelId: speechModel,
             mode: requestedMode,
             textHash,
@@ -16838,7 +17232,7 @@ export const synthesizeChatAnswerSpeech = onCall(
       return {
         audioUrl: await buildSpeechCacheDownloadUrl(storagePath),
         contentType: 'audio/mpeg',
-        voiceId,
+        voiceId: isPersonalNarrator ? null : voiceId,
         speechText: text,
         durationHintSeconds: requestedMode === 'recap' ? 15 : null,
         provider: 'elevenlabs',

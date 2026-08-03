@@ -5,7 +5,7 @@ import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
 import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where, type Firestore, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
-import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
@@ -102,6 +102,7 @@ import {
 } from './stack-audio';
 import {
   DEFAULT_STACK_NARRATOR_VOICE_ID,
+  PERSONAL_STACK_NARRATOR_VOICE_ID,
   STACK_NARRATOR_VOICES,
   normalizeStackNarratorVoiceId,
   stackNarratorVoiceById,
@@ -163,6 +164,7 @@ type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
 type VisitPlanContext = 'board' | 'stack';
 type StackShareMode = 'video' | 'live';
+type StackSoundTab = 'voice' | 'music';
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
 type BoardLearnView = 'menu' | 'study' | 'quiz-edit' | 'quiz-welcome' | 'quiz-play' | 'quiz-result';
 type BoardQuizShareMode = 'invite' | 'score';
@@ -590,6 +592,19 @@ type TourSpeechResponse = {
   contentType?: string;
   provider?: string;
   voiceId?: string;
+};
+
+type PersonalNarratorVoice = {
+  name: string;
+  status: 'ready';
+  createdAt: string;
+  updatedAt: string;
+  sampleDurationSeconds: number;
+};
+
+type PersonalNarratorVoiceResponse = {
+  voice: PersonalNarratorVoice | null;
+  eligible: boolean;
 };
 
 type SpotifyResolvedCard = {
@@ -1135,6 +1150,12 @@ export class BoardsComponent implements OnDestroy {
   private stackTourNarrationSwitchToken = 0;
   private stackAudioPreviewRun = 0;
   private stackVoicePreviewRun = 0;
+  private personalVoiceRecorder: MediaRecorder | null = null;
+  private personalVoiceRecordingStream: MediaStream | null = null;
+  private personalVoiceRecordingChunks: Blob[] = [];
+  private personalVoiceRecordingStartedAt = 0;
+  private personalVoiceRecordingTimer: ReturnType<typeof setInterval> | null = null;
+  private discardPersonalVoiceRecording = false;
   private wizardPhotoImportRun = 0;
   private wizardOffGridLocationRun = 0;
   private boardLearnStartedAt = 0;
@@ -1176,6 +1197,7 @@ export class BoardsComponent implements OnDestroy {
   readonly stackLinkShareTargets = STACK_LINK_SHARE_TARGETS;
   readonly stackAudioTracks = STACK_AUDIO_TRACKS;
   readonly stackNarratorVoices = STACK_NARRATOR_VOICES;
+  readonly personalStackNarratorVoiceId = PERSONAL_STACK_NARRATOR_VOICE_ID;
   readonly noStackAudioTrackId = NO_STACK_AUDIO_TRACK_ID;
   readonly defaultStackAudioTrackId = DEFAULT_STACK_AUDIO_TRACK_ID;
   readonly minStackAudioVolume = MIN_STACK_AUDIO_VOLUME;
@@ -1399,6 +1421,21 @@ export class BoardsComponent implements OnDestroy {
   readonly stackVoicePreviewingId = signal<string | null>(null);
   readonly stackVoicePreviewLoadingId = signal<string | null>(null);
   readonly stackVoiceError = signal<string | null>(null);
+  readonly stackSoundTab = signal<StackSoundTab>('voice');
+  readonly personalNarratorVoice = signal<PersonalNarratorVoice | null>(null);
+  readonly personalVoiceLoading = signal(false);
+  readonly personalVoiceServerEligible = signal<boolean | null>(null);
+  readonly personalVoiceSetupOpen = signal(false);
+  readonly personalVoiceName = signal('My voice');
+  readonly personalVoiceFile = signal<File | null>(null);
+  readonly personalVoiceDurationSeconds = signal(0);
+  readonly personalVoiceRecording = signal(false);
+  readonly personalVoiceRecordingSeconds = signal(0);
+  readonly personalVoiceOwnVoiceConfirmed = signal(false);
+  readonly personalVoiceConsentConfirmed = signal(false);
+  readonly personalVoiceCreating = signal(false);
+  readonly personalVoiceDeleting = signal(false);
+  readonly personalVoiceError = signal<string | null>(null);
   readonly stackFrameIndex = signal(0);
   readonly stackPlaying = signal(false);
   readonly stackShareMessage = signal<string | null>(null);
@@ -1953,6 +1990,22 @@ export class BoardsComponent implements OnDestroy {
   readonly stackSelectedNarratorVoice = computed(() =>
     stackNarratorVoiceById(this.stackNarratorVoiceId()),
   );
+  readonly stackSelectedNarratorName = computed(() =>
+    this.stackNarratorVoiceId() === PERSONAL_STACK_NARRATOR_VOICE_ID
+      ? this.personalNarratorVoice()?.name || $localize`Your voice`
+      : this.stackSelectedNarratorVoice()?.name || $localize`Warm Storyteller`,
+  );
+  readonly personalVoiceEligible = computed(() =>
+    this.personalVoiceServerEligible()
+      ?? (this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan()),
+  );
+  readonly personalVoiceReady = computed(() => !!this.personalNarratorVoice());
+  readonly personalVoiceFileLabel = computed(() => {
+    const file = this.personalVoiceFile();
+    if (!file) return $localize`No recording selected`;
+    const duration = this.personalVoiceDurationSeconds();
+    return duration > 0 ? `${file.name} · ${Math.round(duration)}s` : file.name;
+  });
   readonly stackHasTourNarration = computed(() => this.stackSelectedCards().some((card) => !!card.tour));
   readonly stackSelectedCount = computed(() => this.stackSelectedCardIds().size);
   readonly stackFrameCount = computed(() => this.stackSelectedCards().length + 2);
@@ -2228,6 +2281,7 @@ export class BoardsComponent implements OnDestroy {
     this.stopSongPreview();
     this.stopStackAudioPreview();
     this.stopStackVoicePreview();
+    this.stopPersonalVoiceRecording(true);
     this.stopTourSpeech();
     this.stopStackPlayback();
     this.disposeStackNarrationAudio();
@@ -6648,6 +6702,7 @@ export class BoardsComponent implements OnDestroy {
       this.tourAudioKey(frame),
       text,
       this.selectedBoard()?.stackNarratorVoiceId,
+      this.selectedBoard()?.id,
     );
     if (audioUrl) {
       const audio = new Audio(audioUrl);
@@ -6936,7 +6991,7 @@ export class BoardsComponent implements OnDestroy {
     };
   }
 
-  private async ensureTourAudioUrl(key: string, text: string, narratorVoiceId?: string): Promise<string | null> {
+  private async ensureTourAudioUrl(key: string, text: string, narratorVoiceId?: string, boardId?: string): Promise<string | null> {
     const normalizedNarratorVoiceId = narratorVoiceId
       ? normalizeStackNarratorVoiceId(narratorVoiceId)
       : '';
@@ -6958,7 +7013,7 @@ export class BoardsComponent implements OnDestroy {
     const promise = (async () => {
       try {
         const callable = httpsCallable<
-          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour'; narratorVoiceId?: string | null },
+          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour'; narratorVoiceId?: string | null; boardId?: string | null },
           TourSpeechResponse
         >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
         const response = await callable({
@@ -6967,6 +7022,7 @@ export class BoardsComponent implements OnDestroy {
           anonymousVisitorId: this.authService.uid() ? null : this.ensureTourAnonymousVisitorId(),
           mode: 'tour',
           narratorVoiceId: normalizedNarratorVoiceId || null,
+          boardId: boardId || null,
         });
         const audioUrl = response.data.audioUrl || (response.data.audioBase64 ? this.audioUrlFromBase64(response.data.audioBase64, response.data.contentType || 'audio/mpeg') : '');
         if (audioUrl) {
@@ -10050,6 +10106,7 @@ export class BoardsComponent implements OnDestroy {
     this.prepareStackForBoard(board);
     this.sharePanelOpen.set(false);
     this.stackStudioOpen.set(true);
+    void this.loadPersonalNarratorVoice();
   }
 
   openStackView(board: Board, event?: Event): void {
@@ -10092,6 +10149,7 @@ export class BoardsComponent implements OnDestroy {
     this.stopSongPreview();
     this.stopStackAudioPreview();
     this.stopStackVoicePreview();
+    this.stopPersonalVoiceRecording(true);
     this.stopStackPlayback();
     this.stackStudioOpen.set(false);
     this.setStackShareMessage(null);
@@ -10160,6 +10218,12 @@ export class BoardsComponent implements OnDestroy {
     this.stackRatio.set(ratio);
   }
 
+  setStackSoundTab(tab: StackSoundTab): void {
+    this.stopStackAudioPreview();
+    this.stopStackVoicePreview();
+    this.stackSoundTab.set(tab);
+  }
+
   selectStackAudioTrack(board: Board, trackId: string): void {
     const normalizedTrackId = normalizeStackAudioTrackId(trackId);
     if (this.stackAudioTrackId() === normalizedTrackId) return;
@@ -10210,6 +10274,7 @@ export class BoardsComponent implements OnDestroy {
         `stack-narrator-preview:${voice.id}:v1`,
         voice.sampleText,
         voice.id,
+        board?.id,
       );
       if (run !== this.stackVoicePreviewRun) return;
       if (!audioUrl) {
@@ -10255,6 +10320,330 @@ export class BoardsComponent implements OnDestroy {
     }
     this.stackVoicePreviewingId.set(null);
     this.stackVoicePreviewLoadingId.set(null);
+  }
+
+  openPersonalVoiceSetup(): void {
+    if (!this.personalVoiceEligible()) {
+      void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+      return;
+    }
+    this.stopPersonalVoiceRecording(true);
+    this.personalVoiceFile.set(null);
+    this.personalVoiceDurationSeconds.set(0);
+    this.personalVoiceName.set(this.personalNarratorVoice()?.name || 'My voice');
+    this.personalVoiceOwnVoiceConfirmed.set(false);
+    this.personalVoiceConsentConfirmed.set(false);
+    this.personalVoiceSetupOpen.set(true);
+    this.personalVoiceError.set(null);
+  }
+
+  closePersonalVoiceSetup(): void {
+    if (this.personalVoiceCreating()) return;
+    this.stopPersonalVoiceRecording(true);
+    this.personalVoiceSetupOpen.set(false);
+    this.personalVoiceError.set(null);
+  }
+
+  private async loadPersonalNarratorVoice(): Promise<void> {
+    if (!this.functions || !this.authService.uid() || this.personalVoiceLoading()) return;
+    this.personalVoiceLoading.set(true);
+    try {
+      const callable = httpsCallable<Record<string, never>, PersonalNarratorVoiceResponse>(
+        this.functions,
+        'getPersonalNarratorVoice',
+      );
+      const response = await callable({});
+      this.personalVoiceServerEligible.set(response.data.eligible);
+      this.personalNarratorVoice.set(response.data.voice ?? null);
+    } catch (error) {
+      this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your personal voice could not be loaded.'));
+    } finally {
+      this.personalVoiceLoading.set(false);
+    }
+  }
+
+  async choosePersonalVoiceFile(event: Event): Promise<void> {
+    const input = event.target instanceof HTMLInputElement ? event.target : null;
+    const file = input?.files?.[0] ?? null;
+    if (input) input.value = '';
+    if (!file) return;
+    this.stopPersonalVoiceRecording(true);
+    await this.setPersonalVoiceFile(file);
+  }
+
+  async startPersonalVoiceRecording(): Promise<void> {
+    if (!this.isBrowser || this.personalVoiceRecording() || this.personalVoiceCreating()) return;
+    if (!this.personalVoiceEligible()) {
+      void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+      return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+      this.personalVoiceError.set('Voice recording is not supported in this browser. Upload an audio file instead.');
+      return;
+    }
+
+    this.personalVoiceError.set(null);
+    this.personalVoiceFile.set(null);
+    this.personalVoiceDurationSeconds.set(0);
+    this.discardPersonalVoiceRecording = false;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+      const mimeType = [
+        'audio/webm;codecs=opus',
+        'audio/mp4',
+        'audio/webm',
+        'audio/ogg;codecs=opus',
+      ].find((candidate) => MediaRecorder.isTypeSupported(candidate)) ?? '';
+      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      this.personalVoiceRecordingStream = stream;
+      this.personalVoiceRecorder = recorder;
+      this.personalVoiceRecordingChunks = [];
+      this.personalVoiceRecordingStartedAt = Date.now();
+      recorder.ondataavailable = (chunk) => {
+        if (chunk.data.size) this.personalVoiceRecordingChunks.push(chunk.data);
+      };
+      recorder.onerror = () => {
+        this.personalVoiceError.set('The recording stopped unexpectedly. Please try again.');
+        this.stopPersonalVoiceRecording(true);
+      };
+      recorder.onstop = () => {
+        const duration = Math.max(1, Math.round((Date.now() - this.personalVoiceRecordingStartedAt) / 1000));
+        const chunks = this.personalVoiceRecordingChunks;
+        const discard = this.discardPersonalVoiceRecording;
+        this.cleanupPersonalVoiceRecorder();
+        if (discard || !chunks.length) return;
+        const type = recorder.mimeType || chunks[0]?.type || 'audio/webm';
+        const extension = type.includes('mp4') ? 'm4a' : type.includes('ogg') ? 'ogg' : 'webm';
+        const file = new File([new Blob(chunks, { type })], `my-voice-${Date.now()}.${extension}`, { type });
+        void this.setPersonalVoiceFile(file, duration);
+      };
+      recorder.start(500);
+      this.personalVoiceRecording.set(true);
+      this.personalVoiceRecordingSeconds.set(0);
+      this.personalVoiceRecordingTimer = setInterval(() => {
+        const seconds = Math.floor((Date.now() - this.personalVoiceRecordingStartedAt) / 1000);
+        this.personalVoiceRecordingSeconds.set(seconds);
+        if (seconds >= 120) this.stopPersonalVoiceRecording();
+      }, 500);
+    } catch {
+      this.cleanupPersonalVoiceRecorder();
+      this.personalVoiceError.set('Microphone access was not available. Allow microphone access or upload an audio file.');
+    }
+  }
+
+  stopPersonalVoiceRecording(discard = false): void {
+    this.discardPersonalVoiceRecording = discard;
+    const recorder = this.personalVoiceRecorder;
+    if (recorder && recorder.state !== 'inactive') {
+      recorder.stop();
+      return;
+    }
+    this.cleanupPersonalVoiceRecorder();
+  }
+
+  async createPersonalNarratorVoice(board: Board): Promise<void> {
+    if (!this.functions || !this.storage || !this.authService.uid() || this.personalVoiceCreating()) return;
+    if (!this.personalVoiceEligible()) {
+      void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+      return;
+    }
+    const file = this.personalVoiceFile();
+    const duration = this.personalVoiceDurationSeconds();
+    const name = this.personalVoiceName().trim().slice(0, 48) || 'My voice';
+    if (!file || duration < 20 || duration > 180) {
+      this.personalVoiceError.set('Choose a clear recording between 20 seconds and 3 minutes. Around 60–90 seconds works best.');
+      return;
+    }
+    if (!this.personalVoiceOwnVoiceConfirmed() || !this.personalVoiceConsentConfirmed()) {
+      this.personalVoiceError.set('Confirm that this is your own voice and that you consent to creating the voice model.');
+      return;
+    }
+
+    this.personalVoiceCreating.set(true);
+    this.personalVoiceError.set(null);
+    const uid = this.authService.uid();
+    const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').slice(-90) || 'voice.webm';
+    const path = `users/${uid}/voice-samples/${Date.now()}-${safeName}`;
+    const sampleRef = storageRef(this.storage, path);
+    try {
+      await uploadBytes(sampleRef, file, {
+        contentType: file.type || 'audio/webm',
+        customMetadata: { durationSeconds: String(Math.round(duration)) },
+      });
+      const callable = httpsCallable<{
+        name: string;
+        sampleStoragePath: string;
+        sampleDurationSeconds: number;
+        ownVoiceConfirmed: boolean;
+        consentConfirmed: boolean;
+      }, PersonalNarratorVoiceResponse>(this.functions, 'createPersonalNarratorVoice', { timeout: 120_000 });
+      const response = await callable({
+        name,
+        sampleStoragePath: path,
+        sampleDurationSeconds: duration,
+        ownVoiceConfirmed: true,
+        consentConfirmed: true,
+      });
+      if (!response.data.voice) {
+        throw new Error('The personal voice was not returned after processing.');
+      }
+      this.personalVoiceServerEligible.set(response.data.eligible);
+      this.personalNarratorVoice.set(response.data.voice);
+      this.personalVoiceFile.set(null);
+      this.personalVoiceDurationSeconds.set(0);
+      this.personalVoiceSetupOpen.set(false);
+      this.selectStackNarratorVoice(board, PERSONAL_STACK_NARRATOR_VOICE_ID);
+    } catch (error) {
+      await deleteObject(sampleRef).catch(() => undefined);
+      this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your voice could not be created. Check the recording and try again.'));
+    } finally {
+      this.personalVoiceCreating.set(false);
+    }
+  }
+
+  async deletePersonalNarratorVoice(board: Board): Promise<void> {
+    if (!this.functions || !this.personalNarratorVoice() || this.personalVoiceDeleting() || !this.isBrowser) return;
+    const confirmed = window.confirm('Permanently delete your personal narrator voice and its source recording? Boards using it will return to Warm Storyteller.');
+    if (!confirmed) return;
+    this.personalVoiceDeleting.set(true);
+    this.personalVoiceError.set(null);
+    this.stopStackVoicePreview();
+    try {
+      const callable = httpsCallable<Record<string, never>, { deleted: boolean }>(
+        this.functions,
+        'deletePersonalNarratorVoice',
+      );
+      await callable({});
+      this.personalNarratorVoice.set(null);
+      this.personalVoiceSetupOpen.set(false);
+      if (this.stackNarratorVoiceId() === PERSONAL_STACK_NARRATOR_VOICE_ID) {
+        this.selectStackNarratorVoice(board, DEFAULT_STACK_NARRATOR_VOICE_ID);
+      }
+    } catch (error) {
+      this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your personal voice could not be deleted.'));
+    } finally {
+      this.personalVoiceDeleting.set(false);
+    }
+  }
+
+  async togglePersonalVoicePreview(board: Board, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.isBrowser || !this.personalNarratorVoice()) return;
+    if (this.isStackVoicePreviewing(PERSONAL_STACK_NARRATOR_VOICE_ID)) {
+      this.stopStackVoicePreview();
+      return;
+    }
+    this.selectStackNarratorVoice(board, PERSONAL_STACK_NARRATOR_VOICE_ID);
+    this.stopStackVoicePreview();
+    this.stopStackAudioPreview();
+    const run = ++this.stackVoicePreviewRun;
+    this.stackVoicePreviewLoadingId.set(PERSONAL_STACK_NARRATOR_VOICE_ID);
+    this.personalVoiceError.set(null);
+    try {
+      const sample = 'Welcome to my LivingWiki. I will guide you through the people, places, and stories that make this board worth exploring.';
+      const audioUrl = await this.ensureTourAudioUrl(
+        'personal-narrator-preview:v1',
+        sample,
+        PERSONAL_STACK_NARRATOR_VOICE_ID,
+        board.id,
+      );
+      if (run !== this.stackVoicePreviewRun) return;
+      if (!audioUrl) throw new Error('Preview audio was not returned.');
+      const audio = new Audio(audioUrl);
+      audio.preload = 'auto';
+      audio.onended = () => {
+        if (this.stackVoicePreview === audio) this.stopStackVoicePreview();
+      };
+      audio.onerror = () => {
+        if (this.stackVoicePreview === audio) {
+          this.stopStackVoicePreview();
+          this.personalVoiceError.set('Your voice preview could not be played.');
+        }
+      };
+      this.stackVoicePreview = audio;
+      await audio.play();
+      if (run === this.stackVoicePreviewRun && this.stackVoicePreview === audio) {
+        this.stackVoicePreviewingId.set(PERSONAL_STACK_NARRATOR_VOICE_ID);
+      }
+    } catch (error) {
+      if (run === this.stackVoicePreviewRun) {
+        this.stopStackVoicePreview();
+        this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your voice preview could not be generated.'));
+      }
+    } finally {
+      if (run === this.stackVoicePreviewRun) this.stackVoicePreviewLoadingId.set(null);
+    }
+  }
+
+  private async setPersonalVoiceFile(file: File, knownDuration?: number): Promise<void> {
+    this.personalVoiceError.set(null);
+    if (!file.type.startsWith('audio/')) {
+      this.personalVoiceError.set('Choose an audio recording such as MP3, WAV, M4A, OGG, or WebM.');
+      return;
+    }
+    if (file.size <= 0 || file.size > 15 * 1024 * 1024) {
+      this.personalVoiceError.set('The voice recording must be smaller than 15 MB.');
+      return;
+    }
+    try {
+      const duration = knownDuration ?? await this.audioFileDuration(file);
+      if (!Number.isFinite(duration) || duration < 20 || duration > 180) {
+        this.personalVoiceError.set('Use 20 seconds to 3 minutes of clear speech. Around 60–90 seconds works best.');
+        return;
+      }
+      this.personalVoiceFile.set(file);
+      this.personalVoiceDurationSeconds.set(duration);
+    } catch {
+      this.personalVoiceError.set('The recording duration could not be read. Try an MP3, WAV, M4A, OGG, or WebM file.');
+    }
+  }
+
+  private audioFileDuration(file: File): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const audio = new Audio();
+      const cleanup = () => {
+        audio.onloadedmetadata = null;
+        audio.onerror = null;
+        URL.revokeObjectURL(url);
+      };
+      const timeout = window.setTimeout(() => {
+        cleanup();
+        reject(new Error('Audio metadata timed out.'));
+      }, 10_000);
+      audio.onloadedmetadata = () => {
+        window.clearTimeout(timeout);
+        const duration = audio.duration;
+        cleanup();
+        Number.isFinite(duration) && duration > 0 ? resolve(duration) : reject(new Error('Invalid audio duration.'));
+      };
+      audio.onerror = () => {
+        window.clearTimeout(timeout);
+        cleanup();
+        reject(new Error('Audio metadata failed.'));
+      };
+      audio.preload = 'metadata';
+      audio.src = url;
+    });
+  }
+
+  private cleanupPersonalVoiceRecorder(): void {
+    if (this.personalVoiceRecordingTimer) {
+      clearInterval(this.personalVoiceRecordingTimer);
+      this.personalVoiceRecordingTimer = null;
+    }
+    this.personalVoiceRecordingStream?.getTracks().forEach((track) => track.stop());
+    this.personalVoiceRecordingStream = null;
+    this.personalVoiceRecorder = null;
+    this.personalVoiceRecordingChunks = [];
+    this.personalVoiceRecording.set(false);
   }
 
   updateStackAudioVolume(value: string | number): void {
@@ -10990,7 +11379,7 @@ export class BoardsComponent implements OnDestroy {
   private async createStackVideo(board: Board): Promise<StackVideoResult> {
     const selectedCards = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS);
     const backgroundAudio = this.stackVideoBackgroundAudio();
-    const narration = await this.stackVideoNarration(selectedCards);
+    const narration = await this.stackVideoNarration(selectedCards, board);
     return generateStackVideo({
       title: board.title,
       subtitle: this.stackCoverSubtitle().trim() || board.description,
@@ -11010,7 +11399,7 @@ export class BoardsComponent implements OnDestroy {
     }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)), backgroundAudio, narration);
   }
 
-  private async stackVideoNarration(cards: BoardCard[]): Promise<StackVideoNarration | null> {
+  private async stackVideoNarration(cards: BoardCard[], board: Board): Promise<StackVideoNarration | null> {
     if (!cards.length) return null;
     const voiceId = this.stackNarratorVoiceId();
     const cardAudioUrls: Array<string | null> = Array.from({ length: cards.length }, () => null);
@@ -11024,6 +11413,7 @@ export class BoardsComponent implements OnDestroy {
           `stack-video:${card.id}:${text}`,
           text,
           voiceId,
+          board.id,
         );
       }));
       urls.forEach((url, index) => {
@@ -11221,6 +11611,9 @@ export class BoardsComponent implements OnDestroy {
     this.stackNarratorVoiceId.set(normalizeStackNarratorVoiceId(board.stackNarratorVoiceId));
     this.stackAudioError.set(null);
     this.stackVoiceError.set(null);
+    this.stackSoundTab.set('voice');
+    this.personalVoiceSetupOpen.set(false);
+    this.personalVoiceError.set(null);
     this.stackFrameIndex.set(0);
     this.stackTourNarrationConsent.set(false);
     this.setStackShareMessage(null);
@@ -11514,7 +11907,8 @@ export class BoardsComponent implements OnDestroy {
     const startedAt = Date.now();
     this.stackActiveFrameDurationMs.set(120_000);
     const audioKey = frame.card.tour ? this.tourAudioKey(frame) : this.stackCardAudioKey(frame.card);
-    const audioUrl = await this.ensureTourAudioUrl(audioKey, text, this.stackNarratorVoiceId());
+    const boardId = this.stackBoard()?.id || this.selectedBoard()?.id;
+    const audioUrl = await this.ensureTourAudioUrl(audioKey, text, this.stackNarratorVoiceId(), boardId);
     if (!this.isStackNarrationCurrent(token, frame.card.id)) {
       return;
     }

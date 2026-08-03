@@ -239,10 +239,6 @@
     "source": "{$INTERPOLATION}/4 selected",
     "file": "src/app/business-claim/business-claim.html"
   },
-  "1175957651801339062": {
-    "source": "Inside this card",
-    "file": "src/app/boards/boards.html"
-  },
   "1177294727529714800": {
     "source": "View Wiki",
     "file": "src/app/profile/profile.html"
@@ -499,6 +495,10 @@
     "source": "Failed to load businesses.",
     "file": "src/app/admin-users/admin-users.ts"
   },
+  "1354988606190796844": {
+    "source": "Sound settings",
+    "file": "src/app/boards/boards.html"
+  },
   "1355531462309529746": {
     "source": "Route recalculation is unavailable.",
     "file": "src/app/boards/boards.ts"
@@ -514,6 +514,10 @@
   "1361607849674624999": {
     "source": "Clear QR code",
     "file": "src/app/business-detail/business-edit.ts"
+  },
+  "1363496149639211128": {
+    "source": "Use one speaker, a quiet room, and a natural, consistent delivery. Read for at least 20 seconds; 60–90 seconds gives a stronger result.",
+    "file": "src/app/boards/boards.html"
   },
   "1366154061375727283": {
     "source": "Start voice mode in {$INTERPOLATION}",
@@ -947,10 +951,6 @@
     "source": "\"Sound calm, direct, and avoid hedging language.\"",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
-  "1599863209701352467": {
-    "source": "Add the first related card",
-    "file": "src/app/boards/boards.html"
-  },
   "16005692485610512": {
     "source": "and see how well you know this board.",
     "file": "src/app/boards/boards.ts"
@@ -1055,10 +1055,6 @@
     "source": "Energy Coordinating Agency Open Roles",
     "file": "src/app/green-jobs/philly-green-jobs.service.ts"
   },
-  "1703905729144817409": {
-    "source": "{$START_TAG_SPAN}volume_up{$CLOSE_TAG_SPAN} Start narrated tour ",
-    "file": "src/app/boards/boards.html"
-  },
   "1705197232013740525": {
     "source": "We could not create this business claim. Please try again, or refresh before submitting if the page has been open for a while.",
     "file": "src/app/business-claim/business-claim.ts"
@@ -1154,10 +1150,6 @@
   "1785042287152969295": {
     "source": "Loading city points",
     "file": "src/app/dymaxion/dymaxion.html"
-  },
-  "1788189097163213511": {
-    "source": "Related cards become available after this card is saved",
-    "file": "src/app/boards/boards.html"
   },
   "1793201614434705102": {
     "source": "Claim Your Business | LivingWiki",
@@ -1535,10 +1527,6 @@
     "source": "Signed in as {$INTERPOLATION}",
     "file": "src/app/business-claim/business-claim.html"
   },
-  "2033167441987862994": {
-    "source": "Everything opens as an editable preview before it is saved.",
-    "file": "src/app/boards/boards.html"
-  },
   "2037973327278467205": {
     "source": "Wikis",
     "file": "src/app/landing/landing.html"
@@ -1787,10 +1775,6 @@
     "source": " Shared {$INTERPOLATION} ",
     "file": "src/app/shared-chat/shared-chat.html"
   },
-  "2210389655547013409": {
-    "source": " {$INTERPOLATION} existing photo {$INTERPOLATION_1} automatically when this collection is explored. ",
-    "file": "src/app/boards/boards.html"
-  },
   "2210584698362899481": {
     "source": "View atlas landing page",
     "file": "src/app/wiki/wiki.html"
@@ -1866,6 +1850,10 @@
   "2266344676363317972": {
     "source": "Example supported languages",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "2267745389656750090": {
+    "source": "Warm Storyteller",
+    "file": "src/app/boards/boards.ts"
   },
   "2267786923106483724": {
     "source": "Signed-in visitors can chat freely with this atlas",
@@ -2571,10 +2559,6 @@
     "source": "Start realtime voice mode",
     "file": "src/app/chat/chat.ts"
   },
-  "2742100746542955671": {
-    "source": "Edit related card",
-    "file": "src/app/boards/boards.html"
-  },
   "2744939482590254957": {
     "source": "Pick a profile sticker.",
     "file": "src/app/profile/profile.html"
@@ -2750,10 +2734,6 @@
   "2884814945710241962": {
     "source": "Internet mode searches the web because this Wiki does not have source documents yet.",
     "file": "src/app/chat/chat.ts"
-  },
-  "2885934496181810740": {
-    "source": "New board wizard",
-    "file": "src/app/boards/boards.html"
   },
   "2892412979837680989": {
     "source": "Config",
@@ -3010,10 +2990,6 @@
   "3059442226224028515": {
     "source": "العربية",
     "file": "src/app/business/business.ts"
-  },
-  "3067816648882632734": {
-    "source": "Save the parent card first, then reopen it to build the collection inside.",
-    "file": "src/app/boards/boards.html"
   },
   "3069422820744216221": {
     "source": "Admin name",
@@ -3355,6 +3331,10 @@
     "source": "Failed to delete this business.",
     "file": "src/app/business/business.ts"
   },
+  "3265258875362223842": {
+    "source": "Voice name",
+    "file": "src/app/boards/boards.html"
+  },
   "3265529264338559280": {
     "source": "What stays automatic",
     "file": "src/app/atlas-persona/atlas-persona.html"
@@ -3603,6 +3583,10 @@
     "source": " Open {$START_TAG_SPAN}arrow_outward{$CLOSE_TAG_SPAN}",
     "file": "src/app/city-places/city-places.html"
   },
+  "340145738637685735": {
+    "source": "Upload audio",
+    "file": "src/app/boards/boards.html"
+  },
   "3402055842664792382": {
     "source": "Upload documents",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -3654,10 +3638,6 @@
   "3430356428724646742": {
     "source": "{$START_TAG_SPAN}forum{$CLOSE_TAG_SPAN} Open LivingWiki Chat ",
     "file": "src/app/dymaxion/dymaxion.html"
-  },
-  "3431637420041504872": {
-    "source": "Build a collection inside this card",
-    "file": "src/app/boards/boards.html"
   },
   "3434418851650366018": {
     "source": "LivingWiki of the OpenClaw phenomenon — 247K GitHub stars, the viral mechanics, the lobster culture, security incidents, and the broader shift to autonomous AI agents.",
@@ -3907,6 +3887,10 @@
     "source": "Map zoom controls",
     "file": "src/app/dymaxion/dymaxion.html"
   },
+  "3587466237700112094": {
+    "source": "I consent to LivingWiki and ElevenLabs processing this recording to create my reusable narrator voice.",
+    "file": "src/app/boards/boards.html"
+  },
   "3587750713234424156": {
     "source": "Sign In | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -4051,17 +4035,9 @@
     "source": "Call the {city} guide",
     "file": "src/app/chat/chat.ts"
   },
-  "3685943794835104777": {
-    "source": "{$START_TAG_SPAN}add{$CLOSE_TAG_SPAN} Add first card ",
-    "file": "src/app/boards/boards.html"
-  },
   "3687700726433545247": {
     "source": "Expand knowledge",
     "file": "src/app/atlas-landing/atlas-landing.html"
-  },
-  "3690670725329336870": {
-    "source": "Describe the board",
-    "file": "src/app/boards/boards.html"
   },
   "3698972093462003988": {
     "source": "{count} countries · choose a flag first.",
@@ -4173,10 +4149,6 @@
   },
   "3781832327366529005": {
     "source": "A strong first pass. The cards are here when you’re ready.",
-    "file": "src/app/boards/boards.html"
-  },
-  "3782022495545942129": {
-    "source": "Move related card down",
     "file": "src/app/boards/boards.html"
   },
   "3782563238994348625": {
@@ -4407,6 +4379,10 @@
     "source": "Claim business",
     "file": "src/app/profile/profile.html"
   },
+  "3936559812387551272": {
+    "source": "Create your personal narrator voice",
+    "file": "src/app/boards/boards.html"
+  },
   "3938749328538808242": {
     "source": "More languages",
     "file": "src/app/business-detail/business-detail.html"
@@ -4551,6 +4527,10 @@
     "source": "Used as the main storefront visual.",
     "file": "src/app/business-detail/business-edit.html"
   },
+  "4047829012120859892": {
+    "source": "Close personal voice setup",
+    "file": "src/app/boards/boards.html"
+  },
   "4048452650233619474": {
     "source": "Share pack",
     "file": "src/app/boards/boards.ts"
@@ -4566,10 +4546,6 @@
   "4056444989950615988": {
     "source": "Copy was blocked. Try copying the link instead.",
     "file": "src/app/boards/boards.ts"
-  },
-  "4062975828526117050": {
-    "source": "These cards fill the board when someone selects Explore.",
-    "file": "src/app/boards/boards.html"
   },
   "4071424234285464370": {
     "source": "Payment returned without a checkout session. Please try checkout again.",
@@ -4746,10 +4722,6 @@
   "4157232470683063712": {
     "source": "Click to chat",
     "file": "src/app/wiki/wiki.html"
-  },
-  "4161412739226579751": {
-    "source": "Move related card up",
-    "file": "src/app/boards/boards.html"
   },
   "4163318164147974669": {
     "source": " This maintenance page is only available to the owner of the atlas. ",
@@ -5203,6 +5175,10 @@
     "source": "Counter card",
     "file": "src/app/business/business.ts"
   },
+  "4510432308052618953": {
+    "source": "Personal narrator",
+    "file": "src/app/boards/boards.html"
+  },
   "4512340455215005741": {
     "source": "Could not copy the business detail link.",
     "file": "src/app/business-detail/business-detail.ts"
@@ -5269,10 +5245,6 @@
   },
   "4550958265168690830": {
     "source": "Logo",
-    "file": "src/app/boards/boards.html"
-  },
-  "4551184567681208389": {
-    "source": "New board",
     "file": "src/app/boards/boards.html"
   },
   "4553186615320329789": {
@@ -5435,10 +5407,6 @@
     "source": "Independent product. Not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project.",
     "file": "src/app/business/business.html"
   },
-  "4656697408209433730": {
-    "source": " Remove? ",
-    "file": "src/app/boards/boards.html"
-  },
   "4657483307199605160": {
     "source": "Stripe billing",
     "file": "src/app/business-claim/business-claim.html"
@@ -5462,10 +5430,6 @@
   "4672927057554884109": {
     "source": "Science & Health",
     "file": "src/app/public-wiki-catalog.ts"
-  },
-  "467515590191938529": {
-    "source": "Board",
-    "file": "src/app/boards/boards.html"
   },
   "4675283137032553082": {
     "source": "SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.",
@@ -6163,10 +6127,6 @@
     "source": "{$START_TAG_SPAN}add_location_alt{$CLOSE_TAG_SPAN} Drop a Card ",
     "file": "src/app/boards/boards.html"
   },
-  "5116466601953365942": {
-    "source": "Manage collection",
-    "file": "src/app/boards/boards.html"
-  },
   "5117504445405165086": {
     "source": "Live music",
     "file": "src/app/business/business.ts"
@@ -6263,10 +6223,6 @@
     "source": "Queueing stopped after the current article.",
     "file": "src/app/web-scraper/web-scraper.ts"
   },
-  "5198365629850240797": {
-    "source": "Keep related card",
-    "file": "src/app/boards/boards.html"
-  },
   "5198840835589008501": {
     "source": "{$START_TAG_SPAN}smart_display{$CLOSE_TAG_SPAN} Video ",
     "file": "src/app/boards/boards.html"
@@ -6278,6 +6234,10 @@
   "5207635742003539443": {
     "source": "Sign in",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "5209235093923390614": {
+    "source": "Your private, reusable narrator voice.",
+    "file": "src/app/boards/boards.html"
   },
   "5210885210468560744": {
     "source": " Delete {$INTERPOLATION} selected card{$INTERPOLATION_1} from this board? ",
@@ -6427,6 +6387,10 @@
     "source": "Plant your flag early in a launch city with launch placement, a founding badge, and a stronger voice in how the wiki grows.",
     "file": "src/app/business/business.ts"
   },
+  "5291237410034550628": {
+    "source": "Audio only · 20–180 seconds · up to 15 MB",
+    "file": "src/app/boards/boards.html"
+  },
   "5291253231807019337": {
     "source": "Pull in live internet context and discussion themes.",
     "file": "src/app/chat/chat.ts"
@@ -6494,10 +6458,6 @@
   "5323842471809602464": {
     "source": "Subscribe for weekly updates, or sign in to keep exploring the Philly guide.",
     "file": "src/app/atlas-landing/atlas-landing.html"
-  },
-  "5324861230273549567": {
-    "source": "Remove related card",
-    "file": "src/app/boards/boards.html"
   },
   "5327783398991797788": {
     "source": "No account needed. We use your email only for this plan and its updates.",
@@ -6590,10 +6550,6 @@
   "5379361265080567233": {
     "source": "Shared chat",
     "file": "src/app/chat.service.ts"
-  },
-  "538135249327125203": {
-    "source": "Start with a photo or a short description. AI can prepare the details.",
-    "file": "src/app/boards/boards.html"
   },
   "5381580243787883372": {
     "source": "What are the latest updates about {city}?",
@@ -6810,6 +6766,10 @@
   "5554669496175509358": {
     "source": "About highlight",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "5554675552453885058": {
+    "source": "Record or upload 60–90 seconds of your own clear speech.",
+    "file": "src/app/boards/boards.html"
   },
   "5558151094212447064": {
     "source": "Guide picks",
@@ -7447,10 +7407,6 @@
     "source": "Step 0{$INTERPOLATION}",
     "file": "src/app/marketing/marketing.html"
   },
-  "5962782709150353174": {
-    "source": "Build a board from whatever you already have.",
-    "file": "src/app/boards/boards.html"
-  },
   "5966987131514388332": {
     "source": "All Wikis",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -7466,6 +7422,10 @@
   "5972860366705207232": {
     "source": "A concise local digest so {city} does not sneak important things past you.",
     "file": "src/app/chat/chat.ts"
+  },
+  "5973232235949744487": {
+    "source": "Your voice",
+    "file": "src/app/boards/boards.html"
   },
   "5979490733382756093": {
     "source": "Context, jokes, caveats, and the full explanation behind the cards.",
@@ -7847,6 +7807,10 @@
     "source": "LivingWiki answers are generated from available source material, public records, uploaded documents, verified local sources, and user-submitted updates, and may require human review.",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
+  "6230180786088475979": {
+    "source": "Sound",
+    "file": "src/app/boards/boards.html"
+  },
   "6231445180124635070": {
     "source": "You’re already on this plan.",
     "file": "src/app/boards/boards.ts"
@@ -8026,10 +7990,6 @@
   "6357285887711067123": {
     "source": "Finding articles on {$INTERPOLATION}...",
     "file": "src/app/web-scraper/web-scraper.html"
-  },
-  "6357546202476060069": {
-    "source": "Add a place, meal, memory, idea, shop, or note. Cards can carry tags, ratings, status, and an optional image URL.",
-    "file": "src/app/boards/boards.html"
   },
   "6361948693237132762": {
     "source": "Knowledge",
@@ -8411,6 +8371,10 @@
     "source": "Send a concise summary, useful links, and the transcript to your email.",
     "file": "src/app/chat/chat.ts"
   },
+  "6552948470855569551": {
+    "source": "Choose the narrator first, then add music if you want it.",
+    "file": "src/app/boards/boards.html"
+  },
   "6556985624398131463": {
     "source": "Turns this wiki into a city-aware landing page with live-style metrics.",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -8534,6 +8498,10 @@
   "6626189682857360296": {
     "source": "Toxic doughnut",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "6627551976444260400": {
+    "source": "or",
+    "file": "src/app/boards/boards.html"
   },
   "6640074243271091368": {
     "source": "Admin settings",
@@ -8999,8 +8967,8 @@
     "source": "Live preview",
     "file": "src/app/business-claim/business-claim.html"
   },
-  "7008512926578259782": {
-    "source": "Add related card",
+  "7003142405440233286": {
+    "source": "Hello, and welcome to my LivingWiki. I enjoy sharing the people, places, and ideas that make every story memorable. As we explore these cards together, I will point out the details, connections, and moments that matter most.",
     "file": "src/app/boards/boards.html"
   },
   "7014471967051183149": {
@@ -9017,6 +8985,10 @@
   },
   "7019080605650349051": {
     "source": "Create once, then send the MP4 to X or any social app for in-feed playback",
+    "file": "src/app/boards/boards.html"
+  },
+  "70247719450316174": {
+    "source": "I confirm this recording contains only my own voice.",
     "file": "src/app/boards/boards.html"
   },
   "7026624912846603653": {
@@ -9678,10 +9650,6 @@
   "755320780261948199": {
     "source": "Saved on this browser, but Firebase sync failed.",
     "file": "src/app/boards/boards.ts"
-  },
-  "7553278066673213143": {
-    "source": "This board is ready for its first card.",
-    "file": "src/app/boards/boards.html"
   },
   "7554385645067100439": {
     "source": "No responses yet.",
@@ -10615,6 +10583,10 @@
     "source": "All users",
     "file": "src/app/admin-users/admin-users.html"
   },
+  "8159202362964724662": {
+    "source": "No recording selected",
+    "file": "src/app/boards/boards.ts"
+  },
   "8159490474566182188": {
     "source": "Share quiz",
     "file": "src/app/answer-quiz/answer-quiz.html"
@@ -10787,10 +10759,6 @@
     "source": "What it can become",
     "file": "src/app/public-wikis/public-wikis.html"
   },
-  "8299507857762651018": {
-    "source": "Related cards collection",
-    "file": "src/app/boards/boards.html"
-  },
   "8301535046747035390": {
     "source": "Full name",
     "file": "src/app/create-account/create-account.html"
@@ -10834,10 +10802,6 @@
   "8331031046367440412": {
     "source": "Set the voice of your AI.",
     "file": "src/app/atlas-persona/atlas-persona.html"
-  },
-  "8339700171814475774": {
-    "source": "Related cards",
-    "file": "src/app/boards/boards.html"
   },
   "8340082836740122639": {
     "source": "Create a city not listed below.",
@@ -11145,7 +11109,7 @@
   },
   "855872803871324523": {
     "source": "Music",
-    "file": "src/app/public-wikis/public-wikis.ts"
+    "file": "src/app/boards/boards.html"
   },
   "8569814378547466507": {
     "source": "Estimating...",
@@ -11677,7 +11641,7 @@
   },
   "8958531078371076584": {
     "source": "Premium",
-    "file": "src/app/business-claim/business-claim.ts"
+    "file": "src/app/boards/boards.html"
   },
   "8960713122116301226": {
     "source": "Longitude {$START_TAG_SPAN}(optional · for the map){$CLOSE_TAG_SPAN}",

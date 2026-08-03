@@ -46,7 +46,8 @@ service cloud.firestore {
         'elegant-guide',
         'british-storyteller',
         'cinematic-narrator',
-        'friendly-explainer'
+        'friendly-explainer',
+        'personal-voice'
       ];
     }
 
@@ -80,6 +81,10 @@ service cloud.firestore {
       allow update: if isOwner(userId)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(userEditableProfileKeys());
       allow delete: if false;
+    }
+
+    match /user_narrator_voices/{userId} {
+      allow read, write: if false;
     }
 
     match /atlases/{atlasId} {

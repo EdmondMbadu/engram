@@ -4825,32 +4825,232 @@
                   </div>
                 </section>
 
-                <section class="stack-panel stack-music-panel">
+                <section class="stack-panel stack-sound-panel">
                   <div class="stack-panel__head">
                     <div>
-                      <p i18n>Background music</p>
-                      <h4>
-                        @if (stackSelectedAudioTrack(); as selectedTrack) {
-                          {{ selectedTrack.mood }}
-                        } @else {
-                          <span i18n>No music</span>
-                        }
-                      </h4>
+                      <p i18n>Sound</p>
+                      <h4>{{ stackSoundTab() === 'voice' ? stackSelectedNarratorName() : (stackSelectedAudioTrack()?.mood || 'No music') }}</h4>
                     </div>
-                    @if (stackAudioTrackId() === defaultStackAudioTrackId) {
-                      <span class="stack-music-panel__default" i18n>
-                        <span class="material-symbols-outlined">auto_awesome</span>
-                        Recommended
-                      </span>
-                    }
+                    <small i18n>Choose the narrator first, then add music if you want it.</small>
                   </div>
-                  <p class="stack-music-panel__intro">
-                    @if (stackAudioTrackId() === defaultStackAudioTrackId) {
-                      <span i18n>Golden Hour is selected for you. Preview a mood or choose a different soundtrack.</span>
-                    } @else {
-                      <span i18n>Preview a mood, choose a soundtrack, or keep the video silent.</span>
-                    }
-                  </p>
+
+                  <div class="stack-sound-tabs" role="tablist" aria-label="Sound settings" i18n-aria-label>
+                    <button
+                      type="button"
+                      role="tab"
+                      [class.stack-sound-tabs__button--active]="stackSoundTab() === 'voice'"
+                      [attr.aria-selected]="stackSoundTab() === 'voice'"
+                      (click)="setStackSoundTab('voice')"
+                    >
+                      <span class="material-symbols-outlined">record_voice_over</span>
+                      <span>
+                        <strong i18n>Voice</strong>
+                        <small>{{ stackSelectedNarratorName() }}</small>
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      role="tab"
+                      [class.stack-sound-tabs__button--active]="stackSoundTab() === 'music'"
+                      [attr.aria-selected]="stackSoundTab() === 'music'"
+                      (click)="setStackSoundTab('music')"
+                    >
+                      <span class="material-symbols-outlined">music_note</span>
+                      <span>
+                        <strong i18n>Music</strong>
+                        <small>{{ stackSelectedAudioTrack()?.mood || 'No music' }} · {{ stackAudioVolumePercent() }}%</small>
+                      </span>
+                    </button>
+                  </div>
+
+                  @if (stackSoundTab() === 'voice') {
+                    <div class="stack-voice-picker stack-voice-picker--prominent">
+                      <div class="stack-voice-picker__head">
+                        <div>
+                          <span i18n>Narrator voice</span>
+                          <strong>{{ stackSelectedNarratorName() }}</strong>
+                        </div>
+                        <small i18n>Used in the live view and generated video</small>
+                      </div>
+
+                      <article
+                        class="stack-personal-voice"
+                        [class.stack-personal-voice--active]="stackNarratorVoiceId() === personalStackNarratorVoiceId"
+                        [class.stack-personal-voice--locked]="!personalVoiceEligible()"
+                      >
+                        <div class="stack-personal-voice__identity">
+                          <span class="stack-personal-voice__icon material-symbols-outlined">graphic_eq</span>
+                          <div>
+                            <span class="stack-personal-voice__eyebrow">
+                              <ng-container i18n>Your voice</ng-container>
+                              @if (!personalVoiceEligible()) {
+                                <small i18n>Premium</small>
+                              }
+                            </span>
+                            <strong>{{ personalNarratorVoice()?.name || 'Create your personal narrator' }}</strong>
+                            <p>
+                              @if (personalNarratorVoice()) {
+                                <ng-container i18n>Your private, reusable narrator voice.</ng-container>
+                              } @else {
+                                <ng-container i18n>Record or upload 60–90 seconds of your own clear speech.</ng-container>
+                              }
+                            </p>
+                          </div>
+                        </div>
+
+                        @if (personalVoiceLoading()) {
+                          <span class="stack-personal-voice__loading material-symbols-outlined">progress_activity</span>
+                        } @else if (personalNarratorVoice()) {
+                          <div class="stack-personal-voice__actions">
+                            <button type="button" (click)="selectStackNarratorVoice(board, personalStackNarratorVoiceId)">
+                              <span class="material-symbols-outlined">{{ stackNarratorVoiceId() === personalStackNarratorVoiceId ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                              {{ stackNarratorVoiceId() === personalStackNarratorVoiceId ? 'Selected' : 'Use my voice' }}
+                            </button>
+                            <button
+                              type="button"
+                              [disabled]="stackVoicePreviewLoadingId() === personalStackNarratorVoiceId"
+                              (click)="togglePersonalVoicePreview(board, $event)"
+                            >
+                              <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === personalStackNarratorVoiceId ? 'progress_activity' : isStackVoicePreviewing(personalStackNarratorVoiceId) ? 'stop' : 'play_arrow' }}</span>
+                              {{ isStackVoicePreviewing(personalStackNarratorVoiceId) ? 'Stop' : 'Preview' }}
+                            </button>
+                            <button type="button" (click)="openPersonalVoiceSetup()" i18n>Replace</button>
+                            <button type="button" class="stack-personal-voice__delete" [disabled]="personalVoiceDeleting()" (click)="deletePersonalNarratorVoice(board)">
+                              {{ personalVoiceDeleting() ? 'Deleting…' : 'Delete' }}
+                            </button>
+                          </div>
+                        } @else {
+                          <button type="button" class="stack-personal-voice__create" (click)="openPersonalVoiceSetup()">
+                            <span class="material-symbols-outlined">{{ personalVoiceEligible() ? 'mic' : 'lock' }}</span>
+                            {{ personalVoiceEligible() ? 'Create my voice' : 'Unlock personal voice' }}
+                          </button>
+                        }
+                      </article>
+
+                      @if (personalVoiceSetupOpen()) {
+                        <section class="stack-personal-voice-setup" aria-label="Create your personal narrator voice" i18n-aria-label>
+                          <header>
+                            <div>
+                              <span i18n>Personal narrator</span>
+                              <h5>{{ personalNarratorVoice() ? 'Replace your voice' : 'Create your voice' }}</h5>
+                            </div>
+                            <button type="button" aria-label="Close personal voice setup" [disabled]="personalVoiceCreating()" (click)="closePersonalVoiceSetup()" i18n-aria-label>
+                              <span class="material-symbols-outlined">close</span>
+                            </button>
+                          </header>
+                          <p i18n>Use one speaker, a quiet room, and a natural, consistent delivery. Read for at least 20 seconds; 60–90 seconds gives a stronger result.</p>
+                          <div class="stack-personal-voice-setup__script">
+                            <span class="material-symbols-outlined">article</span>
+                            <p i18n>Hello, and welcome to my LivingWiki. I enjoy sharing the people, places, and ideas that make every story memorable. As we explore these cards together, I will point out the details, connections, and moments that matter most.</p>
+                          </div>
+                          <label>
+                            <span i18n>Voice name</span>
+                            <input type="text" maxlength="48" [value]="personalVoiceName()" (input)="personalVoiceName.set($any($event.target).value)" />
+                          </label>
+                          <div class="stack-personal-voice-setup__capture">
+                            <button
+                              type="button"
+                              [class.stack-personal-voice-setup__record--active]="personalVoiceRecording()"
+                              [disabled]="personalVoiceCreating()"
+                              (click)="personalVoiceRecording() ? stopPersonalVoiceRecording() : startPersonalVoiceRecording()"
+                            >
+                              <span class="material-symbols-outlined">{{ personalVoiceRecording() ? 'stop_circle' : 'mic' }}</span>
+                              {{ personalVoiceRecording() ? 'Stop recording' : 'Record my voice' }}
+                              @if (personalVoiceRecording()) { <small>{{ personalVoiceRecordingSeconds() }}s / 120s</small> }
+                            </button>
+                            <span i18n>or</span>
+                            <label class="stack-personal-voice-setup__upload">
+                              <span class="material-symbols-outlined">upload_file</span>
+                              <span i18n>Upload audio</span>
+                              <input type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg,.webm" [disabled]="personalVoiceCreating()" (change)="choosePersonalVoiceFile($event)" />
+                            </label>
+                          </div>
+                          <div class="stack-personal-voice-setup__file" [class.stack-personal-voice-setup__file--ready]="!!personalVoiceFile()">
+                            <span class="material-symbols-outlined">{{ personalVoiceFile() ? 'check_circle' : 'audio_file' }}</span>
+                            <span>
+                              <strong>{{ personalVoiceFileLabel() }}</strong>
+                              <small i18n>Audio only · 20–180 seconds · up to 15 MB</small>
+                            </span>
+                          </div>
+                          <label class="stack-personal-voice-setup__consent">
+                            <input type="checkbox" [checked]="personalVoiceOwnVoiceConfirmed()" (change)="personalVoiceOwnVoiceConfirmed.set($any($event.target).checked)" />
+                            <span i18n>I confirm this recording contains only my own voice.</span>
+                          </label>
+                          <label class="stack-personal-voice-setup__consent">
+                            <input type="checkbox" [checked]="personalVoiceConsentConfirmed()" (change)="personalVoiceConsentConfirmed.set($any($event.target).checked)" />
+                            <span i18n>I consent to LivingWiki and ElevenLabs processing this recording to create my reusable narrator voice.</span>
+                          </label>
+                          <button
+                            type="button"
+                            class="stack-personal-voice-setup__submit"
+                            [disabled]="personalVoiceCreating() || !personalVoiceFile() || !personalVoiceOwnVoiceConfirmed() || !personalVoiceConsentConfirmed()"
+                            (click)="createPersonalNarratorVoice(board)"
+                          >
+                            <span class="material-symbols-outlined">{{ personalVoiceCreating() ? 'progress_activity' : 'auto_awesome' }}</span>
+                            {{ personalVoiceCreating() ? 'Creating your voice…' : personalNarratorVoice() ? 'Replace my voice' : 'Create my voice' }}
+                          </button>
+                        </section>
+                      }
+
+                      <div class="stack-voice-grid" role="radiogroup" aria-label="Choose a narrator voice" i18n-aria-label>
+                        @for (voice of stackNarratorVoices; track voice.id) {
+                          <div class="stack-voice-option" [class.stack-voice-option--active]="stackNarratorVoiceId() === voice.id">
+                            <button
+                              type="button"
+                              class="stack-voice-option__select"
+                              role="radio"
+                              [attr.aria-checked]="stackNarratorVoiceId() === voice.id"
+                              [attr.aria-label]="voice.name + ', ' + voice.presentation + ', ' + voice.style"
+                              (click)="selectStackNarratorVoice(board, voice.id)"
+                            >
+                              <span class="stack-voice-option__icon material-symbols-outlined">{{ voice.icon }}</span>
+                              <span class="stack-voice-option__copy">
+                                <strong>{{ voice.name }}</strong>
+                                <small>{{ voice.presentation }} · {{ voice.style }}</small>
+                                <span>{{ voice.description }}</span>
+                              </span>
+                              @if (stackNarratorVoiceId() === voice.id) {
+                                <span class="stack-voice-option__check material-symbols-outlined">check_circle</span>
+                              }
+                            </button>
+                            <button
+                              type="button"
+                              class="stack-voice-option__preview"
+                              [class.stack-voice-option__preview--playing]="isStackVoicePreviewing(voice.id)"
+                              [disabled]="stackVoicePreviewLoadingId() === voice.id"
+                              [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Select and listen to ' + voice.name"
+                              (click)="toggleStackVoicePreview(voice, $event)"
+                            >
+                              <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === voice.id ? 'progress_activity' : isStackVoicePreviewing(voice.id) ? 'stop' : 'play_arrow' }}</span>
+                              <span i18n>Preview</span>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                      @if (stackVoiceError() || personalVoiceError()) {
+                        <small class="stack-voice-picker__error">
+                          <span class="material-symbols-outlined">error</span>
+                          {{ personalVoiceError() || stackVoiceError() }}
+                        </small>
+                      }
+                    </div>
+                  } @else {
+                    <div class="stack-music-panel">
+                      <div class="stack-music-panel__summary">
+                        <p>
+                          @if (stackAudioTrackId() === defaultStackAudioTrackId) {
+                            <span i18n>Golden Hour is selected for you. Preview a mood or choose a different soundtrack.</span>
+                          } @else {
+                            <span i18n>Preview a mood, choose a soundtrack, or keep the video silent.</span>
+                          }
+                        </p>
+                        @if (stackAudioTrackId() === defaultStackAudioTrackId) {
+                          <span class="stack-music-panel__default" i18n>
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                            Recommended
+                          </span>
+                        }
+                      </div>
 
                   <div class="stack-music-grid" role="radiogroup" aria-label="Choose a background music mood" i18n-aria-label>
                     <button
@@ -4937,6 +5137,8 @@
                       {{ stackAudioError() }}
                     </small>
                   }
+                    </div>
+                  }
                 </section>
 
                 <details class="stack-panel stack-panel--details">
@@ -4966,61 +5168,6 @@
                         (input)="stackCoverSubtitle.set($any($event.target).value)"
                       />
                     </label>
-                    <div class="stack-voice-picker">
-                      <div class="stack-voice-picker__head">
-                        <div>
-                          <span i18n>Narrator voice</span>
-                          <strong>{{ stackSelectedNarratorVoice()?.name }}</strong>
-                        </div>
-                        <small i18n>Used in the live view and generated video</small>
-                      </div>
-                      <div class="stack-voice-grid" role="radiogroup" aria-label="Choose a narrator voice" i18n-aria-label>
-                        @for (voice of stackNarratorVoices; track voice.id) {
-                          <div
-                            class="stack-voice-option"
-                            [class.stack-voice-option--active]="stackNarratorVoiceId() === voice.id"
-                          >
-                            <button
-                              type="button"
-                              class="stack-voice-option__select"
-                              role="radio"
-                              [attr.aria-checked]="stackNarratorVoiceId() === voice.id"
-                              [attr.aria-label]="voice.name + ', ' + voice.presentation + ', ' + voice.style"
-                              (click)="selectStackNarratorVoice(board, voice.id)"
-                            >
-                              <span class="stack-voice-option__icon material-symbols-outlined">{{ voice.icon }}</span>
-                              <span class="stack-voice-option__copy">
-                                <strong>{{ voice.name }}</strong>
-                                <small>{{ voice.presentation }} · {{ voice.style }}</small>
-                                <span>{{ voice.description }}</span>
-                              </span>
-                              @if (stackNarratorVoiceId() === voice.id) {
-                                <span class="stack-voice-option__check material-symbols-outlined">check_circle</span>
-                              }
-                            </button>
-                            <button
-                              type="button"
-                              class="stack-voice-option__preview"
-                              [class.stack-voice-option__preview--playing]="isStackVoicePreviewing(voice.id)"
-                              [disabled]="stackVoicePreviewLoadingId() === voice.id"
-                              [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Select and listen to ' + voice.name"
-                              (click)="toggleStackVoicePreview(voice, $event)"
-                            >
-                              <span class="material-symbols-outlined">
-                                {{ stackVoicePreviewLoadingId() === voice.id ? 'progress_activity' : isStackVoicePreviewing(voice.id) ? 'stop' : 'play_arrow' }}
-                              </span>
-                              <span i18n>Preview</span>
-                            </button>
-                          </div>
-                        }
-                      </div>
-                      @if (stackVoiceError()) {
-                        <small class="stack-voice-picker__error">
-                          <span class="material-symbols-outlined">error</span>
-                          {{ stackVoiceError() }}
-                        </small>
-                      }
-                    </div>
                     <label>
                       <span i18n>Share caption</span>
                       <textarea

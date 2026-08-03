@@ -1,4 +1,5 @@
 export const DEFAULT_STACK_NARRATOR_VOICE_ID = 'warm-storyteller';
+export const PERSONAL_STACK_NARRATOR_VOICE_ID = 'personal-voice';
 
 export type StackNarratorVoice = {
   id: string;
@@ -108,6 +109,9 @@ export function stackNarratorVoiceById(voiceId: string): StackNarratorVoice | nu
 }
 
 export function normalizeStackNarratorVoiceId(value: unknown): string {
+  if (value === PERSONAL_STACK_NARRATOR_VOICE_ID) {
+    return PERSONAL_STACK_NARRATOR_VOICE_ID;
+  }
   return typeof value === 'string' && stackNarratorVoiceById(value)
     ? value
     : DEFAULT_STACK_NARRATOR_VOICE_ID;

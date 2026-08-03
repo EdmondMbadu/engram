@@ -1,5 +1,6 @@
 import {
   DEFAULT_STACK_NARRATOR_VOICE_ID,
+  PERSONAL_STACK_NARRATOR_VOICE_ID,
   STACK_NARRATOR_VOICES,
   normalizeStackNarratorVoiceId,
   stackNarratorVoiceById,
@@ -24,5 +25,10 @@ describe('Stack narrator voice catalog', () => {
     expect(normalizeStackNarratorVoiceId(undefined)).toBe(DEFAULT_STACK_NARRATOR_VOICE_ID);
     expect(normalizeStackNarratorVoiceId('unknown')).toBe(DEFAULT_STACK_NARRATOR_VOICE_ID);
     expect(stackNarratorVoiceById(DEFAULT_STACK_NARRATOR_VOICE_ID)?.name).toBe('Warm Storyteller');
+  });
+
+  it('preserves the server-resolved personal narrator choice', () => {
+    expect(normalizeStackNarratorVoiceId(PERSONAL_STACK_NARRATOR_VOICE_ID))
+      .toBe(PERSONAL_STACK_NARRATOR_VOICE_ID);
   });
 });
