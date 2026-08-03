@@ -4827,11 +4827,13 @@
 
                 <section class="stack-panel stack-sound-panel">
                   <div class="stack-panel__head">
-                    <div>
-                      <p i18n>Sound</p>
-                      <h4>{{ stackSoundTab() === 'voice' ? stackSelectedNarratorName() : (stackSelectedAudioTrack()?.mood || 'No music') }}</h4>
+                    <div class="stack-sound-panel__heading">
+                      <span class="stack-sound-panel__heading-icon material-symbols-outlined">graphic_eq</span>
+                      <div>
+                        <p i18n>Sound</p>
+                        <h4 i18n>Voice &amp; music</h4>
+                      </div>
                     </div>
-                    <small i18n>Choose the narrator first, then add music if you want it.</small>
                   </div>
 
                   <div class="stack-sound-tabs" role="tablist" aria-label="Sound settings" i18n-aria-label>
@@ -4843,10 +4845,7 @@
                       (click)="setStackSoundTab('voice')"
                     >
                       <span class="material-symbols-outlined">record_voice_over</span>
-                      <span>
-                        <strong i18n>Voice</strong>
-                        <small>{{ stackSelectedNarratorName() }}</small>
-                      </span>
+                      <strong i18n>Voice</strong>
                     </button>
                     <button
                       type="button"
@@ -4856,10 +4855,7 @@
                       (click)="setStackSoundTab('music')"
                     >
                       <span class="material-symbols-outlined">music_note</span>
-                      <span>
-                        <strong i18n>Music</strong>
-                        <small>{{ stackSelectedAudioTrack()?.mood || 'No music' }} · {{ stackAudioVolumePercent() }}%</small>
-                      </span>
+                      <strong i18n>Music</strong>
                     </button>
                   </div>
 

@@ -3875,6 +3875,10 @@
     "source": "This page is Philly-only for now",
     "file": "src/app/green-jobs/green-jobs.html"
   },
+  "3580747102311134195": {
+    "source": "Voice & music",
+    "file": "src/app/boards/boards.html"
+  },
   "3581633941182729086": {
     "source": "CDC PLACES + EJI",
     "file": "src/app/fence-line/fence-line.html"
@@ -8370,10 +8374,6 @@
   "6552469224148703808": {
     "source": "Send a concise summary, useful links, and the transcript to your email.",
     "file": "src/app/chat/chat.ts"
-  },
-  "6552948470855569551": {
-    "source": "Choose the narrator first, then add music if you want it.",
-    "file": "src/app/boards/boards.html"
   },
   "6556985624398131463": {
     "source": "Turns this wiki into a city-aware landing page with live-style metrics.",
