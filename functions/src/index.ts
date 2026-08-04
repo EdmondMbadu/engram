@@ -13,6 +13,7 @@ import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedB
 import {
   boardWizardImageEntityName,
   buildBoardWizardFictionalCharacterSearchQueries,
+  buildBoardWizardFictionalCharacterWikipediaTitles,
   buildBoardWizardCommonsSearchQueries,
   buildBoardWizardPlaceSearchQueries,
   isBoardWizardFictionalCharacter,
@@ -1480,6 +1481,15 @@ type WikipediaBatchPageImagesResponse = {
       terms?: { description?: string[] };
     }>;
   };
+};
+
+type WikipediaPageSummaryResponse = {
+  type?: string;
+  title?: string;
+  description?: string;
+  extract?: string;
+  thumbnail?: { source?: string; width?: number; height?: number };
+  originalimage?: { source?: string; width?: number; height?: number };
 };
 
 type WikipediaPageMediaResponse = {
@@ -9357,10 +9367,10 @@ async function enrichBoardWizardCard(
     if (webImageUrl) {
       return { ...card, image_query: imageQuery, imageUrl: webImageUrl };
     }
-    // Exact/confident Wikipedia pages remain a coherent fallback. Avoid loose
-    // Commons matching: freely licensed franchise imagery is sparse and an
-    // honest missing image is preferable to an unrelated object or monument.
-    return await enrichBoardWizardCardWithReferenceImage({ ...card, image_query: imageQuery });
+    const summaryImageUrl = await findWikipediaFictionalCharacterSummaryImage(card, searchContext);
+    return summaryImageUrl
+      ? { ...card, image_query: imageQuery, imageUrl: summaryImageUrl }
+      : { ...card, image_query: imageQuery };
   }
   if (shouldUseReferenceImageBeforePlaces(card, searchContext)) {
     const imageQuery = buildBoardWizardReferenceImageQuery(card, searchContext);
@@ -11185,6 +11195,40 @@ async function enrichBoardWizardCardWithReferenceImage(card: GeneratedBoardWizar
   }
 }
 
+async function findWikipediaFictionalCharacterSummaryImage(
+  card: GeneratedBoardWizardCard,
+  searchContext: string,
+): Promise<string> {
+  const cacheKey = `fictional-character:${buildBoardWizardReferenceImageQuery(card, searchContext)}`;
+  const cached = getCachedWikipediaImage(cacheKey);
+  if (cached !== null) return cached;
+
+  const titles = buildBoardWizardFictionalCharacterWikipediaTitles(card);
+  for (const title of titles) {
+    try {
+      const summaryUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/\s+/g, '_'))}`;
+      const summary = await fetchJson<WikipediaPageSummaryResponse>(summaryUrl);
+      if (summary.type && summary.type !== 'standard') continue;
+      const imageUrl = textFromUnknown(summary.thumbnail?.source || summary.originalimage?.source);
+      if (!imageUrl || !canTryCoverImageUrl(imageUrl)) continue;
+      const resultContext = [summary.title, summary.description, summary.extract].map(textFromUnknown).join(' ');
+      if (scoreBoardWizardFictionalCharacterImageResult(card, searchContext, resultContext) <= 0) continue;
+      setCachedWikipediaImage(cacheKey, imageUrl);
+      logger.info('Board wizard fictional character summary image resolved.', {
+        entity: boardWizardImageEntityName(card),
+        requestedTitle: title,
+        matchedTitle: textFromUnknown(summary.title),
+      });
+      return imageUrl;
+    } catch {
+      // A missing qualified title is expected; continue through aliases and
+      // then the context-validated plain character title.
+    }
+  }
+  setCachedWikipediaImage(cacheKey, '');
+  return '';
+}
+
 async function findReferenceImageForBoardWizard(query: string): Promise<string> {
   const exactImage = await findExactWikipediaImageForBoardWizard(query);
   if (exactImage) {
@@ -11506,6 +11550,7 @@ async function findBatchExactWikipediaImagesForBoardWizard(
     if (
       card.imageUrl
       || isBoardWizardMenuActionCard(card)
+      || isBoardWizardFictionalCharacter(card)
       || !shouldUseReferenceImageBeforePlaces(card, searchContext)
     ) {
       return;

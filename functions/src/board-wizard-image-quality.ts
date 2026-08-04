@@ -162,6 +162,89 @@ export function buildBoardWizardFictionalCharacterSearchQueries(
   ], 4, 220);
 }
 
+/**
+ * Wikipedia's Action API omits many non-free character thumbnails, while its
+ * REST summary exposes the lead image. Try franchise-qualified titles before
+ * an ambiguous plain title so Thor resolves to Marvel's character, not the
+ * Norse deity.
+ */
+export function buildBoardWizardFictionalCharacterWikipediaTitles(
+  card: BoardWizardImageCardLike,
+): string[] {
+  const entity = boardWizardImageEntityName(card);
+  const identities = [entity, ...boardWizardFictionalCharacterAliases(card)]
+    .map((value) => value.replace(/\s+/g, ' ').trim())
+    .filter((value) => value.length >= 2 && value.length <= 80)
+    .filter((value, index, all) => all.findIndex((candidate) =>
+      normalizeCharacterText(candidate) === normalizeCharacterText(value)) === index)
+    .slice(0, 4);
+  const context = normalizeCharacterText(`${card.image_context ?? ''} ${card.image_query ?? ''} ${(card.tags ?? []).join(' ')}`);
+  const suffixes: string[] = [];
+  if (/\bmarvel\b/.test(context)) {
+    if (/\b(?:mcu|cinematic universe)\b/.test(context)) suffixes.push('Marvel Cinematic Universe');
+    suffixes.push('Marvel Comics');
+    if (!suffixes.includes('Marvel Cinematic Universe')) suffixes.push('Marvel Cinematic Universe');
+  }
+  if (/\b(?:dc|dceu|dc comics|dc universe)\b/.test(context)) {
+    if (/\b(?:dceu|extended universe|cinematic universe)\b/.test(context)) suffixes.push('DC Extended Universe');
+    suffixes.push('DC Comics');
+  }
+  if (/\bstar wars\b/.test(context)) suffixes.push('Star Wars');
+
+  return [
+    ...suffixes.flatMap((suffix) => identities.map((identity) => `${identity} (${suffix})`)),
+    ...identities,
+  ]
+    .filter((value, index, all) => all.findIndex((candidate) =>
+      normalizeCharacterText(candidate) === normalizeCharacterText(value)) === index)
+    .slice(0, 12);
+}
+
+/**
+ * A shared mantle is not a unique image identity. When a generated batch calls
+ * both Steve Rogers and Sam Wilson simply "Captain America", recover the
+ * distinct proper-name segment from each title before image enrichment.
+ */
+export function disambiguateBoardWizardFictionalCharacterEntities<T extends BoardWizardImageCardLike>(
+  cards: T[],
+): T[] {
+  const groups = new Map<string, Array<{ card: T; index: number; specificName: string }>>();
+  cards.forEach((card, index) => {
+    if (!isBoardWizardFictionalCharacter(card)) return;
+    const entity = boardWizardImageEntityName(card);
+    const specificName = boardWizardFictionalCharacterAliases(card)
+      .filter((alias) => normalizeCharacterText(alias) !== normalizeCharacterText(entity))
+      .find(isLikelyCharacterProperName) ?? '';
+    const key = normalizeCharacterText(entity);
+    const group = groups.get(key) ?? [];
+    group.push({ card, index, specificName });
+    groups.set(key, group);
+  });
+
+  const repaired = [...cards];
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    const normalizedSpecificNames = group.map((item) => normalizeCharacterText(item.specificName)).filter(Boolean);
+    if (normalizedSpecificNames.length !== group.length || new Set(normalizedSpecificNames).size !== group.length) continue;
+    for (const item of group) {
+      const previousEntity = boardWizardImageEntityName(item.card);
+      const provisional = {
+        ...item.card,
+        entity_name: item.specificName,
+        entity_type: 'fictional_character',
+        image_intent: 'character',
+        image_context: [previousEntity, item.card.image_context].filter(Boolean).join(' · ').slice(0, 140),
+      };
+      repaired[item.index] = {
+        ...provisional,
+        image_query: buildBoardWizardFictionalCharacterSearchQueries(provisional, '')[0]
+          || item.card.image_query,
+      } as T;
+    }
+  }
+  return repaired;
+}
+
 export function boardWizardFictionalCharacterContextTokens(
   card: BoardWizardImageCardLike,
   searchContext: string,
@@ -284,6 +367,12 @@ function boardWizardFictionalCharacterAliases(card: BoardWizardImageCardLike): s
   return titleParts
     .filter((part, index, all) => all.findIndex((candidate) => normalizeCharacterText(candidate) === normalizeCharacterText(part)) === index)
     .slice(0, 3);
+}
+
+function isLikelyCharacterProperName(value: string): boolean {
+  const words = value.split(/\s+/).filter(Boolean);
+  if (words.length < 2 || words.length > 5) return false;
+  return words.filter((word) => /^[A-Z][A-Za-z'.-]+$/.test(word)).length >= 2;
 }
 
 function cleanCharacterContext(value: string): string {

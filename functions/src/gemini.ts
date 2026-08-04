@@ -4,6 +4,7 @@ import { logger } from 'firebase-functions';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
 import {
   buildBoardWizardFictionalCharacterSearchQueries,
+  disambiguateBoardWizardFictionalCharacterEntities,
   isBoardWizardFictionalCharacter,
 } from './board-wizard-image-quality';
 import { boardWizardResearchMode, shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
@@ -1602,6 +1603,7 @@ function buildBoardWizardPrompt(params: {
     'If the user asks for pictures, make image_query a specific image-search phrase for each card, such as a person portrait, menu item, hotel room, landmark, product, movie poster, song cover art, album cover, book cover, TV poster, or game cover.',
     'For entertainment/reference boards, image_query must match the card entity itself, not the creator/person in the prompt. Movies should use "<movie title> official movie poster" or "<movie title> film poster"; songs should use "<song title> <artist if known> cover art"; albums should use "<album title> album cover"; books should use "<book title> book cover". Do not use actor/artist portraits unless the card is actually about that person.',
     'For fictional characters, use entity_type "fictional_character" and image_intent "character". Set entity_name to the best-known canonical character name, and put aliases, civilian identity, franchise/universe, source work, medium, and portraying actor in image_context when known.',
+    'When multiple characters have held the same mantle, entity_name must identify the specific incarnation rather than repeating the mantle. Use "Steve Rogers" and "Sam Wilson", for example, with "Captain America" retained as an alias in image_context.',
     'A fictional-character image_query must contain the canonical character name, useful alias or civilian identity, and franchise/source context. Example: title "Star-Lord: Peter Quill" should use entity_name "Star-Lord", image_context "Peter Quill · Marvel Cinematic Universe · Guardians of the Galaxy · Chris Pratt", and image_query "Star-Lord Peter Quill Marvel Guardians of the Galaxy character".',
     'For live-action movie or television character boards, target a recognizable in-character screen or promotional depiction. Do not substitute the actor out of character, astronomy, statues, monuments, toys, cosplay, logos, or generic symbols.',
     'For people, image_query must use the canonical person name plus role/context and "portrait", not a poetic nickname or title prefix. Example: title "The God: Art Tatum" should use image_query "Art Tatum jazz pianist portrait".',
@@ -1723,9 +1725,10 @@ function normalizeBoardWizardBatch(
 ): GeneratedBoardWizardBatch {
   const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
   const boardData = data.board && typeof data.board === 'object' ? data.board as Record<string, unknown> : {};
-  const cards = Array.isArray(data.cards)
+  const normalizedCards = Array.isArray(data.cards)
     ? data.cards.map((item) => normalizeBoardWizardCard(item, params.defaultType)).filter((card): card is GeneratedBoardWizardCard => !!card)
     : [];
+  const cards = disambiguateBoardWizardFictionalCharacterEntities(normalizedCards);
   if (!cards.length) {
     throw new Error('Gemini did not return any usable cards.');
   }

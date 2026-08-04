@@ -1,8 +1,10 @@
 const assert = require('node:assert/strict');
 const {
   buildBoardWizardFictionalCharacterSearchQueries,
+  buildBoardWizardFictionalCharacterWikipediaTitles,
   buildBoardWizardCommonsSearchQueries,
   buildBoardWizardPlaceSearchQueries,
+  disambiguateBoardWizardFictionalCharacterEntities,
   isBoardWizardFictionalCharacter,
   rankBoardWizardPlaceCandidates,
   scoreBoardWizardFictionalCharacterImageResult,
@@ -123,6 +125,9 @@ const samWilsonCard = {
 };
 const samWilsonQueries = buildBoardWizardFictionalCharacterSearchQueries(samWilsonCard, 'Marvel movie heroes');
 assert.match(samWilsonQueries[0], /Sam Wilson.*Captain America.*Marvel.*Cinematic.*Universe.*Avengers/i);
+const samWilsonWikipediaTitles = buildBoardWizardFictionalCharacterWikipediaTitles(samWilsonCard);
+assert.equal(samWilsonWikipediaTitles[0], 'Sam Wilson (Marvel Cinematic Universe)');
+assert.ok(samWilsonWikipediaTitles.indexOf('Captain America (Marvel Cinematic Universe)') > 0);
 assert.ok(scoreBoardWizardFictionalCharacterImageResult(
   samWilsonCard,
   'Marvel movie heroes',
@@ -138,6 +143,81 @@ assert.equal(scoreBoardWizardFictionalCharacterImageResult(
   'Marvel movie heroes',
   'Portrait of a real person named Sam Wilson at a business conference',
 ), 0);
+
+const thorCard = {
+  title: 'Thor Odinson',
+  subtitle: 'The God of Thunder',
+  type: 'note',
+  entity_name: 'Thor',
+  entity_type: 'fictional_character',
+  image_intent: 'character',
+  image_context: 'Thor Odinson · Marvel Cinematic Universe · Avengers · portrayed by Chris Hemsworth',
+  image_query: 'Thor Odinson Marvel Avengers character',
+  media_kind: 'none',
+};
+const thorWikipediaTitles = buildBoardWizardFictionalCharacterWikipediaTitles(thorCard);
+assert.equal(thorWikipediaTitles[0], 'Thor (Marvel Cinematic Universe)');
+assert.ok(thorWikipediaTitles.indexOf('Thor') > thorWikipediaTitles.indexOf('Thor (Marvel Cinematic Universe)'));
+assert.ok(scoreBoardWizardFictionalCharacterImageResult(
+  thorCard,
+  'Avengers movie heroes',
+  'Thor is a fictional character in the Marvel Cinematic Universe portrayed by Chris Hemsworth',
+) > 0);
+assert.equal(scoreBoardWizardFictionalCharacterImageResult(
+  thorCard,
+  'Avengers movie heroes',
+  'Thor is a hammer-wielding god in Norse mythology, depicted in a medieval manuscript',
+), 0);
+
+const lokiCard = {
+  ...thorCard,
+  title: 'Loki: God of Stories',
+  entity_name: 'Loki',
+  image_context: 'Loki Laufeyson · Marvel Cinematic Universe · Avengers · portrayed by Tom Hiddleston',
+  image_query: 'Loki Marvel Cinematic Universe Tom Hiddleston character',
+};
+assert.equal(buildBoardWizardFictionalCharacterWikipediaTitles(lokiCard)[0], 'Loki (Marvel Cinematic Universe)');
+assert.equal(scoreBoardWizardFictionalCharacterImageResult(
+  lokiCard,
+  'Avengers movie heroes',
+  'Loki is a Norse deity shown in a medieval illustration',
+), 0);
+assert.ok(scoreBoardWizardFictionalCharacterImageResult(
+  lokiCard,
+  'Avengers movie heroes',
+  'Loki is a Marvel Cinematic Universe fictional character portrayed by Tom Hiddleston',
+) > 0);
+
+const deadpoolCard = {
+  ...thorCard,
+  title: 'Deadpool: Wade Wilson',
+  entity_name: 'Deadpool',
+  image_context: 'Wade Wilson · Marvel Comics · Marvel Cinematic Universe · portrayed by Ryan Reynolds',
+  image_query: 'Deadpool Wade Wilson Marvel Ryan Reynolds fictional character',
+};
+assert.ok(scoreBoardWizardFictionalCharacterImageResult(
+  deadpoolCard,
+  'Avengers movie heroes',
+  'Deadpool is the Marvel Comics character Wade Wilson, portrayed in film by Ryan Reynolds',
+) > 0);
+
+const repairedCaptainAmericas = disambiguateBoardWizardFictionalCharacterEntities([
+  {
+    ...samWilsonCard,
+    title: 'Captain America: Steve Rogers',
+    entity_name: 'Captain America',
+    image_context: 'Marvel Cinematic Universe · Avengers · portrayed by Chris Evans',
+  },
+  {
+    ...samWilsonCard,
+    title: 'Captain America: Sam Wilson',
+    entity_name: 'Captain America',
+  },
+]);
+assert.equal(repairedCaptainAmericas[0].entity_name, 'Steve Rogers');
+assert.equal(repairedCaptainAmericas[1].entity_name, 'Sam Wilson');
+assert.match(repairedCaptainAmericas[0].image_context, /Captain America.*Marvel Cinematic Universe/i);
+assert.match(repairedCaptainAmericas[1].image_query, /Sam Wilson.*Captain America.*Marvel.*Cinematic.*Universe/i);
 
 const laphroaigCard = {
   title: 'Laphroaig: The Peat Monster of Islay',
