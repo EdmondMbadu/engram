@@ -2,6 +2,10 @@ import { GoogleGenAI, type GenerateContentResponse } from '@google/genai';
 import { defineSecret } from 'firebase-functions/params';
 import { logger } from 'firebase-functions';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import {
+  buildBoardWizardFictionalCharacterSearchQueries,
+  isBoardWizardFictionalCharacter,
+} from './board-wizard-image-quality';
 import { boardWizardResearchMode, shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
 import {
   normalizeTranslatedBoardSegments,
@@ -456,8 +460,8 @@ export type GeneratedBoardWizardCard = {
   tags: string[];
   image_query: string;
   entity_name?: string;
-  entity_type?: 'person' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
-  image_intent?: 'portrait' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
+  entity_type?: 'person' | 'fictional_character' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
+  image_intent?: 'portrait' | 'character' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
   image_context?: string;
   media_kind?: 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
   short_summary?: string;
@@ -1507,14 +1511,15 @@ async function verifyBoardWizardBatch(
       : `The UI target is ${targetCount} cards, but it is not an explicit user constraint. Use the real set size when the request asks for a complete set.`,
     `Treat ${new Date().toISOString().slice(0, 10)} as the current date. Replace stale "Present" labels and include current entities when the request requires them.`,
     'Each card must identify its canonical subject independently from its prose:',
-    '- entity_name: canonical real subject name without numbering, slogans, or decorative prefixes.',
-    '- entity_type: person, place, event, work, product, food, organization, or other.',
-    '- image_intent: portrait, place, event, cover, product, food, logo, or other.',
-    '- image_context: short disambiguation such as role, creator, location, year, edition, term, or event.',
-    '- media_kind: none, song, album, film, book, tv, or game. Use none for people, places, events, products, food, and organizations even if their prose mentions media words.',
+    '- entity_name: canonical depicted subject name without numbering, slogans, or decorative prefixes.',
+    '- entity_type: person, fictional_character, place, event, work, product, food, organization, or other.',
+    '- image_intent: portrait, character, place, event, cover, product, food, logo, or other.',
+    '- image_context: short disambiguation such as role, aliases, franchise/universe, source work, creator, location, year, edition, term, or event.',
+    '- media_kind: none, song, album, film, book, tv, or game. Use none for people, fictional characters, places, events, products, food, and organizations even if their prose mentions media words.',
     '- short_summary: a vivid standalone hook of at most 160 characters for compact and Live View presentation.',
     '- rank: the requested one-based rank, sequence, or source position; otherwise 0.',
     'image_query must target entity_name plus image_context and image_intent. Never let incidental words in notes change the depicted subject.',
+    'For a fictional character, retain the canonical name, aliases/civilian identity, and franchise or source-work context. Never reduce the query to an ambiguous common word or to an actor out of character.',
     '',
     'Original user request:',
     JSON.stringify({
@@ -1596,6 +1601,9 @@ function buildBoardWizardPrompt(params: {
     'Do not prefix card titles or image_query values with list numbers or ordinals. The card order already communicates sequence.',
     'If the user asks for pictures, make image_query a specific image-search phrase for each card, such as a person portrait, menu item, hotel room, landmark, product, movie poster, song cover art, album cover, book cover, TV poster, or game cover.',
     'For entertainment/reference boards, image_query must match the card entity itself, not the creator/person in the prompt. Movies should use "<movie title> official movie poster" or "<movie title> film poster"; songs should use "<song title> <artist if known> cover art"; albums should use "<album title> album cover"; books should use "<book title> book cover". Do not use actor/artist portraits unless the card is actually about that person.',
+    'For fictional characters, use entity_type "fictional_character" and image_intent "character". Set entity_name to the best-known canonical character name, and put aliases, civilian identity, franchise/universe, source work, medium, and portraying actor in image_context when known.',
+    'A fictional-character image_query must contain the canonical character name, useful alias or civilian identity, and franchise/source context. Example: title "Star-Lord: Peter Quill" should use entity_name "Star-Lord", image_context "Peter Quill · Marvel Cinematic Universe · Guardians of the Galaxy · Chris Pratt", and image_query "Star-Lord Peter Quill Marvel Guardians of the Galaxy character".',
+    'For live-action movie or television character boards, target a recognizable in-character screen or promotional depiction. Do not substitute the actor out of character, astronomy, statues, monuments, toys, cosplay, logos, or generic symbols.',
     'For people, image_query must use the canonical person name plus role/context and "portrait", not a poetic nickname or title prefix. Example: title "The God: Art Tatum" should use image_query "Art Tatum jazz pianist portrait".',
     'For any person entity, always request a portrait of that exact person even when the notes mention books, writings, buildings, relatives, organizations, or events.',
     'If a display title has a prefix before a colon or dash, use the real subject after the separator for image_query when that subject is the card entity.',
@@ -1664,7 +1672,7 @@ function buildBoardWizardPrompt(params: {
     'Rating must be an integer from 1 to 5.',
     'Tags should be lowercase, 1-6 items, short and useful.',
     'image_query should be a short search phrase for the most accurate image for that exact card entity.',
-    'For every card, set entity_name to the canonical depicted subject; set entity_type to person, place, event, work, product, food, organization, or other; set image_intent to portrait, place, event, cover, product, food, logo, or other; and set image_context to the minimum role, creator, location, year, edition, term, or event needed to disambiguate it.',
+    'For every card, set entity_name to the canonical depicted subject; set entity_type to person, fictional_character, place, event, work, product, food, organization, or other; set image_intent to portrait, character, place, event, cover, product, food, logo, or other; and set image_context to the minimum role, aliases, franchise/universe, source work, creator, location, year, edition, term, or event needed to disambiguate it.',
     'Set media_kind to none unless the card entity itself is a song, album, film, book, TV work, or video game. Words in notes such as "single malt", "book a tour", "track record", or "artist-designed" never make a card media.',
     'Set short_summary to a specific, vivid hook of at most 160 characters. Set rank to the requested one-based position or 0 when the board is not ordered.',
     'The entity fields are authoritative for image selection. Incidental nouns in notes must never replace the entity being depicted.',
@@ -1747,6 +1755,25 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
   const tags = Array.isArray(data.tags)
     ? data.tags.map((tag) => cleanLine(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
     : [];
+  const entityName = cleanLine(data.entity_name, canonicalBoardWizardEntityName(title), 100);
+  let entityType = normalizeBoardWizardEntityType(data.entity_type, type);
+  let imageIntent = normalizeBoardWizardImageIntent(data.image_intent, title, subtitle, notes, tags);
+  const imageContext = cleanLine(data.image_context, boardWizardImageContext(subtitle, notes), 120);
+  const rawImageQuery = cleanLine(data.image_query, title, 120);
+  if (isBoardWizardFictionalCharacter({
+    title,
+    subtitle,
+    tags,
+    image_query: rawImageQuery,
+    entity_name: entityName,
+    entity_type: entityType,
+    image_intent: imageIntent,
+    image_context: imageContext,
+    media_kind: normalizeBoardWizardMediaKind(data.media_kind),
+  })) {
+    entityType = 'fictional_character';
+    imageIntent = 'character';
+  }
   return {
     title,
     subtitle,
@@ -1756,11 +1783,21 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
     status: normalizeBoardWizardStatus(data.status),
     rating: normalizeRating(data.rating),
     tags,
-    image_query: normalizeGeneratedBoardWizardImageQuery(title, cleanLine(data.image_query, title, 120), subtitle, notes, tags),
-    entity_name: cleanLine(data.entity_name, canonicalBoardWizardEntityName(title), 100),
-    entity_type: normalizeBoardWizardEntityType(data.entity_type, type),
-    image_intent: normalizeBoardWizardImageIntent(data.image_intent, title, subtitle, notes, tags),
-    image_context: cleanLine(data.image_context, boardWizardImageContext(subtitle, notes), 120),
+    image_query: normalizeGeneratedBoardWizardImageQuery(
+      title,
+      rawImageQuery,
+      subtitle,
+      notes,
+      tags,
+      entityName,
+      entityType,
+      imageIntent,
+      imageContext,
+    ),
+    entity_name: entityName,
+    entity_type: entityType,
+    image_intent: imageIntent,
+    image_context: imageContext,
     media_kind: normalizeBoardWizardMediaKind(data.media_kind),
     short_summary: cleanLine(data.short_summary, subtitle || firstBoardWizardSentence(notes), 160),
     rank: normalizeBoardWizardRank(data.rank),
@@ -1818,7 +1855,7 @@ function normalizeBoardWizardEntityType(
   value: unknown,
   cardType: GeneratedBoardWizardCard['type'],
 ): NonNullable<GeneratedBoardWizardCard['entity_type']> {
-  if (value === 'person' || value === 'place' || value === 'event' || value === 'work'
+  if (value === 'person' || value === 'fictional_character' || value === 'place' || value === 'event' || value === 'work'
     || value === 'product' || value === 'food' || value === 'organization' || value === 'other') {
     return value;
   }
@@ -1834,7 +1871,7 @@ function normalizeBoardWizardImageIntent(
   notes: string,
   tags: string[],
 ): NonNullable<GeneratedBoardWizardCard['image_intent']> {
-  if (value === 'portrait' || value === 'place' || value === 'event' || value === 'cover'
+  if (value === 'portrait' || value === 'character' || value === 'place' || value === 'event' || value === 'cover'
     || value === 'product' || value === 'food' || value === 'logo' || value === 'other') {
     return value;
   }
@@ -1857,7 +1894,24 @@ function normalizeGeneratedBoardWizardImageQuery(
   subtitle: string,
   notes: string,
   tags: string[],
+  entityName: string,
+  entityType: NonNullable<GeneratedBoardWizardCard['entity_type']>,
+  imageIntent: NonNullable<GeneratedBoardWizardCard['image_intent']>,
+  imageContext: string,
 ): string {
+  if (entityType === 'fictional_character' || imageIntent === 'character') {
+    return buildBoardWizardFictionalCharacterSearchQueries({
+      title,
+      subtitle,
+      tags,
+      image_query: imageQuery,
+      entity_name: entityName,
+      entity_type: entityType,
+      image_intent: imageIntent,
+      image_context: imageContext,
+      media_kind: 'none',
+    }, '')[0]?.slice(0, 120) || imageQuery.slice(0, 120);
+  }
   const subject = canonicalBoardWizardImageSubject(title);
   const text = `${title} ${imageQuery} ${subtitle} ${notes} ${tags.join(' ')}`;
   if (subject && isLikelyBoardWizardPersonSubject(subject, text)) {

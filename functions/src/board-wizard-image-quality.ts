@@ -15,6 +15,18 @@ const PLACE_CONTEXT_DESCRIPTORS = new Set([
   'place', 'location', 'venue', 'attraction', 'shop', 'store', 'restaurant',
 ]);
 
+const CHARACTER_CONTEXT_DESCRIPTORS = new Set([
+  'the', 'and', 'for', 'with', 'from', 'into', 'this', 'that', 'these', 'those',
+  'of', 'to', 'in', 'on', 'at', 'as', 'by',
+  'top', 'best', 'ranked', 'list', 'guide', 'collection', 'favorite', 'favourite',
+  'greatest', 'ultimate', 'hero', 'heroes', 'character', 'characters', 'fictional',
+  'official', 'portrait', 'photo', 'image', 'picture', 'still', 'promotional',
+  'movie', 'movies', 'film', 'films', 'cinema', 'comic', 'comics', 'television',
+  'show', 'shows', 'series', 'actor', 'actress', 'played', 'portrayed', 'depiction',
+]);
+
+const CHARACTER_RESULT_NEGATIVE_TERMS = /\b(?:astronomy|astronomical|celestial|constellation|moon|planet|nebula|statue|sculpture|monument|medieval|knight|figurine|action figure|toy|cosplay|fan[ -]?art|logo|emblem)\b/i;
+
 export type BoardWizardImageCardLike = {
   title: string;
   subtitle?: string;
@@ -49,6 +61,13 @@ export type BoardWizardPlaceCandidateLike = {
 
 export function normalizeWikipediaEntityTitle(value: string): string {
   return value.replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+export function stripBoardWizardReferenceTitleDescriptor(value: string): string {
+  return value
+    .replace(/(?:[,:;|]|\s[-–—]\s).*$/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export function meaningfulWikipediaEntityTokens(value: string): string[] {
@@ -97,15 +116,97 @@ export function wikipediaPageTitleMatchScore(
  */
 export function shouldResolveBoardWizardCardAsPlace(card: BoardWizardImageCardLike): boolean {
   if (card.media_kind && card.media_kind !== 'none') return false;
+  if (isBoardWizardFictionalCharacter(card)) return false;
   if (card.image_intent === 'place') return true;
   if (card.entity_type === 'place') return true;
-  if (card.image_intent && ['portrait', 'event', 'cover', 'product', 'food', 'logo'].includes(card.image_intent)) {
+  if (card.image_intent && ['portrait', 'character', 'event', 'cover', 'product', 'food', 'logo'].includes(card.image_intent)) {
     return false;
   }
-  if (card.entity_type && ['person', 'event', 'work', 'product', 'food', 'organization'].includes(card.entity_type)) {
+  if (card.entity_type && ['person', 'fictional_character', 'event', 'work', 'product', 'food', 'organization'].includes(card.entity_type)) {
     return false;
   }
   return card.type === 'place' || card.type === 'shop';
+}
+
+export function isBoardWizardFictionalCharacter(card: BoardWizardImageCardLike): boolean {
+  if (card.entity_type === 'fictional_character' || card.image_intent === 'character') return true;
+  if (card.media_kind && card.media_kind !== 'none') return false;
+  const localText = `${card.title} ${card.subtitle ?? ''} ${(card.tags ?? []).join(' ')} ${card.image_query ?? ''} ${card.image_context ?? ''}`;
+  if (/\b(?:fictional character|superhero|supervillain|alter ego|civilian identity|in-character|character depiction)\b/i.test(localText)) {
+    return true;
+  }
+  return /\bcharacter\b/i.test(`${(card.tags ?? []).join(' ')} ${card.image_query ?? ''}`)
+    && /\b(?:cinematic universe|fictional universe|franchise|comic(?:s)?|portrayed by|played by)\b/i.test(localText);
+}
+
+/**
+ * Build character queries from identity, aliases, and franchise/source context.
+ * The generated image_query remains useful evidence, but it cannot discard the
+ * structured entity fields or the board's context.
+ */
+export function buildBoardWizardFictionalCharacterSearchQueries(
+  card: BoardWizardImageCardLike,
+  searchContext: string,
+): string[] {
+  const entity = boardWizardImageEntityName(card);
+  const aliases = boardWizardFictionalCharacterAliases(card)
+    .filter((alias) => normalizeCharacterText(alias) !== normalizeCharacterText(entity));
+  const context = boardWizardFictionalCharacterContextTokens(card, searchContext).join(' ');
+  const suppliedQuery = cleanImageSearchText(card.image_query ?? '');
+  const identity = [entity, ...aliases].filter(Boolean).join(' ');
+  return uniqueImageQueries([
+    [identity, context, 'fictional character'].filter(Boolean).join(' '),
+    [entity, context, 'character'].filter(Boolean).join(' '),
+    aliases.length ? [aliases[0], entity, context, 'character'].filter(Boolean).join(' ') : '',
+    suppliedQuery && [suppliedQuery, context].filter(Boolean).join(' '),
+  ], 4, 220);
+}
+
+export function boardWizardFictionalCharacterContextTokens(
+  card: BoardWizardImageCardLike,
+  searchContext: string,
+): string[] {
+  const aliases = [boardWizardImageEntityName(card), ...boardWizardFictionalCharacterAliases(card)];
+  const identityTokens = new Set(aliases.flatMap(characterTokens));
+  const localContext = cleanCharacterContext(card.image_context ?? '');
+  const source = localContext || cleanCharacterContext(searchContext);
+  return characterTokens(source)
+    .filter((token) => !identityTokens.has(token) && !CHARACTER_CONTEXT_DESCRIPTORS.has(token))
+    .slice(0, 8);
+}
+
+/**
+ * Score image-search metadata for a fictional character. A result must match
+ * one canonical identity/alias and, when available, the franchise/source
+ * context. This intentionally prefers an empty image over an unrelated one.
+ */
+export function scoreBoardWizardFictionalCharacterImageResult(
+  card: BoardWizardImageCardLike,
+  searchContext: string,
+  resultContext: string,
+  resultIndex = 0,
+): number {
+  const haystack = normalizeCharacterText(resultContext);
+  if (!haystack || CHARACTER_RESULT_NEGATIVE_TERMS.test(resultContext)) return 0;
+
+  const identities = [boardWizardImageEntityName(card), ...boardWizardFictionalCharacterAliases(card)]
+    .map((value) => ({ value: normalizeCharacterText(value), tokens: characterTokens(value) }))
+    .filter((identity) => identity.tokens.length > 0);
+  const identityScores = identities.map((identity) => {
+    const matches = identity.tokens.filter((token) => haystack.includes(token)).length;
+    const required = identity.tokens.length <= 2 ? identity.tokens.length : Math.max(2, Math.ceil(identity.tokens.length * 0.67));
+    const exactPhrase = identity.value.length >= 4 && haystack.includes(identity.value);
+    return matches >= required ? matches * 35 + (exactPhrase ? 45 : 0) : 0;
+  });
+  const identityScore = identityScores.length ? Math.max(...identityScores) : 0;
+  if (!identityScore) return 0;
+
+  const contextTokens = boardWizardFictionalCharacterContextTokens(card, searchContext);
+  const contextMatches = contextTokens.filter((token) => haystack.includes(token)).length;
+  if (contextTokens.length && contextMatches === 0) return 0;
+
+  const preferred = /\b(?:character|marvel|dc|disney|pixar|warner|studio|movie|film|television|series|episode|cast|cinematic|universe|franchise)\b/i.test(resultContext);
+  return identityScore + contextMatches * 24 + (preferred ? 18 : 0) - resultIndex * 2;
 }
 
 export function boardWizardImageEntityName(card: BoardWizardImageCardLike): string {
@@ -155,6 +256,10 @@ export function buildBoardWizardCommonsSearchQueries(
     .trim();
   const isPlace = shouldResolveBoardWizardCardAsPlace(card);
 
+  if (isBoardWizardFictionalCharacter(card)) {
+    return buildBoardWizardFictionalCharacterSearchQueries(card, searchContext);
+  }
+
   return uniqueImageQueries(isPlace ? [
     joinPlaceQuery(entity, imageContext || boardContext),
     entity,
@@ -168,6 +273,41 @@ export function buildBoardWizardCommonsSearchQueries(
     entity,
     titleEntity,
   ], 6, 180);
+}
+
+function boardWizardFictionalCharacterAliases(card: BoardWizardImageCardLike): string[] {
+  const title = cleanImageSearchText(card.title);
+  const titleParts = title
+    .split(/\s*(?::|\||[–—])\s*/)
+    .map((part) => part.trim())
+    .filter((part) => part.length >= 2 && part.length <= 80);
+  return titleParts
+    .filter((part, index, all) => all.findIndex((candidate) => normalizeCharacterText(candidate) === normalizeCharacterText(part)) === index)
+    .slice(0, 3);
+}
+
+function cleanCharacterContext(value: string): string {
+  return cleanImageSearchText(value)
+    .replace(/\b(?:top|best|ranked|list|guide|collection|favorite|favourite|greatest|ultimate)\b/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 140);
+}
+
+function normalizeCharacterText(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function characterTokens(value: string): string[] {
+  return Array.from(new Set(normalizeCharacterText(value)
+    .split(/\s+/)
+    .filter((token) => token.length >= 2 && !/^\d+$/.test(token) && !CHARACTER_CONTEXT_DESCRIPTORS.has(token))));
 }
 
 export function scoreBoardWizardPlaceCandidate(

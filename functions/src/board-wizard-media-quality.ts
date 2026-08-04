@@ -15,7 +15,7 @@ const mediaKinds = new Set<BoardWizardMediaKind>(['none', 'song', 'album', 'film
 
 export function resolveBoardWizardMediaKind(card: MediaCard): BoardWizardMediaKind {
   if (mediaKinds.has(card.media_kind as BoardWizardMediaKind)) return card.media_kind as BoardWizardMediaKind;
-  if (['person', 'place', 'event', 'product', 'food', 'organization'].includes(card.entity_type ?? '')
+  if (['person', 'fictional_character', 'place', 'event', 'product', 'food', 'organization'].includes(card.entity_type ?? '')
     && card.image_intent !== 'cover') return 'none';
 
   const explicit = `${card.image_query ?? ''} ${card.image_context ?? ''}`.toLowerCase();

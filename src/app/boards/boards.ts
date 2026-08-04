@@ -135,8 +135,8 @@ type BoardVisibility = 'public' | 'private';
 type BoardCardType = 'place' | 'food' | 'memory' | 'idea' | 'shop' | 'note';
 type BoardCardScope = 'place' | 'city' | 'country' | 'region';
 type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
-type BoardEntityType = 'person' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
-type BoardImageIntent = 'portrait' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
+type BoardEntityType = 'person' | 'fictional_character' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
+type BoardImageIntent = 'portrait' | 'character' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
 type BoardMediaKind = 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
 type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
@@ -12460,6 +12460,12 @@ export class BoardsComponent implements OnDestroy {
       ? data['tags'].map((tag) => this.stringValue(tag, '', 24).toLowerCase()).filter(Boolean).slice(0, 6)
       : [this.wizardVibe(), type].slice(0, 6);
     const imageQuery = this.stringValue(data['image_query'], title, 120);
+    const entityType: BoardEntityType = this.isBoardEntityType(data['entity_type'])
+      ? data['entity_type']
+      : (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other');
+    const imageIntent: BoardImageIntent = this.isBoardImageIntent(data['image_intent'])
+      ? data['image_intent']
+      : (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other');
     return {
       title,
       subtitle,
@@ -12469,11 +12475,11 @@ export class BoardsComponent implements OnDestroy {
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: this.numberValue(data['rating'], 4, 1, 5),
       tags,
-      image_query: this.normalizeWizardImageQuery(title, imageQuery, subtitle, notes, tags),
+      image_query: this.normalizeWizardImageQuery(title, imageQuery, subtitle, notes, tags, entityType, imageIntent),
       place_query: this.stringValue(data['place_query'], title, 140),
       entity_name: this.stringValue(data['entity_name'], title, 100),
-      entity_type: this.isBoardEntityType(data['entity_type']) ? data['entity_type'] : (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
-      image_intent: this.isBoardImageIntent(data['image_intent']) ? data['image_intent'] : (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
+      entity_type: entityType,
+      image_intent: imageIntent,
       image_context: this.stringValue(data['image_context'], '', 120),
       media_kind: this.isBoardMediaKind(data['media_kind']) ? data['media_kind'] : 'none',
       short_summary: this.stringValue(data['short_summary'], subtitle, 160),
@@ -12516,7 +12522,15 @@ export class BoardsComponent implements OnDestroy {
       status: card.status,
       rating: card.rating,
       tags: card.tags,
-      image_query: this.normalizeWizardImageQuery(card.title, card.image_query || `${card.title} image`, card.subtitle, card.notes, card.tags),
+      image_query: this.normalizeWizardImageQuery(
+        card.title,
+        card.image_query || `${card.title} image`,
+        card.subtitle,
+        card.notes,
+        card.tags,
+        card.entity_type,
+        card.image_intent,
+      ),
       place_query: card.place_query || card.title,
       entity_name: card.entity_name || card.title,
       entity_type: card.entity_type,
@@ -12621,13 +12635,26 @@ export class BoardsComponent implements OnDestroy {
     const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
       timeout: 150_000,
     });
+    const exactSubjectInstruction = card.entity_type === 'fictional_character' || card.image_intent === 'character'
+      ? `Find the most accurate recognizable in-character depiction of this exact fictional character: ${card.entity_name || card.title}. Preserve aliases, civilian identity, franchise/universe, source work, medium, and portraying actor from the context.`
+      : card.entity_type === 'place' || card.image_intent === 'place'
+        ? `Find the most accurate real photograph for this exact place only: ${card.entity_name || card.title}.`
+        : card.entity_type === 'person' || card.image_intent === 'portrait'
+          ? `Find the most accurate real portrait of this exact person only: ${card.entity_name || card.title}.`
+          : `Find the most accurate authoritative image for this exact subject only: ${card.entity_name || card.title}.`;
+    const rejectionInstruction = card.entity_type === 'fictional_character' || card.image_intent === 'character'
+      ? 'Do not use astronomy, statues, monuments, toys, cosplay, logos, generic symbols, unrelated namesakes, or the actor out of character.'
+      : 'Do not use a map, icon, logo, generic object, or a similarly named subject.';
     const response = await callable({
       mode: this.wizardMode(),
       prompt: [
         this.wizardPrompt().trim(),
-        `Find the most accurate real photograph for this exact place only: ${card.title}.`,
-        locationContext ? `Location context: ${locationContext}.` : '',
-        'Prefer an exact Google Place or authoritative reference photo. Do not use a map, icon, logo, illustration, generic object, or a similarly named place.',
+        exactSubjectInstruction,
+        locationContext ? `Subject context: ${locationContext}.` : '',
+        card.entity_type === 'place' || card.image_intent === 'place'
+          ? 'Prefer an exact Google Place or authoritative reference photo.'
+          : 'Prefer an authoritative exact-entity reference image with strong contextual agreement.',
+        rejectionInstruction,
         'Preserve the title, text, what3words address, and all metadata.',
       ].filter(Boolean).join('\n'),
       pastedList: '',
@@ -12657,13 +12684,24 @@ export class BoardsComponent implements OnDestroy {
   private isReferenceEntityWizardCard(card: BoardWizardGeneratedCard): boolean {
     if (card.entity_type) {
       if (card.media_kind && card.media_kind !== 'none') return true;
-      return ['person', 'event', 'work', 'product', 'organization'].includes(card.entity_type);
+      return ['person', 'fictional_character', 'event', 'work', 'product', 'organization'].includes(card.entity_type);
     }
     const text = `${card.title} ${card.subtitle} ${card.notes} ${card.tags.join(' ')} ${card.image_query}`.toLowerCase();
     return /\b(portrait|person|people|biography|born|died|president|first lady|signer|founding father|politician|leader|governor|senator|representative|justice|inventor|author|artist|scientist|athlete|actor|musician|composer|singer|rapper|pianist|guitarist|drummer|bassist|saxophonist|trumpeter|vocalist|bandleader|poet|philosopher|general|monarch|king|queen|emperor|saint|historical figure|world cup|fifa|national team|football team|soccer team|winner|winners|champion|champions|tournament|award|awards|record|records)\b/.test(text);
   }
 
-  private normalizeWizardImageQuery(title: string, imageQuery: string, subtitle: string, notes: string, tags: string[]): string {
+  private normalizeWizardImageQuery(
+    title: string,
+    imageQuery: string,
+    subtitle: string,
+    notes: string,
+    tags: string[],
+    entityType?: BoardEntityType,
+    imageIntent?: BoardImageIntent,
+  ): string {
+    if (entityType === 'fictional_character' || imageIntent === 'character') {
+      return imageQuery.slice(0, 120);
+    }
     const subject = this.canonicalWizardImageSubject(title);
     const text = `${title} ${imageQuery} ${subtitle} ${notes} ${tags.join(' ')} ${this.wizardPrompt()} ${this.wizardTargetBoardTitle()}`;
     if (subject && this.isLikelyWizardPersonSubject(subject, text)) {
@@ -14357,12 +14395,12 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private isBoardEntityType(value: unknown): value is BoardEntityType {
-    return value === 'person' || value === 'place' || value === 'event' || value === 'work'
+    return value === 'person' || value === 'fictional_character' || value === 'place' || value === 'event' || value === 'work'
       || value === 'product' || value === 'food' || value === 'organization' || value === 'other';
   }
 
   private isBoardImageIntent(value: unknown): value is BoardImageIntent {
-    return value === 'portrait' || value === 'place' || value === 'event' || value === 'cover'
+    return value === 'portrait' || value === 'character' || value === 'place' || value === 'event' || value === 'cover'
       || value === 'product' || value === 'food' || value === 'logo' || value === 'other';
   }
 

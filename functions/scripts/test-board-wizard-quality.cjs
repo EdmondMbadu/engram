@@ -1,9 +1,13 @@
 const assert = require('node:assert/strict');
 const {
+  buildBoardWizardFictionalCharacterSearchQueries,
   buildBoardWizardCommonsSearchQueries,
   buildBoardWizardPlaceSearchQueries,
+  isBoardWizardFictionalCharacter,
   rankBoardWizardPlaceCandidates,
+  scoreBoardWizardFictionalCharacterImageResult,
   shouldResolveBoardWizardCardAsPlace,
+  stripBoardWizardReferenceTitleDescriptor,
   wikipediaPageTitleMatchScore,
 } = require('../lib/board-wizard-image-quality.js');
 const {
@@ -22,6 +26,9 @@ assert.ok(score('Titanic 1997 official movie poster', 'Titanic (1997 film)', ['T
 assert.equal(score('Titanic 1997 official movie poster', 'Titanic museum', ['Titanic (1997 film)']), 0);
 assert.ok(score('Beatles band portrait', 'The Beatles', ['The Beatles']) >= 80);
 assert.equal(score('Beatles band portrait', 'Beatles Ashram', ['The Beatles']), 0);
+assert.equal(stripBoardWizardReferenceTitleDescriptor('Star-Lord'), 'Star-Lord');
+assert.equal(stripBoardWizardReferenceTitleDescriptor('Spider-Man: Peter Parker'), 'Spider-Man');
+assert.equal(stripBoardWizardReferenceTitleDescriptor('Titanic - official poster'), 'Titanic');
 
 const shouldVerify = (prompt, count = 12, mode = 'describe') =>
   shouldGroundAndVerifyBoardWizardBatch({ mode, prompt, count });
@@ -46,6 +53,91 @@ assert.equal(resolveBoardWizardMediaKind({
   title: 'A real song', subtitle: 'Artist name', entity_type: 'work', image_intent: 'cover',
   image_query: 'A real song Artist name cover art', media_kind: 'song',
 }), 'song');
+
+const starLordCard = {
+  title: 'Star-Lord: Peter Quill',
+  subtitle: 'The cosmic leader of the Guardians',
+  type: 'note',
+  scope: 'region',
+  entity_name: 'Star-Lord',
+  entity_type: 'fictional_character',
+  image_intent: 'character',
+  image_context: 'Peter Quill · Marvel Cinematic Universe · Guardians of the Galaxy · portrayed by Chris Pratt',
+  image_query: 'Star-Lord portrait',
+  media_kind: 'none',
+};
+assert.equal(isBoardWizardFictionalCharacter(starLordCard), true);
+assert.equal(isBoardWizardFictionalCharacter({
+  ...starLordCard,
+  entity_type: 'person',
+  image_intent: 'portrait',
+  image_query: 'Star-Lord Peter Quill Marvel character',
+}), true);
+assert.equal(isBoardWizardFictionalCharacter({
+  title: 'Chris Pratt',
+  entity_name: 'Chris Pratt',
+  entity_type: 'person',
+  image_intent: 'portrait',
+  image_context: 'actor · Marvel Cinematic Universe',
+  image_query: 'Chris Pratt actor portrait',
+  media_kind: 'none',
+}), false);
+assert.equal(shouldResolveBoardWizardCardAsPlace(starLordCard), false);
+assert.equal(resolveBoardWizardMediaKind(starLordCard), 'none');
+const starLordQueries = buildBoardWizardFictionalCharacterSearchQueries(
+  starLordCard,
+  'Avengers Assemble: The Top 20 Movie Heroes',
+);
+assert.match(starLordQueries[0], /Star-Lord.*Peter Quill.*Marvel.*Cinematic.*Universe.*Guardians.*Galaxy.*fictional character/i);
+assert.doesNotMatch(buildBoardWizardFictionalCharacterSearchQueries({
+  ...starLordCard,
+  image_context: '',
+}, 'The Top 20 Movie Heroes')[0], /\b20\b/);
+assert.ok(scoreBoardWizardFictionalCharacterImageResult(
+  starLordCard,
+  'Avengers Assemble: The Top 20 Movie Heroes',
+  'Star-Lord (Peter Quill) | Marvel Studios | Guardians of the Galaxy | Chris Pratt',
+) > 0);
+assert.equal(scoreBoardWizardFictionalCharacterImageResult(
+  starLordCard,
+  'Avengers Assemble: The Top 20 Movie Heroes',
+  'A bright star beside the moon in an astronomical night sky',
+), 0);
+assert.equal(scoreBoardWizardFictionalCharacterImageResult(
+  starLordCard,
+  'Avengers Assemble: The Top 20 Movie Heroes',
+  'Star Lord action figure and collectible toy',
+), 0);
+
+const samWilsonCard = {
+  title: 'Sam Wilson: Captain America',
+  subtitle: 'The winged Avenger takes up the shield',
+  type: 'note',
+  scope: 'region',
+  entity_name: 'Sam Wilson',
+  entity_type: 'fictional_character',
+  image_intent: 'character',
+  image_context: 'Captain America · Marvel Cinematic Universe · Avengers · portrayed by Anthony Mackie',
+  image_query: 'Sam Wilson portrait',
+  media_kind: 'none',
+};
+const samWilsonQueries = buildBoardWizardFictionalCharacterSearchQueries(samWilsonCard, 'Marvel movie heroes');
+assert.match(samWilsonQueries[0], /Sam Wilson.*Captain America.*Marvel.*Cinematic.*Universe.*Avengers/i);
+assert.ok(scoreBoardWizardFictionalCharacterImageResult(
+  samWilsonCard,
+  'Marvel movie heroes',
+  'Sam Wilson Captain America in Marvel Studios Avengers, portrayed by Anthony Mackie',
+) > 0);
+assert.equal(scoreBoardWizardFictionalCharacterImageResult(
+  samWilsonCard,
+  'Marvel movie heroes',
+  'Sam Wilson medieval knight statues and monuments',
+), 0);
+assert.equal(scoreBoardWizardFictionalCharacterImageResult(
+  samWilsonCard,
+  'Marvel movie heroes',
+  'Portrait of a real person named Sam Wilson at a business conference',
+), 0);
 
 const laphroaigCard = {
   title: 'Laphroaig: The Peat Monster of Islay',
