@@ -3,7 +3,9 @@ import {
   preferredRecorderMimeType,
   stackVideoCardKicker,
   stackVideoCardImageCandidates,
+  stackVideoFrameAtElapsed,
   stackVideoNarrationFrameDurationMs,
+  stackVideoNarrationScript,
   stackVideoRenderIsCurrent,
 } from './stack-video-export';
 import { reorderRelativeToTarget } from './reorder';
@@ -15,7 +17,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v2')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v3')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v4')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v5')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v5')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v6')).toBeTrue();
   });
 
   it('uses only a rank label for ranked cards', () => {
@@ -78,9 +81,25 @@ describe('Stack video card images', () => {
       .toBe('video/mp4;codecs=avc1.42E01E,mp4a.40.2');
   });
 
-  it('keeps each narrated card visible until its voice clip finishes', () => {
-    expect(stackVideoNarrationFrameDurationMs(0)).toBe(1900);
-    expect(stackVideoNarrationFrameDurationMs(3.25)).toBe(3750);
+  it('keeps normal narration readable but caps unusually long cards', () => {
+    expect(stackVideoNarrationFrameDurationMs(0)).toBe(2200);
+    expect(stackVideoNarrationFrameDurationMs(3.25)).toBe(3700);
+    expect(stackVideoNarrationFrameDurationMs(30)).toBe(4400);
+  });
+
+  it('builds a concise narration script without cutting through a word', () => {
+    expect(stackVideoNarrationScript(
+      'Robert Downey Jr.',
+      'The architect of the MCU and its defining hero across the Infinity Saga.',
+    )).toBe('Robert Downey Jr. The architect of the MCU and its defining.');
+    expect(stackVideoNarrationScript('Chris Evans.', '')).toBe('Chris Evans.');
+  });
+
+  it('uses one master timeline so a delayed render advances to the correct card', () => {
+    expect(stackVideoFrameAtElapsed([2200, 3000, 4000], 0)).toEqual({ index: 0, progress: 0 });
+    expect(stackVideoFrameAtElapsed([2200, 3000, 4000], 3700)).toEqual({ index: 1, progress: 0.5 });
+    expect(stackVideoFrameAtElapsed([2200, 3000, 4000], 7200)).toEqual({ index: 2, progress: 0.5 });
+    expect(stackVideoFrameAtElapsed([2200, 3000, 4000], 20_000)).toEqual({ index: 2, progress: 1 });
   });
 
   it('adds the decoded background music track to the recorded canvas stream', async () => {

@@ -57,11 +57,14 @@ type VideoFrame =
   | { kind: 'card'; card: StackVideoCard; cardIndex: number }
   | { kind: 'closing' };
 
-const FRAME_RATE = 30;
-const FRAME_DURATION_MS = 1900;
+const FRAME_RATE = 15;
+const FRAME_DURATION_MS = 2200;
 const CLOSING_DURATION_MS = 2100;
+const NARRATION_LEAD_MS = 100;
+const NARRATION_TAIL_MS = 350;
+const MAX_NARRATED_FRAME_DURATION_MS = 4400;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v5';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v6';
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
@@ -91,7 +94,41 @@ export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageU
 
 export function stackVideoNarrationFrameDurationMs(durationSeconds: number, baseDurationMs = FRAME_DURATION_MS): number {
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) return baseDurationMs;
-  return Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + 500);
+  return Math.min(
+    MAX_NARRATED_FRAME_DURATION_MS,
+    Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + NARRATION_LEAD_MS + NARRATION_TAIL_MS),
+  );
+}
+
+export function stackVideoNarrationScript(title: string, detail: string): string {
+  const cleanTitle = normalizeNarrationText(title);
+  const cleanDetail = normalizeNarrationText(detail);
+  if (!cleanTitle) return truncateNarration(cleanDetail);
+  if (!cleanDetail || cleanDetail.toLocaleLowerCase() === cleanTitle.toLocaleLowerCase()) {
+    return truncateNarration(cleanTitle);
+  }
+  return truncateNarration(`${cleanTitle}. ${cleanDetail}`);
+}
+
+export function stackVideoFrameAtElapsed(
+  frameDurationsMs: readonly number[],
+  elapsedMs: number,
+): { index: number; progress: number } {
+  if (!frameDurationsMs.length) return { index: 0, progress: 1 };
+  const safeElapsedMs = Math.max(0, Number.isFinite(elapsedMs) ? elapsedMs : 0);
+  let frameStartMs = 0;
+  for (let index = 0; index < frameDurationsMs.length; index += 1) {
+    const durationMs = Math.max(1, frameDurationsMs[index]);
+    const frameEndMs = frameStartMs + durationMs;
+    if (safeElapsedMs < frameEndMs || index === frameDurationsMs.length - 1) {
+      return {
+        index,
+        progress: Math.min(1, Math.max(0, (safeElapsedMs - frameStartMs) / durationMs)),
+      };
+    }
+    frameStartMs = frameEndMs;
+  }
+  return { index: frameDurationsMs.length - 1, progress: 1 };
 }
 
 export async function generateStackVideo(
@@ -159,29 +196,35 @@ export async function generateStackVideo(
   const chunks: Blob[] = [];
   const recorder = new MediaRecorder(stream, {
     mimeType,
-    videoBitsPerSecond: ratio === 'landscape' ? 5_500_000 : 5_000_000,
-    ...(preparedAudio ? { audioBitsPerSecond: 192_000 } : {}),
+    videoBitsPerSecond: ratio === 'landscape' ? 3_200_000 : 2_800_000,
+    ...(preparedAudio ? { audioBitsPerSecond: 128_000 } : {}),
   });
   recorder.addEventListener('dataavailable', (event) => {
     if (event.data.size) chunks.push(event.data);
   });
 
   try {
+    renderFrame(context, width, height, board, frames[0], images, 0, 0, frames.length);
     recorder.start(500);
     preparedAudio?.start();
-    let elapsedMs = 0;
-    for (let index = 0; index < frames.length; index += 1) {
-      const frame = frames[index];
-      const durationMs = frameDurations[index];
-      const startedAt = performance.now();
-      while (true) {
-        const frameElapsedMs = Math.min(durationMs, performance.now() - startedAt);
-        renderFrame(context, width, height, board, frame, images, frameElapsedMs / durationMs, index, frames.length);
-        onProgress?.(Math.min(0.99, (elapsedMs + frameElapsedMs) / totalDurationMs));
-        if (frameElapsedMs >= durationMs) break;
-        await nextAnimationFrame();
-      }
-      elapsedMs += durationMs;
+    const timelineStartedAt = performance.now();
+    while (true) {
+      const elapsedMs = Math.min(totalDurationMs, performance.now() - timelineStartedAt);
+      const timing = stackVideoFrameAtElapsed(frameDurations, elapsedMs);
+      renderFrame(
+        context,
+        width,
+        height,
+        board,
+        frames[timing.index],
+        images,
+        timing.progress,
+        timing.index,
+        frames.length,
+      );
+      onProgress?.(Math.min(0.99, elapsedMs / totalDurationMs));
+      if (elapsedMs >= totalDurationMs) break;
+      await nextVideoTick();
     }
     await stopRecorder(recorder);
     onProgress?.(1);
@@ -340,10 +383,11 @@ async function prepareVideoAudio(
             if (buffer) {
               const duckAt = now + Math.max(fadeInSeconds, frameStartSeconds - 0.16);
               const speechAt = now + frameStartSeconds + 0.1;
-              const restoreAt = speechAt + buffer.duration + 0.18;
+              const speechDuration = narrationPlaybackDurationSeconds(buffer, frameDurationsMs[cardIndex + 1]);
+              const restoreAt = speechAt + speechDuration + 0.18;
               backgroundGain!.gain.setValueAtTime(backgroundVolume, duckAt);
               backgroundGain!.gain.linearRampToValueAtTime(backgroundVolume * 0.28, speechAt);
-              backgroundGain!.gain.setValueAtTime(backgroundVolume * 0.28, speechAt + buffer.duration);
+              backgroundGain!.gain.setValueAtTime(backgroundVolume * 0.28, speechAt + speechDuration);
               backgroundGain!.gain.linearRampToValueAtTime(backgroundVolume, restoreAt);
             }
             frameStartSeconds += frameDurationsMs[cardIndex + 1] / 1000;
@@ -354,7 +398,14 @@ async function prepareVideoAudio(
         }
         let frameStartSeconds = frameDurationsMs[0] / 1000;
         voiceSources.forEach((source, cardIndex) => {
-          if (source) source.start(now + frameStartSeconds + 0.1);
+          const buffer = voiceBuffers[cardIndex];
+          if (source && buffer) {
+            source.start(
+              now + frameStartSeconds + NARRATION_LEAD_MS / 1000,
+              0,
+              narrationPlaybackDurationSeconds(buffer, frameDurationsMs[cardIndex + 1]),
+            );
+          }
           frameStartSeconds += frameDurationsMs[cardIndex + 1] / 1000;
         });
         started = true;
@@ -700,8 +751,31 @@ function easeOut(value: number): number {
   return 1 - Math.pow(1 - value, 3);
 }
 
-function nextAnimationFrame(): Promise<void> {
-  return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+function narrationPlaybackDurationSeconds(buffer: AudioBuffer, frameDurationMs: number): number {
+  const availableMs = Math.max(100, frameDurationMs - NARRATION_LEAD_MS - NARRATION_TAIL_MS);
+  return Math.min(buffer.duration, availableMs / 1000);
+}
+
+function normalizeNarrationText(value: string): string {
+  return value
+    .replace(/https?:\/\/\S+/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/[.!?]+$/, '');
+}
+
+function truncateNarration(value: string): string {
+  const words = value.split(/\s+/).filter(Boolean);
+  let result = words.slice(0, 11).join(' ');
+  if (result.length > 104) {
+    result = result.slice(0, 104).replace(/\s+\S*$/, '').trim();
+  }
+  if (!result) return '';
+  return /[.!?]$/.test(result) ? result : `${result}.`;
+}
+
+function nextVideoTick(): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, Math.round(1000 / FRAME_RATE)));
 }
 
 function stopRecorder(recorder: MediaRecorder): Promise<void> {

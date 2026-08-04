@@ -83,6 +83,7 @@ import {
 import {
   generateStackVideo,
   STACK_VIDEO_RENDER_VERSION,
+  stackVideoNarrationScript,
   stackVideoRenderIsCurrent,
   type StackVideoBackgroundAudio,
   type StackVideoNarration,
@@ -11427,10 +11428,9 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private stackVideoNarrationText(card: BoardCard): string {
-    const detail = (card.shortSummary || card.subtitle || card.notes).trim();
-    const firstSentence = detail.match(/^(.{1,320}?[.!?])(?:\s|$)/)?.[1] ?? detail.slice(0, 280);
-    const narration = `${card.title.trim()}. ${firstSentence.trim()}`.trim();
-    return narration.slice(0, 420);
+    const detail = (card.subtitle || card.shortSummary || card.notes).trim();
+    const firstThought = detail.split(/(?<=[.!?])\s+|\s+[—–-]\s+|[;|]/, 1)[0] ?? '';
+    return stackVideoNarrationScript(card.title, firstThought);
   }
 
   private stackVideoBackgroundAudio(): StackVideoBackgroundAudio | null {
