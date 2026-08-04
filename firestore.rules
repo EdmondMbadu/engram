@@ -343,6 +343,7 @@ service cloud.firestore {
           'socialVideoRatio',
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
+          'socialVideoNarrationEnabled',
           'stackNarratorVoiceId',
           'stickers',
           'tourMeta',
@@ -444,6 +445,10 @@ service cloud.firestore {
             && request.resource.data.socialVideoAudioVolume >= 0
             && request.resource.data.socialVideoAudioVolume <= 0.5
           )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['socialVideoNarrationEnabled'])
+          || request.resource.data.socialVideoNarrationEnabled is bool
         )
         && (
           !request.resource.data.keys().hasAny(['stackNarratorVoiceId'])
