@@ -3345,6 +3345,85 @@
   line-height: 1.25;
 }
 
+.stack-preview__closing--viewer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.65rem, 2.6cqw, 1rem);
+  overflow: hidden;
+  padding: clamp(6.2rem, 22cqw, 7.2rem) 1.25rem max(1rem, env(safe-area-inset-bottom));
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.085) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.085) 1px, transparent 1px),
+    radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--board-accent, var(--accent)) 42%, #315e48), #10291f 58%, #08150f);
+  background-size: 24px 24px, 24px 24px, auto;
+}
+
+.stack-closing__visual {
+  width: min(84%, 21rem);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 1.35rem;
+  box-shadow: 0 1.25rem 2.6rem rgba(0, 0, 0, 0.34);
+}
+
+.stack-closing__visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stack-closing__brand,
+.stack-closing__invitation {
+  display: grid;
+  justify-items: center;
+}
+
+.stack-preview__closing .stack-closing__brand > strong {
+  font-size: clamp(1.35rem, 6.4cqw, 2rem);
+  letter-spacing: -0.035em;
+}
+
+.stack-closing__crane {
+  width: clamp(3.2rem, 15cqw, 4.6rem);
+}
+
+.stack-preview--viewer .stack-preview__closing .stack-closing__invitation h4 {
+  width: auto;
+  font-size: clamp(2rem, 10.5cqw, 3.25rem);
+  letter-spacing: -0.045em;
+}
+
+.stack-preview__cta.stack-closing__cta {
+  width: min(94%, 22rem);
+  margin-top: auto;
+  justify-content: center;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.28);
+  color: color-mix(in srgb, var(--board-accent, var(--accent)) 68%, #10291f);
+  font-size: clamp(0.88rem, 3.8cqw, 1.08rem);
+  padding: 0.85rem 1.1rem;
+}
+
+.stack-preview__closing .stack-closing__cta strong {
+  overflow: hidden;
+  font-size: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stack-preview__closing .stack-closing__url {
+  width: min(96%, 26rem);
+  margin-top: 0.6rem;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: clamp(0.56rem, 2.4cqw, 0.72rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .stack-preview-controls {
   justify-content: center;
   margin: 0.85rem 0;

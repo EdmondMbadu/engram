@@ -195,18 +195,36 @@
                     }
                   }
                 } @else {
-                  <div class="stack-preview__closing">
-                    <span class="material-symbols-outlined">auto_awesome_motion</span>
-                    <h4 i18n>Made with LivingWiki</h4>
-                    <p>{{ board.title }}</p>
+                  <div class="stack-preview__closing stack-preview__closing--viewer">
+                    @if (stackCoverImage(board); as closingImage) {
+                      <figure class="stack-closing__visual">
+                        <img [src]="closingImage" [alt]="board.title" />
+                      </figure>
+                    }
+
+                    <div class="stack-closing__brand">
+                      <span>Made with</span>
+                      <strong>LivingWiki.com</strong>
+                    </div>
+
+                    <div class="stack-closing__invitation">
+                      <img class="stack-closing__crane" src="/assets/image/lucky-paper-crane.png" alt="" aria-hidden="true" />
+                      <h4 i18n>Join for free</h4>
+                      <p i18n>Discover. Share. Belong.</p>
+                    </div>
+
                     @if (board.stackCtaLabel && stackCtaHref(board)) {
-                      <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener" style="justify-content: center; gap: .5rem; max-width: min(88%, 20rem); border-width: 3px; background: linear-gradient(135deg, #ffffff, #fff3bd); box-shadow: 0 18px 34px rgba(0,0,0,.28); color: #111827; font-size: .92rem; line-height: 1; padding: .78rem 1rem .78rem .82rem;">
-                        <span class="material-symbols-outlined" style="display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border-radius: 999px; background: #111827; color: #ffffff; font-size: 1.16rem; font-variation-settings: 'FILL' 1;">ads_click</span>
-                        <strong style="min-width: 0; overflow: hidden; color: inherit; font-size: inherit; font-weight: 950; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap;">{{ board.stackCtaLabel }}</strong>
+                      <a class="stack-preview__cta stack-closing__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener">
+                        <strong>{{ board.stackCtaLabel }}</strong>
+                        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+                      </a>
+                    } @else {
+                      <a class="stack-preview__cta stack-closing__cta" routerLink="/create-account">
+                        <strong i18n>Find what lights you up!</strong>
+                        <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
                       </a>
                     }
-                    <img [src]="stackQrImageUrl(board)" alt="Stack QR code"  i18n-alt/>
-                    <strong>{{ stackClosingUrlLabel(board) }}</strong>
+                    <strong class="stack-closing__url">{{ stackClosingUrlLabel(board) }}</strong>
                   </div>
                 }
               </div>
