@@ -3143,6 +3143,10 @@
     "source": "Your business claim draft is saved.",
     "file": "src/app/verify-email/verify-email.html"
   },
+  "3163044740176820503": {
+    "source": "Get started",
+    "file": "src/app/boards/boards.html"
+  },
   "3164641023049687472": {
     "source": "{$START_TAG_SPAN}location_on{$CLOSE_TAG_SPAN} Map pin ",
     "file": "src/app/business/business.html"
@@ -6541,7 +6545,7 @@
   },
   "5376278527160123538": {
     "source": "Find what lights you up!",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/public-wikis/public-wikis.html"
   },
   "5378115075775890660": {
     "source": "Rotate token",

@@ -3399,7 +3399,7 @@
 
 .stack-preview__cta.stack-closing__cta {
   width: min(94%, 22rem);
-  margin-top: auto;
+  margin-top: clamp(0.2rem, 1cqw, 0.4rem);
   justify-content: center;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.28);
   color: color-mix(in srgb, var(--board-accent, var(--accent)) 68%, #10291f);
