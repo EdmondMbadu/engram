@@ -18,7 +18,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v3')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v4')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v5')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v6')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v6')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v7')).toBeTrue();
   });
 
   it('uses only a rank label for ranked cards', () => {
@@ -81,17 +82,21 @@ describe('Stack video card images', () => {
       .toBe('video/mp4;codecs=avc1.42E01E,mp4a.40.2');
   });
 
-  it('keeps normal narration readable but caps unusually long cards', () => {
+  it('keeps each actor visible until its complete narration finishes', () => {
     expect(stackVideoNarrationFrameDurationMs(0)).toBe(2200);
     expect(stackVideoNarrationFrameDurationMs(3.25)).toBe(3700);
-    expect(stackVideoNarrationFrameDurationMs(30)).toBe(4400);
+    expect(stackVideoNarrationFrameDurationMs(30)).toBe(30_450);
   });
 
   it('builds a concise narration script without cutting through a word', () => {
     expect(stackVideoNarrationScript(
       'Robert Downey Jr.',
       'The architect of the MCU and its defining hero across the Infinity Saga.',
-    )).toBe('Robert Downey Jr. The architect of the MCU and its defining.');
+    )).toBe('Robert Downey Jr. The architect of the MCU and its defining hero across the Infinity Saga.');
+    expect(stackVideoNarrationScript(
+      'Robert Downey Jr.',
+      'Tony Stark / Iron Man. The undisputed anchor of the franchise.',
+    )).toBe('Robert Downey Jr. Tony Stark, Iron Man. The undisputed anchor of the franchise.');
     expect(stackVideoNarrationScript('Chris Evans.', '')).toBe('Chris Evans.');
   });
 

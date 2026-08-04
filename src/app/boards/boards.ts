@@ -11428,9 +11428,15 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private stackVideoNarrationText(card: BoardCard): string {
-    const detail = (card.subtitle || card.shortSummary || card.notes).trim();
-    const firstThought = detail.split(/(?<=[.!?])\s+|\s+[—–-]\s+|[;|]/, 1)[0] ?? '';
-    return stackVideoNarrationScript(card.title, firstThought);
+    const subtitle = card.subtitle.trim();
+    const description = (card.notes || card.shortSummary || '').trim();
+    const firstThought = description.match(/^(.{1,240}?[.!?])(?:\s|$)/)?.[1]
+      ?? description.split(/\s+[—–-]\s+|[;|]/, 1)[0]
+      ?? '';
+    return stackVideoNarrationScript(
+      card.title,
+      [subtitle, firstThought].filter(Boolean).join('. '),
+    );
   }
 
   private stackVideoBackgroundAudio(): StackVideoBackgroundAudio | null {

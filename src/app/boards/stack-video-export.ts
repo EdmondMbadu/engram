@@ -62,9 +62,8 @@ const FRAME_DURATION_MS = 2200;
 const CLOSING_DURATION_MS = 2100;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
-const MAX_NARRATED_FRAME_DURATION_MS = 4400;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v6';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v7';
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
@@ -94,10 +93,7 @@ export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageU
 
 export function stackVideoNarrationFrameDurationMs(durationSeconds: number, baseDurationMs = FRAME_DURATION_MS): number {
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) return baseDurationMs;
-  return Math.min(
-    MAX_NARRATED_FRAME_DURATION_MS,
-    Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + NARRATION_LEAD_MS + NARRATION_TAIL_MS),
-  );
+  return Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + NARRATION_LEAD_MS + NARRATION_TAIL_MS);
 }
 
 export function stackVideoNarrationScript(title: string, detail: string): string {
@@ -759,6 +755,7 @@ function narrationPlaybackDurationSeconds(buffer: AudioBuffer, frameDurationMs: 
 function normalizeNarrationText(value: string): string {
   return value
     .replace(/https?:\/\/\S+/gi, '')
+    .replace(/\s*\/\s*/g, ', ')
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/[.!?]+$/, '');
@@ -766,9 +763,9 @@ function normalizeNarrationText(value: string): string {
 
 function truncateNarration(value: string): string {
   const words = value.split(/\s+/).filter(Boolean);
-  let result = words.slice(0, 11).join(' ');
-  if (result.length > 104) {
-    result = result.slice(0, 104).replace(/\s+\S*$/, '').trim();
+  let result = words.slice(0, 18).join(' ');
+  if (result.length > 160) {
+    result = result.slice(0, 160).replace(/\s+\S*$/, '').trim();
   }
   if (!result) return '';
   return /[.!?]$/.test(result) ? result : `${result}.`;
