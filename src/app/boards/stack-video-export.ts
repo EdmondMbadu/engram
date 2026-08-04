@@ -63,7 +63,7 @@ const CLOSING_DURATION_MS = 2100;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v8';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v9';
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;

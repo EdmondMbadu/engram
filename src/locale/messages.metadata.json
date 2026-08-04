@@ -937,7 +937,7 @@
   },
   "1594128309539616928": {
     "source": "Join for free",
-    "file": "src/app/public-wikis/public-wikis.html"
+    "file": "src/app/boards/boards.html"
   },
   "1594219297096530764": {
     "source": "Loading Source Files...",
@@ -3075,10 +3075,6 @@
     "source": " Every claimed business gets an always-on customer-service agent that can answer calls, explain the business, and guide customers in 60+ languages. Customers choose the language when they scan or call, so there is nothing for the business to configure here. ",
     "file": "src/app/business-claim/business-claim.html"
   },
-  "3124095857098416458": {
-    "source": "Used in the live view and generated video",
-    "file": "src/app/boards/boards.html"
-  },
   "3128911811072399567": {
     "source": " {$INTERPOLATION} ready/retry · {$INTERPOLATION_1} skipped/created ",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -3538,6 +3534,10 @@
   "3378119430490179696": {
     "source": "No topic selected",
     "file": "src/app/wiki/wiki.html"
+  },
+  "3379455520838518111": {
+    "source": "Complete card descriptions",
+    "file": "src/app/boards/boards.html"
   },
   "337993762056511422": {
     "source": "Failed to create answer card.",
@@ -6117,7 +6117,7 @@
   },
   "5100760148289082697": {
     "source": "Discover. Share. Belong.",
-    "file": "src/app/public-wikis/public-wikis.html"
+    "file": "src/app/boards/boards.html"
   },
   "5103910017747954236": {
     "source": "The Mental Health Knowledge Base",
@@ -6289,10 +6289,6 @@
   },
   "5237540255835304092": {
     "source": "{$START_TAG_SPAN}close{$CLOSE_TAG_SPAN} Decline ",
-    "file": "src/app/boards/boards.html"
-  },
-  "5238123465347786401": {
-    "source": "Stack QR code",
     "file": "src/app/boards/boards.html"
   },
   "5245657366616111982": {
@@ -6545,7 +6541,7 @@
   },
   "5376278527160123538": {
     "source": "Find what lights you up!",
-    "file": "src/app/public-wikis/public-wikis.html"
+    "file": "src/app/boards/boards.html"
   },
   "5378115075775890660": {
     "source": "Rotate token",
@@ -7274,6 +7270,10 @@
   "5866254605255506989": {
     "source": "English",
     "file": "src/app/boards/board-translation.ts"
+  },
+  "5867114387620001681": {
+    "source": "Fast slideshow · music optional",
+    "file": "src/app/boards/boards.html"
   },
   "5867579308114836570": {
     "source": "Direct Chat",
@@ -8463,6 +8463,10 @@
     "source": "Waterfront",
     "file": "src/app/atlas-landing/atlas-landing.ts"
   },
+  "6608013488511673510": {
+    "source": "No narration",
+    "file": "src/app/boards/boards.html"
+  },
   "6608990462266379919": {
     "source": "How sisterhood works",
     "file": "src/app/fence-line/fence-line.html"
@@ -8746,6 +8750,10 @@
   "6824739259558485280": {
     "source": "Same operator as Chester's incinerator: one company, two fencelines.",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "6825269236502139760": {
+    "source": "Video narration",
+    "file": "src/app/boards/boards.html"
   },
   "683053614579539412": {
     "source": "Ask {city} anything from your sources.",
@@ -9090,10 +9098,6 @@
   "7109926126126578845": {
     "source": "Subscribe to weekly updates",
     "file": "src/app/chat/chat.ts"
-  },
-  "7116646592650069934": {
-    "source": "Narrator voice",
-    "file": "src/app/boards/boards.html"
   },
   "7122661321319980206": {
     "source": "Reading document",
@@ -9474,6 +9478,10 @@
   "7400407362759733641": {
     "source": " Pathways {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
     "file": "src/app/green-jobs/green-jobs.html"
+  },
+  "7409325500436321433": {
+    "source": "Full video narration is available on paid plans.",
+    "file": "src/app/boards/boards.ts"
   },
   "7410470931053054860": {
     "source": "Official Spotify player",
@@ -11782,6 +11790,10 @@
   "9045596807911679995": {
     "source": "Back to LivingWiki home",
     "file": "src/app/trove/trove.html"
+  },
+  "9049584649597936430": {
+    "source": "Full narration",
+    "file": "src/app/boards/boards.html"
   },
   "905156611670121241": {
     "source": "Could not send those invitations.",

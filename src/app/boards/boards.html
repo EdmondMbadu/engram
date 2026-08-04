@@ -4881,12 +4881,59 @@
                     <div class="stack-voice-picker stack-voice-picker--prominent">
                       <div class="stack-voice-picker__head">
                         <div>
-                          <span i18n>Narrator voice</span>
+                          <span i18n>Video narration</span>
                           <strong>{{ stackSelectedNarratorName() }}</strong>
                         </div>
-                        <small i18n>Used in the live view and generated video</small>
+                        @if (stackVideoNarrationEnabled()) {
+                          <small i18n>Complete card descriptions</small>
+                        } @else {
+                          <small i18n>Fast slideshow · music optional</small>
+                        }
                       </div>
 
+                      <div class="stack-narration-modes" role="radiogroup" aria-label="Video narration" i18n-aria-label>
+                        <button
+                          type="button"
+                          class="stack-narration-mode"
+                          [class.stack-narration-mode--active]="!stackVideoNarrationEnabled()"
+                          [attr.aria-checked]="!stackVideoNarrationEnabled()"
+                          role="radio"
+                          (click)="setStackVideoNarrationEnabled(false)"
+                        >
+                          <span class="material-symbols-outlined">voice_over_off</span>
+                          <span>
+                            <strong i18n>No narration</strong>
+                            <small i18n>Fast slideshow · music optional</small>
+                          </span>
+                          @if (!stackVideoNarrationEnabled()) {
+                            <span class="stack-narration-mode__check material-symbols-outlined">check_circle</span>
+                          }
+                        </button>
+                        <button
+                          type="button"
+                          class="stack-narration-mode"
+                          [class.stack-narration-mode--active]="stackVideoNarrationEnabled()"
+                          [class.stack-narration-mode--locked]="!stackVideoNarrationEligible()"
+                          [attr.aria-checked]="stackVideoNarrationEnabled()"
+                          role="radio"
+                          (click)="setStackVideoNarrationEnabled(true)"
+                        >
+                          <span class="material-symbols-outlined">record_voice_over</span>
+                          <span>
+                            <strong i18n>Full narration</strong>
+                            <small i18n>Complete card descriptions</small>
+                          </span>
+                          @if (stackVideoNarrationEligible()) {
+                            @if (stackVideoNarrationEnabled()) {
+                              <span class="stack-narration-mode__check material-symbols-outlined">check_circle</span>
+                            }
+                          } @else {
+                            <span class="stack-narration-mode__premium" i18n>Premium</span>
+                          }
+                        </button>
+                      </div>
+
+                      @if (stackVideoNarrationEnabled()) {
                       <article
                         class="stack-personal-voice"
                         [class.stack-personal-voice--active]="stackNarratorVoiceId() === personalStackNarratorVoiceId"
@@ -5041,6 +5088,7 @@
                           </div>
                         }
                       </div>
+                      }
                       @if (stackVoiceError() || personalVoiceError()) {
                         <small class="stack-voice-picker__error">
                           <span class="material-symbols-outlined">error</span>

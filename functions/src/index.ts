@@ -17192,9 +17192,25 @@ export const synthesizeChatAnswerSpeech = onCall(
     if (!request.auth?.uid && !normalizeAnonymousVisitorId(request.data?.anonymousVisitorId)) {
       throw new HttpsError('unauthenticated', 'Authentication or anonymousVisitorId is required.');
     }
-    const requestedMode = request.data?.mode === 'tour' ? 'tour' : request.data?.mode === 'full' ? 'full' : 'recap';
+    const requestedMode = request.data?.mode === 'stack-video'
+      ? 'stack-video'
+      : request.data?.mode === 'tour'
+        ? 'tour'
+        : request.data?.mode === 'full'
+          ? 'full'
+          : 'recap';
     const requestedNarratorId = String(request.data?.narratorVoiceId ?? '').trim();
     const boardId = String(request.data?.boardId ?? '').trim();
+    if (requestedMode === 'stack-video') {
+      const userId = request.auth?.uid;
+      if (!userId) {
+        throw new HttpsError('unauthenticated', 'Sign in to create narrated videos.');
+      }
+      const { eligible } = await personalNarratorEligibility(userId);
+      if (!eligible) {
+        throw new HttpsError('failed-precondition', 'Full video narration requires an active paid plan.');
+      }
+    }
     let requestedNarratorVoiceId = requestedNarratorId && requestedNarratorId !== personalStackNarratorVoiceId
       ? stackNarratorVoiceIds[requestedNarratorId as keyof typeof stackNarratorVoiceIds]
       : '';
@@ -17203,7 +17219,7 @@ export const synthesizeChatAnswerSpeech = onCall(
       && !requestedNarratorVoiceId) {
       throw new HttpsError('invalid-argument', 'The selected narrator voice is not available.');
     }
-    const text = requestedMode === 'full' || requestedMode === 'tour'
+    const text = requestedMode === 'full' || requestedMode === 'tour' || requestedMode === 'stack-video'
       ? normalizeSpeechText(request.data?.text)
       : buildSpeechRecapText(request.data?.question, request.data?.text);
     if (!text) {
@@ -17254,8 +17270,10 @@ export const synthesizeChatAnswerSpeech = onCall(
       throw new HttpsError('failed-precondition', 'ElevenLabs API key is not configured.');
     }
 
-    const speechModel = requestedMode === 'tour' ? tourGuideSpeechModel : chatAnswerSpeechModel;
-    const voiceSettings = requestedMode === 'tour'
+    const speechModel = requestedMode === 'tour' || requestedMode === 'stack-video'
+      ? tourGuideSpeechModel
+      : chatAnswerSpeechModel;
+    const voiceSettings = requestedMode === 'tour' || requestedMode === 'stack-video'
       ? {
           stability: 0.34,
           similarity_boost: 0.86,
@@ -17268,7 +17286,9 @@ export const synthesizeChatAnswerSpeech = onCall(
           style: 0,
           use_speaker_boost: false,
     };
-    const speechVersion = requestedMode === 'tour' ? tourSpeechVersion : speechRecapVersion;
+    const speechVersion = requestedMode === 'tour' || requestedMode === 'stack-video'
+      ? tourSpeechVersion
+      : speechRecapVersion;
     const primaryVoiceId = requestedNarratorVoiceId || chatAnswerVoiceId;
     const voiceIds = isPersonalNarrator
       ? [primaryVoiceId]

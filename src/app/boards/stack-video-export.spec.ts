@@ -19,7 +19,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v5')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v6')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v7')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v8')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v8')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v9')).toBeTrue();
   });
 
   it('uses only a rank label for ranked cards', () => {
