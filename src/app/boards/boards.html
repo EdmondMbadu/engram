@@ -5455,6 +5455,45 @@
                   <p i18n>Social video</p>
                   <h4 i18n>Create the video once</h4>
                   <span i18n>LivingWiki will generate and permanently host an MP4 of this live view.</span>
+                  <div class="stack-share-sheet__narration-modes" role="radiogroup" aria-label="Video narration" i18n-aria-label>
+                    <button
+                      type="button"
+                      [class.stack-share-sheet__narration-mode--active]="stackVideoNarrationEnabled()"
+                      [class.stack-share-sheet__narration-mode--locked]="!stackVideoNarrationEligible()"
+                      [attr.aria-checked]="stackVideoNarrationEnabled()"
+                      [disabled]="stackVideoExporting()"
+                      role="radio"
+                      (click)="setStackVideoNarrationEnabled(true)"
+                    >
+                      <span class="material-symbols-outlined">record_voice_over</span>
+                      <span>
+                        <strong i18n>Full narration</strong>
+                        <small i18n>Complete card descriptions</small>
+                      </span>
+                      @if (!stackVideoNarrationEligible()) {
+                        <em i18n>Premium</em>
+                      } @else if (stackVideoNarrationEnabled()) {
+                        <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span>
+                      }
+                    </button>
+                    <button
+                      type="button"
+                      [class.stack-share-sheet__narration-mode--active]="!stackVideoNarrationEnabled()"
+                      [attr.aria-checked]="!stackVideoNarrationEnabled()"
+                      [disabled]="stackVideoExporting()"
+                      role="radio"
+                      (click)="setStackVideoNarrationEnabled(false)"
+                    >
+                      <span class="material-symbols-outlined">voice_over_off</span>
+                      <span>
+                        <strong i18n>No narration</strong>
+                        <small i18n>Fast slideshow · music optional</small>
+                      </span>
+                      @if (!stackVideoNarrationEnabled()) {
+                        <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span>
+                      }
+                    </button>
+                  </div>
                   @if (canEditBoard(board)) {
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
                       <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'movie' }}</span>

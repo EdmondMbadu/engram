@@ -1316,6 +1316,98 @@
   padding: 0.42rem 0.58rem;
 }
 
+.stack-share-sheet__narration-modes {
+  display: grid;
+  width: min(100%, 28rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.stack-share-sheet__narration-modes > button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.48rem;
+  min-width: 0;
+  min-height: 3.85rem;
+  border: 2px solid var(--line);
+  border-radius: 0.82rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.58rem;
+  text-align: left;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.stack-share-sheet__narration-modes > button:hover {
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--line));
+}
+
+.stack-share-sheet__narration-modes > button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.stack-share-sheet__narration-modes > .stack-share-sheet__narration-mode--active {
+  border-color: var(--modal-ink);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface));
+  box-shadow: 2px 2px 0 var(--modal-ink);
+  transform: translate(-1px, -1px);
+}
+
+.stack-share-sheet__narration-modes > .stack-share-sheet__narration-mode--locked {
+  background: color-mix(in srgb, var(--soft-fill) 78%, var(--surface));
+}
+
+.stack-share-sheet__narration-modes > button > .material-symbols-outlined:first-child {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 0.62rem;
+  background: color-mix(in srgb, var(--accent) 12%, var(--soft-fill));
+  color: var(--accent);
+  font-size: 1.08rem;
+}
+
+.stack-share-sheet__narration-modes > button > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.stack-share-sheet__narration-modes strong {
+  font-size: 0.7rem;
+  font-weight: 950;
+}
+
+.stack-share-sheet__narration-modes small {
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.stack-share-sheet__narration-modes em {
+  border-radius: 999px;
+  background: var(--modal-ink);
+  color: var(--modal-paper);
+  font-size: 0.5rem;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.36rem;
+  text-transform: uppercase;
+}
+
+.stack-share-sheet__narration-check {
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-variation-settings: 'FILL' 1;
+}
+
 .stack-share-sheet__empty {
   display: grid;
   justify-items: center;
@@ -1641,6 +1733,10 @@
 }
 
 @media (max-width: 440px) {
+  .stack-share-sheet__narration-modes {
+    grid-template-columns: 1fr;
+  }
+
   .stack-share-sheet__destinations {
     grid-template-columns: repeat(6, 3.7rem);
   }

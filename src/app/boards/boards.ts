@@ -1418,7 +1418,7 @@ export class BoardsComponent implements OnDestroy {
   readonly stackAudioPreviewingId = signal<string | null>(null);
   readonly stackAudioPreviewLoadingId = signal<string | null>(null);
   readonly stackAudioError = signal<string | null>(null);
-  readonly stackVideoNarrationEnabled = signal(false);
+  readonly stackVideoNarrationEnabled = signal(true);
   readonly stackNarratorVoiceId = signal(DEFAULT_STACK_NARRATOR_VOICE_ID);
   readonly stackVoicePreviewingId = signal<string | null>(null);
   readonly stackVoicePreviewLoadingId = signal<string | null>(null);
@@ -3811,7 +3811,7 @@ export class BoardsComponent implements OnDestroy {
           socialVideoRatio: 'vertical',
           socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
           socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
-          socialVideoNarrationEnabled: false,
+          socialVideoNarrationEnabled: true,
           stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
           forkedFromBoardId: '',
           forkedFromTitle: '',
@@ -3999,7 +3999,7 @@ export class BoardsComponent implements OnDestroy {
         socialVideoRatio: 'vertical',
         socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
         socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
-        socialVideoNarrationEnabled: false,
+        socialVideoNarrationEnabled: true,
         stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
         forkedFromBoardId: '',
         forkedFromTitle: '',
@@ -9759,7 +9759,7 @@ export class BoardsComponent implements OnDestroy {
       socialVideoRatio: 'vertical',
       socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
       socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
-      socialVideoNarrationEnabled: false,
+      socialVideoNarrationEnabled: true,
       stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
       parentBoardId: '',
       parentCardId: '',
@@ -10282,7 +10282,7 @@ export class BoardsComponent implements OnDestroy {
 
   private requestStackVideoNarrationUpgrade(): void {
     this.stopStackVoicePreview();
-    this.stackVideoNarrationEnabled.set(false);
+    this.stackVideoNarrationEnabled.set(true);
     this.stackVoiceError.set($localize`Full video narration is available on paid plans.`);
     void this.router.navigate(['/pricing'], { queryParams: { feature: 'video-narration' } });
   }
@@ -11118,6 +11118,10 @@ export class BoardsComponent implements OnDestroy {
     if (!board || !this.isBrowser || this.stackVideoExporting()) {
       return;
     }
+    if (this.stackVideoNarrationEnabled() && !this.stackVideoNarrationEligible()) {
+      this.requestStackVideoNarrationUpgrade();
+      return;
+    }
     const url = this.stackShareUrl(board);
     const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
     const text = `${caption}\n${url}`;
@@ -11288,6 +11292,10 @@ export class BoardsComponent implements OnDestroy {
     const uid = this.authService.uid();
     if (!uid || !this.storage) {
       this.setStackShareMessage('Sign in to publish a permanent video link.', false);
+      return;
+    }
+    if (this.stackVideoNarrationEnabled() && !this.stackVideoNarrationEligible()) {
+      this.requestStackVideoNarrationUpgrade();
       return;
     }
 
@@ -11657,9 +11665,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackRatio.set('vertical');
     this.stackAudioTrackId.set(normalizeStackAudioTrackId(board.socialVideoAudioTrackId));
     this.stackAudioVolume.set(normalizeStackAudioVolume(board.socialVideoAudioVolume));
-    this.stackVideoNarrationEnabled.set(
-      this.stackVideoNarrationEligible() && board.socialVideoNarrationEnabled !== false,
-    );
+    this.stackVideoNarrationEnabled.set(board.socialVideoNarrationEnabled !== false);
     this.stackNarratorVoiceId.set(normalizeStackNarratorVoiceId(board.stackNarratorVoiceId));
     this.stackAudioError.set(null);
     this.stackVoiceError.set(null);
