@@ -62,6 +62,11 @@ import {
 } from './tour-order';
 import { isGenericTourStopFallback, tourStopDestinationQuery } from './tour-stop';
 import {
+  youtubePrivacyEmbedUrl,
+  youtubeVideoIdFromReference,
+  youtubeWatchUrl,
+} from './youtube-video';
+import {
   boardQuizEligibleCardCount,
   buildBoardLearningQuiz,
   gradeBoardLearningQuiz,
@@ -238,6 +243,15 @@ type BoardCard = {
   mediaKind?: BoardMediaKind;
   shortSummary?: string;
   rank?: number;
+  videoIntent?: boolean;
+  videoSearchQuery?: string;
+  youtubeVideoId?: string;
+  youtubeVideoTitle?: string;
+  youtubeChannelTitle?: string;
+  youtubeThumbnailUrl?: string;
+  youtubeDurationSeconds?: number;
+  youtubeMatchConfidence?: number;
+  youtubeVerifiedAt?: string;
   imageUrl: string;
   imageUrls: string[];
   audioPreviewUrl: string;
@@ -358,6 +372,14 @@ type CardDraft = {
   spotifyArtistName: string;
   spotifyAlbumName: string;
   spotifyArtworkUrl: string;
+  youtubeReference: string;
+  youtubeVideoId: string;
+  youtubeVideoTitle: string;
+  youtubeChannelTitle: string;
+  youtubeThumbnailUrl: string;
+  youtubeDurationSeconds: number;
+  youtubeMatchConfidence: number;
+  youtubeVerifiedAt: string;
   placeQuery: string;
   placeCity: string;
   placeId: string;
@@ -493,6 +515,15 @@ type BoardWizardGeneratedCard = {
   media_kind?: BoardMediaKind;
   short_summary?: string;
   rank?: number;
+  video_intent?: boolean;
+  video_search_query?: string;
+  youtubeVideoId?: string;
+  youtubeVideoTitle?: string;
+  youtubeChannelTitle?: string;
+  youtubeThumbnailUrl?: string;
+  youtubeDurationSeconds?: number;
+  youtubeMatchConfidence?: number;
+  youtubeVerifiedAt?: string;
   imageUrl?: string;
   audioPreviewUrl?: string;
   spotifyTrackId?: string;
@@ -1105,7 +1136,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css'],
+  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1146,6 +1177,8 @@ export class BoardsComponent implements OnDestroy {
   private readonly spotifyEnrichedBoardIds = new Set<string>();
   private readonly spotifyEnrichmentInFlightBoardIds = new Set<string>();
   private readonly spotifyEmbedUrls = new Map<string, SafeResourceUrl>();
+  private readonly youtubeEmbedUrls = new Map<string, SafeResourceUrl>();
+  private wizardVideoEnrichmentRun = 0;
   private stackLivePreviewAutoplay = false;
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
@@ -1388,6 +1421,8 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardSelectedCardIds = signal<Set<string>>(new Set());
   readonly wizardRedoingCardIds = signal<Set<string>>(new Set());
   readonly wizardImageLoadingCardIds = signal<Set<string>>(new Set());
+  readonly wizardVideoLoadingCardIds = signal<Set<string>>(new Set());
+  readonly wizardVideoNotice = signal<string | null>(null);
   readonly wizardEditingCardId = signal<string | null>(null);
   readonly wizardCardEditorSection = signal<WizardCardEditorSection>('details');
   readonly wizardCardImageToolMode = signal<CardImageToolMode>(null);
@@ -1465,6 +1500,7 @@ export class BoardsComponent implements OnDestroy {
   readonly openCardMemoryGalleries = signal<Set<string>>(new Set());
   readonly cardPhotoViewerCardId = signal<string | null>(null);
   readonly cardPhotoViewerIndex = signal(0);
+  readonly cardVideoViewerCardId = signal<string | null>(null);
   readonly boardLearnOpen = signal(false);
   readonly boardLearnView = signal<BoardLearnView>('menu');
   readonly boardLearnStudyIndex = signal(0);
@@ -1520,6 +1556,14 @@ export class BoardsComponent implements OnDestroy {
     spotifyArtistName: '',
     spotifyAlbumName: '',
     spotifyArtworkUrl: '',
+    youtubeReference: '',
+    youtubeVideoId: '',
+    youtubeVideoTitle: '',
+    youtubeChannelTitle: '',
+    youtubeThumbnailUrl: '',
+    youtubeDurationSeconds: 0,
+    youtubeMatchConfidence: 0,
+    youtubeVerifiedAt: '',
     placeQuery: '',
     placeCity: '',
     placeId: '',
@@ -1720,6 +1764,14 @@ export class BoardsComponent implements OnDestroy {
     const board = this.selectedBoard();
     return board?.cards.find((card) => card.id === cardId)
       ?? board?.cards.flatMap((card) => this.relatedCardsFor(card)).find((card) => card.id === cardId)
+      ?? null;
+  });
+  readonly cardVideoViewerCard = computed(() => {
+    const cardId = this.cardVideoViewerCardId();
+    const board = this.selectedBoard();
+    return board?.cards.find((card) => card.id === cardId)
+      ?? board?.cards.flatMap((card) => this.relatedCardsFor(card)).find((card) => card.id === cardId)
+      ?? this.wizardPreviewCards().find((card) => card.id === cardId)
       ?? null;
   });
   readonly selectedBoardTitle = computed(() => this.selectedBoard()?.title ?? $localize`Card`);
@@ -3143,6 +3195,7 @@ export class BoardsComponent implements OnDestroy {
       this.wizardPreviewCards.set(previewCards);
       this.wizardSelectedCardIds.set(new Set(previewCards.map((card) => card.id)));
       this.wizardStep.set('preview');
+      void this.enrichWizardVideos(previewCards, batch);
     } catch (error) {
       this.wizardError.set(this.wizardGenerationErrorMessage(error));
       if (previousResult && previousPreviewCards.length) {
@@ -3404,6 +3457,9 @@ export class BoardsComponent implements OnDestroy {
             }
           : item));
         this.wizardSelectedCardIds.update((ids) => new Set(ids).add(cardId));
+        if (this.wizardCardWantsVideo(replacement)) {
+          await this.refreshWizardCardVideo(cardId);
+        }
       }
     } catch {
       this.wizardPreviewCards.update((cards) =>
@@ -3474,12 +3530,17 @@ export class BoardsComponent implements OnDestroy {
   }
 
   isWizardCardBusy(cardId: string): boolean {
-    return this.wizardRedoingCardIds().has(cardId) || this.wizardImageLoadingCardIds().has(cardId);
+    return this.wizardRedoingCardIds().has(cardId)
+      || this.wizardImageLoadingCardIds().has(cardId)
+      || this.wizardVideoLoadingCardIds().has(cardId);
   }
 
   wizardCardBusyLabel(cardId: string): string {
     if (this.wizardImageLoadingCardIds().has(cardId)) {
       return 'Finding image';
+    }
+    if (this.wizardVideoLoadingCardIds().has(cardId)) {
+      return 'Finding video';
     }
     if (this.wizardRedoingCardIds().has(cardId)) {
       return 'Replacing card';
@@ -3720,6 +3781,15 @@ export class BoardsComponent implements OnDestroy {
       mediaKind: card.media_kind ?? 'none',
       shortSummary: card.short_summary?.trim() || card.subtitle.trim(),
       rank: Math.max(0, Math.min(100, Math.trunc(card.rank ?? 0))),
+      videoIntent: card.video_intent === true,
+      videoSearchQuery: card.video_search_query?.trim() || '',
+      youtubeVideoId: card.youtubeVideoId?.trim() || '',
+      youtubeVideoTitle: card.youtubeVideoTitle?.trim() || '',
+      youtubeChannelTitle: card.youtubeChannelTitle?.trim() || '',
+      youtubeThumbnailUrl: card.youtubeThumbnailUrl?.trim() || '',
+      youtubeDurationSeconds: Math.max(0, Math.min(86_400, Math.trunc(card.youtubeDurationSeconds ?? 0))),
+      youtubeMatchConfidence: Math.max(0, Math.min(1, card.youtubeMatchConfidence ?? 0)),
+      youtubeVerifiedAt: card.youtubeVerifiedAt?.trim() || '',
       imageUrl: card.imageUrl,
       imageUrls: card.imageUrl ? [card.imageUrl] : [],
       audioPreviewUrl: card.audioPreviewUrl ?? '',
@@ -4276,6 +4346,14 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtistName: '',
       spotifyAlbumName: '',
       spotifyArtworkUrl: '',
+      youtubeReference: '',
+      youtubeVideoId: '',
+      youtubeVideoTitle: '',
+      youtubeChannelTitle: '',
+      youtubeThumbnailUrl: '',
+      youtubeDurationSeconds: 0,
+      youtubeMatchConfidence: 0,
+      youtubeVerifiedAt: '',
       placeQuery: '',
       placeCity: '',
       placeId: '',
@@ -4328,6 +4406,14 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtistName: card.spotifyArtistName,
       spotifyAlbumName: card.spotifyAlbumName,
       spotifyArtworkUrl: card.spotifyArtworkUrl,
+      youtubeReference: youtubeWatchUrl(card.youtubeVideoId ?? ''),
+      youtubeVideoId: card.youtubeVideoId ?? '',
+      youtubeVideoTitle: card.youtubeVideoTitle ?? '',
+      youtubeChannelTitle: card.youtubeChannelTitle ?? '',
+      youtubeThumbnailUrl: card.youtubeThumbnailUrl ?? '',
+      youtubeDurationSeconds: card.youtubeDurationSeconds ?? 0,
+      youtubeMatchConfidence: card.youtubeMatchConfidence ?? 0,
+      youtubeVerifiedAt: card.youtubeVerifiedAt ?? '',
       placeQuery: card.title,
       placeCity: '',
       placeId: card.placeId,
@@ -5672,6 +5758,15 @@ export class BoardsComponent implements OnDestroy {
       spotifyArtistName: draft.spotifyArtistName.trim(),
       spotifyAlbumName: draft.spotifyAlbumName.trim(),
       spotifyArtworkUrl: draft.spotifyArtworkUrl.trim(),
+      videoIntent: !!draft.youtubeVideoId,
+      videoSearchQuery: existing?.videoSearchQuery ?? '',
+      youtubeVideoId: youtubeVideoIdFromReference(draft.youtubeVideoId || draft.youtubeReference),
+      youtubeVideoTitle: draft.youtubeVideoTitle.trim(),
+      youtubeChannelTitle: draft.youtubeChannelTitle.trim(),
+      youtubeThumbnailUrl: draft.youtubeThumbnailUrl.trim(),
+      youtubeDurationSeconds: Math.max(0, Math.min(86_400, Math.trunc(draft.youtubeDurationSeconds || 0))),
+      youtubeMatchConfidence: Math.max(0, Math.min(1, draft.youtubeMatchConfidence || 0)),
+      youtubeVerifiedAt: draft.youtubeVerifiedAt.trim(),
       placeId,
       googleMapsUrl,
       what3wordsAddress,
@@ -8727,6 +8822,98 @@ export class BoardsComponent implements OnDestroy {
     );
   }
 
+  hasYoutubeVideo(card: Pick<BoardCard, 'youtubeVideoId'> | BoardWizardPreviewCard): boolean {
+    return !!youtubeVideoIdFromReference(card.youtubeVideoId);
+  }
+
+  cardMediaPoster(card: Pick<BoardCard, 'imageUrl' | 'imageUrls' | 'youtubeVideoId' | 'youtubeThumbnailUrl'>): string {
+    return this.hasYoutubeVideo(card) && card.youtubeThumbnailUrl
+      ? card.youtubeThumbnailUrl
+      : this.currentCardImage(card as BoardCard);
+  }
+
+  youtubeVideoHref(card: Pick<BoardCard, 'youtubeVideoId'> | BoardWizardPreviewCard): string {
+    return youtubeWatchUrl(card.youtubeVideoId ?? '');
+  }
+
+  youtubeVideoEmbedUrl(card: Pick<BoardCard, 'youtubeVideoId'>): SafeResourceUrl | null {
+    const videoId = youtubeVideoIdFromReference(card.youtubeVideoId);
+    if (!videoId) return null;
+    const cached = this.youtubeEmbedUrls.get(videoId);
+    if (cached) return cached;
+    const embedUrl = youtubePrivacyEmbedUrl(videoId);
+    if (!embedUrl) return null;
+    const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+    this.youtubeEmbedUrls.set(videoId, safeUrl);
+    return safeUrl;
+  }
+
+  youtubeDurationLabel(seconds: number | undefined): string {
+    const duration = Math.max(0, Math.trunc(seconds ?? 0));
+    if (!duration) return '';
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    const remainingSeconds = duration % 60;
+    return hours
+      ? `${hours}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`
+      : `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+  }
+
+  openCardVideoViewer(card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.hasYoutubeVideo(card)) return;
+    this.closeCardPhotoViewer();
+    this.cardVideoViewerCardId.set(card.id);
+  }
+
+  openWizardCardVideoViewer(card: BoardWizardPreviewCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.hasYoutubeVideo(card)) return;
+    this.cardVideoViewerCardId.set(card.id);
+  }
+
+  closeCardVideoViewer(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.cardVideoViewerCardId.set(null);
+  }
+
+  onCardYoutubeReferenceInput(value: string): void {
+    const videoId = youtubeVideoIdFromReference(value);
+    this.cardDraft.update((draft) => {
+      const changed = videoId !== draft.youtubeVideoId;
+      return {
+        ...draft,
+        youtubeReference: value,
+        youtubeVideoId: videoId,
+        youtubeVideoTitle: changed ? '' : draft.youtubeVideoTitle,
+        youtubeChannelTitle: changed ? '' : draft.youtubeChannelTitle,
+        youtubeThumbnailUrl: changed ? '' : draft.youtubeThumbnailUrl,
+        youtubeDurationSeconds: changed ? 0 : draft.youtubeDurationSeconds,
+        youtubeMatchConfidence: changed ? 0 : draft.youtubeMatchConfidence,
+        youtubeVerifiedAt: changed ? '' : draft.youtubeVerifiedAt,
+      };
+    });
+    this.imageUploadError.set(value.trim() && !videoId
+      ? $localize`Enter a valid YouTube watch, share, Shorts, Live, or embed URL.`
+      : null);
+  }
+
+  async applyWizardCardYoutubeReference(cardId: string, value: string): Promise<void> {
+    const videoId = youtubeVideoIdFromReference(value);
+    if (!videoId) {
+      this.wizardCardEditorError.set($localize`Enter a valid YouTube watch, share, Shorts, Live, or embed URL.`);
+      return;
+    }
+    this.wizardCardEditorError.set(null);
+    // Keep a currently verified video in place until its replacement has also
+    // been verified. A typo, removed video, or transient lookup failure should
+    // never downgrade a good card.
+    await this.refreshWizardCardVideo(cardId, videoId);
+  }
+
   openCardPhotoViewer(card: BoardCard, event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
@@ -8811,6 +8998,11 @@ export class BoardsComponent implements OnDestroy {
         event.preventDefault();
         this.stepBoardStudy(1);
       }
+      return;
+    }
+    if (event.key === 'Escape' && this.cardVideoViewerCard()) {
+      event.preventDefault();
+      this.closeCardVideoViewer();
       return;
     }
     if (!this.cardPhotoViewerCard()) {
@@ -12257,6 +12449,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private resetBoardWizard(): void {
+    this.wizardVideoEnrichmentRun += 1;
     const selectedBoard = this.selectedBoard();
     const editableSelectedBoard = selectedBoard && this.canEditBoard(selectedBoard) ? selectedBoard : null;
     this.wizardStep.set('choose');
@@ -12301,6 +12494,8 @@ export class BoardsComponent implements OnDestroy {
     this.wizardSelectedCardIds.set(new Set());
     this.wizardRedoingCardIds.set(new Set());
     this.wizardImageLoadingCardIds.set(new Set());
+    this.wizardVideoLoadingCardIds.set(new Set());
+    this.wizardVideoNotice.set(null);
     this.wizardEditingCardId.set(null);
     this.resetWizardCardImageTools();
     this.wizardSaving.set(false);
@@ -12542,6 +12737,15 @@ export class BoardsComponent implements OnDestroy {
       media_kind: this.isBoardMediaKind(data['media_kind']) ? data['media_kind'] : 'none',
       short_summary: this.stringValue(data['short_summary'], subtitle, 160),
       rank: this.numberValue(data['rank'], 0, 0, 100),
+      video_intent: data['video_intent'] === true,
+      video_search_query: this.stringValue(data['video_search_query'], '', 180),
+      youtubeVideoId: youtubeVideoIdFromReference(data['youtubeVideoId']),
+      youtubeVideoTitle: this.stringValue(data['youtubeVideoTitle'], '', 300),
+      youtubeChannelTitle: this.stringValue(data['youtubeChannelTitle'], '', 200),
+      youtubeThumbnailUrl: this.stringValue(data['youtubeThumbnailUrl'], '', 2000),
+      youtubeDurationSeconds: this.numberValue(data['youtubeDurationSeconds'], 0, 0, 86_400),
+      youtubeMatchConfidence: this.numberValue(data['youtubeMatchConfidence'], 0, 0, 1),
+      youtubeVerifiedAt: this.stringValue(data['youtubeVerifiedAt'], '', 80),
       imageUrl: this.stringValue(data['imageUrl'], '', 2000),
       audioPreviewUrl: this.stringValue(data['audioPreviewUrl'], '', 2000),
       spotifyTrackId: this.stringValue(data['spotifyTrackId'], '', 120),
@@ -12597,6 +12801,8 @@ export class BoardsComponent implements OnDestroy {
       media_kind: card.media_kind || 'none',
       short_summary: card.short_summary || card.subtitle,
       rank: card.rank || 0,
+      video_intent: card.video_intent === true,
+      video_search_query: card.video_search_query || '',
       audioPreviewUrl: card.audioPreviewUrl || '',
       spotifyTrackId: card.spotifyTrackId || '',
       spotifyTrackUrl: card.spotifyTrackUrl || '',
@@ -12642,6 +12848,13 @@ export class BoardsComponent implements OnDestroy {
         spotifyArtistName: card.spotifyArtistName ?? '',
         spotifyAlbumName: card.spotifyAlbumName ?? '',
         spotifyArtworkUrl: card.spotifyArtworkUrl ?? '',
+        youtubeVideoId: card.youtubeVideoId ?? '',
+        youtubeVideoTitle: card.youtubeVideoTitle ?? '',
+        youtubeChannelTitle: card.youtubeChannelTitle ?? '',
+        youtubeThumbnailUrl: card.youtubeThumbnailUrl ?? '',
+        youtubeDurationSeconds: card.youtubeDurationSeconds ?? 0,
+        youtubeMatchConfidence: card.youtubeMatchConfidence ?? 0,
+        youtubeVerifiedAt: card.youtubeVerifiedAt ?? '',
         placeId: card.placeId ?? '',
         googleMapsUrl: card.googleMapsUrl ?? '',
         editing: false,
@@ -12675,6 +12888,132 @@ export class BoardsComponent implements OnDestroy {
       onProgress?.(preview.length, candidates.length);
     }
     return preview;
+  }
+
+  private wizardCardWantsVideo(card: BoardWizardGeneratedCard): boolean {
+    if (card.video_intent === true) return true;
+    const text = [
+      this.wizardPrompt(),
+      card.title,
+      card.subtitle,
+      card.notes,
+      card.entity_name,
+      card.image_context,
+      ...card.tags,
+    ].filter(Boolean).join(' ');
+    return /\b(?:half[\s-]?time\s+show|live\s+performance|performance|concert|music\s+video|trailer|highlights?|speech|keynote|interview|tutorial|demonstration|awards?\s+show|opening\s+ceremony|closing\s+ceremony)\b/i.test(text);
+  }
+
+  private async enrichWizardVideos(
+    cards: BoardWizardPreviewCard[],
+    batch: BoardWizardGeneratedBatch,
+    options: { youtubeReferences?: Record<string, string>; forceCardIds?: Set<string> } = {},
+  ): Promise<void> {
+    if (!this.functions) return;
+    const candidates = cards
+      .filter((card) => options.forceCardIds?.has(card.id) || this.wizardCardWantsVideo(card))
+      .slice(0, 20);
+    if (!candidates.length) {
+      this.wizardVideoNotice.set(null);
+      return;
+    }
+    const run = ++this.wizardVideoEnrichmentRun;
+    this.wizardVideoLoadingCardIds.set(new Set(candidates.map((card) => card.id)));
+    this.wizardVideoNotice.set(
+      candidates.length === 1 ? $localize`Finding a verified video…` : `Finding videos for ${candidates.length} cards…`,
+    );
+    try {
+      const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'resolveBoardCardVideos', {
+        timeout: 55_000,
+      });
+      const response = await callable({
+        boardTitle: batch.board.title,
+        boardDescription: batch.board.description,
+        prompt: this.wizardPrompt().trim(),
+        cards: candidates.map((card) => ({
+          cardId: card.id,
+          title: card.title,
+          subtitle: card.subtitle,
+          notes: card.notes,
+          entityName: card.entity_name || card.title,
+          entityType: card.entity_type || '',
+          imageContext: card.image_context || '',
+          tags: card.tags,
+          videoIntent: options.forceCardIds?.has(card.id) || card.video_intent === true,
+          videoSearchQuery: card.video_search_query || '',
+          youtubeReference: options.youtubeReferences?.[card.id] || '',
+        })),
+      });
+      if (run !== this.wizardVideoEnrichmentRun) return;
+      const data = response.data && typeof response.data === 'object'
+        ? response.data as Record<string, unknown>
+        : {};
+      const matches = Array.isArray(data['matches']) ? data['matches'] : [];
+      const byCardId = new Map<string, Partial<BoardWizardPreviewCard>>();
+      for (const value of matches) {
+        if (!value || typeof value !== 'object') continue;
+        const match = value as Record<string, unknown>;
+        const cardId = this.stringValue(match['cardId'], '', 160);
+        const videoId = youtubeVideoIdFromReference(match['youtubeVideoId']);
+        if (!cardId || !videoId) continue;
+        byCardId.set(cardId, {
+          video_intent: true,
+          youtubeVideoId: videoId,
+          youtubeVideoTitle: this.stringValue(match['youtubeVideoTitle'], '', 300),
+          youtubeChannelTitle: this.stringValue(match['youtubeChannelTitle'], '', 200),
+          youtubeThumbnailUrl: this.stringValue(match['youtubeThumbnailUrl'], '', 2000),
+          youtubeDurationSeconds: this.numberValue(match['youtubeDurationSeconds'], 0, 0, 86_400),
+          youtubeMatchConfidence: this.numberValue(match['youtubeMatchConfidence'], 0, 0, 1),
+          youtubeVerifiedAt: this.stringValue(match['youtubeVerifiedAt'], new Date().toISOString(), 80),
+        });
+      }
+      this.wizardPreviewCards.update((current) => current.map((card) => {
+        const match = byCardId.get(card.id);
+        return match ? { ...card, ...match } : card;
+      }));
+      const refreshedCards = this.wizardPreviewCards();
+      const currentResult = this.wizardResult();
+      if (currentResult) this.wizardResult.set({ ...currentResult, cards: refreshedCards });
+      const count = byCardId.size;
+      this.wizardVideoNotice.set(count
+        ? `${count} verified video${count === 1 ? '' : 's'} found. Review any card before saving.`
+        : $localize`No confident embeddable videos were found. Your image cards are unchanged.`);
+    } catch {
+      if (run === this.wizardVideoEnrichmentRun) {
+        this.wizardVideoNotice.set($localize`Video lookup is unavailable right now. Your image cards are unchanged.`);
+      }
+    } finally {
+      if (run === this.wizardVideoEnrichmentRun) {
+        this.wizardVideoLoadingCardIds.set(new Set());
+      }
+    }
+  }
+
+  async refreshWizardCardVideo(cardId: string, reference = ''): Promise<void> {
+    const card = this.wizardPreviewCards().find((candidate) => candidate.id === cardId);
+    const result = this.wizardResult();
+    if (!card || !result) return;
+    await this.enrichWizardVideos([card], result, {
+      forceCardIds: new Set([cardId]),
+      youtubeReferences: reference ? { [cardId]: reference } : undefined,
+    });
+  }
+
+  removeWizardCardVideo(cardId: string): void {
+    this.wizardPreviewCards.update((cards) => cards.map((card) => card.id === cardId ? {
+      ...card,
+      video_intent: false,
+      video_search_query: '',
+      youtubeVideoId: '',
+      youtubeVideoTitle: '',
+      youtubeChannelTitle: '',
+      youtubeThumbnailUrl: '',
+      youtubeDurationSeconds: 0,
+      youtubeMatchConfidence: 0,
+      youtubeVerifiedAt: '',
+    } : card));
+    const currentResult = this.wizardResult();
+    if (currentResult) this.wizardResult.set({ ...currentResult, cards: this.wizardPreviewCards() });
   }
 
   private async requestWizardCardImage(
@@ -14043,6 +14382,19 @@ export class BoardsComponent implements OnDestroy {
       mediaKind: this.isBoardMediaKind(data['mediaKind']) ? data['mediaKind'] : 'none',
       shortSummary: typeof data['shortSummary'] === 'string' ? data['shortSummary'] : (typeof data['subtitle'] === 'string' ? data['subtitle'] : ''),
       rank: typeof data['rank'] === 'number' ? Math.max(0, Math.min(100, Math.trunc(data['rank']))) : this.rankFromTags(data['tags']),
+      videoIntent: data['videoIntent'] === true,
+      videoSearchQuery: typeof data['videoSearchQuery'] === 'string' ? data['videoSearchQuery'].slice(0, 180) : '',
+      youtubeVideoId: youtubeVideoIdFromReference(data['youtubeVideoId']),
+      youtubeVideoTitle: typeof data['youtubeVideoTitle'] === 'string' ? data['youtubeVideoTitle'].slice(0, 300) : '',
+      youtubeChannelTitle: typeof data['youtubeChannelTitle'] === 'string' ? data['youtubeChannelTitle'].slice(0, 200) : '',
+      youtubeThumbnailUrl: typeof data['youtubeThumbnailUrl'] === 'string' ? data['youtubeThumbnailUrl'].slice(0, 2000) : '',
+      youtubeDurationSeconds: typeof data['youtubeDurationSeconds'] === 'number'
+        ? Math.max(0, Math.min(86_400, Math.trunc(data['youtubeDurationSeconds'])))
+        : 0,
+      youtubeMatchConfidence: typeof data['youtubeMatchConfidence'] === 'number'
+        ? Math.max(0, Math.min(1, data['youtubeMatchConfidence']))
+        : 0,
+      youtubeVerifiedAt: typeof data['youtubeVerifiedAt'] === 'string' ? data['youtubeVerifiedAt'].slice(0, 80) : '',
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
       imageUrls: this.uniqueImageUrls([
         typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',

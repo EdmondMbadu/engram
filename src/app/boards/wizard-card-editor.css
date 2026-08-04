@@ -615,3 +615,6 @@
     grid-template-columns: 1fr;
   }
 }
+.wizard-card-editor__video-field { display:grid;gap:.45rem;border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));border-radius:.85rem;background:color-mix(in srgb,var(--accent) 6%,var(--surface));padding:.7rem }
+.wizard-card-editor__video-field>div { display:flex;flex-wrap:wrap;gap:.4rem }
+.wizard-card-editor__video-field small { color:var(--muted);font-size:.7rem;font-weight:800;line-height:1.35 }

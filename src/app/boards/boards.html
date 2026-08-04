@@ -1632,20 +1632,21 @@
                         (drop)="dropCardOnCard($event, board, card)"
                       >
                         <div class="tour-stop-card__media">
-                          @if (currentCardImage(card)) {
+                          @if (cardMediaPoster(card)) {
                             <button
                               type="button"
                               class="tour-stop-card__photo-button"
-                              [attr.aria-label]="'Open ' + card.title + ' photos full screen'"
-                              (click)="openCardPhotoViewer(card, $event)"
+                              [class.card-video-trigger]="hasYoutubeVideo(card)"
+                              [attr.aria-label]="hasYoutubeVideo(card) ? 'Play ' + card.title + ' video' : 'Open ' + card.title + ' photos full screen'"
+                              (click)="hasYoutubeVideo(card) ? openCardVideoViewer(card, $event) : openCardPhotoViewer(card, $event)"
                             >
                               <img
-                                [src]="currentCardImage(card)"
-                                [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)"
+                                [src]="cardMediaPoster(card)"
+                                [alt]="hasYoutubeVideo(card) ? card.title + ' video thumbnail' : card.title + ' photo ' + currentCardPhotoPosition(card)"
                                 loading="lazy"
                               />
                               <span class="tour-stop-card__photo-hint" aria-hidden="true">
-                                <span class="material-symbols-outlined">fullscreen</span>
+                                <span class="material-symbols-outlined">{{ hasYoutubeVideo(card) ? 'play_arrow' : 'fullscreen' }}</span>
                               </span>
                             </button>
                           } @else {
@@ -2377,16 +2378,17 @@
                             <path d="M11 22l-1.5-3.5L13 17.5" />
                           </svg>
                         </button>
-                        @if (currentCardImage(card)) {
+                        @if (cardMediaPoster(card)) {
                           <button
                             type="button"
                             class="detail-card__photo-button"
-                            [attr.aria-label]="'Open ' + card.title + ' photos full screen'"
-                            (click)="openCardPhotoViewer(card, $event)"
+                            [class.card-video-trigger]="hasYoutubeVideo(card)"
+                            [attr.aria-label]="hasYoutubeVideo(card) ? 'Play ' + card.title + ' video' : 'Open ' + card.title + ' photos full screen'"
+                            (click)="hasYoutubeVideo(card) ? openCardVideoViewer(card, $event) : openCardPhotoViewer(card, $event)"
                           >
-                            <img [src]="currentCardImage(card)" [alt]="card.title + ' photo ' + currentCardPhotoPosition(card)" loading="lazy" />
+                            <img [src]="cardMediaPoster(card)" [alt]="hasYoutubeVideo(card) ? card.title + ' video thumbnail' : card.title + ' photo ' + currentCardPhotoPosition(card)" loading="lazy" />
                             <span class="detail-card__photo-hint" aria-hidden="true">
-                              <span class="material-symbols-outlined">fullscreen</span>
+                              <span class="material-symbols-outlined">{{ hasYoutubeVideo(card) ? 'play_arrow' : 'fullscreen' }}</span>
                             </span>
                           </button>
                         } @else {
@@ -3385,6 +3387,54 @@
           </section>
         </div>
       }
+    </div>
+  }
+
+  @if (cardVideoViewerCard(); as videoCard) {
+    <div class="card-video-lightbox" (click)="closeCardVideoViewer($event)">
+      <section
+        class="card-video-lightbox__dialog"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-labelledby]="'card-video-lightbox-title-' + videoCard.id"
+        (click)="$event.stopPropagation()"
+      >
+        <header class="card-video-lightbox__head">
+          <div>
+            <small i18n>Playing on LivingWiki</small>
+            <h2 [id]="'card-video-lightbox-title-' + videoCard.id">{{ videoCard.title }}</h2>
+            @if (videoCard.youtubeChannelTitle) {
+              <p>{{ videoCard.youtubeChannelTitle }}</p>
+            }
+          </div>
+          <button type="button" autofocus aria-label="Close video" (click)="closeCardVideoViewer($event)" i18n-aria-label>
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </header>
+        <div class="card-video-lightbox__stage">
+          @if (youtubeVideoEmbedUrl(videoCard); as embedUrl) {
+            <iframe
+              [src]="embedUrl"
+              [title]="videoCard.youtubeVideoTitle || videoCard.title"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          }
+        </div>
+        <footer class="card-video-lightbox__footer">
+          <div>
+            <strong>{{ videoCard.youtubeVideoTitle || videoCard.title }}</strong>
+            @if (youtubeDurationLabel(videoCard.youtubeDurationSeconds); as duration) {
+              <span>{{ duration }}</span>
+            }
+          </div>
+          <a [href]="youtubeVideoHref(videoCard)" target="_blank" rel="noopener noreferrer" i18n>
+            Watch on YouTube
+            <span class="material-symbols-outlined">open_in_new</span>
+          </a>
+        </footer>
+      </section>
     </div>
   }
 
@@ -4469,6 +4519,51 @@
                             </select>
                           </label>
                         </div>
+                        <div class="wizard-card-editor__video-field">
+                          <label>
+                            <span i18n>YouTube video</span>
+                            <input
+                              #wizardYoutubeReference
+                              type="url"
+                              inputmode="url"
+                              maxlength="500"
+                              placeholder="https://www.youtube.com/watch?v=..."
+                              [value]="youtubeVideoHref(card)"
+                              (keydown.enter)="$event.preventDefault(); applyWizardCardYoutubeReference(card.id, wizardYoutubeReference.value)"
+                             i18n-placeholder/>
+                          </label>
+                          <div>
+                            <button
+                              type="button"
+                              class="boards-ghost-action"
+                              [disabled]="isWizardCardBusy(card.id) || !wizardYoutubeReference.value.trim()"
+                              (click)="applyWizardCardYoutubeReference(card.id, wizardYoutubeReference.value)"
+                            >
+                              <span class="material-symbols-outlined">check</span>
+                              <span i18n>Use video</span>
+                            </button>
+                            <button
+                              type="button"
+                              class="boards-ghost-action"
+                              [disabled]="isWizardCardBusy(card.id)"
+                              (click)="refreshWizardCardVideo(card.id)"
+                            >
+                              <span class="material-symbols-outlined">youtube_searched_for</span>
+                              <span i18n>Find automatically</span>
+                            </button>
+                            @if (hasYoutubeVideo(card)) {
+                              <button type="button" class="boards-ghost-action" (click)="removeWizardCardVideo(card.id)" i18n>
+                                <span class="material-symbols-outlined">close</span>
+                                Remove
+                              </button>
+                            }
+                          </div>
+                          @if (hasYoutubeVideo(card)) {
+                            <small>{{ card.youtubeVideoTitle }} · {{ card.youtubeChannelTitle }}</small>
+                          } @else {
+                            <small i18n>Paste a YouTube link or let LivingWiki find an embeddable match.</small>
+                          }
+                        </div>
                         <label>
                           <span i18n>Tags</span>
                           <input type="text" placeholder="history, champion, 1934" [value]="card.tags.join(', ')" (input)="updateWizardCardTags(card.id, $any($event.target).value)"  i18n-placeholder/>
@@ -4544,6 +4639,20 @@
                         } @else {
                           <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                         }
+                        @if (hasYoutubeVideo(card)) {
+                          <button
+                            type="button"
+                            class="boards-wizard-card__play-video"
+                            [attr.aria-label]="'Preview video for ' + card.title"
+                            (click)="openWizardCardVideoViewer(card, $event)"
+                          >
+                            <span class="material-symbols-outlined">play_arrow</span>
+                          </button>
+                          <span class="boards-wizard-card__video-source">
+                            <span class="material-symbols-outlined">smart_display</span>
+                            {{ card.youtubeChannelTitle || 'YouTube' }}
+                          </span>
+                        }
                         @if (card.productUrl || card.sourceUrl) {
                           <span
                             style="position: absolute; top: 0.55rem; left: 0.55rem; display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 999px; background: rgba(31, 41, 55, 0.86); padding: 0.3rem 0.48rem; color: #fff; font-size: 0.64rem; font-weight: 950;"
@@ -4577,6 +4686,15 @@
                         <div class="boards-wizard-card__body">
                           <strong>{{ card.title }}</strong>
                           <small>{{ card.subtitle }}</small>
+                          @if (hasYoutubeVideo(card)) {
+                            <div class="boards-wizard-card__video-meta">
+                              <span class="material-symbols-outlined">verified</span>
+                              <span>
+                                <strong i18n>Video ready</strong>
+                                <small>{{ card.youtubeVideoTitle }}</small>
+                              </span>
+                            </div>
+                          }
                           @if (card.productUrl) {
                             <div class="boards-wizard-card__tags">
                               @if (card.price) {
@@ -4607,6 +4725,18 @@
                           <span class="material-symbols-outlined">edit</span>
                           Edit card
                         </button>
+                        @if (hasYoutubeVideo(card)) {
+                          <button
+                            type="button"
+                            class="boards-wizard-card__audio"
+                            [disabled]="isWizardCardBusy(card.id)"
+                            [attr.aria-label]="'Remove video from ' + card.title"
+                            title="Remove video"
+                            (click)="removeWizardCardVideo(card.id)"
+                          >
+                            <span class="material-symbols-outlined">video_library</span>
+                          </button>
+                        }
                         @if (card.audioPreviewUrl) {
                           <button
                             type="button"
@@ -4641,6 +4771,12 @@
                       <span i18n>Every card has an image.</span>
                     }
                   </p>
+                  @if (wizardVideoNotice()) {
+                    <p class="boards-wizard-refine__video" aria-live="polite">
+                      <span class="material-symbols-outlined">smart_display</span>
+                      <span>{{ wizardVideoNotice() }}</span>
+                    </p>
+                  }
                   <textarea
                     rows="5"
                     placeholder="Make it more kid-friendly, add cheaper options, remove duplicates..."
@@ -4666,11 +4802,13 @@
               <button
                 type="button"
                 class="boards-primary-action"
-                [disabled]="!wizardSelectedCount() || wizardSaving()"
+                [disabled]="!wizardSelectedCount() || wizardSaving() || wizardVideoLoadingCardIds().size > 0"
                 (click)="saveWizardBatch()"
               >
                 <span class="material-symbols-outlined">save</span>
-                @if (wizardSaving()) {
+                @if (wizardVideoLoadingCardIds().size > 0) {
+                  <span i18n>Finding videos...</span>
+                } @else if (wizardSaving()) {
                   <span i18n>Saving...</span>
                 } @else if (wizardContributionBoard()) {
                   <span i18n>Add card to board</span>
@@ -6560,6 +6698,26 @@
                   [value]="cardDraft().notes"
                   (input)="updateCardDraft('notes', $any($event.target).value)"
                  i18n-placeholder></textarea>
+              </label>
+              <label class="card-youtube-field">
+                <span i18n>YouTube video <small>(optional)</small></span>
+                <input
+                  type="url"
+                  inputmode="url"
+                  maxlength="500"
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  [value]="cardDraft().youtubeReference"
+                  (input)="onCardYoutubeReferenceInput($any($event.target).value)"
+                 i18n-placeholder/>
+                @if (cardDraft().youtubeVideoId) {
+                  <small class="card-youtube-field__ready">
+                    <span class="material-symbols-outlined">smart_display</span>
+                    {{ cardDraft().youtubeVideoTitle || 'YouTube video ready' }}
+                    @if (cardDraft().youtubeChannelTitle) { · {{ cardDraft().youtubeChannelTitle }} }
+                  </small>
+                } @else {
+                  <small i18n>The video will play inside LivingWiki without replacing this card’s image.</small>
+                }
               </label>
               <label>
                 <span i18n>what3words address <small>(optional)</small></span>

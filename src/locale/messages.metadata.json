@@ -977,7 +977,7 @@
   },
   "1614114820020537854": {
     "source": "Close video",
-    "file": "src/app/business/business.html"
+    "file": "src/app/boards/boards.html"
   },
   "1617658171087305476": {
     "source": "Translating…",
@@ -1742,6 +1742,10 @@
   "2189658386781190180": {
     "source": "Download QR only",
     "file": "src/app/business-detail/business-edit.html"
+  },
+  "2189729695158786557": {
+    "source": "Playing on LivingWiki",
+    "file": "src/app/boards/boards.html"
   },
   "2189734075602206105": {
     "source": "{$START_TAG_SPAN}admin_panel_settings{$CLOSE_TAG_SPAN} Admin ",
@@ -2951,6 +2955,10 @@
     "source": "Fitness",
     "file": "src/app/business-badge-icons.ts"
   },
+  "3023080881568639206": {
+    "source": "Video lookup is unavailable right now. Your image cards are unchanged.",
+    "file": "src/app/boards/boards.ts"
+  },
   "3023338532329792149": {
     "source": "Paste and verify",
     "file": "src/app/boards/boards.html"
@@ -3758,6 +3766,10 @@
   "3504675257490256046": {
     "source": "Opening your text-message app with the invitation.",
     "file": "src/app/boards/boards.ts"
+  },
+  "3506200530718753497": {
+    "source": "Find automatically",
+    "file": "src/app/boards/boards.html"
   },
   "3517550046701184661": {
     "source": "Show less",
@@ -4735,6 +4747,10 @@
     "source": " This maintenance page is only available to the owner of the atlas. ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
+  "4163799947179756404": {
+    "source": "Finding videos...",
+    "file": "src/app/boards/boards.html"
+  },
   "4164148513692559278": {
     "source": "Waiting to begin",
     "file": "src/app/web-scraper/web-scraper.ts"
@@ -4878,6 +4894,10 @@
   "4262970142091008968": {
     "source": "When on, anyone with the link can view this landing page.",
     "file": "src/app/atlas-landing/atlas-landing.html"
+  },
+  "4265435982711876384": {
+    "source": "Use video",
+    "file": "src/app/boards/boards.html"
   },
   "4266013949855660076": {
     "source": "Public title",
@@ -5215,6 +5235,10 @@
     "source": "Could not load plans for this place.",
     "file": "src/app/boards/boards.ts"
   },
+  "4523347413979510028": {
+    "source": "YouTube video",
+    "file": "src/app/boards/boards.html"
+  },
   "4523595445630422797": {
     "source": "Trending Figures",
     "file": "src/app/public-wiki-catalog.ts"
@@ -5334,6 +5358,10 @@
   "4595694646116657147": {
     "source": "After building hundreds of LivingWiki pages, we are glad to help you get up and running quickly.",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "4596109603911733381": {
+    "source": "Paste a YouTube link or let LivingWiki find an embeddable match.",
+    "file": "src/app/boards/boards.html"
   },
   "4596750151911929850": {
     "source": "Type a place, restaurant, idea, memory, shop, or anything you want on this board...",
@@ -5770,6 +5798,10 @@
   "4845700341905116949": {
     "source": "Close share page dialog",
     "file": "src/app/shared-chat/shared-chat.html"
+  },
+  "4856267183472819161": {
+    "source": " Watch on YouTube {$START_TAG_SPAN}open_in_new{$CLOSE_TAG_SPAN}",
+    "file": "src/app/boards/boards.html"
   },
   "4859460763805199435": {
     "source": "Your LivingWiki tour guide",
@@ -6691,6 +6723,10 @@
     "source": "Create a public share link",
     "file": "src/app/chat/chat.ts"
   },
+  "5489093035350146255": {
+    "source": "Enter a valid YouTube watch, share, Shorts, Live, or embed URL.",
+    "file": "src/app/boards/boards.ts"
+  },
   "5497627646066282315": {
     "source": "Connecting",
     "file": "src/app/chat/chat.ts"
@@ -7570,6 +7606,10 @@
   "6069774338805555320": {
     "source": "{$START_TAG_SPAN}arrow_back{$CLOSE_TAG_SPAN} Back to chat ",
     "file": "src/app/city-places/city-places.html"
+  },
+  "6071709171532536515": {
+    "source": "Finding a verified video…",
+    "file": "src/app/boards/boards.ts"
   },
   "6074302300349219019": {
     "source": "Select a city",
@@ -9111,6 +9151,10 @@
     "source": "Place",
     "file": "src/app/boards/boards.ts"
   },
+  "7131680993182796423": {
+    "source": "The video will play inside LivingWiki without replacing this card’s image.",
+    "file": "src/app/boards/boards.html"
+  },
   "7136018875175606726": {
     "source": "in",
     "file": "src/app/chat/chat.html"
@@ -10263,6 +10307,10 @@
     "source": "Flip through all {$INTERPOLATION} cards and reveal the details.",
     "file": "src/app/boards/boards.html"
   },
+  "7962329668696319938": {
+    "source": "No confident embeddable videos were found. Your image cards are unchanged.",
+    "file": "src/app/boards/boards.ts"
+  },
   "7963878862756701037": {
     "source": " Knowledge Gaps ",
     "file": "src/app/library/library.html"
@@ -10569,6 +10617,10 @@
   },
   "8136076385961286941": {
     "source": "Steinbeck Plaza    ///candy.sage.sticks\nMonterey Bay Aquarium    https://w3w.co/sank.ticket.speeds",
+    "file": "src/app/boards/boards.html"
+  },
+  "813740279775651438": {
+    "source": "Video ready",
     "file": "src/app/boards/boards.html"
   },
   "8146960230716882663": {
@@ -11407,6 +11459,10 @@
     "source": "Local Orbit",
     "file": "src/app/profile/profile-icons.ts"
   },
+  "8815719575309331876": {
+    "source": "https://www.youtube.com/watch?v=...",
+    "file": "src/app/boards/boards.html"
+  },
   "8815830530284902285": {
     "source": "Reading relevant entries",
     "file": "src/app/chat/chat.ts"
@@ -11758,6 +11814,10 @@
   "9019779151642071529": {
     "source": "Delete thread {title}",
     "file": "src/app/chat/chat.ts"
+  },
+  "9025935389437417374": {
+    "source": "YouTube video {$START_SMALL_TEXT}(optional){$CLOSE_SMALL_TEXT}",
+    "file": "src/app/boards/boards.html"
   },
   "9027131328158506822": {
     "source": "Edit card",

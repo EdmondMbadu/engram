@@ -213,6 +213,8 @@ const boardWizardBatchSchema = {
           media_kind: { type: 'string' },
           short_summary: { type: 'string' },
           rank: { type: 'integer' },
+          video_intent: { type: 'boolean' },
+          video_search_query: { type: 'string' },
           place_query: { type: 'string' },
           imageUrl: { type: 'string' },
           sourceUrl: { type: 'string' },
@@ -263,6 +265,8 @@ const boardWizardBatchSchema = {
           'media_kind',
           'short_summary',
           'rank',
+          'video_intent',
+          'video_search_query',
           'place_query',
         ],
       },
@@ -467,6 +471,15 @@ export type GeneratedBoardWizardCard = {
   media_kind?: 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
   short_summary?: string;
   rank?: number;
+  video_intent?: boolean;
+  video_search_query?: string;
+  youtubeVideoId?: string;
+  youtubeVideoTitle?: string;
+  youtubeChannelTitle?: string;
+  youtubeThumbnailUrl?: string;
+  youtubeDurationSeconds?: number;
+  youtubeMatchConfidence?: number;
+  youtubeVerifiedAt?: string;
   place_query: string;
   imageUrl?: string;
   audioPreviewUrl?: string;
@@ -1519,6 +1532,8 @@ async function verifyBoardWizardBatch(
     '- media_kind: none, song, album, film, book, tv, or game. Use none for people, fictional characters, places, events, products, food, and organizations even if their prose mentions media words.',
     '- short_summary: a vivid standalone hook of at most 160 characters for compact and Live View presentation.',
     '- rank: the requested one-based rank, sequence, or source position; otherwise 0.',
+    '- video_intent: true only when watching a real video materially represents this card, such as a performance, halftime show, concert, speech, interview, trailer, tutorial, ceremony, or sports highlight.',
+    '- video_search_query: when video_intent is true, an exact YouTube search phrase containing the canonical subject, event, year or edition, and "official" where appropriate; otherwise an empty string.',
     'image_query must target entity_name plus image_context and image_intent. Never let incidental words in notes change the depicted subject.',
     'For a fictional character, retain the canonical name, aliases/civilian identity, and franchise or source-work context. Never reduce the query to an ambiguous common word or to an actor out of character.',
     '',
@@ -1677,6 +1692,8 @@ function buildBoardWizardPrompt(params: {
     'For every card, set entity_name to the canonical depicted subject; set entity_type to person, fictional_character, place, event, work, product, food, organization, or other; set image_intent to portrait, character, place, event, cover, product, food, logo, or other; and set image_context to the minimum role, aliases, franchise/universe, source work, creator, location, year, edition, term, or event needed to disambiguate it.',
     'Set media_kind to none unless the card entity itself is a song, album, film, book, TV work, or video game. Words in notes such as "single malt", "book a tour", "track record", or "artist-designed" never make a card media.',
     'Set short_summary to a specific, vivid hook of at most 160 characters. Set rank to the requested one-based position or 0 when the board is not ordered.',
+    'Set video_intent true for cards whose subject is best experienced as a real playable video, including performances, halftime shows, concerts, music videos, speeches, interviews, trailers, tutorials, ceremonies, and sports highlights. Otherwise set it false.',
+    'When video_intent is true, set video_search_query to a precise YouTube lookup such as "Prince Super Bowl XLI halftime show official NFL". Never invent or return a YouTube URL or video ID; LivingWiki resolves and verifies it separately. When false, use an empty string.',
     'The entity fields are authoritative for image selection. Incidental nouns in notes must never replace the entity being depicted.',
     'place_query should be a Google Places-style lookup query when the item is a real place; otherwise use the title.',
     params.countIsExplicit
@@ -1804,6 +1821,10 @@ function normalizeBoardWizardCard(value: unknown, fallbackType: GeneratedBoardWi
     media_kind: normalizeBoardWizardMediaKind(data.media_kind),
     short_summary: cleanLine(data.short_summary, subtitle || firstBoardWizardSentence(notes), 160),
     rank: normalizeBoardWizardRank(data.rank),
+    video_intent: data.video_intent === true,
+    video_search_query: data.video_intent === true
+      ? cleanLine(data.video_search_query, `${entityName} ${imageContext} official video`, 180)
+      : '',
     place_query: cleanLine(data.place_query, title, 140),
     imageUrl: cleanLine(data.imageUrl, '', 2000) || undefined,
     sourceUrl: cleanLine(data.sourceUrl, '', 2000) || undefined,

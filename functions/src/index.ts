@@ -25,6 +25,15 @@ import {
 } from './board-wizard-image-quality';
 import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
 import {
+  boardWizardCardWantsVideo,
+  buildBoardWizardVideoSearchQuery,
+  parseIso8601DurationSeconds,
+  scoreBoardWizardVideoCandidate,
+  youtubeVideoIdFromReference,
+  type BoardWizardVideoCandidate,
+  type BoardWizardVideoCardInput,
+} from './board-wizard-video';
+import {
   extractBoardTranslationSource,
   isBoardTranslationLanguage,
   type BoardTranslationSegment,
@@ -1560,6 +1569,38 @@ type GoogleCustomSearchWebResponse = {
   error?: {
     message?: string;
   };
+};
+
+type YouTubeSearchResponse = {
+  items?: Array<{
+    id?: { videoId?: string };
+    snippet?: {
+      title?: string;
+      channelTitle?: string;
+      thumbnails?: Record<string, { url?: string }>;
+    };
+  }>;
+  error?: { message?: string };
+};
+
+type YouTubeVideosResponse = {
+  items?: Array<{
+    id?: string;
+    snippet?: {
+      title?: string;
+      channelTitle?: string;
+      thumbnails?: Record<string, { url?: string }>;
+    };
+    status?: { embeddable?: boolean; privacyStatus?: string };
+    contentDetails?: { duration?: string };
+  }>;
+  error?: { message?: string };
+};
+
+type YouTubeOEmbedResponse = {
+  title?: string;
+  author_name?: string;
+  thumbnail_url?: string;
 };
 
 type AppleMusicSearchResponse = {
@@ -6372,6 +6413,352 @@ export const generateBoardWizardBatch = onCall(
     return resultWithSourceReport;
   },
 );
+
+export const resolveBoardCardVideos = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 60,
+    memory: '512MiB',
+    concurrency: 10,
+    maxInstances: 20,
+    secrets: [googleCustomSearchApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to find videos for board cards.');
+    }
+    const data = request.data && typeof request.data === 'object'
+      ? request.data as Record<string, unknown>
+      : {};
+    const boardContext = [
+      stringOrEmpty(data.boardTitle).slice(0, 120),
+      stringOrEmpty(data.boardDescription).slice(0, 300),
+      stringOrEmpty(data.prompt).slice(0, 600),
+    ].filter(Boolean).join(' · ');
+    // A board generation currently tops out at 20 cards. Keep the resolver to
+    // that same bound and overlap independent lookups so a temporary miss does
+    // not make an otherwise-ready board wait for a long serial search.
+    const rawCards = Array.isArray(data.cards) ? data.cards.slice(0, 20) : [];
+    const cards = rawCards.map((value) => normalizeBoardVideoLookupCard(value)).filter(
+      (card): card is NormalizedBoardVideoLookupCard => !!card,
+    );
+    if (!cards.length) {
+      return { matches: [], attempted: 0 };
+    }
+
+    const apiKey = googleCustomSearchApiKey.value();
+    const matches = await mapWithConcurrency(cards, 5, async (card) => {
+      if (!card.youtubeReference && !boardWizardCardWantsVideo(card, boardContext)) {
+        return null;
+      }
+      const query = buildBoardWizardVideoSearchQuery(card, boardContext);
+      const candidate = card.youtubeReference
+        ? await resolveYouTubeCandidateByReference(card.youtubeReference, apiKey)
+        : await resolveCachedBoardWizardVideo(card, boardContext, query, apiKey);
+      if (!candidate) return null;
+      const score = card.youtubeReference
+        ? 100
+        : scoreBoardWizardVideoCandidate(card, boardContext, candidate);
+      if (!card.youtubeReference && score < 55) return null;
+      return {
+        cardId: card.cardId,
+        youtubeVideoId: candidate.videoId,
+        youtubeVideoTitle: candidate.title,
+        youtubeChannelTitle: candidate.channelTitle,
+        youtubeThumbnailUrl: candidate.thumbnailUrl,
+        youtubeDurationSeconds: candidate.durationSeconds,
+        youtubeMatchConfidence: card.youtubeReference
+          ? 1
+          : Math.max(0, Math.min(1, Number(((score - 35) / 100).toFixed(2)))),
+        youtubeVerifiedAt: new Date().toISOString(),
+      };
+    });
+
+    logger.info('Board wizard video enrichment completed.', {
+      userId,
+      requestedCount: cards.length,
+      matchedCount: matches.filter(Boolean).length,
+      boardTitle: stringOrEmpty(data.boardTitle).slice(0, 120),
+    });
+    return {
+      matches: matches.filter((match) => !!match),
+      attempted: cards.length,
+    };
+  },
+);
+
+type NormalizedBoardVideoLookupCard = BoardWizardVideoCardInput & {
+  cardId: string;
+  youtubeReference: string;
+};
+
+function normalizeBoardVideoLookupCard(value: unknown): NormalizedBoardVideoLookupCard | null {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const cardId = stringOrEmpty(data.cardId).slice(0, 160);
+  const title = stringOrEmpty(data.title).replace(/\s+/g, ' ').trim().slice(0, 120);
+  if (!cardId || !title) return null;
+  return {
+    cardId,
+    title,
+    subtitle: stringOrEmpty(data.subtitle).replace(/\s+/g, ' ').trim().slice(0, 180),
+    notes: stringOrEmpty(data.notes).replace(/\s+/g, ' ').trim().slice(0, 800),
+    entityName: stringOrEmpty(data.entityName).replace(/\s+/g, ' ').trim().slice(0, 120),
+    entityType: stringOrEmpty(data.entityType).slice(0, 40),
+    imageContext: stringOrEmpty(data.imageContext).replace(/\s+/g, ' ').trim().slice(0, 180),
+    tags: Array.isArray(data.tags)
+      ? data.tags.map((tag) => stringOrEmpty(tag).slice(0, 40)).filter(Boolean).slice(0, 8)
+      : [],
+    videoIntent: data.videoIntent === true,
+    videoSearchQuery: stringOrEmpty(data.videoSearchQuery).replace(/\s+/g, ' ').trim().slice(0, 180),
+    youtubeReference: stringOrEmpty(data.youtubeReference).trim().slice(0, 500),
+  };
+}
+
+async function resolveCachedBoardWizardVideo(
+  card: NormalizedBoardVideoLookupCard,
+  boardContext: string,
+  query: string,
+  apiKey: string,
+): Promise<BoardWizardVideoCandidate | null> {
+  if (!query) return null;
+  const cacheId = createHash('sha256').update(query.toLowerCase()).digest('hex');
+  const cacheRef = db.collection('board_video_matches').doc(cacheId);
+  try {
+    const cached = await cacheRef.get();
+    const data = cached.data();
+    if (data && Number(data.expires_at_ms) > Date.now()) {
+      return normalizeCachedBoardVideoCandidate(data.match);
+    }
+  } catch (error) {
+    logger.warn('Board video cache read failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  const candidate = await searchYouTubeForBoardCard(card, boardContext, query, apiKey);
+  try {
+    await cacheRef.set({
+      query,
+      match: candidate ?? null,
+      expires_at_ms: Date.now() + (candidate ? 14 * 24 * 60 * 60 * 1000 : 6 * 60 * 60 * 1000),
+      updated_at: FieldValue.serverTimestamp(),
+    });
+  } catch (error) {
+    logger.warn('Board video cache write failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+  return candidate;
+}
+
+function normalizeCachedBoardVideoCandidate(value: unknown): BoardWizardVideoCandidate | null {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const videoId = youtubeVideoIdFromReference(data.videoId);
+  if (!videoId || data.embeddable !== true) return null;
+  return {
+    videoId,
+    title: stringOrEmpty(data.title).slice(0, 300),
+    channelTitle: stringOrEmpty(data.channelTitle).slice(0, 200),
+    thumbnailUrl: stringOrEmpty(data.thumbnailUrl).slice(0, 2000),
+    durationSeconds: Math.max(0, Math.min(86_400, Number(data.durationSeconds) || 0)),
+    embeddable: true,
+  };
+}
+
+async function searchYouTubeForBoardCard(
+  card: NormalizedBoardVideoLookupCard,
+  boardContext: string,
+  query: string,
+  apiKey: string,
+): Promise<BoardWizardVideoCandidate | null> {
+  const officialCandidates = await searchYouTubeDataApi(query, apiKey);
+  const officialMatch = chooseBoardWizardVideoCandidate(card, boardContext, officialCandidates);
+  if (officialMatch) return officialMatch;
+  const fallbackCandidates = await searchYouTubeWithCustomSearch(query, apiKey);
+  return chooseBoardWizardVideoCandidate(card, boardContext, fallbackCandidates);
+}
+
+function chooseBoardWizardVideoCandidate(
+  card: NormalizedBoardVideoLookupCard,
+  boardContext: string,
+  candidates: BoardWizardVideoCandidate[],
+): BoardWizardVideoCandidate | null {
+  return candidates
+    .map((candidate) => ({
+      candidate,
+      score: scoreBoardWizardVideoCandidate(card, boardContext, candidate),
+    }))
+    .filter((entry) => entry.score >= 55)
+    .sort((left, right) => right.score - left.score)[0]?.candidate ?? null;
+}
+
+async function resolveYouTubeCandidateByReference(
+  reference: string,
+  apiKey: string,
+): Promise<BoardWizardVideoCandidate | null> {
+  const videoId = youtubeVideoIdFromReference(reference);
+  if (!videoId) return null;
+  const official = await fetchYouTubeDataApiCandidates([videoId], apiKey);
+  if (official[0]?.embeddable) return official[0];
+  return await fetchYouTubeOEmbedCandidate(videoId);
+}
+
+async function searchYouTubeDataApi(
+  query: string,
+  apiKey: string,
+): Promise<BoardWizardVideoCandidate[]> {
+  if (!apiKey) return [];
+  try {
+    const url = new URL('https://www.googleapis.com/youtube/v3/search');
+    url.searchParams.set('part', 'snippet');
+    url.searchParams.set('type', 'video');
+    url.searchParams.set('videoEmbeddable', 'true');
+    url.searchParams.set('videoSyndicated', 'true');
+    url.searchParams.set('safeSearch', 'moderate');
+    url.searchParams.set('maxResults', '8');
+    url.searchParams.set('q', query);
+    url.searchParams.set('key', apiKey);
+    const response = await fetch(url, {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
+      signal: AbortSignal.timeout(7_000),
+    });
+    const data = await response.json() as YouTubeSearchResponse;
+    if (!response.ok || data.error?.message) {
+      logger.warn('YouTube Data API search unavailable; using search fallback.', {
+        query,
+        status: response.status,
+        error: data.error?.message,
+      });
+      return [];
+    }
+    const ids = (data.items ?? [])
+      .map((item) => youtubeVideoIdFromReference(item.id?.videoId))
+      .filter(Boolean);
+    return await fetchYouTubeDataApiCandidates(ids, apiKey);
+  } catch (error) {
+    logger.warn('YouTube Data API search failed; using search fallback.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+}
+
+async function fetchYouTubeDataApiCandidates(
+  videoIds: string[],
+  apiKey: string,
+): Promise<BoardWizardVideoCandidate[]> {
+  const ids = videoIds.map(youtubeVideoIdFromReference).filter(Boolean).slice(0, 10);
+  if (!apiKey || !ids.length) return [];
+  try {
+    const url = new URL('https://www.googleapis.com/youtube/v3/videos');
+    url.searchParams.set('part', 'snippet,status,contentDetails');
+    url.searchParams.set('id', ids.join(','));
+    url.searchParams.set('key', apiKey);
+    const response = await fetch(url, {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
+      signal: AbortSignal.timeout(6_000),
+    });
+    const data = await response.json() as YouTubeVideosResponse;
+    if (!response.ok || data.error?.message) return [];
+    return (data.items ?? []).map((item): BoardWizardVideoCandidate | null => {
+      const videoId = youtubeVideoIdFromReference(item.id);
+      if (!videoId || item.status?.embeddable !== true || item.status?.privacyStatus !== 'public') return null;
+      const thumbnails = item.snippet?.thumbnails ?? {};
+      return {
+        videoId,
+        title: decodeBasicHtmlEntities(stringOrEmpty(item.snippet?.title)).slice(0, 300),
+        channelTitle: decodeBasicHtmlEntities(stringOrEmpty(item.snippet?.channelTitle)).slice(0, 200),
+        thumbnailUrl: stringOrEmpty(
+          thumbnails.maxres?.url || thumbnails.standard?.url || thumbnails.high?.url
+          || thumbnails.medium?.url || thumbnails.default?.url,
+        ).slice(0, 2000),
+        durationSeconds: parseIso8601DurationSeconds(item.contentDetails?.duration),
+        embeddable: true,
+      };
+    }).filter((candidate): candidate is BoardWizardVideoCandidate => !!candidate);
+  } catch {
+    return [];
+  }
+}
+
+async function searchYouTubeWithCustomSearch(
+  query: string,
+  apiKey: string,
+): Promise<BoardWizardVideoCandidate[]> {
+  const cx = googleCustomSearchCx.trim();
+  if (!apiKey || !cx || Date.now() < googleCustomSearchUnavailableUntil) return [];
+  try {
+    const url = new URL('https://www.googleapis.com/customsearch/v1');
+    url.searchParams.set('key', apiKey);
+    url.searchParams.set('cx', cx);
+    url.searchParams.set('q', `${query} site:youtube.com/watch`);
+    url.searchParams.set('num', '8');
+    const response = await fetch(url, {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
+      signal: AbortSignal.timeout(7_000),
+    });
+    const data = await response.json() as GoogleCustomSearchWebResponse;
+    if (!response.ok || data.error?.message) {
+      if (response.status === 403 || response.status === 429) {
+        googleCustomSearchUnavailableUntil = Date.now() + (response.status === 403 ? 60 * 60 * 1000 : 60 * 1000);
+      }
+      return [];
+    }
+    const ids = Array.from(new Set((data.items ?? [])
+      .map((item) => youtubeVideoIdFromReference(item.link))
+      .filter(Boolean)))
+      .slice(0, 6);
+    const candidates = await Promise.all(ids.map((id) => fetchYouTubeOEmbedCandidate(id)));
+    return candidates.filter((candidate): candidate is BoardWizardVideoCandidate => !!candidate);
+  } catch (error) {
+    logger.warn('YouTube Custom Search fallback failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+}
+
+async function fetchYouTubeOEmbedCandidate(videoId: string): Promise<BoardWizardVideoCandidate | null> {
+  const id = youtubeVideoIdFromReference(videoId);
+  if (!id) return null;
+  try {
+    const url = new URL('https://www.youtube.com/oembed');
+    url.searchParams.set('url', `https://www.youtube.com/watch?v=${id}`);
+    url.searchParams.set('format', 'json');
+    const response = await fetch(url, {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
+      signal: AbortSignal.timeout(4_000),
+    });
+    if (!response.ok) return null;
+    const data = await response.json() as YouTubeOEmbedResponse;
+    if (!data.title || !data.author_name) return null;
+    return {
+      videoId: id,
+      title: decodeBasicHtmlEntities(data.title).slice(0, 300),
+      channelTitle: decodeBasicHtmlEntities(data.author_name).slice(0, 200),
+      thumbnailUrl: stringOrEmpty(data.thumbnail_url).slice(0, 2000),
+      durationSeconds: 0,
+      embeddable: true,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function decodeBasicHtmlEntities(value: string): string {
+  return value
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
+}
 
 export const generateBoardCardImage = onCall(
   {

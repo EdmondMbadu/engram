@@ -1,0 +1,15 @@
+.boards-wizard-card__play-video { position:absolute;left:50%;top:50%;z-index:3;display:grid;width:3.75rem;height:3.75rem;place-items:center;border:2px solid #fff;border-radius:50%;background:#e4281f;box-shadow:0 12px 30px rgba(0,0,0,.4);color:#fff;cursor:pointer;padding:0;transform:translate(-50%,-50%) }
+.boards-wizard-card__play-video:hover { transform:translate(-50%,-50%) scale(1.06) }
+.boards-wizard-card__play-video .material-symbols-outlined { font-size:2.2rem;font-variation-settings:'FILL' 1 }
+.boards-wizard-card__video-source { position:absolute;left:.55rem;bottom:.55rem;z-index:3;display:inline-flex;max-width:calc(100% - 1.1rem);align-items:center;gap:.25rem;overflow:hidden;border-radius:999px;background:rgba(9,14,11,.82);color:#fff;font-size:.62rem;font-weight:950;padding:.3rem .48rem;text-overflow:ellipsis;white-space:nowrap;backdrop-filter:blur(8px) }
+.boards-wizard-card__video-source .material-symbols-outlined { flex:0 0 auto;font-size:.92rem }
+.boards-wizard-card__video-meta { display:flex;align-items:flex-start;gap:.4rem;border-radius:.65rem;background:color-mix(in srgb,#e4281f 9%,var(--surface-strong));color:var(--text);padding:.45rem .5rem }
+.boards-wizard-card__video-meta>.material-symbols-outlined { color:#e4281f;font-size:1.05rem }
+.boards-wizard-card__video-meta span { min-width:0 }
+.boards-wizard-card__video-meta strong,.boards-wizard-card__video-meta small { display:block }
+.boards-wizard-card__video-meta strong { font-size:.68rem }
+.boards-wizard-card__video-meta small { overflow:hidden;margin-top:.12rem;font-size:.62rem;text-overflow:ellipsis;white-space:nowrap }
+.boards-wizard-refine__video { display:flex;align-items:flex-start;gap:.45rem;border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:.75rem;background:color-mix(in srgb,var(--accent) 8%,var(--surface));color:var(--text);font-size:.72rem;font-weight:850;line-height:1.35;padding:.6rem }
+.boards-wizard-refine__video .material-symbols-outlined { color:#e4281f;font-size:1.15rem }
+.card-youtube-field__ready { display:flex!important;align-items:center;gap:.3rem;color:#197642!important;font-weight:900!important }
+.card-youtube-field__ready .material-symbols-outlined { color:#e4281f;font-size:1rem }
