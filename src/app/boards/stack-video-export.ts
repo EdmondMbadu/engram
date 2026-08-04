@@ -63,7 +63,7 @@ const CLOSING_DURATION_MS = 2100;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v7';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v8';
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
@@ -94,16 +94,6 @@ export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageU
 export function stackVideoNarrationFrameDurationMs(durationSeconds: number, baseDurationMs = FRAME_DURATION_MS): number {
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) return baseDurationMs;
   return Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + NARRATION_LEAD_MS + NARRATION_TAIL_MS);
-}
-
-export function stackVideoNarrationScript(title: string, detail: string): string {
-  const cleanTitle = normalizeNarrationText(title);
-  const cleanDetail = normalizeNarrationText(detail);
-  if (!cleanTitle) return truncateNarration(cleanDetail);
-  if (!cleanDetail || cleanDetail.toLocaleLowerCase() === cleanTitle.toLocaleLowerCase()) {
-    return truncateNarration(cleanTitle);
-  }
-  return truncateNarration(`${cleanTitle}. ${cleanDetail}`);
 }
 
 export function stackVideoFrameAtElapsed(
@@ -750,25 +740,6 @@ function easeOut(value: number): number {
 function narrationPlaybackDurationSeconds(buffer: AudioBuffer, frameDurationMs: number): number {
   const availableMs = Math.max(100, frameDurationMs - NARRATION_LEAD_MS - NARRATION_TAIL_MS);
   return Math.min(buffer.duration, availableMs / 1000);
-}
-
-function normalizeNarrationText(value: string): string {
-  return value
-    .replace(/https?:\/\/\S+/gi, '')
-    .replace(/\s*\/\s*/g, ', ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/[.!?]+$/, '');
-}
-
-function truncateNarration(value: string): string {
-  const words = value.split(/\s+/).filter(Boolean);
-  let result = words.slice(0, 18).join(' ');
-  if (result.length > 160) {
-    result = result.slice(0, 160).replace(/\s+\S*$/, '').trim();
-  }
-  if (!result) return '';
-  return /[.!?]$/.test(result) ? result : `${result}.`;
 }
 
 function nextVideoTick(): Promise<void> {

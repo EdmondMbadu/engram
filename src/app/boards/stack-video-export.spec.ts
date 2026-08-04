@@ -5,7 +5,6 @@ import {
   stackVideoCardImageCandidates,
   stackVideoFrameAtElapsed,
   stackVideoNarrationFrameDurationMs,
-  stackVideoNarrationScript,
   stackVideoRenderIsCurrent,
 } from './stack-video-export';
 import { reorderRelativeToTarget } from './reorder';
@@ -19,7 +18,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v4')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v5')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v6')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v7')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v7')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v8')).toBeTrue();
   });
 
   it('uses only a rank label for ranked cards', () => {
@@ -86,18 +86,6 @@ describe('Stack video card images', () => {
     expect(stackVideoNarrationFrameDurationMs(0)).toBe(2200);
     expect(stackVideoNarrationFrameDurationMs(3.25)).toBe(3700);
     expect(stackVideoNarrationFrameDurationMs(30)).toBe(30_450);
-  });
-
-  it('builds a concise narration script without cutting through a word', () => {
-    expect(stackVideoNarrationScript(
-      'Robert Downey Jr.',
-      'The architect of the MCU and its defining hero across the Infinity Saga.',
-    )).toBe('Robert Downey Jr. The architect of the MCU and its defining hero across the Infinity Saga.');
-    expect(stackVideoNarrationScript(
-      'Robert Downey Jr.',
-      'Tony Stark / Iron Man. The undisputed anchor of the franchise.',
-    )).toBe('Robert Downey Jr. Tony Stark, Iron Man. The undisputed anchor of the franchise.');
-    expect(stackVideoNarrationScript('Chris Evans.', '')).toBe('Chris Evans.');
   });
 
   it('uses one master timeline so a delayed render advances to the correct card', () => {
