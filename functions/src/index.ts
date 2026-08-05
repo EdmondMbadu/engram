@@ -26,6 +26,8 @@ import {
 import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
 import {
   boardWizardCardWantsVideo,
+  buildBoardWizardRelatedVideoSearchQuery,
+  buildBoardWizardYouTubeApiQuery,
   buildBoardWizardVideoSearchQuery,
   parseIso8601DurationSeconds,
   scoreBoardWizardVideoCandidate,
@@ -33,6 +35,7 @@ import {
   type BoardWizardVideoCandidate,
   type BoardWizardVideoCardInput,
 } from './board-wizard-video';
+import { createYouTubeEmbedVerifier, type YouTubeEmbedVerifier } from './youtube-embed-verifier';
 import {
   extractBoardTranslationSource,
   isBoardTranslationLanguage,
@@ -158,6 +161,7 @@ const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_ME
 });
 const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const googleCustomSearchApiKey = defineSecret('GOOGLE_CUSTOM_SEARCH_API_KEY');
+const youtubeDataApiKey = defineSecret('YOUTUBE_DATA_API_KEY');
 const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? '';
 const spotifyClientSecret = defineSecret('SPOTIFY_CLIENT_SECRET');
@@ -6418,11 +6422,11 @@ export const resolveBoardCardVideos = onCall(
   {
     region: callableRegion,
     cors: true,
-    timeoutSeconds: 60,
-    memory: '512MiB',
-    concurrency: 10,
-    maxInstances: 20,
-    secrets: [googleCustomSearchApiKey],
+    timeoutSeconds: 120,
+    memory: '1GiB',
+    concurrency: 5,
+    maxInstances: 10,
+    secrets: [googleCustomSearchApiKey, youtubeDataApiKey],
   },
   async (request) => {
     const userId = request.auth?.uid;
@@ -6448,44 +6452,57 @@ export const resolveBoardCardVideos = onCall(
       return { matches: [], attempted: 0 };
     }
 
-    const apiKey = googleCustomSearchApiKey.value();
-    const matches = await mapWithConcurrency(cards, 5, async (card) => {
-      if (!card.youtubeReference && !boardWizardCardWantsVideo(card, boardContext)) {
-        return null;
-      }
-      const query = buildBoardWizardVideoSearchQuery(card, boardContext);
-      const candidate = card.youtubeReference
-        ? await resolveYouTubeCandidateByReference(card.youtubeReference, apiKey)
-        : await resolveCachedBoardWizardVideo(card, boardContext, query, apiKey);
-      if (!candidate) return null;
-      const score = card.youtubeReference
-        ? 100
-        : scoreBoardWizardVideoCandidate(card, boardContext, candidate);
-      if (!card.youtubeReference && score < 55) return null;
-      return {
-        cardId: card.cardId,
-        youtubeVideoId: candidate.videoId,
-        youtubeVideoTitle: candidate.title,
-        youtubeChannelTitle: candidate.channelTitle,
-        youtubeThumbnailUrl: candidate.thumbnailUrl,
-        youtubeDurationSeconds: candidate.durationSeconds,
-        youtubeMatchConfidence: card.youtubeReference
-          ? 1
-          : Math.max(0, Math.min(1, Number(((score - 35) / 100).toFixed(2)))),
-        youtubeVerifiedAt: new Date().toISOString(),
-      };
-    });
+    const apiKey = youtubeDataApiKey.value();
+    const customSearchApiKey = googleCustomSearchApiKey.value();
+    const embedVerifier = createYouTubeEmbedVerifier(5);
+    try {
+      const matches = await mapWithConcurrency(cards, 5, async (card) => {
+        if (!card.youtubeReference && !boardWizardCardWantsVideo(card, boardContext)) {
+          return null;
+        }
+        const query = buildBoardWizardVideoSearchQuery(card, boardContext);
+        const candidate = card.youtubeReference
+          ? await resolveYouTubeCandidateByReference(card.youtubeReference, apiKey, embedVerifier)
+          : await resolveCachedBoardWizardVideo(
+              card,
+              boardContext,
+              query,
+              apiKey,
+              customSearchApiKey,
+              embedVerifier,
+            );
+        if (!candidate) return null;
+        const score = card.youtubeReference
+          ? 100
+          : scoreBoardWizardVideoCandidate(card, boardContext, candidate);
+        if (!card.youtubeReference && score < 55) return null;
+        return {
+          cardId: card.cardId,
+          youtubeVideoId: candidate.videoId,
+          youtubeVideoTitle: candidate.title,
+          youtubeChannelTitle: candidate.channelTitle,
+          youtubeThumbnailUrl: candidate.thumbnailUrl,
+          youtubeDurationSeconds: candidate.durationSeconds,
+          youtubeMatchConfidence: card.youtubeReference
+            ? 1
+            : Math.max(0, Math.min(1, Number(((score - 35) / 100).toFixed(2)))),
+          youtubeVerifiedAt: new Date().toISOString(),
+        };
+      });
 
-    logger.info('Board wizard video enrichment completed.', {
-      userId,
-      requestedCount: cards.length,
-      matchedCount: matches.filter(Boolean).length,
-      boardTitle: stringOrEmpty(data.boardTitle).slice(0, 120),
-    });
-    return {
-      matches: matches.filter((match) => !!match),
-      attempted: cards.length,
-    };
+      logger.info('Board wizard video enrichment completed.', {
+        userId,
+        requestedCount: cards.length,
+        matchedCount: matches.filter(Boolean).length,
+        boardTitle: stringOrEmpty(data.boardTitle).slice(0, 120),
+      });
+      return {
+        matches: matches.filter((match) => !!match),
+        attempted: cards.length,
+      };
+    } finally {
+      await embedVerifier.close();
+    }
   },
 );
 
@@ -6520,10 +6537,15 @@ async function resolveCachedBoardWizardVideo(
   card: NormalizedBoardVideoLookupCard,
   boardContext: string,
   query: string,
-  apiKey: string,
+  youtubeApiKey: string,
+  customSearchApiKey: string,
+  embedVerifier: YouTubeEmbedVerifier,
 ): Promise<BoardWizardVideoCandidate | null> {
   if (!query) return null;
-  const cacheId = createHash('sha256').update(query.toLowerCase()).digest('hex');
+  // Prefix the hash whenever resolver credentials or matching semantics change.
+  // This prevents a short-lived outage from pinning freshly repaired searches
+  // to an old negative cache entry.
+  const cacheId = createHash('sha256').update(`youtube-v3|${query.toLowerCase()}`).digest('hex');
   const cacheRef = db.collection('board_video_matches').doc(cacheId);
   try {
     const cached = await cacheRef.get();
@@ -6538,10 +6560,18 @@ async function resolveCachedBoardWizardVideo(
     });
   }
 
-  const candidate = await searchYouTubeForBoardCard(card, boardContext, query, apiKey);
+  const candidate = await searchYouTubeForBoardCard(
+    card,
+    boardContext,
+    query,
+    youtubeApiKey,
+    customSearchApiKey,
+    embedVerifier,
+  );
   try {
     await cacheRef.set({
       query,
+      resolver_version: 'youtube-v3',
       match: candidate ?? null,
       expires_at_ms: Date.now() + (candidate ? 14 * 24 * 60 * 60 * 1000 : 6 * 60 * 60 * 1000),
       updated_at: FieldValue.serverTimestamp(),
@@ -6573,38 +6603,67 @@ async function searchYouTubeForBoardCard(
   card: NormalizedBoardVideoLookupCard,
   boardContext: string,
   query: string,
-  apiKey: string,
+  youtubeApiKey: string,
+  customSearchApiKey: string,
+  embedVerifier: YouTubeEmbedVerifier,
 ): Promise<BoardWizardVideoCandidate | null> {
-  const officialCandidates = await searchYouTubeDataApi(query, apiKey);
-  const officialMatch = chooseBoardWizardVideoCandidate(card, boardContext, officialCandidates);
+  let officialCandidates = await searchYouTubeDataApi(query, youtubeApiKey);
+  if (!officialCandidates.length) {
+    officialCandidates = await searchYouTubeWeb(buildBoardWizardYouTubeApiQuery(query));
+  }
+  const officialMatch = await chooseBoardWizardVideoCandidate(card, boardContext, officialCandidates, embedVerifier);
   if (officialMatch) return officialMatch;
-  const fallbackCandidates = await searchYouTubeWithCustomSearch(query, apiKey);
-  return chooseBoardWizardVideoCandidate(card, boardContext, fallbackCandidates);
+  const relatedQuery = buildBoardWizardRelatedVideoSearchQuery(card);
+  let relatedCandidates = await searchYouTubeDataApi(relatedQuery, youtubeApiKey);
+  if (!relatedCandidates.length) relatedCandidates = await searchYouTubeWeb(relatedQuery);
+  const relatedMatch = await chooseBoardWizardVideoCandidate(
+    card,
+    boardContext,
+    relatedCandidates,
+    embedVerifier,
+    true,
+  );
+  if (relatedMatch) return relatedMatch;
+  const fallbackCandidates = await searchYouTubeWithCustomSearch(query, customSearchApiKey);
+  return await chooseBoardWizardVideoCandidate(card, boardContext, fallbackCandidates, embedVerifier);
 }
 
-function chooseBoardWizardVideoCandidate(
+async function chooseBoardWizardVideoCandidate(
   card: NormalizedBoardVideoLookupCard,
   boardContext: string,
   candidates: BoardWizardVideoCandidate[],
-): BoardWizardVideoCandidate | null {
-  return candidates
+  embedVerifier: YouTubeEmbedVerifier,
+  allowRelated = false,
+): Promise<BoardWizardVideoCandidate | null> {
+  const ranked = candidates
     .map((candidate) => ({
       candidate,
-      score: scoreBoardWizardVideoCandidate(card, boardContext, candidate),
+      score: scoreBoardWizardVideoCandidate(card, boardContext, candidate, { allowRelated }),
     }))
     .filter((entry) => entry.score >= 55)
-    .sort((left, right) => right.score - left.score)[0]?.candidate ?? null;
+    .sort((left, right) => right.score - left.score)
+    .slice(0, 8);
+  for (const entry of ranked) {
+    if (await embedVerifier.isPlayable(entry.candidate.videoId)) return entry.candidate;
+    logger.info('Rejected a metadata-embeddable YouTube result that failed the real player check.', {
+      videoId: entry.candidate.videoId,
+      videoTitle: entry.candidate.title,
+    });
+  }
+  return null;
 }
 
 async function resolveYouTubeCandidateByReference(
   reference: string,
   apiKey: string,
+  embedVerifier: YouTubeEmbedVerifier,
 ): Promise<BoardWizardVideoCandidate | null> {
   const videoId = youtubeVideoIdFromReference(reference);
   if (!videoId) return null;
   const official = await fetchYouTubeDataApiCandidates([videoId], apiKey);
-  if (official[0]?.embeddable) return official[0];
-  return await fetchYouTubeOEmbedCandidate(videoId);
+  if (official[0]?.embeddable && await embedVerifier.isPlayable(videoId)) return official[0];
+  const fallback = await fetchYouTubeOEmbedCandidate(videoId);
+  return fallback && await embedVerifier.isPlayable(videoId) ? fallback : null;
 }
 
 async function searchYouTubeDataApi(
@@ -6620,7 +6679,7 @@ async function searchYouTubeDataApi(
     url.searchParams.set('videoSyndicated', 'true');
     url.searchParams.set('safeSearch', 'moderate');
     url.searchParams.set('maxResults', '8');
-    url.searchParams.set('q', query);
+    url.searchParams.set('q', buildBoardWizardYouTubeApiQuery(query));
     url.searchParams.set('key', apiKey);
     const response = await fetch(url, {
       headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
@@ -6707,6 +6766,11 @@ async function searchYouTubeWithCustomSearch(
       if (response.status === 403 || response.status === 429) {
         googleCustomSearchUnavailableUntil = Date.now() + (response.status === 403 ? 60 * 60 * 1000 : 60 * 1000);
       }
+      logger.warn('YouTube Custom Search fallback unavailable.', {
+        query,
+        status: response.status,
+        error: data.error?.message,
+      });
       return [];
     }
     const ids = Array.from(new Set((data.items ?? [])
@@ -6717,6 +6781,33 @@ async function searchYouTubeWithCustomSearch(
     return candidates.filter((candidate): candidate is BoardWizardVideoCandidate => !!candidate);
   } catch (error) {
     logger.warn('YouTube Custom Search fallback failed.', {
+      query,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+}
+
+async function searchYouTubeWeb(query: string): Promise<BoardWizardVideoCandidate[]> {
+  try {
+    const url = new URL('https://www.youtube.com/results');
+    url.searchParams.set('search_query', query);
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/131 Safari/537.36',
+      },
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!response.ok) return [];
+    const html = await response.text();
+    const ids = Array.from(html.matchAll(/"videoId":"([A-Za-z0-9_-]{11})"/g), (match) => match[1]);
+    const uniqueIds = Array.from(new Set(ids)).slice(0, 10);
+    const candidates = await Promise.all(uniqueIds.map((id) => fetchYouTubeOEmbedCandidate(id)));
+    return candidates.filter((candidate): candidate is BoardWizardVideoCandidate => !!candidate);
+  } catch (error) {
+    logger.warn('YouTube web search fallback failed.', {
       query,
       errorMessage: error instanceof Error ? error.message : String(error),
     });

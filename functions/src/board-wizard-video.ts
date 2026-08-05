@@ -61,6 +61,23 @@ export function buildBoardWizardVideoSearchQuery(
     .slice(0, 180);
 }
 
+export function buildBoardWizardYouTubeApiQuery(query: string): string {
+  const cleaned = cleanSearchText(query);
+  if (/\bhalf[\s-]?time\s+show\b/i.test(cleaned) && !/\bfull\b/i.test(cleaned)) {
+    return `${cleaned} full performance`.slice(0, 180);
+  }
+  return cleaned.slice(0, 180);
+}
+
+export function buildBoardWizardRelatedVideoSearchQuery(card: BoardWizardVideoCardInput): string {
+  return [card.entityName || card.title, card.title, 'interview performance analysis']
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 180);
+}
+
 export function youtubeVideoIdFromReference(value: unknown): string {
   const raw = typeof value === 'string' ? value.trim() : '';
   if (!raw) return '';
@@ -92,6 +109,7 @@ export function scoreBoardWizardVideoCandidate(
   card: BoardWizardVideoCardInput,
   boardContext: string,
   candidate: BoardWizardVideoCandidate,
+  options: { allowRelated?: boolean } = {},
 ): number {
   if (!candidate.embeddable || !youtubeVideoIdFromReference(candidate.videoId)) return -1;
   const expected = tokens([
@@ -105,15 +123,33 @@ export function scoreBoardWizardVideoCandidate(
   const overlap = expected.filter((token) => candidateTokens.includes(token)).length;
   const titleTokens = tokens(card.entityName || card.title);
   const titleOverlap = titleTokens.filter((token) => candidateTokens.includes(token)).length;
-  if (titleTokens.length >= 2 && titleOverlap < Math.min(2, titleTokens.length)) return -1;
+  if (titleTokens.length && titleOverlap < Math.min(2, titleTokens.length)) return -1;
   const normalizedCandidate = normalizeText(`${candidate.title} ${candidate.channelTitle}`);
   const normalizedTitle = normalizeText(card.entityName || card.title);
+  if (/\b(?:studio version|live studio version|hq audio|audio only)\b/i.test(candidate.title)) {
+    return -1;
+  }
+  if (!options.allowRelated && /\b(?:facts? behind|behind the scenes|documentary)\b/i.test(candidate.title)) {
+    return -1;
+  }
+  const normalizedExpectedContext = normalizeText([
+    card.title,
+    card.imageContext,
+    card.videoSearchQuery,
+    boardContext,
+  ].filter(Boolean).join(' '));
   const contextTokens = tokens(boardContext);
   const contextOverlap = contextTokens.filter((token) => candidateTokens.includes(token)).length;
   let score = overlap * 12 + titleOverlap * 18 + Math.min(24, contextOverlap * 4);
   if (normalizedTitle.length >= 4 && normalizedCandidate.includes(normalizedTitle)) score += 32;
   if (/\b(?:official|nfl|nba|olympics|vevo|records|studios?|network|broadcast)\b/i.test(candidate.channelTitle)) score += 12;
+  if (/^(?:nfl|nba|olympics)$/i.test(candidate.channelTitle.trim())) score += 35;
   if (/\b(?:reaction|reacts?|review|commentary|explained|parody|cover by|fan made|shorts?)\b/i.test(candidate.title)) score -= 35;
+  if (/\bhalf[\s-]?time show\b/.test(normalizedExpectedContext)) {
+    if (/\b(?:full|complete|entire)\b/i.test(candidate.title)) score += 28;
+    if (candidate.durationSeconds >= 8 * 60) score += 22;
+    if (candidate.durationSeconds > 0 && candidate.durationSeconds < 5 * 60) score -= 28;
+  }
   if (candidate.durationSeconds > 0 && candidate.durationSeconds < 45) score -= 18;
   return score;
 }
