@@ -1703,9 +1703,11 @@ let spotifyAccessTokenCache: { token: string; expiresAt: number } | null = null;
 let googleCustomSearchUnavailableUntil = 0;
 let youtubeDataApiSearchUnavailableUntil = 0;
 let youtubeDataApiSearchUnavailableReason = '';
+const youtubeBlockedEmbedUntil = new Map<string, number>();
 
 const BOARD_VIDEO_LOOKUP_BUDGET_MS = 42_000;
 const BOARD_VIDEO_DEADLINE_BUFFER_MS = 1_500;
+const BOARD_VIDEO_BLOCKED_MEMORY_MS = 24 * 60 * 60 * 1000;
 
 type WikimediaCommonsImageResponse = {
   query?: {
@@ -6543,6 +6545,7 @@ export const resolveBoardCardVideos = onCall(
 type NormalizedBoardVideoLookupCard = BoardWizardVideoCardInput & {
   cardId: string;
   youtubeReference: string;
+  excludeVideoIds: string[];
 };
 
 function normalizeBoardVideoLookupCard(value: unknown): NormalizedBoardVideoLookupCard | null {
@@ -6564,6 +6567,9 @@ function normalizeBoardVideoLookupCard(value: unknown): NormalizedBoardVideoLook
     videoIntent: data.videoIntent === true,
     videoSearchQuery: stringOrEmpty(data.videoSearchQuery).replace(/\s+/g, ' ').trim().slice(0, 180),
     youtubeReference: stringOrEmpty(data.youtubeReference).trim().slice(0, 500),
+    excludeVideoIds: Array.isArray(data.excludeVideoIds)
+      ? Array.from(new Set(data.excludeVideoIds.map(youtubeVideoIdFromReference).filter(Boolean))).slice(0, 20)
+      : [],
   };
 }
 
@@ -6580,7 +6586,10 @@ async function resolveCachedBoardWizardVideo(
   // Prefix the hash whenever resolver credentials or matching semantics change.
   // This prevents a short-lived outage from pinning freshly repaired searches
   // to an old negative cache entry.
-  const cacheId = createHash('sha256').update(`youtube-resilient-v2|${query.toLowerCase()}`).digest('hex');
+  const exclusionKey = [...card.excludeVideoIds].sort().join(',');
+  const cacheId = createHash('sha256')
+    .update(`youtube-playable-v3|${query.toLowerCase()}|exclude:${exclusionKey}`)
+    .digest('hex');
   const cacheRef = db.collection('board_video_matches').doc(cacheId);
   try {
     const cached = await cacheRef.get();
@@ -6607,9 +6616,11 @@ async function resolveCachedBoardWizardVideo(
   try {
     await cacheRef.set({
       query,
-      resolver_version: 'youtube-resilient-v2',
+      resolver_version: 'youtube-playable-v3',
+      verification_status: candidate ? 'playable' : 'no-playable-match',
+      verified_at_iso: candidate ? new Date().toISOString() : '',
       match: candidate ?? null,
-      expires_at_ms: Date.now() + (candidate ? 14 * 24 * 60 * 60 * 1000 : 5 * 60 * 1000),
+      expires_at_ms: Date.now() + (candidate ? 48 * 60 * 60 * 1000 : 5 * 60 * 1000),
       updated_at: FieldValue.serverTimestamp(),
     });
   } catch (error) {
@@ -6646,10 +6657,8 @@ async function searchYouTubeForBoardCard(
 ): Promise<BoardWizardVideoCandidate | null> {
   const apiSearch = await searchYouTubeDataApi(query, youtubeApiKey, deadlineAt);
   let officialCandidates = apiSearch.candidates;
-  let metadataFallbackAllowed = !apiSearch.available;
   if (!officialCandidates.length) {
     officialCandidates = await searchYouTubeWeb(buildBoardWizardYouTubeApiQuery(query), deadlineAt);
-    metadataFallbackAllowed = true;
   }
   const officialMatch = await chooseBoardWizardVideoCandidate(
     card,
@@ -6657,23 +6666,17 @@ async function searchYouTubeForBoardCard(
     officialCandidates,
     embedVerifier,
     {
-      verificationLimit: metadataFallbackAllowed ? 1 : 2,
-      acceptBestMetadataMatch: metadataFallbackAllowed,
+      verificationLimit: 4,
       deadlineAt,
     },
   );
   if (officialMatch) return officialMatch;
-  // When quota or the primary API is unavailable, the public-search result is
-  // the durable fallback. Do not spend the remaining request budget searching
-  // for loosely related commentary or invoking another quota-bound API.
-  if (!apiSearch.available || Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
+  if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
   const relatedQuery = buildBoardWizardRelatedVideoSearchQuery(card);
   const relatedApiSearch = await searchYouTubeDataApi(relatedQuery, youtubeApiKey, deadlineAt);
   let relatedCandidates = relatedApiSearch.candidates;
-  let relatedMetadataFallbackAllowed = !relatedApiSearch.available;
   if (!relatedCandidates.length) {
     relatedCandidates = await searchYouTubeWeb(relatedQuery, deadlineAt);
-    relatedMetadataFallbackAllowed = true;
   }
   const relatedMatch = await chooseBoardWizardVideoCandidate(
     card,
@@ -6682,8 +6685,7 @@ async function searchYouTubeForBoardCard(
     embedVerifier,
     {
       allowRelated: true,
-      verificationLimit: relatedMetadataFallbackAllowed ? 1 : 2,
-      acceptBestMetadataMatch: relatedMetadataFallbackAllowed,
+      verificationLimit: 4,
       deadlineAt,
     },
   );
@@ -6691,8 +6693,7 @@ async function searchYouTubeForBoardCard(
   if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
   const fallbackCandidates = await searchYouTubeWithCustomSearch(query, customSearchApiKey);
   return await chooseBoardWizardVideoCandidate(card, boardContext, fallbackCandidates, embedVerifier, {
-    verificationLimit: 1,
-    acceptBestMetadataMatch: true,
+    verificationLimit: 3,
     deadlineAt,
   });
 }
@@ -6705,29 +6706,32 @@ async function chooseBoardWizardVideoCandidate(
   options: {
     allowRelated?: boolean;
     verificationLimit?: number;
-    acceptBestMetadataMatch?: boolean;
     deadlineAt: number;
   },
 ): Promise<BoardWizardVideoCandidate | null> {
   const ranked = rankBoardWizardVideoCandidates(card, boardContext, candidates, {
     allowRelated: options.allowRelated,
-    limit: 8,
+    limit: 12,
   });
-  const verificationLimit = Math.max(0, Math.min(3, Math.trunc(options.verificationLimit ?? 2)));
-  for (const entry of ranked.slice(0, verificationLimit)) {
+  const verificationLimit = Math.max(0, Math.min(5, Math.trunc(options.verificationLimit ?? 3)));
+  const candidatesToVerify = ranked
+    .filter((entry) => !card.excludeVideoIds.includes(entry.candidate.videoId))
+    .filter((entry) => !youtubeVideoEmbedIsKnownBlocked(entry.candidate.videoId))
+    .slice(0, verificationLimit);
+  for (const entry of candidatesToVerify) {
     if (Date.now() >= options.deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) break;
-    if (await embedVerifier.isPlayable(entry.candidate.videoId, options.deadlineAt)) return entry.candidate;
-    logger.info('Rejected a metadata-embeddable YouTube result that failed the real player check.', {
+    const verification = await embedVerifier.verify(entry.candidate.videoId, options.deadlineAt);
+    if (verification.status === 'playable') return entry.candidate;
+    if (verification.status === 'blocked') {
+      rememberBlockedYouTubeEmbed(entry.candidate.videoId);
+    }
+    logger.info('Rejected a YouTube result that was not verified playable in an embedded player.', {
       videoId: entry.candidate.videoId,
       videoTitle: entry.candidate.title,
+      verificationStatus: verification.status,
+      verificationReason: verification.reason,
+      playerErrorCode: verification.errorCode,
     });
-  }
-  if (options.acceptBestMetadataMatch && ranked[0]) {
-    logger.info('Using the best YouTube metadata match because runtime playback verification is unavailable.', {
-      videoId: ranked[0].candidate.videoId,
-      videoTitle: ranked[0].candidate.title,
-    });
-    return ranked[0].candidate;
   }
   return null;
 }
@@ -6745,13 +6749,43 @@ async function resolveYouTubeCandidateByReference(
     ? official[0]
     : await fetchYouTubeOEmbedCandidate(videoId, deadlineAt);
   if (!fallback) return null;
-  const playable = await embedVerifier.isPlayable(videoId, deadlineAt);
-  if (!playable) {
-    logger.info('Retaining an explicit YouTube reference even though embedded playback could not be verified.', {
+  const verification = await embedVerifier.verify(videoId, deadlineAt);
+  if (verification.status !== 'playable') {
+    if (verification.status === 'blocked') rememberBlockedYouTubeEmbed(videoId);
+    logger.info('Rejected an explicit YouTube reference because embedded playback could not be verified.', {
       videoId,
+      verificationStatus: verification.status,
+      verificationReason: verification.reason,
+      playerErrorCode: verification.errorCode,
     });
+    return null;
   }
   return fallback;
+}
+
+function youtubeVideoEmbedIsKnownBlocked(videoId: string): boolean {
+  const normalized = youtubeVideoIdFromReference(videoId);
+  if (!normalized) return true;
+  const blockedUntil = youtubeBlockedEmbedUntil.get(normalized) ?? 0;
+  if (blockedUntil <= Date.now()) {
+    youtubeBlockedEmbedUntil.delete(normalized);
+    return false;
+  }
+  return true;
+}
+
+function rememberBlockedYouTubeEmbed(videoId: string): void {
+  const normalized = youtubeVideoIdFromReference(videoId);
+  if (!normalized) return;
+  if (youtubeBlockedEmbedUntil.size >= 2_000) {
+    const now = Date.now();
+    for (const [id, blockedUntil] of youtubeBlockedEmbedUntil) {
+      if (blockedUntil <= now || youtubeBlockedEmbedUntil.size >= 1_500) {
+        youtubeBlockedEmbedUntil.delete(id);
+      }
+    }
+  }
+  youtubeBlockedEmbedUntil.set(normalized, Date.now() + BOARD_VIDEO_BLOCKED_MEMORY_MS);
 }
 
 async function searchYouTubeDataApi(
@@ -6773,7 +6807,7 @@ async function searchYouTubeDataApi(
     url.searchParams.set('videoEmbeddable', 'true');
     url.searchParams.set('videoSyndicated', 'true');
     url.searchParams.set('safeSearch', 'moderate');
-    url.searchParams.set('maxResults', '8');
+    url.searchParams.set('maxResults', '15');
     url.searchParams.set('q', buildBoardWizardYouTubeApiQuery(query));
     url.searchParams.set('key', apiKey);
     const response = await fetch(url, {
@@ -6814,7 +6848,7 @@ async function fetchYouTubeDataApiCandidates(
   apiKey: string,
   deadlineAt?: number,
 ): Promise<BoardWizardVideoCandidate[]> {
-  const ids = videoIds.map(youtubeVideoIdFromReference).filter(Boolean).slice(0, 10);
+  const ids = videoIds.map(youtubeVideoIdFromReference).filter(Boolean).slice(0, 20);
   if (!apiKey || !ids.length) return [];
   if (deadlineAt && Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return [];
   try {
@@ -6907,7 +6941,7 @@ async function searchYouTubeWeb(query: string, deadlineAt: number): Promise<Boar
     });
     if (!response.ok) return [];
     const html = await response.text();
-    const parsed = extractYouTubeWebSearchResults(html, 8).map((candidate): BoardWizardVideoCandidate => ({
+    const parsed = extractYouTubeWebSearchResults(html, 15).map((candidate): BoardWizardVideoCandidate => ({
       ...candidate,
       thumbnailUrl: decodeBasicHtmlEntities(candidate.thumbnailUrl),
       title: decodeBasicHtmlEntities(candidate.title),

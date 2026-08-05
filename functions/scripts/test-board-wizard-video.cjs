@@ -9,7 +9,10 @@ const {
   scoreBoardWizardVideoCandidate,
   youtubeVideoIdFromReference,
 } = require('../lib/board-wizard-video.js');
-const { youtubeEmbedBodyIsPlayable } = require('../lib/youtube-embed-verifier.js');
+const {
+  classifyYouTubeEmbedVerification,
+  youtubeEmbedBodyIsPlayable,
+} = require('../lib/youtube-embed-verifier.js');
 const { extractYouTubeWebSearchResults } = require('../lib/youtube-web-search.js');
 
 const card = {
@@ -31,7 +34,15 @@ assert.equal(
 );
 assert.equal(
   buildBoardWizardRelatedVideoSearchQuery(card),
-  'Prince Prince — Super Bowl XLI interview performance analysis',
+  'Prince Super Bowl XLI halftime show · 2007 full live performance',
+);
+assert.equal(
+  buildBoardWizardRelatedVideoSearchQuery({
+    title: 'Pelé Goal — 1958 Final',
+    entityName: 'Pelé',
+    imageContext: 'Brazil v Sweden 1958 FIFA World Cup Final',
+  }),
+  'Pelé Brazil v Sweden 1958 FIFA World Cup Final match goal highlights',
 );
 assert.equal(
   buildBoardWizardYouTubeApiQuery('Katy Perry Super Bowl XLIX halftime show official NFL'),
@@ -114,6 +125,41 @@ const wrongSingleNameScore = scoreBoardWizardVideoCandidate({
 assert.equal(wrongSingleNameScore, -1);
 assert.equal(youtubeEmbedBodyIsPlayable('Video unavailable. Watch on YouTube', true, true), false);
 assert.equal(youtubeEmbedBodyIsPlayable('Prince performance channel controls', true, false), true);
+assert.deepEqual(classifyYouTubeEmbedVerification({
+  text: '',
+  hasPlayer: true,
+  hasPlayerError: false,
+  apiReady: false,
+  errorCode: 101,
+}), { status: 'blocked', errorCode: 101, reason: 'player-error-101' });
+assert.deepEqual(classifyYouTubeEmbedVerification({
+  text: '',
+  hasPlayer: true,
+  hasPlayerError: false,
+  apiReady: false,
+  errorCode: 150,
+}), { status: 'blocked', errorCode: 150, reason: 'player-error-150' });
+assert.deepEqual(classifyYouTubeEmbedVerification({
+  text: '',
+  hasPlayer: false,
+  hasPlayerError: false,
+  apiReady: false,
+  errorCode: 153,
+}), { status: 'unavailable', errorCode: 153, reason: 'verifier-error-153' });
+assert.deepEqual(classifyYouTubeEmbedVerification({
+  text: '',
+  hasPlayer: true,
+  hasPlayerError: false,
+  apiReady: true,
+  errorCode: 0,
+}), { status: 'playable', errorCode: 0, reason: 'player-ready' });
+assert.deepEqual(classifyYouTubeEmbedVerification({
+  text: 'Video unavailable. This video contains content from FIFA, who has blocked it from display.',
+  hasPlayer: true,
+  hasPlayerError: true,
+  apiReady: false,
+  errorCode: 0,
+}), { status: 'blocked', errorCode: 0, reason: 'player-error-message' });
 
 const webSearchFixture = `<!doctype html><script>var ytInitialData = ${JSON.stringify({
   contents: [{

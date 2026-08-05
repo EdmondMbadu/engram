@@ -70,7 +70,17 @@ export function buildBoardWizardYouTubeApiQuery(query: string): string {
 }
 
 export function buildBoardWizardRelatedVideoSearchQuery(card: BoardWizardVideoCardInput): string {
-  return [card.entityName || card.title, card.title, 'interview performance analysis']
+  const subject = cleanSearchText(card.entityName || card.title);
+  const context = cleanSearchText(card.imageContext || card.videoSearchQuery || card.title);
+  const combined = `${subject} ${context}`;
+  const formatHint = /\b(?:world cup|final|goal|match|tournament|championship|sports?)\b/i.test(combined)
+    ? 'match goal highlights'
+    : /\bhalf[\s-]?time\s+show\b/i.test(combined)
+      ? 'full live performance'
+      : /\b(?:song|music|concert|performance|artist|band|singer)\b/i.test(combined)
+        ? 'official live performance'
+        : 'highlights clip';
+  return [subject, context, formatHint]
     .filter(Boolean)
     .join(' ')
     .replace(/\s+/g, ' ')

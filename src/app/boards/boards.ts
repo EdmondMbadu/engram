@@ -1543,6 +1543,8 @@ export class BoardsComponent implements OnDestroy {
   readonly cardPhotoViewerCardId = signal<string | null>(null);
   readonly cardPhotoViewerIndex = signal(0);
   readonly cardVideoViewerCardId = signal<string | null>(null);
+  readonly cardVideoRepairing = signal(false);
+  readonly cardVideoRepairNotice = signal<string | null>(null);
   readonly boardLearnOpen = signal(false);
   readonly boardLearnView = signal<BoardLearnView>('menu');
   readonly boardLearnStudyIndex = signal(0);
@@ -9089,6 +9091,7 @@ export class BoardsComponent implements OnDestroy {
     event?.stopPropagation();
     if (!this.hasYoutubeVideo(card)) return;
     this.closeCardPhotoViewer();
+    this.cardVideoRepairNotice.set(null);
     this.cardVideoViewerCardId.set(card.id);
   }
 
@@ -9103,6 +9106,87 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     this.cardVideoViewerCardId.set(null);
+    this.cardVideoRepairNotice.set(null);
+  }
+
+  canRepairCardVideo(card: Pick<BoardCard, 'id'>): boolean {
+    const board = this.originalSelectedBoard();
+    return !!board && this.canEditBoard(board) && board.cards.some((candidate) => candidate.id === card.id);
+  }
+
+  async repairCardVideo(card: Pick<BoardCard, 'id'>, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.originalSelectedBoard();
+    const sourceCard = board?.cards.find((candidate) => candidate.id === card.id) ?? null;
+    const failedVideoId = youtubeVideoIdFromReference(sourceCard?.youtubeVideoId);
+    if (!board || !sourceCard || !failedVideoId || !this.functions || !this.canEditBoard(board) || this.cardVideoRepairing()) {
+      return;
+    }
+    this.cardVideoRepairing.set(true);
+    this.cardVideoRepairNotice.set('Finding another verified player…');
+    try {
+      const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'resolveBoardCardVideos', {
+        timeout: 55_000,
+      });
+      const response = await callable({
+        boardTitle: board.title,
+        boardDescription: board.description,
+        prompt: `${board.title} · ${board.description}`,
+        cards: [{
+          cardId: sourceCard.id,
+          title: sourceCard.title,
+          subtitle: sourceCard.subtitle,
+          notes: sourceCard.notes,
+          entityName: sourceCard.entityName || sourceCard.title,
+          entityType: sourceCard.entityType || '',
+          imageContext: sourceCard.imageContext || '',
+          tags: sourceCard.tags,
+          videoIntent: true,
+          videoSearchQuery: sourceCard.videoSearchQuery || '',
+          youtubeReference: '',
+          excludeVideoIds: [failedVideoId],
+        }],
+      });
+      const data = response.data && typeof response.data === 'object'
+        ? response.data as Record<string, unknown>
+        : {};
+      const matchValue = Array.isArray(data['matches']) ? data['matches'][0] : null;
+      const match = matchValue && typeof matchValue === 'object'
+        ? matchValue as Record<string, unknown>
+        : null;
+      const replacementId = youtubeVideoIdFromReference(match?.['youtubeVideoId']);
+      if (!match || !replacementId || replacementId === failedVideoId) {
+        this.cardVideoRepairNotice.set('No equally relevant playable replacement was found. You can still watch this video on YouTube.');
+        return;
+      }
+      const now = new Date().toISOString();
+      const replacementCard: BoardCard = {
+        ...sourceCard,
+        videoIntent: true,
+        youtubeVideoId: replacementId,
+        youtubeVideoTitle: this.stringValue(match['youtubeVideoTitle'], sourceCard.title, 300),
+        youtubeChannelTitle: this.stringValue(match['youtubeChannelTitle'], '', 200),
+        youtubeThumbnailUrl: this.stringValue(match['youtubeThumbnailUrl'], sourceCard.youtubeThumbnailUrl || '', 2000),
+        youtubeDurationSeconds: this.numberValue(match['youtubeDurationSeconds'], 0, 0, 86_400),
+        youtubeMatchConfidence: this.numberValue(match['youtubeMatchConfidence'], 0, 0, 1),
+        youtubeVerifiedAt: this.stringValue(match['youtubeVerifiedAt'], now, 80),
+        updatedAt: now,
+      };
+      const saved = await this.persistAndReplaceBoard({
+        ...board,
+        cards: board.cards.map((candidate) => candidate.id === sourceCard.id ? replacementCard : candidate),
+        updatedAt: now,
+      });
+      this.cardVideoRepairNotice.set(saved
+        ? 'A verified playable replacement is ready.'
+        : 'A replacement was found, but it could not be saved. Please try again.');
+    } catch (error) {
+      console.error('Card video replacement failed.', error, { boardId: board.id, cardId: sourceCard.id });
+      this.cardVideoRepairNotice.set('Another playable video could not be found right now. Please try again.');
+    } finally {
+      this.cardVideoRepairing.set(false);
+    }
   }
 
   onCardYoutubeReferenceInput(value: string): void {

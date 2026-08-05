@@ -3491,11 +3491,22 @@
             @if (youtubeDurationLabel(videoCard.youtubeDurationSeconds); as duration) {
               <span>{{ duration }}</span>
             }
+            @if (cardVideoRepairNotice()) {
+              <span class="card-video-lightbox__repair-notice" aria-live="polite">{{ cardVideoRepairNotice() }}</span>
+            }
           </div>
-          <a [href]="youtubeVideoHref(videoCard)" target="_blank" rel="noopener noreferrer" i18n>
-            Watch on YouTube
-            <span class="material-symbols-outlined">open_in_new</span>
-          </a>
+          <div class="card-video-lightbox__footer-actions">
+            @if (canRepairCardVideo(videoCard)) {
+              <button type="button" [disabled]="cardVideoRepairing()" (click)="repairCardVideo(videoCard, $event)">
+                <span class="material-symbols-outlined">{{ cardVideoRepairing() ? 'progress_activity' : 'youtube_searched_for' }}</span>
+                {{ cardVideoRepairing() ? 'Checking…' : 'Find another playable video' }}
+              </button>
+            }
+            <a [href]="youtubeVideoHref(videoCard)" target="_blank" rel="noopener noreferrer" i18n>
+              Watch on YouTube
+              <span class="material-symbols-outlined">open_in_new</span>
+            </a>
+          </div>
         </footer>
       </section>
     </div>

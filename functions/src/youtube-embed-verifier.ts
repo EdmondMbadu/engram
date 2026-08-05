@@ -4,20 +4,52 @@ import type { AddressInfo } from 'node:net';
 import puppeteer, { type Browser, type HTTPRequest } from 'puppeteer-core';
 
 const PLAYER_ERROR_PATTERN = /\b(?:video unavailable|player configuration error|error\s+\d+|blocked it from display|watch on youtube)\b/i;
+const DEFINITIVE_PLAYER_ERROR_CODES = new Set([5, 100, 101, 150]);
 
 export function youtubeEmbedBodyIsPlayable(text: string, hasPlayer: boolean, hasPlayerError: boolean): boolean {
   return hasPlayer && !hasPlayerError && !PLAYER_ERROR_PATTERN.test(text);
 }
 
+export type YouTubeEmbedVerificationStatus = 'playable' | 'blocked' | 'unavailable';
+
+export type YouTubeEmbedVerification = {
+  status: YouTubeEmbedVerificationStatus;
+  errorCode: number;
+  reason: string;
+};
+
+export function classifyYouTubeEmbedVerification(input: {
+  text: string;
+  hasPlayer: boolean;
+  hasPlayerError: boolean;
+  apiReady: boolean;
+  errorCode: number;
+}): YouTubeEmbedVerification {
+  const errorCode = Number.isFinite(input.errorCode) ? Math.trunc(input.errorCode) : 0;
+  if (DEFINITIVE_PLAYER_ERROR_CODES.has(errorCode)) {
+    return { status: 'blocked', errorCode, reason: `player-error-${errorCode}` };
+  }
+  if (input.hasPlayerError || PLAYER_ERROR_PATTERN.test(input.text)) {
+    return { status: 'blocked', errorCode, reason: 'player-error-message' };
+  }
+  if (errorCode) {
+    return { status: 'unavailable', errorCode, reason: `verifier-error-${errorCode}` };
+  }
+  if (input.apiReady || youtubeEmbedBodyIsPlayable(input.text, input.hasPlayer, input.hasPlayerError)) {
+    return { status: 'playable', errorCode: 0, reason: 'player-ready' };
+  }
+  return { status: 'unavailable', errorCode: 0, reason: 'player-did-not-settle' };
+}
+
 export type YouTubeEmbedVerifier = {
-  isPlayable(videoId: string, deadlineAt?: number): Promise<boolean>;
+  verify(videoId: string, deadlineAt?: number): Promise<YouTubeEmbedVerification>;
   close(): Promise<void>;
 };
 
 export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVerifier {
   let browserPromise: Promise<Browser> | null = null;
   let originPromise: Promise<{ server: Server; origin: string }> | null = null;
-  const cached = new Map<string, Promise<boolean>>();
+  const cached = new Map<string, Promise<YouTubeEmbedVerification>>();
   const queue: Array<() => void> = [];
   let active = 0;
 
@@ -41,12 +73,31 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
           const requestUrl = new URL(request.url ?? '/', 'http://127.0.0.1');
           const videoId = requestUrl.searchParams.get('video') ?? '';
           const safeId = /^[A-Za-z0-9_-]{11}$/.test(videoId) ? videoId : '';
+          const host = typeof request.headers.host === 'string' ? request.headers.host : '127.0.0.1';
+          const origin = `http://${host}`;
+          const embedUrl = new URL(`https://www.youtube-nocookie.com/embed/${safeId}`);
+          embedUrl.searchParams.set('enablejsapi', '1');
+          embedUrl.searchParams.set('origin', origin);
+          embedUrl.searchParams.set('playsinline', '1');
+          embedUrl.searchParams.set('rel', '0');
           response.writeHead(200, {
             'Content-Type': 'text/html; charset=utf-8',
             'Cache-Control': 'no-store',
-            'Content-Security-Policy': "default-src 'none'; frame-src https://www.youtube-nocookie.com",
+            'Content-Security-Policy': "default-src 'none'; script-src 'unsafe-inline' https://www.youtube.com; frame-src https://www.youtube-nocookie.com",
           });
-          response.end(`<!doctype html><html><body><iframe title="YouTube verification" allow="autoplay; encrypted-media" src="https://www.youtube-nocookie.com/embed/${safeId}?autoplay=1&playsinline=1&rel=0"></iframe></body></html>`);
+          response.end(`<!doctype html><html><body>
+            <iframe id="player" title="YouTube verification" allow="encrypted-media" referrerpolicy="strict-origin-when-cross-origin" src="${embedUrl.toString()}"></iframe>
+            <script>window.__livingWikiYouTubeVerification={apiReady:false,errorCode:0};</script>
+            <script src="https://www.youtube.com/iframe_api"></script>
+            <script>
+              function onYouTubeIframeAPIReady(){
+                new YT.Player('player',{events:{
+                  onReady:function(){window.__livingWikiYouTubeVerification.apiReady=true;},
+                  onError:function(event){window.__livingWikiYouTubeVerification.errorCode=Number(event.data)||-1;}
+                }});
+              }
+            </script>
+          </body></html>`);
         });
         server.once('error', reject);
         server.listen(0, '127.0.0.1', () => {
@@ -81,15 +132,21 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
     return browserPromise;
   };
 
-  const verify = (videoId: string, deadlineAt?: number): Promise<boolean> => {
-    if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return Promise.resolve(false);
-    if (deadlineAt && Date.now() >= deadlineAt - 750) return Promise.resolve(false);
+  const verify = (videoId: string, deadlineAt?: number): Promise<YouTubeEmbedVerification> => {
+    if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) {
+      return Promise.resolve({ status: 'blocked', errorCode: 2, reason: 'invalid-video-id' });
+    }
+    if (deadlineAt && Date.now() >= deadlineAt - 750) {
+      return Promise.resolve({ status: 'unavailable', errorCode: 0, reason: 'verification-deadline' });
+    }
     const existing = cached.get(videoId);
     if (existing) return existing;
-    const pending = runLimited(async () => {
+    const pending = runLimited<YouTubeEmbedVerification>(async () => {
       let page: Awaited<ReturnType<Browser['newPage']>> | null = null;
       try {
-        if (deadlineAt && Date.now() >= deadlineAt - 750) return false;
+        if (deadlineAt && Date.now() >= deadlineAt - 750) {
+          return { status: 'unavailable', errorCode: 0, reason: 'verification-deadline' };
+        }
         const [{ origin }, browser] = await Promise.all([getOrigin(), getBrowser()]);
         page = await browser.newPage();
         await page.setRequestInterception(true);
@@ -105,18 +162,38 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
           waitUntil: 'domcontentloaded',
           timeout: Math.max(500, Math.min(8_000, deadlineAt ? deadlineAt - Date.now() - 500 : 8_000)),
         });
-        const settleMs = Math.max(0, Math.min(1_500, deadlineAt ? deadlineAt - Date.now() - 400 : 1_500));
+        const settleMs = Math.max(0, Math.min(2_200, deadlineAt ? deadlineAt - Date.now() - 400 : 2_200));
         if (settleMs) await new Promise((resolve) => setTimeout(resolve, settleMs));
         const frame = page.frames().find((candidate) => candidate.url().includes('youtube-nocookie.com/embed/'));
-        if (!frame) return false;
-        const result = await frame.evaluate(() => ({
+        if (!frame) {
+          return { status: 'unavailable', errorCode: 0, reason: 'player-frame-missing' };
+        }
+        const [apiResult, frameResult] = await Promise.all([
+          page.evaluate(() => {
+            const state = (window as typeof window & {
+              __livingWikiYouTubeVerification?: { apiReady?: boolean; errorCode?: number };
+            }).__livingWikiYouTubeVerification;
+            return {
+              apiReady: state?.apiReady === true,
+              errorCode: Number(state?.errorCode) || 0,
+            };
+          }),
+          frame.evaluate(() => ({
           text: document.body?.innerText?.replace(/\s+/g, ' ').trim() ?? '',
           hasPlayer: !!document.querySelector('.html5-video-player'),
           hasPlayerError: !!document.querySelector('.ytp-error, .ytp-error-content-wrap-reason'),
-        }));
-        return youtubeEmbedBodyIsPlayable(result.text, result.hasPlayer, result.hasPlayerError);
-      } catch {
-        return false;
+          })),
+        ]);
+        return classifyYouTubeEmbedVerification({
+          ...frameResult,
+          ...apiResult,
+        });
+      } catch (error) {
+        return {
+          status: 'unavailable',
+          errorCode: 0,
+          reason: error instanceof Error ? `verifier-failed:${error.name}` : 'verifier-failed',
+        };
       } finally {
         await page?.close().catch(() => undefined);
       }
@@ -126,7 +203,7 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
   };
 
   return {
-    isPlayable: verify,
+    verify,
     async close(): Promise<void> {
       const browser = browserPromise ? await browserPromise.catch(() => null) : null;
       await browser?.close().catch(() => undefined);

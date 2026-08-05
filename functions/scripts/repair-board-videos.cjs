@@ -100,13 +100,13 @@ async function resolveQuery(normalized, boardContext, query, allowRelated) {
       videoEmbeddable: 'true',
       videoSyndicated: 'true',
       safeSearch: 'moderate',
-      maxResults: '10',
+      maxResults: '15',
       q: searchQuery,
     });
     const ids = Array.from(new Set((search.items || [])
       .map((item) => youtubeVideoIdFromReference(item.id?.videoId))
       .filter(Boolean)))
-      .slice(0, 10);
+      .slice(0, 15);
     if (ids.length) {
       const details = await youtubeJson('videos', {
         part: 'snippet,status,contentDetails',
@@ -137,7 +137,8 @@ async function resolveQuery(normalized, boardContext, query, allowRelated) {
     score: scoreBoardWizardVideoCandidate(normalized, boardContext, candidate, { allowRelated }),
   })).filter((entry) => entry.score >= 55).sort((left, right) => right.score - left.score);
   for (const entry of ranked.slice(0, 8)) {
-    if (await embedVerifier.isPlayable(entry.candidate.videoId)) return entry;
+    const verification = await embedVerifier.verify(entry.candidate.videoId);
+    if (verification.status === 'playable') return entry;
   }
   return null;
 }

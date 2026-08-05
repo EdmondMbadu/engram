@@ -311,8 +311,12 @@
 .card-video-lightbox__footer>div { display:flex;min-width:0;align-items:center;gap:.55rem }
 .card-video-lightbox__footer strong { overflow:hidden;font-size:.78rem;text-overflow:ellipsis;white-space:nowrap }
 .card-video-lightbox__footer span { color:rgba(255,255,255,.64);font-size:.7rem;font-weight:900 }
-.card-video-lightbox__footer a { display:inline-flex;flex:0 0 auto;align-items:center;gap:.35rem;border:1px solid rgba(255,255,255,.34);border-radius:999px;color:#fff;font-size:.72rem;font-weight:950;padding:.48rem .7rem;text-decoration:none }
-.card-video-lightbox__footer a:hover { background:#fff;color:#07100c }
+.card-video-lightbox__footer .card-video-lightbox__repair-notice { overflow:hidden;max-width:28rem;color:#ffef3d;text-overflow:ellipsis;white-space:nowrap }
+.card-video-lightbox__footer-actions { flex:0 0 auto }
+.card-video-lightbox__footer a,.card-video-lightbox__footer button { display:inline-flex;flex:0 0 auto;align-items:center;gap:.35rem;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:transparent;color:#fff;font:inherit;font-size:.72rem;font-weight:950;padding:.48rem .7rem;text-decoration:none }
+.card-video-lightbox__footer button { cursor:pointer }
+.card-video-lightbox__footer a:hover,.card-video-lightbox__footer button:hover { background:#fff;color:#07100c }
+.card-video-lightbox__footer button:disabled { cursor:not-allowed;opacity:.58 }
 .card-video-lightbox__footer .material-symbols-outlined { font-size:1rem }
 .card-photo-lightbox__dialog { display:grid;width:min(100%,72rem);height:min(94vh,54rem);grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;border:2px solid rgba(255,255,255,.32);border-radius:1.2rem;background:#07100c;box-shadow:0 28px 80px rgba(0,0,0,.6);color:#fff }
 .card-photo-lightbox__head { display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:.8rem;border-bottom:1px solid rgba(255,255,255,.16);background:rgba(11,22,16,.96);padding:.8rem 1rem }
