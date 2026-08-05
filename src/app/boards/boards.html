@@ -4877,53 +4877,81 @@
 
             @if (!wizardEditingCard()) {
             <div class="boards-form__actions boards-wizard-savebar">
-              <button type="button" class="boards-ghost-action" (click)="backWizardStep()" i18n>Back</button>
-              <span class="boards-wizard-savebar__status">
-                <span class="material-symbols-outlined">cloud_done</span>
-                @if (wizardLockedTargetBoard() || wizardContributionBoard()) {
-                  <span>Closing keeps this draft. Saving adds the selected cards to the existing board.</span>
-                } @else {
-                  <span>Closing keeps this draft. Publishing creates the board and notifies your friends.</span>
-                }
-              </span>
-              <button
-                type="button"
-                class="boards-primary-action"
-                [disabled]="!wizardSelectedCount() || wizardSaving() || wizardVideoLoadingCardIds().size > 0"
-                (click)="saveWizardBatch()"
-              >
-                <span class="material-symbols-outlined">save</span>
-                @if (wizardVideoLoadingCardIds().size > 0) {
-                  <span i18n>Finding videos...</span>
-                } @else if (wizardSaving()) {
-                  <span i18n>Saving...</span>
-                } @else if (wizardContributionBoard()) {
-                  <span i18n>Add card to board</span>
-                } @else if (wizardLockedTargetBoard()) {
-                  <span>Add {{ wizardSelectedCount() }} {{ wizardSelectedCount() === 1 ? 'card' : 'cards' }}</span>
-                } @else {
-                  <span>Save and publish</span>
-                }
-              </button>
-            </div>
-            @if (wizardActiveDraftId(); as activeDraftId) {
-              <div class="boards-wizard-discard-row">
-                @if (wizardDraftDiscardCandidateId() === activeDraftId) {
-                  <span>This permanently removes the generated board and its edits.</span>
-                  <button type="button" (click)="cancelWizardDraftDiscard()">Keep draft</button>
+              @if (wizardDraftDiscardCandidateId(); as discardDraftId) {
+                <div class="boards-wizard-discard-row" role="alert" aria-live="assertive">
+                  <span class="boards-wizard-discard-row__icon material-symbols-outlined" aria-hidden="true">warning</span>
+                  <span class="boards-wizard-discard-row__copy">
+                    <strong>Permanently delete this draft?</strong>
+                    <small>This cannot be undone. The board will not be published and no friend emails will be sent.</small>
+                  </span>
+                  <span class="boards-wizard-discard-row__actions">
+                    <button
+                      type="button"
+                      class="boards-wizard-discard-row__keep"
+                      [disabled]="wizardDraftDiscarding()"
+                      (click)="cancelWizardDraftDiscard()"
+                    >Keep draft</button>
+                    <button
+                      type="button"
+                      class="boards-wizard-discard-row__confirm"
+                      [disabled]="wizardDraftDiscarding()"
+                      (click)="confirmWizardDraftDiscard(discardDraftId)"
+                    >
+                      <span class="material-symbols-outlined" aria-hidden="true">delete_forever</span>
+                      {{ wizardDraftDiscarding() ? 'Deleting…' : 'Delete permanently' }}
+                    </button>
+                  </span>
+                </div>
+              } @else {
+                <div class="boards-wizard-savebar__left">
+                  @if (wizardActiveDraftId(); as activeDraftId) {
+                    <button
+                      type="button"
+                      class="boards-wizard-delete-action"
+                      [disabled]="wizardDraftDiscarding()"
+                      (click)="requestWizardDraftDiscard(activeDraftId)"
+                    >
+                      <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                      <span>Delete draft…</span>
+                    </button>
+                  }
                   <button
                     type="button"
-                    class="boards-wizard-discard-row__confirm"
+                    class="boards-ghost-action"
                     [disabled]="wizardDraftDiscarding()"
-                    (click)="confirmWizardDraftDiscard(activeDraftId)"
-                  >
-                    {{ wizardDraftDiscarding() ? 'Discarding…' : 'Yes, discard draft' }}
-                  </button>
-                } @else {
-                  <button type="button" (click)="requestWizardDraftDiscard(activeDraftId)">Don’t save this draft</button>
-                }
-              </div>
-            }
+                    (click)="backWizardStep()"
+                    i18n
+                  >Back</button>
+                </div>
+                <span class="boards-wizard-savebar__status">
+                  <span class="material-symbols-outlined">cloud_done</span>
+                  @if (wizardLockedTargetBoard() || wizardContributionBoard()) {
+                    <span>Closing keeps this draft. Saving adds the selected cards to the existing board.</span>
+                  } @else {
+                    <span>Closing keeps this draft. Publishing creates the board and notifies your friends.</span>
+                  }
+                </span>
+                <button
+                  type="button"
+                  class="boards-primary-action"
+                  [disabled]="!wizardSelectedCount() || wizardSaving() || wizardVideoLoadingCardIds().size > 0"
+                  (click)="saveWizardBatch()"
+                >
+                  <span class="material-symbols-outlined">save</span>
+                  @if (wizardVideoLoadingCardIds().size > 0) {
+                    <span i18n>Finding videos...</span>
+                  } @else if (wizardSaving()) {
+                    <span i18n>Saving...</span>
+                  } @else if (wizardContributionBoard()) {
+                    <span i18n>Add card to board</span>
+                  } @else if (wizardLockedTargetBoard()) {
+                    <span>Add {{ wizardSelectedCount() }} {{ wizardSelectedCount() === 1 ? 'card' : 'cards' }}</span>
+                  } @else {
+                    <span>Save and publish</span>
+                  }
+                </button>
+              }
+            </div>
             }
           </div>
         } @else {
