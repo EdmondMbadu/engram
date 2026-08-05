@@ -12587,7 +12587,7 @@ export class BoardsComponent implements OnDestroy {
       refinement ? `Refinement: ${refinement}` : '',
     ].filter(Boolean).join('\n');
     const callable = httpsCallable<Record<string, unknown>, unknown>(this.functions, 'generateBoardWizardBatch', {
-      timeout: 170_000,
+      timeout: 290_000,
     });
     const response = await callable({
       mode: this.wizardMode(),
@@ -12901,7 +12901,7 @@ export class BoardsComponent implements OnDestroy {
       card.image_context,
       ...card.tags,
     ].filter(Boolean).join(' ');
-    return /\b(?:half[\s-]?time\s+show|live\s+performance|performance|concert|music\s+video|trailer|highlights?|speech|keynote|interview|tutorial|demonstration|awards?\s+show|opening\s+ceremony|closing\s+ceremony)\b/i.test(text);
+    return /\b(?:you\s*tube(?:\s+(?:link|video))?|best\s+song|signature\s+song|half[\s-]?time\s+show|live\s+performance|performance|concert|music\s+video|trailer|highlights?|speech|keynote|interview|tutorial|demonstration|awards?\s+show|opening\s+ceremony|closing\s+ceremony)\b/i.test(text);
   }
 
   private async enrichWizardVideos(
@@ -12949,6 +12949,8 @@ export class BoardsComponent implements OnDestroy {
         ? response.data as Record<string, unknown>
         : {};
       const matches = Array.isArray(data['matches']) ? data['matches'] : [];
+      const degraded = data['degraded'] === true;
+      const partial = data['partial'] === true;
       const byCardId = new Map<string, Partial<BoardWizardPreviewCard>>();
       for (const value of matches) {
         if (!value || typeof value !== 'object') continue;
@@ -12975,10 +12977,20 @@ export class BoardsComponent implements OnDestroy {
       const currentResult = this.wizardResult();
       if (currentResult) this.wizardResult.set({ ...currentResult, cards: refreshedCards });
       const count = byCardId.size;
-      this.wizardVideoNotice.set(count
-        ? `${count} verified video${count === 1 ? '' : 's'} found. Review any card before saving.`
-        : $localize`No confident embeddable videos were found. Your image cards are unchanged.`);
-    } catch {
+      if (count) {
+        const qualifier = degraded
+          ? ' found using backup search'
+          : partial
+            ? ' found before the lookup deadline'
+            : ' found';
+        this.wizardVideoNotice.set(
+          `${count} video${count === 1 ? '' : 's'}${qualifier}. Review any card before saving.`,
+        );
+      } else {
+        this.wizardVideoNotice.set($localize`No confident embeddable videos were found. Your image cards are unchanged.`);
+      }
+    } catch (error) {
+      console.error('Board wizard video enrichment failed.', error);
       if (run === this.wizardVideoEnrichmentRun) {
         this.wizardVideoNotice.set($localize`Video lookup is unavailable right now. Your image cards are unchanged.`);
       }

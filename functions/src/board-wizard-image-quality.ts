@@ -30,6 +30,7 @@ const CHARACTER_RESULT_NEGATIVE_TERMS = /\b(?:astronomy|astronomical|celestial|c
 export type BoardWizardImageCardLike = {
   title: string;
   subtitle?: string;
+  notes?: string;
   type?: string;
   scope?: string;
   tags?: string[];
@@ -356,6 +357,102 @@ export function buildBoardWizardCommonsSearchQueries(
     entity,
     titleEntity,
   ], 6, 180);
+}
+
+/**
+ * Build a second-pass query ladder for cards whose strict provider lookup did
+ * not return an image. The first terms preserve exact identity; later terms
+ * add the minimum medium/category context needed for products and narrative
+ * scenes without degrading into a generic board-level stock-photo search.
+ */
+export function buildBoardWizardImageRecoveryQueries(
+  card: BoardWizardImageCardLike,
+  searchContext: string,
+): string[] {
+  const entity = boardWizardImageEntityName(card);
+  const title = cleanImageSearchText(card.title);
+  const supplied = cleanImageSearchText(card.image_query ?? '');
+  const localContext = cleanPlaceContext(card.image_context ?? card.subtitle ?? '');
+  const boardContext = cleanPlaceContext(searchContext);
+  const product = card.entity_type === 'product' || card.image_intent === 'product';
+  const food = card.entity_type === 'food' || card.image_intent === 'food';
+  const narrative = card.entity_type === 'event'
+    || card.image_intent === 'event'
+    || /\b(?:journey|myth|mythology|epic|legend|story|chapter|scene|battle|homecoming|odyssey)\b/i.test(
+      `${searchContext} ${card.image_context ?? ''} ${card.subtitle ?? ''}`,
+    );
+
+  if (product) {
+    return uniqueImageQueries([
+      supplied,
+      [entity, localContext, 'official product'].filter(Boolean).join(' '),
+      [entity, card.tags?.slice(0, 2).join(' '), 'designer product photograph'].filter(Boolean).join(' '),
+      [title, 'product photography'].filter(Boolean).join(' '),
+    ], 4, 180);
+  }
+  if (food) {
+    return uniqueImageQueries([
+      supplied,
+      [entity, localContext, 'food photograph'].filter(Boolean).join(' '),
+      [title, boardContext, 'dish'].filter(Boolean).join(' '),
+    ], 3, 180);
+  }
+  if (narrative) {
+    return uniqueImageQueries([
+      supplied,
+      [entity, localContext, boardContext, 'painting illustration'].filter(Boolean).join(' '),
+      [title, localContext, 'classical artwork'].filter(Boolean).join(' '),
+      [entity, boardContext, 'scene'].filter(Boolean).join(' '),
+    ], 4, 200);
+  }
+  return uniqueImageQueries([
+    supplied,
+    [entity, localContext, boardContext].filter(Boolean).join(' '),
+    [title, boardContext].filter(Boolean).join(' '),
+  ], 3, 180);
+}
+
+export function buildBoardWizardContextualImagePrompt(
+  card: BoardWizardImageCardLike,
+  boardTitle: string,
+  boardDescription: string,
+): string {
+  const entity = boardWizardImageEntityName(card);
+  const context = [card.image_context, card.subtitle, card.notes]
+    .map((value) => cleanImageSearchText(value ?? ''))
+    .filter(Boolean)
+    .join(' · ')
+    .slice(0, 700);
+  const product = card.entity_type === 'product' || card.image_intent === 'product';
+  const food = card.entity_type === 'food' || card.image_intent === 'food';
+  const person = card.entity_type === 'person' || card.image_intent === 'portrait';
+  const narrative = card.entity_type === 'event'
+    || card.image_intent === 'event'
+    || /\b(?:journey|myth|mythology|epic|legend|story|chapter|scene|battle|homecoming|odyssey)\b/i.test(
+      `${boardTitle} ${boardDescription} ${context}`,
+    );
+  const direction = product
+    ? 'Premium editorial studio product photography, realistic materials, complete product clearly visible, clean complementary background, sophisticated fashion lighting. Depict the named model as faithfully as the supplied context permits; omit uncertain lettering and logos rather than inventing them.'
+    : food
+      ? 'Appetizing editorial food photography, recognizable dish, natural ingredients and texture, restaurant-quality styling, inviting directional light.'
+      : person
+        ? 'A tasteful, clearly illustrated editorial portrait rather than a fake documentary photograph, recognizable through the supplied role and historical context, dignified composition.'
+        : narrative
+          ? 'A cohesive museum-quality narrative illustration with painterly realism, cinematic natural light, historically or mythologically grounded setting, and a clearly readable central action.'
+          : card.image_intent === 'place' || card.entity_type === 'place'
+            ? 'A polished editorial travel visualization centered on the defining architecture, landscape, and atmosphere described in the context; avoid maps and generic location symbols.'
+            : 'A polished editorial illustration with a concrete central subject, natural depth, and a composition that remains clear as a landscape card thumbnail.';
+  return [
+    'Create one original, beautiful 3:2 landscape cover image for a LivingWiki card.',
+    `Exact card subject: ${entity}.`,
+    context ? `Subject context: ${context}.` : '',
+    boardTitle ? `Board: ${cleanImageSearchText(boardTitle)}.` : '',
+    boardDescription ? `Board context: ${cleanImageSearchText(boardDescription).slice(0, 300)}.` : '',
+    `Shared visual direction: ${direction}`,
+    'Show the actual subject or scene, not a generic symbol or unrelated namesake.',
+    'No words, captions, labels, typography, borders, watermarks, signatures, UI, collages, or mockup frames.',
+    'Do not imitate a living artist or an existing poster, album cover, advertisement, or other copyrighted composition.',
+  ].filter(Boolean).join('\n');
 }
 
 function boardWizardFictionalCharacterAliases(card: BoardWizardImageCardLike): string[] {

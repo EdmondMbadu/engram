@@ -10,7 +10,7 @@ export function youtubeEmbedBodyIsPlayable(text: string, hasPlayer: boolean, has
 }
 
 export type YouTubeEmbedVerifier = {
-  isPlayable(videoId: string): Promise<boolean>;
+  isPlayable(videoId: string, deadlineAt?: number): Promise<boolean>;
   close(): Promise<void>;
 };
 
@@ -81,13 +81,15 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
     return browserPromise;
   };
 
-  const verify = (videoId: string): Promise<boolean> => {
+  const verify = (videoId: string, deadlineAt?: number): Promise<boolean> => {
     if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return Promise.resolve(false);
+    if (deadlineAt && Date.now() >= deadlineAt - 750) return Promise.resolve(false);
     const existing = cached.get(videoId);
     if (existing) return existing;
     const pending = runLimited(async () => {
       let page: Awaited<ReturnType<Browser['newPage']>> | null = null;
       try {
+        if (deadlineAt && Date.now() >= deadlineAt - 750) return false;
         const [{ origin }, browser] = await Promise.all([getOrigin(), getBrowser()]);
         page = await browser.newPage();
         await page.setRequestInterception(true);
@@ -101,9 +103,10 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
         });
         await page.goto(`${origin}/?video=${encodeURIComponent(videoId)}`, {
           waitUntil: 'domcontentloaded',
-          timeout: 12_000,
+          timeout: Math.max(500, Math.min(8_000, deadlineAt ? deadlineAt - Date.now() - 500 : 8_000)),
         });
-        await new Promise((resolve) => setTimeout(resolve, 1_800));
+        const settleMs = Math.max(0, Math.min(1_500, deadlineAt ? deadlineAt - Date.now() - 400 : 1_500));
+        if (settleMs) await new Promise((resolve) => setTimeout(resolve, settleMs));
         const frame = page.frames().find((candidate) => candidate.url().includes('youtube-nocookie.com/embed/'));
         if (!frame) return false;
         const result = await frame.evaluate(() => ({

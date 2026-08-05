@@ -3,6 +3,8 @@ const {
   buildBoardWizardFictionalCharacterSearchQueries,
   buildBoardWizardFictionalCharacterWikipediaTitles,
   buildBoardWizardCommonsSearchQueries,
+  buildBoardWizardContextualImagePrompt,
+  buildBoardWizardImageRecoveryQueries,
   buildBoardWizardPlaceSearchQueries,
   disambiguateBoardWizardFictionalCharacterEntities,
   isBoardWizardFictionalCharacter,
@@ -55,6 +57,57 @@ assert.equal(resolveBoardWizardMediaKind({
   title: 'A real song', subtitle: 'Artist name', entity_type: 'work', image_intent: 'cover',
   image_query: 'A real song Artist name cover art', media_kind: 'song',
 }), 'song');
+
+const designerShoeCard = {
+  title: 'Miu Miu x New Balance 530 SL',
+  subtitle: 'A slim-profile designer sneaker collaboration',
+  notes: 'A polished low-profile sneaker for fashion-conscious teenagers.',
+  type: 'shop',
+  entity_name: 'Miu Miu x New Balance 530 SL',
+  entity_type: 'product',
+  image_intent: 'product',
+  image_context: 'designer sneaker collaboration · silver and brown colorways',
+  image_query: 'Miu Miu New Balance 530 SL official product',
+  tags: ['designer shoes', 'sneakers'],
+};
+const designerShoeRecovery = buildBoardWizardImageRecoveryQueries(
+  designerShoeCard,
+  'Top 10 Designer Shoes for Teenagers',
+);
+assert.match(designerShoeRecovery[0], /Miu Miu New Balance 530 SL official product/i);
+assert.ok(designerShoeRecovery.some((query) => /designer product photograph/i.test(query)));
+const designerShoePrompt = buildBoardWizardContextualImagePrompt(
+  designerShoeCard,
+  'Top 10 Designer Shoes for Teenagers',
+  'A polished guide to statement footwear.',
+);
+assert.match(designerShoePrompt, /Exact card subject: Miu Miu x New Balance 530 SL/i);
+assert.match(designerShoePrompt, /Premium editorial studio product photography/i);
+assert.match(designerShoePrompt, /omit uncertain lettering and logos/i);
+
+const odysseySceneCard = {
+  title: 'Thrinacia',
+  subtitle: 'The forbidden cattle of the sun god',
+  notes: 'Odysseus warns his starving crew not to harm the sacred cattle of Helios.',
+  type: 'note',
+  entity_name: 'Thrinacia',
+  entity_type: 'event',
+  image_intent: 'event',
+  image_context: 'island of Helios · sacred cattle · Homer’s Odyssey',
+  image_query: 'Thrinacia cattle of Helios Odyssey scene',
+};
+const odysseyRecovery = buildBoardWizardImageRecoveryQueries(
+  odysseySceneCard,
+  'The Odyssey: Homer’s Epic Journey of Adventure, Temptation, Survival, and Homecoming',
+);
+assert.ok(odysseyRecovery.some((query) => /Thrinacia.*Helios.*Odyssey.*painting illustration/i.test(query)));
+const odysseyPrompt = buildBoardWizardContextualImagePrompt(
+  odysseySceneCard,
+  'The Odyssey: Homer’s Epic Journey',
+  'Adventure, temptation, survival, and homecoming.',
+);
+assert.match(odysseyPrompt, /museum-quality narrative illustration/i);
+assert.match(odysseyPrompt, /sacred cattle/i);
 
 const starLordCard = {
   title: 'Star-Lord: Peter Quill',

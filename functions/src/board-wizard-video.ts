@@ -19,7 +19,7 @@ export type BoardWizardVideoCardInput = {
   videoSearchQuery?: string;
 };
 
-const VIDEO_INTENT_PATTERN = /\b(?:half[\s-]?time\s+show|live\s+performance|performance|concert|music\s+video|trailer|highlight(?:s|\s+reel)?|speech|keynote|interview|tutorial|demonstration|demo\s+video|dance|recital|awards?\s+show|opening\s+ceremony|closing\s+ceremony)\b/i;
+const VIDEO_INTENT_PATTERN = /\b(?:you\s*tube(?:\s+(?:link|video))?|best\s+song|signature\s+song|half[\s-]?time\s+show|live\s+performance|performance|concert|music\s+video|trailer|highlight(?:s|\s+reel)?|speech|keynote|interview|tutorial|demonstration|demo\s+video|dance|recital|awards?\s+show|opening\s+ceremony|closing\s+ceremony)\b/i;
 
 const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/;
 
@@ -152,6 +152,25 @@ export function scoreBoardWizardVideoCandidate(
   }
   if (candidate.durationSeconds > 0 && candidate.durationSeconds < 45) score -= 18;
   return score;
+}
+
+export function rankBoardWizardVideoCandidates(
+  card: BoardWizardVideoCardInput,
+  boardContext: string,
+  candidates: BoardWizardVideoCandidate[],
+  options: { allowRelated?: boolean; limit?: number } = {},
+): Array<{ candidate: BoardWizardVideoCandidate; score: number }> {
+  const limit = Math.max(1, Math.min(20, Math.trunc(options.limit ?? 8)));
+  return candidates
+    .map((candidate) => ({
+      candidate,
+      score: scoreBoardWizardVideoCandidate(card, boardContext, candidate, {
+        allowRelated: options.allowRelated,
+      }),
+    }))
+    .filter((entry) => entry.score >= 55)
+    .sort((left, right) => right.score - left.score)
+    .slice(0, limit);
 }
 
 export function parseIso8601DurationSeconds(value: unknown): number {

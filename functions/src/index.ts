@@ -12,9 +12,11 @@ import Stripe from 'stripe';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedBoardSource } from './board-wizard-source';
 import {
   boardWizardImageEntityName,
+  buildBoardWizardContextualImagePrompt,
   buildBoardWizardFictionalCharacterSearchQueries,
   buildBoardWizardFictionalCharacterWikipediaTitles,
   buildBoardWizardCommonsSearchQueries,
+  buildBoardWizardImageRecoveryQueries,
   buildBoardWizardPlaceSearchQueries,
   isBoardWizardFictionalCharacter,
   rankBoardWizardPlaceCandidates,
@@ -30,12 +32,14 @@ import {
   buildBoardWizardYouTubeApiQuery,
   buildBoardWizardVideoSearchQuery,
   parseIso8601DurationSeconds,
+  rankBoardWizardVideoCandidates,
   scoreBoardWizardVideoCandidate,
   youtubeVideoIdFromReference,
   type BoardWizardVideoCandidate,
   type BoardWizardVideoCardInput,
 } from './board-wizard-video';
 import { createYouTubeEmbedVerifier, type YouTubeEmbedVerifier } from './youtube-embed-verifier';
+import { extractYouTubeWebSearchResults } from './youtube-web-search';
 import {
   extractBoardTranslationSource,
   isBoardTranslationLanguage,
@@ -1697,6 +1701,11 @@ type SpotifyTokenResponse = {
 
 let spotifyAccessTokenCache: { token: string; expiresAt: number } | null = null;
 let googleCustomSearchUnavailableUntil = 0;
+let youtubeDataApiSearchUnavailableUntil = 0;
+let youtubeDataApiSearchUnavailableReason = '';
+
+const BOARD_VIDEO_LOOKUP_BUDGET_MS = 42_000;
+const BOARD_VIDEO_DEADLINE_BUFFER_MS = 1_500;
 
 type WikimediaCommonsImageResponse = {
   query?: {
@@ -6047,7 +6056,7 @@ export const generateBoardWizardBatch = onCall(
   {
     region: callableRegion,
     cors: true,
-    timeoutSeconds: 180,
+    timeoutSeconds: 300,
     memory: '2GiB',
     concurrency: 1,
     maxInstances: 20,
@@ -6365,6 +6374,7 @@ export const generateBoardWizardBatch = onCall(
     const enrichedResult = accommodationExtraction
       ? urlFallbackShapedGenerated
       : await enrichBoardWizardBatchWithPlaces(urlFallbackShapedGenerated, {
+          userId,
           mode,
           prompt: effectivePrompt || prompt || pastedList || url || photoNames.join(', '),
           targetBoardTitle,
@@ -6452,53 +6462,77 @@ export const resolveBoardCardVideos = onCall(
       return { matches: [], attempted: 0 };
     }
 
+    const lookupStartedAt = Date.now();
+    const deadlineAt = lookupStartedAt + BOARD_VIDEO_LOOKUP_BUDGET_MS;
+    let deadlineSkippedCount = 0;
     const apiKey = youtubeDataApiKey.value();
     const customSearchApiKey = googleCustomSearchApiKey.value();
     const embedVerifier = createYouTubeEmbedVerifier(5);
     try {
       const matches = await mapWithConcurrency(cards, 5, async (card) => {
-        if (!card.youtubeReference && !boardWizardCardWantsVideo(card, boardContext)) {
+        try {
+          if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) {
+            deadlineSkippedCount += 1;
+            return null;
+          }
+          if (!card.youtubeReference && !boardWizardCardWantsVideo(card, boardContext)) {
+            return null;
+          }
+          const query = buildBoardWizardVideoSearchQuery(card, boardContext);
+          const candidate = card.youtubeReference
+            ? await resolveYouTubeCandidateByReference(card.youtubeReference, apiKey, embedVerifier, deadlineAt)
+            : await resolveCachedBoardWizardVideo(
+                card,
+                boardContext,
+                query,
+                apiKey,
+                customSearchApiKey,
+                embedVerifier,
+                deadlineAt,
+              );
+          if (!candidate) return null;
+          const score = card.youtubeReference
+            ? 100
+            : scoreBoardWizardVideoCandidate(card, boardContext, candidate);
+          if (!card.youtubeReference && score < 55) return null;
+          return {
+            cardId: card.cardId,
+            youtubeVideoId: candidate.videoId,
+            youtubeVideoTitle: candidate.title,
+            youtubeChannelTitle: candidate.channelTitle,
+            youtubeThumbnailUrl: candidate.thumbnailUrl,
+            youtubeDurationSeconds: candidate.durationSeconds,
+            youtubeMatchConfidence: card.youtubeReference
+              ? 1
+              : Math.max(0, Math.min(1, Number(((score - 35) / 100).toFixed(2)))),
+            youtubeVerifiedAt: new Date().toISOString(),
+          };
+        } catch (error) {
+          logger.warn('Board wizard video lookup failed for one card; continuing with the remaining cards.', {
+            cardId: card.cardId,
+            cardTitle: card.title,
+            errorMessage: error instanceof Error ? error.message : String(error),
+          });
           return null;
         }
-        const query = buildBoardWizardVideoSearchQuery(card, boardContext);
-        const candidate = card.youtubeReference
-          ? await resolveYouTubeCandidateByReference(card.youtubeReference, apiKey, embedVerifier)
-          : await resolveCachedBoardWizardVideo(
-              card,
-              boardContext,
-              query,
-              apiKey,
-              customSearchApiKey,
-              embedVerifier,
-            );
-        if (!candidate) return null;
-        const score = card.youtubeReference
-          ? 100
-          : scoreBoardWizardVideoCandidate(card, boardContext, candidate);
-        if (!card.youtubeReference && score < 55) return null;
-        return {
-          cardId: card.cardId,
-          youtubeVideoId: candidate.videoId,
-          youtubeVideoTitle: candidate.title,
-          youtubeChannelTitle: candidate.channelTitle,
-          youtubeThumbnailUrl: candidate.thumbnailUrl,
-          youtubeDurationSeconds: candidate.durationSeconds,
-          youtubeMatchConfidence: card.youtubeReference
-            ? 1
-            : Math.max(0, Math.min(1, Number(((score - 35) / 100).toFixed(2)))),
-          youtubeVerifiedAt: new Date().toISOString(),
-        };
       });
 
+      const degraded = Date.now() < youtubeDataApiSearchUnavailableUntil;
       logger.info('Board wizard video enrichment completed.', {
         userId,
         requestedCount: cards.length,
         matchedCount: matches.filter(Boolean).length,
+        degraded,
+        degradedReason: degraded ? youtubeDataApiSearchUnavailableReason : '',
+        deadlineSkippedCount,
+        durationMs: Date.now() - lookupStartedAt,
         boardTitle: stringOrEmpty(data.boardTitle).slice(0, 120),
       });
       return {
         matches: matches.filter((match) => !!match),
         attempted: cards.length,
+        degraded,
+        partial: deadlineSkippedCount > 0,
       };
     } finally {
       await embedVerifier.close();
@@ -6540,12 +6574,13 @@ async function resolveCachedBoardWizardVideo(
   youtubeApiKey: string,
   customSearchApiKey: string,
   embedVerifier: YouTubeEmbedVerifier,
+  deadlineAt: number,
 ): Promise<BoardWizardVideoCandidate | null> {
   if (!query) return null;
   // Prefix the hash whenever resolver credentials or matching semantics change.
   // This prevents a short-lived outage from pinning freshly repaired searches
   // to an old negative cache entry.
-  const cacheId = createHash('sha256').update(`youtube-v3|${query.toLowerCase()}`).digest('hex');
+  const cacheId = createHash('sha256').update(`youtube-resilient-v2|${query.toLowerCase()}`).digest('hex');
   const cacheRef = db.collection('board_video_matches').doc(cacheId);
   try {
     const cached = await cacheRef.get();
@@ -6567,13 +6602,14 @@ async function resolveCachedBoardWizardVideo(
     youtubeApiKey,
     customSearchApiKey,
     embedVerifier,
+    deadlineAt,
   );
   try {
     await cacheRef.set({
       query,
-      resolver_version: 'youtube-v3',
+      resolver_version: 'youtube-resilient-v2',
       match: candidate ?? null,
-      expires_at_ms: Date.now() + (candidate ? 14 * 24 * 60 * 60 * 1000 : 6 * 60 * 60 * 1000),
+      expires_at_ms: Date.now() + (candidate ? 14 * 24 * 60 * 60 * 1000 : 5 * 60 * 1000),
       updated_at: FieldValue.serverTimestamp(),
     });
   } catch (error) {
@@ -6606,26 +6642,59 @@ async function searchYouTubeForBoardCard(
   youtubeApiKey: string,
   customSearchApiKey: string,
   embedVerifier: YouTubeEmbedVerifier,
+  deadlineAt: number,
 ): Promise<BoardWizardVideoCandidate | null> {
-  let officialCandidates = await searchYouTubeDataApi(query, youtubeApiKey);
+  const apiSearch = await searchYouTubeDataApi(query, youtubeApiKey, deadlineAt);
+  let officialCandidates = apiSearch.candidates;
+  let metadataFallbackAllowed = !apiSearch.available;
   if (!officialCandidates.length) {
-    officialCandidates = await searchYouTubeWeb(buildBoardWizardYouTubeApiQuery(query));
+    officialCandidates = await searchYouTubeWeb(buildBoardWizardYouTubeApiQuery(query), deadlineAt);
+    metadataFallbackAllowed = true;
   }
-  const officialMatch = await chooseBoardWizardVideoCandidate(card, boardContext, officialCandidates, embedVerifier);
+  const officialMatch = await chooseBoardWizardVideoCandidate(
+    card,
+    boardContext,
+    officialCandidates,
+    embedVerifier,
+    {
+      verificationLimit: metadataFallbackAllowed ? 1 : 2,
+      acceptBestMetadataMatch: metadataFallbackAllowed,
+      deadlineAt,
+    },
+  );
   if (officialMatch) return officialMatch;
+  // When quota or the primary API is unavailable, the public-search result is
+  // the durable fallback. Do not spend the remaining request budget searching
+  // for loosely related commentary or invoking another quota-bound API.
+  if (!apiSearch.available || Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
   const relatedQuery = buildBoardWizardRelatedVideoSearchQuery(card);
-  let relatedCandidates = await searchYouTubeDataApi(relatedQuery, youtubeApiKey);
-  if (!relatedCandidates.length) relatedCandidates = await searchYouTubeWeb(relatedQuery);
+  const relatedApiSearch = await searchYouTubeDataApi(relatedQuery, youtubeApiKey, deadlineAt);
+  let relatedCandidates = relatedApiSearch.candidates;
+  let relatedMetadataFallbackAllowed = !relatedApiSearch.available;
+  if (!relatedCandidates.length) {
+    relatedCandidates = await searchYouTubeWeb(relatedQuery, deadlineAt);
+    relatedMetadataFallbackAllowed = true;
+  }
   const relatedMatch = await chooseBoardWizardVideoCandidate(
     card,
     boardContext,
     relatedCandidates,
     embedVerifier,
-    true,
+    {
+      allowRelated: true,
+      verificationLimit: relatedMetadataFallbackAllowed ? 1 : 2,
+      acceptBestMetadataMatch: relatedMetadataFallbackAllowed,
+      deadlineAt,
+    },
   );
   if (relatedMatch) return relatedMatch;
+  if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
   const fallbackCandidates = await searchYouTubeWithCustomSearch(query, customSearchApiKey);
-  return await chooseBoardWizardVideoCandidate(card, boardContext, fallbackCandidates, embedVerifier);
+  return await chooseBoardWizardVideoCandidate(card, boardContext, fallbackCandidates, embedVerifier, {
+    verificationLimit: 1,
+    acceptBestMetadataMatch: true,
+    deadlineAt,
+  });
 }
 
 async function chooseBoardWizardVideoCandidate(
@@ -6633,22 +6702,32 @@ async function chooseBoardWizardVideoCandidate(
   boardContext: string,
   candidates: BoardWizardVideoCandidate[],
   embedVerifier: YouTubeEmbedVerifier,
-  allowRelated = false,
+  options: {
+    allowRelated?: boolean;
+    verificationLimit?: number;
+    acceptBestMetadataMatch?: boolean;
+    deadlineAt: number;
+  },
 ): Promise<BoardWizardVideoCandidate | null> {
-  const ranked = candidates
-    .map((candidate) => ({
-      candidate,
-      score: scoreBoardWizardVideoCandidate(card, boardContext, candidate, { allowRelated }),
-    }))
-    .filter((entry) => entry.score >= 55)
-    .sort((left, right) => right.score - left.score)
-    .slice(0, 8);
-  for (const entry of ranked) {
-    if (await embedVerifier.isPlayable(entry.candidate.videoId)) return entry.candidate;
+  const ranked = rankBoardWizardVideoCandidates(card, boardContext, candidates, {
+    allowRelated: options.allowRelated,
+    limit: 8,
+  });
+  const verificationLimit = Math.max(0, Math.min(3, Math.trunc(options.verificationLimit ?? 2)));
+  for (const entry of ranked.slice(0, verificationLimit)) {
+    if (Date.now() >= options.deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) break;
+    if (await embedVerifier.isPlayable(entry.candidate.videoId, options.deadlineAt)) return entry.candidate;
     logger.info('Rejected a metadata-embeddable YouTube result that failed the real player check.', {
       videoId: entry.candidate.videoId,
       videoTitle: entry.candidate.title,
     });
+  }
+  if (options.acceptBestMetadataMatch && ranked[0]) {
+    logger.info('Using the best YouTube metadata match because runtime playback verification is unavailable.', {
+      videoId: ranked[0].candidate.videoId,
+      videoTitle: ranked[0].candidate.title,
+    });
+    return ranked[0].candidate;
   }
   return null;
 }
@@ -6657,20 +6736,36 @@ async function resolveYouTubeCandidateByReference(
   reference: string,
   apiKey: string,
   embedVerifier: YouTubeEmbedVerifier,
+  deadlineAt: number,
 ): Promise<BoardWizardVideoCandidate | null> {
   const videoId = youtubeVideoIdFromReference(reference);
   if (!videoId) return null;
   const official = await fetchYouTubeDataApiCandidates([videoId], apiKey);
-  if (official[0]?.embeddable && await embedVerifier.isPlayable(videoId)) return official[0];
-  const fallback = await fetchYouTubeOEmbedCandidate(videoId);
-  return fallback && await embedVerifier.isPlayable(videoId) ? fallback : null;
+  const fallback = official[0]?.embeddable
+    ? official[0]
+    : await fetchYouTubeOEmbedCandidate(videoId, deadlineAt);
+  if (!fallback) return null;
+  const playable = await embedVerifier.isPlayable(videoId, deadlineAt);
+  if (!playable) {
+    logger.info('Retaining an explicit YouTube reference even though embedded playback could not be verified.', {
+      videoId,
+    });
+  }
+  return fallback;
 }
 
 async function searchYouTubeDataApi(
   query: string,
   apiKey: string,
-): Promise<BoardWizardVideoCandidate[]> {
-  if (!apiKey) return [];
+  deadlineAt: number,
+): Promise<{ candidates: BoardWizardVideoCandidate[]; available: boolean }> {
+  if (!apiKey) return { candidates: [], available: false };
+  if (Date.now() < youtubeDataApiSearchUnavailableUntil) {
+    return { candidates: [], available: false };
+  }
+  if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) {
+    return { candidates: [], available: false };
+  }
   try {
     const url = new URL('https://www.googleapis.com/youtube/v3/search');
     url.searchParams.set('part', 'snippet');
@@ -6683,36 +6778,45 @@ async function searchYouTubeDataApi(
     url.searchParams.set('key', apiKey);
     const response = await fetch(url, {
       headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
-      signal: AbortSignal.timeout(7_000),
+      signal: AbortSignal.timeout(boardVideoRequestTimeout(deadlineAt, 7_000)),
     });
     const data = await response.json() as YouTubeSearchResponse;
     if (!response.ok || data.error?.message) {
+      if (response.status === 403 || response.status === 429) {
+        youtubeDataApiSearchUnavailableUntil = Date.now() + (response.status === 429 ? 30 * 60 * 1000 : 10 * 60 * 1000);
+        youtubeDataApiSearchUnavailableReason = response.status === 429 ? 'quota-exhausted' : 'access-denied';
+      }
       logger.warn('YouTube Data API search unavailable; using search fallback.', {
         query,
         status: response.status,
         error: data.error?.message,
       });
-      return [];
+      return { candidates: [], available: false };
     }
     const ids = (data.items ?? [])
       .map((item) => youtubeVideoIdFromReference(item.id?.videoId))
       .filter(Boolean);
-    return await fetchYouTubeDataApiCandidates(ids, apiKey);
+    return {
+      candidates: await fetchYouTubeDataApiCandidates(ids, apiKey, deadlineAt),
+      available: true,
+    };
   } catch (error) {
     logger.warn('YouTube Data API search failed; using search fallback.', {
       query,
       errorMessage: error instanceof Error ? error.message : String(error),
     });
-    return [];
+    return { candidates: [], available: false };
   }
 }
 
 async function fetchYouTubeDataApiCandidates(
   videoIds: string[],
   apiKey: string,
+  deadlineAt?: number,
 ): Promise<BoardWizardVideoCandidate[]> {
   const ids = videoIds.map(youtubeVideoIdFromReference).filter(Boolean).slice(0, 10);
   if (!apiKey || !ids.length) return [];
+  if (deadlineAt && Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return [];
   try {
     const url = new URL('https://www.googleapis.com/youtube/v3/videos');
     url.searchParams.set('part', 'snippet,status,contentDetails');
@@ -6720,7 +6824,7 @@ async function fetchYouTubeDataApiCandidates(
     url.searchParams.set('key', apiKey);
     const response = await fetch(url, {
       headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
-      signal: AbortSignal.timeout(6_000),
+      signal: AbortSignal.timeout(deadlineAt ? boardVideoRequestTimeout(deadlineAt, 6_000) : 6_000),
     });
     const data = await response.json() as YouTubeVideosResponse;
     if (!response.ok || data.error?.message) return [];
@@ -6788,7 +6892,8 @@ async function searchYouTubeWithCustomSearch(
   }
 }
 
-async function searchYouTubeWeb(query: string): Promise<BoardWizardVideoCandidate[]> {
+async function searchYouTubeWeb(query: string, deadlineAt: number): Promise<BoardWizardVideoCandidate[]> {
+  if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return [];
   try {
     const url = new URL('https://www.youtube.com/results');
     url.searchParams.set('search_query', query);
@@ -6798,13 +6903,21 @@ async function searchYouTubeWeb(query: string): Promise<BoardWizardVideoCandidat
         'Accept-Language': 'en-US,en;q=0.9',
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/131 Safari/537.36',
       },
-      signal: AbortSignal.timeout(8_000),
+      signal: AbortSignal.timeout(boardVideoRequestTimeout(deadlineAt, 6_000)),
     });
     if (!response.ok) return [];
     const html = await response.text();
+    const parsed = extractYouTubeWebSearchResults(html, 8).map((candidate): BoardWizardVideoCandidate => ({
+      ...candidate,
+      thumbnailUrl: decodeBasicHtmlEntities(candidate.thumbnailUrl),
+      title: decodeBasicHtmlEntities(candidate.title),
+      channelTitle: decodeBasicHtmlEntities(candidate.channelTitle),
+      embeddable: true,
+    }));
+    if (parsed.length) return parsed;
     const ids = Array.from(html.matchAll(/"videoId":"([A-Za-z0-9_-]{11})"/g), (match) => match[1]);
-    const uniqueIds = Array.from(new Set(ids)).slice(0, 10);
-    const candidates = await Promise.all(uniqueIds.map((id) => fetchYouTubeOEmbedCandidate(id)));
+    const uniqueIds = Array.from(new Set(ids)).slice(0, 4);
+    const candidates = await Promise.all(uniqueIds.map((id) => fetchYouTubeOEmbedCandidate(id, deadlineAt)));
     return candidates.filter((candidate): candidate is BoardWizardVideoCandidate => !!candidate);
   } catch (error) {
     logger.warn('YouTube web search fallback failed.', {
@@ -6815,16 +6928,20 @@ async function searchYouTubeWeb(query: string): Promise<BoardWizardVideoCandidat
   }
 }
 
-async function fetchYouTubeOEmbedCandidate(videoId: string): Promise<BoardWizardVideoCandidate | null> {
+async function fetchYouTubeOEmbedCandidate(
+  videoId: string,
+  deadlineAt?: number,
+): Promise<BoardWizardVideoCandidate | null> {
   const id = youtubeVideoIdFromReference(videoId);
   if (!id) return null;
+  if (deadlineAt && Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
   try {
     const url = new URL('https://www.youtube.com/oembed');
     url.searchParams.set('url', `https://www.youtube.com/watch?v=${id}`);
     url.searchParams.set('format', 'json');
     const response = await fetch(url, {
       headers: { 'Accept': 'application/json', 'User-Agent': 'LivingWiki/1.0 board-video-resolver' },
-      signal: AbortSignal.timeout(4_000),
+      signal: AbortSignal.timeout(deadlineAt ? boardVideoRequestTimeout(deadlineAt, 4_000) : 4_000),
     });
     if (!response.ok) return null;
     const data = await response.json() as YouTubeOEmbedResponse;
@@ -6840,6 +6957,10 @@ async function fetchYouTubeOEmbedCandidate(videoId: string): Promise<BoardWizard
   } catch {
     return null;
   }
+}
+
+function boardVideoRequestTimeout(deadlineAt: number, maximumMs: number): number {
+  return Math.max(250, Math.min(maximumMs, deadlineAt - Date.now() - 250));
 }
 
 function decodeBasicHtmlEntities(value: string): string {
@@ -8702,6 +8823,7 @@ export const resolveBoardSongSpotify = onCall(
 async function enrichBoardWizardBatchWithPlaces(
   batch: GeneratedBoardWizardBatch,
   context: {
+    userId: string;
     mode: BoardWizardMode;
     prompt: string;
     targetBoardTitle: string;
@@ -8729,9 +8851,13 @@ async function enrichBoardWizardBatchWithPlaces(
           5_000,
           '',
         );
-        return exactProductImage
-          ? { ...card, imageUrl: exactProductImage, imageSource: 'search' as const }
-          : { ...card, imageSource: 'missing' as const };
+        if (exactProductImage) {
+          return { ...card, imageUrl: exactProductImage, imageSource: 'search' as const };
+        }
+        // The final repair pass owns the broader Wikipedia/Commons query
+        // ladder. Keeping it out of this pass avoids performing the same
+        // recovery work twice when exact web lookup is unavailable.
+        return { ...card, imageSource: 'missing' as const };
       }
       const exactReferenceImage = exactReferenceImages.get(index);
       if (!card.imageUrl && exactReferenceImage) {
@@ -8752,14 +8878,22 @@ async function enrichBoardWizardBatchWithPlaces(
   const repairedCards = await mapWithConcurrency(enrichedCards, 3, async (card) => {
     if (
       card.imageUrl
-      || isBoardWizardProductCard(card)
-      || isBoardWizardMenuItemCard(card)
       || isBoardWizardMenuActionCard(card)
     ) return card;
     const startedAt = Date.now();
     let imageUrl = '';
     let provider = '';
-    if (isBoardWizardFictionalCharacter(card)) {
+    if (isBoardWizardProductCard(card)) {
+      imageUrl = await withBoardWizardTimeout(
+        findBoardWizardGroundedRecoveryImage(card, searchContext),
+        8_000,
+        '',
+      );
+      if (imageUrl) provider = 'grounded-product-recovery';
+    } else if (isBoardWizardMenuItemCard(card)) {
+      // The first pass already tried exact menu/restaurant imagery. Preserve
+      // the empty card for the contextual generation layer below.
+    } else if (isBoardWizardFictionalCharacter(card)) {
       imageUrl = await withBoardWizardTimeout(
         findBoardWizardVerifiedWebImage(card, searchContext, customSearchApiKey),
         5_000,
@@ -8781,6 +8915,14 @@ async function enrichBoardWizardBatchWithPlaces(
         );
         if (imageUrl) provider = 'verified-web';
       }
+      if (!imageUrl) {
+        imageUrl = await withBoardWizardTimeout(
+          findBoardWizardGroundedRecoveryImage(card, searchContext),
+          8_000,
+          '',
+        );
+        if (imageUrl) provider = 'contextual-grounded-recovery';
+      }
     }
     logger.info('Board wizard final image repair completed.', {
       entity: boardWizardImageEntityName(card),
@@ -8788,23 +8930,52 @@ async function enrichBoardWizardBatchWithPlaces(
       provider,
       durationMs: Date.now() - startedAt,
     });
-    return imageUrl ? { ...card, imageUrl } : card;
+    return imageUrl
+      ? { ...card, imageUrl, ...(isBoardWizardProductCard(card) ? { imageSource: 'search' as const } : {}) }
+      : card;
   });
-  const resolvedImageCount = repairedCards.filter((card) => !!card.imageUrl).length;
-  const providerCounts = repairedCards.reduce<Record<string, number>>((counts, card) => {
+  const generatedCandidateIndexes = new Set(repairedCards
+    .map((card, index) => ({ card, index }))
+    .filter(({ card }) => !card.imageUrl && !isBoardWizardMenuActionCard(card))
+    .slice(0, 20)
+    .map(({ index }) => index));
+  const completedCards = await mapWithConcurrency(repairedCards, 4, async (card, index) => {
+    if (!generatedCandidateIndexes.has(index)) return card;
+    const startedAt = Date.now();
+    const imageUrl = await withBoardWizardTimeout(
+      generateAndStoreBoardWizardContextualImage({
+        userId: context.userId,
+        card,
+        cardIndex: index,
+        boardTitle: batch.board.title,
+        boardDescription: batch.board.description,
+      }),
+      45_000,
+      '',
+    );
+    logger.info('Board wizard contextual image fallback completed.', {
+      entity: boardWizardImageEntityName(card),
+      resolved: !!imageUrl,
+      durationMs: Date.now() - startedAt,
+    });
+    return imageUrl ? { ...card, imageUrl, imageSource: 'generated' as const } : card;
+  });
+  const resolvedImageCount = completedCards.filter((card) => !!card.imageUrl).length;
+  const providerCounts = completedCards.reduce<Record<string, number>>((counts, card) => {
     if (!card.imageUrl) return counts;
     const provider = boardWizardImageProvider(card.imageUrl);
     counts[provider] = (counts[provider] ?? 0) + 1;
     return counts;
   }, {});
   logger.info('Board wizard image coverage completed.', {
-    cardCount: repairedCards.length,
+    cardCount: completedCards.length,
     resolvedImageCount,
-    coveragePercent: repairedCards.length ? Math.round(resolvedImageCount / repairedCards.length * 100) : 100,
+    coveragePercent: completedCards.length ? Math.round(resolvedImageCount / completedCards.length * 100) : 100,
     providerCounts,
-    missingEntities: repairedCards.filter((card) => !card.imageUrl).map((card) => card.entity_name || card.title).slice(0, 30),
+    generatedFallbackCount: completedCards.filter((card) => card.imageSource === 'generated').length,
+    missingEntities: completedCards.filter((card) => !card.imageUrl).map((card) => card.entity_name || card.title).slice(0, 30),
   });
-  return { ...batch, cards: repairedCards };
+  return { ...batch, cards: completedCards };
 }
 
 function isBoardWizardProductCard(card: GeneratedBoardWizardCard): boolean {
@@ -8812,6 +8983,88 @@ function isBoardWizardProductCard(card: GeneratedBoardWizardCard): boolean {
     || card.entity_type === 'product'
     || card.image_intent === 'product'
     || (card.type === 'shop' && card.tags.some((tag) => /\bproduct|shopping|handbag|perfume|beauty\b/i.test(tag)));
+}
+
+async function findBoardWizardGroundedRecoveryImage(
+  card: GeneratedBoardWizardCard,
+  searchContext: string,
+): Promise<string> {
+  const queries = buildBoardWizardImageRecoveryQueries(card, searchContext).slice(0, 3);
+  for (const query of queries) {
+    try {
+      const wikipediaImage = await withBoardWizardTimeout(
+        findReferenceImageForBoardWizard(query),
+        3_500,
+        '',
+      );
+      if (wikipediaImage) return wikipediaImage;
+      const commonsImage = await withBoardWizardTimeout(
+        findCommonsReferenceImageForBoardWizard({ ...card, image_query: query }, searchContext),
+        4_500,
+        '',
+      );
+      if (commonsImage) return commonsImage;
+    } catch (error) {
+      logger.warn('Board wizard grounded image recovery query failed.', {
+        entity: boardWizardImageEntityName(card),
+        query,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  return '';
+}
+
+async function generateAndStoreBoardWizardContextualImage(options: {
+  userId: string;
+  card: GeneratedBoardWizardCard;
+  cardIndex: number;
+  boardTitle: string;
+  boardDescription: string;
+}): Promise<string> {
+  try {
+    const prompt = buildBoardWizardContextualImagePrompt(
+      options.card,
+      options.boardTitle,
+      options.boardDescription,
+    );
+    const generated = await generateBoardCardImageAsset(prompt);
+    const bytes = Buffer.from(generated.base64, 'base64');
+    if (bytes.length < 2_048 || bytes.length > 8 * 1024 * 1024) {
+      throw new Error('Generated board image size was unsupported.');
+    }
+    const extension = imageExtensionForContentType(generated.mimeType) ?? 'png';
+    const safeUserId = options.userId.replace(/[^A-Za-z0-9_-]/g, '_').slice(0, 160) || 'user';
+    const month = new Date().toISOString().slice(0, 7);
+    const storagePath = [
+      'users',
+      safeUserId,
+      'wizard-images',
+      month,
+      `${String(options.cardIndex + 1).padStart(2, '0')}-${slugPart(boardWizardImageEntityName(options.card))}-${randomUUID()}.${extension}`,
+    ].join('/');
+    const token = randomUUID();
+    const bucket = storage.bucket();
+    await bucket.file(storagePath).save(bytes, {
+      resumable: false,
+      metadata: {
+        contentType: generated.mimeType,
+        cacheControl: 'public,max-age=31536000,immutable',
+        metadata: {
+          firebaseStorageDownloadTokens: token,
+          livingWikiImageSource: 'generated-contextual-fallback',
+          livingWikiImageModel: generated.model,
+        },
+      },
+    });
+    return `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket.name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
+  } catch (error) {
+    logger.warn('Board wizard contextual image generation failed.', {
+      entity: boardWizardImageEntityName(options.card),
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return '';
+  }
 }
 
 async function mapWithConcurrency<T, R>(
@@ -12305,6 +12558,7 @@ function scoreBoardWizardCommonsCandidate(
 
 function boardWizardImageProvider(imageUrl: string): string {
   if (imageUrl.includes('/boardPlacePhoto?')) return 'google-places';
+  if (/%2Fwizard-images%2F|\/wizard-images\//i.test(imageUrl)) return 'generated';
   if (/upload\.wikimedia\.org|wikimedia\.org|wikipedia\.org/i.test(imageUrl)) return 'wikimedia';
   if (/googleusercontent\.com|gstatic\.com/i.test(imageUrl)) return 'google';
   if (/mzstatic\.com|spotifycdn\.com|scdn\.co|deezer/i.test(imageUrl)) return 'music-provider';
