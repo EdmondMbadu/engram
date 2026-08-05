@@ -3,8 +3,11 @@ import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import puppeteer, { type Browser, type HTTPRequest } from 'puppeteer-core';
 
+type VerificationPage = Awaited<ReturnType<Browser['newPage']>>;
+
 const PLAYER_ERROR_PATTERN = /\b(?:video unavailable|player configuration error|error\s+\d+|blocked it from display|watch on youtube)\b/i;
 const DEFINITIVE_PLAYER_ERROR_CODES = new Set([5, 100, 101, 150]);
+const VERIFIER_BOOTSTRAP_VIDEO_ID = 'M7lc1UVf-VE';
 
 export function youtubeEmbedBodyIsPlayable(text: string, hasPlayer: boolean, hasPlayerError: boolean): boolean {
   return hasPlayer && !hasPlayerError && !PLAYER_ERROR_PATTERN.test(text);
@@ -51,6 +54,8 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
   let originPromise: Promise<{ server: Server; origin: string }> | null = null;
   const cached = new Map<string, Promise<YouTubeEmbedVerification>>();
   const queue: Array<() => void> = [];
+  const idlePages: VerificationPage[] = [];
+  const allPages = new Set<VerificationPage>();
   let active = 0;
 
   const runLimited = async <T>(operation: () => Promise<T>): Promise<T> => {
@@ -87,14 +92,30 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
           });
           response.end(`<!doctype html><html><body>
             <iframe id="player" title="YouTube verification" allow="encrypted-media" referrerpolicy="strict-origin-when-cross-origin" src="${embedUrl.toString()}"></iframe>
-            <script>window.__livingWikiYouTubeVerification={apiReady:false,errorCode:0};</script>
+            <script>
+              window.__livingWikiYouTubeVerification={apiReady:false,errorCode:0};
+              window.__livingWikiYouTubePlayerReady=false;
+              window.__livingWikiVerifyNext=function(){return false;};
+            </script>
             <script src="https://www.youtube.com/iframe_api"></script>
             <script>
+              var livingWikiPlayer=null;
               function onYouTubeIframeAPIReady(){
-                new YT.Player('player',{events:{
-                  onReady:function(){window.__livingWikiYouTubeVerification.apiReady=true;},
-                  onError:function(event){window.__livingWikiYouTubeVerification.errorCode=Number(event.data)||-1;}
+                livingWikiPlayer=new YT.Player('player',{events:{
+                  onReady:function(){window.__livingWikiYouTubePlayerReady=true;},
+                  onError:function(event){window.__livingWikiYouTubeVerification.errorCode=Number(event.data)||-1;},
+                  onStateChange:function(event){
+                    if([1,2,3,5].includes(Number(event.data))){
+                      window.__livingWikiYouTubeVerification.apiReady=true;
+                    }
+                  }
                 }});
+                window.__livingWikiVerifyNext=function(videoId){
+                  if(!livingWikiPlayer||typeof livingWikiPlayer.cueVideoById!=='function'||!/^[A-Za-z0-9_-]{11}$/.test(videoId)){return false;}
+                  window.__livingWikiYouTubeVerification={apiReady:false,errorCode:0};
+                  livingWikiPlayer.cueVideoById(videoId);
+                  return true;
+                };
               }
             </script>
           </body></html>`);
@@ -142,26 +163,56 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
     const existing = cached.get(videoId);
     if (existing) return existing;
     const pending = runLimited<YouTubeEmbedVerification>(async () => {
-      let page: Awaited<ReturnType<Browser['newPage']>> | null = null;
+      let page: VerificationPage | null = null;
+      let keepPage = false;
+      let reusedPage = false;
+      let preparedAt = 0;
       try {
         if (deadlineAt && Date.now() >= deadlineAt - 750) {
           return { status: 'unavailable', errorCode: 0, reason: 'verification-deadline' };
         }
         const [{ origin }, browser] = await Promise.all([getOrigin(), getBrowser()]);
-        page = await browser.newPage();
-        await page.setRequestInterception(true);
-        page.on('request', (request: HTTPRequest) => {
-          const resourceType = request.resourceType();
-          if (resourceType === 'media' || resourceType === 'font' || resourceType === 'image') {
-            void request.abort().catch(() => undefined);
-          } else {
-            void request.continue().catch(() => undefined);
-          }
-        });
-        await page.goto(`${origin}/?video=${encodeURIComponent(videoId)}`, {
-          waitUntil: 'domcontentloaded',
-          timeout: Math.max(500, Math.min(8_000, deadlineAt ? deadlineAt - Date.now() - 500 : 8_000)),
-        });
+        page = idlePages.pop() ?? null;
+        if (page) {
+          reusedPage = true;
+          const queued = await page.evaluate((nextVideoId) => {
+            const verifyNext = (window as typeof window & {
+              __livingWikiVerifyNext?: (id: string) => boolean;
+            }).__livingWikiVerifyNext;
+            return verifyNext?.(nextVideoId) === true;
+          }, videoId);
+          if (!queued) throw new Error('YouTube verifier page was not ready for reuse.');
+        } else {
+          page = await browser.newPage();
+          allPages.add(page);
+          await page.setRequestInterception(true);
+          page.on('request', (request: HTTPRequest) => {
+            const resourceType = request.resourceType();
+            if (resourceType === 'media' || resourceType === 'font' || resourceType === 'image') {
+              void request.abort().catch(() => undefined);
+            } else {
+              void request.continue().catch(() => undefined);
+            }
+          });
+          await page.goto(`${origin}/?video=${VERIFIER_BOOTSTRAP_VIDEO_ID}`, {
+            waitUntil: 'domcontentloaded',
+            timeout: Math.max(500, Math.min(8_000, deadlineAt ? deadlineAt - Date.now() - 500 : 8_000)),
+          });
+          await page.waitForFunction(
+            () => (window as typeof window & { __livingWikiYouTubePlayerReady?: boolean })
+              .__livingWikiYouTubePlayerReady === true,
+            { timeout: Math.max(500, Math.min(8_000, deadlineAt ? deadlineAt - Date.now() - 500 : 8_000)) },
+          );
+          const queued = await page.evaluate((nextVideoId) => {
+            const verifyNext = (window as typeof window & {
+              __livingWikiVerifyNext?: (id: string) => boolean;
+            }).__livingWikiVerifyNext;
+            return verifyNext?.(nextVideoId) === true;
+          }, videoId);
+          if (!queued) throw new Error('YouTube verifier bootstrap player was not ready.');
+        }
+        preparedAt = Date.now();
+        keepPage = true;
         const settleMs = Math.max(0, Math.min(2_200, deadlineAt ? deadlineAt - Date.now() - 400 : 2_200));
         const settleDeadline = Date.now() + settleMs;
         let readyObservedAt = 0;
@@ -191,7 +242,12 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
                 hasPlayerError: !!document.querySelector('.ytp-error, .ytp-error-content-wrap-reason'),
               })),
             ]);
-            latest = classifyYouTubeEmbedVerification({ ...frameResult, ...apiResult });
+            const staleFrameGrace = reusedPage && Date.now() - preparedAt < 350;
+            latest = classifyYouTubeEmbedVerification({
+              ...frameResult,
+              ...(staleFrameGrace ? { text: '', hasPlayerError: false } : {}),
+              ...apiResult,
+            });
             if (latest.status === 'blocked' || latest.errorCode) return latest;
             if (apiResult.apiReady) {
               readyObservedAt ||= Date.now();
@@ -207,13 +263,21 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
           ? { status: 'unavailable', errorCode: 0, reason: 'player-did-not-settle' }
           : { status: 'unavailable', errorCode: 0, reason: 'player-frame-missing' };
       } catch (error) {
+        keepPage = false;
         return {
           status: 'unavailable',
           errorCode: 0,
-          reason: error instanceof Error ? `verifier-failed:${error.name}` : 'verifier-failed',
+          reason: error instanceof Error
+            ? `verifier-failed:${error.name}:${error.message}`.slice(0, 180)
+            : 'verifier-failed',
         };
       } finally {
-        await page?.close().catch(() => undefined);
+        if (page && keepPage && !page.isClosed()) {
+          idlePages.push(page);
+        } else if (page) {
+          allPages.delete(page);
+          await page.close().catch(() => undefined);
+        }
       }
     });
     cached.set(videoId, pending);
@@ -223,6 +287,9 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
   return {
     verify,
     async close(): Promise<void> {
+      await Promise.all(Array.from(allPages, (page) => page.close().catch(() => undefined)));
+      allPages.clear();
+      idlePages.length = 0;
       const browser = browserPromise ? await browserPromise.catch(() => null) : null;
       await browser?.close().catch(() => undefined);
       const origin = originPromise ? await originPromise.catch(() => null) : null;

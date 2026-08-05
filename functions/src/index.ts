@@ -6471,7 +6471,10 @@ export const resolveBoardCardVideos = onCall(
     let deadlineSkippedCount = 0;
     const apiKey = youtubeDataApiKey.value();
     const customSearchApiKey = googleCustomSearchApiKey.value();
-    const embedVerifier = createYouTubeEmbedVerifier(5);
+    // One persistent player avoids competing cold starts in the 1 GiB Cloud
+    // Run container. Candidate checks are then fast cue operations, and the
+    // ten concurrent card searches naturally take turns through the queue.
+    const embedVerifier = createYouTubeEmbedVerifier(1);
     try {
       // Let every card begin its search before a difficult card can consume the
       // entire lookup budget. The verifier still caps Chromium work at five
@@ -6502,7 +6505,7 @@ export const resolveBoardCardVideos = onCall(
             ? 100
             : scoreBoardWizardVideoCandidate(card, boardContext, candidate);
           if (!card.youtubeReference && score < 55) return null;
-          return {
+          const match = {
             cardId: card.cardId,
             youtubeVideoId: candidate.videoId,
             youtubeVideoTitle: candidate.title,
@@ -6514,6 +6517,14 @@ export const resolveBoardCardVideos = onCall(
               : Math.max(0, Math.min(1, Number(((score - 35) / 100).toFixed(2)))),
             youtubeVerifiedAt: new Date().toISOString(),
           };
+          logger.info('Verified a playable YouTube result for a board card.', {
+            cardId: card.cardId,
+            cardTitle: card.title,
+            videoId: candidate.videoId,
+            videoTitle: candidate.title,
+            score,
+          });
+          return match;
         } catch (error) {
           logger.warn('Board wizard video lookup failed for one card; continuing with the remaining cards.', {
             cardId: card.cardId,
@@ -6593,7 +6604,7 @@ async function resolveCachedBoardWizardVideo(
   // to an old negative cache entry.
   const exclusionKey = [...card.excludeVideoIds].sort().join(',');
   const cacheId = createHash('sha256')
-    .update(`youtube-playable-v6|${query.toLowerCase()}|exclude:${exclusionKey}`)
+    .update(`youtube-playable-v7|${query.toLowerCase()}|exclude:${exclusionKey}`)
     .digest('hex');
   const cacheRef = db.collection('board_video_matches').doc(cacheId);
   try {
@@ -6621,7 +6632,7 @@ async function resolveCachedBoardWizardVideo(
   try {
     await cacheRef.set({
       query,
-      resolver_version: 'youtube-playable-v6',
+      resolver_version: 'youtube-playable-v7',
       verification_status: candidate ? 'playable' : 'no-playable-match',
       verified_at_iso: candidate ? new Date().toISOString() : '',
       match: candidate ?? null,
