@@ -289,6 +289,18 @@
         </div>
 
         <div class="boards-topbar__actions">
+          @if (isSignedIn() && wizardDrafts().length) {
+            <button
+              type="button"
+              class="boards-drafts-shortcut"
+              aria-label="Open saved board drafts"
+              (click)="openWizardDrafts()"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
+              <span class="boards-drafts-shortcut__label">Drafts</span>
+              <strong>{{ wizardDrafts().length }}</strong>
+            </button>
+          }
           @if (selectedBoard(); as topBoard) {
             @if (canEditBoard(topBoard)) {
               <button type="button" class="boards-primary-action" (click)="openCreateCard(topBoard.id)">
@@ -683,8 +695,8 @@
         </button>
       </nav>
 
-      @if (!publicOwnerKey() && !selectedBoardId() && activeGalleryTab() === 'boards' && wizardDrafts().length) {
-        <section class="board-drafts" aria-label="Board drafts">
+      @if (canCreateBoard() && activeGalleryTab() === 'boards' && wizardDrafts().length) {
+        <section id="board-drafts" class="board-drafts" aria-label="Board drafts" tabindex="-1">
           <div class="board-drafts__head">
             <div>
               <span class="material-symbols-outlined">edit_note</span>

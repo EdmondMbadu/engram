@@ -2444,6 +2444,23 @@ export class BoardsComponent implements OnDestroy {
     this.boardSearch.set('');
   }
 
+  async openWizardDrafts(): Promise<void> {
+    if (!this.isBrowser || !this.authService.isAuthenticated() || !this.wizardDrafts().length) {
+      return;
+    }
+    this.activeGalleryTab.set('boards');
+    this.boardSearch.set('');
+    const viewingSomeoneElsesProfile = !!this.publicOwnerKey() && !this.canCreateBoard();
+    if (viewingSomeoneElsesProfile || this.selectedBoardId() || this.friendsPage() || this.songsPage() || this.tripsPage()) {
+      await this.router.navigate(['/boards']);
+    }
+    window.setTimeout(() => {
+      const drafts = window.document.getElementById('board-drafts');
+      drafts?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      drafts?.focus({ preventScroll: true });
+    }, 80);
+  }
+
   selectBoard(boardId: string): void {
     if (this.suppressNextBoardOpen) {
       this.suppressNextBoardOpen = false;
