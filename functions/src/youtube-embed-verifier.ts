@@ -163,31 +163,49 @@ export function createYouTubeEmbedVerifier(maxConcurrency = 5): YouTubeEmbedVeri
           timeout: Math.max(500, Math.min(8_000, deadlineAt ? deadlineAt - Date.now() - 500 : 8_000)),
         });
         const settleMs = Math.max(0, Math.min(2_200, deadlineAt ? deadlineAt - Date.now() - 400 : 2_200));
-        if (settleMs) await new Promise((resolve) => setTimeout(resolve, settleMs));
-        const frame = page.frames().find((candidate) => candidate.url().includes('youtube-nocookie.com/embed/'));
-        if (!frame) {
-          return { status: 'unavailable', errorCode: 0, reason: 'player-frame-missing' };
+        const settleDeadline = Date.now() + settleMs;
+        let readyObservedAt = 0;
+        let latest: YouTubeEmbedVerification | null = null;
+        let sawFrame = false;
+        // YouTube normally reports error 101/150 or player readiness well before
+        // the old fixed 2.2 second sleep. Polling lets blocked candidates fail
+        // fast, while a short readiness grace period prevents us from accepting
+        // a frame immediately before its delayed onError callback arrives.
+        while (Date.now() <= settleDeadline) {
+          const frame = page.frames().find((candidate) => candidate.url().includes('youtube-nocookie.com/embed/'));
+          if (frame) {
+            sawFrame = true;
+            const [apiResult, frameResult] = await Promise.all([
+              page.evaluate(() => {
+                const state = (window as typeof window & {
+                  __livingWikiYouTubeVerification?: { apiReady?: boolean; errorCode?: number };
+                }).__livingWikiYouTubeVerification;
+                return {
+                  apiReady: state?.apiReady === true,
+                  errorCode: Number(state?.errorCode) || 0,
+                };
+              }),
+              frame.evaluate(() => ({
+                text: document.body?.innerText?.replace(/\s+/g, ' ').trim() ?? '',
+                hasPlayer: !!document.querySelector('.html5-video-player'),
+                hasPlayerError: !!document.querySelector('.ytp-error, .ytp-error-content-wrap-reason'),
+              })),
+            ]);
+            latest = classifyYouTubeEmbedVerification({ ...frameResult, ...apiResult });
+            if (latest.status === 'blocked' || latest.errorCode) return latest;
+            if (apiResult.apiReady) {
+              readyObservedAt ||= Date.now();
+              if (Date.now() - readyObservedAt >= 450) return latest;
+            }
+          }
+          const remainingMs = settleDeadline - Date.now();
+          if (remainingMs <= 0) break;
+          await new Promise((resolve) => setTimeout(resolve, Math.min(120, remainingMs)));
         }
-        const [apiResult, frameResult] = await Promise.all([
-          page.evaluate(() => {
-            const state = (window as typeof window & {
-              __livingWikiYouTubeVerification?: { apiReady?: boolean; errorCode?: number };
-            }).__livingWikiYouTubeVerification;
-            return {
-              apiReady: state?.apiReady === true,
-              errorCode: Number(state?.errorCode) || 0,
-            };
-          }),
-          frame.evaluate(() => ({
-          text: document.body?.innerText?.replace(/\s+/g, ' ').trim() ?? '',
-          hasPlayer: !!document.querySelector('.html5-video-player'),
-          hasPlayerError: !!document.querySelector('.ytp-error, .ytp-error-content-wrap-reason'),
-          })),
-        ]);
-        return classifyYouTubeEmbedVerification({
-          ...frameResult,
-          ...apiResult,
-        });
+        if (latest) return latest;
+        return sawFrame
+          ? { status: 'unavailable', errorCode: 0, reason: 'player-did-not-settle' }
+          : { status: 'unavailable', errorCode: 0, reason: 'player-frame-missing' };
       } catch (error) {
         return {
           status: 'unavailable',

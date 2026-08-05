@@ -1,6 +1,8 @@
 const assert = require('node:assert/strict');
 const {
   boardWizardCardWantsVideo,
+  boardWizardVideoCandidateLooksDirect,
+  buildBoardWizardContextVideoSearchQuery,
   buildBoardWizardYouTubeApiQuery,
   buildBoardWizardRelatedVideoSearchQuery,
   buildBoardWizardVideoSearchQuery,
@@ -34,7 +36,11 @@ assert.equal(
 );
 assert.equal(
   buildBoardWizardRelatedVideoSearchQuery(card),
-  'Prince Super Bowl XLI halftime show · 2007 full live performance',
+  'Prince Super Bowl XLI halftime show · 2007 audience view fan recording full performance HD',
+);
+assert.equal(
+  buildBoardWizardContextVideoSearchQuery(card),
+  'Prince Super Bowl halftime documentary',
 );
 assert.equal(
   buildBoardWizardRelatedVideoSearchQuery({
@@ -42,7 +48,7 @@ assert.equal(
     entityName: 'Pelé',
     imageContext: 'Brazil v Sweden 1958 FIFA World Cup Final',
   }),
-  'Pelé Brazil v Sweden 1958 FIFA World Cup Final match goal highlights',
+  'Pelé Brazil v Sweden 1958 FIFA World Cup Final fan camera match goal highlights HD',
 );
 assert.equal(
   buildBoardWizardYouTubeApiQuery('Katy Perry Super Bowl XLIX halftime show official NFL'),
@@ -51,6 +57,22 @@ assert.equal(
 assert.equal(youtubeVideoIdFromReference('https://youtu.be/M7lc1UVf-VE?t=3'), 'M7lc1UVf-VE');
 assert.equal(youtubeVideoIdFromReference('https://example.com/M7lc1UVf-VE'), '');
 assert.equal(parseIso8601DurationSeconds('PT12M34S'), 754);
+assert.equal(boardWizardVideoCandidateLooksDirect(card, {
+  videoId: 'fullshow123',
+  title: 'Prince Super Bowl XLI Full Halftime Performance',
+  channelTitle: 'Performance Archive',
+  thumbnailUrl: '',
+  durationSeconds: 740,
+  embeddable: true,
+}), true);
+assert.equal(boardWizardVideoCandidateLooksDirect(card, {
+  videoId: 'interview12',
+  title: 'Prince Discusses His Historic Super Bowl Appearance',
+  channelTitle: 'Entertainment News',
+  thumbnailUrl: '',
+  durationSeconds: 240,
+  embeddable: true,
+}), false);
 
 const goodScore = scoreBoardWizardVideoCandidate(card, 'Top 10 Super Bowl halftime shows', {
   videoId: 'M7lc1UVf-VE',
@@ -123,6 +145,18 @@ const wrongSingleNameScore = scoreBoardWizardVideoCandidate({
   embeddable: true,
 });
 assert.equal(wrongSingleNameScore, -1);
+assert.ok(scoreBoardWizardVideoCandidate({
+  title: 'U2: Super Bowl XXXVI',
+  entityName: 'U2',
+  imageContext: 'U2 Super Bowl halftime show',
+}, 'Top Super Bowl halftime performances', {
+  videoId: 'uwOIPxVGbzc',
+  title: 'U2 SUPERBOWL HALF TIME',
+  channelTitle: 'Performance Archive',
+  thumbnailUrl: '',
+  durationSeconds: 720,
+  embeddable: true,
+}, { allowRelated: true }) >= 55);
 assert.equal(youtubeEmbedBodyIsPlayable('Video unavailable. Watch on YouTube', true, true), false);
 assert.equal(youtubeEmbedBodyIsPlayable('Prince performance channel controls', true, false), true);
 assert.deepEqual(classifyYouTubeEmbedVerification({

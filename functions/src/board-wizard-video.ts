@@ -74,11 +74,11 @@ export function buildBoardWizardRelatedVideoSearchQuery(card: BoardWizardVideoCa
   const context = cleanSearchText(card.imageContext || card.videoSearchQuery || card.title);
   const combined = `${subject} ${context}`;
   const formatHint = /\b(?:world cup|final|goal|match|tournament|championship|sports?)\b/i.test(combined)
-    ? 'match goal highlights'
+    ? 'fan camera match goal highlights HD'
     : /\bhalf[\s-]?time\s+show\b/i.test(combined)
-      ? 'full live performance'
+      ? 'audience view fan recording full performance HD'
       : /\b(?:song|music|concert|performance|artist|band|singer)\b/i.test(combined)
-        ? 'official live performance'
+        ? 'live concert fan recording HD'
         : 'highlights clip';
   return [subject, context, formatHint]
     .filter(Boolean)
@@ -86,6 +86,42 @@ export function buildBoardWizardRelatedVideoSearchQuery(card: BoardWizardVideoCa
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, 180);
+}
+
+export function buildBoardWizardContextVideoSearchQuery(card: BoardWizardVideoCardInput): string {
+  const subject = cleanSearchText(card.entityName || card.title);
+  const context = cleanSearchText(card.imageContext || card.videoSearchQuery || card.title);
+  const combined = `${subject} ${context}`;
+  const formatHint = /\bhalf[\s-]?time\s+show\b/i.test(combined)
+    ? 'Super Bowl halftime documentary'
+    : /\b(?:world cup|final|goal|match|tournament|championship|sports?)\b/i.test(combined)
+      ? 'match documentary interview highlights'
+      : /\b(?:song|music|concert|performance|artist|band|singer)\b/i.test(combined)
+        ? 'performance documentary interview'
+        : 'documentary interview highlights';
+  return [subject, formatHint]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 180);
+}
+
+export function boardWizardVideoCandidateLooksDirect(
+  card: BoardWizardVideoCardInput,
+  candidate: BoardWizardVideoCandidate,
+): boolean {
+  const requested = normalizeText([
+    card.title,
+    card.entityName,
+    card.imageContext,
+    card.videoSearchQuery,
+  ].filter(Boolean).join(' '));
+  if (!/\b(?:half time|halftime) show\b/.test(requested)) return true;
+  if (/\b(?:reveals?|request|discusses?|talks?|interview|press conference|news|reaction|reacts?|review|commentary|explained|behind the scenes|documentary|story|making of|takes issue)\b/i
+    .test(candidate.title)) return false;
+  return /\b(?:half[\s-]?time|performance|performs?|full show|fan cam|fancam|audience|inside (?:the )?stadium|live at|live @)\b/i
+    .test(candidate.title);
 }
 
 export function youtubeVideoIdFromReference(value: unknown): string {
@@ -205,6 +241,8 @@ function normalizeText(value: string): string {
     .toLowerCase()
     .replace(/&/g, ' and ')
     .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\bsuperbowl\b/g, 'super bowl')
+    .replace(/\bhalftime\b/g, 'half time')
     .replace(/\s+/g, ' ')
     .trim();
 }

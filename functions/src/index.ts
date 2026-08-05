@@ -28,6 +28,8 @@ import {
 import { resolveBoardWizardMediaKind, type BoardWizardMediaKind } from './board-wizard-media-quality';
 import {
   boardWizardCardWantsVideo,
+  boardWizardVideoCandidateLooksDirect,
+  buildBoardWizardContextVideoSearchQuery,
   buildBoardWizardRelatedVideoSearchQuery,
   buildBoardWizardYouTubeApiQuery,
   buildBoardWizardVideoSearchQuery,
@@ -6471,7 +6473,10 @@ export const resolveBoardCardVideos = onCall(
     const customSearchApiKey = googleCustomSearchApiKey.value();
     const embedVerifier = createYouTubeEmbedVerifier(5);
     try {
-      const matches = await mapWithConcurrency(cards, 5, async (card) => {
+      // Let every card begin its search before a difficult card can consume the
+      // entire lookup budget. The verifier still caps Chromium work at five
+      // pages, so this improves fairness without increasing browser pressure.
+      const matches = await mapWithConcurrency(cards, Math.min(10, cards.length), async (card) => {
         try {
           if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) {
             deadlineSkippedCount += 1;
@@ -6588,7 +6593,7 @@ async function resolveCachedBoardWizardVideo(
   // to an old negative cache entry.
   const exclusionKey = [...card.excludeVideoIds].sort().join(',');
   const cacheId = createHash('sha256')
-    .update(`youtube-playable-v3|${query.toLowerCase()}|exclude:${exclusionKey}`)
+    .update(`youtube-playable-v6|${query.toLowerCase()}|exclude:${exclusionKey}`)
     .digest('hex');
   const cacheRef = db.collection('board_video_matches').doc(cacheId);
   try {
@@ -6616,7 +6621,7 @@ async function resolveCachedBoardWizardVideo(
   try {
     await cacheRef.set({
       query,
-      resolver_version: 'youtube-playable-v3',
+      resolver_version: 'youtube-playable-v6',
       verification_status: candidate ? 'playable' : 'no-playable-match',
       verified_at_iso: candidate ? new Date().toISOString() : '',
       match: candidate ?? null,
@@ -6666,7 +6671,8 @@ async function searchYouTubeForBoardCard(
     officialCandidates,
     embedVerifier,
     {
-      verificationLimit: 4,
+      verificationLimit: 5,
+      requireDirectMedia: true,
       deadlineAt,
     },
   );
@@ -6685,15 +6691,30 @@ async function searchYouTubeForBoardCard(
     embedVerifier,
     {
       allowRelated: true,
-      verificationLimit: 4,
+      verificationLimit: 10,
+      requireDirectMedia: true,
       deadlineAt,
     },
   );
   if (relatedMatch) return relatedMatch;
   if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
+  const contextCandidates = await searchYouTubeWeb(buildBoardWizardContextVideoSearchQuery(card), deadlineAt);
+  const contextMatch = await chooseBoardWizardVideoCandidate(
+    card,
+    boardContext,
+    contextCandidates,
+    embedVerifier,
+    {
+      allowRelated: true,
+      verificationLimit: 7,
+      deadlineAt,
+    },
+  );
+  if (contextMatch) return contextMatch;
+  if (Date.now() >= deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) return null;
   const fallbackCandidates = await searchYouTubeWithCustomSearch(query, customSearchApiKey);
   return await chooseBoardWizardVideoCandidate(card, boardContext, fallbackCandidates, embedVerifier, {
-    verificationLimit: 3,
+    verificationLimit: 4,
     deadlineAt,
   });
 }
@@ -6705,6 +6726,7 @@ async function chooseBoardWizardVideoCandidate(
   embedVerifier: YouTubeEmbedVerifier,
   options: {
     allowRelated?: boolean;
+    requireDirectMedia?: boolean;
     verificationLimit?: number;
     deadlineAt: number;
   },
@@ -6713,10 +6735,11 @@ async function chooseBoardWizardVideoCandidate(
     allowRelated: options.allowRelated,
     limit: 12,
   });
-  const verificationLimit = Math.max(0, Math.min(5, Math.trunc(options.verificationLimit ?? 3)));
+  const verificationLimit = Math.max(0, Math.min(8, Math.trunc(options.verificationLimit ?? 3)));
   const candidatesToVerify = ranked
     .filter((entry) => !card.excludeVideoIds.includes(entry.candidate.videoId))
     .filter((entry) => !youtubeVideoEmbedIsKnownBlocked(entry.candidate.videoId))
+    .filter((entry) => !options.requireDirectMedia || boardWizardVideoCandidateLooksDirect(card, entry.candidate))
     .slice(0, verificationLimit);
   for (const entry of candidatesToVerify) {
     if (Date.now() >= options.deadlineAt - BOARD_VIDEO_DEADLINE_BUFFER_MS) break;
@@ -6726,8 +6749,11 @@ async function chooseBoardWizardVideoCandidate(
       rememberBlockedYouTubeEmbed(entry.candidate.videoId);
     }
     logger.info('Rejected a YouTube result that was not verified playable in an embedded player.', {
+      cardId: card.cardId,
+      cardTitle: card.title,
       videoId: entry.candidate.videoId,
       videoTitle: entry.candidate.title,
+      candidateScore: entry.score,
       verificationStatus: verification.status,
       verificationReason: verification.reason,
       playerErrorCode: verification.errorCode,
@@ -6941,7 +6967,7 @@ async function searchYouTubeWeb(query: string, deadlineAt: number): Promise<Boar
     });
     if (!response.ok) return [];
     const html = await response.text();
-    const parsed = extractYouTubeWebSearchResults(html, 15).map((candidate): BoardWizardVideoCandidate => ({
+    const parsed = extractYouTubeWebSearchResults(html, 24).map((candidate): BoardWizardVideoCandidate => ({
       ...candidate,
       thumbnailUrl: decodeBasicHtmlEntities(candidate.thumbnailUrl),
       title: decodeBasicHtmlEntities(candidate.title),
