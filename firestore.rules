@@ -83,6 +83,60 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /users/{userId}/board_wizard_drafts/{draftId} {
+      allow read, delete: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && request.resource.data.keys().hasOnly([
+          'id',
+          'owner_user_id',
+          'mode',
+          'target_board_id',
+          'locked_target_board_id',
+          'contribution_board_id',
+          'default_type',
+          'count',
+          'vibe',
+          'prompt',
+          'pasted_list',
+          'source_url',
+          'off_grid_name',
+          'off_grid_address',
+          'off_grid_tip',
+          'stack_cta_label',
+          'stack_cta_url',
+          'tour_voice_style',
+          'tour_pace_or_style',
+          'tour_extras',
+          'result',
+          'selected_card_ids',
+          'created_at_iso',
+          'updated_at_iso',
+          'server_updated_at'
+        ])
+        && request.resource.data.id == draftId
+        && request.resource.data.owner_user_id == userId
+        && request.resource.data.mode in [
+          'describe',
+          'paste',
+          'photos',
+          'off-grid',
+          'url',
+          'walking-tour',
+          'driving-tour'
+        ]
+        && request.resource.data.default_type in ['place', 'food', 'memory', 'idea', 'shop', 'note']
+        && request.resource.data.vibe in ['playful', 'foodie', 'traveler', 'curator', 'memory']
+        && request.resource.data.count is number
+        && request.resource.data.count >= 1
+        && request.resource.data.count <= 100
+        && request.resource.data.result is map
+        && request.resource.data.selected_card_ids is list
+        && request.resource.data.tour_extras is list
+        && request.resource.data.created_at_iso is string
+        && request.resource.data.updated_at_iso is string
+        && request.resource.data.server_updated_at == request.time;
+    }
+
     match /user_narrator_voices/{userId} {
       allow read, write: if false;
     }

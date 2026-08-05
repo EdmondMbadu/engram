@@ -683,6 +683,57 @@
         </button>
       </nav>
 
+      @if (!publicOwnerKey() && !selectedBoardId() && activeGalleryTab() === 'boards' && wizardDrafts().length) {
+        <section class="board-drafts" aria-label="Board drafts">
+          <div class="board-drafts__head">
+            <div>
+              <span class="material-symbols-outlined">edit_note</span>
+              <div>
+                <strong>Your drafts</strong>
+                <small>Generated boards are saved here until you publish or discard them.</small>
+              </div>
+            </div>
+            <span>{{ wizardDrafts().length }}</span>
+          </div>
+          <div class="board-drafts__grid">
+            @for (draft of wizardDrafts(); track draft.id) {
+              <article class="board-draft-card">
+                <button type="button" class="board-draft-card__resume" (click)="resumeWizardDraft(draft)">
+                  <span class="board-draft-card__media">
+                    @if (draft.result.cards[0]?.imageUrl) {
+                      <img [src]="draft.result.cards[0].imageUrl" [alt]="draft.result.board.title" loading="lazy" />
+                    } @else {
+                      <span class="material-symbols-outlined">dashboard_customize</span>
+                    }
+                    <b>Draft</b>
+                  </span>
+                  <span class="board-draft-card__copy">
+                    <strong>{{ draft.result.board.title }}</strong>
+                    <small>{{ draft.result.cards.length }} cards · {{ wizardDraftUpdatedLabel(draft) }}</small>
+                    <span>Resume editing</span>
+                  </span>
+                </button>
+                <div class="board-draft-card__actions">
+                  @if (wizardDraftDiscardCandidateId() === draft.id) {
+                    <button type="button" (click)="cancelWizardDraftDiscard()">Keep draft</button>
+                    <button
+                      type="button"
+                      class="board-draft-card__discard-confirm"
+                      [disabled]="wizardDraftDiscarding()"
+                      (click)="confirmWizardDraftDiscard(draft.id)"
+                    >
+                      {{ wizardDraftDiscarding() ? 'Discarding…' : 'Discard permanently' }}
+                    </button>
+                  } @else {
+                    <button type="button" (click)="requestWizardDraftDiscard(draft.id)">Discard</button>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+      }
+
       <section class="boards-feed">
         <div class="boards-feed__toolbar">
           <label class="boards-search">
@@ -3518,6 +3569,12 @@
           <div>
             <p>{{ wizardLockedTargetBoard() ? 'Add to this board' : 'New board' }}</p>
             <h3>{{ wizardStep() === 'choose' ? (wizardLockedTargetBoard() ? 'Choose how to add cards' : 'Choose how to start') : wizardModeLabel() }}</h3>
+            @if (wizardResult() && wizardPreviewCards().length && wizardStep() !== 'done') {
+              <small class="boards-wizard-draft-status" [class.boards-wizard-draft-status--error]="wizardDraftSaveState() === 'error'">
+                <span class="material-symbols-outlined">{{ wizardDraftSaveState() === 'saving' ? 'sync' : wizardDraftSaveState() === 'error' ? 'cloud_off' : 'cloud_done' }}</span>
+                {{ wizardDraftStatusLabel() }}
+              </small>
+            }
           </div>
           <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeBoardWizard()" i18n-aria-label>
             <span class="material-symbols-outlined">close</span>
@@ -3533,6 +3590,16 @@
                 <p>Everything opens as an editable preview before it is saved.</p>
               </div>
             </div>
+            @if (!wizardLockedTargetBoard() && wizardDrafts()[0]; as recentDraft) {
+              <div class="boards-wizard-resume-draft">
+                <span class="material-symbols-outlined">history</span>
+                <div>
+                  <strong>Continue your latest draft?</strong>
+                  <small>{{ recentDraft.result.board.title }} · {{ recentDraft.result.cards.length }} cards</small>
+                </div>
+                <button type="button" class="boards-primary-action" (click)="resumeWizardDraft(recentDraft)">Resume draft</button>
+              </div>
+            }
             <div class="boards-wizard-mode-grid">
               @for (mode of wizardAvailableModes(); track mode.id) {
                 <button
@@ -4799,6 +4866,14 @@
             @if (!wizardEditingCard()) {
             <div class="boards-form__actions boards-wizard-savebar">
               <button type="button" class="boards-ghost-action" (click)="backWizardStep()" i18n>Back</button>
+              <span class="boards-wizard-savebar__status">
+                <span class="material-symbols-outlined">cloud_done</span>
+                @if (wizardLockedTargetBoard() || wizardContributionBoard()) {
+                  <span>Closing keeps this draft. Saving adds the selected cards to the existing board.</span>
+                } @else {
+                  <span>Closing keeps this draft. Publishing creates the board and notifies your friends.</span>
+                }
+              </span>
               <button
                 type="button"
                 class="boards-primary-action"
@@ -4815,10 +4890,28 @@
                 } @else if (wizardLockedTargetBoard()) {
                   <span>Add {{ wizardSelectedCount() }} {{ wizardSelectedCount() === 1 ? 'card' : 'cards' }}</span>
                 } @else {
-                  <span i18n>Save selected cards</span>
+                  <span>Save and publish</span>
                 }
               </button>
             </div>
+            @if (wizardActiveDraftId(); as activeDraftId) {
+              <div class="boards-wizard-discard-row">
+                @if (wizardDraftDiscardCandidateId() === activeDraftId) {
+                  <span>This permanently removes the generated board and its edits.</span>
+                  <button type="button" (click)="cancelWizardDraftDiscard()">Keep draft</button>
+                  <button
+                    type="button"
+                    class="boards-wizard-discard-row__confirm"
+                    [disabled]="wizardDraftDiscarding()"
+                    (click)="confirmWizardDraftDiscard(activeDraftId)"
+                  >
+                    {{ wizardDraftDiscarding() ? 'Discarding…' : 'Yes, discard draft' }}
+                  </button>
+                } @else {
+                  <button type="button" (click)="requestWizardDraftDiscard(activeDraftId)">Don’t save this draft</button>
+                }
+              </div>
+            }
             }
           </div>
         } @else {
@@ -4833,9 +4926,9 @@
               <p>Your selected cards were added without replacing the cards already there.</p>
               <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">See them on the board</button>
             } @else {
-              <h4 i18n>Board saved</h4>
-              <p i18n>Your new board is synced and ready on your board shelf.</p>
-              <button type="button" class="boards-primary-action" (click)="closeBoardWizard()" i18n>Open saved board</button>
+              <h4>Board published</h4>
+              <p>Your new board is synced, visible on your board shelf, and ready to share.</p>
+              <button type="button" class="boards-primary-action" (click)="closeBoardWizard()">Open published board</button>
             }
           </div>
         }

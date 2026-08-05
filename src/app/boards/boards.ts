@@ -3,7 +3,7 @@ import { Component, computed, effect, ElementRef, HostListener, inject, LOCALE_I
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
-import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where, type Firestore, type Unsubscribe } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where, writeBatch, type Firestore, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
@@ -38,6 +38,7 @@ import {
   type BoardTranslationResult,
 } from './board-translation';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import { shouldAutosaveBoardWizardDraft, shouldFlushBoardWizardDraftOnClose } from './board-wizard-draft-lifecycle';
 import { appendBoardCards } from './board-batch';
 import {
   cardsForBoardInsideDisplay,
@@ -593,6 +594,35 @@ type BoardWizardPreviewCard = BoardWizardGeneratedCard & {
   editing: boolean;
 };
 
+type BoardWizardDraftSaveState = 'idle' | 'saving' | 'saved' | 'error';
+
+type BoardWizardDraft = {
+  id: string;
+  ownerUserId: string;
+  mode: BoardWizardMode;
+  targetBoardId: string;
+  lockedTargetBoardId: string;
+  contributionBoardId: string;
+  defaultType: BoardCardType;
+  count: number;
+  vibe: BoardWizardVibe;
+  prompt: string;
+  pastedList: string;
+  sourceUrl: string;
+  offGridName: string;
+  offGridAddress: string;
+  offGridTip: string;
+  stackCtaLabel: string;
+  stackCtaUrl: string;
+  tourVoiceStyle: BoardTourVoiceStyle;
+  tourPaceOrStyle: string;
+  tourExtras: string[];
+  result: BoardWizardGeneratedBatch;
+  selectedCardIds: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
 type StackFrame = {
   kind: 'cover' | 'card' | 'closing';
   card?: BoardCard;
@@ -1136,7 +1166,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css'],
+  styleUrls: ['./boards.css', './board-wizard-drafts.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1179,6 +1209,12 @@ export class BoardsComponent implements OnDestroy {
   private readonly spotifyEmbedUrls = new Map<string, SafeResourceUrl>();
   private readonly youtubeEmbedUrls = new Map<string, SafeResourceUrl>();
   private wizardVideoEnrichmentRun = 0;
+  private wizardDraftAutosaveTimer: ReturnType<typeof setTimeout> | null = null;
+  private wizardDraftSaveInFlight = false;
+  private wizardDraftSavePromise: Promise<void> | null = null;
+  private wizardDraftSavePending = false;
+  private wizardDraftRestoreInProgress = false;
+  private wizardDraftsLoadedForUid = '';
   private stackLivePreviewAutoplay = false;
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
@@ -1437,6 +1473,12 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardCardImageApplying = signal(false);
   readonly wizardCardEditorError = signal<string | null>(null);
   readonly wizardSaving = signal(false);
+  readonly wizardDrafts = signal<BoardWizardDraft[]>([]);
+  readonly wizardActiveDraftId = signal<string | null>(null);
+  readonly wizardDraftSaveState = signal<BoardWizardDraftSaveState>('idle');
+  readonly wizardDraftSavedAt = signal('');
+  readonly wizardDraftDiscardCandidateId = signal<string | null>(null);
+  readonly wizardDraftDiscarding = signal(false);
   readonly songDeckIndex = signal(0);
   readonly songPreviewPlayingKey = signal<string | null>(null);
   readonly songPreviewError = signal<string | null>(null);
@@ -2317,6 +2359,37 @@ export class BoardsComponent implements OnDestroy {
 
     effect(() => {
       const uid = this.authService.uid();
+      if (!this.isBrowser || !this.firestore || !uid) {
+        this.wizardDraftsLoadedForUid = '';
+        this.wizardDrafts.set([]);
+        return;
+      }
+      if (this.wizardDraftsLoadedForUid === uid) {
+        return;
+      }
+      this.wizardDraftsLoadedForUid = uid;
+      void this.loadWizardDrafts(uid);
+    });
+
+    effect(() => {
+      const snapshotKey = this.wizardDraftSnapshotKey();
+      if (
+        !snapshotKey
+        || !shouldAutosaveBoardWizardDraft({
+          step: this.wizardStep(),
+          hasResult: !!this.wizardResult(),
+          cardCount: this.wizardPreviewCards().length,
+          saving: this.wizardSaving(),
+          restoring: this.wizardDraftRestoreInProgress,
+        })
+      ) {
+        return;
+      }
+      this.scheduleWizardDraftAutosave();
+    });
+
+    effect(() => {
+      const uid = this.authService.uid();
       const board = this.selectedBoard();
       if (!this.isBrowser || !this.functions || !uid || !board) {
         this.visitPlansLoadedFor = '';
@@ -2347,6 +2420,10 @@ export class BoardsComponent implements OnDestroy {
     if (this.boardFriendSearchTimer) {
       clearTimeout(this.boardFriendSearchTimer);
       this.boardFriendSearchTimer = null;
+    }
+    if (this.wizardDraftAutosaveTimer) {
+      clearTimeout(this.wizardDraftAutosaveTimer);
+      this.wizardDraftAutosaveTimer = null;
     }
     if (this.placeSearchTimer) {
       clearTimeout(this.placeSearchTimer);
@@ -2762,13 +2839,131 @@ export class BoardsComponent implements OnDestroy {
     this.boardDialogOpen.set(true);
   }
 
-  closeBoardWizard(): void {
+  async closeBoardWizard(): Promise<void> {
+    if (shouldFlushBoardWizardDraftOnClose({
+      step: this.wizardStep(),
+      hasResult: !!this.wizardResult(),
+      cardCount: this.wizardPreviewCards().length,
+    })) {
+      const saved = await this.flushWizardDraftAutosave();
+      if (!saved) {
+        this.wizardError.set('This draft could not be saved yet. Check your connection and try closing again.');
+        return;
+      }
+    }
     this.wizardOpen.set(false);
     this.wizardStep.set('choose');
     this.wizardLockedTargetBoardId.set(null);
     this.wizardContributionBoardId.set(null);
     this.wizardError.set(null);
     this.wizardSaving.set(false);
+  }
+
+  resumeWizardDraft(draft: BoardWizardDraft): void {
+    if (draft.ownerUserId !== this.authService.uid()) {
+      return;
+    }
+    this.wizardDraftRestoreInProgress = true;
+    this.resetBoardWizard();
+    this.wizardActiveDraftId.set(draft.id);
+    this.wizardMode.set(draft.mode);
+    this.wizardTargetBoardId.set(draft.targetBoardId);
+    this.wizardLockedTargetBoardId.set(draft.lockedTargetBoardId || null);
+    this.wizardContributionBoardId.set(draft.contributionBoardId || null);
+    this.wizardDefaultType.set(draft.defaultType);
+    this.wizardCount.set(draft.count);
+    this.wizardVibe.set(draft.vibe);
+    this.wizardPrompt.set(draft.prompt);
+    this.wizardPastedList.set(draft.pastedList);
+    this.wizardUrl.set(draft.sourceUrl);
+    this.wizardOffGridName.set(draft.offGridName);
+    this.wizardOffGridAddress.set(draft.offGridAddress);
+    this.wizardOffGridTip.set(draft.offGridTip);
+    this.wizardStackCtaLabel.set(draft.stackCtaLabel);
+    this.wizardStackCtaUrl.set(draft.stackCtaUrl);
+    this.wizardTourVoiceStyle.set(draft.tourVoiceStyle);
+    this.wizardTourPaceOrStyle.set(draft.tourPaceOrStyle);
+    this.wizardTourExtras.set(new Set(draft.tourExtras));
+    const cards = draft.result.cards.map((card) => ({ ...card, editing: false })) as BoardWizardPreviewCard[];
+    this.wizardResult.set({ ...draft.result, cards });
+    this.wizardPreviewCards.set(cards);
+    this.wizardSelectedCardIds.set(new Set(
+      draft.selectedCardIds.filter((id) => cards.some((card) => card.id === id)),
+    ));
+    this.wizardDraftSaveState.set('saved');
+    this.wizardDraftSavedAt.set(draft.updatedAt);
+    this.wizardDraftDiscardCandidateId.set(null);
+    this.wizardStep.set('preview');
+    this.wizardOpen.set(true);
+    if (this.isBrowser) {
+      window.setTimeout(() => {
+        this.wizardDraftRestoreInProgress = false;
+      }, 0);
+    } else {
+      this.wizardDraftRestoreInProgress = false;
+    }
+  }
+
+  requestWizardDraftDiscard(draftId: string): void {
+    this.wizardDraftDiscardCandidateId.set(draftId);
+  }
+
+  cancelWizardDraftDiscard(): void {
+    this.wizardDraftDiscardCandidateId.set(null);
+  }
+
+  async confirmWizardDraftDiscard(draftId: string): Promise<void> {
+    const uid = this.authService.uid();
+    if (!uid || !this.firestore || this.wizardDraftDiscarding()) {
+      return;
+    }
+    const discardingActiveDraft = this.wizardActiveDraftId() === draftId;
+    if (discardingActiveDraft) {
+      this.wizardDraftRestoreInProgress = true;
+      if (this.wizardDraftAutosaveTimer) {
+        clearTimeout(this.wizardDraftAutosaveTimer);
+        this.wizardDraftAutosaveTimer = null;
+      }
+      while (this.wizardDraftSavePromise) {
+        await this.wizardDraftSavePromise;
+      }
+    }
+    this.wizardDraftDiscarding.set(true);
+    try {
+      await deleteDoc(doc(this.firestore, 'users', uid, 'board_wizard_drafts', draftId));
+      this.wizardDrafts.update((drafts) => drafts.filter((draft) => draft.id !== draftId));
+      this.wizardDraftDiscardCandidateId.set(null);
+      if (discardingActiveDraft) {
+        this.resetBoardWizard();
+        this.wizardOpen.set(false);
+      }
+    } catch (error) {
+      this.wizardError.set(this.boardFriendErrorMessage(error, 'Could not discard this draft. Please try again.'));
+    } finally {
+      this.wizardDraftDiscarding.set(false);
+      this.wizardDraftRestoreInProgress = false;
+    }
+  }
+
+  wizardDraftUpdatedLabel(draft: BoardWizardDraft): string {
+    const updated = new Date(draft.updatedAt);
+    if (!Number.isFinite(updated.getTime())) {
+      return 'Draft saved';
+    }
+    return `Draft · ${new Intl.DateTimeFormat(this.localeId, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(updated)}`;
+  }
+
+  wizardDraftStatusLabel(): string {
+    switch (this.wizardDraftSaveState()) {
+      case 'saving':
+        return 'Saving draft…';
+      case 'saved':
+        return 'Draft saved';
+      case 'error':
+        return 'Draft not saved';
+      default:
+        return 'Draft saves automatically';
+    }
   }
 
   backWizardStep(): void {
@@ -3764,6 +3959,13 @@ export class BoardsComponent implements OnDestroy {
     this.wizardSaving.set(true);
     this.wizardError.set(null);
 
+    const draftSaved = await this.flushWizardDraftAutosave();
+    if (!draftSaved) {
+      this.wizardError.set('Save and publish is paused because the latest draft could not be synced. Check your connection and try again.');
+      this.wizardSaving.set(false);
+      return;
+    }
+
     const now = new Date().toISOString();
     const cards = selectedCards.map((card): BoardCard => ({
       id: card.id,
@@ -3826,8 +4028,9 @@ export class BoardsComponent implements OnDestroy {
     if (contributionBoard) {
       try {
         await this.saveOffGridContribution(contributionBoard, cards[0]);
-        this.wizardSaving.set(false);
+        await this.deletePublishedWizardDraft();
         this.wizardStep.set('done');
+        this.wizardSaving.set(false);
       } catch (error) {
         const detail = error instanceof Error && error.message ? error.message : $localize`The card could not be added.`;
         this.wizardError.set(detail);
@@ -3843,6 +4046,8 @@ export class BoardsComponent implements OnDestroy {
     }
 
     const targetId = this.wizardTargetBoardId();
+    const activeDraftId = this.wizardActiveDraftId() ?? this.createId();
+    this.wizardActiveDraftId.set(activeDraftId);
     const existingBoard = targetId === 'new' ? null : this.boards().find((board) => board.id === targetId) ?? null;
     if (existingBoard && !this.canEditBoard(existingBoard)) {
       this.wizardError.set($localize`Only the board owner can add cards to this board.`);
@@ -3861,7 +4066,7 @@ export class BoardsComponent implements OnDestroy {
           updatedAt: now,
         }
       : {
-          id: this.createId(),
+          id: activeDraftId,
           ...this.currentOwnerSnapshot(),
           kind: result.board.kind ?? this.wizardGeneratedBoardKind(),
           sortOrder: this.nextBoardSortOrder(),
@@ -3897,15 +4102,18 @@ export class BoardsComponent implements OnDestroy {
         };
 
     try {
-      const persisted = await this.persistBoard(nextBoard);
+      const persisted = await this.publishWizardBoard(nextBoard, activeDraftId);
       if (existingBoard) {
         this.boards.update((boards) => boards.map((board) => board.id === existingBoard.id ? persisted : board));
       } else {
         this.boards.update((boards) => [persisted, ...boards]);
       }
+      this.wizardDrafts.update((drafts) => drafts.filter((draft) => draft.id !== activeDraftId));
+      this.wizardActiveDraftId.set(null);
+      this.wizardDraftSaveState.set('idle');
       this.boardsSyncError.set(null);
-      this.wizardSaving.set(false);
       this.wizardStep.set('done');
+      this.wizardSaving.set(false);
       void this.router.navigate(['/boards', persisted.id]);
     } catch (error) {
       console.error('Wizard board save failed', error, {
@@ -12448,6 +12656,277 @@ export class BoardsComponent implements OnDestroy {
       : $localize`Your exact square could not be found. Please try again.`;
   }
 
+  private wizardDraftSnapshotKey(): string {
+    const result = this.wizardResult();
+    const cards = this.wizardPreviewCards();
+    if (!result || !cards.length || !this.authService.uid()) {
+      return '';
+    }
+    return JSON.stringify({
+      mode: this.wizardMode(),
+      targetBoardId: this.wizardTargetBoardId(),
+      lockedTargetBoardId: this.wizardLockedTargetBoardId(),
+      contributionBoardId: this.wizardContributionBoardId(),
+      defaultType: this.wizardDefaultType(),
+      count: this.wizardCount(),
+      vibe: this.wizardVibe(),
+      prompt: this.wizardPrompt(),
+      pastedList: this.wizardPastedList(),
+      sourceUrl: this.wizardUrl(),
+      offGridName: this.wizardOffGridName(),
+      offGridAddress: this.wizardOffGridAddress(),
+      offGridTip: this.wizardOffGridTip(),
+      stackCtaLabel: this.wizardStackCtaLabel(),
+      stackCtaUrl: this.wizardStackCtaUrl(),
+      tourVoiceStyle: this.wizardTourVoiceStyle(),
+      tourPaceOrStyle: this.wizardTourPaceOrStyle(),
+      tourExtras: [...this.wizardTourExtras()].sort(),
+      board: result.board,
+      sourceReport: result.sourceReport,
+      cards,
+      selectedCardIds: [...this.wizardSelectedCardIds()].sort(),
+    });
+  }
+
+  private scheduleWizardDraftAutosave(delayMs = 700): void {
+    if (!this.isBrowser || !this.firestore || !this.authService.uid() || this.wizardDraftRestoreInProgress) {
+      return;
+    }
+    if (!this.wizardActiveDraftId()) {
+      this.wizardActiveDraftId.set(this.createId());
+    }
+    if (this.wizardDraftAutosaveTimer) {
+      clearTimeout(this.wizardDraftAutosaveTimer);
+    }
+    this.wizardDraftAutosaveTimer = setTimeout(() => {
+      this.wizardDraftAutosaveTimer = null;
+      void this.persistActiveWizardDraft().catch(() => undefined);
+    }, delayMs);
+  }
+
+  private async flushWizardDraftAutosave(): Promise<boolean> {
+    if (this.wizardDraftAutosaveTimer) {
+      clearTimeout(this.wizardDraftAutosaveTimer);
+      this.wizardDraftAutosaveTimer = null;
+    }
+    if (!this.wizardResult() || !this.wizardPreviewCards().length) {
+      return true;
+    }
+    if (!this.wizardActiveDraftId()) {
+      this.wizardActiveDraftId.set(this.createId());
+    }
+    try {
+      await this.persistActiveWizardDraft();
+      return this.wizardDraftSaveState() === 'saved';
+    } catch {
+      return false;
+    }
+  }
+
+  private async persistActiveWizardDraft(): Promise<void> {
+    const inFlight = this.wizardDraftSavePromise;
+    if (inFlight) {
+      this.wizardDraftSavePending = true;
+      await inFlight;
+      while (this.wizardDraftSavePromise) {
+        await this.wizardDraftSavePromise;
+      }
+      return;
+    }
+    const uid = this.authService.uid();
+    const result = this.wizardResult();
+    const cards = this.wizardPreviewCards();
+    const draftId = this.wizardActiveDraftId();
+    if (!this.firestore || !uid || !result || !cards.length || !draftId) {
+      return;
+    }
+
+    this.wizardDraftSaveInFlight = true;
+    let completeSave: () => void = () => undefined;
+    this.wizardDraftSavePromise = new Promise<void>((resolve) => {
+      completeSave = resolve;
+    });
+    this.wizardDraftSaveState.set('saving');
+    try {
+      const existing = this.wizardDrafts().find((draft) => draft.id === draftId);
+      const createdAt = existing?.createdAt || new Date().toISOString();
+      const updatedAt = new Date().toISOString();
+      const persistedCards = await Promise.all(cards.map(async (card) => ({
+        ...card,
+        editing: false,
+        imageUrl: await this.persistImageIfNeeded(
+          card.imageUrl,
+          `users/${uid}/boards/${draftId}/cards/${card.id}/0.jpg`,
+        ),
+      })));
+      const draft: BoardWizardDraft = {
+        id: draftId,
+        ownerUserId: uid,
+        mode: this.wizardMode(),
+        targetBoardId: this.wizardTargetBoardId(),
+        lockedTargetBoardId: this.wizardLockedTargetBoardId() ?? '',
+        contributionBoardId: this.wizardContributionBoardId() ?? '',
+        defaultType: this.wizardDefaultType(),
+        count: this.wizardCount(),
+        vibe: this.wizardVibe(),
+        prompt: this.wizardPrompt(),
+        pastedList: this.wizardPastedList(),
+        sourceUrl: this.wizardUrl(),
+        offGridName: this.wizardOffGridName(),
+        offGridAddress: this.wizardOffGridAddress(),
+        offGridTip: this.wizardOffGridTip(),
+        stackCtaLabel: this.wizardStackCtaLabel(),
+        stackCtaUrl: this.wizardStackCtaUrl(),
+        tourVoiceStyle: this.wizardTourVoiceStyle(),
+        tourPaceOrStyle: this.wizardTourPaceOrStyle(),
+        tourExtras: [...this.wizardTourExtras()],
+        result: { ...result, cards: persistedCards },
+        selectedCardIds: [...this.wizardSelectedCardIds()],
+        createdAt,
+        updatedAt,
+      };
+      await setDoc(
+        doc(this.firestore, 'users', uid, 'board_wizard_drafts', draftId),
+        omitUndefinedDeep({
+          id: draft.id,
+          owner_user_id: draft.ownerUserId,
+          mode: draft.mode,
+          target_board_id: draft.targetBoardId,
+          locked_target_board_id: draft.lockedTargetBoardId,
+          contribution_board_id: draft.contributionBoardId,
+          default_type: draft.defaultType,
+          count: draft.count,
+          vibe: draft.vibe,
+          prompt: draft.prompt,
+          pasted_list: draft.pastedList,
+          source_url: draft.sourceUrl,
+          off_grid_name: draft.offGridName,
+          off_grid_address: draft.offGridAddress,
+          off_grid_tip: draft.offGridTip,
+          stack_cta_label: draft.stackCtaLabel,
+          stack_cta_url: draft.stackCtaUrl,
+          tour_voice_style: draft.tourVoiceStyle,
+          tour_pace_or_style: draft.tourPaceOrStyle,
+          tour_extras: draft.tourExtras,
+          result: draft.result,
+          selected_card_ids: draft.selectedCardIds,
+          created_at_iso: draft.createdAt,
+          updated_at_iso: draft.updatedAt,
+          server_updated_at: serverTimestamp(),
+        }),
+      );
+      this.wizardDrafts.update((drafts) => [
+        draft,
+        ...drafts.filter((item) => item.id !== draft.id),
+      ].sort((left, right) => right.updatedAt.localeCompare(left.updatedAt)));
+      this.wizardDraftSavedAt.set(updatedAt);
+      this.wizardDraftSaveState.set('saved');
+    } catch (error) {
+      this.wizardDraftSaveState.set('error');
+      throw error;
+    } finally {
+      this.wizardDraftSaveInFlight = false;
+      const shouldSaveAgain = this.wizardDraftSavePending;
+      this.wizardDraftSavePending = false;
+      completeSave();
+      this.wizardDraftSavePromise = null;
+      if (shouldSaveAgain) {
+        await this.persistActiveWizardDraft();
+      }
+    }
+  }
+
+  private async loadWizardDrafts(uid: string): Promise<void> {
+    if (!this.firestore) {
+      return;
+    }
+    try {
+      const snapshot = await getDocs(collection(this.firestore, 'users', uid, 'board_wizard_drafts'));
+      if (this.authService.uid() !== uid) {
+        return;
+      }
+      const drafts = snapshot.docs
+        .map((draftDoc) => this.wizardDraftFromRecord(draftDoc.id, draftDoc.data()))
+        .filter((draft): draft is BoardWizardDraft => !!draft)
+        .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+      this.wizardDrafts.set(drafts);
+    } catch (error) {
+      console.error('Board wizard drafts load failed', error);
+    }
+  }
+
+  private wizardDraftFromRecord(id: string, value: Record<string, unknown>): BoardWizardDraft | null {
+    const ownerUserId = this.stringValue(value['owner_user_id'], '', 180);
+    const rawResult = value['result'];
+    if (!ownerUserId || ownerUserId !== this.authService.uid() || !rawResult || typeof rawResult !== 'object') {
+      return null;
+    }
+    try {
+      const result = this.normalizeWizardBatch(rawResult);
+      const resultRecord = rawResult as Record<string, unknown>;
+      const rawCards = Array.isArray(resultRecord['cards']) ? resultRecord['cards'] : [];
+      const cards = result.cards.map((card, index): BoardWizardPreviewCard => {
+        const rawCard = rawCards[index] && typeof rawCards[index] === 'object'
+          ? rawCards[index] as Record<string, unknown>
+          : {};
+        return {
+          ...card,
+          id: this.stringValue(rawCard['id'], this.createId(), 180),
+          imageUrl: card.imageUrl ?? '',
+          placeId: card.placeId ?? '',
+          googleMapsUrl: card.googleMapsUrl ?? '',
+          editing: false,
+        };
+      });
+      const modeValue = value['mode'];
+      const mode: BoardWizardMode = modeValue === 'paste' || modeValue === 'photos' || modeValue === 'off-grid'
+        || modeValue === 'url' || modeValue === 'walking-tour' || modeValue === 'driving-tour'
+        ? modeValue
+        : 'describe';
+      const defaultType = this.isBoardCardType(value['default_type']) ? value['default_type'] : 'place';
+      const vibeValue = value['vibe'];
+      const vibe: BoardWizardVibe = vibeValue === 'foodie' || vibeValue === 'traveler' || vibeValue === 'curator' || vibeValue === 'memory'
+        ? vibeValue
+        : 'playful';
+      const tourVoiceValue = value['tour_voice_style'];
+      const tourVoiceStyle: BoardTourVoiceStyle = tourVoiceValue === 'local' || tourVoiceValue === 'kid-friendly'
+        ? tourVoiceValue
+        : 'historian';
+      return {
+        id,
+        ownerUserId,
+        mode,
+        targetBoardId: this.stringValue(value['target_board_id'], 'new', 180),
+        lockedTargetBoardId: this.stringValue(value['locked_target_board_id'], '', 180),
+        contributionBoardId: this.stringValue(value['contribution_board_id'], '', 180),
+        defaultType,
+        count: Math.round(this.numberValue(value['count'], cards.length, 1, 100)),
+        vibe,
+        prompt: this.stringValue(value['prompt'], '', 2000),
+        pastedList: this.stringValue(value['pasted_list'], '', BOARD_WIZARD_PASTE_MAX_LENGTH),
+        sourceUrl: this.stringValue(value['source_url'], '', 2000),
+        offGridName: this.stringValue(value['off_grid_name'], '', 120),
+        offGridAddress: this.stringValue(value['off_grid_address'], '', 20_000),
+        offGridTip: this.stringValue(value['off_grid_tip'], '', 1000),
+        stackCtaLabel: this.stringValue(value['stack_cta_label'], '', 120),
+        stackCtaUrl: this.stringValue(value['stack_cta_url'], '', 2000),
+        tourVoiceStyle,
+        tourPaceOrStyle: this.stringValue(value['tour_pace_or_style'], 'Standard', 120),
+        tourExtras: Array.isArray(value['tour_extras'])
+          ? value['tour_extras'].map((item) => this.stringValue(item, '', 120)).filter(Boolean).slice(0, 20)
+          : [],
+        result: { ...result, cards },
+        selectedCardIds: Array.isArray(value['selected_card_ids'])
+          ? value['selected_card_ids'].map((item) => this.stringValue(item, '', 180)).filter(Boolean)
+          : cards.map((card) => card.id),
+        createdAt: this.stringValue(value['created_at_iso'], new Date().toISOString(), 80),
+        updatedAt: this.stringValue(value['updated_at_iso'], new Date().toISOString(), 80),
+      };
+    } catch {
+      return null;
+    }
+  }
+
   private resetBoardWizard(): void {
     this.wizardVideoEnrichmentRun += 1;
     const selectedBoard = this.selectedBoard();
@@ -12499,6 +12978,10 @@ export class BoardsComponent implements OnDestroy {
     this.wizardEditingCardId.set(null);
     this.resetWizardCardImageTools();
     this.wizardSaving.set(false);
+    this.wizardActiveDraftId.set(null);
+    this.wizardDraftSaveState.set('idle');
+    this.wizardDraftSavedAt.set('');
+    this.wizardDraftDiscardCandidateId.set(null);
   }
 
   private resetWizardCardImageTools(): void {
@@ -14159,10 +14642,43 @@ export class BoardsComponent implements OnDestroy {
     if (!this.firestore || !uid) {
       return board;
     }
+    const { prepared, persistable } = await this.prepareBoardForFirestore(board, uid);
+    await setDoc(doc(this.firestore, 'boards', prepared.id), persistable);
+    return prepared;
+  }
+
+  private async publishWizardBoard(board: Board, draftId: string): Promise<Board> {
+    const uid = this.authService.uid();
+    if (!this.firestore || !uid) {
+      throw new Error('Board sync is not ready.');
+    }
+    const { prepared, persistable } = await this.prepareBoardForFirestore(board, uid);
+    const batch = writeBatch(this.firestore);
+    batch.set(doc(this.firestore, 'boards', prepared.id), persistable);
+    batch.delete(doc(this.firestore, 'users', uid, 'board_wizard_drafts', draftId));
+    await batch.commit();
+    return prepared;
+  }
+
+  private async deletePublishedWizardDraft(): Promise<void> {
+    const uid = this.authService.uid();
+    const draftId = this.wizardActiveDraftId();
+    if (!this.firestore || !uid || !draftId) {
+      return;
+    }
+    await deleteDoc(doc(this.firestore, 'users', uid, 'board_wizard_drafts', draftId));
+    this.wizardDrafts.update((drafts) => drafts.filter((draft) => draft.id !== draftId));
+    this.wizardActiveDraftId.set(null);
+    this.wizardDraftSaveState.set('idle');
+  }
+
+  private async prepareBoardForFirestore(
+    board: Board,
+    uid: string,
+  ): Promise<{ prepared: Board; persistable: Record<string, unknown> }> {
     if (board.ownerUserId !== uid) {
       throw new Error('Only the board owner can save changes.');
     }
-
     const boardWithOwner = { ...board, ...this.currentOwnerSnapshot() };
     const storageOwnerId = boardWithOwner.ownerUserId || uid;
     const resolvedOwnerPublicSlug = await this.resolveOwnerPublicSlug(boardWithOwner, storageOwnerId);
@@ -14201,8 +14717,7 @@ export class BoardsComponent implements OnDestroy {
       ownerProfilePictureType?: 'icon' | 'image' | null;
       server_updated_at: unknown;
     };
-    await setDoc(doc(this.firestore, 'boards', prepared.id), omitUndefinedDeep(persistable));
-    return prepared;
+    return { prepared, persistable: omitUndefinedDeep(persistable) as Record<string, unknown> };
   }
 
   private currentOwnerSnapshot(): Pick<
