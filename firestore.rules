@@ -43,11 +43,22 @@ service cloud.firestore {
         'energetic-host',
         'calm-documentary',
         'vibrant-presenter',
+        'teenage-girl',
         'elegant-guide',
         'british-storyteller',
         'cinematic-narrator',
         'friendly-explainer',
         'personal-voice'
+      ];
+    }
+
+    function isValidBoardNarrationStyle(value) {
+      return value in [
+        'storyteller',
+        'personal-story',
+        'teen-perspective',
+        'guided-tour',
+        'documentary'
       ];
     }
 
@@ -96,6 +107,7 @@ service cloud.firestore {
           'default_type',
           'count',
           'vibe',
+          'narration_style',
           'prompt',
           'pasted_list',
           'source_url',
@@ -115,6 +127,10 @@ service cloud.firestore {
         ])
         && request.resource.data.id == draftId
         && request.resource.data.owner_user_id == userId
+        && (
+          !request.resource.data.keys().hasAny(['narration_style'])
+          || isValidBoardNarrationStyle(request.resource.data.narration_style)
+        )
         && request.resource.data.mode in [
           'describe',
           'paste',
@@ -463,6 +479,7 @@ service cloud.firestore {
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
           'socialVideoNarrationEnabled',
+          'narrationStyle',
           'stackNarratorVoiceId',
           'stickers',
           'tourMeta',
@@ -569,6 +586,10 @@ service cloud.firestore {
         && (
           !request.resource.data.keys().hasAny(['socialVideoNarrationEnabled'])
           || request.resource.data.socialVideoNarrationEnabled is bool
+        )
+        && (
+          !request.resource.data.keys().hasAny(['narrationStyle'])
+          || isValidBoardNarrationStyle(request.resource.data.narrationStyle)
         )
         && (
           !request.resource.data.keys().hasAny(['stackNarratorVoiceId'])

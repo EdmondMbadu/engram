@@ -13119,6 +13119,11 @@ export class BoardsComponent implements OnDestroy {
       this.wizardDraftSaveState.set('saved');
     } catch (error) {
       this.wizardDraftSaveState.set('error');
+      console.error('Wizard draft autosave failed', error, {
+        draftId,
+        mode: this.wizardMode(),
+        cardCount: cards.length,
+      });
       throw error;
     } finally {
       this.wizardDraftSaveInFlight = false;
