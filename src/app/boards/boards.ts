@@ -5973,6 +5973,13 @@ export class BoardsComponent implements OnDestroy {
       subtitle: draft.subtitle.trim(),
       notes: draft.notes.trim(),
       type: cardType,
+      entityType: existing?.type === cardType
+        ? existing.entityType
+        : cardType === 'place' || cardType === 'shop'
+          ? 'place'
+          : cardType === 'food'
+            ? 'food'
+            : 'other',
       scope: cardScope,
       status: draft.status,
       rating,
@@ -8115,6 +8122,10 @@ export class BoardsComponent implements OnDestroy {
 
   cardTypeLabel(type: BoardCardType): string {
     return this.cardTypes.find((item) => item.id === type)?.label ?? 'Note';
+  }
+
+  isLocationCardType(type: BoardCardType): boolean {
+    return type === 'place' || type === 'food' || type === 'shop';
   }
 
   what3wordsAddressFor(card: What3WordsCardLike): string {

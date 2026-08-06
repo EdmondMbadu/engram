@@ -38,6 +38,21 @@ describe('Let’s go planning', () => {
     expect(canPlanVisit({ type: 'note', entityType: 'other' })).toBeFalse();
   });
 
+  it('keeps reclassified story cards free of stale place actions', () => {
+    expect(canPlanVisit({
+      type: 'idea',
+      entityType: 'place',
+      placeId: 'stale-generated-place-id',
+      googleMapsUrl: 'https://maps.google.com/?q=Pylos',
+      tags: ['place'],
+    })).toBeFalse();
+    expect(canPlanVisit({
+      type: 'memory',
+      locationLat: 36.913,
+      locationLng: 21.696,
+    })).toBeFalse();
+  });
+
   it('deduplicates and validates optional invitation emails', () => {
     expect(parseVisitInviteEmails('SAM@example.com, sam@example.com; maya@example.org bad')).toEqual([
       'sam@example.com',

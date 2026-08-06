@@ -2542,10 +2542,12 @@
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                             {{ cardTypeLabel(card.type) }}
                           </span>
-                          <span>
-                            <span class="material-symbols-outlined">{{ cardScopeIcon(card.scope) }}</span>
-                            {{ cardScopeLabel(card.scope) }}
-                          </span>
+                          @if (isLocationCardType(card.type)) {
+                            <span>
+                              <span class="material-symbols-outlined">{{ cardScopeIcon(card.scope) }}</span>
+                              {{ cardScopeLabel(card.scope) }}
+                            </span>
+                          }
                           <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
                         </div>
                         <h2>{{ card.title }}</h2>
@@ -2564,7 +2566,7 @@
                             </a>
                           </div>
                         }
-                        @if (card.googleMapsUrl || canGoThere(card)) {
+                        @if (canGoThere(card)) {
                           <div class="detail-card__place-actions">
                             <a class="detail-card__map-link" [href]="visitDirectionsUrl(card)" target="_blank" rel="noopener" i18n>
                               <span class="material-symbols-outlined">map</span>
@@ -2646,7 +2648,7 @@
                             </div>
                           }
                         </div>
-                        @if (card.googleMapsUrl || canGoThere(card)) {
+                        @if (canGoThere(card)) {
                           <div class="detail-card__place-actions">
                             <a class="detail-card__map-link" [href]="visitDirectionsUrl(card)" target="_blank" rel="noopener" i18n>
                               <span class="material-symbols-outlined">map</span>
@@ -2657,7 +2659,7 @@
                       </div>
 
                       <div class="detail-card__footer">
-                        <span>{{ statusLabel(card.status) }} · {{ cardScopeLabel(card.scope) }}</span>
+                        <span>{{ statusLabel(card.status) }} · {{ cardTypeLabel(card.type) }}</span>
                       </div>
                     </div>
                   </div>

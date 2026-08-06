@@ -38,10 +38,17 @@ export type VisitPlanAttendee = {
 export function canPlanVisit(card: GoThereCardLike): boolean {
   const mediaKind = stringValue(card.mediaKind).toLowerCase();
   const entityType = stringValue(card.entityType).toLowerCase();
+  const cardType = stringValue(card.type).toLowerCase();
   if (mediaKind && mediaKind !== 'none') {
     return false;
   }
   if (['person', 'work', 'product'].includes(entityType)) {
+    return false;
+  }
+  // The editor's visible card type is authoritative. Generated cards can retain
+  // inferred place metadata after an owner deliberately reclassifies the card.
+  // That metadata should not resurrect visit controls on story-only cards.
+  if (['idea', 'memory', 'note'].includes(cardType)) {
     return false;
   }
 
@@ -68,7 +75,7 @@ export function canPlanVisit(card: GoThereCardLike): boolean {
     ? card.tags.map((tag) => stringValue(tag).toLowerCase())
     : [];
   return entityType === 'place'
-    || stringValue(card.type).toLowerCase() === 'place'
+    || ['place', 'food', 'shop'].includes(cardType)
     || Boolean(stringValue(card.placeId))
     || Boolean(stringValue(card.what3wordsAddress))
     || hasCoordinates
