@@ -4229,6 +4229,7 @@
   color: var(--accent);
 }
 
+
 .boards-wizard-loading,
 .boards-wizard-done {
   justify-items: center;
@@ -6427,6 +6428,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+
   .boards-wizard-preview__layout,
   .boards-wizard-config,
   .boards-tour-wizard-grid,
@@ -6457,6 +6459,7 @@
   .boards-shell {
     padding-inline: 0.9rem;
   }
+
 
   .boards-topbar__actions .boards-primary-action {
     display: none;

@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test:board-wizard-quality": "npm run build && node scripts/test-board-wizard-quality.cjs",
+    "test:board-wizard-narration": "npm run build && node scripts/test-board-wizard-narration.cjs",
     "test:board-wizard-commerce": "npm run build && node scripts/test-board-wizard-commerce.cjs",
     "test:board-wizard-menu": "npm run build && node scripts/test-board-wizard-menu.cjs",
     "test:board-wizard-reader": "npm run build && node scripts/test-board-wizard-reader.cjs",

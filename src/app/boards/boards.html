@@ -4274,6 +4274,41 @@
                 }
               </div>
             </section>
+
+            @if (wizardTargetBoardId() === 'new') {
+              <section class="boards-wizard-narration">
+                <div class="boards-wizard-narration__head">
+                  <span class="boards-wizard-label" i18n>Narration style</span>
+                  <small i18n>How should this board be told? You can change the voice later.</small>
+                </div>
+                <div class="boards-wizard-narration__grid" role="group" aria-label="Narration style" i18n-aria-label>
+                  @for (style of wizardNarrationStyles; track style.id) {
+                    <button
+                      type="button"
+                      [class.boards-wizard-narration__option--active]="wizardNarrationStyle() === style.id"
+                      [attr.aria-pressed]="wizardNarrationStyle() === style.id"
+                      (click)="wizardNarrationStyle.set(style.id)"
+                    >
+                      <span class="boards-wizard-narration__icon material-symbols-outlined">{{ style.icon }}</span>
+                      <span class="boards-wizard-narration__copy">
+                        <span class="boards-wizard-narration__title">
+                          <strong>{{ style.label }}</strong>
+                          <small>{{ style.perspective }}</small>
+                        </span>
+                        <span class="boards-wizard-narration__description">{{ style.description }}</span>
+                        <span class="boards-wizard-narration__voice">
+                          <span class="material-symbols-outlined">graphic_eq</span>
+                          {{ wizardNarrationVoiceName(style.id) }}
+                        </span>
+                      </span>
+                      @if (wizardNarrationStyle() === style.id) {
+                        <span class="boards-wizard-narration__check material-symbols-outlined" aria-hidden="true">check_circle</span>
+                      }
+                    </button>
+                  }
+                </div>
+              </section>
+            }
             }
 
             @if (wizardError()) {

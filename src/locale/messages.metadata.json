@@ -2023,6 +2023,10 @@
     "source": "Business documents",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "234765308942426133": {
+    "source": "Speaks directly to the viewer and leads them through the board.",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "2351856365885832311": {
     "source": "Describe the picture you want...",
     "file": "src/app/boards/boards.html"
@@ -2495,9 +2499,17 @@
     "source": "Listing",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "2650167602418811829": {
+    "source": "Teen perspective",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "2654156322168132923": {
     "source": "{$START_TAG_SPAN}leaderboard{$CLOSE_TAG_SPAN} Leaderboard ",
     "file": "src/app/boards/boards.html"
+  },
+  "2654225373801957274": {
+    "source": "Presents the subject with clear facts, context, and significance.",
+    "file": "src/app/boards/board-narration-style.ts"
   },
   "2656224699244633875": {
     "source": "No videos match that search.",
@@ -2726,6 +2738,10 @@
   "284984515138746555": {
     "source": "Jane Smith",
     "file": "src/app/business-claim/business-claim.html"
+  },
+  "2850437359505777545": {
+    "source": "Personal story",
+    "file": "src/app/boards/board-narration-style.ts"
   },
   "285603769993726999": {
     "source": "Cedar Park",
@@ -3071,6 +3087,10 @@
     "source": "Public wiki",
     "file": "src/app/wiki/wiki.html"
   },
+  "3095391820119384816": {
+    "source": "Tells the story using “I” and “we,” as someone who experienced it.",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "3096153294771450609": {
     "source": "Assistant ID",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -3366,6 +3386,10 @@
   "3246467004668431059": {
     "source": "https://...",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "3249136606070563827": {
+    "source": "Narration style",
+    "file": "src/app/boards/boards.html"
   },
   "3251416375500340583": {
     "source": "No messages in this shared chat",
@@ -6887,6 +6911,10 @@
     "source": "Discover article links from a source page and ingest them into the active atlas.",
     "file": "src/app/web-scraper/web-scraper.ts"
   },
+  "556540835757526483": {
+    "source": "Uses an energetic, youthful point of view without forced slang.",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "55701353440365615": {
     "source": "Reddit",
     "file": "src/app/answer-card/answer-card.html"
@@ -8535,6 +8563,10 @@
     "source": "Badge icons",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "6580280261265446633": {
+    "source": "Storyteller",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "6585005525824777845": {
     "source": "Greenline Coffee House",
     "file": "src/app/business/business.html"
@@ -8678,6 +8710,10 @@
   "6672617702016717708": {
     "source": "Sign in to edit this business.",
     "file": "src/app/business-detail/business-edit.html"
+  },
+  "6673856170093801732": {
+    "source": "Objective",
+    "file": "src/app/boards/board-narration-style.ts"
   },
   "6675314400486618269": {
     "source": "Post the challenge",
@@ -9135,6 +9171,10 @@
     "source": "Create share link",
     "file": "src/app/chat/chat.ts"
   },
+  "7030146909902536387": {
+    "source": "Third person",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "7033016357492920394": {
     "source": "No duplicate claim found for this name and city.",
     "file": "src/app/business-claim/business-claim.html"
@@ -9307,6 +9347,10 @@
     "source": "Landmark",
     "file": "src/app/business-badge-icons.ts"
   },
+  "7181864285226794300": {
+    "source": "Describes the people, places, and events from the outside.",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "7184082160333728920": {
     "source": "Lead risk percentile",
     "file": "src/app/fence-line/fence-line.ts"
@@ -9462,6 +9506,10 @@
   "7298334077666773361": {
     "source": " Pulling published documents and preparing the page. ",
     "file": "src/app/library/library.html"
+  },
+  "7298937512752473997": {
+    "source": "Second person",
+    "file": "src/app/boards/board-narration-style.ts"
   },
   "7300622486876768636": {
     "source": "AI generation is paused because the Gemini API prepaid balance is empty. Add credits in Google AI Studio Billing, then try again.",
@@ -10549,6 +10597,10 @@
   },
   "8041228701381170400": {
     "source": "One place or a list of places",
+    "file": "src/app/boards/boards.html"
+  },
+  "8043744286369764692": {
+    "source": "How should this board be told? You can change the voice later.",
     "file": "src/app/boards/boards.html"
   },
   "8045427885413898831": {
@@ -11871,6 +11923,10 @@
     "source": "Photo ready. Verify the square when you are ready.",
     "file": "src/app/boards/boards.ts"
   },
+  "8980840277498952672": {
+    "source": "First person",
+    "file": "src/app/boards/board-narration-style.ts"
+  },
   "8981371917325659597": {
     "source": "New here? Start with the welcome video",
     "file": "src/app/business/business.html"
@@ -12146,6 +12202,10 @@
   "9156945668434014925": {
     "source": " {$INTERPOLATION} of {$INTERPOLATION_1} processed · {$INTERPOLATION_2} updated · {$INTERPOLATION_3} skipped · {$INTERPOLATION_4} failed ",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "9157126139997558652": {
+    "source": "Documentary",
+    "file": "src/app/boards/board-narration-style.ts"
   },
   "9162350905253460360": {
     "source": "Ship Channel pollution",

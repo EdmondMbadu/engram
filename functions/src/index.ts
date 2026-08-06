@@ -96,6 +96,11 @@ import {
   type GeneratedBoardWizardSourceReport,
 } from './gemini';
 import {
+  boardNarrationFallbackDescription,
+  boardNarrationFallbackNotes,
+  normalizeBoardNarrationStyle,
+} from './board-wizard-narration';
+import {
   getStoredCityPulseSnapshot,
   listEnabledCityAtlasIds,
   refreshStoredCityPulseSnapshot,
@@ -4843,6 +4848,7 @@ type BoardWizardCallableData = {
   defaultType?: unknown;
   count?: unknown;
   vibe?: unknown;
+  narrationStyle?: unknown;
   tourOptions?: unknown;
   existingCards?: unknown;
   singleTourStop?: unknown;
@@ -6077,6 +6083,7 @@ export const generateBoardWizardBatch = onCall(
     const mode = normalizeBoardWizardMode(data.mode);
     const defaultType = normalizeBoardWizardDefaultType(data.defaultType);
     const vibe = normalizeBoardWizardVibe(data.vibe);
+    const narrationStyle = normalizeBoardNarrationStyle(data.narrationStyle);
     const tourOptions = normalizeBoardWizardTourOptions(data.tourOptions, mode);
     const targetBoardId = stringOrEmpty(data.targetBoardId).slice(0, 140);
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
@@ -6148,6 +6155,7 @@ export const generateBoardWizardBatch = onCall(
         target_board_title: targetBoardTitle || null,
         default_type: defaultType,
         vibe,
+        narration_style: narrationStyle,
         requested_count: 1,
         generated_count: result.cards.length,
         prompt_preview: prompt.slice(0, 500),
@@ -6320,6 +6328,9 @@ export const generateBoardWizardBatch = onCall(
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, choose photos, or provide a URL.');
     }
 
+    const generationUsesNarrationPrompt = !commerceExtraction
+      && !accommodationExtraction
+      && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3);
     let generated: GeneratedBoardWizardBatch;
     try {
       generated = commerceExtraction
@@ -6353,6 +6364,7 @@ export const generateBoardWizardBatch = onCall(
             count: generationCount,
             countIsExplicit: !!numberedSource || explicitCount !== null || photoNames.length > 0 || photos.length > 0,
             vibe,
+            narrationStyle,
             tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
             existingCards,
             singleTourStop,
@@ -6370,9 +6382,26 @@ export const generateBoardWizardBatch = onCall(
         message || 'AI generation is temporarily unavailable. Please try again.',
       );
     }
+    const narrationReadyGenerated = generationUsesNarrationPrompt
+      ? generated
+      : {
+          ...generated,
+          board: {
+            ...generated.board,
+            description: boardNarrationFallbackDescription(
+              narrationStyle,
+              generated.board.title,
+              generated.board.description,
+            ),
+          },
+          cards: generated.cards.map((card) => ({
+            ...card,
+            notes: boardNarrationFallbackNotes(narrationStyle, card.title, card.notes),
+          })),
+        };
     const sourceShapedGenerated = numberedSource
-      ? shapeNumberedSourceWizardBatch(generated, numberedSource, defaultType)
-      : generated;
+      ? shapeNumberedSourceWizardBatch(narrationReadyGenerated, numberedSource, defaultType)
+      : narrationReadyGenerated;
     const urlFallbackShapedGenerated = urlResearchFallback
       ? shapeBoardWizardResearchFallbackBatch(sourceShapedGenerated, url)
       : sourceShapedGenerated;
@@ -6420,6 +6449,7 @@ export const generateBoardWizardBatch = onCall(
       target_board_title: targetBoardTitle || null,
       default_type: defaultType,
       vibe,
+      narration_style: narrationStyle,
       requested_count: generationCount,
       generated_count: resultWithSourceReport.cards.length,
       prompt_preview: (prompt || pastedList || url || photoNames.join(', ')).slice(0, 500),

@@ -42,6 +42,14 @@ import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board
 import { shouldAutosaveBoardWizardDraft, shouldFlushBoardWizardDraftOnClose } from './board-wizard-draft-lifecycle';
 import { appendBoardCards } from './board-batch';
 import {
+  BOARD_NARRATION_STYLES,
+  DEFAULT_BOARD_NARRATION_STYLE_ID,
+  defaultNarratorVoiceIdForStyle,
+  defaultNarratorVoiceNameForStyle,
+  normalizeBoardNarrationStyleId,
+  type BoardNarrationStyleId,
+} from './board-narration-style';
+import {
   cardsForBoardInsideDisplay,
   normalizeBoardInsideDisplay,
   type BoardInsideDisplay,
@@ -322,6 +330,7 @@ type Board = {
   socialVideoAudioTrackId: string;
   socialVideoAudioVolume: number;
   socialVideoNarrationEnabled?: boolean;
+  narrationStyle: BoardNarrationStyleId;
   stackNarratorVoiceId: string;
   stickers: BoardSticker[];
   tourMeta: BoardTourMeta | null;
@@ -609,6 +618,7 @@ type BoardWizardDraft = {
   defaultType: BoardCardType;
   count: number;
   vibe: BoardWizardVibe;
+  narrationStyle: BoardNarrationStyleId;
   prompt: string;
   pastedList: string;
   sourceUrl: string;
@@ -1169,7 +1179,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './board-wizard-drafts.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css'],
+  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1268,6 +1278,8 @@ export class BoardsComponent implements OnDestroy {
   readonly cardStatuses = CARD_STATUSES;
   readonly wizardModes = BOARD_WIZARD_MODES;
   readonly wizardVibes = BOARD_WIZARD_VIBES;
+  readonly wizardNarrationStyles = BOARD_NARRATION_STYLES;
+  readonly wizardNarrationVoiceName = defaultNarratorVoiceNameForStyle;
   readonly tourVoiceStyles = TOUR_VOICE_STYLES;
   readonly stackFormats = STACK_FORMATS;
   readonly stackRatios = STACK_RATIOS;
@@ -1419,6 +1431,7 @@ export class BoardsComponent implements OnDestroy {
   readonly wizardDefaultType = signal<BoardCardType>('place');
   readonly wizardCount = signal(12);
   readonly wizardVibe = signal<BoardWizardVibe>('playful');
+  readonly wizardNarrationStyle = signal<BoardNarrationStyleId>(DEFAULT_BOARD_NARRATION_STYLE_ID);
   readonly wizardPrompt = signal('');
   readonly wizardPastedList = signal('');
   readonly wizardPasteMaxLength = BOARD_WIZARD_PASTE_MAX_LENGTH;
@@ -2913,6 +2926,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardDefaultType.set(draft.defaultType);
     this.wizardCount.set(draft.count);
     this.wizardVibe.set(draft.vibe);
+    this.wizardNarrationStyle.set(draft.narrationStyle);
     this.wizardPrompt.set(draft.prompt);
     this.wizardPastedList.set(draft.pastedList);
     this.wizardUrl.set(draft.sourceUrl);
@@ -4127,7 +4141,8 @@ export class BoardsComponent implements OnDestroy {
           socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
           socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
           socialVideoNarrationEnabled: true,
-          stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
+          narrationStyle: this.wizardNarrationStyle(),
+          stackNarratorVoiceId: defaultNarratorVoiceIdForStyle(this.wizardNarrationStyle()),
           forkedFromBoardId: '',
           forkedFromTitle: '',
           forkedFromOwnerUserId: '',
@@ -4319,6 +4334,7 @@ export class BoardsComponent implements OnDestroy {
         socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
         socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
         socialVideoNarrationEnabled: true,
+        narrationStyle: DEFAULT_BOARD_NARRATION_STYLE_ID,
         stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
         forkedFromBoardId: '',
         forkedFromTitle: '',
@@ -5003,6 +5019,7 @@ export class BoardsComponent implements OnDestroy {
         defaultType: draft.type,
         count: 1,
         vibe: draft.type === 'memory' ? 'memory' : 'curator',
+        narrationStyle: board.narrationStyle,
         existingCards: this.explicitRelatedCards(parent).slice(0, 40).map((card) => ({
           title: card.title,
           subtitle: card.subtitle,
@@ -7914,6 +7931,7 @@ export class BoardsComponent implements OnDestroy {
         defaultType: likelyFood ? 'food' : draft.type,
         count: 1,
         vibe: this.wizardVibe(),
+        narrationStyle: board.narrationStyle,
         existingCards: contextCards.slice(0, 80).map((card) => ({
           title: card.title,
           subtitle: card.subtitle,
@@ -12905,6 +12923,14 @@ export class BoardsComponent implements OnDestroy {
     return this.boards().find((board) => board.id === targetId)?.title ?? 'Selected board';
   }
 
+  private wizardNarrationStyleForGeneration(): BoardNarrationStyleId {
+    if (this.wizardTargetBoardId() === 'new') {
+      return this.wizardNarrationStyle();
+    }
+    const targetBoard = this.boards().find((board) => board.id === this.wizardTargetBoardId());
+    return normalizeBoardNarrationStyleId(targetBoard?.narrationStyle);
+  }
+
   private wizardOffGridLocationError(error: unknown): string {
     const code = error && typeof error === 'object' && 'code' in error
       ? Number((error as { code?: unknown }).code)
@@ -12937,6 +12963,7 @@ export class BoardsComponent implements OnDestroy {
       defaultType: this.wizardDefaultType(),
       count: this.wizardCount(),
       vibe: this.wizardVibe(),
+      narrationStyle: this.wizardNarrationStyle(),
       prompt: this.wizardPrompt(),
       pastedList: this.wizardPastedList(),
       sourceUrl: this.wizardUrl(),
@@ -13036,6 +13063,7 @@ export class BoardsComponent implements OnDestroy {
         defaultType: this.wizardDefaultType(),
         count: this.wizardCount(),
         vibe: this.wizardVibe(),
+        narrationStyle: this.wizardNarrationStyle(),
         prompt: this.wizardPrompt(),
         pastedList: this.wizardPastedList(),
         sourceUrl: this.wizardUrl(),
@@ -13064,6 +13092,7 @@ export class BoardsComponent implements OnDestroy {
           default_type: draft.defaultType,
           count: draft.count,
           vibe: draft.vibe,
+          narration_style: draft.narrationStyle,
           prompt: draft.prompt,
           pasted_list: draft.pastedList,
           source_url: draft.sourceUrl,
@@ -13155,6 +13184,7 @@ export class BoardsComponent implements OnDestroy {
       const vibe: BoardWizardVibe = vibeValue === 'foodie' || vibeValue === 'traveler' || vibeValue === 'curator' || vibeValue === 'memory'
         ? vibeValue
         : 'playful';
+      const narrationStyle = normalizeBoardNarrationStyleId(value['narration_style']);
       const tourVoiceValue = value['tour_voice_style'];
       const tourVoiceStyle: BoardTourVoiceStyle = tourVoiceValue === 'local' || tourVoiceValue === 'kid-friendly'
         ? tourVoiceValue
@@ -13169,6 +13199,7 @@ export class BoardsComponent implements OnDestroy {
         defaultType,
         count: Math.round(this.numberValue(value['count'], cards.length, 1, 100)),
         vibe,
+        narrationStyle,
         prompt: this.stringValue(value['prompt'], '', 2000),
         pastedList: this.stringValue(value['pasted_list'], '', BOARD_WIZARD_PASTE_MAX_LENGTH),
         sourceUrl: this.stringValue(value['source_url'], '', 2000),
@@ -13206,6 +13237,7 @@ export class BoardsComponent implements OnDestroy {
     this.wizardDefaultType.set('place');
     this.wizardCount.set(12);
     this.wizardVibe.set('playful');
+    this.wizardNarrationStyle.set(DEFAULT_BOARD_NARRATION_STYLE_ID);
     this.wizardPrompt.set('');
     this.wizardPastedList.set('');
     this.wizardUrl.set('');
@@ -13358,6 +13390,7 @@ export class BoardsComponent implements OnDestroy {
       defaultType: this.wizardDefaultType(),
       count: this.wizardCount(),
       vibe: this.wizardVibe(),
+      narrationStyle: this.wizardNarrationStyleForGeneration(),
       tourOptions: this.isTourWizardMode(this.wizardMode())
         ? {
             voiceStyle: this.wizardTourVoiceStyle(),
@@ -14839,6 +14872,7 @@ export class BoardsComponent implements OnDestroy {
           socialVideoNarrationEnabled: typeof (board as Partial<Board>).socialVideoNarrationEnabled === 'boolean'
             ? (board as Partial<Board>).socialVideoNarrationEnabled
             : undefined,
+          narrationStyle: normalizeBoardNarrationStyleId((board as Partial<Board>).narrationStyle),
           stackNarratorVoiceId: normalizeStackNarratorVoiceId(
             (board as Partial<Board>).stackNarratorVoiceId,
           ),
@@ -15127,6 +15161,7 @@ export class BoardsComponent implements OnDestroy {
       socialVideoNarrationEnabled: typeof data['socialVideoNarrationEnabled'] === 'boolean'
         ? data['socialVideoNarrationEnabled']
         : undefined,
+      narrationStyle: normalizeBoardNarrationStyleId(data['narrationStyle']),
       stackNarratorVoiceId: normalizeStackNarratorVoiceId(data['stackNarratorVoiceId']),
       stickers: this.normalizeStickers(data['stickers']),
       tourMeta: this.normalizeTourMeta(data['tourMeta']),

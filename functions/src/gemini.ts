@@ -9,6 +9,10 @@ import {
 } from './board-wizard-image-quality';
 import { boardWizardResearchMode, shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
 import {
+  boardNarrationPromptInstructions,
+  type BoardNarrationStyleId,
+} from './board-wizard-narration';
+import {
   normalizeTranslatedBoardSegments,
   type BoardTranslationLanguage,
   type BoardTranslationSegment,
@@ -1400,6 +1404,7 @@ export async function generateBoardWizardBatch(params: {
   count: number;
   countIsExplicit?: boolean;
   vibe: BoardWizardVibe;
+  narrationStyle: BoardNarrationStyleId;
   tourOptions?: {
     voiceStyle?: GeneratedBoardTourVoiceStyle;
     paceOrRouteStyle?: string;
@@ -1496,6 +1501,7 @@ async function verifyBoardWizardBatch(
     targetBoardTitle?: string | null;
     defaultType: GeneratedBoardWizardCard['type'];
     vibe: BoardWizardVibe;
+    narrationStyle: BoardNarrationStyleId;
     countIsExplicit?: boolean;
   },
   draft: GeneratedBoardWizardBatch,
@@ -1519,6 +1525,7 @@ async function verifyBoardWizardBatch(
     researchMode === 'source'
       ? 'The pasted source is authoritative for membership, order, titles, viewpoint, and notes. Do not replace its selections or rewrite away its voice; only repair metadata and clearly unsupported factual errors.'
       : '',
+    boardNarrationPromptInstructions(params.narrationStyle),
     'For a closed or complete real-world set, completeness and the evidence-backed cardinality override the UI target count unless the user explicitly supplied a numeric count.',
     params.countIsExplicit
       ? `The user explicitly requested ${targetCount} cards. Return exactly that many in the requested scope.`
@@ -1543,6 +1550,7 @@ async function verifyBoardWizardBatch(
       prompt: params.prompt.slice(0, 4000),
       pastedList: params.pastedList?.slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH) ?? '',
       targetBoardTitle: params.targetBoardTitle ?? '',
+      narrationStyle: params.narrationStyle,
     }),
     '',
     'Draft to verify and repair:',
@@ -1590,6 +1598,7 @@ function buildBoardWizardPrompt(params: {
   countIsExplicit?: boolean;
   verificationRequired?: boolean;
   vibe: BoardWizardVibe;
+  narrationStyle: BoardNarrationStyleId;
   tourOptions?: {
     voiceStyle?: GeneratedBoardTourVoiceStyle;
     paceOrRouteStyle?: string;
@@ -1702,6 +1711,7 @@ function buildBoardWizardPrompt(params: {
     params.verificationRequired ? 'This factual/list request will be verified after generation. Favor canonical names, explicit dates, and zero filler.' : '',
     `Default card type: ${params.defaultType}.`,
     `Vibe: ${params.vibe} (${vibeInstructions[params.vibe]}).`,
+    boardNarrationPromptInstructions(params.narrationStyle),
     params.targetBoardTitle ? `Target board title: ${params.targetBoardTitle}` : 'Create a clear board title.',
     params.existingCards?.length ? 'Avoid duplicating these existing cards:' : '',
     params.existingCards?.length ? JSON.stringify(params.existingCards.slice(0, 40)) : '',
@@ -1726,6 +1736,7 @@ function buildBoardWizardPrompt(params: {
         caption: photo.caption,
       })) ?? [],
       tourOptions: params.tourOptions ?? null,
+      narrationStyle: params.narrationStyle,
     }),
   ].filter(Boolean).join('\n');
 }
@@ -1737,6 +1748,7 @@ function normalizeBoardWizardBatch(
     targetBoardTitle?: string | null;
     defaultType: GeneratedBoardWizardCard['type'];
     vibe: BoardWizardVibe;
+    narrationStyle: BoardNarrationStyleId;
   },
   count: number,
 ): GeneratedBoardWizardBatch {
