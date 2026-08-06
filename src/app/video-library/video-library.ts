@@ -94,7 +94,7 @@ export class VideoLibraryComponent {
 
   async openStudio(item: VideoLibraryItem): Promise<void> {
     if (!item.sourceAvailable) return;
-    await this.router.navigate(['/boards', item.sourceId], { queryParams: { studio: 'video' } });
+    await this.router.navigate(['/boards', item.sourceId], { queryParams: { share: 'video' } });
   }
 
   async share(item: VideoLibraryItem): Promise<void> {

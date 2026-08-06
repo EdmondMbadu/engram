@@ -1222,6 +1222,8 @@ export class BoardsComponent implements OnDestroy {
   private stackLivePreviewAutoplay = false;
   private stackStudioDirectRequested = false;
   private stackStudioDirectOpenedFor = '';
+  private stackShareDirectRequested = false;
+  private stackShareDirectOpenedFor = '';
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
   private stackAudioPreviewRun = 0;
@@ -2250,6 +2252,7 @@ export class BoardsComponent implements OnDestroy {
         }
         this.syncStackDirectView();
         this.syncRequestedStackStudio();
+        this.syncRequestedStackShare();
         this.syncBoardLearnDirectView();
         void this.syncRequestedBoardTranslation();
         this.canonicalizeBoardsRootRoute(boardId, ownerKey);
@@ -2266,6 +2269,10 @@ export class BoardsComponent implements OnDestroy {
       this.stackStudioDirectRequested = params.get('studio') === 'video';
       if (!this.stackStudioDirectRequested) {
         this.stackStudioDirectOpenedFor = '';
+      }
+      this.stackShareDirectRequested = params.get('share') === 'video';
+      if (!this.stackShareDirectRequested) {
+        this.stackShareDirectOpenedFor = '';
       }
       this.tourBoardView.set(view === 'cards' ? 'cards' : 'route');
       const contentLanguage = params.get('contentLang');
@@ -2290,6 +2297,7 @@ export class BoardsComponent implements OnDestroy {
         this.stopStackPlayback();
       }
       this.syncRequestedStackStudio();
+      this.syncRequestedStackShare();
       if (this.isBrowser && wantsFriends) {
         window.setTimeout(() => this.scrollToBoardFriends(), 120);
       }
@@ -12332,6 +12340,22 @@ export class BoardsComponent implements OnDestroy {
     void this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { studio: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  private syncRequestedStackShare(): void {
+    if (!this.stackShareDirectRequested) return;
+    const board = this.selectedBoard();
+    if (!board || this.stackShareDirectOpenedFor === board.id) {
+      return;
+    }
+    this.stackShareDirectOpenedFor = board.id;
+    this.openStackShareDialog(board);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { share: null },
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });

@@ -5872,7 +5872,11 @@
                   @if (!socialVideoIsCurrent(board) && canEditBoard(board)) {
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
                       <span class="material-symbols-outlined">refresh</span>
-                      {{ stackVideoExporting() ? 'Updating video ' + stackVideoProgress() + '%' : 'Update video first' }}
+                      @if (stackVideoExporting()) {
+                        <span>{{ 'Updating video ' + stackVideoProgress() + '%' }}</span>
+                      } @else {
+                        <span i18n>Update video first</span>
+                      }
                     </button>
                   } @else {
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackPublishedVideoLoading()" (click)="sharePublishedStackVideo(board)">

@@ -6259,6 +6259,10 @@
     "source": "Current setup",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "5158796772933676403": {
+    "source": "Update video first",
+    "file": "src/app/boards/boards.html"
+  },
   "5160053987987759046": {
     "source": " Wrong account? {$START_TAG_BUTTON}Sign out{$CLOSE_TAG_BUTTON}",
     "file": "src/app/verify-email/verify-email.html"

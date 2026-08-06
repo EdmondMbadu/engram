@@ -1,6 +1,6 @@
 import { Component, input, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, RouterLink } from '@angular/router';
+import { provideRouter, Router, RouterLink } from '@angular/router';
 import type { VideoLibraryItem } from './video-library.models';
 import { VideoLibraryService } from './video-library.service';
 import { VideoLibraryComponent } from './video-library';
@@ -25,6 +25,7 @@ class AccountMenuStubComponent {}
 describe('VideoLibraryComponent', () => {
   let fixture: ComponentFixture<VideoLibraryComponent>;
   let loadItems: jasmine.Spy;
+  let router: Router;
 
   const item: VideoLibraryItem = {
     id: 'board_board-1',
@@ -77,6 +78,7 @@ describe('VideoLibraryComponent', () => {
         },
       })
       .compileComponents();
+    router = TestBed.inject(Router);
   });
 
   async function createComponent(): Promise<void> {
@@ -128,5 +130,24 @@ describe('VideoLibraryComponent', () => {
     expect(download.textContent).toContain('Download');
     expect(download.getBoundingClientRect().right)
       .toBeLessThanOrEqual(actions.getBoundingClientRect().right + 0.5);
+  });
+
+  it('opens the source board share panel when updating a video', async () => {
+    loadItems.and.resolveTo([{
+      ...item,
+      sourceId: 'b38db631-9bac-4a07-bd74-4750aefc7355',
+      sourceRoute: '/boards/b38db631-9bac-4a07-bd74-4750aefc7355',
+      currentSourceUpdatedAt: '2026-08-06T03:00:00.000Z',
+    }]);
+    const navigate = spyOn(router, 'navigate').and.resolveTo(true);
+    await createComponent();
+
+    fixture.nativeElement.querySelector('.video-library-update-note').click();
+    await fixture.whenStable();
+
+    expect(navigate).toHaveBeenCalledOnceWith(
+      ['/boards', 'b38db631-9bac-4a07-bd74-4750aefc7355'],
+      { queryParams: { share: 'video' } },
+    );
   });
 });
