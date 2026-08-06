@@ -7,9 +7,13 @@ import {
 } from './stack-voice';
 
 describe('Stack narrator voice catalog', () => {
-  it('offers ten distinct narrator choices', () => {
-    expect(STACK_NARRATOR_VOICES.length).toBe(10);
-    expect(new Set(STACK_NARRATOR_VOICES.map((voice) => voice.id)).size).toBe(10);
+  it('offers eleven distinct narrator choices', () => {
+    expect(STACK_NARRATOR_VOICES.length).toBe(11);
+    expect(new Set(STACK_NARRATOR_VOICES.map((voice) => voice.id)).size).toBe(11);
+    expect(stackNarratorVoiceById('teenage-girl')).toEqual(jasmine.objectContaining({
+      name: 'Teenage Girl',
+      presentation: 'Female',
+    }));
   });
 
   it('includes female, male, and neutral presentations', () => {

@@ -67,6 +67,15 @@ export const STACK_NARRATOR_VOICES: readonly StackNarratorVoice[] = [
     sampleText: 'Fresh ideas deserve an expressive voice. Let\'s meet the people, places, and moments shaping what comes next.',
   },
   {
+    id: 'teenage-girl',
+    name: 'Teenage Girl',
+    presentation: 'Female',
+    style: 'Playful & bright',
+    description: 'A youthful, upbeat voice for trends, culture, and lively stories.',
+    icon: 'kid_star',
+    sampleText: 'There is so much to discover here. Let\'s explore the people, places, and ideas everyone will be talking about next.',
+  },
+  {
     id: 'elegant-guide',
     name: 'Elegant Guide',
     presentation: 'Female',

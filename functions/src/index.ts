@@ -206,6 +206,7 @@ const stackNarratorVoiceIds = {
   'energetic-host': 'TxGEqnHWrfWFTfGW9XjX',
   'calm-documentary': 'yoZ06aMxZJJ28mfd3POQ',
   'vibrant-presenter': 'AZnzlk1XvdvUeBnXmlld',
+  'teenage-girl': 'cgSgspJ2msm6clMCkdW9',
   'elegant-guide': 'XB0fDUnXU5powFXDhCwa',
   'british-storyteller': 'CYw3kZ02Hs0563khs1Fj',
   'cinematic-narrator': 'ZQe5CZNOzWyzPSCn5a3c',
