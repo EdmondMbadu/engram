@@ -1,5 +1,6 @@
 import {
   boardVideoLibraryId,
+  canonicalPublicVideoUrl,
   videoLibraryItemFromRecord,
   videoLibraryItemIsCurrent,
 } from './video-library.models';
@@ -8,6 +9,12 @@ describe('video library models', () => {
   it('uses one stable library id for each board', () => {
     expect(boardVideoLibraryId('board-123')).toBe('board_board-123');
     expect(boardVideoLibraryId('board/123')).toBe('board_board123');
+  });
+
+  it('repairs local share links to the canonical public host', () => {
+    expect(canonicalPublicVideoUrl('http://localhost:4200/share/board/9742b50a-112f-4e21-afb0-d468555bcf7f/video?v=latest'))
+      .toBe('https://www.livingwiki.com/share/board/9742b50a-112f-4e21-afb0-d468555bcf7f/video?v=latest');
+    expect(canonicalPublicVideoUrl('https://example.com/not-a-board-video')).toBe('https://example.com/not-a-board-video');
   });
 
   it('normalizes a stored record', () => {

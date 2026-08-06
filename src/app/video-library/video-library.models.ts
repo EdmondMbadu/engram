@@ -1,6 +1,8 @@
 export type VideoLibrarySourceType = 'board';
 export type VideoLibraryRatio = 'vertical' | 'square' | 'landscape';
 
+export const LIVINGWIKI_PUBLIC_APP_URL = 'https://www.livingwiki.com';
+
 export interface VideoLibraryItem {
   id: string;
   ownerUserId: string;
@@ -70,6 +72,19 @@ export function boardVideoLibraryId(boardId: string): string {
 
 export function normalizeVideoLibraryRatio(value: unknown): VideoLibraryRatio {
   return value === 'square' || value === 'landscape' ? value : 'vertical';
+}
+
+export function canonicalPublicVideoUrl(value: string): string {
+  if (!value) return '';
+  try {
+    const url = new URL(value, LIVINGWIKI_PUBLIC_APP_URL);
+    if (!/^\/share\/board\/[A-Za-z0-9_-]{8,128}\/video\/?$/.test(url.pathname)) {
+      return value;
+    }
+    return `${LIVINGWIKI_PUBLIC_APP_URL}${url.pathname}${url.search}`;
+  } catch {
+    return value;
+  }
 }
 
 export function videoLibraryItemFromRecord(

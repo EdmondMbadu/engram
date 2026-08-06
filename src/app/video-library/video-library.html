@@ -92,56 +92,76 @@
             } @else {
               <section class="video-library-grid" aria-label="Saved videos" i18n-aria-label>
                 @for (item of visibleItems(); track item.id) {
-                  <article class="video-library-card">
-                    <button type="button" class="video-library-poster" (click)="play(item)" [attr.aria-label]="'Play ' + item.sourceTitle">
-                      @if (item.posterUrl) {
-                        <img [src]="item.posterUrl" [alt]="item.sourceTitle" loading="lazy" />
-                      } @else {
-                        <span class="material-symbols-outlined video-library-poster__empty">movie</span>
-                      }
-                      <span class="video-library-play"><span class="material-symbols-outlined">play_arrow</span></span>
-                      @if (durationLabel(item)) {
-                        <small class="video-library-duration">{{ durationLabel(item) }}</small>
-                      }
-                    </button>
+                  <article class="video-library-card" [class.video-library-card--stale]="item.sourceAvailable && !isCurrent(item)">
+                    <div class="video-library-visual">
+                      <button type="button" class="video-library-poster" (click)="play(item)" [attr.aria-label]="'Play ' + item.sourceTitle">
+                        @if (item.posterUrl) {
+                          <img [src]="item.posterUrl" [alt]="item.sourceTitle" loading="lazy" />
+                        } @else {
+                          <span class="material-symbols-outlined video-library-poster__empty">movie</span>
+                        }
+                        <span class="video-library-play"><span class="material-symbols-outlined">play_arrow</span></span>
+                        @if (durationLabel(item)) {
+                          <small class="video-library-duration">{{ durationLabel(item) }}</small>
+                        }
+                      </button>
+                      <div class="video-library-visual__top">
+                        @if (!item.sourceAvailable) {
+                          <span class="video-library-version-pill video-library-version-pill--neutral">
+                            <span class="material-symbols-outlined">link_off</span><span i18n>Board unavailable</span>
+                          </span>
+                        } @else if (!isCurrent(item)) {
+                          <span class="video-library-version-pill video-library-version-pill--stale">
+                            <span class="material-symbols-outlined">update</span><span i18n>Update available</span>
+                          </span>
+                        } @else {
+                          <span class="video-library-version-pill">
+                            <span class="material-symbols-outlined">check</span><span i18n>Latest</span>
+                          </span>
+                        }
+                        <button type="button" class="video-library-delete" (click)="requestDelete(item)" aria-label="Delete video" i18n-aria-label>
+                          <span class="material-symbols-outlined">delete</span>
+                        </button>
+                      </div>
+                    </div>
 
                     <div class="video-library-card__body">
                       <div class="video-library-card__heading">
                         <div class="min-w-0">
                           <h3>{{ item.sourceTitle }}</h3>
-                          <p>{{ updatedLabel(item) }}</p>
+                          <p><span i18n>Rendered</span> {{ updatedLabel(item) }}</p>
                         </div>
-                        <button type="button" class="video-library-delete" (click)="requestDelete(item)" aria-label="Delete video" i18n-aria-label>
-                          <span class="material-symbols-outlined">delete</span>
-                        </button>
                       </div>
 
-                      <div class="video-library-badges">
+                      <div class="video-library-meta">
                         <span><span class="material-symbols-outlined">aspect_ratio</span>{{ ratioLabel(item) }}</span>
+                        <i aria-hidden="true"></i>
                         <span><span class="material-symbols-outlined">{{ item.narrationEnabled ? 'record_voice_over' : 'music_note' }}</span>{{ item.narrationEnabled ? 'Narrated' : 'No narration' }}</span>
                       </div>
 
-                      @if (!item.sourceAvailable) {
-                        <div class="video-library-status video-library-status--neutral">
-                          <span class="material-symbols-outlined">link_off</span>
-                          <span i18n>Source board unavailable</span>
-                        </div>
-                      } @else if (!isCurrent(item)) {
-                        <div class="video-library-status video-library-status--stale">
-                          <span class="material-symbols-outlined">update</span>
-                          <span i18n>Board changed · Regenerate for the latest edits</span>
-                        </div>
-                      } @else {
-                        <div class="video-library-status">
-                          <span class="material-symbols-outlined">check_circle</span>
-                          <span i18n>Current version</span>
-                        </div>
+                      @if (item.sourceAvailable && !isCurrent(item)) {
+                        <button type="button" class="video-library-update-note" (click)="openStudio(item)">
+                          <span class="material-symbols-outlined">auto_awesome</span>
+                          <span><strong i18n>Your board has newer edits.</strong><small i18n>Regenerate this video</small></span>
+                          <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
                       }
 
+                      <div class="video-library-actions">
+                        <button type="button" class="video-library-actions__primary" (click)="play(item)">
+                          <span class="material-symbols-outlined">play_arrow</span><span i18n>Play video</span>
+                        </button>
+                        <button type="button" (click)="share(item)" [disabled]="sharingId() === item.id">
+                          <span class="material-symbols-outlined">ios_share</span><span>{{ sharingId() === item.id ? 'Preparing…' : 'Share' }}</span>
+                        </button>
+                        <button type="button" (click)="download(item)">
+                          <span class="material-symbols-outlined">download</span><span i18n>Download</span>
+                        </button>
+                      </div>
+
                       <div class="video-library-link" [class.video-library-link--empty]="!item.publicShareUrl">
-                        <div>
-                          <span class="material-symbols-outlined">link</span>
-                          <span>
+                        <span class="video-library-link__icon"><span class="material-symbols-outlined">link</span></span>
+                        <div class="video-library-link__copy">
                             <strong i18n>Public video link</strong>
                             @if (item.publicShareUrl) {
                               <input
@@ -155,34 +175,21 @@
                             } @else {
                               <small i18n>Not published yet</small>
                             }
-                          </span>
                         </div>
                         @if (item.publicShareUrl) {
                           <div class="video-library-link__actions">
-                            <a [href]="item.publicShareUrl" target="_blank" rel="noopener" aria-label="Open public video link" i18n-aria-label>
-                              <span class="material-symbols-outlined">open_in_new</span><span i18n>Open</span>
-                            </a>
-                            <button type="button" (click)="copyPublicLink(item)">
-                              <span class="material-symbols-outlined">content_copy</span><span i18n>Copy link</span>
+                            <button type="button" class="video-library-link__copy-button" (click)="copyPublicLink(item)">
+                              <span class="material-symbols-outlined">content_copy</span><span i18n>Copy</span>
                             </button>
+                            <a [href]="item.publicShareUrl" target="_blank" rel="noopener" aria-label="Open public video link" i18n-aria-label>
+                              <span class="material-symbols-outlined">north_east</span>
+                            </a>
                           </div>
                         } @else if (item.sourceAvailable) {
                           <button type="button" class="video-library-link__publish" (click)="openStudio(item)">
-                            <span class="material-symbols-outlined">publish</span><span i18n>Publish in Studio</span>
+                            <span i18n>Publish</span><span class="material-symbols-outlined">arrow_forward</span>
                           </button>
                         }
-                      </div>
-
-                      <div class="video-library-actions">
-                        <button type="button" class="video-library-actions__primary" (click)="play(item)">
-                          <span class="material-symbols-outlined">play_arrow</span><span i18n>Play</span>
-                        </button>
-                        <button type="button" (click)="share(item)" [disabled]="sharingId() === item.id">
-                          <span class="material-symbols-outlined">ios_share</span><span>{{ sharingId() === item.id ? 'Preparing…' : 'Share' }}</span>
-                        </button>
-                        <button type="button" (click)="download(item)">
-                          <span class="material-symbols-outlined">download</span><span i18n>Download</span>
-                        </button>
                       </div>
 
                       @if (item.sourceAvailable) {

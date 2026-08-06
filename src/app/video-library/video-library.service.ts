@@ -25,6 +25,8 @@ import { AuthService } from '../auth.service';
 import { getFirebaseFirestore, getFirebaseStorage } from '../firebase.client';
 import {
   boardVideoLibraryId,
+  canonicalPublicVideoUrl,
+  LIVINGWIKI_PUBLIC_APP_URL,
   videoLibraryItemFromRecord,
   type SaveLatestBoardVideoInput,
   type VideoLibraryItem,
@@ -78,11 +80,16 @@ export class VideoLibraryService {
       .map((board) => this.backfillPublishedBoard(uid, board)));
     items.push(...legacyItems.filter((item): item is VideoLibraryItem => !!item));
 
-    return items
+    const normalizedItems = items
       .map((item) => {
         const board = boardsById.get(item.sourceId);
+        const publicShareUrl = canonicalPublicVideoUrl(item.publicShareUrl);
+        if (publicShareUrl !== item.publicShareUrl) {
+          void this.repairPublicShareUrl(uid, item.id, publicShareUrl);
+        }
         return {
           ...item,
+          publicShareUrl,
           sourceAvailable: !!board,
           currentSourceUpdatedAt: board?.updatedAt ?? '',
           sourceRoute: board?.route ?? item.sourceRoute,
@@ -91,6 +98,7 @@ export class VideoLibraryService {
         };
       })
       .sort((left, right) => right.generatedAt.localeCompare(left.generatedAt));
+    return normalizedItems;
   }
 
   async saveLatestBoardVideo(input: SaveLatestBoardVideoInput): Promise<VideoLibraryItem> {
@@ -144,7 +152,7 @@ export class VideoLibraryService {
         // A newly generated private-library copy is not the same file as an older
         // published version. Only advertise a public link when this render was
         // explicitly published as part of the same operation.
-        public_share_url: (input.publicShareUrl ?? '').slice(0, 2500),
+        public_share_url: canonicalPublicVideoUrl(input.publicShareUrl ?? '').slice(0, 2500),
         mime_type: this.normalizedMimeType(input.mimeType),
         ratio: input.ratio,
         duration_seconds: Math.max(0, input.durationSeconds),
@@ -264,7 +272,20 @@ export class VideoLibraryService {
 
   private publicShareUrl(boardId: string, version: string): string {
     const path = `/share/board/${encodeURIComponent(boardId)}/video?v=${encodeURIComponent(version)}`;
-    return this.isBrowser ? `${window.location.origin}${path}` : path;
+    return `${LIVINGWIKI_PUBLIC_APP_URL}${path}`;
+  }
+
+  private async repairPublicShareUrl(uid: string, itemId: string, publicShareUrl: string): Promise<void> {
+    if (!this.firestore) return;
+    try {
+      await updateDoc(doc(this.firestore, 'users', uid, 'videos', itemId), {
+        public_share_url: publicShareUrl,
+        updated_at_iso: new Date().toISOString(),
+        server_updated_at: serverTimestamp(),
+      });
+    } catch (error) {
+      console.warn('Could not repair a legacy video share URL.', error, { itemId });
+    }
   }
 
   private async deleteStoragePath(path: string): Promise<void> {

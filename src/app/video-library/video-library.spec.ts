@@ -90,11 +90,11 @@ describe('VideoLibraryComponent', () => {
     await createComponent();
 
     expect(fixture.nativeElement.querySelector('h3')?.textContent).toContain('Odysseus');
-    expect(fixture.nativeElement.textContent).toContain('Current version');
+    expect(fixture.nativeElement.textContent).toContain('Latest');
     expect(fixture.nativeElement.textContent).toContain('0:42');
     expect(fixture.nativeElement.querySelector('.video-library-link input')?.value)
       .toBe('https://www.livingwiki.com/share/board/board-1/video?v=latest');
-    expect(fixture.nativeElement.textContent).toContain('Copy link');
+    expect(fixture.nativeElement.textContent).toContain('Copy');
 
     fixture.nativeElement.querySelector('.video-library-poster').click();
     fixture.detectChanges();

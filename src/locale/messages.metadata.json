@@ -2659,10 +2659,6 @@
     "source": "Open recap card",
     "file": "src/app/chat/chat.ts"
   },
-  "2806809013074824378": {
-    "source": "Board changed · Regenerate for the latest edits",
-    "file": "src/app/video-library/video-library.html"
-  },
   "2806878392329574752": {
     "source": "Immersive card-by-card experience",
     "file": "src/app/boards/boards.html"
@@ -2670,6 +2666,10 @@
   "2817737674707432852": {
     "source": "Close share options",
     "file": "src/app/answer-card/answer-card.html"
+  },
+  "2820031676440667416": {
+    "source": "Latest",
+    "file": "src/app/video-library/video-library.html"
   },
   "2821179408673282599": {
     "source": "Home",
@@ -3803,10 +3803,6 @@
     "source": "What the tour voice will say at this stop",
     "file": "src/app/boards/boards.html"
   },
-  "3495655540736696118": {
-    "source": "Source board unavailable",
-    "file": "src/app/video-library/video-library.html"
-  },
   "3496615278735103700": {
     "source": "Refresh notes",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
@@ -4382,10 +4378,6 @@
   "3894950702316166331": {
     "source": "Loading...",
     "file": "src/app/public-wikis/public-wikis.html"
-  },
-  "3897118902958268539": {
-    "source": "Publish in Studio",
-    "file": "src/app/video-library/video-library.html"
   },
   "3898763300307281411": {
     "source": " Remembered it? {$START_TAG_BUTTON}Return to sign in{$CLOSE_TAG_BUTTON}",
@@ -6191,6 +6183,10 @@
     "source": "Failed to delete atlas.",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
+  "509090351011426949": {
+    "source": "Update available",
+    "file": "src/app/video-library/video-library.html"
+  },
   "5092645133693921503": {
     "source": "Added admin",
     "file": "src/app/wiki-home/wiki-home.html"
@@ -7046,6 +7042,10 @@
   "5660227828366946260": {
     "source": "Clear Wiki search",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "5661190374215062080": {
+    "source": "Board unavailable",
+    "file": "src/app/video-library/video-library.html"
   },
   "5661831613856753923": {
     "source": "Drop a card on {$INTERPOLATION}.",
@@ -9023,6 +9023,10 @@
     "source": "Password reset complete",
     "file": "src/app/auth-action/auth-action.ts"
   },
+  "6949151938064817789": {
+    "source": "Rendered",
+    "file": "src/app/video-library/video-library.html"
+  },
   "6949471741206359864": {
     "source": "Board challenge",
     "file": "src/app/boards/boards.html"
@@ -9343,6 +9347,10 @@
     "source": "Enter your password.",
     "file": "src/app/sign-in/sign-in.html"
   },
+  "7208763421467281516": {
+    "source": "Regenerate this video",
+    "file": "src/app/video-library/video-library.html"
+  },
   "7212239620607483566": {
     "source": "Only the owner can view this LivingWiki board.",
     "file": "src/app/boards/boards.html"
@@ -9655,6 +9663,10 @@
     "source": "Add company knowledge so the AI answers from real source material.",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7430416142942514215": {
+    "source": "Publish",
+    "file": "src/app/video-library/video-library.html"
+  },
   "7430680760319628492": {
     "source": "Review",
     "file": "src/app/boards/boards.html"
@@ -9850,6 +9862,10 @@
   "7585826646011739428": {
     "source": "Edit",
     "file": "src/app/admin-users/admin-users.html"
+  },
+  "7590597986100375007": {
+    "source": "Play video",
+    "file": "src/app/video-library/video-library.html"
   },
   "7590767207440303327": {
     "source": "shared struggles",
@@ -10274,10 +10290,6 @@
   "7883085249051559382": {
     "source": "Make card",
     "file": "src/app/chat/chat.ts"
-  },
-  "7884682505577720946": {
-    "source": "Current version",
-    "file": "src/app/video-library/video-library.html"
   },
   "7886570921510760899": {
     "source": "Tags",
@@ -11287,10 +11299,6 @@
     "source": "Music",
     "file": "src/app/boards/boards.html"
   },
-  "8564202903947049539": {
-    "source": "Play",
-    "file": "src/app/video-library/video-library.html"
-  },
   "8569814378547466507": {
     "source": "Estimating...",
     "file": "src/app/atlas-manage/atlas-manage.ts"
@@ -12098,6 +12106,10 @@
   "9135526383602478817": {
     "source": "Talk with me",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "9135678218646939886": {
+    "source": "Your board has newer edits.",
+    "file": "src/app/video-library/video-library.html"
   },
   "9137345098023582320": {
     "source": "Copy chat",
