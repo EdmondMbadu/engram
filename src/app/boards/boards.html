@@ -852,7 +852,7 @@
                     <path d="M11 22l-1.5-3.5L13 17.5" />
                   </svg>
                 </button>
-                @if (canEditBoard(board)) {
+                @if (canEditBoard(board) || isPlatformAdmin()) {
                   <div
                     class="card-action-menu board-square__action-menu"
                     [class.card-action-menu--open]="isCardActionMenuOpen('board:' + board.id)"
@@ -876,14 +876,22 @@
                         role="menu"
                         (click)="$event.stopPropagation()"
                       >
-                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditBoard(board, $event)" i18n>
-                          <span class="material-symbols-outlined">edit</span>
-                          Edit board
-                        </button>
-                        <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteBoard(board, $event)" i18n>
-                          <span class="material-symbols-outlined">delete</span>
-                          Delete board
-                        </button>
+                        @if (canEditBoard(board)) {
+                          <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditBoard(board, $event)" i18n>
+                            <span class="material-symbols-outlined">edit</span>
+                            Edit board
+                          </button>
+                          <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteBoard(board, $event)" i18n>
+                            <span class="material-symbols-outlined">delete</span>
+                            Delete board
+                          </button>
+                        }
+                        @if (isPlatformAdmin()) {
+                          <button type="button" role="menuitem" (click)="closeCardActionMenu(); openBoardAdmin(board, $event)">
+                            <span class="material-symbols-outlined">factory</span>
+                            Manage in City Board Factory
+                          </button>
+                        }
                       </div>
                     }
                   </div>

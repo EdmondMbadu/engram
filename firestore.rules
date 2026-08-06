@@ -85,6 +85,19 @@ service cloud.firestore {
         && request.auth.uid in data.admin_user_ids;
     }
 
+    function canAdminAtlasById(atlasId) {
+      return isSignedIn()
+        && atlasId is string
+        && atlasId.size() > 0
+        && (
+          get(/databases/$(database)/documents/atlases/$(atlasId)).data.user_id == request.auth.uid
+          || (
+            get(/databases/$(database)/documents/atlases/$(atlasId)).data.admin_user_ids is list
+            && request.auth.uid in get(/databases/$(database)/documents/atlases/$(atlasId)).data.admin_user_ids
+          )
+        );
+    }
+
     match /users/{userId} {
       allow read: if isOwner(userId) || isPlatformAdmin();
       allow create: if isOwner(userId)
@@ -413,6 +426,7 @@ service cloud.firestore {
     match /boards/{boardId} {
       allow get: if resource.data.visibility == 'public'
         || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
+        || (resource.data.atlas_id is string && canAdminAtlasById(resource.data.atlas_id))
         || isPlatformAdmin();
       allow list: if resource.data.visibility == 'public'
         || (isSignedIn() && resource.data.owner_user_id == request.auth.uid)
@@ -490,6 +504,30 @@ service cloud.firestore {
           'parentCardTitle',
           'insideCardsDisplay',
           'showCardNumbers',
+          'atlas_id',
+          'generated_for_atlas_id',
+          'origin',
+          'publisher_type',
+          'generation_job_id',
+          'generation_item_id',
+          'generation_key',
+          'generator_version',
+          'template_id',
+          'template_version',
+          'rubric_version',
+          'editorial_status',
+          'city_listing_status',
+          'source_status',
+          'quality_status',
+          'quality_warnings',
+          'validation_summary',
+          'created_by_user_id',
+          'approved_by_user_id',
+          'approved_at',
+          'deleted_at',
+          'deleted_by_user_id',
+          'deletion_reason',
+          'deletion_snapshot',
           'cards',
           'created_at_iso',
           'updated_at_iso',
@@ -653,6 +691,26 @@ service cloud.firestore {
         && request.resource.data.server_updated_at == request.time;
       allow delete: if isSignedIn()
         && (resource.data.owner_user_id == request.auth.uid || isPlatformAdmin());
+    }
+
+    match /board_generation_jobs/{jobId} {
+      allow read: if isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /board_generation_items/{itemId} {
+      allow read: if isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /board_generation_suppressions/{suppressionId} {
+      allow read: if isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /board_generation_audit/{auditId} {
+      allow read: if isPlatformAdmin();
+      allow write: if false;
     }
 
     match /business_claim_requests/{claimId} {

@@ -100,6 +100,14 @@
           </a>
           @if (isAdmin()) {
             <a
+              routerLink="/admin/city-board-factory"
+              role="menuitem"
+              class="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[var(--muted)] transition-colors duration-150 hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"
+              (click)="closeMenu()">
+              <span class="material-symbols-outlined text-base">factory</span>
+              City Board Factory
+            </a>
+            <a
               routerLink="/admin/users"
               role="menuitem"
               class="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[var(--muted)] transition-colors duration-150 hover:bg-[var(--soft-fill)] hover:text-[var(--text)]"

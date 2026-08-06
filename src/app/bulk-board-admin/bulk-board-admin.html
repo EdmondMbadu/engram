@@ -1,0 +1,298 @@
+<div class="bulk-page min-h-screen bg-[var(--bg)] text-[var(--text)]">
+  <header class="bulk-header border-b border-[var(--line)] bg-[var(--surface)]">
+    <div class="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <a routerLink="/wikis" class="flex min-w-0 items-center gap-4">
+        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-10 w-40 object-contain" />
+        <span class="min-w-0 border-l border-[var(--line)] pl-4">
+          <span class="block text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Platform operations</span>
+          <span class="block truncate text-lg font-black tracking-tight">City Board Factory</span>
+        </span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a routerLink="/admin/users" class="header-link">
+          <span class="material-symbols-outlined">group</span>
+          <span class="hidden sm:inline">Admin users</span>
+        </a>
+        <a routerLink="/atlases" class="header-link">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          <span class="hidden sm:inline">Wiki admin</span>
+        </a>
+        <app-theme-toggle></app-theme-toggle>
+        <app-account-menu></app-account-menu>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-[1500px] px-4 py-8 sm:px-6 lg:px-8">
+    <section class="hero-panel">
+      <div>
+        <p class="eyebrow">Controlled generation · private by default</p>
+        <h1>Generate city boards without losing editorial control.</h1>
+        <p class="hero-copy">
+          Every task starts with provider-verified place identities, runs independently, and produces a private review draft.
+          Nothing is published or approved as a city source automatically.
+        </p>
+      </div>
+      <div class="operator-card">
+        <span class="material-symbols-outlined">verified_user</span>
+        <div>
+          <strong>{{ currentUserName() }}</strong>
+          <small>{{ currentUserEmail() }}</small>
+          <small>Generator {{ dashboard()?.generatorVersion || '—' }} · Rubric {{ dashboard()?.rubricVersion || '—' }}</small>
+        </div>
+      </div>
+    </section>
+
+    @if (error()) {
+      <div class="alert alert--error">
+        <span class="material-symbols-outlined">error</span>
+        <span>{{ error() }}</span>
+        <button type="button" (click)="error.set(null)" aria-label="Dismiss error"><span class="material-symbols-outlined">close</span></button>
+      </div>
+    }
+    @if (notice()) {
+      <div class="alert alert--success">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>{{ notice() }}</span>
+        <button type="button" (click)="notice.set(null)" aria-label="Dismiss message"><span class="material-symbols-outlined">close</span></button>
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="loading-panel">
+        <span class="material-symbols-outlined animate-spin">progress_activity</span>
+        Loading the board factory…
+      </div>
+    } @else {
+      <section class="summary-grid">
+        <article><small>Eligible cities</small><strong>{{ cities().length }}</strong><span>Public city wikis</span></article>
+        <article><small>Selected now</small><strong>{{ selectedCount() }}</strong><span>Generation targets</span></article>
+        <article><small>Generated boards</small><strong>{{ boards().length }}</strong><span>Including trash</span></article>
+        <article><small>Needs review</small><strong>{{ needsReviewCount() }}</strong><span>Private drafts</span></article>
+      </section>
+
+      <div class="workspace-grid">
+        <section class="panel generator-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Step 1</p>
+              <h2>Define the board template</h2>
+            </div>
+            <span class="safety-badge"><span class="material-symbols-outlined">lock</span> Review required</span>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              <span>Template ID</span>
+              <input type="text" [ngModel]="template().id" (ngModelChange)="updateTemplate('id', $event)" maxlength="64" />
+            </label>
+            <label>
+              <span>Version</span>
+              <input type="text" [ngModel]="template().version" (ngModelChange)="updateTemplate('version', $event)" maxlength="24" />
+            </label>
+            <label class="form-span">
+              <span>Board title pattern</span>
+              <input type="text" [ngModel]="template().titlePattern" (ngModelChange)="updateTemplate('titlePattern', $event)" maxlength="90" />
+              <small>Must contain <code>&#123;city&#125;</code>. You may also use <code>&#123;count&#125;</code>.</small>
+            </label>
+            <label>
+              <span>Place search query</span>
+              <input type="text" [ngModel]="template().searchQuery" (ngModelChange)="updateTemplate('searchQuery', $event)" maxlength="120" />
+              <small>Used to build the verified candidate pool.</small>
+            </label>
+            <label>
+              <span>Cards per board</span>
+              <input type="number" min="3" max="20" [ngModel]="template().count" (ngModelChange)="onCountInput($event)" />
+              <small>All cards must resolve or the city fails closed.</small>
+            </label>
+            <label class="form-span">
+              <span>Editorial brief</span>
+              <textarea rows="5" [ngModel]="template().editorialBrief" (ngModelChange)="updateTemplate('editorialBrief', $event)" maxlength="1200"></textarea>
+            </label>
+          </div>
+
+          <div class="selection-heading">
+            <div>
+              <p class="eyebrow">Step 2</p>
+              <h2>Select cities</h2>
+            </div>
+            <strong>{{ selectedCount() }} selected</strong>
+          </div>
+          <div class="city-toolbar">
+            <label class="search-box">
+              <span class="material-symbols-outlined">search</span>
+              <input type="search" placeholder="Search cities or regions…" [ngModel]="citySearch()" (ngModelChange)="citySearch.set($event)" />
+            </label>
+            <button type="button" class="button button--secondary" (click)="selectFilteredCities()">Select shown</button>
+            <button type="button" class="button button--ghost" (click)="clearCities()">Clear</button>
+          </div>
+          <div class="city-list" role="group" aria-label="Generation cities">
+            @for (city of filteredCities(); track trackCity($index, city)) {
+              <label class="city-row" [class.city-row--selected]="isCitySelected(city.id)">
+                <input type="checkbox" [checked]="isCitySelected(city.id)" (change)="toggleCity(city.id)" />
+                <span class="city-check"><span class="material-symbols-outlined">check</span></span>
+                <span><strong>{{ city.name }}</strong><small>{{ city.region || city.countryCode || 'Region not set' }}</small></span>
+              </label>
+            } @empty {
+              <p class="empty-copy">No cities match this search.</p>
+            }
+          </div>
+
+          <div class="preflight-area">
+            <div>
+              <p class="eyebrow">Step 3</p>
+              <h2>Preflight, then start</h2>
+              <p>No AI or Places generation calls occur during preflight.</p>
+            </div>
+            <button type="button" class="button button--secondary" [disabled]="running() || selectedCount() === 0" (click)="runPreflight()">
+              <span class="material-symbols-outlined">fact_check</span>
+              {{ running() ? 'Checking…' : 'Run preflight' }}
+            </button>
+          </div>
+          @if (preflight(); as check) {
+            <div class="preflight-card">
+              <div><small>Requested</small><strong>{{ check.requestedCount }}</strong></div>
+              <div><small>Ready</small><strong>{{ check.readyCount }}</strong></div>
+              <div><small>Existing</small><strong>{{ check.existingCount }}</strong></div>
+              <div><small>Suppressed</small><strong>{{ check.suppressedCount }}</strong></div>
+            </div>
+            <label class="acknowledgement">
+              <input type="checkbox" [checked]="preflightAccepted()" (change)="preflightAccepted.set(!preflightAccepted())" />
+              <span>I understand these boards remain private until an admin reviews and publishes them.</span>
+            </label>
+            <button type="button" class="button button--primary button--wide" [disabled]="running() || !preflightAccepted() || check.readyCount === 0 || !!activeJob()" (click)="startGeneration()">
+              <span class="material-symbols-outlined">rocket_launch</span>
+              {{ activeJob() ? 'A generation job is already active' : 'Start background generation' }}
+            </button>
+          }
+        </section>
+
+        <aside class="panel jobs-panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow">Operations</p><h2>Generation jobs</h2></div>
+            <button type="button" class="icon-button" [disabled]="refreshing()" (click)="load(true)" aria-label="Refresh jobs">
+              <span class="material-symbols-outlined" [class.animate-spin]="refreshing()">refresh</span>
+            </button>
+          </div>
+          <div class="job-list">
+            @for (job of jobs(); track trackJob($index, job)) {
+              <article class="job-card">
+                <div class="job-title">
+                  <div><strong>{{ job.template?.titlePattern || 'City board job' }}</strong><small>{{ job.created_at | date: 'medium' }}</small></div>
+                  <span [class]="itemStatusClass(job.status)">{{ jobStatusLabel(job.status) }}</span>
+                </div>
+                <div class="progress-track"><span [style.width.%]="jobProgress(job)"></span></div>
+                <div class="job-counts">
+                  <span><strong>{{ job.completed_count }}</strong>/{{ job.total_count }} complete</span>
+                  <span>{{ job.success_count }} review</span>
+                  <span>{{ job.failed_count }} failed</span>
+                  <span>{{ job.skipped_count }} skipped</span>
+                </div>
+                @if (job.status === 'running') {
+                  <button type="button" class="button button--danger-quiet" [disabled]="running()" (click)="cancelJob(job)">
+                    <span class="material-symbols-outlined">stop_circle</span> Cancel queued work
+                  </button>
+                }
+              </article>
+            } @empty {
+              <p class="empty-copy">No bulk jobs yet.</p>
+            }
+          </div>
+
+          @if (items().length) {
+            <div class="item-heading"><h3>Latest job cities</h3><span>{{ items().length }}</span></div>
+            <div class="item-list">
+              @for (item of items(); track trackItem($index, item)) {
+                <article class="item-row">
+                  <span class="item-state-dot" [class.item-state-dot--bad]="item.status === 'failed'" [class.item-state-dot--good]="item.status === 'needs_review'"></span>
+                  <div><strong>{{ item.city_name }}</strong><small>{{ item.region_name || item.error_message || jobStatusLabel(item.status) }}</small></div>
+                  <span [class]="itemStatusClass(item.status)">{{ jobStatusLabel(item.status) }}</span>
+                  @if (isRetryableItem(item)) {
+                    <button type="button" class="icon-button" [disabled]="busyItemId() === item.id" (click)="retryItem(item)" aria-label="Retry failed city">
+                      <span class="material-symbols-outlined">replay</span>
+                    </button>
+                  }
+                </article>
+              }
+            </div>
+          }
+        </aside>
+      </div>
+
+      <section class="panel board-management">
+        <div class="panel-heading board-heading">
+          <div>
+            <p class="eyebrow">City board lifecycle</p>
+            <h2>Review, publish, remove, restore, or delete</h2>
+            <p>Listing and source approval are intentionally separate.</p>
+          </div>
+          <span class="result-count">{{ filteredBoards().length }} boards</span>
+        </div>
+        <div class="board-toolbar">
+          <label class="search-box">
+            <span class="material-symbols-outlined">search</span>
+            <input type="search" placeholder="Search board, city, or template…" [ngModel]="boardSearch()" (ngModelChange)="boardSearch.set($event)" />
+          </label>
+          <select aria-label="Filter boards by city" [ngModel]="selectedBoardCity()" (ngModelChange)="selectedBoardCity.set($event)">
+            <option value="all">All cities</option>
+            @for (city of cities(); track trackCity($index, city)) { <option [value]="city.id">{{ city.name }}</option> }
+          </select>
+          <select aria-label="Filter boards by status" [ngModel]="selectedBoardStatus()" (ngModelChange)="selectedBoardStatus.set($event)">
+            <option value="active">Active only</option>
+            <option value="needs_review">Needs review</option>
+            <option value="published">Published</option>
+            <option value="trash">Trash</option>
+            <option value="all">All statuses</option>
+          </select>
+        </div>
+
+        <div class="board-list">
+          @for (board of filteredBoards(); track trackBoard($index, board)) {
+            <article class="board-row" [class.board-row--deleted]="board.deleted_at">
+              <div class="board-identity">
+                <span class="board-icon"><span class="material-symbols-outlined">dashboard_customize</span></span>
+                <div>
+                  <a [routerLink]="['/boards', board.id]">{{ board.title }}</a>
+                  <small>{{ cityLabel(board) }} · {{ board.card_count }} verified cards</small>
+                  <small>{{ board.template_id }} v{{ board.template_version }} · rubric {{ board.rubric_version }}</small>
+                </div>
+              </div>
+              <div class="board-statuses">
+                <span [class]="boardStatusClass(board)">{{ board.deleted_at ? 'trash' : jobStatusLabel(board.editorial_status) }}</span>
+                <span class="status">city: {{ jobStatusLabel(board.city_listing_status) }}</span>
+                <span class="status">source: {{ jobStatusLabel(board.source_status) }}</span>
+              </div>
+              <div class="quality-block">
+                <strong>{{ board.validation_summary?.verified_count ?? board.card_count }}/{{ board.validation_summary?.requested_count ?? board.card_count }}</strong>
+                <span>places verified</span>
+                @if (board.quality_warnings.length) { <small>{{ board.quality_warnings.length }} voice warning(s)</small> }
+              </div>
+              <div class="board-actions">
+                <a class="button button--ghost" [routerLink]="['/boards', board.id]" target="_blank"><span class="material-symbols-outlined">open_in_new</span> Open</a>
+                @if (board.deleted_at) {
+                  <button type="button" class="button button--secondary" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'restore')"><span class="material-symbols-outlined">restore</span> Restore</button>
+                  <button type="button" class="button button--danger-quiet" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'permanent_delete')"><span class="material-symbols-outlined">delete_forever</span> Delete forever</button>
+                } @else {
+                  @if (board.editorial_status !== 'published') {
+                    <button type="button" class="button button--primary" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'publish')"><span class="material-symbols-outlined">publish</span> Publish</button>
+                  }
+                  @if (board.city_listing_status === 'listed') {
+                    <button type="button" class="button button--secondary" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'remove_from_city')"><span class="material-symbols-outlined">link_off</span> Remove from city</button>
+                  }
+                  @if (board.source_status === 'approved') {
+                    <button type="button" class="button button--ghost" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'exclude_source')"><span class="material-symbols-outlined">block</span> Exclude source</button>
+                  } @else if (board.editorial_status === 'published') {
+                    <button type="button" class="button button--ghost" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'approve_source')"><span class="material-symbols-outlined">verified</span> Approve source</button>
+                  }
+                  <button type="button" class="button button--danger-quiet" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'trash')"><span class="material-symbols-outlined">delete</span> Trash</button>
+                }
+              </div>
+            </article>
+          } @empty {
+            <div class="empty-state"><span class="material-symbols-outlined">inventory_2</span><strong>No boards in this view</strong><p>Change the filters or generate the first city board draft.</p></div>
+          }
+        </div>
+      </section>
+    }
+  </main>
+</div>

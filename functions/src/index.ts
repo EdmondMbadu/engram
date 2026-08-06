@@ -96,6 +96,13 @@ import {
   type GeneratedBoardWizardSourceReport,
 } from './gemini';
 import {
+  BULK_BOARD_RUBRIC_VERSION,
+  bulkBoardGenerationKey,
+  bulkBoardSuppressionId,
+  normalizeBulkBoardTemplate,
+  processBulkBoardGenerationItem,
+} from './bulk-board-generation';
+import {
   boardNarrationFallbackDescription,
   boardNarrationFallbackNotes,
   normalizeBoardNarrationStyle,
@@ -170,7 +177,7 @@ const elevenLabsTtsVoiceOverridesEnabled = defineString('ELEVENLABS_TTS_VOICE_OV
 const elevenLabsFirstMessageOverridesEnabled = defineString('ELEVENLABS_FIRST_MESSAGE_OVERRIDES_ENABLED', {
   default: 'false',
 });
-const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
+export const googlePlacesApiKey = defineSecret('GOOGLE_PLACES_API_KEY');
 const googleCustomSearchApiKey = defineSecret('GOOGLE_CUSTOM_SEARCH_API_KEY');
 const youtubeDataApiKey = defineSecret('YOUTUBE_DATA_API_KEY');
 const googleCustomSearchCx = process.env.GOOGLE_CUSTOM_SEARCH_CX ?? '';
@@ -19070,6 +19077,554 @@ export const deleteQuery = onCall(
       }
       throw new HttpsError('internal', message);
     }
+  },
+);
+
+type BulkBoardAdminAction =
+  | 'publish'
+  | 'remove_from_city'
+  | 'exclude_source'
+  | 'approve_source'
+  | 'trash'
+  | 'restore'
+  | 'permanent_delete';
+
+function bulkBoardDashboardTimestamp(value: unknown): string | null {
+  return timestampToIso(value);
+}
+
+function bulkBoardDashboardDocument(id: string, value: Record<string, unknown>): Record<string, unknown> {
+  return {
+    id,
+    ...value,
+    created_at: bulkBoardDashboardTimestamp(value.created_at),
+    updated_at: bulkBoardDashboardTimestamp(value.updated_at),
+    started_at: bulkBoardDashboardTimestamp(value.started_at),
+    completed_at: bulkBoardDashboardTimestamp(value.completed_at),
+    deleted_at: bulkBoardDashboardTimestamp(value.deleted_at),
+    approved_at: bulkBoardDashboardTimestamp(value.approved_at),
+  };
+}
+
+async function canManageBulkBoardAtlas(userId: string, atlasId: string): Promise<boolean> {
+  const [userSnapshot, atlasSnapshot] = await Promise.all([
+    db.collection('users').doc(userId).get(),
+    db.collection('atlases').doc(atlasId).get(),
+  ]);
+  if (userSnapshot.data()?.role === 'admin') {
+    return true;
+  }
+  if (!atlasSnapshot.exists) {
+    return false;
+  }
+  const atlas = atlasSnapshot.data() as Record<string, unknown>;
+  const adminUserIds = Array.isArray(atlas.admin_user_ids)
+    ? atlas.admin_user_ids.map((value) => String(value))
+    : [];
+  return String(atlas.user_id ?? '') === userId || adminUserIds.includes(userId);
+}
+
+async function assertBulkBoardAtlasAccess(userId: string, atlasId: string): Promise<void> {
+  if (!await canManageBulkBoardAtlas(userId, atlasId)) {
+    throw new HttpsError('permission-denied', 'You cannot manage boards for this city.');
+  }
+}
+
+export const getBulkBoardAdminDashboard = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 60, memory: '1GiB' },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const requestingUserId = request.auth.uid;
+    await assertPlatformAdmin(requestingUserId);
+
+    const [atlasSnapshot, jobSnapshot, boardSnapshot] = await Promise.all([
+      db.collection('atlases').where('is_public', '==', true).get(),
+      db.collection('board_generation_jobs').orderBy('created_at', 'desc').limit(20).get(),
+      db.collection('boards').where('origin', '==', 'bulk_generator').limit(500).get(),
+    ]);
+    const cities = atlasSnapshot.docs
+      .flatMap((atlasDocument) => {
+        const atlas = atlasDocument.data() as Record<string, unknown>;
+        const cityConfig = atlas.city_config && typeof atlas.city_config === 'object'
+          ? atlas.city_config as Record<string, unknown>
+          : {};
+        if (cityConfig.enabled !== true) return [];
+        const name = textFromUnknown(cityConfig.city_name)
+          || textFromUnknown(atlas.name).replace(/^Living Wiki:\s*/i, '');
+        if (!name) return [];
+        return [{
+          id: atlasDocument.id,
+          name,
+          region: textFromUnknown(cityConfig.region_name),
+          countryCode: textFromUnknown(cityConfig.country_code),
+          slug: textFromUnknown(atlas.slug),
+        }];
+      })
+      .sort((left, right) => left.name.localeCompare(right.name));
+    const jobs = jobSnapshot.docs.map((document) => bulkBoardDashboardDocument(
+      document.id,
+      document.data() as Record<string, unknown>,
+    ));
+    const latestJobId = textFromUnknown(jobs[0]?.['id']);
+    const itemSnapshot = latestJobId
+      ? await db.collection('board_generation_items').where('job_id', '==', latestJobId).limit(500).get()
+      : null;
+    const items = itemSnapshot?.docs.map((document) => bulkBoardDashboardDocument(
+      document.id,
+      document.data() as Record<string, unknown>,
+    )) ?? [];
+    const boards = boardSnapshot.docs
+      .map((document) => {
+        const data = document.data() as Record<string, unknown>;
+        return bulkBoardDashboardDocument(document.id, {
+          title: textFromUnknown(data.title),
+          atlas_id: textFromUnknown(data.atlas_id),
+          generated_for_atlas_id: textFromUnknown(data.generated_for_atlas_id),
+          generation_job_id: textFromUnknown(data.generation_job_id),
+          generation_key: textFromUnknown(data.generation_key),
+          template_id: textFromUnknown(data.template_id),
+          template_version: textFromUnknown(data.template_version),
+          rubric_version: textFromUnknown(data.rubric_version),
+          editorial_status: textFromUnknown(data.editorial_status),
+          city_listing_status: textFromUnknown(data.city_listing_status),
+          source_status: textFromUnknown(data.source_status),
+          quality_status: textFromUnknown(data.quality_status),
+          quality_warnings: Array.isArray(data.quality_warnings)
+            ? data.quality_warnings.map((warning) => textFromUnknown(warning)).filter(Boolean).slice(0, 20)
+            : [],
+          validation_summary: data.validation_summary ?? null,
+          visibility: textFromUnknown(data.visibility),
+          card_count: Array.isArray(data.cards) ? data.cards.length : 0,
+          created_at: data.created_at_iso ?? data.created_at,
+          updated_at: data.updated_at_iso ?? data.updated_at,
+          deleted_at: data.deleted_at,
+          deletion_reason: textFromUnknown(data.deletion_reason),
+        });
+      })
+      .sort((left, right) => String(right.updated_at ?? '').localeCompare(String(left.updated_at ?? '')));
+
+    return {
+      generatorVersion: '1.0.0',
+      rubricVersion: BULK_BOARD_RUBRIC_VERSION,
+      cities,
+      jobs,
+      items,
+      boards,
+    };
+  },
+);
+
+export const startBulkBoardGeneration = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 120, memory: '1GiB' },
+  async (request) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const requestingUserId = request.auth.uid;
+    await assertPlatformAdmin(requestingUserId);
+
+    let template;
+    try {
+      template = normalizeBulkBoardTemplate(request.data?.template);
+    } catch (error) {
+      throw new HttpsError('invalid-argument', error instanceof Error ? error.message : String(error));
+    }
+    const requestedCityIds: unknown[] = Array.isArray(request.data?.cityIds) ? request.data.cityIds : [];
+    const cityIds: string[] = Array.from(new Set(
+      requestedCityIds
+        .map((value: unknown) => textFromUnknown(value).slice(0, 160))
+        .filter(Boolean),
+    )).slice(0, 300);
+    if (!cityIds.length) {
+      throw new HttpsError('invalid-argument', 'Select at least one city.');
+    }
+
+    const atlasSnapshots = await db.getAll(...cityIds.map((atlasId) => db.collection('atlases').doc(atlasId)));
+    const eligible = atlasSnapshots.filter((snapshot) => {
+      const atlas = snapshot.data() as Record<string, unknown> | undefined;
+      const config = atlas?.city_config && typeof atlas.city_config === 'object'
+        ? atlas.city_config as Record<string, unknown>
+        : {};
+      return snapshot.exists && atlas?.is_public === true && config.enabled === true;
+    });
+    if (eligible.length !== cityIds.length) {
+      throw new HttpsError('failed-precondition', 'One or more selected cities are no longer eligible. Refresh and try again.');
+    }
+
+    const checks = eligible.map((atlasSnapshot) => {
+      const generationKey = bulkBoardGenerationKey(atlasSnapshot.id, template);
+      return {
+        atlasSnapshot,
+        generationKey,
+        boardRef: db.collection('boards').doc(`bulk_${createHash('sha256').update(generationKey).digest('hex').slice(0, 28)}`),
+        suppressionRef: db.collection('board_generation_suppressions').doc(bulkBoardSuppressionId(generationKey)),
+      };
+    });
+    const [existingBoards, suppressions] = await Promise.all([
+      db.getAll(...checks.map((check) => check.boardRef)),
+      db.getAll(...checks.map((check) => check.suppressionRef)),
+    ]);
+    const existingCount = existingBoards.filter((snapshot) => snapshot.exists && !snapshot.data()?.deleted_at).length;
+    const suppressedCount = suppressions.filter((snapshot) => snapshot.exists && snapshot.data()?.active !== false).length;
+
+    if (request.data?.dryRun === true) {
+      return {
+        dryRun: true,
+        requestedCount: cityIds.length,
+        eligibleCount: eligible.length,
+        readyCount: Math.max(0, eligible.length - existingCount - suppressedCount),
+        existingCount,
+        suppressedCount,
+        template,
+      };
+    }
+
+    const jobRef = db.collection('board_generation_jobs').doc();
+    await db.runTransaction(async (transaction) => {
+      const lockRef = db.collection('board_generation_locks').doc('active');
+      const lockSnapshot = await transaction.get(lockRef);
+      const lockedJobId = textFromUnknown(lockSnapshot.data()?.job_id);
+      if (lockedJobId) {
+        const lockedJobSnapshot = await transaction.get(db.collection('board_generation_jobs').doc(lockedJobId));
+        if (lockedJobSnapshot.data()?.status === 'running') {
+          throw new HttpsError('already-exists', 'Another bulk board generation job is already running.');
+        }
+      }
+      transaction.set(jobRef, {
+        requested_by_user_id: requestingUserId,
+        template,
+        rubric_version: BULK_BOARD_RUBRIC_VERSION,
+        generator_version: '1.0.0',
+        status: 'running',
+        cancel_requested: false,
+        total_count: eligible.length,
+        completed_count: 0,
+        success_count: 0,
+        failed_count: 0,
+        skipped_count: 0,
+        cancelled_count: 0,
+        city_ids: cityIds,
+        created_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      transaction.set(lockRef, {
+        job_id: jobRef.id,
+        acquired_by_user_id: requestingUserId,
+        acquired_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      for (const check of checks) {
+        const atlas = check.atlasSnapshot.data() as Record<string, unknown>;
+        const config = atlas.city_config as Record<string, unknown>;
+        const itemId = `${jobRef.id}__${createHash('sha256').update(check.atlasSnapshot.id).digest('hex').slice(0, 20)}`;
+        transaction.set(db.collection('board_generation_items').doc(itemId), {
+          job_id: jobRef.id,
+          atlas_id: check.atlasSnapshot.id,
+          city_name: textFromUnknown(config.city_name) || textFromUnknown(atlas.name),
+          region_name: textFromUnknown(config.region_name),
+          template_id: template.id,
+          template_version: template.version,
+          generation_key: check.generationKey,
+          status: 'queued',
+          attempt_count: 0,
+          board_id: '',
+          error_code: '',
+          error_message: '',
+          created_at: FieldValue.serverTimestamp(),
+          updated_at: FieldValue.serverTimestamp(),
+        });
+      }
+    });
+    await db.collection('board_generation_audit').add({
+      action: 'job_started',
+      job_id: jobRef.id,
+      actor_user_id: requestingUserId,
+      city_count: eligible.length,
+      template_id: template.id,
+      template_version: template.version,
+      created_at: FieldValue.serverTimestamp(),
+    });
+    return { jobId: jobRef.id, cityCount: eligible.length, template };
+  },
+);
+
+export const retryBulkBoardGenerationItem = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 30 },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    const requestingUserId = request.auth.uid;
+    await assertPlatformAdmin(requestingUserId);
+    const itemId = textFromUnknown(request.data?.itemId).slice(0, 220);
+    if (!itemId) throw new HttpsError('invalid-argument', 'itemId is required.');
+    await db.runTransaction(async (transaction) => {
+      const itemRef = db.collection('board_generation_items').doc(itemId);
+      const itemSnapshot = await transaction.get(itemRef);
+      const item = (itemSnapshot.data() ?? {}) as Record<string, unknown>;
+      const itemStatus = textFromUnknown(item.status);
+      const itemUpdatedAt = Date.parse(timestampToIso(item.updated_at) ?? '');
+      const staleRunning = itemStatus === 'running'
+        && Number.isFinite(itemUpdatedAt)
+        && itemUpdatedAt <= Date.now() - 12 * 60 * 1000;
+      if (!itemSnapshot.exists || (itemStatus !== 'failed' && !staleRunning)) {
+        throw new HttpsError('failed-precondition', 'Only failed or stale generation items can be retried.');
+      }
+      const jobId = textFromUnknown(item.job_id);
+      const jobRef = db.collection('board_generation_jobs').doc(jobId);
+      const jobSnapshot = await transaction.get(jobRef);
+      if (!jobSnapshot.exists) {
+        throw new HttpsError('failed-precondition', 'The generation job for this item no longer exists.');
+      }
+      const job = (jobSnapshot.data() ?? {}) as Record<string, unknown>;
+      const lockRef = db.collection('board_generation_locks').doc('active');
+      const lockSnapshot = await transaction.get(lockRef);
+      const lockedJobId = textFromUnknown(lockSnapshot.data()?.job_id);
+      if (lockedJobId && lockedJobId !== jobId) {
+        const lockedJobSnapshot = await transaction.get(db.collection('board_generation_jobs').doc(lockedJobId));
+        if (lockedJobSnapshot.data()?.status === 'running') {
+          throw new HttpsError('already-exists', 'Another bulk board generation job is already running.');
+        }
+      }
+      transaction.update(itemRef, {
+        status: 'queued',
+        error_code: '',
+        error_message: '',
+        completed_at: FieldValue.delete(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      transaction.update(jobRef, {
+        status: 'running',
+        cancel_requested: false,
+        completed_count: Math.max(0, Number(job.completed_count) - (itemStatus === 'failed' ? 1 : 0)),
+        failed_count: Math.max(0, Number(job.failed_count) - (itemStatus === 'failed' ? 1 : 0)),
+        completed_at: FieldValue.delete(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      transaction.set(lockRef, {
+        job_id: jobId,
+        acquired_by_user_id: requestingUserId,
+        acquired_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+    });
+    return { ok: true };
+  },
+);
+
+export const cancelBulkBoardGeneration = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 30 },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    await assertPlatformAdmin(request.auth.uid);
+    const jobId = textFromUnknown(request.data?.jobId).slice(0, 160);
+    if (!jobId) throw new HttpsError('invalid-argument', 'jobId is required.');
+    await db.collection('board_generation_jobs').doc(jobId).set({
+      cancel_requested: true,
+      updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+    return { ok: true };
+  },
+);
+
+export const manageCityBoard = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 60, memory: '1GiB' },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    const boardId = textFromUnknown(request.data?.boardId).slice(0, 160);
+    const action = textFromUnknown(request.data?.action) as BulkBoardAdminAction;
+    const reason = textFromUnknown(request.data?.reason).slice(0, 500);
+    if (!boardId || !['publish', 'remove_from_city', 'exclude_source', 'approve_source', 'trash', 'restore', 'permanent_delete'].includes(action)) {
+      throw new HttpsError('invalid-argument', 'A valid board and action are required.');
+    }
+    const boardRef = db.collection('boards').doc(boardId);
+    const boardSnapshot = await boardRef.get();
+    if (!boardSnapshot.exists) throw new HttpsError('not-found', 'Board not found.');
+    const board = boardSnapshot.data() as Record<string, unknown>;
+    const atlasId = textFromUnknown(board.atlas_id || board.generated_for_atlas_id);
+    if (!atlasId) throw new HttpsError('failed-precondition', 'This board is not associated with a city.');
+    await assertBulkBoardAtlasAccess(request.auth.uid, atlasId);
+    const userSnapshot = await db.collection('users').doc(request.auth.uid).get();
+    const isPlatformAdmin = userSnapshot.data()?.role === 'admin';
+    const isGeneratedBoard = board.origin === 'bulk_generator';
+    if (['publish', 'trash', 'restore'].includes(action) && !isGeneratedBoard && !isPlatformAdmin
+      && textFromUnknown(board.owner_user_id) !== request.auth.uid) {
+      throw new HttpsError('permission-denied', 'City admins may moderate city association, but cannot delete another user’s board.');
+    }
+    if (action === 'permanent_delete' && !isPlatformAdmin) {
+      throw new HttpsError('permission-denied', 'Only a platform admin can permanently delete a board.');
+    }
+
+    const nowIso = new Date().toISOString();
+    const common = {
+      updated_at_iso: nowIso,
+      server_updated_at: FieldValue.serverTimestamp(),
+    };
+    let updates: Record<string, unknown> = {};
+    let restoredGenerationKey = '';
+    switch (action) {
+      case 'publish': {
+        if (board.deleted_at) throw new HttpsError('failed-precondition', 'Restore this board before publishing it.');
+        const summary = board.validation_summary && typeof board.validation_summary === 'object'
+          ? board.validation_summary as Record<string, unknown>
+          : {};
+        if (Number(summary.verified_count) !== (Array.isArray(board.cards) ? board.cards.length : 0)) {
+          throw new HttpsError('failed-precondition', 'This board has not passed place validation.');
+        }
+        updates = {
+          ...common,
+          visibility: 'public',
+          editorial_status: 'published',
+          city_listing_status: 'listed',
+          approved_by_user_id: request.auth.uid,
+          approved_at: FieldValue.serverTimestamp(),
+        };
+        break;
+      }
+      case 'remove_from_city':
+        updates = { ...common, city_listing_status: 'removed', source_status: 'excluded' };
+        break;
+      case 'exclude_source':
+        updates = { ...common, source_status: 'excluded' };
+        break;
+      case 'approve_source':
+        if (board.editorial_status !== 'published') {
+          throw new HttpsError('failed-precondition', 'Publish and review the board before approving it as a source.');
+        }
+        updates = { ...common, source_status: 'approved' };
+        break;
+      case 'trash': {
+        const generationKey = textFromUnknown(board.generation_key);
+        updates = {
+          ...common,
+          visibility: 'private',
+          editorial_status: 'archived',
+          city_listing_status: 'removed',
+          source_status: 'excluded',
+          deleted_at: FieldValue.serverTimestamp(),
+          deleted_by_user_id: request.auth.uid,
+          deletion_reason: reason || 'Moved to trash by an admin.',
+          deletion_snapshot: {
+            visibility: textFromUnknown(board.visibility) || 'private',
+            editorial_status: textFromUnknown(board.editorial_status) || 'needs_review',
+            city_listing_status: textFromUnknown(board.city_listing_status) || 'pending',
+            source_status: textFromUnknown(board.source_status) || 'excluded',
+          },
+        };
+        if (generationKey) {
+          await db.collection('board_generation_suppressions').doc(bulkBoardSuppressionId(generationKey)).set({
+            active: true,
+            generation_key: generationKey,
+            atlas_id: atlasId,
+            board_id: boardId,
+            reason: reason || 'Board moved to trash.',
+            created_by_user_id: request.auth.uid,
+            created_at: FieldValue.serverTimestamp(),
+            updated_at: FieldValue.serverTimestamp(),
+          }, { merge: true });
+        }
+        break;
+      }
+      case 'restore': {
+        if (!board.deleted_at) throw new HttpsError('failed-precondition', 'This board is not in trash.');
+        updates = {
+          ...common,
+          visibility: 'private',
+          editorial_status: 'needs_review',
+          city_listing_status: 'pending',
+          source_status: 'excluded',
+          deleted_at: null,
+          deleted_by_user_id: '',
+          deletion_reason: '',
+          deletion_snapshot: FieldValue.delete(),
+        };
+        const generationKey = textFromUnknown(board.generation_key);
+        if (generationKey) {
+          restoredGenerationKey = generationKey;
+        }
+        break;
+      }
+      case 'permanent_delete': {
+        if (!board.deleted_at) throw new HttpsError('failed-precondition', 'Move the board to trash before permanently deleting it.');
+        const dependencyCollections = ['board_translations', 'board_quiz_attempts', 'visit_plans'];
+        for (const collectionName of dependencyCollections) {
+          while (true) {
+            const snapshot = await db.collection(collectionName).where('board_id', '==', boardId).limit(400).get();
+            if (snapshot.empty) break;
+            const batch = db.batch();
+            snapshot.docs.forEach((document) => batch.delete(document.ref));
+            await batch.commit();
+          }
+        }
+        const deletionBatch = db.batch();
+        deletionBatch.set(db.collection('board_generation_audit').doc(), {
+          action,
+          board_id: boardId,
+          atlas_id: atlasId,
+          actor_user_id: request.auth.uid,
+          reason,
+          generation_key: textFromUnknown(board.generation_key),
+          created_at: FieldValue.serverTimestamp(),
+        });
+        deletionBatch.delete(boardRef);
+        await deletionBatch.commit();
+        return { ok: true, deleted: true };
+      }
+    }
+    const mutationBatch = db.batch();
+    mutationBatch.update(boardRef, updates);
+    mutationBatch.set(db.collection('board_generation_audit').doc(), {
+      action,
+      board_id: boardId,
+      atlas_id: atlasId,
+      actor_user_id: request.auth.uid,
+      reason,
+      previous_state: {
+        visibility: textFromUnknown(board.visibility),
+        editorial_status: textFromUnknown(board.editorial_status),
+        city_listing_status: textFromUnknown(board.city_listing_status),
+        source_status: textFromUnknown(board.source_status),
+      },
+      created_at: FieldValue.serverTimestamp(),
+    });
+    await mutationBatch.commit();
+    if (restoredGenerationKey) {
+      await db.collection('board_generation_suppressions').doc(bulkBoardSuppressionId(restoredGenerationKey)).set({
+        active: false,
+        restored_by_user_id: request.auth.uid,
+        restored_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+    }
+    return { ok: true };
+  },
+);
+
+const bulkBoardWorkerOptions = {
+  region: callableRegion,
+  document: 'board_generation_items/{itemId}',
+  timeoutSeconds: 540,
+  memory: '2GiB' as const,
+  concurrency: 1,
+  maxInstances: 5,
+  secrets: [geminiApiKey, googlePlacesApiKey],
+};
+
+export const generateBulkCityBoard = onDocumentCreated(
+  bulkBoardWorkerOptions,
+  async (event) => {
+    if (!event.data) return;
+    await processBulkBoardGenerationItem(event.params.itemId, googlePlacesApiKey.value());
+  },
+);
+
+export const retryBulkCityBoard = onDocumentUpdated(
+  bulkBoardWorkerOptions,
+  async (event) => {
+    const before = event.data?.before.data();
+    const after = event.data?.after.data();
+    if (!after || after.status !== 'queued' || before?.status === 'queued') return;
+    await processBulkBoardGenerationItem(event.params.itemId, googlePlacesApiKey.value());
   },
 );
 

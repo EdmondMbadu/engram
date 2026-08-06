@@ -158,6 +158,12 @@ export const routes: Routes = [
   },
   { path: 'atlases', component: AtlasManageComponent, title: $localize`Atlas Settings | LivingWiki`, canActivate: [authGuard] },
   { path: 'admin/users', component: AdminUsersComponent, title: $localize`Users | LivingWiki`, canActivate: [adminGuard] },
+  {
+    path: 'admin/city-board-factory',
+    loadComponent: () => import('./bulk-board-admin/bulk-board-admin').then((m) => m.BulkBoardAdminComponent),
+    title: 'City Board Factory | LivingWiki',
+    canActivate: [adminGuard],
+  },
   { path: 'atlases/:atlasId/persona', component: AtlasPersonaComponent, title: $localize`Wiki Voice | LivingWiki`, canActivate: [authGuard] },
   { path: 'atlas/:slug/green-jobs', component: GreenJobsComponent, title: $localize`Philly Green Jobs | LivingWiki` },
   { path: 'atlas/:slug/worldometers', component: CityPulseAdminComponent, title: $localize`Worldometers Maintenance | LivingWiki` },

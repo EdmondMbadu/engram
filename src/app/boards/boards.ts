@@ -1197,6 +1197,7 @@ export class BoardsComponent implements OnDestroy {
   private readonly firestore: Firestore | null = this.isBrowser ? getFirebaseFirestore() : null;
   private readonly functions: Functions | null = this.isBrowser ? getFirebaseFunctions() : null;
   private readonly storage: FirebaseStorage | null = this.isBrowser ? getFirebaseStorage() : null;
+  readonly isPlatformAdmin = this.authService.isAdmin;
   private hasLoaded = false;
   private loadedStoredLocalBoards = false;
   private placeSearchTimer: ReturnType<typeof setTimeout> | null = null;
@@ -4404,6 +4405,12 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.boardDeleteCandidate.set(board);
+  }
+
+  openBoardAdmin(board: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    void this.router.navigate(['/admin/city-board-factory'], { queryParams: { board: board.id } });
   }
 
   closeBoardDeleteDialog(event?: Event): void {

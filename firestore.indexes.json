@@ -130,6 +130,32 @@
         { "fieldPath": "atlas_id", "order": "ASCENDING" },
         { "fieldPath": "last_updated", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "boards",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "atlas_id", "order": "ASCENDING" },
+        { "fieldPath": "city_listing_status", "order": "ASCENDING" },
+        { "fieldPath": "updated_at_iso", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "boards",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "origin", "order": "ASCENDING" },
+        { "fieldPath": "updated_at_iso", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "board_generation_items",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "job_id", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "updated_at", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
