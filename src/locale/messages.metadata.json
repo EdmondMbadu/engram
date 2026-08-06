@@ -583,6 +583,10 @@
     "source": "The Marvel & DC Cinematic Universe",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "1401297377025534068": {
+    "source": "Open public video link",
+    "file": "src/app/video-library/video-library.html"
+  },
   "1404563908210027739": {
     "source": "Move stop earlier",
     "file": "src/app/boards/boards.html"
@@ -1398,6 +1402,10 @@
   "1942764235305429174": {
     "source": "1 request every 1.1 seconds between articles.",
     "file": "src/app/web-scraper/web-scraper.html"
+  },
+  "1946057653061100680": {
+    "source": "Copy public link",
+    "file": "src/app/video-library/video-library.html"
   },
   "1950875832040824729": {
     "source": "Business page",
@@ -4374,6 +4382,10 @@
   "3894950702316166331": {
     "source": "Loading...",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "3897118902958268539": {
+    "source": "Publish in Studio",
+    "file": "src/app/video-library/video-library.html"
   },
   "3898763300307281411": {
     "source": " Remembered it? {$START_TAG_BUTTON}Return to sign in{$CLOSE_TAG_BUTTON}",
@@ -9607,6 +9619,10 @@
     "source": "Full video narration is available on paid plans.",
     "file": "src/app/boards/boards.ts"
   },
+  "7410087971193228836": {
+    "source": "Not published yet",
+    "file": "src/app/video-library/video-library.html"
+  },
   "7410470931053054860": {
     "source": "Official Spotify player",
     "file": "src/app/boards/boards.html"
@@ -12166,6 +12182,10 @@
   "920232928891867801": {
     "source": " Included ",
     "file": "src/app/pricing/pricing.html"
+  },
+  "9203624695497087561": {
+    "source": "Public video link",
+    "file": "src/app/video-library/video-library.html"
   },
   "9203853982818549778": {
     "source": "Delete board",

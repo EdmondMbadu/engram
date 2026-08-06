@@ -40,7 +40,7 @@ describe('VideoLibraryComponent', () => {
     videoUrl: 'https://example.com/video.mp4',
     storagePath: 'users/user-1/video-library/boards/board-1/latest.mp4',
     publicStoragePath: '',
-    publicShareUrl: '',
+    publicShareUrl: 'https://www.livingwiki.com/share/board/board-1/video?v=latest',
     mimeType: 'video/mp4',
     ratio: 'vertical',
     durationSeconds: 42,
@@ -92,6 +92,9 @@ describe('VideoLibraryComponent', () => {
     expect(fixture.nativeElement.querySelector('h3')?.textContent).toContain('Odysseus');
     expect(fixture.nativeElement.textContent).toContain('Current version');
     expect(fixture.nativeElement.textContent).toContain('0:42');
+    expect(fixture.nativeElement.querySelector('.video-library-link input')?.value)
+      .toBe('https://www.livingwiki.com/share/board/board-1/video?v=latest');
+    expect(fixture.nativeElement.textContent).toContain('Copy link');
 
     fixture.nativeElement.querySelector('.video-library-poster').click();
     fixture.detectChanges();

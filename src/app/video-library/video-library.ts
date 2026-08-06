@@ -148,6 +148,31 @@ export class VideoLibraryComponent {
     }
   }
 
+  async copyPublicLink(item: VideoLibraryItem): Promise<void> {
+    if (!item.publicShareUrl) {
+      this.message.set('Publish this video from Board Studio to create a public video link.');
+      return;
+    }
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(item.publicShareUrl);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = item.publicShareUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        const copied = document.execCommand('copy');
+        textArea.remove();
+        if (!copied) throw new Error('Copy was blocked.');
+      }
+      this.message.set('Public video link copied.');
+    } catch {
+      this.message.set('The link could not be copied. Select the address and copy it manually.');
+    }
+  }
+
   requestDelete(item: VideoLibraryItem): void {
     this.deleteCandidate.set(item);
   }

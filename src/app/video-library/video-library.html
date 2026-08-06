@@ -138,6 +138,41 @@
                         </div>
                       }
 
+                      <div class="video-library-link" [class.video-library-link--empty]="!item.publicShareUrl">
+                        <div>
+                          <span class="material-symbols-outlined">link</span>
+                          <span>
+                            <strong i18n>Public video link</strong>
+                            @if (item.publicShareUrl) {
+                              <input
+                                type="text"
+                                readonly
+                                [value]="item.publicShareUrl"
+                                (focus)="$any($event.target).select()"
+                                aria-label="Public video link"
+                                i18n-aria-label
+                              />
+                            } @else {
+                              <small i18n>Not published yet</small>
+                            }
+                          </span>
+                        </div>
+                        @if (item.publicShareUrl) {
+                          <div class="video-library-link__actions">
+                            <a [href]="item.publicShareUrl" target="_blank" rel="noopener" aria-label="Open public video link" i18n-aria-label>
+                              <span class="material-symbols-outlined">open_in_new</span><span i18n>Open</span>
+                            </a>
+                            <button type="button" (click)="copyPublicLink(item)">
+                              <span class="material-symbols-outlined">content_copy</span><span i18n>Copy link</span>
+                            </button>
+                          </div>
+                        } @else if (item.sourceAvailable) {
+                          <button type="button" class="video-library-link__publish" (click)="openStudio(item)">
+                            <span class="material-symbols-outlined">publish</span><span i18n>Publish in Studio</span>
+                          </button>
+                        }
+                      </div>
+
                       <div class="video-library-actions">
                         <button type="button" class="video-library-actions__primary" (click)="play(item)">
                           <span class="material-symbols-outlined">play_arrow</span><span i18n>Play</span>
@@ -184,6 +219,9 @@
       <footer>
         <button type="button" (click)="share(video)"><span class="material-symbols-outlined">ios_share</span><span i18n>Share</span></button>
         <button type="button" (click)="download(video)"><span class="material-symbols-outlined">download</span><span i18n>Download</span></button>
+        @if (video.publicShareUrl) {
+          <button type="button" (click)="copyPublicLink(video)"><span class="material-symbols-outlined">content_copy</span><span i18n>Copy public link</span></button>
+        }
         @if (video.sourceAvailable) {
           <button type="button" (click)="openStudio(video)"><span class="material-symbols-outlined">movie_edit</span><span i18n>Regenerate</span></button>
         }

@@ -1,6 +1,11 @@
 {
   "locale": "fr",
   "translations": {
+    "1401297377025534068": "Ouvrir le lien vidéo public",
+    "1946057653061100680": "Copier le lien public",
+    "3897118902958268539": "Publier dans Studio",
+    "7410087971193228836": "Pas encore publiée",
+    "9203624695497087561": "Lien vidéo public",
     "1167656259347983543": "Vidéos enregistrées",
     "1315625787188038913": "Commandes de la vidéothèque",
     "1755282281769141570": "Créer une vidéo de tableau",

@@ -157,6 +157,34 @@
 .video-library-status--neutral { color: var(--muted); }
 .video-library-status .material-symbols-outlined { font-size: 1rem; }
 
+.video-library-link {
+  display: grid;
+  gap: .6rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: .9rem;
+  background: color-mix(in srgb, var(--accent) 6%, var(--soft-fill));
+  padding: .7rem;
+}
+
+.video-library-link--empty { border-color: var(--line); background: var(--soft-fill); }
+.video-library-link > div:first-child { display: flex; min-width: 0; align-items: start; gap: .45rem; }
+.video-library-link > div:first-child > .material-symbols-outlined { margin-top: .05rem; color: var(--accent); font-size: 1rem; }
+.video-library-link > div:first-child > span { display: grid; min-width: 0; flex: 1; gap: .25rem; }
+.video-library-link strong { font-size: .68rem; font-weight: 950; }
+.video-library-link small { color: var(--muted); font-size: .68rem; font-weight: 750; }
+.video-library-link input { width: 100%; min-width: 0; overflow: hidden; border: 0; background: transparent; color: var(--muted); font-size: .66rem; font-weight: 700; outline: none; text-overflow: ellipsis; }
+.video-library-link input:focus { color: var(--text); }
+.video-library-link__actions { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+.video-library-link__actions a,
+.video-library-link__actions button,
+.video-library-link__publish { display: flex; align-items: center; justify-content: center; gap: .3rem; border: 1px solid var(--line); border-radius: .65rem; padding: .45rem .55rem; color: var(--muted); font-size: .65rem; font-weight: 900; }
+.video-library-link__actions a:hover,
+.video-library-link__actions button:hover,
+.video-library-link__publish:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--accent); }
+.video-library-link__actions .material-symbols-outlined,
+.video-library-link__publish .material-symbols-outlined { font-size: .85rem; }
+.video-library-link__publish { width: 100%; }
+
 .video-library-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }
 .video-library-actions button { display: flex; min-width: 0; align-items: center; justify-content: center; gap: .3rem; border: 1px solid var(--line); border-radius: .75rem; padding: .58rem .4rem; color: var(--muted); font-size: .68rem; font-weight: 900; }
 .video-library-actions button:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); color: var(--text); }
