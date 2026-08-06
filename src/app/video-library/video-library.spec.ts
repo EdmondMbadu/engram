@@ -109,4 +109,24 @@ describe('VideoLibraryComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Your generated videos will appear here automatically.');
     expect(fixture.nativeElement.querySelector('a[href="/boards"]')).not.toBeNull();
   });
+
+  it('contains long titles and keeps every video action inside the card', async () => {
+    const longTitle = "Avengers Franchise: The Earth's Mightiest Heroes and Their Greatest Battles";
+    loadItems.and.resolveTo([{ ...item, sourceTitle: longTitle }]);
+    await createComponent();
+
+    const title = fixture.nativeElement.querySelector('.video-library-card__heading h3') as HTMLElement;
+    const actions = fixture.nativeElement.querySelector('.video-library-actions') as HTMLElement;
+    const buttons = actions.querySelectorAll('button');
+    const download = buttons.item(2) as HTMLElement;
+    const titleStyle = getComputedStyle(title);
+
+    expect(title.textContent).toContain(longTitle);
+    expect(titleStyle.overflow).toBe('hidden');
+    expect(titleStyle.getPropertyValue('-webkit-line-clamp')).toBe('2');
+    expect(buttons.length).toBe(3);
+    expect(download.textContent).toContain('Download');
+    expect(download.getBoundingClientRect().right)
+      .toBeLessThanOrEqual(actions.getBoundingClientRect().right + 0.5);
+  });
 });
