@@ -1409,37 +1409,94 @@
           }
 
           @if (!isSongBoard(board) && canEditBoard(board) && isManagingBoard(board.id)) {
-            <section class="board-inside-display" aria-label="Card numbering setting">
-              <div class="board-inside-display__copy">
-                <span class="material-symbols-outlined">format_list_numbered</span>
+            <section
+              class="board-inside-display"
+              style="display: grid; align-items: stretch; gap: .75rem; padding: .8rem;"
+              [attr.aria-labelledby]="'board-settings-title-' + board.id"
+            >
+              <header class="board-inside-display__copy">
+                <span class="material-symbols-outlined">settings</span>
                 <span>
-                  <strong>Show card numbers</strong>
-                  <small>
-                    {{ boardCardNumbersSavingId() === board.id ? 'Saving…' : 'Applies to the board, Live View, tours, and generated video.' }}
-                  </small>
+                  <strong [id]="'board-settings-title-' + board.id">Board settings</strong>
+                  <small>Presentation choices save automatically for this board.</small>
                 </span>
-              </div>
-              <div class="board-inside-display__switch" role="group" aria-label="Show card numbers">
-                <button
-                  type="button"
-                  [disabled]="boardCardNumbersSavingId() === board.id"
-                  [class.board-inside-display__option--active]="boardShowsCardNumbers(board)"
-                  [attr.aria-pressed]="boardShowsCardNumbers(board)"
-                  (click)="setBoardShowCardNumbers(board, true, $event)"
-                >
-                  <span class="material-symbols-outlined">filter_1</span>
-                  <span><strong>Show</strong><small>Display card sequence numbers</small></span>
-                </button>
-                <button
-                  type="button"
-                  [disabled]="boardCardNumbersSavingId() === board.id"
-                  [class.board-inside-display__option--active]="!boardShowsCardNumbers(board)"
-                  [attr.aria-pressed]="!boardShowsCardNumbers(board)"
-                  (click)="setBoardShowCardNumbers(board, false, $event)"
-                >
-                  <span class="material-symbols-outlined">format_list_bulleted</span>
-                  <span><strong>Hide</strong><small>Remove numbers everywhere</small></span>
-                </button>
+              </header>
+              <div style="display: grid; gap: .6rem;">
+                <div class="board-inside-display" style="margin: 0; background: #ffffff;" aria-label="Card numbering setting">
+                  <div class="board-inside-display__copy">
+                    <span class="material-symbols-outlined">format_list_numbered</span>
+                    <span>
+                      <strong>Card numbers</strong>
+                      <small>
+                        {{ boardCardNumbersSavingId() === board.id ? 'Saving…' : 'Controls the board, Live View, tours, Learn, and generated video.' }}
+                      </small>
+                    </span>
+                  </div>
+                  <div class="board-inside-display__switch" role="group" aria-label="Card numbers">
+                    <button
+                      type="button"
+                      [disabled]="boardCardNumbersSavingId() === board.id"
+                      [class.board-inside-display__option--active]="boardShowsCardNumbers(board)"
+                      [attr.aria-pressed]="boardShowsCardNumbers(board)"
+                      (click)="setBoardShowCardNumbers(board, true, $event)"
+                    >
+                      <span class="material-symbols-outlined">filter_1</span>
+                      <span><strong>Show</strong><small>Display sequence numbers</small></span>
+                    </button>
+                    <button
+                      type="button"
+                      [disabled]="boardCardNumbersSavingId() === board.id"
+                      [class.board-inside-display__option--active]="!boardShowsCardNumbers(board)"
+                      [attr.aria-pressed]="!boardShowsCardNumbers(board)"
+                      (click)="setBoardShowCardNumbers(board, false, $event)"
+                    >
+                      <span class="material-symbols-outlined">format_list_bulleted</span>
+                      <span><strong>Hide</strong><small>Remove sequence numbers</small></span>
+                    </button>
+                  </div>
+                </div>
+
+                @if (!exploredRelatedCardParent() && boardHasCardsInside(board)) {
+                  <div class="board-inside-display" style="margin: 0; background: #ffffff;" aria-label="Cards inside placement setting">
+                    <div class="board-inside-display__copy">
+                      <span class="material-symbols-outlined">account_tree</span>
+                      <span>
+                        <strong>Cards inside placement</strong>
+                        <small>
+                          {{ boardInsideDisplaySavingId() === board.id ? 'Saving…' : 'Choose where a board created inside a card appears.' }}
+                        </small>
+                      </span>
+                    </div>
+                    <div class="board-inside-display__switch" role="group" aria-label="Cards inside placement">
+                      <button
+                        type="button"
+                        [disabled]="boardInsideDisplaySavingId() === board.id"
+                        [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'nested'"
+                        [attr.aria-pressed]="boardInsideDisplay(board) === 'nested'"
+                        (click)="setBoardInsideDisplay(board, 'nested', $event)"
+                      >
+                        <span class="material-symbols-outlined">subdirectory_arrow_right</span>
+                        <span>
+                          <strong>Inside parent</strong>
+                          <small>Default · Open from its parent card</small>
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        [disabled]="boardInsideDisplaySavingId() === board.id"
+                        [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'alongside'"
+                        [attr.aria-pressed]="boardInsideDisplay(board) === 'alongside'"
+                        (click)="setBoardInsideDisplay(board, 'alongside', $event)"
+                      >
+                        <span class="material-symbols-outlined">view_module</span>
+                        <span>
+                          <strong>Alongside cards</strong>
+                          <small>Show the opened inside board in this grid</small>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                }
               </div>
             </section>
             <div class="board-bulk-actions">
@@ -1462,47 +1519,6 @@
                 </button>
               </div>
             </div>
-            @if (!exploredRelatedCardParent() && boardHasCardsInside(board)) {
-              <section class="board-inside-display" aria-label="Cards inside display setting">
-                <div class="board-inside-display__copy">
-                  <span class="material-symbols-outlined">account_tree</span>
-                  <span>
-                    <strong>Show cards inside</strong>
-                    <small>
-                      {{ boardInsideDisplaySavingId() === board.id ? 'Saving…' : 'Saved automatically for this board.' }}
-                    </small>
-                  </span>
-                </div>
-                <div class="board-inside-display__switch" role="group" aria-label="Show cards inside">
-                  <button
-                    type="button"
-                    [disabled]="boardInsideDisplaySavingId() === board.id"
-                    [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'nested'"
-                    [attr.aria-pressed]="boardInsideDisplay(board) === 'nested'"
-                    (click)="setBoardInsideDisplay(board, 'nested', $event)"
-                  >
-                    <span class="material-symbols-outlined">subdirectory_arrow_right</span>
-                    <span>
-                      <strong>Inside their parent</strong>
-                      <small>Open the board from its parent card</small>
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    [disabled]="boardInsideDisplaySavingId() === board.id"
-                    [class.board-inside-display__option--active]="boardInsideDisplay(board) === 'alongside'"
-                    [attr.aria-pressed]="boardInsideDisplay(board) === 'alongside'"
-                    (click)="setBoardInsideDisplay(board, 'alongside', $event)"
-                  >
-                    <span class="material-symbols-outlined">view_module</span>
-                    <span>
-                      <strong>Alongside board cards</strong>
-                      <small>Select Board inside on a card to show it here</small>
-                    </span>
-                  </button>
-                </div>
-              </section>
-            }
           }
 
           @if (isTourBoard(board) && !exploredRelatedCardParent()) {

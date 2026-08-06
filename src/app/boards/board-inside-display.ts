@@ -13,7 +13,7 @@ type ChildBoard<Card> = {
 };
 
 export function normalizeBoardInsideDisplay(value: unknown): BoardInsideDisplay {
-  return value === 'nested' ? 'nested' : 'alongside';
+  return value === 'alongside' ? 'alongside' : 'nested';
 }
 
 export function cardsForBoardInsideDisplay<Card extends CardWithChildBoard>(

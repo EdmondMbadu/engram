@@ -15,9 +15,10 @@ describe('board-inside display', () => {
     cards: [{ id: 'inside-1' }, { id: 'inside-2' }],
   }];
 
-  it('defaults unsaved preferences to alongside while preserving an explicit nested choice', () => {
-    expect(normalizeBoardInsideDisplay(undefined)).toBe('alongside');
+  it('defaults unsaved preferences to nested while preserving an explicit alongside choice', () => {
+    expect(normalizeBoardInsideDisplay(undefined)).toBe('nested');
     expect(normalizeBoardInsideDisplay('nested')).toBe('nested');
+    expect(normalizeBoardInsideDisplay('alongside')).toBe('alongside');
     expect(cardsForBoardInsideDisplay('board-1', parentCards, childBoards, 'nested'))
       .toEqual(parentCards);
   });
