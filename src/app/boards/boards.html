@@ -6885,7 +6885,7 @@
                   (change)="updateCardDraft('type', $any($event.target).value)"
                 >
                   @for (type of cardTypes; track type.id) {
-                    <option [value]="type.id">{{ type.label }}</option>
+                    <option [value]="type.id" [selected]="type.id === cardDraft().type">{{ type.label }}</option>
                   }
                 </select>
               </label>
@@ -7240,7 +7240,7 @@
                 (change)="updateRelatedCardDraft('type', $any($event.target).value)"
               >
                 @for (type of cardTypes; track type.id) {
-                  <option [value]="type.id">{{ type.label }}</option>
+                  <option [value]="type.id" [selected]="type.id === relatedCardDraft().type">{{ type.label }}</option>
                 }
               </select>
             </label>
