@@ -407,6 +407,7 @@ service cloud.firestore {
           'parentBoardTitle',
           'parentCardTitle',
           'insideCardsDisplay',
+          'showCardNumbers',
           'cards',
           'created_at_iso',
           'updated_at_iso',
@@ -511,6 +512,10 @@ service cloud.firestore {
         && (
           !request.resource.data.keys().hasAny(['insideCardsDisplay'])
           || request.resource.data.insideCardsDisplay in ['nested', 'alongside']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['showCardNumbers'])
+          || request.resource.data.showCardNumbers is bool
         )
         && request.resource.data.stickers is list
         && request.resource.data.stickers.size() <= 48

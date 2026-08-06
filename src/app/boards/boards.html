@@ -93,12 +93,14 @@
                     @if (!isPhotoOnlyCard(card)) {
                       <div class="stack-preview__shade"></div>
                       <div class="stack-preview__content">
-                        <span>{{ stackCardEyebrow(card) }}</span>
+                        @if (stackCardEyebrow(board, card); as eyebrow) {
+                          <span>{{ eyebrow }}</span>
+                        }
                         <h4 [class]="stackTitleClass(card.title)">{{ card.title }}</h4>
-                        <p>{{ stackCardSummary(card) }}</p>
-                        @if (stackCardHasMore(card) || stackPlaying() || tourSpeechPlaying() || stackNarrationLoading()) {
+                        <p>{{ stackCardSummary(board, card) }}</p>
+                        @if (stackCardHasMore(board, card) || stackPlaying() || tourSpeechPlaying() || stackNarrationLoading()) {
                           <div class="stack-preview__inline-actions">
-                            @if (stackCardHasMore(card)) {
+                            @if (stackCardHasMore(board, card)) {
                               <button type="button" class="stack-preview__read-more" (click)="toggleStackCardDetails(card, $event)">
                                 {{ stackExpandedCardId() === card.id ? 'Close' : 'Read more' }}
                               </button>
@@ -983,7 +985,7 @@
                       <span class="material-symbols-outlined">{{ cardTypeIcon(item.card.type) }}</span>
                     </span>
                     <span class="board-square__meta board-square__meta--back">
-                      <strong>{{ item.card.notes || item.card.subtitle || item.card.title }}</strong>
+                      <strong>{{ item.card.notes || cardDisplaySubtitle(item.board, item.card) || item.card.title }}</strong>
                       <small>{{ item.card.title }} · {{ item.board.title }}</small>
                     </span>
                   </button>
@@ -1369,8 +1371,8 @@
                 }
                 @if (canEditBoard(board) && board.cards.length) {
                   <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
-                    <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'checklist' }}</span>
-                    {{ isManagingBoard(board.id) ? 'Done' : 'Manage' }}
+                    <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'settings' }}</span>
+                    {{ isManagingBoard(board.id) ? 'Done' : 'Settings' }}
                   </button>
                 }
                 @if (board.kind === 'off-grid') {
@@ -1407,6 +1409,39 @@
           }
 
           @if (!isSongBoard(board) && canEditBoard(board) && isManagingBoard(board.id)) {
+            <section class="board-inside-display" aria-label="Card numbering setting">
+              <div class="board-inside-display__copy">
+                <span class="material-symbols-outlined">format_list_numbered</span>
+                <span>
+                  <strong>Show card numbers</strong>
+                  <small>
+                    {{ boardCardNumbersSavingId() === board.id ? 'Saving…' : 'Applies to the board, Live View, tours, and generated video.' }}
+                  </small>
+                </span>
+              </div>
+              <div class="board-inside-display__switch" role="group" aria-label="Show card numbers">
+                <button
+                  type="button"
+                  [disabled]="boardCardNumbersSavingId() === board.id"
+                  [class.board-inside-display__option--active]="boardShowsCardNumbers(board)"
+                  [attr.aria-pressed]="boardShowsCardNumbers(board)"
+                  (click)="setBoardShowCardNumbers(board, true, $event)"
+                >
+                  <span class="material-symbols-outlined">filter_1</span>
+                  <span><strong>Show</strong><small>Display card sequence numbers</small></span>
+                </button>
+                <button
+                  type="button"
+                  [disabled]="boardCardNumbersSavingId() === board.id"
+                  [class.board-inside-display__option--active]="!boardShowsCardNumbers(board)"
+                  [attr.aria-pressed]="!boardShowsCardNumbers(board)"
+                  (click)="setBoardShowCardNumbers(board, false, $event)"
+                >
+                  <span class="material-symbols-outlined">format_list_bulleted</span>
+                  <span><strong>Hide</strong><small>Remove numbers everywhere</small></span>
+                </button>
+              </div>
+            </section>
             <div class="board-bulk-actions">
               <div>
                 <strong i18n>{{ selectedCardCount() }} selected</strong>
@@ -1715,7 +1750,9 @@
                           } @else {
                             <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                           }
-                          <span class="tour-stop-card__sequence">{{ card.tour?.sequence }}</span>
+                          @if (boardShowsCardNumbers(board)) {
+                            <span class="tour-stop-card__sequence">{{ card.tour?.sequence }}</span>
+                          }
                           @if (hasBoardInside(card) || relatedCardCount(card) > 0) {
                             <button
                               type="button"
@@ -2265,7 +2302,9 @@
                   (drop)="dropCardOnCard($event, board, card)"
                   (dragend)="clearCardReorderDrag()"
                 >
-                  <span class="detail-card__rank" aria-label="Rank {{ $index + 1 }}">{{ $index + 1 }}</span>
+                  @if (boardShowsCardNumbers(board)) {
+                    <span class="detail-card__rank" aria-label="Card {{ $index + 1 }}">{{ $index + 1 }}</span>
+                  }
                   @if (isAlongsideInnerCard(board, card)) {
                     <span class="detail-card__inside-context">
                       <button
@@ -2551,8 +2590,8 @@
                           <span class="detail-card__rating">{{ ratingStars(card.rating) }}</span>
                         </div>
                         <h2>{{ card.title }}</h2>
-                        @if (card.subtitle) {
-                          <p class="detail-card__subtitle">{{ card.subtitle }}</p>
+                        @if (cardDisplaySubtitle(board, card); as subtitle) {
+                          <p class="detail-card__subtitle">{{ subtitle }}</p>
                         }
                         @if (what3wordsAddressFor(card); as what3wordsAddress) {
                           <div class="off-grid-card-location">
@@ -2638,7 +2677,7 @@
                             </a>
                           }
                           <p class="detail-card__notes" style="-webkit-line-clamp: 8;">
-                            {{ card.notes || card.subtitle || 'Add notes, memories, details, or fun facts when editing this card.' }}
+                            {{ card.notes || cardDisplaySubtitle(board, card) || 'Add notes, memories, details, or fun facts when editing this card.' }}
                           </p>
                           @if (card.tags.length) {
                             <div class="detail-card__tags">
@@ -2876,7 +2915,11 @@
             @case ('study') {
               @if (boardLearnStudyCard(); as studyCard) {
                 <div class="board-learning__progress-row">
-                  <span i18n>Card {{ boardLearnStudyIndex() + 1 }} of {{ learnBoard.cards.length }}</span>
+                  @if (boardShowsCardNumbers(learnBoard)) {
+                    <span i18n>Card {{ boardLearnStudyIndex() + 1 }} of {{ learnBoard.cards.length }}</span>
+                  } @else {
+                    <span>Study card</span>
+                  }
                   <div class="board-learning__progress">
                     <span [style.width.%]="((boardLearnStudyIndex() + 1) / learnBoard.cards.length) * 100"></span>
                   </div>
@@ -2893,13 +2936,13 @@
                   <div class="board-study-card__content">
                     <span class="board-learning__eyebrow">{{ cardScopeLabel(studyCard.scope) }}</span>
                     <h3>{{ studyCard.title }}</h3>
-                    @if (studyCard.subtitle) {
-                      <p>{{ studyCard.subtitle }}</p>
+                    @if (cardDisplaySubtitle(learnBoard, studyCard); as subtitle) {
+                      <p>{{ subtitle }}</p>
                     }
                     @if (boardLearnStudyRevealed()) {
                       <div class="board-study-card__answer">
                         <small i18n>From the source card</small>
-                        <p>{{ studyCard.notes || studyCard.shortSummary || studyCard.subtitle }}</p>
+                        <p>{{ studyCard.notes || studyCard.shortSummary || cardDisplaySubtitle(learnBoard, studyCard) }}</p>
                         @if (studyCard.tags.length) {
                           <div class="board-study-card__tags">
                             @for (tag of studyCard.tags; track tag) {
@@ -5014,7 +5057,13 @@
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
             <div class="tour-guide__body">
-              <span>{{ frame.kind === 'leg' ? 'On the way' : 'Stop ' + frame.card.tour?.sequence }} · {{ frame.index + 1 }} / {{ frame.total }}</span>
+              <span>
+                @if (boardShowsCardNumbers(selectedBoard())) {
+                  {{ frame.kind === 'leg' ? 'On the way' : 'Stop ' + frame.card.tour?.sequence }} · {{ frame.index + 1 }} / {{ frame.total }}
+                } @else {
+                  {{ frame.kind === 'leg' ? 'On the way' : 'Tour stop' }}
+                }
+              </span>
               <h2>{{ frame.kind === 'leg' && frame.nextCard ? 'To ' + frame.nextCard.title : frame.card.title }}</h2>
               <p class="tour-guide__meta">
                 {{ frame.kind === 'leg' ? (frame.card.tour?.legToNext?.durationText || '') + ' · ' + (frame.card.tour?.legToNext?.distanceText || '') : (frame.card.tour?.address || frame.card.subtitle) }}
@@ -5113,7 +5162,9 @@
                         } @else {
                           <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
                         }
-                        <span class="stack-card-chip__count">{{ $index + 1 }}</span>
+                        @if (boardShowsCardNumbers(board)) {
+                          <span class="stack-card-chip__count">{{ $index + 1 }}</span>
+                        }
                         @if (!isPhotoOnlyCard(card)) {
                           <strong>{{ card.title }}</strong>
                         }
@@ -5556,7 +5607,9 @@
                 <div class="stack-preview-toolbar">
                   <div>
                     <strong>{{ stackFrameLabel(stackCurrentFrame()) }}</strong>
-                    <span>{{ stackFramePosition(stackCurrentFrame()) }}</span>
+                    @if (boardShowsCardNumbers(board)) {
+                      <span>{{ stackFramePosition(stackCurrentFrame()) }}</span>
+                    }
                   </div>
                   <div class="stack-ratio-tabs">
                     @for (ratio of stackRatios; track ratio.id) {
@@ -5601,7 +5654,7 @@
                           <div class="stack-preview__content">
                             <span>{{ card.status }} · {{ card.rating }}/5</span>
                             <h4>{{ card.title }}</h4>
-                            <p>{{ card.subtitle || card.notes }}</p>
+                            <p>{{ cardDisplaySubtitle(board, card) || card.notes }}</p>
                             @if (card.audioPreviewUrl && !hasSpotifyTrack(card)) {
                               <button
                                 type="button"

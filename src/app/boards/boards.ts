@@ -46,6 +46,7 @@ import {
   type BoardInsideDisplay,
 } from './board-inside-display';
 import { canReorderCardSurface } from './card-interaction';
+import { cardPresentationSubtitle } from './card-numbering';
 import { omitUndefinedDeep } from './firestore-payload';
 import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 import {
@@ -329,6 +330,7 @@ type Board = {
   parentBoardTitle?: string;
   parentCardTitle?: string;
   insideCardsDisplay: BoardInsideDisplay;
+  showCardNumbers: boolean;
   cards: BoardCard[];
   createdAt: string;
   updatedAt: string;
@@ -1291,6 +1293,7 @@ export class BoardsComponent implements OnDestroy {
   readonly expandedCardIds = signal<Set<string>>(new Set());
   readonly activeAlongsideBoardIds = signal<Set<string>>(new Set());
   readonly boardInsideDisplaySavingId = signal<string | null>(null);
+  readonly boardCardNumbersSavingId = signal<string | null>(null);
   readonly activeGalleryTab = signal<BoardGalleryTab>('boards');
   readonly boardSearch = signal('');
   readonly cardSearch = signal('');
@@ -4115,6 +4118,7 @@ export class BoardsComponent implements OnDestroy {
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
           insideCardsDisplay: 'alongside',
+          showCardNumbers: true,
           cards,
           createdAt: now,
           updatedAt: now,
@@ -4308,6 +4312,7 @@ export class BoardsComponent implements OnDestroy {
         parentBoardTitle: insideContext?.parentBoardTitle ?? '',
         parentCardTitle: insideContext?.parentCardTitle ?? '',
         insideCardsDisplay: 'alongside',
+        showCardNumbers: true,
         cards: parentCard ? cardsForNewBoardInside(this.relatedCardsFor(parentCard)) : [],
         kind: 'standard',
         tourMeta: null,
@@ -4436,6 +4441,45 @@ export class BoardsComponent implements OnDestroy {
 
   boardInsideDisplay(board: Board): BoardInsideDisplay {
     return normalizeBoardInsideDisplay(board.insideCardsDisplay);
+  }
+
+  boardShowsCardNumbers(board: Board | null | undefined): boolean {
+    return board?.showCardNumbers !== false;
+  }
+
+  cardDisplaySubtitle(board: Board | null | undefined, card: Pick<BoardCard, 'subtitle'>): string {
+    return cardPresentationSubtitle(card.subtitle, this.boardShowsCardNumbers(board));
+  }
+
+  async setBoardShowCardNumbers(board: Board, showCardNumbers: boolean, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const current = this.boards().find((candidate) => candidate.id === board.id) ?? null;
+    if (!current || !this.canEditBoard(current) || this.boardShowsCardNumbers(current) === showCardNumbers) {
+      return;
+    }
+    const nextBoard: Board = {
+      ...current,
+      showCardNumbers,
+      // A previously rendered video contains the old presentation choice.
+      // Clear it so the next video is generated with the new board setting.
+      socialVideoUrl: '',
+      socialVideoMimeType: '',
+      socialVideoUpdatedAt: '',
+      socialVideoRenderVersion: '',
+      updatedAt: new Date().toISOString(),
+    };
+    this.boards.update((boards) => boards.map((candidate) => candidate.id === nextBoard.id ? nextBoard : candidate));
+    this.publishedStackVideoFiles.delete(board.id);
+    this.stackPublishedVideoReady.set(false);
+    this.boardCardNumbersSavingId.set(board.id);
+    try {
+      await this.persistAndReplaceBoard(nextBoard);
+    } finally {
+      if (this.boardCardNumbersSavingId() === board.id) {
+        this.boardCardNumbersSavingId.set(null);
+      }
+    }
   }
 
   isAlongsideBoardInsideActive(board: Board, card: BoardCard): boolean {
@@ -7482,11 +7526,16 @@ export class BoardsComponent implements OnDestroy {
       const AdvancedMarkerElement = maps.marker?.AdvancedMarkerElement;
       const Marker = maps['Marker'] as new (options: Record<string, unknown>) => unknown;
       points.forEach(({ card, position }) => {
-        const markerContent = this.createTourMarkerElement(card);
+        const showCardNumbers = this.boardShowsCardNumbers(tourBoard);
+        const markerContent = this.createTourMarkerElement(card, showCardNumbers);
         const marker = AdvancedMarkerElement
           ? new AdvancedMarkerElement({ map: this.tourMap, position, title: card.title, content: markerContent })
           : Marker
-            ? new Marker({ map: this.tourMap, position, title: `${card.tour?.sequence}. ${card.title}` })
+            ? new Marker({
+                map: this.tourMap,
+                position,
+                title: showCardNumbers ? `${card.tour?.sequence}. ${card.title}` : card.title,
+              })
             : null;
         if (!marker) {
           return;
@@ -7563,14 +7612,17 @@ export class BoardsComponent implements OnDestroy {
     this.tourMapPolylines = [];
   }
 
-  private createTourMarkerElement(card: BoardCard): HTMLElement {
+  private createTourMarkerElement(card: BoardCard, showCardNumbers: boolean): HTMLElement {
     const marker = document.createElement('button');
     marker.type = 'button';
     marker.className = 'tour-map-marker';
     marker.dataset['cardId'] = card.id;
-    marker.setAttribute('aria-label', `Preview stop ${card.tour?.sequence}: ${card.title}`);
+    marker.setAttribute(
+      'aria-label',
+      showCardNumbers ? `Preview stop ${card.tour?.sequence}: ${card.title}` : `Preview stop: ${card.title}`,
+    );
     const label = document.createElement('span');
-    label.textContent = String(card.tour?.sequence ?? '');
+    label.textContent = showCardNumbers ? String(card.tour?.sequence ?? '') : '•';
     marker.appendChild(label);
     if (this.selectedTourCardId() === card.id) {
       marker.classList.add('tour-map-marker--active');
@@ -11450,20 +11502,27 @@ export class BoardsComponent implements OnDestroy {
     this.stackExpandedCardId.set(opening ? card.id : null);
   }
 
-  stackCardEyebrow(card: BoardCard): string {
+  stackCardEyebrow(board: Board, card: BoardCard): string {
     const rank = card.rank || this.rankFromTags(card.tags);
-    return [rank ? `#${rank}` : '', card.subtitle].filter(Boolean).join(' · ');
+    return [
+      this.boardShowsCardNumbers(board) && rank ? `#${rank}` : '',
+      this.cardDisplaySubtitle(board, card),
+    ].filter(Boolean).join(' · ');
   }
 
-  stackCardSummary(card: BoardCard): string {
-    const summary = (card.shortSummary || card.subtitle || '').trim();
-    if (summary && summary !== card.subtitle) return summary;
+  stackCardSummary(board: Board, card: BoardCard): string {
+    const subtitle = this.cardDisplaySubtitle(board, card);
+    const summary = cardPresentationSubtitle(
+      card.shortSummary || subtitle,
+      this.boardShowsCardNumbers(board),
+    );
+    if (summary && summary !== subtitle) return summary;
     const sentence = card.notes.match(/^(.{1,155}?[.!?])(?:\s|$)/)?.[1] ?? '';
-    return sentence || card.subtitle;
+    return sentence || subtitle;
   }
 
-  stackCardHasMore(card: BoardCard): boolean {
-    return card.notes.trim().length > 0 && card.notes.trim() !== this.stackCardSummary(card).trim();
+  stackCardHasMore(board: Board, card: BoardCard): boolean {
+    return card.notes.trim().length > 0 && card.notes.trim() !== this.stackCardSummary(board, card).trim();
   }
 
   stackTitleClass(title: string): string {
@@ -11958,9 +12017,10 @@ export class BoardsComponent implements OnDestroy {
       coverImageUrl: this.stackCoverImage(board),
       liveUrl: this.stackShareUrl(board),
       qrImageUrl: this.stackQrImageUrl(board),
+      showCardNumbers: this.boardShowsCardNumbers(board),
       cards: selectedCards.map((card) => ({
         title: card.title,
-        subtitle: card.subtitle,
+        subtitle: this.cardDisplaySubtitle(board, card),
         notes: card.notes,
         rank: card.rank ?? null,
         imageUrl: this.cardImages(card)[0] ?? '',
@@ -14696,6 +14756,7 @@ export class BoardsComponent implements OnDestroy {
           parentBoardTitle: typeof (board as Board).parentBoardTitle === 'string' ? (board as Board).parentBoardTitle : '',
           parentCardTitle: typeof (board as Board).parentCardTitle === 'string' ? (board as Board).parentCardTitle : '',
           insideCardsDisplay: normalizeBoardInsideDisplay((board as Partial<Board>).insideCardsDisplay),
+          showCardNumbers: (board as Partial<Board>).showCardNumbers !== false,
           cards: board.cards.map((card) => ({
             ...card,
             imageUrl: card.imageUrl ?? '',
@@ -14980,6 +15041,7 @@ export class BoardsComponent implements OnDestroy {
       parentBoardTitle: typeof data['parentBoardTitle'] === 'string' ? data['parentBoardTitle'] : '',
       parentCardTitle: typeof data['parentCardTitle'] === 'string' ? data['parentCardTitle'] : '',
       insideCardsDisplay: normalizeBoardInsideDisplay(data['insideCardsDisplay']),
+      showCardNumbers: data['showCardNumbers'] !== false,
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
       createdAt: typeof data['created_at_iso'] === 'string' ? data['created_at_iso'] : new Date().toISOString(),
       updatedAt: typeof data['updated_at_iso'] === 'string' ? data['updated_at_iso'] : new Date().toISOString(),

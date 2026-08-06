@@ -35,6 +35,11 @@ describe('Stack video card images', () => {
     expect(stackVideoCardKicker({}, 0, 4)).toBe('');
   });
 
+  it('removes rank and tour-stop numbering when the board setting is off', () => {
+    expect(stackVideoCardKicker({ rank: 3 }, 2, 10, false)).toBe('');
+    expect(stackVideoCardKicker({ tourSequence: 2 }, 1, 5, false)).toBe('');
+  });
+
   it('keeps gallery images available when the primary image is empty after reordering', () => {
     expect(stackVideoCardImageCandidates({
       imageUrl: '',

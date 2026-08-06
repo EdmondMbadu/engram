@@ -17,6 +17,7 @@ export type StackVideoBoard = {
   coverImageUrl: string;
   liveUrl: string;
   qrImageUrl: string;
+  showCardNumbers: boolean;
   cards: StackVideoCard[];
 };
 
@@ -73,7 +74,11 @@ export function stackVideoCardKicker(
   card: Pick<StackVideoCard, 'rank' | 'tourSequence'>,
   _cardIndex: number,
   _cardCount: number,
+  showCardNumbers = true,
 ): string {
+  if (!showCardNumbers) {
+    return '';
+  }
   if (card.tourSequence && card.tourSequence > 0) {
     return `TOUR STOP ${card.tourSequence}`;
   }
@@ -457,6 +462,7 @@ function renderFrame(
       frame.card,
       frame.cardIndex,
       board.cards.length,
+      board.showCardNumbers,
       firstLoadedCardImage(frame.card, images),
       progress,
     );
@@ -531,6 +537,7 @@ function drawCardFrame(
   card: StackVideoCard,
   cardIndex: number,
   cardCount: number,
+  showCardNumbers: boolean,
   image: LoadedImage | undefined,
   progress: number,
 ): void {
@@ -542,7 +549,7 @@ function drawCardFrame(
   context.save();
   context.globalAlpha = reveal;
   context.translate(0, (1 - reveal) * height * 0.035);
-  const kicker = stackVideoCardKicker(card, cardIndex, cardCount);
+  const kicker = stackVideoCardKicker(card, cardIndex, cardCount, showCardNumbers);
   if (kicker) {
     context.fillStyle = '#bdfbe3';
     context.font = `850 ${Math.round(width * 0.032)}px Inter, Arial, sans-serif`;
