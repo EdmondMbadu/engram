@@ -34,6 +34,7 @@ export class MobileMenuComponent {
 
   readonly moreNavItems = [
     { route: '/dymaxion', icon: 'public', label: $localize`World Map`, key: 'dymaxion', workspaceOnly: true },
+    { route: '/videos', icon: 'video_library', label: $localize`My Videos`, key: 'videos', workspaceOnly: true },
     { route: '/upload', icon: 'neurology', label: $localize`Upload`, key: 'upload' },
     { route: '/library', icon: 'library_books', label: $localize`Source Files`, key: 'library' },
     { route: '/scrapper', icon: 'travel_explore', label: $localize`Scraper`, key: 'scrapper', workspaceOnly: true },

@@ -11,6 +11,7 @@ export type WorkspaceSidebarActive =
   | 'chat'
   | 'upload'
   | 'library'
+  | 'videos'
   | 'scrapper'
   | 'wiki'
   | 'settings'
@@ -73,6 +74,7 @@ export class WorkspaceSidebarComponent {
 
   readonly workspaceMoreItems = computed<WorkspaceNavItem[]>(() => [
     { key: 'dymaxion', label: $localize`World Map`, icon: 'public', route: '/dymaxion' },
+    { key: 'videos', label: $localize`My Videos`, icon: 'video_library', route: '/videos' },
     { key: 'upload', label: $localize`Upload Knowledge`, icon: 'neurology', route: '/upload' },
     { key: 'library', label: $localize`Source Files`, icon: 'library_books', route: '/library' },
     { key: 'scrapper', label: $localize`Scraper`, icon: 'travel_explore', route: '/scrapper' },

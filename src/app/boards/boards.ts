@@ -18,6 +18,7 @@ import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons'
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
+import { VideoLibraryService } from '../video-library/video-library.service';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
 import {
   spotifyTrackEmbedUrl as buildSpotifyTrackEmbedUrl,
@@ -1179,6 +1180,7 @@ export class BoardsComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly videoLibrary = inject(VideoLibraryService);
   readonly spotify = inject(SpotifyPlaybackService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
@@ -1218,6 +1220,8 @@ export class BoardsComponent implements OnDestroy {
   private wizardDraftRestoreInProgress = false;
   private wizardDraftsLoadedForUid = '';
   private stackLivePreviewAutoplay = false;
+  private stackStudioDirectRequested = false;
+  private stackStudioDirectOpenedFor = '';
   private stackLivePreviewSwitchToken = 0;
   private stackTourNarrationSwitchToken = 0;
   private stackAudioPreviewRun = 0;
@@ -2245,6 +2249,7 @@ export class BoardsComponent implements OnDestroy {
           this.watchSelectedBoard(boardId);
         }
         this.syncStackDirectView();
+        this.syncRequestedStackStudio();
         this.syncBoardLearnDirectView();
         void this.syncRequestedBoardTranslation();
         this.canonicalizeBoardsRootRoute(boardId, ownerKey);
@@ -2258,6 +2263,10 @@ export class BoardsComponent implements OnDestroy {
       const view = params.get('view') ?? params.get('stack');
       const wantsFriends = params.get('friends') === '1';
       const wantsStack = view === 'stack' || view === 'reel';
+      this.stackStudioDirectRequested = params.get('studio') === 'video';
+      if (!this.stackStudioDirectRequested) {
+        this.stackStudioDirectOpenedFor = '';
+      }
       this.tourBoardView.set(view === 'cards' ? 'cards' : 'route');
       const contentLanguage = params.get('contentLang');
       this.boardTranslationTarget.set(
@@ -2280,6 +2289,7 @@ export class BoardsComponent implements OnDestroy {
         this.stopSongPreview();
         this.stopStackPlayback();
       }
+      this.syncRequestedStackStudio();
       if (this.isBrowser && wantsFriends) {
         window.setTimeout(() => this.scrollToBoardFriends(), 120);
       }
@@ -11704,6 +11714,12 @@ export class BoardsComponent implements OnDestroy {
     try {
       const result = await this.createStackVideo(board);
       const file = this.stackVideoFile(board, result);
+      const librarySave = await this.saveStackVideoToLibrary(board, result);
+      const libraryMessage = librarySave === true
+        ? ' Saved to My Videos.'
+        : librarySave === false
+          ? ' The video was created, but could not be saved to My Videos.'
+          : '';
 
       if (target !== 'download' && this.canNativeShareFile(file)) {
         try {
@@ -11712,7 +11728,7 @@ export class BoardsComponent implements OnDestroy {
             text,
             files: [file],
           });
-          this.setStackShareMessage('Video shared as native media for inline playback.');
+          this.setStackShareMessage(`Video shared as native media for inline playback.${libraryMessage}`);
           return;
         } catch (error) {
           if (error instanceof DOMException && error.name === 'AbortError') {
@@ -11726,12 +11742,12 @@ export class BoardsComponent implements OnDestroy {
       await this.copyTextToClipboard(text);
       if (target === 'download') {
         this.setStackShareMessage(result.xCompatible
-          ? 'MP4 downloaded. It is ready to upload as native social video; the caption is copied.'
-          : 'Video downloaded as WebM. The caption is copied; convert to MP4 before posting to X for guaranteed compatibility.', false);
+          ? `MP4 downloaded. It is ready to upload as native social video; the caption is copied.${libraryMessage}`
+          : `Video downloaded as WebM. The caption is copied; convert to MP4 before posting to X for guaranteed compatibility.${libraryMessage}`, false);
       } else {
         this.setStackShareMessage(result.xCompatible
-          ? `Video downloaded. Attach it to ${this.stackTargetLabel(target)} for inline playback; the caption is copied.`
-          : `Video downloaded as WebM. Convert it to MP4, then attach it to ${this.stackTargetLabel(target)}; the caption is copied.`, false);
+          ? `Video downloaded. Attach it to ${this.stackTargetLabel(target)} for inline playback; the caption is copied.${libraryMessage}`
+          : `Video downloaded as WebM. Convert it to MP4, then attach it to ${this.stackTargetLabel(target)}; the caption is copied.${libraryMessage}`, false);
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Video export failed.';
@@ -11907,7 +11923,13 @@ export class BoardsComponent implements OnDestroy {
       };
       const persisted = await this.persistBoard(nextBoard);
       this.boards.update((boards) => boards.map((item) => item.id === persisted.id ? persisted : item));
-      this.setStackShareMessage('Permanent video link published. You can copy it or share the MP4 natively.', false);
+      const librarySave = await this.saveStackVideoToLibrary(persisted, result, {
+        publicStoragePath: path,
+        publicShareUrl: this.socialVideoShareUrl(persisted),
+      });
+      this.setStackShareMessage(librarySave === false
+        ? 'Permanent video link published, but My Videos could not be updated. You can still copy the link or share the MP4.'
+        : 'Permanent video link published and saved to My Videos. You can copy it or share the MP4 natively.', false);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not publish the video.';
       this.setStackShareMessage(message, false);
@@ -12176,6 +12198,38 @@ export class BoardsComponent implements OnDestroy {
     return new File([result.blob], `${slug}.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
   }
 
+  private async saveStackVideoToLibrary(
+    board: Board,
+    result: StackVideoResult,
+    published: { publicStoragePath: string; publicShareUrl: string } | null = null,
+  ): Promise<boolean | null> {
+    if (!this.canEditBoard(board) || !this.authService.uid()) {
+      return null;
+    }
+    try {
+      await this.videoLibrary.saveLatestBoardVideo({
+        boardId: board.id,
+        boardTitle: board.title,
+        boardRoute: `${this.boardRouteRoot(board)}/${encodeURIComponent(board.id)}`,
+        boardUpdatedAt: board.updatedAt,
+        posterUrl: this.stackCoverImage(board),
+        blob: result.blob,
+        extension: result.extension,
+        mimeType: this.normalizedVideoMimeType(result.mimeType),
+        ratio: this.stackRatio(),
+        durationSeconds: result.durationSeconds,
+        renderVersion: STACK_VIDEO_RENDER_VERSION,
+        narrationEnabled: this.stackVideoNarrationEnabled(),
+        publicStoragePath: published?.publicStoragePath,
+        publicShareUrl: published?.publicShareUrl,
+      });
+      return true;
+    } catch (error) {
+      console.error('Video library save failed', error, { boardId: board.id });
+      return false;
+    }
+  }
+
   private normalizedVideoMimeType(value: string): string {
     return value.split(';')[0]?.trim() || 'video/mp4';
   }
@@ -12264,6 +12318,23 @@ export class BoardsComponent implements OnDestroy {
     this.stackStudioOpen.set(false);
     this.stackTourNarrationConsent.set(true);
     this.startStackPlayback();
+  }
+
+  private syncRequestedStackStudio(): void {
+    if (!this.stackStudioDirectRequested) return;
+    const board = this.selectedBoard();
+    if (!board || this.stackStudioDirectOpenedFor === board.id || !this.canUseStackStudio(board)) {
+      return;
+    }
+    this.stackStudioDirectOpenedFor = board.id;
+    this.stackStudioDirectRequested = false;
+    this.openStackStudio(board);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { studio: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 
   private canonicalizeBoardsRootRoute(boardId: string | null, ownerKey: string | null): void {

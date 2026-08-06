@@ -137,6 +137,71 @@ service cloud.firestore {
         && request.resource.data.server_updated_at == request.time;
     }
 
+    match /users/{userId}/videos/{videoId} {
+      allow read, delete: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && request.resource.data.keys().hasOnly([
+          'id',
+          'owner_user_id',
+          'source_type',
+          'source_id',
+          'source_title',
+          'source_route',
+          'source_updated_at_iso',
+          'poster_url',
+          'video_url',
+          'storage_path',
+          'public_storage_path',
+          'public_share_url',
+          'mime_type',
+          'ratio',
+          'duration_seconds',
+          'render_version',
+          'narration_enabled',
+          'generated_at_iso',
+          'updated_at_iso',
+          'server_updated_at'
+        ])
+        && request.resource.data.id == videoId
+        && request.resource.data.owner_user_id == userId
+        && request.resource.data.source_type == 'board'
+        && request.resource.data.source_id is string
+        && request.resource.data.source_id.size() >= 1
+        && request.resource.data.source_id.size() <= 128
+        && request.resource.data.source_title is string
+        && request.resource.data.source_title.size() >= 1
+        && request.resource.data.source_title.size() <= 120
+        && request.resource.data.source_route is string
+        && request.resource.data.source_route.size() <= 240
+        && request.resource.data.source_updated_at_iso is string
+        && request.resource.data.source_updated_at_iso.size() <= 80
+        && request.resource.data.poster_url is string
+        && request.resource.data.poster_url.size() <= 2500
+        && request.resource.data.video_url is string
+        && request.resource.data.video_url.size() >= 1
+        && request.resource.data.video_url.size() <= 2500
+        && request.resource.data.storage_path is string
+        && request.resource.data.storage_path.size() <= 500
+        && request.resource.data.public_storage_path is string
+        && request.resource.data.public_storage_path.size() <= 500
+        && request.resource.data.public_share_url is string
+        && request.resource.data.public_share_url.size() <= 2500
+        && request.resource.data.mime_type is string
+        && request.resource.data.mime_type.matches('video/.*')
+        && request.resource.data.mime_type.size() <= 120
+        && request.resource.data.ratio in ['vertical', 'square', 'landscape']
+        && request.resource.data.duration_seconds is number
+        && request.resource.data.duration_seconds >= 0
+        && request.resource.data.render_version is string
+        && request.resource.data.render_version.size() <= 64
+        && request.resource.data.narration_enabled is bool
+        && request.resource.data.generated_at_iso is string
+        && request.resource.data.generated_at_iso.size() <= 80
+        && request.resource.data.updated_at_iso is string
+        && request.resource.data.updated_at_iso.size() <= 80
+        && request.resource.data.server_updated_at == request.time;
+    }
+
     match /user_narrator_voices/{userId} {
       allow read, write: if false;
     }

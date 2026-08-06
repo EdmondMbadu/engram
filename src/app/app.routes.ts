@@ -90,6 +90,12 @@ export const routes: Routes = [
   },
   { path: 'wikis', component: WikiHomeComponent, title: $localize`My Wikis | LivingWiki`, canActivate: [authGuard] },
   {
+    path: 'videos',
+    loadComponent: () => import('./video-library/video-library').then((m) => m.VideoLibraryComponent),
+    title: $localize`My Videos | LivingWiki`,
+    canActivate: [authGuard],
+  },
+  {
     path: 'boards',
     loadComponent: loadBoardsComponent,
     title: $localize`Boards | LivingWiki`,

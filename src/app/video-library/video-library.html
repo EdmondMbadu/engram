@@ -1,0 +1,213 @@
+<div class="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+  <div class="relative flex min-h-screen flex-col md:h-screen md:flex-row md:overflow-hidden">
+    <app-workspace-sidebar active="videos" [rail]="true"></app-workspace-sidebar>
+
+    <main class="theme-shell relative flex min-w-0 flex-1 flex-col">
+      <header class="theme-nav sticky top-0 z-40 flex h-20 items-center justify-between border-b px-5 backdrop-blur-xl md:px-8">
+        <div class="flex min-w-0 items-center gap-3">
+          <app-mobile-menu activePage="videos"></app-mobile-menu>
+          <div class="min-w-0">
+            <h1 class="truncate text-2xl font-black tracking-[-0.05em]" i18n>My Videos</h1>
+            <p class="hidden text-xs uppercase tracking-[0.18em] text-[var(--muted)] sm:block" i18n>Your latest generated videos</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-3">
+          <app-theme-toggle></app-theme-toggle>
+          <app-account-menu></app-account-menu>
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto">
+        <div class="mx-auto w-full max-w-7xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
+          <section class="video-library-hero">
+            <div>
+              <p class="video-library-eyebrow" i18n>Video library</p>
+              <h2 i18n>One home for every story you render.</h2>
+              <p i18n>
+                The latest video from each board is saved here automatically. Regenerating replaces the previous version without creating duplicates.
+              </p>
+            </div>
+            <a routerLink="/boards" class="primary-btn inline-flex shrink-0 items-center gap-2 !px-4 !py-2.5 text-sm">
+              <span class="material-symbols-outlined text-base">dashboard_customize</span>
+              <span i18n>Open my boards</span>
+            </a>
+          </section>
+
+          @if (message()) {
+            <div class="video-library-message" role="status">
+              <span class="material-symbols-outlined">info</span>
+              <span>{{ message() }}</span>
+              <button type="button" (click)="message.set(null)" aria-label="Dismiss message" i18n-aria-label>
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+          }
+
+          @if (loading()) {
+            <section class="video-library-state" aria-live="polite">
+              <span class="video-library-spinner" aria-hidden="true"></span>
+              <strong i18n>Loading your videos…</strong>
+              <small i18n>Checking for the latest version from each board.</small>
+            </section>
+          } @else if (error()) {
+            <section class="video-library-state">
+              <span class="material-symbols-outlined">cloud_off</span>
+              <strong>{{ error() }}</strong>
+              <button type="button" class="primary-btn !px-4 !py-2.5 text-sm" (click)="load()" i18n>Try again</button>
+            </section>
+          } @else if (!items().length) {
+            <section class="video-library-state">
+              <span class="material-symbols-outlined">video_library</span>
+              <strong i18n>Your generated videos will appear here automatically.</strong>
+              <small i18n>Open a board, choose Create video, and your finished video will be saved here.</small>
+              <a routerLink="/boards" class="primary-btn inline-flex !px-4 !py-2.5 text-sm" i18n>Create a board video</a>
+            </section>
+          } @else {
+            <section class="video-library-toolbar" aria-label="Video library controls" i18n-aria-label>
+              <label>
+                <span class="material-symbols-outlined">search</span>
+                <input
+                  type="search"
+                  [value]="search()"
+                  (input)="setSearch($any($event.target).value)"
+                  placeholder="Search videos"
+                  aria-label="Search videos"
+                  i18n-placeholder
+                  i18n-aria-label
+                />
+              </label>
+              <select [value]="sort()" (change)="setSort($any($event.target).value)" aria-label="Sort videos" i18n-aria-label>
+                <option value="newest" i18n>Newest first</option>
+                <option value="oldest" i18n>Oldest first</option>
+                <option value="title" i18n>Board title</option>
+              </select>
+            </section>
+
+            @if (!visibleItems().length) {
+              <section class="video-library-state video-library-state--compact">
+                <span class="material-symbols-outlined">search_off</span>
+                <strong i18n>No videos match that search.</strong>
+                <button type="button" class="ghost-btn !px-4 !py-2 text-sm" (click)="search.set('')" i18n>Clear search</button>
+              </section>
+            } @else {
+              <section class="video-library-grid" aria-label="Saved videos" i18n-aria-label>
+                @for (item of visibleItems(); track item.id) {
+                  <article class="video-library-card">
+                    <button type="button" class="video-library-poster" (click)="play(item)" [attr.aria-label]="'Play ' + item.sourceTitle">
+                      @if (item.posterUrl) {
+                        <img [src]="item.posterUrl" [alt]="item.sourceTitle" loading="lazy" />
+                      } @else {
+                        <span class="material-symbols-outlined video-library-poster__empty">movie</span>
+                      }
+                      <span class="video-library-play"><span class="material-symbols-outlined">play_arrow</span></span>
+                      @if (durationLabel(item)) {
+                        <small class="video-library-duration">{{ durationLabel(item) }}</small>
+                      }
+                    </button>
+
+                    <div class="video-library-card__body">
+                      <div class="video-library-card__heading">
+                        <div class="min-w-0">
+                          <h3>{{ item.sourceTitle }}</h3>
+                          <p>{{ updatedLabel(item) }}</p>
+                        </div>
+                        <button type="button" class="video-library-delete" (click)="requestDelete(item)" aria-label="Delete video" i18n-aria-label>
+                          <span class="material-symbols-outlined">delete</span>
+                        </button>
+                      </div>
+
+                      <div class="video-library-badges">
+                        <span><span class="material-symbols-outlined">aspect_ratio</span>{{ ratioLabel(item) }}</span>
+                        <span><span class="material-symbols-outlined">{{ item.narrationEnabled ? 'record_voice_over' : 'music_note' }}</span>{{ item.narrationEnabled ? 'Narrated' : 'No narration' }}</span>
+                      </div>
+
+                      @if (!item.sourceAvailable) {
+                        <div class="video-library-status video-library-status--neutral">
+                          <span class="material-symbols-outlined">link_off</span>
+                          <span i18n>Source board unavailable</span>
+                        </div>
+                      } @else if (!isCurrent(item)) {
+                        <div class="video-library-status video-library-status--stale">
+                          <span class="material-symbols-outlined">update</span>
+                          <span i18n>Board changed · Regenerate for the latest edits</span>
+                        </div>
+                      } @else {
+                        <div class="video-library-status">
+                          <span class="material-symbols-outlined">check_circle</span>
+                          <span i18n>Current version</span>
+                        </div>
+                      }
+
+                      <div class="video-library-actions">
+                        <button type="button" class="video-library-actions__primary" (click)="play(item)">
+                          <span class="material-symbols-outlined">play_arrow</span><span i18n>Play</span>
+                        </button>
+                        <button type="button" (click)="share(item)" [disabled]="sharingId() === item.id">
+                          <span class="material-symbols-outlined">ios_share</span><span>{{ sharingId() === item.id ? 'Preparing…' : 'Share' }}</span>
+                        </button>
+                        <button type="button" (click)="download(item)">
+                          <span class="material-symbols-outlined">download</span><span i18n>Download</span>
+                        </button>
+                      </div>
+
+                      @if (item.sourceAvailable) {
+                        <div class="video-library-source-actions">
+                          <a [routerLink]="item.sourceRoute"><span class="material-symbols-outlined">open_in_new</span><span i18n>Open board</span></a>
+                          <button type="button" (click)="openStudio(item)"><span class="material-symbols-outlined">movie_edit</span><span i18n>Regenerate</span></button>
+                        </div>
+                      }
+                    </div>
+                  </article>
+                }
+              </section>
+            }
+          }
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+@if (selectedVideo(); as video) {
+  <div class="video-library-modal" role="dialog" aria-modal="true" [attr.aria-label]="video.sourceTitle" (click)="closePlayer()">
+    <section class="video-library-player" (click)="$event.stopPropagation()">
+      <header>
+        <div class="min-w-0">
+          <strong>{{ video.sourceTitle }}</strong>
+          <small>{{ ratioLabel(video) }} · {{ updatedLabel(video) }}</small>
+        </div>
+        <button type="button" (click)="closePlayer()" aria-label="Close video" i18n-aria-label>
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+      <video [src]="video.videoUrl" [poster]="video.posterUrl" playsinline controls autoplay preload="metadata"></video>
+      <footer>
+        <button type="button" (click)="share(video)"><span class="material-symbols-outlined">ios_share</span><span i18n>Share</span></button>
+        <button type="button" (click)="download(video)"><span class="material-symbols-outlined">download</span><span i18n>Download</span></button>
+        @if (video.sourceAvailable) {
+          <button type="button" (click)="openStudio(video)"><span class="material-symbols-outlined">movie_edit</span><span i18n>Regenerate</span></button>
+        }
+      </footer>
+    </section>
+  </div>
+}
+
+@if (deleteCandidate(); as candidate) {
+  <div class="video-library-modal" role="dialog" aria-modal="true" aria-labelledby="delete-video-title" (click)="closeDelete()">
+    <section class="video-library-confirm" (click)="$event.stopPropagation()">
+      <span class="material-symbols-outlined">delete_forever</span>
+      <h2 id="delete-video-title" i18n>Delete this video?</h2>
+      <p><strong>{{ candidate.sourceTitle }}</strong> <span i18n>will be removed from My Videos. Its source board will not be deleted.</span></p>
+      @if (candidate.publicShareUrl) {
+        <small i18n>Its hosted public video link will also stop working.</small>
+      }
+      <div>
+        <button type="button" class="ghost-btn !px-4 !py-2.5 text-sm" [disabled]="!!deletingId()" (click)="closeDelete()" i18n>Keep video</button>
+        <button type="button" class="video-library-confirm__delete" [disabled]="!!deletingId()" (click)="confirmDelete()">
+          <span class="material-symbols-outlined">delete</span>
+          <span>{{ deletingId() ? 'Deleting…' : 'Delete video' }}</span>
+        </button>
+      </div>
+    </section>
+  </div>
+}

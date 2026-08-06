@@ -27,6 +27,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'all-cities', renderMode: RenderMode.Client },
   { path: 'trove', renderMode: RenderMode.Prerender },
   { path: 'wikis', renderMode: RenderMode.Client },
+  { path: 'videos', renderMode: RenderMode.Client },
   { path: 'boards', renderMode: RenderMode.Client },
   { path: 'songs', renderMode: RenderMode.Client },
   { path: 'trips', renderMode: RenderMode.Client },

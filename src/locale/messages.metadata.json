@@ -223,6 +223,10 @@
     "source": "Completed",
     "file": "src/app/boards/boards.html"
   },
+  "1167656259347983543": {
+    "source": "Saved videos",
+    "file": "src/app/video-library/video-library.html"
+  },
   "1169260545431807459": {
     "source": "Spotify Premium is required for full-song playback inside LivingWiki.",
     "file": "src/app/spotify-playback.service.ts"
@@ -450,6 +454,10 @@
   "1313427361117980099": {
     "source": "Mobile menu",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "1315625787188038913": {
+    "source": "Video library controls",
+    "file": "src/app/video-library/video-library.html"
   },
   "1315814696232593467": {
     "source": "Add knowledge",
@@ -1127,6 +1135,10 @@
     "source": "Voice",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "1755282281769141570": {
+    "source": "Create a board video",
+    "file": "src/app/video-library/video-library.html"
+  },
   "1757369727553818439": {
     "source": "Internet",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -1506,6 +1518,10 @@
   "2017684128422011792": {
     "source": " Already ingested ",
     "file": "src/app/web-scraper/web-scraper.html"
+  },
+  "2017946828631642125": {
+    "source": "My Videos",
+    "file": "src/app/video-library/video-library.html"
   },
   "2021756259208992603": {
     "source": " No metrics yet. Save city settings and refresh the snapshot. ",
@@ -1930,6 +1946,10 @@
   "2315314988054330932": {
     "source": "Card photo memories",
     "file": "src/app/boards/boards.html"
+  },
+  "2317673285989169654": {
+    "source": "Newest first",
+    "file": "src/app/video-library/video-library.html"
   },
   "2326055153434981693": {
     "source": "Best score per person",
@@ -2471,6 +2491,10 @@
     "source": "{$START_TAG_SPAN}leaderboard{$CLOSE_TAG_SPAN} Leaderboard ",
     "file": "src/app/boards/boards.html"
   },
+  "2656224699244633875": {
+    "source": "No videos match that search.",
+    "file": "src/app/video-library/video-library.html"
+  },
   "266584947949444186": {
     "source": "Go to Chat",
     "file": "src/app/wiki/wiki.html"
@@ -2627,6 +2651,10 @@
     "source": "Open recap card",
     "file": "src/app/chat/chat.ts"
   },
+  "2806809013074824378": {
+    "source": "Board changed · Regenerate for the latest edits",
+    "file": "src/app/video-library/video-library.html"
+  },
   "2806878392329574752": {
     "source": "Immersive card-by-card experience",
     "file": "src/app/boards/boards.html"
@@ -2767,6 +2795,10 @@
     "source": "Video Game Industry Atlas",
     "file": "src/app/public-wiki-catalog.ts"
   },
+  "2909684945706361544": {
+    "source": "Delete video",
+    "file": "src/app/video-library/video-library.html"
+  },
   "2911419861099353936": {
     "source": "{$START_TAG_SPAN}lock{$CLOSE_TAG_SPAN} Private ",
     "file": "src/app/boards/boards.html"
@@ -2798,6 +2830,10 @@
   "2932261031104379488": {
     "source": "Address {$START_SMALL_TEXT}(found automatically){$CLOSE_SMALL_TEXT}",
     "file": "src/app/boards/boards.html"
+  },
+  "293344152000220895": {
+    "source": "will be removed from My Videos. Its source board will not be deleted.",
+    "file": "src/app/video-library/video-library.html"
   },
   "2940010916792941547": {
     "source": "My City",
@@ -3037,7 +3073,7 @@
   },
   "3099741642167775297": {
     "source": "Download",
-    "file": "src/app/boards/boards.ts"
+    "file": "src/app/video-library/video-library.html"
   },
   "3099882906994173432": {
     "source": "Linked",
@@ -3499,6 +3535,10 @@
     "source": "The Mississippi River corridor between Baton Rouge and New Orleans carries some of the highest air-toxics cancer risk in America.",
     "file": "src/app/fence-line/fence-line.ts"
   },
+  "3351209217299739942": {
+    "source": "Dismiss message",
+    "file": "src/app/video-library/video-library.html"
+  },
   "335464837566395534": {
     "source": "Translating this board…",
     "file": "src/app/boards/boards.html"
@@ -3754,6 +3794,10 @@
   "3493716866023768278": {
     "source": "What the tour voice will say at this stop",
     "file": "src/app/boards/boards.html"
+  },
+  "3495655540736696118": {
+    "source": "Source board unavailable",
+    "file": "src/app/video-library/video-library.html"
   },
   "3496615278735103700": {
     "source": "Refresh notes",
@@ -4130,10 +4174,6 @@
   "3747563688323690440": {
     "source": "Lines {$INTERPOLATION}-{$INTERPOLATION_1}",
     "file": "src/app/shared-chat/shared-chat.html"
-  },
-  "3750491827752273285": {
-    "source": "Board saved",
-    "file": "src/app/boards/boards.html"
   },
   "3752022757554431322": {
     "source": "LivingWiki place",
@@ -4823,6 +4863,10 @@
     "source": " Start with your name, email, and password, or continue with Google. Email sign-up requires verification before workspace access. ",
     "file": "src/app/create-account/create-account.html"
   },
+  "4215991549357490776": {
+    "source": "My Videos | LivingWiki",
+    "file": "src/app/app.routes.ts"
+  },
   "4217077840708229340": {
     "source": "Network explorer",
     "file": "src/app/fence-line/fence-line.html"
@@ -5278,6 +5322,10 @@
   "4550958265168690830": {
     "source": "Logo",
     "file": "src/app/boards/boards.html"
+  },
+  "4551066756854355501": {
+    "source": " The latest video from each board is saved here automatically. Regenerating replaces the previous version without creating duplicates. ",
+    "file": "src/app/video-library/video-library.html"
   },
   "4553186615320329789": {
     "source": " No listings match the current filter. ",
@@ -6447,10 +6495,6 @@
     "source": "Not a dead listing. A page with a pulse.",
     "file": "src/app/business/business.html"
   },
-  "5296359791909264394": {
-    "source": "Your new board is synced and ready on your board shelf.",
-    "file": "src/app/boards/boards.html"
-  },
   "5299830934554879298": {
     "source": "SMS",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -6579,6 +6623,10 @@
     "source": "Find what lights you up!",
     "file": "src/app/public-wikis/public-wikis.html"
   },
+  "5377288695600634859": {
+    "source": "Your generated videos will appear here automatically.",
+    "file": "src/app/video-library/video-library.html"
+  },
   "5378115075775890660": {
     "source": "Rotate token",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -6667,6 +6715,10 @@
     "source": "Open the board to add the first place.",
     "file": "src/app/chat/chat.ts"
   },
+  "5452623943061444909": {
+    "source": "Loading your videos…",
+    "file": "src/app/video-library/video-library.html"
+  },
   "5452798498597950632": {
     "source": "Guest · ",
     "file": "src/app/boards/boards.html"
@@ -6738,6 +6790,10 @@
   "5497987268452737660": {
     "source": "Profile picture reset to your premade icon.",
     "file": "src/app/profile/profile.ts"
+  },
+  "5500106286908783229": {
+    "source": "Search videos",
+    "file": "src/app/video-library/video-library.html"
   },
   "5501003611405360769": {
     "source": "Housing markets across major U.S. metros — prices, inventory, mortgage rates, construction activity, and affordability metrics from public data.",
@@ -7034,6 +7090,10 @@
   "5687578233861198468": {
     "source": "Founded by survivors of the last known slave ship, the Clotilda, and later encircled by paper mills and heavy industry.",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "5687687219163995900": {
+    "source": "Video library",
+    "file": "src/app/video-library/video-library.html"
   },
   "5691966639616932851": {
     "source": "Card",
@@ -7487,10 +7547,6 @@
     "source": "Local Favorite",
     "file": "src/app/business-claim/business-claim.ts"
   },
-  "5992904787075426387": {
-    "source": "Open saved board",
-    "file": "src/app/boards/boards.html"
-  },
   "5995926993425996892": {
     "source": "Publish richer LivingWiki pages for communities, collections, classes, or public projects.",
     "file": "src/app/pricing/pricing.ts"
@@ -7642,6 +7698,10 @@
   "6097726220585319586": {
     "source": "Cover image automation",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "6099582880838447961": {
+    "source": "Checking for the latest version from each board.",
+    "file": "src/app/video-library/video-library.html"
   },
   "6109343307319603955": {
     "source": "PWD Apprenticeships",
@@ -8074,6 +8134,10 @@
   "6376908297993110120": {
     "source": "What should I know right now about {city}?",
     "file": "src/app/chat/chat.ts"
+  },
+  "6380922926275044250": {
+    "source": "Open my boards",
+    "file": "src/app/video-library/video-library.html"
   },
   "6380962930762780583": {
     "source": "{$START_TAG_SPAN}public{$CLOSE_TAG_SPAN} World ",
@@ -9055,6 +9119,10 @@
     "source": "No duplicate claim found for this name and city.",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "7037738623445841512": {
+    "source": "Regenerate",
+    "file": "src/app/video-library/video-library.html"
+  },
   "7038348735575269146": {
     "source": "Official player",
     "file": "src/app/boards/boards.html"
@@ -9090,6 +9158,10 @@
   "7046682610560834138": {
     "source": "Choose when you’re going first.",
     "file": "src/app/boards/boards.ts"
+  },
+  "7049787008165800439": {
+    "source": "One home for every story you render.",
+    "file": "src/app/video-library/video-library.html"
   },
   "7051535332948231705": {
     "source": " Refresh official city metrics, inspect the stored snapshot, and validate what the public landing page will render. ",
@@ -9266,6 +9338,10 @@
   "7215759904460573154": {
     "source": " Ready ",
     "file": "src/app/atlas-manage/atlas-manage.html"
+  },
+  "7215857352006835111": {
+    "source": "Its hosted public video link will also stop working.",
+    "file": "src/app/video-library/video-library.html"
   },
   "7215929028736105768": {
     "source": " Business ",
@@ -10059,6 +10135,10 @@
     "source": "{$START_TAG_SPAN}ios_share{$CLOSE_TAG_SPAN} Share invite ",
     "file": "src/app/city-places/city-places.html"
   },
+  "7788789394151316565": {
+    "source": "Oldest first",
+    "file": "src/app/video-library/video-library.html"
+  },
   "7793580788216466724": {
     "source": " Each Wiki is an isolated knowledge workspace. Wikis shared with you as an admin appear here alongside the ones you own. ",
     "file": "src/app/wiki-home/wiki-home.html"
@@ -10098,6 +10178,10 @@
   "7819314041543176992": {
     "source": "Close",
     "file": "src/app/boards/boards.html"
+  },
+  "7820905200377492755": {
+    "source": "Open a board, choose Create video, and your finished video will be saved here.",
+    "file": "src/app/video-library/video-library.html"
   },
   "7822736614267880009": {
     "source": "Bakery",
@@ -10175,12 +10259,12 @@
     "source": "Make card",
     "file": "src/app/chat/chat.ts"
   },
+  "7884682505577720946": {
+    "source": "Current version",
+    "file": "src/app/video-library/video-library.html"
+  },
   "7886570921510760899": {
     "source": "Tags",
-    "file": "src/app/boards/boards.html"
-  },
-  "7886812346331249953": {
-    "source": "Save selected cards",
     "file": "src/app/boards/boards.html"
   },
   "7886832344922735592": {
@@ -10755,6 +10839,10 @@
     "source": "Join LivingWiki {city}",
     "file": "src/app/chat/chat.ts"
   },
+  "8256594142065137247": {
+    "source": "Sort videos",
+    "file": "src/app/video-library/video-library.html"
+  },
   "8260151227491194978": {
     "source": "Home | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -10931,6 +11019,10 @@
     "source": "Search articles",
     "file": "src/app/wiki/wiki.html"
   },
+  "8382226728259549695": {
+    "source": "Your latest generated videos",
+    "file": "src/app/video-library/video-library.html"
+  },
   "8383265682711941087": {
     "source": "Discovery preview",
     "file": "src/app/web-scraper/web-scraper.html"
@@ -10954,6 +11046,10 @@
   "8389258107404387491": {
     "source": "{$START_TAG_SPAN}check{$CLOSE_TAG_SPAN} Use this picture ",
     "file": "src/app/boards/boards.html"
+  },
+  "8389384979017254186": {
+    "source": "Keep video",
+    "file": "src/app/video-library/video-library.html"
   },
   "8400867234732762128": {
     "source": "{$START_TAG_SPAN}trending_up{$CLOSE_TAG_SPAN} Signal ",
@@ -11174,6 +11270,10 @@
   "855872803871324523": {
     "source": "Music",
     "file": "src/app/boards/boards.html"
+  },
+  "8564202903947049539": {
+    "source": "Play",
+    "file": "src/app/video-library/video-library.html"
   },
   "8569814378547466507": {
     "source": "Estimating...",
@@ -12106,6 +12206,10 @@
   "926039708040434207": {
     "source": "Add trip",
     "file": "src/app/public-wikis/public-wikis.ts"
+  },
+  "927188635374839833": {
+    "source": "Delete this video?",
+    "file": "src/app/video-library/video-library.html"
   },
   "928605580772916369": {
     "source": "Your score was saved to this board.",
