@@ -813,13 +813,6 @@
                       <strong>{{ board.title }}</strong>
                       <small i18n>{{ board.cards.length }} cards</small>
                     </span>
-                    <span class="board-square__stack" aria-hidden="true">
-                      @for (card of board.cards.slice(0, 3); track card.id) {
-                        <i>
-                          <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                        </i>
-                      }
-                    </span>
                   </button>
 
                   <button type="button" class="board-square__open board-square__face board-square__face--back" (click)="selectBoard(board.id)">
