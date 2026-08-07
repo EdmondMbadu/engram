@@ -57,6 +57,7 @@ import {
 } from './board-inside-display';
 import { canReorderCardSurface } from './card-interaction';
 import { cardPresentationSubtitle } from './card-numbering';
+import { cardNotesForPersistence, cardNotesSummary } from './card-notes';
 import { omitUndefinedDeep } from './firestore-payload';
 import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 import {
@@ -4012,7 +4013,7 @@ export class BoardsComponent implements OnDestroy {
       id: card.id,
       title: card.title.trim(),
       subtitle: card.subtitle.trim(),
-      notes: card.notes.trim(),
+      notes: cardNotesForPersistence(card.notes),
       type: card.type,
       scope: card.scope,
       status: card.status,
@@ -5073,7 +5074,7 @@ export class BoardsComponent implements OnDestroy {
       id: existing?.id ?? this.createId(),
       title,
       subtitle: draft.subtitle.trim(),
-      notes: draft.notes.trim(),
+      notes: cardNotesForPersistence(draft.notes),
       type: draft.type,
       scope: generated?.scope ?? existing?.scope ?? 'place',
       status: generated?.status ?? existing?.status ?? 'saved',
@@ -5083,7 +5084,7 @@ export class BoardsComponent implements OnDestroy {
       imageIntent: generated?.image_intent || existing?.imageIntent || 'other',
       imageContext: generated?.image_context || existing?.imageContext || parent.title,
       mediaKind: generated?.media_kind || existing?.mediaKind || 'none',
-      shortSummary: generated?.short_summary || draft.subtitle.trim() || draft.notes.trim(),
+      shortSummary: generated?.short_summary || draft.subtitle.trim() || cardNotesSummary(draft.notes),
       rank: generated?.rank ?? existing?.rank ?? this.explicitRelatedCards(parent).length + 1,
       imageUrl: draft.imageUrl || generated?.imageUrl || existing?.imageUrl || '',
       imageUrls: this.uniqueImageUrls([
@@ -5549,7 +5550,7 @@ export class BoardsComponent implements OnDestroy {
       id,
       title,
       subtitle: draft.subtitle.trim(),
-      notes: draft.notes.trim(),
+      notes: cardNotesForPersistence(draft.notes),
       type: 'place',
       scope: 'place',
       status: generated?.status ?? 'saved',
@@ -5559,7 +5560,7 @@ export class BoardsComponent implements OnDestroy {
       imageIntent: 'place',
       imageContext: generated?.image_context || board.title,
       mediaKind: 'none',
-      shortSummary: generated?.short_summary || draft.subtitle.trim() || draft.notes.trim(),
+      shortSummary: generated?.short_summary || draft.subtitle.trim() || cardNotesSummary(draft.notes),
       rank: this.tourCards(board).length + 1,
       imageUrl: draft.imageUrl || generated?.imageUrl || '',
       imageUrls: this.uniqueImageUrls([draft.imageUrl, generated?.imageUrl ?? '']).slice(0, 12),
@@ -6047,7 +6048,7 @@ export class BoardsComponent implements OnDestroy {
       id: existing?.id ?? this.createId(),
       title,
       subtitle: draft.subtitle.trim(),
-      notes: draft.notes.trim(),
+      notes: cardNotesForPersistence(draft.notes),
       type: cardType,
       entityType: existing?.type === cardType
         ? existing.entityType

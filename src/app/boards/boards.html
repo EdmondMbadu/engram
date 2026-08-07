@@ -4680,7 +4680,7 @@
                         </label>
                         <label>
                           <span i18n>Notes</span>
-                          <textarea rows="7" maxlength="3600" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
+                          <textarea rows="7" [value]="card.notes" (input)="updateWizardCard(card.id, 'notes', $any($event.target).value)"></textarea>
                         </label>
                         @if (what3wordsAddressFor(card); as what3wordsAddress) {
                           <label>
@@ -6695,7 +6695,6 @@
                 <span i18n>Notes</span>
                 <textarea
                   rows="3"
-                  maxlength="260"
                   placeholder="Why this song belongs here."
                   [value]="cardDraft().notes"
                   (input)="updateCardDraft('notes', $any($event.target).value)"
@@ -6948,7 +6947,6 @@
                 <span i18n>Notes</span>
                 <textarea
                   rows="3"
-                  maxlength="260"
                   placeholder="Why this belongs on the board."
                   [value]="cardDraft().notes"
                   (input)="updateCardDraft('notes', $any($event.target).value)"
@@ -7197,7 +7195,6 @@
               <span i18n>Visitor notes</span>
               <textarea
                 rows="3"
-                maxlength="1000"
                 placeholder="Context, history, or practical details"
                 [value]="tourStopDraft().notes"
                 (input)="updateTourStopDraft('notes', $any($event.target).value)"
@@ -7369,7 +7366,6 @@
             <span i18n>Story or notes</span>
             <textarea
               rows="4"
-              maxlength="800"
               placeholder="Add the story, context, or details behind this card."
               [value]="relatedCardDraft().notes"
               (input)="updateRelatedCardDraft('notes', $any($event.target).value)"
