@@ -8,6 +8,7 @@ import {
   isBoardWizardFictionalCharacter,
 } from './board-wizard-image-quality';
 import { boardWizardResearchMode, shouldGroundAndVerifyBoardWizardBatch } from './board-wizard-generation-quality';
+import type { BoardWizardSourceManifest } from './board-wizard-article';
 import {
   boardNarrationPromptInstructions,
   type BoardNarrationStyleId,
@@ -530,6 +531,10 @@ export type GeneratedBoardWizardSourceReport = {
   productCount: number;
   exactImageCount: number;
   missingImageCount: number;
+  extractedItemCount: number;
+  matchedCardCount: number;
+  sourceImageCount: number;
+  confidence: number;
   snapshotDate: string;
   message: string;
 };
@@ -1412,6 +1417,7 @@ export async function generateBoardWizardBatch(params: {
   } | null;
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
   singleTourStop?: boolean;
+  sourceManifest?: BoardWizardSourceManifest | null;
 }): Promise<GeneratedBoardWizardBatch> {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
   const verificationRequired = shouldVerifyBoardWizardBatch(params, count);
@@ -1487,6 +1493,7 @@ function shouldVerifyBoardWizardBatch(
     prompt: string;
     pastedList?: string;
     targetBoardTitle?: string | null;
+    sourceManifest?: BoardWizardSourceManifest | null;
   },
   count: number,
 ): boolean {
@@ -1503,6 +1510,7 @@ async function verifyBoardWizardBatch(
     vibe: BoardWizardVibe;
     narrationStyle: BoardNarrationStyleId;
     countIsExplicit?: boolean;
+    sourceManifest?: BoardWizardSourceManifest | null;
   },
   draft: GeneratedBoardWizardBatch,
   targetCount: number,
@@ -1523,7 +1531,7 @@ async function verifyBoardWizardBatch(
       ? 'Every description must contain concrete, entity-specific reasons for its position and maintain the requested editorial voice. Reject interchangeable promotional filler.'
       : '',
     researchMode === 'source'
-      ? 'The pasted source is authoritative for membership, order, titles, viewpoint, and notes. Do not replace its selections or rewrite away its voice; only repair metadata and clearly unsupported factual errors.'
+      ? 'The supplied source manifest or pasted source is authoritative for membership, order, titles, viewpoint, and notes. Do not replace its selections or rewrite away its voice; only repair metadata and clearly unsupported factual errors.'
       : '',
     boardNarrationPromptInstructions(params.narrationStyle),
     'For a closed or complete real-world set, completeness and the evidence-backed cardinality override the UI target count unless the user explicitly supplied a numeric count.',
@@ -1549,6 +1557,7 @@ async function verifyBoardWizardBatch(
       mode: params.mode,
       prompt: params.prompt.slice(0, 4000),
       pastedList: params.pastedList?.slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH) ?? '',
+      sourceManifest: params.sourceManifest ?? null,
       targetBoardTitle: params.targetBoardTitle ?? '',
       narrationStyle: params.narrationStyle,
     }),
@@ -1606,6 +1615,7 @@ function buildBoardWizardPrompt(params: {
   } | null;
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
   singleTourStop?: boolean;
+  sourceManifest?: BoardWizardSourceManifest | null;
 }): string {
   const numberedSource = params.mode === 'paste' ? parseNumberedBoardSource(params.pastedList ?? '') : null;
   const vibeInstructions: Record<BoardWizardVibe, string> = {
@@ -1637,6 +1647,15 @@ function buildBoardWizardPrompt(params: {
     'For FIFA World Cup winner cards, use "<year> <country> FIFA World Cup champions team celebration photo". Do not use a flag, federation crest, badge, kit graphic, logo, or generic national-team identity image.',
     'When one entity appears in multiple cards, make every image_query distinct to that card\'s year, event, or achievement so the same image is not repeated.',
     'For URL mode, treat the URL as primary evidence. Extract concrete items from the page text, metadata, links, and image candidates before inventing outside examples.',
+    params.sourceManifest
+      ? [
+          'SOURCE-MANIFEST FIDELITY MODE: The extracted source manifest below is authoritative.',
+          `Return exactly ${params.sourceManifest.items.length} cards, one for each manifest item in the same order.`,
+          'Use the manifest item title as the card title. Never omit, merge, replace, reorder, pad, or invent items.',
+          'Use each supplied excerpt only for its matching card. Set sourceUrl to the submitted source URL.',
+          'If a source image is supplied, preserve it in imageUrl with imageSource "source-page". Do not substitute a different image.',
+        ].join('\n')
+      : '',
     'For a shopping, collection, category, or merchant homepage, return only concrete products whose membership on that exact page is supported by the supplied extraction context or grounded search.',
     'For every shopping product, set entity_type to "product", image_intent to "product", type to "shop", productUrl and place_query to the exact official product-detail URL, and sourceUrl to the submitted page URL.',
     'When grounded search exposes an exact official product image URL, put it in imageUrl and set imageSource to "product-page". Never synthesize an image URL from a naming pattern and never substitute a boutique, logo, campaign, category, or merely similar product image. Leave imageUrl empty when an exact image cannot be verified.',
@@ -1737,6 +1756,18 @@ function buildBoardWizardPrompt(params: {
       })) ?? [],
       tourOptions: params.tourOptions ?? null,
       narrationStyle: params.narrationStyle,
+      sourceManifest: params.sourceManifest ? {
+        sourceUrl: params.sourceManifest.sourceUrl,
+        pageTitle: params.sourceManifest.pageTitle,
+        expectedCount: params.sourceManifest.expectedCount,
+        items: params.sourceManifest.items.map((item) => ({
+          id: item.id,
+          title: item.title,
+          excerpt: item.excerpt.slice(0, 500),
+          imageUrl: item.imageUrl,
+          sourceIndex: item.sourceIndex,
+        })),
+      } : null,
     }),
   ].filter(Boolean).join('\n');
 }

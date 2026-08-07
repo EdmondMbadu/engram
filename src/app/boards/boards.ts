@@ -39,7 +39,11 @@ import {
   type BoardTranslationLanguage,
   type BoardTranslationResult,
 } from './board-translation';
-import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import {
+  BOARD_WIZARD_PASTE_MAX_LENGTH,
+  detectBoardWizardSourceUrl,
+  parseNumberedBoardSource,
+} from './board-wizard-source';
 import { shouldAutosaveBoardWizardDraft, shouldFlushBoardWizardDraftOnClose } from './board-wizard-draft-lifecycle';
 import { appendBoardCards } from './board-batch';
 import {
@@ -163,7 +167,7 @@ type CardImageToolMode = 'generate' | 'search' | null;
 type WizardCardEditorSection = 'details' | 'image';
 type OffGridLocationSource = 'spot' | 'words';
 type BoardWizardMode = 'describe' | 'paste' | 'photos' | 'off-grid' | 'url' | 'walking-tour' | 'driving-tour';
-type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'preview' | 'done';
+type BoardWizardStep = 'choose' | 'configure' | 'loading' | 'source-review' | 'preview' | 'done';
 type BoardWizardVibe = 'playful' | 'foodie' | 'traveler' | 'curator' | 'memory';
 type WizardLoadingTask = {
   message: string;
@@ -596,8 +600,33 @@ type BoardWizardSourceReport = {
   productCount: number;
   exactImageCount: number;
   missingImageCount: number;
+  extractedItemCount: number;
+  matchedCardCount: number;
+  sourceImageCount: number;
+  confidence: number;
   snapshotDate: string;
   message: string;
+};
+
+type BoardWizardSourceManifestItem = {
+  id: string;
+  title: string;
+  excerpt: string;
+  imageUrl: string;
+  sourceIndex: number;
+};
+
+type BoardWizardSourceManifest = {
+  kind: 'article-list';
+  sourceUrl: string;
+  finalUrl: string;
+  pageTitle: string;
+  siteName: string;
+  expectedCount: number | null;
+  confidence: number;
+  method: 'page' | 'reader';
+  sourceBlocked: boolean;
+  items: BoardWizardSourceManifestItem[];
 };
 
 type BoardWizardPreviewCard = BoardWizardGeneratedCard & {
@@ -1431,6 +1460,17 @@ export class BoardsComponent implements OnDestroy {
       ?? 0,
   );
   readonly wizardUrl = signal('');
+  readonly wizardDetectedSourceUrl = computed(() => detectBoardWizardSourceUrl(
+    this.wizardMode(),
+    this.wizardPrompt(),
+    this.wizardUrl(),
+  ));
+  readonly wizardSourceManifest = signal<BoardWizardSourceManifest | null>(null);
+  readonly wizardSourceImageCount = computed(() => this.wizardSourceManifest()?.items.filter((item) => !!item.imageUrl).length ?? 0);
+  readonly wizardSourceReviewUrl = signal('');
+  readonly wizardSourceReviewExact = signal(false);
+  readonly wizardSourceReviewWarning = signal('');
+  readonly wizardSourceConfirmedUrl = signal('');
   readonly wizardPhotos = signal<BoardWizardPhoto[]>([]);
   readonly wizardPhotosLoading = signal(false);
   readonly wizardPhotoError = signal<string | null>(null);
@@ -3016,7 +3056,7 @@ export class BoardsComponent implements OnDestroy {
         return;
       }
       this.wizardStep.set('choose');
-    } else if (step === 'preview') {
+    } else if (step === 'preview' || step === 'source-review') {
       this.wizardStep.set('configure');
     }
   }
@@ -3388,11 +3428,110 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
-  async generateWizardBatch(refinement = ''): Promise<void> {
+  private async prepareWizardSourceReview(sourceUrl: string, force = false): Promise<boolean> {
+    if (!this.functions || !sourceUrl) return false;
+    if (
+      !force
+      && this.canonicalWizardSourceUrl(this.wizardSourceManifest()?.sourceUrl ?? '') === this.canonicalWizardSourceUrl(sourceUrl)
+      && this.canonicalWizardSourceUrl(this.wizardSourceConfirmedUrl()) !== this.canonicalWizardSourceUrl(sourceUrl)
+    ) {
+      this.wizardStep.set('source-review');
+      return true;
+    }
+    if (
+      !force
+      && this.canonicalWizardSourceUrl(this.wizardSourceManifest()?.sourceUrl ?? '') === this.canonicalWizardSourceUrl(sourceUrl)
+      && this.canonicalWizardSourceUrl(this.wizardSourceConfirmedUrl()) === this.canonicalWizardSourceUrl(sourceUrl)
+    ) {
+      return false;
+    }
+    this.wizardStep.set('loading');
+    this.wizardLoadingTask.set({ message: 'Reading the source page', progress: 18 });
+    this.wizardError.set(null);
+    try {
+      const callable = httpsCallable<Record<string, unknown>, unknown>(
+        this.functions,
+        'previewBoardWizardSource',
+        { timeout: 90_000 },
+      );
+      const response = await callable({ url: sourceUrl, prompt: this.wizardPrompt().trim() });
+      const data = response.data && typeof response.data === 'object'
+        ? response.data as Record<string, unknown>
+        : {};
+      const manifest = this.normalizeWizardSourceManifest(data['manifest'], sourceUrl);
+      this.wizardSourceReviewUrl.set(sourceUrl);
+      this.wizardSourceReviewExact.set(data['exact'] === true);
+      this.wizardSourceReviewWarning.set(this.stringValue(data['warning'], '', 500));
+      if (data['requiresReview'] === true && manifest) {
+        this.wizardSourceManifest.set(manifest);
+        this.wizardSourceConfirmedUrl.set('');
+        this.setWizardCount(manifest.items.length);
+        this.wizardStep.set('source-review');
+        this.wizardLoadingTask.set(null);
+        return true;
+      }
+      // Menus, shops, and lodging pages keep their established specialized paths.
+      this.wizardSourceManifest.set(null);
+      this.wizardSourceConfirmedUrl.set(sourceUrl);
+      return false;
+    } catch {
+      this.wizardStep.set('configure');
+      this.wizardLoadingTask.set(null);
+      this.wizardSourceManifest.set(null);
+      this.wizardSourceConfirmedUrl.set(sourceUrl);
+      this.wizardSourceReviewWarning.set(
+        'The quick source review was unavailable. LivingWiki will continue with the full source reader and mark anything uncertain in the final preview.',
+      );
+      // Source review is a quality guard, not a new single point of failure. The
+      // established generation pipeline still has direct, Reader, and search fallbacks.
+      return false;
+    }
+  }
+
+  async confirmWizardSourceReview(): Promise<void> {
+    const manifest = this.wizardSourceManifest();
+    if (!manifest?.items.length) return;
+    this.wizardSourceConfirmedUrl.set(manifest.sourceUrl);
+    await this.generateWizardBatch('', true);
+  }
+
+  async rereadWizardSource(): Promise<void> {
+    const sourceUrl = this.wizardSourceReviewUrl() || this.wizardDetectedSourceUrl();
+    this.wizardSourceManifest.set(null);
+    this.wizardSourceConfirmedUrl.set('');
+    if (sourceUrl && !(await this.prepareWizardSourceReview(sourceUrl, true))) {
+      await this.generateWizardBatch('', true);
+    }
+  }
+
+  async generateWizardBatch(refinement = '', sourceConfirmed = false): Promise<void> {
     if (!this.wizardCanGenerate() || this.wizardSaving()) {
       return;
     }
     this.wizardError.set(null);
+    const sourceUrl = this.wizardDetectedSourceUrl();
+    if (!sourceUrl) {
+      this.wizardSourceManifest.set(null);
+      this.wizardSourceReviewUrl.set('');
+      this.wizardSourceReviewExact.set(false);
+      this.wizardSourceReviewWarning.set('');
+      this.wizardSourceConfirmedUrl.set('');
+    } else if (
+      this.canonicalWizardSourceUrl(this.wizardSourceManifest()?.sourceUrl ?? '')
+      !== this.canonicalWizardSourceUrl(sourceUrl)
+    ) {
+      this.wizardSourceManifest.set(null);
+      this.wizardSourceConfirmedUrl.set('');
+    }
+    if (
+      !refinement
+      && sourceUrl
+      && !sourceConfirmed
+      && this.canonicalWizardSourceUrl(this.wizardSourceConfirmedUrl()) !== this.canonicalWizardSourceUrl(sourceUrl)
+    ) {
+      const awaitingReview = await this.prepareWizardSourceReview(sourceUrl);
+      if (awaitingReview) return;
+    }
     const pastedWhat3Words = this.wizardMode() === 'paste'
       ? this.wizardPastedWhat3WordsSource()
       : null;
@@ -13248,6 +13387,11 @@ export class BoardsComponent implements OnDestroy {
     this.wizardPrompt.set('');
     this.wizardPastedList.set('');
     this.wizardUrl.set('');
+    this.wizardSourceManifest.set(null);
+    this.wizardSourceReviewUrl.set('');
+    this.wizardSourceReviewExact.set(false);
+    this.wizardSourceReviewWarning.set('');
+    this.wizardSourceConfirmedUrl.set('');
     this.wizardPhotos.set([]);
     this.wizardPhotoImportRun += 1;
     this.wizardPhotosLoading.set(false);
@@ -13382,7 +13526,8 @@ export class BoardsComponent implements OnDestroy {
       mode: this.wizardMode(),
       prompt,
       pastedList: this.wizardMode() === 'paste' ? this.wizardPastedList().trim() : '',
-      url: this.wizardMode() === 'url' ? this.wizardUrl().trim() : '',
+      url: this.wizardDetectedSourceUrl(),
+      sourceManifest: this.wizardSourceManifest(),
       photoNames: this.wizardMode() === 'photos' ? this.wizardPhotoNamesList() : [],
       photos: this.wizardMode() === 'photos'
         ? this.wizardPhotos().map((photo, index) => ({
@@ -13478,9 +13623,62 @@ export class BoardsComponent implements OnDestroy {
       productCount: Math.round(this.numberValue(data['productCount'], 0, 0, 100)),
       exactImageCount: Math.round(this.numberValue(data['exactImageCount'], 0, 0, 100)),
       missingImageCount: Math.round(this.numberValue(data['missingImageCount'], 0, 0, 100)),
+      extractedItemCount: Math.round(this.numberValue(data['extractedItemCount'], 0, 0, 100)),
+      matchedCardCount: Math.round(this.numberValue(data['matchedCardCount'], 0, 0, 100)),
+      sourceImageCount: Math.round(this.numberValue(data['sourceImageCount'], 0, 0, 100)),
+      confidence: this.numberValue(data['confidence'], status === 'exact' ? 1 : 0.5, 0, 1),
       snapshotDate: this.stringValue(data['snapshotDate'], '', 40),
       message: this.stringValue(data['message'], '', 500),
     };
+  }
+
+  private normalizeWizardSourceManifest(value: unknown, requiredUrl: string): BoardWizardSourceManifest | null {
+    if (!value || typeof value !== 'object') return null;
+    const data = value as Record<string, unknown>;
+    const sourceUrl = this.stringValue(data['sourceUrl'], '', 2000);
+    if (!sourceUrl || this.canonicalWizardSourceUrl(sourceUrl) !== this.canonicalWizardSourceUrl(requiredUrl)) return null;
+    const items = Array.isArray(data['items'])
+      ? data['items'].flatMap((item, index): BoardWizardSourceManifestItem[] => {
+          if (!item || typeof item !== 'object') return [];
+          const record = item as Record<string, unknown>;
+          const title = this.stringValue(record['title'], '', 80);
+          if (!title) return [];
+          return [{
+            id: this.stringValue(record['id'], `source-${index + 1}`, 80),
+            title,
+            excerpt: this.stringValue(record['excerpt'], '', 1200),
+            imageUrl: this.stringValue(record['imageUrl'], '', 2000),
+            sourceIndex: index + 1,
+          }];
+        }).slice(0, 100)
+      : [];
+    if (items.length < 2) return null;
+    const expectedValue = data['expectedCount'];
+    const expectedCount = typeof expectedValue === 'number' && Number.isFinite(expectedValue)
+      ? Math.max(1, Math.min(100, Math.round(expectedValue)))
+      : null;
+    return {
+      kind: 'article-list',
+      sourceUrl,
+      finalUrl: this.stringValue(data['finalUrl'], sourceUrl, 2000),
+      pageTitle: this.stringValue(data['pageTitle'], '', 220),
+      siteName: this.stringValue(data['siteName'], '', 120),
+      expectedCount,
+      confidence: this.numberValue(data['confidence'], 0.5, 0, 1),
+      method: data['method'] === 'reader' ? 'reader' : 'page',
+      sourceBlocked: data['sourceBlocked'] === true,
+      items,
+    };
+  }
+
+  private canonicalWizardSourceUrl(value: string): string {
+    try {
+      const url = new URL(value);
+      url.hash = '';
+      return url.toString().replace(/\/$/, '');
+    } catch {
+      return value.trim().replace(/\/$/, '');
+    }
   }
 
   private normalizeWizardGeneratedCard(value: unknown): BoardWizardGeneratedCard | null {

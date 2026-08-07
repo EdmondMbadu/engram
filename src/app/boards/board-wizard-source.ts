@@ -14,6 +14,29 @@ export type NumberedBoardSource = {
   items: NumberedBoardSourceItem[];
 };
 
+export function detectBoardWizardSourceUrl(
+  mode: string,
+  prompt: string,
+  explicitUrl: string,
+): string {
+  if (mode !== 'describe' && mode !== 'url') return '';
+  const value = mode === 'url' ? explicitUrl : prompt;
+  const markdownTarget = value.match(/\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/i)?.[1];
+  const candidate = markdownTarget ?? value.match(/https?:\/\/[^\s<>"'\]]+/i)?.[0] ?? '';
+  return trimBoardWizardUrlPunctuation(candidate);
+}
+
+function trimBoardWizardUrlPunctuation(value: string): string {
+  let trimmed = value.replace(/[.,;!?]+$/, '');
+  while (
+    trimmed.endsWith(')')
+    && (trimmed.match(/\)/g)?.length ?? 0) > (trimmed.match(/\(/g)?.length ?? 0)
+  ) {
+    trimmed = trimmed.slice(0, -1);
+  }
+  return trimmed;
+}
+
 export function parseNumberedBoardSource(value: string): NumberedBoardSource | null {
   const lines = value.replace(/\r\n?/g, '\n').split('\n');
   const preamble: string[] = [];

@@ -145,6 +145,15 @@ import {
   fetchBoardWizardReaderPage,
 } from './board-wizard-reader';
 import {
+  alignBoardWizardSourceCards,
+  boardWizardSourceManifestIsExact,
+  extractBoardWizardArticleManifest,
+  extractBoardWizardArticleManifestFromMarkdown,
+  extractBoardWizardReadableText,
+  normalizeBoardWizardSourceManifest,
+  type BoardWizardSourceManifest,
+} from './board-wizard-article';
+import {
   clientTimestamp,
   deleteChatEntityForUser,
   deleteDocumentForUser,
@@ -4859,6 +4868,7 @@ type BoardWizardCallableData = {
   tourOptions?: unknown;
   existingCards?: unknown;
   singleTourStop?: unknown;
+  sourceManifest?: unknown;
 };
 
 type BoardWizardTourOptions = {
@@ -4948,7 +4958,16 @@ type BoardWizardUrlExtraction = {
 };
 
 function firstHttpUrl(value: string): string {
-  return value.match(/https?:\/\/[^\s<>"']+/i)?.[0]?.replace(/[),.;!?]+$/, '') ?? '';
+  const markdownTarget = value.match(/\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/i)?.[1];
+  const candidate = markdownTarget ?? value.match(/https?:\/\/[^\s<>"'\]]+/i)?.[0] ?? '';
+  let trimmed = candidate.replace(/[.,;!?]+$/, '');
+  while (
+    trimmed.endsWith(')')
+    && (trimmed.match(/\)/g)?.length ?? 0) > (trimmed.match(/\(/g)?.length ?? 0)
+  ) {
+    trimmed = trimmed.slice(0, -1);
+  }
+  return trimmed;
 }
 
 function isGoogleMapsUrl(value: string): boolean {
@@ -5024,7 +5043,7 @@ function buildGoogleMapsTourContext(inputUrl: string, finalUrl: string): string 
 
 async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, html: string): Promise<BoardWizardUrlExtraction> {
   const baseUrl = finalUrl || inputUrl;
-  const pageText = stripHtmlForBoardWizard(html).slice(0, 6500);
+  const pageText = (extractBoardWizardReadableText(baseUrl, html) || stripHtmlForBoardWizard(html)).slice(0, 10_000);
   const pageLines = stripHtmlLinesForBoardWizard(html);
   const title = firstHtmlMatch(html, /<title[^>]*>([\s\S]*?)<\/title>/i);
   const description = firstHtmlMeta(html, ['description', 'og:description', 'twitter:description']);
@@ -5053,11 +5072,11 @@ async function buildBoardWizardUrlContext(inputUrl: string, finalUrl: string, ht
     restaurantLike ? 'Detected page type: restaurant/menu. Build one restaurant board with menu-item cards, location/contact cards, and reserve/order/menu action cards.' : '',
     menuItems.length ? `Extracted menu item candidates:\n${menuItems.map((item) => `- ${item.title}${item.price ? ` (${item.price})` : ''}${item.category ? ` [${item.category}]` : ''}${item.description ? `: ${item.description}` : ''}${item.imageUrl ? ` | image: ${item.imageUrl}` : ''}`).join('\n')}` : '',
     importantLinks.length ? `Important links:\n${importantLinks.map((link) => `- ${link.label}: ${link.href}`).join('\n')}` : '',
+    pageText ? `Main page text:\n${pageText}` : '',
     images.length ? `Image candidates:\n${images.map((image) => `- ${image.alt || 'image'}: ${image.src}`).join('\n')}` : '',
     jsonLd ? `Structured data snippets:\n${jsonLd}` : '',
     linkedContext ? `Linked page excerpts:\n${linkedContext}` : '',
-    pageText ? `Main page text:\n${pageText}` : '',
-  ].filter(Boolean).join('\n\n').slice(0, 12000);
+  ].filter(Boolean).join('\n\n').slice(0, 16_000);
   return { context, restaurantLike, menuItems, pageTitle: title, siteName };
 }
 
@@ -5171,6 +5190,81 @@ function buildBoardWizardReaderCommerceExtraction(
       `${products.length} official product links recovered from the public Reader representation`,
       `${products.filter((product) => !!product.imageUrl).length} locally paired product images`,
     ],
+  };
+}
+
+type BoardWizardSourcePreviewAnalysis = {
+  manifest: BoardWizardSourceManifest | null;
+  specializedKind: 'restaurant' | 'commerce' | 'accommodation' | null;
+  warning: string;
+};
+
+async function analyzeBoardWizardSourcePreview(sourceUrl: string): Promise<BoardWizardSourcePreviewAnalysis> {
+  try {
+    const fetched = await fetchHtmlWithFallback(sourceUrl, {
+      timeoutMs: 30_000,
+      preferBrowser: false,
+      allowBrowserFallback: true,
+    });
+    const blocked = looksLikeAntiBotChallenge(fetched.html);
+    if (fetched.status >= 200 && fetched.status < 400 && !blocked) {
+      const extraction = await buildBoardWizardUrlContext(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
+      if (extraction.restaurantLike && extraction.menuItems.length >= 3) {
+        return { manifest: null, specializedKind: 'restaurant', warning: '' };
+      }
+      const commerce = extractCommercePage(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
+      if (commerce.isCommerce && commerce.products.length >= 2) {
+        return { manifest: null, specializedKind: 'commerce', warning: '' };
+      }
+      if (buildBoardWizardAccommodationExtraction(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html)) {
+        return { manifest: null, specializedKind: 'accommodation', warning: '' };
+      }
+      const manifest = extractBoardWizardArticleManifest(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
+      if (manifest) return { manifest, specializedKind: null, warning: '' };
+    }
+  } catch {
+    // The no-key Reader fallback below can still recover public article content.
+  }
+
+  const reader = await fetchBoardWizardReaderPage(sourceUrl, { timeoutMs: 18_000 });
+  if (reader.markdown) {
+    if (extractBoardWizardReaderMenuItems(reader.markdown).length >= 3) {
+      return { manifest: null, specializedKind: 'restaurant', warning: '' };
+    }
+    if (extractBoardWizardReaderProducts(reader.markdown, sourceUrl).length >= 2) {
+      return { manifest: null, specializedKind: 'commerce', warning: '' };
+    }
+    const manifest = extractBoardWizardArticleManifestFromMarkdown(sourceUrl, reader.markdown);
+    if (manifest) return { manifest, specializedKind: null, warning: '' };
+  }
+
+  return {
+    manifest: null,
+    specializedKind: null,
+    warning: reader.blocked
+      ? 'The publisher blocked source reading. LivingWiki will use verified public indexing and clearly mark the result for review.'
+      : 'LivingWiki could not identify a reliable ordered list before generation. The full card preview will require careful review.',
+  };
+}
+
+function buildArticleManifestUrlExtraction(manifest: BoardWizardSourceManifest): BoardWizardUrlExtraction {
+  const context = [
+    `Source URL: ${manifest.sourceUrl}`,
+    manifest.pageTitle ? `Page title: ${manifest.pageTitle}` : '',
+    manifest.siteName ? `Site name: ${manifest.siteName}` : '',
+    `Authoritative extracted source items (${manifest.items.length}):`,
+    ...manifest.items.map((item) => [
+      `${item.sourceIndex}. ${item.title}`,
+      item.excerpt ? `   ${item.excerpt}` : '',
+      item.imageUrl ? `   Source image: ${item.imageUrl}` : '',
+    ].filter(Boolean).join('\n')),
+  ].filter(Boolean).join('\n');
+  return {
+    context: context.slice(0, 30_000),
+    restaurantLike: false,
+    menuItems: [],
+    pageTitle: manifest.pageTitle,
+    siteName: manifest.siteName,
   };
 }
 
@@ -6070,6 +6164,47 @@ function boardTranslationCallableResponse(
   return { boardId, targetLanguage, sourceLanguage, fingerprint, segments, cached, changed };
 }
 
+export const previewBoardWizardSource = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 90,
+    memory: '1GiB',
+    concurrency: 4,
+    maxInstances: 20,
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) throw new HttpsError('unauthenticated', 'Sign in to read a board source.');
+    const data = (request.data ?? {}) as Record<string, unknown>;
+    const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
+    const submitted = stringOrEmpty(data.url).slice(0, 1000) || firstHttpUrl(prompt);
+    const sourceUrl = safeBoardCardSourceUrl(submitted);
+    if (!sourceUrl) throw new HttpsError('invalid-argument', 'Provide a public HTTP or HTTPS page URL.');
+
+    const startedAt = Date.now();
+    const analysis = await analyzeBoardWizardSourcePreview(sourceUrl);
+    logger.info('Board wizard source preview completed.', {
+      userId,
+      sourceHost: safeCommerceHostname(sourceUrl),
+      specializedKind: analysis.specializedKind,
+      manifestItemCount: analysis.manifest?.items.length ?? 0,
+      expectedCount: analysis.manifest?.expectedCount ?? null,
+      confidence: analysis.manifest?.confidence ?? 0,
+      method: analysis.manifest?.method ?? null,
+      durationMs: Date.now() - startedAt,
+    });
+    return {
+      sourceUrl,
+      requiresReview: !!analysis.manifest,
+      specializedKind: analysis.specializedKind,
+      manifest: analysis.manifest,
+      exact: analysis.manifest ? boardWizardSourceManifestIsExact(analysis.manifest) : false,
+      warning: analysis.warning,
+    };
+  },
+);
+
 export const generateBoardWizardBatch = onCall(
   {
     region: callableRegion,
@@ -6096,11 +6231,17 @@ export const generateBoardWizardBatch = onCall(
     const targetBoardTitle = stringOrEmpty(data.targetBoardTitle).slice(0, 120);
     const prompt = stringOrEmpty(data.prompt).slice(0, 4000);
     const pastedList = stringOrEmpty(data.pastedList).slice(0, BOARD_WIZARD_PASTE_MAX_LENGTH);
-    const submittedUrl = stringOrEmpty(data.url).slice(0, 1000);
+    const describedUrl = mode === 'describe' ? firstHttpUrl(prompt) : '';
+    const submittedUrl = stringOrEmpty(data.url).slice(0, 1000) || describedUrl;
     const url = submittedUrl ? safeBoardCardSourceUrl(submittedUrl) : '';
-    if (mode === 'url' && submittedUrl && !url) {
+    const usesUrlSource = (mode === 'url' || !!describedUrl) && !!submittedUrl;
+    const generationMode: BoardWizardMode = usesUrlSource ? 'url' : mode;
+    if (usesUrlSource && submittedUrl && !url) {
       throw new HttpsError('invalid-argument', 'Provide a public HTTP or HTTPS page URL.');
     }
+    const submittedSourceManifest = url
+      ? normalizeBoardWizardSourceManifest(data.sourceManifest, url)
+      : null;
     const numberedSource = mode === 'paste' ? parseNumberedBoardSource(pastedList) : null;
     const explicitCount = inferBoardWizardRequestedCount([prompt, pastedList, targetBoardTitle].join(' '));
     const requestedCount = numberedSource?.items.length ?? explicitCount ?? (Number(data.count) || 12);
@@ -6174,6 +6315,7 @@ export const generateBoardWizardBatch = onCall(
     }
 
     let urlExtraction: BoardWizardUrlExtraction | null = null;
+    let articleManifest: BoardWizardSourceManifest | null = submittedSourceManifest;
     let accommodationExtraction: BoardWizardAccommodationExtraction | null = null;
     let commerceExtraction: CommercePageExtraction | null = null;
     let urlResearchFallback = false;
@@ -6203,9 +6345,13 @@ export const generateBoardWizardBatch = onCall(
         );
       }
     }
-    if (mode === 'url' && url) {
+    if (usesUrlSource && url) {
       const urlIntakeStartedAt = Date.now();
-      try {
+      if (articleManifest) {
+        urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
+        urlRecoveryMethod = articleManifest.method;
+        urlSourceBlocked = articleManifest.sourceBlocked;
+      } else try {
         const fetched = await fetchHtmlWithFallback(url, {
           timeoutMs: 30_000,
           preferBrowser: false,
@@ -6255,6 +6401,12 @@ export const generateBoardWizardBatch = onCall(
           if (!commerceExtraction) {
             accommodationExtraction = buildBoardWizardAccommodationExtraction(url, fetched.finalUrl || url, fetched.html);
           }
+          if (!commerceExtraction && !accommodationExtraction && !(urlExtraction.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+            articleManifest = extractBoardWizardArticleManifest(url, fetched.finalUrl || url, fetched.html);
+            if (articleManifest) {
+              urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
+            }
+          }
         } else {
           logger.warn('Board wizard rejected an unusable source response.', {
             userId,
@@ -6278,6 +6430,10 @@ export const generateBoardWizardBatch = onCall(
           urlExtraction = buildBoardWizardReaderExtraction(url, reader.markdown);
           if (!(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
             commerceExtraction = buildBoardWizardReaderCommerceExtraction(url, reader.markdown);
+          }
+          if (!commerceExtraction && !(urlExtraction?.restaurantLike && urlExtraction.menuItems.length >= 3)) {
+            articleManifest = extractBoardWizardArticleManifestFromMarkdown(url, reader.markdown);
+            if (articleManifest) urlExtraction = buildArticleManifestUrlExtraction(articleManifest);
           }
           if (urlExtraction || commerceExtraction) {
             urlRecoveryMethod = 'reader';
@@ -6329,7 +6485,7 @@ export const generateBoardWizardBatch = onCall(
     const mapsTourStopCount = mapsTourContext
       ? (mapsTourContext.match(/^\d+\. /gm)?.length ?? 0)
       : 0;
-    const generationCount = numberedSource?.items.length || mapsTourStopCount || photos.length || count;
+    const generationCount = numberedSource?.items.length || articleManifest?.items.length || mapsTourStopCount || photos.length || count;
 
     if (!effectivePrompt && !pastedList && photoNames.length === 0 && photos.length === 0 && !url) {
       throw new HttpsError('invalid-argument', 'Describe the board, paste a list, choose photos, or provide a URL.');
@@ -6360,7 +6516,7 @@ export const generateBoardWizardBatch = onCall(
             count,
           })
         : await generateBoardWizardBatchWithGemini({
-            mode,
+            mode: generationMode,
             prompt: effectivePrompt || url || photoNames.join(', '),
             pastedList,
             url: sourceUrl,
@@ -6369,12 +6525,13 @@ export const generateBoardWizardBatch = onCall(
             targetBoardTitle,
             defaultType,
             count: generationCount,
-            countIsExplicit: !!numberedSource || explicitCount !== null || photoNames.length > 0 || photos.length > 0,
+            countIsExplicit: !!numberedSource || !!articleManifest || explicitCount !== null || photoNames.length > 0 || photos.length > 0,
             vibe,
             narrationStyle,
             tourOptions: isBoardWizardTourMode(mode) ? tourOptions : null,
             existingCards,
             singleTourStop,
+            sourceManifest: articleManifest,
           });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -6408,7 +6565,9 @@ export const generateBoardWizardBatch = onCall(
         };
     const sourceShapedGenerated = numberedSource
       ? shapeNumberedSourceWizardBatch(narrationReadyGenerated, numberedSource, defaultType)
-      : narrationReadyGenerated;
+      : articleManifest
+        ? shapeArticleSourceWizardBatch(narrationReadyGenerated, articleManifest, defaultType)
+        : narrationReadyGenerated;
     const urlFallbackShapedGenerated = urlResearchFallback
       ? shapeBoardWizardResearchFallbackBatch(sourceShapedGenerated, url)
       : sourceShapedGenerated;
@@ -6424,7 +6583,9 @@ export const generateBoardWizardBatch = onCall(
     const imageProvenanceResult = markCommerceImageFallbacks(enrichedResult);
     const result = numberedSource
       ? shapeNumberedSourceWizardBatch(imageProvenanceResult, numberedSource, defaultType)
-      : imageProvenanceResult;
+      : articleManifest
+        ? shapeArticleSourceWizardBatch(imageProvenanceResult, articleManifest, defaultType)
+        : imageProvenanceResult;
     const previewReadyResult = await enrichBoardWizardBatchWithSongAudioPreviews(
       result,
       [
@@ -6438,13 +6599,14 @@ export const generateBoardWizardBatch = onCall(
       ? await enrichBoardWizardTourBatchWithRoutes(previewReadyResult, mode, tourOptions)
       : previewReadyResult;
 
-    const resultWithSourceReport: GeneratedBoardWizardBatch = mode === 'url' && url
+    const resultWithSourceReport: GeneratedBoardWizardBatch = usesUrlSource && url
       ? {
           ...routeReadyResult,
           sourceReport: buildBoardWizardSourceReport(routeReadyResult, {
             sourceUrl: url,
             sourceBlocked: urlSourceBlocked,
             method: urlRecoveryMethod,
+            manifest: articleManifest,
           }),
         }
       : routeReadyResult;
@@ -9818,6 +9980,7 @@ function buildBoardWizardSourceReport(
     sourceUrl: string;
     sourceBlocked: boolean;
     method: GeneratedBoardWizardSourceReport['method'];
+    manifest?: BoardWizardSourceManifest | null;
   },
 ): GeneratedBoardWizardSourceReport {
   const productCards = batch.cards.filter((card) => !!card.productUrl);
@@ -9825,19 +9988,37 @@ function buildBoardWizardSourceReport(
     !!card.imageUrl && (card.imageSource === 'source-page' || card.imageSource === 'product-page'),
   ).length;
   const missingImageCount = productCards.filter((card) => !card.imageUrl).length;
+  const extractedItemCount = options.manifest?.items.length ?? 0;
+  const normalizedCardTitles = new Set(batch.cards.map((card) => normalizeBoardWizardSourceTitle(card.title)));
+  const matchedCardCount = options.manifest?.items.filter((item) =>
+    normalizedCardTitles.has(normalizeBoardWizardSourceTitle(item.title)),
+  ).length ?? 0;
+  const sourceImageCount = options.manifest?.items.filter((item) => !!item.imageUrl).length ?? exactImageCount;
   const recovered = options.method !== 'page' || options.sourceBlocked;
-  const status: GeneratedBoardWizardSourceReport['status'] = recovered
-    ? productCards.length > 0 && missingImageCount === 0
-      ? 'recovered'
-      : 'partial'
-    : 'exact';
-  const message = options.method === 'grounded-search'
+  const deterministicSourceCards = batch.cards.filter((card) =>
+    !!card.productUrl
+    || card.tags.some((tag) => ['menu-item', 'lodging'].includes(tag.toLowerCase())),
+  );
+  const manifestExact = !!options.manifest
+    && boardWizardSourceManifestIsExact(options.manifest)
+    && matchedCardCount === extractedItemCount
+    && options.manifest.expectedCount === extractedItemCount;
+  const status: GeneratedBoardWizardSourceReport['status'] = options.manifest
+    ? manifestExact ? (recovered ? 'recovered' : 'exact') : 'partial'
+    : recovered
+      ? productCards.length > 0 && missingImageCount === 0 ? 'recovered' : 'partial'
+      : deterministicSourceCards.length > 0 ? 'exact' : 'partial';
+  const message = options.manifest
+    ? `${matchedCardCount} of ${extractedItemCount} source item${extractedItemCount === 1 ? '' : 's'} matched in the generated preview${sourceImageCount ? `; ${sourceImageCount} source image${sourceImageCount === 1 ? '' : 's'} recovered` : ''}.`
+    : options.method === 'grounded-search'
     ? productCards.length
       ? `${productCards.length} product${productCards.length === 1 ? '' : 's'} verified from the public indexed representation because the publisher blocked direct extraction.`
       : 'The publisher blocked direct extraction. Public search evidence was used, so review every card before saving.'
     : options.method === 'reader'
       ? `${productCards.length || batch.cards.length} item${(productCards.length || batch.cards.length) === 1 ? '' : 's'} recovered from the page’s public Reader representation.`
-      : `${productCards.length || batch.cards.length} item${(productCards.length || batch.cards.length) === 1 ? '' : 's'} extracted directly from the source page.`;
+      : deterministicSourceCards.length > 0
+        ? `${deterministicSourceCards.length} structured source item${deterministicSourceCards.length === 1 ? '' : 's'} extracted directly from the page.`
+        : `${batch.cards.length} card${batch.cards.length === 1 ? '' : 's'} generated from readable source text. The page did not expose a reliable structured item list, so review the names before saving.`;
   return {
     status,
     method: options.method,
@@ -9846,9 +10027,17 @@ function buildBoardWizardSourceReport(
     productCount: productCards.length,
     exactImageCount,
     missingImageCount,
+    extractedItemCount,
+    matchedCardCount,
+    sourceImageCount,
+    confidence: options.manifest?.confidence ?? (status === 'exact' ? 1 : status === 'recovered' ? 0.8 : 0.5),
     snapshotDate: new Date().toISOString().slice(0, 10),
     message,
   };
+}
+
+function normalizeBoardWizardSourceTitle(value: string): string {
+  return value.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 function buildCommerceWizardBatch(options: {
@@ -12775,6 +12964,51 @@ function shapeNumberedSourceWizardBatch(
       ...batch.board,
       title: sourceTitle || batch.board.title,
       description: source.description.slice(0, 500) || batch.board.description || `${cards.length} ordered items imported from pasted text.`,
+    },
+    cards,
+  };
+}
+
+function shapeArticleSourceWizardBatch(
+  batch: GeneratedBoardWizardBatch,
+  manifest: BoardWizardSourceManifest,
+  defaultType: GeneratedBoardWizardCard['type'],
+): GeneratedBoardWizardBatch {
+  const cards = alignBoardWizardSourceCards(manifest.items, batch.cards).map(({ item, card: generated }): GeneratedBoardWizardCard => {
+    const type = generated?.type ?? defaultType;
+    const sourceImage = item.imageUrl;
+    const notes = item.excerpt || generated?.notes || 'Imported from the source article.';
+    return {
+      ...generated,
+      title: cleanBoardWizardSourceText(item.title).slice(0, 80),
+      subtitle: cleanBoardWizardSourceText(generated?.subtitle || `Source item ${item.sourceIndex}`).slice(0, 120),
+      notes: cleanBoardWizardSourceText(notes).slice(0, 3600),
+      type,
+      scope: generated?.scope ?? 'place',
+      status: generated?.status ?? 'saved',
+      rating: generated?.rating ?? 4,
+      tags: mergeBoardWizardTags(['source-item', `source-${item.sourceIndex}`], generated?.tags ?? []),
+      image_query: (generated?.image_query || `${item.title} photo`).slice(0, 180),
+      place_query: (generated?.place_query || item.title).slice(0, 240),
+      entity_name: cleanBoardWizardSourceText(item.title).slice(0, 120),
+      entity_type: generated?.entity_type ?? (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
+      image_intent: generated?.image_intent ?? (type === 'place' || type === 'shop' ? 'place' : type === 'food' ? 'food' : 'other'),
+      image_context: generated?.image_context || manifest.pageTitle,
+      media_kind: generated?.media_kind ?? 'none',
+      short_summary: generated?.short_summary || firstBoardWizardSentence(notes),
+      rank: item.sourceIndex,
+      imageUrl: sourceImage || generated?.imageUrl,
+      imageSource: sourceImage ? 'source-page' : generated?.imageSource,
+      sourceUrl: manifest.sourceUrl,
+      extractionConfidence: manifest.confidence,
+      extractedAt: generated?.extractedAt || new Date().toISOString(),
+    };
+  });
+  return {
+    board: {
+      ...batch.board,
+      title: cleanBoardWizardSourceText(batch.board.title || manifest.pageTitle).slice(0, 90),
+      description: batch.board.description || `${cards.length} items imported from ${manifest.siteName || 'the source article'}.`,
     },
     cards,
   };

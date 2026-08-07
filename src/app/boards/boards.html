@@ -3724,6 +3724,12 @@
                     [value]="wizardPrompt()"
                     (input)="wizardPrompt.set($any($event.target).value)"
                   ></textarea>
+                  @if (wizardDetectedSourceUrl()) {
+                    <small class="boards-wizard-paste-detected" aria-live="polite">
+                      <span class="material-symbols-outlined">link</span>
+                      Source link detected. LivingWiki will read the page and show the extracted card names before building them.
+                    </small>
+                  }
                 </label>
               } @else if (wizardMode() === 'paste') {
                 <label>
@@ -4342,6 +4348,50 @@
               <span [style.width.%]="wizardLoadingProgress()"></span>
             </div>
           </div>
+        } @else if (wizardStep() === 'source-review') {
+          @if (wizardSourceManifest(); as source) {
+            <div class="boards-wizard" style="display: grid; gap: 1rem;">
+              <section class="boards-wizard__intro">
+                <span class="material-symbols-outlined">fact_check</span>
+                <div>
+                  <strong>Review the {{ source.items.length }} card names found on {{ source.siteName || 'the source page' }}</strong>
+                  <small>
+                    {{ wizardSourceReviewExact() ? 'The source count and extracted list agree.' : 'Please check this list before card and picture generation begins.' }}
+                    {{ wizardSourceImageCount() }} source picture{{ wizardSourceImageCount() === 1 ? '' : 's' }} found.
+                  </small>
+                </div>
+              </section>
+              @if (wizardSourceReviewWarning()) {
+                <div class="boards-form__soft-error" role="status">{{ wizardSourceReviewWarning() }}</div>
+              }
+              <ol style="display: grid; max-height: 54vh; gap: 0.5rem; overflow: auto; margin: 0; padding-left: 2rem;">
+                @for (item of source.items; track item.id) {
+                  <li style="display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 0.6rem; border-bottom: 1px solid var(--line); padding: 0.5rem;">
+                    @if (item.imageUrl) {
+                      <img style="width: 3rem; height: 3rem; border-radius: 0.5rem; object-fit: cover;" [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
+                    } @else {
+                      <span class="material-symbols-outlined">article</span>
+                    }
+                    <div style="display: grid; min-width: 0; gap: 0.15rem;">
+                      <strong>{{ item.title }}</strong>
+                      @if (item.excerpt) { <small style="overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap;">{{ item.excerpt }}</small> }
+                    </div>
+                  </li>
+                }
+              </ol>
+              <div class="boards-form__actions">
+                <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
+                <button type="button" class="boards-ghost-action" (click)="rereadWizardSource()">
+                  <span class="material-symbols-outlined">refresh</span>
+                  Re-read page
+                </button>
+                <button type="button" class="boards-primary-action" (click)="confirmWizardSourceReview()">
+                  <span class="material-symbols-outlined">auto_awesome</span>
+                  Create these {{ source.items.length }} cards
+                </button>
+              </div>
+            </div>
+          }
         } @else if (wizardStep() === 'preview') {
           <div class="boards-wizard boards-wizard-preview">
             <div class="boards-wizard-preview__bar">
@@ -4455,6 +4505,10 @@
                         @if (report.missingImageCount) {
                           <span><b>{{ report.missingImageCount }}</b> still need{{ report.missingImageCount === 1 ? 's' : '' }} an image</span>
                         }
+                      }
+                      @if (report.extractedItemCount) {
+                        <span><b>{{ report.matchedCardCount }}/{{ report.extractedItemCount }}</b> source items matched</span>
+                        <span><b>{{ report.sourceImageCount }}</b> source image{{ report.sourceImageCount === 1 ? '' : 's' }}</span>
                       }
                       @if (report.snapshotDate) {
                         <span>Snapshot {{ report.snapshotDate }}</span>
@@ -4776,7 +4830,7 @@
 
                     <footer class="wizard-card-editor__footer">
                       <div class="wizard-card-editor__secondary-actions">
-                        @if (wizardMode() !== 'off-grid') {
+                        @if (wizardMode() !== 'off-grid' && !wizardSourceManifest()) {
                         <button type="button" [disabled]="isWizardCardBusy(card.id)" (click)="redoWizardCard(card.id)">
                           <span class="material-symbols-outlined">autorenew</span>
                           <span>
@@ -4974,10 +5028,14 @@
                     <span class="material-symbols-outlined">forum</span>
                     Refine batch
                   </button>
-                  <button type="button" class="boards-ghost-action" (click)="addMoreWizardCards()" i18n>
-                    <span class="material-symbols-outlined">add</span>
-                    Add 5 more
-                  </button>
+                  @if (!wizardSourceManifest()) {
+                    <button type="button" class="boards-ghost-action" (click)="addMoreWizardCards()" i18n>
+                      <span class="material-symbols-outlined">add</span>
+                      Add 5 more
+                    </button>
+                  } @else {
+                    <small>Source titles stay locked while you refine descriptions and presentation.</small>
+                  }
                   }
                 </aside>
               </div>

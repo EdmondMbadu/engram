@@ -1,4 +1,8 @@
-import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource } from './board-wizard-source';
+import {
+  BOARD_WIZARD_PASTE_MAX_LENGTH,
+  detectBoardWizardSourceUrl,
+  parseNumberedBoardSource,
+} from './board-wizard-source';
 
 describe('board wizard pasted sources', () => {
   it('parses a ranked article into ordered source sections', () => {
@@ -52,5 +56,46 @@ describe('board wizard pasted sources', () => {
     const parsed = parseNumberedBoardSource('Top visits\nRanked for memorable experiences, not prestige.\n1. One\nA\n2. Two\nB\n3. Three\nC');
     expect(parsed?.title).toBe('Top visits');
     expect(parsed?.description).toBe('Ranked for memorable experiences, not prestige.');
+  });
+
+  it('detects a source URL pasted inside a Describe it prompt', () => {
+    expect(detectBoardWizardSourceUrl(
+      'describe',
+      'Use the 15 destinations and pictures from https://www.newsweek.com/most-underrated-us-travel-destinations-revealed-12230311.',
+      '',
+    )).toBe('https://www.newsweek.com/most-underrated-us-travel-destinations-revealed-12230311');
+  });
+
+  it('uses the dedicated URL field in URL mode', () => {
+    expect(detectBoardWizardSourceUrl(
+      'url',
+      'Ignore this prompt link https://example.com/wrong',
+      'https://example.com/right',
+    )).toBe('https://example.com/right');
+  });
+
+  it('returns no source URL for an ordinary description', () => {
+    expect(detectBoardWizardSourceUrl('describe', 'A board about quiet coastal towns', '')).toBe('');
+  });
+
+  it('leaves tour links on the established tour ingestion path', () => {
+    expect(detectBoardWizardSourceUrl(
+      'walking-tour',
+      'Follow https://maps.app.goo.gl/example in order',
+      '',
+    )).toBe('');
+  });
+
+  it('handles Markdown links and keeps balanced URL parentheses', () => {
+    expect(detectBoardWizardSourceUrl(
+      'describe',
+      'Use [this source](https://example.com/article).',
+      '',
+    )).toBe('https://example.com/article');
+    expect(detectBoardWizardSourceUrl(
+      'describe',
+      'Use https://en.wikipedia.org/wiki/Travel_(magazine).',
+      '',
+    )).toBe('https://en.wikipedia.org/wiki/Travel_(magazine)');
   });
 });
