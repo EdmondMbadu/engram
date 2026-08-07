@@ -9,6 +9,7 @@ import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type Fire
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { BOARD_ICON_OPTIONS, resolveBoardIcon } from '../board-icon';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from '../firebase.client';
 import { GoogleMapsService, type PlaceSearchResult } from '../google-maps.service';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
@@ -1041,21 +1042,6 @@ const COUNTRY_OPTIONS: Array<{ name: string; aliases?: string[] }> = [
   { name: 'Zimbabwe' },
 ];
 
-const BOARD_ICONS = [
-  'dashboard',
-  'travel_explore',
-  'restaurant',
-  'local_cafe',
-  'beach_access',
-  'festival',
-  'hiking',
-  'museum',
-  'shopping_bag',
-  'favorite',
-  'auto_awesome',
-  'public',
-];
-
 const CARD_STICKER_ICONS = [
   'location_on',
   'restaurant',
@@ -1294,7 +1280,7 @@ export class BoardsComponent implements OnDestroy {
   readonly minStackAudioVolume = MIN_STACK_AUDIO_VOLUME;
   readonly maxStackAudioVolume = MAX_STACK_AUDIO_VOLUME;
   readonly songEqBars = Array.from({ length: 24 }, (_item, index) => index);
-  readonly boardIcons = BOARD_ICONS;
+  readonly boardIcons = BOARD_ICON_OPTIONS;
   readonly cardStickerIcons = CARD_STICKER_ICONS;
   readonly ratingOptions = [1, 2, 3, 4, 5];
   readonly shareTargets = SHARE_TARGETS;
@@ -4290,7 +4276,11 @@ export class BoardsComponent implements OnDestroy {
                 title,
                 description: draft.description.trim(),
                 backNote: draft.backNote.trim(),
-                icon: draft.icon,
+                icon: resolveBoardIcon(draft.icon, {
+                  title,
+                  description: draft.description,
+                  kind: board.kind,
+                }),
                 tone: draft.tone,
                 visibility: board.parentCardId ? board.visibility : draft.visibility,
                 imageUrl: draft.imageUrl.trim(),
@@ -4320,7 +4310,7 @@ export class BoardsComponent implements OnDestroy {
         title,
         description: draft.description.trim(),
         backNote: draft.backNote.trim(),
-        icon: draft.icon,
+        icon: resolveBoardIcon(draft.icon, { title, description: draft.description, kind: 'standard' }),
         tone: draft.tone,
         visibility: parentBoard?.visibility ?? draft.visibility,
         imageUrl: draft.imageUrl.trim(),
@@ -8213,6 +8203,10 @@ export class BoardsComponent implements OnDestroy {
 
   cardTypeIcon(type: BoardCardType): string {
     return this.cardTypes.find((item) => item.id === type)?.icon ?? 'sticky_note_2';
+  }
+
+  boardDisplayIcon(board: Pick<Board, 'icon' | 'title' | 'description' | 'kind'>): string {
+    return resolveBoardIcon(board.icon, board);
   }
 
   cardTypeLabel(type: BoardCardType): string {
@@ -13435,7 +13429,11 @@ export class BoardsComponent implements OnDestroy {
       board: {
         title: this.stringValue(boardData['title'], fallback.board.title, 90),
         description: this.stringValue(boardData['description'], fallback.board.description, 500),
-        icon: this.stringValue(boardData['icon'], fallback.board.icon, 64),
+        icon: resolveBoardIcon(this.stringValue(boardData['icon'], fallback.board.icon, 64), {
+          title: this.stringValue(boardData['title'], fallback.board.title, 90),
+          description: this.stringValue(boardData['description'], fallback.board.description, 500),
+          kind: this.isBoardKind(boardData['kind']) ? boardData['kind'] : fallback.board.kind,
+        }),
         tone: this.isBoardTone(boardData['tone']) ? boardData['tone'] : fallback.board.tone,
         kind: this.isBoardKind(boardData['kind']) ? boardData['kind'] : fallback.board.kind,
         tourMeta: this.normalizeTourMeta(boardData['tourMeta']) ?? fallback.board.tourMeta,
@@ -15156,7 +15154,11 @@ export class BoardsComponent implements OnDestroy {
       title,
       description: typeof data['description'] === 'string' ? data['description'] : '',
       backNote: typeof data['backNote'] === 'string' ? data['backNote'] : '',
-      icon: typeof data['icon'] === 'string' ? data['icon'] : 'dashboard',
+      icon: resolveBoardIcon(data['icon'], {
+        title,
+        description: typeof data['description'] === 'string' ? data['description'] : '',
+        kind: this.isBoardKind(data['kind']) ? data['kind'] : 'standard',
+      }),
       tone: this.isBoardTone(data['tone']) ? data['tone'] : 'teal',
       imageUrl: typeof data['imageUrl'] === 'string' ? data['imageUrl'] : '',
       logoUrl: typeof data['logoUrl'] === 'string' ? data['logoUrl'] : '',

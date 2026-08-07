@@ -807,7 +807,7 @@
                       </span>
                     }
                     <span class="board-square__icon">
-                      <span class="material-symbols-outlined">{{ board.icon }}</span>
+                      <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
                     </span>
                     <span class="board-square__meta">
                       <strong>{{ board.title }}</strong>
@@ -824,7 +824,7 @@
 
                   <button type="button" class="board-square__open board-square__face board-square__face--back" (click)="selectBoard(board.id)">
                     <span class="board-square__icon">
-                      <span class="material-symbols-outlined">{{ board.icon }}</span>
+                      <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
                     </span>
                     <span class="board-square__meta board-square__meta--back">
                       <strong>{{ board.backNote || board.description || 'Add a secret note, a memory, or a tiny fun fact for this collection.' }}</strong>
@@ -1224,7 +1224,7 @@
                     <img [src]="board.logoUrl" [alt]="board.title + ' logo'" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,.16));" />
                   }
                 } @else {
-                  <span class="material-symbols-outlined">{{ board.icon }}</span>
+                  <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
                 }
               </div>
 
@@ -5172,7 +5172,7 @@
                 @if (stackCoverImage(board)) {
                   <img [src]="stackCoverImage(board)" [alt]="board.title" />
                 } @else {
-                  <span class="material-symbols-outlined">{{ board.icon }}</span>
+                  <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
                 }
               </div>
               <div>

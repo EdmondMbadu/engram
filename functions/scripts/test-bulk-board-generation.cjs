@@ -5,6 +5,7 @@ const {
   bulkBoardGenerationKey,
   bulkBoardSuppressionId,
   normalizeBulkBoardTemplate,
+  normalizeBulkBoardIcon,
   renderBulkBoardTitle,
 } = require('../lib/bulk-board-generation.js');
 
@@ -32,6 +33,9 @@ assert.throws(
 );
 assert.equal(normalizeBulkBoardTemplate({ titlePattern: '{city}', count: 200 }).count, 20);
 assert.equal(normalizeBulkBoardTemplate({ titlePattern: '{city}', count: 1 }).count, 3);
+assert.equal(normalizeBulkBoardIcon('Handball'), 'sports_handball');
+assert.equal(normalizeBulkBoardIcon('eb', 'Best museums in Philadelphia'), 'museum');
+assert.equal(normalizeBulkBoardIcon('unknown-model-output'), 'location_city');
 
 const key = bulkBoardGenerationKey('atlas-philly', template);
 assert.equal(key, 'atlas-philly__visitor-picks__2.1');
@@ -55,4 +59,3 @@ assert.deepEqual(warnings, [
 ]);
 
 console.log('bulk board generation tests passed');
-

@@ -27,6 +27,7 @@ const HOME_ICON_URLS = {
   trove: '/assets/image/home-icons/my-trove.png',
 } as const;
 const PUBLIC_WIKI_CATEGORIES = [CITIES_CATEGORY, OTHERS_CATEGORY] as const;
+const PUBLIC_BOARD_ICON = /^(?:dashboard|travel_explore|restaurant|local_cafe|beach_access|festival|hiking|museum|shopping_bag|favorite|auto_awesome|public|sports_handball)$/;
 type PublicWikiCategory = (typeof PUBLIC_WIKI_CATEGORIES)[number];
 const PUBLIC_WIKI_SORTS = [
   { value: 'az', label: 'A-Z' },
@@ -1291,15 +1292,13 @@ export class PublicWikisComponent implements OnInit {
   }
 
   boardIcon(board: MobileBoard): string {
-    if (board.icon && /^[a-z0-9_]+$/i.test(board.icon)) {
-      return board.icon;
-    }
-    if (board.kind === 'walking-tour') {
-      return 'hiking';
-    }
-    if (board.kind === 'driving-tour') {
-      return 'directions_car';
-    }
+    const requested = typeof board.icon === 'string'
+      ? board.icon.trim().toLowerCase().replace(/[\s-]+/g, '_').replace(/[^a-z0-9_]/g, '')
+      : '';
+    const icon = requested === 'handball' ? 'sports_handball' : requested;
+    if (PUBLIC_BOARD_ICON.test(icon)) return icon;
+    if (board.kind === 'walking-tour') return 'directions_walk';
+    if (board.kind === 'driving-tour') return 'directions_car';
     return 'dashboard_customize';
   }
 

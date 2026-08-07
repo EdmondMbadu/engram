@@ -97,6 +97,16 @@ const antiSlopPhrases = [
   'immerse yourself',
   'look no further',
 ];
+const safeBulkBoardIcons = new Set([
+  'dashboard_customize', 'travel_explore', 'location_city', 'location_on', 'restaurant',
+  'local_cafe', 'local_bar', 'nightlife', 'beach_access', 'festival', 'hiking',
+  'directions_walk', 'directions_car', 'museum', 'history_edu', 'shopping_bag',
+  'storefront', 'favorite', 'auto_awesome', 'public', 'sports_handball',
+  'sports_basketball', 'sports_soccer', 'sports_football', 'sports_baseball',
+  'sports_tennis', 'sports_volleyball', 'fitness_center', 'music_note', 'palette',
+  'photo_camera', 'park', 'family_restroom', 'school', 'menu_book', 'theater_comedy',
+  'stadium', 'spa', 'pets',
+]);
 
 function text(value: unknown, max = 500): string {
   return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim().slice(0, max) : '';
@@ -114,6 +124,36 @@ function slug(value: string, fallback: string): string {
     .replace(/^-+|-+$/g, '')
     .slice(0, 64);
   return normalized || fallback;
+}
+
+export function normalizeBulkBoardIcon(value: unknown, subject = ''): string {
+  const requested = text(value, 64)
+    .toLowerCase()
+    .replace(/[\s-]+/g, '_')
+    .replace(/[^a-z0-9_]/g, '');
+  const aliased = requested === 'handball'
+    ? 'sports_handball'
+    : requested === 'food'
+      ? 'restaurant'
+      : requested === 'coffee'
+        ? 'local_cafe'
+        : requested === 'travel'
+          ? 'travel_explore'
+          : requested;
+  if (safeBulkBoardIcons.has(aliased)) return aliased;
+
+  const normalizedSubject = subject.toLowerCase();
+  if (/\b(handball)\b/.test(normalizedSubject)) return 'sports_handball';
+  if (/\b(sport|game|arena|stadium)\b/.test(normalizedSubject)) return 'stadium';
+  if (/\b(food|eat|restaurant|dining|cuisine)\b/.test(normalizedSubject)) return 'restaurant';
+  if (/\b(coffee|cafe|tea)\b/.test(normalizedSubject)) return 'local_cafe';
+  if (/\b(museums?|history|historic|heritage)\b/.test(normalizedSubject)) return 'museum';
+  if (/\b(music|song|concert|playlist)\b/.test(normalizedSubject)) return 'music_note';
+  if (/\b(shop|shopping|market|boutique)\b/.test(normalizedSubject)) return 'shopping_bag';
+  if (/\b(beach|coast|ocean)\b/.test(normalizedSubject)) return 'beach_access';
+  if (/\b(hike|hiking|trail|outdoor|nature)\b/.test(normalizedSubject)) return 'hiking';
+  if (/\b(trip|tour|travel|visit|itinerary|destination)\b/.test(normalizedSubject)) return 'travel_explore';
+  return 'location_city';
 }
 
 export function normalizeBulkBoardTemplate(value: unknown): BulkBoardTemplate {
@@ -525,7 +565,10 @@ function boardPayload(params: {
     description: text(params.generated.board.description, 240)
       || `A reviewed collection of places in ${params.atlas.cityName}.`,
     backNote: 'Generated from verified place identities. Editorial review is required before publishing.',
-    icon: text(params.generated.board.icon, 64) || 'location_city',
+    icon: normalizeBulkBoardIcon(
+      params.generated.board.icon,
+      `${params.template.searchQuery} ${params.template.titlePattern} ${params.generated.board.title}`,
+    ),
     tone: params.generated.board.tone || 'teal',
     imageUrl,
     logoUrl: '',
