@@ -5358,7 +5358,6 @@
                           type="button"
                           class="stack-narration-mode"
                           [class.stack-narration-mode--active]="stackVideoNarrationEnabled()"
-                          [class.stack-narration-mode--locked]="!stackVideoNarrationEligible()"
                           [attr.aria-checked]="stackVideoNarrationEnabled()"
                           role="radio"
                           (click)="setStackVideoNarrationEnabled(true)"
@@ -5368,12 +5367,10 @@
                             <strong i18n>Full narration</strong>
                             <small i18n>Complete card descriptions</small>
                           </span>
-                          @if (stackVideoNarrationEligible()) {
-                            @if (stackVideoNarrationEnabled()) {
-                              <span class="stack-narration-mode__check material-symbols-outlined">check_circle</span>
-                            }
+                          @if (stackVideoNarrationEnabled()) {
+                            <span class="stack-narration-mode__check material-symbols-outlined">check_circle</span>
                           } @else {
-                            <span class="stack-narration-mode__premium" i18n>Premium</span>
+                            <span class="stack-narration-mode__included" i18n>Free</span>
                           }
                         </button>
                       </div>
@@ -5906,7 +5903,6 @@
                     <button
                       type="button"
                       [class.stack-share-sheet__narration-mode--active]="stackVideoNarrationEnabled()"
-                      [class.stack-share-sheet__narration-mode--locked]="!stackVideoNarrationEligible()"
                       [attr.aria-checked]="stackVideoNarrationEnabled()"
                       [disabled]="stackVideoExporting()"
                       role="radio"
@@ -5917,10 +5913,10 @@
                         <strong i18n>Full narration</strong>
                         <small i18n>Complete card descriptions</small>
                       </span>
-                      @if (!stackVideoNarrationEligible()) {
-                        <em i18n>Premium</em>
-                      } @else if (stackVideoNarrationEnabled()) {
+                      @if (stackVideoNarrationEnabled()) {
                         <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span>
+                      } @else {
+                        <em class="stack-share-sheet__narration-free" i18n>Free</em>
                       }
                     </button>
                     <button

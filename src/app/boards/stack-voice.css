@@ -135,10 +135,6 @@
   transform: translate(-1px, -1px);
 }
 
-.stack-narration-mode--locked {
-  background: color-mix(in srgb, var(--soft-fill) 78%, var(--surface));
-}
-
 .stack-narration-mode > .material-symbols-outlined:first-child {
   display: grid;
   width: 2.2rem;
@@ -174,10 +170,10 @@
   font-variation-settings: 'FILL' 1;
 }
 
-.stack-narration-mode__premium {
+.stack-narration-mode__included {
   border-radius: 999px;
-  background: var(--modal-ink);
-  color: var(--modal-paper);
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  color: var(--accent);
   font-size: 0.56rem;
   font-weight: 950;
   letter-spacing: 0.04em;

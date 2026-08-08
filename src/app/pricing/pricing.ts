@@ -9,6 +9,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
 
 type PricingAudience = 'general' | 'business';
 type BillingCycle = 'monthly' | 'annual';
+type PricingFeature = 'personal-voice' | 'private-boards' | 'video-narration' | null;
 type PersonalPaidPlanId = 'personal_plus' | 'creator';
 type PricingPlanId =
   | 'reader'
@@ -45,6 +46,7 @@ export class PricingComponent implements OnInit {
   readonly isSignedIn = this.authService.isAuthenticated;
   readonly activeAudience = signal<PricingAudience>('general');
   readonly billingCycle = signal<BillingCycle>('monthly');
+  readonly requestedFeature = signal<PricingFeature>(null);
   readonly checkoutLoading = signal<string | null>(null);
   readonly checkoutError = signal<string | null>(null);
   readonly checkoutStatus = signal<string | null>(null);
@@ -63,7 +65,7 @@ export class PricingComponent implements OnInit {
       features: [
         'Follow public city and topic wikis',
         'Save favorite pages and source links',
-        'Join weekly update lists',
+        'Create narrated Stack videos with included voices',
         'Start one personal LivingWiki draft',
       ],
     },
@@ -82,7 +84,7 @@ export class PricingComponent implements OnInit {
         'Up to 5 private LivingWiki spaces',
         'Document uploads and cited answers',
         'Personal library across cities and topics',
-        'Priority access to new AI tools',
+        'Create a reusable Personal Voice narrator',
       ],
     },
     {
@@ -100,6 +102,7 @@ export class PricingComponent implements OnInit {
         'Custom landing page summary and media',
         'Source library and update workflow',
         'Basic visitor and question insights',
+        'Create a reusable Personal Voice narrator',
       ],
     },
     {
@@ -171,15 +174,35 @@ export class PricingComponent implements OnInit {
   readonly showUpgradePrompt = computed(() => !this.hasPaidPricingPlan());
 
   readonly promptTitle = computed(() =>
-    this.isSignedIn()
-      ? $localize`Upgrade your LivingWiki account`
-      : $localize`Upgrade when you are ready for more than browsing`,
+    this.requestedFeature() === 'personal-voice'
+      ? $localize`Unlock your personal narrator voice`
+      : this.requestedFeature() === 'video-narration'
+        ? $localize`Standard video narration is included free`
+        : this.requestedFeature() === 'private-boards'
+          ? $localize`Upgrade to create private LivingWikis`
+          : this.isSignedIn()
+            ? $localize`Upgrade your LivingWiki account`
+            : $localize`Upgrade when you are ready for more than browsing`,
   );
 
   readonly promptDescription = computed(() =>
-    this.isSignedIn()
-      ? $localize`You are not on a paid pricing plan yet. Pick a personal or business tier to unlock private spaces, richer publishing, or local business tools.`
-      : $localize`Browse the public directory for free, then choose a personal or business tier when you want to save work, publish, upload sources, or claim a local business.`,
+    this.requestedFeature() === 'personal-voice'
+      ? $localize`Creating a reusable narrator from your own recording is available with Personal Plus or Creator. All included narrator voices and narrated video exports remain free.`
+      : this.requestedFeature() === 'video-narration'
+        ? $localize`Return to Stack Studio to create a narrated video with any included voice. A paid plan is only required when you create and use your own Personal Voice.`
+        : this.requestedFeature() === 'private-boards'
+          ? $localize`Choose Personal Plus or Creator to keep LivingWiki spaces private. Public boards and narrated Stack video exports remain free.`
+          : this.isSignedIn()
+            ? $localize`Your free account is active. Upgrade only when you need private spaces, Personal Voice, richer publishing, or local business tools.`
+            : $localize`Browse public LivingWikis and create narrated Stack videos for free, then upgrade when you need private spaces, Personal Voice, publishing, uploads, or business tools.`,
+  );
+
+  readonly promptEyebrow = computed(() =>
+    this.requestedFeature() === 'video-narration'
+      ? $localize`Included with Free`
+      : this.requestedFeature() === 'personal-voice' || this.requestedFeature() === 'private-boards'
+        ? $localize`Paid feature`
+        : $localize`Free`,
   );
 
   readonly activeCopy = computed(() =>
@@ -279,11 +302,16 @@ export class PricingComponent implements OnInit {
   }
 
   private async restoreCheckoutReturn(): Promise<void> {
+    const feature = this.route.snapshot.queryParamMap.get('feature');
     const audience = this.route.snapshot.queryParamMap.get('audience');
     const billing = this.route.snapshot.queryParamMap.get('billing');
     const plan = this.route.snapshot.queryParamMap.get('plan');
     const payment = this.route.snapshot.queryParamMap.get('pricingPayment');
     const sessionId = this.route.snapshot.queryParamMap.get('session_id');
+
+    if (feature === 'personal-voice' || feature === 'private-boards' || feature === 'video-narration') {
+      this.requestedFeature.set(feature);
+    }
 
     if (audience === 'general' || audience === 'business') {
       this.activeAudience.set(audience);

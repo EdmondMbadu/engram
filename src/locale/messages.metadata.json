@@ -647,6 +647,10 @@
     "source": "Thursday",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
+  "1434874317823023024": {
+    "source": "Creating a reusable narrator from your own recording is available with Personal Plus or Creator. All included narrator voices and narrated video exports remain free.",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "1435345575180427494": {
     "source": "Businesses",
     "file": "src/app/admin-users/admin-users.html"
@@ -1539,6 +1543,10 @@
     "source": "Operational Flow",
     "file": "src/app/marketing/marketing.html"
   },
+  "2026225553315845494": {
+    "source": "Return to Stack Studio to create a narrated video with any included voice. A paid plan is only required when you create and use your own Personal Voice.",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "2031158923353182856": {
     "source": "Landing preview",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
@@ -2039,6 +2047,10 @@
     "source": "{$START_TAG_SPAN}photo_library{$CLOSE_TAG_SPAN} Photo memories",
     "file": "src/app/boards/boards.html"
   },
+  "2363304106411417130": {
+    "source": "Paid feature",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "2368761113340801104": {
     "source": "Create account to claim",
     "file": "src/app/business-claim/business-claim.html"
@@ -2146,6 +2158,10 @@
   "2424191973274934075": {
     "source": "Scrapper | LivingWiki",
     "file": "src/app/app.routes.ts"
+  },
+  "2430877036485762047": {
+    "source": "Included with Free",
+    "file": "src/app/pricing/pricing.ts"
   },
   "2432093903373755152": {
     "source": "Source files",
@@ -2583,6 +2599,10 @@
     "source": "{count} reviewed places",
     "file": "src/app/chat/chat.ts"
   },
+  "2718109484487214389": {
+    "source": "Browse public LivingWikis and create narrated Stack videos for free, then upgrade when you need private spaces, Personal Voice, publishing, uploads, or business tools.",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "2724745748710734378": {
     "source": "Open quiz",
     "file": "src/app/chat/chat.ts"
@@ -2775,10 +2795,6 @@
     "source": "Copy was blocked. Try the share button instead.",
     "file": "src/app/boards/boards.ts"
   },
-  "2878384721916926582": {
-    "source": "No paid plan detected",
-    "file": "src/app/pricing/pricing.html"
-  },
   "2880258575103791541": {
     "source": " /chat/{$INTERPOLATION} ",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -2966,6 +2982,10 @@
   "29832309535656200": {
     "source": "System",
     "file": "src/app/answer-card/answer-card.html"
+  },
+  "298449106119424769": {
+    "source": "Personal Voice is available with Personal Plus or Creator. Included narrator voices remain free.",
+    "file": "src/app/boards/boards.ts"
   },
   "2991576300940539223": {
     "source": "Pin places without street addresses to an exact what3words square.",
@@ -3262,6 +3282,10 @@
   "3180135722751253645": {
     "source": "Loading chat",
     "file": "src/app/chat/chat.ts"
+  },
+  "3181015128176551788": {
+    "source": "Unlock your personal narrator voice",
+    "file": "src/app/pricing/pricing.ts"
   },
   "3184541958586845717": {
     "source": "Describe the tour",
@@ -3699,6 +3723,10 @@
     "source": " A majority-Black city on the Delaware River hosts Reworld Delaware Valley, formerly Covanta, burning up to 3,500 tons of waste per day. Only a tiny fraction of the trash burned here is Chester's own. ",
     "file": "src/app/fence-line/fence-line.html"
   },
+  "3414269325222112982": {
+    "source": "Choose your plan",
+    "file": "src/app/pricing/pricing.html"
+  },
   "3414607804424479154": {
     "source": "Philly Challenge Quiz",
     "file": "src/app/answer-quiz/answer-quiz.html"
@@ -4107,6 +4135,10 @@
     "source": "Create a quiz",
     "file": "src/app/boards/boards.html"
   },
+  "3675258437245553149": {
+    "source": "Upgrade to create private LivingWikis",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "3676305033706189085": {
     "source": "Founding-business status",
     "file": "src/app/business/business.ts"
@@ -4214,10 +4246,6 @@
   "3756676051726423969": {
     "source": "Paste a URL to ingest into LivingWiki...",
     "file": "src/app/library/library.html"
-  },
-  "3761890892725885726": {
-    "source": "You are not on a paid pricing plan yet. Pick a personal or business tier to unlock private spaces, richer publishing, or local business tools.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "3765125977049766699": {
     "source": "Sign in to save chat",
@@ -5111,10 +5139,6 @@
     "source": "It is live on the shared board now. Everyone viewing this board will receive the new location.",
     "file": "src/app/boards/boards.html"
   },
-  "4376546714873789688": {
-    "source": "Browse the public directory for free, then choose a personal or business tier when you want to save work, publish, upload sources, or claim a local business.",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "4379224223006063625": {
     "source": "Duplicate check found an existing pending claim.",
     "file": "src/app/business-claim/business-claim.html"
@@ -5778,10 +5802,6 @@
   "4799178979576697091": {
     "source": "QR destination URL",
     "file": "src/app/business-detail/business-edit.html"
-  },
-  "4799565531231690317": {
-    "source": " A simple starting point for personal knowledge spaces, public wiki publishing, and local business discovery. ",
-    "file": "src/app/pricing/pricing.html"
   },
   "4800514254034370317": {
     "source": "Local Favorite trust badge",
@@ -7445,7 +7465,7 @@
   },
   "5891064527381218201": {
     "source": "Free",
-    "file": "src/app/pricing/pricing.html"
+    "file": "src/app/boards/boards.html"
   },
   "5895528980500499411": {
     "source": "Business explainer",
@@ -7826,6 +7846,10 @@
   "6165308040554736592": {
     "source": "X opened with your challenge.",
     "file": "src/app/boards/boards.ts"
+  },
+  "6165554337484865770": {
+    "source": "Choose Personal Plus or Creator to keep LivingWiki spaces private. Public boards and narrated Stack video exports remain free.",
+    "file": "src/app/pricing/pricing.ts"
   },
   "6166411589217463623": {
     "source": "Search pictures",
@@ -9675,10 +9699,6 @@
     "source": " Pathways {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}",
     "file": "src/app/green-jobs/green-jobs.html"
   },
-  "7409325500436321433": {
-    "source": "Full video narration is available on paid plans.",
-    "file": "src/app/boards/boards.ts"
-  },
   "7410087971193228836": {
     "source": "Not published yet",
     "file": "src/app/video-library/video-library.html"
@@ -10502,10 +10522,6 @@
   "7981406851517511884": {
     "source": "Learn from this board",
     "file": "src/app/boards/boards.html"
-  },
-  "7987425617873257630": {
-    "source": " Pick the plan that matches how you use LivingWiki. ",
-    "file": "src/app/pricing/pricing.html"
   },
   "7988525976592029498": {
     "source": "A majority-Black city of roughly 33,000 hosts Reworld Delaware Valley, burning regional waste shipped from Philadelphia, New Jersey, and New York City.",
@@ -11683,6 +11699,10 @@
     "source": "We will reveal additional member features as they come online for this LivingWiki.",
     "file": "src/app/chat/chat.ts"
   },
+  "8835471938996842616": {
+    "source": "Your free account is active. Upgrade only when you need private spaces, Personal Voice, richer publishing, or local business tools.",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "8843134590212886305": {
     "source": "Ready to create the page",
     "file": "src/app/business-claim/business-claim.html"
@@ -11747,6 +11767,10 @@
     "source": "Keep the video silent",
     "file": "src/app/boards/boards.html"
   },
+  "8904123080211688242": {
+    "source": "Standard video narration is included free",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "8906308433967346612": {
     "source": " Control how the assistant sounds for this Wiki. Grounding, citations, and safety rules still stay automatic. ",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -11774,10 +11798,6 @@
   "891271694938396429": {
     "source": "Roughly $300M in incinerator debt pushed the city into state receivership.",
     "file": "src/app/fence-line/fence-line.ts"
-  },
-  "8914243769048279065": {
-    "source": " Personal ",
-    "file": "src/app/pricing/pricing.html"
   },
   "8915052701180137066": {
     "source": "Creating Account...",

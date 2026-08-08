@@ -3,6 +3,7 @@ import {
   PERSONAL_STACK_NARRATOR_VOICE_ID,
   STACK_NARRATOR_VOICES,
   normalizeStackNarratorVoiceId,
+  stackNarratorVoiceRequiresPaidPlan,
   stackNarratorVoiceById,
 } from './stack-voice';
 
@@ -34,5 +35,11 @@ describe('Stack narrator voice catalog', () => {
   it('preserves the server-resolved personal narrator choice', () => {
     expect(normalizeStackNarratorVoiceId(PERSONAL_STACK_NARRATOR_VOICE_ID))
       .toBe(PERSONAL_STACK_NARRATOR_VOICE_ID);
+  });
+
+  it('keeps every included narrator free and reserves payment for Personal Voice', () => {
+    expect(STACK_NARRATOR_VOICES.every((voice) => !stackNarratorVoiceRequiresPaidPlan(voice.id)))
+      .toBeTrue();
+    expect(stackNarratorVoiceRequiresPaidPlan(PERSONAL_STACK_NARRATOR_VOICE_ID)).toBeTrue();
   });
 });

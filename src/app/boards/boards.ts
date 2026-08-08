@@ -44,7 +44,11 @@ import {
   detectBoardWizardSourceUrl,
   parseNumberedBoardSource,
 } from './board-wizard-source';
-import { shouldAutosaveBoardWizardDraft, shouldFlushBoardWizardDraftOnClose } from './board-wizard-draft-lifecycle';
+import {
+  boardWizardStepAfterGenerationFailure,
+  shouldAutosaveBoardWizardDraft,
+  shouldFlushBoardWizardDraftOnClose,
+} from './board-wizard-draft-lifecycle';
 import { appendBoardCards } from './board-batch';
 import {
   BOARD_NARRATION_STYLES,
@@ -127,6 +131,7 @@ import {
   PERSONAL_STACK_NARRATOR_VOICE_ID,
   STACK_NARRATOR_VOICES,
   normalizeStackNarratorVoiceId,
+  stackNarratorVoiceRequiresPaidPlan,
   stackNarratorVoiceById,
   type StackNarratorVoice,
 } from './stack-voice';
@@ -2145,9 +2150,6 @@ export class BoardsComponent implements OnDestroy {
       ? this.personalNarratorVoice()?.name || $localize`Your voice`
       : this.stackSelectedNarratorVoice()?.name || $localize`Warm Storyteller`,
   );
-  readonly stackVideoNarrationEligible = computed(() =>
-    this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan(),
-  );
   readonly personalVoiceEligible = computed(() =>
     this.personalVoiceServerEligible()
       ?? (this.authService.isAdmin() || this.authService.hasActivePersonalWikiPlan()),
@@ -3578,12 +3580,12 @@ export class BoardsComponent implements OnDestroy {
         this.wizardResult.set(previousResult);
         this.wizardPreviewCards.set(previousPreviewCards);
         this.wizardSelectedCardIds.set(previousSelectedCardIds);
-        this.wizardStep.set('preview');
+        this.wizardStep.set(boardWizardStepAfterGenerationFailure(true));
       } else {
         this.wizardResult.set(null);
         this.wizardPreviewCards.set([]);
         this.wizardSelectedCardIds.set(new Set());
-        this.wizardStep.set('choose');
+        this.wizardStep.set(boardWizardStepAfterGenerationFailure(false));
       }
     } finally {
       if (interval) {
@@ -10991,11 +10993,11 @@ export class BoardsComponent implements OnDestroy {
   }
 
   selectStackNarratorVoice(board: Board, voiceId: string): void {
-    if (!this.stackVideoNarrationEligible()) {
-      this.requestStackVideoNarrationUpgrade();
+    const normalizedVoiceId = normalizeStackNarratorVoiceId(voiceId);
+    if (stackNarratorVoiceRequiresPaidPlan(normalizedVoiceId) && !this.personalVoiceEligible()) {
+      this.requestPersonalVoiceUpgrade();
       return;
     }
-    const normalizedVoiceId = normalizeStackNarratorVoiceId(voiceId);
     if (this.stackNarratorVoiceId() === normalizedVoiceId) {
       this.saveStackNarratorPreference(board, true);
       return;
@@ -11009,10 +11011,6 @@ export class BoardsComponent implements OnDestroy {
   }
 
   setStackVideoNarrationEnabled(enabled: boolean): void {
-    if (enabled && !this.stackVideoNarrationEligible()) {
-      this.requestStackVideoNarrationUpgrade();
-      return;
-    }
     if (!enabled) {
       this.stopStackVoicePreview();
     }
@@ -11021,11 +11019,10 @@ export class BoardsComponent implements OnDestroy {
     this.setStackShareMessage(null);
   }
 
-  private requestStackVideoNarrationUpgrade(): void {
+  private requestPersonalVoiceUpgrade(): void {
     this.stopStackVoicePreview();
-    this.stackVideoNarrationEnabled.set(true);
-    this.stackVoiceError.set($localize`Full video narration is available on paid plans.`);
-    void this.router.navigate(['/pricing'], { queryParams: { feature: 'video-narration' } });
+    this.stackVoiceError.set($localize`Personal Voice is available with Personal Plus or Creator. Included narrator voices remain free.`);
+    void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
   }
 
   isStackVoicePreviewing(voiceId: string): boolean {
@@ -11036,10 +11033,6 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.isBrowser) return;
-    if (!this.stackVideoNarrationEligible()) {
-      this.requestStackVideoNarrationUpgrade();
-      return;
-    }
     if (this.isStackVoicePreviewing(voice.id)) {
       this.stopStackVoicePreview();
       return;
@@ -11110,7 +11103,7 @@ export class BoardsComponent implements OnDestroy {
 
   openPersonalVoiceSetup(): void {
     if (!this.personalVoiceEligible()) {
-      void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+      this.requestPersonalVoiceUpgrade();
       return;
     }
     this.stopPersonalVoiceRecording(true);
@@ -11322,6 +11315,10 @@ export class BoardsComponent implements OnDestroy {
     event?.preventDefault();
     event?.stopPropagation();
     if (!this.isBrowser || !this.personalNarratorVoice()) return;
+    if (!this.personalVoiceEligible()) {
+      this.requestPersonalVoiceUpgrade();
+      return;
+    }
     if (this.isStackVoicePreviewing(PERSONAL_STACK_NARRATOR_VOICE_ID)) {
       this.stopStackVoicePreview();
       return;
@@ -11866,8 +11863,10 @@ export class BoardsComponent implements OnDestroy {
     if (!board || !this.isBrowser || this.stackVideoExporting()) {
       return;
     }
-    if (this.stackVideoNarrationEnabled() && !this.stackVideoNarrationEligible()) {
-      this.requestStackVideoNarrationUpgrade();
+    if (this.stackVideoNarrationEnabled()
+      && stackNarratorVoiceRequiresPaidPlan(this.stackNarratorVoiceId())
+      && !this.personalVoiceEligible()) {
+      this.requestPersonalVoiceUpgrade();
       return;
     }
     const url = this.stackShareUrl(board);
@@ -12048,8 +12047,10 @@ export class BoardsComponent implements OnDestroy {
       this.setStackShareMessage('Sign in to publish a permanent video link.', false);
       return;
     }
-    if (this.stackVideoNarrationEnabled() && !this.stackVideoNarrationEligible()) {
-      this.requestStackVideoNarrationUpgrade();
+    if (this.stackVideoNarrationEnabled()
+      && stackNarratorVoiceRequiresPaidPlan(this.stackNarratorVoiceId())
+      && !this.personalVoiceEligible()) {
+      this.requestPersonalVoiceUpgrade();
       return;
     }
 
@@ -12193,8 +12194,10 @@ export class BoardsComponent implements OnDestroy {
   private async createStackVideo(board: Board): Promise<StackVideoResult> {
     const selectedCards = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS);
     const backgroundAudio = this.stackVideoBackgroundAudio();
-    if (this.stackVideoNarrationEnabled() && !this.stackVideoNarrationEligible()) {
-      throw new Error('Full video narration requires an active paid plan. Choose No narration or upgrade to continue.');
+    if (this.stackVideoNarrationEnabled()
+      && stackNarratorVoiceRequiresPaidPlan(this.stackNarratorVoiceId())
+      && !this.personalVoiceEligible()) {
+      throw new Error('Personal Voice requires Personal Plus or Creator. Choose an included narrator voice to continue for free.');
     }
     const narration = this.stackVideoNarrationEnabled()
       ? await this.stackVideoNarration(selectedCards, board)
@@ -12459,7 +12462,12 @@ export class BoardsComponent implements OnDestroy {
     this.stackAudioTrackId.set(normalizeStackAudioTrackId(board.socialVideoAudioTrackId));
     this.stackAudioVolume.set(normalizeStackAudioVolume(board.socialVideoAudioVolume));
     this.stackVideoNarrationEnabled.set(board.socialVideoNarrationEnabled !== false);
-    this.stackNarratorVoiceId.set(normalizeStackNarratorVoiceId(board.stackNarratorVoiceId));
+    const narratorVoiceId = normalizeStackNarratorVoiceId(board.stackNarratorVoiceId);
+    this.stackNarratorVoiceId.set(
+      stackNarratorVoiceRequiresPaidPlan(narratorVoiceId) && !this.personalVoiceEligible()
+        ? DEFAULT_STACK_NARRATOR_VOICE_ID
+        : narratorVoiceId,
+    );
     this.stackAudioError.set(null);
     this.stackVoiceError.set(null);
     this.stackSoundTab.set('voice');

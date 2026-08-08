@@ -1357,10 +1357,6 @@
   transform: translate(-1px, -1px);
 }
 
-.stack-share-sheet__narration-modes > .stack-share-sheet__narration-mode--locked {
-  background: color-mix(in srgb, var(--soft-fill) 78%, var(--surface));
-}
-
 .stack-share-sheet__narration-modes > button > .material-symbols-outlined:first-child {
   display: grid;
   width: 2rem;
@@ -1400,6 +1396,11 @@
   letter-spacing: 0.04em;
   padding: 0.25rem 0.36rem;
   text-transform: uppercase;
+}
+
+.stack-share-sheet__narration-modes .stack-share-sheet__narration-free {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  color: var(--accent);
 }
 
 .stack-share-sheet__narration-check {

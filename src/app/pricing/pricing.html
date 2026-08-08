@@ -27,36 +27,6 @@
       </nav>
 
       <main>
-        <section class="pricing-hero-section relative border-b border-[var(--line)]">
-          <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--soft-fill),transparent_42%),linear-gradient(to_right,var(--line)_1px,transparent_1px),linear-gradient(to_bottom,var(--line)_1px,transparent_1px)] bg-[size:auto,72px_72px,72px_72px] opacity-60"></div>
-          <div class="pricing-spill-art" aria-hidden="true">
-            <span class="pricing-spill pricing-spill--cities">
-              <img src="/assets/image/living-cities.png" alt="" />
-            </span>
-            <span class="pricing-spill pricing-spill--wiki">
-              <img src="/assets/image/my-living-wiki.png" alt="" />
-            </span>
-            <span class="pricing-spill pricing-spill--ring">
-              <img src="/assets/image/ring-countries.png" alt="" />
-            </span>
-            <span class="pricing-spill pricing-spill--spark pricing-spill--spark-one"></span>
-            <span class="pricing-spill pricing-spill--spark pricing-spill--spark-two"></span>
-          </div>
-          <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
-            <div class="max-w-4xl">
-              <div class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-1.5 shadow-[var(--shadow-floating)]">
-                <span class="text-[10px] font-bold uppercase tracking-[0.26em] text-[var(--accent)]" i18n>LivingWiki pricing</span>
-              </div>
-              <h1 class="mt-5 text-4xl font-black leading-[0.98] tracking-normal text-[var(--text)] sm:text-6xl lg:text-7xl" i18n>
-                Pick the plan that matches how you use LivingWiki.
-              </h1>
-              <p class="mt-5 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg" i18n>
-                A simple starting point for personal knowledge spaces, public wiki publishing, and local business discovery.
-              </p>
-            </div>
-          </div>
-        </section>
-
         <section class="pricing-plans-section relative border-b border-[var(--line)] bg-[linear-gradient(180deg,var(--surface),var(--soft-fill)_72%,var(--surface))]">
           <div class="pricing-plan-spill-art" aria-hidden="true">
             <span class="pricing-plan-spill pricing-plan-spill--logo">
@@ -67,35 +37,12 @@
             </span>
             <span class="pricing-plan-spill pricing-plan-spill--tile"></span>
           </div>
-          <div class="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
-            @if (showUpgradePrompt()) {
-              <div class="mb-8 overflow-hidden rounded-[1.5rem] border border-[var(--accent)]/30 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent)_14%,var(--surface)),var(--surface))] p-5 shadow-[var(--shadow-floating)] sm:p-6">
-                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div class="flex min-w-0 gap-4">
-                    <span class="pricing-prompt-mark" aria-hidden="true"></span>
-                    <div class="min-w-0">
-                      <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]" i18n>No paid plan detected</p>
-                      <h2 class="mt-1 text-2xl font-black tracking-tight text-[var(--text)] sm:text-3xl">{{ promptTitle() }}</h2>
-                      <p class="mt-2 max-w-3xl text-sm leading-6 text-[var(--muted)]">{{ promptDescription() }}</p>
-                    </div>
-                  </div>
-                  <div class="flex flex-col gap-2 sm:flex-row lg:shrink-0">
-                    <button type="button" (click)="setAudience('general')" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] transition hover:-translate-y-0.5" i18n>
-                      Personal
-                    </button>
-                    <button type="button" (click)="setAudience('business')" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-5 py-3 text-sm font-black text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[var(--accent)]/45 hover:text-[var(--accent)]" i18n>
-                      Business
-                    </button>
-                  </div>
-                </div>
-              </div>
-            }
-
-            <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div class="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
+            <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div class="max-w-3xl">
-                <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]">{{ activeCopy().eyebrow }}</p>
-                <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--text)] sm:text-5xl">{{ activeCopy().title }}</h2>
-                <p class="mt-4 text-base leading-7 text-[var(--muted)]">{{ activeCopy().description }}</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]" i18n>LivingWiki pricing</p>
+                <h1 class="mt-2 text-3xl font-black leading-tight tracking-tight text-[var(--text)] sm:text-4xl" i18n>Choose your plan</h1>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:text-base">{{ activeCopy().description }}</p>
               </div>
 
               <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
@@ -154,7 +101,7 @@
               </div>
             }
 
-            <div class="pricing-card-grid mt-10">
+            <div class="pricing-card-grid mt-6">
               @for (plan of activePlans(); track plan.id) {
                 <article
                   class="pricing-card"
@@ -178,10 +125,6 @@
                     </div>
                   </div>
 
-                  <p class="pricing-card__description">
-                    {{ plan.description }}
-                  </p>
-
                   <div class="pricing-card__price-row">
                     <div>
                       @if (plan.price === 0) {
@@ -198,6 +141,10 @@
                       <p class="pricing-card__cadence">{{ plan.cadence }}</p>
                     </div>
                   </div>
+
+                  <p class="pricing-card__description">
+                    {{ plan.description }}
+                  </p>
 
                   <div class="pricing-card__features-header" i18n>
                     Included
@@ -234,6 +181,17 @@
                 </article>
               }
             </div>
+
+            @if (showUpgradePrompt()) {
+              <div class="pricing-context-note mt-6">
+                <span class="pricing-prompt-mark" aria-hidden="true"></span>
+                <div class="min-w-0">
+                  <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">{{ promptEyebrow() }}</p>
+                  <h2 class="mt-1 text-xl font-black tracking-tight text-[var(--text)] sm:text-2xl">{{ promptTitle() }}</h2>
+                  <p class="mt-1 max-w-4xl text-sm leading-6 text-[var(--muted)]">{{ promptDescription() }}</p>
+                </div>
+              </div>
+            }
 
             <p class="mt-6 text-center text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]" i18n>
               Example launch pricing for review. Exact checkout and limits can be adjusted after you approve the tiers.

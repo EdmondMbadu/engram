@@ -24,3 +24,7 @@ export function shouldFlushBoardWizardDraftOnClose(
 ): boolean {
   return state.step !== 'done' && hasBoardWizardDraftContent(state);
 }
+
+export function boardWizardStepAfterGenerationFailure(hasPreviousPreview: boolean): BoardWizardDraftLifecycleStep {
+  return hasPreviousPreview ? 'preview' : 'configure';
+}

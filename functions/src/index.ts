@@ -18008,7 +18008,7 @@ function personalNarrationTextsFromCard(value: unknown): Set<string> {
   return allowed;
 }
 
-function publicBoardAllowsPersonalNarration(board: Record<string, unknown>, text: string): boolean {
+function boardAllowsNarrationText(board: Record<string, unknown>, text: string): boolean {
   const requestedText = normalizeNarrationAuthorizationText(text);
   if (!requestedText || !Array.isArray(board['cards'])) return false;
   return board['cards'].some((card) => personalNarrationTextsFromCard(card).has(requestedText));
@@ -18276,14 +18276,22 @@ export const synthesizeChatAnswerSpeech = onCall(
           : 'recap';
     const requestedNarratorId = String(request.data?.narratorVoiceId ?? '').trim();
     const boardId = String(request.data?.boardId ?? '').trim();
+    let requestedBoard: Record<string, unknown> | null = null;
     if (requestedMode === 'stack-video') {
       const userId = request.auth?.uid;
       if (!userId) {
         throw new HttpsError('unauthenticated', 'Sign in to create narrated videos.');
       }
-      const { eligible } = await personalNarratorEligibility(userId);
-      if (!eligible) {
-        throw new HttpsError('failed-precondition', 'Full video narration requires an active paid plan.');
+      if (!boardId) {
+        throw new HttpsError('failed-precondition', 'A board is required to create narrated videos.');
+      }
+      const boardSnapshot = await db.collection('boards').doc(boardId).get();
+      if (!boardSnapshot.exists) {
+        throw new HttpsError('not-found', 'The board for this video could not be found.');
+      }
+      requestedBoard = boardSnapshot.data() as Record<string, unknown>;
+      if (String(requestedBoard['owner_user_id'] ?? '').trim() !== userId) {
+        throw new HttpsError('permission-denied', 'Only the board owner can create its narrated video.');
       }
     }
     let requestedNarratorVoiceId = requestedNarratorId && requestedNarratorId !== personalStackNarratorVoiceId
@@ -18300,21 +18308,28 @@ export const synthesizeChatAnswerSpeech = onCall(
     if (!text) {
       throw new HttpsError('invalid-argument', 'Answer text is required.');
     }
+    if (requestedMode === 'stack-video'
+      && (!requestedBoard || !boardAllowsNarrationText(requestedBoard, text))) {
+      throw new HttpsError('permission-denied', 'This narration does not match a card on the selected board.');
+    }
 
     const isPersonalNarrator = requestedNarratorId === personalStackNarratorVoiceId;
     let personalVoiceOwnerId = '';
     if (isPersonalNarrator) {
       if (boardId) {
-        const boardSnapshot = await db.collection('boards').doc(boardId).get();
-        if (!boardSnapshot.exists) {
-          throw new HttpsError('not-found', 'The board for this narrator could not be found.');
+        let board = requestedBoard;
+        if (!board) {
+          const snapshot = await db.collection('boards').doc(boardId).get();
+          if (!snapshot.exists) {
+            throw new HttpsError('not-found', 'The board for this narrator could not be found.');
+          }
+          board = snapshot.data() as Record<string, unknown>;
         }
-        const board = boardSnapshot.data() as Record<string, unknown>;
         personalVoiceOwnerId = String(board['owner_user_id'] ?? '').trim();
         const isOwner = !!request.auth?.uid && request.auth.uid === personalVoiceOwnerId;
         const canUsePublicNarration = board['visibility'] === 'public'
           && board['stackNarratorVoiceId'] === personalStackNarratorVoiceId
-          && publicBoardAllowsPersonalNarration(board, text);
+          && boardAllowsNarrationText(board, text);
         if (!personalVoiceOwnerId || (!isOwner && !canUsePublicNarration)) {
           throw new HttpsError('permission-denied', 'This personal narrator is not available for that text.');
         }

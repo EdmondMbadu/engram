@@ -125,3 +125,7 @@ export function normalizeStackNarratorVoiceId(value: unknown): string {
     ? value
     : DEFAULT_STACK_NARRATOR_VOICE_ID;
 }
+
+export function stackNarratorVoiceRequiresPaidPlan(value: unknown): boolean {
+  return normalizeStackNarratorVoiceId(value) === PERSONAL_STACK_NARRATOR_VOICE_ID;
+}

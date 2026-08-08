@@ -1,4 +1,5 @@
 import {
+  boardWizardStepAfterGenerationFailure,
   shouldAutosaveBoardWizardDraft,
   shouldFlushBoardWizardDraftOnClose,
 } from './board-wizard-draft-lifecycle';
@@ -50,5 +51,13 @@ describe('board wizard draft lifecycle', () => {
       saving: false,
       restoring: false,
     })).toBeFalse();
+  });
+
+  it('returns a first-time generation failure to the configured source instead of starting over', () => {
+    expect(boardWizardStepAfterGenerationFailure(false)).toBe('configure');
+  });
+
+  it('keeps an earlier preview visible when a refinement fails', () => {
+    expect(boardWizardStepAfterGenerationFailure(true)).toBe('preview');
   });
 });

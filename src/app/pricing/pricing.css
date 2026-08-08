@@ -1,29 +1,18 @@
-.pricing-hero-section,
 .pricing-plans-section {
   isolation: isolate;
   overflow: hidden;
 }
 
-.pricing-spill-art,
 .pricing-plan-spill-art {
   pointer-events: none;
   position: absolute;
   z-index: 0;
 }
 
-.pricing-hero-section > .mx-auto,
 .pricing-plans-section > .relative {
   z-index: 1;
 }
 
-.pricing-spill-art {
-  bottom: -4.5rem;
-  height: 22rem;
-  right: max(1rem, calc((100vw - 80rem) / 2 - 3rem));
-  width: min(34rem, 42vw);
-}
-
-.pricing-spill,
 .pricing-plan-spill {
   position: absolute;
   display: flex;
@@ -36,7 +25,6 @@
   box-shadow: 7px 7px 0 #102018, 0 22px 58px rgba(16, 32, 24, 0.16);
 }
 
-.pricing-spill img,
 .pricing-plan-spill img {
   display: block;
   height: 100%;
@@ -44,45 +32,6 @@
   width: 100%;
 }
 
-.pricing-spill--cities {
-  border-radius: 2rem 1.4rem 2.4rem 1.6rem;
-  height: 9.5rem;
-  padding: 1.1rem;
-  right: 1.5rem;
-  top: 1.3rem;
-  transform: rotate(7deg);
-  width: 11rem;
-}
-
-.pricing-spill--wiki {
-  border-radius: 1.2rem 2rem 1.5rem 2.2rem;
-  height: 7.8rem;
-  left: 4rem;
-  padding: 1rem;
-  top: 6.6rem;
-  transform: rotate(-9deg);
-  width: 9.5rem;
-}
-
-.pricing-spill--ring {
-  border-radius: 50%;
-  height: 6.2rem;
-  padding: 0.9rem;
-  right: 8.8rem;
-  top: 12.6rem;
-  transform: rotate(12deg);
-  width: 6.2rem;
-}
-
-.pricing-spill--spark {
-  background: #fff0b8;
-  border-radius: 1rem 0.75rem 1.1rem 0.8rem;
-  height: 2.4rem;
-  width: 2.4rem;
-}
-
-.pricing-spill--spark::before,
-.pricing-spill--spark::after,
 .pricing-plan-spill--tile::before,
 .pricing-plan-spill--tile::after {
   content: "";
@@ -90,7 +39,6 @@
   background: #102018;
 }
 
-.pricing-spill--spark::before,
 .pricing-plan-spill--tile::before {
   height: 0.3rem;
   left: 0.55rem;
@@ -99,26 +47,12 @@
   transform: translateY(-50%);
 }
 
-.pricing-spill--spark::after,
 .pricing-plan-spill--tile::after {
   bottom: 0.55rem;
   left: 50%;
   top: 0.55rem;
   transform: translateX(-50%);
   width: 0.3rem;
-}
-
-.pricing-spill--spark-one {
-  left: 0.8rem;
-  top: 2.4rem;
-  transform: rotate(14deg);
-}
-
-.pricing-spill--spark-two {
-  background: #ffe2d7;
-  right: 0.2rem;
-  top: 14.8rem;
-  transform: rotate(-10deg);
 }
 
 .pricing-plan-spill-art {
@@ -179,6 +113,17 @@
   border-right: 0.18rem solid var(--accent-contrast);
   border-top: 0.18rem solid var(--accent-contrast);
   transform: translate(-50%, -42%) rotate(-45deg);
+}
+
+.pricing-context-note {
+  align-items: flex-start;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-floating);
+  display: flex;
+  gap: 1rem;
+  padding: 1.15rem;
 }
 
 .pricing-card-grid {
@@ -298,14 +243,12 @@
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.7;
-  margin-top: 1.35rem;
+  margin-top: 1rem;
   min-height: 5rem;
 }
 
 .pricing-card__price-row {
-  border-top: 1px solid var(--line);
-  margin-top: 1.55rem;
-  padding-top: 1.55rem;
+  margin-top: 1.15rem;
 }
 
 .pricing-card__price {
@@ -511,13 +454,6 @@
 }
 
 @media (max-width: 1023px) {
-  .pricing-spill-art {
-    bottom: -2.5rem;
-    opacity: 0.52;
-    right: -5rem;
-    width: 24rem;
-  }
-
   .pricing-plan-spill-art {
     opacity: 0.42;
   }
@@ -541,29 +477,6 @@
 }
 
 @media (max-width: 520px) {
-  .pricing-spill-art {
-    bottom: -1.8rem;
-    height: 13rem;
-    opacity: 0.34;
-    right: -8.5rem;
-    width: 20rem;
-  }
-
-  .pricing-spill {
-    box-shadow: 5px 5px 0 #102018, 0 14px 34px rgba(16, 32, 24, 0.12);
-  }
-
-  .pricing-spill--cities {
-    height: 6.5rem;
-    width: 7.5rem;
-  }
-
-  .pricing-spill--wiki,
-  .pricing-spill--ring,
-  .pricing-spill--spark {
-    display: none;
-  }
-
   .pricing-card__header {
     align-items: flex-start;
     flex-direction: column;
