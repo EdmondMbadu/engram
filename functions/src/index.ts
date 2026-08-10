@@ -19682,6 +19682,152 @@ export const cancelBulkBoardGeneration = onCall(
   },
 );
 
+function cityBoardPublishFailure(board: Record<string, unknown>): string {
+  if (board.deleted_at) return 'Restore this board before publishing it.';
+  const cards = Array.isArray(board.cards) ? board.cards : [];
+  if (!cards.length) return 'This board has no cards to publish.';
+  const summary = board.validation_summary && typeof board.validation_summary === 'object'
+    ? board.validation_summary as Record<string, unknown>
+    : {};
+  if (Number(summary.verified_count) !== cards.length) {
+    return 'This board has not passed place validation.';
+  }
+  return '';
+}
+
+export const publishCityBoards = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 120, memory: '1GiB' },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    const requestingUserId = request.auth.uid;
+    await assertPlatformAdmin(requestingUserId);
+    const requestedBoardIds: unknown[] = Array.isArray(request.data?.boardIds) ? request.data.boardIds : [];
+    const boardIds = Array.from(new Set(
+      requestedBoardIds
+        .map((value) => textFromUnknown(value).slice(0, 160))
+        .filter(Boolean),
+    ));
+    if (!boardIds.length) {
+      throw new HttpsError('invalid-argument', 'Select at least one board to publish.');
+    }
+    if (boardIds.length > 500) {
+      throw new HttpsError('invalid-argument', 'Publish up to 500 boards at a time. Narrow the filters and try again.');
+    }
+
+    const snapshots = await db.getAll(...boardIds.map((boardId) => db.collection('boards').doc(boardId)));
+    const failures: Array<{ boardId: string; title: string; message: string }> = [];
+    const skipped: string[] = [];
+    const publishable: Array<{
+      boardId: string;
+      title: string;
+      atlasId: string;
+      board: Record<string, unknown>;
+      ref: DocumentReference;
+    }> = [];
+
+    for (let index = 0; index < snapshots.length; index += 1) {
+      const snapshot = snapshots[index];
+      const boardId = boardIds[index];
+      if (!snapshot.exists) {
+        failures.push({ boardId, title: boardId, message: 'Board not found.' });
+        continue;
+      }
+      const board = snapshot.data() as Record<string, unknown>;
+      const title = textFromUnknown(board.title) || boardId;
+      if (board.origin !== 'bulk_generator') {
+        failures.push({ boardId, title, message: 'Only factory-generated boards can be published in bulk.' });
+        continue;
+      }
+      const atlasId = textFromUnknown(board.atlas_id || board.generated_for_atlas_id);
+      if (!atlasId) {
+        failures.push({ boardId, title, message: 'This board is not associated with a city.' });
+        continue;
+      }
+      if (textFromUnknown(board.editorial_status) === 'published' && !board.deleted_at) {
+        skipped.push(boardId);
+        continue;
+      }
+      const validationFailure = cityBoardPublishFailure(board);
+      if (validationFailure) {
+        failures.push({ boardId, title, message: validationFailure });
+        continue;
+      }
+      publishable.push({ boardId, title, atlasId, board, ref: snapshot.ref });
+    }
+
+    const publishedIds: string[] = [];
+    const operationId = db.collection('board_generation_audit').doc().id;
+    const chunkSize = 200;
+    for (let offset = 0; offset < publishable.length; offset += chunkSize) {
+      const chunk = publishable.slice(offset, offset + chunkSize);
+      const batch = db.batch();
+      const nowIso = new Date().toISOString();
+      for (const candidate of chunk) {
+        batch.update(candidate.ref, {
+          visibility: 'public',
+          editorial_status: 'published',
+          city_listing_status: 'listed',
+          approved_by_user_id: requestingUserId,
+          approved_at: FieldValue.serverTimestamp(),
+          updated_at_iso: nowIso,
+          server_updated_at: FieldValue.serverTimestamp(),
+        });
+        batch.set(db.collection('board_generation_audit').doc(), {
+          action: 'publish',
+          bulk_operation_id: operationId,
+          board_id: candidate.boardId,
+          atlas_id: candidate.atlasId,
+          actor_user_id: requestingUserId,
+          previous_state: {
+            visibility: textFromUnknown(candidate.board.visibility),
+            editorial_status: textFromUnknown(candidate.board.editorial_status),
+            city_listing_status: textFromUnknown(candidate.board.city_listing_status),
+            source_status: textFromUnknown(candidate.board.source_status),
+          },
+          created_at: FieldValue.serverTimestamp(),
+        });
+      }
+      try {
+        await batch.commit();
+        publishedIds.push(...chunk.map((candidate) => candidate.boardId));
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'The database rejected this publish batch.';
+        failures.push(...chunk.map((candidate) => ({
+          boardId: candidate.boardId,
+          title: candidate.title,
+          message,
+        })));
+      }
+    }
+
+    try {
+      await db.collection('board_generation_audit').add({
+        action: 'publish_all_completed',
+        bulk_operation_id: operationId,
+        actor_user_id: requestingUserId,
+        requested_count: boardIds.length,
+        published_count: publishedIds.length,
+        skipped_count: skipped.length,
+        failed_count: failures.length,
+        created_at: FieldValue.serverTimestamp(),
+      });
+    } catch (error) {
+      logger.warn('Bulk city-board publish completed, but its summary audit write failed.', {
+        operationId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+
+    return {
+      requestedCount: boardIds.length,
+      publishedCount: publishedIds.length,
+      skippedCount: skipped.length,
+      failedCount: failures.length,
+      failures: failures.slice(0, 100),
+    };
+  },
+);
+
 export const manageCityBoard = onCall(
   { region: callableRegion, cors: true, timeoutSeconds: 60, memory: '1GiB' },
   async (request) => {
@@ -19719,13 +19865,8 @@ export const manageCityBoard = onCall(
     let restoredGenerationKey = '';
     switch (action) {
       case 'publish': {
-        if (board.deleted_at) throw new HttpsError('failed-precondition', 'Restore this board before publishing it.');
-        const summary = board.validation_summary && typeof board.validation_summary === 'object'
-          ? board.validation_summary as Record<string, unknown>
-          : {};
-        if (Number(summary.verified_count) !== (Array.isArray(board.cards) ? board.cards.length : 0)) {
-          throw new HttpsError('failed-precondition', 'This board has not passed place validation.');
-        }
+        const validationFailure = cityBoardPublishFailure(board);
+        if (validationFailure) throw new HttpsError('failed-precondition', validationFailure);
         updates = {
           ...common,
           visibility: 'public',

@@ -109,6 +109,18 @@ export type BulkBoardAdminAction =
   | 'restore'
   | 'permanent_delete';
 
+export type BulkBoardPublishAllResult = {
+  requestedCount: number;
+  publishedCount: number;
+  skippedCount: number;
+  failedCount: number;
+  failures: Array<{
+    boardId: string;
+    title: string;
+    message: string;
+  }>;
+};
+
 @Injectable({ providedIn: 'root' })
 export class BulkBoardAdminService {
   async dashboard(): Promise<BulkBoardDashboard> {
@@ -157,5 +169,13 @@ export class BulkBoardAdminService {
       { ok: boolean }
     >(getFirebaseFunctions(), 'manageCityBoard');
     await callable({ boardId, action, reason });
+  }
+
+  async publishBoards(boardIds: string[]): Promise<BulkBoardPublishAllResult> {
+    const callable = httpsCallable<
+      { boardIds: string[] },
+      BulkBoardPublishAllResult
+    >(getFirebaseFunctions(), 'publishCityBoards');
+    return (await callable({ boardIds })).data;
   }
 }

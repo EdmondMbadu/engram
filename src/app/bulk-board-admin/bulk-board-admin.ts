@@ -150,6 +150,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   readonly template = signal<BulkBoardTemplateInput>({ ...DEFAULT_TEMPLATE });
   readonly preflight = signal<BulkBoardPreflight | null>(null);
   readonly preflightAccepted = signal(false);
+  readonly publishingAll = signal(false);
   readonly busyBoardId = signal<string | null>(null);
   readonly busyItemId = signal<string | null>(null);
   readonly currentUserName = this.authService.displayName;
@@ -199,6 +200,9 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
       return matchesQuery && matchesCity && matchesStatus;
     });
   });
+  readonly publishableBoards = computed(() => this.filteredBoards().filter(
+    (board) => !board.deleted_at && board.editorial_status !== 'published',
+  ));
 
   async ngOnInit(): Promise<void> {
     if (!this.isBrowser) {
@@ -403,6 +407,46 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
       this.error.set(this.authService.toFriendlyError(error));
     } finally {
       this.busyBoardId.set(null);
+    }
+  }
+
+  async publishAll(): Promise<void> {
+    const boards = this.publishableBoards();
+    if (!boards.length || this.publishingAll()) return;
+    const cityCount = new Set(boards.map(
+      (board) => board.atlas_id || board.generated_for_atlas_id,
+    ).filter(Boolean)).size;
+    const boardLabel = `${boards.length} board${boards.length === 1 ? '' : 's'}`;
+    const cityLabel = `${cityCount} cit${cityCount === 1 ? 'y' : 'ies'}`;
+    if (!confirm(
+      `Publish all ${boardLabel} currently shown across ${cityLabel}?\n\n`
+      + 'Each board will become public and appear in its city. Source approval remains separate. This confirms that you reviewed their editorial quality.',
+    )) return;
+
+    this.publishingAll.set(true);
+    this.error.set(null);
+    this.notice.set(null);
+    try {
+      const result = await this.service.publishBoards(boards.map((board) => board.id));
+      const skippedCopy = result.skippedCount
+        ? ` ${result.skippedCount} already-published board${result.skippedCount === 1 ? ' was' : 's were'} skipped.`
+        : '';
+      this.notice.set(
+        `Published ${result.publishedCount} board${result.publishedCount === 1 ? '' : 's'} and listed them in their cities.${skippedCopy}`,
+      );
+      if (result.failedCount) {
+        const examples = result.failures.slice(0, 3)
+          .map((failure) => `${failure.title || failure.boardId}: ${failure.message}`)
+          .join(' · ');
+        this.error.set(
+          `${result.failedCount} board${result.failedCount === 1 ? '' : 's'} could not be published.${examples ? ` ${examples}` : ''}`,
+        );
+      }
+      await this.load(true);
+    } catch (error) {
+      this.error.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.publishingAll.set(false);
     }
   }
 

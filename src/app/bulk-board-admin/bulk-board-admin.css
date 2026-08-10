@@ -106,7 +106,9 @@
 .item-state-dot--good{background:var(--accent)}
 .board-management{margin-top:1rem;overflow:hidden}
 .board-heading{padding:1.25rem}
+.board-heading-actions{display:flex;align-items:center;justify-content:flex-end;gap:.6rem}
 .result-count{border-radius:999px;background:var(--soft-fill);padding:.45rem .7rem;color:var(--muted);font-size:.68rem;font-weight:900}
+.publish-all-button{min-width:10.75rem;justify-content:center;box-shadow:0 10px 24px -18px color-mix(in srgb,var(--accent) 80%,transparent)}
 .board-toolbar{margin:0;padding:1rem 1.25rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--soft-fill)}
 .board-toolbar .search-box{max-width:32rem;background:var(--surface)}
 .board-toolbar select{width:auto;min-width:10rem;background:var(--surface);font-size:.75rem}
@@ -141,6 +143,9 @@
 .board-actions{grid-column:2;grid-row:2}
 }
 @media(max-width:760px){.hero-panel{align-items:stretch;flex-direction:column}
+.board-heading{align-items:stretch;flex-direction:column}
+.board-heading-actions{justify-content:space-between}
+.publish-all-button{flex:1}
 .operator-card{min-width:0}
 .summary-grid{grid-template-columns:repeat(2,1fr)}
 .form-grid{grid-template-columns:1fr}

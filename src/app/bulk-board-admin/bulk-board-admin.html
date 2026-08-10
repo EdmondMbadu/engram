@@ -287,7 +287,19 @@
             <h2>Review, publish, remove, restore, or delete</h2>
             <p>Listing and source approval are intentionally separate.</p>
           </div>
-          <span class="result-count">{{ filteredBoards().length }} boards</span>
+          <div class="board-heading-actions">
+            <span class="result-count">{{ filteredBoards().length }} boards</span>
+            <button
+              type="button"
+              class="button button--primary publish-all-button"
+              [disabled]="publishingAll() || publishableBoards().length === 0"
+              (click)="publishAll()"
+              [attr.aria-label]="'Publish all ' + publishableBoards().length + ' ready boards currently shown'"
+            >
+              <span class="material-symbols-outlined" [class.animate-spin]="publishingAll()">{{ publishingAll() ? 'progress_activity' : 'publish' }}</span>
+              {{ publishingAll() ? 'Publishing…' : 'Publish all ready (' + publishableBoards().length + ')' }}
+            </button>
+          </div>
         </div>
         <div class="board-toolbar">
           <label class="search-box">
@@ -331,21 +343,21 @@
               <div class="board-actions">
                 <a class="button button--ghost" [routerLink]="['/boards', board.id]" target="_blank"><span class="material-symbols-outlined">open_in_new</span> Open</a>
                 @if (board.deleted_at) {
-                  <button type="button" class="button button--secondary" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'restore')"><span class="material-symbols-outlined">restore</span> Restore</button>
-                  <button type="button" class="button button--danger-quiet" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'permanent_delete')"><span class="material-symbols-outlined">delete_forever</span> Delete forever</button>
+                  <button type="button" class="button button--secondary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'restore')"><span class="material-symbols-outlined">restore</span> Restore</button>
+                  <button type="button" class="button button--danger-quiet" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'permanent_delete')"><span class="material-symbols-outlined">delete_forever</span> Delete forever</button>
                 } @else {
                   @if (board.editorial_status !== 'published') {
-                    <button type="button" class="button button--primary" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'publish')"><span class="material-symbols-outlined">publish</span> Publish</button>
+                    <button type="button" class="button button--primary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'publish')"><span class="material-symbols-outlined">publish</span> Publish</button>
                   }
                   @if (board.city_listing_status === 'listed') {
-                    <button type="button" class="button button--secondary" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'remove_from_city')"><span class="material-symbols-outlined">link_off</span> Remove from city</button>
+                    <button type="button" class="button button--secondary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'remove_from_city')"><span class="material-symbols-outlined">link_off</span> Remove from city</button>
                   }
                   @if (board.source_status === 'approved') {
-                    <button type="button" class="button button--ghost" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'exclude_source')"><span class="material-symbols-outlined">block</span> Exclude source</button>
+                    <button type="button" class="button button--ghost" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'exclude_source')"><span class="material-symbols-outlined">block</span> Exclude source</button>
                   } @else if (board.editorial_status === 'published') {
-                    <button type="button" class="button button--ghost" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'approve_source')"><span class="material-symbols-outlined">verified</span> Approve source</button>
+                    <button type="button" class="button button--ghost" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'approve_source')"><span class="material-symbols-outlined">verified</span> Approve source</button>
                   }
-                  <button type="button" class="button button--danger-quiet" [disabled]="busyBoardId() === board.id" (click)="manage(board, 'trash')"><span class="material-symbols-outlined">delete</span> Trash</button>
+                  <button type="button" class="button button--danger-quiet" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'trash')"><span class="material-symbols-outlined">delete</span> Trash</button>
                 }
               </div>
             </article>
