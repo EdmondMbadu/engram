@@ -75,55 +75,107 @@
         <section class="panel generator-panel">
           <div class="panel-heading">
             <div>
-              <p class="eyebrow">Step 1</p>
-              <h2>Define the board template</h2>
+              <p class="eyebrow">Step 1 · 7 rubric-clean presets</p>
+              <h2>Choose a global bucket</h2>
             </div>
             <span class="safety-badge"><span class="material-symbols-outlined">lock</span> Review required</span>
           </div>
 
-          <div class="form-grid">
-            <label>
-              <span>Template ID</span>
-              <input type="text" [ngModel]="template().id" (ngModelChange)="updateTemplate('id', $event)" maxlength="64" />
-            </label>
-            <label>
-              <span>Version</span>
-              <input type="text" [ngModel]="template().version" (ngModelChange)="updateTemplate('version', $event)" maxlength="24" />
-            </label>
-            <label class="form-span">
-              <span>Board title pattern</span>
-              <input type="text" [ngModel]="template().titlePattern" (ngModelChange)="updateTemplate('titlePattern', $event)" maxlength="90" />
-              <small>Must contain <code>&#123;city&#125;</code>. You may also use <code>&#123;count&#125;</code>.</small>
-            </label>
-            <label>
-              <span>Place search query</span>
-              <input type="text" [ngModel]="template().searchQuery" (ngModelChange)="updateTemplate('searchQuery', $event)" maxlength="120" />
-              <small>Used to build the verified candidate pool.</small>
-            </label>
-            <label>
-              <span>Cards per board</span>
-              <input type="number" min="3" max="20" [ngModel]="template().count" (ngModelChange)="onCountInput($event)" />
-              <small>All cards must resolve or the city fails closed.</small>
-            </label>
-            <label class="form-span">
-              <span>Editorial brief</span>
-              <textarea rows="5" [ngModel]="template().editorialBrief" (ngModelChange)="updateTemplate('editorialBrief', $event)" maxlength="1200"></textarea>
-            </label>
+          <div class="bucket-grid" role="radiogroup" aria-label="Global board buckets">
+            @for (bucket of bucketPresets; track bucket.id) {
+              <button
+                type="button"
+                role="radio"
+                class="bucket-card"
+                [class.bucket-card--selected]="selectedBucketId() === bucket.id"
+                [attr.aria-checked]="selectedBucketId() === bucket.id"
+                (click)="applyBucket(bucket)"
+              >
+                <span class="bucket-card__icon material-symbols-outlined" aria-hidden="true">{{ bucket.icon }}</span>
+                <span class="bucket-card__copy">
+                  <strong>{{ bucket.label }}</strong>
+                  <small>{{ bucket.promise }}</small>
+                </span>
+                <span class="bucket-card__check material-symbols-outlined" aria-hidden="true">check</span>
+              </button>
+            }
           </div>
+
+          <div class="template-preview">
+            <span class="template-preview__icon material-symbols-outlined" aria-hidden="true">preview</span>
+            <div>
+              <small>First board preview</small>
+              <strong>{{ boardTitlePreview() }}</strong>
+              <span>{{ template().count }} verified cards · {{ template().cardTitleMode === 'subject' ? 'subject-first titles' : 'place-first titles' }}</span>
+            </div>
+          </div>
+
+          <details class="advanced-template">
+            <summary>
+              <span><span class="material-symbols-outlined">tune</span> Advanced template settings</span>
+              <small>Edit only when this run intentionally differs from an approved bucket.</small>
+            </summary>
+            <div class="form-grid">
+              <label>
+                <span>Template ID</span>
+                <input type="text" [ngModel]="template().id" (ngModelChange)="updateTemplate('id', $event)" maxlength="64" />
+              </label>
+              <label>
+                <span>Version</span>
+                <input type="text" [ngModel]="template().version" (ngModelChange)="updateTemplate('version', $event)" maxlength="24" />
+              </label>
+              <label class="form-span">
+                <span>Board title pattern</span>
+                <input type="text" [ngModel]="template().titlePattern" (ngModelChange)="updateTemplate('titlePattern', $event)" maxlength="90" />
+                <small><code>[City]</code> and <code>&#123;city&#125;</code> both work. Some approved global titles intentionally omit the city.</small>
+              </label>
+              <label>
+                <span>Verified-place search</span>
+                <input type="text" [ngModel]="template().searchQuery" (ngModelChange)="updateTemplate('searchQuery', $event)" maxlength="120" />
+                <small>Builds the provider-verified candidate pool.</small>
+              </label>
+              <label>
+                <span>Cards per board</span>
+                <input type="number" min="3" max="20" [ngModel]="template().count" (ngModelChange)="onCountInput($event)" />
+                <small>All cards must resolve or the city fails closed.</small>
+              </label>
+              <label>
+                <span>Card title grammar</span>
+                <select [ngModel]="template().cardTitleMode" (ngModelChange)="updateTemplate('cardTitleMode', $event)">
+                  <option value="place">Place first</option>
+                  <option value="subject">Subject first</option>
+                </select>
+              </label>
+              <label class="form-span">
+                <span>Editorial brief</span>
+                <textarea rows="5" [ngModel]="template().editorialBrief" (ngModelChange)="updateTemplate('editorialBrief', $event)" maxlength="1200"></textarea>
+              </label>
+            </div>
+          </details>
 
           <div class="selection-heading">
             <div>
               <p class="eyebrow">Step 2</p>
               <h2>Select cities</h2>
             </div>
-            <strong>{{ selectedCount() }} selected</strong>
+            <strong>{{ citySelectionSummary() }}</strong>
+          </div>
+          <div class="run-mode" role="group" aria-label="Generation scope">
+            <button type="button" [class.run-mode__button--active]="runMode() === 'test'" (click)="setRunMode('test')">
+              <span class="material-symbols-outlined">science</span>
+              <span><strong>Test drive</strong><small>Maximum 5 cities</small></span>
+            </button>
+            <button type="button" [class.run-mode__button--active]="runMode() === 'production'" (click)="setRunMode('production')">
+              <span class="material-symbols-outlined">public</span>
+              <span><strong>Production run</strong><small>All eligible cities</small></span>
+            </button>
           </div>
           <div class="city-toolbar">
             <label class="search-box">
               <span class="material-symbols-outlined">search</span>
               <input type="search" placeholder="Search cities or regions…" [ngModel]="citySearch()" (ngModelChange)="citySearch.set($event)" />
             </label>
-            <button type="button" class="button button--secondary" (click)="selectFilteredCities()">Select shown</button>
+            <button type="button" class="button button--secondary" (click)="selectFilteredCities()">{{ selectShownLabel() }}</button>
             <button type="button" class="button button--ghost" (click)="clearCities()">Clear</button>
           </div>
           <div class="city-list" role="group" aria-label="Generation cities">
@@ -137,12 +189,21 @@
               <p class="empty-copy">No cities match this search.</p>
             }
           </div>
+          @if (selectedCities().length) {
+            <div class="selected-city-strip" aria-label="Selected test cities">
+              @for (city of selectedCities(); track city.id) {
+                <button type="button" (click)="toggleCity(city.id)" [attr.aria-label]="'Remove ' + city.name">
+                  <span>{{ city.name }}</span><span class="material-symbols-outlined">close</span>
+                </button>
+              }
+            </div>
+          }
 
           <div class="preflight-area">
             <div>
               <p class="eyebrow">Step 3</p>
               <h2>Preflight, then start</h2>
-              <p>No AI or Places generation calls occur during preflight.</p>
+              <p>{{ selectedCount() }} board{{ selectedCount() === 1 ? '' : 's' }} · no AI or Places calls occur during preflight.</p>
             </div>
             <button type="button" class="button button--secondary" [disabled]="running() || selectedCount() === 0" (click)="runPreflight()">
               <span class="material-symbols-outlined">fact_check</span>
@@ -162,7 +223,7 @@
             </label>
             <button type="button" class="button button--primary button--wide" [disabled]="running() || !preflightAccepted() || check.readyCount === 0 || !!activeJob()" (click)="startGeneration()">
               <span class="material-symbols-outlined">rocket_launch</span>
-              {{ activeJob() ? 'A generation job is already active' : 'Start background generation' }}
+              {{ activeJob() ? 'A generation job is already active' : startGenerationLabel() }}
             </button>
           }
         </section>

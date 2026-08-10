@@ -16,6 +16,7 @@ const template = normalizeBulkBoardTemplate({
   searchQuery: 'cultural attractions',
   editorialBrief: 'Stay specific.',
   count: 10,
+  cardTitleMode: 'subject',
 });
 
 assert.deepEqual(template, {
@@ -25,11 +26,16 @@ assert.deepEqual(template, {
   searchQuery: 'cultural attractions',
   editorialBrief: 'Stay specific.',
   count: 10,
+  cardTitleMode: 'subject',
 });
 assert.equal(renderBulkBoardTitle(template, 'Philadelphia'), '10 places worth knowing in Philadelphia');
-assert.throws(
-  () => normalizeBulkBoardTemplate({ titlePattern: 'No city placeholder' }),
-  /must include \{city\}/,
+assert.equal(
+  renderBulkBoardTitle(normalizeBulkBoardTemplate({ titlePattern: 'Only Happens Here' }), 'Philadelphia'),
+  'Only Happens Here',
+);
+assert.equal(
+  renderBulkBoardTitle(normalizeBulkBoardTemplate({ titlePattern: '10 Dishes That Explain [City]' }), 'Philadelphia'),
+  '10 Dishes That Explain Philadelphia',
 );
 assert.equal(normalizeBulkBoardTemplate({ titlePattern: '{city}', count: 200 }).count, 20);
 assert.equal(normalizeBulkBoardTemplate({ titlePattern: '{city}', count: 1 }).count, 3);

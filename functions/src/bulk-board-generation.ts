@@ -21,6 +21,7 @@ export type BulkBoardTemplate = {
   searchQuery: string;
   editorialBrief: string;
   count: number;
+  cardTitleMode: 'place' | 'subject';
 };
 
 export type BulkBoardCandidate = {
@@ -159,10 +160,9 @@ export function normalizeBulkBoardIcon(value: unknown, subject = ''): string {
 export function normalizeBulkBoardTemplate(value: unknown): BulkBoardTemplate {
   const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
   const count = Math.max(3, Math.min(20, Math.trunc(Number(data.count) || 10)));
-  const titlePattern = text(data.titlePattern, 90) || '{count} places worth knowing in {city}';
-  if (!titlePattern.includes('{city}')) {
-    throw new Error('The board title pattern must include {city}.');
-  }
+  const titlePattern = (text(data.titlePattern, 90) || '{count} places worth knowing in {city}')
+    .replace(/\[city\]/gi, '{city}')
+    .replace(/\[count\]/gi, '{count}');
   const searchQuery = text(data.searchQuery, 120) || 'places to visit';
   if (searchQuery.length < 2) {
     throw new Error('The place search query must contain at least two characters.');
@@ -175,6 +175,7 @@ export function normalizeBulkBoardTemplate(value: unknown): BulkBoardTemplate {
     editorialBrief: text(data.editorialBrief, 1200)
       || 'Write like a generous local insider. Give each card one specific reason to care. Avoid tour-guide filler and unsupported factual claims.',
     count,
+    cardTitleMode: data.cardTitleMode === 'subject' ? 'subject' : 'place',
   };
 }
 
@@ -424,6 +425,9 @@ async function generateBulkBoardCopy(
       'Write in warm second person, as a well-informed local insider—not a tour guide or search result.',
       'One card must reveal one reason to care. Never invent history, prices, hours, dates, rankings, local habits, or operational details.',
       'Use only facts contained in the verified candidate data below. If detail is thin, stay concise instead of guessing.',
+      template.cardTitleMode === 'subject'
+        ? 'Card-title grammar: lead with the concrete subject promised by this board (such as the dish or free activity), then name the verified venue after an em dash when useful. Keep entity_name exactly equal to the verified candidate venue. Use Google Search in verification and never assert a subject-to-venue connection that cannot be verified.'
+        : 'Card-title grammar: keep each verified place name recognizable and exact. Put the reveal or reason in the subtitle and notes.',
       `Verified candidate data: ${JSON.stringify(candidateFacts)}`,
     ].join('\n'),
     pastedList: numberedCandidateSource(title, candidates),
@@ -433,6 +437,7 @@ async function generateBulkBoardCopy(
     countIsExplicit: true,
     vibe: 'curator',
     narrationStyle: 'storyteller',
+    verificationFailureMode: 'error',
   });
 }
 
@@ -441,6 +446,7 @@ function cardPayload(
   candidate: BulkBoardCandidate,
   index: number,
   now: string,
+  cardTitleMode: BulkBoardTemplate['cardTitleMode'],
 ): Record<string, unknown> {
   const photoUrl = candidate.photoReference
     ? `${publicFunctionsBaseUrl}/boardPlacePhoto?ref=${encodeURIComponent(candidate.photoReference)}`
@@ -448,7 +454,9 @@ function cardPayload(
   const types = candidate.types.map((type) => type.replaceAll('_', ' ')).slice(0, 5);
   return {
     id: `card_${createHash('sha256').update(candidate.placeId).digest('hex').slice(0, 20)}`,
-    title: candidate.name.slice(0, 90),
+    title: cardTitleMode === 'subject'
+      ? text(generated?.title, 90) || candidate.name.slice(0, 90)
+      : candidate.name.slice(0, 90),
     subtitle: text(generated?.subtitle, 120) || candidate.address.slice(0, 120),
     notes: text(generated?.notes, 3600),
     type: 'place',
@@ -540,6 +548,7 @@ function boardPayload(params: {
     candidate,
     index,
     now,
+    params.template.cardTitleMode,
   ));
   const imageUrl = String(cards.find((card) => card.imageUrl)?.imageUrl ?? '');
   const warnings = bulkBoardAntiSlopWarnings(params.generated);
@@ -758,6 +767,16 @@ export async function processBulkBoardGenerationItem(
     const generated = await generateBulkBoardCopy(atlas, template, candidates);
     if (generated.cards.length !== template.count) {
       throw new Error(`The writer returned ${generated.cards.length} cards; ${template.count} are required.`);
+    }
+    if (template.cardTitleMode === 'subject') {
+      const unmatched = candidates.filter((candidate) => {
+        const card = generatedCardForCandidate(candidate, generated.cards);
+        return !card || !text(card.title, 90)
+          || text(card.title, 90).toLowerCase() === candidate.name.toLowerCase();
+      });
+      if (unmatched.length) {
+        throw new Error(`The grounded writer did not produce ${unmatched.length} subject-first card title(s).`);
+      }
     }
 
     const latestJob = await db.collection('board_generation_jobs').doc(jobId).get();

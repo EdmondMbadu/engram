@@ -17,13 +17,107 @@ import {
   type BulkBoardTemplateInput,
 } from './bulk-board-admin.service';
 
+type GlobalBucketPreset = BulkBoardTemplateInput & {
+  label: string;
+  promise: string;
+  icon: string;
+};
+
+const GLOBAL_BUCKET_PRESETS: GlobalBucketPreset[] = [
+  {
+    id: 'global-dishes-explain',
+    version: '1.0',
+    label: '10 Dishes That Explain [City]',
+    promise: 'Food as a way to understand the place—not a ranking.',
+    icon: 'restaurant',
+    titlePattern: '{count} Dishes That Explain {city}',
+    searchQuery: 'local food restaurant signature dishes regional cuisine',
+    editorialBrief: 'Dish first. Each card must name one distinct, verifiable dish and explain one specific thing it reveals about the city. Tie it to an exact verified venue. Do not repeat the same dish. No “best,” rankings, generic food praise, or unsupported origin stories. If the dish-to-venue connection cannot be verified, do not claim it.',
+    count: 10,
+    cardTitleMode: 'subject',
+  },
+  {
+    id: 'global-guidebooks-miss',
+    version: '1.0',
+    label: 'What the Guidebooks Miss: 10 Places Locals Deal Each Other',
+    promise: '10 places locals deal each other, without “hidden gem” language.',
+    icon: 'style',
+    titlePattern: 'What the Guidebooks Miss: {count} Places Locals Deal Each Other',
+    searchQuery: 'locally loved independent places community favorites',
+    editorialBrief: 'Expectation-subversion, not obscurity theater. Explain the concrete local use, ritual, or reason someone would pass each place to a friend. Never say hidden gem, off the beaten path, locals-only, must-visit, or tourist-free. Do not invent local habits.',
+    count: 10,
+    cardTitleMode: 'place',
+  },
+  {
+    id: 'global-zero-dollars',
+    version: '1.0',
+    label: 'Zero Dollars: 10 Things Locals Do for Free',
+    promise: '10 things locals genuinely do for free.',
+    icon: 'money_off',
+    titlePattern: 'Zero Dollars: {count} Things Locals Do for Free',
+    searchQuery: 'free attractions parks public spaces activities',
+    editorialBrief: 'Lead with the free behavior, not an adjective. Verify that no required admission or purchase is needed. Explain what people actually do there and why the setting matters. Avoid “fun for everyone,” vague affordability claims, and temporary offers.',
+    count: 10,
+    cardTitleMode: 'subject',
+  },
+  {
+    id: 'global-where-locals-linger',
+    version: '1.0',
+    label: 'Where Locals Linger: 10 Places to Sit for Hours',
+    promise: '10 places to sit for hours, framed through observed behavior.',
+    icon: 'weekend',
+    titlePattern: 'Where Locals Linger: {count} Places to Sit for Hours',
+    searchQuery: 'cafes libraries parks plazas third places',
+    editorialBrief: 'Treat this as a third-places board. Explain the observable setup that makes lingering possible: seating, pace, shade, tables, public access, or a steady room. Do not assert that staff tolerate hours-long stays unless a source supports it. No cozy, charming, or perfect-for filler.',
+    count: 10,
+    cardTitleMode: 'place',
+  },
+  {
+    id: 'global-neighborhoods-one-reason',
+    version: '1.0',
+    label: '10 Neighborhoods, One Reason Each',
+    promise: 'One neighborhood, one clean reason to care.',
+    icon: 'location_city',
+    titlePattern: '{count} Neighborhoods, One Reason Each',
+    searchQuery: 'neighborhoods districts local areas',
+    editorialBrief: 'Exactly one defensible reason per neighborhood. Use the neighborhood’s real name and a concrete distinction that helps a reader understand the city. Do not flatten communities into stereotypes, safety claims, demographic shorthand, or “vibrant culture.”',
+    count: 10,
+    cardTitleMode: 'place',
+  },
+  {
+    id: 'global-only-happens-here',
+    version: '1.0',
+    label: 'Only Happens Here: 10 Things That Make No Sense Anywhere Else',
+    promise: '10 city-specific things that make little sense anywhere else.',
+    icon: 'fingerprint',
+    titlePattern: 'Only Happens Here: {count} Things That Make No Sense Anywhere Else',
+    searchQuery: 'unique local landmarks traditions institutions',
+    editorialBrief: 'Playful confidence, rigorously local. Lead with the strange or city-specific thing, then explain the context that makes it make sense here. “Only” must be supportable as a local category claim, never an unsupported uniqueness superlative. Reject interchangeable attractions.',
+    count: 10,
+    cardTitleMode: 'subject',
+  },
+  {
+    id: 'global-first-24-hours',
+    version: '1.0',
+    label: 'Your First 24 Hours in [City], Dealt as Cards',
+    promise: 'A first-day sequence, dealt as ten useful cards.',
+    icon: 'schedule',
+    titlePattern: 'Your First 24 Hours in {city}, Dealt as Cards',
+    searchQuery: 'essential local food culture landmarks first visit',
+    editorialBrief: 'Build a plausible first-day sequence, not a top-ten list. Give each card a role in the day and one clear reason it belongs there. Keep travel time and opening-hour claims conservative unless verified. Avoid bucket-list language and exhausting itinerary compression.',
+    count: 10,
+    cardTitleMode: 'place',
+  },
+];
+
 const DEFAULT_TEMPLATE: BulkBoardTemplateInput = {
-  id: 'places-worth-knowing',
+  id: 'global-dishes-explain',
   version: '1.0',
-  titlePattern: '{count} places worth knowing in {city}',
-  searchQuery: 'places to visit',
-  editorialBrief: 'Write like a generous local insider. Give each card one clear reason to care. Avoid tour-guide filler, superlative marketing, and unsupported factual claims.',
+  titlePattern: '{count} Dishes That Explain {city}',
+  searchQuery: 'local food restaurant signature dishes regional cuisine',
+  editorialBrief: 'Dish first. Each card must name one distinct, verifiable dish and explain one specific thing it reveals about the city. Tie it to an exact verified venue. Do not repeat the same dish. No “best,” rankings, generic food praise, or unsupported origin stories. If the dish-to-venue connection cannot be verified, do not claim it.',
   count: 10,
+  cardTitleMode: 'subject',
 };
 
 @Component({
@@ -49,6 +143,8 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   readonly citySearch = signal('');
   readonly boardSearch = signal('');
   readonly selectedCityIds = signal<Set<string>>(new Set());
+  readonly runMode = signal<'test' | 'production'>('test');
+  readonly selectedBucketId = signal(DEFAULT_TEMPLATE.id);
   readonly selectedBoardCity = signal('all');
   readonly selectedBoardStatus = signal('active');
   readonly template = signal<BulkBoardTemplateInput>({ ...DEFAULT_TEMPLATE });
@@ -67,7 +163,24 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     (board) => !board.deleted_at && board.editorial_status === 'needs_review',
   ).length);
   readonly selectedCount = computed(() => this.selectedCityIds().size);
+  readonly bucketPresets = GLOBAL_BUCKET_PRESETS;
   readonly cityById = computed(() => new Map(this.cities().map((city) => [city.id, city])));
+  readonly selectedCities = computed(() => [...this.selectedCityIds()]
+    .map((id) => this.cityById().get(id))
+    .filter((city): city is BulkBoardCity => !!city));
+  readonly citySelectionSummary = computed(() => this.runMode() === 'test'
+    ? `${this.selectedCount()} of 5 selected`
+    : `${this.selectedCount()} selected`);
+  readonly selectShownLabel = computed(() => this.runMode() === 'test' ? 'Select up to 5' : 'Select shown');
+  readonly startGenerationLabel = computed(() => this.runMode() === 'test'
+    ? `Start ${this.selectedCount()}-city test drive`
+    : `Start ${this.selectedCount()}-city production run`);
+  readonly boardTitlePreview = computed(() => {
+    const city = this.selectedCities()[0]?.name || '[City]';
+    return this.template().titlePattern
+      .replace(/\{city\}|\[city\]/gi, city)
+      .replace(/\{count\}|\[count\]/gi, String(this.template().count));
+  });
   readonly filteredCities = computed(() => {
     const query = this.citySearch().trim().toLowerCase();
     return this.cities().filter((city) => !query || `${city.name} ${city.region} ${city.countryCode}`.toLowerCase().includes(query));
@@ -126,6 +239,27 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
 
   updateTemplate<K extends keyof BulkBoardTemplateInput>(key: K, value: BulkBoardTemplateInput[K]): void {
     this.template.update((template) => ({ ...template, [key]: value }));
+    this.selectedBucketId.set('custom');
+    this.preflight.set(null);
+    this.preflightAccepted.set(false);
+  }
+
+  applyBucket(bucket: GlobalBucketPreset): void {
+    const { label: _label, promise: _promise, icon: _icon, ...template } = bucket;
+    this.selectedBucketId.set(bucket.id);
+    this.template.set({ ...template });
+    this.preflight.set(null);
+    this.preflightAccepted.set(false);
+    this.notice.set(null);
+  }
+
+  setRunMode(mode: 'test' | 'production'): void {
+    if (mode === this.runMode()) return;
+    if (mode === 'test' && this.selectedCount() > 5) {
+      this.selectedCityIds.set(new Set([...this.selectedCityIds()].slice(0, 5)));
+      this.notice.set('Test drive keeps the first five selected cities.');
+    }
+    this.runMode.set(mode);
     this.preflight.set(null);
     this.preflightAccepted.set(false);
   }
@@ -135,18 +269,31 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   }
 
   toggleCity(cityId: string): void {
-    this.selectedCityIds.update((selected) => {
-      const next = new Set(selected);
-      if (next.has(cityId)) next.delete(cityId);
-      else next.add(cityId);
-      return next;
-    });
+    const next = new Set(this.selectedCityIds());
+    if (next.has(cityId)) {
+      next.delete(cityId);
+    } else if (this.runMode() === 'test' && next.size >= 5) {
+      this.notice.set('Five cities selected. Remove one before choosing another.');
+      return;
+    } else {
+      next.add(cityId);
+    }
+    this.selectedCityIds.set(next);
     this.preflight.set(null);
     this.preflightAccepted.set(false);
   }
 
   selectFilteredCities(): void {
-    this.selectedCityIds.update((selected) => new Set([...selected, ...this.filteredCities().map((city) => city.id)]));
+    const limit = this.runMode() === 'test' ? 5 : Number.POSITIVE_INFINITY;
+    const next = new Set(this.selectedCityIds());
+    for (const city of this.filteredCities()) {
+      if (next.size >= limit) break;
+      next.add(city.id);
+    }
+    if (this.runMode() === 'test' && this.filteredCities().some((city) => !next.has(city.id))) {
+      this.notice.set('Selected the first five matching cities for this test drive.');
+    }
+    this.selectedCityIds.set(next);
     this.preflight.set(null);
     this.preflightAccepted.set(false);
   }

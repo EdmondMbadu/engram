@@ -17,6 +17,7 @@ export type BulkBoardTemplateInput = {
   searchQuery: string;
   editorialBrief: string;
   count: number;
+  cardTitleMode: 'place' | 'subject';
 };
 
 export type BulkBoardJob = {
@@ -158,4 +159,3 @@ export class BulkBoardAdminService {
     await callable({ boardId, action, reason });
   }
 }
-

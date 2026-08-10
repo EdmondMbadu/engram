@@ -1418,6 +1418,7 @@ export async function generateBoardWizardBatch(params: {
   existingCards?: Array<{ title: string; subtitle?: string; tags?: string[] }>;
   singleTourStop?: boolean;
   sourceManifest?: BoardWizardSourceManifest | null;
+  verificationFailureMode?: 'draft' | 'error';
 }): Promise<GeneratedBoardWizardBatch> {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
   const verificationRequired = shouldVerifyBoardWizardBatch(params, count);
@@ -1460,12 +1461,18 @@ export async function generateBoardWizardBatch(params: {
         },
       });
       const draft = normalizeBoardWizardBatch(parseJsonResponse<unknown>(response.text ?? '{}'), params, cardLimit);
-      if (!verificationRequired || wizardModel !== model) {
+      if (!verificationRequired) {
+        return draft;
+      }
+      if (wizardModel !== model && params.verificationFailureMode !== 'error') {
         return draft;
       }
       try {
         return await verifyBoardWizardBatch(params, draft, count, cardLimit);
       } catch (error) {
+        if (params.verificationFailureMode === 'error') {
+          throw error;
+        }
         logger.warn('Board wizard verification pass failed; returning the generated draft.', {
           mode: params.mode,
           count,
