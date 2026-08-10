@@ -517,6 +517,7 @@ service cloud.firestore {
           'rubric_version',
           'editorial_status',
           'city_listing_status',
+          'city_feature_order',
           'source_status',
           'quality_status',
           'quality_warnings',
@@ -533,6 +534,33 @@ service cloud.firestore {
           'updated_at_iso',
           'server_updated_at'
         ])
+        && (
+          isPlatformAdmin()
+          || (
+            request.method == 'create'
+            && !request.resource.data.keys().hasAny([
+              'atlas_id', 'generated_for_atlas_id', 'origin', 'publisher_type',
+              'generation_job_id', 'generation_item_id', 'generation_key',
+              'generator_version', 'template_id', 'template_version', 'rubric_version',
+              'editorial_status', 'city_listing_status', 'city_feature_order', 'source_status',
+              'quality_status', 'quality_warnings', 'validation_summary', 'created_by_user_id',
+              'approved_by_user_id', 'approved_at', 'deleted_at', 'deleted_by_user_id',
+              'deletion_reason', 'deletion_snapshot'
+            ])
+          )
+          || (
+            request.method == 'update'
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+              'atlas_id', 'generated_for_atlas_id', 'origin', 'publisher_type',
+              'generation_job_id', 'generation_item_id', 'generation_key',
+              'generator_version', 'template_id', 'template_version', 'rubric_version',
+              'editorial_status', 'city_listing_status', 'city_feature_order', 'source_status',
+              'quality_status', 'quality_warnings', 'validation_summary', 'created_by_user_id',
+              'approved_by_user_id', 'approved_at', 'deleted_at', 'deleted_by_user_id',
+              'deletion_reason', 'deletion_snapshot'
+            ])
+          )
+        )
         && request.resource.data.id == boardId
         && (
           !request.resource.data.keys().hasAny(['kind'])
@@ -691,6 +719,11 @@ service cloud.firestore {
         && request.resource.data.server_updated_at == request.time;
       allow delete: if isSignedIn()
         && (resource.data.owner_user_id == request.auth.uid || isPlatformAdmin());
+    }
+
+    match /city_board_listings/{listingId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
     }
 
     match /board_generation_jobs/{jobId} {

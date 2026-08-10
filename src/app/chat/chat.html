@@ -419,100 +419,119 @@
             [class.max-w-4xl]="hasMessages()"
           >
             @if (canShowCityVoiceCarousel()) {
-              <section class="lang-carousel lang-carousel--top" [attr.aria-label]="uiText('startVoiceConversation')">
-                <div class="lang-carousel__head">
-                  <div class="lang-carousel__copy">
-                    <span class="lang-carousel__eyebrow">
-                      <span class="material-symbols-outlined text-[1rem]">graphic_eq</span>
-                      <span>{{ uiText('weSpeakYourLanguage') }}</span>
-                    </span>
-                    <p class="lang-carousel__hint">
-                      {{ voiceLanguageHint() }}
-                    </p>
-                  </div>
-                  <label class="lang-carousel__search">
-                    <span class="material-symbols-outlined">search</span>
-                    <input
-                      type="search"
-                      autocomplete="off"
-                      [placeholder]="uiText('findCountry')"
-                      [value]="voiceLanguageSearch()"
-                      (input)="onVoiceLanguageSearchInput($event)"
-                    />
-                    @if (voiceLanguageSearch()) {
-                      <button type="button" [attr.aria-label]="uiText('clearCountrySearch')" (click)="clearVoiceLanguageSearch()">
-                        <span class="material-symbols-outlined">close</span>
-                      </button>
-                    }
-                  </label>
-                </div>
+              <section
+                class="lang-carousel lang-carousel--top"
+                [class.lang-carousel--expanded]="cityLanguageExpanded()"
+                [attr.aria-label]="uiText('startVoiceConversation')"
+              >
+                <button
+                  type="button"
+                  class="lang-carousel__summary"
+                  [attr.aria-expanded]="cityLanguageExpanded()"
+                  aria-controls="city-language-options"
+                  (click)="toggleCityLanguageExpanded()"
+                >
+                  <span class="lang-carousel__summary-mark material-symbols-outlined" aria-hidden="true">graphic_eq</span>
+                  <span class="lang-carousel__summary-copy">
+                    <span class="lang-carousel__summary-kicker">{{ uiText('weSpeakYourLanguage') }}</span>
+                    <strong>{{ cityLanguageSummary() }}</strong>
+                    <small>{{ cityLanguageSummaryMeta() }}</small>
+                  </span>
+                  <span class="lang-carousel__summary-action">
+                    <span>{{ cityLanguageExpanded() ? uiText('close') : uiText('languages') }}</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">{{ cityLanguageExpanded() ? 'expand_less' : 'expand_more' }}</span>
+                  </span>
+                </button>
 
-                <div class="lang-carousel__viewport">
-                  <button
-                    type="button"
-                    class="lang-carousel__nav lang-carousel__nav--prev"
-                    [attr.aria-label]="uiText('previousLanguages')"
-                    [disabled]="!canScrollVoiceCarouselPrev()"
-                    (click)="scrollVoiceCarousel(-1)"
-                  >
-                    <span class="material-symbols-outlined">chevron_left</span>
-                  </button>
+                @if (cityLanguageExpanded()) {
+                  <div id="city-language-options" class="lang-carousel__body">
+                    <div class="lang-carousel__head">
+                      <p class="lang-carousel__hint">{{ voiceLanguageHint() }}</p>
+                      <label class="lang-carousel__search">
+                        <span class="material-symbols-outlined">search</span>
+                        <input
+                          type="search"
+                          autocomplete="off"
+                          [placeholder]="uiText('findCountry')"
+                          [value]="voiceLanguageSearch()"
+                          (input)="onVoiceLanguageSearchInput($event)"
+                        />
+                        @if (voiceLanguageSearch()) {
+                          <button type="button" [attr.aria-label]="uiText('clearCountrySearch')" (click)="clearVoiceLanguageSearch()">
+                            <span class="material-symbols-outlined">close</span>
+                          </button>
+                        }
+                      </label>
+                    </div>
 
-                  <div #voiceLanguageTrack class="lang-carousel__track" role="list" (scroll)="syncVoiceCarouselScrollState()">
-                    @for (lang of filteredVoiceLanguages(); track lang.country) {
+                    <div class="lang-carousel__viewport">
                       <button
                         type="button"
-                        role="listitem"
-                        class="lang-flag-card"
-                        [class.lang-flag-card--selected]="isSelectedVoiceLanguage(lang)"
-                        [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
-                        [attr.aria-label]="uiText('useLanguageFor', { language: lang.language, city: currentWikiName(), country: localizedCountryName(lang.country) })"
-                        [attr.data-tooltip]="uiText('chooseLanguage', { language: lang.language })"
-                        (click)="selectVoiceLanguage(lang)"
+                        class="lang-carousel__nav lang-carousel__nav--prev"
+                        [attr.aria-label]="uiText('previousLanguages')"
+                        [disabled]="!canScrollVoiceCarouselPrev()"
+                        (click)="scrollVoiceCarousel(-1)"
                       >
-                        <span class="lang-flag-card__flag" aria-hidden="true">{{ lang.flag }}</span>
-                        <span class="lang-flag-card__country">{{ localizedCountryName(lang.country) }}</span>
-                        <span class="lang-flag-card__language">{{ lang.language }}</span>
-                        <span class="lang-flag-card__cta">
-                          <span class="material-symbols-outlined">translate</span>
-                          <span>{{ uiText('choose') }}</span>
-                        </span>
+                        <span class="material-symbols-outlined">chevron_left</span>
                       </button>
-                    } @empty {
-                      <p class="lang-carousel__empty">{{ uiText('noMatchingLanguage') }}</p>
-                    }
-                  </div>
 
-                  <button
-                    type="button"
-                    class="lang-carousel__nav lang-carousel__nav--next"
-                    [attr.aria-label]="uiText('moreLanguages')"
-                    [disabled]="!canScrollVoiceCarouselNext()"
-                    (click)="scrollVoiceCarousel(1)"
-                  >
-                    <span class="material-symbols-outlined">chevron_right</span>
-                  </button>
-                </div>
+                      <div #voiceLanguageTrack class="lang-carousel__track" role="list" (scroll)="syncVoiceCarouselScrollState()">
+                        @for (lang of filteredVoiceLanguages(); track lang.country) {
+                          <button
+                            type="button"
+                            role="listitem"
+                            class="lang-flag-card"
+                            [class.lang-flag-card--selected]="isSelectedVoiceLanguage(lang)"
+                            [class.lang-flag-card--active]="activeVoiceLanguageCode() === lang.code && activeVoiceCountry() === lang.country && realtimeVoiceActive()"
+                            [attr.aria-label]="uiText('useLanguageFor', { language: lang.language, city: currentWikiName(), country: localizedCountryName(lang.country) })"
+                            [attr.data-tooltip]="uiText('chooseLanguage', { language: lang.language })"
+                            (click)="selectVoiceLanguage(lang)"
+                          >
+                            <span class="lang-flag-card__flag" aria-hidden="true">{{ lang.flag }}</span>
+                            <span class="lang-flag-card__country">{{ localizedCountryName(lang.country) }}</span>
+                            <span class="lang-flag-card__language">{{ lang.language }}</span>
+                            <span class="lang-flag-card__cta">
+                              <span class="material-symbols-outlined">translate</span>
+                              <span>{{ uiText('choose') }}</span>
+                            </span>
+                          </button>
+                        } @empty {
+                          <p class="lang-carousel__empty">{{ uiText('noMatchingLanguage') }}</p>
+                        }
+                      </div>
 
-                <div class="lang-carousel__selection" [class.lang-carousel__selection--ready]="selectedVoiceLanguage()">
-                  <div class="lang-carousel__selected-copy">
-                    <span class="material-symbols-outlined">{{ selectedVoiceLanguage() ? 'record_voice_over' : 'language' }}</span>
-                    <div class="lang-carousel__selected-text">
-                      <span class="lang-carousel__selected-kicker">{{ selectedVoiceLanguage() ? uiText('voiceModeSelected') : uiText('language') }}</span>
-                      <p>{{ selectedVoiceLanguageGreeting() }}</p>
+                      <button
+                        type="button"
+                        class="lang-carousel__nav lang-carousel__nav--next"
+                        [attr.aria-label]="uiText('moreLanguages')"
+                        [disabled]="!canScrollVoiceCarouselNext()"
+                        (click)="scrollVoiceCarousel(1)"
+                      >
+                        <span class="material-symbols-outlined">chevron_right</span>
+                      </button>
+                    </div>
+
+                    <div class="lang-carousel__selection" [class.lang-carousel__selection--ready]="selectedVoiceLanguage()">
+                      <div class="lang-carousel__selected-copy">
+                        <span class="material-symbols-outlined">{{ selectedVoiceLanguage() ? 'record_voice_over' : 'language' }}</span>
+                        <div class="lang-carousel__selected-text">
+                          <span class="lang-carousel__selected-kicker">{{ selectedVoiceLanguage() ? uiText('voiceModeSelected') : uiText('language') }}</span>
+                          <p>{{ selectedVoiceLanguageGreeting() }}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        class="lang-carousel__speak"
+                        [disabled]="!selectedVoiceLanguage()"
+                        [attr.aria-label]="selectedVoiceLanguageCta()"
+                        (click)="startSelectedVoiceLanguage()"
+                      >
+                        <span class="material-symbols-outlined">mic</span>
+                        <span>{{ selectedVoiceLanguageCta() }}</span>
+                      </button>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    class="lang-carousel__speak"
-                    [disabled]="!selectedVoiceLanguage()"
-                    [attr.aria-label]="selectedVoiceLanguageCta()"
-                    (click)="startSelectedVoiceLanguage()"
-                  >
-                    <span class="material-symbols-outlined">mic</span>
-                    <span>{{ selectedVoiceLanguageCta() }}</span>
-                  </button>
-                </div>
+                }
               </section>
             }
 
@@ -547,46 +566,6 @@
                     <div class="mt-3 w-full max-w-2xl overflow-hidden rounded-[1.25rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-soft)]">
                       <img [src]="guide.banner_url" alt="" class="h-24 w-full object-cover sm:h-32" />
                     </div>
-                  }
-                }
-
-                @if (canSubscribeToCurrentWiki() && !businessPageContext()) {
-                  <form
-                    class="mt-4 flex w-full max-w-xl flex-col gap-2 rounded-[1.35rem] border border-[var(--accent)]/30 bg-[var(--surface)]/95 p-2 shadow-[var(--shadow-soft)] sm:flex-row sm:items-center sm:rounded-full"
-                    (submit)="subscribeToUpdates($event)"
-                  >
-                    <label class="sr-only" for="hero-subscribe-email">{{ uiText('emailAddress') }}</label>
-                    <input
-                      id="hero-subscribe-email"
-                      type="email"
-                      autocomplete="email"
-                      inputmode="email"
-                      placeholder="you@example.com"
-                      [value]="subscribeEmail()"
-                      (input)="onSubscribeEmailInput($event)"
-                      [disabled]="isSubscribing()"
-                      class="min-h-[3rem] min-w-0 flex-1 rounded-[1rem] border border-transparent bg-transparent px-4 text-sm font-semibold text-[var(--text)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)]/35 focus:bg-[var(--soft-fill)] sm:rounded-full"
-                     i18n-placeholder/>
-                    <button
-                      type="submit"
-                      class="inline-flex min-h-[3rem] shrink-0 items-center justify-center gap-2 rounded-[1rem] bg-[linear-gradient(135deg,var(--accent),color-mix(in_srgb,var(--accent)_72%,white_28%))] px-5 text-sm font-black text-[var(--accent-contrast)] shadow-[0_12px_24px_color-mix(in_srgb,var(--accent)_22%,transparent)] transition hover:-translate-y-0.5 hover:brightness-[1.03] disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-full"
-                      [disabled]="isSubscribing() || !canSubmitSubscribeEmail()"
-                    >
-                      @if (isSubscribing()) {
-                        <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white"></span>
-                        <span>{{ uiText('joining') }}</span>
-                      } @else {
-                        <span>{{ uiText('joinForFree') }}</span>
-                      }
-                    </button>
-                    <p class="px-2 pb-1 text-center text-xs font-bold leading-5 text-[var(--muted)] sm:hidden">{{ uiText('weeklyUpdates') }}</p>
-                  </form>
-                  <p class="mt-2 hidden text-xs font-bold leading-5 text-[var(--muted)] sm:block">{{ uiText('weeklyUpdates') }}</p>
-                  @if (subscribeSuccess()) {
-                    <p class="mt-2 max-w-xl rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-2 text-sm font-semibold text-[var(--accent)]">{{ subscribeSuccess() }}</p>
-                  }
-                  @if (subscribeError()) {
-                    <p class="error-banner mt-2 max-w-xl rounded-2xl px-4 py-2 text-sm">{{ subscribeError() }}</p>
                   }
                 }
 
@@ -818,7 +797,84 @@
                   <p class="chat-helper-line">{{ composerHelperText() }}</p>
                 </div>
 
-                @if (quickPrompts().length > 0) {
+                @if (isCityBoardPage()) {
+                  <section class="city-board-shelf" [attr.aria-label]="cityBoardsHeading()">
+                    <header class="city-board-shelf__header">
+                      <div>
+                        <span class="city-board-shelf__eyebrow">
+                          <span class="material-symbols-outlined" aria-hidden="true">explore</span>
+                          <span>Explore the city</span>
+                        </span>
+                        <h2>{{ cityBoardsHeading() }}</h2>
+                        <p>Curated collections from people who know this place.</p>
+                      </div>
+                      @if (!cityBoardsLoading() && cityBoards().length > 0) {
+                        <span class="city-board-shelf__count">{{ cityBoardsTotalLabel() }}</span>
+                      }
+                    </header>
+
+                    @if (cityBoardsLoading()) {
+                      <div class="city-board-grid" aria-busy="true" aria-label="Loading city boards">
+                        @for (item of [1, 2, 3, 4]; track item) {
+                          <div class="city-board-card city-board-card--skeleton" aria-hidden="true">
+                            <span class="city-board-card__skeleton-media"></span>
+                            <span class="city-board-card__skeleton-copy"><i></i><i></i><i></i></span>
+                          </div>
+                        }
+                      </div>
+                    } @else if (cityBoardsError()) {
+                      <div class="city-board-shelf__notice city-board-shelf__notice--error" role="status">
+                        <span class="material-symbols-outlined" aria-hidden="true">cloud_off</span>
+                        <span>{{ cityBoardsError() }}</span>
+                      </div>
+                    } @else if (cityBoards().length > 0) {
+                      <div class="city-board-grid">
+                        @for (board of visibleCityBoards(); track board.id) {
+                          <a class="city-board-card" [routerLink]="['/boards', board.id]">
+                            <span class="city-board-card__media" [class.city-board-card__media--image]="!!board.imageUrl">
+                              @if (board.imageUrl) {
+                                <img [src]="board.imageUrl" alt="" loading="lazy" />
+                              } @else {
+                                <span class="material-symbols-outlined" aria-hidden="true">{{ cityBoardIcon(board) }}</span>
+                              }
+                            </span>
+                            <span class="city-board-card__body">
+                              <span class="city-board-card__title-row">
+                                <strong>{{ board.title }}</strong>
+                                <span class="material-symbols-outlined city-board-card__arrow" aria-hidden="true">arrow_outward</span>
+                              </span>
+                              @if (board.description) {
+                                <span class="city-board-card__description">{{ board.description }}</span>
+                              }
+                              <span class="city-board-card__meta">
+                                <span>{{ cityBoardCountLabel(board) }}</span>
+                                <span aria-hidden="true">·</span>
+                                <span>{{ board.publisherName }}</span>
+                              </span>
+                            </span>
+                          </a>
+                        }
+                      </div>
+
+                      @if (hasMoreCityBoards()) {
+                        <button
+                          type="button"
+                          class="city-board-shelf__more"
+                          [attr.aria-expanded]="cityBoardsExpanded()"
+                          (click)="toggleCityBoardsExpanded()"
+                        >
+                          <span>{{ cityBoardsToggleLabel() }}</span>
+                          <span class="material-symbols-outlined" aria-hidden="true">{{ cityBoardsExpanded() ? 'expand_less' : 'expand_more' }}</span>
+                        </button>
+                      }
+                    } @else {
+                      <div class="city-board-shelf__notice" role="status">
+                        <span class="material-symbols-outlined" aria-hidden="true">dashboard_customize</span>
+                        <span>Published city boards will appear here.</span>
+                      </div>
+                    }
+                  </section>
+                } @else if (quickPrompts().length > 0) {
                   <div class="mt-10 w-full max-w-3xl">
                     <p class="chat-suggestion-label text-[11px] font-semibold tracking-[-0.005em] text-[var(--muted)]">{{ uiText('suggestedQuestions') }}</p>
                     <div class="mt-3 grid gap-2.5 sm:grid-cols-2">
@@ -838,6 +894,45 @@
                       }
                     </div>
                   </div>
+                }
+
+                @if (canSubscribeToCurrentWiki() && !businessPageContext()) {
+                  <section class="chat-city-subscribe" aria-label="City updates">
+                    <span class="chat-city-subscribe__mark material-symbols-outlined" aria-hidden="true">notifications_active</span>
+                    <div class="chat-city-subscribe__copy">
+                      <strong>Stay close to {{ currentWikiName() }}</strong>
+                      <span>{{ uiText('weeklyUpdates') }}</span>
+                    </div>
+                    <form class="chat-city-subscribe__form" (submit)="subscribeToUpdates($event)">
+                      <label class="sr-only" for="city-subscribe-email">{{ uiText('emailAddress') }}</label>
+                      <input
+                        id="city-subscribe-email"
+                        type="email"
+                        autocomplete="email"
+                        inputmode="email"
+                        placeholder="you@example.com"
+                        [value]="subscribeEmail()"
+                        (input)="onSubscribeEmailInput($event)"
+                        [disabled]="isSubscribing()"
+                        i18n-placeholder
+                      />
+                      <button type="submit" [disabled]="isSubscribing() || !canSubmitSubscribeEmail()">
+                        @if (isSubscribing()) {
+                          <span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                          <span>{{ uiText('joining') }}</span>
+                        } @else {
+                          <span>{{ uiText('joinForFree') }}</span>
+                          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                        }
+                      </button>
+                    </form>
+                  </section>
+                  @if (subscribeSuccess()) {
+                    <p class="mt-2 max-w-3xl rounded-2xl border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-4 py-2 text-sm font-semibold text-[var(--accent)]">{{ subscribeSuccess() }}</p>
+                  }
+                  @if (subscribeError()) {
+                    <p class="error-banner mt-2 max-w-3xl rounded-2xl px-4 py-2 text-sm">{{ subscribeError() }}</p>
+                  }
                 }
 
                 @if (isPublicVisitorMode() && (showSignInCta() || !isSignedIn())) {

@@ -13,6 +13,10 @@ import { DocumentsService } from '../documents.service';
 import { WikiService } from '../wiki.service';
 import { PlaceReviewsService, type CityReviewedPlace } from '../place-reviews.service';
 import {
+  CityBoardListingsService,
+  type CityBoardListing,
+} from '../city-board-listings.service';
+import {
   BusinessClaimService,
   type BusinessClaimRegistryRecord,
 } from '../business-claim/business-claim.service';
@@ -113,6 +117,7 @@ const THINKING_STAGES = [
 ];
 
 const CITY_WIKI_CATEGORY = 'Cities & Regions';
+const SAFE_CITY_BOARD_ICON = /^(?:dashboard|dashboard_customize|travel_explore|location_city|location_on|restaurant|local_cafe|local_bar|nightlife|beach_access|festival|hiking|directions_walk|directions_car|museum|history_edu|shopping_bag|storefront|favorite|auto_awesome|public|sports_handball|sports_basketball|sports_soccer|sports_football|sports_baseball|sports_tennis|sports_volleyball|fitness_center|music_note|palette|photo_camera|park|family_restroom|school|menu_book|theater_comedy|stadium|spa|pets)$/;
 
 // ElevenLabs supported language override codes (see @elevenlabs/types
 // ConversationConfigOverrideAgentLanguage). Keep `code` values within this set,
@@ -418,6 +423,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   private readonly documentsService = inject(DocumentsService);
   private readonly wikiService = inject(WikiService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
+  private readonly cityBoardListingsService = inject(CityBoardListingsService);
   private readonly businessClaimService = inject(BusinessClaimService);
   private readonly route = inject(ActivatedRoute);
 
@@ -498,6 +504,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly voiceSummarySending = signal(false);
   readonly voiceSummaryError = signal<string | null>(null);
   readonly voiceSummarySent = signal(false);
+  readonly cityLanguageExpanded = signal(false);
 
   // Language flag carousel (World Cup 2026 nations + China / Russia / India).
   readonly voiceLanguages = signal<VoiceLanguageOption[]>(VOICE_LANGUAGES);
@@ -568,6 +575,18 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
     return this.uiText('voiceHintManual', { count: String(this.filteredVoiceLanguages().length) });
   });
+  readonly cityLanguageSummary = computed(() => {
+    const language = this.selectedVoiceLanguage();
+    return language
+      ? `${language.flag} ${language.language}`
+      : 'Choose a language';
+  });
+  readonly cityLanguageSummaryMeta = computed(() => {
+    const language = this.selectedVoiceLanguage();
+    return language
+      ? `${this.localizedCountryName(language.country)} · ${this.voiceLanguages().length} languages`
+      : `${this.voiceLanguages().length} languages available`;
+  });
   // Language the active/last voice session was started in, so the UI can show
   // which flag is "speaking".
   readonly activeVoiceLanguageCode = signal<VoiceLanguageCode | null>(null);
@@ -597,8 +616,33 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly animatedSourceCount = signal(0);
   readonly reviewedPlaces = signal<CityReviewedPlace[]>([]);
   readonly reviewedPlacesLoading = signal(false);
+  readonly cityBoards = signal<CityBoardListing[]>([]);
+  readonly cityBoardsLoading = signal(false);
+  readonly cityBoardsError = signal<string | null>(null);
+  readonly cityBoardsExpanded = signal(false);
+  readonly visibleCityBoards = computed(() => this.cityBoardsExpanded()
+    ? this.cityBoards()
+    : this.cityBoards().slice(0, 4));
+  readonly hasMoreCityBoards = computed(() => this.cityBoards().length > 4);
   readonly isPublicView = computed(() => !!this.routeSlug());
   readonly businessPageContext = computed(() => !!this.routeBusinessSlug());
+  readonly isCityBoardPage = computed(() =>
+    this.isPublicView()
+    && this.publicAtlas()?.city_config?.enabled === true
+    && !this.businessPageContext(),
+  );
+  readonly cityBoardsHeading = computed(() =>
+    `Boards for ${this.currentWikiName() || 'this city'}`,
+  );
+  readonly cityBoardsTotalLabel = computed(() => {
+    const count = this.cityBoards().length;
+    return count === 1 ? '1 board' : `${count} boards`;
+  });
+  readonly cityBoardsToggleLabel = computed(() => {
+    if (this.cityBoardsExpanded()) return this.uiText('showLess');
+    const remaining = Math.max(0, this.cityBoards().length - 4);
+    return `More boards (${remaining})`;
+  });
   readonly businessPageName = computed(() =>
     this.businessClaim()?.business_name?.trim()
     || this.titleizeSlug(this.routeBusinessSlug() || 'business'),
@@ -1199,6 +1243,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const dictionaries: Partial<Record<string, Partial<Record<ChatUiTextKey, string>>>> = {
       en: {
         weSpeakYourLanguage: $localize`We speak your language`,
+        languages: 'Languages',
         voiceHintManual: $localize`{count} countries · choose a flag first.`,
         voiceHintAuto: $localize`{count} countries · selected for {country}.`,
         findCountry: $localize`Find country`,
@@ -3259,6 +3304,8 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
     effect((onCleanup) => {
       const slug = this.routeSlug();
+      this.cityLanguageExpanded.set(false);
+      this.cityBoardsExpanded.set(false);
       if (!slug) {
         this.publicAtlas.set(null);
         this.publicLookupDone.set(true);
@@ -3295,6 +3342,37 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
           if (!cancelled) {
             this.publicLookupDone.set(true);
           }
+        });
+    });
+
+    effect((onCleanup) => {
+      const atlas = this.publicAtlas();
+      const isCityPage = atlas?.city_config?.enabled === true && !this.businessPageContext();
+      let cancelled = false;
+      onCleanup(() => {
+        cancelled = true;
+      });
+
+      this.cityBoards.set([]);
+      this.cityBoardsError.set(null);
+      if (!atlas?.id || !isCityPage) {
+        this.cityBoardsLoading.set(false);
+        return;
+      }
+
+      this.cityBoardsLoading.set(true);
+      void this.cityBoardListingsService.list(atlas.id)
+        .then((boards) => {
+          if (!cancelled) this.cityBoards.set(boards);
+        })
+        .catch(() => {
+          if (!cancelled) {
+            this.cityBoards.set([]);
+            this.cityBoardsError.set('City boards are temporarily unavailable.');
+          }
+        })
+        .finally(() => {
+          if (!cancelled) this.cityBoardsLoading.set(false);
         });
     });
 
@@ -4007,6 +4085,30 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.voiceLanguageAutoSelected.set(false);
     this.selectedVoiceLanguage.set(language);
     queueMicrotask(() => this.scrollSelectedVoiceLanguageIntoView());
+  }
+
+  toggleCityLanguageExpanded(): void {
+    const expanded = !this.cityLanguageExpanded();
+    this.cityLanguageExpanded.set(expanded);
+    if (expanded) {
+      queueMicrotask(() => {
+        this.scrollSelectedVoiceLanguageIntoView();
+        this.syncVoiceCarouselScrollState();
+      });
+    }
+  }
+
+  toggleCityBoardsExpanded(): void {
+    this.cityBoardsExpanded.update((expanded) => !expanded);
+  }
+
+  cityBoardIcon(board: CityBoardListing): string {
+    const requested = board.icon.trim().toLowerCase().replace(/[\s-]+/g, '_').replace(/[^a-z0-9_]/g, '');
+    return SAFE_CITY_BOARD_ICON.test(requested) ? requested : 'dashboard_customize';
+  }
+
+  cityBoardCountLabel(board: CityBoardListing): string {
+    return board.cardCount === 1 ? '1 card' : `${board.cardCount} cards`;
   }
 
   async startSelectedVoiceLanguage(): Promise<void> {

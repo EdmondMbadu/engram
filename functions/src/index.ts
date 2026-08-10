@@ -1,4 +1,4 @@
-import { onDocumentCreated, onDocumentUpdated } from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentUpdated, onDocumentWritten } from 'firebase-functions/v2/firestore';
 import { HttpsError, onCall, onRequest, type CallableRequest } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onObjectFinalized } from 'firebase-functions/v2/storage';
@@ -118,6 +118,12 @@ import {
   cityPlaceSearchCandidateLimit,
   cityPlaceSearchGoogleResultLimit,
 } from './city-place-search';
+import {
+  cityBoardAtlasId,
+  cityBoardListingId,
+  cityBoardListingPayload,
+  isPublicCityBoard,
+} from './city-board-listing';
 import {
   getStoredPhillyGreenJobsSnapshot,
   refreshStoredPhillyGreenJobsSnapshot,
@@ -19874,6 +19880,85 @@ export const retryBulkCityBoard = onDocumentUpdated(
     const after = event.data?.after.data();
     if (!after || after.status !== 'queued' || before?.status === 'queued') return;
     await processBulkBoardGenerationItem(event.params.itemId, googlePlacesApiKey.value());
+  },
+);
+
+export const syncPublicCityBoardListing = onDocumentWritten(
+  {
+    region: callableRegion,
+    document: 'boards/{boardId}',
+    timeoutSeconds: 60,
+    memory: '256MiB',
+  },
+  async (event) => {
+    const boardId = textFromUnknown(event.params.boardId);
+    if (!boardId || !event.data) return;
+
+    const before = event.data.before.exists
+      ? event.data.before.data() as Record<string, unknown>
+      : null;
+    const after = event.data.after.exists
+      ? event.data.after.data() as Record<string, unknown>
+      : null;
+    const beforeAtlasId = cityBoardAtlasId(before);
+    const afterAtlasId = cityBoardAtlasId(after);
+    const beforeQualifies = isPublicCityBoard(before);
+    const afterQualifies = isPublicCityBoard(after);
+    const batch = db.batch();
+    let hasMutation = false;
+
+    if (beforeQualifies && beforeAtlasId && (!afterQualifies || beforeAtlasId !== afterAtlasId)) {
+      batch.delete(db.collection('city_board_listings').doc(cityBoardListingId(beforeAtlasId, boardId)));
+      hasMutation = true;
+    }
+    if (afterQualifies && after && afterAtlasId) {
+      batch.set(
+        db.collection('city_board_listings').doc(cityBoardListingId(afterAtlasId, boardId)),
+        {
+          ...cityBoardListingPayload(boardId, after),
+          server_updated_at: FieldValue.serverTimestamp(),
+        },
+      );
+      hasMutation = true;
+    }
+    if (hasMutation) {
+      await batch.commit();
+    }
+  },
+);
+
+export const listPublicCityBoards = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 30, memory: '256MiB' },
+  async (request) => {
+    const atlasId = textFromUnknown(request.data?.atlasId).slice(0, 180);
+    if (!atlasId) {
+      throw new HttpsError('invalid-argument', 'A city atlas ID is required.');
+    }
+
+    const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
+    const atlas = atlasSnapshot.data() as Record<string, unknown> | undefined;
+    const cityConfig = atlas?.city_config && typeof atlas.city_config === 'object'
+      ? atlas.city_config as Record<string, unknown>
+      : null;
+    if (!atlasSnapshot.exists || atlas?.is_public !== true || cityConfig?.enabled !== true) {
+      throw new HttpsError('not-found', 'The public city atlas was not found.');
+    }
+
+    // This callable is both a migration bridge for boards published before the
+    // projection trigger existed and a safe fallback if a listing is rebuilding.
+    // It deliberately returns the same public-only projection, never board cards.
+    const snapshot = await db.collection('boards')
+      .where('atlas_id', '==', atlasId)
+      .where('city_listing_status', '==', 'listed')
+      .limit(100)
+      .get();
+    const boards = snapshot.docs
+      .filter((document) => isPublicCityBoard(document.data() as Record<string, unknown>))
+      .map((document) => cityBoardListingPayload(
+        document.id,
+        document.data() as Record<string, unknown>,
+      ));
+    return { boards };
   },
 );
 
