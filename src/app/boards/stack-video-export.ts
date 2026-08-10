@@ -64,7 +64,7 @@ const CLOSING_DURATION_MS = 2100;
 const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
-export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v9';
+export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v10';
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
@@ -101,6 +101,14 @@ export function stackVideoNarrationFrameDurationMs(durationSeconds: number, base
   return Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + NARRATION_LEAD_MS + NARRATION_TAIL_MS);
 }
 
+export function stackVideoNarrationIsComplete(
+  cardCount: number,
+  narration: StackVideoNarration | null | undefined,
+): boolean {
+  if (!narration || cardCount < 1 || narration.cardAudioUrls.length < cardCount) return false;
+  return narration.cardAudioUrls.slice(0, cardCount).every((url) => !!url?.trim());
+}
+
 export function stackVideoFrameAtElapsed(
   frameDurationsMs: readonly number[],
   elapsedMs: number,
@@ -131,6 +139,9 @@ export async function generateStackVideo(
 ): Promise<StackVideoResult> {
   if (typeof document === 'undefined' || typeof MediaRecorder === 'undefined') {
     throw new Error('Video export is not supported in this browser.');
+  }
+  if (narration && !stackVideoNarrationIsComplete(board.cards.length, narration)) {
+    throw new Error('Full narration is incomplete. No video was created; try again so every selected card can be narrated.');
   }
 
   const hasNarration = narration?.cardAudioUrls.some(Boolean) ?? false;

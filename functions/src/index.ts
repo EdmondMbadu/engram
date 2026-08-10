@@ -119,6 +119,10 @@ import {
   cityPlaceSearchGoogleResultLimit,
 } from './city-place-search';
 import {
+  stackVideoNarrationCardFromBoard,
+  stackVideoNarrationTextFromCard,
+} from './stack-video-narration';
+import {
   cityBoardAtlasId,
   cityBoardListingId,
   cityBoardListingPayload,
@@ -18282,7 +18286,9 @@ export const synthesizeChatAnswerSpeech = onCall(
           : 'recap';
     const requestedNarratorId = String(request.data?.narratorVoiceId ?? '').trim();
     const boardId = String(request.data?.boardId ?? '').trim();
+    const requestedCardId = String(request.data?.cardId ?? '').trim().slice(0, 160);
     let requestedBoard: Record<string, unknown> | null = null;
+    let requestedStackVideoCard: Record<string, unknown> | null = null;
     if (requestedMode === 'stack-video') {
       const userId = request.auth?.uid;
       if (!userId) {
@@ -18299,6 +18305,12 @@ export const synthesizeChatAnswerSpeech = onCall(
       if (String(requestedBoard['owner_user_id'] ?? '').trim() !== userId) {
         throw new HttpsError('permission-denied', 'Only the board owner can create its narrated video.');
       }
+      if (requestedCardId) {
+        requestedStackVideoCard = stackVideoNarrationCardFromBoard(requestedBoard, requestedCardId);
+        if (!requestedStackVideoCard) {
+          throw new HttpsError('permission-denied', 'This narration card does not belong to the selected board.');
+        }
+      }
     }
     let requestedNarratorVoiceId = requestedNarratorId && requestedNarratorId !== personalStackNarratorVoiceId
       ? stackNarratorVoiceIds[requestedNarratorId as keyof typeof stackNarratorVoiceIds]
@@ -18308,14 +18320,16 @@ export const synthesizeChatAnswerSpeech = onCall(
       && !requestedNarratorVoiceId) {
       throw new HttpsError('invalid-argument', 'The selected narrator voice is not available.');
     }
-    const text = requestedMode === 'full' || requestedMode === 'tour' || requestedMode === 'stack-video'
-      ? normalizeSpeechText(request.data?.text)
-      : buildSpeechRecapText(request.data?.question, request.data?.text);
+    const text = requestedMode === 'stack-video' && requestedStackVideoCard
+      ? stackVideoNarrationTextFromCard(requestedStackVideoCard, normalizeSpeechText)
+      : requestedMode === 'full' || requestedMode === 'tour' || requestedMode === 'stack-video'
+        ? normalizeSpeechText(request.data?.text)
+        : buildSpeechRecapText(request.data?.question, request.data?.text);
     if (!text) {
       throw new HttpsError('invalid-argument', 'Answer text is required.');
     }
     if (requestedMode === 'stack-video'
-      && (!requestedBoard || !boardAllowsNarrationText(requestedBoard, text))) {
+      && (!requestedBoard || (!requestedStackVideoCard && !boardAllowsNarrationText(requestedBoard, text)))) {
       throw new HttpsError('permission-denied', 'This narration does not match a card on the selected board.');
     }
 

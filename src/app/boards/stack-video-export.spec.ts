@@ -1,10 +1,12 @@
 import {
   combineStackVideoMediaStream,
+  generateStackVideo,
   preferredRecorderMimeType,
   stackVideoCardKicker,
   stackVideoCardImageCandidates,
   stackVideoFrameAtElapsed,
   stackVideoNarrationFrameDurationMs,
+  stackVideoNarrationIsComplete,
   stackVideoRenderIsCurrent,
 } from './stack-video-export';
 import { reorderRelativeToTarget } from './reorder';
@@ -20,7 +22,8 @@ describe('Stack video card images', () => {
     expect(stackVideoRenderIsCurrent('stack-video-v6')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v7')).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v8')).toBeFalse();
-    expect(stackVideoRenderIsCurrent('stack-video-v9')).toBeTrue();
+    expect(stackVideoRenderIsCurrent('stack-video-v9')).toBeFalse();
+    expect(stackVideoRenderIsCurrent('stack-video-v10')).toBeTrue();
   });
 
   it('uses only a rank label for ranked cards', () => {
@@ -92,6 +95,44 @@ describe('Stack video card images', () => {
     expect(stackVideoNarrationFrameDurationMs(0)).toBe(2200);
     expect(stackVideoNarrationFrameDurationMs(3.25)).toBe(3700);
     expect(stackVideoNarrationFrameDurationMs(30)).toBe(30_450);
+  });
+
+  it('requires narration audio for every selected card', () => {
+    expect(stackVideoNarrationIsComplete(3, {
+      cardAudioUrls: ['https://audio.example/1.mp3', 'https://audio.example/2.mp3', 'https://audio.example/3.mp3'],
+      volume: 1,
+    })).toBeTrue();
+    expect(stackVideoNarrationIsComplete(3, {
+      cardAudioUrls: ['https://audio.example/1.mp3', null, 'https://audio.example/3.mp3'],
+      volume: 1,
+    })).toBeFalse();
+    expect(stackVideoNarrationIsComplete(3, {
+      cardAudioUrls: ['https://audio.example/1.mp3', 'https://audio.example/2.mp3'],
+      volume: 1,
+    })).toBeFalse();
+  });
+
+  it('refuses to render a full-narration video with a missing card clip', async () => {
+    const cards = ['One', 'Two'].map((title) => ({
+      title,
+      subtitle: '',
+      notes: `${title} narration.`,
+      imageUrl: '',
+      imageUrls: [],
+    }));
+    await expectAsync(generateStackVideo({
+      title: 'Complete narration',
+      subtitle: '',
+      ownerName: 'LivingWiki',
+      coverImageUrl: '',
+      liveUrl: 'https://www.livingwiki.com/boards/test',
+      qrImageUrl: '',
+      showCardNumbers: true,
+      cards,
+    }, 'square', undefined, null, {
+      cardAudioUrls: ['https://audio.example/one.mp3', null],
+      volume: 1,
+    })).toBeRejectedWithError(/Full narration is incomplete/);
   });
 
   it('uses one master timeline so a delayed render advances to the correct card', () => {

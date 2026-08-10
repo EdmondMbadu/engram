@@ -7553,6 +7553,8 @@ export class BoardsComponent implements OnDestroy {
     narratorVoiceId?: string,
     boardId?: string,
     mode: 'tour' | 'stack-video' = 'tour',
+    cardId?: string,
+    required = false,
   ): Promise<string | null> {
     const normalizedNarratorVoiceId = narratorVoiceId
       ? normalizeStackNarratorVoiceId(narratorVoiceId)
@@ -7575,7 +7577,7 @@ export class BoardsComponent implements OnDestroy {
     const promise = (async () => {
       try {
         const callable = httpsCallable<
-          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour' | 'stack-video'; narratorVoiceId?: string | null; boardId?: string | null },
+          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour' | 'stack-video'; narratorVoiceId?: string | null; boardId?: string | null; cardId?: string | null },
           TourSpeechResponse
         >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
         const response = await callable({
@@ -7585,14 +7587,19 @@ export class BoardsComponent implements OnDestroy {
           mode,
           narratorVoiceId: normalizedNarratorVoiceId || null,
           boardId: boardId || null,
+          cardId: cardId || null,
         });
         const audioUrl = response.data.audioUrl || (response.data.audioBase64 ? this.audioUrlFromBase64(response.data.audioBase64, response.data.contentType || 'audio/mpeg') : '');
         if (audioUrl) {
           this.tourAudioUrls.set(requestKey, audioUrl);
           return audioUrl;
         }
-      } catch {
-        this.tourAudioNotice.set('ElevenLabs tour narration failed to generate. Check the function logs if this persists.');
+      } catch (error) {
+        this.tourAudioNotice.set(mode === 'stack-video'
+          ? 'A video narration clip could not be created. The video will not be generated with missing narration.'
+          : 'ElevenLabs tour narration failed to generate. Check the function logs if this persists.');
+        console.error('Narration audio generation failed.', error, { boardId, cardId, mode });
+        if (required) throw error;
       } finally {
         this.tourAudioPromises.delete(requestKey);
         if (this.tourAudioLoadingKey() === requestKey) {
@@ -12229,29 +12236,46 @@ export class BoardsComponent implements OnDestroy {
     const batchSize = 4;
     for (let offset = 0; offset < cards.length; offset += batchSize) {
       const batch = cards.slice(offset, offset + batchSize);
-      const urls = await Promise.all(batch.map((card) => {
+      const urls = await Promise.all(batch.map(async (card) => {
         const text = this.stackVideoNarrationText(card);
-        if (!text) return Promise.resolve(null);
-        return this.ensureTourAudioUrl(
-          `stack-video:${card.id}:${text}`,
-          text,
-          voiceId,
-          board.id,
-          'stack-video',
-        );
+        let lastError: unknown = null;
+        for (let attempt = 0; attempt < 3; attempt += 1) {
+          try {
+            const url = await this.ensureTourAudioUrl(
+              `stack-video:${card.id}:${text}`,
+              text,
+              voiceId,
+              board.id,
+              'stack-video',
+              card.id,
+              true,
+            );
+            if (url) return url;
+          } catch (error) {
+            lastError = error;
+          }
+          if (attempt < 2) {
+            await new Promise<void>((resolve) => window.setTimeout(resolve, 450 * (attempt + 1)));
+          }
+        }
+        console.error('Full video narration stopped before rendering.', lastError, {
+          boardId: board.id,
+          cardId: card.id,
+        });
+        throw new Error(`Narration could not be prepared for “${card.title}”. No video was created. Please try again.`);
       }));
       urls.forEach((url, index) => {
         cardAudioUrls[offset + index] = url;
       });
     }
-    if (!cardAudioUrls.some(Boolean)) {
-      throw new Error('The narrator audio could not be created. Preview the selected voice and try again.');
+    if (!cardAudioUrls.every(Boolean)) {
+      throw new Error('Full narration could not be prepared for every selected card. No video was created. Please try again.');
     }
     return { cardAudioUrls, volume: 1 };
   }
 
   private stackVideoNarrationText(card: BoardCard): string {
-    return (card.tour?.guideScript || this.stackCardNarrationText(card)).trim();
+    return (card.tour?.guideScript || this.stackCardNarrationText(card) || `${card.title}.`).trim();
   }
 
   private stackVideoBackgroundAudio(): StackVideoBackgroundAudio | null {
