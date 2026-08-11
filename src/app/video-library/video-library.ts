@@ -43,7 +43,7 @@ export class VideoLibraryComponent {
   readonly visibleItems = computed(() => {
     const query = this.search().trim().toLowerCase();
     const filtered = query
-      ? this.items().filter((item) => [item.sourceTitle, this.ratioLabel(item), item.narrationEnabled ? 'narration' : 'music only']
+      ? this.items().filter((item) => [item.sourceTitle, item.videoKind === 'trailer' ? 'board trailer teaser short' : 'full video', this.ratioLabel(item), item.narrationEnabled ? 'narration' : 'music only']
         .join(' ')
         .toLowerCase()
         .includes(query))

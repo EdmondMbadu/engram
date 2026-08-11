@@ -128,6 +128,7 @@
                     <div class="video-library-card__body">
                       <div class="video-library-card__heading">
                         <div class="min-w-0">
+                          <small class="video-library-kind">{{ item.videoKind === 'trailer' ? 'Board Trailer' : 'Full video' }}</small>
                           <h3>{{ item.sourceTitle }}</h3>
                           <p><span i18n>Rendered</span> {{ updatedLabel(item) }}</p>
                         </div>

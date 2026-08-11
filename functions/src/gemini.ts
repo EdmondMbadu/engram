@@ -24,6 +24,10 @@ import {
   normalizeTopicName,
   parseJsonResponse,
 } from './utils';
+import {
+  boardTrailerFallbackScript,
+  normalizeBoardTrailerScript,
+} from './stack-video-narration';
 
 export const geminiApiKey = defineSecret('GEMINI_API_KEY');
 
@@ -31,6 +35,15 @@ const model = 'gemini-3-flash-preview';
 const internetSearchModel = 'gemini-2.5-flash';
 const boardWizardModels = [model, internetSearchModel] as const;
 const boardCardImageModels = ['gemini-3.1-flash-image', 'gemini-2.5-flash-image'] as const;
+const boardTrailerModel = 'gemini-3.1-flash-lite';
+
+const boardTrailerScriptSchema = {
+  type: 'object',
+  properties: {
+    script: { type: 'string' },
+  },
+  required: ['script'],
+} as const;
 
 const boardTranslationSchema = {
   type: 'array',
@@ -593,6 +606,55 @@ async function generateContentStreamWithRetry(
   }
 
   throw new Error('Gemini stream request failed after repeated attempts.');
+}
+
+export async function generateBoardTrailerScript(params: {
+  title: string;
+  description: string;
+  cards: Array<{ title: string; subtitle: string }>;
+}): Promise<string> {
+  const title = params.title.replace(/\s+/g, ' ').trim().slice(0, 120);
+  const description = params.description.replace(/\s+/g, ' ').trim().slice(0, 360);
+  const cards = params.cards.slice(0, 30).map((card, index) => ({
+    number: index + 1,
+    title: card.title.replace(/\s+/g, ' ').trim().slice(0, 100),
+    subtitle: card.subtitle.replace(/\s+/g, ' ').trim().slice(0, 180),
+  }));
+  const fallback = boardTrailerFallbackScript({ title, cardTitles: cards.map((card) => card.title) });
+  if (!title || !cards.length) return fallback;
+
+  const prompt = [
+    'Write one short voiceover for a LivingWiki Board Trailer.',
+    'The trailer is a 15–30 second invitation to open the full board, not a summary of every card.',
+    'Use 38–55 words. Begin with an immediate hook. Create rhythm and curiosity. End with a natural invitation to open the full board.',
+    'LivingWiki voice: specific, observant, confident, fresh, human. Never sound like a tour brochure, Google result, listicle, or generic AI copy.',
+    'Do not use: hidden gem, must-see, vibrant, nestled, iconic, ultimate, best, breathtaking, something for everyone, or embark.',
+    'Critical factual rule: use only the supplied title, description, and card text. Do not add facts, rankings, place descriptions, claims, or invented connective details.',
+    'Mention at most three supplied card titles. Return JSON only.',
+    '',
+    JSON.stringify({ title, description, cards }),
+  ].join('\n');
+
+  try {
+    const response = await generateContentWithRetry({
+      model: boardTrailerModel,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: boardTrailerScriptSchema,
+        temperature: 0.35,
+        maxOutputTokens: 180,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+    const parsed = parseJsonResponse<{ script?: unknown }>(response.text ?? '{}');
+    return normalizeBoardTrailerScript(parsed?.script, fallback);
+  } catch (error) {
+    logger.warn('Board Trailer script generation fell back to deterministic copy.', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return fallback;
+  }
 }
 
 export async function translateBoardTextSegments(

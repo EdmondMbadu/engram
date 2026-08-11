@@ -162,6 +162,7 @@
 .video-library-card__body { display: grid; gap: 1rem; padding: 1.15rem; }
 .video-library-card__heading { display: flex; align-items: start; justify-content: space-between; gap: .75rem; }
 .video-library-card__heading > div { min-width: 0; flex: 1; }
+.video-library-kind { display: inline-flex; width: fit-content; margin-bottom: .32rem; border-radius: 999px; background: color-mix(in srgb, var(--accent) 12%, var(--surface)); color: var(--accent); font-size: .56rem; font-weight: 950; letter-spacing: .08em; padding: .24rem .42rem; text-transform: uppercase; }
 .video-library-card__heading h3 { display: -webkit-box; min-height: 2.6rem; overflow: hidden; margin: 0; font-size: 1.15rem; font-weight: 950; letter-spacing: -.035em; line-height: 1.15; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .video-library-card__heading p { margin: .25rem 0 0; color: var(--muted); font-size: .7rem; font-weight: 750; }
 .video-library-delete { display: grid; width: 2.1rem; height: 2.1rem; flex: none; place-items: center; border: 1px solid rgba(255,255,255,.2); border-radius: .7rem; background: rgba(5,8,7,.66); color: rgba(255,255,255,.76); pointer-events: auto; backdrop-filter: blur(12px); }

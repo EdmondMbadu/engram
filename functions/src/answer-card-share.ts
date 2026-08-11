@@ -68,6 +68,10 @@ interface BoardShare {
   socialVideoMimeType: string;
   socialVideoUpdatedAt: string | null;
   socialVideoRatio: 'vertical' | 'square' | 'landscape';
+  trailerVideoUrl: string | null;
+  trailerVideoMimeType: string;
+  trailerVideoUpdatedAt: string | null;
+  trailerVideoRatio: 'vertical' | 'square' | 'landscape';
   quiz: BoardShareQuiz | null;
   cards: BoardShareCard[];
   updatedAt: string | null;
@@ -172,17 +176,17 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
     return;
   }
 
-  if (parsed.rawVideo) {
-    if (!board.socialVideoUrl) {
+  if (parsed.rawVideo && parsed.videoKind) {
+    if (!boardVideoAsset(board, parsed.videoKind).url) {
       res.status(404).send('This board does not have a published video yet.');
       return;
     }
-    await proxyBoardVideo(req, res, board);
+    await proxyBoardVideo(req, res, board, parsed.videoKind);
     return;
   }
 
-  if (parsed.video || parsed.player) {
-    if (!board.socialVideoUrl) {
+  if (parsed.videoKind && (parsed.video || parsed.player)) {
+    if (!boardVideoAsset(board, parsed.videoKind).url) {
       res.status(404).send('This board does not have a published video yet.');
       return;
     }
@@ -193,8 +197,8 @@ export async function handleBoardShare(req: Request, res: Response): Promise<voi
       .send(req.method === 'HEAD'
         ? undefined
         : parsed.player
-          ? buildBoardVideoPlayerHtml(board)
-          : buildBoardVideoSharePageHtml(board));
+          ? buildBoardVideoPlayerHtml(board, parsed.videoKind)
+          : buildBoardVideoSharePageHtml(board, parsed.videoKind));
     return;
   }
 
@@ -247,11 +251,12 @@ function parseBoardSharePath(url: string): {
   video: boolean;
   player: boolean;
   rawVideo: boolean;
+  videoKind: 'video' | 'trailer' | null;
   uiLanguage: 'en' | 'fr' | 'ja';
   contentLanguage: 'en' | 'fr' | 'ja' | null;
 } | null {
   const [path, query = ''] = url.split('?');
-  const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/(og\.png|video|video\/player|video\.mp4))?\/?$/);
+  const match = (path ?? '').match(/\/share\/board\/([A-Za-z0-9_-]{8,128})(?:\/(og\.png|video|video\/player|video\.mp4|trailer|trailer\/player|trailer\.mp4))?\/?$/);
   if (!match) {
     return null;
   }
@@ -264,9 +269,10 @@ function parseBoardSharePath(url: string): {
     image: match[2] === 'og.png',
     stack: queryParams.get('view') === 'stack',
     quiz: queryParams.get('learn') === 'quiz',
-    video: match[2] === 'video',
-    player: match[2] === 'video/player',
-    rawVideo: match[2] === 'video.mp4',
+    video: match[2] === 'video' || match[2] === 'trailer',
+    player: match[2] === 'video/player' || match[2] === 'trailer/player',
+    rawVideo: match[2] === 'video.mp4' || match[2] === 'trailer.mp4',
+    videoKind: match[2]?.startsWith('trailer') ? 'trailer' : match[2]?.startsWith('video') ? 'video' : null,
     uiLanguage,
     contentLanguage,
   };
@@ -276,8 +282,9 @@ function boardShareLanguage(value: string | null): 'en' | 'fr' | 'ja' | null {
   return value === 'en' || value === 'fr' || value === 'ja' ? value : null;
 }
 
-async function proxyBoardVideo(req: Request, res: Response, board: BoardShare): Promise<void> {
-  const videoUrl = board.socialVideoUrl;
+async function proxyBoardVideo(req: Request, res: Response, board: BoardShare, kind: 'video' | 'trailer'): Promise<void> {
+  const asset = boardVideoAsset(board, kind);
+  const videoUrl = asset.url;
   if (!videoUrl) {
     res.status(404).send('Video not found.');
     return;
@@ -298,12 +305,12 @@ async function proxyBoardVideo(req: Request, res: Response, board: BoardShare): 
       return;
     }
 
-    const contentType = (upstream.headers.get('content-type') || board.socialVideoMimeType || 'video/mp4').split(';')[0] || 'video/mp4';
+    const contentType = (upstream.headers.get('content-type') || asset.mimeType || 'video/mp4').split(';')[0] || 'video/mp4';
     res.status(upstream.status);
     res.set('Content-Type', contentType);
     res.set('Cache-Control', 'public, max-age=3600, s-maxage=86400');
     res.set('Accept-Ranges', upstream.headers.get('accept-ranges') || 'bytes');
-    res.set('Content-Disposition', `inline; filename="${safeFileName(board.title)}.mp4"`);
+    res.set('Content-Disposition', `inline; filename="${safeFileName(board.title)}${kind === 'trailer' ? '-trailer' : ''}.mp4"`);
     for (const header of ['content-range', 'content-length'] as const) {
       const value = upstream.headers.get(header);
       if (value) res.set(header, value);
@@ -420,6 +427,12 @@ async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
     socialVideoUpdatedAt: cleanText(data.socialVideoUpdatedAt, 80),
     socialVideoRatio: data.socialVideoRatio === 'square' || data.socialVideoRatio === 'landscape'
       ? data.socialVideoRatio
+      : 'vertical',
+    trailerVideoUrl: safeUrl(data.trailerVideoUrl),
+    trailerVideoMimeType: cleanText(data.trailerVideoMimeType, 120) || 'video/mp4',
+    trailerVideoUpdatedAt: cleanText(data.trailerVideoUpdatedAt, 80),
+    trailerVideoRatio: data.trailerVideoRatio === 'square' || data.trailerVideoRatio === 'landscape'
+      ? data.trailerVideoRatio
       : 'vertical',
     quiz,
     cards,
@@ -886,18 +899,22 @@ function buildBoardSharePageHtml(
 </html>`;
 }
 
-function buildBoardVideoSharePageHtml(board: BoardShare): string {
-  const description = `Watch ${board.title}, a LivingWiki video curated by ${board.ownerName}.`;
-  const version = boardVideoVersion(board);
-  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video?v=${version}`;
-  const playerUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video/player?v=${version}`;
+function buildBoardVideoSharePageHtml(board: BoardShare, kind: 'video' | 'trailer' = 'video'): string {
+  const asset = boardVideoAsset(board, kind);
+  const isTrailer = kind === 'trailer';
+  const description = isTrailer
+    ? `Watch a quick Board Trailer for ${board.title}, curated by ${board.ownerName}.`
+    : `Watch ${board.title}, a LivingWiki video curated by ${board.ownerName}.`;
+  const version = boardVideoVersion(board, kind);
+  const shareUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}?v=${version}`;
+  const playerUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}/player?v=${version}`;
   const boardUrl = `${appUrl}/${boardShareRoute(board)}/${encodeURIComponent(board.id)}?view=stack`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
-  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video.mp4?v=${version}`;
-  const videoType = board.socialVideoMimeType.split(';')[0] || 'video/mp4';
-  const sourceDimensions = boardVideoSourceDimensions(board.socialVideoRatio);
-  const playerDimensions = boardVideoPlayerDimensions(board.socialVideoRatio);
+  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}.mp4?v=${version}`;
+  const videoType = asset.mimeType.split(';')[0] || 'video/mp4';
+  const sourceDimensions = boardVideoSourceDimensions(asset.ratio);
+  const playerDimensions = boardVideoPlayerDimensions(asset.ratio);
 
   return `<!doctype html>
 <html lang="en">
@@ -943,7 +960,7 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
     body { min-height: 100dvh; margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; color: #f7fff9; background: radial-gradient(circle at 50% 10%, #173d31, #050807 62%); }
     main { display: grid; width: min(100% - 28px, 1160px); min-height: 100dvh; margin: auto; grid-template-columns: minmax(0, 1fr) minmax(260px, 360px); gap: clamp(24px, 5vw, 72px); align-items: center; padding: 28px 0; }
     .player { display: grid; min-width: 0; place-items: center; }
-    video { display: block; width: ${board.socialVideoRatio === 'vertical' ? 'min(100%, 430px)' : '100%'}; max-height: calc(100dvh - 56px); border: 1px solid rgba(255,255,255,.32); border-radius: 24px; background: #000; box-shadow: 0 28px 80px rgba(0,0,0,.5); object-fit: contain; }
+    video { display: block; width: ${asset.ratio === 'vertical' ? 'min(100%, 430px)' : '100%'}; max-height: calc(100dvh - 56px); border: 1px solid rgba(255,255,255,.32); border-radius: 24px; background: #000; box-shadow: 0 28px 80px rgba(0,0,0,.5); object-fit: contain; }
     .copy { display: grid; gap: 18px; }
     .brand { color: #8ff1c4; font-size: 14px; font-weight: 950; letter-spacing: .16em; text-transform: uppercase; }
     h1 { margin: 0; font-size: clamp(36px, 6vw, 70px); line-height: .95; letter-spacing: -.04em; }
@@ -961,11 +978,11 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
       <video src="${escapeHtml(videoUrl)}" poster="${escapeHtml(posterUrl)}" autoplay muted loop playsinline controls preload="metadata"></video>
     </section>
     <section class="copy">
-      <span class="brand">LivingWiki video</span>
+      <span class="brand">${isTrailer ? 'LivingWiki Board Trailer' : 'LivingWiki full video'}</span>
       <h1>${escapeHtml(board.title)}</h1>
       <p>${escapeHtml(description)}</p>
       <div class="actions">
-        <a href="${escapeHtml(boardUrl)}">Open live view</a>
+        <a href="${escapeHtml(boardUrl)}">${isTrailer ? 'Open the full board' : 'Open live view'}</a>
         <a class="secondary" href="${escapeHtml(videoUrl)}" download>Open video file</a>
       </div>
       <small>For dependable inline playback on social media, attach the video file to the post. Platforms decide whether shared links autoplay.</small>
@@ -975,9 +992,9 @@ function buildBoardVideoSharePageHtml(board: BoardShare): string {
 </html>`;
 }
 
-function buildBoardVideoPlayerHtml(board: BoardShare): string {
-  const version = boardVideoVersion(board);
-  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/video.mp4?v=${version}`;
+function buildBoardVideoPlayerHtml(board: BoardShare, kind: 'video' | 'trailer' = 'video'): string {
+  const version = boardVideoVersion(board, kind);
+  const videoUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/${kind}.mp4?v=${version}`;
   const imageCacheKey = encodeURIComponent(`${board.updatedAt ?? 'board'}-${imageVersion}`);
   const posterUrl = `${appUrl}/share/board/${encodeURIComponent(board.id)}/og.png?v=${imageCacheKey}`;
   return `<!doctype html>
@@ -1000,18 +1017,30 @@ function buildBoardVideoPlayerHtml(board: BoardShare): string {
 </html>`;
 }
 
-function boardVideoVersion(board: BoardShare): string {
-  const videoVersion = board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion;
+function boardVideoVersion(board: BoardShare, kind: 'video' | 'trailer' = 'video'): string {
+  const videoVersion = kind === 'trailer'
+    ? board.trailerVideoUpdatedAt ?? board.updatedAt ?? imageVersion
+    : board.socialVideoUpdatedAt ?? board.updatedAt ?? imageVersion;
   return encodeURIComponent(`${videoVersion}-${playerCardVersion}`);
 }
 
-function boardVideoSourceDimensions(ratio: BoardShare['socialVideoRatio']): { width: number; height: number } {
+function boardVideoAsset(board: BoardShare, kind: 'video' | 'trailer'): {
+  url: string | null;
+  mimeType: string;
+  ratio: 'vertical' | 'square' | 'landscape';
+} {
+  return kind === 'trailer'
+    ? { url: board.trailerVideoUrl, mimeType: board.trailerVideoMimeType, ratio: board.trailerVideoRatio }
+    : { url: board.socialVideoUrl, mimeType: board.socialVideoMimeType, ratio: board.socialVideoRatio };
+}
+
+function boardVideoSourceDimensions(ratio: 'vertical' | 'square' | 'landscape'): { width: number; height: number } {
   if (ratio === 'square') return { width: 720, height: 720 };
   if (ratio === 'landscape') return { width: 1280, height: 720 };
   return { width: 720, height: 1280 };
 }
 
-function boardVideoPlayerDimensions(ratio: BoardShare['socialVideoRatio']): { width: number; height: number } {
+function boardVideoPlayerDimensions(ratio: 'vertical' | 'square' | 'landscape'): { width: number; height: number } {
   if (ratio === 'square') return { width: 720, height: 720 };
   if (ratio === 'landscape') return { width: 1280, height: 720 };
   return { width: 405, height: 720 };

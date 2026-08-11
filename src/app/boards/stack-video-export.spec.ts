@@ -1,5 +1,6 @@
 import {
   combineStackVideoMediaStream,
+  generateStackTrailer,
   generateStackVideo,
   preferredRecorderMimeType,
   stackVideoCardKicker,
@@ -8,10 +9,60 @@ import {
   stackVideoNarrationFrameDurationMs,
   stackVideoNarrationIsComplete,
   stackVideoRenderIsCurrent,
+  stackTrailerCaptionChunks,
+  stackTrailerPlan,
 } from './stack-video-export';
 import { reorderRelativeToTarget } from './reorder';
 
 describe('Stack video card images', () => {
+  it('keeps Board Trailers inside the 15–30 second promise', () => {
+    expect(stackTrailerPlan(1).durationMs).toBe(15_000);
+    expect(stackTrailerPlan(10).durationMs).toBe(18_850);
+    expect(stackTrailerPlan(30).durationMs).toBe(30_000);
+  });
+
+  it('shows every trailer card while preserving intro, montage, and closing beats', () => {
+    const plan = stackTrailerPlan(10);
+    expect(plan.frameDurationsMs.length).toBe(13);
+    expect(plan.frameDurationsMs.reduce((sum, value) => sum + value, 0)).toBe(plan.durationMs);
+    expect(plan.cardDurationMs).toBeGreaterThanOrEqual(1_200);
+  });
+
+  it('adapts a trailer to a voiceover without exceeding 30 seconds', () => {
+    expect(stackTrailerPlan(8, 23).durationMs).toBeGreaterThanOrEqual(24_950);
+    expect(stackTrailerPlan(8, 40).durationMs).toBe(30_000);
+  });
+
+  it('creates short silent-autoplay caption phrases without dropping words', () => {
+    const script = 'Philadelphia rewards the curious. Ten cards move from iconic flavors to the corners locals keep returning to.';
+    const chunks = stackTrailerCaptionChunks(script, 7);
+    expect(chunks.every((chunk) => chunk.split(/\s+/).length <= 7)).toBeTrue();
+    expect(chunks.join(' ')).toBe(script);
+  });
+
+  it('records a complete browser-native Board Trailer file', async () => {
+    const result = await generateStackTrailer({
+      title: 'A Board Worth Opening',
+      subtitle: 'A compact trailer renderer check.',
+      ownerName: 'LivingWiki',
+      coverImageUrl: '',
+      liveUrl: 'https://www.livingwiki.com/boards/trailer-test',
+      qrImageUrl: '',
+      showCardNumbers: true,
+      cards: [{
+        title: 'The first card',
+        subtitle: 'One visual beat.',
+        notes: '',
+        imageUrl: '',
+        imageUrls: [],
+      }],
+    }, 'vertical');
+
+    expect(result.durationSeconds).toBe(15);
+    expect(result.blob.size).toBeGreaterThan(1_000);
+    expect(['mp4', 'webm']).toContain(result.extension);
+  }, 30_000);
+
   it('requires legacy videos to be regenerated after a renderer change', () => {
     expect(stackVideoRenderIsCurrent(undefined)).toBeFalse();
     expect(stackVideoRenderIsCurrent('stack-video-v1')).toBeFalse();

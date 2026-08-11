@@ -46,6 +46,12 @@ type BoardVideoSummary = {
   socialVideoRenderVersion: string;
   socialVideoRatio: 'vertical' | 'square' | 'landscape';
   socialVideoNarrationEnabled: boolean;
+  trailerVideoUrl: string;
+  trailerVideoMimeType: string;
+  trailerVideoUpdatedAt: string;
+  trailerVideoRenderVersion: string;
+  trailerVideoRatio: 'vertical' | 'square' | 'landscape';
+  trailerVideoNarrationEnabled: boolean;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -79,6 +85,10 @@ export class VideoLibraryService {
       .filter((board) => !!board.socialVideoUrl && !itemIds.has(boardVideoLibraryId(board.id)))
       .map((board) => this.backfillPublishedBoard(uid, board)));
     items.push(...legacyItems.filter((item): item is VideoLibraryItem => !!item));
+    const legacyTrailers = await Promise.all(boards
+      .filter((board) => !!board.trailerVideoUrl && !itemIds.has(boardVideoLibraryId(board.id, 'trailer')))
+      .map((board) => this.backfillPublishedBoardTrailer(uid, board)));
+    items.push(...legacyTrailers.filter((item): item is VideoLibraryItem => !!item));
 
     const normalizedItems = items
       .map((item) => {
@@ -108,7 +118,7 @@ export class VideoLibraryService {
       throw new Error('Sign in to save videos to My Videos.');
     }
 
-    const itemId = boardVideoLibraryId(input.boardId);
+    const itemId = boardVideoLibraryId(input.boardId, input.videoKind);
     const itemRef = doc(this.firestore, 'users', uid, 'videos', itemId);
     const previousSnapshot = await getDoc(itemRef);
     const previous = previousSnapshot.exists()
@@ -120,7 +130,7 @@ export class VideoLibraryService {
         : '');
     const generatedAt = new Date().toISOString();
     const version = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
-    const storagePath = `users/${uid}/video-library/boards/${input.boardId}/${version}.${input.extension}`;
+    const storagePath = `users/${uid}/video-library/boards/${input.boardId}/${input.videoKind}/${version}.${input.extension}`;
     const videoRef = storageRef(this.storage, storagePath);
     const safeTitle = this.safeFileName(input.boardTitle);
 
@@ -131,6 +141,7 @@ export class VideoLibraryService {
       customMetadata: {
         sourceType: 'board',
         sourceId: input.boardId,
+        videoKind: input.videoKind,
         generatedAt,
       },
     });
@@ -141,6 +152,7 @@ export class VideoLibraryService {
         id: itemId,
         owner_user_id: uid,
         source_type: 'board',
+        video_kind: input.videoKind,
         source_id: input.boardId,
         source_title: input.boardTitle.trim().slice(0, 120) || 'Untitled video',
         source_route: input.boardRoute.slice(0, 240),
@@ -189,7 +201,14 @@ export class VideoLibraryService {
       const boardSnapshot = await getDoc(boardRef);
       if (boardSnapshot.exists() && boardSnapshot.data()['owner_user_id'] === uid) {
         const now = new Date().toISOString();
-        await updateDoc(boardRef, {
+        await updateDoc(boardRef, item.videoKind === 'trailer' ? {
+          trailerVideoUrl: '',
+          trailerVideoMimeType: '',
+          trailerVideoUpdatedAt: '',
+          trailerVideoRenderVersion: '',
+          updated_at_iso: now,
+          server_updated_at: serverTimestamp(),
+        } : {
           socialVideoUrl: '',
           socialVideoMimeType: '',
           socialVideoUpdatedAt: '',
@@ -216,6 +235,7 @@ export class VideoLibraryService {
       id: itemId,
       owner_user_id: uid,
       source_type: 'board',
+      video_kind: 'full',
       source_id: board.id,
       source_title: board.title,
       source_route: board.route,
@@ -230,6 +250,41 @@ export class VideoLibraryService {
       duration_seconds: 0,
       render_version: board.socialVideoRenderVersion,
       narration_enabled: board.socialVideoNarrationEnabled,
+      generated_at_iso: generatedAt,
+      updated_at_iso: new Date().toISOString(),
+      server_updated_at: serverTimestamp(),
+    };
+    try {
+      await setDoc(doc(this.firestore, 'users', uid, 'videos', itemId), record);
+      return videoLibraryItemFromRecord(itemId, record);
+    } catch {
+      return null;
+    }
+  }
+
+  private async backfillPublishedBoardTrailer(uid: string, board: BoardVideoSummary): Promise<VideoLibraryItem | null> {
+    if (!this.firestore || !board.trailerVideoUrl) return null;
+    const itemId = boardVideoLibraryId(board.id, 'trailer');
+    const generatedAt = board.trailerVideoUpdatedAt || board.updatedAt || new Date().toISOString();
+    const record: VideoLibraryRecord = {
+      id: itemId,
+      owner_user_id: uid,
+      source_type: 'board',
+      video_kind: 'trailer',
+      source_id: board.id,
+      source_title: board.title,
+      source_route: board.route,
+      source_updated_at_iso: generatedAt,
+      poster_url: board.posterUrl,
+      video_url: board.trailerVideoUrl,
+      storage_path: '',
+      public_storage_path: '',
+      public_share_url: board.visibility === 'public' ? this.publicShareUrl(board.id, generatedAt, 'trailer') : '',
+      mime_type: board.trailerVideoMimeType || 'video/mp4',
+      ratio: board.trailerVideoRatio,
+      duration_seconds: 0,
+      render_version: board.trailerVideoRenderVersion,
+      narration_enabled: board.trailerVideoNarrationEnabled,
       generated_at_iso: generatedAt,
       updated_at_iso: new Date().toISOString(),
       server_updated_at: serverTimestamp(),
@@ -267,11 +322,19 @@ export class VideoLibraryService {
         ? data['socialVideoRatio']
         : 'vertical',
       socialVideoNarrationEnabled: data['socialVideoNarrationEnabled'] !== false,
+      trailerVideoUrl: this.stringValue(data['trailerVideoUrl']),
+      trailerVideoMimeType: this.stringValue(data['trailerVideoMimeType']),
+      trailerVideoUpdatedAt: this.stringValue(data['trailerVideoUpdatedAt']),
+      trailerVideoRenderVersion: this.stringValue(data['trailerVideoRenderVersion']),
+      trailerVideoRatio: data['trailerVideoRatio'] === 'square' || data['trailerVideoRatio'] === 'landscape'
+        ? data['trailerVideoRatio']
+        : 'vertical',
+      trailerVideoNarrationEnabled: data['trailerVideoNarrationEnabled'] !== false,
     };
   }
 
-  private publicShareUrl(boardId: string, version: string): string {
-    const path = `/share/board/${encodeURIComponent(boardId)}/video?v=${encodeURIComponent(version)}`;
+  private publicShareUrl(boardId: string, version: string, kind: 'video' | 'trailer' = 'video'): string {
+    const path = `/share/board/${encodeURIComponent(boardId)}/${kind}?v=${encodeURIComponent(version)}`;
     return `${LIVINGWIKI_PUBLIC_APP_URL}${path}`;
   }
 

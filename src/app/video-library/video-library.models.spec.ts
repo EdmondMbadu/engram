@@ -9,6 +9,7 @@ describe('video library models', () => {
   it('uses one stable library id for each board', () => {
     expect(boardVideoLibraryId('board-123')).toBe('board_board-123');
     expect(boardVideoLibraryId('board/123')).toBe('board_board123');
+    expect(boardVideoLibraryId('board-123', 'trailer')).toBe('board_board-123_trailer');
   });
 
   it('repairs local share links to the canonical public host', () => {
@@ -33,6 +34,18 @@ describe('video library models', () => {
     expect(item?.ratio).toBe('square');
     expect(item?.durationSeconds).toBe(12.5);
     expect(item?.narrationEnabled).toBeFalse();
+    expect(item?.videoKind).toBe('full');
+  });
+
+  it('keeps a Board Trailer separate from the full board video', () => {
+    const item = videoLibraryItemFromRecord('board_board-123_trailer', {
+      owner_user_id: 'user-1',
+      source_id: 'board-123',
+      source_title: 'Odysseus',
+      video_kind: 'trailer',
+      video_url: 'https://example.com/trailer.mp4',
+    });
+    expect(item?.videoKind).toBe('trailer');
   });
 
   it('rejects records without a usable video', () => {

@@ -31,6 +31,7 @@ describe('VideoLibraryComponent', () => {
     id: 'board_board-1',
     ownerUserId: 'user-1',
     sourceType: 'board',
+    videoKind: 'full',
     sourceId: 'board-1',
     sourceTitle: 'Odysseus',
     sourceRoute: '/boards/board-1',

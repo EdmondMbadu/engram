@@ -1,5 +1,6 @@
 export type VideoLibrarySourceType = 'board';
 export type VideoLibraryRatio = 'vertical' | 'square' | 'landscape';
+export type VideoLibraryKind = 'full' | 'trailer';
 
 export const LIVINGWIKI_PUBLIC_APP_URL = 'https://www.livingwiki.com';
 
@@ -7,6 +8,7 @@ export interface VideoLibraryItem {
   id: string;
   ownerUserId: string;
   sourceType: VideoLibrarySourceType;
+  videoKind: VideoLibraryKind;
   sourceId: string;
   sourceTitle: string;
   sourceRoute: string;
@@ -28,6 +30,7 @@ export interface VideoLibraryItem {
 
 export interface SaveLatestBoardVideoInput {
   boardId: string;
+  videoKind: VideoLibraryKind;
   boardTitle: string;
   boardRoute: string;
   boardUpdatedAt: string;
@@ -47,6 +50,7 @@ export type VideoLibraryRecord = {
   id: string;
   owner_user_id: string;
   source_type: VideoLibrarySourceType;
+  video_kind: VideoLibraryKind;
   source_id: string;
   source_title: string;
   source_route: string;
@@ -66,8 +70,9 @@ export type VideoLibraryRecord = {
   server_updated_at?: unknown;
 };
 
-export function boardVideoLibraryId(boardId: string): string {
-  return `board_${boardId.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 128)}`;
+export function boardVideoLibraryId(boardId: string, videoKind: VideoLibraryKind = 'full'): string {
+  const base = `board_${boardId.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 128)}`;
+  return videoKind === 'trailer' ? `${base}_trailer` : base;
 }
 
 export function normalizeVideoLibraryRatio(value: unknown): VideoLibraryRatio {
@@ -78,7 +83,7 @@ export function canonicalPublicVideoUrl(value: string): string {
   if (!value) return '';
   try {
     const url = new URL(value, LIVINGWIKI_PUBLIC_APP_URL);
-    if (!/^\/share\/board\/[A-Za-z0-9_-]{8,128}\/video\/?$/.test(url.pathname)) {
+    if (!/^\/share\/board\/[A-Za-z0-9_-]{8,128}\/(?:video|trailer)\/?$/.test(url.pathname)) {
       return value;
     }
     return `${LIVINGWIKI_PUBLIC_APP_URL}${url.pathname}${url.search}`;
@@ -101,6 +106,7 @@ export function videoLibraryItemFromRecord(
     id,
     ownerUserId: stringValue(value['owner_user_id'], 128),
     sourceType: 'board',
+    videoKind: value['video_kind'] === 'trailer' ? 'trailer' : 'full',
     sourceId,
     sourceTitle,
     sourceRoute: stringValue(value['source_route'], 240) || `/boards/${encodeURIComponent(sourceId)}`,

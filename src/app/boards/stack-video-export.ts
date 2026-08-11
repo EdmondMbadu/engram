@@ -39,6 +39,18 @@ export type StackVideoNarration = {
   volume: number;
 };
 
+export type StackTrailerNarration = {
+  audioUrl: string;
+  script: string;
+  volume: number;
+};
+
+export type StackTrailerPlan = {
+  durationMs: number;
+  frameDurationsMs: number[];
+  cardDurationMs: number;
+};
+
 type LoadedImage = {
   source: CanvasImageSource;
   width: number;
@@ -47,6 +59,13 @@ type LoadedImage = {
 };
 
 type PreparedVideoAudio = {
+  tracks: MediaStreamTrack[];
+  frameDurationsMs: number[];
+  start: () => void;
+  close: () => Promise<void>;
+};
+
+type PreparedTrailerAudio = {
   tracks: MediaStreamTrack[];
   frameDurationsMs: number[];
   start: () => void;
@@ -65,6 +84,57 @@ const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
 export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v10';
+export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v1';
+
+const TRAILER_MIN_DURATION_MS = 15_000;
+const TRAILER_MAX_DURATION_MS = 30_000;
+const TRAILER_COVER_DURATION_MS = 2_250;
+const TRAILER_MONTAGE_DURATION_MS = 1_750;
+const TRAILER_CLOSING_DURATION_MS = 2_350;
+const TRAILER_VOICE_LEAD_MS = 850;
+
+export function stackTrailerPlan(cardCount: number, narrationSeconds = 0): StackTrailerPlan {
+  const safeCardCount = Math.max(1, Math.min(30, Math.floor(cardCount) || 1));
+  const visualTarget = TRAILER_COVER_DURATION_MS
+    + TRAILER_MONTAGE_DURATION_MS
+    + TRAILER_CLOSING_DURATION_MS
+    + safeCardCount * 1_250;
+  const narratedTarget = Number.isFinite(narrationSeconds) && narrationSeconds > 0
+    ? Math.ceil(narrationSeconds * 1000) + TRAILER_VOICE_LEAD_MS + 1_100
+    : 0;
+  const durationMs = Math.min(
+    TRAILER_MAX_DURATION_MS,
+    Math.max(TRAILER_MIN_DURATION_MS, visualTarget, narratedTarget),
+  );
+  const fixedDuration = TRAILER_COVER_DURATION_MS + TRAILER_MONTAGE_DURATION_MS + TRAILER_CLOSING_DURATION_MS;
+  const cardDurationMs = Math.max(380, Math.floor((durationMs - fixedDuration) / safeCardCount));
+  const frameDurationsMs = [
+    TRAILER_COVER_DURATION_MS,
+    ...Array.from({ length: safeCardCount }, () => cardDurationMs),
+    TRAILER_MONTAGE_DURATION_MS,
+    TRAILER_CLOSING_DURATION_MS,
+  ];
+  const remainder = durationMs - frameDurationsMs.reduce((sum, value) => sum + value, 0);
+  frameDurationsMs[frameDurationsMs.length - 1] += remainder;
+  return { durationMs, frameDurationsMs, cardDurationMs };
+}
+
+export function stackTrailerCaptionChunks(script: string, maxWords = 9): string[] {
+  const words = script.trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  const chunks: string[] = [];
+  let current: string[] = [];
+  for (const word of words) {
+    current.push(word);
+    const endsThought = /[.!?;:]$/.test(word);
+    if (current.length >= maxWords || (endsThought && current.length >= 4)) {
+      chunks.push(current.join(' '));
+      current = [];
+    }
+  }
+  if (current.length) chunks.push(current.join(' '));
+  return chunks;
+}
 
 export function stackVideoRenderIsCurrent(version: unknown): boolean {
   return version === STACK_VIDEO_RENDER_VERSION;
@@ -240,6 +310,118 @@ export async function generateStackVideo(
   if (!chunks.length) {
     throw new Error('The browser did not produce a video file.');
   }
+  const recordedType = recorder.mimeType || mimeType;
+  const extension = recordedType.includes('mp4') ? 'mp4' : 'webm';
+  return {
+    blob: new Blob(chunks, { type: recordedType }),
+    mimeType: recordedType,
+    extension,
+    xCompatible: extension === 'mp4',
+    durationSeconds: Math.round(totalDurationMs / 100) / 10,
+  };
+}
+
+export async function generateStackTrailer(
+  board: StackVideoBoard,
+  ratio: StackVideoRatio,
+  onProgress?: (progress: number) => void,
+  backgroundAudio?: StackVideoBackgroundAudio | null,
+  narration?: StackTrailerNarration | null,
+): Promise<StackVideoResult> {
+  if (typeof document === 'undefined' || typeof MediaRecorder === 'undefined') {
+    throw new Error('Video export is not supported in this browser.');
+  }
+  if (!board.cards.length) {
+    throw new Error('Add at least one card before creating a Board Trailer.');
+  }
+  if (narration && (!narration.audioUrl.trim() || !narration.script.trim())) {
+    throw new Error('The trailer voiceover is incomplete. Please try creating it again.');
+  }
+  const cards = board.cards.slice(0, 30);
+  const hasAudio = !!backgroundAudio?.url || !!narration?.audioUrl;
+  const mimeType = preferredRecorderMimeType(hasAudio);
+  if (!mimeType) throw new Error('This browser cannot record a social video.');
+
+  const { width, height } = dimensionsForRatio(ratio);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext('2d', { alpha: false });
+  if (!context) throw new Error('Could not prepare the video canvas.');
+
+  const images = new Map<string, LoadedImage>();
+  const pendingImages = new Map<string, Promise<LoadedImage | null>>();
+  const loadCachedImage = async (url: string): Promise<LoadedImage | null> => {
+    if (!url) return null;
+    let pending = pendingImages.get(url);
+    if (!pending) {
+      pending = loadImage(url);
+      pendingImages.set(url, pending);
+    }
+    const image = await pending;
+    if (image) images.set(url, image);
+    return image;
+  };
+  await Promise.all([
+    loadCachedImage(board.coverImageUrl),
+    ...cards.map(async (card) => {
+      for (const imageUrl of stackVideoCardImageCandidates(card)) {
+        if (await loadCachedImage(imageUrl)) return;
+      }
+    }),
+  ]);
+
+  const initialPlan = stackTrailerPlan(cards.length);
+  const preparedAudio = hasAudio
+    ? await prepareTrailerAudio(backgroundAudio, narration, initialPlan)
+    : null;
+  const frameDurationsMs = preparedAudio?.frameDurationsMs ?? initialPlan.frameDurationsMs;
+  const totalDurationMs = frameDurationsMs.reduce((sum, value) => sum + value, 0);
+  const frameCount = cards.length + 3;
+  const captionChunks = stackTrailerCaptionChunks(narration?.script ?? '');
+  const canvasStream = canvas.captureStream(FRAME_RATE);
+  const stream = combineStackVideoMediaStream(canvasStream, preparedAudio?.tracks);
+  const chunks: Blob[] = [];
+  const recorder = new MediaRecorder(stream, {
+    mimeType,
+    videoBitsPerSecond: ratio === 'landscape' ? 3_200_000 : 2_800_000,
+    ...(preparedAudio ? { audioBitsPerSecond: 128_000 } : {}),
+  });
+  recorder.addEventListener('dataavailable', (event) => {
+    if (event.data.size) chunks.push(event.data);
+  });
+
+  const renderAt = (elapsedMs: number): void => {
+    const timing = stackVideoFrameAtElapsed(frameDurationsMs, elapsedMs);
+    const captionProgress = Math.min(0.999, Math.max(0, (elapsedMs - TRAILER_VOICE_LEAD_MS) / Math.max(1, totalDurationMs - 2_000)));
+    const caption = captionChunks.length
+      ? captionChunks[Math.min(captionChunks.length - 1, Math.floor(captionProgress * captionChunks.length))]
+      : '';
+    renderTrailerFrame(context, width, height, board, cards, images, timing.index, timing.progress, frameCount, caption);
+  };
+
+  try {
+    renderAt(0);
+    recorder.start(500);
+    preparedAudio?.start();
+    const startedAt = performance.now();
+    while (true) {
+      const elapsedMs = Math.min(totalDurationMs, performance.now() - startedAt);
+      renderAt(elapsedMs);
+      onProgress?.(Math.min(0.99, elapsedMs / totalDurationMs));
+      if (elapsedMs >= totalDurationMs) break;
+      await nextVideoTick();
+    }
+    await stopRecorder(recorder);
+    onProgress?.(1);
+  } finally {
+    for (const image of images.values()) image.close();
+    for (const track of stream.getTracks()) track.stop();
+    for (const track of canvasStream.getTracks()) track.stop();
+    await preparedAudio?.close();
+  }
+
+  if (!chunks.length) throw new Error('The browser did not produce a video file.');
   const recordedType = recorder.mimeType || mimeType;
   const extension = recordedType.includes('mp4') ? 'mp4' : 'webm';
   return {
@@ -435,6 +617,112 @@ async function prepareVideoAudio(
   }
 }
 
+async function prepareTrailerAudio(
+  backgroundAudio: StackVideoBackgroundAudio | null | undefined,
+  narration: StackTrailerNarration | null | undefined,
+  initialPlan: StackTrailerPlan,
+): Promise<PreparedTrailerAudio> {
+  const AudioContextConstructor = window.AudioContext
+    ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  if (!AudioContextConstructor) throw new Error('This browser cannot add narration or music to the trailer.');
+
+  const context = new AudioContextConstructor();
+  let started = false;
+  try {
+    await context.resume();
+    const destination = context.createMediaStreamDestination();
+    const voiceBuffer = narration?.audioUrl
+      ? await loadAudioBuffer(context, narration.audioUrl, 'The trailer voiceover could not be loaded. Please try again.')
+      : null;
+    const plan = stackTrailerPlan(initialPlan.frameDurationsMs.length - 3, voiceBuffer?.duration ?? 0);
+    const durationSeconds = plan.durationMs / 1000;
+    const sources: AudioBufferSourceNode[] = [];
+    const gains: GainNode[] = [];
+
+    let backgroundSource: AudioBufferSourceNode | null = null;
+    let backgroundGain: GainNode | null = null;
+    const backgroundVolume = Math.min(0.5, Math.max(0, backgroundAudio?.volume ?? 0));
+    if (backgroundAudio?.url) {
+      const buffer = await loadAudioBuffer(
+        context,
+        backgroundAudio.url,
+        'The selected background music could not be loaded. Choose another mood and try again.',
+      );
+      backgroundSource = context.createBufferSource();
+      backgroundGain = context.createGain();
+      backgroundSource.buffer = buffer;
+      backgroundSource.loop = buffer.duration + 0.05 < durationSeconds;
+      backgroundSource.connect(backgroundGain);
+      backgroundGain.connect(destination);
+      sources.push(backgroundSource);
+      gains.push(backgroundGain);
+    }
+
+    let voiceSource: AudioBufferSourceNode | null = null;
+    let voiceGain: GainNode | null = null;
+    if (voiceBuffer) {
+      voiceSource = context.createBufferSource();
+      voiceGain = context.createGain();
+      voiceSource.buffer = voiceBuffer;
+      voiceGain.gain.value = Math.min(1, Math.max(0, narration?.volume ?? 1));
+      voiceSource.connect(voiceGain);
+      voiceGain.connect(destination);
+      sources.push(voiceSource);
+      gains.push(voiceGain);
+    }
+
+    return {
+      tracks: destination.stream.getAudioTracks(),
+      frameDurationsMs: plan.frameDurationsMs,
+      start: () => {
+        const now = context.currentTime;
+        const voiceDuration = Math.min(
+          voiceBuffer?.duration ?? 0,
+          Math.max(0, durationSeconds - TRAILER_VOICE_LEAD_MS / 1000 - 0.55),
+        );
+        if (backgroundSource && backgroundGain) {
+          const voiceStartsAt = now + TRAILER_VOICE_LEAD_MS / 1000;
+          const voiceEndsAt = voiceStartsAt + voiceDuration;
+          backgroundGain.gain.cancelScheduledValues(now);
+          backgroundGain.gain.setValueAtTime(0.0001, now);
+          backgroundGain.gain.linearRampToValueAtTime(backgroundVolume, now + 0.45);
+          if (voiceDuration > 0) {
+            backgroundGain.gain.linearRampToValueAtTime(backgroundVolume * 0.24, voiceStartsAt);
+            backgroundGain.gain.setValueAtTime(backgroundVolume * 0.24, voiceEndsAt);
+            backgroundGain.gain.linearRampToValueAtTime(backgroundVolume, voiceEndsAt + 0.35);
+          }
+          backgroundGain.gain.setValueAtTime(backgroundVolume, now + Math.max(0.6, durationSeconds - 1.15));
+          backgroundGain.gain.linearRampToValueAtTime(0.0001, now + durationSeconds);
+          backgroundSource.start(now);
+        }
+        if (voiceSource && voiceDuration > 0) {
+          voiceSource.start(now + TRAILER_VOICE_LEAD_MS / 1000, 0, voiceDuration);
+        }
+        started = true;
+      },
+      close: async () => {
+        if (started) {
+          for (const source of sources) {
+            try {
+              source.stop();
+            } catch {
+              // Source already ended with the recording.
+            }
+          }
+        }
+        sources.forEach((source) => source.disconnect());
+        gains.forEach((gain) => gain.disconnect());
+        destination.disconnect();
+        await context.close();
+      },
+    };
+  } catch (error) {
+    await context.close();
+    if (error instanceof Error && error.message) throw error;
+    throw new Error('The trailer audio could not be prepared.');
+  }
+}
+
 async function loadAudioBuffer(
   context: AudioContext,
   url: string,
@@ -482,6 +770,222 @@ function renderFrame(
   }
   drawTimeline(context, width, height, frameIndex, frameCount, progress);
   context.restore();
+}
+
+function renderTrailerFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  board: StackVideoBoard,
+  cards: StackVideoCard[],
+  images: Map<string, LoadedImage>,
+  frameIndex: number,
+  progress: number,
+  frameCount: number,
+  caption: string,
+): void {
+  context.save();
+  context.clearRect(0, 0, width, height);
+  drawBackdrop(context, width, height);
+  if (frameIndex === 0) {
+    drawTrailerCoverFrame(context, width, height, board, images.get(board.coverImageUrl), progress);
+  } else if (frameIndex <= cards.length) {
+    const cardIndex = frameIndex - 1;
+    drawTrailerCardFrame(
+      context,
+      width,
+      height,
+      cards[cardIndex],
+      cardIndex,
+      cards.length,
+      firstLoadedCardImage(cards[cardIndex], images),
+      progress,
+    );
+  } else if (frameIndex === cards.length + 1) {
+    drawTrailerMontageFrame(context, width, height, cards, images, progress);
+  } else {
+    drawTrailerClosingFrame(context, width, height, board, progress);
+  }
+  if (caption && frameIndex > 0 && frameIndex < frameCount - 1) {
+    drawTrailerCaption(context, width, height, caption);
+  }
+  drawTrailerTimeline(context, width, height, frameIndex, frameCount, progress);
+  context.restore();
+}
+
+function drawTrailerCoverFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  board: StackVideoBoard,
+  image: LoadedImage | undefined,
+  progress: number,
+): void {
+  if (image) drawCoverImage(context, image, width, height, 1.04 + progress * 0.035);
+  drawShade(context, width, height, image ? 0.88 : 0.4);
+  drawBrandPill(context, width, height);
+  const padding = width * 0.075;
+  const reveal = easeOut(Math.min(1, progress * 3.2));
+  context.save();
+  context.globalAlpha = reveal;
+  context.translate(0, (1 - reveal) * height * 0.04);
+  context.fillStyle = '#bdfbe3';
+  context.font = `900 ${Math.round(width * 0.032)}px Inter, Arial, sans-serif`;
+  context.letterSpacing = `${Math.round(width * 0.004)}px`;
+  context.fillText('A BOARD WORTH OPENING', padding, height * 0.56);
+  context.letterSpacing = '0px';
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(width * 0.105)}px Inter, Arial, sans-serif`;
+  drawWrappedText(context, board.title, padding, height * 0.62, width - padding * 2, width * 0.108, 3);
+  context.fillStyle = 'rgba(255,255,255,.82)';
+  context.font = `800 ${Math.round(width * 0.034)}px Inter, Arial, sans-serif`;
+  context.fillText(`${board.cards.length} cards · one LivingWiki`, padding, height * 0.9);
+  context.restore();
+}
+
+function drawTrailerCardFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  card: StackVideoCard,
+  cardIndex: number,
+  cardCount: number,
+  image: LoadedImage | undefined,
+  progress: number,
+): void {
+  if (image) drawCoverImage(context, image, width, height, 1.06 + progress * 0.045);
+  drawShade(context, width, height, image ? 0.82 : 0.36);
+  drawBrandPill(context, width, height);
+  const padding = width * 0.075;
+  const reveal = easeOut(Math.min(1, progress * 4));
+  context.save();
+  context.globalAlpha = reveal;
+  context.translate((1 - reveal) * width * 0.045, 0);
+  context.fillStyle = '#bdfbe3';
+  context.font = `900 ${Math.round(width * 0.029)}px Inter, Arial, sans-serif`;
+  context.fillText(`${String(cardIndex + 1).padStart(2, '0')} / ${String(cardCount).padStart(2, '0')}`, padding, height * 0.61);
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(width * 0.09)}px Inter, Arial, sans-serif`;
+  drawWrappedText(context, card.title, padding, height * 0.67, width - padding * 2, width * 0.094, 3);
+  context.restore();
+}
+
+function drawTrailerMontageFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  cards: StackVideoCard[],
+  images: Map<string, LoadedImage>,
+  progress: number,
+): void {
+  const columns = 3;
+  const rows = 3;
+  const gap = width * 0.018;
+  const padding = width * 0.045;
+  const tileWidth = (width - padding * 2 - gap * (columns - 1)) / columns;
+  const tileHeight = height * 0.205;
+  const startY = height * 0.12;
+  const montageCards = cards.slice(0, 9);
+  montageCards.forEach((card, index) => {
+    const image = firstLoadedCardImage(card, images);
+    const x = padding + (index % columns) * (tileWidth + gap);
+    const y = startY + Math.floor(index / columns) * (tileHeight + gap);
+    context.save();
+    context.globalAlpha = easeOut(Math.min(1, progress * 3 - index * 0.08));
+    roundedRect(context, x, y, tileWidth, tileHeight, width * 0.025);
+    context.clip();
+    if (image) drawImageCoverIntoRect(context, image, x, y, tileWidth, tileHeight, 1.04);
+    else {
+      context.fillStyle = index % 2 ? '#144738' : '#0c6b54';
+      context.fillRect(x, y, tileWidth, tileHeight);
+    }
+    context.restore();
+  });
+  const gradient = context.createLinearGradient(0, height * 0.56, 0, height);
+  gradient.addColorStop(0, 'rgba(7,16,13,0)');
+  gradient.addColorStop(0.28, 'rgba(7,16,13,.86)');
+  gradient.addColorStop(1, '#07100d');
+  context.fillStyle = gradient;
+  context.fillRect(0, height * 0.53, width, height * 0.47);
+  context.textAlign = 'center';
+  context.fillStyle = '#bdfbe3';
+  context.font = `900 ${Math.round(width * 0.032)}px Inter, Arial, sans-serif`;
+  context.fillText('THE WHOLE BOARD IS WAITING', width / 2, height * 0.78);
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(width * 0.088)}px Inter, Arial, sans-serif`;
+  context.fillText(`${cards.length} CARDS`, width / 2, height * 0.86);
+  context.textAlign = 'left';
+}
+
+function drawTrailerClosingFrame(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  board: StackVideoBoard,
+  progress: number,
+): void {
+  const reveal = easeOut(Math.min(1, progress * 2.8));
+  context.save();
+  context.globalAlpha = reveal;
+  context.translate(0, (1 - reveal) * height * 0.03);
+  context.textAlign = 'center';
+  context.fillStyle = '#bdfbe3';
+  context.font = `900 ${Math.round(width * 0.034)}px Inter, Arial, sans-serif`;
+  context.fillText('THERE IS MORE TO DISCOVER', width / 2, height * 0.31);
+  context.fillStyle = '#ffffff';
+  context.font = `950 ${Math.round(width * 0.092)}px Inter, Arial, sans-serif`;
+  drawWrappedText(context, 'OPEN THE FULL BOARD', width * 0.08, height * 0.39, width * 0.84, width * 0.098, 3, 'center');
+  roundedRect(context, width * 0.2, height * 0.67, width * 0.6, height * 0.085, 999);
+  context.fillStyle = '#bdfbe3';
+  context.fill();
+  context.fillStyle = '#08271e';
+  context.font = `950 ${Math.round(width * 0.033)}px Inter, Arial, sans-serif`;
+  context.textBaseline = 'middle';
+  context.fillText('EXPLORE ON LIVINGWIKI', width / 2, height * 0.7125);
+  context.textBaseline = 'alphabetic';
+  context.fillStyle = 'rgba(255,255,255,.72)';
+  context.font = `800 ${Math.round(width * 0.026)}px Inter, Arial, sans-serif`;
+  context.fillText(shortDisplayUrl(board.liveUrl), width / 2, height * 0.86);
+  context.restore();
+}
+
+function drawTrailerCaption(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  caption: string,
+): void {
+  const padding = width * 0.08;
+  const y = height * 0.87;
+  roundedRect(context, padding, y, width - padding * 2, height * 0.085, width * 0.025);
+  context.fillStyle = 'rgba(4,18,14,.84)';
+  context.fill();
+  context.strokeStyle = 'rgba(189,251,227,.42)';
+  context.lineWidth = 2;
+  context.stroke();
+  context.fillStyle = '#ffffff';
+  context.font = `850 ${Math.round(width * 0.031)}px Inter, Arial, sans-serif`;
+  context.textAlign = 'center';
+  drawWrappedText(context, caption, padding + width * 0.025, y + height * 0.033, width - padding * 2 - width * 0.05, width * 0.039, 2, 'center');
+  context.textAlign = 'left';
+}
+
+function drawTrailerTimeline(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  activeIndex: number,
+  count: number,
+  progress: number,
+): void {
+  const padding = width * 0.065;
+  const totalProgress = Math.min(1, Math.max(0, (activeIndex + progress) / count));
+  roundedRect(context, padding, height * 0.025, width - padding * 2, Math.max(5, width * 0.009), 999);
+  context.fillStyle = 'rgba(255,255,255,.25)';
+  context.fill();
+  roundedRect(context, padding, height * 0.025, (width - padding * 2) * totalProgress, Math.max(5, width * 0.009), 999);
+  context.fillStyle = '#bdfbe3';
+  context.fill();
 }
 
 function firstLoadedCardImage(
@@ -676,6 +1180,36 @@ function drawCoverImage(
   const sourceX = (image.width - sourceWidth) / 2;
   const sourceY = (image.height - sourceHeight) / 2;
   context.drawImage(image.source, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
+}
+
+function drawImageCoverIntoRect(
+  context: CanvasRenderingContext2D,
+  image: LoadedImage,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  scale = 1,
+): void {
+  const targetRatio = width / height;
+  const imageRatio = image.width / image.height;
+  let sourceWidth = image.width;
+  let sourceHeight = image.height;
+  if (imageRatio > targetRatio) sourceWidth = image.height * targetRatio;
+  else sourceHeight = image.width / targetRatio;
+  sourceWidth /= scale;
+  sourceHeight /= scale;
+  context.drawImage(
+    image.source,
+    (image.width - sourceWidth) / 2,
+    (image.height - sourceHeight) / 2,
+    sourceWidth,
+    sourceHeight,
+    x,
+    y,
+    width,
+    height,
+  );
 }
 
 function drawShade(context: CanvasRenderingContext2D, width: number, height: number, strength: number): void {

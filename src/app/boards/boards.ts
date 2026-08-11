@@ -107,12 +107,15 @@ import {
   what3wordsLocation,
 } from './off-grid-location';
 import {
+  generateStackTrailer,
   generateStackVideo,
+  STACK_TRAILER_RENDER_VERSION,
   STACK_VIDEO_RENDER_VERSION,
   stackVideoRenderIsCurrent,
   type StackVideoBackgroundAudio,
   type StackVideoNarration,
   type StackVideoResult,
+  type StackTrailerNarration,
 } from './stack-video-export';
 import {
   DEFAULT_STACK_AUDIO_TRACK_ID,
@@ -190,7 +193,7 @@ type StackFormat = 'carousel' | 'reel' | 'both';
 type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
 type VisitPlanContext = 'board' | 'stack';
-type StackShareMode = 'video' | 'live';
+type StackShareMode = 'trailer' | 'video' | 'live';
 type StackSoundTab = 'voice' | 'music';
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
 type BoardLearnView = 'menu' | 'study' | 'quiz-edit' | 'quiz-welcome' | 'quiz-play' | 'quiz-result';
@@ -341,6 +344,18 @@ type Board = {
   socialVideoAudioTrackId: string;
   socialVideoAudioVolume: number;
   socialVideoNarrationEnabled?: boolean;
+  trailerVideoUrl: string;
+  trailerVideoMimeType: string;
+  trailerVideoUpdatedAt: string;
+  trailerVideoRenderVersion?: string;
+  trailerVideoRatio: StackRatio;
+  trailerVideoAudioTrackId: string;
+  trailerVideoAudioVolume: number;
+  trailerVideoNarrationEnabled?: boolean;
+  trailerVideoScript: string;
+  trailerVideoSourceFingerprint: string;
+  trailerVideoCardIds: string[];
+  trailerVideoDurationSeconds: number;
   narrationStyle: BoardNarrationStyleId;
   stackNarratorVoiceId: string;
   stickers: BoardSticker[];
@@ -703,6 +718,13 @@ type TourSpeechResponse = {
   contentType?: string;
   provider?: string;
   voiceId?: string;
+};
+
+type BoardTrailerPreparationResponse = {
+  script: string;
+  fingerprint: string;
+  cached: boolean;
+  cardIds: string[];
 };
 
 type PersonalNarratorVoice = {
@@ -1278,6 +1300,7 @@ export class BoardsComponent implements OnDestroy {
   private readonly tourAudioUrls = new Map<string, string>();
   private readonly tourAudioPromises = new Map<string, Promise<string | null>>();
   private readonly publishedStackVideoFiles = new Map<string, File>();
+  private readonly publishedStackTrailerFiles = new Map<string, File>();
   private readonly stackAudioUrls = new Map<string, string>();
   private stackAudioPreview: HTMLAudioElement | null = null;
   private stackVoicePreview: HTMLAudioElement | null = null;
@@ -1551,6 +1574,7 @@ export class BoardsComponent implements OnDestroy {
   readonly stackAudioPreviewLoadingId = signal<string | null>(null);
   readonly stackAudioError = signal<string | null>(null);
   readonly stackVideoNarrationEnabled = signal(true);
+  readonly stackTrailerNarrationEnabled = signal(true);
   readonly stackNarratorVoiceId = signal(DEFAULT_STACK_NARRATOR_VOICE_ID);
   readonly stackVoicePreviewingId = signal<string | null>(null);
   readonly stackVoicePreviewLoadingId = signal<string | null>(null);
@@ -1577,7 +1601,9 @@ export class BoardsComponent implements OnDestroy {
   readonly stackVideoProgress = signal(0);
   readonly stackPublishedVideoLoading = signal(false);
   readonly stackPublishedVideoReady = signal(false);
-  readonly stackShareMode = signal<StackShareMode>('video');
+  readonly stackPublishedTrailerLoading = signal(false);
+  readonly stackPublishedTrailerReady = signal(false);
+  readonly stackShareMode = signal<StackShareMode>('trailer');
   readonly stackDirectView = signal(false);
   readonly stackExpandedCardId = signal<string | null>(null);
   readonly stackShareDialogOpen = signal(false);
@@ -4270,6 +4296,17 @@ export class BoardsComponent implements OnDestroy {
           socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
           socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
           socialVideoNarrationEnabled: true,
+          trailerVideoUrl: '',
+          trailerVideoMimeType: '',
+          trailerVideoUpdatedAt: '',
+          trailerVideoRatio: 'vertical',
+          trailerVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
+          trailerVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
+          trailerVideoNarrationEnabled: true,
+          trailerVideoScript: '',
+          trailerVideoSourceFingerprint: '',
+          trailerVideoCardIds: [],
+          trailerVideoDurationSeconds: 0,
           narrationStyle: this.wizardNarrationStyle(),
           stackNarratorVoiceId: defaultNarratorVoiceIdForStyle(this.wizardNarrationStyle()),
           forkedFromBoardId: '',
@@ -4467,6 +4504,17 @@ export class BoardsComponent implements OnDestroy {
         socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
         socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
         socialVideoNarrationEnabled: true,
+        trailerVideoUrl: '',
+        trailerVideoMimeType: '',
+        trailerVideoUpdatedAt: '',
+        trailerVideoRatio: 'vertical',
+        trailerVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
+        trailerVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
+        trailerVideoNarrationEnabled: true,
+        trailerVideoScript: '',
+        trailerVideoSourceFingerprint: '',
+        trailerVideoCardIds: [],
+        trailerVideoDurationSeconds: 0,
         narrationStyle: DEFAULT_BOARD_NARRATION_STYLE_ID,
         stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
         forkedFromBoardId: '',
@@ -7552,7 +7600,7 @@ export class BoardsComponent implements OnDestroy {
     text: string,
     narratorVoiceId?: string,
     boardId?: string,
-    mode: 'tour' | 'stack-video' = 'tour',
+    mode: 'tour' | 'stack-video' | 'stack-trailer' = 'tour',
     cardId?: string,
     required = false,
   ): Promise<string | null> {
@@ -7577,7 +7625,7 @@ export class BoardsComponent implements OnDestroy {
     const promise = (async () => {
       try {
         const callable = httpsCallable<
-          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour' | 'stack-video'; narratorVoiceId?: string | null; boardId?: string | null; cardId?: string | null },
+          { text: string; question?: string | null; anonymousVisitorId?: string | null; mode?: 'recap' | 'full' | 'tour' | 'stack-video' | 'stack-trailer'; narratorVoiceId?: string | null; boardId?: string | null; cardId?: string | null },
           TourSpeechResponse
         >(functions, 'synthesizeChatAnswerSpeech', { timeout: 120_000 });
         const response = await callable({
@@ -10510,6 +10558,17 @@ export class BoardsComponent implements OnDestroy {
       socialVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
       socialVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
       socialVideoNarrationEnabled: true,
+      trailerVideoUrl: '',
+      trailerVideoMimeType: '',
+      trailerVideoUpdatedAt: '',
+      trailerVideoRatio: 'vertical',
+      trailerVideoAudioTrackId: DEFAULT_STACK_AUDIO_TRACK_ID,
+      trailerVideoAudioVolume: DEFAULT_STACK_AUDIO_VOLUME,
+      trailerVideoNarrationEnabled: true,
+      trailerVideoScript: '',
+      trailerVideoSourceFingerprint: '',
+      trailerVideoCardIds: [],
+      trailerVideoDurationSeconds: 0,
       stackNarratorVoiceId: DEFAULT_STACK_NARRATOR_VOICE_ID,
       parentBoardId: '',
       parentCardId: '',
@@ -10927,11 +10986,15 @@ export class BoardsComponent implements OnDestroy {
     if (this.stackStudioBoardId() !== board.id) {
       this.prepareStackForBoard(board);
     }
-    this.stackShareMode.set('video');
+    this.stackShareMode.set('trailer');
     this.stackShareDialogOpen.set(true);
     this.stackPublishedVideoReady.set(this.publishedStackVideoFiles.has(board.id));
+    this.stackPublishedTrailerReady.set(this.publishedStackTrailerFiles.has(board.id));
     if (board.socialVideoUrl && !this.publishedStackVideoFiles.has(board.id)) {
       void this.preloadPublishedStackVideo(board);
+    }
+    if (board.trailerVideoUrl && !this.publishedStackTrailerFiles.has(board.id)) {
+      void this.preloadPublishedStackTrailer(board);
     }
     void this.preloadStackAudioUrls();
   }
@@ -11022,6 +11085,13 @@ export class BoardsComponent implements OnDestroy {
       this.stopStackVoicePreview();
     }
     this.stackVideoNarrationEnabled.set(enabled);
+    this.stackVoiceError.set(null);
+    this.setStackShareMessage(null);
+  }
+
+  setStackTrailerNarrationEnabled(enabled: boolean): void {
+    if (!enabled) this.stopStackVoicePreview();
+    this.stackTrailerNarrationEnabled.set(enabled);
     this.stackVoiceError.set(null);
     this.setStackShareMessage(null);
   }
@@ -11953,12 +12023,38 @@ export class BoardsComponent implements OnDestroy {
     return this.isBrowser ? `${window.location.origin}${path}` : path;
   }
 
+  trailerVideoShareUrl(board: Board): string {
+    if (!board.trailerVideoUrl) return '';
+    const version = encodeURIComponent(`${board.trailerVideoUpdatedAt || board.updatedAt || board.id}-${playerCardVersion}`);
+    const path = `/share/board/${encodeURIComponent(board.id)}/trailer?v=${version}`;
+    return board.visibility === 'public'
+      ? `${PUBLIC_APP_URL}${path}`
+      : this.isBrowser ? `${window.location.origin}${path}` : path;
+  }
+
+  trailerVideoFileUrl(board: Board): string {
+    if (!board.trailerVideoUrl) return '';
+    const version = encodeURIComponent(board.trailerVideoUpdatedAt || board.updatedAt || board.id);
+    const path = `/share/board/${encodeURIComponent(board.id)}/trailer.mp4?v=${version}`;
+    return board.visibility === 'public'
+      ? `${PUBLIC_APP_URL}${path}`
+      : this.isBrowser ? `${window.location.origin}${path}` : path;
+  }
+
   stackSelectedShareUrl(board: Board): string {
-    return this.stackShareMode() === 'video' ? this.socialVideoShareUrl(board) : this.stackSocialShareUrl(board);
+    return this.stackShareMode() === 'trailer'
+      ? this.trailerVideoShareUrl(board)
+      : this.stackShareMode() === 'video'
+        ? this.socialVideoShareUrl(board)
+        : this.stackSocialShareUrl(board);
   }
 
   stackSelectedShareLabel(): string {
-    return this.stackShareMode() === 'video' ? 'Permanent video page (optional)' : 'Live-view link';
+    return this.stackShareMode() === 'trailer'
+      ? 'Board Trailer page'
+      : this.stackShareMode() === 'video'
+        ? 'Permanent full-video page (optional)'
+        : 'Live-view link';
   }
 
   async copySelectedStackShareUrl(board: Board): Promise<void> {
@@ -11978,6 +12074,10 @@ export class BoardsComponent implements OnDestroy {
     if (!this.isBrowser) return;
     if (this.stackShareMode() === 'video') {
       await this.sharePublishedStackVideo(board, target);
+      return;
+    }
+    if (this.stackShareMode() === 'trailer') {
+      await this.sharePublishedStackTrailer(board, target);
       return;
     }
     const url = this.stackSelectedShareUrl(board);
@@ -12017,6 +12117,21 @@ export class BoardsComponent implements OnDestroy {
     return Number.isFinite(videoTime) && Number.isFinite(boardTime) && videoTime >= boardTime;
   }
 
+  trailerVideoIsCurrent(board: Board): boolean {
+    if (!board.trailerVideoUrl || !board.trailerVideoUpdatedAt) return false;
+    if (board.trailerVideoRenderVersion !== STACK_TRAILER_RENDER_VERSION) return false;
+    const selectedIds = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS).map((card) => card.id);
+    if (selectedIds.length !== board.trailerVideoCardIds.length
+      || selectedIds.some((id, index) => board.trailerVideoCardIds[index] !== id)) return false;
+    if (board.trailerVideoRatio !== this.stackRatio()
+      || board.trailerVideoAudioTrackId !== this.stackAudioTrackId()
+      || Math.abs(board.trailerVideoAudioVolume - this.stackAudioVolume()) > 0.001
+      || (board.trailerVideoNarrationEnabled !== false) !== this.stackTrailerNarrationEnabled()) return false;
+    const videoTime = Date.parse(board.trailerVideoUpdatedAt);
+    const boardTime = Date.parse(board.updatedAt);
+    return Number.isFinite(videoTime) && Number.isFinite(boardTime) && videoTime >= boardTime;
+  }
+
   async copySocialVideoUrl(board: Board): Promise<void> {
     const url = this.socialVideoShareUrl(board);
     if (!url) {
@@ -12037,6 +12152,204 @@ export class BoardsComponent implements OnDestroy {
     } else {
       this.setStackShareMessage('Copy was blocked.', false);
     }
+  }
+
+  async copyTrailerVideoFileUrl(board: Board): Promise<void> {
+    if (!board.trailerVideoUrl) return;
+    if (await this.copyTextToClipboard(this.trailerVideoFileUrl(board))) {
+      this.setStackShareMessage('Direct Board Trailer file link copied.');
+    } else {
+      this.setStackShareMessage('Copy was blocked.', false);
+    }
+  }
+
+  async publishStackTrailer(board: Board): Promise<void> {
+    if (!this.isBrowser || this.stackVideoExporting()) return;
+    if (!this.canEditBoard(board)) {
+      this.setStackShareMessage('Only the board owner can publish a Board Trailer.', false);
+      return;
+    }
+    if (board.visibility !== 'public') {
+      this.setStackShareMessage('Make this board public before publishing its trailer.', false);
+      return;
+    }
+    const uid = this.authService.uid();
+    if (!uid || !this.storage) {
+      this.setStackShareMessage('Sign in to publish a Board Trailer.', false);
+      return;
+    }
+    if (this.stackTrailerNarrationEnabled()
+      && stackNarratorVoiceRequiresPaidPlan(this.stackNarratorVoiceId())
+      && !this.personalVoiceEligible()) {
+      this.requestPersonalVoiceUpgrade();
+      return;
+    }
+
+    this.stackVideoExporting.set(true);
+    this.stackVideoProgress.set(0);
+    this.setStackShareMessage('Writing the hook and creating your Board Trailer…', false);
+    try {
+      const created = await this.createStackTrailer(board);
+      const { result } = created;
+      if (result.blob.size >= 100 * 1024 * 1024) {
+        throw new Error('The trailer is too large to publish. Select fewer cards and try again.');
+      }
+      const file = this.stackTrailerFile(board, result);
+      const path = `users/${uid}/boards/${board.id}/social/trailer.${result.extension}`;
+      const ref = storageRef(this.storage, path);
+      await uploadBytes(ref, result.blob, {
+        contentType: this.normalizedVideoMimeType(result.mimeType),
+        cacheControl: 'public,max-age=3600',
+        contentDisposition: `inline; filename="${file.name}"`,
+        customMetadata: {
+          boardId: board.id,
+          videoKind: 'trailer',
+          generatedAt: new Date().toISOString(),
+        },
+      });
+      const videoUrl = await getDownloadURL(ref);
+      this.publishedStackTrailerFiles.set(board.id, file);
+      this.stackPublishedTrailerReady.set(true);
+      const now = new Date().toISOString();
+      const nextBoard: Board = {
+        ...board,
+        trailerVideoUrl: videoUrl,
+        trailerVideoMimeType: this.normalizedVideoMimeType(result.mimeType),
+        trailerVideoUpdatedAt: now,
+        trailerVideoRenderVersion: STACK_TRAILER_RENDER_VERSION,
+        trailerVideoRatio: this.stackRatio(),
+        trailerVideoAudioTrackId: this.stackAudioTrackId(),
+        trailerVideoAudioVolume: this.stackAudioVolume(),
+        trailerVideoNarrationEnabled: this.stackTrailerNarrationEnabled(),
+        trailerVideoScript: created.script,
+        trailerVideoSourceFingerprint: created.fingerprint,
+        trailerVideoCardIds: created.cardIds,
+        trailerVideoDurationSeconds: result.durationSeconds,
+        stackNarratorVoiceId: this.stackNarratorVoiceId(),
+      };
+      const persisted = await this.persistBoard(nextBoard);
+      this.boards.update((boards) => boards.map((item) => item.id === persisted.id ? persisted : item));
+      const librarySave = await this.saveStackVideoToLibrary(persisted, result, {
+        publicStoragePath: path,
+        publicShareUrl: this.trailerVideoShareUrl(persisted),
+      }, 'trailer');
+      this.setStackShareMessage(librarySave === false
+        ? 'Board Trailer published. My Videos could not be updated, but the trailer link is ready.'
+        : 'Board Trailer published and saved to My Videos. It is ready to share.', false);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not create the Board Trailer.';
+      this.setStackShareMessage(message, false);
+    } finally {
+      this.stackVideoExporting.set(false);
+      this.stackVideoProgress.set(0);
+    }
+  }
+
+  async sharePublishedStackTrailer(board: Board, target: StackLinkShareTarget = 'more'): Promise<void> {
+    if (!this.isBrowser || !board.trailerVideoUrl || this.stackVideoExporting()) return;
+    const file = this.publishedStackTrailerFiles.get(board.id);
+    if (!file) {
+      void this.preloadPublishedStackTrailer(board);
+      this.setStackShareMessage('Preparing the trailer file. Tap Share again when it is ready.', false);
+      return;
+    }
+    const caption = this.stackCaption().trim() || `A quick look at ${board.title}.`;
+    const boardUrl = this.stackSocialShareUrl(board);
+    const shareText = `${caption}\n${boardUrl}`;
+    try {
+      if (target === 'more' && this.canNativeShareFile(file)) {
+        await navigator.share({ title: board.title, text: shareText, files: [file] });
+        this.setStackShareMessage('Board Trailer shared as native video.');
+        return;
+      }
+      this.downloadStackVideo(file);
+      if (target !== 'more') this.openStackLinkComposer(target, board, boardUrl, caption);
+      await this.copyTextToClipboard(shareText);
+      this.setStackShareMessage('Trailer downloaded and caption copied. Attach it as native media for autoplay.', false);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        this.setStackShareMessage('Share was cancelled.');
+        return;
+      }
+      this.setStackShareMessage(error instanceof Error ? error.message : 'Could not share the Board Trailer.', false);
+    }
+  }
+
+  private async preloadPublishedStackTrailer(board: Board): Promise<void> {
+    if (!this.isBrowser || !board.trailerVideoUrl || this.publishedStackTrailerFiles.has(board.id) || this.stackPublishedTrailerLoading()) return;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+    this.stackPublishedTrailerLoading.set(true);
+    this.stackPublishedTrailerReady.set(false);
+    try {
+      const response = await fetch(this.trailerVideoFileUrl(board), { credentials: 'same-origin' });
+      if (!response.ok) throw new Error('The Board Trailer could not be prepared.');
+      const blob = await response.blob();
+      const extension: StackVideoResult['extension'] = (board.trailerVideoMimeType || blob.type).includes('mp4') ? 'mp4' : 'webm';
+      const result: StackVideoResult = {
+        blob,
+        mimeType: this.normalizedVideoMimeType(board.trailerVideoMimeType || blob.type || `video/${extension}`),
+        extension,
+        xCompatible: extension === 'mp4',
+        durationSeconds: board.trailerVideoDurationSeconds,
+      };
+      this.publishedStackTrailerFiles.set(board.id, this.stackTrailerFile(board, result));
+      this.stackPublishedTrailerReady.set(true);
+    } catch (error) {
+      this.setStackShareMessage(error instanceof Error ? error.message : 'The Board Trailer could not be prepared.', false);
+    } finally {
+      this.stackPublishedTrailerLoading.set(false);
+    }
+  }
+
+  private async createStackTrailer(board: Board): Promise<{
+    result: StackVideoResult;
+    script: string;
+    fingerprint: string;
+    cardIds: string[];
+  }> {
+    const cards = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS);
+    if (!cards.length) throw new Error('Select at least one card for the Board Trailer.');
+    if (!this.functions) throw new Error('Trailer writing is unavailable. Refresh and try again.');
+    const prepare = httpsCallable<
+      { boardId: string; cardIds: string[] },
+      BoardTrailerPreparationResponse
+    >(this.functions, 'prepareBoardTrailer', { timeout: 90_000 });
+    const prepared = (await prepare({ boardId: board.id, cardIds: cards.map((card) => card.id) })).data;
+    const script = prepared.script.trim();
+    if (!script) throw new Error('The Board Trailer hook could not be written. Please try again.');
+    let narration: StackTrailerNarration | null = null;
+    if (this.stackTrailerNarrationEnabled()) {
+      const audioUrl = await this.ensureTourAudioUrl(
+        `stack-trailer:${board.id}:${prepared.fingerprint}:${script}`,
+        script,
+        this.stackNarratorVoiceId(),
+        board.id,
+        'stack-trailer',
+        undefined,
+        true,
+      );
+      if (!audioUrl) throw new Error('The Board Trailer voiceover could not be prepared. Please try again.');
+      narration = { audioUrl, script, volume: 1 };
+    }
+    const result = await generateStackTrailer({
+      title: board.title,
+      subtitle: this.stackCoverSubtitle().trim() || board.description,
+      ownerName: this.ownerName(board),
+      coverImageUrl: this.stackCoverImage(board),
+      liveUrl: this.stackShareUrl(board),
+      qrImageUrl: '',
+      showCardNumbers: this.boardShowsCardNumbers(board),
+      cards: cards.map((card) => ({
+        title: card.title,
+        subtitle: this.cardDisplaySubtitle(board, card),
+        notes: card.notes,
+        rank: card.rank ?? null,
+        imageUrl: this.cardImages(card)[0] ?? '',
+        imageUrls: this.cardImages(card),
+        tourSequence: card.tour?.sequence ?? null,
+      })),
+    }, this.stackRatio(), (progress) => this.stackVideoProgress.set(Math.round(progress * 100)), this.stackVideoBackgroundAudio(), narration);
+    return { result, script, fingerprint: prepared.fingerprint, cardIds: prepared.cardIds };
   }
 
   async publishStackVideo(board: Board): Promise<void> {
@@ -12392,10 +12705,21 @@ export class BoardsComponent implements OnDestroy {
     return new File([result.blob], `${slug}.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
   }
 
+  private stackTrailerFile(board: Board, result: StackVideoResult): File {
+    const slug = board.title
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 46) || 'livingwiki-board';
+    return new File([result.blob], `${slug}-trailer.${result.extension}`, { type: this.normalizedVideoMimeType(result.mimeType) });
+  }
+
   private async saveStackVideoToLibrary(
     board: Board,
     result: StackVideoResult,
     published: { publicStoragePath: string; publicShareUrl: string } | null = null,
+    videoKind: 'full' | 'trailer' = 'full',
   ): Promise<boolean | null> {
     if (!this.canEditBoard(board) || !this.authService.uid()) {
       return null;
@@ -12403,6 +12727,7 @@ export class BoardsComponent implements OnDestroy {
     try {
       await this.videoLibrary.saveLatestBoardVideo({
         boardId: board.id,
+        videoKind,
         boardTitle: board.title,
         boardRoute: `${this.boardRouteRoot(board)}/${encodeURIComponent(board.id)}`,
         boardUpdatedAt: board.updatedAt,
@@ -12412,8 +12737,8 @@ export class BoardsComponent implements OnDestroy {
         mimeType: this.normalizedVideoMimeType(result.mimeType),
         ratio: this.stackRatio(),
         durationSeconds: result.durationSeconds,
-        renderVersion: STACK_VIDEO_RENDER_VERSION,
-        narrationEnabled: this.stackVideoNarrationEnabled(),
+        renderVersion: videoKind === 'trailer' ? STACK_TRAILER_RENDER_VERSION : STACK_VIDEO_RENDER_VERSION,
+        narrationEnabled: videoKind === 'trailer' ? this.stackTrailerNarrationEnabled() : this.stackVideoNarrationEnabled(),
         publicStoragePath: published?.publicStoragePath,
         publicShareUrl: published?.publicShareUrl,
       });
@@ -12486,6 +12811,7 @@ export class BoardsComponent implements OnDestroy {
     this.stackAudioTrackId.set(normalizeStackAudioTrackId(board.socialVideoAudioTrackId));
     this.stackAudioVolume.set(normalizeStackAudioVolume(board.socialVideoAudioVolume));
     this.stackVideoNarrationEnabled.set(board.socialVideoNarrationEnabled !== false);
+    this.stackTrailerNarrationEnabled.set(board.trailerVideoNarrationEnabled !== false);
     const narratorVoiceId = normalizeStackNarratorVoiceId(board.stackNarratorVoiceId);
     this.stackNarratorVoiceId.set(
       stackNarratorVoiceRequiresPaidPlan(narratorVoiceId) && !this.personalVoiceEligible()
@@ -15113,6 +15439,26 @@ export class BoardsComponent implements OnDestroy {
           socialVideoNarrationEnabled: typeof (board as Partial<Board>).socialVideoNarrationEnabled === 'boolean'
             ? (board as Partial<Board>).socialVideoNarrationEnabled
             : undefined,
+          trailerVideoUrl: typeof board.trailerVideoUrl === 'string' ? board.trailerVideoUrl : '',
+          trailerVideoMimeType: typeof board.trailerVideoMimeType === 'string' ? board.trailerVideoMimeType : '',
+          trailerVideoUpdatedAt: typeof board.trailerVideoUpdatedAt === 'string' ? board.trailerVideoUpdatedAt : '',
+          trailerVideoRenderVersion: typeof board.trailerVideoRenderVersion === 'string' ? board.trailerVideoRenderVersion : '',
+          trailerVideoRatio: this.isStackRatio((board as Partial<Board>).trailerVideoRatio)
+            ? (board as Board).trailerVideoRatio
+            : 'vertical',
+          trailerVideoAudioTrackId: normalizeStackAudioTrackId((board as Partial<Board>).trailerVideoAudioTrackId),
+          trailerVideoAudioVolume: normalizeStackAudioVolume((board as Partial<Board>).trailerVideoAudioVolume),
+          trailerVideoNarrationEnabled: typeof (board as Partial<Board>).trailerVideoNarrationEnabled === 'boolean'
+            ? (board as Partial<Board>).trailerVideoNarrationEnabled
+            : undefined,
+          trailerVideoScript: typeof board.trailerVideoScript === 'string' ? board.trailerVideoScript : '',
+          trailerVideoSourceFingerprint: typeof board.trailerVideoSourceFingerprint === 'string' ? board.trailerVideoSourceFingerprint : '',
+          trailerVideoCardIds: Array.isArray(board.trailerVideoCardIds)
+            ? board.trailerVideoCardIds.filter((value): value is string => typeof value === 'string').slice(0, 30)
+            : [],
+          trailerVideoDurationSeconds: typeof board.trailerVideoDurationSeconds === 'number' && Number.isFinite(board.trailerVideoDurationSeconds)
+            ? Math.max(0, board.trailerVideoDurationSeconds)
+            : 0,
           narrationStyle: normalizeBoardNarrationStyleId((board as Partial<Board>).narrationStyle),
           stackNarratorVoiceId: normalizeStackNarratorVoiceId(
             (board as Partial<Board>).stackNarratorVoiceId,
@@ -15406,6 +15752,24 @@ export class BoardsComponent implements OnDestroy {
       socialVideoNarrationEnabled: typeof data['socialVideoNarrationEnabled'] === 'boolean'
         ? data['socialVideoNarrationEnabled']
         : undefined,
+      trailerVideoUrl: typeof data['trailerVideoUrl'] === 'string' ? data['trailerVideoUrl'] : '',
+      trailerVideoMimeType: typeof data['trailerVideoMimeType'] === 'string' ? data['trailerVideoMimeType'] : '',
+      trailerVideoUpdatedAt: typeof data['trailerVideoUpdatedAt'] === 'string' ? data['trailerVideoUpdatedAt'] : '',
+      trailerVideoRenderVersion: typeof data['trailerVideoRenderVersion'] === 'string' ? data['trailerVideoRenderVersion'] : '',
+      trailerVideoRatio: this.isStackRatio(data['trailerVideoRatio']) ? data['trailerVideoRatio'] : 'vertical',
+      trailerVideoAudioTrackId: normalizeStackAudioTrackId(data['trailerVideoAudioTrackId']),
+      trailerVideoAudioVolume: normalizeStackAudioVolume(data['trailerVideoAudioVolume']),
+      trailerVideoNarrationEnabled: typeof data['trailerVideoNarrationEnabled'] === 'boolean'
+        ? data['trailerVideoNarrationEnabled']
+        : undefined,
+      trailerVideoScript: typeof data['trailerVideoScript'] === 'string' ? data['trailerVideoScript'] : '',
+      trailerVideoSourceFingerprint: typeof data['trailerVideoSourceFingerprint'] === 'string' ? data['trailerVideoSourceFingerprint'] : '',
+      trailerVideoCardIds: Array.isArray(data['trailerVideoCardIds'])
+        ? data['trailerVideoCardIds'].filter((value): value is string => typeof value === 'string').slice(0, 30)
+        : [],
+      trailerVideoDurationSeconds: typeof data['trailerVideoDurationSeconds'] === 'number' && Number.isFinite(data['trailerVideoDurationSeconds'])
+        ? Math.max(0, data['trailerVideoDurationSeconds'])
+        : 0,
       narrationStyle: normalizeBoardNarrationStyleId(data['narrationStyle']),
       stackNarratorVoiceId: normalizeStackNarratorVoiceId(data['stackNarratorVoiceId']),
       stickers: this.normalizeStickers(data['stickers']),

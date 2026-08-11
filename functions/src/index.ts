@@ -81,6 +81,7 @@ import {
   generateAnswerCard,
   generateAnswerQuiz,
   generateBoardCardImageAsset,
+  generateBoardTrailerScript,
   generateBoardWizardBatch as generateBoardWizardBatchWithGemini,
   translateBoardTextSegments,
   generateVoiceConversationRecap,
@@ -18020,7 +18021,9 @@ function personalNarrationTextsFromCard(value: unknown): Set<string> {
 
 function boardAllowsNarrationText(board: Record<string, unknown>, text: string): boolean {
   const requestedText = normalizeNarrationAuthorizationText(text);
-  if (!requestedText || !Array.isArray(board['cards'])) return false;
+  if (!requestedText) return false;
+  if (normalizeNarrationAuthorizationText(board['trailerVideoScript']) === requestedText) return true;
+  if (!Array.isArray(board['cards'])) return false;
   return board['cards'].some((card) => personalNarrationTextsFromCard(card).has(requestedText));
 }
 
@@ -18265,6 +18268,72 @@ export const deletePersonalNarratorVoice = onCall(
   },
 );
 
+export const prepareBoardTrailer = onCall(
+  {
+    region: callableRegion,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+    cors: true,
+    secrets: [geminiApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) throw new HttpsError('unauthenticated', 'Sign in to create a Board Trailer.');
+    const boardId = String(request.data?.boardId ?? '').trim().slice(0, 160);
+    if (!boardId) throw new HttpsError('invalid-argument', 'A board is required.');
+
+    const boardRef = db.collection('boards').doc(boardId);
+    const snapshot = await boardRef.get();
+    if (!snapshot.exists) throw new HttpsError('not-found', 'The board could not be found.');
+    const board = snapshot.data() as Record<string, unknown>;
+    if (String(board['owner_user_id'] ?? '').trim() !== userId) {
+      throw new HttpsError('permission-denied', 'Only the board owner can create its trailer.');
+    }
+    const sourceCards = Array.isArray(board['cards'])
+      ? board['cards'].filter((value): value is Record<string, unknown> => !!value && typeof value === 'object')
+      : [];
+    const requestedIds: string[] = Array.isArray(request.data?.cardIds)
+      ? Array.from(new Set<string>(request.data.cardIds
+          .map((value: unknown) => String(value ?? '').trim())
+          .filter((value: string) => !!value))).slice(0, 30)
+      : [];
+    const cardsById = new Map(sourceCards.map((card) => [String(card['id'] ?? card['card_id'] ?? '').trim(), card]));
+    if (requestedIds.some((id) => !cardsById.has(id))) {
+      throw new HttpsError('permission-denied', 'Every trailer card must belong to the selected board.');
+    }
+    const selectedCards = (requestedIds.length ? requestedIds.map((id) => cardsById.get(id)!) : sourceCards.slice(0, 30))
+      .filter(Boolean);
+    if (!selectedCards.length) throw new HttpsError('failed-precondition', 'Add at least one card before creating a trailer.');
+
+    const title = String(board['title'] ?? '').replace(/\s+/g, ' ').trim().slice(0, 120);
+    const description = String(board['description'] ?? '').replace(/\s+/g, ' ').trim().slice(0, 360);
+    const cardInputs = selectedCards.map((card) => ({
+      id: String(card['id'] ?? card['card_id'] ?? '').trim(),
+      title: String(card['title'] ?? '').replace(/\s+/g, ' ').trim().slice(0, 100),
+      subtitle: String(card['shortSummary'] ?? card['subtitle'] ?? card['notes'] ?? '')
+        .replace(/\s+/g, ' ').trim().slice(0, 180),
+    }));
+    const fingerprint = createHash('sha256')
+      .update(JSON.stringify({ title, description, cards: cardInputs }))
+      .digest('hex');
+    const cachedScript = normalizeNarrationAuthorizationText(board['trailerVideoScript']);
+    const cachedFingerprint = String(board['trailerVideoSourceFingerprint'] ?? '').trim();
+    if (cachedScript && cachedFingerprint === fingerprint) {
+      return { script: cachedScript, fingerprint, cached: true, cardIds: cardInputs.map((card) => card.id) };
+    }
+
+    const script = await generateBoardTrailerScript({ title, description, cards: cardInputs });
+    await boardRef.update({
+      trailerVideoScript: script,
+      trailerVideoSourceFingerprint: fingerprint,
+      trailerVideoCardIds: cardInputs.map((card) => card.id),
+      trailerVideoScriptUpdatedAt: new Date().toISOString(),
+      server_updated_at: FieldValue.serverTimestamp(),
+    });
+    return { script, fingerprint, cached: false, cardIds: cardInputs.map((card) => card.id) };
+  },
+);
+
 export const synthesizeChatAnswerSpeech = onCall(
   {
     region: callableRegion,
@@ -18277,7 +18346,9 @@ export const synthesizeChatAnswerSpeech = onCall(
     if (!request.auth?.uid && !normalizeAnonymousVisitorId(request.data?.anonymousVisitorId)) {
       throw new HttpsError('unauthenticated', 'Authentication or anonymousVisitorId is required.');
     }
-    const requestedMode = request.data?.mode === 'stack-video'
+    const requestedMode = request.data?.mode === 'stack-trailer'
+      ? 'stack-trailer'
+      : request.data?.mode === 'stack-video'
       ? 'stack-video'
       : request.data?.mode === 'tour'
         ? 'tour'
@@ -18289,7 +18360,7 @@ export const synthesizeChatAnswerSpeech = onCall(
     const requestedCardId = String(request.data?.cardId ?? '').trim().slice(0, 160);
     let requestedBoard: Record<string, unknown> | null = null;
     let requestedStackVideoCard: Record<string, unknown> | null = null;
-    if (requestedMode === 'stack-video') {
+    if (requestedMode === 'stack-video' || requestedMode === 'stack-trailer') {
       const userId = request.auth?.uid;
       if (!userId) {
         throw new HttpsError('unauthenticated', 'Sign in to create narrated videos.');
@@ -18305,7 +18376,7 @@ export const synthesizeChatAnswerSpeech = onCall(
       if (String(requestedBoard['owner_user_id'] ?? '').trim() !== userId) {
         throw new HttpsError('permission-denied', 'Only the board owner can create its narrated video.');
       }
-      if (requestedCardId) {
+      if (requestedMode === 'stack-video' && requestedCardId) {
         requestedStackVideoCard = stackVideoNarrationCardFromBoard(requestedBoard, requestedCardId);
         if (!requestedStackVideoCard) {
           throw new HttpsError('permission-denied', 'This narration card does not belong to the selected board.');
@@ -18322,7 +18393,7 @@ export const synthesizeChatAnswerSpeech = onCall(
     }
     const text = requestedMode === 'stack-video' && requestedStackVideoCard
       ? stackVideoNarrationTextFromCard(requestedStackVideoCard, normalizeSpeechText)
-      : requestedMode === 'full' || requestedMode === 'tour' || requestedMode === 'stack-video'
+      : requestedMode === 'full' || requestedMode === 'tour' || requestedMode === 'stack-video' || requestedMode === 'stack-trailer'
         ? normalizeSpeechText(request.data?.text)
         : buildSpeechRecapText(request.data?.question, request.data?.text);
     if (!text) {
@@ -18331,6 +18402,10 @@ export const synthesizeChatAnswerSpeech = onCall(
     if (requestedMode === 'stack-video'
       && (!requestedBoard || (!requestedStackVideoCard && !boardAllowsNarrationText(requestedBoard, text)))) {
       throw new HttpsError('permission-denied', 'This narration does not match a card on the selected board.');
+    }
+    if (requestedMode === 'stack-trailer'
+      && (!requestedBoard || normalizeNarrationAuthorizationText(requestedBoard['trailerVideoScript']) !== text)) {
+      throw new HttpsError('permission-denied', 'This voiceover does not match the prepared Board Trailer script.');
     }
 
     const isPersonalNarrator = requestedNarratorId === personalStackNarratorVoiceId;

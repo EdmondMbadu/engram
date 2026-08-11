@@ -1222,7 +1222,7 @@
 
 .stack-share-sheet__modes {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.35rem;
   border-radius: 999px;
   background: #e8f3ed;
@@ -1253,6 +1253,25 @@
 
 .stack-share-sheet__modes .material-symbols-outlined {
   font-size: 1.05rem;
+}
+
+.stack-share-sheet__modes button > span:not(.material-symbols-outlined) {
+  display: grid;
+  gap: 0.03rem;
+  line-height: 1;
+}
+
+.stack-share-sheet__modes button > span strong {
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.stack-share-sheet__modes button > span small {
+  color: #0a8a65;
+  font-size: 0.46rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .stack-share-sheet__music-summary {
@@ -1455,6 +1474,51 @@
   line-height: 1.4;
 }
 
+.stack-share-sheet__empty--trailer {
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 50% 0, rgba(141, 245, 197, .2), transparent 45%),
+    linear-gradient(180deg, #f8fffb, #ffffff);
+  padding: 0.9rem 0.7rem 0.45rem;
+}
+
+.stack-trailer-promise {
+  display: grid;
+  width: min(100%, 30rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.42rem;
+  margin: 0.25rem 0;
+}
+
+.stack-trailer-promise > span {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 0.12rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  border-radius: 0.72rem;
+  background: #ffffff;
+  padding: 0.55rem 0.35rem;
+}
+
+.stack-trailer-promise .material-symbols-outlined {
+  color: var(--accent);
+  font-size: 1.12rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.stack-trailer-promise strong {
+  color: var(--text);
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.stack-trailer-promise small {
+  color: var(--muted);
+  font-size: 0.52rem;
+  font-weight: 750;
+}
+
 .stack-share-sheet__primary {
   display: inline-flex;
   width: min(100%, 22rem);
@@ -1482,6 +1546,15 @@
 
 .stack-share-sheet__primary .material-symbols-outlined {
   font-size: 1.15rem;
+}
+
+.stack-share-sheet__primary--trailer {
+  background: linear-gradient(135deg, #096c52, #10ad7c 70%, #2ad59c);
+  box-shadow: 3px 3px 0 var(--modal-ink), 0 12px 28px rgba(10, 152, 112, .2);
+}
+
+.stack-share-sheet__video-preview--trailer {
+  background: radial-gradient(circle at 50% 20%, #184f3f, #030806 72%);
 }
 
 .stack-share-sheet__video-preview {

@@ -5862,11 +5862,15 @@
           </div>
 
           <div class="stack-share-dialog">
-            <section class="stack-share-sheet" [class.stack-share-sheet--stale]="board.socialVideoUrl && !socialVideoIsCurrent(board)">
+            <section class="stack-share-sheet" [class.stack-share-sheet--stale]="(stackShareMode() === 'trailer' && board.trailerVideoUrl && !trailerVideoIsCurrent(board)) || (stackShareMode() === 'video' && board.socialVideoUrl && !socialVideoIsCurrent(board))">
               <div class="stack-share-sheet__modes" aria-label="Choose what to share" i18n-aria-label>
-                <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'video'" (click)="setStackShareMode('video')" i18n>
+                <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'trailer'" (click)="setStackShareMode('trailer')">
+                  <span class="material-symbols-outlined">movie_filter</span>
+                  <span><strong>Trailer</strong><small>Recommended</small></span>
+                </button>
+                <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'video'" (click)="setStackShareMode('video')">
                   <span class="material-symbols-outlined">smart_display</span>
-                  Video
+                  Full video
                 </button>
                 <button type="button" [class.stack-share-sheet__mode--active]="stackShareMode() === 'live'" (click)="setStackShareMode('live')" i18n>
                   <span class="material-symbols-outlined">play_arrow</span>
@@ -5874,7 +5878,7 @@
                 </button>
               </div>
 
-              @if (stackShareMode() === 'video') {
+              @if (stackShareMode() === 'video' || stackShareMode() === 'trailer') {
                 <div class="stack-share-sheet__music-summary">
                   <span class="material-symbols-outlined">
                     {{ stackSelectedAudioTrack() ? 'music_note' : 'music_off' }}
@@ -5893,7 +5897,39 @@
                 </div>
               }
 
-              @if (stackShareMode() === 'video' && !board.socialVideoUrl) {
+              @if (stackShareMode() === 'trailer' && !board.trailerVideoUrl) {
+                <div class="stack-share-sheet__empty stack-share-sheet__empty--trailer">
+                  <span class="stack-share-sheet__hero-icon material-symbols-outlined">movie_filter</span>
+                  <p>Board Trailer</p>
+                  <h4>Make people want the full board</h4>
+                  <span>A fast 15–30 second teaser with every selected card, one continuous hook, silent-friendly captions, and a clear invitation to explore.</span>
+                  <div class="stack-trailer-promise" aria-label="Trailer format">
+                    <span><span class="material-symbols-outlined">timer</span><strong>15–30 sec</strong><small>Built for attention</small></span>
+                    <span><span class="material-symbols-outlined">view_carousel</span><strong>{{ stackSelectedCards().length }} cards</strong><small>Every card appears</small></span>
+                    <span><span class="material-symbols-outlined">subtitles</span><strong>Captions</strong><small>Works without sound</small></span>
+                  </div>
+                  <div class="stack-share-sheet__narration-modes" role="radiogroup" aria-label="Trailer voiceover">
+                    <button type="button" [class.stack-share-sheet__narration-mode--active]="stackTrailerNarrationEnabled()" [attr.aria-checked]="stackTrailerNarrationEnabled()" [disabled]="stackVideoExporting()" role="radio" (click)="setStackTrailerNarrationEnabled(true)">
+                      <span class="material-symbols-outlined">campaign</span>
+                      <span><strong>One trailer voiceover</strong><small>A short, board-level hook</small></span>
+                      @if (stackTrailerNarrationEnabled()) { <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span> }
+                    </button>
+                    <button type="button" [class.stack-share-sheet__narration-mode--active]="!stackTrailerNarrationEnabled()" [attr.aria-checked]="!stackTrailerNarrationEnabled()" [disabled]="stackVideoExporting()" role="radio" (click)="setStackTrailerNarrationEnabled(false)">
+                      <span class="material-symbols-outlined">voice_over_off</span>
+                      <span><strong>Music + titles</strong><small>Fast, visual, no voice</small></span>
+                      @if (!stackTrailerNarrationEnabled()) { <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span> }
+                    </button>
+                  </div>
+                  @if (canEditBoard(board)) {
+                    <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="stackVideoExporting() || !stackSelectedCards().length" (click)="publishStackTrailer(board)">
+                      <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'auto_awesome' }}</span>
+                      {{ stackVideoExporting() ? 'Creating trailer ' + stackVideoProgress() + '%' : 'Create Board Trailer' }}
+                    </button>
+                  } @else {
+                    <small>Only the board owner can publish its trailer.</small>
+                  }
+                </div>
+              } @else if (stackShareMode() === 'video' && !board.socialVideoUrl) {
                 <div class="stack-share-sheet__empty">
                   <span class="stack-share-sheet__hero-icon material-symbols-outlined">movie</span>
                   <p i18n>Social video</p>
@@ -5950,7 +5986,27 @@
                   }
                 </div>
               } @else {
-                @if (stackShareMode() === 'video') {
+                @if (stackShareMode() === 'trailer') {
+                  <div class="stack-share-sheet__video-preview stack-share-sheet__video-preview--trailer">
+                    <video [src]="board.trailerVideoUrl" [poster]="stackCoverImage(board)" playsinline controls preload="metadata"></video>
+                    <span><span class="material-symbols-outlined">check_circle</span> Board Trailer ready · {{ board.trailerVideoDurationSeconds || '15–30' }} sec</span>
+                  </div>
+                  <div class="stack-share-sheet__title">
+                    <p>Share the hook</p>
+                    <span>Use this teaser as native social video, then point people to the full board.</span>
+                  </div>
+                  @if (!trailerVideoIsCurrent(board) && canEditBoard(board)) {
+                    <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="stackVideoExporting()" (click)="publishStackTrailer(board)">
+                      <span class="material-symbols-outlined">refresh</span>
+                      {{ stackVideoExporting() ? 'Updating trailer ' + stackVideoProgress() + '%' : 'Update Board Trailer' }}
+                    </button>
+                  } @else {
+                    <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="stackPublishedTrailerLoading()" (click)="sharePublishedStackTrailer(board)">
+                      <span class="material-symbols-outlined">ios_share</span>
+                      {{ stackPublishedTrailerLoading() ? 'Preparing trailer…' : stackPublishedTrailerReady() ? 'Share trailer file' : 'Prepare trailer file' }}
+                    </button>
+                  }
+                } @else if (stackShareMode() === 'video') {
                   <div class="stack-share-sheet__video-preview">
                     <video [src]="board.socialVideoUrl" [poster]="stackCoverImage(board)" playsinline controls preload="metadata"></video>
                     <span i18n><span class="material-symbols-outlined">check_circle</span> Permanent video ready</span>
@@ -5989,8 +6045,8 @@
                 }
 
                 <div class="stack-share-sheet__destination-head">
-                  <strong>{{ stackShareMode() === 'video' ? 'Open a social composer' : 'Share live-view link' }}</strong>
-                  <span>{{ stackShareMode() === 'video' ? 'Downloads the MP4 and opens the selected composer. Attach the downloaded video for in-feed playback.' : 'Includes the board picture and opens the interactive board.' }}</span>
+                  <strong>{{ stackShareMode() === 'live' ? 'Share live-view link' : 'Open a social composer' }}</strong>
+                  <span>{{ stackShareMode() === 'live' ? 'Includes the board picture and opens the interactive board.' : 'Downloads the MP4 and opens the selected composer. Attach it for in-feed autoplay.' }}</span>
                 </div>
                 <div class="stack-share-sheet__destinations" aria-label="Share destinations" i18n-aria-label>
                   @for (target of stackLinkShareTargets; track target.id) {
@@ -6009,7 +6065,7 @@
                   <button type="button" (click)="copySelectedStackShareUrl(board)" i18n>Copy</button>
                 </div>
 
-                @if (stackShareMode() === 'video') {
+                @if (stackShareMode() !== 'live') {
                   <small class="stack-share-sheet__note" i18n><strong>For in-feed playback</strong>, attach the MP4 as native media. The permanent video-page link remains available above as an optional fallback.</small>
                 }
               }
@@ -6020,6 +6076,9 @@
                   <button type="button" (click)="copyBoardUrl(board)" i18n><span class="material-symbols-outlined">dashboard_customize</span> Copy board link</button>
                   @if (board.socialVideoUrl) {
                     <button type="button" (click)="copySocialVideoFileUrl(board)" i18n><span class="material-symbols-outlined">movie</span> Copy direct MP4</button>
+                  }
+                  @if (board.trailerVideoUrl) {
+                    <button type="button" (click)="copyTrailerVideoFileUrl(board)"><span class="material-symbols-outlined">movie_filter</span> Copy trailer MP4</button>
                   }
                   <button type="button" [disabled]="stackVideoExporting()" (click)="shareStackTo('download')" i18n><span class="material-symbols-outlined">download</span> Download video</button>
                 </div>
