@@ -493,6 +493,18 @@ service cloud.firestore {
           'socialVideoAudioTrackId',
           'socialVideoAudioVolume',
           'socialVideoNarrationEnabled',
+          'trailerVideoUrl',
+          'trailerVideoMimeType',
+          'trailerVideoUpdatedAt',
+          'trailerVideoRenderVersion',
+          'trailerVideoRatio',
+          'trailerVideoAudioTrackId',
+          'trailerVideoAudioVolume',
+          'trailerVideoNarrationEnabled',
+          'trailerVideoScript',
+          'trailerVideoSourceFingerprint',
+          'trailerVideoCardIds',
+          'trailerVideoDurationSeconds',
           'narrationStyle',
           'stackNarratorVoiceId',
           'stickers',
@@ -652,6 +664,86 @@ service cloud.firestore {
         && (
           !request.resource.data.keys().hasAny(['socialVideoNarrationEnabled'])
           || request.resource.data.socialVideoNarrationEnabled is bool
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoUrl'])
+          || (
+            request.resource.data.trailerVideoUrl is string
+            && request.resource.data.trailerVideoUrl.size() <= 2000
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoMimeType'])
+          || (
+            request.resource.data.trailerVideoMimeType is string
+            && request.resource.data.trailerVideoMimeType.size() <= 120
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoUpdatedAt'])
+          || (
+            request.resource.data.trailerVideoUpdatedAt is string
+            && request.resource.data.trailerVideoUpdatedAt.size() <= 80
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoRenderVersion'])
+          || (
+            request.resource.data.trailerVideoRenderVersion is string
+            && request.resource.data.trailerVideoRenderVersion.size() <= 64
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoRatio'])
+          || request.resource.data.trailerVideoRatio in ['vertical', 'square', 'landscape']
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoAudioTrackId'])
+          || (
+            request.resource.data.trailerVideoAudioTrackId is string
+            && request.resource.data.trailerVideoAudioTrackId.size() <= 80
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoAudioVolume'])
+          || (
+            request.resource.data.trailerVideoAudioVolume is number
+            && request.resource.data.trailerVideoAudioVolume >= 0
+            && request.resource.data.trailerVideoAudioVolume <= 0.5
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoNarrationEnabled'])
+          || request.resource.data.trailerVideoNarrationEnabled is bool
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoScript'])
+          || (
+            request.resource.data.trailerVideoScript is string
+            && request.resource.data.trailerVideoScript.size() <= 620
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoSourceFingerprint'])
+          || (
+            request.resource.data.trailerVideoSourceFingerprint is string
+            && request.resource.data.trailerVideoSourceFingerprint.size() <= 128
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoCardIds'])
+          || (
+            request.resource.data.trailerVideoCardIds is list
+            && request.resource.data.trailerVideoCardIds.size() <= 30
+          )
+        )
+        && (
+          !request.resource.data.keys().hasAny(['trailerVideoDurationSeconds'])
+          || (
+            request.resource.data.trailerVideoDurationSeconds is number
+            && request.resource.data.trailerVideoDurationSeconds >= 0
+            && request.resource.data.trailerVideoDurationSeconds <= 30
+          )
         )
         && (
           !request.resource.data.keys().hasAny(['narrationStyle'])
