@@ -1481,9 +1481,17 @@ export async function generateBoardWizardBatch(params: {
   singleTourStop?: boolean;
   sourceManifest?: BoardWizardSourceManifest | null;
   verificationFailureMode?: 'draft' | 'error';
+  /**
+   * Bulk generation already starts from provider-verified identities. It can use
+   * one grounded writing pass and omit the generic second verification pass.
+   */
+  verificationPass?: boolean;
+  researchGrounding?: boolean;
 }): Promise<GeneratedBoardWizardBatch> {
   const count = Math.max(1, Math.min(100, Math.trunc(params.count || 12)));
-  const verificationRequired = shouldVerifyBoardWizardBatch(params, count);
+  const verificationRequired = params.verificationPass !== false
+    && shouldVerifyBoardWizardBatch(params, count);
+  const groundingRequired = verificationRequired || params.researchGrounding === true;
   const researchMode = boardWizardResearchMode(params);
   const cardLimit = params.countIsExplicit ? count : verificationRequired ? 100 : count;
   const prompt = buildBoardWizardPrompt({ ...params, count, verificationRequired });
@@ -1517,8 +1525,8 @@ export async function generateBoardWizardBatch(params: {
           responseMimeType: 'application/json',
           responseJsonSchema: boardWizardBatchSchema,
           temperature: 0.28,
-          maxOutputTokens: verificationRequired ? 16384 : Math.min(16384, 1100 + count * 420),
-          tools: verificationRequired && researchMode !== 'source' ? [{ googleSearch: {} }] : undefined,
+          maxOutputTokens: groundingRequired ? 16384 : Math.min(16384, 1100 + count * 420),
+          tools: groundingRequired && researchMode !== 'source' ? [{ googleSearch: {} }] : undefined,
           thinkingConfig: { thinkingBudget: wizardModel === model ? (researchMode === 'curated' ? 1536 : 768) : 0 },
         },
       });

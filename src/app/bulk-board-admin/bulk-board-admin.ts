@@ -15,6 +15,7 @@ import {
   type BulkBoardJobItem,
   type BulkBoardPreflight,
   type BulkBoardTemplateInput,
+  type GlobalCityBoardCatalogStatus,
 } from './bulk-board-admin.service';
 
 type GlobalBucketPreset = BulkBoardTemplateInput & {
@@ -151,6 +152,9 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   readonly preflight = signal<BulkBoardPreflight | null>(null);
   readonly preflightAccepted = signal(false);
   readonly publishingAll = signal(false);
+  readonly reconcilingCatalog = signal(false);
+  readonly catalogPlan = signal<GlobalCityBoardCatalogStatus | null>(null);
+  readonly catalogAccepted = signal(false);
   readonly busyBoardId = signal<string | null>(null);
   readonly busyItemId = signal<string | null>(null);
   readonly currentUserName = this.authService.displayName;
@@ -187,6 +191,12 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     return this.cities().filter((city) => !query || `${city.name} ${city.region} ${city.countryCode}`.toLowerCase().includes(query));
   });
   readonly activeJob = computed(() => this.jobs().find((job) => job.status === 'running') ?? null);
+  readonly catalog = computed(() => this.dashboard()?.catalog ?? null);
+  readonly catalogProgress = computed(() => {
+    const catalog = this.catalog();
+    if (!catalog?.expectedCount) return 0;
+    return Math.round((catalog.publishedCount + catalog.reviewCount) / catalog.expectedCount * 100);
+  });
   readonly filteredBoards = computed(() => {
     const query = this.boardSearch().trim().toLowerCase();
     const cityId = this.selectedBoardCity();
@@ -352,6 +362,45 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     }
   }
 
+  async prepareCatalogReconciliation(): Promise<void> {
+    this.reconcilingCatalog.set(true);
+    this.error.set(null);
+    this.notice.set(null);
+    try {
+      const plan = await this.service.reconcileCatalog(true);
+      this.catalogPlan.set(plan);
+      this.catalogAccepted.set(false);
+      if (!plan.readyCount) {
+        this.notice.set('The seven-bucket city catalog has no unsuppressed missing boards to queue.');
+      }
+    } catch (error) {
+      this.error.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.reconcilingCatalog.set(false);
+    }
+  }
+
+  async startCatalogReconciliation(): Promise<void> {
+    const plan = this.catalogPlan();
+    if (!plan?.readyCount || !this.catalogAccepted() || this.activeJob()) return;
+    this.reconcilingCatalog.set(true);
+    this.error.set(null);
+    this.notice.set(null);
+    try {
+      const result = await this.service.reconcileCatalog(false);
+      this.notice.set(
+        `Queued ${result.readyCount ?? 0} missing city boards in one resumable catalog job. Existing boards will not be regenerated.`,
+      );
+      this.catalogPlan.set(null);
+      this.catalogAccepted.set(false);
+      await this.load(true);
+    } catch (error) {
+      this.error.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.reconcilingCatalog.set(false);
+    }
+  }
+
   async cancelJob(job: BulkBoardJob): Promise<void> {
     if (!confirm('Cancel queued work for this job? A city already being processed will stop before its board is saved.')) return;
     this.running.set(true);
@@ -461,6 +510,10 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
 
   jobStatusLabel(status: string): string {
     return status.replaceAll('_', ' ');
+  }
+
+  bucketLabel(bucketId: string): string {
+    return this.bucketPresets.find((bucket) => bucket.id === bucketId)?.label ?? bucketId;
   }
 
   itemStatusClass(status: string): string {

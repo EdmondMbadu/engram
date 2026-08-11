@@ -88,6 +88,31 @@ export type BulkBoardDashboard = {
   jobs: BulkBoardJob[];
   items: BulkBoardJobItem[];
   boards: BulkBoardAdminBoard[];
+  catalog: GlobalCityBoardCatalogStatus;
+};
+
+export type GlobalCityBoardCatalogBucketStatus = {
+  id: string;
+  expectedCount: number;
+  publishedCount: number;
+  reviewCount: number;
+  missingCount: number;
+  invalidCount: number;
+};
+
+export type GlobalCityBoardCatalogStatus = {
+  cityCount: number;
+  bucketCount: number;
+  expectedCount: number;
+  publishedCount: number;
+  reviewCount: number;
+  missingCount: number;
+  invalidCount: number;
+  readyCount?: number;
+  suppressedCount?: number;
+  dryRun?: boolean;
+  jobId?: string;
+  buckets: GlobalCityBoardCatalogBucketStatus[];
 };
 
 export type BulkBoardPreflight = {
@@ -176,6 +201,29 @@ export class BulkBoardAdminService {
       { boardIds: string[] },
       BulkBoardPublishAllResult
     >(getFirebaseFunctions(), 'publishCityBoards');
-    return (await callable({ boardIds })).data;
+    const result: BulkBoardPublishAllResult = {
+      requestedCount: 0,
+      publishedCount: 0,
+      skippedCount: 0,
+      failedCount: 0,
+      failures: [],
+    };
+    for (let offset = 0; offset < boardIds.length; offset += 500) {
+      const chunk = (await callable({ boardIds: boardIds.slice(offset, offset + 500) })).data;
+      result.requestedCount += chunk.requestedCount;
+      result.publishedCount += chunk.publishedCount;
+      result.skippedCount += chunk.skippedCount;
+      result.failedCount += chunk.failedCount;
+      result.failures.push(...chunk.failures);
+    }
+    return result;
+  }
+
+  async reconcileCatalog(dryRun: boolean): Promise<GlobalCityBoardCatalogStatus> {
+    const callable = httpsCallable<
+      { dryRun: boolean },
+      GlobalCityBoardCatalogStatus
+    >(getFirebaseFunctions(), 'reconcileGlobalCityBoardCatalog');
+    return (await callable({ dryRun })).data;
   }
 }

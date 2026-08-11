@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const {
   bulkBoardAntiSlopWarnings,
+  bulkBoardCandidateQueries,
   bulkBoardDocumentId,
   bulkBoardGenerationKey,
   bulkBoardSuppressionId,
@@ -51,6 +52,22 @@ assert.match(bulkBoardSuppressionId(key), /^[a-f0-9]{64}$/);
 assert.notEqual(
   bulkBoardDocumentId(key),
   bulkBoardDocumentId(bulkBoardGenerationKey('atlas-vegas', template)),
+);
+
+assert.deepEqual(
+  bulkBoardCandidateQueries({ id: 'global-where-locals-linger', searchQuery: 'cafes libraries parks plazas third places' }),
+  [
+    'cafes libraries parks plazas third places',
+    'cafes coffee shops with seating',
+    'public libraries reading rooms',
+    'parks plazas public gardens',
+    'coffee shops',
+    'public parks libraries',
+  ],
+);
+assert.equal(
+  new Set(bulkBoardCandidateQueries({ id: 'custom', searchQuery: 'public parks' })).size,
+  2,
 );
 
 const warnings = bulkBoardAntiSlopWarnings({

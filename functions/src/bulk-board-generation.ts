@@ -83,6 +83,7 @@ type BulkBoardJobRecord = {
 
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
 const candidateRadiusMeters = 50_000;
+const bulkBoardCandidateCacheVersion = 3;
 const antiSlopPhrases = [
   'hidden gem',
   'nestled',
@@ -248,12 +249,153 @@ function distanceMeters(aLat: number, aLng: number, bLat: number, bLng: number):
 function candidateBelongsToCity(candidate: BulkBoardCandidate, atlas: BulkBoardAtlas): boolean {
   if (atlas.latitude !== null && atlas.longitude !== null) {
     const distance = distanceMeters(atlas.latitude, atlas.longitude, candidate.lat, candidate.lng);
-    const addressNamesCity = candidate.address.toLowerCase().includes(atlas.cityName.toLowerCase());
-    return distance <= (addressNamesCity ? candidateRadiusMeters : 25_000);
+    // City Wikis represent the practical metro area. The former 25 km fallback
+    // rejected valid global results whenever Google's localized address spelling
+    // differed from our English city label.
+    return distance <= candidateRadiusMeters;
   }
   const address = candidate.address.toLowerCase();
   const city = atlas.cityName.toLowerCase();
-  return !!address && (address.includes(city) || (!!atlas.regionName && address.includes(atlas.regionName.toLowerCase())));
+  // Google Text Search receives an explicit "near City, Region, Country"
+  // constraint when coordinates are unavailable. Localized addresses may not
+  // repeat our English city label (for example Москва vs Moscow), so an address
+  // returned from that scoped provider request is acceptable.
+  return !!address && (address.includes(city)
+    || (!!atlas.regionName && address.includes(atlas.regionName.toLowerCase()))
+    || !!atlas.countryCode);
+}
+
+export function bulkBoardCandidateQueries(template: Pick<BulkBoardTemplate, 'id' | 'searchQuery'>): string[] {
+  const fallbacks: Record<string, string[]> = {
+    'global-dishes-explain': [
+      'traditional regional cuisine restaurants',
+      'local specialty food restaurants',
+      'regional dishes local restaurants',
+      'restaurants',
+      'food markets',
+    ],
+    'global-guidebooks-miss': [
+      'independent cafes bookstores markets',
+      'community markets local institutions',
+      'popular local places',
+      'cafes bookstores markets',
+      'community centers independent shops',
+    ],
+    'global-zero-dollars': [
+      'public parks plazas waterfront',
+      'free museums monuments landmarks',
+      'public libraries gardens',
+      'parks',
+      'public squares beaches waterfront',
+    ],
+    'global-where-locals-linger': [
+      'cafes coffee shops with seating',
+      'public libraries reading rooms',
+      'parks plazas public gardens',
+      'coffee shops',
+      'public parks libraries',
+    ],
+    'global-neighborhoods-one-reason': [
+      'neighborhood districts',
+      'historic districts local areas',
+      'boroughs quarters neighborhoods',
+      'neighborhood',
+      'historic neighborhood city quarter suburb',
+    ],
+    'global-only-happens-here': [
+      'distinctive local landmarks institutions',
+      'local traditions cultural sites',
+      'unusual museums monuments attractions',
+      'landmarks museums historic sites',
+      'cultural institutions attractions',
+    ],
+    'global-first-24-hours': [
+      'essential landmarks attractions',
+      'local food markets museums',
+      'parks culture first visit',
+      'tourist attractions museums',
+      'restaurants parks landmarks',
+    ],
+  };
+  return Array.from(new Set([
+    template.searchQuery,
+    ...(fallbacks[template.id] ?? [`popular ${template.searchQuery}`]),
+  ].map((query) => query.replace(/\s+/g, ' ').trim()).filter(Boolean)));
+}
+
+function uniqueRankedCandidates(candidates: BulkBoardCandidate[]): BulkBoardCandidate[] {
+  const unique = new Map<string, BulkBoardCandidate>();
+  for (const candidate of candidates) {
+    const existing = unique.get(candidate.placeId);
+    if (!existing || candidateRank(candidate) > candidateRank(existing)) {
+      unique.set(candidate.placeId, candidate);
+    }
+  }
+  return [...unique.values()]
+    .sort((left, right) => candidateRank(right) - candidateRank(left) || left.name.localeCompare(right.name));
+}
+
+function cachedCandidate(value: unknown): BulkBoardCandidate | null {
+  const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const placeId = text(data.placeId, 240);
+  const name = text(data.name, 160);
+  const lat = finiteNumber(data.lat, -90, 90);
+  const lng = finiteNumber(data.lng, -180, 180);
+  if (!placeId || !name || lat === null || lng === null) return null;
+  return {
+    placeId,
+    name,
+    address: text(data.address, 260),
+    lat,
+    lng,
+    types: Array.isArray(data.types) ? data.types.map((type) => text(type, 60)).filter(Boolean).slice(0, 16) : [],
+    rating: finiteNumber(data.rating, 0, 5),
+    ratingCount: Math.max(0, Math.trunc(Number(data.ratingCount) || 0)),
+    photoReference: text(data.photoReference, 1200),
+    googleMapsUrl: text(data.googleMapsUrl, 2000)
+      || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`,
+    source: data.source === 'livingwiki_reviews' ? 'livingwiki_reviews' : 'google_places',
+  };
+}
+
+async function readCandidateCache(
+  atlas: BulkBoardAtlas,
+  template: BulkBoardTemplate,
+): Promise<{ candidates: BulkBoardCandidate[]; completedQueries: string[] }> {
+  const generationKey = bulkBoardGenerationKey(atlas.id, template);
+  const snapshot = await db.collection('bulk_board_candidate_sets')
+    .doc(bulkBoardSuppressionId(generationKey)).get();
+  const raw = snapshot.data()?.candidates;
+  const completedQueries = snapshot.data()?.cache_version === bulkBoardCandidateCacheVersion
+    && Array.isArray(snapshot.data()?.completed_queries)
+    ? snapshot.data()!.completed_queries.map((query: unknown) => text(query, 160)).filter(Boolean)
+    : [];
+  if (!Array.isArray(raw)) return { candidates: [], completedQueries };
+  const candidates = uniqueRankedCandidates(raw
+    .map(cachedCandidate)
+    .filter((candidate): candidate is BulkBoardCandidate => !!candidate)
+    .filter((candidate) => candidateBelongsToCity(candidate, atlas)));
+  return { candidates, completedQueries };
+}
+
+async function persistCandidateCache(params: {
+  atlas: BulkBoardAtlas;
+  template: BulkBoardTemplate;
+  candidates: BulkBoardCandidate[];
+  completedQueries: string[];
+}): Promise<void> {
+  const generationKey = bulkBoardGenerationKey(params.atlas.id, params.template);
+  await db.collection('bulk_board_candidate_sets').doc(bulkBoardSuppressionId(generationKey)).set({
+    atlas_id: params.atlas.id,
+    template_id: params.template.id,
+    template_version: params.template.version,
+    generation_key: generationKey,
+    cache_version: bulkBoardCandidateCacheVersion,
+    candidates: uniqueRankedCandidates(params.candidates).slice(0, 60),
+    candidate_count: new Set(params.candidates.map((candidate) => candidate.placeId)).size,
+    completed_queries: Array.from(new Set(params.completedQueries)),
+    updated_at: FieldValue.serverTimestamp(),
+  }, { merge: true });
 }
 
 function bestPhotoReference(
@@ -305,8 +447,7 @@ function candidateRank(candidate: BulkBoardCandidate): number {
 
 async function reviewedCandidates(atlas: BulkBoardAtlas, searchQuery: string): Promise<BulkBoardCandidate[]> {
   const snapshot = await db.collection('city_places').where('atlas_id', '==', atlas.id).limit(80).get();
-  const meaningfulSearchTokens = searchQuery.toLowerCase().split(/[^a-z0-9]+/)
-    .filter((token) => token.length >= 3 && !['best', 'top', 'places', 'place', 'visit', 'near', 'popular'].includes(token));
+  const meaningfulSearchTokens = candidateSearchTokens(searchQuery);
   return snapshot.docs.flatMap((document) => {
     const data = document.data() as Record<string, unknown>;
     const placeId = text(data.google_place_id ?? data.place_id, 240);
@@ -333,6 +474,58 @@ async function reviewedCandidates(atlas: BulkBoardAtlas, searchQuery: string): P
       source: 'livingwiki_reviews' as const,
     }];
   }).filter((candidate) => candidateBelongsToCity(candidate, atlas));
+}
+
+function candidateSearchTokens(searchQuery: string): string[] {
+  return searchQuery.toLowerCase().split(/[^a-z0-9]+/)
+    .filter((token) => token.length >= 3 && ![
+      'best', 'top', 'places', 'place', 'visit', 'near', 'popular', 'local', 'city',
+      'things', 'first', 'areas', 'regional', 'essential', 'unique',
+    ].includes(token));
+}
+
+async function existingBoardCandidates(
+  atlas: BulkBoardAtlas,
+  searchQuery: string,
+): Promise<BulkBoardCandidate[]> {
+  const snapshot = await db.collection('boards').where('atlas_id', '==', atlas.id).limit(40).get();
+  const searchTokens = candidateSearchTokens(searchQuery);
+  const candidates = snapshot.docs.flatMap((document) => {
+    const board = document.data() as Record<string, unknown>;
+    if (board.deleted_at || !Array.isArray(board.cards)) return [];
+    return board.cards.flatMap((value: unknown) => {
+      const card = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+      const placeId = text(card.placeId ?? card.place_id, 240);
+      const name = text(card.entityName ?? card.entity_name ?? card.title, 160);
+      const lat = finiteNumber(card.locationLat ?? card.location_lat, -90, 90);
+      const lng = finiteNumber(card.locationLng ?? card.location_lng, -180, 180);
+      const types = Array.isArray(card.tags)
+        ? card.tags.map((type) => text(type, 60).replace(/\s+/g, '_')).filter(Boolean).slice(0, 16)
+        : [];
+      const searchable = `${name} ${text(card.subtitle, 160)} ${types.join(' ')}`.toLowerCase();
+      if (!placeId || !name || lat === null || lng === null
+        || (searchTokens.length > 0 && !searchTokens.some((token) => searchable.includes(token)))) {
+        return [];
+      }
+      const imageUrl = text(card.imageUrl, 2000);
+      const photoMatch = imageUrl.match(/[?&]ref=([^&]+)/);
+      return [{
+        placeId,
+        name,
+        address: text(card.subtitle, 260),
+        lat,
+        lng,
+        types,
+        rating: null,
+        ratingCount: 0,
+        photoReference: photoMatch ? decodeURIComponent(photoMatch[1]) : '',
+        googleMapsUrl: text(card.googleMapsUrl ?? card.google_maps_url, 2000)
+          || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(placeId)}`,
+        source: 'google_places' as const,
+      }];
+    });
+  });
+  return uniqueRankedCandidates(candidates.filter((candidate) => candidateBelongsToCity(candidate, atlas)));
 }
 
 async function googleCandidates(
@@ -373,26 +566,25 @@ export async function findBulkBoardCandidates(
   template: BulkBoardTemplate,
   apiKey: string,
 ): Promise<BulkBoardCandidate[]> {
-  if (!apiKey) {
-    throw new Error('Google Places is not configured.');
+  const [cache, local, existing] = await Promise.all([
+    readCandidateCache(atlas, template),
+    reviewedCandidates(atlas, template.searchQuery),
+    existingBoardCandidates(atlas, template.searchQuery),
+  ]);
+  let combined = uniqueRankedCandidates([...cache.candidates, ...local, ...existing]);
+  if (combined.length >= template.count) return combined.slice(0, template.count);
+  if (!apiKey) throw new Error('Google Places is not configured and the verified candidate cache is incomplete.');
+
+  const completedQueries = [...cache.completedQueries];
+  for (const query of bulkBoardCandidateQueries(template)) {
+    if (completedQueries.includes(query)) continue;
+    const discovered = await googleCandidates(atlas, query, apiKey);
+    completedQueries.push(query);
+    combined = uniqueRankedCandidates([...combined, ...discovered]);
+    await persistCandidateCache({ atlas, template, candidates: combined, completedQueries });
+    if (combined.length >= template.count) break;
   }
-  const local = await reviewedCandidates(atlas, template.searchQuery);
-  const primary = await googleCandidates(atlas, template.searchQuery, apiKey);
-  const combined = [...local, ...primary];
-  if (combined.length < template.count) {
-    const fallback = await googleCandidates(atlas, `popular ${template.searchQuery}`, apiKey);
-    combined.push(...fallback);
-  }
-  const unique = new Map<string, BulkBoardCandidate>();
-  for (const candidate of combined) {
-    const existing = unique.get(candidate.placeId);
-    if (!existing || candidateRank(candidate) > candidateRank(existing)) {
-      unique.set(candidate.placeId, candidate);
-    }
-  }
-  return [...unique.values()]
-    .sort((left, right) => candidateRank(right) - candidateRank(left) || left.name.localeCompare(right.name))
-    .slice(0, template.count);
+  return combined.slice(0, template.count);
 }
 
 function numberedCandidateSource(title: string, candidates: BulkBoardCandidate[]): string {
@@ -438,6 +630,8 @@ async function generateBulkBoardCopy(
     vibe: 'curator',
     narrationStyle: 'storyteller',
     verificationFailureMode: 'error',
+    verificationPass: false,
+    researchGrounding: true,
   });
 }
 
@@ -554,6 +748,16 @@ function boardPayload(params: {
   const warnings = bulkBoardAntiSlopWarnings(params.generated);
   if (matchedCopyCount !== params.candidates.length) {
     warnings.push(`${params.candidates.length - matchedCopyCount} card(s) use factual fallback copy because writer output could not be matched safely.`);
+  }
+  if (params.template.cardTitleMode === 'subject') {
+    const venueFirstCount = params.candidates.filter((candidate) => {
+      const generated = generatedCardForCandidate(candidate, params.generated.cards);
+      return !generated || !text(generated.title, 90)
+        || text(generated.title, 90).toLowerCase() === candidate.name.toLowerCase();
+    }).length;
+    if (venueFirstCount) {
+      warnings.push(`${venueFirstCount} card(s) need a subject-first title during editorial review.`);
+    }
   }
   return {
     id: params.boardId,
@@ -750,7 +954,7 @@ export async function processBulkBoardGenerationItem(
       await finishItem(itemId, jobId, 'cancelled');
       return;
     }
-    const template = normalizeBulkBoardTemplate(job.template);
+    const template = normalizeBulkBoardTemplate(claim.template ?? job.template);
     const generationKey = bulkBoardGenerationKey(atlasId, template);
     const suppression = await db.collection('board_generation_suppressions')
       .doc(bulkBoardSuppressionId(generationKey)).get();
@@ -780,17 +984,6 @@ export async function processBulkBoardGenerationItem(
     if (generated.cards.length !== template.count) {
       throw new Error(`The writer returned ${generated.cards.length} cards; ${template.count} are required.`);
     }
-    if (template.cardTitleMode === 'subject') {
-      const unmatched = candidates.filter((candidate) => {
-        const card = generatedCardForCandidate(candidate, generated.cards);
-        return !card || !text(card.title, 90)
-          || text(card.title, 90).toLowerCase() === candidate.name.toLowerCase();
-      });
-      if (unmatched.length) {
-        throw new Error(`The grounded writer did not produce ${unmatched.length} subject-first card title(s).`);
-      }
-    }
-
     const latestJob = await db.collection('board_generation_jobs').doc(jobId).get();
     const latestSuppression = await db.collection('board_generation_suppressions')
       .doc(bulkBoardSuppressionId(generationKey)).get();

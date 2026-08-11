@@ -71,6 +71,81 @@
         <article><small>Needs review</small><strong>{{ needsReviewCount() }}</strong><span>Private drafts</span></article>
       </section>
 
+      @if (catalog(); as catalogStatus) {
+        <section class="catalog-panel" aria-labelledby="catalog-heading">
+          <div class="catalog-panel__intro">
+            <div>
+              <p class="eyebrow">Global catalog · 7 buckets × {{ catalogStatus.cityCount }} cities</p>
+              <h2 id="catalog-heading">One matrix. No blind regeneration.</h2>
+              <p>
+                The reconciler keeps every existing board, queues only unsuppressed gaps, reuses verified candidates,
+                and leaves new boards private for review.
+              </p>
+            </div>
+            <div class="catalog-ring" [style.--catalog-progress.%]="catalogProgress()">
+              <strong>{{ catalogProgress() }}%</strong>
+              <span>generated</span>
+            </div>
+          </div>
+
+          <div class="catalog-totals">
+            <div><small>Required</small><strong>{{ catalogStatus.expectedCount }}</strong></div>
+            <div><small>Published</small><strong>{{ catalogStatus.publishedCount }}</strong></div>
+            <div><small>Awaiting review</small><strong>{{ catalogStatus.reviewCount }}</strong></div>
+            <div><small>Missing</small><strong>{{ catalogStatus.missingCount }}</strong></div>
+            <div><small>Invalid</small><strong>{{ catalogStatus.invalidCount }}</strong></div>
+          </div>
+
+          <div class="catalog-buckets">
+            @for (bucket of catalogStatus.buckets; track bucket.id) {
+              <article>
+                <div><strong>{{ bucketLabel(bucket.id) }}</strong><small>{{ bucket.publishedCount }} live · {{ bucket.reviewCount }} review</small></div>
+                <span [class.catalog-bucket--complete]="bucket.missingCount === 0 && bucket.invalidCount === 0">
+                  {{ bucket.missingCount ? bucket.missingCount + ' missing' : bucket.invalidCount ? bucket.invalidCount + ' invalid' : 'complete' }}
+                </span>
+              </article>
+            }
+          </div>
+
+          <div class="catalog-actions">
+            <div>
+              <strong>Complete the global catalog</strong>
+              <p>First run a free database-only preflight. Provider calls begin only after the confirmed job is queued.</p>
+            </div>
+            <button
+              type="button"
+              class="button button--secondary"
+              [disabled]="reconcilingCatalog() || !!activeJob()"
+              (click)="prepareCatalogReconciliation()"
+            >
+              <span class="material-symbols-outlined" [class.animate-spin]="reconcilingCatalog()">{{ reconcilingCatalog() ? 'progress_activity' : 'fact_check' }}</span>
+              {{ activeJob() ? 'A job is already active' : 'Audit missing boards' }}
+            </button>
+          </div>
+
+          @if (catalogPlan(); as plan) {
+            <div class="catalog-plan">
+              <div><small>Will queue</small><strong>{{ plan.readyCount ?? 0 }}</strong><span>missing boards</span></div>
+              <div><small>Will keep</small><strong>{{ plan.expectedCount - (plan.readyCount ?? 0) }}</strong><span>existing or suppressed</span></div>
+              <div><small>Provider safety</small><strong>Cached first</strong><span>no repeated discovery</span></div>
+              <label>
+                <input type="checkbox" [checked]="catalogAccepted()" (change)="catalogAccepted.set(!catalogAccepted())" />
+                <span>I understand new boards use Google Places and one grounded Gemini writing pass, then remain private for review.</span>
+              </label>
+              <button
+                type="button"
+                class="button button--primary"
+                [disabled]="reconcilingCatalog() || !catalogAccepted() || !(plan.readyCount ?? 0) || !!activeJob()"
+                (click)="startCatalogReconciliation()"
+              >
+                <span class="material-symbols-outlined">playlist_add_check_circle</span>
+                Queue {{ plan.readyCount ?? 0 }} missing boards
+              </button>
+            </div>
+          }
+        </section>
+      }
+
       <div class="workspace-grid">
         <section class="panel generator-panel">
           <div class="panel-heading">

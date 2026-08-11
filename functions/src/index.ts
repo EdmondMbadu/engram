@@ -98,11 +98,13 @@ import {
 } from './gemini';
 import {
   BULK_BOARD_RUBRIC_VERSION,
+  bulkBoardDocumentId,
   bulkBoardGenerationKey,
   bulkBoardSuppressionId,
   normalizeBulkBoardTemplate,
   processBulkBoardGenerationItem,
 } from './bulk-board-generation';
+import { GLOBAL_CITY_BOARD_TEMPLATES } from './global-city-board-templates';
 import {
   boardNarrationFallbackDescription,
   boardNarrationFallbackNotes,
@@ -19673,6 +19675,82 @@ function bulkBoardDashboardDocument(id: string, value: Record<string, unknown>):
   };
 }
 
+type GlobalCityBoardCatalogStatus = {
+  cityCount: number;
+  bucketCount: number;
+  expectedCount: number;
+  publishedCount: number;
+  reviewCount: number;
+  missingCount: number;
+  invalidCount: number;
+  buckets: Array<{
+    id: string;
+    expectedCount: number;
+    publishedCount: number;
+    reviewCount: number;
+    missingCount: number;
+    invalidCount: number;
+  }>;
+};
+
+function globalCityBoardCatalogStatus(
+  cityIds: string[],
+  boardDocuments: Array<{ id: string; data: Record<string, unknown> }>,
+): GlobalCityBoardCatalogStatus {
+  const boardsByKey = new Map(boardDocuments.map(({ data }) => [textFromUnknown(data.generation_key), data]));
+  const buckets = GLOBAL_CITY_BOARD_TEMPLATES.map((template) => {
+    const status = {
+      id: template.id,
+      expectedCount: cityIds.length,
+      publishedCount: 0,
+      reviewCount: 0,
+      missingCount: 0,
+      invalidCount: 0,
+    };
+    for (const cityId of cityIds) {
+      const generationKey = bulkBoardGenerationKey(cityId, normalizeBulkBoardTemplate(template));
+      const board = boardsByKey.get(generationKey);
+      if (!board || board.deleted_at) {
+        status.missingCount += 1;
+        continue;
+      }
+      const cards = Array.isArray(board.cards) ? board.cards : [];
+      const validation = board.validation_summary && typeof board.validation_summary === 'object'
+        ? board.validation_summary as Record<string, unknown>
+        : {};
+      const structurallyValid = cards.length === template.count
+        && Number(validation.requested_count) === template.count
+        && Number(validation.verified_count) === template.count
+        && Number(validation.unique_place_ids) === template.count
+        && validation.all_have_coordinates === true
+        && textFromUnknown(board.atlas_id) === cityId
+        && textFromUnknown(board.generated_for_atlas_id) === cityId
+        && textFromUnknown(board.template_id) === template.id
+        && textFromUnknown(board.template_version) === template.version;
+      if (!structurallyValid) {
+        status.invalidCount += 1;
+      } else if (board.editorial_status === 'published'
+        && board.city_listing_status === 'listed'
+        && board.visibility === 'public') {
+        status.publishedCount += 1;
+      } else {
+        status.reviewCount += 1;
+      }
+    }
+    return status;
+  });
+  return {
+    cityCount: cityIds.length,
+    bucketCount: GLOBAL_CITY_BOARD_TEMPLATES.length,
+    expectedCount: cityIds.length * GLOBAL_CITY_BOARD_TEMPLATES.length,
+    publishedCount: buckets.reduce((sum, bucket) => sum + bucket.publishedCount, 0),
+    reviewCount: buckets.reduce((sum, bucket) => sum + bucket.reviewCount, 0),
+    missingCount: buckets.reduce((sum, bucket) => sum + bucket.missingCount, 0),
+    invalidCount: buckets.reduce((sum, bucket) => sum + bucket.invalidCount, 0),
+    buckets,
+  };
+}
+
 async function canManageBulkBoardAtlas(userId: string, atlasId: string): Promise<boolean> {
   const [userSnapshot, atlasSnapshot] = await Promise.all([
     db.collection('users').doc(userId).get(),
@@ -19709,7 +19787,7 @@ export const getBulkBoardAdminDashboard = onCall(
     const [atlasSnapshot, jobSnapshot, boardSnapshot] = await Promise.all([
       db.collection('atlases').where('is_public', '==', true).get(),
       db.collection('board_generation_jobs').orderBy('created_at', 'desc').limit(20).get(),
-      db.collection('boards').where('origin', '==', 'bulk_generator').limit(500).get(),
+      db.collection('boards').where('origin', '==', 'bulk_generator').get(),
     ]);
     const cities = atlasSnapshot.docs
       .flatMap((atlasDocument) => {
@@ -19736,7 +19814,7 @@ export const getBulkBoardAdminDashboard = onCall(
     ));
     const latestJobId = textFromUnknown(jobs[0]?.['id']);
     const itemSnapshot = latestJobId
-      ? await db.collection('board_generation_items').where('job_id', '==', latestJobId).limit(500).get()
+      ? await db.collection('board_generation_items').where('job_id', '==', latestJobId).limit(1600).get()
       : null;
     const items = itemSnapshot?.docs.map((document) => bulkBoardDashboardDocument(
       document.id,
@@ -19771,6 +19849,13 @@ export const getBulkBoardAdminDashboard = onCall(
         });
       })
       .sort((left, right) => String(right.updated_at ?? '').localeCompare(String(left.updated_at ?? '')));
+    const catalog = globalCityBoardCatalogStatus(
+      cities.map((city) => city.id),
+      boardSnapshot.docs.map((document) => ({
+        id: document.id,
+        data: document.data() as Record<string, unknown>,
+      })),
+    );
 
     return {
       generatorVersion: '1.0.0',
@@ -19779,6 +19864,7 @@ export const getBulkBoardAdminDashboard = onCall(
       jobs,
       items,
       boards,
+      catalog,
     };
   },
 );
@@ -19914,6 +20000,159 @@ export const startBulkBoardGeneration = onCall(
       created_at: FieldValue.serverTimestamp(),
     });
     return { jobId: jobRef.id, cityCount: eligible.length, template };
+  },
+);
+
+export const reconcileGlobalCityBoardCatalog = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 120, memory: '2GiB' },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    const requestingUserId = request.auth.uid;
+    await assertPlatformAdmin(requestingUserId);
+
+    const [atlasSnapshot, boardSnapshot, suppressionSnapshot] = await Promise.all([
+      db.collection('atlases').where('is_public', '==', true).get(),
+      db.collection('boards').where('origin', '==', 'bulk_generator').get(),
+      db.collection('board_generation_suppressions').get(),
+    ]);
+    const cities = atlasSnapshot.docs.flatMap((snapshot) => {
+      const atlas = snapshot.data() as Record<string, unknown>;
+      const config = atlas.city_config && typeof atlas.city_config === 'object'
+        ? atlas.city_config as Record<string, unknown>
+        : {};
+      return config.enabled === true ? [{ snapshot, atlas, config }] : [];
+    });
+    const existingKeys = new Set(boardSnapshot.docs.flatMap((snapshot) => {
+      const board = snapshot.data() as Record<string, unknown>;
+      const generationKey = textFromUnknown(board.generation_key);
+      return generationKey && !board.deleted_at ? [generationKey] : [];
+    }));
+    const suppressedKeys = new Set(suppressionSnapshot.docs.flatMap((snapshot) => {
+      const suppression = snapshot.data() as Record<string, unknown>;
+      const generationKey = textFromUnknown(suppression.generation_key);
+      return generationKey && suppression.active !== false ? [generationKey] : [];
+    }));
+    const items = cities.flatMap(({ snapshot, atlas, config }) => GLOBAL_CITY_BOARD_TEMPLATES.flatMap((rawTemplate) => {
+      const template = normalizeBulkBoardTemplate(rawTemplate);
+      const generationKey = bulkBoardGenerationKey(snapshot.id, template);
+      if (existingKeys.has(generationKey) || suppressedKeys.has(generationKey)) return [];
+      return [{
+        atlasId: snapshot.id,
+        cityName: textFromUnknown(config.city_name) || textFromUnknown(atlas.name),
+        regionName: textFromUnknown(config.region_name),
+        generationKey,
+        template,
+      }];
+    }));
+    const catalog = globalCityBoardCatalogStatus(
+      cities.map(({ snapshot }) => snapshot.id),
+      boardSnapshot.docs.map((snapshot) => ({
+        id: snapshot.id,
+        data: snapshot.data() as Record<string, unknown>,
+      })),
+    );
+    const preview = {
+      dryRun: request.data?.dryRun === true,
+      ...catalog,
+      readyCount: items.length,
+      suppressedCount: suppressedKeys.size,
+    };
+    if (request.data?.dryRun === true || items.length === 0) return preview;
+
+    const jobRef = db.collection('board_generation_jobs').doc();
+    await db.runTransaction(async (transaction) => {
+      const lockRef = db.collection('board_generation_locks').doc('active');
+      const lockSnapshot = await transaction.get(lockRef);
+      const lockedJobId = textFromUnknown(lockSnapshot.data()?.job_id);
+      if (lockedJobId) {
+        const lockedJobSnapshot = await transaction.get(db.collection('board_generation_jobs').doc(lockedJobId));
+        if (lockedJobSnapshot.data()?.status === 'running') {
+          throw new HttpsError('already-exists', 'Another bulk board generation job is already running.');
+        }
+      }
+      transaction.set(jobRef, {
+        requested_by_user_id: requestingUserId,
+        template: {
+          id: 'global-city-board-catalog',
+          version: '1.0',
+          titlePattern: 'Seven global buckets × all cities',
+          searchQuery: 'catalog reconciliation',
+          editorialBrief: 'Canonical global city-board catalog reconciliation.',
+          count: 10,
+          cardTitleMode: 'place',
+        },
+        catalog_mode: true,
+        catalog_bucket_ids: GLOBAL_CITY_BOARD_TEMPLATES.map((template) => template.id),
+        rubric_version: BULK_BOARD_RUBRIC_VERSION,
+        generator_version: '1.1.0',
+        status: 'running',
+        cancel_requested: false,
+        total_count: items.length,
+        completed_count: 0,
+        success_count: 0,
+        failed_count: 0,
+        skipped_count: 0,
+        cancelled_count: 0,
+        city_ids: cities.map(({ snapshot }) => snapshot.id),
+        created_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      transaction.set(lockRef, {
+        job_id: jobRef.id,
+        acquired_by_user_id: requestingUserId,
+        acquired_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+    });
+
+    try {
+      for (let offset = 0; offset < items.length; offset += 350) {
+        const batch = db.batch();
+        for (const item of items.slice(offset, offset + 350)) {
+          const itemId = `${jobRef.id}__${createHash('sha256').update(item.generationKey).digest('hex').slice(0, 28)}`;
+          batch.set(db.collection('board_generation_items').doc(itemId), {
+            job_id: jobRef.id,
+            atlas_id: item.atlasId,
+            city_name: item.cityName,
+            region_name: item.regionName,
+            template_id: item.template.id,
+            template_version: item.template.version,
+            template: item.template,
+            generation_key: item.generationKey,
+            status: 'queued',
+            attempt_count: 0,
+            board_id: '',
+            error_code: '',
+            error_message: '',
+            created_at: FieldValue.serverTimestamp(),
+            updated_at: FieldValue.serverTimestamp(),
+          });
+        }
+        await batch.commit();
+      }
+    } catch (error) {
+      await jobRef.set({
+        status: 'cancelled',
+        cancel_requested: true,
+        setup_error: error instanceof Error ? error.message.slice(0, 1000) : String(error).slice(0, 1000),
+        completed_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+      throw new HttpsError('internal', 'The catalog job could not be queued completely. No retry will start automatically.');
+    }
+
+    await db.collection('board_generation_audit').add({
+      action: 'global_catalog_reconciliation_started',
+      job_id: jobRef.id,
+      actor_user_id: requestingUserId,
+      city_count: cities.length,
+      bucket_count: GLOBAL_CITY_BOARD_TEMPLATES.length,
+      queued_count: items.length,
+      existing_count: catalog.expectedCount - catalog.missingCount,
+      suppressed_count: suppressedKeys.size,
+      created_at: FieldValue.serverTimestamp(),
+    });
+    return { ...preview, dryRun: false, jobId: jobRef.id };
   },
 );
 
@@ -20333,6 +20572,98 @@ export const retryBulkCityBoard = onDocumentUpdated(
     const after = event.data?.after.data();
     if (!after || after.status !== 'queued' || before?.status === 'queued') return;
     await processBulkBoardGenerationItem(event.params.itemId, googlePlacesApiKey.value());
+  },
+);
+
+export const retryGlobalCityBoardCatalogFailures = onDocumentUpdated(
+  {
+    region: callableRegion,
+    document: 'board_generation_jobs/{jobId}',
+    timeoutSeconds: 120,
+    memory: '1GiB',
+    concurrency: 1,
+    maxInstances: 1,
+  },
+  async (event) => {
+    const before = event.data?.before.data() as Record<string, unknown> | undefined;
+    const after = event.data?.after.data() as Record<string, unknown> | undefined;
+    if (!after || after.catalog_mode !== true || before?.status === 'completed' || after.status !== 'completed') return;
+    const retryRound = Math.max(0, Math.trunc(Number(after.catalog_retry_round) || 0));
+    if (retryRound >= 1 || Number(after.failed_count) <= 0) return;
+
+    const jobId = textFromUnknown(event.params.jobId);
+    const itemSnapshot = await db.collection('board_generation_items').where('job_id', '==', jobId).get();
+    const retryable = itemSnapshot.docs.filter((document) => {
+      const item = document.data() as Record<string, unknown>;
+      const message = textFromUnknown(item.error_message).toLowerCase();
+      if (item.status !== 'failed' || /credit|quota|billing|resource_exhausted/.test(message)) return false;
+      return /subject-first card title|verified places/.test(message);
+    }).slice(0, 400);
+    if (!retryable.length) return;
+
+    const claimed = await db.runTransaction(async (transaction) => {
+      const jobRef = db.collection('board_generation_jobs').doc(jobId);
+      const lockRef = db.collection('board_generation_locks').doc('active');
+      const [jobSnapshot, lockSnapshot] = await Promise.all([
+        transaction.get(jobRef),
+        transaction.get(lockRef),
+      ]);
+      const current = jobSnapshot.data() as Record<string, unknown> | undefined;
+      if (!current || current.status !== 'completed'
+        || Math.max(0, Math.trunc(Number(current.catalog_retry_round) || 0)) >= 1) return false;
+      const lockedJobId = textFromUnknown(lockSnapshot.data()?.job_id);
+      if (lockedJobId && lockedJobId !== jobId) {
+        const lockedJob = await transaction.get(db.collection('board_generation_jobs').doc(lockedJobId));
+        if (lockedJob.data()?.status === 'running') return false;
+      }
+      transaction.update(jobRef, {
+        status: 'running',
+        completed_count: Math.max(0, Number(current.completed_count) - retryable.length),
+        failed_count: Math.max(0, Number(current.failed_count) - retryable.length),
+        catalog_retry_round: retryRound + 1,
+        catalog_retry_count: retryable.length,
+        completed_at: FieldValue.delete(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      transaction.set(lockRef, {
+        job_id: jobId,
+        acquired_by_user_id: textFromUnknown(current.requested_by_user_id) || 'livingwiki-system',
+        acquired_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      });
+      return true;
+    });
+    if (!claimed) return;
+
+    try {
+      const batch = db.batch();
+      for (const document of retryable) {
+        batch.update(document.ref, {
+          status: 'queued',
+          error_code: '',
+          error_message: '',
+          completed_at: FieldValue.delete(),
+          updated_at: FieldValue.serverTimestamp(),
+        });
+      }
+      batch.set(db.collection('board_generation_audit').doc(), {
+        action: 'global_catalog_failures_requeued',
+        job_id: jobId,
+        retry_round: retryRound + 1,
+        item_count: retryable.length,
+        created_at: FieldValue.serverTimestamp(),
+      });
+      await batch.commit();
+    } catch (error) {
+      await db.collection('board_generation_jobs').doc(jobId).set({
+        status: 'completed',
+        completed_count: FieldValue.increment(retryable.length),
+        failed_count: FieldValue.increment(retryable.length),
+        catalog_retry_error: error instanceof Error ? error.message.slice(0, 1000) : String(error).slice(0, 1000),
+        completed_at: FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      }, { merge: true });
+    }
   },
 );
 
