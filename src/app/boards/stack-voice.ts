@@ -129,3 +129,17 @@ export function normalizeStackNarratorVoiceId(value: unknown): string {
 export function stackNarratorVoiceRequiresPaidPlan(value: unknown): boolean {
   return normalizeStackNarratorVoiceId(value) === PERSONAL_STACK_NARRATOR_VOICE_ID;
 }
+
+export function stackNarrationErrorIsPermanent(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false;
+  const code = 'code' in error && typeof error.code === 'string'
+    ? error.code.toLowerCase()
+    : '';
+  return [
+    'permission-denied',
+    'unauthenticated',
+    'invalid-argument',
+    'failed-precondition',
+    'not-found',
+  ].some((suffix) => code === suffix || code.endsWith(`/${suffix}`));
+}

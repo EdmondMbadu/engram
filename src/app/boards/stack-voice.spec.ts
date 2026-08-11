@@ -3,6 +3,7 @@ import {
   PERSONAL_STACK_NARRATOR_VOICE_ID,
   STACK_NARRATOR_VOICES,
   normalizeStackNarratorVoiceId,
+  stackNarrationErrorIsPermanent,
   stackNarratorVoiceRequiresPaidPlan,
   stackNarratorVoiceById,
 } from './stack-voice';
@@ -41,5 +42,13 @@ describe('Stack narrator voice catalog', () => {
     expect(STACK_NARRATOR_VOICES.every((voice) => !stackNarratorVoiceRequiresPaidPlan(voice.id)))
       .toBeTrue();
     expect(stackNarratorVoiceRequiresPaidPlan(PERSONAL_STACK_NARRATOR_VOICE_ID)).toBeTrue();
+  });
+
+  it('does not retry permanent narration authorization failures', () => {
+    expect(stackNarrationErrorIsPermanent({ code: 'functions/permission-denied' })).toBeTrue();
+    expect(stackNarrationErrorIsPermanent({ code: 'unauthenticated' })).toBeTrue();
+    expect(stackNarrationErrorIsPermanent({ code: 'functions/invalid-argument' })).toBeTrue();
+    expect(stackNarrationErrorIsPermanent({ code: 'functions/internal' })).toBeFalse();
+    expect(stackNarrationErrorIsPermanent(new Error('Temporary network failure'))).toBeFalse();
   });
 });

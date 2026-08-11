@@ -1553,6 +1553,59 @@
   box-shadow: 3px 3px 0 var(--modal-ink), 0 12px 28px rgba(10, 152, 112, .2);
 }
 
+.stack-share-sheet__copy-gate {
+  display: grid;
+  width: min(100%, 29rem);
+  justify-items: center;
+  gap: 0.48rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  padding: 0.8rem;
+}
+
+.stack-share-sheet__copy-gate > .material-symbols-outlined {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 0.72rem;
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  color: var(--accent);
+  font-size: 1.25rem;
+}
+
+.stack-share-sheet__copy-gate > strong {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.stack-share-sheet__copy-gate > small {
+  max-width: 24rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.stack-share-sheet__copy-gate .stack-share-sheet__primary {
+  margin-top: 0.2rem;
+}
+
+.stack-share-sheet__secondary {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.67rem;
+  font-weight: 900;
+  padding: 0.35rem 0.5rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18rem;
+}
+
 .stack-share-sheet__video-preview--trailer {
   background: radial-gradient(circle at 50% 20%, #184f3f, #030806 72%);
 }

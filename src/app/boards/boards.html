@@ -1169,9 +1169,9 @@
                 Save
               </button>
               @if (canForkBoard(board)) {
-                <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)" i18n>
-                  <span class="material-symbols-outlined">content_copy</span>
-                  Make it mine
+                <button type="button" class="boards-share-button boards-share-button--fork" [disabled]="!!boardForkingId()" (click)="forkBoard(board, $event)">
+                  <span class="material-symbols-outlined">{{ boardForkingId() === board.id ? 'progress_activity' : 'content_copy' }}</span>
+                  {{ boardForkingId() === board.id ? 'Making your copy…' : 'Make your own copy' }}
                 </button>
               }
               @if (canEditBoard(board)) {
@@ -2024,9 +2024,9 @@
                       </button>
                     }
                     @if (canForkBoard(board)) {
-                      <button type="button" class="boards-share-button boards-share-button--fork" (click)="forkBoard(board, $event)" i18n>
-                        <span class="material-symbols-outlined">content_copy</span>
-                        Make it mine
+                      <button type="button" class="boards-share-button boards-share-button--fork" [disabled]="!!boardForkingId()" (click)="forkBoard(board, $event)">
+                        <span class="material-symbols-outlined">{{ boardForkingId() === board.id ? 'progress_activity' : 'content_copy' }}</span>
+                        {{ boardForkingId() === board.id ? 'Making your copy…' : 'Make your own copy' }}
                       </button>
                     }
                     @if (canEditBoard(board)) {
@@ -5878,7 +5878,7 @@
                 </button>
               </div>
 
-              @if (stackShareMode() === 'video' || stackShareMode() === 'trailer') {
+              @if ((stackShareMode() === 'video' || stackShareMode() === 'trailer') && canEditBoard(board)) {
                 <div class="stack-share-sheet__music-summary">
                   <span class="material-symbols-outlined">
                     {{ stackSelectedAudioTrack() ? 'music_note' : 'music_off' }}
@@ -5908,25 +5908,41 @@
                     <span><span class="material-symbols-outlined">view_carousel</span><strong>{{ stackSelectedCards().length }} cards</strong><small>Every card appears</small></span>
                     <span><span class="material-symbols-outlined">subtitles</span><strong>Captions</strong><small>Works without sound</small></span>
                   </div>
-                  <div class="stack-share-sheet__narration-modes" role="radiogroup" aria-label="Trailer voiceover">
-                    <button type="button" [class.stack-share-sheet__narration-mode--active]="stackTrailerNarrationEnabled()" [attr.aria-checked]="stackTrailerNarrationEnabled()" [disabled]="stackVideoExporting()" role="radio" (click)="setStackTrailerNarrationEnabled(true)">
-                      <span class="material-symbols-outlined">campaign</span>
-                      <span><strong>One trailer voiceover</strong><small>A short, board-level hook</small></span>
-                      @if (stackTrailerNarrationEnabled()) { <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span> }
-                    </button>
-                    <button type="button" [class.stack-share-sheet__narration-mode--active]="!stackTrailerNarrationEnabled()" [attr.aria-checked]="!stackTrailerNarrationEnabled()" [disabled]="stackVideoExporting()" role="radio" (click)="setStackTrailerNarrationEnabled(false)">
-                      <span class="material-symbols-outlined">voice_over_off</span>
-                      <span><strong>Music + titles</strong><small>Fast, visual, no voice</small></span>
-                      @if (!stackTrailerNarrationEnabled()) { <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span> }
-                    </button>
-                  </div>
                   @if (canEditBoard(board)) {
+                    <div class="stack-share-sheet__narration-modes" role="radiogroup" aria-label="Trailer voiceover">
+                      <button type="button" [class.stack-share-sheet__narration-mode--active]="stackTrailerNarrationEnabled()" [attr.aria-checked]="stackTrailerNarrationEnabled()" [disabled]="stackVideoExporting()" role="radio" (click)="setStackTrailerNarrationEnabled(true)">
+                        <span class="material-symbols-outlined">campaign</span>
+                        <span><strong>One trailer voiceover</strong><small>A short, board-level hook</small></span>
+                        @if (stackTrailerNarrationEnabled()) { <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span> }
+                      </button>
+                      <button type="button" [class.stack-share-sheet__narration-mode--active]="!stackTrailerNarrationEnabled()" [attr.aria-checked]="!stackTrailerNarrationEnabled()" [disabled]="stackVideoExporting()" role="radio" (click)="setStackTrailerNarrationEnabled(false)">
+                        <span class="material-symbols-outlined">voice_over_off</span>
+                        <span><strong>Music + titles</strong><small>Fast, visual, no voice</small></span>
+                        @if (!stackTrailerNarrationEnabled()) { <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span> }
+                      </button>
+                    </div>
                     <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="stackVideoExporting() || !stackSelectedCards().length" (click)="publishStackTrailer(board)">
                       <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'auto_awesome' }}</span>
                       {{ stackVideoExporting() ? 'Creating trailer ' + stackVideoProgress() + '%' : 'Create Board Trailer' }}
                     </button>
                   } @else {
-                    <small>Only the board owner can publish its trailer.</small>
+                    <div class="stack-share-sheet__copy-gate">
+                      <span class="material-symbols-outlined">content_copy</span>
+                      <strong>Create your own version</strong>
+                      <small>Make an independent copy first. Your copy keeps the cards and attribution, then you can customize and publish its trailer.</small>
+                      @if (canForkBoard(board)) {
+                        <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" [disabled]="!!boardForkingId()" (click)="makeStackCopyAndContinue(board, 'trailer')">
+                          <span class="material-symbols-outlined">{{ boardForkingId() === board.id ? 'progress_activity' : 'content_copy' }}</span>
+                          {{ boardForkingId() === board.id ? 'Making your copy…' : 'Make a copy & continue' }}
+                        </button>
+                      } @else {
+                        <button type="button" class="stack-share-sheet__primary stack-share-sheet__primary--trailer" (click)="signInToCopyBoard(board)">
+                          <span class="material-symbols-outlined">login</span>
+                          Sign in to make a copy
+                        </button>
+                      }
+                      <button type="button" class="stack-share-sheet__secondary" (click)="copyStackUrl(board)">Share the original live view</button>
+                    </div>
                   }
                 </div>
               } @else if (stackShareMode() === 'video' && !board.socialVideoUrl) {
@@ -5935,7 +5951,8 @@
                   <p i18n>Social video</p>
                   <h4 i18n>Create the video once</h4>
                   <span i18n>LivingWiki will generate and permanently host an MP4 of this live view.</span>
-                  <div class="stack-share-sheet__narration-modes" role="radiogroup" aria-label="Video narration" i18n-aria-label>
+                  @if (canEditBoard(board)) {
+                    <div class="stack-share-sheet__narration-modes" role="radiogroup" aria-label="Video narration" i18n-aria-label>
                     <button
                       type="button"
                       [class.stack-share-sheet__narration-mode--active]="stackVideoNarrationEnabled()"
@@ -5972,17 +5989,29 @@
                         <span class="stack-share-sheet__narration-check material-symbols-outlined">check_circle</span>
                       }
                     </button>
-                  </div>
-                  @if (canEditBoard(board)) {
+                    </div>
                     <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="publishStackVideo(board)">
                       <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'movie' }}</span>
                       {{ stackVideoExporting() ? 'Creating video ' + stackVideoProgress() + '%' : 'Create video' }}
                     </button>
                   } @else {
-                    <button type="button" class="stack-share-sheet__primary" [disabled]="stackVideoExporting()" (click)="shareStackTo('x')">
-                      <span class="material-symbols-outlined">{{ stackVideoExporting() ? 'progress_activity' : 'ios_share' }}</span>
-                      {{ stackVideoExporting() ? 'Creating video ' + stackVideoProgress() + '%' : 'Create and share a copy' }}
-                    </button>
+                    <div class="stack-share-sheet__copy-gate">
+                      <span class="material-symbols-outlined">content_copy</span>
+                      <strong>Create your own version</strong>
+                      <small>Make an independent copy first. Your copy keeps the cards and attribution, then you can create and share its video.</small>
+                      @if (canForkBoard(board)) {
+                        <button type="button" class="stack-share-sheet__primary" [disabled]="!!boardForkingId()" (click)="makeStackCopyAndContinue(board, 'video')">
+                          <span class="material-symbols-outlined">{{ boardForkingId() === board.id ? 'progress_activity' : 'content_copy' }}</span>
+                          {{ boardForkingId() === board.id ? 'Making your copy…' : 'Make a copy & continue' }}
+                        </button>
+                      } @else {
+                        <button type="button" class="stack-share-sheet__primary" (click)="signInToCopyBoard(board)">
+                          <span class="material-symbols-outlined">login</span>
+                          Sign in to make a copy
+                        </button>
+                      }
+                      <button type="button" class="stack-share-sheet__secondary" (click)="copyStackUrl(board)">Share the original live view</button>
+                    </div>
                   }
                 </div>
               } @else {
@@ -6080,7 +6109,9 @@
                   @if (board.trailerVideoUrl) {
                     <button type="button" (click)="copyTrailerVideoFileUrl(board)"><span class="material-symbols-outlined">movie_filter</span> Copy trailer MP4</button>
                   }
-                  <button type="button" [disabled]="stackVideoExporting()" (click)="shareStackTo('download')" i18n><span class="material-symbols-outlined">download</span> Download video</button>
+                  @if (canEditBoard(board)) {
+                    <button type="button" [disabled]="stackVideoExporting()" (click)="shareStackTo('download')" i18n><span class="material-symbols-outlined">download</span> Download video</button>
+                  }
                 </div>
               </details>
             </section>

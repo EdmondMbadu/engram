@@ -134,6 +134,7 @@ import {
   PERSONAL_STACK_NARRATOR_VOICE_ID,
   STACK_NARRATOR_VOICES,
   normalizeStackNarratorVoiceId,
+  stackNarrationErrorIsPermanent,
   stackNarratorVoiceRequiresPaidPlan,
   stackNarratorVoiceById,
   type StackNarratorVoice,
@@ -1607,6 +1608,7 @@ export class BoardsComponent implements OnDestroy {
   readonly stackDirectView = signal(false);
   readonly stackExpandedCardId = signal<string | null>(null);
   readonly stackShareDialogOpen = signal(false);
+  readonly boardForkingId = signal<string | null>(null);
   readonly stackFrameDurationMs = 4200;
   readonly stackActiveFrameDurationMs = signal(this.stackFrameDurationMs);
   readonly tourWayfindersShown = signal(false);
@@ -10532,25 +10534,30 @@ export class BoardsComponent implements OnDestroy {
 
   canForkBoard(board: Board | null | undefined): boolean {
     const uid = this.authService.uid();
-    return !!board && !!uid && !!board.ownerUserId && board.ownerUserId !== uid;
+    return !!board
+      && board.visibility === 'public'
+      && !!uid
+      && !!board.ownerUserId
+      && board.ownerUserId !== uid;
   }
 
-  async forkBoard(board: Board, event?: Event): Promise<void> {
+  async forkBoard(board: Board, event?: Event, navigateToCopy = true): Promise<Board | null> {
     event?.preventDefault();
     event?.stopPropagation();
-    if (!this.canForkBoard(board)) {
-      return;
+    if (!this.canForkBoard(board) || this.boardForkingId()) {
+      return null;
     }
+    this.boardForkingId.set(board.id);
     const now = new Date().toISOString();
     const forked: Board = {
       ...board,
       ...this.currentOwnerSnapshot(),
       id: this.createId(),
       sortOrder: this.nextBoardSortOrder(),
-      forkedFromBoardId: board.forkedFromBoardId || board.id,
-      forkedFromTitle: board.forkedFromTitle || board.title,
-      forkedFromOwnerUserId: board.forkedFromOwnerUserId || board.ownerUserId,
-      forkedFromOwnerName: board.forkedFromOwnerName || this.ownerName(board),
+      forkedFromBoardId: board.id,
+      forkedFromTitle: board.title,
+      forkedFromOwnerUserId: board.ownerUserId,
+      forkedFromOwnerName: this.ownerName(board),
       socialVideoUrl: '',
       socialVideoMimeType: '',
       socialVideoUpdatedAt: '',
@@ -10599,11 +10606,37 @@ export class BoardsComponent implements OnDestroy {
       this.boards.update((boards) => [persisted, ...boards]);
       this.boardsSyncError.set(null);
       this.setShareMessage('Added a copy to your boards.');
-      void this.router.navigate(['/boards', persisted.id]);
+      if (navigateToCopy) {
+        await this.router.navigate(['/boards', persisted.id]);
+      }
+      return persisted;
     } catch (error) {
       console.error('Board fork failed', error, { boardId: board.id });
       this.boardsSyncError.set($localize`Could not make a copy of this board. Please try again.`);
+      return null;
+    } finally {
+      this.boardForkingId.set(null);
     }
+  }
+
+  async makeStackCopyAndContinue(board: Board, mode: 'trailer' | 'video'): Promise<void> {
+    const forked = await this.forkBoard(board, undefined, false);
+    if (!forked) return;
+    await this.router.navigate(['/boards', forked.id]);
+    this.prepareStackForBoard(forked);
+    this.sharePanelOpen.set(false);
+    this.stackStudioOpen.set(false);
+    this.stackDirectView.set(false);
+    this.stackShareMode.set(mode);
+    this.stackShareDialogOpen.set(true);
+    this.stackPublishedVideoReady.set(false);
+    this.stackPublishedTrailerReady.set(false);
+    this.setStackShareMessage('Your copy is ready. You can now create and share its video.', false);
+  }
+
+  signInToCopyBoard(board: Board): void {
+    const redirectTo = `${this.boardPagePath(board)}?share=1`;
+    void this.router.navigate(['/sign-in'], { queryParams: { redirectTo } });
   }
 
   toggleBoardLike(board: Board, event?: Event): void {
@@ -11940,6 +11973,10 @@ export class BoardsComponent implements OnDestroy {
     if (!board || !this.isBrowser || this.stackVideoExporting()) {
       return;
     }
+    if (!this.canEditBoard(board)) {
+      this.setStackShareMessage('Make your own copy of this board before creating a new video.', false);
+      return;
+    }
     if (this.stackVideoNarrationEnabled()
       && stackNarratorVoiceRequiresPaidPlan(this.stackNarratorVoiceId())
       && !this.personalVoiceEligible()) {
@@ -12512,6 +12549,9 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private async createStackVideo(board: Board): Promise<StackVideoResult> {
+    if (!this.canEditBoard(board)) {
+      throw new Error('Make your own copy of this board before creating a new video.');
+    }
     const selectedCards = this.stackSelectedCards().slice(0, STACK_VIDEO_MAX_CARDS);
     const backgroundAudio = this.stackVideoBackgroundAudio();
     if (this.stackVideoNarrationEnabled()
@@ -12566,6 +12606,7 @@ export class BoardsComponent implements OnDestroy {
             if (url) return url;
           } catch (error) {
             lastError = error;
+            if (stackNarrationErrorIsPermanent(error)) break;
           }
           if (attempt < 2) {
             await new Promise<void>((resolve) => window.setTimeout(resolve, 450 * (attempt + 1)));
