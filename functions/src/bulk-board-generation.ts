@@ -10,7 +10,7 @@ import {
 } from './gemini';
 
 export const BULK_BOARD_RUBRIC_VERSION = '1.0';
-export const BULK_BOARD_GENERATOR_VERSION = '1.0.0';
+export const BULK_BOARD_GENERATOR_VERSION = '1.1.0';
 export const BULK_BOARD_SYSTEM_OWNER_ID = 'livingwiki-system';
 export const BULK_BOARD_SYSTEM_OWNER_SLUG = 'livingwiki';
 
@@ -79,6 +79,7 @@ type BulkBoardJobRecord = {
   template?: unknown;
   status?: unknown;
   cancel_requested?: unknown;
+  auto_publish?: unknown;
 };
 
 const publicFunctionsBaseUrl = 'https://us-central1-living-atlas-7622a.cloudfunctions.net';
@@ -126,6 +127,13 @@ function slug(value: string, fallback: string): string {
     .replace(/^-+|-+$/g, '')
     .slice(0, 64);
   return normalized || fallback;
+}
+
+function normalizedCandidateName(value: unknown): string {
+  return text(value, 180)
+    .normalize('NFKC')
+    .toLocaleLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, '');
 }
 
 export function normalizeBulkBoardIcon(value: unknown, subject = ''): string {
@@ -565,14 +573,16 @@ export async function findBulkBoardCandidates(
   atlas: BulkBoardAtlas,
   template: BulkBoardTemplate,
   apiKey: string,
+  requestedPoolSize = template.count,
 ): Promise<BulkBoardCandidate[]> {
+  const poolSize = Math.max(template.count, Math.min(40, Math.trunc(requestedPoolSize)));
   const [cache, local, existing] = await Promise.all([
     readCandidateCache(atlas, template),
     reviewedCandidates(atlas, template.searchQuery),
     existingBoardCandidates(atlas, template.searchQuery),
   ]);
   let combined = uniqueRankedCandidates([...cache.candidates, ...local, ...existing]);
-  if (combined.length >= template.count) return combined.slice(0, template.count);
+  if (combined.length >= poolSize) return combined.slice(0, poolSize);
   if (!apiKey) throw new Error('Google Places is not configured and the verified candidate cache is incomplete.');
 
   const completedQueries = [...cache.completedQueries];
@@ -582,9 +592,9 @@ export async function findBulkBoardCandidates(
     completedQueries.push(query);
     combined = uniqueRankedCandidates([...combined, ...discovered]);
     await persistCandidateCache({ atlas, template, candidates: combined, completedQueries });
-    if (combined.length >= template.count) break;
+    if (combined.length >= poolSize) break;
   }
-  return combined.slice(0, template.count);
+  return combined.slice(0, poolSize);
 }
 
 function numberedCandidateSource(title: string, candidates: BulkBoardCandidate[]): string {
@@ -608,12 +618,22 @@ async function generateBulkBoardCopy(
     rating: candidate.rating,
     ratingCount: candidate.ratingCount,
   }));
+  const selectionRule = template.id === 'global-zero-dollars'
+    ? 'Select exactly ten candidates that require no admission, ticket, membership, reservation fee, or purchase for the behavior you describe. A real venue is not enough: independently verify that the specific activity is currently free. Reject paid museums, zoos, gardens, observation decks, tours, and attractions.'
+    : template.id === 'global-dishes-explain'
+      ? 'Select exactly ten candidates only when a distinct local dish can be independently verified at that exact venue. Reject generic restaurant recommendations and never infer a dish from cuisine type alone.'
+      : template.id === 'global-neighborhoods-one-reason'
+        ? 'Select exactly ten candidates that are actual named neighborhoods, districts, quarters, or boroughs. Reject landmarks, museums, monuments, streets, and attractions standing in for a neighborhood.'
+        : template.id === 'global-only-happens-here'
+          ? 'Select exactly ten candidates with a concrete city-specific reason. Reject generic museums, statues, parks, markers, houses, and attractions that could be swapped into another city without changing the claim.'
+          : `Select the strongest ${template.count} candidates for the requested bucket; reject weak, duplicate, closed, or out-of-scope candidates.`;
   return await generateBoardWizardBatch({
     mode: 'paste',
     prompt: [
       `Create a LivingWiki board for ${atlas.cityName}${atlas.regionName ? `, ${atlas.regionName}` : ''}.`,
       template.editorialBrief,
-      'The numbered candidate list is authoritative. Use every candidate exactly once and in the supplied order.',
+      `The numbered list is a provider-verified candidate pool, not the final board. ${selectionRule}`,
+      `Return exactly ${template.count} cards. Use each selected candidate once, keep entity_name exactly equal to its candidate name, and do not introduce a place outside the pool. Order the final selection for the clearest story rather than preserving candidate-pool order.`,
       'Write in warm second person, as a well-informed local insider—not a tour guide or search result.',
       'One card must reveal one reason to care. Never invent history, prices, hours, dates, rankings, local habits, or operational details.',
       'Use only facts contained in the verified candidate data below. If detail is thin, stay concise instead of guessing.',
@@ -633,6 +653,43 @@ async function generateBulkBoardCopy(
     verificationPass: false,
     researchGrounding: true,
   });
+}
+
+function candidateForGeneratedCard(
+  card: GeneratedBoardWizardCard,
+  candidates: BulkBoardCandidate[],
+): BulkBoardCandidate | null {
+  const entityName = normalizedCandidateName(card.entity_name);
+  const title = normalizedCandidateName(card.title);
+  const exact = candidates.filter((candidate) => {
+    const name = normalizedCandidateName(candidate.name);
+    return !!name && (name === entityName || name === title);
+  });
+  if (exact.length === 1) return exact[0];
+  const contained = candidates.filter((candidate) => {
+    const name = normalizedCandidateName(candidate.name);
+    return name.length >= 8 && (entityName.includes(name) || title.includes(name));
+  });
+  return contained.length === 1 ? contained[0] : null;
+}
+
+function selectedCandidatesFromGeneratedCards(
+  generated: GeneratedBoardWizardBatch,
+  candidatePool: BulkBoardCandidate[],
+  count: number,
+): BulkBoardCandidate[] {
+  const selected: BulkBoardCandidate[] = [];
+  const seen = new Set<string>();
+  for (const card of generated.cards) {
+    const candidate = candidateForGeneratedCard(card, candidatePool);
+    if (!candidate || seen.has(candidate.placeId)) continue;
+    selected.push(candidate);
+    seen.add(candidate.placeId);
+  }
+  if (selected.length !== count) {
+    throw new Error(`The grounded writer selected ${selected.length} unambiguous verified places; ${count} are required.`);
+  }
+  return selected;
 }
 
 function cardPayload(
@@ -712,12 +769,11 @@ function generatedCardForCandidate(
   candidate: BulkBoardCandidate,
   cards: GeneratedBoardWizardCard[],
 ): GeneratedBoardWizardCard | undefined {
-  const normalize = (value: unknown) => text(value, 180).toLowerCase().replace(/[^a-z0-9]+/g, '');
-  const candidateName = normalize(candidate.name);
+  const candidateName = normalizedCandidateName(candidate.name);
   if (!candidateName) return undefined;
   return cards.find((card) => {
-    const entityName = normalize(card.entity_name);
-    const title = normalize(card.title);
+    const entityName = normalizedCandidateName(card.entity_name);
+    const title = normalizedCandidateName(card.title);
     return entityName === candidateName
       || title === candidateName
       || (candidateName.length >= 8 && (entityName.includes(candidateName) || title.includes(candidateName)));
@@ -734,6 +790,7 @@ function boardPayload(params: {
   generationKey: string;
   generated: GeneratedBoardWizardBatch;
   candidates: BulkBoardCandidate[];
+  autoPublish: boolean;
 }): Record<string, unknown> {
   const now = new Date().toISOString();
   const matchedCopyCount = params.candidates.filter((candidate) => !!generatedCardForCandidate(candidate, params.generated.cards)).length;
@@ -773,11 +830,13 @@ function boardPayload(params: {
     forkedFromTitle: '',
     forkedFromOwnerUserId: '',
     forkedFromOwnerName: '',
-    visibility: 'private',
+    visibility: params.autoPublish ? 'public' : 'private',
     title: renderBulkBoardTitle(params.template, params.atlas.cityName),
     description: text(params.generated.board.description, 240)
       || `A reviewed collection of places in ${params.atlas.cityName}.`,
-    backNote: 'Generated from verified place identities. Editorial review is required before publishing.',
+    backNote: params.autoPublish
+      ? 'Generated from verified place identities for the approved global city-board catalog.'
+      : 'Generated from verified place identities. Editorial review is required before publishing.',
     icon: normalizeBulkBoardIcon(
       params.generated.board.icon,
       `${params.template.searchQuery} ${params.template.titlePattern} ${params.generated.board.title}`,
@@ -831,8 +890,8 @@ function boardPayload(params: {
     template_id: params.template.id,
     template_version: params.template.version,
     rubric_version: BULK_BOARD_RUBRIC_VERSION,
-    editorial_status: 'needs_review',
-    city_listing_status: 'pending',
+    editorial_status: params.autoPublish ? 'published' : 'needs_review',
+    city_listing_status: params.autoPublish ? 'listed' : 'pending',
     source_status: 'excluded',
     quality_status: warnings.length ? 'warnings' : 'not_scored',
     quality_warnings: warnings,
@@ -846,8 +905,8 @@ function boardPayload(params: {
       validated_at: now,
     },
     created_by_user_id: params.requestedBy,
-    approved_by_user_id: '',
-    approved_at: null,
+    approved_by_user_id: params.autoPublish ? BULK_BOARD_SYSTEM_OWNER_ID : '',
+    approved_at: params.autoPublish ? FieldValue.serverTimestamp() : null,
     deleted_at: null,
     deleted_by_user_id: '',
     deletion_reason: '',
@@ -973,17 +1032,23 @@ export async function processBulkBoardGenerationItem(
     }
 
     const atlas = atlasFromSnapshot(atlasSnapshot.id, atlasSnapshot.data() as Record<string, unknown>);
-    const candidates = await findBulkBoardCandidates(atlas, template, googlePlacesApiKey);
-    if (candidates.length !== template.count) {
-      throw new Error(`Found ${candidates.length} verified places; ${template.count} are required.`);
+    const candidatePool = await findBulkBoardCandidates(
+      atlas,
+      template,
+      googlePlacesApiKey,
+      template.count * 2,
+    );
+    if (candidatePool.length < template.count) {
+      throw new Error(`Found ${candidatePool.length} verified places; ${template.count} are required.`);
     }
-    if (new Set(candidates.map((candidate) => candidate.placeId)).size !== template.count) {
+    if (new Set(candidatePool.map((candidate) => candidate.placeId)).size !== candidatePool.length) {
       throw new Error('The verified candidate list contains duplicate place identities.');
     }
-    const generated = await generateBulkBoardCopy(atlas, template, candidates);
+    const generated = await generateBulkBoardCopy(atlas, template, candidatePool);
     if (generated.cards.length !== template.count) {
       throw new Error(`The writer returned ${generated.cards.length} cards; ${template.count} are required.`);
     }
+    const candidates = selectedCandidatesFromGeneratedCards(generated, candidatePool, template.count);
     const latestJob = await db.collection('board_generation_jobs').doc(jobId).get();
     const latestSuppression = await db.collection('board_generation_suppressions')
       .doc(bulkBoardSuppressionId(generationKey)).get();
@@ -1006,6 +1071,7 @@ export async function processBulkBoardGenerationItem(
       generationKey,
       generated,
       candidates,
+      autoPublish: job.auto_publish === true,
     });
     const writeResult = await db.runTransaction(async (transaction) => {
       const jobRef = db.collection('board_generation_jobs').doc(jobId);

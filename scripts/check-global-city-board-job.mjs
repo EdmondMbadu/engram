@@ -46,6 +46,8 @@ console.log(JSON.stringify({
   projectId,
   jobId,
   status: job.status,
+  autoPublish: job.auto_publish === true,
+  catalogMode: job.catalog_mode === true,
   progress: `${completed}/${total}`,
   progressPercent: total ? Number((completed / total * 100).toFixed(1)) : 0,
   successCount: Number(job.success_count) || 0,
