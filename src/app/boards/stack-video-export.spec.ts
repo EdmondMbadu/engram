@@ -1,4 +1,5 @@
 import {
+  STACK_TRAILER_RENDER_VERSION,
   combineStackVideoMediaStream,
   generateStackTrailer,
   generateStackVideo,
@@ -15,6 +16,10 @@ import {
 import { reorderRelativeToTarget } from './reorder';
 
 describe('Stack video card images', () => {
+  it('marks the corrected closing-card layout as a new trailer render', () => {
+    expect(STACK_TRAILER_RENDER_VERSION).toBe('board-trailer-v2');
+  });
+
   it('keeps Board Trailers inside the 15–30 second promise', () => {
     expect(stackTrailerPlan(1).durationMs).toBe(15_000);
     expect(stackTrailerPlan(10).durationMs).toBe(18_850);

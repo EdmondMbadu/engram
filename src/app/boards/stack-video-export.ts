@@ -84,7 +84,7 @@ const NARRATION_LEAD_MS = 100;
 const NARRATION_TAIL_MS = 350;
 
 export const STACK_VIDEO_RENDER_VERSION = 'stack-video-v10';
-export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v1';
+export const STACK_TRAILER_RENDER_VERSION = 'board-trailer-v2';
 
 const TRAILER_MIN_DURATION_MS = 15_000;
 const TRAILER_MAX_DURATION_MS = 30_000;
@@ -933,19 +933,20 @@ function drawTrailerClosingFrame(
   context.font = `900 ${Math.round(width * 0.034)}px Inter, Arial, sans-serif`;
   context.fillText('THERE IS MORE TO DISCOVER', width / 2, height * 0.31);
   context.fillStyle = '#ffffff';
-  context.font = `950 ${Math.round(width * 0.092)}px Inter, Arial, sans-serif`;
-  drawWrappedText(context, 'OPEN THE FULL BOARD', width * 0.08, height * 0.39, width * 0.84, width * 0.098, 3, 'center');
-  roundedRect(context, width * 0.2, height * 0.67, width * 0.6, height * 0.085, 999);
+  context.font = `950 ${Math.round(width * 0.086)}px Inter, Arial, sans-serif`;
+  drawWrappedText(context, 'OPEN THE FULL BOARD', width * 0.085, height * 0.39, width * 0.83, width * 0.092, 3, 'center');
+  roundedRect(context, width * 0.14, height * 0.665, width * 0.72, height * 0.086, 999);
   context.fillStyle = '#bdfbe3';
   context.fill();
   context.fillStyle = '#08271e';
-  context.font = `950 ${Math.round(width * 0.033)}px Inter, Arial, sans-serif`;
+  context.font = `950 ${Math.round(width * 0.031)}px Inter, Arial, sans-serif`;
+  context.textAlign = 'center';
   context.textBaseline = 'middle';
-  context.fillText('EXPLORE ON LIVINGWIKI', width / 2, height * 0.7125);
+  context.fillText('EXPLORE ON LIVINGWIKI', width / 2, height * 0.708);
   context.textBaseline = 'alphabetic';
   context.fillStyle = 'rgba(255,255,255,.72)';
-  context.font = `800 ${Math.round(width * 0.026)}px Inter, Arial, sans-serif`;
-  context.fillText(shortDisplayUrl(board.liveUrl), width / 2, height * 0.86);
+  context.font = `800 ${Math.round(width * 0.025)}px Inter, Arial, sans-serif`;
+  context.fillText(displayUrlHost(board.liveUrl), width / 2, height * 0.855);
   context.restore();
 }
 
@@ -1231,6 +1232,7 @@ function drawWrappedText(
   maxLines: number,
   align: CanvasTextAlign = 'left',
 ): number {
+  const previousAlign = context.textAlign;
   const words = text.trim().split(/\s+/).filter(Boolean);
   const lines: string[] = [];
   let line = '';
@@ -1238,24 +1240,43 @@ function drawWrappedText(
     const candidate = line ? `${line} ${word}` : word;
     if (line && context.measureText(candidate).width > maxWidth) {
       lines.push(line);
-      line = word;
+      line = context.measureText(word).width > maxWidth
+        ? truncateCanvasText(context, word, maxWidth)
+        : word;
       if (lines.length === maxLines) break;
     } else {
-      line = candidate;
+      line = !line && context.measureText(candidate).width > maxWidth
+        ? truncateCanvasText(context, candidate, maxWidth)
+        : candidate;
     }
   }
   if (lines.length < maxLines && line) lines.push(line);
   if (lines.length === maxLines && words.join(' ').length > lines.join(' ').length) {
-    while (lines[maxLines - 1].length && context.measureText(`${lines[maxLines - 1]}…`).width > maxWidth) {
-      lines[maxLines - 1] = lines[maxLines - 1].slice(0, -1);
-    }
-    lines[maxLines - 1] = `${lines[maxLines - 1].trim()}…`;
+    lines[maxLines - 1] = truncateCanvasText(context, `${lines[maxLines - 1]}…`, maxWidth);
   }
   context.textAlign = align;
   const drawX = align === 'center' ? x + maxWidth / 2 : x;
   lines.forEach((value, index) => context.fillText(value, drawX, y + index * lineHeight));
-  context.textAlign = 'left';
+  context.textAlign = previousAlign;
   return y + Math.max(0, lines.length - 1) * lineHeight;
+}
+
+function truncateCanvasText(
+  context: CanvasRenderingContext2D,
+  value: string,
+  maxWidth: number,
+): string {
+  const text = value.trim();
+  if (!text || context.measureText(text).width <= maxWidth) return text;
+  const plain = text.replace(/…+$/, '').trimEnd();
+  let low = 0;
+  let high = plain.length;
+  while (low < high) {
+    const middle = Math.ceil((low + high) / 2);
+    if (context.measureText(`${plain.slice(0, middle).trimEnd()}…`).width <= maxWidth) low = middle;
+    else high = middle - 1;
+  }
+  return `${plain.slice(0, low).trimEnd()}…`;
 }
 
 function roundedRect(
@@ -1282,6 +1303,14 @@ function shortDisplayUrl(url: string): string {
     return `${parsed.host}${parsed.pathname}`;
   } catch {
     return url.replace(/^https?:\/\//, '');
+  }
+}
+
+function displayUrlHost(url: string): string {
+  try {
+    return new URL(url).host.replace(/^www\./, '');
+  } catch {
+    return 'livingwiki.com';
   }
 }
 
