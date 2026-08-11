@@ -1598,12 +1598,21 @@
   background: transparent;
   color: var(--accent);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
   font: inherit;
   font-size: 0.67rem;
   font-weight: 900;
   padding: 0.35rem 0.5rem;
   text-decoration: underline;
   text-underline-offset: 0.18rem;
+}
+
+.stack-share-sheet__secondary .material-symbols-outlined {
+  font-size: 0.9rem;
+  text-decoration: none;
 }
 
 .stack-share-sheet__video-preview--trailer {

@@ -10930,6 +10930,11 @@ export class BoardsComponent implements OnDestroy {
     }
   }
 
+  showOriginalStackShareOptions(): void {
+    this.setStackShareMode('live');
+    this.setStackShareMessage('Choose where to share, or copy the live-view link.', false);
+  }
+
   async nativeShareBoard(board: Board): Promise<void> {
     if (!this.isBrowser) {
       return;
