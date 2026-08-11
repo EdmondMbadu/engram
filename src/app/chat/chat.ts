@@ -833,6 +833,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly currentWikiAtlas = computed(() =>
     this.isPublicView() ? this.publicAtlas() : this.atlasService.activeAtlas(),
   );
+  readonly isUniversityPage = computed(() => {
+    const atlas = this.currentWikiAtlas();
+    return atlas?.wiki_type === 'university' || atlas?.university_config?.enabled === true;
+  });
   readonly currentVoiceAtlasId = computed(() =>
     this.currentWikiAtlas()?.id ?? this.publicAtlas()?.id ?? this.atlasService.activeAtlasId(),
   );
@@ -860,6 +864,16 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly currentWikiCountry = computed(() => this.localizedCountryName(this.atlasService.cityCountryLabel(this.currentWikiAtlas()) ?? ''));
   readonly chatCityStickers = computed<ChatCitySticker[]>(() => {
     const atlas = this.currentWikiAtlas();
+    const university = atlas?.university_config;
+    if (this.isUniversityPage() && university) {
+      const facts: ChatCitySticker[] = [
+        { id: 'campus', label: 'Campus', value: `${university.city}, ${university.state}`, caption: 'Location', icon: 'location_on', palette: 'sky' },
+        ...(university.undergraduate_enrollment !== null ? [{ id: 'enrollment', label: 'Undergraduates', value: this.formatChatCompactNumber(university.undergraduate_enrollment), caption: university.data_year ? `${university.data_year} federal release` : 'Federal data', icon: 'groups', palette: 'coral' } as ChatCitySticker] : []),
+        { id: 'control', label: 'Institution', value: university.control, caption: 'Control', icon: 'account_balance', palette: 'purple' },
+        ...(university.completion_rate !== null ? [{ id: 'completion', label: 'Completion', value: `${Math.round(university.completion_rate * 100)}%`, caption: university.data_year ? `${university.data_year} federal release` : 'Federal data', icon: 'school', palette: 'green' } as ChatCitySticker] : []),
+      ];
+      return facts.slice(0, 4);
+    }
     const config = atlas?.city_config;
     const metadata = config?.metadata;
     const stickers: ChatCitySticker[] = [];
@@ -930,6 +944,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     return stickers.slice(0, 4);
   });
   readonly chatCityMoodStickers = computed<ChatCityMoodSticker[]>(() => {
+    if (this.isUniversityPage()) return [];
     const options: ChatCityMoodSticker[] = [
       { label: 'Food', icon: 'restaurant', palette: 'coral' },
       { label: 'Markets', icon: 'storefront', palette: 'yellow' },
@@ -1115,6 +1130,34 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     }
 
     const atlasName = this.currentWikiName() || this.uiText('askThisWiki').toLowerCase();
+    if (this.isUniversityPage()) {
+      return [
+        {
+          title: 'Admissions snapshot',
+          prompt: `Give me a current, source-linked admissions snapshot for ${atlasName}, including deadlines and the data year for every statistic.`,
+          detail: 'Official deadlines, requirements, and federal data where available.',
+          icon: 'school',
+        },
+        {
+          title: 'Academics & programs',
+          prompt: `What academic programs and distinctive strengths should I know about at ${atlasName}? Use official sources.`,
+          detail: 'Programs, schools, and academic context without invented rankings.',
+          icon: 'menu_book',
+        },
+        {
+          title: 'Cost & outcomes',
+          prompt: `Explain the cost, financial aid, completion, and earnings data for ${atlasName}, with years and caveats.`,
+          detail: 'Comparable federal measures with their limitations made clear.',
+          icon: 'monitoring',
+        },
+        {
+          title: 'Campus life',
+          prompt: `Give me a practical overview of campus life at ${atlasName}, separating verified facts from student perspectives.`,
+          detail: 'Housing, setting, organizations, support, and student experience.',
+          icon: 'diversity_3',
+        },
+      ];
+    }
     if (this.isInternetMode()) {
       return [
         {
@@ -1230,6 +1273,9 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     const name = this.currentWikiName();
     if (!name) {
       return this.uiText('askAtlasInternet');
+    }
+    if (this.isUniversityPage()) {
+      return `Ask about ${name} admissions, academics, cost, campus life, outcomes, and current news...`;
     }
     return this.uiText('askCityInternet', { city: name });
   }

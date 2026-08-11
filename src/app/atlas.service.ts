@@ -20,7 +20,7 @@ import {
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
-import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityAtlasMetadata, CityPulseMetric } from './atlas.models';
+import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityAtlasMetadata, CityPulseMetric, UniversityAtlasConfig } from './atlas.models';
 import { AuthService } from './auth.service';
 import type { CityAtlasTemplate } from './city-atlas-templates';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from './firebase.client';
@@ -265,6 +265,55 @@ export interface BulkCityAtlasCreateResponse {
   skipped: number;
   failed: number;
   results: BulkCityAtlasResult[];
+}
+
+export interface UniversityAtlasInput {
+  rowNumber?: number;
+  unitId: string;
+  opeId?: string | null;
+  officialName: string;
+  city: string;
+  state: string;
+  website?: string | null;
+  accreditationAgency?: string | null;
+  control?: UniversityAtlasConfig['control'];
+  highestDegree?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  undergraduateEnrollment?: number | null;
+  admissionRate?: number | null;
+  completionRate?: number | null;
+  retentionRate?: number | null;
+  averageNetPrice?: number | null;
+  medianEarnings10Year?: number | null;
+  dataYear?: number | null;
+  cohortRank?: number | null;
+  cohortScore?: number | null;
+  cohortVersion?: string | null;
+  sourceUrl?: string | null;
+  sourceFetchedAt?: string | null;
+  heroUrl?: string | null;
+  logoUrl?: string | null;
+  heroSourcePage?: string | null;
+  logoSourcePage?: string | null;
+  description?: string | null;
+}
+
+export interface UniversityAtlasResult {
+  rowNumber: number;
+  unitId: string;
+  officialName: string;
+  slug: string;
+  status: 'created' | 'skipped' | 'failed';
+  atlasId: string | null;
+  error: string | null;
+}
+
+export interface UniversityAtlasCreateResponse {
+  created: number;
+  skipped: number;
+  failed: number;
+  results: UniversityAtlasResult[];
 }
 
 function normalizeCityIdentity(value: string | null | undefined): string {
@@ -529,6 +578,7 @@ export class AtlasService {
     const slug = this.slugify(name);
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
+      wiki_type: 'city',
       name,
       slug,
       description: input.description?.trim() || null,
@@ -576,6 +626,7 @@ export class AtlasService {
 
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
+      wiki_type: 'city',
       name: template.name,
       slug,
       description: template.description,
@@ -657,6 +708,7 @@ export class AtlasService {
     const regionPhrase = regionName ? `${cityName}, ${regionName}` : cityName;
     const ref = await addDoc(collection(this.firestore, 'atlases'), {
       user_id: uid,
+      wiki_type: 'city',
       name,
       slug,
       description,
@@ -810,6 +862,19 @@ export class AtlasService {
       BulkCityAtlasCreateResponse
     >(this.functions, 'createBulkCityAtlases');
     const { data } = await createBulkCityAtlases({ rows });
+    return data;
+  }
+
+  async createUniversityAtlases(rows: UniversityAtlasInput[]): Promise<UniversityAtlasCreateResponse> {
+    this.assertCanCreateWiki();
+    if (!this.functions) {
+      throw new Error('Functions unavailable.');
+    }
+    const createUniversityAtlases = httpsCallable<
+      { rows: UniversityAtlasInput[] },
+      UniversityAtlasCreateResponse
+    >(this.functions, 'createUniversityAtlases');
+    const { data } = await createUniversityAtlases({ rows });
     return data;
   }
 
@@ -1340,7 +1405,15 @@ export class AtlasService {
       hero_url: typeof data['hero_url'] === 'string' ? data['hero_url'] : null,
       video_url: typeof data['video_url'] === 'string' ? data['video_url'] : null,
       cover_color: typeof data['cover_color'] === 'string' ? data['cover_color'] : null,
+      wiki_type: data['wiki_type'] === 'city' || data['wiki_type'] === 'university' || data['wiki_type'] === 'topic'
+        ? data['wiki_type']
+        : data['city_config'] && typeof data['city_config'] === 'object'
+          ? 'city'
+          : 'topic',
       city_config: this.hydrateCityConfig(data['city_config']),
+      university_config: data['university_config'] && typeof data['university_config'] === 'object'
+        ? data['university_config'] as UniversityAtlasConfig
+        : null,
       chat_guide: this.hydrateChatGuideConfig(data['chat_guide']),
       persona_prompt: typeof data['persona_prompt'] === 'string' ? data['persona_prompt'] : null,
       admin_user_ids: Array.isArray(data['admin_user_ids'])

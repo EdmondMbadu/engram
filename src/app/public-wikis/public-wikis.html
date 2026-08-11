@@ -502,9 +502,9 @@
               type="text"
               [ngModel]="searchTerm()"
               (ngModelChange)="onSearchInput($event)"
-              placeholder="Search cities, neighborhoods, topics, and upcoming LivingWiki pages..."
+              placeholder="Search cities, universities, neighborhoods, and public LivingWiki pages..."
               class="w-full rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] py-4 pl-14 pr-12 text-sm text-[var(--text)] placeholder:text-[var(--muted)] outline-none transition-colors focus:border-[var(--accent)]"
-             i18n-placeholder/>
+             />
             @if (searchTerm()) {
               <button
                 type="button"
@@ -657,7 +657,7 @@
         }
 
         <div class="public-wiki-grid grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          @for (wiki of filteredWikis(); track wiki.title; let rank = $index) {
+          @for (wiki of visibleWikis(); track wiki.slug || wiki.title; let rank = $index) {
             @if (wiki.status === 'live') {
               <a
                 [routerLink]="wiki.link || '/chat'"
@@ -788,6 +788,14 @@
                       <span class="public-wiki-city-mark">
                         <img src="/assets/image/living-cities.png" alt="" loading="lazy" class="h-full w-full rounded-xl object-contain" />
                       </span>
+                    } @else if (activeCategory() === 'Universities') {
+                      <span class="public-wiki-city-mark bg-white p-1">
+                        @if (wiki.logoUrl) {
+                          <img [src]="wiki.logoUrl" alt="" loading="lazy" class="h-full w-full rounded-lg object-contain" />
+                        } @else {
+                          <span class="flex h-full w-full items-center justify-center rounded-lg bg-[var(--soft-fill)] text-[10px] font-black text-[var(--accent)]">{{ initialsFor(displayWikiTitle(wiki)) }}</span>
+                        }
+                      </span>
                     }
                     <div class="public-wiki-title-sticker min-w-0">
                       <p>{{ cityTitleKicker(wiki) }}</p>
@@ -823,6 +831,25 @@
                         </span>
                       }
                     </div>
+                  } @else if (activeCategory() === 'Universities') {
+                    <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                      <span class="rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-2">
+                        <b class="block text-[var(--text)]">{{ wiki.universityCity }}, {{ wiki.universityState }}</b>
+                        <small class="text-[var(--muted)]">Campus</small>
+                      </span>
+                      <span class="rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-2">
+                        <b class="block text-[var(--text)]">{{ wiki.undergraduateEnrollment ? (wiki.undergraduateEnrollment | number) : 'Not reported' }}</b>
+                        <small class="text-[var(--muted)]">Undergraduates</small>
+                      </span>
+                      <span class="rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-2">
+                        <b class="block text-[var(--text)]">{{ wiki.universityControl || 'Institution' }}</b>
+                        <small class="text-[var(--muted)]">Control</small>
+                      </span>
+                      <span class="rounded-xl border border-[var(--line)] bg-[var(--soft-fill)] px-3 py-2">
+                        <b class="block text-[var(--text)]">{{ wiki.completionRate !== null && wiki.completionRate !== undefined ? ((wiki.completionRate * 100) | number:'1.0-0') + '%' : 'Not reported' }}</b>
+                        <small class="text-[var(--muted)]">Completion</small>
+                      </span>
+                    </div>
                   }
 
                   <div class="mt-auto flex items-center justify-end border-t border-[var(--line)] pt-4">
@@ -836,6 +863,14 @@
             }
           }
         </div>
+        @if (hasMoreWikis()) {
+          <div class="mt-8 flex justify-center">
+            <button type="button" (click)="showMoreWikis()" class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--surface)] px-6 py-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent)] transition hover:-translate-y-0.5 hover:bg-[var(--accent)]/10">
+              <span class="material-symbols-outlined">expand_more</span>
+              Show more · {{ filteredWikis().length - visibleWikis().length }} remaining
+            </button>
+          </div>
+        }
       </div>
     </section>
 

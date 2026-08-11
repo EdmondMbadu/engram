@@ -681,7 +681,13 @@
 	                } @else {
                   <div class="chat-city-hero-sticker mt-3">
                     <div class="chat-city-hero-sticker__mark">
-                      <img src="/assets/image/living-cities.png" alt="" class="h-full w-full object-contain" />
+                      @if (isUniversityPage() && currentWikiAtlas()?.logo_url) {
+                        <img [src]="currentWikiAtlas()?.logo_url" alt="" class="h-full w-full object-contain" />
+                      } @else if (isUniversityPage()) {
+                        <span class="material-symbols-outlined">school</span>
+                      } @else {
+                        <img src="/assets/image/living-cities.png" alt="" class="h-full w-full object-contain" />
+                      }
                     </div>
                     <div class="min-w-0">
                       <p>{{ uiText('askLivingWiki') }}</p>
@@ -693,7 +699,7 @@
                   </div>
 
                   @if (chatCityStickers().length || chatCityMoodStickers().length) {
-                    <div class="chat-city-sticker-row" aria-label="City context stickers" i18n-aria-label>
+                    <div class="chat-city-sticker-row" [attr.aria-label]="isUniversityPage() ? 'University facts' : 'City context stickers'">
                       @for (sticker of chatCityStickers(); track sticker.id) {
                         <span class="chat-city-sticker chat-sticker-palette--{{ sticker.palette }}">
                           <span class="chat-city-sticker__icon material-symbols-outlined">{{ sticker.icon }}</span>
@@ -887,11 +893,11 @@
                 }
 
                 @if (canSubscribeToCurrentWiki() && !businessPageContext()) {
-                  <section class="chat-city-subscribe" aria-label="City updates">
+                  <section class="chat-city-subscribe" [attr.aria-label]="isUniversityPage() ? 'University updates' : 'City updates'">
                     <span class="chat-city-subscribe__mark material-symbols-outlined" aria-hidden="true">notifications_active</span>
                     <div class="chat-city-subscribe__copy">
                       <strong>Stay close to {{ currentWikiName() }}</strong>
-                      <span>{{ uiText('weeklyUpdates') }}</span>
+                      <span>{{ isUniversityPage() ? 'Official news and useful updates, without the brochure copy.' : uiText('weeklyUpdates') }}</span>
                     </div>
                     <form class="chat-city-subscribe__form" (submit)="subscribeToUpdates($event)">
                       <label class="sr-only" for="city-subscribe-email">{{ uiText('emailAddress') }}</label>

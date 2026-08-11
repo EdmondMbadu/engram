@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { DecimalPipe, isPlatformBrowser } from '@angular/common';
 import { Component, computed, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -18,6 +18,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher';
 
 const CITIES_CATEGORY = 'Cities';
+const UNIVERSITIES_CATEGORY = 'Universities';
 const OTHERS_CATEGORY = 'Others';
 const HOME_ICON_URLS = {
   boards: '/assets/image/home-icons/my-boards.png',
@@ -26,7 +27,7 @@ const HOME_ICON_URLS = {
   trips: '/assets/image/home-icons/my-trips.png',
   trove: '/assets/image/home-icons/my-trove.png',
 } as const;
-const PUBLIC_WIKI_CATEGORIES = [CITIES_CATEGORY, OTHERS_CATEGORY] as const;
+const PUBLIC_WIKI_CATEGORIES = [CITIES_CATEGORY, UNIVERSITIES_CATEGORY, OTHERS_CATEGORY] as const;
 const PUBLIC_BOARD_ICON = /^(?:dashboard|travel_explore|restaurant|local_cafe|beach_access|festival|hiking|museum|shopping_bag|favorite|auto_awesome|public|sports_handball)$/;
 type PublicWikiCategory = (typeof PUBLIC_WIKI_CATEGORIES)[number];
 const PUBLIC_WIKI_SORTS = [
@@ -472,6 +473,7 @@ interface PublicWikiFeelingSticker {
 @Component({
   selector: 'app-public-wikis',
   imports: [
+    DecimalPipe,
     RouterLink,
     ThemeToggleComponent,
     FormsModule,
@@ -507,6 +509,7 @@ export class PublicWikisComponent implements OnInit {
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
   readonly activeSort = signal<PublicWikiSortMode>('population');
+  readonly visibleWikiLimit = signal(60);
   readonly mobileDrawerOpen = signal(false);
   readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
@@ -619,13 +622,15 @@ export class PublicWikisComponent implements OnInit {
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
 
   categoryLabel(category: PublicWikiCategory): string {
-    return category === CITIES_CATEGORY ? $localize`Cities` : $localize`Others`;
+    if (category === CITIES_CATEGORY) return $localize`Cities`;
+    if (category === UNIVERSITIES_CATEGORY) return 'Universities';
+    return $localize`Others`;
   }
 
   activeCategoryTitle(): string {
-    return this.activeCategory() === CITIES_CATEGORY
-      ? $localize`City LivingWiki pages`
-      : $localize`Public LivingWiki pages`;
+    if (this.activeCategory() === CITIES_CATEGORY) return $localize`City LivingWiki pages`;
+    if (this.activeCategory() === UNIVERSITIES_CATEGORY) return 'U.S. college & university LivingWiki pages';
+    return $localize`Public LivingWiki pages`;
   }
   readonly sortOptions = computed(() => [...PUBLIC_WIKI_SORTS]);
   readonly isTemperatureSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'temp');
@@ -633,6 +638,7 @@ export class PublicWikisComponent implements OnInit {
   readonly isPopulationSort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'population');
   readonly isDensitySort = computed(() => this.activeCategory() === CITIES_CATEGORY && this.activeSort() === 'density');
   readonly isOthersCategory = computed(() => this.activeCategory() === OTHERS_CATEGORY);
+  readonly isUniversitiesCategory = computed(() => this.activeCategory() === UNIVERSITIES_CATEGORY);
   readonly mobileCityWikis = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
     const cityWikis = this.publicWikis().filter((wiki) => {
@@ -717,6 +723,8 @@ export class PublicWikisComponent implements OnInit {
     });
     return this.sortWikis(filtered);
   });
+  readonly visibleWikis = computed(() => this.filteredWikis().slice(0, this.visibleWikiLimit()));
+  readonly hasMoreWikis = computed(() => this.visibleWikis().length < this.filteredWikis().length);
 
   async ngOnInit(): Promise<void> {
     if (await this.redirectSignedInRootToHome()) {
@@ -734,7 +742,8 @@ export class PublicWikisComponent implements OnInit {
 	      const atlases = await this.atlasService.listPublicAtlases();
 	      const liveWikis = sortPublicAtlases(atlases).map((atlas) => ({
 	        ...buildPublicWikiLiveItem(atlas),
-	        countryLabel: this.atlasService.cityCountryLabel(atlas),
+	        countryLabel: this.atlasService.cityCountryLabel(atlas)
+            ?? (atlas.university_config?.country_code === 'US' ? 'United States' : null),
 	      }));
 	      this.liveWikis.set(liveWikis);
       if (this.activeSort() === 'temp') {
@@ -769,6 +778,7 @@ export class PublicWikisComponent implements OnInit {
 
   setCategory(cat: PublicWikiCategory): void {
     this.activeCategory.set(cat);
+    this.visibleWikiLimit.set(60);
     if (cat !== CITIES_CATEGORY) {
       this.activeSort.set('featured');
     }
@@ -776,6 +786,11 @@ export class PublicWikisComponent implements OnInit {
 
   onSearchInput(value: string): void {
     this.searchTerm.set(value);
+    this.visibleWikiLimit.set(60);
+  }
+
+  showMoreWikis(): void {
+    this.visibleWikiLimit.update((limit) => limit + 60);
   }
 
   clearFilters(): void {
@@ -1733,7 +1748,9 @@ export class PublicWikisComponent implements OnInit {
   }
 
   private categoryForWiki(wiki: PublicWikiCatalogItem): PublicWikiCategory {
-    return wiki.category === 'Cities & Regions' ? CITIES_CATEGORY : OTHERS_CATEGORY;
+    if (wiki.category === 'Cities & Regions') return CITIES_CATEGORY;
+    if (wiki.category === 'Universities') return UNIVERSITIES_CATEGORY;
+    return OTHERS_CATEGORY;
   }
 
   private sortWikis(wikis: PublicWikiCatalogItem[]): PublicWikiCatalogItem[] {
@@ -1789,7 +1806,9 @@ export class PublicWikisComponent implements OnInit {
         });
       case 'featured':
       default:
-        return sorted;
+        return this.activeCategory() === UNIVERSITIES_CATEGORY
+          ? sorted.sort((a, b) => (a.cohortRank ?? Number.MAX_SAFE_INTEGER) - (b.cohortRank ?? Number.MAX_SAFE_INTEGER))
+          : sorted;
     }
   }
 

@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import type { AtlasAdminProfile, AtlasChatGuideConfig, AtlasItem, AtlasNewsletterConfig, AtlasNewsletterTestResult, AtlasSubscriptionItem, AtlasTextMessagingConfig, AtlasTextMessagingProvider, AtlasUsage, AtlasVoiceAgentConfig, CityAtlasConfig, CityPulseMetric } from '../atlas.models';
-import { AtlasService, type BulkCityAtlasResult, type CityPopulationRefreshResult, type CustomCityAtlasInput } from '../atlas.service';
+import { AtlasService, type BulkCityAtlasResult, type CityPopulationRefreshResult, type CustomCityAtlasInput, type UniversityAtlasInput } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { BusinessClaimService, type BusinessClaimWorkspaceRecord, type BusinessClaimWorkspaceUpdate } from '../business-claim/business-claim.service';
 import { CITY_ATLAS_TEMPLATES, type CityAtlasTemplate } from '../city-atlas-templates';
@@ -90,6 +90,19 @@ interface BulkCityProgress {
   failed: number;
   skipped: number;
   started_at_ms: number;
+}
+
+interface UniversityDraft {
+  unit_id: string;
+  official_name: string;
+  city: string;
+  state: string;
+  website: string;
+  control: 'Public' | 'Private nonprofit' | 'Private for-profit' | 'Unknown';
+  undergraduate_enrollment: string;
+  hero_url: string;
+  logo_url: string;
+  description: string;
 }
 
 interface BusinessEditDraft {
@@ -246,6 +259,7 @@ export class AtlasManageComponent {
   readonly businessSavedClaimKey = signal<string | null>(null);
   readonly businessEditDraftByKey = signal<Record<string, BusinessEditDraft>>({});
   readonly cityLaunchOpen = signal(false);
+  readonly universityLaunchOpen = signal(false);
   readonly wikiListOpen = signal(false);
   readonly wikiSearch = signal('');
   readonly deletingId = signal<string | null>(null);
@@ -261,6 +275,12 @@ export class AtlasManageComponent {
   readonly bulkCityFileName = signal<string | null>(null);
   readonly bulkCityRows = signal<BulkCityDraft[]>([]);
   readonly bulkCityError = signal<string | null>(null);
+  readonly creatingUniversities = signal(false);
+  readonly universityCreationMessage = signal<string | null>(null);
+  readonly universityBulkError = signal<string | null>(null);
+  readonly universityBulkFileName = signal<string | null>(null);
+  readonly universityBulkRows = signal<UniversityAtlasInput[]>([]);
+  readonly universityBulkProgress = signal<{ total: number; processed: number; created: number; skipped: number; failed: number } | null>(null);
   readonly populationBackfillRunning = signal(false);
   readonly populationBackfillProgress = signal<PopulationBackfillProgress | null>(null);
   readonly populationBackfillResults = signal<CityPopulationRefreshResult[]>([]);
@@ -288,6 +308,18 @@ export class AtlasManageComponent {
     population_density_per_km2: '',
     latitude: '',
     longitude: '',
+  });
+  readonly universityDraft = signal<UniversityDraft>({
+    unit_id: '',
+    official_name: '',
+    city: '',
+    state: '',
+    website: '',
+    control: 'Unknown',
+    undergraduate_enrollment: '',
+    hero_url: '',
+    logo_url: '',
+    description: '',
   });
 
   readonly hasMultipleAtlases = computed(() => this.atlases().length > 1);
@@ -471,7 +503,7 @@ export class AtlasManageComponent {
     void this.loadPublicCityTemplateSlugs();
     effect(() => {
       const atlases = this.atlases();
-      void this.syncUsage(atlases);
+      void this.syncUsage(atlases.filter((atlas) => atlas.wiki_type !== 'university'));
     });
     effect(() => {
       const uid = this.authService.uid();
@@ -1322,6 +1354,167 @@ export class AtlasManageComponent {
 
   toggleCityLaunch(): void {
     this.cityLaunchOpen.update((open) => !open);
+  }
+
+  toggleUniversityLaunch(): void {
+    this.universityLaunchOpen.update((open) => !open);
+  }
+
+  updateUniversityDraft<K extends keyof UniversityDraft>(key: K, value: UniversityDraft[K]): void {
+    this.universityDraft.update((current) => ({ ...current, [key]: value }));
+  }
+
+  async createUniversity(event: Event): Promise<void> {
+    event.preventDefault();
+    const draft = this.universityDraft();
+    if (!draft.unit_id.trim() || !draft.official_name.trim() || !draft.city.trim() || !draft.state.trim()) {
+      this.universityBulkError.set('Unit ID, official name, city, and state are required.');
+      return;
+    }
+    const enrollment = parseOptionalPositiveInteger(draft.undergraduate_enrollment);
+    if (Number.isNaN(enrollment)) {
+      this.universityBulkError.set('Enrollment must be a positive number.');
+      return;
+    }
+    this.creatingUniversities.set(true);
+    this.universityBulkError.set(null);
+    try {
+      const response = await this.atlasService.createUniversityAtlases([{
+        rowNumber: 1,
+        unitId: draft.unit_id,
+        officialName: draft.official_name,
+        city: draft.city,
+        state: draft.state,
+        website: draft.website || null,
+        control: draft.control,
+        undergraduateEnrollment: enrollment,
+        heroUrl: draft.hero_url || null,
+        logoUrl: draft.logo_url || null,
+        description: draft.description || null,
+        sourceUrl: 'https://collegescorecard.ed.gov/data/',
+        sourceFetchedAt: new Date().toISOString(),
+      }]);
+      const result = response.results[0];
+      if (!result || result.status === 'failed') throw new Error(result?.error || 'University creation failed.');
+      this.universityCreationMessage.set(result.status === 'skipped'
+        ? `${draft.official_name} already exists.`
+        : `${draft.official_name} is now live.`);
+      if (result.status === 'created') {
+        this.universityDraft.set({ unit_id: '', official_name: '', city: '', state: '', website: '', control: 'Unknown', undergraduate_enrollment: '', hero_url: '', logo_url: '', description: '' });
+      }
+    } catch (error) {
+      this.universityBulkError.set(error instanceof Error ? error.message : 'Failed to create university Wiki.');
+    } finally {
+      this.creatingUniversities.set(false);
+    }
+  }
+
+  async onUniversityCsvSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    input.value = '';
+    if (!file) return;
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+      this.universityBulkError.set($localize`Upload a .csv file.`);
+      return;
+    }
+    try {
+      const rows = parseCsvRows(await file.text());
+      const headers = (rows.shift() ?? []).map((header) => header.trim().toLowerCase());
+      const required = ['unit_id', 'official_name', 'city', 'state'];
+      const missing = required.filter((header) => !headers.includes(header));
+      if (missing.length) throw new Error(`Missing required column${missing.length === 1 ? '' : 's'}: ${missing.join(', ')}.`);
+      const index = (name: string) => headers.indexOf(name);
+      const value = (row: string[], name: string) => index(name) >= 0 ? (row[index(name)] ?? '').trim() : '';
+      const optionalNumber = (row: string[], name: string) => {
+        const raw = value(row, name);
+        if (!raw) return null;
+        const parsed = Number(raw.replace(/,/g, ''));
+        return Number.isFinite(parsed) ? parsed : null;
+      };
+      const parsed = rows.map((row, rowIndex): UniversityAtlasInput => ({
+        rowNumber: rowIndex + 2,
+        unitId: value(row, 'unit_id'),
+        opeId: value(row, 'ope_id') || null,
+        officialName: value(row, 'official_name'),
+        city: value(row, 'city'),
+        state: value(row, 'state'),
+        website: value(row, 'website') || null,
+        accreditationAgency: value(row, 'accreditation_agency') || null,
+        control: (['Public', 'Private nonprofit', 'Private for-profit'].includes(value(row, 'control')) ? value(row, 'control') : 'Unknown') as UniversityAtlasInput['control'],
+        highestDegree: value(row, 'highest_degree') || null,
+        latitude: optionalNumber(row, 'latitude'),
+        longitude: optionalNumber(row, 'longitude'),
+        undergraduateEnrollment: optionalNumber(row, 'undergraduate_enrollment'),
+        admissionRate: optionalNumber(row, 'admission_rate'),
+        completionRate: optionalNumber(row, 'completion_rate'),
+        retentionRate: optionalNumber(row, 'retention_rate'),
+        averageNetPrice: optionalNumber(row, 'average_net_price'),
+        medianEarnings10Year: optionalNumber(row, 'median_earnings_10_year'),
+        dataYear: optionalNumber(row, 'data_year'),
+        cohortRank: optionalNumber(row, 'cohort_rank'),
+        cohortScore: optionalNumber(row, 'cohort_score'),
+        cohortVersion: value(row, 'cohort_version') || null,
+        sourceUrl: value(row, 'source_url') || null,
+        sourceFetchedAt: value(row, 'source_fetched_at') || null,
+        heroUrl: value(row, 'hero_url') || null,
+        logoUrl: value(row, 'logo_url') || null,
+        heroSourcePage: value(row, 'hero_source_page') || null,
+        logoSourcePage: value(row, 'logo_source_page') || null,
+        description: value(row, 'description') || null,
+      })).filter((row) => row.unitId || row.officialName || row.city || row.state);
+      if (!parsed.length) throw new Error('No university rows found.');
+      if (parsed.some((row) => !row.unitId || !row.officialName || !row.city || !/^[A-Za-z]{2}$/.test(row.state))) {
+        throw new Error('Every row needs unit_id, official_name, city, and a two-letter state.');
+      }
+      this.universityBulkRows.set(parsed);
+      this.universityBulkFileName.set(file.name);
+      this.universityBulkError.set(null);
+      this.universityBulkProgress.set(null);
+    } catch (error) {
+      this.universityBulkRows.set([]);
+      this.universityBulkFileName.set(null);
+      this.universityBulkError.set(error instanceof Error ? error.message : 'Failed to read university CSV.');
+    }
+  }
+
+  async createBulkUniversities(): Promise<void> {
+    const rows = this.universityBulkRows();
+    if (!rows.length || this.creatingUniversities()) return;
+    this.creatingUniversities.set(true);
+    this.universityBulkError.set(null);
+    this.universityBulkProgress.set({ total: rows.length, processed: 0, created: 0, skipped: 0, failed: 0 });
+    try {
+      for (let offset = 0; offset < rows.length; offset += 250) {
+        const response = await this.atlasService.createUniversityAtlases(rows.slice(offset, offset + 250));
+        this.universityBulkProgress.update((progress) => progress ? ({
+          ...progress,
+          processed: progress.processed + response.results.length,
+          created: progress.created + response.created,
+          skipped: progress.skipped + response.skipped,
+          failed: progress.failed + response.failed,
+        }) : progress);
+      }
+      const progress = this.universityBulkProgress();
+      this.universityCreationMessage.set(`University import finished: ${progress?.created ?? 0} created, ${progress?.skipped ?? 0} skipped, ${progress?.failed ?? 0} failed.`);
+    } catch (error) {
+      this.universityBulkError.set(error instanceof Error ? error.message : 'University import failed. The completed batches are safe; retry to skip duplicates.');
+    } finally {
+      this.creatingUniversities.set(false);
+    }
+  }
+
+  downloadUniversitySampleCsv(): void {
+    const csv = [
+      'unit_id,ope_id,official_name,city,state,website,accreditation_agency,control,highest_degree,latitude,longitude,undergraduate_enrollment,admission_rate,completion_rate,retention_rate,average_net_price,median_earnings_10_year,data_year,cohort_rank,cohort_score,cohort_version,source_url,source_fetched_at,hero_url,logo_url,hero_source_page,logo_source_page,description',
+      '166027,00215500,Harvard University,Cambridge,MA,https://www.harvard.edu/,New England Commission of Higher Education,Private nonprofit,Graduate degree,42.3745,-71.1182,7973,0.032,0.98,0.96,19500,101817,2026,1,99.1,us-doe-scorecard-2026,https://collegescorecard.ed.gov/data/,,,,,',
+    ].join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'universities-sample.csv';
+    link.click();
+    URL.revokeObjectURL(url);
   }
 
   toggleWikiList(): void {

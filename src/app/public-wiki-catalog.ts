@@ -36,6 +36,16 @@ export interface PublicWikiCatalogItem {
   timezone?: string | null;
   latitude?: number | null;
   longitude?: number | null;
+  universityUnitId?: string | null;
+  universityCity?: string | null;
+  universityState?: string | null;
+  universityControl?: string | null;
+  undergraduateEnrollment?: number | null;
+  admissionRate?: number | null;
+  completionRate?: number | null;
+  averageNetPrice?: number | null;
+  website?: string | null;
+  cohortRank?: number | null;
 }
 
 type PublicWikiPresentation = Pick<
@@ -753,6 +763,16 @@ function inferPresentation(atlas: AtlasItem): PublicWikiPresentation {
       sources: 'Internet-grounded city answers. Source bundles can be added later.',
     };
   }
+  if (atlas.wiki_type === 'university' || atlas.university_config?.enabled) {
+    return {
+      title: atlas.university_config?.official_name?.trim() || atlas.name?.trim() || undefined,
+      subtitle: 'U.S. Colleges & Universities',
+      category: 'Universities',
+      priority: 'med',
+      badges: ['evergreen'],
+      sources: 'U.S. Department of Education College Scorecard; official institution sources; Wikimedia image provenance.',
+    };
+  }
   return {
     subtitle: $localize`Public Atlas`,
     category: 'Public Atlases',
@@ -798,6 +818,17 @@ export function buildPublicWikiLiveItem(atlas: AtlasItem): PublicWikiCatalogItem
     timezone: atlas.city_config?.timezone ?? null,
     latitude: atlas.city_config?.latitude ?? null,
     longitude: atlas.city_config?.longitude ?? null,
+    countryLabel: atlas.university_config?.country_code === 'US' ? 'United States' : null,
+    universityUnitId: atlas.university_config?.unit_id ?? null,
+    universityCity: atlas.university_config?.city ?? null,
+    universityState: atlas.university_config?.state ?? null,
+    universityControl: atlas.university_config?.control ?? null,
+    undergraduateEnrollment: atlas.university_config?.undergraduate_enrollment ?? null,
+    admissionRate: atlas.university_config?.admission_rate ?? null,
+    completionRate: atlas.university_config?.completion_rate ?? null,
+    averageNetPrice: atlas.university_config?.average_net_price ?? null,
+    website: atlas.university_config?.website ?? null,
+    cohortRank: atlas.university_config?.cohort_rank ?? null,
   };
 }
 

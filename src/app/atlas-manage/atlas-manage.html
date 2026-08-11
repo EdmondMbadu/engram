@@ -283,6 +283,75 @@
     </section>
 
     <section class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
+      <button type="button" class="flex w-full items-center justify-between gap-4 px-5 py-5 text-left transition hover:bg-[var(--soft-fill)]" (click)="toggleUniversityLaunch()" [attr.aria-expanded]="universityLaunchOpen()">
+        <span class="min-w-0">
+          <span class="block text-[10px] font-black uppercase tracking-[0.24em] text-[var(--accent)]">College & university launch</span>
+          <span class="mt-2 block text-2xl font-black tracking-tight">Create source-aware public university Wikis.</span>
+          <span class="mt-2 block max-w-3xl text-sm leading-6 text-[var(--muted)]">Create one institution or upload a federal-data CSV. Unit ID is the durable identity; batches run safely in groups of 250 and skip duplicates.</span>
+        </span>
+        <span class="flex shrink-0 items-center gap-3">
+          <span class="hidden rounded-2xl border border-[var(--line)] bg-[var(--soft-fill)] px-4 py-3 text-sm sm:inline-flex"><b>{{ universityBulkRows().length }}</b><span class="ml-1 text-[var(--muted)]"> ready</span></span>
+          <span class="material-symbols-outlined text-[1.4rem] text-[var(--muted)]">{{ universityLaunchOpen() ? 'expand_less' : 'expand_more' }}</span>
+        </span>
+      </button>
+
+      @if (universityLaunchOpen()) {
+        <div class="grid gap-5 border-t border-[var(--line)] p-5 xl:grid-cols-2">
+          @if (universityCreationMessage()) {
+            <div class="rounded-2xl border border-[var(--accent)]/25 bg-[var(--soft-fill)] px-4 py-3 text-sm font-semibold text-[var(--accent)] xl:col-span-2">{{ universityCreationMessage() }}</div>
+          }
+          @if (universityBulkError()) {
+            <div class="rounded-2xl border border-[var(--error-border)] bg-[var(--error-bg)] px-4 py-3 text-sm font-semibold text-[var(--error-text)] xl:col-span-2">{{ universityBulkError() }}</div>
+          }
+
+          <form class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4" (submit)="createUniversity($event)">
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Individual institution</p>
+            <h3 class="mt-1 text-lg font-black">Create a public university Wiki</h3>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Use the federal Unit ID and official institution name. Images remain independently sourced and traceable.</p>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Federal Unit ID *</span><input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().unit_id" (input)="updateUniversityDraft('unit_id', $any($event.target).value)" placeholder="166027" /></label>
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Official name *</span><input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().official_name" (input)="updateUniversityDraft('official_name', $any($event.target).value)" placeholder="Harvard University" /></label>
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">City *</span><input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().city" (input)="updateUniversityDraft('city', $any($event.target).value)" placeholder="Cambridge" /></label>
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">State *</span><input maxlength="2" class="theme-input w-full rounded-2xl px-4 py-3 text-sm uppercase" [value]="universityDraft().state" (input)="updateUniversityDraft('state', $any($event.target).value)" placeholder="MA" /></label>
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Official website</span><input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().website" (input)="updateUniversityDraft('website', $any($event.target).value)" placeholder="https://www.example.edu" /></label>
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Control</span><select class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().control" (change)="updateUniversityDraft('control', $any($event.target).value)"><option>Unknown</option><option>Public</option><option>Private nonprofit</option><option>Private for-profit</option></select></label>
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Undergraduate enrollment</span><input inputmode="numeric" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().undergraduate_enrollment" (input)="updateUniversityDraft('undergraduate_enrollment', $any($event.target).value)" placeholder="7973" /></label>
+              <label class="block"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Logo URL</span><input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().logo_url" (input)="updateUniversityDraft('logo_url', $any($event.target).value)" placeholder="Wikimedia or official URL" /></label>
+              <label class="block sm:col-span-2"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Main campus image URL</span><input class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().hero_url" (input)="updateUniversityDraft('hero_url', $any($event.target).value)" placeholder="Wikimedia image URL" /></label>
+              <label class="block sm:col-span-2"><span class="mb-1 block text-xs font-bold text-[var(--muted)]">Description</span><textarea rows="3" class="theme-input w-full rounded-2xl px-4 py-3 text-sm" [value]="universityDraft().description" (input)="updateUniversityDraft('description', $any($event.target).value)" placeholder="Leave blank for a factual generated summary."></textarea></label>
+            </div>
+            <button type="submit" [disabled]="creatingUniversities()" class="mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] disabled:opacity-45"><span class="material-symbols-outlined">school</span>{{ creatingUniversities() ? 'Creating…' : 'Create university' }}</button>
+          </form>
+
+          <section class="rounded-3xl border border-[var(--line)] bg-[var(--soft-fill)] p-4">
+            <p class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--accent)]">Bulk university CSV</p>
+            <h3 class="mt-1 text-lg font-black">Preview, deduplicate, and create</h3>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">Upload up to 500 prepared rows. The browser sends two safe 250-row batches, and a retry skips records already created by Unit ID.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <button type="button" (click)="downloadUniversitySampleCsv()" class="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-bold"><span class="material-symbols-outlined">download</span>Sample CSV</button>
+              <label class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-bold"><span class="material-symbols-outlined">upload_file</span>Upload CSV<input type="file" accept=".csv,text/csv" class="sr-only" (change)="onUniversityCsvSelected($event)" /></label>
+            </div>
+            @if (universityBulkFileName()) {
+              <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4">
+                <div class="flex items-center justify-between gap-3"><div><b>{{ universityBulkFileName() }}</b><p class="text-xs text-[var(--muted)]">{{ universityBulkRows().length }} valid rows</p></div><span class="rounded-full bg-[var(--accent)]/10 px-3 py-1 text-xs font-black text-[var(--accent)]">Ready</span></div>
+                <div class="mt-3 max-h-56 overflow-auto rounded-xl border border-[var(--line)]">
+                  @for (row of universityBulkRows().slice(0, 12); track row.unitId) {
+                    <div class="flex items-center justify-between gap-4 border-b border-[var(--line)] px-3 py-2 text-xs last:border-0"><span class="min-w-0 truncate"><b>{{ row.officialName }}</b> · {{ row.city }}, {{ row.state }}</span><span class="shrink-0 text-[var(--muted)]">{{ row.unitId }}</span></div>
+                  }
+                </div>
+                @if (universityBulkRows().length > 12) { <p class="mt-2 text-xs text-[var(--muted)]">Plus {{ universityBulkRows().length - 12 }} more rows.</p> }
+              </div>
+            }
+            @if (universityBulkProgress(); as progress) {
+              <div class="mt-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4"><div class="flex justify-between text-xs font-black"><span>{{ progress.processed }} / {{ progress.total }}</span><span>{{ progress.created }} created · {{ progress.skipped }} skipped · {{ progress.failed }} failed</span></div><div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--soft-fill)]"><div class="h-full bg-[var(--accent)]" [style.width.%]="progress.total ? progress.processed / progress.total * 100 : 0"></div></div></div>
+            }
+            <button type="button" (click)="createBulkUniversities()" [disabled]="!universityBulkRows().length || creatingUniversities()" class="mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-black text-[var(--accent-contrast)] disabled:opacity-45"><span class="material-symbols-outlined">playlist_add</span>{{ creatingUniversities() ? 'Importing…' : 'Create all universities' }}</button>
+          </section>
+        </div>
+      }
+    </section>
+
+    <section class="mt-6 overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-floating)]">
       <button
         type="button"
         class="flex w-full items-center justify-between gap-4 px-5 py-5 text-left transition hover:bg-[var(--soft-fill)]"

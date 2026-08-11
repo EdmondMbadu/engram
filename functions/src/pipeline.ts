@@ -805,6 +805,14 @@ async function loadAtlasChatContext(atlasId: string | null): Promise<{
         region_name?: unknown;
         country_code?: unknown;
       } | null;
+      university_config?: {
+        official_name?: unknown;
+        city?: unknown;
+        state?: unknown;
+        country_code?: unknown;
+        source_url?: unknown;
+        data_year?: unknown;
+      } | null;
     } | undefined;
     const raw = typeof data?.persona_prompt === 'string' ? data.persona_prompt.trim() : '';
     const guide = data?.chat_guide && typeof data.chat_guide === 'object'
@@ -831,11 +839,22 @@ async function loadAtlasChatContext(atlasId: string | null): Promise<{
       typeof cityConfig?.region_name === 'string' ? cityConfig.region_name.trim() : '',
       typeof cityConfig?.country_code === 'string' ? cityConfig.country_code.trim() : '',
     ].filter(Boolean);
+    const universityConfig = data?.university_config;
+    const universityParts = [
+      typeof universityConfig?.official_name === 'string' ? universityConfig.official_name.trim() : '',
+      typeof universityConfig?.city === 'string' ? universityConfig.city.trim() : '',
+      typeof universityConfig?.state === 'string' ? universityConfig.state.trim() : '',
+      typeof universityConfig?.country_code === 'string' ? universityConfig.country_code.trim() : '',
+    ].filter(Boolean);
 
     return {
       personaPrompt,
       atlasName: typeof data?.name === 'string' && data.name.trim() ? data.name.trim() : null,
-      cityHint: cityParts.length > 0 ? cityParts.join(', ') : null,
+      cityHint: cityParts.length > 0
+        ? cityParts.join(', ')
+        : universityParts.length > 0
+          ? universityParts.join(', ')
+          : null,
     };
   } catch (error) {
     logger.warn('Failed to load atlas chat context.', {

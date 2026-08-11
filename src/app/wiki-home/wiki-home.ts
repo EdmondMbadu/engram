@@ -72,7 +72,7 @@ export class WikiHomeComponent {
   constructor() {
     effect(() => {
       const atlases = this.atlases();
-      void this.syncUsage(atlases);
+      void this.syncUsage(atlases.filter((atlas) => atlas.wiki_type !== 'university'));
     });
   }
 

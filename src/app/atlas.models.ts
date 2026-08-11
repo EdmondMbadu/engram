@@ -100,6 +100,47 @@ export interface CityAtlasConfig {
   manual_metrics?: CityPulseMetric[] | null;
 }
 
+export type WikiType = 'city' | 'university' | 'topic';
+
+export interface UniversityAssetSource {
+  url: string | null;
+  page_url: string | null;
+  provider: 'wikimedia' | 'official_website' | 'manual' | 'fallback' | null;
+  title: string | null;
+  license: string | null;
+  fetched_at: string | null;
+}
+
+export interface UniversityAtlasConfig {
+  enabled: boolean;
+  unit_id: string;
+  ope_id: string | null;
+  official_name: string;
+  city: string;
+  state: string;
+  country_code: string;
+  website: string | null;
+  accreditation_agency: string | null;
+  control: 'Public' | 'Private nonprofit' | 'Private for-profit' | 'Unknown';
+  highest_degree: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  undergraduate_enrollment: number | null;
+  admission_rate: number | null;
+  completion_rate: number | null;
+  retention_rate: number | null;
+  average_net_price: number | null;
+  median_earnings_10_year: number | null;
+  data_year: number | null;
+  cohort_rank: number | null;
+  cohort_score: number | null;
+  cohort_version: string | null;
+  source_url: string | null;
+  source_fetched_at: string | null;
+  hero_source?: UniversityAssetSource | null;
+  logo_source?: UniversityAssetSource | null;
+}
+
 export interface AtlasChatGuideConfig {
   name: string | null;
   label: string | null;
@@ -121,7 +162,9 @@ export interface AtlasItem {
   hero_url: string | null;
   video_url: string | null;
   cover_color: string | null;
+  wiki_type?: WikiType | null;
   city_config?: CityAtlasConfig | null;
+  university_config?: UniversityAtlasConfig | null;
   chat_guide?: AtlasChatGuideConfig | null;
   persona_prompt?: string | null;
   default_answer_mode?: 'wiki' | 'internet' | null;

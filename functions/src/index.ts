@@ -19016,6 +19016,7 @@ export const createBulkCityAtlases = onCall(
 
       batch.set(atlasRef, {
         user_id: uid,
+        wiki_type: 'city',
         name,
         slug,
         description,
@@ -19082,6 +19083,228 @@ export const createBulkCityAtlases = onCall(
       await batch.commit();
     }
 
+    return {
+      created: results.filter((result) => result.status === 'created').length,
+      skipped: results.filter((result) => result.status === 'skipped').length,
+      failed: results.filter((result) => result.status === 'failed').length,
+      results,
+    };
+  },
+);
+
+type UniversityCreateRow = {
+  rowNumber?: number;
+  unitId?: string | number;
+  opeId?: string | null;
+  officialName?: string;
+  city?: string;
+  state?: string;
+  website?: string | null;
+  accreditationAgency?: string | null;
+  control?: string | null;
+  highestDegree?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  undergraduateEnrollment?: number | null;
+  admissionRate?: number | null;
+  completionRate?: number | null;
+  retentionRate?: number | null;
+  averageNetPrice?: number | null;
+  medianEarnings10Year?: number | null;
+  dataYear?: number | null;
+  cohortRank?: number | null;
+  cohortScore?: number | null;
+  cohortVersion?: string | null;
+  sourceUrl?: string | null;
+  sourceFetchedAt?: string | null;
+  heroUrl?: string | null;
+  logoUrl?: string | null;
+  heroSourcePage?: string | null;
+  logoSourcePage?: string | null;
+  description?: string | null;
+};
+
+type UniversityCreateResult = {
+  rowNumber: number;
+  unitId: string;
+  officialName: string;
+  slug: string;
+  status: 'created' | 'skipped' | 'failed';
+  atlasId: string | null;
+  error: string | null;
+};
+
+function universityNumber(value: unknown, options: { min?: number; max?: number } = {}): number | null {
+  const parsed = typeof value === 'number' ? value : Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  if (options.min !== undefined && parsed < options.min) return null;
+  if (options.max !== undefined && parsed > options.max) return null;
+  return parsed;
+}
+
+function universityUrl(value: unknown): string | null {
+  const raw = textFromUnknown(value).trim().slice(0, 1000);
+  if (!raw) return null;
+  const candidate = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    const parsed = new URL(candidate);
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+export const createUniversityAtlases = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 300,
+    memory: '1GiB',
+  },
+  async (request) => {
+    const uid = request.auth?.uid;
+    if (!uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    await assertPlatformAdmin(uid);
+
+    const rows = Array.isArray(request.data?.rows) ? request.data.rows as UniversityCreateRow[] : [];
+    if (!rows.length) throw new HttpsError('invalid-argument', 'At least one university row is required.');
+    if (rows.length > 250) throw new HttpsError('invalid-argument', 'Import up to 250 universities at a time.');
+
+    const existingSnapshot = await db.collection('atlases').where('is_public', '==', true).get();
+    const existingUnitIds = new Set(existingSnapshot.docs.map((docSnapshot) => {
+      const config = docSnapshot.data().university_config as Record<string, unknown> | undefined;
+      return textFromUnknown(config?.unit_id);
+    }).filter(Boolean));
+    const existingSlugs = new Set(existingSnapshot.docs.map((docSnapshot) => textFromUnknown(docSnapshot.data().slug)).filter(Boolean));
+    const seenUnitIds = new Set<string>();
+    const seenSlugs = new Set<string>();
+    const results: UniversityCreateResult[] = [];
+    const batch = db.batch();
+    const now = FieldValue.serverTimestamp();
+    let createCount = 0;
+
+    for (const row of rows) {
+      const rowNumber = Math.round(universityNumber(row.rowNumber, { min: 0 }) ?? 0);
+      const unitId = textFromUnknown(row.unitId).replace(/\D/g, '').slice(0, 12);
+      const officialName = textFromUnknown(row.officialName).replace(/\s+/g, ' ').trim().slice(0, 180);
+      const city = textFromUnknown(row.city).replace(/\s+/g, ' ').trim().slice(0, 100);
+      const state = textFromUnknown(row.state).trim().toUpperCase().slice(0, 2);
+      const baseSlug = cityImportSlug(officialName);
+      let slug = baseSlug;
+      const withSuffix = (base: string, suffix: string) => {
+        const cleanSuffix = cityImportSlug(suffix).slice(0, 16);
+        return `${base.slice(0, Math.max(1, 47 - cleanSuffix.length))}-${cleanSuffix}`;
+      };
+      if (existingSlugs.has(slug) || seenSlugs.has(slug)) slug = withSuffix(baseSlug, state);
+      if (existingSlugs.has(slug) || seenSlugs.has(slug)) slug = withSuffix(baseSlug, `${state}-${unitId}`);
+      const base = { rowNumber, unitId, officialName, slug, atlasId: null };
+
+      if (!unitId || !officialName || !city || !/^[A-Z]{2}$/.test(state)) {
+        results.push({ ...base, status: 'failed', error: 'Unit ID, official name, city, and two-letter state are required.' });
+        continue;
+      }
+      if (existingUnitIds.has(unitId) || seenUnitIds.has(unitId)) {
+        results.push({ ...base, status: 'skipped', error: null });
+        continue;
+      }
+
+      const controlValue = textFromUnknown(row.control);
+      const control = ['Public', 'Private nonprofit', 'Private for-profit'].includes(controlValue)
+        ? controlValue
+        : 'Unknown';
+      const website = universityUrl(row.website);
+      const heroUrl = universityUrl(row.heroUrl);
+      const logoUrl = universityUrl(row.logoUrl);
+      const location = `${city}, ${state}`;
+      const description = textFromUnknown(row.description).slice(0, 900)
+        || `${officialName} is a ${control.toLowerCase()} institution in ${location}. Explore admissions, academics, campus life, costs, outcomes, and current official information.`;
+      const atlasRef = db.collection('atlases').doc();
+      const fetchedAt = nullableTextFromUnknown(row.sourceFetchedAt, 60) || new Date().toISOString();
+      const universityConfig = {
+        enabled: true,
+        unit_id: unitId,
+        ope_id: nullableTextFromUnknown(row.opeId, 20),
+        official_name: officialName,
+        city,
+        state,
+        country_code: 'US',
+        website,
+        accreditation_agency: nullableTextFromUnknown(row.accreditationAgency, 240),
+        control,
+        highest_degree: nullableTextFromUnknown(row.highestDegree, 80),
+        latitude: universityNumber(row.latitude, { min: -90, max: 90 }),
+        longitude: universityNumber(row.longitude, { min: -180, max: 180 }),
+        undergraduate_enrollment: universityNumber(row.undergraduateEnrollment, { min: 0 }),
+        admission_rate: universityNumber(row.admissionRate, { min: 0, max: 1 }),
+        completion_rate: universityNumber(row.completionRate, { min: 0, max: 1 }),
+        retention_rate: universityNumber(row.retentionRate, { min: 0, max: 1 }),
+        average_net_price: universityNumber(row.averageNetPrice, { min: 0 }),
+        median_earnings_10_year: universityNumber(row.medianEarnings10Year, { min: 0 }),
+        data_year: universityNumber(row.dataYear, { min: 2000, max: 2100 }),
+        cohort_rank: universityNumber(row.cohortRank, { min: 1 }),
+        cohort_score: universityNumber(row.cohortScore, { min: 0, max: 100 }),
+        cohort_version: nullableTextFromUnknown(row.cohortVersion, 80),
+        source_url: universityUrl(row.sourceUrl),
+        source_fetched_at: fetchedAt,
+        hero_source: {
+          url: heroUrl,
+          page_url: universityUrl(row.heroSourcePage),
+          provider: heroUrl ? 'wikimedia' : 'fallback',
+          title: officialName,
+          license: null,
+          fetched_at: fetchedAt,
+        },
+        logo_source: {
+          url: logoUrl,
+          page_url: universityUrl(row.logoSourcePage),
+          provider: logoUrl ? 'wikimedia' : 'fallback',
+          title: `${officialName} logo`,
+          license: null,
+          fetched_at: fetchedAt,
+        },
+      };
+
+      batch.set(atlasRef, {
+        user_id: uid,
+        wiki_type: 'university',
+        name: slug === baseSlug ? officialName : `${officialName} (${state})`,
+        slug,
+        description,
+        landing_summary: `A source-aware guide to ${officialName}: academics, admissions, cost, campus life, outcomes, and current institutional information.`,
+        is_public: true,
+        logo_url: logoUrl,
+        hero_url: heroUrl,
+        video_url: null,
+        cover_color: '#173f35',
+        default_answer_mode: 'internet',
+        city_config: null,
+        university_config: universityConfig,
+        chat_guide: {
+          name: `${officialName} Guide`,
+          label: `Ask about ${officialName} academics, admissions, costs, campus life, outcomes, and current news.`,
+          image_url: logoUrl,
+          banner_url: heroUrl,
+        },
+        persona_prompt: [
+          `You are the LivingWiki guide for ${officialName} in ${location}.`,
+          `Use official institutional sources and U.S. Department of Education data first.`,
+          `Separate verified facts from interpretation, state the data year for statistics, and never invent rankings, programs, costs, admissions figures, or campus details.`,
+          `Be concise, welcoming, useful to prospective students, current students, families, alumni, faculty, and researchers.`,
+        ].join(' '),
+        import_batch_id: nullableTextFromUnknown(row.cohortVersion, 80),
+        created_at: now,
+        updated_at: now,
+      });
+
+      createCount += 1;
+      existingUnitIds.add(unitId);
+      existingSlugs.add(slug);
+      seenUnitIds.add(unitId);
+      seenSlugs.add(slug);
+      results.push({ ...base, status: 'created', atlasId: atlasRef.id, error: null });
+    }
+
+    if (createCount) await batch.commit();
     return {
       created: results.filter((result) => result.status === 'created').length,
       skipped: results.filter((result) => result.status === 'skipped').length,
