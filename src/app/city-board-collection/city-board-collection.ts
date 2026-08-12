@@ -1,11 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, LOCALE_ID, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
+import { Component, LOCALE_ID, OnDestroy, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
+import { AuthService } from '../auth.service';
 import {
   CITY_BOARD_CATEGORIES,
   cityBoardCategory,
@@ -18,24 +19,30 @@ import {
   type CityBoardListing,
 } from '../city-board-listings.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
+import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
+import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 
 type CollectionFilter = 'all' | CityBoardCategoryId;
 type RailState = { back: boolean; forward: boolean };
 
 @Component({
   selector: 'app-city-board-collection',
-  imports: [RouterLink, ThemeToggleComponent],
+  imports: [RouterLink, ThemeToggleComponent, MobileMenuComponent, WorkspaceSidebarComponent],
   templateUrl: './city-board-collection.html',
   styleUrl: './city-board-collection.css',
 })
-export class CityBoardCollectionComponent {
+export class CityBoardCollectionComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly atlasService = inject(AtlasService);
+  private readonly authService = inject(AuthService);
   private readonly listingsService = inject(CityBoardListingsService);
   private readonly titleService = inject(Title);
   private readonly localeId = inject(LOCALE_ID);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private loadSequence = 0;
+  private spotlightRotationTimer: number | null = null;
+  private spotlightPointerInside = false;
+  private spotlightFocusWithin = false;
 
   readonly routeSlug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug')?.trim() || '')),
@@ -51,6 +58,8 @@ export class CityBoardCollectionComponent {
   readonly activeFilter = signal<CollectionFilter>('all');
   readonly searchQuery = signal('');
   readonly railState = signal<Record<string, RailState>>({});
+  readonly spotlightPaused = signal(false);
+  readonly isSignedIn = computed(() => !!this.authService.uid());
 
   readonly cityName = computed(() => {
     const atlas = this.atlas();
@@ -128,11 +137,43 @@ export class CityBoardCollectionComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.stopSpotlightRotation();
+  }
+
   selectFeatured(board: CityBoardListing): void {
     this.selectedFeaturedId.set(board.id);
+    this.restartSpotlightRotation();
   }
 
   moveFeatured(direction: -1 | 1): void {
+    this.rotateFeatured(direction);
+    this.restartSpotlightRotation();
+  }
+
+  onSpotlightPointerEnter(): void {
+    this.spotlightPointerInside = true;
+    this.syncSpotlightPause();
+  }
+
+  onSpotlightPointerLeave(): void {
+    this.spotlightPointerInside = false;
+    this.syncSpotlightPause();
+  }
+
+  onSpotlightFocusIn(): void {
+    this.spotlightFocusWithin = true;
+    this.syncSpotlightPause();
+  }
+
+  onSpotlightFocusOut(event: FocusEvent): void {
+    const spotlight = event.currentTarget as HTMLElement;
+    const nextTarget = event.relatedTarget;
+    this.spotlightFocusWithin = nextTarget instanceof Node && spotlight.contains(nextTarget);
+    this.syncSpotlightPause();
+  }
+
+  private rotateFeatured(direction: -1 | 1): void {
     const boards = this.featuredBoards();
     if (boards.length < 2) return;
     const activeIndex = Math.max(0, boards.findIndex((board) => board.id === this.activeFeatured()?.id));
@@ -232,6 +273,7 @@ export class CityBoardCollectionComponent {
         if (sequence !== this.loadSequence) return;
         this.boards.set(boards);
         this.selectedFeaturedId.set(selectFeaturedCityBoards(boards, 5)[0]?.id ?? '');
+        this.restartSpotlightRotation();
         if (this.isBrowser) window.setTimeout(() => this.syncAllRails(), 80);
       } catch {
         if (sequence === this.loadSequence) {
@@ -254,6 +296,33 @@ export class CityBoardCollectionComponent {
       const id = rail.dataset['cityBoardRail'];
       if (id) this.updateRailState(id, rail);
     });
+  }
+
+  private restartSpotlightRotation(): void {
+    this.stopSpotlightRotation();
+    if (!this.isBrowser || this.spotlightPaused() || this.featuredBoards().length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    this.spotlightRotationTimer = window.setInterval(() => {
+      if (document.visibilityState !== 'visible' || this.spotlightPaused()) return;
+      this.rotateFeatured(1);
+    }, 5_000);
+  }
+
+  private stopSpotlightRotation(): void {
+    if (this.spotlightRotationTimer !== null) {
+      window.clearInterval(this.spotlightRotationTimer);
+      this.spotlightRotationTimer = null;
+    }
+  }
+
+  private syncSpotlightPause(): void {
+    const paused = this.spotlightPointerInside || this.spotlightFocusWithin;
+    this.spotlightPaused.set(paused);
+    if (paused) {
+      this.stopSpotlightRotation();
+    } else {
+      this.restartSpotlightRotation();
+    }
   }
 
   private updateRailState(id: string, rail: HTMLElement): void {

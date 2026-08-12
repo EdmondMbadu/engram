@@ -1,11 +1,21 @@
+<div class="city-collection-workspace">
+  @if (isSignedIn()) {
+    <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
+  }
+
 <main class="city-collection-page">
   <div class="city-collection-page__glow" aria-hidden="true"></div>
 
   <header class="collection-nav">
     <div class="collection-nav__inner">
-      <a routerLink="/" class="collection-nav__brand" aria-label="LivingWiki home">
-        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki" />
-      </a>
+      <div class="collection-nav__brand-group">
+        @if (isSignedIn()) {
+          <app-mobile-menu activePage="home"></app-mobile-menu>
+        }
+        <a routerLink="/" class="collection-nav__brand" aria-label="LivingWiki home">
+          <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki" />
+        </a>
+      </div>
       <div class="collection-nav__actions">
         @if (atlas()) {
           <a [routerLink]="cityLink()" class="collection-nav__city-link">
@@ -105,7 +115,15 @@
         </section>
       } @else {
         @if (activeFeatured(); as featured) {
-          <section class="collection-spotlight" aria-label="Featured city boards">
+          <section
+            class="collection-spotlight"
+            [class.collection-spotlight--paused]="spotlightPaused()"
+            aria-label="Featured city boards"
+            (mouseenter)="onSpotlightPointerEnter()"
+            (mouseleave)="onSpotlightPointerLeave()"
+            (focusin)="onSpotlightFocusIn()"
+            (focusout)="onSpotlightFocusOut($event)"
+          >
             <div class="collection-spotlight__backdrop" [class.collection-spotlight__backdrop--fallback]="!activeHeroImage()">
               @if (activeHeroImage()) {
                 <img [src]="activeHeroImage()" [alt]="featured.title" />
@@ -302,3 +320,4 @@
     }
   </div>
 </main>
+</div>

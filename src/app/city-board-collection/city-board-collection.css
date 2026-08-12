@@ -2,11 +2,19 @@
   display: block;
 }
 
+.city-collection-workspace {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
 .city-collection-page {
   --collection-green: #118968;
   --collection-deep: #071d17;
   position: relative;
   min-height: 100vh;
+  min-width: 0;
+  flex: 1 1 auto;
   overflow: hidden;
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--bg) 97%, var(--accent) 3%), var(--bg) 32rem),
@@ -47,9 +55,14 @@
   padding: 0.65rem clamp(1rem, 4vw, 3.4rem);
 }
 
+.collection-nav__brand-group,
 .collection-nav__brand {
   display: inline-flex;
   align-items: center;
+}
+
+.collection-nav__brand-group {
+  gap: 0.65rem;
 }
 
 .collection-nav__brand img {
@@ -421,6 +434,10 @@
   border-color: rgba(126, 229, 196, 0.72);
   background: rgba(12, 60, 47, 0.82);
   color: #fff;
+}
+
+.collection-spotlight--paused .collection-spotlight__picker button.active {
+  border-color: rgba(177, 244, 222, 0.92);
 }
 
 .collection-spotlight__picker-media {
