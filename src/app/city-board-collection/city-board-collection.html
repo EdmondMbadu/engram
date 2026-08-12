@@ -170,6 +170,9 @@
                     [attr.aria-label]="'Feature ' + board.title"
                     (click)="selectFeatured(board)"
                   >
+                    <span class="collection-spotlight__picker-progress" aria-hidden="true">
+                      <i [style.width.%]="spotlightBoardProgress(board)"></i>
+                    </span>
                     <span class="collection-spotlight__picker-media">
                       @if (board.imageUrl) {
                         <img [src]="board.imageUrl" alt="" />

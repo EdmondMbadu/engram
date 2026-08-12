@@ -1,5 +1,10 @@
 import type { CityBoardListing } from './city-board-listings.service';
-import { cityBoardCategory, selectFeaturedCityBoards } from './city-board-collection.util';
+import {
+  cityBoardCategory,
+  cityBoardReelIndex,
+  cityBoardReelSegmentProgress,
+  selectFeaturedCityBoards,
+} from './city-board-collection.util';
 
 function board(overrides: Partial<CityBoardListing>): CityBoardListing {
   return {
@@ -37,5 +42,17 @@ describe('city board collection', () => {
       board({ id: 'more-food', title: 'Where Philadelphia Eats', imageUrl: 'more-food.jpg' }),
     ], 3);
     expect(selected.map((item) => item.id)).toEqual(['ranked', 'food', 'places']);
+  });
+
+  it('loops the reel from the final board back to the first board', () => {
+    expect(cityBoardReelIndex(4, 5, 1)).toBe(0);
+    expect(cityBoardReelIndex(0, 5, -1)).toBe(4);
+  });
+
+  it('fills completed progress segments and clamps the active segment', () => {
+    expect(cityBoardReelSegmentProgress(0, 2, 43)).toBe(100);
+    expect(cityBoardReelSegmentProgress(2, 2, 43)).toBe(43);
+    expect(cityBoardReelSegmentProgress(3, 2, 43)).toBe(0);
+    expect(cityBoardReelSegmentProgress(2, 2, 120)).toBe(100);
   });
 });

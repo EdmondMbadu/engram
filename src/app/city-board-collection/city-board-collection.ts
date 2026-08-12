@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, LOCALE_ID, OnDestroy, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
+import { Component, HostListener, LOCALE_ID, OnDestroy, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -10,6 +10,8 @@ import { AuthService } from '../auth.service';
 import {
   CITY_BOARD_CATEGORIES,
   cityBoardCategory,
+  cityBoardReelIndex,
+  cityBoardReelSegmentProgress,
   selectFeaturedCityBoards,
   type CityBoardCategory,
   type CityBoardCategoryId,
@@ -24,6 +26,7 @@ import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sideba
 
 type CollectionFilter = 'all' | CityBoardCategoryId;
 type RailState = { back: boolean; forward: boolean };
+const SPOTLIGHT_ROTATION_MS = 5_000;
 
 @Component({
   selector: 'app-city-board-collection',
@@ -40,7 +43,9 @@ export class CityBoardCollectionComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private loadSequence = 0;
-  private spotlightRotationTimer: number | null = null;
+  private spotlightRotationFrame: number | null = null;
+  private spotlightCycleStartedAt = 0;
+  private spotlightCycleElapsedMs = 0;
   private spotlightPointerInside = false;
   private spotlightFocusWithin = false;
 
@@ -59,6 +64,7 @@ export class CityBoardCollectionComponent implements OnDestroy {
   readonly searchQuery = signal('');
   readonly railState = signal<Record<string, RailState>>({});
   readonly spotlightPaused = signal(false);
+  readonly spotlightProgress = signal(0);
   readonly isSignedIn = computed(() => !!this.authService.uid());
 
   readonly cityName = computed(() => {
@@ -141,6 +147,16 @@ export class CityBoardCollectionComponent implements OnDestroy {
     this.stopSpotlightRotation();
   }
 
+  @HostListener('document:visibilitychange')
+  onDocumentVisibilityChange(): void {
+    if (!this.isBrowser) return;
+    if (document.visibilityState === 'visible' && !this.spotlightPaused()) {
+      this.resumeSpotlightRotation();
+    } else {
+      this.pauseSpotlightRotation();
+    }
+  }
+
   selectFeatured(board: CityBoardListing): void {
     this.selectedFeaturedId.set(board.id);
     this.restartSpotlightRotation();
@@ -149,6 +165,13 @@ export class CityBoardCollectionComponent implements OnDestroy {
   moveFeatured(direction: -1 | 1): void {
     this.rotateFeatured(direction);
     this.restartSpotlightRotation();
+  }
+
+  spotlightBoardProgress(board: CityBoardListing): number {
+    const boards = this.featuredBoards();
+    const boardIndex = boards.findIndex((candidate) => candidate.id === board.id);
+    const activeIndex = boards.findIndex((candidate) => candidate.id === this.activeFeatured()?.id);
+    return cityBoardReelSegmentProgress(boardIndex, activeIndex, this.spotlightProgress());
   }
 
   onSpotlightPointerEnter(): void {
@@ -177,7 +200,7 @@ export class CityBoardCollectionComponent implements OnDestroy {
     const boards = this.featuredBoards();
     if (boards.length < 2) return;
     const activeIndex = Math.max(0, boards.findIndex((board) => board.id === this.activeFeatured()?.id));
-    this.selectedFeaturedId.set(boards[(activeIndex + direction + boards.length) % boards.length].id);
+    this.selectedFeaturedId.set(boards[cityBoardReelIndex(activeIndex, boards.length, direction)].id);
   }
 
   selectFilter(filter: CollectionFilter): void {
@@ -300,28 +323,67 @@ export class CityBoardCollectionComponent implements OnDestroy {
 
   private restartSpotlightRotation(): void {
     this.stopSpotlightRotation();
+    this.spotlightCycleElapsedMs = 0;
+    this.spotlightProgress.set(0);
+    this.resumeSpotlightRotation();
+  }
+
+  private resumeSpotlightRotation(): void {
     if (!this.isBrowser || this.spotlightPaused() || this.featuredBoards().length < 2) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    this.spotlightRotationTimer = window.setInterval(() => {
-      if (document.visibilityState !== 'visible' || this.spotlightPaused()) return;
-      this.rotateFeatured(1);
-    }, 5_000);
+    if (this.spotlightRotationFrame !== null) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this.spotlightProgress.set(100);
+      return;
+    }
+
+    this.spotlightCycleStartedAt = performance.now() - this.spotlightCycleElapsedMs;
+    const tick = (now: number) => {
+      if (document.visibilityState !== 'visible' || this.spotlightPaused()) {
+        this.pauseSpotlightRotation();
+        return;
+      }
+
+      this.spotlightCycleElapsedMs = Math.min(
+        SPOTLIGHT_ROTATION_MS,
+        Math.max(0, now - this.spotlightCycleStartedAt),
+      );
+      this.spotlightProgress.set((this.spotlightCycleElapsedMs / SPOTLIGHT_ROTATION_MS) * 100);
+
+      if (this.spotlightCycleElapsedMs >= SPOTLIGHT_ROTATION_MS) {
+        this.rotateFeatured(1);
+        this.spotlightCycleElapsedMs = 0;
+        this.spotlightCycleStartedAt = now;
+        this.spotlightProgress.set(0);
+      }
+      this.spotlightRotationFrame = window.requestAnimationFrame(tick);
+    };
+    this.spotlightRotationFrame = window.requestAnimationFrame(tick);
   }
 
   private stopSpotlightRotation(): void {
-    if (this.spotlightRotationTimer !== null) {
-      window.clearInterval(this.spotlightRotationTimer);
-      this.spotlightRotationTimer = null;
+    if (this.isBrowser && this.spotlightRotationFrame !== null) {
+      window.cancelAnimationFrame(this.spotlightRotationFrame);
+      this.spotlightRotationFrame = null;
     }
+  }
+
+  private pauseSpotlightRotation(): void {
+    if (!this.isBrowser || this.spotlightRotationFrame === null) return;
+    this.spotlightCycleElapsedMs = Math.min(
+      SPOTLIGHT_ROTATION_MS,
+      Math.max(0, performance.now() - this.spotlightCycleStartedAt),
+    );
+    this.spotlightProgress.set((this.spotlightCycleElapsedMs / SPOTLIGHT_ROTATION_MS) * 100);
+    this.stopSpotlightRotation();
   }
 
   private syncSpotlightPause(): void {
     const paused = this.spotlightPointerInside || this.spotlightFocusWithin;
     this.spotlightPaused.set(paused);
     if (paused) {
-      this.stopSpotlightRotation();
+      this.pauseSpotlightRotation();
     } else {
-      this.restartSpotlightRotation();
+      this.resumeSpotlightRotation();
     }
   }
 

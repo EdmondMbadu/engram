@@ -148,3 +148,19 @@ export function selectFeaturedCityBoards(
   }
   return selected;
 }
+
+export function cityBoardReelIndex(currentIndex: number, count: number, direction: -1 | 1): number {
+  if (count <= 0) return 0;
+  return (Math.max(0, currentIndex) + direction + count) % count;
+}
+
+export function cityBoardReelSegmentProgress(
+  boardIndex: number,
+  activeIndex: number,
+  activeProgress: number,
+): number {
+  if (boardIndex < 0 || activeIndex < 0) return 0;
+  if (boardIndex < activeIndex) return 100;
+  if (boardIndex > activeIndex) return 0;
+  return Math.min(100, Math.max(0, activeProgress));
+}
