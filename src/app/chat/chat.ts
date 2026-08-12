@@ -620,9 +620,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly cityBoardsLoading = signal(false);
   readonly cityBoardsError = signal<string | null>(null);
   readonly cityBoardsExpanded = signal(false);
-  readonly visibleCityBoards = computed(() => this.cityBoardsExpanded()
-    ? this.cityBoards()
-    : this.cityBoards().slice(0, 4));
+  readonly visibleCityBoards = computed(() => this.cityBoards().slice(0, 4));
   readonly hasMoreCityBoards = computed(() => this.cityBoards().length > 4);
   readonly isPublicView = computed(() => !!this.routeSlug());
   readonly businessPageContext = computed(() => !!this.routeBusinessSlug());
@@ -637,6 +635,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly cityBoardsTotalLabel = computed(() => {
     const count = this.cityBoards().length;
     return count === 1 ? '1 board' : `${count} boards`;
+  });
+  readonly cityBoardsCollectionLink = computed(() => {
+    const slug = this.publicAtlas()?.slug?.trim() || this.routeSlug()?.trim();
+    return slug ? ['/chat', slug, 'boards'] : null;
   });
   readonly cityBoardsToggleLabel = computed(() => {
     if (this.cityBoardsExpanded()) return this.uiText('showLess');

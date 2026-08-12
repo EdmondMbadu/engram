@@ -1,0 +1,304 @@
+<main class="city-collection-page">
+  <div class="city-collection-page__glow" aria-hidden="true"></div>
+
+  <header class="collection-nav">
+    <div class="collection-nav__inner">
+      <a routerLink="/" class="collection-nav__brand" aria-label="LivingWiki home">
+        <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki" />
+      </a>
+      <div class="collection-nav__actions">
+        @if (atlas()) {
+          <a [routerLink]="cityLink()" class="collection-nav__city-link">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+            <span>Back to {{ cityName() }}</span>
+          </a>
+        }
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+    </div>
+  </header>
+
+  <div class="collection-shell">
+    @if (atlasLoading()) {
+      <section class="collection-loading" aria-busy="true" aria-label="Loading city boards">
+        <span class="collection-loading__line collection-loading__line--short"></span>
+        <span class="collection-loading__line collection-loading__line--title"></span>
+        <span class="collection-loading__line collection-loading__line--copy"></span>
+        <span class="collection-loading__hero"></span>
+        <div class="collection-loading__cards">
+          @for (item of [1, 2, 3, 4]; track item) {
+            <span></span>
+          }
+        </div>
+      </section>
+    } @else if (atlasError()) {
+      <section class="collection-state collection-state--error">
+        <span class="collection-state__icon material-symbols-outlined" aria-hidden="true">location_off</span>
+        <span class="collection-state__eyebrow">City collection unavailable</span>
+        <h1>{{ atlasError() }}</h1>
+        <p>Return to LivingWiki and choose another public city.</p>
+        <a routerLink="/all-cities" class="collection-primary-action">
+          <span class="material-symbols-outlined" aria-hidden="true">public</span>
+          Browse all cities
+        </a>
+      </section>
+    } @else {
+      <section class="collection-intro">
+        <nav class="collection-breadcrumb" aria-label="Breadcrumb">
+          <a [routerLink]="cityLink()">{{ cityName() }}</a>
+          <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+          <span aria-current="page">Boards</span>
+        </nav>
+        <div class="collection-intro__row">
+          <div class="collection-intro__copy">
+            <span class="collection-kicker">
+              <span class="material-symbols-outlined" aria-hidden="true">view_carousel</span>
+              City board library
+            </span>
+            <h1>Boards for {{ cityName() }}</h1>
+            <p>{{ collectionDescription() }}</p>
+          </div>
+          <div class="collection-intro__identity">
+            @if (atlas()?.logo_url) {
+              <img [src]="atlas()!.logo_url!" alt="" />
+            } @else {
+              <span class="material-symbols-outlined" aria-hidden="true">location_city</span>
+            }
+            <span>
+              <strong>{{ totalLabel() }}</strong>
+              @if (country()) { <small>{{ country() }}</small> }
+            </span>
+          </div>
+        </div>
+      </section>
+
+      @if (boardsLoading()) {
+        <section class="collection-loading collection-loading--boards" aria-busy="true" aria-label="Loading boards">
+          <span class="collection-loading__hero"></span>
+          <div class="collection-loading__cards">
+            @for (item of [1, 2, 3, 4]; track item) { <span></span> }
+          </div>
+        </section>
+      } @else if (boardsError()) {
+        <section class="collection-state collection-state--compact">
+          <span class="collection-state__icon material-symbols-outlined" aria-hidden="true">cloud_off</span>
+          <h2>{{ boardsError() }}</h2>
+          <p>Your city Wiki is still available.</p>
+          <div class="collection-state__actions">
+            <button type="button" class="collection-primary-action" (click)="retry()">
+              <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+              Try again
+            </button>
+            <a [routerLink]="cityLink()" class="collection-secondary-action">Back to {{ cityName() }}</a>
+          </div>
+        </section>
+      } @else if (boards().length === 0) {
+        <section class="collection-state collection-state--empty">
+          <span class="collection-state__icon material-symbols-outlined" aria-hidden="true">space_dashboard</span>
+          <span class="collection-state__eyebrow">A collection in the making</span>
+          <h2>There are no published boards for {{ cityName() }} yet.</h2>
+          <p>The city Wiki is ready now. Ask it a question while its first collections are being curated.</p>
+          <a [routerLink]="cityLink()" class="collection-primary-action">
+            <span class="material-symbols-outlined" aria-hidden="true">forum</span>
+            Ask {{ cityName() }}
+          </a>
+        </section>
+      } @else {
+        @if (activeFeatured(); as featured) {
+          <section class="collection-spotlight" aria-label="Featured city boards">
+            <div class="collection-spotlight__backdrop" [class.collection-spotlight__backdrop--fallback]="!activeHeroImage()">
+              @if (activeHeroImage()) {
+                <img [src]="activeHeroImage()" [alt]="featured.title" />
+              } @else {
+                <span class="material-symbols-outlined" aria-hidden="true">{{ boardIcon(featured) }}</span>
+              }
+            </div>
+            <div class="collection-spotlight__wash" aria-hidden="true"></div>
+            <div class="collection-spotlight__content">
+              <span class="collection-spotlight__label">
+                <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+                Featured in {{ cityName() }}
+              </span>
+              @if (activeFeaturedCategory(); as category) {
+                <span class="collection-spotlight__category">{{ category.label }}</span>
+              }
+              <h2>{{ featured.title }}</h2>
+              <p>{{ heroDescription(featured) }}</p>
+              <div class="collection-spotlight__meta">
+                <span>{{ boardCountLabel(featured) }}</span>
+                <span aria-hidden="true">•</span>
+                <span>{{ featured.publisherName }}</span>
+              </div>
+              <div class="collection-spotlight__actions">
+                <a [routerLink]="['/boards', featured.id]" class="collection-spotlight__primary">
+                  <span class="material-symbols-outlined" aria-hidden="true">dashboard_customize</span>
+                  Explore board
+                </a>
+                <a [routerLink]="['/boards', featured.id]" [queryParams]="{ view: 'stack' }" class="collection-spotlight__secondary">
+                  <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
+                  Live view
+                </a>
+              </div>
+            </div>
+
+            @if (featuredBoards().length > 1) {
+              <div class="collection-spotlight__picker" role="tablist" aria-label="Choose a featured board">
+                @for (board of featuredBoards(); track board.id; let boardIndex = $index) {
+                  <button
+                    type="button"
+                    role="tab"
+                    [class.active]="featured.id === board.id"
+                    [attr.aria-selected]="featured.id === board.id"
+                    [attr.aria-label]="'Feature ' + board.title"
+                    (click)="selectFeatured(board)"
+                  >
+                    <span class="collection-spotlight__picker-media">
+                      @if (board.imageUrl) {
+                        <img [src]="board.imageUrl" alt="" />
+                      } @else {
+                        <span class="material-symbols-outlined" aria-hidden="true">{{ boardIcon(board) }}</span>
+                      }
+                    </span>
+                    <span class="collection-spotlight__picker-copy">
+                      <small>0{{ boardIndex + 1 }}</small>
+                      <strong>{{ board.title }}</strong>
+                    </span>
+                  </button>
+                }
+              </div>
+              <button type="button" class="collection-spotlight__nav collection-spotlight__nav--back" aria-label="Previous featured board" (click)="moveFeatured(-1)">
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+              </button>
+              <button type="button" class="collection-spotlight__nav collection-spotlight__nav--forward" aria-label="Next featured board" (click)="moveFeatured(1)">
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+              </button>
+            }
+          </section>
+        }
+
+        <section class="collection-tools" aria-label="Browse boards">
+          <div class="collection-filters" role="group" aria-label="Filter boards by topic">
+            <button type="button" [class.active]="activeFilter() === 'all'" (click)="selectFilter('all')">
+              All <span>{{ boards().length }}</span>
+            </button>
+            @for (category of availableCategories(); track category.id) {
+              <button type="button" [class.active]="activeFilter() === category.id" (click)="selectFilter(category.id)">
+                <span class="material-symbols-outlined" aria-hidden="true">{{ category.icon }}</span>
+                {{ category.shortLabel }} <span>{{ category.count }}</span>
+              </button>
+            }
+          </div>
+          <label class="collection-search">
+            <span class="material-symbols-outlined" aria-hidden="true">search</span>
+            <input
+              type="search"
+              [value]="searchQuery()"
+              [placeholder]="'Search ' + cityName() + ' boards'"
+              aria-label="Search city boards"
+              (input)="onSearch($event)"
+            />
+            @if (searchQuery()) {
+              <button type="button" aria-label="Clear board search" (click)="clearSearch()">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            }
+          </label>
+        </section>
+
+        @if (showTopicRows()) {
+          <div class="collection-topic-rows">
+            @for (row of topicRows(); track row.category.id) {
+              <section class="collection-row" [attr.aria-labelledby]="'city-board-row-' + row.category.id">
+                <header class="collection-row__header">
+                  <div>
+                    <span class="collection-row__icon material-symbols-outlined" aria-hidden="true">{{ row.category.icon }}</span>
+                    <span>
+                      <h2 [id]="'city-board-row-' + row.category.id">{{ row.category.label }}</h2>
+                      <p>{{ row.category.description }}</p>
+                    </span>
+                  </div>
+                  <button type="button" (click)="selectFilter(row.category.id)">
+                    View all <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                  </button>
+                </header>
+                <div class="collection-rail-wrap">
+                  <div
+                    class="collection-board-rail"
+                    [attr.data-city-board-rail]="row.category.id"
+                    (scroll)="onRailScroll(row.category.id, $event)"
+                  >
+                    @for (board of row.boards; track board.id) {
+                      <a class="collection-board-card" [routerLink]="['/boards', board.id]">
+                        <span class="collection-board-card__media" [class.collection-board-card__media--fallback]="!board.imageUrl">
+                          @if (board.imageUrl) {
+                            <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" />
+                          } @else {
+                            <span class="material-symbols-outlined" aria-hidden="true">{{ boardIcon(board) }}</span>
+                          }
+                          <span class="collection-board-card__chip">{{ boardCategory(board).shortLabel }}</span>
+                        </span>
+                        <span class="collection-board-card__body">
+                          <strong>{{ board.title }}</strong>
+                          <span>{{ boardCountLabel(board) }} · {{ board.publisherName }}</span>
+                        </span>
+                      </a>
+                    }
+                  </div>
+                  @if (railCanGoBack(row.category.id)) {
+                    <button type="button" class="collection-rail-arrow collection-rail-arrow--back" [attr.aria-label]="'Previous ' + row.category.label + ' boards'" (click)="moveRail(row.category.id, -1)">
+                      <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+                    </button>
+                  }
+                  @if (railCanGoForward(row.category.id)) {
+                    <button type="button" class="collection-rail-arrow collection-rail-arrow--forward" [attr.aria-label]="'More ' + row.category.label + ' boards'" (click)="moveRail(row.category.id, 1)">
+                      <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+                    </button>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+        }
+
+        <section id="city-board-results" class="collection-all" tabindex="-1">
+          <header class="collection-all__header">
+            <div>
+              <span class="collection-kicker">Browse the library</span>
+              <h2>{{ resultsHeading() }}</h2>
+            </div>
+            <span>{{ filteredBoards().length }} shown</span>
+          </header>
+          @if (filteredBoards().length) {
+            <div class="collection-all__grid">
+              @for (board of filteredBoards(); track board.id) {
+                <a class="collection-board-card collection-board-card--grid" [routerLink]="['/boards', board.id]">
+                  <span class="collection-board-card__media" [class.collection-board-card__media--fallback]="!board.imageUrl">
+                    @if (board.imageUrl) {
+                      <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" />
+                    } @else {
+                      <span class="material-symbols-outlined" aria-hidden="true">{{ boardIcon(board) }}</span>
+                    }
+                    <span class="collection-board-card__chip">{{ boardCategory(board).shortLabel }}</span>
+                    <span class="collection-board-card__open material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+                  </span>
+                  <span class="collection-board-card__body">
+                    <strong>{{ board.title }}</strong>
+                    @if (board.description) { <p>{{ board.description }}</p> }
+                    <span>{{ boardCountLabel(board) }} · {{ board.publisherName }}</span>
+                  </span>
+                </a>
+              }
+            </div>
+          } @else {
+            <div class="collection-no-results">
+              <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+              <h3>No matching boards</h3>
+              <p>Try another word or return to the complete {{ cityName() }} library.</p>
+              <button type="button" (click)="clearSearch(); selectFilter('all')">Show every board</button>
+            </div>
+          }
+        </section>
+      }
+    }
+  </div>
+</main>

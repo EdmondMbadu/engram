@@ -19,6 +19,14 @@ function safeIcon(value: unknown): string {
     : 'dashboard_customize';
 }
 
+function safeTopicIds(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value
+    .map((item) => text(item, 64).toLowerCase().replace(/[^a-z0-9_-]+/g, '-'))
+    .filter(Boolean))]
+    .slice(0, 12);
+}
+
 export function cityBoardAtlasId(board: CityBoardRecord | null | undefined): string {
   if (!board) return '';
   return text(board.atlas_id || board.generated_for_atlas_id, 180);
@@ -59,6 +67,12 @@ export function cityBoardListingPayload(
     card_count: cards.length,
     publisher_name: text(board.owner_display_name, 100) || 'LivingWiki',
     publisher_type: text(board.publisher_type, 40),
+    template_id: text(board.template_id, 100),
+    category_id: text(
+      board.city_board_category || board.collection_category || board.category_id,
+      64,
+    ).toLowerCase(),
+    topic_ids: safeTopicIds(board.topic_ids || board.city_board_topics),
     featured_rank: featuredRank,
     approved_at: board.approved_at ?? null,
     updated_at_iso: text(board.updated_at_iso, 64),

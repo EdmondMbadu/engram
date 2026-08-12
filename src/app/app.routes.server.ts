@@ -42,6 +42,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'answer-card/:cardId', renderMode: RenderMode.Client },
   { path: 'quiz/:quizId', renderMode: RenderMode.Client },
   { path: 'places/:slug', renderMode: RenderMode.Client },
+  { path: 'chat/:slug/boards', renderMode: RenderMode.Client },
   { path: 'chat/:slug', renderMode: RenderMode.Client },
   { path: 'chat', renderMode: RenderMode.Client },
   { path: 'library/:slug', renderMode: RenderMode.Client },

@@ -20737,7 +20737,7 @@ export const listPublicCityBoards = onCall(
     const snapshot = await db.collection('boards')
       .where('atlas_id', '==', atlasId)
       .where('city_listing_status', '==', 'listed')
-      .limit(100)
+      .limit(250)
       .get();
     const boards = snapshot.docs
       .filter((document) => isPublicCityBoard(document.data() as Record<string, unknown>))

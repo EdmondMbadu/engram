@@ -814,8 +814,11 @@
                         <h2>{{ cityBoardsHeading() }}</h2>
                         <p>Curated collections from people who know this place.</p>
                       </div>
-                      @if (!cityBoardsLoading() && cityBoards().length > 0) {
-                        <span class="city-board-shelf__count">{{ cityBoardsTotalLabel() }}</span>
+                      @if (!cityBoardsLoading() && cityBoards().length > 0 && cityBoardsCollectionLink(); as collectionLink) {
+                        <a class="city-board-shelf__view-all" [routerLink]="collectionLink">
+                          <span>View all {{ cityBoardsTotalLabel() }}</span>
+                          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                        </a>
                       }
                     </header>
 
@@ -857,16 +860,15 @@
                         }
                       </div>
 
-                      @if (hasMoreCityBoards()) {
-                        <button
-                          type="button"
-                          class="city-board-shelf__more"
-                          [attr.aria-expanded]="cityBoardsExpanded()"
-                          (click)="toggleCityBoardsExpanded()"
-                        >
-                          <span>{{ cityBoardsToggleLabel() }}</span>
-                          <span class="material-symbols-outlined" aria-hidden="true">{{ cityBoardsExpanded() ? 'expand_less' : 'expand_more' }}</span>
-                        </button>
+                      @if (cityBoardsCollectionLink(); as collectionLink) {
+                        <a class="city-board-shelf__collection-cta" [routerLink]="collectionLink">
+                          <span class="city-board-shelf__collection-mark material-symbols-outlined" aria-hidden="true">view_carousel</span>
+                          <span>
+                            <strong>Explore every {{ currentWikiName() }} board</strong>
+                            <small>Browse featured collections and topics</small>
+                          </span>
+                          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                        </a>
                       }
                     }
                   </section>

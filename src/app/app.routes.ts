@@ -142,6 +142,11 @@ export const routes: Routes = [
   { path: 'answer-card/:cardId', component: AnswerCardComponent, title: $localize`Answer Card | LivingWiki` },
   { path: 'quiz/:quizId', component: AnswerQuizComponent, title: $localize`Quiz Challenge | LivingWiki` },
   { path: 'places/:slug', component: CityPlacesComponent, title: $localize`Places | LivingWiki` },
+  {
+    path: 'chat/:slug/boards',
+    loadComponent: () => import('./city-board-collection/city-board-collection').then((m) => m.CityBoardCollectionComponent),
+    title: 'City Boards | LivingWiki',
+  },
   { path: 'chat/:slug', component: ChatComponent, title: $localize`Chat | LivingWiki` },
   { path: 'chat', component: ChatComponent, title: $localize`Chat | LivingWiki`, canActivate: [authGuard] },
   { path: 'library/:slug', component: LibraryComponent, title: $localize`Source Files | LivingWiki` },

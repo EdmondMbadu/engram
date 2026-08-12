@@ -15,10 +15,21 @@ export type CityBoardListing = {
   kind: string;
   cardCount: number;
   publisherName: string;
+  templateId: string;
+  categoryId: string;
+  topicIds: string[];
   featuredRank: number;
   approvedAt: string | null;
   updatedAt: string | null;
 };
+
+function stringList(value: unknown, maxItems: number, maxLength: number): string[] {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value
+    .map((item) => stringValue(item, maxLength).toLowerCase().replace(/[^a-z0-9_-]+/g, '-'))
+    .filter(Boolean))]
+    .slice(0, maxItems);
+}
 
 function stringValue(value: unknown, max: number): string {
   return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim().slice(0, max) : '';
@@ -61,6 +72,9 @@ export function cityBoardListingFromData(id: string, value: unknown): CityBoardL
     kind: stringValue(data['kind'], 40) || 'standard',
     cardCount: Math.max(0, Math.trunc(Number(data['card_count']) || 0)),
     publisherName: stringValue(data['publisher_name'], 100) || 'LivingWiki',
+    templateId: stringValue(data['template_id'], 100),
+    categoryId: stringValue(data['category_id'], 64).toLowerCase(),
+    topicIds: stringList(data['topic_ids'], 12, 64),
     featuredRank: Number.isFinite(rank) && rank >= 0 ? Math.min(rank, 9_999) : 9_999,
     approvedAt: dateValue(data['approved_at']),
     updatedAt: dateValue(data['updated_at_iso']) || dateValue(data['server_updated_at']),
@@ -94,7 +108,7 @@ export class CityBoardListingsService {
       const snapshot = await getDocs(query(
         collection(this.firestore, 'city_board_listings'),
         where('atlas_id', '==', normalizedAtlasId),
-        limit(100),
+        limit(250),
       ));
       const projected = this.fromRecords(snapshot.docs.map((document) => ({
         id: document.id,

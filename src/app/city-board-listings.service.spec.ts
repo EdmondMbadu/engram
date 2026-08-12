@@ -31,6 +31,7 @@ describe('city board listings', () => {
     const base: CityBoardListing = {
       id: '', atlasId: 'atlas-1', title: '', description: '', icon: 'dashboard', tone: 'teal',
       imageUrl: '', kind: 'standard', cardCount: 0, publisherName: 'LivingWiki',
+      templateId: '', categoryId: '', topicIds: [],
       featuredRank: 9_999, approvedAt: null, updatedAt: null,
     };
     const sorted = sortCityBoardListings([
