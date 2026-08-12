@@ -230,8 +230,10 @@
             <p i18n>Discover</p>
             <h2 i18n>Boards from around LivingWiki</h2>
           </div>
+          <a routerLink="/discover" class="mobile-rail-view-all">View all</a>
         </div>
-        <div class="mobile-card-row">
+        <div class="mobile-card-rail">
+        <div class="mobile-card-row" data-home-rail="discover" (scroll)="onHomeRailScroll('discover', $event)">
           <a routerLink="/discover" class="mobile-icon-tile">
             <img [src]="homeIconUrls.boards" alt="" class="mobile-home-tile-icon" />
             <span class="mobile-plus">+</span>
@@ -257,24 +259,41 @@
             <div class="mobile-discover-empty" i18n>No boards yet.</div>
           }
         </div>
-        @if (hasMoreMobileDiscoverBoards()) {
+        @if (homeRailCanGoBack('discover')) {
           <button
             type="button"
-            class="mobile-home-more"
-            [disabled]="mobileDiscoverLoadingMore()"
-            (click)="showMoreMobileDiscoverBoards()"
+            class="mobile-rail-arrow mobile-rail-arrow--back"
+            aria-label="Previous boards"
+            (click)="moveDiscoverRail(-1)"
           >
-            <span class="material-symbols-outlined">expand_more</span>
-            <span>{{ mobileDiscoverLoadingMore() ? 'Loading…' : 'Load 10 more' }}</span>
+            <span class="material-symbols-outlined">chevron_left</span>
           </button>
         }
+        @if (homeRailCanGoForward('discover', hasMoreMobileDiscoverBoards(), mobileDiscoverPreviewBoards().length + 1)) {
+          <button
+            type="button"
+            class="mobile-rail-arrow mobile-rail-arrow--forward"
+            aria-label="More boards"
+            [class.loading]="mobileDiscoverLoadingMore()"
+            [disabled]="mobileDiscoverLoadingMore()"
+            (click)="moveDiscoverRail(1)"
+          >
+            <span class="material-symbols-outlined">{{ mobileDiscoverLoadingMore() ? 'progress_activity' : 'chevron_right' }}</span>
+          </button>
+        }
+        </div>
       </section>
 
       <section
         class="mobile-row-section mobile-featured-cities"
         [attr.aria-label]="mobileDirectoryIsUniversities() ? 'Universities' : 'Cities'"
       >
-        <div class="mobile-card-row">
+        <div class="mobile-rail-heading">
+          <h2>{{ mobileDirectoryIsUniversities() ? 'Universities' : 'Cities' }}</h2>
+          <button type="button" class="mobile-rail-view-all" (click)="openHomeDirectory()">View all</button>
+        </div>
+        <div class="mobile-card-rail">
+        <div class="mobile-card-row" data-home-rail="directory" (scroll)="onHomeRailScroll('directory', $event)">
           <button type="button" class="mobile-icon-tile" (click)="openHomeDirectory()">
             @if (mobileDirectoryIsUniversities()) {
               <span class="material-symbols-outlined mobile-section-icon">school</span>
@@ -320,21 +339,29 @@
             </a>
           }
         </div>
-        @if (hasMoreMobileFeaturedWikis()) {
-          <button type="button" class="mobile-home-more" (click)="showMoreMobileFeaturedWikis()">
-            <span class="material-symbols-outlined">expand_more</span>
-            <span>Load 10 more</span>
+        @if (homeRailCanGoBack('directory')) {
+          <button type="button" class="mobile-rail-arrow mobile-rail-arrow--back" aria-label="Previous places" (click)="moveDirectoryRail(-1)">
+            <span class="material-symbols-outlined">chevron_left</span>
           </button>
         }
+        @if (homeRailCanGoForward('directory', hasMoreMobileFeaturedWikis(), mobileFeaturedWikis().length + 1)) {
+          <button type="button" class="mobile-rail-arrow mobile-rail-arrow--forward" aria-label="More places" (click)="moveDirectoryRail(1)">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        }
+        </div>
       </section>
 
       @for (section of mobileSections(); track section.id) {
         <section class="mobile-row-section" [id]="'mobile-' + section.id">
-          <h2>
-            <span>{{ section.label }}</span>
-            <span class="material-symbols-outlined">expand_less</span>
-          </h2>
-          <div class="mobile-card-row">
+          <div class="mobile-rail-heading">
+            <h2>{{ section.label }}</h2>
+            @if (mobileSectionViewAllLink(section); as viewAllLink) {
+              <a [routerLink]="viewAllLink" class="mobile-rail-view-all">View all</a>
+            }
+          </div>
+          <div class="mobile-card-rail">
+          <div class="mobile-card-row" [attr.data-home-rail]="'section-' + section.id" (scroll)="onHomeRailScroll('section-' + section.id, $event)">
             <a [routerLink]="mobileSectionAddLink(section)" class="mobile-icon-tile">
               @if (section.iconImageUrl) {
                 <img [src]="section.iconImageUrl" [alt]="section.addLabel" class="mobile-home-tile-icon" />
@@ -364,17 +391,29 @@
               </a>
             }
           </div>
-          @if (hasMoreMobileSection(section)) {
+          @if (homeRailCanGoBack('section-' + section.id)) {
             <button
               type="button"
-              class="mobile-home-more"
-              [disabled]="isMobileSectionLoading(section)"
-              (click)="showMoreMobileSection(section)"
+              class="mobile-rail-arrow mobile-rail-arrow--back"
+              [attr.aria-label]="'Previous ' + section.label"
+              (click)="moveSectionRail(section, -1)"
             >
-              <span class="material-symbols-outlined">expand_more</span>
-              <span>{{ isMobileSectionLoading(section) ? 'Loading…' : 'Load 10 more' }}</span>
+              <span class="material-symbols-outlined">chevron_left</span>
             </button>
           }
+          @if (homeRailCanGoForward('section-' + section.id, hasMoreMobileSection(section), section.cards.length + 1)) {
+            <button
+              type="button"
+              class="mobile-rail-arrow mobile-rail-arrow--forward"
+              [attr.aria-label]="'More ' + section.label"
+              [class.loading]="isMobileSectionLoading(section)"
+              [disabled]="isMobileSectionLoading(section)"
+              (click)="moveSectionRail(section, 1)"
+            >
+              <span class="material-symbols-outlined">{{ isMobileSectionLoading(section) ? 'progress_activity' : 'chevron_right' }}</span>
+            </button>
+          }
+          </div>
         </section>
       }
 

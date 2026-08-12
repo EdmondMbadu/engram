@@ -1,5 +1,5 @@
 import { DecimalPipe, isPlatformBrowser } from '@angular/common';
-import { Component, computed, ElementRef, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
+import { AfterViewChecked, Component, computed, ElementRef, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -498,7 +498,7 @@ interface PublicWikiFeelingSticker {
   templateUrl: './public-wikis.html',
   styleUrl: './public-wikis.css',
 })
-export class PublicWikisComponent implements OnInit {
+export class PublicWikisComponent implements OnInit, AfterViewChecked {
   @ViewChild('directorySearchInput') private directorySearchInput?: ElementRef<HTMLInputElement>;
   private readonly localeId = inject(LOCALE_ID);
   private readonly platformId = inject(PLATFORM_ID);
@@ -545,6 +545,7 @@ export class PublicWikisComponent implements OnInit {
   readonly mobileSelectedCitySlug = signal<string | null>('philly');
   readonly mobileSelectedUniversitySlug = signal<string | null>(null);
   readonly isSavingHomePreference = signal(false);
+  readonly homeRailState = signal<Record<string, { back: boolean; forward: boolean }>>({});
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
   readonly cityTemperatureCoordinates = signal<Record<string, CityTemperatureCoordinates>>({});
   readonly isLoadingTemperatures = signal(false);
@@ -559,6 +560,7 @@ export class PublicWikisComponent implements OnInit {
   private readonly pendingTemperatureCoordinateLookups = new Map<string, Promise<CityTemperatureCoordinates | null>>();
   private mobileBoardCursor: QueryDocumentSnapshot<DocumentData> | null = null;
   private mobileDiscoverCursor: QueryDocumentSnapshot<DocumentData> | null = null;
+  private homeRailLayoutCheckQueued = false;
 
   readonly publicWikis = computed(() => this.liveWikis());
 
@@ -876,6 +878,18 @@ export class PublicWikisComponent implements OnInit {
     }
   }
 
+  ngAfterViewChecked(): void {
+    if (!this.isBrowser || !this.isHomeRoute() || this.homeRailLayoutCheckQueued) return;
+    this.homeRailLayoutCheckQueued = true;
+    requestAnimationFrame(() => {
+      this.homeRailLayoutCheckQueued = false;
+      document.querySelectorAll<HTMLElement>('[data-home-rail]').forEach((rail) => {
+        const railId = rail.dataset['homeRail'];
+        if (railId) this.updateHomeRailState(railId, rail);
+      });
+    });
+  }
+
   @HostListener('window:hashchange')
   onWindowHashChange(): void {
     void this.handleMobileHomeHash();
@@ -1094,6 +1108,41 @@ export class PublicWikisComponent implements OnInit {
     document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  private homeRailElement(railId: string): HTMLElement | null {
+    if (!this.isBrowser) return null;
+    return document.querySelector<HTMLElement>(`[data-home-rail="${railId}"]`);
+  }
+
+  private homeRailNeedsMore(railId: string): boolean {
+    const rail = this.homeRailElement(railId);
+    if (!rail) return false;
+    return rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - Math.max(48, rail.clientWidth * 0.12);
+  }
+
+  private moveHomeRail(railId: string, direction: -1 | 1): void {
+    if (!this.isBrowser) return;
+    requestAnimationFrame(() => {
+      const rail = this.homeRailElement(railId);
+      if (!rail) return;
+      const card = rail.querySelector<HTMLElement>('.mobile-icon-tile, .mobile-content-card, .mobile-city-card');
+      const gap = Number.parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || '0') || 0;
+      const cardStep = (card?.getBoundingClientRect().width ?? rail.clientWidth * 0.75) + gap;
+      const visibleCards = Math.max(1, Math.floor((rail.clientWidth + gap) / cardStep));
+      rail.scrollBy({ left: direction * cardStep * visibleCards, behavior: 'smooth' });
+      setTimeout(() => this.updateHomeRailState(railId, rail), 420);
+    });
+  }
+
+  private updateHomeRailState(railId: string, rail: HTMLElement): void {
+    const next = {
+      back: rail.scrollLeft > 8,
+      forward: rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 8,
+    };
+    const current = this.homeRailState()[railId];
+    if (current?.back === next.back && current?.forward === next.forward) return;
+    this.homeRailState.update((state) => ({ ...state, [railId]: next }));
+  }
+
   private async redirectSignedInRootToHome(): Promise<boolean> {
     if (!this.isBrowser || this.route.snapshot.routeConfig?.path !== '') {
       return false;
@@ -1151,6 +1200,49 @@ export class PublicWikisComponent implements OnInit {
 
   mobileCardLink(card: MobileHomeCard): string {
     return card.link === '/chat/philly' ? this.mobileSelectedCityLink() : card.link;
+  }
+
+  mobileSectionViewAllLink(section: MobileHomeSection): string | null {
+    if (section.id === 'boards') return '/boards';
+    if (section.id === 'songs') return '/songs';
+    if (section.id === 'friends') return '/friends';
+    if (section.id === 'trips') return '/trips';
+    return null;
+  }
+
+  homeRailCanGoBack(railId: string): boolean {
+    return this.homeRailState()[railId]?.back ?? false;
+  }
+
+  homeRailCanGoForward(railId: string, hasMore = false, itemCount = 0): boolean {
+    const state = this.homeRailState()[railId];
+    return state ? state.forward || hasMore : hasMore || itemCount > 1;
+  }
+
+  onHomeRailScroll(railId: string, event: Event): void {
+    this.updateHomeRailState(railId, event.currentTarget as HTMLElement);
+  }
+
+  async moveDiscoverRail(direction: -1 | 1): Promise<void> {
+    if (direction > 0 && this.homeRailNeedsMore('discover') && this.hasMoreMobileDiscoverBoards()) {
+      await this.showMoreMobileDiscoverBoards();
+    }
+    this.moveHomeRail('discover', direction);
+  }
+
+  async moveDirectoryRail(direction: -1 | 1): Promise<void> {
+    if (direction > 0 && this.homeRailNeedsMore('directory') && this.hasMoreMobileFeaturedWikis()) {
+      this.showMoreMobileFeaturedWikis();
+    }
+    this.moveHomeRail('directory', direction);
+  }
+
+  async moveSectionRail(section: MobileHomeSection, direction: -1 | 1): Promise<void> {
+    const railId = `section-${section.id}`;
+    if (direction > 0 && this.homeRailNeedsMore(railId) && this.hasMoreMobileSection(section)) {
+      await this.showMoreMobileSection(section);
+    }
+    this.moveHomeRail(railId, direction);
   }
 
   hasMoreMobileSection(section: MobileHomeSection): boolean {
