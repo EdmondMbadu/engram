@@ -1091,29 +1091,53 @@
   }
 
   .collection-spotlight {
-    min-height: clamp(30rem, calc(100svh - 12rem), 42rem);
+    min-height: clamp(24.5rem, calc(100svh - 23.5rem), 32rem);
   }
 
   .collection-spotlight__content {
     min-height: 100%;
-    padding: 2rem clamp(2.25rem, 5vw, 4.5rem) 6rem;
+    padding: 1.5rem clamp(2.25rem, 5vw, 4.5rem) 5.5rem;
   }
 
   .collection-spotlight h2 {
-    font-size: clamp(2.2rem, 3.4vw, 3.65rem);
+    font-size: clamp(2rem, 3vw, 3.2rem);
   }
 
   .collection-spotlight__content > p {
+    display: none;
+  }
+
+  .collection-spotlight__category {
     margin-top: 0.75rem;
-    -webkit-line-clamp: 2;
+  }
+
+  .collection-spotlight__meta {
+    margin-top: 0.65rem;
   }
 
   .collection-spotlight__actions {
-    margin-top: 1rem;
+    margin-top: 0.75rem;
   }
 
   .collection-spotlight__picker {
-    bottom: 1rem;
+    bottom: 0.75rem;
+  }
+
+  .collection-tools {
+    margin-top: 1rem;
+    padding: 0.45rem;
+  }
+
+  .collection-filters button {
+    min-height: 2.25rem;
+  }
+
+  .collection-search {
+    min-height: 2.35rem;
+  }
+
+  .collection-topic-rows {
+    margin-top: 1.25rem;
   }
 }
 
