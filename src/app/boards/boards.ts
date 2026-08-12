@@ -195,7 +195,12 @@ type StackRatio = 'vertical' | 'square' | 'landscape';
 type StackExportTarget = 'whatsapp' | 'facebook' | 'instagram' | 'tiktok' | 'x' | 'download';
 type VisitPlanContext = 'board' | 'stack';
 type StackShareMode = 'trailer' | 'video' | 'live';
-type StackSoundTab = 'voice' | 'music';
+type StackSoundTab = 'script' | 'voice' | 'music';
+
+type StackScriptCardDraft = {
+  title: string;
+  narration: string;
+};
 type StackLinkShareTarget = Extract<ShareTarget, 'x' | 'facebook' | 'linkedin' | 'reddit' | 'whatsapp'> | 'more';
 type BoardLearnView = 'menu' | 'study' | 'quiz-edit' | 'quiz-welcome' | 'quiz-play' | 'quiz-result';
 type BoardQuizShareMode = 'invite' | 'score';
@@ -1223,7 +1228,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css'],
+  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1581,6 +1586,16 @@ export class BoardsComponent implements OnDestroy {
   readonly stackVoicePreviewLoadingId = signal<string | null>(null);
   readonly stackVoiceError = signal<string | null>(null);
   readonly stackSoundTab = signal<StackSoundTab>('voice');
+  readonly stackScriptBoardTitle = signal('');
+  readonly stackScriptBoardDescription = signal('');
+  readonly stackScriptCardDrafts = signal<Record<string, StackScriptCardDraft>>({});
+  readonly stackScriptOriginalSnapshot = signal('');
+  readonly stackScriptExpandedCardIds = signal<Set<string>>(new Set());
+  readonly stackScriptSaving = signal(false);
+  readonly stackScriptSavedAt = signal('');
+  readonly stackScriptError = signal<string | null>(null);
+  readonly stackScriptPreviewLoadingCardId = signal<string | null>(null);
+  readonly stackScriptDiscardConfirmOpen = signal(false);
   readonly personalNarratorVoice = signal<PersonalNarratorVoice | null>(null);
   readonly personalVoiceLoading = signal(false);
   readonly personalVoiceServerEligible = signal<boolean | null>(null);
@@ -2162,6 +2177,18 @@ export class BoardsComponent implements OnDestroy {
     const selectedIds = this.stackSelectedCardIds();
     return board ? board.cards.filter((card) => selectedIds.has(card.id)) : [];
   });
+  readonly stackScriptDirty = computed(() => this.stackScriptSnapshot() !== this.stackScriptOriginalSnapshot());
+  readonly stackScriptWordCount = computed(() => this.stackSelectedCards().reduce((total, card) => {
+    return total + this.stackScriptNarration(card).split(/\s+/).filter(Boolean).length;
+  }, 0));
+  readonly stackScriptEstimatedSeconds = computed(() => Math.max(0, Math.ceil(this.stackScriptWordCount() / 2.35)));
+  readonly stackScriptMissingCount = computed(() => this.stackSelectedCards().filter((card) => !this.stackScriptNarration(card).trim()).length);
+  readonly stackScriptCanSave = computed(() =>
+    this.stackScriptDirty()
+    && !this.stackScriptSaving()
+    && !!this.stackScriptBoardTitle().trim()
+    && this.stackScriptMissingCount() === 0,
+  );
   readonly stackSelectedAudioTrack = computed(() =>
     stackAudioTrackById(this.stackAudioTrackId()),
   );
@@ -2316,7 +2343,9 @@ export class BoardsComponent implements OnDestroy {
       this.setShareMessage(null);
       this.sharePanelOpen.set(false);
       this.songDeckIndex.set(0);
-      this.closeStackStudio();
+      // Route changes are not an in-Studio close action. Always clear Studio state
+      // silently so its unsaved-draft safeguard cannot leak onto another page.
+      this.closeStackStudioImmediately();
       void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => {
         if (this.selectedBoardId() === boardId) {
           this.watchSelectedBoard(boardId);
@@ -11009,12 +11038,34 @@ export class BoardsComponent implements OnDestroy {
   }
 
   closeStackStudio(): void {
+    if (!this.stackStudioOpen()) {
+      this.stackScriptDiscardConfirmOpen.set(false);
+      return;
+    }
+    if (this.stackScriptDirty()) {
+      this.stackScriptDiscardConfirmOpen.set(true);
+      return;
+    }
+    this.closeStackStudioImmediately();
+  }
+
+  keepEditingStackScript(): void {
+    this.stackScriptDiscardConfirmOpen.set(false);
+  }
+
+  discardStackScriptAndClose(): void {
+    this.stackScriptDiscardConfirmOpen.set(false);
+    this.closeStackStudioImmediately();
+  }
+
+  private closeStackStudioImmediately(): void {
     this.stopSongPreview();
     this.stopStackAudioPreview();
     this.stopStackVoicePreview();
     this.stopPersonalVoiceRecording(true);
     this.stopStackPlayback();
     this.stackStudioOpen.set(false);
+    this.stackScriptDiscardConfirmOpen.set(false);
     this.setStackShareMessage(null);
   }
 
@@ -11091,6 +11142,184 @@ export class BoardsComponent implements OnDestroy {
     this.stackSoundTab.set(tab);
   }
 
+  updateStackScriptBoardTitle(value: string): void {
+    this.stackScriptBoardTitle.set(value);
+    this.stackCoverTitle.set(value);
+    this.stackScriptError.set(null);
+  }
+
+  updateStackScriptBoardDescription(value: string): void {
+    this.stackScriptBoardDescription.set(value);
+    this.stackCoverSubtitle.set(value);
+    this.stackScriptError.set(null);
+  }
+
+  updateStackScriptCard(cardId: string, field: keyof StackScriptCardDraft, value: string): void {
+    this.stackScriptCardDrafts.update((drafts) => ({
+      ...drafts,
+      [cardId]: {
+        title: drafts[cardId]?.title ?? '',
+        narration: drafts[cardId]?.narration ?? '',
+        [field]: value,
+      },
+    }));
+    this.stackScriptError.set(null);
+  }
+
+  stackScriptTitle(card: BoardCard): string {
+    return this.stackScriptCardDrafts()[card.id]?.title ?? card.title;
+  }
+
+  stackScriptNarration(card: BoardCard): string {
+    return this.stackScriptCardDrafts()[card.id]?.narration
+      ?? (card.tour?.guideScript || this.stackCardNarrationText(card) || '');
+  }
+
+  stackScriptCardIsExpanded(cardId: string): boolean {
+    return this.stackScriptExpandedCardIds().has(cardId);
+  }
+
+  toggleStackScriptCard(cardId: string): void {
+    this.stackScriptExpandedCardIds.update((expanded) => {
+      const next = new Set(expanded);
+      next.has(cardId) ? next.delete(cardId) : next.add(cardId);
+      return next;
+    });
+  }
+
+  setAllStackScriptCardsExpanded(expanded: boolean): void {
+    this.stackScriptExpandedCardIds.set(expanded ? new Set(this.stackSelectedCards().map((card) => card.id)) : new Set());
+  }
+
+  resetStackScriptCard(card: BoardCard): void {
+    this.updateStackScriptCard(card.id, 'title', card.title);
+    this.updateStackScriptCard(card.id, 'narration', card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '');
+  }
+
+  stackScriptCardEstimatedSeconds(card: BoardCard): number {
+    const words = this.stackScriptCardWordCount(card);
+    return Math.max(1, Math.ceil(words / 2.35));
+  }
+
+  stackScriptCardWordCount(card: BoardCard): number {
+    return this.stackScriptNarration(card).trim().split(/\s+/).filter(Boolean).length;
+  }
+
+  stackScriptIndexLabel(index: number): string {
+    return String(index + 1).padStart(2, '0');
+  }
+
+  stackScriptDurationLabel(): string {
+    const seconds = this.stackScriptEstimatedSeconds();
+    const minutes = Math.floor(seconds / 60);
+    const remainder = seconds % 60;
+    return minutes ? `~${minutes}:${String(remainder).padStart(2, '0')}` : `~${remainder}s`;
+  }
+
+  async previewStackScriptCard(card: BoardCard, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.stackBoard();
+    const text = this.stackScriptNarration(card).trim();
+    if (!this.isBrowser || !board || !text) return;
+    if (this.stackScriptPreviewLoadingCardId() === card.id || this.stackVoicePreviewingId() === `studio-script:${card.id}`) {
+      this.stopStackVoicePreview();
+      this.stackScriptPreviewLoadingCardId.set(null);
+      return;
+    }
+    this.stopStackVoicePreview();
+    this.stackScriptPreviewLoadingCardId.set(card.id);
+    this.stackScriptError.set(null);
+    try {
+      const url = await this.ensureTourAudioUrl(
+        `stack-script-preview:${card.id}:${text}`,
+        text,
+        this.stackNarratorVoiceId(),
+        board.id,
+        'stack-video',
+        card.id,
+        true,
+      );
+      if (!url) throw new Error('Preview audio was not returned.');
+      const audio = new Audio(url);
+      audio.preload = 'auto';
+      audio.onended = () => this.stopStackVoicePreview();
+      audio.onerror = () => {
+        this.stopStackVoicePreview();
+        this.stackScriptError.set('This script preview could not be played.');
+      };
+      this.stackVoicePreview = audio;
+      await audio.play();
+      this.stackVoicePreviewingId.set(`studio-script:${card.id}`);
+    } catch (error) {
+      this.stackScriptError.set(error instanceof Error ? error.message : 'This script preview could not be played.');
+    } finally {
+      this.stackScriptPreviewLoadingCardId.set(null);
+    }
+  }
+
+  async saveStackScript(board: Board): Promise<boolean> {
+    if (!this.canEditBoard(board) || this.stackScriptSaving()) return false;
+    const title = this.stackScriptBoardTitle().trim();
+    if (!title) {
+      this.stackScriptError.set('Add a board title before saving.');
+      return false;
+    }
+    if (this.stackScriptMissingCount()) {
+      this.stackScriptError.set(`Add narration for ${this.stackScriptMissingCount()} selected card${this.stackScriptMissingCount() === 1 ? '' : 's'} before saving.`);
+      return false;
+    }
+    this.stackScriptSaving.set(true);
+    this.stackScriptError.set(null);
+    const drafts = this.stackScriptCardDrafts();
+    const selectedIds = this.stackSelectedCardIds();
+    const now = new Date().toISOString();
+    const nextBoard: Board = {
+      ...board,
+      title,
+      description: this.stackScriptBoardDescription().trim(),
+      cards: board.cards.map((card) => {
+        const draft = drafts[card.id];
+        if (!draft || !selectedIds.has(card.id)) return card;
+        const narration = draft.narration.trim();
+        return {
+          ...card,
+          title: draft.title.trim() || card.title,
+          notes: card.tour ? card.notes : narration,
+          tour: card.tour ? { ...card.tour, guideScript: narration } : card.tour,
+          updatedAt: now,
+        };
+      }),
+      updatedAt: now,
+    };
+    try {
+      const saved = await this.persistAndReplaceBoard(nextBoard);
+      if (!saved) throw new Error('The script could not be synchronized. Your draft is still here.');
+      this.stackCoverTitle.set(nextBoard.title);
+      this.stackCoverSubtitle.set(nextBoard.description);
+      this.stackScriptBoardTitle.set(nextBoard.title);
+      this.stackScriptBoardDescription.set(nextBoard.description);
+      this.stackScriptCardDrafts.set(Object.fromEntries(nextBoard.cards.map((card) => [card.id, {
+        title: card.title,
+        narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
+      }])));
+      this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(nextBoard));
+      this.stackScriptSavedAt.set(now);
+      this.setStackShareMessage('Script saved. Your video will use these words.', false);
+      return true;
+    } catch (error) {
+      this.stackScriptError.set(error instanceof Error ? error.message : 'The script could not be saved. Your draft is still here.');
+      return false;
+    } finally {
+      this.stackScriptSaving.set(false);
+    }
+  }
+
+  async continueStackStudio(board: Board, to: 'voice' | 'music'): Promise<void> {
+    if (this.stackScriptDirty() && !await this.saveStackScript(board)) return;
+    this.setStackSoundTab(to);
+  }
+
   selectStackAudioTrack(board: Board, trackId: string): void {
     const normalizedTrackId = normalizeStackAudioTrackId(trackId);
     if (this.stackAudioTrackId() === normalizedTrackId) return;
@@ -11164,9 +11393,10 @@ export class BoardsComponent implements OnDestroy {
     this.stackVoicePreviewLoadingId.set(voice.id);
     this.stackVoiceError.set(null);
     try {
+      const sampleText = this.stackVoicePreviewSample(voice.sampleText);
       const audioUrl = await this.ensureTourAudioUrl(
-        `stack-narrator-preview:${voice.id}:v1`,
-        voice.sampleText,
+        `stack-narrator-preview:${voice.id}:${sampleText}`,
+        sampleText,
         voice.id,
         board?.id,
       );
@@ -11445,9 +11675,11 @@ export class BoardsComponent implements OnDestroy {
     this.stackVoicePreviewLoadingId.set(PERSONAL_STACK_NARRATOR_VOICE_ID);
     this.personalVoiceError.set(null);
     try {
-      const sample = 'Welcome to my LivingWiki. I will guide you through the people, places, and stories that make this board worth exploring.';
+      const sample = this.stackVoicePreviewSample(
+        'Welcome to my LivingWiki. I will guide you through the people, places, and stories that make this board worth exploring.',
+      );
       const audioUrl = await this.ensureTourAudioUrl(
-        'personal-narrator-preview:v1',
+        `personal-narrator-preview:${sample}`,
         sample,
         PERSONAL_STACK_NARRATOR_VOICE_ID,
         board.id,
@@ -11849,7 +12081,20 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private stackCardNarrationText(card: BoardCard): string {
+    const draft = this.stackStudioOpen() ? this.stackScriptCardDrafts()[card.id]?.narration : undefined;
+    return (draft ?? this.persistedStackCardNarrationText(card)).trim();
+  }
+
+  private persistedStackCardNarrationText(card: BoardCard): string {
     return (card.notes || card.shortSummary || card.subtitle).trim();
+  }
+
+  private stackVoicePreviewSample(fallback: string): string {
+    const firstCard = this.stackSelectedCards()[0];
+    const script = firstCard ? this.stackScriptNarration(firstCard).trim() : '';
+    if (!script) return fallback;
+    const words = script.split(/\s+/).filter(Boolean);
+    return words.slice(0, 42).join(' ');
   }
 
   private stackCardAudioKey(card: BoardCard): string {
@@ -11974,7 +12219,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   async shareStackTo(target: StackExportTarget): Promise<void> {
-    const board = this.stackBoard();
+    let board = this.stackBoard();
     if (!board || !this.isBrowser || this.stackVideoExporting()) {
       return;
     }
@@ -11988,6 +12233,9 @@ export class BoardsComponent implements OnDestroy {
       this.requestPersonalVoiceUpgrade();
       return;
     }
+    const savedBoard = await this.stackBoardWithSavedScript(board);
+    if (!savedBoard) return;
+    board = savedBoard;
     const url = this.stackShareUrl(board);
     const caption = this.stackCaption().trim() || `LivingWiki Stack: ${board.title}`;
     const text = `${caption}\n${url}`;
@@ -12226,6 +12474,9 @@ export class BoardsComponent implements OnDestroy {
       this.requestPersonalVoiceUpgrade();
       return;
     }
+    const savedBoard = await this.stackBoardWithSavedScript(board);
+    if (!savedBoard) return;
+    board = savedBoard;
 
     this.stackVideoExporting.set(true);
     this.stackVideoProgress.set(0);
@@ -12415,6 +12666,9 @@ export class BoardsComponent implements OnDestroy {
       this.requestPersonalVoiceUpgrade();
       return;
     }
+    const savedBoard = await this.stackBoardWithSavedScript(board);
+    if (!savedBoard) return;
+    board = savedBoard;
 
     this.stackVideoExporting.set(true);
     this.stackVideoProgress.set(0);
@@ -12568,17 +12822,17 @@ export class BoardsComponent implements OnDestroy {
       ? await this.stackVideoNarration(selectedCards, board)
       : null;
     return generateStackVideo({
-      title: board.title,
-      subtitle: this.stackCoverSubtitle().trim() || board.description,
+      title: this.stackScriptBoardTitle().trim() || board.title,
+      subtitle: this.stackScriptBoardDescription().trim() || board.description,
       ownerName: this.ownerName(board),
       coverImageUrl: this.stackCoverImage(board),
       liveUrl: this.stackShareUrl(board),
       qrImageUrl: this.stackQrImageUrl(board),
       showCardNumbers: this.boardShowsCardNumbers(board),
       cards: selectedCards.map((card) => ({
-        title: card.title,
+        title: this.stackScriptTitle(card),
         subtitle: this.cardDisplaySubtitle(board, card),
-        notes: card.notes,
+        notes: this.stackScriptNarration(card),
         rank: card.rank ?? null,
         imageUrl: this.cardImages(card)[0] ?? '',
         imageUrls: this.cardImages(card),
@@ -12634,7 +12888,20 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private stackVideoNarrationText(card: BoardCard): string {
-    return (card.tour?.guideScript || this.stackCardNarrationText(card) || `${card.title}.`).trim();
+    return (this.stackScriptNarration(card) || `${this.stackScriptTitle(card)}.`).trim();
+  }
+
+  private async stackBoardWithSavedScript(board: Board): Promise<Board | null> {
+    if (this.stackScriptDirty()) {
+      const saved = await this.saveStackScript(board);
+      if (!saved) {
+        this.stackSoundTab.set('script');
+        this.setStackShareMessage('Review the highlighted script fields before creating the video.', false);
+        return null;
+      }
+    }
+    const current = this.stackBoard();
+    return current?.id === board.id ? current : board;
   }
 
   private stackVideoBackgroundAudio(): StackVideoBackgroundAudio | null {
@@ -12851,6 +13118,17 @@ export class BoardsComponent implements OnDestroy {
     this.stackSelectedCardIds.set(new Set(board.cards.map((card) => card.id)));
     this.stackCoverTitle.set(board.title);
     this.stackCoverSubtitle.set(subtitle);
+    this.stackScriptBoardTitle.set(board.title);
+    this.stackScriptBoardDescription.set(board.description);
+    this.stackScriptCardDrafts.set(Object.fromEntries(board.cards.map((card) => [card.id, {
+      title: card.title,
+      narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
+    }])));
+    this.stackScriptExpandedCardIds.set(new Set(board.cards.slice(0, 1).map((card) => card.id)));
+    this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(board));
+    this.stackScriptSavedAt.set('');
+    this.stackScriptError.set(null);
+    this.stackScriptDiscardConfirmOpen.set(false);
     this.stackCaption.set(`I made a LivingWiki Stack: ${board.title}. Explore the full board.`);
     this.stackFormat.set('reel');
     this.stackRatio.set('vertical');
@@ -12866,13 +13144,26 @@ export class BoardsComponent implements OnDestroy {
     );
     this.stackAudioError.set(null);
     this.stackVoiceError.set(null);
-    this.stackSoundTab.set('voice');
+    this.stackSoundTab.set('script');
     this.personalVoiceSetupOpen.set(false);
     this.personalVoiceError.set(null);
     this.stackFrameIndex.set(0);
     this.stackTourNarrationConsent.set(false);
     this.setStackShareMessage(null);
     void this.preloadStackAudioUrls();
+  }
+
+  private stackScriptSnapshot(board: Board | null = this.stackBoard()): string {
+    const drafts = this.stackScriptCardDrafts();
+    return JSON.stringify({
+      title: this.stackScriptBoardTitle(),
+      description: this.stackScriptBoardDescription(),
+      cards: (board?.cards ?? []).map((card) => ({
+        id: card.id,
+        title: drafts[card.id]?.title ?? card.title,
+        narration: drafts[card.id]?.narration ?? (card.tour?.guideScript || this.persistedStackCardNarrationText(card) || ''),
+      })),
+    });
   }
 
   private syncStackDirectView(): void {

@@ -5288,18 +5288,29 @@
                   </div>
                 </section>
 
-                <section class="stack-panel stack-sound-panel">
+                <section class="stack-panel stack-sound-panel stack-workflow-panel">
                   <div class="stack-panel__head">
-                    <div class="stack-sound-panel__heading">
-                      <span class="stack-sound-panel__heading-icon material-symbols-outlined">graphic_eq</span>
-                      <div>
-                        <p i18n>Sound</p>
-                        <h4 i18n>Voice &amp; music</h4>
-                      </div>
+                    <div class="stack-workflow-heading">
+                      <p>Video Studio</p>
+                      <h4>Shape your board into a story</h4>
+                      <small>Write the words, choose the voice, then set the mood.</small>
                     </div>
                   </div>
 
-                  <div class="stack-sound-tabs" role="tablist" aria-label="Sound settings" i18n-aria-label>
+                  <div class="stack-sound-tabs stack-workflow-tabs" role="tablist" aria-label="Studio steps">
+                    <button
+                      type="button"
+                      role="tab"
+                      [class.stack-sound-tabs__button--active]="stackSoundTab() === 'script'"
+                      [attr.aria-selected]="stackSoundTab() === 'script'"
+                      (click)="setStackSoundTab('script')"
+                    >
+                      <span class="stack-workflow-tabs__step">1</span>
+                      <span class="stack-workflow-tabs__copy"><strong>Script</strong><small>Write the story</small></span>
+                      @if (!stackScriptDirty() && stackScriptMissingCount() === 0) {
+                        <span class="stack-workflow-tabs__status" aria-label="Script ready">✓</span>
+                      }
+                    </button>
                     <button
                       type="button"
                       role="tab"
@@ -5307,8 +5318,8 @@
                       [attr.aria-selected]="stackSoundTab() === 'voice'"
                       (click)="setStackSoundTab('voice')"
                     >
-                      <span class="material-symbols-outlined">record_voice_over</span>
-                      <strong i18n>Voice</strong>
+                      <span class="stack-workflow-tabs__step">2</span>
+                      <span class="stack-workflow-tabs__copy"><strong i18n>Voice</strong><small>Choose a narrator</small></span>
                     </button>
                     <button
                       type="button"
@@ -5317,12 +5328,121 @@
                       [attr.aria-selected]="stackSoundTab() === 'music'"
                       (click)="setStackSoundTab('music')"
                     >
-                      <span class="material-symbols-outlined">music_note</span>
-                      <strong i18n>Music</strong>
+                      <span class="stack-workflow-tabs__step">3</span>
+                      <span class="stack-workflow-tabs__copy"><strong i18n>Music</strong><small>Set the mood</small></span>
                     </button>
                   </div>
 
-                  @if (stackSoundTab() === 'voice') {
+                  @if (stackSoundTab() === 'script') {
+                    <div class="stack-script-editor">
+                      <section class="stack-script-intro">
+                        <header>
+                          <span class="stack-script-intro__eyebrow">Board opening</span>
+                          <strong>Title and introduction</strong>
+                          <small>These words open the video and update the board when you save.</small>
+                        </header>
+                        <div class="stack-script-intro__fields">
+                          <label>
+                            <span>Board title</span>
+                            <input
+                              type="text"
+                              maxlength="120"
+                              [value]="stackScriptBoardTitle()"
+                              (input)="updateStackScriptBoardTitle($any($event.target).value)"
+                            />
+                          </label>
+                          <label>
+                            <span>Board description</span>
+                            <textarea
+                              rows="3"
+                              maxlength="1000"
+                              [value]="stackScriptBoardDescription()"
+                              (input)="updateStackScriptBoardDescription($any($event.target).value)"
+                            ></textarea>
+                          </label>
+                        </div>
+                      </section>
+
+                      <div class="stack-script-summary">
+                        <span><strong>{{ stackSelectedCount() }}</strong><small>Cards selected</small></span>
+                        <span><strong>{{ stackScriptDurationLabel() }}</strong><small>Estimated voice</small></span>
+                        <span [class.stack-script-summary__warning]="stackScriptMissingCount() > 0"><strong>{{ stackScriptMissingCount() }}</strong><small>{{ stackScriptMissingCount() === 1 ? 'Script needed' : 'Scripts needed' }}</small></span>
+                      </div>
+
+                      <div class="stack-script-sequence-head">
+                        <div>
+                          <span>Narration sequence</span>
+                          <strong>Exactly what the voice will read</strong>
+                        </div>
+                        <div>
+                          <button type="button" (click)="setAllStackScriptCardsExpanded(true)">Expand all</button>
+                          <button type="button" (click)="setAllStackScriptCardsExpanded(false)">Collapse all</button>
+                        </div>
+                      </div>
+
+                      <div class="stack-script-sequence">
+                        @for (card of stackSelectedCards(); track card.id; let scriptIndex = $index) {
+                          <article class="stack-script-card" [class.stack-script-card--open]="stackScriptCardIsExpanded(card.id)" [class.stack-script-card--missing]="!stackScriptNarration(card).trim()">
+                            <button type="button" class="stack-script-card__summary" (click)="toggleStackScriptCard(card.id)" [attr.aria-expanded]="stackScriptCardIsExpanded(card.id)">
+                              <span class="stack-script-card__number">{{ stackScriptIndexLabel(scriptIndex) }}</span>
+                              <span class="stack-script-card__thumb">
+                                @if (card.imageUrl) { <img [src]="card.imageUrl" alt="" /> }
+                                @else { <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span> }
+                              </span>
+                              <span class="stack-script-card__copy">
+                                <strong>{{ stackScriptTitle(card) }}</strong>
+                                <small>{{ stackScriptNarration(card) || 'Narration needed' }}</small>
+                              </span>
+                              <span class="stack-script-card__duration">~{{ stackScriptCardEstimatedSeconds(card) }}s</span>
+                              <span class="material-symbols-outlined">{{ stackScriptCardIsExpanded(card.id) ? 'expand_less' : 'expand_more' }}</span>
+                            </button>
+                            @if (stackScriptCardIsExpanded(card.id)) {
+                              <div class="stack-script-card__editor">
+                                <label>
+                                  <span>Card title</span>
+                                  <input type="text" maxlength="160" [value]="stackScriptTitle(card)" (input)="updateStackScriptCard(card.id, 'title', $any($event.target).value)" />
+                                </label>
+                                <label>
+                                  <span>Narration script <small>This is exactly what the selected voice will read.</small></span>
+                                  <textarea rows="5" maxlength="3000" [value]="stackScriptNarration(card)" (input)="updateStackScriptCard(card.id, 'narration', $any($event.target).value)"></textarea>
+                                </label>
+                                <div class="stack-script-card__actions">
+                                  <span>{{ stackScriptCardWordCount(card) }} words · ~{{ stackScriptCardEstimatedSeconds(card) }}s</span>
+                                  <button type="button" [disabled]="stackScriptPreviewLoadingCardId() === card.id" (click)="previewStackScriptCard(card, $event)">
+                                    <span class="material-symbols-outlined">{{ stackScriptPreviewLoadingCardId() === card.id ? 'progress_activity' : 'play_arrow' }}</span>
+                                    Preview
+                                  </button>
+                                  <button type="button" (click)="resetStackScriptCard(card)">
+                                    <span class="material-symbols-outlined">restart_alt</span>
+                                    Reset
+                                  </button>
+                                </div>
+                              </div>
+                            }
+                          </article>
+                        } @empty {
+                          <div class="stack-empty-note"><span class="material-symbols-outlined">select_check_box</span><strong>Select at least one card to write its script.</strong></div>
+                        }
+                      </div>
+
+                      @if (stackScriptError()) {
+                        <div class="stack-script-error">{{ stackScriptError() }}</div>
+                      }
+                      <footer class="stack-script-footer">
+                        <span class="stack-script-save-state" [class.stack-script-save-state--dirty]="stackScriptDirty()">
+                          <span class="stack-script-save-state__dot" aria-hidden="true"></span>
+                          {{ stackScriptSaving() ? 'Saving…' : stackScriptDirty() ? 'Unsaved changes' : stackScriptSavedAt() ? 'Script saved' : 'Ready to edit' }}
+                        </span>
+                        <button type="button" class="boards-ghost-action" [disabled]="!stackScriptCanSave()" (click)="saveStackScript(board)">
+                          {{ stackScriptSaving() ? 'Saving…' : 'Save script' }}
+                        </button>
+                        <button type="button" class="boards-primary-action" [disabled]="stackScriptSaving() || !stackScriptBoardTitle().trim() || stackScriptMissingCount() > 0" (click)="continueStackStudio(board, 'voice')">
+                          Continue to Voice
+                          <span aria-hidden="true">→</span>
+                        </button>
+                      </footer>
+                    </div>
+                  } @else if (stackSoundTab() === 'voice') {
                     <div class="stack-voice-picker stack-voice-picker--prominent">
                       <div class="stack-voice-picker__head">
                         <div>
@@ -5648,30 +5768,12 @@
                 <details class="stack-panel stack-panel--details">
                   <summary class="stack-panel__summary">
                     <div>
-                      <p i18n>Cover</p>
-                      <h4 i18n>Caption</h4>
+                      <p>Sharing</p>
+                      <h4>Social caption</h4>
                     </div>
                     <span class="material-symbols-outlined">expand_more</span>
                   </summary>
                   <div class="stack-fields">
-                    <label>
-                      <span i18n>Cover title</span>
-                      <input
-                        type="text"
-                        maxlength="80"
-                        [value]="stackCoverTitle()"
-                        (input)="stackCoverTitle.set($any($event.target).value)"
-                      />
-                    </label>
-                    <label>
-                      <span i18n>Cover subtitle</span>
-                      <input
-                        type="text"
-                        maxlength="140"
-                        [value]="stackCoverSubtitle()"
-                        (input)="stackCoverSubtitle.set($any($event.target).value)"
-                      />
-                    </label>
                     <label>
                       <span i18n>Share caption</span>
                       <textarea
@@ -5747,8 +5849,8 @@
                       <div class="stack-preview__shade"></div>
                       <div class="stack-preview__content stack-preview__content--cover">
                         <span i18n>A LivingWiki Stack</span>
-                        <h4>{{ stackCoverTitle() || board.title }}</h4>
-                        <p>{{ stackCoverSubtitle() }}</p>
+                        <h4>{{ stackScriptBoardTitle() || board.title }}</h4>
+                        <p>{{ stackScriptBoardDescription() }}</p>
                       </div>
                     } @else if (frame.kind === 'card') {
                       @if (frame.card; as card) {
@@ -5760,8 +5862,8 @@
                           <div class="stack-preview__brand" i18n>LivingWiki</div>
                           <div class="stack-preview__content">
                             <span>{{ card.status }} · {{ card.rating }}/5</span>
-                            <h4>{{ card.title }}</h4>
-                            <p>{{ cardDisplaySubtitle(board, card) || card.notes }}</p>
+                            <h4>{{ stackScriptTitle(card) }}</h4>
+                            <p>{{ stackScriptNarration(card) }}</p>
                             @if (card.audioPreviewUrl && !hasSpotifyTrack(card)) {
                               <button
                                 type="button"
@@ -5781,7 +5883,7 @@
                       <div class="stack-preview__closing">
                         <span class="material-symbols-outlined">auto_awesome_motion</span>
                         <h4 i18n>Made with LivingWiki</h4>
-                        <p>{{ board.title }}</p>
+                        <p>{{ stackScriptBoardTitle() || board.title }}</p>
                         @if (board.stackCtaLabel && stackCtaHref(board)) {
                           <a class="stack-preview__cta" [href]="stackCtaHref(board)" target="_blank" rel="noopener" style="justify-content: center; gap: .5rem; max-width: min(88%, 20rem); border-width: 3px; background: linear-gradient(135deg, #ffffff, #fff3bd); box-shadow: 0 18px 34px rgba(0,0,0,.28); color: #111827; font-size: .92rem; line-height: 1; padding: .78rem 1rem .78rem .82rem;">
                             <span class="material-symbols-outlined" style="display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border-radius: 999px; background: #111827; color: #ffffff; font-size: 1.16rem; font-variation-settings: 'FILL' 1;">ads_click</span>
@@ -5845,6 +5947,20 @@
         </section>
       </div>
     }
+  }
+
+  @if (stackStudioOpen() && stackScriptDiscardConfirmOpen()) {
+    <div class="boards-modal-backdrop stack-script-discard-backdrop" (click)="keepEditingStackScript()">
+      <section class="boards-modal boards-modal--confirm stack-script-discard" aria-label="Unsaved script changes" (click)="$event.stopPropagation()">
+        <span class="stack-script-discard__icon material-symbols-outlined">edit_note</span>
+        <h3>Keep your script changes?</h3>
+        <p>Your edits have not been saved to this board yet.</p>
+        <div>
+          <button type="button" class="boards-ghost-action" (click)="discardStackScriptAndClose()">Discard changes</button>
+          <button type="button" class="boards-primary-action" (click)="keepEditingStackScript()">Keep editing</button>
+        </div>
+      </section>
+    </div>
   }
 
   @if (stackShareDialogOpen()) {
