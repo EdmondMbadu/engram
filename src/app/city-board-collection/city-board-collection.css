@@ -1048,6 +1048,75 @@
   to { background-position-x: -220%; }
 }
 
+@media (min-width: 821px) and (max-height: 900px) {
+  .collection-nav__inner {
+    min-height: 3.5rem;
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+  }
+
+  .collection-shell {
+    padding-top: 1rem;
+  }
+
+  .collection-intro {
+    margin-bottom: 0.75rem;
+  }
+
+  .collection-breadcrumb {
+    margin-bottom: 0.5rem;
+  }
+
+  .collection-intro__row {
+    align-items: center;
+  }
+
+  .collection-intro h1 {
+    margin-top: 0.35rem;
+    font-size: clamp(2.35rem, 4vw, 3.2rem);
+  }
+
+  .collection-intro__copy > p {
+    display: none;
+  }
+
+  .collection-intro__identity {
+    padding: 0.45rem 0.65rem 0.45rem 0.45rem;
+  }
+
+  .collection-intro__identity > img,
+  .collection-intro__identity > .material-symbols-outlined {
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+
+  .collection-spotlight {
+    min-height: clamp(30rem, calc(100svh - 12rem), 42rem);
+  }
+
+  .collection-spotlight__content {
+    min-height: 100%;
+    padding: 2rem clamp(2.25rem, 5vw, 4.5rem) 6rem;
+  }
+
+  .collection-spotlight h2 {
+    font-size: clamp(2.2rem, 3.4vw, 3.65rem);
+  }
+
+  .collection-spotlight__content > p {
+    margin-top: 0.75rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .collection-spotlight__actions {
+    margin-top: 1rem;
+  }
+
+  .collection-spotlight__picker {
+    bottom: 1rem;
+  }
+}
+
 @media (max-width: 1100px) {
   .collection-spotlight__picker { grid-template-columns: repeat(5, minmax(4rem, 1fr)); }
   .collection-spotlight__picker button { display: block; padding: 0.48rem 0.25rem 0.25rem; }
