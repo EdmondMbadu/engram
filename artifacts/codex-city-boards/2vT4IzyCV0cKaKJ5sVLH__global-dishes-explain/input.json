@@ -1,0 +1,348 @@
+{
+  "city": {
+    "id": "2vT4IzyCV0cKaKJ5sVLH",
+    "name": "Valencia",
+    "region": "Spain",
+    "country": "ES"
+  },
+  "template": {
+    "id": "global-dishes-explain",
+    "version": "1.0",
+    "titlePattern": "{count} Dishes That Explain {city}",
+    "searchQuery": "local food restaurant signature dishes regional cuisine",
+    "editorialBrief": "Dish first. Each card must name one distinct, verifiable dish and explain one specific thing it reveals about the city. Tie it to an exact verified venue. Do not repeat the same dish. No “best,” rankings, generic food praise, or unsupported origin stories. If the dish-to-venue connection cannot be verified, do not claim it.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "2vT4IzyCV0cKaKJ5sVLH__global-dishes-explain__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJuao-fExPYA0R0jIb3nfPa5Y",
+      "name": "El Porteño",
+      "address": "Carrer d'en Llop, 4, Bajo Derecha, Ciutat Vella, 46002 Valencia",
+      "latitude": 39.4707829,
+      "longitude": -0.3774405,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJuao-fExPYA0R0jIb3nfPa5Y",
+      "photo_reference": "AWCwydieW8epvzEkQY_c6p7sE7D61oiuTkD5ddmAJrKlTmQfEr72yFbC7Ky5_vri5XRTaBoSbbfyhtSDvN9BbK6iLLjdTHuhcmwfqaFWuwJ2kzzii4nLKXLBHErVo_V7GplsiLqsmH0RHL6kfY9Th6HRbmkzsdMhSgzuGHGAqns1RuxOTZBD8ynQiPhmuEc-bPFkvSePtt_TEohfoh5U7QtEilP1VSkxjcUtjS-6qvjlYh8hbIbWgZKLI3j23KsD5D5AzBzzD-d7q9mq_d0sHIihXjbvnUNwAyh5NnA5xrZQMet_oYkxsTiT7de38Ju4xgkSwLjufOqP9nK-BSZ75AHS9KTJqoCJTvusT4gmCv5MJa5wV-kmz0r3dk-ROeJvq_2W_LOFBiiBFKzzTPOdxXQCluYPT69WxMlIxsioFg7JE9g"
+    },
+    {
+      "place_id": "ChIJLeu0r7RIYA0RvH4m2HNY2eY",
+      "name": "Los Gómez, Correos",
+      "address": "C/ de Correus, 10, Ciutat Vella, 46002 València, Valencia",
+      "latitude": 39.4697609,
+      "longitude": -0.3743417000000001,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJLeu0r7RIYA0RvH4m2HNY2eY",
+      "photo_reference": "AWCwydjzck1lLp5RNgXs6ANO-tG6pe29chrvFiLJx7qFmi7LSH0PPEz3RDsg8CWy6GFwetYfUp7ikuDn4aIBxTJJg1YPb04KclUh4bclWsopJH5wTenQlWTbpnm1hkrW5aJNwqSLxq2_cW0QmgbO4yYyxHR3xLuVKaFTBnEpUkgfjU66RC3spuhruuZ8xNDb1NJBET7fcqKUwVIMDp0VggOyvbRhFZGsCI0xMT4Lrx2dHKOLD7mYwlUGM0oXc5NNfhzk4FPu12HIViEWQjI1H6LgL7wjfMvnvGZW2VLquN30AT-VatoZ4RoAPjb0ceQkcomkdfc6yOIZebrr9_IUiSGpSjhAr4SvE-TCrWzPzQIKaZCJ5CTO-ioa5wR6_uqOGUUXwJTpxIF13KZotJ9x9yaDBri1fRjl36qBTpMNz7euPUp1IPyPFCF6R4CEKpjhYA"
+    },
+    {
+      "place_id": "ChIJeUQhh0xPYA0R7oyc8eA9D3o",
+      "name": "La Vita e Bella",
+      "address": "Carrer d'en Llop, 4, Ciutat Vella, 46002 València, Valencia",
+      "latitude": 39.4706887,
+      "longitude": -0.3773919,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJeUQhh0xPYA0R7oyc8eA9D3o",
+      "photo_reference": "AWCwydikBrFg9AaxaL_2XeQbWNzeADiSXzT34o5SVBMs1wys7OVTHL3Z0d1e6NG6dnFpQJI7aQw80ZGyrqaR2z9ajv7kr4aaubA5Y1tW0EXRqs1MEkbQ0Nqn2TZWyk_LM8tmwOI0rv8pMPZdTE6l_YRAkKPxN9k7j-Qbkl7ccQUFEqvCHJ2QN5qJaqvU45JPGWFSLmdw5SEIva9Di3Xc-fslG6FJQQmihWfFofbzZDBoQeumHcn8p33RbhfP-NmSA6uo6wVdf1nTk0IUou94q4a-T-vT3EGrd0153ekqnaAmb8fussb0MDvVt2ljb9C-fMBPQaf2AcbMI7FAtgyBYfzdKkt2UeEMUkNgMm0SPmNe_EpQ-Ez_AbGitvtoUk7GTdioSGfvAcyCfUfOwmTEI8B3bOD6Fkyl7k0EETwhilyJ2OeJ2A"
+    },
+    {
+      "place_id": "ChIJN-LQKrE4YA0RrtXIc191dd8",
+      "name": "Puerta del Mar",
+      "address": "Carrer dels Transits, 4, Ciutat Vella, 46002 València, Valencia",
+      "latitude": 39.47096639999999,
+      "longitude": -0.3753882,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJN-LQKrE4YA0RrtXIc191dd8",
+      "photo_reference": "AWCwydh_1F42vASg7uQ3FsrCbnGfvhwVAdX5UTmVClz3zgyciSFqNzDtdr8thWm4tCMZYF6jjRnw1n_dt9Ql98gLBQiU6-iV2e91KSlCR1ZCMrXAp1cYmP9e-uQS7eicVT_tyyMLCOMTqgA1dJZMUof07nwwXYs-q59IQTkQIiAK_3kNeixl17v0eqxfcMkU-sj4lf-KpsP281EgevGAlXZj4gQ89xT2a8i-ZBE-UmbfAKZK7OzRi3Qq3ScY7kqlrommlJZWKgtLTVVbM_mkTwwIeHvHRZ0c1cpHcxI9Ga24I3-W6XEk7HKe57VTYfzn14VL9MKhGc1M5DRD9jM2eVq_9hIl39tAH3648jb3U0t1Gb4iYXfYMSfN0SPPUPHr3SxNHzhtZO4YhBuBEK2P2NEmqXouQpMZQ6g1ATdbSsB_9Bp04_fLi6F_BemLwPDnBg"
+    },
+    {
+      "place_id": "ChIJ1VbQfU1PYA0RiMq5MxHNr6Q",
+      "name": "San Tommaso",
+      "address": "C/ de la Corretgeria, 37, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.4752898,
+      "longitude": -0.3771125,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ1VbQfU1PYA0RiMq5MxHNr6Q",
+      "photo_reference": "AWCwydg9dkNc6uVfoSzHPqPKwgqjVRBhej2-Odirao783gaYF7UQEzdf9M2aqNQ6Gg4p4CP-R9aKuflUxBHTl-HYZwCRZDc5_Jm2MMIFJdZOj8cft18qsiWD-VYBLzo6-g4WLRZEZVzlaYtzh0Tjs8jNh62Ir7hRozWHX3hy_XBTMi4G4iNYt7rPQ2dl1Mts_RaV1b5tsXX1y3wm5Wi0gSknevw_DPYNvAoztoY1yRit-18eShKt59oAOEjVdMeDT833hWcOGoUZXZxNlIRi0ba0ZUZaB3qDYvo65fqbY7syaPSD5K57Qlw95uB_wzSfUIxxQ--NiTr2e_4_tdj1QKbK851u4WM9xZu2i4j1ICcM4X9M5RPw8_7yTgQQQoexJcGqXdba4CXqPEkPV4N0Sr7yeTz2c9czBEbTUMGPQbaBiGSajJpT"
+    },
+    {
+      "place_id": "ChIJu7Y9ispPYA0RwTN0l4X7f9o",
+      "name": "Gran Mercat",
+      "address": "Av. de María Cristina, 12, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.4730709,
+      "longitude": -0.3774264,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJu7Y9ispPYA0RwTN0l4X7f9o",
+      "photo_reference": "AWCwydi8cJGVo6ujWfJcmlRvG1AKyIuKbfqVd2FJ6z_tN8XwsBdsNpsJPZwBAdz0xSjR_LYFe2aFgb159A1mJ7FoX2isTUauh_dnwNMdo7PI8RVUITX7wR93SEsrCFpg0EnWm8X4kjTT1pZ_MdWs8XwJw1UW1VeczXbOZFogA5vXrG2jukAyjGFWTySifloLjyciPXi8r4ujZfNSvW7Cke0vjO8EsemltOslsqZgSKiMs12S5voPPXNQaJr29et9GfrRCpXcUzMWrnUdVfu_53-n-qIeRN5qLzSBp11TtC2b-Itc_ikhuIHF0PKP4npsPBJ6lvQoYT4zN6A_fOxVK6Niq_Bza7geXg9HodVnS-B0AcaYT3rT_q8_GzDbPAXkzLG2Is8V8uRlAOc9oLramcMGTlDtmkfgSLP8rHnEzwtn54-9xqJp4Zg9mdQ9kH7atiA9"
+    },
+    {
+      "place_id": "ChIJ_YzZnvVPYA0RF_0xeub_iLE",
+      "name": "French Corner Comida Para Llevar - Shawarma Halal Valencia",
+      "address": "C. del Hospital, 18, Ciutat Vella, 46001 Valencia",
+      "latitude": 39.4710076,
+      "longitude": -0.3817745,
+      "types": [
+        "establishment",
+        "food",
+        "meal_delivery",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_YzZnvVPYA0RF_0xeub_iLE",
+      "photo_reference": "AWCwydiTs0a6QV0GtKWOm8hbNTbs7B6RZ7EofZ5MX4JyXsKfKX8UOMh0Ys8xfyCVEFDBxdG9vKDR_VVJzRQB2cWdCPqxcezrf0xfyagGxcn8PYYNSkbPncwi_c4wNdzIU-C8uLK4FobCCk-F4bvtS5E9OEDYp8uTqfdQUn-80bbEzrtWz6mq7dZjA90AyZBehYru_zNpPj42qTY0FOZQ8OYzr4pIzo9WrXmDX7Lj0FGJveLtUuBUylLUnMPjWOA_RKbdp3ecErUsGYVKsPzJUqgH_VuV7Ss0yIfHLrbAJT-GDQxZEhl33gp-Fgwmj9_NFfD9X-ooBKeFx5UsOWwe3zOxNLcAempWTJrrBiRS0YNbE7atUyuN1ASxz2g_t596U5OlX_7yUi_oC_Glj2CeyBCnJ9ObPeJk-uTjdS7XLBf3RCJQ7LVp"
+    },
+    {
+      "place_id": "ChIJJ13mxK5PYA0RwlcSDrCSIIo",
+      "name": "La Terrazza (Pza La Virgen)",
+      "address": "C/ dels Cavallers, 5, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.4763292,
+      "longitude": -0.3760006,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJJ13mxK5PYA0RwlcSDrCSIIo",
+      "photo_reference": "AWCwydj4h8DI-KoGRjy3MZ11xLwFxOAoW609BbokfjEzcgkjSPcF2jeMtiWkbSdpDMangsgDI12Ddgf5WGYeqQK7RpuvbnZF2PtYODeZkYQjbrD35ycnR9su-ueYSom89pFwi4NOLGBM-JQEwFK93QsBroQrtolXFnC8fIMcUTG5jSnuGjHgiFA9BOt6GH0r8NBoUX9hyxxVXQoySP4SbM54mpuRZczAfJGkRCaCxIIEt8oiVoRMxohsnb_o3DSxBOZN9LxkiGidIuhyiJjXy7eJmsXHGkL8BE8SW4T2GChTK4Ti6KUFUzqpSD_4q8lziHDL7QWMHDJFmVTbfEi3JnUkEBb97FZc8YdpjKEwlTpd0XzFaucgL4rEMRzB0-Igqr4st09S_0nhAmaCho-n6lBXjEKh_K4y3elicTClsT8jiG8dOnAN"
+    },
+    {
+      "place_id": "ChIJf1lPLE1PYA0RAfTM9SYE8pk",
+      "name": "Restaurant Secret",
+      "address": "C/ de Sant Martí, 11, Ciutat Vella, 46002 València, Valencia",
+      "latitude": 39.473327,
+      "longitude": -0.375048,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJf1lPLE1PYA0RAfTM9SYE8pk",
+      "photo_reference": "AWCwydjioCvOg_lZS08rcTHHibUFjSTWIsgnTQLdYSgO_7jnaRhFyyLvVfQpyAK0L_NmgynmvsR-GMVWIjvDcd7YToqWaxailCckihHSM39bBE0PrqWg_2F9d-MmtoylRPKOXBduHr6VXRC9qStFiS3-G2W18KUtYDTNIlx3Mm1z2M82DQm86AobZkiuidQTsXIVXTNBi7b9jLILqa4yEYMQ5sWdMm7XPkFePmlpx-_SJY1xVQJIFzHcjUD130EE6wBTzMU-xM7a-DmtyKKc1sBMiiSH_XS7LVynNqbE1Pz2eZw3lZiplj7LDJIUmIZCKu3-591xFPW-cA2i2B88UwWF-IL92Y8-C_My7m22F22FUondlYeAJQSPUHYus7JpsNkP3Rl0nK99_skTLQe1RdRmO-jQRCSQk-sbARZbA6wCLxa2OhY"
+    },
+    {
+      "place_id": "ChIJ9-rCGHdIYA0R9c5tfV6sydc",
+      "name": "Casa Carmela",
+      "address": "C/ d'Isabel de Villena, 155, Poblats Marítims, 46011 València, Valencia",
+      "latitude": 39.4822222,
+      "longitude": -0.3258333,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ9-rCGHdIYA0R9c5tfV6sydc",
+      "photo_reference": "AWCwydjnKglzWdKvezyJtyMsBuSzXuzrbbzMhKrhWcHFgCmIkV6q6ezriybfTTR0TSfu3xNn9bKQ-o79Njrh7KH8p8GK6AMThABxAH0wVUMlzObWE2Vw-GD-_PFRTtQRQ0UFjrI3dakcPIMF3tkJPO8HfAWR1QOrXSheurVZ_v8AYGIIUfQDz3JpCuEpbz4ATDR-66VUAkkHIPDZRH9rLDIoonI5qI8sjCWngjzGMl1PCX1p3WGVIK64gfTv0nbGI1SctHenYnE0lyse8X2N5WLgzjZZWxGKBuniSaI2rtXPl8jADz9xrdEWJ0O_Pjg24PFlilnEkWikTszgjhCL4w_EYNimvBKntmB5465ga5WXIZwQIwzgaKWa4X-DdTXuVysPQ7DghPZKll_0G71PX4wm0B64esdwq0d79BZIOlwVDbsOxJdHx1oRibeivXQ-DLKD"
+    },
+    {
+      "place_id": "ChIJaSRcQ3BPYA0RkN8l2pZnmIo",
+      "name": "Burgers Food Terrace",
+      "address": "Pujada del Toledà, 6, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.4755196,
+      "longitude": -0.376009,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "liquor_store",
+        "point_of_interest",
+        "restaurant",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJaSRcQ3BPYA0RkN8l2pZnmIo",
+      "photo_reference": "AWCwydixMbXwpacqb6aSB55-FB3jkd3DwpKOmSMtB2QrUyXVKo-bLylxDXAzgYsc47k_SEvgOoSGYB053siLwbscKIdVg67m7Iqw3Vakqk3QbE3iT41v9ioE4TncSdmV89AjcdYVpCbnG2MKHP9vCIMXA6fmg4i5-V3VCpuopmEiCQF36Sbz3tfN7YHQ7ttF2giaS0hYFkLSPs6GxsNgEnSAVRBRi8s6FvfMXiWqqV_hQxl_wVwmJUZjqafc_kv0GI8iaakFzN9KayN3Du2rTC8f5jZMFWLkGF0a-zwG2UUN5gUqaEo0ShhXhWA1pS-tWkKpDOsIHyaf9uXDRYOQ_118tm-SB-4cK2R0NsD8QuErmt0iINKSOMnRvo4ropLe7S73lN9s3s8gZGmLe1WeUQ_NGtrBxOeYXCtD5cFV72g9tKODOw"
+    },
+    {
+      "place_id": "ChIJew1-lKNPYA0Re04XuJa_gH8",
+      "name": "REINA BONITA | BEAUTIFUL QUEEN",
+      "address": "Pça. de la Reina, 18, derecha, Ciutat Vella, 46003 Valencia",
+      "latitude": 39.4748775,
+      "longitude": -0.3749701,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJew1-lKNPYA0Re04XuJa_gH8",
+      "photo_reference": "AWCwydiVNv7c98J_79WqHFCTAYq4wlCnv_zmP4SQhrD0LXfPSemMotA2i7wEGBgFIeRju7nJVqTcE3h2d2JJXqqEhm6IiKR2fnZ5TfrP7DNLS5pViFI0b7W1kJyfCqL5VN8gh9JhX1uOTXEr7ZAQXdZUf8agJqQ36k6rvmuzICEp4bTvN77KjTh-3pb1va-Uxb-hNPRMfC-4k14bvPxgjoeyW1E1PLu9wj2PjdFC9C_-CRjSP4Gtmn4LGu-fsmhigCi6FbYcdlkcoRc5S7NUlbfOyTLrPq8nSBF8YRJ2yxuACQ-H1FSoPUg8L4G1bOk6ZokkLvRI0vGRuMjoxRU7lcqdFqflRNPutQGzth5RiPxLz9YKLKDAXOIY3fHvHy_I1qihP-gfLaCRWh2lcl6qtApqsaphXIVNNaGRCwKHx5tc0uh1gFI3RrjuSYPJaxoHPeQK"
+    },
+    {
+      "place_id": "ChIJzeJRiLdIYA0Rmw-vKgfYvwI",
+      "name": "Swagat",
+      "address": "Carrer del Comte d'Altea, 44, L'Eixample, 46005 València, Valencia",
+      "latitude": 39.4669681,
+      "longitude": -0.3655311,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJzeJRiLdIYA0Rmw-vKgfYvwI",
+      "photo_reference": "AWCwydhcqLJTKHcVIAlNECt1OlYr1HDPyypDRFUM2lvIBeIyJ8ZJWv6RPVP0g7r5FLmeQVD5CQBlFjogz8iusq5iQTv-TrJGoID30D-lBV3LdI21qdSUJVB_NR6mq1GsnN9du6RaiqsLJT7t_cizhIAcM36w8z_fT1ph7tSB3YEEpeBz81-_SIJr8DPS77BN7n5bIMBjl4miYiaNBqr4w86c_OQ-Bo6WKkgF7TIDVq6w6WmQIy6sh_SiMpwiTSHev450ybcEKgWs4Dabq-s1c6253fjZ9IF0QpdWYl3QfA3Ov4G7SsOpn71C-hcvnRO84TFIKzYEAN17ccZqMNKeuFT2fAUlCUpNJECB2gPjwtPHSBJg17GcmMuGCl69P4SlnuTQfO9UpA9A9m2XWCl56LzVlHHnbZpenXFMUNQGB3CfPwY4zx_duY3_cKVIihGxew"
+    },
+    {
+      "place_id": "ChIJQULzYE1PYA0RpCPa735s7PU",
+      "name": "La Papardella",
+      "address": "C/ del Cobertís dels Brodadors, 5, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.4753486,
+      "longitude": -0.3761297,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJQULzYE1PYA0RpCPa735s7PU",
+      "photo_reference": "AWCwydhB9tVH6jK4ij3mRKJm_CEBGHsb7pwQJCjm8Axs3bcAQ-U00F1VSywlIsK5DjMaQj07nKeBLHNfJnAaKeAmR1nz3D_pGwBK33Qd3kiApEC3RRkL0fmsapNkaOn3N3FM_f215PCU7csSlO8BXSnaDP33rNQls-XBffA_jRL_T-0p_aAwpFUTGmjXSlif0j4s-VUm7zH2SFyOEqNYz-s9r4ruf-14mOeQ7NxKwHj1szu6Ok52oCMuoZGFQfsQsjKudz2w3Q-OKhCwk-uKl1_YY-FWvO952K1BERoUN0zXEUDETFC62XIsGvtnQf9rPCNsQzIqCjJ6EgZDzjzn58FGMjSQ__wefFeTpoDD72xfIJ-AcbPAE_Un1xMe7FCKxP_sCZzJoyPLdOUQhRYW9FQkhhGOTbbth4UEGqU6GahMFZBaeJK2"
+    },
+    {
+      "place_id": "ChIJVaP0fE1PYA0RitDLphgcx8w",
+      "name": "Rincón 33",
+      "address": "C/ de la Corretgeria, 33, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.4753002,
+      "longitude": -0.3768577,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJVaP0fE1PYA0RitDLphgcx8w",
+      "photo_reference": "AWCwydgmCl-ttYxyo0CPtLd6xgVY06GV0hZvvtMjrVHkB-YTPmNAyUzsOgOe53uzBUQrIMcQt9f8crPmyPT2mPw0D5s9JofKc_CXWEbHBO-SvbaU9qLejDMe01xQQxjjtFD5YeoWdle0AZZG0AO8l64FCQsn6zFUVBThbfZCnVtN_qA-t50QwK6_jG0-4mzBg5ym34tUni_Mx7sPgANBqLt_bImuIGXltqs4C_h49vXX55kMPzJQ7LxzB4xA1AZ1tHniS6c-2E1UijXWIXYEc18ggIxJ8SJJxHdOMIh7bZm1OKJK9gFgeilupr9c2wNEhja9RApi8flOzhaJrs1xoqKFck-Ny8s3QFuRO4W1y4szZxka5sQ5yhDiKAsWpJNEkrPyQIlDts9E0knyaoBuZrbCAphh7SrYudyNV4dITCnkvw7EDQ"
+    },
+    {
+      "place_id": "ChIJ8wleZrJPYA0RfX1dtIKbH9k",
+      "name": "El Paeller Valencià",
+      "address": "C/ dels Cavallers, 5, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.4763706,
+      "longitude": -0.3759766,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ8wleZrJPYA0RfX1dtIKbH9k",
+      "photo_reference": "AWCwydibQHAPsED2YVmoiNwrlzCgy0Rxe5tBNzPaPw9gJIAzhLxMHMY_E3DVmfF_B1ZmYJwFdd52AKz84EJ4zfUudZElTcsh0nSqJCBf9HIA2d8iwdiSbuxl9vD1ec3LVfD2QJzNBtElpO3ixYtBTkz9Twl-J-whQO-NEyPD7PMiVb9kt7r0x7steqc2i0woU9QO3H79JK-wopE0DnvtPz6R6ad72-IKs_V-Bu7pWV9h-XfIe97R8KYrGioDf7XDX2C92S4X8E9xJbNrvnDGBq4IesF7JhXJKypYn-nw9sR-9VEkS4e_sB58RD6xyVoaigMgUc55gsPwkAQIJKdjUjuZqK5oIaKm7RRnRE9lMGyEJX71cAQE172WTtTKMBAEWA3uj4wFr4jPiFC-RZx0xSXKvlS6NmFIzf36AOtJcVZrt1WRObTlAdJcfaK7NdfmKA"
+    },
+    {
+      "place_id": "ChIJg67DZkxPYA0RHMVCuyuYRnI",
+      "name": "Restaurante El Encuentro",
+      "address": "Carrer de Sant Vicent Màrtir, 28, Ciutat Vella, 46002 València, Valencia",
+      "latitude": 39.4714482,
+      "longitude": -0.3776867,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJg67DZkxPYA0RHMVCuyuYRnI",
+      "photo_reference": "AWCwydgNqxbXNgSVPx_YxEVyu97Ulb7BjgCHv9iFEoVJMJs7rSwEHTYKWsnnJgvEyVfbMZ_u2mKXnwYrsYHVyZyjBGFEgsyKgAr9CHn4fjEBVmQS-mnXHSpSlekndkjIIBXuH7OENHUaK8n1ZchzI4mZdeh0bcA-0GZH_Mc9Dwjk3tdwDyuXNPfhJwgfO6oYn75f5uYCQs121QTTfv8lhAgyy-bDNS3d6IXzztpFz8JopYHsR9PPv9onV6BYzTYVsJYQKqbjtkys6aiDRO7BsH6AX_p2ToahDMQX9Xfwq-tfhjbu9llc5vTbskvrH_rv5af5PXTkaaNiIICU-pjVNosp33wWqbVI7u-gFWXLjbIWEpLuYmnpXo6La4OLd7ewb49wVOSyR0sx3Zcu7G0D1_ao8n7TYsJ8rpCPRmzASivdJimDtCHG"
+    },
+    {
+      "place_id": "ChIJi8NyLwdPYA0RCZeCAaWKv9g",
+      "name": "El mirador de Only YOU",
+      "address": "Plaça de Rodrigo Botet, 5, Planta novena, Ciutat Vella, 46002 Valencia",
+      "latitude": 39.4712791,
+      "longitude": -0.3749211,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJi8NyLwdPYA0RCZeCAaWKv9g",
+      "photo_reference": "AWCwydga2gICIcXoSNVawho6EYvhVLHWB7tRbj5cVEALnKHk57q_KiihSJH_UVdKN0KGPjcytZvZNCMhhSbUmPIkvNt7xhfWCYxwP_fZ5IlbEduk8IAUeKgmnmUETVdn74RHaZleYPSvcCj60BzQdBsIV9p5mxxPNtpbryWFyqVc1pN8wDCUZC7Mq_Z6gD6WAgqjJNcGy-42sFC0N0lrVCx5mnCM1cvwKj2Tsnp1T1GFq4Nr_Y9KTtbIctZmor5m3N1b-YlmaK8UM6X7U7vElfj62xcpyDBP229f4_Debb8tfERj6jGBHhL7uXgaOE68iVOap5FETeCNAN5bjDvGete5dYx9G1oZpVZS4zvU8Y9OAi5oNdXxyBUXkGOgACQiKOiCItDBcQ67mB83jUclhGHBhXn3xvQ0czE9RniORrZPdJGGNMI0"
+    },
+    {
+      "place_id": "ChIJuzaC9FVPYA0RjAmLeooCIGs",
+      "name": "Casa Bravo",
+      "address": "C/ de Calatrava, 23, Ciutat Vella, 46001 València, Valencia",
+      "latitude": 39.47643860000001,
+      "longitude": -0.3773893,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJuzaC9FVPYA0RjAmLeooCIGs",
+      "photo_reference": "AWCwydhV5e8B4xgDMn2_qySOIqZrBMa571Y-2U0BeZkSHZ_JUd3CIK4s5gXuiQzFxjR2YVkfXvmbglPZHsv9CU93_zbBNZAFCIOKRG0AntZOmGbq7rNYfngU4RvVqeEFt7QYH3TuPGHzFsZEdUtehTYsh0HdmK5B8-ETXIFKs6s4gNHOqvJIy1BkpcRztuRsc9xa-FNqR_rD5kOwomZlsX4OoK9UmH-JYdlA2mH6ZTWfPjR9kfjxR1Gtf5QuOtO09z8zTNDj3NK9TiRZu14qnYl81E08CIrakby1QsVvunH7gBl2ViZ18G3KYczkml3B65sg-ttkdpQ84ema26vmNrEnpMKTiJDXReJvWHKl9TyONW5-wdmEp5oJZlWcdMpjivImdAbjMfhXc6UYzTjiHuxNPI-Dg9UKKyebyYd-0ZHvbbOW30GeckHFL0ROstq_1XLA"
+    },
+    {
+      "place_id": "ChIJYWh2EwBPYA0ROiUAlOmTs4I",
+      "name": "Tete Coco | Comida Real",
+      "address": "Pça. de la Reina, 18, Ciutat Vella, 46003 València, Valencia",
+      "latitude": 39.4749316,
+      "longitude": -0.3749711,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJYWh2EwBPYA0ROiUAlOmTs4I",
+      "photo_reference": "AWCwydg8g5lYyZrTZ_DfdLrZz3seYFVf-KOBWm6Q4f3KIccc97EcEuD92pq4pxEA1_AXBFUsbkr2PxKZ1fjn23lxSTCiUE_vs1PJPFfelsGXh2VpuFdpM_ndYZSmUkNNzDp6ZAJX9bKnI06_X-fOd7jj4CwDLsJq-09n8ggJiamtMjGnxdJxypDLImm4sZjRVNRXxFqrT4p2mP6xS4KPY--LpGq_soFNSbUA0gkTgUtvVdE1LciQ-vX5z8kRb-dleLKITRf3QJPPSDYKahwJAw0MjB4l2lrTuElQYWtr5K2qctQPFnM4WNGPugG111VOF4s7CrUAW8RCDXsERAv56dbaxDIClq80tiYtNvZKgt_tcwMyAwssjXaSat7a1Y4zz-LNVCtyejA2oV9FYJIXXUvDhhDddFRxEhdvXPtIzXgDZVmcJjccPkLSQjSicoCzI_zC"
+    },
+    {
+      "place_id": "ChIJYa9pZM9IYA0RfyFL8NEsbmI",
+      "name": "La Bulería Tablao Flamenco",
+      "address": "An evening of Andalusian soul in Valencia",
+      "latitude": 39.4583477,
+      "longitude": -0.3658752,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "rank-7",
+        "verified-place"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJYa9pZM9IYA0RfyFL8NEsbmI",
+      "photo_reference": "AWCwydj4fSB0ZVJ025P8jHx-Imq-lDDQ2LePLw8R2A-jtFIaq6fURN8O_CA4N4yvIPtCmYF-cH9jkB8otQqrsyBTkPGHplUMh1K4vAwMgj2yRC5q3smiFvih7z5H2UBazWJFhDd04UwIRQrf__yHyXAC-ZGl0-iMffYu7Wz1uL3I4uyCegMfyDDlZi71x1gQqJOiEh-OjSBDAsAKiqeLDKYCRu3O0Sgv7llOIjvUWwPZqR0yaicXMPDLhtA3aIGzGDpU7G18dLB2DK4w0fMl_KQ5GOAYJ6iKPMJybEXPIQvD_kHpisgqjaXNbEVoIHus1yV4isAcBcOOcsFkZUGwRlnOiAhGKCZdYRqI7ExE2WXjjhUCDVPawEWSxnm7l0I8rf7ymRIWfLlrqGdhuod5sn4WPC8N7m5RyFmWyUZCVLZwxxMICXvT"
+    }
+  ]
+}

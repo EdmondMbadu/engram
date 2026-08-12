@@ -78,54 +78,7 @@
     <main class="mobile-home-main">
       <p class="mobile-tagline" i18n>Find what lights you up!</p>
 
-      <section id="mobile-discover" class="mobile-discover-section" aria-label="Discover boards" i18n-aria-label>
-        <div class="mobile-discover-head">
-          <span class="material-symbols-outlined">travel_explore</span>
-          <div>
-            <p i18n>Discover</p>
-            <h2 i18n>Boards from around LivingWiki</h2>
-          </div>
-        </div>
-        <div class="mobile-card-row">
-          <a routerLink="/discover" class="mobile-icon-tile">
-            <img [src]="homeIconUrls.boards" alt="" class="mobile-home-tile-icon" />
-            <span class="mobile-plus">+</span>
-          </a>
-          @if (mobileDiscoverLoading()) {
-            <div class="mobile-discover-empty" i18n>Loading...</div>
-          } @else if (mobileDiscoverPreviewBoards().length) {
-            @for (board of mobileDiscoverPreviewBoards(); track board.id) {
-              <a
-                [routerLink]="boardViewLink(board)"
-                class="mobile-content-card"
-                [class.mobile-content-card--with-image]="board.imageUrl"
-              >
-                @if (board.imageUrl) {
-                  <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" class="mobile-content-card-image" />
-                }
-                <span class="material-symbols-outlined">{{ boardIcon(board) }}</span>
-                <b>{{ board.title }}</b>
-                <small>{{ ownerLabel(board) }} · {{ countLabel(board.cards.length, boardSongCards(board).length ? 'song' : 'card') }}</small>
-              </a>
-            }
-          } @else {
-            <div class="mobile-discover-empty" i18n>No boards yet.</div>
-          }
-        </div>
-        @if (hasMoreMobileDiscoverBoards()) {
-          <button
-            type="button"
-            class="mobile-home-more"
-            [disabled]="mobileDiscoverLoadingMore()"
-            (click)="showMoreMobileDiscoverBoards()"
-          >
-            <span class="material-symbols-outlined">expand_more</span>
-            <span>{{ mobileDiscoverLoadingMore() ? 'Loading…' : 'Load 10 more' }}</span>
-          </button>
-        }
-      </section>
-
-      <section id="mobile-city" class="mobile-city-block">
+      <section id="mobile-city" class="mobile-city-block mobile-city-block--top">
         <div class="mobile-city-row">
           @if (mobileSelectedCity(); as selectedCity) {
             <span class="mobile-selected-city-picture">
@@ -136,12 +89,15 @@
               }
             </span>
           } @else {
-            <span class="mobile-selected-city-picture">
-              <span i18n>LW</span>
-            </span>
+            <span class="mobile-selected-city-picture"><span i18n>LW</span></span>
           }
           <span class="mobile-city-label" i18n>My City</span>
-          <button type="button" class="mobile-city-select" (click)="toggleMobileAllCities()">
+          <button
+            type="button"
+            class="mobile-city-select"
+            aria-label="Choose my city"
+            (click)="toggleMobileAllCities()"
+          >
             <span>{{ mobileSelectedCityName() }}</span>
             <span class="material-symbols-outlined">expand_more</span>
           </button>
@@ -206,6 +162,44 @@
           </div>
         }
 
+        <div class="mobile-directory-tools">
+          <div class="mobile-directory-switch" role="group" aria-label="Browse cities or universities">
+            <button
+              type="button"
+              [class.active]="!mobileDirectoryIsUniversities()"
+              [attr.aria-pressed]="!mobileDirectoryIsUniversities()"
+              (click)="setHomeDirectoryCategory('Cities')"
+            >
+              <span class="material-symbols-outlined">location_city</span>
+              <span>Cities</span>
+            </button>
+            <button
+              type="button"
+              [class.active]="mobileDirectoryIsUniversities()"
+              [attr.aria-pressed]="mobileDirectoryIsUniversities()"
+              (click)="setHomeDirectoryCategory('Universities')"
+            >
+              <span class="material-symbols-outlined">school</span>
+              <span>Universities</span>
+            </button>
+          </div>
+
+          <label class="mobile-directory-search">
+            <span class="material-symbols-outlined">search</span>
+            <input
+              type="search"
+              [ngModel]="searchTerm()"
+              (ngModelChange)="onSearchInput($event)"
+              [placeholder]="mobileDirectorySearchPlaceholder()"
+            />
+            @if (searchTerm()) {
+              <button type="button" aria-label="Clear search" (click)="onSearchInput('')" i18n-aria-label>
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            }
+          </label>
+        </div>
+
         <div class="mobile-primary-actions">
           <a [routerLink]="mobileSelectedCityLink()" class="mobile-talk-action">
             <span class="material-symbols-outlined">graphic_eq</span>
@@ -214,62 +208,108 @@
               <small i18n>Live voice for {{ mobileSelectedCityName() }}</small>
             </span>
           </a>
-          @if (!isSignedIn()) {
-            <a routerLink="/create-account" class="mobile-join-action" i18n>Join for free</a>
-          }
         </div>
       </section>
 
-      <section class="mobile-search-wrap">
-        <label>
+      <section id="mobile-discover" class="mobile-discover-section" aria-label="Discover boards" i18n-aria-label>
+        <div class="mobile-discover-head">
           <span class="material-symbols-outlined">travel_explore</span>
-          <input
-            type="text"
-            [ngModel]="searchTerm()"
-            (ngModelChange)="onSearchInput($event)"
-            placeholder="Search cities, boards, songs, friends..."
-           i18n-placeholder/>
-        </label>
+          <div>
+            <p i18n>Discover</p>
+            <h2 i18n>Boards from around LivingWiki</h2>
+          </div>
+        </div>
+        <div class="mobile-card-row">
+          <a routerLink="/discover" class="mobile-icon-tile">
+            <img [src]="homeIconUrls.boards" alt="" class="mobile-home-tile-icon" />
+            <span class="mobile-plus">+</span>
+          </a>
+          @if (mobileDiscoverLoading()) {
+            <div class="mobile-discover-empty" i18n>Loading...</div>
+          } @else if (mobileDiscoverPreviewBoards().length) {
+            @for (board of mobileDiscoverPreviewBoards(); track board.id) {
+              <a
+                [routerLink]="boardViewLink(board)"
+                class="mobile-content-card"
+                [class.mobile-content-card--with-image]="board.imageUrl"
+              >
+                @if (board.imageUrl) {
+                  <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" class="mobile-content-card-image" />
+                }
+                <span class="material-symbols-outlined">{{ boardIcon(board) }}</span>
+                <b>{{ board.title }}</b>
+                <small>{{ ownerLabel(board) }} · {{ countLabel(board.cards.length, boardSongCards(board).length ? 'song' : 'card') }}</small>
+              </a>
+            }
+          } @else {
+            <div class="mobile-discover-empty" i18n>No boards yet.</div>
+          }
+        </div>
+        @if (hasMoreMobileDiscoverBoards()) {
+          <button
+            type="button"
+            class="mobile-home-more"
+            [disabled]="mobileDiscoverLoadingMore()"
+            (click)="showMoreMobileDiscoverBoards()"
+          >
+            <span class="material-symbols-outlined">expand_more</span>
+            <span>{{ mobileDiscoverLoadingMore() ? 'Loading…' : 'Load 10 more' }}</span>
+          </button>
+        }
       </section>
 
-      <section class="mobile-row-section mobile-featured-cities" aria-label="Featured cities" i18n-aria-label>
+      <section
+        class="mobile-row-section mobile-featured-cities"
+        [attr.aria-label]="mobileDirectoryIsUniversities() ? 'Universities' : 'Cities'"
+      >
         <div class="mobile-card-row">
-          <button type="button" class="mobile-icon-tile" (click)="toggleMobileAllCities()">
-            <img [src]="homeIconUrls.cities" alt="" class="mobile-home-tile-icon" />
+          <button type="button" class="mobile-icon-tile" (click)="openHomeDirectory()">
+            @if (mobileDirectoryIsUniversities()) {
+              <span class="material-symbols-outlined mobile-section-icon">school</span>
+            } @else {
+              <img [src]="homeIconUrls.cities" alt="" class="mobile-home-tile-icon" />
+            }
             <span class="mobile-plus">+</span>
           </button>
-          @for (city of mobileFeaturedCities(); track city.slug || city.title) {
+          @for (wiki of mobileFeaturedWikis(); track wiki.slug || wiki.title) {
             <a
-              [routerLink]="city.link || '/chat'"
+              [routerLink]="wiki.link || '/chat'"
               class="mobile-city-card"
-              [style.backgroundColor]="city.coverColor || '#0d3823'"
+              [class.mobile-university-card]="mobileDirectoryIsUniversities()"
+              [style.backgroundColor]="wiki.coverColor || '#0d3823'"
             >
-              @if (city.heroUrl) {
+              @if (wiki.heroUrl) {
                 <img
-                  [src]="city.heroUrl"
-                  [alt]="cityDisplayName(city) + ' city image'"
+                  [src]="wiki.heroUrl"
+                  [alt]="cityDisplayName(wiki) + (mobileDirectoryIsUniversities() ? ' campus image' : ' city image')"
                   loading="lazy"
                   class="mobile-city-card-image"
                 />
               } @else {
                 <div class="mobile-city-card-image mobile-city-card-image--initials">
-                  {{ initialsFor(cityDisplayName(city)) }}
+                  {{ initialsFor(cityDisplayName(wiki)) }}
                 </div>
               }
               <span class="mobile-city-card-mark">
-                @if (city.logoUrl) {
-                  <img [src]="city.logoUrl" alt="" loading="lazy" />
+                @if (wiki.logoUrl) {
+                  <img [src]="wiki.logoUrl" alt="" loading="lazy" />
+                } @else if (mobileDirectoryIsUniversities()) {
+                  <span class="material-symbols-outlined">school</span>
                 } @else {
-                  {{ initialsFor(cityDisplayName(city)) }}
+                  {{ initialsFor(cityDisplayName(wiki)) }}
                 }
               </span>
-              <span class="mobile-city-card-title">{{ cityDisplayName(city) }}</span>
-              <small>{{ city.countryLabel || globalRegionForWiki(city) }}</small>
+              <span class="mobile-city-card-title">{{ cityDisplayName(wiki) }}</span>
+              <small>
+                {{ mobileDirectoryIsUniversities()
+                  ? ((wiki.universityCity || '') + (wiki.universityState ? ', ' + wiki.universityState : ''))
+                  : (wiki.countryLabel || globalRegionForWiki(wiki)) }}
+              </small>
             </a>
           }
         </div>
-        @if (hasMoreMobileFeaturedCities()) {
-          <button type="button" class="mobile-home-more" (click)="showMoreMobileFeaturedCities()">
+        @if (hasMoreMobileFeaturedWikis()) {
+          <button type="button" class="mobile-home-more" (click)="showMoreMobileFeaturedWikis()">
             <span class="material-symbols-outlined">expand_more</span>
             <span>Load 10 more</span>
           </button>

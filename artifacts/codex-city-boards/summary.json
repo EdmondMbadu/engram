@@ -1,0 +1,53 @@
+{
+  "projectId": "living-atlas-7622a",
+  "apply": true,
+  "publish": true,
+  "requested": 5,
+  "generated": 5,
+  "valid": 2,
+  "written": 2,
+  "rejected": 3,
+  "results": [
+    {
+      "city": "Xi’an",
+      "templateId": "global-first-24-hours",
+      "status": "rejected",
+      "problems": [
+        "10 source URL(s) could not be reached."
+      ],
+      "outputPath": "/Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/1LWnftojx4JIC60zYJwy__global-first-24-hours/board.json"
+    },
+    {
+      "city": "Hangzhou",
+      "templateId": "global-first-24-hours",
+      "status": "rejected",
+      "problems": [
+        "1 source URL(s) could not be reached."
+      ],
+      "outputPath": "/Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/W2ce5FOPAgpsfHVTFtJe__global-first-24-hours/board.json"
+    },
+    {
+      "city": "Kuwait City",
+      "templateId": "global-first-24-hours",
+      "status": "rejected",
+      "problems": [
+        "4 source URL(s) could not be reached."
+      ],
+      "outputPath": "/Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/gMMxFZNtxq8gLKceZv3m__global-first-24-hours/board.json"
+    },
+    {
+      "city": "Tampa",
+      "templateId": "global-first-24-hours",
+      "status": "published",
+      "boardId": "bulk_af56f727016f7f009dc962dc3eb9",
+      "outputPath": "/Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/qX5ezONH7J0ipaJJEYty__global-first-24-hours/board.json"
+    },
+    {
+      "city": "Chongqing",
+      "templateId": "global-first-24-hours",
+      "status": "published",
+      "boardId": "bulk_bc361ca07f33d63127c096a53a73",
+      "outputPath": "/Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/tSQF4gV0GHMKqYyduRS3__global-first-24-hours/board.json"
+    }
+  ]
+}

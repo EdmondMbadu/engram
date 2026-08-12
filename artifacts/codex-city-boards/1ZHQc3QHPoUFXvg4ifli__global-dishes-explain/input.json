@@ -1,0 +1,392 @@
+{
+  "city": {
+    "id": "1ZHQc3QHPoUFXvg4ifli",
+    "name": "Pune",
+    "region": "India",
+    "country": "IN"
+  },
+  "template": {
+    "id": "global-dishes-explain",
+    "version": "1.0",
+    "titlePattern": "{count} Dishes That Explain {city}",
+    "searchQuery": "local food restaurant signature dishes regional cuisine",
+    "editorialBrief": "Dish first. Each card must name one distinct, verifiable dish and explain one specific thing it reveals about the city. Tie it to an exact verified venue. Do not repeat the same dish. No “best,” rankings, generic food praise, or unsupported origin stories. If the dish-to-venue connection cannot be verified, do not claim it.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "1ZHQc3QHPoUFXvg4ifli__global-dishes-explain__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJd-MtBI2_wjsRreODkEmBq9Q",
+      "name": "Nisarg Sea Food Since 1999",
+      "address": "Nalstop, Karve Road, 6/1, Shankarao Joshi Rd, Opposite Padale Palace, Pandurang Colony, Erandwane, Pune, Maharashtra 411004",
+      "latitude": 18.5066776,
+      "longitude": 73.8321917,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJd-MtBI2_wjsRreODkEmBq9Q",
+      "photo_reference": "AWCwydiIrfWSrG-Oj8Eb37TXVRJQChP4KePiQkgVyPMvuJqwm4oQWKiMrZLKqzgSYEpeV0YobA2eAMS5lCNonR206-k9goWeAiwPOz6WZUNGL5G4O-FfO-iZ6kPB_8MtmJK7AtGNvcTdRY_A_S5JkJKND_qwaiQrpeKa5jHIH5rEmZay9Hek0Qm4cuV3_wqlcIu6k2sCBQb_eoHFmywHhrunLgLF5ZFFAbBnwA69ck61mSZN1t4rKUDq2BsFzBmbSE40HKPj5U29PlJfwub1qzOrr1WQnUKpc41-0_mdFGpx8qdAAFSTjBTPDn6lT7mCksS-BUgD7gkN6x8oQjLxDObucudkzPu-lRgHaqmGgKI4n2HbdWfLJpBreGNXY3Bsay1vpyj6utXxnTXF-52tSV60F3pePEMPbCy11XP1zvWJ9yfiPsq1"
+    },
+    {
+      "place_id": "ChIJf25TjgfBwjsRltOx6_TA7mc",
+      "name": "The Sassy Spoon",
+      "address": "Sanskriti Lifestyle, Lane No. 7, Ashok Chakra Society, Meera Nagar, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.533963,
+      "longitude": 73.89873589999999,
+      "types": [
+        "establishment",
+        "food",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJf25TjgfBwjsRltOx6_TA7mc",
+      "photo_reference": "AWCwydid_LCeFmo4G8T_Uy-6SZ09QeJRVz_jPOvxohOQXKR46O68nDHK59Uo5uqVo07vo4Cx6_ZnHGThc54K7Joho2u452nK74pd2aICeL1MCAheymDoo0NJu220eOYxfD59lPSkCCFIaRszM6vT1-T6HBOTZx9eRTsFmJPVHEPbD77XKef8bWvbD3MbreSMR2PflMEhu8TH6yHQUugUZpJ0PjlJH6sz1iNlExIzcKy7hWUhvQ4vGI7vg-8fYFCqsKt2alRTPqqgehl7Ti_Un_asKeoMsD-sP3WaagaMYsS51WcWD1IIv0pp_LhppNFj02E1AvGIBXEa0j7Q5MTki3VG7q8Z9Q4yoQIk70YkiN9cP1o5g-odaHqDiQ7sQxOVMABecN9Gu8ZIDqHNubPrpJSiHn3Wp9kboCqzaEstlp94Q_Sz0ZA"
+    },
+    {
+      "place_id": "ChIJXz17S3DBwjsR0XUiyoOecBI",
+      "name": "Haldiram's – Pune Food Plaza",
+      "address": "OAM Industries India Pvt Ltd (Haldirams), Hemant Kumar Shukla Food plaza at, PF no:-1, beside OM sai ram.Pune, Agarkar Nagar, Pune, Maharashtra 411001",
+      "latitude": 18.5289753,
+      "longitude": 73.8738791,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJXz17S3DBwjsR0XUiyoOecBI",
+      "photo_reference": "AWCwydhz0vmbnYGPCnalys7AUge1sSczUrrLYRSJhKTWMiXQXVHm_sm2MF7a2F6pmr7tdQLCIRNe6R5feEixt1I0Y0Qf_Mok15rXttHD3aVvY0dY5yd8e8ZXjmVoRYE78zACf4ERl4VnUMGnCVkmn2CXurhPqUcL5Dd90k-brumxJ_k8pQGy5Xp4k1DOEWQDfHYR57pMrv0LIWpp_ZqOcEcfqOqVrwMAR2AIpwITu01CD7VEMIYrFzUqGpGh34fgkDxVmS0Y0CcJbKa7QiYY1HtJMcTqIGsQKicEzBjIGdYsv8SG5IHyW5Alli83xYuVfvq1TfnEuMNucSCs6OS2GujDuyEKpcfnaxomXkaZJO36QGCcIr54sTzxRPW-tojOefy9zPw9_y6EH5qoyQsPRjNFwurUrbugK9-_xj5hGcx_H3HvUv1FyamYfTFU5ojhb1Ze"
+    },
+    {
+      "place_id": "ChIJ7c4lPXTAwjsRU8h8e3qn6CU",
+      "name": "Durvankur Dining Hall",
+      "address": "Tilak Road, Hatti Ganapati Chowk, Shop No. 1166, Chhatrapati Sambhaji Maharaj Rd, near Sahitya Parishad, Pantancha Gate, Sadashiv Peth, Pune, Maharashtra 411030",
+      "latitude": 18.510734,
+      "longitude": 73.8461745,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ7c4lPXTAwjsRU8h8e3qn6CU",
+      "photo_reference": "AWCwydi5LjSsoOaxLa1-48M9EDNi1S1HdVt0Y468Uz3thBNa-EirfGbw81mOMe7_1tJlSguEe63WdS07Xy0Z1-8Zng36xoquvo64kEmDG8YVAbCsl_AFc3tRZna-HAW9myRQ8FM4kR7Q5KicKeoXqD_6oqR3I7z0En-ftj13jHKpBuntjU3n300zkBOQQo3BIGKRLY4S899XOAWhf96SsIjaTROWa39IWIC_a1gnh6FzJ7YuC5qxJo-biSRRAh2qP5n2fk4EO8W4qqy2FJ9hibZW-jn8wfeV859gHDcg6pPP64QJsG86rdwQTzsrfinbouhwzyZzRSZ5-1-XbgiyKdltRdLYznfunShnQIqUdnSuPyvi2k59vCiVjofM2pICH0lKKW9DXCR1zO6keJmrLIsSI_R-MBaUubdJ3Y4SGUqAHxSEyA3A94tF0bLEVEv3lg"
+    },
+    {
+      "place_id": "ChIJAw_t2v3AwjsRkqw87Aq03hI",
+      "name": "Savya Rasa",
+      "address": "Gera Serenity Building, CTS No. 15, near Starbucks Cafe, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5388527,
+      "longitude": 73.8866766,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAw_t2v3AwjsRkqw87Aq03hI",
+      "photo_reference": "AWCwydg1BxMF3hlcn076pb2ZVzcDRjxEvP0ZKdf0sJ1hLoRGSBt4SpXtlZ7KPlzlpvpZpTpSXh7BjNwWEodcvX43HS7r9UFRp42vBYbPNXTYPQYFoJZamOSIawUJVXaPaOTMuBLO4odzFSLtqVcF3TMYg4CqkmFmg-jUX6K8F9LWK5V8j9xgBMFrqyOzLJgDgMj7Hmke0KCzjAdF_xEZ8UNXUeHmuncCa8lVtxxcl3CpDCMsdvV6ude8IbriUIMjpjLz_ibWga1y6TOnHAINvH_v3lEmgLHH_4se_mwPiklDPMRltBN4Jog9raMbgZP18V_Ueg_97mOmwFw83gojFr7m-OKSDrUS5Ctll0UeV0rhtU9FZPLsQLv0LDSwy7-SD2rXbtYk8ggMFjhY399X8VjjdkHMr5r3wU7SIJnYf5DHrMm4xG7U"
+    },
+    {
+      "place_id": "ChIJX2oYFqzBwjsRCv4LyZEjJxk",
+      "name": "Krushnakala Pure Veg Family Restaurant",
+      "address": "CTS No 347, Upper Ground Floor, opposite KEM Hospital Vrundawan, Abhiman Shree Cooperative Society, Rasta Peth, Pune, Maharashtra 411011",
+      "latitude": 18.5194679,
+      "longitude": 73.8666258,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJX2oYFqzBwjsRCv4LyZEjJxk",
+      "photo_reference": "AWCwydh9CIFsPpeyovG2S972yijbdvrYQ4j15G1f4Q3zce3_Rv9TvQ28BfdT1wltBieRkPpbNklVfMTD0TiOAs0wbb9h-2lj8fNmc-eE6czrwetOfwAghMb8-nM3uQmIcNb-p56bxPKkG0NvrnO_1fgQ82WsO7g_9YdHChokHMafJ8oBTpbzG8S9juGXTVyQ_yqDhp1sf16rYsY1q1qRFzOCLaVLAXl7-00xdahZ_bpk_lDIYTI5pNJhaT5n-l0-NFlTmJmr51fZhlnJTgQDkguuTMlyjpt3s1YViKP7TVqnzErUpFA6WSkgSWrJg02MqwMlooEfgh8EBS8fBZvkc50GfuU9TUHNSnbWcrL1Xh2c1vPDSF2k62vT9QYBR3S1gs4KR6WmiPcG8IULJSuw1oVpGr5drPUwv0Ns9cvQN8FvR4B3OjdHEJGUzfUTJnkqZw"
+    },
+    {
+      "place_id": "ChIJOQEKwwjBwjsR73HldegFxKY",
+      "name": "Aragma",
+      "address": "Ground floor, Insignia, Balkrishna Sakharam Dhole Patil Rd, opposite Axis Bank, Sangamvadi, Pune, Maharashtra 411001",
+      "latitude": 18.5345771,
+      "longitude": 73.8787536,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJOQEKwwjBwjsR73HldegFxKY",
+      "photo_reference": "AWCwydhyS_5hoq8TLid68Q9Rgr-ZE3f3dyD01cVR7_S_LRpW_EP0IUAubtEySJLdqvDGynQwUlVzHjKMfOs1SbQKuYMO5J2Wf63-gJGbLvVEsEgho3K0QVoLpoAiIydv81FGH9xbkRRyoV7knnbetirAitkzO3NSjYHDBoMKWdxR2kkx59NqmIiypXc1R59INsvSKQihTcUZnKa3l7pglO7R4fC9pl3oJ0GCIvyuill2G5_faJcIH5YTUL_jsDpNYxTbDLGxA0DnKkIINCQb6d9YoxZbDIWvIyVGyq-jOPQZwjNMQlAa7T7eFsO5A6lnGS9jDX8R6o9kD0-cwLnwFfvn12GhhgC1oXBPbs8T3QgUY0ooUXOzunaEc6Hx89C88nfEFjdaumfdm4-L7aiOaxYlJvMu8JiKZQEoUnAWGM_RZuB_EO38qLAByIu3DNzPzKq_"
+    },
+    {
+      "place_id": "ChIJxw3u9U_AwjsRsNwpCrutcsE",
+      "name": "The Place Touche the Sizzler",
+      "address": "7, Clover Center, Moledina Rd, Camp, Pune, Maharashtra 411001",
+      "latitude": 18.5184803,
+      "longitude": 73.8785311,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJxw3u9U_AwjsRsNwpCrutcsE",
+      "photo_reference": "AWCwydgakJk4D6CeCoZ8MOY87SgNZZQAkH72K_GwWey7A4H9pCfxbUzxv3Hb5V88EH6Ru8hiacEtnszdbajN04nDVg56ZTHd7mxWS6nF-CqbootpDB_GgI94QSii4cIV6MZgHvD3Vqrbn2w1EZeZfGAK3YN1hVp-KXbACmZu2heHpaPAlanvCNnhcITRczNdIPrGXWf1QSCGz1WDS5iEoNJaatWxcIgsErLmqYYwbheQklX6rrVrEyHqmr5WRREG00NUWmBg0auO1WQnIgt30f2Iv3RDeRIGu3BvM5XO6U5_Fvv_TK_zKee2R-7J-CpIbUcLsIWmzb1YwZFqzpTIbH3Mj2YYMaZ0wimFYZ73pyY4bNFXWtQy-UIL2My7XDvZVmheoGDR04efaIVD1YovBXgPXa5y6XdXhI44WUWO6gksgMqcLl44OMsEtQMmml8PnKXO"
+    },
+    {
+      "place_id": "ChIJw3mzMdzBwjsRnl0VghkVCaI",
+      "name": "TSUKI : Asian Restaurant",
+      "address": "7, A Lane, Ashok Chakra Society, Vasani Nagar, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5339799,
+      "longitude": 73.8995345,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJw3mzMdzBwjsRnl0VghkVCaI",
+      "photo_reference": "AWCwydgKp9Yus9ejZrPDMKUPcM3_YokFCptELnJraHa0AdCL7qUX6_sp86xf6vHtDqYxVs6oNrJgoOUwVW1EmU2djCJm5ZzrfZgVnDSm2tpSTZZccmmEezWheqM_NjW8rxvt3xW-uT5Sa8WzkTKJmZYg_PzIVM5ti8Yi4S3rhGc6xxxVOHlcsq3LwRLLwb6VdMtErCcECekUtfYxf8SXX-83MWgdEXiWgA9bh8RdFKr6ol_VkgRsU9Sb-f6LY5Y8mZxHmGYYe5yCzyu8HAgIpVazAPSa7e2oyCAugVrN_j_g9uD9v_TMU6iDps1YY1B6jxZy60RZg3TTayP54UrXIDfJLgouUcXOe56EDYd4oKjVdrCrPl4gEFrNMxkmB1hfwcjvePhRbSIVeabAZpUDq6WaKBbfsyR2PsNbBbIo9anh7pjC8Q"
+    },
+    {
+      "place_id": "ChIJ97UStsXBwjsRCIwk_PK6-_k",
+      "name": "Persian Darbar Pune",
+      "address": "GV9F+QH8, Wellesley Road, Camp, Pune, Maharashtra 411001",
+      "latitude": 18.5194375,
+      "longitude": 73.8739375,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ97UStsXBwjsRCIwk_PK6-_k",
+      "photo_reference": "AWCwydiNhsp7qjiXEIkNw1wNx1AVUUirSRlH8jNCQVQmJaiWX8YHG5A1hkJCNLPpjyXQgIOQMnYC3nd977HnLcDtTNb5RuP6ljzLEzUlGZj-9L0drXPjRpMrAcIUkonQrIZ9jD870c-PF5j7-q88ifeqUQeEiYorbUe0Ni4G8xxn8OLX-uALCSCi_GEsdSKz3BiHcMD_fB3vi6_zxqggNsedn74Bt4J-x5fRi8BMGXVXP5cHXJoj-CMd5PQs74KLERZOfNuBEoG25mFxa3bY_SIrpqKKH1L6v4c7v6SK1AwTlUFO7rs6mXz8hSHoFuVhYRxahGfL6DQgtUQE5XO1VacxL1X0W2SzrZbNisMyDJMi-_urMIDJQkmR7TAsJROnxZzSFmv4x7G9FVXEJ8baL8II0UeYj4dJOKfurpp9fPmYthws6YId"
+    },
+    {
+      "place_id": "ChIJ_W7f2gnBwjsR2KblXGBfFZU",
+      "name": "The Mills",
+      "address": "5, Raja Bahadur Mill Rd, Behind Hotel Grand Sheraton, Sangamvadi, Pune, Maharashtra 411001",
+      "latitude": 18.5320614,
+      "longitude": 73.8708819,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_W7f2gnBwjsR2KblXGBfFZU",
+      "photo_reference": "AWCwydi8ly6nEco5I0Hi7lqEBjC9FyJSnfIOxHntgF6ZL2aXYADQWTTDHverxRpxf0pzfYLed3koVdKWV_2HEvG6Z4_E3ow48vvgqeiJudRp2NAjDUkR9oQMpX80v8lqMJrSwyOTTTeRtcTmbBJof1DNeqJeVZpMPSCskiHugn0FXGWaPb8vE-9GqJklFSe04mTBoAYP93XJFVXb2Syo0YxmTr17dt6iX-PBTTGuognXSuLKiWx6AT-vg0zeYTywnDuVdLAAfE9cYGHzUmOlW6k0PGkKr7HZ8Wtr-0TwftZM2imEvt4LfqU63VFHpUNHSM3wih-TvtcsRTDwSRXmlNE6DgNAOUQL9tpw2FOS9_ifpCZiV2xc2v4nGKSj5MNdKK9ZAL8ZSSG1b-jFJiIhx75qf0MS3Eo8JevupKEOLwVgugKlUWw"
+    },
+    {
+      "place_id": "ChIJqbyRbTDBwjsRRA1zH7bYRro",
+      "name": "Dakshin Tiffin Room",
+      "address": "Shop no 1 and 2, Connaught Place, Road, opp. NOWROSJEE WADIA COLLEGE, Bund Garden, Sangamvadi, Pune, Maharashtra 411001",
+      "latitude": 18.5350057,
+      "longitude": 73.8807966,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJqbyRbTDBwjsRRA1zH7bYRro",
+      "photo_reference": "AWCwydh_Z-sW3N6k3HvY7LDzCGMchJpBrYN6KjixVjL1xaqIl_dd4COjVBb3-hxccWpmZTZocxV09tlmb7fo6OxLZKNLAEpKC-HzGOkDPIv0KY_99zrz_XAAH3xO1GgoFzKj5nu2mbUnEOkXrBQk1813eNDilVIVFLTWdzGgKN0pnvjt-N9fIMGkK2XrCe7y5qgh9YNRYpzQAlrClpMHAw-yiCfFSuYIjkSmdKFyTdxBwuYi6Tt6ImM3OCt6oYcKOBI2GKMUc2pKNNhIPA17X9pIim5oGQJvn7JG0-oHQezn5u0dfgPBYkLZPF9TNnJogEyTdXI23ftRvZE1wlkWaTQuTMhnxKB3gbndoTS7ySzPVWeW4I5vi0ouj1MP9FCmxxbypxg51t3b55UcYYJdVqU5n49J5sivk78eCzC4oFuG24irNyWdtQ87gK8T5_OKVd53"
+    },
+    {
+      "place_id": "ChIJARGe1f7AwjsRcXhY0wlKGZs",
+      "name": "Zeera",
+      "address": "Lower ground, 7, Suyog Platinum, 7, Mangaldas Rd, adjacent to Conrad Hotel, Sangamvadi, Pune, Maharashtra 411001",
+      "latitude": 18.5350842,
+      "longitude": 73.882846,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJARGe1f7AwjsRcXhY0wlKGZs",
+      "photo_reference": "AWCwydhSrSgP2_3SqaG9QrWcey_RF5KFaj2gvpmGK_0jucYHo_r4cLKj1RKwqpTtBU2EfEA99U7BaWkwdmxtoB4uJOzHPwYwYfqDlx8Oi3Dv3uQxUafGKagU3u5ULedbiN0GyNExR-gnmZXIX1l0rV2b928aLVIluGSYHKlKov3KBDeZ8G6zoE8MPXkrZzTrcG29H1vHv5k5IDevjT8glM0IVUSzWi7957MEieRvot5y6b92EeFEyl-niPjztLPREviFB6WEr1wcRmb1DIKN9agy1Ll8BSQ9xgN6mIdyuFn0DaNSLUiNTVbWEFSWQXsYf7PKAurO4g943X7K52e3NnArwhO8y8w0Y7sI6clCkJMwVQTNrEGpbByeFRJoWqHPbnFbXDttqOcpW47pVZr7B8IjgNCEG2qUdHEJj8bDFMqLIP_1MA0V"
+    },
+    {
+      "place_id": "ChIJRYOG0v3AwjsR2XOAQu4VAME",
+      "name": "Latitude",
+      "address": "Blue Diamond-IHCL SeleQtions, 11, Koregaon Rd, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5382145,
+      "longitude": 73.8863123,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJRYOG0v3AwjsR2XOAQu4VAME",
+      "photo_reference": "AWCwydipyRHexvyHnj3_HTmL0mfkM_yGk8XzgXJ3gDZ-aFBMrA7KOey7XduaRQVMzapvlIQcXR2sAWcD1eh5GKYRaRHPGkg51fRzfnKmGpkqEDtBuMbwlkMt1g325qLJPTfY4LU39wsY0fSsCi_cYBlJ5ycvqKNUkjx-sNJWRjLBOEPaa4kUCOXxF262JpS5N1EyZywGruxPqYrTIv_i_X0ftY9INdOYDg4H89kLmYJTGB9wWUi1qSqtgWzARkJkAhaZ9Ckv5xXFu4ApWLPF4yTCQTTGAiLWcm91cwZPkGjRgiXEUZWkOe3R8qHfbMba2ZVAYIhmrY6JXkfk-HXtEOFLKpuG27DCOMhQ3er2vo7R0jChaWiSCI6xERL9cdY_NmKr9qOlyI3ca34Wc70QX0AK5SxEf-Gp6JOiXZAywF9jJsfqatU"
+    },
+    {
+      "place_id": "ChIJk6k8kKzBwjsRkRvE0aIe_Vc",
+      "name": "Madras Tiffin Room",
+      "address": "CTS No, 15, Gera Serenity Building, N Main Rd, near Starbucks, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5388316,
+      "longitude": 73.886707,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJk6k8kKzBwjsRkRvE0aIe_Vc",
+      "photo_reference": "AWCwydgyoweNH92fjjQZOCje-jA4obSwtSARR6w8SroiwsfBcOHe_vrjGOGfsfZaSWbKsbD9EqFvW9lCR3SWwFj6dARtwVuS3lJKqCk3zhmc8PJeio1waahGfHR64cDYmSw0FIHUtpvtdwDSZMz3CZWpEoWmn8n0O59u9qaxScwKfo4hsCsPNTljMfkAknJK3Bj4nEcexdYeeIUCv_3WCBBR1L95MmArm0zqYLihHAFumvTbJmdOKPx6m1vQfmyIRdbq_JE5L1I2__gJ0osqoycVSyaThD7P9E5-Oao1Kx61_I90yktX2KwZtAEeB3L1Klqria5GTyVv6ZTgcq5Q49rWdVjq9yfk81pPL_weaA6YSS6YL9UKkjjdQDPAs7IWE9IiMpaSTI4YrPI-FjOIgAxA3Hog2ZV2kOcqamovu0p-7WhHrA"
+    },
+    {
+      "place_id": "ChIJ8SGAnUbBwjsRMzUbBFea66U",
+      "name": "Al Di La",
+      "address": "7, Mangaldas Rd, Sangamvadi, Pune, Maharashtra 411001",
+      "latitude": 18.535077,
+      "longitude": 73.8833677,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ8SGAnUbBwjsRMzUbBFea66U",
+      "photo_reference": "AWCwydgWBc-cuTlkYBKK89crBvTO6f2mH2KkvyzCNxmEwSc2u5Vy2_lepKOk8gX65NUHMDeNkyMpjSrabNzbCEutgNLqg7BeA1-NUh8TESLxzfCoOnaRpV_o9jBWGL41jVmdGELVk2dTO0oEKEvZAvkDLyz1p8jHzt5U2mnjRJ37jv9VBNdwG5FcJ9DEQGLEzh0ggsbQs6dfNEBLyY2jtyzeLYCInY-HYG4zxMlI9GADyWCmK1WBFgLF2WhzAOLyk_nhLX2b_Nm6wDr9ysysGq9ueD2bWQmyJEDlFOxHplIx4aTbiekFDWFN7DwNxDkWYnbeIebbyUs0biHtaBt1n5u1pvKfQNiAFMrRNzED7SqjlUZL58CSXJrB_FkqsaWsJtZY45VuOz87MaT34ctRaL9gTLLy6c2m9eOYdesYVJMrS68Lr8Yx"
+    },
+    {
+      "place_id": "ChIJlWBFdWDBwjsRa9wNCqWQ7io",
+      "name": "Ambarsariya Authentic Amritsari Family Restaurant & Bar - Dine In",
+      "address": "Shop no. G1 - G2, Chandrakant Chamber, Balkrishna Sakharam Dhole Patil Rd, opp. Madhuban Veg Restaurant, Sangamvadi, Pune, Maharashtra 411001",
+      "latitude": 18.5357619,
+      "longitude": 73.876211,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJlWBFdWDBwjsRa9wNCqWQ7io",
+      "photo_reference": "AWCwydh9hIvvhazN7KDvvR9zixOVM7i24XhcQDG-lHfs4vumX8JsW1pk080uayUd5cA5nJNX97M0CNA-XGkyqfDeB3fyE1IbGRsL1KxbTjbNxqoWEIoCHFz_AoLWqapdQSQtoipsfkREu1Tt01Nl26GSF47XuAUYWphnajdiUFUE0OR9wwRK3rcvEEyzB7rI8IzACVvtKVFN3MHxkpXGd627IRaHwVc9_-vAC9d1R9EyjqmSlorfNHAyu-QlFU0zWaibjQ_j9d3xau8FPEhC1jOTurA3jX1tiaN3CJ0SYF_mAbhLfz6cNFbCs2tBB6zGNF-uvZG8Qf3T-IywvGunf7WFqqhZHPOLBTbJv7IPbdtZppH5XHeWIm1zRT23zb7Y0J1SByIYR5qFKKCK2I-rTNBwPs0UwbgokJ95O80SNdoRji0FzFxk"
+    },
+    {
+      "place_id": "ChIJH6DZ1N7BwjsRLA6TtFed5As",
+      "name": "Aasmana",
+      "address": "Golf Course Square, Airport Rd, Jayprakash Nagar, Yerawada, Pune, Maharashtra 411006",
+      "latitude": 18.552289,
+      "longitude": 73.88995249999999,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJH6DZ1N7BwjsRLA6TtFed5As",
+      "photo_reference": "AWCwydjcfUM9KihgE9KVYPr1BNgIVuWnOfCNQ7PuO7BWgacP2odd3urWbw6eRZJghcwgEYZFkYwFjsY-zI_H0w7sHunfuQJFGc2lQZ_eutFHvnjz9LiGoTY-SaWWTfp_TrFr4TbpeItlzbCSExq_dz_fx5qKsjEiIoRFwwuc4sKbipSUBJWQu1hk48gc60ZmpUf8xkw1e4OhfeOgB93y4PQ5fAgAzDpYW4yKReIX56JkDyyR23IScW0IlMRTuAiqGnXJ2kiHVwRbhz49aBjhXyXoPmNxYvAJwN1G7wnuP0XKqWBgNRl31RQlkFVw_STHvTggUtfp69OOBlX91bOKBngsjb7mK7F6Eow63poAr5yZDDiMlsZ0TxhzLe4DRnbWtUKQCUJuc171QqraOWUZm647MiEffQS65McLZm4B6nz3O3iwmKRG"
+    },
+    {
+      "place_id": "ChIJtfRvFJvBwjsRTUf8ZYu6C6w",
+      "name": "Glint By Plunge",
+      "address": "3rd Floor, Jewel Square mall, next to Bharat Petroleum, Vasani Nagar, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.538958,
+      "longitude": 73.8859181,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJtfRvFJvBwjsRTUf8ZYu6C6w",
+      "photo_reference": "AWCwydjOHZbiObkx6HnSErrtdLOhKOn_P8fAm3HBZrQ27kMhvgic8YE6uznauNX_TiyGGRFcp80ghUqU_w3a6o81bYyRxe53vhE4IikiYTJEw8eNTt5b-FBBiQGDjUZKbEAI5UaU3pGyIEJs6E1OK3T8gl3G5v5RQHHuGPZuaW_mPZSrhWELKdFlM3PP1b40KE9Ubp01AwHRMmDAd7mHp8XhE8N7HimZkUYbrt_ldNCM_0pQugLCunHWjca_z4uLCqgo99HYF5GsadtKgSb7Vbdz0wZ3R0iEyjZe3u4uLocHCytSyorNOJnGAhEv9h7ush5sgVvIEV9IiCDiEHUAu3bN9M5GfNdPXSBhVlv37PSTrlSRaLK8DxG46Eu3_GRPr7sVN8OP0A_7VRXfzxWcMVIWR0ublQOkQBDm_vs7LLryBBXkhsex"
+    },
+    {
+      "place_id": "ChIJdyi-eP7AwjsR1zezlvfhIyg",
+      "name": "Mystic Masala Restaurant - Blue Diamond, Pune",
+      "address": "Blue Diamond-IHCL SeleQtions, 11, Koregaon Rd, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5382006,
+      "longitude": 73.88630930000001,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJdyi-eP7AwjsR1zezlvfhIyg",
+      "photo_reference": "AWCwydjcrJNJzG9w-Gk9TD1NfZrrrA7bse3HOzn5_QoE8S5oBnBaFEQqQxBnpiwRjrzZtM5RAKojrJIZ3QRRGjZrHXwTI7qW_AWAMcPzGqhUn9YueVhbwbAgDJEeNu5uzWlp_QSsi21h03OvDVdCEjRvFkQBQXtIk62zqi57GMeI5YxDfIIPo4hNTdB3IxIWunFX2N3lBTDIca2me_8kkSMBrWjzZQJ6HmRY9LsV3Afu4v9Hp0wd4tYqJaRzb-mrfTvgCOHu2YKhL2XUh_14LdI6LqpRUnlkoPaqagPNJ3Wus6Ke5BYFwzXQkH-FVKM3kQz-7TKHNpyz8fhmzEYngsgMC8oU2MIKzkvbkyqoEltAxknQ2BDST67WH-UnO2xqIO8SgWrSgq0R943x6c6h_8Uf4gAKlD8osMrwXf4e5q1Y5_UwbJwY"
+    },
+    {
+      "place_id": "ChIJKYWoizq_wjsRPbowDxgloOo",
+      "name": "Bookavibe - Book Cafe and Co-working space",
+      "address": "Book A Vibe, Ground Floor, Rachana Tulips, Ferguson College Rd, behind Times of India, near Vaishali Hotel, Ganeshwadi,",
+      "latitude": 18.5211504,
+      "longitude": 73.8416961,
+      "types": [
+        "book_store",
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "rank-8"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJKYWoizq_wjsRPbowDxgloOo",
+      "photo_reference": "AWCwydj7dv9OVtjBZdBrdU5v4d0BzqKj_DgnRBhAIIRt_Q2HRPQx_dECiWc-IZMy_BLCuRZ8P8vdeJZsB5Gd6gZmcYLJBSmgPFsFUqZlku63B-Wj-Zf0EfbkSvqDPNi_mBzPbZRIw1rUy0NGT_u93M_HC5A3rQp8YVHcCTe3jrSkxA_x9S7tMyzvVMdO0Z3cXg848sP-H0vfBpP5_8mPOxvErmuFV-cHaewEHcCv2JeF7LAm02WJjYQfzXiAfoFN55Z5XZP3tvqwVyvKFFWCuVDDql9vuLfgh_iWDcEnP_TjiGhW5wG4AjUlIKQzTr3pEIPqinhnCIua0NjC-GlTIjgsX7jdjuJEHj4Qmn5SxYe3Hc7Ojd7FqHiJnddu06HQxTT2D_-_zXypwqIK0Hn2Ksocx1qjdinNo6Uh2Lqh8hdOfIaonJlbkkWIJDbwwn0sVYIh"
+    },
+    {
+      "place_id": "ChIJSagtExm_wjsRoW-EnzD4pGY",
+      "name": "Coffee Nation - Law College Road",
+      "address": "Ashok Path, Shanti Sheela Society, Apex Colony, Erandwane, Pune, Maharashtra 411038",
+      "latitude": 18.5145088,
+      "longitude": 73.8287493,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store",
+        "rank-9"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJSagtExm_wjsRoW-EnzD4pGY",
+      "photo_reference": "AWCwydhIhQVoyoNLR-hHoY7KXW_CBoS7tnvwt5udnUcZNmB802DypoVrRZ7uYFhuD2pLkU48JniBh9a4Dry8TFvRxfAiVu7M2A8QnaTrYMFtqrklT4u65iJLdBsMO8EL_LL0FHUJUVzFE0WfP1tTRaOwzeqk5NE6d9zAfkyqJx-9T8Ty94aATT5Frb1fGo_QQ81R6hnfgIZUQ7-FrqemsBwlntqfHN_Pav85PE-m5pXiB02bWfMiGcId-iGwOEUvwE-gdAJN8H_Og_dymAaavgKIp74UIjzdpklj2doQ3yxMEmDUTJX7-qfqK6xavp0Y5gNpun5yezlJBBeXk9roIyIn4Zvv0L1sACc1qgNEm7cBNjzjUne7cbcxetK5lZMml7LB_DLBmk0zx6V76fEXvRuh2paWJ29UmPuq36eS7MuCrHupQNIX_bvBnOmKJqHsqA"
+    },
+    {
+      "place_id": "ChIJw-y8a0HBwjsRHevGyiHPZM8",
+      "name": "Copper Chimney, Viman Nagar",
+      "address": "North Indian flavors at Phoenix Marketcity",
+      "latitude": 18.5625893,
+      "longitude": 73.9169635,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "rank-7",
+        "verified-place"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJw-y8a0HBwjsRHevGyiHPZM8",
+      "photo_reference": "AWCwydgO603r-RrcdU-rujakJRAiOV25OjDop_0eUeVOrIxvU7WnleOBgn40D-gmsL7tKLakzu22BzYfCSjng59NlZ2f-8c_Xe_TheGkYFzVTV1JIC92c5a27zWRDj-AK_qu9WAGlYdHa4n108BHNsn_aJ4LxJ4GGJZmfJfwekFJ1zghHPLvd09U8kOScs3OFzDSm0Qii1a9Mxb84HLz32IvTLf3sYcM0e3MqHL1TwPgdxE7gCJNw977xfyPjw1ryHpr574lxORaPGbvgxy0NUw7tj4RF-zstL3J1Bo0pvHGEJKVLmhgLvSYb_4-IQPlra_2qfdwmB1tZ2E5ncBEg5uXBvIMCgHmzffVyb_QNZ5Gze6_27HvttGv3nQh9NOTFbHN4eW9WcKSUAEQNoNBGUV5e1Q6Ob_bhcXuIdcVm4aMPx6ESwLc"
+    },
+    {
+      "place_id": "ChIJod9uzqPBwjsRj0_mtF7jrZc",
+      "name": "Haldiram's - The Railway Coach Restaurant, Pune",
+      "address": "Platform No. 6, Side, Circulating Area, PUNE RAILWAY STATION, Tadiwala Rd, near DRM Office, Sangamvadi, Pune, Maharashtr",
+      "latitude": 18.530279,
+      "longitude": 73.8731734,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "store",
+        "rank-6"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJod9uzqPBwjsRj0_mtF7jrZc",
+      "photo_reference": "AWCwydiIJXSWp-0JM1fbOvfEDk5qdqhMOJfWmUumUsVeyzLJnoRaw_8hutTrW332vALeNcksWVY2q8JXBMi6eDgFRULTgW2_eLNA-h58xvmZFOrxZKsAP3iR1PxwrCwbmVts86cT6NV1bxYayUS2HnyEa2H_ND-DPbBQkJHNTRANm4DE94jrUrR7scLnfgaopCBeKOQCV8yuFt4Xf5Zso0J3yykl-vgozmF47dHGTZOy_Rls5S15YpH2YW2Kqgti4i_nHNjaP0VPDIH0_YrrLU5eoMs4vfab2LiNzR_QpWgGx6oue_XDusIIsFnid-HW8xjPQT0JO-XnUZswtceM1DNtGd6l2UrrbcVuuzeGQeaq4au8SoKhzdE8_hslb8qiPESM6LmuntBOvaeYV5pS0x82puS_duvwSKRIG_0UGkhZZTyTGOngNsn1L_8KEkbjxm91"
+    }
+  ]
+}

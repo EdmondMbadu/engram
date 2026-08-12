@@ -1,0 +1,175 @@
+{
+  "city": {
+    "id": "0qJClFmKce5CqI5pNVcc",
+    "name": "Antwerp",
+    "region": "Belgium",
+    "country": "BE"
+  },
+  "template": {
+    "id": "global-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Things That Make No Sense Anywhere Else",
+    "searchQuery": "unique local landmarks traditions institutions",
+    "editorialBrief": "Playful confidence, rigorously local. Lead with the strange or city-specific thing, then explain the context that makes it make sense here. “Only” must be supportable as a local category claim, never an unsupported uniqueness superlative. Reject interchangeable attractions.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "0qJClFmKce5CqI5pNVcc__global-only-happens-here__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJUYx1InLDw0cR6pGbrSjiCag",
+      "name": "MOIR",
+      "address": "Rue du Marché aux Poulets 30, 1000 Bruxelles",
+      "latitude": 50.8489593,
+      "longitude": 4.3508403,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJUYx1InLDw0cR6pGbrSjiCag",
+      "photo_reference": "AWCwydjHOEUKZx6dkRlONEIx7iS_ryniQp9N5c9-r2MoimNmN_rErvVI6xq6ijUeNiCc2BRpT22yuqpGXHQ-mqXbezeP9RgkKk11Yjn09NtPO51qOn3fwWuC4fgkKy1g-wllAZcR27-Hl_3sMgxbZ85VeWytYokIqymHvmkKiZ1z1vFaBFK4sSzqwpi-GorlzYGpASC2Yrs4V_G1KADbT14hYLZ2A__Rik3Wn3f70eGvr480Mwgef8e4rrnGdfhS3wPAVmtK-0_mL-ZL1ti2ZOQlc50gVWS0ttZS4YnOd42BYwd-E2Zio_5hc1QWct5TfitJ0HTk1EyNzmvIcMi4ejikklvGvpwzbkJfAspozvQpfb3_GLPoclROyWqipyWMHaKOVu4S-4NB5y577O65KRjOtYogced64piXHM1_Xd6yY1hZpS9pCrGqe__sKG6ZVA"
+    },
+    {
+      "place_id": "ChIJ_9_YpCZhwUcREoxgA8UptNM",
+      "name": "Groot Begijnhof Leuven",
+      "address": "Groot Begijnhof 7, 3000 Leuven",
+      "latitude": 50.8717337,
+      "longitude": 4.697392199999999,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_9_YpCZhwUcREoxgA8UptNM",
+      "photo_reference": "AWCwydhl7_kmjZHxRfQzF8T6HiqqX0wPLlhfgFoWACttkz08DN6R6gWPcx4U3hdHlVCowlbHhI1o44VKencGpny7QeW5FmAU0FSs69Q0BPUtDBlcNvIrTRI09Rd54PVn20cqxU7I35FY9iyFCsvMIukmL_WyzMmMejYB0IqZ7I-uGSdb0JX3sDfs5wVVQRirCuGnCtdBTq3D2PjxdhEsJdO0ombt-fNgfdnzLPswEufMrbBuMHcwSgl9lYNZcZw7VjeSWttjD6AXeV7MbvKSeVUz9BDv2s_dXPWsHW8vOxpUPaHfwyjNTDeBf5YN9gqzr2D5gT4Q7S5GntKfRtcQH65MQ2jSksgA7EZzx5hzdO22CoQ9kSfr3e2Se76XBz5rVmyb0U0Mly-Jo1fblwU4zVEUK6q3Kfrizqg69CMuMMW3wUw"
+    },
+    {
+      "place_id": "ChIJO-nq3fX2w0cRBavEBrxq_f8",
+      "name": "Het Steen",
+      "address": "Het Steen, Steenplein 1, 2000 Antwerpen",
+      "latitude": 51.2227238,
+      "longitude": 4.3973637,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJO-nq3fX2w0cRBavEBrxq_f8",
+      "photo_reference": "AWCwydh6K1uGPysVg3-jDQjXLEEmXzQkqZWyZp1ieFhb7i418snUnqSVR_yzzuiMmRtakU8udhLe-vFfxGnxHDBz0detaB3MWcgkb0pDjBrl-QBmq11H4DhJ2CTkEMbsJ7-NEQvYajRXQ3ZIS8uPGBG7yF9pYL42FkG8xrN14KEcVT_gSXp4YfHCjnxxbqpPhEwU9kISquG-gf3JrNcVLy9uPdhuJgDgL4AKqdvPbXwDCQRXdmjnlyPmELJfwMQKHSXfMWDN7_sZZWq29vj4D-lPJMKbJeOHQfiUbwJ9cq98UyFsyPNXE3ofK5h9xWiPLYMHolbgY3H90FyAh7fKYsGDcl8JeBv_SH1gnTXbXx0rESsbf2ohnbt3RZ0q6GtH0IoF8lGJEiPTAVw-hpiX4PSrKMbtZfheVzoLRYxy52cGwwB6jg"
+    },
+    {
+      "place_id": "ChIJvxQ79ff2w0cRG2YlCS24zG0",
+      "name": "Sint-Carolus Borromeuskerk",
+      "address": "Hendrik Conscienceplein, 2000 Antwerpen",
+      "latitude": 51.2209718,
+      "longitude": 4.404402699999999,
+      "types": [
+        "church",
+        "establishment",
+        "place_of_worship",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJvxQ79ff2w0cRG2YlCS24zG0",
+      "photo_reference": "AWCwydhVf7dcfJ6t4Kn78eOUYAS5ga8YQ2Zr4ySEvKBsf1mQVtHbm2U2v2XG8a1R5GW0Se4Gq_a64LLYSMu4H-nONTE9kE6uZpo1K_vFCNoAaJxOmj8qhCZNse_t_nxX-A94HhuEVIq-98WaSKuNVKOd4rq13mAjnJ45bIbd09Z-ySy2TCVOFCM4wrUB8hg1CcDx3WZcV3c-PlrUFtkGf7jUEPrej3F3M8-fWj-v0i6EbuG5VYkWuumegHp5ul_MROwDCyKJXP-pm67FfeSuUC58FcwfLiuUVTHfGZGrSqTmgnlwG93zZJnc55EUH5XPhum-WVHe5GfjGbGviF6OVKx7SxXTpDe1hwv-QnvgAA3GlanV8NOzs9kQvGlFt-btlBxo6eqyUobVfR8LmOmqfP63AOYiyB2mwuzIPJ36mEbGsQ5bBWuk-etG_KW58u0GzlIN"
+    },
+    {
+      "place_id": "ChIJ1SdzW_H2w0cRpmXjMfkQbN8",
+      "name": "St. Andrew's Church",
+      "address": "Waaistraat, 2000 Antwerpen",
+      "latitude": 51.21649129999999,
+      "longitude": 4.398124699999999,
+      "types": [
+        "church",
+        "establishment",
+        "place_of_worship",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ1SdzW_H2w0cRpmXjMfkQbN8",
+      "photo_reference": "AWCwydifGLOCKRddzRSNVLQWrsWxgyJz7aQHbPiCRikPPSgHFv5JIYDznQ6XqSDMxPI3xGKMNCiTLddx-2Uz61ovaVM-8ZAEsTdNokOiu92dEcNlNF0BD5vgmiT68MEiqpsvK8gF9ngfvGvvSUhMA49L8lqDP5BrRVZc9DIvTN6K5DcIK5eKyIL7cS7pXcDG_CO6ZFdqE8BZofG1zJyl3RXTrCWcx57ZoASVVPueaA65kAFdphwbB3ODrAPIRsDQ4biHmFw3wzs65LZG5QMv3Xvn83BUJakXbIe6VTjI3V6cu4kw4GtOOv5_yGlmFiFd0XvvR67HqenOtWQEWY3cHGEYP59w7y9qGPZy2by9q5Ust5y6WOiKoZT7c5il9USG2PRUTmpqaeHWNYrO1bfF1P85DIAdYj16bhoWkZq-qvF6xmwQ3PDP"
+    },
+    {
+      "place_id": "ChIJmVGguw-7xkcRV1HF6EXZwQw",
+      "name": "Tablica pamiątkowa 1 DPanc",
+      "address": "2387 Baarle-Hertog",
+      "latitude": 51.4426098,
+      "longitude": 4.9312288,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJmVGguw-7xkcRV1HF6EXZwQw",
+      "photo_reference": "AWCwydjioyvGbPQ3ywbrqeMEi_PbjUNOBF96CO-aZZJcuCoswi9AxvafGFfdlLphxOqoFf5oAw3veB6ZxwliMJR6EfTH2QqJbu_DJBiUuAoan2tChExs-fegMimFhF89U6ghD055KInH0rwUEx6j4pQClBBo4DkgbhHsa_O9PPp4YtT-ejjT5lwySkFqP8K1n5m1zoOdGOUlXtV6RDkBGwOIpaWpqsqRqLPzUjiobeBTmMLbeFbYHsccVYL03B4_NOYS2ckTSBFsp6wBvjdsGvX0hXewo7fmehZnOYuVUZLad4GZYvRQtcx35x6cYMI6b4r4-2kIQHxqtd2y8JJCJyZ7XX6m4Tirw4J-A4IkVSH4PpzTysG88SyWdyV8rUq8XJQ9OTkvj8Zn8z_A5-SYbuoMZusmnlTDldNZykI-tTsYqgAbcg"
+    },
+    {
+      "place_id": "ChIJGbALbSD3w0cRGtlgOdtaWEo",
+      "name": "Den Preeckstoel",
+      "address": "Grote Goddaard 20, 2000 Antwerpen",
+      "latitude": 51.2219468,
+      "longitude": 4.4045371,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJGbALbSD3w0cRGtlgOdtaWEo",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ_bJK_nBIwUcRd2wFcDEJ0ss",
+      "name": "De Oude Pastorie",
+      "address": "6,, Kerkstraat 2, 2430 Laakdal",
+      "latitude": 51.0795679,
+      "longitude": 5.0195978,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_bJK_nBIwUcRd2wFcDEJ0ss",
+      "photo_reference": "AWCwydjR_2GcAZDFnb-3H_MnX0JFj7-mmABy9clRmZWsam79LUhcKO87kUZIDSAOlI-zNgEK7eXRG7v9rDURyTFo6sZUDMCAkRP3-Nzbi_PP_jcA14pBerEj1NXCmWnW-MTe-t-0HDbIMZ6tBwI1MLUcXKuLuKTpU9ExrduObS-YSrgtQcgXmeJrxcHNXb--utzmXl8-oJgB6PNN7QGTc9yKr8DlWU63JbddOlSQKyLBSjTHeBRZIiwbALZLT2-FwCc28WWmP-Z0VRiURrOr09V9Y4v2IbG0mP3TanKvxQZuOsq5--sWD5xrw0JhFHWdoQ7d6f7AVvuiRldIPNRWhCtCfxTfsZvqHHYrU2AdryK1L86lxTI1abKJqP1jBmVxPGxAilC7C4-BQsf-GO1slQZRykGsfPGyZ3iL1CQhLE9IBkxMLQ"
+    },
+    {
+      "place_id": "ChIJv3G6gmn3w0cRuu1O7QuqXsI",
+      "name": "Former Portuguese Nation XVI-XVII Centuries/1511 to 1795/Huys van Portugael",
+      "address": "Kipdorp 6, 2000 Antwerpen",
+      "latitude": 51.221125,
+      "longitude": 4.4058796,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJv3G6gmn3w0cRuu1O7QuqXsI",
+      "photo_reference": "AWCwydj6MFN2ES_HeX6Y520e_xyz_jTYILVouj3PxQ8TuihybI8DQzUF_jr26tEMXn0BRFKG3r6zSMJbHcnOWUpHqpnjhK64Q4JylXOa-J6OdDEN_L6vH6jWW5rSIVyvFmkX6qg6rNk4YQC9acouPhVFl4iuM-LJaOUMULkcP4-PhH0m0_-aLdsqXI5DnaQELUwK5XlUlvSmB1ajQGMkcvL3fYEKaLG5TD258w9h-RuzK-kBPFwDsEghY8pRA-lZl-JlRDd1RgmTIU2VXeHSYmEuwoZ2znfcQNu1YUyoPqid-xvwKlSE1F5QwMmfNQGN7m5I9eFpjAZcTsccHSDs9tWNEOZ7GH4JwKeW4VykPlFkr3BlEGCVoY6LLH3HlJM2_Iie5d5veBnYP4ASTXLMLZmZg2oBxuenokt_0bNHPqMWAt0NJw"
+    },
+    {
+      "place_id": "ChIJ_SI9KgDxw0cRN6jXGXowO4o",
+      "name": "Monument der Oud-strijders",
+      "address": "Edegemsestraat 115b, 2640 Mortsel",
+      "latitude": 51.1674167,
+      "longitude": 4.4466503,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_SI9KgDxw0cRN6jXGXowO4o",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJubi03Gb3w0cRCJlG0C2aViE",
+      "name": "monument voor het Vaderland met opschrift \"EER UW VADERLAND! - HONORE TA PATRIE!\".",
+      "address": "Lange Gasthuisstraat 27, 2000 Antwerpen",
+      "latitude": 51.2148992,
+      "longitude": 4.405357299999999,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJubi03Gb3w0cRCJlG0C2aViE",
+      "photo_reference": ""
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "ok": false,
+  "problems": [
+    "1 source URL(s) could not be reached."
+  ],
+  "sourceCount": 10,
+  "reachability": [
+    {
+      "url": "https://whc.unesco.org/en/list/1334/",
+      "ok": true,
+      "status": 403,
+      "finalUrl": "https://whc.unesco.org/en/list/1334/",
+      "error": ""
+    },
+    {
+      "url": "https://www.teamuseum.cn/english/basicInfo/basicIntroduction.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.teamuseum.cn/english/basicInfo/basicIntroduction.htm",
+      "error": ""
+    },
+    {
+      "url": "https://en.lingyinsi.org/history/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://en.lingyinsi.org/history/",
+      "error": ""
+    },
+    {
+      "url": "https://ywhz.hangzhou.com.cn/en/scms/content/content_6266060.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://ywhz.hangzhou.com.cn/en/scms/content/content_6266060.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.ehangzhou.gov.cn/2022-03/01/c_279719.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ehangzhou.gov.cn/2022-03/01/c_279719.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.chinasilkmuseum.com/bwggk/index_77.aspx",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.chinasilkmuseum.com/bwggk/index_77.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://ehangzhou.gov.cn/2022-02/07/c_279484.htm",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://ehangzhou.gov.cn/2022-02/07/c_279484.htm",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.ehangzhou.gov.cn/2022-08/02/c_281223.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ehangzhou.gov.cn/2022-08/02/c_281223.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.ehangzhou.gov.cn/2018-08/15/c_262278.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ehangzhou.gov.cn/2018-08/15/c_262278.htm",
+      "error": ""
+    },
+    {
+      "url": "https://www.ehangzhou.gov.cn/2020-04/09/c_242801.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ehangzhou.gov.cn/2020-04/09/c_242801.htm",
+      "error": ""
+    }
+  ],
+  "unreachable": [
+    {
+      "url": "https://ehangzhou.gov.cn/2022-02/07/c_279484.htm",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://ehangzhou.gov.cn/2022-02/07/c_279484.htm",
+      "error": "fetch failed"
+    }
+  ]
+}

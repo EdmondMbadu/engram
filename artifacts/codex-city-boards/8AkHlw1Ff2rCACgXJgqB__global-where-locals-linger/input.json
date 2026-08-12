@@ -1,0 +1,327 @@
+{
+  "city": {
+    "id": "8AkHlw1Ff2rCACgXJgqB",
+    "name": "Moscow",
+    "region": "Russia",
+    "country": "RU"
+  },
+  "template": {
+    "id": "global-where-locals-linger",
+    "version": "1.0",
+    "titlePattern": "Where Locals Linger: {count} Places to Sit for Hours",
+    "searchQuery": "cafes libraries parks plazas third places",
+    "editorialBrief": "Treat this as a third-places board. Explain the observable setup that makes lingering possible: seating, pace, shade, tables, public access, or a steady room. Do not assert that staff tolerate hours-long stays unless a source supports it. No cozy, charming, or perfect-for filler.",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "8AkHlw1Ff2rCACgXJgqB__global-where-locals-linger__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJGaSPc1pKtUYRHzFSa1B9NHw",
+      "name": "Red Square",
+      "address": "Krasnaya ploshad, Moskva, 109012",
+      "latitude": 55.75393030000001,
+      "longitude": 37.620795,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJGaSPc1pKtUYRHzFSa1B9NHw",
+      "photo_reference": "AWCwydjlbuPKzA52kDUPVOLV5xc1RGy08cMo8RBgnow0ZvFkP5X_zoLykNkkw_LpSE3yjVGmx6jgd2lR2ANvLZ1FbTbstrQatuGIAoLmRTO0DLMlK3l9HoZ4Ky6k4Db_PsN-tQnTwEjOO-BGA_LReWDbUwCRX4ydNSZ8rZA_cTeNd4wlmkdKlyYuVGT3YZJXaGZgi7WdLDq2HiUwTN48FA4FrUbspshmlPSRxYt-hubbr5I2RuFLbbJnzkaz_mlttRmKLOShnJt2tHGwjs5e-3LVDteWq9Kx6b_yhtJZAKwYXGHr0p0YGnB_pY4jD7HPLR_t0mwh9czPjm3cmlfUKe_WmSp_FPTLqcDXWBNUQD7LsgVLUwItJpWxqyUN4Ixr-0Ke1ErB0rDrvSIMUo1uFjsMs5XkiLy9hB-ZQY4ig433erh0Odn4qXNY5V7IPwvQ4gLw"
+    },
+    {
+      "place_id": "ChIJIa7uAFhKtUYRRWeoyNDZL6U",
+      "name": "Zaryadye Park",
+      "address": "улица Варварка домовладение 6, строение 1, Moskva, 109012",
+      "latitude": 55.7514578,
+      "longitude": 37.6287988,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJIa7uAFhKtUYRRWeoyNDZL6U",
+      "photo_reference": "AWCwydjIet96yfD88f3VRoEjtSHCAuD2R6PxRJKYmDOh0SHwyM0DMW_jMpviPLk9wxhi_kY6Hn7o7N19uk1aTiHdFcz0pzV4gyXGel63WjjtWSnZHUS8aGe2hKDkCPCQELmI38xAR1xnMyMhbboLWd7UDeyzVF9yjon3Ov_dXFeBWLSbal_RD16gOQ_Sch5XIJkbzToro4KD9yu4f134XXgF6q0N1OpYDpvYjuyMvhe6DwV4Jp7nvaDZCSKNdXUdAjLD9rcM_tiqBqWgcHvXj4D6hEk9IB954kIQEYUYPHKKgYCKtR82cHHOjMSUougObl3pksZevAiwQu8zrVBnTwNyShSSkyDDwKUSma9jDIGaOPfB78teP1ZA7reLsNaSnDXM_K4dPVyFeDbxZRX9AUlUfgMX6lixR6LqvC8TU5Yw8m9kDcf0"
+    },
+    {
+      "place_id": "ChIJV9zPi_xLtUYR_N-oIGSHxJ8",
+      "name": "Cafe Pushkin",
+      "address": "Tverskoy Blvd, 26А, Moskva, 125009",
+      "latitude": 55.7637392,
+      "longitude": 37.6049078,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJV9zPi_xLtUYR_N-oIGSHxJ8",
+      "photo_reference": "AWCwydjSLr6D2eAzBHFiDeCn9xTaUw4K5nx_cPjEuNPC-4vrS6hGGZotX0PTSLZExPCLbl3rp5rD1IS4qBmb900jc2PPy7hpzO2cnyoQ14NHbCmIdGBjPoeYQUmmLFJnnSARf2m3y2_ZvjFt8tobpkihMh1eL05ZAL_JLH2vTtXjnDiBCEzsPQ1UgPkt8b5sXU4UcZKEZdBo3fu-c-tI3hUAbpgh0raiRvj6EcCzUVjdeyWLv6smpDTXGSmKDI_xgOG1Vh69tFS3yuZ_wlWymWx4To_4OI1TsYNlc8QTKfIbEpbFf9prFiveorNDJ7j-uE324UuZ9vVeYP6SQ8WpQOdMUZPwIdgmg9V8OiyTpZZN4jCbGkZ5gNWO1fyWpPXU8uD5WEAS4FBGToZr9afVFOoeeuHPUotlgvr9360iTsk-cKufFrsB"
+    },
+    {
+      "place_id": "ChIJg9ntX3xKtUYRVlzQDtcwcS8",
+      "name": "Lyudi Kak Lyudi",
+      "address": "Solyanskiy Tupik, 1/4, Moskva, 109074",
+      "latitude": 55.753888,
+      "longitude": 37.6361103,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJg9ntX3xKtUYRVlzQDtcwcS8",
+      "photo_reference": "AWCwydgvA6KvocsXmCrJvT_spM62QT8UjBLiDXhW2Tk8mGN0IuHSKvxMWjk7rGW_aSmmmFSh4GsglzjN4yw3G0CNbUY5V-R_F5oZGk40WP7y2IgZrhvKHXn9CDS06Yf3j9K8MD3CgsNsOeQwYfN-MUUG_dBz3yz4Ii08Ukbe-DYj02wzc8vffDoVVpchQ5UAr4RlwKGRoDxg7SB2VFeAvrOEvEsirpxJTp4R7nUnx6gkDBSLSv7ds4tttprAMcxzZ75CxqyP-ezGwox1Jee--f1h-GPtqCR0nTQ3l8HDwWRqKU12IzKqPTZ9UzfsyWzV2Gpm4WhG8b3ObmB1j9g3GS1BPMQTyx10evvalbEuuxx0SP4-uchZ6IczqcFpIALiirydMD5HPsWqN9o-YzMeMvPscY8_uTzaXfiv1p7UhhczfMiXNg"
+    },
+    {
+      "place_id": "ChIJvY4zrU5KtUYRCbEr1R7Wx3s",
+      "name": "Stolovaya 57",
+      "address": "ГУМ, Krasnaya ploshad, 3, Moskva, 109012",
+      "latitude": 55.754237,
+      "longitude": 37.623287,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJvY4zrU5KtUYRCbEr1R7Wx3s",
+      "photo_reference": "AWCwydjY93Dqg9d2Hgtd_Z_SrhzrJEegvjxqIJKRsOXmTuwX3lv6yxq_VOG_D0CG5NA2gZZNBTwfp-14XWQEvcPOvwGyMu4W3fwnj_Tvq56n_tgwof2X-CJKUjpk_-v83CPVlmWK648s3wq08kpQyH_Yo6Zp92a7NNfl0pD0B-ibAhAQMI3wmYhICC0wue1nC5nxN-gfZuC01SgyCmQsz6WUID0HxrchOeugggODtFIWbODeVJSJhBMFrQz5wyo3iZgv5N0deMUsk_Lz676SiF18A9d85YHs4Na5Tykk1P9kp19K97NMll5vuh15ITYvDGKdQHcJOXN2rlizlLmCYpg3l0mg_LvEEuraUOhNH3K4FxHMp-oFWrvbVnYLks1uoWnltZiS-b-nREdoLEvNpyIen6t4pISpvoc_zkcWrc6x0yE"
+    },
+    {
+      "place_id": "ChIJA5zPJ01KtUYRmLblosjZA8I",
+      "name": "Starbucks",
+      "address": "Arbat St, 19, 2 Ground Floor, Moskva, 119019",
+      "latitude": 55.750753,
+      "longitude": 37.596148,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJA5zPJ01KtUYRmLblosjZA8I",
+      "photo_reference": "AWCwydiWaPWmpSdSNMHU4mhbqZHVCs6wghiGDS5jVSTlWm0s0uq6qev4SnJ_BG26Wi43ecbmy88WXgSUlrehcl_jEQFbQhXhZdlDnATbNsp_GSYwDE8qq80VxvIrGSzqSg_tPdhtxDzZhI5ZV31xd40VSKHEnzdWGxWqzAHH3xYIQduFCisapegOD7kaxEIuFNY1CwFttXn1YEHu2oCz-qKLYudQ3bRQDawy2xjYW-RS7qvtfmkF99f7Ufps74IxQchSDAFjjEp6s_kBLIbFEiTZsoJVHkLtAUxk7a0rD7ByCgQ4xewLYARIJWJQDmZ9R1PxhtZcWopsaDzk670y8rzjIPGej17Ga-TIREE_8t9z0SspdYdlBTsApK2jIMQFGEXExfF75k9u3gFKHhny-cDKgfo6W4NOFaxeXqZeP51RneQzw4q9"
+    },
+    {
+      "place_id": "ChIJm0wpr09KtUYRs0OMCA4eNGw",
+      "name": "Ugolek",
+      "address": "Bol'shaya Nikitskaya Ulitsa, 12, Moskva, 125009",
+      "latitude": 55.75647679999999,
+      "longitude": 37.6066734,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJm0wpr09KtUYRs0OMCA4eNGw",
+      "photo_reference": "AWCwydgrPkmGFoJXgSmttagnbf6e-KSFeqlmmY-O6m_NHyHP3nd1n3-EB-yXRNjXOfuhpb_m3Lsp65u2IXHWR2YcQtGiymmTh94ED9aNnL737U5YijS-Cb6g2k_gd6vY2SyGCyNbyqS2eHtlaQOClaT39q25irbPmLwihi9t-5fgybi59CM4ScGcER9juIY89U2_64J-2ewK6MC4Q7OiuSzfXCGDh0Kv5tD3VXf_BTrL8kL2EDRplYmd-jsRjNqk2oYAwVuEl2SxLtveUdtE1YoyuzHSSNRE01qf4AQ5prJ3IzB8gYJbGX75pJxisTH0k44Xghv9Tlw-4exXVt0rZKW9r292yxdCfyaJfJ8AA5mCP02BBl82YnBN0WufRZyUvvlBJPeZPvru6-6YriVWPL6nr6TcvkSHEmawpmDZM90Y6G_X4X2-"
+    },
+    {
+      "place_id": "ChIJ_TXI0DVKtUYRrBCJF0uIJco",
+      "name": "Breakfast",
+      "address": "Malaya Nikitskaya Ulitsa, 2/1 стр. 1, Moskva, 121069",
+      "latitude": 55.75797799999999,
+      "longitude": 37.597466,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_TXI0DVKtUYRrBCJF0uIJco",
+      "photo_reference": "AWCwydh8KQxKwWPlOKm2hHpJqtyy3xvnkyOfAEuY5OtixTrjqTLALaehDVz-4dOuG8M0z5O-1NRt6i3DpgEklaLmFyrSHSU35D93XWr8CWGKFnxJ8fq8u7SYQdPFV7QJjZ3skKu2dhV4ZaudHQIKpXqHOvIUbqRfTfblCn_QJ6Pq4lNmxJDRTD0JOsRS6B49HWLyDkeyx9f-KpNlb-MxdKYF4Qh9zcqOH6QJzZasQAwyNZPHfoYuWmT6QviQ4qyK_R8RAZvlQ454IPQ9EcvOzCSORXj7aCQb5lIlwACF8R2OnKFI1TgFcdeLoB9YD1mjwmoVLKq1vfMdY2TYisRb42n6P2sgWzLeC-K7sUZy7Hn8FcUYcUYdsOlF3MysREU-YMITTc3nL1oEMIfCnA_KFlU6Uu3hLwZWtBA7-DrJ4w-0gvEnHKY4"
+    },
+    {
+      "place_id": "ChIJg8j0xIpKtUYR6bHmEXFxF3Y",
+      "name": "Coffeemania",
+      "address": "Pokrovka St, 18/18с3, Moskva, 101000",
+      "latitude": 55.7589429,
+      "longitude": 37.64623479999999,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJg8j0xIpKtUYR6bHmEXFxF3Y",
+      "photo_reference": "AWCwydh2xnYxzrVoBWZmCOj8CQYj63-wqllnNmIJXBu_nvrXjgak_COONZS_fhSma60t5PpoHp17I4cYhsAVyYSyYXf78EysCbZ-90ur_yvSt5mEy7p2HeR22O3PtO-KSXn8EyNUrGjAIiAaduu6bOdyGvNNIS_2Z4EE92-P6D34lq5qvRsPH7C7LUNuaNAIpt_vfm8FgHWLLwTNMB0T4ogu4vvqiTwI-YjcJOfIgSRXAmCbGVGJHQrKuds7QczjZaVZemijXPt7Icw7MQrZLpwS4nNwhbTupzf3bJiJ5qBnlR2lKomSyJ9ySFRidFqI23SmlEvN_7BA3K1y-FgPnZf9Oqwa997geMZ_wBitGG4cbu8MgdLV6koquidkGhU0opXVsvmRNm8ey1R0xWKl6MyfXU2qjRwvYkemhRAzWh9rlxqibaUV"
+    },
+    {
+      "place_id": "ChIJoTopjFFKtUYRrlnHuUxMa10",
+      "name": "Russian State Library",
+      "address": "Vozdvizhenka St., 3/5, Moskva, 119019",
+      "latitude": 55.7517701,
+      "longitude": 37.6088686,
+      "types": [
+        "establishment",
+        "library",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJoTopjFFKtUYRrlnHuUxMa10",
+      "photo_reference": "AWCwydgkC73oI_fy6xc7a67r0m_XsYBe33FbPRf3F8LVNYCm1v6xDj6IsxavwMA9aZrkVXqnLjQYyZ2nKgWXpx9y1ibz2Emaqn3hQnd3cKItLuu7CAEmGo1K8KmTYIJfd-oY2e2mvTaZJe054KirTONgepipivFxyu-wcN5x4SA-jYK0yvhE8LRjzmTKVc7ofeSF5_v5vRVWy0-7hdpdyjPJvOLKZAPboqgrhq2K4kLs2Xmdfvn5aYWbl8Rd-iBMvCEqiD_5srGRTV3hzQTNZv0dd7nYx4UdAwE2qDyALErutn6I7n-9sZ7Zk3VUa30P2t1FCxv1I-8AqIGx2-lk_0QG2ubMlC5_1FV2eTGjYlroaLZR3G1MjSqQ2sXb31ZMb9yO4q2vYh8rwzsLFrtDrwYwXd7Zc53ZruYYTJ-FJ4CBl8FQ3Kq2"
+    },
+    {
+      "place_id": "ChIJOZWrTUhKtUYRXmlln8m_oRQ",
+      "name": "Kofemaniya Nikitskaya",
+      "address": "Bol'shaya Nikitskaya Ulitsa, 13, Moskva, 125009",
+      "latitude": 55.756386,
+      "longitude": 37.604942,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJOZWrTUhKtUYRXmlln8m_oRQ",
+      "photo_reference": "AWCwydgewI2bsiCkh-UTD5fGGoN10uNNZNxEPbXPVYg_hd61IgRhmKGJ66XGCrDThFZm0-iDSjMBKmVutS1ew0CAGBmD85FZPaVwyt5Dkzqpn0SPd5ZzjgUr921SfeFFVKfMEYEjCNNg_covKiKeZtWZtx7pENTYX_Fxdq9wjMzDijE0wmd1PfIpvvn4ldlouRsRsA_ohHZV2LDP_vsT9tmNR4UypMevtxZaXgicL7zwkWF4VHiaQynoAMHKZ8fQk1YO4bBPZXtmvMWhC-tF_XBwI4XooZOwZGcaGi66gmWHyx4_iGF4nmfvrfQd70aE2MgR4hC9SQBss0HSEwhKFUlQYpIrWhJ11GK4oiKPvhR5dUXQoS6uj77aWK_MGDlUH1I48KCOwRoH5cOBVAWrCUt7V4ZXglzEA04eIDNoSmcX-tcjAQ"
+    },
+    {
+      "place_id": "ChIJy4NyKxhKtUYR7pinwSgkw6k",
+      "name": "Lao Lee Cafe",
+      "address": "Tsvetnoy Blvd, 15 стр.1, Moskva, 125047",
+      "latitude": 55.7711111,
+      "longitude": 37.62,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJy4NyKxhKtUYR7pinwSgkw6k",
+      "photo_reference": "AWCwydg-nHHUMSKsLP1ysvy4WQEDRakpOReuGE5UGR4Z0IQLagyOfjtbW1YwVtfdeuuxUT8MmTamuFcOoAl_EQWXL5Ju881NEu8Bvy8DmbWpOKrD7BZjzGju9npVu8cQE9V7McCzwNsN5u8RI_sfDN4OpKyFxo5c8tVuCwVDF5ovIqwc502mKdiDfQJnimpbf5R-fDdho1liBtCD5SOPTZwRbCmK2vZDVPjqcJbtK7NMjGn2iZMqw1slLUj5NP9WVrEuNqiTn2ZNwBE_oGLhu5Izfj4OXvsx3Jg28RSL9vP6087Wd90sMFEG7ZwMc8VbecUwWv99JERB1eVAy2rfI-xJzojtA5_B3I_H4r5AUK6FZG2e1TlJDEr7wUOnyJN6CdFobLKV5Mmv-6xkfnQXQ3mgHO8yXpL2IvlJQpLPBLH7fIEAXw"
+    },
+    {
+      "place_id": "ChIJrS0a_eNLtUYRKlClHuXryiI",
+      "name": "Кофемания",
+      "address": "New Arbat Ave, 19, Moskva, 119019",
+      "latitude": 55.752156,
+      "longitude": 37.588548,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJrS0a_eNLtUYRKlClHuXryiI",
+      "photo_reference": "AWCwydgHyNaXK6pvGEDJuvhNG7qg7D8To5ISPvpOmq5gntvB_ZD81FltXO9iIiHzG3W_T7ENLaZ3Et_vcoLAgxoLFAJPntPrpI6C5ZXtmYhRW1w4GqF4afpCOSA7V3MG3tVbqrycE7w8bTi1iMMFe9kdeFo-ieoMBaFsru9GdIM_WMNOvghUv9c5If7eqk8p7Z6ihhJQgVoEXiZ1qIU34P8VXOBfndnmau0OAOqwVDH8Qi6QrZHWiDcPKvCAj1eo3odCV2etol4MhEPHt0c7_q8DtUbhyC0i43zF4wu3y_DiuLW8HQazTroJD2zD_lPVNZ-t3dHETXHVfFEd-Dd3tRkkscMwIGO47aMWE_KKmwOGVPleGOc1s-LTNimLXuRN028d28TKJLGXumNiuS00OhTcDKtMtjOh9KmH6eLex7ql1PC7Uw"
+    },
+    {
+      "place_id": "ChIJuSZtG6ZLtUYRMmdKUJaMVI0",
+      "name": "LES",
+      "address": "Zubovskiy Bul'var, 2, стр 5, Moskva, 119034",
+      "latitude": 55.7367763,
+      "longitude": 37.5944759,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJuSZtG6ZLtUYRMmdKUJaMVI0",
+      "photo_reference": "AWCwydheR1fDfWmB8uniuxo8SgUIX_Oo_UvwsxeZJNPMJVG6tR3i-3JlMtEqG1XgDAgKaaJRNTWY9COQpuEGw-gs09W4CgH1B98fP2biKbGqLaWAQe0KbrC30qLqyJkw_zpFuXS98mUvbWSHty7eRRVBJQ9lNc4-idtsB3bzDB5ydFv_bJgV9NXpsERciHQ-UO0fWDRuHG_X7PHNh6sCgaqFanT7YBrKRFITasCMtVO4KhGMv7ttRXnzKHM4U5qIj4ci1iCwRPezU2oBgIhNNkiY0enVIPG0bU1zSt_zYnBloHmLu0W-d8QbRvq_QgjHLpUSzy-GqAtacY0Q_7tshZvBA6G36iPb23KKxbziECda089rV8ASf6z2mQf1sutcYt9oRHxlPQgBXJ828g4-eIK1KY6S_M40B0he9D8vudamRvDXHnM"
+    },
+    {
+      "place_id": "ChIJh60jzRxLtUYRr1WGGdEDc3M",
+      "name": "NICEPRICECAFE",
+      "address": "Ulitsa Pyatnitskaya, 54, стр.2, Moskva, 115184",
+      "latitude": 55.7339486,
+      "longitude": 37.6274183,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJh60jzRxLtUYRr1WGGdEDc3M",
+      "photo_reference": "AWCwydi-TScZ9RX8AsvzEDX07Biljsto2IfBszXGjlzUKPTSl0SA2f3ovLhwI6EZe3xzFMS-cA5QxBWj34rIxc6Du6ZTJgBySY3JXKBeliXJpzEd3u0-U6qsFOLAO2TONv8YB80LxY8CGpOQNxtfX8gD7iPkOy2cyCxqJ7Mh0PeKItxp_GG2bypBF0EnMaT8L6q3Kw_7bAfTHwJ8d7lS7YrGEFnvAHBl8cJ5hDGZaXHfSKPrgmEX3xvE-yQ1lWXibCNBPoMLW-XQrruEC9E6o7r7pEwAI_8iv0q0cYNaXm6OVi66a2GRaGAWTMAYTjwwlITyjLDRA-QRGuTnSvi17Bjnyy1gfDc_tFrdySon_UAxc9HIbD8v5sl3F1L9x1z4DoC_JoBDmYG47mE3RXKKlnLoN2ctiRhmeL0EXgihkvSQiaZY15ks"
+    },
+    {
+      "place_id": "ChIJg8j0xIpKtUYRVEIeh-bvKOw",
+      "name": "Coffeemania",
+      "address": "Tverskaya St, 22, Moskva, 125375",
+      "latitude": 55.767687,
+      "longitude": 37.601033,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJg8j0xIpKtUYRVEIeh-bvKOw",
+      "photo_reference": "AWCwydiKWHsfSdHE8u8ZuOLO6Nd0wfB0OORAGKH_S-FzJKuSYlpbkV4EVHT8Rk_Xb0_UkgLLbN9uhv_5JmHPwQ5PfLBG8uKACy4uf-Kzd6Ov2OmtL-zEXFTMgE4gevoSLCbYA0dI4s0HRceL2Vs4PBuOjXSJt6XWkzV3VdPtZyfRqdTOC1JikK31Tnd301kJEVmnVSI5wMb0-tqX0rWJlya3IumxJfxOna2HG62ZLtL0C5p2JNUBWbRNUhN8Z9noyEvwdns_T0FSLFplTExQx0kqt5lPG9pXH9xIg7tiS6lzcJIqBIP5LTbLUUaN68p4WqAVhii6IxR7QNhytBDUfgLRaRS5o9Bz51QiwQaBoroUAff_EgmoWhjAJqFlKVpgE1HU-euZpR03LISFCMANoySljWrSxpJEpZ10GDKGd2milMXTVVOi"
+    },
+    {
+      "place_id": "ChIJPdIUHFpKtUYRWlmQL9Imxt8",
+      "name": "Кофемания",
+      "address": "Красная площадь, 3 ГУМ, второй этаж, Moskva, 109012",
+      "latitude": 55.7546025,
+      "longitude": 37.62159949999999,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPdIUHFpKtUYRWlmQL9Imxt8",
+      "photo_reference": "AWCwydgxQlFWW2W6E-55PPxIYZUghPkWeSSknOvn32sH2DPrHKZwYYuREv4k_vKD-99HomPcw_lqM-EzrEXBrxdQ49OhpZq389xGEf_rLIR-2b2dydTEY_3STh61JEOHCldmMInTsdTw0TbxToReOvXA72Z0t1op5qEN5euIcQI4pkrjkb5tk_erVfr41LCpy_woVxU6-A6xu5aZy4RMUsynp_uYu44DwfCgcopY2LVHaOld3luq8pfURhtuolF8YGwL2J4d5k8E5nNryMtOaheG_zLRf6zt-3A2lYNVdz3UIIO6uLDytNJQnDyAENNgzu2GQeon8vkbKEw9W-426H8PIO2zRfX9q7ZWFK-aCnWX24ualVX19kkLzGK-Icl_CDzQJiqmUMq5HwYd_smfKg6lxKkonSvqNfZEpMUT0K2oipI"
+    },
+    {
+      "place_id": "ChIJ_Q6wSgRKtUYR0MjVWPUFQQw",
+      "name": "Café Museum \"Garage\"",
+      "address": "Krymsky Val, 9, стр. 32, Moskva, 119049",
+      "latitude": 55.728082,
+      "longitude": 37.6019422,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_Q6wSgRKtUYR0MjVWPUFQQw",
+      "photo_reference": "AWCwydhNyGtQbBa7tbC2LKIf9x7ymHpv_amJalG2VMLKM0S0K9uipxEz3R96BeMmJfA435iMJ_SrUd_Ig8gApjCjSOMd2AMS1DdZgvWiX4tbYsMlxiM7DoG0HLM0pALc2Us147SMQqmuBf_Q2iv5v6tvVsgMyZZiOpHEQmjdiUM1aP6eBH_hc3vn0UTQ6pVFAJX1GwZCxCe-oalWQ3Ofc7Do3sRmdRumi92BcWDhyaolP7PtE17A5XPbGxwzJkltoR1jNmNkDiyQ3cJ8Gjpjiu0nSP3uISsBTcTQW81nJFMRHpqdic2nZcMg-YSRAxjQmK75nffymhJD8vmUR-P62nKJ_gYPLUS5FR4KcgeiDLaDWBW6dhKIyZmtNNPuOAxke_MXTOFG5GUhdmChEsPIn5szIxWMbmijSOrg9KFZhLdT1Pc78zvo"
+    },
+    {
+      "place_id": "ChIJK7gPM3dLtUYRbkgQ4HC5Zgc",
+      "name": "Bosco Café",
+      "address": "Москва улица Петровка 10 Петровский Пассаж, Moskva, 107031",
+      "latitude": 55.762185,
+      "longitude": 37.61833499999999,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJK7gPM3dLtUYRbkgQ4HC5Zgc",
+      "photo_reference": "AWCwydhm3LnKS3JGpyWDKmWL9Lr-H4msWwjlChJj_5Xnr1HH_N8cWkA_fkCztbGg1TiB89Oprkfp3j6vBjr-Y_tUxn8mjCMJX6R00G0Ppewu8w-Q1ZCSu1XfwZnnRe-9ynWWg7v0ti00b0teQtUXDXJMVxQn6x0uGI2qfbil-vuSTCboD7vDFNKiNKfplsq0GsRup6ELnOQxxnXqp503Kt3mx-uukLdMFv4eyNkbh9BcjHRFp9uLcvWS6yDKk6RuG_ddJpuevVajse0JgGF3yadHZcXd0a-a-g8GSB67QN1BEXkEugEMHcwcYC0O1yuQC5ZDYNByqdpXgXTdgmXsJYPSH4qt0oFeCIBlIPsBO7RwhsRxLrxkhZX_PrlrZoQVF-xvvHWc2GFgMkCqJqi7xVntIkwLFEpl9YKPrBSOcKVuM4oIeg"
+    },
+    {
+      "place_id": "ChIJ532_WWtKtUYR8LDUe4bb_a8",
+      "name": "Book-Cafe",
+      "address": "Sadovaya-Samotechnaya Ulitsa, 13/14, Moskva, 127473",
+      "latitude": 55.7742783,
+      "longitude": 37.6175352,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ532_WWtKtUYR8LDUe4bb_a8",
+      "photo_reference": ""
+    }
+  ]
+}

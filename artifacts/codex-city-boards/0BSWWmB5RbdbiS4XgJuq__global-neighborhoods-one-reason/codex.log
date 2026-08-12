@@ -1,0 +1,280 @@
+Reading additional input from stdin...
+2026-08-12T03:01:08.038675Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:01:08.040585Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:01:08.043541Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 019ff3ea-a142-74c3-92e5-42cfc404bf5a
+--------
+user
+Read /Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/0BSWWmB5RbdbiS4XgJuq__global-neighborhoods-one-reason/input.json. Research and write one source-backed LivingWiki board for Durban, South Africa. template_id: global-neighborhoods-one-reason. Exact board title: 10 Neighborhoods, One Reason Each. Every card must be a real named neighborhood, district, sublocality, or locality—not a business, attraction, road, or the city itself. Give exactly one conservative, sourced distinction. Do not invent demographic, safety, culture, or history claims. The input candidates are identity leads only. Their names, addresses, coordinates, types, and Google Maps URLs may establish identity/location, but never prove free admission, a menu item, local behavior, uniqueness, history, quality, opening hours, or popularity. Use browser research. Prefer official venue/institution/government pages, direct menus, cultural institutions, and established local publications. Avoid SEO listicles, scraped aggregators, review snippets, and invented synthesis. Every card must have a direct https source_url that supports its central claim and a precise source_title. Preserve a candidate place_id and maps_url when the selected entity matches a supplied candidate. Otherwise use null. Use supplied coordinates only for an exact identity match; otherwise null. Use fresh, concise LivingWiki voice: specific, observant, and useful. No rankings, best/must-visit/hidden-gem language, generic praise, stereotypes, or unsupported superlatives. Return exactly 10 distinct cards only when all ten are defensible. Otherwise set complete=false and return only the defensible cards with clear warnings. Never fill a slot to reach ten. The board icon must be one of: restaurant, style, money_off, weekend, location_city, fingerprint, schedule, dashboard_customize.
+codex
+{"complete":false,"city":"Durban","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"I’ll inspect the identity leads first, then verify each neighborhood’s single distinction against direct, credible web sources.","icon":"location_city","cards":[],"warnings":[]}
+exec
+/bin/zsh -lc "sed -n '1,240p' artifacts/codex-city-boards/0BSWWmB5RbdbiS4XgJuq__global-neighborhoods-one-reason/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 0ms:
+{
+  "city": {
+    "id": "0BSWWmB5RbdbiS4XgJuq",
+    "name": "Durban",
+    "region": "South Africa",
+    "country": "ZA"
+  },
+  "template": {
+    "id": "global-neighborhoods-one-reason",
+    "version": "1.0",
+    "titlePattern": "{count} Neighborhoods, One Reason Each",
+    "searchQuery": "neighborhoods districts local areas",
+    "editorialBrief": "Exactly one defensible reason per neighborhood. Use the neighborhood’s real name and a concrete distinction that helps a reader understand the city. Do not flatten communities into stereotypes, safety claims, demographic shorthand, or “vibrant culture.”",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "0BSWWmB5RbdbiS4XgJuq__global-neighborhoods-one-reason__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJvzyk0-Cp9x4RArwrls7F_bo",
+      "name": "Durban Botanic Gardens",
+      "address": "9A John Zikhali Rd, Berea, Durban, 4001",
+      "latitude": -29.848252,
+      "longitude": 31.008291,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJvzyk0-Cp9x4RArwrls7F_bo",
+      "photo_reference": "AWCwydgJ8Golw1QpmkOH3ZO-R1bo2Puenqp-D6bHYhCmim9YmmoGzlvh69TgrTs1GqDF5RVFUMCR4_tmj9xRdOpLpvdBDEqaA8C_Q-X0C6W3myntPcScsklZFrkS-HC-1KUlbR1jeKXEI5-py7hPJofqb4XvIRedVLVI5g04ZHyokcqWvgnnITpw9tq2hDg6AGxmKIpouu1eL0gMyL8bWzVmv7tVoEIowcvcGDuNtgKPidN6Eg2O9rNtG6rVGcH98lDsaqonCNeNIDciQAxz9IkLuqP-mECNIde62rkxS_7GUncVjGx0NIa2NDpNoAET7w-4NsyK-mruaR2MLNo8FpPpMvmrSCKuK2QYkWqkvTeF8vlRJvtZbb9bhDxS6TZwRGjbIuGNi9TP7GholQZMY43Odd_B3eDy-P-vfyeSOebIQYkoSg"
+    },
+    {
+      "place_id": "ChIJG9IR-2QH9x4RbXrF_KFE-3g",
+      "name": "Windermere Shopping Centre.",
+      "address": "163 Lilian Ngoyi Rd, Morningside, Durban, 4001",
+      "latitude": -29.8324921,
+      "longitude": 31.019802,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "shopping_mall"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJG9IR-2QH9x4RbXrF_KFE-3g",
+      "photo_reference": "AWCwydhZgywBzABh-nwrH7yrBYMQShRTTPkTPvPd9juKSWl-G_02FFMmY8qG6IZaNrwDplQU_vlwZRM01ESB1iLXvyRswYe33J03mtoRD-Rg5yHN1jQnW7ShfDXH96Iy2UyszbcbjeAItgxBU1Xy3AfieqI-TOGz8WVyZTXYvLFAFAjae8ZKUlF23DigMPNds73mZUTlm83hFsDKNZM4vnaISdoy52L5OsoyQCRLopU9ulNCmcC2-HQswTE_ZN6cMS5T35HUCpzPPjjc46w60HbfNHVD95wc1c1xzaoyXJ2XiQDP5QmkzBT2Zp5BUd9R5-c3gYiHg3bAE0sWoOlJNKcWo83lf8g5lnPAmO1RShrbNER1NZlydZUrbsQTTFBlPO1Tjbj_d5RAsMjCZ9tf1aRIP8DEHIyD4r-A-m1HLrMkqDOdIQ"
+    },
+    {
+      "place_id": "ChIJAbtTuoEH9x4Rz6wfL58ER8E",
+      "name": "Durban Beach Front Promenade",
+      "address": "Durban Beach, Durban, 4001",
+      "latitude": -29.8324424,
+      "longitude": 31.0354231,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAbtTuoEH9x4Rz6wfL58ER8E",
+      "photo_reference": "AWCwydjZ4S-5_aDVk01Ga-2IwgSj5igGVPkDYoD2ADLS6-Ez71HuWXrlCQEprotS5av5yTGRrdoZ5PwdXnQxseCWudP_R_7c5SPtvMwXa5myD4zKP6-Xk8HYsrBAOF1PL-7gcL_ed7B8aq2jJb1WQ2tWiurtZSoCGMXzKu7x4yLwRL7h2BytFchxgG3lEpUiaCofT683wyRkz9gKSz2i0YALDLuSMPFWJLaF5TNYqK1L_TrLih4F8L6ApctY1lWgzCWE_bzOEMi0mjV3vLkHDwbJVF2wttdBLKtY77NP1eTwNiTF8ow1in6IhNnRhaoK_7veHrCrdPC2k9bva00xIZC-SkaKmDW0XoGJ7_CGfaza3_aVuYXJMNzFI5vcGQWdbB1r23qc07CP17eVeKgSU2Vz081gIpUD_gga3vrQqJQfQjQTQGrF"
+    },
+    {
+      "place_id": "ChIJga8YhhoH9x4RRimN-m1Q2EQ",
+      "name": "Umgeni River Bird Park",
+      "address": "490 Riverside Rd, Durban North, Durban, 4051",
+      "latitude": -29.8084474,
+      "longitude": 31.0178023,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "zoo"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJga8YhhoH9x4RRimN-m1Q2EQ",
+      "photo_reference": "AWCwydgy9DiQTmsNXPlKd5Jy4rzdWl06p-IQyqFDgKHZ7u7iiWEIT_BhFtSW240WMmu9pgbMsFPQcugFamX0RdKucpRF-eb3MjxontvHiY-7xjKe71D6q_2qQ2dioG78gmr3ndzNRDR2Uj-za1MBiYTGNTRyTRkTHAQKDKvL_9yFkLXC9zEl-DpQBV3fvEm_o10nihOyL636uSN4j_f7tEtb29ZSccQZ2OhLku_is2FDqrzmJzZXXVCbQjc-DA1dqToERbl9XbYsFXmM1adrqujJAa5zmNdLwOHhX7h5CbllpktjMkjHzVIif8-kcYn7O4xqgzb4IRELnuPbYexpBNrgJuWm3FOAu8lZGxVSZW77gK7rNU3oKlHUaTgiC1DpX73PWhSwlI8SGxcuf7HfpPd3YHBGJYUVuHAqpTzZctKw6Lb4xDqoIry60T7ZPMuthmwS"
+    },
+    {
+      "place_id": "ChIJK4SOEi2o9x4RVmZ21m2jwek",
+      "name": "Mini Town",
+      "address": "114 Snell Parade, North Beach, Durban, 4001",
+      "latitude": -29.8447091,
+      "longitude": 31.0355853,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJK4SOEi2o9x4RVmZ21m2jwek",
+      "photo_reference": "AWCwydhcNEPqrNz9I4E5OT8J_juNkbJlsnYht_8tewqe-eGf6v4eHG5X0OPeqw3p0KCQ0r4Dulfc-HQAo4gjRRumdL2Q1kUTgYv_RbY7VwklOyDCvrw66u68mZWgFvR4Swg-0KcLfC3S-kFh8AR9Fr9brMOg10hx5Iq6TruS80ND8t-QMqbRyC_6kfqzXoGogcCqwkfxDS9sErhSIg1zoY0EyKJABGG89ZZakSblWooKENvcehk1ndaBzLTomfbtQTSFh4PqWP92EwjFBC2xa-kRtLbO3JFkuAZ-XtzkwJGNts7HYna82W_2p4KDoXs-PtgS5WEIAPA_wX2cQKMuve0Bq3w0aKG_8E-psFDGCbP1G5mxXLj5NClOA_GOHJBeasIzGc8PmXfA03muQew3laWPcgSSA2Vnl5Pwj497dicJE76K7n0"
+    },
+    {
+      "place_id": "ChIJL05Nf2oH9x4Rtt2rW41mfJ8",
+      "name": "Mitchell Park Zoo",
+      "address": "10 Ferndale Rd, Morningside, Durban, 4001",
+      "latitude": -29.8252913,
+      "longitude": 31.0120778,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction",
+        "zoo"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJL05Nf2oH9x4Rtt2rW41mfJ8",
+      "photo_reference": "AWCwydjrap0q0sqldZcCa42c3PthGQQjQWomaXeuXp8y95KRDX0TwhwPefKybEN9HkOg55X8W-GNw_s3wWktU-A33aRMfLJmPLrD6JbeHiW84EWP_ZgS3sbq7OV1yvz329Lo-wImwP5mYv8TI7eb1CBq7fcKHLZJOeyaRRqKAapgK2hiIGKWoGYSic2c_XB9Q1tBVCP8BILAwjYs25J_OPo-84qARb9VmSXptRd5oW0OXlKJsdq-xqaE3pkn-maEW7_XkptDp5LiScW0aY_Vl69R0LebOFcg1Wi6c7TH54j-UNAUZIwFN1t9Oxai-isMH7479QP9TP--WeYNI_oKwS2Ym1zeCFIF7TM9Zh0DfLNNFVp-wVJtIJSJd63C2A-Q5AOoKnsz9LV4rI1zL_qQjYbF2Rurkeag2JgSvRWxsEA"
+    },
+    {
+      "place_id": "ChIJCeEt6_qp9x4RCcLGjbTMwtE",
+      "name": "Glenwood Village Shopping Centre",
+      "address": "Locksley Dr, Sherwood, Durban, 4091",
+      "latitude": -29.8545143,
+      "longitude": 30.9971855,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "shopping_mall"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJCeEt6_qp9x4RCcLGjbTMwtE",
+      "photo_reference": "AWCwydinrN14cdaGMPW9eDO5ikNQGXSuj6KTsh7LfEkaWnEIkYMhgsWqFqFVNjBjgkpexur_KEQoWPQxWTaD-mk9RYo7RER17QVaJl3gALWJWQ7QoFdJSDRC4bWYOxLGmwh2hRIIeqVyj_DVFLRvIBUL-J4Cd2SJuRXn4hgmORlvsjv_T7fPlHwpSj4MemIBXf_f0TVGHYGjTDZ2VJuOOLS1JrGXzckEoM_Lyz7sosjsp3KHj4IuMlc80wcGDAPVUpS39CNPRZ-fss0OXtNrq9dlNv75uoipN4eme9RAuAL_W7yKUwSmtvep4pwc5mrX5zUYI-33bMUJJNG2KX5GhSrOIaUvp-ETRMxF6BMbTVfMOuogXD7ORVh_HmI_OrYpXZ799FeRXlnDj47qwVa86p6s04b1cix7uOtynTduD8lMDyrQhtdb"
+    },
+    {
+      "place_id": "ChIJmcU7GwSr9x4RliLpbNEMU9k",
+      "name": "Kenneth Stainbank Nature Reserve",
+      "address": "Coedmore Ave, Yellowwood Park, Durban, 4011",
+      "latitude": -29.9134086,
+      "longitude": 30.9422462,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJmcU7GwSr9x4RliLpbNEMU9k",
+      "photo_reference": "AWCwydiwXfjWUAT4v2OfTeiVh0kdIW8ObS-CE2sGcOpmDO59UGxd7fWMqtAdV2B2ppl79hQtsFVeVH3FpRBFPxnUX8tGo1jAii5kMWC9A3xUU9sE9Pl69V4EeglyXMOp_dcE8ZIQPtlyZ0lPFDKHUh_fUtFuuJNs89Y0bYFMyPyQ8zV9vmPM74WVVkVY-SbRb9-sD3YY1sLWlu-cqM0OnyYvOv79pcVv2iej8gDGzQGoT8f8vUKh4rHtrqVrMnxeiVN387709xxEv3IMvOFQBVt72kGi9v1GQt7uWXqUudO44sLbbqz52DUdlXqgk95a86aJz-og5w8PwBovrehjZndulIShTco06FA_4FNdnh4uNYEtgrPSndy4I7op02CI8N7x0pyeYwFqh3dTlmo0vAbzvWd-Q61p_uY-whgS8b_urh4zgI3h"
+    },
+    {
+      "place_id": "ChIJrde858Wp9x4R9Pm4rRe1WBM",
+      "name": "Victoria Street Market",
+      "address": "151/155 Victoria St, Durban Central, Durban, 4001",
+      "latitude": -29.8561994,
+      "longitude": 31.0148824,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "shopping_mall"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJrde858Wp9x4R9Pm4rRe1WBM",
+      "photo_reference": "AWCwydgBeWaUTgfM34xrqh5IkLeCle28PHSNpgwALqKuURzWxxWYzQCHGkH2L38di_db5vZIf9Et4XEICLeSsjZscUe4jQQpDrwX5jFfjckQ2WqmUf-k9RlYc3Tozt0GSraJYdNclNmOdOmeXaialyQljvfSfC6WscJGCg1LrInHeGHMlaOS0SvekivWywODWidlbcATLde4FqTvlaSx_PGyteE8_CPXcMi2B2P38XdVqaGSicoeseF0d2mng-wDI9DtlXoUmZWYg2GTXWWg050PC-31a_8LmUkJUeyuIlh7Eijz_KUKs2cuXiLuXREZ8rjlF6ZdgKhoEhlxt0-XQX56sYcWPNvhYOVlECm9gLOKt6ZdJM2NRylpAFBVyHonkMKK7gy1CrdiEi8BPW8M0VHsLpsVSCBk3DuWKud9xk1rrWtS9nIV"
+    },
+    {
+      "place_id": "ChIJt6uiAMip9x4RjtPYEVudgCk",
+      "name": "Durban City Hall",
+      "address": "Anton Lembede St, Durban Central, Durban, 4000",
+      "latitude": -29.8585977,
+      "longitude": 31.0262402,
+      "types": [
+        "city_hall",
+        "establishment",
+        "local_government_office",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJt6uiAMip9x4RjtPYEVudgCk",
+      "photo_reference": "AWCwydg7UyqtabC6HayvbdUcKGp6DCLpD5LhwZqw64C36ZoZDlwQZPFdtOiaYGMhCsA6EdZr59AKIMtxejIaOcglYpZY6uXgqWIo6q_fQ_1psJ-dY18K-qaDw2rMkgT7LfmZ9HiceFBx1qRLsKjT0Sp8QFd1GrY6qyZuOQR9iR2zKMNb5PjSHgzes-Uix0xlffjXdG4WHuYIJDY5eVvGN0RAeyW0rK-Tjow2dAeNsfGD-NhEVGovuEJUoWrkBzmzcRS_aT070OVbtUgUDoYc776XTyTGY55X6o8t3_xOvHPRbcZnHfVqUFfxHsdTRRl9yeGNcXl1BvsIUEi7vt230Xsghv5B-7rkGubow51mkFOKpPTdlCmYTUToCKAo-Pg-sHiT9RI-sLIlcix7EUjSQif-V6lAlyksldH9INKiMZdkF-e84anU"
+    },
+    {
+      "place_id": "ChIJjVoSzq6u9x4RNICbk004NTw",
+      "name": "Bluff Nature Reserve",
+      "address": "The Bluff, Brighton Beach, Durban, 4052",
+      "latitude": -29.9384148,
+      "longitude": 30.9910086,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJjVoSzq6u9x4RNICbk004NTw",
+      "photo_reference": "AWCwydgyVsp5cjVs9ablhEgxcCWGeC76-xxexfWeCLa5ARiegvL2gySR9BQ-BqhAoPz28rpp5DL6CwKKpefm_4stoSeXdeA2csfWRoItMSGAPLunER2UZN-nJLnCyPtcpGbp4gzrU_SyKeWmZTxz7ZuusTq5tY0aocfoqybAyvf29Z4mb6Ui68UMkf-H5CbIdTSDtvLZNSApMFl6lcks0YMhrKVdms8H44xak2GTbx7-L-s073c1llR0jv5UXqH5HCQFAk0Q__KHnF5C2CM_w4KKzzZyo2z3IasdSJSr7CQjhdo5YXbvNZqNy2rwJmXx7DXJ1lvV1O8ktOI7oe25DIij-TBDv6cOq98Mtnqq_rVNabLPVQYLqDkE6-sYdOYdRgoz0FQ4uUyr-UZocYKWIuqnjDnTwa4SSSsEqoMF6z2PjNQKbl4"
+    },
+    {
+      "place_id": "ChIJFVkM1GcD9x4RPJLWXKNei1k",
+      "name": "Mahatma Gandhi House, Phoenix Settlement Durban",
+      "address": "12 ntombi mbiko St, Bhambayi, Inanda, 4309",
+      "latitude": -29.7076624,
+      "longitude": 30.9763545,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJFVkM1GcD9x4RPJLWXKNei1k",
+      "photo_reference": "AWCwydi6DFbzmGEnfj4VaPu4_UVY6qbcfo5_cI5CS2-jvba8I5sauAmxSvkTgYbp6ZJcwxvnmOz60qwUVXdeM_vFXL7-b1PvM13bzALcXDpqdINE7P16IK5qxQ3MhDolvtLKGGmfHRknYOmW4nsh1AG82Pg5Ol044fPegZ2irChK4iCn8sUjql9uYnsAEgeAZfCGZiqWgVdx_wG7Tpav6jc2BlYCREoBH2aA-EMSTj4Cbg4-f6x6e127pmLaQxVvtD5xe3fLh_Pcr1HeWV-yQtgaz7RJ89mdHqv1g9-OfEpqlwje3GGZwIA05XApn_8mOhmBaYAgPSVDOcMJC5fBWwccM9VoBcWw9XpAj24zYXNub78TNvrM40BUQGgVuUn0wQ1jI8WT5kshagzO1oIcVI9ZpqbXaO9LzdQ0fRNa5S9gv6mVz_c"
+    },
+    {
+      "place_id": "ChIJq1zibBMH9x4RHG3WGep_f3s",
+      "name": "Burman Bush Nature Reserve",
+      "address": "Burman Dr, Morningside, Durban, 4001",
+      "latitude": -29.8177009,
+      "longitude": 31.0172381,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJq1zibBMH9x4RHG3WGep_f3s",
+      "photo_reference": "AWCwydjN7eQa97Rc5js7qzdIM0-soB_YmO4jDwY_f9mKbZYwMurjto_ldFvVWtOf-CbGAChUKp8_Ew5yw7d8iwHSn_auJgFOos8i37qvk_yGdvVyf-EpeohPcxaY-X-dysuqRw9yRMYqKoqQZ8kJ51_6TKLthGe9FijecvB2XJKa4_YkV_WQ9qN9XCIMFQp4J_wLizk0oPC1uCPAmXAi7QLe7GK43rKP3VoxLQ-tWoLBsHBnEwSfD3GFUCyLLopEFxFG2H7pbxxHlD2WNchkrogN7-w9sLNEkoD7-i6qOkUjb49tNcd7gd0e3QdtSoH9AXZIw_-fw2fjqlqpcNb0iGklPW5wvoVJUUoATVO-q1FE9XAZHS-DNNSDDymXzc5GMAjk0dJzi6fZihiQuZWg7jT7_2q_f9aSYOfFylA2brTbQyzjlA"
+    },
+    {
+      "place_id": "ChIJN8Ayztep9x4RJDoVV3uagRc",
+      "name": "Durban City",
+      "address": "Durban Station, Stamford Hill, Durban, 4025",
+      "latitude": -29.839285,
+      "longitude": 31.024377,
+      "types": [
+        "establishment",
+        "home_goods_store",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJN8Ayztep9x4RJDoVV3uagRc",
+      "photo_reference": "AWCwydhWTBlmhAYul-gOphDCKNT5gnJUy_-RJS_I6sUNGD-okvlDM2z6iE4bOtEx_hyqP2KGYnTbRDuZPUx21M-GtXXnaslin5R3GUnrlBEHSuinRcNAWHmoKrlLXkVGF6jC8OH_uaO7V5h-22EfEkNIdx2Sqrn5mlRSsUDnrTh9AS2IgLQ6c6tGYcd-LG2FbW3HVXm1QP8pfMmVdvjf7tDHCLSRTjjTcmQJ1CAXzv0k5GZXY6QuwFBwcmgB97RtzWhQwMFrBSBXODAJnf5KQZ35P1wJIz1U9mHSJjq-iqnRrFlDvHmeWEcfJ78CXyfJsO-_SIrm8yo_3YoW2aqZ0qEtghdXNLkOg0O4miagZ-GyE_b-giu7Z8XgyUqgyOVRxx7D-QQNlpTWpZTG2q7stiA7IhwQN2aEQMCQHOsQCeIMxEfNKmNs"
+    },
+    {
+      "place_id": "ChIJowKTMGIH9x4RcndgGRGs1mQ",
+      "name": "CHILD WELFARE Durban & District",
+      "address": "20 Clarence Rd, Greyville, Durban, 4001",
+      "latitude": -29.83840309999999,
+      "longitude": 31.0172759,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJowKTMGIH9x4RcndgGRGs1mQ",
+      "photo_reference": "AWCwydjvd6UZ-FbVgMdgPI9_5_jeH5hiENyna3jdISAI5DNW-he196hFzDVvygezz-fiz5vbonYXyHp6TX5eRenGrVy1nt6G1wg944EGiUODexiYdNOYUOzEduV-4qOnE_o6u21gICMO_OaRdef2qakkz7CGJF6QvfgzxXuXKiWXgofH9u7rQWUc3NRZ6OBPpptkh6bW4ozyN-EHADA6-3dbX0s8AdzzUUUcLrzHbeeESxohXZuxSU7VB1vfLGdHg1VDGdsAKCNWRDPV0gOThxm1fvjNxi3iJMq-A5-s4KJmA5mxkmkHi-Ig2IyNWdYxeUid0m-yWwVky-fRcu-QvUKTwpGsMk8kPATus77LNb1HAKIJWdR1pyVFRKoeljDj-oY1EzmQ8KaxWd9-j32ki4zfnQGFW_1Nkg8j8x2hnnvEez-Xwg"
+    },
+    {
+      "place_id": "ChIJY1f3hXH89h4R3FX4ZbBdmxA",
+      "name": "Ethekwini Municipality Durban",
+      "address": "263 West St, Durban Central, Durban, 3646",
+      "latitude": -29.8586323,
+
+web search: 
+web search: site:durban.gov.za Durban Botanic Gardens Berea ...
+web search: 
+web search: Phoenix Settlement Bhambayi Inanda official Gandhi South Africa ...
+web search: 
+web search: KZNSA Gallery Glenwood Durban official ...
+codex
+{"complete":false,"city":"Durban","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"The strongest leads now span municipal museums and gardens, conservation areas, an official arts nonprofit, a heritage trust, and the racecourse operator. I’m tightening neighborhood boundaries and source wording before admitting any card.","icon":"location_city","cards":[],"warnings":[]}
+web search: 
+web search: site:durban.gov.za "Bluff Nature Reserve" ...
+web search: 
+web search: site:visitdurban.travel Greyville Racecourse Greyville location ...
+codex
+{"complete":true,"city":"Durban","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"Ten Durban localities, each anchored by one specific institution, landscape, or recurring event.","icon":"location_city","cards":[{"entity_name":"Berea","title":"Berea","subtitle":"For Africa’s oldest surviving botanic garden","notes":"Durban Botanic Gardens occupies 15 hectares on the Berea side of the city centre.","short_summary":"The neighborhood’s botanic garden conserves indigenous and exotic plant collections, including cycads, palms, bromeliads, and orchids.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Morningside","title":"Morningside","subtitle":"For a municipal park with a walk-through aviary","notes":"Mitchell Park combines picnic lawns and a children’s play area with its small zoo park.","short_summary":"The zoo park’s animal collection includes birds housed in a walk-through aviary.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Durban North","title":"Durban North","subtitle":"For the paths and ponds of the Japanese Gardens","notes":"The municipal garden’s walking paths circle ponds planted with water lilies.","short_summary":"Japanese-style ponds and a network of walking paths give this locality a distinct public garden.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"North Beach","title":"North Beach","subtitle":"For a garden between the promenade and the hotels","notes":"Amphitheatre Gardens sits on the Golden Mile between the beachfront promenade and the hotel strip.","short_summary":"Its ponds, fountains, and subtropical planting form a small landscaped pause beside the beachfront.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Glenwood","title":"Glenwood","subtitle":"For a nonprofit contemporary-art space","notes":"KZNSA Gallery operates from Bulwer Road as a nonprofit devoted to advancing visual art.","short_summary":"Its exhibition program gives Glenwood a standing address for contemporary visual art.","source_url":"https://kznsagallery.co.za/","source_title":"KZNSA Gallery — Home","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Yellowwood Park","title":"Yellowwood Park","subtitle":"For a 210-hectare protected area inside the suburb","notes":"Kenneth Stainbank Nature Reserve is situated within Yellowwood Park, southwest of central Durban.","short_summary":"A substantial protected landscape is embedded directly in this residential locality.","source_url":"https://www.kznwildlife.com/downloads/03-Management-Plans/Approved/2015%20-%20Kenneth%20Stainbank%20Nature%20Reserve%20Management%20Plan.pdf","source_title":"Ezemvelo KZN Wildlife — Kenneth Stainbank Nature Reserve Management Plan","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Inanda","title":"Inanda","subtitle":"For Gandhi’s Phoenix Settlement","notes":"The settlement was established in 1904 and later became home to the press that published Indian Opinion.","short_summary":"Phoenix Settlement preserves a documented site from Gandhi’s years in South Africa.","source_url":"https://www.phoenixsettlement.co.za/word/about/","source_title":"Phoenix Settlement Trust — About Phoenix Settlement","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Greyville","title":"Greyville","subtitle":"For the annual Durban July","notes":"The Durban July is staged at Hollywoodbets Greyville Racecourse on Avondale Road.","short_summary":"Greyville’s namesake racecourse is the fixed venue for Durban’s annual July race meeting.","source_url":"https://visitdurban.travel/event/hollywoodbets-durban-july-2026","source_title":"Durban Tourism — Hollywoodbets Durban July 2026","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Durban Central","title":"Durban Central","subtitle":"For natural-science galleries inside City Hall","notes":"The first-floor museum presents public natural-science galleries and curriculum-linked programs.","short_summary":"Durban Natural Science Museum places a public science collection within the civic center.","source_url":"https://www.durban.gov.za/page/parks-recreation-culture-amenities","source_title":"eThekwini Municipality — Parks, Recreation & Culture Amenities","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Westville","title":"Westville","subtitle":"For a municipal local-history museum","notes":"Bergtheil Museum is one of eThekwini’s managed Local History Museum sites and stands on Queens Avenue.","short_summary":"Westville has its own branch in the municipality’s local-history museum network.","source_url":"https://www.durban.gov.za/page/parks-recreation-culture-amenities","source_title":"eThekwini Municipality — Parks, Recreation & Culture Amenities","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":[]}
+tokens used
+66,684
+{"complete":true,"city":"Durban","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"Ten Durban localities, each anchored by one specific institution, landscape, or recurring event.","icon":"location_city","cards":[{"entity_name":"Berea","title":"Berea","subtitle":"For Africa’s oldest surviving botanic garden","notes":"Durban Botanic Gardens occupies 15 hectares on the Berea side of the city centre.","short_summary":"The neighborhood’s botanic garden conserves indigenous and exotic plant collections, including cycads, palms, bromeliads, and orchids.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Morningside","title":"Morningside","subtitle":"For a municipal park with a walk-through aviary","notes":"Mitchell Park combines picnic lawns and a children’s play area with its small zoo park.","short_summary":"The zoo park’s animal collection includes birds housed in a walk-through aviary.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Durban North","title":"Durban North","subtitle":"For the paths and ponds of the Japanese Gardens","notes":"The municipal garden’s walking paths circle ponds planted with water lilies.","short_summary":"Japanese-style ponds and a network of walking paths give this locality a distinct public garden.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"North Beach","title":"North Beach","subtitle":"For a garden between the promenade and the hotels","notes":"Amphitheatre Gardens sits on the Golden Mile between the beachfront promenade and the hotel strip.","short_summary":"Its ponds, fountains, and subtropical planting form a small landscaped pause beside the beachfront.","source_url":"https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf","source_title":"eThekwini Municipality — “Spring Has Sprung in the City’s Blossoming Gardens”","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Glenwood","title":"Glenwood","subtitle":"For a nonprofit contemporary-art space","notes":"KZNSA Gallery operates from Bulwer Road as a nonprofit devoted to advancing visual art.","short_summary":"Its exhibition program gives Glenwood a standing address for contemporary visual art.","source_url":"https://kznsagallery.co.za/","source_title":"KZNSA Gallery — Home","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Yellowwood Park","title":"Yellowwood Park","subtitle":"For a 210-hectare protected area inside the suburb","notes":"Kenneth Stainbank Nature Reserve is situated within Yellowwood Park, southwest of central Durban.","short_summary":"A substantial protected landscape is embedded directly in this residential locality.","source_url":"https://www.kznwildlife.com/downloads/03-Management-Plans/Approved/2015%20-%20Kenneth%20Stainbank%20Nature%20Reserve%20Management%20Plan.pdf","source_title":"Ezemvelo KZN Wildlife — Kenneth Stainbank Nature Reserve Management Plan","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Inanda","title":"Inanda","subtitle":"For Gandhi’s Phoenix Settlement","notes":"The settlement was established in 1904 and later became home to the press that published Indian Opinion.","short_summary":"Phoenix Settlement preserves a documented site from Gandhi’s years in South Africa.","source_url":"https://www.phoenixsettlement.co.za/word/about/","source_title":"Phoenix Settlement Trust — About Phoenix Settlement","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Greyville","title":"Greyville","subtitle":"For the annual Durban July","notes":"The Durban July is staged at Hollywoodbets Greyville Racecourse on Avondale Road.","short_summary":"Greyville’s namesake racecourse is the fixed venue for Durban’s annual July race meeting.","source_url":"https://visitdurban.travel/event/hollywoodbets-durban-july-2026","source_title":"Durban Tourism — Hollywoodbets Durban July 2026","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Durban Central","title":"Durban Central","subtitle":"For natural-science galleries inside City Hall","notes":"The first-floor museum presents public natural-science galleries and curriculum-linked programs.","short_summary":"Durban Natural Science Museum places a public science collection within the civic center.","source_url":"https://www.durban.gov.za/page/parks-recreation-culture-amenities","source_title":"eThekwini Municipality — Parks, Recreation & Culture Amenities","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Westville","title":"Westville","subtitle":"For a municipal local-history museum","notes":"Bergtheil Museum is one of eThekwini’s managed Local History Museum sites and stands on Queens Avenue.","short_summary":"Westville has its own branch in the municipality’s local-history museum network.","source_url":"https://www.durban.gov.za/page/parks-recreation-culture-amenities","source_title":"eThekwini Municipality — Parks, Recreation & Culture Amenities","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":[]}

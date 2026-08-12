@@ -52,8 +52,12 @@ for (const city of cities) {
           ? `${board.editorial_status || 'unknown'}/${board.city_listing_status || 'unknown'}/${board.visibility || 'unknown'}`
           : 'missing',
         listingProjection: board ? listedBoardIds.has(board.id) : false,
-        generationState: item?.status || '',
-        error: item?.error_message || '',
+        generationState: board?.generator_version === 'codex-open-data-1.0'
+          ? 'superseded_by_codex'
+          : item?.status || '',
+        error: board?.generator_version === 'codex-open-data-1.0'
+          ? ''
+          : item?.error_message || '',
       };
     }),
   });

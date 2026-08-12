@@ -1,0 +1,309 @@
+{
+  "city": {
+    "id": "1boxEqZeyAQeZCKW5lj1",
+    "name": "Dongguan",
+    "region": "China",
+    "country": "CN"
+  },
+  "template": {
+    "id": "global-zero-dollars",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Things Locals Do for Free",
+    "searchQuery": "free attractions parks public spaces activities",
+    "editorialBrief": "Lead with the free behavior, not an adjective. Verify that no required admission or purchase is needed. Explain what people actually do there and why the setting matters. Avoid “fun for everyone,” vague affordability claims, and temporary offers.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "1boxEqZeyAQeZCKW5lj1__global-zero-dollars__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJHxDDnb4KAzQRbchl8lexBlg",
+      "name": "Keyuan",
+      "address": "32 Ke Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523013",
+      "latitude": 23.042926,
+      "longitude": 113.743609,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJHxDDnb4KAzQRbchl8lexBlg",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJox4WEwuCAzQRebP3EGWGHiE",
+      "name": "Yinxian Resort Happy Valley Paradise （Northeast Gate）",
+      "address": "X2GG+4R4, Dongguan, Guangdong Province, 523067",
+      "latitude": 22.975257,
+      "longitude": 114.027092,
+      "types": [
+        "amusement_park",
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJox4WEwuCAzQRebP3EGWGHiE",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJP0-Ip9mbAzQRO5naoXRdOeY",
+      "name": "松山湖公园",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 大岭山镇环湖路 邮政编码: 523820",
+      "latitude": 22.885328,
+      "longitude": 113.862322,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJP0-Ip9mbAzQRO5naoXRdOeY",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJlZ5xs5iXAzQR3O9AaD1v15U",
+      "name": "Chang'an Park （Southeast Gate）",
+      "address": "214 De Zheng Zhong Lu, Chang An Zhen, Dong Guan Shi, Guang Dong Sheng, 523850",
+      "latitude": 22.816302,
+      "longitude": 113.804984,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJlZ5xs5iXAzQR3O9AaD1v15U",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJH9rkko68AzQRH4X8tttZ3qo",
+      "name": "Humen Park",
+      "address": "4 Lian Sheng Zhong Lu, Dong Guan Shi, Guang Dong Sheng, 523900",
+      "latitude": 22.817669,
+      "longitude": 113.684659,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJH9rkko68AzQRH4X8tttZ3qo",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJwz0XoyqYAzQRmiy5eMMegFU",
+      "name": "Chang'an Countryside Park",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 莲峰北路RRP5+6V9 邮政编码: 523850",
+      "latitude": 22.8355399,
+      "longitude": 113.809724,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJwz0XoyqYAzQRmiy5eMMegFU",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ_9fACJTDIDQRp5pkPa9lIUw",
+      "name": "旗峰公园",
+      "address": "2Q8F+RRF, Dongguan, Guangdong Province, 523000",
+      "latitude": 23.017073,
+      "longitude": 113.774539,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_9fACJTDIDQRp5pkPa9lIUw",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJCYqGYH54AzQRWrnET2RdHvQ",
+      "name": "Changping Park",
+      "address": "XXQX+59W, Chang Tian Lu, Dong Guan Shi, Guang Dong Sheng, 523560",
+      "latitude": 22.987992,
+      "longitude": 113.998457,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJCYqGYH54AzQRWrnET2RdHvQ",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ0epQZZecAzQRCKC2aZ_cAew",
+      "name": "Central Park",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 中心一街WW9G+4C9 邮政编码: 523770",
+      "latitude": 22.917788,
+      "longitude": 113.926097,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ0epQZZecAzQRCKC2aZ_cAew",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJfbrs2QkIAzQRTYYiOCC3-UE",
+      "name": "Huayang Lake Wetland Park",
+      "address": "3H8F+C72, Dongguan, Guangdong Province, 523132",
+      "latitude": 23.06601,
+      "longitude": 113.573156,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJfbrs2QkIAzQRTYYiOCC3-UE",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJPzE6QLUKAzQRk1OU49IqZFc",
+      "name": "Dongguan People's Park",
+      "address": "2QQ5+VQ4, Gong Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523013",
+      "latitude": 23.039643,
+      "longitude": 113.759467,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPzE6QLUKAzQRk1OU49IqZFc",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJFcr_vN2fAzQRMrSdF0vTx8A",
+      "name": "虎英公园",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 迎宾路 邮政编码: 523122",
+      "latitude": 23.00958,
+      "longitude": 113.787455,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJFcr_vN2fAzQRMrSdF0vTx8A",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJaVPPFJUKAzQRCJipKLEj3e4",
+      "name": "Wanjiang Park （North Gate）",
+      "address": "1 Gong Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523050",
+      "latitude": 23.0465346,
+      "longitude": 113.7380772,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJaVPPFJUKAzQRCJipKLEj3e4",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJD7nlQvihAzQRvNt_mjlGvcQ",
+      "name": "Shuilian Mountain Forest Park",
+      "address": "Dongguan, China, 523070",
+      "latitude": 22.92711,
+      "longitude": 113.762423,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJD7nlQvihAzQRvNt_mjlGvcQ",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJPX-w7nGCAzQRBG1JPbi7ql0",
+      "name": "Changping Railway Park",
+      "address": "X2C9+56J, Gong Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523067",
+      "latitude": 22.9704675,
+      "longitude": 114.0180009,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPX-w7nGCAzQRBG1JPbi7ql0",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJV4pp67YKAzQRb8cmBKHs0Sc",
+      "name": "人民公园",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 新芬路口 邮政编码: 523013",
+      "latitude": 23.03955,
+      "longitude": 113.759546,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJV4pp67YKAzQRb8cmBKHs0Sc",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJjZVUjpqCAzQR3XjV83ypSH4",
+      "name": "Xiaxu Park",
+      "address": "XXGP+9R9, Sha Bian Jie, Dong Guan Shi, Guang Dong Sheng, 523560",
+      "latitude": 22.975918,
+      "longitude": 113.987119,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJjZVUjpqCAzQR3XjV83ypSH4",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJmXGSPnuPAzQRgAaQkg9_HDw",
+      "name": "Dongguan Daping Peak Forest Park",
+      "address": "Q2W6+7P9, Dongguan, Guangdong Province, 523710",
+      "latitude": 22.795652,
+      "longitude": 114.011858,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJmXGSPnuPAzQRgAaQkg9_HDw",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ6Sw0bn54AzQRsGFKxlDyrco",
+      "name": "Changping Fire Fighting Theme Park",
+      "address": "XXQX+9MP, Kou An Da Dao, Dong Guan Shi, Guang Dong Sheng, 523560",
+      "latitude": 22.988462,
+      "longitude": 113.999203,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ6Sw0bn54AzQRsGFKxlDyrco",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJaz46lwqXAzQRJW6zsdX8S-c",
+      "name": "Bijishan Park",
+      "address": "RR66+7P6, Dong Men Zhong Lu, Dong Guan Shi, Guang Dong Sheng, 523850",
+      "latitude": 22.810657,
+      "longitude": 113.811778,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJaz46lwqXAzQRJW6zsdX8S-c",
+      "photo_reference": ""
+    }
+  ]
+}

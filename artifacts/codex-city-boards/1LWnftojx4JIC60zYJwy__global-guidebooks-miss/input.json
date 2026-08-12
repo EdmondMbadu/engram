@@ -1,0 +1,64 @@
+{
+  "city": {
+    "id": "1LWnftojx4JIC60zYJwy",
+    "name": "Xi’an",
+    "region": "China",
+    "country": "CN"
+  },
+  "template": {
+    "id": "global-guidebooks-miss",
+    "version": "1.0",
+    "titlePattern": "What the Guidebooks Miss: {count} Places Locals Deal Each Other",
+    "searchQuery": "locally loved independent places community favorites",
+    "editorialBrief": "Expectation-subversion, not obscurity theater. Explain the concrete local use, ritual, or reason someone would pass each place to a friend. Never say hidden gem, off the beaten path, locals-only, must-visit, or tourist-free. Do not invent local habits.",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "1LWnftojx4JIC60zYJwy__global-guidebooks-miss__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJodN_-FZ6YzYRhtqcQ2dSq7k",
+      "name": "Fortifications of Xi'an",
+      "address": "Xincheng, Xi'An, China, 710003",
+      "latitude": 34.276795,
+      "longitude": 108.947241,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJodN_-FZ6YzYRhtqcQ2dSq7k",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJYbErLmF6YzYRk_SjprzMUFw",
+      "name": "钟鼓楼广场",
+      "address": "Lianhu District, Xi'An, China, 710007",
+      "latitude": 34.259896,
+      "longitude": 108.945027,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJYbErLmF6YzYRk_SjprzMUFw",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJJ1ehA9mu8TURPDE20DILx2s",
+      "name": "Dashufang Coffee",
+      "address": "Chaoyang, China, 100024",
+      "latitude": 39.915594,
+      "longitude": 116.557781,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJJ1ehA9mu8TURPDE20DILx2s",
+      "photo_reference": ""
+    }
+  ]
+}

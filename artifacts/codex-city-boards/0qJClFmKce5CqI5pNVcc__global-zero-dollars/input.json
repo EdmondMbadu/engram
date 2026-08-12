@@ -1,0 +1,331 @@
+{
+  "city": {
+    "id": "0qJClFmKce5CqI5pNVcc",
+    "name": "Antwerp",
+    "region": "Belgium",
+    "country": "BE"
+  },
+  "template": {
+    "id": "global-zero-dollars",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Things Locals Do for Free",
+    "searchQuery": "free attractions parks public spaces activities",
+    "editorialBrief": "Lead with the free behavior, not an adjective. Verify that no required admission or purchase is needed. Explain what people actually do there and why the setting matters. Avoid “fun for everyone,” vague affordability claims, and temporary offers.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "0qJClFmKce5CqI5pNVcc__global-zero-dollars__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJX1tyKaTEw0cRWjLH8frzAq8",
+      "name": "Parc du Cinquantenaire",
+      "address": "1000 Brussels",
+      "latitude": 50.841393,
+      "longitude": 4.3904833,
+      "types": [
+        "establishment",
+        "park",
+        "parking",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJX1tyKaTEw0cRWjLH8frzAq8",
+      "photo_reference": "AWCwydhef6mOPBRK_ZZvDNWW80EeVJTwlX2TeqWpU9sr_JnSWo6Z0uoe71EFEs78EPmhouy2i-AfWkPlxdVxdlnonQ43o_t-edf0yHdrWISe2FE05s6i587qVV53KGth0ygDdyUKjhnKMBmebjkE6rAUUSOP4H1ZEo3-4CZmFYlLt6HIOauBFumUexoBiHP-Kps9o9Fol_2grxnQyoxF1Uwn2khdTpurji2PigmfCIrMHn08mBOt45tosJHeN5dekCb3JQKexhV1hc8EGzykBwzWtFLgDRWX3V5CJN50oZBNZ_HCEngLwtVgN6JPi61OF5qbmalMhiRBQ46GXnCqUtSYISyOLzfcArozA-8w1a-Abfd7hJDtTbFzCbk-5R7U4Gv27TycWEWfBr0-R1jLtiTrOy1-pjGXNrfasw3Qwl7jErlY7fQRx8jRWMlgcHNK548m"
+    },
+    {
+      "place_id": "ChIJ8bkYeoHEw0cRJWjmPRPA384",
+      "name": "Parc de Bruxelles",
+      "address": "1000 Brussels",
+      "latitude": 50.8441724,
+      "longitude": 4.3635553,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ8bkYeoHEw0cRJWjmPRPA384",
+      "photo_reference": "AWCwydjIS6twJ3XThqK7b29jHi6WO41gWHlAbGeLPzrZ2Ep2bX6Y7iH_Xb91Jk9a_Y0JOL7DipS8bmERFZY71DH-o5Sg9gTeATjhFwYqmCXYJTtc0NlUpYMUjnS6IdgdR1FjbqNG_R2wvLl9clCRhydC1sIW5pc0lM11791ciyqg8DcwQHonVuS-WWvQsCxb9mMtM3_56kZz_d2mDIXDmXK3ppWf-Cr9kZK08j0JRU_QAt0WfdZKUJaLWvRGVLHr0CUtSXxoFOAwzuBoAUvvOSacFNUZoxEada9ixa933vnlJINWJyqX6OhoMEcBHxjJTkNvglkec-FXjdQ4cSPzUIfZYfB2T0JzMITsJyG38kZLPzEo5-b6Y_f0V7JIRHsb68WKZOPswuBe8yWvQ0eEYpjycGJ5OVNYZxNsMA2FkP0t2K7bZJLj4sR247DSl4QzK0dS"
+    },
+    {
+      "place_id": "ChIJDWw3Dn73w0cRaoueQJNFZEs",
+      "name": "Provinciaal Groendomein Rivierenhof",
+      "address": "Turnhoutsebaan 246, 2100 Antwerpen",
+      "latitude": 51.2149878,
+      "longitude": 4.4705487,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJDWw3Dn73w0cRaoueQJNFZEs",
+      "photo_reference": "AWCwydiwbpQp0gtVGbgmSnIqfJPqeEOUKZFnKo1obLrbUuUphwz7PbUqsx9CpwX0M0TBMDF4vWWk6hYmDsstZZaIZ6xqS36U3dEOzihVvzzUBqOenSouK0-JqPngH19FyQg8dRE4ZGOJZBLynEPbV77BO9mc_ihB6IDB7yz8ddro4wFJTPY8M8HDSxfkMMSGXT0j67nNTGXMAIQYm9PgKmK0cH20vIrUKiaG4ofilCnWheDIgz14nGXwXStaOlK6RHGxJkZ8c7Z_iFnO8aLwC-TXsCa0nFtCQoQyDh-G0WTVZ9QYZaZTL8EcZXDusPCzecAJzv-M3-S-85aOn3XU47fhx7lEepaee5uj50MnapJJcdL1jGqym94zlnCeAzmp7KyNPZTVzAcoO0MkaaBp63laxLcV2m9UnZZoWO5F07Nw39OUyltdk3u62GlMTlJoPtVj"
+    },
+    {
+      "place_id": "ChIJb8byOGrDw0cRM063iFkbOgU",
+      "name": "Josaphat Park",
+      "address": "Avenue Ambassadeur van Vollenhoven, 1030 Schaerbeek",
+      "latitude": 50.8639863,
+      "longitude": 4.383962299999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJb8byOGrDw0cRM063iFkbOgU",
+      "photo_reference": "AWCwydj3Byh0NsxuDurayx59P7IRXHg0ONR3jzFedgWSteIUE3PaDK8YXlhfZy0JE7C8M4sZP_tAOstOJLhw_dfQ3SsMWvYx1FWB54HUxccdeOIwVVROL3YFj2uq6Y_rxEIUyYtdY8xUn6B3GMhUlrAZcjz32qSIVtiiXq3tdLtc5FYSZzkqhvoUBL_gr0CiiQC0i-aKKhOwbanJL05I8NHn1TAU_llssyNgQMVxwURJUqcqxrvexWS8gntUnZqBEWL-OKDPhBIfg74kZB1athsgVLku_jKffVVEF3iIYvmQ5Fm8ZptXS-LNQQ8upPcvd3oQbR1b5zv5Lmx5Osll9RZ_M92PW2rRaEaIlQI_0TXO4H9x0Nch44zBn1bTOsQ5ARz-UqbawRRzGYXRKqLkUJDg9r-0h0a_QCB5fXvuv8cHcoyGQMb8"
+    },
+    {
+      "place_id": "ChIJbdEdNk3Cw0cRO1KiRD2y3Qk",
+      "name": "Parc de Laeken - Royal Parc",
+      "address": "1020 Brussels",
+      "latitude": 50.889217,
+      "longitude": 4.3535906,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJbdEdNk3Cw0cRO1KiRD2y3Qk",
+      "photo_reference": "AWCwydjCiUzX7HzEaxzkDpDveAjSoRYhrS9V3Qx7O1HhLUJ-B0ko0Zsq9C348-UrwVbJ_-yPWAZw72Dbvv14hYQ4dwXDZcB5_QA2AUbAM337kJApfXAAuwSAdvFZhMGc9sLGimbFX1DlOqMyOKy4aO9DkldOqOGTxi3isRIno9LukB6Yi1nWGXeBU0rh2afS1GYZHofRseiEBpEyLt9e2L_efCZgUf136jKW2Ivfgr7Q7bGuzBhHIClCPk6HYj0hSSIzkKz9PG3ke8dqVOsp_JZAPamh6qXciMxcXKusjV2CNZFbnfBfoTIiK3AfHOxmsbStRwf9pZq3Bhmb0cMB-fXtEH1uVeVvVMQScDpTu67C8vikVfsnEvxptqz_5dpxb6xWazZ-VX7QmJIEaFpwWE-GuC7BmPqFGnPuWv5-safWhNpWQQsm"
+    },
+    {
+      "place_id": "ChIJO-nq3fX2w0cRBavEBrxq_f8",
+      "name": "Het Steen",
+      "address": "Het Steen, Steenplein 1, 2000 Antwerpen",
+      "latitude": 51.2227238,
+      "longitude": 4.3973637,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJO-nq3fX2w0cRBavEBrxq_f8",
+      "photo_reference": "AWCwydg4nY-jMHsJuJ06ZcwFO-l3LBNmue3cYsLPceGigwlKomvRGwztKlnu5XYaQizZZdiX4-ZkNFR5FN2_NV4K6N2dNxZIdnhOCD8z07JA7SYU6srqKv5mNw-y9wEIrVwwU227lWK5LfTSJbdccP3Wamx4GLXN4jFwj878MNLygrZxIk4Uw1hMW_MKT-nK1NbpskOHOLeiBQ1RBVN3XNREP79ERg3Kj8wXAVqwvBemBY9CIQQl_wZjhcv7JWX-puY4lEAhQ70h-jOPkubJPoGFMu0FkK1fLWnhBgYIPigHqHCB-22wpdM8x7MC_Tm4yLmbPsRiLwqCOeUtMeSEl_G1ytXhvQNMPfmV6Yu2st33HKFloCN_b1Uf2vcROJRI24xzcg00QYjIaK4pQ0pKbHnuu0Sw8j-QFB8l2YsR5gTGFFeDkg"
+    },
+    {
+      "place_id": "ChIJcUcrU5jEw0cRAtPrbd3cAA8",
+      "name": "Leopold Park",
+      "address": "1040 Brussels",
+      "latitude": 50.83874549999999,
+      "longitude": 4.3802726,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJcUcrU5jEw0cRAtPrbd3cAA8",
+      "photo_reference": "AWCwydjmUoQGkh_6zXgwBRtu7eXRkN68ugrCSxDmeu5VvFFlNXLGVKoeIBNFTqTYQgqcx53Eo2zdKndhbJLLgXvzh5KYyEfAm_V3P7fnhsqiI8me2frOzZ3O1IoR4ohIg_UxkX0mCXraT7m5FuudFFcgsbViYvAxL5Fapc3bNdP_Eca8bsGrK4saGqsJLN9DyK6K1KPdB5JYgtfpAnlYXyv1hiVkIqEd9tB5LipIpmOc17VKHDoGrlgaI53cGGQixhazOgBfEtQRxar_tRdvTStDJfZz3EvZXTjMuebYvpZAUJzrOlERsxkFUiV7a5hhavpBBHN25nNGvMjaGyuHDsRt7eZGYn-0Di5GbHDr3GZbYIMLxKCR0eiGpqRAIv3mao1mU9UnNozG15Y66GUvTN13aeZ7sZxGNbRysmBEafoIWSRc8bFJ"
+    },
+    {
+      "place_id": "ChIJRXYuvPHEw0cRo3FPLJINiXg",
+      "name": "Parc Tenbosch",
+      "address": "Rue des Mélèzes 52, 1050 Ixelles",
+      "latitude": 50.8204255,
+      "longitude": 4.3636896,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJRXYuvPHEw0cRo3FPLJINiXg",
+      "photo_reference": "AWCwydioH3-Mt8WJUux4Ry_Bu6hPv06_ACMOZuU8C3d0ECHlhSN-jJjfJW8kk7CV3rgmlMkflO7otam_ys7iIcJUVQveECeCDx8F_sFNCibcBvAX4DCpMRruR9jHCtabqhuHDJ1ruJx0aTQAHHT8cW9dkSCY-wYoaAloU20doj6Jd6ytBmHhyWrCbXEZtzEo65dcb70gepqEHXwEYdY4uWkkPRzMz4m1_k2ytfxsarLfqxaVKr16p4uYj8eBC3CtOH-IhaGYOqY9CYXQM51yPk-crzdRpje-eVe0kEGFAJnYXHmLwUSAIAgeQGAChVvXj3-ekmAa5gUaYeGb6fLeW-9_R_4ZgB4HuH5cRNMo5E04i-nqCd4_odX58T9CgEAeHv9shWMdhBTz7A4iebCl-ITEMJWrPXVMYxaekoeG-zdHRwI4_nwK"
+    },
+    {
+      "place_id": "ChIJfUJaA6jcw0cRhzBa6vp3z0E",
+      "name": "Georges Henripark",
+      "address": "1200 Woluwe-Saint-Lambert",
+      "latitude": 50.8457008,
+      "longitude": 4.4204416,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJfUJaA6jcw0cRhzBa6vp3z0E",
+      "photo_reference": "AWCwydigSEVEYbctyJJmVlXg4YpxTvI9WD4yTMJMDbLr9zQyj8FK9ayJYrTvcL9Njd6y4hwWpNHT4fmtRYSh2WBm5arXgADQZtUgVFMj0BKfI-b6UfWVRK7rQwih2vVkSuFnzQphrnKmm6kQc-OUadpH_vqL27w80f8udhohrufbfVWLfskddYqJAxdCJlp9YSWaSMULmz8hNZXZHkYGkjG_Bga_F2_3qVir4F81KSlTLeHpdHzp2wgLqSHPppxUYCiIFY_pKH3M8noIIOBp7v54ABKqftm3m1LoyttSNQ-zJ8hwZ6uK1Naozg0IacG6jlel96xve8hz1hVZfcQPEvB_oU9ElqNLv2nIBcRSr9wWxtzVOuzeCl6svPPVoi2VgzIKWsRBf5PSh03v2BIhKgpJUo-Mgt5BSHXLiHfDVibb9v10VA"
+    },
+    {
+      "place_id": "ChIJcZFY_Sr3w0cRg4MYr6Y0ero",
+      "name": "Middelheim Museum",
+      "address": "Middelheimlaan 61, 2020 Antwerpen",
+      "latitude": 51.1814027,
+      "longitude": 4.4134096,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJcZFY_Sr3w0cRg4MYr6Y0ero",
+      "photo_reference": "AWCwydjnQuSLeVh3YrJSIWMIDVKw9wP-Y_cxsX0wyuysB8B43WFRaX-0KRkE9kn-IQJfeRvjgIWV3vMkXFxOWBJjBz22RYjTTZ_WnJLIA1sTar6u_KR_uHbEKMWgLO19w08wnyqsaLXYhlafofHtVwb5jmvnnQlJD5yUGJ7XDmegOhmf47QMIeUgov1PWgzCUIVDkAPV4HrqJwnLJuf1KazVO-Pk3z_xwgfbKmcLxBJuUDjpok5oQ9keCA1ao2Wr9-1ENtoQDoxT_ZL-hkz83IgvnARcoHftL-x-eCx7Yno85TkcXi2yeV6Ca0T778NDJnhIfj4LcAMYOvxnnM_9ccTOV0-b5FqvAYUG-pc0Hh5cAUv53HfT5ibDSn3iVaPgkL0kM7rT7SudX44SQvya7AyiOjRxr1aB3L3kDpqgt2Ch3hU"
+    },
+    {
+      "place_id": "ChIJhxvhPv32w0cR7MAw9akWF6Y",
+      "name": "Stadspark",
+      "address": "Rubenslei, 2018 Antwerpen",
+      "latitude": 51.2121583,
+      "longitude": 4.414947199999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJhxvhPv32w0cR7MAw9akWF6Y",
+      "photo_reference": "AWCwydjKOTIrYT9KDajICi7kFWAiGVgkQYEN7xbk_Segrv2o-2RM1eD3yKgsFJQ05QZnXswCnc3Aiwog_nmtksG923D3sHmhTCyEYu6lKA4i6_q35HE7DbWeId3aH0e-6vg6c8GUWORXrs4XNiunu-jt4Mu0v08uuEAplEJiLw9yYtwrH1sgqDkNTP6z1ndzgsCcZgSBapnwr8JG72co_P9lLsBg4Q0n0itkeQteGEcYo_tP3yB6e5iE0hjeWxwQGMiFexJpDOv9MDC9yVjwnuA8Uk8T5x8ecXI3x64aPEMs91RtnuEOeAiB4l5JcgxApNFqgQ0pI3Y31soN4cW_gj4Y9bEzLQscDf7EdJsxpEUylVZG_uVa6Tajann6UonthLzzPRFBaE-Lib_WAKMhGQoGMQx8az4-8uKbyldNQ54_05i5B044uQNkyXCkQoAEqeOQ"
+    },
+    {
+      "place_id": "ChIJrSDqeq73w0cRRCuG0fY3ZPs",
+      "name": "Park Spoor Noord",
+      "address": "Ellermanstraat, 2060 Antwerpen",
+      "latitude": 51.2305004,
+      "longitude": 4.4213661,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJrSDqeq73w0cRRCuG0fY3ZPs",
+      "photo_reference": "AWCwydhgEKmJUTM7zb22r8Bt41CdlYg3zVYDEUIevPlpbncbln_baU0iOt2MPKw9Fj0RyBq7p-2fEaoaW3xpgCUzxrcfBdguKPh2mrIyBoyqUaWqiT-q4qHm5HPDWZtrcVb8fd6HAqiAHSpg1vXSGK_cX2a19bkpqAWjwDTtT47wdeEdqJ_eOntcZRKGYHSsnux6lRAvLn34pAzUA83Hnz1NQrkRCUG_RZCv6s516MhVLcwAQ1b7qc8_VJG3FZQYXB0MvGY0x5yjZEYEg9bHsScFAv44669OuBsz1Iy08SKIJxbFf7LB-lshW5HjKoy-_hfiChLW72Gt7Soz4hBT3i3Y07JDMGAfU1M1e3-f2qgp7BVxVxQk806-E44aXc9a7kpdOQ-6455Lc5u4DzovXq0Dw1OVGS4RpUVn_aXUTPS7rb_QaSN3"
+    },
+    {
+      "place_id": "ChIJPb4wwF_3w0cRmzDyDPrzpcQ",
+      "name": "Boekenbergpark",
+      "address": "Unitaslaan, 2100 Antwerpen",
+      "latitude": 51.1980219,
+      "longitude": 4.4625575,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPb4wwF_3w0cRmzDyDPrzpcQ",
+      "photo_reference": "AWCwydhIAxGdOE890I0J7IX1xvFGlGXb6G_GiYoFBzSVpJoXD4oXNkjV4DLoVIS-CHN0CVxqrA8uhQGAWbkiT-jx_ZuG_zkNbuD8P774anMO4rGFWw1V_tPeRsbrW3w1TaeaAzrgFN3P5tkZ-DLEu7oksBH9CD6cliVO0iXtBJaAk_pCbeD2oaHRzPg2hyzvoyoyhJEXOLLSMmlkR3EB8nT4Muv-s_7jjhHyTRl6WCKXO3h5gd_h3UD_WYAr92QV1lTQwBodVsGn9psVdXH7GLyyE3XIdT0EKY0Qs72yrM29UehRIJ_BeI4ayh3-HCvicqsDUHPJTLtJmej4MSvzKlJZUqTtZUYh-gg6me3U6Nb9f3WrznVH4Gk67IRdfPvS5qj6PugLEvSpd3T2AVMqlzffWD1bIJ5-9-cqLpCI_-sQlR7Uffd_E38e_4Eh7gqbbg_s"
+    },
+    {
+      "place_id": "ChIJo1ittNb2w0cRwOSQpqLLiNM",
+      "name": "Vogelzang",
+      "address": "Floraliënlaan 115, 2020 Antwerpen",
+      "latitude": 51.1867782,
+      "longitude": 4.410163,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJo1ittNb2w0cRwOSQpqLLiNM",
+      "photo_reference": "AWCwydiiqHbAYW9A-hLmG5-WEX8VF-T1TwBbqCu0y5nEHaHrL56QFiZn-Wp2f6ssTAMfwxDWMfozmU07kHIeZBwUJTkRaT0Fbpda1bySIiXQDp93RWaK7QodTLUWh8dqPVfho8mavSMJg8a9XW3xH1oDDH7iJI40TB4zp0gwyBVkTW7XN-58TloAsSd1m1Eo223fldOpL7o2xh4qjqVCNVnLrXFq90_9uONo30TVwW74RvnnfE-CvzzRz03H2Pd8qpUSMNvzDafESuZpqfVcLWLsHH42rG7RnKnr_EE-P1VWeoOQz53s9pYZ6Fo1kDa0R6459PloQNdhlYWPolTlHGFQjfN56HJvDDsp4Jnr6cByBpIpEpsUec9TtuQ10sltEYNxLiYdLhptSJCEPOMOHgXK2CFZN09qVlTCFiMNs9y2EEezAd8b"
+    },
+    {
+      "place_id": "ChIJKaJaNIbEw0cR6P45lpHsDA0",
+      "name": "Egmont Park",
+      "address": "Bd de Waterloo 25, 1000 Bruxelles",
+      "latitude": 50.8377957,
+      "longitude": 4.3563732,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJKaJaNIbEw0cR6P45lpHsDA0",
+      "photo_reference": "AWCwydhpcstADlzsVSn9TTCVTlJ8FN3XxxXj0ZDcwIssdRKgNxp-AwyUXabR_2O7FhVMw7zc3j9gQwuU4jBGHF3ilTj29P92lCgECX-2IAsLQDfSw8Tj6ha-FDB2TqBBNl5pZ8S-1K_gtEDvj_hiNGDLSOGjk8j_JlZz7vXHB8SLoUslZ4_jzst1gxebsvC44KW7UZ_oOyUpkXPunl0O5N9mKOngzXhLWEqFoSl8YkzsMqSCqWpd4_qhQdUZK8yFgSwkNLamvrROpRsUJoFfslRHxfIsQPkR71QI1ZeaKtqYgnwLUKk9KUb-t93BNvl0g8viZcmsYcuJnh3zm53mFTAE3q6oicy8-nPVfo6NJ4Kquw1cwm1xvV1U0hlxUBlWCmf8h59GI6qjtaXN2h1yGsVtBZ3wbJXYZRl4HCbMw4pAB7Z1fw"
+    },
+    {
+      "place_id": "ChIJTXh74mf3w0cRHHXqWxUm64k",
+      "name": "Te Boelaerpark",
+      "address": "Karel de Preterlei 2140, 2140 Antwerpen",
+      "latitude": 51.20045020000001,
+      "longitude": 4.4519589,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJTXh74mf3w0cRHHXqWxUm64k",
+      "photo_reference": "AWCwydhIivEZ7G7n-eIK8anQTLhJ4Wn-q0GVuN3IbP20GWMbWnXyln9TYEYy0bUJEuJPaLcnC2Z8fQls7uvYCOEkCdEh4nphkZQUZkfi_BUqMuDxnzZZoFZpEKbURBxLwaD3Djokk0zVZs99klCjngmxTt_txAAU4o82_Bg70H2rI3kOJW2hSslbMYrgr7DD9oHyDzLKtv4k5enmou7D7OTdn3r0oXawy47B4eQ89GsnkbhlzDymLHCeUMMYNRLwPJOkuwsrDkM2OrIp3X6O-tyO_cd9B9RdiokC05FDTiE91lQQShHHdQeq5Yitw2M-32TxBGrAVZuzRUrISvCTIo8majpuvAXacpMaEr-tBHCVi0Z0LJN8opoEyHZf-OE1GB4QKo0TBz7sh-pXCO7qZFEGs6o4zWTtGzu4_DRvGf-tBdnv6A"
+    },
+    {
+      "place_id": "ChIJIVaGiUT2w0cRW7N3thh7ums",
+      "name": "Droogdokkenpark",
+      "address": "Eilandje, 2030 Antwerpen",
+      "latitude": 51.2356868,
+      "longitude": 4.4016971,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJIVaGiUT2w0cRW7N3thh7ums",
+      "photo_reference": "AWCwydgtj6Jqs6IcbOoriTYvBEjPWmxRsQsllj6HB9KtS5YUID9VMyCAFWyOYw6r7n6MDjkHQLFVfTmWev7X8cQbv7qrdp5AQiFp8CpsVQEfV5dkgDzMrfdFf3cHilDHTKsH55tWigzjKXNAC6IYgwalA9SNhxor8ahCoXAPK_Z1KiANNrydpxCRpzKlAPcQobTL1TyWYQNVSpLKmAFyq5mfa-mj5MBW12wefAZvYwAVdDl8lzTta5g1qop41iXKGGMjZcXS23G6OqimybO4SwTGQzSlvJL_tfXLJGTieNA9SVo5UlCwbaX9q5EeZj5gt-CPmWnM0UDDTsWjdpA4y8uWB6lO_FVvBYtf_zaKKH3KkGkA6CjjWqcdg-6Hp5JsumoPzkhrf5fF-dSuxDI7olhcCXmH0uJWZwRdqN1k-l4qkK0V0A"
+    },
+    {
+      "place_id": "ChIJxQqj6CXxw0cRirCa4YP4_Eo",
+      "name": "Steytelinckpark",
+      "address": "Wilrijk, 2610 Antwerp",
+      "latitude": 51.1690642,
+      "longitude": 4.4022035,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJxQqj6CXxw0cRirCa4YP4_Eo",
+      "photo_reference": "AWCwydiC52psJLgoos8EUflFx6xU9IVx34UX0sso339FV_Ov8OezuPISr-ydtXglw7RM3U87j27gVTOMjg9H1mKJLYaDaJskHYzWIR6W4-3D1cQSsUNlWwBEmoQsuHKMj_KBVVNPkqjXcw7bJ6gCxSx1vhPYQiCfIMCGkX5nBWHNeJbV0TbF4W122bjJQ0BT2vw7m_ZllLLS_94z34dMrUEL3N5ZxVOn_7ccUBIZHCeueiKdAdbLBNV1i-THHlFHXz2aLW3cfcsDj3-2TfQdGTu5PKVPm2G6aqOxhJ6_gndMvKzVHMhN3HBwTunaoAEMglKSn0tENd6S78dp8flj4BxshrBZdLX5WKPYKUnDcxU2xyKLPFEx_JMNUEFB0IxM1B2LIpen_qsPGeZdkaqPXt4YV0iC5fTQBi1BPbjs1I0aLuLHSw"
+    },
+    {
+      "place_id": "ChIJVY5XGRn3w0cRh94fUHUaWuY",
+      "name": "Groen Kwartier Wijk",
+      "address": "2018 Antwerp",
+      "latitude": 51.2031256,
+      "longitude": 4.4215032,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJVY5XGRn3w0cRh94fUHUaWuY",
+      "photo_reference": "AWCwydg09mUYwO2vkMZcovXl53MCeG3QbpVfXPWRgBGZhxhVTIALzlOJZIbLrKqGUJRmNQNPhMf_2-VNDFujtYVJ-0jk0gKGPXO99-GQKrAOC-WZDYLWB9EXZ7jWfaZOR0qw0cBdAoWfywUGNBKSsRZZKNcVaXwqqRwp06D5hHAFWqdlCUJEL1YIlDVDZgg1P-8J9C6tJaB1zrgKNi9vqLn7hkYy6SCF29YdJUZIUh34B6GcJOvYZcAHoi1P1TrPW6dp9xIYwWcawK4Ptcsr6GteHxt-pN2f0cJo6B6ChmI8E_2vLb2vLac5Y2lgCR_6fiEDsZui_xQ7e9shwBCBmqyhf5-mMkHHlTISIsSsXKa40SmCptWxQkFSq5SdAFCurk_P-S0b3hxIPLq6kpON7VZ5Wvgtq9JdWRH4IDeaN_ajvKY"
+    },
+    {
+      "place_id": "ChIJUS0qXH7xw0cR3T_TQJNhsWg",
+      "name": "Luithagen public sculpture park",
+      "address": "Vredebaan 40/34, 2640 Mortsel",
+      "latitude": 51.1729308,
+      "longitude": 4.4417244,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJUS0qXH7xw0cR3T_TQJNhsWg",
+      "photo_reference": "AWCwydileRm0fGDPbZ37RbA7fMutNOf6cmA7oDD3dqE8EaBioOVTOy6nTXMkh8RAFTmhFT5Q37g8KXijJwYpSYTUFIkCUxLv_CrYuOqbmkUm5BMPzq2Ub7Odek6-GJcUfvSR2vWEjByQKUeuGPHdtkb4Rc9rK5l_K6cRivxsd9E7uV2Tuv284wCKM7-w_M501inav7I5GpcsUiMVorWMpEiEuXFzcpD4SnTpfsISVx9q506ho4CC7VdvVFWOrzTai5RYPW3bbjvGcpEXg9JudX7wZvCUgSNIjKoh9-5DLJhEPq9rojCb1R55Cbr9Ewr5Ts1ALqzlnsWx9IOEWhmLIjMrCgZt0r3wECJETcCGpXjDgXLtyUiS-c0fGyVA7oPLhefauVSl8MI4QbJoUzHDeY0WDkmG9YoQOfbNTpZ81gF4SYNK51SH"
+    },
+    {
+      "place_id": "ChIJPdEx_vn2w0cRVFCw9wToR3k",
+      "name": "De Wilde Zee",
+      "address": "A car-free shopping enclave",
+      "latitude": 51.2174638,
+      "longitude": 4.404319,
+      "types": [
+        "neighborhood",
+        "political",
+        "rank-10",
+        "verified-place"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPdEx_vn2w0cRVFCw9wToR3k",
+      "photo_reference": "AWCwydhFIJ6lSdaQ06RewTOpPiCNWKaRz9mzJjSMjZz-O_M5mTwuTQJ7PaG3lfBgNGSYtF-C-X9tzp7s1_Iey7Cd_FiKM_g4-4fHZICS-ltbQe2sy9d44EnVpc64pMaYT6nRH0NLaCkUb9CvhdV15a0TzJTsLHuWEwnNtvGJPD3wW6bNsSEMTP1fb2KSVvVkfqcwKvjl_hCq8NZtTMeR50tqUOLaic4eixwMe8pjXyR2HXjvwTi5ROSjATcb6TORBC4_mYUb2pjMjbs1-OzAzy2XyaHCoQTVTRnCq1ds8Ja3k216OHTNWtLDGDHnqqe-RjkY6-Vvu7Iqo4HP86e4SfpTco5mM6VHif5e1bilmsYf9WT8xM2j4C5hJAvSTbdNqIrFwxkltl_QqVbehiTAqUIHTC55HXC2Qz2PUt-GwDZlc-rYGA"
+    }
+  ]
+}

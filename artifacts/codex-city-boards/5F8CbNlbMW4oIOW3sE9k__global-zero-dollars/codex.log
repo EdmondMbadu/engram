@@ -1,0 +1,289 @@
+Reading additional input from stdin...
+2026-08-12T02:57:06.096190Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T02:57:06.097920Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T02:57:06.099932Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 019ff3e6-f02b-7561-8465-656e0ffac43b
+--------
+user
+Read /Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/5F8CbNlbMW4oIOW3sE9k__global-zero-dollars/input.json. Research and write one source-backed LivingWiki board for Karachi, Pakistan. template_id: global-zero-dollars. Exact board title: Zero Dollars: 10 Things Locals Do for Free. Every card needs an official or reliable source explicitly supporting free public access or no required admission/purchase. Avoid venues that are merely outdoors or sometimes free. Card titles must lead with the free action. The input candidates are identity leads only. Their names, addresses, coordinates, types, and Google Maps URLs may establish identity/location, but never prove free admission, a menu item, local behavior, uniqueness, history, quality, opening hours, or popularity. Use browser research. Prefer official venue/institution/government pages, direct menus, cultural institutions, and established local publications. Avoid SEO listicles, scraped aggregators, review snippets, and invented synthesis. Every card must have a direct https source_url that supports its central claim and a precise source_title. Preserve a candidate place_id and maps_url when the selected entity matches a supplied candidate. Otherwise use null. Use supplied coordinates only for an exact identity match; otherwise null. Use fresh, concise LivingWiki voice: specific, observant, and useful. No rankings, best/must-visit/hidden-gem language, generic praise, stereotypes, or unsupported superlatives. Return exactly 10 distinct cards only when all ten are defensible. Otherwise set complete=false and return only the defensible cards with clear warnings. Never fill a slot to reach ten. The board icon must be one of: restaurant, style, money_off, weekend, location_city, fingerprint, schedule, dashboard_customize.
+codex
+{
+  "complete": false,
+  "city": "Karachi",
+  "template_id": "global-zero-dollars",
+  "title": "Zero Dollars: 10 Things Locals Do for Free",
+  "description": "",
+  "icon": "money_off",
+  "cards": [],
+  "warnings": [
+    "I’m reading the supplied candidates first, then I’ll verify each selected activity against a direct official or reliable source that explicitly establishes free access."
+  ]
+}
+exec
+/bin/zsh -lc "sed -n '1,240p' artifacts/codex-city-boards/5F8CbNlbMW4oIOW3sE9k__global-zero-dollars/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 0ms:
+{
+  "city": {
+    "id": "5F8CbNlbMW4oIOW3sE9k",
+    "name": "Karachi",
+    "region": "Pakistan",
+    "country": "PK"
+  },
+  "template": {
+    "id": "global-zero-dollars",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Things Locals Do for Free",
+    "searchQuery": "free attractions parks public spaces activities",
+    "editorialBrief": "Lead with the free behavior, not an adjective. Verify that no required admission or purchase is needed. Explain what people actually do there and why the setting matters. Avoid “fun for everyone,” vague affordability claims, and temporary offers.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "5F8CbNlbMW4oIOW3sE9k__global-zero-dollars__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJX89xMEQ8sz4R0TYSaBPEgcM",
+      "name": "Nisar Shaheed Park",
+      "address": "D.H.A. Phase 4 Phase 4 Defence Housing Authority, Karachi, 75500",
+      "latitude": 24.8267288,
+      "longitude": 67.0620502,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJX89xMEQ8sz4R0TYSaBPEgcM",
+      "photo_reference": "AWCwydiu9pGrrMfOsWFsAf_zuStMUnZoxGTcMSJztO0bJ6sFoA9dihSTyGrO7Rc2ZJP0PvKoGKlLy5-GctKT2gLscl__TXl7v0sVGOyaXiw6ojj8xSDh84efSk3sdot-pHHsTxZTHO7fLlUOzJDvS2jlYpYfr7ANCKIe1z4VNaoGQMSPwx5LdipWpMw7VFzL1U-Bgen4tIHkOu7PoJa2-uG2M8tJSDjIlqMcYRM5EcuZ2V21mGflk_zoeghPWXDoJfbotuZeuLEkrSoi2z7mDkOSl-WEuL0wc9avxYT0ynnn5ggDLxbgKUp26iFAiGmlqq5WS5dZFpoWN_9TXRygEFCe6PQcyAkp02eLvGpE_Us5Adteb47laqZ0EJkIq-Mxs5xBOsINkZG83Z7MaUjm8hvgejgKFY-NgGEGpgyg4mMBJDslhw"
+    },
+    {
+      "place_id": "ChIJP3j250I-sz4Rp5JFz6MGqcw",
+      "name": "Nishtar Park",
+      "address": "Shahnawaz Bhutto Rd, Soldier Bazaar Jamshed Town, Karachi",
+      "latitude": 24.8747057,
+      "longitude": 67.0332708,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJP3j250I-sz4Rp5JFz6MGqcw",
+      "photo_reference": "AWCwydgXJfsNoPRzRreTH4jKyd_2qkW5MvYHS6OpOODDaqe68ItYpguOwYCyybYl2B0aqNTN4mR6QDLDFHU7vE9FAB_9VxZv1GuiTz_o04RwhAEee1KOLb3BoQZ523s0WrW_KGd80jEUh_WHPmrohS5ewahO2iq_XPo_E84iE7BLijO6eF-lDR6_UIimXqRQ-GXdEvZyEgzvZmak6gSXnijDMZsFIABokfV0XYZORuFz321guZLrmff07NzN2Q3n503smsPeYnV7cOsM38FdITO7JV-r3K5H3W05BnlSq_KLa0sI71KRZzxh3TldfoXXq3YMvnPhPjVDGgT9VlMowWJyWZR0UHuFxpgZzfktrii3mliT8SLLC9qNvPoaJufKadECmkj400E1f6U5XDQ6RdyN7Ka0YQT2TR4kGopAGzjIyHTXhw"
+    },
+    {
+      "place_id": "ChIJI1RZBAU9sz4RMHq_6trYEDg",
+      "name": "A.K. Khan Park",
+      "address": "Q2WP+VRF, Defence V Defence Housing Authority, Karachi, 75500",
+      "latitude": 24.7971755,
+      "longitude": 67.03703300000001,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJI1RZBAU9sz4RMHq_6trYEDg",
+      "photo_reference": "AWCwydjT_V4a4IcdDesbXEVjitYowNldc6jjqIZB24I1NO4UBRb_9PdozE7Ws_P5dhfgP8PEzHtAYbohtIxyStjxFFZC59CZlpqgrH7BK_p-tuuN6JkSA4tK4YxslCrVm5cxthKdv88_CsZWem4fdE5j_AZqOLg0tDKJ3z2EUXzHn-QG5IQQnObaTk0M3vWq_M1oa9XDo9Q-pCRW6-rjKM53Zmjv3dNlDDuHYlLvTdOKwAGaG8NCuGs9oUSYHHAYLR1bCZbPDOIJD-HiiMUWC9r_5F63CtwN5ZxDBSvVtJbyPUHfdC6NZhs3Ky5vB59LFm3PRjKxATq88EPACsgMuY5QrkxT27gZQwka3cC6B9kIFXqQBppGCy5jaSgDgZrnUoknqQ_aQ4Yw5sfQcJxirVbhSk6ysIAuiDZbY2gCcLzn7PAoDA"
+    },
+    {
+      "place_id": "ChIJBxgE90E_sz4R7at0dqA3dFA",
+      "name": "Taleemi Bagh",
+      "address": "Block 14 Naseerabad Block 14 Gulberg Town, Karachi",
+      "latitude": 24.9282148,
+      "longitude": 67.0719184,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJBxgE90E_sz4R7at0dqA3dFA",
+      "photo_reference": "AWCwydggR_FMBCN7mmClLE_9DKzllwGps6nbjW8HfQzAASihHlqyk6oKqEIM1wHNbW58rmuw0A_L3zWTpYj8Q7ek4GPf6yESGb8J2s-SiSaOC42LYjmII4HwIWAGF5NHGbkzwE0LYProcexg2cpjkj57z6um-tosv_tzyG-CtXxGso8FKF3c--g8NA7jUF16HWJaBB93DQI1eRk4XZ5ICLpoBdl1EyOAM1I9fQn9e3dsh8VLAfbUvKk8YcEMMWDdkZ4SZ63a0PsOEd0zBtURQemsuGk56_HyRJ-g2X1mPmcZkMHL-UXfMQFNUn10IyV23U2mrneB-Kp-FHjmsHWGtWMvoMKH-r0SPhMvdXqGEqB5tekNebYQtn7PF_wXqcHTrQF5pnq0_TkOMNgkTUG7YHTlwCkgM-R6rcShrlVjkcIbvEEtuQp3"
+    },
+    {
+      "place_id": "ChIJ_eBojb0-sz4Ri6Qs9OoeS38",
+      "name": "Hill Park",
+      "address": "187 Osman Issa Bhai Memon Road, Karachi Memon Society P.E.C.H.S., Karachi",
+      "latitude": 24.8715176,
+      "longitude": 67.0709538,
+      "types": [
+        "amusement_park",
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_eBojb0-sz4Ri6Qs9OoeS38",
+      "photo_reference": "AWCwydh9ZbLgjsdBmAmRB25k1ire8LeKXrCBQkWh8RdlKa-rbxXGYHULhXatxLet1UN4ikK49glT31lVMCQTyb6DL-01dhrlT_DDVvXJYCkEeXeeOFeZIEvcwgLLcGVrX5CqZqkcTOY_BqIPeKOW0UvvNaatNE6x4DTV0kL8S3BoWbC1XicpKqC1Q2_1-BEWRiRYTvqjg316VRb9xlzwuT1JBhJ4uv87_ixA9xf4heQnMzZavzpZWYX5vHsQcYR5XDrNtPnKe5qUCUqxJ9vTa-pxzebp_WkXg0DuuwLVfwgcYn6Hob1BSu2SD6BannkWpFqsFEaBHeYkE3c3htiarIQ3RDlZ9RfodthugLTKSE__vPYrSt3dRiH-02A-q92usRr3bIwsUEMsylkPuBHTNWJwZDTwpXPVyzlyJ5H7N4-PyxDGxsnIhW1aV5Ied-KfTmut"
+    },
+    {
+      "place_id": "ChIJqeI30hg5sz4RJtFWCx4eyIs",
+      "name": "Butterfly Park Askari IV",
+      "address": "Askari IV Block 19 Gulistan-e-Johar, Karachi",
+      "latitude": 24.9031197,
+      "longitude": 67.1202604,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJqeI30hg5sz4RJtFWCx4eyIs",
+      "photo_reference": "AWCwydj-lbS8mS13IcEqlvsr7m3cgzAWCmfnsfVOOTLcUu3MNGpJnZNO2Vmbdg392itzsTKEkk2YlqTO_VR3s_tIG51Flml2o7uEPSMKBdP-tVcJneiTVvVnH38ubsgYACW55hk1ghfinF2_ELzYirdMGEbOy5S4VpUTCg9gNxe40_qMJxJGTxkcprb3RkgnRuRpTtIHoJQyWANyddIQWEFk5u3QoEygu5r3OC_TTYTfqHR2JlTPGumaCUbpHcIxj4rW1ONvm4fYBMWXz8mIhsBaAS7pWyg_lZ5jBC9nWrOZa7u1nuUJx2pU0Id441prlK6wNulZZmIdAfOmtjoXv_h75iSUEnIJ9dpwgm68mLymEyBscayVRYrHgGuto66mG-RgkvR224UcmNamBYpQF-TO_RXAHOPk2_cmIeWr6ncMyb0x2zGy"
+    },
+    {
+      "place_id": "ChIJNZP6O_E-sz4RHlK9HuW-udQ",
+      "name": "Mir Usman Ali Khan Parda Park & Mini Zoo",
+      "address": "V3M3+CCR, New M. A. Jinnah Rd, Jamshed Quarters Shikarpur Colony, Karachi",
+      "latitude": 24.8836201,
+      "longitude": 67.0535312,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJNZP6O_E-sz4RHlK9HuW-udQ",
+      "photo_reference": "AWCwydj2ciZgQGVC4lepBh21FEQVq565IbbPD7wF4HKR2SGH9wACC8ojGso8oGNcJX5x-0qXNRBecWkApW14RTTEVGN3dzM3dn20fesrWejiS88hRm36KHp5pYT0vMtBhhSJdzmhih-8uBskq6YjBIbnIoOGCjgTM0NPOhydxjVuiOFItOy-OeJdBXLe_d_eqprib2YeI-ZJr1ohuCo-7wxM2H8Qap9BGm3YAAuACzQtcgeyyLh-w80-L6KxJkkOEYJmnhipHsk2jymgEtqoHQL6xaQwjBYGN_Cq48kIQd6WOEwP9FgDFaK9iE_GDjjQNaiv2ZHMSLPclHUmIjd3ikRNqA046uvKk0q_OaT9OCyDVQdeEZFxI6P5VLLtAcMT6ddWlvZkILNULAR96mfcoUmeWi0rmTSY7I-XkKk2TFmiWgY3Hg"
+    },
+    {
+      "place_id": "ChIJRxlZS10-sz4RTMISX8Fx9GQ",
+      "name": "KPSIAJ Khoja Family Park",
+      "address": "Soldier Bazaar Parsi Colony Saddar, Karachi",
+      "latitude": 24.8739678,
+      "longitude": 67.0345828,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJRxlZS10-sz4RTMISX8Fx9GQ",
+      "photo_reference": "AWCwydjtS30mtrSWrDeUe-BS5N6Y1wn7C_YENvhX6vtcQBgHqFcO4_2mNQ8Hbnpa49paGFM1Z6VvrrqAY2Br5D4UPJUfiwmJVap5o7JhldCRaohmXv8lLyxFQ0DVO_Di-PSsgZQIiUwQICxOo_yg3diLbW_8DbjbnR31MHnOFHe40iKuF7EdbWCtcEuwT1KUFzxjxG4-aS--UKQFFQLIAHOVa3MyBJJp_5TqcPY-6kSd0JD_dsr-WkBwSciDZbmdSsyV7TOextECvVjZIR-VN3p-MrHRht6zmUVyNW_ef2twpvwceKBiQRU29YQ5-lPw7v5QXCcJATcC7c7XjIhyJzcGf9Yqee218XZa5zHPwYLUxIjD8zLtJsmk54OA2LCjvZjSPobQ5uCpQQ68q6g3zMCnlwGKQ8iBccrSx_xTsRDb-ADA8q9t"
+    },
+    {
+      "place_id": "ChIJAQBRn7g9sz4RhXv44oS7EUw",
+      "name": "Shaheed Benazir Bhutto Park",
+      "address": "Boat Basin Branch, Shop # 40-43, Commercial Sub Plot # FL-7/C/4 of Plot # 7, Block No. 5, Boat Basin, Block 5 Clifton, Karachi, 75600",
+      "latitude": 24.8263827,
+      "longitude": 67.02381840000001,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAQBRn7g9sz4RhXv44oS7EUw",
+      "photo_reference": "AWCwydjf1TBT8nlpYm5azx9TRucnAsr_x6M4yMA8-n0cUNnNpqVMttFjSCgAZDMI19TAdRkMr39bHpclpcHI3nproR1HqhVETLNNPk9ujp7zuH4n4A1fk0RLvFNTwBjLlFJf1hz84pwS3UIuK7OAx_ZvbyWNjXF4IwHyG8YeRRTxGOemSf1Fp26rNO5zLBuQ8leXXFLJ2MrbU5CgnFHWn9Ar75aumT-aN6gOr6XTT6t5dH9wvrR4G-mX2DRlLWWFYRc4u4hC_ht1yCrLaU54_yIslsEF3KxUXh2DDOf8GaQiY7fcgMRxJap3SSzHJ6Ir5WPRrtKwRaX7K9iWSKeClQ6V0nVOAts7f-MIJ-vHHzW_Vx0nrvkRk-JDdKpcOXYXZ6SxaLdSWSuzW9XbyZO_8iIqpdd82rUIJRt-02An3et3jWsu02ZR"
+    },
+    {
+      "place_id": "ChIJf3gglEM_sz4RMedo0lt7yIs",
+      "name": "Allama Iqbal Park",
+      "address": "R-707، Block 14، Naseerabad Block 14 Gulberg Town, Karachi",
+      "latitude": 24.9311548,
+      "longitude": 67.07449369999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJf3gglEM_sz4RMedo0lt7yIs",
+      "photo_reference": "AWCwydgAsc4mNL-4BR1DvEpm5Jm9SYxWLMssvN1gYBeg7izzWq7lBZSN5GPxBJe1KjZZN0akCO79w4rB62iYdOCRSBDxEZOvCM1bQ05Wx7QW14Tu3r2enuKHEJbWD_m0piVIPk4p22wjL3fV8wJZK5aXop2g9XV3BsndRX9malMalaQq9-DOgMQYO7ZpeuFcjU9adNEQQ8tsTA_dA_GaeU6lXUF7o64kXPVjtBgRY1YD8Ts2G7v59Qn6AgV_XMDqYXmh51vpGvy6x8mH1SWiT0ICsAfFLYXDwND4FX8hTN6Zsr-Mdt1rgUv0Ddh6ULy8z9J31Mwi4oPD49a88jJ_CmQ9DoOjW7mFAtVqGQOILzgHAmy2CdTFGg_PpLn9jWecoGeJDjV40kK5cDcb8TXoVECI-pCyflH0cBU8II9qkDBYR7mGrPm-"
+    },
+    {
+      "place_id": "ChIJCxsUe309sz4RUI0FbB2kjMs",
+      "name": "Giggle Town",
+      "address": "LG Floor, Ocean Towers, Block 9 Clifton, Karachi, 75600",
+      "latitude": 24.823889,
+      "longitude": 67.035556,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJCxsUe309sz4RUI0FbB2kjMs",
+      "photo_reference": "AWCwydg0OmxXymm3Zv_JJNzYB-r89HIUbMPcNTY_HQA-V68m4QOefxvIbiQLLwrAeMklPD13XKSOZ9T4iJSqQMYbe5n2PV9aif0YAuly7Nhu4iiWcHjwR4Z6Ui4C3-Avp2NYCoVULYs6b_1gESL18Sfpf6Xi-iyQH3nI7JiLsyzFziVSjLIhWhYf2zk5zB6tijSglAytaeygEmL2Fu53epWg8HkXP5idjKXG30t8mIkH9i3qFot8CsLUAhRlBMkSVdlTmgCrEex0NTPcuWDuAq7mhPpAVdZvBEFNA0OW-lhfnUf5UkZ41keWIyZGqkQj7QK-_3tehjOjuMsriTIsmhehRoIWIwZ8nsSPtldm1goqKgpvyNJOeZLvvhwEw3RXznN4tPeI75_QS0zVrRH0-btqKCMht9ER30hvjpmvz7ZuFxYH-w"
+    },
+    {
+      "place_id": "ChIJhYtaOVc_sz4RVv0kC5Ed__w",
+      "name": "Peekabear",
+      "address": "The Northwalk, Top Floor, Block C North Nazimabad, Karachi",
+      "latitude": 24.932919,
+      "longitude": 67.0380153,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJhYtaOVc_sz4RVv0kC5Ed__w",
+      "photo_reference": "AWCwydjt7yS6DjCfiyG9VSAw8dVwvu-X7qMnbba8URd-IROGWby1xbrzK6uwqWIeR6PsUbytIa-eY5BzdXlvvIpNLDJIGs_FVYpcq1qm3Cm5EJgDmjrMxOjJKNPZSiofHlAiKXYExeqcksX-Q4rz_I9-Z6YsJURZgS9sYrosq86QsxIt5o4XUG_XMXCmnsGE6nn7wBsQe9rlpRSa8zbHDS0EtXuAjsX42Tjb2_I9WsIOR1PuCihwnyEdaJplFg3r9XqHJ3aQSpNSrjghyv6TF6rv4OhBFEqj_R4pkJCM5N1E-D7iVskB_cjGRTXc6NO0EczW0cWkbdzqyJlQaV24Y663oiyXmKzFlbWluMPJmio206QKOnskZLiRjBtHbeofybKZKbU6zXQdAHYguxHj83h8Lu7VQR7tyLM6P2kYjd-8OuY4o4oI"
+    },
+    {
+      "place_id": "ChIJdTTt7iA_sz4RZ_hPlec49Ps",
+      "name": "Amir Siddiqui Family Park & Ayeza Play Land",
+      "address": "Block 13 -A Main University Rd, Block 13 A Gulshan-e-Iqbal, Karachi, 75300",
+      "latitude": 24.9052183,
+      "longitude": 67.0781377,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJdTTt7iA_sz4RZ_hPlec49Ps",
+      "photo_reference": "AWCwydiCbWCRbQUw12vOscuq7DXzyW6sqKPAwYC8nhUBnZW3adIHo7vHHxc68mBuob1S8HR_9gnevD1lcXiHN-w3Rht4mSgSvn7CSALFFNsTwRfRadu7ouEsQ5r4X08TprIr3MzFueBKEKXAxrHTFbnXQPY5h66l7tB6WLkYcRAYDAmOaOoCV4PeQUpfK7yDe-xtMDUg4_LN7I42jQ2oP9sD7H1DpYblf8lcjRtwts3yRky2nGtAoh9aiCYyU5TckOqT6LCsToVjisvHTByxeLYQZ7aunTQnPiPL8zmSaffi1imrRwChvxN9eeeTklhM0_2QB7N7AYYe8TQeyshhlDZuceQ_vhT19GrN09JLQnputq31P21mvwtSxhKH1cQDFzFJOSx8Xz-neqsp3RTfUVoTbdYiy1U0EF_loNVLyxfFB9hjzg"
+    },
+    {
+      "place_id": "ChIJ-dMFDxA_sz4R3lhLI4sz_5w",
+      "name": "Denso Hall",
+      "address": "V233+CWW, Mariott Rd, Market Quarter, Karachi",
+      "latitude": 24.8536022,
+      "longitude": 67.004828,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ-dMFDxA_sz4R3lhLI4sz_5w",
+      "photo_reference": "AWCwydgeSgfdEmfJR6vvXdhn6dLN6GGybl88mvM15Qjde6n3HuhCE259thbbyS_3xo55CcpScjPoPb8sTlI8VOWIuvY-2kjvH-ooViX-2q6wgq3_QdC9y5vfLFrn1ykyBCO9AV0w3uaUo-I67LBP21pcE3NUdTHWCOd9P3tqECalIQf30-T3xg3vaB2HM1cZU8TpReEyRkF76MpqFBPeoTyPcDd5vEjEUGAPWz-RPWqIq3KbzH-THSxdNWoI2-2vmyxi54tn4vgc2brmwxtlH3ndRjJh9er6MH1SLXmhVthMlKjAnWeApAP6jkYkt0pHfjiOgkmGWLq-mWevuLAJkAICHIs6yvVqxmtjrRCs7peMFbBFmmrl170SawHcehnSoGk-0baWHwbfRBrCzLxiOWi_xtD0Zlmy4kmuMCVIQejkd7OGZA"
+    },
+    {
+      "place_id": "ChIJbbtwJfwVsz4RGFP8kdUT-Ng",
+      "name": "Bagh-e-Jinnah",
+      "address": "R2WJ+VVP, Naw Abad Nawabad, Karachi",
+      "latitude": 24.84721,
+      "longitude": 67.0322174,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJbbtwJfwVsz4RGFP8kdUT-Ng",
+      "photo_reference": "AWCwydiPElVEWwKSx_BDHOE5UAbuSFpD3vyjVQ2bOEOY8ux868u0ZtJYsfTAtOnLwT8YGGpEi0D3lZPwPLe3Hp_ITwnNIQh26wv1JFfrtmFd5sqymQiAHQNorxpU01_GtZDh5P5k6ynR9hogtiZNGCj6Si2GhvjbQRPayjJwFSxXNu0PFlSwZ-Px2I263jrQu_4fD40rU9Vc68h2yWoR75nGaluPnMdQXCXVmvOPiud8tmI5vX9shOsv6DJOnIuWMhJwWgjq_9z6SYYlwicjNWLLM2sZ582AfJ06HFvlVSHSuvfVIOl-kT92G93TMdTgeUTIH0jgwSNJ19xL2dP1Nke7Fvwyp5UOuif_ZlzMBmgyOC0D_hRAKeaR07X4WCeX92e1bbjhR7t_dSd2hwNYRW_yXwvyJkMN44JTEbOUHzMgBS5iQA"
+    },
+    {
+      "place_id": "ChIJTdtDblE5sz4RWLOvHtCgpdE",
+      "name": "Super Space",
+      "address": "5th floor, Ocean Towers, Clifton Block 9 Clifton, Karachi, 75600",
+      "latitude": 24.823889,
+      "longitude": 67.035556,
+      "types": [
+        "establishment",
+
+web search: 
+web search: site:sbp.org.pk museum Karachi free entry admission ...
+web search: 
+web search: Karachi "free entry" park official ...
+web search: 
+web search: State Bank Museum Karachi admission free official ...
+web search: 
+web search: 
+web search: 
+web search: 
+codex
+{"complete":false,"city":"Karachi","template_id":"global-zero-dollars","title":"Zero Dollars: 10 Things Locals Do for Free","description":"A carefully verified shortlist of Karachi activities that require no admission or purchase, including public reading rooms and access available to specific age or student groups.","icon":"money_off","cards":[{"entity_name":"Kitab Ghar Karachi","title":"Read and work free at Kitab Ghar","subtitle":"A citizen-funded public library with no entry or membership charge.","notes":"Kitab Ghar describes itself as an entirely free public library and also provides visitors with free Wi-Fi and mineral water. Check its current Karachi location before setting out.","short_summary":"Settle in with a book or a laptop at this entirely free, citizen-funded public library.","source_url":"https://kitabghar.co/about","source_title":"About Us — Kitab Ghar","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"State Bank of Pakistan Library","title":"Join the SBP Library free","subtitle":"Karachi residents outside the bank can apply for membership without a fee.","notes":"The library says outsiders—including students, academics, bankers, lawyers, businesspeople and journalists—may join, and membership is absolutely free. Applicants need the prescribed form, photographs, a CNIC copy and an in-service SBP employee as guarantor; original CNIC is required for entry.","short_summary":"Use a substantial institutional library without paying a membership charge, provided you complete its documentation requirements.","source_url":"https://sbplibrary.sbp.org.pk/index/content/key/faqs","source_title":"FAQs — State Bank of Pakistan Library","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"British Council Karachi Library","title":"Tour the British Council library free","subtitle":"A pre-booked library tour costs nothing and does not require purchasing membership.","notes":"The British Council explicitly offers free tours of its Karachi library. This card covers the tour only: continued library access and borrowing require paid membership.","short_summary":"Book a no-cost look through the Clifton library before deciding whether membership suits you.","source_url":"https://www.britishcouncil.pk/library/join","source_title":"Membership options — British Council Pakistan","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Mohatta Palace Museum","title":"See Mohatta Palace free if you’re under 12","subtitle":"Children younger than 12 receive free museum admission.","notes":"The museum’s official visitor information grants free admission to children under 12. Adults pay admission; the offer is therefore useful only to families visiting with eligible children.","short_summary":"Children under 12 can enter the museum galleries without an admission charge.","source_url":"https://www.mohattapalacemuseum.org/about-the-museum","source_title":"About the Museum — Mohatta Palace Museum","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Quaid-e-Azam House Museum","title":"Enter free with a student study group","subtitle":"Organized student groups pay no museum admission when visiting for study and research.","notes":"The Government of Sindh’s museum page explicitly exempts student groups entering for study and research. General visitors pay the listed entrance fee, so arrange the group visit through an educational institution.","short_summary":"Students can examine the preserved house as a free group research visit.","source_url":"https://antiquities.sindhculture.gov.pk/tour/quaid-e-azam-house-museum-karachi/","source_title":"Quaid-e-Azam House Museum, Karachi — Directorate General of Antiquities, Government of Sindh","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":["Only five activities met the requested evidence standard; the board is therefore incomplete rather than padded to ten.","Most supplied park candidates were excluded because their candidate records establish identity and location only, while accessible official or reliable sources did not explicitly confirm free entry.","The Mohatta Palace and Quaid-e-Azam House activities are eligibility-limited; their cards state the applicable age or student-group requirement.","No supplied candidate exactly matched a selected entity, so all place_id and maps_url fields are null."]}
+tokens used
+78,870
+{"complete":false,"city":"Karachi","template_id":"global-zero-dollars","title":"Zero Dollars: 10 Things Locals Do for Free","description":"A carefully verified shortlist of Karachi activities that require no admission or purchase, including public reading rooms and access available to specific age or student groups.","icon":"money_off","cards":[{"entity_name":"Kitab Ghar Karachi","title":"Read and work free at Kitab Ghar","subtitle":"A citizen-funded public library with no entry or membership charge.","notes":"Kitab Ghar describes itself as an entirely free public library and also provides visitors with free Wi-Fi and mineral water. Check its current Karachi location before setting out.","short_summary":"Settle in with a book or a laptop at this entirely free, citizen-funded public library.","source_url":"https://kitabghar.co/about","source_title":"About Us — Kitab Ghar","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"State Bank of Pakistan Library","title":"Join the SBP Library free","subtitle":"Karachi residents outside the bank can apply for membership without a fee.","notes":"The library says outsiders—including students, academics, bankers, lawyers, businesspeople and journalists—may join, and membership is absolutely free. Applicants need the prescribed form, photographs, a CNIC copy and an in-service SBP employee as guarantor; original CNIC is required for entry.","short_summary":"Use a substantial institutional library without paying a membership charge, provided you complete its documentation requirements.","source_url":"https://sbplibrary.sbp.org.pk/index/content/key/faqs","source_title":"FAQs — State Bank of Pakistan Library","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"British Council Karachi Library","title":"Tour the British Council library free","subtitle":"A pre-booked library tour costs nothing and does not require purchasing membership.","notes":"The British Council explicitly offers free tours of its Karachi library. This card covers the tour only: continued library access and borrowing require paid membership.","short_summary":"Book a no-cost look through the Clifton library before deciding whether membership suits you.","source_url":"https://www.britishcouncil.pk/library/join","source_title":"Membership options — British Council Pakistan","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Mohatta Palace Museum","title":"See Mohatta Palace free if you’re under 12","subtitle":"Children younger than 12 receive free museum admission.","notes":"The museum’s official visitor information grants free admission to children under 12. Adults pay admission; the offer is therefore useful only to families visiting with eligible children.","short_summary":"Children under 12 can enter the museum galleries without an admission charge.","source_url":"https://www.mohattapalacemuseum.org/about-the-museum","source_title":"About the Museum — Mohatta Palace Museum","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Quaid-e-Azam House Museum","title":"Enter free with a student study group","subtitle":"Organized student groups pay no museum admission when visiting for study and research.","notes":"The Government of Sindh’s museum page explicitly exempts student groups entering for study and research. General visitors pay the listed entrance fee, so arrange the group visit through an educational institution.","short_summary":"Students can examine the preserved house as a free group research visit.","source_url":"https://antiquities.sindhculture.gov.pk/tour/quaid-e-azam-house-museum-karachi/","source_title":"Quaid-e-Azam House Museum, Karachi — Directorate General of Antiquities, Government of Sindh","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":["Only five activities met the requested evidence standard; the board is therefore incomplete rather than padded to ten.","Most supplied park candidates were excluded because their candidate records establish identity and location only, while accessible official or reliable sources did not explicitly confirm free entry.","The Mohatta Palace and Quaid-e-Azam House activities are eligibility-limited; their cards state the applicable age or student-group requirement.","No supplied candidate exactly matched a selected entity, so all place_id and maps_url fields are null."]}

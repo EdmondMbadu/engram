@@ -1,0 +1,62 @@
+{
+  "city": {
+    "id": "1LWnftojx4JIC60zYJwy",
+    "name": "Xi’an",
+    "region": "China",
+    "country": "CN"
+  },
+  "template": {
+    "id": "global-neighborhoods-one-reason",
+    "version": "1.0",
+    "titlePattern": "{count} Neighborhoods, One Reason Each",
+    "searchQuery": "neighborhoods districts local areas",
+    "editorialBrief": "Exactly one defensible reason per neighborhood. Use the neighborhood’s real name and a concrete distinction that helps a reader understand the city. Do not flatten communities into stereotypes, safety claims, demographic shorthand, or “vibrant culture.”",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "1LWnftojx4JIC60zYJwy__global-neighborhoods-one-reason__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJodN_-FZ6YzYRhtqcQ2dSq7k",
+      "name": "Fortifications of Xi'an",
+      "address": "Xincheng, Xi'An, China, 710003",
+      "latitude": 34.276795,
+      "longitude": 108.947241,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJodN_-FZ6YzYRhtqcQ2dSq7k",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJWVj4NPV6YzYRuWMKeUK1Jeo",
+      "name": "Hantang Inn Youth Hostel",
+      "address": "Xincheng, Xi'An, China, 710004",
+      "latitude": 34.2623794,
+      "longitude": 108.9512336,
+      "types": [
+        "establishment",
+        "lodging",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJWVj4NPV6YzYRuWMKeUK1Jeo",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJYbErLmF6YzYRk_SjprzMUFw",
+      "name": "钟鼓楼广场",
+      "address": "Lianhu District, Xi'An, China, 710007",
+      "latitude": 34.259896,
+      "longitude": 108.945027,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJYbErLmF6YzYRk_SjprzMUFw",
+      "photo_reference": ""
+    }
+  ]
+}

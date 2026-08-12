@@ -83,4 +83,67 @@ describe('PublicWikisComponent home pagination', () => {
     expect(component.mobileDiscoverPreviewBoards().length).toBe(25);
     expect(component.hasMoreMobileDiscoverBoards()).toBeFalse();
   });
+
+  it('switches the home directory between cities and universities', () => {
+    const component = createComponent();
+    component.liveWikis.set([
+      {
+        title: 'LivingWiki: Philadelphia',
+        subtitle: 'Philadelphia',
+        description: 'A city wiki',
+        category: 'Cities & Regions',
+        status: 'live',
+        link: '/chat/philly',
+      } as any,
+      {
+        title: 'LivingWiki: University of Pennsylvania',
+        subtitle: 'University of Pennsylvania',
+        description: 'A university wiki',
+        category: 'Universities',
+        status: 'live',
+        link: '/chat/university-of-pennsylvania',
+        universityCity: 'Philadelphia',
+        universityState: 'Pennsylvania',
+        cohortRank: 1,
+      } as any,
+    ]);
+
+    expect(component.mobileFeaturedWikis().map((wiki) => wiki.title)).toEqual(['LivingWiki: Philadelphia']);
+    expect(component.mobileDirectorySearchPlaceholder()).toContain('cities');
+
+    component.setHomeDirectoryCategory('Universities');
+
+    expect(component.mobileFeaturedWikis().map((wiki) => wiki.title)).toEqual(['LivingWiki: University of Pennsylvania']);
+    expect(component.mobileDirectorySearchPlaceholder()).toContain('universities');
+  });
+
+  it('filters universities by campus city or state', () => {
+    const component = createComponent();
+    component.liveWikis.set([
+      {
+        title: 'LivingWiki: University of Pennsylvania',
+        subtitle: 'University of Pennsylvania',
+        description: 'A university wiki',
+        category: 'Universities',
+        status: 'live',
+        link: '/chat/university-of-pennsylvania',
+        universityCity: 'Philadelphia',
+        universityState: 'Pennsylvania',
+      } as any,
+      {
+        title: 'LivingWiki: Northwestern University',
+        subtitle: 'Northwestern University',
+        description: 'A university wiki',
+        category: 'Universities',
+        status: 'live',
+        link: '/chat/northwestern-university',
+        universityCity: 'Evanston',
+        universityState: 'Illinois',
+      } as any,
+    ]);
+    component.setHomeDirectoryCategory('Universities');
+    component.onSearchInput('Philadelphia');
+
+    expect(component.mobileDirectoryWikis().map((wiki) => wiki.title)).toEqual(['LivingWiki: University of Pennsylvania']);
+  });
 });

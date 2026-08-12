@@ -1,0 +1,98 @@
+{
+  "city": {
+    "id": "BhnJLj9QkyvYtlLZVKiI",
+    "name": "Rome",
+    "region": "Italy",
+    "country": "IT"
+  },
+  "template": {
+    "id": "global-neighborhoods-one-reason",
+    "version": "1.0",
+    "titlePattern": "{count} Neighborhoods, One Reason Each",
+    "searchQuery": "neighborhoods districts local areas",
+    "editorialBrief": "Exactly one defensible reason per neighborhood. Use the neighborhood’s real name and a concrete distinction that helps a reader understand the city. Do not flatten communities into stereotypes, safety claims, demographic shorthand, or “vibrant culture.”",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "BhnJLj9QkyvYtlLZVKiI__global-neighborhoods-one-reason__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJOfR_6athLxMRe5WMm35eHgc",
+      "name": "Piazza Barberini",
+      "address": "P.za Barberini, 23, 00187 Roma RM",
+      "latitude": 41.9037846,
+      "longitude": 12.4886381,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJOfR_6athLxMRe5WMm35eHgc",
+      "photo_reference": "AWCwydg7kT1dsWeWDqUgPnt6bPea50E62LRRouHf0sKlh1RymONoOfXCBtTSiEQcIoNYlrt-pLb5iBmUB6X2YxXZLntrAjFtUnWn7h6vt6-c7HNjgFiiLu1CYt-7jzy-oM2qAJIKdyU-mP7nt1aLi_gKSaY1UobUu2hb9gOx0WXXAd8jmgGayeWPPif0XrsEW4YS0sWgvhcPmJEJvt3xDwc9APUf0xijOIT6zyHzYz-iFTf4H6OdeQPTRmDiFYc7NEIAVEZWdOckwPiN1BsyPE3rc-zYd3QONjcuHi9HQlKnv9qg3uuHP7UpEJPzYHS5as7_421eQBc4phL0OkyRNLOCtStJZoK5A3xbq2fVYcmIu3lhlIJ8tHzf_g7hyfLFFGUI8ueGAOWYueQ5_geZsVZC3wtgOA8g_K0dQvzSzdJ0-6i6A8nCYLqAUP8JOAkU710q"
+    },
+    {
+      "place_id": "ChIJ5ajmirBhLxMRJC0VLLfKiLE",
+      "name": "Monti",
+      "address": "Monti, Rome, Metropolitan City of Rome Capital",
+      "latitude": 41.8947077,
+      "longitude": 12.4925226,
+      "types": [
+        "neighborhood",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ5ajmirBhLxMRJC0VLLfKiLE",
+      "photo_reference": "AWCwydinoiEIbWEqVGbXcBoD9DAQhnUg5NEIAE5A1gXYrwLA6WrdVc8Pew5pblZ6cDLqNz71zgwrZjuDvrL9sj0Tm5wxvVRcolLlzcmxNN3CwSy8QAWU20FB9xYAtOUi88vXItIOzFBucCFGL3jyd-RPUhfoJy-JGpNmekxfUYMAQ4bBuTj6bg3cqHzglfZ214BEpX1Vw470T7oG0PFjyB-UBIn29A4LrVDTrteFN09dSYc5SFDwvYV-fYubBPI3NcfIYyPKwLOrV3sAHftq4EbAp-o-B3AAG1_GwYaMHosX5HqCTYtWiLDrFV_HQSBq9A6JayyFyzMOEGgMkxRCEO035B8EFUkJD4-YCOKARosa1DLvkEAYXKEoAsJG-HHzkGf_josKMjUG_ShO_8X9oMcFFx7qpOlzgwMf6LewnpAHWF-AxJBl"
+    },
+    {
+      "place_id": "ChIJ1TLxfZJhLxMRaWFFR7hE-lY",
+      "name": "Pietra d'inciampo in memoria di Carlo Del Papa",
+      "address": "V. Gioberti, 47, 00185 Roma RM",
+      "latitude": 41.8987294,
+      "longitude": 12.5002933,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ1TLxfZJhLxMRaWFFR7hE-lY",
+      "photo_reference": "AWCwydhGhvq45OM0-v3fg6AhV7ZatMkcFLRDd18d7qQG1FOfh4CyY0ZJZ_3QNuMZcuergPjcQSEmrgDj4uVMeJX_ArUIxA4DStCO8KPMmSKCYBdQVsutAIlXCXWOj4G9CZc8XhHtJwEwTO1NXkEUdc82QRH5NC9Qht_oQDraqUqQTNrPBMbrbVgHzkNkSZoSeRW5MAJr5MEamk4mO5n8xBKMdgOCFf2yGi_Ad1X--SNCOTGiCaqIplZivTvg6Aeq4-2z-CrTJDg8NRRqjfbDuj9V_BILUXj4k-JgBDw5xzUu0tLTi6PcC48BnqZs9uAcUusp1QhY5_BeB6M3mIsZr6Jz8nrNc8D_kwSA_nV9ADD-DmjaTJmIpUkGjX2gErt735Duijek0UAezRY0n9tsmWRN2YnQGv0_Zh8N3LGgzqcmqegXjQ"
+    },
+    {
+      "place_id": "ChIJL6C3bAhhLxMR9gJKZ7TsSHY",
+      "name": "Rione XVII Sallustiano",
+      "address": "Rione XVII Sallustiano, Roma RM",
+      "latitude": 41.9071447,
+      "longitude": 12.4961067,
+      "types": [
+        "neighborhood",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJL6C3bAhhLxMR9gJKZ7TsSHY",
+      "photo_reference": "AWCwydjSBqn-kR3S5opOfGUZpZ6LhN8RRuluzgH5YYC_nIVSRwzkKHWw5VvBJMeaQtFIYWq65jqphT7f3WjSLLwQY7SO9yM-oOSrPIAZdfFARl1xmujd7bNNiAazyUyzJYkrqKz-7rRjsAyoWyfHAmEHYsLT_NRbwYuBciNR2X-f4YDvs4Q4kuBv8g_1XaHqV_bOc7_BfJX-CATd1ZBLldkB8OEVARDtrVw0S5ok1kWAZKlJMw3HGp_ME-FAuBzmH8gDApphxGeDXd1pS4JW1h0njM0k_Esez80bpUaiLj22ZgHHON4Htj7lOwqT2AIET-nvlvlxQuSog2ys3IKOy5fHLU-_xdz2Dpt9n7O-EFfF8q1CYSEEcTwNbMtjeqIjlD_ycyL7F6kP5kVmW6hKg8YajmcZmr7UGZhNEpqsp1csggj7S1o"
+    },
+    {
+      "place_id": "ChIJM1Hl6HaJJRMRdtFQxjXoVVM",
+      "name": "Rome Metropolitan Area",
+      "address": "Rome Metropolitan Area",
+      "latitude": 41.7853849,
+      "longitude": 12.5298028,
+      "types": [
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJM1Hl6HaJJRMRdtFQxjXoVVM",
+      "photo_reference": "AWCwydiKCqenf5Ozz6hG09cnBe7MmX2sRrDBIVY_NRgmB3pujWxZVBBFI3LfSFDDwbPtPr-YA2yu7etM7li6tGot9h2DQE7oqq67gtpqGdYyrjoshsQiFr5iXODhw0xphgd0FkUZdEvE5e7o7jp6pX235UbP7OztSkWMHTsxPEibDcpwN5gkD9NyfDTox2VrRgKg8oL0--ySsVBI4281MBDHWNNwKZ7nUJOy7xSbhV_MMv8bcCKUY-cWiQfQTy6mdKj25YVYne6UhafSl63q6nhtgh4ypCn8Dj5hTpy1M2SMGPo8bp-aO-N-uQEyAA5-t7_p_t0bOtTVH1UNxdhSjEK57N2GNsj69p-7FSPAEorefczJ28_B-WXh5sWdDk1Fo26sB5m0yMQun3ag2GFionBxkY3RtdP25z3dVx-xK63YrTYycJgV"
+    },
+    {
+      "place_id": "ChIJSaLFEQphLxMRDlhwzRCVLvs",
+      "name": "XX Settembre",
+      "address": "XX Settembre, 00185 Rome, Metropolitan City of Rome Capital",
+      "latitude": 41.9065367,
+      "longitude": 12.5020717,
+      "types": [
+        "neighborhood",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJSaLFEQphLxMRDlhwzRCVLvs",
+      "photo_reference": ""
+    }
+  ]
+}

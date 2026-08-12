@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "problems": [
+    "Writer marked the board incomplete.",
+    "Expected 10 cards; received 5.",
+    "1 source URL(s) could not be reached."
+  ],
+  "sourceCount": 5,
+  "unreachable": [
+    "https://sbplibrary.sbp.org.pk/index/content/key/faqs"
+  ]
+}

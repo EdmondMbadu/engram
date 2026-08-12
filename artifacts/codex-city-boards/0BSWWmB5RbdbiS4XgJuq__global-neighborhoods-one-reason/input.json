@@ -1,0 +1,386 @@
+{
+  "city": {
+    "id": "0BSWWmB5RbdbiS4XgJuq",
+    "name": "Durban",
+    "region": "South Africa",
+    "country": "ZA"
+  },
+  "template": {
+    "id": "global-neighborhoods-one-reason",
+    "version": "1.0",
+    "titlePattern": "{count} Neighborhoods, One Reason Each",
+    "searchQuery": "neighborhoods districts local areas",
+    "editorialBrief": "Exactly one defensible reason per neighborhood. Use the neighborhood’s real name and a concrete distinction that helps a reader understand the city. Do not flatten communities into stereotypes, safety claims, demographic shorthand, or “vibrant culture.”",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "0BSWWmB5RbdbiS4XgJuq__global-neighborhoods-one-reason__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJvzyk0-Cp9x4RArwrls7F_bo",
+      "name": "Durban Botanic Gardens",
+      "address": "9A John Zikhali Rd, Berea, Durban, 4001",
+      "latitude": -29.848252,
+      "longitude": 31.008291,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJvzyk0-Cp9x4RArwrls7F_bo",
+      "photo_reference": "AWCwydgJ8Golw1QpmkOH3ZO-R1bo2Puenqp-D6bHYhCmim9YmmoGzlvh69TgrTs1GqDF5RVFUMCR4_tmj9xRdOpLpvdBDEqaA8C_Q-X0C6W3myntPcScsklZFrkS-HC-1KUlbR1jeKXEI5-py7hPJofqb4XvIRedVLVI5g04ZHyokcqWvgnnITpw9tq2hDg6AGxmKIpouu1eL0gMyL8bWzVmv7tVoEIowcvcGDuNtgKPidN6Eg2O9rNtG6rVGcH98lDsaqonCNeNIDciQAxz9IkLuqP-mECNIde62rkxS_7GUncVjGx0NIa2NDpNoAET7w-4NsyK-mruaR2MLNo8FpPpMvmrSCKuK2QYkWqkvTeF8vlRJvtZbb9bhDxS6TZwRGjbIuGNi9TP7GholQZMY43Odd_B3eDy-P-vfyeSOebIQYkoSg"
+    },
+    {
+      "place_id": "ChIJG9IR-2QH9x4RbXrF_KFE-3g",
+      "name": "Windermere Shopping Centre.",
+      "address": "163 Lilian Ngoyi Rd, Morningside, Durban, 4001",
+      "latitude": -29.8324921,
+      "longitude": 31.019802,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "shopping_mall"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJG9IR-2QH9x4RbXrF_KFE-3g",
+      "photo_reference": "AWCwydhZgywBzABh-nwrH7yrBYMQShRTTPkTPvPd9juKSWl-G_02FFMmY8qG6IZaNrwDplQU_vlwZRM01ESB1iLXvyRswYe33J03mtoRD-Rg5yHN1jQnW7ShfDXH96Iy2UyszbcbjeAItgxBU1Xy3AfieqI-TOGz8WVyZTXYvLFAFAjae8ZKUlF23DigMPNds73mZUTlm83hFsDKNZM4vnaISdoy52L5OsoyQCRLopU9ulNCmcC2-HQswTE_ZN6cMS5T35HUCpzPPjjc46w60HbfNHVD95wc1c1xzaoyXJ2XiQDP5QmkzBT2Zp5BUd9R5-c3gYiHg3bAE0sWoOlJNKcWo83lf8g5lnPAmO1RShrbNER1NZlydZUrbsQTTFBlPO1Tjbj_d5RAsMjCZ9tf1aRIP8DEHIyD4r-A-m1HLrMkqDOdIQ"
+    },
+    {
+      "place_id": "ChIJAbtTuoEH9x4Rz6wfL58ER8E",
+      "name": "Durban Beach Front Promenade",
+      "address": "Durban Beach, Durban, 4001",
+      "latitude": -29.8324424,
+      "longitude": 31.0354231,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAbtTuoEH9x4Rz6wfL58ER8E",
+      "photo_reference": "AWCwydjZ4S-5_aDVk01Ga-2IwgSj5igGVPkDYoD2ADLS6-Ez71HuWXrlCQEprotS5av5yTGRrdoZ5PwdXnQxseCWudP_R_7c5SPtvMwXa5myD4zKP6-Xk8HYsrBAOF1PL-7gcL_ed7B8aq2jJb1WQ2tWiurtZSoCGMXzKu7x4yLwRL7h2BytFchxgG3lEpUiaCofT683wyRkz9gKSz2i0YALDLuSMPFWJLaF5TNYqK1L_TrLih4F8L6ApctY1lWgzCWE_bzOEMi0mjV3vLkHDwbJVF2wttdBLKtY77NP1eTwNiTF8ow1in6IhNnRhaoK_7veHrCrdPC2k9bva00xIZC-SkaKmDW0XoGJ7_CGfaza3_aVuYXJMNzFI5vcGQWdbB1r23qc07CP17eVeKgSU2Vz081gIpUD_gga3vrQqJQfQjQTQGrF"
+    },
+    {
+      "place_id": "ChIJga8YhhoH9x4RRimN-m1Q2EQ",
+      "name": "Umgeni River Bird Park",
+      "address": "490 Riverside Rd, Durban North, Durban, 4051",
+      "latitude": -29.8084474,
+      "longitude": 31.0178023,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "zoo"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJga8YhhoH9x4RRimN-m1Q2EQ",
+      "photo_reference": "AWCwydgy9DiQTmsNXPlKd5Jy4rzdWl06p-IQyqFDgKHZ7u7iiWEIT_BhFtSW240WMmu9pgbMsFPQcugFamX0RdKucpRF-eb3MjxontvHiY-7xjKe71D6q_2qQ2dioG78gmr3ndzNRDR2Uj-za1MBiYTGNTRyTRkTHAQKDKvL_9yFkLXC9zEl-DpQBV3fvEm_o10nihOyL636uSN4j_f7tEtb29ZSccQZ2OhLku_is2FDqrzmJzZXXVCbQjc-DA1dqToERbl9XbYsFXmM1adrqujJAa5zmNdLwOHhX7h5CbllpktjMkjHzVIif8-kcYn7O4xqgzb4IRELnuPbYexpBNrgJuWm3FOAu8lZGxVSZW77gK7rNU3oKlHUaTgiC1DpX73PWhSwlI8SGxcuf7HfpPd3YHBGJYUVuHAqpTzZctKw6Lb4xDqoIry60T7ZPMuthmwS"
+    },
+    {
+      "place_id": "ChIJK4SOEi2o9x4RVmZ21m2jwek",
+      "name": "Mini Town",
+      "address": "114 Snell Parade, North Beach, Durban, 4001",
+      "latitude": -29.8447091,
+      "longitude": 31.0355853,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJK4SOEi2o9x4RVmZ21m2jwek",
+      "photo_reference": "AWCwydhcNEPqrNz9I4E5OT8J_juNkbJlsnYht_8tewqe-eGf6v4eHG5X0OPeqw3p0KCQ0r4Dulfc-HQAo4gjRRumdL2Q1kUTgYv_RbY7VwklOyDCvrw66u68mZWgFvR4Swg-0KcLfC3S-kFh8AR9Fr9brMOg10hx5Iq6TruS80ND8t-QMqbRyC_6kfqzXoGogcCqwkfxDS9sErhSIg1zoY0EyKJABGG89ZZakSblWooKENvcehk1ndaBzLTomfbtQTSFh4PqWP92EwjFBC2xa-kRtLbO3JFkuAZ-XtzkwJGNts7HYna82W_2p4KDoXs-PtgS5WEIAPA_wX2cQKMuve0Bq3w0aKG_8E-psFDGCbP1G5mxXLj5NClOA_GOHJBeasIzGc8PmXfA03muQew3laWPcgSSA2Vnl5Pwj497dicJE76K7n0"
+    },
+    {
+      "place_id": "ChIJL05Nf2oH9x4Rtt2rW41mfJ8",
+      "name": "Mitchell Park Zoo",
+      "address": "10 Ferndale Rd, Morningside, Durban, 4001",
+      "latitude": -29.8252913,
+      "longitude": 31.0120778,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction",
+        "zoo"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJL05Nf2oH9x4Rtt2rW41mfJ8",
+      "photo_reference": "AWCwydjrap0q0sqldZcCa42c3PthGQQjQWomaXeuXp8y95KRDX0TwhwPefKybEN9HkOg55X8W-GNw_s3wWktU-A33aRMfLJmPLrD6JbeHiW84EWP_ZgS3sbq7OV1yvz329Lo-wImwP5mYv8TI7eb1CBq7fcKHLZJOeyaRRqKAapgK2hiIGKWoGYSic2c_XB9Q1tBVCP8BILAwjYs25J_OPo-84qARb9VmSXptRd5oW0OXlKJsdq-xqaE3pkn-maEW7_XkptDp5LiScW0aY_Vl69R0LebOFcg1Wi6c7TH54j-UNAUZIwFN1t9Oxai-isMH7479QP9TP--WeYNI_oKwS2Ym1zeCFIF7TM9Zh0DfLNNFVp-wVJtIJSJd63C2A-Q5AOoKnsz9LV4rI1zL_qQjYbF2Rurkeag2JgSvRWxsEA"
+    },
+    {
+      "place_id": "ChIJCeEt6_qp9x4RCcLGjbTMwtE",
+      "name": "Glenwood Village Shopping Centre",
+      "address": "Locksley Dr, Sherwood, Durban, 4091",
+      "latitude": -29.8545143,
+      "longitude": 30.9971855,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "shopping_mall"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJCeEt6_qp9x4RCcLGjbTMwtE",
+      "photo_reference": "AWCwydinrN14cdaGMPW9eDO5ikNQGXSuj6KTsh7LfEkaWnEIkYMhgsWqFqFVNjBjgkpexur_KEQoWPQxWTaD-mk9RYo7RER17QVaJl3gALWJWQ7QoFdJSDRC4bWYOxLGmwh2hRIIeqVyj_DVFLRvIBUL-J4Cd2SJuRXn4hgmORlvsjv_T7fPlHwpSj4MemIBXf_f0TVGHYGjTDZ2VJuOOLS1JrGXzckEoM_Lyz7sosjsp3KHj4IuMlc80wcGDAPVUpS39CNPRZ-fss0OXtNrq9dlNv75uoipN4eme9RAuAL_W7yKUwSmtvep4pwc5mrX5zUYI-33bMUJJNG2KX5GhSrOIaUvp-ETRMxF6BMbTVfMOuogXD7ORVh_HmI_OrYpXZ799FeRXlnDj47qwVa86p6s04b1cix7uOtynTduD8lMDyrQhtdb"
+    },
+    {
+      "place_id": "ChIJmcU7GwSr9x4RliLpbNEMU9k",
+      "name": "Kenneth Stainbank Nature Reserve",
+      "address": "Coedmore Ave, Yellowwood Park, Durban, 4011",
+      "latitude": -29.9134086,
+      "longitude": 30.9422462,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJmcU7GwSr9x4RliLpbNEMU9k",
+      "photo_reference": "AWCwydiwXfjWUAT4v2OfTeiVh0kdIW8ObS-CE2sGcOpmDO59UGxd7fWMqtAdV2B2ppl79hQtsFVeVH3FpRBFPxnUX8tGo1jAii5kMWC9A3xUU9sE9Pl69V4EeglyXMOp_dcE8ZIQPtlyZ0lPFDKHUh_fUtFuuJNs89Y0bYFMyPyQ8zV9vmPM74WVVkVY-SbRb9-sD3YY1sLWlu-cqM0OnyYvOv79pcVv2iej8gDGzQGoT8f8vUKh4rHtrqVrMnxeiVN387709xxEv3IMvOFQBVt72kGi9v1GQt7uWXqUudO44sLbbqz52DUdlXqgk95a86aJz-og5w8PwBovrehjZndulIShTco06FA_4FNdnh4uNYEtgrPSndy4I7op02CI8N7x0pyeYwFqh3dTlmo0vAbzvWd-Q61p_uY-whgS8b_urh4zgI3h"
+    },
+    {
+      "place_id": "ChIJrde858Wp9x4R9Pm4rRe1WBM",
+      "name": "Victoria Street Market",
+      "address": "151/155 Victoria St, Durban Central, Durban, 4001",
+      "latitude": -29.8561994,
+      "longitude": 31.0148824,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "shopping_mall"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJrde858Wp9x4R9Pm4rRe1WBM",
+      "photo_reference": "AWCwydgBeWaUTgfM34xrqh5IkLeCle28PHSNpgwALqKuURzWxxWYzQCHGkH2L38di_db5vZIf9Et4XEICLeSsjZscUe4jQQpDrwX5jFfjckQ2WqmUf-k9RlYc3Tozt0GSraJYdNclNmOdOmeXaialyQljvfSfC6WscJGCg1LrInHeGHMlaOS0SvekivWywODWidlbcATLde4FqTvlaSx_PGyteE8_CPXcMi2B2P38XdVqaGSicoeseF0d2mng-wDI9DtlXoUmZWYg2GTXWWg050PC-31a_8LmUkJUeyuIlh7Eijz_KUKs2cuXiLuXREZ8rjlF6ZdgKhoEhlxt0-XQX56sYcWPNvhYOVlECm9gLOKt6ZdJM2NRylpAFBVyHonkMKK7gy1CrdiEi8BPW8M0VHsLpsVSCBk3DuWKud9xk1rrWtS9nIV"
+    },
+    {
+      "place_id": "ChIJt6uiAMip9x4RjtPYEVudgCk",
+      "name": "Durban City Hall",
+      "address": "Anton Lembede St, Durban Central, Durban, 4000",
+      "latitude": -29.8585977,
+      "longitude": 31.0262402,
+      "types": [
+        "city_hall",
+        "establishment",
+        "local_government_office",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJt6uiAMip9x4RjtPYEVudgCk",
+      "photo_reference": "AWCwydg7UyqtabC6HayvbdUcKGp6DCLpD5LhwZqw64C36ZoZDlwQZPFdtOiaYGMhCsA6EdZr59AKIMtxejIaOcglYpZY6uXgqWIo6q_fQ_1psJ-dY18K-qaDw2rMkgT7LfmZ9HiceFBx1qRLsKjT0Sp8QFd1GrY6qyZuOQR9iR2zKMNb5PjSHgzes-Uix0xlffjXdG4WHuYIJDY5eVvGN0RAeyW0rK-Tjow2dAeNsfGD-NhEVGovuEJUoWrkBzmzcRS_aT070OVbtUgUDoYc776XTyTGY55X6o8t3_xOvHPRbcZnHfVqUFfxHsdTRRl9yeGNcXl1BvsIUEi7vt230Xsghv5B-7rkGubow51mkFOKpPTdlCmYTUToCKAo-Pg-sHiT9RI-sLIlcix7EUjSQif-V6lAlyksldH9INKiMZdkF-e84anU"
+    },
+    {
+      "place_id": "ChIJjVoSzq6u9x4RNICbk004NTw",
+      "name": "Bluff Nature Reserve",
+      "address": "The Bluff, Brighton Beach, Durban, 4052",
+      "latitude": -29.9384148,
+      "longitude": 30.9910086,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJjVoSzq6u9x4RNICbk004NTw",
+      "photo_reference": "AWCwydgyVsp5cjVs9ablhEgxcCWGeC76-xxexfWeCLa5ARiegvL2gySR9BQ-BqhAoPz28rpp5DL6CwKKpefm_4stoSeXdeA2csfWRoItMSGAPLunER2UZN-nJLnCyPtcpGbp4gzrU_SyKeWmZTxz7ZuusTq5tY0aocfoqybAyvf29Z4mb6Ui68UMkf-H5CbIdTSDtvLZNSApMFl6lcks0YMhrKVdms8H44xak2GTbx7-L-s073c1llR0jv5UXqH5HCQFAk0Q__KHnF5C2CM_w4KKzzZyo2z3IasdSJSr7CQjhdo5YXbvNZqNy2rwJmXx7DXJ1lvV1O8ktOI7oe25DIij-TBDv6cOq98Mtnqq_rVNabLPVQYLqDkE6-sYdOYdRgoz0FQ4uUyr-UZocYKWIuqnjDnTwa4SSSsEqoMF6z2PjNQKbl4"
+    },
+    {
+      "place_id": "ChIJFVkM1GcD9x4RPJLWXKNei1k",
+      "name": "Mahatma Gandhi House, Phoenix Settlement Durban",
+      "address": "12 ntombi mbiko St, Bhambayi, Inanda, 4309",
+      "latitude": -29.7076624,
+      "longitude": 30.9763545,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJFVkM1GcD9x4RPJLWXKNei1k",
+      "photo_reference": "AWCwydi6DFbzmGEnfj4VaPu4_UVY6qbcfo5_cI5CS2-jvba8I5sauAmxSvkTgYbp6ZJcwxvnmOz60qwUVXdeM_vFXL7-b1PvM13bzALcXDpqdINE7P16IK5qxQ3MhDolvtLKGGmfHRknYOmW4nsh1AG82Pg5Ol044fPegZ2irChK4iCn8sUjql9uYnsAEgeAZfCGZiqWgVdx_wG7Tpav6jc2BlYCREoBH2aA-EMSTj4Cbg4-f6x6e127pmLaQxVvtD5xe3fLh_Pcr1HeWV-yQtgaz7RJ89mdHqv1g9-OfEpqlwje3GGZwIA05XApn_8mOhmBaYAgPSVDOcMJC5fBWwccM9VoBcWw9XpAj24zYXNub78TNvrM40BUQGgVuUn0wQ1jI8WT5kshagzO1oIcVI9ZpqbXaO9LzdQ0fRNa5S9gv6mVz_c"
+    },
+    {
+      "place_id": "ChIJq1zibBMH9x4RHG3WGep_f3s",
+      "name": "Burman Bush Nature Reserve",
+      "address": "Burman Dr, Morningside, Durban, 4001",
+      "latitude": -29.8177009,
+      "longitude": 31.0172381,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJq1zibBMH9x4RHG3WGep_f3s",
+      "photo_reference": "AWCwydjN7eQa97Rc5js7qzdIM0-soB_YmO4jDwY_f9mKbZYwMurjto_ldFvVWtOf-CbGAChUKp8_Ew5yw7d8iwHSn_auJgFOos8i37qvk_yGdvVyf-EpeohPcxaY-X-dysuqRw9yRMYqKoqQZ8kJ51_6TKLthGe9FijecvB2XJKa4_YkV_WQ9qN9XCIMFQp4J_wLizk0oPC1uCPAmXAi7QLe7GK43rKP3VoxLQ-tWoLBsHBnEwSfD3GFUCyLLopEFxFG2H7pbxxHlD2WNchkrogN7-w9sLNEkoD7-i6qOkUjb49tNcd7gd0e3QdtSoH9AXZIw_-fw2fjqlqpcNb0iGklPW5wvoVJUUoATVO-q1FE9XAZHS-DNNSDDymXzc5GMAjk0dJzi6fZihiQuZWg7jT7_2q_f9aSYOfFylA2brTbQyzjlA"
+    },
+    {
+      "place_id": "ChIJN8Ayztep9x4RJDoVV3uagRc",
+      "name": "Durban City",
+      "address": "Durban Station, Stamford Hill, Durban, 4025",
+      "latitude": -29.839285,
+      "longitude": 31.024377,
+      "types": [
+        "establishment",
+        "home_goods_store",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJN8Ayztep9x4RJDoVV3uagRc",
+      "photo_reference": "AWCwydhWTBlmhAYul-gOphDCKNT5gnJUy_-RJS_I6sUNGD-okvlDM2z6iE4bOtEx_hyqP2KGYnTbRDuZPUx21M-GtXXnaslin5R3GUnrlBEHSuinRcNAWHmoKrlLXkVGF6jC8OH_uaO7V5h-22EfEkNIdx2Sqrn5mlRSsUDnrTh9AS2IgLQ6c6tGYcd-LG2FbW3HVXm1QP8pfMmVdvjf7tDHCLSRTjjTcmQJ1CAXzv0k5GZXY6QuwFBwcmgB97RtzWhQwMFrBSBXODAJnf5KQZ35P1wJIz1U9mHSJjq-iqnRrFlDvHmeWEcfJ78CXyfJsO-_SIrm8yo_3YoW2aqZ0qEtghdXNLkOg0O4miagZ-GyE_b-giu7Z8XgyUqgyOVRxx7D-QQNlpTWpZTG2q7stiA7IhwQN2aEQMCQHOsQCeIMxEfNKmNs"
+    },
+    {
+      "place_id": "ChIJowKTMGIH9x4RcndgGRGs1mQ",
+      "name": "CHILD WELFARE Durban & District",
+      "address": "20 Clarence Rd, Greyville, Durban, 4001",
+      "latitude": -29.83840309999999,
+      "longitude": 31.0172759,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJowKTMGIH9x4RcndgGRGs1mQ",
+      "photo_reference": "AWCwydjvd6UZ-FbVgMdgPI9_5_jeH5hiENyna3jdISAI5DNW-he196hFzDVvygezz-fiz5vbonYXyHp6TX5eRenGrVy1nt6G1wg944EGiUODexiYdNOYUOzEduV-4qOnE_o6u21gICMO_OaRdef2qakkz7CGJF6QvfgzxXuXKiWXgofH9u7rQWUc3NRZ6OBPpptkh6bW4ozyN-EHADA6-3dbX0s8AdzzUUUcLrzHbeeESxohXZuxSU7VB1vfLGdHg1VDGdsAKCNWRDPV0gOThxm1fvjNxi3iJMq-A5-s4KJmA5mxkmkHi-Ig2IyNWdYxeUid0m-yWwVky-fRcu-QvUKTwpGsMk8kPATus77LNb1HAKIJWdR1pyVFRKoeljDj-oY1EzmQ8KaxWd9-j32ki4zfnQGFW_1Nkg8j8x2hnnvEez-Xwg"
+    },
+    {
+      "place_id": "ChIJY1f3hXH89h4R3FX4ZbBdmxA",
+      "name": "Ethekwini Municipality Durban",
+      "address": "263 West St, Durban Central, Durban, 3646",
+      "latitude": -29.8586323,
+      "longitude": 31.0240112,
+      "types": [
+        "establishment",
+        "local_government_office",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJY1f3hXH89h4R3FX4ZbBdmxA",
+      "photo_reference": "AWCwydgWS8H1IQ-IRzokJBr6ZAyBh8_Do5nhSwDeklqO4zmnthPwV4-x8A7cDXdS073I_wO1hR4si4W2QxzRsbGR_a0cVnIBhvDXS6iBCUq3TluK819553pniJinEi-8oUR1DIy9JBt8IRDOG_T-agGGXtaf0k1FgY3noFV_lP1IBPTdDCltMUI6u-Ub4LGoKuqrEy5UOhHj85l6l8ENNS7wTFoLWJgHAlt0BCoOrgznVm5Yax_YRhgQZ5PTGSVNDkBBxX5Xu_RdWoMdteh88YHtiR4yU8luLrLcZuFKh_Zlf7lCa0CS8VTkdCHmFd5_QeAV-1PMP4VK3huEckv_Z8lXOoDmVIE4iHV3zTtU2L5T25Qp0X4wyJirjrMG9UTrF8xNaTAwP5lHjafrmxiuHlnm_UnxbvbfGqkegxB64V4PMJXPbg"
+    },
+    {
+      "place_id": "ChIJFy4yvoEA9x4RYxoXDx-GXPk",
+      "name": "Chesterville",
+      "address": "Chesterville, Durban, 4138",
+      "latitude": -29.8514404,
+      "longitude": 30.9446058,
+      "types": [
+        "political",
+        "sublocality",
+        "sublocality_level_1"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJFy4yvoEA9x4RYxoXDx-GXPk",
+      "photo_reference": "AWCwydi2bYtZZMPgLarcpIfz7B5ghwVxT-NDKF9GQwzIJ7hN4gQAQ53ssJMdABw-LYVfarS1u6Iwbl2jnJrePwzMF10gSQc_BvyWDJGPG37XaP7ED5PWVGRr4GNiDkAve5W3QodlPo2UUbgvsm78aoGn2DKuUySwWLg5_rtbgI1-3Q_hlOf8Eh9z5Ly2ho2vLODW6b7-cKvc7ITezUKbhjuZflUz8HSQfUqXgx51q6CBRiae8_jQLgNvQVDKAjEXRnEUtaG33WAulHN14WNQrkglazD5PPZTbuY91gQRffWy_qxPy3jBmJXFp8waxbaGT0BhcS994XGnHBpB4DBor6CSvFSY0Xa4O0mtyHIpfVFR8VXREjTYDFwJUj4xf8caL9owxNj24DrW9lEGcBtW4zSl1JDhMkE9ucY0btEj-H-0VcYhyw"
+    },
+    {
+      "place_id": "ChIJt2G8AQCq9x4RgW6qxEZVp8w",
+      "name": "Durban",
+      "address": "Durban",
+      "latitude": -29.85868039999999,
+      "longitude": 31.0218404,
+      "types": [
+        "locality",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJt2G8AQCq9x4RgW6qxEZVp8w",
+      "photo_reference": "AWCwydijIFNFgRpB37ib8Wg3qTEJYvvE-owVC4Zu4KoIMjYsCNqoJCbQRyqRV3fW9QQiIETTFoCP7Wq_5DsiZ3_fu6OdHg2F5gkR6PzKztAOQ_iEZqsi_XRgwDjGOU5il2AwtxnAZdJIgZDE6gs8vLurtnCDnucfbGXvfEqzU1kNa4_TpFshPspkbrKa88bkjXmUQYKyyun7coZ0OGMX375odGdbIOYX3_MvXi6X9I8Xrut9FGDK27MosuwLHEB7NYhTKG1i_d1mnmWLsjiErWcb-ubzG4kF2wkC1Pwb6O9pqEujS8swGC4AGD20GaUgLzSQizXmF-XnGfw48fHGA4dzj8VoKkL1crDGroMSCZT6X47jKxbBxC9w3i6lRlO2BrKPNpDzpAtDrtJ_-wXgp7CQApjXvETB2rMzO8dTz1RV-x6Z0Q"
+    },
+    {
+      "place_id": "ChIJ302Czcep9x4RF7cPW1Q2Qd8",
+      "name": "Durban Central",
+      "address": "Durban Central, Durban, 4001",
+      "latitude": -29.8574051,
+      "longitude": 31.021598,
+      "types": [
+        "political",
+        "sublocality",
+        "sublocality_level_1"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ302Czcep9x4RF7cPW1Q2Qd8",
+      "photo_reference": "AWCwydjI-QIJ9ua3_rhL4U64p6-Zwl5U1QXr_WwrA9U31dZ7ou3aT13lVwUcVpQ6wy5J6Pp3osuC850bcfsk5fuE8uZ3H7pCm9HS9zB7aZcTmixE7IbZ-vrvHFSBaW3dZAqPe4THbVqZiOGmSdo7p3IhUotb7WLsrUNAovir6DIkHP234OXtki7sWJLF0_bLX5gyC0Kdex0kCF6gb99uct6k_VatDavkmyTx4xUPlJO1ef-QVz4RWAgq2Kcpn-UxWAFPUkEzTAdaHszrAoRcSMIz7joYlizUl-W7MVqphpinTqeFHpwGaqkKzmcP6mf-eUlaqshvftqz-LxuvLGjXYB7FsJlbHDmJ2KPaIdBTu2swDUa2W2TmyKDC6tarDDwAUxSAWzoS-rsH7GokM76panJ6jyG3KIaPRswSlUZbBeNxuKBzWBC"
+    },
+    {
+      "place_id": "ChIJ04EcnZEG9x4Rr-9fNPScsTo",
+      "name": "Durban North",
+      "address": "Durban North, 4051",
+      "latitude": -29.7850641,
+      "longitude": 31.0397342,
+      "types": [
+        "locality",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ04EcnZEG9x4Rr-9fNPScsTo",
+      "photo_reference": "AWCwydjglbHrXu7c9zHsLs2MjTHenoOAFuFii-Pe7U_VCJLL1hpraNRZbphMKms7i311V1NgMXckR3jRQKyIBXYDK6SoZhoIgY_yJJ1qP7LlDSyq2O1DkR6lFLpTMkuKe6geIT5L1_5BCc-mGgWJRYimTXG9snPPCA3_too2m1A3JNgHuXHLlPZ31VZ-Faza176LzwrFsJDC6lPep4Q--TnNeHegfxx_2rBaoIUTeKp-DrW4Vk1CrvEFKHyBLepn_XrXC1aI_eV85GRYRy1BE9cR9F5nW58T88bMc_LUUYrLl3r3LvheRD5pJlseKmrcu4_rNC9u4fGky4BiPO0N6P2ocEYf697-e7ZNY6tHVxFejsfK4aDqdI8hOjpbWh7B2ZVH0_ybF835o1N35sv7mB4LgMfFd7IIlADxPXHNcv-u7xVYZQ"
+    },
+    {
+      "place_id": "ChIJk2bdj1mo9x4RdYa726gkZfg",
+      "name": "Durban Point",
+      "address": "Durban Point, Point, Durban, 4001",
+      "latitude": -29.8698232,
+      "longitude": 31.0471267,
+      "types": [
+        "neighborhood",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJk2bdj1mo9x4RdYa726gkZfg",
+      "photo_reference": "AWCwydjYzWg-aBHvxUsSerB2Y_T--psnCKClGSTllKdYUioFh2jHEc13WP4RGNo7zlZWQ9VTkWgF7JrIx-MnXhUvtm3nA7rIxQcV_5TEqW-GT_bRkpZLfodxSu6-K2vihc33nohSfW52izITzwUNAQbWH2C8giXtnyNWqlycAeN8w52zl9R2X3OjfG98BipnZH_sPNAPvR4fLLD-Cm7bWoXIO38IRS43spxQ5j4K1FW-I40ujC7moqYijumDeR7GdircSQGFWD1OSUYR2O6uDBMpYHjTrCL7SimbZzxk9CcdyTY3a-eAayF8sf7NUunf4OProuh19TqHfeNq3XdF2VNJuXph59f1lU0joeR07U7wUfvrO2HowMuXt9Us5lQVT7pC_rqEOX_N5eQPOOeNf_KmNGiq0s0G6kFN65Bk-On1BwikTA"
+    },
+    {
+      "place_id": "ChIJB85FllwB9x4R3Jzm5GVDX28",
+      "name": "Newlands East",
+      "address": "Newlands East",
+      "latitude": -29.7744947,
+      "longitude": 30.9958108,
+      "types": [
+        "locality",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJB85FllwB9x4R3Jzm5GVDX28",
+      "photo_reference": "AWCwydiISHYs7aCcLyNl49hqZuzNnUpmpuMeuTyugQ2sv1JA274feRZwsNkIZ5fTK9AnsEr7pvybLbn11tILYfOMShDICd_tPrsd31V1b46fW-oY_WTUkhROK5uRO4T7vODf_7-EM78i7YTq09zFnyDSa60Ui8h1vmUW5HVNe2KK0C_MiXe_c9ZeKXO3UQ1F9_yTT3afX15KIDLPWpqOzSFllMa_I_B4ncm_F1S39XzcW94VUGIEZqgqFztLWvXNEw2JfQDB710xVGu4QFFmtn42-7G5hTI8I_6mrjb8Y63WuT3y5Ka7mVaWDLOZCodHK3dKKjBiSV8sSsYiqrySBE47pqsLGUktNcPOVP9Doj_uwYtTp5nxglZh2BvuWhlpDMaj338W_W-sSSy4-iU2O4PWqTyrotGrzi-lyoBHSm8DUik"
+    },
+    {
+      "place_id": "ChIJEVe7cHkH9x4RD_Uv4_WEtHg",
+      "name": "Stamford Hill",
+      "address": "Stamford Hill, Durban, 4001",
+      "latitude": -29.8275728,
+      "longitude": 31.0329987,
+      "types": [
+        "political",
+        "sublocality",
+        "sublocality_level_1"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJEVe7cHkH9x4RD_Uv4_WEtHg",
+      "photo_reference": "AWCwydjkhen-jczOlt3v7jqIuI2wgu6L0olKUSacSlh8PkG3-i0Z91Z24CzP8N-31rbvVYUCAc3XDyBURszlw924m3-wXAY3rHvNbu-pA4ZphLMFriOuMHjxbEhe5tbZLjd658PPdx6sQunoHCAVLyUZgerw-PuF3G9WnIl6jrQwwppHFVeAeYIyDh75KoSONlyEQRReZQ1rres_yo7GEZ6xkPkO53sWA74SuXJN9DV5nYoh9XXVhxGV6w8wu9FVVwYsK8WkY3dEcAfYLz3vTcikQN9wA9ShsPJLbEoDvVN934Ue3eB52YEjkHjTRfkvqIgNPMQIFr6VcDGXsDaORxq2J6yuP1Tl91ttNVPU-xftGsM-jpJPBrl615d_kvZoC6aNg2KSnpuNZ4RPraClGFyH2i0-u68sLRMIRUE2Fi-sj1paJ1Myy5iNEhHlyZAlHXMo"
+    },
+    {
+      "place_id": "ChIJc2voWNYA9x4R8co-bWUuVp4",
+      "name": "Kennedy Road",
+      "address": "Kennedy Road, Clare Hills, Durban, 4091",
+      "latitude": -29.8111263,
+      "longitude": 30.9803653,
+      "types": [
+        "neighborhood",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJc2voWNYA9x4R8co-bWUuVp4",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJWYjNxMEG9x4RBkxyTdBCc4c",
+      "name": "Kenville",
+      "address": "Kenville, Durban North, 4051",
+      "latitude": -29.7814439,
+      "longitude": 31.0134406,
+      "types": [
+        "political",
+        "sublocality",
+        "sublocality_level_1"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJWYjNxMEG9x4RBkxyTdBCc4c",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJhy_7k2-q9x4RCGyGMMnVdQw",
+      "name": "Umkumbaan",
+      "address": "Umkumbaan, Durban, 4138",
+      "latitude": -29.8693347,
+      "longitude": 30.95608099999999,
+      "types": [
+        "political",
+        "sublocality",
+        "sublocality_level_1"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJhy_7k2-q9x4RCGyGMMnVdQw",
+      "photo_reference": ""
+    }
+  ]
+}

@@ -1,0 +1,463 @@
+{
+  "city": {
+    "id": "qX5ezONH7J0ipaJJEYty",
+    "name": "Tampa",
+    "region": "Florida",
+    "country": "US"
+  },
+  "template": {
+    "id": "global-first-24-hours",
+    "version": "1.0",
+    "titlePattern": "Your First 24 Hours in {city}, Dealt as Cards",
+    "searchQuery": "essential local food culture landmarks first visit",
+    "editorialBrief": "Build a plausible first-day sequence, not a top-ten list. Give each card a role in the day and one clear reason it belongs there. Keep travel time and opening-hour claims conservative unless verified. Avoid bucket-list language and exhausting itinerary compression.",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "qX5ezONH7J0ipaJJEYty__global-first-24-hours__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJYWj9iZ_PwogRQebjN7pJ_Nw",
+      "name": "Armature Works",
+      "address": "1910 N Ola Ave, Tampa, FL 33602",
+      "latitude": 27.9609343,
+      "longitude": -82.4642724,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJYWj9iZ_PwogRQebjN7pJ_Nw",
+      "photo_reference": "AWCwydho5HUNgoFdKOITyoQev9Q56yhKZfO0uvMEcjfQ0t4hzWT-uO-87vCIMPfxTfKM3Z-Zt1pquAzE9X6QAYWhXhnSEqPpm3DwzrK4Ws0zE9EtzZZaOnZgj0xAFshyd8njNJYsFRLXwqfn7TqrkqWX-Mpbf_5tuypVCuJXUDZ8f41BOT7Aa-NWraV9horjCFrDVmxE6YGc8McjxRf4ElkHEYBfhfV2h7WaAqga6nDtiJyS_rQax9oBFEU2-oddacIAI-4w9FbWSY4IkA59F_g53k1IvK0QlGjNd6dQsSA0vI0wNE1oH7Ufq2CjN-DCwn5Mx7tXfzYDLwdaTzm3-pBf9s1UvITmylgRMjsv-DLLqUR7BYxePpGjH3ql2Fyf3L0c1PrVFrnSwCaKu45IZ1buU4YvAcYPQ9dReJGG9lUTnkoXPX8"
+    },
+    {
+      "place_id": "ChIJkTDP2OLFwogR9W0EjRYIL-0",
+      "name": "Naked Farmer",
+      "address": "1001 Water St, Tampa, FL 33602",
+      "latitude": 27.9437958,
+      "longitude": -82.44983239999999,
+      "types": [
+        "establishment",
+        "food",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJkTDP2OLFwogR9W0EjRYIL-0",
+      "photo_reference": "AWCwydi56cuzUJuhOI-oDwe-KG7GVSw4vyi5N6LN5GxDCwhqFEnIFxjI4N3UOqdzHARXMRUyipYTzy6Ju7APDcwI5sV-EutBjw0HGhcFyr5RnUcTm3v4GoiJi4ccls1iQVS01bm6CpEYEfHRYUJ5wY7ZhmiZ54SJcgk-ng2PoJEAk8P_ur2qEyOE1Q0ymPziBCM6q2DE5PbOLIM1lTinshDJ_wNLfqxjVEv9c2HQv9sYTU5DX9BvD0rehaInPVH31Xg_7EvN56NjnjB0Ld4ihC06TT6SBhdKabzmu9s82dkq3X1gqFJlfzQ_Hwj09xlREM51QIT6UfgNbT4sOUY-eHu8MD6p5K0-qjmGJ3nSHp6B2-MmYK_lei7TYHlPKl3uXtoi1PZDu6ekUTU0GleHwYpfxkgVUF9exRj9DFPmHVk3P2jMeA"
+    },
+    {
+      "place_id": "ChIJ91OSMGfFwogRD8L_rG6FEG8",
+      "name": "Heights Public Market",
+      "address": "1910 N Ola Ave, Tampa, FL 33602",
+      "latitude": 27.9609924,
+      "longitude": -82.46403839999999,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ91OSMGfFwogRD8L_rG6FEG8",
+      "photo_reference": "AWCwydhga1V5MLsRIMuMbw3y0xJp88EtWW3J5dtDKlxxGT2wte2bIapvQi0bBbAAbMUjl5NFDZm_J_KwJZUkmTT2haZf5mjTogVgSTfWe3Es-nLw7Rk2neWqP5MTxybcNlY4mpbTrTZ4Bt182clVFner3Bmo-gf1AeJFtsL4wHtfJpViAHkeHUbC65BeWjaav8Cpm1BU8hLJYaEctQsevfJ6DyFqa1EYKt38n_4ylj0WBs90NHiRrHWb1_MA5DjcX9UBqJ_wL7M3PzdiArflaU9OdxwHxN1YA8qu1avluqzXSMb1R_QBeYbm9UkRcq-nObds-3UxwXzmjOVinkHf0MroZJ6oVb6iPKmcFUNdHJkv8bgHY6gChkG1EKrvbRP3h6BwXLgiBdOD5-eYHj640Yufrnc6IahYZrRbApiCrYs9ryK4_Q"
+    },
+    {
+      "place_id": "ChIJtyjCT8zFwogRDeMzOrl5Rn4",
+      "name": "Flan Factory - Ybor",
+      "address": "1718 N Nebraska Ave, Tampa, FL 33602",
+      "latitude": 27.9601848,
+      "longitude": -82.4514981,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJtyjCT8zFwogRDeMzOrl5Rn4",
+      "photo_reference": "AWCwydiehPiG5VIxw8Ps0KC85nk6yyQwwzVK0a36Xx5SGhnWGMxN4D0KpjKlPWG2iQgawAqcUbfTcn_sALCTB4P4-lHiLDjnSozd8QPwAbXjr304KvoaldU_Q3kb4r-jSUE5vxweTiPBJ2weh6RRpKWJfTarVF_0uscp6rWMHJylxiebtrZ_kWjvN35ljn31k5b-pLPmYaI_x_b98ayXtiAs9YTCqanKwkPQNEQrwMVfY5iWPuUOC4fviJS6jO4Ub4340PLbJpzEpFy6cLLDPq9BkzsMyo0Wctgl9rLDBbFRwsEbZKql5znCcHMHjYpG-m-ylVOTWg-8Gx87znwVjzPzC2TNP6gUvBJwLZu6pCynmI2fFRm72bdfveoRiRlNdGBNdYLCi0EghPaUtbmIic42TJLtjhFDoSdwWOlUKciWe0sSew"
+    },
+    {
+      "place_id": "ChIJmfFGVBPFwogRIYyNhvz3X9Y",
+      "name": "7th + Grove",
+      "address": "1930 E 7th Ave, Tampa, FL 33605",
+      "latitude": 27.9604164,
+      "longitude": -82.43687779999999,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "night_club",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJmfFGVBPFwogRIYyNhvz3X9Y",
+      "photo_reference": "AWCwydhkum4SFrkswIDb6_rZNQg25PEEHmfGDHuh5MeBRfwvKQXQSEpRVFGQNekEzvbg4W4d7OkI6hbPB64f77tK7PFMIzVDNXNAOdB-N_IyK3MEiEPzze2Rfs6sMf3InFQSMzsiGklajSKPpBuVnF_gtZPusjaG_2FyOQIgLquFhRTyXNMOrnGPEPFIwGi2ZX37yupg5I606N8iHZuvbpDqsfzsXvXGKiOtAAw1wD-ikqZcHZAhbz0QgguFZY9INlAzv9JGSL1fmqeTh_TyjtuwtsnSjjduBote91YJgFehEDw9FPthVGg-_1KHTqS1vNyWAEtHyRnccPUGbxt0zhUrt0711qSV2uLxRX3hlmz93SGBktyqCP7dGH3up8iDtH-yYkDeBcSpkPygtZyfVb-fqB9nfVdXfQem2tUvgnqld7k2Nw"
+    },
+    {
+      "place_id": "ChIJ3zTNmF3DwogRw7sotf7e2lE",
+      "name": "Fresh Kitchen - NoHo Flagship",
+      "address": "1719 W Kennedy Blvd, Tampa, FL 33606",
+      "latitude": 27.9450083,
+      "longitude": -82.47789499999999,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ3zTNmF3DwogRw7sotf7e2lE",
+      "photo_reference": "AWCwydj1ZvAuYQyqtgURsd6xbhTd0Ysadl44IHeE3CB01I8tcYB0YYpJ18t0gxWKYK5qR6Q2vjQlrihCr2UZT_lQrtpRNhgLkeDVMi_T4fcmwY9tx6pVQnP5jxcrGxhwu7YY2bLcwGbzgjRLsMt95V5JNPwFFKB6PgeL3hMw8Lvyrr7CTnBdzd8UlyaBawpeMcPCmH3ikNxTZV8ZhhIDXuZAZUybSTu1W1TeSJzrlNtJfdll_Q7Ohje5bYKDQfCTBv7Oakfkhd6qbe3ImFWAp6R8DlccKc0uzUTTnQKUbdj1MW82drGQ5vhayTN8bpQoMdHxcDWnFXQveMDkPYoNon4F5Dv1rspVQTxFUGrQvT7p9z60gNCuPQJILH_Q-NICC8obN34wN4r4i3lMbW4YcYwXfsi4jLNgpZPoRMOjfJFhe84PDGPBwdpBXVY-85itZg"
+    },
+    {
+      "place_id": "ChIJH23RWFrEwogRYahoBQ4orHc",
+      "name": "The Bricks",
+      "address": "1327 E 7th Ave, Tampa, FL 33605",
+      "latitude": 27.960175,
+      "longitude": -82.44432599999999,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJH23RWFrEwogRYahoBQ4orHc",
+      "photo_reference": "AWCwydjwSfpIwiY3AZ-FJd89P1egJ8Ydtr0cxhhaccsuc-4jq8KxRyeh9OK829Dv_rwd17sgliZepYXd4JPgV2l85MXCiHJKLVyWxP7HOXUOUvXskGpKlDHea3TFpfBQjjvGOaafxumsa5Rv9IrHROO_O3DLQbdutKWp8iq0qpARbB6rgWDUM9SeDezO-EiZ9FOQz9gOT-DVev_WpOqqkiD7oOaEl9bLwEtMESSVtXqnkPafYFqzAW12ZITDrVPTboDf6FfZTRPDdP5wTp49EKc4MtxJROas3nE7KXclKd7smaCZBlrRoA27PHrIsLgAomhCAowX1OpQJ5M5lX7J95kO7ObBC3pI8I-ao7SFFeEn_qjHsMCLsmaSFPB31NlWV-Qthj72ACKbWmB33ARGMgFyZhV9ecqIn_TZAVN6jkMr_7VIqDRX"
+    },
+    {
+      "place_id": "ChIJR41doPPEwogRaIOCz6ag1bA",
+      "name": "wagamama water st, tampa",
+      "address": "1050 Water St, Tampa, FL 33602",
+      "latitude": 27.9441713,
+      "longitude": -82.4505355,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJR41doPPEwogRaIOCz6ag1bA",
+      "photo_reference": "AWCwydgF4K4GDX0fuZcPDtyHURMeVDT9yccMoihy15-IXU82Viwt7LjTHRHjrUx2d2ARdpXKZPwUwlyN4-53V9BLdeI8DxNTSAI77fKrE2zKCSmJ0WS1cZr46FSTzz2H3stOcNfvzOyeMWxV6vsmaHEFtI7TXN9QSDNVejzP7x6IbtfzZheu_7W4WmASfVMik08rBw-eegQAU8VZgqyB3YQhxhCn_d6QEhzMTzRJe4CLv8uwMccvFG2Y2nH4OnHh_7blEsPxmpP8w496gj6smy9GiwID22pL9vCUwb5sryaMLc-ZWphY0EIW_WywLtAeHJyGl4D16VCFnSK9fd7mT_lj1l85bTlcfeRYAdFyeUavUVftHTlrbiHeZ1x_48vc-TYK-7ia88WKTwFLpO4QMNA1dfxCmZ3J1jj_mflvfTZglnO-EkHa"
+    },
+    {
+      "place_id": "ChIJLVn3KCDFwogRs6tRips8jgU",
+      "name": "SuperNatural Food & Wine",
+      "address": "305 E Polk St, Tampa, FL 33602",
+      "latitude": 27.9506772,
+      "longitude": -82.4588289,
+      "types": [
+        "bakery",
+        "establishment",
+        "food",
+        "grocery_or_supermarket",
+        "liquor_store",
+        "point_of_interest",
+        "restaurant",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJLVn3KCDFwogRs6tRips8jgU",
+      "photo_reference": "AWCwydjgVpOACj4yxgKxFZ1L1mx8FY5lnaXQNxb9Q5VsiyOiPbRf2-qx-stmDrxgIgjRj2w80KVulduodElLT2MVB9E6pkzBWC3pwgZ04rrnRIhGNxqK0nWaRGGUYfztWsN1wJYrZJobP3GBKbcHQgbErUz2E-2v-L4JkiZ0Mgr2mw1dbTZfS_Bo5YjcfvqK27Xf7uQFUD9K5dGQDv2NtgwtTUVPd0kkEum0LV_hmfC4-QzT387NhBrNPDFF8criB7FzCmR5Om4EnH5yh2RsPLMIOHTLHoFhtzoQMGo-ofmie82ZngHKIeYXnjjAxCG--oQ8S_BNlJWNK83-WN1eUnljMo5KaTAMfe68ctbxsOIzdgLy3MFUKTh9p6L2e_nBDjR7P9sWY4GeWKx74JYt9VJQHMnLV-z-zBbeVUUmLry05VfMjES8xDlm8rKV0Baz8CKl"
+    },
+    {
+      "place_id": "ChIJuSleXdjDwogRrL-rlcOWhZ0",
+      "name": "District South Kitchen & Craft",
+      "address": "3301 S Dale Mabry Hwy, Tampa, FL 33629",
+      "latitude": 27.9152761,
+      "longitude": -82.50635869999999,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJuSleXdjDwogRrL-rlcOWhZ0",
+      "photo_reference": "AWCwydgF3KdmUfiMfiE9W1PLtni6bmYfUuFCG1uf25OBYhFAxjlSOCJRIOuNj5IDkAtIf-SIZnOspBsMUVgJC4eiNminosxRe-XraV9jU4rciuRmuBACwBtRqQ4k1mbgOL6X6SSBv5Fg4mtgcECLZ-ByVd7m1YhZ3nZAS1Sf7HNurV2dAOUwS6cQdcsyLICLOoaFW3__DDN87XctuEtWMq7g-2F8Gk5JEPm5VD26-_Gaey-OvYl1JyUc1Ey8kWK28icJA0sMCwaQAGTcT8KDUYq-cYeh-R-zUZWB34owN0tADyn1-_PdyaS1VuRacwWnCYHvAtFe6O4eEkV1d-23Zn4ISsgMR4OjVffW4amsaXQi5hvvcZk6t-LW8em0GvRcSSpboaJSojfV67y4MzBHwPTUnEvrtRTM6wZBOGLUqqJqiz8kTA"
+    },
+    {
+      "place_id": "ChIJSeP9a5HdwogRf78zSeGZ2Qw",
+      "name": "Naked Farmer",
+      "address": "4306 W Gandy Blvd, Tampa, FL 33611",
+      "latitude": 27.8933288,
+      "longitude": -82.5173178,
+      "types": [
+        "establishment",
+        "food",
+        "meal_takeaway",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJSeP9a5HdwogRf78zSeGZ2Qw",
+      "photo_reference": "AWCwydh4XIRVjCn0KYyhrrom_HGR9dBG2pejBLNn1-cQ-tcwj3PLBirX_p0QFdkzDPejLmPfudvmYZUdguPlOMNO9zJ_wKVI72VEArQguV89iQOHGfFPehsVD742ZrvfvD96auzDjVLlnFk-O7y-535ZJOGiLcCsTMiwbus5Cr8dl37F1aEOC9wJ0-Grh2M5bx2SdPq7Jz-i0Tx4Z8q4-alSzwkbGMTtZIuv0iXPq-efc4JbKQ8hDRYVJWk-gjo2Jk-vVy6IwlwDAmgg-Tlejq70rylFi0EklH9zqjonkzIVaWxcmOxbSNJdIi3Nty3U5kXQsNAMORrrFTAt-N0Udu7MVAsp8mKiIeS--Pcfk1vYvin2cU9eCnmDgvtynVND6NZdFJ8BepZzwErexxeHdzos6MjK0qlywCBrnbU3wLrXsEhPNg"
+    },
+    {
+      "place_id": "ChIJL4IuYVDEwogR5LMMy05uh9g",
+      "name": "ASIATIC STREETFOOD & Noodle BAR",
+      "address": "1600 E 8th Ave D101, Tampa, FL 33605",
+      "latitude": 27.9605819,
+      "longitude": -82.4416552,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJL4IuYVDEwogR5LMMy05uh9g",
+      "photo_reference": "AWCwydi-i6XZQVfKvpEXZYS2WBryyri-Eru41NXgZM0TUqQElOjvrL3L6Fbax77wzNOxX8-sQ-qW2SIlSO3c0f2wkGedd5UxA4ycTyVNgrCnHVgeWiD8zXLN79-h_Rr6RkJpnNyotF8r0mTDeKSJJca-ZFjP5efGFw7pjvEqdDzazOePzav9q3MPAKl5vQB73iHUNJuEGMYqm0C2ResbODtx5QOk9qI6te0pHs_DNq-LioPV5BFVxIWQpKUiIXkOLazuCXtLfAaPykKD5ARhfM-5DPMJtb4fMmBxF2_JBgcCLWhQ7GlsD2ZkVoaibNPv8MM4J8riXjWLLshA0aQVLT9zKhJn1v1izt7r0jBEHZMIq7gcUpLTunI8FybyNZw0tJmm9Y1z-eJkU8tAKXUB3hTutQ4l4so-6BbXxI4jhpUCqn_I70TD6xO0AKpJCSYmOcPA"
+    },
+    {
+      "place_id": "ChIJm12E_VrEwogRO8VKKnDVWO0",
+      "name": "Church of Scientology of Tampa",
+      "address": "1300 E 8th Ave, Tampa, FL 33605",
+      "latitude": 27.9614745,
+      "longitude": -82.44459340000002,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJm12E_VrEwogRO8VKKnDVWO0",
+      "photo_reference": "AWCwydgDXJKUVd0KIJZpGCfXUya0WhAl8AqDEGkRzrW-3__UeDfZ9QcakkJKuJ4scS6NykYvXfO2A_ttxdpC3mnbr28AdQSnYSkLl9H6WCMzHtQmnrJA-IUQ2PRuJoPjRDw6Iki25UzBjlkiLEHmxnnZmJ3Z07JXMVwK5ILXNWIa-xPmoiBIWHOoFCDYIw--3NWW8SFE-55z5QyO-DUMebVTQJ5oh5H5b9x9zuJ-O2PxmPthPQm9CVYvxSxbpvfA5ruVJIoM37tIHyJVERHOlX0C-j89OGvRzdW_2RVc6suqjA-R5aG0PsHzblk2Y2VahKZm55weL5KS_DO3dx9sQXw6bqLv6q1QQ4uWctbbTCNQA-5Mb9e_2a4MRyXon_SMvf7S-BDCwwydsCpIzVnZZOl1ul2cM5ScnQz2jZF8iV43f3f7f60"
+    },
+    {
+      "place_id": "ChIJ4WZcoVHEwogRjOD_FWusTsM",
+      "name": "Carmine's Restaurant & Bar - Ybor",
+      "address": "1802 E 7th Ave #3808, Tampa, FL 33605",
+      "latitude": 27.960458,
+      "longitude": -82.439067,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ4WZcoVHEwogRjOD_FWusTsM",
+      "photo_reference": "AWCwydjs30cBbCdS7wc2Pf8cMyklVZfizb3xfAmi1MZv0-NIu8LNJljuyrxq4ATSzmr585M-PxEnFRfCPAsDz20tAyKRB2HoAPoS4iPis3XoIETcjPNNeVr-lmJH8o8wiMnaRNSy3ARAb5_7qCi68ks54IarUkXkhGnjwbVI9kpZ4_w8Ev1hfZmhlnKDhvnsP2f9mZz-BwKo-XHXvyNqICfm_Ko9ycty5ls2fKVYlKY4C0yqQLGO4TR7Cka3nQ4K7jRgabRcSIsFkyrW6HNZfp7cQqh9oeN09TCHhUs0Q4YPT7W2ju5IjCTToD9eypWdoj1aoznlaBMF89La7vmNoS2L4gThA1ehskYorIXyAOOyYC6clU7GR0wPbWCK3hNmZzjZLN-R5QTIQ_GCrrw4lU7pJ1i43JN-XH8PIn0yJcXzzW-Msffw"
+    },
+    {
+      "place_id": "ChIJJehTYonEwogRW9GaIGe0tJQ",
+      "name": "Spain Restaurant and Toma Bar",
+      "address": "513 N Tampa St, Tampa, FL 33602",
+      "latitude": 27.9486386,
+      "longitude": -82.45911699999999,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJJehTYonEwogRW9GaIGe0tJQ",
+      "photo_reference": "AWCwydhr50ad80IWHOR1B1zD4Q4p_kleOMvgvS4lTtY_vSEM_lfhS4PfwzEHnE3gZVR4aJ6bIsbz-uErHGfZxsL_lJ5kolbiyAZ3msc1qqM6vQAwjv0gtl7k6TYregbmNNTGBX0fhWkTFlWJM-_oRCVLofn2_cfxTUz6Xo6BbmevyfJe6d38i9a2bBhECVEVSyepDZn1yjwTKiOYas6Mb6U7Hb6hilrtK6Bk-vFi2bZ6ayPbYodIPtfPNvq70d0JF0wR_WtI6CsBNmzyfUeOR_gtcUGjOnSS1fnKdfhpTOBJ2PW_s-77fwtHeURl928_Fa6G0IQB9jVhYlT0LD_E-FPUearnsXuYgOjmOcze9L53hF-vzMEPSgVCSc504jmzBvCWj1kHGLXnzwClEu4151oCr9tlRXXi5GZ6mFm02Las2rWKTw"
+    },
+    {
+      "place_id": "ChIJ3-oWJ_vHwogR7gv1YpW8Ahk",
+      "name": "The Outside Kitchen",
+      "address": "4622 E Hillsborough Ave, Tampa, FL 33610",
+      "latitude": 27.9966037,
+      "longitude": -82.40650869999999,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ3-oWJ_vHwogR7gv1YpW8Ahk",
+      "photo_reference": "AWCwydgtuu7HtHeRVxil3sZaUAo4zQQ0EwwEAUggst9gacBfqJxDGpxpm-PQG45Z2gCHQyA21cbMmDi97ucoJWStpiN0iD1WpJcyTBeX9IjdSqDGAYan0s0Rj4oFKI8gwvFtgch2PVc2wxJwQVCBEMSL2RfQiHa5crAkGS9oJo8zSmVzfGgwHd2JCp8fyN_itauoi-ZpZyxUAoMlnhA3tYw6ZlGD2AIa09-ciPqTlQpt41TT9HDEMcnCH-Iq9SsdwNIx1F-Dmqyll7bjx6zTsWXMnVTT-bzG58NUoTrFpGBmoJtCSAcDFIP9-nL5S5-Szf6MZza9UnzDNilZdL8WiFL7mvViZicJcfjLLrzdlE-LAVsDdo4XYQA_6oeX2pqlHCPYAJP6uQ-AP-m8V-B7bDGaxsHhUS0K2PA131XfUa2OmsPc8g"
+    },
+    {
+      "place_id": "ChIJBz07X8fDwogRarosT1UjffU",
+      "name": "Counter Culture",
+      "address": "2909 W Bay to Bay Blvd Ste 100, Tampa, FL 33629",
+      "latitude": 27.9196439,
+      "longitude": -82.4918237,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJBz07X8fDwogRarosT1UjffU",
+      "photo_reference": "AWCwydg2oEHOzIy0RlbdCQgdscJlHS3C82KHDuesj6WpyGsrah13Nqar7VgUX1pxtSckpFfRCvAbVndajWNC4DQ3zoUeGHBR4xEu5htPTshT2nZyd4MhNqbiRURQdcRbzkylB79J5RDRlQ21jo4TOL36CF94TIHMaByiw7SmvBxA-rjqHvBV_liYLLMhSlwVQF5Hv4uZB5TxkLpNkX1dVoVWCEEige9C0Mga036qkkwc-izaIaT4-joM7OVvuKBZzbYI_WzbOjNGP_iTg_m_MU9rK8LP490C_AmuUzwAxWShOXamlXf64TJSRJMltGe7LgV6Z4c1ojAg4PPupR5axVO5Y0S87xewkO9POBjfLdHUv2VRVmgPWziW5WqZCv5LEbn3YiIjXbyFHGjxR1WSNLJM4rXtUQGBYoq6dqGSai7u7dKC5A"
+    },
+    {
+      "place_id": "ChIJ-f3JRDvDwogRjO7RfupMYgc",
+      "name": "Tampa Commissary",
+      "address": "1936 W Main St, Tampa, FL 33607",
+      "latitude": 27.9570236,
+      "longitude": -82.4804987,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ-f3JRDvDwogRjO7RfupMYgc",
+      "photo_reference": "AWCwydhMKUfZrmA7WNRru77TSQPT8Npc8JVRGGqeGKprB9JCgTa7QeUHSauaIdLnL-qyNd2seu8IAhkrzlJxcF6EusRbayImHUQm6Ga8QFtRO-aZLb17gYi8urwE15VF0y9L1QqBS48RaUNSR6ppo72zdMX32WdImtS9jyw2KuwSrBooFIrgBvnUBTKUtxpyae0xCz92YbYg5VyR2k04pohqSSnbqF5jlY6Dat0DyiQcKqdfRSwxgznrPh0ovmyOxIvPD3488lz1H62naVRIn84WTHxBTNQu2dgSzVAhCT8RrzPgKskF6684jidRK5zr7bBtAGFCCeetQwixk0t1Ie22Gpa6ZYQtdF6bsI0xOKhNpqUUjI1O4IaMHQBohVqfIU4QHnOjM1pPOqGUkJx_f0atl1SCGkCke6-KIKXW5OOiXeREqkz-7UFPUqoav-HsSz4I"
+    },
+    {
+      "place_id": "ChIJwZ5hFYTFwogRhkLk16w5l80",
+      "name": "Market at EDITION",
+      "address": "500 Channelside Dr, Tampa, FL 33602",
+      "latitude": 27.9436888,
+      "longitude": -82.4508523,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJwZ5hFYTFwogRhkLk16w5l80",
+      "photo_reference": "AWCwydj-FOnsgOXBmagO5IN4z9nMcFc5uOV0s726VvDe4BJqHj8WQ-MBo5L5mLZoSuTSPQI92vjPDokPV5QwcB2j7_cHEJ5yT8T8YdVuzS7XmnWZ1Y5irDcntsbpFXXR_H93AyO1naTqFBA3MD56VPGOuWY5yJEXSsgHlbLysje4YzFelOaF0B0zM1WOvrvNj1K0nopqjvxMKGfzou-dPTs_6uPRu1AgJAhfl2qiCX4c7gTiF5M-w0ZvjvKBM5cHdNYbnuUk3c5TNezODFTvqdwvFEQms7-j1Q3P5FTRFVocd1JdKf_urz0rhZwF17LGdECrnuvwXsU-6I3ZwcJXU3lQkHNrOFe6fEZ-zFY4yK6aQF-Wug7IVmrmKpYIm71xkKqu_n_EGPvTmazbugxO0J4P2Dw6wNKhsd42eNzNh1kKfi3RHCzgZgmszjL9GHVRTilj"
+    },
+    {
+      "place_id": "ChIJPW4HpZ_FwogRaR6mR__ODb0",
+      "name": "Food Truck Culture",
+      "address": "4914 E Broadway Ave, Tampa, FL 33605",
+      "latitude": 27.9619191,
+      "longitude": -82.4031387,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPW4HpZ_FwogRaR6mR__ODb0",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJZXQ_k_bEwogRtcdeOZB4QDM",
+      "name": "District Tavern",
+      "address": "A modern social anchor for the Channel District",
+      "latitude": 27.9480452,
+      "longitude": -82.446901,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "rank-1"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJZXQ_k_bEwogRtcdeOZB4QDM",
+      "photo_reference": "AWCwydiBiH1R5ADBVzSfgZji8N_0aa69SaxeM_QaMOXBeVNBF1vE8QM04sE0YzYv1-FbsO_CY8qp7JTzP9YXXi4n5MSUhJ9qTF3JoWM5fgdSvytGf97IhKHu9sIyMjXgPmhcVv6NBgnNdsoQ5RGGEXCpWK-Wpgn-s6J7yb11YoxUoVgZo6QX0KFI3RAgvTtLgxmYLJaduKlKJo6FQkbvfLDLOyHbGZH5OjOpgod7VcdLJBR8jru65foyDTmDMRnJx_8c_adVu2RsiR_R-Sl4Af8NSPmuFlDXyadTQ4eNBNhGq62tUFGUz3KXbMXoUUHIrq9Gf5xXA6S3zSTDxgB_4AciPzPQtWlhnPZcQf7OR0IbEMO6FInLfdjJ2GEJHUVtn5aJlXyM9AqqRJUU5u8Exo44sCu72g9enXXY3xFkc8lDme-IRg"
+    },
+    {
+      "place_id": "ChIJoWDfRyPDwogR4qmTsaY4eZs",
+      "name": "Eleven80",
+      "address": "Latin-inspired flavors bridging Chicago and Tampa",
+      "latitude": 27.9260137,
+      "longitude": -82.5061947,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "rank-2"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJoWDfRyPDwogR4qmTsaY4eZs",
+      "photo_reference": "AWCwydhRkiuIgwflT2FCSA3dx3SvFwe0oWt0xVRM7lI1afw1dUcGb42zXthQONCVnrFrkAtOSndfLxYBdJcSgVLNQflTKXOn0pDzidbxq0wM4NLjq1QLB2Xtjodaz5e8_DZq5VBqcn6-nv7k3lGSj5uJN-325Y085bJWwrENv45CgqHUGnxDS-FkU46Cur3_dI1jSgGOW9xA1SB2rA9W12qw6XeVTjCjU5M93kZAcQ9FSSGdzNgjYSAP37HQLk0K-SRigtTfKwwHdWO52G5HR70n3kZ5nkZvxX5jVrsDOMOAVHBEKd8c0pZWqa7JHoO-Gp7i6lxIrc6qupMVh3A8UQvZ9EyvuKXBaw1CJByvB5VlMNmy0uqlqLweW1hOfNryDAe4yRmALm04Md-mUB1azf_eZ_5OhKiig2mc463XIhawgoptuHv5WNF78YMOOqfUyQ"
+    },
+    {
+      "place_id": "ChIJ8bW6uvTrwogRUorwK25q9v0",
+      "name": "Fat Beet Farm Kitchen and Bakery",
+      "address": "A Michelin Green Star farm-to-table experience",
+      "latitude": 28.0310064,
+      "longitude": -82.64388740000001,
+      "types": [
+        "bakery",
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "rank-3"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ8bW6uvTrwogRUorwK25q9v0",
+      "photo_reference": "AWCwydhwA5nIpgQKoPr9xROTCRFjCB5zpgisebRtZNrNitv6LcfG0YKbe5274udCjlxQPSwFBjK5Lj4o9mAFZJ_cEbIfcOw8l7edraeFOcwkIc5QUeHZtqgptImHq3lfyKt7Dm6FLVWWnvDUXQCxlMWLhywFYoygcrRQkMk7GoylUkY6fQ6dIQ6mFE1aLrKoLcOZk4POOdbBy5lqofSSk4Hs1jVxI4p73I9nmbaLljtGhCwXh3x8DEmBp8RZ4JUHmJg5Q-j53-uXHWyZfWSMd5aCsy-CC4S4_xBj9rFGrCqYRAEBAfr49zXd3uR1TR3Lt5PVLR7X53x5lFzy5f3LGYKO32g1R8olJwbTeieVIwLLKLNcq1Ei1Lt5CmWK26CtWmbGH-ihZAI6nubfifhXRhVC3dQJ9rAHOYgW1uzJBYO4sdBVfFt7ReIkeDiwQ0yzKrWg"
+    },
+    {
+      "place_id": "ChIJQZRp15bDwogReY6sMTk-YWg",
+      "name": "Hyde Park Village",
+      "address": "A first-in-Florida retail destination with a neighborhood soul",
+      "latitude": 27.9374533,
+      "longitude": -82.47548789999999,
+      "types": [
+        "clothing_store",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "rank-5"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJQZRp15bDwogReY6sMTk-YWg",
+      "photo_reference": "AWCwydhpzmLS1h82AIKFF_k8CkMGEw81WA3xR-JshOXfjPBa5F-JenbnMADcnm2KHB3cSd694Pnnjr3KYfJmhs4RbnVQitU7Blft_lwZGVIfmCAkGP-C4sSBHCNBtG9UiDGhJVaOUnvd5I9bVFoc7EeMM8XDtdiHeuvcTgA27KsqYhzgFuLUteuq2E13J02w9lCmk6_sjS596AHf8BpB4poM5bUG_jsEsx9ReQDTxNtsEg1onmnzDv5VrijLYC8wvdEdQoCMKA9vAdT0zTmbyTL5D0DLKUGp2Knn483t2NVH_pz3JWWxaYoFI2fiHCAdDSBO9oPeQGU-U8kTkf-JbihqmL2ztRGzC9nMZM5YVrCpomfhI_06d1GdQNI5DUyO0MuK2ygCrZ-vz8CrOo8bUe7HZjEqf97D2JscCA1FQy2kzGeqpq8l"
+    },
+    {
+      "place_id": "ChIJPf7N5xvEwogRo0adU2c7_2s",
+      "name": "Independent Bar & Kitchen",
+      "address": "The Seminole Heights anchor for craft beer and community",
+      "latitude": 27.9919727,
+      "longitude": -82.45961129999999,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "rank-6"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPf7N5xvEwogRo0adU2c7_2s",
+      "photo_reference": "AWCwydgp6Cv92B_C4szlpk7rXOJ_Nmo9aeuzkJGRwbJI4K8ucCIOMsAa6iHJ6MwYVd3vxqfmMyQezxKFng22CGLKseuCjKhe9fwiQJFXifzhnCT2rcPkwUMUcAoeziM66sv6P6iQhxwAi5FTY9XRvW9buOmQQuR-66S8GpTlKXksj3mBayF25ywhEKzqbdOaOeKZU6w6BEdR15N7g89U3mqcxjOd71MIeT0tj_nASNaT2UpFeAVvYvmuz6L1lkG0zbBRPuqewKpOBSxjeCGv_ZMwBA64LP7lT_UJ4NdGf0_zQdXZobCzX6UWTMM-Oneh8G0SzoPCVmpERUYwn-RJDyn1nlO3yGZSpcrld0yqVnC3XSC7CRXSG6N5V7zDQXUZ16NGZMUbx13x-2a2V4GAU4qH3L6c9VpswLt2S-jD-WS_tnpBGw"
+    },
+    {
+      "place_id": "ChIJfdZWtju5wogRMrUTwAD3IWQ",
+      "name": "Lutz Whistle Stop Depot",
+      "address": "Antiques and local history in a historic depot",
+      "latitude": 28.1543755,
+      "longitude": -82.4617282,
+      "types": [
+        "establishment",
+        "food",
+        "home_goods_store",
+        "point_of_interest",
+        "store",
+        "rank-7"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJfdZWtju5wogRMrUTwAD3IWQ",
+      "photo_reference": "AWCwydizn_q1UIXjOaxn4SRRQ92lbjoPeIadix5OWS_gv9NaFVIyIojRZs2r35UXVp7Qoi5CknOZlI_WKywCeVOw71g5EWOzWBsUX-OTfOb7XmlQsL-LgQMQagB4gks7yB1kF01YA8paJj9KQTu0DR3QvXstAvCVnn9-3g3rRhIYR6loyP5L5qhPlnx5eDp2m17vfPNDKfHCIWNZvTIc90qVeIt3U_LpT7LnZmFZY1GoXjCUNRp3suKZh6iHYQ6IrbHUkO8rZXp4haxLJmQLQZOrYE3GLvgC9qAS5JjefdgElD3O_TRzKAOe9Sb2iqL6A74mxLPZk4kZD5S2oE9aHKg-XsG2Z-HyaCQJPr81SZgK9-ysPR00-rRXdEPF3zAPJWWNVJvKdeClVgN5mww_O45iUC2Ogocs3kdFJEfgAHzvCU5ODdS5"
+    },
+    {
+      "place_id": "ChIJ11hsiYXEwogRjDBv39F04J8",
+      "name": "Oxford Exchange",
+      "address": "A curated mix of bookstore, cafe, and design shop",
+      "latitude": 27.9449261,
+      "longitude": -82.4646338,
+      "types": [
+        "book_store",
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "rank-8"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ11hsiYXEwogRjDBv39F04J8",
+      "photo_reference": "AWCwydidZNR5NFRFPHQVyAPxksCWtznjOU1W2JFgKjmDit5sxjyfnwmavM1mHxhzGH117BHmg4c0KqBss3XCZd30dM6Ikmkdo5lOMsl2-LkCbP7Yj024zvQ4mrQjZaQHkmqC5fxkGtAjX643ZvLMHOxuOK47e-y6w3rLp_lj4xUxzRajtBNTOgKGR_evXZ6-6BoAkRobwwOmlLBYuXTBZN7nxXS9Sm3wuitNJORzrFsE6efKwoxfhB2UkNcvmDyONzkoCIwidR8SDjCW7J2yEJj0QbTjJATso1xeq6EDLEAHqQYAO45yoriMVTdx_xc-8GYUcyEVPu9RfsBQ1CX3I4na5n_0FSRyPAMxnWZvwWc4I_x9qL2Fo5Mla4Vqc4JvYPIAW62mSHdRrrDktkvsUD1gp2MGJA7yfpAnHnmUe4FrMko2Yg"
+    },
+    {
+      "place_id": "ChIJu1sZ_9bHwogRRihztB_Q0l4",
+      "name": "The Goods - Coffee & Gifts",
+      "address": "Coffee and curated gifts in North Florida Avenue",
+      "latitude": 28.0069479,
+      "longitude": -82.4596538,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store",
+        "rank-10"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJu1sZ_9bHwogRRihztB_Q0l4",
+      "photo_reference": "AWCwydiq0ixKMJUHqLKDgPHnVwB6BpsqVdO7DN296zYlKRHkyro4HClcUDHP_br8LLzBTLmswztF4Iv251v2UZefEfIXEZ1sSMXCmhEE-EjJPf3EzBPvnOe_04JaIwB_LxWhsA_JRS9x5CUZ3cFUDy-wjjb2Dk2It0IcB-o7XauEdmp51yzll87cYYmM81B-8aK8-RVj7ovCDp5igFhUDxK_KfUsu1l9SD2XX3z7ihFyDXgiD5YGR5nAMkYkE40B2RQz7DWp6TiVsNWOuqW9G9iJvVWbTha475X98NCs5QZz9TWWH5T7XzCiBu7XzZpKk2wgpLCt27-cAXRnOoqS9PLKd9lfMvqdDIYKIVBrcMJOpprKhoN32pczllqVa-0HCMKZy5TV4hBhVuh0s3hyFwjsV3GXkuVhlS1jr2ur7B2IdYjbZgNMWEXCzfNu1xHwLqPl"
+    }
+  ]
+}

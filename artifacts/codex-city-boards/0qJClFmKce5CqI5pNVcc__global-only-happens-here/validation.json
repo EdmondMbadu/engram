@@ -1,0 +1,88 @@
+{
+  "ok": false,
+  "problems": [
+    "1 source URL(s) could not be reached."
+  ],
+  "sourceCount": 10,
+  "reachability": [
+    {
+      "url": "https://mas.be/en/content/antwerp-hand-biscuits-brabo-and-holocaust",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://mas.be/en/content/antwerp-hand-biscuits-brabo-and-holocaust",
+      "error": ""
+    },
+    {
+      "url": "https://mas.be/nl/pagina/de-poesje-van-antwerpen",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://mas.be/nl/pagina/de-poesje-van-antwerpen",
+      "error": ""
+    },
+    {
+      "url": "https://inventaris.onroerenderfgoed.be/aanduidingsobjecten/7041",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://inventaris.onroerenderfgoed.be/aanduidingsobjecten/7041",
+      "error": ""
+    },
+    {
+      "url": "https://www.momu.be/en/exhibitions/the-antwerp-six",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.momu.be/en/exhibitions/the-antwerp-six",
+      "error": ""
+    },
+    {
+      "url": "https://www.antwerpen.be/info/54e31ad9cea8a726038b4862/senioren",
+      "ok": false,
+      "status": 404,
+      "finalUrl": "https://www.antwerpen.be/info/54e31ad9cea8a726038b4862/senioren",
+      "error": ""
+    },
+    {
+      "url": "https://mkantwerpen.be/en/churches/st-andrews-church/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://mkantwerpen.be/en/churches/st-andrews-church/",
+      "error": ""
+    },
+    {
+      "url": "https://mkantwerpen.be/wp-content/uploads/2024/05/MKA-BoO-carolus-B-Eng-24.pdf",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://mkantwerpen.be/wp-content/uploads/2024/05/MKA-BoO-carolus-B-Eng-24.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://museumplantinmoretus.be/en/about-us",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://museumplantinmoretus.be/en/about-us",
+      "error": ""
+    },
+    {
+      "url": "https://www.antwerpen.be/info/5c61413220bb92e7877946b9/de-hobokense-helden-nello-en-patrasche",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.antwerpen.be/info/5c61413220bb92e7877946b9/de-hobokense-helden-nello-en-patrasche",
+      "error": ""
+    },
+    {
+      "url": "https://www.dekoninck.be/en/beers/bolleke",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.dekoninck.be/en/beers/bolleke",
+      "error": ""
+    }
+  ],
+  "unreachable": [
+    {
+      "url": "https://www.antwerpen.be/info/54e31ad9cea8a726038b4862/senioren",
+      "ok": false,
+      "status": 404,
+      "finalUrl": "https://www.antwerpen.be/info/54e31ad9cea8a726038b4862/senioren",
+      "error": ""
+    }
+  ]
+}

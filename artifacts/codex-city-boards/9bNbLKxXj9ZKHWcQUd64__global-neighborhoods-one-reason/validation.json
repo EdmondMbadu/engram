@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "problems": [
+    "2 source URL(s) could not be reached."
+  ],
+  "sourceCount": 10,
+  "unreachable": [
+    "https://whc.unesco.org/en/list/755",
+    "https://visitporto.travel/en-GB/poi/5cd04b45f979e000018e5ac3"
+  ]
+}

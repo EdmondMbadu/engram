@@ -1,0 +1,95 @@
+{
+  "ok": false,
+  "problems": [
+    "2 source URL(s) could not be reached."
+  ],
+  "sourceCount": 10,
+  "reachability": [
+    {
+      "url": "https://stroi.mos.ru/park-zariad-ie",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://stroi.mos.ru/park-zariad-ie",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://stroi.mos.ru/press_releases/anastasiia-piatova-zaviershien-novyi-uchastok-parka-zielionaia-rieka-v-liefortovie",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://stroi.mos.ru/press_releases/anastasiia-piatova-zaviershien-novyi-uchastok-parka-zielionaia-rieka-v-liefortovie",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.rsl.ru/visit-to-rsl",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.rsl.ru/visit-to-rsl",
+      "error": ""
+    },
+    {
+      "url": "https://www.shpl.ru/readers/reading_rooms/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.shpl.ru/readers/reading_rooms/",
+      "error": ""
+    },
+    {
+      "url": "https://rgub.ru/library/technologies.php",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://rgub.ru/library/technologies.php",
+      "error": ""
+    },
+    {
+      "url": "https://moscu.cervantes.es/ru/biblioteka_ispanskiy/uslugi_biblioteka_ispanskiy/chitalny_zal.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://moscu.cervantes.es/ru/biblioteka_ispanskiy/uslugi_biblioteka_ispanskiy/chitalny_zal.htm",
+      "error": ""
+    },
+    {
+      "url": "https://pushkinmoslib.ru/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://pushkinmoslib.ru/",
+      "error": ""
+    },
+    {
+      "url": "https://mosmuseum.ru/association/dobrolubova/for-visitors/",
+      "ok": true,
+      "status": 403,
+      "finalUrl": "https://mosmuseum.ru/association/dobrolubova/for-visitors/",
+      "error": ""
+    },
+    {
+      "url": "https://kulturasao.ru/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://kulturasao.ru/",
+      "error": ""
+    },
+    {
+      "url": "https://libfl.ru/ru/contacts",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://libfl.ru/ru/contacts",
+      "error": ""
+    }
+  ],
+  "unreachable": [
+    {
+      "url": "https://stroi.mos.ru/park-zariad-ie",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://stroi.mos.ru/park-zariad-ie",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://stroi.mos.ru/press_releases/anastasiia-piatova-zaviershien-novyi-uchastok-parka-zielionaia-rieka-v-liefortovie",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://stroi.mos.ru/press_releases/anastasiia-piatova-zaviershien-novyi-uchastok-parka-zielionaia-rieka-v-liefortovie",
+      "error": "fetch failed"
+    }
+  ]
+}

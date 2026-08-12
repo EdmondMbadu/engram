@@ -1,0 +1,170 @@
+Reading additional input from stdin...
+2026-08-12T03:04:05.348074Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:04:05.350711Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:04:05.353554Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 019ff3ed-55df-7b43-95b9-9988a68a4863
+--------
+user
+Read /Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/9bNbLKxXj9ZKHWcQUd64__global-neighborhoods-one-reason/input.json. Research and write one source-backed LivingWiki board for Porto, Portugal. template_id: global-neighborhoods-one-reason. Exact board title: 10 Neighborhoods, One Reason Each. Every card must be a real named neighborhood, district, sublocality, or locality—not a business, attraction, road, or the city itself. Give exactly one conservative, sourced distinction. Do not invent demographic, safety, culture, or history claims. The input candidates are identity leads only. Their names, addresses, coordinates, types, and Google Maps URLs may establish identity/location, but never prove free admission, a menu item, local behavior, uniqueness, history, quality, opening hours, or popularity. Use browser research. Prefer official venue/institution/government pages, direct menus, cultural institutions, and established local publications. Avoid SEO listicles, scraped aggregators, review snippets, and invented synthesis. Every card must have a direct https source_url that supports its central claim and a precise source_title. Preserve a candidate place_id and maps_url when the selected entity matches a supplied candidate. Otherwise use null. Use supplied coordinates only for an exact identity match; otherwise null. Use fresh, concise LivingWiki voice: specific, observant, and useful. No rankings, best/must-visit/hidden-gem language, generic praise, stereotypes, or unsupported superlatives. Return exactly 10 distinct cards only when all ten are defensible. Otherwise set complete=false and return only the defensible cards with clear warnings. Never fill a slot to reach ten. The board icon must be one of: restaurant, style, money_off, weekend, location_city, fingerprint, schedule, dashboard_customize.
+codex
+{"complete":false,"city":"Porto","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"I’ll inspect the supplied identity leads, then verify each neighborhood’s single distinction against direct, credible web sources.","icon":"location_city","cards":[],"warnings":[]}
+exec
+/bin/zsh -lc "sed -n '1,240p' artifacts/codex-city-boards/9bNbLKxXj9ZKHWcQUd64__global-neighborhoods-one-reason/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 0ms:
+{
+  "city": {
+    "id": "9bNbLKxXj9ZKHWcQUd64",
+    "name": "Porto",
+    "region": "Portugal",
+    "country": "PT"
+  },
+  "template": {
+    "id": "global-neighborhoods-one-reason",
+    "version": "1.0",
+    "titlePattern": "{count} Neighborhoods, One Reason Each",
+    "searchQuery": "neighborhoods districts local areas",
+    "editorialBrief": "Exactly one defensible reason per neighborhood. Use the neighborhood’s real name and a concrete distinction that helps a reader understand the city. Do not flatten communities into stereotypes, safety claims, demographic shorthand, or “vibrant culture.”",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "9bNbLKxXj9ZKHWcQUd64__global-neighborhoods-one-reason__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJQQ2CwuFkJA0RUdkM5HFBMmk",
+      "name": "Palácio da Bolsa",
+      "address": "Palácio da Bolsa, R. de Ferreira Borges 11, 4050-253 Porto",
+      "latitude": 41.1413772,
+      "longitude": -8.615672499999999,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJQQ2CwuFkJA0RUdkM5HFBMmk",
+      "photo_reference": "AWCwydiKvb_LPjV34MLOw-OlSQSGZT9XpCugNtelEeyyZvZVLWNC6nAqYkQHJKC9FbpG8H3QRP6IXvOg6EgxzuITJ0lvrKpkalkjCs6Ck6ugRgm1rIP9Vr6rdDKot4KgSJFXSDvcKHWxnZWcWJoQyg-9c0v5t3ySFIILCbLMqKMdr8_zmVq2eErywNNGEaf7jnEYNgy10-SdPXap3B_q3mh6FJRwVOsZ1ilb8SDWtwd6dyn3kJgMhjSd_e5kNn-cNaoZR9VbcXp81-BdhEBASxr6wec4tUr4rx5jpg_q5gm8hvuRzol6I78DdZFHsYdpDu4hgqiuOBHmLOH3BnWvJa1pc6LIESfHbOwUdugRnSwr78wPKm_Fw8hBL3Y72PXZUKOIELgcMMPEWSGq2a_PpKYlGB7BVDqSD8btODCerlYY4GDUL-d9LMewFDE9LidP_A"
+    },
+    {
+      "place_id": "ChIJ-7I2FvZlJA0RuVF7bMy19yA",
+      "name": "Átrio da Estação de São Bento",
+      "address": "Praça de Almeida Garrett, 4000-069 Porto",
+      "latitude": 41.1455957,
+      "longitude": -8.6105377,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ-7I2FvZlJA0RuVF7bMy19yA",
+      "photo_reference": "AWCwydj9QTIGIVdP6XgO4_t7mbVfn9ppRz7ld2MqEftvb_i9XXaM-gLpRGVPK5r7u8d1VkEcJJ_U6b0f8TQcTbcl4tGDBqkfUmcaXJyjeP5EwZulbzUhR_4k7ELzepY8-iKKjnDfJHQM4hTkkXG6vsZMI1FygOA7dn7PDqQKC-tCttRFmhzt8p8pqWyAdajvxw5K11LdceV_Iyvv_9jaHVrpGT2hmy25JoLuLXdyuEy8_40W0tAYeJYrWjAwtjRTuMJ2MeS-P8U3-_uIP4p8GF4XcM17s0p91axCldhDjRfahE1KdA5sE_3FIDjiE1zZMkEhccfsC_sPAotIAE6L_8Ik-RMRLdH_igxsN8Cou8IFraukveJWzw8e_5L0Ox5085oYDPUX0Fl9oAbOZeyGxDStQe2LCFIDZaCh6XtuWM5hRjPxGw"
+    },
+    {
+      "place_id": "ChIJWalMQOBkJA0Rjq54F9q8pXo",
+      "name": "Episcopal Palace of Porto",
+      "address": "Terreiro da Sé, 4050-573 Porto",
+      "latitude": 41.141979,
+      "longitude": -8.6117156,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJWalMQOBkJA0Rjq54F9q8pXo",
+      "photo_reference": "AWCwydg8PZdogl6zzb5fTObLlkdHj2iafjtfAHcEfnXuYjs65zNDWPdLJCMJgEyxqYIupsMCnrEVlbY8ysnIimcGNKhvRa_hAcBX_uBUKFyPWiIe2MI2VsLbY-JzQfzm4i1jDEtlq4ZAQrrD_zFPhBJfvO5NMgi5wP_drlh7nY7XkBqAJ5u2KY5J4QJeGWEjof4emgUPIEVyTkhYQyPaloJr8uJVqo11OXYB6ynpv10Gvzuxw7C64aXBj78AgQ8apuEH1sUWIK9ZZOtZBk4cBmyC-x7NeUocDijaKo5RdbQO7Mydgh56-8jCMoHnL-9eRbWH8PLqsHkjT3XaIZ3wA2pZJLxhQak0hVcXiIt7pocgkDXcC3mlBDBBMQl6-Xj4DAl_Gj4RCO6pi5PdSZIwe-kopBzopQajnZ3D0j2AR0ca0_Dh"
+    },
+    {
+      "place_id": "ChIJc1bpCOJkJA0RnA_VNGxS0Ps",
+      "name": "Antiga Cadeia da Relação do Porto",
+      "address": "Campo dos Mártires da Pátria, 4050-139 Porto",
+      "latitude": 41.1446986,
+      "longitude": -8.615962999999999,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJc1bpCOJkJA0RnA_VNGxS0Ps",
+      "photo_reference": "AWCwydgvQ4a5WPfAvo4Fo-bLiOpbVKC6glHVjbqy5sV24OjOXAYFFNWuY5yEPPg3BJ98wl3HwL5rGgZ-F42niHotMgdiAGoan66xNKtL654excIoVRR-cpDO9VyWsaHjLyS56mjKdGOISbgYpDh4ei0ujgkBui94Q8we6Sdi-msR7Wdkdbfvf1qjAZBccQyYJJNwHRSEWnihFi19zwI0VV043IStuo5gHW8XQ5LEIfJ_fxUTCEbdH4Hi1TtEhh4mv9Yto_yO1K4LymfsRfWXnGHiEhs-51Oq6s3AYQOiBOOIeED9ck8fKnkfVnZAHTni9plhnYlvE1JlLkXoaczhoN7gQsr_NZV4UxdjrJUGL0Li8xq7qXuw5S6agBXJc7YVA8bAcGf9EnKQRPOpnwogH-1Ew_sP91N76zUGvRkGoBEBNejJYOrfFk1FYWQOqx8fqsO3"
+    },
+    {
+      "place_id": "ChIJC8oaQixlJA0R8K_A-1LolE8",
+      "name": "9 Torra de Rua",
+      "address": "Escadas do Barredo 12, 4050-092 Porto",
+      "latitude": 41.1409217,
+      "longitude": -8.6124119,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJC8oaQixlJA0R8K_A-1LolE8",
+      "photo_reference": "AWCwydg_RAOxAugQaEjSQ0BOOH7vTbQOlRIMaItIAQvIum6cX9atObDPC-BsVQ_nF-cAnGtzeaL0KHcpXF400lhx8vKqJZ_ewLjqKjs8-Pk2b4oFuu-kQO7YoCg0ILrN8TlgCHJZutdd-b50cfqF5dMq7gcloiUE1KM3xuIgHQEVnKDB6gObcexOGyyVCAEJF6t-OgVdlZ9y7IZloxCX1AyJ0uNgLEMe3n_MlS1K3kHeCRNaNYxrPUKl9RejJL2zbzOFQmLNhD41oZwqWbNcLEaf6Ibznm26L_ZxmKdihtGP-Ce9WYKcDcew1nEIs79iastf88_nihPsvUt4wBCifQ8jrpG9zVdU-jBpW6JUrl81UEmj6fZFmg64K0ijJtfhVFmjRT0fJvCZelhj9dJ5bMxpCLdPbpH39M4j4mOMoHOBc4AsEQUTLPd5QoyfG3RT0A"
+    },
+    {
+      "place_id": "ChIJPbkZPgBlJA0RGdBeWTSlFSo",
+      "name": "Centro Histórico do Porto",
+      "address": "Praça da Batalha, 4000-101 Porto",
+      "latitude": 41.1454898,
+      "longitude": -8.6074304,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPbkZPgBlJA0RGdBeWTSlFSo",
+      "photo_reference": "AWCwydjhCfFaTS-Plbrp1rhla4zul15_HOaKUbRq2IbOtxrEhUB_pP9f-Ld9OiBXgyI6OOkvGnDtqbmtxX-3WBfCSeaiNFn-E4eaujI7pI6ckF_TVjiXUyWQgXxbbQwTzjNPpvayTna5r9LPqO0OnNQaaMk-bhHrpLzmv_bU4kWfqwzbRiKM9CW1YQywaLRX3hTlptYP44rfkiQlBTqtTOY1CbD_7maVOpkafj61GDUviFl0v0L-J8f8QKiyP7xCrcD4v8f9QsKDqPNNT9nmb3G8n7JmmI1IxnLeXOil0TIXlJoBT-pu8xEm4tyYYYsvYwCk3vZM9ahMOUqtTo-GQMjdv7U2mNz38gEB-fBiQPi0XQuxZWBo5Noh5Lb4RfYiBrMWtz3oNrNkTtxwDTX90vm9B8Ti9StBUbFh3thjbDRsfbzkwgNu8a4dgnw7vrkvTzKE"
+    },
+    {
+      "place_id": "ChIJadR08PpkJA0RPnb8Lg60iNo",
+      "name": "Porto District",
+      "address": "Porto District",
+      "latitude": 41.2150268,
+      "longitude": -8.3964938,
+      "types": [
+        "administrative_area_level_1",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJadR08PpkJA0RPnb8Lg60iNo",
+      "photo_reference": "AWCwydhU-pFYwq3x0HlQ91GwJGE5VlWniwQt6WyCvrhwDngwWYQ2cOnA8VoCcAV0w-uTXEykvP8axurp81pLXeDx9EbeEKDGtk-uzpxCGmB_hxTYXW5WxbGXe0hNAWJWZ7keMBYp12dXzKhkj2gfSLGYbNeiDhuf7sPClLjS5Q_QGqe9GnPx8uXnxAjWI_sWkoW-bOzc9zX7Hdk6vgetlGIi-OVPYDoyKpa4MSxkkEZKa0fYpC8rXf8AmCTvpDNY-J78XxjZSSotsd_mtxKID4cZWeNTpRrQUikNbyl8RPjqovw_3gs4ZyxXJ0NUNHWW4okKlSrYikiLMVJ4ZrpsfKqXsNY4C4ewXmJxmWaf0dFW0-7hQ3zVyKbotnTpBzCa6r4IU2xwIiJfWs-FlZMKjKBuvt7Z59vdv-SRuAB_AR9v0Tk"
+    },
+    {
+      "place_id": "ChIJicetJOdkJA0R8GJ9Dy_dcgo",
+      "name": "Ribeira",
+      "address": "Ribeira, Porto",
+      "latitude": 41.1432682,
+      "longitude": -8.610313500000002,
+      "types": [
+        "neighborhood",
+        "political"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJicetJOdkJA0R8GJ9Dy_dcgo",
+      "photo_reference": "AWCwydhp_nAwlqoJufCuFvgcaPR-qXbHCflxMlXKtHdQeegBJdrhwsrtz8vmqIgUmidL5hy05M6z8XbRxL6fCQ9f82WwjgokgEzfiH7vb6eXEt5_GkKX2k2DqbczxUkv0U8XvJ4vRw8KiwBGd-yE6hW7sKruEUiNAcTDELpHLZUfnGZy5HY-fz6hVuQRpDm5QNnkbVSkNxSfZtM052DE2LCckSp32oSx0yEL7KjX0WXP4hdkd0rufeGYkIFe7T8VhKd1k8VsEBtrBBpTcq_gzUic5-vniuV_ffNz6l6bAhyI3_Ik5iwoDUY2AD2ekKnbDhZi_TigAzSP6MgvNFa-OCrEBxFRZUhKUEaI0ByJb_M3e1GHuYah9ZY5JAUEQUnDZhglzcs17yetd5E0mro04WVXP6u4CPpCmJStHFM7wDkDQ4O7_A"
+    }
+  ]
+}
+
+codex
+{"complete":false,"city":"Porto","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"The supplied list contains only one exact neighborhood candidate (Ribeira); the other viable places will need independently verified locality identities, with coordinates and Maps fields left null.","icon":"location_city","cards":[],"warnings":[]}
+web search: 
+web search: site:visitporto.travel Porto neighborhoods Ribeira Foz Cedofeita Bonfim ...
+web search: 
+web search: site:visitporto.travel/en-GB/poi Foz do Douro Porto beaches ...
+web search: 
+web search: site:visitporto.travel/en-GB "Campanhã District" ...
+web search: 
+web search: site:visitporto.travel/en-GB/poi Cedofeita Miguel Bombarda galleries ...
+web search: 
+web search: Cedofeita Rua Miguel Bombarda official Porto municipality ...
+codex
+{"complete":true,"city":"Porto","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"Ten Porto localities, each anchored by one concrete feature—from Atlantic beaches to a Nasoni-designed landscape complex.","icon":"location_city","cards":[{"entity_name":"Ribeira","title":"Ribeira","subtitle":"For a riverfront foothold in Porto’s UNESCO-listed historic center.","notes":"UNESCO describes the protected center as an urban landscape built along the hills overlooking the Douro’s mouth.","short_summary":"Read Porto’s layered river-facing cityscape from the Douro’s edge.","source_url":"https://whc.unesco.org/en/list/755","source_title":"Historic Centre of Oporto, Luiz I Bridge and Monastery of Serra do Pilar — UNESCO World Heritage Centre","latitude":41.1432682,"longitude":-8.610313500000002,"place_id":"ChIJicetJOdkJA0R8GJ9Dy_dcgo","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJicetJOdkJA0R8GJ9Dy_dcgo"},{"entity_name":"Miragaia","title":"Miragaia","subtitle":"For one of Porto’s oldest churches.","notes":"Visit Porto identifies the Church of São Pedro de Miragaia as one of the city’s most ancient churches.","short_summary":"The neighborhood’s namesake church holds layers of woodcarving from several artistic periods.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b48f979e000016c55e6","source_title":"Church of S. Pedro de Miragaia — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Boavista","title":"Boavista","subtitle":"For Casa da Música’s purpose-built concert architecture.","notes":"Visit Porto places Rem Koolhaas’s 2005 concert hall in the Boavista district.","short_summary":"A contemporary concert hall gives this district a clear architectural and musical marker.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b45f979e000018e5ac3","source_title":"Casa da Música — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Foz do Douro","title":"Foz do Douro","subtitle":"For a chain of Atlantic beaches within Porto.","notes":"The official tourism page assigns ten named city beaches to the Foz district.","short_summary":"Choose this locality when the city walk should meet the Atlantic shoreline.","source_url":"https://visitporto.travel/en-GB/poi/66b22bc043ba490001b5db99","source_title":"Porto Beaches — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Bonfim","title":"Bonfim","subtitle":"For a compact circuit of civic cultural institutions.","notes":"Visit Porto’s district page groups the Fine Arts Faculty, Municipal Library and Military Museum among Bonfim’s points of interest.","short_summary":"Three different public-facing institutions make a practical cultural circuit here.","source_url":"https://visitporto.travel/en-GB/districts/bonfim","source_title":"Bonfim District — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Campanhã","title":"Campanhã","subtitle":"For Porto’s intermodal transport terminal.","notes":"The official Campanhã district page includes Terminal Intermodal among the locality’s identified points of interest.","short_summary":"A useful eastern anchor when a Porto itinerary connects multiple transport modes.","source_url":"https://visitporto.travel/en-GB/districts/campanha","source_title":"Campanhã District — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Lordelo do Ouro","title":"Lordelo do Ouro","subtitle":"For a high viewpoint spanning the Douro estuary to the sea.","notes":"Visit Porto locates the Santa Catarina and Senhora dos Anjos viewpoint at one of the parish’s highest points.","short_summary":"The estuary’s relationship with the Atlantic becomes legible from above.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b4ef979e00001fe47ed","source_title":"View point – Chapel of Santa Catarina and Senhora dos Anjos — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Paranhos","title":"Paranhos","subtitle":"For an eight-hectare public park with environmental education on site.","notes":"Visit Porto says Covelo Park occupies nearly eight hectares and houses a Centre for Environmental Education.","short_summary":"Covelo Park combines everyday green space with an environmental-learning facility.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b48f979e000016c55f6","source_title":"Covelo Park — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Ramalde","title":"Ramalde","subtitle":"For Nicolau Nasoni’s Quinta da Prelada landscape complex.","notes":"Visit Porto places Casa da Prelada in Ramalde and identifies the estate as a landscape complex designed by Nasoni.","short_summary":"House and garden can be read together as one designed estate.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b55f979e000013060a3","source_title":"Casa da Prelada — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Miguel Bombarda","title":"Miguel Bombarda","subtitle":"For Porto’s formally organized arts quarter.","notes":"The municipality-led Bombarda project describes the neighborhood as the Arts Quarter and the city’s creative hub.","short_summary":"This is a named neighborhood where the art-gallery identity is institutionally documented.","source_url":"https://qabombarda.portodigital.pt/en/about-us","source_title":"About Us — Bombarda","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":[]}
+tokens used
+47,010
+{"complete":true,"city":"Porto","template_id":"global-neighborhoods-one-reason","title":"10 Neighborhoods, One Reason Each","description":"Ten Porto localities, each anchored by one concrete feature—from Atlantic beaches to a Nasoni-designed landscape complex.","icon":"location_city","cards":[{"entity_name":"Ribeira","title":"Ribeira","subtitle":"For a riverfront foothold in Porto’s UNESCO-listed historic center.","notes":"UNESCO describes the protected center as an urban landscape built along the hills overlooking the Douro’s mouth.","short_summary":"Read Porto’s layered river-facing cityscape from the Douro’s edge.","source_url":"https://whc.unesco.org/en/list/755","source_title":"Historic Centre of Oporto, Luiz I Bridge and Monastery of Serra do Pilar — UNESCO World Heritage Centre","latitude":41.1432682,"longitude":-8.610313500000002,"place_id":"ChIJicetJOdkJA0R8GJ9Dy_dcgo","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJicetJOdkJA0R8GJ9Dy_dcgo"},{"entity_name":"Miragaia","title":"Miragaia","subtitle":"For one of Porto’s oldest churches.","notes":"Visit Porto identifies the Church of São Pedro de Miragaia as one of the city’s most ancient churches.","short_summary":"The neighborhood’s namesake church holds layers of woodcarving from several artistic periods.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b48f979e000016c55e6","source_title":"Church of S. Pedro de Miragaia — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Boavista","title":"Boavista","subtitle":"For Casa da Música’s purpose-built concert architecture.","notes":"Visit Porto places Rem Koolhaas’s 2005 concert hall in the Boavista district.","short_summary":"A contemporary concert hall gives this district a clear architectural and musical marker.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b45f979e000018e5ac3","source_title":"Casa da Música — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Foz do Douro","title":"Foz do Douro","subtitle":"For a chain of Atlantic beaches within Porto.","notes":"The official tourism page assigns ten named city beaches to the Foz district.","short_summary":"Choose this locality when the city walk should meet the Atlantic shoreline.","source_url":"https://visitporto.travel/en-GB/poi/66b22bc043ba490001b5db99","source_title":"Porto Beaches — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Bonfim","title":"Bonfim","subtitle":"For a compact circuit of civic cultural institutions.","notes":"Visit Porto’s district page groups the Fine Arts Faculty, Municipal Library and Military Museum among Bonfim’s points of interest.","short_summary":"Three different public-facing institutions make a practical cultural circuit here.","source_url":"https://visitporto.travel/en-GB/districts/bonfim","source_title":"Bonfim District — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Campanhã","title":"Campanhã","subtitle":"For Porto’s intermodal transport terminal.","notes":"The official Campanhã district page includes Terminal Intermodal among the locality’s identified points of interest.","short_summary":"A useful eastern anchor when a Porto itinerary connects multiple transport modes.","source_url":"https://visitporto.travel/en-GB/districts/campanha","source_title":"Campanhã District — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Lordelo do Ouro","title":"Lordelo do Ouro","subtitle":"For a high viewpoint spanning the Douro estuary to the sea.","notes":"Visit Porto locates the Santa Catarina and Senhora dos Anjos viewpoint at one of the parish’s highest points.","short_summary":"The estuary’s relationship with the Atlantic becomes legible from above.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b4ef979e00001fe47ed","source_title":"View point – Chapel of Santa Catarina and Senhora dos Anjos — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Paranhos","title":"Paranhos","subtitle":"For an eight-hectare public park with environmental education on site.","notes":"Visit Porto says Covelo Park occupies nearly eight hectares and houses a Centre for Environmental Education.","short_summary":"Covelo Park combines everyday green space with an environmental-learning facility.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b48f979e000016c55f6","source_title":"Covelo Park — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Ramalde","title":"Ramalde","subtitle":"For Nicolau Nasoni’s Quinta da Prelada landscape complex.","notes":"Visit Porto places Casa da Prelada in Ramalde and identifies the estate as a landscape complex designed by Nasoni.","short_summary":"House and garden can be read together as one designed estate.","source_url":"https://visitporto.travel/en-GB/poi/5cd04b55f979e000013060a3","source_title":"Casa da Prelada — Visit Porto","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Miguel Bombarda","title":"Miguel Bombarda","subtitle":"For Porto’s formally organized arts quarter.","notes":"The municipality-led Bombarda project describes the neighborhood as the Arts Quarter and the city’s creative hub.","short_summary":"This is a named neighborhood where the art-gallery identity is institutionally documented.","source_url":"https://qabombarda.portodigital.pt/en/about-us","source_title":"About Us — Bombarda","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":[]}

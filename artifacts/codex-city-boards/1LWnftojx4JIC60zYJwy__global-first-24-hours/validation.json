@@ -1,0 +1,151 @@
+{
+  "ok": false,
+  "problems": [
+    "10 source URL(s) could not be reached."
+  ],
+  "sourceCount": 10,
+  "reachability": [
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201705/t20170516_1595189_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201705/t20170516_1595189_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171210_1595308.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171210_1595308.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171219_1595434_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171219_1595434_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/as/hac/ch/201704/t20170427_1595053_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/as/hac/ch/201704/t20170427_1595053_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/tt/din/201712/t20171213_1594974.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/tt/din/201712/t20171213_1594974.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201707/t20170703_1594933.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201707/t20170703_1594933.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594684_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594684_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594605.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594605.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594551_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594551_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/news/sn/202602/t20260204_3610741.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/news/sn/202602/t20260204_3610741.html",
+      "error": "fetch failed"
+    }
+  ],
+  "unreachable": [
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201705/t20170516_1595189_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201705/t20170516_1595189_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171210_1595308.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171210_1595308.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171219_1595434_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/aic/xa_2120/201712/t20171219_1595434_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/as/hac/ch/201704/t20170427_1595053_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/as/hac/ch/201704/t20170427_1595053_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/tt/din/201712/t20171213_1594974.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/tt/din/201712/t20171213_1594974.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201707/t20170703_1594933.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201707/t20170703_1594933.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594684_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594684_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594605.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594605.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594551_wap.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/tourism/ms/201705/t20170516_1594551_wap.html",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.shaanxi.gov.cn/news/sn/202602/t20260204_3610741.html",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://en.shaanxi.gov.cn/news/sn/202602/t20260204_3610741.html",
+      "error": "fetch failed"
+    }
+  ]
+}

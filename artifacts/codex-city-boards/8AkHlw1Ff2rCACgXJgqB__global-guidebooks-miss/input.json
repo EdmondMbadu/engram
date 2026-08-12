@@ -1,0 +1,63 @@
+{
+  "city": {
+    "id": "8AkHlw1Ff2rCACgXJgqB",
+    "name": "Moscow",
+    "region": "Russia",
+    "country": "RU"
+  },
+  "template": {
+    "id": "global-guidebooks-miss",
+    "version": "1.0",
+    "titlePattern": "What the Guidebooks Miss: {count} Places Locals Deal Each Other",
+    "searchQuery": "locally loved independent places community favorites",
+    "editorialBrief": "Expectation-subversion, not obscurity theater. Explain the concrete local use, ritual, or reason someone would pass each place to a friend. Never say hidden gem, off the beaten path, locals-only, must-visit, or tourist-free. Do not invent local habits.",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "8AkHlw1Ff2rCACgXJgqB__global-guidebooks-miss__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJOW1DflpKtUYRF8gLIoMaAiM",
+      "name": "Armoury Chamber",
+      "address": "Moscow, 103132",
+      "latitude": 55.7495732,
+      "longitude": 37.6134111,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJOW1DflpKtUYRF8gLIoMaAiM",
+      "photo_reference": "AWCwydg6OdCRxct3vbHxf4LLPcadap17uCi4uiLMcspsndMS_Za4h4yKf--ywPxRopOZDZKYCvKymu-tiDywBUZG05-7ay07Kaj51qS5_XwsavCvhcy-LD2NAPS_3f3iITQUNp1cs_KQVleG8r34SJPmrv-Emq52-KCoNy8RQc2hIXueXhUiJuasjjYB8ttdW94km3ybi7_qaM1dPYjjbW80vVyLEALcOIsU9b06ykx3WsiVUII-clyigZtjbV13UwXGCNCjYFgPQKbMcC-wpm_XxrMGNAlOED89MSSEfhVqQstKqvSCQ4ex1bCY-7oevlVbuu2QOkq-pjwQm3QhXgExRVazungPrUmEmQHTRobVNv8ExMeyxu-ENTkQbF-rju1Mck8v9MKokCWJxoS0ShTW1jZIJ-7E1AtmjmVxcQUYUsZ8KMH3"
+    },
+    {
+      "place_id": "ChIJv4uvex21SkERUMUfJBrEGP4",
+      "name": "Market",
+      "address": "Moscow, 109548",
+      "latitude": 55.7034934,
+      "longitude": 37.7263356,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJv4uvex21SkERUMUfJBrEGP4",
+      "photo_reference": "AWCwydgiWnmRe4UZ6MKAkPlMBpKvFJ2PFDYmGW23hnm4zonZzHS_kzapSyMJ8RJIhUXJuoUkLsOnL4CIMVLGqkBJxfk_aXH9W5u-0QvoCFxBHS7tqXrEz4TCZ6lhTdQp9QvsA7eEXqUUpcfqpbisgIM5kExZXUD5lS4iYr2yV-e7xUQUun_N7fwA68f6PjKC9f8qATiSHVk6EzoP8J8hxUTcKebfNzSj6uWmu-cku9UAURMfx_YEsoBZaUlgKhPwoR3Rblp5PJkuh6piwKx4Gso4Ro3GLA_7BUuJIDkn3WPQkTMoLSDvvEAHWdzKmMR63rVqomqN3-d7uzXFC8vod2ZzwLIRFVftqAMwGFheHSHxTsJZ-03B4owtq66tcUEHI9W_yEhEiW46E5mF_hJXViHwhrPndaInTSYxFaQfcwOvVDn2_DhA"
+    },
+    {
+      "place_id": "ChIJc-UVs1BKtUYRaC6bPVq_hqg",
+      "name": "The Moscow Kremlin",
+      "address": "Moscow, 103132",
+      "latitude": 55.7509544,
+      "longitude": 37.6175755,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJc-UVs1BKtUYRaC6bPVq_hqg",
+      "photo_reference": "AWCwydiPbOcgB_a0UZJVT4HbNnmFQIrzT-Ab6fzKHvOP2377Emveb8hS9JkY52rPUGXL3aAX-aPef1ns68Ax1ufKKpJcv3OZvgGxC6TCwymSRl92lZTz9_MmJ01sW8ZP_21tONvI2NvXxUSlWfPk9E86ME2sL4YT2xoR_1nlJcLklOrA71QLeT0fzVjv5E1nkCXuyu2zbxujEFgqmcnUNZfwcuiOmCZQHCybCbejUDBudg6A87b0FVhKZKGnHAq0CyBS_IzxLYKedbzthIRtnP2gkwnQXhXB7VeVUfnibyOaam6QFIbLNdITjWLTWJ7eKekJbottajRJmSteZUrO2r6p3BYL_F3GbPWiIDAIvgyQKFr2s1ZBMQr3xdWFN0QP5Rjgyu-GKmKWeXbkVsnuAJnh5q8IOsTrsYgg2otJ4OcnDA2H7cpo"
+    }
+  ]
+}

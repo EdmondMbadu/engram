@@ -1,0 +1,95 @@
+{
+  "ok": false,
+  "problems": [
+    "2 source URL(s) could not be reached."
+  ],
+  "sourceCount": 10,
+  "reachability": [
+    {
+      "url": "https://www.china.org.cn/2025-07/30/content_118002682_3.shtml",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.china.org.cn/2025-07/30/content_118002682_3.shtml",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://media.wtcf.org.cn/M00/03/3E/rBFBuWUKkG6AabyNAhy3YgSKgIs847.pdf",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://media.wtcf.org.cn/M00/03/3E/rBFBuWUKkG6AabyNAhy3YgSKgIs847.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://beilin.xiancity.cn/system/2026/02/02/031238016.shtml",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://beilin.xiancity.cn/system/2026/02/02/031238016.shtml",
+      "error": ""
+    },
+    {
+      "url": "https://www.urbanmuseum.cn/nd.jsp?fromColId=107&id=70",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.urbanmuseum.cn/nd.jsp?fromColId=107&id=70",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://en.xa.gov.cn/ztzl/NinthChinaQinOperaArtFestival/1691691586951958529.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://en.xa.gov.cn/ztzl/NinthChinaQinOperaArtFestival/1691691586951958529.html",
+      "error": ""
+    },
+    {
+      "url": "https://en.xa.gov.cn/MediaCenter/News/2075158116966174721.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://en.xa.gov.cn/MediaCenter/News/2075158116966174721.html",
+      "error": ""
+    },
+    {
+      "url": "https://whhlyt.shaanxi.gov.cn/zfxxgk/fdzdgknr/ysjs/202503/P020250313646401089590.pdf",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://whhlyt.shaanxi.gov.cn/zfxxgk/fdzdgknr/ysjs/202503/P020250313646401089590.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.nationalreading.gov.cn/ydkj/dmsg/202501/t20250120_882620.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.nationalreading.gov.cn/ydkj/dmsg/202501/t20250120_882620.html",
+      "error": ""
+    },
+    {
+      "url": "https://en.xa.gov.cn/MediaCenter/News/1691691417036509185.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://en.xa.gov.cn/MediaCenter/News/1691691417036509185.html",
+      "error": ""
+    },
+    {
+      "url": "https://qjxq.xa.gov.cn/zjqj/gyqj/tsqj/5df21c62fd8508098d284f14.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://qjxq.xa.gov.cn/zjqj/gyqj/tsqj/5df21c62fd8508098d284f14.html",
+      "error": ""
+    }
+  ],
+  "unreachable": [
+    {
+      "url": "https://www.china.org.cn/2025-07/30/content_118002682_3.shtml",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.china.org.cn/2025-07/30/content_118002682_3.shtml",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.urbanmuseum.cn/nd.jsp?fromColId=107&id=70",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.urbanmuseum.cn/nd.jsp?fromColId=107&id=70",
+      "error": "fetch failed"
+    }
+  ]
+}

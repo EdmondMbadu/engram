@@ -16,7 +16,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["entity_name", "title", "subtitle", "notes", "short_summary", "source_url", "source_title", "latitude", "longitude"],
+        "required": ["entity_name", "title", "subtitle", "notes", "short_summary", "source_url", "source_title", "latitude", "longitude", "place_id", "maps_url"],
         "properties": {
           "entity_name": { "type": "string" },
           "title": { "type": "string" },
@@ -26,7 +26,9 @@
           "source_url": { "type": "string" },
           "source_title": { "type": "string" },
           "latitude": { "type": ["number", "null"] },
-          "longitude": { "type": ["number", "null"] }
+          "longitude": { "type": ["number", "null"] },
+          "place_id": { "type": ["string", "null"] },
+          "maps_url": { "type": ["string", "null"] }
         }
       }
     },

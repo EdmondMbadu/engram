@@ -1,0 +1,216 @@
+Reading additional input from stdin...
+2026-08-12T03:47:33.160030Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:47:33.161733Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:47:33.163561Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 019ff415-20a2-79c1-9fb8-dcf8f947a08b
+--------
+user
+Read /Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/0qJClFmKce5CqI5pNVcc__global-only-happens-here/input.json. Research and write one source-backed LivingWiki board for Antwerp, Belgium. template_id: global-only-happens-here. Exact board title: Only Happens Here: 10 Things That Make No Sense Anywhere Else. Every card must have a source supporting a genuinely city-specific institution, object, ritual, landscape, or local form. Explain why it makes sense in this city. Do not turn an ordinary attraction into an unsupported uniqueness claim. The input candidates are identity leads only. Their names, addresses, coordinates, types, and Google Maps URLs may establish identity/location, but never prove free admission, a menu item, local behavior, uniqueness, history, quality, opening hours, or popularity. Use browser research. Prefer official venue/institution/government pages, direct menus, cultural institutions, and established local publications. Avoid SEO listicles, scraped aggregators, review snippets, and invented synthesis. Every card must have a direct https source_url that supports its central claim and a precise source_title. Preserve a candidate place_id and maps_url when the selected entity matches a supplied candidate. Otherwise use null. Use supplied coordinates only for an exact identity match; otherwise null. Use fresh, concise LivingWiki voice: specific, observant, and useful. No rankings, best/must-visit/hidden-gem language, generic praise, stereotypes, or unsupported superlatives. Return exactly 10 distinct cards only when all ten are defensible. Otherwise set complete=false and return only the defensible cards with clear warnings. Never fill a slot to reach ten. The board icon must be one of: restaurant, style, money_off, weekend, location_city, fingerprint, schedule, dashboard_customize.
+codex
+{ "complete": false, "city": "Antwerp", "template_id": "global-only-happens-here", "title": "Only Happens Here: 10 Things That Make No Sense Anywhere Else", "description": "", "icon": "fingerprint", "cards": [], "warnings": ["I’m reading the candidate file first, then I’ll verify each proposed card against direct, authoritative web sources."] }
+exec
+/bin/zsh -lc "sed -n '1,240p' artifacts/codex-city-boards/0qJClFmKce5CqI5pNVcc__global-only-happens-here/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 0ms:
+{
+  "city": {
+    "id": "0qJClFmKce5CqI5pNVcc",
+    "name": "Antwerp",
+    "region": "Belgium",
+    "country": "BE"
+  },
+  "template": {
+    "id": "global-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Things That Make No Sense Anywhere Else",
+    "searchQuery": "unique local landmarks traditions institutions",
+    "editorialBrief": "Playful confidence, rigorously local. Lead with the strange or city-specific thing, then explain the context that makes it make sense here. “Only” must be supportable as a local category claim, never an unsupported uniqueness superlative. Reject interchangeable attractions.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "0qJClFmKce5CqI5pNVcc__global-only-happens-here__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJUYx1InLDw0cR6pGbrSjiCag",
+      "name": "MOIR",
+      "address": "Rue du Marché aux Poulets 30, 1000 Bruxelles",
+      "latitude": 50.8489593,
+      "longitude": 4.3508403,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJUYx1InLDw0cR6pGbrSjiCag",
+      "photo_reference": "AWCwydjHOEUKZx6dkRlONEIx7iS_ryniQp9N5c9-r2MoimNmN_rErvVI6xq6ijUeNiCc2BRpT22yuqpGXHQ-mqXbezeP9RgkKk11Yjn09NtPO51qOn3fwWuC4fgkKy1g-wllAZcR27-Hl_3sMgxbZ85VeWytYokIqymHvmkKiZ1z1vFaBFK4sSzqwpi-GorlzYGpASC2Yrs4V_G1KADbT14hYLZ2A__Rik3Wn3f70eGvr480Mwgef8e4rrnGdfhS3wPAVmtK-0_mL-ZL1ti2ZOQlc50gVWS0ttZS4YnOd42BYwd-E2Zio_5hc1QWct5TfitJ0HTk1EyNzmvIcMi4ejikklvGvpwzbkJfAspozvQpfb3_GLPoclROyWqipyWMHaKOVu4S-4NB5y577O65KRjOtYogced64piXHM1_Xd6yY1hZpS9pCrGqe__sKG6ZVA"
+    },
+    {
+      "place_id": "ChIJ_9_YpCZhwUcREoxgA8UptNM",
+      "name": "Groot Begijnhof Leuven",
+      "address": "Groot Begijnhof 7, 3000 Leuven",
+      "latitude": 50.8717337,
+      "longitude": 4.697392199999999,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_9_YpCZhwUcREoxgA8UptNM",
+      "photo_reference": "AWCwydhl7_kmjZHxRfQzF8T6HiqqX0wPLlhfgFoWACttkz08DN6R6gWPcx4U3hdHlVCowlbHhI1o44VKencGpny7QeW5FmAU0FSs69Q0BPUtDBlcNvIrTRI09Rd54PVn20cqxU7I35FY9iyFCsvMIukmL_WyzMmMejYB0IqZ7I-uGSdb0JX3sDfs5wVVQRirCuGnCtdBTq3D2PjxdhEsJdO0ombt-fNgfdnzLPswEufMrbBuMHcwSgl9lYNZcZw7VjeSWttjD6AXeV7MbvKSeVUz9BDv2s_dXPWsHW8vOxpUPaHfwyjNTDeBf5YN9gqzr2D5gT4Q7S5GntKfRtcQH65MQ2jSksgA7EZzx5hzdO22CoQ9kSfr3e2Se76XBz5rVmyb0U0Mly-Jo1fblwU4zVEUK6q3Kfrizqg69CMuMMW3wUw"
+    },
+    {
+      "place_id": "ChIJO-nq3fX2w0cRBavEBrxq_f8",
+      "name": "Het Steen",
+      "address": "Het Steen, Steenplein 1, 2000 Antwerpen",
+      "latitude": 51.2227238,
+      "longitude": 4.3973637,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJO-nq3fX2w0cRBavEBrxq_f8",
+      "photo_reference": "AWCwydh6K1uGPysVg3-jDQjXLEEmXzQkqZWyZp1ieFhb7i418snUnqSVR_yzzuiMmRtakU8udhLe-vFfxGnxHDBz0detaB3MWcgkb0pDjBrl-QBmq11H4DhJ2CTkEMbsJ7-NEQvYajRXQ3ZIS8uPGBG7yF9pYL42FkG8xrN14KEcVT_gSXp4YfHCjnxxbqpPhEwU9kISquG-gf3JrNcVLy9uPdhuJgDgL4AKqdvPbXwDCQRXdmjnlyPmELJfwMQKHSXfMWDN7_sZZWq29vj4D-lPJMKbJeOHQfiUbwJ9cq98UyFsyPNXE3ofK5h9xWiPLYMHolbgY3H90FyAh7fKYsGDcl8JeBv_SH1gnTXbXx0rESsbf2ohnbt3RZ0q6GtH0IoF8lGJEiPTAVw-hpiX4PSrKMbtZfheVzoLRYxy52cGwwB6jg"
+    },
+    {
+      "place_id": "ChIJvxQ79ff2w0cRG2YlCS24zG0",
+      "name": "Sint-Carolus Borromeuskerk",
+      "address": "Hendrik Conscienceplein, 2000 Antwerpen",
+      "latitude": 51.2209718,
+      "longitude": 4.404402699999999,
+      "types": [
+        "church",
+        "establishment",
+        "place_of_worship",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJvxQ79ff2w0cRG2YlCS24zG0",
+      "photo_reference": "AWCwydhVf7dcfJ6t4Kn78eOUYAS5ga8YQ2Zr4ySEvKBsf1mQVtHbm2U2v2XG8a1R5GW0Se4Gq_a64LLYSMu4H-nONTE9kE6uZpo1K_vFCNoAaJxOmj8qhCZNse_t_nxX-A94HhuEVIq-98WaSKuNVKOd4rq13mAjnJ45bIbd09Z-ySy2TCVOFCM4wrUB8hg1CcDx3WZcV3c-PlrUFtkGf7jUEPrej3F3M8-fWj-v0i6EbuG5VYkWuumegHp5ul_MROwDCyKJXP-pm67FfeSuUC58FcwfLiuUVTHfGZGrSqTmgnlwG93zZJnc55EUH5XPhum-WVHe5GfjGbGviF6OVKx7SxXTpDe1hwv-QnvgAA3GlanV8NOzs9kQvGlFt-btlBxo6eqyUobVfR8LmOmqfP63AOYiyB2mwuzIPJ36mEbGsQ5bBWuk-etG_KW58u0GzlIN"
+    },
+    {
+      "place_id": "ChIJ1SdzW_H2w0cRpmXjMfkQbN8",
+      "name": "St. Andrew's Church",
+      "address": "Waaistraat, 2000 Antwerpen",
+      "latitude": 51.21649129999999,
+      "longitude": 4.398124699999999,
+      "types": [
+        "church",
+        "establishment",
+        "place_of_worship",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ1SdzW_H2w0cRpmXjMfkQbN8",
+      "photo_reference": "AWCwydifGLOCKRddzRSNVLQWrsWxgyJz7aQHbPiCRikPPSgHFv5JIYDznQ6XqSDMxPI3xGKMNCiTLddx-2Uz61ovaVM-8ZAEsTdNokOiu92dEcNlNF0BD5vgmiT68MEiqpsvK8gF9ngfvGvvSUhMA49L8lqDP5BrRVZc9DIvTN6K5DcIK5eKyIL7cS7pXcDG_CO6ZFdqE8BZofG1zJyl3RXTrCWcx57ZoASVVPueaA65kAFdphwbB3ODrAPIRsDQ4biHmFw3wzs65LZG5QMv3Xvn83BUJakXbIe6VTjI3V6cu4kw4GtOOv5_yGlmFiFd0XvvR67HqenOtWQEWY3cHGEYP59w7y9qGPZy2by9q5Ust5y6WOiKoZT7c5il9USG2PRUTmpqaeHWNYrO1bfF1P85DIAdYj16bhoWkZq-qvF6xmwQ3PDP"
+    },
+    {
+      "place_id": "ChIJmVGguw-7xkcRV1HF6EXZwQw",
+      "name": "Tablica pamiątkowa 1 DPanc",
+      "address": "2387 Baarle-Hertog",
+      "latitude": 51.4426098,
+      "longitude": 4.9312288,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJmVGguw-7xkcRV1HF6EXZwQw",
+      "photo_reference": "AWCwydjioyvGbPQ3ywbrqeMEi_PbjUNOBF96CO-aZZJcuCoswi9AxvafGFfdlLphxOqoFf5oAw3veB6ZxwliMJR6EfTH2QqJbu_DJBiUuAoan2tChExs-fegMimFhF89U6ghD055KInH0rwUEx6j4pQClBBo4DkgbhHsa_O9PPp4YtT-ejjT5lwySkFqP8K1n5m1zoOdGOUlXtV6RDkBGwOIpaWpqsqRqLPzUjiobeBTmMLbeFbYHsccVYL03B4_NOYS2ckTSBFsp6wBvjdsGvX0hXewo7fmehZnOYuVUZLad4GZYvRQtcx35x6cYMI6b4r4-2kIQHxqtd2y8JJCJyZ7XX6m4Tirw4J-A4IkVSH4PpzTysG88SyWdyV8rUq8XJQ9OTkvj8Zn8z_A5-SYbuoMZusmnlTDldNZykI-tTsYqgAbcg"
+    },
+    {
+      "place_id": "ChIJGbALbSD3w0cRGtlgOdtaWEo",
+      "name": "Den Preeckstoel",
+      "address": "Grote Goddaard 20, 2000 Antwerpen",
+      "latitude": 51.2219468,
+      "longitude": 4.4045371,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJGbALbSD3w0cRGtlgOdtaWEo",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ_bJK_nBIwUcRd2wFcDEJ0ss",
+      "name": "De Oude Pastorie",
+      "address": "6,, Kerkstraat 2, 2430 Laakdal",
+      "latitude": 51.0795679,
+      "longitude": 5.0195978,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_bJK_nBIwUcRd2wFcDEJ0ss",
+      "photo_reference": "AWCwydjR_2GcAZDFnb-3H_MnX0JFj7-mmABy9clRmZWsam79LUhcKO87kUZIDSAOlI-zNgEK7eXRG7v9rDURyTFo6sZUDMCAkRP3-Nzbi_PP_jcA14pBerEj1NXCmWnW-MTe-t-0HDbIMZ6tBwI1MLUcXKuLuKTpU9ExrduObS-YSrgtQcgXmeJrxcHNXb--utzmXl8-oJgB6PNN7QGTc9yKr8DlWU63JbddOlSQKyLBSjTHeBRZIiwbALZLT2-FwCc28WWmP-Z0VRiURrOr09V9Y4v2IbG0mP3TanKvxQZuOsq5--sWD5xrw0JhFHWdoQ7d6f7AVvuiRldIPNRWhCtCfxTfsZvqHHYrU2AdryK1L86lxTI1abKJqP1jBmVxPGxAilC7C4-BQsf-GO1slQZRykGsfPGyZ3iL1CQhLE9IBkxMLQ"
+    },
+    {
+      "place_id": "ChIJv3G6gmn3w0cRuu1O7QuqXsI",
+      "name": "Former Portuguese Nation XVI-XVII Centuries/1511 to 1795/Huys van Portugael",
+      "address": "Kipdorp 6, 2000 Antwerpen",
+      "latitude": 51.221125,
+      "longitude": 4.4058796,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJv3G6gmn3w0cRuu1O7QuqXsI",
+      "photo_reference": "AWCwydj6MFN2ES_HeX6Y520e_xyz_jTYILVouj3PxQ8TuihybI8DQzUF_jr26tEMXn0BRFKG3r6zSMJbHcnOWUpHqpnjhK64Q4JylXOa-J6OdDEN_L6vH6jWW5rSIVyvFmkX6qg6rNk4YQC9acouPhVFl4iuM-LJaOUMULkcP4-PhH0m0_-aLdsqXI5DnaQELUwK5XlUlvSmB1ajQGMkcvL3fYEKaLG5TD258w9h-RuzK-kBPFwDsEghY8pRA-lZl-JlRDd1RgmTIU2VXeHSYmEuwoZ2znfcQNu1YUyoPqid-xvwKlSE1F5QwMmfNQGN7m5I9eFpjAZcTsccHSDs9tWNEOZ7GH4JwKeW4VykPlFkr3BlEGCVoY6LLH3HlJM2_Iie5d5veBnYP4ASTXLMLZmZg2oBxuenokt_0bNHPqMWAt0NJw"
+    },
+    {
+      "place_id": "ChIJ_SI9KgDxw0cRN6jXGXowO4o",
+      "name": "Monument der Oud-strijders",
+      "address": "Edegemsestraat 115b, 2640 Mortsel",
+      "latitude": 51.1674167,
+      "longitude": 4.4466503,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_SI9KgDxw0cRN6jXGXowO4o",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJubi03Gb3w0cRCJlG0C2aViE",
+      "name": "monument voor het Vaderland met opschrift \"EER UW VADERLAND! - HONORE TA PATRIE!\".",
+      "address": "Lange Gasthuisstraat 27, 2000 Antwerpen",
+      "latitude": 51.2148992,
+      "longitude": 4.405357299999999,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJubi03Gb3w0cRCJlG0C2aViE",
+      "photo_reference": ""
+    }
+  ]
+}
+
+web search: 
+web search: site:antwerpen.be Antwerp Handjes legend official city ...
+web search: 
+web search: site:mas.be Antwerp giants Antigoon giant procession ...
+codex
+{"complete":false,"city":"Antwerp","template_id":"global-only-happens-here","title":"Only Happens Here: 10 Things That Make No Sense Anywhere Else","description":"","icon":"fingerprint","cards":[],"warnings":["The candidate set is geographically noisy, so I’m retaining candidate metadata only for exact Antwerp matches. The strongest board is emerging around Antwerp’s hand-shaped civic identity, basement puppet theatre, river tunnel, fashion lineage, and several unusually local objects and rituals."]}
+web search: 
+web search: Antwerp St Andrew church Ann Demeulemeester Mary dress official ...
+web search: 
+web search: site:dekoninck.be Bolleke Antwerp glass name city beer ...
+web search: 
+web search: UNESCO Plantin Moretus museum Antwerp world heritage printing official ...
+codex
+{"complete":true,"city":"Antwerp","template_id":"global-only-happens-here","title":"Only Happens Here: 10 Things That Make No Sense Anywhere Else","description":"Antwerp turns its own mythology, dialect, printing history, fashion nerve and river engineering into everyday objects: edible hands, dressed saints, basement puppets and a beer named after its glass.","icon":"fingerprint","cards":[{"entity_name":"Antwerpse Handjes","title":"Antwerpse Handjes","subtitle":"The city’s severed-hand legend became a regulated biscuit.","notes":"Created by pastry chef Jos Hakker for a 1934 competition, these almond-topped, hand-shaped biscuits translate the Brabo-and-Antigoon story into something edible. Their recipe, form and packaging were later protected, and production is restricted to members of Antwerp’s bakers’ union—a very Antwerp way to formalize civic folklore.","short_summary":"A protected hand-shaped biscuit born from Antwerp’s founding legend and bakers’ guild.","source_url":"https://mas.be/en/content/antwerp-hand-biscuits-brabo-and-holocaust","source_title":"Antwerp Hand biscuits | Museum MAS","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"De Poesje van Antwerpen","title":"De Poesje van Antwerpen","subtitle":"Adult puppet theatre survives in a cellar, in broad Antwerp dialect.","notes":"Poesjenellen are rod puppets descended from Italian street theatre and embedded in Antwerp popular culture since the 16th century. The surviving cellar tradition is comic, satirical and emphatically not children’s theatre: characters swear, fight and sing in plat Antwerps. Performances are booked by groups rather than through ordinary individual ticketing.","short_summary":"A basement rod-puppet theatre where satire is still delivered in raw Antwerp dialect.","source_url":"https://mas.be/nl/pagina/de-poesje-van-antwerpen","source_title":"De Poesje van Antwerpen | MAS | Museum aan de Stroom","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Sint-Annatunnel","title":"Sint-Annatunnel","subtitle":"A river crossing reached by monumental wooden escalators.","notes":"Built in 1931–33 to join Antwerp’s two Scheldt banks, the pedestrian tunnel survives with its entrance buildings and much of its original technical equipment. Flemish heritage authorities describe it as a uniquely preserved example of an under-river pedestrian tunnel equipped with lifts and escalators. In a port city divided by a broad working river, the elaborate descent makes practical sense.","short_summary":"Antwerp crosses the Scheldt through a protected 1930s pedestrian tunnel and its preserved machinery.","source_url":"https://inventaris.onroerenderfgoed.be/aanduidingsobjecten/7041","source_title":"Voetgangerstunnel Sint-Anna | Inventaris Onroerend Erfgoed","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Antwerp Six","title":"The Antwerp Six","subtitle":"A fashion movement named like a municipal delegation.","notes":"Dirk Bikkembergs, Ann Demeulemeester, Walter Van Beirendonck, Dries Van Noten, Dirk Van Saene and Marina Yee studied at Antwerp’s Royal Academy, then broke internationally after presenting in London in 1986. The geographic nickname stuck because their shared city and school were the connective tissue—even as they built separate labels.","short_summary":"Six Academy-trained designers turned their city’s name into fashion shorthand.","source_url":"https://www.momu.be/en/exhibitions/the-antwerp-six","source_title":"The Antwerp Six | MoMu - Fashion Museum Antwerp","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Het Steen","title":"Semini at Het Steen","subtitle":"A damaged fertility figure still receives an annual civic celebration.","notes":"Above Het Steen’s gateway sits a battered relief traditionally identified as Semini. Antwerp women once appealed to the supposed fertility god when hoping for children; how much of that story is historically true remains uncertain. A local preservation committee deliberately keeps the legend alive through walks, puppetry and an annual Grote Markt celebration.","short_summary":"A mysterious relief over Antwerp’s old fortress gate sustains a knowingly half-legendary fertility ritual.","source_url":"https://www.antwerpen.be/info/54e31ad9cea8a726038b4862/senioren","source_title":"Antwerps Komitee Semini in Ere (AKSIE) | Antwerpen","latitude":51.2227238,"longitude":4.3973637,"place_id":"ChIJO-nq3fX2w0cRBavEBrxq_f8","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJO-nq3fX2w0cRBavEBrxq_f8"},{"entity_name":"St. Andrew's Church","title":"Ann Demeulemeester’s Madonna","subtitle":"A Gothic church’s Virgin wears contemporary Antwerp fashion.","notes":"The statue’s clothing was designed by Ann Demeulemeester, placing one of the Antwerp Six inside a historic neighborhood church. It works here because St. Andrew’s stands in the fashion district, where the parish presents old rituals through contemporary visual language rather than treating fashion and devotion as separate worlds.","short_summary":"An Antwerp Six designer dressed the Virgin Mary in a church inside the city’s fashion district.","source_url":"https://mkantwerpen.be/en/churches/st-andrews-church/","source_title":"St. Andrew’s Church | Monumental Churches of Antwerp","latitude":51.21649129999999,"longitude":4.398124699999999,"place_id":"ChIJ1SdzW_H2w0cRpmXjMfkQbN8","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJ1SdzW_H2w0cRpmXjMfkQbN8"},{"entity_name":"Sint-Carolus Borromeuskerk","title":"The Altarpiece Pulley","subtitle":"The church changes monumental paintings with stage machinery.","notes":"Behind the high altar, paintings can be released from the frame and exchanged using a pulley system. The theatrical mechanism belongs in this former Jesuit church: its architecture and decoration were conceived as an integrated Baroque spectacle, with Rubens closely involved in the original artistic program.","short_summary":"A concealed pulley turns the high altar into a changeable Baroque set.","source_url":"https://mkantwerpen.be/wp-content/uploads/2024/05/MKA-BoO-carolus-B-Eng-24.pdf","source_title":"Baroque Orchestration: St. Charles Borromeo Church Visitor Guide | Monumental Churches of Antwerp","latitude":51.2209718,"longitude":4.404402699999999,"place_id":"ChIJvxQ79ff2w0cRG2YlCS24zG0","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJvxQ79ff2w0cRG2YlCS24zG0"},{"entity_name":"Museum Plantin-Moretus","title":"Museum Plantin-Moretus","subtitle":"A family printing business became the only museum on UNESCO’s World Heritage List.","notes":"The original Plantin-Moretus home and workshop preserves the world’s oldest printing presses, historical type and business archives where the family printed and published for three centuries. It makes sense in Antwerp because the city was one of early modern Europe’s leading printing centers; this is the surviving workplace, not a later collection assembled elsewhere.","short_summary":"The Renaissance printing house survives in place, complete with presses, type, home and archives.","source_url":"https://museumplantinmoretus.be/en/about-us","source_title":"About us | Museum Plantin-Moretus","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Nello and Patrasche Monument","title":"Nello and Patrasche","subtitle":"Antwerp memorializes fictional residents better known across East Asia.","notes":"Ouida’s 1872 novel follows an orphan, his dog and a milk route from Hoboken to Antwerp, ending before a Rubens painting in the cathedral. The story became especially popular in Japan and Korea and now has a bronze monument in Hoboken. Its emotional geography only fully resolves here: farm road, city, cathedral and Rubens all belong to the plot.","short_summary":"A locally set Victorian tragedy returned to Antwerp as a monument after finding an enormous Asian audience.","source_url":"https://www.antwerpen.be/info/5c61413220bb92e7877946b9/de-hobokense-helden-nello-en-patrasche","source_title":"De Hobokense helden: Nello en Patrasche | Antwerpen","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Bolleke","title":"A Bolleke Keuning","subtitle":"Order the glass shape and Antwerp knows which beer you mean.","notes":"De Koninck’s amber Spéciale Belge took the nickname “Bolleke” from its rounded glass; in Antwerp dialect, the full order is a “Bolleke Keuning.” Brewed since 1952, it is local shorthand built from glassware, dialect and the brewery’s family name rather than a generic beer style.","short_summary":"An Antwerp beer is ordered by the affectionate local name of its spherical glass.","source_url":"https://www.dekoninck.be/en/beers/bolleke","source_title":"Bolleke | Antwerp City Brewery De Koninck","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":[]}
+2026-08-12T03:49:58.073015Z  WARN codex_core::shell_snapshot: Failed to delete shell snapshot at AbsolutePathBuf("/Users/edmondmbadu/.codex/shell_snapshots/019ff415-20a2-79c1-9fb8-dcf8f947a08b.1786506453154967000.sh"): Os { code: 2, kind: NotFound, message: "No such file or directory" }
+tokens used
+93,643
+{"complete":true,"city":"Antwerp","template_id":"global-only-happens-here","title":"Only Happens Here: 10 Things That Make No Sense Anywhere Else","description":"Antwerp turns its own mythology, dialect, printing history, fashion nerve and river engineering into everyday objects: edible hands, dressed saints, basement puppets and a beer named after its glass.","icon":"fingerprint","cards":[{"entity_name":"Antwerpse Handjes","title":"Antwerpse Handjes","subtitle":"The city’s severed-hand legend became a regulated biscuit.","notes":"Created by pastry chef Jos Hakker for a 1934 competition, these almond-topped, hand-shaped biscuits translate the Brabo-and-Antigoon story into something edible. Their recipe, form and packaging were later protected, and production is restricted to members of Antwerp’s bakers’ union—a very Antwerp way to formalize civic folklore.","short_summary":"A protected hand-shaped biscuit born from Antwerp’s founding legend and bakers’ guild.","source_url":"https://mas.be/en/content/antwerp-hand-biscuits-brabo-and-holocaust","source_title":"Antwerp Hand biscuits | Museum MAS","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"De Poesje van Antwerpen","title":"De Poesje van Antwerpen","subtitle":"Adult puppet theatre survives in a cellar, in broad Antwerp dialect.","notes":"Poesjenellen are rod puppets descended from Italian street theatre and embedded in Antwerp popular culture since the 16th century. The surviving cellar tradition is comic, satirical and emphatically not children’s theatre: characters swear, fight and sing in plat Antwerps. Performances are booked by groups rather than through ordinary individual ticketing.","short_summary":"A basement rod-puppet theatre where satire is still delivered in raw Antwerp dialect.","source_url":"https://mas.be/nl/pagina/de-poesje-van-antwerpen","source_title":"De Poesje van Antwerpen | MAS | Museum aan de Stroom","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Sint-Annatunnel","title":"Sint-Annatunnel","subtitle":"A river crossing reached by monumental wooden escalators.","notes":"Built in 1931–33 to join Antwerp’s two Scheldt banks, the pedestrian tunnel survives with its entrance buildings and much of its original technical equipment. Flemish heritage authorities describe it as a uniquely preserved example of an under-river pedestrian tunnel equipped with lifts and escalators. In a port city divided by a broad working river, the elaborate descent makes practical sense.","short_summary":"Antwerp crosses the Scheldt through a protected 1930s pedestrian tunnel and its preserved machinery.","source_url":"https://inventaris.onroerenderfgoed.be/aanduidingsobjecten/7041","source_title":"Voetgangerstunnel Sint-Anna | Inventaris Onroerend Erfgoed","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Antwerp Six","title":"The Antwerp Six","subtitle":"A fashion movement named like a municipal delegation.","notes":"Dirk Bikkembergs, Ann Demeulemeester, Walter Van Beirendonck, Dries Van Noten, Dirk Van Saene and Marina Yee studied at Antwerp’s Royal Academy, then broke internationally after presenting in London in 1986. The geographic nickname stuck because their shared city and school were the connective tissue—even as they built separate labels.","short_summary":"Six Academy-trained designers turned their city’s name into fashion shorthand.","source_url":"https://www.momu.be/en/exhibitions/the-antwerp-six","source_title":"The Antwerp Six | MoMu - Fashion Museum Antwerp","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Het Steen","title":"Semini at Het Steen","subtitle":"A damaged fertility figure still receives an annual civic celebration.","notes":"Above Het Steen’s gateway sits a battered relief traditionally identified as Semini. Antwerp women once appealed to the supposed fertility god when hoping for children; how much of that story is historically true remains uncertain. A local preservation committee deliberately keeps the legend alive through walks, puppetry and an annual Grote Markt celebration.","short_summary":"A mysterious relief over Antwerp’s old fortress gate sustains a knowingly half-legendary fertility ritual.","source_url":"https://www.antwerpen.be/info/54e31ad9cea8a726038b4862/senioren","source_title":"Antwerps Komitee Semini in Ere (AKSIE) | Antwerpen","latitude":51.2227238,"longitude":4.3973637,"place_id":"ChIJO-nq3fX2w0cRBavEBrxq_f8","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJO-nq3fX2w0cRBavEBrxq_f8"},{"entity_name":"St. Andrew's Church","title":"Ann Demeulemeester’s Madonna","subtitle":"A Gothic church’s Virgin wears contemporary Antwerp fashion.","notes":"The statue’s clothing was designed by Ann Demeulemeester, placing one of the Antwerp Six inside a historic neighborhood church. It works here because St. Andrew’s stands in the fashion district, where the parish presents old rituals through contemporary visual language rather than treating fashion and devotion as separate worlds.","short_summary":"An Antwerp Six designer dressed the Virgin Mary in a church inside the city’s fashion district.","source_url":"https://mkantwerpen.be/en/churches/st-andrews-church/","source_title":"St. Andrew’s Church | Monumental Churches of Antwerp","latitude":51.21649129999999,"longitude":4.398124699999999,"place_id":"ChIJ1SdzW_H2w0cRpmXjMfkQbN8","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJ1SdzW_H2w0cRpmXjMfkQbN8"},{"entity_name":"Sint-Carolus Borromeuskerk","title":"The Altarpiece Pulley","subtitle":"The church changes monumental paintings with stage machinery.","notes":"Behind the high altar, paintings can be released from the frame and exchanged using a pulley system. The theatrical mechanism belongs in this former Jesuit church: its architecture and decoration were conceived as an integrated Baroque spectacle, with Rubens closely involved in the original artistic program.","short_summary":"A concealed pulley turns the high altar into a changeable Baroque set.","source_url":"https://mkantwerpen.be/wp-content/uploads/2024/05/MKA-BoO-carolus-B-Eng-24.pdf","source_title":"Baroque Orchestration: St. Charles Borromeo Church Visitor Guide | Monumental Churches of Antwerp","latitude":51.2209718,"longitude":4.404402699999999,"place_id":"ChIJvxQ79ff2w0cRG2YlCS24zG0","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJvxQ79ff2w0cRG2YlCS24zG0"},{"entity_name":"Museum Plantin-Moretus","title":"Museum Plantin-Moretus","subtitle":"A family printing business became the only museum on UNESCO’s World Heritage List.","notes":"The original Plantin-Moretus home and workshop preserves the world’s oldest printing presses, historical type and business archives where the family printed and published for three centuries. It makes sense in Antwerp because the city was one of early modern Europe’s leading printing centers; this is the surviving workplace, not a later collection assembled elsewhere.","short_summary":"The Renaissance printing house survives in place, complete with presses, type, home and archives.","source_url":"https://museumplantinmoretus.be/en/about-us","source_title":"About us | Museum Plantin-Moretus","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Nello and Patrasche Monument","title":"Nello and Patrasche","subtitle":"Antwerp memorializes fictional residents better known across East Asia.","notes":"Ouida’s 1872 novel follows an orphan, his dog and a milk route from Hoboken to Antwerp, ending before a Rubens painting in the cathedral. The story became especially popular in Japan and Korea and now has a bronze monument in Hoboken. Its emotional geography only fully resolves here: farm road, city, cathedral and Rubens all belong to the plot.","short_summary":"A locally set Victorian tragedy returned to Antwerp as a monument after finding an enormous Asian audience.","source_url":"https://www.antwerpen.be/info/5c61413220bb92e7877946b9/de-hobokense-helden-nello-en-patrasche","source_title":"De Hobokense helden: Nello en Patrasche | Antwerpen","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Bolleke","title":"A Bolleke Keuning","subtitle":"Order the glass shape and Antwerp knows which beer you mean.","notes":"De Koninck’s amber Spéciale Belge took the nickname “Bolleke” from its rounded glass; in Antwerp dialect, the full order is a “Bolleke Keuning.” Brewed since 1952, it is local shorthand built from glassware, dialect and the brewery’s family name rather than a generic beer style.","short_summary":"An Antwerp beer is ordered by the affectionate local name of its spherical glass.","source_url":"https://www.dekoninck.be/en/beers/bolleke","source_title":"Bolleke | Antwerp City Brewery De Koninck","latitude":null,"longitude":null,"place_id":null,"maps_url":null}],"warnings":[]}

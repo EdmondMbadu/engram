@@ -691,11 +691,41 @@ export class PublicWikisComponent implements OnInit {
     });
     return this.sortWikis(cityWikis);
   });
-  readonly mobileFeaturedCities = computed(() =>
-    this.mobileCityWikis().slice(0, this.mobileFeaturedCityLimit()),
+  readonly mobileDirectoryWikis = computed(() => {
+    const term = this.searchTerm().trim().toLowerCase();
+    const category = this.activeCategory() === UNIVERSITIES_CATEGORY
+      ? UNIVERSITIES_CATEGORY
+      : CITIES_CATEGORY;
+    const wikis = this.publicWikis().filter((wiki) => {
+      if (this.categoryForWiki(wiki) !== category) {
+        return false;
+      }
+      if (!term) {
+        return true;
+      }
+      return [
+        wiki.title,
+        wiki.subtitle,
+        wiki.description,
+        wiki.countryLabel ?? '',
+        wiki.universityCity ?? '',
+        wiki.universityState ?? '',
+        this.globalRegionForWiki(wiki),
+      ].join(' ').toLowerCase().includes(term);
+    });
+    return this.sortWikis(wikis);
+  });
+  readonly mobileFeaturedWikis = computed(() =>
+    this.mobileDirectoryWikis().slice(0, this.mobileFeaturedCityLimit()),
   );
-  readonly hasMoreMobileFeaturedCities = computed(() =>
-    this.mobileFeaturedCities().length < this.mobileCityWikis().length,
+  readonly hasMoreMobileFeaturedWikis = computed(() =>
+    this.mobileFeaturedWikis().length < this.mobileDirectoryWikis().length,
+  );
+  readonly mobileDirectoryIsUniversities = computed(() => this.activeCategory() === UNIVERSITIES_CATEGORY);
+  readonly mobileDirectorySearchPlaceholder = computed(() =>
+    this.mobileDirectoryIsUniversities()
+      ? 'Search universities by name, city, or state...'
+      : 'Search cities by name, country, or region...',
   );
   readonly hasMoreMobileDiscoverBoards = computed(() =>
     this.mobileDiscoverPreviewBoards().length < this.mobileDiscoverBoards().length
@@ -773,6 +803,13 @@ export class PublicWikisComponent implements OnInit {
       return;
     }
 
+    const requestedCategory = this.route.snapshot.queryParamMap?.get('category')?.trim().toLowerCase();
+    if (requestedCategory === 'universities') {
+      this.setCategory(UNIVERSITIES_CATEGORY);
+    } else if (requestedCategory === 'cities') {
+      this.setCategory(CITIES_CATEGORY);
+    }
+
     this.loadBoardActionState();
     void this.loadMobileBoards();
     void this.loadMobileDiscoverBoards();
@@ -823,7 +860,19 @@ export class PublicWikisComponent implements OnInit {
     this.visibleWikiLimit.set(HOME_SECTION_PAGE_SIZE);
     if (cat !== CITIES_CATEGORY) {
       this.activeSort.set('featured');
+    } else if (this.activeSort() === 'featured') {
+      this.activeSort.set('population');
     }
+  }
+
+  setHomeDirectoryCategory(category: typeof CITIES_CATEGORY | typeof UNIVERSITIES_CATEGORY): void {
+    this.setCategory(category);
+    this.mobileFeaturedCityLimit.set(HOME_SECTION_PAGE_SIZE);
+  }
+
+  openHomeDirectory(): void {
+    const category = this.mobileDirectoryIsUniversities() ? 'universities' : 'cities';
+    void this.router.navigate(['/all-cities'], { queryParams: { category } });
   }
 
   onSearchInput(value: string): void {
@@ -1030,7 +1079,7 @@ export class PublicWikisComponent implements OnInit {
     }
   }
 
-  showMoreMobileFeaturedCities(): void {
+  showMoreMobileFeaturedWikis(): void {
     this.mobileFeaturedCityLimit.update((currentLimit) => currentLimit + HOME_SECTION_PAGE_SIZE);
   }
 

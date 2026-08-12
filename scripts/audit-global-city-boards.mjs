@@ -19,6 +19,7 @@ const buckets = [
 ];
 
 const concise = process.argv.includes('--concise');
+const summaryOnly = process.argv.includes('--summary-only');
 const [atlasSnapshot, boardSnapshot, listingSnapshot, jobSnapshot, itemSnapshot, placeSnapshot, candidateSetSnapshot] = await Promise.all([
   db.collection('atlases').where('is_public', '==', true).get(),
   db.collection('boards').where('origin', '==', 'bulk_generator').get(),
@@ -63,7 +64,9 @@ function boardProblems(board) {
   if (Number(summary.requested_count) !== 10) problems.push(`requested:${summary.requested_count ?? 'missing'}`);
   if (Number(summary.verified_count) !== 10) problems.push(`verified:${summary.verified_count ?? 'missing'}`);
   if (Number(summary.unique_place_ids) !== 10) problems.push(`unique:${summary.unique_place_ids ?? 'missing'}`);
-  if (summary.all_have_coordinates !== true) problems.push('coordinates');
+  const identitiesValidated = summary.all_have_coordinates === true
+    || (summary.validation_mode === 'source_backed_editorial' && summary.all_have_source_urls === true);
+  if (!identitiesValidated) problems.push('identity-evidence');
   if (board.atlas_id !== board.generated_for_atlas_id) problems.push('atlas-link-mismatch');
   if (board.template_version !== '1.0') problems.push(`template-version:${board.template_version || 'missing'}`);
   if (board.rubric_version !== '1.0') problems.push(`rubric-version:${board.rubric_version || 'missing'}`);
@@ -223,5 +226,16 @@ const result = {
   duplicates,
   orphanBoards: orphanBoards.slice(0, 100),
 };
-console.log(JSON.stringify(result, null, 2));
+console.log(JSON.stringify(summaryOnly ? {
+  projectId: result.projectId,
+  cities: result.cities,
+  buckets: result.buckets,
+  expectedCells: result.expectedCells,
+  completeCells: result.completeCells,
+  missingCells: result.missingCells,
+  invalidBoards: result.invalidBoards,
+  duplicateCells: result.duplicateCells,
+  listingDocuments: result.listingDocuments,
+  coverage: result.coverage,
+} : result, null, 2));
 process.exit(0);

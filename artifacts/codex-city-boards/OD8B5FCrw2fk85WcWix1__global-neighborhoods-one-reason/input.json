@@ -1,0 +1,19 @@
+{
+  "city": {
+    "id": "OD8B5FCrw2fk85WcWix1",
+    "name": "Luanda",
+    "region": "Angola",
+    "country": "AO"
+  },
+  "template": {
+    "id": "global-neighborhoods-one-reason",
+    "version": "1.0",
+    "titlePattern": "{count} Neighborhoods, One Reason Each",
+    "searchQuery": "neighborhoods districts local areas",
+    "editorialBrief": "Exactly one defensible reason per neighborhood. Use the neighborhood’s real name and a concrete distinction that helps a reader understand the city. Do not flatten communities into stereotypes, safety claims, demographic shorthand, or “vibrant culture.”",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "OD8B5FCrw2fk85WcWix1__global-neighborhoods-one-reason__1.0",
+  "candidates": []
+}

@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "problems": [],
+  "sourceCount": 9,
+  "reachability": [
+    {
+      "url": "https://www.ichongqing.info/2020/12/04/xiaomian-chongqing-noodles-chongqing-delicacies-animation-series/amp/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ichongqing.info/2020/12/04/xiaomian-chongqing-noodles-chongqing-delicacies-animation-series/amp/",
+      "error": ""
+    },
+    {
+      "url": "https://global.chinadaily.com.cn/a/202606/15/WS6a2bef4aa310986e2b45fac5.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://global.chinadaily.com.cn/a/202606/15/WS6a2bef4aa310986e2b45fac5.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.chinadaily.com.cn/a/202203/16/WS62319511a310fd2b29e51481_1.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.chinadaily.com.cn/a/202203/16/WS62319511a310fd2b29e51481_1.html",
+      "error": ""
+    },
+    {
+      "url": "https://english.cq.gov.cn/aboutchongqing/culture/Museums/202606/t20260613_15751582.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://english.cq.gov.cn/aboutchongqing/culture/Museums/202606/t20260613_15751582.html",
+      "error": ""
+    },
+    {
+      "url": "https://english.cq.gov.cn/latestnews/Editor/202606/t20260608_15735957.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://english.cq.gov.cn/latestnews/Editor/202606/t20260608_15735957.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.chinadaily.com.cn/china/2007-04/21/content_856382_3.htm",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.chinadaily.com.cn/china/2007-04/21/content_856382_3.htm",
+      "error": ""
+    },
+    {
+      "url": "https://global.chinadaily.com.cn/a/201912/23/WS5e001c56a310cf3e3557febb.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://global.chinadaily.com.cn/a/201912/23/WS5e001c56a310cf3e3557febb.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.ichongqing.info/restaurant/dezhuang-hot-pot/amp/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ichongqing.info/restaurant/dezhuang-hot-pot/amp/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ichongqing.info/2020/08/18/new-destination-in-hongya-cave-restores-chongqings-street-in-1980s/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ichongqing.info/2020/08/18/new-destination-in-hongya-cave-restores-chongqings-street-in-1980s/",
+      "error": ""
+    }
+  ],
+  "unreachable": []
+}

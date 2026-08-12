@@ -1,0 +1,295 @@
+Reading additional input from stdin...
+2026-08-12T03:49:25.010380Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:49:25.022752Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T03:49:25.034569Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 019ff416-d539-7bf3-8f46-b296c7718fd6
+--------
+user
+Read /Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/BFikbzM8T4vwxGHGbK1I__global-where-locals-linger/input.json. Research and write one source-backed LivingWiki board for Portland, ME, Maine. template_id: global-where-locals-linger. Exact board title: Where Locals Linger: 10 Places to Sit for Hours. Every card needs a source supporting a concrete lingering affordance such as public seating, reading/study space, tables, park access, or café seating. Do not claim staff tolerate long stays. Explain the physical setup, not an invented local habit. The input candidates are identity leads only. Their names, addresses, coordinates, types, and Google Maps URLs may establish identity/location, but never prove free admission, a menu item, local behavior, uniqueness, history, quality, opening hours, or popularity. Use browser research. Prefer official venue/institution/government pages, direct menus, cultural institutions, and established local publications. Avoid SEO listicles, scraped aggregators, review snippets, and invented synthesis. Every card must have a direct https source_url that supports its central claim and a precise source_title. Preserve a candidate place_id and maps_url when the selected entity matches a supplied candidate. Otherwise use null. Use supplied coordinates only for an exact identity match; otherwise null. Use fresh, concise LivingWiki voice: specific, observant, and useful. No rankings, best/must-visit/hidden-gem language, generic praise, stereotypes, or unsupported superlatives. Return exactly 10 distinct cards only when all ten are defensible. Otherwise set complete=false and return only the defensible cards with clear warnings. Never fill a slot to reach ten. The board icon must be one of: restaurant, style, money_off, weekend, location_city, fingerprint, schedule, dashboard_customize.
+codex
+{"complete":false,"city":"Portland, ME","template_id":"global-where-locals-linger","title":"Where Locals Linger: 10 Places to Sit for Hours","description":"","icon":"weekend","cards":[],"warnings":["I’m reading the supplied candidate set first, then I’ll verify each selected place against direct, authoritative web sources."]}
+exec
+/bin/zsh -lc "sed -n '1,240p' artifacts/codex-city-boards/BFikbzM8T4vwxGHGbK1I__global-where-locals-linger/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 250ms:
+{
+  "city": {
+    "id": "BFikbzM8T4vwxGHGbK1I",
+    "name": "Portland, ME",
+    "region": "Maine",
+    "country": "US"
+  },
+  "template": {
+    "id": "global-where-locals-linger",
+    "version": "1.0",
+    "titlePattern": "Where Locals Linger: {count} Places to Sit for Hours",
+    "searchQuery": "cafes libraries parks plazas third places",
+    "editorialBrief": "Treat this as a third-places board. Explain the observable setup that makes lingering possible: seating, pace, shade, tables, public access, or a steady room. Do not assert that staff tolerate hours-long stays unless a source supports it. No cozy, charming, or perfect-for filler.",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "BFikbzM8T4vwxGHGbK1I__global-where-locals-linger__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJ89hxThWcskwR2KqDLwdWrEM",
+      "name": "Bard Coffee",
+      "address": "185 Middle St, Portland, ME 04101",
+      "latitude": 43.6576744,
+      "longitude": -70.2552393,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ89hxThWcskwR2KqDLwdWrEM",
+      "photo_reference": "AWCwydjdKXaZtP-RyruqJVylioh8ho3vtJzT6-GteN7yFU3BQQ2-zZ4mPx6Oww5PDt_Ys_sXAtAsOcdXzhBleAWe295Nwt0tD4fo0pqdfte_bxPV_geb6mNe8csvR98nhKjA3QWLjTLYYXaY_7Zi0Pwj5oa46Yp5uijUYhFsedoLO2qP4t3jd4125CCHdF4b2FaC7OAQwxC2LYNjznjqJl3Tc1g6sbYDv9YvfkaM2LjwrYjDdY01Lqkn2V0xIDup3xjMn4HKqm-EQFCHKbuGvIRduYpHAZb_NFGhebugwzUzR30obsYYVBE4cvzacerTP-3wxdRu_MgzIGpCB3yrEy-U9x_ZZjZv7bSDOmoYdQAkgr9GvcbNPUvoDNyMD-dE-5Q3LegeUgBRStnvZMM2qne-XdVr4kvW1beLjtETWP9pUmE4gLbf"
+    },
+    {
+      "place_id": "ChIJ2XpQcbOdskwRLvBPulo1DHc",
+      "name": "Smalls",
+      "address": "28 Brackett St, Portland, ME 04102",
+      "latitude": 43.64783509999999,
+      "longitude": -70.2614715,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ2XpQcbOdskwRLvBPulo1DHc",
+      "photo_reference": "AWCwydg-uHyNwFnGQUuEjJCmjgNSWYck0cW4YmNJr-zbYffe3CPF7U4x7dqMcPYsy8CIX_PzJWkO2GVXiCbF_FJ0JjZa8vQKIfo3mYv02NUq5a6F9MyUCjy8iFwRmrHboosfLOsFRnVAFYEgWiiWIeNkoIcJEyqVz1ROw0IJ56dfnmxKkfCW-Q13Wt9UekPfYpkf4AMTdNxoolhHTsaI-KVXMD_IZ1zp5BtGjXc6l-68C6VON1LKp0Lokmh3WOJNCnmNuIFEGWF_u3aVdQnVRQ39dx1HCUtMFef_2BY9YVbgD88pqzvxHloSb2kARIJGcUGFh-lxmLFK8t9Ell6XgnIENo5lUsb5I8m-hpsHp-XNHthlizwL4YJJhrJgpxLul_can-TccQ1tDtjS72sb_0YKsbfXd0APcA-HdfqutCwMriYGRurP"
+    },
+    {
+      "place_id": "ChIJJW5iOcNrskwRnM6dC2NXnco",
+      "name": "Forage Market",
+      "address": "180 Lisbon St, Lewiston, ME 04240",
+      "latitude": 44.095876,
+      "longitude": -70.216574,
+      "types": [
+        "bakery",
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJJW5iOcNrskwRnM6dC2NXnco",
+      "photo_reference": "AWCwydhUJgP2JNAB1-2a6_Wfjm6V8l65LF7Q95pUIkwhM0_oiuLWPrI-_SqDVJdIKPrh8dZtoPtnBXG8WmJj0jiWKnURpcmYHlQJ-QYBYNuOyhvwKJWqtLaU3n-8bNCLk_byhfHwGXczXDDtJPI_3xO1-VNBu-8FSN27HHUQeA7Npp2HWzSb7x94KQ-VfaZBxMWZLQlxt9u65e3THk1rls0JeekiAJlcfmKPRuCmYd_IZZvL8JIRjgirKtS1t-b8xRejc9H9lTBZy1gpqmdp1tvK4K_Li_Ecx5OaDW8wQ6xBR1idaNbuxfZI55mqx9n2njcOAdGmUIkxZwuLkPAr2C-2e-VuKKsBjIaaTZOwFycwey3yH7XKM-ls-VYe6gjC1Jp6GM-GUAzWh73Bfb-_xrOgTdg-CuTY2FQCkxBsubgD1-feF-qRts8Mm5c4MgAPeThQ"
+    },
+    {
+      "place_id": "ChIJZTpEAz9xskwREHcNKOU07As",
+      "name": "Little River Coffee",
+      "address": "11 Union St, Lisbon Falls, ME 04252",
+      "latitude": 43.9973174,
+      "longitude": -70.0610516,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJZTpEAz9xskwREHcNKOU07As",
+      "photo_reference": "AWCwydhKS6tEQ31lDJug9s9gG9y7ZalHJB8Em4m8mhrR6S28wo2FtQjfCf0koX2cAQEY6ZOlJSPlzn4uAtlV_8ID5aUM6tXjQ6yTfEJsctWt5-shwyfCUV1mxGmLhU_NV51fDGgNui6IrRb1PPlX118XV0u-DsfEt1mlMIZKarifQr_sxjVytfkaSdV5G9NerlMXLQuhhwMvCLlkwfNKWP46ju8YbqQQdkg5UN9xxxWRJ1LORkpqgZSgnSJiPgWTdB6Y5SU4taBmrSJCpzLSJLi-PKP1qAXaKXdj9s7ulvKgWgxu2EQgfS2r5nhGlluRiw95hbXad8L36kqbgon1A2-reITWTqnCS-xXmfu800z7OfTUVWbay2N8iHZ6FUuPAwarySyyingZI-nUOc9QsEu4M7Lol1MKJOGBmHfgwlekPoR_HB15NaQUXsBeuTr0"
+    },
+    {
+      "place_id": "ChIJyYvcvJuHrUwRfNIZFZLpY2w",
+      "name": "Reverie Coffee House",
+      "address": "117 Maine St, Brunswick, ME 04011",
+      "latitude": 43.91569920000001,
+      "longitude": -69.9651858,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJyYvcvJuHrUwRfNIZFZLpY2w",
+      "photo_reference": "AWCwydj2PDh-6_ISeO-l8GdgSd2PeCPwN4U98WNrnj8KP2kCFQ3hJrTOlBAp4QiV4dtpHpKtktmdqgMLPf-F1fdz_C70yHwOb8q_wUJ9VtlCrzq-dfCsILcQjxi1SbtQjLuv1_xJcdSwNRPrvWJnPFjrJJv_svvuuIAjouMY0pifyoGT0eyfWZoZ2nzAtFYkiw8o69Obr-FXmaJl5H8zrByrYQDOt3JwaRCpY20T-fRLC1VvwBPxY17Ee42-u2re4RTm9YDY8nLVnQOZbSMnWLHWMUFYjbGZyHSDsdW5oSHQ42HX45QGQdt2dXNRYAwF_bbJ1MTwr56odJDutPyIsJKz9mcE_eGwKzwWX2ooz9wiYJzTTxfaVM84n7vxtPvnQEVa1kxN2SMrAeHtXlpnR4nWero2g99_wLiRNQjWjMiIaPEjng"
+    },
+    {
+      "place_id": "ChIJ37Eo4eGdskwRV6tosgO-0ww",
+      "name": "Salt Yard Cafe & Bar",
+      "address": "285 Commercial St, Portland, ME 04101",
+      "latitude": 43.6540816,
+      "longitude": -70.2557847,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ37Eo4eGdskwRV6tosgO-0ww",
+      "photo_reference": "AWCwydhJxQjmoiow2sXzKzjaZ1zrbD4hiu4DVm2rgDm3NPsRMFdUWMo4910d-UJ-T5CD6mUAQx8HG7Qv743Q6X2wVoAvsaKGtes6fU_5Idpv_S07zlGcP9HsKg0PgHXBx3cFtU74RsR5Oj6FGatsr4oxLrteVmQH29mrjL74DA3r4LTuFIAEF1AstglGKTF5N1qumZ-HbpTeioGU3aLKj6TBxlLAhLMwLxp07dD7dQucgCni6I5bhQoqSzMcD-dWuuA9kFi-T633ZzDRD5zJ9bZnb8mdwzxtWZybhmmnKdMqPo5unetv3N0vjhjG04nBbpvu-nIdTMdV-N9m2P-5VvvJMd18zjOO99BxSdJnKwZsm6dZrZ8nXgVzJm6DCLsgvmkJU9pXhFDW_SYBymZJ07PGuwn2lnfvIM0iuZxNN6T1g-wpTXg"
+    },
+    {
+      "place_id": "ChIJ87IdcgCdskwRjLTSuHWLOMo",
+      "name": "Bom Dia Cafe",
+      "address": "47 India St, Portland, ME 04101",
+      "latitude": 43.66052759999999,
+      "longitude": -70.2499611,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ87IdcgCdskwRjLTSuHWLOMo",
+      "photo_reference": "AWCwydi8JOb7E3IjNGKVF680kUQUKTcSEIETT8YMlvd07_BXUtTjO3t6fPzhtTaxAPcbk1Os8jzKOnXRvzvXEsNOXk6gkdBeQgpTNpZX5GiUXTmtDNJEp-tyvfvBIlDE0IG_8nsjqVC-aVp6780ZMOpnjIVVOy3hV-W5XdpAwHBdn0aw4W6x9OJGx5v4Qzc-66uT5j7tDTwPlSftnjaoWfaLqsCoCwn9KDfFEY1P9MV7pBzA8GZuN5lFO4xCJyZ8LwDGDpJIzTKG1SX_37jlcGjGgd8M7zga5oVLvZQ5tl_wOWKk0mBXk_KnsQoCPATTI57gIlmdVT3UnLsuyAUzQJz2FT1xQpPAX51NqXYInM2UBL_JSLLtqR0g1nGwGRLu4GSRf_LP8XgHdYKeCilA7HJb_uQkXVxDgfiF1mT1-P8KfkGuSAH-aBfLh43b9SKx2F49"
+    },
+    {
+      "place_id": "ChIJx2_KVQCdskwRdhSAx7KIitk",
+      "name": "Another Round",
+      "address": "549 Congress St, Portland, ME 04101",
+      "latitude": 43.65573029999999,
+      "longitude": -70.2619477,
+      "types": [
+        "bar",
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJx2_KVQCdskwRdhSAx7KIitk",
+      "photo_reference": "AWCwydiRJjkOUohh6K57BCR3fa42czqsgdzya7aJDimAghoIOVCcKZZo2mNMsBZjqIsURSuEKAmyJedjXw7vjT7BPIVTy0h0Rs9IXzfnUv1LLuGO1f_LaWh4eS2itiqvj6Zqg3NluM75Y-eW6pHlgFG1GjvTz_TPPrvO6PQe66oQE7zkzcH_-yz3gqX9n4TYVPbKnKApaKdaRIEcBJs5Mq9lqR1w7QmwsS0HuWUMCJ2Vm_n6dAvhrb-jNdDp9r7ZexwvR4kzQcew5OBO4P_HAOPgb_CE5LKJlQwHa_hXZxxwOsNdavW5R5kTrtm7rL0hZGiXUv6MDxyO6bxh7mZGcZI9k31iBoBXx_Qw8JL9cIR-jh33o_2QSS-jtUwDQNSck4jSrLWpzBXl35Fm9zTdXJyfq-YF3m1mBG8pX5K9IgjWzYurHg"
+    },
+    {
+      "place_id": "ChIJ32BlUgCdskwRyL5YLJHvVn0",
+      "name": "Double Great Coffee",
+      "address": "100 Congress St, Portland, ME 04101",
+      "latitude": 43.6663163,
+      "longitude": -70.2470383,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ32BlUgCdskwRyL5YLJHvVn0",
+      "photo_reference": "AWCwydh8qV9zs_qMqCD3R1_dtao14n-24jeYDurIJaHumEqsYNiZmmVROC9kjFXKnpPlQJd9IEVmF30sZ1A60lPvRyC-uiF3Akq60KYJpJr4oYVLMilaUtFSSuz0c19Spgbd0VODty88Muff2ivTeFAtiwyO-EDmqZyYy8zcfAlJ0Rf7hKxxJlvIWyxn51bgMu_qrLEXdIdTIVQHLiq_b2KssehedgoU-Fga2zQ6z722qA9TpKUJMdfS7QgqhhGFkvo-0BUDAE-ECTZWS1wuOcFmtKXk6XGM3XH1k37GT7HWtFp6jUO178rCLrZ3l4ZCBKlVGdXYvHvm-doMiozt8nBOsQdBubh566PNSACOi5qEyLOG6V8cg4dq-9XwmD501pv05l56IGL-L_xfHqLPTYsjk0aUPpW3X9i0M0eGf1mlhh5YMQ"
+    },
+    {
+      "place_id": "ChIJfx2F-tWdskwR4TDhDoaN9Jg",
+      "name": "Baba’s Cafe",
+      "address": "79 Island Ave, Portland, ME 04108",
+      "latitude": 43.6566801,
+      "longitude": -70.1978797,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJfx2F-tWdskwR4TDhDoaN9Jg",
+      "photo_reference": "AWCwydgpLdMeZzloQxZWeNIeP_8RAB34l7VkzCl2pJK8EGFYHPFj-exy7n5CS1YoKZXRRgZMZirMsV4BHKIlBzd5m6wwLYzTbQmKHewlrZDRRLBilma06iPFrYOuG17Hf-AunwgMLOk5HC06D3W1hbg5Tdg0Tm2vvKLcED8yfnp-OChQKcKz_xygG3UKZ5pfejrU2-2yuFiJEdJkJRbZAe_hKdbw3q4e9LUjp7lU3mMrAF-NSZle107p-Fm9VcrcnociOVbqFMrQMxkrqdVMV6hm0N1Brg78TsdOUKgb4_VbcwvX5L48Tvz424u6uoxXrWb8p-YytKTiR5wR04qJgKUVUyKo-sbdN7GFXsK3eizSQA_XPVqPtbFqzrEXsmnsgZq2gtHjC-hGClPhxaBjOROhSYlwT0TQzwV7TFeXSGt3VXs"
+    },
+    {
+      "place_id": "ChIJKbEYIq6bskwR9LwKYw_K25U",
+      "name": "Shaghf cafe",
+      "address": "645 Forest Ave, Portland, ME 04101",
+      "latitude": 43.6705507,
+      "longitude": -70.28372999999999,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJKbEYIq6bskwR9LwKYw_K25U",
+      "photo_reference": "AWCwydjxeD_Xu55ccBBwaLzYfl4jTXAIuGMKThaZySL4QKUrKLhk6u4gTdIJ9n59Jl6Wu60ZKvfhFZ5rHdYY-dObCXB4H_AKBPXIL7eawP1UFfg520O4FEctsSYaMN69_hnhgcN_4WuCDexp5x_CLgKRFKmaOMqZLgCwrMRTbvR85hg4SPayR73kAmuAjI6YdpmMz0NTNFiIybUETKTpjPicDKiQGg7jSJwE9Kxa4f6UchU7m8IYsuAdiLcsly0V-fy1ysvIa-JRofjBO20qjtEroQklvtbSFhfHwv_EFdexMLK67zLvE9SlTE0e-X27KtDS1IgM2vjsj5h1m3xyZU6aQjF9HM2Z9A0ju5CXZTcTT5hEf1UR_nM0e0f_8WI9txN2KZzpQen8rPZtvJuQWYO7SZ4YXes5h6mltkhdseI0Bq4uBKjMtekTDtWwrgpNzg"
+    },
+    {
+      "place_id": "ChIJG4rDaRWdskwRulnqAFKh9gw",
+      "name": "Flat Iron Coffee Bar",
+      "address": "594 Congress St, Portland, ME 04101",
+      "latitude": 43.65432380000001,
+      "longitude": -70.26258,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJG4rDaRWdskwRulnqAFKh9gw",
+      "photo_reference": "AWCwydilIUHPppUxTnFtEE4cBhdKGpVXdBZQNwYlnSgfg9LIv-jmOpRT9v3FIiXCk-ytTffqUM5cUDP5JOWJtbltYMEBUe4Op9sE62BMZz3c8fEZSQYKJCmqEjrHkUSQ2vR4D5_wQKawfmP7zIHyK2YZnkz_4q8W1tfyEGEOybonFWK2vJBxL2_y4m4SLbDLU4_x9Vf1fVeidsE32CSlDtln49F8a4qxmwNQWE8Pw5NXBqVYblDNOmPYxHJyLT4t4kkFs1mr093TyO0pZudzPHi6T5WIVZu60zuSnajGd56oflopeGQf0zr2zkQQmErLTXT3gcyhDPp9rHZIVW_rrU8dIcvqhICcFx4GMDmhkj4k-awhKA__LtSPri4uVTkzr-YMm_YGYIV211D_mwBF9rDmc1zcvfxyZ1po2tYuYgU6P7-AZGopxuunpfzGd3saAQ"
+    },
+    {
+      "place_id": "ChIJGVCGegidskwRpW8dDFo_xIk",
+      "name": "Ugly duckling Maine",
+      "address": "246 Danforth St, Portland, ME 04102",
+      "latitude": 43.64730300000001,
+      "longitude": -70.2657253,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "store"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJGVCGegidskwRpW8dDFo_xIk",
+      "photo_reference": "AWCwydjdaAKbmFSWmbUW_oL24tlesS0jYoe1SzyoDHkuQwKzd_l-tmlyVQWSr6WPcWfUnpbrim9EUMudFkdCY30w5G89hZyH2PABaTmqMcuDQ9f-rD_OdyBp2SlWc1f8I9DdNzrEx9itPxmb-eWww3KqnZeTmQls-KYSSvOZtAE_H8gp7TFolJNW0sMpxQMCUGm_Bb1sZ69p2gEdixkOk38gHRfvgMXFVswMclD80O0ybuS4uV2uwfO2HuS5T6yyVjrm2g4QXBJgUGkugcKJWLvFDoW3_yroFV8khHgC__0r6C6ZO3I68W3VEhO0zeurRR8kvwnoUOx3puePFZnVPwzTG0JOAQ5JVPJJn6cvTEd--mhay1QxelxTMF5JXrwLQ0DWNC5p2H9gE-xuOS8a5Avtvnrs-iioYKIBOfP-7TbvozqtSrJeLshQ_tqpHfOlJXXQ"
+    },
+    {
+      "place_id": "ChIJRWvGamqdskwR45w_OXJ2wQw",
+      "name": "Radial Coffee Co Portland",
+      "address": "383 Commercial St, Portland, ME 04101",
+      "latitude": 43.6518873,
+      "longitude": -70.2570473,
+      "types": [
+        "cafe",
+        "establishment",
+        "food",
+
+exec
+/bin/zsh -lc "jq -r '.candidates[] | [.name,.address,.place_id,.latitude,.longitude,.maps_url] | @tsv' artifacts/codex-city-boards/BFikbzM8T4vwxGHGbK1I__global-where-locals-linger/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 269ms:
+Bard Coffee	185 Middle St, Portland, ME 04101	ChIJ89hxThWcskwR2KqDLwdWrEM	43.6576744	-70.2552393	https://www.google.com/maps/place/?q=place_id:ChIJ89hxThWcskwR2KqDLwdWrEM
+Smalls	28 Brackett St, Portland, ME 04102	ChIJ2XpQcbOdskwRLvBPulo1DHc	43.64783509999999	-70.2614715	https://www.google.com/maps/place/?q=place_id:ChIJ2XpQcbOdskwRLvBPulo1DHc
+Forage Market	180 Lisbon St, Lewiston, ME 04240	ChIJJW5iOcNrskwRnM6dC2NXnco	44.095876	-70.216574	https://www.google.com/maps/place/?q=place_id:ChIJJW5iOcNrskwRnM6dC2NXnco
+Little River Coffee	11 Union St, Lisbon Falls, ME 04252	ChIJZTpEAz9xskwREHcNKOU07As	43.9973174	-70.0610516	https://www.google.com/maps/place/?q=place_id:ChIJZTpEAz9xskwREHcNKOU07As
+Reverie Coffee House	117 Maine St, Brunswick, ME 04011	ChIJyYvcvJuHrUwRfNIZFZLpY2w	43.91569920000001	-69.9651858	https://www.google.com/maps/place/?q=place_id:ChIJyYvcvJuHrUwRfNIZFZLpY2w
+Salt Yard Cafe & Bar	285 Commercial St, Portland, ME 04101	ChIJ37Eo4eGdskwRV6tosgO-0ww	43.6540816	-70.2557847	https://www.google.com/maps/place/?q=place_id:ChIJ37Eo4eGdskwRV6tosgO-0ww
+Bom Dia Cafe	47 India St, Portland, ME 04101	ChIJ87IdcgCdskwRjLTSuHWLOMo	43.66052759999999	-70.2499611	https://www.google.com/maps/place/?q=place_id:ChIJ87IdcgCdskwRjLTSuHWLOMo
+Another Round	549 Congress St, Portland, ME 04101	ChIJx2_KVQCdskwRdhSAx7KIitk	43.65573029999999	-70.2619477	https://www.google.com/maps/place/?q=place_id:ChIJx2_KVQCdskwRdhSAx7KIitk
+Double Great Coffee	100 Congress St, Portland, ME 04101	ChIJ32BlUgCdskwRyL5YLJHvVn0	43.6663163	-70.2470383	https://www.google.com/maps/place/?q=place_id:ChIJ32BlUgCdskwRyL5YLJHvVn0
+Baba’s Cafe	79 Island Ave, Portland, ME 04108	ChIJfx2F-tWdskwR4TDhDoaN9Jg	43.6566801	-70.1978797	https://www.google.com/maps/place/?q=place_id:ChIJfx2F-tWdskwR4TDhDoaN9Jg
+Shaghf cafe	645 Forest Ave, Portland, ME 04101	ChIJKbEYIq6bskwR9LwKYw_K25U	43.6705507	-70.28372999999999	https://www.google.com/maps/place/?q=place_id:ChIJKbEYIq6bskwR9LwKYw_K25U
+Flat Iron Coffee Bar	594 Congress St, Portland, ME 04101	ChIJG4rDaRWdskwRulnqAFKh9gw	43.65432380000001	-70.26258	https://www.google.com/maps/place/?q=place_id:ChIJG4rDaRWdskwRulnqAFKh9gw
+Ugly duckling Maine	246 Danforth St, Portland, ME 04102	ChIJGVCGegidskwRpW8dDFo_xIk	43.64730300000001	-70.2657253	https://www.google.com/maps/place/?q=place_id:ChIJGVCGegidskwRpW8dDFo_xIk
+Radial Coffee Co Portland	383 Commercial St, Portland, ME 04101	ChIJRWvGamqdskwR45w_OXJ2wQw	43.6518873	-70.2570473	https://www.google.com/maps/place/?q=place_id:ChIJRWvGamqdskwR45w_OXJ2wQw
+Cobblestone Coffee & Co.	200 Gorham Rd, South Portland, ME 04106	ChIJ8ZwVcXmZskwRPMKQabyk5IY	43.633112	-70.3241206	https://www.google.com/maps/place/?q=place_id:ChIJ8ZwVcXmZskwRPMKQabyk5IY
+Rigby Yard	50 Wharf St, Portland, ME 04101	ChIJrxVxJoCdskwRJQcbt6aOh70	43.655445	-70.254469	https://www.google.com/maps/place/?q=place_id:ChIJrxVxJoCdskwRJQcbt6aOh70
+Kassa coffee	Main St, Westbrook, ME 04092	ChIJFUlfvKubskwRDpQo7WrFOTM	43.67825209999999	-70.3586302	https://www.google.com/maps/place/?q=place_id:ChIJFUlfvKubskwRDpQo7WrFOTM
+Y%F Coffee	600 Congress St, Portland, ME 04101	ChIJJcnwfQCdskwRxZHT0EuWFps	43.6537211	-70.26314649999999	https://www.google.com/maps/place/?q=place_id:ChIJJcnwfQCdskwRxZHT0EuWFps
+Cafe Luna	370 US-1, Scarborough, ME 04074	ChIJfwSJOwCZskwRfljPc_S_IRw	43.5854752	-70.35547319999999	https://www.google.com/maps/place/?q=place_id:ChIJfwSJOwCZskwRfljPc_S_IRw
+Cafe Luna Falmouth	267 US-1 Suite 106, Falmouth, ME 04105	ChIJ1Urs0a-DskwRkJ-FScs6SjM	43.7267107	-70.2292351	https://www.google.com/maps/place/?q=place_id:ChIJ1Urs0a-DskwRkJ-FScs6SjM
+Mourning Cloak	122 Washington Ave, Portland, ME 04101	ChIJQXNmjIWdskwRnHUQuRao6pE	43.6672873	-70.2532772	https://www.google.com/maps/place/?q=place_id:ChIJQXNmjIWdskwRnHUQuRao6pE
+
+web search: 
+web search: site:portlandmaine.gov parks Portland Maine benches picnic tables Congress Square Park seating ...
+web search: 
+web search: Portland Maine Eastern Promenade benches picnic tables official ...
+web search: 
+web search: Congress Square Park Portland Maine tables chairs official seating ...
+web search: 

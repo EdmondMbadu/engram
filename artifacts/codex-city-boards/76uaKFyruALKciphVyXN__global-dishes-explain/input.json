@@ -1,0 +1,349 @@
+{
+  "city": {
+    "id": "76uaKFyruALKciphVyXN",
+    "name": "Brasília",
+    "region": "Brazil",
+    "country": "BR"
+  },
+  "template": {
+    "id": "global-dishes-explain",
+    "version": "1.0",
+    "titlePattern": "{count} Dishes That Explain {city}",
+    "searchQuery": "local food restaurant signature dishes regional cuisine",
+    "editorialBrief": "Dish first. Each card must name one distinct, verifiable dish and explain one specific thing it reveals about the city. Tie it to an exact verified venue. Do not repeat the same dish. No “best,” rankings, generic food praise, or unsupported origin stories. If the dish-to-venue connection cannot be verified, do not claim it.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "76uaKFyruALKciphVyXN__global-dishes-explain__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJg_bS3NokWpMRHdEp-LNyPRE",
+      "name": "Pontão Lago Sul",
+      "address": "Administração Pontão Lago Sul - SHIS Ql 10, 1/30 - Lago Sul, Brasília - DF, 71630-115",
+      "latitude": -15.8263463,
+      "longitude": -47.8734408,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "store",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJg_bS3NokWpMRHdEp-LNyPRE",
+      "photo_reference": "AWCwydgvRd8nuljQPfO110HE4aFS2tTom-MLgOf6ScLQehGXS1wY1si_VZruk9F2wM6lXITdrFh4AqIBFWmNYJ_5VMbkZAeJIHAte8k8M3uxU4HYEMOEjLgICYl1fw-POUgetkfAywI46T9qok88olQLHdP_CREkTBJE1X3Y2vW_y7Nk4CD7Q7vmO8L4KOR423ZuZQPULad-MSpyxTD2lFLzj5-Vn74jUrpoywj0SEOkXI5wMAu5dAGrISJ2s-6JjmyYhpvf5F686m9-YuWbwbcBX8cQMAlIqhEaGwVwgKlzoqrxaMt-AVCeIUc8yvNYxIJH2Tfwwa8-eBVA9N0pJYC79YDnRnLp-g1rBeCl2p_N-Y2IBViOWArD-x9r76twPwlCIavGpmui80zkoVBEr-GisXRve--gEp9j3uBwK5fw491TyT1NSqcRdbiXo9nQ4v3T"
+    },
+    {
+      "place_id": "ChIJy4h9ps4kWpMRIjcXbp7Tmtw",
+      "name": "Coco Bambu",
+      "address": "St. de Clubes Esportivos Sul Trecho 2 Ícone Parque Conjunto 36, Parte C 301 - Asa Sul, Brasília - DF, 70200-002",
+      "latitude": -15.8191018,
+      "longitude": -47.8683993,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJy4h9ps4kWpMRIjcXbp7Tmtw",
+      "photo_reference": "AWCwydg9_jS19w35s1FVnbinkVgr7sd8t_fg9TXMkW95ixayZT5i04AsbGCL5vzzjMu51qzjyL_iBQt6adE4xyA4zO1ppCAuhtXqb6GdHBREUS7HqwIT0rdm4nYNRkjIDttloCpfvrqcq9VXDfwCfcexabNN8UIeSe4ePhuGWkLPDkJNZ1IzBuHON-VtqD-z9ZE74LHg8TJ0g9R7zXlMjap9cDPr-PSZ6Ozd0OxQ7Kh13HYj9Y8xkWmlqmF2wyxV2s1Ptn4qmMp1VQsctXXvGnKSOjQmSQbcv7bDA9RAX8N-m0cC_HKuewLYGHaXcrOwudg3uQDQlsxk4Q5lllUvgf-AujM_3rSR1GiFDh8usiZnNtnb-iM7MrOBB_rJowy-abQGhmD0xY6diDx89vrgF5386_hkIKlwWvzPRCeL-7-e4Ry6aRQ"
+    },
+    {
+      "place_id": "ChIJAZP6rtokWpMRP0xkdhYWDCE",
+      "name": "Sallva Bar e Ristorante - Pontão Lago Sul - Brasília DF",
+      "address": "pontão - Lago Sul - SHIS Ql 10 - Asa Sul, Brasília - DF, 70297-400",
+      "latitude": -15.8249045,
+      "longitude": -47.8728175,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAZP6rtokWpMRP0xkdhYWDCE",
+      "photo_reference": "AWCwydg47V6ZgOJxHQh0tCd4tqgtF1ZLh4Yn6sKxAaPKpwj9dL9-O4HLEnkb7s_hvKzsc3KeQACGpeSOXtJlElAD5r0qrJKCL2uK111eye7gyyuLJSjfKeGdmU95cOW0B_ovcsmASgGVF_ljNNaO0TtsOrIZ6k7WfecOEZ7Tsagw9eE3AONRLK6mK1xYWbY9e5fPEWIVXUnrGvv8w9uJDc6fg72o02tHNb32yUhjyxzCoXeRgn-5DoiJYBRbzCkK2OBpM9JkK-dHSWE_TVWjQcAV0p1J6SfdatbswNGEA4VYiStIEaDBt5ILefxSveW5QGSr81O9YPMp5NzbEx40CT3MmAOIXZM718GvXioKu5t3cM0p4E8b3LxGB_JiID2ETj5BTRdSwZ6zw6KDJg3xEoqPDvtnuM_r0_6KZJuIHX4aBKJXOi53"
+    },
+    {
+      "place_id": "ChIJV0M4HpswWpMRsua8jZbQOLU",
+      "name": "Fogo de Chão Brasília",
+      "address": "ST DE CLUBES ESPORTIVOS SUL - Asa Sul Trecho 2 2/11 - Plano Piloto, Brasília - DF, 70200-002",
+      "latitude": -15.8200884,
+      "longitude": -47.8676094,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJV0M4HpswWpMRsua8jZbQOLU",
+      "photo_reference": "AWCwydiLeM8txF8HVtaoDVFoJJgsxEge8AyDdWR6HkL4CvKSZM9fkFByl7xfOJxVG8dApFKi-D5ZMJluPDzzFUXGUrucIcvMSO07wTks81_nKTvU33C9-22zkUP-K5sFUoPF1gMrQFoSQOq5XA2eHkRI5Mvb9Gbe8tlZyLblbCDgJerwbE6XfXI7t78fujileMxZxkRM6_nA615XBn692Z6IhDdHLTKOU3rRhkXF6ZMywTFw8mDrpaq6G2XyLvxabjHGXiJzn9MoUoC-uXl23ktUaTD3M0RbLmt-69hUILtSiI9lyAEqi4HGkmiCY-hOjFTnCg0P9aMxnS8K976X69n4ENe5IXRWI5zod4JHogVTn2qLvp1uCeZoxZi7orD4PAqyhwvO3U9bvuhmno67CNjgh_SxSkDGcZ9G38tbEDkW9uE"
+    },
+    {
+      "place_id": "ChIJExmgMFojWpMRUrNcSkJw82U",
+      "name": "Mangai",
+      "address": "SCE Sul, s/n - Lote 2 - Asa Sul Trecho 2 - Plano Piloto, Brasília - DF, 70200-002",
+      "latitude": -15.8176974,
+      "longitude": -47.836948,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJExmgMFojWpMRUrNcSkJw82U",
+      "photo_reference": "AWCwydh7OWROIEm8eM_7xFiMQqplv33WoipxMarD-VwZEPTCB_b3pcqM2kIzWqmm4N3iwX6KWJQtKGN9CTV56FNJ7a1EdE8N5fnVAYn0JBG-VlzWu9soEGaJhvuJpH-humgWs4O9ZCaElLhI36DfbUylbnRUvNeINbFVMVwj4MMzp15-77fj5IrjbKzoEj5frCfghRyuIFDK1WKRvtrze7O4NoTerHZWNmZ76gfHKT4syc6lUeuWPvsRBJQ8_Xae-pp6kHUJ2hWc0ZbzDOLY3t_sW8TlVVxGsnFMqFc93taHgzBUm3JMPtgfaLDwP6uJwayHXqHTjghkTZPZFHV9leir7fVxIPBCHXJ_g5YjLIaURkdFMe_HbaBH5fi6M-k8NoS0wq0eI4r68RNo40fSjlM64C4mMe1fP7jaG_nraK2cm79XN0wF"
+    },
+    {
+      "place_id": "ChIJncvFNco7WpMRgxlgf5yunzs",
+      "name": "Vasto Restaurante Brasília Shopping: Happy Hour, Sushi, Massas, Delivery",
+      "address": "BL A - SCN Q 5 Q5 Loja 84L, Brasìlia shopping - Asa Norte, Brasília - DF, 70715-900",
+      "latitude": -15.786767,
+      "longitude": -47.8889043,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJncvFNco7WpMRgxlgf5yunzs",
+      "photo_reference": "AWCwydgQGdBjj-Bhkcd1LqiuzA_GbSArw-T2kJMwcAwCSM4v_UwDbVzZC8bjvuVa4dwAEk08ZyYdQp1bSn9X38sHKpGkACuU36Ob8OT-ZBbIpVSyJ5sv2aWVMH0ltuPjxpj-vZsWkzrbdRaYS0TH36g8jvP-yZAJ9GrVJFnvLLX4uxQQ6Doq7D0T3jc7ZPwktGFU-jRNtfFOW4cswWk1JmRXltFPWpTsszozPOp063Yv8H2o2B9lPbfW_HlZFTn7HpKwkIY51qeo_TnbDDA_RYQwsg7SwyyV40WK_CaKgPyRY7_y8WS6DyDaD-_Nx0S9I_aV2j5kGNB7cctOWSWqA7OOsvcitVJ2IaBsFNFYv6ST7sSqf4wb6YNmqeGOaztqNms_SEM4ndig71FG2coX2RUNxKRh2Ci6E-wF-HNQR41t0gPXHQ"
+    },
+    {
+      "place_id": "ChIJpb8WJUslWpMRquL7_68mfvY",
+      "name": "Restaurante Universal",
+      "address": "ERL - Sul, 18 - Asa Sul, Brasília - DF, 70273-530",
+      "latitude": -15.8234572,
+      "longitude": -47.9050211,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJpb8WJUslWpMRquL7_68mfvY",
+      "photo_reference": "AWCwydi5Qr-D5smHx_b-E4i_VCJSHL7Vgy53IjI_XMmXn1ydJJFEjSLT0FaSkwMajZS3rkFefn1nzFKhbQ8Xz5FrpGrpWpnaseDQCA85IoOsY234scDWnSY1URi2UuyjYzkEBLISDkWnENp1pduQ1L9WPQXykVaxd-cCxoS8P8Nvg4_PTdB6Tj78pzQyjB6mor9IYCOKwqgs3MNDdvZHK9VVUDbVc6-BXnEyXsWn2lYtEkGn5bzGGt0qPq9iasFWj6CXaQlRy3bTRFXpF1Vd6EM0ub3Du_JSY5ko9Pu9SiD9zUeosC4YTqNA3VvWFwnNKV4lExHHxU4Mf1y4BrdlEAUBTEjH-hrGUH6YLfAcy2gMSs_10TMcesqZ2m3CY2c-JwGlbNcxVR3bIqhQzZuWSMonOdtiaX9H61AQSRmbJsnp9mX4ps4"
+    },
+    {
+      "place_id": "ChIJUcPvaKovWpMRhpMXQUvEFMQ",
+      "name": "MADE IN JAPAN - ASA SUL",
+      "address": "SHCS CLS 409 BL D LOJA 30 - Asa Sul, Brasília - DF, 70258-540",
+      "latitude": -15.823624,
+      "longitude": -47.9007045,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJUcPvaKovWpMRhpMXQUvEFMQ",
+      "photo_reference": "AWCwydhfZnTP3rm4ICP1SBdVKle_Y618NdzKPFZrC_MNg2Di_AscXByL1x_WAL4fKG1fEIjhcAbKDamWV5S3mB5FQKcM1q1BMLevfgJtdGnt1JLFd8XB87jyQhRgtTg5fFrSbtAJJJJq-MyknC1bY_Cn6dMW8GgSUoYNYbxBeK7btFwubpZsawbALSUHY7lYxagpRhJ9THGDR_mIMDqUW4nnS_m-qEgojdrDmj91BBysb7oLI19xvHpr74SzXbL5pFfrRcsKj-rj5k4dlPZJrTaH6GosA0xfRpzsTTE9K8UAVum7yCEttDwkzg7uo6m9xDaDBcEX-_n6xo-T4mu-e6FX50UwBibzX7uUsweP9g7tPJJmEIiw8yGgwHepF-S8b0u8dwpKdx1dFInJTBPwh78EfI-vbOlT_UtmS0Js_GA4pe8HXQ"
+    },
+    {
+      "place_id": "ChIJt-udrsA7WpMREp8LMwIJ2dI",
+      "name": "Nonna Augusta Trattoria: Comida Italiana | Asa Norte Brasília",
+      "address": "Bloco E - Loja 69 - Asa Norte, Brasília - DF, 70876-550",
+      "latitude": -15.7471256,
+      "longitude": -47.8832222,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJt-udrsA7WpMREp8LMwIJ2dI",
+      "photo_reference": "AWCwydjEof8oPMDmVSNRXU-1DrIS7YKeloZSJWLEXhqM-ET-U_fEzoOwqXWAtQ-DmS4GWW_kbH5Qod9jPENn_5m8XRDlxhAFHsXFhh7IMdDdnmRR58TEHAkR2R3vQElse_tMJ1r6JruM2bo7uzGpFk-dRLt_U5p5kCuK_ssI6xKdlWncXAMla3vyMb-mE7fq3zcakU3eSYJQGudKdlVd0gr4r4ZAAi60AZnD2ays6_70WWj6wuliee_pLiqkv7BHy4dXVBEqkQWSBeboFaGK32E11DO2a-_Q0wbDXk59OzW8nrc3m6HF7Wmnp61el-b96OhHUzp8A_5iB33xORVlnDk6wdqgmSF8N4QIv7V7pj5_uofBRo4wXgDPoFoF3gM3maJwG4ICAtjC6bu1FJ1HYtMm5u0T6zhcpFvJnXFnSKxXZ2A"
+    },
+    {
+      "place_id": "ChIJ43TpJvo6WpMRybviSjnPJu0",
+      "name": "Mangai Shopping ID: Comida nordestina, buffet variado, pratos regionais e happy hour.",
+      "address": "Q SCN QUADRA 6 Bloco A,b,c - Via N2 - Asa Norte, Brasília - DF, 70716-900",
+      "latitude": -15.786753,
+      "longitude": -47.890309,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ43TpJvo6WpMRybviSjnPJu0",
+      "photo_reference": "AWCwydiK1oRqwlmVcN4gezvO9mHCt_T9RqjcZV5u_I8b7H2baHsykDYF4Oikyrq0jtCt5ueCXsnzIRr7mNdCZEWsSG5nxtpln7V_xL1VOS9mtSahbM1xsglRs_wQmecqx9vZdidR5IhZWJ3x66KCqc73JP4gKNKdDtzj_jVLZLgLG_kvNGCEHOdivhqpx9vRthwaBnjRCkYAseCkjuDzRjWEtdu8vnFUg8LPhOWU8X8acay3LYWF0yqReB8HWpAYNV6h4j6sq9lVd3arutc-GEX-5rBNhaNYkEmqaJwprTQhS4Or5_TSMeuG7vGEcnzTK-SZNqegENUyVej1OzJH1pbBTALoqgryHjaPOTqsjPmmHU2qtKmGFODBnk0JDMYH9s-wEkfN8q69HmOJFmb-4FcQm9MKi24LMpBkS5902apDLhlRwQ"
+    },
+    {
+      "place_id": "ChIJ9cqxClAkWpMRYoIXQiLXY8M",
+      "name": "Taypá",
+      "address": "Shis Qi 5, 17 - BI.G, Lj.208 - Lago Sul, Brasília - DF, 71645-500",
+      "latitude": -15.8606087,
+      "longitude": -47.8723097,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ9cqxClAkWpMRYoIXQiLXY8M",
+      "photo_reference": "AWCwydiX1xs5j1tibtvAJnL76jK2vkUJ8wb4IPaPh3CGFqqEflhi26Tmp8QeEyOUtyrxOjubgTYu_NBlrBQN54pgZUnK7UgBAbY26zLe4wXFXZpN7W1tFjvIMM8WKJ10Pup78HAwlbPAZsGqTfLtiOiKLivfoQzYrGAYU9Fj2yuNbJ9z3FHdFlsCM8hdVC5HRd64s7324SO4jnND684bFZhopde5BmRI3hptNEiyohX1ESB-9NJUc9d8HqlNSm2XGbWoms1czqORpr7JEQkMcyotfCOarL2U5zYTgq6DfKe8yeDBzO2XTYBst6e86-_4wfEyXrdpiL69kFibknnu4dPPvz1lBg9CEZCs-yKv_KdPQdpM4GXiLy22UFyjvOV1-GHOtJMmnqhQCzfmBNPqNptPDsy092N01-ek1r8JQHyiALe7wg"
+    },
+    {
+      "place_id": "ChIJyaJdvlM6WpMRRvjqF_pqAj8",
+      "name": "BSB Grill N°1 - Asa Norte",
+      "address": "SHCN CLN 304 BL B - Lj, Brasília - DF, 70736-520",
+      "latitude": -15.7746064,
+      "longitude": -47.8857149,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJyaJdvlM6WpMRRvjqF_pqAj8",
+      "photo_reference": "AWCwydiC3ZoJd1uGaDQJ_6CYjGFl9ViojTaxXWC8h49rCoyXuroG8qy_XRjVzMLVtCZTsE2GSQ_kadLft1t4oVO8n12rw2RaMZQ6N3_vrkQC0p2c6Fdfbm-1lqlA_D4BC1NKKXc7KHzpH4beWiV70eTBUdxK8GIGstfsvs3yJXzGuZ5tpeTXpZ9hSS8U6hG-ZMPRHvy_5COQs5LpXV5iLW4Cgr3o8UvU-aERuvRk89i4lDlIxTP6pi7aRQ3Ofn896CwL5VxvP4XThvttyGxoEnWVK466FyNEPeiEXGj7orG_mtXP2i5P10UGtKR_2nqUOMRgMirmB9EQ-ZclJpsgKBGGoU0RfLVOxFBORHIru0FWmJLlXrRmsrMxR9Z48QoyuFwP1qAQeYpdTLJCaoBiPkuO61CABUiooM8MMDpXq8EET7JkBg"
+    },
+    {
+      "place_id": "ChIJAQDwubM6WpMRQM580R-c91E",
+      "name": "New Koto",
+      "address": "BL C - LOJA 20 - Asa Sul, Brasília - DF, 70275-530",
+      "latitude": -15.8273585,
+      "longitude": -47.9103686,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAQDwubM6WpMRQM580R-c91E",
+      "photo_reference": "AWCwydjAE2XNJesMiSL3aX2JsQ6UIC9Ypos8wkShJ36oG-dDcCl1H5SBm2TFGAORd0UG8MJ2DWNOOodvF5KqU-mParyXK2vRiuJsL0hF9P6eF1NG7ZmaKMK-lQ4LX_nzrbRvFIi6CWto2AKOeJ_5HQ11aXNoNrx6LDC0tcEpE2S28rmtDiKPLmwkjQgoeRaRuogINydstFq542y2krF4im0RFuHVurdR46Q82qbCXKuqiFeIXFrawaqHvKt91MInKrM0ecqw2UgeQEGIoMFbRs-Lh3dKjxpMpfuI5uvELdCwqokyYg_n_ixD3n309xsipt91LxE8nYatyH710_lgRJqnZrAnRmUXQtJixGQFBMcq0yHz1cXNYjeuBpHRIS9jwvcr-B4pAGwDQ8IvOQfVuyuxO5AdvqB3adHS6Tpis-0JmMsC1JXt"
+    },
+    {
+      "place_id": "ChIJN2ZuSUE9WpMRCvsuwihlyas",
+      "name": "Doma Rooftop",
+      "address": "SHTN Trecho 1, Lote 9, Cobertura - Plano Piloto, Brasília - DF, 70800-210",
+      "latitude": -15.7864512,
+      "longitude": -47.8338828,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJN2ZuSUE9WpMRCvsuwihlyas",
+      "photo_reference": "AWCwydgmfTLS7rDSaSBbOoypmr8SSg-MtBAnyDMk8oZ-PRaU6l_83HmxPu0-0jgPtLmrILXTHUQzxRwKSgaG9JkWTKv55H-StrPW6cw_kEhwCU6p3ukN83Uz0dZZhXBroNtMvBphZ6gVvNlc0TAWBx5i3vV59jcItm5kneIgxiEoj2WlevzWCXaHrB6S-gSnrQBjxPxckb4O7auSRCAHzVXvz0urH_7CFEfmG3eoKfz_x32nVfhkRLea3u_TXGDGQpgiKd0mg7Cy8sNGPTKvY6Tvc_EMlfxkdaMNW0MYHe5WImPlCT0jIIr5Fp45mhXL2s_qYWhff6MJsBCrrADliHdFK8W_21CQEXz9Tp_Fc_fsnYYzVvbuqRmlpR_QBTCm9h9vW7f70w3kIde39d7xZflHIcc72D1HO2rq3ShN2Ekw7IF08b9T"
+    },
+    {
+      "place_id": "ChIJ7x849lY7WpMR7bIRogqR2b0",
+      "name": "Restaurante Esquina Mineira",
+      "address": "Setor Comercial Residencial Norte SCRN 704/705 Bloco D Loja 42 - Asa Norte, Brasília - DF, 70730-640",
+      "latitude": -15.775352,
+      "longitude": -47.8905097,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ7x849lY7WpMR7bIRogqR2b0",
+      "photo_reference": "AWCwydidjyFKDiHbpiFu5QPDE38D2FTTQjyq7Nl9wLzTQy9AeDkO3Y8TPBRUSREfld9BF2xpgrBnwBtKDRvSzoDPXuGWbU8YBxcZhRLKLkhiw9U0kKwGSHbpU5hPT0cT06HedNTk_gbxg4HTC9rBKJiUfOICrW2fDyD1kh4MH2ll88L_ZqGyMU4hT_TRyrD_7rTIROjoDjorVTOqwMf4MH5PQga1mHpeIW18aIDgqq7NZKrJW-0fCphktFNzFRNtDX6A0yNLECJG59j89SNIshPCEWBn2Y7Twgm4j-NyzIrB-OkYaCPiVQ9pRYtxkyqHuZvXnruBUvoFtLLnqdAYba7pizLU10Urohpx6zl1H3uD7tNNHnco1wwWK-y9b6exyPkwD0tmVn_bNUXc3wHoIioICnPSzvkDjpvBinYR5ryU10vT4g"
+    },
+    {
+      "place_id": "ChIJH1Bz6VQ6WpMRg9xOQOc21ik",
+      "name": "Confectionery and Café Chico Mineiro",
+      "address": "SHCN CLN 104 BL D Lj 38 - Plano Piloto, Brasília - DF, 70733-540",
+      "latitude": -15.7770059,
+      "longitude": -47.8838206,
+      "types": [
+        "bar",
+        "cafe",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJH1Bz6VQ6WpMRg9xOQOc21ik",
+      "photo_reference": "AWCwydjpz-F74EUd-tO7wMte65M4ALnejkWyxvFSjp9n3_AeH1m-ISreVWtAHsEIX5velN6h64uwq75m14DjWaPP0cqtbI6qcySY5cUhf3D_TH1hhSZdIquNomNKLKbHeH2dZcFojdE8wmuB8bUjBS7LhJkg01r99JnRaylacGPruLxqe1S2FFimLu971FRsnwt5XJ9fmjeeY-edFgD2AAVRrzJT1MBmDfitNs0fPRlSH3BibPxe1IG2Ipj2FjGg12wGmdDGj6cgfYX0vYZ6eUvz_OjFr8gzZtCNGxw-8TuHwbJWO844IZQEa4_vCPJKcN1RcXP5mC8EWgfZSdYdxG6KnD3MIs9lLqp5MdffwENFTtmNlF0_DmYnH4ETZs-kLEkn81dCnbp1PFtbnTTXuaKKPbNi-J96dfVJ3gTSjOHJS3K6rw"
+    },
+    {
+      "place_id": "ChIJwWB3m0E9WpMR8Wsb8oGBUmc",
+      "name": "Piccolino",
+      "address": "SHCN CLN 314 Lj 13 - Asa Norte, Brasília - DF, 70767-520",
+      "latitude": -15.7440982,
+      "longitude": -47.8946937,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJwWB3m0E9WpMR8Wsb8oGBUmc",
+      "photo_reference": "AWCwydhwz5BqfE1QxUznwtnKTGB7VMp0NTzQtM4UzSUbyl4ko44T343zqIUEJRYlhmDTirIDMjmLqf09HzaHqpP9UfbH81HGmELdswZELYwAbtw1Jbv7wz_FElhm-hd57W3nLEORpVFCrsvrfBrSpBkdkzRyljcgj5pz6Xfu-c6UQBkyRWPeQZDqZHdayDiIMbAwNJ3cmAgoJuUwElGN12hcALwBNG2e7yY5OKpeyxfvEiMfA-Mw-so7w4Z7RZig2LP-5CY-6zY7egtg0RYr2Esb9F1tSykgFIUcb6vhAIJbhntBrNO1uGme4T6Z5xcwVpvkcjK5wsoOOUxhObZSmfg7cx3loT4AP0estabEv_MHyqKsW5z52ED8IA6JIWOkbpYBIV6JxLjeEl-ueqwlcNKKSrirXprquoBgbcT4d7vnvK8jyqTbr2p-cDrZnniO1w"
+    },
+    {
+      "place_id": "ChIJR33TFKI7WpMRYdaxmU4PhcA",
+      "name": "Marie Cuisine: Vinhos, Massas, Sobremesa, Bistrô, Brasília DF",
+      "address": "SHCS CLS 103 - Asa Sul, Brasília - DF, 70342-510",
+      "latitude": -15.8072527,
+      "longitude": -47.8925491,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJR33TFKI7WpMRYdaxmU4PhcA",
+      "photo_reference": "AWCwydjA5WSUyl1jeAq-gQOc5KmosxkL46xy9Vj99Az5-s2lHWoAapGjzn3vYVAzbBsfj56mYHx9Qlm4QNGDPdFoZlMaAIhkdGnF2Uarc-sKw76sGSzT_Ti8r-sXGB-IYVnW62YoIwvDOQoJM3BCj1yurXQiEBesOwmSBJc8vXojnMdtSTg2qtqbOxiBnCLllxZgwNQkuQCvKbgulsu9gmRbq5Xeo6Vrg_TIx3uRtNBwF2zbzU96mh8nCe8UR9St0PWwul22eQTvbfk6zIARMGIsbx66nP0dAqMn07WI6ykKVwM4W2d2uGaw_dXJHOJedM9TuQVpy_r0jHJ9yKn0c-getFxrH1E9CIywLelQzBqg4_Ms3jGPCfSgMwwcjqtsmsc9egxMXvDMeNnzyuLLsw3Oe-3bwovSiKSf34CObjrqxsJnOw"
+    },
+    {
+      "place_id": "ChIJaSjJ_DQlWpMRnyK3OUAy-BM",
+      "name": "Restaurante La Chaumière",
+      "address": "SHCS CLS 408 BLOCO A loja 13 - Asa Sul, Brasília - DF, 70257-510",
+      "latitude": -15.8224127,
+      "longitude": -47.90131040000001,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJaSjJ_DQlWpMRnyK3OUAy-BM",
+      "photo_reference": "AWCwydg61n2Q-Hr0h7Ar-MAwAfcY1Y9MPsD3nKRJD0B5iNnNjrNaCJrjnrge1adkctU7Z25I4gZcBPSGjt3qeHRVIaXqDJdIzpGU1Xy2XOQBhgTzXHJ4wPDydra6y5aZtTyt0FAbcjFxDT0-bWeMScn4psjm_QPX1DLBr8_38HFYFt-ShW7GD5mGlIX3O94_qBVDyyFs7TK6Aoptff4spvA_cPSjgaeZsIdH6cukjR_lgGAawZtE16rQMlXGxHS7lggTciOc34awzkEEvQ4dmodcfDBk7544jIhJhuCUmAvgHHI2x9CF-b9hc9zw-LcsaBrYzVdgA0fUAxXCyOvlAbJyMobb0B3yZcjeoEvvXSEAkagWJmCCimwmK2FinpiCJQMtid50ZIlhylgNsdi_23ntdz9dedj9SWMp_pizKYtfovVW4Q"
+    },
+    {
+      "place_id": "ChIJd8QQABA7WpMRwFchNxePyqA",
+      "name": "Fuego Alma e Vino",
+      "address": "SHCS CLS 112 BL. A Loja 3 - Asa Sul, Brasília - DF, 70375-510",
+      "latitude": -15.8238894,
+      "longitude": -47.9131017,
+      "types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJd8QQABA7WpMRwFchNxePyqA",
+      "photo_reference": "AWCwydifP09U3hs4p-zrHHAgKUjomvd383HUBV1Xno40yXvaSYmy9zQG2oM0Gc8wgA8tCy2C3m-SIrD3JtzV7Bc78afzaaRDDcQ0I7BD9s-5nLsMUlTOwZS_R3n1Kg7vvvvWrU6eA4hNi77YXmQT2MgaGWKOz0MIqphUSYEc5cLfiPeMzzy9rtrpuPs2fMa09IokWwynsNk6_ZTgkQxQ3vT1sib3vIxwb8HV2pUojA-Ir9VBwq4Ffql5gouRRbOeBQIlhgQDCm2y4BbwhjM11F6kaa-QTdhzKZ7J7AAH3HHsltHo7f2gxGSn5IbYc67b40mDEiNLIzS-ar7-zFrDlb2EeQ6IbRaKqt_UcDlOR8Vc8-jFx5jwUFlox3d-jkZTHcZatjaJIcnu7jAuPjRA1ynbs_kzVx65dfzrWUvLWk1RYSs"
+    },
+    {
+      "place_id": "ChIJdcopOcUkWpMRw79rv7wnJhU",
+      "name": "Fausto & Manoel Pontão Lago Sul - Bar e Restaurante",
+      "address": "SHIS Ql 10, Lote 1/30 - Lago Sul, Brasília - DF, 70297-400",
+      "latitude": -15.8254628,
+      "longitude": -47.8715104,
+      "types": [
+        "bar",
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant",
+        "rank-6"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJdcopOcUkWpMRw79rv7wnJhU",
+      "photo_reference": "AWCwydgpnd27yqKOm-Zf49tS0BXHqNspDbGkO4XKEgn2pU3Rj-xM4JyGEG2aG1Cj6dxGJn6FKXjYBcj9ZidjIqWi5RFnxlJ3l1ReeG_BYC5Lb3kaFwjQrSjPY-9rGy-UM0ywoF1A2Y6BwA3pO018NFB8nw1LzVWkSlMPlrnJUaYIYh3bI1cGXgAED9f-IUPv8BnQpurTYXo6vP2eWB0moWKSqWaDJ_xbkZi1ZDH1ngoh7d9FXOEPiCtLQBKV8dfeh6efaj8p4hAV_ja5JoAjsKgZabaJzGUZX8caugye5Y6lYwPIIWKK6vvaRqZ_kO7rEUknfnZzOA-wLCjNqT1w7N3twaGl3yYGsSCNV9F6fBmf5KVmM8e3eNxHivlUylTbxXXwHIeNHcdqLxVqtz2L8lcZRoQilQlhr60tZ9wJjmzUxh8dl2s"
+    }
+  ]
+}

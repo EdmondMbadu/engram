@@ -1,0 +1,361 @@
+Reading additional input from stdin...
+2026-08-12T02:43:08.686232Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T02:43:08.689221Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+2026-08-12T02:43:08.692261Z  WARN codex_rollout::list: state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back
+OpenAI Codex v0.147.0-alpha.6.5
+--------
+workdir: /Users/edmondmbadu/repo/living-wiki
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 019ff3da-2907-7410-b2bb-b5c9b53921fc
+--------
+user
+Read /Users/edmondmbadu/repo/living-wiki/artifacts/codex-city-boards/1boxEqZeyAQeZCKW5lj1__global-zero-dollars/input.json. Research and write one source-backed LivingWiki board for Dongguan, China. template_id: global-zero-dollars. Exact board title: Zero Dollars: 10 Things Locals Do for Free. Every card needs an official or reliable source explicitly supporting free public access or no required admission/purchase. Avoid venues that are merely outdoors or sometimes free. Card titles must lead with the free action. The input candidates are identity leads only. Their names, addresses, coordinates, types, and Google Maps URLs may establish identity/location, but never prove free admission, a menu item, local behavior, uniqueness, history, quality, opening hours, or popularity. Use browser research. Prefer official venue/institution/government pages, direct menus, cultural institutions, and established local publications. Avoid SEO listicles, scraped aggregators, review snippets, and invented synthesis. Every card must have a direct https source_url that supports its central claim and a precise source_title. Preserve a candidate place_id and maps_url when the selected entity matches a supplied candidate. Otherwise use null. Use supplied coordinates only for an exact identity match; otherwise null. Use fresh, concise LivingWiki voice: specific, observant, and useful. No rankings, best/must-visit/hidden-gem language, generic praise, stereotypes, or unsupported superlatives. Return exactly 10 distinct cards only when all ten are defensible. Otherwise set complete=false and return only the defensible cards with clear warnings. Never fill a slot to reach ten. The board icon must be one of: restaurant, style, money_off, weekend, location_city, fingerprint, schedule, dashboard_customize.
+codex
+{
+  "complete": false,
+  "city": "Dongguan",
+  "template_id": "global-zero-dollars",
+  "title": "Zero Dollars: 10 Things Locals Do for Free",
+  "description": "",
+  "icon": "money_off",
+  "cards": [],
+  "warnings": [
+    "I’m reading the candidate file first, then I’ll verify each free-access claim against direct official or reliable web sources. I’ll leave out any lead whose zero-cost claim cannot be explicitly supported."
+  ]
+}
+exec
+/bin/zsh -lc "sed -n '1,240p' artifacts/codex-city-boards/1boxEqZeyAQeZCKW5lj1__global-zero-dollars/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 0ms:
+{
+  "city": {
+    "id": "1boxEqZeyAQeZCKW5lj1",
+    "name": "Dongguan",
+    "region": "China",
+    "country": "CN"
+  },
+  "template": {
+    "id": "global-zero-dollars",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Things Locals Do for Free",
+    "searchQuery": "free attractions parks public spaces activities",
+    "editorialBrief": "Lead with the free behavior, not an adjective. Verify that no required admission or purchase is needed. Explain what people actually do there and why the setting matters. Avoid “fun for everyone,” vague affordability claims, and temporary offers.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "1boxEqZeyAQeZCKW5lj1__global-zero-dollars__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJHxDDnb4KAzQRbchl8lexBlg",
+      "name": "Keyuan",
+      "address": "32 Ke Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523013",
+      "latitude": 23.042926,
+      "longitude": 113.743609,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJHxDDnb4KAzQRbchl8lexBlg",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJox4WEwuCAzQRebP3EGWGHiE",
+      "name": "Yinxian Resort Happy Valley Paradise （Northeast Gate）",
+      "address": "X2GG+4R4, Dongguan, Guangdong Province, 523067",
+      "latitude": 22.975257,
+      "longitude": 114.027092,
+      "types": [
+        "amusement_park",
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJox4WEwuCAzQRebP3EGWGHiE",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJP0-Ip9mbAzQRO5naoXRdOeY",
+      "name": "松山湖公园",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 大岭山镇环湖路 邮政编码: 523820",
+      "latitude": 22.885328,
+      "longitude": 113.862322,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJP0-Ip9mbAzQRO5naoXRdOeY",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJlZ5xs5iXAzQR3O9AaD1v15U",
+      "name": "Chang'an Park （Southeast Gate）",
+      "address": "214 De Zheng Zhong Lu, Chang An Zhen, Dong Guan Shi, Guang Dong Sheng, 523850",
+      "latitude": 22.816302,
+      "longitude": 113.804984,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJlZ5xs5iXAzQR3O9AaD1v15U",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJH9rkko68AzQRH4X8tttZ3qo",
+      "name": "Humen Park",
+      "address": "4 Lian Sheng Zhong Lu, Dong Guan Shi, Guang Dong Sheng, 523900",
+      "latitude": 22.817669,
+      "longitude": 113.684659,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJH9rkko68AzQRH4X8tttZ3qo",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJwz0XoyqYAzQRmiy5eMMegFU",
+      "name": "Chang'an Countryside Park",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 莲峰北路RRP5+6V9 邮政编码: 523850",
+      "latitude": 22.8355399,
+      "longitude": 113.809724,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJwz0XoyqYAzQRmiy5eMMegFU",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ_9fACJTDIDQRp5pkPa9lIUw",
+      "name": "旗峰公园",
+      "address": "2Q8F+RRF, Dongguan, Guangdong Province, 523000",
+      "latitude": 23.017073,
+      "longitude": 113.774539,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_9fACJTDIDQRp5pkPa9lIUw",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJCYqGYH54AzQRWrnET2RdHvQ",
+      "name": "Changping Park",
+      "address": "XXQX+59W, Chang Tian Lu, Dong Guan Shi, Guang Dong Sheng, 523560",
+      "latitude": 22.987992,
+      "longitude": 113.998457,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJCYqGYH54AzQRWrnET2RdHvQ",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ0epQZZecAzQRCKC2aZ_cAew",
+      "name": "Central Park",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 中心一街WW9G+4C9 邮政编码: 523770",
+      "latitude": 22.917788,
+      "longitude": 113.926097,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ0epQZZecAzQRCKC2aZ_cAew",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJfbrs2QkIAzQRTYYiOCC3-UE",
+      "name": "Huayang Lake Wetland Park",
+      "address": "3H8F+C72, Dongguan, Guangdong Province, 523132",
+      "latitude": 23.06601,
+      "longitude": 113.573156,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJfbrs2QkIAzQRTYYiOCC3-UE",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJPzE6QLUKAzQRk1OU49IqZFc",
+      "name": "Dongguan People's Park",
+      "address": "2QQ5+VQ4, Gong Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523013",
+      "latitude": 23.039643,
+      "longitude": 113.759467,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPzE6QLUKAzQRk1OU49IqZFc",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJFcr_vN2fAzQRMrSdF0vTx8A",
+      "name": "虎英公园",
+      "address": "Guang Dong Sheng, Dong Guan Shi, 迎宾路 邮政编码: 523122",
+      "latitude": 23.00958,
+      "longitude": 113.787455,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJFcr_vN2fAzQRMrSdF0vTx8A",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJaVPPFJUKAzQRCJipKLEj3e4",
+      "name": "Wanjiang Park （North Gate）",
+      "address": "1 Gong Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523050",
+      "latitude": 23.0465346,
+      "longitude": 113.7380772,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJaVPPFJUKAzQRCJipKLEj3e4",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJD7nlQvihAzQRvNt_mjlGvcQ",
+      "name": "Shuilian Mountain Forest Park",
+      "address": "Dongguan, China, 523070",
+      "latitude": 22.92711,
+      "longitude": 113.762423,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJD7nlQvihAzQRvNt_mjlGvcQ",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJPX-w7nGCAzQRBG1JPbi7ql0",
+      "name": "Changping Railway Park",
+      "address": "X2C9+56J, Gong Yuan Lu, Dong Guan Shi, Guang Dong Sheng, 523067",
+      "latitude": 22.9704675,
+      "longitude": 114.0180009,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJPX-w7nGCAzQRBG1JPbi7ql0",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJV4pp67YKAzQRb8cmBKHs0Sc",
+      "name": "人民公园",
+
+exec
+/bin/zsh -lc "sed -n '241,520p' artifacts/codex-city-boards/1boxEqZeyAQeZCKW5lj1__global-zero-dollars/input.json" in /Users/edmondmbadu/repo/living-wiki
+ succeeded in 0ms:
+      "address": "Guang Dong Sheng, Dong Guan Shi, 新芬路口 邮政编码: 523013",
+      "latitude": 23.03955,
+      "longitude": 113.759546,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJV4pp67YKAzQRb8cmBKHs0Sc",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJjZVUjpqCAzQR3XjV83ypSH4",
+      "name": "Xiaxu Park",
+      "address": "XXGP+9R9, Sha Bian Jie, Dong Guan Shi, Guang Dong Sheng, 523560",
+      "latitude": 22.975918,
+      "longitude": 113.987119,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJjZVUjpqCAzQR3XjV83ypSH4",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJmXGSPnuPAzQRgAaQkg9_HDw",
+      "name": "Dongguan Daping Peak Forest Park",
+      "address": "Q2W6+7P9, Dongguan, Guangdong Province, 523710",
+      "latitude": 22.795652,
+      "longitude": 114.011858,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJmXGSPnuPAzQRgAaQkg9_HDw",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJ6Sw0bn54AzQRsGFKxlDyrco",
+      "name": "Changping Fire Fighting Theme Park",
+      "address": "XXQX+9MP, Kou An Da Dao, Dong Guan Shi, Guang Dong Sheng, 523560",
+      "latitude": 22.988462,
+      "longitude": 113.999203,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ6Sw0bn54AzQRsGFKxlDyrco",
+      "photo_reference": ""
+    },
+    {
+      "place_id": "ChIJaz46lwqXAzQRJW6zsdX8S-c",
+      "name": "Bijishan Park",
+      "address": "RR66+7P6, Dong Men Zhong Lu, Dong Guan Shi, Guang Dong Sheng, 523850",
+      "latitude": 22.810657,
+      "longitude": 113.811778,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJaz46lwqXAzQRJW6zsdX8S-c",
+      "photo_reference": ""
+    }
+  ]
+}
+
+web search: 
+web search: site:dg.gov.cn 东莞 免费开放 公园 门票 ...
+web search: 
+web search: site:dg.gov.cn 东莞 "免费开放" 博物馆 ...
+web search: 
+web search: 东莞 鸦片战争博物馆 免费开放 官方 ...
+web search: 
+web search: site:dg.gov.cn "水濂山森林公园" "免费" ...
+2026-08-12T02:56:00.078784Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 203ms)... turn_id=019ff3da-2953-7033-acf7-3449259cf417 retries=1 max_retries=5 sampling_error=stream disconnected before completion: idle timeout waiting for websocket
+codex
+{"complete":true,"city":"Dongguan","template_id":"global-zero-dollars","title":"Zero Dollars: 10 Things Locals Do for Free","description":"Dongguan’s no-spend map runs through exhibition halls, neighborhood reading rooms, archaeology, ceramics and a campsite set aside for the public. Some stops require registration or observe weekly closures, but none of these activities requires admission or a purchase.","icon":"money_off","cards":[{"entity_name":"Dongguan Exhibition Center","title":"See the city story for free","subtitle":"Dongguan Exhibition Center","notes":"The center’s official site says it is free to the public. Its displays trace Dongguan’s history and development through documents, reconstructed scenes and multimedia; check the current closure calendar before going.","short_summary":"Walk through a free civic exhibition about how Dongguan became the city it is today.","source_url":"https://www.dgec.org.cn/","source_title":"东莞展览馆","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Haogang Site Museum","title":"Meet prehistoric Dongguan for free","subtitle":"Dongguan Haogang Site Museum","notes":"The Nancheng government says the museum has been open free of charge since 2007. Visitors can see the excavated shell-mound site alongside pottery, stone, bone and shell finds.","short_summary":"Look down into an archaeological site and examine objects left by Dongguan’s Neolithic residents.","source_url":"https://www.dg.gov.cn/nancheng/ztlm/dzzgyzbwg/","source_title":"东莞蚝岗遗址博物馆—东莞市南城街道","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Yuanchonghuan Memorial Park","title":"Trace Yuan Chonghuan’s story for free","subtitle":"Dongguan Yuanchonghuan Memorial Park","notes":"The memorial park’s official site identifies it as a public cultural institution open to visitors free of charge. The grounds and displays focus on the Dongguan-born Ming commander; temporary capacity controls may still apply.","short_summary":"Use the memorial grounds and exhibition rooms as a free entry point into a consequential local life.","source_url":"https://www.ych.org.cn/index.asp","source_title":"东莞市袁崇焕纪念园 首页","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Weimei Ceramics Museum","title":"Read ceramic surfaces for free","subtitle":"Dongguan Weimei Ceramics Museum","notes":"The Guangdong Museum’s institutional profile says Weimei has maintained free public admission. Its displays connect historic Chinese architectural ceramics with contemporary building-material specimens.","short_summary":"Follow the changing techniques and patterns of architectural ceramics without buying a ticket.","source_url":"https://www.gdmuseum.org.cn/cn/col48/892","source_title":"东莞市唯美陶瓷博物馆—广东省博物馆","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Keyuan Museum Comprehensive Exhibition Area","title":"Browse Keyuan’s galleries for free","subtitle":"The no-ticket half of Keyuan Museum","notes":"The museum distinguishes its two areas: the historic garden buildings carry an ¥8 ticket, while the comprehensive exhibition area is open free all year. Stay with the latter for a genuinely zero-yuan visit.","short_summary":"See the museum’s comprehensive exhibitions free, while treating the ticketed historic garden as a separate visit.","source_url":"https://dgkeyuan.org/article/1763.html","source_title":"可园古建筑门票收费—东莞市可园博物馆","latitude":23.042926,"longitude":113.743609,"place_id":"ChIJHxDDnb4KAzQRbchl8lexBlg","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJHxDDnb4KAzQRbchl8lexBlg"},{"entity_name":"Dongguan Library Dongkeng Branch","title":"Settle in with a book for free","subtitle":"Dongguan Library Dongkeng Branch","notes":"Dongkeng’s government explicitly describes the three-floor branch as free to enter. It includes general and children’s collections, periodicals, local documents, reading seats and a 24-hour self-service library.","short_summary":"Claim a reading seat, browse the stacks or bring children to the picture-book area without an entry charge.","source_url":"https://www.dg.gov.cn/dgdkz/gkmlpt/content/4/4480/post_4480294.html","source_title":"东莞图书馆东坑分馆—东坑镇人民政府","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Cultural Center Songshan Lake Branch","title":"Use the culture rooms for free","subtitle":"Dongguan Cultural Center Songshan Lake Branch","notes":"The branch’s published free-service list covers its public spaces and multifunction rooms for activities including calligraphy, photography, literature and intangible-cultural-heritage experiences. Individual scheduled programs may require advance registration.","short_summary":"Drop into a public cultural space where exhibitions, study and selected workshops carry no admission fee.","source_url":"https://ssl.dg.gov.cn/xxgk/zdlyxxgk/whjg/content/post_4213628.html","source_title":"东莞市文化馆松山湖分馆免费开放服务项目公示","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Tongsha Ecological Park","title":"Camp in a designated zone for free","subtitle":"Tongsha Ecological Park","notes":"Dongguan’s culture and tourism authority says four designated areas inside the park are provided for free public camping under park rules. Bring your own setup and confirm weather or fire restrictions before leaving home.","short_summary":"Pitch a personal tent in one of Tongsha’s four designated public camping areas without paying a site fee.","source_url":"https://wglt.dg.gov.cn/zxfw/gzdt/content/post_4037067.html","source_title":"东莞市文化广电旅游体育局关于东莞市政协十四届二次会议第20230031号提案答复的函","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan People's Park","title":"Watch the lotus ponds for free","subtitle":"Dongguan People’s Park","notes":"A Dongguan Agriculture and Rural Affairs Bureau feature explicitly presents the listed lotus-viewing locations as free and names People’s Park among them. Flowering is seasonal, generally centered on summer.","short_summary":"Circle an old central-city park and pause at its lotus ponds during the summer bloom.","source_url":"https://nyncj.dg.gov.cn/zixun/snkd/content/post_4229326.html","source_title":"免费开放！东莞这些地方藏着大片“荷花海”—东莞市农业农村局","latitude":23.039643,"longitude":113.759467,"place_id":"ChIJPzE6QLUKAzQRk1OU49IqZFc","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJPzE6QLUKAzQRk1OU49IqZFc"},{"entity_name":"Humen Park","title":"Circle the lotus pool for free","subtitle":"Humen Park","notes":"The city agriculture bureau’s free-access lotus guide specifically includes Humen Park and describes its pond framed by pavilions and covered walkways. Come for the public park circuit even when the flowers are out of season.","short_summary":"Take an unhurried lap around Humen Park’s lotus water, pavilions and covered paths without admission.","source_url":"https://nyncj.dg.gov.cn/zixun/snkd/content/post_4229326.html","source_title":"免费开放！东莞这些地方藏着大片“荷花海”—东莞市农业农村局","latitude":22.817669,"longitude":113.684659,"place_id":"ChIJH9rkko68AzQRH4X8tttZ3qo","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJH9rkko68AzQRH4X8tttZ3qo"}],"warnings":[]}
+tokens used
+99,934
+{"complete":true,"city":"Dongguan","template_id":"global-zero-dollars","title":"Zero Dollars: 10 Things Locals Do for Free","description":"Dongguan’s no-spend map runs through exhibition halls, neighborhood reading rooms, archaeology, ceramics and a campsite set aside for the public. Some stops require registration or observe weekly closures, but none of these activities requires admission or a purchase.","icon":"money_off","cards":[{"entity_name":"Dongguan Exhibition Center","title":"See the city story for free","subtitle":"Dongguan Exhibition Center","notes":"The center’s official site says it is free to the public. Its displays trace Dongguan’s history and development through documents, reconstructed scenes and multimedia; check the current closure calendar before going.","short_summary":"Walk through a free civic exhibition about how Dongguan became the city it is today.","source_url":"https://www.dgec.org.cn/","source_title":"东莞展览馆","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Haogang Site Museum","title":"Meet prehistoric Dongguan for free","subtitle":"Dongguan Haogang Site Museum","notes":"The Nancheng government says the museum has been open free of charge since 2007. Visitors can see the excavated shell-mound site alongside pottery, stone, bone and shell finds.","short_summary":"Look down into an archaeological site and examine objects left by Dongguan’s Neolithic residents.","source_url":"https://www.dg.gov.cn/nancheng/ztlm/dzzgyzbwg/","source_title":"东莞蚝岗遗址博物馆—东莞市南城街道","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Yuanchonghuan Memorial Park","title":"Trace Yuan Chonghuan’s story for free","subtitle":"Dongguan Yuanchonghuan Memorial Park","notes":"The memorial park’s official site identifies it as a public cultural institution open to visitors free of charge. The grounds and displays focus on the Dongguan-born Ming commander; temporary capacity controls may still apply.","short_summary":"Use the memorial grounds and exhibition rooms as a free entry point into a consequential local life.","source_url":"https://www.ych.org.cn/index.asp","source_title":"东莞市袁崇焕纪念园 首页","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Weimei Ceramics Museum","title":"Read ceramic surfaces for free","subtitle":"Dongguan Weimei Ceramics Museum","notes":"The Guangdong Museum’s institutional profile says Weimei has maintained free public admission. Its displays connect historic Chinese architectural ceramics with contemporary building-material specimens.","short_summary":"Follow the changing techniques and patterns of architectural ceramics without buying a ticket.","source_url":"https://www.gdmuseum.org.cn/cn/col48/892","source_title":"东莞市唯美陶瓷博物馆—广东省博物馆","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Keyuan Museum Comprehensive Exhibition Area","title":"Browse Keyuan’s galleries for free","subtitle":"The no-ticket half of Keyuan Museum","notes":"The museum distinguishes its two areas: the historic garden buildings carry an ¥8 ticket, while the comprehensive exhibition area is open free all year. Stay with the latter for a genuinely zero-yuan visit.","short_summary":"See the museum’s comprehensive exhibitions free, while treating the ticketed historic garden as a separate visit.","source_url":"https://dgkeyuan.org/article/1763.html","source_title":"可园古建筑门票收费—东莞市可园博物馆","latitude":23.042926,"longitude":113.743609,"place_id":"ChIJHxDDnb4KAzQRbchl8lexBlg","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJHxDDnb4KAzQRbchl8lexBlg"},{"entity_name":"Dongguan Library Dongkeng Branch","title":"Settle in with a book for free","subtitle":"Dongguan Library Dongkeng Branch","notes":"Dongkeng’s government explicitly describes the three-floor branch as free to enter. It includes general and children’s collections, periodicals, local documents, reading seats and a 24-hour self-service library.","short_summary":"Claim a reading seat, browse the stacks or bring children to the picture-book area without an entry charge.","source_url":"https://www.dg.gov.cn/dgdkz/gkmlpt/content/4/4480/post_4480294.html","source_title":"东莞图书馆东坑分馆—东坑镇人民政府","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan Cultural Center Songshan Lake Branch","title":"Use the culture rooms for free","subtitle":"Dongguan Cultural Center Songshan Lake Branch","notes":"The branch’s published free-service list covers its public spaces and multifunction rooms for activities including calligraphy, photography, literature and intangible-cultural-heritage experiences. Individual scheduled programs may require advance registration.","short_summary":"Drop into a public cultural space where exhibitions, study and selected workshops carry no admission fee.","source_url":"https://ssl.dg.gov.cn/xxgk/zdlyxxgk/whjg/content/post_4213628.html","source_title":"东莞市文化馆松山湖分馆免费开放服务项目公示","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Tongsha Ecological Park","title":"Camp in a designated zone for free","subtitle":"Tongsha Ecological Park","notes":"Dongguan’s culture and tourism authority says four designated areas inside the park are provided for free public camping under park rules. Bring your own setup and confirm weather or fire restrictions before leaving home.","short_summary":"Pitch a personal tent in one of Tongsha’s four designated public camping areas without paying a site fee.","source_url":"https://wglt.dg.gov.cn/zxfw/gzdt/content/post_4037067.html","source_title":"东莞市文化广电旅游体育局关于东莞市政协十四届二次会议第20230031号提案答复的函","latitude":null,"longitude":null,"place_id":null,"maps_url":null},{"entity_name":"Dongguan People's Park","title":"Watch the lotus ponds for free","subtitle":"Dongguan People’s Park","notes":"A Dongguan Agriculture and Rural Affairs Bureau feature explicitly presents the listed lotus-viewing locations as free and names People’s Park among them. Flowering is seasonal, generally centered on summer.","short_summary":"Circle an old central-city park and pause at its lotus ponds during the summer bloom.","source_url":"https://nyncj.dg.gov.cn/zixun/snkd/content/post_4229326.html","source_title":"免费开放！东莞这些地方藏着大片“荷花海”—东莞市农业农村局","latitude":23.039643,"longitude":113.759467,"place_id":"ChIJPzE6QLUKAzQRk1OU49IqZFc","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJPzE6QLUKAzQRk1OU49IqZFc"},{"entity_name":"Humen Park","title":"Circle the lotus pool for free","subtitle":"Humen Park","notes":"The city agriculture bureau’s free-access lotus guide specifically includes Humen Park and describes its pond framed by pavilions and covered walkways. Come for the public park circuit even when the flowers are out of season.","short_summary":"Take an unhurried lap around Humen Park’s lotus water, pavilions and covered paths without admission.","source_url":"https://nyncj.dg.gov.cn/zixun/snkd/content/post_4229326.html","source_title":"免费开放！东莞这些地方藏着大片“荷花海”—东莞市农业农村局","latitude":22.817669,"longitude":113.684659,"place_id":"ChIJH9rkko68AzQRH4X8tttZ3qo","maps_url":"https://www.google.com/maps/place/?q=place_id:ChIJH9rkko68AzQRH4X8tttZ3qo"}],"warnings":[]}

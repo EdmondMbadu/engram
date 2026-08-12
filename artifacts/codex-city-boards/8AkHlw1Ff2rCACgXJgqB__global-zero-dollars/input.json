@@ -1,0 +1,93 @@
+{
+  "city": {
+    "id": "8AkHlw1Ff2rCACgXJgqB",
+    "name": "Moscow",
+    "region": "Russia",
+    "country": "RU"
+  },
+  "template": {
+    "id": "global-zero-dollars",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Things Locals Do for Free",
+    "searchQuery": "free attractions parks public spaces activities",
+    "editorialBrief": "Lead with the free behavior, not an adjective. Verify that no required admission or purchase is needed. Explain what people actually do there and why the setting matters. Avoid “fun for everyone,” vague affordability claims, and temporary offers.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "8AkHlw1Ff2rCACgXJgqB__global-zero-dollars__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJZ9GWZA0vtUYRxjqkufYT8yI",
+      "name": "Park 850-Letiya Moskvy",
+      "address": "Moscow, 109652",
+      "latitude": 55.6419139,
+      "longitude": 37.7443974,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJZ9GWZA0vtUYRxjqkufYT8yI",
+      "photo_reference": "AWCwydiDddNSthNDz_zx-YdTHPwpyMhWO1n5tZNkWI4CzWsNzYoWDH7ObonZYihV39cKemvPbSQkooiPJ0ZHx2TXw-JoS03yDQcShw3UtTIr8ofu5SRLnnjV8MACqZS1hxpVBH40kXMPgnfKnYJskMldkbfnZKjVXcIW6liQ_0OV7q7FTiC3R_nhWlF8LW730FKCpyTIPObeQCfM1c-z9eCg6dTeD07cwmo1aCb-0e1K-iywHWoVutJA-aCxd9f-km8q-aLuKi6tQ8_Drws8q6uGkUhFFIyRdVVEg3kEuifEiuELIu2_z1LB4NagdSrzynjySY2HDKd9Mn_6NckXAmVsUgoeFpZ0tLXwhLDcsVqXc3UeaQn-Q2YMVByK9liVfrbxDpKpz1N54wL9a4kXVrYfvLUQbbNsGvxKCa4gFvgDlzK7Jlcx"
+    },
+    {
+      "place_id": "ChIJOW1DflpKtUYRF8gLIoMaAiM",
+      "name": "Armoury Chamber",
+      "address": "Moscow, 103132",
+      "latitude": 55.7495732,
+      "longitude": 37.6134111,
+      "types": [
+        "establishment",
+        "museum",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJOW1DflpKtUYRF8gLIoMaAiM",
+      "photo_reference": "AWCwydgQHLt_cviSZwJks6m185qjmmJa-_WudS9T1etWJJGPzoELXLl8bK8B7mUfNflSYfuAfzv_3NvAB5jb-hey7XJ0z2GrtRp29w54rcTnBUi-K_j_dYXyt8grTgmUDdDz4qeJs67fqNu4ZmHJvn9SO10WmbLlVm85xPE5vqyhhGNX-oYD3K20cWp7mq44o04qzDKfKQ9LViJxEHePBA4msR8vAlMsRBpwiy8OSp6QDcpuXITReyOxotzOCCSI8moQhfT5ay6N63GARbVEY9IB5AeY7PEXvSwVwKA5BN_OGfTIB-rXk9V0eFuUahil65rUlpWhJ1Oqo5IYLbeAE8yPUSPIoseHehTPxSRU5xhHZTwBrNLhG3HOxArXtLwCBpyqWrHFmR3YcX83q2WzSA4LqWXc-tcPBcpmABKnqkg9_woVYmMa"
+    },
+    {
+      "place_id": "ChIJ3-Er1662SkER2TTJDFShiSs",
+      "name": "Park Brateyevskaya Poyma",
+      "address": "Moscow, 115408",
+      "latitude": 55.638773,
+      "longitude": 37.779774,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ3-Er1662SkER2TTJDFShiSs",
+      "photo_reference": "AWCwydhBx3iru52rYTjnwi4WDv4qxr7y17k3XaSQy3Uq1UQ6b-__ZLRCfRPInKn850E4zcBMO3aZPyboq4YifzprN_J_ERPPpqkOx993obdbL38TDNvc5iBuDIIjT3z3LxBYqZs5gqK5YzIZj_maUf7xr0mObXmAZ1sWuOUi60AktHqU-XMtpe1D8-xd3mpU95b3P1XKuocEtOKhgwHTArF6tMwwcSByL-8NMN8lceu2wkQgG9O56u6KQo4ohVAWuMFdPtyA2A1agVrjsBI_IPhB4AN9VzWauVHhrsFfDwHWkT4pkOlkTXbr9VbMxHLpViY27Q32Hb0DSulGuaiyb4ChOsDwYtPgvo44QCK2QGFLyBDBG1tPNxChts-i4OCg70UVSV56p-AQeYksy05xrkuyktRwFhHSoyPhZMo0c1dUq0BRAg"
+    },
+    {
+      "place_id": "ChIJryzRm1FKtUYRd7NIhVhsx_I",
+      "name": "Biblioteka imeni Lenina",
+      "address": "Moscow, Russia, 119019",
+      "latitude": 55.751143,
+      "longitude": 37.61017,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "subway_station",
+        "transit_station"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJryzRm1FKtUYRd7NIhVhsx_I",
+      "photo_reference": "AWCwydj58GJHkD6PJZu9MAmXtEZlv71TE4cZXKlhWPHv3wvN5ufain1LSsmNnUDO2MjbdeXcx_dcsJqyOoX6fIEu6d_fqE2y3kNtoVvXDH3zbU6AC4QlixZJKHDc91Dn4YHl57bq96IVwpg7lpuT6hmwP9vsz9mhR5N1Qk4luiVyzwHbSdRTdo7T_FV9nDTBfqlFntgzctn296uzCLR4jXTYX1CfdUk9bNsD9CCaaBt-zzrLZhC4maJg8ANbprUhiGgAW36uq2RqnI1Xy0PAl0tAa5raSDX4XFEdOL0AJ3yqS8b8RCU_4o1wRkbgvcSVSlOsq7lesP_qodW-SQfW-JYEHcWUTuyM2NkFuzFwUDn4DAqNgm1kCy5rbffj2YhWKXHmyrvzo04QJdUbtvLUvCsOrgTIstWbiZcRbQGNsZRJqsS9OvM"
+    },
+    {
+      "place_id": "ChIJ_a73Ngg7tUYRm8MJTCN06OM",
+      "name": "Park Mysovo",
+      "address": "Dolgoprudny, Moscow Oblast, 141702",
+      "latitude": 55.95390279999999,
+      "longitude": 37.4959854,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ_a73Ngg7tUYRm8MJTCN06OM",
+      "photo_reference": "AWCwydjtO4MisCPq8yQl60pAVZZXPU_nlmT9zdGxozixTQlwSfKnNtyRiFg6N_fbHvRxznDExlqlcxMC1n8Qf0j49_84x9lqmUHv_ryJE9nWWKVg_qFbLB6fVUn5pMyCxhsCTNMPvVxL2tuU3YoviTPNyphaPRMB7wUFYWI-zxNiCav78TEjX9l4lCCUUg0AiyMCIRDNf9tRuO-jN3AjqTTNYeErkiXH561Pv9W68JQRyoem4N8LwY7emvUdHxz0x0cPTjyrXkJHlvNjs_qJpy_Datufx-uVgGr0INR4RgSCXxKinvsue4_Eom2YpH52jqn-ZIsoZRukglaE9CybktsRH8EbRdnno6bzStbhe56FhfN2cbzR6vvCksGcskM91jWR9ZUg-Zq3s1qZ5fTrSMzAbeJV8gAU0lYEYLMJzScNJsuruw"
+    }
+  ]
+}

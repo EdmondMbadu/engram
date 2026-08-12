@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "problems": [
+    "2 source URL(s) could not be reached."
+  ],
+  "sourceCount": 6,
+  "unreachable": [
+    "https://dag.durban.gov.za/storage/Documents/METRO%20Ezasegagasini%202025/Ezasegagasini%20Metro%20English%2019Sep2025.pdf",
+    "https://www.durban.gov.za/page/parks-recreation-culture-amenities"
+  ]
+}

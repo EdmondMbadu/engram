@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "problems": [],
+  "sourceCount": 10,
+  "reachability": [
+    {
+      "url": "https://bookstore.oxfordexchange.com/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://bookstore.oxfordexchange.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.ut.edu/about-utampa/henry-b-plant-museum",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ut.edu/about-utampa/henry-b-plant-museum",
+      "error": ""
+    },
+    {
+      "url": "https://thetampariverwalk.com/who-we-are/frequent-questions.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://thetampariverwalk.com/who-we-are/frequent-questions.html",
+      "error": ""
+    },
+    {
+      "url": "https://tampamuseum.org/about/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://tampamuseum.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://tampabayhistorycenter.org/about/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://tampabayhistorycenter.org/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.columbiarestaurant.com/columbia-cafe-at-the-tbhc",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.columbiarestaurant.com/columbia-cafe-at-the-tbhc",
+      "error": ""
+    },
+    {
+      "url": "https://www.tecolinestreetcar.org/howtoride.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.tecolinestreetcar.org/howtoride.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.floridastateparks.org/parks-and-trails/ybor-city-museum-state-park",
+      "ok": true,
+      "status": 403,
+      "finalUrl": "https://www.floridastateparks.org/parks-and-trails/ybor-city-museum-state-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.columbiarestaurant.com/menu?menu=columbia-restaurant-lunch-menu",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.columbiarestaurant.com/menu?menu=columbia-restaurant-lunch-menu",
+      "error": ""
+    },
+    {
+      "url": "https://tampatheatre.org/about/history/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://tampatheatre.org/about/history/",
+      "error": ""
+    }
+  ],
+  "unreachable": []
+}

@@ -19718,11 +19718,14 @@ function globalCityBoardCatalogStatus(
       const validation = board.validation_summary && typeof board.validation_summary === 'object'
         ? board.validation_summary as Record<string, unknown>
         : {};
+      const identitiesValidated = validation.all_have_coordinates === true
+        || (validation.validation_mode === 'source_backed_editorial'
+          && validation.all_have_source_urls === true);
       const structurallyValid = cards.length === template.count
         && Number(validation.requested_count) === template.count
         && Number(validation.verified_count) === template.count
         && Number(validation.unique_place_ids) === template.count
-        && validation.all_have_coordinates === true
+        && identitiesValidated
         && textFromUnknown(board.atlas_id) === cityId
         && textFromUnknown(board.generated_for_atlas_id) === cityId
         && textFromUnknown(board.template_id) === template.id

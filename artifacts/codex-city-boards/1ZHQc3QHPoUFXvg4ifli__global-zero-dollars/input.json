@@ -1,0 +1,296 @@
+{
+  "city": {
+    "id": "1ZHQc3QHPoUFXvg4ifli",
+    "name": "Pune",
+    "region": "India",
+    "country": "IN"
+  },
+  "template": {
+    "id": "global-zero-dollars",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Things Locals Do for Free",
+    "searchQuery": "free attractions parks public spaces activities",
+    "editorialBrief": "Lead with the free behavior, not an adjective. Verify that no required admission or purchase is needed. Explain what people actually do there and why the setting matters. Avoid “fun for everyone,” vague affordability claims, and temporary offers.",
+    "count": 10,
+    "cardTitleMode": "subject"
+  },
+  "generation_key": "1ZHQc3QHPoUFXvg4ifli__global-zero-dollars__1.0",
+  "candidates": [
+    {
+      "place_id": "ChIJAQAAkPm_wjsRNNKab-PjkTI",
+      "name": "P L Deshpande Garden",
+      "address": "Pu La Deshpande udyan, Sinhgad Rd, Pune Okayama Friendship Garden, Dattawadi, Pune, Maharashtra 411030",
+      "latitude": 18.4923958,
+      "longitude": 73.83614779999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAQAAkPm_wjsRNNKab-PjkTI",
+      "photo_reference": "AWCwydhumB3otfj0odVqJYfgbz2qkZM4D0OpzTZBCf-4XypbxP6Qrg4g_NOmrQfyyVOa55D4Dmy-uhAXhYOifLve5eOpga1IjYCa3Ahr5FIzb4uUcR3OzjjoImhajuP4uaUEPjUc0jgo8I_el6jl7ThuSk6qfDpd_8Ecs4BD5YERXynJ-EmtWrkwz3dzSEwsS8h31Id7KmA-zBdKJzfBk2-O-3b8RI-BGStSSIuSzg0lMBDCX0aALFzmfgg0aZJmzucDWFeBRPtulYq7q6WopuFQMO8Ipz5HfkZ4bQGYhl6MZCm6-va1nKSF8or-6Z_qu2Drbb6QQ5H3ZZ5Qiku8MYQ2k3ADNH_AhwJ5yK4fBKQ8Ftytje3lZ1x5WgQUc5EV3IOQ-OODLs3tdngXEEMBXpKRo5ATgtOEf_BnIYjEWVVI-ZgMvG0NZZzi7bbpkVL9xPHy"
+    },
+    {
+      "place_id": "ChIJL6j3B8PqwjsRC7AkMjQxxDo",
+      "name": "Rajiv Gandhi Zoological Park & Wildlife Research Center",
+      "address": "Pune - Satara Rd, opp. Katraj Dairy, Katraj, Pune, Maharashtra 411046",
+      "latitude": 18.4542537,
+      "longitude": 73.85984859999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction",
+        "zoo"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJL6j3B8PqwjsRC7AkMjQxxDo",
+      "photo_reference": "AWCwydjbYT6X8L7gu4AS9ujKGmXVVXn8jpjx7VPAb6wSAGRc_A5upixPzUOT23u184PBIQD79Tlea9zwl9zZEGjYQsw9cEG0RIxSU3-rGEb94Rb2LuWV-ikO91-cV0f-QvuTvkurSEurcx3FdT1BSprs7TDTBJcWWeAdGRfgENqFmOK_usz8L7ULO38PS015F6K6__6NuntV73W6V_efkzyjkvadxPwjpz6xo-FX11deC-oIe4cYfaSfQcyJ1JhcKQooBiMqFL9-GyMh2yYKZSf9EN_qy9b7ppI6gaRnY8uz0GIqAMK0iHSfVtjSFqIGJ9cHLPKJth1jzo9scd4Kx3ERJUssRcBVP8pkoOWI7r2iuLW__SWZYruMc7ZtTt1Oi8naQ6HAch0dUpXuTr7uNLcBrcSjJprHvxoKQAdIiDV7nEhZAEurd-8zV-6om0b2fsEA"
+    },
+    {
+      "place_id": "ChIJV7RabyLBwjsRqvpesetuOIc",
+      "name": "Chhatrapati Sambhaji Maharaj Garden",
+      "address": "Ground Floor, Hotel Sapna, 573/7, Jangali Maharaj Rd, beside Chhatrapati Sambhaji Garden, Shivajinagar, Pune, Maharashtra 411004",
+      "latitude": 18.51984,
+      "longitude": 73.8460006,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJV7RabyLBwjsRqvpesetuOIc",
+      "photo_reference": "AWCwydh-8nfho3cUeTyMeXwUiHVzbQce2P7Ukckh0lZDvpItiJMvDQLtoIXIsp54Ce29SH3iptBuRoWRfSpTaz0v3ZaAAsexqJmubPukJ2wW9MqM_Dn7G2z6VjuvK9gei5HdM6EZLS7hArUmJmfCQibMP9hDLJ4Z50tmmQYmSExXctkX1PQaZEiG14m8vgIj0sBPuwx8-XlCd84p1bZeAHq3yUJAm7A1wTet82jxsG2SizNXpgogJ9l43QeT-7dnHPsbj3VC6tlw8gt-IMrYZzhSMvlYZj-C2kbFRnug-bg-gNWkiDx5dskjPyAgdCqHOqtqaYX4iAOsdZXHh_ocUK-_EQ52fhlA_DVv7liln6Yabi8zi-J2pnE1iZgP2ZV2saRargH7GtULetu6eiPrp8gwXt1LH_aeRBVZ0PSdgD0EcX_f8lu7dqEmzgJ9h2wZz49p"
+    },
+    {
+      "place_id": "ChIJAQ7SNBbFwjsRt_hVUUuHcwo",
+      "name": "Diamond Water Parks",
+      "address": "Survey No. 41, Diamond Water Park Rd, Lohegaon, Pune, Maharashtra 411047",
+      "latitude": 18.6065759,
+      "longitude": 73.95748019999999,
+      "types": [
+        "amusement_park",
+        "bar",
+        "campground",
+        "establishment",
+        "food",
+        "lodging",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAQ7SNBbFwjsRt_hVUUuHcwo",
+      "photo_reference": "AWCwydiwWJy1PFpDtHqjoEH4vAEITPRJoKMIkxA0W_ITO427S_QhDsXjUUXY1LgvR9KHXhMoaOoMnC8ZeNHNUq_b2B-IYnaYCgas0-hHvyA09o8wnzXzThaSr-71pL0oUj7AmE_EsHtDvCPslbHyAtd5isysBtUJX395aoS2536Xmdd0zmWXcGGSQGHqCE3GQeCftQtMG7vT3tCi6gjnBELCPOD7y0XoLHPqztPx0d7ZWQqODbvuV6t9i6E_913dtdQXIzK30GYn5YIj3rQRJKy2X1QXTYR2_svVqYV4gKPtWnDEH0AJ83b1DQbgMiwqyE4RWAerkXdUHNS3nIM3kzoh71TW7b51yLSbjHjeTO2BjhGNDVNVUgR9a3kydHLrMvo2xWzbzUbyCj6EZbcTHRmzgRl9ELWh2rD3YnhNbdUg_DxQddY"
+    },
+    {
+      "place_id": "ChIJAZge7gfBwjsRxpzsulMgPDw",
+      "name": "Mystery Rooms - Koregaon Park, Pune (OFFICIAL Escape Rooms)",
+      "address": "Lane No. 7, Out of the World Building, First Floor, Ashok Chakra Society, Meera Nagar, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5344236,
+      "longitude": 73.899733,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAZge7gfBwjsRxpzsulMgPDw",
+      "photo_reference": "AWCwydi5fBNPL4i4EltS0wmfoNQH0Af5HFF7jaOCwPgs_ynEFoMbBMAwpi4jkrea2iAfPY6ooEie-Gm1_FdyDrhwAYVi9soRQgFkYjFFbinmSWvucZ7etsfNSu0FwQOPJmDViOQ8u750EwlUtq1L-AyaaEHu14tkSYYmZmrJFC0B5ydQKc7L_dpsNV8hIXCJnJiu_Cv1Q3f8X8BitHlOzDZ05Lyr2RWm19BULWePypaoqF11NfJx9-aBYTxe5QpRcn-XDrP52L3bedMUI5XK8Tzu6y6mz3aqCDoebOBKOCBlmP--2BL9nN8cFPtay1CnDuzlhlMCaekdTFmujpIBmizQrX4UELYyhOa93J8fGheCYqD_XGuLnB5DOIFwjGZmFVO3VoXubev6tYaNAm6i4igp4_vKY05WSf2wPfOGYZvqHM-sA3N8"
+    },
+    {
+      "place_id": "ChIJhz2V_w3AwjsRqBqc55efyg0",
+      "name": "Saras Baug",
+      "address": "near Appolo Hospital, Saras Baug, Pune, Maharashtra 411030",
+      "latitude": 18.5009133,
+      "longitude": 73.8527869,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJhz2V_w3AwjsRqBqc55efyg0",
+      "photo_reference": "AWCwydi9675lBchByU6aEtzMYUS3ZlbvXMTfLlNFhFRWqKMliVS1MZVnMwf0KYW4ap72Rt904BSA5DjGUUT2fNzO-qnpgzFUD86EV9jOXvn9gLC9Tkeox-ydwIpDpmQM3b_eAZSl6MV3a-1Z1cdMww6oVCflSTh9cwFbi1pU7iJrJUaokKm68S4sIX-x-XrCLVV3nJXW1eWQRYNlk_OfY7Vd3Q4DlLszuWDBgSzIRfts-GUZNsn6EKxCL3k5UNSB6euSHzMcK3QrV4pfLse3gSsJS-Mkm2uX_H-1u3KulFD-spLtMm4ZxGZUEUHxrhU28z2Rr8RNT6GjaiSa22mMU9q3ziyxsW1KvueOYiKz9kswH9IGpTlOwgvP0f9wXoollqAEgCZZGl2eHUFoeB_xcLd-NIj2FJgikhoa4Xdrrtmr7yz9AQ"
+    },
+    {
+      "place_id": "ChIJNwqWDh-_wjsRCic6BxFOa7A",
+      "name": "Late Sanjay Mahadeo Nimhan Gram Sanskruti Udyan",
+      "address": "Ward No. 9, Ward No. 8, Someshwarwadi, Pashan, Pune, Maharashtra 411021",
+      "latitude": 18.545905,
+      "longitude": 73.79825699999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJNwqWDh-_wjsRCic6BxFOa7A",
+      "photo_reference": "AWCwydjN3fdi00MeuIK2xaE6Eh8q1ZzrfgxkNPOBQJBggaKPDBRtYyXWAk8qkp_9ohYQpAE4kh1-RMXcmgV_YLvyKjgj1zl1D1kIhcAyec6YIbcuHxWYJ6yD7GyyKAM-s3tX3ggw-yu4qOtd_y861n81SLMiyw_f-oPKLf380sN0L4_QQJjhbdmOcCwz0AnXBRikIP1iEDvVCisCr4efUJ5iVezmAjV2AMHckRPJ5y-ZjeNaW1qOgLKIcHOr8ZqwlUI-MTsYMm_K2Ktd05oDe3_kWZkeKIluq7F4cYuUDnxweha9noHBUOQqFm_VUymJQzpf0UF0S4YgEv9Ayg4ammL9EGF46IKWgaVh7dCCeHIbIRZL6eu5_-u2eUATd6EmOKXpLN7l1w00VCOIJfalzCwufX9iUHr4snW3M4LDpwEhE4IlaGkfQ4mI8o3o5eiiEYR4"
+    },
+    {
+      "place_id": "ChIJ90jf84W_wjsR1XPp7YfSitI",
+      "name": "Kamala Nehru Park",
+      "address": "Lane Number 11, Harshavardhan Society, Deccan Gymkhana, Pune, Maharashtra 411004",
+      "latitude": 18.5170408,
+      "longitude": 73.8344134,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ90jf84W_wjsR1XPp7YfSitI",
+      "photo_reference": "AWCwydjcCBiyioswnS8rL48LA1ciPB3CAk_YutIMMSEpRTWP-6ayWtZxRDSFuMJ-B-X1c2wUEyhe20xKJqbrDuRj3kPQgra2jxHPt_LelIL7-IYHjvRliSk2AYvW9Vtsy8bhavJHJW1cAIbXSDC16adPLqbkmMsU2hXtCoaChAeBFdBRk2f9iYTs1nT2zqO3chDlpHx35opPDruQsKxtUTuO-BDXZHWg-3ODlbiADFWpeqad87qKenP2ay3kV1PYoDvg_N6HfIT4G7IKlM5kB3eF81bT7MkuID9cZ4x-niCaPXP3OS0fzjpuIeDEnD4mxip7miMO69zmWB377osMtw-2-zbh7J4QH4DTiAr2s7S_T35GdQREZyiAQxV9ULFmNn196CbTwDOYEpKcA_2XIdK38HJGVQevZ-I0QoCzJ9RAIjtClFbj"
+    },
+    {
+      "place_id": "ChIJ2eMc2xDBwjsRAJns4bQyws4",
+      "name": "Jogger's Park",
+      "address": "North Ave, Nilanjali Society, Kalyani Nagar, Pune, Maharashtra 411006",
+      "latitude": 18.5496917,
+      "longitude": 73.9024604,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ2eMc2xDBwjsRAJns4bQyws4",
+      "photo_reference": "AWCwydjv1cli8C7ynyyntus8KnwBFMSPm_RR9p7Yw8j-wmzdWralIJ98bj8979wg6ud5lgHeQcIM-I0KvkloiMExrQDyDo3VFTlbY02Bd5-L5EomVgdbHpyj11Dd5VGEJ56JmNgOSqPzsCmPjkY1ws2OcqedBhdX4F-o7Kchr6GH52H0bJLqDnSnrn7JNxl6QDTNa5HviCao0Dx0NNqXxdY4QCjsQbfgA9pUWelpu1sXYqCnXSWBUNHdU1uoG2MVoMnbUg7kSB5JBGm8y9A2tc0HjhHUE47-Kz1H6eMdcwM1OZWPN50os4bSAHdMzqcqQS_yxTCj-VRjzLWtd93nK1L7r4FkHZW1YI0ZkPezUa_txj4OBAe0No7e-sRcHv802XMICV0b-EXzqu9LD0r5vf1I7i73HF_jK6k6hm0tsPb4TW2LTDiMTa-ze3GdQaKsR1X_"
+    },
+    {
+      "place_id": "ChIJT5p_f27BwjsRiuRDSLDNRdA",
+      "name": "Chhatrapati Shivaji Maharaj Garden",
+      "address": "Raje Chhatrapati Shivaji Maharaj Udyan, Chhatrapati Shivaji Maharaj Chowk, 31, Kalyani Nagar Rd, Bramha Suncity, Balaji Uddyam Nagar, Sainikwadi, Wadgaon Sheri, Pune, Maharashtra 411014",
+      "latitude": 18.5494145,
+      "longitude": 73.91838969999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJT5p_f27BwjsRiuRDSLDNRdA",
+      "photo_reference": "AWCwydgChYc64plwsEmqRu0Gec9In1uk0CILMVFTZ7Wmj0d9sDdJ4kQqUd19Eb-6rOpJT_RS7AdV6n82k7IapHxdAzIW1sh6d0Gn8D2KqPIxOeCrAyr3idf_ts-tP0nR7EBFU-TpTmoSGH8ston8TW7lCuL0WHUISxDeKrOmSXSNbu1Oh82e6Dxl56P6mvaSrV0QvrmQvU7lmXZ02f2F1tu3C-nXwZfnX8v3pDX_tvHIdO5owpIf5YRD7qkDK9xavpeWmxtiAFh6UOr2nPoRSZ2A09uqZHxECwPvkIhTZ7_FFYHU8PoGtoWB-RsrOg5BfDYzYS8BAuwTFnAeaOXcLiYWyJYOCzIYRZnD425pvo08d4PsTuGEQb_jmV2-libYw6_2yT-Q4G7WO4HjvYAdNGSjAGsM5Kt6QINsUFF6vHNL3BKsMA"
+    },
+    {
+      "place_id": "ChIJIztE1w3AwjsR23oesHZSifQ",
+      "name": "Peshwe Energy Garden and Adventure Park",
+      "address": "9, Sane Guruji Road, Municipal Colony, Saras Baug, Pune, Maharashtra 411030",
+      "latitude": 18.5023602,
+      "longitude": 73.85223200000001,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJIztE1w3AwjsR23oesHZSifQ",
+      "photo_reference": "AWCwydjHpLS5GfpabdULhmE4yEYZne0p-K6neltp4dbt-N62Mcp5iXOyEN3ZZApR52UG3eJs2wvuF3oEbKOqjB2RN3YS24mBF3e-DpJlwhk28y2aG2SW5AwydyQf7OZubXc4Trqku5kWcyTN79OS_WVgyijOerVN-Tqi0N6E0MAom_ShN5QGIk_dIQSWle2t09yZdrUHI4Rwk0bbYSniKF4xHsohzIwlPsjPrHJY-GeExEhO03s_IedSd0FBLR7bPQWnXT_MuQt2e8F3OlLIGK8MkYlpwt6vnVmo8fy0JJOx7TbqA7v11dkUw3k6LAMdEYGqt3Rt-3nRT6LTbYF4jJsWrdRlLH_mXkzk9N4rSn14XkF24iaz9kIyFKj7ONe6CICUB9a0liYhmrDGJ0u71-kqYFQ4Hu65ZojA-nE1flgdgABcIw"
+    },
+    {
+      "place_id": "ChIJVVVVlbXBwjsR_je8hWKs9iA",
+      "name": "Empress Botanical Garden",
+      "address": "Empress Garden, Pune - Solapur Rd, near race course tower, Empress Garden, Kavade Mala, Pune Cantonment, Pune, Maharashtra 411001",
+      "latitude": 18.5123005,
+      "longitude": 73.8979112,
+      "types": [
+        "establishment",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJVVVVlbXBwjsR_je8hWKs9iA",
+      "photo_reference": "AWCwydjHi-DMDxSozmYJPwv1ZBFo_OLl6TSIHdiuZdrtAFZrq-YKGJDlypUMjivdA0cTX4NDLgGda60VbwYP-IjSolHWTcs78wxqriftll0DJv9o9XmBpmCaM7QZ3Rv7V0cZ2l6FPbcdL4jKFh7UytBAsVFS6JEOkjaW0WD-SS9_Yqkpp-tQXJyV9w8fR6MmN1bEmG40_bB9kjjVI6QoimE9z4cKXdlyjC2nMCvcon_n1bx2IIBeSM12iQmunJ2aM02axh6Qvst6mFS7dNgY7NJy-jewvi9KtgWOY78ESEq0xz3PG8lJsY1BsdJRQc4L6DKbhEYP_Rtfk8JeP8rvH9uHjYhphqNp1tr1yzhWHTV1-dbhuiijTm1ozoOBtyD-v_3WQBWgCv_cUHN6IFhFag1QoUeeb_A7EJWfxjzRgCo4CdH2awWG"
+    },
+    {
+      "place_id": "ChIJx_7D8-2_wjsRRjfM_50xcw8",
+      "name": "Dr. Shyamaprasad Mukherjee Garden",
+      "address": "FRXH+WWR, Patwardhan Baug Road, Mitrasadan Society, Vakil Nagar, Erandwane, Pune, Maharashtra 411004",
+      "latitude": 18.4998703,
+      "longitude": 73.82975429999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJx_7D8-2_wjsRRjfM_50xcw8",
+      "photo_reference": "AWCwydjMYtag1Bn33LR_0WmHodw-GrpqheHZQpQ6dgWXo86R6i8XBX5dKPNZNHw4wRaDmMxmbso339QmcNR7ut--gcQYIYS6vpYcMmyB78yB2gWSLRa8M38cbOHbZzroJvXrSz7OVXJsDOFb-YSVgYsRE7x0y-c38ek_fiVyYy2AMwzDxORPmW4qGZHswcnPkqRD_0dd4b4TrqsLmUErdl2loG68_ehgIXjN5QNIUIAZxCGiEGiuD-wPpu1iu5FwmwSG-39fL_4ksTtk4azPuzf3Yi9PmkAXMV8KFP1qjoE44PyX-Huuxz36d0wYWiav4IZyyqU_kg1J9wu3LWP6mxKAukfEolce_PHMc7NxKX9USO3i481yqnkVAUUn9S_OS_3JuRzOqsfuwPfdIFuFt4wJpwVghi7CLE6yzLw-WLM8H6lvJ19ImD1B8PsU7k9WSQ"
+    },
+    {
+      "place_id": "ChIJowcuENDBwjsRC68PZG5CHR0",
+      "name": "Shivarkar Garden",
+      "address": "Off, Vitthal Rao Shivarkar Rd, Shivam, Wanowrie, Pune, Maharashtra 411040",
+      "latitude": 18.4980682,
+      "longitude": 73.9002375,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJowcuENDBwjsRC68PZG5CHR0",
+      "photo_reference": "AWCwydiSTXIOjtat6DK0WWHHAklgXUr6IWrsKdspyZPb9e7T8RMb5r-Aebf5UoQWgzp67-D3dZbFXdrXxKnoXuPNejqPAuoJDfdUSs5Wvsz1yv77jW3-nzzv8tJN7FC91BVd0ErRO4OS3U766_KCEdwr5nycgv8dwkYT0YfKWKBbKKikPgQ5O4XvssjO-ptdevxT3C8ui9O1qFye-IXf8nP2Gr4WGFVX5QgRAMzchxq3SE3_PbYqsdACMPBkUbbHW7x_CRSzPVPIOEaibyI9YsXxN7SN2LmyfsRvuL2JdRH6P4MfI_ZyXV_SJTi1-iGgy5AH9pOHuKhVW-QvR7klUggTpOFera6zN9jXEHcRaWbc7PQ4uzXYEJQ3gQlGNtuHw3c0_KLI635E2Yw6XbfdPJIekW7Sim6uSA5qDST2Hxn7HWMh3A"
+    },
+    {
+      "place_id": "ChIJBSUk1QHBwjsRSBl0UnQdfNU",
+      "name": "Osho Garden",
+      "address": "19, Gopal Rao Bevur Rd, Iricen Railway Colony, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5360446,
+      "longitude": 73.8906885,
+      "types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJBSUk1QHBwjsRSBl0UnQdfNU",
+      "photo_reference": "AWCwydjiL60M6eE3RaHgsBEq2m4WiMzDR65GJUEeey57_3L8praXqYBnspjasN11h4sbJ1LxxjIJQMFcwMoaMTldyicFdK2H6DV28vamkhPLXZNUbX4bMg6rUihgovAvR8EUUYlxy9tW9udcNFGyluiPtGXXc9-tTM0s5ub2_y9Mcrp9OCh3b14mDllRypRYHgrGEFsJdLcauCP3PXdSYPpiX6Ho6tQ1Y1hDnQdFu-wedlVraeb-7ltmMX00YyZtY9k4yeH8vt78wCR0eZ8g9Nnu1ea47-xEbwu409PQwvv4MVs5PVO-tcyEemYz68PoA-QIzWa1Oq33vxLR3bYb36F9x0RggELss3_c5ScCFATlsPW413SQlL66bwIJTAQW0pdIW59m0j4HjpFqqwjHq-BtF-JGyJo9WqJATphlvsSCRe8"
+    },
+    {
+      "place_id": "ChIJJ-cTQQDBwjsRH4rwUIDtfds",
+      "name": "Osho Teerth Park",
+      "address": "D. H. Dhunjibhoy Road, Between Lane Number 2 and 3, GVPR+89R, Koregaon Rd, Koregaon Park, Pune, Maharashtra 411001",
+      "latitude": 18.5358733,
+      "longitude": 73.8906921,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJJ-cTQQDBwjsRH4rwUIDtfds",
+      "photo_reference": "AWCwydgVvC9ayGo1VsjMzlZhDmXnt16J7K73sAEd0gyVUrA2svxthY3BcUWgE8Aw_hS2Nf16_zCDbd_3l5StWsSo4JJNr3ci-vxakpP4qi9iefVufzZrj0etRIxWDJlUVa9vC1jCu7SzJ9nvB7FbmU5WpvgGQavYm4xeTWQbCsf7vJOlyiM8pV8UTsz44i8LvfM7FKpvE5xEkvX0NkOVchdPJE7BNCDX95z9xIMfPnqlHjym-kAB8pByrVYJxVP9QEltycsyT-rKA4SnUBItFvXQ0P_7nDfrGkMJp2vvkD5uU83MxpBTxDB3bmt43bQM3pHONl52zMrCsUvTS5ASkX2uCPhXafWwC98-a9QxXsn8fGhp5tqUUHiSkNU-6stFeZ7kIirZv7lOqwIwaMGsHME6dAM6n_SHX8ZcCOUnnoUutQTtrg"
+    },
+    {
+      "place_id": "ChIJQefo-QTAwjsR2NdHUYcrabM",
+      "name": "Bagul Udyan",
+      "address": "Tapodhan Society, Sivadarshan Poorgrasta Vasahat, Parvati Paytha, Pune, Maharashtra 411009",
+      "latitude": 18.4910317,
+      "longitude": 73.85089599999999,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJQefo-QTAwjsR2NdHUYcrabM",
+      "photo_reference": "AWCwydjhFQc_OsLzUDuCV6tWE_wZos8UJSPl3adcf1DiaJqkgVhAF_R1UCDv_8VaPQTAfSrJCUpZCkCkCBNGVZ-RWLCiQKu6VV03l2inDfS8vXdsNBNN0oC8JgoDiPoLrcTC7qSAhNKOF5R3lAtP2uxOH_IyQDmbWfWxlScMf58I21wRw91vfUkb4w4DZNLx7XCnOau7a8tSsmSOj7g8bEic0HMibH-94aBPN7NgkzGoJ5dMR0tUinyI7l9x0kaNTevAqMnYoe2Qu32gu9NcH7UweXK57Ft7vRMVdhMFWcrmn5QspXqEtSTpA7SMyVsI8eHn6X1EPNZMgCqDVxqI5sNlpxxkUAfLRvh2TpaM0zsrLtYMPhwv-L1itHdk6ogEXiyhWVXZzzFzU4XkRRiNHssk-xQCtNqWo5B12oD27dxXctOAyA"
+    },
+    {
+      "place_id": "ChIJydFb0hrAwjsRgmxdVh8tBxM",
+      "name": "Seven Wonders Dream Park",
+      "address": "1, Shiv Darshan Rd, Anurag Society, Sivadarshan Poorgrasta Vasahat, Parvati Paytha, Pune, Maharashtra 411009",
+      "latitude": 18.4928445,
+      "longitude": 73.8534859,
+      "types": [
+        "amusement_park",
+        "establishment",
+        "point_of_interest"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJydFb0hrAwjsRgmxdVh8tBxM",
+      "photo_reference": "AWCwydiBHFAcv7LNQbw08uOtnlDRxmRyaqktsV2TwHlxnYOqBBS5IlqY1b5uu8NPFIe4KUukr6B2wcSkM5BSGw0YrIUbPcH3tx19IUs_unrmCgHCRuCcPCwhFR2rIErHHiyYf_sRVyU-zptfZgB4ennKFK6377m803L9zTvNOxWoSY7WGPn4ZwvjNXP9TBZGBC0CDSPb7V6l-T5p4FOjKbTue8qdULUyrExZPgdiW-DUr0XQMMKk-jvc2bnVTDo4CrTTcJEFbDx0pq57PK3tuwBo4tfaTtsMBva7yUuKPHRrfCBprpew4Hoc26r_2pUJfUXdLLMFd6wCw6NQVTRKSVwVbVvMP0EAlDCjfEh58uX4MeZS-w8QShrGbmZlhConbfevqUtGdp0TGfpZPMwuZ3IuD6p1AhPCvY9H6CzIRYLbF6-pU5VK"
+    },
+    {
+      "place_id": "ChIJw7yl9krAwjsRkQZmFjSf7Nc",
+      "name": "Muredha Nala Park",
+      "address": "GV7P+7FX, HH Prince Aga Khan Rd, Agarkar Nagar, Pune, Maharashtra 411001",
+      "latitude": 18.5132425,
+      "longitude": 73.8862233,
+      "types": [
+        "establishment",
+        "park",
+        "point_of_interest",
+        "tourist_attraction"
+      ],
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJw7yl9krAwjsRkQZmFjSf7Nc",
+      "photo_reference": "AWCwydg5IbK7wEOZ9ePqXaF78SrXkYQENukKEADM8QUdPwGTGmCdktGTFEuS2Xs_XHDOiudSm8mgPCjQQfDs1qO9NTxaoV7L7rc83B2hUVPoomDEMxDgNFrGi8zm-d96WyuIXFnfucD-n9oxKDdy-qA7kdZWtCp5LAv4LTGIEEsaqoDZfRmtIpDgfntRa-w-ldVMm3OCmeWfIIYHIA74y0iyWb4RTBIsu6r159CY0GJHngyO3YeQPHNoVM54C2xukprqUcTGwctq0a3-6QMKvbLUs9MbHzXBr0itvNPyL1kQTVUka9-Ja6LEmLeAX103VNv5WB20blTYsdiyoIIvig0AdSYP_GulOJVQe0act7N1aCAnNRDyk8tCHyph4J6ON5s7dlnv4x5MifN74zju8rFaXEhWFb3iMUxEpt8xIA--m6s"
+    }
+  ]
+}

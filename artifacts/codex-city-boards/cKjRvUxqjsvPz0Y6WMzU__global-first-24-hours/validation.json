@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "problems": [],
+  "sourceCount": 8,
+  "reachability": [
+    {
+      "url": "https://english.nanjing.gov.cn/IWantto/Travel/PlacestoGo/Parks/202405/t20240511_4663669.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://english.nanjing.gov.cn/IWantto/Travel/PlacestoGo/Parks/202405/t20240511_4663669.html",
+      "error": ""
+    },
+    {
+      "url": "https://english.nanjing.gov.cn/IWantto/Travel/PlacestoGo/ScenicSpots/202405/t20240511_4663557.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://english.nanjing.gov.cn/IWantto/Travel/PlacestoGo/ScenicSpots/202405/t20240511_4663557.html",
+      "error": ""
+    },
+    {
+      "url": "https://english.nanjing.gov.cn/IWantto/Travel/PlacestoGo/MuseumsGalleries/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://english.nanjing.gov.cn/IWantto/Travel/PlacestoGo/MuseumsGalleries/",
+      "error": ""
+    },
+    {
+      "url": "https://www.19371213.com.cn/en/about/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.19371213.com.cn/en/about/",
+      "error": ""
+    },
+    {
+      "url": "https://english.nanjing.gov.cn/WhatsNew/ExpatStories/202405/t20240523_4673600.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://english.nanjing.gov.cn/WhatsNew/ExpatStories/202405/t20240523_4673600.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.shangri-la.com/-/media/Shangri-La/nanjing_shangrila/dining/restaurants/jiangnan-wok/menu.pdf",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.shangri-la.com/-/media/Shangri-La/nanjing_shangrila/dining/restaurants/jiangnan-wok/menu.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://english.nanjing.gov.cn/IWantto/Shop/CharacteristicCommercialBlocks/202405/t20240509_4662078.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://english.nanjing.gov.cn/IWantto/Shop/CharacteristicCommercialBlocks/202405/t20240509_4662078.html",
+      "error": ""
+    },
+    {
+      "url": "https://whc.unesco.org/en/list/1004",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://whc.unesco.org/en/list/1004",
+      "error": ""
+    }
+  ],
+  "unreachable": []
+}

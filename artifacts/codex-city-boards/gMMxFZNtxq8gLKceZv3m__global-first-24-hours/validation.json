@@ -1,0 +1,102 @@
+{
+  "ok": false,
+  "problems": [
+    "4 source URL(s) could not be reached."
+  ],
+  "sourceCount": 9,
+  "reachability": [
+    {
+      "url": "https://e.gov.kw/sites/kgoenglish/Pages/eServices/MOIAI/MOIAeservice.aspx",
+      "ok": true,
+      "status": 403,
+      "finalUrl": "https://e.gov.kw/sites/kgoenglish/Pages/eServices/MOIAI/MOIAeservice.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2775857&language=en",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2775857&language=en",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.nlk.gov.kw/Content.aspx?ID=23",
+      "ok": true,
+      "status": 403,
+      "finalUrl": "https://www.nlk.gov.kw/Content.aspx?ID=23",
+      "error": ""
+    },
+    {
+      "url": "https://www.nccal.gov.kw/en/museums",
+      "ok": true,
+      "status": 403,
+      "finalUrl": "https://www.nccal.gov.kw/en/museums",
+      "error": ""
+    },
+    {
+      "url": "https://alsadu.org.kw/sadu-house-history/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://alsadu.org.kw/sadu-house-history/",
+      "error": ""
+    },
+    {
+      "url": "https://dev.jacc-kw.com/about-us/architecture/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dev.jacc-kw.com/about-us/architecture/",
+      "error": ""
+    },
+    {
+      "url": "https://www.kuna.net.kw/ArticleDetails.aspx?Language=en&id=2685113",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticleDetails.aspx?Language=en&id=2685113",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.kuna.net.kw/ArticlePrintPage.aspx?id=3276665&language=en",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticlePrintPage.aspx?id=3276665&language=en",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2427737&language=en",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2427737&language=en",
+      "error": "fetch failed"
+    }
+  ],
+  "unreachable": [
+    {
+      "url": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2775857&language=en",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2775857&language=en",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.kuna.net.kw/ArticleDetails.aspx?Language=en&id=2685113",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticleDetails.aspx?Language=en&id=2685113",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.kuna.net.kw/ArticlePrintPage.aspx?id=3276665&language=en",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticlePrintPage.aspx?id=3276665&language=en",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2427737&language=en",
+      "ok": false,
+      "status": 0,
+      "finalUrl": "https://www.kuna.net.kw/ArticleDetails.aspx?id=2427737&language=en",
+      "error": "fetch failed"
+    }
+  ]
+}

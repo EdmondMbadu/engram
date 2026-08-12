@@ -1,0 +1,19 @@
+{
+  "city": {
+    "id": "gMMxFZNtxq8gLKceZv3m",
+    "name": "Kuwait City",
+    "region": "Kuwait",
+    "country": "KW"
+  },
+  "template": {
+    "id": "global-first-24-hours",
+    "version": "1.0",
+    "titlePattern": "Your First 24 Hours in {city}, Dealt as Cards",
+    "searchQuery": "essential local food culture landmarks first visit",
+    "editorialBrief": "Build a plausible first-day sequence, not a top-ten list. Give each card a role in the day and one clear reason it belongs there. Keep travel time and opening-hour claims conservative unless verified. Avoid bucket-list language and exhausting itinerary compression.",
+    "count": 10,
+    "cardTitleMode": "place"
+  },
+  "generation_key": "gMMxFZNtxq8gLKceZv3m__global-first-24-hours__1.0",
+  "candidates": []
+}
