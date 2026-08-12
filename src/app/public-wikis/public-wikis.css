@@ -671,6 +671,16 @@
   object-fit: cover;
 }
 
+.mobile-discover-card__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 4rem;
+  font-weight: 950;
+}
+
 .mobile-discover-card__icon,
 .mobile-discover-card__meta {
   position: relative;
@@ -821,6 +831,45 @@
   color: var(--mobile-green);
   font-size: 1.2rem;
   font-variation-settings: 'FILL' 1;
+}
+
+.mobile-home-more {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0.15rem auto 0.75rem;
+  border: 2px solid var(--mobile-deep);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 3px 3px 0 var(--mobile-deep);
+  color: var(--mobile-green);
+  padding: 0.62rem 0.9rem;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+.mobile-home-more:hover:not(:disabled) {
+  box-shadow: 1px 1px 0 var(--mobile-deep);
+  transform: translate(2px, 2px);
+}
+
+.mobile-home-more:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.mobile-home-more .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+.mobile-home-more--discover {
+  margin-top: 1rem;
 }
 
 .mobile-card-row {

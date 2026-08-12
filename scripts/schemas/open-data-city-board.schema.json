@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["complete", "city", "template_id", "title", "description", "icon", "cards", "warnings"],
+  "properties": {
+    "complete": { "type": "boolean" },
+    "city": { "type": "string" },
+    "template_id": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "icon": { "type": "string" },
+    "cards": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_name", "title", "subtitle", "notes", "short_summary", "source_url", "source_title", "latitude", "longitude"],
+        "properties": {
+          "entity_name": { "type": "string" },
+          "title": { "type": "string" },
+          "subtitle": { "type": "string" },
+          "notes": { "type": "string" },
+          "short_summary": { "type": "string" },
+          "source_url": { "type": "string" },
+          "source_title": { "type": "string" },
+          "latitude": { "type": ["number", "null"] },
+          "longitude": { "type": ["number", "null"] }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

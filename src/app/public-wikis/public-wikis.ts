@@ -2,7 +2,17 @@ import { DecimalPipe, isPlatformBrowser } from '@angular/common';
 import { Component, computed, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { collection, getDocs, query, where, type Firestore } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  limit,
+  query,
+  startAfter,
+  where,
+  type DocumentData,
+  type Firestore,
+  type QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
@@ -61,6 +71,7 @@ interface MobileHomeSection {
   addLabel: string;
   addLink: string;
   cards: MobileHomeCard[];
+  totalCount: number;
 }
 
 interface MobileBoardCard {
@@ -178,6 +189,8 @@ const MOBILE_CITY_SORTS: Array<{ value: MobileCitySortMode; label: string }> = [
 const MOBILE_BOARD_STORAGE_KEY = 'livingwiki-boards-v1';
 const MOBILE_BOARD_ACTIONS_STORAGE_KEY = 'lw-board-actions';
 const MOBILE_DEMO_BOARD_IDS = new Set(['board-summer-places', 'board-eats', 'board-weekend']);
+const HOME_SECTION_PAGE_SIZE = 10;
+const HOME_BOARD_QUERY_PAGE_SIZE = HOME_SECTION_PAGE_SIZE + 1;
 
 const CITY_DENSITY_PER_KM2_BY_KEY: Record<string, number> = {
   'abu dhabi': 110,
@@ -509,7 +522,15 @@ export class PublicWikisComponent implements OnInit {
   readonly searchTerm = signal('');
   readonly activeCategory = signal<PublicWikiCategory>(CITIES_CATEGORY);
   readonly activeSort = signal<PublicWikiSortMode>('population');
-  readonly visibleWikiLimit = signal(60);
+  readonly visibleWikiLimit = signal(HOME_SECTION_PAGE_SIZE);
+  readonly mobileSectionLimits = signal<Record<string, number>>({});
+  readonly mobileDiscoverLimit = signal(HOME_SECTION_PAGE_SIZE);
+  readonly mobileFeaturedCityLimit = signal(HOME_SECTION_PAGE_SIZE);
+  readonly mobileBoardsHasMore = signal(false);
+  readonly mobileBoardRemoteExhausted = signal(false);
+  readonly mobileDiscoverHasMore = signal(false);
+  readonly mobileBoardsLoadingMore = signal(false);
+  readonly mobileDiscoverLoadingMore = signal(false);
   readonly mobileDrawerOpen = signal(false);
   readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
@@ -530,17 +551,20 @@ export class PublicWikisComponent implements OnInit {
   private readonly localTimeHeroFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly timezoneFormatterCache = new Map<string, Intl.DateTimeFormat>();
   private readonly pendingTemperatureCoordinateLookups = new Map<string, Promise<CityTemperatureCoordinates | null>>();
+  private mobileBoardCursor: QueryDocumentSnapshot<DocumentData> | null = null;
+  private mobileDiscoverCursor: QueryDocumentSnapshot<DocumentData> | null = null;
 
   readonly publicWikis = computed(() => this.liveWikis());
 
   readonly liveCount = computed(() => this.liveWikis().length);
-  readonly mobileBoardCards = computed(() =>
+  readonly allMobileBoardCards = computed(() =>
     this.mobileBoards()
-      .slice(0, 10)
       .map((board) => this.mobileCardFromBoard(board, 'board')),
   );
-  readonly mobileDiscoverPreviewBoards = computed(() => this.mobileDiscoverBoards().filter((board) => board.imageUrl).slice(0, 4));
-  readonly mobileSavedBoardCards = computed(() => {
+  readonly mobileDiscoverPreviewBoards = computed(() =>
+    this.mobileDiscoverBoards().slice(0, this.mobileDiscoverLimit()),
+  );
+  readonly allMobileSavedBoardCards = computed(() => {
     const saved = this.savedBoardIds();
     if (!saved.size) {
       return [];
@@ -550,73 +574,82 @@ export class PublicWikisComponent implements OnInit {
     return [...saved]
       .map((id) => boardsById.get(id))
       .filter((board): board is MobileBoard => !!board)
-      .slice(0, 10)
       .map((board) => this.mobileCardFromBoard(board, this.boardSongCards(board).length ? 'song' : 'board'));
   });
-  readonly mobileSongCards = computed(() =>
+  readonly allMobileSongCards = computed(() =>
     this.mobileBoards()
       .filter((board) => this.boardSongCards(board).length > 0)
-      .slice(0, 10)
       .map((board) => this.mobileCardFromBoard(board, 'song')),
   );
-  readonly mobileFriendCards = computed(() =>
+  readonly allMobileFriendCards = computed(() =>
     this.mobileFriends()
-      .slice(0, 10)
       .map((friend) => this.mobileCardFromFriend(friend)),
   );
-  readonly mobileTripCards = computed(() =>
+  readonly allMobileTripCards = computed(() =>
     this.mobileBoards()
       .filter((board) => this.isTripBoard(board))
-      .slice(0, 10)
       .map((board) => this.mobileCardFromBoard(board, 'trip')),
   );
-  readonly mobileSections = computed<MobileHomeSection[]>(() => [
-    ...(this.mobileSavedBoardCards().length
-      ? [{
-          id: 'saved',
-          label: $localize`Saved Boards`,
-          icon: 'bookmark',
-          addLabel: $localize`Discover boards`,
-          addLink: '/home',
-          cards: this.mobileSavedBoardCards(),
-        }]
-      : []),
-    {
-      id: 'boards',
-      label: $localize`My Boards`,
-      icon: 'dashboard_customize',
-      iconImageUrl: HOME_ICON_URLS.boards,
-      addLabel: $localize`Add board`,
-      addLink: '/boards',
-      cards: this.mobileBoardCards(),
-    },
-    {
-      id: 'songs',
-      label: $localize`My Songs`,
-      icon: 'music_note',
-      iconImageUrl: HOME_ICON_URLS.songs,
-      addLabel: $localize`Add song`,
-      addLink: '/songs',
-      cards: this.mobileSongCards(),
-    },
-    {
-      id: 'friends',
-      label: $localize`My Friends`,
-      icon: 'group',
-      addLabel: $localize`Add friend`,
-      addLink: '/friends',
-      cards: this.mobileFriendCards(),
-    },
-    {
-      id: 'trips',
-      label: $localize`My Trips`,
-      icon: 'map',
-      iconImageUrl: HOME_ICON_URLS.trips,
-      addLabel: $localize`Add trip`,
-      addLink: '/trips',
-      cards: this.mobileTripCards(),
-    },
-  ]);
+  readonly mobileSections = computed<MobileHomeSection[]>(() => {
+    const savedCards = this.allMobileSavedBoardCards();
+    const boardCards = this.allMobileBoardCards();
+    const songCards = this.allMobileSongCards();
+    const friendCards = this.allMobileFriendCards();
+    const tripCards = this.allMobileTripCards();
+
+    return [
+      ...(savedCards.length
+        ? [{
+            id: 'saved',
+            label: $localize`Saved Boards`,
+            icon: 'bookmark',
+            addLabel: $localize`Discover boards`,
+            addLink: '/home',
+            cards: savedCards.slice(0, this.mobileSectionLimit('saved')),
+            totalCount: savedCards.length,
+          }]
+        : []),
+      {
+        id: 'boards',
+        label: $localize`My Boards`,
+        icon: 'dashboard_customize',
+        iconImageUrl: HOME_ICON_URLS.boards,
+        addLabel: $localize`Add board`,
+        addLink: '/boards',
+        cards: boardCards.slice(0, this.mobileSectionLimit('boards')),
+        totalCount: boardCards.length,
+      },
+      {
+        id: 'songs',
+        label: $localize`My Songs`,
+        icon: 'music_note',
+        iconImageUrl: HOME_ICON_URLS.songs,
+        addLabel: $localize`Add song`,
+        addLink: '/songs',
+        cards: songCards.slice(0, this.mobileSectionLimit('songs')),
+        totalCount: songCards.length,
+      },
+      {
+        id: 'friends',
+        label: $localize`My Friends`,
+        icon: 'group',
+        addLabel: $localize`Add friend`,
+        addLink: '/friends',
+        cards: friendCards.slice(0, this.mobileSectionLimit('friends')),
+        totalCount: friendCards.length,
+      },
+      {
+        id: 'trips',
+        label: $localize`My Trips`,
+        icon: 'map',
+        iconImageUrl: HOME_ICON_URLS.trips,
+        addLabel: $localize`Add trip`,
+        addLink: '/trips',
+        cards: tripCards.slice(0, this.mobileSectionLimit('trips')),
+        totalCount: tripCards.length,
+      },
+    ];
+  });
   readonly mobileCitySortOptions = MOBILE_CITY_SORTS;
 
   readonly categories = computed(() => [...PUBLIC_WIKI_CATEGORIES]);
@@ -658,7 +691,16 @@ export class PublicWikisComponent implements OnInit {
     });
     return this.sortWikis(cityWikis);
   });
-  readonly mobileFeaturedCities = computed(() => this.mobileCityWikis().slice(0, 8));
+  readonly mobileFeaturedCities = computed(() =>
+    this.mobileCityWikis().slice(0, this.mobileFeaturedCityLimit()),
+  );
+  readonly hasMoreMobileFeaturedCities = computed(() =>
+    this.mobileFeaturedCities().length < this.mobileCityWikis().length,
+  );
+  readonly hasMoreMobileDiscoverBoards = computed(() =>
+    this.mobileDiscoverPreviewBoards().length < this.mobileDiscoverBoards().length
+      || this.mobileDiscoverHasMore(),
+  );
   readonly mobileSelectedCity = computed(() => {
     const cityWikis = this.publicWikis().filter((wiki) => this.categoryForWiki(wiki) === CITIES_CATEGORY);
     const selectedSlug = this.mobileSelectedCitySlug();
@@ -734,7 +776,7 @@ export class PublicWikisComponent implements OnInit {
     this.loadBoardActionState();
     void this.loadMobileBoards();
     void this.loadMobileDiscoverBoards();
-    void this.loadMobileFriends();
+    this.scheduleMobileFriendsLoad();
     void this.handleMobileHomeHash();
     this.isLoadingLiveWikis.set(true);
 
@@ -778,7 +820,7 @@ export class PublicWikisComponent implements OnInit {
 
   setCategory(cat: PublicWikiCategory): void {
     this.activeCategory.set(cat);
-    this.visibleWikiLimit.set(60);
+    this.visibleWikiLimit.set(HOME_SECTION_PAGE_SIZE);
     if (cat !== CITIES_CATEGORY) {
       this.activeSort.set('featured');
     }
@@ -786,11 +828,12 @@ export class PublicWikisComponent implements OnInit {
 
   onSearchInput(value: string): void {
     this.searchTerm.set(value);
-    this.visibleWikiLimit.set(60);
+    this.visibleWikiLimit.set(HOME_SECTION_PAGE_SIZE);
+    this.mobileFeaturedCityLimit.set(HOME_SECTION_PAGE_SIZE);
   }
 
   showMoreWikis(): void {
-    this.visibleWikiLimit.update((limit) => limit + 60);
+    this.visibleWikiLimit.update((currentLimit) => currentLimit + HOME_SECTION_PAGE_SIZE);
   }
 
   clearFilters(): void {
@@ -936,6 +979,74 @@ export class PublicWikisComponent implements OnInit {
     return card.link === '/chat/philly' ? this.mobileSelectedCityLink() : card.link;
   }
 
+  hasMoreMobileSection(section: MobileHomeSection): boolean {
+    if (section.totalCount > section.cards.length) {
+      return true;
+    }
+    if (section.id === 'saved') {
+      return this.savedBoardIds().size > section.totalCount
+        && (this.mobileBoardsHasMore() || this.mobileDiscoverHasMore());
+    }
+    return ['boards', 'songs', 'trips'].includes(section.id) && this.mobileBoardsHasMore();
+  }
+
+  isMobileSectionLoading(section: MobileHomeSection): boolean {
+    if (section.id === 'saved') {
+      return this.mobileBoardsLoadingMore() || this.mobileDiscoverLoadingMore();
+    }
+    return ['boards', 'songs', 'trips'].includes(section.id) && this.mobileBoardsLoadingMore();
+  }
+
+  async showMoreMobileSection(section: MobileHomeSection): Promise<void> {
+    if (this.isMobileSectionLoading(section)) return;
+    const nextLimit = this.mobileSectionLimit(section.id) + HOME_SECTION_PAGE_SIZE;
+    this.mobileSectionLimits.update((limits) => ({ ...limits, [section.id]: nextLimit }));
+
+    while (
+      this.mobileSectionFullCardCount(section.id) < nextLimit
+      && !this.mobileBoardRemoteExhausted()
+    ) {
+      if (section.id === 'saved') {
+        const canLoadBoards = this.mobileBoardsHasMore();
+        const canLoadDiscover = this.mobileDiscoverHasMore();
+        if (!canLoadBoards && !canLoadDiscover) break;
+        if (canLoadBoards) await this.fetchNextMobileBoardPage(this.authService.uid());
+        if (canLoadDiscover) await this.fetchNextMobileDiscoverPage(this.authService.uid());
+        continue;
+      }
+      if (!['boards', 'songs', 'trips'].includes(section.id) || !this.mobileBoardsHasMore()) {
+        break;
+      }
+      await this.fetchNextMobileBoardPage(this.authService.uid());
+    }
+  }
+
+  async showMoreMobileDiscoverBoards(): Promise<void> {
+    if (this.mobileDiscoverLoadingMore()) return;
+    const nextLimit = this.mobileDiscoverLimit() + HOME_SECTION_PAGE_SIZE;
+    this.mobileDiscoverLimit.set(nextLimit);
+    while (this.mobileDiscoverBoards().length < nextLimit && this.mobileDiscoverHasMore()) {
+      await this.fetchNextMobileDiscoverPage(this.authService.uid());
+    }
+  }
+
+  showMoreMobileFeaturedCities(): void {
+    this.mobileFeaturedCityLimit.update((currentLimit) => currentLimit + HOME_SECTION_PAGE_SIZE);
+  }
+
+  private mobileSectionLimit(sectionId: string): number {
+    return this.mobileSectionLimits()[sectionId] ?? HOME_SECTION_PAGE_SIZE;
+  }
+
+  private mobileSectionFullCardCount(sectionId: string): number {
+    if (sectionId === 'saved') return this.allMobileSavedBoardCards().length;
+    if (sectionId === 'boards') return this.allMobileBoardCards().length;
+    if (sectionId === 'songs') return this.allMobileSongCards().length;
+    if (sectionId === 'friends') return this.allMobileFriendCards().length;
+    if (sectionId === 'trips') return this.allMobileTripCards().length;
+    return 0;
+  }
+
   private isDesktopHomeShell(): boolean {
     return this.isBrowser && window.matchMedia('(min-width: 1024px)').matches;
   }
@@ -950,29 +1061,53 @@ export class PublicWikisComponent implements OnInit {
       await this.authService.waitForReady();
       const uid = this.authService.uid();
       const localBoards = this.loadStoredMobileBoards(uid);
-      let remoteBoards: MobileBoard[] = [];
-
-      if (this.firestore) {
-        const boardQuery = uid
-          ? query(collection(this.firestore, 'boards'), where('owner_user_id', '==', uid))
-          : query(collection(this.firestore, 'boards'), where('visibility', '==', 'public'));
-        const snapshot = await getDocs(boardQuery);
-        remoteBoards = snapshot.docs
-          .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
-          .filter((board): board is MobileBoard => !!board);
-      }
-
-      const boardsById = new Map<string, MobileBoard>();
-      [...localBoards, ...remoteBoards].forEach((board) => {
-        if (!MOBILE_DEMO_BOARD_IDS.has(board.id)) {
-          boardsById.set(board.id, board);
-        }
-      });
-      this.mobileBoards.set(this.sortMobileBoards([...boardsById.values()]));
+      this.mobileBoardCursor = null;
+      this.mobileBoardRemoteExhausted.set(false);
+      this.mobileBoardsHasMore.set(Boolean(this.firestore));
+      this.mobileBoards.set(localBoards);
+      await this.fetchNextMobileBoardPage(uid);
     } catch {
       this.mobileBoards.set(this.loadStoredMobileBoards(this.authService.uid()));
+      this.mobileBoardsHasMore.set(false);
+      this.mobileBoardRemoteExhausted.set(true);
     } finally {
       this.mobileBoardsLoading.set(false);
+    }
+  }
+
+  private async fetchNextMobileBoardPage(uid: string): Promise<void> {
+    if (!this.firestore || !this.mobileBoardsHasMore() || this.mobileBoardsLoadingMore()) {
+      return;
+    }
+
+    this.mobileBoardsLoadingMore.set(true);
+    try {
+      const boardQuery = query(
+        collection(this.firestore, 'boards'),
+        uid ? where('owner_user_id', '==', uid) : where('visibility', '==', 'public'),
+        ...(this.mobileBoardCursor ? [startAfter(this.mobileBoardCursor)] : []),
+        limit(HOME_BOARD_QUERY_PAGE_SIZE),
+      );
+      const snapshot = await getDocs(boardQuery);
+      const remoteBoards = snapshot.docs
+        .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
+        .filter((board): board is MobileBoard => !!board);
+      const boardsById = new Map(this.mobileBoards().map((board) => [board.id, board]));
+      remoteBoards.forEach((board) => {
+        if (!MOBILE_DEMO_BOARD_IDS.has(board.id)) boardsById.set(board.id, board);
+      });
+      this.mobileBoards.set(this.sortMobileBoards([...boardsById.values()]));
+      this.mobileBoardCursor = snapshot.docs.at(-1) ?? this.mobileBoardCursor;
+      const remoteExhausted = snapshot.docs.length < HOME_BOARD_QUERY_PAGE_SIZE;
+      this.mobileBoardRemoteExhausted.set(remoteExhausted);
+      this.mobileBoardsHasMore.set(
+        this.mobileBoards().length > HOME_SECTION_PAGE_SIZE || !remoteExhausted,
+      );
+    } catch {
+      this.mobileBoardsHasMore.set(false);
+      this.mobileBoardRemoteExhausted.set(true);
+    } finally {
+      this.mobileBoardsLoadingMore.set(false);
     }
   }
 
@@ -986,16 +1121,51 @@ export class PublicWikisComponent implements OnInit {
     try {
       await this.authService.waitForReady();
       const uid = this.authService.uid();
-      const snapshot = await getDocs(query(collection(this.firestore, 'boards'), where('visibility', '==', 'public')));
+      this.mobileDiscoverCursor = null;
+      this.mobileDiscoverHasMore.set(true);
+      this.mobileDiscoverBoards.set([]);
+      await this.fetchNextMobileDiscoverPage(uid);
+      while (
+        this.mobileDiscoverBoards().length < HOME_SECTION_PAGE_SIZE
+        && this.mobileDiscoverHasMore()
+      ) {
+        await this.fetchNextMobileDiscoverPage(uid);
+      }
+    } catch {
+      this.mobileDiscoverBoards.set([]);
+      this.mobileDiscoverHasMore.set(false);
+    } finally {
+      this.mobileDiscoverLoading.set(false);
+    }
+  }
+
+  private async fetchNextMobileDiscoverPage(uid: string): Promise<void> {
+    if (!this.firestore || !this.mobileDiscoverHasMore() || this.mobileDiscoverLoadingMore()) {
+      return;
+    }
+
+    this.mobileDiscoverLoadingMore.set(true);
+    try {
+      const boardQuery = query(
+        collection(this.firestore, 'boards'),
+        where('visibility', '==', 'public'),
+        ...(this.mobileDiscoverCursor ? [startAfter(this.mobileDiscoverCursor)] : []),
+        limit(HOME_BOARD_QUERY_PAGE_SIZE),
+      );
+      const snapshot = await getDocs(boardQuery);
       const boards = snapshot.docs
         .map((boardDoc) => this.mobileBoardFromRecord(boardDoc.id, boardDoc.data()))
         .filter((board): board is MobileBoard => !!board)
-        .filter((board) => !!board.imageUrl && !MOBILE_DEMO_BOARD_IDS.has(board.id) && board.ownerUserId !== uid);
-      this.mobileDiscoverBoards.set(this.sortMobileBoards(boards));
+        .filter((board) => !MOBILE_DEMO_BOARD_IDS.has(board.id) && board.ownerUserId !== uid);
+      const boardsById = new Map(this.mobileDiscoverBoards().map((board) => [board.id, board]));
+      boards.forEach((board) => boardsById.set(board.id, board));
+      this.mobileDiscoverBoards.set(this.sortMobileBoards([...boardsById.values()]));
+      this.mobileDiscoverCursor = snapshot.docs.at(-1) ?? this.mobileDiscoverCursor;
+      this.mobileDiscoverHasMore.set(snapshot.docs.length === HOME_BOARD_QUERY_PAGE_SIZE);
     } catch {
-      this.mobileDiscoverBoards.set([]);
+      this.mobileDiscoverHasMore.set(false);
     } finally {
-      this.mobileDiscoverLoading.set(false);
+      this.mobileDiscoverLoadingMore.set(false);
     }
   }
 
@@ -1065,6 +1235,15 @@ export class PublicWikisComponent implements OnInit {
 
   private stringArraySet(value: unknown): Set<string> {
     return new Set(Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []);
+  }
+
+  private scheduleMobileFriendsLoad(): void {
+    if (!this.isBrowser) return;
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => void this.loadMobileFriends(), { timeout: 2_000 });
+      return;
+    }
+    setTimeout(() => void this.loadMobileFriends(), 0);
   }
 
   private async loadMobileFriends(): Promise<void> {

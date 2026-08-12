@@ -97,9 +97,12 @@
             @for (board of mobileDiscoverPreviewBoards(); track board.id) {
               <a
                 [routerLink]="boardViewLink(board)"
-                class="mobile-content-card mobile-content-card--with-image"
+                class="mobile-content-card"
+                [class.mobile-content-card--with-image]="board.imageUrl"
               >
-                <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" class="mobile-content-card-image" />
+                @if (board.imageUrl) {
+                  <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" class="mobile-content-card-image" />
+                }
                 <span class="material-symbols-outlined">{{ boardIcon(board) }}</span>
                 <b>{{ board.title }}</b>
                 <small>{{ ownerLabel(board) }} · {{ countLabel(board.cards.length, boardSongCards(board).length ? 'song' : 'card') }}</small>
@@ -109,6 +112,17 @@
             <div class="mobile-discover-empty" i18n>No boards yet.</div>
           }
         </div>
+        @if (hasMoreMobileDiscoverBoards()) {
+          <button
+            type="button"
+            class="mobile-home-more"
+            [disabled]="mobileDiscoverLoadingMore()"
+            (click)="showMoreMobileDiscoverBoards()"
+          >
+            <span class="material-symbols-outlined">expand_more</span>
+            <span>{{ mobileDiscoverLoadingMore() ? 'Loading…' : 'Load 10 more' }}</span>
+          </button>
+        }
       </section>
 
       <section id="mobile-city" class="mobile-city-block">
@@ -254,6 +268,12 @@
             </a>
           }
         </div>
+        @if (hasMoreMobileFeaturedCities()) {
+          <button type="button" class="mobile-home-more" (click)="showMoreMobileFeaturedCities()">
+            <span class="material-symbols-outlined">expand_more</span>
+            <span>Load 10 more</span>
+          </button>
+        }
       </section>
 
       @for (section of mobileSections(); track section.id) {
@@ -292,6 +312,17 @@
               </a>
             }
           </div>
+          @if (hasMoreMobileSection(section)) {
+            <button
+              type="button"
+              class="mobile-home-more"
+              [disabled]="isMobileSectionLoading(section)"
+              (click)="showMoreMobileSection(section)"
+            >
+              <span class="material-symbols-outlined">expand_more</span>
+              <span>{{ isMobileSectionLoading(section) ? 'Loading…' : 'Load 10 more' }}</span>
+            </button>
+          }
         </section>
       }
 
@@ -340,10 +371,14 @@
           @if (mobileDiscoverLoading()) {
             <div class="mobile-discover-empty" i18n>Loading...</div>
           } @else if (mobileDiscoverBoards().length) {
-            @for (board of mobileDiscoverBoards(); track board.id) {
+            @for (board of mobileDiscoverPreviewBoards(); track board.id) {
               <article class="mobile-discover-card">
-                <a [routerLink]="boardViewLink(board)" class="mobile-discover-card__media">
-                  <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" />
+                <a [routerLink]="boardViewLink(board)" class="mobile-discover-card__media" [style.background]="boardAccent(board)">
+                  @if (board.imageUrl) {
+                    <img [src]="board.imageUrl" [alt]="board.title" loading="lazy" />
+                  } @else {
+                    <span class="mobile-discover-card__fallback">{{ initialsFor(board.title) }}</span>
+                  }
                   <span class="mobile-discover-card__icon">
                     <span class="material-symbols-outlined">{{ boardIcon(board) }}</span>
                   </span>
@@ -377,6 +412,17 @@
             <div class="mobile-discover-empty" i18n>No boards yet.</div>
           }
         </div>
+        @if (hasMoreMobileDiscoverBoards()) {
+          <button
+            type="button"
+            class="mobile-home-more mobile-home-more--discover"
+            [disabled]="mobileDiscoverLoadingMore()"
+            (click)="showMoreMobileDiscoverBoards()"
+          >
+            <span class="material-symbols-outlined">expand_more</span>
+            <span>{{ mobileDiscoverLoadingMore() ? 'Loading…' : 'Load 10 more' }}</span>
+          </button>
+        }
       </section>
     </main>
     }
@@ -867,7 +913,7 @@
           <div class="mt-8 flex justify-center">
             <button type="button" (click)="showMoreWikis()" class="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--surface)] px-6 py-3 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent)] transition hover:-translate-y-0.5 hover:bg-[var(--accent)]/10">
               <span class="material-symbols-outlined">expand_more</span>
-              Show more · {{ filteredWikis().length - visibleWikis().length }} remaining
+              Show 10 more · {{ filteredWikis().length - visibleWikis().length }} remaining
             </button>
           </div>
         }
