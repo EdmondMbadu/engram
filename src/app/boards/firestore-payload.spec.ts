@@ -1,5 +1,5 @@
 import { serverTimestamp } from 'firebase/firestore';
-import { omitUndefinedDeep } from './firestore-payload';
+import { boardCityMetadataForFirestore, omitUndefinedDeep } from './firestore-payload';
 
 describe('omitUndefinedDeep', () => {
   it('removes undefined values throughout nested board data', () => {
@@ -54,5 +54,19 @@ describe('omitUndefinedDeep', () => {
     expect(cleaned).not.toBe(source);
     expect(cleaned.nested).not.toBe(source.nested);
     expect(Object.prototype.hasOwnProperty.call(source.nested, 'remove')).toBeTrue();
+  });
+});
+
+describe('boardCityMetadataForFirestore', () => {
+  it('omits empty privileged city metadata from personal board saves', () => {
+    expect(boardCityMetadataForFirestore('', '')).toEqual({});
+    expect(boardCityMetadataForFirestore('   ', null)).toEqual({});
+  });
+
+  it('preserves non-empty city metadata for trusted publisher payloads', () => {
+    expect(boardCityMetadataForFirestore(' atlas-philly ', ' atlas-philly ')).toEqual({
+      atlas_id: 'atlas-philly',
+      generated_for_atlas_id: 'atlas-philly',
+    });
   });
 });

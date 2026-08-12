@@ -66,7 +66,7 @@ import {
 import { canReorderCardSurface } from './card-interaction';
 import { cardPresentationSubtitle } from './card-numbering';
 import { cardNotesForPersistence, cardNotesSummary } from './card-notes';
-import { omitUndefinedDeep } from './firestore-payload';
+import { boardCityMetadataForFirestore, omitUndefinedDeep } from './firestore-payload';
 import { cardsForNewBoardInside, legacyMemoryImages, relatedCardCollectionLabel, upsertNestedCard } from './related-cards';
 import {
   insertionSortOrder,
@@ -15963,8 +15963,7 @@ export class BoardsComponent implements OnDestroy {
       prepared,
       persistable: omitUndefinedDeep({
         ...persistable,
-        atlas_id: atlasId || null,
-        generated_for_atlas_id: generatedForAtlasId || null,
+        ...boardCityMetadataForFirestore(atlasId, generatedForAtlasId),
       }) as Record<string, unknown>,
     };
   }

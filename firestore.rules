@@ -62,6 +62,92 @@ service cloud.firestore {
       ];
     }
 
+    function personalBoardKeys() {
+      return [
+        'id',
+        'owner_user_id',
+        'owner_public_slug',
+        'owner_display_name',
+        'owner_photo_url',
+        'owner_profile_icon',
+        'owner_profile_picture_type',
+        'forkedFromBoardId',
+        'forkedFromTitle',
+        'forkedFromOwnerUserId',
+        'forkedFromOwnerName',
+        'visibility',
+        'kind',
+        'sortOrder',
+        'title',
+        'description',
+        'backNote',
+        'icon',
+        'tone',
+        'imageUrl',
+        'logoUrl',
+        'logoLinkUrl',
+        'stackCtaLabel',
+        'stackCtaUrl',
+        'socialVideoUrl',
+        'socialVideoMimeType',
+        'socialVideoUpdatedAt',
+        'socialVideoRenderVersion',
+        'socialVideoRatio',
+        'socialVideoAudioTrackId',
+        'socialVideoAudioVolume',
+        'socialVideoNarrationEnabled',
+        'trailerVideoUrl',
+        'trailerVideoMimeType',
+        'trailerVideoUpdatedAt',
+        'trailerVideoRenderVersion',
+        'trailerVideoRatio',
+        'trailerVideoAudioTrackId',
+        'trailerVideoAudioVolume',
+        'trailerVideoNarrationEnabled',
+        'trailerVideoScript',
+        'trailerVideoSourceFingerprint',
+        'trailerVideoCardIds',
+        'trailerVideoDurationSeconds',
+        'narrationStyle',
+        'stackNarratorVoiceId',
+        'stickers',
+        'tourMeta',
+        'learningQuiz',
+        'parentBoardId',
+        'parentCardId',
+        'parentBoardTitle',
+        'parentCardTitle',
+        'insideCardsDisplay',
+        'showCardNumbers',
+        'atlas_id',
+        'generated_for_atlas_id',
+        'cards',
+        'created_at_iso',
+        'updated_at_iso',
+        'server_updated_at'
+      ];
+    }
+
+    function hasNoCityPublishingMetadata(data) {
+      return (
+        !data.keys().hasAny(['atlas_id'])
+        || data.atlas_id == null
+      )
+      && (
+        !data.keys().hasAny(['generated_for_atlas_id'])
+        || data.generated_for_atlas_id == null
+      )
+      && !data.keys().hasAny([
+        'origin', 'publisher_type',
+        'generation_job_id', 'generation_item_id', 'generation_key',
+        'generator_version', 'template_id', 'template_version', 'rubric_version',
+        'editorial_status', 'city_listing_status', 'city_feature_order', 'source_status',
+        'quality_status', 'quality_warnings', 'validation_summary', 'created_by_user_id',
+        'approved_by_user_id', 'approved_at', 'deleted_at', 'deleted_by_user_id',
+        'deletion_reason', 'deletion_snapshot'
+      ]);
+    }
+
     function userEditableProfileKeys() {
       return [
         'id',
@@ -446,6 +532,99 @@ service cloud.firestore {
           'server_updated_at'
         ])
         && isValidStackNarratorVoiceId(request.resource.data.stackNarratorVoiceId)
+        && request.resource.data.updated_at_iso is string
+        && request.resource.data.server_updated_at == request.time;
+
+      // Personal board saves use a compact validator so they remain below
+      // Firestore's 1,000-expression evaluation limit. City publishing fields
+      // are never accepted through this owner-controlled path.
+      allow create, update: if isSignedIn()
+        && request.resource.data.owner_user_id == request.auth.uid
+        && request.resource.data.id == boardId
+        && (request.method == 'create' || resource.data.owner_user_id == request.auth.uid)
+        && request.resource.data.visibility in ['public', 'private']
+        && (
+          request.resource.data.visibility == 'public'
+          || isPlatformAdmin()
+          || hasActivePersonalWikiPlan()
+        )
+        && request.resource.data.keys().hasOnly(personalBoardKeys())
+        && hasNoCityPublishingMetadata(request.resource.data)
+        && request.resource.data.keys().hasAll([
+          'id',
+          'owner_user_id',
+          'owner_public_slug',
+          'owner_display_name',
+          'owner_photo_url',
+          'owner_profile_icon',
+          'owner_profile_picture_type',
+          'visibility',
+          'title',
+          'description',
+          'backNote',
+          'icon',
+          'tone',
+          'imageUrl',
+          'logoUrl',
+          'logoLinkUrl',
+          'stackCtaLabel',
+          'stackCtaUrl',
+          'socialVideoUrl',
+          'socialVideoMimeType',
+          'socialVideoUpdatedAt',
+          'socialVideoRatio',
+          'stickers',
+          'cards',
+          'created_at_iso',
+          'updated_at_iso',
+          'server_updated_at'
+        ])
+        && request.resource.data.owner_public_slug is string
+        && request.resource.data.owner_public_slug.size() >= 2
+        && request.resource.data.owner_public_slug.size() <= 80
+        && request.resource.data.owner_public_slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+        && request.resource.data.owner_display_name is string
+        && request.resource.data.owner_display_name.size() <= 120
+        && request.resource.data.owner_photo_url is string
+        && request.resource.data.owner_photo_url.size() <= 2000
+        && request.resource.data.owner_profile_icon is string
+        && request.resource.data.owner_profile_icon.size() <= 64
+        && (
+          request.resource.data.owner_profile_picture_type == null
+          || request.resource.data.owner_profile_picture_type in ['icon', 'image']
+        )
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 90
+        && request.resource.data.description is string
+        && request.resource.data.description.size() <= 240
+        && request.resource.data.backNote is string
+        && request.resource.data.backNote.size() <= 300
+        && request.resource.data.icon is string
+        && request.resource.data.icon.size() <= 64
+        && request.resource.data.tone in ['teal', 'coral', 'yellow', 'green', 'blue', 'sky', 'purple']
+        && request.resource.data.imageUrl is string
+        && request.resource.data.imageUrl.size() <= 2000
+        && request.resource.data.logoUrl is string
+        && request.resource.data.logoUrl.size() <= 2000
+        && request.resource.data.logoLinkUrl is string
+        && request.resource.data.logoLinkUrl.size() <= 240
+        && request.resource.data.stackCtaLabel is string
+        && request.resource.data.stackCtaLabel.size() <= 48
+        && request.resource.data.stackCtaUrl is string
+        && request.resource.data.stackCtaUrl.size() <= 240
+        && request.resource.data.socialVideoUrl is string
+        && request.resource.data.socialVideoUrl.size() <= 2000
+        && request.resource.data.socialVideoMimeType is string
+        && request.resource.data.socialVideoMimeType.size() <= 120
+        && request.resource.data.socialVideoUpdatedAt is string
+        && request.resource.data.socialVideoUpdatedAt.size() <= 80
+        && request.resource.data.socialVideoRatio in ['vertical', 'square', 'landscape']
+        && request.resource.data.stickers is list
+        && request.resource.data.stickers.size() <= 48
+        && request.resource.data.cards is list
+        && request.resource.data.cards.size() <= 200
+        && request.resource.data.created_at_iso is string
         && request.resource.data.updated_at_iso is string
         && request.resource.data.server_updated_at == request.time;
 

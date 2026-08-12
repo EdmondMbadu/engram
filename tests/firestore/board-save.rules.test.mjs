@@ -1,0 +1,162 @@
+import assert from 'node:assert/strict';
+import { after, before, beforeEach, test } from 'node:test';
+import { readFile } from 'node:fs/promises';
+import {
+  assertFails,
+  assertSucceeds,
+  initializeTestEnvironment,
+} from '@firebase/rules-unit-testing';
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  writeBatch,
+} from 'firebase/firestore';
+
+const projectId = 'demo-living-wiki';
+const ownerUid = 'board-owner';
+let testEnvironment;
+
+function personalWizardBoard(overrides = {}) {
+  return {
+    id: 'wizard-board-1',
+    owner_user_id: ownerUid,
+    owner_public_slug: 'board-owner',
+    owner_display_name: 'Board Owner',
+    owner_photo_url: '',
+    owner_profile_icon: 'person',
+    owner_profile_picture_type: 'icon',
+    visibility: 'public',
+    kind: 'standard',
+    sortOrder: 0,
+    title: 'My saved board',
+    description: 'A board created through the wizard.',
+    backNote: 'Created with LivingWiki.',
+    icon: 'space_dashboard',
+    tone: 'teal',
+    imageUrl: '',
+    logoUrl: '',
+    logoLinkUrl: '',
+    stackCtaLabel: '',
+    stackCtaUrl: '',
+    socialVideoUrl: '',
+    socialVideoMimeType: '',
+    socialVideoUpdatedAt: '',
+    socialVideoRatio: 'vertical',
+    stickers: [],
+    cards: [],
+    created_at_iso: '2026-08-12T00:00:00.000Z',
+    updated_at_iso: '2026-08-12T00:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+    ...overrides,
+  };
+}
+
+before(async () => {
+  testEnvironment = await initializeTestEnvironment({
+    projectId,
+    firestore: {
+      rules: await readFile(new URL('../../firestore.rules', import.meta.url), 'utf8'),
+    },
+  });
+});
+
+beforeEach(async () => {
+  await testEnvironment.clearFirestore();
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    const database = context.firestore();
+    await setDoc(doc(database, 'users', ownerUid), { role: 'member' });
+    await setDoc(doc(database, 'users', ownerUid, 'board_wizard_drafts', 'wizard-board-1'), {
+      id: 'wizard-board-1',
+      owner_user_id: ownerUid,
+    });
+  });
+});
+
+after(async () => {
+  await testEnvironment?.cleanup();
+});
+
+test('owner can atomically save a personal wizard board and remove its draft', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+  const boardReference = doc(database, 'boards', 'wizard-board-1');
+  const draftReference = doc(database, 'users', ownerUid, 'board_wizard_drafts', 'wizard-board-1');
+  const batch = writeBatch(database);
+  batch.set(boardReference, personalWizardBoard());
+  batch.delete(draftReference);
+
+  await assertSucceeds(batch.commit());
+
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    assert.equal((await getDoc(doc(context.firestore(), 'boards', 'wizard-board-1'))).exists(), true);
+    assert.equal((await getDoc(doc(context.firestore(), 'users', ownerUid, 'board_wizard_drafts', 'wizard-board-1'))).exists(), false);
+  });
+});
+
+test('older clients may save a personal board with null city metadata', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({ atlas_id: null, generated_for_atlas_id: null }),
+  ));
+});
+
+test('client payload may not claim privileged city publication metadata', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({ atlas_id: 'atlas-philly' }),
+  ));
+});
+
+test('owner can update a full personal board without hitting the rule expression limit', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'wizard-board-1'),
+      personalWizardBoard({ server_updated_at: new Date('2026-08-12T00:00:00.000Z') }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({
+      title: 'My updated board',
+      updated_at_iso: '2026-08-12T01:00:00.000Z',
+    }),
+  ));
+});
+
+test('owner can repair a legacy personal board that stored null city metadata', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'boards', 'wizard-board-1'),
+      personalWizardBoard({
+        atlas_id: null,
+        generated_for_atlas_id: null,
+        server_updated_at: new Date('2026-08-12T00:00:00.000Z'),
+      }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard({
+      title: 'Legacy board repaired',
+      updated_at_iso: '2026-08-12T01:00:00.000Z',
+    }),
+  ));
+});
+
+test('signed-in users cannot save a board under another owner', async () => {
+  const database = testEnvironment.authenticatedContext('different-user').firestore();
+
+  await assertFails(setDoc(
+    doc(database, 'boards', 'wizard-board-1'),
+    personalWizardBoard(),
+  ));
+});

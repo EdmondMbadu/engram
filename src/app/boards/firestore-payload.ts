@@ -27,3 +27,29 @@ export function omitUndefinedDeep<T>(value: T): T {
   }
   return result as T;
 }
+
+/**
+ * City publication metadata is privileged and Firestore rejects it on a
+ * personal board create. Omit empty values entirely instead of serializing
+ * them as null so ordinary wizard saves cannot look like city-publisher
+ * writes to the security rules.
+ */
+export function boardCityMetadataForFirestore(
+  atlasId: unknown,
+  generatedForAtlasId: unknown,
+): Record<string, string> {
+  const metadata: Record<string, string> = {};
+  const normalizedAtlasId = typeof atlasId === 'string' ? atlasId.trim() : '';
+  const normalizedGeneratedForAtlasId = typeof generatedForAtlasId === 'string'
+    ? generatedForAtlasId.trim()
+    : '';
+
+  if (normalizedAtlasId) {
+    metadata['atlas_id'] = normalizedAtlasId;
+  }
+  if (normalizedGeneratedForAtlasId) {
+    metadata['generated_for_atlas_id'] = normalizedGeneratedForAtlasId;
+  }
+
+  return metadata;
+}
