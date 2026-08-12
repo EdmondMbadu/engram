@@ -371,6 +371,8 @@ type Board = {
   parentCardId?: string;
   parentBoardTitle?: string;
   parentCardTitle?: string;
+  atlasId: string;
+  generatedForAtlasId: string;
   insideCardsDisplay: BoardInsideDisplay;
   showCardNumbers: boolean;
   cards: BoardCard[];
@@ -1228,7 +1230,7 @@ const STACK_VIDEO_MAX_CARDS = 30;
   selector: 'app-boards',
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css'],
+  styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './board-city-tag.css'],
 })
 export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -2176,6 +2178,10 @@ export class BoardsComponent implements OnDestroy {
     const board = this.stackBoard();
     const selectedIds = this.stackSelectedCardIds();
     return board ? board.cards.filter((card) => selectedIds.has(card.id)) : [];
+  });
+  readonly selectedBoardCity = computed(() => {
+    const board = this.selectedBoard();
+    return board ? this.cityForBoard(board) : null;
   });
   readonly stackScriptDirty = computed(() => this.stackScriptSnapshot() !== this.stackScriptOriginalSnapshot());
   readonly stackScriptWordCount = computed(() => this.stackSelectedCards().reduce((total, card) => {
@@ -4347,6 +4353,8 @@ export class BoardsComponent implements OnDestroy {
           visibility: 'public',
           stickers: [],
           tourMeta: result.board.tourMeta ?? this.buildWizardTourMeta(cards),
+          atlasId: '',
+          generatedForAtlasId: '',
           insideCardsDisplay: 'nested',
           showCardNumbers: true,
           cards,
@@ -4557,6 +4565,8 @@ export class BoardsComponent implements OnDestroy {
         parentCardId: insideContext?.parentCardId ?? '',
         parentBoardTitle: insideContext?.parentBoardTitle ?? '',
         parentCardTitle: insideContext?.parentCardTitle ?? '',
+        atlasId: '',
+        generatedForAtlasId: '',
         insideCardsDisplay: 'nested',
         showCardNumbers: true,
         cards: parentCard ? cardsForNewBoardInside(this.relatedCardsFor(parentCard)) : [],
@@ -15808,6 +15818,8 @@ export class BoardsComponent implements OnDestroy {
           parentCardId: typeof (board as Board).parentCardId === 'string' ? (board as Board).parentCardId : '',
           parentBoardTitle: typeof (board as Board).parentBoardTitle === 'string' ? (board as Board).parentBoardTitle : '',
           parentCardTitle: typeof (board as Board).parentCardTitle === 'string' ? (board as Board).parentCardTitle : '',
+          atlasId: typeof (board as Partial<Board>).atlasId === 'string' ? (board as Partial<Board>).atlasId! : '',
+          generatedForAtlasId: typeof (board as Partial<Board>).generatedForAtlasId === 'string' ? (board as Partial<Board>).generatedForAtlasId! : '',
           insideCardsDisplay: normalizeBoardInsideDisplay((board as Partial<Board>).insideCardsDisplay),
           showCardNumbers: (board as Partial<Board>).showCardNumbers !== false,
           cards: board.cards.map((card) => ({
@@ -15931,6 +15943,8 @@ export class BoardsComponent implements OnDestroy {
       ownerPhotoUrl,
       ownerProfileIcon,
       ownerProfilePictureType,
+      atlasId,
+      generatedForAtlasId,
       ...persistable
     } = record as BoardRecord & {
       createdAt?: string;
@@ -15941,9 +15955,18 @@ export class BoardsComponent implements OnDestroy {
       ownerPhotoUrl?: string;
       ownerProfileIcon?: string;
       ownerProfilePictureType?: 'icon' | 'image' | null;
+      atlasId?: string;
+      generatedForAtlasId?: string;
       server_updated_at: unknown;
     };
-    return { prepared, persistable: omitUndefinedDeep(persistable) as Record<string, unknown> };
+    return {
+      prepared,
+      persistable: omitUndefinedDeep({
+        ...persistable,
+        atlas_id: atlasId || null,
+        generated_for_atlas_id: generatedForAtlasId || null,
+      }) as Record<string, unknown>,
+    };
   }
 
   private currentOwnerSnapshot(): Pick<
@@ -16116,6 +16139,8 @@ export class BoardsComponent implements OnDestroy {
       parentCardId: typeof data['parentCardId'] === 'string' ? data['parentCardId'] : '',
       parentBoardTitle: typeof data['parentBoardTitle'] === 'string' ? data['parentBoardTitle'] : '',
       parentCardTitle: typeof data['parentCardTitle'] === 'string' ? data['parentCardTitle'] : '',
+      atlasId: typeof data['atlas_id'] === 'string' ? data['atlas_id'] : '',
+      generatedForAtlasId: typeof data['generated_for_atlas_id'] === 'string' ? data['generated_for_atlas_id'] : '',
       insideCardsDisplay: normalizeBoardInsideDisplay(data['insideCardsDisplay']),
       showCardNumbers: data['showCardNumbers'] !== false,
       cards: rawCards.map((card) => this.cardFromRecord(card)).filter((card): card is BoardCard => !!card),
@@ -16826,6 +16851,16 @@ export class BoardsComponent implements OnDestroy {
       region: atlas.city_config?.region_name || atlas.city_config?.country_code || '',
       slug: atlas.slug,
     };
+  }
+
+  cityForBoard(board: Board): BoardCityOption | null {
+    const atlasId = board.atlasId || board.generatedForAtlasId;
+    if (!atlasId) return null;
+    return this.publicCities().find((city) => city.id === atlasId) ?? null;
+  }
+
+  cityBoardLink(city: BoardCityOption): string[] {
+    return ['/chat', city.slug || city.id];
   }
 
   private findCityOption(value: string): BoardCityOption | null {
