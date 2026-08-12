@@ -106,6 +106,10 @@ import {
 } from './bulk-board-generation';
 import { GLOBAL_CITY_BOARD_TEMPLATES } from './global-city-board-templates';
 import {
+  GLOBAL_UNIVERSITY_BOARD_TEMPLATES,
+  type GlobalUniversityBoardTemplate,
+} from './global-university-board-templates';
+import {
   boardNarrationFallbackDescription,
   boardNarrationFallbackNotes,
   normalizeBoardNarrationStyle,
@@ -19754,6 +19758,137 @@ function globalCityBoardCatalogStatus(
   };
 }
 
+type UniversityBoardTarget = {
+  id: string;
+  name: string;
+  shortName: string;
+  townName: string;
+  state: string;
+  countryCode: string;
+  slug: string;
+  unitId: string;
+  website: string;
+  latitude: number | null;
+  longitude: number | null;
+};
+
+function universityBoardTargetFromAtlas(
+  id: string,
+  atlas: Record<string, unknown>,
+): UniversityBoardTarget | null {
+  const config = atlas.university_config && typeof atlas.university_config === 'object'
+    ? atlas.university_config as Record<string, unknown>
+    : {};
+  if (atlas.is_public !== true || config.enabled !== true || atlas.wiki_type !== 'university') return null;
+  const name = textFromUnknown(config.official_name) || textFromUnknown(atlas.name);
+  const townName = textFromUnknown(config.city);
+  const state = textFromUnknown(config.state).toUpperCase();
+  if (!name || !townName || !state) return null;
+  const shortName = name
+    .replace(/-Main Campus$/i, '')
+    .replace(/ in the City of [A-Z][\w .'-]+$/i, '')
+    .trim();
+  const latitude = Number(config.latitude);
+  const longitude = Number(config.longitude);
+  return {
+    id,
+    name,
+    shortName: shortName || name,
+    townName,
+    state,
+    countryCode: textFromUnknown(config.country_code).toUpperCase() || 'US',
+    slug: textFromUnknown(atlas.slug),
+    unitId: textFromUnknown(config.unit_id),
+    website: textFromUnknown(config.website),
+    latitude: Number.isFinite(latitude) && latitude >= -90 && latitude <= 90 ? latitude : null,
+    longitude: Number.isFinite(longitude) && longitude >= -180 && longitude <= 180 ? longitude : null,
+  };
+}
+
+function universityBoardGenerationKey(
+  atlasId: string,
+  template: Pick<GlobalUniversityBoardTemplate, 'id' | 'version'>,
+): string {
+  return `${atlasId}__${template.id}__${template.version}`;
+}
+
+function universityBoardTemplateInput(template: GlobalUniversityBoardTemplate): Record<string, unknown> {
+  return {
+    id: template.id,
+    version: template.version,
+    titlePattern: template.titlePattern,
+    searchQuery: template.researchQueries.join(' '),
+    editorialBrief: template.editorialBrief,
+    count: template.count,
+    cardTitleMode: 'subject',
+    icon: template.icon,
+    primarySubjectType: template.primarySubjectType,
+    allowedSubjectTypes: [...template.allowedSubjectTypes],
+    freshnessDays: template.freshnessDays,
+  };
+}
+
+function globalUniversityBoardCatalogStatus(
+  targets: UniversityBoardTarget[],
+  boardDocuments: Array<{ id: string; data: Record<string, unknown> }>,
+): GlobalCityBoardCatalogStatus & { targetCount: number } {
+  const boardsByKey = new Map(boardDocuments.map(({ data }) => [textFromUnknown(data.generation_key), data]));
+  const buckets = GLOBAL_UNIVERSITY_BOARD_TEMPLATES.map((template) => {
+    const status = {
+      id: template.id,
+      expectedCount: targets.length,
+      publishedCount: 0,
+      reviewCount: 0,
+      missingCount: 0,
+      invalidCount: 0,
+    };
+    for (const target of targets) {
+      const board = boardsByKey.get(universityBoardGenerationKey(target.id, template));
+      if (!board || board.deleted_at) {
+        status.missingCount += 1;
+        continue;
+      }
+      const cards = Array.isArray(board.cards) ? board.cards : [];
+      const validation = board.validation_summary && typeof board.validation_summary === 'object'
+        ? board.validation_summary as Record<string, unknown>
+        : {};
+      const score = Number(board.generation_score);
+      const structurallyValid = cards.length === template.count
+        && Number(validation.requested_count) === template.count
+        && Number(validation.verified_count) === template.count
+        && Number(validation.unique_subject_ids) === template.count
+        && validation.all_have_source_urls === true
+        && textFromUnknown(board.atlas_id) === target.id
+        && textFromUnknown(board.generated_for_atlas_id) === target.id
+        && textFromUnknown(board.template_id) === template.id
+        && textFromUnknown(board.template_version) === template.version
+        && Number.isFinite(score)
+        && score >= 70;
+      if (!structurallyValid) {
+        status.invalidCount += 1;
+      } else if (board.editorial_status === 'published'
+        && board.city_listing_status === 'listed'
+        && board.visibility === 'public') {
+        status.publishedCount += 1;
+      } else {
+        status.reviewCount += 1;
+      }
+    }
+    return status;
+  });
+  return {
+    cityCount: targets.length,
+    targetCount: targets.length,
+    bucketCount: GLOBAL_UNIVERSITY_BOARD_TEMPLATES.length,
+    expectedCount: targets.length * GLOBAL_UNIVERSITY_BOARD_TEMPLATES.length,
+    publishedCount: buckets.reduce((sum, bucket) => sum + bucket.publishedCount, 0),
+    reviewCount: buckets.reduce((sum, bucket) => sum + bucket.reviewCount, 0),
+    missingCount: buckets.reduce((sum, bucket) => sum + bucket.missingCount, 0),
+    invalidCount: buckets.reduce((sum, bucket) => sum + bucket.invalidCount, 0),
+    buckets,
+  };
+}
+
 async function canManageBulkBoardAtlas(userId: string, atlasId: string): Promise<boolean> {
   const [userSnapshot, atlasSnapshot] = await Promise.all([
     db.collection('users').doc(userId).get(),
@@ -19842,6 +19977,12 @@ export const getBulkBoardAdminDashboard = onCall(
           quality_warnings: Array.isArray(data.quality_warnings)
             ? data.quality_warnings.map((warning) => textFromUnknown(warning)).filter(Boolean).slice(0, 20)
             : [],
+          generation_score: Number.isFinite(Number(data.generation_score)) ? Number(data.generation_score) : null,
+          generation_grade: textFromUnknown(data.generation_grade),
+          generation_score_breakdown: data.generation_score_breakdown ?? null,
+          generation_score_reasons: Array.isArray(data.generation_score_reasons)
+            ? data.generation_score_reasons.map((reason) => textFromUnknown(reason)).filter(Boolean).slice(0, 12)
+            : [],
           validation_summary: data.validation_summary ?? null,
           visibility: textFromUnknown(data.visibility),
           card_count: Array.isArray(data.cards) ? data.cards.length : 0,
@@ -19869,6 +20010,391 @@ export const getBulkBoardAdminDashboard = onCall(
       boards,
       catalog,
     };
+  },
+);
+
+export const getUniversityBoardAdminDashboard = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 90, memory: '2GiB' },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    await assertPlatformAdmin(request.auth.uid);
+
+    const [atlasSnapshot, jobSnapshot, boardSnapshot] = await Promise.all([
+      db.collection('atlases').where('is_public', '==', true).get(),
+      db.collection('board_generation_jobs').orderBy('created_at', 'desc').limit(100).get(),
+      db.collection('boards').where('origin', '==', 'bulk_generator').get(),
+    ]);
+    const targets = atlasSnapshot.docs
+      .map((document) => universityBoardTargetFromAtlas(
+        document.id,
+        document.data() as Record<string, unknown>,
+      ))
+      .filter((target): target is UniversityBoardTarget => !!target)
+      .sort((left, right) => left.name.localeCompare(right.name));
+    const targetIds = new Set(targets.map((target) => target.id));
+    const universityBoardDocuments = boardSnapshot.docs
+      .map((document) => ({ id: document.id, data: document.data() as Record<string, unknown> }))
+      .filter(({ data }) => data.target_kind === 'university'
+        || targetIds.has(textFromUnknown(data.atlas_id || data.generated_for_atlas_id)));
+    const jobs = jobSnapshot.docs
+      .filter((document) => document.data().target_kind === 'university')
+      .slice(0, 20)
+      .map((document) => bulkBoardDashboardDocument(
+        document.id,
+        document.data() as Record<string, unknown>,
+      ));
+    const latestJobId = textFromUnknown(jobs[0]?.['id']);
+    const itemSnapshot = latestJobId
+      ? await db.collection('board_generation_items').where('job_id', '==', latestJobId).limit(750).get()
+      : null;
+    const items = itemSnapshot?.docs.map((document) => bulkBoardDashboardDocument(
+      document.id,
+      document.data() as Record<string, unknown>,
+    )) ?? [];
+    const boards = universityBoardDocuments.map(({ id, data }) => bulkBoardDashboardDocument(id, {
+      title: textFromUnknown(data.title),
+      atlas_id: textFromUnknown(data.atlas_id),
+      generated_for_atlas_id: textFromUnknown(data.generated_for_atlas_id),
+      generation_job_id: textFromUnknown(data.generation_job_id),
+      generation_key: textFromUnknown(data.generation_key),
+      target_kind: 'university',
+      generation_engine: textFromUnknown(data.generation_engine),
+      template_id: textFromUnknown(data.template_id),
+      template_version: textFromUnknown(data.template_version),
+      rubric_version: textFromUnknown(data.rubric_version),
+      editorial_status: textFromUnknown(data.editorial_status),
+      city_listing_status: textFromUnknown(data.city_listing_status),
+      source_status: textFromUnknown(data.source_status),
+      quality_status: textFromUnknown(data.quality_status),
+      quality_warnings: Array.isArray(data.quality_warnings)
+        ? data.quality_warnings.map((warning) => textFromUnknown(warning)).filter(Boolean).slice(0, 20)
+        : [],
+      generation_score: Number.isFinite(Number(data.generation_score)) ? Number(data.generation_score) : null,
+      generation_grade: textFromUnknown(data.generation_grade),
+      generation_score_breakdown: data.generation_score_breakdown ?? null,
+      generation_score_reasons: Array.isArray(data.generation_score_reasons)
+        ? data.generation_score_reasons.map((reason) => textFromUnknown(reason)).filter(Boolean).slice(0, 12)
+        : [],
+      validation_summary: data.validation_summary ?? null,
+      visibility: textFromUnknown(data.visibility),
+      card_count: Array.isArray(data.cards) ? data.cards.length : 0,
+      created_at: data.created_at_iso ?? data.created_at,
+      updated_at: data.updated_at_iso ?? data.updated_at,
+      deleted_at: data.deleted_at,
+      deletion_reason: textFromUnknown(data.deletion_reason),
+    })).sort((left, right) => String(right.updated_at ?? '').localeCompare(String(left.updated_at ?? '')));
+    const catalog = globalUniversityBoardCatalogStatus(targets, universityBoardDocuments);
+
+    return {
+      generatorVersion: 'codex-university-1.0.0',
+      rubricVersion: 'university-1.0',
+      targetKind: 'university',
+      generationEngine: 'codex_local',
+      cities: targets.map((target) => ({
+        id: target.id,
+        name: target.shortName,
+        officialName: target.name,
+        region: `${target.townName}, ${target.state}`,
+        townName: target.townName,
+        state: target.state,
+        countryCode: target.countryCode,
+        slug: target.slug,
+        unitId: target.unitId,
+        website: target.website,
+        latitude: target.latitude,
+        longitude: target.longitude,
+        kind: 'university',
+      })),
+      jobs,
+      items,
+      itemDisplayLimit: 750,
+      boards,
+      catalog,
+      templates: GLOBAL_UNIVERSITY_BOARD_TEMPLATES.map(universityBoardTemplateInput),
+    };
+  },
+);
+
+function canonicalUniversityBoardTemplate(value: unknown): GlobalUniversityBoardTemplate {
+  const templateId = typeof value === 'string'
+    ? textFromUnknown(value)
+    : textFromUnknown((value as Record<string, unknown> | null | undefined)?.id);
+  const template = GLOBAL_UNIVERSITY_BOARD_TEMPLATES.find((candidate) => candidate.id === templateId);
+  if (!template) throw new HttpsError('invalid-argument', 'Choose one of the seven approved university board templates.');
+  return template;
+}
+
+async function universityBoardGenerationChecks(
+  atlasIds: string[],
+  template: GlobalUniversityBoardTemplate,
+): Promise<{
+  targets: Array<{ snapshot: FirebaseFirestore.DocumentSnapshot; target: UniversityBoardTarget }>;
+  existingCount: number;
+  suppressedCount: number;
+  ready: Array<{
+    snapshot: FirebaseFirestore.DocumentSnapshot;
+    target: UniversityBoardTarget;
+    generationKey: string;
+  }>;
+}> {
+  const snapshots = await db.getAll(...atlasIds.map((atlasId) => db.collection('atlases').doc(atlasId)));
+  const targets = snapshots.flatMap((snapshot) => {
+    const target = snapshot.exists
+      ? universityBoardTargetFromAtlas(snapshot.id, snapshot.data() as Record<string, unknown>)
+      : null;
+    return target ? [{ snapshot, target }] : [];
+  });
+  if (targets.length !== atlasIds.length) {
+    throw new HttpsError('failed-precondition', 'One or more selected universities are no longer eligible. Refresh and try again.');
+  }
+  const keyed = targets.map(({ snapshot, target }) => {
+    const generationKey = universityBoardGenerationKey(snapshot.id, template);
+    return {
+      snapshot,
+      target,
+      generationKey,
+      boardRef: db.collection('boards').doc(bulkBoardDocumentId(generationKey)),
+      suppressionRef: db.collection('board_generation_suppressions').doc(bulkBoardSuppressionId(generationKey)),
+    };
+  });
+  const [boards, suppressions] = await Promise.all([
+    db.getAll(...keyed.map((entry) => entry.boardRef)),
+    db.getAll(...keyed.map((entry) => entry.suppressionRef)),
+  ]);
+  const existingKeys = new Set(boards.flatMap((snapshot, index) => snapshot.exists && !snapshot.data()?.deleted_at
+    ? [keyed[index].generationKey]
+    : []));
+  const suppressedKeys = new Set(suppressions.flatMap((snapshot, index) => snapshot.exists && snapshot.data()?.active !== false
+    ? [keyed[index].generationKey]
+    : []));
+  return {
+    targets,
+    existingCount: existingKeys.size,
+    suppressedCount: suppressedKeys.size,
+    ready: keyed.filter((entry) => !existingKeys.has(entry.generationKey) && !suppressedKeys.has(entry.generationKey)),
+  };
+}
+
+async function createUniversityBoardJob(params: {
+  requestedBy: string;
+  items: Array<{
+    target: UniversityBoardTarget;
+    generationKey: string;
+    template: GlobalUniversityBoardTemplate;
+  }>;
+  catalogMode: boolean;
+}): Promise<string> {
+  const jobRef = db.collection('board_generation_jobs').doc();
+  const lockId = 'university_codex_local';
+  await db.runTransaction(async (transaction) => {
+    const lockRef = db.collection('board_generation_locks').doc(lockId);
+    const lockSnapshot = await transaction.get(lockRef);
+    const lockedJobId = textFromUnknown(lockSnapshot.data()?.job_id);
+    if (lockedJobId) {
+      const lockedJob = await transaction.get(db.collection('board_generation_jobs').doc(lockedJobId));
+      if (lockedJob.data()?.status === 'running' && lockedJob.data()?.cancel_requested !== true) {
+        throw new HttpsError('already-exists', 'Another university Codex generation job is already running.');
+      }
+    }
+    transaction.set(jobRef, {
+      requested_by_user_id: params.requestedBy,
+      target_kind: 'university',
+      generation_engine: 'codex_local',
+      lock_id: lockId,
+      catalog_mode: params.catalogMode,
+      catalog_bucket_ids: params.catalogMode ? GLOBAL_UNIVERSITY_BOARD_TEMPLATES.map((template) => template.id) : [],
+      template: params.catalogMode
+        ? { id: 'global-university-board-catalog', version: '1.0', titlePattern: 'Seven global buckets × all universities' }
+        : universityBoardTemplateInput(params.items[0].template),
+      rubric_version: 'university-1.0',
+      score_rubric_version: '1.0',
+      generator_version: 'codex-university-1.0.0',
+      status: params.items.length ? 'running' : 'completed',
+      worker_status: params.items.length ? 'waiting_for_codex' : 'complete',
+      cancel_requested: false,
+      total_count: params.items.length,
+      completed_count: 0,
+      success_count: 0,
+      failed_count: 0,
+      skipped_count: 0,
+      cancelled_count: 0,
+      atlas_ids: [...new Set(params.items.map((item) => item.target.id))],
+      created_at: FieldValue.serverTimestamp(),
+      updated_at: FieldValue.serverTimestamp(),
+      ...(params.items.length ? {} : { completed_at: FieldValue.serverTimestamp() }),
+    });
+    transaction.set(lockRef, {
+      job_id: jobRef.id,
+      target_kind: 'university',
+      generation_engine: 'codex_local',
+      acquired_by_user_id: params.requestedBy,
+      acquired_at: FieldValue.serverTimestamp(),
+      updated_at: FieldValue.serverTimestamp(),
+    });
+  });
+  try {
+    for (let offset = 0; offset < params.items.length; offset += 300) {
+      const batch = db.batch();
+      for (const item of params.items.slice(offset, offset + 300)) {
+        const itemId = `${jobRef.id}__${createHash('sha256').update(item.generationKey).digest('hex').slice(0, 28)}`;
+        batch.set(db.collection('board_generation_items').doc(itemId), {
+          job_id: jobRef.id,
+          atlas_id: item.target.id,
+          target_kind: 'university',
+          generation_engine: 'codex_local',
+          target_name: item.target.shortName,
+          city_name: item.target.shortName,
+          school_name: item.target.name,
+          short_school_name: item.target.shortName,
+          town_name: item.target.townName,
+          region_name: `${item.target.townName}, ${item.target.state}`,
+          state: item.target.state,
+          country_code: item.target.countryCode,
+          unit_id: item.target.unitId,
+          website: item.target.website,
+          latitude: item.target.latitude,
+          longitude: item.target.longitude,
+          template_id: item.template.id,
+          template_version: item.template.version,
+          template: universityBoardTemplateInput(item.template),
+          generation_key: item.generationKey,
+          status: 'queued',
+          attempt_count: 0,
+          board_id: '',
+          error_code: '',
+          error_message: '',
+          created_at: FieldValue.serverTimestamp(),
+          updated_at: FieldValue.serverTimestamp(),
+        });
+      }
+      await batch.commit();
+    }
+  } catch (error) {
+    await jobRef.set({
+      status: 'cancelled',
+      cancel_requested: true,
+      worker_status: 'setup_failed',
+      setup_error: error instanceof Error ? error.message.slice(0, 1_000) : String(error).slice(0, 1_000),
+      completed_at: FieldValue.serverTimestamp(),
+      updated_at: FieldValue.serverTimestamp(),
+    }, { merge: true });
+    await db.runTransaction(async (transaction) => {
+      const lockRef = db.collection('board_generation_locks').doc(lockId);
+      const lock = await transaction.get(lockRef);
+      if (textFromUnknown(lock.data()?.job_id) === jobRef.id) transaction.delete(lockRef);
+    });
+    throw new HttpsError('internal', 'The university job could not be queued completely. It was cancelled and can be safely started again.');
+  }
+  return jobRef.id;
+}
+
+export const startUniversityBoardGeneration = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 120, memory: '2GiB' },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    await assertPlatformAdmin(request.auth.uid);
+    const template = canonicalUniversityBoardTemplate(request.data?.template ?? request.data?.templateId);
+    const requestedIds: unknown[] = Array.isArray(request.data?.atlasIds)
+      ? request.data.atlasIds
+      : Array.isArray(request.data?.cityIds) ? request.data.cityIds : [];
+    const atlasIds = Array.from(new Set(requestedIds.map((value) => textFromUnknown(value).slice(0, 160)).filter(Boolean))).slice(0, 500);
+    if (!atlasIds.length) throw new HttpsError('invalid-argument', 'Select at least one university.');
+    const checks = await universityBoardGenerationChecks(atlasIds, template);
+    const preview = {
+      dryRun: request.data?.dryRun === true,
+      requestedCount: atlasIds.length,
+      eligibleCount: checks.targets.length,
+      readyCount: checks.ready.length,
+      existingCount: checks.existingCount,
+      suppressedCount: checks.suppressedCount,
+      template: universityBoardTemplateInput(template),
+      generationEngine: 'codex_local',
+    };
+    if (request.data?.dryRun === true || !checks.ready.length) return preview;
+    const jobId = await createUniversityBoardJob({
+      requestedBy: request.auth.uid,
+      catalogMode: false,
+      items: checks.ready.map(({ target, generationKey }) => ({ target, generationKey, template })),
+    });
+    await db.collection('board_generation_audit').add({
+      action: 'university_job_started',
+      job_id: jobId,
+      actor_user_id: request.auth.uid,
+      target_kind: 'university',
+      generation_engine: 'codex_local',
+      university_count: checks.ready.length,
+      template_id: template.id,
+      created_at: FieldValue.serverTimestamp(),
+    });
+    return { ...preview, dryRun: false, jobId, cityCount: checks.ready.length };
+  },
+);
+
+export const reconcileGlobalUniversityBoardCatalog = onCall(
+  { region: callableRegion, cors: true, timeoutSeconds: 180, memory: '2GiB' },
+  async (request) => {
+    if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
+    await assertPlatformAdmin(request.auth.uid);
+    const [atlasSnapshot, boardSnapshot, suppressionSnapshot] = await Promise.all([
+      db.collection('atlases').where('is_public', '==', true).get(),
+      db.collection('boards').where('origin', '==', 'bulk_generator').get(),
+      db.collection('board_generation_suppressions').get(),
+    ]);
+    const targets = atlasSnapshot.docs.map((document) => universityBoardTargetFromAtlas(
+      document.id,
+      document.data() as Record<string, unknown>,
+    )).filter((target): target is UniversityBoardTarget => !!target);
+    const targetIds = new Set(targets.map((target) => target.id));
+    const boardDocuments = boardSnapshot.docs
+      .map((document) => ({ id: document.id, data: document.data() as Record<string, unknown> }))
+      .filter(({ data }) => data.target_kind === 'university'
+        || targetIds.has(textFromUnknown(data.atlas_id || data.generated_for_atlas_id)));
+    const existingKeys = new Set(boardDocuments.flatMap(({ data }) => {
+      const key = textFromUnknown(data.generation_key);
+      return key && !data.deleted_at ? [key] : [];
+    }));
+    const expectedKeys = new Set(targets.flatMap((target) => GLOBAL_UNIVERSITY_BOARD_TEMPLATES.map(
+      (template) => universityBoardGenerationKey(target.id, template),
+    )));
+    const suppressedKeys = new Set(suppressionSnapshot.docs.flatMap((document) => {
+      const data = document.data() as Record<string, unknown>;
+      const key = textFromUnknown(data.generation_key);
+      return key && expectedKeys.has(key) && data.active !== false ? [key] : [];
+    }));
+    const items = targets.flatMap((target) => GLOBAL_UNIVERSITY_BOARD_TEMPLATES.flatMap((template) => {
+      const generationKey = universityBoardGenerationKey(target.id, template);
+      return existingKeys.has(generationKey) || suppressedKeys.has(generationKey)
+        ? []
+        : [{ target, template, generationKey }];
+    }));
+    const catalog = globalUniversityBoardCatalogStatus(targets, boardDocuments);
+    const preview = {
+      dryRun: request.data?.dryRun === true,
+      ...catalog,
+      readyCount: items.length,
+      suppressedCount: suppressedKeys.size,
+      generationEngine: 'codex_local',
+    };
+    if (request.data?.dryRun === true || !items.length) return preview;
+    const jobId = await createUniversityBoardJob({
+      requestedBy: request.auth.uid,
+      items,
+      catalogMode: true,
+    });
+    await db.collection('board_generation_audit').add({
+      action: 'global_university_catalog_reconciliation_started',
+      job_id: jobId,
+      actor_user_id: request.auth.uid,
+      target_kind: 'university',
+      generation_engine: 'codex_local',
+      university_count: targets.length,
+      bucket_count: GLOBAL_UNIVERSITY_BOARD_TEMPLATES.length,
+      queued_count: items.length,
+      existing_count: catalog.expectedCount - catalog.missingCount,
+      suppressed_count: suppressedKeys.size,
+      created_at: FieldValue.serverTimestamp(),
+    });
+    return { ...preview, dryRun: false, jobId };
   },
 );
 
@@ -20186,7 +20712,7 @@ export const retryBulkBoardGenerationItem = onCall(
         throw new HttpsError('failed-precondition', 'The generation job for this item no longer exists.');
       }
       const job = (jobSnapshot.data() ?? {}) as Record<string, unknown>;
-      const lockRef = db.collection('board_generation_locks').doc('active');
+      const lockRef = db.collection('board_generation_locks').doc(textFromUnknown(job.lock_id) || 'active');
       const lockSnapshot = await transaction.get(lockRef);
       const lockedJobId = textFromUnknown(lockSnapshot.data()?.job_id);
       if (lockedJobId && lockedJobId !== jobId) {
@@ -20222,16 +20748,71 @@ export const retryBulkBoardGenerationItem = onCall(
 );
 
 export const cancelBulkBoardGeneration = onCall(
-  { region: callableRegion, cors: true, timeoutSeconds: 30 },
+  { region: callableRegion, cors: true, timeoutSeconds: 120, memory: '1GiB' },
   async (request) => {
     if (!request.auth?.uid) throw new HttpsError('unauthenticated', 'Authentication is required.');
     await assertPlatformAdmin(request.auth.uid);
     const jobId = textFromUnknown(request.data?.jobId).slice(0, 160);
     if (!jobId) throw new HttpsError('invalid-argument', 'jobId is required.');
-    await db.collection('board_generation_jobs').doc(jobId).set({
+    const jobRef = db.collection('board_generation_jobs').doc(jobId);
+    const jobSnapshot = await jobRef.get();
+    if (!jobSnapshot.exists) throw new HttpsError('not-found', 'Generation job not found.');
+    const job = jobSnapshot.data() as Record<string, unknown>;
+    await jobRef.set({
       cancel_requested: true,
       updated_at: FieldValue.serverTimestamp(),
     }, { merge: true });
+    if (job.target_kind === 'university' && job.generation_engine === 'codex_local') {
+      const itemSnapshot = await db.collection('board_generation_items').where('job_id', '==', jobId).get();
+      const queued = itemSnapshot.docs.filter((document) => document.data().status === 'queued');
+      for (let offset = 0; offset < queued.length; offset += 400) {
+        const batch = db.batch();
+        for (const document of queued.slice(offset, offset + 400)) {
+          batch.update(document.ref, {
+            status: 'cancelled',
+            error_code: 'job-cancelled',
+            error_message: 'Cancelled before the local Codex worker claimed this item.',
+            completed_at: FieldValue.serverTimestamp(),
+            updated_at: FieldValue.serverTimestamp(),
+          });
+        }
+        await batch.commit();
+      }
+      const refreshedItems = await db.collection('board_generation_items').where('job_id', '==', jobId).get();
+      const statusCounts = refreshedItems.docs.reduce((counts, document) => {
+        const status = textFromUnknown(document.data().status);
+        if (['needs_review', 'failed', 'skipped_existing', 'suppressed', 'cancelled'].includes(status)) {
+          counts.completed += 1;
+        }
+        if (status === 'needs_review') counts.success += 1;
+        if (status === 'failed') counts.failed += 1;
+        if (status === 'skipped_existing' || status === 'suppressed') counts.skipped += 1;
+        if (status === 'cancelled') counts.cancelled += 1;
+        return counts;
+      }, { completed: 0, success: 0, failed: 0, skipped: 0, cancelled: 0 });
+      await db.runTransaction(async (transaction) => {
+        const current = await transaction.get(jobRef);
+        const currentJob = (current.data() ?? {}) as Record<string, unknown>;
+        const completedCount = Math.min(Number(currentJob.total_count) || 0, statusCounts.completed);
+        const isComplete = completedCount >= (Number(currentJob.total_count) || 0);
+        const lockRef = isComplete
+          ? db.collection('board_generation_locks').doc(textFromUnknown(currentJob.lock_id) || 'university_codex_local')
+          : null;
+        const lock = lockRef ? await transaction.get(lockRef) : null;
+        transaction.set(jobRef, {
+          completed_count: completedCount,
+          success_count: statusCounts.success,
+          failed_count: statusCounts.failed,
+          skipped_count: statusCounts.skipped,
+          cancelled_count: statusCounts.cancelled,
+          status: isComplete ? 'cancelled' : 'running',
+          worker_status: isComplete ? 'cancelled' : 'cancelling',
+          updated_at: FieldValue.serverTimestamp(),
+          ...(isComplete ? { completed_at: FieldValue.serverTimestamp() } : {}),
+        }, { merge: true });
+        if (lockRef && textFromUnknown(lock?.data()?.job_id) === jobId) transaction.delete(lockRef);
+      });
+    }
     return { ok: true };
   },
 );
@@ -20245,6 +20826,14 @@ function cityBoardPublishFailure(board: Record<string, unknown>): string {
     : {};
   if (Number(summary.verified_count) !== cards.length) {
     return 'This board has not passed place validation.';
+  }
+  if (board.target_kind === 'university') {
+    if (!Number.isFinite(Number(board.generation_score)) || Number(board.generation_score) < 70) {
+      return 'This university board does not meet the 70-point generation-score threshold.';
+    }
+    if (cards.some((card) => !(card as Record<string, unknown>)?.under21Safe)) {
+      return 'This university board has not passed the under-21 safety check.';
+    }
   }
   return '';
 }
@@ -20564,6 +21153,8 @@ export const generateBulkCityBoard = onDocumentCreated(
   bulkBoardWorkerOptions,
   async (event) => {
     if (!event.data) return;
+    const item = event.data.data() as Record<string, unknown>;
+    if (item.generation_engine === 'codex_local' || item.target_kind === 'university') return;
     await processBulkBoardGenerationItem(event.params.itemId, googlePlacesApiKey.value());
   },
 );
@@ -20574,6 +21165,7 @@ export const retryBulkCityBoard = onDocumentUpdated(
     const before = event.data?.before.data();
     const after = event.data?.after.data();
     if (!after || after.status !== 'queued' || before?.status === 'queued') return;
+    if (after.generation_engine === 'codex_local' || after.target_kind === 'university') return;
     await processBulkBoardGenerationItem(event.params.itemId, googlePlacesApiKey.value());
   },
 );

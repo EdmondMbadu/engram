@@ -5,10 +5,20 @@ import { getFirebaseFunctions } from '../firebase.client';
 export type BulkBoardCity = {
   id: string;
   name: string;
+  officialName?: string;
   region: string;
   countryCode: string;
   slug: string;
+  kind?: 'city' | 'university';
+  townName?: string;
+  state?: string;
+  unitId?: string;
+  website?: string;
+  latitude?: number | null;
+  longitude?: number | null;
 };
+
+export type BoardFactoryKind = 'city' | 'university';
 
 export type BulkBoardTemplateInput = {
   id: string;
@@ -23,6 +33,9 @@ export type BulkBoardTemplateInput = {
 export type BulkBoardJob = {
   id: string;
   status: string;
+  target_kind?: BoardFactoryKind;
+  generation_engine?: string;
+  worker_status?: string;
   template?: BulkBoardTemplateInput;
   total_count: number;
   completed_count: number;
@@ -40,6 +53,11 @@ export type BulkBoardJobItem = {
   job_id: string;
   atlas_id: string;
   city_name: string;
+  target_name?: string;
+  school_name?: string;
+  town_name?: string;
+  target_kind?: BoardFactoryKind;
+  generation_engine?: string;
   region_name: string;
   status: string;
   attempt_count: number;
@@ -47,6 +65,8 @@ export type BulkBoardJobItem = {
   error_code: string;
   error_message: string;
   quality_warning_count: number;
+  generation_score?: number | null;
+  generation_grade?: string;
   updated_at: string | null;
 };
 
@@ -65,6 +85,17 @@ export type BulkBoardAdminBoard = {
   source_status: string;
   quality_status: string;
   quality_warnings: string[];
+  generation_score: number | null;
+  generation_grade: string;
+  generation_score_breakdown: {
+    completeness?: number;
+    evidence?: number;
+    identity?: number;
+    specificity?: number;
+    freshness?: number;
+    safety?: number;
+  } | null;
+  generation_score_reasons: string[];
   visibility: string;
   card_count: number;
   created_at: string | null;
@@ -75,7 +106,9 @@ export type BulkBoardAdminBoard = {
     requested_count?: number;
     verified_count?: number;
     unique_place_ids?: number;
+    unique_subject_ids?: number;
     all_have_coordinates?: boolean;
+    all_have_source_urls?: boolean;
     candidate_sources?: string[];
     validated_at?: string;
   } | null;
@@ -89,6 +122,10 @@ export type BulkBoardDashboard = {
   items: BulkBoardJobItem[];
   boards: BulkBoardAdminBoard[];
   catalog: GlobalCityBoardCatalogStatus;
+  targetKind?: BoardFactoryKind;
+  generationEngine?: string;
+  templates?: BulkBoardTemplateInput[];
+  itemDisplayLimit?: number;
 };
 
 export type GlobalCityBoardCatalogBucketStatus = {
@@ -102,6 +139,7 @@ export type GlobalCityBoardCatalogBucketStatus = {
 
 export type GlobalCityBoardCatalogStatus = {
   cityCount: number;
+  targetCount?: number;
   bucketCount: number;
   expectedCount: number;
   publishedCount: number;
@@ -112,6 +150,7 @@ export type GlobalCityBoardCatalogStatus = {
   suppressedCount?: number;
   dryRun?: boolean;
   jobId?: string;
+  generationEngine?: string;
   buckets: GlobalCityBoardCatalogBucketStatus[];
 };
 
@@ -148,28 +187,32 @@ export type BulkBoardPublishAllResult = {
 
 @Injectable({ providedIn: 'root' })
 export class BulkBoardAdminService {
-  async dashboard(): Promise<BulkBoardDashboard> {
+  async dashboard(kind: BoardFactoryKind = 'city'): Promise<BulkBoardDashboard> {
     const callable = httpsCallable<Record<string, never>, BulkBoardDashboard>(
       getFirebaseFunctions(),
-      'getBulkBoardAdminDashboard',
+      kind === 'university' ? 'getUniversityBoardAdminDashboard' : 'getBulkBoardAdminDashboard',
     );
     return (await callable({})).data;
   }
 
-  async preflight(cityIds: string[], template: BulkBoardTemplateInput): Promise<BulkBoardPreflight> {
+  async preflight(kind: BoardFactoryKind, cityIds: string[], template: BulkBoardTemplateInput): Promise<BulkBoardPreflight> {
     const callable = httpsCallable<
-      { cityIds: string[]; template: BulkBoardTemplateInput; dryRun: true },
+      { cityIds?: string[]; atlasIds?: string[]; template: BulkBoardTemplateInput; dryRun: true },
       BulkBoardPreflight
-    >(getFirebaseFunctions(), 'startBulkBoardGeneration');
-    return (await callable({ cityIds, template, dryRun: true })).data;
+    >(getFirebaseFunctions(), kind === 'university' ? 'startUniversityBoardGeneration' : 'startBulkBoardGeneration');
+    return (await callable(kind === 'university'
+      ? { atlasIds: cityIds, template, dryRun: true }
+      : { cityIds, template, dryRun: true })).data;
   }
 
-  async start(cityIds: string[], template: BulkBoardTemplateInput): Promise<{ jobId: string; cityCount: number }> {
+  async start(kind: BoardFactoryKind, cityIds: string[], template: BulkBoardTemplateInput): Promise<{ jobId: string; cityCount: number }> {
     const callable = httpsCallable<
-      { cityIds: string[]; template: BulkBoardTemplateInput },
+      { cityIds?: string[]; atlasIds?: string[]; template: BulkBoardTemplateInput },
       { jobId: string; cityCount: number }
-    >(getFirebaseFunctions(), 'startBulkBoardGeneration');
-    return (await callable({ cityIds, template })).data;
+    >(getFirebaseFunctions(), kind === 'university' ? 'startUniversityBoardGeneration' : 'startBulkBoardGeneration');
+    return (await callable(kind === 'university'
+      ? { atlasIds: cityIds, template }
+      : { cityIds, template })).data;
   }
 
   async retryItem(itemId: string): Promise<void> {
@@ -219,11 +262,13 @@ export class BulkBoardAdminService {
     return result;
   }
 
-  async reconcileCatalog(dryRun: boolean): Promise<GlobalCityBoardCatalogStatus> {
+  async reconcileCatalog(kind: BoardFactoryKind, dryRun: boolean): Promise<GlobalCityBoardCatalogStatus> {
     const callable = httpsCallable<
       { dryRun: boolean },
       GlobalCityBoardCatalogStatus
-    >(getFirebaseFunctions(), 'reconcileGlobalCityBoardCatalog');
+    >(getFirebaseFunctions(), kind === 'university'
+      ? 'reconcileGlobalUniversityBoardCatalog'
+      : 'reconcileGlobalCityBoardCatalog');
     return (await callable({ dryRun })).data;
   }
 }

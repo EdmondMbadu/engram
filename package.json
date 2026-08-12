@@ -19,6 +19,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:firestore-rules": "node scripts/run-firestore-rule-tests.mjs",
+    "university-boards:worker": "npm --prefix functions run build && node scripts/run-university-board-worker.mjs",
     "serve:ssr:living-atlast": "node dist/living-atlast/server/server.mjs"
   },
   "prettier": {

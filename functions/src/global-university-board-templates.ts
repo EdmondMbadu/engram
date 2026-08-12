@@ -1,0 +1,124 @@
+export type UniversityBoardSubjectType =
+  | 'place'
+  | 'tradition'
+  | 'activity'
+  | 'study_space'
+  | 'street_or_district'
+  | 'sequence_stop';
+
+export type GlobalUniversityBoardTemplate = {
+  id: string;
+  version: string;
+  titlePattern: string;
+  editorialBrief: string;
+  researchQueries: readonly string[];
+  count: 10;
+  icon: string;
+  primarySubjectType: UniversityBoardSubjectType;
+  allowedSubjectTypes: readonly UniversityBoardSubjectType[];
+  freshnessDays: number | null;
+};
+
+export const GLOBAL_UNIVERSITY_BOARD_TEMPLATES: readonly GlobalUniversityBoardTemplate[] = [
+  {
+    id: 'college-late-night-runs',
+    version: '1.0',
+    titlePattern: '{count} Late-Night Runs That Explain {school}',
+    editorialBrief: 'Build an under-21-safe late-night ritual board. Every card needs a currently verifiable destination, a direct source supporting late availability, and a conservative explanation of why it matters near this campus. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.',
+    researchQueries: ['late night dining students', 'campus dining late hours', 'restaurants open late near campus'],
+    count: 10,
+    icon: 'nightlife',
+    primarySubjectType: 'place',
+    allowedSubjectTypes: ['place'],
+    freshnessDays: 120,
+  },
+  {
+    id: 'college-campus-tour-skips',
+    version: '1.0',
+    titlePattern: 'What the Campus Tour Skips: {count} Places Students Share With Each Other',
+    editorialBrief: 'Choose campus-specific places with a concrete shared use supported by an official campus map, student-affairs source, library or department page, or credible student publication. Explain the useful behavior without claiming secrecy, universal popularity, or unrestricted public access.',
+    researchQueries: ['student favorite campus places', 'campus map student spaces', 'student newspaper campus places'],
+    count: 10,
+    icon: 'style',
+    primarySubjectType: 'place',
+    allowedSubjectTypes: ['place', 'study_space'],
+    freshnessDays: 365,
+  },
+  {
+    id: 'college-zero-dollar-hangs',
+    version: '1.0',
+    titlePattern: 'Zero Dollars: {count} Hangs That Cost Nothing',
+    editorialBrief: 'Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.',
+    researchQueries: ['free student activities campus', 'free campus spaces students', 'free public places near campus'],
+    count: 10,
+    icon: 'money_off',
+    primarySubjectType: 'activity',
+    allowedSubjectTypes: ['activity', 'place'],
+    freshnessDays: 180,
+  },
+  {
+    id: 'college-study-spots',
+    version: '1.0',
+    titlePattern: 'Claimed by 9am: {count} Study Spots Worth Showing Up Early For',
+    editorialBrief: 'Choose ten distinct study environments. Verify access rules, room or reservation constraints, and the physical affordance that makes each useful. Treat “Claimed by 9am” as editorial framing; never assert crowding or student behavior without evidence.',
+    researchQueries: ['campus study spaces', 'library study rooms students', 'quiet study campus'],
+    count: 10,
+    icon: 'menu_book',
+    primarySubjectType: 'study_space',
+    allowedSubjectTypes: ['study_space', 'place'],
+    freshnessDays: 180,
+  },
+  {
+    id: 'college-blocks-off-campus',
+    version: '1.0',
+    titlePattern: '{count} Blocks Off Campus, One Reason Each',
+    editorialBrief: 'Use real streets, blocks, corridors, or micro-districts within the practical orbit of this specific campus. Give exactly one sourced reason for each and do not substitute broad city neighborhoods, isolated businesses, safety claims, or demographic stereotypes.',
+    researchQueries: ['off campus streets student district', 'campus adjacent commercial streets', 'neighborhood plan near university'],
+    count: 10,
+    icon: 'location_city',
+    primarySubjectType: 'street_or_district',
+    allowedSubjectTypes: ['street_or_district'],
+    freshnessDays: 730,
+  },
+  {
+    id: 'college-only-happens-here',
+    version: '1.0',
+    titlePattern: 'Only Happens Here: {count} Traditions That Make No Sense Anywhere Else',
+    editorialBrief: 'Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.',
+    researchQueries: ['university traditions alumni', 'campus traditions student newspaper', 'school rituals history'],
+    count: 10,
+    icon: 'fingerprint',
+    primarySubjectType: 'tradition',
+    allowedSubjectTypes: ['tradition'],
+    freshnessDays: 1095,
+  },
+  {
+    id: 'college-first-weekend',
+    version: '1.0',
+    titlePattern: 'Your First Weekend at {school}, Shared as Cards',
+    editorialBrief: 'Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.',
+    researchQueries: ['new student orientation campus guide', 'first year student campus activities', 'weekend near campus students'],
+    count: 10,
+    icon: 'schedule',
+    primarySubjectType: 'sequence_stop',
+    allowedSubjectTypes: ['sequence_stop', 'place', 'activity'],
+    freshnessDays: 180,
+  },
+] as const;
+
+export const GLOBAL_UNIVERSITY_BOARD_TEMPLATE_IDS = GLOBAL_UNIVERSITY_BOARD_TEMPLATES.map((template) => template.id);
+
+export function renderUniversityBoardTitle(
+  template: Pick<GlobalUniversityBoardTemplate, 'titlePattern' | 'count'>,
+  schoolName: string,
+  townName: string,
+): string {
+  return template.titlePattern
+    .replaceAll('{school}', schoolName)
+    .replaceAll('{town}', townName)
+    .replaceAll('{count}', String(template.count))
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 100);
+}
+

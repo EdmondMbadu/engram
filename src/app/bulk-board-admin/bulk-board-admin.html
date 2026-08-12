@@ -5,7 +5,7 @@
         <img src="/assets/image/livingwiki-brand.svg" alt="LivingWiki logo" class="h-10 w-40 object-contain" />
         <span class="min-w-0 border-l border-[var(--line)] pl-4">
           <span class="block text-[10px] font-black uppercase tracking-[0.28em] text-[var(--accent)]">Platform operations</span>
-          <span class="block truncate text-lg font-black tracking-tight">City Board Factory</span>
+          <span class="block truncate text-lg font-black tracking-tight">{{ factoryTitle }}</span>
         </span>
       </a>
       <div class="flex items-center gap-2">
@@ -27,10 +27,15 @@
     <section class="hero-panel">
       <div>
         <p class="eyebrow">Controlled generation · private by default</p>
-        <h1>Generate city boards without losing editorial control.</h1>
+        <h1>Generate {{ targetSingular }} boards without losing editorial control.</h1>
         <p class="hero-copy">
-          Every task starts with provider-verified place identities, runs independently, and produces a private review draft.
-          Nothing is published or approved as a city source automatically.
+          @if (isUniversityFactory()) {
+            Every task uses source-backed campus and town research, runs through the local Codex worker, and produces a scored private draft.
+            Nothing is published or approved as a university source automatically.
+          } @else {
+            Every task starts with provider-verified place identities, runs independently, and produces a private review draft.
+            Nothing is published or approved as a city source automatically.
+          }
         </p>
       </div>
       <div class="operator-card">
@@ -65,7 +70,7 @@
       </div>
     } @else {
       <section class="summary-grid">
-        <article><small>Eligible cities</small><strong>{{ cities().length }}</strong><span>Public city wikis</span></article>
+        <article><small>Eligible {{ targetPlural }}</small><strong>{{ cities().length }}</strong><span>Public {{ targetSingular }} wikis</span></article>
         <article><small>Selected now</small><strong>{{ selectedCount() }}</strong><span>Generation targets</span></article>
         <article><small>Generated boards</small><strong>{{ boards().length }}</strong><span>Including trash</span></article>
         <article><small>Needs review</small><strong>{{ needsReviewCount() }}</strong><span>Private drafts</span></article>
@@ -75,10 +80,10 @@
         <section class="catalog-panel" aria-labelledby="catalog-heading">
           <div class="catalog-panel__intro">
             <div>
-              <p class="eyebrow">Global catalog · 7 buckets × {{ catalogStatus.cityCount }} cities</p>
+              <p class="eyebrow">Global catalog · 7 buckets × {{ catalogStatus.targetCount ?? catalogStatus.cityCount }} {{ targetPlural }}</p>
               <h2 id="catalog-heading">One matrix. No blind regeneration.</h2>
               <p>
-                The reconciler keeps every existing board, queues only unsuppressed gaps, reuses verified candidates,
+                The reconciler keeps every existing board, queues only unsuppressed gaps,
                 and leaves new boards private for review.
               </p>
             </div>
@@ -110,7 +115,7 @@
           <div class="catalog-actions">
             <div>
               <strong>Complete the global catalog</strong>
-              <p>First run a free database-only preflight. Provider calls begin only after the confirmed job is queued.</p>
+              <p>First run a free database-only preflight. Research begins only when the confirmed job reaches its worker.</p>
             </div>
             <button
               type="button"
@@ -127,10 +132,14 @@
             <div class="catalog-plan">
               <div><small>Will queue</small><strong>{{ plan.readyCount ?? 0 }}</strong><span>missing boards</span></div>
               <div><small>Will keep</small><strong>{{ plan.expectedCount - (plan.readyCount ?? 0) }}</strong><span>existing or suppressed</span></div>
-              <div><small>Provider safety</small><strong>Cached first</strong><span>no repeated discovery</span></div>
+              <div><small>Generation engine</small><strong>{{ isUniversityFactory() ? 'Codex local' : 'Cached first' }}</strong><span>{{ isUniversityFactory() ? 'resumable checkpoints' : 'no repeated discovery' }}</span></div>
               <label>
                 <input type="checkbox" [checked]="catalogAccepted()" (change)="catalogAccepted.set(!catalogAccepted())" />
-                <span>I understand new boards use Google Places and one grounded Gemini writing pass, then remain private for review.</span>
+                <span>
+                  {{ isUniversityFactory()
+                    ? 'I understand these jobs use the locally authenticated Codex worker, store a 0–100 quality score, and remain private for review.'
+                    : 'I understand new boards use Google Places and one grounded Gemini writing pass, then remain private for review.' }}
+                </span>
               </label>
               <button
                 type="button"
@@ -185,6 +194,7 @@
             </div>
           </div>
 
+          @if (!isUniversityFactory()) {
           <details class="advanced-template">
             <summary>
               <span><span class="material-symbols-outlined">tune</span> Advanced template settings</span>
@@ -227,33 +237,34 @@
               </label>
             </div>
           </details>
+          }
 
           <div class="selection-heading">
             <div>
               <p class="eyebrow">Step 2</p>
-              <h2>Select cities</h2>
+              <h2>Select {{ targetPlural }}</h2>
             </div>
             <strong>{{ citySelectionSummary() }}</strong>
           </div>
           <div class="run-mode" role="group" aria-label="Generation scope">
             <button type="button" [class.run-mode__button--active]="runMode() === 'test'" (click)="setRunMode('test')">
               <span class="material-symbols-outlined">science</span>
-              <span><strong>Test drive</strong><small>Maximum 5 cities</small></span>
+              <span><strong>Test drive</strong><small>Maximum 5 {{ targetPlural }}</small></span>
             </button>
             <button type="button" [class.run-mode__button--active]="runMode() === 'production'" (click)="setRunMode('production')">
               <span class="material-symbols-outlined">public</span>
-              <span><strong>Production run</strong><small>All eligible cities</small></span>
+              <span><strong>Production run</strong><small>All eligible {{ targetPlural }}</small></span>
             </button>
           </div>
           <div class="city-toolbar">
             <label class="search-box">
               <span class="material-symbols-outlined">search</span>
-              <input type="search" placeholder="Search cities or regions…" [ngModel]="citySearch()" (ngModelChange)="citySearch.set($event)" />
+              <input type="search" [placeholder]="isUniversityFactory() ? 'Search universities or towns…' : 'Search cities or regions…'" [ngModel]="citySearch()" (ngModelChange)="citySearch.set($event)" />
             </label>
             <button type="button" class="button button--secondary" (click)="selectFilteredCities()">{{ selectShownLabel() }}</button>
             <button type="button" class="button button--ghost" (click)="clearCities()">Clear</button>
           </div>
-          <div class="city-list" role="group" aria-label="Generation cities">
+          <div class="city-list" role="group" [attr.aria-label]="'Generation ' + targetPlural">
             @for (city of filteredCities(); track trackCity($index, city)) {
               <label class="city-row" [class.city-row--selected]="isCitySelected(city.id)">
                 <input type="checkbox" [checked]="isCitySelected(city.id)" (change)="toggleCity(city.id)" />
@@ -261,11 +272,11 @@
                 <span><strong>{{ city.name }}</strong><small>{{ city.region || city.countryCode || 'Region not set' }}</small></span>
               </label>
             } @empty {
-              <p class="empty-copy">No cities match this search.</p>
+              <p class="empty-copy">No {{ targetPlural }} match this search.</p>
             }
           </div>
           @if (selectedCities().length) {
-            <div class="selected-city-strip" aria-label="Selected test cities">
+            <div class="selected-city-strip" [attr.aria-label]="'Selected test ' + targetPlural">
               @for (city of selectedCities(); track city.id) {
                 <button type="button" (click)="toggleCity(city.id)" [attr.aria-label]="'Remove ' + city.name">
                   <span>{{ city.name }}</span><span class="material-symbols-outlined">close</span>
@@ -278,7 +289,7 @@
             <div>
               <p class="eyebrow">Step 3</p>
               <h2>Preflight, then start</h2>
-              <p>{{ selectedCount() }} board{{ selectedCount() === 1 ? '' : 's' }} · no AI or Places calls occur during preflight.</p>
+              <p>{{ selectedCount() }} board{{ selectedCount() === 1 ? '' : 's' }} · no AI, search, or Places calls occur during preflight.</p>
             </div>
             <button type="button" class="button button--secondary" [disabled]="running() || selectedCount() === 0" (click)="runPreflight()">
               <span class="material-symbols-outlined">fact_check</span>
@@ -314,7 +325,7 @@
             @for (job of jobs(); track trackJob($index, job)) {
               <article class="job-card">
                 <div class="job-title">
-                  <div><strong>{{ job.template?.titlePattern || 'City board job' }}</strong><small>{{ job.created_at | date: 'medium' }}</small></div>
+                  <div><strong>{{ job.template?.titlePattern || factoryTitle + ' job' }}</strong><small>{{ job.created_at | date: 'medium' }}{{ job.worker_status ? ' · ' + jobStatusLabel(job.worker_status) : '' }}</small></div>
                   <span [class]="itemStatusClass(job.status)">{{ jobStatusLabel(job.status) }}</span>
                 </div>
                 <div class="progress-track"><span [style.width.%]="jobProgress(job)"></span></div>
@@ -336,15 +347,21 @@
           </div>
 
           @if (items().length) {
-            <div class="item-heading"><h3>Latest job cities</h3><span>{{ items().length }}</span></div>
+            <div class="item-heading"><h3>Latest job {{ targetPlural }}</h3><span>{{ items().length }}</span></div>
             <div class="item-list">
               @for (item of items(); track trackItem($index, item)) {
                 <article class="item-row">
                   <span class="item-state-dot" [class.item-state-dot--bad]="item.status === 'failed'" [class.item-state-dot--good]="item.status === 'needs_review'"></span>
-                  <div><strong>{{ item.city_name }}</strong><small>{{ item.region_name || item.error_message || jobStatusLabel(item.status) }}</small></div>
+                  <div>
+                    <strong>{{ item.city_name }}</strong>
+                    <small>{{ item.region_name || item.error_message || jobStatusLabel(item.status) }}</small>
+                    @if (item.generation_score !== null && item.generation_score !== undefined) {
+                      <small>Generation score: {{ item.generation_score }}/100 · {{ item.generation_grade || '—' }}</small>
+                    }
+                  </div>
                   <span [class]="itemStatusClass(item.status)">{{ jobStatusLabel(item.status) }}</span>
                   @if (isRetryableItem(item)) {
-                    <button type="button" class="icon-button" [disabled]="busyItemId() === item.id" (click)="retryItem(item)" aria-label="Retry failed city">
+                    <button type="button" class="icon-button" [disabled]="busyItemId() === item.id" (click)="retryItem(item)" [attr.aria-label]="'Retry failed ' + targetSingular">
                       <span class="material-symbols-outlined">replay</span>
                     </button>
                   }
@@ -358,7 +375,7 @@
       <section class="panel board-management">
         <div class="panel-heading board-heading">
           <div>
-            <p class="eyebrow">City board lifecycle</p>
+            <p class="eyebrow">{{ factoryTitle }} lifecycle</p>
             <h2>Review, publish, remove, restore, or delete</h2>
             <p>Listing and source approval are intentionally separate.</p>
           </div>
@@ -379,10 +396,10 @@
         <div class="board-toolbar">
           <label class="search-box">
             <span class="material-symbols-outlined">search</span>
-            <input type="search" placeholder="Search board, city, or template…" [ngModel]="boardSearch()" (ngModelChange)="boardSearch.set($event)" />
+            <input type="search" [placeholder]="'Search board, ' + targetSingular + ', or template…'" [ngModel]="boardSearch()" (ngModelChange)="boardSearch.set($event)" />
           </label>
-          <select aria-label="Filter boards by city" [ngModel]="selectedBoardCity()" (ngModelChange)="selectedBoardCity.set($event)">
-            <option value="all">All cities</option>
+          <select [attr.aria-label]="'Filter boards by ' + targetSingular" [ngModel]="selectedBoardCity()" (ngModelChange)="selectedBoardCity.set($event)">
+            <option value="all">All {{ targetPlural }}</option>
             @for (city of cities(); track trackCity($index, city)) { <option [value]="city.id">{{ city.name }}</option> }
           </select>
           <select aria-label="Filter boards by status" [ngModel]="selectedBoardStatus()" (ngModelChange)="selectedBoardStatus.set($event)">
@@ -407,13 +424,14 @@
               </div>
               <div class="board-statuses">
                 <span [class]="boardStatusClass(board)">{{ board.deleted_at ? 'trash' : jobStatusLabel(board.editorial_status) }}</span>
-                <span class="status">city: {{ jobStatusLabel(board.city_listing_status) }}</span>
+                <span class="status">{{ targetSingular }}: {{ jobStatusLabel(board.city_listing_status) }}</span>
                 <span class="status">source: {{ jobStatusLabel(board.source_status) }}</span>
               </div>
               <div class="quality-block">
                 <strong>{{ board.validation_summary?.verified_count ?? board.card_count }}/{{ board.validation_summary?.requested_count ?? board.card_count }}</strong>
-                <span>places verified</span>
-                @if (board.quality_warnings.length) { <small>{{ board.quality_warnings.length }} voice warning(s)</small> }
+                <span>{{ isUniversityFactory() ? 'subjects verified' : 'places verified' }}</span>
+                <small [class]="generationScoreClass(board)">{{ generationScoreLabel(board) }}</small>
+                @if (board.quality_warnings.length) { <small>{{ board.quality_warnings.length }} quality warning(s)</small> }
               </div>
               <div class="board-actions">
                 <a class="button button--ghost" [routerLink]="['/boards', board.id]" target="_blank"><span class="material-symbols-outlined">open_in_new</span> Open</a>
@@ -425,7 +443,7 @@
                     <button type="button" class="button button--primary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'publish')"><span class="material-symbols-outlined">publish</span> Publish</button>
                   }
                   @if (board.city_listing_status === 'listed') {
-                    <button type="button" class="button button--secondary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'remove_from_city')"><span class="material-symbols-outlined">link_off</span> Remove from city</button>
+                    <button type="button" class="button button--secondary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'remove_from_city')"><span class="material-symbols-outlined">link_off</span> Remove from {{ targetSingular }}</button>
                   }
                   @if (board.source_status === 'approved') {
                     <button type="button" class="button button--ghost" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'exclude_source')"><span class="material-symbols-outlined">block</span> Exclude source</button>
@@ -437,7 +455,7 @@
               </div>
             </article>
           } @empty {
-            <div class="empty-state"><span class="material-symbols-outlined">inventory_2</span><strong>No boards in this view</strong><p>Change the filters or generate the first city board draft.</p></div>
+            <div class="empty-state"><span class="material-symbols-outlined">inventory_2</span><strong>No boards in this view</strong><p>Change the filters or generate the first {{ targetSingular }} board draft.</p></div>
           }
         </div>
       </section>

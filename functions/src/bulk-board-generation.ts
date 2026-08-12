@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { FieldValue } from 'firebase-admin/firestore';
 import { logger } from 'firebase-functions';
 import { buildCityPlaceTextSearchRequest } from './city-place-search';
+import { scoreGeneratedBoard } from './board-generation-score';
 import { db } from './firebase';
 import {
   generateBoardWizardBatch,
@@ -816,7 +817,7 @@ function boardPayload(params: {
       warnings.push(`${venueFirstCount} card(s) need a subject-first title during editorial review.`);
     }
   }
-  return {
+  const payload: Record<string, unknown> = {
     id: params.boardId,
     kind: 'standard',
     sortOrder: Date.now(),
@@ -893,7 +894,7 @@ function boardPayload(params: {
     editorial_status: params.autoPublish ? 'published' : 'needs_review',
     city_listing_status: params.autoPublish ? 'listed' : 'pending',
     source_status: 'excluded',
-    quality_status: warnings.length ? 'warnings' : 'not_scored',
+    quality_status: warnings.length ? 'warnings' : 'passed',
     quality_warnings: warnings,
     validation_summary: {
       requested_count: params.template.count,
@@ -913,6 +914,16 @@ function boardPayload(params: {
     created_at_iso: now,
     updated_at_iso: now,
     server_updated_at: FieldValue.serverTimestamp(),
+  };
+  const scoring = scoreGeneratedBoard(payload, { expectedCount: params.template.count });
+  return {
+    ...payload,
+    generation_score: scoring.score,
+    generation_grade: scoring.grade,
+    generation_score_breakdown: scoring.breakdown,
+    generation_score_reasons: scoring.reasons,
+    generation_scored_at: scoring.scoredAt,
+    generation_score_rubric_version: scoring.rubricVersion,
   };
 }
 
@@ -1100,6 +1111,8 @@ export async function processBulkBoardGenerationItem(
         item_id: itemId,
         actor_user_id: text(job.requested_by_user_id, 160),
         generation_key: generationKey,
+        generation_score: Number(payload.generation_score),
+        generation_grade: text(payload.generation_grade, 4),
         created_at: FieldValue.serverTimestamp(),
       });
       return 'created' as const;
@@ -1121,6 +1134,8 @@ export async function processBulkBoardGenerationItem(
       generation_key: generationKey,
       verified_place_count: candidates.length,
       quality_warning_count: Array.isArray(payload.quality_warnings) ? payload.quality_warnings.length : 0,
+      generation_score: Number(payload.generation_score),
+      generation_grade: text(payload.generation_grade, 4),
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

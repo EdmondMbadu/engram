@@ -144,6 +144,11 @@
 .quality-block strong{font-size:1rem;font-weight:950}
 .quality-block span,.quality-block small{color:var(--muted);font-size:.6rem}
 .quality-block small{margin-top:.2rem;color:#8a6811}
+.quality-block .score{display:inline-flex;width:max-content;margin-top:.35rem;border:1px solid var(--line);border-radius:999px;padding:.2rem .45rem;font-weight:950}
+.quality-block .score--excellent{border-color:color-mix(in srgb,#18864b 40%,var(--line));background:color-mix(in srgb,#18864b 10%,var(--surface));color:#18864b}
+.quality-block .score--good{border-color:color-mix(in srgb,var(--accent) 40%,var(--line));background:color-mix(in srgb,var(--accent) 9%,var(--surface));color:var(--accent)}
+.quality-block .score--review{border-color:color-mix(in srgb,#b67914 45%,var(--line));background:color-mix(in srgb,#b67914 10%,var(--surface));color:#8a5a0d}
+.quality-block .score--weak{border-color:color-mix(in srgb,#b64242 42%,var(--line));background:color-mix(in srgb,#b64242 9%,var(--surface));color:#a13232}
 .board-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.4rem}
 .board-actions .button{min-height:2.2rem;padding:.45rem .65rem;font-size:.65rem}
 .empty-state{flex-direction:column;min-height:16rem}

@@ -7,6 +7,7 @@ import { AuthService } from '../auth.service';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import {
   BulkBoardAdminService,
+  type BoardFactoryKind,
   type BulkBoardAdminAction,
   type BulkBoardAdminBoard,
   type BulkBoardCity,
@@ -121,6 +122,67 @@ const DEFAULT_TEMPLATE: BulkBoardTemplateInput = {
   cardTitleMode: 'subject',
 };
 
+const UNIVERSITY_BUCKET_PRESETS: GlobalBucketPreset[] = [
+  {
+    id: 'college-late-night-runs', version: '1.0', label: '10 Late-Night Runs That Explain [School]',
+    promise: 'Under-21-safe late-night destinations with current evidence.', icon: 'nightlife',
+    titlePattern: '{count} Late-Night Runs That Explain {school}',
+    searchQuery: 'late night dining students campus dining late hours restaurants near campus',
+    editorialBrief: 'Build an under-21-safe late-night ritual board. Verify late availability and the campus connection from direct sources. Do not invent student habits, signature orders, popularity, or current hours. Bars and 21+-only venues are prohibited.',
+    count: 10, cardTitleMode: 'subject',
+  },
+  {
+    id: 'college-campus-tour-skips', version: '1.0', label: 'What the Campus Tour Skips',
+    promise: 'Places with a concrete shared student use—not secrecy theater.', icon: 'style',
+    titlePattern: 'What the Campus Tour Skips: {count} Places Students Share With Each Other',
+    searchQuery: 'student favorite campus places campus map student spaces student newspaper',
+    editorialBrief: 'Choose campus-specific places with a concrete shared use supported by official or credible student sources. Never claim secrecy, universal popularity, or unrestricted access.',
+    count: 10, cardTitleMode: 'place',
+  },
+  {
+    id: 'college-zero-dollar-hangs', version: '1.0', label: 'Zero Dollars: 10 Hangs That Cost Nothing',
+    promise: 'Social activities with no required admission or purchase.', icon: 'money_off',
+    titlePattern: 'Zero Dollars: {count} Hangs That Cost Nothing',
+    searchQuery: 'free student activities campus free public places near campus',
+    editorialBrief: 'Every card must describe a social activity requiring no admission and no purchase. Distinguish public access from student-only access and avoid temporary promotions.',
+    count: 10, cardTitleMode: 'subject',
+  },
+  {
+    id: 'college-study-spots', version: '1.0', label: 'Claimed by 9am: 10 Study Spots',
+    promise: 'Distinct study environments with access rules verified.', icon: 'menu_book',
+    titlePattern: 'Claimed by 9am: {count} Study Spots Worth Showing Up Early For',
+    searchQuery: 'campus study spaces library study rooms students quiet study',
+    editorialBrief: 'Choose ten distinct study environments. Verify access and reservation constraints and explain the physical study affordance. Do not assert crowding without evidence.',
+    count: 10, cardTitleMode: 'place',
+  },
+  {
+    id: 'college-blocks-off-campus', version: '1.0', label: '10 Blocks Off Campus, One Reason Each',
+    promise: 'Campus-adjacent streets and micro-districts, not generic neighborhoods.', icon: 'location_city',
+    titlePattern: '{count} Blocks Off Campus, One Reason Each',
+    searchQuery: 'off campus streets student district campus adjacent commercial corridors',
+    editorialBrief: 'Use real streets, blocks, corridors, or micro-districts in this campus orbit. Give one sourced reason each. Avoid broad city neighborhoods, safety claims, and stereotypes.',
+    count: 10, cardTitleMode: 'place',
+  },
+  {
+    id: 'college-only-happens-here', version: '1.0', label: 'Only Happens Here: 10 Traditions',
+    promise: 'Documented school-specific rituals with disputed origins labeled.', icon: 'fingerprint',
+    titlePattern: 'Only Happens Here: {count} Traditions That Make No Sense Anywhere Else',
+    searchQuery: 'university traditions alumni campus rituals student newspaper history',
+    editorialBrief: 'Choose documented school-specific traditions or rituals. Prefer official archives, alumni sources, and credible student publications. Label disputed or discontinued practices and reject unsafe behavior.',
+    count: 10, cardTitleMode: 'subject',
+  },
+  {
+    id: 'college-first-weekend', version: '1.0', label: 'Your First Weekend at [School]',
+    promise: 'An under-21-safe, evergreen sequence shared as cards.', icon: 'schedule',
+    titlePattern: 'Your First Weekend at {school}, Shared as Cards',
+    searchQuery: 'new student orientation campus guide weekend near campus students',
+    editorialBrief: 'Build a plausible under-21-safe first-weekend sequence. Use evergreen places or recurring behaviors. Be conservative about hours, access, and travel time.',
+    count: 10, cardTitleMode: 'subject',
+  },
+];
+
+const DEFAULT_UNIVERSITY_TEMPLATE: BulkBoardTemplateInput = UNIVERSITY_BUCKET_PRESETS[0];
+
 @Component({
   selector: 'app-bulk-board-admin',
   imports: [RouterLink, FormsModule, DatePipe, ThemeToggleComponent, AccountMenuComponent],
@@ -134,6 +196,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
   private refreshTimer: ReturnType<typeof setInterval> | null = null;
+  readonly factoryKind: BoardFactoryKind = this.route.snapshot.data['factoryKind'] === 'university' ? 'university' : 'city';
 
   readonly dashboard = signal<BulkBoardDashboard | null>(null);
   readonly loading = signal(true);
@@ -145,10 +208,10 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   readonly boardSearch = signal('');
   readonly selectedCityIds = signal<Set<string>>(new Set());
   readonly runMode = signal<'test' | 'production'>('test');
-  readonly selectedBucketId = signal(DEFAULT_TEMPLATE.id);
+  readonly selectedBucketId = signal(this.factoryKind === 'university' ? DEFAULT_UNIVERSITY_TEMPLATE.id : DEFAULT_TEMPLATE.id);
   readonly selectedBoardCity = signal('all');
   readonly selectedBoardStatus = signal('active');
-  readonly template = signal<BulkBoardTemplateInput>({ ...DEFAULT_TEMPLATE });
+  readonly template = signal<BulkBoardTemplateInput>({ ...(this.factoryKind === 'university' ? DEFAULT_UNIVERSITY_TEMPLATE : DEFAULT_TEMPLATE) });
   readonly preflight = signal<BulkBoardPreflight | null>(null);
   readonly preflightAccepted = signal(false);
   readonly publishingAll = signal(false);
@@ -168,7 +231,10 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     (board) => !board.deleted_at && board.editorial_status === 'needs_review',
   ).length);
   readonly selectedCount = computed(() => this.selectedCityIds().size);
-  readonly bucketPresets = GLOBAL_BUCKET_PRESETS;
+  readonly bucketPresets = this.factoryKind === 'university' ? UNIVERSITY_BUCKET_PRESETS : GLOBAL_BUCKET_PRESETS;
+  readonly factoryTitle = this.factoryKind === 'university' ? 'University Board Factory' : 'City Board Factory';
+  readonly targetSingular = this.factoryKind === 'university' ? 'university' : 'city';
+  readonly targetPlural = this.factoryKind === 'university' ? 'universities' : 'cities';
   readonly cityById = computed(() => new Map(this.cities().map((city) => [city.id, city])));
   readonly selectedCities = computed(() => [...this.selectedCityIds()]
     .map((id) => this.cityById().get(id))
@@ -178,17 +244,23 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     : `${this.selectedCount()} selected`);
   readonly selectShownLabel = computed(() => this.runMode() === 'test' ? 'Select up to 5' : 'Select shown');
   readonly startGenerationLabel = computed(() => this.runMode() === 'test'
-    ? `Start ${this.selectedCount()}-city test drive`
-    : `Start ${this.selectedCount()}-city production run`);
+    ? `Start ${this.selectedCount()}-${this.targetSingular} test drive`
+    : `Start ${this.selectedCount()}-${this.targetSingular} production run`);
   readonly boardTitlePreview = computed(() => {
-    const city = this.selectedCities()[0]?.name || '[City]';
+    const target = this.selectedCities()[0];
+    const city = target?.name || '[City]';
+    const school = target?.name || '[School]';
+    const town = target?.townName || target?.region || '[Town]';
     return this.template().titlePattern
       .replace(/\{city\}|\[city\]/gi, city)
+      .replace(/\{school\}|\[school\]/gi, school)
+      .replace(/\{town\}|\[town\]/gi, town)
       .replace(/\{count\}|\[count\]/gi, String(this.template().count));
   });
   readonly filteredCities = computed(() => {
     const query = this.citySearch().trim().toLowerCase();
-    return this.cities().filter((city) => !query || `${city.name} ${city.region} ${city.countryCode}`.toLowerCase().includes(query));
+    return this.cities().filter((city) => !query
+      || `${city.name} ${city.officialName ?? ''} ${city.region} ${city.townName ?? ''} ${city.countryCode}`.toLowerCase().includes(query));
   });
   readonly activeJob = computed(() => this.jobs().find((job) => job.status === 'running') ?? null);
   readonly catalog = computed(() => this.dashboard()?.catalog ?? null);
@@ -239,7 +311,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     else this.loading.set(true);
     if (!silent) this.error.set(null);
     try {
-      const dashboard = await this.service.dashboard();
+      const dashboard = await this.service.dashboard(this.factoryKind);
       this.dashboard.set(dashboard);
       const eligibleIds = new Set(dashboard.cities.map((city) => city.id));
       this.selectedCityIds.update((selected) => new Set([...selected].filter((id) => eligibleIds.has(id))));
@@ -271,7 +343,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     if (mode === this.runMode()) return;
     if (mode === 'test' && this.selectedCount() > 5) {
       this.selectedCityIds.set(new Set([...this.selectedCityIds()].slice(0, 5)));
-      this.notice.set('Test drive keeps the first five selected cities.');
+      this.notice.set(`Test drive keeps the first five selected ${this.targetPlural}.`);
     }
     this.runMode.set(mode);
     this.preflight.set(null);
@@ -287,7 +359,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     if (next.has(cityId)) {
       next.delete(cityId);
     } else if (this.runMode() === 'test' && next.size >= 5) {
-      this.notice.set('Five cities selected. Remove one before choosing another.');
+      this.notice.set(`Five ${this.targetPlural} selected. Remove one before choosing another.`);
       return;
     } else {
       next.add(cityId);
@@ -305,7 +377,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
       next.add(city.id);
     }
     if (this.runMode() === 'test' && this.filteredCities().some((city) => !next.has(city.id))) {
-      this.notice.set('Selected the first five matching cities for this test drive.');
+      this.notice.set(`Selected the first five matching ${this.targetPlural} for this test drive.`);
     }
     this.selectedCityIds.set(next);
     this.preflight.set(null);
@@ -324,14 +396,14 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
 
   async runPreflight(): Promise<void> {
     if (!this.selectedCount()) {
-      this.error.set('Select at least one city.');
+      this.error.set(`Select at least one ${this.targetSingular}.`);
       return;
     }
     this.running.set(true);
     this.error.set(null);
     this.notice.set(null);
     try {
-      this.preflight.set(await this.service.preflight([...this.selectedCityIds()], this.template()));
+      this.preflight.set(await this.service.preflight(this.factoryKind, [...this.selectedCityIds()], this.template()));
       this.preflightAccepted.set(false);
     } catch (error) {
       this.error.set(this.authService.toFriendlyError(error));
@@ -350,8 +422,10 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     this.running.set(true);
     this.error.set(null);
     try {
-      const result = await this.service.start([...this.selectedCityIds()], this.template());
-      this.notice.set(`Started ${result.cityCount} city board tasks. You can leave this page; work continues in the background.`);
+      const result = await this.service.start(this.factoryKind, [...this.selectedCityIds()], this.template());
+      this.notice.set(this.factoryKind === 'university'
+        ? `Queued ${result.cityCount} university board tasks for the local Codex worker. You can leave this page; checkpoints are resumable.`
+        : `Started ${result.cityCount} city board tasks. You can leave this page; work continues in the background.`);
       this.preflight.set(null);
       this.preflightAccepted.set(false);
       await this.load(true);
@@ -367,11 +441,11 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     this.error.set(null);
     this.notice.set(null);
     try {
-      const plan = await this.service.reconcileCatalog(true);
+      const plan = await this.service.reconcileCatalog(this.factoryKind, true);
       this.catalogPlan.set(plan);
       this.catalogAccepted.set(false);
       if (!plan.readyCount) {
-        this.notice.set('The seven-bucket city catalog has no unsuppressed missing boards to queue.');
+        this.notice.set(`The seven-bucket ${this.targetSingular} catalog has no unsuppressed missing boards to queue.`);
       }
     } catch (error) {
       this.error.set(this.authService.toFriendlyError(error));
@@ -387,9 +461,9 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     this.error.set(null);
     this.notice.set(null);
     try {
-      const result = await this.service.reconcileCatalog(false);
+      const result = await this.service.reconcileCatalog(this.factoryKind, false);
       this.notice.set(
-        `Queued ${result.readyCount ?? 0} missing city boards in one resumable catalog job. Existing boards will not be regenerated.`,
+        `Queued ${result.readyCount ?? 0} missing ${this.targetSingular} boards in one resumable catalog job. Existing boards will not be regenerated.`,
       );
       this.catalogPlan.set(null);
       this.catalogAccepted.set(false);
@@ -402,7 +476,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   }
 
   async cancelJob(job: BulkBoardJob): Promise<void> {
-    if (!confirm('Cancel queued work for this job? A city already being processed will stop before its board is saved.')) return;
+    if (!confirm(`Cancel queued work for this job? A ${this.targetSingular} already being processed will stop before its board is saved.`)) return;
     this.running.set(true);
     this.error.set(null);
     try {
@@ -434,15 +508,15 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     const destructive = action === 'trash' || action === 'permanent_delete' || action === 'remove_from_city';
     let reason = '';
     if (action === 'publish'
-      && !confirm('Publish this board publicly and list it in the city? Place identity passed validation, but you are confirming the editorial review.')) {
+      && !confirm(`Publish this board publicly and list it for the ${this.targetSingular}? Automated validation passed, but you are confirming the editorial review.`)) {
       return;
     }
     if (action === 'approve_source'
-      && !confirm('Approve this published board as a city source? This is separate from making it visible.')) {
+      && !confirm(`Approve this published board as a ${this.targetSingular} source? This is separate from making it visible.`)) {
       return;
     }
     if (destructive) {
-      const label = action === 'trash' ? 'move this board to trash' : action === 'permanent_delete' ? 'permanently delete this board' : 'remove this board from its city';
+      const label = action === 'trash' ? 'move this board to trash' : action === 'permanent_delete' ? 'permanently delete this board' : `remove this board from its ${this.targetSingular}`;
       if (!confirm(`Are you sure you want to ${label}?`)) return;
       reason = prompt('Reason for the audit log (optional):')?.trim() ?? '';
     }
@@ -466,10 +540,10 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
       (board) => board.atlas_id || board.generated_for_atlas_id,
     ).filter(Boolean)).size;
     const boardLabel = `${boards.length} board${boards.length === 1 ? '' : 's'}`;
-    const cityLabel = `${cityCount} cit${cityCount === 1 ? 'y' : 'ies'}`;
+    const cityLabel = `${cityCount} ${cityCount === 1 ? this.targetSingular : this.targetPlural}`;
     if (!confirm(
       `Publish all ${boardLabel} currently shown across ${cityLabel}?\n\n`
-      + 'Each board will become public and appear in its city. Source approval remains separate. This confirms that you reviewed their editorial quality.',
+      + `Each board will become public and appear for its ${this.targetSingular}. Source approval remains separate. This confirms that you reviewed their editorial quality.`,
     )) return;
 
     this.publishingAll.set(true);
@@ -481,7 +555,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
         ? ` ${result.skippedCount} already-published board${result.skippedCount === 1 ? ' was' : 's were'} skipped.`
         : '';
       this.notice.set(
-        `Published ${result.publishedCount} board${result.publishedCount === 1 ? '' : 's'} and listed them in their cities.${skippedCopy}`,
+        `Published ${result.publishedCount} board${result.publishedCount === 1 ? '' : 's'} and listed them for their ${this.targetPlural}.${skippedCopy}`,
       );
       if (result.failedCount) {
         const examples = result.failures.slice(0, 3)
@@ -501,7 +575,21 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
 
   cityLabel(board: BulkBoardAdminBoard): string {
     const city = this.cityById().get(board.atlas_id || board.generated_for_atlas_id);
-    return city ? [city.name, city.region].filter(Boolean).join(', ') : 'Unknown city';
+    return city ? [city.name, city.region].filter(Boolean).join(' · ') : `Unknown ${this.targetSingular}`;
+  }
+
+  isUniversityFactory(): boolean { return this.factoryKind === 'university'; }
+
+  generationScoreLabel(board: BulkBoardAdminBoard): string {
+    return board.generation_score === null ? 'Not scored' : `${board.generation_score}/100 · ${board.generation_grade || '—'}`;
+  }
+
+  generationScoreClass(board: BulkBoardAdminBoard): string {
+    const score = board.generation_score ?? -1;
+    if (score >= 90) return 'score score--excellent';
+    if (score >= 80) return 'score score--good';
+    if (score >= 70) return 'score score--review';
+    return 'score score--weak';
   }
 
   jobProgress(job: BulkBoardJob): number {
@@ -543,10 +631,10 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
 
   private actionSuccessMessage(action: BulkBoardAdminAction): string {
     switch (action) {
-      case 'publish': return 'Board published and listed in its city.';
-      case 'remove_from_city': return 'Board removed from the city and excluded as a source.';
-      case 'exclude_source': return 'Board excluded as a city source.';
-      case 'approve_source': return 'Board approved as a city source.';
+      case 'publish': return `Board published and listed for its ${this.targetSingular}.`;
+      case 'remove_from_city': return `Board removed from the ${this.targetSingular} and excluded as a source.`;
+      case 'exclude_source': return `Board excluded as a ${this.targetSingular} source.`;
+      case 'approve_source': return `Board approved as a ${this.targetSingular} source.`;
       case 'trash': return 'Board moved to trash and suppressed from regeneration.';
       case 'restore': return 'Board restored as a private review draft.';
       case 'permanent_delete': return 'Board permanently deleted.';

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["complete", "school_name", "town_name", "researched_at", "evidence", "warnings"],
+  "properties": {
+    "complete": { "type": "boolean" },
+    "school_name": { "type": "string" },
+    "town_name": { "type": "string" },
+    "researched_at": { "type": "string" },
+    "evidence": {
+      "type": "array",
+      "maxItems": 80,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_id", "buckets", "subject_name", "subject_type", "supported_claim", "source_url", "source_title", "source_kind", "source_published_at", "source_fetched_at", "latitude", "longitude", "maps_url", "access_notes", "cost_status", "under21_safe"],
+        "properties": {
+          "evidence_id": { "type": "string" },
+          "buckets": { "type": "array", "items": { "type": "string" } },
+          "subject_name": { "type": "string" },
+          "subject_type": { "enum": ["place", "tradition", "activity", "study_space", "street_or_district", "sequence_stop"] },
+          "supported_claim": { "type": "string" },
+          "source_url": { "type": "string" },
+          "source_title": { "type": "string" },
+          "source_kind": { "enum": ["university_official", "business_official", "government", "student_media", "local_media", "cultural_institution", "other_reliable"] },
+          "source_published_at": { "type": ["string", "null"] },
+          "source_fetched_at": { "type": "string" },
+          "latitude": { "type": ["number", "null"] },
+          "longitude": { "type": ["number", "null"] },
+          "maps_url": { "type": ["string", "null"] },
+          "access_notes": { "type": "string" },
+          "cost_status": { "enum": ["free", "purchase_required", "unknown", "not_applicable"] },
+          "under21_safe": { "type": "boolean" }
+        }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}
+
