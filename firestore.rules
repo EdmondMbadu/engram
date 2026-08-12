@@ -72,6 +72,8 @@ service cloud.firestore {
         'photoURL',
         'profileIcon',
         'profilePictureType',
+        'preferredCitySlug',
+        'preferredUniversitySlug',
         'providers',
         'creationTime',
         'lastSignInTime',

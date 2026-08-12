@@ -70,6 +70,8 @@ export interface AuthUserProfile {
   businessPlan: string | null;
   subscriptionStatus: string | null;
   stripeSubscriptionId: string | null;
+  preferredCitySlug: string | null;
+  preferredUniversitySlug: string | null;
   creationTime: string | null;
   lastSignInTime: string | null;
 }
@@ -398,6 +400,28 @@ export class AuthService {
     await this.refreshUser();
   }
 
+  async updateHomePreferences(preferences: {
+    preferredCitySlug: string | null;
+    preferredUniversitySlug: string | null;
+  }): Promise<void> {
+    const user = this.requireCurrentUser();
+    const firestore = this.requireFirestore();
+    const preferredCitySlug = this.normalizedOptionalSlug(preferences.preferredCitySlug);
+    const preferredUniversitySlug = this.normalizedOptionalSlug(preferences.preferredUniversitySlug);
+
+    await setDoc(doc(firestore, 'users', user.uid), {
+      preferredCitySlug,
+      preferredUniversitySlug,
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
+
+    this.profile.update((profile) => profile ? {
+      ...profile,
+      preferredCitySlug,
+      preferredUniversitySlug,
+    } : profile);
+  }
+
   toFriendlyError(error: unknown): string {
     if (error instanceof FirebaseError) {
       switch (error.code) {
@@ -557,6 +581,8 @@ export class AuthService {
       businessPlan: this.stringField(data, 'businessPlan', 'business_plan'),
       subscriptionStatus: this.stringField(data, 'subscriptionStatus', 'subscription_status'),
       stripeSubscriptionId: this.stringField(data, 'stripeSubscriptionId', 'stripe_subscription_id'),
+      preferredCitySlug: this.stringField(data, 'preferredCitySlug', 'preferred_city_slug'),
+      preferredUniversitySlug: this.stringField(data, 'preferredUniversitySlug', 'preferred_university_slug'),
       creationTime: typeof data['creationTime'] === 'string' ? data['creationTime'] : null,
       lastSignInTime: typeof data['lastSignInTime'] === 'string' ? data['lastSignInTime'] : null,
     });
@@ -570,6 +596,11 @@ export class AuthService {
       }
     }
     return null;
+  }
+
+  private normalizedOptionalSlug(value: string | null): string | null {
+    const normalized = value?.trim().toLowerCase();
+    return normalized && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(normalized) ? normalized : null;
   }
 
   private async sendVerificationEmail(

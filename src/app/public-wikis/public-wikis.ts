@@ -1,5 +1,5 @@
 import { DecimalPipe, isPlatformBrowser } from '@angular/common';
-import { Component, computed, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, type WritableSignal } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal, ViewChild, type WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -30,6 +30,7 @@ import { LanguageSwitcherComponent } from '../language-switcher/language-switche
 const CITIES_CATEGORY = 'Cities';
 const UNIVERSITIES_CATEGORY = 'Universities';
 const OTHERS_CATEGORY = 'Others';
+const HOME_PREFERENCES_STORAGE_PREFIX = 'living-wiki:home-preferences';
 const HOME_ICON_URLS = {
   boards: '/assets/image/home-icons/my-boards.png',
   cities: '/assets/image/home-icons/my-cities.png',
@@ -498,6 +499,7 @@ interface PublicWikiFeelingSticker {
   styleUrl: './public-wikis.css',
 })
 export class PublicWikisComponent implements OnInit {
+  @ViewChild('directorySearchInput') private directorySearchInput?: ElementRef<HTMLInputElement>;
   private readonly localeId = inject(LOCALE_ID);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly atlasService = inject(AtlasService);
@@ -534,11 +536,15 @@ export class PublicWikisComponent implements OnInit {
   readonly mobileDrawerOpen = signal(false);
   readonly desktopSidebarClosed = signal(false);
   readonly mobileAllCitiesOpen = signal(false);
+  readonly directoryAutocompleteOpen = signal(false);
+  readonly directoryActiveSuggestionIndex = signal(0);
   readonly isHomeRoute = signal(Boolean(this.route.snapshot.data['signedInHome']));
   readonly isDiscoverRoute = signal(Boolean(this.route.snapshot.data['discoverPage']));
   readonly isDirectoryRoute = signal(Boolean(this.route.snapshot.data['directoryPage']));
   readonly homeIconUrls = HOME_ICON_URLS;
   readonly mobileSelectedCitySlug = signal<string | null>('philly');
+  readonly mobileSelectedUniversitySlug = signal<string | null>(null);
+  readonly isSavingHomePreference = signal(false);
   readonly cityTemperatures = signal<Record<string, CityTemperatureReading>>({});
   readonly cityTemperatureCoordinates = signal<Record<string, CityTemperatureCoordinates>>({});
   readonly isLoadingTemperatures = signal(false);
@@ -746,6 +752,37 @@ export class PublicWikisComponent implements OnInit {
     const city = this.mobileSelectedCity();
     return city ? this.cityDisplayName(city) : 'Pick your city';
   });
+  readonly mobileSelectedUniversity = computed(() => {
+    const selectedSlug = this.mobileSelectedUniversitySlug();
+    if (!selectedSlug) return null;
+    return this.publicWikis().find((wiki) =>
+      this.categoryForWiki(wiki) === UNIVERSITIES_CATEGORY && wiki.slug === selectedSlug,
+    ) ?? null;
+  });
+  readonly mobileDirectoryPreference = computed(() =>
+    this.mobileDirectoryIsUniversities() ? this.mobileSelectedUniversity() : this.mobileSelectedCity(),
+  );
+  readonly mobileDirectoryPreferenceLabel = computed(() =>
+    this.mobileDirectoryIsUniversities() ? 'My University' : 'My City',
+  );
+  readonly mobileDirectoryPreferenceName = computed(() => {
+    const selected = this.mobileDirectoryPreference();
+    if (selected) return this.cityDisplayName(selected);
+    return this.mobileDirectoryIsUniversities() ? 'Choose a university' : 'Choose a city';
+  });
+  readonly mobileDirectoryPreferenceLink = computed(() => this.mobileDirectoryPreference()?.link ?? null);
+  readonly directorySuggestions = computed(() => {
+    const query = this.searchTerm().trim();
+    if (!query) return [];
+    const category = this.mobileDirectoryIsUniversities() ? UNIVERSITIES_CATEGORY : CITIES_CATEGORY;
+    return this.publicWikis()
+      .filter((wiki) => this.categoryForWiki(wiki) === category)
+      .map((wiki) => ({ wiki, score: this.directorySuggestionScore(wiki, query) }))
+      .filter((candidate) => candidate.score < Number.MAX_SAFE_INTEGER)
+      .sort((left, right) => left.score - right.score || this.titleKey(left.wiki).localeCompare(this.titleKey(right.wiki)))
+      .slice(0, 2)
+      .map((candidate) => candidate.wiki);
+  });
 
   readonly hasPaidPricingPlan = computed(() => {
     const profile = this.authService.profile();
@@ -810,6 +847,9 @@ export class PublicWikisComponent implements OnInit {
       this.setCategory(CITIES_CATEGORY);
     }
 
+    await this.authService.waitForReady();
+    this.loadHomePreferences();
+
     this.loadBoardActionState();
     void this.loadMobileBoards();
     void this.loadMobileDiscoverBoards();
@@ -825,6 +865,7 @@ export class PublicWikisComponent implements OnInit {
             ?? (atlas.university_config?.country_code === 'US' ? 'United States' : null),
 	      }));
 	      this.liveWikis.set(liveWikis);
+      this.validateHomePreferences();
       if (this.activeSort() === 'temp') {
         void this.ensureTemperatures();
       }
@@ -868,6 +909,8 @@ export class PublicWikisComponent implements OnInit {
   setHomeDirectoryCategory(category: typeof CITIES_CATEGORY | typeof UNIVERSITIES_CATEGORY): void {
     this.setCategory(category);
     this.mobileFeaturedCityLimit.set(HOME_SECTION_PAGE_SIZE);
+    this.searchTerm.set('');
+    this.closeDirectoryAutocomplete();
   }
 
   openHomeDirectory(): void {
@@ -879,6 +922,86 @@ export class PublicWikisComponent implements OnInit {
     this.searchTerm.set(value);
     this.visibleWikiLimit.set(HOME_SECTION_PAGE_SIZE);
     this.mobileFeaturedCityLimit.set(HOME_SECTION_PAGE_SIZE);
+    this.directoryActiveSuggestionIndex.set(0);
+    this.directoryAutocompleteOpen.set(Boolean(value.trim()));
+  }
+
+  onDirectorySearchFocus(): void {
+    if (this.searchTerm().trim()) {
+      this.directoryAutocompleteOpen.set(true);
+    }
+  }
+
+  onDirectorySearchBlur(): void {
+    setTimeout(() => this.closeDirectoryAutocomplete(), 120);
+  }
+
+  onDirectorySearchKeydown(event: KeyboardEvent): void {
+    const suggestions = this.directorySuggestions();
+    if (event.key === 'Escape') {
+      this.closeDirectoryAutocomplete();
+      return;
+    }
+    if (!suggestions.length) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.directoryAutocompleteOpen.set(true);
+      this.directoryActiveSuggestionIndex.update((index) => Math.min(index + 1, suggestions.length - 1));
+      return;
+    }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.directoryAutocompleteOpen.set(true);
+      this.directoryActiveSuggestionIndex.update((index) => Math.max(index - 1, 0));
+      return;
+    }
+    if (event.key === 'Enter' && this.directoryAutocompleteOpen()) {
+      event.preventDefault();
+      const selected = suggestions[this.directoryActiveSuggestionIndex()] ?? suggestions[0];
+      if (selected) void this.selectHomeDirectoryPreference(selected);
+    }
+  }
+
+  async selectHomeDirectoryPreference(wiki: PublicWikiCatalogItem): Promise<void> {
+    if (this.mobileDirectoryIsUniversities()) {
+      this.mobileSelectedUniversitySlug.set(wiki.slug ?? null);
+    } else {
+      this.mobileSelectedCitySlug.set(wiki.slug ?? null);
+    }
+    this.searchTerm.set('');
+    this.closeDirectoryAutocomplete();
+    this.saveHomePreferencesLocally();
+    await this.saveHomePreferencesToProfile();
+  }
+
+  async clearHomeDirectoryPreference(): Promise<void> {
+    if (this.mobileDirectoryIsUniversities()) {
+      this.mobileSelectedUniversitySlug.set(null);
+    } else {
+      this.mobileSelectedCitySlug.set(null);
+    }
+    this.saveHomePreferencesLocally();
+    await this.saveHomePreferencesToProfile();
+    setTimeout(() => this.directorySearchInput?.nativeElement.focus(), 0);
+  }
+
+  beginChangingHomeDirectoryPreference(): void {
+    this.searchTerm.set('');
+    this.closeDirectoryAutocomplete();
+    setTimeout(() => this.directorySearchInput?.nativeElement.focus(), 0);
+  }
+
+  closeDirectoryAutocomplete(): void {
+    this.directoryAutocompleteOpen.set(false);
+    this.directoryActiveSuggestionIndex.set(0);
+  }
+
+  directorySuggestionMeta(wiki: PublicWikiCatalogItem): string {
+    if (this.mobileDirectoryIsUniversities()) {
+      return [wiki.universityCity, wiki.universityState].filter(Boolean).join(', ') || 'United States';
+    }
+    return wiki.countryLabel || this.globalRegionForWiki(wiki);
   }
 
   showMoreWikis(): void {
@@ -1018,6 +1141,8 @@ export class PublicWikisComponent implements OnInit {
   selectMobileCity(wiki: PublicWikiCatalogItem): void {
     this.mobileSelectedCitySlug.set(wiki.slug ?? null);
     this.mobileAllCitiesOpen.set(false);
+    this.saveHomePreferencesLocally();
+    void this.saveHomePreferencesToProfile();
   }
 
   mobileSectionAddLink(section: MobileHomeSection): string {
@@ -2054,6 +2179,92 @@ export class PublicWikisComponent implements OnInit {
 
   private normalizeVisibleWikiTitle(title: string): string {
     return title.replace(/^my\s+living\s*wiki:/i, 'LivingWiki:').trim();
+  }
+
+  private directorySuggestionScore(wiki: PublicWikiCatalogItem, rawQuery: string): number {
+    const query = this.normalizeSearchValue(rawQuery);
+    if (!query) return Number.MAX_SAFE_INTEGER;
+    const name = this.normalizeSearchValue(this.cityDisplayName(wiki));
+    const subtitle = this.normalizeSearchValue(wiki.subtitle);
+    const location = this.normalizeSearchValue(this.directorySuggestionMeta(wiki));
+    const acronym = name.split(' ').filter((word) => !['of', 'the', 'and', 'at'].includes(word)).map((word) => word[0]).join('');
+
+    if (name === query || acronym === query) return 0;
+    if (name.startsWith(query)) return 10;
+    if (name.split(' ').some((word) => word.startsWith(query))) return 20;
+    if (acronym.startsWith(query)) return 25;
+    if (name.includes(query)) return 30;
+    if (subtitle.startsWith(query)) return 35;
+    if (location.startsWith(query)) return 40;
+    if (location.includes(query)) return 50;
+    return Number.MAX_SAFE_INTEGER;
+  }
+
+  private normalizeSearchValue(value: string | null | undefined): string {
+    return (value ?? '')
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9]+/g, ' ')
+      .trim()
+      .toLowerCase();
+  }
+
+  private homePreferencesStorageKey(): string {
+    return `${HOME_PREFERENCES_STORAGE_PREFIX}:${this.authService.uid() || 'guest'}`;
+  }
+
+  private loadHomePreferences(): void {
+    const profile = this.authService.profile();
+    let local: { citySlug?: string | null; universitySlug?: string | null } = {};
+    if (this.isBrowser) {
+      try {
+        local = JSON.parse(window.localStorage.getItem(this.homePreferencesStorageKey()) ?? '{}') as typeof local;
+      } catch {
+        local = {};
+      }
+    }
+
+    this.mobileSelectedCitySlug.set(profile?.preferredCitySlug ?? local.citySlug ?? 'philly');
+    this.mobileSelectedUniversitySlug.set(profile?.preferredUniversitySlug ?? local.universitySlug ?? null);
+  }
+
+  private validateHomePreferences(): void {
+    const citySlug = this.mobileSelectedCitySlug();
+    if (citySlug && !this.liveWikis().some((wiki) => this.categoryForWiki(wiki) === CITIES_CATEGORY && wiki.slug === citySlug)) {
+      const philadelphia = this.liveWikis().find((wiki) =>
+        this.categoryForWiki(wiki) === CITIES_CATEGORY
+        && (wiki.slug === 'philly' || this.cityNameKey(wiki) === 'philadelphia'),
+      );
+      this.mobileSelectedCitySlug.set(philadelphia?.slug ?? null);
+    }
+    const universitySlug = this.mobileSelectedUniversitySlug();
+    if (universitySlug && !this.liveWikis().some((wiki) => this.categoryForWiki(wiki) === UNIVERSITIES_CATEGORY && wiki.slug === universitySlug)) {
+      this.mobileSelectedUniversitySlug.set(null);
+    }
+    this.saveHomePreferencesLocally();
+  }
+
+  private saveHomePreferencesLocally(): void {
+    if (!this.isBrowser) return;
+    window.localStorage.setItem(this.homePreferencesStorageKey(), JSON.stringify({
+      citySlug: this.mobileSelectedCitySlug(),
+      universitySlug: this.mobileSelectedUniversitySlug(),
+    }));
+  }
+
+  private async saveHomePreferencesToProfile(): Promise<void> {
+    if (!this.isBrowser || !this.authService.uid()) return;
+    this.isSavingHomePreference.set(true);
+    try {
+      await this.authService.updateHomePreferences({
+        preferredCitySlug: this.mobileSelectedCitySlug(),
+        preferredUniversitySlug: this.mobileSelectedUniversitySlug(),
+      });
+    } catch (error) {
+      console.warn('Could not sync home preferences to the account.', error);
+    } finally {
+      this.isSavingHomePreference.set(false);
+    }
   }
 
   globalRegionForWiki(wiki: PublicWikiCatalogItem): string {

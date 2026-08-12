@@ -18,6 +18,7 @@ describe('PublicWikisComponent home pagination', () => {
             profile: signal(null),
             uid: () => 'user-1',
             waitForReady: async () => undefined,
+            updateHomePreferences: async () => undefined,
           },
         },
         { provide: AtlasService, useValue: {} },
@@ -145,5 +146,62 @@ describe('PublicWikisComponent home pagination', () => {
     component.onSearchInput('Philadelphia');
 
     expect(component.mobileDirectoryWikis().map((wiki) => wiki.title)).toEqual(['LivingWiki: University of Pennsylvania']);
+  });
+
+  it('keeps university empty until the user selects one', () => {
+    const component = createComponent();
+    component.setHomeDirectoryCategory('Universities');
+
+    expect(component.mobileSelectedUniversity()).toBeNull();
+    expect(component.mobileDirectoryPreferenceName()).toBe('Choose a university');
+  });
+
+  it('returns only the two best city suggestions and supports acronym matches', () => {
+    const component = createComponent();
+    component.liveWikis.set([
+      {
+        title: 'LivingWiki: Philadelphia', subtitle: 'Philadelphia', description: '', category: 'Cities & Regions',
+        status: 'live', link: '/chat/philly', slug: 'philly', countryLabel: 'United States',
+      } as any,
+      {
+        title: 'LivingWiki: Phoenix', subtitle: 'Phoenix', description: '', category: 'Cities & Regions',
+        status: 'live', link: '/chat/phoenix', slug: 'phoenix', countryLabel: 'United States',
+      } as any,
+      {
+        title: 'LivingWiki: Phnom Penh', subtitle: 'Phnom Penh', description: '', category: 'Cities & Regions',
+        status: 'live', link: '/chat/phnom-penh', slug: 'phnom-penh', countryLabel: 'Cambodia',
+      } as any,
+    ]);
+    component.onSearchInput('Ph');
+
+    expect(component.directorySuggestions().length).toBe(2);
+    expect(component.directorySuggestions()[0].slug).toBe('philly');
+  });
+
+  it('selects and clears a university preference independently from the city', async () => {
+    const component = createComponent();
+    const university = {
+      title: 'LivingWiki: Massachusetts Institute of Technology',
+      subtitle: 'Massachusetts Institute of Technology',
+      description: '',
+      category: 'Universities',
+      status: 'live',
+      link: '/chat/mit',
+      slug: 'massachusetts-institute-of-technology',
+      universityCity: 'Cambridge',
+      universityState: 'Massachusetts',
+    } as any;
+    component.liveWikis.set([university]);
+    component.setHomeDirectoryCategory('Universities');
+    component.onSearchInput('MIT');
+
+    expect(component.directorySuggestions()[0]).toBe(university);
+    await component.selectHomeDirectoryPreference(university);
+    expect(component.mobileSelectedUniversitySlug()).toBe('massachusetts-institute-of-technology');
+    expect(component.mobileSelectedCitySlug()).toBe('philly');
+
+    await component.clearHomeDirectoryPreference();
+    expect(component.mobileSelectedUniversitySlug()).toBeNull();
+    expect(component.mobileSelectedCitySlug()).toBe('philly');
   });
 });

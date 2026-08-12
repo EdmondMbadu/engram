@@ -364,6 +364,11 @@
   transition: border-color 140ms ease, box-shadow 140ms ease;
 }
 
+.mobile-directory-search-wrap {
+  position: relative;
+  min-width: 0;
+}
+
 .mobile-directory-search:focus-within {
   border-color: var(--mobile-green);
   box-shadow: 0 0 0 3px rgba(30, 166, 74, 0.11), inset 0 2px 6px rgba(13, 56, 35, 0.08);
@@ -408,6 +413,127 @@
   font-size: 1rem;
 }
 
+.mobile-directory-suggestions {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  border: 2px solid var(--mobile-deep);
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow: 5px 6px 0 rgba(16, 32, 24, 0.92), 0 20px 44px rgba(13, 56, 35, 0.2);
+  padding: 0.35rem;
+}
+
+.mobile-directory-suggestions > button {
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  border: 0;
+  border-radius: 0.72rem;
+  background: transparent;
+  color: var(--mobile-deep);
+  padding: 0.55rem;
+  text-align: left;
+  font: inherit;
+}
+
+.mobile-directory-suggestions > button + button {
+  border-top: 1px solid rgba(13, 56, 35, 0.1);
+}
+
+.mobile-directory-suggestions > button.active,
+.mobile-directory-suggestions > button:hover {
+  background: #eef8f1;
+}
+
+.mobile-directory-suggestion-image {
+  display: inline-flex;
+  width: 3.25rem;
+  height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.72rem;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.mobile-directory-suggestion-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobile-directory-suggestion-image img.logo {
+  object-fit: contain;
+  background: #ffffff;
+  padding: 0.35rem;
+}
+
+.mobile-directory-suggestion-copy {
+  min-width: 0;
+}
+
+.mobile-directory-suggestion-copy b,
+.mobile-directory-suggestion-copy small {
+  display: block;
+}
+
+.mobile-directory-suggestion-copy b {
+  overflow: hidden;
+  font-size: 0.85rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-directory-suggestion-copy small {
+  margin-top: 0.18rem;
+  color: #607066;
+  font-size: 0.67rem;
+  font-weight: 800;
+}
+
+.mobile-directory-suggestion-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--mobile-green);
+  font-size: 0.65rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.mobile-directory-suggestion-action .material-symbols-outlined {
+  font-size: 0.9rem;
+}
+
+.mobile-directory-suggestions-empty {
+  display: flex;
+  min-height: 4.5rem;
+  align-items: center;
+  gap: 0.45rem;
+  color: #607066;
+  padding: 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.mobile-directory-suggestions-empty button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--mobile-green);
+  font: inherit;
+  font-weight: 950;
+}
+
 .mobile-city-label {
   flex: 0 0 auto;
   font-size: 1.02rem;
@@ -434,6 +560,23 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.mobile-selected-city-picture img.mobile-selected-city-picture__logo {
+  object-fit: contain;
+  background: #ffffff;
+  padding: 0.35rem;
+}
+
+.mobile-selected-city-picture--empty {
+  border-style: dashed;
+  background: #eef6f0;
+  color: var(--mobile-green);
+}
+
+.mobile-selected-city-picture--empty .material-symbols-outlined {
+  font-size: 1.5rem;
+  font-variation-settings: 'FILL' 1;
 }
 
 .mobile-city-select {
@@ -625,6 +768,23 @@
   padding: 0.6rem 0.75rem 0.1rem;
 }
 
+.mobile-preference-action {
+  min-height: 3.4rem;
+  border: 2px solid var(--mobile-deep);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--mobile-green);
+  padding: 0.6rem 0.9rem;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 950;
+}
+
+.mobile-preference-action--quiet {
+  border-color: rgba(13, 56, 35, 0.18);
+  color: #607066;
+}
+
 .mobile-talk-action,
 .mobile-join-action {
   display: flex;
@@ -641,6 +801,17 @@
   color: #ffffff;
   padding: 0.65rem 0.85rem;
   justify-content: flex-start;
+}
+
+button.mobile-talk-action {
+  border: 0;
+  text-align: left;
+  font: inherit;
+}
+
+.mobile-talk-action--empty {
+  width: 100%;
+  grid-column: 1 / -1;
 }
 
 .mobile-talk-action .material-symbols-outlined {

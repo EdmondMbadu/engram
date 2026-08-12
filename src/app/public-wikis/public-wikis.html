@@ -80,87 +80,35 @@
 
       <section id="mobile-city" class="mobile-city-block mobile-city-block--top">
         <div class="mobile-city-row">
-          @if (mobileSelectedCity(); as selectedCity) {
+          @if (mobileDirectoryPreference(); as selectedWiki) {
             <span class="mobile-selected-city-picture">
-              @if (selectedCity.heroUrl) {
-                <img [src]="selectedCity.heroUrl" [alt]="cityDisplayName(selectedCity) + ' image'" />
+              @if (mobileDirectoryIsUniversities() && selectedWiki.logoUrl) {
+                <img class="mobile-selected-city-picture__logo" [src]="selectedWiki.logoUrl" [alt]="cityDisplayName(selectedWiki) + ' logo'" />
+              } @else if (selectedWiki.heroUrl) {
+                <img [src]="selectedWiki.heroUrl" [alt]="cityDisplayName(selectedWiki) + ' image'" />
               } @else {
-                <span>{{ initialsFor(cityDisplayName(selectedCity)) }}</span>
+                <span>{{ initialsFor(cityDisplayName(selectedWiki)) }}</span>
               }
             </span>
           } @else {
-            <span class="mobile-selected-city-picture"><span i18n>LW</span></span>
+            <span class="mobile-selected-city-picture mobile-selected-city-picture--empty">
+              <span class="material-symbols-outlined">school</span>
+            </span>
           }
-          <span class="mobile-city-label" i18n>My City</span>
+          <span class="mobile-city-label">{{ mobileDirectoryPreferenceLabel() }}</span>
           <button
             type="button"
             class="mobile-city-select"
-            aria-label="Choose my city"
-            (click)="toggleMobileAllCities()"
+            [attr.aria-label]="mobileDirectoryPreferenceName()"
+            (click)="beginChangingHomeDirectoryPreference()"
           >
-            <span>{{ mobileSelectedCityName() }}</span>
-            <span class="material-symbols-outlined">expand_more</span>
+            <span>{{ mobileDirectoryPreferenceName() }}</span>
+            <span class="material-symbols-outlined">edit</span>
           </button>
-          <button type="button" class="mobile-all-cities-link" (click)="openAllCities()" i18n>
-            All Cities
+          <button type="button" class="mobile-all-cities-link" (click)="openHomeDirectory()">
+            {{ mobileDirectoryIsUniversities() ? 'All Universities' : 'All Cities' }}
           </button>
         </div>
-
-        @if (mobileAllCitiesOpen()) {
-          <div class="mobile-city-panel">
-            <label class="mobile-city-search">
-              <span class="material-symbols-outlined">search</span>
-              <input
-                type="text"
-                [ngModel]="searchTerm()"
-                (ngModelChange)="onSearchInput($event)"
-                placeholder="Search all cities"
-               i18n-placeholder/>
-            </label>
-            <div class="mobile-city-sorts" aria-label="Sort all cities" i18n-aria-label>
-              @for (sort of mobileCitySortOptions; track sort.value) {
-                <button
-                  type="button"
-                  [class.active]="activeSort() === sort.value"
-                  (click)="setMobileSort(sort.value)"
-                >
-                  {{ sort.label }}
-                </button>
-              }
-            </div>
-            <div class="mobile-city-count" i18n>
-              {{ mobileCityWikis().length }} cities shown
-              @if (temperatureStatusLabel()) {
-                <span>{{ temperatureStatusLabel() }}</span>
-              }
-            </div>
-            <div class="mobile-city-list">
-              @if (isLoadingLiveWikis()) {
-                <p i18n>Loading cities...</p>
-              } @else {
-                @for (city of mobileCityWikis(); track city.slug || city.title) {
-                  <button type="button" (click)="selectMobileCity(city)">
-                    <span
-                      class="mobile-city-list-thumb"
-                      [style.backgroundColor]="city.coverColor || '#0d3823'"
-                    >
-                      @if (city.heroUrl) {
-                        <img [src]="city.heroUrl" [alt]="cityDisplayName(city) + ' image'" loading="lazy" />
-                      } @else {
-                        <span>{{ initialsFor(cityDisplayName(city)) }}</span>
-                      }
-                    </span>
-                    <span>
-                      <b>{{ cityDisplayName(city) }}</b>
-                      <small>{{ city.countryLabel || globalRegionForWiki(city) }}</small>
-                    </span>
-                    <span>{{ populationLabel(city) || timeHeroLabel(city) }}</span>
-                  </button>
-                }
-              }
-            </div>
-          </div>
-        }
 
         <div class="mobile-directory-tools">
           <div class="mobile-directory-switch" role="group" aria-label="Browse cities or universities">
@@ -184,13 +132,20 @@
             </button>
           </div>
 
-          <label class="mobile-directory-search">
+          <div class="mobile-directory-search-wrap">
+          <label class="mobile-directory-search" role="combobox" [attr.aria-expanded]="directoryAutocompleteOpen()" aria-haspopup="listbox" aria-controls="home-directory-suggestions">
             <span class="material-symbols-outlined">search</span>
             <input
+              #directorySearchInput
               type="search"
               [ngModel]="searchTerm()"
               (ngModelChange)="onSearchInput($event)"
+              (focus)="onDirectorySearchFocus()"
+              (blur)="onDirectorySearchBlur()"
+              (keydown)="onDirectorySearchKeydown($event)"
               [placeholder]="mobileDirectorySearchPlaceholder()"
+              aria-autocomplete="list"
+              [attr.aria-activedescendant]="directoryAutocompleteOpen() && directorySuggestions().length ? 'home-directory-option-' + directoryActiveSuggestionIndex() : null"
             />
             @if (searchTerm()) {
               <button type="button" aria-label="Clear search" (click)="onSearchInput('')" i18n-aria-label>
@@ -198,16 +153,73 @@
               </button>
             }
           </label>
+          @if (directoryAutocompleteOpen()) {
+            <div id="home-directory-suggestions" class="mobile-directory-suggestions" role="listbox">
+              @if (directorySuggestions().length) {
+                @for (suggestion of directorySuggestions(); track suggestion.slug || suggestion.title; let suggestionIndex = $index) {
+                  <button
+                    type="button"
+                    role="option"
+                    [id]="'home-directory-option-' + suggestionIndex"
+                    [class.active]="directoryActiveSuggestionIndex() === suggestionIndex"
+                    [attr.aria-selected]="directoryActiveSuggestionIndex() === suggestionIndex"
+                    (mouseenter)="directoryActiveSuggestionIndex.set(suggestionIndex)"
+                    (mousedown)="$event.preventDefault()"
+                    (click)="selectHomeDirectoryPreference(suggestion)"
+                  >
+                    <span class="mobile-directory-suggestion-image" [style.backgroundColor]="suggestion.coverColor || '#0d3823'">
+                      @if (mobileDirectoryIsUniversities() && suggestion.logoUrl) {
+                        <img class="logo" [src]="suggestion.logoUrl" alt="" />
+                      } @else if (suggestion.heroUrl) {
+                        <img [src]="suggestion.heroUrl" alt="" />
+                      } @else {
+                        <span>{{ initialsFor(cityDisplayName(suggestion)) }}</span>
+                      }
+                    </span>
+                    <span class="mobile-directory-suggestion-copy">
+                      <b>{{ cityDisplayName(suggestion) }}</b>
+                      <small>{{ directorySuggestionMeta(suggestion) }}</small>
+                    </span>
+                    <span class="mobile-directory-suggestion-action">
+                      Make mine
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    </span>
+                  </button>
+                }
+              } @else {
+                <div class="mobile-directory-suggestions-empty">
+                  <span class="material-symbols-outlined">search_off</span>
+                  <span>No {{ mobileDirectoryIsUniversities() ? 'universities' : 'cities' }} found</span>
+                  <button type="button" (click)="openHomeDirectory()">View all</button>
+                </div>
+              }
+            </div>
+          }
+          </div>
         </div>
 
         <div class="mobile-primary-actions">
-          <a [routerLink]="mobileSelectedCityLink()" class="mobile-talk-action">
-            <span class="material-symbols-outlined">graphic_eq</span>
-            <span>
-              <b i18n>Talk with me</b>
-              <small i18n>Live voice for {{ mobileSelectedCityName() }}</small>
-            </span>
-          </a>
+          @if (mobileDirectoryPreferenceLink(); as preferenceLink) {
+            <a [routerLink]="preferenceLink" class="mobile-talk-action">
+              <span class="material-symbols-outlined">graphic_eq</span>
+              <span>
+                <b>Open {{ mobileDirectoryIsUniversities() ? 'my university' : 'my city' }}</b>
+                <small>{{ mobileDirectoryPreferenceName() }}</small>
+              </span>
+            </a>
+            <button type="button" class="mobile-preference-action" (click)="beginChangingHomeDirectoryPreference()">Change</button>
+            @if (mobileDirectoryIsUniversities()) {
+              <button type="button" class="mobile-preference-action mobile-preference-action--quiet" (click)="clearHomeDirectoryPreference()">Clear</button>
+            }
+          } @else {
+            <button type="button" class="mobile-talk-action mobile-talk-action--empty" (click)="beginChangingHomeDirectoryPreference()">
+              <span class="material-symbols-outlined">school</span>
+              <span>
+                <b>Choose your university</b>
+                <small>Search by name, city, or state</small>
+              </span>
+            </button>
+          }
         </div>
       </section>
 
