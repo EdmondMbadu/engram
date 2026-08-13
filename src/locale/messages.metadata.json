@@ -471,6 +471,10 @@
     "source": "Free LivingWiki access",
     "file": "src/app/chat/chat.ts"
   },
+  "1326793450016732647": {
+    "source": "All narrator voices",
+    "file": "src/app/boards/boards.html"
+  },
   "1335669222103870731": {
     "source": "The review area stays here so the main action is always visible.",
     "file": "src/app/city-places/city-places.html"
@@ -502,10 +506,6 @@
   "1347499950222247129": {
     "source": "Failed to load businesses.",
     "file": "src/app/admin-users/admin-users.ts"
-  },
-  "1354988606190796844": {
-    "source": "Sound settings",
-    "file": "src/app/boards/boards.html"
   },
   "1355531462309529746": {
     "source": "Route recalculation is unavailable.",
@@ -975,14 +975,6 @@
     "source": "No description yet — click \"Edit cover\" to add one.",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
-  "1608726624012487947": {
-    "source": "Featured cities",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
-  "1609590237614502097": {
-    "source": "Search cities, neighborhoods, topics, and upcoming LivingWiki pages...",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "1613103031683776529": {
     "source": "area km²",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -1358,10 +1350,6 @@
   "1900652734060382700": {
     "source": "Turn your actual photos into a visual memory board.",
     "file": "src/app/boards/boards.ts"
-  },
-  "1905338138080894943": {
-    "source": "Loading cities...",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "1910853702226231310": {
     "source": "{$START_TAG_SPAN}more_horiz{$CLOSE_TAG_SPAN} More sharing options ",
@@ -2151,10 +2139,6 @@
     "source": "Add next stop",
     "file": "src/app/boards/boards.html"
   },
-  "2423167179144495541": {
-    "source": "Sort all cities",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "2424191973274934075": {
     "source": "Scrapper | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -2330,10 +2314,6 @@
   "2547019822509993435": {
     "source": "Top 500 podcasts mapped by genre, audience, ad rates, and influence — with the business model of podcasting analyzed through public data.",
     "file": "src/app/public-wiki-catalog.ts"
-  },
-  "2548945977946554040": {
-    "source": "{$START_TAG_SPAN}content_copy{$CLOSE_TAG_SPAN} Make it mine ",
-    "file": "src/app/boards/boards.html"
   },
   "2555853257286023739": {
     "source": " Claim your business {$START_TAG_SPAN}arrow_forward{$CLOSE_TAG_SPAN}",
@@ -2874,10 +2854,6 @@
   "293344152000220895": {
     "source": "will be removed from My Videos. Its source board will not be deleted.",
     "file": "src/app/video-library/video-library.html"
-  },
-  "2940010916792941547": {
-    "source": "My City",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "2940597258261263177": {
     "source": "Creating a useful title and description. You can edit everything afterward.",
@@ -3991,10 +3967,6 @@
     "source": "This page is Philly-only for now",
     "file": "src/app/green-jobs/green-jobs.html"
   },
-  "3580747102311134195": {
-    "source": "Voice & music",
-    "file": "src/app/boards/boards.html"
-  },
   "3581633941182729086": {
     "source": "CDC PLACES + EJI",
     "file": "src/app/fence-line/fence-line.html"
@@ -4262,6 +4234,10 @@
   "3778301070648434818": {
     "source": "Account and linked spaces",
     "file": "src/app/profile/profile.html"
+  },
+  "3778426902224526936": {
+    "source": "Show more voices",
+    "file": "src/app/boards/boards.html"
   },
   "3781832327366529005": {
     "source": "A strong first pass. The cards are here when you’re ready.",
@@ -4611,6 +4587,10 @@
     "source": "Sources",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "3998980995528693781": {
+    "source": "Six versatile choices. Browse the full library when you want something more specific.",
+    "file": "src/app/boards/boards.html"
+  },
   "4000358558848315615": {
     "source": "Removed locally, but Firebase delete failed.",
     "file": "src/app/boards/boards.ts"
@@ -4754,6 +4734,10 @@
   "4113265961462660636": {
     "source": "verified",
     "file": "src/app/business-detail/business-detail.ts"
+  },
+  "4118998347943496240": {
+    "source": "Search voices, accents, or styles",
+    "file": "src/app/boards/boards.html"
   },
   "4119317062986389746": {
     "source": "Use {language} for {city} ({country})",
@@ -5055,6 +5039,10 @@
     "source": "Test QR link",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "4305396338074940248": {
+    "source": "Recommended to start",
+    "file": "src/app/boards/boards.html"
+  },
   "4306169234658044987": {
     "source": "Share link",
     "file": "src/app/city-places/city-places.html"
@@ -5333,6 +5321,10 @@
   },
   "4523347413979510028": {
     "source": "YouTube video",
+    "file": "src/app/boards/boards.html"
+  },
+  "4523371562217096169": {
+    "source": "Selected included narrator",
     "file": "src/app/boards/boards.html"
   },
   "4523595445630422797": {
@@ -5623,6 +5615,10 @@
     "source": "Profile picture",
     "file": "src/app/business-detail/business-edit.html"
   },
+  "4706944862243942841": {
+    "source": "Included voices",
+    "file": "src/app/boards/boards.html"
+  },
   "4709273745320055687": {
     "source": "Your first stop",
     "file": "src/app/boards/boards.html"
@@ -5715,6 +5711,10 @@
     "source": "Search businesses by name, owner, admin, city, status, or category...",
     "file": "src/app/admin-users/admin-users.html"
   },
+  "476014195758025586": {
+    "source": "Close voice library",
+    "file": "src/app/boards/boards.html"
+  },
   "4765010664772309058": {
     "source": "Failed to load connected businesses.",
     "file": "src/app/profile/profile.ts"
@@ -5742,10 +5742,6 @@
   "4772919228811952053": {
     "source": "Give me a quick overview of {city}.",
     "file": "src/app/chat/chat.ts"
-  },
-  "477383994112411668": {
-    "source": " {$INTERPOLATION} cities shown {$START_BLOCK_IF}{$START_TAG_SPAN}{$INTERPOLATION_1}{$CLOSE_TAG_SPAN}{$CLOSE_BLOCK_IF}",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "4775670732266482359": {
     "source": "No users match this search.",
@@ -6131,10 +6127,6 @@
     "source": " Batch limit: 10 files ",
     "file": "src/app/library/library.html"
   },
-  "5019561374406700830": {
-    "source": "Live voice for {$INTERPOLATION}",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "502108372633069384": {
     "source": "Read-only shared conversation",
     "file": "src/app/shared-chat/shared-chat.ts"
@@ -6366,10 +6358,6 @@
   "51952318571096765": {
     "source": "Queueing stopped after the current article.",
     "file": "src/app/web-scraper/web-scraper.ts"
-  },
-  "5198840835589008501": {
-    "source": "{$START_TAG_SPAN}smart_display{$CLOSE_TAG_SPAN} Video ",
-    "file": "src/app/boards/boards.html"
   },
   "5204959570695071139": {
     "source": " Revert changes ",
@@ -6923,6 +6911,10 @@
     "source": "Record or upload 60–90 seconds of your own clear speech.",
     "file": "src/app/boards/boards.html"
   },
+  "5554739955940677275": {
+    "source": "No voices match that search",
+    "file": "src/app/boards/boards.html"
+  },
   "5558151094212447064": {
     "source": "Guide picks",
     "file": "src/app/chat/chat.ts"
@@ -7066,10 +7058,6 @@
   "564051786145937145": {
     "source": "Only the board owner or an admin can delete cards.",
     "file": "src/app/boards/boards.ts"
-  },
-  "5647385237943731686": {
-    "source": "Cover title",
-    "file": "src/app/boards/boards.html"
   },
   "5648528895501098027": {
     "source": "Full collection with every card",
@@ -7329,6 +7317,10 @@
   },
   "5794811201696000835": {
     "source": "From: {$INTERPOLATION}",
+    "file": "src/app/boards/boards.html"
+  },
+  "5796065746581962285": {
+    "source": "Search narrator voices",
     "file": "src/app/boards/boards.html"
   },
   "5800187103306660757": {
@@ -7983,10 +7975,6 @@
     "source": "LivingWiki answers are generated from available source material, public records, uploaded documents, verified local sources, and user-submitted updates, and may require human review.",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
-  "6230180786088475979": {
-    "source": "Sound",
-    "file": "src/app/boards/boards.html"
-  },
   "6231445180124635070": {
     "source": "You’re already on this plan.",
     "file": "src/app/boards/boards.ts"
@@ -8074,6 +8062,10 @@
   "629615905201130753": {
     "source": "What should the guide know about this business?",
     "file": "src/app/business-detail/business-edit.html"
+  },
+  "6300268466755202647": {
+    "source": "Recommended narrator voices",
+    "file": "src/app/boards/boards.html"
   },
   "6300511176353570003": {
     "source": "Start Building Your LivingWiki.",
@@ -8559,6 +8551,10 @@
     "source": " Current city: {$START_TAG_SPAN}{$INTERPOLATION}{$CLOSE_TAG_SPAN}{$START_BLOCK_IF}{$START_TAG_SPAN_1} ({$INTERPOLATION_1}){$CLOSE_TAG_SPAN}{$CLOSE_BLOCK_IF}",
     "file": "src/app/business-claim/business-claim.html"
   },
+  "6559246822757089203": {
+    "source": "Clear filters",
+    "file": "src/app/boards/boards.html"
+  },
   "6568496994795904409": {
     "source": "{$START_TAG_SPAN}ios_share{$CLOSE_TAG_SPAN} Share page ",
     "file": "src/app/boards/boards.html"
@@ -8682,6 +8678,10 @@
   "6626189682857360296": {
     "source": "Toxic doughnut",
     "file": "src/app/fence-line/fence-line.ts"
+  },
+  "662726165004497712": {
+    "source": "Included with narration",
+    "file": "src/app/boards/boards.html"
   },
   "6627551976444260400": {
     "source": "or",
@@ -8839,10 +8839,6 @@
     "source": "Live view",
     "file": "src/app/boards/boards.html"
   },
-  "677002730778646962": {
-    "source": "Search cities, boards, songs, friends...",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "6775345672170917282": {
     "source": "Find the exact place, photo, description, and guide narration",
     "file": "src/app/boards/boards.html"
@@ -8947,10 +8943,6 @@
     "source": "Recent debates",
     "file": "src/app/chat/chat.ts"
   },
-  "6838559377527923778": {
-    "source": "Caption",
-    "file": "src/app/boards/boards.html"
-  },
   "6846936610287845684": {
     "source": "Green jobs operating plan",
     "file": "src/app/green-jobs/green-jobs.html"
@@ -8965,6 +8957,10 @@
   },
   "6852682759248251347": {
     "source": "{$INTERPOLATION} attempts",
+    "file": "src/app/boards/boards.html"
+  },
+  "6856660539530586286": {
+    "source": "Selected voice",
     "file": "src/app/boards/boards.html"
   },
   "6857611498925334466": {
@@ -9215,10 +9211,6 @@
     "source": "Describe the destination or add a photo first.",
     "file": "src/app/boards/boards.ts"
   },
-  "7040205503614397686": {
-    "source": " All Cities ",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "7040288612202036661": {
     "source": "Others",
     "file": "src/app/public-wikis/public-wikis.ts"
@@ -9263,10 +9255,6 @@
     "source": "Sky",
     "file": "src/app/boards/boards.ts"
   },
-  "7062082209527325705": {
-    "source": "Choose a narrator voice",
-    "file": "src/app/boards/boards.html"
-  },
   "7064098783390125905": {
     "source": "Made with LivingWiki",
     "file": "src/app/boards/boards.html"
@@ -9309,6 +9297,10 @@
   },
   "7131680993182796423": {
     "source": "The video will play inside LivingWiki without replacing this card’s image.",
+    "file": "src/app/boards/boards.html"
+  },
+  "7132564289660728319": {
+    "source": "Filter voices",
     "file": "src/app/boards/boards.html"
   },
   "7136018875175606726": {
@@ -10311,6 +10303,10 @@
     "source": "Searching places and looking for a photo.",
     "file": "src/app/boards/boards.ts"
   },
+  "7841237137284744976": {
+    "source": "Search by name, accent, or style. Previewing does not change your selection.",
+    "file": "src/app/boards/boards.html"
+  },
   "7841307602433789437": {
     "source": "Nano Banana",
     "file": "src/app/boards/boards.html"
@@ -10371,10 +10367,6 @@
     "source": "Finding plans for this place…",
     "file": "src/app/boards/boards.html"
   },
-  "7891736560934397673": {
-    "source": "Cover subtitle",
-    "file": "src/app/boards/boards.html"
-  },
   "7892590553414841819": {
     "source": "Illinois",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -10385,6 +10377,10 @@
   },
   "7895238671495134949": {
     "source": "Quiz controls",
+    "file": "src/app/boards/boards.html"
+  },
+  "7895659711003082543": {
+    "source": "Clear voice search",
     "file": "src/app/boards/boards.html"
   },
   "7895705680096978822": {
@@ -10794,10 +10790,6 @@
   "8133924153515128326": {
     "source": "Edit preview card",
     "file": "src/app/boards/boards.html"
-  },
-  "8134702383788923107": {
-    "source": "City context stickers",
-    "file": "src/app/chat/chat.html"
   },
   "8136076385961286941": {
     "source": "Steinbeck Plaza    ///candy.sage.sticks\nMonterey Bay Aquarium    https://w3w.co/sank.ticket.speeds",
@@ -11503,6 +11495,10 @@
     "source": "Deleting...",
     "file": "src/app/chat/chat.ts"
   },
+  "8695448432910720179": {
+    "source": "Select a voice or preview it first",
+    "file": "src/app/boards/boards.html"
+  },
   "8700121026680200191": {
     "source": "Clear",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -12183,10 +12179,6 @@
     "source": "Tomorrow",
     "file": "src/app/boards/boards.html"
   },
-  "9135526383602478817": {
-    "source": "Talk with me",
-    "file": "src/app/public-wikis/public-wikis.html"
-  },
   "9135678218646939886": {
     "source": "Your board has newer edits.",
     "file": "src/app/video-library/video-library.html"
@@ -12254,10 +12246,6 @@
   "9183665075985529683": {
     "source": " The page you entered does not exist. Head back to the landing page or open your wiki home. ",
     "file": "src/app/not-found/not-found.html"
-  },
-  "9184859967855746689": {
-    "source": "Search all cities",
-    "file": "src/app/public-wikis/public-wikis.html"
   },
   "9188397733808972472": {
     "source": "Census-tract health outcomes connecting pollution exposure to people.",

@@ -5639,41 +5639,185 @@
                         </section>
                       }
 
-                      <div class="stack-voice-grid" role="radiogroup" aria-label="Choose a narrator voice" i18n-aria-label>
-                        @for (voice of stackNarratorVoices; track voice.id) {
-                          <div class="stack-voice-option" [class.stack-voice-option--active]="stackNarratorVoiceId() === voice.id">
-                            <button
-                              type="button"
-                              class="stack-voice-option__select"
-                              role="radio"
-                              [attr.aria-checked]="stackNarratorVoiceId() === voice.id"
-                              [attr.aria-label]="voice.name + ', ' + voice.presentation + ', ' + voice.style"
-                              (click)="selectStackNarratorVoice(board, voice.id)"
-                            >
-                              <span class="stack-voice-option__icon material-symbols-outlined">{{ voice.icon }}</span>
-                              <span class="stack-voice-option__copy">
-                                <strong>{{ voice.name }}</strong>
-                                <small>{{ voice.presentation }} · {{ voice.style }}</small>
-                                <span>{{ voice.description }}</span>
-                              </span>
-                              @if (stackNarratorVoiceId() === voice.id) {
-                                <span class="stack-voice-option__check material-symbols-outlined">check_circle</span>
-                              }
-                            </button>
-                            <button
-                              type="button"
-                              class="stack-voice-option__preview"
-                              [class.stack-voice-option__preview--playing]="isStackVoicePreviewing(voice.id)"
-                              [disabled]="stackVoicePreviewLoadingId() === voice.id"
-                              [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Select and listen to ' + voice.name"
-                              (click)="toggleStackVoicePreview(voice, $event)"
-                            >
-                              <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === voice.id ? 'progress_activity' : isStackVoicePreviewing(voice.id) ? 'stop' : 'play_arrow' }}</span>
-                              <span i18n>Preview</span>
-                            </button>
+                      <section class="stack-voice-recommendations" aria-labelledby="stack-recommended-voices-title">
+                        <header class="stack-voice-recommendations__head">
+                          <div>
+                            <span i18n>Included voices</span>
+                            <h5 id="stack-recommended-voices-title" i18n>Recommended to start</h5>
+                            <p i18n>Six versatile choices. Browse the full library when you want something more specific.</p>
                           </div>
+                          <button type="button" class="stack-voice-browse" (click)="openStackVoiceLibrary()">
+                            <span class="material-symbols-outlined">manage_search</span>
+                            <span>Browse all {{ stackNarratorVoices.length }}</span>
+                          </button>
+                        </header>
+
+                        @if (stackSelectedNarratorVoice(); as selectedVoice) {
+                          <article class="stack-selected-voice" aria-label="Selected included narrator" i18n-aria-label>
+                            <span class="stack-selected-voice__icon material-symbols-outlined">{{ selectedVoice.icon }}</span>
+                            <span class="stack-selected-voice__copy">
+                              <small i18n>Selected voice</small>
+                              <strong>{{ selectedVoice.name }}</strong>
+                              <span>{{ selectedVoice.presentation }} · {{ selectedVoice.accent }} · {{ selectedVoice.style }}</span>
+                            </span>
+                            <button
+                              type="button"
+                              [disabled]="stackVoicePreviewLoadingId() === selectedVoice.id"
+                              [attr.aria-label]="isStackVoicePreviewing(selectedVoice.id) ? 'Stop ' + selectedVoice.name + ' preview' : 'Preview ' + selectedVoice.name"
+                              (click)="toggleStackVoicePreview(selectedVoice, $event)"
+                            >
+                              <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === selectedVoice.id ? 'progress_activity' : isStackVoicePreviewing(selectedVoice.id) ? 'stop' : 'play_arrow' }}</span>
+                              {{ isStackVoicePreviewing(selectedVoice.id) ? 'Stop' : 'Preview' }}
+                            </button>
+                            <button type="button" class="stack-selected-voice__change" (click)="openStackVoiceLibrary()" i18n>Change</button>
+                          </article>
                         }
-                      </div>
+
+                        <div class="stack-voice-grid stack-voice-grid--recommended" role="radiogroup" aria-label="Recommended narrator voices" i18n-aria-label>
+                          @for (voice of recommendedStackNarratorVoices; track voice.id) {
+                            <div class="stack-voice-option stack-voice-option--compact" [class.stack-voice-option--active]="stackNarratorVoiceId() === voice.id">
+                              <button
+                                type="button"
+                                class="stack-voice-option__select"
+                                role="radio"
+                                [attr.aria-checked]="stackNarratorVoiceId() === voice.id"
+                                [attr.aria-label]="voice.name + ', ' + voice.presentation + ', ' + voice.accent + ', ' + voice.style"
+                                (click)="chooseStackNarratorVoice(board, voice.id)"
+                              >
+                                <span class="stack-voice-option__icon material-symbols-outlined">{{ voice.icon }}</span>
+                                <span class="stack-voice-option__copy">
+                                  <strong>{{ voice.name }}</strong>
+                                  <small>{{ voice.presentation }} · {{ voice.style }}</small>
+                                </span>
+                                <span class="stack-voice-option__check material-symbols-outlined">{{ stackNarratorVoiceId() === voice.id ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                              </button>
+                              <button
+                                type="button"
+                                class="stack-voice-option__preview"
+                                [class.stack-voice-option__preview--playing]="isStackVoicePreviewing(voice.id)"
+                                [disabled]="stackVoicePreviewLoadingId() === voice.id"
+                                [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Preview ' + voice.name"
+                                (click)="toggleStackVoicePreview(voice, $event)"
+                              >
+                                <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === voice.id ? 'progress_activity' : isStackVoicePreviewing(voice.id) ? 'stop' : 'play_arrow' }}</span>
+                                <span i18n>Preview</span>
+                              </button>
+                            </div>
+                          }
+                        </div>
+                      </section>
+
+                      @if (stackVoiceLibraryOpen()) {
+                        <div class="stack-voice-library-backdrop" (click)="closeStackVoiceLibrary()">
+                          <section
+                            #stackVoiceLibrary
+                            class="stack-voice-library"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="stack-voice-library-title"
+                            (click)="$event.stopPropagation()"
+                          >
+                            <header class="stack-voice-library__head">
+                              <div>
+                                <span i18n>Included with narration</span>
+                                <h4 id="stack-voice-library-title">Choose from {{ stackNarratorVoices.length }} voices</h4>
+                                <p i18n>Search by name, accent, or style. Previewing does not change your selection.</p>
+                              </div>
+                              <button type="button" aria-label="Close voice library" (click)="closeStackVoiceLibrary()" i18n-aria-label>
+                                <span class="material-symbols-outlined">close</span>
+                              </button>
+                            </header>
+
+                            <label class="stack-voice-library__search">
+                              <span class="material-symbols-outlined">search</span>
+                              <input
+                                #stackVoiceLibrarySearch
+                                type="search"
+                                autocomplete="off"
+                                placeholder="Search voices, accents, or styles"
+                                aria-label="Search narrator voices"
+                                i18n-placeholder
+                                i18n-aria-label
+                                [value]="stackVoiceLibrarySearchQuery()"
+                                (input)="onStackVoiceLibrarySearch($any($event.target).value)"
+                              />
+                              @if (stackVoiceLibrarySearchQuery()) {
+                                <button type="button" aria-label="Clear voice search" (click)="onStackVoiceLibrarySearch('')" i18n-aria-label>
+                                  <span class="material-symbols-outlined">close</span>
+                                </button>
+                              }
+                            </label>
+
+                            <div class="stack-voice-library__filters" aria-label="Filter voices" i18n-aria-label>
+                              @for (filter of stackVoiceLibraryFilters; track filter) {
+                                <button
+                                  type="button"
+                                  [class.stack-voice-library__filter--active]="stackVoiceLibraryFilter() === filter"
+                                  [attr.aria-pressed]="stackVoiceLibraryFilter() === filter"
+                                  (click)="selectStackVoiceLibraryFilter(filter)"
+                                >
+                                  {{ filter }}
+                                </button>
+                              }
+                            </div>
+
+                            <div class="stack-voice-library__status" aria-live="polite">
+                              <strong>{{ stackFilteredNarratorVoices().length }} {{ stackFilteredNarratorVoices().length === 1 ? 'voice' : 'voices' }}</strong>
+                              <span i18n>Select a voice or preview it first</span>
+                            </div>
+
+                            <div class="stack-voice-library__viewport" (scroll)="onStackVoiceLibraryScroll($event)">
+                              @if (stackVisibleNarratorVoices().length) {
+                                <div class="stack-voice-grid stack-voice-grid--library" role="radiogroup" aria-label="All narrator voices" i18n-aria-label>
+                                  @for (voice of stackVisibleNarratorVoices(); track voice.id) {
+                                    <div class="stack-voice-option stack-voice-option--library" [class.stack-voice-option--active]="stackNarratorVoiceId() === voice.id">
+                                      <button
+                                        type="button"
+                                        class="stack-voice-option__select"
+                                        role="radio"
+                                        [attr.aria-checked]="stackNarratorVoiceId() === voice.id"
+                                        [attr.aria-label]="voice.name + ', ' + voice.presentation + ', ' + voice.accent + ', ' + voice.style"
+                                        (click)="chooseStackNarratorVoice(board, voice.id, true)"
+                                      >
+                                        <span class="stack-voice-option__icon material-symbols-outlined">{{ voice.icon }}</span>
+                                        <span class="stack-voice-option__copy">
+                                          <strong>{{ voice.name }}</strong>
+                                          <small>{{ voice.presentation }} · {{ voice.accent }} · {{ voice.style }}</small>
+                                          <span>{{ voice.description }}</span>
+                                        </span>
+                                        <span class="stack-voice-option__check material-symbols-outlined">{{ stackNarratorVoiceId() === voice.id ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                                      </button>
+                                      <button
+                                        type="button"
+                                        class="stack-voice-option__preview"
+                                        [class.stack-voice-option__preview--playing]="isStackVoicePreviewing(voice.id)"
+                                        [disabled]="stackVoicePreviewLoadingId() === voice.id"
+                                        [attr.aria-label]="isStackVoicePreviewing(voice.id) ? 'Stop ' + voice.name + ' preview' : 'Preview ' + voice.name"
+                                        (click)="toggleStackVoicePreview(voice, $event)"
+                                      >
+                                        <span class="material-symbols-outlined">{{ stackVoicePreviewLoadingId() === voice.id ? 'progress_activity' : isStackVoicePreviewing(voice.id) ? 'stop' : 'play_arrow' }}</span>
+                                        <span i18n>Preview</span>
+                                      </button>
+                                    </div>
+                                  }
+                                </div>
+                                <footer class="stack-voice-library__more">
+                                  <span>Showing {{ stackVisibleNarratorVoices().length }} of {{ stackFilteredNarratorVoices().length }}</span>
+                                  @if (stackVoiceLibraryHasMore()) {
+                                    <button type="button" (click)="loadMoreStackVoices()" i18n>Show more voices</button>
+                                  }
+                                </footer>
+                              } @else {
+                                <div class="stack-voice-library__empty">
+                                  <span class="material-symbols-outlined">search_off</span>
+                                  <strong i18n>No voices match that search</strong>
+                                  <button type="button" (click)="onStackVoiceLibrarySearch(''); selectStackVoiceLibraryFilter('All')" i18n>Clear filters</button>
+                                </div>
+                              }
+                            </div>
+                          </section>
+                        </div>
+                      }
                       }
                       @if (stackVoiceError() || personalVoiceError()) {
                         <small class="stack-voice-picker__error">

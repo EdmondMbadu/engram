@@ -312,7 +312,7 @@ function imageDimensions(buffer, contentType) {
   return null;
 }
 
-async function fetchBitmap(value) {
+export async function fetchBitmap(value) {
   let current = safeRemoteUrl(value);
   if (!current) throw new Error('Unsupported image URL.');
   let response;
@@ -839,7 +839,7 @@ async function googleImageCandidates(card, target, apiKey, cx) {
   }
 }
 
-async function uploadBitmap(admin, bitmap, storagePath, provenance, bucketName) {
+export async function uploadBitmap(admin, bitmap, storagePath, provenance, bucketName) {
   const bucket = admin.storage().bucket(bucketName);
   const token = randomUUID();
   await bucket.file(storagePath).save(bitmap.buffer, {
@@ -857,6 +857,188 @@ async function uploadBitmap(admin, bitmap, storagePath, provenance, bucketName) 
     },
   });
   return `https://firebasestorage.googleapis.com/v0/b/${encodeURIComponent(bucket.name)}/o/${encodeURIComponent(storagePath)}?alt=media&token=${encodeURIComponent(token)}`;
+}
+
+function schoolSearchVariants(schoolName) {
+  const value = clean(schoolName, 180);
+  return [...new Set([
+    value,
+    value.replace(/^CUNY\s+/i, '').replace(/\s+Campus Immersion$/i, '').trim(),
+    value.replace(/\s+in the City of New York$/i, '').trim(),
+    value.replace(/^The\s+/i, '').trim(),
+  ].filter((item) => item.length >= 4))];
+}
+
+function campusCandidateFromPage(page, target, mode) {
+  const info = page.imageinfo?.[0];
+  if (!info || !/^image\/(?:jpeg|png|webp)$/i.test(clean(info.mime))) return null;
+  const metadata = info.extmetadata || {};
+  const title = clean(page.title, 300).replace(/^File:/i, '');
+  const metadataText = [title, metadata.ObjectName?.value, metadata.ImageDescription?.value, metadata.Categories?.value]
+    .map((value) => clean(value, 2_000).replace(/<[^>]+>/g, ' ')).join(' ');
+  const haystack = normalizedPhrase(metadataText);
+  if (/(?:logo|seal|coat of arms|wordmark|flag|map|diagram|icon|aircraft|airliner|satellite|umbra|basketball player|football player)/i.test(haystack)) return null;
+  const schoolPhrase = normalizedPhrase(target.schoolName);
+  const variants = schoolSearchVariants(target.schoolName).map(normalizedPhrase);
+  const schoolIdentity = tokens(target.schoolName).filter((token) => !['university', 'college', 'school', 'campus', 'immersion'].includes(token));
+  const matchedSchool = schoolIdentity.filter((token) => haystack.includes(token)).length;
+  const exactSchool = variants.some((variant) => variant.length >= 5 && haystack.includes(variant));
+  const coordinate = page.coordinates?.[0];
+  const distance = coordinate ? distanceKm(
+    Number(target.latitude), Number(target.longitude), Number(coordinate.lat), Number(coordinate.lon),
+  ) : null;
+  const locationVerified = distance !== null && distance <= 2.5;
+  if (mode === 'search' && !exactSchool && matchedSchool < Math.min(2, schoolIdentity.length)) return null;
+  if (mode === 'geo' && !locationVerified) return null;
+  const license = clean(metadata.LicenseShortName?.value, 80).replace(/<[^>]+>/g, '');
+  const imageUrl = safeRemoteUrl(info.thumburl || info.url);
+  const sourceUrl = safeRemoteUrl(info.descriptionurl);
+  if (!imageUrl || !sourceUrl) return null;
+  return {
+    imageUrl, sourceUrl, sourceLabel: `Wikimedia Commons · related campus/location photo${license ? ` · ${license}` : ''}`,
+    license, provider: 'campus-fallback-wikimedia', title,
+    score: (exactSchool ? 200 : 0) + matchedSchool * 35 + (locationVerified ? Math.max(0, 80 - (distance * 25)) : 0),
+  };
+}
+
+export async function universityCampusFallbackCandidates(target) {
+  const pages = [];
+  for (const query of schoolSearchVariants(target.schoolName)) {
+    try {
+      const url = new URL('https://commons.wikimedia.org/w/api.php');
+      url.searchParams.set('action', 'query');
+      url.searchParams.set('format', 'json');
+      url.searchParams.set('formatversion', '2');
+      url.searchParams.set('generator', 'search');
+      url.searchParams.set('gsrsearch', `\"${query}\"`);
+      url.searchParams.set('gsrnamespace', '6');
+      url.searchParams.set('gsrlimit', '100');
+      url.searchParams.set('prop', 'imageinfo|coordinates');
+      url.searchParams.set('iiprop', 'url|mime|extmetadata');
+      url.searchParams.set('iiurlwidth', '1600');
+      const response = await fetch(url, { signal: AbortSignal.timeout(20_000), headers: { 'user-agent': userAgent } });
+      if (!response.ok) continue;
+      const data = await response.json();
+      pages.push(...(data.query?.pages || []).map((page) => ({ page, mode: 'search' })));
+    } catch { /* keep the remaining free sources */ }
+  }
+  if (Number.isFinite(Number(target.latitude)) && Number.isFinite(Number(target.longitude))) {
+    try {
+      const url = new URL('https://commons.wikimedia.org/w/api.php');
+      url.searchParams.set('action', 'query');
+      url.searchParams.set('format', 'json');
+      url.searchParams.set('formatversion', '2');
+      url.searchParams.set('generator', 'geosearch');
+      url.searchParams.set('ggsprimary', 'all');
+      url.searchParams.set('ggsnamespace', '6');
+      url.searchParams.set('ggslimit', '100');
+      url.searchParams.set('ggsradius', '2500');
+      url.searchParams.set('ggscoord', `${target.latitude}|${target.longitude}`);
+      url.searchParams.set('prop', 'imageinfo|coordinates');
+      url.searchParams.set('iiprop', 'url|mime|extmetadata');
+      url.searchParams.set('iiurlwidth', '1600');
+      const response = await fetch(url, { signal: AbortSignal.timeout(20_000), headers: { 'user-agent': userAgent } });
+      if (response.ok) {
+        const data = await response.json();
+        pages.push(...(data.query?.pages || []).map((page) => ({ page, mode: 'geo' })));
+      }
+    } catch { /* search results may still be sufficient */ }
+  }
+  return [...new Map(pages.map(({ page, mode }) => [`${page.pageid || page.title}`, { page, mode }])).values()]
+    .map(({ page, mode }) => campusCandidateFromPage(page, target, mode)).filter(Boolean)
+    .sort((left, right) => right.score - left.score)
+    .filter((candidate, index, all) => all.findIndex((item) => item.imageUrl === candidate.imageUrl) === index);
+}
+
+function pageAssetUrls(html, responseUrl) {
+  const values = [];
+  for (const match of html.matchAll(/<(?:meta|link)\b([^>]*)>/gi)) {
+    const attrs = match[1] || '';
+    if (!/(?:og:image|twitter:image|image_src)/i.test(attrs)) continue;
+    values.push(htmlAttribute(attrs, 'content') || htmlAttribute(attrs, 'href'));
+  }
+  for (const match of html.matchAll(/<(?:img|source)\b([^>]*)>/gi)) {
+    const attrs = match[1] || '';
+    const srcset = htmlAttribute(attrs, 'srcset') || htmlAttribute(attrs, 'data-srcset');
+    const largestSrcset = srcset.split(',').map((item) => item.trim().split(/\s+/)[0]).filter(Boolean).at(-1);
+    values.push(largestSrcset || htmlAttribute(attrs, 'src') || htmlAttribute(attrs, 'data-src') || htmlAttribute(attrs, 'data-lazy-src'));
+  }
+  for (const match of html.matchAll(/background-image\s*:\s*url\((['"]?)([^)'";]+)\1\)/gi)) values.push(match[2]);
+  return [...new Set(values.map((value) => {
+    try {
+      let absolute = new URL(decodeHtml(value), responseUrl).toString();
+      if (absolute.startsWith('http:')) absolute = `https:${absolute.slice(5)}`;
+      return safeRemoteUrl(absolute);
+    } catch { return ''; }
+  }).filter((value) => value && !/(?:logo|seal|wordmark|favicon|icon|sprite|placeholder|avatar|tracking|pixel|spacer|badge|button)/i.test(value)))];
+}
+
+export async function relatedPageImageCandidates(sourceUrl, sourceLabel = 'Related source page') {
+  const url = safeRemoteUrl(sourceUrl);
+  if (!url) return [];
+  try {
+    const response = await fetch(url, {
+      redirect: 'follow', signal: AbortSignal.timeout(18_000),
+      headers: { accept: 'text/html,application/xhtml+xml', 'user-agent': userAgent },
+    });
+    if (!response.ok || !clean(response.headers.get('content-type')).includes('text/html')) return [];
+    const html = (await response.text()).slice(0, 1_500_000);
+    const pageTitle = decodeHtml(html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '')
+      .replace(/<[^>]+>/g, ' ').trim();
+    return pageAssetUrls(html, response.url).slice(0, 40).map((imageUrl) => ({
+      imageUrl, sourceUrl: response.url, sourceLabel, license: '', provider: 'related-source-page',
+      title: pageTitle || sourceLabel,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function officialUniversitySiteCandidates(target, website, seedUrls = []) {
+  const root = safeRemoteUrl(website);
+  if (!root) return [];
+  const rootUrl = new URL(root);
+  const sameOfficialSite = (value) => {
+    try {
+      const host = new URL(value).hostname.toLowerCase();
+      const official = rootUrl.hostname.toLowerCase();
+      return host === official || host.endsWith(`.${official}`) || official.endsWith(`.${host}`);
+    } catch { return false; }
+  };
+  const queue = [...new Set([root, ...seedUrls.filter(sameOfficialSite)])].slice(0, 30);
+  const visited = new Set();
+  const candidates = [];
+  while (queue.length && visited.size < 18 && candidates.length < 80) {
+    const url = queue.shift();
+    if (!url || visited.has(url)) continue;
+    visited.add(url);
+    try {
+      const response = await fetch(url, {
+        redirect: 'follow', signal: AbortSignal.timeout(18_000),
+        headers: { accept: 'text/html,application/xhtml+xml', 'user-agent': userAgent },
+      });
+      if (!response.ok || !clean(response.headers.get('content-type')).includes('text/html')) continue;
+      const html = (await response.text()).slice(0, 1_500_000);
+      const pageTitle = decodeHtml(html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '')
+        .replace(/<[^>]+>/g, ' ').trim();
+      for (const imageUrl of pageAssetUrls(html, response.url)) candidates.push({
+        imageUrl, sourceUrl: response.url, sourceLabel: `${target.schoolName} official website`, license: '',
+        provider: 'official-campus-fallback', title: pageTitle || target.schoolName,
+      });
+      if (visited.size <= 5) {
+        for (const match of html.matchAll(/<a\b([^>]*)>/gi)) {
+          const href = htmlAttribute(match[1] || '', 'href');
+          if (!href) continue;
+          try {
+            const absolute = new URL(href, response.url).toString();
+            if (sameOfficialSite(absolute) && /(?:campus|visit|tour|life|student|about|admission|gallery|news)/i.test(absolute)
+              && !visited.has(absolute) && queue.length < 40) queue.push(absolute);
+          } catch { /* ignore malformed links */ }
+        }
+      }
+    } catch { /* continue through official pages */ }
+  }
+  return [...new Map(candidates.map((candidate) => [candidate.imageUrl, candidate])).values()];
 }
 
 export async function enrichUniversityBoardImages(payload, target, options) {

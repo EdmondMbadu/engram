@@ -9,6 +9,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, type DocumentReference } from 'firebase-admin/firestore';
 import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
+import stackNarratorVoiceCatalog from './stack-narrator-voices.json';
 import { BOARD_WIZARD_PASTE_MAX_LENGTH, parseNumberedBoardSource, type NumberedBoardSource } from './board-wizard-source';
 import {
   boardWizardImageEntityName,
@@ -237,19 +238,9 @@ const elevenLabsPremadeNarratorVoiceIds = [
   'EXAVITQu4vr4xnSDxMaL',
   'pNInz6obpgDQGcFmaJgB',
 ];
-const stackNarratorVoiceIds = {
-  'warm-storyteller': '21m00Tcm4TlvDq8ikWAM',
-  'inspiring-guide': 'EXAVITQu4vr4xnSDxMaL',
-  'confident-narrator': 'pNInz6obpgDQGcFmaJgB',
-  'energetic-host': 'TxGEqnHWrfWFTfGW9XjX',
-  'calm-documentary': 'yoZ06aMxZJJ28mfd3POQ',
-  'vibrant-presenter': 'AZnzlk1XvdvUeBnXmlld',
-  'teenage-girl': 'cgSgspJ2msm6clMCkdW9',
-  'elegant-guide': 'XB0fDUnXU5powFXDhCwa',
-  'british-storyteller': 'CYw3kZ02Hs0563khs1Fj',
-  'cinematic-narrator': 'ZQe5CZNOzWyzPSCn5a3c',
-  'friendly-explainer': 'ODq5zmih8GrVes37Dizd',
-} as const;
+const stackNarratorVoiceIds = Object.fromEntries(
+  stackNarratorVoiceCatalog.map((voice) => [voice.id, voice.providerVoiceId]),
+) as Readonly<Record<string, string>>;
 const personalStackNarratorVoiceId = 'personal-voice';
 const personalNarratorVoiceCollection = 'user_narrator_voices';
 const personalNarratorVoiceConsentVersion = 'v1';

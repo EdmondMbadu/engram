@@ -138,12 +138,16 @@ import {
 import {
   DEFAULT_STACK_NARRATOR_VOICE_ID,
   PERSONAL_STACK_NARRATOR_VOICE_ID,
+  RECOMMENDED_STACK_NARRATOR_VOICES,
   STACK_NARRATOR_VOICES,
+  STACK_NARRATOR_VOICE_PRESENTATIONS,
+  filterStackNarratorVoices,
   normalizeStackNarratorVoiceId,
   stackNarrationErrorIsPermanent,
   stackNarratorVoiceRequiresPaidPlan,
   stackNarratorVoiceById,
   type StackNarratorVoice,
+  type StackVoiceLibraryFilter,
 } from './stack-voice';
 import {
   browserTimezone,
@@ -1232,6 +1236,7 @@ const STACK_LINK_SHARE_TARGETS: Array<{ id: StackLinkShareTarget; label: string;
 
 const STACK_VIDEO_MAX_CARDS = 30;
 const BOARD_GALLERY_PAGE_SIZE = DEFAULT_INCREMENTAL_PAGE_SIZE;
+const STACK_VOICE_LIBRARY_PAGE_SIZE = 12;
 
 type BoardLoadContext = {
   uid: string;
@@ -1327,6 +1332,7 @@ export class BoardsComponent implements OnDestroy {
   private readonly stackAudioUrls = new Map<string, string>();
   private stackAudioPreview: HTMLAudioElement | null = null;
   private stackVoicePreview: HTMLAudioElement | null = null;
+  private stackVoiceLibraryReturnFocus: HTMLElement | null = null;
   private friendsLoadedForUid = '';
   private visitPlansLoadedFor = '';
   private relatedCardsReturnScrollY = 0;
@@ -1337,6 +1343,12 @@ export class BoardsComponent implements OnDestroy {
 
   @ViewChild('boardsScrollViewport')
   private boardsScrollViewport?: ElementRef<HTMLElement>;
+
+  @ViewChild('stackVoiceLibrarySearch')
+  private stackVoiceLibrarySearch?: ElementRef<HTMLInputElement>;
+
+  @ViewChild('stackVoiceLibrary')
+  private stackVoiceLibrary?: ElementRef<HTMLElement>;
 
   @ViewChild('tourMapCanvas')
   set tourMapCanvasRef(value: ElementRef<HTMLElement> | undefined) {
@@ -1361,6 +1373,11 @@ export class BoardsComponent implements OnDestroy {
   readonly stackLinkShareTargets = STACK_LINK_SHARE_TARGETS;
   readonly stackAudioTracks = STACK_AUDIO_TRACKS;
   readonly stackNarratorVoices = STACK_NARRATOR_VOICES;
+  readonly recommendedStackNarratorVoices = RECOMMENDED_STACK_NARRATOR_VOICES;
+  readonly stackVoiceLibraryFilters: readonly StackVoiceLibraryFilter[] = [
+    'All',
+    ...STACK_NARRATOR_VOICE_PRESENTATIONS,
+  ];
   readonly personalStackNarratorVoiceId = PERSONAL_STACK_NARRATOR_VOICE_ID;
   readonly noStackAudioTrackId = NO_STACK_AUDIO_TRACK_ID;
   readonly defaultStackAudioTrackId = DEFAULT_STACK_AUDIO_TRACK_ID;
@@ -1612,6 +1629,10 @@ export class BoardsComponent implements OnDestroy {
   readonly stackVoicePreviewingId = signal<string | null>(null);
   readonly stackVoicePreviewLoadingId = signal<string | null>(null);
   readonly stackVoiceError = signal<string | null>(null);
+  readonly stackVoiceLibraryOpen = signal(false);
+  readonly stackVoiceLibrarySearchQuery = signal('');
+  readonly stackVoiceLibraryFilter = signal<StackVoiceLibraryFilter>('All');
+  readonly stackVoiceLibraryVisibleLimit = signal(STACK_VOICE_LIBRARY_PAGE_SIZE);
   readonly stackSoundTab = signal<StackSoundTab>('voice');
   readonly stackScriptBoardTitle = signal('');
   readonly stackScriptBoardDescription = signal('');
@@ -2254,6 +2275,19 @@ export class BoardsComponent implements OnDestroy {
   );
   readonly stackSelectedNarratorVoice = computed(() =>
     stackNarratorVoiceById(this.stackNarratorVoiceId()),
+  );
+  readonly stackFilteredNarratorVoices = computed(() => {
+    return filterStackNarratorVoices(
+      this.stackNarratorVoices,
+      this.stackVoiceLibrarySearchQuery(),
+      this.stackVoiceLibraryFilter(),
+    );
+  });
+  readonly stackVisibleNarratorVoices = computed(() =>
+    incrementalSlice(this.stackFilteredNarratorVoices(), this.stackVoiceLibraryVisibleLimit()),
+  );
+  readonly stackVoiceLibraryHasMore = computed(() =>
+    this.stackVisibleNarratorVoices().length < this.stackFilteredNarratorVoices().length,
   );
   readonly stackSelectedNarratorName = computed(() =>
     !this.stackVideoNarrationEnabled()
@@ -9770,6 +9804,23 @@ export class BoardsComponent implements OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   handleCardPhotoViewerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.stackVoiceLibraryOpen()) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.closeStackVoiceLibrary();
+      return;
+    }
+    if (event.key === 'Tab' && this.stackVoiceLibraryOpen()) {
+      const focusable = Array.from(this.stackVoiceLibrary?.nativeElement.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ) ?? []).filter((element) => element.offsetParent !== null);
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (first && last && (event.shiftKey ? document.activeElement === first : document.activeElement === last)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      }
+    }
     if (event.key === 'Escape' && this.tourStopEditorOpen()) {
       event.preventDefault();
       this.closeTourStopEditor();
@@ -11167,6 +11218,7 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
     this.prepareStackForBoard(board);
+    this.stackVoiceLibraryOpen.set(false);
     this.sharePanelOpen.set(false);
     this.stackStudioOpen.set(true);
     void this.loadPersonalNarratorVoice();
@@ -11235,6 +11287,7 @@ export class BoardsComponent implements OnDestroy {
     this.stopStackVoicePreview();
     this.stopPersonalVoiceRecording(true);
     this.stopStackPlayback();
+    this.stackVoiceLibraryOpen.set(false);
     this.stackStudioOpen.set(false);
     this.stackScriptDiscardConfirmOpen.set(false);
     this.setStackShareMessage(null);
@@ -11518,6 +11571,65 @@ export class BoardsComponent implements OnDestroy {
     this.saveStackNarratorPreference(board);
   }
 
+  chooseStackNarratorVoice(board: Board, voiceId: string, closeLibrary = false): void {
+    this.selectStackNarratorVoice(board, voiceId);
+    if (closeLibrary && this.stackNarratorVoiceId() === normalizeStackNarratorVoiceId(voiceId)) {
+      this.closeStackVoiceLibrary();
+    }
+  }
+
+  openStackVoiceLibrary(): void {
+    this.stackVoiceLibrarySearchQuery.set('');
+    this.stackVoiceLibraryFilter.set('All');
+    this.stackVoiceLibraryVisibleLimit.set(STACK_VOICE_LIBRARY_PAGE_SIZE);
+    this.stackVoiceLibraryOpen.set(true);
+    if (this.isBrowser) {
+      this.stackVoiceLibraryReturnFocus = document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+      window.setTimeout(() => this.stackVoiceLibrarySearch?.nativeElement.focus(), 0);
+    }
+  }
+
+  closeStackVoiceLibrary(): void {
+    this.stopStackVoicePreview();
+    this.stackVoiceLibraryOpen.set(false);
+    if (this.isBrowser) {
+      const returnFocus = this.stackVoiceLibraryReturnFocus;
+      this.stackVoiceLibraryReturnFocus = null;
+      window.setTimeout(() => returnFocus?.focus(), 0);
+    }
+  }
+
+  onStackVoiceLibrarySearch(value: string): void {
+    this.stackVoiceLibrarySearchQuery.set(value);
+    this.stackVoiceLibraryVisibleLimit.set(STACK_VOICE_LIBRARY_PAGE_SIZE);
+  }
+
+  selectStackVoiceLibraryFilter(filter: StackVoiceLibraryFilter): void {
+    this.stackVoiceLibraryFilter.set(filter);
+    this.stackVoiceLibraryVisibleLimit.set(STACK_VOICE_LIBRARY_PAGE_SIZE);
+  }
+
+  onStackVoiceLibraryScroll(event: Event): void {
+    const viewport = event.currentTarget as HTMLElement;
+    if (this.stackVoiceLibraryHasMore() && incrementalViewportNearEnd(
+      viewport.scrollHeight,
+      viewport.scrollTop,
+      viewport.clientHeight,
+      240,
+    )) {
+      this.loadMoreStackVoices();
+    }
+  }
+
+  loadMoreStackVoices(): void {
+    if (!this.stackVoiceLibraryHasMore()) return;
+    this.stackVoiceLibraryVisibleLimit.update((limit) =>
+      nextIncrementalLimit(limit, STACK_VOICE_LIBRARY_PAGE_SIZE),
+    );
+  }
+
   setStackVideoNarrationEnabled(enabled: boolean): void {
     if (!enabled) {
       this.stopStackVoicePreview();
@@ -11554,9 +11666,6 @@ export class BoardsComponent implements OnDestroy {
     }
 
     const board = this.stackBoard();
-    if (board) {
-      this.selectStackNarratorVoice(board, voice.id);
-    }
     this.stopStackVoicePreview();
     this.stopStackAudioPreview();
     this.stopSongPreview();
