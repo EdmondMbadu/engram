@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Weekend building, office, dining, and recreation schedules can change; verify current access before relying on an indoor stop.",
+    "Free status covers the described place or activity only; optional food, equipment, transit, and separately ticketed programming are not included.",
+    "1 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://drexel.edu/~/media/Drexel/Core-Site-Group/Core/Documents/admissions/virtual-tour/ucity-walking-tour.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/~/media/Drexel/Core-Site-Group/Core/Documents/admissions/virtual-tour/ucity-walking-tour.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/admissions/visit-tours/dragon-life-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/admissions/virtual-tour/student-involvement-tour",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/studentlife/campus-living/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/studentlife/campus-living/dining",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.drexel.edu/about/locations/?searchid=guides",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.drexel.edu/about/locations/?searchid=guides",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/admissions/virtual-tour/self-guided-walking-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/admissions/virtual-tour/self-guided-walking-tour",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/university-recreation/reccenter/fitness-floors/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/university-recreation/reccenter/fitness-floors/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/news/archive/2019/july/hidden-treasures-drexel-outdoor-public-art",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/news/archive/2019/july/hidden-treasures-drexel-outdoor-public-art",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Drexel Park"
+  ],
+  "sourceCount": 7,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

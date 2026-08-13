@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Late-night hours can change without notice; verify the linked source on the day of the run.",
+    "The Dragons’ Learning Den, Serenity Suite, and Den vending area are separately recognizable destinations or facilities within the same building; their access requirements overlap.",
+    "Alcohol may appear on Shake Shack’s broader menu, but the restaurant is not presented as a bar or 21+-only venue, and this board recommends only its general food service.",
+    "2 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.library.drexel.edu/about/locations/?searchid=guides",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.drexel.edu/about/locations/?searchid=guides",
+      "error": ""
+    },
+    {
+      "url": "https://library.drexel.edu/services/reserve-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.drexel.edu/services/reserve-room/",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/university-recreation/reccenter/fitness-floors/facilities",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/university-recreation/reccenter/fitness-floors/facilities",
+      "error": ""
+    },
+    {
+      "url": "https://oldnelson3600.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://oldnelson3600.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.dpdough.com/img/DPDough_PhiladelphiaPA.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.dpdough.com/img/DPDough_PhiladelphiaPA.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://shopsatpenn.com/wawa",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://shopsatpenn.com/wawa",
+      "error": ""
+    },
+    {
+      "url": "https://www.7-eleven.com/locations/pa/philadelphia/3401-lancaster-avenue-22479",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.7-eleven.com/locations/pa/philadelphia/3401-lancaster-avenue-22479",
+      "error": ""
+    },
+    {
+      "url": "https://locations.raisingcanes.com/pa/philadelphia/3925-walnut-street",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.raisingcanes.com/pa/philadelphia/3925-walnut-street",
+      "error": ""
+    },
+    {
+      "url": "https://shakeshack.com/location/university-city-pa",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://shakeshack.com/location/university-city-pa",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Dragons’ Learning Den",
+    "Drexel Recreation Center"
+  ],
+  "sourceCount": 9,
+  "generationScore": 95,
+  "generationGrade": "A"
+}

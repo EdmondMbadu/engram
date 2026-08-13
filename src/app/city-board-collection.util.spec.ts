@@ -23,6 +23,16 @@ describe('city board collection', () => {
     expect(cityBoardCategory(board({ templateId: 'global-first-24-hours' })).id).toBe('itineraries');
   });
 
+  it('classifies the seven university templates without relying on titles', () => {
+    expect(cityBoardCategory(board({ templateId: 'college-late-night-runs' })).id).toBe('food');
+    expect(cityBoardCategory(board({ templateId: 'college-campus-tour-skips' })).id).toBe('places');
+    expect(cityBoardCategory(board({ templateId: 'college-zero-dollar-hangs' })).id).toBe('free');
+    expect(cityBoardCategory(board({ templateId: 'college-study-spots' })).id).toBe('local-life');
+    expect(cityBoardCategory(board({ templateId: 'college-blocks-off-campus' })).id).toBe('places');
+    expect(cityBoardCategory(board({ templateId: 'college-only-happens-here' })).id).toBe('culture');
+    expect(cityBoardCategory(board({ templateId: 'college-first-weekend' })).id).toBe('itineraries');
+  });
+
   it('uses stable title fallbacks for projections created before category metadata', () => {
     expect(cityBoardCategory(board({ title: '10 Dishes That Explain Philadelphia' })).id).toBe('food');
     expect(cityBoardCategory(board({ title: '10 Neighborhoods, One Reason Each' })).id).toBe('places');

@@ -35,6 +35,8 @@ The source of truth is `functions/src/global-university-board-templates.ts`. Uni
 
 6. Inspect the saved private boards in the factory. Approve them individually after editorial review.
 
+After publication, the university chat page replaces its suggested-question cards with the university board shelf. The “View all” link opens `/chat/[university-slug]/boards`, which provides the complete searchable collection. Private drafts and boards still awaiting review never appear on either public surface.
+
 `--resume` reuses an existing board artifact after an interrupted run. `--reuse-dossiers` reuses the university-wide research dossier. `--item ITEM_ID` processes one explicit item. `--output-dir PATH` changes the local audit-artifact directory. Source reachability checks should remain enabled; `--skip-source-check` is only for diagnosing network restrictions and does not make a board publish-ready.
 
 ## Cost and quality controls

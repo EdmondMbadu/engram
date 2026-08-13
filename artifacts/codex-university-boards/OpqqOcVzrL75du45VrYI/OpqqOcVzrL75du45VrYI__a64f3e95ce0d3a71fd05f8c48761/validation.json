@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Free status covers the described admission-free activity only; optional transportation, food, merchandise, rentals, tours, and separately ticketed programming are not included.",
+    "Hours and exhibition schedules can change; use each linked official page before departure.",
+    "Coordinates are included only where supplied by the research dossier; no coordinates were inferred for newly researched subjects."
+  ],
+  "reachability": [
+    {
+      "url": "https://drexel.edu/pearlsteingallery/about/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/pearlsteingallery/about/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/drexel-founding-collection/plan/overview/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/drexel-founding-collection/plan/overview/",
+      "error": ""
+    },
+    {
+      "url": "https://www.universitycity.org/portal/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.universitycity.org/portal/",
+      "error": ""
+    },
+    {
+      "url": "https://icaphila.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://icaphila.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.sciencehistory.org/visit/hours-admission/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.sciencehistory.org/visit/hours-admission/",
+      "error": ""
+    },
+    {
+      "url": "https://www.therailpark.org/faqs/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.therailpark.org/faqs/",
+      "error": ""
+    },
+    {
+      "url": "https://www.woodlandsphila.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.woodlandsphila.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://libwww.freelibrary.org/locations/central/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://libwww.freelibrary.org/locations/central/",
+      "error": ""
+    },
+    {
+      "url": "https://www.bartramsgarden.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bartramsgarden.org/visit/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

@@ -1,0 +1,27 @@
+{
+  "ok": false,
+  "problems": [
+    "Writer marked the board incomplete."
+  ],
+  "warnings": [
+    "The dossier contains exactly 70 distinct subjects and exactly 10 records for each canonical template ID.",
+    "complete is false because several late-night business pages expose location-specific hours dynamically or may change without notice; those records conservatively require live confirmation before travel.",
+    "The input file states current_date 2026-08-13, while the execution environment states 2026-08-12; source_fetched_at and researched_at use the environment date as requested.",
+    "Coordinates were left null where exact subject-level coordinates were not verified from an authoritative direct source; map-search URLs are supplied for visual documentation and disambiguation.",
+    "Free-activity claims are narrowly limited to activities requiring neither admission nor purchase; parking, transportation, optional services, special programs or ticketed interiors may still cost money."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.adelphi.edu/about/history/traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.adelphi.edu/about/history/traditions/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 1,
+  "generationScore": null,
+  "generationGrade": null
+}

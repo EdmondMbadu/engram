@@ -624,11 +624,18 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   readonly hasMoreCityBoards = computed(() => this.cityBoards().length > 4);
   readonly isPublicView = computed(() => !!this.routeSlug());
   readonly businessPageContext = computed(() => !!this.routeBusinessSlug());
-  readonly isCityBoardPage = computed(() =>
-    this.isPublicView()
-    && this.publicAtlas()?.city_config?.enabled === true
-    && !this.businessPageContext(),
-  );
+  readonly isBoardShelfPage = computed(() => {
+    const atlas = this.publicAtlas();
+    return this.isPublicView()
+      && !this.businessPageContext()
+      && (atlas?.city_config?.enabled === true
+        || atlas?.wiki_type === 'university'
+        || atlas?.university_config?.enabled === true);
+  });
+  readonly boardShelfEyebrow = computed(() => this.isUniversityPage() ? 'Explore campus life' : 'Explore the city');
+  readonly boardShelfDescription = computed(() => this.isUniversityPage()
+    ? 'Source-backed collections for campus traditions, shared spaces, food, study, and the college town.'
+    : 'Curated collections from people who know this place.');
   readonly cityBoardsHeading = computed(() =>
     `Boards for ${this.currentWikiName() || 'this city'}`,
   );
@@ -3395,7 +3402,10 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
     effect((onCleanup) => {
       const atlas = this.publicAtlas();
-      const isCityPage = atlas?.city_config?.enabled === true && !this.businessPageContext();
+      const supportsBoardShelf = !this.businessPageContext()
+        && (atlas?.city_config?.enabled === true
+          || atlas?.wiki_type === 'university'
+          || atlas?.university_config?.enabled === true);
       let cancelled = false;
       onCleanup(() => {
         cancelled = true;
@@ -3403,20 +3413,24 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
 
       this.cityBoards.set([]);
       this.cityBoardsError.set(null);
-      if (!atlas?.id || !isCityPage) {
+      if (!atlas?.id || !supportsBoardShelf) {
         this.cityBoardsLoading.set(false);
         return;
       }
 
       this.cityBoardsLoading.set(true);
-      void this.cityBoardListingsService.list(atlas.id)
+      void this.cityBoardListingsService.list(atlas.id, {
+        targetKind: atlas.wiki_type === 'university' || atlas.university_config?.enabled === true
+          ? 'university'
+          : 'city',
+      })
         .then((boards) => {
           if (!cancelled) this.cityBoards.set(boards);
         })
         .catch(() => {
           if (!cancelled) {
             this.cityBoards.set([]);
-            this.cityBoardsError.set('City boards are temporarily unavailable.');
+            this.cityBoardsError.set('Boards are temporarily unavailable.');
           }
         })
         .finally(() => {

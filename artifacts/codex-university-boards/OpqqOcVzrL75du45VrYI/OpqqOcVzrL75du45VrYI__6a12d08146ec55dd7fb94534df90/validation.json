@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "3 subject(s) also appear on another board for this school."
+  ],
+  "reachability": [
+    {
+      "url": "https://library.drexel.edu/services/reserve-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.drexel.edu/services/reserve-room/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.drexel.edu/about/locations/?searchid=guides",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.drexel.edu/about/locations/?searchid=guides",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/studentlife/campus-living/commuter-resources/lockers-and-lounges",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/studentlife/campus-living/commuter-resources/lockers-and-lounges",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/studentlife/activities-involvement/student-centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/studentlife/activities-involvement/student-centers",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/admissions/virtual-tour/self-guided-walking-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/admissions/virtual-tour/self-guided-walking-tour",
+      "error": ""
+    }
+  ],
+  "overlap": [
+    "Hagerty Library group study rooms",
+    "Dragons’ Learning Den Practice Zone",
+    "Creese Student Center Tech Lounge"
+  ],
+  "sourceCount": 5,
+  "generationScore": 91,
+  "generationGrade": "A"
+}

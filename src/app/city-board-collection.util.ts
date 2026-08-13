@@ -73,6 +73,13 @@ const TEMPLATE_CATEGORY: Record<string, CityBoardCategoryId> = {
   'global-neighborhoods-one-reason': 'places',
   'global-only-happens-here': 'culture',
   'global-first-24-hours': 'itineraries',
+  'college-late-night-runs': 'food',
+  'college-campus-tour-skips': 'places',
+  'college-zero-dollar-hangs': 'free',
+  'college-study-spots': 'local-life',
+  'college-blocks-off-campus': 'places',
+  'college-only-happens-here': 'culture',
+  'college-first-weekend': 'itineraries',
 };
 
 export function cityBoardCategory(board: CityBoardListing): CityBoardCategory {

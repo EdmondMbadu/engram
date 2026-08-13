@@ -1,0 +1,61 @@
+{
+  "ok": false,
+  "problems": [
+    "Every card needs a validated image. Missing after 3 attempts: 2. 1000 block of North Third Street at Hallett Park, 3. 1400 block of Nicollet Avenue at Jefferson Park, 4. 600 block of West Broadway Avenue at Johnson Park, 5. 1400 block of Leonard Street at McGill Park, 6. 2000 block of Essler Drive at Prairie Ridge Park, 7. 2100 block of Meridian Street at Community Spirit Park East, 9. 1500 block of Lloyd Lane at Warren Park."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.saintpetermn.gov/facilities/facility/details/Minnesota-Square-Park-11",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/facilities/facility/details/Minnesota-Square-Park-11",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/facilities/facility/details/Hallett-Park-5",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/facilities/facility/details/Hallett-Park-5",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/facilities/facility/details/Jefferson-Park-6",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/facilities/facility/details/Jefferson-Park-6",
+      "error": ""
+    },
+    {
+      "url": "https://saintpetermn.gov/parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://saintpetermn.gov/parks",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/Facilities/Facility/Details/Minnesota-Square-Park-9",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/Facilities/Facility/Details/Minnesota-Square-Park-9",
+      "error": ""
+    },
+    {
+      "url": "https://www.artscentersp.org/about",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.artscentersp.org/about",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 6,
+  "generationScore": null,
+  "generationGrade": null
+}

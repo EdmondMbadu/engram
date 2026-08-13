@@ -1,0 +1,75 @@
+{
+  "ok": false,
+  "problems": [
+    "Writer marked the board incomplete.",
+    "Expected 10 cards; received 7."
+  ],
+  "warnings": [
+    "Only seven non-excluded destinations met the requested evidence standard. The board is incomplete rather than padded with stale listings, bars, inferred hours, or additional branches lacking direct store-hour pages.",
+    "Saint Peter’s defensible late-night inventory is exceptionally thin after applying excluded_subjects; five cards therefore identify Mankato destinations that require a planned drive from campus.",
+    "Coordinates are null because no verified coordinate source was established during research; destination-specific Google Maps search URLs are supplied without inventing coordinates.",
+    "Papa Murphy’s closes at 9 p.m. on its latest nights and is included as an evening take-and-bake run, not as an after-midnight destination."
+  ],
+  "reachability": [
+    {
+      "url": "https://pizza.dominos.com/minnesota/st-peter/103-s-minnesota-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/minnesota/st-peter/103-s-minnesota-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://locations.papamurphys.com/mn/st.-peter/1226-south-mn-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.papamurphys.com/mn/st.-peter/1226-south-mn-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/mankato/1819-madison-avenue.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/mankato/1819-madison-avenue.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.tacobell.com/mn/mankato/145-st--andrews-dr/restaurant.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.tacobell.com/mn/mankato/145-st--andrews-dr/restaurant.html",
+      "error": ""
+    },
+    {
+      "url": "https://locations.wendys.com/united-states/mn/mankato/1545-madison-avenue",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://locations.wendys.com/united-states/mn/mankato/1545-madison-avenue",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/mn/mankato/1921-adams-st/13126.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/mn/mankato/1921-adams-st/13126.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.perkinsrestaurants.com/locations/us/mn/mankato/1790-madison-avenue/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.perkinsrestaurants.com/locations/us/mn/mankato/1790-madison-avenue/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -1,6 +1,12 @@
 import { Component, computed, inject, LOCALE_ID, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AccountMenuComponent } from '../account-menu/account-menu';
+import {
+  DEFAULT_INCREMENTAL_PAGE_SIZE,
+  incrementalSlice,
+  incrementalViewportNearEnd,
+  nextIncrementalLimit,
+} from '../incremental-pagination';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
@@ -11,6 +17,7 @@ import {
 import { VideoLibraryService } from './video-library.service';
 
 type VideoLibrarySort = 'newest' | 'oldest' | 'title';
+const VIDEO_LIBRARY_PAGE_SIZE = DEFAULT_INCREMENTAL_PAGE_SIZE;
 
 @Component({
   selector: 'app-video-library',
@@ -39,6 +46,7 @@ export class VideoLibraryComponent {
   readonly deleteCandidate = signal<VideoLibraryItem | null>(null);
   readonly deletingId = signal<string | null>(null);
   readonly sharingId = signal<string | null>(null);
+  readonly visibleLimit = signal(VIDEO_LIBRARY_PAGE_SIZE);
 
   readonly visibleItems = computed(() => {
     const query = this.search().trim().toLowerCase();
@@ -54,6 +62,12 @@ export class VideoLibraryComponent {
       return right.generatedAt.localeCompare(left.generatedAt);
     });
   });
+  readonly displayedItems = computed(() =>
+    incrementalSlice(this.visibleItems(), this.visibleLimit()),
+  );
+  readonly hasMoreItems = computed(() =>
+    this.displayedItems().length < this.visibleItems().length,
+  );
 
   constructor() {
     void this.load();
@@ -62,6 +76,7 @@ export class VideoLibraryComponent {
   async load(): Promise<void> {
     this.loading.set(true);
     this.error.set(null);
+    this.visibleLimit.set(VIDEO_LIBRARY_PAGE_SIZE);
     try {
       this.items.set(await this.videoLibrary.loadItems());
     } catch (error) {
@@ -74,14 +89,28 @@ export class VideoLibraryComponent {
 
   setSearch(value: string): void {
     this.search.set(value);
+    this.visibleLimit.set(VIDEO_LIBRARY_PAGE_SIZE);
   }
 
   setSort(value: string): void {
+    this.visibleLimit.set(VIDEO_LIBRARY_PAGE_SIZE);
     if (value === 'oldest' || value === 'title') {
       this.sort.set(value);
       return;
     }
     this.sort.set('newest');
+  }
+
+  onLibraryScroll(event: Event): void {
+    const viewport = event.currentTarget as HTMLElement;
+    if (incrementalViewportNearEnd(viewport.scrollHeight, viewport.scrollTop, viewport.clientHeight)) {
+      this.showMoreItems();
+    }
+  }
+
+  showMoreItems(): void {
+    if (!this.hasMoreItems()) return;
+    this.visibleLimit.update((current) => nextIncrementalLimit(current, VIDEO_LIBRARY_PAGE_SIZE));
   }
 
   play(item: VideoLibraryItem): void {

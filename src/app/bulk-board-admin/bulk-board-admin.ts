@@ -230,6 +230,9 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
   readonly needsReviewCount = computed(() => this.boards().filter(
     (board) => !board.deleted_at && board.editorial_status === 'needs_review',
   ).length);
+  readonly publishedBoardCount = computed(() => this.boards().filter(
+    (board) => !board.deleted_at && board.editorial_status === 'published',
+  ).length);
   readonly selectedCount = computed(() => this.selectedCityIds().size);
   readonly bucketPresets = this.factoryKind === 'university' ? UNIVERSITY_BUCKET_PRESETS : GLOBAL_BUCKET_PRESETS;
   readonly factoryTitle = this.factoryKind === 'university' ? 'University Board Factory' : 'City Board Factory';
@@ -283,7 +286,7 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     });
   });
   readonly publishableBoards = computed(() => this.filteredBoards().filter(
-    (board) => !board.deleted_at && board.editorial_status !== 'published',
+    (board) => this.isBoardPublishable(board),
   ));
 
   async ngOnInit(): Promise<void> {
@@ -578,7 +581,21 @@ export class BulkBoardAdminComponent implements OnInit, OnDestroy {
     return city ? [city.name, city.region].filter(Boolean).join(' · ') : `Unknown ${this.targetSingular}`;
   }
 
+  universityBoardLibraryLink(board: BulkBoardAdminBoard): string[] | null {
+    if (!this.isUniversityFactory()) return null;
+    const university = this.cityById().get(board.atlas_id || board.generated_for_atlas_id);
+    return university?.slug ? ['/chat', university.slug, 'boards'] : null;
+  }
+
   isUniversityFactory(): boolean { return this.factoryKind === 'university'; }
+
+  isBoardPublishable(board: BulkBoardAdminBoard): boolean {
+    return !board.deleted_at
+      && board.editorial_status !== 'published'
+      && (!this.isUniversityFactory()
+        || (board.validation_summary?.all_have_images === true
+          && board.validation_summary?.image_count === board.card_count));
+  }
 
   generationScoreLabel(board: BulkBoardAdminBoard): string {
     return board.generation_score === null ? 'Not scored' : `${board.generation_score}/100 · ${board.generation_grade || '—'}`;

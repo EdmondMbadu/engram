@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://drexel.edu/news/archive/2024/September/drexel-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/news/archive/2024/September/drexel-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/collecting-experiences",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/collecting-experiences",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/studentlife/activities-involvement/programs-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/studentlife/activities-involvement/programs-traditions",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/admissions/undergrad/blog/2025/July/drexel-traditions",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/admissions/undergrad/blog/2025/July/drexel-traditions",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": 90,
+  "generationGrade": "A"
+}

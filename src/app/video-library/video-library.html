@@ -17,7 +17,7 @@
         </div>
       </header>
 
-      <div class="flex-1 overflow-y-auto">
+      <div class="flex-1 overflow-y-auto" (scroll)="onLibraryScroll($event)">
         <div class="mx-auto w-full max-w-7xl px-5 py-8 pb-24 md:px-8 md:py-10 lg:px-12">
           <section class="video-library-hero">
             <div>
@@ -87,11 +87,11 @@
               <section class="video-library-state video-library-state--compact">
                 <span class="material-symbols-outlined">search_off</span>
                 <strong i18n>No videos match that search.</strong>
-                <button type="button" class="ghost-btn !px-4 !py-2 text-sm" (click)="search.set('')" i18n>Clear search</button>
+                <button type="button" class="ghost-btn !px-4 !py-2 text-sm" (click)="setSearch('')" i18n>Clear search</button>
               </section>
             } @else {
               <section class="video-library-grid" aria-label="Saved videos" i18n-aria-label>
-                @for (item of visibleItems(); track item.id) {
+                @for (item of displayedItems(); track item.id) {
                   <article class="video-library-card" [class.video-library-card--stale]="item.sourceAvailable && !isCurrent(item)">
                     <div class="video-library-visual">
                       <button type="button" class="video-library-poster" (click)="play(item)" [attr.aria-label]="'Play ' + item.sourceTitle">
@@ -203,6 +203,14 @@
                   </article>
                 }
               </section>
+              @if (hasMoreItems()) {
+                <div class="video-library-pagination" role="status" aria-live="polite">
+                  <button type="button" (click)="showMoreItems()">
+                    <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+                    Load 10 more
+                  </button>
+                </div>
+              }
             }
           }
         </div>

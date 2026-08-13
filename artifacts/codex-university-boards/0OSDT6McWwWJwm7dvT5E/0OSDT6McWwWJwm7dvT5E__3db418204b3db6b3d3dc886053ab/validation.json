@@ -1,0 +1,85 @@
+{
+  "ok": false,
+  "problems": [
+    "1 source URL(s) returned a conclusive broken response."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/student-life/campus-services/transportation-and-parking/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/campus-services/transportation-and-parking/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/dining/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/dining/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/library/studentresources/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/library/studentresources/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/athletics-and-recreation/recreation-complex/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/athletics-and-recreation/recreation-complex/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/museum/Documents/551122873_fuam_collection_outdoor-sculpture-map_08182020.pdf",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.fairfield.edu/museum/Documents/551122873_fuam_collection_outdoor-sculpture-map_08182020.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/museum/about/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://colonygrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://colonygrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/stag-traditions/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/stag-traditions/",
+      "error": ""
+    },
+    {
+      "url": "https://quickcenter.fairfield.edu/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://quickcenter.fairfield.edu/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

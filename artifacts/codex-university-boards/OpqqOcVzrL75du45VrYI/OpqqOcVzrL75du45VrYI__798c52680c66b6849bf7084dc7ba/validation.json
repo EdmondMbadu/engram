@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Hours, room availability, event reservations, and building-entry rules can change; consult the cited Drexel pages or posted notices before relying on access.",
+    "Coordinates and map links are location aids from the supplied research dossier; the cited Drexel sources support the editorial claims."
+  ],
+  "reachability": [
+    {
+      "url": "https://drexel.edu/studentlife/campus-living/commuter-resources/lockers-and-lounges",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/studentlife/campus-living/commuter-resources/lockers-and-lounges",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/studentlife/activities-involvement/student-centers",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/studentlife/activities-involvement/student-centers",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/admissions/virtual-tour/self-guided-walking-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/admissions/virtual-tour/self-guided-walking-tour",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/studentlife/activities-involvement/event-services/event-spaces",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/studentlife/activities-involvement/event-services/event-spaces",
+      "error": ""
+    },
+    {
+      "url": "https://library.drexel.edu/services/reserve-room/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.drexel.edu/services/reserve-room/",
+      "error": ""
+    },
+    {
+      "url": "https://www.library.drexel.edu/about/locations/?searchid=guides",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://library.drexel.edu/about/locations/?searchid=guides",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/admissions/visit-tours/dragon-life-tour",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/admissions/virtual-tour/student-involvement-tour",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

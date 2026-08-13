@@ -1,0 +1,53 @@
+{
+  "ok": false,
+  "problems": [
+    "1 source URL(s) returned a conclusive broken response."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/library/services/reservearoom/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/library/services/reservearoom/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/student-life/athletics-and-recreation/recreation-complex/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/athletics-and-recreation/recreation-complex/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/museum/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/museum/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/museum/Documents/551122873_fuam_collection_outdoor-sculpture-map_08182020.pdf",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.fairfield.edu/museum/Documents/551122873_fuam_collection_outdoor-sculpture-map_08182020.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/academics/schools-and-colleges/charles-f-dolan-school-of-business/centers-and-facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/academics/schools-and-colleges/charles-f-dolan-school-of-business/centers-and-facilities/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 5,
+  "generationScore": null,
+  "generationGrade": null
+}

@@ -66,6 +66,10 @@ export class CityBoardCollectionComponent implements OnDestroy {
   readonly spotlightPaused = signal(false);
   readonly spotlightProgress = signal(0);
   readonly isSignedIn = computed(() => !!this.authService.uid());
+  readonly isUniversity = computed(() => {
+    const atlas = this.atlas();
+    return atlas?.wiki_type === 'university' || atlas?.university_config?.enabled === true;
+  });
 
   readonly cityName = computed(() => {
     const atlas = this.atlas();
@@ -75,14 +79,28 @@ export class CityBoardCollectionComponent implements OnDestroy {
       .replace(/\s*\(flagship\)\s*$/i, '')
       .trim();
   });
-  readonly country = computed(() => this.atlasService.cityCountryLabel(this.atlas()) ?? '');
+  readonly country = computed(() => {
+    const atlas = this.atlas();
+    const cityCountry = this.atlasService.cityCountryLabel(atlas);
+    if (cityCountry) return cityCountry;
+    const countryCode = atlas?.university_config?.country_code?.trim().toUpperCase();
+    return countryCode === 'US' ? 'United States' : countryCode ?? '';
+  });
   readonly cityLink = computed(() => ['/chat', this.atlas()?.slug || this.routeSlug()]);
   readonly collectionDescription = computed(() => {
     const description = this.atlas()?.landing_summary?.trim() || this.atlas()?.description?.trim();
     return description
       ? this.clampText(description, 170)
-      : `Curated collections that reveal how ${this.cityName()} eats, gathers, moves, and makes sense of itself.`;
+      : this.isUniversity()
+        ? `Source-backed collections for campus traditions, shared spaces, study rituals, food, and life around ${this.cityName()}.`
+        : `Curated collections that reveal how ${this.cityName()} eats, gathers, moves, and makes sense of itself.`;
   });
+  readonly collectionKindLabel = computed(() => this.isUniversity() ? 'University board library' : 'City board library');
+  readonly collectionIcon = computed(() => this.isUniversity() ? 'school' : 'location_city');
+  readonly collectionUnavailableLabel = computed(() => this.isUniversity() ? 'University collection unavailable' : 'City collection unavailable');
+  readonly collectionUnavailableCopy = computed(() => this.isUniversity()
+    ? 'Return to LivingWiki and choose another public university.'
+    : 'Return to LivingWiki and choose another public city.');
   readonly totalLabel = computed(() => {
     const count = this.boards().length;
     return `${count} ${count === 1 ? 'board' : 'boards'}`;
@@ -277,22 +295,29 @@ export class CityBoardCollectionComponent implements OnDestroy {
     this.searchQuery.set('');
     if (!slug) {
       this.atlasLoading.set(false);
-      this.atlasError.set('This city could not be found.');
+      this.atlasError.set('This board collection could not be found.');
       return;
     }
 
     try {
       const atlas = await this.atlasService.getPublicAtlasBySlug(slug);
       if (sequence !== this.loadSequence) return;
-      if (!atlas || atlas.city_config?.enabled !== true) {
-        this.atlasError.set('This public city collection could not be found.');
+      const collectionEligible = atlas?.city_config?.enabled === true
+        || atlas?.wiki_type === 'university'
+        || atlas?.university_config?.enabled === true;
+      if (!atlas || !collectionEligible) {
+        this.atlasError.set('This public board collection could not be found.');
         return;
       }
       this.atlas.set(atlas);
       this.titleService.setTitle(`Boards for ${this.cityName()} | LivingWiki`);
       this.boardsLoading.set(true);
       try {
-        const boards = await this.listingsService.list(atlas.id);
+        const boards = await this.listingsService.list(atlas.id, {
+          targetKind: atlas.wiki_type === 'university' || atlas.university_config?.enabled === true
+            ? 'university'
+            : 'city',
+        });
         if (sequence !== this.loadSequence) return;
         this.boards.set(boards);
         this.selectedFeaturedId.set(selectFeaturedCityBoards(boards, 5)[0]?.id ?? '');
@@ -300,14 +325,14 @@ export class CityBoardCollectionComponent implements OnDestroy {
         if (this.isBrowser) window.setTimeout(() => this.syncAllRails(), 80);
       } catch {
         if (sequence === this.loadSequence) {
-          this.boardsError.set('The city board library is temporarily unavailable.');
+          this.boardsError.set('The board library is temporarily unavailable.');
         }
       } finally {
         if (sequence === this.loadSequence) this.boardsLoading.set(false);
       }
     } catch {
       if (sequence === this.loadSequence) {
-        this.atlasError.set('This city is temporarily unavailable.');
+        this.atlasError.set('This board collection is temporarily unavailable.');
       }
     } finally {
       if (sequence === this.loadSequence) this.atlasLoading.set(false);

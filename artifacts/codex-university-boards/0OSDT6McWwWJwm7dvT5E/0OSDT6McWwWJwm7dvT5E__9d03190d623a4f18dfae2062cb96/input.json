@@ -1,0 +1,40 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "5U4BI3DRo2pu5fQQG3pV",
+    "schoolName": "Adelphi University",
+    "shortSchoolName": "Adelphi University",
+    "townName": "Garden City",
+    "state": "NY",
+    "countryCode": "US",
+    "unitId": "188429",
+    "website": "https://www.adelphi.edu/",
+    "latitude": 40.721439,
+    "longitude": -73.653321,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Adelphi_University_Seal.svg/250px-Adelphi_University_Seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=adelphi.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

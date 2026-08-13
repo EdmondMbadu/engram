@@ -803,16 +803,16 @@
                   <p class="chat-helper-line">{{ composerHelperText() }}</p>
                 </div>
 
-                @if (isCityBoardPage() && (cityBoardsLoading() || cityBoards().length > 0)) {
+                @if (isBoardShelfPage() && (cityBoardsLoading() || cityBoards().length > 0)) {
                   <section class="city-board-shelf" [attr.aria-label]="cityBoardsHeading()">
                     <header class="city-board-shelf__header">
                       <div>
                         <span class="city-board-shelf__eyebrow">
                           <span class="material-symbols-outlined" aria-hidden="true">explore</span>
-                          <span>Explore the city</span>
+                          <span>{{ boardShelfEyebrow() }}</span>
                         </span>
                         <h2>{{ cityBoardsHeading() }}</h2>
-                        <p>Curated collections from people who know this place.</p>
+                        <p>{{ boardShelfDescription() }}</p>
                       </div>
                       @if (!cityBoardsLoading() && cityBoards().length > 0 && cityBoardsCollectionLink(); as collectionLink) {
                         <a class="city-board-shelf__view-all" [routerLink]="collectionLink">
@@ -823,7 +823,7 @@
                     </header>
 
                     @if (cityBoardsLoading()) {
-                      <div class="city-board-grid" aria-busy="true" aria-label="Loading city boards">
+                      <div class="city-board-grid" aria-busy="true" aria-label="Loading boards">
                         @for (item of [1, 2, 3, 4]; track item) {
                           <div class="city-board-card city-board-card--skeleton" aria-hidden="true">
                             <span class="city-board-card__skeleton-media"></span>
@@ -865,7 +865,7 @@
                           <span class="city-board-shelf__collection-mark material-symbols-outlined" aria-hidden="true">view_carousel</span>
                           <span>
                             <strong>Explore every {{ currentWikiName() }} board</strong>
-                            <small>Browse featured collections and topics</small>
+                            <small>{{ isUniversityPage() ? 'Browse all campus and college-town collections' : 'Browse featured collections and topics' }}</small>
                           </span>
                           <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
                         </a>

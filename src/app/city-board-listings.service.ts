@@ -101,7 +101,10 @@ export class CityBoardListingsService {
     ? getFirebaseFunctions()
     : null;
 
-  async list(atlasId: string): Promise<CityBoardListing[]> {
+  async list(
+    atlasId: string,
+    options: { targetKind?: 'city' | 'university' } = {},
+  ): Promise<CityBoardListing[]> {
     const normalizedAtlasId = atlasId.trim();
     if (!normalizedAtlasId || !this.firestore || !this.functions) return [];
     try {
@@ -114,7 +117,7 @@ export class CityBoardListingsService {
         id: document.id,
         data: document.data(),
       })));
-      if (projected.length) return projected;
+      if (projected.length || options.targetKind === 'university') return projected;
     } catch {
       // Fall through to the callable migration bridge. This also keeps the city
       // page useful during the short rules/functions rollout window.

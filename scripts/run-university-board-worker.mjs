@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { constants as fsConstants } from 'node:fs';
 import path from 'node:path';
+import { enrichUniversityBoardImages } from './lib/university-board-images.mjs';
 
 const require = createRequire(import.meta.url);
 const admin = require('../functions/node_modules/firebase-admin');
@@ -23,18 +24,23 @@ const valueAfter = (flag) => {
 const has = (flag) => args.includes(flag);
 const apply = has('--apply');
 const resume = has('--resume');
+const artifactOnly = has('--artifact-only');
+const regenerate = has('--regenerate');
 const reuseDossiers = has('--reuse-dossiers') || resume;
 const skipSourceCheck = has('--skip-source-check');
 const limit = Math.max(1, Math.min(100, Number.parseInt(valueAfter('--limit') || '1', 10)));
 const requestedJobId = valueAfter('--job');
 const requestedItemId = valueAfter('--item');
+const generationEngine = valueAfter('--generation-engine') || 'codex_local';
 const outputRoot = path.resolve(valueAfter('--output-dir') || 'artifacts/codex-university-boards');
 const projectId = process.env.FIREBASE_PROJECT_ID || 'living-atlas-7622a';
 const knownCodexBinary = '/Applications/ChatGPT.app/Contents/Resources/codex';
 const dossierSchemaPath = path.resolve('scripts/schemas/university-research-dossier.schema.json');
 const boardSchemaPath = path.resolve('scripts/schemas/university-board.schema.json');
-const workerVersion = 'codex-university-1.0.0';
+const workerVersion = generationEngine === 'gemini' ? 'gemini-university-1.0.0' : 'codex-university-1.0.0';
 const scoreThreshold = 70;
+const storageBucket = process.env.FIREBASE_STORAGE_BUCKET || `${projectId}.firebasestorage.app`;
+const functionsBaseUrl = `https://us-central1-${projectId}.cloudfunctions.net`;
 
 if (has('--help') || has('-h')) {
   process.stdout.write([
@@ -50,6 +56,9 @@ if (has('--help') || has('-h')) {
     '  --apply                 Save passing private boards and update job progress',
     '  --reuse-dossiers        Reuse a valid university-wide research dossier',
     '  --resume                Reuse both dossier and existing per-item board artifact',
+    '  --artifact-only         Validate the resumed board artifact without invoking Codex',
+    '  --generation-engine ID  Label saved boards/audit with the actual generator',
+    '  --regenerate            Replace an existing private review board when the new score improves it',
     '  --output-dir PATH       Store audit artifacts at PATH',
     '  --skip-source-check     Diagnostic only; skip live source reachability checks',
     '  -h, --help              Show this help',
@@ -133,7 +142,7 @@ async function runCodex(prompt, schemaPath, outputPath, logPath) {
 
 function dossierPrompt(inputPath, outputPath) {
   return [
-    `Read the university target at ${inputPath}. Build a reusable, source-backed research dossier and write the structured result to ${outputPath}.`,
+    `Read the university target at ${inputPath}. Build a reusable, source-backed research dossier. Return only the structured dossier as your final response; the Codex CLI captures it at ${outputPath}, so do not use shell commands or file-editing tools to write that path.`,
     'Research all seven template buckets listed in the input. Aim for 45–70 defensible evidence records so later boards can avoid repeating the same subjects.',
     'Use web research. Prefer official university, library, dining, student-affairs, campus-map, alumni, government, cultural-institution, direct business, and established student-media sources.',
     'Search results and reviews are discovery leads only. Do not use snippets, Reddit, anonymous posts, SEO listicles, scraped directories, or Google Maps as proof of the central claim.',
@@ -148,14 +157,22 @@ function dossierPrompt(inputPath, outputPath) {
 function boardPrompt(inputPath, dossierPath, template, exactTitle) {
   return [
     `Read the generation input at ${inputPath} and the reusable research dossier at ${dossierPath}.`,
+    'Return only the structured board as your final response. The Codex CLI captures it automatically; do not use shell commands or file-editing tools to write the output.',
     `Create exactly one LivingWiki university board for template ${template.id}. Exact title: ${exactTitle}.`,
     template.editorialBrief,
     `Allowed subject types: ${template.allowedSubjectTypes.join(', ')}. Use exactly 10 distinct subjects and icon ${template.icon}.`,
     'Every card needs one direct HTTPS source supporting its evidence_claim. Prefer dossier evidence, but use fresh web research when the dossier cannot defensibly fill all ten slots.',
     'A source proves only what it says. Do not infer current hours, price, access, popularity, student habits, school affiliation, uniqueness, safety, or tradition origins.',
     'Write specific, compact, useful copy. Avoid rankings, “best,” hidden-gem language, generic praise, stereotypes, brochure copy, and claims that every student behaves the same way.',
+    'Each card notes field must be a useful 80–180 character action-oriented explanation, not a short label or disclaimer. Keep the short_summary distinct from the notes.',
     'Keep the exact entity name recognizable. For non-place subjects, latitude, longitude, and maps_url may be null. Never fabricate coordinates.',
+    'Every selected subject must also be visually documentable: choose a named place, event, object, artwork, or tradition with an exact attributable photo on an official source, established local/student publication, Google Places listing, or Wikimedia Commons. Avoid generic concepts, micro-spaces, and ambiguous names whose only likely images are logos, banners, stock art, or unrelated namesakes.',
+    template.id === 'college-blocks-off-campus'
+      ? 'For this blocks-off-campus board, anchor every card to one clearly named, map-listed destination on or immediately beside the block (park, cafe, shop, library, museum, theater, market, or civic site). Put the block/corridor in the subtitle and notes. Never use a bare intersection, generic street segment, unnamed civic block, or corridor as the entity unless its exact source page visibly contains an attributable photograph.'
+      : '',
     'All content must be under-21-safe. Set complete=false rather than filling a weak slot. Return no more than ten cards and never duplicate a subject under a different title.',
+    'The generation input contains excluded_subjects already used by other boards for this university. Do not use any excluded subject, close alias, or the same place/activity reframed under another title.',
+    'The generation input may contain excluded_source_urls that failed live validation. Never cite those URLs; find a current direct replacement or choose a different subject.',
   ].join(' ');
 }
 
@@ -195,6 +212,16 @@ async function crossBoardOverlap(atlasId, templateId, cards) {
     .map((card) => clean(card.entity_name, 160))
     .filter((name) => existing.has(normalizedIdentity(name)));
   return [...new Set(overlapping)];
+}
+
+async function excludedSubjects(atlasId, templateId) {
+  const snapshot = await db.collection('boards').where('atlas_id', '==', atlasId).limit(80).get();
+  const subjects = snapshot.docs.flatMap((document) => {
+    const board = document.data();
+    if (board.deleted_at || board.template_id === templateId || !Array.isArray(board.cards)) return [];
+    return board.cards.map((card) => clean(card?.entityName || card?.entity_name, 160)).filter(Boolean);
+  });
+  return [...new Map(subjects.map((subject) => [normalizedIdentity(subject), subject])).values()].slice(0, 120);
 }
 
 async function validateArtifact(artifact, target, template) {
@@ -278,7 +305,7 @@ function cardPayload(card, index, now, target) {
     externalPlaceId: '', googleMapsUrl: clean(card.maps_url, 2_000), locationLat: latitude, locationLng: longitude,
     sourceUrl, sourceTitle: clean(card.source_title, 240), productUrl: '', merchant: '', price: '', currency: '', sku: '', availability: '', productCategory: '',
     extractionConfidence: 1, extractedAt: now, what3wordsAddress: '',
-    tags: [`rank-${index + 1}`, 'source-backed', 'codex-researched', subjectType, slug(target.shortSchoolName)].filter(Boolean).slice(0, 8),
+    tags: [`rank-${index + 1}`, 'source-backed', `${generationEngine}-researched`, subjectType, slug(target.shortSchoolName)].filter(Boolean).slice(0, 8),
     stickers: [], tour: null, childBoardId: '', relatedCards: [], createdAt: now, updatedAt: now,
   };
 }
@@ -291,13 +318,13 @@ function boardPayload(artifact, validation, target, template, jobId, itemId, her
     id: boardIdFor(key), kind: 'standard', sortOrder: Date.now(), owner_user_id: 'livingwiki-system', owner_public_slug: 'livingwiki', owner_display_name: 'LivingWiki', owner_photo_url: '', owner_profile_icon: 'school', owner_profile_picture_type: 'icon',
     forkedFromBoardId: '', forkedFromTitle: '', forkedFromOwnerUserId: '', forkedFromOwnerName: '',
     visibility: 'private', title: clean(artifact.title, 100), description: clean(artifact.description, 240),
-    backNote: 'Researched with Codex from direct public sources. Every card retains its evidence source. Editorial review is required before publishing.',
+    backNote: `Researched with ${generationEngine === 'gemini' ? 'Gemini' : 'Codex'} from direct public sources. Every card retains its evidence source. Editorial review is required before publishing.`,
     icon: template.icon, tone: 'teal', imageUrl: clean(heroUrl, 2_000), logoUrl: '', logoLinkUrl: '', stackCtaLabel: '', stackCtaUrl: '',
     socialVideoUrl: '', socialVideoMimeType: '', socialVideoUpdatedAt: '', socialVideoRenderVersion: '', socialVideoRatio: 'vertical', socialVideoAudioTrackId: '', socialVideoAudioVolume: 0.18, socialVideoNarrationEnabled: true,
     trailerVideoUrl: '', trailerVideoMimeType: '', trailerVideoUpdatedAt: '', trailerVideoRenderVersion: '', trailerVideoRatio: 'vertical', trailerVideoAudioTrackId: '', trailerVideoAudioVolume: 0.18, trailerVideoNarrationEnabled: true, trailerVideoScript: '', trailerVideoSourceFingerprint: '', trailerVideoCardIds: [], trailerVideoDurationSeconds: 0,
     narrationStyle: 'storyteller', stackNarratorVoiceId: 'warm-storyteller', stickers: [], tourMeta: null, learningQuiz: null, parentBoardId: '', parentCardId: '', parentBoardTitle: '', parentCardTitle: '', insideCardsDisplay: 'nested', showCardNumbers: true,
     cards, atlas_id: target.atlasId, generated_for_atlas_id: target.atlasId, target_kind: 'university', origin: 'bulk_generator', publisher_type: 'livingwiki',
-    generation_engine: 'codex_local', generation_job_id: jobId, generation_item_id: itemId, generation_key: key, generator_version: workerVersion, template_id: template.id, template_version: template.version, rubric_version: 'university-1.0',
+    generation_engine: generationEngine, generation_job_id: jobId, generation_item_id: itemId, generation_key: key, generator_version: workerVersion, template_id: template.id, template_version: template.version, rubric_version: 'university-1.0',
     school_name: target.schoolName, short_school_name: target.shortSchoolName, town_name: target.townName, state: target.state, unit_id: target.unitId,
     editorial_status: 'needs_review', city_listing_status: 'pending', source_status: 'excluded',
     quality_status: validation.warnings.length ? 'warnings' : 'passed', quality_warnings: validation.warnings,
@@ -317,6 +344,45 @@ function boardPayload(artifact, validation, target, template, jobId, itemId, her
     generation_score: scoring.score, generation_grade: scoring.grade, generation_score_breakdown: scoring.breakdown,
     generation_score_reasons: scoring.reasons, generation_scored_at: scoring.scoredAt, generation_score_rubric_version: scoring.rubricVersion,
   };
+}
+
+async function googlePlacesApiKey() {
+  const configured = clean(process.env.GOOGLE_PLACES_API_KEY, 2_000);
+  if (configured) return configured;
+  try {
+    const result = await new Promise((resolve, reject) => {
+      const child = spawn('gcloud', ['secrets', 'versions', 'access', 'latest', '--secret', 'GOOGLE_PLACES_API_KEY', '--project', projectId], {
+        cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      const stdout = [];
+      child.stdout.on('data', (chunk) => stdout.push(Buffer.from(chunk)));
+      child.on('error', reject);
+      child.on('exit', (code) => resolve({ code, value: Buffer.concat(stdout).toString('utf8').trim() }));
+    });
+    return result.code === 0 ? clean(result.value, 2_000) : '';
+  } catch {
+    return '';
+  }
+}
+
+
+async function gcloudSecret(name) {
+  const configured = clean(process.env[name], 2_000);
+  if (configured) return configured;
+  try {
+    const result = await new Promise((resolve, reject) => {
+      const child = spawn('gcloud', ['secrets', 'versions', 'access', 'latest', '--secret', name, '--project', projectId], {
+        cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      const stdout = [];
+      child.stdout.on('data', (chunk) => stdout.push(Buffer.from(chunk)));
+      child.on('error', reject);
+      child.on('exit', (code) => resolve({ code, value: Buffer.concat(stdout).toString('utf8').trim() }));
+    });
+    return result.code === 0 ? clean(result.value, 2_000) : '';
+  } catch {
+    return '';
+  }
 }
 
 async function latestUniversityJobId() {
@@ -458,12 +524,20 @@ async function writeBoard(payload, item, target, template, artifactPath, validat
     ]);
     if (job.data()?.cancel_requested === true) return 'cancelled';
     if (suppression.exists && suppression.data()?.active !== false) return 'suppressed';
-    if (board.exists && !board.data()?.deleted_at) return 'existing';
+    if (board.exists && !board.data()?.deleted_at) {
+      const current = board.data() || {};
+      const replaceable = regenerate
+        && current.visibility === 'private'
+        && current.editorial_status === 'needs_review'
+        && current.generation_key === payload.generation_key
+        && payload.generation_score > (Number(current.generation_score) || 0);
+      if (!replaceable) return 'existing';
+    }
     transaction.set(boardRef, payload);
     transaction.set(db.collection('board_generation_audit').doc(), {
-      action: 'codex_university_generate_for_review', board_id: payload.id, atlas_id: target.atlasId,
+      action: `${generationEngine}_university_generate_for_review`, board_id: payload.id, atlas_id: target.atlasId,
       job_id: clean(item.data.job_id, 180), item_id: item.id, template_id: template.id,
-      actor_user_id: 'livingwiki-system', target_kind: 'university', generation_engine: 'codex_local',
+      actor_user_id: 'livingwiki-system', target_kind: 'university', generation_engine: generationEngine,
       generator_version: workerVersion, generation_score: payload.generation_score,
       artifact_path: artifactPath, validation_path: validationPath, created_at: FieldValue.serverTimestamp(),
     });
@@ -485,7 +559,7 @@ async function processItem(item) {
     await finishItem(item, 'suppressed', { generation_key: key });
     return { itemId: item.id, school: target.shortSchoolName, template: template.id, status: 'suppressed' };
   }
-  if (existingBoard.exists && !existingBoard.data()?.deleted_at) {
+  if (existingBoard.exists && !existingBoard.data()?.deleted_at && !regenerate) {
     await finishItem(item, 'skipped_existing', { board_id: existingBoard.id, generation_key: key });
     return { itemId: item.id, school: target.shortSchoolName, template: template.id, status: 'existing', boardId: existingBoard.id };
   }
@@ -496,16 +570,72 @@ async function processItem(item) {
   const validationPath = path.join(targetDir, 'validation.json');
   const logPath = path.join(targetDir, 'codex.log');
   const exactTitle = renderUniversityBoardTitle(template, target.shortSchoolName, target.townName);
-  await writeFile(inputPath, `${JSON.stringify({ current_date: new Date().toISOString().slice(0, 10), target, template, exact_title: exactTitle }, null, 2)}\n`, 'utf8');
-  const { dossierPath } = await ensureDossier(target, item.data.template, targetDir);
-  let shouldGenerate = true;
-  if (resume) {
-    try { await readFile(artifactPath, 'utf8'); shouldGenerate = false; } catch { shouldGenerate = true; }
+  const excluded = await excludedSubjects(target.atlasId, template.id);
+  let excludedSourceUrls = [];
+  try {
+    const previousValidation = await readJson(validationPath);
+    excludedSourceUrls = (previousValidation?.reachability || [])
+      .filter((entry) => entry?.conclusive === true && entry?.ok === false)
+      .map((entry) => clean(entry?.url, 2_000))
+      .filter(Boolean);
+  } catch { /* no prior validation */ }
+  let dossierPath = path.join(outputRoot, 'dossiers', `${target.atlasId}.json`);
+  if (!artifactOnly) {
+    ({ dossierPath } = await ensureDossier(target, item.data.template, targetDir));
+  } else {
+    try {
+      await readFile(artifactPath, 'utf8');
+    } catch {
+      throw new Error(`--artifact-only requires an existing board artifact at ${artifactPath}.`);
+    }
   }
-  if (shouldGenerate) await runCodex(boardPrompt(inputPath, dossierPath, template, exactTitle), boardSchemaPath, artifactPath, logPath);
-  const artifact = await readJson(artifactPath);
-  const validation = await validateArtifact(artifact, target, template);
-  const payload = validation.ok ? boardPayload(artifact, validation, target, template, clean(item.data.job_id, 180), item.id, target.heroUrl) : null;
+  const imageOptions = {
+    admin, bucketName: storageBucket, functionsBaseUrl,
+    googlePlacesApiKey: await googlePlacesApiKey(),
+    googleCustomSearchApiKey: await gcloudSecret('GOOGLE_CUSTOM_SEARCH_API_KEY'),
+    googleCustomSearchCx: process.env.GOOGLE_CUSTOM_SEARCH_CX || 'f5a12e50537f14b83',
+  };
+  let validation;
+  let payload = null;
+  let imageRetrySubjects = [];
+  const maximumImageAttempts = artifactOnly ? 1 : 3;
+  for (let imageAttempt = 1; imageAttempt <= maximumImageAttempts; imageAttempt += 1) {
+    await writeFile(inputPath, `${JSON.stringify({
+      current_date: new Date().toISOString().slice(0, 10), target, template,
+      exact_title: exactTitle,
+      excluded_subjects: [...new Set([...excluded, ...imageRetrySubjects])],
+      excluded_source_urls: excludedSourceUrls,
+      image_retry_attempt: imageAttempt,
+    }, null, 2)}\n`, 'utf8');
+    let shouldGenerate = true;
+    if (resume && imageAttempt === 1) {
+      try { await readFile(artifactPath, 'utf8'); shouldGenerate = false; } catch { shouldGenerate = true; }
+    }
+    if (shouldGenerate) {
+      const attemptLogPath = imageAttempt === 1 ? logPath : path.join(targetDir, `codex-image-retry-${imageAttempt}.log`);
+      await runCodex(boardPrompt(inputPath, dossierPath, template, exactTitle), boardSchemaPath, artifactPath, attemptLogPath);
+    }
+    const artifact = await readJson(artifactPath);
+    validation = await validateArtifact(artifact, target, template);
+    payload = validation.ok ? boardPayload(artifact, validation, target, template, clean(item.data.job_id, 180), item.id, target.heroUrl) : null;
+    if (!payload) break;
+    const imageResult = await enrichUniversityBoardImages(payload, target, imageOptions);
+    if (imageResult.ok) {
+      payload = imageResult.board;
+      break;
+    }
+    const failedIndexes = new Set(imageResult.failures.map((failure) => Number.parseInt(failure, 10) - 1).filter((index) => index >= 0));
+    const failedEntities = artifact.cards
+      .filter((_, index) => failedIndexes.has(index))
+      .map((card) => clean(card?.entity_name, 160))
+      .filter(Boolean);
+    imageRetrySubjects = [...new Set([...imageRetrySubjects, ...failedEntities])];
+    payload = null;
+    if (imageAttempt === maximumImageAttempts) {
+      validation.ok = false;
+      validation.problems.push(`Every card needs a validated image. Missing after ${maximumImageAttempts} attempt(s): ${imageResult.failures.join(', ')}.`);
+    }
+  }
   if (payload && payload.generation_score < scoreThreshold) {
     validation.ok = false;
     validation.problems.push(`Generation score ${payload.generation_score}/100 is below the ${scoreThreshold} publish-review threshold.`);
@@ -549,6 +679,7 @@ async function main() {
       summary.results.push(result);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
+      summary.completed += 1;
       summary.rejected += 1;
       summary.results.push({ itemId: item.id, status: 'error', error: message });
       await finishItem(item, 'failed', { error_code: 'codex-worker-failed', error_message: message.slice(0, 1_000) });

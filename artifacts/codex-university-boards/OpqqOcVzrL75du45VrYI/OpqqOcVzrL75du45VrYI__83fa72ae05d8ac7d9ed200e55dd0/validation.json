@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.phila.gov/media/20190517161458/Philadelphia-30th-Street-Station-District-Plan-2016.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phila.gov/media/20190517161458/Philadelphia-30th-Street-Station-District-Plan-2016.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://drexel.edu/university-recreation/reccenter/fitness-floors/facilities/vidas-athletic-complex",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://drexel.edu/university-recreation/reccenter/fitness-floors/facilities/vidas-athletic-complex",
+      "error": ""
+    },
+    {
+      "url": "https://www.universitycity.org/stroll/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.universitycity.org/stroll/",
+      "error": ""
+    },
+    {
+      "url": "https://www.phila.gov/media/20220520145523/Bike-Map-0520-Spanish.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phila.gov/media/20220520145523/Bike-Map-0520-Spanish.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://schuylkillyards.com/experience",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://schuylkillyards.com/experience",
+      "error": ""
+    },
+    {
+      "url": "https://ucitysquare.com/about/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ucitysquare.com/about/",
+      "error": ""
+    },
+    {
+      "url": "https://www.phila.gov/programs/complete-streets/projects/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phila.gov/programs/complete-streets/projects/",
+      "error": ""
+    },
+    {
+      "url": "https://www.universitycity.org/press/a-look-at-the-old-timers-on-university-citys-vibrant-40th-street-corridor/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.universitycity.org/press/a-look-at-the-old-timers-on-university-citys-vibrant-40th-street-corridor/",
+      "error": ""
+    },
+    {
+      "url": "https://www.phila.gov/programs/complete-streets/projects/woodland-42nd-va/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phila.gov/programs/complete-streets/projects/woodland-42nd-va/",
+      "error": ""
+    },
+    {
+      "url": "https://www.phila.gov/2024-05-03-city-celebrates-bicycle-safety-month-by-launching-visual-recap-of-2023-bicycle-network-changes-and-announcing-multiple-events/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.phila.gov/2024-05-03-city-celebrates-bicycle-safety-month-by-launching-visual-recap-of-2023-bicycle-network-changes-and-announcing-multiple-events/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 97,
+  "generationGrade": "A"
+}

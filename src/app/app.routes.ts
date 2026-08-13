@@ -145,7 +145,7 @@ export const routes: Routes = [
   {
     path: 'chat/:slug/boards',
     loadComponent: () => import('./city-board-collection/city-board-collection').then((m) => m.CityBoardCollectionComponent),
-    title: 'City Boards | LivingWiki',
+    title: 'Boards | LivingWiki',
   },
   { path: 'chat/:slug', component: ChatComponent, title: $localize`Chat | LivingWiki` },
   { path: 'chat', component: ChatComponent, title: $localize`Chat | LivingWiki`, canActivate: [authGuard] },

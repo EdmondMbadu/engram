@@ -1,0 +1,62 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "0CwHLxhPS5m7gSNlFvWc",
+    "schoolName": "Fairfield University",
+    "shortSchoolName": "Fairfield University",
+    "townName": "Fairfield",
+    "state": "CT",
+    "countryCode": "US",
+    "unitId": "129242",
+    "website": "https://fairfield.edu/",
+    "latitude": 41.157673,
+    "longitude": -73.255903,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Fairfield_University_seal.svg/250px-Fairfield_University_seal.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=fairfield.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Post Road at the Fairfield University Store",
+    "Brick Walk",
+    "Post Road at Sherman Green",
+    "Fairfield Station area",
+    "Old Post Road at Fairfield Public Library",
+    "Museum Commons and Town Green",
+    "Beach Road at Fairfield Museum",
+    "Sanford Street at Fairfield Theatre Company",
+    "Unquowa Road at Birdcraft",
+    "Fairfield Woods Road at the Branch Library",
+    "Colony Grill Fairfield",
+    "Domino's Pizza, 1580 Post Road",
+    "Planet Pizza Fairfield",
+    "McDonald's, 536 Post Road",
+    "The Levee",
+    "Tai Jiang",
+    "Quattro Pazzi",
+    "Taj - Indian Cuisine",
+    "Fin Japanese Restaurant",
+    "Lantern Point Taverna",
+    "Teddy Bears with Love Drive",
+    "Commencement weekend sequence"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 2
+}

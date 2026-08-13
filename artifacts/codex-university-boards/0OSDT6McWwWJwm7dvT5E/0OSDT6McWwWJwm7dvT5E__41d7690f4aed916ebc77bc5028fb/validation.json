@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/admission-aid/new-students/orientation",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/admission-aid/new-students/orientation",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/old-main",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/old-main",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/admission/choose/traditions.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/admission/choose/traditions.php",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/dining",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/dining",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/cao/reservations.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/campus-activities-office/services-campus-activities-office",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/arboretum/visit-arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/arboretum/visit-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/arboretum/about.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/arboretum/about-arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://www.saintpetermn.gov/101/Community",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.saintpetermn.gov/101/Community",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 98,
+  "generationGrade": "A"
+}

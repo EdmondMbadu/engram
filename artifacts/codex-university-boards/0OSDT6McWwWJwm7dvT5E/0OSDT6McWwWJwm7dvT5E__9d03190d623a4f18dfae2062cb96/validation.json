@@ -1,0 +1,100 @@
+{
+  "ok": false,
+  "problems": [
+    "Writer marked the board incomplete.",
+    "4 source URL(s) returned a conclusive broken response."
+  ],
+  "warnings": [
+    "The dossier contains exactly 70 distinct subjects and exactly 10 records for each canonical template ID.",
+    "complete is false because several late-night business pages expose location-specific hours dynamically or may change without notice; those records conservatively require live confirmation before travel.",
+    "The input file states current_date 2026-08-13, while the execution environment states 2026-08-12; source_fetched_at and researched_at use the environment date as requested.",
+    "Coordinates were left null where exact subject-level coordinates were not verified from an authoritative direct source; map-search URLs are supplied for visual documentation and disambiguation.",
+    "Free-activity claims are narrowly limited to activities requiring neither admission nor purchase; parking, transportation, optional services, special programs or ticketed interiors may still cost money."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.gardencityny.net/164/Recreation-Parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.gardencityny.net/164/Organizational-Chart",
+      "error": ""
+    },
+    {
+      "url": "https://nassaumuseum.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://nassaumuseum.org/plan-your-visit/",
+      "error": ""
+    },
+    {
+      "url": "https://parks.ny.gov/parks/hempsteadlake",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://parks.ny.gov/visit/state-parks/hempstead-lake-state-park",
+      "error": ""
+    },
+    {
+      "url": "https://www.northhempsteadny.gov/clarkbotanicgarden",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.northhempsteadny.gov/clarkbotanicgarden",
+      "error": ""
+    },
+    {
+      "url": "https://www.gardencitypl.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gardencitypl.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.nassaucountyny.gov/2797/Eisenhower-Park",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nassaucountyny.gov/2797/Eisenhower-Park",
+      "error": ""
+    },
+    {
+      "url": "https://www.adelphi.edu/uc/explore/",
+      "ok": false,
+      "conclusive": true,
+      "status": 503,
+      "finalUrl": "https://www.adelphi.edu/uc/explore/",
+      "error": ""
+    },
+    {
+      "url": "https://www.adelphi.edu/pac/visual-arts/",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.adelphi.edu/pac/visual-arts/",
+      "error": ""
+    },
+    {
+      "url": "https://www.incarnationgc.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.incarnationgc.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.cradleofaviation.org/plan_your_visit/index.html",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.cradleofaviation.org/plan_your_visit/index.html",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": null,
+  "generationGrade": null
+}

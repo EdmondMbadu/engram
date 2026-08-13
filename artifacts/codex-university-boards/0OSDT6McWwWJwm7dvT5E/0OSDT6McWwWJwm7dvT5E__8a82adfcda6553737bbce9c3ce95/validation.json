@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://www.fairfield.edu/student-life/campus-services/transportation-and-parking/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/student-life/campus-services/transportation-and-parking/",
+      "error": ""
+    },
+    {
+      "url": "https://www.experiencefairfieldct.org/sidewalk-sale",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.experiencefairfieldct.org/sidewalk-sale",
+      "error": ""
+    },
+    {
+      "url": "https://fairfieldpubliclibrary.org/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fairfieldpubliclibrary.org/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfieldhistory.org/about/museum-commons-town-green/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfieldhistory.org/about/museum-commons-town-green/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfieldhistory.org/visit/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfieldhistory.org/visit/",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfieldtheatre.org/venue/info",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfieldtheatre.org/venue/info",
+      "error": ""
+    },
+    {
+      "url": "https://ctaudubon.org/locations/birdcraft-museum-and-sanctuary/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://ctaudubon.org/locations/birdcraft-museum-and-sanctuary/",
+      "error": ""
+    },
+    {
+      "url": "https://fairfieldpubliclibrary.org/blog/branch/branch-library/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://fairfieldpubliclibrary.org/blog/branch/branch-library/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 8,
+  "generationScore": 96,
+  "generationGrade": "A"
+}

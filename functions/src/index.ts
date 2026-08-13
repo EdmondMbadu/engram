@@ -19853,6 +19853,18 @@ function globalUniversityBoardCatalogStatus(
         ? board.validation_summary as Record<string, unknown>
         : {};
       const score = Number(board.generation_score);
+      const imageFingerprints = new Set(cards.map((card) => textFromUnknown(
+        (card as Record<string, unknown>)?.imageFingerprint,
+      )).filter(Boolean));
+      const imagesValidated = cards.every((card) => {
+        const universityCard = card as Record<string, unknown>;
+        return textFromUnknown(universityCard.imageUrl).includes('firebasestorage.googleapis.com')
+          && !!textFromUnknown(universityCard.imageSourceUrl)
+          && !!textFromUnknown(universityCard.imageFingerprint);
+      }) && imageFingerprints.size === cards.length
+        && validation.all_have_images === true
+        && Number(validation.image_count) === template.count
+        && Number(validation.unique_image_count) === template.count;
       const structurallyValid = cards.length === template.count
         && Number(validation.requested_count) === template.count
         && Number(validation.verified_count) === template.count
@@ -19863,7 +19875,8 @@ function globalUniversityBoardCatalogStatus(
         && textFromUnknown(board.template_id) === template.id
         && textFromUnknown(board.template_version) === template.version
         && Number.isFinite(score)
-        && score >= 70;
+        && score >= 70
+        && imagesValidated;
       if (!structurallyValid) {
         status.invalidCount += 1;
       } else if (board.editorial_status === 'published'
@@ -20076,6 +20089,7 @@ export const getUniversityBoardAdminDashboard = onCall(
         ? data.generation_score_reasons.map((reason) => textFromUnknown(reason)).filter(Boolean).slice(0, 12)
         : [],
       validation_summary: data.validation_summary ?? null,
+      paid_artifact_recovery: data.paid_artifact_recovery === true,
       visibility: textFromUnknown(data.visibility),
       card_count: Array.isArray(data.cards) ? data.cards.length : 0,
       created_at: data.created_at_iso ?? data.created_at,
@@ -20834,6 +20848,20 @@ function cityBoardPublishFailure(board: Record<string, unknown>): string {
     if (cards.some((card) => !(card as Record<string, unknown>)?.under21Safe)) {
       return 'This university board has not passed the under-21 safety check.';
     }
+    const imageFingerprints = new Set(cards.map((card) => textFromUnknown(
+      (card as Record<string, unknown>)?.imageFingerprint,
+    )).filter(Boolean));
+    if (cards.some((card) => {
+      const universityCard = card as Record<string, unknown>;
+      return !textFromUnknown(universityCard.imageUrl)
+        || !textFromUnknown(universityCard.imageSourceUrl)
+        || !textFromUnknown(universityCard.imageFingerprint);
+    }) || imageFingerprints.size !== cards.length) {
+      return 'Every university card needs a distinct validated image with source provenance.';
+    }
+    if (summary.all_have_images !== true || Number(summary.image_count) !== cards.length) {
+      return 'This university board has not passed complete image validation.';
+    }
   }
   return '';
 }
@@ -21311,7 +21339,7 @@ export const listPublicCityBoards = onCall(
   async (request) => {
     const atlasId = textFromUnknown(request.data?.atlasId).slice(0, 180);
     if (!atlasId) {
-      throw new HttpsError('invalid-argument', 'A city atlas ID is required.');
+      throw new HttpsError('invalid-argument', 'A public atlas ID is required.');
     }
 
     const atlasSnapshot = await db.collection('atlases').doc(atlasId).get();
@@ -21319,8 +21347,14 @@ export const listPublicCityBoards = onCall(
     const cityConfig = atlas?.city_config && typeof atlas.city_config === 'object'
       ? atlas.city_config as Record<string, unknown>
       : null;
-    if (!atlasSnapshot.exists || atlas?.is_public !== true || cityConfig?.enabled !== true) {
-      throw new HttpsError('not-found', 'The public city atlas was not found.');
+    const universityConfig = atlas?.university_config && typeof atlas.university_config === 'object'
+      ? atlas.university_config as Record<string, unknown>
+      : null;
+    const supportsBoardCollection = cityConfig?.enabled === true
+      || atlas?.wiki_type === 'university'
+      || universityConfig?.enabled === true;
+    if (!atlasSnapshot.exists || atlas?.is_public !== true || !supportsBoardCollection) {
+      throw new HttpsError('not-found', 'The public atlas was not found.');
     }
 
     // This callable is both a migration bridge for boards published before the

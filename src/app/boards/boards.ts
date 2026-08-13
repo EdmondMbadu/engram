@@ -3,7 +3,7 @@ import { Component, computed, effect, ElementRef, HostListener, inject, LOCALE_I
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
-import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where, writeBatch, type Firestore, type Unsubscribe } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, limit, onSnapshot, query, serverTimestamp, setDoc, startAfter, updateDoc, where, writeBatch, type DocumentData, type Firestore, type QueryConstraint, type QueryDocumentSnapshot, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
@@ -30,6 +30,12 @@ import {
   LOCALE_STORAGE_KEY,
   supportedLocale,
 } from '../i18n/locales';
+import {
+  DEFAULT_INCREMENTAL_PAGE_SIZE,
+  incrementalSlice,
+  incrementalViewportNearEnd,
+  nextIncrementalLimit,
+} from '../incremental-pagination';
 import {
   applyBoardTranslation,
   BOARD_TRANSLATION_LANGUAGES,
@@ -1225,6 +1231,14 @@ const STACK_LINK_SHARE_TARGETS: Array<{ id: StackLinkShareTarget; label: string;
 ];
 
 const STACK_VIDEO_MAX_CARDS = 30;
+const BOARD_GALLERY_PAGE_SIZE = DEFAULT_INCREMENTAL_PAGE_SIZE;
+
+type BoardLoadContext = {
+  uid: string;
+  publicOwnerUid: string | null;
+  publicOwnerSlug: string | null;
+  publicOwnerRouteActive: boolean;
+};
 
 @Component({
   selector: 'app-boards',
@@ -1260,6 +1274,7 @@ export class BoardsComponent implements OnDestroy {
   private shareMessageTimer: ReturnType<typeof setTimeout> | null = null;
   private stackShareMessageTimer: ReturnType<typeof setTimeout> | null = null;
   private boardFriendSearchTimer: ReturnType<typeof setTimeout> | null = null;
+  private boardSearchTimer: ReturnType<typeof setTimeout> | null = null;
   private boardFriendSearchRun = 0;
   private tourMapElement: HTMLElement | null = null;
   private tourMap: unknown | null = null;
@@ -1316,6 +1331,12 @@ export class BoardsComponent implements OnDestroy {
   private visitPlansLoadedFor = '';
   private relatedCardsReturnScrollY = 0;
   private relatedCardsReturnSearch = '';
+  private boardPageCursor: QueryDocumentSnapshot<DocumentData> | null = null;
+  private boardLoadContext: BoardLoadContext | null = null;
+  private boardLoadSequence = 0;
+
+  @ViewChild('boardsScrollViewport')
+  private boardsScrollViewport?: ElementRef<HTMLElement>;
 
   @ViewChild('tourMapCanvas')
   set tourMapCanvasRef(value: ElementRef<HTMLElement> | undefined) {
@@ -1352,6 +1373,10 @@ export class BoardsComponent implements OnDestroy {
   readonly shareTargets = SHARE_TARGETS;
 
   readonly boards = signal<Board[]>([]);
+  readonly boardsLoading = signal(false);
+  readonly boardsLoadingMore = signal(false);
+  readonly boardsHasMore = signal(false);
+  readonly galleryVisibleLimit = signal(BOARD_GALLERY_PAGE_SIZE);
   readonly publicCities = signal<BoardCityOption[]>([]);
   readonly citiesLoading = signal(false);
   readonly selectedBoardId = signal<string | null>(null);
@@ -2002,6 +2027,10 @@ export class BoardsComponent implements OnDestroy {
     );
   });
 
+  readonly displayedBoards = computed(() =>
+    incrementalSlice(this.filteredBoards(), this.galleryVisibleLimit()),
+  );
+
   readonly filteredCards = computed(() => {
     const board = this.selectedBoard();
     const query = this.cardSearch().trim().toLowerCase();
@@ -2076,6 +2105,19 @@ export class BoardsComponent implements OnDestroy {
     );
   });
 
+  readonly displayedGalleryCards = computed(() =>
+    incrementalSlice(this.visibleGalleryCards(), this.galleryVisibleLimit()),
+  );
+  readonly galleryHasMore = computed(() => {
+    const visibleCount = this.activeGalleryTab() === 'boards'
+      ? this.displayedBoards().length
+      : this.displayedGalleryCards().length;
+    const availableCount = this.activeGalleryTab() === 'boards'
+      ? this.filteredBoards().length
+      : this.visibleGalleryCards().length;
+    return visibleCount < availableCount || this.boardsHasMore();
+  });
+
   readonly totalCards = computed(() =>
     this.boards()
       .filter((board) => !board.parentCardId)
@@ -2086,6 +2128,15 @@ export class BoardsComponent implements OnDestroy {
       (total, board) => total + board.cards.filter((card) => card.status === 'favorite').length,
       0,
     ),
+  );
+  readonly boardsCountLabel = computed(() =>
+    `${this.boards().length}${this.boardsHasMore() ? '+' : ''}`,
+  );
+  readonly cardsCountLabel = computed(() =>
+    `${this.totalCards()}${this.boardsHasMore() ? '+' : ''}`,
+  );
+  readonly favoritesCountLabel = computed(() =>
+    `${this.favoriteCards()}${this.boardsHasMore() ? '+' : ''}`,
   );
   readonly cityMatchSuggestions = computed(() => {
     const draft = this.cardDraft();
@@ -2345,6 +2396,7 @@ export class BoardsComponent implements OnDestroy {
       this.publicOwnerUid.set(ownerUid);
       this.publicOwnerSlug.set(ownerSlug);
       this.cardSearch.set('');
+      this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
       this.closeCardManageMode();
       this.setShareMessage(null);
       this.sharePanelOpen.set(false);
@@ -2415,7 +2467,7 @@ export class BoardsComponent implements OnDestroy {
 
     effect(() => {
       const boards = this.boards();
-      if (!this.isBrowser || !this.hasLoaded) {
+      if (!this.isBrowser || !this.hasLoaded || this.boardsLoading() || this.boardsHasMore()) {
         return;
       }
       const publicOwnerKey = this.publicOwnerKey();
@@ -2537,6 +2589,7 @@ export class BoardsComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.wizardOffGridLocationRun += 1;
+    this.boardLoadSequence += 1;
     this.selectedBoardUnsubscribe?.();
     this.selectedBoardUnsubscribe = null;
     this.stopSongPreview();
@@ -2549,6 +2602,10 @@ export class BoardsComponent implements OnDestroy {
     if (this.boardFriendSearchTimer) {
       clearTimeout(this.boardFriendSearchTimer);
       this.boardFriendSearchTimer = null;
+    }
+    if (this.boardSearchTimer) {
+      clearTimeout(this.boardSearchTimer);
+      this.boardSearchTimer = null;
     }
     if (this.wizardDraftAutosaveTimer) {
       clearTimeout(this.wizardDraftAutosaveTimer);
@@ -2571,6 +2628,110 @@ export class BoardsComponent implements OnDestroy {
   setGalleryTab(tab: BoardGalleryTab): void {
     this.activeGalleryTab.set(tab);
     this.boardSearch.set('');
+    this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
+    this.scheduleGalleryViewportCheck();
+  }
+
+  onBoardSearchInput(value: string): void {
+    this.boardSearch.set(value);
+    this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
+    if (this.boardSearchTimer) {
+      clearTimeout(this.boardSearchTimer);
+      this.boardSearchTimer = null;
+    }
+    if (value.trim()) {
+      this.boardSearchTimer = setTimeout(() => {
+        this.boardSearchTimer = null;
+        void this.loadRemainingBoardPagesForSearch();
+      }, 250);
+    } else {
+      this.scheduleGalleryViewportCheck();
+    }
+  }
+
+  onBoardsViewportScroll(event: Event): void {
+    this.maybeLoadMoreForElement(event.currentTarget as HTMLElement);
+  }
+
+  @HostListener('window:scroll')
+  onBoardsWindowScroll(): void {
+    if (!this.isBrowser || this.selectedBoard() || this.friendsPage()) {
+      return;
+    }
+    const documentElement = window.document.documentElement;
+    if (incrementalViewportNearEnd(
+      documentElement.scrollHeight,
+      window.scrollY,
+      window.innerHeight,
+    )) {
+      void this.loadMoreGalleryItems();
+    }
+  }
+
+  async loadMoreGalleryItems(): Promise<void> {
+    if (this.boardsLoadingMore() || !this.galleryHasMore()) {
+      return;
+    }
+
+    const requestedLimit = nextIncrementalLimit(this.galleryVisibleLimit(), BOARD_GALLERY_PAGE_SIZE);
+    this.galleryVisibleLimit.set(requestedLimit);
+    try {
+      while (this.visibleGalleryItemCount() < requestedLimit && this.boardsHasMore()) {
+        const loaded = await this.loadNextBoardPage();
+        if (!loaded) {
+          break;
+        }
+      }
+    } catch {
+      this.boardsHasMore.set(false);
+      this.boardsSyncError.set('More boards could not be loaded. Check your connection and try again.');
+    }
+    this.scheduleGalleryViewportCheck();
+  }
+
+  private visibleGalleryItemCount(): number {
+    return this.activeGalleryTab() === 'boards'
+      ? this.filteredBoards().length
+      : this.visibleGalleryCards().length;
+  }
+
+  private maybeLoadMoreForElement(element: HTMLElement): void {
+    if (this.selectedBoard() || this.friendsPage()) {
+      return;
+    }
+    if (incrementalViewportNearEnd(element.scrollHeight, element.scrollTop, element.clientHeight)) {
+      void this.loadMoreGalleryItems();
+    }
+  }
+
+  private scheduleGalleryViewportCheck(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    window.requestAnimationFrame(() => {
+      const viewport = this.boardsScrollViewport?.nativeElement;
+      if (viewport && viewport.scrollHeight > viewport.clientHeight + 1) {
+        this.maybeLoadMoreForElement(viewport);
+        return;
+      }
+      this.onBoardsWindowScroll();
+    });
+  }
+
+  private async loadRemainingBoardPagesForSearch(): Promise<void> {
+    try {
+      while (this.boardSearch().trim() && this.boardsHasMore()) {
+        const loaded = await this.loadNextBoardPage();
+        if (!loaded) {
+          break;
+        }
+      }
+    } catch {
+      this.boardsHasMore.set(false);
+      this.boardsSyncError.set('Search could not load the rest of the boards. Check your connection and try again.');
+    } finally {
+      this.scheduleGalleryViewportCheck();
+    }
   }
 
   async openWizardDrafts(): Promise<void> {
@@ -15511,6 +15672,14 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
+    // Public profile routes should never parse another account's potentially large
+    // local shelf before the first remote page can render.
+    if (this.route.snapshot.paramMap.has('ownerKey')) {
+      this.boards.set([]);
+      this.hasLoaded = true;
+      return;
+    }
+
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? this.parseBoards(raw) : null;
     const uid = this.authService.uid();
@@ -15533,25 +15702,36 @@ export class BoardsComponent implements OnDestroy {
       return;
     }
 
+    const loadSequence = ++this.boardLoadSequence;
+    this.boardsLoading.set(true);
+    this.boardsLoadingMore.set(false);
+    this.boardsHasMore.set(false);
+    this.boardPageCursor = null;
+    this.boardLoadContext = null;
     await this.authService.waitForReady();
+    if (loadSequence !== this.boardLoadSequence) {
+      return;
+    }
     const uid = this.authService.uid();
     this.boardsSyncError.set(null);
     this.privateBoardBlocked.set(false);
+    this.boardLoadContext = { uid, publicOwnerUid, publicOwnerSlug, publicOwnerRouteActive };
+    this.boardsHasMore.set(true);
+    const storedBoards = this.boards();
 
     try {
-      const loaded: Board[] = [];
-      if (publicOwnerRouteActive) {
-        if (publicOwnerUid) {
-          loaded.push(...await this.loadPublicBoardsForOwner(publicOwnerUid));
-        } else if (publicOwnerSlug) {
-          loaded.push(...await this.loadPublicBoardsForOwnerSlug(publicOwnerSlug));
-        }
-      } else if (publicOwnerUid) {
-        loaded.push(...await this.loadPublicBoardsForOwner(publicOwnerUid));
-      } else if (uid) {
-        loaded.push(...await this.loadUserBoards(uid));
-      } else if (!boardId) {
-        loaded.push(...await this.loadPublicBoards());
+      await this.loadNextBoardPage(loadSequence, true);
+      if (loadSequence !== this.boardLoadSequence) return;
+
+      let loaded = this.boards();
+
+      // Older public boards may predate the normalized owner slug. Keep the
+      // compatibility lookup off the hot path and only use it when page one is empty.
+      if (!loaded.length && publicOwnerRouteActive && publicOwnerSlug) {
+        loaded = await this.loadPublicBoardsForOwnerSlug(publicOwnerSlug);
+        if (loadSequence !== this.boardLoadSequence) return;
+        this.boards.set(loaded);
+        this.boardsHasMore.set(false);
       }
 
       if (boardId && !loaded.some((board) => board.id === boardId)) {
@@ -15559,6 +15739,7 @@ export class BoardsComponent implements OnDestroy {
           const sharedBoard = await this.loadBoardById(boardId);
           if (sharedBoard) {
             loaded.unshift(sharedBoard);
+            this.boards.set(loaded);
           }
         } catch (error) {
           if (this.isPermissionDeniedError(error)) {
@@ -15569,22 +15750,81 @@ export class BoardsComponent implements OnDestroy {
         }
       }
 
-      if (publicOwnerRouteActive) {
-        this.boards.set(loaded);
-        return;
-      }
-
-      if (loaded.length) {
-        this.boards.set(loaded);
-      } else if (uid && this.loadedStoredLocalBoards) {
-        await Promise.all(this.boards().map((board) => this.persistBoard(board)));
+      if (!loaded.length && !publicOwnerRouteActive && uid && this.loadedStoredLocalBoards) {
+        await Promise.all(storedBoards.map((board) => this.persistBoard(board)));
         const migrated = await this.loadUserBoards(uid);
         if (migrated.length) {
           this.boards.set(migrated);
+          this.boardsHasMore.set(false);
         }
       }
     } catch {
       this.boardsSyncError.set($localize`Boards are using this browser for now. Firebase sync is unavailable.`);
+      this.boardsHasMore.set(false);
+    } finally {
+      if (loadSequence === this.boardLoadSequence) {
+        this.boardsLoading.set(false);
+        this.scheduleGalleryViewportCheck();
+      }
+    }
+  }
+
+  private async loadNextBoardPage(
+    loadSequence = this.boardLoadSequence,
+    replace = false,
+  ): Promise<boolean> {
+    const context = this.boardLoadContext;
+    if (
+      !this.firestore
+      || !context
+      || loadSequence !== this.boardLoadSequence
+      || !this.boardsHasMore()
+      || this.boardsLoadingMore()
+    ) {
+      return false;
+    }
+
+    const constraints: QueryConstraint[] = [];
+    if (context.publicOwnerRouteActive || context.publicOwnerUid) {
+      if (context.publicOwnerUid) {
+        constraints.push(where('owner_user_id', '==', context.publicOwnerUid));
+      } else if (context.publicOwnerSlug) {
+        constraints.push(where('owner_public_slug', '==', context.publicOwnerSlug));
+      } else {
+        this.boardsHasMore.set(false);
+        return false;
+      }
+      constraints.push(where('visibility', '==', 'public'));
+    } else if (context.uid) {
+      constraints.push(where('owner_user_id', '==', context.uid));
+    } else {
+      constraints.push(where('visibility', '==', 'public'));
+    }
+    if (this.boardPageCursor) {
+      constraints.push(startAfter(this.boardPageCursor));
+    }
+    constraints.push(limit(BOARD_GALLERY_PAGE_SIZE));
+
+    this.boardsLoadingMore.set(true);
+    try {
+      const snapshot = await getDocs(query(collection(this.firestore, 'boards'), ...constraints));
+      if (loadSequence !== this.boardLoadSequence) {
+        return false;
+      }
+      const page = snapshot.docs
+        .map((boardDoc) => this.boardFromRecord(boardDoc.id, boardDoc.data()))
+        .filter((board): board is Board => !!board);
+      const current = replace ? [] : this.boards();
+      const boardsById = new Map(current.map((board) => [board.id, board]));
+      page.forEach((board) => boardsById.set(board.id, board));
+      this.boards.set([...boardsById.values()].sort((left, right) => this.compareBoards(left, right)));
+      this.boardPageCursor = snapshot.docs.at(-1) ?? this.boardPageCursor;
+      this.boardsHasMore.set(snapshot.docs.length === BOARD_GALLERY_PAGE_SIZE);
+      return snapshot.docs.length > 0;
+    } finally {
+      if (loadSequence === this.boardLoadSequence) {
+        this.boardsLoadingMore.set(false);
+      }
     }
   }
 

@@ -1,0 +1,92 @@
+{
+  "ok": false,
+  "problems": [
+    "Writer marked the board incomplete.",
+    "3 source URL(s) returned a conclusive broken response."
+  ],
+  "warnings": [
+    "The dossier contains exactly 70 distinct subjects and exactly 10 records for each canonical template ID.",
+    "complete is false because several late-night business pages expose location-specific hours dynamically or may change without notice; those records conservatively require live confirmation before travel.",
+    "The input file states current_date 2026-08-13, while the execution environment states 2026-08-12; source_fetched_at and researched_at use the environment date as requested.",
+    "Coordinates were left null where exact subject-level coordinates were not verified from an authoritative direct source; map-search URLs are supplied for visual documentation and disambiguation.",
+    "Free-activity claims are narrowly limited to activities requiring neither admission nor purchase; parking, transportation, optional services, special programs or ticketed interiors may still cost money."
+  ],
+  "reachability": [
+    {
+      "url": "https://map.adelphi.edu/index.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://map.adelphi.edu/index.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.adelphi.edu/uc/explore/",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.adelphi.edu/conference-event-spaces/explore/",
+      "error": ""
+    },
+    {
+      "url": "https://www.adelphi.edu/bookstore/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.bkstr.com/adelphistore/home",
+      "error": ""
+    },
+    {
+      "url": "https://www.adelphi.edu/campus-recreation/facilities/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.adelphi.edu/campus-recreation/facilities/",
+      "error": ""
+    },
+    {
+      "url": "https://aupanthers.com/facilities/motamed-field/2",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://aupanthers.com/sports/2011/9/9/GEN_0909114933.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://aupanthers.com/facilities/janet-l-ficke-field/5",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://aupanthers.com/facilities/janet-l-ficke-field/5",
+      "error": ""
+    },
+    {
+      "url": "https://aupanthers.com/facilities/william-j-bonomo-memorial-field/1",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://aupanthers.com/sports/2011/9/9/GEN_0909115256.aspx",
+      "error": ""
+    },
+    {
+      "url": "https://www.adelphi.edu/pac/venues/",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.adelphi.edu/pac/venues/",
+      "error": ""
+    },
+    {
+      "url": "https://www.adelphi.edu/alumni/about/angello-alumni-house/",
+      "ok": false,
+      "conclusive": true,
+      "status": 404,
+      "finalUrl": "https://www.adelphi.edu/alumni/about/angello-alumni-house/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

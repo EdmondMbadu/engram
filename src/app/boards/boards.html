@@ -274,7 +274,7 @@
       <app-workspace-sidebar active="home" [rail]="true"></app-workspace-sidebar>
     }
 
-    <div class="boards-main">
+    <div #boardsScrollViewport class="boards-main" (scroll)="onBoardsViewportScroll($event)">
       <header class="boards-topbar">
         <div class="boards-topbar__brand">
           @if (isSignedIn()) {
@@ -450,15 +450,15 @@
 
           <div class="boards-profile__stats" aria-label="Boards summary" i18n-aria-label>
             <div>
-              <strong>{{ boards().length }}</strong>
+              <strong>{{ boardsCountLabel() }}</strong>
               <span i18n>Boards</span>
             </div>
             <div>
-              <strong>{{ totalCards() }}</strong>
+              <strong>{{ cardsCountLabel() }}</strong>
               <span i18n>Cards</span>
             </div>
             <div>
-              <strong>{{ favoriteCards() }}</strong>
+              <strong>{{ favoritesCountLabel() }}</strong>
               <span i18n>Favorites</span>
             </div>
           </div>
@@ -757,14 +757,14 @@
               autocomplete="off"
               [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : 'Search cards...'"
               [value]="boardSearch()"
-              (input)="boardSearch.set($any($event.target).value)"
+              (input)="onBoardSearchInput($any($event.target).value)"
             />
           </label>
         </div>
 
         @if (activeGalleryTab() === 'boards') {
           <div class="boards-grid">
-            @for (board of filteredBoards(); track board.id) {
+            @for (board of displayedBoards(); track board.id) {
               <article
                 class="board-square"
                 [class.board-square--flipped]="isBoardFlipped(board.id)"
@@ -916,10 +916,10 @@
               </article>
             } @empty {
               <div class="boards-empty-state">
-                <span class="material-symbols-outlined">dashboard_customize</span>
-                <h2>{{ publicOwnerKey() ? 'No public boards yet.' : 'No boards yet.' }}</h2>
-                <p>{{ publicOwnerKey() ? 'This public boards page is ready, but there are no public boards to show yet.' : 'Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.' }}</p>
-                @if (canCreateBoard()) {
+                <span class="material-symbols-outlined" [class.board-translation-control__spinner]="boardsLoading()">{{ boardsLoading() ? 'progress_activity' : 'dashboard_customize' }}</span>
+                <h2>{{ boardsLoading() ? 'Loading boards…' : publicOwnerKey() ? 'No public boards yet.' : 'No boards yet.' }}</h2>
+                <p>{{ boardsLoading() ? 'Bringing in the first 10 boards.' : publicOwnerKey() ? 'This public boards page is ready, but there are no public boards to show yet.' : 'Create a collection for places, restaurants, memories, ideas, or anything you want to keep together.' }}</p>
+                @if (!boardsLoading() && canCreateBoard()) {
                   <button type="button" class="boards-primary-action" (click)="openCreateBoard()" i18n>
                     <span class="material-symbols-outlined">add</span>
                     Create board
@@ -930,7 +930,7 @@
           </div>
         } @else {
           <div class="cards-mosaic">
-            @for (item of visibleGalleryCards(); track item.board.id + item.card.id) {
+            @for (item of displayedGalleryCards(); track item.board.id + item.card.id) {
               <article
                 class="mosaic-card"
                 [class.board-square--flipped]="isCardFlipped(item.card.id)"
@@ -1060,6 +1060,20 @@
                 <h2>{{ activeGalleryTab() === 'favorites' ? 'No favorites yet.' : 'No cards yet.' }}</h2>
                 <p i18n>Open a board and add cards to build out your collection feed.</p>
               </div>
+            }
+          </div>
+        }
+
+        @if (galleryHasMore() || boardsLoadingMore()) {
+          <div class="flex min-h-20 items-center justify-center gap-2 text-sm font-black text-[var(--muted)]" role="status" aria-live="polite">
+            @if (boardsLoadingMore()) {
+              <span class="material-symbols-outlined board-translation-control__spinner" aria-hidden="true">progress_activity</span>
+              <span>Loading 10 more…</span>
+            } @else {
+              <button type="button" class="boards-ghost-action" (click)="loadMoreGalleryItems()">
+                <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+                Load 10 more
+              </button>
             }
           </div>
         }

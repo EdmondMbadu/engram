@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/library",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/library",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/christ-chapel",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/christ-chapel",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/lund-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/lund-center",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/interpretive-center",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/interpretive-center",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/arboretum",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/arboretum",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/nobel-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/nobel-hall",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/norelius-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/student-experience/where-youll-live/explore-housing/norelius-hall",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 7,
+  "generationScore": 99,
+  "generationGrade": "A"
+}

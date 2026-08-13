@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "problems": [],
+  "warnings": [
+    "Business hours can change or be shortened for holidays, academic breaks, staffing, or kitchen cutoffs; every card directs readers to confirm same-day availability.",
+    "Several restaurants serve alcohol, but no bar or 21+-only venue is included; under21_safe indicates ordinary restaurant access, subject to current venue policy.",
+    "Coordinates are null where the supplied research did not provide defensible verified coordinates; each such card includes a destination-specific Google Maps search URL."
+  ],
+  "reachability": [
+    {
+      "url": "https://colonygrill.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 403,
+      "finalUrl": "https://colonygrill.com/",
+      "error": ""
+    },
+    {
+      "url": "https://pizza.dominos.com/connecticut/fairfield/1580-post-rd",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://pizza.dominos.com/connecticut/fairfield/1580-post-rd",
+      "error": ""
+    },
+    {
+      "url": "https://planetpizzaoffairfield.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://planetpizzaoffairfield.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.mcdonalds.com/us/en-us/location/ct/fairfield/536-post-rd/1032.html",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.mcdonalds.com/us/en-us/location/ct/fairfield/536-post-rd/1032.html",
+      "error": ""
+    },
+    {
+      "url": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/the-levee/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.fairfield.edu/about/offices-and-departments/conference-and-events-management/available-rooms/the-levee/",
+      "error": ""
+    },
+    {
+      "url": "https://taijiang.info/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://taijiang.info/",
+      "error": ""
+    },
+    {
+      "url": "https://www.quattropazzi.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.quattropazzi.com/",
+      "error": ""
+    },
+    {
+      "url": "https://www.tajfairfield.com/events",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.tajfairfield.com/events",
+      "error": ""
+    },
+    {
+      "url": "https://www.finjapanesefairfield.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://order.menufy.com/?404Location",
+      "error": ""
+    },
+    {
+      "url": "https://lanternpointtaverna.com/",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://lanternpointtaverna.com/",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 10,
+  "generationScore": 94,
+  "generationGrade": "A"
+}

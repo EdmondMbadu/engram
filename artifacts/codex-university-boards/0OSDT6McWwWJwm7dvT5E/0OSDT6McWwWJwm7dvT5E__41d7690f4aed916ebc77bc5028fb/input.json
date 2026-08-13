@@ -1,0 +1,54 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "06Q4tm5oerqBUIqqnT7s",
+    "schoolName": "Gustavus Adolphus College",
+    "shortSchoolName": "Gustavus Adolphus College",
+    "townName": "Saint Peter",
+    "state": "MN",
+    "countryCode": "US",
+    "unitId": "173647",
+    "website": "https://gustavus.edu/",
+    "latitude": 44.323626,
+    "longitude": -93.972196,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/b6/Gustavus_Adolphus_College_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gustavus.edu&sz=256"
+  },
+  "template": {
+    "id": "college-first-weekend",
+    "version": "1.0",
+    "titlePattern": "Your First Weekend at {school}, Shared as Cards",
+    "editorialBrief": "Build a plausible under-21-safe first-weekend sequence, not a ranking. Give each card one role in the sequence and use evergreen places or recurring behaviors rather than one-time events. Be conservative about hours, access, and travel time unless directly sourced.",
+    "researchQueries": [
+      "new student orientation campus guide",
+      "first year student campus activities",
+      "weekend near campus students"
+    ],
+    "count": 10,
+    "icon": "schedule",
+    "primarySubjectType": "sequence_stop",
+    "allowedSubjectTypes": [
+      "sequence_stop",
+      "place",
+      "activity"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Your First Weekend at Gustavus Adolphus College, Shared as Cards",
+  "excluded_subjects": [
+    "Folke Bernadotte Memorial Library",
+    "Christ Chapel",
+    "Lund Center",
+    "Melva Lind Interpretive Center",
+    "Arboretum labyrinth",
+    "Nobel Hall of Science",
+    "Don Roberts Ice Rink",
+    "Vic Gustafson Pool",
+    "STEAMery Café",
+    "Norelius Hall",
+    "Eckman Mall echo circle",
+    "Official Gustavus campus map route"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 3
+}

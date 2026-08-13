@@ -1,0 +1,85 @@
+{
+  "ok": false,
+  "problems": [
+    "Every card needs a validated image. Missing after 3 attempts: 8. MAYDAY! Peace Conference, 9. Commencement Baccalaureate, 10. Gustie Rouser."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/chaplains",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/chaplains",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/administrative-offices/advancement/alumni/gather-alumni/homecoming-alumni",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/administrative-offices/advancement/alumni/gather-alumni/homecoming-alumni",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/mission-history",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/mission-history",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.gustavus.edu/articles/2025-09/brief-history-homecomings-royalty",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.gustavus.edu/articles/2025-09/brief-history-homecomings-royalty",
+      "error": ""
+    },
+    {
+      "url": "https://magazine.gustavus.edu/articles/2025-04/presidents-ball-through-years",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://magazine.gustavus.edu/articles/2025-04/presidents-ball-through-years",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/nobel-conference",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/nobel-conference",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/events/concertFiles/media/Mayday/21536011_Mayday24_program.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/events/concertFiles/media/Mayday/21536011_Mayday24_program.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/events/commencement/concertFiles/media/4235_Baccalaureate_Web.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/events/commencement/concertFiles/media/4235_Baccalaureate_Web.pdf",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/alumni/concertFiles/media/2025_Reunion_Weekend_Program_Web.pdf",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/alumni/concertFiles/media/2025_Reunion_Weekend_Program_Web.pdf",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 9,
+  "generationScore": null,
+  "generationGrade": null
+}

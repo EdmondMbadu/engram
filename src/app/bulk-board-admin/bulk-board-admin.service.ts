@@ -109,6 +109,9 @@ export type BulkBoardAdminBoard = {
     unique_subject_ids?: number;
     all_have_coordinates?: boolean;
     all_have_source_urls?: boolean;
+    all_have_images?: boolean;
+    image_count?: number;
+    unique_image_count?: number;
     candidate_sources?: string[];
     validated_at?: string;
   } | null;

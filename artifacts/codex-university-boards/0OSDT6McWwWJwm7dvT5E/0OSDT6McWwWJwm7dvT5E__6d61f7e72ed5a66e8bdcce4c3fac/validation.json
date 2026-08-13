@@ -1,0 +1,32 @@
+{
+  "ok": false,
+  "problems": [
+    "Writer marked the board incomplete.",
+    "Expected 10 cards; received 4."
+  ],
+  "warnings": [
+    "Only four defensible subjects remained after excluding the Arboretum trails and close aliases. Additional candidates lacked direct evidence of no-cost access, were temporary events, or could not support the required visual-documentation standard."
+  ],
+  "reachability": [
+    {
+      "url": "https://www.co.nicollet.mn.us/349/Parks-Trails",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://www.nicolletcountymn.gov/349/Parks-Trails",
+      "error": ""
+    },
+    {
+      "url": "https://saintpetermn.gov/parks",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://saintpetermn.gov/parks",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 2,
+  "generationScore": null,
+  "generationGrade": null
+}

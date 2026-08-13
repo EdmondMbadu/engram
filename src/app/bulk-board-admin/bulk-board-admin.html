@@ -72,9 +72,22 @@
       <section class="summary-grid">
         <article><small>Eligible {{ targetPlural }}</small><strong>{{ cities().length }}</strong><span>Public {{ targetSingular }} wikis</span></article>
         <article><small>Selected now</small><strong>{{ selectedCount() }}</strong><span>Generation targets</span></article>
-        <article><small>Generated boards</small><strong>{{ boards().length }}</strong><span>Including trash</span></article>
+        <article><small>Stored boards</small><strong>{{ boards().length }}</strong><span>{{ publishedBoardCount() }} published · including trash</span></article>
         <article><small>Needs review</small><strong>{{ needsReviewCount() }}</strong><span>Private drafts</span></article>
       </section>
+
+      @if (isUniversityFactory() && boards().length === 0) {
+        <section class="worker-callout" aria-label="University generation status">
+          <span class="worker-callout__icon material-symbols-outlined" aria-hidden="true">terminal</span>
+          <div>
+            <strong>No university board generation has completed yet.</strong>
+            <p>Queue a test or catalog job below, then run the local Codex worker with <code>--apply</code>. Queuing alone does not call Codex or create boards.</p>
+            @if (activeJob(); as job) {
+              <code>npm run university-boards:worker -- --job {{ job.id }} --apply --limit 10 --reuse-dossiers</code>
+            }
+          </div>
+        </section>
+      }
 
       @if (catalog(); as catalogStatus) {
         <section class="catalog-panel" aria-labelledby="catalog-heading">
@@ -430,17 +443,23 @@
               <div class="quality-block">
                 <strong>{{ board.validation_summary?.verified_count ?? board.card_count }}/{{ board.validation_summary?.requested_count ?? board.card_count }}</strong>
                 <span>{{ isUniversityFactory() ? 'subjects verified' : 'places verified' }}</span>
+                @if (isUniversityFactory()) {
+                  <small [class.score--weak]="board.validation_summary?.all_have_images !== true">Images: {{ board.validation_summary?.image_count ?? 0 }}/{{ board.card_count }}{{ board.validation_summary?.all_have_images === true ? ' validated' : ' · awaiting enrichment' }}</small>
+                }
                 <small [class]="generationScoreClass(board)">{{ generationScoreLabel(board) }}</small>
                 @if (board.quality_warnings.length) { <small>{{ board.quality_warnings.length }} quality warning(s)</small> }
               </div>
               <div class="board-actions">
+                @if (universityBoardLibraryLink(board); as libraryLink) {
+                  <a class="button button--secondary" [routerLink]="libraryLink" target="_blank"><span class="material-symbols-outlined">view_carousel</span> View university boards</a>
+                }
                 <a class="button button--ghost" [routerLink]="['/boards', board.id]" target="_blank"><span class="material-symbols-outlined">open_in_new</span> Open</a>
                 @if (board.deleted_at) {
                   <button type="button" class="button button--secondary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'restore')"><span class="material-symbols-outlined">restore</span> Restore</button>
                   <button type="button" class="button button--danger-quiet" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'permanent_delete')"><span class="material-symbols-outlined">delete_forever</span> Delete forever</button>
                 } @else {
                   @if (board.editorial_status !== 'published') {
-                    <button type="button" class="button button--primary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'publish')"><span class="material-symbols-outlined">publish</span> Publish</button>
+                    <button type="button" class="button button--primary" [disabled]="publishingAll() || busyBoardId() === board.id || !isBoardPublishable(board)" (click)="manage(board, 'publish')"><span class="material-symbols-outlined">{{ isBoardPublishable(board) ? 'publish' : 'image' }}</span> {{ isBoardPublishable(board) ? 'Publish' : 'Images required' }}</button>
                   }
                   @if (board.city_listing_status === 'listed') {
                     <button type="button" class="button button--secondary" [disabled]="publishingAll() || busyBoardId() === board.id" (click)="manage(board, 'remove_from_city')"><span class="material-symbols-outlined">link_off</span> Remove from {{ targetSingular }}</button>

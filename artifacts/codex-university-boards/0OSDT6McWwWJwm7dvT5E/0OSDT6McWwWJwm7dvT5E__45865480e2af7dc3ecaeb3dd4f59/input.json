@@ -1,0 +1,49 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "T27CHLRiqNiYuFlrFFNg",
+    "schoolName": "Agnes Scott College",
+    "shortSchoolName": "Agnes Scott College",
+    "townName": "Decatur",
+    "state": "GA",
+    "countryCode": "US",
+    "unitId": "138600",
+    "website": "https://www.agnesscott.edu/",
+    "latitude": 33.769268,
+    "longitude": -84.295459,
+    "heroUrl": "https://www.agnesscott.edu/assets/images/og-images/campus-aerial-view-1200x630.jpg",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=agnesscott.edu&sz=256"
+  },
+  "template": {
+    "id": "college-only-happens-here",
+    "version": "1.0",
+    "titlePattern": "Only Happens Here: {count} Traditions That Make No Sense Anywhere Else",
+    "editorialBrief": "Choose documented school-specific traditions, rituals, superstitions, chants, objects, or recurring practices. Prefer official archives, alumni sources, and credible student publications. Label disputed origins and discontinued practices clearly. Do not encourage unsafe, illegal, or exclusionary behavior.",
+    "researchQueries": [
+      "university traditions alumni",
+      "campus traditions student newspaper",
+      "school rituals history"
+    ],
+    "count": 10,
+    "icon": "fingerprint",
+    "primarySubjectType": "tradition",
+    "allowedSubjectTypes": [
+      "tradition"
+    ],
+    "freshnessDays": 1095
+  },
+  "exact_title": "Only Happens Here: 10 Traditions That Make No Sense Anywhere Else",
+  "excluded_subjects": [
+    "Black Cat",
+    "Sophomore Ring Ceremony",
+    "Senior Investiture and Parade",
+    "Bell-Tower Signature Signing",
+    "AgnesPalooza",
+    "Honor Pledge Signing Ceremony",
+    "Junior Production",
+    "Mortarboard Flip at Commencement",
+    "Pancake Jam"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 2
+}

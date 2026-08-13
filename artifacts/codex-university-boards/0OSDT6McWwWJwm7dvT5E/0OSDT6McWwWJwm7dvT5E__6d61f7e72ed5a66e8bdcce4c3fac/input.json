@@ -1,0 +1,61 @@
+{
+  "current_date": "2026-08-13",
+  "target": {
+    "atlasId": "06Q4tm5oerqBUIqqnT7s",
+    "schoolName": "Gustavus Adolphus College",
+    "shortSchoolName": "Gustavus Adolphus College",
+    "townName": "Saint Peter",
+    "state": "MN",
+    "countryCode": "US",
+    "unitId": "173647",
+    "website": "https://gustavus.edu/",
+    "latitude": 44.323626,
+    "longitude": -93.972196,
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/en/b/b6/Gustavus_Adolphus_College_seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "logoUrl": "https://www.google.com/s2/favicons?domain=gustavus.edu&sz=256"
+  },
+  "template": {
+    "id": "college-zero-dollar-hangs",
+    "version": "1.0",
+    "titlePattern": "Zero Dollars: {count} Hangs That Cost Nothing",
+    "editorialBrief": "Every card must describe a social activity that requires no admission and no purchase. Use official access information whenever possible, distinguish public access from student-only access, and avoid temporary promotions or vague affordability claims.",
+    "researchQueries": [
+      "free student activities campus",
+      "free campus spaces students",
+      "free public places near campus"
+    ],
+    "count": 10,
+    "icon": "money_off",
+    "primarySubjectType": "activity",
+    "allowedSubjectTypes": [
+      "activity",
+      "place"
+    ],
+    "freshnessDays": 180
+  },
+  "exact_title": "Zero Dollars: 10 Hangs That Cost Nothing",
+  "excluded_subjects": [
+    "Gustie Greeter",
+    "Orientation Group",
+    "Old Main",
+    "Painting the Rock",
+    "Market Place",
+    "Campus Activities Office Equipment and Board Game Rentals",
+    "The Arboretum at Gustavus Adolphus College trails",
+    "Borgeson Family Cabin",
+    "Downtown Saint Peter Historic District",
+    "Saint Peter Area Veterans Memorial at Minnesota Square Park",
+    "Folke Bernadotte Memorial Library",
+    "Christ Chapel",
+    "Lund Center",
+    "Melva Lind Interpretive Center",
+    "Arboretum labyrinth",
+    "Nobel Hall of Science",
+    "Don Roberts Ice Rink",
+    "Vic Gustafson Pool",
+    "STEAMery Café",
+    "Norelius Hall"
+  ],
+  "excluded_source_urls": [],
+  "image_retry_attempt": 1
+}

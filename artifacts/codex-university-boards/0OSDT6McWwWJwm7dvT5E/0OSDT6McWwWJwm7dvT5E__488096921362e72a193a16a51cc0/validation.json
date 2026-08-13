@@ -1,0 +1,45 @@
+{
+  "ok": false,
+  "problems": [
+    "Every card needs a validated image. Missing after 3 attempts: 1. Edwards Atrium, 7. Sohre Hall computer room, 10. Saint Peter Public Library Meeting Room."
+  ],
+  "warnings": [],
+  "reachability": [
+    {
+      "url": "https://gustavus.edu/about/facilities/anderson-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/anderson-hall",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/about/facilities/olin-hall",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/about/facilities/olin-hall",
+      "error": ""
+    },
+    {
+      "url": "https://gustavus.edu/reslife/residences/index.php",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://gustavus.edu/reslife/residences/index.php",
+      "error": ""
+    },
+    {
+      "url": "https://saintpetermn.gov/DocumentCenter/View/701",
+      "ok": true,
+      "conclusive": true,
+      "status": 200,
+      "finalUrl": "https://saintpetermn.gov/DocumentCenter/View/701/Library-Meeting-Rooms-PDF?bidId=",
+      "error": ""
+    }
+  ],
+  "overlap": [],
+  "sourceCount": 4,
+  "generationScore": null,
+  "generationGrade": null
+}

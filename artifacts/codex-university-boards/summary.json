@@ -1,0 +1,21 @@
+{
+  "projectId": "living-atlas-7622a",
+  "apply": true,
+  "requested": 1,
+  "completed": 1,
+  "created": 0,
+  "rejected": 1,
+  "results": [
+    {
+      "itemId": "0OSDT6McWwWJwm7dvT5E__1d3b2bdbf8c528d45b294513487d",
+      "school": "Adelphi University",
+      "template": "college-first-weekend",
+      "status": "rejected",
+      "problems": [
+        "Writer marked the board incomplete.",
+        "3 source URL(s) returned a conclusive broken response."
+      ],
+      "score": null
+    }
+  ]
+}
