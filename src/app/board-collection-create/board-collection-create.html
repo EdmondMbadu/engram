@@ -1,0 +1,122 @@
+<div class="collection-create-overlay" role="presentation" (mousedown)="$event.target === $event.currentTarget && close()">
+  <section class="collection-create-dialog" role="dialog" aria-modal="true" aria-labelledby="collection-create-title">
+    <header class="collection-create-header">
+      <div>
+        <span class="material-symbols-outlined" aria-hidden="true">collections_bookmark</span>
+        <span>
+          <small>New collection</small>
+          <h2 id="collection-create-title">Bring your boards together</h2>
+        </span>
+      </div>
+      <button type="button" aria-label="Close collection creator" [disabled]="saving()" (click)="close()">
+        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+      </button>
+    </header>
+
+    <div class="collection-create-form">
+      <label>
+        <span>Collection name</span>
+        <input
+          type="text"
+          maxlength="100"
+          autocomplete="off"
+          placeholder="A collection people will remember"
+          [value]="title()"
+          (input)="title.set($any($event.target).value); error.set(null)"
+        />
+      </label>
+      <label>
+        <span>Description <small>Optional</small></span>
+        <textarea
+          maxlength="280"
+          rows="2"
+          placeholder="What connects these boards?"
+          [value]="description()"
+          (input)="description.set($any($event.target).value)"
+        ></textarea>
+      </label>
+    </div>
+
+    <div class="collection-create-picker-head">
+      <div>
+        <strong>Choose boards</strong>
+        <small>{{ selectedIds().size }} selected · up to {{ maxBoards }}</small>
+      </div>
+      <div>
+        @if (selectedIds().size) {
+          <button type="button" (click)="clearSelection()">Clear</button>
+        }
+        <button type="button" [disabled]="loadingChoices() || !filteredChoices().length" (click)="selectAllVisible()">Select shown</button>
+      </div>
+    </div>
+
+    <label class="collection-create-search">
+      <span class="material-symbols-outlined" aria-hidden="true">search</span>
+      <input
+        type="search"
+        autocomplete="off"
+        placeholder="Search your public boards"
+        aria-label="Search boards for this collection"
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+      />
+    </label>
+
+    <div class="collection-create-choices" aria-label="Public boards">
+      @if (loadingChoices()) {
+        <div class="collection-create-state" aria-live="polite">
+          <span class="material-symbols-outlined collection-create-spin" aria-hidden="true">progress_activity</span>
+          <strong>Loading all of your public boards…</strong>
+        </div>
+      } @else {
+        @for (choice of filteredChoices(); track choice.id) {
+          <button
+            type="button"
+            class="collection-create-choice"
+            [class.collection-create-choice--selected]="isSelected(choice.id)"
+            [attr.aria-pressed]="isSelected(choice.id)"
+            (click)="toggleChoice(choice.id)"
+          >
+            <span class="collection-create-choice__media" [class.collection-create-choice__media--fallback]="!choice.imageUrl">
+              @if (choice.imageUrl) {
+                <img [src]="choice.imageUrl" [alt]="choice.title" loading="lazy" />
+              } @else {
+                <span class="material-symbols-outlined" aria-hidden="true">{{ choice.icon || 'dashboard_customize' }}</span>
+              }
+            </span>
+            <span class="collection-create-choice__copy">
+              <strong>{{ choice.title }}</strong>
+              <small>{{ choice.cardCount }} {{ choice.cardCount === 1 ? 'card' : 'cards' }}</small>
+            </span>
+            <span class="collection-create-check material-symbols-outlined" aria-hidden="true">
+              {{ isSelected(choice.id) ? 'check_circle' : 'circle' }}
+            </span>
+          </button>
+        } @empty {
+          <div class="collection-create-state">
+            <span class="material-symbols-outlined" aria-hidden="true">space_dashboard</span>
+            <strong>{{ search().trim() ? 'No boards match that search.' : 'Publish a board before creating a collection.' }}</strong>
+            <small>Collections are public, so only your public boards can be selected.</small>
+          </div>
+        }
+      }
+    </div>
+
+    @if (error()) {
+      <p class="collection-create-error" role="alert">{{ error() }}</p>
+    }
+
+    <footer class="collection-create-footer">
+      <button type="button" class="collection-create-cancel" [disabled]="saving()" (click)="close()">Cancel</button>
+      <button type="button" class="collection-create-submit" [disabled]="!canCreate()" (click)="createCollection()">
+        @if (saving()) {
+          <span class="material-symbols-outlined collection-create-spin" aria-hidden="true">progress_activity</span>
+          Creating…
+        } @else {
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          Create collection
+        }
+      </button>
+    </footer>
+  </section>
+</div>

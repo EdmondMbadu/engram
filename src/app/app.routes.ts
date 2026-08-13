@@ -122,6 +122,12 @@ export const routes: Routes = [
     title: $localize`User Boards | LivingWiki`,
   },
   {
+    path: 'boards/u/:ownerKey/collections/:slug',
+    loadComponent: () => import('./city-board-collection/city-board-collection').then((m) => m.CityBoardCollectionComponent),
+    title: 'Board Collection | LivingWiki',
+    data: { userCollection: true },
+  },
+  {
     path: 'boards/:boardId',
     loadComponent: loadBoardsComponent,
     title: $localize`Board | LivingWiki`,

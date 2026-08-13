@@ -53,6 +53,27 @@ function personalWizardBoard(overrides = {}) {
   };
 }
 
+function publicBoardCollection(overrides = {}) {
+  return {
+    id: 'collection-1',
+    slug: 'favorite-places',
+    owner_user_id: ownerUid,
+    owner_public_slug: 'board-owner',
+    owner_display_name: 'Board Owner',
+    owner_photo_url: '',
+    owner_profile_icon: 'person',
+    owner_profile_picture_type: 'icon',
+    visibility: 'public',
+    title: 'Favorite Places',
+    description: 'A hand-picked set of public boards.',
+    board_ids: ['wizard-board-1'],
+    created_at_iso: '2026-08-13T00:00:00.000Z',
+    updated_at_iso: '2026-08-13T00:00:00.000Z',
+    server_updated_at: serverTimestamp(),
+    ...overrides,
+  };
+}
+
 before(async () => {
   testEnvironment = await initializeTestEnvironment({
     projectId,
@@ -158,5 +179,50 @@ test('signed-in users cannot save a board under another owner', async () => {
   await assertFails(setDoc(
     doc(database, 'boards', 'wizard-board-1'),
     personalWizardBoard(),
+  ));
+});
+
+test('owner can create a public board collection', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertSucceeds(setDoc(
+    doc(database, 'board_collections', 'collection-1'),
+    publicBoardCollection(),
+  ));
+});
+
+test('public visitors can read a public board collection', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'board_collections', 'collection-1'),
+      publicBoardCollection({ server_updated_at: new Date('2026-08-13T00:00:00.000Z') }),
+    );
+  });
+  const database = testEnvironment.unauthenticatedContext().firestore();
+
+  await assertSucceeds(getDoc(doc(database, 'board_collections', 'collection-1')));
+});
+
+test('another user cannot replace an owners board collection', async () => {
+  await testEnvironment.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'board_collections', 'collection-1'),
+      publicBoardCollection({ server_updated_at: new Date('2026-08-13T00:00:00.000Z') }),
+    );
+  });
+  const database = testEnvironment.authenticatedContext('different-user').firestore();
+
+  await assertFails(setDoc(
+    doc(database, 'board_collections', 'collection-1'),
+    publicBoardCollection({ owner_user_id: 'different-user' }),
+  ));
+});
+
+test('collection writes require at least one selected board', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  await assertFails(setDoc(
+    doc(database, 'board_collections', 'collection-1'),
+    publicBoardCollection({ board_ids: [] }),
   ));
 });

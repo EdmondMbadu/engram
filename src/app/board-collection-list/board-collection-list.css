@@ -1,0 +1,28 @@
+.board-collections-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.board-collection-card { display: grid; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 1.25rem; background: var(--surface); box-shadow: 0 0.55rem 1.5rem color-mix(in srgb, var(--text) 7%, transparent); color: var(--text); text-decoration: none; transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+.board-collection-card:hover { border-color: color-mix(in srgb, var(--accent) 58%, var(--line)); box-shadow: 0 1rem 2.25rem color-mix(in srgb, var(--text) 12%, transparent); transform: translateY(-3px); }
+.board-collection-card__art { position: relative; display: grid; min-height: 11rem; overflow: hidden; place-items: center; background: radial-gradient(circle at 16% 18%, color-mix(in srgb, #fff 78%, transparent), transparent 24%), linear-gradient(135deg, color-mix(in srgb, var(--accent) 88%, #0e3443), color-mix(in srgb, var(--accent) 44%, #7a3ee6)); }
+.board-collection-card__art > .material-symbols-outlined { position: relative; z-index: 2; display: grid; width: 4rem; height: 4rem; place-items: center; border: 1px solid rgba(255, 255, 255, 0.45); border-radius: 1.2rem; background: rgba(255, 255, 255, 0.2); box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.15); color: #fff; font-size: 2rem; backdrop-filter: blur(10px); }
+.board-collection-card__art i { position: absolute; width: 42%; aspect-ratio: 4 / 3; border: 1px solid rgba(255, 255, 255, 0.42); border-radius: 0.8rem; background: rgba(255, 255, 255, 0.14); transform: rotate(-9deg) translate(-62%, 18%); }
+.board-collection-card__art i:nth-of-type(2) { transform: rotate(8deg) translate(62%, -18%); }
+.board-collection-card__art i:nth-of-type(3) { transform: rotate(-2deg) translate(0, 70%); }
+.board-collection-card__body { display: grid; gap: 0.48rem; padding: 1rem 1.05rem 1.1rem; }
+.board-collection-card__body small { color: var(--accent); font-size: 0.65rem; font-weight: 950; letter-spacing: 0.15em; text-transform: uppercase; }
+.board-collection-card__body strong { overflow-wrap: anywhere; font-size: 1.18rem; line-height: 1.12; }
+.board-collection-card__body > span { display: -webkit-box; min-height: 2.45rem; overflow: hidden; color: var(--muted); font-size: 0.8rem; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.board-collection-card__body em { display: flex; align-items: center; justify-content: space-between; margin-top: 0.25rem; color: var(--text); font-size: 0.72rem; font-style: normal; font-weight: 900; }
+.board-collection-card__body em .material-symbols-outlined { color: var(--accent); font-size: 1rem; transition: transform 160ms ease; }
+.board-collection-card:hover .board-collection-card__body em .material-symbols-outlined { transform: translateX(3px); }
+.board-collection-card--loading { min-height: 18rem; align-content: end; padding: 1rem; }
+.board-collection-card--loading span { display: block; height: 0.7rem; margin-top: 0.55rem; border-radius: 999px; background: color-mix(in srgb, var(--text) 8%, var(--surface)); animation: board-collection-shimmer 1.1s ease-in-out infinite alternate; }
+.board-collection-card--loading span:first-child { height: 10rem; margin: -1rem -1rem 1rem; border-radius: 0; }
+.board-collection-card--loading span:last-child { width: 64%; }
+.board-collections-empty { display: grid; min-height: 18rem; grid-column: 1 / -1; place-items: center; align-content: center; gap: 0.7rem; border: 1px dashed var(--line); border-radius: 1.1rem; padding: 2rem; color: var(--muted); text-align: center; }
+.board-collections-empty > .material-symbols-outlined { color: var(--accent); font-size: 2.6rem; }
+.board-collections-empty h2, .board-collections-empty p { margin: 0; }
+.board-collections-empty h2 { color: var(--text); font-size: 1.35rem; }
+.board-collections-empty p { max-width: 32rem; line-height: 1.6; }
+.board-collections-empty button { display: inline-flex; min-height: 2.7rem; align-items: center; gap: 0.45rem; border: 0; border-radius: 999px; background: var(--accent); padding: 0 1rem; color: #fff; cursor: pointer; font: inherit; font-size: 0.8rem; font-weight: 900; }
+@keyframes board-collection-shimmer { to { opacity: 0.42; } }
+@media (max-width: 860px) { .board-collections-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .board-collections-grid { grid-template-columns: 1fr; } }

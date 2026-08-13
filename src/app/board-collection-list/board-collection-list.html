@@ -1,0 +1,39 @@
+<div class="board-collections-grid">
+  @if (loading()) {
+    @for (item of [1, 2, 3]; track item) {
+      <div class="board-collection-card board-collection-card--loading" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    }
+  } @else {
+    @for (collectionItem of collections(); track collectionItem.id) {
+      <a class="board-collection-card" [routerLink]="collectionRoute(collectionItem)">
+        <span class="board-collection-card__art" aria-hidden="true">
+          <span class="material-symbols-outlined">collections_bookmark</span>
+          <i></i><i></i><i></i>
+        </span>
+        <span class="board-collection-card__body">
+          <small>Board collection</small>
+          <strong>{{ collectionItem.title }}</strong>
+          <span>{{ collectionItem.description || 'A curated set of LivingWiki boards.' }}</span>
+          <em>
+            {{ collectionItem.boardIds.length }} {{ collectionItem.boardIds.length === 1 ? 'board' : 'boards' }}
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </em>
+        </span>
+      </a>
+    } @empty {
+      <div class="board-collections-empty">
+        <span class="material-symbols-outlined">collections_bookmark</span>
+        <h2>{{ error() ? 'Collections are unavailable.' : searching() ? 'No collections match that search.' : 'No collections yet.' }}</h2>
+        <p>{{ error() || (canCreate() ? 'Select a set of public boards and turn them into a shareable collection.' : 'This curator has not published a board collection yet.') }}</p>
+        @if (!error() && !searching() && canCreate()) {
+          <button type="button" (click)="createRequested.emit()">
+            <span class="material-symbols-outlined">add</span>
+            Create collection
+          </button>
+        }
+      </div>
+    }
+  }
+</div>

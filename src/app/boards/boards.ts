@@ -9,6 +9,13 @@ import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type Fire
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { BoardCollectionCreateComponent } from '../board-collection-create/board-collection-create';
+import { BoardCollectionListComponent } from '../board-collection-list/board-collection-list';
+import {
+  BoardCollectionsService,
+  type BoardCollection,
+  type BoardCollectionChoice,
+} from '../board-collections.service';
 import { BOARD_ICON_OPTIONS, resolveBoardIcon } from '../board-icon';
 import { getFirebaseFirestore, getFirebaseFunctions, getFirebaseStorage } from '../firebase.client';
 import { GoogleMapsService, type PlaceSearchResult } from '../google-maps.service';
@@ -179,7 +186,7 @@ type BoardCardStatus = 'planned' | 'saved' | 'visited' | 'favorite';
 type BoardEntityType = 'person' | 'fictional_character' | 'place' | 'event' | 'work' | 'product' | 'food' | 'organization' | 'other';
 type BoardImageIntent = 'portrait' | 'character' | 'place' | 'event' | 'cover' | 'product' | 'food' | 'logo' | 'other';
 type BoardMediaKind = 'none' | 'song' | 'album' | 'film' | 'book' | 'tv' | 'game';
-type BoardGalleryTab = 'boards' | 'cards' | 'favorites';
+type BoardGalleryTab = 'boards' | 'cards' | 'favorites' | 'collections';
 type ShareTarget = 'facebook' | 'x' | 'linkedin' | 'whatsapp' | 'reddit' | 'email';
 type StickerSurface = 'board' | 'card';
 type CardImageToolMode = 'generate' | 'search' | null;
@@ -1247,7 +1254,7 @@ type BoardLoadContext = {
 
 @Component({
   selector: 'app-boards',
-  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent],
   templateUrl: './boards.html',
   styleUrls: ['./boards.css', './board-wizard-drafts.css', './board-narration-style.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './board-city-tag.css'],
 })
@@ -1255,6 +1262,7 @@ export class BoardsComponent implements OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly boardCollectionsService = inject(BoardCollectionsService);
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
   private readonly route = inject(ActivatedRoute);
@@ -1340,6 +1348,7 @@ export class BoardsComponent implements OnDestroy {
   private boardPageCursor: QueryDocumentSnapshot<DocumentData> | null = null;
   private boardLoadContext: BoardLoadContext | null = null;
   private boardLoadSequence = 0;
+  private collectionLoadSequence = 0;
 
   @ViewChild('boardsScrollViewport')
   private boardsScrollViewport?: ElementRef<HTMLElement>;
@@ -1390,6 +1399,11 @@ export class BoardsComponent implements OnDestroy {
   readonly shareTargets = SHARE_TARGETS;
 
   readonly boards = signal<Board[]>([]);
+  readonly boardCollections = signal<BoardCollection[]>([]);
+  readonly boardCollectionsLoading = signal(false);
+  readonly boardCollectionsError = signal<string | null>(null);
+  readonly collectionCreateOpen = signal(false);
+  readonly collectionChoicesLoading = signal(false);
   readonly boardsLoading = signal(false);
   readonly boardsLoadingMore = signal(false);
   readonly boardsHasMore = signal(false);
@@ -1971,6 +1985,7 @@ export class BoardsComponent implements OnDestroy {
   });
   readonly canManageBoardFriends = computed(() => this.isOwnBoardsProfile());
   readonly canCreateBoard = computed(() => this.isOwnBoardsProfile());
+  readonly canCreateCollection = computed(() => this.isOwnBoardsProfile());
   readonly boardFriendsCountLabel = computed(() => {
     const count = this.boardFriends().friends.length;
     return `${count} friend${count === 1 ? '' : 's'}`;
@@ -2028,6 +2043,48 @@ export class BoardsComponent implements OnDestroy {
     return this.userIcon();
   });
   readonly canShareBoardsProfile = computed(() => !!this.boardsProfileShareUrl());
+
+  readonly collectionOwnerPublicSlug = computed(() =>
+    this.boardsProfileBoard()?.ownerPublicSlug
+      || this.publicOwnerSlug()
+      || this.currentPublicOwnerKey(),
+  );
+  readonly collectionOwnerProfileIcon = computed(() =>
+    this.boardsProfileBoard()?.ownerProfileIcon
+      || this.profile()?.profileIcon
+      || '',
+  );
+  readonly collectionOwnerProfilePictureType = computed(() =>
+    this.publicOwnerKey()
+      ? this.boardsProfileBoard()?.ownerProfilePictureType ?? null
+      : this.profile()?.profilePictureType ?? null,
+  );
+  readonly collectionBoardChoices = computed<BoardCollectionChoice[]>(() => {
+    const uid = this.authService.uid();
+    return this.boards()
+      .filter((board) => !board.parentCardId && board.visibility === 'public' && board.ownerUserId === uid)
+      .sort((left, right) => this.compareBoards(left, right))
+      .map((board) => ({
+        id: board.id,
+        title: board.title,
+        description: board.description,
+        imageUrl: board.imageUrl,
+        icon: this.boardDisplayIcon(board),
+        tone: board.tone,
+        kind: board.kind,
+        cardCount: board.cards.length,
+      }));
+  });
+  readonly filteredBoardCollections = computed(() => {
+    const search = this.boardSearch().trim().toLowerCase();
+    if (!search) return this.boardCollections();
+    return this.boardCollections().filter((collectionItem) =>
+      [collectionItem.title, collectionItem.description, collectionItem.ownerDisplayName]
+        .join(' ')
+        .toLowerCase()
+        .includes(search),
+    );
+  });
 
   readonly filteredBoards = computed(() => {
     const query = this.boardSearch().trim().toLowerCase();
@@ -2130,6 +2187,7 @@ export class BoardsComponent implements OnDestroy {
     incrementalSlice(this.visibleGalleryCards(), this.galleryVisibleLimit()),
   );
   readonly galleryHasMore = computed(() => {
+    if (this.activeGalleryTab() === 'collections') return false;
     const visibleCount = this.activeGalleryTab() === 'boards'
       ? this.displayedBoards().length
       : this.displayedGalleryCards().length;
@@ -2429,6 +2487,8 @@ export class BoardsComponent implements OnDestroy {
       this.publicOwnerKey.set(ownerKey);
       this.publicOwnerUid.set(ownerUid);
       this.publicOwnerSlug.set(ownerSlug);
+      this.boardCollections.set([]);
+      this.boardCollectionsError.set(null);
       this.cardSearch.set('');
       this.galleryVisibleLimit.set(BOARD_GALLERY_PAGE_SIZE);
       this.closeCardManageMode();
@@ -2439,6 +2499,9 @@ export class BoardsComponent implements OnDestroy {
       // silently so its unsaved-draft safeguard cannot leak onto another page.
       this.closeStackStudioImmediately();
       void this.loadBoards(boardId, ownerUid, ownerSlug, ownerKey !== null).then(() => {
+        if (!boardId && !this.friendsPage()) {
+          void this.loadBoardCollections(ownerKey || ownerSlug || this.currentPublicOwnerKey());
+        }
         if (this.selectedBoardId() === boardId) {
           this.watchSelectedBoard(boardId);
         }
@@ -2624,6 +2687,7 @@ export class BoardsComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.wizardOffGridLocationRun += 1;
     this.boardLoadSequence += 1;
+    this.collectionLoadSequence += 1;
     this.selectedBoardUnsubscribe?.();
     this.selectedBoardUnsubscribe = null;
     this.stopSongPreview();
@@ -2673,7 +2737,7 @@ export class BoardsComponent implements OnDestroy {
       clearTimeout(this.boardSearchTimer);
       this.boardSearchTimer = null;
     }
-    if (value.trim()) {
+    if (value.trim() && this.activeGalleryTab() !== 'collections') {
       this.boardSearchTimer = setTimeout(() => {
         this.boardSearchTimer = null;
         void this.loadRemainingBoardPagesForSearch();
@@ -2703,7 +2767,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   async loadMoreGalleryItems(): Promise<void> {
-    if (this.boardsLoadingMore() || !this.galleryHasMore()) {
+    if (this.activeGalleryTab() === 'collections' || this.boardsLoadingMore() || !this.galleryHasMore()) {
       return;
     }
 
@@ -2724,6 +2788,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   private visibleGalleryItemCount(): number {
+    if (this.activeGalleryTab() === 'collections') return this.filteredBoardCollections().length;
     return this.activeGalleryTab() === 'boards'
       ? this.filteredBoards().length
       : this.visibleGalleryCards().length;
@@ -2750,6 +2815,38 @@ export class BoardsComponent implements OnDestroy {
       }
       this.onBoardsWindowScroll();
     });
+  }
+
+  async openCreateCollection(): Promise<void> {
+    if (!this.canCreateCollection()) return;
+    this.collectionCreateOpen.set(true);
+    this.collectionChoicesLoading.set(true);
+    try {
+      while (this.boardsHasMore()) {
+        const loaded = await this.loadNextBoardPage();
+        if (!loaded) break;
+      }
+    } catch {
+      this.boardsHasMore.set(false);
+    } finally {
+      this.collectionChoicesLoading.set(false);
+    }
+  }
+
+  closeCreateCollection(): void {
+    this.collectionCreateOpen.set(false);
+  }
+
+  onCollectionCreated(collectionItem: BoardCollection): void {
+    this.boardCollections.update((items) => [collectionItem, ...items.filter((item) => item.id !== collectionItem.id)]);
+    this.collectionCreateOpen.set(false);
+    this.activeGalleryTab.set('collections');
+    void this.router.navigate([
+      '/boards/u',
+      collectionItem.ownerPublicSlug,
+      'collections',
+      collectionItem.slug,
+    ]);
   }
 
   private async loadRemainingBoardPagesForSearch(): Promise<void> {
@@ -15799,6 +15896,33 @@ export class BoardsComponent implements OnDestroy {
     const boards = userBoards;
     this.boards.set(boards);
     this.hasLoaded = true;
+  }
+
+  private async loadBoardCollections(ownerKey: string): Promise<void> {
+    const normalizedOwnerKey = ownerKey.trim();
+    const loadSequence = ++this.collectionLoadSequence;
+    if (!normalizedOwnerKey) {
+      this.boardCollections.set([]);
+      this.boardCollectionsLoading.set(false);
+      return;
+    }
+    this.boardCollectionsLoading.set(true);
+    this.boardCollectionsError.set(null);
+    try {
+      const collections = await this.boardCollectionsService.listPublicForOwner(normalizedOwnerKey);
+      if (loadSequence === this.collectionLoadSequence) {
+        this.boardCollections.set(collections);
+      }
+    } catch {
+      if (loadSequence === this.collectionLoadSequence) {
+        this.boardCollections.set([]);
+        this.boardCollectionsError.set('Collections could not be loaded. Refresh and try again.');
+      }
+    } finally {
+      if (loadSequence === this.collectionLoadSequence) {
+        this.boardCollectionsLoading.set(false);
+      }
+    }
   }
 
   private async loadBoards(

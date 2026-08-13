@@ -896,7 +896,7 @@
   top: 4.75rem;
   z-index: 25;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   border-bottom: 1px solid var(--line);
   background: color-mix(in srgb, var(--shell) 90%, transparent);
   backdrop-filter: blur(16px);
@@ -973,6 +973,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.35rem;
 }
+
 
 .board-square,
 .mosaic-card {

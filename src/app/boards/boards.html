@@ -442,7 +442,13 @@
               @if (canCreateBoard()) {
                 <button type="button" class="boards-ghost-action" (click)="openCreateBoard()" i18n>
                   <span class="material-symbols-outlined">add</span>
-                  Create
+                  Create board
+                </button>
+              }
+              @if (canCreateCollection()) {
+                <button type="button" class="boards-primary-action" (click)="openCreateCollection()">
+                  <span class="material-symbols-outlined">collections_bookmark</span>
+                  New collection
                 </button>
               }
             </div>
@@ -695,6 +701,15 @@
           <span class="material-symbols-outlined">kid_star</span>
           Favorites
         </button>
+        <button
+          type="button"
+          [class.boards-tabbar__item--active]="activeGalleryTab() === 'collections'"
+          class="boards-tabbar__item"
+          (click)="setGalleryTab('collections')"
+        >
+          <span class="material-symbols-outlined">collections_bookmark</span>
+          Collections
+        </button>
       </nav>
 
       @if (canCreateBoard() && activeGalleryTab() === 'boards' && wizardDrafts().length) {
@@ -755,14 +770,23 @@
             <input
               type="search"
               autocomplete="off"
-              [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : 'Search cards...'"
+              [placeholder]="activeGalleryTab() === 'boards' ? 'Search boards...' : activeGalleryTab() === 'collections' ? 'Search collections...' : 'Search cards...'"
               [value]="boardSearch()"
               (input)="onBoardSearchInput($any($event.target).value)"
             />
           </label>
         </div>
 
-        @if (activeGalleryTab() === 'boards') {
+        @if (activeGalleryTab() === 'collections') {
+          <app-board-collection-list
+            [collections]="filteredBoardCollections()"
+            [loading]="boardCollectionsLoading()"
+            [error]="boardCollectionsError()"
+            [canCreate]="canCreateCollection()"
+            [searching]="!!boardSearch().trim()"
+            (createRequested)="openCreateCollection()"
+          ></app-board-collection-list>
+        } @else if (activeGalleryTab() === 'boards') {
           <div class="boards-grid">
             @for (board of displayedBoards(); track board.id) {
               <article
@@ -1064,7 +1088,7 @@
           </div>
         }
 
-        @if (galleryHasMore() || boardsLoadingMore()) {
+        @if (activeGalleryTab() !== 'collections' && (galleryHasMore() || boardsLoadingMore())) {
           <div class="flex min-h-20 items-center justify-center gap-2 text-sm font-black text-[var(--muted)]" role="status" aria-live="polite">
             @if (boardsLoadingMore()) {
               <span class="material-symbols-outlined board-translation-control__spinner" aria-hidden="true">progress_activity</span>
@@ -7677,6 +7701,20 @@
       </form>
     </section>
   </div>
+}
+
+@if (collectionCreateOpen()) {
+  <app-board-collection-create
+    [choices]="collectionBoardChoices()"
+    [loadingChoices]="collectionChoicesLoading()"
+    [ownerPublicSlug]="collectionOwnerPublicSlug()"
+    [ownerDisplayName]="boardsProfileName()"
+    [ownerPhotoUrl]="boardsProfilePhotoUrl()"
+    [ownerProfileIcon]="collectionOwnerProfileIcon()"
+    [ownerProfilePictureType]="collectionOwnerProfilePictureType()"
+    (closed)="closeCreateCollection()"
+    (created)="onCollectionCreated($event)"
+  ></app-board-collection-create>
 }
 
 @if (relatedCardEditorOpen() && relatedCardEditorParent(); as relatedParent) {

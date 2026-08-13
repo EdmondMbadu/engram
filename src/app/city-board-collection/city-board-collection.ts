@@ -7,6 +7,7 @@ import { map } from 'rxjs';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
+import { BoardCollectionsService, type BoardCollection } from '../board-collections.service';
 import {
   CITY_BOARD_CATEGORIES,
   cityBoardCategory,
@@ -38,6 +39,7 @@ export class CityBoardCollectionComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly atlasService = inject(AtlasService);
   private readonly authService = inject(AuthService);
+  private readonly boardCollectionsService = inject(BoardCollectionsService);
   private readonly listingsService = inject(CityBoardListingsService);
   private readonly titleService = inject(Title);
   private readonly localeId = inject(LOCALE_ID);
@@ -53,7 +55,13 @@ export class CityBoardCollectionComponent implements OnDestroy {
     this.route.paramMap.pipe(map((params) => params.get('slug')?.trim() || '')),
     { initialValue: this.route.snapshot.paramMap.get('slug')?.trim() || '' },
   );
+  readonly ownerKey = toSignal(
+    this.route.paramMap.pipe(map((params) => params.get('ownerKey')?.trim() || '')),
+    { initialValue: this.route.snapshot.paramMap.get('ownerKey')?.trim() || '' },
+  );
+  readonly isUserCollection = this.route.snapshot.data['userCollection'] === true;
   readonly atlas = signal<AtlasItem | null>(null);
+  readonly userCollection = signal<BoardCollection | null>(null);
   readonly atlasLoading = signal(true);
   readonly atlasError = signal<string | null>(null);
   readonly boards = signal<CityBoardListing[]>([]);
@@ -79,6 +87,9 @@ export class CityBoardCollectionComponent implements OnDestroy {
       .replace(/\s*\(flagship\)\s*$/i, '')
       .trim();
   });
+  readonly parentName = computed(() =>
+    this.userCollection()?.ownerDisplayName || this.cityName(),
+  );
   readonly country = computed(() => {
     const atlas = this.atlas();
     const cityCountry = this.atlasService.cityCountryLabel(atlas);
@@ -87,7 +98,21 @@ export class CityBoardCollectionComponent implements OnDestroy {
     return countryCode === 'US' ? 'United States' : countryCode ?? '';
   });
   readonly cityLink = computed(() => ['/chat', this.atlas()?.slug || this.routeSlug()]);
+  readonly parentLink = computed(() => this.isUserCollection
+    ? ['/boards/u', this.userCollection()?.ownerPublicSlug || this.ownerKey()]
+    : this.cityLink());
+  readonly pageHeading = computed(() =>
+    this.userCollection()?.title || `Boards for ${this.cityName()}`,
+  );
+  readonly breadcrumbCurrent = computed(() =>
+    this.userCollection()?.title || 'Boards',
+  );
   readonly collectionDescription = computed(() => {
+    const personal = this.userCollection();
+    if (personal) {
+      return personal.description
+        || `A curated set of LivingWiki boards selected by ${personal.ownerDisplayName}.`;
+    }
     const description = this.atlas()?.landing_summary?.trim() || this.atlas()?.description?.trim();
     return description
       ? this.clampText(description, 170)
@@ -95,12 +120,40 @@ export class CityBoardCollectionComponent implements OnDestroy {
         ? `Source-backed collections for campus traditions, shared spaces, study rituals, food, and life around ${this.cityName()}.`
         : `Curated collections that reveal how ${this.cityName()} eats, gathers, moves, and makes sense of itself.`;
   });
-  readonly collectionKindLabel = computed(() => this.isUniversity() ? 'University board library' : 'City board library');
-  readonly collectionIcon = computed(() => this.isUniversity() ? 'school' : 'location_city');
-  readonly collectionUnavailableLabel = computed(() => this.isUniversity() ? 'University collection unavailable' : 'City collection unavailable');
-  readonly collectionUnavailableCopy = computed(() => this.isUniversity()
-    ? 'Return to LivingWiki and choose another public university.'
-    : 'Return to LivingWiki and choose another public city.');
+  readonly collectionKindLabel = computed(() => this.isUserCollection
+    ? 'Board collection'
+    : this.isUniversity() ? 'University board library' : 'City board library');
+  readonly collectionIcon = computed(() => this.isUserCollection
+    ? 'collections_bookmark'
+    : this.isUniversity() ? 'school' : 'location_city');
+  readonly collectionUnavailableLabel = computed(() => this.isUserCollection
+    ? 'Collection unavailable'
+    : this.isUniversity() ? 'University collection unavailable' : 'City collection unavailable');
+  readonly collectionUnavailableCopy = computed(() => this.isUserCollection
+    ? 'This collection may have moved, or it is no longer public.'
+    : this.isUniversity()
+      ? 'Return to LivingWiki and choose another public university.'
+      : 'Return to LivingWiki and choose another public city.');
+  readonly collectionAvailable = computed(() => !!this.atlas() || !!this.userCollection());
+  readonly identityImageUrl = computed(() =>
+    this.userCollection()?.ownerPhotoUrl || this.atlas()?.logo_url || '',
+  );
+  readonly identitySecondary = computed(() =>
+    this.userCollection() ? `By ${this.userCollection()!.ownerDisplayName}` : this.country(),
+  );
+  readonly backLabel = computed(() => `Back to ${this.parentName()}`);
+  readonly featuredAriaLabel = computed(() => this.isUserCollection
+    ? 'Featured collection boards'
+    : this.isUniversity() ? 'Featured university boards' : 'Featured city boards');
+  readonly featuredContextLabel = computed(() =>
+    this.userCollection()?.title || this.cityName(),
+  );
+  readonly searchPlaceholder = computed(() => this.isUserCollection
+    ? 'Search this collection'
+    : `Search ${this.cityName()} boards`);
+  readonly searchAriaLabel = computed(() => this.isUserCollection
+    ? 'Search collection boards'
+    : this.isUniversity() ? 'Search university boards' : 'Search city boards');
   readonly totalLabel = computed(() => {
     const count = this.boards().length;
     return `${count} ${count === 1 ? 'board' : 'boards'}`;
@@ -152,7 +205,9 @@ export class CityBoardCollectionComponent implements OnDestroy {
     const query = this.searchQuery().trim();
     if (query) return `Results for “${this.clampText(query, 44)}”`;
     const category = this.availableCategories().find((item) => item.id === this.activeFilter());
-    return category ? category.label : `All ${this.cityName()} boards`;
+    return category
+      ? category.label
+      : this.isUserCollection ? 'All boards in this collection' : `All ${this.cityName()} boards`;
   });
 
   constructor() {
@@ -251,7 +306,9 @@ export class CityBoardCollectionComponent implements OnDestroy {
   }
 
   heroDescription(board: CityBoardListing): string {
-    return board.description || `Open this curated ${this.cityName()} collection and explore every card.`;
+    return board.description || (this.isUserCollection
+      ? 'Open this board and explore every card in the collection.'
+      : `Open this curated ${this.cityName()} collection and explore every card.`);
   }
 
   railCanGoBack(id: string): boolean {
@@ -285,6 +342,7 @@ export class CityBoardCollectionComponent implements OnDestroy {
   private async loadCollection(slug: string): Promise<void> {
     const sequence = ++this.loadSequence;
     this.atlas.set(null);
+    this.userCollection.set(null);
     this.boards.set([]);
     this.atlasError.set(null);
     this.boardsError.set(null);
@@ -300,6 +358,22 @@ export class CityBoardCollectionComponent implements OnDestroy {
     }
 
     try {
+      if (this.isUserCollection) {
+        this.boardsLoading.set(true);
+        const loaded = await this.boardCollectionsService.getPublic(this.ownerKey(), slug);
+        if (sequence !== this.loadSequence) return;
+        if (!loaded) {
+          this.atlasError.set('This public board collection could not be found.');
+          return;
+        }
+        this.userCollection.set(loaded.collection);
+        this.boards.set(loaded.boards);
+        this.selectedFeaturedId.set(selectFeaturedCityBoards(loaded.boards, 5)[0]?.id ?? '');
+        this.titleService.setTitle(`${loaded.collection.title} | LivingWiki`);
+        this.restartSpotlightRotation();
+        if (this.isBrowser) window.setTimeout(() => this.syncAllRails(), 80);
+        return;
+      }
       const atlas = await this.atlasService.getPublicAtlasBySlug(slug);
       if (sequence !== this.loadSequence) return;
       const collectionEligible = atlas?.city_config?.enabled === true
@@ -335,7 +409,10 @@ export class CityBoardCollectionComponent implements OnDestroy {
         this.atlasError.set('This board collection is temporarily unavailable.');
       }
     } finally {
-      if (sequence === this.loadSequence) this.atlasLoading.set(false);
+      if (sequence === this.loadSequence) {
+        this.atlasLoading.set(false);
+        if (this.isUserCollection) this.boardsLoading.set(false);
+      }
     }
   }
 

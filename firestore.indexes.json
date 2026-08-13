@@ -156,6 +156,40 @@
         { "fieldPath": "status", "order": "ASCENDING" },
         { "fieldPath": "updated_at", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "board_collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "owner_public_slug", "order": "ASCENDING" },
+        { "fieldPath": "visibility", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "board_collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "owner_user_id", "order": "ASCENDING" },
+        { "fieldPath": "visibility", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "board_collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "owner_public_slug", "order": "ASCENDING" },
+        { "fieldPath": "slug", "order": "ASCENDING" },
+        { "fieldPath": "visibility", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "board_collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "owner_user_id", "order": "ASCENDING" },
+        { "fieldPath": "slug", "order": "ASCENDING" },
+        { "fieldPath": "visibility", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
