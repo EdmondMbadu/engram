@@ -9901,6 +9901,9 @@ export class BoardsComponent implements OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   handleCardPhotoViewerKeydown(event: KeyboardEvent): void {
+    if (this.collectionCreateOpen()) {
+      return;
+    }
     if (event.key === 'Escape' && this.stackVoiceLibraryOpen()) {
       event.preventDefault();
       event.stopPropagation();

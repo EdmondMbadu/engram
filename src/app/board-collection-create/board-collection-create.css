@@ -1,4 +1,4 @@
-:host { position: fixed; inset: 0; z-index: 1000; }
+:host { position: fixed; inset: 0; z-index: 1000; display: block; pointer-events: auto; }
 
 .collection-create-overlay {
   display: grid;
@@ -79,6 +79,9 @@
 }
 .collection-create-form input,
 .collection-create-form textarea { padding: 0.76rem 0.85rem; outline: 0; resize: none; }
+.collection-create-form input,
+.collection-create-form textarea,
+.collection-create-search input { pointer-events: auto; user-select: text; -webkit-user-select: text; }
 .collection-create-form input:focus,
 .collection-create-form textarea:focus,
 .collection-create-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent); }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Output, computed, inject, input, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild, computed, inject, input, signal } from '@angular/core';
 import {
   BOARD_COLLECTION_MAX_BOARDS,
   BoardCollectionsService,
@@ -12,8 +12,9 @@ import {
   templateUrl: './board-collection-create.html',
   styleUrl: './board-collection-create.css',
 })
-export class BoardCollectionCreateComponent {
+export class BoardCollectionCreateComponent implements AfterViewInit {
   private readonly collectionsService = inject(BoardCollectionsService);
+  @ViewChild('titleInput') private titleInput?: ElementRef<HTMLInputElement>;
 
   readonly choices = input.required<BoardCollectionChoice[]>();
   readonly loadingChoices = input(false);
@@ -47,9 +48,13 @@ export class BoardCollectionCreateComponent {
     && !this.loadingChoices(),
   );
 
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    this.close();
+  ngAfterViewInit(): void {
+    requestAnimationFrame(() => this.titleInput?.nativeElement.focus());
+  }
+
+  onDialogKeydown(event: KeyboardEvent): void {
+    event.stopPropagation();
+    if (event.key === 'Escape') this.close();
   }
 
   close(): void {

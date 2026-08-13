@@ -1,5 +1,14 @@
-<div class="collection-create-overlay" role="presentation" (mousedown)="$event.target === $event.currentTarget && close()">
-  <section class="collection-create-dialog" role="dialog" aria-modal="true" aria-labelledby="collection-create-title">
+<div class="collection-create-overlay" role="presentation" (click)="$event.target === $event.currentTarget && close()">
+  <section
+    class="collection-create-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="collection-create-title"
+    (pointerdown)="$event.stopPropagation()"
+    (mousedown)="$event.stopPropagation()"
+    (click)="$event.stopPropagation()"
+    (keydown)="onDialogKeydown($event)"
+  >
     <header class="collection-create-header">
       <div>
         <span class="material-symbols-outlined" aria-hidden="true">collections_bookmark</span>
@@ -17,6 +26,7 @@
       <label>
         <span>Collection name</span>
         <input
+          #titleInput
           type="text"
           maxlength="100"
           autocomplete="off"

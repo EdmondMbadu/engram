@@ -7,10 +7,15 @@ import {
   initializeTestEnvironment,
 } from '@firebase/rules-unit-testing';
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
+  limit,
+  query,
   serverTimestamp,
   setDoc,
+  where,
   writeBatch,
 } from 'firebase/firestore';
 
@@ -189,6 +194,19 @@ test('owner can create a public board collection', async () => {
     doc(database, 'board_collections', 'collection-1'),
     publicBoardCollection(),
   ));
+});
+
+test('owner can check collection slug availability before creating it', async () => {
+  const database = testEnvironment.authenticatedContext(ownerUid).firestore();
+
+  const snapshot = await assertSucceeds(getDocs(query(
+    collection(database, 'board_collections'),
+    where('owner_user_id', '==', ownerUid),
+    where('slug', '==', 'favorite-places'),
+    limit(1),
+  )));
+
+  assert.equal(snapshot.empty, true);
 });
 
 test('public visitors can read a public board collection', async () => {
